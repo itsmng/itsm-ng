@@ -45,7 +45,7 @@ class ConfigureCommand extends AbstractConfigureCommand {
 
       parent::configure();
 
-      $this->setName('glpi:database:configure');
+      $this->setName('itsmng:database:configure');
       $this->setAliases(['db:configure']);
       $this->setDescription('Define database configuration');
    }

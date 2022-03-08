@@ -57,7 +57,7 @@ class SetCommand extends AbstractCommand {
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:config:set');
+      $this->setName('itsmng:config:set');
       $this->setAliases(['config:set']);
       $this->setDescription(__('Set configuration value'));
       $this->addArgument('key', InputArgument::REQUIRED, 'Configuration key');

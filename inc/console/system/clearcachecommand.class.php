@@ -47,9 +47,9 @@ class ClearCacheCommand extends Command {
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:system:clear_cache');
+      $this->setName('itsmng:system:clear_cache');
       $this->setAliases(['system:clear_cache']);
-      $this->setDescription('Clear GLPI cache.');
+      $this->setDescription('Clear ITSM-NG cache.');
    }
 
    protected function execute(InputInterface $input, OutputInterface $output) {

@@ -50,7 +50,7 @@ class EnableMaintenanceModeCommand extends AbstractCommand {
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:maintenance:enable');
+      $this->setName('itsmng:maintenance:enable');
       $this->setAliases(
          [
             'maintenance:enable',

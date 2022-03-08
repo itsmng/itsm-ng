@@ -48,7 +48,7 @@ class TimestampsCommand extends AbstractCommand {
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:migration:timestamps');
+      $this->setName('itsmng:migration:timestamps');
       $this->setDescription(__('Convert "datetime" fields to "timestamp" to use timezones.'));
    }
 

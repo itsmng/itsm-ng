@@ -99,7 +99,7 @@ abstract class AbstractConfigureCommand extends AbstractCommand implements Force
 
       parent::configure();
 
-      $this->setName('glpi:database:install');
+      $this->setName('itsmng:database:install');
       $this->setAliases(['db:install']);
       $this->setDescription('Install database schema');
 

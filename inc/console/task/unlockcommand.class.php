@@ -51,7 +51,7 @@ class UnlockCommand extends AbstractCommand {
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:task:unlock');
+      $this->setName('itsmng:task:unlock');
       $this->setAliases(['task:unlock']);
       $this->setDescription(__('Unlock automatic tasks'));
 

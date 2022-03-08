@@ -53,7 +53,7 @@ class ChangekeyCommand extends AbstractCommand {
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:security:change_key');
+      $this->setName('itsmng:security:change_key');
       $this->setDescription(__('Change password storage key and update values in database.'));
    }
 

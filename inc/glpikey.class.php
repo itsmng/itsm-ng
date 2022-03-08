@@ -116,7 +116,7 @@ class GLPIKey {
     */
    public function get() {
       if (!file_exists($this->keyfile)) {
-         throw new \RuntimeException('You must create a security key, see glpi:security:change_key command.');
+         throw new \RuntimeException('You must create a security key, see itsmng:security:change_key command.');
       }
       //load key from existing config file
       $key = file_get_contents($this->keyfile);

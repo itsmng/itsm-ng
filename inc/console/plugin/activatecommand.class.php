@@ -46,7 +46,7 @@ class ActivateCommand extends AbstractPluginCommand {
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:plugin:activate');
+      $this->setName('itsmng:plugin:activate');
       $this->setAliases(['plugin:activate']);
       $this->setDescription('Activate plugin(s)');
    }
