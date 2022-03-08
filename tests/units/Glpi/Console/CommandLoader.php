@@ -54,7 +54,7 @@ PHP
 <?php
 class InstallCommand extends \\Symfony\\Component\\Console\\Command\\Command {
    protected function configure() {
-      \$this->setName('glpi:database:install');
+      \$this->setName('itsmng:database:install');
       \$this->setAliases(['db:install']);
    }
 }
