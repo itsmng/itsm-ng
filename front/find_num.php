@@ -43,7 +43,7 @@ echo "<html lang=\"{$CFG_GLPI["languages"][$_SESSION['glpilanguage']][3]}\">";
 ?>
 <head>
     <meta charset="utf-8">
-    <title>GLPI</title>
+    <title>ITSM-NG</title>
 
 <?php
 echo Html::scss('css/styles');
