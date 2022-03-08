@@ -69,7 +69,7 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:database:update');
+      $this->setName('itsmng:database:update');
       $this->setAliases(['db:update']);
       $this->setDescription(__('Update database schema to new version'));
 
@@ -111,9 +111,11 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
       Session::changeProfile(4);
 
       // Display current/future state informations
-      $currents            = $update->getCurrents();
-      $current_version     = $currents['version'];
-      $current_db_version  = $currents['dbversion'];
+      $currents                  = $update->getCurrents();
+      $current_version           = $currents['version'];
+      $current_db_version        = $currents['dbversion'];
+      $itsm_current_version      = $currents['itsmversion'];
+      $itsm_current_db_version   = $currents['itsmdbversion'];
 
       global $migration; // Migration scripts are using global migrations
       $migration = new Migration(GLPI_SCHEMA_VERSION);
@@ -125,8 +127,8 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
       $informations->addRow([__('Database host'), $this->db->dbhost, '']);
       $informations->addRow([__('Database name'), $this->db->dbdefault, '']);
       $informations->addRow([__('Database user'), $this->db->dbuser, '']);
-      $informations->addRow([__('GLPI version'), $current_version, GLPI_VERSION]);
-      $informations->addRow([__('GLPI database version'), $current_db_version, GLPI_SCHEMA_VERSION]);
+      $informations->addRow([__('GLPI version'), $itsm_current_version, ITSM_VERSION]);
+      $informations->addRow([__('GLPI database version'), $itsm_current_db_version, ITSM_SCHEMA_VERSION]);
       $informations->render();
 
       if (defined('GLPI_PREVER')) {
@@ -143,7 +145,7 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
          }
       }
 
-      if (version_compare($current_db_version, GLPI_SCHEMA_VERSION, 'eq') && !$force) {
+      if (version_compare($current_db_version, GLPI_SCHEMA_VERSION, 'eq') && !$force && version_compare($itsm_current_db_version, ITSM_SCHEMA_VERSION, 'eq')) {
          $output->writeln('<info>' . __('No migration needed.') . '</info>');
          return 0;
       }
@@ -180,17 +182,23 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
          }
       }
 
-      $update->doUpdates($current_version);
-
       if (version_compare($current_db_version, GLPI_SCHEMA_VERSION, 'ne')) {
+         $update->doUpdates($current_version);
+      }
+
+      if (version_compare($itsm_current_db_version, ITSM_SCHEMA_VERSION, 'ne')) {
+         $update->doItsmUpdates($itsm_current_version);
+      }
+
+      if (version_compare($current_db_version, GLPI_SCHEMA_VERSION, 'ne') && version_compare($itsm_current_db_version, ITSM_SCHEMA_VERSION, 'ne')) {
          // Migration is considered as done as Update class has the responsibility
          // to run updates if schema has changed (even for "pre-versions".
          $output->writeln('<info>' . __('Migration done.') . '</info>');
       } else if ($force) {
          // Replay last update script even if there is no schema change.
          // It can be used in dev environment when update script has been updated/fixed.
-         include_once(GLPI_ROOT . '/install/update_956_957.php');
-         update956to957();
+         include_once(GLPI_ROOT . '/install/itsm_update/update_100_101.php');
+         update100to101();
 
          $output->writeln('<info>' . __('Last migration replayed.') . '</info>');
       }
