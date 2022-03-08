@@ -459,10 +459,12 @@ function changeVarcharToID($table1, $table2, $chps) {
 function doUpdateDb() {
    global $GLPI_CACHE, $migration, $update;
 
-   $currents            = $update->getCurrents();
-   $current_version     = $currents['version'];
-   $current_db_version  = $currents['dbversion'];
-   $glpilanguage        = $currents['language'];
+   $currents                  = $update->getCurrents();
+   $current_version           = $currents['version'];
+   $current_db_version        = $currents['dbversion'];
+   $glpilanguage              = $currents['language'];
+   $itsm_current_version      = $currents['itsmversion'];
+   $itsm_current_db_version   = $currents['itsmdbversion'];
 
    $migration = new Migration(GLPI_SCHEMA_VERSION);
    $update->setMigration($migration);
@@ -474,6 +476,7 @@ function doUpdateDb() {
    }
 
    $update->doUpdates($current_version);
+   $update->doItsmUpdates($itsm_current_version);
    $GLPI_CACHE->clear();
 }
 
