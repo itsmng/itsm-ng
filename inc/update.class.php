@@ -124,19 +124,93 @@ class Update extends CommonGLPI {
       } else {
          $currents = Config::getConfigurationValues(
             'core',
-            ['version', 'dbversion', 'language']
+            ['version', 'dbversion', 'language', 'itsmversion', 'itsmdbversion']
          );
 
          if (!isset($currents['dbversion'])) {
             $currents['dbversion'] = $currents['version'];
          }
+
+         // Init ITSM-NG version
+         if (!isset($currents['itsmversion'])) {
+            $currents['itsmversion'] = "1.0.0";
+         }
+
+         if (!isset($currents['itsmdbversion'])) {
+            $currents['itsmdbversion'] = $currents['itsmversion'];
+         }
       }
 
-      $this->version    = $currents['version'];
-      $this->dbversion  = $currents['dbversion'];
-      $this->language   = $currents['language'];
+      $this->version       = $currents['version'];
+      $this->dbversion     = $currents['dbversion'];
+      $this->language      = $currents['language'];
+
+      // Init ITSM-NG version
+      $this->itsmversion   = $currents['itsmversion'];
+      $this->itsmdbversion = $currents['itsmdbversion'];
 
       return $currents;
+   }
+
+   /**
+    * Run ITSM-NG updates
+    *
+    * @param string $itsm_current_version ITSM Current version
+    *
+    * @return void
+    */
+   public function doItsmUpdates($itsm_current_version = null) {
+      if ($itsm_current_version === null) {
+         if ($this->itsmversion === null) {
+            throw new \RuntimeException('Cannot process ITSM-NG updates without any version specified!');
+         }
+         $itsm_current_version = $this->itsmversion;
+      }
+
+      $DB = $this->DB;
+
+      // To prevent problem of execution time
+      ini_set("max_execution_time", "0");
+
+      $updir = __DIR__ . "/../install/itsm_update/";
+
+      if (isCommandLine() && version_compare($current_version, '0.72.3', 'lt')) {
+         echo 'Upgrade from command line is not supported before 0.72.3!';
+         die(1);
+      }
+
+      // Update process desactivate all plugins
+      $plugin = new Plugin();
+      $plugin->unactivateAll();
+
+      switch ($itsm_current_version) {
+         case '1.0.0':
+            include_once "{$updir}update_100_101.php";
+            update100to101();
+            break;
+
+         case ITSM_VERSION:
+         case ITSM_SCHEMA_VERSION:
+            break;
+
+         default :
+            $message = sprintf(
+               __('Unsupported version (%1$s)'),
+               $current_version
+            );
+            if (isCommandLine()) {
+               echo "$message\n";
+               die(1);
+            } else {
+               $this->migration->displayWarning($message, true);
+               die(1);
+            }
+      }
+
+      // Update version number ---- LEAVE AT THE END
+      Config::setConfigurationValues('core', ['itsmversion'             => ITSM_VERSION,
+                                              'itsmdbversion'           => ITSM_SCHEMA_VERSION]);
+
    }
 
 
