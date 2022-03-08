@@ -5174,7 +5174,7 @@ msgid ""
 msgstr ""
 "Nepodarilo sa vytvoriť súbor s kľúčom zabezpečenia! Ak chcete manuálne "
 "vytvoriť tento súbor, musíte spustiť príkaz \"php bin/console "
-"glpi:security:change_key\"."
+"itsmng:security:change_key\"."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72
 #: inc/rssfeed.class.php:980 inc/rssfeed.class.php:981
@@ -9620,7 +9620,7 @@ msgstr "Niektoré voliteľné systémové požiadavky chýbajú."
 #: inc/console/application.class.php:472
 msgid "Run \"php bin/console glpi:system:check_requirements\" for more details."
 msgstr ""
-"Spustite \"php bin/console glpi:system:check_requirements\" pre viac "
+"Spustite \"php bin/console itsmng:system:check_requirements\" pre viac "
 "informácií."
 
 #: inc/console/migration/myisamtoinnodbcommand.class.php:60

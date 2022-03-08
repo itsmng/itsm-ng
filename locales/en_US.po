@@ -5055,7 +5055,7 @@ msgid ""
 "glpi:security:change_key\" command to manually create this file."
 msgstr ""
 "Unable to create the security key file! You have to run \"php bin/console "
-"glpi:security:change_key\" command to manually create this file."
+"itsmng:security:change_key\" command to manually create this file."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72
 #: inc/rssfeed.class.php:980 inc/rssfeed.class.php:981
@@ -9300,7 +9300,7 @@ msgstr "Some optional system requirements are missing."
 #: inc/console/abstractcommand.class.php:197
 #: inc/console/application.class.php:472
 msgid "Run \"php bin/console glpi:system:check_requirements\" for more details."
-msgstr "Run \"php bin/console glpi:system:check_requirements\" for more details."
+msgstr "Run \"php bin/console itsmng:system:check_requirements\" for more details."
 
 #: inc/console/migration/myisamtoinnodbcommand.class.php:60
 msgid "Migrate MyISAM tables to InnoDB"

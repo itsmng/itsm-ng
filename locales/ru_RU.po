@@ -5198,7 +5198,7 @@ msgid ""
 "glpi:security:change_key\" command to manually create this file."
 msgstr ""
 "Не удаётся создать файл секретного ключа! Создайте его вручную, выполнив "
-"команду \"php bin/console glpi:security:change_key\"."
+"команду \"php bin/console itsmng:security:change_key\"."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72
 #: inc/rssfeed.class.php:980 inc/rssfeed.class.php:981

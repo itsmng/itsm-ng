@@ -5056,7 +5056,7 @@ msgid ""
 "glpi:security:change_key\" command to manually create this file."
 msgstr ""
 "Нууцлалын түлхүүр файлыг үүсгэх боломжгүй! \"php bin/console "
-"glpi:security:change_key\" командыг ажиллуулж тухайн файлыг гараар үүсгэнэ."
+"itsmng:security:change_key\" командыг ажиллуулж тухайн файлыг гараар үүсгэнэ."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72
 #: inc/rssfeed.class.php:980 inc/rssfeed.class.php:981
@@ -9313,7 +9313,7 @@ msgstr "Зарим нэмэлт системийн шаардлагууд бай
 #: inc/console/application.class.php:472
 msgid "Run \"php bin/console glpi:system:check_requirements\" for more details."
 msgstr ""
-"Дэлгэрэнгүй мэдээллийг \"php bin/console glpi: system: "
+"Дэлгэрэнгүй мэдээллийг \"php bin/console itsmng: system: "
 "check_requirements\"-с үзнэ үү."
 
 #: inc/console/migration/myisamtoinnodbcommand.class.php:60

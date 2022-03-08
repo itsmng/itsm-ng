@@ -5116,7 +5116,7 @@ msgid ""
 msgstr ""
 "Nije moguće stvoriti datoteku sigurnosnog ključa! Za ručno stvaranje ove "
 "datoteke mora se pokrenuti naredba „php bin/console "
-"glpi:security:change_key”."
+"itsmng:security:change_key”."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72
 #: inc/rssfeed.class.php:980 inc/rssfeed.class.php:981
@@ -9468,7 +9468,7 @@ msgstr "Nedostaju neki opcionalni sustavski uvjeti."
 #: inc/console/application.class.php:472
 msgid "Run \"php bin/console glpi:system:check_requirements\" for more details."
 msgstr ""
-"Pokreni „php bin/console glpi:system:check_requirements” za daljnje detalje."
+"Pokreni „php bin/console itsmng:system:check_requirements” za daljnje detalje."
 
 #: inc/console/migration/myisamtoinnodbcommand.class.php:60
 msgid "Migrate MyISAM tables to InnoDB"
