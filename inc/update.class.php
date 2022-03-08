@@ -174,7 +174,7 @@ class Update extends CommonGLPI {
 
       $updir = __DIR__ . "/../install/itsm_update/";
 
-      if (isCommandLine() && version_compare($current_version, '0.72.3', 'lt')) {
+      if (isCommandLine() && version_compare($itsm_current_version, '0.72.3', 'lt')) {
          echo 'Upgrade from command line is not supported before 0.72.3!';
          die(1);
       }
