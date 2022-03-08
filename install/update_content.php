@@ -263,7 +263,7 @@ echo "<head>";
 echo "<meta charset='utf-8'>";
 echo "<meta http-equiv='Content-Script-Type' content='text/javascript'>";
 echo "<meta http-equiv='Content-Style-Type' content='text/css'>";
-echo "<title>Setup GLPI</title>";
+echo "<title>Setup ITSM-NG</title>";
 // CSS
 echo "<link rel='stylesheet' href='../css/style_install.css' type='text/css' media='screen' >";
 
@@ -272,7 +272,7 @@ echo "<body>";
 echo "<div id='principal'>";
 echo "<div id='bloc'>";
 echo "<div id='logo_bloc'></div>";
-echo "<h2>GLPI SETUP</h2>";
+echo "<h2>ITSM-NG SETUP</h2>";
 //end style and co
 
 // #################" UPDATE CONTENT #################################
