@@ -5195,7 +5195,7 @@ msgid ""
 "glpi:security:change_key\" command to manually create this file."
 msgstr ""
 "Nie można utworzyć pliku klucza zabezpieczającego! Musisz manualnie "
-"uruchomić komendę \"php bin/console glpi:security:change_key\" by utworzyć "
+"uruchomić komendę \"php bin/console itsmng:security:change_key\" by utworzyć "
 "ten plik."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72
@@ -9648,7 +9648,7 @@ msgstr "Brak niektórych opcjonalnych wymagań systemowych."
 #: inc/console/application.class.php:472
 msgid "Run \"php bin/console glpi:system:check_requirements\" for more details."
 msgstr ""
-"Uruchom polecenie \"php bin/console glpi:system:check_requirements\" by "
+"Uruchom polecenie \"php bin/console itsmng:system:check_requirements\" by "
 "otrzymać więcej szczegółów."
 
 #: inc/console/migration/myisamtoinnodbcommand.class.php:60

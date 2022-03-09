@@ -5073,7 +5073,7 @@ msgid ""
 "glpi:security:change_key\" command to manually create this file."
 msgstr ""
 "Não foi possivel a criação do ficheiro com chave de segurança! Tem de "
-"executar o comando \"php bin/console glpi:security:change_key\" manualmente "
+"executar o comando \"php bin/console itsmng:security:change_key\" manualmente "
 "para criar este ficheiro."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72
@@ -9334,7 +9334,7 @@ msgstr "Alguns requisitos opcionais do sistema encontram-se em falta."
 #: inc/console/application.class.php:472
 msgid "Run \"php bin/console glpi:system:check_requirements\" for more details."
 msgstr ""
-"Execute \"php bin/console glpi:system:check_requirements\" para mais "
+"Execute \"php bin/console itsmng:system:check_requirements\" para mais "
 "detalhes"
 
 #: inc/console/migration/myisamtoinnodbcommand.class.php:60

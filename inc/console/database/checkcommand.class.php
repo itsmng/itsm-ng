@@ -54,7 +54,7 @@ class CheckCommand extends AbstractCommand {
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:database:check');
+      $this->setName('itsmng:database:check');
       $this->setAliases(['db:check']);
       $this->setDescription(__('Check for schema differences between current database and installation file.'));
    }

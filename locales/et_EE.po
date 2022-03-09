@@ -5045,7 +5045,7 @@ msgid ""
 "glpi:security:change_key\" command to manually create this file."
 msgstr ""
 "Ei suuda luua faili turvavõtmele. Pead andma käsurealt käsu \"php "
-"bin/console glpi:security:change_key\" faili käsitsi loomiseks."
+"bin/console itsmng:security:change_key\" faili käsitsi loomiseks."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72
 #: inc/rssfeed.class.php:980 inc/rssfeed.class.php:981
@@ -9290,7 +9290,7 @@ msgstr "Mõned valikulised süsteeminõuded pole täidetud."
 #: inc/console/application.class.php:472
 msgid "Run \"php bin/console glpi:system:check_requirements\" for more details."
 msgstr ""
-"Käivita \"php bin/console glpi:system:check_requirements\" rohkema info "
+"Käivita \"php bin/console itsmng:system:check_requirements\" rohkema info "
 "saamiseks."
 
 #: inc/console/migration/myisamtoinnodbcommand.class.php:60

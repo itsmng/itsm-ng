@@ -141,7 +141,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand {
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:migration:appliances_plugin_to_core');
+      $this->setName('itsmng:migration:appliances_plugin_to_core');
       $this->setDescription(__('Migrate Appliances plugin data into GLPI core tables'));
 
       $this->addOption(

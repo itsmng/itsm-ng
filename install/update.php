@@ -459,10 +459,12 @@ function changeVarcharToID($table1, $table2, $chps) {
 function doUpdateDb() {
    global $GLPI_CACHE, $migration, $update;
 
-   $currents            = $update->getCurrents();
-   $current_version     = $currents['version'];
-   $current_db_version  = $currents['dbversion'];
-   $glpilanguage        = $currents['language'];
+   $currents                  = $update->getCurrents();
+   $current_version           = $currents['version'];
+   $current_db_version        = $currents['dbversion'];
+   $glpilanguage              = $currents['language'];
+   $itsm_current_version      = $currents['itsmversion'];
+   $itsm_current_db_version   = $currents['itsmdbversion'];
 
    $migration = new Migration(GLPI_SCHEMA_VERSION);
    $update->setMigration($migration);
@@ -474,6 +476,7 @@ function doUpdateDb() {
    }
 
    $update->doUpdates($current_version);
+   $update->doItsmUpdates($itsm_current_version);
    $GLPI_CACHE->clear();
 }
 
@@ -552,7 +555,7 @@ echo "<head>";
 echo "<meta charset='utf-8'>";
 echo "<meta http-equiv='Content-Script-Type' content='text/javascript'>";
 echo "<meta http-equiv='Content-Style-Type' content='text/css'>";
-echo "<title>Setup GLPI</title>";
+echo "<title>Setup ITSM-NG</title>";
 //JS
 echo Html::script("public/lib/base.js");
 // CSS
@@ -563,7 +566,7 @@ echo "<body>";
 echo "<div id='principal'>";
 echo "<div id='bloc'>";
 echo "<div id='logo_bloc'></div>";
-echo "<h2>GLPI SETUP</h2>";
+echo "<h2>ITSM-NG SETUP</h2>";
 echo "<br><h3>".__('Upgrade')."</h3>";
 
 // step 1    avec bouton de confirmation
@@ -640,13 +643,6 @@ if (empty($_POST["continuer"]) && empty($_POST["from_update"])) {
                default:
                   echo "<form action='".$CFG_GLPI["root_doc"]."/install/update.php' method='post'>";
                   echo "<input type='hidden' name='update_end' value='1'/>";
-
-                  if (!Telemetry::isEnabled()) {
-                     echo "<hr />";
-                     $_SESSION['telemetry_from_install'] = true;
-                     echo Telemetry::showTelemetry();
-                  }
-                  echo Telemetry::showReference();
 
                   echo "<p class='submit'><input type='submit' name='submit' class='submit' value='".
                            __('Use GLPI')."'></p>";

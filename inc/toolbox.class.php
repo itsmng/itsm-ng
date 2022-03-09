@@ -2549,6 +2549,15 @@ class Toolbox {
             ]
          );
 
+         // set ITSM-NG version
+         Config::setConfigurationValues(
+            'core',
+            [
+               'itsmversion'       => ITSM_VERSION,
+               'itsmdbversion'     => ITSM_SCHEMA_VERSION
+            ]
+         );
+
          if (defined('GLPI_SYSTEM_CRON')) {
             // Downstream packages may provide a good system cron
             $DB->updateOrDie(

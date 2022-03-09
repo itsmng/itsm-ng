@@ -66,9 +66,10 @@ a {
    top:-25px;
    padding:0;
    margin:0;
-   width: 145px;
+   width: 170px;
    height: 80px;
    background: url(../pics/login_logo_itsm.png)  no-repeat;
+   background-size: 170px;
 }
 
 

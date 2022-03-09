@@ -5052,7 +5052,7 @@ msgid ""
 "glpi:security:change_key\" command to manually create this file."
 msgstr ""
 "Ezin izan da seguritate kakoa sortu. \"php bin/console "
-"glpi:security:change_key\" komandoa exekutatu behar duzu fitxategi hori "
+"itsmng:security:change_key\" komandoa exekutatu behar duzu fitxategi hori "
 "sortzeko."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72

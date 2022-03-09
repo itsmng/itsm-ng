@@ -5063,7 +5063,7 @@ msgid ""
 "glpi:security:change_key\" command to manually create this file."
 msgstr ""
 "Невъзможно създаване на защитен ключ! Трябва да стартирате командата \"php "
-"bin/console glpi:security:change_key\", за да създадете файла ръчно."
+"bin/console itsmng:security:change_key\", за да създадете файла ръчно."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72
 #: inc/rssfeed.class.php:980 inc/rssfeed.class.php:981
@@ -9306,7 +9306,7 @@ msgstr ""
 #: inc/console/application.class.php:472
 msgid "Run \"php bin/console glpi:system:check_requirements\" for more details."
 msgstr ""
-"Стартирайте \"php bin/console glpi:system:check_requirements\" за повече "
+"Стартирайте \"php bin/console itsmng:system:check_requirements\" за повече "
 "детайли."
 
 #: inc/console/migration/myisamtoinnodbcommand.class.php:60

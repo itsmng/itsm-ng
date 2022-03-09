@@ -5093,7 +5093,7 @@ msgid ""
 "glpi:security:change_key\" command to manually create this file."
 msgstr ""
 "Die Sicherheitsschlüsseldatei kann nicht erstellt werden! Sie müssen den "
-"Befehl \"php bin/console glpi:security:change_key\" ausführen, um diese "
+"Befehl \"php bin/console itsmng:security:change_key\" ausführen, um diese "
 "Datei manuell zu erstellen."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72

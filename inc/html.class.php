@@ -1222,7 +1222,7 @@ class Html {
       // Start the page
       echo "<!DOCTYPE html>\n";
       echo "<html lang=\"{$CFG_GLPI["languages"][$_SESSION['glpilanguage']][3]}\">";
-      echo "<head><title>GLPI - ".$title."</title>";
+      echo "<head><title>ITSM-NG - ".$title."</title>";
       echo "<meta charset=\"utf-8\">";
 
       //prevent IE to turn into compatible mode...

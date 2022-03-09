@@ -52,7 +52,7 @@ class InstallCommand extends AbstractPluginCommand {
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:plugin:install');
+      $this->setName('itsmng:plugin:install');
       $this->setAliases(['plugin:install']);
       $this->setDescription('Run plugin(s) installation script');
 

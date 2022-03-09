@@ -56,7 +56,7 @@ class MyIsamToInnoDbCommand extends AbstractCommand {
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:migration:myisam_to_innodb');
+      $this->setName('itsmng:migration:myisam_to_innodb');
       $this->setDescription(__('Migrate MyISAM tables to InnoDB'));
    }
 

@@ -5053,7 +5053,7 @@ msgid ""
 "glpi:security:change_key\" command to manually create this file."
 msgstr ""
 "Güvenlik anahtarı dosyası oluşturulamadı! Bu dosyayı el ile oluşturmak için "
-"\"php bin/console glpi:security:change_key\" komutunu yürütmelisiniz."
+"\"php bin/console itsmng:security:change_key\" komutunu yürütmelisiniz."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72
 #: inc/rssfeed.class.php:980 inc/rssfeed.class.php:981
@@ -9306,7 +9306,7 @@ msgstr "Bazı isteğe bağlı sistem gereksinimleri eksik."
 msgid "Run \"php bin/console glpi:system:check_requirements\" for more details."
 msgstr ""
 "Ayrıntılı bilgi almak için \"php bin/console "
-"glpi:system:check_requirements\" komutunu yürütün."
+"itsmng:system:check_requirements\" komutunu yürütün."
 
 #: inc/console/migration/myisamtoinnodbcommand.class.php:60
 msgid "Migrate MyISAM tables to InnoDB"

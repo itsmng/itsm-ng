@@ -5053,7 +5053,7 @@ msgid ""
 "glpi:security:change_key\" command to manually create this file."
 msgstr ""
 "Kan bestand met beveiligingssleutel niet maken! U moet het \"php bin/console"
-" glpi:security:change_key\" commando uitvoeren om dit bestand handmatig te "
+" itsmng:security:change_key\" commando uitvoeren om dit bestand handmatig te "
 "maken."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72

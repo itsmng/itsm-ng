@@ -5068,7 +5068,7 @@ msgid ""
 "glpi:security:change_key\" command to manually create this file."
 msgstr ""
 "No es pot crear l'arxiu de la clau de seguretat. S'ha d'executar la comanda "
-"\"php bin/console glpi:security:change_key\" per crear manualment aquest "
+"\"php bin/console itsmng:security:change_key\" per crear manualment aquest "
 "arxiu."
 
 #: inc/ruleasset.class.php:70 inc/ruleasset.class.php:72
@@ -9326,7 +9326,7 @@ msgstr "Falten alguns requeriments opcionals del sistema."
 #: inc/console/application.class.php:472
 msgid "Run \"php bin/console glpi:system:check_requirements\" for more details."
 msgstr ""
-"Executa \"php bin/console glpi:system:check_requirements\" per més detalls."
+"Executa \"php bin/console itsmng:system:check_requirements\" per més detalls."
 
 #: inc/console/migration/myisamtoinnodbcommand.class.php:60
 msgid "Migrate MyISAM tables to InnoDB"

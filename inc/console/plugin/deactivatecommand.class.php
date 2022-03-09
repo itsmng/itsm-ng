@@ -46,7 +46,7 @@ class DeactivateCommand extends AbstractPluginCommand {
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:plugin:deactivate');
+      $this->setName('itsmng:plugin:deactivate');
       $this->setAliases(['plugin:deactivate']);
       $this->setDescription('Deactivate plugin(s)');
    }
