@@ -118,7 +118,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
    $_SESSION['pwdfield'] = $pwdfield = uniqid('fieldb');
    $_SESSION['rmbfield'] = $rmbfield = uniqid('fieldc');
 
-   // Other CAS
+   // Other CASé
    if (isset($_GET["noAUTO"])) {
       echo "<input type='hidden' name='noAUTO' value='1' />";
    }
@@ -210,6 +210,27 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
       }
    }
    echo "</div>";
+
+   // Display oidc login 
+   global $DB;
+   $criteria = "SELECT * FROM glpi_oidc_config";
+   $iterators = $DB->request($criteria);
+   foreach($iterators as $iterator) {
+       $is_activate = $iterator['is_activate'];
+       $is_forced = $iterator['is_forced'];
+   }
+   
+   if ($is_activate) {
+      if ($is_forced && !isset($_GET["noAUTO"]))
+         Html::redirect("front/oidc.php");
+      echo "<form method='post' action='./index.php'>";
+      echo "<hr style='width:30%'>";
+      echo "<div id='display-login'><input type='submit' name='login_oidc' value='Connect with Keycloak' class='submit'></div>";
+      if (isset($_POST["login_oidc"])) {
+         Html::redirect("front/oidc.php");
+      }
+      Html::closeForm();
+   }
 
    // Display FAQ is enable
    if ($CFG_GLPI["use_public_faq"]) {
