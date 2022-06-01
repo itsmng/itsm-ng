@@ -112,6 +112,26 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
    echo "</div>";
 
    echo "<div id='boxlogin'>";
+   // Display oidc login 
+   global $DB;
+   $criteria = "SELECT * FROM glpi_oidc_config";
+   $iterators = $DB->request($criteria);
+   foreach($iterators as $iterator) {
+       $is_activate = $iterator['is_activate'];
+       $is_forced = $iterator['is_forced'];
+   }
+
+   if ($is_activate) {
+      if ($is_forced && !isset($_GET["noAUTO"]))
+         Html::redirect("front/oidc.php");
+      echo "<form method='post' action='./index.php'>";
+      echo "<p class='login_input'><input type='submit' name='login_oidc' value='SSO Login' class='submit'></p>";
+      echo "<p class='login_input'><hr style='width:30%'></p>";
+      if (isset($_POST["login_oidc"])) {
+         Html::redirect("front/oidc.php");
+      }
+      Html::closeForm();
+   }
    echo "<form action='".$CFG_GLPI["root_doc"]."/front/login.php' method='post'>";
 
    $_SESSION['namfield'] = $namfield = uniqid('fielda');
@@ -210,27 +230,6 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
       }
    }
    echo "</div>";
-
-   // Display oidc login 
-   global $DB;
-   $criteria = "SELECT * FROM glpi_oidc_config";
-   $iterators = $DB->request($criteria);
-   foreach($iterators as $iterator) {
-       $is_activate = $iterator['is_activate'];
-       $is_forced = $iterator['is_forced'];
-   }
-   
-   if ($is_activate) {
-      if ($is_forced && !isset($_GET["noAUTO"]))
-         Html::redirect("front/oidc.php");
-      echo "<form method='post' action='./index.php'>";
-      echo "<hr style='width:30%'>";
-      echo "<div id='display-login'><input type='submit' name='login_oidc' value='Connect with Keycloak' class='submit'></div>";
-      if (isset($_POST["login_oidc"])) {
-         Html::redirect("front/oidc.php");
-      }
-      Html::closeForm();
-   }
 
    // Display FAQ is enable
    if ($CFG_GLPI["use_public_faq"]) {
