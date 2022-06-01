@@ -125,7 +125,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
       if ($is_forced && !isset($_GET["noAUTO"]))
          Html::redirect("front/oidc.php");
       echo "<form method='post' action='./index.php'>";
-      echo "<p class='login_input'><input type='submit' name='login_oidc' value='SSO Login' class='submit'></p>";
+      echo "<p class='login_input'><input type='submit' name='login_oidc' value='".__('SSO Login')."' class='submit'></p>";
       echo "<p class='login_input'><hr style='width:30%'></p>";
       if (isset($_POST["login_oidc"])) {
          Html::redirect("front/oidc.php");

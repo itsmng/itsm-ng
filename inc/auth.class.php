@@ -1675,9 +1675,9 @@ class Auth extends CommonGLPI {
 
       echo "<form method='post' action='./auth.oidc.php' method='post'>";
       echo "<table class='tab_cadre' cellpadding='5'>";
-      echo "<tr><th colspan='2'>".__("Open ID connect configuration", 'holidays')."</th></tr>";
+      echo "<tr><th colspan='2'>".__("Open ID connect configuration")."</th></tr>";
       echo "<tr class='tab_bg_1'>";
-      echo "<td>Activate open ID connect</td>";
+      echo "<td>".__("Activate open ID connect")."</td>";
       echo "<td>";
       if (isset($oidc_db['is_activate'])) {
        Dropdown::showYesNo('useoidc', $oidc_db['is_activate'],-1,['use_checkbox' => false]);
@@ -1686,7 +1686,7 @@ class Auth extends CommonGLPI {
    }
       echo "</td></tr>";
       echo "<tr class='tab_bg_1'>";
-      echo "<td>Forced open ID connect</td>";
+      echo "<td>".__("Forced connection with open ID connect")."</td>";
       echo "<td>";
       if (isset($oidc_db['is_forced'])) {
        Dropdown::showYesNo('forceoidc', $oidc_db['is_forced'],-1,['use_checkbox' => false]);
