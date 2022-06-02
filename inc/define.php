@@ -46,8 +46,8 @@ if (substr(GLPI_VERSION, -4) === '-dev') {
 define('GLPI_MIN_PHP', '7.2.0'); // Must also be changed in top of index.php
 
 // Current version of ITSM-NG
-define('ITSM_VERSION', '1.0.1');
-define('ITSM_SCHEMA_VERSION', '1.0.1');
+define('ITSM_VERSION', '1.1.0');
+define('ITSM_SCHEMA_VERSION', '1.1.0');
 define('ITSM_MIN_PHP', '7.2.0'); // Must also be changed in top of index.php
 define('ITSM_YEAR', '2022');
 
