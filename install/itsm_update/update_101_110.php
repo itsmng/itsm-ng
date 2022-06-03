@@ -37,14 +37,14 @@
  **/
 function update101to110() {
    /** @global Migration $migration */
-   global $DB, $migration, $CFG_GLPI;
+   global $DB;
 
    $current_config   = Config::getConfigurationValues('core');
    $updateresult     = true;
    $ADDTODISPLAYPREF = [];
 
-   //TRANS: %s is the number of new version
-   $migration->displayTitle(sprintf(__('Update to %s'), '1.1.0'));
+   echo "<p class='center'>ITSM-NG Version 1.1.0 </p>";
+
 
    /** Create new table for Open ID connect's config */
    if (!$DB->tableExists("glpi_oidc_config")) {
@@ -62,7 +62,6 @@ function update101to110() {
    /** /Create new table for Open ID connect's config */
 
    // ************ Keep it at the end **************
-   $migration->executeMigration();
 
    return $updateresult;
 }
