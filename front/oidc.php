@@ -34,14 +34,6 @@ include ('../inc/includes.php');
 require __DIR__ . '/../vendor/autoload.php';
 
 global $DB;
-
-//If something go wrong 
-Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
-echo '<div class="center b">';
-echo "Missing or wrong fields in open ID connect config";
-echo '<p><a href="'. $CFG_GLPI['root_doc'] . "/index.php" .'">' .__('Log in again') . '</a></p>';
-echo '</div>';
-Html::nullFooter();
       
 //Get config from DB and use it to setup oidc
 $criteria = "SELECT * FROM glpi_oidc_config";
@@ -54,10 +46,19 @@ foreach($iterators as $iterator) {
 
 $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
 $oidc->setHttpUpgradeInsecureRequests(false);
-$oidc->authenticate();
+try {
+    $oidc->authenticate();
+} catch( Exception $e ) {
+    //If something go wrong 
+    Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
+    echo '<div class="center b">';
+    echo "Missing or wrong fields in open ID connect config";
+    echo '<p><a href="'. $CFG_GLPI['root_doc'] . "/index.php" .'">' .__('Log in again') . '</a></p>';
+    echo '</div>';
+    Html::nullFooter();
+    die;
+}
 $result = $oidc->requestUserInfo();
-if (!isset($result))
-    return false;
 //Tranform result to an array
 $user_array = json_encode($result);
 $user_array = json_decode($user_array,true);
@@ -98,7 +99,7 @@ if (isset($user_array["preferred_username"])) {
 }
 
 if (!$user->getFromDB($ID))
-    return false;
+    die;
 
 $auth = new Auth();
 $auth->auth_succeded = true;
