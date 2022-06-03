@@ -34,6 +34,14 @@ include ('../inc/includes.php');
 require __DIR__ . '/../vendor/autoload.php';
 
 global $DB;
+
+//If something go wrong 
+Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
+echo '<div class="center b">';
+echo "Missing or wrong fields in open ID connect config";
+echo '<p><a href="'. $CFG_GLPI['root_doc'] . "/index.php" .'">' .__('Log in again') . '</a></p>';
+echo '</div>';
+Html::nullFooter();
       
 //Get config from DB and use it to setup oidc
 $criteria = "SELECT * FROM glpi_oidc_config";
