@@ -53,8 +53,8 @@ function update101to110() {
         `Provider` varchar(255) NOT NULL,
         `ClientID` varchar(255) NOT NULL,
         `ClientSecret` varchar(255) NOT NULL,
-        `is_activate`   TINYINT(1) NOT NULL,
-        `is_forced`   TINYINT(1) NOT NULL,
+        `is_activate`   TINYINT(1) NOT NULL DEFAULT 0,
+        `is_forced`   TINYINT(1) NOT NULL DEFAULT 0,
         PRIMARY KEY (`id`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
         $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
