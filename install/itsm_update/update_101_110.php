@@ -43,7 +43,7 @@ function update101to110() {
    $updateresult     = true;
    $ADDTODISPLAYPREF = [];
 
-   echo "<p class='center'>ITSM-NG Version 1.1.0 </p>";
+   echo "<p class='center'>ITSM-NG Version 1.1.0</p>";
 
 
    /** Create new table for Open ID connect's config */
