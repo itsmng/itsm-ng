@@ -50,9 +50,9 @@ function update101to110() {
    if (!$DB->tableExists("glpi_oidc_config")) {
     $config = "CREATE TABLE `glpi_oidc_config` (
         `id` INT(11) NOT NULL DEFAULT 0,
-        `Provider` varchar(255) NOT NULL,
-        `ClientID` varchar(255) NOT NULL,
-        `ClientSecret` varchar(255) NOT NULL,
+        `Provider` varchar(255) DEFAULT NULL,
+        `ClientID` varchar(255) DEFAULT NULL,
+        `ClientSecret` varchar(255) DEFAULT NULL,
         `is_activate`   TINYINT(1) NOT NULL DEFAULT 0,
         `is_forced`   TINYINT(1) NOT NULL DEFAULT 0,
         PRIMARY KEY (`id`)
@@ -60,14 +60,9 @@ function update101to110() {
         $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
     }
 
-    $oidc_result = [
-        'Provider'   => "",
-        'ClientID'   => "",
-        'ClientSecret'  => "",
-        'is_activate'  => 0,
-        'is_forced'  => 0
-     ];
-    $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
+    $set = "INSERT INTO glpi_oidc_config (is_activate, is_forced) VALUES(0, 0);";
+    $DB->queryOrDie($set, $DB->error());
+
    /** /Create new table for Open ID connect's config */
 
    // ************ Keep it at the end **************
