@@ -37,13 +37,13 @@
  **/
 function update101to110() {
    /** @global Migration $migration */
-   global $DB;
+   global $DB, $migration;
 
    $current_config   = Config::getConfigurationValues('core');
    $updateresult     = true;
    $ADDTODISPLAYPREF = [];
 
-   echo "<p class='center'>ITSM-NG Version 1.1.0</p>";
+   $migration->displayTitle(sprintf(__('Update to %s'), '1.1.0'));
 
 
    /** Create new table for Open ID connect's config */
@@ -62,6 +62,6 @@ function update101to110() {
    /** /Create new table for Open ID connect's config */
 
    // ************ Keep it at the end **************
-
+   $migration->executeMigration();
    return $updateresult;
 }
