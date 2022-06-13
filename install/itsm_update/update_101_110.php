@@ -59,6 +59,15 @@ function update101to110() {
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
         $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
     }
+
+    $oidc_result = [
+        'Provider'   => "",
+        'ClientID'   => "",
+        'ClientSecret'  => "",
+        'is_activate'  => 0,
+        'is_forced'  => 0
+     ];
+    $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
    /** /Create new table for Open ID connect's config */
 
    // ************ Keep it at the end **************
