@@ -8149,6 +8149,13 @@ $tables['glpi_devicefirmwaretypes'] = [
    ],
 ];
 
+$tables['glpi_oidc_config'] = [
+   [
+      'is_activate'   => 0,
+      'is_forced' => 0,
+   ],
+];
+
 $tables[DomainRecordType::getTable()] = DomainRecordType::getDefaults();
 $tables[DomainRelation::getTable()] = DomainRelation::getDefaults();
 

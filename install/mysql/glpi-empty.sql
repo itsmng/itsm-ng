@@ -8125,3 +8125,13 @@ CREATE TABLE IF NOT EXISTS `glpi_appliances_items_relations` (
    KEY `items_id` (`items_id`),
    KEY `item` (`itemtype`,`items_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `glpi_oidc_config` (
+        `id` INT(11) NOT NULL DEFAULT 0,
+        `Provider` varchar(255) DEFAULT NULL,
+        `ClientID` varchar(255) DEFAULT NULL,
+        `ClientSecret` varchar(255) DEFAULT NULL,
+        `is_activate`   TINYINT(1) NOT NULL DEFAULT 0,
+        `is_forced`   TINYINT(1) NOT NULL DEFAULT 0,
+        PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
