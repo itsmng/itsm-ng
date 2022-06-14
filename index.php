@@ -112,13 +112,33 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
    echo "</div>";
 
    echo "<div id='boxlogin'>";
+   // Display oidc login 
+   global $DB;
+   $criteria = "SELECT * FROM glpi_oidc_config";
+   $iterators = $DB->request($criteria);
+   foreach($iterators as $iterator) {
+       $is_activate = $iterator['is_activate'];
+       $is_forced = $iterator['is_forced'];
+   }
+
+   if ($is_activate) {
+      if ($is_forced && !isset($_GET["noAUTO"]))
+         Html::redirect("front/oidc.php");
+      echo "<form method='post' action='./index.php'>";
+      echo "<p class='login_input'><input type='submit' name='login_oidc' value='".__('SSO Login')."' class='submit'></p>";
+      echo "<p class='login_input'><hr style='width:30%'></p>";
+      if (isset($_POST["login_oidc"])) {
+         Html::redirect("front/oidc.php");
+      }
+      Html::closeForm();
+   }
    echo "<form action='".$CFG_GLPI["root_doc"]."/front/login.php' method='post'>";
 
    $_SESSION['namfield'] = $namfield = uniqid('fielda');
    $_SESSION['pwdfield'] = $pwdfield = uniqid('fieldb');
    $_SESSION['rmbfield'] = $rmbfield = uniqid('fieldc');
 
-   // Other CAS
+   // Other CASé
    if (isset($_GET["noAUTO"])) {
       echo "<input type='hidden' name='noAUTO' value='1' />";
    }

@@ -197,8 +197,8 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
       } else if ($force) {
          // Replay last update script even if there is no schema change.
          // It can be used in dev environment when update script has been updated/fixed.
-         include_once(GLPI_ROOT . '/install/itsm_update/update_100_101.php');
-         update100to101();
+         include_once(GLPI_ROOT . '/install/itsm_update/update_101_110.php');
+         update101to110();
 
          $output->writeln('<info>' . __('Last migration replayed.') . '</info>');
       }

@@ -1644,6 +1644,95 @@ class Auth extends CommonGLPI {
    }
 
    /**
+    * Show form for open ID connect authentication configuration.
+    *
+    * Form is directly printed.
+    */
+   static function showAuthOIDCConfig() {
+      global $DB;
+      
+      //Set or update config with the db
+      if (isset($_POST["update"])) {
+         $oidc_result = [
+            'Provider'   => $_POST["provider"],
+            'ClientID'   => $_POST["clientID"],
+            'ClientSecret'  => $_POST["clientSecret"],
+            'is_activate'  => $_POST["useoidc"],
+            'is_forced'  => $_POST["forceoidc"]
+         ];
+        $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
+      }
+      $criteria = "SELECT * FROM glpi_oidc_config";
+      $iterators = $DB->request($criteria);
+      foreach($iterators as $iterator) {
+          $oidc_db['Provider'] = $iterator['Provider'];
+          $oidc_db['ClientID'] = $iterator['ClientID'];
+          $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
+          $oidc_db['is_activate'] = $iterator['is_activate'];
+          $oidc_db['is_forced'] = $iterator['is_forced'];
+      }
+      
+
+      echo "<form method='post' action='./auth.oidc.php' method='post'>";
+      echo "<table class='tab_cadre' cellpadding='5'>";
+      echo "<tr><th colspan='2'>".__("Open ID connect configuration")."</th></tr>";
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>".__("Activate open ID connect")."</td>";
+      echo "<td>";
+      if (isset($oidc_db['is_activate'])) {
+       Dropdown::showYesNo('useoidc', $oidc_db['is_activate'],-1,['use_checkbox' => false]);
+   } else {
+       Dropdown::showYesNo('useoidc', 0,-1,['use_checkbox' => false]);
+   }
+      echo "</td></tr>";
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>".__("Forced connection with open ID connect")."</td>";
+      echo "<td>";
+      if (isset($oidc_db['is_forced'])) {
+       Dropdown::showYesNo('forceoidc', $oidc_db['is_forced'],-1,['use_checkbox' => false]);
+   } else {
+       Dropdown::showYesNo('forceoidc', 0,-1,['use_checkbox' => false]);
+   }
+      echo "</td></tr>";
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>Provider</td>";
+      echo "<td>";
+      if (isset($oidc_db['Provider'])) {
+       echo "<input type='text' id='provider' name='provider'value=". $oidc_db['Provider'] .">";
+   } else {
+       echo "<input type='text' id='provider' name='provider' placeholder='https://id.provider.com'>";
+   }
+      echo "</td></tr>";
+
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>Client ID</td>";
+      echo "<td>";
+      if (isset($oidc_db['ClientID'])) {
+       echo "<input type='text' id='clientID' name='clientID'value=". $oidc_db['ClientID'] .">";
+   } else {
+       echo "<input type='text' id='clientID' name='clientID'>";
+   }
+      echo "</td></tr>";
+
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>Client Secret</td>";
+      echo "<td>";
+      if (isset($oidc_db['ClientSecret'])) {
+       echo "<input type='password' id='clientSecret' name='clientSecret'value=". $oidc_db['ClientSecret'] .">";
+   } else {
+       echo "<input type='password' id='clientSecret' name='clientSecret' >";
+   }
+      echo "</td></tr>";
+      
+      echo "<tr class='tab_bg_1'><td class='center' colspan='2'>";
+      echo "<input type='submit' name='update' class='submit'>";
+      echo "</td></tr>";
+      echo "</table>";
+      Html::closeForm();
+      
+  }
+
+   /**
     * Get authentication methods available
     *
     * @return array

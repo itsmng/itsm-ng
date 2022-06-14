@@ -21,6 +21,30 @@ msgstr ""
 msgid "No restriction"
 msgstr "No restriction"
 
+#: index.php:128
+msgid "SSO Login"
+msgstr "SSO Login"
+
+#: front/setup.auth.php:58
+msgid "Open ID connect authentication"
+msgstr "OpenID connect authentication"
+
+#: front/oidc.php:55
+msgid "Missing or wrong fields in open ID connect config"
+msgstr "Missing or wrong fields in openID connect config"
+
+#: inc/auth.class.php:1678
+msgid "Open ID connect configuration"
+msgstr "OpenID connect configuration"
+
+#: inc/auth.class.php:1680
+msgid "Activate open ID connect"
+msgstr "Activate openID connect"
+
+#: inc/auth.class.php:1689
+msgid "Forced connection with open ID connect"
+msgstr "Forced connection with openID connect"
+
 #: ajax/subvisibility.php:66 ajax/visibility.php:91 ajax/private_public.php:67
 #: inc/rule.class.php:740 inc/ruleimportentity.class.php:172
 #: inc/profile_user.class.php:948 inc/domain.class.php:176
