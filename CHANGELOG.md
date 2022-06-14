@@ -1,5 +1,13 @@
 # ITSM-NG Changelog
 
+## ITSM-NG - 1.1.0
+
+### Add
+
+* Add OpenID connect authentication
+* Add OpenID connect cofiguration page
+* Add Button on login page when OpenID connect is activate
+
 ## ITSM-NG - 1.0.1
 
 ### Add
