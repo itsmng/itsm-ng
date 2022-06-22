@@ -3346,33 +3346,70 @@ class Ticket extends CommonITILObject {
       }
    }
 
-
    /**
-    * get the Ticket status list
+    * get the Ticket status list sorted by weight
     *
     * @param boolean $withmetaforsearch  (false by default)
     *
+    * @param boolean $alldata  (false by default)
+    *
     * @return array
    **/
-   static function getAllStatusArray($withmetaforsearch = false) {
+  static function getAllStatusArray($withmetaforsearch = false, $alldata = false) {
 
-      // To be overridden by class
-      $tab = [self::INCOMING => _x('status', 'New'),
-                   self::ASSIGNED => _x('status', 'Processing (assigned)'),
-                   self::PLANNED  => _x('status', 'Processing (planned)'),
-                   self::WAITING  => __('Pending'),
-                   self::SOLVED   => _x('status', 'Solved'),
-                   self::CLOSED   => _x('status', 'Closed')];
+   global $DB;
+   $done = 0;
+   
+   $criteria = "SELECT * FROM glpi_ticket_status";
+   $iterators = $DB->request($criteria);
 
-      if ($withmetaforsearch) {
-         $tab['notold']    = _x('status', 'Not solved');
-         $tab['notclosed'] = _x('status', 'Not closed');
-         $tab['process']   = __('Processing');
-         $tab['old']       = _x('status', 'Solved + Closed');
-         $tab['all']       = __('All');
+   while ($data = $iterators->next()) {
+      $do_sort[] = $data['weight'];
+      $status_db[] = $data;
+   }
+   sort($do_sort);
+   
+   for ($i=0; count($do_sort) > 0; $i++) {
+      //echo '<pre>' , var_dump($status_db[$i]["weight"] . "|" . $do_sort[$done]), '</pre>';
+      if ($status_db[$i]["weight"] == $do_sort[$done]) {
+         if ($status_db[$i]["is_active"]) {
+            $tab["name"][$done + 1] = $status_db[$i]["name"];
+            $tab["id"][$done + 1] = $status_db[$i]["id"];
+            $tab["weight"][$done + 1] = $status_db[$i]["weight"];
+            $tab["color"][$done + 1] = $status_db[$i]["color"];
+         }
+         unset($status_db[$i]);
+         unset($do_sort[$done]);
+         $done = $done + 1;
+         $i=-1;
+         
       }
+   }
+   //var_dump($tab);
+   /*/ To be overridden by class
+   $tab = [self::INCOMING => _x('status', 'New'),
+                self::ASSIGNED => _x('status', 'Processing (assigned)'),
+                self::PLANNED  => _x('status', 'Processing (planned)'),
+                self::WAITING  => __('Pending'),
+                self::SOLVED   => _x('status', 'Solved'),
+                self::CLOSED   => _x('status', 'Closed')];
+   $tab[13] = "JAAJ";
+   if ($withmetaforsearch) {
+      $tab['notold']    = _x('status', 'Not solved');
+      $tab['notclosed'] = _x('status', 'Not closed');
+      $tab['process']   = __('Processing');
+      $tab['old']       = _x('status', 'Solved + Closed');
+      $tab['all']       = __('All');
+   }
+
+   for ($i=0; $i < count($status_db); $i++) { 
+      $tab[] = $status_db[$i]["name"];
+   }/*/
+   if ($alldata) {
       return $tab;
    }
+   return $tab["name"];
+}
 
 
    /**

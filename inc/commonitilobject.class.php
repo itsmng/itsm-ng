@@ -64,6 +64,7 @@ abstract class CommonITILObject extends CommonDBTM {
 
 
    // STATUS
+   
    const INCOMING      = 1; // new
    const ASSIGNED      = 2; // assign
    const PLANNED       = 3; // plan
@@ -3939,9 +3940,14 @@ abstract class CommonITILObject extends CommonDBTM {
     * @return string
     */
    public static function getStatusIcon($status) {
+      $tab = Ticket::getAllStatusArray(false, true);
       $class = static::getStatusClass($status);
       $label = static::getStatus($status);
-      return "<i class='$class' title='$label'></i>";
+      if (empty($class)) {
+         return "<i style='color:". $tab["color"][$status] ."' class='itilstatus fas fa-circle new' title='$label'></i>";
+      } else {
+         return "<i class='$class' title='$label'></i>";
+      }
    }
 
    /**
@@ -3954,29 +3960,29 @@ abstract class CommonITILObject extends CommonDBTM {
    public static function getStatusClass($status) {
       $class = null;
       $solid = true;
-
-      switch ($status) {
-         case self::INCOMING :
+      $tab = Ticket::getAllStatusArray();
+      switch ($tab[$status]) {
+         case "New" :
             $class = 'circle';
             break;
-         case self::ASSIGNED :
+         case "Processing (assigned)" :
             $class = 'circle';
             $solid = false;
             break;
-         case self::PLANNED :
+         case "Processing (planned)" :
             $class = 'calendar';
             break;
-         case self::WAITING :
+         case "Pending" :
             $class = 'circle';
             break;
-         case self::SOLVED :
+         case "Solved" :
             $class = 'circle';
             $solid = false;
             break;
-         case self::CLOSED :
+         case "Closed" :
             $class = 'circle';
             break;
-         case self::ACCEPTED :
+         /*/case self::ACCEPTED :
             $class = 'check-circle';
             break;
          case self::OBSERVED :
@@ -3995,7 +4001,7 @@ abstract class CommonITILObject extends CommonDBTM {
          case self::QUALIFICATION :
             $class = 'circle';
             $solid = false;
-            break;
+            break;/*/
       }
 
       return $class == null
@@ -4013,26 +4019,27 @@ abstract class CommonITILObject extends CommonDBTM {
     */
    public static function getStatusKey($status) {
       $key = '';
-      switch ($status) {
-         case self::INCOMING :
+      $tab = Ticket::getAllStatusArray();
+      switch ($tab[$status]) {
+         case "New" :
             $key = 'new';
             break;
-         case self::ASSIGNED :
+         case "Processing (assigned)" :
             $key = 'assigned';
             break;
-         case self::PLANNED :
+         case "Processing (planned)" :
             $key = 'planned';
             break;
-         case self::WAITING :
+         case "Pending" :
             $key = 'waiting';
             break;
-         case self::SOLVED :
+         case "Solved" :
             $key = 'solved';
             break;
-         case self::CLOSED :
+         case "Closed" :
             $key = 'closed';
             break;
-         case self::ACCEPTED :
+         /*/case self::ACCEPTED :
             $key = 'accepted';
             break;
          case self::OBSERVED :
@@ -4049,7 +4056,7 @@ abstract class CommonITILObject extends CommonDBTM {
             break;
          case self::QUALIFICATION :
             $key = 'qualif';
-            break;
+            break;/*/
       }
       return $key;
    }
