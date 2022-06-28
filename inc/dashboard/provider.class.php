@@ -335,48 +335,48 @@ class Provider extends CommonGLPI {
 
          // Statuses speciale cases (no break)
          case 'incoming':
-            $status = Ticket::INCOMING;
+            $status = $_SESSION['INCOMING'];
             $params['icon']  = Ticket::getIcon();
             $params['label'] = __("Incoming tickets");
             $skip = true;
          case 'waiting':
             if (!$skip) {
-               $status =Ticket::WAITING;
+               $status =$_SESSION['WAITING'];
                $params['icon']  = "fas fa-pause-circle";
                $params['label'] = __("Pending tickets");
                $skip = true;
             }
          case 'assigned':
             if (!$skip) {
-               $status = Ticket::ASSIGNED;
+               $status = $_SESSION['ASSIGNED'];
                $params['icon']  = "fas fa-users";
                $params['label'] = __("Assigned tickets");
                $skip = true;
             }
          case 'planned':
             if (!$skip) {
-               $status = Ticket::PLANNED;
+               $status = $_SESSION['PLANNED'];
                $params['icon']  = "fas fa-calendar-check";
                $params['label'] = __("Planned tickets");
                $skip = true;
             }
          case 'solved':
             if (!$skip) {
-               $status = Ticket::SOLVED;
+               $status = $_SESSION['SOLVED'];
                $params['icon']  = "far fa-check-square";
                $params['label'] = __("Solved tickets");
                $skip = true;
             }
          case 'closed':
             if (!$skip) {
-               $status = Ticket::CLOSED;
+               $status = $_SESSION['CLOSED'];
                $params['icon']  = "fas fa-archive";
                $params['label'] = __("Closed tickets");
                $skip = true;
             }
          case 'status':
             if (!$skip) {
-               $status = Ticket::INCOMING;
+               $status = $_SESSION['INCOMING'];
             }
             $search_criteria = [
                [
@@ -892,27 +892,27 @@ class Provider extends CommonGLPI {
                "FROM_UNIXTIME(UNIX_TIMESTAMP(".$DB->quoteName("{$t_table}_distinct.date")."),'%Y-%m') AS period"
             ),
             new QueryExpression(
-               "SUM(IF({$t_table}_distinct.status = ".Ticket::INCOMING.", 1, 0))
+               "SUM(IF({$t_table}_distinct.status = ".$_SESSION['INCOMING'].", 1, 0))
                   as ".$DB->quoteValue(_x('status', 'New'))
             ),
             new QueryExpression(
-               "SUM(IF({$t_table}_distinct.status = ".Ticket::ASSIGNED.", 1, 0))
+               "SUM(IF({$t_table}_distinct.status = ".$_SESSION['ASSIGNED'].", 1, 0))
                   as ".$DB->quoteValue(_x('status', 'Processing (assigned)'))
             ),
             new QueryExpression(
-               "SUM(IF({$t_table}_distinct.status = ".Ticket::PLANNED.", 1, 0))
+               "SUM(IF({$t_table}_distinct.status = ".$_SESSION['PLANNED'].", 1, 0))
                   as ".$DB->quoteValue(_x('status', 'Processing (planned)'))
             ),
             new QueryExpression(
-               "SUM(IF({$t_table}_distinct.status = ".Ticket::WAITING.", 1, 0))
+               "SUM(IF({$t_table}_distinct.status = ".$_SESSION['WAITING'].", 1, 0))
                   as ".$DB->quoteValue(__('Pending'))
             ),
             new QueryExpression(
-               "SUM(IF({$t_table}_distinct.status = ".Ticket::SOLVED.", 1, 0))
+               "SUM(IF({$t_table}_distinct.status = ".$_SESSION['SOLVED'].", 1, 0))
                   as ".$DB->quoteValue(_x('status', 'Solved'))
             ),
             new QueryExpression(
-               "SUM(IF({$t_table}_distinct.status = ".Ticket::CLOSED.", 1, 0))
+               "SUM(IF({$t_table}_distinct.status = ".$_SESSION['CLOSED'].", 1, 0))
                   as ".$DB->quoteValue(_x('status', 'Closed'))
             ),
          ],

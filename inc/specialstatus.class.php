@@ -52,29 +52,35 @@ class SpecialStatus extends CommonTreeDropdown {
    public function oldStatusOrder()
    {
       $tab = Ticket::getAllStatusArray(false, true);
-      for ($i=0; $i <= count($tab['name']); $i++) { 
-         switch ($tab['name'][$i]) {
-            case "New" :
-               $_SESSION['INCOMING'] = $i;
-               break;
-            case "Processing (assigned)" :
-               $_SESSION['ASSIGNED'] = $i;
-               break;
-            case "Processing (planned)" :
-               $_SESSION['PLANNED'] = $i;
-               break;
-            case "Pending" :
-               $_SESSION['WAITING'] = $i;
-               break;
-            case "Solved" :
-               $_SESSION['SOLVED'] = $i;
-               break;
-            case "Closed" :
-               Ticket::CLOSED = $i;
-               break;
+      $done = 0;
+
+      for ($i=0; $done < count($tab['name']); $i++) {
+
+         if (isset($tab['name'][$i])) {
+            switch ($tab['name'][$i]) {
+               case "New" :
+                  $_SESSION['INCOMING'] = $i;
+                  break;
+               case "Processing (assigned)" :
+                  $_SESSION['ASSIGNED'] = $i;
+                  break;
+               case "Processing (planned)" :
+                  $_SESSION['PLANNED'] = $i;
+                  break;
+               case "Pending" :
+                  $_SESSION['WAITING'] = $i;
+                  break;
+               case "Solved" :
+                  $_SESSION['SOLVED'] = $i;
+                  break;
+               case "Closed" :
+                  $_SESSION['CLOSED'] = $i;
+                  break;
+            }
+            $done++;
          }
+         
       }
-      var_dump(Ticket::CLOSED);
    }
 
    function statusForm() {
@@ -93,10 +99,17 @@ class SpecialStatus extends CommonTreeDropdown {
                ['is_active' => $_POST["is_active_" .$update["id"]]],
                ['id' => $update["id"]]
             );
-            $DB->update(
-               "glpi_ticket_status",
-               ['color' => $_POST["color_" .$update["id"]]],
-               ['id' => $update["id"]]
+            if (isset($_POST["color_" .$update["id"]])) {
+               $DB->update(
+                  "glpi_ticket_status",
+                  ['color' => $_POST["color_" .$update["id"]]],
+                  ['id' => $update["id"]]
+               );
+            }
+            Session::addMessageAfterRedirect(
+               sprintf(__("Status has been updated!")),
+               true,
+               INFO
             );
          }
       }
@@ -144,6 +157,11 @@ class SpecialStatus extends CommonTreeDropdown {
          'color'  => $_POST["color"]
       ];
      $DB->updateOrInsert("glpi_ticket_status", $status_db, ['id'   => 0]);
+     Session::addMessageAfterRedirect(
+      sprintf(__("Status has been added!")),
+      true,
+      INFO
+   );
    }
    echo "<form method='post' action='./specialstatus.form.php' method='post'>";
    echo "<table style='width:40%' class='tab_cadre' cellpadding='5'>";
@@ -166,5 +184,29 @@ class SpecialStatus extends CommonTreeDropdown {
    echo "</td></tr>";
    echo "</table>";
    Html::closeForm();
+  }
+
+  function keepStatusSet($before, $after)
+  {
+     global $DB;
+  //showFromArray
+     $criteria = "SELECT * FROM glpi_tickets";
+     $iterators = $DB->request($criteria);
+     while ($data = $iterators->next()) {
+         $result[] = $data["status"];
+        var_dump($data["status"]);
+     }
+     for ($i=0; $i < count($result); $i++) { 
+         $status = $before[$result[$i]]["name"];
+     }
+  }
+
+  static function statusArray($postData)
+  {
+      var_dump($postData);
+      $tab = Ticket::getAllStatusArray(false, true);
+      if (isset($postData["Status"]))
+         var_dump($tab['id'][$postData['Status']]);
+      Dropdown::showFromArray("Status", $tab["name"]);
   }
 }
