@@ -49,11 +49,11 @@ class SpecialStatus extends CommonTreeDropdown {
       return __('Status');
    }
 
-   public function oldStatusOrder()
+   static function oldStatusOrder()
    {
       $tab = Ticket::getAllStatusArray(false, true);
       $done = 0;
-
+      
       for ($i=0; $done < count($tab['name']); $i++) {
 
          if (isset($tab['name'][$i])) {
@@ -88,6 +88,7 @@ class SpecialStatus extends CommonTreeDropdown {
       $criteria = "SELECT * FROM glpi_ticket_status";
       $iterators = $DB->request($criteria);
       if (isset($_POST["update"])) {
+         $before = Ticket::getAllStatusArray(false, true);
          while ($update = $iterators->next()) {
             $DB->update(
                "glpi_ticket_status",
@@ -112,7 +113,10 @@ class SpecialStatus extends CommonTreeDropdown {
                INFO
             );
          }
+         $after = Ticket::getAllStatusArray(false, true);
+         self::keepStatusSet($before, $after);
       }
+
       echo "<form method='post' action='./specialstatus.php' method='post'>";
       echo "<table style='width:40%' class='tab_cadre' cellpadding='5'>";
       echo "<tr><th colspan='4'>".__("Special status")."</th></tr>";
@@ -142,7 +146,6 @@ class SpecialStatus extends CommonTreeDropdown {
       echo "</td></tr>";
       echo "</table>";
       Html::closeForm();
-      
   }
 
   public function addStatus()
@@ -150,18 +153,21 @@ class SpecialStatus extends CommonTreeDropdown {
    global $DB;
 
    if (isset($_POST["update"])) {
+      $before = Ticket::getAllStatusArray(false, true);
       $status_db = [
          'name'   => $_POST["name"],
          'weight'   => $_POST["weight"],
          'is_active'  => $_POST["is_active"],
          'color'  => $_POST["color"]
       ];
-     $DB->updateOrInsert("glpi_ticket_status", $status_db, ['id'   => 0]);
-     Session::addMessageAfterRedirect(
-      sprintf(__("Status has been added!")),
-      true,
-      INFO
-   );
+      $DB->updateOrInsert("glpi_ticket_status", $status_db, ['id'   => 0]);
+         Session::addMessageAfterRedirect(
+         sprintf(__("Status has been added!")),
+         true,
+         INFO
+      );
+      $after = Ticket::getAllStatusArray(false, true);
+      self::keepStatusSet($before, $after);
    }
    echo "<form method='post' action='./specialstatus.form.php' method='post'>";
    echo "<table style='width:40%' class='tab_cadre' cellpadding='5'>";
@@ -189,16 +195,29 @@ class SpecialStatus extends CommonTreeDropdown {
   function keepStatusSet($before, $after)
   {
      global $DB;
-  //showFromArray
+
      $criteria = "SELECT * FROM glpi_tickets";
      $iterators = $DB->request($criteria);
-     while ($data = $iterators->next()) {
-         $result[] = $data["status"];
-        var_dump($data["status"]);
+
+      $iterators = $DB->request($criteria);
+      while ($data = $iterators->next()) {
+
+         for ($i=0; $i < count($after["name"]) + max($after["weight"]); $i++) {
+            if (!isset($before["name"][$data["status"]]))
+               continue;
+            if (!isset($after["name"][$i])) 
+               continue;
+            if ($before["name"][$data["status"]] == $after["name"][$i]) {
+               $DB->update(
+                  "glpi_tickets",
+                  ['status' => $i],
+                  ['id' => $data["id"]]
+               );
+               break;
+            }
+         }
      }
-     for ($i=0; $i < count($result); $i++) { 
-         $status = $before[$result[$i]]["name"];
-     }
+     
   }
 
   static function statusArray($postData)

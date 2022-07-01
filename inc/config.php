@@ -243,4 +243,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
    }
 
    $GLPI_CACHE = Config::getCache('cache_db');
+   //set Status session var
+   SpecialStatus::oldStatusOrder();
+
 }
