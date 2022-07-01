@@ -4663,8 +4663,6 @@ class Ticket extends CommonITILObject {
       echo $tt->getBeginHiddenFieldValue('status');
       if ($canupdate) {
          self::dropdownStatus(['value'     => $this->fields["status"], 'showtype'  => 'allowed']);
-         var_dump($this->fields["status"]);
-         var_dump(self::getStatus($this->fields["status"]));
          TicketValidation::alertValidation($this, 'status');
       } else {
          echo self::getStatus($this->fields["status"]);
