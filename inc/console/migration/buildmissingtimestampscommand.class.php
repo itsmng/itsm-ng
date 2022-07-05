@@ -48,7 +48,7 @@ class BuildMissingTimestampsCommand extends AbstractCommand {
    protected function configure() {
       parent::configure();
 
-      $this->setName('glpi:migration:build_missing_timestamps');
+      $this->setName('itsmng:migration:build_missing_timestamps');
       $this->setDescription(__('Set missing `date_creation` and `date_mod` values using log entries.'));
       $this->setHidden(true); // Hide this command as it is when migrating from really old GLPI version
    }
