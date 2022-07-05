@@ -1882,7 +1882,7 @@ class Config extends CommonDBTM {
       // No need to translate, this part always display in english (for copy/paste to forum)
 
       $ver = ITSM_VERSION;
-      echo "<tr class='tab_bg_1'><td><pre>[code]\n&nbsp;\n";
+      echo "<tr class='tab_bg_1'><td><pre>\n";
       echo "ITSM-NG $ver (" . $CFG_GLPI['root_doc']." => " . GLPI_ROOT . ")\n";
       echo "Installation mode: " . GLPI_INSTALL_MODE . "\n";
       echo "Current language:" . $oldlang . "\n";
