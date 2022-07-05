@@ -469,7 +469,7 @@ class Application extends BaseApplication {
       if ($core_requirements->hasMissingMandatoryRequirements()) {
          $message = __('Some mandatory system requirements are missing.')
             . ' '
-            . __('Run "php bin/console glpi:system:check_requirements" for more details.');
+            . __('Run "php bin/console itsmng:system:check_requirements" for more details.');
          $this->output->writeln(
             '<error>' . $message . '</error>',
             OutputInterface::VERBOSITY_QUIET
