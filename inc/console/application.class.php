@@ -98,7 +98,7 @@ class Application extends BaseApplication {
 
    public function __construct() {
 
-      parent::__construct('GLPI CLI', GLPI_VERSION);
+      parent::__construct('ITSM-NG CLI', GLPI_VERSION);
 
       $this->initApplication();
       $this->initDb();
