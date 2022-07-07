@@ -7406,6 +7406,10 @@ $tables['glpi_profilerights'] = [
       'profiles_id' => '8',
       'name'        => 'appliance',
       'rights'      => 1,
+   ], [
+      'profiles_id' => '2',
+      'name'        => 'specialstatus',
+      'rights'      => 0,
    ],
 ];
 
@@ -8146,6 +8150,51 @@ $tables['glpi_devicefirmwaretypes'] = [
    [
       'id'   => '3',
       'name' => 'Firmware',
+   ],
+];
+
+$tables['glpi_specialstatuses'] = [
+   [
+      'id'   => '1',
+      'name'   => "New",
+      'weight'   => 1,
+      'is_active'  => 1,
+      'color'  => "Default"
+   ],
+   [
+      'id'   => '2',
+      'name'   => "Processing (assigned)",
+      'weight'   => 2,
+      'is_active'  => 1,
+      'color'  => "Default"
+   ],
+   [
+      'id'   => '3',
+      'name'   => "Processing (planned)",
+      'weight'   => 3,
+      'is_active'  => 1,
+      'color'  => "Default"
+   ],
+   [
+      'id'   => '4',
+      'name'   => "Pending",
+      'weight'   => 4,
+      'is_active'  => 1,
+      'color'  => "Default"
+   ],
+   [
+      'id'   => '5',
+      'name'   => "Solved",
+      'weight'   => 5,
+      'is_active'  => 1,
+      'color'  => "Default"
+   ],
+   [
+      'id'   => '6',
+      'name'   => "Closed",
+      'weight'   => 6,
+      'is_active'  => 1,
+      'color'  => "Default"
    ],
 ];
 

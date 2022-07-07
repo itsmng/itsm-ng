@@ -8136,7 +8136,7 @@ CREATE TABLE IF NOT EXISTS `glpi_oidc_config` (
         PRIMARY KEY (`id`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `glpi_ticket_status` (
+CREATE TABLE IF NOT EXISTS `glpi_specialstatuses` (
         `id` int(11) NOT NULL auto_increment,
         `name` varchar(255) DEFAULT NULL,
         `weight`   int(11) NOT NULL DEFAULT 0,
