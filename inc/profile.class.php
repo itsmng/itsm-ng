@@ -1610,6 +1610,11 @@ class Profile extends CommonDBTM {
             'field'     => 'taskcategory'
          ],
          [
+            'itemtype'  => 'SpecialStatus',
+            'label'     => _n('Special Status', 'Specials Status', Session::getPluralNumber()),
+            'field'     => 'status_ticket'
+         ],
+         [
             'itemtype'  => 'State',
             'label'     => _n('Status of items', 'Statuses of items', Session::getPluralNumber()),
             'field'     => 'state'
