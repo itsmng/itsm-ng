@@ -38,10 +38,10 @@ if (!defined('GLPI_ROOT')) {
 
 class SpecialStatus extends CommonTreeDropdown {
    public $can_be_translated = true;
-   static $rightname = 'state';
+   static $rightname = 'status_ticket';
 
    static function getTypeName($nb = 0) {
-      return _n('Special Status', 'Special Status', $nb);
+      return __('Special Status');
    }
 
 
@@ -84,25 +84,29 @@ class SpecialStatus extends CommonTreeDropdown {
    }
 
    function statusForm() {
-      global $DB;
-      $criteria = "SELECT * FROM glpi_ticket_status";
+      global $DB, $CFG_GLPI;
+      $criteria = "SELECT * FROM glpi_specialstatuses";
       $iterators = $DB->request($criteria);
+      $checksum = 0;
+      echo Html::script("js/specialstatus.js");
+
       if (isset($_POST["update"])) {
          $before = Ticket::getAllStatusArray(false, true);
          while ($update = $iterators->next()) {
+            $checksum = $checksum + $_POST["is_active_" .$update["id"]];
             $DB->update(
-               "glpi_ticket_status",
+               "glpi_specialstatuses",
                ['weight' => $_POST["weight_".$update["id"]]],
                ['id' => $update["id"]]
             );
             $DB->update(
-               "glpi_ticket_status",
+               "glpi_specialstatuses",
                ['is_active' => $_POST["is_active_" .$update["id"]]],
                ['id' => $update["id"]]
             );
             if (isset($_POST["color_" .$update["id"]])) {
                $DB->update(
-                  "glpi_ticket_status",
+                  "glpi_specialstatuses",
                   ['color' => $_POST["color_" .$update["id"]]],
                   ['id' => $update["id"]]
                );
@@ -113,18 +117,44 @@ class SpecialStatus extends CommonTreeDropdown {
                INFO
             );
          }
+         if ($checksum == 0) {
+            $DB->update(
+               "glpi_specialstatuses",
+               ['is_active' => 1],
+               ['id' => 1]
+            );
+         }
          $after = Ticket::getAllStatusArray(false, true);
          self::keepStatusSet($before, $after);
+      }
+      if (isset($_POST["delete"])) {
+         $before = Ticket::getAllStatusArray(false, true);
+         self::deleteStatus($_POST["delete"]);
+         $after = Ticket::getAllStatusArray(false, true);
+         self::keepStatusSet($before, $after);
+      }
+      if (isset($_POST["force"])) {
+         $DB->delete(
+            "glpi_specialstatuses", ['id' => $_SESSION['id']]
+         );
+         unset($_SESSION['id']);
+         Session::addMessageAfterRedirect(
+            sprintf(__("Status has been removed!")),
+            true,
+            INFO
+         );
       }
 
       echo "<form method='post' action='./specialstatus.php' method='post'>";
       echo "<table style='width:40%' class='tab_cadre' cellpadding='5'>";
-      echo "<tr><th colspan='4'>".__("Special status")."</th></tr>";
+      echo "<tr><th colspan='5'>".__("Special status")."</th></tr>";
       echo "<tr class='tab_bg_1'>";
       echo "<td><b>".__("Name")."</b></td>";
       echo "<td><b>".__("Weight")."</b></td>";
-      echo "<td><b>".__("Is active")."</b></td>";
-      echo "<td><b>".__("Color")."</b></td></tr>";
+      echo "<td><b>".__("Active")."</b></td>";
+      echo "<td><b>".__("Color")."</b></td>";
+      echo "<td><b>".__("Delete")."</b></td>";
+      echo "</tr>";
 
       $iterators = $DB->request($criteria);
       while ($data = $iterators->next()) {
@@ -135,18 +165,57 @@ class SpecialStatus extends CommonTreeDropdown {
          Dropdown::showYesNo("is_active_" . $data["id"], $data["is_active"],-1,['use_checkbox' => true]);
          echo "</td>";
          if ($data["color"] == "Default") {
-            echo "<td>".__("Default");
+            echo "<td>";
+            echo "<td>";
          } else {
             echo "<td><input type='color' id='color_". $data["id"] ."' name='color_". $data["id"] ."' value='". $data["color"] ."'>";
+            echo "<td>";
+            echo "<a class='planning_link planning_add_filter' href='javascript:specialstatus.showStatusModal(". $data["id"] .");'>";
+            echo "<i style='color:#772317' class='fa fa-trash-alt pointer fa-2x' title='" .__("Delete"). "'></i>";
+            echo "</a>";
          }
          echo "</td></tr>";
       }
-      echo "<tr class='tab_bg_1'><td class='center' colspan='4'>";
-      echo "<input type='submit' name='update' class='submit'>";
+      echo "<tr class='tab_bg_1'><td class='center' colspan='5'>";
+      echo "<input type='submit' name='update' value='". _sx('button', 'Save') ."' class='submit'>";
       echo "</td></tr>";
       echo "</table>";
       Html::closeForm();
   }
+
+  static function deleteStatus($id)
+  {
+   $tab = Ticket::getAllStatusArray(false, true);
+   global $DB, $CFG_GLPI;
+
+     $criteria = "SELECT * FROM glpi_tickets";
+     $iterators = $DB->request($criteria);
+
+      $iterators = $DB->request($criteria);
+      while ($data = $iterators->next()) {
+         if (isset($tab["id"][$data["status"]]) && $id == $tab["id"][$data["status"]]) {
+            $result[] = $tab["id"][$data["status"]];
+         }
+      }
+      echo "<form method='post' action='./specialstatus.php' method='post'>";
+      if (isset($result)) {
+         $count = count($result);
+         
+         if ($count <= 1)
+            echo "<b>" . $count . __(' Ticket is still using this status, are you sure to remove the status ?') ."</b>";
+         else
+            echo "<b>" . $count . __(' Tickets are still using this status, are you sure to remove the status ?') ."</b>";
+      } else {
+         echo "<b>" .__('Are you sure to remove the status ?') . "</b>";
+      }
+      echo "<br>";
+      $_SESSION["id"] = $id;
+      echo "<table style='width:40%; margin-top: 2.5em; text-align:center' cellpadding='2'><tr class='tab_bg_1'>";
+      echo "<td><input type='submit' name='force' value='". _sx('button', 'Confirm') ."' class='submit'></td>";
+      echo "<td><input type='submit' name='cancel' value='". _sx('button', 'Cancel') ."' class='submit'></td>";
+      echo "</tr></table>";
+      Html::closeForm();
+   }
 
   public function addStatus()
   {
@@ -160,7 +229,7 @@ class SpecialStatus extends CommonTreeDropdown {
          'is_active'  => $_POST["is_active"],
          'color'  => $_POST["color"]
       ];
-      $DB->updateOrInsert("glpi_ticket_status", $status_db, ['id'   => 0]);
+      $DB->updateOrInsert("glpi_specialstatuses", $status_db, ['id'   => 0]);
          Session::addMessageAfterRedirect(
          sprintf(__("Status has been added!")),
          true,
@@ -175,7 +244,7 @@ class SpecialStatus extends CommonTreeDropdown {
    echo "<tr class='tab_bg_1'>";
    echo "<td><b>".__("Name")."</b></td>";
    echo "<td><b>".__("Weight")."</b></td>";
-   echo "<td><b>".__("Is active")."</b></td>";
+   echo "<td><b>".__("Active")."</b></td>";
    echo "<td><b>".__("Color")."</b></td></tr>";
    echo "<tr class='tab_bg_1'>";
    echo "<td><input type='text' id='name' name='name' placeholder='Name'></td>";

@@ -3360,7 +3360,7 @@ class Ticket extends CommonITILObject {
    global $DB;
    $done = 0;
    
-   $criteria = "SELECT * FROM glpi_ticket_status";
+   $criteria = "SELECT * FROM glpi_specialstatuses";
    $iterators = $DB->request($criteria);
 
    while ($data = $iterators->next()) {
@@ -3374,6 +3374,7 @@ class Ticket extends CommonITILObject {
       if (isset($status_db[$i]["weight"]) && $status_db[$i]["weight"] == $do_sort[$done]) {
          if ($status_db[$i]["is_active"]) {
             $tab["name"][$done + 1] = $status_db[$i]["name"];
+            $tab["name_translate"][$done + 1] = _x('status', $status_db[$i]["name"]);
             $tab["id"][$done + 1] = $status_db[$i]["id"];
             $tab["weight"][$done + 1] = $status_db[$i]["weight"];
             $tab["color"][$done + 1] = $status_db[$i]["color"];
@@ -3406,16 +3407,16 @@ class Ticket extends CommonITILObject {
       $tab[] = $status_db[$i]["name"];
    }/*/
    if ($withmetaforsearch) {
-      $tab["name"]['notold']    = _x('status', 'Not solved');
-      $tab["name"]['notclosed'] = _x('status', 'Not closed');
-      $tab["name"]['process']   = __('Processing');
-      $tab["name"]['old']       = _x('status', 'Solved + Closed');
-      $tab["name"]['all']       = __('All');
+      $tab["name_translate"]['notold']    = _x('status', 'Not solved');
+      $tab["name_translate"]['notclosed'] = _x('status', 'Not closed');
+      $tab["name_translate"]['process']   = __('Processing');
+      $tab["name_translate"]['old']       = _x('status', 'Solved + Closed');
+      $tab["name_translate"]['all']       = __('All');
    }
    if ($alldata) {
       return $tab;
    }
-   return $tab["name"];
+   return $tab["name_translate"];
 }
 
 
@@ -7055,7 +7056,6 @@ class Ticket extends CommonITILObject {
 
    public function getWhitelistedSingleMassiveActions() {
       $whitelist = parent::getWhitelistedSingleMassiveActions();
-
       if (!in_array($this->fields['status'], $this->getClosedStatusArray())) {
          $whitelist[] = 'Item_Ticket:add_item';
       }

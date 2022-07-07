@@ -3960,8 +3960,8 @@ abstract class CommonITILObject extends CommonDBTM {
    public static function getStatusClass($status) {
       $class = null;
       $solid = true;
-      $tab = Ticket::getAllStatusArray();
-      switch ($tab[$status]) {
+      $tab = Ticket::getAllStatusArray(false,true);
+      switch ($tab["name"][$status]) {
          case "New" :
             $class = 'circle';
             break;
@@ -3982,26 +3982,26 @@ abstract class CommonITILObject extends CommonDBTM {
          case "Closed" :
             $class = 'circle';
             break;
-         /*/case self::ACCEPTED :
+         case "Accepted" :
             $class = 'check-circle';
             break;
-         case self::OBSERVED :
+         case "Observe" :
             $class = 'eye';
             break;
-         case self::EVALUATION :
+         case "Eval" :
             $class = 'circle';
             $solid = false;
             break;
-         case self::APPROVAL :
+         case "Approval" :
             $class = 'question-circle';
             break;
-         case self::TEST :
+         case "Test" :
             $class = 'question-circle';
             break;
-         case self::QUALIFICATION :
+         case "Qualif" :
             $class = 'circle';
             $solid = false;
-            break;/*/
+            break;
       }
 
       return $class == null
@@ -4019,8 +4019,8 @@ abstract class CommonITILObject extends CommonDBTM {
     */
    public static function getStatusKey($status) {
       $key = '';
-      $tab = Ticket::getAllStatusArray();
-      switch ($tab[$status]) {
+      $tab = Ticket::getAllStatusArray(false,true);
+      switch ($tab["name"][$status]) {
          case "New" :
             $key = 'new';
             break;
@@ -4039,24 +4039,24 @@ abstract class CommonITILObject extends CommonDBTM {
          case "Closed" :
             $key = 'closed';
             break;
-         /*/case self::ACCEPTED :
+         case "Accepted" :
             $key = 'accepted';
             break;
-         case self::OBSERVED :
+         case "Observe" :
             $key = 'observe';
             break;
-         case self::EVALUATION :
+         case "Eval" :
             $key = 'eval';
             break;
-         case self::APPROVAL :
+         case "Approval" :
             $key = 'approval';
             break;
-         case self::TEST :
+         case "Test" :
             $key = 'test';
             break;
-         case self::QUALIFICATION :
+         case "Qualif" :
             $key = 'qualif';
-            break;/*/
+            break;
       }
       return $key;
    }
