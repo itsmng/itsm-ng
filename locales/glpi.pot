@@ -1982,6 +1982,8 @@ msgstr ""
 #: inc/item_softwareversion.class.php:1191
 #: inc/item_softwareversion.class.php:1324
 #: inc/item_softwareversion.class.php:1419
+#: inc/specialstatus.class.php:152
+#: inc/specialstatus.class.php:245
 msgid "Name"
 msgstr ""
 
@@ -3562,6 +3564,8 @@ msgstr ""
 #: inc/requesttype.class.php:49 inc/requesttype.class.php:116
 #: inc/slalevel.class.php:108 inc/slalevel.class.php:143
 #: inc/slalevel.class.php:230
+#: inc/specialstatus.class.php:154
+#: inc/specialstatus.class.php:247
 msgid "Active"
 msgstr ""
 
@@ -5022,6 +5026,7 @@ msgstr ""
 #: inc/commonitilobject.class.php:4784 inc/reminder.class.php:912
 #: inc/reminder.class.php:913 js/kanban.js:873 js/kanban.js:1435
 #: js/kanban.js:1483
+#: inc/specialstatus.class.php:258
 msgid "Add"
 msgstr ""
 
@@ -6168,6 +6173,8 @@ msgstr ""
 
 #: inc/commondcmodeldropdown.class.php:68
 #: inc/commondcmodeldropdown.class.php:165 inc/item_rack.class.php:530
+#: inc/specialstatus.class.php:153
+#: inc/specialstatus.class.php:246
 msgid "Weight"
 msgstr ""
 
@@ -6809,6 +6816,8 @@ msgstr ""
 #: inc/notification.class.php:469 inc/displaypreference.class.php:315
 #: inc/planning.class.php:949 inc/commondbtm.class.php:5117 js/impact.js:1339
 #: js/kanban.js:309 js/planning.js:239
+#: inc/specialstatus.class.php:156
+#: inc/specialstatus.class.php:174
 msgid "Delete"
 msgstr ""
 
@@ -6847,6 +6856,8 @@ msgstr[1] ""
 
 #: inc/planningeventcategory.class.php:48 inc/impact.class.php:1532
 #: inc/projectstate.class.php:58 inc/projectstate.class.php:75
+#: inc/specialstatus.class.php:155
+#: inc/specialstatus.class.php:248
 msgid "Color"
 msgstr ""
 
@@ -16020,6 +16031,7 @@ msgid "No limit"
 msgstr ""
 
 #: inc/impact.class.php:487 inc/knowbaseitem_comment.class.php:376
+#: inc/specialstatus.class.php:215
 msgid "Cancel"
 msgstr ""
 
@@ -16415,6 +16427,7 @@ msgid "If you confirm the deletion, all uses of this dropdown will be blanked."
 msgstr ""
 
 #: inc/commondropdown.class.php:691 inc/html.class.php:6326
+#: inc/specialstatus.class.php:214
 msgctxt "button"
 msgid "Confirm"
 msgstr ""
@@ -22900,4 +22913,37 @@ msgstr ""
 msgid ""
 "The dragged event is a recurring event. Do you want to move the serie or "
 "instance ?"
+msgstr ""
+
+#: inc/specialstatus.class.php:44
+#: inc/specialstatus.class.php:150
+msgid "Special Status"
+msgstr ""
+
+#: inc/specialstatus.class.php:115
+msgid "Status has been updated!"
+msgstr ""
+
+#: inc/specialstatus.class.php:142
+msgid "Status has been removed!"
+msgstr ""
+
+#: inc/specialstatus.class.php:205
+msgid " Ticket is still using this status, are you sure to remove the status?"
+msgstr ""
+
+#: inc/specialstatus.class.php:207
+msgid " Tickets are still using this status, are you sure to remove the status?"
+msgstr ""
+
+#: inc/specialstatus.class.php:209
+msgid " Are you sure to remove the status?"
+msgstr ""
+
+#: inc/specialstatus.class.php:234
+msgid "Status has been added!"
+msgstr ""
+
+#: inc/specialstatus.class.php:243
+msgid "New Status - Special status"
 msgstr ""
