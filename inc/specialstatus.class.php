@@ -288,13 +288,4 @@ class SpecialStatus extends CommonTreeDropdown {
      }
      
   }
-
-  static function statusArray($postData)
-  {
-      var_dump($postData);
-      $tab = Ticket::getAllStatusArray(false, true);
-      if (isset($postData["Status"]))
-         var_dump($tab['id'][$postData['Status']]);
-      Dropdown::showFromArray("Status", $tab["name"]);
-  }
 }
