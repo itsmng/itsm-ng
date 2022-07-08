@@ -23154,6 +23154,7 @@ msgstr ""
 
 #: inc/specialstatus.class.php:44
 #: inc/specialstatus.class.php:150
+#: inc/profile.class.php:1614
 msgid "Special Status"
 msgstr "Special Status"
 
@@ -23166,16 +23167,16 @@ msgid "Status has been removed!"
 msgstr "Status has been removed!"
 
 #: inc/specialstatus.class.php:205
-msgid " Ticket is still using this status, are you sure to remove the status?"
-msgstr " Ticket is still using this status, are you sure to remove the status?"
+msgid "Ticket is still using this status, are you sure to remove the status?"
+msgstr "Ticket is still using this status, are you sure to remove the status?"
 
 #: inc/specialstatus.class.php:207
-msgid " Tickets are still using this status, are you sure to remove the status?"
-msgstr " Tickets are still using this status, are you sure to remove the status?"
+msgid "Tickets are still using this status, are you sure to remove the status?"
+msgstr "Tickets are still using this status, are you sure to remove the status?"
 
 #: inc/specialstatus.class.php:209
-msgid " Are you sure to remove the status?"
-msgstr " Are you sure to remove the status?"
+msgid "Are you sure to remove the status?"
+msgstr "Are you sure to remove the status?"
 
 #: inc/specialstatus.class.php:234
 msgid "Status has been added!"

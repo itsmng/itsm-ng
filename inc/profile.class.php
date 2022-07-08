@@ -1611,7 +1611,7 @@ class Profile extends CommonDBTM {
          ],
          [
             'itemtype'  => 'SpecialStatus',
-            'label'     => _n('Special Status', 'Specials Status', Session::getPluralNumber()),
+            'label'     => __('Special Status'),
             'field'     => 'status_ticket'
          ],
          [

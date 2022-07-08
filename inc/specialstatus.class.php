@@ -202,11 +202,11 @@ class SpecialStatus extends CommonTreeDropdown {
          $count = count($result);
          
          if ($count <= 1)
-            echo "<b>" . $count . __(' Ticket is still using this status, are you sure to remove the status ?') ."</b>";
+            echo "<b>" . "$count " . __('Ticket is still using this status, are you sure to remove the status?') ."</b>";
          else
-            echo "<b>" . $count . __(' Tickets are still using this status, are you sure to remove the status ?') ."</b>";
+            echo "<b>" . "$count " . __('Tickets are still using this status, are you sure to remove the status?') ."</b>";
       } else {
-         echo "<b>" .__('Are you sure to remove the status ?') . "</b>";
+         echo "<b>" .__('Are you sure to remove the status?') . "</b>";
       }
       echo "<br>";
       $_SESSION["id"] = $id;

@@ -3,7 +3,6 @@ var modalTask;
 
 $(function() {
    modalWindow = $("<div></div>").dialog({
-      title: __('Status'),
       resizable: true,
       width: '300',
       autoOpen: false,
