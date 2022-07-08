@@ -1,5 +1,20 @@
 # ITSM-NG Changelog
 
+## ITSM-NG - 1.2.0
+
+### Add
+
+* Add Update file for 1.2.0
+* Add Special status page in dropdown/tools
+* Add Special status page to add new status
+* Add Status customization (Name, weight,color or if it's activate)
+* Add Profile right to Special status (desactivate by default)
+
+### Updates
+
+* Update to 1.2.0
+* Update the list of statuses with the new statuses created and sorted
+
 ## ITSM-NG - 1.1.0
 
 ### Add
