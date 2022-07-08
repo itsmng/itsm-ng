@@ -40,67 +40,6 @@ $dropdown->displayHeader();
 $dropdown->title();
 $dropdown->statusForm();
 $dropdown->oldStatusOrder();
-/*/
-global $DB;
-$oidc_result = [
-   'name'   => "New",
-   'weight'   => 1,
-   'is_active'  => 1,
-   'color'  => "Default"
-];
-$DB->updateOrInsert("glpi_specialstatuses", $oidc_result, ['id'   => 0]);
-$oidc_result = [
-   'name'   => "Processing (assigned)",
-   'weight'   => 2,
-   'is_active'  => 1,
-   'color'  => "Default"
-];
-$DB->updateOrInsert("glpi_specialstatuses", $oidc_result, ['id'   => 0]);
-$oidc_result = [
-   'name'   => "Processing (planned)",
-   'weight'   => 3,
-   'is_active'  => 1,
-   'color'  => "Default"
-];
-$DB->updateOrInsert("glpi_specialstatuses", $oidc_result, ['id'   => 0]);
-$oidc_result = [
-   'name'   => "Pending",
-   'weight'   => 4,
-   'is_active'  => 1,
-   'color'  => "Default"
-];
-$DB->updateOrInsert("glpi_specialstatuses", $oidc_result, ['id'   => 0]);
-$oidc_result = [
-   'name'   => "Solved",
-   'weight'   => 5,
-   'is_active'  => 1,
-   'color'  => "Default"
-];
-$DB->updateOrInsert("glpi_specialstatuses", $oidc_result, ['id'   => 0]);
-$oidc_result = [
-   'name'   => "Closed",
-   'weight'   => 6,
-   'is_active'  => 1,
-   'color'  => "Default"
-];
-$DB->updateOrInsert("glpi_specialstatuses", $oidc_result, ['id'   => 0]);
-
-
-/*/
-/*/
-UPDATE glpi_specialstatuses SET     weight = '5' WHERE    id = 2;
-INSERT INTO glpi_profilerights ('profiles_id','name', 'rights') VALUES('2', 'specialstatus', '0');
-$oidc_result = [
-   'profiles_id'   => 2,
-   'name'   => "specialstatus",
-   'rights'  => 0
-];
-$DB->updateOrInsert("glpi_profilerights", $oidc_result, ['id'   => 0]);
-/*/
-
-
-
-
 
 Html::footer();
 //include (GLPI_ROOT . "/front/dropdown.common.php");

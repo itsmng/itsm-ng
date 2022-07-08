@@ -3370,7 +3370,6 @@ class Ticket extends CommonITILObject {
    sort($do_sort);
    
    for ($i=0; count($do_sort) > 0; $i++) {
-      //echo '<pre>' , var_dump($status_db[$i]["weight"] . "|" . $do_sort[$done]), '</pre>';
       if (isset($status_db[$i]["weight"]) && $status_db[$i]["weight"] == $do_sort[$done]) {
          if ($status_db[$i]["is_active"]) {
             $tab["name"][$done + 1] = $status_db[$i]["name"];
@@ -3386,26 +3385,7 @@ class Ticket extends CommonITILObject {
          
       }
    }
-   //var_dump($tab["id"]);
-   /*/ To be overridden by class
-   $tab = [$_SESSION['INCOMING'] => _x('status', 'New'),
-                $_SESSION['ASSIGNED'] => _x('status', 'Processing (assigned)'),
-                $_SESSION['PLANNED']  => _x('status', 'Processing (planned)'),
-                $_SESSION['WAITING']  => __('Pending'),
-                $_SESSION['SOLVED']   => _x('status', 'Solved'),
-                self::CLOSED   => _x('status', 'Closed')];
-   $tab[13] = "JAAJ";
-   if ($withmetaforsearch) {
-      $tab['notold']    = _x('status', 'Not solved');
-      $tab['notclosed'] = _x('status', 'Not closed');
-      $tab['process']   = __('Processing');
-      $tab['old']       = _x('status', 'Solved + Closed');
-      $tab['all']       = __('All');
-   }
-
-   for ($i=0; $i < count($status_db); $i++) { 
-      $tab[] = $status_db[$i]["name"];
-   }/*/
+ 
    if ($withmetaforsearch) {
       $tab["name_translate"]['notold']    = _x('status', 'Not solved');
       $tab["name_translate"]['notclosed'] = _x('status', 'Not closed');
