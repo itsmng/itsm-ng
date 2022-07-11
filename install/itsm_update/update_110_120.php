@@ -103,13 +103,13 @@ function update110to120() {
     $DB->updateOrInsert("glpi_specialstatuses", $status, ['id'   => 0]);
 
     $status = [
+      'id'           => null,
       'profiles_id' => '4',
       'name'        => 'status_ticket',
       'rights'      => 23,
     ];
-    $DB->updateOrInsert("glpi_profilerights", $status, ['id'   => 0]);
-    /*/
-    /*/
+    $DB->insert("glpi_profilerights", $status);
+
 
     /** /Create new table for Open ID connect's config */
 
