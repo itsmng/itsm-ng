@@ -104,7 +104,7 @@ function update110to120() {
 
     $status = [
       'profiles_id' => '4',
-      'name'        => 'specialstatus',
+      'name'        => 'status_ticket',
       'rights'      => 23,
     ];
     $DB->updateOrInsert("glpi_profilerights", $status, ['id'   => 0]);
