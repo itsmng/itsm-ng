@@ -7407,9 +7407,9 @@ $tables['glpi_profilerights'] = [
       'name'        => 'appliance',
       'rights'      => 1,
    ], [
-      'profiles_id' => '2',
+      'profiles_id' => '4',
       'name'        => 'specialstatus',
-      'rights'      => 0,
+      'rights'      => 23,
    ],
 ];
 
