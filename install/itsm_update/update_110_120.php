@@ -102,8 +102,14 @@ function update110to120() {
     ];
     $DB->updateOrInsert("glpi_specialstatuses", $status, ['id'   => 0]);
 
-    //$set = "INSERT INTO glpi_oidc_config (is_activate, is_forced) VALUES(0, 0);";
-    //$DB->queryOrDie($set, $DB->error());
+    $status = [
+      'profiles_id' => '4',
+      'name'        => 'specialstatus',
+      'rights'      => 23,
+    ];
+    $DB->updateOrInsert("glpi_profilerights", $status, ['id'   => 0]);
+    /*/
+    /*/
 
     /** /Create new table for Open ID connect's config */
 
