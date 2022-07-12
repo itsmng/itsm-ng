@@ -121,7 +121,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
        $is_forced = $iterator['is_forced'];
    }
 
-   if ($is_activate) {
+   if (isset($is_activate) && $is_activate) {
       if ($is_forced && !isset($_GET["noAUTO"]))
          Html::redirect("front/oidc.php");
       echo "<form method='post' action='./index.php'>";

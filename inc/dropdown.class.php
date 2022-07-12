@@ -920,7 +920,8 @@ class Dropdown {
              ],
 
              __('Tools') => [
-                 'KnowbaseItemCategory' => null
+                 'KnowbaseItemCategory' => null,
+                 'SpecialStatus' => null
              ],
 
              _n('Calendar', 'Calendars', 1) => [

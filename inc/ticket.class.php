@@ -240,7 +240,7 @@ class Ticket extends CommonITILObject {
                       || (isset($_SESSION["glpigroups"])
                           && $this->haveAGroup(CommonITILActor::ASSIGN, $_SESSION["glpigroups"]))
                       || (Session::haveRight(self::$rightname, self::ASSIGN)
-                          && ($this->fields["status"] == self::INCOMING))))
+                          && ($this->fields["status"] == $_SESSION['INCOMING']))))
               || (Session::haveRightsOr('ticketvalidation', TicketValidation::getValidateRights())
                   && TicketValidation::canValidate($this->fields["id"])));
    }
@@ -507,8 +507,8 @@ class Ticket extends CommonITILObject {
    function canRequesterUpdateItem() {
        return ($this->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
                || $this->fields["users_id_recipient"] === Session::getLoginUserID())
-              && $this->fields['status'] != self::SOLVED
-              && $this->fields['status'] != self::CLOSED
+              && $this->fields['status'] != $_SESSION['SOLVED']
+              && $this->fields['status'] != $_SESSION['CLOSED']
               && $this->numberOfFollowups() == 0
               && $this->numberOfTasks() == 0;
    }
@@ -544,8 +544,8 @@ class Ticket extends CommonITILObject {
    function canReopen() {
       return Session::haveRight('followup', CREATE)
              && in_array($this->fields["status"], $this->getClosedStatusArray())
-             && ($this->isAllowedStatus($this->fields['status'], self::INCOMING)
-                 || $this->isAllowedStatus($this->fields['status'], self::ASSIGNED));
+             && ($this->isAllowedStatus($this->fields['status'], $_SESSION['INCOMING'])
+                 || $this->isAllowedStatus($this->fields['status'], $_SESSION['ASSIGNED']));
    }
 
 
@@ -747,7 +747,7 @@ class Ticket extends CommonITILObject {
             // enquete si statut clos
             $satisfaction = new TicketSatisfaction();
             if ($satisfaction->getFromDB($item->getID())
-                && $item->fields['status'] == self::CLOSED) {
+                && $item->fields['status'] == $_SESSION['CLOSED']) {
                $ong[3] = __('Satisfaction');
             }
             if ($item->canView()) {
@@ -779,7 +779,7 @@ class Ticket extends CommonITILObject {
 
                case 3 :
                   $satisfaction = new TicketSatisfaction();
-                  if (($item->fields['status'] == self::CLOSED)
+                  if (($item->fields['status'] == $_SESSION['CLOSED'])
                       && $satisfaction->getFromDB($_GET["id"])) {
 
                      $duration = Entity::getUsedConfig('inquest_duration', $item->fields['entities_id']);
@@ -1504,7 +1504,7 @@ class Ticket extends CommonITILObject {
               && isset($this->oldvalues['solvedate']) && $this->oldvalues['solvedate'])
              && (isset($this->input['status'])
                  && ($this->input['status'] != $this->oldvalues['status'])
-                 && ($this->oldvalues['status'] == self::SOLVED))) {
+                 && ($this->oldvalues['status'] == $_SESSION['SOLVED']))) {
 
             $mailtype = "rejectsolution";
          }
@@ -1781,7 +1781,7 @@ class Ticket extends CommonITILObject {
                || is_array($input['_suppliers_id_assign']) && count($input['_suppliers_id_assign']) > 0)))
           && (in_array($input['status'], $this->getNewStatusArray()))
           && !$this->isStatusComputationBlocked($input)) {
-         $input["status"] = self::ASSIGNED;
+         $input["status"] = $_SESSION['ASSIGNED'];
       }
 
       // Manage SLA / OLA asignment
@@ -1822,7 +1822,7 @@ class Ticket extends CommonITILObject {
 
          $fup  = new ITILFollowup();
          $type = "new";
-         if (isset($this->fields["status"]) && ($this->fields["status"] == self::SOLVED)) {
+         if (isset($this->fields["status"]) && ($this->fields["status"] == $_SESSION['SOLVED'])) {
             $type = "solved";
          }
          $toadd = ['type'       => $type,
@@ -1846,7 +1846,7 @@ class Ticket extends CommonITILObject {
 
          $task = new TicketTask();
          $type = "new";
-         if (isset($this->fields["status"]) && ($this->fields["status"]  == self::SOLVED)) {
+         if (isset($this->fields["status"]) && ($this->fields["status"]  == $_SESSION['SOLVED'])) {
             $type = "solved";
          }
          $toadd = ["type"        => $type,
@@ -1936,7 +1936,7 @@ class Ticket extends CommonITILObject {
          $this->getFromDB($this->fields['id']);
 
          $type = "new";
-         if (isset($this->fields["status"]) && ($this->fields["status"] == self::SOLVED)) {
+         if (isset($this->fields["status"]) && ($this->fields["status"] == $_SESSION['SOLVED'])) {
             $type = "solved";
          }
          NotificationEvent::raiseEvent($type, $this);
@@ -2360,7 +2360,7 @@ class Ticket extends CommonITILObject {
    function canAddItem($type) {
 
       if ($type == 'Document') {
-         if ($this->getField('status') == self::CLOSED) {
+         if ($this->getField('status') == $_SESSION['CLOSED']) {
             return false;
          }
 
@@ -3346,33 +3346,58 @@ class Ticket extends CommonITILObject {
       }
    }
 
-
    /**
-    * get the Ticket status list
+    * get the Ticket status list sorted by weight
     *
     * @param boolean $withmetaforsearch  (false by default)
     *
+    * @param boolean $alldata  (false by default)
+    *
     * @return array
    **/
-   static function getAllStatusArray($withmetaforsearch = false) {
+  static function getAllStatusArray($withmetaforsearch = false, $alldata = false) {
 
-      // To be overridden by class
-      $tab = [self::INCOMING => _x('status', 'New'),
-                   self::ASSIGNED => _x('status', 'Processing (assigned)'),
-                   self::PLANNED  => _x('status', 'Processing (planned)'),
-                   self::WAITING  => __('Pending'),
-                   self::SOLVED   => _x('status', 'Solved'),
-                   self::CLOSED   => _x('status', 'Closed')];
+   global $DB;
+   $done = 0;
+   
+   $criteria = "SELECT * FROM glpi_specialstatuses";
+   $iterators = $DB->request($criteria);
 
-      if ($withmetaforsearch) {
-         $tab['notold']    = _x('status', 'Not solved');
-         $tab['notclosed'] = _x('status', 'Not closed');
-         $tab['process']   = __('Processing');
-         $tab['old']       = _x('status', 'Solved + Closed');
-         $tab['all']       = __('All');
+   while ($data = $iterators->next()) {
+      $do_sort[] = $data['weight'];
+      $status_db[] = $data;
+   }
+   sort($do_sort);
+   
+   for ($i=0; count($do_sort) > 0; $i++) {
+      if (isset($status_db[$i]["weight"]) && $status_db[$i]["weight"] == $do_sort[$done]) {
+         if ($status_db[$i]["is_active"]) {
+            $tab["name"][$done + 1] = $status_db[$i]["name"];
+            $tab["name_translate"][$done + 1] = _x('status', $status_db[$i]["name"]);
+            $tab["id"][$done + 1] = $status_db[$i]["id"];
+            $tab["weight"][$done + 1] = $status_db[$i]["weight"];
+            $tab["color"][$done + 1] = $status_db[$i]["color"];
+         }
+         unset($status_db[$i]);
+         unset($do_sort[$done]);
+         $done = $done + 1;
+         $i=-1;
+         
       }
+   }
+ 
+   if ($withmetaforsearch) {
+      $tab["name_translate"]['notold']    = _x('status', 'Not solved');
+      $tab["name_translate"]['notclosed'] = _x('status', 'Not closed');
+      $tab["name_translate"]['process']   = __('Processing');
+      $tab["name_translate"]['old']       = _x('status', 'Solved + Closed');
+      $tab["name_translate"]['all']       = __('All');
+   }
+   if ($alldata) {
       return $tab;
    }
+   return $tab["name_translate"];
+}
 
 
    /**
@@ -3383,7 +3408,7 @@ class Ticket extends CommonITILObject {
     * @return array
    **/
    static function getClosedStatusArray() {
-      return [self::CLOSED];
+      return [$_SESSION['CLOSED']];
    }
 
 
@@ -3395,7 +3420,7 @@ class Ticket extends CommonITILObject {
     * @return array
    **/
    static function getSolvedStatusArray() {
-      return [self::SOLVED];
+      return [$_SESSION['SOLVED']];
    }
 
    /**
@@ -3406,7 +3431,7 @@ class Ticket extends CommonITILObject {
     * @return array
    **/
    static function getNewStatusArray() {
-      return [self::INCOMING];
+      return [$_SESSION['INCOMING']];
    }
 
    /**
@@ -3417,7 +3442,7 @@ class Ticket extends CommonITILObject {
     * @return array
    **/
    static function getProcessStatusArray() {
-      return [self::ASSIGNED, self::PLANNED];
+      return [$_SESSION['ASSIGNED'], $_SESSION['PLANNED']];
    }
 
 
@@ -4094,7 +4119,7 @@ class Ticket extends CommonITILObject {
                'actiontime'                => 0,
                'date'                      => null,
                'entities_id'               => $entity,
-               'status'                    => self::INCOMING,
+               'status'                    => $_SESSION['INCOMING'],
                'followup'                  => [],
                'itemtype'                  => '',
                'items_id'                  => 0,
@@ -4618,8 +4643,7 @@ class Ticket extends CommonITILObject {
       echo "<td width='$colsize2%'>";
       echo $tt->getBeginHiddenFieldValue('status');
       if ($canupdate) {
-         self::dropdownStatus(['value'     => $this->fields["status"],
-                                    'showtype'  => 'allowed']);
+         self::dropdownStatus(['value'     => $this->fields["status"], 'showtype'  => 'allowed']);
          TicketValidation::alertValidation($this, 'status');
       } else {
          echo self::getStatus($this->fields["status"]);
@@ -5098,7 +5122,7 @@ class Ticket extends CommonITILObject {
             $WHERE = array_merge(
                $WHERE,
                $search_assign,
-               ['glpi_tickets.status' => self::WAITING]
+               ['glpi_tickets.status' => $_SESSION['WAITING']]
             );
             break;
 
@@ -5106,7 +5130,7 @@ class Ticket extends CommonITILObject {
             $WHERE = array_merge(
                $WHERE,
                $search_assign,
-               ['glpi_tickets.status' => array_merge(self::getProcessStatusArray(), [self::INCOMING])]
+               ['glpi_tickets.status' => array_merge(self::getProcessStatusArray(), [$_SESSION['INCOMING']])]
             );
 
             break;
@@ -5117,7 +5141,7 @@ class Ticket extends CommonITILObject {
                $ORWHERE[] = ['glpi_tickets.users_id_recipient' => Session::getLoginUserID()];
             }
             $WHERE[] = ['OR' => $ORWHERE];
-            $WHERE['glpi_tickets.status'] = self::SOLVED;
+            $WHERE['glpi_tickets.status'] = $_SESSION['SOLVED'];
             break;
 
          case "tovalidate" : // tickets waiting for validation
@@ -5136,7 +5160,7 @@ class Ticket extends CommonITILObject {
                   'glpi_ticketvalidations.status'  => CommonITILValidation::WAITING,
                   'glpi_tickets.global_validation' => CommonITILValidation::WAITING,
                   'NOT'                            => [
-                     'glpi_tickets.status'   => [self::SOLVED, self::CLOSED]
+                     'glpi_tickets.status'   => [$_SESSION['SOLVED'], $_SESSION['CLOSED']]
                   ]
                ]
             );
@@ -5148,7 +5172,7 @@ class Ticket extends CommonITILObject {
                $WHERE,
                $search_assign,
                [
-                  'glpi_tickets.status'            => ['<>', self::CLOSED],
+                  'glpi_tickets.status'            => ['<>', $_SESSION['CLOSED']],
                   'glpi_tickets.global_validation' => CommonITILValidation::REFUSED
                ]
             );
@@ -5179,7 +5203,7 @@ class Ticket extends CommonITILObject {
                $WHERE,
                $search_assign,
                [
-                  'glpi_tickets.status'         => ['<>', self::CLOSED],
+                  'glpi_tickets.status'         => ['<>', $_SESSION['CLOSED']],
                   'glpi_itilsolutions.status'   => CommonITILValidation::REFUSED
                ]
             );
@@ -5190,10 +5214,10 @@ class Ticket extends CommonITILObject {
                $search_observer,
                [
                   'glpi_tickets.status'   => [
-                     self::INCOMING,
-                     self::PLANNED,
-                     self::ASSIGNED,
-                     self::WAITING
+                     $_SESSION['INCOMING'],
+                     $_SESSION['PLANNED'],
+                     $_SESSION['ASSIGNED'],
+                     $_SESSION['WAITING']
                   ],
                   'NOT'                   => [
                      $search_assign,
@@ -5227,7 +5251,7 @@ class Ticket extends CommonITILObject {
             $WHERE = array_merge(
                $WHERE,
                [
-                  'glpi_tickets.status'   => self::CLOSED,
+                  'glpi_tickets.status'   => $_SESSION['CLOSED'],
                   ['OR'                   => [
                      'glpi_entities.inquest_duration' => 0,
                      new \QueryExpression(
@@ -5249,10 +5273,10 @@ class Ticket extends CommonITILObject {
                $search_users_id,
                [
                   'glpi_tickets.status'   => [
-                     self::INCOMING,
-                     self::PLANNED,
-                     self::ASSIGNED,
-                     self::WAITING
+                     $_SESSION['INCOMING'],
+                     $_SESSION['PLANNED'],
+                     $_SESSION['ASSIGNED'],
+                     $_SESSION['WAITING']
                   ],
                   'NOT' => $search_assign
                ]
@@ -5304,7 +5328,7 @@ class Ticket extends CommonITILObject {
                case "toapprove" :
                   $options['criteria'][0]['field']      = 12; // status
                   $options['criteria'][0]['searchtype'] = 'equals';
-                  $options['criteria'][0]['value']      = self::SOLVED;
+                  $options['criteria'][0]['value']      = $_SESSION['SOLVED'];
                   $options['criteria'][0]['link']       = 'AND';
 
                   $options['criteria'][1]['field']      = 71; // groups_id
@@ -5321,7 +5345,7 @@ class Ticket extends CommonITILObject {
                case "waiting" :
                   $options['criteria'][0]['field']      = 12; // status
                   $options['criteria'][0]['searchtype'] = 'equals';
-                  $options['criteria'][0]['value']      = self::WAITING;
+                  $options['criteria'][0]['value']      = $_SESSION['WAITING'];
                   $options['criteria'][0]['link']       = 'AND';
 
                   $options['criteria'][1]['field']      = 8; // groups_id_assign
@@ -5350,7 +5374,7 @@ class Ticket extends CommonITILObject {
                               'link'        => 'AND',
                               'field'       => 12,
                               'searchtype'  => 'equals',
-                              'value'       => Ticket::INCOMING,
+                              'value'       => $_SESSION['INCOMING'],
                            ],
                            [
                               'link'        => 'OR',
@@ -5405,7 +5429,7 @@ class Ticket extends CommonITILObject {
                case "waiting" :
                   $options['criteria'][0]['field']      = 12; // status
                   $options['criteria'][0]['searchtype'] = 'equals';
-                  $options['criteria'][0]['value']      = self::WAITING;
+                  $options['criteria'][0]['value']      = $_SESSION['WAITING'];
                   $options['criteria'][0]['link']       = 'AND';
 
                   $options['criteria'][1]['field']      = 5; // users_id_assign
@@ -5500,7 +5524,7 @@ class Ticket extends CommonITILObject {
                case "toapprove" :
                   $options['criteria'][0]['field']      = 12; // status
                   $options['criteria'][0]['searchtype'] = 'equals';
-                  $options['criteria'][0]['value']      = self::SOLVED;
+                  $options['criteria'][0]['value']      = $_SESSION['SOLVED'];
                   $options['criteria'][0]['link']       = 'AND';
 
                   $options['criteria'][1]['field']      = 4; // users_id_assign
@@ -5515,7 +5539,7 @@ class Ticket extends CommonITILObject {
 
                   $options['criteria'][3]['field']      = 12; // status
                   $options['criteria'][3]['searchtype'] = 'equals';
-                  $options['criteria'][3]['value']      = self::SOLVED;
+                  $options['criteria'][3]['value']      = $_SESSION['SOLVED'];
                   $options['criteria'][3]['link']       = 'AND';
 
                   $forcetab                 = 'Ticket$2';
@@ -5544,7 +5568,7 @@ class Ticket extends CommonITILObject {
                case "survey" :
                   $options['criteria'][0]['field']      = 12; // status
                   $options['criteria'][0]['searchtype'] = 'equals';
-                  $options['criteria'][0]['value']      = self::CLOSED;
+                  $options['criteria'][0]['value']      = $_SESSION['CLOSED'];
                   $options['criteria'][0]['link']       = 'AND';
 
                   $options['criteria'][1]['field']      = 60; // enquete generee
@@ -5778,7 +5802,7 @@ class Ticket extends CommonITILObject {
 
       $criteria = self::getCommonCriteria();
       $criteria['WHERE'] = [
-         'status'       => self::INCOMING,
+         'status'       => $_SESSION['INCOMING'],
          'is_deleted'   => 0
       ] + getEntitiesRestrictCriteria(self::getTable());
       $criteria['LIMIT'] = (int)$_SESSION['glpilist_limit'];
@@ -5794,7 +5818,7 @@ class Ticket extends CommonITILObject {
          ];
          $options['criteria'][0]['field']      = 12;
          $options['criteria'][0]['searchtype'] = 'equals';
-         $options['criteria'][0]['value']   = self::INCOMING;
+         $options['criteria'][0]['value']   = $_SESSION['INCOMING'];
          $options['criteria'][0]['link']       = 'AND';
 
          echo "<div class='center'><table class='tab_cadre_fixe' style='min-width: 85%'>";
@@ -6316,7 +6340,7 @@ class Ticket extends CommonITILObject {
                'FROM'   => self::getTable(),
                'WHERE'  => [
                   'entities_id'  => $entity['id'],
-                  'status'       => self::SOLVED,
+                  'status'       => $_SESSION['SOLVED'],
                   'is_deleted'   => 0
                ]
             ];
@@ -6345,7 +6369,7 @@ class Ticket extends CommonITILObject {
             while ($tick = $iterator->next()) {
                $ticket->update([
                   'id'           => $tick['id'],
-                  'status'       => self::CLOSED,
+                  'status'       => $_SESSION['CLOSED'],
                   '_auto_update' => true
                ]);
                $nb++;
@@ -6385,10 +6409,10 @@ class Ticket extends CommonITILObject {
                'entities_id'  => $entity,
                'is_deleted'   => 0,
                'status'       => [
-                  self::INCOMING,
-                  self::ASSIGNED,
-                  self::PLANNED,
-                  self::WAITING
+                  $_SESSION['INCOMING'],
+                  $_SESSION['ASSIGNED'],
+                  $_SESSION['PLANNED'],
+                  $_SESSION['WAITING']
                ],
                'closedate'    => null,
                new QueryExpression("ADDDATE(" . $DB->quoteName('date') . ", INTERVAL $value DAY) < NOW()")
@@ -6479,7 +6503,7 @@ class Ticket extends CommonITILObject {
             'WHERE'     => [
                "$table.entities_id"          => $entity,
                "$table.is_deleted"           => 0,
-               "$table.status"               => self::CLOSED,
+               "$table.status"               => $_SESSION['CLOSED'],
                "$table.closedate"            => ['>', $max_closedate],
                new QueryExpression("ADDDATE(" . $DB->quoteName("$table.closedate") . ", INTERVAL $delay DAY) <= NOW()"),
                new QueryExpression("ADDDATE(" . $DB->quoteName("glpi_entities.max_closedate") . ", INTERVAL $duration DAY) <= NOW()"),
@@ -7012,7 +7036,9 @@ class Ticket extends CommonITILObject {
 
    public function getWhitelistedSingleMassiveActions() {
       $whitelist = parent::getWhitelistedSingleMassiveActions();
-
+      if (!isset($this->fields['status'])) {
+         return $whitelist;
+      }
       if (!in_array($this->fields['status'], $this->getClosedStatusArray())) {
          $whitelist[] = 'Item_Ticket:add_item';
       }

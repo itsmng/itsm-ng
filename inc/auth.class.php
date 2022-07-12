@@ -1725,7 +1725,7 @@ class Auth extends CommonGLPI {
       echo "</td></tr>";
       
       echo "<tr class='tab_bg_1'><td class='center' colspan='2'>";
-      echo "<input type='submit' name='update' class='submit'>";
+      echo "<input type='submit' name='update' value='". _sx('button', 'Save') ."' class='submit'>";
       echo "</td></tr>";
       echo "</table>";
       Html::closeForm();
