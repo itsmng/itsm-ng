@@ -187,10 +187,16 @@ class Update extends CommonGLPI {
          case '1.0.0':
             include_once "{$updir}update_100_101.php";
             update100to101();
+            include_once "{$updir}update_101_110.php";
+            update101to110();
+            include_once "{$updir}update_110_120.php";
+            update110to120();
             break;
          case '1.0.1':
             include_once "{$updir}update_101_110.php";
             update101to110();
+            include_once "{$updir}update_110_120.php";
+            update110to120();
             break;
          case '1.1.0':
             include_once "{$updir}update_110_120.php";
