@@ -1652,6 +1652,9 @@ class Auth extends CommonGLPI {
       global $DB;
       
       //Set or update config with the db
+      if (isset($_POST["mapping"])) {
+         Html::redirect("auth.oidc_profile.php");
+      }
       if (isset($_POST["update"])) {
          $oidc_result = [
             'Provider'   => $_POST["provider"],
@@ -1724,8 +1727,9 @@ class Auth extends CommonGLPI {
    }
       echo "</td></tr>";
       
-      echo "<tr class='tab_bg_1'><td class='center' colspan='2'>";
-      echo "<input type='submit' name='update' value='". _sx('button', 'Save') ."' class='submit'>";
+      echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
+      echo "<input type='submit' name='update' class='submit' value=\"".__s('Save')."\">" . '&nbsp;';
+      echo "<input type='submit' name='mapping' class='submit' value=\"".__s('Mapping')."\" >";
       echo "</td></tr>";
       echo "</table>";
       Html::closeForm();

@@ -30,6 +30,39 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+namespace Glpi\Console\Oidc;
 
-Oidc::auth();
+if (!defined('GLPI_ROOT')) {
+   die("Sorry. You can't access this file directly");
+}
+
+use Glpi\Console\AbstractCommand;
+
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+class OidcUpdateCommand extends AbstractCommand {
+
+   protected function configure() {
+      parent::configure();
+
+      $this->setName('itsmng:oidc:update');
+      $this->setAliases(['oidc:update']);
+      $this->setDescription(__('Each ITSM-NG user using openID connect must log in again to update their personal information'));
+   }
+
+   protected function execute(InputInterface $input, OutputInterface $output) {
+
+      global $DB;
+
+      $querry = "UPDATE glpi_oidc_users SET `update` = 0;";
+      $DB->queryOrDie($querry);
+
+      return 0; // Success
+   }
+
+   public function mustCheckMandatoryRequirements(): bool {
+
+      return false;
+   }
+}
