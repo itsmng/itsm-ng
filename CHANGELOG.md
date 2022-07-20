@@ -9,11 +9,17 @@
 * Add Special status page to add new status
 * Add Status customization (Name, weight,color or if it's activate)
 * Add Profile right to Special status (desactivate by default)
+* Add Mapping openID connect page to get proply all informations on the user
+* Add New command **php bin/console itsmng:oidc:update** to force evry user of OIDC to update their information
 
 ### Updates
 
 * Update to 1.2.0
 * Update the list of statuses with the new statuses created and sorted
+
+### Fixes
+
+* Fix translation don't apply on a button
 
 ## ITSM-NG - 1.1.0
 
