@@ -23492,7 +23492,7 @@ msgid "New Status - Special status"
 msgstr "Nouveau statut - Statut spécial"
 
 #: inc/oidc.class.php:261
-msgid "Mapping of fields according to OIDC provider"
+msgid "Mapping of fields according to provider"
 msgstr "Mappage des champs en fonction fournisseur"
 
 #: inc/auth.class.php:1732
