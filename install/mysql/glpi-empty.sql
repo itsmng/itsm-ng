@@ -7080,6 +7080,8 @@ CREATE TABLE `glpi_users` (
   `default_dashboard_assets` varchar(100) DEFAULT NULL,
   `default_dashboard_helpdesk` varchar(100) DEFAULT NULL,
   `default_dashboard_mini_ticket` varchar(100) DEFAULT NULL,
+  `access_zoom_level` smallint(1) DEFAULT 100,
+  `access_font` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unicityloginauth` (`name`, `authtype`, `auths_id`),
   KEY `firstname` (`firstname`),

@@ -118,7 +118,7 @@ class Profile extends CommonDBTM {
                   $ong[6] = __('Tools');
                   $ong[7] = __('Administration');
                   $ong[8] = __('Setup');
-
+                  $ong[9] = __('Accessibility');
                }
                return $ong;
          }
@@ -174,6 +174,10 @@ class Profile extends CommonDBTM {
                } else {
                   $item->showFormSetup();
                }
+               break;
+
+            case 9:
+               $item->showFormAccess();
                break;
          }
       }
@@ -1433,6 +1437,62 @@ class Profile extends CommonDBTM {
    }
 
 
+    /**
+     * Print the accessibility form for a profile
+     *
+     * @param $openform     boolean  open the form (true by default)
+     * @param $closeform    boolean  close the form (true by default)
+     **/
+    function showFormAccess($openform = true, $closeform = true) {
+        if (!self::canView()) {
+            return false;
+        }
+
+        echo "<div class='spaced'>";
+
+        if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
+            && $openform) {
+            echo "<form method='post' action='".$this->getFormURL()."' data-track-changes='true'>";
+        }
+
+        $matrix_options = ['canedit'       => $canedit,
+            'default_class' => 'tab_bg_4'];
+
+        $rights = [
+            [
+                'itemtype'  => 'Accessibility',
+                'label'     => __("Edit accessibility"),
+                'field'     => 'accessibility'
+            ],
+            [
+                'itemtype'  => 'Accessibility',
+                'label'     => __("Change font"),
+                'field'     => 'changefont'
+            ],
+            [
+                'itemtype'  => 'Accessibility',
+                'label'     => __("Change zoom"),
+                'field'     => 'changezoom'
+            ]
+        ];
+
+        $matrix_options['title'] = __('Accessibility');
+        $matrix_options['default_class'] = 'tab_bg_2';
+        $this->displayRightsChoiceMatrix($rights, $matrix_options);
+
+        if ($canedit
+            && $closeform) {
+            echo "<div class='center'>";
+            echo "<input type='hidden' name='id' value='".$this->fields['id']."'>";
+            echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit'>";
+            echo "</div>\n";
+            Html::closeForm();
+        }
+
+        echo "<div/>";
+
+        $this->showLegend();
+    }
    /**
     * Print the central form for a profile
     *

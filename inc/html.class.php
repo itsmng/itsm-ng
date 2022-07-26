@@ -1457,6 +1457,8 @@ JAVASCRIPT;
          }
       }
 
+      self::accessibilityHeader();
+
       // layout
       if (CommonGLPI::isLayoutWithMain()
           && !CommonGLPI::isLayoutExcludedPage()) {
@@ -1650,6 +1652,43 @@ JAVASCRIPT;
       return $menu;
    }
 
+    static function accessibilityHeader() {
+        $user = new User();
+        $user->getFromDB(Session::getLoginUserID());
+        if (Session::haveRight("accessibility", READ)) {
+            $factor = $user->fields["access_zoom_level"];
+            $font = $user->fields["access_font"];
+            switch ($font) {
+                case "OpenDyslexic":
+                    echo '<link href="http://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet">';     // Use CDNFonts for webfont delivery
+                    break;
+                case "OpenDyslexicAlta":
+                    echo '<link href="http://fonts.cdnfonts.com/css/opendyslexic?styles=29221" rel="stylesheet">';
+                    break;
+                case 'Tiresias Infofont':
+                    echo '<link href="http://fonts.cdnfonts.com/css/tiresias-infofont" rel="stylesheet">';
+                    break;
+                default:
+                    break;
+            }
+            echo Html::scriptBlock(<<<JAVASCRIPT
+            $(function() {
+                $("body").css({
+                    "zoom": "$factor%",
+                    "font-family": "'" + "$font" + "', Verdana, Tahoma, 'Sans serif'"
+                   });
+                $("ul").css("font-family", "'" + "$font" + "', Verdana, Arial, 'Sans serif'");
+                $("div").css("font-family", "'" + "$font" + "', Verdana, Arial, 'Sans serif'");
+                $("button").css("font-family", "'" + "$font" + "', Verdana, Arial, 'Sans serif'");
+                $(".vsubmit").css("font-family", "'" + "$font" + "', Arial, Helvetica");
+                $("input").css("font-family", "'" + "$font" + "', Verdana, Tahoma, 'Sans serif'");
+                $("#myname").css("font-family", "'" + "$font" + "', Verdana, Tahoma, 'Sans serif'");
+                $("div.timeline_box").children().css("font-family", "'" + "$font" + "', Verdana, Arial, 'Sans serif'");
+            })
+JAVASCRIPT
+            );
+        }
+    }
 
    /**
     * Print a nice HTML head for every page
