@@ -16,15 +16,6 @@ class Accessibility extends CommonDBTM {
 
     /*************************************** TABS ********************************************/
 
-    function defineTabs($options = []) {
-
-        $ong = [];
-        $this->addStandardTab(__CLASS__, $ong, $options);
-        $this->addStandardTab('Log', $ong, $options);
-
-        return $ong;
-    }
-
     function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
         switch ($item->getType()) {
@@ -67,7 +58,6 @@ class Accessibility extends CommonDBTM {
     function showAccessForm($data = []) {
         global $CFG_GLPI, $DB;
 
-        $oncentral = (Session::getCurrentInterface() == "central");
         $userpref  = false;
         $url       = Toolbox::getItemTypeFormURL(__CLASS__);
         $rand      = mt_rand();
