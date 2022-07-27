@@ -822,7 +822,6 @@ class Ticket extends CommonITILObject {
 
     function defineTabs($options = []) {
       $ong = [];
-      $shortcut = [];
 
       $this->defineDefaultObjectTabs($ong, $options);
       $this->addStandardTab('TicketValidation', $ong, $options);
@@ -925,7 +924,7 @@ class Ticket extends CommonITILObject {
       }
 
       // automatic recalculate if user changes urgence or technician change impact
-      $canpriority               = Session::haveRight(self::$rightname, self::CHANGEPRIORITY);
+      $canpriority = Session::haveRight(self::$rightname, self::CHANGEPRIORITY);
       if ((isset($input['urgency']) && $input['urgency'] != $this->fields['urgency'])
          || (isset($input['impact']) && $input['impact'] != $this->fields['impact'])
          && ($canpriority && !isset($input['priority']) || !$canpriority)

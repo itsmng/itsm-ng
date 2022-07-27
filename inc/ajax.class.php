@@ -409,7 +409,7 @@ class Ajax {
             } else if (!empty($val["shortcut"])) {
                 $currentShortcut = $val['shortcut'][explode("$", $key)[1]];
             }
-            if ($currentShortcut && $displayShortcuts) {
+            if ($currentShortcut && $displayShortcuts && $orientation == 'vertical' && count($tabs) > 1) {
                 // I wish doing this wasn't necessary, but it is
                 $shortcutWrapperID = "acc".mt_rand();
                 echo "<div id='$shortcutWrapperID' style='align-items: end;float: right; top: -25px; right: 5%; position: inherit; margin-bottom: -55px; pointer-events: none;'>";

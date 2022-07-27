@@ -1679,6 +1679,7 @@ JAVASCRIPT;
                     "font-family": "'$font', Verdana, Tahoma, 'Sans serif'"
                    });
                 $("div").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+                $(".secondary").css("font-family", "'$font', Arial, Helvetica");
                 $("button").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
                 $(".vsubmit").css("font-family", "'$font', Arial, Helvetica");
                 $("input").css("font-family", "'$font', Verdana, Tahoma, 'Sans serif'");
