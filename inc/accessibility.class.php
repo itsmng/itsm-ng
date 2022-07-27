@@ -1,3 +1,5 @@
+<?php
+
 /**
  * ---------------------------------------------------------------------
  * ITSM-NG
@@ -28,8 +30,6 @@
  * along with ITSM-NG. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
  */
-
-<?php
 
 class Accessibility extends CommonDBTM {
     static function getTypeName($nb = 0) {
