@@ -1423,6 +1423,7 @@ class Html {
 
       // AJAX library
       echo Html::script('public/lib/base.js');
+      echo Html::script('js/hotkeys.js');
 
       // Locales
       $locales_domains = ['glpi' => GLPI_VERSION]; // base domain
@@ -4004,7 +4005,18 @@ JS;
          });
       });";
 
+      echo Html::scriptBlock(<<<JAVASCRIPT
+$('#tinymce.mce-content-body').load(function() {
+    $('#tinymce.mce-content-body').css({
+       'zoom': '200%',
+       'font-family': 'OpenDyslexic'
+    });
+})
+JAVASCRIPT
+      );
+
       if ($display) {
+
          echo  Html::scriptBlock($js);
       } else {
          return  Html::scriptBlock($js);
@@ -6614,6 +6626,9 @@ JAVASCRIPT;
             break;
          case 'photoswipe':
             $_SESSION['glpi_js_toload'][$name][] = 'public/lib/photoswipe.js';
+            break;
+         case 'hotkeys':
+            $_SESSION['glpi_js_toload'][$name][] = 'js/hotkeys.js';
             break;
          default:
             $found = false;

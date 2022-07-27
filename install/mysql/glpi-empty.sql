@@ -7082,6 +7082,7 @@ CREATE TABLE `glpi_users` (
   `default_dashboard_mini_ticket` varchar(100) DEFAULT NULL,
   `access_zoom_level` smallint(1) DEFAULT 100,
   `access_font` varchar(100) DEFAULT NULL,
+  `access_shortcuts` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unicityloginauth` (`name`, `authtype`, `auths_id`),
   KEY `firstname` (`firstname`),
@@ -8138,6 +8139,7 @@ CREATE TABLE IF NOT EXISTS `glpi_oidc_config` (
         PRIMARY KEY (`id`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+DROP TABLE IF EXISTS `glpi_specialstatuses`;
 CREATE TABLE IF NOT EXISTS `glpi_specialstatuses` (
         `id` int(11) NOT NULL auto_increment,
         `name` varchar(255) DEFAULT NULL,

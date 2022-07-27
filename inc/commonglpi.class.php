@@ -557,6 +557,21 @@ class CommonGLPI {
       return '';
    }
 
+   /**
+    * Returns an array of keyboard keys.
+    *
+    * @param CommonGLPI $item         Item that the shortcut is attached to
+    * @param bool       $withtemplate Is a template object? (default 0)
+    *
+    * @see Item_Ticket::getShortcutsForItem() for a single shortcut implementation
+    * @see Ticket::getShortcutsForItem()      for a multi-shortcut implementation
+    *
+    * @return array Keys for the shortcut
+    */
+   function getShortcutsForItem() {
+       return [];
+   }
+
 
    /**
     * show Tab content
@@ -868,20 +883,32 @@ class CommonGLPI {
          $tabs    = [];
 
          foreach ($onglets as $key => $val) {
-            $tabs[$key] = ['title'  => $val,
-                                'url'    => $tabpage,
-                                'params' => "_target=$target&amp;_itemtype=".$this->getType().
-                                            "&amp;_glpi_tab=$key&amp;id=$ID$extraparamhtml"];
+            if($item = getItemForItemtype(explode("$", $key)[0])) {
+                $shortcut = $item->getShortcutsForItem();
+                if(!count($shortcut)) {
+                    $shortcut = false;
+                }
+            }
+            $tabs[$key] = [
+                'title'    => $val,
+                'shortcut' => $shortcut,
+                'url'      => $tabpage,
+                'params'   => "_target=$target&amp;_itemtype=".$this->getType().
+                              "&amp;_glpi_tab=$key&amp;id=$ID$extraparamhtml"
+            ];
          }
 
          // Not all tab for templates and if only 1 tab
          if ($display_all
              && empty($withtemplate)
              && (count($tabs) > 1)) {
-            $tabs[-1] = ['title'  => __('All'),
-                              'url'    => $tabpage,
-                              'params' => "_target=$target&amp;_itemtype=".$this->getType().
-                                          "&amp;_glpi_tab=-1&amp;id=$ID$extraparamhtml"];
+            $tabs[-1] = [
+                'title'    => __('All'),
+                'shortcut' => false,
+                'url'      => $tabpage,
+                'params'   => "_target=$target&amp;_itemtype=".$this->getType().
+                              "&amp;_glpi_tab=-1&amp;id=$ID$extraparamhtml"
+            ];
          }
 
          Ajax::createTabs('tabspanel', 'tabcontent', $tabs, $this->getType(), $ID,

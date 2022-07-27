@@ -811,9 +811,18 @@ class Ticket extends CommonITILObject {
       return true;
    }
 
+    function getShortcutsForItem()
+    {
+      return [
+          1      => ["SHIFT", "P"],
+          "main" => ["ALT", "T"],
+          4      => ["ALT", "S"]
+      ];
+    }
 
-   function defineTabs($options = []) {
+    function defineTabs($options = []) {
       $ong = [];
+      $shortcut = [];
 
       $this->defineDefaultObjectTabs($ong, $options);
       $this->addStandardTab('TicketValidation', $ong, $options);

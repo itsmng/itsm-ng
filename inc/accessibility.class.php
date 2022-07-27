@@ -113,6 +113,11 @@ class Accessibility extends CommonDBTM {
         Dropdown::showFromArray('access_font', $fonts, ['value' => $data["access_font"], 'rand' => $rand]);
         echo "</td></tr>";
 
+        echo "<td><label for='access_shortcuts_drop$rand'>" .__('Enable shortcuts') . "</label></td>";
+        echo "<td>";
+        Dropdown::showYesNo('access_shortcuts', $data["access_shortcuts"], -1,['rand' => $rand]);
+        echo "</td></tr>";
+
         if ((!$userpref && $canedit) || ($userpref && $canedituser)) {
             echo "<tr class='tab_bg_2'>";
             echo "<td colspan='4' class='center'>";

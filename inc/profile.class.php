@@ -1473,6 +1473,11 @@ class Profile extends CommonDBTM {
                 'itemtype'  => 'Accessibility',
                 'label'     => __("Change zoom"),
                 'field'     => 'changezoom'
+            ],
+            [
+                'itemtype'  => 'Accessibility',
+                'label'     => __("Use shortcuts"),
+                'field'     => 'useshortcuts'
             ]
         ];
 
