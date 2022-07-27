@@ -6622,9 +6622,15 @@ abstract class CommonITILObject extends CommonDBTM {
     * @return void
     */
    function filterTimeline() {
+      $user = new User();
+      $user->getFromDB(Session::getLoginUserID());
 
+      $font = "Bitstream Vera Sans";
+      if (Session::haveRight("accessibility", READ)) {
+          $font = $user->fields["access_font"];
+      }
       echo "<div class='filter_timeline'>";
-      echo "<h3>".__("Timeline filter")." : </h3>";
+      echo "<h3 style='font-family: $font;'>".__("Timeline filter")." : </h3>";
       echo "<ul>";
 
       $objType = static::getType();
@@ -6658,8 +6664,13 @@ abstract class CommonITILObject extends CommonDBTM {
     * @return void
     */
    function showTimelineHeader() {
-
-      echo "<h2>".__("Actions historical")." : </h2>";
+      $user = new User();
+      $user->getFromDB(Session::getLoginUserID());
+      $font = "Bitstream Vera Sans";
+      if (Session::haveRight("accessibility", READ)) {
+          $font = $user->fields["access_font"];
+      }
+      echo "<h2 style='font-family: $font;'>".__("Actions historical")." : </h2>";
       $this->filterTimeline();
    }
 
@@ -6792,12 +6803,16 @@ abstract class CommonITILObject extends CommonDBTM {
       $user->getFromDB(Session::getLoginUserID());
 
       $canuse_shortcuts = $user->fields['access_shortcuts'];
+      $font = "Bitstream Vera Sans";
+      if (Session::haveRight("accessibility", READ)) {
+          $font = $user->fields["access_font"];
+      }
 
       if ($canadd_fup || $canadd_task || $canadd_document || $canadd_solution) {
-         echo "<h2>"._sx('button', 'Add')." : </h2>";
+         echo "<h2 style='font-family: $font;'>"._sx('button', 'Add')." : </h2>";
       }
       if ($canadd_fup) {
-         echo "<li class='followup' onclick='".
+         echo "<li class='followup' style='font-family: $font;' onclick='".
               "javascript:viewAddSubitem".$this->fields['id']."$rand(\"ITILFollowup\");'>"
               . "<i class='far fa-comment'></i>"._n('Followup', 'Followups', 1);
          echo "</li>";
@@ -6810,7 +6825,7 @@ abstract class CommonITILObject extends CommonDBTM {
          }
       }
       if ($canadd_task) {
-         echo "<li class='task' onclick='".
+         echo "<li class='task' style='font-family: $font;' onclick='".
               "javascript:viewAddSubitem".$this->fields['id']."$rand(\"$taskClass\");'>"
               ."<i class='far fa-check-square'></i>"._n('Task', 'Tasks', 1)."</li>";
          if ($canuse_shortcuts) {
@@ -6822,7 +6837,7 @@ abstract class CommonITILObject extends CommonDBTM {
          }
       }
       if ($canadd_document) {
-         echo "<li class='document' onclick='".
+         echo "<li class='document' style='font-family: $font;' onclick='".
               "javascript:viewAddSubitem".$this->fields['id']."$rand(\"Document_Item\");'>"
               ."<i class='fa fa-paperclip'></i>".Document::getTypeName(1)."</li>";
          if ($canuse_shortcuts) {
@@ -6834,7 +6849,7 @@ abstract class CommonITILObject extends CommonDBTM {
          }
       }
       if ($canadd_validation) {
-         echo "<li class='validation' onclick='".
+         echo "<li class='validation' style='font-family: $font;' onclick='".
             "javascript:viewAddSubitem".$this->fields['id']."$rand(\"$validation_class\");'>"
             ."<i class='far fa-thumbs-up'></i>"._n('Approval', 'Approvals', 1)."</li>";
          if ($canuse_shortcuts) {
@@ -6846,7 +6861,7 @@ abstract class CommonITILObject extends CommonDBTM {
          }
       }
       if ($canadd_solution) {
-         echo "<li class='solution' onclick='".
+         echo "<li class='solution' style='font-family: $font;' onclick='".
               "javascript:viewAddSubitem".$this->fields['id']."$rand(\"Solution\");'>"
               ."<i class='fa fa-check'></i>"._n('Solution', 'Solutions', 1)."</li>";
          if ($canuse_shortcuts) {
@@ -6858,7 +6873,7 @@ abstract class CommonITILObject extends CommonDBTM {
          }
       }
       if ($canuse_shortcuts) {
-         echo "<li class='shortcutpop' onclick=\"".
+         echo "<li class='shortcutpop' style='font-family: $font;' onclick=\"".
               "alert('".
               "<kbd>SHIFT</kbd>+<kbd>F</kbd> : Followup <br> ".
               "<kbd>SHIFT</kbd>+<kbd>T</kbd> : Task <br> ".
@@ -6892,7 +6907,7 @@ abstract class CommonITILObject extends CommonDBTM {
             $total_actiontime = $row['actiontime'];
          }
          if ($total_actiontime > 0) {
-            echo "<h3>";
+            echo "<h3 style='font-family: $font;'>";
             $total   = Html::timestampToString($total_actiontime, false);
             $message = sprintf(__('Total duration: %s'),
                                $total);
@@ -6906,7 +6921,7 @@ abstract class CommonITILObject extends CommonDBTM {
             $states = [Planning::INFO => __('Information tasks: %s %%'),
                        Planning::TODO => __('Todo tasks: %s %%'),
                        Planning::DONE => __('Done tasks: %s %% ')];
-            echo "<h3>";
+            echo "<h3 style='font-family: $font;'>";
             foreach ($states as $state => $string) {
                $criteria = [$foreignKey => $this->fields['id'],
                             "state"     => $state];
@@ -7149,6 +7164,14 @@ abstract class CommonITILObject extends CommonDBTM {
       // show title for timeline
       $this->showTimelineHeader();
 
+      $thisUser = new User();
+      $thisUser->getFromDB(Session::getLoginUserID());
+
+      $font = "Bitstream Vera Sans";
+      if (Session::haveRight("accessibility", READ)) {
+         $font = $thisUser->fields["access_font"];
+      }
+
       $timeline_index = 0;
       foreach ($timeline as $item) {
          $options = [ 'parent' => $this,
@@ -7199,7 +7222,7 @@ abstract class CommonITILObject extends CommonDBTM {
             $user_position.= ' middle';
          }
 
-         echo "<div class='h_item $user_position'>";
+         echo "<div style='font-family: $font;' class='h_item $user_position'>";
 
          echo "<div class='h_info'>";
 
@@ -7572,7 +7595,7 @@ abstract class CommonITILObject extends CommonDBTM {
       echo "<div class='break'></div>";
 
       // recall content
-      echo "<div class='h_item middle'>";
+      echo "<div style='font-family: $font;' class='h_item middle'>";
 
       echo "<div class='h_info'>";
       echo "<div class='h_date'><i class='far fa-clock'></i>".Html::convDateTime($this->fields['date'])."</div>";

@@ -1676,15 +1676,14 @@ JAVASCRIPT;
             $(function() {
                 $("body").css({
                     "zoom": "$factor%",
-                    "font-family": "'" + "$font" + "', Verdana, Tahoma, 'Sans serif'"
+                    "font-family": "'$font', Verdana, Tahoma, 'Sans serif'"
                    });
-                $("ul").css("font-family", "'" + "$font" + "', Verdana, Arial, 'Sans serif'");
-                $("div").css("font-family", "'" + "$font" + "', Verdana, Arial, 'Sans serif'");
-                $("button").css("font-family", "'" + "$font" + "', Verdana, Arial, 'Sans serif'");
-                $(".vsubmit").css("font-family", "'" + "$font" + "', Arial, Helvetica");
-                $("input").css("font-family", "'" + "$font" + "', Verdana, Tahoma, 'Sans serif'");
-                $("#myname").css("font-family", "'" + "$font" + "', Verdana, Tahoma, 'Sans serif'");
-                $("div.timeline_box").children().css("font-family", "'" + "$font" + "', Verdana, Arial, 'Sans serif'");
+                $("div").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+                $("button").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+                $(".vsubmit").css("font-family", "'$font', Arial, Helvetica");
+                $("input").css("font-family", "'$font', Verdana, Tahoma, 'Sans serif'");
+                $("#myname").css("font-family", "'$font', Verdana, Tahoma, 'Sans serif'");
+                $("div.timeline_box").children().css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
             })
 JAVASCRIPT
             );
