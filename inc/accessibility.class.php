@@ -86,6 +86,45 @@ class Accessibility extends CommonDBTM {
 
     /*************************************** FORM ********************************************/
 
+    static function editTabShortcutForm(string $tab) {
+        global $CFG_GLPI, $DB;
+
+        $user = new User();
+        $user->getFromDB(Session::getLoginUserID());
+        $data = $user->fields;
+
+        $split = explode("$", $tab);
+
+        $url       = Toolbox::getItemTypeFormURL(__CLASS__);
+        $rand      = mt_rand();
+
+        $canedit = Config::canUpdate();
+        $canedituser = Session::haveRight('accessibility', UPDATE);
+
+        $form = "<form name='form' action='".$CFG_GLPI['root_doc']."/front/preference.php' method='post' data-track-changes='true'>";
+
+        $form .= "<div class='center' id='tabsbody'>";
+        $form .= "<table class='tab_cadre_fixe'>";
+
+        $form .= "<tr><th colspan='4' style='text-align: center'>" . __('Edit shortcut') . "</th></tr>";
+        $form .= "<td><label for='$rand' style='text-align: center'>" . $split[1] . "</label></td>";
+        $form .= "<td>";
+        $form .= "<textarea></textarea>";
+        $form .= "</td></tr>";
+
+        if (Session::haveRight("accessibility", 2)) {
+            $form .= "<tr class='tab_bg_2'>";
+            $form .= "<td colspan='4' class='center'>";
+            $form .= "<input type='submit' name='update' class='submit' value='"._sx('button', 'Save')."'>";
+            $form .= "</td></tr>";
+        }
+
+        $form .= "</table></div>";
+        $form .= str_replace('"', "'", Html::closeForm(false));
+
+        return $form;
+    }
+
     function showAccessForm($data = []) {
         global $CFG_GLPI, $DB;
 

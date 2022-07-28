@@ -68,6 +68,12 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
 if ($item = getItemForItemtype($_UGET['_itemtype'])) {
    if ($item->get_item_to_display_tab) {
+       Html::
+      echo Html::scriptBlock(''.
+          '$("#shortcut-floater").unbind("click");'.
+          '$("#shortcut-floater").attr("onclick", "alert(\"'.Accessibility::editTabShortcutForm($_GET["_glpi_tab"]).'\")");'
+      );
+
       // No id if ruleCollection but check right
       if ($item instanceof RuleCollection) {
          if (!$item->canList()) {

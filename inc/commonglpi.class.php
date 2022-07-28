@@ -600,8 +600,7 @@ class CommonGLPI {
     * @return boolean true
    **/
    static function displayStandardTab(CommonGLPI $item, $tab, $withtemplate = 0, $options = []) {
-
-      switch ($tab) {
+       switch ($tab) {
          // All tab
          case -1 :
             // get tabs and loop over
@@ -611,7 +610,6 @@ class CommonGLPI {
                //on classical and vertical split; the main tab is always displayed
                array_shift($ong);
             }
-
             if (count($ong)) {
                foreach ($ong as $key => $val) {
                   if ($key != 'empty') {
@@ -879,6 +877,11 @@ class CommonGLPI {
       }
 
       if (count($onglets)) {
+         if (count($onglets) > 1 && !CommonGLPI::isLayoutExcludedPage()) {
+             echo "<div style='position: absolute; width: 100%; height: 100%; top: 81px; right: 2px;'>";
+             echo "<button id='shortcut-floater' onclick='alert(\"".$this->getTypeName()."\")'>" . __("Edit shortcut") . "</button>";
+             echo "</div>";
+         }
          $tabpage = $this->getTabsURL();
          $tabs    = [];
 
