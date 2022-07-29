@@ -31,16 +31,47 @@
  * ---------------------------------------------------------------------
  */
 
+use Glpi\Event;
+
 if (!defined('GLPI_ROOT')) {
     include ('../inc/includes.php');
 }
 
-Html::popHeader(__("Setup"), $_SERVER["PHP_SELF"]);
+$user = new User();
 
-Session::checkRight("accessibility", READ);
+Session::checkLoginUser();
 
-$accessdisplay = new Accessibility();
+if (isset($_POST["update"])
+    && ($_POST["id"] == Session::getLoginUserID())) {
+    // Prepare user data
+    $shortcuts = [];
+    foreach ($_POST as $K => $V) { // Iterate KV, remove shortcuts from POST
+        if (str_contains($K, "$")) {
+            $shortcuts[$K] = $V;
+            unset($_POST[$K]);
+        }
+    }
+    $_POST["access_custom_shortcuts"] = json_encode($shortcuts);
+    $user->update($_POST);
 
-if (isset($_POST["update"])) {
+    Event::log($_POST["id"], "users", 5, "setup",
+        //TRANS: %s is the user login
+        sprintf(__('%s updates an item'), $_SESSION["glpiname"]));
+    Html::back();
 
+} else {
+    if (Session::getCurrentInterface() == "central") {
+        Html::header(Preference::getTypeName(1), $_SERVER['PHP_SELF'], 'accessibility');
+    } else {
+        Html::helpHeader(Preference::getTypeName(1), $_SERVER['PHP_SELF']);
+    }
+
+    $access = new Accessibility();
+    $access->display(['main_class' => 'tab_cadre_fixe']);
+
+    if (Session::getCurrentInterface() == "central") {
+        Html::footer();
+    } else {
+        Html::helpFooter();
+    }
 }

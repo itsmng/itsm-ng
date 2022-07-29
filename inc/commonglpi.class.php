@@ -877,11 +877,6 @@ class CommonGLPI {
       }
 
       if (count($onglets)) {
-         if (count($onglets) > 1 && !CommonGLPI::isLayoutExcludedPage()) {
-             echo "<div style='position: absolute; width: 100%; height: 100%; top: 81px; right: 2px;'>";
-             echo "<button id='shortcut-floater' onclick='alert(\"".$this->getTypeName()."\")'>" . __("Edit shortcut") . "</button>";
-             echo "</div>";
-         }
          $tabpage = $this->getTabsURL();
          $tabs    = [];
 

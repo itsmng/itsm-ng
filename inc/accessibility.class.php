@@ -86,45 +86,6 @@ class Accessibility extends CommonDBTM {
 
     /*************************************** FORM ********************************************/
 
-    static function editTabShortcutForm(string $tab) {
-        global $CFG_GLPI, $DB;
-
-        $user = new User();
-        $user->getFromDB(Session::getLoginUserID());
-        $data = $user->fields;
-
-        $split = explode("$", $tab);
-
-        $url       = Toolbox::getItemTypeFormURL(__CLASS__);
-        $rand      = mt_rand();
-
-        $canedit = Config::canUpdate();
-        $canedituser = Session::haveRight('accessibility', UPDATE);
-
-        $form = "<form name='form' action='".$CFG_GLPI['root_doc']."/front/preference.php' method='post' data-track-changes='true'>";
-
-        $form .= "<div class='center' id='tabsbody'>";
-        $form .= "<table class='tab_cadre_fixe'>";
-
-        $form .= "<tr><th colspan='4' style='text-align: center'>" . __('Edit shortcut') . "</th></tr>";
-        $form .= "<td><label for='$rand' style='text-align: center'>" . $split[1] . "</label></td>";
-        $form .= "<td>";
-        $form .= "<textarea></textarea>";
-        $form .= "</td></tr>";
-
-        if (Session::haveRight("accessibility", 2)) {
-            $form .= "<tr class='tab_bg_2'>";
-            $form .= "<td colspan='4' class='center'>";
-            $form .= "<input type='submit' name='update' class='submit' value='"._sx('button', 'Save')."'>";
-            $form .= "</td></tr>";
-        }
-
-        $form .= "</table></div>";
-        $form .= str_replace('"', "'", Html::closeForm(false));
-
-        return $form;
-    }
-
     function showAccessForm($data = []) {
         global $CFG_GLPI, $DB;
 
@@ -137,9 +98,9 @@ class Accessibility extends CommonDBTM {
         if (array_key_exists('last_login', $data)) {
             $userpref = true;
             if ($data["id"] === Session::getLoginUserID()) {
-                $url  = $CFG_GLPI['root_doc']."/front/preference.php";
+                $url  = $CFG_GLPI['root_doc']."/front/accessibility.form.php";
             } else {
-                $url  = User::getFormURL();
+                $url  = Accessibility::getFormURL();
             }
         }
 
@@ -187,6 +148,52 @@ class Accessibility extends CommonDBTM {
         echo "<td>";
         Dropdown::showYesNo('access_shortcuts', $data["access_shortcuts"], -1,['rand' => $rand]);
         echo "</td></tr>";
+
+        $classes = [];
+        foreach (get_declared_classes() as $class) {
+            if (is_subclass_of($class, "CommonGLPI")) {
+                $reflector = new ReflectionMethod($class, 'defineTabs');
+                if ($reflector->getDeclaringClass()->getName() !== $class) continue;
+                $item = @getItemForItemtype($class);
+
+                if ($item) {
+                    try {
+                        $tabs = @$item->defineTabs(["id" => 1]);
+                    } catch (Exception $e) {
+                        Toolbox::logWarning("($item) Caught exception: $e"); // :)
+                        continue;
+                    }
+                    $classes = array_merge($classes, $tabs);
+                }
+            }
+        }
+
+        unset($classes["no_all_tab"]); // Remove superfluous element
+
+        ksort($classes); // Order things around
+
+        echo "<tr><th colspan='4'>" . __('Shortcuts') . " <a style='position: absolute; right: 25px; cursor: pointer; user-select: none;' onclick='\$(\".togshortcuts\").toggle(400);'>[toggle view]</a></th></tr>";
+
+        $shortcuts = json_decode($data["access_custom_shortcuts"], true);
+
+        foreach ($classes as $tab => $display) {
+            $shortcut = $shortcuts[$tab];
+
+            if (!$shortcut) {
+                $shortcut = __("Not set");
+            }
+            echo "<tr class='togshortcuts' style='display: none;'>";
+            echo "<input type='hidden' name='$tab' value='".json_encode($shortcut)."'>";
+            echo "<td><label for='$tab$rand'>" . $display . "</label></td>";
+            echo "<td>";
+            if (!is_array($shortcut)) {
+                $shortcutHtml = "<kbd>$shortcut</kbd>";
+            } else {
+                $shortcutHtml = "<kbd>".implode("</kbd>+<kbd>", $shortcut)."</kbd>";
+            }
+            echo "<span style='cursor: pointer'>$shortcutHtml</span>"; // Clicking this should edit the value in the hidden input for the HTML form.
+            echo "</td></tr>";
+        }
 
         if ((!$userpref && $canedit) || ($userpref && $canedituser)) {
             echo "<tr class='tab_bg_2'>";

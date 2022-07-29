@@ -404,13 +404,10 @@ class Ajax {
             $currentShortcut = null;
             echo $title."</a>";
             // Below is code dedicated to rendering the keyboard shortcuts, you shouldn't have to touch this.
-            if($val["shortcut"] && !is_array($val["shortcut"][1])) {
-                $currentShortcut = $val['shortcut'];
-            } else if (!empty($val["shortcut"])) {
-                $currentShortcut = $val['shortcut'][explode("$", $key)[1]];
-            }
-
-            if ($currentShortcut && $displayShortcuts && $orientation == 'vertical' && count($tabs) > 1) {
+             if ($displayShortcuts && $orientation == 'vertical' && count($tabs) > 1) {
+                 $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true)[$key];
+             }
+             if (is_array($currentShortcut)) {
                 // I wish doing this wasn't necessary, but it is
                 $shortcutWrapperID = "acc".mt_rand();
                 echo "<div id='$shortcutWrapperID' style='align-items: end;float: right; top: -25px; right: 5%; position: inherit; margin-bottom: -55px; pointer-events: none;'>";
