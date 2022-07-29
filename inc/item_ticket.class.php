@@ -530,8 +530,13 @@ class Item_Ticket extends CommonItilObject_Item {
       return '';
    }
 
+   function getShortcutsForItem()
+   {
+       return ["CTRL", "I"]; // CTRL + I
+   }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
+
+    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       switch ($item->getType()) {
          case 'Ticket' :

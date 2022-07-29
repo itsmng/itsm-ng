@@ -811,8 +811,16 @@ class Ticket extends CommonITILObject {
       return true;
    }
 
+    function getShortcutsForItem()
+    {
+      return [
+          1      => ["SHIFT", "P"],
+          "main" => ["ALT", "T"],
+          4      => ["ALT", "S"]
+      ];
+    }
 
-   function defineTabs($options = []) {
+    function defineTabs($options = []) {
       $ong = [];
 
       $this->defineDefaultObjectTabs($ong, $options);
@@ -916,7 +924,7 @@ class Ticket extends CommonITILObject {
       }
 
       // automatic recalculate if user changes urgence or technician change impact
-      $canpriority               = Session::haveRight(self::$rightname, self::CHANGEPRIORITY);
+      $canpriority = Session::haveRight(self::$rightname, self::CHANGEPRIORITY);
       if ((isset($input['urgency']) && $input['urgency'] != $this->fields['urgency'])
          || (isset($input['impact']) && $input['impact'] != $this->fields['impact'])
          && ($canpriority && !isset($input['priority']) || !$canpriority)

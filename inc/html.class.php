@@ -1423,6 +1423,7 @@ class Html {
 
       // AJAX library
       echo Html::script('public/lib/base.js');
+      echo Html::script('js/hotkeys.js');
 
       // Locales
       $locales_domains = ['glpi' => GLPI_VERSION]; // base domain
@@ -1456,6 +1457,8 @@ JAVASCRIPT;
             echo Html::scriptBlock($locale_js);
          }
       }
+
+      self::accessibilityHeader();
 
       // layout
       if (CommonGLPI::isLayoutWithMain()
@@ -1650,6 +1653,43 @@ JAVASCRIPT;
       return $menu;
    }
 
+    static function accessibilityHeader() {
+        $user = new User();
+        $user->getFromDB(Session::getLoginUserID());
+        if (Session::haveRight("accessibility", READ)) {
+            $factor = $user->fields["access_zoom_level"];
+            $font = $user->fields["access_font"];
+            switch ($font) {
+                case "OpenDyslexic":
+                    echo '<link href="http://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet">';     // Use CDNFonts for webfont delivery
+                    break;
+                case "OpenDyslexicAlta":
+                    echo '<link href="http://fonts.cdnfonts.com/css/opendyslexic?styles=29221" rel="stylesheet">';
+                    break;
+                case 'Tiresias Infofont':
+                    echo '<link href="http://fonts.cdnfonts.com/css/tiresias-infofont" rel="stylesheet">';
+                    break;
+                default:
+                    break;
+            }
+            echo Html::scriptBlock(<<<JAVASCRIPT
+            $(function() {
+                $("body").css({
+                    "zoom": "$factor%",
+                    "font-family": "'$font', Verdana, Tahoma, 'Sans serif'"
+                   });
+                $("div").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+                $(".secondary").css("font-family", "'$font', Arial, Helvetica");
+                $("button").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+                $(".vsubmit").css("font-family", "'$font', Arial, Helvetica");
+                $("input").css("font-family", "'$font', Verdana, Tahoma, 'Sans serif'");
+                $("#myname").css("font-family", "'$font', Verdana, Tahoma, 'Sans serif'");
+                $("div.timeline_box").children().css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+            })
+JAVASCRIPT
+            );
+        }
+    }
 
    /**
     * Print a nice HTML head for every page
@@ -3965,7 +4005,18 @@ JS;
          });
       });";
 
+      echo Html::scriptBlock(<<<JAVASCRIPT
+$('#tinymce.mce-content-body').load(function() {
+    $('#tinymce.mce-content-body').css({
+       'zoom': '200%',
+       'font-family': 'OpenDyslexic'
+    });
+})
+JAVASCRIPT
+      );
+
       if ($display) {
+
          echo  Html::scriptBlock($js);
       } else {
          return  Html::scriptBlock($js);
@@ -6575,6 +6626,9 @@ JAVASCRIPT;
             break;
          case 'photoswipe':
             $_SESSION['glpi_js_toload'][$name][] = 'public/lib/photoswipe.js';
+            break;
+         case 'hotkeys':
+            $_SESSION['glpi_js_toload'][$name][] = 'js/hotkeys.js';
             break;
          default:
             $found = false;
