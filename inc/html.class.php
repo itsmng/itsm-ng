@@ -218,7 +218,7 @@ class Html {
     * @return string
    **/
    static function cleanInputText($string) {
-      return preg_replace( '/\'/', '&apos;', preg_replace('/\"/', '&quot;', $string));
+      return preg_replace( '/\'/', '&apos;', preg_replace('/\"/', '&quot;', $string ?? ''));
    }
 
 
@@ -4168,7 +4168,7 @@ JS;
                         echo "(object) " . get_class($val);
                      }
                   } else {
-                     echo htmlentities($val);
+                     echo htmlentities($val ?? '');
                   }
                }
             }

@@ -735,7 +735,7 @@ final class DbUtils {
          ]);
 
          if (count($iterator) > 0) {
-            $db_sons = trim($iterator->next()['sons_cache']);
+            $db_sons = trim($iterator->next()['sons_cache'] ?? '');
             if (!empty($db_sons)) {
                $sons = $this->importArrayFromDB($db_sons, true);
             }
@@ -743,6 +743,7 @@ final class DbUtils {
       }
 
       if (!is_array($sons)) {
+         $sons = [];
          // IDs to be present in the final array
          $sons[$IDf] = $IDf;
          // current ID found to be added
@@ -1167,7 +1168,7 @@ final class DbUtils {
          if ($translate && !empty($transcomment)) {
             $comment .= nl2br($transcomment);
          } else {
-            $comment .= nl2br($result['comment']);
+            $comment .= nl2br($result['comment'] ?? '');
          }
       }
 
@@ -1423,7 +1424,7 @@ final class DbUtils {
          $id_visible = $_SESSION["glpiis_ids_visible"];
       }
 
-      if (strlen($realname) > 0) {
+      if (strlen($realname ?? '') > 0) {
          $formatted = $realname;
 
          if (strlen($firstname) > 0) {
@@ -1780,13 +1781,13 @@ final class DbUtils {
     * @return array containing datas
     */
    public function importArrayFromDB($data) {
-      $tab = json_decode($data, true);
+      $tab = json_decode($data ?? '', true);
 
       // Use old scheme to decode
       if (!is_array($tab)) {
          $tab = [];
 
-         foreach (explode(" ", $data) as $item) {
+         foreach (explode(" ", $data ?? '') as $item) {
             $a = explode("=>", $item);
 
             if ((strlen($a[0]) > 0)

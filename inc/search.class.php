@@ -1384,11 +1384,11 @@ class Search {
                   }
 
                   // No Group_concat case
-                  if ($fieldname == 'content' || strpos($val, self::LONGSEP) === false) {
+                  if ($fieldname == 'content' || strpos($val ?? '', self::LONGSEP) === false) {
                      $newrow[$j]['count'] = 1;
 
                      $handled = false;
-                     if ($fieldname != 'content' && strpos($val, self::SHORTSEP) !== false) {
+                     if ($fieldname != 'content' && strpos($val ?? '', self::SHORTSEP) !== false) {
                         $split2                    = self::explodeWithID(self::SHORTSEP, $val);
                         if (is_numeric($split2[1])) {
                            $newrow[$j][0][$fieldname] = $split2[0];
@@ -6341,7 +6341,7 @@ JAVASCRIPT;
                $out           = '';
                $count_display = 0;
                for ($k=0; $k<$data[$ID]['count']; $k++) {
-                  if (strlen(trim($data[$ID][$k]['name'])) > 0) {
+                  if (strlen(trim($data[$ID][$k]['name'] ?? '')) > 0) {
                      if ($count_display) {
                         $out .= $separate;
                      }
@@ -6444,7 +6444,7 @@ JAVASCRIPT;
                return (empty($out) ? "&nbsp;" : $out);
 
             case "weblink" :
-               $orig_link = trim($data[$ID][0]['name']);
+               $orig_link = trim($data[$ID][0]['name'] ?? '');
                if (!empty($orig_link) && Toolbox::isValidWebUrl($orig_link)) {
                   // strip begin of link
                   $link = preg_replace('/https?:\/\/(www[^\.]*\.)?/', '', $orig_link);
@@ -6480,7 +6480,7 @@ JAVASCRIPT;
                $out           = "";
                $count_display = 0;
                for ($k=0; $k<$data[$ID]['count']; $k++) {
-                  if (strlen(trim($data[$ID][$k]['name'])) > 0) {
+                  if (strlen(trim($data[$ID][$k]['name'] ?? '')) > 0) {
 
                      if ($count_display) {
                         $out .= self::LBBR;
@@ -6551,7 +6551,7 @@ JAVASCRIPT;
          $separate = self::LBHR;
       }
       for ($k=0; $k<$data[$ID]['count']; $k++) {
-         if (strlen(trim($data[$ID][$k]['name'])) > 0) {
+         if (strlen(trim($data[$ID][$k]['name'] ?? '')) > 0) {
             if ($count_display) {
                $out .= $separate;
             }

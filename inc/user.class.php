@@ -3874,7 +3874,7 @@ JAVASCRIPT;
       }
 
       if (!$count) {
-         if ((strlen($search) > 0)) {
+         if ((strlen($search ?? '') > 0)) {
             $txt_search = Search::makeTextSearchValue($search);
 
             $firstname_field = $DB->quoteName(self::getTableField('firstname'));
