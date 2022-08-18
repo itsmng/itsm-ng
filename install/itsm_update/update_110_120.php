@@ -123,7 +123,7 @@ function update110to120() {
          `group` varchar(255) DEFAULT '',
          `date_mod` timestamp NULL DEFAULT NULL,
          PRIMARY KEY (`id`)
-         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+         ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
           $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
       }
 
@@ -133,7 +133,7 @@ function update110to120() {
          `user_id` int(11) NOT NULL DEFAULT '0',
          `update`   TINYINT(1) NOT NULL DEFAULT 0,
          PRIMARY KEY (`id`)
-         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+         ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
           $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
       }
 
