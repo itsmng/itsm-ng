@@ -296,7 +296,7 @@ class DBmysql {
     * @return string escaped string
     */
    function escape($string) {
-      return $this->dbh->real_escape_string($string);
+      return $this->dbh->real_escape_string($string ?? '');
    }
 
    /**
