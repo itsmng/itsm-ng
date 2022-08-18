@@ -147,7 +147,7 @@ class SpecialStatus extends CommonTreeDropdown {
 
       echo "<form method='post' action='./specialstatus.php' method='post'>";
       echo "<table style='width:40%' class='tab_cadre' cellpadding='5'>";
-      echo "<tr><th colspan='5'>".__("Special status")."</th></tr>";
+      echo "<tr><th colspan='5'>".__("Special Status")."</th></tr>";
       echo "<tr class='tab_bg_1'>";
       echo "<td><b>".__("Name")."</b></td>";
       echo "<td><b>".__("Weight")."</b></td>";

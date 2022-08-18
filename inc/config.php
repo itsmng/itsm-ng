@@ -35,7 +35,7 @@ if (!defined('GLPI_ROOT')) {
 }
 
 // Be sure to use global objects if this file is included outside normal process
-global $CFG_GLPI, $GLPI, $GLPI_CACHE;
+global $CFG_GLPI, $GLPI, $GLPI_CACHE, $DB;
 
 include_once (GLPI_ROOT."/inc/based_config.php");
 include_once (GLPI_ROOT."/inc/dbconnection.class.php");
@@ -245,5 +245,16 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
    $GLPI_CACHE = Config::getCache('cache_db');
    //set Status session var
    SpecialStatus::oldStatusOrder();
+
+   $request = $DB->request('glpi_oidc_users');
+   while ($data = $request->next()) {
+      if ($data['user_id'] == $_SESSION['glpiID']) {
+         if ($data['update'] == 0) {
+            Oidc::auth();
+         }
+         
+      }
+      
+   }
 
 }
