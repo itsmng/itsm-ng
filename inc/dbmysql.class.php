@@ -296,7 +296,7 @@ class DBmysql {
     * @return string escaped string
     */
    function escape($string) {
-      return $this->dbh->real_escape_string($string);
+      return $this->dbh->real_escape_string($string ?? '');
    }
 
    /**
@@ -853,7 +853,7 @@ class DBmysql {
       foreach ($queries as $query) {
          $query = trim($query);
          if ($query != '') {
-            $query = htmlentities($query);
+            $query = htmlentities($query, ENT_COMPAT, 'UTF-8');
             if (!$this->query($query)) {
                return false;
             }

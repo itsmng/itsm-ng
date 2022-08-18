@@ -8134,8 +8134,9 @@ CREATE TABLE IF NOT EXISTS `glpi_oidc_config` (
         `is_activate`   TINYINT(1) NOT NULL DEFAULT 0,
         `is_forced`   TINYINT(1) NOT NULL DEFAULT 0,
         PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+DROP TABLE IF EXISTS `glpi_specialstatuses`;
 CREATE TABLE IF NOT EXISTS `glpi_specialstatuses` (
         `id` int(11) NOT NULL auto_increment,
         `name` varchar(255) DEFAULT NULL,
@@ -8143,7 +8144,7 @@ CREATE TABLE IF NOT EXISTS `glpi_specialstatuses` (
         `is_active`   TINYINT(1) NOT NULL DEFAULT 1,
         `color` varchar(255) DEFAULT NULL,
         PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `glpi_oidc_mapping` (
         `id` INT(11) NOT NULL DEFAULT 0,
@@ -8157,11 +8158,11 @@ CREATE TABLE IF NOT EXISTS `glpi_oidc_mapping` (
         `group` varchar(255) DEFAULT '',
         `date_mod` timestamp NULL DEFAULT NULL,
         PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `glpi_oidc_users` (
         `id` int(11) NOT NULL auto_increment,
         `user_id` int(11) NOT NULL DEFAULT '0',
         `update`   TINYINT(1) NOT NULL DEFAULT 0,
         PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

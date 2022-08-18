@@ -98,7 +98,7 @@ class Application extends BaseApplication {
 
    public function __construct() {
 
-      parent::__construct('GLPI CLI', GLPI_VERSION);
+      parent::__construct('ITSM-NG CLI', ITSM_VERSION);
 
       $this->initApplication();
       $this->initDb();
@@ -469,7 +469,7 @@ class Application extends BaseApplication {
       if ($core_requirements->hasMissingMandatoryRequirements()) {
          $message = __('Some mandatory system requirements are missing.')
             . ' '
-            . __('Run "php bin/console glpi:system:check_requirements" for more details.');
+            . __('Run "php bin/console itsmng:system:check_requirements" for more details.');
          $this->output->writeln(
             '<error>' . $message . '</error>',
             OutputInterface::VERBOSITY_QUIET

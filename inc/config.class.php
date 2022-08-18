@@ -1874,9 +1874,6 @@ class Config extends CommonDBTM {
 
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr><th>". __('Information about system installation and configuration')."</th></tr>";
-      echo "<tr class='tab_bg_1'><td>";
-      echo "<a class='vsubmit' href='?check_version'>".__('Check if a new version is available')."</a>";
-      echo "</td></tr>";
 
        $oldlang = $_SESSION['glpilanguage'];
        // Keep this, for some function call which still use translation (ex showAllReplicateDelay)
@@ -1884,25 +1881,9 @@ class Config extends CommonDBTM {
 
       // No need to translate, this part always display in english (for copy/paste to forum)
 
-      // Try to compute a better version for .git
-      $ver = GLPI_VERSION;
-      if (is_dir(GLPI_ROOT."/.git")) {
-         $dir = getcwd();
-         chdir(GLPI_ROOT);
-         $returnCode = 1;
-         /** @var array $output */
-         $gitrev = @exec('git show --format="%h" --no-patch 2>&1', $output, $returnCode);
-         $gitbranch = '';
-         if (!$returnCode) {
-            $gitbranch = @exec('git symbolic-ref --quiet --short HEAD || git rev-parse --short HEAD 2>&1', $output, $returnCode);
-         }
-         chdir($dir);
-         if (!$returnCode) {
-            $ver .= '-git-' .$gitbranch . '-' . $gitrev;
-         }
-      }
-      echo "<tr class='tab_bg_1'><td><pre>[code]\n&nbsp;\n";
-      echo "GLPI $ver (" . $CFG_GLPI['root_doc']." => " . GLPI_ROOT . ")\n";
+      $ver = ITSM_VERSION;
+      echo "<tr class='tab_bg_1'><td><pre>\n";
+      echo "ITSM-NG $ver (" . $CFG_GLPI['root_doc']." => " . GLPI_ROOT . ")\n";
       echo "Installation mode: " . GLPI_INSTALL_MODE . "\n";
       echo "Current language:" . $oldlang . "\n";
       echo "\n</pre></td></tr>";
