@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -72,11 +73,11 @@ if (!defined('GLPI_ROOT')) {
 $RELATION = [
 
    'glpi_appliances'     => [
-       'glpi_appliances_items' => 'appliances_id'
+      'glpi_appliances_items' => 'appliances_id'
    ],
 
    'glpi_appliancetypes' => [
-       'glpi_appliances' => 'appliancetypes_id'
+      'glpi_appliances' => 'appliancetypes_id'
    ],
 
    'glpi_authldaps' => [
@@ -530,6 +531,7 @@ $RELATION = [
       '_glpi_projecttasks'               => 'entities_id',
       'glpi_projecttasktemplates'        => 'entities_id',
       'glpi_queuednotifications'         => 'entities_id',
+      'glpi_queuedchats'                 => 'entities_id',
       'glpi_racks'                       => 'entities_id',
       'glpi_racktypes'                   => 'entities_id',
       '_glpi_reservationitems'           => 'entities_id',
@@ -855,6 +857,7 @@ $RELATION = [
       '_glpi_notifications_notificationtemplates' => 'notificationtemplates_id',
       '_glpi_notificationtemplatetranslations'    => 'notificationtemplates_id',
       '_glpi_queuednotifications'                 => 'notificationtemplates_id',
+      '_glpi_queuedchats'                         => 'notificationtemplates_id',
    ],
 
    'glpi_olalevels' => [

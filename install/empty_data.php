@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -144,6 +145,7 @@ $default_prefs = [
    'smtp_host'                               => '',
    'smtp_port'                               => '25',
    'smtp_username'                           => '',
+   'chat_mode'                               => '0',
    'proxy_name'                              => '',
    'proxy_port'                              => '8080',
    'proxy_user'                              => '',
@@ -307,6 +309,7 @@ $default_prefs = [
    'default_dashboard_mini_ticket'           => 'mini_tickets',
    'admin_email_noreply'                     => '',
    'admin_email_noreply_name'                => '',
+   'rocketurl'                               => '',
    Impact::CONF_ENABLED                      => exportArrayToDB(Impact::getDefaultItemtypes())
 ];
 
@@ -672,7 +675,7 @@ $tables['glpi_crontasks'] = [
    ],
 ];
 
-$dashboards_data = include_once __DIR__."/update_94_95/dashboards.php";
+$dashboards_data = include_once __DIR__ . "/update_94_95/dashboards.php";
 $tables['glpi_dashboards_dashboards'] = [];
 $tables['glpi_dashboards_items'] = [];
 $i = $j = 1;
@@ -4319,7 +4322,7 @@ style="color: #8b8c8f; font-weight: bold; text-decoration: underline;"&gt;
 ##lang.ticket.closedate## : ##ticket.closedate##
 
 ##lang.satisfaction.text## ##ticket.urlsatisfaction##',
-      'content_html'             =>'&lt;p&gt;##lang.ticket.title## : ##ticket.title##&lt;/p&gt;
+      'content_html'             => '&lt;p&gt;##lang.ticket.title## : ##ticket.title##&lt;/p&gt;
 &lt;p&gt;##lang.ticket.closedate## : ##ticket.closedate##&lt;/p&gt;
 &lt;p&gt;##lang.satisfaction.text## &lt;a href="##ticket.urlsatisfaction##"&gt;##ticket.urlsatisfaction##&lt;/a&gt;&lt;/p&gt;',
    ], [
