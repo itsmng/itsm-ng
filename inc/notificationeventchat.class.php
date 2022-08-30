@@ -85,7 +85,7 @@ class NotificationEventChat extends NotificationEventAbstract implements Notific
             $current->getFromResultSet($row);
 
             $sendChat = new NotificationChatSend();
-            $sendChat->sendRocketNotification($current->fields['ticketId'], $current->fields['entName'], $current->fields['ticketTitle'], $current->fields['serverName'], $current->fields['rocketHookUrl']);
+            $sendChat->sendRocketNotification($current->fields['ticketTitle'], $current->fields['items_id'], $current->fields['entName'],  $current->fields['serverName'], $current->fields['rocketHookUrl']);
         }
 
         return count($processed);

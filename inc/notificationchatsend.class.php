@@ -40,11 +40,11 @@ class NotificationChatSend extends CommonDBTM
         ));
     }
 
-    public function sendRocketNotification($ticketId, $entName, $ticketTitle, $serverName, $rocketHookUrl)
+    public function sendRocketNotification($ticketTitle, $ticketId, $entName, $serverName, $rocketHookUrl)
     {
         $glpiUrl = $serverName;
-        $ticketId = $ticketId;
         $entName = $entName;
+        $ticketId = $ticketId;
         $ticketTitle = $ticketTitle;
         $rocketHookUrl = $rocketHookUrl;
 
@@ -78,9 +78,21 @@ class NotificationChatSend extends CommonDBTM
         // Submit the POST request
         $result = curl_exec($ch);
         if ($result) {
-            Toolbox::logInFile('chat', __('The chat %s was sent'),  $ticketTitle . "\n");
+            Toolbox::logInFile(
+                "chat",
+                sprintf(
+                    __('Chat: the chat %s was sent'),
+                    $ticketTitle
+                ) . "\n"
+            );
         } else {
-            Toolbox::logInFile('chat-error', __('Fatal-error: the chat %s was not send'),  $ticketTitle . "\n");
+            Toolbox::logInFile(
+                "chat-error",
+                sprintf(
+                    __('Fatal-error: the chat %s was not send'),
+                    $ticketTitle
+                ) . "\n"
+            );
         }
 
         // Close cURL session handle
