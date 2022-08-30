@@ -460,12 +460,12 @@ class QueuedNotification extends CommonDBTM {
 
       switch ($name) {
          case 'queuednotification' :
-            return ['description' => __('Send mails in queue'),
-                         'parameter'   => __('Maximum emails to send at once')];
+            return ['description' => __('Send chat in queue'),
+                         'parameter'   => __('Maximum chat to send at once')];
 
          case 'queuednotificationclean' :
             return ['description' => __('Clean notification queue'),
-                         'parameter'   => __('Days to keep sent emails')];
+                         'parameter'   => __('Days to keep sent chat')];
 
       }
       return [];

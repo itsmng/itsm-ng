@@ -114,6 +114,187 @@ class QueuedChat extends CommonDBTM
         parent::processMassiveActionsForOneItemtype($ma, $item, $ids);
     }
 
+    function prepareInputForAdd($input)
+    {
+        global $DB;
+
+        if (!isset($input['create_time']) || empty($input['create_time'])) {
+            $input['create_time'] = $_SESSION["glpi_currenttime"];
+        }
+        if (!isset($input['send_time']) || empty($input['send_time'])) {
+            $toadd = 0;
+            if (isset($input['entities_id'])) {
+                $toadd = Entity::getUsedConfig('delay_send_emails', $input['entities_id']);
+            }
+            if ($toadd > 0) {
+                $input['send_time'] = date(
+                    "Y-m-d H:i:s",
+                    strtotime($_SESSION["glpi_currenttime"])
+                        + $toadd * MINUTE_TIMESTAMP
+                );
+            } else {
+                $input['send_time'] = $_SESSION["glpi_currenttime"];
+            }
+        }
+        $input['sent_try'] = 0;
+
+
+        // Force items_id to integer
+        if (!isset($input['items_id']) || empty($input['items_id'])) {
+            $input['items_id'] = 0;
+        }
+
+        // Drop existing mails in queue for the same event and item 
+        if (
+            isset($input['itemtype']) && !empty($input['itemtype'])
+            && isset($input['entities_id']) && ($input['entities_id'] >= 0)
+            && isset($input['items_id']) && ($input['items_id'] >= 0)
+            && isset($input['notificationtemplates_id']) && !empty($input['notificationtemplates_id'])
+
+        ) {
+            $criteria = [
+                'FROM'   => $this->getTable(),
+                'WHERE'  => [
+                    'is_deleted'   => 0,
+                    'itemtype'     => $input['itemtype'],
+                    'items_id'     => $input['items_id'],
+                    'entities_id'  => $input['entities_id'],
+                    'notificationtemplates_id' => $input['notificationtemplates_id'],
+
+
+                ]
+            ];
+            $iterator = $DB->request($criteria);
+            while ($data = $iterator->next()) {
+                $this->delete(['id' => $data['id']], 1);
+            }
+        }
+
+        return $input;
+    }
+
+
+    function rawSearchOptions()
+    {
+        $tab = [];
+
+        $tab[] = [
+            'id'                 => 'common',
+            'name'               => __('Characteristics')
+        ];
+        $tab[] = [
+            'id'                 => '1',
+            'table'              => $this->getTable(),
+            'field'              => 'completName',
+            'name'               => __('Subject'),
+            'datatype'           => 'itemlink',
+            'massiveaction'      => false
+        ];
+
+        $tab[] = [
+            'id'                 => '2',
+            'table'              => $this->getTable(),
+            'field'              => 'id',
+            'name'               => __('ID'),
+            'massiveaction'      => false,
+            'datatype'           => 'number'
+        ];
+
+        $tab[] = [
+            'id'                 => '16',
+            'table'              => $this->getTable(),
+            'field'              => 'create_time',
+            'name'               => __('Creation date'),
+            'datatype'           => 'datetime',
+            'massiveaction'      => false
+        ];
+
+        $tab[] = [
+            'id'                 => '3',
+            'table'              => $this->getTable(),
+            'field'              => 'send_time',
+            'name'               => __('Expected send date'),
+            'datatype'           => 'datetime',
+            'massiveaction'      => false
+        ];
+
+        $tab[] = [
+            'id'                 => '4',
+            'table'              => $this->getTable(),
+            'field'              => 'sent_time',
+            'name'               => __('Send date'),
+            'datatype'           => 'datetime',
+            'massiveaction'      => false
+        ];
+
+        $tab[] = [
+            'id'                 => '15',
+            'table'              => $this->getTable(),
+            'field'              => 'sent_try',
+            'name'               => __('Number of tries of sent'),
+            'datatype'           => 'integer',
+            'massiveaction'      => false
+        ];
+        $tab[] = [
+            'id'                 => '20',
+            'table'              => $this->getTable(),
+            'field'              => 'itemtype',
+            'name'               => _n('Type', 'Types', 1),
+            'datatype'           => 'itemtype',
+            'massiveaction'      => false
+        ];
+
+        $tab[] = [
+            'id'                 => '21',
+            'table'              => $this->getTable(),
+            'field'              => 'items_id',
+            'name'               => __('Associated item ID'),
+            'massiveaction'      => false,
+            'datatype'           => 'integer'
+        ];
+
+        $tab[] = [
+            'id'                 => '23',
+            'table'              => 'glpi_queuedchats',
+            'field'              => 'entName',
+            'name'               => __('Entity name'),
+            'massiveaction'      => false,
+            'datatype'           => 'string'
+        ];
+
+        $tab[] = [
+            'id'                 => '24',
+            'table'              => 'glpi_queuedchats',
+            'field'              => 'serverName',
+            'name'               => __('Server name'),
+            'massiveaction'      => false,
+            'datatype'           => 'string'
+        ];
+
+        $tab[] = [
+            'id'                 => '25',
+            'table'              => 'glpi_queuedchats',
+            'field'              => 'rocketHookUrl',
+            'name'               => __('URl Hook'),
+            'massiveaction'      => false,
+            'datatype'           => 'itemtype'
+        ];
+
+        $tab[] = [
+            'id'                 => '25',
+            'table'              => 'glpi_queuedchats',
+            'field'              => 'mode',
+            'name'               => __('Mode'),
+            'massiveaction'      => false,
+            'datatype'           => 'specific',
+            'searchtype'         => [
+                0 => 'equals',
+                1 => 'notequals'
+            ]
+        ];
+        return $tab;
+    }
+
     /**
      * @param $field
      * @param $values
@@ -331,7 +512,7 @@ class QueuedChat extends CommonDBTM
 
         $vol = 0;
 
-        // Expire mails in queue
+        // Expire chat in queue
         if ($task->fields['param'] > 0) {
             $secs      = $task->fields['param'] * DAY_TIMESTAMP;
             $send_time = date("U") - $secs;
@@ -407,14 +588,14 @@ class QueuedChat extends CommonDBTM
         if (!($item = getItemForItemtype($this->fields['itemtype']))) {
             echo NOT_AVAILABLE;
             echo "</td>";
-            echo "<td>" . _n('Item', 'Items', 1) . "</td>";
+            echo "<td>" . _n('Name', 'Names', 1) . "</td>";
             echo "<td>";
             echo NOT_AVAILABLE;
         } else if ($item instanceof CommonDBTM) {
             echo $item->getType();
             $item->getFromDB($this->fields['items_id']);
             echo "</td>";
-            echo "<td>" . _n('Item', 'Items', 1) . "</td>";
+            echo "<td>" . _n('Name', 'Names', 1) . "</td>";
             echo "<td>";
             echo $item->getLink();
         } else {
@@ -431,8 +612,9 @@ class QueuedChat extends CommonDBTM
             $this->fields['notificationtemplates_id']
         );
         echo "</td>";
-        echo "<td>&nbsp;</td>";
-        echo "<td>&nbsp;</td>";
+        echo "<td>" . __('Ticket ID') . "</td>";
+        echo "<td>" . $this->fields['items_id'] . "</td>";
+
         echo "</tr>";
 
         echo "<tr class='tab_bg_1'>";
@@ -451,18 +633,18 @@ class QueuedChat extends CommonDBTM
         echo "</tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Ticket name') . "</td>";
-        echo "<td>" . $this->fields['ticketTitle'] . "</td>";
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Ticket ID') . "</td>";
-        echo "<td>" . $this->fields['ticketId'] . "</td>";
+        echo "<td>" . __('Subject') . "</td>";
+        echo "<td>" . $this->fields['completName'] . "</td>";
         echo "</tr>";
 
         echo "<tr class='tab_bg_1'>";
         echo "<td>" . __('Server name') . "</td>";
         echo "<td>" . $this->fields['serverName'] . "</td>";
+        echo "</tr>";
+
+        echo "<tr class='tab_bg_1'>";
+        echo "<td>" . __('Entity name') . "</td>";
+        echo "<td>" . $this->fields['entName'] . "</td>";
         echo "</tr>";
 
         echo "<tr class='tab_bg_1'>";
