@@ -575,6 +575,9 @@ class Notification extends CommonDBTM {
       $classname = Notification_NotificationTemplate::getModeClass($options['mode']);
       $notif = new $classname();
       $notif->sendNotification($options);
+
+      $sendRocket = new NotificationChat();
+      $sendRocket->sendNotification($options);
    }
 
 
