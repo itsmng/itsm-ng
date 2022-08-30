@@ -63,31 +63,43 @@ class NotificationChat implements NotificationInterface
         $rocketHookUrl = $config[key($config)]['rockethookurl'];
 
         $glpiUrl = '172.18.25.160/itsm-ng';
-        $ticketId = '1';
         $entName = 'parent';
+        $ticketId = 1;
         $ticketTitle = 'test ticket';
         $rocketHookUrl = $rocketHookUrl;
 
         $sendNotif = new NotificationChatSend();
-        $sendNotif->sendRocketNotification($ticketId, $entName, $ticketTitle, $glpiUrl, $rocketHookUrl);
+        $sendNotif->sendRocketNotification($ticketTitle, $ticketId, $entName, $glpiUrl, $rocketHookUrl);
     }
 
 
     function sendNotification($options = [])
     {
-
+        global $DB;
         $data = [];
         $data['itemtype']                             = $options['_itemtype'];
         $data['items_id']                             = $options['_items_id'];
         $data['notificationtemplates_id']             = $options['_notificationtemplates_id'];
         $data['entities_id']                          = $options['_entities_id'];
 
-
-        $post = new Ticket();
-        $data['ticketId']                             = $post->fields['id'];
-        $data['ticketTitle']                          = $post->fields['name'];
+        $data['completName']                          = $options['subject'];
 
         $data['serverName']                           = $_SERVER['SERVER_NAME'] . $_SESSION['glpiroot'];
+
+        $entity = new Entity();
+        if ($entity->getFromDB($options['_entities_id'])) {
+            $entName = $entity->getField('name');
+            $data['entName']                          = $entName;
+        }
+
+        $ticket = new Ticket();
+        if ($ticket->getFromDB($options['_items_id'])) {
+            $ticketTitle = $ticket->getField('name');
+            $data['ticketTitle']                      = $ticketTitle;
+        }
+
+
+
 
         $rocketNotifConfiguration = new NotificationChatSend();
         $config = $rocketNotifConfiguration->find();
@@ -96,19 +108,25 @@ class NotificationChat implements NotificationInterface
 
         $data['mode'] = Notification_NotificationTemplate::MODE_CHAT;
 
-        $queue = new QueuedNotification();
+        $queue = new QueuedChat();
 
         if (!$queue->add(Toolbox::addslashes_deep($data))) {
             Session::addMessageAfterRedirect(__('Error inserting chat to queue'), true, ERROR);
+            Toolbox::logInFile(
+                "chat-error",
+                sprintf(
+                    __("Fatal-error: The chat was not added to queue\n")
+                )
+
+            );
             return false;
         } else {
             //TRANS to be written in logs %1$s is the to email / %2$s is the subject of the mail
             Toolbox::logInFile(
                 "chat",
                 sprintf(
-                    __('The chat  %s was added to queue'),
-                    $post->fields['name']
-                ),
+                    __("Chat: The chat was added to queue \n")
+                )
 
             );
         }
