@@ -580,6 +580,9 @@ class NotificationTemplate extends CommonDBTM {
       // QueuedNotification does not extends CommonDBConnexity
       $queued = new QueuedNotification();
       $queued->deleteByCriteria(['notificationtemplates_id' => $this->fields['id']]);
+
+      $queuedChat = new QueuedChat();
+      $queuedChat->deleteByCriteria(['notificationtemplates_id' => $this->fields['id']]);
    }
 
    function prepareInputForClone($input) {
