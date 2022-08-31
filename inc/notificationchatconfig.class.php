@@ -1,6 +1,6 @@
 <?php
 
-class NotificationChatSend extends CommonDBTM
+class NotificationChatConfig extends CommonDBTM
 {
 
     function processPostData($rocketUrl)
@@ -16,27 +16,6 @@ class NotificationChatSend extends CommonDBTM
 
         $return = $this->add(array(
             'rockethookurl' => $rocketUrl
-        ));
-    }
-
-    static function triggerOnAdd(Ticket $post)
-    {
-
-        $ticketId = $post->fields['id'];
-        $ticketTitle = $post->fields['name'];
-        $serverName = $_SERVER['SERVER_NAME'] . $_SESSION['glpiroot'];
-
-        $rocketNotifConfiguration = new self();
-        $config = $rocketNotifConfiguration->find();
-        $rocketHookUrl = $config[key($config)]['rockethookurl'];
-
-        $entity = new Entity();
-        $entity->getFromDB($post->fields['entities_id']);
-        $entName = $entity->fields['name'];
-
-        exec(sprintf(
-            "%s &",
-            $rocketNotifConfiguration->sendRocketNotification($ticketId, $entName, $ticketTitle, $serverName, $rocketHookUrl)
         ));
     }
 
@@ -81,7 +60,7 @@ class NotificationChatSend extends CommonDBTM
             Toolbox::logInFile(
                 "chat",
                 sprintf(
-                    __('Chat: the chat %s was sent'),
+                    __('Rocket chat: the chat %s was sent'),
                     $ticketTitle
                 ) . "\n"
             );
@@ -89,7 +68,7 @@ class NotificationChatSend extends CommonDBTM
             Toolbox::logInFile(
                 "chat-error",
                 sprintf(
-                    __('Fatal-error: the chat %s was not send'),
+                    __('Fatal-error: the chat %s was not send to rocket chat'),
                     $ticketTitle
                 ) . "\n"
             );

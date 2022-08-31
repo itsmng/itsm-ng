@@ -45,10 +45,10 @@ CREATE TABLE `glpi_alerts` (
   KEY `date` (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-### Dump table glpi_notificationchatsends
+### Dump table glpi_notificationchatconfigs
 
-DROP TABLE IF EXISTS `glpi_notificationchatsends`;
-CREATE TABLE `glpi_notificationchatsends` (
+DROP TABLE IF EXISTS `glpi_notificationchatconfigs`;
+CREATE TABLE `glpi_notificationchatconfigs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `rockethookurl` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)

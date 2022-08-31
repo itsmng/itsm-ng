@@ -58,17 +58,17 @@ class NotificationChat implements NotificationInterface
     static function testNotification()
     {
         global $CFG_GLPI;
-        $rocketNotifConfiguration = new NotificationChatSend();
+        $rocketNotifConfiguration = new NotificationChatConfig();
         $config = $rocketNotifConfiguration->find();
         $rocketHookUrl = $config[key($config)]['rockethookurl'];
 
         $glpiUrl = '172.18.25.160/itsm-ng';
         $entName = 'parent';
         $ticketId = 1;
-        $ticketTitle = 'test ticket';
+        $ticketTitle = 'test static data';
         $rocketHookUrl = $rocketHookUrl;
 
-        $sendNotif = new NotificationChatSend();
+        $sendNotif = new NotificationChatConfig();
         $sendNotif->sendRocketNotification($ticketTitle, $ticketId, $entName, $glpiUrl, $rocketHookUrl);
     }
 
@@ -101,7 +101,7 @@ class NotificationChat implements NotificationInterface
 
 
 
-        $rocketNotifConfiguration = new NotificationChatSend();
+        $rocketNotifConfiguration = new NotificationChatConfig();
         $config = $rocketNotifConfiguration->find();
         $rocketHookUrl = $config[key($config)]['rockethookurl'];
         $data['rocketHookUrl']                               = $rocketHookUrl;
@@ -115,8 +115,9 @@ class NotificationChat implements NotificationInterface
             Toolbox::logInFile(
                 "chat-error",
                 sprintf(
-                    __("Fatal-error: The chat was not added to queue\n")
-                )
+                    __('Fatal-error: The chat %s was not added to queue '),
+                    $data['completName']
+                ) . "\n"
 
             );
             return false;
@@ -125,8 +126,9 @@ class NotificationChat implements NotificationInterface
             Toolbox::logInFile(
                 "chat",
                 sprintf(
-                    __("Chat: The chat was added to queue \n")
-                )
+                    __('Rocket chat: The chat %s was added to queue '),
+                    $data['completName']
+                ) . "\n"
 
             );
         }

@@ -35,7 +35,7 @@ include('../inc/includes.php');
 
 Session::checkRight("config", UPDATE);
 $notificationChatSetting = new NotificationChatSetting();
-$notificationChatSend = new NotificationChatSend();
+$notificationChatSend = new NotificationChatConfig();
 
 
 if (!empty($_POST["test_chat_send"])) {
