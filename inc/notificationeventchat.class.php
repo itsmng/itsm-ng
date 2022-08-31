@@ -66,12 +66,12 @@ class NotificationEventChat extends NotificationEventAbstract implements Notific
     static public function getAdminData()
     {
 
-        return false;
+        return true;
     }
     static public function getEntityAdminsData($entity)
     {
 
-        return false;
+        return true;
     }
 
     static public function send(array $data)

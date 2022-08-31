@@ -672,6 +672,26 @@ $tables['glpi_crontasks'] = [
       'mode'          => 2,
       'lastrun'       => null,
       'logs_lifetime' => 30,
+   ], [
+      'id'            => 39,
+      'itemtype'      => 'QueuedChat',
+      'name'          => 'queuedchat',
+      'frequency'     => 60,
+      'param'         => 50,
+      'state'         => 1,
+      'mode'          => 1,
+      'lastrun'       => null,
+      'logs_lifetime' => 30,
+   ], [
+      'id'            => 40,
+      'itemtype'      => 'QueuedChat',
+      'name'          => 'queuedchatclean',
+      'frequency'     => 86400,
+      'param'         => 30,
+      'state'         => 1,
+      'mode'          => 1,
+      'lastrun'       => null,
+      'logs_lifetime' => 30,
    ],
 ];
 
@@ -4798,6 +4818,10 @@ $tables['glpi_profilerights'] = [
       'name'        => 'queuednotification',
       'rights'      => '0',
    ], [
+      'profiles_id' => '6',
+      'name'        => 'queuedchat',
+      'rights'      => '0',
+   ], [
       'profiles_id' => '1',
       'name'        => 'contact_enterprise',
       'rights'      => '0',
@@ -5064,6 +5088,10 @@ $tables['glpi_profilerights'] = [
    ], [
       'profiles_id' => '5',
       'name'        => 'queuednotification',
+      'rights'      => '0',
+   ], [
+      'profiles_id' => '5',
+      'name'        => 'queuedchat',
       'rights'      => '0',
    ], [
       'profiles_id' => '2',
@@ -5348,6 +5376,10 @@ $tables['glpi_profilerights'] = [
    ], [
       'profiles_id' => '4',
       'name'        => 'queuednotification',
+      'rights'      => '31',
+   ], [
+      'profiles_id' => '4',
+      'name'        => 'queuedchat',
       'rights'      => '31',
    ], [
       'profiles_id' => '3',
@@ -5914,6 +5946,10 @@ $tables['glpi_profilerights'] = [
       'name'        => 'queuednotification',
       'rights'      => '0',
    ], [
+      'profiles_id' => '3',
+      'name'        => 'queuedchat',
+      'rights'      => '0',
+   ], [
       'profiles_id' => '5',
       'name'        => 'contact_enterprise',
       'rights'      => '0',
@@ -6196,6 +6232,10 @@ $tables['glpi_profilerights'] = [
    ], [
       'profiles_id' => '2',
       'name'        => 'queuednotification',
+      'rights'      => '0',
+   ], [
+      'profiles_id' => '2',
+      'name'        => 'queuedchat',
       'rights'      => '0',
    ], [
       'profiles_id' => '6',
@@ -6482,6 +6522,10 @@ $tables['glpi_profilerights'] = [
       'name'        => 'queuednotification',
       'rights'      => '0',
    ], [
+      'profiles_id' => '1',
+      'name'        => 'queuedchat',
+      'rights'      => '0',
+   ], [
       'profiles_id' => '7',
       'name'        => 'contact_enterprise',
       'rights'      => '96',
@@ -6608,6 +6652,10 @@ $tables['glpi_profilerights'] = [
    ], [
       'profiles_id' => '7',
       'name'        => 'queuednotification',
+      'rights'      => '0',
+   ], [
+      'profiles_id' => '7',
+      'name'        => 'queuedchat',
       'rights'      => '0',
    ], [
       'profiles_id' => '7',
@@ -6881,6 +6929,10 @@ $tables['glpi_profilerights'] = [
       'profiles_id' => '8',
       'name'        => 'queuednotification',
       'rights'      => '1',
+   ], [
+      'profiles_id' => '8',
+      'name'        => 'queuedchat',
+      'rights'      => '0',
    ], [
       'profiles_id' => '8',
       'name'        => 'reminder_public',
