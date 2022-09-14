@@ -51,7 +51,7 @@ class NotificationEventChat extends NotificationEventAbstract implements Notific
         $field = self::getTargetFieldName();
         if (!isset($data[$field])) {
             //Missing field; set to null
-            $data[$field] = null;
+            $data[$field] = 1;
         }
 
         return $field;
@@ -65,8 +65,15 @@ class NotificationEventChat extends NotificationEventAbstract implements Notific
 
     static public function getAdminData()
     {
+        global $CFG_GLPI;
 
-        return true;
+        return [
+           'email'     => $CFG_GLPI['admin_email'],
+           'name'      => $CFG_GLPI['admin_email_name'],
+           'language'  => $CFG_GLPI['language']
+        ];
+
+        //return true;
     }
     static public function getEntityAdminsData($entity)
     {

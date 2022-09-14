@@ -1140,14 +1140,14 @@ class NotificationTarget extends CommonDBChild {
             switch ($data['items_id']) {
                //Send to glpi's global admin (as defined in the mailing configuration)
                case Notification::GLOBAL_ADMINISTRATOR :
-                  if ($this->isMailMode()) {
+                  if ($this->isMailMode() || $this->isChatMode()) {
                      $this->addAdmin();
                   }
                   break;
 
                //Send to the entity's admninistrator
                case Notification::ENTITY_ADMINISTRATOR :
-                  if ($this->isMailMode()) {
+                  if ($this->isMailMode() || $this->isChatMode()) {
                      $this->addEntityAdmin();
                   }
                   break;
@@ -1518,6 +1518,15 @@ class NotificationTarget extends CommonDBChild {
     */
    protected function isMailMode() {
       return ($this->mode == Notification_NotificationTemplate::MODE_MAIL);
+   }
+
+   /**
+    * Is current mode for mail
+    *
+    * @return boolean
+    */
+   protected function isChatMode() {
+      return ($this->mode == Notification_NotificationTemplate::MODE_CHAT);
    }
 
    /**
