@@ -1,0 +1,54 @@
+diff --git a/locales/en_GB.mo b/locales/en_GB.mo
+index ea17606cf..cd7b01930 100644
+Binary files a/locales/en_GB.mo and b/locales/en_GB.mo differ
+diff --git a/locales/en_GB.po b/locales/en_GB.po
+index 385b6704f..17ef7ba26 100644
+--- a/locales/en_GB.po
++++ b/locales/en_GB.po
+@@ -23192,4 +23192,16 @@ msgstr "Mapping of fields according to provider"
+ 
+ #: inc/auth.class.php:1732
+ msgid "Mapping"
+-msgstr "Mapping"
+\ No newline at end of file
++msgstr "Mapping"
++
++#: inc/notificationchatsetting.class.php:46
++msgid "Chat followups configuration"
++msgstr "Chat followups configuration"
++
++#: inc/notificationchatsetting.class.php:52
++msgid "Enable followups via chat"
++msgstr "Enable followups via chat"
++
++#: inc/notificationchatsetting.class.php:145
++msgid "Send a test chat"
++msgstr "Send a test chat"
+\ No newline at end of file
+diff --git a/locales/fr_FR.mo b/locales/fr_FR.mo
+index 604490fba..d1b243340 100644
+Binary files a/locales/fr_FR.mo and b/locales/fr_FR.mo differ
+diff --git a/locales/fr_FR.po b/locales/fr_FR.po
+index bb1ce648d..126f0c466 100644
+--- a/locales/fr_FR.po
++++ b/locales/fr_FR.po
+@@ -23497,4 +23497,16 @@ msgstr "Mappage des champs en fonction fournisseur"
+ 
+ #: inc/auth.class.php:1732
+ msgid "Mapping"
+-msgstr "Mappage"
+\ No newline at end of file
++msgstr "Mappage"
++
++#: inc/notificationchatsetting.class.php:46
++msgid "Chat followups configuration"
++msgstr "Configuration des notifications par chat"
++
++#: inc/notificationchatsetting.class.php:52
++msgid "Enable followups via chat"
++msgstr "Activer les notifications chat"
++
++#: inc/notificationchatsetting.class.php:145
++msgid "Send a test chat"
++msgstr "Envoyer un message de test"
+\ No newline at end of file

@@ -23498,3 +23498,15 @@ msgstr "Mappage des champs en fonction fournisseur"
 #: inc/auth.class.php:1732
 msgid "Mapping"
 msgstr "Mappage"
+
+#: inc/notificationchatsetting.class.php:46
+msgid "Chat followups configuration"
+msgstr "Configuration des notifications par chat"
+
+#: inc/notificationchatsetting.class.php:52
+msgid "Enable followups via chat"
+msgstr "Activer les notifications chat"
+
+#: inc/notificationchatsetting.class.php:145
+msgid "Send a test chat"
+msgstr "Envoyer un message de test"
