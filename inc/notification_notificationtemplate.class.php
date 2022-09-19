@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -39,8 +40,9 @@ if (!defined('GLPI_ROOT')) {
  * Notification_NotificationTemplate Class
  *
  * @since 9.2
-**/
-class Notification_NotificationTemplate extends CommonDBRelation {
+ **/
+class Notification_NotificationTemplate extends CommonDBRelation
+{
 
    // From CommonDBRelation
    static public $itemtype_1       = 'Notification';
@@ -58,20 +60,25 @@ class Notification_NotificationTemplate extends CommonDBRelation {
    const MODE_SMS       = 'sms';
    const MODE_XMPP      = 'xmpp';
    const MODE_IRC       = 'irc';
+   const MODE_CHAT      = 'chat';
 
-   static function getTypeName($nb = 0) {
+   static function getTypeName($nb = 0)
+   {
       return _n('Template', 'Templates', $nb);
    }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+   {
 
       if (!$withtemplate && Notification::canView()) {
          $nb = 0;
          switch ($item->getType()) {
             case Notification::class:
                if ($_SESSION['glpishow_count_on_tabs']) {
-                  $nb = countElementsInTable($this->getTable(),
-                                             ['notifications_id' => $item->getID()]);
+                  $nb = countElementsInTable(
+                     $this->getTable(),
+                     ['notifications_id' => $item->getID()]
+                  );
                }
                return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
                break;
@@ -89,7 +96,8 @@ class Notification_NotificationTemplate extends CommonDBRelation {
       return '';
    }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+   {
       switch ($item->getType()) {
          case Notification::class:
             self::showForNotification($item, $withtemplate);
@@ -110,23 +118,28 @@ class Notification_NotificationTemplate extends CommonDBRelation {
     * @param boolean      $withtemplate Template or basic item (default '')
     *
     * @return void
-   **/
-   static function showForNotification(Notification $notif, $withtemplate = 0) {
+    **/
+   static function showForNotification(Notification $notif, $withtemplate = 0)
+   {
       global $DB;
 
       $ID = $notif->getID();
 
-      if (!$notif->getFromDB($ID)
-          || !$notif->can($ID, READ)) {
+      if (
+         !$notif->getFromDB($ID)
+         || !$notif->can($ID, READ)
+      ) {
          return false;
       }
       $canedit = $notif->canEdit($ID);
 
-      if ($canedit
-          && !(!empty($withtemplate) && ($withtemplate == 2))) {
-         echo "<div class='center firstbloc'>".
-               "<a class='vsubmit' href='" . self::getFormURL() ."?notifications_id=$ID&amp;withtemplate=".
-                  $withtemplate."'>";
+      if (
+         $canedit
+         && !(!empty($withtemplate) && ($withtemplate == 2))
+      ) {
+         echo "<div class='center firstbloc'>" .
+            "<a class='vsubmit' href='" . self::getFormURL() . "?notifications_id=$ID&amp;withtemplate=" .
+            $withtemplate . "'>";
          echo __('Add a template');
          echo "</a></div>\n";
       }
@@ -144,16 +157,21 @@ class Notification_NotificationTemplate extends CommonDBRelation {
       if ($iterator->numrows()) {
          $header = "<tr>";
          $header .= "<th>" . __('ID') . "</th>";
-         $header .= "<th>".static::getTypeName(1)."</th>";
-         $header .= "<th>".__('Mode')."</th>";
+         $header .= "<th>" . static::getTypeName(1) . "</th>";
+         $header .= "<th>" . __('Mode') . "</th>";
          $header .= "</tr>";
          echo $header;
 
-         Session::initNavigateListItems(__CLASS__,
-                           //TRANS : %1$s is the itemtype name,
-                           //        %2$s is the name of the item (used for headings of a list)
-                                          sprintf(__('%1$s = %2$s'),
-                                          Notification::getTypeName(1), $notif->getName()));
+         Session::initNavigateListItems(
+            __CLASS__,
+            //TRANS : %1$s is the itemtype name,
+            //        %2$s is the name of the item (used for headings of a list)
+            sprintf(
+               __('%1$s = %2$s'),
+               Notification::getTypeName(1),
+               $notif->getName()
+            )
+         );
 
          $notiftpl = new self();
          while ($data = $iterator->next()) {
@@ -164,13 +182,13 @@ class Notification_NotificationTemplate extends CommonDBRelation {
             $tpl_link = $tpl->getLink();
             if (empty($tpl_link)) {
                $tpl_link = "<i class='fa fa-exclamation-triangle red'></i>&nbsp;
-                            <a href='".$notiftpl->getLinkUrl()."'>".
-                              __("No template selected").
-                           "</a>";
+                            <a href='" . $notiftpl->getLinkUrl() . "'>" .
+                  __("No template selected") .
+                  "</a>";
             }
 
             echo "<tr class='tab_bg_2'>";
-            echo "<td>".$notiftpl->getLink()."</td>";
+            echo "<td>" . $notiftpl->getLink() . "</td>";
             echo "<td>$tpl_link</td>";
             $mode = self::getMode($data['mode']);
             if ($mode === NOT_AVAILABLE) {
@@ -184,7 +202,7 @@ class Notification_NotificationTemplate extends CommonDBRelation {
          }
          echo $header;
       } else {
-         echo "<tr class='tab_bg_2'><th colspan='$colspan'>".__('No item found')."</th></tr>";
+         echo "<tr class='tab_bg_2'><th colspan='$colspan'>" . __('No item found') . "</th></tr>";
       }
 
       echo "</table>";
@@ -200,13 +218,16 @@ class Notification_NotificationTemplate extends CommonDBRelation {
     *
     * @return void
     */
-   static function showForNotificationTemplate(NotificationTemplate $template, $withtemplate = 0) {
+   static function showForNotificationTemplate(NotificationTemplate $template, $withtemplate = 0)
+   {
       global $DB;
 
       $ID = $template->getID();
 
-      if (!$template->getFromDB($ID)
-          || !$template->can($ID, READ)) {
+      if (
+         !$template->getFromDB($ID)
+         || !$template->can($ID, READ)
+      ) {
          return false;
       }
 
@@ -232,8 +253,11 @@ class Notification_NotificationTemplate extends CommonDBRelation {
             __CLASS__,
             //TRANS : %1$s is the itemtype name,
             //        %2$s is the name of the item (used for headings of a list)
-            sprintf(__('%1$s = %2$s'),
-            Notification::getTypeName(1), $template->getName())
+            sprintf(
+               __('%1$s = %2$s'),
+               Notification::getTypeName(1),
+               $template->getName()
+            )
          );
 
          while ($data = $iterator->next()) {
@@ -241,7 +265,7 @@ class Notification_NotificationTemplate extends CommonDBRelation {
             $notification->getFromDB($data['notifications_id']);
 
             echo "<tr class='tab_bg_2'>";
-            echo "<td>".$data['id']."</td>";
+            echo "<td>" . $data['id'] . "</td>";
             echo "<td>" . $notification->getLink() . "</td>";
             $mode = self::getMode($data['mode']);
             if ($mode === NOT_AVAILABLE) {
@@ -255,7 +279,7 @@ class Notification_NotificationTemplate extends CommonDBRelation {
          }
          echo $header;
       } else {
-         echo "<tr class='tab_bg_2'><th colspan='$colspan'>".__('No item found')."</th></tr>";
+         echo "<tr class='tab_bg_2'><th colspan='$colspan'>" . __('No item found') . "</th></tr>";
       }
 
       echo "</table>";
@@ -265,14 +289,15 @@ class Notification_NotificationTemplate extends CommonDBRelation {
 
    /**
     * Form for Notification on Massive action
-   **/
-   static function showFormMassiveAction() {
+    **/
+   static function showFormMassiveAction()
+   {
 
-      echo __('Mode')."<br>";
+      echo __('Mode') . "<br>";
       self::dropdownMode(['name' => 'mode']);
       echo "<br><br>";
 
-      echo NotificationTemplate::getTypeName(1)."<br>";
+      echo NotificationTemplate::getTypeName(1) . "<br>";
       NotificationTemplate::dropdown([
          'name'       => 'notificationtemplates_id',
          'value'     => 0,
@@ -284,7 +309,8 @@ class Notification_NotificationTemplate extends CommonDBRelation {
    }
 
 
-   function getName($options = []) {
+   function getName($options = [])
+   {
       return $this->getID();
    }
 
@@ -298,8 +324,9 @@ class Notification_NotificationTemplate extends CommonDBRelation {
     *     - computers_id ID of the computer for add process
     *
     * @return true if displayed  false if item not found or not right to display
-   **/
-   function showForm($ID, $options = []) {
+    **/
+   function showForm($ID, $options = [])
+   {
       if (!Session::haveRight("notification", UPDATE)) {
          return false;
       }
@@ -316,12 +343,12 @@ class Notification_NotificationTemplate extends CommonDBRelation {
       $this->showFormHeader($options);
 
       if ($this->isNewID($ID)) {
-         echo "<input type='hidden' name='notifications_id' value='".$options['notifications_id']."'>";
+         echo "<input type='hidden' name='notifications_id' value='" . $options['notifications_id'] . "'>";
       }
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Notification', 'Notifications', 1)."</td>";
-      echo "<td>".$notif->getLink()."</td>";
+      echo "<td>" . _n('Notification', 'Notifications', 1) . "</td>";
+      echo "<td>" . $notif->getLink() . "</td>";
       echo "<td colspan='2'>&nbsp;</td>";
       echo "</tr>\n";
 
@@ -331,7 +358,7 @@ class Notification_NotificationTemplate extends CommonDBRelation {
       self::dropdownMode(['name' => 'mode', 'value' => $this->getField('mode')]);
       echo "</td>";
 
-      echo "<td>". NotificationTemplate::getTypeName(1)."</td>";
+      echo "<td>" . NotificationTemplate::getTypeName(1) . "</td>";
       echo "<td><span id='show_templates'>";
       NotificationTemplate::dropdownTemplates(
          'notificationtemplates_id',
@@ -352,8 +379,9 @@ class Notification_NotificationTemplate extends CommonDBRelation {
     * @param string $mode the mode to use
     *
     * @return array
-   **/
-   static function getMode($mode) {
+    **/
+   static function getMode($mode)
+   {
       $tab = self::getModes();
       if (isset($tab[$mode])) {
          return $tab[$mode];
@@ -370,7 +398,8 @@ class Notification_NotificationTemplate extends CommonDBRelation {
     *
     * @return void
     */
-   static public function registerMode($mode, $label, $from) {
+   static public function registerMode($mode, $label, $from)
+   {
       global $CFG_GLPI;
 
       self::getModes();
@@ -386,8 +415,9 @@ class Notification_NotificationTemplate extends CommonDBRelation {
     * @since 0.84
     *
     * @return the mode's label
-   **/
-   static function getModes() {
+    **/
+   static function getModes()
+   {
       global $CFG_GLPI;
 
       $core_modes = [
@@ -398,6 +428,10 @@ class Notification_NotificationTemplate extends CommonDBRelation {
          self::MODE_AJAX      => [
             'label'  => __('Browser'),
             'from'   => 'core'
+         ],
+         self::MODE_CHAT      => [
+            'label'  =>  'Chat',
+            'from'   =>  'core'
          ]
          /*self::MODE_WEBSOCKET => [
             'label'  => __('Websocket'),
@@ -424,7 +458,8 @@ class Notification_NotificationTemplate extends CommonDBRelation {
    }
 
 
-   static function getSpecificValueToDisplay($field, $values, array $options = []) {
+   static function getSpecificValueToDisplay($field, $values, array $options = [])
+   {
       if (!is_array($values)) {
          $values = [$field => $values];
       }
@@ -442,7 +477,8 @@ class Notification_NotificationTemplate extends CommonDBRelation {
    }
 
 
-   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
+   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
+   {
 
       if (!is_array($values)) {
          $values = [$field => $values];
@@ -450,7 +486,7 @@ class Notification_NotificationTemplate extends CommonDBRelation {
       $options['display'] = false;
 
       switch ($field) {
-         case 'mode' :
+         case 'mode':
             $options['value']    = $values[$field];
             $options['name']     = $name;
             return self::dropdownMode($options);
@@ -466,7 +502,8 @@ class Notification_NotificationTemplate extends CommonDBRelation {
     *
     * @return void
     */
-   static function dropdownMode($options) {
+   static function dropdownMode($options)
+   {
       $p['name']     = 'modes';
       $p['display']  = true;
       $p['value']    = '';
@@ -493,7 +530,8 @@ class Notification_NotificationTemplate extends CommonDBRelation {
     *
     * @return string
     */
-   static function getModeClass($mode, $extratype = '') {
+   static function getModeClass($mode, $extratype = '')
+   {
       if ($extratype == 'event') {
          $classname = 'NotificationEvent' . ucfirst($mode);
       } else if ($extratype == 'setting') {
@@ -516,7 +554,8 @@ class Notification_NotificationTemplate extends CommonDBRelation {
     *
     * @return boolean
     */
-   static public function hasActiveMode() {
+   static public function hasActiveMode()
+   {
       global $CFG_GLPI;
       foreach (array_keys(self::getModes()) as $mode) {
          if ($CFG_GLPI['notifications_' . $mode]) {

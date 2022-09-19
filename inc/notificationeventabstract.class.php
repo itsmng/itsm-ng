@@ -138,7 +138,13 @@ abstract class NotificationEventAbstract {
                            $send_data['_entities_id']              = $entity;
                            $send_data['mode']                      = $data['mode'];
 
-                           Notification::send($send_data);
+                           if (array_key_exists('chat', $users_infos)) {
+                              Notification::sendChat($send_data);
+                           }
+                           if (array_key_exists('email', $users_infos)) {
+                              Notification::send($send_data);
+                           }
+
                         } else {
                            $notificationtarget->getFromDB($target['id']);
                            echo "<tr class='tab_bg_2'><td>".$label."</td>";

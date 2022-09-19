@@ -23193,3 +23193,15 @@ msgstr "Mapping of fields according to provider"
 #: inc/auth.class.php:1732
 msgid "Mapping"
 msgstr "Mapping"
+
+#: inc/notificationchatsetting.class.php:46
+msgid "Chat followups configuration"
+msgstr "Chat followups configuration"
+
+#: inc/notificationchatsetting.class.php:52
+msgid "Enable followups via chat"
+msgstr "Enable followups via chat"
+
+#: inc/notificationchatsetting.class.php:145
+msgid "Send a test chat"
+msgstr "Send a test chat"

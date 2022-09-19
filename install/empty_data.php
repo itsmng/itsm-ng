@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -144,6 +145,7 @@ $default_prefs = [
    'smtp_host'                               => '',
    'smtp_port'                               => '25',
    'smtp_username'                           => '',
+   'chat_mode'                               => '0',
    'proxy_name'                              => '',
    'proxy_port'                              => '8080',
    'proxy_user'                              => '',
@@ -307,6 +309,7 @@ $default_prefs = [
    'default_dashboard_mini_ticket'           => 'mini_tickets',
    'admin_email_noreply'                     => '',
    'admin_email_noreply_name'                => '',
+   'rocketurl'                               => '',
    Impact::CONF_ENABLED                      => exportArrayToDB(Impact::getDefaultItemtypes())
 ];
 
@@ -669,10 +672,30 @@ $tables['glpi_crontasks'] = [
       'mode'          => 2,
       'lastrun'       => null,
       'logs_lifetime' => 30,
+   ], [
+      'id'            => 39,
+      'itemtype'      => 'QueuedChat',
+      'name'          => 'queuedchat',
+      'frequency'     => 60,
+      'param'         => 50,
+      'state'         => 1,
+      'mode'          => 1,
+      'lastrun'       => null,
+      'logs_lifetime' => 30,
+   ], [
+      'id'            => 40,
+      'itemtype'      => 'QueuedChat',
+      'name'          => 'queuedchatclean',
+      'frequency'     => 86400,
+      'param'         => 30,
+      'state'         => 1,
+      'mode'          => 1,
+      'lastrun'       => null,
+      'logs_lifetime' => 30,
    ],
 ];
 
-$dashboards_data = include_once __DIR__."/update_94_95/dashboards.php";
+$dashboards_data = include_once __DIR__ . "/update_94_95/dashboards.php";
 $tables['glpi_dashboards_dashboards'] = [];
 $tables['glpi_dashboards_items'] = [];
 $i = $j = 1;
@@ -4319,7 +4342,7 @@ style="color: #8b8c8f; font-weight: bold; text-decoration: underline;"&gt;
 ##lang.ticket.closedate## : ##ticket.closedate##
 
 ##lang.satisfaction.text## ##ticket.urlsatisfaction##',
-      'content_html'             =>'&lt;p&gt;##lang.ticket.title## : ##ticket.title##&lt;/p&gt;
+      'content_html'             => '&lt;p&gt;##lang.ticket.title## : ##ticket.title##&lt;/p&gt;
 &lt;p&gt;##lang.ticket.closedate## : ##ticket.closedate##&lt;/p&gt;
 &lt;p&gt;##lang.satisfaction.text## &lt;a href="##ticket.urlsatisfaction##"&gt;##ticket.urlsatisfaction##&lt;/a&gt;&lt;/p&gt;',
    ], [
@@ -4795,6 +4818,10 @@ $tables['glpi_profilerights'] = [
       'name'        => 'queuednotification',
       'rights'      => '0',
    ], [
+      'profiles_id' => '6',
+      'name'        => 'queuedchat',
+      'rights'      => '0',
+   ], [
       'profiles_id' => '1',
       'name'        => 'contact_enterprise',
       'rights'      => '0',
@@ -5061,6 +5088,10 @@ $tables['glpi_profilerights'] = [
    ], [
       'profiles_id' => '5',
       'name'        => 'queuednotification',
+      'rights'      => '0',
+   ], [
+      'profiles_id' => '5',
+      'name'        => 'queuedchat',
       'rights'      => '0',
    ], [
       'profiles_id' => '2',
@@ -5345,6 +5376,10 @@ $tables['glpi_profilerights'] = [
    ], [
       'profiles_id' => '4',
       'name'        => 'queuednotification',
+      'rights'      => '31',
+   ], [
+      'profiles_id' => '4',
+      'name'        => 'queuedchat',
       'rights'      => '31',
    ], [
       'profiles_id' => '3',
@@ -5911,6 +5946,10 @@ $tables['glpi_profilerights'] = [
       'name'        => 'queuednotification',
       'rights'      => '0',
    ], [
+      'profiles_id' => '3',
+      'name'        => 'queuedchat',
+      'rights'      => '0',
+   ], [
       'profiles_id' => '5',
       'name'        => 'contact_enterprise',
       'rights'      => '0',
@@ -6193,6 +6232,10 @@ $tables['glpi_profilerights'] = [
    ], [
       'profiles_id' => '2',
       'name'        => 'queuednotification',
+      'rights'      => '0',
+   ], [
+      'profiles_id' => '2',
+      'name'        => 'queuedchat',
       'rights'      => '0',
    ], [
       'profiles_id' => '6',
@@ -6479,6 +6522,10 @@ $tables['glpi_profilerights'] = [
       'name'        => 'queuednotification',
       'rights'      => '0',
    ], [
+      'profiles_id' => '1',
+      'name'        => 'queuedchat',
+      'rights'      => '0',
+   ], [
       'profiles_id' => '7',
       'name'        => 'contact_enterprise',
       'rights'      => '96',
@@ -6605,6 +6652,10 @@ $tables['glpi_profilerights'] = [
    ], [
       'profiles_id' => '7',
       'name'        => 'queuednotification',
+      'rights'      => '0',
+   ], [
+      'profiles_id' => '7',
+      'name'        => 'queuedchat',
       'rights'      => '0',
    ], [
       'profiles_id' => '7',
@@ -6878,6 +6929,10 @@ $tables['glpi_profilerights'] = [
       'profiles_id' => '8',
       'name'        => 'queuednotification',
       'rights'      => '1',
+   ], [
+      'profiles_id' => '8',
+      'name'        => 'queuedchat',
+      'rights'      => '0',
    ], [
       'profiles_id' => '8',
       'name'        => 'reminder_public',

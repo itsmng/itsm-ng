@@ -45,6 +45,15 @@ CREATE TABLE `glpi_alerts` (
   KEY `date` (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+### Dump table glpi_notificationchatconfigs
+
+DROP TABLE IF EXISTS `glpi_notificationchatconfigs`;
+CREATE TABLE `glpi_notificationchatconfigs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rockethookurl` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 ### Dump table glpi_authldapreplicates
 
@@ -5586,6 +5595,76 @@ CREATE TABLE `glpi_queuednotifications` (
   `body_text` longtext COLLATE utf8_unicode_ci,
   `messageid` text COLLATE utf8_unicode_ci,
   `documents` text COLLATE utf8_unicode_ci,
+  `mode` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'See Notification_NotificationTemplate::MODE_* constants',
+  PRIMARY KEY (`id`),
+  KEY `item` (`itemtype`,`items_id`,`notificationtemplates_id`),
+  KEY `is_deleted` (`is_deleted`),
+  KEY `entities_id` (`entities_id`),
+  KEY `sent_try` (`sent_try`),
+  KEY `create_time` (`create_time`),
+  KEY `send_time` (`send_time`),
+  KEY `sent_time` (`sent_time`),
+  KEY `mode` (`mode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+### Dump table glpi_queuednotifications
+
+DROP TABLE IF EXISTS `glpi_queuednotifications`;
+CREATE TABLE `glpi_queuednotifications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `itemtype` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `items_id` int(11) NOT NULL DEFAULT '0',
+  `notificationtemplates_id` int(11) NOT NULL DEFAULT '0',
+  `entities_id` int(11) NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `sent_try` int(11) NOT NULL DEFAULT '0',
+  `create_time` timestamp NULL DEFAULT NULL,
+  `send_time` timestamp NULL DEFAULT NULL,
+  `sent_time` timestamp NULL DEFAULT NULL,
+  `name` text COLLATE utf8_unicode_ci,
+  `sender` text COLLATE utf8_unicode_ci,
+  `sendername` text COLLATE utf8_unicode_ci,
+  `recipient` text COLLATE utf8_unicode_ci,
+  `recipientname` text COLLATE utf8_unicode_ci,
+  `replyto` text COLLATE utf8_unicode_ci,
+  `replytoname` text COLLATE utf8_unicode_ci,
+  `headers` text COLLATE utf8_unicode_ci,
+  `body_html` longtext COLLATE utf8_unicode_ci,
+  `body_text` longtext COLLATE utf8_unicode_ci,
+  `messageid` text COLLATE utf8_unicode_ci,
+  `documents` text COLLATE utf8_unicode_ci,
+  `mode` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'See Notification_NotificationTemplate::MODE_* constants',
+  PRIMARY KEY (`id`),
+  KEY `item` (`itemtype`,`items_id`,`notificationtemplates_id`),
+  KEY `is_deleted` (`is_deleted`),
+  KEY `entities_id` (`entities_id`),
+  KEY `sent_try` (`sent_try`),
+  KEY `create_time` (`create_time`),
+  KEY `send_time` (`send_time`),
+  KEY `sent_time` (`sent_time`),
+  KEY `mode` (`mode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+### Dump table glpi_queuedchats
+
+DROP TABLE IF EXISTS `glpi_queuedchats`;
+CREATE TABLE `glpi_queuedchats` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `itemtype` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `items_id` int(11) NOT NULL DEFAULT '0',
+  `notificationtemplates_id` int(11) NOT NULL DEFAULT '0',
+  `entities_id` int(11) NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `sent_try` int(11) NOT NULL DEFAULT '0',
+  `create_time` timestamp NULL DEFAULT NULL,
+  `send_time` timestamp NULL DEFAULT NULL,
+  `sent_time` timestamp NULL DEFAULT NULL,
+  `entName` text COLLATE utf8_unicode_ci,
+  `ticketTitle` text COLLATE utf8_unicode_ci,
+  `completName` text COLLATE utf8_unicode_ci,
+  `serverName` text COLLATE utf8_unicode_ci,
+  `rocketHookUrl` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `mode` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'See Notification_NotificationTemplate::MODE_* constants',
   PRIMARY KEY (`id`),
   KEY `item` (`itemtype`,`items_id`,`notificationtemplates_id`),

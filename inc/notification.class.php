@@ -577,6 +577,18 @@ class Notification extends CommonDBTM {
       $notif->sendNotification($options);
    }
 
+   /**
+    * Send notification chat
+    *
+    * @param array $options Options
+    *
+    * @return void
+   **/
+   static function sendChat($options) {
+      $sendRocket = new NotificationChat();
+      $sendRocket->sendNotification($options);
+   }
+
 
    /**
     * Get the mailing signature for the entity
