@@ -62,7 +62,7 @@ class NotificationChat implements NotificationInterface
         $config = $rocketNotifConfiguration->find();
         $rocketHookUrl = $config[key($config)]['rockethookurl'];
 
-        $glpiUrl = '172.18.25.160/itsm-ng';
+        $glpiUrl = 'localhost/itsm-ng';
         $entName = 'parent';
         $ticketId = 1;
         $ticketTitle = 'test static data';
