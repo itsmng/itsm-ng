@@ -259,7 +259,7 @@ class QueuedChat extends CommonDBTM
             'field'              => 'entName',
             'name'               => __('Entity name'),
             'massiveaction'      => false,
-            'datatype'           => 'string'
+            'datatype'           => 'text'
         ];
 
         $tab[] = [
