@@ -86,11 +86,6 @@ class NotificationChat implements NotificationInterface
 
         $data['serverName']                           = $_SERVER['SERVER_NAME'] . $_SESSION['glpiroot'];
 
-        /* $entity = new Entity();
-        if ($entity->getFromDB($options['_entities_id'])) {
-            $entName = $entity->getField('name');
-            $data['entName']                          = $entName;
-        } */
         $data['entName'] = $options['content_text'];
 
         $ticket = new Ticket();
