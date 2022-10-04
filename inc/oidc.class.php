@@ -138,6 +138,8 @@ class Oidc extends CommonDBTM {
       $auth->user = $user;
       //Setup a new session and redirect to the main menu
       Session::init($auth);
+      $_SESSION['itsm_is_oidc'] = 1;
+      $_SESSION['itsm_oidc_test'] = $oidc->getIdToken();
       Auth::redirectIfAuthenticated();
    }
 

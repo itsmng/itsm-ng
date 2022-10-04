@@ -73,6 +73,29 @@ if (isset($_SESSION["noAUTO"]) || isset($_GET['noAUTO'])) {
    $toADD .= "noAUTO=1";
 }
 
+if (isset($_SESSION["itsm_is_oidc"]) && $_SESSION["itsm_is_oidc"] == 1) {
+
+   //Get config from DB and use it to setup oidc
+   $criteria = "SELECT * FROM glpi_oidc_config";
+   $iterators = $DB->request($criteria);
+   foreach($iterators as $iterator) {
+      $oidc_db['Provider'] = $iterator['Provider'];
+      $oidc_db['ClientID'] = $iterator['ClientID'];
+      $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
+      $oidc_db['scope'] = explode(',', addslashes($iterator['scope']));
+   }
+
+   if (isset($oidc_db)) {
+      $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
+      $sid = $_SESSION['itsm_oidc_test'];
+
+      Session::destroy();
+      Auth::setRememberMeCookie('');
+
+      $oidc->signOut($sid, $CFG_GLPI["url_base"]."/index.php".$toADD);
+   }
+}
+
 Session::destroy();
 
 //Remove cookie to allow new login
