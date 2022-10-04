@@ -139,7 +139,7 @@ class Oidc extends CommonDBTM {
       //Setup a new session and redirect to the main menu
       Session::init($auth);
       $_SESSION['itsm_is_oidc'] = 1;
-      $_SESSION['itsm_oidc_test'] = $oidc->getIdToken();
+      $_SESSION['itsm_oidc_idtoken'] = $oidc->getIdToken();
       Auth::redirectIfAuthenticated();
    }
 
@@ -246,6 +246,8 @@ class Oidc extends CommonDBTM {
 
       $criteria = "SELECT * FROM glpi_oidc_mapping";
       $iterators = $DB->request($criteria);
+      $oidc_db = [];
+
       foreach($iterators as $iterator) {
          $oidc_db['name']   = $iterator["name"];
          $oidc_db['given_name']  = $iterator["given_name"];
@@ -267,27 +269,68 @@ class Oidc extends CommonDBTM {
       echo "<th class='center' colspan='4'>" . __('Mapping of fields according to provider') . "</th></tr>";
 
       echo "<tr class='tab_bg_2'><td>" . __('Email') . "</td>";
-      echo "<td><input type='text' name='email' value='".$oidc_db['email']."'></td>";
+      if (array_key_exists('email', $oidc_db)) {
+         echo "<td><input type='text' name='email' value='". $oidc_db['email'] ."'></td>";
+      } else {
+         echo "<td><input type='text' name='email' value='". "" ."'></td>";
+      }
       echo "<td>" . __('Name') . "</td>";
-      echo "<td><input type='text' name='name' value='".$oidc_db['name']."'></td></tr>";
+      if (array_key_exists('name', $oidc_db)) {
+         echo "<td><input type='text' name='name' value='". $oidc_db['name'] ."'></td>";
+      } else {
+         echo "<td><input type='text' name='name' value='". "" ."'></td>";
+      }
+      echo "</tr>";
 
       echo "<tr class='tab_bg_2'><td>" . __('Surname') . "</td>";
-      echo "<td><input type='text' name='family_name' value='".$oidc_db['given_name']."'></td>";
+      if (array_key_exists('family_name', $oidc_db)) {
+         echo "<td><input type='text' name='family_name' value='". $oidc_db['family_name'] ."'></td>";
+      } else {
+         echo "<td><input type='text' name='family_name' value='". "" ."'></td>";
+      }
       echo "<td>" . __('First name') . "</td>";
-      echo "<td><input type='text' name='given_name' value='".$oidc_db['family_name']."'></td></tr>";
+      if (array_key_exists('given_name', $oidc_db)) {
+         echo "<td><input type='text' name='given_name' value='". $oidc_db['given_name'] ."'></td>";
+      } else {
+         echo "<td><input type='text' name='given_name' value='". "" ."'></td>";
+      }
+      echo "</tr>";
 
       echo "<tr class='tab_bg_2'><td>" . __('Locale') . "</td>";
-      echo "<td><input type='text' name='locale' value='".$oidc_db['locale']."'></td>";
+      if (array_key_exists('locale', $oidc_db)) {
+         echo "<td><input type='text' name='locale' value='". $oidc_db['locale'] ."'></td>";
+      } else {
+         echo "<td><input type='text' name='locale' value='". "" ."'></td>";
+      }
       echo "<td>" . __('Phone') . "</td>";
-      echo "<td><input type='text' name='phone_number' value='".$oidc_db['phone_number']."'></td></tr>";
+      if (array_key_exists('phone_number', $oidc_db)) {
+         echo "<td><input type='text' name='phone_number' value='". $oidc_db['phone_number'] ."'></td>";
+      } else {
+         echo "<td><input type='text' name='phone_number' value='". "" ."'></td>";
+      }
+      echo "</tr>";
 
       echo "<tr class='tab_bg_2'><td>" . __('Group') . "</td>";
-      echo "<td><input type='text' name='group' value='".$oidc_db['group']."'></td>";
+      if (array_key_exists('group', $oidc_db)) {
+         echo "<td><input type='text' name='group' value='". $oidc_db['group'] ."'></td>";
+      } else {
+         echo "<td><input type='text' name='group' value='". "" ."'></td>";
+      }
       echo "<td>" . __('Picture') . "</td>";
-      echo "<td><input type='text' name='picture' value='".$oidc_db['picture']."'></td></tr>";
+      if (array_key_exists('picture', $oidc_db)) {
+         echo "<td><input type='text' name='picture' value='". $oidc_db['picture'] ."'></td>";
+      } else {
+         echo "<td><input type='text' name='picture' value='". "" ."'></td>";
+      }
+      echo "</tr>";
       
       echo "<tr class='tab_bg_2'><td>" . __('Last update') . "</td>";
-      echo "<td>".$oidc_db['date_mod']."</td></tr>";
+      if (array_key_exists('date_mod', $oidc_db)) {
+         echo "<td><input type='text' name='date_mod' value='". $oidc_db['date_mod'] ."'></td>";
+      } else {
+         echo "<td><input type='text' name='date_mod' value='". "" ."'></td>";
+      }
+      echo "</tr>";
 
       echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
       echo "<input type='submit' name='update' class='submit' value=\"".__s('Save')."\">" . '&nbsp;';

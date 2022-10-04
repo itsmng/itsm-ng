@@ -87,7 +87,7 @@ if (isset($_SESSION["itsm_is_oidc"]) && $_SESSION["itsm_is_oidc"] == 1) {
 
    if (isset($oidc_db)) {
       $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
-      $sid = $_SESSION['itsm_oidc_test'];
+      $sid = $_SESSION['itsm_oidc_idtoken'];
 
       Session::destroy();
       Auth::setRememberMeCookie('');
