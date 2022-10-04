@@ -45,23 +45,23 @@ msgstr "Connection en SSO"
 
 #: front/setup.auth.php:58
 msgid "Open ID connect authentication"
-msgstr "Authentication avec openID connect"
+msgstr "Authentication avec OpenID Connect"
 
 #: front/oidc.php:55
 msgid "Missing or wrong fields in open ID connect config"
-msgstr "Champs manquants ou incorrects dans la configuration de openID connect"
+msgstr "Champs manquants ou incorrects dans la configuration de OpenID Connect"
 
 #: inc/auth.class.php:1678
 msgid "Open ID connect configuration"
-msgstr "Configuration d'openID connect"
+msgstr "Configuration d'OpenID Connect"
 
 #: inc/auth.class.php:1680
 msgid "Activate open ID connect"
-msgstr "Activer openID connect"
+msgstr "Activer OpenID Connect"
 
 #: inc/auth.class.php:1689
 msgid "Forced connection with open ID connect"
-msgstr "Connection forcée avec openID connect"
+msgstr "Connection forcée avec OpenID Connect"
 
 #: ajax/subvisibility.php:66 ajax/visibility.php:91 ajax/private_public.php:67
 #: inc/rule.class.php:740 inc/ruleimportentity.class.php:172

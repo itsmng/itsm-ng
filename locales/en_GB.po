@@ -27,23 +27,23 @@ msgstr "SSO Login"
 
 #: front/setup.auth.php:58
 msgid "Open ID connect authentication"
-msgstr "OpenID connect authentication"
+msgstr "OpenID Connect authentication"
 
 #: front/oidc.php:55
 msgid "Missing or wrong fields in open ID connect config"
-msgstr "Missing or wrong fields in openID connect config"
+msgstr "Missing or wrong fields in OpenID Connect config"
 
 #: inc/auth.class.php:1678
 msgid "Open ID connect configuration"
-msgstr "OpenID connect configuration"
+msgstr "OpenID Connect configuration"
 
 #: inc/auth.class.php:1680
 msgid "Activate open ID connect"
-msgstr "Activate openID connect"
+msgstr "Activate OpenID Connect"
 
 #: inc/auth.class.php:1689
 msgid "Forced connection with open ID connect"
-msgstr "Forced connection with openID connect"
+msgstr "Forced connection with OpenID Connect"
 
 #: ajax/subvisibility.php:66 ajax/visibility.php:91 ajax/private_public.php:67
 #: inc/rule.class.php:740 inc/ruleimportentity.class.php:172
