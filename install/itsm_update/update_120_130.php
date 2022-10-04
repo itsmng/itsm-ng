@@ -127,6 +127,10 @@ function update120to130() {
          $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
      }
 
+      $config = "ALTER TABLE `glpi_oidc_config`
+         ADD COLUMN `scope` varchar(255) DEFAULT NULL";
+      $DB->queryOrDie($config, "erreur lors de la mise a jour de la table de configuration oidc".$DB->error());
+
    // ************ Keep it at the end **************
    $migration->executeMigration();
    return $updateresult;
