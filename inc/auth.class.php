@@ -1733,7 +1733,7 @@ class Auth extends CommonGLPI {
       echo "<td>" . __('Scopes') . "</td>";
       echo "<td>";
    if (isset($oidc_db['scope'])) {
-       echo "<input type='text' id='scope' name='scope'value=". $oidc_db['scope'] .">";
+       echo "<input type='text' id='scope' name='scope'value=". str_replace(' ', '', $oidc_db['scope']) .">";
    } else {
        echo "<input type='text' id='scope' name='scope' >";
    }
