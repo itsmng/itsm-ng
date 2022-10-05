@@ -269,68 +269,27 @@ class Oidc extends CommonDBTM {
       echo "<th class='center' colspan='4'>" . __('Mapping of fields according to provider') . "</th></tr>";
 
       echo "<tr class='tab_bg_2'><td>" . __('Email') . "</td>";
-      if (array_key_exists('email', $oidc_db)) {
-         echo "<td><input type='text' name='email' value='". $oidc_db['email'] ."'></td>";
-      } else {
-         echo "<td><input type='text' name='email' value='". "" ."'></td>";
-      }
+      echo "<td><input type='text' name='email' value='". $oidc_db['email'] ."'></td>";
       echo "<td>" . __('Name') . "</td>";
-      if (array_key_exists('name', $oidc_db)) {
-         echo "<td><input type='text' name='name' value='". $oidc_db['name'] ."'></td>";
-      } else {
-         echo "<td><input type='text' name='name' value='". "" ."'></td>";
-      }
-      echo "</tr>";
+      echo "<td><input type='text' name='name' value='". $oidc_db['name'] ."'></td></tr>";
 
       echo "<tr class='tab_bg_2'><td>" . __('Surname') . "</td>";
-      if (array_key_exists('family_name', $oidc_db)) {
-         echo "<td><input type='text' name='family_name' value='". $oidc_db['family_name'] ."'></td>";
-      } else {
-         echo "<td><input type='text' name='family_name' value='". "" ."'></td>";
-      }
+      echo "<td><input type='text' name='family_name' value='". $oidc_db['family_name'] ."'></td>";
       echo "<td>" . __('First name') . "</td>";
-      if (array_key_exists('given_name', $oidc_db)) {
-         echo "<td><input type='text' name='given_name' value='". $oidc_db['given_name'] ."'></td>";
-      } else {
-         echo "<td><input type='text' name='given_name' value='". "" ."'></td>";
-      }
-      echo "</tr>";
+      echo "<td><input type='text' name='given_name' value='". $oidc_db['given_name'] ."'></td></tr>";
 
       echo "<tr class='tab_bg_2'><td>" . __('Locale') . "</td>";
-      if (array_key_exists('locale', $oidc_db)) {
-         echo "<td><input type='text' name='locale' value='". $oidc_db['locale'] ."'></td>";
-      } else {
-         echo "<td><input type='text' name='locale' value='". "" ."'></td>";
-      }
+      echo "<td><input type='text' name='locale' value='". $oidc_db['locale'] ."'></td>";
       echo "<td>" . __('Phone') . "</td>";
-      if (array_key_exists('phone_number', $oidc_db)) {
-         echo "<td><input type='text' name='phone_number' value='". $oidc_db['phone_number'] ."'></td>";
-      } else {
-         echo "<td><input type='text' name='phone_number' value='". "" ."'></td>";
-      }
-      echo "</tr>";
+      echo "<td><input type='text' name='phone_number' value='". $oidc_db['phone_number'] ."'></td></tr>";
 
       echo "<tr class='tab_bg_2'><td>" . __('Group') . "</td>";
-      if (array_key_exists('group', $oidc_db)) {
-         echo "<td><input type='text' name='group' value='". $oidc_db['group'] ."'></td>";
-      } else {
-         echo "<td><input type='text' name='group' value='". "" ."'></td>";
-      }
+      echo "<td><input type='text' name='group' value='". $oidc_db['group'] ."'></td>";
       echo "<td>" . __('Picture') . "</td>";
-      if (array_key_exists('picture', $oidc_db)) {
-         echo "<td><input type='text' name='picture' value='". $oidc_db['picture'] ."'></td>";
-      } else {
-         echo "<td><input type='text' name='picture' value='". "" ."'></td>";
-      }
-      echo "</tr>";
+      echo "<td><input type='text' name='picture' value='". $oidc_db['picture'] ."'></td></tr>";
       
       echo "<tr class='tab_bg_2'><td>" . __('Last update') . "</td>";
-      if (array_key_exists('date_mod', $oidc_db)) {
-         echo "<td><input type='text' name='date_mod' value='". $oidc_db['date_mod'] ."'></td>";
-      } else {
-         echo "<td><input type='text' name='date_mod' value='". "" ."'></td>";
-      }
-      echo "</tr>";
+      echo "<td><input type='text' name='date_mod' value='". $oidc_db['date_mod'] ."'></td></tr>";
 
       echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
       echo "<input type='submit' name='update' class='submit' value=\"".__s('Save')."\">" . '&nbsp;';
