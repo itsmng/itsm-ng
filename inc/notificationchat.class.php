@@ -55,21 +55,21 @@ class NotificationChat implements NotificationInterface
 
 
 
-    static function testNotification()
+    static function testNotification($id = 1)
     {
         global $CFG_GLPI;
         $rocketNotifConfiguration = new NotificationChatConfig();
-        $config = $rocketNotifConfiguration->find();
-        $rocketHookUrl = $config[key($config)]['rockethookurl'];
+        $config = $rocketNotifConfiguration->find(['id'=> $id]);
+        $hookurl = $config[key($config)]['hookurl'];
 
         $glpiUrl = 'localhost/itsm-ng';
         $entName = 'parent';
         $ticketId = 1;
         $ticketTitle = 'test static data';
-        $rocketHookUrl = $rocketHookUrl;
+        $hookurl = $hookurl;
 
         $sendNotif = new NotificationChatConfig();
-        $sendNotif->sendRocketNotification($ticketTitle, $ticketId, $entName, $glpiUrl, $rocketHookUrl);
+        $sendNotif->sendRocketNotification($ticketTitle, $ticketId, $entName, $glpiUrl, $hookurl);
     }
 
 
@@ -81,11 +81,19 @@ class NotificationChat implements NotificationInterface
         $data['items_id']                             = $options['_items_id'];
         $data['notificationtemplates_id']             = $options['_notificationtemplates_id'];
         $data['entities_id']                          = $options['_entities_id'];
+        $data['locations_id']                         = $options['_locations_id'];
+        $data['groups_id']                            = $options['_groups_id'];
+        $data['itilcategories_id']                    = $options['_itilcategories_id'];
 
         $data['completName']                          = $options['subject'];
 
         $data['serverName']                           = $_SERVER['SERVER_NAME'] . $_SESSION['glpiroot'];
 
+        /* $entity = new Entity();
+        if ($entity->getFromDB($options['_entities_id'])) {
+            $entName = $entity->getField('name');
+            $data['entName']                          = $entName;
+        } */
         $data['entName'] = $options['content_text'];
 
         $ticket = new Ticket();
@@ -99,8 +107,8 @@ class NotificationChat implements NotificationInterface
 
         $rocketNotifConfiguration = new NotificationChatConfig();
         $config = $rocketNotifConfiguration->find();
-        $rocketHookUrl = $config[key($config)]['rockethookurl'];
-        $data['rocketHookUrl']                               = $rocketHookUrl;
+        $hookurl = $config[key($config)]['hookurl'];
+        $data['hookurl'] = $hookurl;
 
         $data['mode'] = Notification_NotificationTemplate::MODE_CHAT;
 

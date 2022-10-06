@@ -41,10 +41,16 @@ $notificationChatSend = new NotificationChatConfig();
 if (!empty($_POST["test_chat_send"])) {
     NotificationChat::testNotification();
     Html::back();
-} else if (!empty($_POST["update"]) && isset($_POST['rocketurl'])) {
+} else if (!empty($_POST["update"]) && isset($_POST['hookurl'])) {
     $config = new Config();
     $config->update($_POST);
-    $notificationChatSend->processPostData($_POST['rocketurl']);
+    $notificationChatSend->processPostData($_POST['hookurl'], $_POST['chat_mode'], $_POST['type'], $_POST['value']);
+    Html::back();
+} else if (!empty($_GET["delete"])) {
+    $notificationChatSend->delete(['id' => $_GET["delete"]]);
+    Html::back();
+} else if (!empty($_GET["test"])) {
+    NotificationChat::testNotification($_GET["test"]);
     Html::back();
 }
 
