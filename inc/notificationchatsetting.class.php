@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use SimplePie\Category;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -75,6 +73,7 @@ class NotificationChatSetting extends NotificationSetting
         $out .= Html::scriptBlock("$(function() {
         console.log($('[name=type]'));
 
+        $('[name=value]').prop('disabled', true);
         $('[name=value_entity]').attr('hidden', true);
         $('[name=value_group]').attr('hidden', true);
         $('[name=value_location]').attr('hidden', true);
@@ -85,26 +84,31 @@ class NotificationChatSetting extends NotificationSetting
             console.log(_val);
             console.log($('[name=value_entity]'));
             if (_val == 'all') {
+                $('[name=value_all]').attr('hidden', false);
                 $('[name=value_entity]').attr('hidden', true);
                 $('[name=value_group]').attr('hidden', true);
                 $('[name=value_location]').attr('hidden', true);
                 $('[name=value_category]').attr('hidden', true);
             } else if (_val == 'entity') {
+                $('[name=value_all]').attr('hidden', true);
                 $('[name=value_entity]').attr('hidden', false);
                 $('[name=value_group]').attr('hidden', true);
                 $('[name=value_location]').attr('hidden', true);
                 $('[name=value_category]').attr('hidden', true);
             } else if (_val == 'group') {
+                $('[name=value_all]').attr('hidden', true);
                 $('[name=value_entity]').attr('hidden', true);
                 $('[name=value_group]').attr('hidden', false);
                 $('[name=value_location]').attr('hidden', true);
                 $('[name=value_category]').attr('hidden', true);
             } else if (_val == 'location') {
+                $('[name=value_all]').attr('hidden', true);
                 $('[name=value_entity]').attr('hidden', true);
                 $('[name=value_group]').attr('hidden', true);
                 $('[name=value_location]').attr('hidden', false);
                 $('[name=value_category]').attr('hidden', true);
             } else if (_val == 'category') {
+                $('[name=value_all]').attr('hidden', true);
                 $('[name=value_entity]').attr('hidden', true);
                 $('[name=value_group]').attr('hidden', true);
                 $('[name=value_location]').attr('hidden', true);
@@ -192,6 +196,7 @@ class NotificationChatSetting extends NotificationSetting
             $out .= "</td>";
             $out .= "<td><label for='value'>" . __('value') . "</label></td>";
             //$out .= "<td><input type='text' name='value' id='value'></td>";
+            $out .= "<td name='value_all'><input type='text' name='value' id='value' disable></td>";
             $out .= "<td name='value_entity'>";
             $out .= Dropdown::showFromArray(
                 'value_entity', 
@@ -243,6 +248,8 @@ class NotificationChatSetting extends NotificationSetting
         echo $out;
         $this->showFormButtons($options);
 
+
+        // Display existing configs
         echo "<div>";
 
         $query = "SELECT * FROM glpi_notificationchatconfigs";
@@ -270,7 +277,25 @@ class NotificationChatSetting extends NotificationSetting
             echo "<td>" . $chat_modes[$value['chat']] . "</td>";
             echo "<td>" . $value['hookurl'] . "</td>";
             echo "<td>" . $types[$value['type']] . "</td>";
-            echo "<td>" . $value['value'] . "</td>";
+
+            switch ($value['type']) {
+                case 'entity':
+                    echo "<td>" . $entities[$value['value']] . "</td>";
+                    break;
+                case 'group':
+                    echo "<td>" . $groups[$value['value']] . "</td>";
+                    break;
+                case 'location':
+                    echo "<td>" . $locations[$value['value']] . "</td>";
+                    break;
+                case 'category':
+                    echo "<td>" . $categories[$value['value']] . "</td>";
+                    break;   
+                default:
+                    echo "<td>" . $value['value'] . "</td>";
+                    break;
+            }
+            
             echo "<td><a href='notificationchatsetting.form.php?test=" . $value['id'] ."' class='vsubmit'>" . __("Test") . "</a></td>";
             echo "<td><a href='notificationchatsetting.form.php?delete=" . $value['id'] ."' class='vsubmit'>" . __("Delete") . "</a></td>";
             echo "</tr>";
@@ -279,9 +304,6 @@ class NotificationChatSetting extends NotificationSetting
         echo "</table>";
 
         echo "</div>";
-
-        //echo "<pre style='text-align: start;'>", print_r($groupsRaw, true), "</pre>";
-        //echo "<pre style='text-align: start;'>", print_r($CFG_GLPI, true), "</pre>";
     }
 
 }
