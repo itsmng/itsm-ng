@@ -50,7 +50,10 @@ function update120to130() {
    if (!$DB->tableExists("glpi_notificationchatconfigs")) {
     $config = "CREATE TABLE `glpi_notificationchatconfigs` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
-        `rockethookurl` varchar(255) DEFAULT NULL,
+        `hookurl` varchar(255) DEFAULT NULL,
+        `chat` varchar(255) DEFAULT NULL,
+        `type` varchar(255) DEFAULT NULL,
+        `value` varchar(255) DEFAULT NULL,
         PRIMARY KEY (`id`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
         $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
@@ -64,6 +67,9 @@ function update120to130() {
         `items_id` int(11) NOT NULL DEFAULT '0',
         `notificationtemplates_id` int(11) NOT NULL DEFAULT '0',
         `entities_id` int(11) NOT NULL DEFAULT '0',
+        `locations_id` int(11) NOT NULL DEFAULT '0',
+        `groups_id` int(11) NOT NULL DEFAULT '0',
+        `itilcategories_id` int(11) NOT NULL DEFAULT '0',
         `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
         `sent_try` int(11) NOT NULL DEFAULT '0',
         `create_time` timestamp NULL DEFAULT NULL,
@@ -73,7 +79,7 @@ function update120to130() {
         `ticketTitle` text COLLATE utf8_unicode_ci,
         `completName` text COLLATE utf8_unicode_ci,
         `serverName` text COLLATE utf8_unicode_ci,
-        `rocketHookUrl` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+        `hookurl` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
         `mode` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'See Notification_NotificationTemplate::MODE_* constants',
         PRIMARY KEY (`id`),
         KEY `item` (`itemtype`,`items_id`,`notificationtemplates_id`),
