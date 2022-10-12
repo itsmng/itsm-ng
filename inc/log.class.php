@@ -144,6 +144,13 @@ class Log extends CommonDBTM {
                $id_search_option = $key2; // Give ID of the $SEARCHOPTION
 
                if ($val2['table'] == $item->getTable()) {
+                  if ($val2['field'] === 'completename') {
+                     // Separator is not encoded in DB, and it could not be changed as this is mandatory to be able to split tree
+                     // correctly even if some tree elements are containing ">" char in their name (this one will be encoded).
+                     $separator = ' > ';
+                     $oldval = implode(Toolbox::clean_cross_side_scripting_deep($separator), explode($separator, $oldval));
+                     $values[$key] = implode(Toolbox::clean_cross_side_scripting_deep($separator), explode($separator, $values[$key]));
+                  }
                   $changes = [$id_search_option, addslashes($oldval), $values[$key]];
                } else {
                   // other cases; link field -> get data from dropdown
