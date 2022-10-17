@@ -239,6 +239,23 @@ class Accessibility extends CommonDBTM {
             echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
             echo "</td></tr>";
         }
+        $user = new User();
+        $user->getFromDB(session::getLoginUserID());
+        $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true );
+
+        unset($currentShortcut["DCRoom"]);
+        unset($currentShortcut["update"]);
+
+        foreach($currentShortcut as $name => $shortcut){
+            if(is_subclass_of($name, "CommonGLPI")){
+                $url = Toolbox::getItemTypeFormURL($name);
+                echo Html::scriptBlock('hotkeys('."'$shortcut'".',function() {
+                                        location.replace('."'$url'".');
+                                    });
+                ');
+            }
+                
+        }
 
         echo "</table></div>";
         Html::closeForm();
