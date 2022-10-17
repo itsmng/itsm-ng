@@ -185,6 +185,53 @@ class Accessibility extends CommonDBTM {
             $cpt++;
 
         }
+                $js=<<<JAVASCRIPT
+            function myFunction(rack) {
+                var entity_element = $(this);
+
+                let id_span = document.getElementsByClassName(rack.id)[0]; //the input hidden
+                let id_input_hidden  = document.getElementById(rack.name); //the span 
+                id_input_hidden.value = "";
+                
+                x = document.getElementById("popupForm"); //The popup
+                if(x.style.display === "none"){
+                    x.style.display = "block";
+                    document.addEventListener('keydown', getShortcut); // Instanciation get short 
+                } else {
+                    x.style.display = "none";
+ 
+                }
+                
+                let log="";
+                //Function to manage events
+                function getShortcut(event){
+                    event.preventDefault();                 
+                    const element = document.getElementById("saveShortcut");
+                    log += event.key;
+                    document.getElementById("shortcut_added").innerHTML = log;
+                    log +="+";
+                    // Set the custom shortcut in currents fields
+                    element.addEventListener("click", function() {
+                        id_input_hidden.value=log.slice(0 , -1); //Remove(slice) the last + before updating
+                        id_span.innerHTML = "<kbd>"+log.slice(0 , -1)+"<kbd>";
+  
+                        x.style.display = "none";
+                        document.removeEventListener('keydown', getShortcut);
+                        document.getElementById("shortcut_added").innerHTML ="";
+                
+                    });
+                }
+            }; 
+        JAVASCRIPT;
+        echo Html::scriptBlock($js);
+
+        echo "<div id='popupForm' style='display: none;position: fixed;left: 50%;top: 50%;transform: translate(-45%, 5%);border: 2px solid #666;z-index: 9;padding: 50px;background-color: rgb(228, 216, 216);opacity: 0.8;width: 20%;height: 10%;text-align: center;'>
+        <H3> Enter your shortcut</H3>
+        <p id='shortcut_added'></p>
+        <span style='cursor: pointer; background-color: rgb(131, 77, 77); color: white' id='saveShortcut'>Update</span>
+       
+        </div>";
+ 
 
         if ((!$userpref && $canedit) || ($userpref && $canedituser)) {
             echo "<tr class='tab_bg_2'>";
