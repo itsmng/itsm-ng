@@ -1109,6 +1109,7 @@ class Document extends CommonDBTM {
       $new_path = self::getUploadFileValidLocationName($dir, $sha1sum);
 
       if (!$sha1sum || !$dir || !$new_path) {
+         @unlink($fullpath);
          return false;
       }
 
