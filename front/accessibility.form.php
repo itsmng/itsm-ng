@@ -46,11 +46,10 @@ if (isset($_POST["update"])
     // Prepare user data
     $shortcuts = [];
     foreach ($_POST as $K => $V) { // Iterate KV, remove shortcuts from POST
-        if (str_contains($K, "$")) {
-            $shortcuts[$K] = $V;
-            unset($_POST[$K]);
-        }
+        $shortcuts[$K] = $V;
+
     }
+    $shortcuts = str_ireplace( array( '\'', '"', '\\'), '', $shortcuts);
     $_POST["access_custom_shortcuts"] = json_encode($shortcuts);
     $user->update($_POST);
 
