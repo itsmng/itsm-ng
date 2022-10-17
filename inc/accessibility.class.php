@@ -149,50 +149,41 @@ class Accessibility extends CommonDBTM {
         Dropdown::showYesNo('access_shortcuts', $data["access_shortcuts"], -1,['rand' => $rand]);
         echo "</td></tr>";
 
-        $classes = [];
-        foreach (get_declared_classes() as $class) {
-            if (is_subclass_of($class, "CommonGLPI")) {
-                $reflector = new ReflectionMethod($class, 'defineTabs');
-                if ($reflector->getDeclaringClass()->getName() !== $class) continue;
-                $item = @getItemForItemtype($class);
-
-                if ($item) {
-                    try {
-                        $tabs = @$item->defineTabs(["id" => 1]);
-                    } catch (Exception $e) {
-                        Toolbox::logWarning("($item) Caught exception: $e"); // :)
-                        continue;
-                    }
-                    $classes = array_merge($classes, $tabs);
-                }
-            }
-        }
-
-        unset($classes["no_all_tab"]); // Remove superfluous element
-
-        ksort($classes); // Order things around
-
         echo "<tr><th colspan='4'>" . __('Shortcuts') . " <a style='position: absolute; right: 25px; cursor: pointer; user-select: none;' onclick='\$(\".togshortcuts\").toggle(400);'>[toggle view]</a></th></tr>";
 
         $shortcuts = json_decode($data["access_custom_shortcuts"], true);
-
-        foreach ($classes as $tab => $display) {
-            $shortcut = $shortcuts[$tab];
-
-            if (!$shortcut) {
-                $shortcut = __("Not set");
+        $cpt = 1;
+        $classes = [];
+        foreach (get_declared_classes() as $class) {
+            if (is_subclass_of($class, "CommonGLPI")) {
+                $tabs = array($class => $class::getTypeName());
+                $classes = array_merge($classes, $tabs);
+                
             }
-            echo "<tr class='togshortcuts' style='display: none;'>";
-            echo "<input type='hidden' name='$tab' value='".json_encode($shortcut)."'>";
-            echo "<td><label for='$tab$rand'>" . $display . "</label></td>";
+        }
+        unset($classes["no_all_tab"]); // Remove superfluous element
+        ksort($classes);
+        foreach($classes as $tab => $display){
+            $shortcut = $shortcuts[$tab];
+            if (!$shortcut) {
+                $shortcut = __("shif+alt+" .$cpt);
+            
+            }
+
+            echo "<tr class='togshortcuts' style='display: none;' enctype='application/json'>";
+            echo "<input type='hidden' id='$tab' name='$tab' value='$shortcut' >";
+            echo "<td><label for='$tabs$rand'>" . $display . "</label></td>";
             echo "<td>";
             if (!is_array($shortcut)) {
                 $shortcutHtml = "<kbd>$shortcut</kbd>";
             } else {
                 $shortcutHtml = "<kbd>".implode("</kbd>+<kbd>", $shortcut)."</kbd>";
             }
-            echo "<span style='cursor: pointer'>$shortcutHtml</span>"; // Clicking this should edit the value in the hidden input for the HTML form.
+           
+            echo "<span class='$tab' name='$tab' style='cursor: pointer' onclick='myFunction($tab)'>$shortcutHtml</span>"; // Clicking this should edit the value in the hidden input for the HTML form.           
             echo "</td></tr>";
+            $cpt++;
+
         }
 
         if ((!$userpref && $canedit) || ($userpref && $canedituser)) {
