@@ -6907,6 +6907,35 @@ JAVASCRIPT;
       }
    }
 
+
+   /**
+	* Manage the shortcut js/hotkeys.js
+	*
+	*
+	*/
+
+	static function hotkeys(){
+    
+      $user = new User();
+      $user->getFromDB(session::getLoginUserID());
+      $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true );
+      unset($currentShortcut["DCRoom"]);
+      unset($currentShortcut["update"]);
+      foreach($currentShortcut as $name => $shortcut){
+         if(is_subclass_of($name, "CommonGLPI")){
+            //echo $name . " - ". $shortcut. nl2br("<br>") ; 
+            $url = Toolbox::getItemTypeFormURL($name);
+            //echo $url. nl2br("<br>");
+            echo Html::scriptBlock('hotkeys('."'$shortcut'".',function() {
+                                    location.replace('."'$url'".');
+                                 });
+            ');
+         }                    
+      }
+     
+	}
+
+
    /**
     * Display GLPI top menu
     *
