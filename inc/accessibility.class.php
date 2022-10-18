@@ -181,8 +181,10 @@ class Accessibility extends CommonDBTM {
             } else {
                 $shortcutHtml = "<kbd>".implode("</kbd>+<kbd>", $shortcut)."</kbd>";
             }
-           
+            
             echo "<span class='$tab' name='$tab' style='cursor: pointer' onclick='myFunction($tab)'>$shortcutHtml</span>"; // Clicking this should edit the value in the hidden input for the HTML form.           
+            
+            echo "<span id='indicator_shortcut_set_$tab' style='background: orange; border-radius: 40px; marging-left: 25px;'></span>";
             echo "</td></tr>";
             $cpt++;
         }
@@ -232,6 +234,9 @@ class Accessibility extends CommonDBTM {
                 
                 let keyPressed="";
                 
+                let idbtnIndicator ="indicator_shortcut_set_"+rack.name;
+                let btnIndicator = document.getElementById(idbtnIndicator);
+                
                 function getShortcut(event){
                     event.preventDefault();                 
                     const element = document.getElementById("saveShortcut");
@@ -251,11 +256,13 @@ class Accessibility extends CommonDBTM {
                         element.addEventListener("click", function() {
                             
                             id_input_hidden.value=keyPressed.slice(0 , -1); //Remove(slice) the last + before updating
-                            id_span.innerHTML = "<kbd>"+keyPressed.slice(0 , -1)+"<kbd>";
+                            id_span.innerHTML = "<kbd>"+keyPressed.slice(0 , -1)+"</kbd>";
     
                             x.style.display = "none";
                             document.removeEventListener('."'keydown'".', getShortcut);
                             document.getElementById("shortcut_added").innerHTML ="";
+                            btnIndicator.innerHTML ="<kbd></kbd>";
+
                     
                         });
                     } else {
@@ -284,7 +291,7 @@ class Accessibility extends CommonDBTM {
         Html::closeForm();
 
 
-        echo "<div id='popupForm'  tabindex='-1' role='dialog' class='ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-draggable ui-resizable' style='position: absolute; height: 120px; width: 300px; top: 141.5px; left: 233.6px; display:none;' >";
+        echo "<div id='popupForm'  tabindex='-1' role='dialog' class='ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-draggable ui-resizable' style='position: fixed; height: 120px; width: 300px; top: 200px; left: 40%; display:none;' >";
         
         echo "<div class='ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle'>";
         echo "<span id='ui-id-8' class='ui-dialog-title'>Enter your shortcut &nbsp;</span>";
