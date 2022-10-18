@@ -88,6 +88,8 @@ class Accessibility extends CommonDBTM {
 
     function showAccessForm($data = []) {
         global $CFG_GLPI, $DB;
+        $user = new User();
+        $user->getFromDB(session::getLoginUserID());
 
         $userpref  = false;
         $url       = Toolbox::getItemTypeFormURL(__CLASS__);
@@ -183,54 +185,90 @@ class Accessibility extends CommonDBTM {
             echo "<span class='$tab' name='$tab' style='cursor: pointer' onclick='myFunction($tab)'>$shortcutHtml</span>"; // Clicking this should edit the value in the hidden input for the HTML form.           
             echo "</td></tr>";
             $cpt++;
-
         }
-                $js=<<<JAVASCRIPT
-            function myFunction(rack) {
+
+
+        $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true );
+
+        unset($currentShortcut["DCRoom"]);
+        unset($currentShortcut["update"]);
+        $all_shotcuts = array();
+        foreach($currentShortcut as $name => $shortcut){
+            if(is_subclass_of($name, "CommonGLPI")){
+                $url = Toolbox::getItemTypeFormURL($name);
+                array_push($all_shotcuts, $shortcut);
+              
+            }
+                
+        }
+        
+        echo Html::scriptBlock('
+        
+        function myFunction(rack) {
                 var entity_element = $(this);
+                let all_shotcuts = '.json_encode($all_shotcuts).';
+                
 
                 let id_span = document.getElementsByClassName(rack.id)[0]; //the input hidden
                 let id_input_hidden  = document.getElementById(rack.name); //the span 
                 id_input_hidden.value = "";
                 
+                
+                
                 x = document.getElementById("popupForm"); //The popup
                 if(x.style.display === "none"){
                     x.style.display = "block";
-                    document.addEventListener('keydown', getShortcut); // Instanciation get short 
+                    document.addEventListener('."'keydown'".', getShortcut); // Instanciation get short 
+                    
                 } else {
                     x.style.display = "none";
  
                 }
+
+                let btnClose = document.getElementById("btnClose");
+                btnClose.addEventListener("click", function() {
+                    x.style.display = "none";
+                });
                 
-                let log="";
-                //Function to manage events
+                let keyPressed="";
+                
                 function getShortcut(event){
                     event.preventDefault();                 
                     const element = document.getElementById("saveShortcut");
-                    log += event.key;
-                    document.getElementById("shortcut_added").innerHTML = log;
-                    log +="+";
-                    // Set the custom shortcut in currents fields
-                    element.addEventListener("click", function() {
-                        id_input_hidden.value=log.slice(0 , -1); //Remove(slice) the last + before updating
-                        id_span.innerHTML = "<kbd>"+log.slice(0 , -1)+"<kbd>";
-  
-                        x.style.display = "none";
-                        document.removeEventListener('keydown', getShortcut);
-                        document.getElementById("shortcut_added").innerHTML ="";
-                
-                    });
-                }
-            }; 
-        JAVASCRIPT;
-        echo Html::scriptBlock($js);
+                    keyPressed += event.key;
+                    document.getElementById("shortcut_added").innerHTML = keyPressed;
+                    document.getElementById("shortcut_existant").innerHTML ="";
+                    keyPressed +="+";
+                    var cpt = 0;
+                    for(var i = 0; i<all_shotcuts.length; i++){
+                        
+                        if(all_shotcuts.includes(keyPressed.slice(0 , -1))){
+                            cpt++;
+                        }
+                    }
+                    if(cpt == 0){
+                        // Set the custom shortcut in currents fields
+                        element.addEventListener("click", function() {
+                            
+                            id_input_hidden.value=keyPressed.slice(0 , -1); //Remove(slice) the last + before updating
+                            id_span.innerHTML = "<kbd>"+keyPressed.slice(0 , -1)+"<kbd>";
+    
+                            x.style.display = "none";
+                            document.removeEventListener('."'keydown'".', getShortcut);
+                            document.getElementById("shortcut_added").innerHTML ="";
+                    
+                        });
+                    } else {
+                        document.getElementById("shortcut_existant").innerHTML ="Shortcut existe déjà";
+                        keyPressed="";
 
-        echo "<div id='popupForm' style='display: none;position: fixed;left: 50%;top: 50%;transform: translate(-45%, 5%);border: 2px solid #666;z-index: 9;padding: 50px;background-color: rgb(228, 216, 216);opacity: 0.8;width: 20%;height: 10%;text-align: center;'>
-        <H3> Enter your shortcut</H3>
-        <p id='shortcut_added'></p>
-        <span style='cursor: pointer; background-color: rgb(131, 77, 77); color: white' id='saveShortcut'>Update</span>
+                    }  
+                }
+            };
+        ');
+
+        
        
-        </div>";
  
 
         if ((!$userpref && $canedit) || ($userpref && $canedituser)) {
@@ -239,25 +277,41 @@ class Accessibility extends CommonDBTM {
             echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
             echo "</td></tr>";
         }
-        $user = new User();
-        $user->getFromDB(session::getLoginUserID());
-        $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true );
-
-        unset($currentShortcut["DCRoom"]);
-        unset($currentShortcut["update"]);
-
-        foreach($currentShortcut as $name => $shortcut){
-            if(is_subclass_of($name, "CommonGLPI")){
-                $url = Toolbox::getItemTypeFormURL($name);
-                echo Html::scriptBlock('hotkeys('."'$shortcut'".',function() {
-                                        location.replace('."'$url'".');
-                                    });
-                ');
-            }
-                
-        }
+        
+        
 
         echo "</table></div>";
         Html::closeForm();
+
+
+        echo "<div id='popupForm'  tabindex='-1' role='dialog' class='ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-draggable ui-resizable' style='position: absolute; height: 120px; width: 300px; top: 141.5px; left: 233.6px; display:none;' >";
+        
+        echo "<div class='ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle'>";
+        echo "<span id='ui-id-8' class='ui-dialog-title'>Enter your shortcut &nbsp;</span>";
+        echo "<button type='button' id='btnClose'class='ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close' title='Close'>";
+        echo "<span class='ui-button-icon ui-icon ui-icon-closethick'></span>";
+        echo "<span class='ui-button-icon-space'> </span>";
+        echo "Close";
+        echo "</button>";
+        echo "</div>";
+
+        echo "<table class='tab_cadre_fixe'>";
+        echo "<tbody>";
+      
+
+        echo "<tr class='tab_bg_2' ><p id='shortcut_added' class='center'></p></tr>";
+        echo "<tr class='tab_bg_2' ><p id='shortcut_existant' class='center' style='color: red'></p></tr>";
+
+        echo "<tr class='tab_bg_2'>";
+        echo "<td class='center' colspan='4' >";
+        echo "<input type='submit' id='saveShortcut' name='saveShortcut' class='vsubmit' value=\""._sx('button', 'Update')."\">";
+        echo "</td>";
+        echo "</tr>";
+
+        echo "</tbody>";
+        echo "</table>";
+        //echo "<tr><input type='submit' id='saveShortcut' name='saveShortcut' class='submit' value=\""._sx('button', 'Update')."\"></tr>";
+
+        echo "</div>";
     }
 }
