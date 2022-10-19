@@ -276,6 +276,10 @@ class Accessibility extends CommonDBTM {
                         });
                     } else {
                         document.getElementById("shortcut_existant").innerHTML ="Shortcut existe déjà";
+                        setTimeout(() => {
+                            document.getElementById("shortcut_existant").innerHTML ="";
+                            document.getElementById("shortcut_added").innerHTML = "";
+                        }, "800")
                         keyPressed="";
 
                     }  
