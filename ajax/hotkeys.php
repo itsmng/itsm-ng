@@ -37,4 +37,6 @@ Html::header_nocache();
 
 Session::checkLoginUser();
 
-echo Html::hotkeys();
+if(!str_contains($_SERVER["HTTP_REFERER"], "front/preference.php")){
+    echo Html::hotkeys();
+}
