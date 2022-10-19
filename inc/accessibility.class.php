@@ -184,7 +184,7 @@ class Accessibility extends CommonDBTM {
             
             echo "<span class='$tab' name='$tab' style='cursor: pointer' onclick='myFunction($tab)'>$shortcutHtml</span>"; // Clicking this should edit the value in the hidden input for the HTML form.           
             
-            echo "<span id='indicator_shortcut_set_$tab' style='background: orange; border-radius: 40px; marging-left: 25px;'></span>";
+            echo "<span id='infoBulle_$tab' style='background: orange; border-radius: 40px; marging-left: 25px;'></span>";
             echo "</td></tr>";
             $cpt++;
         }
@@ -208,7 +208,7 @@ class Accessibility extends CommonDBTM {
         
         function myFunction(rack) {
                 var entity_element = $(this);
-                let all_shotcuts = '.json_encode($all_shotcuts).';
+                let all_shotcuts = '.json_encode($all_shotcuts).'; // Retrieve all shortcuts
                 
 
                 let id_span = document.getElementsByClassName(rack.id)[0]; //the input hidden
@@ -217,51 +217,60 @@ class Accessibility extends CommonDBTM {
                 
                 
                 
-                x = document.getElementById("popupForm"); //The popup
-                if(x.style.display === "none"){
-                    x.style.display = "block";
+                modal = document.getElementById("modalForm"); //The modal
+                if(modal.style.display === "none"){
+                    modal.style.display = "block";
                     document.addEventListener('."'keydown'".', getShortcut); // Instanciation get short 
-                    
+                      
                 } else {
-                    x.style.display = "none";
+                    modal.style.display = "none";
  
                 }
+            
+               
+                let keyPressed="";
 
-                let btnClose = document.getElementById("btnClose");
+                let btnClose = document.getElementById("btnClose"); // Close boutton in the modal
                 btnClose.addEventListener("click", function() {
-                    x.style.display = "none";
+                    modal.style.display = "none";
+                    // Remove all text in the modal
+                    keyPressed="";
+                    document.getElementById("shortcut_added").innerHTML =""; //
+                    document.getElementById("shortcut_existant").innerHTML ="";
                 });
                 
-                let keyPressed="";
                 
-                let idbtnIndicator ="indicator_shortcut_set_"+rack.name;
-                let btnIndicator = document.getElementById(idbtnIndicator);
+                
+                let id_infoBulle ="infoBulle_"+rack.name;
+                let btn_infoBulle = document.getElementById(id_infoBulle); // info bulle
                 
                 function getShortcut(event){
                     event.preventDefault();                 
-                    const element = document.getElementById("saveShortcut");
+                    const btn_submit_in_modal = document.getElementById("submit_in_modal");
+
                     keyPressed += event.key;
                     document.getElementById("shortcut_added").innerHTML = keyPressed;
                     document.getElementById("shortcut_existant").innerHTML ="";
                     keyPressed +="+";
-                    var cpt = 0;
+
+                    var testExistShortcut = 0;
                     for(var i = 0; i<all_shotcuts.length; i++){
                         
-                        if(all_shotcuts.includes(keyPressed.slice(0 , -1))){
-                            cpt++;
+                        if(all_shotcuts.includes(keyPressed.slice(0 , -1))){ // Test to find if the shotcut is already exist
+                            testExistShortcut++;
                         }
                     }
-                    if(cpt == 0){
+                    if(testExistShortcut == 0){
                         // Set the custom shortcut in currents fields
-                        element.addEventListener("click", function() {
+                        btn_submit_in_modal.addEventListener("click", function() {
                             
-                            id_input_hidden.value=keyPressed.slice(0 , -1); //Remove(slice) the last + before updating
+                            id_input_hidden.value=keyPressed.slice(0 , -1);   //Remove(slice) the last + before updating
                             id_span.innerHTML = "<kbd>"+keyPressed.slice(0 , -1)+"</kbd>";
     
-                            x.style.display = "none";
+                            modal.style.display = "none";
                             document.removeEventListener('."'keydown'".', getShortcut);
                             document.getElementById("shortcut_added").innerHTML ="";
-                            btnIndicator.innerHTML ="<kbd></kbd>";
+                            btn_infoBulle.innerHTML ="<kbd></kbd>";
 
                     
                         });
@@ -291,7 +300,7 @@ class Accessibility extends CommonDBTM {
         Html::closeForm();
 
 
-        echo "<div id='popupForm'  tabindex='-1' role='dialog' class='ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-draggable ui-resizable' style='position: fixed; height: 120px; width: 300px; top: 200px; left: 40%; display:none;' >";
+        echo "<div id='modalForm'  tabindex='-1' role='dialog' class='ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-draggable ui-resizable' style='position: fixed; height: 150px; width: 300px; top: 30%; left: 40%; display:none;' >";
         
         echo "<div class='ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle'>";
         echo "<span id='ui-id-8' class='ui-dialog-title'>Enter your shortcut &nbsp;</span>";
@@ -302,22 +311,25 @@ class Accessibility extends CommonDBTM {
         echo "</button>";
         echo "</div>";
 
-        echo "<table class='tab_cadre_fixe'>";
-        echo "<tbody>";
-      
+        echo "<div class='spaced'>";
+        echo "<table class='tab_cadre_fixe' style=' height: 120px; overflow-y: scroll;'>";
+        echo "<tr >";
+        echo "<td style='position: absolute; margin: 0; left: 50%; transform: translate(-50%, 0%); '><p id='shortcut_added'></p></td>";
+        echo "</tr>";
 
-        echo "<tr class='tab_bg_2' ><p id='shortcut_added' class='center'></p></tr>";
-        echo "<tr class='tab_bg_2' ><p id='shortcut_existant' class='center' style='color: red'></p></tr>";
+        echo "<tr >";
+        echo "<td  style='position: absolute; margin: 0; left: 50%; transform: translate(-50%, 0%);'><p  id='shortcut_existant' class='center' style='color: red; '></p></td>";
+        echo "</tr>";
 
-        echo "<tr class='tab_bg_2'>";
-        echo "<td class='center' colspan='4' >";
-        echo "<input type='submit' id='saveShortcut' name='saveShortcut' class='vsubmit' value=\""._sx('button', 'Update')."\">";
+        echo "<tr >";
+        echo "<td  style='position: absolute; margin: 0; left: 50%; transform: translate(-50%, 0%); '>";
+        echo "<input type='submit'  id='submit_in_modal'  name='submit_in_modal' class='vsubmit' value=\""._sx('button', 'Update')."\">";
         echo "</td>";
         echo "</tr>";
 
-        echo "</tbody>";
         echo "</table>";
-        //echo "<tr><input type='submit' id='saveShortcut' name='saveShortcut' class='submit' value=\""._sx('button', 'Update')."\"></tr>";
+        echo "</div>";
+        //echo "<tr><input type='submit' id='submit_in_modal' name='submit_in_modal' class='submit' value=\""._sx('button', 'Update')."\"></tr>";
 
         echo "</div>";
     }
