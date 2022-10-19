@@ -6923,9 +6923,8 @@ JAVASCRIPT;
       unset($currentShortcut["update"]);
       foreach($currentShortcut as $name => $shortcut){
          if(is_subclass_of($name, "CommonGLPI")){
-            //echo $name . " - ". $shortcut. nl2br("<br>") ; 
             $url = Toolbox::getItemTypeFormURL($name);
-            //echo $url. nl2br("<br>");
+            if($name == "Accessibility") $url = "/itsm-ng/front/preference.php"; // Redirect accessibility to preference
             echo Html::scriptBlock('hotkeys('."'$shortcut'".',function() {
                                     location.replace('."'$url'".');
                                  });
