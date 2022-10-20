@@ -195,11 +195,12 @@ class Accessibility extends CommonDBTM {
         unset($currentShortcut["DCRoom"]);
         unset($currentShortcut["update"]);
         $all_shotcuts = array();
+        $all_classes = array();
         foreach($currentShortcut as $name => $shortcut){
             if(is_subclass_of($name, "CommonGLPI")){
                 $url = Toolbox::getItemTypeFormURL($name);
                 array_push($all_shotcuts, $shortcut);
-              
+                array_push($all_classes, $name);
             }
                 
         }
@@ -209,10 +210,11 @@ class Accessibility extends CommonDBTM {
         function myFunction(rack) {
                 var entity_element = $(this);
                 let all_shotcuts = '.json_encode($all_shotcuts).'; // Retrieve all shortcuts
+                let all_classes  = '.json_encode($all_classes).';  // Retrieve all classes
                 
 
-                let id_span = document.getElementsByClassName(rack.id)[0]; //the input hidden
-                let id_input_hidden  = document.getElementById(rack.name); //the span 
+                let id_span = document.getElementsByClassName(rack.id)[0]; // the span 
+                let id_input_hidden  = document.getElementById(rack.name); // the input hidden
                 id_input_hidden.value = "";
                 
                 
@@ -255,8 +257,10 @@ class Accessibility extends CommonDBTM {
 
                     var testExistShortcut = 0;
                     for(var i = 0; i<all_shotcuts.length; i++){
-                        
-                        if(all_shotcuts.includes(keyPressed.slice(0 , -1))){ // Test to find if the shotcut is already exist
+                        let existShortcutInput = document.getElementById(all_classes[i]);
+
+                        // Test to find if the shotcut is already exist
+                        if(all_shotcuts.includes(keyPressed.slice(0 , -1)) || existShortcutInput.value == keyPressed.slice(0 , -1)){ 
                             testExistShortcut++;
                         }
                     }
@@ -275,11 +279,7 @@ class Accessibility extends CommonDBTM {
                     
                         });
                     } else {
-                        document.getElementById("shortcut_existant").innerHTML ="Shortcut existe déjà";
-                        setTimeout(() => {
-                            document.getElementById("shortcut_existant").innerHTML ="";
-                            document.getElementById("shortcut_added").innerHTML = "";
-                        }, "800")
+                        document.getElementById("shortcut_existant").innerHTML ="Already exist enter another shortcut";
                         keyPressed="";
 
                     }  
@@ -318,11 +318,11 @@ class Accessibility extends CommonDBTM {
         echo "<div class='spaced'>";
         echo "<table class='tab_cadre_fixe' style=' height: 120px; overflow-y: scroll;'>";
         echo "<tr >";
-        echo "<td style='position: absolute; margin: 0; left: 50%; transform: translate(-50%, 0%); '><p id='shortcut_added'></p></td>";
+        echo "<td style='position: absolute;  left: 50%; transform: translate(-50%, 0%); '><p id='shortcut_added'></p></td>";
         echo "</tr>";
 
         echo "<tr >";
-        echo "<td  style='position: absolute; margin: 0; left: 50%; transform: translate(-50%, 0%);'><p  id='shortcut_existant' class='center' style='color: red; '></p></td>";
+        echo "<td  style='position: absolute; width: 200px; left: 50%; transform: translate(-50%, 0%);'><p  id='shortcut_existant' class='center' style='color: red; '></p></td>";
         echo "</tr>";
 
         echo "<tr >";
