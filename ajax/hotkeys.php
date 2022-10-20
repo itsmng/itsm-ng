@@ -37,6 +37,11 @@ Html::header_nocache();
 
 Session::checkLoginUser();
 
-if(!str_contains($_SERVER["HTTP_REFERER"], "front/preference.php")){
+$user = new User();
+$user->getFromDB(session::getLoginUserID());
+
+$canUseShortcuts = $user->fields["access_shortcuts"];
+
+if(!str_contains($_SERVER["HTTP_REFERER"], "front/preference.php") && $canUseShortcuts == "1"){
     echo Html::hotkeys();
 }
