@@ -183,8 +183,8 @@ class Accessibility extends CommonDBTM {
             }
             
             echo "<span class='$tab' name='$tab' style='cursor: pointer' onclick='myFunction($tab)'>$shortcutHtml</span>"; // Clicking this should edit the value in the hidden input for the HTML form.           
-            
-            echo "<span id='infoBulle_$tab' style='background: orange; border-radius: 40px; marging-left: 25px;'></span>";
+            echo "&nbsp;";
+            echo "<span id='infoBulle_$tab' style='background: orange; position: absolute;  height: 14.7px; margin-top: 0.2px;color: orange; border-radius: 3px;'></span>";
             echo "</td></tr>";
             $cpt++;
         }
@@ -270,7 +270,7 @@ class Accessibility extends CommonDBTM {
                             modal.style.display = "none";
                             document.removeEventListener('."'keydown'".', getShortcut);
                             document.getElementById("shortcut_added").innerHTML ="";
-                            btn_infoBulle.innerHTML ="<kbd></kbd>";
+                            btn_infoBulle.innerHTML ="&nbsp;&nbsp;&nbsp;";
 
                     
                         });
