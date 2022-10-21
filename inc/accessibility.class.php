@@ -117,7 +117,8 @@ class Accessibility extends CommonDBTM {
         echo "<table class='tab_cadre_fixe'>";
 
         echo "<tr><th colspan='4'>" . __('Interface') . "</th></tr>";
-        echo "<td><label for='access_zoom_level_drop$rand'>" .__('UI Scale') . "</label></td>";
+        echo "<tr class='tab_bg_1' >";
+        echo "<td width='40%'><label for='access_zoom_level_drop$rand'>" .__('UI Scale') . "</label></td>";
         $zooms = [
             100 => '100%',
             110 => '110%',
@@ -131,23 +132,25 @@ class Accessibility extends CommonDBTM {
             190 => '190%',
             200 => '200%'
         ];
-        echo "<td>";
+        echo "<td width='40%'>";
         Dropdown::showFromArray('access_zoom_level', $zooms, ['value' => $data["access_zoom_level"], 'rand' => $rand]);
         echo "</td></tr>";
 
-        echo "<td><label for='access_font_drop$rand'>" .__('UI Font') . "</label></td>";
+        echo "<tr class='tab_bg_1' >";
+        echo "<td width='40%'><label for='access_font_drop$rand'>" .__('UI Font') . "</label></td>";
         $fonts = [
             ""                  => "Default",
             "OpenDyslexic"      => "Open Dyslexic Regular",
             "OpenDyslexicAlta"  => "Open Dyslexic Alta",
             "Tiresias Infofont" => "Tiresias Infofont"
         ];
-        echo "<td>";
+        echo "<td width='40%'>";
         Dropdown::showFromArray('access_font', $fonts, ['value' => $data["access_font"], 'rand' => $rand]);
         echo "</td></tr>";
 
-        echo "<td><label for='access_shortcuts_drop$rand'>" .__('Enable shortcuts') . "</label></td>";
-        echo "<td>";
+        echo "<tr class='tab_bg_1' >";
+        echo "<td width='40%'><label for='access_shortcuts_drop$rand'>" .__('Enable shortcuts') . "</label></td>";
+        echo "<td width='40%'>";
         Dropdown::showYesNo('access_shortcuts', $data["access_shortcuts"], -1,['rand' => $rand]);
         echo "</td></tr>";
 
@@ -174,8 +177,8 @@ class Accessibility extends CommonDBTM {
 
             echo "<tr class='togshortcuts' style='display: none;' enctype='application/json'>";
             echo "<input type='hidden' id='$tab' name='$tab' value='$shortcut' >";
-            echo "<td><label for='$tabs$rand'>" . $display . "</label></td>";
-            echo "<td>";
+            echo "<td width='40%'><label for='$tabs$rand'>" . $display . "</label></td>";
+            echo "<td width='40%'>";
             if (!is_array($shortcut)) {
                 $shortcutHtml = "<kbd>$shortcut</kbd>";
             } else {
@@ -318,11 +321,14 @@ class Accessibility extends CommonDBTM {
         echo "<div class='spaced'>";
         echo "<table class='tab_cadre_fixe' style=' height: 120px; overflow-y: scroll;'>";
         echo "<tr >";
-        echo "<td style='position: absolute;  left: 50%; transform: translate(-50%, 0%); '><p id='shortcut_added'></p></td>";
-        echo "</tr>";
+        echo "<td width='100%' style='position: absolute;  left: 50%; transform: translate(-50%, 0%);'>";
+        echo "<p style='width: 100%; overflow-wrap: break-word;' class='center' id='shortcut_added'></p>";
+        echo "</td></tr>";
 
         echo "<tr >";
-        echo "<td  style='position: absolute; width: 200px; left: 50%; transform: translate(-50%, 0%);'><p  id='shortcut_existant' class='center' style='color: red; '></p></td>";
+        echo "<td width='100%' style='position: absolute; left: 50%; transform: translate(-50%, 0%);'>
+            <p  id='shortcut_existant' class='center' style='color: red; width: 100%;'></p>
+        </td>";
         echo "</tr>";
 
         echo "<tr >";
