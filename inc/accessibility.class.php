@@ -154,7 +154,7 @@ class Accessibility extends CommonDBTM {
         Dropdown::showYesNo('access_shortcuts', $data["access_shortcuts"], -1,['rand' => $rand]);
         echo "</td></tr>";
 
-        echo "<tr><th colspan='4'>" . __('Shortcuts') . " <a style='position: absolute; right: 25px; cursor: pointer; user-select: none;' onclick='\$(\".togshortcuts\").toggle(400);'>[toggle view]</a></th></tr>";
+        echo "<tr><th colspan='4'>" . __('Shortcuts') . "<span id ='alert_save' style='display:none; position: absolute; left: 50.5%; color: #ae0c2a; '><i>Don't forget to save</i></span>" . " <a style='position: absolute; right: 25px; cursor: pointer; user-select: none;' onclick='\$(\".togshortcuts\").toggle(400);'>[toggle view]</a></th></tr>";
 
         $shortcuts = json_decode($data["access_custom_shortcuts"], true);
         $cpt = 1;
@@ -218,9 +218,9 @@ class Accessibility extends CommonDBTM {
 
                 let id_span = document.getElementsByClassName(rack.id)[0]; // the span 
                 let id_input_hidden  = document.getElementById(rack.name); // the input hidden
-                id_input_hidden.value = "";
+           
                 
-                
+                let alertSave = document.getElementById("alert_save"); // message do not forget to save the form
                 
                 modal = document.getElementById("modalForm"); //The modal
                 if(modal.style.display === "none"){
@@ -242,6 +242,7 @@ class Accessibility extends CommonDBTM {
                     keyPressed="";
                     document.getElementById("shortcut_added").innerHTML =""; //
                     document.getElementById("shortcut_existant").innerHTML ="";
+                    document.removeEventListener('."'keydown'".', getShortcut);
                 });
                 
                 
@@ -270,15 +271,17 @@ class Accessibility extends CommonDBTM {
                     if(testExistShortcut == 0){
                         // Set the custom shortcut in currents fields
                         btn_submit_in_modal.addEventListener("click", function() {
-                            
-                            id_input_hidden.value=keyPressed.slice(0 , -1);   //Remove(slice) the last + before updating
-                            id_span.innerHTML = "<kbd>"+keyPressed.slice(0 , -1)+"</kbd>";
-    
-                            modal.style.display = "none";
-                            document.removeEventListener('."'keydown'".', getShortcut);
-                            document.getElementById("shortcut_added").innerHTML ="";
-                            btn_infoBulle.innerHTML ="&nbsp;&nbsp;&nbsp;";
-
+                            if(keyPressed != ""){
+                                id_input_hidden.value=keyPressed.slice(0 , -1);   //Remove(slice) the last + before updating
+                                id_span.innerHTML = "<kbd>"+keyPressed.slice(0 , -1)+"</kbd>";
+        
+                                modal.style.display = "none";
+                                document.removeEventListener('."'keydown'".', getShortcut);
+                                document.getElementById("shortcut_added").innerHTML ="";
+                                btn_infoBulle.innerHTML ="&nbsp;&nbsp;&nbsp;";
+                                alertSave.style.display = "inline";
+                            }
+                            keyPressed="";
                     
                         });
                     } else {
