@@ -40,8 +40,7 @@ if (!defined('GLPI_ROOT')) {
  * Central class
 **/
 class Central extends CommonGLPI {
-
-
+   
    static function getTypeName($nb = 0) {
 
       // No plural
@@ -117,6 +116,9 @@ class Central extends CommonGLPI {
       $default   = Glpi\Dashboard\Grid::getDefaultDashboardForMenu('central');
       $dashboard = new Glpi\Dashboard\Grid($default);
       $dashboard->show();
+
+      Html::accessibilityHeader();
+
    }
 
 
@@ -124,6 +126,7 @@ class Central extends CommonGLPI {
     * Show the central global view
    **/
    static function showGlobalView() {
+      
 
       $showticket  = Session::haveRight("ticket", Ticket::READALL);
       $showproblem = Session::haveRight("problem", Problem::READALL);

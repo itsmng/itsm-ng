@@ -1685,6 +1685,10 @@ JAVASCRIPT;
                 $("input").css("font-family", "'$font', Verdana, Tahoma, 'Sans serif'");
                 $("#myname").css("font-family", "'$font', Verdana, Tahoma, 'Sans serif'");
                 $("div.timeline_box").children().css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+                $("ul").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+                $("li").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+                $("select").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+                
             })
 JAVASCRIPT
             );

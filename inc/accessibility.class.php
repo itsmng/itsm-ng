@@ -87,6 +87,7 @@ class Accessibility extends CommonDBTM {
     /*************************************** FORM ********************************************/
 
     function showAccessForm($data = []) {
+        
         global $CFG_GLPI, $DB;
         $user = new User();
         $user->getFromDB(session::getLoginUserID());
@@ -153,10 +154,11 @@ class Accessibility extends CommonDBTM {
         echo "<td width='40%'>";
         Dropdown::showYesNo('access_shortcuts', $data["access_shortcuts"], -1,['rand' => $rand]);
         echo "</td></tr>";
-
+         
         echo "<tr><th colspan='4'>" . __('Shortcuts') . "<span id ='alert_save' style='display:none; position: absolute; left: 50.5%; color: #ae0c2a; '><i>Don't forget to save</i></span>" . " <a style='position: absolute; right: 25px; cursor: pointer; user-select: none;' onclick='\$(\".togshortcuts\").toggle(400);'>[toggle view]</a></th></tr>";
 
         $shortcuts = json_decode($data["access_custom_shortcuts"], true);
+        $font = $user->fields["access_font"];
         $cpt = 1;
         $classes = [];
         foreach (get_declared_classes() as $class) {
@@ -180,12 +182,12 @@ class Accessibility extends CommonDBTM {
             echo "<td width='40%'><label for='$tabs$rand'>" . $display . "</label></td>";
             echo "<td width='40%'>";
             if (!is_array($shortcut)) {
-                $shortcutHtml = "<kbd>$shortcut</kbd>";
+                $shortcutHtml = "<kbd style='font-family:$font'>$shortcut</kbd>";
             } else {
-                $shortcutHtml = "<kbd>".implode("</kbd>+<kbd>", $shortcut)."</kbd>";
+                $shortcutHtml = "<kbd style='font-family:$font'>".implode("</kbd>+<kbd>", $shortcut)."</kbd>";
             }
-            
-            echo "<span class='$tab' name='$tab' style='cursor: pointer' onclick='myFunction($tab)'>$shortcutHtml</span>"; // Clicking this should edit the value in the hidden input for the HTML form.           
+            Html::accessibilityHeader();
+            echo "<span class='$tab' name='$tab' style='cursor: pointer;' onclick='myFunction($tab)'>$shortcutHtml</span>"; // Clicking this should edit the value in the hidden input for the HTML form.           
             echo "&nbsp;";
             echo "<span id='infoBulle_$tab' style='background: orange; position: absolute;  height: 14.7px; margin-top: 0.2px;color: orange; border-radius: 3px;'></span>";
             echo "</td></tr>";
