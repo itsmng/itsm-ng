@@ -42,6 +42,9 @@ class Accessibility extends CommonDBTM {
         $values[UPDATE] = ["short" => __("Edit"),
             "long" => __("Edit this parameter in your settings")];
 
+        if ($interface == 'helpdesk') {
+            unset($values[UPDATE], $values[READ]);
+        }
         return $values;
     }
 
@@ -78,7 +81,8 @@ class Accessibility extends CommonDBTM {
 
         } else if ($item->getType() == 'User') {
             $config = new self();
-            $item->computePreferences();
+            $user   = new User();
+            $user->computePreferences();
             $config->showAccessForm($item->fields);
         }
         return true;

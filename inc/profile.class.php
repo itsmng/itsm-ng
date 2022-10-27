@@ -62,6 +62,10 @@ class Profile extends CommonDBTM {
       'ticket_status',
       'tickettemplates_id',
       'ticketvalidation',
+      'accessibility',
+      'changefont',
+      'changezoom',
+      'useshortcuts',
    ];
 
 
@@ -110,6 +114,7 @@ class Profile extends CommonDBTM {
                   $ong[4] = __('Life cycles');
                   $ong[6] = __('Tools');
                   $ong[8] = __('Setup');
+                  $ong[9] = __('Accessibility');
                } else {
                   $ong[2] = __('Assets');
                   $ong[3] = __('Assistance');
@@ -177,7 +182,11 @@ class Profile extends CommonDBTM {
                break;
 
             case 9:
-               $item->showFormAccess();
+               if ($item->fields['interface'] == 'helpdesk') {
+                  $item->showFormAccessHelpdesk();
+               } else {
+                  $item->showFormAccess();
+               }
                break;
          }
       }
@@ -1498,6 +1507,67 @@ class Profile extends CommonDBTM {
 
         $this->showLegend();
     }
+
+    /**
+    * Print the helpdesk right form for the current profile
+    *
+    * @since 0.85
+   **/
+   function showFormAccessHelpdesk($openform = true, $closeform = true) {
+      if (!self::canView()) {
+         return false;
+      }
+
+      echo "<div class='spaced'>";
+      if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
+          && $openform) {
+         echo "<form method='post' action='".$this->getFormURL()."' data-track-changes='true'>";
+      }
+
+
+     $matrix_options = ['canedit'       => $canedit,
+            'default_class' => 'tab_bg_4'];
+
+        $rights = [
+            [
+                'itemtype'  => 'Accessibility',
+                'label'     => __("Edit accessibility"),
+                'field'     => 'accessibility'
+            ],
+            [
+                'itemtype'  => 'Accessibility',
+                'label'     => __("Change font"),
+                'field'     => 'changefont'
+            ],
+            [
+                'itemtype'  => 'Accessibility',
+                'label'     => __("Change zoom"),
+                'field'     => 'changezoom'
+            ],
+            [
+                'itemtype'  => 'Accessibility',
+                'label'     => __("Use shortcuts"),
+                'field'     => 'useshortcuts'
+            ]
+        ];
+
+        $matrix_options['title'] = __('Accessibility');
+        $matrix_options['default_class'] = 'tab_bg_2';
+        $this->displayRightsChoiceMatrix($rights, $matrix_options);
+
+      if ($canedit
+          && $closeform) {
+         echo "<div class='center'>";
+         echo "<input type='hidden' name='id' value='".$this->fields['id']."'>";
+         echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit'>";
+         echo "</div>\n";
+         Html::closeForm();
+      }
+      echo "</div>";
+
+      $this->showLegend();
+   }
+
    /**
     * Print the central form for a profile
     *
@@ -2597,6 +2667,49 @@ class Profile extends CommonDBTM {
          'datatype'           => 'text',
          'massiveaction'      => false
       ];
+      
+      
+      $tab[] = [
+         'id'                 => '113',
+         'table'              => $this->getTable(),
+         'field'              => 'accessibility',
+         'name'               => __('Accessibility'),
+         'nosearch'           => true,
+         'datatype'           => 'text',
+         'massiveaction'      => false
+      ];
+
+      $tab[] = [
+         'id'                 => '117',
+         'table'              => $this->getTable(),
+         'field'              => 'changefont',
+         'name'               => __('Change font'),
+         'nosearch'           => true,
+         'datatype'           => 'text',
+         'massiveaction'      => false
+      ];
+
+      $tab[] = [
+         'id'                 => '122',
+         'table'              => $this->getTable(),
+         'field'              => 'changezoom',
+         'name'               => __('Change zoom'),
+         'nosearch'           => true,
+         'datatype'           => 'number',
+         'massiveaction'      => false
+      ];
+     
+
+      $tab[] = [
+         'id'                 => '123',
+         'table'              => $this->getTable(),
+         'field'              => 'useshortcuts',
+         'name'               => __('Use shortcuts'),
+         'nosearch'           => true,
+         'datatype'           => 'bool',
+         'massiveaction'      => false
+      ];
+
 
       $tab[] = [
          'id'                 => '110',
@@ -2623,7 +2736,7 @@ class Profile extends CommonDBTM {
       ];
 
       $tab[] = [
-         'id'                 => '111',
+         'id'                 => '116',
          'table'              => $this->getTable(),
          'field'              => 'change_status',
          'name'               => __('Life cycle of changes'),
