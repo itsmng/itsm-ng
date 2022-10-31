@@ -1988,9 +1988,9 @@ JAVASCRIPT
 
       Html::displayImpersonateBanner();
 
-      echo "<div id='header'>";
+      echo "<div >";
       // Main Headline
-      echo "<header >";
+      echo "<header id='header'>";
       echo "<div>";
       echo "<div role='banner' id='header_top'>";
 
@@ -7133,7 +7133,7 @@ JAVASCRIPT;
 
       $already_used_shortcut = ['1'];
 
-      echo "<nav id='menu'>";
+      echo "<nav id='main_menu'>";
       echo "<div id='c_menu'>";
       echo "<ul id='menu'";
       if ($full === true) {
