@@ -1988,9 +1988,11 @@ JAVASCRIPT
 
       Html::displayImpersonateBanner();
 
-      // Main Headline
       echo "<div id='header'>";
-      echo "<header role='banner' id='header_top'>";
+      // Main Headline
+      echo "<header >";
+      echo "<div>";
+      echo "<div role='banner' id='header_top'>";
 
       echo "<div id='c_logo'>";
       echo "<a href='".$CFG_GLPI["root_doc"]."/front/helpdesk.public.php' accesskey='1' title=\"".
@@ -1999,12 +2001,12 @@ JAVASCRIPT
 
       //Preferences and logout link
       self::displayTopMenu(false);
-      echo "</header>"; // header_top
+      echo "</div>"; // header_top
 
       //Main menu
       self::displayMainMenu(false);
-
-      echo "</div>"; // fin header
+      echo "</div>";
+      echo "</header>"; // fin header
       echo "<main role='main' id='page'>";
 
       // call static function callcron() every 5min
@@ -2030,7 +2032,7 @@ JAVASCRIPT
       echo "<footer role='contentinfo' id='footer'>";
       echo "<table role='presentation' width='100%'><tr><td class='right'>" . self::getCopyrightMessage(false);
       echo "</td></tr></table></footer>";
-
+      echo "</div>";
       self::displayDebugInfos();
       echo "</body></html>";
       self::loadJavascript();
@@ -7131,6 +7133,7 @@ JAVASCRIPT;
 
       $already_used_shortcut = ['1'];
 
+      echo "<nav id='menu'>";
       echo "<div id='c_menu'>";
       echo "<ul id='menu'";
       if ($full === true) {
@@ -7464,6 +7467,7 @@ JAVASCRIPT;
       }
       echo "</ul>";
       echo "</div>";
+      echo "</nav>";
    }
 
    /**
