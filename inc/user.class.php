@@ -247,6 +247,7 @@ class User extends CommonDBTM {
       $this->addStandardTab('Profile_User', $ong, $options);
       $this->addStandardTab('Group_User', $ong, $options);
       $this->addStandardTab('Config', $ong, $options);
+      $this->addStandardTab('Accessibility', $ong, $options);
       $this->addStandardTab(__CLASS__, $ong, $options);
       $this->addStandardTab('Ticket', $ong, $options);
       $this->addStandardTab('Item_Problem', $ong, $options);
