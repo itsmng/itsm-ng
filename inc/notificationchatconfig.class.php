@@ -5,15 +5,6 @@ class NotificationChatConfig extends CommonDBTM
 
     function processPostData($rocketUrl, $chat, $type, $value)
     {
-
-        // First check if already configured
-        /* $results = $this->find();
-        if (!empty($results)) {
-            foreach ($results as $id => $fields) {
-                $this->delete($fields);
-            }
-        }
- */
         $return = $this->add(array(
             'hookurl' => $rocketUrl,
             'chat' => $chat,
@@ -96,7 +87,7 @@ class NotificationChatConfig extends CommonDBTM
             'alias' => 'test',
             'text' => ''
         );
-        /* $data["text"] = sprintf($textStructure, $entName, $ticketId, $ticketTitle, $glpiUrl, $ticketId); */
+
         $data["text"] = $entName;
 
         $payload = json_encode($data);

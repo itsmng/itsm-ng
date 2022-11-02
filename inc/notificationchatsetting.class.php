@@ -180,7 +180,6 @@ class NotificationChatSetting extends NotificationSetting
             $out .= "<td><label for='hookurl'>" . __('URL') . "</label></td>";
             $out .= "<td><input type='text' name='hookurl' id='hookurl'></td>";
             $out .= "<td><label for='type'>" . __('Type') . "</label></td>";
-            //$out .= "<td><input type='text' name='type' id='type'></td>";
             $out .= "<td>";
             $out .= Dropdown::showFromArray(
                 'type', 
@@ -192,7 +191,6 @@ class NotificationChatSetting extends NotificationSetting
             );
             $out .= "</td>";
             $out .= "<td><label for='value'>" . __('Value') . "</label></td>";
-            //$out .= "<td><input type='text' name='value' id='value'></td>";
             $out .= "<td name='value_all'><input type='text' name='value' id='value' disable></td>";
             $out .= "<td name='value_entity'>";
             $out .= Dropdown::showFromArray(
