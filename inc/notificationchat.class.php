@@ -69,7 +69,8 @@ class NotificationChat implements NotificationInterface
         $hookurl = $hookurl;
 
         $sendNotif = new NotificationChatConfig();
-        $sendNotif->sendRocketNotification($ticketTitle, $ticketId, $entName, $glpiUrl, $hookurl);
+
+        return $sendNotif->sendRocketNotification($ticketTitle, $ticketId, $entName, $glpiUrl, $hookurl);
     }
 
 

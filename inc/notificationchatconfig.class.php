@@ -70,6 +70,8 @@ class NotificationChatConfig extends CommonDBTM
 
         // Close cURL session handle
         curl_close($ch);
+
+        return $result;
     }
 
     public function sendRocketNotificationNew($ticketTitle, $ticketId, $entName, $serverName, $hookurl)

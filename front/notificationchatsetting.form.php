@@ -69,7 +69,11 @@ if (!empty($_POST["test_chat_send"])) {
     $notificationChatSend->delete(['id' => $_GET["delete"]]);
     Html::back();
 } else if (!empty($_GET["test"])) {
-    NotificationChat::testNotification($_GET["test"]);
+    if(NotificationChat::testNotification($_GET["test"])) {
+        Session::addMessageAfterRedirect(__('Test successful'));
+    } else {
+        Session::addMessageAfterRedirect(__('Test failed'), false, ERROR);
+    }
     Html::back();
 }
 
