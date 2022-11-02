@@ -1658,7 +1658,8 @@ class Auth extends CommonGLPI {
             'ClientID'   => $_POST["clientID"],
             'ClientSecret'  => $_POST["clientSecret"],
             'is_activate'  => $_POST["useoidc"],
-            'is_forced'  => $_POST["forceoidc"]
+            'is_forced'  => $_POST["forceoidc"],
+            'scope'  => $_POST["scope"]
          ];
         $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
       }
@@ -1670,6 +1671,7 @@ class Auth extends CommonGLPI {
           $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
           $oidc_db['is_activate'] = $iterator['is_activate'];
           $oidc_db['is_forced'] = $iterator['is_forced'];
+          $oidc_db['scope'] = $iterator['scope'];
       }
       
 
@@ -1707,7 +1709,7 @@ class Auth extends CommonGLPI {
       echo "<tr class='tab_bg_1'>";
       echo "<td>Client ID</td>";
       echo "<td>";
-      if (isset($oidc_db['ClientID'])) {
+   if (isset($oidc_db['ClientID'])) {
        echo "<input type='text' id='clientID' name='clientID'value=". $oidc_db['ClientID'] .">";
    } else {
        echo "<input type='text' id='clientID' name='clientID'>";
@@ -1717,10 +1719,20 @@ class Auth extends CommonGLPI {
       echo "<tr class='tab_bg_1'>";
       echo "<td>Client Secret</td>";
       echo "<td>";
-      if (isset($oidc_db['ClientSecret'])) {
+   if (isset($oidc_db['ClientSecret'])) {
        echo "<input type='password' id='clientSecret' name='clientSecret'value=". $oidc_db['ClientSecret'] .">";
    } else {
        echo "<input type='password' id='clientSecret' name='clientSecret' >";
+   }
+      echo "</td></tr>";
+      
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __('Scopes') . "</td>";
+      echo "<td>";
+   if (isset($oidc_db['scope'])) {
+       echo "<input type='text' id='scope' name='scope'value=". str_replace(' ', '', $oidc_db['scope']) .">";
+   } else {
+       echo "<input type='text' id='scope' name='scope' >";
    }
       echo "</td></tr>";
       

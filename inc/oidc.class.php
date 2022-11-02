@@ -55,9 +55,13 @@ class Oidc extends CommonDBTM {
           $oidc_db['Provider'] = $iterator['Provider'];
           $oidc_db['ClientID'] = $iterator['ClientID'];
           $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
+          $oidc_db['scope'] = explode(',', addslashes(str_replace(' ', '', $iterator['scope'])));
       }
 
       $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
+      if (is_array($oidc_db['scope'])) {
+         $oidc->addScope($oidc_db['scope']);
+      }
       $oidc->setHttpUpgradeInsecureRequests(false);
       try {
           $oidc->authenticate();
@@ -134,6 +138,8 @@ class Oidc extends CommonDBTM {
       $auth->user = $user;
       //Setup a new session and redirect to the main menu
       Session::init($auth);
+      $_SESSION['itsm_is_oidc'] = 1;
+      $_SESSION['itsm_oidc_idtoken'] = $oidc->getIdToken();
       Auth::redirectIfAuthenticated();
    }
 
@@ -225,7 +231,6 @@ class Oidc extends CommonDBTM {
 
       if (isset($_POST["update"])) {
          $oidc_result = [
-            'name'   => $_POST["name"],
             'given_name'  => $_POST["given_name"],
             'family_name'  => $_POST["family_name"],
             'picture'  => $_POST["picture"],
@@ -240,8 +245,18 @@ class Oidc extends CommonDBTM {
 
       $criteria = "SELECT * FROM glpi_oidc_mapping";
       $iterators = $DB->request($criteria);
+      $oidc_db = [
+         'given_name'  => null,
+         'family_name'  => null,
+         'picture'  => null,
+         'email'  => null,
+         'locale'  => null,
+         'phone_number'  => null,
+         'group'  => null,
+         'date_mod' => null,
+      ];
+
       foreach($iterators as $iterator) {
-         $oidc_db['name']   = $iterator["name"];
          $oidc_db['given_name']  = $iterator["given_name"];
          $oidc_db['family_name']  = $iterator["family_name"];
          $oidc_db['picture']  = $iterator["picture"];
@@ -260,28 +275,25 @@ class Oidc extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<th class='center' colspan='4'>" . __('Mapping of fields according to provider') . "</th></tr>";
 
-      echo "<tr class='tab_bg_2'><td>" . __('Email') . "</td>";
-      echo "<td><input type='text' name='email' value='".$oidc_db['email']."'></td>";
-      echo "<td>" . __('Name') . "</td>";
-      echo "<td><input type='text' name='name' value='".$oidc_db['name']."'></td></tr>";
-
       echo "<tr class='tab_bg_2'><td>" . __('Surname') . "</td>";
-      echo "<td><input type='text' name='family_name' value='".$oidc_db['given_name']."'></td>";
+      echo "<td><input type='text' name='family_name' value='". $oidc_db['family_name'] ."'></td>";
       echo "<td>" . __('First name') . "</td>";
-      echo "<td><input type='text' name='given_name' value='".$oidc_db['family_name']."'></td></tr>";
+      echo "<td><input type='text' name='given_name' value='". $oidc_db['given_name'] ."'></td></tr>";
+
+      echo "<tr class='tab_bg_2'><td>" . __('Email') . "</td>";
+      echo "<td><input type='text' name='email' value='". $oidc_db['email'] ."'></td>";
+      echo "<td>" . __('Phone') . "</td>";
+      echo "<td><input type='text' name='phone_number' value='". $oidc_db['phone_number'] ."'></td></tr>";
 
       echo "<tr class='tab_bg_2'><td>" . __('Locale') . "</td>";
-      echo "<td><input type='text' name='locale' value='".$oidc_db['locale']."'></td>";
-      echo "<td>" . __('Phone') . "</td>";
-      echo "<td><input type='text' name='phone_number' value='".$oidc_db['phone_number']."'></td></tr>";
+      echo "<td><input type='text' name='locale' value='". $oidc_db['locale'] ."'></td>";
+      echo "<td>" . __('Picture') . "</td>";
+      echo "<td><input type='text' name='picture' value='". $oidc_db['picture'] ."'></td></tr>";
 
       echo "<tr class='tab_bg_2'><td>" . __('Group') . "</td>";
-      echo "<td><input type='text' name='group' value='".$oidc_db['group']."'></td>";
-      echo "<td>" . __('Picture') . "</td>";
-      echo "<td><input type='text' name='picture' value='".$oidc_db['picture']."'></td></tr>";
-      
-      echo "<tr class='tab_bg_2'><td>" . __('Last update') . "</td>";
-      echo "<td>".$oidc_db['date_mod']."</td></tr>";
+      echo "<td><input type='text' name='group' value='". $oidc_db['group'] ."'></td>";
+      echo "<td>" . __('Last update') . "</td>";
+      echo "<td><input type='text' name='date_mod' value='". $oidc_db['date_mod'] ."'></td></tr>";
 
       echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
       echo "<input type='submit' name='update' class='submit' value=\"".__s('Save')."\">" . '&nbsp;';
