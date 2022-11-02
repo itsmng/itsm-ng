@@ -41,10 +41,39 @@ $notificationChatSend = new NotificationChatConfig();
 if (!empty($_POST["test_chat_send"])) {
     NotificationChat::testNotification();
     Html::back();
-} else if (!empty($_POST["update"]) && isset($_POST['rocketurl'])) {
+} else if (!empty($_POST["update"]) && isset($_POST['hookurl'])) {
     $config = new Config();
     $config->update($_POST);
-    $notificationChatSend->processPostData($_POST['rocketurl']);
+
+    switch ($_POST['type']) {
+        case 'entity':
+            $value = $_POST['value_entity'];
+            break;
+        case 'group':
+            $value = $_POST['value_group'];
+            break;
+        case 'location':
+            $value = $_POST['value_location'];
+            break;
+        case 'category':
+            $value = $_POST['value_category'];
+            break;   
+        default:
+            $value = "";
+            break;
+    }
+
+    $notificationChatSend->processPostData($_POST['hookurl'], $_POST['chat_mode'], $_POST['type'], $value);
+    Html::back();
+} else if (!empty($_GET["delete"])) {
+    $notificationChatSend->delete(['id' => $_GET["delete"]]);
+    Html::back();
+} else if (!empty($_GET["test"])) {
+    if(NotificationChat::testNotification($_GET["test"])) {
+        Session::addMessageAfterRedirect(__('Test successful'));
+    } else {
+        Session::addMessageAfterRedirect(__('Test failed'), false, ERROR);
+    }
     Html::back();
 }
 

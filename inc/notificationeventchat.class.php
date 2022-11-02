@@ -92,7 +92,30 @@ class NotificationEventChat extends NotificationEventAbstract implements Notific
             $current->getFromResultSet($row);
 
             $sendChat = new NotificationChatConfig();
-            $sendChat->sendRocketNotification($current->fields['ticketTitle'], $current->fields['items_id'], $current->fields['entName'],  $current->fields['serverName'], $current->fields['rocketHookUrl']);
+            $list = $sendChat->find(['type' => 'all']);
+            $webHooks = [];
+            if (empty($list)) {
+                $list['entity'] = $sendChat->find(['type' => 'entity', 'value' => $row['entities_id']]);
+                $list['location'] = $sendChat->find(['type' => 'location', 'value' => $row['locations_id']]);
+                $list['group'] = $sendChat->find(['type' => 'group', 'value' => $row['groups_id']]);
+                $list['category'] = $sendChat->find(['type' => 'category', 'value' => $row['itilcategories_id']]);
+
+                foreach ($list as $key => $value) {
+                    foreach ($value as $key => $val) {
+                        if (!in_array($val['hookurl'], $webHooks)) {
+                            $webHooks[] = $val['hookurl'];
+                        }
+                    }
+                }
+            } else {
+                foreach ($list as $key => $value) {
+                    $webHooks[] = $value['hookurl'];
+                }
+            }
+
+            foreach ($webHooks as $key => $value) {
+                $sendChat->sendRocketNotificationNew($current->fields['ticketTitle'], $current->fields['items_id'], $current->fields['entName'],  $current->fields['serverName'], $value);
+            }
 
             $processed[] = $current->getID();
             $current->update([

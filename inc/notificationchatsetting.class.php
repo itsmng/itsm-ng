@@ -61,7 +61,7 @@ class NotificationChatSetting extends NotificationSetting
 
     function showFormConfig($options = [])
     {
-        global $CFG_GLPI;
+        global $CFG_GLPI, $DB;
 
         if (!isset($options['display'])) {
             $options['display'] = true;
@@ -70,10 +70,53 @@ class NotificationChatSetting extends NotificationSetting
         $out = "<form action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "' method='post'>";
         $out .= "<div>";
         $out .= "<input type='hidden' name='id' value='1'>";
+        $out .= Html::scriptBlock("$(function() {
+
+        $('[name=value]').prop('disabled', true);
+        $('[name=value_entity]').attr('hidden', true);
+        $('[name=value_group]').attr('hidden', true);
+        $('[name=value_location]').attr('hidden', true);
+        $('[name=value_category]').attr('hidden', true);
+
+        $('[name=type]').on('change', function() {
+            var _val = $(this).find('option:selected').val();
+            if (_val == 'all') {
+                $('[name=value_all]').attr('hidden', false);
+                $('[name=value_entity]').attr('hidden', true);
+                $('[name=value_group]').attr('hidden', true);
+                $('[name=value_location]').attr('hidden', true);
+                $('[name=value_category]').attr('hidden', true);
+            } else if (_val == 'entity') {
+                $('[name=value_all]').attr('hidden', true);
+                $('[name=value_entity]').attr('hidden', false);
+                $('[name=value_group]').attr('hidden', true);
+                $('[name=value_location]').attr('hidden', true);
+                $('[name=value_category]').attr('hidden', true);
+            } else if (_val == 'group') {
+                $('[name=value_all]').attr('hidden', true);
+                $('[name=value_entity]').attr('hidden', true);
+                $('[name=value_group]').attr('hidden', false);
+                $('[name=value_location]').attr('hidden', true);
+                $('[name=value_category]').attr('hidden', true);
+            } else if (_val == 'location') {
+                $('[name=value_all]').attr('hidden', true);
+                $('[name=value_entity]').attr('hidden', true);
+                $('[name=value_group]').attr('hidden', true);
+                $('[name=value_location]').attr('hidden', false);
+                $('[name=value_category]').attr('hidden', true);
+            } else if (_val == 'category') {
+                $('[name=value_all]').attr('hidden', true);
+                $('[name=value_entity]').attr('hidden', true);
+                $('[name=value_group]').attr('hidden', true);
+                $('[name=value_location]').attr('hidden', true);
+                $('[name=value_category]').attr('hidden', false);
+            }
+        });
+        });");
         $out .= "<table class='tab_cadre_fixe'>";
 
 
-        $out .= "<tr class='tab_bg_1'><th colspan='4'>" . _n(
+        $out .= "<tr class='tab_bg_1'><th colspan='8'>" . _n(
             'Chat notification',
             'Chat notifications',
             Session::getPluralNumber()
@@ -92,6 +135,38 @@ class NotificationChatSetting extends NotificationSetting
 
             ];
 
+            $types = [
+                'all'      => __("All"),
+                'entity'   => __("Entity"),
+                'group'    => __("Group"),
+                'location' => __("Location"),
+                'category' => __("ITIL category")
+            ];
+
+            $groupsRaw = (new Group)->find();
+            $groups = [];
+            foreach ($groupsRaw as $key => $group) {
+                $groups[$group['id']] = $group['completename'];
+            }
+
+            $entitiesRaw = (new Entity)->find();
+            $entities = [];
+            foreach ($entitiesRaw as $key => $entity) {
+                $entities[$entity['id']] = $entity['completename'];
+            }
+
+            $locationsRaw = (new Location)->find();
+            $locations = [];
+            foreach ($locationsRaw as $key => $location) {
+                $locations[$location['id']] = $location['completename'];
+            }
+
+            $categoriesRaw = (new ITILCategory)->find();
+            $categories = [];
+            foreach ($categoriesRaw as $key => $category) {
+                $categories[$category['id']] = $category['completename'];
+            }
+
             $out .= Dropdown::showFromArray(
                 "chat_mode",
                 $chat_modes,
@@ -101,51 +176,129 @@ class NotificationChatSetting extends NotificationSetting
                     'rand'      => $chatmoderand
                 ]
             );
-            $out .= Html::scriptBlock("$(function() {
-            console.log($('[name=chat_mode]'));
-            $('[name=chat_mode]').on('change', function() {
-               var _val = $(this).find('option:selected').val();
-
-               if (_val == '" . CHAT_ROCKET . "') {
-                  $('#chat_config').removeClass('starthidden');
-                  
-               } else {
-                  $('#chat_config').addClass('starthidden');
-               }
-            });
-            });");
+            $out .= "</td>";
+            $out .= "<td><label for='hookurl'>" . __('URL') . "</label></td>";
+            $out .= "<td><input type='text' name='hookurl' id='hookurl'></td>";
+            $out .= "<td><label for='type'>" . __('Type') . "</label></td>";
+            $out .= "<td>";
+            $out .= Dropdown::showFromArray(
+                'type', 
+                $types, 
+                [
+                    'value' => 'all',
+                    'display'   => false,
+                ]
+            );
+            $out .= "</td>";
+            $out .= "<td><label for='value'>" . __('Value') . "</label></td>";
+            $out .= "<td name='value_all'><input type='text' name='value' id='value' disable></td>";
+            $out .= "<td name='value_entity'>";
+            $out .= Dropdown::showFromArray(
+                'value_entity', 
+                $entities, 
+                [
+                    'display'   => false,
+                ]
+            );
+            $out .= "</td>";
+            $out .= "<td name='value_group'>";
+            $out .= Dropdown::showFromArray(
+                'value_group', 
+                $groups, 
+                [
+                    'display'   => false,
+                ]
+            );
+            $out .= "</td>";
+            $out .= "<td name='value_location'>";
+            $out .= Dropdown::showFromArray(
+                'value_location', 
+                $locations, 
+                [
+                    'display'   => false,
+                ]
+            );
+            $out .= "</td>";
+            $out .= "<td name='value_category'>";
+            $out .= Dropdown::showFromArray(
+                'value_category', 
+                $categories, 
+                [
+                    'display'   => false,
+                ]
+            );
             $out .= "</td>";
             $out .= "</tr>";
 
-            $out .= "</table>";
-
-            $out .= "<table class= 'tab_cadre_fixe";
-
-            if ($CFG_GLPI["chat_mode"] == CHAT_ROCKET) {
-                $out .= " starthidden";
-                $out .= "' id='chat_config'>";
-
-
-                $out .= "<tr class='tab_bg_2'>";
-                $out .= "<td><label for='rocketurl'>" . __('URL') . "</label></td>";
-                $out .= "<td><input type='text' name='rocketurl' id='rocketurl' size='40' value='" .
-                    $CFG_GLPI["rocketurl"] . "'>";
-                $out .= "</td></tr>";
-
-                $out .= "</table>";
-            }
         } else {
-            $out .= "<tr><td colspan='4'>" . __('Notifications are disabled.')  .
+            $out .= "<tr><td colspan='6'>" . __('Notifications are disabled.')  .
                 "<a href='{$CFG_GLPI['root_doc']}/front/setup.notification.php'>" .
                 __('See configuration') . "</a></td></tr>";
             $out .= "</table>";
         }
         $options['candel']     = false;
-        if ($CFG_GLPI['notifications_chat']) {
-            $options['addbuttons'] = ['test_chat_send' => __('Send a test chat')];
-        }
+        $options['colspan']     = 12;
+        
         //do not satisfy display param since showFormButtons() will not :(
         echo $out;
         $this->showFormButtons($options);
+
+
+        // Display existing configs
+        echo "<div>";
+
+        $query = "SELECT * FROM glpi_notificationchatconfigs";
+        $iterators = $DB->request($query);
+
+        $result = [];
+        foreach ($iterators as $key => $iterator) {
+            $res = [];
+            $res['hookurl'] = $iterator['hookurl'];
+            $res['chat'] = $iterator['chat'];
+            $res['type'] = $iterator['type'];
+            $res['value'] = $iterator['value'];
+            $res['id'] = $iterator['id'];
+
+            $result[] = $res;
+        }
+
+        echo "<table class='tab_cadre_fixe'>";
+        echo "<tbody>";
+        echo "<tr class='tab_bg_1'>";
+        echo "<th colspan='6'>" . "Liste des configs chats" . "</th>";
+        echo "</tr>";
+        foreach ($result as $key => $value) {
+            echo "<tr class='tab_bg_2'>";
+            echo "<td>" . $chat_modes[$value['chat']] . "</td>";
+            echo "<td>" . $value['hookurl'] . "</td>";
+            echo "<td>" . $types[$value['type']] . "</td>";
+
+            switch ($value['type']) {
+                case 'entity':
+                    echo "<td>" . $entities[$value['value']] . "</td>";
+                    break;
+                case 'group':
+                    echo "<td>" . $groups[$value['value']] . "</td>";
+                    break;
+                case 'location':
+                    echo "<td>" . $locations[$value['value']] . "</td>";
+                    break;
+                case 'category':
+                    echo "<td>" . $categories[$value['value']] . "</td>";
+                    break;   
+                default:
+                    echo "<td>" . $value['value'] . "</td>";
+                    break;
+            }
+            
+            echo "<td><a href='notificationchatsetting.form.php?test=" . $value['id'] ."' class='vsubmit'>" . __("Test") . "</a></td>";
+            echo "<td><a href='notificationchatsetting.form.php?delete=" . $value['id'] ."' class='vsubmit'>" . __("Delete") . "</a></td>";
+            echo "</tr>";
+        }
+        echo "</tbody>";
+        echo "</table>";
+
+        echo "</div>";
     }
+
 }

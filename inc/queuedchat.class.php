@@ -259,7 +259,7 @@ class QueuedChat extends CommonDBTM
             'field'              => 'entName',
             'name'               => __('Entity name'),
             'massiveaction'      => false,
-            'datatype'           => 'string'
+            'datatype'           => 'text'
         ];
 
         $tab[] = [
@@ -274,7 +274,7 @@ class QueuedChat extends CommonDBTM
         $tab[] = [
             'id'                 => '25',
             'table'              => 'glpi_queuedchats',
-            'field'              => 'rocketHookUrl',
+            'field'              => 'hookurl',
             'name'               => __('URl Hook'),
             'massiveaction'      => false,
             'datatype'           => 'itemtype'
@@ -649,7 +649,7 @@ class QueuedChat extends CommonDBTM
 
         echo "<tr class='tab_bg_1'>";
         echo "<td>" . __('Rocket Hook Url') . "</td>";
-        echo "<td>" . $this->fields['rocketHookUrl'] . "</td>";
+        echo "<td>" . $this->fields['hookurl'] . "</td>";
         echo "</tr>";
 
         echo "<tr class='tab_bg_1 top' >";
