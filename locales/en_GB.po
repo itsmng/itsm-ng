@@ -23188,7 +23188,7 @@ msgstr "New Status - Special status"
 
 #: inc/oidc.class.php:261
 msgid "Mapping of fields according to provider"
-msgstr "Mapping of fields according to provider"
+msgstr "Mapping of fields according to OpenID Connect provider"
 
 #: inc/auth.class.php:1732
 msgid "Mapping"

@@ -23493,7 +23493,7 @@ msgstr "Nouveau statut - Statut spécial"
 
 #: inc/oidc.class.php:261
 msgid "Mapping of fields according to provider"
-msgstr "Mappage des champs en fonction fournisseur"
+msgstr "Mappage des champs en fonction du fournisseur OpenID Connect"
 
 #: inc/auth.class.php:1732
 msgid "Mapping"
