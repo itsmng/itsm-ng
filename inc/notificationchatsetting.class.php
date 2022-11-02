@@ -71,7 +71,6 @@ class NotificationChatSetting extends NotificationSetting
         $out .= "<div>";
         $out .= "<input type='hidden' name='id' value='1'>";
         $out .= Html::scriptBlock("$(function() {
-        console.log($('[name=type]'));
 
         $('[name=value]').prop('disabled', true);
         $('[name=value_entity]').attr('hidden', true);
@@ -81,8 +80,6 @@ class NotificationChatSetting extends NotificationSetting
 
         $('[name=type]').on('change', function() {
             var _val = $(this).find('option:selected').val();
-            console.log(_val);
-            console.log($('[name=value_entity]'));
             if (_val == 'all') {
                 $('[name=value_all]').attr('hidden', false);
                 $('[name=value_entity]').attr('hidden', true);
@@ -182,7 +179,7 @@ class NotificationChatSetting extends NotificationSetting
             $out .= "</td>";
             $out .= "<td><label for='hookurl'>" . __('URL') . "</label></td>";
             $out .= "<td><input type='text' name='hookurl' id='hookurl'></td>";
-            $out .= "<td><label for='type'>" . __('type') . "</label></td>";
+            $out .= "<td><label for='type'>" . __('Type') . "</label></td>";
             //$out .= "<td><input type='text' name='type' id='type'></td>";
             $out .= "<td>";
             $out .= Dropdown::showFromArray(
@@ -194,7 +191,7 @@ class NotificationChatSetting extends NotificationSetting
                 ]
             );
             $out .= "</td>";
-            $out .= "<td><label for='value'>" . __('value') . "</label></td>";
+            $out .= "<td><label for='value'>" . __('Value') . "</label></td>";
             //$out .= "<td><input type='text' name='value' id='value'></td>";
             $out .= "<td name='value_all'><input type='text' name='value' id='value' disable></td>";
             $out .= "<td name='value_entity'>";
@@ -242,7 +239,7 @@ class NotificationChatSetting extends NotificationSetting
             $out .= "</table>";
         }
         $options['candel']     = false;
-        $options['colspan']     = 4;
+        $options['colspan']     = 12;
         
         //do not satisfy display param since showFormButtons() will not :(
         echo $out;
