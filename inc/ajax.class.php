@@ -367,8 +367,12 @@ class Ajax {
    ) {
       global $CFG_GLPI;
 
+      $user = new User();
+      $user->getFromDB(Session::getLoginUserID());
+
       // TODO need to clean params !!
       $active_tabs = Session::getActiveTab($type);
+      $displayShortcuts = (Session::haveRight("accessibility", READ) && $user->fields["access_shortcuts"]);
 
       $mainclass = '';
       if (isset($options['main_class'])) {
@@ -397,7 +401,27 @@ class Ajax {
             // $limit = 16;
             // No title strip for horizontal menu
             $title = $val['title'];
-            echo $title."</a></li>";
+            $currentShortcut = null;
+            echo $title."</a>";
+            // Below is code dedicated to rendering the keyboard shortcuts, you shouldn't have to touch this.
+            if ($displayShortcuts && $orientation == 'vertical' && count($tabs) > 1) {
+               $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true)[$key];
+            }
+            if (is_array($currentShortcut)) {
+                // I wish doing this wasn't necessary, but it is
+                $shortcutWrapperID = "acc".mt_rand();
+                echo "<div id='$shortcutWrapperID' style='align-items: end;float: right; top: -25px; right: 5%; position: inherit; margin-bottom: -55px; pointer-events: none;'>";
+                // Generate <kbd> elements
+                echo "<kbd>".implode("</kbd>+<kbd>", $currentShortcut)."</kbd>";
+                echo Html::scriptBlock("
+                    hotkeys('".strtolower(implode("+", $currentShortcut))."', function(e, h) {
+                       e.preventDefault();                        
+                       $('#".$shortcutWrapperID."').prev('a').trigger('click');
+                    });
+                ");
+                echo "</div>";
+            }
+            echo "</li>";
             $current ++;
          }
          echo "</ul>";

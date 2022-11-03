@@ -23510,3 +23510,47 @@ msgstr "Activer les notifications chat"
 #: inc/notificationchatsetting.class.php:145
 msgid "Send a test chat"
 msgstr "Envoyer un message de test"
+
+#: inc/accessibility.class.php:36
+msgid "Accessibility"
+msgstr "Accessibilité"
+
+#: inc/accessibility.class.php:127
+msgid "UI Scale"
+msgstr "Echelle de l'interface utilisateur"
+
+#: inc/accessibility.class.php:146
+msgid "UI Font"
+msgstr "Police de l'interface utilisateur"
+
+#: inc/accessibility.class.php:158
+msgid "Enable shortcuts"
+msgstr "Activer les raccourcis"
+
+#: inc/accessibility.class.php:163
+msgid "Shortcuts"
+msgstr "Raccourcis"
+
+#: inc/accessibility.class.php:163
+msgid "Don't forget to save"
+msgstr "N'oubliez pas de sauvegarder"
+
+#: inc/accessibility.class.php:163
+msgid "Toggle view"
+msgstr "Basculer la vue"
+
+#: inc/profile.class.php:1756
+msgid "Edit accessibility"
+msgstr "Editer l'accessibilité"
+
+#: inc/profile.class.php:1761
+msgid "Change font"
+msgstr "Changer la police"
+
+#: inc/profile.class.php:1766
+msgid "Change zoom"
+msgstr "Changer le zoom"
+
+#: inc/profile.class.php:1771
+msgid "Use shortcuts"
+msgstr "Utiliser les raccourcis"

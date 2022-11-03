@@ -811,6 +811,14 @@ class Ticket extends CommonITILObject {
       return true;
    }
 
+   function getShortcutsForItem()
+   {
+     return [
+         1      => ["SHIFT", "P"],
+         "main" => ["ALT", "T"],
+         4      => ["ALT", "S"]
+     ];
+   }
 
    function defineTabs($options = []) {
       $ong = [];
@@ -916,7 +924,7 @@ class Ticket extends CommonITILObject {
       }
 
       // automatic recalculate if user changes urgence or technician change impact
-      $canpriority               = Session::haveRight(self::$rightname, self::CHANGEPRIORITY);
+      $canpriority = Session::haveRight(self::$rightname, self::CHANGEPRIORITY);
       if ((isset($input['urgency']) && $input['urgency'] != $this->fields['urgency'])
          || (isset($input['impact']) && $input['impact'] != $this->fields['impact'])
          && ($canpriority && !isset($input['priority']) || !$canpriority)
@@ -3765,12 +3773,15 @@ class Ticket extends CommonITILObject {
 
       Plugin::doHook("pre_item_form", ['item' => $this, 'options' => &$options]);
 
+      echo "<thead>";
       echo "<tr><th>".__('Describe the incident or request')."</th><th>";
       if (Session::isMultiEntitiesMode()) {
          echo "(".Dropdown::getDropdownName("glpi_entities", $_SESSION["glpiactive_entity"]).")";
       }
       echo "</th></tr>";
+      echo "</thead>";
 
+      echo "<tbody>";
       echo "<tr class='tab_bg_1'>";
       echo "<td>".sprintf(__('%1$s%2$s'), _n('Type', 'Types', 1), $tt->getMandatoryMark('type'))."</td>";
       echo "<td>";
@@ -3988,6 +3999,7 @@ class Ticket extends CommonITILObject {
          echo "</td></tr>";
       }
 
+      echo "</tbody>";
       echo "</table></div>";
       if (!$ticket_template) {
          Html::closeForm();

@@ -1500,6 +1500,7 @@ class Html
 
       // AJAX library
       echo Html::script('public/lib/base.js');
+      echo Html::script('js/hotkeys.js');
 
       // Locales
       $locales_domains = ['glpi' => GLPI_VERSION]; // base domain
@@ -1535,6 +1536,8 @@ JAVASCRIPT;
          }
       }
 
+      self::accessibilityHeader();
+
       // layout
       if (
          CommonGLPI::isLayoutWithMain()
@@ -1546,6 +1549,52 @@ JAVASCRIPT;
       // End of Head
       echo "</head>\n";
       self::glpi_flush();
+   }
+   
+   /**
+    * accessibilityHeader
+    *
+    * @return void
+    */
+   static function accessibilityHeader() {
+      $user = new User();
+      $user->getFromDB(Session::getLoginUserID());
+      if (Session::haveRight("accessibility", READ)) {
+          $factor = $user->fields["access_zoom_level"];
+          $font = $user->fields["access_font"];
+          switch ($font) {
+              case "OpenDyslexic":
+                  echo '<link href="http://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet">';     // Use CDNFonts for webfont delivery
+                  break;
+              case "OpenDyslexicAlta":
+                  echo '<link href="http://fonts.cdnfonts.com/css/opendyslexic?styles=29221" rel="stylesheet">';
+                  break;
+              case 'Tiresias Infofont':
+                  echo '<link href="http://fonts.cdnfonts.com/css/tiresias-infofont" rel="stylesheet">';
+                  break;
+              default:
+                  break;
+          }
+          echo Html::scriptBlock(<<<JAVASCRIPT
+          $(function() {
+              $("body").css({
+                  "zoom": "$factor%",
+                  "font-family": "'$font', Verdana, Tahoma, 'Sans serif'"
+                 });
+               $("div").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+               $(".secondary").css("font-family", "'$font', Arial, Helvetica");
+               $("button").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+               $(".vsubmit").css("font-family", "'$font', Arial, Helvetica");
+               $("input").css("font-family", "'$font', Verdana, Tahoma, 'Sans serif'");
+               $("#myname").css("font-family", "'$font', Verdana, Tahoma, 'Sans serif'");
+               $("div.timeline_box").children().css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+               $("ul").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+               $("li").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+               $("select").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
+          })
+JAVASCRIPT
+          );
+      }
    }
 
 
@@ -2042,9 +2091,11 @@ JAVASCRIPT;
 
       Html::displayImpersonateBanner();
 
+      echo "<div >";
       // Main Headline
-      echo "<div id='header'>";
-      echo "<header role='banner' id='header_top'>";
+      echo "<header id='header'>";
+      echo "<div>";
+      echo "<div role='banner' id='header_top'>";
 
       echo "<div id='c_logo'>";
       echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php' accesskey='1' title=\"" .
@@ -2053,12 +2104,13 @@ JAVASCRIPT;
 
       //Preferences and logout link
       self::displayTopMenu(false);
-      echo "</header>"; // header_top
+      echo "</div>"; // header_top
 
       //Main menu
       self::displayMainMenu(false);
 
-      echo "</div>"; // fin header
+      echo "</div>";
+      echo "</header>"; // fin header
       echo "<main role='main' id='page'>";
 
       // call static function callcron() every 5min
@@ -2086,6 +2138,7 @@ JAVASCRIPT;
       echo "<table role='presentation' width='100%'><tr><td class='right'>" . self::getCopyrightMessage(false);
       echo "</td></tr></table></footer>";
 
+      echo "</div>";
       self::displayDebugInfos();
       echo "</body></html>";
       self::loadJavascript();
@@ -4138,6 +4191,16 @@ JS;
             editor.setSticky();
          });
       });";
+
+      echo Html::scriptBlock(<<<JAVASCRIPT
+$('#tinymce.mce-content-body').load(function() {
+    $('#tinymce.mce-content-body').css({
+       'zoom': '200%',
+       'font-family': 'OpenDyslexic'
+    });
+})
+JAVASCRIPT
+      );
 
       if ($display) {
          echo  Html::scriptBlock($js);
@@ -6853,6 +6916,9 @@ JAVASCRIPT;
          case 'photoswipe':
             $_SESSION['glpi_js_toload'][$name][] = 'public/lib/photoswipe.js';
             break;
+         case 'hotkeys':
+            $_SESSION['glpi_js_toload'][$name][] = 'js/hotkeys.js';
+            break;
          default:
             $found = false;
             if (isset($PLUGIN_HOOKS['javascript']) && isset($PLUGIN_HOOKS['javascript'][$name])) {
@@ -7137,6 +7203,34 @@ JAVASCRIPT;
    }
 
    /**
+	* Manage the shortcut js/hotkeys.js
+	*
+	*
+	*/
+
+	static function hotkeys(){
+      global $CFG_GLPI;
+
+      $user = new User();
+      $user->getFromDB(session::getLoginUserID());
+      $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true );
+      unset($currentShortcut["DCRoom"]);
+      unset($currentShortcut["update"]);
+      foreach($currentShortcut as $name => $shortcut){
+         if(is_subclass_of($name, "CommonGLPI")){
+            //echo $name . " - ". $shortcut. nl2br("<br>") ; 
+            $url = Toolbox::getItemTypeFormURL($name);
+            if($name == "Accessibility") $url = $CFG_GLPI['root_doc']."/front/preference.php"; // Redirect accessibility to preference
+            echo Html::scriptBlock('hotkeys('."'$shortcut'".',function() {
+                                    location.replace('."'$url'".');
+                                 });
+            ');
+         }                    
+      }
+
+	}
+
+   /**
     * Display GLPI top menu
     *
     * @param boolean $full True for full interface, false otherwise
@@ -7337,6 +7431,7 @@ JAVASCRIPT;
 
       $already_used_shortcut = ['1'];
 
+      echo "<nav id='main_menu'>";
       echo "<div id='c_menu'>";
       echo "<ul id='menu'";
       if ($full === true) {
@@ -7701,6 +7796,7 @@ JAVASCRIPT;
       }
       echo "</ul>";
       echo "</div>";
+      echo "</nav>";
    }
 
    /**

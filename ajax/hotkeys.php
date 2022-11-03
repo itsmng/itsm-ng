@@ -30,34 +30,18 @@
  * ---------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
-}
+$AJAX_INCLUDE = 1;
+include ('../inc/includes.php');
+header("Content-Type: text/html; charset=UTF-8");
+Html::header_nocache();
 
-// class Preference for the current connected User
-class Preference extends CommonGLPI {
+Session::checkLoginUser();
 
+$user = new User();
+$user->getFromDB(session::getLoginUserID());
 
-   static function getTypeName($nb = 0) {
-      // Always plural
-      return __('Settings');
-   }
+$canUseShortcuts = $user->fields["access_shortcuts"];
 
-
-   function defineTabs($options = []) {
-
-      $ong = [];
-      $this->addStandardTab('User', $ong, $options);
-      if (Session::haveRightsOr('personalization', [READ, UPDATE])) {
-         $this->addStandardTab('Config', $ong, $options);
-      }
-      if (Session::haveRightsOr('accessibility', [READ, UPDATE])) {
-         $this->addStandardTab('Accessibility', $ong, $options);
-      }
-      $this->addStandardTab('DisplayPreference', $ong, $options);
-
-      $ong['no_all_tab'] = true;
-
-      return $ong;
-   }
+if(!str_contains($_SERVER["HTTP_REFERER"], "front/preference.php") && $canUseShortcuts == "1"){
+    echo Html::hotkeys();
 }

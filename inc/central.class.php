@@ -117,6 +117,8 @@ class Central extends CommonGLPI {
       $default   = Glpi\Dashboard\Grid::getDefaultDashboardForMenu('central');
       $dashboard = new Glpi\Dashboard\Grid($default);
       $dashboard->show();
+
+      Html::accessibilityHeader();
    }
 
 
