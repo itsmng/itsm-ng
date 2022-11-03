@@ -160,7 +160,7 @@ class Accessibility extends CommonDBTM {
         Dropdown::showYesNo('access_shortcuts', $data["access_shortcuts"], -1,['rand' => $rand]);
         echo "</td></tr>";
          
-        echo "<tr><th colspan='4'>" . __('Shortcuts') . "<span id ='alert_save' style='display:none; position: absolute; left: 50.5%; color: #ae0c2a; '><i>Don't forget to save</i></span>" . " <a style='position: absolute; right: 25px; cursor: pointer; user-select: none;' onclick='\$(\".togshortcuts\").toggle(400);'>[toggle view]</a></th></tr>";
+        echo "<tr><th colspan='4'>" . __('Shortcuts') . "<span id ='alert_save' style='display:none; position: absolute; left: 50.5%; color: #ae0c2a; '><i>".__("Don't forget to save")."</i></span>" . " <a style='position: absolute; right: 25px; cursor: pointer; user-select: none;' onclick='\$(\".togshortcuts\").toggle(400);'>[".__("Toggle view")."]</a></th></tr>";
 
         $shortcuts = json_decode($data["access_custom_shortcuts"], true);
         $font = $user->fields["access_font"];
