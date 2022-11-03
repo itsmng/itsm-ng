@@ -23205,3 +23205,47 @@ msgstr "Enable followups via chat"
 #: inc/notificationchatsetting.class.php:145
 msgid "Send a test chat"
 msgstr "Send a test chat"
+
+#: inc/accessibility.class.php:36
+msgid "Accessibility"
+msgstr "Accessibility"
+
+#: inc/accessibility.class.php:127
+msgid "UI Scale"
+msgstr "UI Scale"
+
+#: inc/accessibility.class.php:146
+msgid "UI Font"
+msgstr "UI Font"
+
+#: inc/accessibility.class.php:158
+msgid "Enable shortcuts"
+msgstr "Enable shortcuts"
+
+#: inc/accessibility.class.php:163
+msgid "Shortcuts"
+msgstr "Shortcuts"
+
+#: inc/accessibility.class.php:163
+msgid "Don't forget to save"
+msgstr "Don't forget to save"
+
+#: inc/accessibility.class.php:163
+msgid "Toggle view"
+msgstr "Toggle view"
+
+#: inc/profile.class.php:1756
+msgid "Edit accessibility"
+msgstr "Edit accessibility"
+
+#: inc/profile.class.php:1761
+msgid "Change font"
+msgstr "Change font"
+
+#: inc/profile.class.php:1766
+msgid "Change zoom"
+msgstr "Change zoom"
+
+#: inc/profile.class.php:1771
+msgid "Use shortcuts"
+msgstr "Use shortcuts"
