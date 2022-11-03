@@ -176,11 +176,7 @@ class Accessibility extends CommonDBTM {
         unset($classes["no_all_tab"]); // Remove superfluous element
         ksort($classes);
         foreach($classes as $tab => $display){
-            $shortcut = $shortcuts[$tab];
-            if (!$shortcut) {
-                $shortcut = __("shif+alt+" .$cpt);
-            
-            }
+            $shortcut = $shortcuts[$tab] ?? __("shif+alt+" .$cpt);
 
             echo "<tr class='togshortcuts' style='display: none;' enctype='application/json'>";
             echo "<input type='hidden' id='$tab' name='$tab' value='$shortcut' >";
@@ -206,13 +202,13 @@ class Accessibility extends CommonDBTM {
         unset($currentShortcut["update"]);
         $all_shotcuts = array();
         $all_classes = array();
-        foreach($currentShortcut as $name => $shortcut){
+
+        if(!is_null($currentShortcut)) foreach($currentShortcut as $name => $shortcut){
             if(is_subclass_of($name, "CommonGLPI")){
                 $url = Toolbox::getItemTypeFormURL($name);
                 array_push($all_shotcuts, $shortcut);
                 array_push($all_classes, $name);
-            }
-                
+            }       
         }
         
         echo Html::scriptBlock('
