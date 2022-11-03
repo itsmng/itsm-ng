@@ -405,7 +405,7 @@ class Ajax {
             echo $title."</a>";
             // Below is code dedicated to rendering the keyboard shortcuts, you shouldn't have to touch this.
             if ($displayShortcuts && $orientation == 'vertical' && count($tabs) > 1) {
-               $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true)[$key];
+               $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true)[$key] ?? null;
             }
             if (is_array($currentShortcut)) {
                 // I wish doing this wasn't necessary, but it is
