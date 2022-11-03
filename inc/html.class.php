@@ -7209,6 +7209,7 @@ JAVASCRIPT;
 	*/
 
 	static function hotkeys(){
+      global $CFG_GLPI;
 
       $user = new User();
       $user->getFromDB(session::getLoginUserID());
@@ -7219,7 +7220,7 @@ JAVASCRIPT;
          if(is_subclass_of($name, "CommonGLPI")){
             //echo $name . " - ". $shortcut. nl2br("<br>") ; 
             $url = Toolbox::getItemTypeFormURL($name);
-            if($name == "Accessibility") $url = "/itsm-ng/front/preference.php"; // Redirect accessibility to preference
+            if($name == "Accessibility") $url = $CFG_GLPI['root_doc']."/front/preference.php"; // Redirect accessibility to preference
             echo Html::scriptBlock('hotkeys('."'$shortcut'".',function() {
                                     location.replace('."'$url'".');
                                  });
