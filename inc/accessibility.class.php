@@ -92,8 +92,8 @@ class Accessibility extends CommonDBTM {
     /*************************************** FORM ********************************************/
 
     function showAccessForm($data = []) {
-        
         global $CFG_GLPI, $DB;
+
         $user = new User();
         $user->getFromDB(session::getLoginUserID());
 
@@ -103,6 +103,7 @@ class Accessibility extends CommonDBTM {
 
         $canedit = Config::canUpdate();
         $canedituser = Session::haveRight('accessibility', UPDATE);
+
         if (array_key_exists('last_login', $data)) {
             $userpref = true;
             if ($data["id"] === Session::getLoginUserID()) {
@@ -119,12 +120,13 @@ class Accessibility extends CommonDBTM {
         if ($userpref) {
             echo "<input type='hidden' name='id' value='".$data['id']."'>";
         }
+
         echo "<div class='center' id='tabsbody'>";
         echo "<table class='tab_cadre_fixe'>";
-
         echo "<tr><th colspan='4'>" . __('Interface') . "</th></tr>";
         echo "<tr class='tab_bg_1' >";
         echo "<td width='40%'><label for='access_zoom_level_drop$rand'>" .__('UI Scale') . "</label></td>";
+
         $zooms = [
             100 => '100%',
             110 => '110%',
@@ -138,18 +140,21 @@ class Accessibility extends CommonDBTM {
             190 => '190%',
             200 => '200%'
         ];
+
         echo "<td width='40%'>";
         Dropdown::showFromArray('access_zoom_level', $zooms, ['value' => $data["access_zoom_level"], 'rand' => $rand]);
         echo "</td></tr>";
 
         echo "<tr class='tab_bg_1' >";
         echo "<td width='40%'><label for='access_font_drop$rand'>" .__('UI Font') . "</label></td>";
+
         $fonts = [
             ""                  => "Default",
             "OpenDyslexic"      => "Open Dyslexic Regular",
             "OpenDyslexicAlta"  => "Open Dyslexic Alta",
             "Tiresias Infofont" => "Tiresias Infofont"
         ];
+
         echo "<td width='40%'>";
         Dropdown::showFromArray('access_font', $fonts, ['value' => $data["access_font"], 'rand' => $rand]);
         echo "</td></tr>";
@@ -166,6 +171,7 @@ class Accessibility extends CommonDBTM {
         $font = $user->fields["access_font"];
         $cpt = 1;
         $classes = [];
+
         foreach (get_declared_classes() as $class) {
             if (is_subclass_of($class, "CommonGLPI")) {
                 $tabs = array($class => $class::getTypeName());
@@ -173,8 +179,10 @@ class Accessibility extends CommonDBTM {
                 
             }
         }
+
         unset($classes["no_all_tab"]); // Remove superfluous element
         ksort($classes);
+
         foreach($classes as $tab => $display){
             $shortcut = $shortcuts[$tab] ?? __("shif+alt+" .$cpt);
 
@@ -182,11 +190,13 @@ class Accessibility extends CommonDBTM {
             echo "<input type='hidden' id='$tab' name='$tab' value='$shortcut' >";
             echo "<td width='40%'><label for='$tab$rand'>" . $display . "</label></td>";
             echo "<td width='40%'>";
+
             if (!is_array($shortcut)) {
                 $shortcutHtml = "<kbd style='font-family:$font'>$shortcut</kbd>";
             } else {
                 $shortcutHtml = "<kbd style='font-family:$font'>".implode("</kbd>+<kbd>", $shortcut)."</kbd>";
             }
+
             Html::accessibilityHeader();
             echo "<span class='$tab' name='$tab' style='cursor: pointer;' onclick='myFunction($tab)'>$shortcutHtml</span>"; // Clicking this should edit the value in the hidden input for the HTML form.           
             echo "&nbsp;";
@@ -290,10 +300,6 @@ class Accessibility extends CommonDBTM {
             };
         ');
 
-        
-       
- 
-
         if ((!$userpref && $canedit) || ($userpref && $canedituser)) {
             echo "<tr class='tab_bg_2'>";
             echo "<td colspan='4' class='center'>";
@@ -301,11 +307,8 @@ class Accessibility extends CommonDBTM {
             echo "</td></tr>";
         }
         
-        
-
         echo "</table></div>";
         Html::closeForm();
-
 
         echo "<div id='modalForm'  tabindex='-1' role='dialog' class='ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-draggable ui-resizable' style='position: fixed; height: 150px; width: 300px; top: 30%; left: 40%; display:none;' >";
         
@@ -339,8 +342,6 @@ class Accessibility extends CommonDBTM {
 
         echo "</table>";
         echo "</div>";
-        //echo "<tr><input type='submit' id='submit_in_modal' name='submit_in_modal' class='submit' value=\""._sx('button', 'Update')."\"></tr>";
-
         echo "</div>";
     }
 }
