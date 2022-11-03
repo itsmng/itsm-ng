@@ -184,7 +184,7 @@ class Accessibility extends CommonDBTM {
 
             echo "<tr class='togshortcuts' style='display: none;' enctype='application/json'>";
             echo "<input type='hidden' id='$tab' name='$tab' value='$shortcut' >";
-            echo "<td width='40%'><label for='$tabs$rand'>" . $display . "</label></td>";
+            echo "<td width='40%'><label for='$tab$rand'>" . $display . "</label></td>";
             echo "<td width='40%'>";
             if (!is_array($shortcut)) {
                 $shortcutHtml = "<kbd style='font-family:$font'>$shortcut</kbd>";
