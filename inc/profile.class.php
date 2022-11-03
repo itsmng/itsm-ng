@@ -1756,21 +1756,6 @@ class Profile extends CommonDBTM
             'label'     => __("Edit accessibility"),
             'field'     => 'accessibility'
          ],
-         [
-            'itemtype'  => 'Accessibility',
-            'label'     => __("Change font"),
-            'field'     => 'changefont'
-         ],
-         [
-            'itemtype'  => 'Accessibility',
-            'label'     => __("Change zoom"),
-            'field'     => 'changezoom'
-         ],
-         [
-             'itemtype'  => 'Accessibility',
-             'label'     => __("Use shortcuts"),
-             'field'     => 'useshortcuts'
-         ]
       ];
 
       $matrix_options['title'] = __('Accessibility');

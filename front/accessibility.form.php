@@ -41,14 +41,13 @@ $user = new User();
 
 Session::checkLoginUser();
 
-if (isset($_POST["update"])
-    && ($_POST["id"] == Session::getLoginUserID())) {
+if (isset($_POST["update"])) {
     // Prepare user data
     $shortcuts = [];
     foreach ($_POST as $K => $V) { // Iterate KV, remove shortcuts from POST
         $shortcuts[$K] = $V;
-
     }
+
     $shortcuts = str_ireplace( array( '\'', '"', '\\'), '', $shortcuts);
     $_POST["access_custom_shortcuts"] = json_encode($shortcuts);
     $user->update($_POST);
@@ -56,6 +55,7 @@ if (isset($_POST["update"])
     Event::log($_POST["id"], "users", 5, "setup",
         //TRANS: %s is the user login
         sprintf(__('%s updates an item'), $_SESSION["glpiname"]));
+
     Html::back();
 
 } else {
