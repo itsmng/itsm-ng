@@ -309,7 +309,7 @@ $default_prefs = [
    'default_dashboard_mini_ticket'           => 'mini_tickets',
    'admin_email_noreply'                     => '',
    'admin_email_noreply_name'                => '',
-   'rocketurl'                               => '',
+   'notifications_chat'                      => '0',
    Impact::CONF_ENABLED                      => exportArrayToDB(Impact::getDefaultItemtypes())
 ];
 

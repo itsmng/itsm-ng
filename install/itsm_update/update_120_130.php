@@ -94,6 +94,13 @@ function update120to130() {
         $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
     }
 
+     // Add default notifications_chat in config
+     if (!isset($current_config['notifications_chat'])) {
+      $migration->addConfig([
+         'notifications_chat' => '0',
+      ]);
+     }
+
     /** Create new table for Open ID connect's config */
     if (!$DB->tableExists("glpi_queuednotifications")) {
         $config = "CREATE TABLE `glpi_queuednotifications` (
