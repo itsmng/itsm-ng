@@ -1,5 +1,24 @@
 # ITSM-NG Changelog
 
+## ITSM-NG - 1.3.0
+
+### Add
+
+* Add Update file for 1.3.0
+* Add chat notifications feature
+* Add accessibility feature
+
+### Updates
+
+* Update to 1.3.0
+* Improve OIDC connexion
+
+### Fixes
+
+* Remove tests dir in vendor for release (Parent project CVE fixing)
+* Fix injection on SVG file upload (Parent project CVE fixing)
+* Fix CSS XSS injection (Parent project CVE fixing)
+
 ## ITSM-NG - 1.2.0
 
 ### Add
