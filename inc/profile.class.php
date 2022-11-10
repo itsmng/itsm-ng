@@ -1792,7 +1792,6 @@ class Profile extends CommonDBTM
          echo "<form method='post' action='".$this->getFormURL()."' data-track-changes='true'>";
       }
 
-
       $matrix_options = ['canedit'       => $canedit,
             'default_class' => 'tab_bg_4'];
 
@@ -1801,21 +1800,6 @@ class Profile extends CommonDBTM
                'itemtype'  => 'Accessibility',
                'label'     => __("Edit accessibility"),
                'field'     => 'accessibility'
-            ],
-            [
-               'itemtype'  => 'Accessibility',
-               'label'     => __("Change font"),
-               'field'     => 'changefont'
-            ],
-            [
-               'itemtype'  => 'Accessibility',
-               'label'     => __("Change zoom"),
-               'field'     => 'changezoom'
-            ],
-            [
-               'itemtype'  => 'Accessibility',
-               'label'     => __("Use shortcuts"),
-               'field'     => 'useshortcuts'
             ]
       ];
 
