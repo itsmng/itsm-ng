@@ -248,13 +248,13 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
 
    $request = $DB->request('glpi_oidc_users');
    while ($data = $request->next()) {
-      if ($data['user_id'] == $_SESSION['glpiID']) {
-         if ($data['update'] == 0) {
-            Oidc::auth();
+      if(isset($_SESSION['glpiID'])) {
+         if ($data['user_id'] == $_SESSION['glpiID']) {
+            if ($data['update'] == 0) {
+               Oidc::auth();
+            } 
          }
-         
-      }
-      
+      } 
    }
 
 }

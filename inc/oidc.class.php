@@ -151,68 +151,80 @@ class Oidc extends CommonDBTM {
    static function addUserData($user_array, $id)
    {
       global $DB;
+
       $criteria = "SELECT * FROM glpi_oidc_mapping";
       $iterators = $DB->request($criteria);
+
       while ($data = $iterators->next())
          $result[] = $data;
       
-      if (isset($user_array[$result[0]["name"]]))
-         $DB->updateOrInsert("glpi_users", ['name'   => $user_array[$result[0]["name"]]], ['id'   => $id]);
-      if (isset($user_array[$result[0]["given_name"]]))
-         $DB->updateOrInsert("glpi_users", ['firstname'   => $user_array[$result[0]["given_name"]]], ['id'   => $id]);
-      if (isset($user_array[$result[0]["family_name"]]))
-         $DB->updateOrInsert("glpi_users", ['realname'   => $user_array[$result[0]["family_name"]]], ['id'   => $id]);
-      if (isset($user_array[$result[0]["picture"]]))
-         $DB->updateOrInsert("glpi_users", ['picture'   => $user_array[$result[0]["picture"]]], ['id'   => $id]);
-      if (isset($user_array[$result[0]["email"]])) {
-         $querry = "INSERT IGNORE INTO `glpi_useremails` (`id`, `users_id`, `is_default`, `is_dynamic`, `email`) VALUES ('0', '$id', '0', '0', '". $user_array[$result[0]["email"]] ."');";
-         $DB->queryOrDie($querry);
-               
-      }
-      if (isset($user_array[$result[0]["locale"]]))
-         $DB->updateOrInsert("glpi_users", ['language'   => $user_array[$result[0]["locale"]]], ['id'   => $id]);
-      if (isset($user_array[$result[0]["phone_number"]]))
-         $DB->updateOrInsert("glpi_users", ['phone'   => $user_array[$result[0]["phone_number"]]], ['id'   => $id]);
-      $DB->updateOrInsert("glpi_users", ['date_mod'   => $_SESSION["glpi_currenttime"]], ['id'   => $id]);
-      if (isset($user_array[$result[0]["group"]])) {
-         
-         foreach ($data = $user_array[$result[0]["group"]] as $value) {
-            $id_group_create = 0;
-            $request = $DB->request('glpi_groups');
-            while ($data = $request->next()) {
-               if ($data['name'] == $value) {
-                  $id_group_create = $data['id'];
-                  break;
+      if(isset($result)) {
+         if (isset($user_array[$result[0]["name"]]))
+            $DB->updateOrInsert("glpi_users", ['name'   => $user_array[$result[0]["name"]]], ['id'   => $id]);
+      
+         if (isset($user_array[$result[0]["given_name"]]))
+            $DB->updateOrInsert("glpi_users", ['firstname'   => $user_array[$result[0]["given_name"]]], ['id'   => $id]);
+
+         if (isset($user_array[$result[0]["family_name"]]))
+            $DB->updateOrInsert("glpi_users", ['realname'   => $user_array[$result[0]["family_name"]]], ['id'   => $id]);
+
+         if (isset($user_array[$result[0]["picture"]]))
+            $DB->updateOrInsert("glpi_users", ['picture'   => $user_array[$result[0]["picture"]]], ['id'   => $id]);
+
+         if (isset($user_array[$result[0]["email"]])) {
+            $querry = "INSERT IGNORE INTO `glpi_useremails` (`id`, `users_id`, `is_default`, `is_dynamic`, `email`) VALUES ('0', '$id', '0', '0', '". $user_array[$result[0]["email"]] ."');";
+            $DB->queryOrDie($querry);        
+         }
+
+         if (isset($user_array[$result[0]["locale"]]))
+            $DB->updateOrInsert("glpi_users", ['language'   => $user_array[$result[0]["locale"]]], ['id'   => $id]);
+
+         if (isset($user_array[$result[0]["phone_number"]]))
+            $DB->updateOrInsert("glpi_users", ['phone'   => $user_array[$result[0]["phone_number"]]], ['id'   => $id]);
+
+         $DB->updateOrInsert("glpi_users", ['date_mod'   => $_SESSION["glpi_currenttime"]], ['id'   => $id]);
+
+         if (isset($user_array[$result[0]["group"]])) {
+            foreach ($data = $user_array[$result[0]["group"]] as $value) {
+               $id_group_create = 0;
+               $request = $DB->request('glpi_groups');
+
+               while ($data = $request->next()) {
+                  if ($data['name'] == $value) {
+                     $id_group_create = $data['id'];
+                     break;
+                  }
                }
-            }
-            $querry = "INSERT IGNORE INTO `glpi_groups` (`id`, `name`, `completename`) VALUES ($id_group_create, '$value', '$value');";
-            $DB->queryOrDie($querry);
-            $request = $DB->request('glpi_groups');
-            while ($data = $request->next()) {
-               $id_group = $data['id'];
-               if ($data['name'] == $value) {
-                  break;
+
+               $querry = "INSERT IGNORE INTO `glpi_groups` (`id`, `name`, `completename`) VALUES ($id_group_create, '$value', '$value');";
+               $DB->queryOrDie($querry);
+               $request = $DB->request('glpi_groups');
+
+               while ($data = $request->next()) {
+                  $id_group = $data['id'];
+                  if ($data['name'] == $value) {
+                     break;
+                  }
                }
+
+               $querry = "INSERT IGNORE INTO `glpi_groups_users` (`id`, `users_id`, `groups_id`) VALUES ('0', '$id', '$id_group');";
+               $DB->queryOrDie($querry);
             }
-            $querry = "INSERT IGNORE INTO `glpi_groups_users` (`id`, `users_id`, `groups_id`) VALUES ('0', '$id', '$id_group');";
-            $DB->queryOrDie($querry);
          }
       }
+
       $request = $DB->request('glpi_oidc_users');
+
       while ($data = $request->next()) {
          $user_id = $data['id'];
-         //$update = $data['update'];
-         if ($data['user_id'] == $id)
-            $find = true;
+
+         if ($data['user_id'] == $id) $find = true;
       }
 
       if (!isset($find)) {
-
-         $DB->updateOrInsert("glpi_oidc_users", ['user_id'   => $id, 
-                                                 'update'   => 1], ['id'   => 0]);
+         $DB->updateOrInsert("glpi_oidc_users", ['user_id' => $id, 'update' => 1], ['id' => 0]);
       } else {
-         $DB->updateOrInsert("glpi_oidc_users", ['user_id'   => $id, 
-                                                 'update'   => 1], ['id'   => $user_id]);
+         $DB->updateOrInsert("glpi_oidc_users", ['user_id' => $id, 'update' => 1], ['id' => $user_id]);
       }
    }
 
@@ -222,7 +234,6 @@ class Oidc extends CommonDBTM {
     * @return void
     */
    static function showFormUserConfig() {
-
       global $DB;
 
       if (isset($_POST["config"])) {
