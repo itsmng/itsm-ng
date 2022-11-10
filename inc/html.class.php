@@ -1419,6 +1419,9 @@ class Html
          }
       }
 
+
+      Html::requireJs('hotkeys');
+      
       if (Session::getCurrentInterface() == "helpdesk") {
          echo Html::css('public/lib/jquery.rateit.css');
          Html::requireJs('rateit');
@@ -1500,7 +1503,6 @@ class Html
 
       // AJAX library
       echo Html::script('public/lib/base.js');
-      echo Html::script('js/hotkeys.js');
 
       // Locales
       $locales_domains = ['glpi' => GLPI_VERSION]; // base domain

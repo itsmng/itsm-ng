@@ -29,12 +29,15 @@
  * ---------------------------------------------------------------------
  */
  $(document).ready(function() {
-
-   $.get(CFG_GLPI.root_doc+'/ajax/hotkeys.php', {
+   var url = window.location.href;
+   
+   if(!url.includes("front/login.php")) {
+      $.get(CFG_GLPI.root_doc+'/ajax/hotkeys.php', {
        
-   }, function(html) {
-           $(document.body).append(html);
-       });
+      }, function(html) {
+              $(document.body).append(html);
+         });
+   }
 });
 /**
 * 
