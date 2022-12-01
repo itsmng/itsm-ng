@@ -270,13 +270,11 @@ class Accessibility extends CommonDBTM {
                         document.getElementById("shortcut_existant").innerHTML ="";
                         keyPressed +="+";
                         var testExistShortcut = 0;
-                        for(var i = 0; i<all_shotcuts.length; i++){
-                            let existShortcutInput = document.getElementById(all_classes[i]);
-                            // Test to find if the shotcut is already exist
-                            if(all_shotcuts.includes(keyPressed.slice(0 , -1)) || existShortcutInput.value == keyPressed.slice(0 , -1)){ 
-                                testExistShortcut++;
-                            }
+
+                        if(all_shotcuts.includes(keyPressed.slice(0, -1))){
+                            testExistShortcut++;
                         }
+
                         if(testExistShortcut == 0){
                             // Set the custom shortcut in currents fields
                             btn_submit_in_modal.addEventListener("click", function() {
