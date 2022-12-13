@@ -1596,7 +1596,7 @@ class User extends CommonDBTM {
          return false;
       }
 
-      if (is_resource($ldap_connection)) {
+      if ($ldap_connection !== false) {
          //Set all the search fields
          $this->fields['password'] = "";
 
