@@ -5802,6 +5802,7 @@ msgstr ""
 
 #: inc/change.class.php:490 inc/commonitilobject.class.php:4637
 #: inc/problem.class.php:544 inc/ticket.class.php:3484
+msgctxt "status"
 msgid "Pending"
 msgstr ""
 
