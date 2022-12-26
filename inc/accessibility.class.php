@@ -122,7 +122,7 @@ class Accessibility extends CommonDBTM {
         }
 
         echo "<div class='center' id='tabsbody'>";
-        echo "<table class='tab_cadre_fixe'>";
+        echo "<table class='tab_cadre_fixe' style='position: relative'>";
         echo "<tr><th colspan='4'>" . __('Interface') . "</th></tr>";
         echo "<tr class='tab_bg_1' >";
         echo "<td width='40%'><label for='access_zoom_level_drop$rand'>" .__('UI Scale') . "</label></td>";
