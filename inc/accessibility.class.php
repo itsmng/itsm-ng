@@ -84,7 +84,7 @@ class Accessibility extends CommonDBTM {
             $config = new self();
             $user   = new User();
             $user->computePreferences();
-            $config->showAccessForm($item->fields, false);
+            $config->showAccessForm($item->fields, true);
         }
         return true;
     }
