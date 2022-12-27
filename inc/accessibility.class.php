@@ -168,7 +168,8 @@ class Accessibility extends CommonDBTM {
         if($displayShortcut) {
             echo "<tr><th colspan='4'>" . __('Shortcuts') . "<span id ='alert_save' style='display:none; position: absolute; left: 50.5%; color: #ae0c2a; '><i>".__("Don't forget to save")."</i></span>" . " <a style='position: absolute; right: 25px; cursor: pointer; user-select: none;' onclick='\$(\".togshortcuts\").toggle(400);'>[".__("Toggle view")."]</a></th></tr>";
 
-            $shortcuts = json_decode($data["access_custom_shortcuts"], true);
+            if(is_null($data["access_custom_shortcuts"])) $shortcuts = [];
+            else $shortcuts = json_decode($data["access_custom_shortcuts"], true);
             $font = $user->fields["access_font"];
             $cpt = 1;
             $classes = [];
@@ -185,7 +186,7 @@ class Accessibility extends CommonDBTM {
             ksort($classes);
     
             foreach($classes as $tab => $display){
-                $shortcut = $shortcuts[$tab] ?? __("shif+alt+" .$cpt);
+                $shortcut = $shortcuts[$tab] ?? __("shift+alt+" .$cpt);
     
                 echo "<tr class='togshortcuts' style='display: none;' enctype='application/json'>";
                 echo "<input type='hidden' id='$tab' name='$tab' value='$shortcut' >";
