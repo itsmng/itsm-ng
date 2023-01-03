@@ -182,7 +182,6 @@ class DBmysql {
     * @return void
     */
    function connect($choice = null) {
-      error_reporting(E_ALL ^ E_DEPRECATED);
       $this->connected = false;
       $this->dbh = @new mysqli();
       $this->dbh->init();
