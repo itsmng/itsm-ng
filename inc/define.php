@@ -167,6 +167,7 @@ define("MAIL_SMTPTLS", 3);
 define("CHAT_ROCKET", 0);
 define("CHAT_SLACK", 1);
 define("CHAT_TEAMS", 2);
+define("CHAT_ZULIP", 3);
 
 
 // MESSAGE TYPE
