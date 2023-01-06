@@ -4201,6 +4201,7 @@ msgstr "En curso (planificada)"
 #: inc/problem.class.php:680 inc/ticket.class.php:3360
 #: inc/dashboard/provider.class.php:907 inc/dashboard/provider.class.php:1246
 #: inc/change.class.php:541 inc/commonitilobject.class.php:5245
+msgctxt "status"
 msgid "Pending"
 msgstr "En espera"
 
