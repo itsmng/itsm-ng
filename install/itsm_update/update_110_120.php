@@ -55,60 +55,72 @@ function update110to120() {
         `is_active`   TINYINT(1) NOT NULL DEFAULT 1,
         `color` varchar(255) DEFAULT NULL,
         PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
         $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
     }
 
+    // Insert or update "New" status
     $status = [
        'name'   => "New",
        'weight'   => 1,
        'is_active'  => 1,
        'color'  => "Default"
     ];
-    $DB->updateOrInsert("glpi_specialstatuses", $status, ['id'   => 0]);
+    $DB->updateOrInsert("glpi_specialstatuses", $status, ['id' => 1]);
+
+    // Insert or update "Processing (assigned)" status
     $status = [
        'name'   => "Processing (assigned)",
        'weight'   => 2,
        'is_active'  => 1,
        'color'  => "Default"
     ];
-    $DB->updateOrInsert("glpi_specialstatuses", $status, ['id'   => 0]);
+    $DB->updateOrInsert("glpi_specialstatuses", $status, ['id' => 2]);
+
+    // Insert or update "Processing (planned)" status
     $status = [
        'name'   => "Processing (planned)",
        'weight'   => 3,
        'is_active'  => 1,
        'color'  => "Default"
     ];
-    $DB->updateOrInsert("glpi_specialstatuses", $status, ['id'   => 0]);
+    $DB->updateOrInsert("glpi_specialstatuses", $status, ['id' => 3]);
+
+    // Insert or update "Pending" status
     $status = [
        'name'   => "Pending",
        'weight'   => 4,
        'is_active'  => 1,
        'color'  => "Default"
     ];
-    $DB->updateOrInsert("glpi_specialstatuses", $status, ['id'   => 0]);
+    $DB->updateOrInsert("glpi_specialstatuses", $status, ['id' => 4]);
+
+    // Insert or update "Solved" status
     $status = [
        'name'   => "Solved",
        'weight'   => 5,
        'is_active'  => 1,
        'color'  => "Default"
     ];
-    $DB->updateOrInsert("glpi_specialstatuses", $status, ['id'   => 0]);
+    $DB->updateOrInsert("glpi_specialstatuses", $status, ['id' => 5]);
+
+    // Insert or update "Closed" status
     $status = [
        'name'   => "Closed",
        'weight'   => 6,
        'is_active'  => 1,
        'color'  => "Default"
     ];
-    $DB->updateOrInsert("glpi_specialstatuses", $status, ['id'   => 0]);
+    $DB->updateOrInsert("glpi_specialstatuses", $status, ['id' => 6]);
 
-    $status = [
+    // Insert or update special statuses right for SA
+    $status_right = [
       'id'           => null,
       'profiles_id' => '4',
       'name'        => 'status_ticket',
       'rights'      => 23,
     ];
-    $DB->insert("glpi_profilerights", $status);
+    $DB->updateOrInsert("glpi_profilerights", $status_right, ['name' => 'status_ticket', 'profiles_id' => 4]);
    
     if (!$DB->tableExists("glpi_oidc_mapping")) {
       $config = "CREATE TABLE IF NOT EXISTS `glpi_oidc_mapping` (
