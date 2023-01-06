@@ -56,12 +56,17 @@ function update101to110() {
         `is_activate`   TINYINT(1) NOT NULL DEFAULT 0,
         `is_forced`   TINYINT(1) NOT NULL DEFAULT 0,
         PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
         $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
     }
 
-    $set = "INSERT INTO glpi_oidc_config (is_activate, is_forced) VALUES(0, 0);";
-    $DB->queryOrDie($set, $DB->error());
+    $oidc_config = [
+        "is_activate" => 0,
+        "is_forced" => 0
+    ];
+
+    // Update or insert OIDC config
+    $DB->updateOrInsert("glpi_oidc_config", $oidc_config, ['id' => 0]);
 
    /** /Create new table for Open ID connect's config */
 
