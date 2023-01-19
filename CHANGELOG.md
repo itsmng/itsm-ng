@@ -1,5 +1,33 @@
 # ITSM-NG Changelog
 
+## ITSM-NG - 1.4.0
+
+### Add
+
+* Add Update file for 1.4.0
+* Allow admin to change user accessibility shortcuts
+* Add placeholder to specify scopes input format in openid conf
+
+### Updates
+
+* Update to 1.4.0
+* Update chat integration
+* Prevent XSS on formatted user link (fix from parent)
+* Prevent XSS on generated links (Parent project CVE fixing)
+
+### Fixes
+
+* Fix SQL Injection from API (Parent project CVE fixing)
+* Fix access to debug panel (Parent project CVE fixing)
+* Fix input validation on email link (Parent project CVE fixing)
+* Fix XSS on login page
+* Fix update files for 1.1.0 and 1.2.0
+* Fix pending status translation
+* Fix accessibility shortcut modal
+* Fix logo size
+* Fix import of LDAP users
+* Fix PHP8 compatibility issue
+
 ## ITSM-NG - 1.3.0
 
 ### Add
