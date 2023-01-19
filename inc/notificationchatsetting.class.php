@@ -129,9 +129,10 @@ class NotificationChatSetting extends NotificationSetting
             $chatmoderand = mt_rand();
             $out .= "<td><label for='dropdown_chat_mode$chatmoderand'>" . __('Mode') . "</label></td><td>";
             $chat_modes = [
-                CHAT_SLACK      => __('Slack'),
                 CHAT_ROCKET     => __('Rocket chat'),
-                CHAT_TEAMS      => __('Teams')
+                CHAT_SLACK      => __('Slack'),
+                CHAT_TEAMS      => __('Teams'),
+                CHAT_ZULIP      => __('Zulip')
 
             ];
 
