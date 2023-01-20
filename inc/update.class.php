@@ -189,6 +189,8 @@ class Update extends CommonGLPI {
             update110to120();
             include_once "{$updir}update_120_130.php";
             update120to130();
+            include_once "{$updir}update_130_140.php";
+            update130to140();
             break;
          case '1.0.1':
             include_once "{$updir}update_101_110.php";
@@ -197,16 +199,26 @@ class Update extends CommonGLPI {
             update110to120();
             include_once "{$updir}update_120_130.php";
             update120to130();
+            include_once "{$updir}update_130_140.php";
+            update130to140();
             break;
          case '1.1.0':
             include_once "{$updir}update_110_120.php";
             update110to120();
             include_once "{$updir}update_120_130.php";
             update120to130();
+            include_once "{$updir}update_130_140.php";
+            update130to140();
             break;
          case '1.2.0':
             include_once "{$updir}update_120_130.php";
             update120to130();
+            include_once "{$updir}update_130_140.php";
+            update130to140();
+            break;
+         case '1.3.0':
+            include_once "{$updir}update_130_140.php";
+            update130to140();
             break;
 
          case ITSM_VERSION:
