@@ -67,7 +67,7 @@ PHP
 namespace Glpi;
 class ValidateCommand extends \\Symfony\\Component\\Console\\Command\\Command {
    protected function configure() {
-      \$this->setName('glpi:validate');
+      \$this->setName('itsmng:validate');
    }
 }
 PHP
@@ -83,7 +83,7 @@ PHP
 namespace Glpi\\Console;
 class TestCommand extends \\Symfony\\Component\\Console\\Command\\Command {
    protected function configure() {
-      \$this->setName('glpi:test');
+      \$this->setName('itsmng:test');
    }
 }
 PHP
@@ -95,7 +95,7 @@ PHP
 <?php
 class DebugCommand extends \\Symfony\\Component\\Console\\Command\\Command {
    protected function configure() {
-      \$this->setName('glpi:tools:debug');
+      \$this->setName('itsmng:tools:debug');
       \$this->setAliases(['tools:debug']);
    }
 }
@@ -229,11 +229,11 @@ PHP
       vfsStream::setup('glpi', null, $structure);
 
       $core_names_to_class = [
-         'glpi:database:install' => 'InstallCommand',
+         'itsmng:database:install' => 'InstallCommand',
          'db:install'            => 'InstallCommand',
-         'glpi:validate'         => 'Glpi\\ValidateCommand',
-         'glpi:test'             => 'Glpi\\Console\\TestCommand',
-         'glpi:tools:debug'      => 'DebugCommand',
+         'itsmng:validate'         => 'Glpi\\ValidateCommand',
+         'itsmng:test'             => 'Glpi\\Console\\TestCommand',
+         'itsmng:tools:debug'      => 'DebugCommand',
          'tools:debug'           => 'DebugCommand',
       ];
 
