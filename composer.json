@@ -1,14 +1,12 @@
 {
-    "name": "glpi/glpi",
-    "description": "GLPI dependencies",
+    "name": "itsmng/itsmng",
+    "description": "ITSM-NG dependencies",
     "license": "GPL-2.0-or-later",
     "type": "project",
-    "homepage": "http://www.glpi-project.org/",
+    "homepage": "https://www.itsm-ng.org/",
     "support": {
-        "irc": "irc://irc.freenode.org/glpi",
-        "forum": "http://forum.glpi-project.org/",
-        "issues": "https://github.com/glpi-project/glpi/issues",
-        "docs": "https://github.com/glpi-project/doc"
+        "issues": "https://github.com/itsmng/itsm-ng/issues",
+        "docs": "https://wiki.itsm-ng.org/"
     },
     "require": {
         "php": "^7.2",

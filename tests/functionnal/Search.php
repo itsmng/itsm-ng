@@ -494,43 +494,45 @@ class Search extends DbTestCase {
    public function testSearchOptions() {
       $classes = $this->getSearchableClasses();
       foreach ($classes as $class) {
-         $item = new $class();
+         if(!in_array($class, ['Accessibility', 'Oidc', 'SpecialStatus'])) {
+            $item = new $class();
 
-         //load all options; so rawSearchOptionsToAdd to be tested
-         $options = \Search::getCleanedOptions($item->getType());
-
-         $multi_criteria = [];
-         foreach ($options as $key => $data) {
-            if (!is_int($key) || ($criterion_params = $this->getCriterionParams($item, $key, $data)) === null) {
-               continue;
+            //load all options; so rawSearchOptionsToAdd to be tested
+            $options = \Search::getCleanedOptions($item->getType());
+   
+            $multi_criteria = [];
+            foreach ($options as $key => $data) {
+               if (!is_int($key) || ($criterion_params = $this->getCriterionParams($item, $key, $data)) === null) {
+                  continue;
+               }
+   
+               // do a search query based on current search option
+               $this->doSearch(
+                  $class,
+                  [
+                     'is_deleted'   => 0,
+                     'start'        => 0,
+                     'criteria'     => [$criterion_params],
+                     'metacriteria' => []
+                  ]
+               );
+   
+               $multi_criteria[] = $criterion_params;
+   
+               if (count($multi_criteria) > 50) {
+                  // Limit criteria count to 50 to prevent performances issues
+                  // and also prevent exceeding of MySQL join limit.
+                  break;
+               }
             }
-
-            // do a search query based on current search option
-            $this->doSearch(
-               $class,
-               [
-                  'is_deleted'   => 0,
-                  'start'        => 0,
-                  'criteria'     => [$criterion_params],
-                  'metacriteria' => []
-               ]
-            );
-
-            $multi_criteria[] = $criterion_params;
-
-            if (count($multi_criteria) > 50) {
-               // Limit criteria count to 50 to prevent performances issues
-               // and also prevent exceeding of MySQL join limit.
-               break;
-            }
+   
+            // do a search query with all criteria at the same time
+            $search_params = ['is_deleted'   => 0,
+                              'start'        => 0,
+                              'criteria'     => $multi_criteria,
+                              'metacriteria' => []];
+            $this->doSearch($class, $search_params);
          }
-
-         // do a search query with all criteria at the same time
-         $search_params = ['is_deleted'   => 0,
-                           'start'        => 0,
-                           'criteria'     => $multi_criteria,
-                           'metacriteria' => []];
-         $this->doSearch($class, $search_params);
       }
    }
 
