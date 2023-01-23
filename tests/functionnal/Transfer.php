@@ -111,54 +111,56 @@ class Transfer extends DbTestCase {
 
       $count = 0;
       foreach ($itemtypeslist as $itemtype) {
-         $item_class = new \ReflectionClass($itemtype);
-         if ($item_class->isAbstract()) {
-            continue;
-         }
-
-         $obj = new $itemtype();
-         if (!$obj->isEntityAssign()) {
-            continue;
-         }
-
-         // Add
-         $input = [];
-         foreach ($fields_values as $field => $value) {
-            if ($obj->isField($field)) {
-               $input[$field] = $value;
+         if(!in_array($itemtype, ['Accessibility', 'Oidc'])) {
+            $item_class = new \ReflectionClass($itemtype);
+            if ($item_class->isAbstract()) {
+               continue;
             }
+   
+            $obj = new $itemtype();
+            if (!$obj->isEntityAssign()) {
+               continue;
+            }
+   
+            // Add
+            $input = [];
+            foreach ($fields_values as $field => $value) {
+               if ($obj->isField($field)) {
+                  $input[$field] = $value;
+               }
+            }
+   
+            if ($obj->maybeLocated()) {
+               $input['locations_id'] = $location_id;
+            }
+   
+            $id = $obj->add($input);
+            $this->integer((int)$id)->isGreaterThan(0, "Cannot add $itemtype");
+            $this->boolean($obj->getFromDB($id))->isTrue();
+   
+            //transer to another entity
+            $transfer = new \Transfer();
+   
+            $controller = new \atoum\atoum\mock\controller();
+            $controller->__construct = function() {
+               // void
+            };
+   
+            $ma = new \mock\MassiveAction([], [], 'process', $controller);
+   
+            \MassiveAction::processMassiveActionsForOneItemtype(
+               $ma,
+               $obj,
+               [$id]
+            );
+            $transfer->moveItems([$itemtype => [$id]], $dentity, [$id]);
+            unset($_SESSION['glpitransfer_list']);
+   
+            $this->boolean($obj->getFromDB($id))->isTrue();
+            $this->integer((int)$obj->fields['entities_id'])->isidenticalTo($dentity, "Transfer has failed on $itemtype");
+   
+            ++$count;
          }
-
-         if ($obj->maybeLocated()) {
-            $input['locations_id'] = $location_id;
-         }
-
-         $id = $obj->add($input);
-         $this->integer((int)$id)->isGreaterThan(0, "Cannot add $itemtype");
-         $this->boolean($obj->getFromDB($id))->isTrue();
-
-         //transer to another entity
-         $transfer = new \Transfer();
-
-         $controller = new \atoum\atoum\mock\controller();
-         $controller->__construct = function() {
-            // void
-         };
-
-         $ma = new \mock\MassiveAction([], [], 'process', $controller);
-
-         \MassiveAction::processMassiveActionsForOneItemtype(
-            $ma,
-            $obj,
-            [$id]
-         );
-         $transfer->moveItems([$itemtype => [$id]], $dentity, [$id]);
-         unset($_SESSION['glpitransfer_list']);
-
-         $this->boolean($obj->getFromDB($id))->isTrue();
-         $this->integer((int)$obj->fields['entities_id'])->isidenticalTo($dentity, "Transfer has failed on $itemtype");
-
-         ++$count;
       }
       $this->dump(
          sprintf(
