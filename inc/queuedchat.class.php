@@ -281,7 +281,7 @@ class QueuedChat extends CommonDBTM
         ];
 
         $tab[] = [
-            'id'                 => '25',
+            'id'                 => '26',
             'table'              => 'glpi_queuedchats',
             'field'              => 'mode',
             'name'               => __('Mode'),
