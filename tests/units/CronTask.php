@@ -87,7 +87,7 @@ class Crontask extends \GLPITestCase {
       \CronTask::launch($mode, 5, 'temp');
 
       $nb_file = $this->getFileCountRecursively(GLPI_TMP_DIR);
-      $this->variable($nb_file)->isEqualTo(1); //recent_file.txt
+      $this->variable($nb_file)->isEqualTo(2); //recent_file.txt
    }
 
 

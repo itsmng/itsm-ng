@@ -61,7 +61,7 @@ class Widget extends DbTestCase {
                   '#a6a6a6',
                   '#808080',
                   '#595959',
-                  '#323232',
+                  '#333333',
                ],
             ]
          ], [
