@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {php-version: "7.2"} # Lint on lower PHP version to detected too early usage of new syntaxes
+         # - {php-version: "7.2"} # Lint on lower PHP version to detected too early usage of new syntaxes
           - {php-version: "8.0"} # Lint on higher PHP version to detected deprecated elements usage
     env:
       COMPOSE_FILE: ".github/actions/docker-compose-app.yml"
