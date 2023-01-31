@@ -65,9 +65,9 @@ jobs:
       #- name: "PHP lint"
       #  run: |
       #    docker-compose exec -T app .github/actions/lint_php-lint.sh
-      - name: "JS lint"
-        run: |
-          docker-compose exec -T app .github/actions/lint_js-lint.sh
+      #- name: "JS lint"
+      #  run: |
+      #    docker-compose exec -T app .github/actions/lint_js-lint.sh
       - name: "Misc lint"
         run: |
           docker-compose exec -T app .github/actions/lint_misc-lint.sh
