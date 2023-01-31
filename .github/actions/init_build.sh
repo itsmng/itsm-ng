@@ -12,4 +12,6 @@ fi
 if [[ "$PHP_MAJOR_VERSION" == "8.0" ]]; then
   COMPOSER_ADD_OPTS=--ignore-platform-reqs;
 fi
+composer update
 bin/console dependencies install --composer-options="$COMPOSER_ADD_OPTS --prefer-dist --no-progress"
+for app  manifest unknown
