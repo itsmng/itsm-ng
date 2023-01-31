@@ -5,7 +5,7 @@ on:
   # and when a new tag is created
   push:
     branches:
-      - main
+      - '**'
     tags:
        - '*'
   # Runs test suite when a PR is opened or synchronyzed
