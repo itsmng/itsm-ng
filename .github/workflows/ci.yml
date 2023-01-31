@@ -62,9 +62,9 @@ jobs:
       - name: "Install dependencies"
         run: |
           docker-compose exec -T app .github/actions/init_build.sh
-      #- name: "PHP lint"
-      #  run: |
-      #    docker-compose exec -T app .github/actions/lint_php-lint.sh
+      - name: "LDAP"
+        run: |
+          docker-compose exec -T app .github/actions/test_tests-ldap.sh
       #- name: "JS lint"
       #  run: |
       #    docker-compose exec -T app .github/actions/lint_js-lint.sh
