@@ -22,8 +22,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {php-version: "7.2"} # Lint on lower PHP version to detected too early usage of new syntaxes
-          - {php-version: "8.0"} # Lint on higher PHP version to detected deprecated elements usage
+          - {php-version: "8.0"}
+          - {php-version: "8.2"}
     env:
       COMPOSE_FILE: ".github/actions/docker-compose-app.yml"
       APPLICATION_ROOT: "${{ github.workspace }}"
@@ -95,9 +95,6 @@ jobs:
           # test higher PHP version with higher MariaDB and MySQL versions
           - {php-version: "8.0", db-image: "mariadb:10.6", always: true}
           - {php-version: "8.0", db-image: "mysql:8.0", always: true}
-          # test other DB servers/versions
-          - {php-version: "8.0", db-image: "mariadb:10.1", always: false}
-          - {php-version: "8.0", db-image: "mysql:5.6", always: false}
     env:
       # Skip jobs that should not be always run on pull requests or on push on tier repository (to limit workers usage).
       # No jobs will be skipped on nightly build, manual dispatch or push on main branches (master and */bugfixes) or tags.
