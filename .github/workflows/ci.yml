@@ -151,10 +151,10 @@ jobs:
       #  run: |
       #    .github/actions/init_initialize-old-dbs.sh
       #    docker-compose exec -T app .github/actions/test_update-from-older-version.sh
-      #- name: "Unit tests"
-      #  if: env.skip != 'true'
-      #  run: |
-      #    docker-compose exec -T app .github/actions/test_tests-units.sh
+      - name: "Unit tests"
+        if: env.skip != 'true'
+        run: |
+          docker-compose exec -T app .github/actions/test_tests-units.sh
       #- name: "Functionnal tests"
       #  if: env.skip != 'true'
       #  run: |
