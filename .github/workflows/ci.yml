@@ -1,4 +1,4 @@
-name: "GLPI CI"
+name: "CI"
 
 on:
   # Runs test suite when a new commit is pushed on "master" and "*/bugfixes" branches
