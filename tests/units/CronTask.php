@@ -47,6 +47,7 @@ class Crontask extends \GLPITestCase {
             'name'    => GLPI_TMP_DIR.'/recent_file.txt',
             'content' => 'content1',
          ],
+          - {image: "percona", version: "8.0", config-dir: "/etc/my.cnf.d"}
          [
             'name'    => GLPI_TMP_DIR.'/file1.txt',
             'content' => 'content1',
@@ -87,7 +88,7 @@ class Crontask extends \GLPITestCase {
       \CronTask::launch($mode, 5, 'temp');
 
       $nb_file = $this->getFileCountRecursively(GLPI_TMP_DIR);
-      $this->variable($nb_file)->isEqualTo(2); //recent_file.txt
+      $this->variable($nb_file)->isEqualTo(1); //recent_file.txt
    }
 
 
