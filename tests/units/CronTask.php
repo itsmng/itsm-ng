@@ -47,7 +47,6 @@ class Crontask extends \GLPITestCase {
             'name'    => GLPI_TMP_DIR.'/recent_file.txt',
             'content' => 'content1',
          ],
-          - {image: "percona", version: "8.0", config-dir: "/etc/my.cnf.d"}
          [
             'name'    => GLPI_TMP_DIR.'/file1.txt',
             'content' => 'content1',
