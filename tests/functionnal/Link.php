@@ -60,7 +60,7 @@ class Link extends DbTestCase {
             'entities_id'  => $_SESSION['glpiactive_entity'],
             'locations_id' => getItemByTypeName(\Location::class, '_location01', true),
             'networks_id'  => $network->getID(),
-            'users_id'     => getItemByTypeName(\User::class, 'glpi', true),
+            'users_id'     => getItemByTypeName(\User::class, 'itsm', true),
          ]
       );
 
