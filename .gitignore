@@ -37,3 +37,4 @@ phpunit.xml
 /public/build/
 /public/lib/
 /tests/web/error.log
+megalinter-reports/
