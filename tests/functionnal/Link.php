@@ -116,7 +116,7 @@ class Link extends DbTestCase {
             'link'     => '[LOCATION] > [SERIAL] ([USER])',
             'item'     => $item,
             'safe_url' => $safe_url,
-            'expected' => ['_location01 > ABC0004E6 (glpi)'],
+            'expected' => ['_location01 > ABC0004E6 (itsm)'],
          ];
 
          // Link that is actually a long text (it is a normal usage!)
