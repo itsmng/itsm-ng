@@ -34,7 +34,6 @@ WORKING_DIR=$(readlink -f "$(dirname $0)")
 
 # Declaration order in $TESTS_SUITES corresponds to the execution order
 TESTS_SUITES=(
-  "lint"
   "install"
   "update"
   "units"
@@ -91,14 +90,13 @@ Usage: run_tests.sh [options] [tests-suites]
 Examples:
  - run_tests.sh --all
  - run_tests.sh --build ldap imap
- - run_tests.sh lint
+ - run_tests.sh units
 
 Available options:
  --all      run all tests suites
  --build    build dependencies and translation files before running test suites
 
 Available tests suites:
- - lint
  - install
  - update
  - units
@@ -126,7 +124,7 @@ fi
 APPLICATION_ROOT=$(readlink -f "$WORKING_DIR/..")
 [[ ! -z "$APP_CONTAINER_HOME" ]] || APP_CONTAINER_HOME=$(mktemp -d -t glpi-tests-home-XXXXXXXXXX)
 [[ ! -z "$DB_IMAGE" ]] || DB_IMAGE=githubactions-mysql:8.0
-[[ ! -z "$PHP_IMAGE" ]] || PHP_IMAGE=githubactions-php:7.2
+[[ ! -z "$PHP_IMAGE" ]] || PHP_IMAGE=githubactions-php:8.0
 
 # Backup configuration files
 BACKUP_DIR=$(mktemp -d -t glpi-tests-backup-XXXXXXXXXX)
@@ -152,14 +150,6 @@ do
   echo -e "\n\e[1;30;43m Running \"$TEST_SUITE\" test suite \e[0m"
   LAST_EXIT_CODE=0
   case $TEST_SUITE in
-    "lint")
-      # Misc lint (locales and SCSS) is not executed here as their output is not configurable yet
-      # and it would be a pain to handle rolling back of their changes.
-      # TODO Add ability to simulate locales extact and SCSS compilation without actually modifying locale files.
-         docker-compose exec -T app .github/actions/lint_php-lint.sh \
-      && docker-compose exec -T app .github/actions/lint_js-lint.sh \
-      || LAST_EXIT_CODE=$?
-      ;;
     "install")
          docker-compose exec -T app .github/actions/test_install.sh \
       || LAST_EXIT_CODE=$?
