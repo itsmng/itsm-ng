@@ -150,10 +150,10 @@ jobs:
         if: env.skip != 'true'
         run: |
           docker-compose exec -T app .github/actions/test_tests-web.sh    
-      #- name: "Functionnal tests"
-      #  if: env.skip != 'true'
-      #  run: |
-      #    docker-compose exec -T app .github/actions/test_tests-functionnal.sh
+      - name: "Functionnal tests"
+        if: env.skip != 'true'
+        run: |
+          docker-compose exec -T app .github/actions/test_tests-functionnal.sh
       #- name: "LDAP tests"
       #  if: env.skip != 'true'
       #  run: |
@@ -164,10 +164,6 @@ jobs:
       #  run: |
       #    .github/actions/init_initialize-imap-fixtures.sh
       #    docker-compose exec -T app .github/actions/test_tests-imap.sh
-      #- name: "WEB tests"
-      #  if: env.skip != 'true'
-      #  run: |
-      #    docker-compose exec -T app .github/actions/test_tests-web.sh
       - name: "Cleanup containers"
         if: env.skip != 'true' && always()
         run: |
