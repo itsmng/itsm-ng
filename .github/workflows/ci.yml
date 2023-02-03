@@ -137,11 +137,11 @@ jobs:
         if: env.skip != 'true'
         run: |
           docker-compose exec -T app .github/actions/test_install.sh
-      #- name: "Update DB tests"
-      #  if: env.skip != 'true'
-      #  run: |
-      #    .github/actions/init_initialize-old-dbs.sh
-      #    docker-compose exec -T app .github/actions/test_update-from-older-version.sh
+      - name: "Update DB tests"
+        if: env.skip != 'true'
+        run: |
+          .github/actions/init_initialize-old-dbs.sh
+          docker-compose exec -T app .github/actions/test_update-from-older-version.sh
       - name: "Unit tests"
         if: env.skip != 'true'
         run: |
