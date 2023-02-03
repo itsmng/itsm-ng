@@ -30,7 +30,8 @@ jobs:
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
           fetch-depth: 0 # If you use VALIDATE_ALL_CODEBASE = true, you can remove this line to improve performances
-
+      - name: Install dependencies
+        uses: php-actions/composer@v6
       # MegaLinter
       - name: MegaLinter
         id: ml
