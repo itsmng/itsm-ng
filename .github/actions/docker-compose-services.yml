@@ -8,9 +8,9 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: "itsm"
     shm_size: '1gb'
-  dovecot:
-    container_name: "dovecot"
-    image: "ghcr.io/minzords/githubactions-dovecot"
-  openldap:
-    container_name: "openldap"
-    image: "ghcr.io/minzords/githubactions-openldap"
+  #dovecot:
+  #  container_name: "dovecot"
+  #  image: "ghcr.io/minzords/githubactions-dovecot"
+  #openldap:
+  #  container_name: "openldap"
+  #  image: "ghcr.io/minzords/githubactions-openldap"
