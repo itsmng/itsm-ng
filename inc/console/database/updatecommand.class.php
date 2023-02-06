@@ -114,8 +114,8 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
       $currents                  = $update->getCurrents();
       $current_version           = $currents['version'];
       $current_db_version        = $currents['dbversion'];
-      $itsm_current_version      = $currents['itsmversion'];
-      $itsm_current_db_version   = $currents['itsmdbversion'];
+      $itsm_current_version      = $currents['itsmversion'] ?? '1.0.0';
+      $itsm_current_db_version   = $currents['itsmdbversion'] ?? '1.0.0';
 
       global $migration; // Migration scripts are using global migrations
       $migration = new Migration(GLPI_SCHEMA_VERSION);

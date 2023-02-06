@@ -142,8 +142,8 @@ class Update extends CommonGLPI {
       $this->language      = $currents['language'];
 
       // Init ITSM-NG version
-      $this->itsmversion   = $currents['itsmversion'];
-      $this->itsmdbversion = $currents['itsmdbversion'];
+      $this->itsmversion   = $currents['itsmversion'] ?? '1.0.0';
+      $this->itsmdbversion = $currents['itsmdbversion'] ?? '1.0.0';
 
       return $currents;
    }
