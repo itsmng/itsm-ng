@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<psalm
+    resolveFromConfigFile="true"
+>
+    <projectFiles>
+        <file name="index.php" />
+    </projectFiles>
+</psalm>

@@ -1,0 +1,7 @@
+parameters:
+    paths:
+        - ajax
+        - inc
+    level: 9
+    ignoreErrors:
+    checkGenericClassInNonGenericObjectType: false
