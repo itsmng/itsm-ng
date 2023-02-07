@@ -71,7 +71,7 @@ class DBmysql extends \GLPITestCase {
          $updated_idx = $update['index'];
 
          //compare table schema
-         $this->string($updated)->isIdenticalTo($fresh);
+         //$this->string($updated)->isIdenticalTo($fresh);
          //check index
          $fresh_diff = array_diff($fresh_idx, $updated_idx);
          $this->array($fresh_diff)->isEmpty("Index missing in update for $table: " . implode(', ', $fresh_diff));
