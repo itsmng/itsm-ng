@@ -139,7 +139,7 @@ name:     Test computer
 serial:   ABC0004E6/X0000015
 location: _location01 (1)
 domain:   domain1.tld (LAN)
-owner:    glpi
+owner:    itsm
 TEXT
                ,
             ],
