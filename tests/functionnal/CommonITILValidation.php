@@ -48,7 +48,7 @@ class CommonITILValidation extends DbTestCase {
       ]);
       $this->integer($gid)->isGreaterThan(0);
 
-      $uid1 = getItemByTypeName('User', 'glpi', true);
+      $uid1 = getItemByTypeName('User', 'itsm', true);
       $uid2 = getItemByTypeName('User', 'tech', true);
       $user = new \User();
       $uid3 = (int)$user->add([
@@ -174,14 +174,14 @@ class CommonITILValidation extends DbTestCase {
       $this->boolean($ticket->getFromDB($tid))->isTrue();
       $this->integer((int)$ticket->getField('global_validation'))->isEqualTo(\CommonITILValidation::WAITING);
 
-      $this->login('glpi', 'glpi');
+      $this->login('itsm', 'itsm');
       $ticket->getFromDB($tid);
 
       $validation = new \TicketValidation();
       $this->boolean(
          $validation->getFromDBByCrit([
             'tickets_id'         => $tid,
-            'users_id_validate'  => getItemByTypeName('User', 'glpi', true)
+            'users_id_validate'  => getItemByTypeName('User', 'itsm', true)
          ])
       )->isTrue();
 
@@ -201,7 +201,7 @@ class CommonITILValidation extends DbTestCase {
       $this->boolean(
          $validation->getFromDBByCrit([
             'tickets_id'         => $tickets_id,
-            'users_id_validate'  => getItemByTypeName('User', 'glpi', true)
+            'users_id_validate'  => getItemByTypeName('User', 'itsm', true)
          ])
       )->isTrue();
 
@@ -253,7 +253,7 @@ class CommonITILValidation extends DbTestCase {
       $this->boolean(
          $validation->getFromDBByCrit([
             'tickets_id'         => $tickets_id,
-            'users_id_validate'  => getItemByTypeName('User', 'glpi', true)
+            'users_id_validate'  => getItemByTypeName('User', 'itsm', true)
          ])
       )->isTrue();
 
