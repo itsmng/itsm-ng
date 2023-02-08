@@ -1,4 +1,4 @@
-path: [ajax,inc]
+path: [ajax,front,inc]
 jobs: 5
 extensions:
   - php
