@@ -146,10 +146,10 @@ jobs:
         if: env.skip != 'true'
         run: |
           docker-compose exec -T app .github/actions/test_tests-units.sh
-      #- name: "Web tests"
-      #  if: env.skip != 'true'
-      #  run: |
-      #    docker-compose exec -T app .github/actions/test_tests-web.sh    
+      - name: "Web tests"
+        if: env.skip != 'true'
+        run: |
+          docker-compose exec -T app .github/actions/test_tests-web.sh    
       #- name: "Functionnal tests"
       #  if: env.skip != 'true'
       #  run: |
