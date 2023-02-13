@@ -93,7 +93,7 @@ jobs:
     env:
       # Skip jobs that should not be always run on pull requests or on push on tier repository (to limit workers usage).
       # No jobs will be skipped on nightly build, manual dispatch or push on main branches (master and */bugfixes) or tags.
-      skip: ${{ matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'itsmng/itsm-ng') || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master') || startsWith(github.ref, 'refs/tags'))) }}
+      skip: ${{ matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'itsmng/itsm-ng' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags'))) }}
       COMPOSE_FILE: ".github/actions/docker-compose-app.yml:.github/actions/docker-compose-services.yml"
       APPLICATION_ROOT: "${{ github.workspace }}"
       DB_IMAGE: "githubactions-${{ matrix.db-image }}"
