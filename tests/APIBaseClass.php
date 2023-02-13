@@ -820,7 +820,7 @@ abstract class APIBaseClass extends atoum {
       $data = $this->query('getItems',
                            ['itemtype' => 'User',
                             'headers'  => ['Session-Token' => $this->session_token],
-                            'query'    => ['searchText' => ['name' => 'gl']]]);
+                            'query'    => ['searchText' => ['name' => 'it']]]);
 
       $this->variable($data)->isNotFalse();
 
