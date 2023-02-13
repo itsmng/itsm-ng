@@ -16,7 +16,7 @@ on:
 jobs:
   lint:
     # Do not run scheduled lint on tier repositories
-    if: github.repository == 'itsmng/itsm-ng' || github.event_name != 'schedule'
+    if: github.repository == 'itsmng/itsm-ng'
     name: "Lint on PHP ${{ matrix.php-version }}"
     # Choose Ubuntu docker image
     runs-on: ubuntu-latest
@@ -80,7 +80,7 @@ jobs:
 
   tests:
     # Do not run scheduled tests on tier repositories
-    if: github.repository == 'minzords/itsm-ng' || github.event_name != 'schedule'
+    if: github.repository == 'minzords/itsm-ng'
     name: "Test on PHP ${{ matrix.php-version }} using ${{ matrix.db-image }}"
     runs-on: ubuntu-latest
     strategy:
