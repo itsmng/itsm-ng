@@ -79,7 +79,7 @@ jobs:
           .github/actions/teardown_containers-cleanup.sh
 
   tests:
-    if: github.repository == 'minzords/itsm-ng'
+    if: github.repository == 'itsmng/itsm-ng'
     name: "Test on PHP ${{ matrix.php-version }} using ${{ matrix.db-image }}"
     runs-on: ubuntu-latest
     strategy:
@@ -90,7 +90,7 @@ jobs:
           - {php-version: "8.0", db-image: "mariadb:10.9", always: true}
           - {php-version: "8.0", db-image: "mysql:8.0", always: true}
     env:
-    if: github.repository == 'itsmng/itsm-ng'
+      if: github.repository == 'itsmng/itsm-ng'
       # Skip jobs that should not be always run on pull requests or on push on tier repository (to limit workers usage).
       # No jobs will be skipped on nightly build, manual dispatch or push on main branches (master and */bugfixes) or tags.
       skip: ${{ matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'itsmng/itsm-ng' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags'))) }}
