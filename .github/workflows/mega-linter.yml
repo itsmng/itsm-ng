@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   build:
-    if: github.repository == 'minzords/itsm-ng' || github.event_name != 'schedule'
+    if: github.repository == 'itsmng/itsm-ng'
     name: MegaLinter
     runs-on: ubuntu-latest
     steps:
