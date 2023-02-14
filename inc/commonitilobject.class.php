@@ -6625,7 +6625,7 @@ abstract class CommonITILObject extends CommonDBTM {
       $user = new User();
       $user->getFromDB(Session::getLoginUserID());
 
-      $font = "Bitstream Vera Sans";
+      $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
       if (Session::haveRight("accessibility", READ)) {
           $font = $user->fields["access_font"];
       }
@@ -6667,7 +6667,7 @@ abstract class CommonITILObject extends CommonDBTM {
    function showTimelineHeader() {
       $user = new User();
       $user->getFromDB(Session::getLoginUserID());
-      $font = "Bitstream Vera Sans";
+      $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
       if (Session::haveRight("accessibility", READ)) {
           $font = $user->fields["access_font"];
       }
@@ -6804,7 +6804,7 @@ abstract class CommonITILObject extends CommonDBTM {
       $user->getFromDB(Session::getLoginUserID());
 
       $canuse_shortcuts = $user->fields['access_shortcuts'];
-      $font = "Bitstream Vera Sans";
+      $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
       if (Session::haveRight("accessibility", READ)) {
          $font = $user->fields["access_font"];
       }
@@ -7169,7 +7169,7 @@ abstract class CommonITILObject extends CommonDBTM {
       $thisUser = new User();
       $thisUser->getFromDB(Session::getLoginUserID());
 
-      $font = "Bitstream Vera Sans";
+      $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
       if (Session::haveRight("accessibility", READ)) {
          $font = $thisUser->fields["access_font"];
       }
