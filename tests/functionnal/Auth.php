@@ -67,7 +67,7 @@ class Auth extends DbTestCase {
       $methods = \Auth::getLoginAuthMethods();
       $expected = [
          '_default'  => 'local',
-         'local'     => 'GLPI internal database'
+         'local'     => 'ITSM-NG internal database'
       ];
       $this->array($methods)->isIdenticalTo($expected);
    }

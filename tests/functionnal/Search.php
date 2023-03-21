@@ -468,7 +468,7 @@ class Search extends DbTestCase {
                                            1 => ['link'       => 'AND',
                                                  'field'      => '1',
                                                  'searchtype' => 'contains',
-                                                 'value'      => 'glpi'],
+                                                 'value'      => 'itsm'],
                                            // entity
                                            2 => ['link'       => 'AND',
                                                  'field'      => '80',

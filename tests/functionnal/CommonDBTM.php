@@ -435,7 +435,7 @@ class CommonDBTM extends DbTestCase {
       $this->integer($id[3])->isGreaterThan(0);
 
       // Super admin
-      $this->login('glpi', 'glpi');
+      $this->login('itsm', 'itsm');
       $this->variable($_SESSION['glpiactiveprofile']['id'])->isEqualTo(4);
       $this->variable($_SESSION['glpiactiveprofile']['printer'])->isEqualTo(255);
 
@@ -502,7 +502,7 @@ class CommonDBTM extends DbTestCase {
       $ent2 = getItemByTypeName('Entity', '_test_child_2', true);
 
       // Super admin
-      $this->login('glpi', 'glpi');
+      $this->login('itsm', 'itsm');
       $this->variable($_SESSION['glpiactiveprofile']['id'])->isEqualTo(4);
       $this->variable($_SESSION['glpiactiveprofile']['contact_enterprise'])->isEqualTo(255);
 

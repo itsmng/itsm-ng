@@ -167,7 +167,7 @@ class KnowbaseItem_Comment extends DbTestCase {
 
       //same tests, from another user
       $auth = new \Auth();
-      $result = $auth->login('glpi', 'glpi', true);
+      $result = $auth->login('itsm', 'itsm', true);
       $this->boolean($result)->isTrue();
 
       $html = \KnowbaseItem_Comment::displayComments(

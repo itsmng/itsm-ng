@@ -499,7 +499,7 @@ class Document extends DbTestCase {
     */
    public function testCanViewItilFile($itemtype) {
 
-      $this->login('glpi', 'glpi'); // Login with glpi to prevent link to post-only
+      $this->login('itsm', 'itsm'); // Login with glpi to prevent link to post-only
 
       $basicDocument = new \Document();
       $this->integer(
@@ -622,7 +622,7 @@ class Document extends DbTestCase {
     */
    public function testCanViewTicketChildFile($itil_itemtype, $child_itemtype) {
 
-      $this->login('glpi', 'glpi'); // Login with glpi to prevent link to post-only
+      $this->login('itsm', 'itsm'); // Login with glpi to prevent link to post-only
 
       $inlinedDocument = new \Document();
       $this->integer(

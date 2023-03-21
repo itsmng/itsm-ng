@@ -251,8 +251,8 @@ class Server extends DbTestCase {
       $dataset[] = [
          'path'             => 'calendars/users/',
          'expected_results' => $expected_results,
-         'login'            => 'glpi',
-         'pass'             => 'glpi',
+         'login'            => 'itsm',
+         'pass'             => 'itsm',
       ];
       foreach ($users as $user_data) {
          $dataset[] = [

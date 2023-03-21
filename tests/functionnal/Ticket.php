@@ -3650,7 +3650,7 @@ HTML
       $this->login();
 
       // Existing ursers from databaser
-      $users_id_1 = getItemByTypeName(User::class, "glpi", true);
+      $users_id_1 = getItemByTypeName(User::class, "itsm", true);
       $users_id_2 = getItemByTypeName(User::class, "tech", true);
 
       // Tickets to create before tests

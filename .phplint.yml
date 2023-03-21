@@ -1,0 +1,7 @@
+path: [ajax,front,inc]
+jobs: 5
+extensions:
+  - php
+exclude: []
+warning: false
+memory_limit: -1

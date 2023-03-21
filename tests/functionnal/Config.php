@@ -406,7 +406,7 @@ class Config extends DbTestCase {
 
    public function testGetPalettes() {
       $expected = [
-         'itsmng'          => 'ITSM-NG',
+         'itsmng'          => 'Itsmng',
          'dark'            => 'Dark',
          'flood'           => 'Flood',
       ];

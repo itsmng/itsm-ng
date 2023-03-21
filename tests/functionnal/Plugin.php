@@ -113,7 +113,7 @@ class Plugin extends DbTestCase {
          function () use ($plugin, $infos) {
             $this->boolean($plugin->checkGlpiVersion($infos))->isFalse();
          }
-      )->isIdenticalTo('This plugin requires GLPI >= 0.90.');
+      )->isIdenticalTo('This plugin requires ITSM-NG >= 0.90.');
 
       $this->calling($plugin)->isGlpiPrever = true;
       $this->calling($plugin)->getGlpiPrever = '0.89';
@@ -122,7 +122,7 @@ class Plugin extends DbTestCase {
          function () use ($plugin, $infos) {
             $this->boolean($plugin->checkGlpiVersion($infos))->isFalse();
          }
-      )->isIdenticalTo('This plugin requires GLPI >= 0.90.');
+      )->isIdenticalTo('This plugin requires ITSM-NG >= 0.90.');
 
       // Test max compatibility
       $infos = ['max' => '9.3'];
@@ -142,7 +142,7 @@ class Plugin extends DbTestCase {
          function () use ($plugin, $infos) {
             $this->boolean($plugin->checkGlpiVersion($infos))->isFalse();
          }
-      )->isIdenticalTo('This plugin requires GLPI < 9.3.');
+      )->isIdenticalTo('This plugin requires ITSM-NG < 9.3.');
 
       $this->calling($plugin)->isGlpiPrever = true;
       $this->calling($plugin)->getGlpiPrever = '9.3';
@@ -151,7 +151,7 @@ class Plugin extends DbTestCase {
          function () use ($plugin, $infos) {
             $this->boolean($plugin->checkGlpiVersion($infos))->isFalse();
          }
-      )->isIdenticalTo('This plugin requires GLPI < 9.3.');
+      )->isIdenticalTo('This plugin requires ITSM-NG < 9.3.');
 
       // Test min and max compatibility
       $infos = ['min' => '0.90', 'max' => '9.3'];
@@ -171,7 +171,7 @@ class Plugin extends DbTestCase {
          function () use ($plugin, $infos) {
             $this->boolean($plugin->checkGlpiVersion($infos, true))->isFalse();
          }
-      )->isIdenticalTo('This plugin requires GLPI >= 0.90 and < 9.3.');
+      )->isIdenticalTo('This plugin requires ITSM-NG >= 0.90 and < 9.3.');
 
       $this->calling($plugin)->isGlpiPrever = true;
       $this->calling($plugin)->getGlpiPrever = '0.89';
@@ -180,7 +180,7 @@ class Plugin extends DbTestCase {
          function () use ($plugin, $infos) {
             $this->boolean($plugin->checkGlpiVersion($infos))->isFalse();
          }
-      )->isIdenticalTo('This plugin requires GLPI >= 0.90 and < 9.3.');
+      )->isIdenticalTo('This plugin requires ITSM-NG >= 0.90 and < 9.3.');
 
       $this->calling($plugin)->isGlpiPrever = false;
       $this->calling($plugin)->getGlpiVersion = '9.3';
@@ -188,7 +188,7 @@ class Plugin extends DbTestCase {
          function () use ($plugin, $infos) {
             $this->boolean($plugin->checkGlpiVersion($infos))->isFalse();
          }
-      )->isIdenticalTo('This plugin requires GLPI >= 0.90 and < 9.3.');
+      )->isIdenticalTo('This plugin requires ITSM-NG >= 0.90 and < 9.3.');
 
       $this->calling($plugin)->isGlpiPrever = true;
       $this->calling($plugin)->getGlpiPrever = '9.3';
@@ -197,7 +197,7 @@ class Plugin extends DbTestCase {
          function () use ($plugin, $infos) {
             $this->boolean($plugin->checkGlpiVersion($infos))->isFalse();
          }
-      )->isIdenticalTo('This plugin requires GLPI >= 0.90 and < 9.3.');
+      )->isIdenticalTo('This plugin requires ITSM-NG >= 0.90 and < 9.3.');
    }
 
    public function testcheckPhpVersion() {
@@ -257,21 +257,21 @@ class Plugin extends DbTestCase {
          function () use ($plugin, $params) {
             $this->boolean($plugin->checkGlpiParameters($params))->isFalse();
          }
-      )->isIdenticalTo('This plugin requires GLPI parameter my_param<br/>');
+      )->isIdenticalTo('This plugin requires ITSM-NG parameter my_param<br/>');
 
       $CFG_GLPI['my_param'] = '';
       $this->output(
          function () use ($plugin, $params) {
             $this->boolean($plugin->checkGlpiParameters($params))->isFalse();
          }
-      )->isIdenticalTo('This plugin requires GLPI parameter my_param<br/>');
+      )->isIdenticalTo('This plugin requires ITSM-NG parameter my_param<br/>');
 
       $CFG_GLPI['my_param'] = '0';
       $this->output(
          function () use ($plugin, $params) {
             $this->boolean($plugin->checkGlpiParameters($params))->isFalse();
          }
-      )->isIdenticalTo('This plugin requires GLPI parameter my_param<br/>');
+      )->isIdenticalTo('This plugin requires ITSM-NG parameter my_param<br/>');
 
       $CFG_GLPI['my_param'] = 'abc';
       $this->output(

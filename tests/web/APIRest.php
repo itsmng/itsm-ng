@@ -452,7 +452,7 @@ class APIRest extends APIBaseClass {
    public function testUserPicture() {
       $pic = "test_picture.png";
       $params = ['headers' => ['Session-Token' => $this->session_token]];
-      $id = getItemByTypeName('User', 'glpi', true);
+      $id = getItemByTypeName('User', 'itsm', true);
       $user = new \User();
 
       /**

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<psalm
+        totallyTyped="true"
+        resolveFromConfigFile="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config"
+>
+    <projectFiles>
+        <directory name="ajax"/>
+        <directory name="front"/>
+        <directory name="inc"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+            <directory name="tests"/>
+            <directory name="plugins"/>
+            <directory name="scripts"/>
+            <directory name="tools"/>
+            <directory name="lib"/>
+            <directory name="install"/>
+
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+    
+    </issueHandlers>
+</psalm>

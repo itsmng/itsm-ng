@@ -60,7 +60,7 @@ class Link extends DbTestCase {
             'entities_id'  => $_SESSION['glpiactive_entity'],
             'locations_id' => getItemByTypeName(\Location::class, '_location01', true),
             'networks_id'  => $network->getID(),
-            'users_id'     => getItemByTypeName(\User::class, 'glpi', true),
+            'users_id'     => getItemByTypeName(\User::class, 'itsm', true),
          ]
       );
 
@@ -116,7 +116,7 @@ class Link extends DbTestCase {
             'link'     => '[LOCATION] > [SERIAL] ([USER])',
             'item'     => $item,
             'safe_url' => $safe_url,
-            'expected' => ['_location01 > ABC0004E6 (glpi)'],
+            'expected' => ['_location01 > ABC0004E6 (itsm)'],
          ];
 
          // Link that is actually a long text (it is a normal usage!)
@@ -139,7 +139,7 @@ name:     Test computer
 serial:   ABC0004E6/X0000015
 location: _location01 (1)
 domain:   domain1.tld (LAN)
-owner:    glpi
+owner:    itsm
 TEXT
                ,
             ],

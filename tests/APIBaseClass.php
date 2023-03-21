@@ -820,7 +820,7 @@ abstract class APIBaseClass extends atoum {
       $data = $this->query('getItems',
                            ['itemtype' => 'User',
                             'headers'  => ['Session-Token' => $this->session_token],
-                            'query'    => ['searchText' => ['name' => 'gl']]]);
+                            'query'    => ['searchText' => ['name' => 'it']]]);
 
       $this->variable($data)->isNotFalse();
 
@@ -833,7 +833,7 @@ abstract class APIBaseClass extends atoum {
          ->hasKey('id')
          ->hasKey('name');
 
-      $this->string($data[0]['name'])->isIdenticalTo('glpi');
+      $this->string($data[0]['name'])->isIdenticalTo('itsm');
 
       // Test only_id param
       $data = $this->query('getItems',
