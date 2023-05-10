@@ -53,7 +53,21 @@ final class URL
 
       $url = trim($url);
 
-      if (preg_match('/^javascript:/i', $url)) {
+      $url_begin_patterns = [
+         // scheme followed by `//` and a hostname (absolute URL)
+         '[a-z]+:\/\/.+',
+         // `/` that corresponds to either start of a network path (e.g. `//host/path/to/file`)
+         // or a relative URL (e.g. `/`, `/path/to/page`, or `//anothersite.org/`)
+         '\/',
+      ];
+      $url_pattern = '/^(' . implode('|', $url_begin_patterns) . ')/i';
+      if (preg_match($url_pattern, $url) !== 1) {
+         return '';
+      }
+
+      $js_pattern = '/^javascript:/i';
+
+      if (preg_match($js_pattern, $url)) {
          return '';
       }
 
