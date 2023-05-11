@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
 # /**
 #  * ---------------------------------------------------------------------
 #  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -93,7 +93,7 @@ git --git-dir="$SOURCE_DIR/.git" checkout-index --all --force --prefix="$WORKING
 
 if [[ ! $ASSUME_YES = 1 ]]
 then
-    FOUND_VERSION=$(grep -Eo "define\('GLPI_VERSION', '[^']+'\);" $WORKING_DIR/itsm-ng/inc/define.php | sed "s/define('GLPI_VERSION', '\([^)]*\)');/\1/")
+    FOUND_VERSION=$(grep -Eo "define\('ITSM_VERSION', '[^']+'\);" $WORKING_DIR/itsm-ng/inc/define.php | sed "s/define('ITSM_VERSION', '\([^)]*\)');/\1/")
     if [[ ! "$RELEASE" = "$FOUND_VERSION" ]]
     then
         read -p "$RELEASE does not match version $FOUND_VERSION declared in inc/define.php. Do you want to continue? [Y/n] " -n 1 -r
@@ -106,7 +106,7 @@ then
 fi
 
 echo "Building application"
-$WORKING_DIR/itsm-ng/tools/build_glpi.sh
+$WORKING_DIR/itsm-ng/tools/build_itsm.sh
 
 echo "Creating tarball";
 tar -c -z -f $TARBALL_PATH -C $WORKING_DIR itsm-ng
