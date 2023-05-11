@@ -1,5 +1,27 @@
 # ITSM-NG Changelog
 
+## ITSM-NG - 1.5.0
+
+### Add
+
+* Add phpCAS 1.5 compatibility
+
+### Fixes
+
+* Fix dark palette logo
+* Fix font family if user doesn't use accessibility feature
+* Fix PHP 8.2 warning
+* Fix prevent xss on browse views (Parent fixing)
+* Fix escape external links URLs (Parent fixing)
+* Fix rights checks in export feature (Parent fixing)
+* Fix sanitize help URL (Parent fixing)
+* Fix ensure emails are always attached to current user (Parent fixing)
+* Fix prevent SQL injection (Parent fixing)
+* Fix prevent XSS through dashboard (Parent fixing)
+* Fix prevent XSS on external links (Parent fixing)
+* Fix prevent XSS on search button (Parent fixing)
+* Fix remove RSS feeds autodiscovery (Parent fixing)
+
 ## ITSM-NG - 1.4.0
 
 ### Add
