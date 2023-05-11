@@ -479,8 +479,18 @@ class Auth extends CommonGLPI {
                return false;
             }
 
-            phpCAS::client(constant($CFG_GLPI["cas_version"]), $CFG_GLPI["cas_host"], intval($CFG_GLPI["cas_port"]),
-                           $CFG_GLPI["cas_uri"], false);
+            if (phpCAS::getVersion() >= "1.5.0") { 
+               if ($_SERVER['SERVER_PORT'] == "443") { 
+                  $VD_service_base_url = "https://".$_SERVER['SERVER_NAME']; 
+               } else { 
+                  $VD_service_base_url = "http://".$_SERVER['SERVER_NAME']; 
+               } 
+               phpCAS::client(constant($CFG_GLPI["cas_version"]), $CFG_GLPI["cas_host"], intval($CFG_GLPI["cas_port"]), 
+               $CFG_GLPI["cas_uri"], $VD_service_base_url, false); 
+            } else { 
+               phpCAS::client(constant($CFG_GLPI["cas_version"]), $CFG_GLPI["cas_host"], intval($CFG_GLPI["cas_port"]), 
+               $CFG_GLPI["cas_uri"], false); 
+            }
 
             // no SSL validation for the CAS server
             phpCAS::setNoCasServerValidation();
