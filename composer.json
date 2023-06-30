@@ -9,7 +9,7 @@
         "docs": "https://wiki.itsm-ng.org/"
     },
     "require": {
-        "php": "^7.2",
+        "php": ">=7.2",
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-fileinfo": "*",
@@ -53,7 +53,7 @@
         "tecnickcom/tcpdf": "^6.2",
         "true/punycode": "^2.1",
         "wapmorgan/unified-archive": "^1.0",
-        "smarty/smarty": "^3.1"
+        "twig/twig": "^3.3"
     },
     "require-dev": {
         "ext-xml": "*",
@@ -78,7 +78,7 @@
     "config": {
         "optimize-autoloader": true,
         "platform": {
-            "php": "7.2.0"
+            "php": "7.4.0"
         },
         "sort-packages": true
     },
