@@ -56,11 +56,19 @@ class Oidc extends CommonDBTM {
           $oidc_db['ClientID'] = $iterator['ClientID'];
           $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
           $oidc_db['scope'] = explode(',', addslashes(str_replace(' ', '', $iterator['scope'])));
+          $oidc_db['proxy'] = $iterator['proxy'];
+          $oidc_db['cert'] = $iterator['cert'];
       }
 
       $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
       if (is_array($oidc_db['scope'])) {
          $oidc->addScope($oidc_db['scope']);
+      }
+      if (isset($oidc_db['proxy']) && $oidc_db['proxy'] != '') {
+         $oidc->setHttpProxy($oidc_db['proxy']);
+      }
+      if (isset($oidc_db['cert']) && $oidc_db['proxy'] != '' && file_exists($oidc_db['cert'])) {
+         $oidc->setCertPath($oidc_db['cert']);
       }
       $oidc->setHttpUpgradeInsecureRequests(false);
       try {
