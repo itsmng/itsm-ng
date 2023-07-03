@@ -390,12 +390,13 @@ if (!file_exists(GLPI_ROOT . '/public/lib')) {
 }
 
 if ($needrun) {
-   $deps_install_msg = 'Application dependencies are not up to date.' . PHP_EOL
-      . 'Run "php bin/console dependencies install" in the glpi tree to fix this.' . PHP_EOL;
+   $deps_install_msg[] = 'Application dependencies are not up to date.';
+   $deps_install_msg[] = 'Run "php bin/console dependencies install" in the ITSM-NG tree to fix this.';
    if (isCommandLine()) {
-      echo $deps_install_msg;
+      echo implode(PHP_EOL,$deps_install_msg);
    } else {
-      echo nl2br($deps_install_msg);
+      $msg=$deps_install_msg;
+      require_once("front/error.php");
    }
    die(1);
 }
