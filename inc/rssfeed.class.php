@@ -790,7 +790,7 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
             echo Html::convDateTime($item->get_date('Y-m-d H:i:s'));
             echo "</td><td>";
             if (!empty($link)) {
-               echo '<a target="_blank" href="' . htmlspecialchars($link) . '">'.$item->get_title().'</a>';
+               echo '<a target="_blank" href="' . str_replace("&amp;", "&", htmlspecialchars($link)) . '">'.$item->get_title().'</a>';
             } else {
                echo $item->get_title();
             }
