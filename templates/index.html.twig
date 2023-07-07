@@ -1,0 +1,30 @@
+
+{% import "form.macro.twig" as forms %}
+{% include "header.html.twig" with  {'step': step} %}
+
+{% if step == 'languages' %}
+    {% include "language.html.twig" with {'languages' : languages, 'preferred_language' : preferred_language} %}
+{% elseif step == 'license' %}
+    {% include "license.html.twig" with {'license' : license} %}
+{% elseif step == 'install' %}
+    {% include "install.html.twig" %}
+{% elseif step == 0 %}
+    {% include "step0.html.twig" with {'requirements' : requirements, 'passed': passed} %}
+{% elseif step == 1 %}
+    {% include "step1.html.twig"  with {'host' : host, 'user' : user} %}
+{% elseif step == 2 %}
+    {% include "step2.html.twig" with { 'host' :            host,               'user' :    user,                  
+                                        'connect_error' :   connect_error,      'version' : version,    
+                                        'ver_too_old' :     ver_too_old,        'action' :  action,
+                                        'databases' :       databases} %}
+{% elseif step == 3 %}
+    {% include "step3.html.twig" with { 'db_state' :        db_state,            'new' :    new, 
+                                        'error' :           error,              'secured' : secured, 
+                                        'sql_error' :       sql_error} %}
+{% elseif step == 4 %}
+    {% include "step4.html.twig" %}
+{% elseif step == 'error' %}
+    {% include "error.html.twig" %}
+{% endif %}
+
+{% include "footer.html.twig" %}

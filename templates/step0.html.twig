@@ -1,0 +1,49 @@
+<h3>Checking of the compatibility of your environment with the execution of GLPI</h3>
+<div>
+    <table class="tab_check" data-toggle="table" >
+        <thead>
+        <tr>
+            <th data-field="test">Test done</th>
+            <th data-sortable="true" data-field="result">Results</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for requirement in requirements %}
+                <tr>
+                    <td>{{requirement.title}}</td>
+                    <td>
+                        {% if requirement.validated %}
+                            <i class="fas fa-check"></i>
+                        {% else %}
+                            {% if requirement.required %}
+                                <i class="fas fa-exclamation-triangle"></i>
+                            {% else %}
+                                <i class="fas fa-times"></i>
+                            {% endif %}
+                            <p>{{requirement.message}}</p>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+</div>
+    <h3>Do you want to continue?</h3>
+    {% if passed == 0 %} {# 0 is good, 1 is missing optional, 2 is missing required #}
+        <form action="install.php?step=1" method="post">
+            <button type="submit">Continue</button>
+        </form>
+    {% elseif passed == 1 %}
+        <div>
+            <form action="install.php?step=0" method="post">
+                <button type="submit">Try again</button>
+            </form>
+            <form action="install.php?step=1" method="post">
+                <button type="submit">Continue</button>
+            </form>
+        </div>
+    {% else %}
+        <form action="install.php?step=0" method="post">
+            <button type="submit">Try again</button>
+        </form>
+    {% endif %}

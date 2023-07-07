@@ -1,0 +1,13 @@
+<form action="install.php?step=license" method="post">
+<select name="language" class="selectpicker" data-live-search="true" data-width="fit" data-size="7"> {# TO DOsearch bar !! #}
+    {% for code,language in languages %}
+        {% if code == preferred_language %}
+        <option value={{code}} selected>{{language[0]}}</option>
+        {% else %}
+        <option value={{code}}>{{language[0]}}</option>
+        {% endif %}
+    {% endfor %}
+</select>
+<button type="submit">OK</button>
+</form>
+

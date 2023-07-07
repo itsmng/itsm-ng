@@ -1,0 +1,13 @@
+<h3>Database connection setup.</h3>
+<form action='install.php?step=2' method='post'>
+<fieldset>
+    <legend>Database connection parameters</legend>
+    <label class='block'>SQL server (MariaDB or MySQL) </label>
+    <input type='text' name='db_host' required autocomplete="off" placeholder="locahost:1433" value={{host}}>
+    <label class='block'>SQL user</label>
+    <input type='text' name='db_user' required autocomplete="off" value={{user}}>
+    <label class='block'>SQL password</label>
+    <input type='password' name='db_pass'>
+</fieldset>
+<button type="submit">Continue</button>
+</form>
