@@ -30,21 +30,137 @@
 */
 
 /*  ############# Definition des styles de l'install et de l'update ############# */
-
-body {
-   background-color:#7b081d;
-   font-family: Verdana;
-   color:#FFF;
+@font-face {
+   font-family: Techna Sans;
+   src: url(../fonts/TechnaSans-Regular.otf);
 }
 
+@font-face {
+   font-family: Liberation Sans;
+   src: url(../fonts/LiberationSans-Regular.ttf);
+}
+
+@font-face {
+   font-family: Liberation Sans;
+   src: url(../fonts/LiberationSans-Bold.ttf);
+   font-weight: bold;
+}
+
+*{
+   box-sizing: content-box;
+}
+
+body {
+   --main-color: #7b081d;
+   --bg-color: black;
+   --secondary-bg-color: white;
+   background-color:var(--bg-color);
+   font-family: Liberation Sans;
+   color:white;
+   font-size: 1.2rem;
+}
+
+h2 {
+   margin-top: 10px;
+   font-family: Techna Sans;
+   text-align:center;
+   color: var(--secondary-bg-color)
+}
+
+h3 {
+   font-family: Liberation Sans;
+   font-weight: bold;
+   text-align:center;
+   color: var(--secondary-bg-color);
+}
+
+#bloc>div:last-of-type{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+
+}
+button{
+   font-family: Liberation Sans;
+   font-weight: bold;
+   font-size: 2rem;
+   border: solid 1px;
+   border-radius: 5px;
+   background-color: transparent;
+   color: white;
+   width: fit-content;
+   transition: background-color 0.25s ease;
+   transition: color 0.25s ease;
+}
+button{
+      --color: #00a2ff;
+   color: var(--color);
+   border-color: var(--color);
+}
+
+body>button[type=submit]:first-of-type, button[name=install]{
+   --color: #00a2ff;
+   color: var(--color);
+   border-color: var(--color);
+}
+
+body>button[type=submit]:last-of-type, button[name=update]{
+   --color: #ff0000;
+   color: var(--color);
+   border-color: var(--color);
+}
+
+button:hover{
+   background-color: var(--color);
+   color: var(--secondary-bg-color);
+}
+
+fieldset {
+   margin:40px;
+   padding: 20px;
+   background: #FFF;
+   border: none;
+   font-size: 12px;
+   font-weight:200;
+   position: relative;
+   border-radius: 5px;
+}
+
+fieldset>legend {
+   text-align: center;
+   color: #000;
+   font-weight: bold;
+   position: relative;
+   top: 5px;
+   font-size: 1.2em;
+}
+
+fieldset label {
+   text-align: right;
+   margin: 10px 5px 0px 0px
+}
 
 #principal {
    width:760px;
-   font-family: Verdana;
-   font-size:12px;
    text-align: center;
    margin: auto;
-   padding: 40px 40px 40px 40px;
+   padding: 70px 40px 40px 40px;
+}
+
+input[type=text], input[type=password]{
+   width: 200px;
+   height: 20px;
+   border-radius: 5px;
+   font-size: 1.2em;
+   transition: outtline-style 1s ease;
+   transition: outtline-width 1s ease;
+   transition: outtline-color 1s ease;
+}
+
+input[type=text]:focus, input[type=password]:focus{
+   outline-style: solid;
+   outline-width: 2px;
+   outline-color: var(--main-color);
 }
 
 a {
@@ -53,23 +169,51 @@ a {
 }
 
 #bloc {
+   --border_size: 20px;
+   min-height: 500px;
    width:760px;
    margin:0 auto;
    text-align:left;
    position:relative;
-   padding:10px;
-   background:#ae0c2a;
+   padding: 10px 30px;
+   background:var(--main-color);
+   border-radius: 10px;
+}
+
+#bloc::before{
+   position: absolute;
+   z-index: -1;
+   top: calc(-1 * var(--border_size)/2);
+   left: calc(-1 * var(--border_size)/2);
+   content: "";
+   background-color: var(--secondary-bg-color);
+   border-radius: 10px;
+   width: calc(100% + var(--border_size));
+   height: calc(100% + var(--border_size));
 }
 
 #logo_bloc {
+   --border_size: 10px;
    position:absolute;
-   top:-25px;
-   padding:0;
-   margin:0;
-   width: 170px;
-   height: 80px;
-   background: url(../pics/login_logo_itsm.png)  no-repeat;
-   background-size: 170px;
+   top:-40px;
+   left: -100px;
+   border-radius: 5px;
+   width: 270px;
+   height: 120px;
+   background: url(../White\ on\ Transparent.png)  no-repeat center;
+   background-color: var(--main-color);
+   background-size: 250px;
+}
+#logo_bloc::before{
+   position: absolute;
+   z-index: -1;
+   top: calc(-1 * var(--border_size)/2);
+   left: calc(-1 * var(--border_size)/2);
+   content: "";
+   background-color: var(--secondary-bg-color);
+   border-radius: 10px;
+   width: calc(100% + var(--border_size));
+   height: calc(100% + var(--border_size));
 }
 
 
@@ -101,6 +245,7 @@ table {
    margin-left: auto;
    margin-right: auto;
    width: 90%;
+   border-radius: 5px;
 }
 
 th {
@@ -118,6 +263,13 @@ th {
    padding:10px;
    background-color: #FFF;
    color: #000;
+   border-collapse:initial;
+}
+
+.tab_check tbody{
+   max-height: 300px;
+   overflow-y: auto;
+   display: block;
 }
 
 .tab_check th{
@@ -141,7 +293,9 @@ th {
 .tab_check td i.fa-exclamation-triangle {
    color: #ffa500;
 }
-
+table.tab_check>tr:last-child>td:last-child{
+   border-bottom-left-radius: 20px;
+}
 
 .red {
    color:red;
@@ -154,47 +308,14 @@ th {
    color:green;
 }
 
-
-h2 {
-   text-align:center;
-   color: #F5B7B1
-}
-
-h3 {
-   text-align:center;
-}
-
-
 input {
    border: 1px solid #ccc;
-}
-
-fieldset {
-   margin:40px;
-   padding: 20px;
-   background: #FFF;
-   border: none;
-   font-size: 12px;
-   font-weight:200;
-   position: relative;
-}
-
-fieldset legend {
-   color: #000;
-   font-weight: bold;
-   position: absolute;
-   top: 5px;
 }
 
 .block {
    display: inline-block;
    width:300px;
    color: #000;
-}
-
-fieldset label {
-   text-align: right;
-   margin-right: 5px
 }
 
 .submit {
