@@ -2,9 +2,11 @@
 {% if connect_error %}
     <p>Can't connect to the database</p>
     <p>The server answered: {{ connect_error }}</p>
-    <form action='install.php?step=1' method='post'>
-        <button type='submit'>Back</button>
-    </form>
+    <div class="buttons">
+        <form action='install.php?step=1' method='post'>
+            <button class="btn btn-primary btn-lg"  type='submit'>Back</button>
+        </form>
+    </div>
 {% else %}
     <h3>Database connection successful</h3>
     {% if not ver_too_old %} {# if <p></p> else <p></p> plus clair que <p> if else </p> #}
@@ -26,7 +28,7 @@
                     <label for='databasename'>{{database}}</label>
                 {% endfor %}
         {% endif %}
-        <button type='submit'>Continue</button>
+        <button class="btn btn-primary btn-lg" type='submit'>Continue</button>
         </form>
     {% else %}
         <p>Your database engine version seems too old: {{version}}.</p>

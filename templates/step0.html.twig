@@ -1,5 +1,5 @@
 <h3>Checking of the compatibility of your environment with the execution of GLPI</h3>
-<div>
+<div class="tab_check">
     <table class="tab_check" data-toggle="table" >
         <thead>
         <tr>
@@ -30,20 +30,24 @@
 </div>
     <h3>Do you want to continue?</h3>
     {% if passed == 0 %} {# 0 is good, 1 is missing optional, 2 is missing required #}
-        <form action="install.php?step=1" method="post">
-            <button type="submit">Continue</button>
-        </form>
-    {% elseif passed == 1 %}
-        <div>
-            <form action="install.php?step=0" method="post">
-                <button type="submit">Try again</button>
-            </form>
+        <div class="buttons">
             <form action="install.php?step=1" method="post">
                 <button type="submit">Continue</button>
             </form>
         </div>
+    {% elseif passed == 1 %}
+            <div class="buttons">
+                <form action="install.php?step=0" method="post">
+                    <button class="btn btn-primary btn-lg" type="submit">Try again</button>
+                </form>
+                <form action="install.php?step=1" method="post">
+                    <button class="btn btn-primary btn-lg" type="submit">Continue</button>
+                </form>
+            </div>
     {% else %}
-        <form action="install.php?step=0" method="post">
-            <button type="submit">Try again</button>
-        </form>
+        <div class="buttons">
+            <form action="install.php?step=0" method="post">
+                <button class="btn btn-primary btn-lg" type="submit">Try again</button>
+            </form>
+        </div>
     {% endif %}

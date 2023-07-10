@@ -4,7 +4,17 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
+define('GLPI_ROOT', realpath('..'));
 
+
+include_once (GLPI_ROOT . "/inc/based_config.php");
+include_once (GLPI_ROOT . "/inc/db.function.php");
+
+$GLPI = new GLPI();
+$GLPI->initLogger();
+$GLPI->initErrorHandler();
+
+Config::detectRootDoc();
 require_once '../vendor/autoload.php';
 
 use Glpi\System\RequirementsManager;
@@ -13,13 +23,9 @@ use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 $loader = new FilesystemLoader('../templates');
 $twig = new Environment($loader, [
-/*     'cache' => './cache', */
+    /*     'cache' => './cache', */
     'cache' => false
 ]);
-define('GLPI_ROOT', realpath('..'));
-
-include_once (GLPI_ROOT . "/inc/based_config.php");
-include_once (GLPI_ROOT . "/inc/db.function.php");
 
 function check_post($var_name){
     global $twig;
@@ -35,11 +41,6 @@ function check_post($var_name){
     return true;
 }
 
-$GLPI = new GLPI();
-$GLPI->initLogger();
-$GLPI->initErrorHandler();
-
-Config::detectRootDoc();
 /* header("Cache-Control: max-age=2592000"); */
 header("Cache-Control: private, max-age=10800, pre-check=10800");
 header("Pragma: private");
@@ -175,7 +176,6 @@ switch ($step) {
                 $_SESSION['new'] = false;
             }
         }
-        echo "ici" . $_SESSION['databasename'];
         $sql_error = "";
         $error = "";
         $db_state = "";
@@ -218,7 +218,7 @@ switch ($step) {
                         Toolbox::createSchema($_SESSION['language']);
                         $db_state = "initialized";
                         echo '<p>OK - database was initialized</p>';
-/*                         echo $twig->render('step3.html.twig', $twig_vars);*/                        $error = "none";
+                        $error = "none";
                     } else { 
                         $error = "setup";
                     }
@@ -264,7 +264,6 @@ switch ($step) {
         );
 
 }
-
 try {
     echo $twig->render('index.html.twig',  ['step' => $step,'header_data' => $header_data] + $twig_vars);
 } catch (\Exception $e) {

@@ -54,6 +54,7 @@ body {
    --main-color: #7b081d;
    --bg-color: black;
    --secondary-bg-color: white;
+   --third-color: #f2e0c2;
    background-color:var(--bg-color);
    font-family: Liberation Sans;
    color:white;
@@ -73,29 +74,66 @@ h3 {
    text-align:center;
    color: var(--secondary-bg-color);
 }
+input.form-control{
+   width: inherit !important;
+}
+.btn{
+   color: #000;
+   --third-color: #f2e0c2;
+   --darker-cream: #cec1a8;
+   background-color: var(--third-color);
+   border-color: var(--third-color);
+}
 
-#bloc>div:last-of-type{
-   display: flex;
-   flex-direction: row;
-   justify-content: space-evenly;
+.btn:hover{
+   background-color: var(--darker-cream);
+   border-color: var(--darker-cream);
+}
+
+.btn:active{
+   background-color: var(--third-color) !important;
+   border-color: var(--darker-cream) !important;
 
 }
-button{
+/* button{
+   position: relative;
+   top: 30px;
+   --color: #eae0c2;
+   font-family: Liberation Sans;
+   font-weight: bold;
+   font-size: 1.3rem;
+   background:linear-gradient(to bottom, #eae0c2 5%, #ccc2a6 100%);
+	background-color:var(--third-color);
+   color: white;
+   box-shadow: 4px 4px 9px #000000;
+   border:solid 2px transparent;
+   border-radius:15px;
+   padding:12px 16px;
+   cursor: pointer;
+}
+
+button:hover {
+	background-color:#9b8f7a;
+   border-color:  white;
+} */
+/* button{
    font-family: Liberation Sans;
    font-weight: bold;
    font-size: 2rem;
-   border: solid 1px;
+   border: solid 3px;
    border-radius: 5px;
    background-color: transparent;
    color: white;
    width: fit-content;
    transition: background-color 0.25s ease;
    transition: color 0.25s ease;
-}
-button{
-      --color: #00a2ff;
+} */
+/* button{
+   --color: #00a2ff;
    color: var(--color);
    border-color: var(--color);
+   padding: 5px;
+   background-color: rgba(0, 0, 0, 0.6);
 }
 
 body>button[type=submit]:first-of-type, button[name=install]{
@@ -105,7 +143,7 @@ body>button[type=submit]:first-of-type, button[name=install]{
 }
 
 body>button[type=submit]:last-of-type, button[name=update]{
-   --color: #ff0000;
+   --color: #ff8800;
    color: var(--color);
    border-color: var(--color);
 }
@@ -113,7 +151,7 @@ body>button[type=submit]:last-of-type, button[name=update]{
 button:hover{
    background-color: var(--color);
    color: var(--secondary-bg-color);
-}
+} */
 
 fieldset {
    margin:40px;
@@ -141,7 +179,6 @@ fieldset label {
 }
 
 #principal {
-   width:760px;
    text-align: center;
    margin: auto;
    padding: 70px 40px 40px 40px;
@@ -167,17 +204,59 @@ a {
    color: #F5B7B1;
    font-weight: bold;
 }
+.buttons{
+   position: relative;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+}
+button{
+   min-width: 60px;
+}
+button>i{
+   padding: 0px 5px;
+   visibility: hidden
+}
 
+button>i:active, button>i:focus{
+   visibility: visible;
+}
+
+.language>form{
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-evenly;
+   align-items: center;
+}
+
+.language>form>button{
+   margin-top: 20px;
+   width: 50px;
+}
+
+label, input[type=text], input[type=password]{
+   font-size: 1.5em;
+   height: 2rem;
+}
+/* .buttons>form{
+   width: 80%;
+   height: 80%;
+   margin: auto auto;
+} */
 #bloc {
+   z-index: initial;
    --border_size: 20px;
    min-height: 500px;
-   width:760px;
+   max-width: 760px;
+   width:80%;
    margin:0 auto;
    text-align:left;
    position:relative;
-   padding: 10px 30px;
+   padding: 30px 30px;
    background:var(--main-color);
    border-radius: 10px;
+   box-sizing: content-box;
 }
 
 #bloc::before{
@@ -194,34 +273,147 @@ a {
 
 #logo_bloc {
    --border_size: 10px;
-   position:absolute;
+   position: absolute;
    top:-40px;
    left: -100px;
-   border-radius: 5px;
-   width: 270px;
-   height: 120px;
-   background: url(../White\ on\ Transparent.png)  no-repeat center;
-   background-color: var(--main-color);
-   background-size: 250px;
-}
-#logo_bloc::before{
-   position: absolute;
-   z-index: -1;
-   top: calc(-1 * var(--border_size)/2);
-   left: calc(-1 * var(--border_size)/2);
    content: "";
    background-color: var(--secondary-bg-color);
    border-radius: 10px;
-   width: calc(100% + var(--border_size));
-   height: calc(100% + var(--border_size));
+   width: calc(270px + var(--border_size));
+   height: calc(120px + var(--border_size));
+   overflow: hidden;
+}
+
+#logo_bloc::after{
+   content: "";
+   top: calc(var(--border_size)/2);
+   left: calc(var(--border_size)/2);
+   z-index: 1;
+   position:absolute;
+   border-radius: 5px;
+   width: calc(100% - var(--border_size));
+   height: calc(100% - var(--border_size));
+   background: url(../pics/fd_logo.png)  no-repeat center;
+   background-color: var(--main-color);
+   background-size: 250px;
+}
+
+.table {
+   position: relative;
+   overflow-y: hidden;
+   max-height: 500px;
+}
+.led {
+   z-index: 2;
+   border-radius: 5px;
+   right: 10px;
+   bottom: 29px;
+   position: absolute;
+   background-color: var(--main-color);
+   border: solid 2px var(--secondary-bg-color);
+   width: 55%;
+   height: 18%;
+   font-size: 0.9em;
+   overflow: hidden;
+   --anim-time: 5s;
+}
+.led>p:first-child {
+   white-space: nowrap;
+   position: absolute;
+   padding: 0;
+   z-index: 2;
+   animation: passing var(--anim-time) linear infinite;
+}
+
+.led>p:last-child {
+   padding: 0;
+   white-space: nowrap;
+   position: absolute;
+   z-index: 2;
+   animation: passing var(--anim-time) linear infinite;
+   animation-delay: calc(var(--anim-time)/2);
+   transform: translateX(-5000%);
+}
+
+.led>p{
+   white-space: nowrap;
+   position: absolute;
+   padding: 0;
+   z-index: 2;
+   animation: passing3 var(--anim-time) linear 1;
+   transform: translateX(500%);
+}
+
+@keyframes passing {
+   0% {transform: translateX(-120%);}
+   100% {transform: translateX(120%);}
+}
+
+@keyframes passing3 {
+   0% {transform: translateX(0%);}
+   100% {transform: translateX(240%);}
+}
+
+div.tab_check{
+   height: 500px;
+   overflow-y: scroll;
+   font-size: 0.8em;
+   border-radius: 10px;
+   margin: 0 10px;
 }
 
 
+td>p{
+   padding: 0;
+}
 
+.fa-check{
+   color: green;
+}
 
+.fa-exclamation-triangle{
+   color: #f08b3b;
+}
+
+.fa-times{
+   color: red;
+}
+/* @keyframes passing2 {
+   0% {transform: translateX(0%);}
+   50% {transform: translateX(120%);}
+   50% {transform: translateX(-120%);}
+   100% {transform: translateX(0%);}
+} */
+
+div>.text{
+   background:rgba(81, 73, 73, 0.4);
+   backdrop-filter: blur(50px);
+   border: solid 2px black;
+   border-radius: 10px;
+   margin-bottom: 20px; 
+}
+
+.main{
+   position: relative; 
+   top: 20px;
+   display: flex;
+   flex-direction: column;
+}
+
+.dropdown-toggle{
+   margin: solid;
+   margin-right: 30px;
+}
+/* #bloc>div:last-of-type{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+   margin-top: 20px;
+} */
 p {
-   padding-left:20px;
-   padding-right:20px;
+   padding: 10px 20px 10px 20px;
+   /* background-color: #999; */
+   margin: 0;
 }
 
 
@@ -238,7 +430,7 @@ p {
 }
 
 
-table {
+/* table {
    text-align:center;
    border: 0;
    margin: 20px;
@@ -253,13 +445,13 @@ th {
    font-weight: bold;
    color: #FFA500;
    vertical-align:bottom;
-}
+} */
 
 .tab_cadre {  }
 
 .tab_bg_1 {  }
 
-.tab_check {
+/* .tab_check {
    padding:10px;
    background-color: #FFF;
    color: #000;
@@ -295,7 +487,7 @@ th {
 }
 table.tab_check>tr:last-child>td:last-child{
    border-bottom-left-radius: 20px;
-}
+} */
 
 .red {
    color:red;
