@@ -50,6 +50,7 @@ echo '
 
 <body translate="no">
 <h1>';
+//check all messages
 foreach ($msg as $k=>$v){
   echo '<span class="word">'.$v.'</span>';
 }
