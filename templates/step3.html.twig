@@ -1,42 +1,53 @@
 {% if action == 'install' %}
     <h3>Initialization of the database</h3>
-    {% if not db_state %}
-        {% if not secured %}
-        <p>Security key cannot be generated</p>
-        {% elseif error == "use" %}
-            {% if new %}
+    {% if not done %}
+        {% if not secured or error != "none" %}
+            {% if not secured %}
+            <p>Security key cannot be generated</p>
+            {% elseif error == "use" %}
+                {% if new %}
+                <p>Error in creating database!</p>
+                {% else %}
+                    <p>Impossible to use the database:</p>
+                    {% endif %}
+                <p>The server answered: {{sql_error}}</p>
+            {% elseif error == "create_db" %}
             <p>Error in creating database!</p>
-            {% else %}
-                <p>Impossible to use the database:</p>
-                {% endif %}
             <p>The server answered: {{sql_error}}</p>
-        {% elseif error == "create_db" %}
-        <p>Error in creating database!</p>
-        <p>The server answered: {{sql_error}}</p>
-        {% elseif error == "setup" %}
-            <p>Impossible to write the database setup file</p>
-        {% elseif error == "selected" %}
-        <p>You didn't select a database!</p>
+            {% elseif error == "setup" %}
+                <p>Impossible to write the database setup file</p>
+            {% elseif error == "selected" %}
+            <p>You didn't select a database!</p>
+            {% endif %}
+            <form action="install.php?step=2" method="post">
+                <button class="btn btn-primary btn-lg" type="submit">Back</button>
+            </form>
+        {% else %}
+            {% if created %}
+                <p>Database created</p>
+            {% endif %}
+            <div>
+                <i class="fas fa-spinner fa-pulse fa-10x"></i>
+            </div>   
         {% endif %}
-        <form action="install.php?step=2" method="post">
-            <button type="submit">Back</button>
-        </form>
     {% else %}
-        {% if db_state == 'created' %}
+        {% if created %}
             <p>Database created</p>
-            <p>OK - database was initialized</p>
-        {% elseif db_state == 'initialized' %}
-            <p>OK - database was initialized</p>
         {% endif %}
+        <p>OK - database was initialized</p> 
+        
+            {# <p>OK - database was initialized</p>
+        {% elseif db_state == 'initialized' %}
+            <p>OK - database was initialized</p> #}
             <form action="install.php?step=4" method="post">
-                <button type="submit">Continue</button>
+                <button class="btn btn-primary btn-lg" type="submit">Continue</button>
             </form>
     {% endif %}
 {% elseif action == 'update' %}
         {% if error == 'create_config' %}
             <p>Can't create the database connection file, please verify file permissions.</p>
             <form action="install.php?step=0" method="post">
-            <button>Do you want to continue?</button>
+            <button class="btn btn-primary btn-lg" type="submit">Do you want to continue?</button>
             </form>
         {% else %}
             <p>Show update page</p>

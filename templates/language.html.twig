@@ -1,3 +1,4 @@
+{% from 'macros.html.twig' import button %}
 <div class="language">
     <form action="install.php?step=license" method="post">
     <select name="language" class="selectpicker" data-live-search="true" data-size="auto"> {# TO DOsearch bar !! #}
@@ -9,7 +10,6 @@
             {% endif %}
         {% endfor %}
     </select>
-    <button class="btn btn-primary btn-lg" type="submit"><i class="fa fa-circle-o-notch fa-spin"></i>OK</button>
+    {{button('submit', 'OK')}}
     </form>
 </div>
-

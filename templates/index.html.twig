@@ -1,5 +1,3 @@
-
-{% import "form.macro.twig" as forms %}
 {% include "header.html.twig" with  {'step': step} %}
 
 {% if step == 'languages' %}
@@ -20,7 +18,8 @@
 {% elseif step == 3 %}
     {% include "step3.html.twig" with { 'db_state' :        db_state,            'new' :    new, 
                                         'error' :           error,              'secured' : secured, 
-                                        'sql_error' :       sql_error} %}
+                                        'sql_error' :       sql_error,           'created' : created,
+                                        'initialized' :     initialized,         'done' : done} %}
 {% elseif step == 4 %}
     {% include "step4.html.twig" %}
 {% elseif step == 'error' %}
