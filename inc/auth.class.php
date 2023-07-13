@@ -1669,7 +1669,9 @@ class Auth extends CommonGLPI {
             'ClientSecret'  => $_POST["clientSecret"],
             'is_activate'  => $_POST["useoidc"],
             'is_forced'  => $_POST["forceoidc"],
-            'scope'  => $_POST["scope"]
+            'scope'  => $_POST["scope"],
+            'proxy'  => $_POST["proxy"],
+            'cert'  => $_POST["cert"]
          ];
         $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
       }
@@ -1682,6 +1684,8 @@ class Auth extends CommonGLPI {
           $oidc_db['is_activate'] = $iterator['is_activate'];
           $oidc_db['is_forced'] = $iterator['is_forced'];
           $oidc_db['scope'] = $iterator['scope'];
+          $oidc_db['proxy'] = $iterator['proxy'];
+          $oidc_db['cert'] = $iterator['cert'];
       }
       
 
@@ -1743,6 +1747,26 @@ class Auth extends CommonGLPI {
        echo "<input type='text' id='scope' name='scope'value=". str_replace(' ', '', $oidc_db['scope']) .">";
    } else {
        echo "<input type='text' id='scope' name='scope' placeholder='scope1,scope2'>";
+   }
+      echo "</td></tr>";
+      
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __('Proxy') . "</td>";
+      echo "<td>";
+   if (isset($oidc_db['proxy'])) {
+       echo "<input type='text' id='proxy' name='proxy'value=". str_replace(' ', '', $oidc_db['proxy']) .">";
+   } else {
+       echo "<input type='text' id='proxy' name='proxy' placeholder='http://my.proxy.com:80/'>";
+   }
+      echo "</td></tr>";
+      
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __('Certificate') . "</td>";
+      echo "<td>";
+   if (isset($oidc_db['cert'])) {
+       echo "<input type='text' id='cert' name='cert'value=". str_replace(' ', '', $oidc_db['cert']) .">";
+   } else {
+       echo "<input type='text' id='cert' name='cert' placeholder='/path/to/my.cert'>";
    }
       echo "</td></tr>";
       
