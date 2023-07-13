@@ -1,10 +1,11 @@
+{% from 'macros.html.twig' import button %}
 <h3>Test of the connection at the database</h3>
 {% if connect_error %}
     <p>Can't connect to the database</p>
     <p>The server answered: {{ connect_error }}</p>
     <div class="buttons">
         <form action='install.php?step=1' method='post'>
-            <button class="btn btn-primary btn-lg"  type='submit'>Back</button>
+            {{button('submit', 'Back')}}
         </form>
     </div>
 {% else %}
@@ -28,7 +29,7 @@
                     <label for='databasename'>{{database}}</label>
                 {% endfor %}
         {% endif %}
-        <button class="btn btn-primary btn-lg" type='submit'>Continue</button>
+            {{button('submit', 'Continue')}}
         </form>
     {% else %}
         <p>Your database engine version seems too old: {{version}}.</p>

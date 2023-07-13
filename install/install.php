@@ -26,6 +26,17 @@ $twig = new Environment($loader, [
     /*     'cache' => './cache', */
     'cache' => false
 ]);
+$TRANSLATE;
+// Session::loadLanguage('en_EN', false);
+// Session::loadLanguage('fr_FR', false);
+// Session::loadLanguage('es_ES', false);
+// $TRANSLATE->setLocale('es_ES');
+
+$filter = new \Twig\TwigFilter('trans', '__');
+$twig->addFilter($filter);
+// $function = new \Twig\TwigFunction('__', '__');
+// $twig->addFunction($function);
+
 
 function check_post($var_name){
     global $twig;
@@ -58,6 +69,8 @@ $header_data = [
                         Html::script("js/tableExport.min.js"),
                         Html::script("js/bootstrap-table.min.js"),
                         Html::script("js/bootstrap-table-export.min.js"),
+                        Html::script("js/bootstrap-table-sticky-header.js"),
+
                         ],
     "css_files"     =>  [
                         Html::css("css/bootstrap.min.css"),
@@ -65,7 +78,9 @@ $header_data = [
                         Html::css('css/bootstrap-table.min.css'),
                         Html::css('public/lib/base.css'),
                         Html::css("css/style_install.css"),
-                        Html::css("css/font-awesome.min.css")
+                        Html::css("css/font-awesome.min.css"),
+                        Html::css("css/bootstrap-table-sticky-header.scss")
+
                          ]
                     ];
 
@@ -77,6 +92,7 @@ if (isset($_GET['step']) and in_array($_GET['step'], $steps)) {
     $step = 'languages';
 }
 $twig_vars = [];
+Session::loadLanguage('', false);
 switch ($step) {
     case "languages":
         if (isset($_SESSION['language'])){
@@ -91,6 +107,8 @@ switch ($step) {
 
     case "license":
         if (check_post('language')){$_SESSION['language'] = $_POST['language'];}
+        Session::loadLanguage($_SESSION['language'], false);
+        $TRANSLATE->setLocale($_SESSION['language']);
         $license = file_get_contents("../COPYING.txt");
         $twig_vars = ['license' => $license];
         break;

@@ -1,3 +1,4 @@
+{% from 'macros.html.twig' import button %}
 <h3>Database connection setup.</h3>
 <div class="buttons">
     <form action='install.php?step=2' method='post'>
@@ -10,6 +11,6 @@
         <label class='block'>SQL password</label>
         <input type='password' name='db_pass'>
     </fieldset>
-    <button class="btn btn-primary btn-lg" type="submit">Continue</button>
+    {{button('submit', 'Continue')}}
     </form>
 </div>

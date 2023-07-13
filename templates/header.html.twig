@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv='Content-Script-Type' content='text/javascript'> 
     <meta http-equiv='Content-Style-Type' content='text/css'> 
-    {# <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"> #}
-    {# <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css"> #}
-    {# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> #}
     {% for array in header_data %}
     {% for e in array %}
     {{e|raw}}
@@ -23,15 +19,15 @@
             <h2>SETUP</h2>
             <h3>
             {% if step == 'languages' %}
-                Select your languages
+                {{'Select your language'|trans}}
             {% elseif step == 'license' %}
-                License
+                {{'License'|trans}}
             {% elseif step == 'install' %}
-                Beginning of the installation
+                {{'Beginning of the installation'|trans}}
             {% elseif step == 'error' %}
                 Error            
             {% else %}
-                Step {{step}} 
+                {{'Step'|trans}} {{step}} 
             {% endif %}  
             </h3>
             <div class="main">

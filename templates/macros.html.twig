@@ -10,6 +10,6 @@
 {% if type != "submit" %}
     <button type="{{ type }}" name="{{ name }}" value="{{ value|e }}"/></button>
 {% else %}
-<button type="{{ type }}" class="btn btn-primary btn-lg submit" name="{{ name }}" value="{{ value|e }}"/><i class="fas fa-circle-o-notch fa-spin" aria-hidden="true"></i>{{text}}</button>
+    <button type="{{ type }}" class="btn btn-warning submit"/><i class="fas fa-circle-o-notch fa-spin" aria-hidden="true"></i>{{text}}</button>
 {% endif %}
 {% endmacro %}

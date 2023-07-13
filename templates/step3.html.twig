@@ -1,3 +1,4 @@
+{% from 'macros.html.twig' import button %}
 {% if action == 'install' %}
     <h3>Initialization of the database</h3>
     {% if not done %}
@@ -40,14 +41,14 @@
         {% elseif db_state == 'initialized' %}
             <p>OK - database was initialized</p> #}
             <form action="install.php?step=4" method="post">
-                <button class="btn btn-primary btn-lg" type="submit">Continue</button>
+                {{button('submit', 'Continue')}}
             </form>
     {% endif %}
 {% elseif action == 'update' %}
         {% if error == 'create_config' %}
             <p>Can't create the database connection file, please verify file permissions.</p>
             <form action="install.php?step=0" method="post">
-            <button class="btn btn-primary btn-lg" type="submit">Do you want to continue?</button>
+                {{button('submit', 'Do you want to continue ?')}}
             </form>
         {% else %}
             <p>Show update page</p>

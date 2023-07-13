@@ -1,10 +1,9 @@
 {% from 'macros.html.twig' import button %}
-<textarea id='license' cols='85' rows='10' readonly='readonly'>
+<div id='license' cols='85' rows='10' readonly='readonly'>
     {{license}}
-</textarea><br>
-<a target='_blank' href='http://www.gnu.org/licenses/old-licenses/gpl-2.0-translations.html'>Unofficial translations are also available</a>
-
-<p>I have read and ACCEPT the terms of the license written above.</p>
+</div>
 <form action="install.php?step=install" method="post">
-    {{button('submit', 'Continue')}}
+    <input type="checkbox">
+    <p>{{'I have read and ACCEPT the terms of the license written above.'|trans}}</p>
+    {{button('submit', 'Continue'|trans)}}
 </form>

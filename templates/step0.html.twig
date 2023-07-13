@@ -1,16 +1,17 @@
-<h3>Checking of the compatibility of your environment with the execution of GLPI</h3>
+{% from 'macros.html.twig' import button %}
+<h3>{{'Checking of the compatibility of your environment with the execution of GLPI'|trans}}</h3>
 <div class="tab_check">
-    <table class="tab_check" data-search="true" data-toolbar="#toolbar" data-toggle="table" data-show-export="true">
+    <table class="table-responsive" data-sticky-header="true"  data-toggle="table" >
         <thead>
         <tr>
             <th data-field="test">Test done</th>
-            <th data-sortable="true" data-field="result">Results</th>
+            <th data-sortable="true" data-field="result">{{'Results'|trans}}</th>
         </tr>
         </thead>
         <tbody>
             {% for requirement in requirements %}
                 <tr>
-                    <td>{{requirement.title}}</td>
+                    <td>{{requirement.title|trans}}</td>
                     <td>
                         {% if requirement.validated %}
                             <i class="fas fa-check"></i>
@@ -20,7 +21,7 @@
                             {% else %}
                                 <i class="fas fa-times"></i>
                             {% endif %}
-                            <p>{{requirement.message}}</p>
+                            <p>{{requirement.message|trans|raw}}</p>
                         {% endif %}
                     </td>
                 </tr>
@@ -28,7 +29,7 @@
         </tbody>
     </table>
 </div>
-    <h3>Do you want to continue?</h3>
+    <h3>{{'Do you want to continue?'|trans}}</h3>
     {% if passed == 0 %} {# 0 is good, 1 is missing optional, 2 is missing required #}
         <div class="buttons">
             <form action="install.php?step=1" method="post">
@@ -38,16 +39,16 @@
     {% elseif passed == 1 %}
             <div class="buttons">
                 <form action="install.php?step=0" method="post">
-                    <button class="btn btn-primary btn-lg" type="submit">Try again</button>
+                    {{button('submit', 'Try again'|trans)}}
                 </form>
                 <form action="install.php?step=1" method="post">
-                    <button class="btn btn-primary btn-lg" type="submit">Continue</button>
+                    {{button('submit', 'Continue'|trans)}}
                 </form>
             </div>
     {% else %}
         <div class="buttons">
             <form action="install.php?step=0" method="post">
-                <button class="btn btn-primary btn-lg" type="submit">Try again</button>
+                {{button('submit', 'Try again'|trans)}}
             </form>
         </div>
     {% endif %}

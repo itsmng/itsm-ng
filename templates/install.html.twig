@@ -1,14 +1,14 @@
 {% from 'macros.html.twig' import button %}
 <div class="text">
-<h3>Installation or update of GLPI</h3>
-    <p>Choose 'Install' for a completely new installation of GLPI.</p>
-    <p> Select 'Upgrade' to update your version of GLPI from an earlier version.</p>
+    <h3>{{'Installation or update of GLPI'|trans}}</h3>
+    <p>{{"Choose 'Install' for a completely new installation of GLPI."|trans}}</p>
+    <p> {{"Select 'Upgrade' to update your version of GLPI from an earlier version"|trans}}</p>
 </div>
 <div class="buttons">
     <form action="install.php?step=0" method="post">
-        {{button('submit', 'Install')}}
+        {{button('submit', 'Install'|trans)}}
     </form>
     <form action="install.php?step=0" method="post">
-        {{button('submit', 'Upgrade')}}
+        {{button('submit', 'Upgrade'|trans)}}
     </form>
 </div>
