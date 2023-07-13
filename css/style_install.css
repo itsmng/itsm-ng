@@ -21,8 +21,12 @@
 body {
    --primary-color: #7b081d;
    --secondary-color: #545555;
-   --third-color: #f2e0c2;
+   --third-color: #ffe1ad;
+   --darker-third-color: #dba746;
    --text-color: white;
+   --text-color2: black;
+   --white: white;
+   --black: black;
    --bloc-border-size: 15px;
    --bloc-border-radius: 10px;
    background-color:var(--secondary-color);
@@ -84,7 +88,24 @@ body {
    border-radius: var(--bloc-border-radius);
    background-color: var(--text-color);
 }
-
+#license{
+   background-color: var(--white);
+   color: var(--black);
+   border-radius: var(--bloc-border-radius);
+   font-size: 0.9rem;
+   position: relative;
+   height: 300px;
+   overflow: scroll;
+   text-align: center;
+   white-space: pre-wrap;
+   width: 100%;
+}
+a.btn {
+   color: var(--text-color);
+   width: fit-content;
+   font-weight: bold;
+   margin: 5px 0px;
+}
 h2 {
    margin-top: 10px;
    font-family: Techna Sans;
@@ -101,24 +122,6 @@ h3 {
 input.form-control{
    width: inherit !important;
 }
-.btn{
-   color: #000;
-   --third-color: #f2e0c2;
-   --darker-cream: #cec1a8;
-   background-color: var(--third-color);
-   border-color: var(--third-color);
-}
-
-.btn:hover{
-   background-color: var(--darker-cream);
-   border-color: var(--darker-cream);
-}
-
-.btn:active{
-   background-color: var(--third-color) !important;
-   border-color: var(--darker-cream) !important;
-
-}
 
 input[type=text], input[type=password]{
    width: 200px;
@@ -130,45 +133,78 @@ input[type=text], input[type=password]{
    transition: outtline-color 1s ease;
 }
 
-input[type=text]:focus, input[type=password]:focus{
+/* input[type=text]:focus, input[type=password]:focus{
    outline-style: solid;
    outline-width: 2px;
    outline-color: var(--primary-color);
-}
+} */
 
 .buttons{
-   position: relative;
+   width: 60%;
    display: flex;
    flex-direction: row;
    justify-content: space-evenly;
 }
-button{
+/* .buttons>form{
+   width: 50%;
+   position: relative;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+} */
+/* button{
    position: relative;
    min-width: 60px;
-}
+} */
+
 
 .submit{
-   position: relative;
-   border: solid;
-   border-color: var(--third-color);
    display: flex;
    justify-content: center;
    align-items: center;
+}
+.submit>i{
+   position: absolute;
+   color: var(--text-color2);
+   opacity: 0;
+   transition: opacity .7s ease-in-out;
+}
+
+
+/* button.submit{
+   background-color: var(--third-color) !important;
+   border-color: var(--third-color)!important;
+   color: var(--text-color2);
+   transition: background-color .1s ease-in-out;
+}
+button.submit:hover{
+   background-color: var(--darker-third-color) !important;
+   border-color: var(--darker-third-color) !important;
+   color: var(--text-color2);
+}
+
+button.submit:active button.submit:focus{
+   color: transparent !important;
 }
 .submit>i{
    font-size: x-large;
    position: absolute;
    opacity: 0;
    color: rgb(0, 0, 0);
-   transition: opacity .2s ease-in-out;
+   transition: opacity .7s ease-in-out;
 }
 
-.submit:active, .submit:focus{
-   color: transparent;
-}
-.submit:active>i, .submit:focus>i{
+.submit:focus>i{
    opacity: 1;
-}
+} */
+/* display: flex;
+justify-content: center;
+align-items: center; */
+
+/* .submit:active, .submit:focus{
+   color: transparent;
+} */
+
 
 .language>form{
    position: relative;
@@ -194,20 +230,30 @@ div.tab_check{
    overflow: auto;
    border-radius: 10px;
 }
+.table{
+   position: relative;
+}
 .fixed-table-toolbar{
    position: sticky;
    top: 0;
+   padding-top: 10px;
    z-index: 5;
    background-color: white;
 }
-.tab_check thead th{
+.sticky-header{
+   position: absolute;
+   top: 0;
+   z-index: 12;
+}
+/* .tab_check thead th{
    position: sticky;
    top: 0;
    z-index: 12;
-}thead th{
+} */
+/* thead th{
    position: sticky;
    top: 0;
-}
+} */
 
 td>p{
    padding: 0;
@@ -234,10 +280,13 @@ div>.text{
 }
 
 .main{
+   margin: 0 auto;
+   width: 80%;
    position: relative; 
-   top: 20px;
    display: flex;
    flex-direction: column;
+   justify-content: center;
+   align-items: center;
 }
 
 .dropdown-toggle{
@@ -286,9 +335,6 @@ fieldset label {
    display:inline;
 }
 
-a {
-   color: #F5B7B1;
-   font-weight: bold;
-}
+
 
 input {    border: 1px solid #ccc; }  .block {    display: inline-block;    width:300px;    color: #000; }
