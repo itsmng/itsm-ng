@@ -1761,7 +1761,7 @@ class Auth extends CommonGLPI {
       echo "</td></tr>";
       
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Cert') . "</td>";
+      echo "<td>" . __('Certificate') . "</td>";
       echo "<td>";
    if (isset($oidc_db['cert'])) {
        echo "<input type='text' id='cert' name='cert'value=". str_replace(' ', '', $oidc_db['cert']) .">";

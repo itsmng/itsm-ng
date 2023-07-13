@@ -31,11 +31,11 @@
  */
 
 /**
- * Update ITSM-NG from 1.5.0 to 1.6.0
+ * Update ITSM-NG from 1.5.0 to 1.5.1
  *
  * @return bool for success (will die for most error)
  **/
-function update150to160() {
+function update150to151() {
     /** @global Migration $migration */
     global $DB, $migration;
 
@@ -43,7 +43,7 @@ function update150to160() {
     $updateresult     = true;
     $ADDTODISPLAYPREF = [];
 
-    $migration->displayTitle(sprintf(__('Update to %s'), '1.6.0'));
+    $migration->displayTitle(sprintf(__('Update to %s'), '1.5.1'));
 
     if(!$DB->fieldExists('glpi_oidc_config', 'proxy') && !$DB->fieldExists('glpi_oidc_config', 'cert')) {
         $query = "ALTER TABLE `glpi_oidc_config` ADD COLUMN (`cert` varchar(255) DEFAULT NULL, `proxy` varchar(255) DEFAULT NULL)";
