@@ -205,6 +205,25 @@ align-items: center; */
    color: transparent;
 } */
 
+.progress{
+   height: 5px;
+   width: var(--step);
+   border-radius: 5px;
+   background: linear-gradient(90deg, red, blue);
+   position: relative;
+}
+.progress::after{
+   --radius: 10px;
+   content: "";
+   position: absolute;
+   z-index: 1;
+   width: calc(2*var(--radius));
+   height: calc(2*var(--radius));
+   border-radius: 50%;
+   background-color: white;
+   left: calc(-1 * var(--radius));
+   top: calc(-1 * var(--radius));
+}
 
 .language>form{
    position: relative;
@@ -219,18 +238,59 @@ align-items: center; */
    width: 50px;
 }
 
+.dropdown-menu{
+   max-height: 50vh;
+   overflow-x: hidden;
+   padding-right: 9px;
+}
+
 label, input[type=text], input[type=password]{
    font-size: 1.5em;
    height: 2rem;
 }
+#table{
+   max-height: 50vh;
+   display: table;
+}
+.fixed-height{
+   display: block;
+   max-height: 50vh;
+   border: 0 !important;
+}
 
-div.tab_check{
+.bs-bars{
+   display: none;
+}
+.fixed-table-toolbar{
+   display: flex;
+   justify-content: space-between;
+   --table-broder-radius: 10px;
+   background-color: white;
+   border-radius: var(--table-broder-radius) var(--table-broder-radius) 0 0; 
+}
+.fixed-table-body{
+   max-height: 50vh;
+   overflow-x: hidden !important;
+   --table-broder-radius: 10px;
+   border-radius: 0 0 var(--table-broder-radius) var(--table-broder-radius);
+}
+/* .fixed-table-loading{
+   width: 0;
+   display: none !important;
+} */
+/* .fixed-table-header{
+   position: fixed;
+} */
+/* .fixed-table-body{
+   height: 200px;
+} */
+/* div.tab_check{
    height: 500px;
    font-size: 0.8em;
    overflow: auto;
    border-radius: 10px;
-}
-.table{
+} */
+/* .table{
    position: relative;
 }
 .fixed-table-toolbar{
@@ -244,10 +304,10 @@ div.tab_check{
    position: absolute;
    top: 0;
    z-index: 12;
-}
+} */
 /* .tab_check thead th{
    position: sticky;
-   top: 0;
+   top: 0;  
    z-index: 12;
 } */
 /* thead th{
@@ -289,10 +349,6 @@ div>.text{
    align-items: center;
 }
 
-.dropdown-toggle{
-   margin: solid;
-   margin-right: 30px;
-}
 p {
    padding: 10px 20px 10px 20px;
    margin: 0;

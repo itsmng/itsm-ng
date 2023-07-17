@@ -18,10 +18,10 @@ Config::detectRootDoc();
 require_once '../vendor/autoload.php';
 
 use Glpi\System\RequirementsManager;
-
+use JetBrains\PhpStorm\Language;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
-$loader = new FilesystemLoader('../templates');
+$loader = new FilesystemLoader('../templates/install');
 $twig = new Environment($loader, [
     /*     'cache' => './cache', */
     'cache' => false
@@ -69,7 +69,6 @@ $header_data = [
                         Html::script("js/tableExport.min.js"),
                         Html::script("js/bootstrap-table.min.js"),
                         Html::script("js/bootstrap-table-export.min.js"),
-                        Html::script("js/bootstrap-table-sticky-header.js"),
 
                         ],
     "css_files"     =>  [
@@ -79,7 +78,6 @@ $header_data = [
                         Html::css('public/lib/base.css'),
                         Html::css("css/style_install.css"),
                         Html::css("css/font-awesome.min.css"),
-                        Html::css("css/bootstrap-table-sticky-header.scss")
 
                          ]
                     ];
@@ -95,13 +93,32 @@ $twig_vars = [];
 Session::loadLanguage('', false);
 switch ($step) {
     case "languages":
+        $languages_raw = $CFG_GLPI["languages"];
+
+        $european_languages_code = [                                                    //a implementer directement dans $CFG_GLPI["languages"]
+            'bd_BG','ca_ES','cz_CZ','de_DE','da_DK','et_EE','en_GB','eu_ES','fr_FR','fr_BE',
+            'gl_ES','el_GR','hr_HR','hu_HU','it_IT','lv_LV','lt_LT','nl_NL','nl_BE',
+            'nb_NO','nn_NO','pt_PT','ro_RO','ru_RU','sk_SK','sl_SI','sr_RS','fi_FI',
+            'sv_SE','tr_TR','uk_UA','be_BY','is_IS'];
+
+        $languages = [
+            'europe' => [],
+            'others' => [] 
+        ];
+
+        foreach($languages_raw as $code => $l) {
+            if (in_array($code, $european_languages_code)){
+                $languages['europe'][] = [$code => $l];
+            } else {
+                $languages['others'][] = [$code => $l];
+            }
+        }
         if (isset($_SESSION['language'])){
             $language = $_SESSION['language'];
         } else {
             $language = Session::getPreferredLanguage();
         }
-        $languages = $CFG_GLPI["languages"];
-
+        print_r($language);
         $twig_vars = ['languages' => $languages, 'preferred_language' =>  $language];
         break;
 
