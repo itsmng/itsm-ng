@@ -1,85 +1,327 @@
-/**
- * ---------------------------------------------------------------------
- * GLPI - Gestionnaire Libre de Parc Informatique
- * Copyright (C) 2015-2022 Teclib' and contributors.
- *
- * http://glpi-project.org
- *
- * based on GLPI - Gestionnaire Libre de Parc Informatique
- * Copyright (C) 2003-2014 by the INDEPNET Development Team.
- *
- * ---------------------------------------------------------------------
- *
- * LICENSE
- *
- * This file is part of GLPI.
- *
- * GLPI is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * GLPI is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
- * ---------------------------------------------------------------------
-*/
-
-/*  ############# Definition des styles de l'install et de l'update ############# */
-
-body {
-   background-color:#7b081d;
-   font-family: Verdana;
-   color:#FFF;
+@font-face {
+   font-family: Techna Sans;
+   src: url(../fonts/TechnaSans-Regular.otf);
 }
 
-
-#principal {
-   width:760px;
-   font-family: Verdana;
-   font-size:12px;
-   text-align: center;
-   margin: auto;
-   padding: 40px 40px 40px 40px;
+@font-face {
+   font-family: Liberation Sans;
+   src: url(../fonts/LiberationSans-Regular.ttf);
 }
 
-a {
-   color: #F5B7B1;
+@font-face {
+   font-family: Liberation Sans;
+   src: url(../fonts/LiberationSans-Bold.ttf);
    font-weight: bold;
 }
 
+*{
+   box-sizing: content-box;
+}
+
+body {
+   --primary-color: #7b081d;
+   --secondary-color: #545555;
+   --third-color: #ffe1ad;
+   --darker-third-color: #dba746;
+   --text-color: white;
+   --text-color2: black;
+   --white: white;
+   --black: black;
+   --bloc-border-size: 15px;
+   --bloc-border-radius: 10px;
+   background-color:var(--secondary-color);
+   font-family: Liberation Sans;
+   color:var(--text-color);
+   font-size: 1.2rem;
+}
+
+#principal {
+   text-align: center;
+   margin: auto;
+   padding: 70px 40px 40px 40px;
+}
+
 #bloc {
-   width:760px;
+   position:relative;
+   width:80%;
+   min-height: 500px;
+   max-width: 760px;
+   padding: 30px 30px;
    margin:0 auto;
    text-align:left;
-   position:relative;
-   padding:10px;
-   background:#ae0c2a;
+   background:var(--primary-color);
+   border-radius: var(--bloc-border-radius);
+}
+
+#bloc::before{
+   content: " ";
+   position: absolute;
+   z-index: -1;
+   width: calc(100% + var(--bloc-border-size));
+   height: calc(100% + var(--bloc-border-size));
+   top: calc(-1 * var(--bloc-border-size)/2);
+   left: calc(-1 * var(--bloc-border-size)/2);
+   background-color: var(--text-color);
+   border-radius: var(--bloc-border-radius);
 }
 
 #logo_bloc {
+   position: absolute;
+   width: 270px;
+   height: 100px;
+   top:-55px;
+   left: 0px;
+   border-radius: var(--bloc-border-radius);
+   background: url(../pics/fd_logo.png)  no-repeat center;
+   background-size: 250px;
+   background-color: var(--primary-color);
+}
+
+#logo_bloc::before{
+   content: "";
    position:absolute;
-   top:-25px;
-   padding:0;
-   margin:0;
-   width: 170px;
-   height: 80px;
-   background: url(../pics/login_logo_itsm.png)  no-repeat;
-   background-size: 170px;
+   z-index: -1;
+   width: calc(100% + var(--bloc-border-size));
+   height: calc(100% + var(--bloc-border-size));
+   top: calc(-1 * var(--bloc-border-size)/2);
+   left: calc(-1 * var(--bloc-border-size)/2);
+   border-radius: var(--bloc-border-radius);
+   background-color: var(--text-color);
+}
+#license{
+   background-color: var(--white);
+   color: var(--black);
+   border-radius: var(--bloc-border-radius);
+   font-size: 0.9rem;
+   position: relative;
+   height: 300px;
+   overflow: scroll;
+   text-align: center;
+   white-space: pre-wrap;
+   width: 100%;
+}
+a.btn {
+   color: var(--text-color);
+   width: fit-content;
+   font-weight: bold;
+   margin: 5px 0px;
+}
+h2 {
+   margin-top: 10px;
+   font-family: Techna Sans;
+   text-align:center;
+   color: var(--text-color)
+}
+
+h3 {
+   font-family: Liberation Sans;
+   font-weight: bold;
+   text-align:center;
+   color: var(--text-color);
+}
+input.form-control{
+   width: inherit !important;
+}
+
+input[type=text], input[type=password]{
+   width: 200px;
+   height: 20px;
+   border-radius: 5px;
+   font-size: 1.2em;
+   transition: outtline-style 1s ease;
+   transition: outtline-width 1s ease;
+   transition: outtline-color 1s ease;
+}
+
+/* input[type=text]:focus, input[type=password]:focus{
+   outline-style: solid;
+   outline-width: 2px;
+   outline-color: var(--primary-color);
+} */
+
+.buttons{
+   width: 60%;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+}
+/* .buttons>form{
+   width: 50%;
+   position: relative;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+} */
+/* button{
+   position: relative;
+   min-width: 60px;
+} */
+
+
+.submit{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.submit>i{
+   position: absolute;
+   color: var(--text-color2);
+   opacity: 0;
+   transition: opacity .7s ease-in-out;
 }
 
 
+/* button.submit{
+   background-color: var(--third-color) !important;
+   border-color: var(--third-color)!important;
+   color: var(--text-color2);
+   transition: background-color .1s ease-in-out;
+}
+button.submit:hover{
+   background-color: var(--darker-third-color) !important;
+   border-color: var(--darker-third-color) !important;
+   color: var(--text-color2);
+}
+
+button.submit:active button.submit:focus{
+   color: transparent !important;
+}
+.submit>i{
+   font-size: x-large;
+   position: absolute;
+   opacity: 0;
+   color: rgb(0, 0, 0);
+   transition: opacity .7s ease-in-out;
+}
+
+.submit:focus>i{
+   opacity: 1;
+} */
+/* display: flex;
+justify-content: center;
+align-items: center; */
+
+/* .submit:active, .submit:focus{
+   color: transparent;
+} */
 
 
+.language>form{
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-evenly;
+   align-items: center;
+}
+
+.language>form>button{
+   margin-top: 20px;
+   width: 50px;
+}
+
+label, input[type=text], input[type=password]{
+   font-size: 1.5em;
+   height: 2rem;
+}
+
+div.tab_check{
+   height: 500px;
+   font-size: 0.8em;
+   overflow: auto;
+   border-radius: 10px;
+}
+.table{
+   position: relative;
+}
+.fixed-table-toolbar{
+   position: sticky;
+   top: 0;
+   padding-top: 10px;
+   z-index: 5;
+   background-color: white;
+}
+.sticky-header{
+   position: absolute;
+   top: 0;
+   z-index: 12;
+}
+/* .tab_check thead th{
+   position: sticky;
+   top: 0;
+   z-index: 12;
+} */
+/* thead th{
+   position: sticky;
+   top: 0;
+} */
+
+td>p{
+   padding: 0;
+}
+
+.fa-check{
+   color: green;
+}
+
+.fa-exclamation-triangle{
+   color: #f08b3b;
+}
+
+.fa-times{
+   color: red;
+}
+
+div>.text{
+   background:rgba(81, 73, 73, 0.4);
+   backdrop-filter: blur(50px);
+   border: solid 2px black;
+   border-radius: 10px;
+   margin-bottom: 20px; 
+}
+
+.main{
+   margin: 0 auto;
+   width: 80%;
+   position: relative; 
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+
+.dropdown-toggle{
+   margin: solid;
+   margin-right: 30px;
+}
 p {
-   padding-left:20px;
-   padding-right:20px;
+   padding: 10px 20px 10px 20px;
+   margin: 0;
 }
 
+fieldset {
+   margin:40px;
+   padding: 20px;
+   background: #FFF;
+   border: none;
+   font-size: 12px;
+   font-weight:200;
+   position: relative;
+   border-radius: 5px;
+}
+
+fieldset>legend {
+   text-align: center;
+   color: #000;
+   font-weight: bold;
+   position: relative;
+   top: 5px;
+   font-size: 1.2em;
+}
+
+fieldset label {
+   text-align: right;
+   margin: 10px 5px 0px 0px
+}
 
 .center {
    text-align:center;
@@ -94,209 +336,5 @@ p {
 }
 
 
-table {
-   text-align:center;
-   border: 0;
-   margin: 20px;
-   margin-left: auto;
-   margin-right: auto;
-   width: 90%;
-}
 
-th {
-   font-size: 12px;
-   font-weight: bold;
-   color: #FFA500;
-   vertical-align:bottom;
-}
-
-.tab_cadre {  }
-
-.tab_bg_1 {  }
-
-.tab_check {
-   padding:10px;
-   background-color: #FFF;
-   color: #000;
-}
-
-.tab_check th{
-   font-size: 14px;
-   font-weight: bold;
-
-}
-
-.tab_check td {
-   font-size:11px;
-   border-bottom:1px solid #bbbbbb;
-}
-
-.tab_check td i.fas {
-   font-size: 12px;
-   margin-right: 3px;
-}
-.tab_check td i.fa-check {
-   color: #008e2c;
-}
-.tab_check td i.fa-exclamation-triangle {
-   color: #ffa500;
-}
-
-
-.red {
-   color:red;
-}
-.migred {
-   color: white;
-   background-color: red;
-}
-.green {
-   color:green;
-}
-
-
-h2 {
-   text-align:center;
-   color: #F5B7B1
-}
-
-h3 {
-   text-align:center;
-}
-
-
-input {
-   border: 1px solid #ccc;
-}
-
-fieldset {
-   margin:40px;
-   padding: 20px;
-   background: #FFF;
-   border: none;
-   font-size: 12px;
-   font-weight:200;
-   position: relative;
-}
-
-fieldset legend {
-   color: #000;
-   font-weight: bold;
-   position: absolute;
-   top: 5px;
-}
-
-.block {
-   display: inline-block;
-   width:300px;
-   color: #000;
-}
-
-fieldset label {
-   text-align: right;
-   margin-right: 5px
-}
-
-.submit {
-   text-align:center;
-}
-
-input.submit,
-span.vsubmit, a.vsubmit {
-   padding: 5px;
-   cursor:pointer;
-   height: auto;
-   font: bold 12px Arial, Helvetica;
-   color: #8f5a0a;
-   background-color: #F5B7B1;
-   border: 0;
-}
-
-input.submit:hover,
-a.vsubmit:hover {
-   background-color: #c2908c;
-   -moz-box-shadow: 0px 1px 1px #999;
-   -webkit-box-shadow: 0px 1px 1px #999;
-   box-shadow: 0px 1px 1px #999;
-
-}
-
-
-#license {
-   text-align: left;
-   width: 520px;
-   margin: 20px auto;
-}
-
-
-.radio {
-   display: inline-block;
-   cursor: pointer;
-   line-height: 25px;
-   font-weight: bold;
-   margin-bottom: 5px;
-}
-
-.radio:hover .inner {
-   -webkit-transform: scale(0.5);
-   -ms-transform: scale(0.5);
-   transform: scale(0.5);
-   opacity: .5;
-}
-
-.radio input[type=radio] {
-   width: 1px;
-   height: 1px;
-   opacity: 0;
-}
-
-.radio input:checked + .outer .inner {
-   -webkit-transform: scale(1);
-   -ms-transform: scale(1);
-   transform: scale(1);
-   opacity: 1;
-}
-
-.radio input:checked + .outer { border: 3px solid #f08b3b; }
-
-.radio input:focus + .outer .inner {
-   -webkit-transform: scale(1);
-   -ms-transform: scale(1);
-   transform: scale(1);
-   opacity: 1;
-   background-color: #F5B7B1;
-}
-
-.radio .outer {
-   width: 20px;
-   height: 20px;
-   display: block;
-   float: left;
-   border: 3px solid #7b081d;
-   border-radius: 50%;
-   /*background-color: #fff;*/
-}
-
-.radio .inner {
-   -webkit-transition: all 0.25s ease-in-out;
-   transition: all 0.25s ease-in-out;
-   width: 16px;
-   height: 16px;
-   -webkit-transform: scale(0);
-   -ms-transform: scale(0);
-   transform: scale(0);
-   display: block;
-   margin: 2px;
-   border-radius: 50%;
-   background-color: #F5B7B1;
-   opacity: 0;
-}
-
-.ui-widget {
-   font-size: 12px;
-}
-
-/* Language dropdown */
-.select2-container ul {
-    color: #000;
-}
+input {    border: 1px solid #ccc; }  .block {    display: inline-block;    width:300px;    color: #000; }

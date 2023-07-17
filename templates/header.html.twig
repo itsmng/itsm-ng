@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv='Content-Script-Type' content='text/javascript'> 
+    <meta http-equiv='Content-Style-Type' content='text/css'> 
+    {% for array in header_data %}
+    {% for e in array %}
+    {{e|raw}}
+    {% endfor %}
+    {% endfor %}    
+    <title>Setup ITSM-NG</title>
+</head>
+<body>
+    <div id='principal'>
+        <div id='bloc'>
+            <div id='logo_bloc'></div>
+            <h2>SETUP</h2>
+            <h3>
+            {% if step == 'languages' %}
+                {{'Select your language'|trans}}
+            {% elseif step == 'license' %}
+                {{'License'|trans}}
+            {% elseif step == 'install' %}
+                {{'Beginning of the installation'|trans}}
+            {% elseif step == 'error' %}
+                Error            
+            {% else %}
+                {{'Step'|trans}} {{step}} 
+            {% endif %}  
+            </h3>
+            <div class="main">
+            

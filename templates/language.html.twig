@@ -1,0 +1,15 @@
+{% from 'macros.html.twig' import button %}
+<div class="language">
+    <form action="install.php?step=license" method="post">
+    <select name="language" class="selectpicker" data-live-search="true" data-size="auto"> {# TO DOsearch bar !! #}
+        {% for code,language in languages %}
+            {% if code == preferred_language %}
+            <option value={{code}} selected>{{language[0]}}</option>
+            {% else %}
+            <option value={{code}}>{{language[0]}}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    {{button('submit', 'OK'|trans)}}
+    </form>
+</div>

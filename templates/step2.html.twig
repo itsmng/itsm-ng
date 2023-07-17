@@ -1,0 +1,37 @@
+{% from 'macros.html.twig' import button %}
+<h3>Test of the connection at the database</h3>
+{% if connect_error %}
+    <p>Can't connect to the database</p>
+    <p>The server answered: {{ connect_error }}</p>
+    <div class="buttons">
+        <form action='install.php?step=1' method='post'>
+            {{button('submit', 'Back')}}
+        </form>
+    </div>
+{% else %}
+    <h3>Database connection successful</h3>
+    {% if not ver_too_old %} {# if <p></p> else <p></p> plus clair que <p> if else </p> #}
+        <p>Database version seems correct {{version}} - Perfect!</p>
+        <form action='install.php?step=3' method='post'>
+        {% if action == 'install' %}
+            <p>Please select a database:</p>
+                {% for database in databases %}
+                    <input type='radio' name='databasename' required value={{database}}>
+                    <label for='databasename'>{{database}}</label>
+                {% endfor %}
+                <input type='radio' name='databasename' checked value=''>
+                <label for='databasename'>Create a new database or use an existing one:</label>
+                <input type='text' name='newdatabasename'></input>
+        {% elseif action == 'update' %}
+            <p>Please select the database to update:</p>
+                {% for database in databases %}
+                    <input type='radio' name='databasename' value={{database}}>
+                    <label for='databasename'>{{database}}</label>
+                {% endfor %}
+        {% endif %}
+            {{button('submit', 'Continue')}}
+        </form>
+    {% else %}
+        <p>Your database engine version seems too old: {{version}}.</p>
+    {% endif %}
+{% endif %}
