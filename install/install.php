@@ -18,7 +18,7 @@ Config::detectRootDoc();
 require_once '../vendor/autoload.php';
 
 use Glpi\System\RequirementsManager;
-use JetBrains\PhpStorm\Language;
+
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 $loader = new FilesystemLoader('../templates/install');
@@ -27,15 +27,9 @@ $twig = new Environment($loader, [
     'cache' => false
 ]);
 $TRANSLATE;
-// Session::loadLanguage('en_EN', false);
-// Session::loadLanguage('fr_FR', false);
-// Session::loadLanguage('es_ES', false);
-// $TRANSLATE->setLocale('es_ES');
 
 $filter = new \Twig\TwigFilter('trans', '__');
 $twig->addFilter($filter);
-// $function = new \Twig\TwigFunction('__', '__');
-// $twig->addFunction($function);
 
 
 function check_post($var_name){
@@ -52,7 +46,7 @@ function check_post($var_name){
     return true;
 }
 
-/* header("Cache-Control: max-age=2592000"); */
+
 header("Cache-Control: private, max-age=10800, pre-check=10800");
 header("Pragma: private");
 header("Expires: " . date(DATE_RFC822,strtotime("+2 day")));
@@ -75,28 +69,28 @@ $header_data = [
                         Html::css("css/bootstrap.min.css"),
                         Html::css('css/bootstrap-select.min.css'),
                         Html::css('css/bootstrap-table.min.css'),
+                        Html::css("css/fresh-bootstrap-table.css"),
                         Html::css('public/lib/base.css'),
                         Html::css("css/style_install.css"),
                         Html::css("css/font-awesome.min.css"),
-
                          ]
                     ];
 
-$steps =   ['languages', 'license', 'install', '0', '1', '2', '3', '4'];
+$steps =   ['0', '1', '2', '3', '4', '5', '6','7','8', 'error'];
 global $CFG_GLPI;
 if (isset($_GET['step']) and in_array($_GET['step'], $steps)) {
     $step = $_GET['step'];
 } else {
-    $step = 'languages';
+    $step = '0';
 }
 $twig_vars = [];
 Session::loadLanguage('', false);
 switch ($step) {
-    case "languages":
+    case "0":
         $languages_raw = $CFG_GLPI["languages"];
 
         $european_languages_code = [                                                    //a implementer directement dans $CFG_GLPI["languages"]
-            'bd_BG','ca_ES','cz_CZ','de_DE','da_DK','et_EE','en_GB','eu_ES','fr_FR','fr_BE',
+            'bd_BG','ca_ES','cz_CZ','de_DE','da_DK','et_EE','en_GB','eu_ES','fr_FR','fr_BE','es_ES',
             'gl_ES','el_GR','hr_HR','hu_HU','it_IT','lv_LV','lt_LT','nl_NL','nl_BE',
             'nb_NO','nn_NO','pt_PT','ro_RO','ru_RU','sk_SK','sl_SI','sr_RS','fi_FI',
             'sv_SE','tr_TR','uk_UA','be_BY','is_IS'];
@@ -118,11 +112,10 @@ switch ($step) {
         } else {
             $language = Session::getPreferredLanguage();
         }
-        print_r($language);
         $twig_vars = ['languages' => $languages, 'preferred_language' =>  $language];
         break;
 
-    case "license":
+    case "1":
         if (check_post('language')){$_SESSION['language'] = $_POST['language'];}
         Session::loadLanguage($_SESSION['language'], false);
         $TRANSLATE->setLocale($_SESSION['language']);
@@ -130,7 +123,7 @@ switch ($step) {
         $twig_vars = ['license' => $license];
         break;
 
-    case "0":
+    case "3":
         if (isset($_POST['install'])){
             $_SESSION['action'] = 'install';
         } else if (isset($_POST['update'])){
@@ -142,9 +135,10 @@ switch ($step) {
             if (!$raw_requirement->isOutOfContext()) { // skip raw_requirement if not relevant
                 $title = $raw_requirement->getTitle();
                 $required = $raw_requirement->isMissing() && !$raw_requirement->isOptional();
+                $optional = $raw_requirement->isMissing() && $raw_requirement->isOptional();
                 $validated = $raw_requirement->isValidated();
                 $message = implode('. ', Html::entities_deep($raw_requirement->getValidationMessages()));
-                $requirement = ['title' => $title, 'required' => $required, 'validated' => $validated, 'message' => $message];
+                $requirement = ['title' => $title, 'required' => $required, 'validated' => $validated, 'optional' => $optional, 'message' => $message];
                 $requirements[] = $requirement;
             }
         }
@@ -159,14 +153,14 @@ switch ($step) {
         $twig_vars = ['requirements' => $requirements, 'passed' => $passed];
         break;
 
-    case "1":
+    case "4":
         $host = isset($_SESSION['db_host']) ? $_SESSION['db_host'] : "";
         $user = isset($_SESSION['db_user']) ? $_SESSION['db_user'] : "";
 
         $twig_vars = ['host' => $host, 'user' => $user];
         break;
 
-    case "2":
+    case "5":
         if (check_post('db_host')){
             $_SESSION['db_host'] = $_POST['db_host'];
         }
@@ -196,30 +190,36 @@ switch ($step) {
                 $ver_too_old = true;
             } else {
                 $ver_too_old = false;
-                $databases = [];
-                if ($DB_list = $link->query("SHOW DATABASES")) {
-                    while ($row = $DB_list->fetch_array()) {
-                        if (!in_array($row['Database'],["information_schema","mysql","performance_schema"])){
-                            $databases[] = $row['Database'];
+                $databases_info = [];
+                $db_info = [];
+                if ($DB_list = $link->query(   
+                   "SELECT S.schema_name AS 'name', COUNT(T.table_name) AS 'table_count', DATE(MIN(T.create_time)) AS 'table_create', DATE(MAX(T.update_time)) AS 'table_update'
+                    FROM information_schema.tables AS T 
+                    RIGHT JOIN information_schema.schemata AS S 
+                    ON S.schema_name = T.table_schema
+                    GROUP BY S.schema_name;")){
+                    while ($row = $DB_list->fetch_array(MYSQLI_ASSOC)) {
+                        if (!in_array($row['name'],["information_schema","mysql","performance_schema","sys"])){
+                            $databases_info[] = $row;
                         }
                     }
                 }
             }
             $link->close();
         }
-
         $twig_vars = [  'host' =>           $_SESSION['db_host'],   'user' =>       $_SESSION['db_user'], 
                         'connect_error' =>  $connect_error,         'version' =>    $version, 
                         'ver_too_old' =>    $ver_too_old,           'action' =>     $_SESSION['action'],
-                        'databases' =>      $databases];
+                        'databases' =>      $databases_info];
         break;
 
-    case "3":
+    case "6":
         global $done;
         if (isset($_SESSION['initialized']) and $_SESSION['initialized']){
             Toolbox::createSchema($_SESSION['language']);
             $done = true;
         } else {
+            print_r($_POST);
             $done = false;
             if (check_post('databasename')){
                 if (empty($_POST['databasename'])){
@@ -292,7 +292,7 @@ switch ($step) {
                                 'secured'   => $secured,            'sql_error'     => $sql_error];
         break;
 
-    case "4":
+    case "7":
         include_once(GLPI_ROOT . "/inc/dbmysql.class.php");
         include_once(GLPI_CONFIG_DIR . "/config_db.php");
         $DB = new DB();
@@ -318,7 +318,7 @@ switch ($step) {
 }
 try {
     echo $twig->render('index.html.twig',  ['step' => $step,'header_data' => $header_data] + $twig_vars);
-    if($step == "3" and !$done){
+    if($step == "5" and !$done){
         header("Refresh:0");
     }
 } catch (\Exception $e) {

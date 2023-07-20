@@ -13,11 +13,30 @@
     <title>Setup ITSM-NG</title>
 </head>
 <body>
+    
     <div id='principal'>
         <div id='bloc'>
             <div id='logo_bloc'></div>
-            <h2>SETUP</h2>
-            <h3>
+{% set steps = ['languages', 'license', 'install', 'requirement', 'login', 'databases', 'initialisation', 'done'] %}
+{% set maxstep = 8 %}
+{% set line_width = maxstep - step %}
+<div class="progress">
+    <div class="line" style={{'--w:' ~ line_width ~ ';--maxstep:' ~ maxstep ~ ';'}}></div>
+{% for i in steps %}
+    <div class="step">
+        <a  href={{"install.php?step="~loop.index0}}
+            title={{steps[loop.index0]|capitalize}}
+            class={% if loop.index0 <= step %}"circle"{% else %}"circle hidden"{% endif %}
+            style={{'--step:' ~ loop.index0 ~ ';--maxstep:' ~ maxstep ~ ';'}}
+        >{{loop.index0}}</a>
+        <p>{{steps[loop.index0]|capitalize}}</p>
+    </div>
+    
+{% endfor %}
+
+
+</div>
+            {# <h3>
             {% if step == 'languages' %}
                 {{'Select your language'|trans}}
             {% elseif step == 'license' %}
@@ -29,6 +48,5 @@
             {% else %}
                 {{'Step'|trans}} {{step}} 
             {% endif %}  
-            </h3>
+            </h3> #}
             <div class="main">
-            

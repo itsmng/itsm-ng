@@ -157,7 +157,6 @@ input[type=text], input[type=password]{
    min-width: 60px;
 } */
 
-
 .submit{
    display: flex;
    justify-content: center;
@@ -206,13 +205,76 @@ align-items: center; */
 } */
 
 .progress{
-   height: 5px;
-   width: var(--step);
+   margin: 0 auto;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   height: 50px;
+   width:100%;
    border-radius: 5px;
-   background: linear-gradient(90deg, red, blue);
    position: relative;
+   z-index: 0;
+   background-color: transparent;
+   padding-bottom: 20px;
+   overflow: visible;
+   --grey: rgb(219, 212, 212);
 }
-.progress::after{
+.line{
+   margin-left: 2.5%;
+   width: 95%;
+   height: 10px;
+   background: linear-gradient(90deg, rgba(255,0,0) 0%, rgba(255,255,0) 20%, rgba(0,255,0) 40%, rgba(0,255,255) 60%, rgba(0,0,255) 80%, rgba(255,0,255) 100%);
+   background-color: var(--grey);
+   position: absolute;
+   z-index: 1;
+}
+.line::after{
+   content: "";
+   position: absolute;
+   z-index: 2;
+   width: calc(100%/var(--maxstep)*var(--w));
+   height: 10px;
+   background-color: var(--grey);
+   border-radius: 5px;
+   right: 0;
+   top: 0;
+}
+.step{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.step>p{
+   position: absolute;
+   bottom: -5px;
+   font-weight: bold;
+   font-size: 1.2em;
+}
+.circle{
+   z-index: 2;
+   /* --step: 0;           <
+   --maxstep: 10;          <-défini dans twig*/
+   --size: 35px;
+   width: var(--size);
+   height: var(--size);
+   background: linear-gradient(90deg, rgba(255,0,0) 0%, rgba(255,255,0) 20%, rgba(0,255,0) 40%, rgba(0,255,255) 60%, rgba(0,0,255) 80%, rgba(255,0,255) 100%);
+   background-size: 10000%;
+   border-radius: 50%;
+   background-position: calc(var(--step) * 100%/var(--maxstep));
+   cursor: pointer;
+   text-decoration: none;
+   font-size: 2em;
+   color: var(--text-color);
+   text-align: center;
+   opacity: 1;
+}
+.hidden{
+   background: var(--grey);
+   pointer-events: none;
+   color: transparent;
+}
+/* .progress::after{
    --radius: 10px;
    content: "";
    position: absolute;
@@ -223,7 +285,24 @@ align-items: center; */
    background-color: white;
    left: calc(-1 * var(--radius));
    top: calc(-1 * var(--radius));
-}
+} */
+/* .progress{
+   /* width:100%;
+   height:20px;
+   border:1px solid; 
+   height: 20px;
+   width: 1000px;
+   background:
+   radial-gradient(ellipse at center, #ffbdd7 0%, #ffbdd7 30%, transparent 30%);
+     /* radial-gradient(farthest-side,yellow 32%,yellow 90% ,purple 93%, purple 96%,transparent) left center/60px 60px,
+     radial-gradient(farthest-side,yellow 96%,transparent) bottom left/80px 80px,
+     radial-gradient(farthest-side,green  96%,transparent) top right/80px 80px,
+     radial-gradient(farthest-side,blue   96%,transparent) 100px 50px/100px 100px,
+     radial-gradient(farthest-side,red    96%,transparent) top left/40px 40px; */
+     /* the circle                                          position / size 
+   background-repeat:repeat-x;
+   background-size: 20px;
+ } */
 
 .language>form{
    position: relative;
@@ -248,22 +327,96 @@ label, input[type=text], input[type=password]{
    font-size: 1.5em;
    height: 2rem;
 }
-#table{
+
+div.chip{
+   margin: 0 auto;
+   position: relative;
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+   background-color: rgba(150, 223, 176, 0.9) !important;
+   color: #428859;
+   width: fit-content;
+   padding: 0 10px;
+   border-radius: 30px;
+}
+div.validated{
+   background-color: rgba(150, 223, 176, 0.9) !important;
+   color: #428859;
+}
+div.optional{
+   background-color: rgba(221, 130, 44, 0.9) !important;
+   color: rgb(253, 93, 0);
+}
+div.required{
+   background-color: rgba(226, 97, 97, 0.9) !important;
+   color: rgb(255, 0, 0);
+}
+.transparent{
+   background-color: transparent !important;
+   color: transparent !important;
+}
+div.chip>p{
+   position: relative;
+   padding: 10px;
+}
+.required2{
+   position: relative;
+}
+.required-message{
+   margin-top: 6px;
+   position: relative;
+   width: calc(200% - 18px);
+   color: var(--text-color);
+   background-color: rgba(255, 0, 0, 0.5);
+   border-radius: 5px 5px 20px 20px;
+   text-wrap: balance;
+}
+
+td
+table, thead, tbody, .fresh-table .fixed-table-container.fixed-height .table thead th,th, tr, td{
+   background-color: transparent !important;
+   color: white !important;
+   border: none !important;
+   font-size: 1rem;
+   text-wrap: balance;
+}
+.fresh-table tbody>tr:nth-child(odd){
+   background-color: rgba(255, 255, 255, 0.15) !important;
+}
+.fresh-table td{
+   width: 50%;
+}
+.fresh-table .dropdown-menu{
+   visibility: visible;
+   opacity: 1;
+   display: none;
+   overflow-x: hidden !important;
+   color: var(--text-color);
+}
+.dropdown-menu.show{
+   display: block;
+}
+ .table{
    max-height: 50vh;
    display: table;
 }
+/* .table th, .table td {
+    padding: 12px 15px;
+} */
+
 .fixed-height{
    display: block;
    max-height: 50vh;
-   border: 0 !important;
 }
 
-.bs-bars{
+/* .bs-bars{
    display: none;
-}
+} */
 .fixed-table-toolbar{
    display: flex;
-   justify-content: space-between;
+   justify-content: center;
    --table-broder-radius: 10px;
    background-color: white;
    border-radius: var(--table-broder-radius) var(--table-broder-radius) 0 0; 
@@ -273,7 +426,7 @@ label, input[type=text], input[type=password]{
    overflow-x: hidden !important;
    --table-broder-radius: 10px;
    border-radius: 0 0 var(--table-broder-radius) var(--table-broder-radius);
-}
+} */
 /* .fixed-table-loading{
    width: 0;
    display: none !important;
@@ -339,6 +492,18 @@ div>.text{
    margin-bottom: 20px; 
 }
 
+.part>p>input[type=checkbox]{
+   margin: 5px;
+   position: relative;
+   left: -5px;
+}
+div>.part{
+   background:rgba(81, 73, 73, 0.4);
+   backdrop-filter: blur(50px);
+   border: solid 2px black;
+   border-radius: 10px;
+   margin-bottom: 20px; 
+}
 .main{
    margin: 0 auto;
    width: 80%;

@@ -1,9 +1,11 @@
 {% from 'macros.html.twig' import button %}
+<h3>{{'License'|trans}}</h3>
 <div id='license' cols='85' rows='10' readonly='readonly'>
     {{license}}
 </div>
-<form action="install.php?step=install" method="post">
-    <input type="checkbox">
-    <p>{{'I have read and ACCEPT the terms of the license written above.'|trans}}</p>
-    {{button('submit', 'Continue'|trans)}}
+<form action="install.php?step=2" method="post">
+    <div class="part">
+        <p><input type="checkbox" required>{{'I have read and ACCEPT the terms of the license written above.'|trans}}</p>
+    </div>
+        {{button('submit', 'Continue'|trans)}}
 </form>

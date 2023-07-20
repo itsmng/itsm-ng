@@ -1,27 +1,68 @@
 {% from 'macros.html.twig' import button %}
-<h3>Test of the connection at the database</h3>
+<h3>{{'Test of the connection at the database'|trans}}</h3>
 {% if connect_error %}
     <p>Can't connect to the database</p>
     <p>The server answered: {{ connect_error }}</p>
     <div class="buttons">
-        <form action='install.php?step=1' method='post'>
+        <form action='install.php?step=4' method='post'>
             {{button('submit', 'Back')}}
         </form>
     </div>
 {% else %}
-    <h3>Database connection successful</h3>
+<h3>Database connection successful</h3>
     {% if not ver_too_old %} {# if <p></p> else <p></p> plus clair que <p> if else </p> #}
         <p>Database version seems correct {{version}} - Perfect!</p>
-        <form action='install.php?step=3' method='post'>
+        <form action='install.php?step=6' method='post'>
         {% if action == 'install' %}
             <p>Please select a database:</p>
-                {% for database in databases %}
+            <div class="fresh-table full-color-orange">
+                <table id="table" class="table"
+                data-toggle="table"
+                data-search="true"
+                data-height="1px"
+                data-click-to-select="true"
+                data-show-export="true">
+                    <thead>
+                    <tr>
+                        <th data-sortable="true">Name</th>
+                        <th data-sortable="true">Table count</th>
+                        <th data-sortable="true">Creation date</th>
+                        <th data-sortable="true">Last update</th>
+                        <th data-radio="true"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for db in databases %}
+                            <tr data-databasename="{{db.name}}">
+                                <td>{{db.name}}</td>
+                                <td>{{db.table_count|default('No Info')}}</td>
+                                <td>{{db.table_create|default('No Info')}}</td>
+                                <td>{{db.table_update|default('No Info')}}</td>
+                                <td>{{loop.index0 == 1 ? 'check'}}</td> {# BootstrapTable#radio: If a value is given, the checkbox is automatically checked. #}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            
+    <input id="post_value" type="hidden" name="databasename" value={databases[0].name}>
+    <script>
+        $.extend($.fn.bootstrapTable.defaults.icons, {
+       export: 'fas fa-download'
+ });
+        $('#table').bootstrapTable({
+  onCheck: (row, $element) => {
+    $('#post_value').val(row._data.databasename);
+  }})
+    </script>
+                {# {% for database in databases %}
                     <input type='radio' name='databasename' required value={{database}}>
                     <label for='databasename'>{{database}}</label>
                 {% endfor %}
                 <input type='radio' name='databasename' checked value=''>
                 <label for='databasename'>Create a new database or use an existing one:</label>
-                <input type='text' name='newdatabasename'></input>
+                <input type='text' name='newdatabasename'></input> #}
         {% elseif action == 'update' %}
             <p>Please select the database to update:</p>
                 {% for database in databases %}
@@ -35,3 +76,4 @@
         <p>Your database engine version seems too old: {{version}}.</p>
     {% endif %}
 {% endif %}
+
