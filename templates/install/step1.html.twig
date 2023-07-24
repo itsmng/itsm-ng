@@ -1,8 +1,7 @@
 {% from 'macros.html.twig' import button %}
 <h3>{{'Database connection setup.'|trans}}</h3>
-<div class="buttons">
     <form action='install.php?step=5' method='post'>
-    <fieldset>
+    {# <fieldset>
         <legend>Database connection parameters</legend>
         <label class='block'>SQL server (MariaDB or MySQL) </label>
         <input type='text' name='db_host' required autocomplete="off" placeholder="locahost:1433" value={{host}}>
@@ -10,7 +9,20 @@
         <input type='text' name='db_user' required autocomplete="off" value={{user}}>
         <label class='block'>SQL password</label>
         <input type='password' name='db_pass'>
-    </fieldset>
-    {{button('submit', 'Continue')}}
+    </fieldset> #}
+    <div class="fields">
+        <div class="form-floating">
+            <input type="text" class="form-control" id="server" placeholder="localhost:1433">
+            <label for="server">SQL server (MariaDB or MySQL)</label>
+        </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="user" placeholder="Username">
+            <label for="user">SQL User</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="password" placeholder="*******">
+            <label for="password">Password</label>
+        </div>
+    </div>
+    <div class="buttons">{{button('submit', 'Continue')}}</div>
     </form>
-</div>

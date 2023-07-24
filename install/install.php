@@ -66,14 +66,13 @@ $header_data = [
 
                         ],
     "css_files"     =>  [
-                        Html::css("css/bootstrap.min.css"),
-                        Html::css('css/bootstrap-select.min.css'),
-                        Html::css('css/bootstrap-table.min.css'),
-                        Html::css("css/fresh-bootstrap-table.css"),
-                        Html::css('public/lib/base.css'),
-                        Html::css("css/style_install.css"),
-                        Html::css("css/font-awesome.min.css"),
-                        Html::css("css/style_install.css"),
+        Html::css('css/bootstrap-select.min.css'),
+        Html::css('css/bootstrap-table.min.css'),
+        // Html::css("css/fresh-bootstrap-table.css"),
+        Html::css('public/lib/base.css'),
+        Html::css("css/font-awesome.min.css"),
+        Html::css("css/bootstrap.min.css"),
+        Html::css("css/style_install.css"),
                          ]
                     ];
 

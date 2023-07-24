@@ -42,6 +42,7 @@ body {
    text-align: center;
    margin: auto;
    padding: 70px 40px 40px 40px;
+   box-sizing: border-box;
 }
 
 #bloc {
@@ -97,10 +98,6 @@ body {
    width: 100%;
    height: 100%;
    position: relative; 
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
    text-wrap: balance; /* not supported by firefox 07/23, doesn't break layout*/
 }
 #license{
@@ -135,43 +132,15 @@ h3 {
    color: var(--text-color);
    margin: 0;
 }
-input.form-control{
-   width: inherit !important;
-}
-
-input[type=text], input[type=password]{
-   width: 200px;
-   height: 20px;
-   border-radius: 5px;
-   font-size: 1.2em;
-   transition: outtline-style 1s ease;
-   transition: outtline-width 1s ease;
-   transition: outtline-color 1s ease;
-}
-
-/* input[type=text]:focus, input[type=password]:focus{
-   outline-style: solid;
-   outline-width: 2px;
-   outline-color: var(--primary-color);
-} */
 
 .buttons{
-   width: 60%;
+   margin: 0 auto;
+   margin-top: 1em;
    display: flex;
    flex-direction: row;
    justify-content: space-evenly;
 }
-/* .buttons>form{
-   width: 50%;
-   position: relative;
-   display: flex;
-   flex-direction: row;
-   justify-content: space-evenly;
-} */
-/* button{
-   position: relative;
-   min-width: 60px;
-} */
+
 
 .submit{
    display: flex;
@@ -185,40 +154,6 @@ input[type=text], input[type=password]{
    transition: opacity .7s ease-in-out;
 }
 
-
-/* button.submit{
-   background-color: var(--third-color) !important;
-   border-color: var(--third-color)!important;
-   color: var(--text-color2);
-   transition: background-color .1s ease-in-out;
-}
-button.submit:hover{
-   background-color: var(--darker-third-color) !important;
-   border-color: var(--darker-third-color) !important;
-   color: var(--text-color2);
-}
-
-button.submit:active button.submit:focus{
-   color: transparent !important;
-}
-.submit>i{
-   font-size: x-large;
-   position: absolute;
-   opacity: 0;
-   color: rgb(0, 0, 0);
-   transition: opacity .7s ease-in-out;
-}
-
-.submit:focus>i{
-   opacity: 1;
-} */
-/* display: flex;
-justify-content: center;
-align-items: center; */
-
-/* .submit:active, .submit:focus{
-   color: transparent;
-} */
 
 .progress{
    margin: 0 auto;
@@ -290,35 +225,6 @@ align-items: center; */
    pointer-events: none;
    color: transparent;
 }
-/* .progress::after{
-   --radius: 10px;
-   content: "";
-   position: absolute;
-   z-index: 1;
-   width: calc(2*var(--radius));
-   height: calc(2*var(--radius));
-   border-radius: 50%;
-   background-color: white;
-   left: calc(-1 * var(--radius));
-   top: calc(-1 * var(--radius));
-} */
-/* .progress{
-   /* width:100%;
-   height:20px;
-   border:1px solid; 
-   height: 20px;
-   width: 1000px;
-   background:
-   radial-gradient(ellipse at center, #ffbdd7 0%, #ffbdd7 30%, transparent 30%);
-     /* radial-gradient(farthest-side,yellow 32%,yellow 90% ,purple 93%, purple 96%,transparent) left center/60px 60px,
-     radial-gradient(farthest-side,yellow 96%,transparent) bottom left/80px 80px,
-     radial-gradient(farthest-side,green  96%,transparent) top right/80px 80px,
-     radial-gradient(farthest-side,blue   96%,transparent) 100px 50px/100px 100px,
-     radial-gradient(farthest-side,red    96%,transparent) top left/40px 40px; */
-     /* the circle                                          position / size 
-   background-repeat:repeat-x;
-   background-size: 20px;
- } */
 
 .language>form{
    position: relative;
@@ -338,12 +244,11 @@ align-items: center; */
    overflow-x: hidden;
    padding-right: 9px;
 }
-
-label, input[type=text], input[type=password]{
-   font-size: 1.5em;
-   height: 2rem;
+.bs-searchbox .form-control{
+   box-sizing: border-box;
+   /* padding-right: 0;
+   padding-left: 0; */
 }
-
 div.chip{
    margin: 0 auto;
    position: relative;
@@ -362,8 +267,8 @@ div.chip.validated{
    color: #428859;
 }
 div.chip.optional{
-   background-color: rgba(221, 130, 44, 0.9) !important;
-   color: rgb(253, 93, 0);
+   background-color: rgba(172, 83, 0, 0.9) !important;
+   color: rgb(245, 59, 59);
 }
 div.chip.required{
    background-color: rgba(226, 97, 97, 0.9) !important;
@@ -372,6 +277,7 @@ div.chip.required{
 .transparent{
    background-color: transparent !important;
    color: transparent !important;
+   user-select: none;
 }
 div.chip>p{
    position: relative;
@@ -402,15 +308,47 @@ table, thead, tbody, .fresh-table .fixed-table-container.fixed-height .table the
    text-wrap: balance;
 }
 .fresh-table{
+   --table-broder-radius: 10px;
    max-width: 100%;
-}
-/* 
-.fresh-table .bootstrap-table{  
-   height: 50%;
-}
-.fresh-table .bootstrap-table .fixed-table-container{
    height: 100%;
-}   */
+   border-radius: var(--table-broder-radius);
+}
+
+.fresh-table{
+   max-height: 70% !important;
+   overflow: hidden;
+}
+
+.bootstrap-table{
+   height: 100% !important;
+}
+.fixed-height{
+   display: block;
+   height: 100%;
+   padding-bottom: calc(49px) !important; /* taille table header 49px, search bar 70px */
+   box-sizing: border-box;
+}
+.fixed-table-body{
+   height: 100% !important;
+   display: block;
+   overflow-y: scroll;
+   box-sizing: border-box;
+   padding-bottom: 70px;
+}
+.fresh-table .fixed-table-toolbar{
+   display: flex;
+   justify-content: space-between;
+   --table-broder-radius: 10px;
+   background-color: white;
+   padding: 0;
+   margin: 0 10px;
+}
+.fresh-table .fixed-table-toolbar::after{
+   display: none;
+}
+.fixed-table-body{
+   overflow-x: hidden !important;
+} 
 
 .fresh-table .bootstrap-table .table > tfoot > tr > th, .fresh-table .bootstrap-table .table > thead > tr > th {
    padding-top: 0 !important;
@@ -442,77 +380,22 @@ table, thead, tbody, .fresh-table .fixed-table-container.fixed-height .table the
    max-height: 50vh;
    display: table;
 }
-/* .table th, .table td {
-    padding: 12px 15px;
-} */
 
-.fixed-height{
-   display: block;
-   max-height: 50vh;
+.form-floating label{
+   color: var(--text-color2);
 }
-
-/* .bs-bars{
-   display: none;
-} */
-.fresh-table .fixed-table-toolbar{
-   display: flex;
-   justify-content: space-between;
-   --table-broder-radius: 10px;
-   background-color: white;
-   border-radius: var(--table-broder-radius) var(--table-broder-radius) 0 0;
-   padding: 0;
-   margin: 0 10px;
-}
-.fresh-table .fixed-table-toolbar::after{
-   display: none;
-}
-.fixed-table-body{
-   max-height: 50vh;
-   overflow-x: hidden !important;
-   --table-broder-radius: 10px;
-   border-radius: 0 0 var(--table-broder-radius) var(--table-broder-radius);
-} */
-/* .fixed-table-loading{
-   width: 0;
-   display: none !important;
-} */
-/* .fixed-table-header{
-   position: fixed;
-} */
-/* .fixed-table-body{
-   height: 200px;
-} */
-/* div.tab_check{
-   height: 500px;
-   font-size: 0.8em;
-   overflow: auto;
+.fields{
+   background-color: #000;
+   padding: 1em;
    border-radius: 10px;
-} */
-/* .table{
-   position: relative;
 }
-.fixed-table-toolbar{
-   position: sticky;
-   top: 0;
-   padding-top: 10px;
-   z-index: 5;
-   background-color: white;
+.form-floating{
+   width: 100%;
+   margin-top: 0.6em;
 }
-.sticky-header{
-   position: absolute;
-   top: 0;
-   z-index: 12;
-} */
-/* .tab_check thead th{
-   position: sticky;
-   top: 0;  
-   z-index: 12;
-} */
-/* thead th{
-   position: sticky;
-   top: 0;
-} */
-
+.form-floating>input{
+   box-sizing: border-box;
+}
 td>p{
    padding: 0;
 }
@@ -529,7 +412,8 @@ td>p{
    color: red;
 }
 
-div>.text{
+div.text{
+   margin-top: 10px;
    background:rgba(81, 73, 73, 0.4);
    backdrop-filter: blur(50px);
    border: solid 2px black;
@@ -537,11 +421,12 @@ div>.text{
    margin-bottom: 20px; 
 }
 
-.part>p>input[type=checkbox]{
-   margin: 5px;
-   position: relative;
-   left: -5px;
+.license-checkbox{
+   display: flex;
+   justify-content: center;
+   flex-direction: row;
 }
+
 div>.part{
    background:rgba(81, 73, 73, 0.4);
    backdrop-filter: blur(50px);
@@ -575,11 +460,6 @@ fieldset>legend {
    font-size: 1.2em;
 }
 
-fieldset label {
-   text-align: right;
-   margin: 10px 5px 0px 0px
-}
-
 .center {
    text-align:center;
 }
@@ -593,5 +473,4 @@ fieldset label {
 }
 
 
-
-input {    border: 1px solid #ccc; }  .block {    display: inline-block;    width:300px;    color: #000; }
+.block {    display: inline-block;    width:300px;    color: #000; }
