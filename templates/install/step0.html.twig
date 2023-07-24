@@ -5,33 +5,35 @@
           data-search="true" data-height="1px" data-show-export="true">
             <thead>
                 <th data-field="test">Test done</th>
-                <th data-sortable="true" data-field="result">{{'Results'|trans}}</th>
+                <th data-sortable="true" data-field="result" class="check-result">{{'Results'|trans}}</th>
             </thead>
             <tbody>
                 {% for requirement in requirements %}
                     <tr>
                         <td>
-                        {% if not requirement.validated %}
-                            <div class="required2">
+                            <div class="check-row">
                                 {{requirement.title|trans}}
-                                <p class="required-message">{{requirement.message|trans|raw}}</p>
                             </div>
-                        {% else %}
-                            {{requirement.title|trans}}
-                        {% endif %}
+                            {% if not requirement.validated %}
+                                    <p class="required-message">{{requirement.message|trans|raw}}</p>
+                            {% endif %}
                         </td>
-                        <td class="chip">
-                                {% if requirement.validated %}
-                                        <div class="chip validated"><i class="fas fa-check"></i><p>Checked</p></div>
-                                    {% elseif requirement.optional %}
+                        <td>
+                            {% if requirement.validated %}
+                                <div class="check-row">
+                                    <div class="chip validated"><i class="fas fa-check"></i><p>Checked</p></div>
+                                </div>
+                            {% else %}
+                                <div class="check-row">
+                                    {% if requirement.optional %}
                                         <div class="chip optional"><i class="fas fa-exclamation-triangle"></i><p>Recommended</p></div>
                                     {% elseif requirement.required %}
                                         <div class="chip required"><i class="fas fa-times"></i><p>Required</p></div>
-                                {% endif %}
-                                {% if not requirement.validated %} 
+                                    {% endif %}
+                                </div>
                                 <p class="required-message transparent">{{requirement.message|trans|raw}}</p>
-                                {% endif %}
-                            </td>
+                            {% endif %}
+                        </td>
                     </tr>
                     
                 {% endfor %}

@@ -73,6 +73,7 @@ $header_data = [
                         Html::css('public/lib/base.css'),
                         Html::css("css/style_install.css"),
                         Html::css("css/font-awesome.min.css"),
+                        Html::css("css/style_install.css"),
                          ]
                     ];
 

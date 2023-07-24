@@ -33,9 +33,12 @@ body {
    font-family: Liberation Sans;
    color:var(--text-color);
    font-size: 1.2rem;
+   height: 100vh;
 }
 
 #principal {
+   min-width: 600px;
+   height: 100%;
    text-align: center;
    margin: auto;
    padding: 70px 40px 40px 40px;
@@ -43,7 +46,8 @@ body {
 
 #bloc {
    position:relative;
-   width:80%;
+   width:90%;
+   height: 80%;
    min-height: 500px;
    max-width: 760px;
    padding: 30px 30px;
@@ -88,6 +92,17 @@ body {
    border-radius: var(--bloc-border-radius);
    background-color: var(--text-color);
 }
+.main{
+   margin: 0 auto;
+   width: 100%;
+   height: 100%;
+   position: relative; 
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   text-wrap: balance; /* not supported by firefox 07/23, doesn't break layout*/
+}
 #license{
    background-color: var(--white);
    color: var(--black);
@@ -118,6 +133,7 @@ h3 {
    font-weight: bold;
    text-align:center;
    color: var(--text-color);
+   margin: 0;
 }
 input.form-control{
    width: inherit !important;
@@ -341,15 +357,15 @@ div.chip{
    padding: 0 10px;
    border-radius: 30px;
 }
-div.validated{
+div.chip.validated{
    background-color: rgba(150, 223, 176, 0.9) !important;
    color: #428859;
 }
-div.optional{
+div.chip.optional{
    background-color: rgba(221, 130, 44, 0.9) !important;
    color: rgb(253, 93, 0);
 }
-div.required{
+div.chip.required{
    background-color: rgba(226, 97, 97, 0.9) !important;
    color: rgb(255, 0, 0);
 }
@@ -363,9 +379,10 @@ div.chip>p{
 }
 .required2{
    position: relative;
+   padding: 10px 0;
 }
 .required-message{
-   margin-top: 6px;
+   margin-top: 20px;
    position: relative;
    width: calc(200% - 18px);
    color: var(--text-color);
@@ -373,7 +390,9 @@ div.chip>p{
    border-radius: 5px 5px 20px 20px;
    text-wrap: balance;
 }
-
+.check-row{
+   margin-bottom: 0px;
+}
 td
 table, thead, tbody, .fresh-table .fixed-table-container.fixed-height .table thead th,th, tr, td{
    background-color: transparent !important;
@@ -382,11 +401,32 @@ table, thead, tbody, .fresh-table .fixed-table-container.fixed-height .table the
    font-size: 1rem;
    text-wrap: balance;
 }
+.fresh-table{
+   max-width: 100%;
+}
+/* 
+.fresh-table .bootstrap-table{  
+   height: 50%;
+}
+.fresh-table .bootstrap-table .fixed-table-container{
+   height: 100%;
+}   */
+
+.fresh-table .bootstrap-table .table > tfoot > tr > th, .fresh-table .bootstrap-table .table > thead > tr > th {
+   padding-top: 0 !important;
+   padding-bottom: 0 !important;
+}
+.check-result{
+   text-align: center;
+}
 .fresh-table tbody>tr:nth-child(odd){
    background-color: rgba(255, 255, 255, 0.15) !important;
 }
 .fresh-table td{
    width: 50%;
+}
+.fixed-table-toolbar .btn-group{
+   margin-bottom: 0 !important;
 }
 .fresh-table .dropdown-menu{
    visibility: visible;
@@ -414,12 +454,17 @@ table, thead, tbody, .fresh-table .fixed-table-container.fixed-height .table the
 /* .bs-bars{
    display: none;
 } */
-.fixed-table-toolbar{
+.fresh-table .fixed-table-toolbar{
    display: flex;
-   justify-content: center;
+   justify-content: space-between;
    --table-broder-radius: 10px;
    background-color: white;
-   border-radius: var(--table-broder-radius) var(--table-broder-radius) 0 0; 
+   border-radius: var(--table-broder-radius) var(--table-broder-radius) 0 0;
+   padding: 0;
+   margin: 0 10px;
+}
+.fresh-table .fixed-table-toolbar::after{
+   display: none;
 }
 .fixed-table-body{
    max-height: 50vh;
@@ -503,15 +548,6 @@ div>.part{
    border: solid 2px black;
    border-radius: 10px;
    margin-bottom: 20px; 
-}
-.main{
-   margin: 0 auto;
-   width: 80%;
-   position: relative; 
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
 }
 
 p {
