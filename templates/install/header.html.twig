@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv='Content-Script-Type' content='text/javascript'> 
     <meta http-equiv='Content-Style-Type' content='text/css'> 
-    {% for array in header_data %}
+    {% for array in header_data[:-1] %}
     {% for e in array %}
     {{e|raw}}
     {% endfor %}
@@ -13,29 +13,24 @@
     <title>Setup ITSM-NG</title>
 </head>
 <body>
-    
     <div id='principal'>
         <div id='bloc'>
             <div id='logo_bloc'></div>
-{% set steps = ['languages', 'license', 'install', 'requirement', 'login', 'databases', 'initialisation', 'done'] %}
-{% set maxstep = 8 %}
-{% set line_width = maxstep - step %}
-<div class="progress">
-    <div class="line" style={{'--w:' ~ line_width ~ ';--maxstep:' ~ maxstep ~ ';'}}></div>
-{% for i in steps %}
-    <div class="step">
-        <a  href={{"install.php?step="~loop.index0}}
-            title={{steps[loop.index0]|capitalize}}
-            class={% if loop.index0 <= step %}"circle"{% else %}"circle hidden"{% endif %}
-            style={{'--step:' ~ loop.index0 ~ ';--maxstep:' ~ maxstep ~ ';'}}
-        >{{loop.index0}}</a>
-        <p>{{steps[loop.index0]|capitalize}}</p>
-    </div>
-    
-{% endfor %}
-
-
-</div>
+            {% set maxstep = header_data["steps_name"][:-1]|length %}
+            <div class="progress">
+                <div class="line" style={{'--step:' ~ step ~ ';--maxstep:' ~ maxstep ~ ';'}}></div>
+            {% for i in header_data["steps_name"][:-1] %}
+                <div class="step">
+                    <a  href={{"install.php?step="~loop.index0}}
+                        title={{header_data["steps_name"][loop.index0]|capitalize}}
+                        class={% if loop.index0 <= step %}"circle"{% else %}"circle hidden"{% endif %}
+                        style={{'--step:' ~ loop.index0 ~ ';--maxstep:' ~ maxstep ~ ';'}}>
+                    {{loop.index0}}
+                    </a>
+                    <p>{{header_data["steps_name"][loop.index0]|capitalize}}</p>
+                </div>
+            {% endfor %}
+            </div>
             {# <h3>
             {% if step == 'languages' %}
                 {{'Select your language'|trans}}

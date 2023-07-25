@@ -1,4 +1,4 @@
-{% include "header.html.twig" with  {'step': step} %}
+{% include "header.html.twig" with {'step': step, 'header_data': header_data} %}
 
 {% if step == 0 %}
     {% include "language.html.twig" with {'languages' : languages, 'preferred_language' : preferred_language} %}
@@ -26,4 +26,4 @@
     {% include "error.html.twig" %}
 {% endif %}
 
-{% include "footer.html.twig"  with {'step' : step}%}
+{% include "footer.html.twig"  with {'step' : step} %}

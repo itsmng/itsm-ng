@@ -1,44 +1,53 @@
 {% from 'macros.html.twig' import button %}
 <h3>{{'Checking of the compatibility of your environment with the execution of GLPI'|trans}}</h3>
-        <table id="table" class="table"  data-toggle="table" 
-          data-search="true" data-height="1px" data-show-export="true">
-            <thead>
-                <th data-field="test">Test done</th>
-                <th data-sortable="true" data-field="result" class="check-result">{{'Results'|trans}}</th>
-            </thead>
-            <tbody>
-                {% for requirement in requirements %}
-                    <tr>
-                        <td>
-                            <div class="check-row">
-                                {{requirement.title|trans}}
-                            </div>
-                            {% if not requirement.validated %}
-                                    <p class="required-message">{{requirement.message|trans|raw}}</p>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if requirement.validated %}
+        <div class="table-container">
+            <table 
+            id="table" 
+            class="table"  
+            data-toggle="table"
+            data-search="true" 
+            data-height="1px" 
+            data-show-export="true"
+            data-icons-prefix="fas"
+            data-sort-name="result"
+            data-sort-order="asc">
+                <thead>
+                    <th data-sortable="true">Test done</th>
+                    <th data-sortable="true" data-field="result" class="check-result">{{'Results'|trans}}</th>
+                </thead>
+                <tbody>
+                    {% for requirement in requirements %}
+                        <tr>
+                            <td>
                                 <div class="check-row">
-                                    <div class="chip validated"><i class="fas fa-check"></i><p>Checked</p></div>
+                                    {{requirement.title|trans}}
                                 </div>
-                            {% else %}
-                                <div class="check-row">
-                                    {% if requirement.optional %}
-                                        <div class="chip optional"><i class="fas fa-exclamation-triangle"></i><p>Recommended</p></div>
-                                    {% elseif requirement.required %}
-                                        <div class="chip required"><i class="fas fa-times"></i><p>Required</p></div>
-                                    {% endif %}
-                                </div>
-                                <p class="required-message transparent">{{requirement.message|trans|raw}}</p>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                                {% if not requirement.validated %}
+                                        <p class="required-message">{{requirement.message|trans|raw}}</p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if requirement.validated %}
+                                    <div class="check-row">
+                                        <div class="chip validated"><i class="fas fa-check"></i><p>Checked</p></div>
+                                    </div>
+                                {% else %}
+                                    <div class="check-row">
+                                        {% if requirement.optional %}
+                                            <div class="chip optional"><i class="fas fa-exclamation-triangle"></i><p>Recommended</p></div>
+                                        {% elseif requirement.required %}
+                                            <div class="chip required"><i class="fas fa-times"></i><p>Required</p></div>
+                                        {% endif %}
+                                    </div>
+                                    <p class="required-message transparent">{{requirement.message|trans|raw}}</p>
+                                {% endif %}
+                            </td>
+                        </tr>
+            
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         <h3>{{'Do you want to continue?'|trans}}</h3>
     {% if passed == 0 %} {# 0 is good, 1 is missing optional, 2 is missing required #}
         <div class="buttons">

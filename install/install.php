@@ -37,7 +37,10 @@ function check_post($var_name){
     global $header_data;
     if (!isset($_POST[$var_name])){
         if (!isset($_SESSION[$var_name])){
-            echo $twig->render('index.html.twig', ['header_data'=> $header_data,'step' => 'error']);
+            $twig_vars = [];
+            echo "bug";
+            echo $twig->render('index.html.twig',  ['step' => "error",'header_data' => $header_data] + $twig_vars);
+            echo "hihi";
             die();
         } else {
             return false;
@@ -77,6 +80,8 @@ $header_data = [
                     ];
 
 $steps =   ['0', '1', '2', '3', '4', '5', '6','7','8', 'error'];
+$steps_name = ['languages', 'license', 'install', 'requirement', 'login', 'databases', 'initialisation', 'done', 'error'];
+$header_data["steps_name"] = $steps_name;
 global $CFG_GLPI;
 if (isset($_GET['step']) and in_array($_GET['step'], $steps)) {
     $step = $_GET['step'];
@@ -161,6 +166,7 @@ switch ($step) {
         break;
 
     case "5":
+        $_SESSION['first'] = true;
         if (check_post('db_host')){
             $_SESSION['db_host'] = $_POST['db_host'];
         }
@@ -219,7 +225,6 @@ switch ($step) {
             Toolbox::createSchema($_SESSION['language']);
             $done = true;
         } else {
-            print_r($_POST);
             $done = false;
             if (check_post('databasename')){
                 if (empty($_POST['databasename'])){
@@ -231,7 +236,6 @@ switch ($step) {
                 }
             }
             $created = false;
-            $_SESSION['initialized'] = false;
             $sql_error = "";
             $error = "";
             $db_state = "";
@@ -318,7 +322,7 @@ switch ($step) {
 }
 try {
     echo $twig->render('index.html.twig',  ['step' => $step,'header_data' => $header_data] + $twig_vars);
-    if($step == "5" and !$done){
+    if($step == "6" and !$done){
         header("Refresh:0");
     }
 } catch (\Exception $e) {

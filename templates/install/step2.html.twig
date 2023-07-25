@@ -15,13 +15,14 @@
         <form action='install.php?step=6' method='post'>
         {% if action == 'install' %}
             <p>Please select a database:</p>
-            <div class="fresh-table full-color-orange">
+            <div class="table-container">
                 <table id="table" class="table"
                 data-toggle="table"
                 data-search="true"
                 data-height="1px"
                 data-click-to-select="true"
-                data-show-export="true">
+                data-show-export="true"
+                data-icons-prefix="fas">
                     <thead>
                     <tr>
                         <th data-sortable="true">Name</th>
@@ -46,11 +47,8 @@
             </div>
 
             
-    <input id="post_value" type="hidden" name="databasename" value={databases[0].name}>
+    <input id="post_value" type="hidden" name="databasename" value='{{databases[0].name}}'>
     <script>
-        $.extend($.fn.bootstrapTable.defaults.icons, {
-       export: 'fas fa-download'
- });
         $('#table').bootstrapTable({
   onCheck: (row, $element) => {
     $('#post_value').val(row._data.databasename);
@@ -70,7 +68,7 @@
                     <label for='databasename'>{{database}}</label>
                 {% endfor %}
         {% endif %}
-            {{button('submit', 'Continue')}}
+            <div class="buttons">{{button('submit', 'Continue')}}</div>
         </form>
     {% else %}
         <p>Your database engine version seems too old: {{version}}.</p>

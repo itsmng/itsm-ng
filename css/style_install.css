@@ -48,8 +48,8 @@ body {
 #bloc {
    position:relative;
    width:90%;
-   height: 80%;
-   min-height: 500px;
+   height: 90%;
+   min-height: 600px;
    max-width: 760px;
    padding: 30px 30px;
    margin:0 auto;
@@ -97,10 +97,15 @@ body {
    margin: 0 auto;
    width: 100%;
    height: 100%;
+   min-height: 800px;
    position: relative; 
+   display: flex;
+   flex-direction: column;
+   align-items: center;
    text-wrap: balance; /* not supported by firefox 07/23, doesn't break layout*/
 }
 #license{
+   margin-top: 10px;
    background-color: var(--white);
    color: var(--black);
    border-radius: var(--bloc-border-radius);
@@ -134,6 +139,7 @@ h3 {
 }
 
 .buttons{
+   min-width: 60%;
    margin: 0 auto;
    margin-top: 1em;
    display: flex;
@@ -170,6 +176,7 @@ h3 {
    padding-bottom: 20px;
    overflow: visible;
    --grey: rgb(219, 212, 212);
+   top: 600px;
 }
 .line{
    margin-left: 2.5%;
@@ -184,7 +191,7 @@ h3 {
    content: "";
    position: absolute;
    z-index: 2;
-   width: calc(100%/var(--maxstep)*var(--w));
+   width: calc(100%/(var(--maxstep) - 1)*((var(--maxstep) - 1) - var(--step)));
    height: 10px;
    background-color: var(--grey);
    border-radius: 5px;
@@ -212,7 +219,7 @@ h3 {
    background: linear-gradient(90deg, rgba(255,0,0) 0%, rgba(255,255,0) 20%, rgba(0,255,0) 40%, rgba(0,255,255) 60%, rgba(0,0,255) 80%, rgba(255,0,255) 100%);
    background-size: 10000%;
    border-radius: 50%;
-   background-position: calc(var(--step) * 100%/var(--maxstep));
+   background-position: calc(100%/(var(--maxstep) - 1) * var(--step));
    cursor: pointer;
    text-decoration: none;
    font-size: 2em;
@@ -225,7 +232,24 @@ h3 {
    pointer-events: none;
    color: transparent;
 }
-
+.spinner{
+   height: 100%;
+   width: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+form{
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+form>button{
+}
+.language{
+   margin-top: 10px;
+}
 .language>form{
    position: relative;
    display: flex;
@@ -289,6 +313,7 @@ div.chip>p{
 }
 .required-message{
    margin-top: 20px;
+   padding: 10px 20px;
    position: relative;
    width: calc(200% - 18px);
    color: var(--text-color);
@@ -300,73 +325,100 @@ div.chip>p{
    margin-bottom: 0px;
 }
 td
-table, thead, tbody, .fresh-table .fixed-table-container.fixed-height .table thead th,th, tr, td{
+table, thead, tbody, .fixed-table-container.fixed-height .table thead th,th, tr, td{
    background-color: transparent !important;
    color: white !important;
    border: none !important;
    font-size: 1rem;
    text-wrap: balance;
 }
-.fresh-table{
+
+.table-container{
+   margin-top: 10px;
    --table-broder-radius: 10px;
-   max-width: 100%;
-   height: 100%;
+   width: 100%;
    border-radius: var(--table-broder-radius);
+   height: 70%;
+   background: linear-gradient(90deg,rgb(255, 133, 52), rgb(255, 94, 0));
+   /* background: radial-gradient(ellipse at center, #ff5221 0%, #ffb33b 100%);
+   background-size: 250% 250%; */
+   /* background:rgba(0, 0, 0, 0.4); */
 }
 
+/* 
 .fresh-table{
    max-height: 70% !important;
-   overflow: hidden;
-}
+} */
 
 .bootstrap-table{
    height: 100% !important;
 }
 .fixed-height{
    display: block;
-   height: 100%;
-   padding-bottom: calc(49px) !important; /* taille table header 49px, search bar 70px */
+   /* padding-bottom: calc(49px) !important; taille table header 49px, search bar 70px */
    box-sizing: border-box;
+   height: calc(100% - 48px);
+}
+
+.fixed-table-container{
+   overflow: hidden;
+   padding: 0 !important;
+   border-bottom: 0 !important;
 }
 .fixed-table-body{
-   height: 100% !important;
    display: block;
    overflow-y: scroll;
    box-sizing: border-box;
-   padding-bottom: 70px;
+   height: calc(100% - 48px) !important;
+
 }
-.fresh-table .fixed-table-toolbar{
+.fixed-table-toolbar{
    display: flex;
    justify-content: space-between;
-   --table-broder-radius: 10px;
-   background-color: white;
+   background-color: transparent;
    padding: 0;
    margin: 0 10px;
 }
-.fresh-table .fixed-table-toolbar::after{
-   display: none;
+.fixed-table-toolbar::after{
+   display: none !important;
+}
+.fixed-table-toolbar>.search{
+}
+.fixed-table-toolbar>.search>.search-input{
+   border-color: rgba(255, 255, 255, 0.8);
+   background-color: transparent;
+   color: #FFFFFF;
+   border-radius: 30px;
+}
+.fixed-table-toolbar>.search>.search-input::placeholder{
+   transition: box-shadow 0.3s linear;
+   color: #FFFFFF;
+}
+.fixed-table-toolbar>.search>.search-input:focus{
+   background-color: rgba(255, 255, 255, 0.2);
+   box-shadow: none;
 }
 .fixed-table-body{
    overflow-x: hidden !important;
 } 
 
-.fresh-table .bootstrap-table .table > tfoot > tr > th, .fresh-table .bootstrap-table .table > thead > tr > th {
+.bootstrap-table .table > tfoot > tr > th, .bootstrap-table .table > thead > tr > th {
    padding-top: 0 !important;
    padding-bottom: 0 !important;
 }
 .check-result{
    text-align: center;
 }
-.fresh-table tbody>tr:nth-child(odd){
+tbody>tr:nth-child(odd){
    background-color: rgba(255, 255, 255, 0.15) !important;
 }
-.fresh-table td{
+td{
    width: 50%;
 }
 .fixed-table-toolbar .btn-group{
    margin-bottom: 0 !important;
 }
-.fresh-table .dropdown-menu{
+.dropdown-menu{
    visibility: visible;
    opacity: 1;
    display: none;
@@ -380,14 +432,37 @@ table, thead, tbody, .fresh-table .fixed-table-container.fixed-height .table the
    max-height: 50vh;
    display: table;
 }
-
+.form-floating{
+   padding: 2px;
+}
 .form-floating label{
    color: var(--text-color2);
 }
+
 .fields{
-   background-color: #000;
+   margin-top: 10px;
+   background: radial-gradient(ellipse at center, #ff5221 0%, #15ff00 100%);
+   background-size: 2500% 2500%;
+   background-position: 50% 50%;
    padding: 1em;
    border-radius: 10px;
+   width: 80%;
+   animation: 5s linear bpos infinite;
+}
+
+@keyframes bpos{
+   0% {
+      background-position: 0% 0%;
+   }
+   25% {
+      background-position: 100% 100%;
+   }
+   50% {
+      background-position: 100% 0%;
+   }
+   100% {
+      background-position: 0% 100%;
+   }
 }
 .form-floating{
    width: 100%;
@@ -419,6 +494,7 @@ div.text{
    border: solid 2px black;
    border-radius: 10px;
    margin-bottom: 20px; 
+   padding: 10px;
 }
 
 .license-checkbox{
@@ -462,6 +538,14 @@ fieldset>legend {
 
 .center {
    text-align:center;
+}
+.center>a{
+   text-decoration: none;
+   color: var(--text-color);
+   padding: 5px;
+   background-color: #545555;
+   border-radius: 5px;
+   border: red 2px solid;
 }
 
 .left {
