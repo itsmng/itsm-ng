@@ -1,0 +1,482 @@
+{
+    "ar_SA" :  {
+    "native" : "العَرَبِيَّةُ",
+    "file" : "ar_SA.mo",
+    "jquery" : "ar",
+    "tinymce" : "ar",
+    "english" : "arabic",
+    "plural" : 103
+                },
+    "bg_BG" :  {
+    "native" : "Български",
+    "file" : "bg_BG.mo",
+    "jquery" : "bg",
+    "tinymce" : "bg",
+    "english" : "bulgarian",
+    "plural" : 2
+                },
+    "id_ID" :  {
+    "native" : "Bahasa Indonesia",
+    "file" : "id_ID.mo",
+    "jquery" : "id",
+    "tinymce" : "id",
+    "english" : "indonesian",
+    "plural" : 2
+                },
+    "ms_MY" :  {
+    "native" : "Bahasa Melayu",
+    "file" : "ms_MY.mo",
+    "jquery" : "ms",
+    "tinymce" : "ms",
+    "english" : "malay",
+    "plural" : 2
+                },
+    "ca_ES" :  {
+    "native" : "Català",
+    "file" : "ca_ES.mo",
+    "jquery" : "ca",
+    "tinymce" : "ca",
+    "english" : "catalan",
+    "plural" : 2
+                },
+    "cs_CZ" :  {
+    "native" : "Čeština",
+    "file" : "cs_CZ.mo",
+    "jquery" : "cs",
+    "tinymce" : "cs",
+    "english" : "czech",
+    "plural" : 10
+                },
+    "de_DE" :  {
+    "native" : "Deutsch",
+    "file" : "de_DE.mo",
+    "jquery" : "de",
+    "tinymce" : "de",
+    "english" : "german",
+    "plural" : 2
+                },
+    "da_DK" :  {
+    "native" : "Dansk",
+    "file" : "da_DK.mo",
+    "jquery" : "da",
+    "tinymce" : "da",
+    "english" : "danish",
+    "plural" : 2
+                },
+    "et_EE" :  {
+    "native" : "Eesti",
+    "file" : "et_EE.mo",
+    "jquery" : "et",
+    "tinymce" : "et",
+    "english" : "estonian",
+    "plural" : 2
+                },
+    "en_GB" :  {
+    "native" : "English",
+    "file" : "en_GB.mo",
+    "jquery" : "en-GB",
+    "tinymce" : "en",
+    "english" : "english",
+    "plural" : 2
+                },
+    "en_US" :  {
+    "native" : "English (US)",
+    "file" : "en_US.mo",
+    "jquery" : "en-GB",
+    "tinymce" : "en",
+    "english" : "english",
+    "plural" : 2
+                },
+    "es_AR" :  {
+    "native" : "Español (Argentina)",
+    "file" : "es_AR.mo",
+    "jquery" : "es",
+    "tinymce" : "es",
+    "english" : "spanish",
+    "plural" : 2
+                },
+    "es_CO" :  {
+    "native" : "Español (Colombia)",
+    "file" : "es_CO.mo",
+    "jquery" : "es",
+    "tinymce" : "es",
+    "english" : "spanish",
+    "plural" : 2
+                },
+    "es_ES" :  {
+    "native" : "Español (España)",
+    "file" : "es_ES.mo",
+    "jquery" : "es",
+    "tinymce" : "es",
+    "english" : "spanish",
+    "plural" : 2
+                },
+    "es_419" :  {
+    "native" : "Español (América Latina)",
+    "file" : "es_419.mo",
+    "jquery" : "es",
+    "tinymce" : "es",
+    "english" : "spanish",
+    "plural" : 2
+                },
+    "es_MX" :  {
+    "native" : "Español (Mexico)",
+    "file" : "es_MX.mo",
+    "jquery" : "es",
+    "tinymce" : "es",
+    "english" : "spanish",
+    "plural" : 2
+                },
+    "es_VE" :  {
+    "native" : "Español (Venezuela)",
+    "file" : "es_VE.mo",
+    "jquery" : "es",
+    "tinymce" : "es",
+    "english" : "spanish",
+    "plural" : 2
+                },
+    "eu_ES" :  {
+    "native" : "Euskara",
+    "file" : "eu_ES.mo",
+    "jquery" : "eu",
+    "tinymce" : "eu",
+    "english" : "basque",
+    "plural" : 2
+                },
+    "fr_FR" :  {
+    "native" : "Français",
+    "file" : "fr_FR.mo",
+    "jquery" : "fr",
+    "tinymce" : "fr",
+    "english" : "french",
+    "plural" : 2
+                },
+    "fr_CA" :  {
+    "native" : "Français (Canada)",
+    "file" : "fr_CA.mo",
+    "jquery" : "fr",
+    "tinymce" : "fr",
+    "english" : "french",
+    "plural" : 2
+                },
+    "fr_BE" :  {
+    "native" : "Français (Belgique)",
+    "file" : "fr_BE.mo",
+    "jquery" : "fr",
+    "tinymce" : "fr",
+    "english" : "french",
+    "plural" : 2
+                },
+    "gl_ES" :  {
+    "native" : "Galego",
+    "file" : "gl_ES.mo",
+    "jquery" : "gl",
+    "tinymce" : "gl",
+    "english" : "galician",
+    "plural" : 2
+                },
+    "el_GR" :  {
+    "native" : "Ελληνικά",
+    "file" : "el_GR.mo",
+    "jquery" : "el",
+    "tinymce" : "el",
+    "english" : "greek",
+    "plural" : 2
+                },
+    "he_IL" :  {
+    "native" : "עברית",
+    "file" : "he_IL.mo",
+    "jquery" : "he",
+    "tinymce" : "he",
+    "english" : "hebrew",
+    "plural" : 2
+                },
+    "hi_IN" :  {
+    "native" : "हिन्दी",
+    "file" : "hi_IN.mo",
+    "jquery" : "hi",
+    "tinymce" : "hi_IN",
+    "english" : "hindi",
+    "plural" : 2
+                },
+    "hr_HR" :  {
+    "native" : "Hrvatski",
+    "file" : "hr_HR.mo",
+    "jquery" : "hr",
+    "tinymce" : "hr",
+    "english" : "croatian",
+    "plural" : 2
+                },
+    "hu_HU" :  {
+    "native" : "Magyar",
+    "file" : "hu_HU.mo",
+    "jquery" : "hu",
+    "tinymce" : "hu",
+    "english" : "hungarian",
+    "plural" : 2
+                },
+    "it_IT" :  {
+    "native" : "Italiano",
+    "file" : "it_IT.mo",
+    "jquery" : "it",
+    "tinymce" : "it",
+    "english" : "italian",
+    "plural" : 2
+                },
+    "kn" :  {
+    "native" : "ಕನ್ನಡ",
+    "file" : "kn.mo",
+    "jquery" : "en-GB",
+    "tinymce" : "en",
+    "english" : "kannada",
+    "plural" : 2
+                },
+    "lv_LV" :  {
+    "native" : "Latviešu",
+    "file" : "lv_LV.mo",
+    "jquery" : "lv",
+    "tinymce" : "lv",
+    "english" : "latvian",
+    "plural" : 2
+                },
+    "lt_LT" :  {
+    "native" : "Lietuvių",
+    "file" : "lt_LT.mo",
+    "jquery" : "lt",
+    "tinymce" : "lt",
+    "english" : "lithuanian",
+    "plural" : 2
+                },
+    "mn_MN" :  {
+    "native" : "Монгол хэл",
+    "file" : "mn_MN.mo",
+    "jquery" : "mn",
+    "tinymce" : "mn",
+    "english" : "mongolian",
+    "plural" : 2
+                },
+    "nl_NL" :  {
+    "native" : "Nederlands",
+    "file" : "nl_NL.mo",
+    "jquery" : "nl",
+    "tinymce" : "nl",
+    "english" : "dutch",
+    "plural" : 2
+                },
+    "nl_BE" :  {
+    "native" : "Flemish",
+    "file" : "nl_BE.mo",
+    "jquery" : "nl",
+    "tinymce" : "nl",
+    "english" : "flemish",
+    "plural" : 2
+                },
+    "nb_NO" :  {
+    "native" : "Norsk (Bokmål)",
+    "file" : "nb_NO.mo",
+    "jquery" : "no",
+    "tinymce" : "nb",
+    "english" : "norwegian",
+    "plural" : 2
+                },
+    "nn_NO" :  {
+    "native" : "Norsk (Nynorsk)",
+    "file" : "nn_NO.mo",
+    "jquery" : "no",
+    "tinymce" : "nn",
+    "english" : "norwegian",
+    "plural" : 2
+                },
+    "fa_IR" :  {
+    "native" : "فارسی",
+    "file" : "fa_IR.mo",
+    "jquery" : "fa",
+    "tinymce" : "fa",
+    "english" : "persian",
+    "plural" : 2
+                },
+    "pl_PL" :  {
+    "native" : "Polski",
+    "file" : "pl_PL.mo",
+    "jquery" : "pl",
+    "tinymce" : "pl",
+    "english" : "polish",
+    "plural" : 2
+                },
+    "pt_PT" :  {
+    "native" : "Português",
+    "file" : "pt_PT.mo",
+    "jquery" : "pt",
+    "tinymce" : "pt",
+    "english" : "portuguese",
+    "plural" : 2
+                },
+    "pt_BR" :  {
+    "native" : "Português do Brasil",
+    "file" : "pt_BR.mo",
+    "jquery" : "pt-BR",
+    "tinymce" : "pt",
+    "english" : "brazilian portuguese",
+    "plural" : 2
+                },
+    "ro_RO" :  {
+    "native" : "Română",
+    "file" : "ro_RO.mo",
+    "jquery" : "ro",
+    "tinymce" : "en",
+    "english" : "romanian",
+    "plural" : 2
+                },
+    "ru_RU" :  {
+    "native" : "Русский",
+    "file" : "ru_RU.mo",
+    "jquery" : "ru",
+    "tinymce" : "ru",
+    "english" : "russian",
+    "plural" : 2
+                },
+    "sk_SK" :  {
+    "native" : "Slovenčina",
+    "file" : "sk_SK.mo",
+    "jquery" : "sk",
+    "tinymce" : "sk",
+    "english" : "slovak",
+    "plural" : 10
+                },
+    "sl_SI" :  {
+    "native" : "Slovenščina",
+    "file" : "sl_SI.mo",
+    "jquery" : "sl",
+    "tinymce" : "sl",
+    "english" : "slovenian slovene",
+    "plural" : 2
+                },
+    "sr_RS" :  {
+    "native" : "Srpski",
+    "file" : "sr_RS.mo",
+    "jquery" : "sr",
+    "tinymce" : "sr",
+    "english" : "serbian",
+    "plural" : 2
+                },
+    "fi_FI" :  {
+    "native" : "Suomi",
+    "file" : "fi_FI.mo",
+    "jquery" : "fi",
+    "tinymce" : "fi",
+    "english" : "finish",
+    "plural" : 2
+                },
+    "sv_SE" :  {
+    "native" : "Svenska",
+    "file" : "sv_SE.mo",
+    "jquery" : "sv",
+    "tinymce" : "sv",
+    "english" : "swedish",
+    "plural" : 2
+                },
+    "vi_VN" :  {
+    "native" : "Tiếng Việt",
+    "file" : "vi_VN.mo",
+    "jquery" : "vi",
+    "tinymce" : "vi",
+    "english" : "vietnamese",
+    "plural" : 2
+                },
+    "th_TH" :  {
+    "native" : "ภาษาไทย",
+    "file" : "th_TH.mo",
+    "jquery" : "th",
+    "tinymce" : "th",
+    "english" : "thai",
+    "plural" : 2
+                },
+    "tr_TR" :  {
+    "native" : "Türkçe",
+    "file" : "tr_TR.mo",
+    "jquery" : "tr",
+    "tinymce" : "tr",
+    "english" : "turkish",
+    "plural" : 2
+                },
+    "uk_UA" :  {
+    "native" : "Українська",
+    "file" : "uk_UA.mo",
+    "jquery" : "uk",
+    "tinymce" : "en",
+    "english" : "ukrainian",
+    "plural" : 2
+                },
+    "ja_JP" :  {
+    "native" : "日本語",
+    "file" : "ja_JP.mo",
+    "jquery" : "ja",
+    "tinymce" : "ja",
+    "english" : "japanese",
+    "plural" : 2
+                },
+    "zh_CN" :  {
+    "native" : "简体中文",
+    "file" : "zh_CN.mo",
+    "jquery" : "zh-CN",
+    "tinymce" : "zh",
+    "english" : "chinese",
+    "plural" : 2
+                },
+    "zh_TW" :  {
+    "native" : "繁體中文",
+    "file" : "zh_TW.mo",
+    "jquery" : "zh-TW",
+    "tinymce" : "zh",
+    "english" : "chinese",
+    "plural" : 2
+                },
+    "ko_KR" :  {
+    "native" : "한국\/韓國",
+    "file" : "ko_KR.mo",
+    "jquery" : "ko",
+    "tinymce" : "ko",
+    "english" : "korean",
+    "plural" : 1
+                },
+    "zh_HK" :  {
+    "native" : "香港",
+    "file" : "zh_HK.mo",
+    "jquery" : "zh-HK",
+    "tinymce" : "zh",
+    "english" : "chinese",
+    "plural" : 2
+                },
+    "be_BY" :  {
+    "native" : "Belarussian",
+    "file" : "be_BY.mo",
+    "jquery" : "be",
+    "tinymce" : "be",
+    "english" : "belarussian",
+    "plural" : 3
+                },
+    "is_IS" :  {
+    "native" : "íslenska",
+    "file" : "is_IS.mo",
+    "jquery" : "is",
+    "tinymce" : "en",
+    "english" : "icelandic",
+    "plural" : 2
+                },
+    "eo" :  {
+    "native" : "Esperanto",
+    "file" : "eo.mo",
+    "jquery" : "eo",
+    "tinymce" : "en",
+    "english" : "esperanto",
+    "plural" : 2
+                },
+    "es_CL" :  {
+    "native" : "Español chileno",
+    "file" : "es_CL",
+    "jquery" : "es",
+    "tinymce" : "es",
+    "english" : "spanish chilean",
+    "plural" : 2
+                }
+}

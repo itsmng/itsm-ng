@@ -1,11 +1,10 @@
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL ^ E_DEPRECATED ^ E_WARNING);
+error_reporting(E_ALL ^ E_DEPRECATED );
 
 session_start();
 define('GLPI_ROOT', realpath('..'));
-
 
 include_once (GLPI_ROOT . "/inc/based_config.php");
 include_once (GLPI_ROOT . "/inc/db.function.php");
@@ -16,21 +15,11 @@ $GLPI->initErrorHandler();
 
 Config::detectRootDoc();
 require_once '../vendor/autoload.php';
-
 use Glpi\System\RequirementsManager;
 
-use Twig\Loader\FilesystemLoader;
-use Twig\Environment;
-$loader = new FilesystemLoader('../templates/install');
-$twig = new Environment($loader, [
-    /*     'cache' => './cache', */
-    'cache' => false
-]);
-$TRANSLATE;
-
-$filter = new \Twig\TwigFilter('trans', '__');
-$twig->addFilter($filter);
-
+require_once GLPI_ROOT . "/ng/languages/language.class.php";
+require_once GLPI_ROOT . "/ng/twig.function.php";
+$twig = Twig::load(GLPI_ROOT . "/templates/install", false);
 
 function check_post($var_name){
     global $twig;
@@ -71,7 +60,6 @@ $header_data = [
     "css_files"     =>  [
         Html::css('css/bootstrap-select.min.css'),
         Html::css('css/bootstrap-table.min.css'),
-        // Html::css("css/fresh-bootstrap-table.css"),
         Html::css('public/lib/base.css'),
         Html::css("css/font-awesome.min.css"),
         Html::css("css/bootstrap.min.css"),
@@ -92,8 +80,9 @@ $twig_vars = [];
 Session::loadLanguage('', false);
 switch ($step) {
     case "0":
-        $languages_raw = $CFG_GLPI["languages"];
-
+        $languages_raw = Language::getLanguages();
+        echo "ici";
+        print_r($languages_raw);
         $european_languages_code = [                                                    //a implementer directement dans $CFG_GLPI["languages"]
             'bd_BG','ca_ES','cz_CZ','de_DE','da_DK','et_EE','en_GB','eu_ES','fr_FR','fr_BE','es_ES',
             'gl_ES','el_GR','hr_HR','hu_HU','it_IT','lv_LV','lt_LT','nl_NL','nl_BE',
@@ -204,8 +193,8 @@ switch ($step) {
                     RIGHT JOIN information_schema.schemata AS S 
                     ON S.schema_name = T.table_schema
                     GROUP BY S.schema_name;")){
-                    while ($row = $DB_list->fetch_array(MYSQLI_ASSOC)) {
-                        if (!in_array($row['name'],["information_schema","mysql","performance_schema","sys"])){
+                    while ($row = $DB_list->fetch_array(MYSQLI_NUM)) {
+                        if (!in_array($row[0],["information_schema","mysql","performance_schema","sys"])){
                             $databases_info[] = $row;
                         }
                     }
@@ -231,7 +220,7 @@ switch ($step) {
                     $_SESSION['databasename'] = $_POST['newdatabasename'];
                     $_SESSION['new'] = true;
                 } else {
-                    $_SESSION['databasename'] = $_POST['databasename'];
+                    $_SESSION['databasename'] = $_POST['database']["name"];
                     $_SESSION['new'] = false;
                 }
             }
@@ -318,8 +307,8 @@ switch ($step) {
                 'name'      => 'url_base_api'
             ]
         );
-
 }
+    
 try {
     echo $twig->render('index.html.twig',  ['step' => $step,'header_data' => $header_data] + $twig_vars);
     if($step == "6" and !$done){
