@@ -139,6 +139,20 @@ class InstallCommand extends AbstractConfigureCommand {
       $default_language = $input->getOption('default-language');
       $force            = $input->getOption('force');
 
+      if(posix_getpwuid(fileowner(GLPI_VAR_DIR . '/_log/php-errors.log'))['name'] == 'root' or posix_getgrgid(filegroup(GLPI_VAR_DIR . '/_log/php-errors.log'))['name'] == 'root') 
+      {
+         if(preg_match('/CentOS/', shell_exec('lsb_release -i')))
+         {
+            chown(GLPI_VAR_DIR . '/_log/php-errors.log', 'apache');
+            chgrp(GLPI_VAR_DIR . '/_log/php-errors.log', 'apache');
+         }
+         else
+         {
+            chown(GLPI_VAR_DIR . '/_log/php-errors.log', 'www-data');
+            chgrp(GLPI_VAR_DIR . '/_log/php-errors.log', 'www-data');
+         }
+      }
+
       if ($this->isDbAlreadyConfigured()
           && $this->isInputContainingConfigValues($input, $output)
           && !$input->getOption('reconfigure')) {
