@@ -23,6 +23,7 @@ body {
    --secondary-color: #545555;
    --third-color: #ffe1ad;
    --darker-third-color: #dba746;
+   --grey-opaque: rgba(81, 73, 73, 0.4);
    --text-color: white;
    --text-color2: black;
    --white: white;
@@ -162,7 +163,7 @@ h3 {
 
 
 .progress{
-   margin: 0 auto;
+   margin-top: 10px;
    display: flex;
    flex-direction: row;
    justify-content: space-between;
@@ -176,7 +177,6 @@ h3 {
    padding-bottom: 20px;
    overflow: visible;
    --grey: rgb(219, 212, 212);
-   top: 600px;
 }
 .line{
    margin-left: 2.5%;
@@ -233,11 +233,9 @@ h3 {
    color: transparent;
 }
 .spinner{
-   height: 100%;
-   width: 100%;
-   display: flex;
-   justify-content: center;
-   align-items: center;
+   font-size: 1.7em;
+   margin: auto;
+   transform: translateY(-2em);
 }
 form{
    width: 100%;
@@ -441,15 +439,32 @@ td{
 
 .fields{
    margin-top: 10px;
-   background: radial-gradient(ellipse at center, #ff5221 0%, #15ff00 100%);
-   background-size: 2500% 2500%;
-   background-position: 50% 50%;
    padding: 1em;
-   border-radius: 10px;
    width: 80%;
-   animation: 5s linear bpos infinite;
+   background-color: var(--grey-opaque);
+   border: solid 2px black;
+   border-radius: 10px;
+   /*    background-size: 2500% 2500%;
+      background-position: 50% 50%; */
+   /* background: radial-gradient(ellipse at center, #ff5221 0%, #15ff00 100%); */
+   /* animation: 5s linear bpos infinite; */
+}
+.form-control:focus{
+   /* background-color: var(--bs-body-bg); */
+   border-color: #ffffff;
+   outline: 0;
+   box-shadow: 0 0 0 .25rem rgba(240, 13, 100, 0.25);
 }
 
+.form-check-input:focus{
+   border-color: var(--white);
+   outline: 0;
+   box-shadow: 0 0 0 .25rem rgba(255, 81, 0, 0.25);
+}
+.form-check-input:checked {
+   background-color: #ff7300;
+   border-color: #ffffff;
+}
 @keyframes bpos{
    0% {
       background-position: 0% 0%;
@@ -488,6 +503,9 @@ td>p{
 }
 
 div.text{
+   width: 100%;
+   display: flex;
+   flex-direction: column;
    margin-top: 10px;
    background:rgba(81, 73, 73, 0.4);
    backdrop-filter: blur(50px);
@@ -539,13 +557,14 @@ fieldset>legend {
 .center {
    text-align:center;
 }
-.center>a{
+.text > a{
+   margin: 0 auto;
    text-decoration: none;
    color: var(--text-color);
    padding: 5px;
-   background-color: #545555;
+   background-color: #000000;
    border-radius: 5px;
-   border: red 2px solid;
+   border: rgb(255, 255, 255) 2px solid;
 }
 
 .left {

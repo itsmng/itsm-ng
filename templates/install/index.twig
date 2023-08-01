@@ -1,0 +1,31 @@
+{% include "header.twig" with {'step': step, 'header_data': header_data} %}
+
+{% if step == 0 %}
+    {% include "language.twig" with {'languages' : languages, 'preferred_language' : preferred_language} %}
+{% elseif step == 1 %}
+    {% include "license.twig" with {'license' : license} %}
+{% elseif step == 2 %}
+    {% include "install.twig" %}
+{% elseif step == 3 %}
+    {% include "requirements.twig" with {'requirements' : requirements, 'passed': passed} %}
+{% elseif step == 4 %}
+    {% include "sql_login.twig"  with {'host' : host, 'user' : user} %}
+{% elseif step == 5 %}
+    {% include "databases.twig" with { 'host' :            host,               'user' :    user,                  
+                                        'connect_error' :   connect_error,      'version' : version,    
+                                        'ver_too_old' :     ver_too_old,        'action' :  action,
+                                        'databases' :       databases} %}
+{% elseif step == 6 %}
+    {% include "initialization.twig" with { 'db_state' :        db_state,            'new' :    new, 
+                                        'error' :           error,              'secured' : secured, 
+                                        'sql_error' :       sql_error,           'created' : created,
+                                        'initialized' :     initialized,         'done' : done} %}
+{% elseif step == 7 %}
+    {% include "initialized.twig" %}
+{% elseif step == 8 %}
+    {% include "done.twig" %}
+{% elseif step == 'error' %}
+    {% include "error.twig" %}
+{% endif %}
+
+{% include "footer.twig"  with {'step' : step} %}

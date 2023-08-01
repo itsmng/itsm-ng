@@ -1,24 +1,33 @@
-{% from 'macros.html.twig' import button, table %}
+{% from 'macros.twig' import button, table %}
 <h3>{{'Test of the connection at the database'|trans}}</h3>
 {% if connect_error %}
-    <p>Can't connect to the database</p>
-    <p>The server answered: {{ connect_error }}</p>
+    <div class="text">
+        <p>{{"Can't connect to the database"|trans}}</p>
+        <p>{{'The server answered: %s'|trans|format(connect_error)}}:</p>
+    </div>
     <div class="buttons">
         <form action='install.php?step=4' method='post'>
-            {{button('submit', 'Back')}}
+            {{button('submit', 'Back'|trans)}}
         </form>
     </div>
 {% else %}
-<h3>Database connection successful</h3>
-    {% if not ver_too_old %} {# if <p></p> else <p></p> plus clair que <p> if else </p> #}
-        <p>Database version seems correct {{version}} - Perfect!</p>
+<h3>{{'Database connection successful'|trans}}</h3>
+    {% if ver_too_old %} {# if <p></p> else <p></p> plus clair que <p> if else </p> #}
+        <p>{{'Your database engine version seems too old: %s.'|trans|format(version)}}</p>
+    {% else %}
+        <p>{{"Database version seems correct (%s) - Perfect!"|trans|format(version)}}</p> {# change the way trans work #}
         <form action='install.php?step=6' method='post'>
         {% if action == 'install' %}
-            <p>Please select a database:</p>
+        <p>{{"Create a new database or use an existing one:"|trans}}</p>
+        <input type="text" name="newdatabasename" autocomplete="off">
+            <p>{{"Please select a database:"|trans}}</p>
+        {% elseif action == 'update' %}
+            <p>{{"Please select the database to update:"|trans}}</p>
+        {% endif %}
 
 
             {{table(
-                { post_name: "databasename"}, 
+                { post_name: "database"}, 
                 {   
                     args: [{sortable: "true"}, {sortable: "true"}, {sortable: "true"}, {sortable: "true"}, {radio: "true"}],
                     titles: ['name', 'table count', 'creation date', 'last update', 'select']
@@ -28,31 +37,7 @@
                     rows: databases
                 }
                 )}}
-
-
-
-
-
-
-                
-                {# {% for database in databases %}
-                    <input type='radio' name='databasename' required value={{database}}>
-                    <label for='databasename'>{{database}}</label>
-                {% endfor %}
-                <input type='radio' name='databasename' checked value=''>
-                <label for='databasename'>Create a new database or use an existing one:</label>
-                <input type='text' name='newdatabasename'></input> #}
-        {% elseif action == 'update' %}
-            <p>Please select the database to update:</p>
-                {% for database in databases %}
-                    <input type='radio' name='databasename' value={{database}}>
-                    <label for='databasename'>{{database}}</label>
-                {% endfor %}
-        {% endif %}
-            <div class="buttons">{{button('submit', 'Continue')}}</div>
+            <div class="buttons">{{button('submit', 'Continue'|trans)}}</div>
         </form>
-    {% else %}
-        <p>Your database engine version seems too old: {{version}}.</p>
     {% endif %}
 {% endif %}
-
