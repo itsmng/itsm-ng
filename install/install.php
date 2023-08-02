@@ -6,7 +6,6 @@ error_reporting(E_ALL ^ E_DEPRECATED ^ E_WARNING);
 session_start();
 define('GLPI_ROOT', realpath('..'));
 
-
 include_once (GLPI_ROOT . "/inc/based_config.php");
 include_once (GLPI_ROOT . "/inc/db.function.php");
 
@@ -16,104 +15,77 @@ $GLPI->initErrorHandler();
 
 Config::detectRootDoc();
 require_once '../vendor/autoload.php';
-
 use Glpi\System\RequirementsManager;
 
-use Twig\Loader\FilesystemLoader;
-use Twig\Environment;
-$loader = new FilesystemLoader('../templates');
-$twig = new Environment($loader, [
-    /*     'cache' => './cache', */
-    'cache' => false
-]);
-$TRANSLATE;
-// Session::loadLanguage('en_EN', false);
-// Session::loadLanguage('fr_FR', false);
-// Session::loadLanguage('es_ES', false);
-// $TRANSLATE->setLocale('es_ES');
+require_once GLPI_ROOT . "/ng/languages/language.class.php";
+require_once GLPI_ROOT . "/ng/twig.function.php";
+$twig = Twig::load(GLPI_ROOT . "/templates/install", false);
 
-$filter = new \Twig\TwigFilter('trans', '__');
-$twig->addFilter($filter);
-// $function = new \Twig\TwigFunction('__', '__');
-// $twig->addFunction($function);
-
-
-function check_post($var_name){
-    global $twig;
-    global $header_data;
-    if (!isset($_POST[$var_name])){
-        if (!isset($_SESSION[$var_name])){
-            echo $twig->render('index.html.twig', ['header_data'=> $header_data,'step' => 'error']);
-            die();
-        } else {
-            return false;
-        }
-    }
-    return true;
-}
-
-/* header("Cache-Control: max-age=2592000"); */
+//allow previous page action
 header("Cache-Control: private, max-age=10800, pre-check=10800");
 header("Pragma: private");
 header("Expires: " . date(DATE_RFC822,strtotime("+2 day")));
 
-
+//get header data, raw in TWIG
 $header_data = [  
-    "js_variables"  =>   Html::getCoreVariablesForJavascript(),
-    "js_scripts"    =>  [
-                        Html::script("public/lib/base.js"),
-                        Html::script("public/lib/fuzzy.js"),
-                        Html::script("js/common.js"),
-                        Html::script("js/bootstrap.bundle.min.js"),
-                        Html::script("js/bootstrap-select.min.js"),
-                        Html::script("js/tableExport.min.js"),
-                        Html::script("js/bootstrap-table.min.js"),
-                        Html::script("js/bootstrap-table-export.min.js"),
-                        Html::script("js/bootstrap-table-sticky-header.js"),
+    "javascript"    =>  [
+        Html::script("public/lib/base.js"),
+        Html::script("public/lib/fuzzy.js"),
+        Html::script("js/common.js"),
+        Html::script("js/bootstrap.bundle.min.js"),
+        Html::script("js/bootstrap-select.min.js"),
+        Html::script("js/tableExport.min.js"),
+        Html::script("js/bootstrap-table.min.js"),
+        Html::script("js/bootstrap-table-export.min.js"),
+        ],
+    "css"     =>  [
+        Html::css('css/bootstrap-select.min.css'),
+        Html::css('css/bootstrap-table.min.css'),
+        Html::css('public/lib/base.css'),
+        Html::css("css/font-awesome.min.css"),
+        Html::css("css/bootstrap.min.css"),
+        Html::css("css/style_install.css"),
+        ]
+];
 
-                        ],
-    "css_files"     =>  [
-                        Html::css("css/bootstrap.min.css"),
-                        Html::css('css/bootstrap-select.min.css'),
-                        Html::css('css/bootstrap-table.min.css'),
-                        Html::css('public/lib/base.css'),
-                        Html::css("css/style_install.css"),
-                        Html::css("css/font-awesome.min.css"),
-                        Html::css("css/bootstrap-table-sticky-header.scss")
+$steps =   ['0', '1', '2', '3', '4', '5', '6','7','8', 'error'];
+$steps_name = ['languages', 'license', 'install', 'requirement', 'login', 'databases', 'initialization', 'initialized', 'done', 'error'];
 
-                         ]
-                    ];
-
-$steps =   ['languages', 'license', 'install', '0', '1', '2', '3', '4'];
+$header_data["steps_name"] = $steps_name;
 global $CFG_GLPI;
+
+//checks if the step is valid
 if (isset($_GET['step']) and in_array($_GET['step'], $steps)) {
     $step = $_GET['step'];
 } else {
-    $step = 'languages';
+    $step = '0';
 }
+
 $twig_vars = [];
 Session::loadLanguage('', false);
 switch ($step) {
-    case "languages":
+    case "0":
+        $regions = Language::getLanguagesByRegion();
+
         if (isset($_SESSION['language'])){
             $language = $_SESSION['language'];
         } else {
             $language = Session::getPreferredLanguage();
         }
-        $languages = $CFG_GLPI["languages"];
-
-        $twig_vars = ['languages' => $languages, 'preferred_language' =>  $language];
+        $twig_vars = ['languages' => $regions , 'preferred_language' =>  $language];
         break;
 
-    case "license":
-        if (check_post('language')){$_SESSION['language'] = $_POST['language'];}
+    case "1":
+        if (isset($_POST['language'])){
+            $_SESSION['language'] = $_POST['language'];
+            $_SESSION['glpilanguage'] = $_SESSION['language']; //required due to the way Session::loadLanguage works
+        }
         Session::loadLanguage($_SESSION['language'], false);
-        $TRANSLATE->setLocale($_SESSION['language']);
         $license = file_get_contents("../COPYING.txt");
         $twig_vars = ['license' => $license];
         break;
 
-    case "0":
+    case "3":
         if (isset($_POST['install'])){
             $_SESSION['action'] = 'install';
         } else if (isset($_POST['update'])){
@@ -125,9 +97,10 @@ switch ($step) {
             if (!$raw_requirement->isOutOfContext()) { // skip raw_requirement if not relevant
                 $title = $raw_requirement->getTitle();
                 $required = $raw_requirement->isMissing() && !$raw_requirement->isOptional();
+                $optional = $raw_requirement->isMissing() && $raw_requirement->isOptional();
                 $validated = $raw_requirement->isValidated();
                 $message = implode('. ', Html::entities_deep($raw_requirement->getValidationMessages()));
-                $requirement = ['title' => $title, 'required' => $required, 'validated' => $validated, 'message' => $message];
+                $requirement = ['title' => $title, 'required' => $required, 'validated' => $validated, 'optional' => $optional, 'message' => $message];
                 $requirements[] = $requirement;
             }
         }
@@ -142,21 +115,17 @@ switch ($step) {
         $twig_vars = ['requirements' => $requirements, 'passed' => $passed];
         break;
 
-    case "1":
+    case "4":
         $host = isset($_SESSION['db_host']) ? $_SESSION['db_host'] : "";
         $user = isset($_SESSION['db_user']) ? $_SESSION['db_user'] : "";
 
         $twig_vars = ['host' => $host, 'user' => $user];
         break;
 
-    case "2":
-        if (check_post('db_host')){
+    case "5":
+        if (isset($_POST['db_host'])){
             $_SESSION['db_host'] = $_POST['db_host'];
-        }
-        if (check_post('db_user')){
             $_SESSION['db_user'] = $_POST['db_user'];
-        }
-        if (check_post('db_pass')){
             $_SESSION['db_pass'] = $_POST['db_pass'];
         }
         error_reporting(16);
@@ -179,103 +148,98 @@ switch ($step) {
                 $ver_too_old = true;
             } else {
                 $ver_too_old = false;
-                $databases = [];
-                if ($DB_list = $link->query("SHOW DATABASES")) {
-                    while ($row = $DB_list->fetch_array()) {
-                        if (!in_array($row['Database'],["information_schema","mysql","performance_schema"])){
-                            $databases[] = $row['Database'];
+                $databases_info = [];
+                $db_info = [];
+                if ($DB_list = $link->query(   
+                   "SELECT S.schema_name AS 'name', COUNT(T.table_name) AS 'table_count', DATE(MIN(T.create_time)) AS 'table_create', DATE(MAX(T.update_time)) AS 'table_update'
+                    FROM information_schema.tables AS T 
+                    RIGHT JOIN information_schema.schemata AS S 
+                    ON S.schema_name = T.table_schema
+                    GROUP BY S.schema_name;")){
+                    while ($row = $DB_list->fetch_array(MYSQLI_NUM)) {
+                        if (!in_array($row[0],["information_schema","mysql","performance_schema","sys"])){
+                            $databases_info[] = $row;
                         }
                     }
                 }
             }
             $link->close();
         }
-
         $twig_vars = [  'host' =>           $_SESSION['db_host'],   'user' =>       $_SESSION['db_user'], 
                         'connect_error' =>  $connect_error,         'version' =>    $version, 
                         'ver_too_old' =>    $ver_too_old,           'action' =>     $_SESSION['action'],
-                        'databases' =>      $databases];
+                        'databases' =>      $databases_info];
         break;
 
-    case "3":
-        global $done;
-        if (isset($_SESSION['initialized']) and $_SESSION['initialized']){
-            Toolbox::createSchema($_SESSION['language']);
-            $done = true;
+    case "6":
+        if (isset($_POST['newdatabasename']) and $_POST['newdatabasename'] != ""){
+            $new_db = true;
+            $_SESSION["databasename"] = $_POST['newdatabasename'];
         } else {
-            $done = false;
-            if (check_post('databasename')){
-                if (empty($_POST['databasename'])){
-                    $_SESSION['databasename'] = $_POST['newdatabasename'];
-                    $_SESSION['new'] = true;
-                } else {
-                    $_SESSION['databasename'] = $_POST['databasename'];
-                    $_SESSION['new'] = false;
-                }
+            $new_db = false;
+            $_SESSION["databasename"] = json_decode($_POST["database"], true)[0]["name"];
+        }
+        $db_created = false;
+        $sql_error = "";
+        $error = "";
+        $db_state = "";
+        if ($_SESSION['action'] == 'install'){
+            $glpikey = new GLPIKey();
+            $secured = $glpikey->keyExists();
+            if (!$secured) {
+                $secured = $glpikey->generate();
+                $error = "secured";
             }
-            $created = false;
-            $_SESSION['initialized'] = false;
-            $sql_error = "";
-            $error = "";
-            $db_state = "";
-            $secured = null;
-            if ($_SESSION['action'] == 'install'){
-                $glpikey = new GLPIKey();
-                $secured = $glpikey->keyExists();
-                if (!$secured) {
-                    $secured = $glpikey->generate();
-                }
-                if ($secured){
-                    mysqli_report(MYSQLI_REPORT_OFF);
-                    $hostport = explode(":", $_SESSION['db_host']);
-                    if (count($hostport) < 2) {
-                        $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass']);
-                    } else {
-                        $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass'], '', $hostport[1]);
-                    } 
-                    $databasename = $link->real_escape_string($_SESSION['databasename']);// use db already created
-                    $DB_selected = $link->select_db($databasename);
-                    $db_state = "";
-                    if ($_SESSION['new'] && !$DB_selected) {
-                        if ($link->query("CREATE DATABASE IF NOT EXISTS `".$databasename."`")) {
-                            $DB_selected = $link->select_db($databasename);
-                            $db_state = "created";
-                            $created = true;
-                        } else {
-                            $error = "create_db";
-                        }
-                    }
-                    if (!$DB_selected){
-                        $sql_error = $link->error;
-                        $error = "use";
-                    } else {
-                        $_SESSION['language'] = Session::getPreferredLanguage();
-                        if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'])){
-                            $db_state = "initialized";
-                            $_SESSION['initialized'] = true;
-                            $error = "none";
-                        } else { 
-                            $error = "setup";
-                        }
-                    } 
+            if ($secured){
+                mysqli_report(MYSQLI_REPORT_OFF);
+                $hostport = explode(":", $_SESSION['db_host']);
+                if (count($hostport) < 2) {
+                    $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass']);
                 } else {
-                    $error = "select";
+                    $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass'], '', $hostport[1]);
+                } 
+                $databasename = $link->real_escape_string($_SESSION['databasename']);// use db already created
+                $DB_selected = $link->select_db($databasename);
+                echo $_SESSION['databasename'];
+                echo $new_db ? "oui" : "non";
+                if ($new_db && !$DB_selected) {
+                    echo "ici";
+                    if ($link->query("CREATE DATABASE IF NOT EXISTS `".$databasename."`")) {
+                        $DB_selected = $link->select_db($databasename);
+                        $db_created = true;
+                    } else {
+                        $error = "create_db";
                     }
-                } else if ($_SESSION['action'] == 'update') {
+                }
+                if (!$DB_selected){
+                    $sql_error = $link->error;
+                    $error = "use";
+                } else {
                     if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'])){
-    /*                     include_once(GLPI_ROOT ."/install/update.php"); */
-                    } else { // can't create config_db file
-                        $error = "create_config";
+                    } else { 
+                        $error = "setup";
                     }
+                } 
+            } else {
+                $error = "select";
                 }
+        } else if ($_SESSION['action'] == 'update') {
+            if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'])){
+                $from_install = true;
+                include_once(GLPI_ROOT ."/install/update.php");
+            } else { // can't create config_db file
+                $error = "create_config";
             }
-                $twig_vars = [  'db_state'      => $db_state,       'action'        => $_SESSION['action'],
-                                'created' => $created,              'initialized'   => $_SESSION['initialized'],
-                                'error'         => $error,          'done'          => $done,
-                                'secured'   => $secured,            'sql_error'     => $sql_error];
+        }
+            
+        $twig_vars = [  'action'        => $_SESSION['action'],
+                        'created' =>  $db_created,            
+                        'error'         => $error,          
+                        'secured'   => $secured,            'sql_error'     => $sql_error];
         break;
-
-    case "4":
+    case "7":
+        Toolbox::createSchema($_SESSION['language']);
+    case "8":
         include_once(GLPI_ROOT . "/inc/dbmysql.class.php");
         include_once(GLPI_CONFIG_DIR . "/config_db.php");
         $DB = new DB();
@@ -297,13 +261,10 @@ switch ($step) {
                 'name'      => 'url_base_api'
             ]
         );
-
 }
+    
 try {
-    echo $twig->render('index.html.twig',  ['step' => $step,'header_data' => $header_data] + $twig_vars);
-    if($step == "3" and !$done){
-        header("Refresh:0");
-    }
+    echo $twig->render('index.twig',  ['step' => $step,'header_data' => $header_data] + $twig_vars);
 } catch (\Exception $e) {
     echo $e->getMessage();
 }

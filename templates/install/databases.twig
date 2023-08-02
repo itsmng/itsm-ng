@@ -1,0 +1,43 @@
+{% from 'macros.twig' import button, table %}
+<h3>{{'Test of the connection at the database'|trans}}</h3>
+{% if connect_error %}
+    <div class="text">
+        <p>{{"Can't connect to the database"|trans}}</p>
+        <p>{{'The server answered: %s'|trans|format(connect_error)}}:</p>
+    </div>
+    <div class="buttons">
+        <form action='install.php?step=4' method='post'>
+            {{button('submit', 'Back'|trans)}}
+        </form>
+    </div>
+{% else %}
+<h3>{{'Database connection successful'|trans}}</h3>
+    {% if ver_too_old %} {# if <p></p> else <p></p> plus clair que <p> if else </p> #}
+        <p>{{'Your database engine version seems too old: %s.'|trans|format(version)}}</p>
+    {% else %}
+        <p>{{"Database version seems correct (%s) - Perfect!"|trans|format(version)}}</p> {# change the way trans work #}
+        <form action='install.php?step=6' method='post'>
+        {% if action == 'install' %}
+        <p>{{"Create a new database or use an existing one:"|trans}}</p>
+        <input type="text" name="newdatabasename" autocomplete="off">
+            <p>{{"Please select a database:"|trans}}</p>
+        {% elseif action == 'update' %}
+            <p>{{"Please select the database to update:"|trans}}</p>
+        {% endif %}
+
+
+            {{table(
+                { post_name: "database"}, 
+                {   
+                    args: [{sortable: "true"}, {sortable: "true"}, {sortable: "true"}, {sortable: "true"}, {radio: "true"}],
+                    titles: ['name', 'table count', 'creation date', 'last update', 'select']
+                },
+                {
+                    args: [],
+                    rows: databases
+                }
+                )}}
+            <div class="buttons">{{button('submit', 'Continue'|trans)}}</div>
+        </form>
+    {% endif %}
+{% endif %}
