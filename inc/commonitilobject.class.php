@@ -8415,13 +8415,20 @@ abstract class CommonITILObject extends CommonDBTM {
 
       $assets = iterator_to_array($assets);
 
+      echo "<pre style='text-align: left;'>";
+      var_dump($assets);
+      echo "</pre>";
+
       $tab = [];
       foreach ($assets as $asset) {
-         if (!class_exists($asset['itemtype'])) {
-            //ignore if class does not exists (maybe a plugin)
-            continue;
+         if ($asset['itemtype'] != '0')
+         {
+            if (!class_exists($asset['itemtype'])) {
+               //ignore if class does not exists (maybe a plugin)
+               continue;
+            }
+            $tab[$asset['itemtype']][$asset['items_id']] = $asset['items_id'];
          }
-         $tab[$asset['itemtype']][$asset['items_id']] = $asset['items_id'];
       }
 
       return $tab;
