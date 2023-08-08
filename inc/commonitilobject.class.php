@@ -8415,10 +8415,6 @@ abstract class CommonITILObject extends CommonDBTM {
 
       $assets = iterator_to_array($assets);
 
-      echo "<pre style='text-align: left;'>";
-      var_dump($assets);
-      echo "</pre>";
-
       $tab = [];
       foreach ($assets as $asset) {
          if ($asset['itemtype'] != '0')
