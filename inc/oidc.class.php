@@ -38,8 +38,9 @@ if (!defined('GLPI_ROOT')) {
 
 /**
  * OpenID connect Class
-**/
-class Oidc extends CommonDBTM {
+ **/
+class Oidc extends CommonDBTM
+{
 
    static $_user_data;
 
@@ -51,13 +52,13 @@ class Oidc extends CommonDBTM {
       //Get config from DB and use it to setup oidc
       $criteria = "SELECT * FROM glpi_oidc_config";
       $iterators = $DB->request($criteria);
-      foreach($iterators as $iterator) {
-          $oidc_db['Provider'] = $iterator['Provider'];
-          $oidc_db['ClientID'] = $iterator['ClientID'];
-          $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
-          $oidc_db['scope'] = explode(',', addslashes(str_replace(' ', '', $iterator['scope'])));
-          $oidc_db['proxy'] = $iterator['proxy'];
-          $oidc_db['cert'] = $iterator['cert'];
+      foreach ($iterators as $iterator) {
+         $oidc_db['Provider'] = $iterator['Provider'];
+         $oidc_db['ClientID'] = $iterator['ClientID'];
+         $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
+         $oidc_db['scope'] = explode(',', addslashes(str_replace(' ', '', $iterator['scope'])));
+         $oidc_db['proxy'] = $iterator['proxy'];
+         $oidc_db['cert'] = $iterator['cert'];
       }
 
       $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
@@ -72,63 +73,70 @@ class Oidc extends CommonDBTM {
       }
       $oidc->setHttpUpgradeInsecureRequests(false);
       try {
-          $oidc->authenticate();
-      } catch( Exception $e ) {
-          //If something go wrong 
-          Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
-          echo '<div class="center b">';
-          echo __('Missing or wrong fields in open ID connect config');
-          echo '<p><a href="'. $CFG_GLPI['root_doc'] . "/index.php" .'">' .__('Log in again') . '</a></p>';
-          echo '</div>';
-          Html::nullFooter();
-          die;
+         $oidc->authenticate();
+      } catch (Exception $e) {
+         //If something go wrong 
+         Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
+         echo '<div class="center b">';
+         echo __('Missing or wrong fields in open ID connect config');
+         echo '<p><a href="' . $CFG_GLPI['root_doc'] . "/index.php" . '">' . __('Log in again') . '</a></p>';
+         echo '</div>';
+         Html::nullFooter();
+         die;
       }
 
       $result = $oidc->requestUserInfo();
       //Tranform result to an array
       $user_array = json_encode($result);
-      $user_array = json_decode($user_array,true);
-      self::$_user_data = $user_array;
-      //var_dump(self::$_user_data);
-      //die;
+      $user_array = json_decode($user_array, true);
       //Create and/or authenticated a user
-      $criteria = "SELECT * FROM glpi_users";
-      $iterators = $DB->request($criteria);
+      $criteria_users = "SELECT * FROM glpi_users";
+      $iterators_users = $DB->request($criteria_users);
+      $criteria_config = "SELECT * FROM glpi_oidc_mapping";
+      $iterators_config = $DB->request($criteria_config);
       $newUser = true;
 
-      if (isset($user_array["name"])) {
-          foreach($iterators as $iterator)
-          if ($user_array['name'] == $iterator['name']) {
-              $ID = $iterator['id'];
-              $newUser = false;
-          }
-       
-          $user = new User();
-          if ($newUser) {
-              $input = ['name'     => $user_array['name'],
-                          '_extauth' => 1,
-                          'add'      => 1];
-              $ID = $user->add($input);
-          }
-      } else {
-          foreach($iterators as $iterator)
-          if ($user_array['sub'] == $iterator['name']) {
-              $ID = $iterator['id'];
-              $newUser = false;
-          }
-       
-          $user = new User();
-          if ($newUser) {
-              $input = ['name'     => $user_array['sub'],
-                          '_extauth' => 1,
-                          'add'      => 1];
-              $ID = $user->add($input);
-          }
+      foreach ($iterators_config as $config) {
+         if (isset($user_array[$config['name']])) {
+            foreach ($iterators_users as $iterator) {
+               if ($user_array[$config['name']] == $iterator['name']) {
+                  $ID = $iterator['id'];
+                  $newUser = false;
+                  break;
+               }
+            }
+            $user = new User();
+            if ($newUser) {
+               $input = [
+                  'name' => $user_array[$config['name']],
+                  '_extauth' => 1,
+                  'add' => 1
+               ];
+               $ID = $user->add($input);
+            }
+         } else {
+            foreach ($iterators_users as $iterator) {
+               if ($user_array['sub'] == $iterator['name']) {
+                  $ID = $iterator['id'];
+                  $newUser = false;
+               }
+            }
+            $user = new User();
+            if ($newUser) {
+               $input = [
+                  'name' => $user_array['sub'],
+                  '_extauth' => 1,
+                  'add' => 1
+               ];
+               $ID = $user->add($input);
+            }
+         }
       }
 
-      if (!$user->getFromDB($ID))
-          die;
-         
+      if (!$user->getFromDB($ID)) {
+         die;
+      }
+
       $request = $DB->request('glpi_oidc_mapping');
       while ($data = $request->next()) {
          $mapping_date_mod = $data["date_mod"];
@@ -139,7 +147,7 @@ class Oidc extends CommonDBTM {
       }
 
       //if ($mapping_date_mod > $user_date_mod)
-         self::addUserData($user_array, $ID);
+      self::addUserData($user_array, $ID);
 
       $auth = new Auth();
       $auth->auth_succeded = true;
@@ -165,32 +173,32 @@ class Oidc extends CommonDBTM {
 
       while ($data = $iterators->next())
          $result[] = $data;
-      
-      if(isset($result)) {
+
+      if (isset($result)) {
          if (isset($user_array[$result[0]["name"]]))
-            $DB->updateOrInsert("glpi_users", ['name'   => $user_array[$result[0]["name"]]], ['id'   => $id]);
-      
+            $DB->updateOrInsert("glpi_users", ['name' => $user_array[$result[0]["name"]]], ['id' => $id]);
+
          if (isset($user_array[$result[0]["given_name"]]))
-            $DB->updateOrInsert("glpi_users", ['firstname'   => $user_array[$result[0]["given_name"]]], ['id'   => $id]);
+            $DB->updateOrInsert("glpi_users", ['firstname' => $user_array[$result[0]["given_name"]]], ['id' => $id]);
 
          if (isset($user_array[$result[0]["family_name"]]))
-            $DB->updateOrInsert("glpi_users", ['realname'   => $user_array[$result[0]["family_name"]]], ['id'   => $id]);
+            $DB->updateOrInsert("glpi_users", ['realname' => $user_array[$result[0]["family_name"]]], ['id' => $id]);
 
          if (isset($user_array[$result[0]["picture"]]))
-            $DB->updateOrInsert("glpi_users", ['picture'   => $user_array[$result[0]["picture"]]], ['id'   => $id]);
+            $DB->updateOrInsert("glpi_users", ['picture' => $user_array[$result[0]["picture"]]], ['id' => $id]);
 
          if (isset($user_array[$result[0]["email"]])) {
-            $querry = "INSERT IGNORE INTO `glpi_useremails` (`id`, `users_id`, `is_default`, `is_dynamic`, `email`) VALUES ('0', '$id', '0', '0', '". $user_array[$result[0]["email"]] ."');";
-            $DB->queryOrDie($querry);        
+            $querry = "INSERT IGNORE INTO `glpi_useremails` (`id`, `users_id`, `is_default`, `is_dynamic`, `email`) VALUES ('0', '$id', '0', '0', '" . $user_array[$result[0]["email"]] . "');";
+            $DB->queryOrDie($querry);
          }
 
          if (isset($user_array[$result[0]["locale"]]))
-            $DB->updateOrInsert("glpi_users", ['language'   => $user_array[$result[0]["locale"]]], ['id'   => $id]);
+            $DB->updateOrInsert("glpi_users", ['language' => $user_array[$result[0]["locale"]]], ['id' => $id]);
 
          if (isset($user_array[$result[0]["phone_number"]]))
-            $DB->updateOrInsert("glpi_users", ['phone'   => $user_array[$result[0]["phone_number"]]], ['id'   => $id]);
+            $DB->updateOrInsert("glpi_users", ['phone' => $user_array[$result[0]["phone_number"]]], ['id' => $id]);
 
-         $DB->updateOrInsert("glpi_users", ['date_mod'   => $_SESSION["glpi_currenttime"]], ['id'   => $id]);
+         $DB->updateOrInsert("glpi_users", ['date_mod' => $_SESSION["glpi_currenttime"]], ['id' => $id]);
 
          if (isset($user_array[$result[0]["group"]])) {
             foreach ($data = $user_array[$result[0]["group"]] as $value) {
@@ -226,7 +234,8 @@ class Oidc extends CommonDBTM {
       while ($data = $request->next()) {
          $user_id = $data['id'];
 
-         if ($data['user_id'] == $id) $find = true;
+         if ($data['user_id'] == $id)
+            $find = true;
       }
 
       if (!isset($find)) {
@@ -241,7 +250,8 @@ class Oidc extends CommonDBTM {
     *
     * @return void
     */
-   static function showFormUserConfig() {
+   static function showFormUserConfig()
+   {
       global $DB;
 
       if (isset($_POST["config"])) {
@@ -250,40 +260,43 @@ class Oidc extends CommonDBTM {
 
       if (isset($_POST["update"])) {
          $oidc_result = [
-            'given_name'  => $_POST["given_name"],
-            'family_name'  => $_POST["family_name"],
-            'picture'  => $_POST["picture"],
-            'email'  => $_POST["email"],
-            'locale'  => $_POST["locale"],
-            'phone_number'  => $_POST["phone_number"],
-            'group'  => $_POST["group"],
+            'name' => $_POST["name"],
+            'given_name' => $_POST["given_name"],
+            'family_name' => $_POST["family_name"],
+            'picture' => $_POST["picture"],
+            'email' => $_POST["email"],
+            'locale' => $_POST["locale"],
+            'phone_number' => $_POST["phone_number"],
+            'group' => $_POST["group"],
             'date_mod' => $_SESSION["glpi_currenttime"],
          ];
-        $DB->updateOrInsert("glpi_oidc_mapping", $oidc_result, ['id'   => 0]);
+         $DB->updateOrInsert("glpi_oidc_mapping", $oidc_result, ['id' => 0]);
       }
 
       $criteria = "SELECT * FROM glpi_oidc_mapping";
       $iterators = $DB->request($criteria);
       $oidc_db = [
-         'given_name'  => null,
-         'family_name'  => null,
-         'picture'  => null,
-         'email'  => null,
-         'locale'  => null,
-         'phone_number'  => null,
-         'group'  => null,
+         'name' => null,
+         'given_name' => null,
+         'family_name' => null,
+         'picture' => null,
+         'email' => null,
+         'locale' => null,
+         'phone_number' => null,
+         'group' => null,
          'date_mod' => null,
       ];
 
-      foreach($iterators as $iterator) {
-         $oidc_db['given_name']  = $iterator["given_name"];
-         $oidc_db['family_name']  = $iterator["family_name"];
-         $oidc_db['picture']  = $iterator["picture"];
-         $oidc_db['email']  = $iterator["email"];
-         $oidc_db['locale']  = $iterator["locale"];
-         $oidc_db['phone_number']  = $iterator["phone_number"];
-         $oidc_db['group']  = $iterator["group"];
-         $oidc_db['date_mod']  = $iterator["date_mod"];
+      foreach ($iterators as $iterator) {
+         $oidc_db['name'] = $iterator["name"];
+         $oidc_db['given_name'] = $iterator["given_name"];
+         $oidc_db['family_name'] = $iterator["family_name"];
+         $oidc_db['picture'] = $iterator["picture"];
+         $oidc_db['email'] = $iterator["email"];
+         $oidc_db['locale'] = $iterator["locale"];
+         $oidc_db['phone_number'] = $iterator["phone_number"];
+         $oidc_db['group'] = $iterator["group"];
+         $oidc_db['date_mod'] = $iterator["date_mod"];
       }
 
       echo "<div class='center'>";
@@ -294,29 +307,32 @@ class Oidc extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<th class='center' colspan='4'>" . __('Mapping of fields according to provider') . "</th></tr>";
 
+      echo "<tr class='tab_bg_2'><td>" . __('Username') . "</td>";
+      echo "<td><input type='text' name='name' value='" . $oidc_db['name'] . "'></td></tr>";
+
       echo "<tr class='tab_bg_2'><td>" . __('Surname') . "</td>";
-      echo "<td><input type='text' name='family_name' value='". $oidc_db['family_name'] ."'></td>";
+      echo "<td><input type='text' name='family_name' value='" . $oidc_db['family_name'] . "'></td>";
       echo "<td>" . __('First name') . "</td>";
-      echo "<td><input type='text' name='given_name' value='". $oidc_db['given_name'] ."'></td></tr>";
+      echo "<td><input type='text' name='given_name' value='" . $oidc_db['given_name'] . "'></td></tr>";
 
       echo "<tr class='tab_bg_2'><td>" . __('Email') . "</td>";
-      echo "<td><input type='text' name='email' value='". $oidc_db['email'] ."'></td>";
+      echo "<td><input type='text' name='email' value='" . $oidc_db['email'] . "'></td>";
       echo "<td>" . __('Phone') . "</td>";
-      echo "<td><input type='text' name='phone_number' value='". $oidc_db['phone_number'] ."'></td></tr>";
+      echo "<td><input type='text' name='phone_number' value='" . $oidc_db['phone_number'] . "'></td></tr>";
 
       echo "<tr class='tab_bg_2'><td>" . __('Locale') . "</td>";
-      echo "<td><input type='text' name='locale' value='". $oidc_db['locale'] ."'></td>";
+      echo "<td><input type='text' name='locale' value='" . $oidc_db['locale'] . "'></td>";
       echo "<td>" . __('Picture') . "</td>";
-      echo "<td><input type='text' name='picture' value='". $oidc_db['picture'] ."'></td></tr>";
+      echo "<td><input type='text' name='picture' value='" . $oidc_db['picture'] . "'></td></tr>";
 
       echo "<tr class='tab_bg_2'><td>" . __('Group') . "</td>";
-      echo "<td><input type='text' name='group' value='". $oidc_db['group'] ."'></td>";
+      echo "<td><input type='text' name='group' value='" . $oidc_db['group'] . "'></td>";
       echo "<td>" . __('Last update') . "</td>";
-      echo "<td><input type='text' name='date_mod' value='". $oidc_db['date_mod'] ."'></td></tr>";
+      echo "<td><input type='text' name='date_mod' value='" . $oidc_db['date_mod'] . "'></td></tr>";
 
       echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
-      echo "<input type='submit' name='update' class='submit' value=\"".__s('Save')."\">" . '&nbsp;';
-      echo "<input type='submit' name='config' class='submit' value=\"".__s('Configuration')."\" >";
+      echo "<input type='submit' name='update' class='submit' value=\"" . __s('Save') . "\">" . '&nbsp;';
+      echo "<input type='submit' name='config' class='submit' value=\"" . __s('Configuration') . "\" >";
       echo "</td></tr>";
       echo "</table>";
       Html::closeForm();
