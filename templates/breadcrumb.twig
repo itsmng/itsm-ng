@@ -1,0 +1,16 @@
+<div id='c_ssmenu2' >
+    <ul>
+        <li class='breadcrumb_item'> {# need menu and link and sector and options #}
+            <a href="{{root_doc}}/front/{{mainurl}}.php" title="{{'Home'|trans}}">{{'Home'|trans}}</a>
+        </li>
+        <li class='breadcrumb_item'>
+            <a href="{{root_doc}}{{link}}" title="{{menu[sector]['title']}}">{{menu[sector]['title']}}</a>
+        </li>
+
+{% if show_page %}
+        <li class="breadcrumb_item">
+            <a href="{{ root_doc ~ menu[sector]['content'][item]['page'] }}" {{with_option ? 'class="here'}} title="{{ menu[sector]['content'][item]['title'] }}">
+                <i class="{{ menu[sector]['content'][item]['icon'] ?? '' }}"></i>{{ menu[sector]['content'][item]['title'] }}
+            </a>
+        </li>
+{% endif %}              

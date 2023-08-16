@@ -1,43 +1,68 @@
 {% from 'macros.twig' import button %}
+
+
 {% if action == 'install' %}
-    <h3>{{'Initialization of the database'|trans}}</h3>
+
+<h3>{{'Initialization of the database'|trans}}</h3>
+
     {% if not secured or error %}
-    <div class="text">
+
+<div class="text">
+
         {% if not secured %}
-            <p>{{'Security key cannot be generated'|trans}}</p>
+
+    <p>{{'Security key cannot be generated'|trans}}</p>
+
         {% elseif error == "setup" %}
-            <p>{{'Impossible to write the database setup file'|trans}}</p>
+
+    <p>{{'Impossible to write the database setup file'|trans}}</p>
+
         {% elseif error == "create_db" %}
-            <p>{{'Error in creating database!'|trans}}</p>
-            <p>{{'The server answered: %s'|trans|format(sql_error)}}</p>
+
+    <p>{{'Error in creating database!'|trans}}</p>
+    <p>{{'The server answered: %s'|trans|format(sql_error)}}</p>
+
         {% elseif error == "use" %}
-            <p>{{'Impossible to use the database:'|trans}}</p>
-            <p>{{'The server answered: %s'|trans|format(sql_error)}}</p>
+
+    <p>{{'Impossible to use the database:'|trans}}</p>
+    <p>{{'The server answered: %s'|trans|format(sql_error)}}</p>
+
         {% endif %}
-    </div>
-        <form action="install.php?step=5" method="post">
-            {{button('submit', 'Back'|trans)}}
-        </form>
+
+</div>
+<form action="install.php?step=5" method="post">
+    {{button('submit', 'Back'|trans)}}
+</form>
+
     {% else %}
+
         {% if created %}
-            <p>{{'Database created'|trans}}</p>
+
+<p>{{'Database created'|trans}}</p>
+
         {% endif %}
-        <div class="spinner">
-            <i class="fas fa-spinner fa-pulse fa-10x"></i>
-        </div>
-        <script>
-            window.onload = function() {
-                window.location.href = "install.php?step=7";
-            }
-        </script>   
+
+<div class="spinner">
+    <i class="fas fa-spinner fa-pulse fa-10x"></i>
+</div>
+<script>
+    window.onload = function() {
+        window.location.href = "install.php?step=7";
+    }
+</script>  
+
     {% endif %}
 {% elseif action == 'update' %}
         {% if error == 'create_config' %}
-            <p>{{"Can't create the database connection file, please verify file permissions."|trans}}</p>
-            <form action="install.php?step=3" method="post">
-                {{button('submit', 'Do you want to continue ?'|trans)}}
-            </form>
+
+<p>{{"Can't create the database connection file, please verify file permissions."|trans}}</p>
+<form action="install.php?step=3" method="post">
+    {{button('submit', 'Do you want to continue ?'|trans)}}
+</form>
+
         {% else %}
-            <p>Show update page</p>
+
+<p>Show update page</p>
+
         {% endif %}
 {% endif %}

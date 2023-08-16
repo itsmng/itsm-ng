@@ -1,0 +1,36 @@
+      </main> {# end of "main role='main'" #}
+      </div> {# end of main container #}
+    </div>  {# end of id=main-test #}
+<footer role='contentinfo' id='footer'>
+  <table role='presentation'>
+    <tr>
+
+      {% if mode_debug %} {# mode debug #}
+        <td class='left'>
+
+          <span class='copyright'>
+            {{timedebug}}
+          </span>
+        </td>
+
+      {% endif %}
+      {% if new_version %}
+
+        <td class='copyright'>
+          {{'A new version is available: %s.'|trans|format(latest_version)|escape('html')}}
+        </td>
+
+      {% endif %}
+
+      <td class='right'>{{copyright_message}}</td>
+    </tr>
+  </table>
+</footer>
+
+{% if maintenance_mode %} {# mode maintenance #}
+
+  <div id='maintenance-float'>
+    <a href='#see_maintenance'>GLPI MAINTENANCE MODE</a>
+  </div>
+
+{% endif %}

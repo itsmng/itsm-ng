@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+    {# <html lang=\"{$CFG_GLPI["languages"][$_SESSION['glpilanguage']][3]}\" class='loginpage'> #}
+    <head>
+    <title>{{"GLPI - Authentication"|trans}}</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">
+    {# <link rel="shortcut icon" type="images/x-icon" href="'.$CFG_GLPI["root_doc   '/pics/favicon.ico" />'; #}
+    <meta name='viewport' content='width=device-width, initial-scale=1'/>
+    {% for array in header_data %}
+        {% for e in array %}
+            {{e|raw}}
+        {% endfor %}
+    {% endfor %} 
+    </head>

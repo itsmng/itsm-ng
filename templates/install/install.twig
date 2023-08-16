@@ -1,4 +1,6 @@
 {% from 'macros.twig' import button %}
+
+
 <h3>{{'Beginning of the installation'|trans}}</h3>
 <div class="text">
     <h3>{{'Installation or update of GLPI'|trans}}</h3>
@@ -7,9 +9,9 @@
 </div>
 <div class="buttons">
     <form action="install.php?step=3" method="post">
-        {{button('submit', 'Install'|trans, 'install', '')}}
+        {{button('submit', 'Install'|trans, 'install')}}
     </form>
     <form action="install.php?step=3" method="post">
-        {{button('submit', 'Upgrade'|trans, 'update', '')}}
+        {{button('submit', 'Upgrade'|trans, 'update')}}
     </form>
 </div>

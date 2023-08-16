@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL ^ E_DEPRECATED ^ E_WARNING);
 
 session_start();
 define('GLPI_ROOT', realpath('..'));
@@ -19,7 +16,7 @@ use Glpi\System\RequirementsManager;
 
 require_once GLPI_ROOT . "/ng/languages/language.class.php";
 require_once GLPI_ROOT . "/ng/twig.function.php";
-$twig = Twig::load(GLPI_ROOT . "/templates/install", false);
+$twig = Twig::load(GLPI_ROOT . "/templates", false);
 
 //allow previous page action
 header("Cache-Control: private, max-age=10800, pre-check=10800");
@@ -94,7 +91,7 @@ switch ($step) {
         $raw_requirements = (new RequirementsManager())->getCoreRequirementList(null);
         $requirements = [];
         foreach ($raw_requirements as $raw_requirement) {
-            if (!$raw_requirement->isOutOfContext()) { // skip raw_requirement if not relevant
+            if (!$raw_requirement->isOutOfContext()) { // skips raw_requirement if not relevant
                 $title = $raw_requirement->getTitle();
                 $required = $raw_requirement->isMissing() && !$raw_requirement->isOptional();
                 $optional = $raw_requirement->isMissing() && $raw_requirement->isOptional();
@@ -105,14 +102,14 @@ switch ($step) {
             }
         }
         if ($raw_requirements->hasMissingMandatoryRequirements()) {
-            $passed = 2;
+            $missing_requirements = "mandatory";
         } else if ($raw_requirements->hasMissingOptionalRequirements()) {
-            $passed = 1;
+            $missing_requirements = "optional";
         } else {
-            $passed = 0;
+            $missing_requirements = "none";
         }
 
-        $twig_vars = ['requirements' => $requirements, 'passed' => $passed];
+        $twig_vars = ['requirements' => $requirements, 'missing_requirements' => $missing_requirements ];
         break;
 
     case "4":
@@ -172,6 +169,7 @@ switch ($step) {
         break;
 
     case "6":
+        print_r($_POST);
         if (isset($_POST['newdatabasename']) and $_POST['newdatabasename'] != ""){
             $new_db = true;
             $_SESSION["databasename"] = $_POST['newdatabasename'];
@@ -200,10 +198,7 @@ switch ($step) {
                 } 
                 $databasename = $link->real_escape_string($_SESSION['databasename']);// use db already created
                 $DB_selected = $link->select_db($databasename);
-                echo $_SESSION['databasename'];
-                echo $new_db ? "oui" : "non";
                 if ($new_db && !$DB_selected) {
-                    echo "ici";
                     if ($link->query("CREATE DATABASE IF NOT EXISTS `".$databasename."`")) {
                         $DB_selected = $link->select_db($databasename);
                         $db_created = true;
@@ -264,7 +259,7 @@ switch ($step) {
 }
     
 try {
-    echo $twig->render('index.twig',  ['step' => $step,'header_data' => $header_data] + $twig_vars);
+    echo $twig->render('install/index.twig',  ['step' => $step,'header_data' => $header_data] + $twig_vars);
 } catch (\Exception $e) {
     echo $e->getMessage();
 }

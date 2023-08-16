@@ -1,15 +1,12 @@
-{% from 'macros.twig' import button %}
 <h2>{{"The installation is finished"|trans}}</h2>
 <div class="text">
     <p>{{"Default logins / passwords are:"|trans}}</p>
-    <p>
-        <ul>
-            <li>{{"itsm/itsm for the administrator account"|trans}}</li>
-            <li>{{"tech/tech for the technician account"|trans}}</li>
-            <li>{{"normal/normal for the normal account"|trans}}</li>
-            <li>{{"post-only/postonly for the postonly account"|trans}}</li>
-        </ul>
-    </p>
+    <ul>
+        <li>{{"itsm/itsm for the administrator account"|trans}}</li>
+        <li>{{"tech/tech for the technician account"|trans}}</li>
+        <li>{{"normal/normal for the normal account"|trans}}</li>
+        <li>{{"post-only/postonly for the postonly account"|trans}}</li>
+    </ul>
     <p>{{"You can delete or modify these accounts as well as the initial data."|trans}}</p>
     <a class='vsubmit' href='../index.php'>{{"Use ITSM"|trans}}</a>
 </div>

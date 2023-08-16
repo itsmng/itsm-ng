@@ -1,0 +1,81 @@
+{% from 'macros.twig' import language_dropdown, button %}
+{% include "header_login.twig" with {"header_data" : header_data} %}
+<body>
+    <div id='firstboxlogin'>
+        <h1 id='logo_login'><img src='{{root_doc}}/pics/login_logo_itsm.png' alt='ITSM-NG' title='ITSM-NG' width='374px' heigth='131px'/></h1>
+        <div id='text-login'>{{text_login}}</div>
+    {{text_login}}
+    <div id='boxlogin'>
+        {% if is_activate %}
+        <form method='post' action='./index.php'>
+            <p class='login_input'><input type='submit' name='login_oidc' value='{{"SSO Login"|trans}}' class='submit'></p>
+            <p class='login_input'><hr></p>
+        </form>
+        {% endif %}
+        <form action='{{root_doc}}/front/login.php' method='post'>
+            {% if noAUTO_set %}
+            <input type='hidden' name='noAUTO' value='1' />
+            {% elseif redirect_set %}
+            <input type="hidden" name="redirect" value="{{redirect|e}}"/>  
+            {% endif %}
+            <p class="login_input" id="login_input_name">
+                <label for="login_name" class="sr-only">{{"Login"|trans}}</label>
+                <input type="text" name="{{namfield}}" id="login_name" required="required" placeholder="{{"Login"|trans}}" autofocus="autofocus"/>
+            </p>
+            <p class="login_input" id="login_input_password">
+                <label for="login_password" class="sr-only">{{"Password"|trans}}</label>
+                <input type="password" name="{{pwdfield}}" id="login_password" required="required" placeholder="{{"Password"|trans}}"/>
+            </p>
+            {% if demo_mode %}
+            <p class="login_input" id="login_lang">
+                {{language_dropdown(languages, current_language)}}
+            </p>
+            {% endif %}
+            {% if display_login_source %}
+            {{auth_dropdown|raw}}
+            {% endif %}
+            {% if login_remember_time  %}
+            <p class="login_input">
+                <label for="login_remember">{{"Remember me"|trans}}</label>
+                <input id="login_remember" type="checkbox" name="{{rmbfield}}" {{login_remember_default ? "checked"}}/>
+            </p>
+            {% endif %}
+            <p class="login_input">
+                <input type="submit" name="submit" value="{{login_input_value}}" class="submit" />
+            </p>
+            {% if show_password_forget %}
+            <a id="forget" href="front/lostpassword.php?lostpassword=1">{{"Forgotten password?"|trans}}</a>
+            {% endif %}
+        </form>
+        <script>
+            $(function() {
+                $('#login_name').focus();
+            });
+        </script>
+    </div>
+    <div class='error'>
+        <noscript>
+            <p>{{"You must activate the JavaScript function of your browser"|trans}}</p>
+        </noscript>
+        {% if error == 1 %}
+        {{"You must accept cookies to reach this application"|trans}}
+        {% elseif error == 2 %}
+        {{"Checking write permissions for session files"|trans}}
+        {% elseif error == 3 %}
+        {{"Invalid use of session ID"|trans}}
+        {% endif %}    
+    </div>
+    {% if use_public_faq %}
+        <div id="box-faq">
+            <a href="front/helpdesk.faq.php">{{"Access to the Frequently Asked Questions"|trans}}</a>
+        </div>        
+    {% endif %}
+    <div id='display-login'>
+        Plugin::doHook('display_login');
+    </div>
+    </div>
+    <div id='footer-login' class='home'>
+       {{copyright_message|raw}}
+    </div>
+</body>
+</html>

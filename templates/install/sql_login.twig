@@ -1,28 +1,23 @@
-{% from 'macros.twig' import button %}
+{% from 'macros.twig' import button, input %}
+
+
 <h3>{{'Database connection setup'|trans}}</h3>
     <form action='install.php?step=5' method='post'>
-    {# <fieldset>
-        <legend>Database connection parameters</legend>
-        <label class='block'>SQL server (MariaDB or MySQL) </label>
-        <input type='text' name='db_host' required autocomplete="off" placeholder="locahost:1433" value={{host}}>
-        <label class='block'>SQL user</label>
-        <input type='text' name='db_user' required autocomplete="off" value={{user}}>
-        <label class='block'>SQL password</label>
-        <input type='password' name='db_pass'>
-    </fieldset> #}
-    <div class="fields">
-        <div class="form-floating">
-            <input type="text" class="form-control" name="db_host" placeholder="localhost:1433" autocomplete="off">
-            <label for="server">{{"SQL server (MariaDB or MySQL)"|trans}}</label>
+        <div class="fields">
+            <div class="form-floating">
+                {{input("db_host","","text", "form-control", "", "off")}}
+                <label for="server">{{"SQL server (MariaDB or MySQL)"|trans}}</label>
+            </div>
+            <div class="form-floating">
+                {{input("db_user","","text", "form-control", "", "off")}}
+                <label for="user">{{"SQL User"|trans}}</label>
+            </div>
+            <div class="form-floating">
+                {{input("db_pass","","password", "form-control", "", "off")}}
+                <label for="password">{{"Password"|trans}}</label>
+            </div>
         </div>
-        <div class="form-floating">
-            <input type="text" class="form-control" name="db_user" placeholder="Username" autocomplete="off">
-            <label for="user">{{"SQL User"|trans}}</label>
+        <div class="buttons">
+            {{button('submit', 'Continue'|trans)}}
         </div>
-        <div class="form-floating">
-            <input type="password" class="form-control" name="db_pass" placeholder="*******" autocomplete="off">
-            <label for="password">{{"Password"|trans}}</label>
-        </div>
-    </div>
-    <div class="buttons">{{button('submit', 'Continue'|trans)}}</div>
     </form>

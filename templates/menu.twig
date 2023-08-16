@@ -1,0 +1,37 @@
+<nav class="nav-side-menu">
+
+    <div class="menu-list">
+  
+        <ul id="menu-content" class="menu-content collapse out">
+
+{% for menu_name, data in menu|filter(data => data['show_menu']) %}
+
+            <li title="{{data['title']}}" data-toggle="collapse" id='menu-{{menu_name}}' data-target="#submenu-{{menu_name}}" data-id='{{loop.index}}' class='{{data['class']}}'> {# loop.index starts at 1 mettre active bone page #}
+                <i class="fas {{menu[menu_name]['icon']}}"></i>
+                <p>{{data['title']}}</p>
+
+            </li>
+            
+    {% if data['show_sub_menu'] %}
+
+            <ul class="sub-menu ssmenu collapse {{menu[menu_name]['is_open'] ? 'show'}}" id='submenu-{{menu_name}}'>
+
+        {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
+
+                <li id='section-{{sub_menu_name}}' class="{{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                    <a  href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} class="{{val['is_favorite'] ? 'section-favorite'}}">
+                        <i class='fa-fw {{val['icon']}}'></i><p>{{val['title']}}</p>
+                    </a>
+                    </i>
+                </li>
+
+        {% endfor %}
+
+            </ul>
+
+    {% endif %}
+{% endfor %}
+
+        </ul>
+    </div>
+</nav>
