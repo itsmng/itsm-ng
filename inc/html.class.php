@@ -7854,6 +7854,28 @@ JAVASCRIPT;
       $menu = Plugin::doHookFunction("redefine_menus", $menu);
       $already_used_shortcut = ['1'];
 
+      // Get user favorites menu
+      $DB->queryOrDie(
+         'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_favorite longtext'
+      );
+      $menu_favorites = $DB->request(
+         [
+             'SELECT' => 'menu_favorite',
+             'FROM'   => 'glpi_users',
+             'WHERE'  => ['id' => $_SESSION["glpiID"]]
+         ]
+      );
+     
+     $menu_favorites = json_decode($menu_favorites->next()['menu_favorite'], true);
+     $menu_collapse = $DB->request(
+      [
+          'SELECT' => 'menu_open',
+          'FROM'   => 'glpi_users',
+          'WHERE'  => ['id' => $_SESSION["glpiID"]]
+      ]
+      );
+  
+      $menu_collapse = json_decode($menu_collapse->next()['menu_open'], true);
       $icons = [  
          'favorite' => 'fa-star',
          'assets' => 'fa-warehouse',
@@ -7870,6 +7892,7 @@ JAVASCRIPT;
          $menu[$part]['show_menu'] = false;
          // Checks if menu contains a submenu
          if (isset($data['content']) && count($data['content'])) {
+            $menu[$part]['is_open'] = in_array($part, $menu_collapse);
             $menu[$part]['icon'] = $icons[$part];
             $menu[$part]['show_menu'] = true;
             $menu[$part]['class'] = (isset($menu[$sector]) && $menu[$sector]['title'] == $data['title']) ? "active" : "";
@@ -7921,6 +7944,21 @@ JAVASCRIPT;
             }
          }
       }
+
+      $favorite = 
+      ['favorite' => [
+         'title' => 'Favorite',
+         'types' => [],
+         'default' => 'none',
+         'content' => [],
+         'show_menu' => true,
+         'class' => '',
+         'link' => '',
+         'show_sub_menu' => true,
+         'icon' => 'fa-star'
+      ]];
+
+      $menu = array_merge($favorite, $menu);   
 
       // Display item
       $mainurl = 'central';

@@ -380,8 +380,6 @@ table, thead, tbody, .fixed-table-container.fixed-height .table thead th,th, tr,
 .fixed-table-toolbar::after{
    display: none !important;
 }
-.fixed-table-toolbar>.search{
-}
 .fixed-table-toolbar>.search>.search-input{
    border-color: rgba(255, 255, 255, 0.8);
    background-color: transparent;
@@ -426,7 +424,7 @@ td{
 .dropdown-menu.show{
    display: block;
 }
- .table{
+.table{
    max-height: 50vh;
    display: table;
 }

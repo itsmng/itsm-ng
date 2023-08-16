@@ -169,7 +169,6 @@ switch ($step) {
         break;
 
     case "6":
-        print_r($_POST);
         if (isset($_POST['newdatabasename']) and $_POST['newdatabasename'] != ""){
             $new_db = true;
             $_SESSION["databasename"] = $_POST['newdatabasename'];

@@ -6,9 +6,17 @@
 
 {% for menu_name, data in menu|filter(data => data['show_menu']) %}
 
-            <li title="{{data['title']}}" data-toggle="collapse" id='menu-{{menu_name}}' data-target="#submenu-{{menu_name}}" data-id='{{loop.index}}' class='{{data['class']}}'> {# loop.index starts at 1 mettre active bone page #}
+            <li title="{{data['title']}}" data-toggle="collapse" id='menu-{{menu_name}}' data-target="#submenu-{{menu_name}}" data-id='{{loop.index}}' class='{{menu[menu_name]['is_open'] ?: 'collapsed'}} {{data['class']}}' onclick="openMenu(this, '{{menu_name}}')"> {# loop.index starts at 1 mettre active bone page #}
                 <i class="fas {{menu[menu_name]['icon']}}"></i>
                 <p>{{data['title']}}</p>
+
+                {% if menu_name == 'favorite' %}
+
+                <div id="menu-favorite-button" onclick="activateFavoriteMode()">
+                    <i class="fas fa-cog"></i>
+                </div>
+
+                {% endif %}
 
             </li>
             
@@ -16,12 +24,32 @@
 
             <ul class="sub-menu ssmenu collapse {{menu[menu_name]['is_open'] ? 'show'}}" id='submenu-{{menu_name}}'>
 
+        {% if menu_name == 'favorite' %}
+
+                <p>You can add your favorite section to this menu. To do this click on the cogwheel then click and the star next to the menu you wish to add as a favorite.</p>
+            {% for menu_name, data in menu|filter(data => data['show_menu']) %}
+                {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
+                    {% if val['is_favorite'] %}
+
+                <li id='section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                    <a  href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}}>
+                        <i class='fa-fw {{val['icon']}}'></i><p>{{val['title']}}</p>
+                    </a>
+                    <i class="star-icon" onclick="addFavorite(this, '{{menu_name}}', '{{sub_menu_name}}')">
+                    </i>
+                </li>
+
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
         {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
 
-                <li id='section-{{sub_menu_name}}' class="{{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                <li id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show'}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
                     <a  href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} class="{{val['is_favorite'] ? 'section-favorite'}}">
                         <i class='fa-fw {{val['icon']}}'></i><p>{{val['title']}}</p>
                     </a>
+                    <i class="star-icon" onclick="addFavorite(this, '{{menu_name}}', '{{sub_menu_name}}')">
                     </i>
                 </li>
 
@@ -35,3 +63,49 @@
         </ul>
     </div>
 </nav>
+<script>
+    function activateFavoriteMode(){
+        is_favorite_select = $('#menu').hasClass('favorite-mode');
+        $('#menu').toggleClass('favorite-mode', !is_favorite_select);
+    }
+    function openMenu(item, menu_name){
+        is_menu_open = $(item).hasClass('collapsed');
+        $.ajax({
+            type: "POST",
+            url: "../ng/db.openMenu.php",
+            data: {
+            menu_name: menu_name,
+            open: is_menu_open,
+            },
+        });
+        console.log(menu_name, is_menu_closed);
+    }
+    function addFavorite(item, menu_name, sub_menu_name){
+        ul = document.getElementById('submenu-favorite');
+        li = item.parentElement;
+        is_menu_favorite = $(li).hasClass('section-favorite');
+        $(li).toggleClass('section-favorite', !is_menu_favorite);
+        if(is_menu_favorite){ //removing favorite
+            if (li.parentElement.id == "submenu-favorite"){ //check if user clicked the star in the favorite menu or in other menu
+                $(document).find('#' + li.id.replace('favorite-','')).toggleClass('section-favorite', false);
+                li.remove();
+            }
+            else {
+                $(ul).find('#favorite-' + li.id).remove();
+            }
+        } else { //adding favorite
+            new_li = li.cloneNode(true);
+            new_li.id = 'favorite-' + li.id;
+            ul.appendChild(new_li);
+        }
+        $.ajax({
+            type: "POST",
+            url: "../ng/db.addFavorite.php",
+            data: {
+            remove: is_menu_favorite,
+            menu_name: menu_name,
+            submenu_name: sub_menu_name,
+            },
+        });
+    }
+    </script>
