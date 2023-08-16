@@ -23003,7 +23003,7 @@ msgstr "Faire un don"
 
 #: install/update.php:660 install/update_content.php:367
 #: install/install.php:545
-msgid "Use GLPI"
+msgid "Use ITSM"
 msgstr "Utiliser ITSM-NG"
 
 #: install/update.php:669
@@ -23162,8 +23162,8 @@ msgid "Default logins / passwords are:"
 msgstr "Les identifiants et mots de passe par défaut sont :"
 
 #: install/install.php:540
-msgid "glpi/glpi for the administrator account"
-msgstr "glpi/glpi pour le compte administrateur"
+msgid "itsm/itsm for the administrator account"
+msgstr "itsm/itsm pour le compte administrateur"
 
 #: install/install.php:541
 msgid "tech/tech for the technician account"
