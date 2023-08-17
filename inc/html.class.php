@@ -1553,7 +1553,7 @@ JAVASCRIPT;
       ) {
          echo Html::script('public/lib/scrollable-tabs.js');
       }
-      echo Html::css('css/test.css');
+      echo Html::css('css/itsm2.css');
       echo Html::css('css/ecrase.css');
       // End of Head
       echo "</head>\n";
@@ -7867,6 +7867,9 @@ JAVASCRIPT;
       );
      
      $menu_favorites = json_decode($menu_favorites->next()['menu_favorite'], true);
+     $DB->queryOrDie(
+        'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_open longtext'
+     );
      $menu_collapse = $DB->request(
       [
           'SELECT' => 'menu_open',
@@ -7874,7 +7877,6 @@ JAVASCRIPT;
           'WHERE'  => ['id' => $_SESSION["glpiID"]]
       ]
       );
-  
       $menu_collapse = json_decode($menu_collapse->next()['menu_open'], true);
       $icons = [  
          'favorite' => 'fa-star',
@@ -7892,7 +7894,9 @@ JAVASCRIPT;
          $menu[$part]['show_menu'] = false;
          // Checks if menu contains a submenu
          if (isset($data['content']) && count($data['content'])) {
-            $menu[$part]['is_open'] = in_array($part, $menu_collapse);
+            if (!is_null($menu_collapse)){
+               $menu[$part]['is_open'] = in_array($part, $menu_collapse);
+            }
             $menu[$part]['icon'] = $icons[$part];
             $menu[$part]['show_menu'] = true;
             $menu[$part]['class'] = (isset($menu[$sector]) && $menu[$sector]['title'] == $data['title']) ? "active" : "";
@@ -7962,11 +7966,11 @@ JAVASCRIPT;
 
       // Display item
       $mainurl = 'central';
-
+      $link = "";
       if (isset($menu[$sector])) {
          $link = (isset($menu[$sector]['default'])) ? $menu[$sector]['default'] :"/front/central.php";
       }
-
+      $show_page = "";
       if (isset($menu[$sector]['content'][$item])) {
          // Title
          $show_page = isset($menu[$sector]['content'][$item]['page']);

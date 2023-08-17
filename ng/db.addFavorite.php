@@ -1,6 +1,4 @@
 <?php
-if (isset($_POST['menu_name']))
-file_put_contents('./test.txt', $_POST);
 $AJAX_INCLUDE = 1;
 include ('../inc/includes.php');
 
@@ -28,6 +26,7 @@ $favorites = json_decode($favorites->next()['menu_favorite'], true);
 if (is_null($favorites)){
     $favorites = [];
 }
+
 if (filter_var($_POST['remove'], FILTER_VALIDATE_BOOLEAN)) {
     $key = array_search($_POST['submenu_name'], $favorites[$_POST['menu_name']]);
     unset($favorites[$_POST['menu_name']][$key]);
@@ -38,7 +37,7 @@ if (filter_var($_POST['remove'], FILTER_VALIDATE_BOOLEAN)) {
 } else {
     $favorites[$_POST['menu_name']][] = $_POST['submenu_name'];
 }
-file_put_contents('./test.txt', $_POST['remove']);
+
 $favorites = json_encode($favorites);
 
 $DB->updateOrInsert('glpi_users', ['menu_favorite' => $favorites], ['id' => $_SESSION['glpiID']]);

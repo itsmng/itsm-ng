@@ -1,6 +1,4 @@
 <?php
-if (isset($_POST['menu_name']))
-file_put_contents('./test.txt', $_POST);
 $AJAX_INCLUDE = 1;
 include ('../inc/includes.php');
 
