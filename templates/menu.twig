@@ -12,7 +12,7 @@
 
                 {% if menu_name == 'favorite' %}
 
-                <div id="menu-favorite-button" onclick="activateFavoriteMode()">
+                <div id="menu-favorite-button" onclick="activateFavoriteMode(event)">
                     <i class="fas fa-cog"></i>
                 </div>
 
@@ -49,7 +49,7 @@
                     <a  href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} class="{{val['is_favorite'] ? 'section-favorite'}}">
                         <i class='fa-fw {{val['icon']}}'></i><p>{{val['title']}}</p>
                     </a>
-                    <i class="star-icon" onclick="addFavorite(this, '{{menu_name}}', '{{sub_menu_name}}')">
+                    <i class="star-icon" onclick="addFavorite(event, this, '{{menu_name}}', '{{sub_menu_name}}')">
                     </i>
                 </li>
 
@@ -64,9 +64,11 @@
     </div>
 </nav>
 <script>
-    function activateFavoriteMode(){
+    function activateFavoriteMode(event){
+        event.stopPropagation();
         is_favorite_select = $('#menu').hasClass('favorite-mode');
         $('#menu').toggleClass('favorite-mode', !is_favorite_select);
+
     }
     function openMenu(item, menu_name){
         is_menu_open = $(item).hasClass('collapsed');
@@ -78,9 +80,10 @@
             open: is_menu_open,
             },
         });
-        console.log(menu_name, is_menu_closed);
     }
-    function addFavorite(item, menu_name, sub_menu_name){
+    function addFavorite(event, item, menu_name, sub_menu_name){
+        console.log(event);
+        event.stopPropagation();
         ul = document.getElementById('submenu-favorite');
         li = item.parentElement;
         is_menu_favorite = $(li).hasClass('section-favorite');

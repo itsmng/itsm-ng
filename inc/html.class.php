@@ -1553,7 +1553,7 @@ JAVASCRIPT;
       ) {
          echo Html::script('public/lib/scrollable-tabs.js');
       }
-      echo Html::css('css/itsm2.css');
+      echo Html::scss('css/itsm2.scss');
       echo Html::css('css/ecrase.css');
       // End of Head
       echo "</head>\n";
@@ -1847,6 +1847,8 @@ JAVASCRIPT
       $twig_vars += ["top_menu" => self::getBottomMenu(true)];
                
       $twig_vars["copyright_message"] = self::getCopyrightMessage(); 
+      $twig_vars["ITSM_VERSION"] = ITSM_VERSION;
+      $twig_vars["ITSM_YEAR"] = ITSM_YEAR;
       $twig_vars['is_slave'] = $DB->isSlave() && !$DB->first_connection;
 
       require_once GLPI_ROOT . "/ng/twig.function.php";
@@ -7343,7 +7345,8 @@ JAVASCRIPT;
  
        echo "</ul>";
        echo "</div>\n";
-    }
+   }
+   
    /**
     * Return ITSM bottom menu
     *
@@ -7889,11 +7892,21 @@ JAVASCRIPT;
          'config' => 'fa-clipboard-list',
          'preference' => 'fa-cog'            
       ];
+      $favorite = 
+      ['favorite' => [
+         'title' => 'Favorite',
+         'types' => [],
+         'default' => 'none',
+         'content' => [],
+      ]];
+
+      $menu = array_merge($favorite, $menu);   
       // Format $menu to pass to Twig
+      // print_r($menu);
       foreach ($menu as $part => $data) {
          $menu[$part]['show_menu'] = false;
          // Checks if menu contains a submenu
-         if (isset($data['content']) && count($data['content'])) {
+         if (isset($data['content']) && count($data['content']) || $part == 'favorite') {
             if (!is_null($menu_collapse)){
                $menu[$part]['is_open'] = in_array($part, $menu_collapse);
             }
@@ -7949,20 +7962,20 @@ JAVASCRIPT;
          }
       }
 
-      $favorite = 
-      ['favorite' => [
-         'title' => 'Favorite',
-         'types' => [],
-         'default' => 'none',
-         'content' => [],
-         'show_menu' => true,
-         'class' => '',
-         'link' => '',
-         'show_sub_menu' => true,
-         'icon' => 'fa-star'
-      ]];
+      // $favorite = 
+      // ['favorite' => [
+      //    'title' => 'Favorite',
+      //    'types' => [],
+      //    'default' => 'none',
+      //    'content' => [],
+      //    'show_menu' => true,
+      //    'class' => '',
+      //    'link' => '',
+      //    'show_sub_menu' => true,
+      //    'icon' => 'fa-star'
+      // ]];
 
-      $menu = array_merge($favorite, $menu);   
+      // $menu = array_merge($favorite, $menu);   
 
       // Display item
       $mainurl = 'central';

@@ -27,30 +27,43 @@
                 is_menu_close = $('#menu').hasClass('menu-close');
                 $('#menu').toggleClass('menu-close', !is_menu_close);
                 $('#header_top').toggleClass('menu-close', !is_menu_close);
+                if (!is_menu_close){
+                    $('#menu').toggleClass('favorite-mode', false);
+                }
             }
             </script>
         </div>
         {% include main_menu.path with main_menu.args %}
-        {% include top_menu.path with top_menu.args %}
-        <div class="copyright-message">{{copyright_message|raw}}</div>
+        <div class="menu-bottom">
+            <a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}}ITSM-NG and contributors">
+                <div>
+                </div>
+            </a>
+            {% include top_menu.path with top_menu.args %}
+        </div>
     </div>
     <div class="main-container">
         <div id='c_ssmenu2' >
             <ul>
-            {# need menu and link and sector and options #}
-                <li class='breadcrumb_item'>  
+                <li class='breadcrumb_item'> {# need menu and link and sector and options #}
                     <a href="{{root_doc}}/front/{{mainurl}}.php" title="{{'Home'|trans}}">{{'Home'|trans}}</a>
                 </li>
+
+        {% if not menu[sector] is empty %}
                 <li class='breadcrumb_item'>
-                    <a href="{{root_doc}}{{link}}" title="{{menu[sector]['title']}}">{{menu[sector]['title']}}</a>
+                    <a href="{{root_doc}}{{link}}" title="{{menu[sector]['title']}}">
+                        <i class="fas {{menu[sector]['icon']}}"></i>{{menu[sector]['title']}}</a>
                 </li>
-{% if show_page %}
+        
+            {% if show_page %}
                 <li class="breadcrumb_item">
-                    <a href="{{ root_doc ~ menu[sector]['content'][item]['page'] }}" {{with_option ? 'class="here'}} title="{{ menu[sector]['content'][item]['title']}}">
+                    <a href="{{ root_doc ~ menu[sector]['content'][item]['page'] }}" {{with_option ? 'class="here'}} title="{{ menu[sector]['content'][item]['title'] }}">
                         <i class="{{ menu[sector]['content'][item]['icon'] ?? '' }}"></i>{{ menu[sector]['content'][item]['title'] }}
                     </a>
                 </li>
-{% endif %}   
-            </ul>
-        </div>
+            {% endif %}         
+        
+        {% endif %}
+        </ul>
+    </div>
         <main role='main' id='page'>
