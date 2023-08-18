@@ -18,9 +18,14 @@ body {
     --logo-image: url("../pics/fd_logo.png");
     --bottom-menu-hover-color: rgb(69, 190, 21);
     --breadcrumb-current-color: rgb(241, 110, 172);
-    height: 100%;
+    --menu-open-width: 11rem;
+    --menu-close-width: 5em;
+    --menu-transition-time: 0.3s;
+    height: 100vh;
 }
-
+#page{
+    display: none;
+}
 .main-container * {
     box-sizing: content-box;
 }
@@ -83,7 +88,7 @@ header {
     background: var(--logo-image);
     background-repeat: no-repeat;
     background-size: auto 50px;
-    transition: width 0.3s ease;
+    transition: width var(--menu-transition-time) ease;
 
     .menu-close & {
         width: 50px;
@@ -110,7 +115,27 @@ margin-left: 240px;
     position: absolute;
     right: 5px;
 }
+
+#menu-border{
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 3px;
+    translate: 80% 0;
+    cursor: e-resize;
+    z-index: 1;
+}
+
+#drag-arrow{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate( 50%, -50%);
+    font-size: 5em;
+}
+
 #menu-button {
+    z-index: 2;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -152,30 +177,24 @@ margin-left: 240px;
     }
     
 }
-// #menu-favorite {
-//     .menu-close & #menu{
-//         display: none;
-//     }
-// }
 
 .menu {
     position: fixed;
     height: calc(100vh - 3.5rem);
     background-color: var(--menu-background-color);
-    width: 11rem;
-    transition: width 0.3s ease;
+    width: var(--menu-open-width);
+    transition: width var(--menu-transition-time) ease;
 
     &.menu-close {
-        width: 5em;
+        width: var(--menu-close-width);
     }
 }
  
 .nav-side-menu {
+    z-index: 3;
     height: calc(100% - 90px);
     position: relative;
     top: 0;
-    font-size: 12px;
-    font-weight: 200;
     color: var(--menu-text-color);
     display: flex;
     flex-direction: row;
@@ -186,6 +205,7 @@ margin-left: 240px;
     width: 100%;
 
     .menu-close & {
+        height: calc(100% - 120px);
         li p {
             margin: 0;
             display: none;
@@ -197,11 +217,6 @@ margin-left: 240px;
         i.star-icon::before {
             visibility: visible;
             font-weight: 400;
-            // pointer-events: auto;
-        }
-
-        .sub-menu a {
-            // pointer-events: none;
         }
     }
 

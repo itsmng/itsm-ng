@@ -1,7 +1,6 @@
 {% from "macros.twig" import table %}
 <body class={{body_class}}>
 
-
 {% if impersonate_banner is defined %}
     {% include impersonate_banner.path with impersonate_banner.args%}
 {% endif %}
@@ -33,9 +32,27 @@
             }
             </script>
         </div>
+        <div id="menu-border" onmousedown="resizeMenu()">
+            <script>
+                function resizeMenu(){
+                    is_menu_close = $('#menu').hasClass('menu-close');
+                    width_var = is_menu_close ? "--menu-close-width" : "--menu-open-width";
+                    $('body').css('--menu-transition-time', '0s');
+                    window.addEventListener("mousemove", changeMenuWidth);
+                    window.addEventListener("mouseup", (event) => {
+                        $('body').css('--menu-transition-time', '0.3s');
+                        removeEventListener("mousemove", changeMenuWidth);
+                        console.log(event);
+                    }, { once: true });
+                }
+                function changeMenuWidth(event) {
+                    $('body').css(width_var, event.clientX + "px")
+                }
+            </script>
+        </div>
         {% include main_menu.path with main_menu.args %}
         <div class="menu-bottom">
-            <a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}}ITSM-NG and contributors">
+            <a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors">
                 <div>
                 </div>
             </a>
