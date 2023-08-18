@@ -76,6 +76,11 @@
         "ext-sodium": "Used to provide strong encryption for sensitive data in database"
     },
     "config": {
+	     "optimize-autoloader": true,
+        "platform": {
+            "php": "7.2.9"
+        },
+        "sort-packages": true
     },
     "scripts": {
         "testdb": "php vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --no-code-coverage --max-children-number 1 -d tests/database",
