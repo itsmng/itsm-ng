@@ -1851,6 +1851,33 @@ JAVASCRIPT
       $twig_vars["ITSM_YEAR"] = ITSM_YEAR;
       $twig_vars['is_slave'] = $DB->isSlave() && !$DB->first_connection;
 
+      $DB->queryOrDie(
+         'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_position longtext'
+      );
+
+      $twig_vars['menu_position'] = $DB->request(
+             [
+                 'SELECT' => 'menu_position',
+                 'FROM'   => 'glpi_users',
+                 'WHERE'  => ['id' => $_SESSION["glpiID"]]
+             ]
+         )->next()['menu_position'];
+
+
+      $DB->queryOrDie(
+         'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_width longtext'
+      );
+
+      $menu_width = $DB->request(
+               [
+                  'SELECT' => 'menu_width',
+                  'FROM'   => 'glpi_users',
+                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
+               ]
+         );
+
+      $menu_width = json_decode($menu_width->next()['menu_width'], true);
+      $twig_vars['menu_width'] = $menu_width;
       require_once GLPI_ROOT . "/ng/twig.function.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
       try {

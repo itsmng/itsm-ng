@@ -6,19 +6,18 @@
 
 {% for menu_name, data in menu|filter(data => data['show_menu']) %}
 
-            <li title="{{data['title']}}" data-toggle="collapse" id='menu-{{menu_name}}' data-target="#submenu-{{menu_name}}" data-id='{{loop.index}}' class='{{menu[menu_name]['is_open'] ?: 'collapsed'}} {{data['class']}}' onclick="openMenu(this, '{{menu_name}}')"> {# loop.index starts at 1 mettre active bone page #}
-                <i class="fas {{menu[menu_name]['icon']}}"></i>
-                <p>{{data['title']}}</p>
-
-                {% if menu_name == 'favorite' %}
-
-                <div id="menu-favorite-button" onclick="activateFavoriteMode(event)">
-                    <i class="fas fa-cog"></i>
+            <li title="{{data['title']}}" id='menu-{{menu_name}}' class='{{data['class']}}' > {# loop.index starts at 1 mettre active bone page #}
+                <div class="{{menu[menu_name]['is_open'] ?: 'collapsed'}} " onclick="openMenu(this, '{{menu_name}}')" data-toggle="collapse" data-target="#submenu-{{menu_name}}">
+                    <i class="fas {{menu[menu_name]['icon']}}"></i>
+                    <p>{{data['title']}}</p>
+                    {% if menu_name == 'favorite' %}
+                    <div id="menu-favorite-button" onclick="activateFavoriteMode(event)">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    {% endif %}
                 </div>
 
-                {% endif %}
 
-            </li>
             
     {% if data['show_sub_menu'] %}
 
@@ -56,7 +55,7 @@
         {% endfor %}
 
             </ul>
-
+        </li>
     {% endif %}
 {% endfor %}
 
@@ -71,18 +70,21 @@
 
     }
     function openMenu(item, menu_name){
+        if ($('#main-test').hasClass('menu-top')){
+            return;
+        }
         is_menu_open = $(item).hasClass('collapsed');
         $.ajax({
             type: "POST",
             url: "../ng/db.openMenu.php",
             data: {
-            menu_name: menu_name,
-            open: is_menu_open,
+                clear: false,
+                menu_name: menu_name,
+                open: is_menu_open,
             },
         });
     }
     function addFavorite(event, item, menu_name, sub_menu_name){
-        console.log(event);
         event.stopPropagation();
         ul = document.getElementById('submenu-favorite');
         li = item.parentElement;
