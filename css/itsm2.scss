@@ -67,7 +67,7 @@ div#searchbar {
 }
 
 header {
-    z-index: 20000;
+    z-index: 5;
     position: fixed;
     top: 0;
     left: 0;
@@ -107,6 +107,7 @@ header {
     top: 3.5rem;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     --menu-left-bool: 1;
 
     &.menu-right{
@@ -118,8 +119,22 @@ header {
     }
 }
 .main-container {
-margin: 0 auto;
-margin-left: 240px;
+    width: calc(100% - var(--menu-open-width));
+    margin-left: var(--menu-open-width);
+    transition: margin var(--menu-transition-time) ease;
+
+    .menu-right & {
+        margin-left: 0;
+        margin-right: var(--menu-open-width);
+    }
+    .menu-top & {
+        width: 100%;
+        margin: 0;
+    }
+    div.menu-close + & {
+        width: calc(100% - var(--menu-close-width));
+        margin-left: var(--menu-close-width);
+    }
 }
  
 .rightz {
@@ -131,10 +146,10 @@ margin-left: 240px;
     position: absolute;
     right: 0;
     height: 100%;
-    width: 3px;
-    translate: 80% 0;
+    width: 10px;
+    translate: 50% 0;
     cursor: e-resize;
-    z-index: 1;
+    z-index: 10;
 
     .menu-right & {
         left: 0;
@@ -256,22 +271,74 @@ margin-left: 240px;
     
 }
 
-.menu {
+#menu {
     position: fixed;
     height: calc(100vh - 3.5rem);
     background-color: var(--menu-background-color);
     width: var(--menu-open-width);
     transition: width var(--menu-transition-time) ease; // in js resizeWidth
     z-index: 1000;
-
+    overflow: visible;
     &.menu-close {
         width: var(--menu-close-width);
     }
 
     .menu-top & {
-        position: relative;
+        position: fixed;
         width: 100%;
         height: auto;
+    }
+
+    .menu-bubble &{
+
+        width: 0;
+
+        :not(.menu-content, li, .menu-content>li>div, .menu-content>li>div>i, .menu-list, .nav-side-menu), #menu-button{
+            display: none;
+        }
+
+        i {
+            top: 0;
+            left: 0;
+            position: fixed;
+            color: red !important;
+            z-index: 9999;
+        }
+
+        li:not(#menu-favorite) i{
+            display: none;
+        }
+
+        li#menu-favorite>div>i {
+            display: flex !important;
+        }
+
+        li>ul{
+            display: flex !important;
+
+            >li{
+                display: flex !important;
+
+                a{
+                    display: flex !important;
+                
+                    i {
+                        display: flex;
+                    }
+                }
+            }
+        }
+        // p {
+        // display: none;
+        // }
+
+        // i.star-icon {
+        //     display: none;
+        // }
+
+        // #menu-favorite-button {
+        //     display: none;
+        // }
     }
 }
  
@@ -359,7 +426,9 @@ margin-left: 240px;
 
             .menu-close & {
                 justify-content: center;
-                padding: 5px 2px;
+                align-items: center;
+                padding: 5px;
+                margin: 0;
             }
             
             
@@ -390,6 +459,7 @@ margin-left: 240px;
                 line-height: 1;
                 color: var(--menu-icon-color);
                 width: 25px;
+                height: 25px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -441,6 +511,11 @@ margin-left: 240px;
                 border-radius: 5px;
                 // pointer-events: auto;
                 font-size: 12px;
+                
+                .menu-close & {
+                    padding: 1px 2px;
+                    margin: 0 !important;
+                }
 
                 &:not(:last-of-type){
                     margin-bottom: 5px;
@@ -505,7 +580,7 @@ margin-left: 240px;
                 display: inline-block;
             }
         }
-        .menu-close &::before {
+        .menu-close & {
             display: none;
         }
 
@@ -686,6 +761,7 @@ margin-left: 240px;
     }
 } */
 #c_ssmenu2 {
+    margin-left: 70px;
     & ul li:last-child {
         background-color: var(--breadcrumb-current-color);
         

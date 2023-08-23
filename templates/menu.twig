@@ -6,14 +6,18 @@
 
 {% for menu_name, data in menu|filter(data => data['show_menu']) %}
 
-            <li title="{{data['title']}}" id='menu-{{menu_name}}' class='{{data['class']}}' > {# loop.index starts at 1 mettre active bone page #}
+            <li title="{{data['title']}}" id='menu-{{menu_name}}' class='menu {{data['class']}}' > {# loop.index starts at 1 mettre active bone page #}
                 <div class="{{menu[menu_name]['is_open'] ?: 'collapsed'}} " onclick="openMenu(this, '{{menu_name}}')" data-toggle="collapse" data-target="#submenu-{{menu_name}}">
-                    <i class="fas {{menu[menu_name]['icon']}}"></i>
-                    <p>{{data['title']}}</p>
                     {% if menu_name == 'favorite' %}
+                    <i id="star" class="bubble-icon fas {{menu[menu_name]['icon']}}"></i>
+                    <p>{{data['title']}}</p>
                     <div id="menu-favorite-button" onclick="activateFavoriteMode(event)">
                         <i class="fas fa-cog"></i>
                     </div>
+                    
+                    {% else %}
+                    <i class="bubble-icon fas {{menu[menu_name]['icon']}}"></i>
+                    <p>{{data['title']}}</p>
                     {% endif %}
                 </div>
 
@@ -32,7 +36,7 @@
 
                 <li id='section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
                     <a  href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}}>
-                        <i class='fa-fw {{val['icon']}}'></i><p>{{val['title']}}</p>
+                        <i class='submenu-icon fa-fw {{val['icon']}}'></i><p>{{val['title']}}</p>
                     </a>
                     <i class="star-icon" onclick="addFavorite(this, '{{menu_name}}', '{{sub_menu_name}}')">
                     </i>
@@ -46,7 +50,7 @@
 
                 <li id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show'}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
                     <a  href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} class="{{val['is_favorite'] ? 'section-favorite'}}">
-                        <i class='fa-fw {{val['icon']}}'></i><p>{{val['title']}}</p>
+                        <i class='submenu-icon fa-fw {{val['icon']}}'></i><p>{{val['title']}}</p>
                     </a>
                     <i class="star-icon" onclick="addFavorite(event, this, '{{menu_name}}', '{{sub_menu_name}}')">
                     </i>
@@ -71,6 +75,7 @@
     }
     function openMenu(item, menu_name){
         if ($('#main-test').hasClass('menu-top')){
+            $('.menu:not(#' + this.id + ')').children('ul').collapse('hide');
             return;
         }
         is_menu_open = $(item).hasClass('collapsed');
@@ -97,6 +102,7 @@
             }
             else {
                 $(ul).find('#favorite-' + li.id).remove();
+                li.remove();
             }
         } else { //adding favorite
             new_li = li.cloneNode(true);

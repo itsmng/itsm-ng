@@ -1863,6 +1863,18 @@ JAVASCRIPT
              ]
          )->next()['menu_position'];
 
+      $DB->queryOrDie(
+         'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_small longtext'
+      );
+
+      $twig_vars['menu_small'] = $DB->request(
+               [
+                  'SELECT' => 'menu_small',
+                  'FROM'   => 'glpi_users',
+                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
+               ]
+         )->next()['menu_small'];
+      $twig_vars['menu_small'] = filter_var($twig_vars['menu_small'], FILTER_VALIDATE_BOOLEAN);
 
       $DB->queryOrDie(
          'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_width longtext'

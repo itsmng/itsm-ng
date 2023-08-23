@@ -2,13 +2,72 @@
 
 {% if menu_width is empty %}
 
-<body class={{body_class}} >
+<body class={{body_class}}>
 
 {% else %}
 
 <body class={{body_class}} style = "--menu-open-width: {{menu_width['menu-open']}}; --menu-close-width: {{menu_width['menu-close']}};"></body>
 
 {% endif %}
+<script>
+    function activateMenuBubble(){
+        $("#star").on('mousedown', menuDrag);
+        $("#star").on('click', openMenuBubble);
+    }
+
+    function openMenuBubble(){
+        is_menu_open = $('.bubble-icon').eq(1).css('display') != 'none'; //not the first one its favorite
+        $('.bubble-icon').css('display', is_menu_open ? 'none' : 'flex');
+        $('submenu-icon').css('display', is_menu_open ? 'none' : 'inline-block');
+        console.log($($('.bubble-icon').eq(2)));
+    }
+
+    function menuDrag(){
+        event.stopPropagation();
+        const menuDragEventHandler = (event) => {menuMove(event, this)}; 
+        window.addEventListener("mousemove", menuDragEventHandler);
+        window.addEventListener("mouseup", (event) => {
+            removeEventListener("mousemove", menuDragEventHandler);
+        });
+    }
+
+    function menuMove(event, element){
+        $('#star').css('left', event.clientX + 'px');
+        $('#star').css('top', event.clientY + 'px');
+        icons = $('.bubble-icon').slice(1);
+        var r = 50;
+        var length = icons.length;
+        var divi = length/4;
+        var ri = Math.PI / divi / 2;
+        console.log(ri);
+        var x = 0; //Math.sin(Math.pi/2)
+        var y = ri;
+        icons.each( function (i) {
+            console.log(this);
+
+            x = Math.cos(ri * (divi - i)) * r;
+            y = Math.sin(ri * (divi - i )) * r;
+            // console.log(ri *(divi - i ));
+            // console.log('event' , event.clientX);
+            // console.log('x', x);
+            // console.log(event.clientX + x);
+            $(this).css('left', (event.clientX + x) + 'px');
+            $(this).css('top', (event.clientY + y) + 'px');
+            var that = this;
+            console.log($(this).parent().parent().children('.submenu-icon'));
+            // .each( function (j) {
+
+
+            // x1 = Math.cos(ri * (divi - j)) * r;
+            // y1 = Math.sin(ri * (divi - j)) * r;
+
+            // $(this).css('left', (event.clientX + x + x1) + 'px');
+            // $(this).css('top', (event.clientY + y + y1) + 'px');
+            // });
+        });
+
+    }
+</script>
 {% if impersonate_banner is defined %}
     {% include impersonate_banner.path with impersonate_banner.args%}
 {% endif %}
@@ -26,7 +85,7 @@
         </header> 
 
 <div id="main-test" class="{{menu_position}}">
-    <div id="menu" class="menu">
+    <div id="menu" class="{{menu_small ? 'menu-close' : 'menu-open'}}">
         <div id="menu-button" onclick="changeMenuState()">
            <i class="fas fa-caret-left"></i>
             <script>
@@ -37,6 +96,14 @@
                 if (!is_menu_close){
                     $('#menu').toggleClass('favorite-mode', false);
                 }
+                $.ajax({
+                    type: "POST",
+                    url: "../ng/db.menuSmall.php",
+                    data: {
+                    small: !is_menu_close,
+                    },
+                });
+                console.log(!is_menu_close);
             }
             </script>
         </div>
@@ -79,9 +146,10 @@
                 <i class="fas fa-arrow-left" onclick="changeMenuPosition('menu-left')"></i>
                 <i class="fas fa-arrow-up" onclick="changeMenuPosition('menu-top');"></i>
                 <i class="fas fa-arrow-right" onclick="changeMenuPosition('menu-right')"></i>
-                <i class="fas fa-ellipsis-h" onclick="changeMenuPosition('menu-bubble')"></i>
+                <i class="fas fa-ellipsis-h" onclick="changeMenuPosition('menu-bubble'); activateMenuBubble();"></i>
             </div>
             <script>
+
                 function showMenuPositions(){
                 $('.menu-positions').toggleClass('show');
                 }
