@@ -301,13 +301,13 @@ header {
 
         width: 0;
 
-        :not(.menu-content, li, .menu-content>li>div, .menu-content>li>div>i, .menu-list, .nav-side-menu), #menu-button{
+        :not(.submenu-icon, .menu-content, li, .menu-content>li>div, .menu-content>li>div>i, .menu-list, .nav-side-menu), #menu-button{
             display: none;
         }
 
         i {
-            top: 0;
-            left: 0;
+            top: 200px;
+            left: 100px;
             position: fixed;
             color: red !important;
             z-index: 9999;

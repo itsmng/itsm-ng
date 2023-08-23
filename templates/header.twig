@@ -18,7 +18,7 @@
     function openMenuBubble(){
         is_menu_open = $('.bubble-icon').eq(1).css('display') != 'none'; //not the first one its favorite
         $('.bubble-icon').css('display', is_menu_open ? 'none' : 'flex');
-        $('submenu-icon').css('display', is_menu_open ? 'none' : 'inline-block');
+        $('.submenu-icon').css('display', is_menu_open ? 'none' : 'inline-block');
         console.log($($('.bubble-icon').eq(2)));
     }
 
@@ -38,7 +38,7 @@
         var r = 50;
         var length = icons.length;
         var divi = length/4;
-        var ri = Math.PI / divi / 2;
+        var ri = Math.PI / 2 / divi;
         console.log(ri);
         var x = 0; //Math.sin(Math.pi/2)
         var y = ri;
@@ -54,16 +54,24 @@
             $(this).css('left', (event.clientX + x) + 'px');
             $(this).css('top', (event.clientY + y) + 'px');
             var that = this;
-            console.log($(this).parent().parent().children('.submenu-icon'));
-            // .each( function (j) {
+            console.log(ri * (divi - i ));
+            if (i == 0){
+                console.log(ri * (divi - i ));
 
+                console.log($(this).parent().parent().find('.submenu-icon'));
+                icons1 = $(this).parent().parent().find('.submenu-icon')
+                var r1 = 80;
+                var length1 = icons1.length;
+                var divi1 = length1/2;
+                icons1.each( function (j) {
+                var ri1 = Math.PI / 2 / divi1;
+                x1 = Math.cos(ri1 * (divi1 - j) + (Math.PI/divi)) * r1;
+                y1 = Math.sin(ri1 * (divi1 - j)+  (Math.PI/divi)) * r1;
 
-            // x1 = Math.cos(ri * (divi - j)) * r;
-            // y1 = Math.sin(ri * (divi - j)) * r;
-
-            // $(this).css('left', (event.clientX + x + x1) + 'px');
-            // $(this).css('top', (event.clientY + y + y1) + 'px');
-            // });
+                $(this).css('left', (event.clientX + x + x1) + 'px');
+                $(this).css('top', (event.clientY + y +100+ + y1) + 'px');
+            });
+        }
         });
 
     }
