@@ -120,10 +120,11 @@
                 function resizeMenu(){
                     is_menu_close = $('#menu').hasClass('menu-close');
                     width_var = is_menu_close ? "--menu-close-width" : "--menu-open-width";
-                    $('.menu').css('transition', 'none');
+                    $('#menu').css('transition', 'none');
+                    $('.main-container').css('transition', 'none');
                     window.addEventListener("mousemove", changeMenuWidth);
                     window.addEventListener("mouseup", (event) => {
-                        $('.menu').css('transition', 'width var(--menu-transition-time) ease');
+                        $('#menu').css('transition', 'width var(--menu-transition-time) ease');
                         removeEventListener("mousemove", changeMenuWidth);
                         $.ajax({
                             type: "POST",
@@ -133,11 +134,10 @@
                                 width: $('body').css(width_var),
                             },
                         });
-                        console.log(is_menu_close ? "menu-close" : "menu-open");
-                        console.log($('body').css(width_var));
                     }, { once: true });
                 }
                 function changeMenuWidth(event) {
+                    console.log(event.clientX);
                     menu_is_right = $('#main-test').hasClass('menu-right');
                     if (menu_is_right){
                         $('body').css(width_var,  window.innerWidth - event.clientX + "px")
