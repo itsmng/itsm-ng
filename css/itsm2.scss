@@ -237,6 +237,7 @@ header {
     .menu-right & {
         right: auto;
         left: -1.2rem;
+        background: linear-gradient(90deg, var(--menu-background-color) 50%, transparent 50%);
     }
 
     .menu-top & {
@@ -336,17 +337,6 @@ header {
                 }
             }
         }
-        // p {
-        // display: none;
-        // }
-
-        // i.star-icon {
-        //     display: none;
-        // }
-
-        // #menu-favorite-button {
-        //     display: none;
-        // }
     }
 }
  
