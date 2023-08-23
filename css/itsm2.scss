@@ -124,8 +124,9 @@ header {
     transition: margin var(--menu-transition-time) ease;
 
     .menu-right & {
-        margin-left: 0;
+        margin-left: 0 !important;
         margin-right: var(--menu-open-width);
+
     }
     .menu-top & {
         width: 100%;
@@ -134,6 +135,11 @@ header {
     div.menu-close + & {
         width: calc(100% - var(--menu-close-width));
         margin-left: var(--menu-close-width);
+        
+
+        .menu-right & {
+            margin-right: var(--menu-close-width);
+        }
     }
 }
  
@@ -145,7 +151,8 @@ header {
 #menu-border{
     position: absolute;
     right: 0;
-    height: 100%;
+    bottom: 0;
+    height: 95%;
     width: 10px;
     translate: 50% 0;
     cursor: e-resize;
@@ -211,7 +218,7 @@ header {
 }
 
 #menu-button {
-    z-index: 2;
+    z-index: 7;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -220,7 +227,8 @@ header {
     position: absolute;
     right: -1.2rem;
     cursor: pointer;
-    background-color: var(--menu-background-color);
+    background: linear-gradient(90deg, transparent 50%, var(--menu-background-color) 50%);
+    // background-color: var(--menu-background-color);
     --_size: 1em;
     height: var(--_size);
     width:  var(--_size);
