@@ -921,9 +921,17 @@ header {
     }
 
 }
+.breadcrumb_item {
+    &::before{
+        z-index: 1 !important;
+    }
 
+    &::after{
+        z-index: 1 !important;
+    }
+}
 td
-table, thead, tbody, .fixed-table-container.fixed-height .table thead th,th, tr, td {
+.bootstrap-table table, .bootstrap-table thead, .bootstrap-table tbody, .fixed-table-container.fixed-height .table thead th,.bootstrap-table th, .bootstrap-table tr, .bootstrap-table td {
     background-color: transparent !important;
     color: white !important;
     border: none !important;
@@ -996,10 +1004,10 @@ table, thead, tbody, .fixed-table-container.fixed-height .table thead th,th, tr,
 .check-result {
     text-align: center;
 }
-tbody>tr:nth-child(odd) {
+.bootstrap-table tbody>tr:nth-child(odd) {
     background-color: rgba(255, 255, 255, 0.15) !important;
 }
-td {
+.bootstrap-table td {
     width: 50%;
 }
 .fixed-table-toolbar .btn-group {
