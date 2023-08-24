@@ -36,5 +36,9 @@
 {% endif %}
 
 <script>
-  $(document).ready(activateMenuBubble());
+  $(document).ready((e) => {
+    if ($('#main-test').hasClass('menu-bubble')) {
+      activateMenuBubble();
+    }
+  });
 </script>

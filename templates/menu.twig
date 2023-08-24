@@ -8,16 +8,12 @@
 
             <li title="{{data['title']}}" id='menu-{{menu_name}}' class='menu {{data['class']}}' > {# loop.index starts at 1 mettre active bone page #}
                 <div class="{{menu[menu_name]['is_open'] ?: 'collapsed'}} " onclick="openMenu(this, '{{menu_name}}')" data-toggle="collapse" data-target="#submenu-{{menu_name}}">
-                    {% if menu_name == 'favorite' %}
-                    <i id="star" class="bubble-icon fas {{menu[menu_name]['icon']}}"></i>
+                    <i class="bubble-icon fas {{menu[menu_name]['icon']}}"></i>
                     <p>{{data['title']}}</p>
+                    {% if menu_name == 'favorite' %}
                     <div id="menu-favorite-button" onclick="activateFavoriteMode(event)">
                         <i class="fas fa-cog"></i>
                     </div>
-                    
-                    {% else %}
-                    <i class="bubble-icon fas {{menu[menu_name]['icon']}}"></i>
-                    <p>{{data['title']}}</p>
                     {% endif %}
                 </div>
 
@@ -34,11 +30,11 @@
                 {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
                     {% if val['is_favorite'] %}
 
-                <li id='section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                <li id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
                     <a  href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}}>
                         <i class='submenu-icon fa-fw {{val['icon']}}'></i><p>{{val['title']}}</p>
                     </a>
-                    <i class="star-icon" onclick="addFavorite(this, '{{menu_name}}', '{{sub_menu_name}}')">
+                    <i class="star-icon" onclick="addFavorite(event, this, '{{menu_name}}', '{{sub_menu_name}}')">
                     </i>
                 </li>
 
@@ -66,57 +62,3 @@
         </ul>
     </div>
 </nav>
-<script>
-    function activateFavoriteMode(event){
-        event.stopPropagation();
-        is_favorite_select = $('#menu').hasClass('favorite-mode');
-        $('#menu').toggleClass('favorite-mode', !is_favorite_select);
-
-    }
-    function openMenu(item, menu_name){
-        if ($('#main-test').hasClass('menu-top')){
-            $('.menu:not(#' + this.id + ')').children('ul').collapse('hide');
-            return;
-        }
-        is_menu_open = $(item).hasClass('collapsed');
-        $.ajax({
-            type: "POST",
-            url: "../ng/db.openMenu.php",
-            data: {
-                clear: false,
-                menu_name: menu_name,
-                open: is_menu_open,
-            },
-        });
-    }
-    function addFavorite(event, item, menu_name, sub_menu_name){
-        event.stopPropagation();
-        ul = document.getElementById('submenu-favorite');
-        li = item.parentElement;
-        is_menu_favorite = $(li).hasClass('section-favorite');
-        $(li).toggleClass('section-favorite', !is_menu_favorite);
-        if(is_menu_favorite){ //removing favorite
-            if (li.parentElement.id == "submenu-favorite"){ //check if user clicked the star in the favorite menu or in other menu
-                $(document).find('#' + li.id.replace('favorite-','')).toggleClass('section-favorite', false);
-                li.remove();
-            }
-            else {
-                $(ul).find('#favorite-' + li.id).remove();
-                li.remove();
-            }
-        } else { //adding favorite
-            new_li = li.cloneNode(true);
-            new_li.id = 'favorite-' + li.id;
-            ul.appendChild(new_li);
-        }
-        $.ajax({
-            type: "POST",
-            url: "../ng/db.addFavorite.php",
-            data: {
-            remove: is_menu_favorite,
-            menu_name: menu_name,
-            submenu_name: sub_menu_name,
-            },
-        });
-    }
-    </script>

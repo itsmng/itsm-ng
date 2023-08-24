@@ -147,12 +147,11 @@ header {
     position: absolute;
     right: 5px;
 }
-
 #menu-border{
     position: absolute;
     right: 0;
-    bottom: 0;
-    height: 95%;
+    bottom: 100px;
+    height: 80%;
     width: 10px;
     translate: 50% 0;
     cursor: e-resize;
@@ -168,7 +167,20 @@ header {
         display: none;
     }
 }
-
+.menu-bubble, .menu-top{
+    .menu-parameters {
+        position: fixed;
+        top: 65px;
+        right: 6px;
+        bottom: auto;
+        color: black;
+        
+        // >i {
+        //     position: static !important;
+        //     color: black !important;
+        // }
+    }
+}
 .menu-parameters{
     display: flex;
     flex-direction: row;
@@ -176,39 +188,108 @@ header {
     align-items: center;
     font-size: 2em;
     z-index: 4;
-    position: relative;
-    top: -5px;
+    position: absolute;
+    bottom: 60px;
+    right: 2px;
+    .menu-bubble &, .menu-top &{
+    position: fixed;
+    right: 6px;
+    bottom: auto;
+    color: black;
+    }
     .menu-top & {
-        flex-direction: column;
-        position: absolute;
-        top: 0;
-        right: 0;
+        top: 65px;
+    }
+
+    .menu-bubble & {
+        top: 30px;
+    }
+
+
+
+
+    &.show >i{
+        rotate: 180deg;
+    }
+    
+    >i {
+        font-size: 1.5em;
+        // rotate: 180deg;
+    }
+
+    .menu-right & {
+        right: auto;
+        left: 2px;
+
+    }
+    .menu-top &, .menu-bubble & {
+        >i { 
+            rotate: 90deg;
+        }
+
+        &.show >i{
+            rotate: 270deg;
+        }
     }   
 
     .menu-close & {
         display: none;
     }
-
+    i { 
+        position: relative !important;
+    }
     .menu-positions {
+        background-color: var(--menu-background-color);
+        padding: 7px 0;
+        padding-right: 0;
+        border-radius: 0 30px 30px 0;
+        font-size: 1em;
         z-index: 2;
-        position: relative;
+        position: absolute;
+        --_offset: -1.09em;
+        right: var(--_offset);
         // top: -1em;
         // left: 2em;
+        // bottom: -1em;
+        // width: auto;
+        // overflow: hidden;
         display: none;
         justify-content: space-evenly;
         align-items: center;
-        width: 100%;
+        flex-direction: column;
+        // width: 100%;
 
-        .menu-top & {
-            flex-direction: column;
-        } 
+        .menu-right & {
+            border-radius: 30px 0 0 30px;
+            right: auto;
+            left: var(--_offset);
+        }
+
+        .menu-top &, .menu-bubble & {
+            right: -6px;
+            left: auto;
+            top: 1.1em;
+            border-radius: 0 0 30px 30px;
+        }
 
         &.show {
+
+            // --_r : 30px;
+            // @for $i from 1 through 4 {
+            //     & i:nth-child(#{$i}) {
+            //         translate: calc(sin(90deg* #{$i}) * var(--_r)) calc(cos(90deg* #{$i}) * var(--_r));
+            //     }
+            // }
             display: flex;
+
         }
 
         i {
+            // left: 5px;
+            // top: -10px;
+            // position: absolute !important;
             cursor: pointer;
+
         }
     }
 
@@ -279,7 +360,74 @@ header {
     }
     
 }
+#bubble {
+    display: none;
+    position: fixed;
+    background-color: white;
+    font-size: 2em;
+    border-radius: 30px;
+    width: 1.6em;
+    height: 1.6em;
+    justify-content: center;
+    align-items: center;
+    i {
+        
+        color: black !important;
+    }
+}
 
+.menu-bubble {
+    
+    #bubble {
+        display: flex !important;
+
+        >i {
+            position: static !important;
+            display: inline-block !important;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 30px;
+    
+        }
+    }
+
+    #menu-button {
+        display: none;
+    }
+
+    .sub-menu ul li a{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center; 
+    }
+    .bubble-icon {
+        padding: 18px;
+        color: white !important;
+        background-color: green;
+        border-radius: 30px;
+    }
+    
+    .submenu-icon {
+        padding: 18px;
+        color: white !important;
+        background-color: blue;
+        border-radius: 30px;
+        position: relative;
+        &::before {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+        }
+    }
+    // li>div>.bubble-icon:hover ~ .bubble-icon{
+    //         display: none;
+    // }
+            // .submenu-icon & {
+            //     display: none !important;
+            // }
+}
 #menu {
     position: fixed;
     height: calc(100vh - 3.5rem);
@@ -302,25 +450,19 @@ header {
 
         width: 0;
 
-        :not(.submenu-icon, .menu-content, li, .menu-content>li>div, .menu-content>li>div>i, .menu-list, .nav-side-menu), #menu-button{
-            display: none;
-        }
+        // :not(.submenu-icon, .menu-content, li, .menu-content>li>div, .menu-content>li>div>i, .menu-list, .nav-side-menu), #menu-button{
+        //     display: none;
+        // }
 
         i {
-            top: 200px;
-            left: 100px;
             position: fixed;
-            color: red !important;
             z-index: 9999;
         }
 
-        li:not(#menu-favorite) i{
+        li i{
             display: none;
         }
 
-        li#menu-favorite>div>i {
-            display: flex !important;
-        }
 
         li>ul{
             display: flex !important;
@@ -330,10 +472,7 @@ header {
 
                 a{
                     display: flex !important;
-                
-                    i {
-                        display: flex;
-                    }
+            
                 }
             }
         }
@@ -651,8 +790,14 @@ header {
     height: fit-content;
     margin: 0;
     
-    .menu-top & {
-        display: none;
+    .menu-top &, .menu-bubble & {
+        position: fixed;
+        right: 0;
+        top: 0;
+
+        ul {
+        border-bottom-left-radius: 20px;
+        }
     }
 
     .menu-close & {
@@ -708,8 +853,11 @@ header {
     width: 100%;
     height: 30px;
 
-    .menu-top & {
-        display: none;
+    .menu-top &, .menu-bubble & {
+        position: fixed;
+        top: 2px;
+        right: 100px;
+        width: 150px;
     }
 
     .menu-close & {

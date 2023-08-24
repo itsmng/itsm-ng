@@ -6,76 +6,8 @@
 
 {% else %}
 
-<body class={{body_class}} style = "--menu-open-width: {{menu_width['menu-open']}}; --menu-close-width: {{menu_width['menu-close']}};"></body>
-
+<body class={{body_class}} style = "--menu-open-width: {{menu_width['menu-open']}}; --menu-close-width: {{menu_width['menu-close']}};">
 {% endif %}
-<script>
-    function activateMenuBubble(){
-        $("#star").on('mousedown', menuDrag);
-        $("#star").on('click', openMenuBubble);
-    }
-
-    function openMenuBubble(){
-        is_menu_open = $('.bubble-icon').eq(1).css('display') != 'none'; //not the first one its favorite
-        $('.bubble-icon').css('display', is_menu_open ? 'none' : 'flex');
-        $('.submenu-icon').css('display', is_menu_open ? 'none' : 'inline-block');
-        console.log($($('.bubble-icon').eq(2)));
-    }
-
-    function menuDrag(){
-        event.stopPropagation();
-        const menuDragEventHandler = (event) => {menuMove(event, this)}; 
-        window.addEventListener("mousemove", menuDragEventHandler);
-        window.addEventListener("mouseup", (event) => {
-            removeEventListener("mousemove", menuDragEventHandler);
-        });
-    }
-
-    function menuMove(event, element){
-        $('#star').css('left', event.clientX + 'px');
-        $('#star').css('top', event.clientY + 'px');
-        icons = $('.bubble-icon').slice(1);
-        var r = 50;
-        var length = icons.length;
-        var divi = length/4;
-        var ri = Math.PI / 2 / divi;
-        console.log(ri);
-        var x = 0; //Math.sin(Math.pi/2)
-        var y = ri;
-        icons.each( function (i) {
-            console.log(this);
-
-            x = Math.cos(ri * (divi - i)) * r;
-            y = Math.sin(ri * (divi - i )) * r;
-            // console.log(ri *(divi - i ));
-            // console.log('event' , event.clientX);
-            // console.log('x', x);
-            // console.log(event.clientX + x);
-            $(this).css('left', (event.clientX + x) + 'px');
-            $(this).css('top', (event.clientY + y) + 'px');
-            var that = this;
-            console.log(ri * (divi - i ));
-            if (i == 0){
-                console.log(ri * (divi - i ));
-
-                console.log($(this).parent().parent().find('.submenu-icon'));
-                icons1 = $(this).parent().parent().find('.submenu-icon')
-                var r1 = 80;
-                var length1 = icons1.length;
-                var divi1 = length1/2;
-                icons1.each( function (j) {
-                var ri1 = Math.PI / 2 / divi1;
-                x1 = Math.cos(ri1 * (divi1 - j) + (Math.PI/divi)) * r1;
-                y1 = Math.sin(ri1 * (divi1 - j)+  (Math.PI/divi)) * r1;
-
-                $(this).css('left', (event.clientX + x + x1) + 'px');
-                $(this).css('top', (event.clientY + y +100+ + y1) + 'px');
-            });
-        }
-        });
-
-    }
-</script>
 {% if impersonate_banner is defined %}
     {% include impersonate_banner.path with impersonate_banner.args%}
 {% endif %}
@@ -94,101 +26,23 @@
 
 <div id="main-test" class="{{menu_position}}">
     <div id="menu" class="{{menu_small ? 'menu-close' : 'menu-open'}}">
+        <div id="bubble">
+            <i class="fas fa-compass" onclick=""></i>
+        </div>
         <div id="menu-button" onclick="changeMenuState()">
            <i class="fas fa-caret-left"></i>
-            <script>
-            function changeMenuState(){
-                is_menu_close = $('#menu').hasClass('menu-close');
-                $('#menu').toggleClass('menu-close', !is_menu_close);
-                $('#header_top').toggleClass('menu-close', !is_menu_close);
-                if (!is_menu_close){
-                    $('#menu').toggleClass('favorite-mode', false);
-                }
-                $.ajax({
-                    type: "POST",
-                    url: "../ng/db.menuSmall.php",
-                    data: {
-                    small: !is_menu_close,
-                    },
-                });
-                console.log(!is_menu_close);
-            }
-            </script>
         </div>
         <div id="menu-border" onmousedown="resizeMenu()">
-            <script>
-                function resizeMenu(){
-                    is_menu_close = $('#menu').hasClass('menu-close');
-                    width_var = is_menu_close ? "--menu-close-width" : "--menu-open-width";
-                    $('#menu').css('transition', 'none');
-                    $('.main-container').css('transition', 'none');
-                    window.addEventListener("mousemove", changeMenuWidth);
-                    window.addEventListener("mouseup", (event) => {
-                        $('#menu').css('transition', 'width var(--menu-transition-time) ease');
-                        removeEventListener("mousemove", changeMenuWidth);
-                        $.ajax({
-                            type: "POST",
-                            url: "../ng/db.changeMenuSize.php",
-                            data: {
-                                menu : is_menu_close ? "menu-close" : "menu-open",
-                                width: $('body').css(width_var),
-                            },
-                        });
-                    }, { once: true });
-                }
-                function changeMenuWidth(event) {
-                    console.log(event.clientX);
-                    menu_is_right = $('#main-test').hasClass('menu-right');
-                    if (menu_is_right){
-                        $('body').css(width_var,  window.innerWidth - event.clientX + "px")
-                    } else {
-                    $('body').css(width_var, event.clientX + "px")
-                    }
-                }
-            </script>
         </div>
         {% include main_menu.path with main_menu.args %}
         <div class="menu-parameters">
-            <i class="fas fa-arrows-alt" onclick="showMenuPositions()"></i>
+            <i class="fas fa-caret-right" onclick="showMenuPositions()"></i>
             <div class="menu-positions">
-                <i class="fas fa-arrow-left" onclick="changeMenuPosition('menu-left')"></i>
                 <i class="fas fa-arrow-up" onclick="changeMenuPosition('menu-top');"></i>
+                <i class="fas fa-arrow-left" onclick="changeMenuPosition('menu-left')"></i>
                 <i class="fas fa-arrow-right" onclick="changeMenuPosition('menu-right')"></i>
                 <i class="fas fa-ellipsis-h" onclick="changeMenuPosition('menu-bubble'); activateMenuBubble();"></i>
             </div>
-            <script>
-
-                function showMenuPositions(){
-                $('.menu-positions').toggleClass('show');
-                }
-
-                function changeMenuPosition(class_name){
-                    if ($('#main-test').hasClass('menu-top') || class_name == 'menu-top'){
-                        clearMenuOpen();
-                    }
-                    $('.menu-positions').toggleClass('show', false);
-                    $('#main-test').attr("class", class_name);
-                    $.ajax({
-                        type: "POST",
-                        url: "../ng/db.changeMenuPosition.php",
-                        data: {
-                            position: class_name,
-                        },
-                    });
-                }
-
-                function clearMenuOpen(){
-                    menus = $('#menu-content').children('li');
-                    menus.children('ul').removeClass('show');
-                    $.ajax({
-                        type: "POST",
-                        url: "../ng/db.openMenu.php",
-                        data: {
-                        clear: true,
-                        },
-                    });
-                }
-            </script>
         </div>
         <div class="menu-bottom">
             <a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors">

@@ -1962,6 +1962,7 @@ JAVASCRIPT
       echo Html::script("js/bootstrap.bundle.min.js");
       echo Html::script("js/bootstrap-table.min.js");
       echo Html::script("js/bootstrap-table-export.min.js");
+      echo Html::script("ng/ngFunctions.js");
 
       echo "</body></html>";
 
