@@ -7,15 +7,15 @@
 {% for menu_name, data in menu|filter(data => data['show_menu']) %}
 
             <li title="{{data['title']}}" id='menu-{{menu_name}}' class='menu {{data['class']}}' > {# loop.index starts at 1 mettre active bone page #}
-                <div class="{{menu[menu_name]['is_open'] ?: 'collapsed'}} " onclick="openMenu(this, '{{menu_name}}')" data-toggle="collapse" data-target="#submenu-{{menu_name}}">
+                <a class="{{menu[menu_name]['is_open'] ?: 'collapsed'}} " onclick="openMenu(this, '{{menu_name}}')" data-toggle="collapse" data-target="#submenu-{{menu_name}}">
                     <i class="bubble-icon fas {{menu[menu_name]['icon']}}"></i>
-                    <p>{{data['title']}}</p>
-                    {% if menu_name == 'favorite' %}
+                    <span>{{data['title']}}</span>
+                    {# {% if menu_name == 'favorite' %}
                     <div id="menu-favorite-button" onclick="activateFavoriteMode(event)">
                         <i class="fas fa-cog"></i>
                     </div>
-                    {% endif %}
-                </div>
+                    {% endif %} #}
+                </a>
 
 
             
@@ -30,27 +30,22 @@
                 {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
                     {% if val['is_favorite'] %}
 
-                <li id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
-                    <a  href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}}>
-                        <i class='submenu-icon fa-fw {{val['icon']}}'></i><p>{{val['title']}}</p>
+                    <a  href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                        <i class='submenu-icon fa-fw {{val['icon']}}'></i>
+                        <span>{{val['title']}}</span>
+                        <i class="star-icon" onclick="addFavorite(event, this, '{{menu_name}}', '{{sub_menu_name}}')"></i>
                     </a>
-                    <i class="star-icon" onclick="addFavorite(event, this, '{{menu_name}}', '{{sub_menu_name}}')">
-                    </i>
-                </li>
 
                     {% endif %}
                 {% endfor %}
             {% endfor %}
         {% endif %}
         {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
-
-                <li id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show'}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
-                    <a  href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} class="{{val['is_favorite'] ? 'section-favorite'}}">
-                        <i class='submenu-icon fa-fw {{val['icon']}}'></i><p>{{val['title']}}</p>
+                    <a  href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show'}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                        <i class='submenu-icon fa-fw {{val['icon']}}'></i>
+                        <span>{{val['title']}}</span>
+                        <i class="star-icon" onclick="addFavorite(event, this, '{{menu_name}}', '{{sub_menu_name}}')"></i>
                     </a>
-                    <i class="star-icon" onclick="addFavorite(event, this, '{{menu_name}}', '{{sub_menu_name}}')">
-                    </i>
-                </li>
 
         {% endfor %}
 

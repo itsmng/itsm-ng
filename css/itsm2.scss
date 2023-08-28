@@ -3,7 +3,8 @@ body {
     --secondary-color: rgb(17, 0, 255);
     --header-color: rgb(255, 255, 255);
     --secondary-color: rgb(255, 255, 255);
-    --text-color: rgb(255, 255, 255);
+    --primary-text-color: rgb(255, 255, 255);
+    --secondary-text-color: black;
     --header-color: var(--primary-color);
     --menu-text-color: rgb(255, 255, 255);
     --menu-icon-color: rgb(255, 255, 255);
@@ -21,6 +22,8 @@ body {
     --menu-open-width: 11rem;
     --menu-close-width: 5em;
     --menu-transition-time: 0.3s;
+    --preference-icon-color: black;
+    --menu-count: 10; //define in html
     height: 100vh;
 }
 #page{
@@ -62,7 +65,7 @@ div#searchbar {
 
     &:hover .fa-search {
     background-color: var(--primary-color);
-    color: var(--text-color);
+    color: var(--primary-text-color);
     }
 }
 
@@ -491,8 +494,55 @@ header {
     font-size: 1.5em;
     line-height: 1;
     overflow-y: hidden;
-    width: 100%;
+    // width: 100%;
     
+    #menu-favorite.hidden{
+        display: none;
+    }
+
+    li>a, ul>a {
+        display: flex;
+        align-items: center;
+        color: var(--primary-text-color);
+        width: 100%;
+        padding: 5px;
+        padding-right: calc(5px + 1em); //take into account star-icon {position: absolute};
+        font-size: 1em !important;
+        overflow: hidden;
+        box-sizing: border-box;
+        border-radius: 5px;
+        font-size: inherit;
+        font-weight: 200;
+
+        &:not(:last-of-type){
+            margin-bottom: 2px;
+        }
+
+        &.active, &:hover{
+            background-color: var(--menu-hover-color);
+        }
+
+        .menu-close & {
+            :not(.submenu-icon, .bubble-icon){
+                display: none;
+            }
+        }
+        
+        i.submenu-icon, i.bubble-icon {
+            --_size: 1.5em;
+            width: var(--_size);
+            height: var(--_size);
+            margin-right: 5px;
+            // line-height: 1;
+            color: var(--menu-icon-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+    }
+
+
     .menu-top &{
         flex-direction: column;
         overflow-y: visible;
@@ -521,7 +571,7 @@ header {
         overflow-x: scroll;
         scrollbar-width: none; /* Firefox */
         -ms-overflow-style: none;  /* IE 10+ */
-        
+        width: 100%;
         &::-webkit-scrollbar {
             background: transparent; /* Chrome/Safari/Webkit */
             width: 0px;
@@ -543,6 +593,8 @@ header {
             flex-direction: row;
             justify-content: space-evenly;
             align-items: center;
+            margin: 0;
+            padding: 0;
         }
 
         > li {
@@ -557,8 +609,23 @@ header {
             }
 
             .menu-top & {
+                margin-left: 5px;
                 margin-top: 0;
                 margin-bottom: 2px;
+                width: calc(100%/var(--menu-count));
+                align-items: center;
+
+                &:first-child{
+                    margin-left: 5px;
+                }
+
+                >a{
+                    justify-content: center;
+                }
+
+                >ul{
+                    min-width: 15em;
+                }
             }
 
             .menu-close & {
@@ -570,7 +637,7 @@ header {
             
             
             > div {
-                width: 100%;
+                // width: 100%;
                 padding: 5px 10px;
                 display: flex;
                 flex-direction: row;
@@ -584,22 +651,17 @@ header {
                     background-color: var(--menu-hover-color);
                 }
             }
-            p {
-                text-overflow: ellipsis;
-                overflow: hidden;
-                text-align: left;
-                color: var(--menu-text-color);
-            }
             
             i {
-                margin-right: 2px;
-                line-height: 1;
-                color: var(--menu-icon-color);
-                width: 25px;
-                height: 25px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                // margin-right: 2px;
+                // line-height: 1;
+                // color: var(--menu-icon-color);
+                // --_size: 0.7em;
+                // width: var(--_size);
+                // height: var(--_size);
+                // display: flex;
+                // justify-content: center;
+                // align-items: center;
 
                 .menu-close & {
                     margin-right: 0px;
@@ -608,6 +670,7 @@ header {
         }
 
         ul.sub-menu{
+            width: 100%;
             z-index: 100000;
             position: relative;
             top: 0;
@@ -615,7 +678,7 @@ header {
             padding: 0px;
             margin: 0px;
             margin-top: 10px;
-            margin-left: 15px;
+            // margin-left: 15px;
             padding: 5px;
             cursor: pointer;
             border-radius: 5px;
@@ -636,7 +699,7 @@ header {
             }
 
             li {
-                width: 100%;
+                // width: 100%;
                 padding: 5px;
                 padding-right: 0;
                 text-align: left;
@@ -667,19 +730,13 @@ header {
                 a {
                     display: flex;  
                     align-items: center;
-                    width: 100%;
+                    // width: 100%;
                     font-size: inherit !important;
                     color: var(--submenu-text-color);
                     text-align: left;
 
                     .menu-close & {
                         justify-content: center;
-                    }
-
-                    p {
-                        // overflow: hidden;
-                        // text-overflow: ellipsis;
-                        max-width: calc(100% - 4em);
                     }
                     i {
                         margin-right: 3px;
@@ -697,8 +754,17 @@ header {
 
 
     i.star-icon{
-
+        --_size: 1.5em;
         pointer-events: none;
+        position: absolute;
+        right: 0;
+        margin-right: 5px;
+        width: var(--_size);
+        height: var(--_size);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
         &::before {
             color: var(--favorite-color);
             display: none;
@@ -748,12 +814,7 @@ header {
 
 
 .nav-side-menu .section-favorite  i.star-icon::before {
-    display: inline-block;
     font-weight: 900;
-
-    .menu-close & {
-        display: none;
-    }
 }
 
 #submenu-favorite i.star-icon::before {
@@ -789,7 +850,7 @@ header {
 #c_preference {
     height: fit-content;
     margin: 0;
-    
+    font-size: 1.6em;
     .menu-top &, .menu-bubble & {
         position: fixed;
         right: 0;
@@ -804,7 +865,14 @@ header {
         bottom: 9.3em;
     }
 
+    .in-dropdown{
+        background-color: transparent;
 
+
+        a {
+            color: var(--preference-icon-color) !important;
+        }
+    }
     ul {
         background-color: var(--bottom-menu-background-color);
         display: flex;
@@ -813,7 +881,7 @@ header {
         align-items: center;
 
         i {
-            color: var(--bottom-menu-icon-color);
+            color: var(--preference-icon-color) !important;
         }
         
         .menu-close & {
@@ -826,13 +894,23 @@ header {
         }
     }
 
+    .dropdown-item{
+        color: var(--secondary-text-color) !important;
+        background-color: transparent !important;
+    }
+
     a {
+        font-size: inherit !important;
         padding: 5px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        
+        color: var(--secondary-text-color);
+        cursor: pointer;
+        &:hover {
+            text-decoration: none !important;
+        }
         &:hover i::before, &:hover span{
             color: var(--bottom-menu-hover-color) !important;
         }
@@ -1018,7 +1096,7 @@ td
     opacity: 1;
     display: none;
     overflow-x: hidden !important;
-    color: var(--text-color);
+    color: var(--primary-text-color);
 }
 .dropdown-menu.show {
     display: block;
@@ -1079,7 +1157,7 @@ div.chip>p {
     padding: 10px 20px;
     position: relative;
     width: calc(200% - 18px);
-    color: var(--text-color);
+    color: var(--primary-text-color);
     background-color: rgba(255, 0, 0, 0.5);
     border-radius: 5px 5px 20px 20px;
     text-wrap: balance;

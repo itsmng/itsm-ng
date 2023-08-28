@@ -136,9 +136,14 @@ function menuInit(){
     });
 
 }
-function showMenuPositions(){
-$('.menu-positions').toggleClass('show');
-$('.menu-parameters').toggleClass('show');
+function showMenuPositions(state=null){
+    if (state) {
+        $('.menu-positions').toggleClass('show', state);
+        $('.menu-parameters').toggleClass('show', state);
+    } else {
+        $('.menu-positions').toggleClass('show');
+        $('.menu-parameters').toggleClass('show');
+    }
 }
 
 function changeMenuPosition(class_name){
@@ -155,6 +160,7 @@ function changeMenuPosition(class_name){
             position: class_name,
         },
     });
+    showMenuPositions(false);
 }
 
 function clearMenuOpen(){
@@ -197,8 +203,9 @@ function changeMenuWidth(event) {
     }
 }
 
-function changeMenuState(){
-    is_menu_close = $('#menu').hasClass('menu-close');
+function changeMenuState(is_menu_close=null){
+    if (is_menu_close == null){
+        is_menu_close = $('#menu').hasClass('menu-close');}
     $('#menu').toggleClass('menu-close', !is_menu_close);
     $('#header_top').toggleClass('menu-close', !is_menu_close);
     if (!is_menu_close){
@@ -211,34 +218,34 @@ function changeMenuState(){
         small: !is_menu_close,
         },
     });
-    console.log(!is_menu_close);
 }
+function activateFavoriteMode(event, activate=null){
+    event.stopPropagation();
+    if (activate == null){
+        activate = !$('#menu').hasClass('favorite-mode');}
+    $('#menu').toggleClass('favorite-mode', activate);
 
-    function activateFavoriteMode(event){
-        event.stopPropagation();
-        is_favorite_select = $('#menu').hasClass('favorite-mode');
-        $('#menu').toggleClass('favorite-mode', !is_favorite_select);
-
+}
+function openMenu(item, menu_name){
+    if ($('#main-test').hasClass('menu-top')){
+        $('.menu:not(#' + this.id + ')').children('ul').collapse('hide');
+        return;
     }
-    function openMenu(item, menu_name){
-        if ($('#main-test').hasClass('menu-top')){
-            $('.menu:not(#' + this.id + ')').children('ul').collapse('hide');
-            return;
-        }
-        is_menu_open = $(item).hasClass('collapsed');
-        $.ajax({
-            type: "POST",
-            url: "../ng/db.openMenu.php",
-            data: {
-                clear: false,
-                menu_name: menu_name,
-                open: is_menu_open,
-            },
-        });
-    }
+    is_menu_open = $(item).hasClass('collapsed');
+    $.ajax({
+        type: "POST",
+        url: "../ng/db.openMenu.php",
+        data: {
+            clear: false,
+            menu_name: menu_name,
+            open: is_menu_open,
+        },
+    });
+}
 function addFavorite(event, item, menu_name, sub_menu_name){
     console.log(item);
     event.stopPropagation();
+    event.preventDefault();
     ul = document.getElementById('submenu-favorite');
     li = item.parentElement;
     is_menu_favorite = $(li).hasClass('section-favorite');

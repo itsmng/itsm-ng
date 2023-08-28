@@ -7999,6 +7999,8 @@ JAVASCRIPT;
                   }
                }
             }
+         } else {
+            unset($menu[$part]);
          }
       }
 

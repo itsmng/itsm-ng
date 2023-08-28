@@ -1,5 +1,5 @@
-{% macro input(name, value, type = "text", class, id, placeholder, required, autocomplete = "on") %} 
-    <input  class="{{ class }}" id="{{ id }}" type="{{ type }}" name="{{ name }}" value="{{ value|e }}" placeholder="{{ palceholder }}" {{ required ? "required"}} "autocomplete"={{ autocomplete }}/>
+{% macro input(name, value, type = "text", class, id, placeholder, required, autocomplete = "on", checked) %} 
+    <input  class="{{ class }}" id="{{ id }}" type="{{ type }}" name="{{ name }}" value="{{ value|e }}" placeholder="{{ palceholder }}" {{ required ? "required"}} {{checked ? 'checked'}} "autocomplete"="{{ autocomplete }}"/>
 {% endmacro %}
 
 {% macro textarea(name, value, rows = 10, cols = 40) %}
