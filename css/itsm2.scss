@@ -17,13 +17,15 @@ body {
     --bottom-menu-background-color : rgba(58, 1, 12, 0.39);
     --bottom-menu-icon-color: var(--menu-icon-color);
     --logo-image: url("../pics/fd_logo.png");
-    --bottom-menu-hover-color: rgb(69, 190, 21);
+    --bottom-menu-hover-color: #ccc;
     --breadcrumb-current-color: rgb(241, 110, 172);
     --menu-open-width: 11rem;
     --menu-close-width: 5em;
     --menu-transition-time: 0.3s;
-    --preference-icon-color: black;
+    --preference-icon-color: white;
     --menu-count: 10; //define in html
+    --bubble_pos_x: 50%;
+    --bubble_pos_y: 50%;
     height: 100vh;
 }
 #page{
@@ -373,6 +375,8 @@ header {
     height: 1.6em;
     justify-content: center;
     align-items: center;
+    top: var(--bubble_pos_y);
+    left: var(--bubble_pos_x);
     i {
         
         color: black !important;
@@ -456,26 +460,27 @@ header {
         // :not(.submenu-icon, .menu-content, li, .menu-content>li>div, .menu-content>li>div>i, .menu-list, .nav-side-menu), #menu-button{
         //     display: none;
         // }
+        .menu-content{
+            i {
+                position: fixed;
+                z-index: 9999;
+            }
 
-        i {
-            position: fixed;
-            z-index: 9999;
-        }
-
-        li i{
-            display: none;
-        }
+            li i{
+                display: none;
+            }
 
 
-        li>ul{
-            display: flex !important;
-
-            >li{
+            li>ul{
                 display: flex !important;
 
-                a{
+                >li{
                     display: flex !important;
-            
+
+                    a{
+                        display: flex !important;
+                
+                    }
                 }
             }
         }
@@ -512,7 +517,7 @@ header {
         box-sizing: border-box;
         border-radius: 5px;
         font-size: inherit;
-        font-weight: 200;
+        font-weight: 500;
 
         &:not(:last-of-type){
             margin-bottom: 2px;
@@ -860,33 +865,36 @@ header {
         border-bottom-left-radius: 20px;
         }
     }
-
+    
     .menu-close & {
-        bottom: 9.3em;
+        #main-test:not(.menu-top, .menu-bubble) &{
+             >ul>:not(#menu-options-button){
+                display: none;
+            }
+        }
     }
-
     .in-dropdown{
         background-color: transparent;
 
 
-        a {
-            color: var(--preference-icon-color) !important;
+        >a {
+            color: black !important;
         }
     }
-    ul {
+    >ul {
         background-color: var(--bottom-menu-background-color);
         display: flex;
         flex-direction: row-reverse;
         justify-content: space-evenly;
         align-items: center;
 
-        i {
-            color: var(--preference-icon-color) !important;
-        }
+        // i:not(#menu-options){
+        //     color: var(--preference-icon-color) !important;
+        // }
         
-        .menu-close & {
-            flex-direction: column;
-        }
+        // .menu-close & {
+        //     flex-direction: column;
+        // }
 
         li{
             margin: 0;
@@ -911,6 +919,10 @@ header {
         &:hover {
             text-decoration: none !important;
         }
+
+        i {
+            color: var(--bottom-menu-icon-color);
+        }
         &:hover i::before, &:hover span{
             color: var(--bottom-menu-hover-color) !important;
         }
@@ -919,6 +931,27 @@ header {
 
     span {
         margin: 0;
+    }
+}
+
+.divers {
+    display: none;
+    .menu-close & {
+            :not(.menu-top, .menu-bubble) &{
+            display: block;
+        }
+    }
+
+    i {
+        color: black;
+    }
+}
+
+.in-dropdown{
+    display: flex;
+    justify-content: space-evenly;
+    i {
+        color: black !important;
     }
 }
 

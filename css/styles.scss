@@ -24,7 +24,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU General Public License 
  * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
 */
@@ -3210,7 +3210,7 @@ ul#menu {
 
 /* hide menu on small screen */
 @media screen and (max-width: $break_menu) {
-   #c_menu ul#menu, #language_link, #help_link, #myname {
+   #c_menu ul#menu, #language_link, #myname {
       display: none;
    }
 }

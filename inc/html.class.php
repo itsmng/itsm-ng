@@ -1863,6 +1863,37 @@ JAVASCRIPT
              ]
          )->next()['menu_position'];
 
+
+         $DB->queryOrDie(
+            'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_favorite_on longtext'
+         );
+   
+         $twig_vars['menu_favorite_on'] = $DB->request(
+                [
+                    'SELECT' => 'menu_favorite_on',
+                    'FROM'   => 'glpi_users',
+                    'WHERE'  => ['id' => $_SESSION["glpiID"]]
+                ]
+            )->next()['menu_favorite_on'];
+            $twig_vars['menu_favorite_on'] = filter_var($twig_vars['menu_favorite_on'], FILTER_VALIDATE_BOOLEAN);
+
+   $DB->queryOrDie(
+      'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS bubble_pos longtext'
+   );
+
+   $bubble_pos = $DB->request(
+      [
+         'SELECT' => 'bubble_pos',
+         'FROM'   => 'glpi_users',
+         'WHERE'  => ['id' => $_SESSION["glpiID"]]
+      ]
+   );
+
+   $bubble_pos = json_decode($bubble_pos->next()['bubble_pos'], true);
+   $twig_vars['bubble_pos'] = $bubble_pos;
+
+
+
       $DB->queryOrDie(
          'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_small longtext'
       );

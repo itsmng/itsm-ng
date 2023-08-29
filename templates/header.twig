@@ -6,7 +6,7 @@
 
 {% else %}
 
-<body class={{body_class}} style = "--menu-open-width: {{menu_width['menu-open']}}; --menu-close-width: {{menu_width['menu-close']}}; --menu-count: {{menu|length}}">
+<body class={{body_class}} style = "--menu-open-width: {{menu_width['menu-open']}}; --menu-close-width: {{menu_width['menu-close']}}; --menu-count: {{menu|length}}; --bubble_pos_x: {{bubble_pos.x}}; --bubble_pos_y: {{bubble_pos.y}};">
 {% endif %}
 {% if impersonate_banner is defined %}
     {% include impersonate_banner.path with impersonate_banner.args%}
@@ -57,39 +57,43 @@
                         <div class="dropdown-menu dropup">
                             <h6 class="dropdown-header">Menu</h6>
                             <span class="dropdown-item" href="#">Menu collapse : {{input("", "", "checkbox", "form-check-input", "menu-collapse-toggle" ,"", "", "", menu_small ? 'true')}}</span>
+                            <span class="dropdown-item" href="#">Reset menu bubble position : <button type="button" class="btn btn-primary btn-sm" onclick="resetMenuBubblePos()">Reset</button></span>
                             <div class="dropdown-divider"></div>
                             <h6 class="dropdown-header">Menu favorite</h6>
-                            <span class="dropdown-item" href="#">Activate menu favorite : {{input("", "", "checkbox", "form-check-input", "menu-favorite-toggle")}}</span>
+                            <span class="dropdown-item" href="#">Activate menu favorite : {{input("", "", "checkbox", "form-check-input", "menu-favorite-toggle","", "", "", menu_favorite_on ? 'true')}}</span>
                             <span class="dropdown-item" href="#">Activate favorite selection : {{input("", "", "checkbox", "form-check-input", "menu-favorite-selection-toggle")}}</span>
                             <div class="dropdown-divider"></div>
                             <h6 class="dropdown-header">Menu position</h6>
                             <span class="dropdown-item" href="#"><i class="fas fa-arrow-alt-circle-left"></i>Left : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-left", "", "", "", menu_position == 'menu-left' ? 'true')}}</span>
                             <span class="dropdown-item" href="#"><i class="fas fa-arrow-alt-circle-up"></i>Up : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-top", "", "", "", menu_position == 'menu-top' ? 'true')}}</span>
                             <span class="dropdown-item" href="#"><i class="fas fa-arrow-alt-circle-right"></i>Right : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-right", "", "", "", menu_position == 'menu-right' ? 'true')}}</span>
-                            <span class="dropdown-item" href="#"><i class="fas fa-circle"></i>Bubble : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-bubble", "", "", "", menu_position == 'menu-bubble' ? 'true')}}</span>
-                            <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">Divers</h6>
-                            <ul class="in-dropdown">
-                                <a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}} class='fa fa-sign-out-alt'>
-                                    <span class='sr-only'>{{'Logout'|trans}}></span>
-                                </a>
-                                <a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}" class='fa fa-cog'>
-                                    <span class='sr-only'>{{'My settings'|trans}}</span>
-                                {% if username %}
-                                    <span id='myname'>{{username}}</span>
-                                {% endif %}
-                                </a>
-                                {% if can_update %}
-                                <a href='{{root_doc}}/ajax/switchdebug.php' class="fa fa-bug debug{{is_debug_active ? 'on' : 'off'}}" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
-                                    <span class='sr-only'>{{'Change mode'|trans}}</span>
-                                </a>
-                                {% endif %}
-                                <a href="{{sanitizedURL}}" target='_blank' title={{'Help'|trans}} class='fa fa-question'>{# URL::sanitizeURL($url_help_link) ?? #}
-                                    <span class='sr-only'>{{'Help'|trans}}</span>
-                                </a>
-                            </ul>
+                            <span class="dropdown-item" href="#"><i class="fas fa-circle"></i>Bubble : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-bubble", "", "", "", menu_position == 'menu-bubble' ? 'true')}}</span>                            
+                            <div class="divers">
+                                <div class="dropdown-divider"></div>
+                                <h6 class="dropdown-header">Divers</h6>
+                                <ul class="in-dropdown">
+                                    <a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}} class='fa fa-sign-out-alt'>
+                                        <span class='sr-only'>{{'Logout'|trans}}></span>
+                                    </a>
+                                    <a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}" class='fa fa-cog'>
+                                        <span class='sr-only'>{{'My settings'|trans}}</span>
+                                    {% if username %}
+                                        <span id='myname'>{{username}}</span>
+                                    {% endif %}
+                                    </a>
+                                    {% if can_update %}
+                                    <a href='{{root_doc}}/ajax/switchdebug.php' class="fa fa-bug debug{{is_debug_active ? 'on' : 'off'}}" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
+                                        <span class='sr-only'>{{'Change mode'|trans}}</span>
+                                    </a>
+                                    {% endif %}
+                                    <a href="{{sanitizedURL}}" target='_blank' title={{'Help'|trans}} class='fa fa-question'>{# URL::sanitizeURL($url_help_link) ?? #}
+                                        <span class='sr-only'>{{'Help'|trans}}</span>
+                                    </a>
+                                </ul>
+                            </div>
                         </div>
                         <script>
+
                             $('#menu-options').find('.menu-position-bouton').on('change', function(e){
                                 e.stopPropagation();
                                 changeMenuPosition($(this).attr('id'));}
@@ -106,10 +110,6 @@
                                 e.stopPropagation();
                                 activateFavoriteMode(e,this.checked);}
                             );
-
-                            function menuFavoriteEnable(enable=true){
-                                $('#menu-favorite').toggleClass('hidden', !enable);
-                            }
                         </script>
                     </div>
                     <script>

@@ -1,10 +1,8 @@
 hide_icons =  (e) => {
     $('.bubble-icon').css('display', 'none');
-    console.log('hide');
 }
 hide_sub_icons =  (e) => {
     $('.submenu-icon').css('display', 'none');
-    console.log('hide');
 }
 
 function activateMenuBubble(){
@@ -13,11 +11,9 @@ function activateMenuBubble(){
     menuInit();
     hide_icons =  (e) => {
         $('.bubble-icon').css('display', 'none');
-        console.log('hide');
     }
     hide_sub_icons =  (e) => {
         $('.submenu-icon').css('display', 'none');
-        console.log('hide');
     }
     $("#bubble").on('mouseenter', (e) => {
         hide_sub_icons();
@@ -26,7 +22,6 @@ function activateMenuBubble(){
 }
 
 function deactivateMenuBubble(){
-    console.log('efdsf');
     $("#bubble").off('mousedown', menuDrag);
     $("#bubble").off('click', openMenuBubble);
     $('.bubble-icon').css('display', 'flex');
@@ -43,6 +38,29 @@ function menuDrag(){
     window.addEventListener("mousemove", menuDragEventHandler);
     window.addEventListener("mouseup", (event) => {
         removeEventListener("mousemove", menuDragEventHandler);
+        $.ajax({
+            type: "POST",
+            url: "../ng/db.changeBubblePos.php",
+            data: {
+                x: $('#bubble').css('left'),
+                y: $('#bubble').css('top')
+            },
+            
+        });
+    });
+}
+
+function resetMenuBubblePos(){
+    $('#bubble').css('left', 100 + 'px');
+    $('#bubble').css('top', 100 + 'px');
+    $.ajax({
+        type: "POST",
+        url: "../ng/db.changeBubblePos.php",
+        data: {
+            x: $('#bubble').css('left'),
+            y: $('#bubble').css('top')
+        },
+        
     });
 }
 let icon_hover = null;
@@ -94,8 +112,8 @@ function menuInit(){
     hide_icons();
     // $('#bubble').css('left', event.clientX + 'px');
     // $('#bubble').css('top', event.clientY + 'px');
-    X = $('#bubble').offset().left;
-    Y = $('#bubble').offset().top;
+    X = parseInt($('#bubble').css('left').slice(0,-2));
+    Y = parseInt($('#bubble').css('top').slice(0,-2));
     console.log(X, Y);
     icons = $('.bubble-icon');
     r = 50;
@@ -136,6 +154,11 @@ function menuInit(){
     });
 
 }
+
+function clearMenuBubble(){
+    $('.bubble-icon').removeAttr('style');
+    $('.submenu-icon').removeAttr('style');
+}
 function showMenuPositions(state=null){
     if (state) {
         $('.menu-positions').toggleClass('show', state);
@@ -147,9 +170,21 @@ function showMenuPositions(state=null){
 }
 
 function changeMenuPosition(class_name){
-    if ($('#main-test').hasClass('menu-top') || class_name == 'menu-top' || $('#main-test').hasClass('menu-bubble')){
+    if ($('#main-test').hasClass('menu-top') || class_name == 'menu-top'){
         clearMenuOpen();
         deactivateMenuBubble();
+        clearMenuBubble();
+
+    }
+
+    if ($('#main-test').hasClass('menu-bubble')) {
+        clearMenuOpen();
+        clearMenuBubble();
+    }
+    
+    if (class_name == 'menu-bubble'){
+        activateMenuBubble();
+        menuInit();
     }
     $('.menu-positions').toggleClass('show', false);
     $('#main-test').attr("class", class_name);
@@ -161,6 +196,17 @@ function changeMenuPosition(class_name){
         },
     });
     showMenuPositions(false);
+}
+
+function menuFavoriteEnable(enable=true){
+    $('#menu-favorite').toggleClass('hidden', !enable);
+    $.ajax({
+        type: "POST",
+        url: "../ng/db.activateMenuFavorite.php",
+        data: {
+            menu_favorite_on: enable,
+        },
+    });
 }
 
 function clearMenuOpen(){
@@ -243,7 +289,6 @@ function openMenu(item, menu_name){
     });
 }
 function addFavorite(event, item, menu_name, sub_menu_name){
-    console.log(item);
     event.stopPropagation();
     event.preventDefault();
     ul = document.getElementById('submenu-favorite');
@@ -253,13 +298,9 @@ function addFavorite(event, item, menu_name, sub_menu_name){
     if(is_menu_favorite){ //removing favorite
         if (li.parentElement.id == "submenu-favorite"){ //check if user clicked the star in the favorite menu or in other menu
             $(document).find('#' + li.id.replace('favorite-','')).toggleClass('section-favorite', false);
-            console.log($(document).find('#' + li.id.replace('favorite-','')));
             li.remove();
         }
         else {
-            // console.log(ul);
-            // console.log($(ul).children('#favorite-' + li.id));
-            // console.log('#favorite-' + li.id);
             $(ul).children('#favorite-' + li.id).remove();
             li.remove();
         }
