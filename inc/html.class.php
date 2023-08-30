@@ -7478,7 +7478,6 @@ JAVASCRIPT;
     *
     * @param boolean $full    True for full interface, false otherwise
     * @param array   $options Option
-    * @deprecated    use getMainMenu with Twig instead
     * @return void
     */
     private static function displayMainMenu($full, $options = [])
@@ -7759,7 +7758,6 @@ JAVASCRIPT;
  
                 $links = $menu[$sector]['content'][$item]['links'];
              }
- 
              // Add item
              echo "<li class='icons_block'>";
              echo "<span>";
@@ -8061,11 +8059,46 @@ JAVASCRIPT;
          // Title
          $show_page = isset($menu[$sector]['content'][$item]['page']);
       }
+
+      //actions
+      $links = [];
+      // Item with Option case
+      if (
+         !empty($option)
+         && isset($menu[$sector]['content'][$item]['options'][$option]['links'])
+         && is_array($menu[$sector]['content'][$item]['options'][$option]['links'])
+      ) {
+         $links = $menu[$sector]['content'][$item]['options'][$option]['links'];
+      } else if (
+         isset($menu[$sector]['content'][$item]['links'])
+         && is_array($menu[$sector]['content'][$item]['links'])
+      ) {
+         // Without option case : only item lin
+         $links = $menu[$sector]['content'][$item]['links'];
+      }
+      $twig_vars = [];
+      if (Session::haveRightsOr('ticketvalidation', TicketValidation::getValidateRights())) {
+         $opt                              = [];
+         $opt['reset']                     = 'reset';
+         $opt['criteria'][0]['field']      = 55; // validation status
+         $opt['criteria'][0]['searchtype'] = 'equals';
+         $opt['criteria'][0]['value']      = TicketValidation::WAITING;
+         $opt['criteria'][0]['link']       = 'AND';
+
+         $opt['criteria'][1]['field']      = 59; // validation aprobator
+         $opt['criteria'][1]['searchtype'] = 'equals';
+         $opt['criteria'][1]['value']      = Session::getLoginUserID();
+         $opt['criteria'][1]['link']       = 'AND';
+
+         $twig_vars['url_validate'] = $CFG_GLPI["root_doc"] . "/front/ticket.php?" . Toolbox::append_params($opt, '&amp;');
+         $twig_vars['opt'] = $opt;
+      }
       $template_path = 'menu.twig';
-      $twig_vars = [ "root_doc" => $CFG_GLPI['root_doc'], "menu" => $menu, 
-                     "mainurl" => $mainurl, "show_page" => $show_page, 
-                     "link" => $link, "item" => $item, 
-                     "option" => $option, "sector"=> $sector];
+      $twig_vars += [ "root_doc" => $CFG_GLPI['root_doc'], "menu" => $menu, 
+      "mainurl" => $mainurl, "show_page" => $show_page, 
+      "link" => $link, "item" => $item, 
+      "option" => $option, "sector"=> $sector];
+      $twig_vars['links'] = $links;
 
       // TODO: add profile selector
       // Profile selector

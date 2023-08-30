@@ -7,7 +7,8 @@ hide_sub_icons =  (e) => {
 
 function activateMenuBubble(){
     $("#bubble").on('mousedown', menuDrag);
-    $("#bubble").on('click', openMenuBubble);
+    $("#compass-menu").on('click', openMenuBubble);
+    $("#star-menu").on('click', openMenuBubbleFavorite);
     menuInit();
     hide_icons =  (e) => {
         $('.bubble-icon').css('display', 'none');
@@ -30,6 +31,10 @@ function deactivateMenuBubble(){
 function openMenuBubble(){
     is_menu_open = $('.bubble-icon').eq(1).css('display') != 'none'; //not the first one its favorite
     $('.bubble-icon').css('display', is_menu_open ? 'none' : 'flex');
+}
+function openMenuBubbleFavorite(){
+    is_menu_open = $('.bubble-icon').eq(1).css('display') != 'none'; //not the first one its favorite
+    $('#menu-favorite').find('.submenu-icon').css('display', is_menu_open ? 'none' : 'flex');
 }
 
 function menuDrag(){
@@ -64,21 +69,26 @@ function resetMenuBubblePos(){
     });
 }
 let icon_hover = null;
-function menuMove(event, element){
-    $('#bubble').css('left', event.clientX + 'px');
-    $('#bubble').css('top', event.clientY + 'px');
-    icons = $('.bubble-icon');
+function menuMove(event, element, Y=null, X=null){
+    if (Y == null){
+        Y = event.clientY;
+        X = event.clientX;
+    }
+    $('#bubble').css('left', X + 'px');
+    $('#bubble').css('top', Y + 'px');
+    icons = $('.bubble-icon').slice();
     r = 50;
     length = icons.length;
-    delta = 2*Math.PI/(length); // full circle
+    delta = 2*Math.PI/(length -1); // full circle
     right_to_up = Math.PI/2;
+    mini = 15;
     icons.each( function (i) {
         rad = delta * i - right_to_up;
-        x = Math.cos(rad) * r;
+        x = Math.cos(rad) * r - mini;
         y = Math.sin(rad) * r;
-        $(this).css('left', (event.clientX + x) + 'px');
-        $(this).css('top', (event.clientY + y) + 'px');
-        if (i == 1 || i == 4 || i == i){
+        $(this).css('left', (X + x) + 'px');
+        $(this).css('top', (Y + y) + 'px');
+        if (true){
             sub_icons = $(this).parent().parent().find('.submenu-icon');
             show_sub_icons = (e) => {
                 if (icon_hover){
@@ -98,11 +108,25 @@ function menuMove(event, element){
                 sub_rad = delta_sub * j - right_to_axis;
                 sub_x = Math.cos(sub_rad + rad) * sub_r;
                 sub_y = Math.sin(sub_rad + rad) * sub_r;
-                $(this).css('left', (event.clientX + sub_x + x) + 'px');
-                $(this).css('top', (event.clientY  + sub_y + y) + 'px');
+                $(this).css('left', (X + sub_x + x) + 'px');
+                $(this).css('top', (Y  + sub_y + y) + 'px');
+                $(this).css('background-position', ((100/sub_length)*j) + '%');
             });
             
         }
+    });
+    icons = $('#menu-favorite').find('.submenu-icon');
+    r = 50;
+    length = icons.length;
+    delta = 2*Math.PI/(length); // full circle
+    right_to_up = Math.PI/2;
+    mini = -15;
+    icons.each( function (i) {
+        rad = delta * i - right_to_up;
+        x = Math.cos(rad) * r - mini;
+        y = Math.sin(rad) * r;
+        $(this).css('left', (event.clientX + x) + 'px');
+        $(this).css('top', (event.clientY + y) + 'px');
     });
 
 }
@@ -126,6 +150,7 @@ function menuInit(){
         y = Math.sin(rad) * r;
         $(this).css('left', (X + x) + 'px');
         $(this).css('top', (Y + y) + 'px');
+        $(this).css('background-position', ((100/length)*i) + '%');
         if (i == 1 || i == 4 || i == i){
             sub_icons = $(this).parent().parent().find('.submenu-icon');
             show_sub_icons = (e) => {
@@ -133,7 +158,6 @@ function menuInit(){
                     icon_hover.parent().parent().find('.submenu-icon').css('display', 'none');
                 }
                 icon_hover = $(this);
-                // $(this).parent().parent().siblings().find('.bubble-icon').css('color', 'rgba(0, 0, 255, 0.3)');
                 $(this).parent().parent().find('.submenu-icon').css('display', 'inline-block');
 
             }
@@ -148,6 +172,8 @@ function menuInit(){
                 sub_y = Math.sin(sub_rad + rad) * sub_r;
                 $(this).css('left', (X + sub_x + x) + 'px');
                 $(this).css('top', (Y  + sub_y + y) + 'px');
+                $(this).css('background-position', ((100/sub_length)*j) + '%');
+
             });
             
         }

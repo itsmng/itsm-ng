@@ -1,0 +1,79 @@
+<li class='icons_block'>
+    <span>
+{% if links['add'] is defined %}
+        <a href='{{root_doc}}{{links['add']}}' class='pointer'title={{'Add'|trans}}>
+            <i class='fa fa-plus'></i>
+            <span class='sr-only'>{{'Add'|trans}}</span>
+        </a>
+{% else %}
+        <a href='#' class='pointer disabled' title={{'Add is disabled'|trans}}>
+            <i class='fa fa-plus'></i>
+            <span class='sr-only'>{{'Add is disabled'|trans}}</span>
+        </a>
+{% endif %} 
+    </span>
+    <span>
+{% if links['search'] is defined %}
+        <a href='{{root_doc}}{{links['search']}}' class='pointer' title="{{'Search'|trans}}">
+            <i class='fa fa-search'></i>
+            <span class='sr-only'>{{'Search'|trans}}</span>
+        </a>
+{% else %}
+        <a href='#' class='pointer disabled' title='{{"Search is disabled"|trans}}'>
+            <i class='fa fa-search'></i>
+            <span class='sr-only'>{{'Search is disabled'|trans}}</span>
+        </a>
+{% endif %}
+    </span>
+             {# if (count($links) > 0) { #}
+{% for key,val in links %}
+    {% if key  == "template" %}
+    <span>
+        <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Manage templates...'|trans}}">
+            <i class="pointer fa fa-layer-group"></i>
+        </a>
+    </span>
+    {% elseif key == "showall" %}
+    <span>
+        <img src="{{root_doc}}/pics/menu_showall.png" url="{{root_doc}}{{val}}" alt="{{'Show all'|trans}}">
+    </span>
+    {% elseif key == "summary" %}
+    <span>
+        <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Summary'|trans}}">
+            <i class="pointer fas fa-stream"></i>
+        </a>
+    </span>
+    {% elseif key == "summary_kanban" %}
+    <span>
+        <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Global Kanban'|trans}}">
+            <i class="pointer fas fa-columns"></i>
+        </a>
+    </span>
+    {% elseif key == "config" %}
+    <span>
+        <img src="{{root_doc}}/pics/menu_showall.png" url="{{root_doc}}{{val}}" alt="{{'Setup'|trans}}">
+    </span>
+    {# {% else %}
+    <span>
+        <a class="pointer" href="{{root_doc}}{{val}}"></a>
+    </span> #}
+    {% endif %}
+{% endfor %}
+</li>
+
+{% if show_ticket %}
+<span>
+    <a class='pointer' href='{{root_doc}}/front/helpdesk.public.php?create_ticket=1' title={{'Add'|trans}}>
+        <i class='fa fa-plus'></i>
+        <span class='sr-only'>{{'Add'|trans}}</span>
+    </a>
+</span>
+{% endif %}
+
+{% if opt is defined %}
+<span>
+    <a href="{{url_validate}}">
+        <img title={{'Ticket waiting for your approval'|trans}} alt={{'Ticket waiting for your approval'|trans}} src='{{root_doc}}/pics/menu_showall.png' class='pointer'>
+    </a>
+</span>
+{% endif %}

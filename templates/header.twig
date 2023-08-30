@@ -27,7 +27,8 @@
 <div id="main-test" class="{{menu_position}}">
     <div id="menu" class="{{menu_small ? 'menu-close' : 'menu-open'}}">
         <div id="bubble">
-            <i class="fas fa-compass" onclick=""></i>
+            <i id="compass-menu" class="fas fa-compass"></i>
+            <i id="star-menu" class="fas fa-star"></i>
         </div>
         {# <div id="menu-button" onclick="changeMenuState()">
            <i class="fas fa-caret-left"></i>
@@ -55,19 +56,19 @@
                     </a>
                     <div id="menu-options" class="dropup">
                         <div class="dropdown-menu dropup">
-                            <h6 class="dropdown-header">Menu</h6>
-                            <span class="dropdown-item" href="#">Menu collapse : {{input("", "", "checkbox", "form-check-input", "menu-collapse-toggle" ,"", "", "", menu_small ? 'true')}}</span>
-                            <span class="dropdown-item" href="#">Reset menu bubble position : <button type="button" class="btn btn-primary btn-sm" onclick="resetMenuBubblePos()">Reset</button></span>
+                            <h6 class="dropdown-header">{{'Menu'|trans}}</h6>
+                            <span class="dropdown-item" href="#">{{'Menu collapse'|trans}} : {{input("", "", "checkbox", "form-check-input", "menu-collapse-toggle" ,"", "", "", menu_small ? 'true')}}</span>
+                            <span class="dropdown-item" href="#">{{'Reset menu bubble position'|trans}} : <button type="button" class="btn btn-primary btn-sm" onclick="resetMenuBubblePos()">Reset</button></span>
                             <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">Menu favorite</h6>
-                            <span class="dropdown-item" href="#">Activate menu favorite : {{input("", "", "checkbox", "form-check-input", "menu-favorite-toggle","", "", "", menu_favorite_on ? 'true')}}</span>
-                            <span class="dropdown-item" href="#">Activate favorite selection : {{input("", "", "checkbox", "form-check-input", "menu-favorite-selection-toggle")}}</span>
+                            <h6 class="dropdown-header">{{'Menu favorite'|trans}}</h6>
+                            <span class="dropdown-item" href="#">{{'Activate menu favorite'|trans}} : {{input("", "", "checkbox", "form-check-input", "menu-favorite-toggle","", "", "", menu_favorite_on ? 'true')}}</span>
+                            <span class="dropdown-item" href="#">{{'Activate favorite selection'|trans}} : {{input("", "", "checkbox", "form-check-input", "menu-favorite-selection-toggle")}}</span>
                             <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">Menu position</h6>
-                            <span class="dropdown-item" href="#"><i class="fas fa-arrow-alt-circle-left"></i>Left : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-left", "", "", "", menu_position == 'menu-left' ? 'true')}}</span>
-                            <span class="dropdown-item" href="#"><i class="fas fa-arrow-alt-circle-up"></i>Up : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-top", "", "", "", menu_position == 'menu-top' ? 'true')}}</span>
-                            <span class="dropdown-item" href="#"><i class="fas fa-arrow-alt-circle-right"></i>Right : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-right", "", "", "", menu_position == 'menu-right' ? 'true')}}</span>
-                            <span class="dropdown-item" href="#"><i class="fas fa-circle"></i>Bubble : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-bubble", "", "", "", menu_position == 'menu-bubble' ? 'true')}}</span>                            
+                            <h6 class="dropdown-header">{{'Menu position'|trans}}</h6>
+                            <span class="dropdown-item" href="#"><i class="fas fa-arrow-alt-circle-left"></i>{{'Left'|trans}} : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-left", "", "", "", menu_position == 'menu-left' ? 'true')}}</span>
+                            <span class="dropdown-item" href="#"><i class="fas fa-arrow-alt-circle-up"></i>{{'Up'|trans}} : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-top", "", "", "", menu_position == 'menu-top' ? 'true')}}</span>
+                            <span class="dropdown-item" href="#"><i class="fas fa-arrow-alt-circle-right"></i>{{'Right'|trans}} : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-right", "", "", "", menu_position == 'menu-right' ? 'true')}}</span>
+                            <span class="dropdown-item" href="#"><i class="fas fa-circle"></i>{{'Bubble'|trans}} : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-bubble", "", "", "", menu_position == 'menu-bubble' ? 'true')}}</span>                            
                             <div class="divers">
                                 <div class="dropdown-divider"></div>
                                 <h6 class="dropdown-header">Divers</h6>
@@ -177,6 +178,7 @@
             {% endif %}         
         
         {% endif %}
+        {% include "actions.twig" with {'links': links, 'root_doc':root_doc} %}
         </ul>
     </div>
         <main role='main' id='page'>

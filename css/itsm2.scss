@@ -18,7 +18,7 @@ body {
     --bottom-menu-icon-color: var(--menu-icon-color);
     --logo-image: url("../pics/fd_logo.png");
     --bottom-menu-hover-color: #ccc;
-    --breadcrumb-current-color: rgb(241, 110, 172);
+    --breadcrumb-current-color: #F5B7B1;
     --menu-open-width: 11rem;
     --menu-close-width: 5em;
     --menu-transition-time: 0.3s;
@@ -368,8 +368,7 @@ header {
 #bubble {
     display: none;
     position: fixed;
-    background-color: white;
-    font-size: 2em;
+    font-size: 1.6em;
     border-radius: 30px;
     width: 1.6em;
     height: 1.6em;
@@ -377,25 +376,47 @@ header {
     align-items: center;
     top: var(--bubble_pos_y);
     left: var(--bubble_pos_x);
-    i {
-        
-        color: black !important;
+    --_padding: 10px;
+    --_color: white!important;
+    --_border-radius: 50%;
+    --_close: -38%;
+    --_background-color: var(--primary-color);
+    --_uncenter: 3px;
+    >i:first-child {
+        right: var(--_close);
+        position: relative !important;
+        display: inline-block !important;
+        cursor: pointer;
+        padding: var(--_padding);
+        border-radius: var(--_border-radius);
+        color: var(--_color);
+        background: linear-gradient(90deg,var(--_background-color) 75%, transparent 75%);
+    
+        &::before{
+            position: relative;
+            right: var(--_uncenter);
+        }
+    }
+
+    >i:nth-child(2) {
+        color: yellow;
+        left: var(--_close);
+        position: relative !important;
+        padding: var(--_padding);
+        border-radius: var(--_border-radius);
+        background: linear-gradient(-90deg, var(--_background-color) 75%, transparent 75%);
+        cursor: pointer;
+
+        &::before{
+            position: relative;
+            left: var(--_uncenter);
+        }
     }
 }
 
 .menu-bubble {
-    
     #bubble {
         display: flex !important;
-
-        >i {
-            position: static !important;
-            display: inline-block !important;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 30px;
-    
-        }
     }
 
     #menu-button {
@@ -409,16 +430,22 @@ header {
         align-items: center; 
     }
     .bubble-icon {
-        padding: 18px;
-        color: white !important;
-        background-color: green;
+        --_padding: 18px;
+        --_color: white !important;
+        padding: var(--_padding);
+        color: var(--_color);
+        background: linear-gradient(90deg, rgba(255,0,0) 0%, rgba(255,255,0) 20%, rgba(0,255,0) 40%, rgba(0,255,255) 60%, rgba(0,0,255) 80%, rgba(255,0,255) 100%);
+        background-position-x: 10%;
+        background-size: 100000%;
         border-radius: 30px;
     }
     
     .submenu-icon {
         padding: 18px;
         color: white !important;
-        background-color: blue;
+        background: linear-gradient(90deg, rgba(123,8,29,1) 0%, rgba(118,118,119,1) 50%, rgba(123,8,29,1) 100%);
+                background-position-x: 10%;
+        background-size: 10000%;
         border-radius: 30px;
         position: relative;
         &::before {
@@ -1019,7 +1046,7 @@ header {
 } */
 #c_ssmenu2 {
     margin-left: 70px;
-    & ul li:last-child {
+    & ul li:nth-of-type(-1) {
         background-color: var(--breadcrumb-current-color);
         
         &::before{
