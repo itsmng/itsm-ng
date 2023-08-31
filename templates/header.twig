@@ -30,35 +30,23 @@
             <i id="compass-menu" class="fas fa-compass"></i>
             <i id="star-menu" class="fas fa-star"></i>
         </div>
-        {# <div id="menu-button" onclick="changeMenuState()">
-           <i class="fas fa-caret-left"></i>
-        </div> #}
         <div id="menu-border" onmousedown="resizeMenu()">
         </div>
         {% include main_menu.path with main_menu.args %}
-        {# <div class="menu-parameters">
-            <i class="fas fa-caret-right" onclick="showMenuPositions()"></i>
-            <div class="menu-positions">
-                <i class="fas fa-arrow-up" onclick="changeMenuPosition('menu-top');"></i>
-                <i class="fas fa-arrow-left" onclick="changeMenuPosition('menu-left')"></i>
-                <i class="fas fa-arrow-right" onclick="changeMenuPosition('menu-right')"></i>
-                <i class="fas fa-ellipsis-h" onclick="changeMenuPosition('menu-bubble'); activateMenuBubble();"></i>
-            </div>
-        </div> #}
         <div class="menu-bottom">
             <a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors">
             </a>
             <div id='c_preference' >
             <ul>
-                <li id='menu-options-button' class="dropdown dropup"> {# URL::sanitizeURL($url_help_link) ?? #}
-                    <a title={{'Options'|trans}} onclick="showMenuOptions()" class="" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li id='menu-options' class="dropdown dropup"> {# URL::sanitizeURL($url_help_link) ?? #}
+                    <a id='menu-options-button' title={{'Options'|trans}} class="" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-sort-amount-down"></i>
                     </a>
                     <div id="menu-options" class="dropup">
                         <div class="dropdown-menu dropup">
                             <h6 class="dropdown-header">{{'Menu'|trans}}</h6>
                             <span class="dropdown-item" href="#">{{'Menu collapse'|trans}} : {{input("", "", "checkbox", "form-check-input", "menu-collapse-toggle" ,"", "", "", menu_small ? 'true')}}</span>
-                            <span class="dropdown-item" href="#">{{'Reset menu bubble position'|trans}} : <button type="button" class="btn btn-primary btn-sm" onclick="resetMenuBubblePos()">Reset</button></span>
+                            <span class="dropdown-item" href="#">{{'Reset menu bubble position'|trans}} : <button id"reset-bubble-button" type="button" class="btn btn-primary btn-sm">Reset</button></span>
                             <div class="dropdown-divider"></div>
                             <h6 class="dropdown-header">{{'Menu favorite'|trans}}</h6>
                             <span class="dropdown-item" href="#">{{'Activate menu favorite'|trans}} : {{input("", "", "checkbox", "form-check-input", "menu-favorite-toggle","", "", "", menu_favorite_on ? 'true')}}</span>
@@ -93,32 +81,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <script>
-
-                            $('#menu-options').find('.menu-position-bouton').on('change', function(e){
-                                e.stopPropagation();
-                                changeMenuPosition($(this).attr('id'));}
-                            );
-                            $('#menu-options').find('#menu-collapse-toggle').on('change', function(e){
-                                e.stopPropagation();
-                                changeMenuState(!this.checked);}
-                            );
-                            $('#menu-options').find('#menu-favorite-toggle').on('change', function(e){
-                                e.stopPropagation();
-                                menuFavoriteEnable(this.checked);}
-                            );
-                            $('#menu-options').find('#menu-favorite-selection-toggle').on('change', function(e){
-                                e.stopPropagation();
-                                activateFavoriteMode(e,this.checked);}
-                            );
-                        </script>
                     </div>
-                    <script>
-                    function showMenuOptions(){
-                        $('#menu-options').toggleClass('show');
-                    }
-                    </script>
-                </li>
                 <li id='deconnexion'>
                     <a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}} class='fa fa-sign-out-alt'>
                         <span class='sr-only'>{{'Logout'|trans}}></span>

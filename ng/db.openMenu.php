@@ -5,10 +5,6 @@ include ('../inc/includes.php');
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
-$DB->queryOrDie(
-    'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_open longtext'
-);
-
 if (filter_var($_POST['clear'], FILTER_VALIDATE_BOOLEAN)) {
     $menu_open = json_encode([]);
     $DB->updateOrInsert('glpi_users', ['menu_open' => $menu_open], ['id' => $_SESSION['glpiID']]);
