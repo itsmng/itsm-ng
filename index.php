@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL ^E_DEPRECATED);
 // Check PHP version not to have trouble
 // Need to be the very fist step before any include
 if (version_compare(PHP_VERSION, '7.2.0') < 0) {
@@ -11,7 +8,7 @@ if (version_compare(PHP_VERSION, '7.2.0') < 0) {
 define('GLPI_ROOT', __DIR__);
 include (GLPI_ROOT . "/inc/based_config.php");
 
-require_once GLPI_ROOT . "/ng/twig.function.php";
+require_once GLPI_ROOT . "/ng/twig.class.php";
 $twig = Twig::load(GLPI_ROOT . "/templates", false);
 
 define('DO_NOT_CHECK_HTTP_REFERER', 1);
@@ -115,7 +112,6 @@ if (GLPI_DEMO_MODE) {
 // Add dropdown for auth (local, LDAPxxx, LDAPyyy, imap...)
 if ($CFG_GLPI['display_login_source']) {
     $twig_vars["display_login_source"] = true;
-    require_once GLPI_ROOT . "/ng/auth.class.php";
     $twig_vars["auth_dropdown"] = Auth::dropdownLogin(); // TODO : rewrite func for TWIG
 }
 

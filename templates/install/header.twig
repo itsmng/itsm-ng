@@ -7,6 +7,7 @@
     <meta http-equiv='Content-Style-Type' content='text/css'> 
 {% for array in header_data[:-1] %}
     {% for e in array %}
+    {# add raw html from install.php #}
     {{e|raw}}
     {% endfor %}
 {% endfor %}    

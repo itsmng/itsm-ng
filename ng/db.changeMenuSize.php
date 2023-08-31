@@ -5,10 +5,6 @@ include ('../inc/includes.php');
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
-file_put_contents('./test.txt', $_POST['menu']);
-$DB->queryOrDie(
-    'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_width longtext'
-);
 
 $menu_width = $DB->request(
     [

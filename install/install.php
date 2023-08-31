@@ -15,7 +15,7 @@ require_once '../vendor/autoload.php';
 use Glpi\System\RequirementsManager;
 
 require_once GLPI_ROOT . "/ng/languages/language.class.php";
-require_once GLPI_ROOT . "/ng/twig.function.php";
+require_once GLPI_ROOT . "/ng/twig.class.php";
 $twig = Twig::load(GLPI_ROOT . "/templates", false);
 
 //allow previous page action
@@ -39,7 +39,6 @@ $header_data = [
         Html::css('css/bootstrap-select.min.css'),
         Html::css('css/bootstrap-table.min.css'),
         Html::css('public/lib/base.css'),
-        Html::css("css/font-awesome.min.css"),
         Html::css("css/bootstrap.min.css"),
         Html::css("css/style_install.css"),
         ]

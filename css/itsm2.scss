@@ -797,6 +797,7 @@ header {
         justify-content: center;
         align-items: center;
         flex-shrink: 0;
+        cursor: url("../ng/pics/star.png"), auto;
         &::before {
             color: var(--favorite-color);
             display: none;
@@ -895,7 +896,7 @@ header {
     
     .menu-close & {
         #main-test:not(.menu-top, .menu-bubble) &{
-             >ul>:not(#menu-options-button){
+             >ul>:not(#menu-options){
                 display: none;
             }
         }
@@ -914,14 +915,6 @@ header {
         flex-direction: row-reverse;
         justify-content: space-evenly;
         align-items: center;
-
-        // i:not(#menu-options){
-        //     color: var(--preference-icon-color) !important;
-        // }
-        
-        // .menu-close & {
-        //     flex-direction: column;
-        // }
 
         li{
             margin: 0;

@@ -1805,6 +1805,7 @@ JAVASCRIPT
    static function header($title, $url = '', $sector = "none", $item = "none", $option = "")
    {
       global $CFG_GLPI, $HEADER_LOADED, $DB;
+
       // If in modal : display popHeader
       if (isset($_REQUEST['_in_modal']) && $_REQUEST['_in_modal']) {
          return self::popHeader($title, $url, false, $sector, $item, $option);
@@ -1831,10 +1832,10 @@ JAVASCRIPT
          }
       }
       
-      $twig_vars['body_class'] = $body_class;
       // Body
+      $twig_vars['body_class'] = $body_class;
       $twig_vars['root_doc'] = $CFG_GLPI['root_doc'];
-      $impersonate_banner = Html::displayImpersonateBanner();
+      $impersonate_banner = Html::getImpersonateBanner();
       if (!empty($impersonate_banner)) {
          $twig_vars += ["impersonate_banner" => $impersonate_banner];
       }
@@ -1851,52 +1852,32 @@ JAVASCRIPT
       $twig_vars["ITSM_YEAR"] = ITSM_YEAR;
       $twig_vars['is_slave'] = $DB->isSlave() && !$DB->first_connection;
 
-      $DB->queryOrDie(
-         'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_position longtext'
-      );
-
       $twig_vars['menu_position'] = $DB->request(
              [
                  'SELECT' => 'menu_position',
                  'FROM'   => 'glpi_users',
                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
              ]
-         )->next()['menu_position'];
-
-
-         $DB->queryOrDie(
-            'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_favorite_on longtext'
-         );
+      )->next()['menu_position'];
    
-         $twig_vars['menu_favorite_on'] = $DB->request(
-                [
-                    'SELECT' => 'menu_favorite_on',
-                    'FROM'   => 'glpi_users',
-                    'WHERE'  => ['id' => $_SESSION["glpiID"]]
-                ]
-            )->next()['menu_favorite_on'];
-            $twig_vars['menu_favorite_on'] = filter_var($twig_vars['menu_favorite_on'], FILTER_VALIDATE_BOOLEAN);
+      $twig_vars['menu_favorite_on'] = $DB->request(
+               [
+                  'SELECT' => 'menu_favorite_on',
+                  'FROM'   => 'glpi_users',
+                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
+               ]
+         )->next()['menu_favorite_on'];
+      $twig_vars['menu_favorite_on'] = filter_var($twig_vars['menu_favorite_on'], FILTER_VALIDATE_BOOLEAN);
 
-   $DB->queryOrDie(
-      'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS bubble_pos longtext'
-   );
-
-   $bubble_pos = $DB->request(
-      [
-         'SELECT' => 'bubble_pos',
-         'FROM'   => 'glpi_users',
-         'WHERE'  => ['id' => $_SESSION["glpiID"]]
-      ]
-   );
-
-   $bubble_pos = json_decode($bubble_pos->next()['bubble_pos'], true);
-   $twig_vars['bubble_pos'] = $bubble_pos;
-
-
-
-      $DB->queryOrDie(
-         'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_small longtext'
+      $bubble_pos = $DB->request(
+         [
+            'SELECT' => 'bubble_pos',
+            'FROM'   => 'glpi_users',
+            'WHERE'  => ['id' => $_SESSION["glpiID"]]
+         ]
       );
+      $bubble_pos = json_decode($bubble_pos->next()['bubble_pos'], true);
+      $twig_vars['bubble_pos'] = $bubble_pos;
 
       $twig_vars['menu_small'] = $DB->request(
                [
@@ -1906,10 +1887,6 @@ JAVASCRIPT
                ]
          )->next()['menu_small'];
       $twig_vars['menu_small'] = filter_var($twig_vars['menu_small'], FILTER_VALIDATE_BOOLEAN);
-
-      $DB->queryOrDie(
-         'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_width longtext'
-      );
 
       $menu_width = $DB->request(
                [
@@ -1921,7 +1898,8 @@ JAVASCRIPT
 
       $menu_width = json_decode($menu_width->next()['menu_width'], true);
       $twig_vars['menu_width'] = $menu_width;
-      require_once GLPI_ROOT . "/ng/twig.function.php";
+
+      require_once GLPI_ROOT . "/ng/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
       try {
          echo $twig->render('header.twig',  $twig_vars );
@@ -1954,6 +1932,7 @@ JAVASCRIPT
       $FOOTER_LOADED = true;
 
       $mode_debug = false;
+      $timedebug = null;
       if ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE) { // mode debug
          $mode_debug = true;
          $timedebug = sprintf(
@@ -1981,7 +1960,7 @@ JAVASCRIPT
       $twig_vars["copyright_message"] = self::getCopyrightMessage(); 
       $twig_vars["maintenance_mode"] = $CFG_GLPI['maintenance_mode'];
       
-      require_once GLPI_ROOT . "/ng/twig.function.php";
+      require_once GLPI_ROOT . "/ng/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
       try {
          echo $twig->render('footer.twig',  $twig_vars );
@@ -7419,10 +7398,12 @@ JAVASCRIPT;
    }
    
    /**
-    * Return ITSM bottom menu
-    *
+    * Return Twig ITSM "bottom" (help, parameters, logout) menu
     *
     * @return array
+    *
+    * @since 2.0.0
+    *
     */
    private static function getBottomMenu($full) : array
    {
@@ -7466,10 +7447,12 @@ JAVASCRIPT;
       /// Search engine
       $show_search = $CFG_GLPI['allow_search_global'];
       $template_path = 'topmenu.twig';
-      $twig_vars =   [  "root_doc" => $CFG_GLPI['root_doc'], "noAUTO" => $noAuto, 
-                        "username" => $username, "can_update" => $can_update, 
-                        "is_debug_active" => $is_debug_active, "show_search" => $show_search, 
-                        "sanitizedURL" => $sanitizedURL];
+      $twig_vars =   [  
+                        "root_doc"        => $CFG_GLPI['root_doc'],  "noAUTO"       => $noAuto, 
+                        "username"        => $username,              "can_update"   => $can_update, 
+                        "is_debug_active" => $is_debug_active,       "show_search"  => $show_search, 
+                        "sanitizedURL"    => $sanitizedURL
+                     ];
       return ["path" => $template_path, "args" => $twig_vars];
    }
 
@@ -8031,21 +8014,6 @@ JAVASCRIPT;
          }
       }
 
-      // $favorite = 
-      // ['favorite' => [
-      //    'title' => 'Favorite',
-      //    'types' => [],
-      //    'default' => 'none',
-      //    'content' => [],
-      //    'show_menu' => true,
-      //    'class' => '',
-      //    'link' => '',
-      //    'show_sub_menu' => true,
-      //    'icon' => 'fa-star'
-      // ]];
-
-      // $menu = array_merge($favorite, $menu);   
-
       // Display item
       $mainurl = 'central';
       $link = "";
@@ -8326,12 +8294,41 @@ JAVASCRIPT;
       return GLPI_ROOT . '/css_compiled';
    }
 
+
    /**
     * Display impersonate banner if feature is currently used.
     *
     * @return void
+    *
+    * @deprecated 2.0.0
     */
-   public static function displayImpersonateBanner() : array
+    public static function displayImpersonateBanner()
+    {
+ 
+       if (!Session::isImpersonateActive()) {
+          return;
+       }
+ 
+       echo '<div class="banner-impersonate">';
+       echo '<form name="form" method="post" action="' . User::getFormURL() . '">';
+       echo sprintf(__('You are impersonating %s.'), $_SESSION['glpiname']);
+       echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
+       echo '<button type="submit" name="impersonate" class="btn-linkstyled" value="0">';
+       echo __s('Stop impersonating');
+       echo '</button>';
+       echo '</form>';
+       echo '</div>';
+    }
+
+
+   /**
+    * Get Twig impersonate banner if feature is currently used.
+    *
+    * @return void
+    *
+    * @since 2.0.0
+    */
+   public static function getImpersonateBanner() : array
    {
       
       if (!Session::isImpersonateActive()) {

@@ -1,21 +1,48 @@
-hide_icons =  (e) => {
+$(document).ready((e) => {
+    if ($('#main-test').hasClass('menu-bubble')) {
+      activateMenuBubble();
+    }
+    initializeListeners();
+});
+
+function initializeListeners(){
+    $('.menu-position-bouton').on('change', function(e){
+        e.stopPropagation();
+        changeMenuPosition($(this).attr('id'));}
+    );
+    $('#menu-collapse-toggle').on('change', function(e){
+        e.stopPropagation();
+        changeMenuState(!this.checked);}
+    );
+    $('#menu-favorite-toggle').on('change', function(e){
+        e.stopPropagation();
+        menuFavoriteEnable(this.checked);}
+    );
+    $('#menu-favorite-selection-toggle').on('change', function(e){
+        e.stopPropagation();
+        activateFavoriteMode(e,this.checked);}
+    );
+    $('#menu-options-menu').on('click', showMenuOptions);
+    $('#menu-options-reset').on('click', resetMenuBubblePos);
+    $('.star-icon').on('click', addFavorite);
+}
+
+function showMenuOptions(){ //menu-dropdown for menu position, favorite etc...
+    $('#menu-options').toggleClass('show');
+}
+
+let hide_icons =  (e) => {
     $('.bubble-icon').css('display', 'none');
 }
-hide_sub_icons =  (e) => {
+let hide_sub_icons =  (e) => {
     $('.submenu-icon').css('display', 'none');
 }
 
 function activateMenuBubble(){
     $("#bubble").on('mousedown', menuDrag);
-    $("#compass-menu").on('click', openMenuBubble);
+    $("#compass-menu").on('click', openMenuCompass);
     $("#star-menu").on('click', openMenuBubbleFavorite);
-    menuInit();
-    hide_icons =  (e) => {
-        $('.bubble-icon').css('display', 'none');
-    }
-    hide_sub_icons =  (e) => {
-        $('.submenu-icon').css('display', 'none');
-    }
+    menuBubbleInit();
     $("#bubble").on('mouseenter', (e) => {
         hide_sub_icons();
         hide_icons();
@@ -24,20 +51,23 @@ function activateMenuBubble(){
 
 function deactivateMenuBubble(){
     $("#bubble").off('mousedown', menuDrag);
-    $("#bubble").off('click', openMenuBubble);
+    $("#compass-menu").off('click', openMenuCompass);
+    $("#star-menu").off('click', openMenuBubbleFavorite);
     $('.bubble-icon').css('display', 'flex');
     $('.submenu-icon').css('display', 'inline-block');
 }
-function openMenuBubble(){
+
+function openMenuCompass(){ //menu bubble left part
     is_menu_open = $('.bubble-icon').eq(1).css('display') != 'none'; //not the first one its favorite
     $('.bubble-icon').css('display', is_menu_open ? 'none' : 'flex');
 }
-function openMenuBubbleFavorite(){
+function openMenuBubbleFavorite(){ //menu bubble rigth part
     is_menu_open = $('.bubble-icon').eq(1).css('display') != 'none'; //not the first one its favorite
     $('#menu-favorite').find('.submenu-icon').css('display', is_menu_open ? 'none' : 'flex');
 }
 
-function menuDrag(){
+function menuDrag(){ //to move menu bubble
+    //TODO: add limit to menu bubble pos to prevent going out of screen, meantime reset to 'default'
     event.stopPropagation();
     const menuDragEventHandler = (event) => {menuMove(event, this)};
     window.addEventListener("mousemove", menuDragEventHandler);
@@ -55,7 +85,7 @@ function menuDrag(){
     });
 }
 
-function resetMenuBubblePos(){
+function resetMenuBubblePos(){ //TODO: add limit to menu bubble pos to prevent going out of screen, meantime reset to 'default'
     $('#bubble').css('left', 100 + 'px');
     $('#bubble').css('top', 100 + 'px');
     $.ajax({
@@ -69,14 +99,19 @@ function resetMenuBubblePos(){
     });
 }
 let icon_hover = null;
-function menuMove(event, element, Y=null, X=null){
+//caclulate menu position based on mouse position each move event, use radians and trigonometry to calculate position
+function menuMove(event, element, Y=null, X=null){ //highly inneficent, 
+                                                   //initialize menu and submenu pos relative to bubble menu on first page load or menu update 
+                                                   //then store and retrieve when needed
     if (Y == null){
         Y = event.clientY;
         X = event.clientX;
     }
     $('#bubble').css('left', X + 'px');
     $('#bubble').css('top', Y + 'px');
-    icons = $('.bubble-icon').slice();
+    icons = $('.bubble-icon');
+    //divise 2PI (cercle entier) par nombre d'icone pour avoir l'angle entre chaque icone
+    //multiplié par le rayon et décaler de 0.5PI pour avoir le premier icone en haut
     r = 50;
     length = icons.length;
     delta = 2*Math.PI/(length -1); // full circle
@@ -88,32 +123,30 @@ function menuMove(event, element, Y=null, X=null){
         y = Math.sin(rad) * r;
         $(this).css('left', (X + x) + 'px');
         $(this).css('top', (Y + y) + 'px');
-        if (true){
-            sub_icons = $(this).parent().parent().find('.submenu-icon');
-            show_sub_icons = (e) => {
-                if (icon_hover){
-                    icon_hover.parent().parent().find('.submenu-icon').css('display', 'none');
-                }
-                icon_hover = $(this);
-                // $(this).parent().parent().siblings().find('.bubble-icon').css('color', 'rgba(0, 0, 255, 0.3)');
-                $(this).parent().parent().find('.submenu-icon').css('display', 'inline-block');
-
+        $(this).css('background-position', ((100/length)*i) + '%');
+        sub_icons = $(this).parent().parent().find('.submenu-icon');
+        show_sub_icons = (e) => {
+            if (icon_hover){
+                icon_hover.parent().parent().find('.submenu-icon').css('display', 'none');
             }
-            $(this).on("mouseenter", show_sub_icons);
-            sub_length = sub_icons.length;
-            sub_r = r*sub_length/5;
-            delta_sub = Math.PI/(sub_length-1); //half circle
-            right_to_axis = right_to_up; 
-            sub_icons.each( function (j) {
-                sub_rad = delta_sub * j - right_to_axis;
-                sub_x = Math.cos(sub_rad + rad) * sub_r;
-                sub_y = Math.sin(sub_rad + rad) * sub_r;
-                $(this).css('left', (X + sub_x + x) + 'px');
-                $(this).css('top', (Y  + sub_y + y) + 'px');
-                $(this).css('background-position', ((100/sub_length)*j) + '%');
-            });
-            
+            icon_hover = $(this);
+            $(this).parent().parent().find('.submenu-icon').css('display', 'inline-block');
+
         }
+        $(this).on("mouseenter", show_sub_icons);
+        sub_length = sub_icons.length;
+        sub_r = r*sub_length/5;
+        delta_sub = Math.PI/(sub_length-1); //half circle
+        right_to_axis = right_to_up; 
+        sub_icons.each( function (j) {
+            sub_rad = delta_sub * j - right_to_axis;
+            sub_x = Math.cos(sub_rad + rad) * sub_r;
+            sub_y = Math.sin(sub_rad + rad) * sub_r;
+            $(this).css('left', (X + sub_x + x) + 'px');
+            $(this).css('top', (Y  + sub_y + y) + 'px');
+            $(this).css('background-position', ((100/sub_length)*j) + '%');
+        });
+            
     });
     icons = $('#menu-favorite').find('.submenu-icon');
     r = 50;
@@ -125,60 +158,18 @@ function menuMove(event, element, Y=null, X=null){
         rad = delta * i - right_to_up;
         x = Math.cos(rad) * r - mini;
         y = Math.sin(rad) * r;
-        $(this).css('left', (event.clientX + x) + 'px');
-        $(this).css('top', (event.clientY + y) + 'px');
+        $(this).css('left', (X + x) + 'px');
+        $(this).css('top', (Y + y) + 'px');
     });
 
 }
 
-function menuInit(){
+function menuBubbleInit(){
     hide_sub_icons();
     hide_icons();
-    // $('#bubble').css('left', event.clientX + 'px');
-    // $('#bubble').css('top', event.clientY + 'px');
     X = parseInt($('#bubble').css('left').slice(0,-2));
     Y = parseInt($('#bubble').css('top').slice(0,-2));
-    console.log(X, Y);
-    icons = $('.bubble-icon');
-    r = 50;
-    length = icons.length;
-    delta = 2*Math.PI/(length); // full circle
-    right_to_up = Math.PI/2;
-    icons.each( function (i) {
-        rad = delta * i - right_to_up;
-        x = Math.cos(rad) * r;
-        y = Math.sin(rad) * r;
-        $(this).css('left', (X + x) + 'px');
-        $(this).css('top', (Y + y) + 'px');
-        $(this).css('background-position', ((100/length)*i) + '%');
-        if (i == 1 || i == 4 || i == i){
-            sub_icons = $(this).parent().parent().find('.submenu-icon');
-            show_sub_icons = (e) => {
-                if (icon_hover){
-                    icon_hover.parent().parent().find('.submenu-icon').css('display', 'none');
-                }
-                icon_hover = $(this);
-                $(this).parent().parent().find('.submenu-icon').css('display', 'inline-block');
-
-            }
-            $(this).on("mouseenter", show_sub_icons);
-            sub_length = sub_icons.length;
-            sub_r = r*sub_length/5;
-            delta_sub = Math.PI/(sub_length-1); //half circle
-            right_to_axis = right_to_up; 
-            sub_icons.each( function (j) {
-                sub_rad = delta_sub * j - right_to_axis;
-                sub_x = Math.cos(sub_rad + rad) * sub_r;
-                sub_y = Math.sin(sub_rad + rad) * sub_r;
-                $(this).css('left', (X + sub_x + x) + 'px');
-                $(this).css('top', (Y  + sub_y + y) + 'px');
-                $(this).css('background-position', ((100/sub_length)*j) + '%');
-
-            });
-            
-        }
-    });
-
+    menuMove(null, this, Y, X);
 }
 
 function clearMenuBubble(){
@@ -195,12 +186,10 @@ function showMenuPositions(state=null){
     }
 }
 
-function changeMenuPosition(class_name){
+function changeMenuPosition(class_name){ //select menu left, right, top, bubble
     if ($('#main-test').hasClass('menu-top') || class_name == 'menu-top'){
         clearMenuOpen();
         deactivateMenuBubble();
-        clearMenuBubble();
-
     }
 
     if ($('#main-test').hasClass('menu-bubble')) {
@@ -210,7 +199,6 @@ function changeMenuPosition(class_name){
     
     if (class_name == 'menu-bubble'){
         activateMenuBubble();
-        menuInit();
     }
     $('.menu-positions').toggleClass('show', false);
     $('#main-test').attr("class", class_name);
@@ -235,7 +223,7 @@ function menuFavoriteEnable(enable=true){
     });
 }
 
-function clearMenuOpen(){
+function clearMenuOpen(){ //close all menu, for menu top and menu bubble
     menus = $('#menu-content').children('li');
     menus.children('ul').removeClass('show');
     $.ajax({
@@ -247,7 +235,7 @@ function clearMenuOpen(){
     });
 }
 
-function resizeMenu(){
+function resizeMenu(){ //TODO: remove resizing on menu collapsed
     is_menu_close = $('#menu').hasClass('menu-close');
     width_var = is_menu_close ? "--menu-close-width" : "--menu-open-width";
     $('#menu').css('transition', 'none');
@@ -266,7 +254,8 @@ function resizeMenu(){
         });
     }, { once: true });
 }
-function changeMenuWidth(event) {
+
+function changeMenuWidth(event) {//TODO: remove resizing on menu collapsed
     menu_is_right = $('#main-test').hasClass('menu-right');
     if (menu_is_right){
         $('body').css(width_var,  window.innerWidth - event.clientX + "px")
@@ -275,7 +264,7 @@ function changeMenuWidth(event) {
     }
 }
 
-function changeMenuState(is_menu_close=null){
+function changeMenuState(is_menu_close=null){ //whether menu is open or collapsed
     if (is_menu_close == null){
         is_menu_close = $('#menu').hasClass('menu-close');}
     $('#menu').toggleClass('menu-close', !is_menu_close);
@@ -291,6 +280,7 @@ function changeMenuState(is_menu_close=null){
         },
     });
 }
+ 
 function activateFavoriteMode(event, activate=null){
     event.stopPropagation();
     if (activate == null){
@@ -298,7 +288,7 @@ function activateFavoriteMode(event, activate=null){
     $('#menu').toggleClass('favorite-mode', activate);
 
 }
-function openMenu(item, menu_name){
+function openMenu(item, menu_name){ //uncollapsed menu
     if ($('#main-test').hasClass('menu-top')){
         $('.menu:not(#' + this.id + ')').children('ul').collapse('hide');
         return;
@@ -314,11 +304,13 @@ function openMenu(item, menu_name){
         },
     });
 }
-function addFavorite(event, item, menu_name, sub_menu_name){
+function addFavorite(){
     event.stopPropagation();
     event.preventDefault();
+    menu_name = $(this).parent().data('menu-name');
+    sub_menu_name = $(this).parent().data('submenu-name');
     ul = document.getElementById('submenu-favorite');
-    li = item.parentElement;
+    li = this.parentElement;
     is_menu_favorite = $(li).hasClass('section-favorite');
     $(li).toggleClass('section-favorite', !is_menu_favorite);
     if(is_menu_favorite){ //removing favorite

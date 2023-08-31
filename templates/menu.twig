@@ -10,11 +10,6 @@
                 <a class="{{menu[menu_name]['is_open'] ?: 'collapsed'}} " onclick="openMenu(this, '{{menu_name}}')" data-toggle="collapse" data-target="#submenu-{{menu_name}}">
                     <i class="bubble-icon fas {{menu[menu_name]['icon']}}"></i>
                     <span>{{data['title']}}</span>
-                    {# {% if menu_name == 'favorite' %}
-                    <div id="menu-favorite-button" onclick="activateFavoriteMode(event)">
-                        <i class="fas fa-cog"></i>
-                    </div>
-                    {% endif %} #}
                 </a>
 
 
@@ -26,14 +21,15 @@
         {% if menu_name == 'favorite' %}
 
                 <p>You can add your favorite section to this menu. To do this click on the cogwheel then click and the star next to the menu you wish to add as a favorite.</p>
-            {% for menu_name, data in menu|filter(data => data['show_menu']) %}
+            {# double loop inneficient, just add submenu favorite in php #}
+                {% for menu_name, data in menu|filter(data => data['show_menu']) %}
                 {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
                     {% if val['is_favorite'] %}
 
-                    <a  href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                    <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
                         <i class='submenu-icon fa-fw {{val['icon']}}'></i>
                         <span>{{val['title']}}</span>
-                        <i class="star-icon" onclick="addFavorite(event, this, '{{menu_name}}', '{{sub_menu_name}}')"></i>
+                        <i class="star-icon" ></i>
                     </a>
 
                     {% endif %}
@@ -41,10 +37,10 @@
             {% endfor %}
         {% endif %}
         {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
-                    <a  href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show'}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                    <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show'}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
                         <i class='submenu-icon fa-fw {{val['icon']}}'></i>
                         <span>{{val['title']}}</span>
-                        <i class="star-icon" onclick="addFavorite(event, this, '{{menu_name}}', '{{sub_menu_name}}')"></i>
+                        <i class="star-icon" ></i>
                     </a>
 
         {% endfor %}
