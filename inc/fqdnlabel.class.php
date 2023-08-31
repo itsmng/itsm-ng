@@ -87,8 +87,9 @@ abstract class FQDNLabel extends CommonDBChild {
          $fqdn_regex = "/^(?!-)[A-Za-z0-9-]{1,63}(?<!-)$/";
          if (!preg_match($fqdn_regex, $label, $regs)) {
             //check also Internationalized domain name
-            $punycode = new TrueBV\Punycode();
-            $idn = $punycode->encode($label);
+            // $punycode = new TrueBV\Punycode();
+            // $idn = $punycode->encode($label);
+            $idn = idn_to_utf8($label);
             if (!preg_match($fqdn_regex, $idn, $regs)) {
                return false;
             }
