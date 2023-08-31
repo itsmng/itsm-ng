@@ -7920,9 +7920,7 @@ JAVASCRIPT;
       global $CFG_GLPI, $PLUGIN_HOOKS, $DB;
 
       // Generate array for menu and check right
-
       $menu    = self::generateMenuSession($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
-      
       $menu = Plugin::doHookFunction("redefine_menus", $menu);
       $already_used_shortcut = ['1'];
 
@@ -8077,7 +8075,7 @@ JAVASCRIPT;
          $links = $menu[$sector]['content'][$item]['links'];
       }
       $twig_vars = [];
-      if (Session::haveRightsOr('ticketvalidation', TicketValidation::getValidateRights())) {
+      if ($sector == "helpdesk" && Session::haveRightsOr('ticketvalidation', TicketValidation::getValidateRights())) {
          $opt                              = [];
          $opt['reset']                     = 'reset';
          $opt['criteria'][0]['field']      = 55; // validation status
