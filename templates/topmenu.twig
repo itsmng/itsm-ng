@@ -1,0 +1,50 @@
+<div id='c_preference' >
+    <ul>
+        <li id='deconnexion'>
+            <a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}} class='fa fa-sign-out-alt'>
+                <span class='sr-only'>{{'Logout'|trans}}></span>
+            </a>
+        </li>
+
+        <li id='preferences_link'>
+            <a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}" class='fa fa-cog'>
+                <span class='sr-only'>{{'My settings'|trans}}</span>
+{% if username %}
+                    <span id='myname'>{{username}}</span>
+{% endif %}
+            </a>
+        </li>
+
+{% if can_update %}
+        <li id='debug_mode'>
+            <a href='{{root_doc}}/ajax/switchdebug.php' class="fa fa-bug debug{{is_debug_active ? 'on' : 'off'}}" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
+                <span class='sr-only'>{{'Change mode'|trans}}</span>
+            </a>
+        </li>
+{% endif %}
+        {# <li id='bookmark_link'> TODO: RE ADD
+            <a href='#' id='showSavedSearchesLink' class='fa fa-star' title={{'Load a saved search'|trans}}>
+                <span class='sr-only'>{{'Saved searches'|trans}}</span>
+            </a>
+        </li> #}
+
+        <li id='help_link'> {# URL::sanitizeURL($url_help_link) ?? #}
+            <a href="{{sanitizedURL}}" target='_blank' title={{'Help'|trans}} class='fa fa-question'>
+                <span class='sr-only'>{{'Help'|trans}}</span>
+           </a>
+        </li>
+        {# <li id='c_recherche'> a reintegrer
+            {% if show_search %}
+            <form role='search' method='get' action="{{root_doc}}/front/search.php">
+                <span id='champRecherche'>
+                    <input size='15' type='search' name='globalsearch' placeholder="{{'Search'|trans}}" aria-labelledby='globalsearchglass'>
+                    <button type='submit' name='globalsearchglass' id='globalsearchglass'>
+                        <i class='fa fa-search'></i>
+                        <span class='sr-only'>{{'Search'|trans}}</span>
+                    </button>
+                </span>
+            </form>
+            {% endif %}
+        </li> #}
+    </ul>
+</div>

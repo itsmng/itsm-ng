@@ -1,4 +1,7 @@
-<h3>An unknown error happened.</h3>
+{% from 'macros.twig' import button %}
+
+
+<h3>{{'An unknown error happened.'|trans}}</h3> {# TODO : add to trans file#}
 <form action="install.php?step=languages" method="post">
-    <button type="submit">Retry</button>
+    {{button('submit', 'Retry'|trans)}}
 </form>

@@ -1114,10 +1114,12 @@ class Dropdown {
 
    /**
     * Get available languages
-    *
+    * 
     * @since 9.5.0
-    *
+    * @deprecated since 2.0.0
+    * use Language::getLanguages() instead
     * @return array
+    *
     */
    public static function getLanguages() {
       global $CFG_GLPI;

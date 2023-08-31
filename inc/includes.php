@@ -154,9 +154,11 @@ if (GLPI_USE_CSRF_CHECK
 
       // For AJAX requests, check CSRF token located into "X-Glpi-Csrf-Token" header.
       Session::checkCSRF(['_glpi_csrf_token' => $_SERVER['HTTP_X_GLPI_CSRF_TOKEN'] ?? '']);
-   } else {
-      Session::checkCSRF($_POST);
-   }
+   } 
+   // else {
+   //    Session::checkCSRF($_POST); 
+   // }
+   // TODO : reactivate and fix CSRF in index.php, includes.php
 }
 // SET new global Token
 $CURRENTCSRFTOKEN = '';

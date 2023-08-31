@@ -1,5 +1,18 @@
 {% from 'macros.twig' import button %}
+
+
 <h3>{{'Checking of the compatibility of your environment with the execution of GLPI'|trans}}</h3>
+        {# {{table(
+        { post_name: "database", presort_field : "result"}, 
+        {   
+            args: [{},{field = "result"}],
+            titles: [{{'Test done'|trans}}, {{'Results'|trans}}]
+        },
+        {
+            args: [],
+            rows: databases
+        }
+        )}} #}
         <div class="table-container">
             <table 
             data-toggle="table"
@@ -11,7 +24,7 @@
             data-sort-order="asc"
             data-virtual-scroll="true">
                 <thead>
-                    <th data-sortable="true">Test done</th>
+                    <th data-sortable="true">{{'Test done'|trans}}</th>
                     <th data-sortable="true" data-field="result" class="check-result">{{'Results'|trans}}</th>
                 </thead>
                 <tbody>
@@ -48,13 +61,17 @@
             </table>
         </div>
         <h3>{{'Do you want to continue?'|trans}}</h3>
-    {% if passed == 0 %} {# 0 is good, 1 is missing optional, 2 is missing required #}
+
+    {% if missing_requirements  == "mandatory" %}
+
         <div class="buttons">
             <form action="install.php?step=4" method="post">
-                <button type="submit">Continue</button>
+                    {{button('submit', 'Continue'|trans)}}
             </form>
         </div>
-    {% elseif passed == 1 %}
+
+    {% elseif missing_requirements  == "optional" %}
+
             <div class="buttons">
                 <form action="install.php?step=3" method="post">
                     {{button('submit', 'Try again'|trans)}}
@@ -63,10 +80,13 @@
                     {{button('submit', 'Continue'|trans)}}
                 </form>
             </div>
+
     {% else %}
+
         <div class="buttons">
             <form action="install.php?step=3" method="post">
                 {{button('submit', 'Try again'|trans)}}
             </form>
         </div>
+
     {% endif %}

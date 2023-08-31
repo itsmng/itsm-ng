@@ -1,0 +1,8 @@
+{% from "macros.twig" import hidden %}
+<div class="banner-impersonate">
+    <form name="form" method="post" action={{user_form_url}}>
+        {{'You are impersonating'|trans}} {{impersonate_name}}.
+        {{hidden({field_name :'_glpi_csrf_token', options: {'value' : csrf_token}})}}
+        <button type="submit" name="impersonate" class="btn-linkstyled" value="0">{{'Stop impersonating'|trans}}</button>
+    </form>
+</div>

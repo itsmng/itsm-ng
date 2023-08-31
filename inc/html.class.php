@@ -1312,6 +1312,11 @@ class Html
 
       //detect theme
       $theme = isset($_SESSION['glpipalette']) ? $_SESSION['glpipalette'] : 'itsmng';
+      
+      echo Html::css('css/bootstrap.min.css');
+      echo Html::css('css/bootstrap-table.min.css');
+      echo Html::css('css/bootstrap-select.min.css');
+      
 
       echo Html::css('public/lib/base.css');
       //JSTree JS part is loaded on demand... But from an ajax call to display entities. Need to have CSS loaded.
@@ -1548,7 +1553,8 @@ JAVASCRIPT;
       ) {
          echo Html::script('public/lib/scrollable-tabs.js');
       }
-
+      echo Html::scss('css/itsm2.scss');
+      echo Html::css('css/ecrase.css');
       // End of Head
       echo "</head>\n";
       self::glpi_flush();
@@ -1799,7 +1805,6 @@ JAVASCRIPT
    static function header($title, $url = '', $sector = "none", $item = "none", $option = "")
    {
       global $CFG_GLPI, $HEADER_LOADED, $DB;
-
       // If in modal : display popHeader
       if (isset($_REQUEST['_in_modal']) && $_REQUEST['_in_modal']) {
          return self::popHeader($title, $url, false, $sector, $item, $option);
@@ -1812,12 +1817,12 @@ JAVASCRIPT
       // Force lower case for sector and item
       $sector = strtolower($sector);
       $item   = strtolower($item);
-
+      
       self::includeHeader($title, $sector, $item, $option);
-
+      
       $body_class = "layout_" . $_SESSION['glpilayout'];
       if ((strpos($_SERVER['REQUEST_URI'], ".form.php") !== false)
-         && isset($_GET['id']) && ($_GET['id'] > 0)
+      && isset($_GET['id']) && ($_GET['id'] > 0)
       ) {
          if (!CommonGLPI::isLayoutExcludedPage()) {
             $body_class .= " form";
@@ -1825,55 +1830,104 @@ JAVASCRIPT
             $body_class = "";
          }
       }
-
+      
+      $twig_vars['body_class'] = $body_class;
       // Body
-      echo "<body class='$body_class'>";
-
-      Html::displayImpersonateBanner();
-
-      echo "<div id='header'>";
-      echo "<header role='banner' id='header_top'>";
-      echo "<div id='c_logo'>";
-      echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/central.php'
-               accesskey='1'
-               title='" . __s('Home') . "'><span class='sr-only'>" . __s('Home') . "</span></a>";
-      echo "</div>";
-
-      // Preferences and logout link
-      self::displayTopMenu(true);
-      echo "</header>"; // header_top
-
+      $twig_vars['root_doc'] = $CFG_GLPI['root_doc'];
+      $impersonate_banner = Html::displayImpersonateBanner();
+      if (!empty($impersonate_banner)) {
+         $twig_vars += ["impersonate_banner" => $impersonate_banner];
+      }
+      
       //Main menu
-      self::displayMainMenu(
-         true,
-         [
-            'sector' => $sector,
-            'item'   => $item,
-            'option' => $option
-         ]
+      $twig_vars += ["main_menu" => self::getMainMenu($sector, $item, $option)];
+      $twig_vars += self::getMainMenu($sector, $item, $option)['args']; //TODO : change to only add breadcrumb var.
+      // TODO : separate menu from header
+      // Preferences and logout link
+      $twig_vars += ["top_menu" => self::getBottomMenu(true)];
+               
+      $twig_vars["copyright_message"] = self::getCopyrightMessage(); 
+      $twig_vars["ITSM_VERSION"] = ITSM_VERSION;
+      $twig_vars["ITSM_YEAR"] = ITSM_YEAR;
+      $twig_vars['is_slave'] = $DB->isSlave() && !$DB->first_connection;
+
+      $DB->queryOrDie(
+         'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_position longtext'
       );
 
-      echo "</div>\n"; // fin header
+      $twig_vars['menu_position'] = $DB->request(
+             [
+                 'SELECT' => 'menu_position',
+                 'FROM'   => 'glpi_users',
+                 'WHERE'  => ['id' => $_SESSION["glpiID"]]
+             ]
+         )->next()['menu_position'];
 
-      // Back to top button
-      echo "<span class='fa-stack fa-lg' id='backtotop' style='display: none'>" .
-         "<i class='fa fa-circle fa-stack-2x primary-fg-inverse'></i>" .
-         "<a href='#' class='fa fa-arrow-up fa-stack-1x primary-fg' title='" .
-         __s('Back to top of the page') . "'>" .
-         "<span class='sr-only'>Top of the page</span>" .
-         "</a></span>";
 
-      echo "<main role='main' id='page'>";
+         $DB->queryOrDie(
+            'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_favorite_on longtext'
+         );
+   
+         $twig_vars['menu_favorite_on'] = $DB->request(
+                [
+                    'SELECT' => 'menu_favorite_on',
+                    'FROM'   => 'glpi_users',
+                    'WHERE'  => ['id' => $_SESSION["glpiID"]]
+                ]
+            )->next()['menu_favorite_on'];
+            $twig_vars['menu_favorite_on'] = filter_var($twig_vars['menu_favorite_on'], FILTER_VALIDATE_BOOLEAN);
 
-      if (
-         $DB->isSlave()
-         && !$DB->first_connection
-      ) {
-         echo "<div id='dbslave-float'>";
-         echo "<a href='#see_debug'>" . __('SQL replica: read only') . "</a>";
-         echo "</div>";
+   $DB->queryOrDie(
+      'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS bubble_pos longtext'
+   );
+
+   $bubble_pos = $DB->request(
+      [
+         'SELECT' => 'bubble_pos',
+         'FROM'   => 'glpi_users',
+         'WHERE'  => ['id' => $_SESSION["glpiID"]]
+      ]
+   );
+
+   $bubble_pos = json_decode($bubble_pos->next()['bubble_pos'], true);
+   $twig_vars['bubble_pos'] = $bubble_pos;
+
+
+
+      $DB->queryOrDie(
+         'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_small longtext'
+      );
+
+      $twig_vars['menu_small'] = $DB->request(
+               [
+                  'SELECT' => 'menu_small',
+                  'FROM'   => 'glpi_users',
+                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
+               ]
+         )->next()['menu_small'];
+      $twig_vars['menu_small'] = filter_var($twig_vars['menu_small'], FILTER_VALIDATE_BOOLEAN);
+
+      $DB->queryOrDie(
+         'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_width longtext'
+      );
+
+      $menu_width = $DB->request(
+               [
+                  'SELECT' => 'menu_width',
+                  'FROM'   => 'glpi_users',
+                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
+               ]
+         );
+
+      $menu_width = json_decode($menu_width->next()['menu_width'], true);
+      $twig_vars['menu_width'] = $menu_width;
+      require_once GLPI_ROOT . "/ng/twig.function.php";
+      $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
+      try {
+         echo $twig->render('header.twig',  $twig_vars );
+      } catch (\Exception $e) {
+         echo $e->getMessage();
       }
-
       // call static function callcron() every 5min
       CronTask::callCron();
       self::displayMessageAfterRedirect();
@@ -1893,19 +1947,15 @@ JAVASCRIPT
       if (isset($_REQUEST['_in_modal']) && $_REQUEST['_in_modal']) {
          return self::popFooter();
       }
-
       // Print foot for every page
       if ($FOOTER_LOADED) {
          return;
       }
       $FOOTER_LOADED = true;
-      echo "</main>"; // end of "main role='main'"
 
-      echo "<footer role='contentinfo' id='footer'>";
-      echo "<table role='presentation'><tr>";
-
+      $mode_debug = false;
       if ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE) { // mode debug
-         echo "<td class='left'><span class='copyright'>";
+         $mode_debug = true;
          $timedebug = sprintf(
             _n('%s second', '%s seconds', $TIMER_DEBUG->getTime()),
             $TIMER_DEBUG->getTime()
@@ -1914,34 +1964,36 @@ JAVASCRIPT
          if (function_exists("memory_get_usage")) {
             $timedebug = sprintf(__('%1$s - %2$s'), $timedebug, Toolbox::getSize(memory_get_usage()));
          }
-         echo $timedebug;
-         echo "</span></td>";
       }
-
+      $twig_vars["mode_debug"] = $mode_debug;
+      $twig_vars["timedebug"] = $timedebug;
       $currentVersion = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
       $foundedNewVersion = array_key_exists('founded_new_version', $CFG_GLPI)
          ? $CFG_GLPI['founded_new_version']
          : '';
       if (!empty($foundedNewVersion) && version_compare($currentVersion, $foundedNewVersion, '<')) {
-         echo "<td class='copyright'>";
-         $latest_version = "<a href='http://www.glpi-project.org' target='_blank' title=\""
+         $twig_vars["latest_version"] = "<a href='http://www.glpi-project.org' target='_blank' title=\""
             . __s('You will find it on the GLPI-PROJECT.org site.') . "\"> "
             . $foundedNewVersion
             . "</a>";
-         printf(__('A new version is available: %s.'), $latest_version);
 
-         echo "</td>";
       }
-      echo "<td class='right'>" . self::getCopyrightMessage() . "</td>";
-      echo "</tr></table></footer>";
-
-      if ($CFG_GLPI['maintenance_mode']) { // mode maintenance
-         echo "<div id='maintenance-float'>";
-         echo "<a href='#see_maintenance'>GLPI MAINTENANCE MODE</a>";
-         echo "</div>";
+      $twig_vars["copyright_message"] = self::getCopyrightMessage(); 
+      $twig_vars["maintenance_mode"] = $CFG_GLPI['maintenance_mode'];
+      
+      require_once GLPI_ROOT . "/ng/twig.function.php";
+      $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
+      try {
+         echo $twig->render('footer.twig',  $twig_vars );
+      } catch (\Exception $e) {
+         echo $e->getMessage();
       }
       self::displayDebugInfos();
       self::loadJavascript();
+      echo Html::script("js/bootstrap.bundle.min.js");
+      echo Html::script("js/bootstrap-table.min.js");
+      echo Html::script("js/bootstrap-table-export.min.js");
+      echo Html::script("ng/ngFunctions.js");
 
       echo "</body></html>";
 
@@ -7240,28 +7292,145 @@ JAVASCRIPT;
     *
     * @return void
     */
-   private static function displayTopMenu($full)
+    private static function displayTopMenu($full)
+    {
+       global $CFG_GLPI;
+ 
+       /// Prefs / Logout link
+       echo "<div id='c_preference' >";
+       echo "<ul>";
+ 
+       echo "<li id='deconnexion'>";
+       echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/logout.php";
+       /// logout witout noAuto login for extauth
+       if (isset($_SESSION['glpiextauth']) && $_SESSION['glpiextauth']) {
+          echo "?noAUTO=1";
+       }
+       echo "' title=\"" . __s('Logout') . "\" class='fa fa-sign-out-alt'>";
+       // check user id : header used for display messages when session logout
+       echo "<span class='sr-only'>" . __s('Logout') . "></span>";
+       echo "</a>";
+       echo "</li>\n";
+ 
+       $username = '';
+       $title = __s('My settings');
+       if (Session::getLoginUserID()) {
+          $username = formatUserName(
+             0,
+             $_SESSION["glpiname"],
+             $_SESSION["glpirealname"],
+             $_SESSION["glpifirstname"],
+             0,
+             20
+          );
+          $title = sprintf(
+             __s('%1$s - %2$s'),
+             __s('My settings'),
+             $username
+          );
+       }
+       echo "<li id='preferences_link'><a href='" . $CFG_GLPI["root_doc"] . "/front/preference.php' title=\"" .
+          $title . "\" class='fa fa-cog'>";
+       echo "<span class='sr-only'>" . __s('My settings') . "</span>";
+ 
+       // check user id : header used for display messages when session logout
+       if (Session::getLoginUserID()) {
+          echo "<span id='myname'>{$username}</span>";
+       }
+       echo "</a></li>";
+ 
+       if (Config::canUpdate()) {
+          $is_debug_active = $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE;
+          $class = 'debug' . ($is_debug_active ? 'on' : 'off');
+          $title = sprintf(
+             __s('%1$s - %2$s'),
+             __s('Change mode'),
+             $is_debug_active ? __s('Debug mode enabled') : __s('Debug mode disabled')
+          );
+          echo "<li id='debug_mode'>";
+          echo "<a href='{$CFG_GLPI['root_doc']}/ajax/switchdebug.php' class='fa fa-bug $class'
+                 title='$title'>";
+          echo "<span class='sr-only'>" . __s('Change mode') . "</span>";
+          echo "</a>";
+          echo "</li>";
+       }
+ 
+       /// Bookmark load
+       echo "<li id='bookmark_link'>";
+       Ajax::createSlidePanel(
+          'showSavedSearches',
+          [
+             'title'     => __('Saved searches'),
+             'url'       => $CFG_GLPI['root_doc'] . '/ajax/savedsearch.php?action=show',
+             'icon'      => '/pics/menu_config.png',
+             'icon_url'  => SavedSearch::getSearchURL(),
+             'icon_txt'  => __('Manage saved searches')
+          ]
+       );
+       echo "<a href='#' id='showSavedSearchesLink' class='fa fa-star' title=\"" .
+          __s('Load a saved search') . "\">";
+       echo "<span class='sr-only'>" . __('Saved searches')  . "</span>";
+       echo "</a></li>";
+ 
+       if (Session::getCurrentInterface() == 'central') {
+          $url_help_link = (empty($CFG_GLPI["central_doc_url"])
+             ? "http://glpi-project.org/help-central"
+             : $CFG_GLPI["central_doc_url"]);
+       } else {
+          $url_help_link = (empty($CFG_GLPI["helpdesk_doc_url"])
+             ? "http://glpi-project.org/help-central"
+             : $CFG_GLPI["helpdesk_doc_url"]);
+       }
+ 
+       echo "<li id='help_link'>" .
+          "<a href='" . $url_help_link . "' target='_blank' title=\"" .
+          __s('Help') . "\" class='fa fa-question'>" .
+          "<span class='sr-only'>" . __('Help') . "</span>";
+       echo "</a></li>";
+ 
+       if (!GLPI_DEMO_MODE) {
+          echo "<li id='language_link'><a href='" . $CFG_GLPI["root_doc"] .
+             "/front/preference.php?forcetab=User\$1' title=\"" .
+             addslashes(Dropdown::getLanguageName($_SESSION['glpilanguage'])) . "\">" .
+             Dropdown::getLanguageName($_SESSION['glpilanguage']) . "</a></li>";
+       } else {
+          echo "<li id='language_link'><span>" .
+             Dropdown::getLanguageName($_SESSION['glpilanguage']) . "</span></li>";
+       }
+ 
+       echo "<li id='c_recherche'>\n";
+       if ($full === true) {
+          /// Search engine
+          if ($CFG_GLPI['allow_search_global']) {
+             echo "<form role='search' method='get' action='" . $CFG_GLPI["root_doc"] . "/front/search.php'>\n";
+             echo "<span id='champRecherche'>";
+             echo "<input size='15' type='search' name='globalsearch' placeholder='" . __s('Search') . "' aria-labelledby='globalsearchglass'>";
+             echo "<button type='submit' name='globalsearchglass' id='globalsearchglass'>";
+             echo "<i class='fa fa-search'></i><span class='sr-only'>" . __s('Search') . "</span>";
+             echo "</button>";
+             echo "</span>";
+             Html::closeForm();
+          }
+       }
+       echo "</li>";
+ 
+       echo "</ul>";
+       echo "</div>\n";
+   }
+   
+   /**
+    * Return ITSM bottom menu
+    *
+    *
+    * @return array
+    */
+   private static function getBottomMenu($full) : array
    {
       global $CFG_GLPI;
 
-      /// Prefs / Logout link
-      echo "<div id='c_preference' >";
-      echo "<ul>";
-
-      echo "<li id='deconnexion'>";
-      echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/logout.php";
-      /// logout witout noAuto login for extauth
-      if (isset($_SESSION['glpiextauth']) && $_SESSION['glpiextauth']) {
-         echo "?noAUTO=1";
-      }
-      echo "' title=\"" . __s('Logout') . "\" class='fa fa-sign-out-alt'>";
-      // check user id : header used for display messages when session logout
-      echo "<span class='sr-only'>" . __s('Logout') . "></span>";
-      echo "</a>";
-      echo "</li>\n";
+      $noAuto = (isset($_SESSION['glpiextauth']) && $_SESSION['glpiextauth']);
 
       $username = '';
-      $title = __s('My settings');
       if (Session::getLoginUserID()) {
          $username = formatUserName(
             0,
@@ -7271,40 +7440,16 @@ JAVASCRIPT;
             0,
             20
          );
-         $title = sprintf(
-            __s('%1$s - %2$s'),
-            __s('My settings'),
-            $username
-         );
       }
-      echo "<li id='preferences_link'><a href='" . $CFG_GLPI["root_doc"] . "/front/preference.php' title=\"" .
-         $title . "\" class='fa fa-cog'>";
-      echo "<span class='sr-only'>" . __s('My settings') . "</span>";
 
       // check user id : header used for display messages when session logout
-      if (Session::getLoginUserID()) {
-         echo "<span id='myname'>{$username}</span>";
-      }
-      echo "</a></li>";
-
+      $can_update = false;
       if (Config::canUpdate()) {
+         $can_update = true;
          $is_debug_active = $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE;
-         $class = 'debug' . ($is_debug_active ? 'on' : 'off');
-         $title = sprintf(
-            __s('%1$s - %2$s'),
-            __s('Change mode'),
-            $is_debug_active ? __s('Debug mode enabled') : __s('Debug mode disabled')
-         );
-         echo "<li id='debug_mode'>";
-         echo "<a href='{$CFG_GLPI['root_doc']}/ajax/switchdebug.php' class='fa fa-bug $class'
-                title='$title'>";
-         echo "<span class='sr-only'>" . __s('Change mode') . "</span>";
-         echo "</a>";
-         echo "</li>";
       }
 
       /// Bookmark load
-      echo "<li id='bookmark_link'>";
       Ajax::createSlidePanel(
          'showSavedSearches',
          [
@@ -7315,55 +7460,17 @@ JAVASCRIPT;
             'icon_txt'  => __('Manage saved searches')
          ]
       );
-      echo "<a href='#' id='showSavedSearchesLink' class='fa fa-star' title=\"" .
-         __s('Load a saved search') . "\">";
-      echo "<span class='sr-only'>" . __('Saved searches')  . "</span>";
-      echo "</a></li>";
 
-      if (Session::getCurrentInterface() == 'central') {
-         $url_help_link = (empty($CFG_GLPI["central_doc_url"])
-            ? "http://glpi-project.org/help-central"
-            : $CFG_GLPI["central_doc_url"]);
-      } else {
-         $url_help_link = (empty($CFG_GLPI["helpdesk_doc_url"])
-            ? "http://glpi-project.org/help-central"
-            : $CFG_GLPI["helpdesk_doc_url"]);
-      }
+      $sanitizedURL = URL::sanitizeURL("https://www.itsm-ng.org/");
 
-      echo "<li id='help_link'>" .
-           "<a href='".URL::sanitizeURL($url_help_link)."' target='_blank' title=\"".
-         __s('Help') . "\" class='fa fa-question'>" .
-         "<span class='sr-only'>" . __('Help') . "</span>";
-      echo "</a></li>";
-
-      if (!GLPI_DEMO_MODE) {
-         echo "<li id='language_link'><a href='" . $CFG_GLPI["root_doc"] .
-            "/front/preference.php?forcetab=User\$1' title=\"" .
-            addslashes(Dropdown::getLanguageName($_SESSION['glpilanguage'])) . "\">" .
-            Dropdown::getLanguageName($_SESSION['glpilanguage']) . "</a></li>";
-      } else {
-         echo "<li id='language_link'><span>" .
-            Dropdown::getLanguageName($_SESSION['glpilanguage']) . "</span></li>";
-      }
-
-      echo "<li id='c_recherche'>\n";
-      if ($full === true) {
-         /// Search engine
-         if ($CFG_GLPI['allow_search_global']) {
-            echo "<form role='search' method='get' action='" . $CFG_GLPI["root_doc"] . "/front/search.php'>\n";
-            echo "<span id='champRecherche'>";
-            echo "<input size='15' type='search' name='globalsearch' placeholder='" . __s('Search') . "' aria-labelledby='globalsearchglass'>";
-            echo "<button type='submit' name='globalsearchglass' id='globalsearchglass'>";
-            echo "<i class='fa fa-search'></i><span class='sr-only'>" . __s('Search') . "</span>";
-            echo "</button>";
-            echo "</span>";
-            Html::closeForm();
-         }
-      }
-      echo "</li>";
-
-      echo "</ul>";
-      echo "</div>\n";
+      /// Search engine
+      $show_search = $CFG_GLPI['allow_search_global'];
+      $template_path = 'topmenu.twig';
+      $twig_vars =   [  "root_doc" => $CFG_GLPI['root_doc'], "noAUTO" => $noAuto, 
+                        "username" => $username, "can_update" => $can_update, 
+                        "is_debug_active" => $is_debug_active, "show_search" => $show_search, 
+                        "sanitizedURL" => $sanitizedURL];
+      return ["path" => $template_path, "args" => $twig_vars];
    }
 
    /**
@@ -7371,437 +7478,639 @@ JAVASCRIPT;
     *
     * @param boolean $full    True for full interface, false otherwise
     * @param array   $options Option
-    *
     * @return void
     */
-   private static function displayMainMenu($full, $options = [])
-   {
-      global $CFG_GLPI, $PLUGIN_HOOKS;
+    private static function displayMainMenu($full, $options = [])
+    {
+       global $CFG_GLPI, $PLUGIN_HOOKS;
+ 
+       $sector = '';
+ 
+       // Generate array for menu and check right
+       if ($full === true) {
+          $menu    = self::generateMenuSession($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
+          $sector  = $options['sector'];
+          $item    = $options['item'];
+          $option  = $options['option'];
+       } else {
+          $menu = [];
+ 
+          //  Create ticket
+          if (Session::haveRight("ticket", CREATE)) {
+             $menu['create_ticket'] = [
+                'default'   => '/front/helpdesk.public.php?create_ticket=1',
+                'title'     => __s('Create a ticket'),
+                'content'   => [true]
+             ];
+          }
+ 
+          //  Tickets
+          if (
+             Session::haveRight("ticket", CREATE)
+             || Session::haveRight("ticket", Ticket::READMY)
+             || Session::haveRight("followup", ITILFollowup::SEEPUBLIC)
+          ) {
+             $menu['tickets'] = [
+                'default'   => '/front/ticket.php',
+                'title'     => _n('Ticket', 'Tickets', Session::getPluralNumber()),
+                'content'   => [true]
+             ];
+          }
+ 
+          // Reservation
+          if (Session::haveRight("reservation", ReservationItem::RESERVEANITEM)) {
+             $menu['reservation'] = [
+                'default'   => '/front/reservationitem.php',
+                'title'     => _n('Reservation', 'Reservations', Session::getPluralNumber()),
+                'content'   => [true]
+             ];
+          }
+ 
+          // FAQ
+          if (Session::haveRight('knowbase', KnowbaseItem::READFAQ)) {
+             $menu['faq'] = [
+                'default'   => '/front/helpdesk.faq.php',
+                'title'     => __s('FAQ'),
+                'content'   => [true]
+             ];
+          }
+       }
+ 
+       $menu = Plugin::doHookFunction("redefine_menus", $menu);
+ 
+       $already_used_shortcut = ['1'];
+ 
+       echo "<nav id='main_menu'>";
+       echo "<div id='c_menu'>";
+       echo "<ul id='menu'";
+       if ($full === true) {
+          echo " class='fullmenu'";
+       }
+       echo ">";
+ 
+       if ($full === false) {
+          // Display Home menu
+          echo "<li id='menu1'>";
+          echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php' title=\"" .
+             __s('Home') . "\" class='itemP'>" . __('Home') . "</a>";
+          echo "</li>";
+       }
+ 
+       // Get object-variables and build the navigation-elements
+       $i = 1;
+       foreach ($menu as $part => $data) {
+          if (isset($data['content']) && count($data['content'])) {
+             $menu_class = "";
+             if (isset($menu[$sector]) && $menu[$sector]['title'] == $data['title']) {
+                $menu_class = "active";
+             }
+ 
+             echo "<li id='menu$i' data-id='$i' class='$menu_class'>";
+             $link = "#";
+ 
+             if (isset($data['default']) && !empty($data['default'])) {
+                $link = $CFG_GLPI["root_doc"] . $data['default'];
+             }
+ 
+             echo "<a href='$link' class='itemP'>{$data['title']}</a>";
+             if (!isset($data['content'][0]) || $data['content'][0] !== true) {
+                echo "<ul class='ssmenu'>";
+ 
+                // list menu item
+                foreach ($data['content'] as $key => $val) {
+                   $menu_class       = "";
+                   $tmp_active_item  = explode("/", $item);
+                   $active_item      = array_pop($tmp_active_item);
+                   if (
+                      isset($menu[$sector]['content'])
+                      && isset($menu[$sector]['content'][$active_item])
+                      && isset($val['title'])
+                      && ($menu[$sector]['content'][$active_item]['title'] == $val['title'])
+                   ) {
+                      $menu_class = "active";
+                   }
+                   if (
+                      isset($val['page'])
+                      && isset($val['title'])
+                   ) {
+                      $shortcut_attr = "";
+                      $title = $val['title'];
+ 
+                      if (isset($val['shortcut']) && !empty($val['shortcut'])) {
+                         if (!isset($already_used_shortcut[$val['shortcut']])) {
+                            $shortcut_attr = " accesskey='" . $val['shortcut'] . "'";
+                            $already_used_shortcut[$val['shortcut']] = $val['shortcut'];
+                         }
+                         $title = Toolbox::shortcut($val['title'], $val['shortcut']);
+                      }
+ 
+                      $icon_cls = "";
+                      if (isset($val['icon'])) {
+                         $icon_cls = $val['icon'];
+                      }
+                      $icon = "<i class='fa-fw $icon_cls'></i>";
+ 
+                      echo "<li class='$menu_class'>
+                         <a href='" . $CFG_GLPI["root_doc"] . $val['page'] . "' $shortcut_attr>
+                            $icon
+                            $title
+                         </a>
+                      </li>";
+                   }
+                }
+                echo "</ul>";
+             }
+             echo "</li>";
+             $i++;
+          }
+       }
+ 
+       if ($full === false) {
+          // Plugins
+          $menu['plugins'] = [
+             'default'   => "#",
+             'title'     => _sn('Plugin', 'Plugins', Session::getPluralNumber()),
+             'content'   => []
+          ];
+ 
+          if (
+             isset($PLUGIN_HOOKS["helpdesk_menu_entry"])
+             && count($PLUGIN_HOOKS["helpdesk_menu_entry"])
+          ) {
+ 
+             foreach ($PLUGIN_HOOKS["helpdesk_menu_entry"] as $plugin => $active) {
+                if (!Plugin::isPluginActive($plugin)) {
+                   continue;
+                }
+                if ($active) {
+                   $infos = Plugin::getInfo($plugin);
+                   $link = "";
+                   if (is_string($PLUGIN_HOOKS["helpdesk_menu_entry"][$plugin])) {
+                      $link = $PLUGIN_HOOKS["helpdesk_menu_entry"][$plugin];
+                   }
+                   $infos['page'] = $link;
+                   $infos['title'] = $infos['name'];
+                   $menu['plugins']['content'][$plugin] = $infos;
+                }
+             }
+          }
+ 
+          // Display plugins
+          if (isset($menu['plugins']['content']) && count($menu['plugins']['content']) > 0) {
+             asort($menu['plugins']['content']);
+             echo "<li id='menu5' onmouseover=\"javascript:menuAff('menu5','menu');\">";
+             echo "<a href='#' title=\"" .
+                _sn('Plugin', 'Plugins', Session::getPluralNumber()) . "\" class='itemP'>" .
+                __('Plugins') . "</a>"; // default none
+             echo "<ul class='ssmenu'>";
+ 
+             // list menu item
+             foreach ($menu['plugins']['content'] as $key => $val) {
+                echo "<li><a href='" . Plugin::getWebDir($key) . $val['page'] . "'>" .
+                   $val["title"] . "</a></li>";
+             }
+             echo "</ul></li>";
+          }
+       }
+ 
+       echo "</ul>"; // #menu
+ 
+       // Display MENU ALL
+       self::displayMenuAll($menu);
+ 
+       // End navigation bar
+       // End headline
+ 
+       //  Le fil d ariane
+       echo "<div id='c_ssmenu2' >";
+       echo "<ul>";
+ 
+       // Display item
+       $mainurl = ($full === true) ? 'central' : 'helpdesk.public';
+       echo "<li class='breadcrumb_item'>" .
+          "<a href='" . $CFG_GLPI["root_doc"] . "/front/$mainurl.php' title=\"" . __s('Home') . "\">" .
+          __('Home') . "</a></li>";
+ 
+       if ($full === true) {
+          if (isset($menu[$sector])) {
+             $link = "/front/central.php";
+ 
+             if (isset($menu[$sector]['default'])) {
+                $link = $menu[$sector]['default'];
+             }
+             echo "<li class='breadcrumb_item'>" .
+                "<a href='" . $CFG_GLPI["root_doc"] . $link . "' title=\"" . $menu[$sector]['title'] . "\">" .
+                $menu[$sector]['title'] . "</a></li>";
+          }
+ 
+          if (isset($menu[$sector]['content'][$item])) {
+             // Title
+             $with_option = false;
+ 
+             if (
+                !empty($option)
+                && isset($menu[$sector]['content'][$item]['options'][$option]['title'])
+                && isset($menu[$sector]['content'][$item]['options'][$option]['page'])
+             ) {
+ 
+                $with_option = true;
+             }
+ 
+             if (isset($menu[$sector]['content'][$item]['page'])) {
+                echo "<li class='breadcrumb_item'>" .
+                   "<a href='" . $CFG_GLPI["root_doc"] . $menu[$sector]['content'][$item]['page'] . "' " .
+                   ($with_option ? "" : "class='here'") . " title=\"" .
+                   $menu[$sector]['content'][$item]['title'] . "\" >" .
+                   "<i class='" . ($menu[$sector]['content'][$item]['icon'] ?? "") . "'></i>&nbsp;" .
+                   $menu[$sector]['content'][$item]['title'] .
+                   "</a>" .
+                   "</li>";
+             }
+ 
+             if ($with_option) {
+                echo "<li class='breadcrumb_item'>" .
+                   "<a href='" . $CFG_GLPI["root_doc"] .
+                   $menu[$sector]['content'][$item]['options'][$option]['page'] .
+                   "' class='here' title=\"" .
+                   $menu[$sector]['content'][$item]['options'][$option]['title'] . "\" >";
+ 
+                echo "<i class='" . ($menu[$sector]['content'][$item]['options'][$option]['icon'] ?? "") . "'></i>&nbsp;";
+                echo self::resume_name(
+                   $menu[$sector]['content'][$item]['options'][$option]['title'],
+                   17
+                );
+                echo "</a></li>";
+             }
+ 
+             $links = [];
+             // Item with Option case
+             if (
+                !empty($option)
+                && isset($menu[$sector]['content'][$item]['options'][$option]['links'])
+                && is_array($menu[$sector]['content'][$item]['options'][$option]['links'])
+             ) {
+                $links = $menu[$sector]['content'][$item]['options'][$option]['links'];
+             } else if (
+                isset($menu[$sector]['content'][$item]['links'])
+                && is_array($menu[$sector]['content'][$item]['links'])
+             ) {
+                // Without option case : only item links
+ 
+                $links = $menu[$sector]['content'][$item]['links'];
+             }
+             // Add item
+             echo "<li class='icons_block'>";
+             echo "<span>";
+             if (isset($links['add'])) {
+                echo "<a href='{$CFG_GLPI['root_doc']}{$links['add']}' class='pointer'
+                                  title='" . __s('Add') . "'><i class='fa fa-plus'></i>
+                                  <span class='sr-only'>" . __('Add') . "</span></a>";
+             } else {
+                echo "<a href='#' class='pointer disabled' title='" . __s('Add is disabled') . "'>" .
+                   "<i class='fa fa-plus'></i>" .
+                   "<span class='sr-only'>" . __('Add is disabled') . "</span></a>";
+             }
+             echo "</span>";
+ 
+             // Search Item
+             echo "<span>";
+             if (isset($links['search'])) {
+                echo "<a href='{$CFG_GLPI['root_doc']}{$links['search']}' class='pointer'
+                                  title='" . __s('Search') . "'><i class='fa fa-search'></i>
+                                  <span class='sr-only'>" . __s('Search') . "</span></a>";
+             } else {
+                echo "<a href='#' class='pointer disabled' title='" . __s('Search is disabled') . "'>" .
+                   "<i class='fa fa-search'></i>" .
+                   "<span class='sr-only'>" . __('Search is disabled') . "</span></a>";
+             }
+             echo "</span>";
+             // Links
+             if (count($links) > 0) {
+                foreach ($links as $key => $val) {
+ 
+                   switch ($key) {
+                      case "add":
+                      case "search":
+                         break;
+ 
+                      case "template":
+                         echo "<span>";
+                         echo Html::link(
+                            '<i class="pointer fa fa-layer-group"></i>',
+                            $CFG_GLPI["root_doc"] . $val,
+                            [
+                               'title' => __('Manage templates...')
+                            ]
+                         );
+                         echo "</span>";
+                         break;
+ 
+                      case "showall":
+                         echo "<span>";
+                         echo Html::image(
+                            $CFG_GLPI["root_doc"] . "/pics/menu_showall.png",
+                            [
+                               'alt' => __('Show all'),
+                               'url' => $CFG_GLPI["root_doc"] . $val
+                            ]
+                         );
+                         echo "</span>";
+                         break;
+ 
+                      case "summary":
+                         echo "<span>";
+                         echo Html::link(
+                            '<i class="pointer fas fa-stream"></i>',
+                            $CFG_GLPI["root_doc"] . $val,
+                            [
+                               'title' => __('Summary')
+                            ]
+                         );
+                         echo "</span>";
+                         break;
+ 
+                      case "summary_kanban":
+                         echo "<span>";
+                         echo Html::link(
+                            '<i class="pointer fas fa-columns"></i>',
+                            $CFG_GLPI["root_doc"] . $val,
+                            [
+                               'title' => __('Global Kanban')
+                            ]
+                         );
+                         echo "</span>";
+                         break;
+ 
+                      case "config":
+                         echo "<span>";
+                         echo Html::image(
+                            $CFG_GLPI["root_doc"] . "/pics/menu_config.png",
+                            [
+                               'alt' => __('Setup'),
+                               'url' => $CFG_GLPI["root_doc"] . $val
+                            ]
+                         );
+                         echo "</span>";
+                         break;
+ 
+                      default:
+                         echo "<span>" . Html::link($key, $CFG_GLPI["root_doc"] . $val, ['class' => 'pointer']) . "</span>";
+                         break;
+                   }
+                }
+             }
+             echo "</li>";
+          } else {
+             echo "<li>&nbsp;</li>";
+          }
+       } else {
+          if (Session::haveRightsOr('ticketvalidation', TicketValidation::getValidateRights())) {
+             $opt                              = [];
+             $opt['reset']                     = 'reset';
+             $opt['criteria'][0]['field']      = 55; // validation status
+             $opt['criteria'][0]['searchtype'] = 'equals';
+             $opt['criteria'][0]['value']      = TicketValidation::WAITING;
+             $opt['criteria'][0]['link']       = 'AND';
+ 
+             $opt['criteria'][1]['field']      = 59; // validation aprobator
+             $opt['criteria'][1]['searchtype'] = 'equals';
+             $opt['criteria'][1]['value']      = Session::getLoginUserID();
+             $opt['criteria'][1]['link']       = 'AND';
+ 
+             $url_validate = $CFG_GLPI["root_doc"] . "/front/ticket.php?" .
+                Toolbox::append_params($opt, '&amp;');
+             $pic_validate = "<a href='$url_validate'>" .
+                "<img title=\"" . __s('Ticket waiting for your approval') . "\" alt=\"" .
+                __s('Ticket waiting for your approval') . "\" src='" .
+                $CFG_GLPI["root_doc"] . "/pics/menu_showall.png' class='pointer'></a>";
+             echo "<li class='icons_block'>$pic_validate</li>\n";
+          }
+ 
+          if (
+             Session::haveRight('ticket', CREATE)
+             && strpos($_SERVER['PHP_SELF'], "ticket")
+          ) {
+             echo "<li class='icons_block'><a class='pointer' href='" . $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php?create_ticket=1'title=\"" . __s('Add') . "\">";
+             echo "<i class='fa fa-plus'></i><span class='sr-only'>" . __s('Add') . "</span></a></li>";
+          }
+       }
+ 
+       // Add common items
+ 
+       // Profile selector
+       // check user id : header used for display messages when session logout
+       if (Session::getLoginUserID()) {
+          self::showProfileSelecter($CFG_GLPI["root_doc"] . "/front/$mainurl.php");
+       }
+       echo "</ul>";
+       echo "</div>";
+       echo "</nav>";
+    }
 
-      $sector = '';
+   /**
+    * Return ITSM main menu
+    *
+    * @param array   $options Option
+    *
+    * @since 2.0.0
+    * @return array
+    */
+   private static function getMainMenu($sector, $item, $option) : array
+   {
+      global $CFG_GLPI, $PLUGIN_HOOKS, $DB;
 
       // Generate array for menu and check right
-      if ($full === true) {
-         $menu    = self::generateMenuSession($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
-         $sector  = $options['sector'];
-         $item    = $options['item'];
-         $option  = $options['option'];
-      } else {
-         $menu = [];
-
-         //  Create ticket
-         if (Session::haveRight("ticket", CREATE)) {
-            $menu['create_ticket'] = [
-               'default'   => '/front/helpdesk.public.php?create_ticket=1',
-               'title'     => __s('Create a ticket'),
-               'content'   => [true]
-            ];
-         }
-
-         //  Tickets
-         if (
-            Session::haveRight("ticket", CREATE)
-            || Session::haveRight("ticket", Ticket::READMY)
-            || Session::haveRight("followup", ITILFollowup::SEEPUBLIC)
-         ) {
-            $menu['tickets'] = [
-               'default'   => '/front/ticket.php',
-               'title'     => _n('Ticket', 'Tickets', Session::getPluralNumber()),
-               'content'   => [true]
-            ];
-         }
-
-         // Reservation
-         if (Session::haveRight("reservation", ReservationItem::RESERVEANITEM)) {
-            $menu['reservation'] = [
-               'default'   => '/front/reservationitem.php',
-               'title'     => _n('Reservation', 'Reservations', Session::getPluralNumber()),
-               'content'   => [true]
-            ];
-         }
-
-         // FAQ
-         if (Session::haveRight('knowbase', KnowbaseItem::READFAQ)) {
-            $menu['faq'] = [
-               'default'   => '/front/helpdesk.faq.php',
-               'title'     => __s('FAQ'),
-               'content'   => [true]
-            ];
-         }
-      }
-
+      $menu    = self::generateMenuSession($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
       $menu = Plugin::doHookFunction("redefine_menus", $menu);
-
       $already_used_shortcut = ['1'];
 
-      echo "<nav id='main_menu'>";
-      echo "<div id='c_menu'>";
-      echo "<ul id='menu'";
-      if ($full === true) {
-         echo " class='fullmenu'";
-      }
-      echo ">";
+      // Get user favorites menu
+      $DB->queryOrDie(
+         'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_favorite longtext'
+      );
+      $menu_favorites = $DB->request(
+         [
+             'SELECT' => 'menu_favorite',
+             'FROM'   => 'glpi_users',
+             'WHERE'  => ['id' => $_SESSION["glpiID"]]
+         ]
+      );
+     
+     $menu_favorites = json_decode($menu_favorites->next()['menu_favorite'], true);
+     $DB->queryOrDie(
+        'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_open longtext'
+     );
+     $menu_collapse = $DB->request(
+      [
+          'SELECT' => 'menu_open',
+          'FROM'   => 'glpi_users',
+          'WHERE'  => ['id' => $_SESSION["glpiID"]]
+      ]
+      );
+      $menu_collapse = json_decode($menu_collapse->next()['menu_open'], true);
+      $icons = [  
+         'favorite' => 'fa-star',
+         'assets' => 'fa-warehouse',
+         'helpdesk' => 'fa-hands-helping',
+         'management' => 'fa-tasks',
+         'tools' => 'fa-tools',
+         'plugins' => 'fa-puzzle-piece',
+         'admin' => 'fa-users-cog',
+         'config' => 'fa-clipboard-list',
+         'preference' => 'fa-cog'            
+      ];
+      $favorite = 
+      ['favorite' => [
+         'title' => 'Favorite',
+         'types' => [],
+         'default' => 'none',
+         'content' => [],
+      ]];
 
-      if ($full === false) {
-         // Display Home menu
-         echo "<li id='menu1'>";
-         echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php' title=\"" .
-            __s('Home') . "\" class='itemP'>" . __('Home') . "</a>";
-         echo "</li>";
-      }
-
-      // Get object-variables and build the navigation-elements
-      $i = 1;
+      $menu = array_merge($favorite, $menu);   
+      // Format $menu to pass to Twig
+      // print_r($menu);
       foreach ($menu as $part => $data) {
-         if (isset($data['content']) && count($data['content'])) {
-            $menu_class = "";
-            if (isset($menu[$sector]) && $menu[$sector]['title'] == $data['title']) {
-               $menu_class = "active";
+         $menu[$part]['show_menu'] = false;
+         // Checks if menu contains a submenu
+         if (isset($data['content']) && count($data['content']) || $part == 'favorite') {
+            if (!is_null($menu_collapse)){
+               $menu[$part]['is_open'] = in_array($part, $menu_collapse);
             }
+            $menu[$part]['icon'] = $icons[$part];
+            $menu[$part]['show_menu'] = true;
+            $menu[$part]['class'] = (isset($menu[$sector]) && $menu[$sector]['title'] == $data['title']) ? "active" : "";
+            $menu[$part]['link'] = (isset($data['default']) && !empty($data['default'])) ? $CFG_GLPI["root_doc"] . $data['default'] : "#";
+            $menu[$part]['show_sub_menu'] = false;
 
-            echo "<li id='menu$i' data-id='$i' class='$menu_class'>";
-            $link = "#";
-
-            if (isset($data['default']) && !empty($data['default'])) {
-               $link = $CFG_GLPI["root_doc"] . $data['default'];
-            }
-
-            echo "<a href='$link' class='itemP'>{$data['title']}</a>";
-            if (!isset($data['content'][0]) || $data['content'][0] !== true) {
-               echo "<ul class='ssmenu'>";
-
+            if (!isset($data['content'][0]) || $data['content'][0] !== true) { //false ?
+               $menu[$part]['show_sub_menu'] = true; 
                // list menu item
                foreach ($data['content'] as $key => $val) {
-                  $menu_class       = "";
+                  // some menu arent arrays and should'nt be showed
+                  if (!is_array($val))
+                  continue;
+                  $menu[$part]['content'][$key]['is_favorite'] = isset($menu_favorites[$part]) && in_array($key, $menu_favorites[$part]);
+                  $menu[$part]['content'][$key]['part'] = $part;
+                  $menu[$part]['content'][$key]['sub_menu_class'] = "";
                   $tmp_active_item  = explode("/", $item);
                   $active_item      = array_pop($tmp_active_item);
+
                   if (
                      isset($menu[$sector]['content'])
                      && isset($menu[$sector]['content'][$active_item])
                      && isset($val['title'])
                      && ($menu[$sector]['content'][$active_item]['title'] == $val['title'])
-                  ) {
-                     $menu_class = "active";
+                     ) {
+                     $menu[$part]['content'][$key]['sub_menu_class']  = "active";
                   }
+                  $menu[$part]['content'][$key]['show_sub_menu']  = true;
                   if (
                      isset($val['page'])
                      && isset($val['title'])
                   ) {
-                     $shortcut_attr = "";
-                     $title = $val['title'];
+                     $menu[$part]['content'][$key]['show_sub_menu']  = true;
+                     $menu[$part]['content'][$key]['shortcut_attr'] = "";
 
                      if (isset($val['shortcut']) && !empty($val['shortcut'])) {
                         if (!isset($already_used_shortcut[$val['shortcut']])) {
-                           $shortcut_attr = " accesskey='" . $val['shortcut'] . "'";
+                           $val['shortcut_attr'] = " accesskey='" . $val['shortcut'] . "'";
                            $already_used_shortcut[$val['shortcut']] = $val['shortcut'];
                         }
-                        $title = Toolbox::shortcut($val['title'], $val['shortcut']);
+                        $menu[$part]['content'][$key]['title'] = $val['title'];
                      }
-
-                     $icon_cls = "";
-                     if (isset($val['icon'])) {
-                        $icon_cls = $val['icon'];
+                     
+                     if (!isset($val['icon'])) {
+                        $menu[$part]['content'][$key]['icon'] = "";
                      }
-                     $icon = "<i class='fa-fw $icon_cls'></i>";
-
-                     echo "<li class='$menu_class'>
-                        <a href='" . $CFG_GLPI["root_doc"] . $val['page'] . "' $shortcut_attr>
-                           $icon
-                           $title
-                        </a>
-                     </li>";
                   }
                }
-               echo "</ul>";
             }
-            echo "</li>";
-            $i++;
+         } else {
+            unset($menu[$part]);
          }
       }
 
-      if ($full === false) {
-         // Plugins
-         $menu['plugins'] = [
-            'default'   => "#",
-            'title'     => _sn('Plugin', 'Plugins', Session::getPluralNumber()),
-            'content'   => []
-         ];
+      // $favorite = 
+      // ['favorite' => [
+      //    'title' => 'Favorite',
+      //    'types' => [],
+      //    'default' => 'none',
+      //    'content' => [],
+      //    'show_menu' => true,
+      //    'class' => '',
+      //    'link' => '',
+      //    'show_sub_menu' => true,
+      //    'icon' => 'fa-star'
+      // ]];
 
-         if (
-            isset($PLUGIN_HOOKS["helpdesk_menu_entry"])
-            && count($PLUGIN_HOOKS["helpdesk_menu_entry"])
-         ) {
-
-            foreach ($PLUGIN_HOOKS["helpdesk_menu_entry"] as $plugin => $active) {
-               if (!Plugin::isPluginActive($plugin)) {
-                  continue;
-               }
-               if ($active) {
-                  $infos = Plugin::getInfo($plugin);
-                  $link = "";
-                  if (is_string($PLUGIN_HOOKS["helpdesk_menu_entry"][$plugin])) {
-                     $link = $PLUGIN_HOOKS["helpdesk_menu_entry"][$plugin];
-                  }
-                  $infos['page'] = $link;
-                  $infos['title'] = $infos['name'];
-                  $menu['plugins']['content'][$plugin] = $infos;
-               }
-            }
-         }
-
-         // Display plugins
-         if (isset($menu['plugins']['content']) && count($menu['plugins']['content']) > 0) {
-            asort($menu['plugins']['content']);
-            echo "<li id='menu5' onmouseover=\"javascript:menuAff('menu5','menu');\">";
-            echo "<a href='#' title=\"" .
-               _sn('Plugin', 'Plugins', Session::getPluralNumber()) . "\" class='itemP'>" .
-               __('Plugins') . "</a>"; // default none
-            echo "<ul class='ssmenu'>";
-
-            // list menu item
-            foreach ($menu['plugins']['content'] as $key => $val) {
-               echo "<li><a href='" . Plugin::getWebDir($key) . $val['page'] . "'>" .
-                  $val["title"] . "</a></li>";
-            }
-            echo "</ul></li>";
-         }
-      }
-
-      echo "</ul>"; // #menu
-
-      // Display MENU ALL
-      self::displayMenuAll($menu);
-
-      // End navigation bar
-      // End headline
-
-      //  Le fil d ariane
-      echo "<div id='c_ssmenu2' >";
-      echo "<ul>";
+      // $menu = array_merge($favorite, $menu);   
 
       // Display item
-      $mainurl = ($full === true) ? 'central' : 'helpdesk.public';
-      echo "<li class='breadcrumb_item'>" .
-         "<a href='" . $CFG_GLPI["root_doc"] . "/front/$mainurl.php' title=\"" . __s('Home') . "\">" .
-         __('Home') . "</a></li>";
-
-      if ($full === true) {
-         if (isset($menu[$sector])) {
-            $link = "/front/central.php";
-
-            if (isset($menu[$sector]['default'])) {
-               $link = $menu[$sector]['default'];
-            }
-            echo "<li class='breadcrumb_item'>" .
-               "<a href='" . $CFG_GLPI["root_doc"] . $link . "' title=\"" . $menu[$sector]['title'] . "\">" .
-               $menu[$sector]['title'] . "</a></li>";
-         }
-
-         if (isset($menu[$sector]['content'][$item])) {
-            // Title
-            $with_option = false;
-
-            if (
-               !empty($option)
-               && isset($menu[$sector]['content'][$item]['options'][$option]['title'])
-               && isset($menu[$sector]['content'][$item]['options'][$option]['page'])
-            ) {
-
-               $with_option = true;
-            }
-
-            if (isset($menu[$sector]['content'][$item]['page'])) {
-               echo "<li class='breadcrumb_item'>" .
-                  "<a href='" . $CFG_GLPI["root_doc"] . $menu[$sector]['content'][$item]['page'] . "' " .
-                  ($with_option ? "" : "class='here'") . " title=\"" .
-                  $menu[$sector]['content'][$item]['title'] . "\" >" .
-                  "<i class='" . ($menu[$sector]['content'][$item]['icon'] ?? "") . "'></i>&nbsp;" .
-                  $menu[$sector]['content'][$item]['title'] .
-                  "</a>" .
-                  "</li>";
-            }
-
-            if ($with_option) {
-               echo "<li class='breadcrumb_item'>" .
-                  "<a href='" . $CFG_GLPI["root_doc"] .
-                  $menu[$sector]['content'][$item]['options'][$option]['page'] .
-                  "' class='here' title=\"" .
-                  $menu[$sector]['content'][$item]['options'][$option]['title'] . "\" >";
-
-               echo "<i class='" . ($menu[$sector]['content'][$item]['options'][$option]['icon'] ?? "") . "'></i>&nbsp;";
-               echo self::resume_name(
-                  $menu[$sector]['content'][$item]['options'][$option]['title'],
-                  17
-               );
-               echo "</a></li>";
-            }
-
-            $links = [];
-            // Item with Option case
-            if (
-               !empty($option)
-               && isset($menu[$sector]['content'][$item]['options'][$option]['links'])
-               && is_array($menu[$sector]['content'][$item]['options'][$option]['links'])
-            ) {
-               $links = $menu[$sector]['content'][$item]['options'][$option]['links'];
-            } else if (
-               isset($menu[$sector]['content'][$item]['links'])
-               && is_array($menu[$sector]['content'][$item]['links'])
-            ) {
-               // Without option case : only item links
-
-               $links = $menu[$sector]['content'][$item]['links'];
-            }
-
-            // Add item
-            echo "<li class='icons_block'>";
-            echo "<span>";
-            if (isset($links['add'])) {
-               echo "<a href='{$CFG_GLPI['root_doc']}{$links['add']}' class='pointer'
-                                 title='" . __s('Add') . "'><i class='fa fa-plus'></i>
-                                 <span class='sr-only'>" . __('Add') . "</span></a>";
-            } else {
-               echo "<a href='#' class='pointer disabled' title='" . __s('Add is disabled') . "'>" .
-                  "<i class='fa fa-plus'></i>" .
-                  "<span class='sr-only'>" . __('Add is disabled') . "</span></a>";
-            }
-            echo "</span>";
-
-            // Search Item
-            echo "<span>";
-            if (isset($links['search'])) {
-               echo "<a href='{$CFG_GLPI['root_doc']}{$links['search']}' class='pointer'
-                                 title='" . __s('Search') . "'><i class='fa fa-search'></i>
-                                 <span class='sr-only'>" . __s('Search') . "</span></a>";
-            } else {
-               echo "<a href='#' class='pointer disabled' title='" . __s('Search is disabled') . "'>" .
-                  "<i class='fa fa-search'></i>" .
-                  "<span class='sr-only'>" . __('Search is disabled') . "</span></a>";
-            }
-            echo "</span>";
-            // Links
-            if (count($links) > 0) {
-               foreach ($links as $key => $val) {
-
-                  switch ($key) {
-                     case "add":
-                     case "search":
-                        break;
-
-                     case "template":
-                        echo "<span>";
-                        echo Html::link(
-                           '<i class="pointer fa fa-layer-group"></i>',
-                           $CFG_GLPI["root_doc"] . $val,
-                           [
-                              'title' => __('Manage templates...')
-                           ]
-                        );
-                        echo "</span>";
-                        break;
-
-                     case "showall":
-                        echo "<span>";
-                        echo Html::image(
-                           $CFG_GLPI["root_doc"] . "/pics/menu_showall.png",
-                           [
-                              'alt' => __('Show all'),
-                              'url' => $CFG_GLPI["root_doc"] . $val
-                           ]
-                        );
-                        echo "</span>";
-                        break;
-
-                     case "summary":
-                        echo "<span>";
-                        echo Html::link(
-                           '<i class="pointer fas fa-stream"></i>',
-                           $CFG_GLPI["root_doc"] . $val,
-                           [
-                              'title' => __('Summary')
-                           ]
-                        );
-                        echo "</span>";
-                        break;
-
-                     case "summary_kanban":
-                        echo "<span>";
-                        echo Html::link(
-                           '<i class="pointer fas fa-columns"></i>',
-                           $CFG_GLPI["root_doc"] . $val,
-                           [
-                              'title' => __('Global Kanban')
-                           ]
-                        );
-                        echo "</span>";
-                        break;
-
-                     case "config":
-                        echo "<span>";
-                        echo Html::image(
-                           $CFG_GLPI["root_doc"] . "/pics/menu_config.png",
-                           [
-                              'alt' => __('Setup'),
-                              'url' => $CFG_GLPI["root_doc"] . $val
-                           ]
-                        );
-                        echo "</span>";
-                        break;
-
-                     default:
-                        echo "<span>" . Html::link($key, $CFG_GLPI["root_doc"] . $val, ['class' => 'pointer']) . "</span>";
-                        break;
-                  }
-               }
-            }
-            echo "</li>";
-         } else {
-            echo "<li>&nbsp;</li>";
-         }
-      } else {
-         if (Session::haveRightsOr('ticketvalidation', TicketValidation::getValidateRights())) {
-            $opt                              = [];
-            $opt['reset']                     = 'reset';
-            $opt['criteria'][0]['field']      = 55; // validation status
-            $opt['criteria'][0]['searchtype'] = 'equals';
-            $opt['criteria'][0]['value']      = TicketValidation::WAITING;
-            $opt['criteria'][0]['link']       = 'AND';
-
-            $opt['criteria'][1]['field']      = 59; // validation aprobator
-            $opt['criteria'][1]['searchtype'] = 'equals';
-            $opt['criteria'][1]['value']      = Session::getLoginUserID();
-            $opt['criteria'][1]['link']       = 'AND';
-
-            $url_validate = $CFG_GLPI["root_doc"] . "/front/ticket.php?" .
-               Toolbox::append_params($opt, '&amp;');
-            $pic_validate = "<a href='$url_validate'>" .
-               "<img title=\"" . __s('Ticket waiting for your approval') . "\" alt=\"" .
-               __s('Ticket waiting for your approval') . "\" src='" .
-               $CFG_GLPI["root_doc"] . "/pics/menu_showall.png' class='pointer'></a>";
-            echo "<li class='icons_block'>$pic_validate</li>\n";
-         }
-
-         if (
-            Session::haveRight('ticket', CREATE)
-            && strpos($_SERVER['PHP_SELF'], "ticket")
-         ) {
-            echo "<li class='icons_block'><a class='pointer' href='" . $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php?create_ticket=1'title=\"" . __s('Add') . "\">";
-            echo "<i class='fa fa-plus'></i><span class='sr-only'>" . __s('Add') . "</span></a></li>";
-         }
+      $mainurl = 'central';
+      $link = "";
+      if (isset($menu[$sector])) {
+         $link = (isset($menu[$sector]['default'])) ? $menu[$sector]['default'] :"/front/central.php";
+      }
+      $show_page = "";
+      if (isset($menu[$sector]['content'][$item])) {
+         // Title
+         $show_page = isset($menu[$sector]['content'][$item]['page']);
       }
 
-      // Add common items
+      //actions
+      $links = [];
+      // Item with Option case
+      if (
+         !empty($option)
+         && isset($menu[$sector]['content'][$item]['options'][$option]['links'])
+         && is_array($menu[$sector]['content'][$item]['options'][$option]['links'])
+      ) {
+         $links = $menu[$sector]['content'][$item]['options'][$option]['links'];
+      } else if (
+         isset($menu[$sector]['content'][$item]['links'])
+         && is_array($menu[$sector]['content'][$item]['links'])
+      ) {
+         // Without option case : only item lin
+         $links = $menu[$sector]['content'][$item]['links'];
+      }
+      $twig_vars = [];
+      if ($sector == "helpdesk" && Session::haveRightsOr('ticketvalidation', TicketValidation::getValidateRights())) {
+         $opt                              = [];
+         $opt['reset']                     = 'reset';
+         $opt['criteria'][0]['field']      = 55; // validation status
+         $opt['criteria'][0]['searchtype'] = 'equals';
+         $opt['criteria'][0]['value']      = TicketValidation::WAITING;
+         $opt['criteria'][0]['link']       = 'AND';
 
+         $opt['criteria'][1]['field']      = 59; // validation aprobator
+         $opt['criteria'][1]['searchtype'] = 'equals';
+         $opt['criteria'][1]['value']      = Session::getLoginUserID();
+         $opt['criteria'][1]['link']       = 'AND';
+
+         $twig_vars['url_validate'] = $CFG_GLPI["root_doc"] . "/front/ticket.php?" . Toolbox::append_params($opt, '&amp;');
+         $twig_vars['opt'] = $opt;
+      }
+      $template_path = 'menu.twig';
+      $twig_vars += [ "root_doc" => $CFG_GLPI['root_doc'], "menu" => $menu, 
+      "mainurl" => $mainurl, "show_page" => $show_page, 
+      "link" => $link, "item" => $item, 
+      "option" => $option, "sector"=> $sector];
+      $twig_vars['links'] = $links;
+
+      // TODO: add profile selector
       // Profile selector
       // check user id : header used for display messages when session logout
-      if (Session::getLoginUserID()) {
-         self::showProfileSelecter($CFG_GLPI["root_doc"] . "/front/$mainurl.php");
-      }
-      echo "</ul>";
-      echo "</div>";
-      echo "</nav>";
+      // if (Session::getLoginUserID()) {
+      //    self::showProfileSelecter($CFG_GLPI["root_doc"] . "/front/$mainurl.php");
+      // }
+      return ["path" => $template_path, "args" => $twig_vars];
    }
 
+   static function addMenuFavorite($menu, $menu_name, $sub_menu_name) : void {
+      $menu['favorite'][] = $menu[$menu_name]['content'][$sub_menu_name];
+   }
+   
    /**
     * Invert the input color (usefull for label bg on top of a background)
     * inpiration: https://github.com/onury/invert-color
@@ -8022,21 +8331,22 @@ JAVASCRIPT;
     *
     * @return void
     */
-   public static function displayImpersonateBanner()
+   public static function displayImpersonateBanner() : array
    {
-
+      
       if (!Session::isImpersonateActive()) {
-         return;
+         return [];
       }
-
-      echo '<div class="banner-impersonate">';
-      echo '<form name="form" method="post" action="' . User::getFormURL() . '">';
-      echo sprintf(__('You are impersonating %s.'), $_SESSION['glpiname']);
-      echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
-      echo '<button type="submit" name="impersonate" class="btn-linkstyled" value="0">';
-      echo __s('Stop impersonating');
-      echo '</button>';
-      echo '</form>';
-      echo '</div>';
+      $user_form_url = User::getFormURL();
+      $impersonate_name = $_SESSION['glpiname'];
+      $csrf_token =  Session::getNewCSRFToken();  
+      $template_path = 'impersonate_banner.twig';
+      $twig_vars = [
+         "root_doc" => $CFG_GLPI['root_doc'],
+         "user_form_url" => $user_form_url,
+         "impersonate_name" => $impersonate_name,
+         "csrf_token" => $csrf_token
+      ];
+      return ["path" => $template_path, "args" => $twig_vars];
    }
 }
