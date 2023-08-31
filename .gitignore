@@ -27,14 +27,13 @@ phpunit.xml
 /config/define.php
 /nbproject
 .composer.hash
-/**/*.min.css
 /css_compiled/
 /css/compiled/
 !/css/tiny_mce/**/*.min.css
-/**/*.min.js
 /node_modules/
 .package.hash
 /public/build/
 /public/lib/
 /tests/web/error.log
 megalinter-reports/
+.gitignore
