@@ -37,3 +37,4 @@ phpunit.xml
 /tests/web/error.log
 megalinter-reports/
 .gitignore
+composer.lock
