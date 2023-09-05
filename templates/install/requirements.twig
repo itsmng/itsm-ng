@@ -62,7 +62,7 @@
         </div>
         <h3>{{'Do you want to continue?'|trans}}</h3>
 
-    {% if missing_requirements  == "mandatory" %}
+    {% if (missing_requirements  == "mandatory") or (missing_requirements  == "none") %}
 
         <div class="buttons">
             <form action="install.php?step=4" method="post">
