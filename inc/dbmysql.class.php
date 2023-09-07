@@ -511,7 +511,6 @@ class DBmysql {
     * @deprecated 9.5.0
     */
    function fetch_assoc($result) {
-      Toolbox::deprecated('Use DBmysql::fetchAssoc()');
       return $this->fetchAssoc($result);
    }
 
