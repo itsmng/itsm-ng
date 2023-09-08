@@ -274,12 +274,15 @@ function glpi_autoload($classname) {
    static $notfound = ['xStates'    => true,
                             'xAllAssets' => true, ];
    // empty classname or non concerted plugin or classname containing dot (leaving GLPI main treee)
-   if (empty($classname) || is_numeric($classname) || (strpos($classname, '.') !== false)) {
-      trigger_error(
-         sprintf('Trying to load a forbidden class name "%1$s"', $classname),
-         E_USER_ERROR
-      );
-      return false;
+   if($classname != '0')
+   {
+      if (empty($classname) || is_numeric($classname) || (strpos($classname, '.') !== false)) {
+         trigger_error(
+            sprintf('Trying to load a forbidden class name "%1$s"', $classname),
+            E_USER_ERROR
+         );
+         return false;
+      }
    }
 
    if ($classname === 'phpCAS'
