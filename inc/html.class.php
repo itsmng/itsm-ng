@@ -7322,11 +7322,11 @@ JAVASCRIPT;
 
       if (Session::getCurrentInterface() == 'central') {
          $url_help_link = (empty($CFG_GLPI["central_doc_url"])
-            ? "http://glpi-project.org/help-central"
+            ? "http://www.itsm-ng.org/"
             : $CFG_GLPI["central_doc_url"]);
       } else {
          $url_help_link = (empty($CFG_GLPI["helpdesk_doc_url"])
-            ? "http://glpi-project.org/help-central"
+            ? "http://www.itsm-ng.org/"
             : $CFG_GLPI["helpdesk_doc_url"]);
       }
 
