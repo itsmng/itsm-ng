@@ -2016,7 +2016,7 @@ class Config extends CommonDBTM {
     */
    static function getLibraries($all = false) {
       $pm = new PHPMailer();
-      $sp = new SimplePie();
+      $sp = new SimplePie\SimplePie();
 
       // use same name that in composer.json
       $deps = [[ 'name'    => 'htmlawed/htmlawed',
@@ -2026,7 +2026,7 @@ class Config extends CommonDBTM {
                  'version' => $pm::VERSION,
                  'check'   => 'PHPMailer\\PHPMailer\\PHPMailer' ],
                [ 'name'    => 'simplepie/simplepie',
-                 'version' => SIMPLEPIE_VERSION,
+                 'version' =>  \SimplePie\SimplePie::VERSION,
                  'check'   => $sp ],
                [ 'name'    => 'tecnickcom/tcpdf',
                  'version' => TCPDF_STATIC::getTCPDFVersion(),
