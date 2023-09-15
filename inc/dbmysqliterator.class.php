@@ -698,12 +698,12 @@ class DBmysqlIterator implements Iterator, Countable {
     *
     * @return string[]|null fetch_assoc() of first results row
     */
-   public function rewind() {
+   public function rewind() : void  {
       if ($this->res && $this->conn->numrows($this->res)) {
          $this->conn->dataSeek($this->res, 0);
       }
       $this->position = 0;
-      return $this->next();
+      $this->next();
    }
 
    /**
@@ -711,7 +711,7 @@ class DBmysqlIterator implements Iterator, Countable {
     *
     * @return mixed
     */
-   public function current() {
+   public function current(): mixed {
       return $this->row;
    }
 
@@ -720,7 +720,7 @@ class DBmysqlIterator implements Iterator, Countable {
     *
     * @return mixed
     */
-   public function key() {
+   public function key(): mixed {
       return (isset($this->row["id"]) ? $this->row["id"] : $this->position - 1);
    }
 
@@ -735,7 +735,7 @@ class DBmysqlIterator implements Iterator, Countable {
       }
       $this->row = $this->conn->fetchAssoc($this->res);
       ++$this->position;
-      return $this->row;
+      return($this->row);
    }
 
    /**
@@ -743,7 +743,7 @@ class DBmysqlIterator implements Iterator, Countable {
     *
     * @return boolean
     */
-   public function valid() {
+   public function valid(): bool {
       return $this->res instanceof \mysqli_result && $this->row;
    }
 
@@ -763,7 +763,7 @@ class DBmysqlIterator implements Iterator, Countable {
     *
     * @return integer
     */
-   public function count() {
+   public function count(): int {
       return ($this->res instanceof \mysqli_result ? $this->conn->numrows($this->res) : 0);
    }
 
