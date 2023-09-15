@@ -109,7 +109,6 @@ class DBmysqlIterator implements Iterator, Countable {
    function buildQuery ($table, $crit = "", $log = false) {
       $this->sql = null;
       $this->res = false;
-      $this->parameters = [];
 
       $is_legacy = false;
 
@@ -729,6 +728,7 @@ class DBmysqlIterator implements Iterator, Countable {
     *
     * @return string[]|null fetch_assoc() of first results row
     */
+   #[\ReturnTypeWillChange]
    public function next() {
       if (!($this->res instanceof \mysqli_result)) {
          return false;
