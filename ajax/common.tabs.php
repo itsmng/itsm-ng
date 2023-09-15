@@ -34,11 +34,7 @@ include ('../inc/includes.php');
 
 if (isset($_GET['full_page_tab'])) {
    Html::header('Only tab for debug', $_SERVER['PHP_SELF']);
-} else {
-   header("Content-Type: text/html; charset=UTF-8");
-   Html::header_nocache();
 }
-
 // Not possible to check right for anonymous FAQ
 //Session::checkLoginUser();
 
