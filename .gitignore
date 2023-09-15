@@ -16,7 +16,6 @@
 /tools/api/
 /tools/htmlcov/
 /vendor/
-phpunit.xml
 /tests/code-coverage/
 /tests/coverage-*/
 /tests/files/
