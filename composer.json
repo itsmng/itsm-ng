@@ -98,7 +98,7 @@
         "test:csp": "vendor/bin/phpcs --parallel=500 --cache -p --extensions=php --standard=vendor/glpi-project/coding-standard/GlpiStandard/ --ignore=\"/.git/,^$(pwd)/(config|files|lib|marketplace|node_modules|plugins|tests/config|vendor)/\" ./",
         "test:cs": "vendor/bin/phpcs -d memory_limit=512M --cache -p --extensions=php --standard=vendor/glpi-project/coding-standard/GlpiStandard/ --ignore=\"/.git/,^$(pwd)/(config|files|lib|marketplace|node_modules|plugins|tests/config|vendor)/\" ./",
         "test:lint": "vendor/bin/parallel-lint  --exclude files --exclude marketplace --exclude plugins --exclude vendor --exclude tools/vendor .",
-        "server": "php -S localhost:8000",
+        "server": "php -S localhost:8000"
     },
     "repositories": {
         "htmlawed": {
