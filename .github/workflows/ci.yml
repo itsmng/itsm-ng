@@ -22,7 +22,7 @@ jobs:
           node-version: '18'
  
       - name: Run composer install
-        run: php bin/console dependencies install
+        run: export NODE_OPTIONS=--openssl-legacy-provider && php bin/console dependencies install
 
       - name: Run Pest
         run: vendor/bin/pest
