@@ -366,14 +366,6 @@ $needrun  = false;
 $autoload = GLPI_ROOT . '/vendor/autoload.php';
 if (!file_exists($autoload)) {
    $needrun = true;
-} else if (file_exists(GLPI_ROOT . '/composer.lock')) {
-   if (!file_exists(GLPI_ROOT . '/.composer.hash')) {
-      /* First time */
-      $needrun = true;
-   } else if (sha1_file(GLPI_ROOT . '/composer.lock') != file_get_contents(GLPI_ROOT . '/.composer.hash')) {
-      /* update */
-      $needrun = true;
-   }
 }
 
 // node dependencies
