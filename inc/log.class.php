@@ -191,6 +191,10 @@ class Log extends CommonDBTM {
    static function history ($items_id, $itemtype, $changes, $itemtype_link = '', $linked_action = '0') {
       global $DB;
 
+      if (!isset($_SESSION["glpi_currenttime"])) {
+         $date = date('Y-m-d H:i:s');
+         $_SESSION['glpi_currenttime'] = $date;
+      }
       $date_mod = $_SESSION["glpi_currenttime"];
       if (empty($changes)) {
          return false;
