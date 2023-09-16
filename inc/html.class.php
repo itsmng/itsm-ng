@@ -1868,10 +1868,10 @@ JAVASCRIPT
             'WHERE'  => ['id' => $_SESSION["glpiID"]]
          ]
       );
-      if ($bubble_pos->numrows() != null) {
+      if ($bubble_pos->numrows() == null) {
          $bubble_pos = json_decode($bubble_pos->next()['bubble_pos'], true);
+         $twig_vars['bubble_pos'] = $bubble_pos;
       }
-      $twig_vars['bubble_pos'] = $bubble_pos;
 
       $twig_vars['menu_small'] = $DB->request(
                [
@@ -1890,8 +1890,10 @@ JAVASCRIPT
                ]
          );
 
-      $menu_width = json_decode($menu_width->next()['menu_width'], true);
-      $twig_vars['menu_width'] = $menu_width;
+      if ($menu_width->next()['menu_width'] != null){
+         $menu_width = json_decode($menu_width->next()['menu_width'], true);
+         $twig_vars['menu_width'] = $menu_width;
+      }      
 
       require_once GLPI_ROOT . "/ng/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
