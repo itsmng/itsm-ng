@@ -39,6 +39,7 @@ if (!defined('GLPI_ROOT')) {
 /**
 *  Common DataBase Table Manager Class - Persistent Object
 **/
+#[AllowDynamicProperties]  
 class CommonDBTM extends CommonGLPI {
 
    /**
@@ -1600,7 +1601,7 @@ class CommonDBTM extends CommonGLPI {
                      switch ($searchopt['datatype']) {
                         case 'string' :
                         case 'text' :
-                           $ischanged = (strcmp($DB->escape($this->fields[$key]),
+                           $ischanged = (@strcmp($DB->escape($this->fields[$key]),
                                                 $this->input[$key]) != 0);
                            break;
 
