@@ -210,7 +210,7 @@ class Config extends CommonDBTM {
 
          for ($urgency=1; $urgency<=5; $urgency++) {
             for ($impact=1; $impact<=5; $impact++) {
-               $priority               = $input["_matrix_${urgency}_${impact}"];
+               $priority               = $input["_matrix_{$urgency}_{$impact}"];
                $tab[$urgency][$impact] = $priority;
             }
          }
@@ -220,11 +220,11 @@ class Config extends CommonDBTM {
          $input['impact_mask']     = 0;
 
          for ($i=1; $i<=5; $i++) {
-            if ($input["_urgency_${i}"]) {
+            if ($input["_urgency_{$i}"]) {
                $input['urgency_mask'] += (1<<$i);
             }
 
-            if ($input["_impact_${i}"]) {
+            if ($input["_impact_{$i}"]) {
                $input['impact_mask'] += (1<<$i);
             }
          }
@@ -954,7 +954,7 @@ class Config extends CommonDBTM {
 
          } else {
             $isimpact[$impact] = (($CFG_GLPI['impact_mask']&(1<<$impact)) >0);
-            Dropdown::showYesNo("_impact_${impact}", $isimpact[$impact]);
+            Dropdown::showYesNo("_impact_{$impact}", $isimpact[$impact]);
          }
          echo "</td>";
       }
@@ -980,7 +980,7 @@ class Config extends CommonDBTM {
 
          } else {
             $isurgency[$urgency] = (($CFG_GLPI['urgency_mask']&(1<<$urgency)) >0);
-            Dropdown::showYesNo("_urgency_${urgency}", $isurgency[$urgency]);
+            Dropdown::showYesNo("_urgency_{$urgency}", $isurgency[$urgency]);
          }
          echo "</td>";
 
@@ -995,10 +995,10 @@ class Config extends CommonDBTM {
                $bgcolor=$_SESSION["glpipriority_$pri"];
                echo "<td class='center' bgcolor='$bgcolor'>";
                Ticket::dropdownPriority(['value' => $pri,
-                                              'name'  => "_matrix_${urgency}_${impact}"]);
+                                              'name'  => "_matrix_{$urgency}_{$impact}"]);
                echo "</td>";
             } else {
-               echo "<td><input type='hidden' name='_matrix_${urgency}_${impact}' value='$pri'>
+               echo "<td><input type='hidden' name='_matrix_{$urgency}_{$impact}' value='$pri'>
                      </td>";
             }
          }
@@ -3151,7 +3151,7 @@ class Config extends CommonDBTM {
       }
 
       if (!isset($opt['options']['namespace'])) {
-         $namespace = "glpi_${optname}_" . GLPI_VERSION;
+         $namespace = "glpi_{$optname}_" . GLPI_VERSION;
          if ($DB) {
             $namespace .= md5(
                (is_array($DB->dbhost) ? implode(' ', $DB->dbhost) : $DB->dbhost) . $DB->dbdefault

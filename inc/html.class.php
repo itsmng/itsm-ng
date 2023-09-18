@@ -1285,14 +1285,6 @@ class Html
          $title = sprintf(__('%1$s - %2$s'), $title, $_GET['id']);
       }
 
-      // Send UTF8 Headers
-      header("Content-Type: text/html; charset=UTF-8");
-      // Allow only frame from same server to prevent click-jacking
-      header('x-frame-options:SAMEORIGIN');
-
-      // Send extra expires header
-      self::header_nocache();
-
       // Start the page
       echo "<!DOCTYPE html>\n";
       echo "<html lang=\"{$CFG_GLPI["languages"][$_SESSION['glpilanguage']][3]}\">";
@@ -1876,8 +1868,10 @@ JAVASCRIPT
             'WHERE'  => ['id' => $_SESSION["glpiID"]]
          ]
       );
-      $bubble_pos = json_decode($bubble_pos->next()['bubble_pos'], true);
-      $twig_vars['bubble_pos'] = $bubble_pos;
+      if ($bubble_pos->numrows() == null) {
+         $bubble_pos = json_decode($bubble_pos->next()['bubble_pos'], true);
+         $twig_vars['bubble_pos'] = $bubble_pos;
+      }
 
       $twig_vars['menu_small'] = $DB->request(
                [
@@ -1896,8 +1890,10 @@ JAVASCRIPT
                ]
          );
 
-      $menu_width = json_decode($menu_width->next()['menu_width'], true);
-      $twig_vars['menu_width'] = $menu_width;
+      if ($menu_width->next()['menu_width'] != null){
+         $menu_width = json_decode($menu_width->next()['menu_width'], true);
+         $twig_vars['menu_width'] = $menu_width;
+      }      
 
       require_once GLPI_ROOT . "/ng/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
@@ -2415,8 +2411,8 @@ JAVASCRIPT
    static function header_nocache()
    {
 
-      header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
-      header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date du passe
+      // header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
+      // header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date du passe
    }
 
 

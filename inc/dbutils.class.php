@@ -1022,7 +1022,7 @@ final class DbUtils {
          if ($translate && !empty($transcomment)) {
             $comment .= nl2br($transcomment);
          } else {
-            $comment .= nl2br($result['comment']);
+            $comment .= @nl2br($result['comment']);
          }
       }
 

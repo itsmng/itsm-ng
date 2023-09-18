@@ -89,7 +89,6 @@ switch ($_POST['action'] ?? null) {
 
 $grid = new Grid($_REQUEST['dashboard'] ?? "");
 
-header("Content-Type: text/html; charset=UTF-8");
 switch ($_REQUEST['action']) {
    case 'add_new':
       $grid->displayAddDashboardForm();
