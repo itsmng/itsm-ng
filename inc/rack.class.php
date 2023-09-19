@@ -201,22 +201,11 @@ class Rack extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td><label for='dropdown_dcrooms_id$rand'>".DCRoom::getTypeName(1)."</label></td>";
       echo "<td>";
-      $rooms = $DB->request([
-         'SELECT' => ['id', 'name'],
-         'FROM'   => DCRoom::getTable()
+      DCRoom::dropdown([
+         'name'   => "id",
+         'rand'   => $rand,
+         'display_emptychoice' => true,
       ]);
-      $rooms_list = [];
-      while ($row = $rooms->next()) {
-         $rooms_list[$row['id']] = $row['name'];
-      }
-      Dropdown::showFromArray(
-         "dcrooms_id",
-         $rooms_list, [
-            'value'                 => $this->fields["dcrooms_id"],
-            'rand'                  => $rand,
-            'display_emptychoice'   => true
-         ]
-      );
       $current = $this->fields['position'];
 
       Ajax::updateItemOnSelectEvent(
