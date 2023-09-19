@@ -147,7 +147,7 @@ class Toolbox {
     * @return integer  length of the string
    **/
    static function strlen($str) {
-      return mb_strlen($str, "UTF-8");
+      return mb_strlen(($str == null) ? "" : $str, "UTF-8");
    }
 
 
