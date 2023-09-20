@@ -1,5 +1,18 @@
 # ITSM-NG Changelog
 
+## ITSM-NG - 1.5.1
+
+### Add
+
+* New configuration options for OpenID Connect
+* New username mapping for OpenID Connect 
+
+### Fixes
+
+* Fix encoded & in url
+* Fix blank page due to an itemtype set to 0
+* Fix passing null value as parameter for mb_strlen() and sscanf()
+
 ## ITSM-NG - 1.5.0
 
 ### Add
