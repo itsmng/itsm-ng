@@ -7896,17 +7896,13 @@ JAVASCRIPT;
     */
    private static function getMainMenu($sector, $item, $option) : array
    {
-      global $CFG_GLPI, $PLUGIN_HOOKS, $DB;
+      global $CFG_GLPI, $DB;
 
       // Generate array for menu and check right
       $menu    = self::generateMenuSession($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
       $menu = Plugin::doHookFunction("redefine_menus", $menu);
       $already_used_shortcut = ['1'];
 
-      // Get user favorites menu
-      $DB->queryOrDie(
-         'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_favorite longtext'
-      );
       $menu_favorites = $DB->request(
          [
              'SELECT' => 'menu_favorite',
@@ -7916,9 +7912,6 @@ JAVASCRIPT;
       );
      
      $menu_favorites = json_decode($menu_favorites->next()['menu_favorite'], true);
-     $DB->queryOrDie(
-        'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_open longtext'
-     );
      $menu_collapse = $DB->request(
       [
           'SELECT' => 'menu_open',
