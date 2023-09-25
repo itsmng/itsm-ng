@@ -37,12 +37,45 @@
 function buttons () {
     return {
         btnMassiveAction: {
-            text: 'Acción masiva',
+            text: 'Massive action',
+            icon: 'fa-edit',
+            event: function () {
+                console.log(JSON.stringify(this.getSelections()));
+            },
+            attributes: {
+                title: {{'Apply massive action'|trans|json_encode|raw}},
+            },
+        },
+        btnAsMap: {
+            text: 'Show as map',
+            icon: 'fa-globe-europe',
+            event: function () {
+                console.log(JSON.stringify(this.getSelections()));
+            },
+            attributes: {
+                title: {{'Show list as map'|trans|json_encode|raw}},
+            },
+        },
+        btnshowTrash: {
+            text: 'Show trash',
+            icon: 'fa-trash-alt',
+            event: function () {
+                console.log(JSON.stringify(this.getSelections()));
+            },
+            attributes: {
+                title: {{'Show trash content'|trans|json_encode|raw}},
+            }
+        },
+        btnEditColumns: {
+            text: 'Edit columns',
             icon: 'fa-wrench',
             event: function () {
                 console.log(JSON.stringify(this.getSelections()));
             },
-        }
+            attributes: {
+                title: {{'Edit columns position and content'|trans|json_encode|raw}},
+            }
+        },
     }
 }
 </script>
