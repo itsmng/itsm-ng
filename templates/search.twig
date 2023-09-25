@@ -43,7 +43,7 @@ function buttons () {
                 console.log(JSON.stringify(this.getSelections()));
             },
             attributes: {
-                title: {{'Apply massive action'|trans|json_encode|raw}},
+                title: {{'Apply a massive action'|trans|json_encode|raw}},
             },
         },
         btnAsMap: {
@@ -70,7 +70,7 @@ function buttons () {
             text: 'Edit columns',
             icon: 'fa-wrench',
             event: function () {
-                console.log(JSON.stringify(this.getSelections()));
+                console.log($('#search-config').dialog("open"));
             },
             attributes: {
                 title: {{'Edit columns position and content'|trans|json_encode|raw}},

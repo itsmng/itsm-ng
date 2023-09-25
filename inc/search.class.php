@@ -1472,22 +1472,38 @@ class Search {
    **/
    static function displayData(array $data) {
       require_once GLPI_ROOT . "/ng/twig.class.php";
+      global $CFG_GLPI;
 
       $fields = $data['data']['cols'];
       $values = [];
       $row_num = 0;
       foreach ($data['data']['rows'] as $row) {
-         $col_num = 0;
          $row_num++;
+         $col_num = 0;
          $value[$row_num] = [];
+
          foreach ($data['data']['cols'] as $col) {
             $col_num++;
             $colkey = "{$col['itemtype']}_{$col['id']}";
+            
             if (isset($row[$colkey]['displayname']) && $row[$colkey]['displayname']) {
                $values[$row_num][$col_num] = $row[$colkey]['displayname'];
             }
          }
       }
+
+      $pref_url = $CFG_GLPI["root_doc"]."/front/displaypreference.form.php?itemtype=".
+      $data['itemtype'];
+      
+      echo Ajax::createIframeModalWindow(
+         'search-config',
+         $pref_url,
+         [
+            'title'         => __('Select default items to show'),
+            'reloadonclose' => true,
+            'display'       => false
+         ]
+      );
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
       echo $twig->render('search.twig', [
          'fields' => $fields,
