@@ -202,8 +202,9 @@ class Rack extends CommonDBTM {
       echo "<td><label for='dropdown_dcrooms_id$rand'>".DCRoom::getTypeName(1)."</label></td>";
       echo "<td>";
       DCRoom::dropdown([
-         'name'   => "id",
+         'name'   => "dcrooms_id",
          'rand'   => $rand,
+         'value'  => $this->fields["dcrooms_id"],
          'display_emptychoice' => true,
       ]);
       $current = $this->fields['position'];
