@@ -2,146 +2,141 @@
 
 {% if menu_width is empty %}
 
-<body class={{body_class}}>
+	<body class={{body_class}}>
 
-{% else %}
+	{% else %}
 
-<body class={{body_class}} style = "--menu-open-width: {{menu_width['menu-open']}}; --menu-close-width: {{menu_width['menu-close']}}; --menu-count: {{menu|length}}; --bubble_pos_x: {{bubble_pos.x}}; --bubble_pos_y: {{bubble_pos.y}};">
-{% endif %}
-{% if impersonate_banner is defined %}
-    {% include impersonate_banner.path with impersonate_banner.args%}
-{% endif %}
+		<body class={{body_class}} style="--menu-open-width: {{menu_width['menu-open']}}; --menu-close-width: {{menu_width['menu-close']}}; --menu-count: {{menu|length}}; --bubble_pos_x: {{bubble_pos.x}}; --bubble_pos_y: {{bubble_pos.y}};">
+		{% endif %}
+		{% if impersonate_banner is defined %}
+			{% include impersonate_banner.path with impersonate_banner.args%}
+		{% endif %}
 
-        <header role='banner' id='header_top'>
-            <div id="searchbar">
-                <input id="searchbar" type="search" placeholder="Search here ..."> 
-                <i class="fa fa-search"></i>
-            </div>
-            <div class="header_logo" id='c_logo'>
-                <a href="{{root_doc}}/front/central.php" accesskey='1' title={{"Home"|trans}}>
-                    <span class='sr-only'>{{"Home"|trans}}</span>
-                </a>
-            </div>
-        </header> 
-
-<div id="main-test" class="{{menu_position}}">
-    <div id="menu" class="{{menu_small ? 'menu-close' : 'menu-open'}}">
-        <div id="bubble">
-            <i id="compass-menu" class="fas fa-compass"></i>
-            <i id="star-menu" class="fas fa-star"></i>
-        </div>
-        <div id="menu-border" onmousedown="resizeMenu()">
-        </div>
-        {% include main_menu.path with main_menu.args %}
-        <div class="menu-bottom">
-            <a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors">
-            </a>
-            <div id='c_preference' >
-            <ul>
-                <li id='menu-options' class="dropdown dropup"> {# URL::sanitizeURL($url_help_link) ?? #}
-                    <a id='menu-options-button' title={{'Options'|trans}} class="" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-sort-amount-down"></i>
-                    </a>
-                    <div id="menu-options" class="dropup">
-                        <div class="dropdown-menu dropup">
-                            <h6 class="dropdown-header">{{'Menu'|trans}}</h6>
-                            <span class="dropdown-item" href="#">{{'Menu collapse'|trans}} : {{input("", "", "checkbox", "form-check-input", "menu-collapse-toggle" ,"", "", "", menu_small ? 'true')}}</span>
-                            <span class="dropdown-item" href="#">{{'Reset menu bubble position'|trans}} : <button id"reset-bubble-button" type="button" class="btn btn-primary btn-sm">Reset</button></span>
+		<header role='banner' id='header_top' class='d-flex justify-content-between align-items-center'>
+			<div class="header_logo" id='c_logo'>
+				<a href="{{root_doc}}/front/central.php" accesskey='1' title={{"Home"|trans}}>
+					<span class='sr-only'>{{"Home"|trans}}</span>
+				</a>
+			</div>
+			<div id="searchbar">
+				<input id="searchbar" type="search" placeholder="Search here ...">
+				<i class="fa fa-search"></i>
+			</div>
+			<ul class='d-flex justify-content-around'>
+				<li id='menu-options' class="dropdown dropup p-2">
+					{# URL::sanitizeURL($url_help_link) ?? #}
+					<a class='fs-3' title={{'Options'|trans}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fas fa-sort-amount-down fs-3"></i>
+					</a>
+                    <div class="dropdown-menu dropup">
+                        <h6 class="dropdown-header">{{'Menu'|trans}}</h6>
+                        <span class="dropdown-item" href="#">{{'Menu collapse'|trans}}
+                            :
+                            {{input("", "", "checkbox", "form-check-input", "menu-collapse-toggle" ,"", "", "", menu_small ? 'true')}}</span>
+                        <span class="dropdown-item" href="#">{{'Reset menu bubble position'|trans}}
+                            :
+                            <button id"reset-bubble-button" type="button" class="btn btn-primary btn-sm">Reset</button>
+                        </span>
+                        <div class="dropdown-divider"></div>
+                        <h6 class="dropdown-header">{{'Menu favorite'|trans}}</h6>
+                        <span class="dropdown-item" href="#">{{'Activate menu favorite'|trans}}
+                            :
+                            {{input("", "", "checkbox", "form-check-input", "menu-favorite-toggle","", "", "", menu_favorite_on ? 'true')}}</span>
+                        <span class="dropdown-item" href="#">{{'Activate favorite selection'|trans}}
+                            :
+                            {{input("", "", "checkbox", "form-check-input", "menu-favorite-selection-toggle")}}</span>
+                        <div class="dropdown-divider"></div>
+                        <h6 class="dropdown-header">{{'Menu position'|trans}}</h6>
+                        <span class="dropdown-item" href="#">
+                            <i class="fas fa-arrow-alt-circle-left"></i>
+                            {{'Left'|trans}}
+                            :
+                            {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-left", "", "", "", menu_position == 'menu-left' ? 'true')}}</span>
+                        <span class="dropdown-item" href="#">
+                            <i class="fas fa-arrow-alt-circle-up"></i>
+                            {{'Up'|trans}}
+                            :
+                            {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-top", "", "", "", menu_position == 'menu-top' ? 'true')}}</span>
+                        <span class="dropdown-item" href="#">
+                            <i class="fas fa-arrow-alt-circle-right"></i>
+                            {{'Right'|trans}}
+                            :
+                            {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-right", "", "", "", menu_position == 'menu-right' ? 'true')}}</span>
+                        <span class="dropdown-item" href="#">
+                            <i class="fas fa-circle"></i>
+                            {{'Bubble'|trans}}
+                            :
+                            {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-bubble", "", "", "", menu_position == 'menu-bubble' ? 'true')}}</span>
+                        <div class="divers">
                             <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">{{'Menu favorite'|trans}}</h6>
-                            <span class="dropdown-item" href="#">{{'Activate menu favorite'|trans}} : {{input("", "", "checkbox", "form-check-input", "menu-favorite-toggle","", "", "", menu_favorite_on ? 'true')}}</span>
-                            <span class="dropdown-item" href="#">{{'Activate favorite selection'|trans}} : {{input("", "", "checkbox", "form-check-input", "menu-favorite-selection-toggle")}}</span>
-                            <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">{{'Menu position'|trans}}</h6>
-                            <span class="dropdown-item" href="#"><i class="fas fa-arrow-alt-circle-left"></i>{{'Left'|trans}} : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-left", "", "", "", menu_position == 'menu-left' ? 'true')}}</span>
-                            <span class="dropdown-item" href="#"><i class="fas fa-arrow-alt-circle-up"></i>{{'Up'|trans}} : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-top", "", "", "", menu_position == 'menu-top' ? 'true')}}</span>
-                            <span class="dropdown-item" href="#"><i class="fas fa-arrow-alt-circle-right"></i>{{'Right'|trans}} : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-right", "", "", "", menu_position == 'menu-right' ? 'true')}}</span>
-                            <span class="dropdown-item" href="#"><i class="fas fa-circle"></i>{{'Bubble'|trans}} : {{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-bubble", "", "", "", menu_position == 'menu-bubble' ? 'true')}}</span>                            
-                            <div class="divers">
-                                <div class="dropdown-divider"></div>
-                                <h6 class="dropdown-header">Divers</h6>
-                                <ul class="in-dropdown">
-                                    <a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}} class='fa fa-sign-out-alt'>
-                                        <span class='sr-only'>{{'Logout'|trans}}></span>
-                                    </a>
-                                    <a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}" class='fa fa-cog'>
-                                        <span class='sr-only'>{{'My settings'|trans}}</span>
+                            <h6 class="dropdown-header">Divers</h6>
+                            <ul class="in-dropdown">
+                                <a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}} class='fa fa-sign-out-alt'>
+                                    <span class='sr-only'>{{'Logout'|trans}}></span>
+                                </a>
+                                <a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}" class='fa fa-cog'>
+                                    <span class='sr-only'>{{'My settings'|trans}}</span>
                                     {% if username %}
                                         <span id='myname'>{{username}}</span>
                                     {% endif %}
-                                    </a>
-                                    {% if can_update %}
+                                </a>
+                                {% if can_update %}
                                     <a href='{{root_doc}}/ajax/switchdebug.php' class="fa fa-bug debug{{is_debug_active ? 'on' : 'off'}}" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
                                         <span class='sr-only'>{{'Change mode'|trans}}</span>
                                     </a>
-                                    {% endif %}
-                                    <a href="{{sanitizedURL}}" target='_blank' title={{'Help'|trans}} class='fa fa-question'>{# URL::sanitizeURL($url_help_link) ?? #}
-                                        <span class='sr-only'>{{'Help'|trans}}</span>
-                                    </a>
-                                </ul>
-                            </div>
+                                {% endif %}
+                                <a
+                                    href="{{sanitizedURL}}" target='_blank' title={{'Help'|trans}} class='fa fa-question'>
+                                    {# URL::sanitizeURL($url_help_link) ?? #}
+                                    <span class='sr-only'>{{'Help'|trans}}</span>
+                                </a>
+                            </ul>
                         </div>
                     </div>
-                <li id='deconnexion'>
-                    <a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}} class='fa fa-sign-out-alt'>
-                        <span class='sr-only'>{{'Logout'|trans}}></span>
-                    </a>
-                </li>
-
-                <li id='preferences_link'>
-                    <a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}" class='fa fa-cog'>
+				</li>
+				{% if can_update %}
+					<li id='debug_mode' class='p-2'>
+						<a href='{{root_doc}}/ajax/switchdebug.php' class="debug{{is_debug_active ? 'on' : 'off'}} fs-3" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
+						    <i class='fa fa-bug'></i>
+							<span class='sr-only'>{{'Change mode'|trans}}</span>
+						</a>
+					</li>
+				{% endif %}
+				<li id='preferences_link' class='p-2'>
+					<a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}" class='fs-3'>
+						<i class='fa fa-cog'></i>
                         <span class='sr-only'>{{'My settings'|trans}}</span>
-        {% if username %}
-                            <span id='myname'>{{username}}</span>
-        {% endif %}
-                    </a>
-                </li>
+						{% if username %}
+							<span id='myname'>{{username}}</span>
+						{% endif %}
+					</a>
+				</li>
 
-        {% if can_update %}
-                <li id='debug_mode'>
-                    <a href='{{root_doc}}/ajax/switchdebug.php' class="fa fa-bug debug{{is_debug_active ? 'on' : 'off'}}" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
-                        <span class='sr-only'>{{'Change mode'|trans}}</span>
-                    </a>
-                </li>
-        {% endif %}
-                {# <li id='bookmark_link'> TODO: RE ADD
-                    <a href='#' id='showSavedSearchesLink' class='fa fa-star' title={{'Load a saved search'|trans}}>
-                        <span class='sr-only'>{{'Saved searches'|trans}}</span>
-                    </a>
-                </li> #}
+				<li id='deconnexion' class='p-2'>
+					<a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}} class='fs-3'>
+						<i class='fa fa-sign-out-alt'></i>
+						<span class='sr-only'>{{'Logout'|trans}}></span>
+					</a>
+				</li>
+			</ul>
+		</header>
 
-                <li id='help_link'> {# URL::sanitizeURL($url_help_link) ?? #}
-                    <a href="{{sanitizedURL}}" target='_blank' title={{'Help'|trans}} class='fa fa-question'>
-                        <span class='sr-only'>{{'Help'|trans}}</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        </div>
-    </div>
-    <div class="main-container">
-        <div id='c_ssmenu2' >
-            <ul>
-                <li class='breadcrumb_item'> {# need menu and link and sector and options #}
-                    <a href="{{root_doc}}/front/{{mainurl}}.php" title="{{'Home'|trans}}">{{'Home'|trans}}</a>
-                </li>
-
-        {% if not menu[sector] is empty %}
-                <li class='breadcrumb_item'>
-                    <a href="{{root_doc}}{{link}}" title="{{menu[sector]['title']}}">
-                        <i class="fas {{menu[sector]['icon']}}"></i>{{menu[sector]['title']}}</a>
-                </li>
-        
-            {% if show_page %}
-                <li class="breadcrumb_item">
-                    <a href="{{ root_doc ~ menu[sector]['content'][item]['page'] }}" {{with_option ? 'class="here'}} title="{{ menu[sector]['content'][item]['title'] }}">
-                        <i class="{{ menu[sector]['content'][item]['icon'] ?? '' }}"></i>{{ menu[sector]['content'][item]['title'] }}
-                    </a>
-                </li>
-            {% endif %}         
-        
-        {% endif %}
-        {% include "actions.twig" with {'links': links, 'root_doc':root_doc} %}
-        </ul>
-    </div>
-        <main role='main' id='page'>
+		<div id="main-test" class="{{menu_position}}">
+			<div id="menu" class="{{menu_small ? 'menu-close' : 'menu-open'}}">
+				<div id="bubble">
+					<i id="compass-menu" class="fas fa-compass"></i>
+					<i id="star-menu" class="fas fa-star"></i>
+				</div>
+				<div id="menu-border" onmousedown="resizeMenu()"></div>
+				{% include main_menu.path with main_menu.args %}
+				<div class="menu-bottom">
+					<a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors"></a>
+					<div id='c_preference'></div>
+				</div>
+			</div>
+			<div class="main-container">
+				<div id="subheader">
+					{% include "breadcrumb.twig" with { 'items': breadcrumb_items } %}
+					{% include "actions.twig" with {'links': links, 'root_doc':root_doc} %}
+				</div>
+				<main role='main' id='page'>

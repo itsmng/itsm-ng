@@ -18,7 +18,6 @@ body {
     --bottom-menu-icon-color: var(--menu-icon-color);
     --logo-image: url("../pics/fd_logo.png");
     --bottom-menu-hover-color: #ccc;
-    --breadcrumb-current-color: #F5B7B1;
     --menu-open-width: 11rem;
     --menu-close-width: 5em;
     --menu-transition-time: 0.3s;
@@ -26,6 +25,8 @@ body {
     --menu-count: 10; //define in html
     --bubble_pos_x: 50%;
     --bubble_pos_y: 50%;
+
+    --bs-link-color: #fff;
 
     --table-border-radius: 0;
     height: 100vh;
@@ -85,11 +86,17 @@ header {
     align-items: center;
     height: 3.5rem;
     background-color: var(--header-color);
+
+    i {
+        color: var(--primary-text-color) !important;
+    }
+}
+
+.breadcrumb-item::before {
+        display: none !important;
 }
 
 #c_logo {
-    left: calc(7.5em - 75px);
-    position: absolute;
     width: 200px;
     height: 50px;
     background: var(--logo-image);
@@ -1041,30 +1048,6 @@ header {
     display: block;
     }
 } */
-#c_ssmenu2 {
-    margin-left: 70px;
-    & ul li:nth-of-type(-1) {
-        background-color: var(--breadcrumb-current-color);
-        
-        &::before{
-            display: none;
-        }
-
-        &::after{
-            display: none;
-        }
-    }
-
-}
-.breadcrumb_item {
-    &::before{
-        z-index: 1 !important;
-    }
-
-    &::after{
-        z-index: 1 !important;
-    }
-}
 
 .check-result {
     text-align: center;
@@ -1164,7 +1147,7 @@ div.chip>p {
         input {
             height: 100%;
             border: 1px solid var(--primary-color) !important;
-            border-radius: 3rem !important;
+            border-radius: 3px !important;
         }
     }
 }

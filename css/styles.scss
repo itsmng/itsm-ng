@@ -215,17 +215,9 @@ a, .btn-linkstyled {
    font-weight: bold;
    text-decoration: none;
 
-   &:not(.fa-lg):not(.fa-2x):not(.fa-3x):not(.fa-4x):not(.fa-5x) {
-      font-size: 11px;
-   }
-
    &:link {
       font-weight: bold;
       text-decoration: none;
-
-      &:not(.fa-lg):not(.fa-2x):not(.fa-3x):not(.fa-4x):not(.fa-5x) {
-         font-size: 11px;
-      }
    }
 
    &.fa, &.far, &.fas {
@@ -3320,68 +3312,12 @@ ul#menu {
    }
 }
 
-.breadcrumb_item {
-   height: 23px;
-   position: relative;
-}
-
 .profile-selector {
    float: right !important;
    height: 28px;
    line-height: 24px;
    z-index: 40;
    position: relative;
-}
-
-.breadcrumb_item {
-   &:before {
-      left: 100%;
-      top: 50%;
-      border: solid transparent;
-      content: " ";
-      height: 0;
-      width: 0;
-      position: absolute;
-      border-left-color: #FFF;
-      border-width: 17px;
-      margin-top: -17px;
-      z-index: 20;
-   }
-
-   &:after {
-      left: 100%;
-      top: 50%;
-      border: solid transparent;
-      content: " ";
-      height: 0;
-      width: 0;
-      position: absolute;
-      border-left-color: #FFF;
-      border-width: 14px;
-      margin-top: -14px;
-      z-index: 20;
-      margin-left: -1px;
-   }
-
-   &:not(:nth-of-type(1)) {
-      padding-left: 25px !important;
-   }
-
-   &:nth-of-type(1), &:nth-of-type(2) {
-      background-color: #F2F2F2;
-
-      &:after {
-         border-left-color: #F2F2F2;
-      }
-   }
-
-   &:nth-of-type(3) {
-      background-color: #F5B7B1;
-
-      &:after {
-         border-left-color: #F5B7B1;
-      }
-   }
 }
 
 .icons_block {

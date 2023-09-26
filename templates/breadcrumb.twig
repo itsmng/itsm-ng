@@ -1,20 +1,10 @@
-<div id='c_ssmenu2' >
-    <ul>
-        <li class='breadcrumb_item'> {# need menu and link and sector and options #}
-            <a href="{{root_doc}}/front/{{mainurl}}.php" title="{{'Home'|trans}}">{{'Home'|trans}}</a>
+<ol class='breadcrumb indigo first mb-5  mb-5 px-md-4 fs-6'>
+        {% for item in items %}
+        <li class='breadcrumb-item'>
+            <a href={{ item['href'] }}>{{ item['title'] }}</a>
+            {% if not loop.last %}
+                <i class="fa fa-caret-right " aria-hidden="true"></i>
+            {% endif %}
         </li>
-
-{% if menu[sector][title] is not empty %}
-        <li class='breadcrumb_item'>
-            <a href="{{root_doc}}{{link}}" title="{{menu[sector]['title']}}">{{menu[sector]['title']}}</a>
-        </li>
-
-    {% if show_page %}
-        <li class="breadcrumb_item">
-            <a href="{{ root_doc ~ menu[sector]['content'][item]['page'] }}" {{with_option ? 'class="here'}} title="{{ menu[sector]['content'][item]['title'] }}">
-                <i class="{{ menu[sector]['content'][item]['icon'] ?? '' }}"></i>{{ menu[sector]['content'][item]['title'] }}
-            </a>
-        </li>
-    {% endif %}         
-
-{% endif %}
+        {% endfor %}
+</ol>

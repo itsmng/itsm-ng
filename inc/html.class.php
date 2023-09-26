@@ -1894,7 +1894,27 @@ JAVASCRIPT
       if ($menu_width_row != null && isset($menu_width_row['menu_width'])){
          $menu_width = json_decode($menu_width_row['menu_width'], true);
          $twig_vars['menu_width'] = $menu_width;
-      }      
+      }
+
+      $menu = self::getMainMenu($sector, $item, $option)['args']['menu'];
+      $twig_vars['breadcrumb_items'] = [
+         [
+            'title' => __('Home'),
+            'href'  => $CFG_GLPI['root_doc'] . '/front/central.php'
+         ],
+      ];
+      if (isset($sector) && isset($menu[$sector])) {
+         $twig_vars['breadcrumb_items'][] = [
+            'title' => $menu[$sector]['title'],
+            'href'  => $CFG_GLPI['root_doc'] . $menu[$sector]['default']
+         ];
+      };
+      if (isset($sector) && isset($menu[$sector]) && isset($menu[$sector]['content'][$item])) {
+         $twig_vars['breadcrumb_items'][] = [
+            'title' => $menu[$sector]['content'][$item]['title'],
+            'href'  => $CFG_GLPI['root_doc'] . $menu[$sector]['content'][$item]['page'],
+         ];
+      };
 
       require_once GLPI_ROOT . "/ng/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
