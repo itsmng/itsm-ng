@@ -1,6 +1,10 @@
 <div class="table-container">
+    <div id="toolbar">
+        <a class="btn btn-secondary" onClick="massiveaction_window.dialog('open')" href="#modal_massaction_content1234" title="Action">Action</a>
+    </div>
     <table
         class="table table-striped table-bordered table-hover"
+        data-toolbar="#toolbar"
         data-toggle="table"
         data-height="460"
         data-click-to-select="true"
@@ -8,7 +12,6 @@
         data-pagination="true"
         show-extended-pagination="true"
         data-search="true"
-        data-show-search-button="true"
         data-sortable="true"
         data-show-export="true"
         data-buttons="buttons"
@@ -31,21 +34,12 @@
             </tr>
             {% endfor %}
         </tbody>
-    </table>
+</table>
 </div>
+
 <script>
 function buttons () {
-    return {
-        btnMassiveAction: {
-            text: 'Massive action',
-            icon: 'fa-edit',
-            event: function () {
-                console.log(JSON.stringify(this.getSelections()));
-            },
-            attributes: {
-                title: {{'Apply a massive action'|trans|json_encode|raw}},
-            },
-        },
+    buttons = {
         btnAsMap: {
             text: 'Show as map',
             icon: 'fa-globe-europe',
@@ -60,23 +54,30 @@ function buttons () {
             text: 'Show trash',
             icon: 'fa-trash-alt',
             event: function () {
-                console.log(JSON.stringify(this.getSelections()));
+                toogle('is_deleted','','','');
+                document.forms['searchform{{itemtype}}'].submit();
             },
             attributes: {
                 title: {{'Show trash content'|trans|json_encode|raw}},
+
+                style: {{(is_trash == 1) ? 'background : #7b081d'|json_encode|raw : ''|json_encode|raw}},
             }
         },
-        btnEditColumns: {
+    }
+    if ('{{searchConfigRights}}' === '1') {
+        buttons.btnEditColumns = {
             text: 'Edit columns',
             icon: 'fa-wrench',
             event: function () {
-                console.log($('#search-config').dialog("open"));
+                $('#search-config').dialog("open");
             },
             attributes: {
                 title: {{'Edit columns position and content'|trans|json_encode|raw}},
             }
-        },
+        }
     }
+    console.log(buttons);
+    return buttons;
 }
 </script>
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>

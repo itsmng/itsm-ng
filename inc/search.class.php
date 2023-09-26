@@ -1492,8 +1492,7 @@ class Search {
          }
       }
 
-      $pref_url = $CFG_GLPI["root_doc"]."/front/displaypreference.form.php?itemtype=".
-      $data['itemtype'];
+      $pref_url = $CFG_GLPI["root_doc"]."/front/displaypreference.form.php?itemtype=".$data['itemtype'];
       
       echo Ajax::createIframeModalWindow(
          'search-config',
@@ -1504,10 +1503,37 @@ class Search {
             'display'       => false
          ]
       );
+
+      $searchconfigRights = Session::haveRightsOr('search_config', [
+         DisplayPreference::PERSONAL,
+         DisplayPreference::GENERAL
+      ]);
+
+      $js_modal_fields  = "";
+      $massiveaction_url = $CFG_GLPI["root_doc"]."/front/massiveaction.php";
+      if ($searchconfigRights) {
+         echo Ajax::createModalWindow(
+            'massiveaction_window',
+            $massiveaction_url,
+            [
+               'title'           => _n('Action', 'Actions', Session::getPluralNumber()),
+               'container'       => 'massiveactioncontent',
+               'extraparams'     => [],
+               'width'           => 800,
+               'height'          => 400,
+               'js_modal_fields' => $js_modal_fields,
+               'display'         => false
+            ]
+         );
+      }
+      
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
       echo $twig->render('search.twig', [
+         'is_trash' => $_GET['is_deleted'] ?? 0,
+         'itemtype' => $data['itemtype'],
          'fields' => $fields,
          'values' => $values,
+         'searchConfigRights' => $searchconfigRights,
       ]);
    }
 

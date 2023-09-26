@@ -1143,32 +1143,28 @@ div.chip>p {
     margin-bottom: 0px;
 }
 
-.fixed-table-toolbar, .fixed-table-pagination {
+.fixed-table-toolbar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 
+    & > div {
+        width: max-content;
+    }
+
     &::after {
         display: none !important;
     }
-}
-
-.fixed-table-toolbar {
-
 
     .search {
-        border: 1px solid var(--secondary-text-color);
-        border-radius: 1rem;
-        overflow: hidden;
+        height: 2rem;
+        border-radius: 0;
+        
         input {
-        height: 100%;
-        border: 0 !important;
-        border-radius: 0 !important;
-        }
-    
-        .input-group-append, button {
-            border-radius: 0 !important;
+            height: 100%;
+            border: 1px solid var(--primary-color) !important;
+            border-radius: 3rem !important;
         }
     }
 }
