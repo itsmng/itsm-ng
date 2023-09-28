@@ -93,7 +93,7 @@ $mmail->AltBody="GLPI test mail\nEncoding : $enc\nDate : $dat\nSecret=$secret";
 
 $mmail->AddAddress($dest, "");
 
-$logo=file_get_contents("../pics/logos/logo-GLPI-100-black.png");
+$logo=file_get_contents("../pics/fd_logo.png");
 $mmail->AddStringAttachment($logo, 'glpi.png', ($enc?$enc:'base64'), 'image/png');
 
 $mmail->AddStringAttachment($secret, 'secret.txt', ($enc?$enc:'base64'), 'text/plain');
