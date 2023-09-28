@@ -1888,10 +1888,10 @@ JAVASCRIPT
                   'FROM'   => 'glpi_users',
                   'WHERE'  => ['id' => $_SESSION["glpiID"]]
                ]
-         );
-
-      if ($menu_width->next()['menu_width'] != null){
-         $menu_width = json_decode($menu_width->next()['menu_width'], true);
+      );
+      $menu_width_row = $menu_width->next();
+      if (isset($menu_width_row) && $menu_width_row['menu_width'] != null){
+         $menu_width = json_decode($menu_width_row['menu_width'], true);
          $twig_vars['menu_width'] = $menu_width;
       }      
 
