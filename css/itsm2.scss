@@ -1,36 +1,5 @@
-body {
-    --primary-color: #7b081d;
-    --secondary-color: rgb(17, 0, 255);
-    --header-color: rgb(255, 255, 255);
-    --secondary-color: rgb(255, 255, 255);
-    --primary-text-color: rgb(255, 255, 255);
-    --secondary-text-color: black;
-    --header-color: var(--primary-color);
-    --menu-text-color: rgb(255, 255, 255);
-    --menu-icon-color: rgb(255, 255, 255);
-    --menu-background-color: var(--primary-color);
-    --submenu-text-color: rgb(255, 255, 255);
-    --submenu-icon-color: rgb(255, 255, 255);
-    --submenu-background-color: var(--secondary-color);
-    --favorite-color: yellow;
-    --menu-hover-color: rgba(255, 255, 255, 0.2);
-    --bottom-menu-background-color : rgba(58, 1, 12, 0.39);
-    --bottom-menu-icon-color: var(--menu-icon-color);
-    --logo-image: url("../pics/fd_logo.png");
-    --bottom-menu-hover-color: #ccc;
-    --menu-open-width: 11rem;
-    --menu-close-width: 5em;
-    --menu-transition-time: 0.3s;
-    --preference-icon-color: white;
-    --menu-count: 10; //define in html
-    --bubble_pos_x: 50%;
-    --bubble_pos_y: 50%;
+@import 'color';
 
-    --bs-link-color: #fff;
-
-    --table-border-radius: 0;
-    height: 100vh;
-}
 #page{
     // display: none;
 }
@@ -85,10 +54,10 @@ header {
     justify-content: center;
     align-items: center;
     height: 3.5rem;
-    background-color: var(--header-color);
+    background-color: var(--header-background-color);
 
     i {
-        color: var(--primary-text-color) !important;
+        color: var(--header-text-color) !important;
     }
 }
 
@@ -444,7 +413,7 @@ header {
         --_color: white !important;
         padding: var(--_padding);
         color: var(--_color);
-        background: linear-gradient(90deg, rgba(255,0,0) 0%, rgba(255,255,0) 20%, rgba(0,255,0) 40%, rgba(0,255,255) 60%, rgba(0,0,255) 80%, rgba(255,0,255) 100%);
+        background: linear-gradient(90deg, rgb(255,0,0) 0%, rgb(255,255,0) 20%, rgb(0,255,0) 40%, rgb(0,255,255) 60%, rgb(0,0,255) 80%, rgb(255,0,255) 100%);
         background-position-x: 10%;
         background-size: 100000%;
         border-radius: 30px;
@@ -475,7 +444,7 @@ header {
 #menu {
     position: fixed;
     height: calc(100vh - 3.5rem);
-    background-color: var(--menu-background-color);
+    background-color: var(--nav-background-color);
     width: var(--menu-open-width);
     transition: width var(--menu-transition-time) ease; // in js resizeWidth
     z-index: 1000;
@@ -727,7 +696,7 @@ header {
             border-radius: 5px;
             font-size: 0.7em;
             box-sizing: border-box;
-            background-color: rgb(0, 0, 0, 0.3);
+            background-color: rgba(0, 0, 0, 0.3);
 
             .menu-top &{
                 margin: 0;

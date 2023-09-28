@@ -22,11 +22,11 @@
 				<input id="searchbar" type="search" placeholder="Search here ...">
 				<i class="fa fa-search"></i>
 			</div>
-			<ul class='d-flex justify-content-around'>
+			<ul class='d-flex justify-content-around m-0'>
 				<li id='menu-options' class="dropdown dropup p-2">
 					{# URL::sanitizeURL($url_help_link) ?? #}
-					<a class='fs-3' title={{'Options'|trans}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="fas fa-sort-amount-down fs-3"></i>
+					<a class='fs-4' title={{'Options'|trans}} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fas fa-sort-amount-down"></i>
 					</a>
                     <div class="dropdown-menu dropup">
                         <h6 class="dropdown-header">{{'Menu'|trans}}</h6>
@@ -96,14 +96,14 @@
 				</li>
 				{% if can_update %}
 					<li id='debug_mode' class='p-2'>
-						<a href='{{root_doc}}/ajax/switchdebug.php' class="debug{{is_debug_active ? 'on' : 'off'}} fs-3" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
+						<a href='{{root_doc}}/ajax/switchdebug.php' class="debug{{is_debug_active ? 'on' : 'off'}} fs-4" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
 						    <i class='fa fa-bug'></i>
 							<span class='sr-only'>{{'Change mode'|trans}}</span>
 						</a>
 					</li>
 				{% endif %}
 				<li id='preferences_link' class='p-2'>
-					<a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}" class='fs-3'>
+					<a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}" class='fs-4'>
 						<i class='fa fa-cog'></i>
                         <span class='sr-only'>{{'My settings'|trans}}</span>
 						{% if username %}
@@ -113,7 +113,7 @@
 				</li>
 
 				<li id='deconnexion' class='p-2'>
-					<a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}} class='fs-3'>
+					<a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}} class='fs-4'>
 						<i class='fa fa-sign-out-alt'></i>
 						<span class='sr-only'>{{'Logout'|trans}}></span>
 					</a>
@@ -135,7 +135,7 @@
 				</div>
 			</div>
 			<div class="main-container">
-				<div id="subheader">
+				<div id="subheader" class="d-flex justify-content-between p-2">
 					{% include "breadcrumb.twig" with { 'items': breadcrumb_items } %}
 					{% include "actions.twig" with {'links': links, 'root_doc':root_doc} %}
 				</div>

@@ -1305,7 +1305,6 @@ class Html
       //detect theme
       $theme = isset($_SESSION['glpipalette']) ? $_SESSION['glpipalette'] : 'itsmng';
       
-      echo Html::css('css/bootstrap.min.css');
       echo Html::css('css/bootstrap-table.min.css');
       echo Html::css('css/bootstrap-select.min.css');
       
@@ -1546,7 +1545,6 @@ JAVASCRIPT;
          echo Html::script('public/lib/scrollable-tabs.js');
       }
       echo Html::scss('css/itsm2.scss');
-      echo Html::css('css/ecrase.css');
       // End of Head
       echo "</head>\n";
       self::glpi_flush();
