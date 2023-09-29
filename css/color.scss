@@ -32,4 +32,9 @@ $logo-file: url("../pics/fd_logo.png") !default;
     --bubble_pos_y: 50%;
     --table-border-radius: 0;
 }
+
+//BOOSTRAP OVERRIDE
+$primary: $primary-color;
+$secondary: $secondary-color;
+
 @import "../vendor/twbs/bootstrap/scss/bootstrap.scss";
