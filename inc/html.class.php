@@ -7465,7 +7465,7 @@ JAVASCRIPT;
       $twig_vars =   [  
                         "root_doc"        => $CFG_GLPI['root_doc'],  "noAUTO"       => $noAuto, 
                         "username"        => $username,              "can_update"   => $can_update, 
-                        "is_debug_active" => $is_debug_active,       "show_search"  => $show_search, 
+                        "is_debug_active" => isset($is_debug_active) ? $is_debug_active : 0,       "show_search"  => $show_search, 
                         "sanitizedURL"    => $sanitizedURL
                      ];
       return ["path" => $template_path, "args" => $twig_vars];
