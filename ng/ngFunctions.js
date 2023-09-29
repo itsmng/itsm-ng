@@ -237,12 +237,12 @@ function clearMenuOpen(){ //close all menu, for menu top and menu bubble
 
 function resizeMenu(){ //TODO: remove resizing on menu collapsed
     is_menu_close = $('#menu').hasClass('menu-close');
-    width_var = is_menu_close ? "--menu-close-width" : "--menu-open-width";
+    width_var = is_menu_close ? "--nav-close-width" : "--nav-open-width";
     $('#menu').css('transition', 'none');
     $('.main-container').css('transition', 'none');
     window.addEventListener("mousemove", changeMenuWidth);
     window.addEventListener("mouseup", (event) => {
-        $('#menu').css('transition', 'width var(--menu-transition-time) ease');
+        $('#menu').css('transition', 'width var(--nav-transition-time) ease');
         removeEventListener("mousemove", changeMenuWidth);
         $.ajax({
             type: "POST",

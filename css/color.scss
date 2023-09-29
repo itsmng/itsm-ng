@@ -1,43 +1,35 @@
-:root {
+//STYLE OVERRIDE
+@import "custom";
 
-    --primary-color:            #7b081d;
-    --secondary-color:          #ae0c2a;
-    
-    --header-color: rgb(255, 255, 255);
-    --primary-text-color: rgb(255, 255, 255);
-    --secondary-text-color: black;
-    --header-color: var(--primary-color);
-    --menu-text-color: rgb(255, 255, 255);
-    --menu-icon-color: rgb(255, 255, 255);
-    --menu-background-color: var(--primary-color);
-    --submenu-text-color: rgb(255, 255, 255);
-    --submenu-icon-color: rgb(255, 255, 255);
-    --submenu-background-color: var(--secondary-color);
-    --favorite-color: yellow;
-    --menu-hover-color: rgba(255, 255, 255, 0.2);
-    --bottom-menu-background-color : rgba(58, 1, 12, 0.39);
-    --bottom-menu-icon-color: var(--menu-icon-color);
-    --logo-image: url("../pics/fd_logo.png");
-    --bottom-menu-hover-color: #ccc;
-    --menu-open-width: 11rem;
-    --menu-close-width: 5em;
-    --menu-transition-time: 0.3s;
-    --preference-icon-color: white;
+// PRECOMPILED VARIABLES
+$primary-color:             #7b081d !default;
+$secondary-color:           #ae0c2a !default;
+
+
+$primary-text-color:        rgb(255, 255, 255) !default;
+$secondary-text-color:      black !default;
+
+$header-background-color:   $primary-color !default;
+$header-text-color:         $primary-text-color !default;
+
+$nav-background-color:      $secondary-color !default;
+$nav-text-color:            $primary-text-color !default;
+$nav-submenu-color:         $primary-color !default;
+$nav-hover-color:           rgba(255, 255, 255, 0.2) !default;
+
+$favorite-color:            yellow !default;
+
+$logo-file: url("../pics/fd_logo.png") !default;
+
+
+// RUNTIME VARIABLES
+:root {
+    --nav-open-width: 11rem;
+    --nav-close-width: 5em;
+    --nav-transition-time: 0.3s;
     --menu-count: 10; //define in html
     --bubble_pos_x: 50%;
     --bubble_pos_y: 50%;
-    
-    --bs-link-color: #fff;
-    
     --table-border-radius: 0;
-    height: 100vh;
-
-    // WHITELABEL VARIABLES
-    --header-background-color:  var(--primary-color);
-    --header-text-color:        var(--primary-text-color);
-
-    --nav-background-color:     var(--secondary-color);
-    --nav-text-color:           var(--primary-text-color);
-    --nav-submenu-color:        var(--primary-color);
 }
 @import "../vendor/twbs/bootstrap/scss/bootstrap.scss";

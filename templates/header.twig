@@ -6,7 +6,7 @@
 
 	{% else %}
 
-		<body class={{body_class}} style="--menu-open-width: {{menu_width['menu-open']}}; --menu-close-width: {{menu_width['menu-close']}}; --menu-count: {{menu|length}}; --bubble_pos_x: {{bubble_pos.x}}; --bubble_pos_y: {{bubble_pos.y}};">
+		<body class={{body_class}} style="--nav-open-width: {{menu_width['menu-open']}}; --nav-close-width: {{menu_width['menu-close']}}; --menu-count: {{menu|length}}; --bubble_pos_x: {{bubble_pos.x}}; --bubble_pos_y: {{bubble_pos.y}};">
 		{% endif %}
 		{% if impersonate_banner is defined %}
 			{% include impersonate_banner.path with impersonate_banner.args%}
@@ -122,7 +122,7 @@
 		</header>
 
 		<div id="main-test" class="{{menu_position}}">
-			<div id="menu" class="{{menu_small ? 'menu-close' : 'menu-open'}}">
+			<nav id="menu" class="{{menu_small ? 'menu-close' : 'menu-open'}}">
 				<div id="bubble">
 					<i id="compass-menu" class="fas fa-compass"></i>
 					<i id="star-menu" class="fas fa-star"></i>
@@ -131,9 +131,8 @@
 				{% include main_menu.path with main_menu.args %}
 				<div class="menu-bottom">
 					<a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors"></a>
-					<div id='c_preference'></div>
 				</div>
-			</div>
+			</nav>
 			<div class="main-container">
 				<div id="subheader" class="d-flex justify-content-between p-2">
 					{% include "breadcrumb.twig" with { 'items': breadcrumb_items } %}

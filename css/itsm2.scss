@@ -10,6 +10,12 @@
 p {
     margin: 0;
 }
+
+a {
+    text-decoration: none;
+    color: $primary-color;
+}
+
 div#searchbar {
     display: flex;
     flex-direction: row;
@@ -30,7 +36,7 @@ div#searchbar {
 
     .fa-search {
     background-color: transparent;
-    color: var(--primary-color);
+    color: $primary-color;
     padding: 10px;
     border-radius: 50%;
     transition: color 0.3s ease;
@@ -38,8 +44,8 @@ div#searchbar {
     }
 
     &:hover .fa-search {
-    background-color: var(--primary-color);
-    color: var(--primary-text-color);
+    background-color: $primary-color;
+    color: $primary-text-color;
     }
 }
 
@@ -54,10 +60,10 @@ header {
     justify-content: center;
     align-items: center;
     height: 3.5rem;
-    background-color: var(--header-background-color);
+    background-color: $header-background-color;
 
     i {
-        color: var(--header-text-color) !important;
+        color: $header-text-color !important;
     }
 }
 
@@ -68,10 +74,10 @@ header {
 #c_logo {
     width: 200px;
     height: 50px;
-    background: var(--logo-image);
+    background: $logo-file;
     background-repeat: no-repeat;
     background-size: auto 50px;
-    transition: width var(--menu-transition-time) ease;
+    transition: width var(--nav-transition-time) ease;
 
     .menu-close & {
         width: 50px;
@@ -103,13 +109,13 @@ header {
 }
 .main-container {
     position: relative;
-    width: calc(100% - var(--menu-open-width));
-    margin-left: var(--menu-open-width);
-    transition: margin var(--menu-transition-time) ease;
+    width: calc(100% - var(--nav-open-width));
+    margin-left: var(--nav-open-width);
+    transition: margin var(--nav-transition-time) ease;
 
     .menu-right & {
         margin-left: 0 !important;
-        margin-right: var(--menu-open-width);
+        margin-right: var(--nav-open-width);
 
     }
     .menu-top & {
@@ -117,12 +123,12 @@ header {
         margin: 0;
     }
     div.menu-close + & {
-        width: calc(100% - var(--menu-close-width));
-        margin-left: var(--menu-close-width);
+        width: calc(100% - var(--nav-close-width));
+        margin-left: var(--nav-close-width);
         
 
         .menu-right & {
-            margin-right: var(--menu-close-width);
+            margin-right: var(--nav-close-width);
         }
     }
 }
@@ -223,7 +229,7 @@ header {
         position: relative !important;
     }
     .menu-positions {
-        background-color: var(--menu-background-color);
+        background-color: $nav-background-color;
         padding: 7px 0;
         padding-right: 0;
         border-radius: 0 30px 30px 0;
@@ -292,8 +298,7 @@ header {
     position: absolute;
     right: -1.2rem;
     cursor: pointer;
-    background: linear-gradient(90deg, transparent 50%, var(--menu-background-color) 50%);
-    // background-color: var(--menu-background-color);
+    background: linear-gradient(90deg, transparent 50%, $nav-background-color 50%);
     --_size: 1em;
     height: var(--_size);
     width:  var(--_size);
@@ -302,7 +307,7 @@ header {
     .menu-right & {
         right: auto;
         left: -1.2rem;
-        background: linear-gradient(90deg, var(--menu-background-color) 50%, transparent 50%);
+        background: linear-gradient(90deg, $nav-background-color 50%, transparent 50%);
     }
 
     .menu-top & {
@@ -340,7 +345,7 @@ header {
         display: none;
     }
     i {
-        color: var(--favorite-color);
+        color: $favorite-color;
     }
     
 }
@@ -359,7 +364,7 @@ header {
     --_color: white!important;
     --_border-radius: 50%;
     --_close: -38%;
-    --_background-color: var(--primary-color);
+    --_background-color: $primary-color;
     --_uncenter: 3px;
     >i:first-child {
         right: var(--_close);
@@ -444,13 +449,13 @@ header {
 #menu {
     position: fixed;
     height: calc(100vh - 3.5rem);
-    background-color: var(--nav-background-color);
-    width: var(--menu-open-width);
-    transition: width var(--menu-transition-time) ease; // in js resizeWidth
+    background-color: $nav-background-color;
+    width: var(--nav-open-width);
+    transition: width var(--nav-transition-time) ease; // in js resizeWidth
     z-index: 1000;
     overflow: visible;
     &.menu-close {
-        width: var(--menu-close-width);
+        width: var(--nav-close-width);
     }
 
     .menu-top & {
@@ -498,7 +503,7 @@ header {
     height: calc(100% - 90px);
     position: relative;
     top: 0;
-    color: var(--menu-text-color);
+    color: $nav-text-color;
     display: flex;
     flex-direction: row;
     justify-content: start;
@@ -530,7 +535,7 @@ header {
         }
 
         &.active, &:hover{
-            background-color: var(--menu-hover-color);
+            background-color: $nav-hover-color;
         }
 
         .menu-close & {
@@ -545,7 +550,7 @@ header {
             height: var(--_size);
             margin-right: 5px;
             // line-height: 1;
-            color: var(--menu-icon-color);
+            color: $nav-text-color;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -660,21 +665,11 @@ header {
                 border-radius: 5px;
 
                 &.active, &:hover{
-                    background-color: var(--menu-hover-color);
+                    background-color: $nav-hover-color;
                 }
             }
             
             i {
-                // margin-right: 2px;
-                // line-height: 1;
-                // color: var(--menu-icon-color);
-                // --_size: 0.7em;
-                // width: var(--_size);
-                // height: var(--_size);
-                // display: flex;
-                // justify-content: center;
-                // align-items: center;
-
                 .menu-close & {
                     margin-right: 0px;
                 }
@@ -703,7 +698,7 @@ header {
                 padding: 5px 2px; 
                 top: 2.5em;
                 position: absolute;
-                background-color: color-mix(in srgb, rgb(0, 0, 0) 30%, var(--menu-background-color) 70%);
+                background-color: color-mix(in srgb, rgb(0, 0, 0) 30%, $nav-background-color 70%);
             }
 
             .menu-close & {
@@ -733,7 +728,7 @@ header {
                     margin-bottom: 5px;
                 }
                 &.active, &:hover{
-                    background-color: var(--menu-hover-color);
+                    background-color: $nav-hover-color;
                 }
                 
                 .menu-top &{
@@ -744,7 +739,6 @@ header {
                     align-items: center;
                     // width: 100%;
                     font-size: inherit !important;
-                    color: var(--submenu-text-color);
                     text-align: left;
 
                     .menu-close & {
@@ -752,7 +746,7 @@ header {
                     }
                     i {
                         margin-right: 3px;
-                        color: var(--submenu-icon-color);
+                        color: $nav-text-color;
                         
                         .menu-close & {
                             margin-right: 0px;
@@ -779,7 +773,7 @@ header {
         flex-shrink: 0;
         cursor: url("../ng/pics/star.png"), auto;
         &::before {
-            color: var(--favorite-color);
+            color: $favorite-color;
             display: none;
             font-style: normal;
             font-variant: normal;
@@ -890,7 +884,6 @@ header {
         }
     }
     >ul {
-        background-color: var(--bottom-menu-background-color);
         display: flex;
         flex-direction: row-reverse;
         justify-content: space-evenly;
@@ -918,13 +911,6 @@ header {
         cursor: pointer;
         &:hover {
             text-decoration: none !important;
-        }
-
-        i {
-            color: var(--bottom-menu-icon-color);
-        }
-        &:hover i::before, &:hover span{
-            color: var(--bottom-menu-hover-color) !important;
         }
     }   
     
@@ -1115,7 +1101,7 @@ div.chip>p {
         
         input {
             height: 100%;
-            border: 1px solid var(--primary-color) !important;
+            border: 1px solid $primary-color !important;
             border-radius: 3px !important;
         }
     }

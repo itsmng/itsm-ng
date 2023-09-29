@@ -237,18 +237,6 @@ a, .btn-linkstyled {
    }
 }
 
-#page a.fa, #page a.far, #page a.fas {
-   color: #222;
-
-   &:link {
-      color: #222;
-   }
-}
-
-a .fa, a .far, a .fas, .btn-linkstyled .fa, .btn-linkstyled .far, .btn-linkstyled .fas {
-   color: #222;
-}
-
 a {
    &:hover {
       color: black;
@@ -3236,25 +3224,6 @@ ul#menu {
 
    .empty-icon::before {
       content: "";
-   }
-}
-
-#header #c_logo {
-   position: absolute;
-   z-index: 1000;
-   width: 55px;
-   height: 55px;
-   float: left;
-   top: 5px;
-   left: 10px;
-   background: url("../pics/itsmng-w.png");
-   background-size: 100%;
-
-   a {
-      display: block;
-      width: 100%;
-      height: 100%;
-      text-decoration: none;
    }
 }
 
