@@ -1305,7 +1305,7 @@ class Html
       //detect theme
       $theme = isset($_SESSION['glpipalette']) ? $_SESSION['glpipalette'] : 'itsmng';
       
-      echo Html::css('css/bootstrap-table.min.css');
+      echo Html::css('vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css');
       echo Html::css('css/bootstrap-select.min.css');
 
       echo Html::css('public/lib/base.css');
@@ -1984,7 +1984,7 @@ JAVASCRIPT
       self::displayDebugInfos();
       self::loadJavascript();
       echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
-      echo Html::script("js/bootstrap-table.min.js");
+      echo Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js");
       echo Html::script("js/bootstrap-table-export.min.js");
       echo Html::script("ng/ngFunctions.js");
 

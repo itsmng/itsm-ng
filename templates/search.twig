@@ -48,7 +48,7 @@ function buttons () {
     buttons = {
         btnAsMap: {
             text: 'Show as map',
-            icon: 'fa-globe-europe',
+            icon: 'fas fa-globe-europe',
             event: function () {
                 console.log(JSON.stringify(this.getSelections()));
             },
@@ -58,7 +58,7 @@ function buttons () {
         },
         btnshowTrash: {
             text: 'Show trash',
-            icon: 'fa-trash-alt',
+            icon: 'fas fa-trash-alt',
             event: function () {
                 toogle('is_deleted','','','');
                 document.forms['searchform{{itemtype}}'].submit();
@@ -73,7 +73,7 @@ function buttons () {
     if ('{{searchConfigRights}}' === '1') {
         buttons.btnEditColumns = {
             text: 'Edit columns',
-            icon: 'fa-wrench',
+            icon: 'fas fa-wrench',
             event: function () {
                 $('#search-config').dialog("open");
             },
