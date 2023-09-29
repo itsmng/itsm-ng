@@ -1307,8 +1307,6 @@ class Html
       
       echo Html::css('css/bootstrap-table.min.css');
       echo Html::css('css/bootstrap-select.min.css');
-      echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
-      
 
       echo Html::css('public/lib/base.css');
       //JSTree JS part is loaded on demand... But from an ajax call to display entities. Need to have CSS loaded.
@@ -1985,7 +1983,7 @@ JAVASCRIPT
       }
       self::displayDebugInfos();
       self::loadJavascript();
-      echo Html::script("js/bootstrap.bundle.min.js");
+      echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
       echo Html::script("js/bootstrap-table.min.js");
       echo Html::script("js/bootstrap-table-export.min.js");
       echo Html::script("ng/ngFunctions.js");
