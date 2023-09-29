@@ -1307,6 +1307,7 @@ class Html
       
       echo Html::css('css/bootstrap-table.min.css');
       echo Html::css('css/bootstrap-select.min.css');
+      echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
       
 
       echo Html::css('public/lib/base.css');
