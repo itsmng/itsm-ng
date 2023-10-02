@@ -298,14 +298,14 @@ function openMenu(item, menu_name){ //uncollapsed menu
         $('.menu:not(#' + this.id + ')').children('ul').collapse('hide');
         return;
     }
-    is_menu_open = $(item).hasClass('collapsed');
+    was_menu_open = $(item).hasClass('collapsed');
     $.ajax({
         type: "POST",
         url: "../ng/db.openMenu.php",
         data: {
             clear: false,
             menu_name: menu_name,
-            open: is_menu_open,
+            open: !was_menu_open,
         },
     });
 }
