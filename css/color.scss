@@ -21,18 +21,6 @@ $favorite-color:            yellow !default;
 
 $logo-file: url("../pics/fd_logo.png") !default;
 
-
-// RUNTIME VARIABLES
-:root {
-    --nav-open-width: 11rem;
-    --nav-close-width: 5em;
-    --nav-transition-time: 0.3s;
-    --menu-count: 10; //define in html
-    --bubble_pos_x: 50%;
-    --bubble_pos_y: 50%;
-    --table-border-radius: 0;
-}
-
 //BOOSTRAP OVERRIDE
 $primary: $primary-color;
 $secondary: $secondary-color;

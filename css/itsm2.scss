@@ -1,8 +1,22 @@
 @import 'color';
 
+
+// RUNTIME VARIABLES
+:root {
+    --header-height: 3.5rem;
+    --nav-open-width: 11rem;
+    --nav-close-width: 5em;
+    --nav-transition-time: 0.3s;
+    --menu-count: 10; //define in html
+    --bubble_pos_x: 50%;
+    --bubble_pos_y: 50%;
+    --table-border-radius: 0;
+}
+
 #page{
     // display: none;
 }
+
 .main-container * {
     box-sizing: content-box;
 }
@@ -58,8 +72,9 @@ header {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: 3.5rem;
+    height: var(--header-height);
     background-color: $header-background-color;
+    z-index: 1;
 
     i {
         color: $header-text-color !important;
@@ -92,7 +107,7 @@ header {
 
 #main-test {
     position: relative;
-    top: 3.5rem;
+    top: var(--header-height);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -107,8 +122,11 @@ header {
     }
 }
 .main-container {
-    position: relative;
+    position: fixed;
+    height: calc(100vh - var(--header-height));
+    overflow-y: scroll;
     width: calc(100% - var(--nav-open-width));
+    margin-top: var();
     margin-left: var(--nav-open-width);
     transition: margin var(--nav-transition-time) ease;
 
@@ -444,7 +462,7 @@ header {
 }
 #menu {
     position: fixed;
-    height: calc(100vh - 3.5rem);
+    height: calc(100vh - var(--header-height));
     background-color: $nav-background-color;
     width: var(--nav-open-width);
     transition: width var(--nav-transition-time) ease; // in js resizeWidth
