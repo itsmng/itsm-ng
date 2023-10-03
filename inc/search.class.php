@@ -1508,24 +1508,6 @@ class Search {
          DisplayPreference::PERSONAL,
          DisplayPreference::GENERAL
       ]);
-
-      $js_modal_fields  = "";
-      $massiveaction_url = $CFG_GLPI["root_doc"]."/front/massiveaction.php";
-      if ($searchconfigRights) {
-         echo Ajax::createModalWindow(
-            'massiveaction_window',
-            $massiveaction_url,
-            [
-               'title'           => _n('Action', 'Actions', Session::getPluralNumber()),
-               'container'       => 'massiveactioncontent',
-               'extraparams'     => [],
-               'width'           => 800,
-               'height'          => 400,
-               'js_modal_fields' => $js_modal_fields,
-               'display'         => false
-            ]
-         );
-      }
       
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
       echo $twig->render('search.twig', [

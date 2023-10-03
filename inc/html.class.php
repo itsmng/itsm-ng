@@ -1840,6 +1840,10 @@ JAVASCRIPT
       $twig_vars["ITSM_VERSION"] = ITSM_VERSION;
       $twig_vars["ITSM_YEAR"] = ITSM_YEAR;
       $twig_vars['is_slave'] = $DB->isSlave() && !$DB->first_connection;
+      $twig_vars["can_update"] = false;
+      if (Config::canUpdate()) {
+         $twig_vars["can_update"] = true;
+      }
 
       $twig_vars['menu_position'] = $DB->request(
              [
@@ -8331,12 +8335,14 @@ JAVASCRIPT;
    /**
     * Get Twig impersonate banner if feature is currently used.
     *
+    * @global array $CFG_GLPI
     * @return void
     *
     * @since 2.0.0
     */
    public static function getImpersonateBanner() : array
    {
+      global $CFG_GLPI;
       
       if (!Session::isImpersonateActive()) {
          return [];
