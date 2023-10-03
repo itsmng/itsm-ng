@@ -2,91 +2,80 @@
 
 
 <h3>{{'Checking of the compatibility of your environment with the execution of GLPI'|trans}}</h3>
-        {# {{table(
-        { post_name: "database", presort_field : "result"}, 
-        {   
-            args: [{},{field = "result"}],
-            titles: [{{'Test done'|trans}}, {{'Results'|trans}}]
-        },
-        {
-            args: [],
-            rows: databases
-        }
-        )}} #}
-        <div class="table-container">
-            <table 
-            data-toggle="table"
-            data-search="true" 
-            data-height="1px" 
-            data-show-export="true"
-            data-icons-prefix="fas"
-            data-sort-name="result"
-            data-sort-order="asc"
-            data-virtual-scroll="true">
-                <thead>
-                    <th data-sortable="true">{{'Test done'|trans}}</th>
-                    <th data-sortable="true" data-field="result" class="check-result">{{'Results'|trans}}</th>
-                </thead>
-                <tbody>
-                    {% for requirement in requirements %}
-                        <tr>
-                            <td>
-                                <div class="check-row">
-                                    {{requirement.title|trans}}
-                                </div>
-                                {% if not requirement.validated %}
-                                        <p class="required-message">{{requirement.message|trans|raw}}</p>
+<div class="table-container">
+    <table 
+    data-toggle="table"
+    data-search="true" 
+    data-height="460" 
+    data-show-export="true"
+    data-icons-prefix="fas"
+    data-sort-name="result"
+    data-sort-order="asc"
+    data-virtual-scroll="true">
+        <thead>
+            <th data-sortable="true">{{'Test done'|trans}}</th>
+            <th data-sortable="true" data-field="result" class="check-result">{{'Results'|trans}}</th>
+        </thead>
+        <tbody>
+            {% for requirement in requirements %}
+                <tr>
+                    <td>
+                        <div class="check-row">
+                            {{requirement.title|trans}}
+                        </div>
+                        {% if not requirement.validated %}
+                                <p class="required-message">{{requirement.message|trans|raw}}</p>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if requirement.validated %}
+                            <div class="check-row">
+                                <div class="chip validated"><i class="fas fa-check"></i><p>Checked</p></div>
+                            </div>
+                        {% else %}
+                            <div class="check-row">
+                                {% if requirement.optional %}
+                                    <div class="chip optional"><i class="fas fa-exclamation-triangle"></i><p>Recommended</p></div>
+                                {% elseif requirement.required %}
+                                    <div class="chip required"><i class="fas fa-times"></i><p>Required</p></div>
                                 {% endif %}
-                            </td>
-                            <td>
-                                {% if requirement.validated %}
-                                    <div class="check-row">
-                                        <div class="chip validated"><i class="fas fa-check"></i><p>Checked</p></div>
-                                    </div>
-                                {% else %}
-                                    <div class="check-row">
-                                        {% if requirement.optional %}
-                                            <div class="chip optional"><i class="fas fa-exclamation-triangle"></i><p>Recommended</p></div>
-                                        {% elseif requirement.required %}
-                                            <div class="chip required"><i class="fas fa-times"></i><p>Required</p></div>
-                                        {% endif %}
-                                    </div>
-                                    <p class="required-message transparent">{{requirement.message|trans|raw}}</p>
-                                {% endif %}
-                            </td>
-                        </tr>
-            
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <h3>{{'Do you want to continue?'|trans}}</h3>
+                            </div>
+                            <p class="required-message transparent">{{requirement.message|trans|raw}}</p>
+                        {% endif %}
+                    </td>
+                </tr>
+    
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<h3>{{'Do you want to continue?'|trans}}</h3>
 
-    {% if (missing_requirements  == "mandatory") or (missing_requirements  == "none") %}
+{% if (missing_requirements  == "mandatory") or (missing_requirements  == "none") %}
 
-        <div class="buttons">
-            <form action="install.php?step=4" method="post">
-                    {{button('submit', 'Continue'|trans)}}
-            </form>
-        </div>
+<div class="buttons">
+    <form action="install.php?step=4" method="post">
+            {{button('submit', 'Continue'|trans)}}
+    </form>
+</div>
 
-    {% elseif missing_requirements  == "optional" %}
+{% elseif missing_requirements  == "optional" %}
 
-            <div class="buttons">
-                <form action="install.php?step=3" method="post">
-                    {{button('submit', 'Try again'|trans)}}
-                </form>
-                <form action="install.php?step=4" method="post">
-                    {{button('submit', 'Continue'|trans)}}
-                </form>
-            </div>
+<div class="buttons">
+    <form action="install.php?step=3" method="post">
+        {{button('submit', 'Try again'|trans)}}
+    </form>
+    <form action="install.php?step=4" method="post">
+        {{button('submit', 'Continue'|trans)}}
+    </form>
+</div>
 
-    {% else %}
+{% else %}
 
-        <div class="buttons">
-            <form action="install.php?step=3" method="post">
-                {{button('submit', 'Try again'|trans)}}
-            </form>
-        </div>
+<div class="buttons">
+    <form action="install.php?step=3" method="post">
+        {{button('submit', 'Try again'|trans)}}
+    </form>
+</div>
 
-    {% endif %}
+{% endif %}

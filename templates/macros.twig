@@ -13,25 +13,6 @@
     <button type="{{ type }}" name="{{ name }}" value="{{ value|e }}" class="btn btn-warning submit"/><i class="fas fa-circle-o-notch fa-spin" aria-hidden="true"></i>{{text}}</button>
     {% endif %}
 {% endmacro %}
-
-
-{# Takes, the language list given by Language::getLanguagesByRegion() and a language code to show on load. #}
-{% macro language_dropdown(languages, selected_language = none) %}
-    <select name="language" class="selectpicker" data-live-search="true" data-size="auto">
-        {% for region,language_list in languages %}
-        <optgroup label={{region|capitalize}}>
-            {% for language_data in language_list %}
-                {% for code, language in language_data %}
-                    {% if code == selected_language %}
-            <option value={{code}} selected>{{language['native']}}</option>
-                    {% else %}
-            <option value={{code}}>{{language['native']}}</option>
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        {% endfor %}
-    </select>
-{% endmacro language_dropdown %}
     
 {# 
     args    = {}    : the overall argument of the table such as the class, whether row searching should be enabled, data export enable etc...

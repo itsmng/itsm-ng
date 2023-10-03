@@ -63,7 +63,10 @@
 
         {% else %}
 
-<p>Show update page</p>
+<h3>{{"Caution! You are about to update the ITSM-NG database named"|trans}} : {{update['db']}}<h3>
+<form action="update.php" method="post">
+    <input type='submit' class='btn btn-warning' name='continuer' value={{"Continue"|trans}}>
+</form>
 
         {% endif %}
 {% endif %}

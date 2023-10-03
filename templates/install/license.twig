@@ -2,11 +2,11 @@
 
 
 <h3>{{'License'|trans}}</h3>
-<div id='license' readonly='readonly'>
+<div id='license' class='mb-5 border border-warning' readonly='readonly'>
     {{license}}
 </div>
 <form action="install.php?step=2" method="post">
-    <div class="text">
+    <div class="text mb-5">
         <div class="license-checkbox">
             <div class="form-check">
                 {{input("", "", "checkbox", "form-check-input", "validateLicense", "", true)}}

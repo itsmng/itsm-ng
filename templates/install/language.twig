@@ -2,9 +2,32 @@
 
 
 <h3>{{'Select your language'|trans}}</h3>
-<div class="language">
+<div class="container mt-5">
     <form action="install.php?step=1" method="post">
-        {{language_dropdown(languages, preferred_language)}}
-        {{button('submit', 'OK'|trans)}}
+        <select name="language" id="select_box" class="form-control p-0 mb-3">
+            {% for region,language_list in languages %}
+            <optgroup label={{region|capitalize}}>
+            {% for language_data in language_list %}
+                    {% for code, language in language_data %}
+                        {% if code == selected_language %}
+                <option value={{code}} selected>{{language['native']}}</option>
+                        {% else %}
+                <option value={{code}}>{{language['native']}}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+        </select>
+        <button type="submit" name="submit" class="btn btn-warning" value={{'OK'|trans}}/>OK</button>
+
     </form>
 </div>
+<script>
+
+    var select_box_element = document.querySelector('#select_box');
+
+    dselect(select_box_element, {
+        search: true
+    });
+
+</script>

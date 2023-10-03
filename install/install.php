@@ -29,17 +29,15 @@ $header_data = [
         Html::script("public/lib/base.js"),
         Html::script("public/lib/fuzzy.js"),
         Html::script("js/common.js"),
-        Html::script("js/bootstrap.bundle.min.js"),
-        Html::script("js/bootstrap-select.min.js"),
         Html::script("js/tableExport.min.js"),
-        Html::script("js/bootstrap-table.min.js"),
+        Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"),
+        Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"),
         Html::script("js/bootstrap-table-export.min.js"),
         ],
     "css"     =>  [
-        Html::css('css/bootstrap-select.min.css'),
-        Html::css('css/bootstrap-table.min.css'),
+        Html::css('vendor/twbs/bootstrap/dist/css/bootstrap.min.css'),
+        Html::css('vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css'),
         Html::css('public/lib/base.css'),
-        Html::css("css/bootstrap.min.css"),
         Html::css("css/style_install.css"),
         ]
 ];
@@ -215,20 +213,29 @@ switch ($step) {
                 } 
             } else {
                 $error = "select";
-                }
+            }
         } else if ($_SESSION['action'] == 'update') {
             if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'])){
-                $from_install = true;
-                include_once(GLPI_ROOT ."/install/update.php");
+                global $DB;
+                $update = [
+                    'db' => $_SESSION['databasename'],
+                ];
             } else { // can't create config_db file
                 $error = "create_config";
             }
         }
+        
+        if (!isset($secured)) {
+            $secured = false;
+        }
             
-        $twig_vars = [  'action'        => $_SESSION['action'],
-                        'created' =>  $db_created,            
-                        'error'         => $error,          
-                        'secured'   => $secured,            'sql_error'     => $sql_error];
+        $twig_vars = [  'action'    => $_SESSION['action'],
+                        'created'   =>  $db_created,            
+                        'error'     => $error,          
+                        'secured'   => $secured,
+                        'sql_error' => $sql_error,
+                        'update'    => $update,
+                    ];
         break;
     case "7":
         Toolbox::createSchema($_SESSION['language']);
@@ -257,7 +264,9 @@ switch ($step) {
 }
     
 try {
-    echo $twig->render('install/index.twig',  ['step' => $step,'header_data' => $header_data] + $twig_vars);
+    echo $twig->render('install/index.twig',  [
+        'step' => ['number' => $step, 'progress' => $step / count($steps), 'name' => $steps_name[$step]],
+        'header_data' => $header_data] + $twig_vars);
 } catch (\Exception $e) {
     echo $e->getMessage();
 }
