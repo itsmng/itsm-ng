@@ -95,7 +95,7 @@ $break_tablet: 1400px;
 
    &.embed {
       .glpi_logo {
-         background: url(../pics/logos/logo-GLPI-100-black.png) no-repeat;
+         background: url(../pics/fd_logo.png) no-repeat;
          width: 100px;
          height: 55px;
          position: absolute;
@@ -105,7 +105,7 @@ $break_tablet: 1400px;
 
       &.nightmode {
          .glpi_logo {
-            background: url(../pics/logos/logo-GLPI-100-white.png) no-repeat;
+            background: url(../pics/pics/fd_logo.png) no-repeat;
          }
       }
    }

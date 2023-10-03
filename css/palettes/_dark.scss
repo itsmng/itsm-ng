@@ -131,11 +131,6 @@ ul {
    background-color: white;
 }
 
-#header #c_logo {
-   background: url("../pics/itsmng-w.png");
-   background-size: 100%;
-}
-
 /* ====== BUTTONS ====== */
 
 input.submit, span.vsubmit, a.vsubmit, .ui-widget-content span.vsubmit, a.vsubmit, #BackToTop {
@@ -150,20 +145,6 @@ input.submit, span.vsubmit, a.vsubmit, .ui-widget-content span.vsubmit, a.vsubmi
 
 input.submit:hover, a.vsubmit:hover, #BackToTop:hover {
    background-color: #585957;
-}
-
-/* ====== Breadcrumb ====== */
-
-.breadcrumb_item:nth-of-type(3) {
-   background-color: #585957;
-
-   a {
-      color: #fff !important;
-   }
-
-   &:after {
-      border-left-color: #585957;
-   }
 }
 
 /* Primary color elements (white on blue BG) designed to be overridden from palettes */

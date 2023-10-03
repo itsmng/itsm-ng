@@ -33,8 +33,7 @@ if (is_null($menu_open)){
 if (filter_var($_POST['open'], FILTER_VALIDATE_BOOLEAN)) {
     $menu_open[] = $_POST['menu_name'];
 } else {
-    $key = array_search($_POST['menu_name'], $menu_open);
-    unset($menu_open[$key]);
+    $menu_open = array_diff($menu_open, [$_POST['menu_name']]);
     $menu_open = array_values($menu_open); //reindex key value
 }
 $menu_open = json_encode($menu_open);

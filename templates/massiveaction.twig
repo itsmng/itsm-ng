@@ -1,0 +1,38 @@
+<div class="d-flex align-item-start">
+	<div
+        class="nav flex-column flex-nowrap nav-pills me-3  overflow-scroll"
+        id="v-pills-tab"
+        role="tablist"
+        aria-orientation="vertical">
+		{% for key, action in actions %}
+			<button
+                class="nav-link {{ (loop.first) ? 'active' : '' }}"
+                id="v-pills-{{ loop.index }}-tab"
+                data-bs-toggle="pill"
+                type="button"
+                role="tab"
+                aria-selected="{{ loop.first ? "true" : "false"}}"
+                onclick="populateSubForm('{{ key }}')"
+            >
+				{{action}}
+			</button>
+		{% endfor %}
+	</div>
+	<div class="tab-content" id="v-pills-tabContent">
+	</div>
+</div>
+<script>
+function populateSubForm(action) {
+    body = JSON.parse('{{ subformBody|json_encode()|raw }}');
+    body["action"] = action;
+    body["container"] = "v-pills-tabContent"; 
+    $.ajax({
+        url: '../ajax/dropdownMassiveAction.php',
+        type: 'POST',
+        data: body,
+        success: function (data) {
+            $('#v-pills-tabContent').html(data);
+        }
+    })
+}
+</script>

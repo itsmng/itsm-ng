@@ -237,12 +237,12 @@ function clearMenuOpen(){ //close all menu, for menu top and menu bubble
 
 function resizeMenu(){ //TODO: remove resizing on menu collapsed
     is_menu_close = $('#menu').hasClass('menu-close');
-    width_var = is_menu_close ? "--menu-close-width" : "--menu-open-width";
+    width_var = is_menu_close ? "--nav-close-width" : "--nav-open-width";
     $('#menu').css('transition', 'none');
     $('.main-container').css('transition', 'none');
     window.addEventListener("mousemove", changeMenuWidth);
     window.addEventListener("mouseup", (event) => {
-        $('#menu').css('transition', 'width var(--menu-transition-time) ease');
+        $('#menu').css('transition', 'width var(--nav-transition-time) ease');
         removeEventListener("mousemove", changeMenuWidth);
         $.ajax({
             type: "POST",
@@ -257,10 +257,15 @@ function resizeMenu(){ //TODO: remove resizing on menu collapsed
 
 function changeMenuWidth(event) {//TODO: remove resizing on menu collapsed
     menu_is_right = $('#main-test').hasClass('menu-right');
+    min = 0;
+    max = window.innerWidth;
+    if (event.clientX < min || event.clientX > max){
+        return;
+    }
     if (menu_is_right){
         $('body').css(width_var,  window.innerWidth - event.clientX + "px")
     } else {
-    $('body').css(width_var, event.clientX + "px")
+        $('body').css(width_var, event.clientX + "px")
     }
 }
 
@@ -293,14 +298,14 @@ function openMenu(item, menu_name){ //uncollapsed menu
         $('.menu:not(#' + this.id + ')').children('ul').collapse('hide');
         return;
     }
-    is_menu_open = $(item).hasClass('collapsed');
+    was_menu_open = $(item).hasClass('collapsed');
     $.ajax({
         type: "POST",
         url: "../ng/db.openMenu.php",
         data: {
             clear: false,
             menu_name: menu_name,
-            open: is_menu_open,
+            open: !was_menu_open,
         },
     });
 }

@@ -1305,10 +1305,8 @@ class Html
       //detect theme
       $theme = isset($_SESSION['glpipalette']) ? $_SESSION['glpipalette'] : 'itsmng';
       
-      echo Html::css('css/bootstrap.min.css');
-      echo Html::css('css/bootstrap-table.min.css');
+      echo Html::css('vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css');
       echo Html::css('css/bootstrap-select.min.css');
-      
 
       echo Html::css('public/lib/base.css');
       //JSTree JS part is loaded on demand... But from an ajax call to display entities. Need to have CSS loaded.
@@ -1546,7 +1544,6 @@ JAVASCRIPT;
          echo Html::script('public/lib/scrollable-tabs.js');
       }
       echo Html::scss('css/itsm2.scss');
-      echo Html::css('css/ecrase.css');
       // End of Head
       echo "</head>\n";
       self::glpi_flush();
@@ -1843,6 +1840,10 @@ JAVASCRIPT
       $twig_vars["ITSM_VERSION"] = ITSM_VERSION;
       $twig_vars["ITSM_YEAR"] = ITSM_YEAR;
       $twig_vars['is_slave'] = $DB->isSlave() && !$DB->first_connection;
+      $twig_vars["can_update"] = false;
+      if (Config::canUpdate()) {
+         $twig_vars["can_update"] = true;
+      }
 
       $twig_vars['menu_position'] = $DB->request(
              [
@@ -1890,10 +1891,31 @@ JAVASCRIPT
                ]
          );
 
-      if ($menu_width->next()['menu_width'] != null){
-         $menu_width = json_decode($menu_width->next()['menu_width'], true);
+      $menu_width_row = $menu_width->next();
+      if ($menu_width_row != null && isset($menu_width_row['menu_width'])){
+         $menu_width = json_decode($menu_width_row['menu_width'], true);
          $twig_vars['menu_width'] = $menu_width;
-      }      
+      }
+
+      $menu = self::getMainMenu($sector, $item, $option)['args']['menu'];
+      $twig_vars['breadcrumb_items'] = [
+         [
+            'title' => __('Home'),
+            'href'  => $CFG_GLPI['root_doc'] . '/front/central.php'
+         ],
+      ];
+      if (isset($sector) && isset($menu[$sector])) {
+         $twig_vars['breadcrumb_items'][] = [
+            'title' => $menu[$sector]['title'],
+            'href'  => $CFG_GLPI['root_doc'] . $menu[$sector]['default']
+         ];
+      };
+      if (isset($sector) && isset($menu[$sector]) && isset($menu[$sector]['content'][$item])) {
+         $twig_vars['breadcrumb_items'][] = [
+            'title' => $menu[$sector]['content'][$item]['title'],
+            'href'  => $CFG_GLPI['root_doc'] . $menu[$sector]['content'][$item]['page'],
+         ];
+      };
 
       require_once GLPI_ROOT . "/ng/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
@@ -1965,8 +1987,8 @@ JAVASCRIPT
       }
       self::displayDebugInfos();
       self::loadJavascript();
-      echo Html::script("js/bootstrap.bundle.min.js");
-      echo Html::script("js/bootstrap-table.min.js");
+      echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
+      echo Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js");
       echo Html::script("js/bootstrap-table-export.min.js");
       echo Html::script("ng/ngFunctions.js");
 
@@ -7446,7 +7468,7 @@ JAVASCRIPT;
       $twig_vars =   [  
                         "root_doc"        => $CFG_GLPI['root_doc'],  "noAUTO"       => $noAuto, 
                         "username"        => $username,              "can_update"   => $can_update, 
-                        "is_debug_active" => $is_debug_active,       "show_search"  => $show_search, 
+                        "is_debug_active" => isset($is_debug_active) ? $is_debug_active : 0,       "show_search"  => $show_search, 
                         "sanitizedURL"    => $sanitizedURL
                      ];
       return ["path" => $template_path, "args" => $twig_vars];
@@ -7896,17 +7918,13 @@ JAVASCRIPT;
     */
    private static function getMainMenu($sector, $item, $option) : array
    {
-      global $CFG_GLPI, $PLUGIN_HOOKS, $DB;
+      global $CFG_GLPI, $DB;
 
       // Generate array for menu and check right
       $menu    = self::generateMenuSession($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
       $menu = Plugin::doHookFunction("redefine_menus", $menu);
       $already_used_shortcut = ['1'];
 
-      // Get user favorites menu
-      $DB->queryOrDie(
-         'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_favorite longtext'
-      );
       $menu_favorites = $DB->request(
          [
              'SELECT' => 'menu_favorite',
@@ -7916,9 +7934,6 @@ JAVASCRIPT;
       );
      
      $menu_favorites = json_decode($menu_favorites->next()['menu_favorite'], true);
-     $DB->queryOrDie(
-        'ALTER TABLE glpi_users ADD COLUMN IF NOT EXISTS menu_open longtext'
-     );
      $menu_collapse = $DB->request(
       [
           'SELECT' => 'menu_open',
@@ -8320,12 +8335,14 @@ JAVASCRIPT;
    /**
     * Get Twig impersonate banner if feature is currently used.
     *
+    * @global array $CFG_GLPI
     * @return void
     *
     * @since 2.0.0
     */
    public static function getImpersonateBanner() : array
    {
+      global $CFG_GLPI;
       
       if (!Session::isImpersonateActive()) {
          return [];

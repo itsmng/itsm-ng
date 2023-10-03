@@ -49,14 +49,6 @@
 
 /* ====== GENERAL ====== */
 
-a, .btn-linkstyled {
-   color: #ae0c2a;
-
-   &:link {
-      color: #ae0c2a;
-   }
-}
-
 .ui-widget-content a {
    color: #ae0c2a;
 }
@@ -66,10 +58,6 @@ a, .btn-linkstyled {
 }
 
 /* ====== HEADER ====== */
-
-#header_top {
-   background-color: #7b081d;
-}
 
 #c_preference a, #language_link > span {
    color: #fff;
