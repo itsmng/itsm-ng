@@ -39,7 +39,6 @@ function update100to101() {
    /** @global Migration $migration */
    global $DB, $migration, $CFG_GLPI;
 
-   toolbox::logerror("dans 100to101");
    $current_config   = Config::getConfigurationValues('core');
    $updateresult     = true;
    $ADDTODISPLAYPREF = [];
