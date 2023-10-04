@@ -44,6 +44,7 @@ function update120to130() {
     $ADDTODISPLAYPREF = [];
 
     $migration->displayTitle(sprintf(__('Update to %s'), '1.3.0'));
+    $migration->setVersion('1.3.0');
 
 
     /** Create new table for chat config */

@@ -163,7 +163,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
       }
    }
    // Check version
-   if ((!isset($CFG_GLPI['dbversion']) || (trim($CFG_GLPI["dbversion"]) != GLPI_SCHEMA_VERSION))
+   if ((!isset($CFG_GLPI['dbversion']) || (trim($CFG_GLPI["dbversion"]) != ITSM_SCHEMA_VERSION))
        && !isset($_GET["donotcheckversion"])) {
 
       Session::loadLanguage('', false);
@@ -192,27 +192,33 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
             if (!isset($CFG_GLPI["version"])) {
                $older = true;
             } else {
-               if (strlen(GLPI_SCHEMA_VERSION) > 40) {
+               if (strlen(ITSM_SCHEMA_VERSION) > 40) {
                   $dev   = true;
                   //got a sha1sum on both sides... cannot know if version is older or newer
                   if (!isset($CFG_GLPI['dbversion']) || strlen(trim($CFG_GLPI['dbversion'])) < 40) {
                      //not sure this is older... User will be warned.
-                     if (trim($CFG_GLPI["version"]) < GLPI_PREVER) {
+                     if (trim($CFG_GLPI["version"]) < ITSM_PREVER) {
                         $older = true;
-                     } else if (trim($CFG_GLPI['version']) >= GLPI_PREVER) {
+                     } else if (trim($CFG_GLPI['version']) >= ITSM_PREVER) {
                         $newer = true;
                      }
                   }
                } else if (isset($CFG_GLPI['dbversion']) && strlen($CFG_GLPI['dbversion']) > 40) {
                   //got a dev version in database, but current stable
-                  if (Toolbox::startsWith($CFG_GLPI['dbversion'], GLPI_SCHEMA_VERSION)) {
+                  if (Toolbox::startsWith($CFG_GLPI['dbversion'], ITSM_SCHEMA_VERSION)) {
                      $older = true;
                   } else {
                      $newer = true;
                   }
-               } else if (!isset($CFG_GLPI['dbversion']) || trim($CFG_GLPI["dbversion"]) < GLPI_SCHEMA_VERSION) {
+               } else if (!isset($CFG_GLPI['dbversion']) || trim($CFG_GLPI["dbversion"]) < ITSM_SCHEMA_VERSION) {
                   $older = true;
-               } else if (trim($CFG_GLPI["dbversion"]) > GLPI_SCHEMA_VERSION) {
+                  
+               // test for GLPI version
+               } else if (trim($CFG_GLPI["dbversion"]) >= 10 ) {  // GLPI 10 not managed
+               } else if (trim($CFG_GLPI["dbversion"]) >= 9 ) {  // for GLPI 9.x
+                   $older = true;
+                   
+               } else if (trim($CFG_GLPI["dbversion"]) > ITSM_SCHEMA_VERSION) {
                   $newer = true;
                }
             }
@@ -233,11 +239,13 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
             } else if ($dev === true) {
                echo "<p class='red'><strong>".
                      __('You are trying to update to a development version from a development version. This is not supported.')."</strong></p>";
+            } else { // for GLPI 10
+               echo "<p class='red'><strong>".
+                    __('Upgrade from GLPI 10 is not supported.')."</strong></p>";
             }
          }
 
          echo "</div>";
-         Html::nullFooter();
       }
       exit();
    }

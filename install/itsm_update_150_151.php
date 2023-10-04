@@ -44,6 +44,7 @@ function update150to151() {
     $ADDTODISPLAYPREF = [];
 
     $migration->displayTitle(sprintf(__('Update to %s'), '1.5.1'));
+    $migration->setVersion('1.5.1');
 
     if(!$DB->fieldExists('glpi_oidc_config', 'proxy') && !$DB->fieldExists('glpi_oidc_config', 'cert')) {
         $query = "ALTER TABLE `glpi_oidc_config` ADD COLUMN (`cert` varchar(255) DEFAULT NULL, `proxy` varchar(255) DEFAULT NULL)";

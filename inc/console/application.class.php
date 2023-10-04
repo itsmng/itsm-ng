@@ -232,7 +232,7 @@ class Application extends BaseApplication {
       $begin_time = microtime(true);
 
       if ($command instanceof GlpiCommandInterface && $command->requiresUpToDateDb()
-          && (!array_key_exists('dbversion', $this->config) || (trim($this->config['dbversion']) != GLPI_SCHEMA_VERSION))) {
+          && (!array_key_exists('dbversion', $this->config) || (trim($this->config['dbversion']) != ITSM_SCHEMA_VERSION))) {
          $output->writeln(
             '<error>'
             . __('The version of the database is not compatible with the version of the installed files. An update is necessary.')
