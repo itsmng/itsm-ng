@@ -214,8 +214,8 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                   $older = true;
                   
                // test for GLPI version
-               } else if (trim($CFG_GLPI["dbversion"]) >= 10 ) {  // GLPI 10 not managed
-               } else if (trim($CFG_GLPI["dbversion"]) >= 9 ) {  // for GLPI 9.x
+               } else if (version_compare(trim($CFG_GLPI["dbversion"]), '10','>=')) {  // GLPI 10 not managed
+               } else if (version_compare(trim($CFG_GLPI["dbversion"]), '9', '>=')) {  // for GLPI 9.x
                    $older = true;
                    
                } else if (trim($CFG_GLPI["dbversion"]) > ITSM_SCHEMA_VERSION) {
