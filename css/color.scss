@@ -6,7 +6,7 @@ $primary-color:             #7b081d !default;
 $secondary-color:           #ae0c2a !default;
 
 
-$primary-text-color:        rgb(255, 255, 255) !default;
+$primary-text-color:        #ffffff !default;
 $secondary-text-color:      black !default;
 
 $header-background-color:   $primary-color !default;
@@ -15,9 +15,9 @@ $header-text-color:         $primary-text-color !default;
 $nav-background-color:      $secondary-color !default;
 $nav-text-color:            $primary-text-color !default;
 $nav-submenu-color:         $primary-color !default;
-$nav-hover-color:           rgba(255, 255, 255, 0.2) !default;
+$nav-hover-color:           #ffffff !default;
 
-$favorite-color:            yellow !default;
+$favorite-color:            #ffff00 !default;
 
 $logo-file: url("../pics/fd_logo.png") !default;
 

@@ -17,13 +17,24 @@
 {% endfor %}
     <title>{{"Setup"|trans}} ITSM-NG</title>
 </head>
-<body class="container my-5 text-center">
-    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="{{step['number']}}" aria-valuemin="0" aria-valuemax="{{step_amount}}">
-        <div class="progress-bar" style="width: {{step['progress'] * 100 }}%"></div>
-    </div>
+<body class="container my-5 text-center position-relative p-0">
     <main class="container p-5 position-relative">
         <header>
-            <h1>{{"Setup"|trans}} ITSM-NG</h1>
+            <img id='logo' src='../pics/fd_logo.png' alt='ITSM-NG logo' />
+            <div class="progress">
+                <div class="line" style={{'--step:' ~ step['number'] ~ ';--maxstep:' ~ header_data["steps_name"][:-1]|length ~ ';'}}></div>
+            {% for i in header_data["steps_name"][:-1] %}
+                <div class="step">
+                    <a  href={{"install.php?step="~loop.index0}}
+                        title={{header_data["steps_name"][loop.index0]|capitalize}}
+                        class={% if loop.index0 <= step['number'] %}"circle"{% else %}"circle hidden"{% endif %}
+                        style={{'--step:' ~ loop.index0 ~ ';--maxstep:' ~ maxstep ~ ';'}}>
+                    {{loop.index0}}
+                    </a>
+                    <p>{{header_data["steps_name"][loop.index0]|capitalize}}</p>
+                </div>
+            {% endfor %}
+            </div>
         </header>
         <div id="page-content">
             {% if step['number'] == 0 %}
