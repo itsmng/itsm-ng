@@ -391,7 +391,7 @@ header {
     --_color: white!important;
     --_border-radius: 50%;
     --_close: -38%;
-    --_background-color: $primary-color;
+    --_background-color: #{$primary-color};
     --_uncenter: 3px;
     >i:first-child {
         right: var(--_close);
