@@ -234,7 +234,7 @@ switch ($step) {
                         'error'     => $error,          
                         'secured'   => $secured,
                         'sql_error' => $sql_error,
-                        'update'    => $update,
+                        'update'    => isset($update) ? $update : null,
                     ];
         break;
     case "7":
