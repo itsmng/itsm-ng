@@ -73,7 +73,7 @@ header {
     align-items: center;
     height: var(--header-height);
     background-color: $header-background-color;
-    z-index: 1;
+    z-index: 50;
     font-size: var(--nav-size);
 
     i {
@@ -480,6 +480,7 @@ header {
     width: var(--nav-open-width);
     transition: width var(--nav-transition-time) ease; // in js resizeWidth
     overflow: visible;
+    z-index: 40;
     &.menu-close {
         width: var(--nav-close-width);
     }
@@ -648,15 +649,10 @@ header {
             }
 
             .menu-top & {
-                margin-left: 5px;
                 margin-top: 0;
                 margin-bottom: 2px;
                 width: calc(100%/var(--menu-count));
                 align-items: center;
-
-                &:first-child{
-                    margin-left: 5px;
-                }
 
                 >a{
                     justify-content: center;
