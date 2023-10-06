@@ -111,6 +111,14 @@ header {
     }
 }
 
+#logo_login {
+    background: $logo-file;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto 10rem;
+    height: 15rem;
+}
+
 #main-test {
     position: relative;
     top: var(--header-height);
@@ -1118,4 +1126,17 @@ div.chip>p {
             border-radius: 3px !important;
         }
     }
+}
+
+#firstboxlogin {
+    background-color: $header-background-color;
+}
+
+
+#text-login, #logo_login {
+    background-color: $nav-background-color;
+}
+
+.login_input i {
+    color: $primary-text-color;
 }
