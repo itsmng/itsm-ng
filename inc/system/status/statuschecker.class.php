@@ -454,9 +454,9 @@ final class StatusChecker {
       }
 
       // Only show overall core status for public
-      // Giving out the version to anonymous users could make it easier to target insecure versions of GLPI
+      // Giving out the version to anonymous users could make it easier to target insecure versions of ITSM
       if (!$public_only) {
-         $status['glpi']['version'] = GLPI_VERSION;
+         $status['glpi']['version'] = ITSM_VERSION;
       }
 
       if ($as_array) {

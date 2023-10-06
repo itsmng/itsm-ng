@@ -3151,7 +3151,7 @@ class Config extends CommonDBTM {
       }
 
       if (!isset($opt['options']['namespace'])) {
-         $namespace = "glpi_${optname}_" . GLPI_VERSION;
+         $namespace = "glpi_${optname}_" . ITSM_VERSION;
          if ($DB) {
             $namespace .= md5(
                (is_array($DB->dbhost) ? implode(' ', $DB->dbhost) : $DB->dbhost) . $DB->dbdefault

@@ -65,7 +65,7 @@ class RequirementsManager {
    public function getCoreRequirementList(\DBmysql $db = null): RequirementsList {
       $requirements = [];
 
-      $requirements[] = new PhpVersion(GLPI_MIN_PHP);
+      $requirements[] = new PhpVersion(ITSM_MIN_PHP);
 
       $requirements[] = new SessionsConfiguration();
 

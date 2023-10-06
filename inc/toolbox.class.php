@@ -1416,7 +1416,7 @@ class Toolbox {
       if (strlen(trim($latest_version)) == 0) {
          return $error;
       } else {
-         $currentVersion = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
+         $currentVersion = preg_replace('/^((\d+\.?)+).*$/', '$1', ITSM_VERSION);
          if (version_compare($currentVersion, $latest_version, '<')) {
             Config::setConfigurationValues('core', ['founded_new_version' => $latest_version]);
             return sprintf(__('A new version is available: %s.'), $latest_version);
@@ -2543,8 +2543,8 @@ class Toolbox {
             'core',
             [
                'language'      => $lang,
-               'version'       => GLPI_VERSION,
-               'dbversion'     => GLPI_SCHEMA_VERSION,
+               'version'       => ITSM_VERSION,
+               'dbversion'     => ITSM_SCHEMA_VERSION,
                'use_timezones' => $DB->areTimezonesAvailable()
             ]
          );
