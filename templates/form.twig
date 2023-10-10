@@ -3,7 +3,7 @@
 <form name="form" action="{{form.action}}" enctype="multipart/form-data" method='post' class="container">
 {% for bloc in form.content  %}
 <div class="container">
-    {% for row in bloc.inputs|batch(2) %}
+    {% for row in bloc.inputs|batch(col) %}
     <div class="row">
         {% for input in row %}
         <div class="col col-lg-5 col-md-6 d-flex align-items-center left">
@@ -20,6 +20,9 @@
     {% endfor %}
 </div>
 {% endfor %}
+<div>
+{{additionnalHtml|raw}}
+</div>
 <button type="submit" class="btn btn-warning mt-3">{{"Submit"|trans}}</button>
 </form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

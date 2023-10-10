@@ -133,7 +133,6 @@ class Rack extends CommonDBTM {
             for (key in data_json) {
                addPositionOpt(key, data_json[key]);
             }
-            console.table(data_json)
             // if the value is in the data keys
             if ($("#room_position_dropdown").attr("value") in data_json)
                $("#room_position_dropdown")[0].value = $("#room_position_dropdown").attr("value");
@@ -165,7 +164,7 @@ class Rack extends CommonDBTM {
                         ]
                      ],
                      'value' => $this->fields['states_id'],
-                     'canAdd' => true,
+                     'actions' => ['info', 'add'],
                   ],
                   [
                      'title' => __("Location"),
@@ -180,7 +179,6 @@ class Rack extends CommonDBTM {
                      ],
                      'value' => $this->fields['locations_id'],
                      'canAdd' => true,
-                     'init' => $loadLocationHook,
                   ],
                   [
                      'title' => __("Type"),
@@ -277,7 +275,6 @@ class Rack extends CommonDBTM {
                      ],
                      'content' => __('No room found or selected'),
                      'value' => $this->fields['position'],
-                     'init' => $loadDcPositionHook,
                   ],
                   [
                      'title' => __("Door orientation in room"),
@@ -297,7 +294,7 @@ class Rack extends CommonDBTM {
                      'title' => __("Number of units"),
                      'name' => 'number_units',
                      'type' => 'number',
-                     'value' => $this->fields['number_units'],
+                     'value' => $this->fields['number_units'] ? $this->fields['number_units'] : 42,
                      'min' => 1,
                      'max' => 100,
                      'step' => 1,
@@ -380,6 +377,11 @@ class Rack extends CommonDBTM {
             'type' => 'hidden',
             'name' => '_glpi_csrf_token',
             'value' => Session::getNewCSRFToken()
+         ],
+         [
+            'type' => 'hidden',
+            'name' => '_read_date_mod',
+            'value' => (new DateTime())->format('Y-m-d H:i:s'),
          ]
       ];
       $form['content']['form_inputs_config'] = ['inputs' =>  $hidden_inputs];
@@ -400,16 +402,29 @@ class Rack extends CommonDBTM {
             }
          }
       }
+      ob_start();
+      Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
+        'colspan'      => 2,
+        'withtemplate' => '',
+        'candel'       => true,
+        'canedit'      => true,
+        'addbuttons'   => [],
+        'formfooter'   => null,
+     ]]);
+     $additionnalHtml = ob_get_clean();
 
       require_once GLPI_ROOT . "/ng/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
       try {
          echo $twig->render('form.twig', [
-          'form' => $form
+          'form' => $form,
+          'col' => 2,
+          'additionnalHtml' => $additionnalHtml,
          ]);
       } catch (Exception $e) {
          echo $e->getMessage();
       }
+      return true;
    }
 
    function rawSearchOptions() {

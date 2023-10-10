@@ -50,5 +50,5 @@ if ($room->getFromDB($id)) {
 
    echo json_encode(array_diff_key($positions, $used));
 } else {
-   echo __('No room found or selected');
+   echo json_encode([]);
 }

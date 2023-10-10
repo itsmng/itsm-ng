@@ -1,5 +1,4 @@
 {% macro dropdown(input) %}
-
 <select id="{{input.id|default("")}}" name="{{input.name}}" value="{{input.value}}">
     <option value="0">-----</option>
     {% if input.from.array %}
@@ -25,7 +24,7 @@
     {% elseif input.type == 'info' %}
 <p><code>{{input.content}}</code></p>
     {% elseif input.type == 'number' %}
-<input id="{{input.id|default("")}}" type="number" min="{{input.min}}" max="{{input.max}}" step="{{input.step}}">
+<input id="{{input.id|default("")}}" name="{{input.name}}" value="{{input.value}}" type="number" min="{{input.min}}" max="{{input.max}}" step="{{input.step}}">
     {% elseif input.type == 'textarea' %}
 <textarea name="{{input.name}}">{{input.value}}</textarea>
     {% else %}
