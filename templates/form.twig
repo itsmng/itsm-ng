@@ -1,0 +1,41 @@
+{% from 'macros/form.twig' import input %}
+
+<form name="form" action="{{form.action}}" enctype="multipart/form-data" method='post' class="container">
+{% for bloc in form.content  %}
+<div class="container">
+    {% for row in bloc.inputs|batch(2) %}
+    <div class="row">
+        {% for input in row %}
+        <div class="col col-lg-5 col-md-6 d-flex align-items-center left">
+            <label class="form-label col-4" for="{{input.name}}">{{input.title}}</label>
+            <div class="d-flex align-items-center left">
+                {{input(input)}}
+                {% if input.after %}
+                <div class="form-text mx-2">{{input.after}}</div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+<button type="submit" class="btn btn-warning mt-3">{{"Submit"|trans}}</button>
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+{% for bloc in form.content %}
+    {% for input in bloc.inputs %}
+    {% if input.init %}
+    {{input.init|raw}}
+    {% endif %}
+    {% if input.hooks %}
+    {% for hook, script in input.hooks %}
+$("#{{input.id}}").on("{{hook}}", function() {
+    {{script|raw}}
+})
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+{% endfor %}
+</script>

@@ -1,0 +1,34 @@
+{% macro dropdown(input) %}
+
+<select id="{{input.id|default("")}}" name="{{input.name}}" value="{{input.value}}">
+    <option value="0">-----</option>
+    {% if input.from.array %}
+        {% for key, item in input.from.array %}
+            <option value="{{key}}" {% if input.value == key %}selected="selected"{% endif %}>{{item}}</option>
+        {% endfor %}
+    {% elseif input.from.item %}
+    {% endif %}
+</select>
+    {% if input.from.item %}
+    <div id="dropdowninfo" class="mx-2">
+        <a href="#" title="{{"Show"|trans}} {{input.from.item|trans}}"><i class="fas fa-info"></i></a>
+        {% if input.canAdd %}
+            <a href="#" title={{"Add"|trans}}><i class="fa fa-plus-circle"></i></a>
+        {% endif %}
+    </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro input(input) %}
+    {% if input.type == 'dropdown' %}
+        {{_self.dropdown(input)}}
+    {% elseif input.type == 'info' %}
+<p><code>{{input.content}}</code></p>
+    {% elseif input.type == 'number' %}
+<input id="{{input.id|default("")}}" type="number" min="{{input.min}}" max="{{input.max}}" step="{{input.step}}">
+    {% elseif input.type == 'textarea' %}
+<textarea name="{{input.name}}">{{input.value}}</textarea>
+    {% else %}
+<input id="{{input.id|default("")}}" name="{{input.name}}" type="{{input.type}}" value="{{input.value}}" aria-label="{{input.title}}">
+    {% endif %}
+{% endmacro %}
