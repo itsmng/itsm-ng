@@ -81,7 +81,6 @@ class Rack extends CommonDBTM {
 
    function showForm($ID, $options = []) {
       global $CFG_GLPI;
-      $dcroom = new DCRoom();
 
       $loadLocationHook = <<<JS
       function addLocationOpt(val, text) {
@@ -139,6 +138,10 @@ class Rack extends CommonDBTM {
          }
       });
       JS;
+
+      $room = new DCRoom();
+      $room->getFromDB($this->fields['dcrooms_id']);
+      $positions = array_diff_key($room->getAllPositions(), $room->getFilled($this->fields['position']));
 
       $form = [
          'action' => $CFG_GLPI['root_doc'] . '/front/rack.form.php',
@@ -274,7 +277,7 @@ class Rack extends CommonDBTM {
                      'id' => 'room_position_dropdown',
                      'type' => 'dropdown',
                      'from' => [
-                        'array' => [],
+                        'array' => $positions,
                      ],
                      'content' => __('No room found or selected'),
                      'value' => $this->fields['position'],
@@ -355,78 +358,23 @@ class Rack extends CommonDBTM {
             ]
          ]
       ];
-      $hidden_inputs = [
-         [
-            'type' => 'hidden',
-            'name' => 'entities_id',
-            'value' => $this->fields['entities_id'],
-         ],
-         [
-            'type' => 'hidden',
-            'name' => 'is_recursive',
-            'value' => $this->fields['is_recursive'],
-         ],
-         [
-            'type' => 'hidden',
-            'name' => $options['id'] ? 'update' : 'add',
-            'value' => '',
-         ],
-         [
-            'type' => 'hidden',
-            'name' =>  'id',
-            'value' => $options['id'] ? $options['id'] : 0,
-         ],
-         [
-            'type' => 'hidden',
-            'name' => '_glpi_csrf_token',
-            'value' => Session::getNewCSRFToken()
-         ],
-         [
-            'type' => 'hidden',
-            'name' => '_read_date_mod',
-            'value' => (new DateTime())->format('Y-m-d H:i:s'),
-         ]
-      ];
-      $form['content']['form_inputs_config'] = ['inputs' =>  $hidden_inputs];
-      foreach ($form['content'] as $bloc_key => $bloc) {
-         foreach ($bloc['inputs'] as $input_key => $input) {
-            if ($input['type'] == 'dropdown' && isset($input['from']['item'])) {
-               $table = getTableForItemType($input['from']['item']);
-               global $DB;
-               $iterator = $DB->request([
-                  'SELECT'          => ['id', 'name'],
-                  'FROM'            => $table,
-                  'WHERE'           => isset($input['from']['conditions']) ? $input['from']['conditions'] : []
-               ]);
-               while ($item = $iterator->next()) {
-                  $input['from']['array'][$item['id']] = $item['name'];
-               }
-               $form['content'][$bloc_key]['inputs'][$input_key] = $input;
-            }
-         }
-      }
+      require_once GLPI_ROOT. "/ng/form.utils.php";
+      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
+
       ob_start();
       Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
-        'colspan'      => 2,
-        'withtemplate' => '',
-        'candel'       => true,
-        'canedit'      => true,
-        'addbuttons'   => [],
-        'formfooter'   => null,
-     ]]);
-     $additionnalHtml = ob_get_clean();
-
-      require_once GLPI_ROOT . "/ng/twig.class.php";
-      $twig = Twig::load(GLPI_ROOT . "/templates", false);
-      try {
-         echo $twig->render('form.twig', [
-          'form' => $form,
-          'col' => 2,
-          'additionnalHtml' => $additionnalHtml,
-         ]);
-      } catch (Exception $e) {
-         echo $e->getMessage();
-      }
+         'colspan'      => 2,
+         'withtemplate' => '',
+         'candel'       => true,
+         'canedit'      => true,
+         'addbuttons'   => [],
+         'formfooter'   => null,
+         ]]);
+         $additionnalHtml = ob_get_clean();
+         
+      expandForm($form);
+      renderTwigForm($form, $additionnalHtml);
+      
       return true;
    }
 
