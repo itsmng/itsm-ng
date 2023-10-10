@@ -179,6 +179,7 @@ class Rack extends CommonDBTM {
                      ],
                      'value' => $this->fields['locations_id'],
                      'canAdd' => true,
+                     'actions' => ['info', 'add'],
                   ],
                   [
                      'title' => __("Type"),
@@ -189,6 +190,7 @@ class Rack extends CommonDBTM {
                      ],
                      'value' => $this->fields['racktypes_id'],
                      'canAdd' => true,
+                     'actions' => ['info', 'add'],
                   ],
                   [
                      'title' => __("Technician in charge of the hardware"),
@@ -202,6 +204,7 @@ class Rack extends CommonDBTM {
                         ]
                      ],
                      'value' => $this->fields['users_id_tech'],
+                     'actions' => ['info'],
                   ],
                   [
                      'title' => __("Manufacturer"),
@@ -211,7 +214,7 @@ class Rack extends CommonDBTM {
                         'item' => 'Manufacturer',
                      ],
                      'value' => $this->fields['manufacturers_id'],
-                     'canAdd' => true,
+                     'actions' => ['info', 'add'],
                   ],
                   [
                      'title' => __("Group in charge of the hardware"),
@@ -225,7 +228,7 @@ class Rack extends CommonDBTM {
                         ],
                      ],
                      'value' => $this->fields['groups_id_tech'],
-                     'canAdd' => true
+                     'actions' => ['info', 'add'],
                   ],
                   [
                      'title' => __("Model"),
@@ -235,7 +238,7 @@ class Rack extends CommonDBTM {
                         'item' => 'RackModel',
                      ],
                      'value' => $this->fields['rackmodels_id'],
-                     'canAdd' => true,
+                     'actions' => ['info', 'add'],
                   ],
                   [
                      'title' => __("Serial number"),

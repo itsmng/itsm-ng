@@ -1,8 +1,11 @@
 {% from 'macros/form.twig' import input %}
 
 <form name="form" action="{{form.action}}" enctype="multipart/form-data" method='post' class="container">
-{% for bloc in form.content  %}
+{% for key, bloc in form.content  %}
 <div class="container">
+    {% if bloc.visible %}
+        <h2 class='header'>{{key}}</h2>
+    {% endif %}
     {% for row in bloc.inputs|batch(col) %}
     <div class="row">
         {% for input in row %}

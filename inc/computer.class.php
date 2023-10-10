@@ -297,193 +297,267 @@ class Computer extends CommonDBTM {
     *     - withtemplate template or basic computer
     *
     * @return boolean
-   **/
-   function showForm($ID, $options = []) {
-
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-
-      $rand = mt_rand();
-      $tplmark = $this->getAutofillMark('name', $options);
-
-      //TRANS: %1$s is a string, %2$s a second one without spaces between them : to change for RTL
-      echo "<td><label for='textfield_name$rand'>".sprintf(__('%1$s%2$s'), __('Name'), $tplmark) .
-           "</label></td>";
-      echo "<td>";
-      $objectName = autoName($this->fields["name"], "name",
-                             (isset($options['withtemplate']) && ( $options['withtemplate']== 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField(
-         $this,
-         'name',
-         [
-            'value'     => $objectName,
-            'rand'      => $rand
+    **/
+   function showForm($ID, $options = [])
+   {
+      
+      $title = __('New Item').' - '.self::getTypeName(1);
+      $form = [
+         'action' => $this->getFormURL(),
+         'content' => [
+            $title => [
+               'visible' => true,
+               'inputs' => [
+                  [
+                     'name' => 'name',
+                     'title' => __('Name'),
+                     'type' => 'text',
+                     'value' => $this->fields['name'],
+                  ],
+                  [
+                     'name' => 'states_id',
+                     'title' => __('Status'),
+                     'type' => 'dropdown',
+                     'from' => [
+                        'item' => 'State',
+                        'conditions' => [
+                           'is_visible_computer' => 1
+                        ],
+                     ],
+                     'value' => $this->fields['states_id'],
+                     'actions' => ['info', 'add'],
+                  ],
+                  [
+                     'name' => 'locations_id',
+                     'title' => __('Location'),
+                     'type' => 'dropdown',
+                     'from' => [
+                        'item' => 'Location',
+                        'conditions' => [
+                           'entities_id' => $this->fields['entities_id'],
+                        ],
+                     ],
+                     'value' => $this->fields['locations_id'],
+                     'actions' => ['info', 'add'],
+                  ],
+                  [
+                     'name' => 'computertypes_id',
+                     'title' => _n('Type', 'Types', 1),
+                     'type' => 'dropdown',
+                     'from' => [
+                        'item' => 'ComputerType',
+                     ],
+                     'value' => $this->fields['computertypes_id'],
+                     'actions' => ['info', 'add'],
+                  ],
+                  [
+                     'name' => 'users_id_tech',
+                     'title' => __("Technician in charge of the hardware"),
+                     'type' => 'dropdown',
+                     'from' => [
+                        'item' => 'User',
+                        'right' => 'own_ticket',
+                        'conditions' => [
+                           'entities_id' => $this->fields['entities_id'],
+                        ]
+                     ],
+                     'value' => $this->fields['users_id_tech'],
+                     'actions' => ['info'],
+                  ],
+                  [
+                     'name' => 'manufacturers_id',
+                     'title' => Manufacturer::getTypeName(1),
+                     'type' => 'dropdown',
+                     'from' => [
+                        'item' => 'Manufacturer',
+                     ],
+                     'value' => $this->fields['manufacturers_id'],
+                     'actions' => ['info', 'add'],
+                  ],
+                  [
+                     'name' => 'groups_id_tech',
+                     'title' => __('Group in charge of the hardware'),
+                     'type' => 'dropdown',
+                     'from' => [
+                        'item' => 'Group',
+                        'conditions' => [
+                           'is_assign' => 1,
+                           'entities_id' => $this->fields['entities_id'],
+                        ],
+                     ],
+                     'value' => $this->fields['groups_id_tech'],
+                     'actions' => ['info', 'add'],
+                  ],
+                  [
+                     'name' => 'computermodels_id',
+                     'title' => _n('Model', 'Models', 1),
+                     'type' => 'dropdown',
+                     'from' => [
+                        'item' => 'ComputerModel',
+                     ],
+                     'value' => $this->fields['computermodels_id'],
+                     'actions' => ['info', 'add'],
+                  ],
+                  [
+                     'name' => 'contact_num',
+                     'title' => __('Alternate username number'),
+                     'type' => 'text',
+                     'value' => $this->fields['contact_num'],
+                  ],
+                  [
+                     'name' => 'serial',
+                     'title' => __('Serial number'),
+                     'type' => 'text',
+                     'value' => $this->fields['serial'],
+                  ],
+                  [
+                     'name' => 'otherserial',
+                     'title' => __('Inventory number'),
+                     'type' => 'text',
+                     'value' => $this->fields['otherserial'],
+                  ],
+                  [
+                     'name' => 'contact',
+                     'title' => __('Alternate username'),
+                     'type' => 'text',
+                     'value' => $this->fields['contact'],
+                  ],
+                  [
+                     'name' => 'users_id',
+                     'title' => User::getTypeName(1),
+                     'type' => 'dropdown',
+                     'from' => [
+                        'item' => 'User',
+                        'right' => 'all',
+                        'conditions' => [
+                           'entities_id' => $this->fields['entities_id'],
+                        ],
+                     ],
+                     'value' => $this->fields['users_id'],
+                     'actions' => ['info'],
+                  ],
+                  [
+                     'name' => 'networks_id',
+                     'title' => _n('Network', 'Networks', 1),
+                     'type' => 'dropdown',
+                     'from' => [
+                        'item' => 'Network',
+                     ],
+                     'value' => $this->fields['networks_id'],
+                     'actions' => ['info', 'add'],
+                  ],
+                  [
+                     'name' => 'groups_id',
+                     'title' => Group::getTypeName(1),
+                     'type' => 'dropdown',
+                     'from' => [
+                        'item' => 'Group',
+                        'conditions' => [
+                           'is_itemgroup' => 1,
+                           'entities_id' => $this->fields['entities_id'],
+                        ],
+                     ],
+                     'value' => $this->fields['groups_id'],
+                     'actions' => ['info', 'add'],
+                  ],
+                  [
+                     'name' => 'uuid',
+                     'title' => __('UUID'),
+                     'type' => 'text',
+                     'value' => $this->fields['uuid'],
+                  ],
+                  [
+                     'name' => 'autoupdatesystems_id',
+                     'title' => AutoUpdateSystem::getTypeName(1),
+                     'type' => 'dropdown',
+                     'from' => [
+                        'item' => 'AutoUpdateSystem',
+                     ],
+                     'value' => $this->fields['autoupdatesystems_id'],
+                     'actions' => ['info', 'add'],
+                  ],
+                  [
+                     'name' => 'comment',
+                     'title' => __('Comments'),
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'],
+                  ],
+               ],
+            ],
          ]
-      );
-      echo "</td>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_states_id$randDropdown'>".__('Status')."</label></td>";
-      echo "<td>";
-      State::dropdown([
-         'value'     => $this->fields["states_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_visible_computer' => 1],
-         'rand'      => $randDropdown
-      ]);
-      echo "</td></tr>\n";
-
-      $this->showDcBreadcrumb();
-
-      echo "<tr class='tab_bg_1'>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_locations_id$randDropdown'>".Location::getTypeName(1)."</label></td>";
-      echo "<td>";
-      Location::dropdown(['value'  => $this->fields["locations_id"],
-                               'entity' => $this->fields["entities_id"],
-                               'rand' => $randDropdown]);
-      echo "</td>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_computertypes_id$randDropdown'>"._n('Type', 'Types', 1)."</label></td>";
-      echo "<td>";
-      ComputerType::dropdown(['value' => $this->fields["computertypes_id"], 'rand' => $randDropdown]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_users_id_tech$randDropdown'>".__('Technician in charge of the hardware')."</label></td>";
-      echo "<td>";
-      User::dropdown(['name'   => 'users_id_tech',
-                           'value'  => $this->fields["users_id_tech"],
-                           'right'  => 'own_ticket',
-                           'entity' => $this->fields["entities_id"],
-                           'rand'   => $randDropdown]);
-      echo "</td>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_manufacturers_id$randDropdown'>".Manufacturer::getTypeName(1)."</label></td>";
-      echo "<td>";
-      Manufacturer::dropdown(['value' => $this->fields["manufacturers_id"], 'rand' => $randDropdown]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_groups_id_tech$randDropdown'>".__('Group in charge of the hardware')."</label></td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id_tech',
-         'value'     => $this->fields['groups_id_tech'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_assign' => 1],
-         'rand' => $randDropdown
-      ]);
-
-      echo "</td>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_computermodels_id$randDropdown'>"._n('Model', 'Models', 1)."</label></td>";
-      echo "<td>";
-      ComputerModel::dropdown(['value' => $this->fields["computermodels_id"], 'rand' => $randDropdown]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      //TRANS: Number of the alternate username
-      echo "<td><label for='textfield_contact_num$rand'>".__('Alternate username number')."</label></td>";
-      echo "<td >";
-      Html::autocompletionTextField($this, 'contact_num', ['rand' => $rand]);
-      echo "</td>";
-      echo "<td><label for='textfield_serial$rand'>".__('Serial number')."</label></td>";
-      echo "<td >";
-      Html::autocompletionTextField($this, 'serial', ['rand' => $rand]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='textfield_contact$rand'>".__('Alternate username')."</label></td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, 'contact', ['rand' => $rand]);
-      echo "</td>";
-
-      echo "<td><label for='textfield_otherserial$rand'>".sprintf(__('%1$s%2$s'), __('Inventory number'), $tplmark).
-           "</label></td>";
-      echo "<td>";
-
-      $objectName = autoName($this->fields["otherserial"], "otherserial",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField(
-         $this,
-         'otherserial',
+      ];
+      $hidden_inputs = [
          [
-            'value'     => $objectName,
-            'rand'      => $rand
+            'type' => 'hidden',
+            'name' => 'entities_id',
+            'value' => $this->fields['entities_id'],
+         ],
+         [
+            'type' => 'hidden',
+            'name' => 'is_recursive',
+            'value' => $this->fields['is_recursive'],
+         ],
+         [
+            'type' => 'hidden',
+            'name' => $options['id'] ? 'update' : 'add',
+            'value' => '',
+         ],
+         [
+            'type' => 'hidden',
+            'name' =>  'id',
+            'value' => $options['id'] ? $options['id'] : 0,
+         ],
+         [
+            'type' => 'hidden',
+            'name' => '_glpi_csrf_token',
+            'value' => Session::getNewCSRFToken()
+         ],
+         [
+            'type' => 'hidden',
+            'name' => '_read_date_mod',
+            'value' => (new DateTime())->format('Y-m-d H:i:s'),
          ]
-      );
-
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_users_id$randDropdown'>".User::getTypeName(1)."</label></td>";
-      echo "<td>";
-      User::dropdown(['value'  => $this->fields["users_id"],
-                           'entity' => $this->fields["entities_id"],
-                           'right'  => 'all',
-                           'rand'   => $randDropdown]);
-      echo "</td>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_networks_id$randDropdown'>"._n('Network', 'Networks', 1)."</label></td>";
-      echo "<td>";
-      Network::dropdown(['value' => $this->fields["networks_id"], 'rand' => $randDropdown]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_groups_id$randDropdown'>".Group::getTypeName(1)."</label></td>";
-      echo "<td>";
-      Group::dropdown([
-         'value'     => $this->fields["groups_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_itemgroup' => 1],
-         'rand'      => $randDropdown
-      ]);
-
-      echo "</td>";
-
-      // Display auto inventory informations
-      $rowspan        = 3;
-
-      echo "<td rowspan='$rowspan'><label for='comment'>".__('Comments')."</label></td>";
-      echo "<td rowspan='$rowspan' class='middle'>";
-
-      echo "<textarea cols='45' rows='".($rowspan+2)."' id='comment' name='comment' >".
-           $this->fields["comment"];
-      echo "</textarea></td></tr>";
-
-      $randDropdown = mt_rand();
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='textfield_uuid$rand'>".__('UUID')."</label></td>";
-      echo "<td >";
-      Html::autocompletionTextField($this, 'uuid', ['rand' => $rand]);
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_autoupdatesystems_id$randDropdown'>".AutoUpdateSystem::getTypeName(1)."</label></td>";
-      echo "<td >";
-      AutoUpdateSystem::dropdown(['value' => $this->fields["autoupdatesystems_id"], 'rand' => $randDropdown]);
-      echo "</td></tr>";
-      // Display auto inventory informations
-      if (!empty($ID)
-          && Plugin::haveImport()
-          && $this->fields["is_dynamic"]) {
-         echo "<tr class='tab_bg_1'><td colspan='4'>";
-         Plugin::doHook("autoinventory_information", $this);
-         echo "</td></tr>";
+      ];
+      $form['content']['form_inputs_config'] = ['visible' => false, 'inputs' =>  $hidden_inputs];
+      foreach ($form['content'] as $bloc_key => $bloc) {
+         foreach ($bloc['inputs'] as $input_key => $input) {
+            if ($input['type'] == 'dropdown' && isset($input['from']['item'])) {
+               $table = getTableForItemType($input['from']['item']);
+               global $DB;
+               $iterator = $DB->request([
+                  'SELECT'          => ['id', 'name'],
+                  'FROM'            => $table,
+                  'WHERE'           => isset($input['from']['conditions']) ? $input['from']['conditions'] : []
+               ]);
+               while ($item = $iterator->next()) {
+                  $input['from']['array'][$item['id']] = $item['name'];
+               }
+               $form['content'][$bloc_key]['inputs'][$input_key] = $input;
+            }
+         }
       }
+      ob_start();
+      Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
+         'colspan'      => 2,
+         'withtemplate' => '',
+         'candel'       => true,
+         'canedit'      => true,
+         'addbuttons'   => [],
+         'formfooter'   => null,
+         ]]);
+      $additionnalHtml = ob_get_clean();
 
-      $this->showFormButtons($options);
-
+      require_once GLPI_ROOT . "/ng/twig.class.php";
+      $twig = Twig::load(GLPI_ROOT . "/templates", false);
+      try {
+         echo $twig->render('form.twig', [
+            'form' => $form,
+            'col' => 2,
+            'additionnalHtml' => $additionnalHtml,
+         ]);
+      } catch (Exception $e) {
+         echo $e->getMessage();
+      }
       return true;
    }
 

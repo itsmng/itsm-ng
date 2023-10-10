@@ -10,8 +10,10 @@
 </select>
     {% if input.from.item %}
     <div id="dropdowninfo" class="mx-2">
+        {% if 'info' in input.actions %}
         <a href="#" title="{{"Show"|trans}} {{input.from.item|trans}}"><i class="fas fa-info"></i></a>
-        {% if input.canAdd %}
+        {% endif %}
+        {% if 'add' in input.actions %}
             <a href="#" title={{"Add"|trans}}><i class="fa fa-plus-circle"></i></a>
         {% endif %}
     </div>
