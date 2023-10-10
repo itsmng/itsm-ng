@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -36,8 +37,9 @@ if (!defined('GLPI_ROOT')) {
 
 /**
  * Rack Class
-**/
-class Rack extends CommonDBTM {
+ **/
+class Rack extends CommonDBTM
+{
    use Glpi\Features\DCBreadcrumb;
 
    const FRONT    = 0;
@@ -57,12 +59,14 @@ class Rack extends CommonDBTM {
    public $dohistory                   = true;
    static $rightname                   = 'datacenter';
 
-   static function getTypeName($nb = 0) {
+   static function getTypeName($nb = 0)
+   {
       //TRANS: Test of comment for translation (mark : //TRANS)
       return _n('Rack', 'Racks', $nb);
    }
 
-   function defineTabs($options = []) {
+   function defineTabs($options = [])
+   {
       $ong = [];
       $this
          ->addStandardTab('Item_Rack', $ong, $options)
@@ -79,7 +83,8 @@ class Rack extends CommonDBTM {
    }
 
 
-   function showForm($ID, $options = []) {
+   function showForm($ID, $options = [])
+   {
       global $CFG_GLPI;
 
       $loadLocationHook = <<<JS
@@ -181,7 +186,6 @@ class Rack extends CommonDBTM {
                         ]
                      ],
                      'value' => $this->fields['locations_id'],
-                     'canAdd' => true,
                      'actions' => ['info', 'add'],
                   ],
                   [
@@ -192,7 +196,6 @@ class Rack extends CommonDBTM {
                         'item' => 'RackType',
                      ],
                      'value' => $this->fields['racktypes_id'],
-                     'canAdd' => true,
                      'actions' => ['info', 'add'],
                   ],
                   [
@@ -268,8 +271,8 @@ class Rack extends CommonDBTM {
                      ],
                      'value' => $this->fields['dcrooms_id'],
                      'hooks' => [
-                        'change' => $loadDcPositionHook. $loadLocationHook,
-                     ], 
+                        'change' => $loadDcPositionHook . $loadLocationHook,
+                     ],
                   ],
                   [
                      'title' => __("Position in room"),
@@ -288,10 +291,10 @@ class Rack extends CommonDBTM {
                      'type' => 'dropdown',
                      'from' => [
                         'array' => [
-                        self::ROOM_O_NORTH => __('North'),
-                        self::ROOM_O_EAST => __('East'),
-                        self::ROOM_O_SOUTH => __('South'),
-                        self::ROOM_O_WEST => __('West'),
+                           self::ROOM_O_NORTH => __('North'),
+                           self::ROOM_O_EAST => __('East'),
+                           self::ROOM_O_SOUTH => __('South'),
+                           self::ROOM_O_WEST => __('West'),
                         ],
                         'value' => $this->fields['room_orientation']
                      ],
@@ -358,7 +361,7 @@ class Rack extends CommonDBTM {
             ]
          ]
       ];
-      require_once GLPI_ROOT. "/ng/form.utils.php";
+      require_once GLPI_ROOT . "/ng/form.utils.php";
       $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
 
       ob_start();
@@ -369,12 +372,12 @@ class Rack extends CommonDBTM {
          'canedit'      => true,
          'addbuttons'   => [],
          'formfooter'   => null,
-         ]]);
-         $additionnalHtml = ob_get_clean();
-         
+      ]]);
+      $additionnalHtml = ob_get_clean();
+
       expandForm($form);
       renderTwigForm($form, $additionnalHtml);
-      
+
       return true;
    }
 

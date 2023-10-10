@@ -27,6 +27,8 @@
 <p><code>{{input.content}}</code></p>
     {% elseif input.type == 'number' %}
 <input id="{{input.id|default("")}}" name="{{input.name}}" value="{{input.value}}" type="number" min="{{input.min}}" max="{{input.max}}" step="{{input.step}}">
+    {% elseif input.type == 'checkbox' %}
+<input id="{{input.id|default("")}}" name="{{input.name}}" type="{{input.type}}" value="1" aria-label="{{input.title}}" {{ (input.value == 1) ? "checked" : "" }}>
     {% elseif input.type == 'textarea' %}
 <textarea name="{{input.name}}">{{input.value}}</textarea>
     {% else %}
