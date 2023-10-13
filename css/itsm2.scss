@@ -11,6 +11,7 @@
     --bubble_pos_x: 50%;
     --bubble_pos_y: 50%;
     --table-border-radius: 0;
+    --nav-size: 1rem;
 }
 
 #page{
@@ -36,8 +37,6 @@ div#searchbar {
     justify-content: space-around;
     align-items: center;
     height: 2.5rem;
-    line-height: 2.5em;
-    font-size: 1em;
     border-radius: 20px;
     background-color: white;
     padding: 2px 10px;
@@ -74,10 +73,17 @@ header {
     align-items: center;
     height: var(--header-height);
     background-color: $header-background-color;
-    z-index: 1;
+    z-index: 50;
+    font-size: var(--nav-size);
 
     i {
         color: $header-text-color !important;
+    }
+}
+
+#subheader {
+    a {
+        font-size: var(--nav-size);
     }
 }
 
@@ -103,6 +109,14 @@ header {
         height: 100%;
         text-decoration: none;
     }
+}
+
+#logo_login {
+    background: $logo-file;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto 10rem;
+    height: 15rem;
 }
 
 #main-test {
@@ -377,7 +391,7 @@ header {
     --_color: white!important;
     --_border-radius: 50%;
     --_close: -38%;
-    --_background-color: $primary-color;
+    --_background-color: #{$primary-color};
     --_uncenter: 3px;
     >i:first-child {
         right: var(--_close);
@@ -466,6 +480,7 @@ header {
     width: var(--nav-open-width);
     transition: width var(--nav-transition-time) ease; // in js resizeWidth
     overflow: visible;
+    z-index: 40;
     &.menu-close {
         width: var(--nav-close-width);
     }
@@ -502,7 +517,6 @@ header {
 
                     a{
                         display: flex !important;
-                
                     }
                 }
             }
@@ -517,7 +531,7 @@ header {
     display: flex;
     flex-direction: row;
     justify-content: start;
-    font-size: 1.5em;
+    font-size: var(--nav-size);
     line-height: 1;
     overflow-y: hidden;
     // width: 100%;
@@ -533,7 +547,6 @@ header {
         width: 100%;
         padding: 5px;
         padding-right: calc(5px + 1em); //take into account star-icon {position: absolute};
-        font-size: 1em !important;
         overflow: hidden;
         box-sizing: border-box;
         border-radius: 5px;
@@ -545,7 +558,7 @@ header {
         }
 
         &.active, &:hover{
-            background-color: $nav-hover-color;
+            background-color: rgba($nav-hover-color, 0.2);
         }
 
         .menu-close & {
@@ -636,15 +649,10 @@ header {
             }
 
             .menu-top & {
-                margin-left: 5px;
                 margin-top: 0;
                 margin-bottom: 2px;
                 width: calc(100%/var(--menu-count));
                 align-items: center;
-
-                &:first-child{
-                    margin-left: 5px;
-                }
 
                 >a{
                     justify-content: center;
@@ -700,7 +708,7 @@ header {
             border-radius: 5px;
             font-size: 0.7em;
             box-sizing: border-box;
-            background-color: rgba(0, 0, 0, 0.3);
+            background-color: rgba($nav-submenu-color, 0.3);
 
             .menu-top &{
                 margin: 0;
@@ -1114,4 +1122,17 @@ div.chip>p {
             border-radius: 3px !important;
         }
     }
+}
+
+#firstboxlogin {
+    background-color: $header-background-color;
+}
+
+
+#text-login, #logo_login {
+    background-color: $nav-background-color;
+}
+
+.login_input i {
+    color: $primary-text-color;
 }

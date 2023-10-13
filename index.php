@@ -42,6 +42,7 @@ $css = [
     Html::scss('css/styles'),
     Html::scss('css/palettes/' . $theme),
     Html::css('public/lib/base.css'), // external libs CSS
+    Html::scss('css/itsm2.scss'),
     $entity->getCustomCssTag(), // Custom CSS for root entity
 ];
 if (isset($_SESSION['glpihighcontrast_css']) && $_SESSION['glpihighcontrast_css']) {

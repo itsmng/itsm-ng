@@ -186,11 +186,6 @@ sup {
    &.inline {
       display: inline-block;
    }
-
-   i.fas {
-      margin-right: 2px;
-      font-size: 0.7em;
-   }
 }
 
 
@@ -1205,7 +1200,6 @@ th, td {}
 .tab_cadre_fixe {
    margin: 0px auto 5px auto;
    background: #FFF;
-   z-index: 1;
    text-align: left;
    font-size: 11px;
    max-width: 950px;
@@ -2860,7 +2854,6 @@ a.icon_nav_move {
       height: 30px;
       display: block;
       border: none;
-      padding: 3px 0 3px 40px;
       font-size: 1.2em;
       border-radius: 4px;
       box-sizing: border-box;
@@ -2872,7 +2865,6 @@ a.icon_nav_move {
          height: 30px;
          display: block;
          border: none;
-         padding: 3px 0 3px 40px;
          font-size: 1.2em;
          border-radius: 4px;
          box-sizing: border-box;
@@ -2911,17 +2903,6 @@ a.icon_nav_move {
       top: 3px;
       color: #9B9B9B;
       font-size: 24px;
-      font-weight: 900;
-   }
-
-   #login_input_name:before {
-      content: "\f2bd";
-      font-weight: 900;
-   }
-
-   #login_input_password:before {
-      content: "\f023";
-      left: 11px;
       font-weight: 900;
    }
 
@@ -3302,11 +3283,6 @@ ul#menu {
       min-width: 20px;
       display: inline-block;
       line-height: 23px;
-   }
-
-   a > img, i.fa, i.far, i.fas {
-      font-size: 1.7em;
-      vertical-align: top;
    }
 }
 

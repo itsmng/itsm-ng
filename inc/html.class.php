@@ -5875,7 +5875,7 @@ JAVASCRIPT;
          $file = $url;
          $url = self::getPrefixedUrl('/front/css.php');
          $url .= '?file=' . $file;
-         if ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE) {
+         if (isset($_SESSION['glpi_use_mode']) && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE) {
             $url .= '&debug';
          }
       }

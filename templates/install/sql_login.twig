@@ -4,20 +4,14 @@
 <h3>{{'Database connection setup'|trans}}</h3>
     <form action='install.php?step=5' method='post'>
         <div class="fields">
-            <div class="form-floating">
-                {{input("db_host","","text", "form-control", "", "off")}}
-                <label for="server">{{"SQL server (MariaDB or MySQL)"|trans}}</label>
-            </div>
-            <div class="form-floating">
-                {{input("db_user","","text", "form-control", "", "off")}}
-                <label for="user">{{"SQL User"|trans}}</label>
-            </div>
-            <div class="form-floating">
-                {{input("db_pass","","password", "form-control", "", "off")}}
-                <label for="password">{{"Password"|trans}}</label>
-            </div>
+            <label class="mt-3" for="server">{{"SQL server (MariaDB or MySQL)"|trans}}</label>
+            <input name="db_host" type="text" class="form-control w-50 mx-auto" value="">
+            <label class="mt-3" for="user">{{"SQL User"|trans}}</label>
+            <input name="db_user" type="text" class="form-control w-50 mx-auto" value="">
+            <label class="mt-3" for="password">{{"Password"|trans}}</label>
+            <input name="db_pass" type="password" class="form-control w-50 mx-auto" value="">
         </div>
-        <div class="buttons">
+        <div class="buttons my-3">
             {{button('submit', 'Continue'|trans)}}
         </div>
     </form>

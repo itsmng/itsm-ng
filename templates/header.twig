@@ -13,7 +13,7 @@
 		{% endif %}
 
 		<header role='banner' id='header_top' class='d-flex justify-content-between align-items-center'>
-			<div class="header_logo" id='c_logo'>
+			<div class="header_logo m-3" id='c_logo'>
 				<a href="{{root_doc}}/front/central.php" accesskey='1' title={{"Home"|trans}}>
 					<span class='sr-only'>{{"Home"|trans}}</span>
 				</a>
@@ -23,22 +23,28 @@
 				<i class="fa fa-search"></i>
 			</div>
 			<ul class='d-flex justify-content-around m-0'>
-				<li id='menu-options' class="dropdown p-2">
-					<a class='fs-4' title={{'Options'|trans}} data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="fas fa-sort-amount-down"></i>
-					</a>
-                    {% include "nav-settings.twig" %}
-				</li>
 				{% if can_update %}
 					<li id='debug_mode' class='p-2'>
-						<a href='{{root_doc}}/ajax/switchdebug.php' class="debug{{is_debug_active ? 'on' : 'off'}} fs-4" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
+						<a href='{{root_doc}}/ajax/switchdebug.php' class="debug{{is_debug_active ? 'on' : 'off'}}" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
 						    <i class='fa fa-bug'></i>
 							<span class='sr-only'>{{'Change mode'|trans}}</span>
 						</a>
 					</li>
 				{% endif %}
+				<li id='menu-options' class="dropdown p-2">
+					<a title={{'Options'|trans}} data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fas fa-sort-amount-down"></i>
+					</a>
+                    {% include "nav-settings.twig" %}
+				</li>
+				<li id='menu-options' class="dropdown p-2">
+					<a title={{'Help'|trans}} href="https://www.itsm-ng.org">
+						<i class="fas fa-question"></i>
+					</a>
+                    {% include "nav-settings.twig" %}
+				</li>
 				<li id='preferences_link' class='p-2'>
-					<a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}" class='fs-4'>
+					<a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}">
 						<i class='fa fa-cog'></i>
                         <span class='sr-only'>{{'My settings'|trans}}</span>
 						{% if username %}
@@ -48,7 +54,7 @@
 				</li>
 
 				<li id='deconnexion' class='p-2'>
-					<a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}} class='fs-4'>
+					<a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}}>
 						<i class='fa fa-sign-out-alt'></i>
 						<span class='sr-only'>{{'Logout'|trans}}></span>
 					</a>

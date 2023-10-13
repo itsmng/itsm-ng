@@ -1,41 +1,70 @@
-{% include "install/header.twig" with {'step': step, 'header_data': header_data} %}
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv='Content-Script-Type' content='text/javascript'> 
+    <meta http-equiv='Content-Style-Type' content='text/css'>
 
-{% if step == 0 %}
-    {% include "install/language.twig" with {'languages' : languages, 'preferred_language' : preferred_language} %}
+    <link rel="stylesheet" href="https://unpkg.com/@jarstone/dselect/dist/css/dselect.css">
+    <script src="https://unpkg.com/@jarstone/dselect/dist/js/dselect.js"></script>
 
-{% elseif step == 1 %}
-    {% include "install/license.twig" with {'license' : license} %}
-
-{% elseif step == 2 %}
-    {% include "install/install.twig" %}
-
-{% elseif step == 3 %}
-    {% include "install/requirements.twig" with {'requirements' : requirements, 'missing_requirements': missing_requirements} %}
-
-{% elseif step == 4 %}
-    {% include "install/sql_login.twig"  with {'host' : host, 'user' : user} %}
-
-{% elseif step == 5 %}
-    {% include "install/databases.twig" with { 'host' :            host,               'user' :    user,                  
-                                        'connect_error' :   connect_error,      'version' : version,    
-                                        'ver_too_old' :     ver_too_old,        'action' :  action,
-                                        'databases' :       databases} %}
-
-{% elseif step == 6 %}
-    {% include "install/initialization.twig" with { 'db_state' :        db_state,            'new' :    new, 
-                                        'error' :           error,              'secured' : secured, 
-                                        'sql_error' :       sql_error,           'created' : created,
-                                        'initialized' :     initialized,         'done' : done} %}
-
-{% elseif step == 7 %}
-    {% include "install/initialized.twig" %}
-
-{% elseif step == 8 %}
-    {% include "install/done.twig" %}
-
-{% elseif step == 'error' %}
-    {% include "install/error.twig" %}
-
-{% endif %}
-
-{% include "install/footer.twig"  with {'step' : step} %}
+{% for array in header_data[:-1] %}
+    {% for e in array %}
+    {# add raw html from install.php #}
+    {{e|raw}}
+    {% endfor %}
+{% endfor %}
+    <title>{{"Setup"|trans}} ITSM-NG</title>
+</head>
+<body class="container my-5 text-center position-relative p-0">
+    <main class="container p-5 position-relative">
+        <header>
+            <img id='logo' src='../pics/fd_logo.png' alt='ITSM-NG logo' />
+            <div class="progress">
+                <div class="line" style={{'--step:' ~ step['number'] ~ ';--maxstep:' ~ header_data["steps_name"][:-1]|length ~ ';'}}></div>
+            {% for i in header_data["steps_name"][:-1] %}
+                <div class="step">
+                    <a  href={{"install.php?step="~loop.index0}}
+                        title={{header_data["steps_name"][loop.index0]|capitalize}}
+                        class={% if loop.index0 <= step['number'] %}"circle"{% else %}"circle hidden"{% endif %}
+                        style={{'--step:' ~ loop.index0 ~ ';--maxstep:' ~ maxstep ~ ';'}}>
+                    {{loop.index0}}
+                    </a>
+                    <p>{{header_data["steps_name"][loop.index0]|capitalize}}</p>
+                </div>
+            {% endfor %}
+            </div>
+        </header>
+        <div id="page-content">
+            {% if step['number'] == 0 %}
+                {% include "install/language.twig" with {'languages' : languages, 'preferred_language' : preferred_language} %}
+            {% elseif step['number'] == 1 %}
+                {% include "install/license.twig" with {'license' : license} %}
+            {% elseif step['number'] == 2 %}
+                {% include "install/install.twig" %}
+            {% elseif step['number'] == 3 %}
+                {% include "install/requirements.twig" with {'requirements' : requirements, 'missing_requirements': missing_requirements} %}
+            {% elseif step['number'] == 4 %}
+                {% include "install/sql_login.twig"  with {'host' : host, 'user' : user} %}
+            {% elseif step['number'] == 5 %}
+                {% include "install/databases.twig" with { 'host' :            host,               'user' :    user,                  
+                                                    'connect_error' :   connect_error,      'version' : version,    
+                                                    'ver_too_old' :     ver_too_old,        'action' :  action,
+                                                    'databases' :       databases} %}
+            {% elseif step['number'] == 6 %}
+                {% include "install/initialization.twig" with { 'db_state' :        db_state,            'new' :    new, 
+                                                    'error' :           error,              'secured' : secured, 
+                                                    'sql_error' :       sql_error,           'created' : created,
+                                                    'initialized' :     initialized,         'done' : done} %}
+            {% elseif step['number'] == 7 %}
+                {% include "install/initialized.twig" %}
+            {% elseif step['number'] == 8 %}
+                {% include "install/done.twig" %}
+            {% elseif step['number'] == 'error' %}
+                {% include "install/error.twig" %}
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>
