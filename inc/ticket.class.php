@@ -4843,22 +4843,6 @@ class Ticket extends CommonITILObject {
       }
       echo "</tr>";
 
-      if (!$ID
-          && Session::haveRight('followup', ITILFollowup::ADDALLTICKET)) {
-
-         echo "<tr class='tab_bg_1'>";
-         // Need comment right to add a followup with the actiontime
-         echo "<th>".$tt->getBeginHiddenFieldText('actiontime');
-         printf(__('%1$s%2$s'), __('Total duration'), $tt->getMandatoryMark('actiontime'));
-         echo $tt->getEndHiddenFieldText('actiontime')."</th>";
-         echo "<td>";
-         echo $tt->getBeginHiddenFieldValue('actiontime');
-         Dropdown::showTimeStamp('actiontime', ['value' => $options['actiontime'],
-                                                'addfirstminutes' => true]);
-         echo $tt->getEndHiddenFieldValue('actiontime', $this);
-         echo "</td>";
-         echo "</tr>";
-      }
 
       echo "</table>";
       if ($ID) {

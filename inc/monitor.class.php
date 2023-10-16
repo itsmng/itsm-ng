@@ -148,7 +148,8 @@ class Monitor extends CommonDBTM {
     *
     * @return boolean item found
     **/
-   function showForm($ID, $options = []) {
+    function showForm($ID, $options = []) {
+      require_once GLPI_ROOT . "/ng/form.utils.php";
       global $CFG_GLPI;
       $form = [
          'action' => $this->getFormURL(),
@@ -156,213 +157,146 @@ class Monitor extends CommonDBTM {
             __('General') => [
                'visible' => true,
                'inputs' => [
-                  [
-                     'title' => __("Name"),
+                  __("Name") => [
                      'name' => 'name',
                      'type' => 'text',
                      'value' => $this->fields['name'],
                      'placeholder' => ''
                   ],
-                  [
-                     'title' => __("Status"),
+                  __("Status") => [
                      'name' => 'states_id',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'State',
-                        'condition' => [
-                           'is_visible_computer' => 1,
-                           'entities_id' => $this->fields['entities_id'],
-                        ]
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('State', ['is_visible_monitor' => 1, 'entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['states_id'],
                      'actions' => ['info', 'add'],
                   ],
-                  [
-                     'title' => __("Location"),
+                  __("Location") => [
                      'name' => 'locations_id',
                      'id' => 'locations_id_dropdown',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'Location',
-                        'conditions' => [
-                           'entities_id' => $this->fields['entities_id'],
-                        ]
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['locations_id'],
                      'actions' => ['info', 'add'],
                   ],
-                  [
-                     'title' => __("Type"),
+                  __("Type") => [
                      'name' => 'monitortypes_id',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'RackType',
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('MonitorType'),
                      'value' => $this->fields['monitortypes_id'],
                      'actions' => ['info', 'add'],
                   ],
-                  [
-                     'title' => __("Technician in charge of the hardware"),
+                  __("Technician in charge of the hardware") => [
                      'name' => 'users_id_tech',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'User',
-                        'right' => 'own_ticket',
-                        'conditions' => [
-                           'entities_id' => $this->fields['entities_id'],
-                        ]
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]), // TODO: add right => 'own_ticket'
                      'value' => $this->fields['users_id_tech'],
                      'actions' => ['info'],
                   ],
-                  [
-                     'title' => __("Manufacturer"),
+                  __("Manufacturer") => [
                      'name' => 'manufacturer_id',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'Manufacturer',
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('Manufacturer'),
                      'value' => $this->fields['manufacturers_id'],
                      'actions' => ['info', 'add'],
                   ],
-                  [
-                     'title' => __("Group in charge of the hardware"),
+                  __("Group in charge of the hardware") => [
                      'name' => 'groups_id_tech',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'Group',
-                        'condition' => [
-                           'entities_id' => $this->fields['entities_id'],
-                           'is_assign' => 1
-                        ],
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['groups_id_tech'],
                      'actions' => ['info', 'add'],
                   ],
-                  [
-                     'title' => __("Model"),
+                  __("Model") => [
                      'name' => 'monitormodels_id',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'RackModel',
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('MonitorModel'),
                      'value' => $this->fields['monitormodels_id'],
                      'actions' => ['info', 'add'],
                   ],
-                  [
-                     'title' => __("Serial number"),
+                  __("Serial number") => [
                      'name' => 'serial',
                      'type' => 'text',
                      'value' => $this->fields['serial'],
                   ], // DOES NOT TAKE INTO ACCOUNT AUTOCOMPLETION FIELD
-                  [
-                     'title' => __("Inventory/Asset number"),
+                  __("Inventory/Asset number") => [
                      'name' => 'otherserial',
                      'type' => 'text',
                      'value' => $this->fields['otherserial'],
                   ], // DOES NOT TAKE INTO ACCOUNT AUTOCOMPLETION FIELD
-                  [
-                     'name' => 'users_id',
-                     'title' => User::getTypeName(1),
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'User',
-                        'right' => 'all',
-                        'conditions' => [
-                           'entities_id' => $this->fields['entities_id'],
-                        ],
-                     ],
+                    User::getTypeName(1) => [
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['users_id'],
                      'actions' => ['info'],
                   ],
-                  [
-                     'title' => Group::getTypeName(),
+                  Group::getTypeName() => [
                      'name' => 'groups_id',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'Group',
-                        'condition' => [
-                           'is_itemgroup' => 1,
-                           'entities_id' => $this->fields['entities_id'],
-                        ],
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_itemgroup' => 1, 'entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['groups_id'],
                   ],
-                  [
-                     'title' => __('Comments'),
+                  __('Comments') => [
                      'name' => 'comment',
                      'type' => 'textarea',
                      'value' => $this->fields['comment'],
                   ],
-                  [
-                     'title' => __('Size'),
+                  __('Size') => [
                      'name' => 'size',
                      'type' => 'text',
                      'value' => $this->fields['size'],
                      'after' => '"',
                   ],
-                  [
-                     'title' => __('Management Type'),
+                  __('Management Type') => [
                      'name' => 'is_global',
-                     'type' => $CFG_GLPI['monitors_management_restrict'] == 2 ? 'dropdown' : 'info',
-                     'from' => [
-                        'array' => [
+                     'type' => 'select',
+                     'values' => [
                            0 => __('Unit Management'),
                            1 => __('Global Management'),
-                        ],
                      ],
+                     'disabled' => $CFG_GLPI['monitors_management_restrict'] != 2 , 
                      'value' => $this->fields['is_global'],
-                     'content' => $CFG_GLPI['monitors_management_restrict'] == 0 ? __('Unit Management') : __('Global Management'),
                   ],
-               ]
+               ],
             ],
             __('Flags') => [
                'visible' => true,
                'inputs' => [
-                  [
-                     'title' => __('Microphone'),
+                  __('Microphone') => [
                      'name' => 'have_micro',
                      'type' => 'checkbox',
                      'value' => $this->fields['have_micro'],
                   ],
-                  [
-                     'title' => __('Speakers'),
+                  __('Speakers') => [
                      'name' => 'have_speaker',
                      'type' => 'checkbox',
                      'value' => $this->fields['have_speaker'],
                   ],
-                  [
-                     'title' => __('Sub-D'),
+                  __('Sub-D') => [
                      'name' => 'have_subd',
                      'type' => 'checkbox',
                      'value' => $this->fields['have_subd'],
                   ],
-                  [
-                     'title' => __('BNC'),
+                  __('BNC') => [
                      'name' => 'have_bnc',
                      'type' => 'checkbox',
                      'value' => $this->fields['have_bnc'],
                   ],
-                  [
-                     'title' => __('DVI'),
+                  __('DVI') => [
                      'name' => 'have_dvi',
                      'type' => 'checkbox',
                      'value' => $this->fields['have_dvi'],
                   ],
-                  [
-                     'title' => __('Pivot'),
+                  __('Pivot') => [
                      'name' => 'have_pivot',
                      'type' => 'checkbox',
                      'value' => $this->fields['have_pivot'],
                   ],
-                  [
-                     'title' => __('HDMI'),
+                  __('HDMI') => [
                      'name' => 'have_hdmi',
                      'type' => 'checkbox',
                      'value' => $this->fields['have_hdmi'],
                   ],
-                  [
-                     'title' => __('DisplayPort'),
+                  __('DisplayPort') => [
                      'name' => 'have_displayport',
                      'type' => 'checkbox',
                      'value' => $this->fields['have_displayport'],
@@ -379,7 +313,6 @@ class Monitor extends CommonDBTM {
       //                                                 => $CFG_GLPI["monitors_management_restrict"],
       //                                  'target'       => $target]);
 
-      require_once GLPI_ROOT . "/ng/form.utils.php";
       $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
       
       ob_start();
@@ -393,8 +326,6 @@ class Monitor extends CommonDBTM {
          ]]);
       $additionnalHtml = ob_get_clean();
          
-      expandForm($form);
-      
       renderTwigForm($form, $additionnalHtml);
       return true;
    }

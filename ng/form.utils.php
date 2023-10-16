@@ -1,28 +1,49 @@
 <?php
 
 /**
+ * @param $item
+ * 
+ * @global $DB
+ * @return array
+ */
+function getFormForItemType($item) {
+    global $DB; 
+    $database = $DB->dbdefault;
+    $table = $item->getTable();
+
+    $columns = iterator_to_array($DB->request([
+        'SELECT' => ['COLUMN_NAME', 'DATA_TYPE'],
+        'FROM' => 'INFORMATION_SCHEMA.COLUMNS',
+        'WHERE' => [
+            'TABLE_SCHEMA' => $database,
+            'TABLE_NAME' => $table,
+        ]
+    ]));
+}
+
+/**
  * @param $form
  * 
  */
-function expandForm(&$form)
+function getOptionForItems($item, $conditions = [], $display_emptychoice = true)
 {
-    foreach ($form['content'] as $bloc_key => $bloc) {
-        foreach ($bloc['inputs'] as $input_key => $input) {
-            if ($input['type'] == 'dropdown' && isset($input['from']['item'])) {
-                $table = getTableForItemType($input['from']['item']);
-                global $DB;
-                $iterator = $DB->request([
-                    'SELECT'          => ['id', 'name'],
-                    'FROM'            => $table,
-                    'WHERE'           => isset($input['from']['conditions']) ? $input['from']['conditions'] : []
-                ]);
-                while ($item = $iterator->next()) {
-                    $input['from']['array'][$item['id']] = $item['name'];
-                }
-                $form['content'][$bloc_key]['inputs'][$input_key] = $input;
-            }
-        }
+    global $DB;
+
+    $table = getTableForItemType($item);
+    $iterator = $DB->request([
+        'SELECT'          => ['id', 'name'],
+        'FROM'            => $table,
+        'WHERE'           => $conditions,
+    ]);
+
+    $options = [];
+    if ($display_emptychoice) {
+        $options[0] = Dropdown::EMPTY_VALUE;
     }
+    while ($val = $iterator->next()) {
+        $options[$val['id']] = $val['name'];
+    }
+    return $options;
 }
 
 /**

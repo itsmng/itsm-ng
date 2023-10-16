@@ -300,185 +300,136 @@ class Computer extends CommonDBTM {
     **/
    function showForm($ID, $options = [])
    {
-      
-      $title = __('New Item').' - '.self::getTypeName(1);
+      include_once GLPI_ROOT . "/ng/form.utils.php";
+
+      $title = __('New item').' - '.self::getTypeName(1);
+      $info = [
+         "onClick" => <<<JS
+         console.log("test")
+         JS,
+         "icon" => "fas fa-info"
+      ];
+      $add = [
+         "onClick" => <<<JS
+         console.log("test")
+         JS,
+         "icon" => "fas fa-plus"
+      ];
       $form = [
          'action' => $this->getFormURL(),
          'content' => [
             $title => [
                'visible' => true,
                'inputs' => [
-                  [
+                  __('Name') => [
                      'name' => 'name',
-                     'title' => __('Name'),
                      'type' => 'text',
                      'value' => $this->fields['name'],
                   ],
-                  [
+                  __('Status') => [
                      'name' => 'states_id',
-                     'title' => __('Status'),
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'State',
-                        'conditions' => [
-                           'is_visible_computer' => 1
-                        ],
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('State', ['is_visible_computer' => 1]),
                      'value' => $this->fields['states_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [$info, $add],
                   ],
-                  [
+                  __('Location') => [
                      'name' => 'locations_id',
-                     'title' => __('Location'),
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'Location',
-                        'conditions' => [
-                           'entities_id' => $this->fields['entities_id'],
-                        ],
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id'],]),
                      'value' => $this->fields['locations_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [$info, $add],
                   ],
-                  [
+                  _n('Type', 'Types', 1) => [
                      'name' => 'computertypes_id',
-                     'title' => _n('Type', 'Types', 1),
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'ComputerType',
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('ComputerType'),
                      'value' => $this->fields['computertypes_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [$info, $add],
                   ],
-                  [
+                  __("Technician in charge of the hardware") => [
                      'name' => 'users_id_tech',
-                     'title' => __("Technician in charge of the hardware"),
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'User',
-                        'right' => 'own_ticket',
-                        'conditions' => [
-                           'entities_id' => $this->fields['entities_id'],
-                        ]
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id'],]),
                      'value' => $this->fields['users_id_tech'],
                      'actions' => ['info'],
                   ],
-                  [
+                  Manufacturer::getTypeName(1) => [
                      'name' => 'manufacturers_id',
-                     'title' => Manufacturer::getTypeName(1),
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'Manufacturer',
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('Manufacturer'),
                      'value' => $this->fields['manufacturers_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [$info, $add],
                   ],
-                  [
+                  __('Group in charge of the hardware') => [
                      'name' => 'groups_id_tech',
-                     'title' => __('Group in charge of the hardware'),
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'Group',
-                        'conditions' => [
-                           'is_assign' => 1,
-                           'entities_id' => $this->fields['entities_id'],
-                        ],
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['groups_id_tech'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [$info, $add],
                   ],
-                  [
+                  _n('Model', 'Models', 1) => [
                      'name' => 'computermodels_id',
-                     'title' => _n('Model', 'Models', 1),
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'ComputerModel',
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('ComputerModel'),
                      'value' => $this->fields['computermodels_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [$info, $add],
                   ],
-                  [
+                  __('Alternate username number') => [
                      'name' => 'contact_num',
-                     'title' => __('Alternate username number'),
                      'type' => 'text',
                      'value' => $this->fields['contact_num'],
                   ],
-                  [
+                  __('Serial number') => [
                      'name' => 'serial',
-                     'title' => __('Serial number'),
                      'type' => 'text',
                      'value' => $this->fields['serial'],
                   ],
-                  [
+                  __('Inventory number') => [
                      'name' => 'otherserial',
-                     'title' => __('Inventory number'),
                      'type' => 'text',
                      'value' => $this->fields['otherserial'],
                   ],
-                  [
+                  __('Alternate username') => [
                      'name' => 'contact',
-                     'title' => __('Alternate username'),
                      'type' => 'text',
                      'value' => $this->fields['contact'],
                   ],
-                  [
+                  User::getTypeName(1) => [
                      'name' => 'users_id',
-                     'title' => User::getTypeName(1),
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'User',
-                        'right' => 'all',
-                        'conditions' => [
-                           'entities_id' => $this->fields['entities_id'],
-                        ],
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]), // TODO : add right => all
                      'value' => $this->fields['users_id'],
                      'actions' => ['info'],
                   ],
-                  [
+                  _n('Network', 'Networks', 1) => [
                      'name' => 'networks_id',
-                     'title' => _n('Network', 'Networks', 1),
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'Network',
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('Network'),
                      'value' => $this->fields['networks_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [$info, $add],
                   ],
-                  [
+                  Group::getTypeName(1) => [
                      'name' => 'groups_id',
-                     'title' => Group::getTypeName(1),
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'Group',
-                        'conditions' => [
-                           'is_itemgroup' => 1,
-                           'entities_id' => $this->fields['entities_id'],
-                        ],
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_itemgroup' => 1, 'entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['groups_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [$info, $add],
                   ],
-                  [
+                  __('UUID') => [
                      'name' => 'uuid',
-                     'title' => __('UUID'),
                      'type' => 'text',
                      'value' => $this->fields['uuid'],
                   ],
-                  [
+                  AutoUpdateSystem::getTypeName(1) => [
                      'name' => 'autoupdatesystems_id',
-                     'title' => AutoUpdateSystem::getTypeName(1),
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'AutoUpdateSystem',
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('AutoUpdateSystem'),
                      'value' => $this->fields['autoupdatesystems_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [$info, $add],
                   ],
-                  [
+                  __('Comments') => [
                      'name' => 'comment',
-                     'title' => __('Comments'),
                      'type' => 'textarea',
                      'value' => $this->fields['comment'],
                   ],
@@ -487,7 +438,6 @@ class Computer extends CommonDBTM {
          ]
       ];
 
-      require_once GLPI_ROOT . "/ng/form.utils.php";
       $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
       
       ob_start();
@@ -501,7 +451,6 @@ class Computer extends CommonDBTM {
          ]]);
       $additionnalHtml = ob_get_clean();
          
-      expandForm($form);
       renderTwigForm($form, $additionnalHtml);
       return true;
    }

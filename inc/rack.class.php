@@ -98,8 +98,8 @@ class Rack extends CommonDBTM
          type: "POST",
          url: "../ajax/dropdownLocation.php",
          data: {
+            itemtype: 'DcRoom',
             items_id: $('#dcrooms_dropdown_id').val(),
-            itemtype: 'DCRoom',
          },
          success: function (data) {
             $("#locations_id_dropdown").empty();
@@ -143,164 +143,114 @@ class Rack extends CommonDBTM
          }
       });
       JS;
-
+      
       $room = new DCRoom();
       $room->getFromDB($this->fields['dcrooms_id']);
-      $positions = array_diff_key($room->getAllPositions(), $room->getFilled($this->fields['position']));
+      $all_positions = isset($this->fields['vis_cols']) ? $room->getAllPositions() : [];
+      $positions = array_diff_key($all_positions, $room->getFilled($this->fields['position']));
+   
+      require_once GLPI_ROOT . "/ng/form.utils.php";
 
+      $title = __('New element').' '.self::getTypeName(1);
       $form = [
          'action' => $CFG_GLPI['root_doc'] . '/front/rack.form.php',
          'content' => [
-            '' => [
+            $title => [
                'inputs' => [
-                  [
-                     'title' => __("Name"),
+                  __("Name") => [
                      'name' => 'name',
                      'type' => 'text',
                      'value' => $this->fields['name'],
-                     'placeholder' => ''
                   ],
-                  [
-                     'title' => __("Status"),
+                  __("Status") => [
                      'name' => 'states_id',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'State',
-                        'condition' => [
-                           'is_visible_computer' => 1,
-                           'entities_id' => $this->fields['entities_id'],
-                        ]
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('State', ['is_visible_computer' => 1, 'entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['states_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [],
                   ],
-                  [
-                     'title' => __("Location"),
+                  __("Location") => [
                      'name' => 'locations_id',
                      'id' => 'locations_id_dropdown',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'Location',
-                        'conditions' => [
-                           'entities_id' => $this->fields['entities_id'],
-                        ]
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['locations_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [],
                   ],
-                  [
-                     'title' => __("Type"),
+                  __("Type") => [
                      'name' => 'racktypes_id',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'RackType',
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('RackType'),
                      'value' => $this->fields['racktypes_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [],
                   ],
-                  [
-                     'title' => __("Technician in charge of the hardware"),
+                  __("Technician in charge of the hardware") => [
                      'name' => 'users_id_tech',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'User',
-                        'right' => 'own_ticket',
-                        'conditions' => [
-                           'entities_id' => $this->fields['entities_id'],
-                        ]
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]), // TODO : add right => own_ticket
                      'value' => $this->fields['users_id_tech'],
-                     'actions' => ['info'],
+                     'actions' => [],
                   ],
-                  [
-                     'title' => __("Manufacturer"),
+                  __("Manufacturer") => [
                      'name' => 'manufacturer_id',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'Manufacturer',
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('Manufacturer'),
                      'value' => $this->fields['manufacturers_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [],
                   ],
-                  [
-                     'title' => __("Group in charge of the hardware"),
+                  __("Group in charge of the hardware") => [
                      'name' => 'groups_id_tech',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'Group',
-                        'condition' => [
-                           'entities_id' => $this->fields['entities_id'],
-                           'is_assign' => 1
-                        ],
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['entities_id' => $this->fields['entities_id'], 'is_assign' => 1]),
                      'value' => $this->fields['groups_id_tech'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [],
                   ],
-                  [
-                     'title' => __("Model"),
+                  __("Model") => [
                      'name' => 'rackmodels_id',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'item' => 'RackModel',
-                     ],
+                     'type' => 'select',
+                     'values' => getOptionForItems('RackModel'),
                      'value' => $this->fields['rackmodels_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => [],
                   ],
-                  [
-                     'title' => __("Serial number"),
+                  __("Serial number") => [
                      'name' => 'serial',
                      'type' => 'text',
                      'value' => $this->fields['serial'],
                   ], // DOES NOT TAKE INTO ACCOUNT AUTOCOMPLETION FIELD
-                  [
-                     'title' => __("Inventory/Asset number"),
+                  __("Inventory/Asset number") => [
                      'name' => 'otherserial',
                      'type' => 'text',
                      'value' => $this->fields['otherserial'],
                   ], // DOES NOT TAKE INTO ACCOUNT AUTOCOMPLETION FIELD
-                  [
-                     'title' => __("Server room"),
+                  __("Server room") => [
                      'name' => 'dcrooms_id',
-                     'type' => 'dropdown',
+                     'type' => 'select',
                      'id' => 'dcrooms_dropdown_id',
-                     'from' => [
-                        'item' => 'DcRoom',
-                        'conditions' => [
-                           'entities_id' => $this->fields['entities_id'],
-                        ],
-                     ],
+                     'values' => getOptionForItems('DcRoom', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['dcrooms_id'],
                      'hooks' => [
                         'change' => $loadDcPositionHook . $loadLocationHook,
                      ],
                   ],
-                  [
-                     'title' => __("Position in room"),
+                  __("Position in room") => [
                      'name' => 'position',
                      'id' => 'room_position_dropdown',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'array' => $positions,
-                     ],
-                     'content' => __('No room found or selected'),
+                     'type' => 'select',
+                     'values' => [$positions ? $positions : 0 => '-----'],
                      'value' => $this->fields['position'],
                   ],
-                  [
-                     'title' => __("Door orientation in room"),
+                  __("Door orientation in room") => [
                      'name' => 'room_orientation',
-                     'type' => 'dropdown',
-                     'from' => [
-                        'array' => [
-                           self::ROOM_O_NORTH => __('North'),
-                           self::ROOM_O_EAST => __('East'),
-                           self::ROOM_O_SOUTH => __('South'),
-                           self::ROOM_O_WEST => __('West'),
-                        ],
-                        'value' => $this->fields['room_orientation']
+                     'type' => 'select',
+                     'values' => [
+                        self::ROOM_O_NORTH => __('North'),
+                        self::ROOM_O_EAST => __('East'),
+                        self::ROOM_O_SOUTH => __('South'),
+                        self::ROOM_O_WEST => __('West'),
                      ],
+                     'value' => $this->fields['room_orientation']
                   ],
-                  [
-                     'title' => __("Number of units"),
+                  __("Number of units") => [
                      'name' => 'number_units',
                      'type' => 'number',
                      'value' => $this->fields['number_units'] ? $this->fields['number_units'] : 42,
@@ -309,50 +259,42 @@ class Rack extends CommonDBTM
                      'step' => 1,
                      'after' => __('U'),
                   ],
-                  [
-                     'title' => __("Width"),
+                  __("Width") => [
                      'name' => 'width',
                      'type' => 'text',
                      'value' => $this->fields['width'],
                   ],
-                  [
-                     'title' => __("Height"),
+                  __("Height") => [
                      'name' => 'height',
                      'type' => 'text',
                      'value' => $this->fields['height'],
                   ],
-                  [
-                     'title' => __("Depth"),
+                  __("Depth") => [
                      'name' => 'depth',
                      'type' => 'text',
                      'value' => $this->fields['depth'],
                   ],
-                  [
-                     'title' => __("Max. power (in watts)"),
+                  __("Max. power (in watts)") => [
                      'name' => 'max_power',
                      'type' => 'text',
                      'value' => $this->fields['max_power'],
                   ],
-                  [
-                     'title' => __("Measured power (in watts)"),
+                  __("Measured power (in watts)") => [
                      'name' => 'mesured_power',
                      'type' => 'text',
                      'value' => $this->fields['mesured_power'],
                   ],
-                  [
-                     'title' => __("Max. weight"),
+                  __("Max. weight") => [
                      'name' => 'max_weight',
                      'type' => 'text',
                      'value' => $this->fields['max_weight'],
                   ],
-                  [
-                     'title' => __("Background color"),
+                  __("Background color") => [
                      'name' => 'bgcolor',
                      'type' => 'color',
                      'value' => $this->fields['bgcolor'],
                   ],
-                  [
-                     'title' => __("Comments"),
+                  __("Comments") => [
                      'name' => 'comment',
                      'type' => 'textarea',
                      'value' => $this->fields['comment'],
@@ -361,7 +303,6 @@ class Rack extends CommonDBTM
             ]
          ]
       ];
-      require_once GLPI_ROOT . "/ng/form.utils.php";
       $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
 
       ob_start();
@@ -375,7 +316,6 @@ class Rack extends CommonDBTM
       ]]);
       $additionnalHtml = ob_get_clean();
 
-      expandForm($form);
       renderTwigForm($form, $additionnalHtml);
 
       return true;

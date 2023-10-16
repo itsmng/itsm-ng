@@ -264,147 +264,130 @@ class NetworkEquipment extends CommonDBTM {
    **/
    function showForm($ID, $options = []) {
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
+      include_once GLPI_ROOT . '/ng/form.utils.php';
+      $title = __('New item').' - '.self::getTypeName(1);
 
-      $tplmark = $this->getAutofillMark('name', $options);
-      echo "<tr class='tab_bg_1'>";
-      //TRANS: %1$s is a string, %2$s a second one without spaces between them : to change for RTL
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Name'), $tplmark).
-           "</td>";
-      echo "<td>";
-      $objectName = autoName($this->fields["name"], "name",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, "name", ['value' => $objectName]);
-      echo "</td>";
-      echo "<td>".__('Status')."</td>";
-      echo "<td>";
-      State::dropdown([
-         'value'     => $this->fields["states_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_visible_networkequipment' => 1]
-      ]);
-      echo "</td></tr>";
+      $form = [
+         'action' => $this->getFormURL(),
+         'content' => [
+            $title => [
+               'visible' => true,
+               'inputs' => [
+                  __('Name') => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'],
+                  ],
+                  __('Status') => [
+                     'name' => 'states_id',
+                     'type' => 'select',
+                     'value' => $this->fields['states_id'],
+                     'values' => getOptionForItems('State', ['is_visible_networkequipment' => 1, 'entities_id' => $this->fields['entities_id']]),
+                  ],
+                  __('Location') => [
+                     'name' => 'locations_id',
+                     'type' => 'select',
+                     'value' => $this->fields['locations_id'],
+                     'values' => getOptionForItems("Location", ['entities_id' => $this->fields['entities_id']]),
+                  ],
+                  __('Type') => [
+                     'name' => 'networkequipmenttypes_id',
+                     'type' => 'select',
+                     'value' => $this->fields['networkequipmenttypes_id'],
+                     'values' => getOptionForItems("NetworkEquipmentType"),
+                  ],
+                  __("Technician in charge of the software") => [
+                     'name' => 'users_id_tech',
+                     'type' => 'select',
+                     'value' => $this->fields['users_id_tech'],
+                     'values' => getOptionForItems("User", ['entities_id' => $this->fields['entities_id']]), // NEED right => own_ticket
+                  ],
+                  __("Manufacturer") => [
+                     'name' => 'manufacturers_id',
+                     'type' => 'select',
+                     'value' => $this->fields['manufacturers_id'],
+                     'values' => getOptionForItems("Manufacturer"),
+                  ],
+                  __("Group in charge of the software") => [
+                     'name' => 'groups_id_tech',
+                     'type' => 'select',
+                     'value' => $this->fields['groups_id_tech'],
+                     'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]), // NEED right => own_ticket
+                  ],
+                  __("Model") => [
+                     'name' => 'manufacturers_id',
+                     'type' => 'select',
+                     'value' => $this->fields['manufacturers_id'],
+                     'values' => getOptionForItems("NetworkEquipmentModel"),
+                  ],
+                  __("Alternate username number") => [
+                     'name' => 'contact_num',
+                     'type' => 'text',
+                     'value' => $this->fields['contact_num'],
+                  ],
+                  __("Serial number") => [
+                     'name' => 'serial',
+                     'type' => 'text',
+                     'value' => $this->fields['serial'],
+                  ],
+                  __("Alternate username") => [
+                     'name' => 'contact',
+                     'type' => 'text',
+                     'value' => $this->fields['contact'],
+                  ],
+                  __("Inventory number") => [
+                     'name' => 'otherserial',
+                     'type' => 'text',
+                     'value' => $this->fields['otherserial'],
+                  ],
+                  __("User") => [
+                     'name' => 'users_id',
+                     'type' => 'select',
+                     'value' => $this->fields['users_id'],
+                     'values' => getOptionForItems("User", ['entities_id' => $this->fields['entities_id']]),
+                  ],
+                  __("Network") => [
+                     'name' => 'networks_id',
+                     'type' => 'select',
+                     'value' => $this->fields['networks_id'],
+                     'values' => getOptionForItems("Network"),
+                  ],
+                  __("Group") => [
+                     'name' => 'groups_id',
+                     'type' => 'select',
+                     'value' => $this->fields['groups_id'],
+                     'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]),
+                  ],
+                  __("Memory") => [
+                     'name' => 'ram',
+                     'type' => 'text',
+                     'value' => $this->fields['ram'],
+                     'after' => __('Mio'),
+                  ],
+                  __("Comment") => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'],
+                  ],
+               ]
+            ],
+         ]
+      ];
 
-      $this->showDcBreadcrumb();
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Location::getTypeName(1)."</td>";
-      echo "<td>";
-      Location::dropdown(['value'  => $this->fields["locations_id"],
-                              'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>"._n('Type', 'Types', 1)."</td>";
-      echo "<td>";
-      NetworkEquipmentType::dropdown(['value' => $this->fields["networkequipmenttypes_id"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Technician in charge of the hardware')."</td>";
-      echo "<td>";
-      User::dropdown(['name'   => 'users_id_tech',
-                           'value'  => $this->fields["users_id_tech"],
-                           'right'  => 'own_ticket',
-                           'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>".Manufacturer::getTypeName(1)."</td>";
-      echo "<td>";
-      Manufacturer::dropdown(['value' => $this->fields["manufacturers_id"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Group in charge of the hardware')."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id_tech',
-         'value'     => $this->fields['groups_id_tech'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_assign' => 1]
-      ]);
-      echo "</td>";
-      echo "<td>"._n('Model', 'Models', 1)."</td>";
-      echo "<td>";
-      NetworkEquipmentModel::dropdown(['value' => $this->fields["networkequipmentmodels_id"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Alternate username number')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "contact_num");
-      echo "</td>";
-      echo "<td>".__('Serial number')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "serial");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Alternate username')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "contact");
-      echo "</td>";
-
-      $tplmark = $this->getAutofillMark('otherserial', $options);
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Inventory number'), $tplmark).
-           "</td>";
-      echo "<td>";
-      $objectName = autoName($this->fields["otherserial"], "otherserial",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, "otherserial", ['value' => $objectName]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".User::getTypeName(1)."</td>";
-      echo "<td>";
-      User::dropdown(['value'  => $this->fields["users_id"],
-                           'entity' => $this->fields["entities_id"],
-                           'right'  => 'all']);
-      echo "</td>";
-      echo "<td>"._n('Network', 'Networks', 1)."</td>";
-      echo "<td>";
-      Network::dropdown(['value' => $this->fields["networks_id"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Group::getTypeName(1)."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'value'     => $this->fields["groups_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_itemgroup' => 1]
-      ]);
-      echo "</td>";
-      $rowspan = 3;
-      echo "<td rowspan='$rowspan'>" . __('Comments') . "</td>";
-      echo "<td rowspan='$rowspan'>";
-      Html::textarea(['name'  => 'comment',
-                      'value' => $this->fields["comment"],
-                      'cols'  => '45',
-                      'rows'  => '10']);
-
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td colspan=2>".__('The MAC address and the IP of the equipment are included in an aggregated network port')."</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".sprintf(__('%1$s (%2$s)'), _n('Memory', 'Memories', 1), __('Mio'))."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "ram");
-      echo "</td></tr>";
-
-      // Display auto inventory information
-      if (!empty($ID)
-         && $this->fields["is_dynamic"]) {
-         echo "<tr class='tab_bg_1'><td colspan='4'>";
-         Plugin::doHook("autoinventory_information", $this);
-         echo "</td></tr>";
-      }
-
-      $this->showFormButtons($options);
-
+      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
+      
+      ob_start();
+      Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
+         'colspan'      => 2,
+         'withtemplate' => '',
+         'candel'       => true,
+         'canedit'      => true,
+         'addbuttons'   => [],
+         'formfooter'   => null,
+         ]]);
+      $additionnalHtml = ob_get_clean();
+         
+      renderTwigForm($form, $additionnalHtml);
       return true;
    }
 
