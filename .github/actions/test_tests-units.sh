@@ -7,6 +7,7 @@ else
   ATOUM_ADDITIONNAL_OPTIONS="--no-code-coverage";
 fi
 
+# Unit test
 vendor/bin/atoum \
   -p 'php -d memory_limit=512M' \
   --debug \
