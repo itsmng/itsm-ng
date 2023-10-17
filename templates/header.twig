@@ -77,6 +77,7 @@
 			<div class="main-container">
 				<div id="subheader" class="d-flex justify-content-between p-2">
 					{% include "breadcrumb.twig" with { 'items': breadcrumb_items } %}
+					{{profileSelect|raw}}
 					{% include "actions.twig" with {'links': links, 'root_doc':root_doc} %}
 				</div>
 				<main role='main' id='page'>

@@ -1917,6 +1917,10 @@ JAVASCRIPT
          ];
       };
 
+      ob_start();
+         Html::showProfileSelecter('test');
+      $twig_vars['profileSelect'] = ob_get_clean();
+
       require_once GLPI_ROOT . "/ng/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
       try {
@@ -3852,7 +3856,7 @@ JS;
       global $CFG_GLPI;
 
       if (count($_SESSION["glpiprofiles"]) > 1) {
-         echo '<li class="profile-selector"><form name="form" method="post" action="' . $target . '">';
+         echo '<li class="profile-selector list-group-item"><form name="form" method="post" action="' . $target . '">';
          $values = [];
          foreach ($_SESSION["glpiprofiles"] as $key => $val) {
             $values[$key] = $val['name'];
@@ -3872,7 +3876,6 @@ JS;
       }
 
       if (Session::isMultiEntitiesMode()) {
-         echo "<li class='profile-selector'>";
          Ajax::createModalWindow(
             'entity_window',
             $CFG_GLPI['root_doc'] . "/ajax/entitytree.php",
@@ -3881,12 +3884,15 @@ JS;
                'extraparams' => ['target' => $target]
             ]
          );
-         echo "<a onclick='entity_window.dialog(\"open\");' href='#modal_entity_content' title=\"" .
-            addslashes($_SESSION["glpiactive_entity_name"]) .
-            "\" class='entity_select' id='global_entity_select'>" .
-            $_SESSION["glpiactive_entity_shortname"] . "</a>";
-
-         echo "</li>";
+         $active_entity = addslashes($_SESSION["glpiactive_entity_name"]);
+         $entity_shortname = $_SESSION["glpiactive_entity_shortname"];
+         echo <<<HTML
+            <div class='profile-selector'>
+               <a onclick='entity_window.dialog("open")' href='#modal_entity_content' title="$active_entity" class='entity-select' id="global_entity_select">
+                  $entity_shortname
+               </a>
+            </div>
+         HTML;
       }
    }
 
