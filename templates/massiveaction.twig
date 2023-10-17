@@ -1,28 +1,20 @@
-<div class="d-flex align-item-start">
-	<div
-        class="nav flex-column flex-nowrap nav-pills me-3  overflow-scroll"
-        id="v-pills-tab"
-        role="tablist"
-        aria-orientation="vertical">
-		{% for key, action in actions %}
-			<button
-                class="nav-link {{ (loop.first) ? 'active' : '' }}"
-                id="v-pills-{{ loop.index }}-tab"
-                data-bs-toggle="pill"
-                type="button"
-                role="tab"
-                aria-selected="{{ loop.first ? "true" : "false"}}"
-                onclick="populateSubForm('{{ key }}')"
-            >
-				{{action}}
-			</button>
-		{% endfor %}
-	</div>
-	<div class="tab-content" id="v-pills-tabContent">
-	</div>
+<div class="modal-header ">
+	<h1 class="modal-title fs-5" id="exampleModalLabel">{{"actions"|trans}}</h1>
+    <select id="action-select">
+        {% for key, action in actions %}
+            <option value="{{ action }}" onclick="populateSubForm('{{ key }}')">{{ action }}</option>
+        {% endfor %}
+    </select>
+	<button type="button" class="btn-close mx-1" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
+<div class="modal-body text-center" id="v-pills-tabContent">
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary">{{"save"|trans}}</button>
+</div>
+
 <script>
-function populateSubForm(action) {
+	function populateSubForm(action) {
     body = JSON.parse('{{ subformBody|json_encode()|raw }}');
     body["action"] = action;
     body["container"] = "v-pills-tabContent"; 

@@ -2910,7 +2910,7 @@ JAVASCRIPT
          $width = '95%';
       }
 
-      $identifier = md5($url . serialize($p['extraparams']) . $p['rand']);
+      $identifier = '';//md5($url . serialize($p['extraparams']) . $p['rand']);
       $max        = Toolbox::get_max_input_vars();
       $out = '';
 
@@ -2937,19 +2937,17 @@ JAVASCRIPT
             || (isset($p['forcecreate']) && $p['forcecreate'])
          ) {
             $out .= "<div id='massiveactioncontent$identifier'></div>";
-
+            
             if (!empty($p['tag_to_send'])) {
-               $js_modal_fields  = "            var items = $('";
-               if (!empty($p['container'])) {
-                  $js_modal_fields .= '[id=' . $p['container'] . '] ';
-               }
-               $js_modal_fields .= "[data-glpicore-ma-tags~=" . $p['tag_to_send'] . "]')";
-               $js_modal_fields .= ".each(function( index ) {\n";
-               $js_modal_fields .= "              fields[$(this).attr('name')] = $(this).attr('value');\n";
-               $js_modal_fields .= "              if (($(this).attr('type') == 'checkbox') && (!$(this).is(':checked'))) {\n";
-               $js_modal_fields .= "                 fields[$(this).attr('name')] = 0;\n";
-               $js_modal_fields .= "              }\n";
-               $js_modal_fields .= "            });";
+               $container = $p['container'];
+               $js_modal_fields = <<<JS
+                  var items = $("#$container").bootstrapTable('getData');
+                  fields = {};
+                  for (item of items) {
+                     fields[item[2]] = item['state'] ? 1 : 0;
+                  }
+                  console.table(fields)
+               JS;
             } else {
                $js_modal_fields = "";
             }
@@ -2972,19 +2970,19 @@ JAVASCRIPT
          if ($p['display_arrow']) {
             $out .= "<td width='30px'><img src='" . $CFG_GLPI["root_doc"] . "/pics/arrow-left" .
                ($p['ontop'] ? '-top' : '') . ".png' alt=''></td>";
+               $out .= "<td width='100%' class='left'>";
+               $out .= "<a class='vsubmit' ";
+               if (is_array($p['confirm'] || strlen($p['confirm']))) {
+                  $out .= self::addConfirmationOnAction($p['confirm'], "massiveaction_window$identifier.dialog(\"open\");");
+               } else {
+                  $out .= "onclick='massiveaction_window$identifier.dialog(\"open\");'";
+               }
+               $out .= " href='#modal_massaction_content$identifier' title=\"" . htmlentities($p['title'], ENT_QUOTES, 'UTF-8') . "\">";
+               $out .= $p['title'] . "</a>";
+               $out .= "</td>";
+      
+               $out .= "</tr></table>";
          }
-         $out .= "<td width='100%' class='left'>";
-         $out .= "<a class='vsubmit' ";
-         if (is_array($p['confirm'] || strlen($p['confirm']))) {
-            $out .= self::addConfirmationOnAction($p['confirm'], "massiveaction_window$identifier.dialog(\"open\");");
-         } else {
-            $out .= "onclick='massiveaction_window$identifier.dialog(\"open\");'";
-         }
-         $out .= " href='#modal_massaction_content$identifier' title=\"" . htmlentities($p['title'], ENT_QUOTES, 'UTF-8') . "\">";
-         $out .= $p['title'] . "</a>";
-         $out .= "</td>";
-
-         $out .= "</tr></table>";
          if (
             !$p['ontop']
             || (isset($p['forcecreate']) && $p['forcecreate'])

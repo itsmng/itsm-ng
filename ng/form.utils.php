@@ -52,14 +52,14 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true)
  * 
  * @return string
  */
-function renderTwigForm($form, $additionnalHtml)
+function renderTwigForm($form, $additionnalHtml, $colAmount = 2)
 {
     require_once GLPI_ROOT . "/ng/twig.class.php";
     $twig = Twig::load(GLPI_ROOT . "/templates", false);
     try {
         echo $twig->render('form.twig', [
             'form' => $form,
-            'col' => 2,
+            'col' => $colAmount,
             'additionnalHtml' => $additionnalHtml,
         ]);
     } catch (Exception $e) {
