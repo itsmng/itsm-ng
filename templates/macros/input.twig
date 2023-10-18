@@ -1,7 +1,7 @@
 {% macro select(attributes) %}
 <select {% for name, value in attributes %} {% if name != 'values'%}{{name}}="{{value}}"{% endif %} {% endfor %}>
     {% for key, item in attributes.values %}
-        <option value="{{key}}" {% if input.value == key %}selected="selected"{% endif %}>{{item}}</option>
+        <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
     {% endfor %}
 </select>
 {% endmacro %}
