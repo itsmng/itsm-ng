@@ -220,7 +220,6 @@ class Software extends CommonDBTM {
     *@return boolean item found
    **/
    function showForm($ID, $options = []) {
-
       include_once GLPI_ROOT . '/ng/form.utils.php';
       $title = __('New item').' - '.self::getTypeName(1);
 
@@ -240,24 +239,28 @@ class Software extends CommonDBTM {
                      'type' => 'select',
                      'value' => $this->fields['manufacturers_id'],
                      'values' => getOptionForItems("Manufacturer"),
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                   ],
                   __('Location') => [
                      'name' => 'locations_id',
                      'type' => 'select',
                      'value' => $this->fields['locations_id'],
                      'values' => getOptionForItems("Location", ['entities_id' => $this->fields['entities_id']]),
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
                   ],
                   __('Category') => [
                      'name' => 'softwarecategories_id',
                      'type' => 'select',
                      'value' => $this->fields['softwarecategories_id'],
                      'values' => getOptionForItems("SoftwareCategory"),
+                     'actions' => getItemActionButtons(['info', 'add'], "SoftwareCategory"),
                   ],
                   __("Technician in charge of the software") => [
                      'name' => 'users_id_tech',
                      'type' => 'select',
                      'value' => $this->fields['users_id_tech'],
                      'values' => getOptionForItems("User", ['entities_id' => $this->fields['entities_id']]), // NEED right => own_ticket
+                     'actions' => getItemActionButtons(['info'], "User"),
                   ],
                   __("Associable to a ticket") => [
                      'name' => 'is_helpdesk_visible',
@@ -269,24 +272,21 @@ class Software extends CommonDBTM {
                      'type' => 'select',
                      'value' => $this->fields['groups_id_tech'],
                      'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]), // NEED right => own_ticket
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __("User") => [
                      'name' => 'users_id',
                      'type' => 'select',
                      'value' => $this->fields['users_id'],
                      'values' => getOptionForItems("User", ['entities_id' => $this->fields['entities_id']]), // NEED right => all
+                     'actions' => getItemActionButtons(['info'], "User"),
                   ],
                   __("Group") => [
                      'name' => 'groups_id',
                      'type' => 'select',
                      'value' => $this->fields['groups_id'],
                      'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]), // NEED right => all
-                  ],
-                  __("Group") => [
-                     'name' => 'groups_id',
-                     'type' => 'select',
-                     'value' => $this->fields['groups_id'],
-                     'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]), // NEED right => all
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                ]
             ],

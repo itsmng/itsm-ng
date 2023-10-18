@@ -3856,7 +3856,7 @@ JS;
       global $CFG_GLPI;
 
       if (count($_SESSION["glpiprofiles"]) > 1) {
-         echo '<li class="profile-selector list-group-item"><form name="form" method="post" action="' . $target . '">';
+         echo '<li class="profile-selector"><form name="form" method="post" action="' . $target . '">';
          $values = [];
          foreach ($_SESSION["glpiprofiles"] as $key => $val) {
             $values[$key] = $val['name'];

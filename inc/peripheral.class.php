@@ -152,146 +152,141 @@ class Peripheral extends CommonDBTM {
    function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
-      $target       = $this->getFormURL();
-      $withtemplate = $this->initForm($ID, $options);
-      $this->showFormHeader($options);
+      include_once (GLPI_ROOT."/ng/form.utils.php");
 
-      $tplmark = $this->getAutofillMark('name', $options);
-      echo "<tr class='tab_bg_1'>";
-      //TRANS: %1$s is a string, %2$s a second one without spaces between them : to change for RTL
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Name'), $tplmark);
-      echo "</td>";
-      echo "<td>";
-      $objectName = autoName($this->fields["name"], "name",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, "name", ['value' => $objectName]);
-      echo "</td>\n";
-      echo "<td>".__('Status')."</td>\n";
-      echo "<td>";
-      State::dropdown([
-         'value'     => $this->fields["states_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_visible_peripheral' => 1]
-      ]);
-      echo "</td></tr>\n";
+      $form = [
+         'action' => $this->getFormURL(),
+         'content' => [
+            'General' => [
+               'visible' => true,
+               'inputs' => [
+                  __('Name') => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'],
+                  ],
+                  __('Status') => [
+                     'name' => 'status',
+                     'type' => 'select',
+                     'values' => getOptionForItems('State', ['is_visible_peripheral' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['states_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "State"),
+                  ],
+                  __('Location') => [
+                     'name' => 'locations_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['locations_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
+                  ],
+                  __('Type') => [
+                     'name' => 'peripheraltypes_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('PeripheralType'),
+                     'value' => $this->fields['peripheraltypes_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "PeripheralType"),
+                  ],
+                  __('Technician in charge of the hardware') => [
+                     'name' => 'users_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]), // TODO : right => own_ticket
+                     'value' => $this->fields['users_id_tech'],
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  Manufacturer::getTypeName(1) => [
+                     'name' => 'manufacturers_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Manufacturer'),
+                     'value' => $this->fields['manufacturers_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
+                  ],
+                  __('Group in charge of the hardware') => [
+                     'name' => 'groups_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['groups_id_tech'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  _n('Model', 'Models', 1) => [
+                     'name' => 'peripheralmodels_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('PeripheralModel'),
+                     'value' => $this->fields['peripheralmodels_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "PeripheralModel"),
+                  ],
+                  __('Alternate username number') => [
+                     'name' => 'contact_num',
+                     'type' => 'text',
+                     'value' => $this->fields['contact_num'],
+                  ],
+                  __('Serial number') => [
+                     'name' => 'serial',
+                     'type' => 'text',
+                     'value' => $this->fields['serial'],
+                  ],
+                  __('Alternate username') => [
+                     'name' => 'contact',
+                     'type' => 'text',
+                     'value' => $this->fields['contact'],
+                  ],
+                  __('Inventory number') => [
+                     'name' => 'otherserial',
+                     'type' => 'text',
+                     'value' => $this->fields['otherserial'],
+                  ],
+                  User::getTypeName(1) => [
+                     'name' => 'users_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['users_id'],
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  __('Management Type') => [
+                     'name' => 'is_global',
+                     'type' => 'select',
+                     'values' => [
+                           0 => __('Unit Management'),
+                           1 => __('Global Management'),
+                     ],
+                     'disabled' => $CFG_GLPI['monitors_management_restrict'] != 2 , 
+                     'value' => $this->fields['is_global'],
+                  ],
+                  Group::getTypeName(1) => [
+                     'name' => 'groups_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_itemgroup' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['groups_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  __('Comments') => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'],
+                  ],
+                  __('Brand') => [
+                     'name' => 'brand',
+                     'type' => 'text',
+                     'value' => $this->fields['brand'],
+                  ],
+               ],
+            ]
+         ]
+      ];
 
-      $this->showDcBreadcrumb();
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Location::getTypeName(1)."</td>\n";
-      echo "<td>";
-      Location::dropdown(['value'  => $this->fields["locations_id"],
-                               'entity' => $this->fields["entities_id"]]);
-      echo "</td>\n";
-      echo "<td>"._n('Type', 'Types', 1)."</td>\n";
-      echo "<td>";
-      PeripheralType::dropdown(['value' => $this->fields["peripheraltypes_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Technician in charge of the hardware')."</td>\n";
-      echo "<td>";
-      User::dropdown(['name'   => 'users_id_tech',
-                           'value'  => $this->fields["users_id_tech"],
-                           'right'  => 'own_ticket',
-                           'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>".Manufacturer::getTypeName(1)."</td>\n";
-      echo "<td>";
-      Manufacturer::dropdown(['value' => $this->fields["manufacturers_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Group in charge of the hardware')."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id_tech',
-         'value'     => $this->fields['groups_id_tech'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_assign' => 1]
-      ]);
-      echo "</td>";
-      echo "<td>"._n('Model', 'Models', 1)."</td>\n";
-      echo "<td>";
-      PeripheralModel::dropdown(['value' => $this->fields["peripheralmodels_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Alternate username number')."</td>\n";
-      echo "<td>";
-      Html::autocompletionTextField($this, "contact_num");
-      echo "</td>";
-      echo "<td>".__('Serial number')."</td>\n";
-      echo "<td>";
-      Html::autocompletionTextField($this, "serial");
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Alternate username')."</td>\n";
-      echo "<td>";
-      Html::autocompletionTextField($this, "contact");
-      echo "</td>\n";
-
-      $tplmark = $this->getAutofillMark('otherserial', $options);
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Inventory number'), $tplmark).
-           "</td>\n";
-      echo "<td>";
-      $objectName = autoName($this->fields["otherserial"], "otherserial",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, "otherserial", ['value' => $objectName]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".User::getTypeName(1)."</td>\n";
-      echo "<td>";
-      User::dropdown(['value'  => $this->fields["users_id"],
-                           'entity' => $this->fields["entities_id"],
-                           'right'  => 'all']);
-      echo "</td>\n";
-      echo "<td>".__('Management type')."</td>\n";
-      echo "<td>";
-      Dropdown::showGlobalSwitch($this->fields["id"],
-                                 ['withtemplate' => $withtemplate,
-                                       'value'        => $this->fields["is_global"],
-                                       'management_restrict'
-                                                      => $CFG_GLPI["peripherals_management_restrict"],
-                                       'target'       => $target]);
-      echo "</td></tr>\n";
-
-      $rowspan        = 2;
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Group::getTypeName(1)."</td>\n";
-      echo "<td>";
-      Group::dropdown([
-         'value'     => $this->fields["groups_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_itemgroup' => 1]
-      ]);
-      echo "</td>\n";
-      echo "<td rowspan='$rowspan'>".__('Comments')."</td>\n";
-      echo "<td rowspan='$rowspan'>
-            <textarea cols='45' rows='".($rowspan+3)."' name='comment' >".$this->fields["comment"];
-      echo "</textarea></td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Brand')."</td>\n";
-      echo "<td>";
-      Html::autocompletionTextField($this, "brand");
-      echo "</td>\n";
-      echo "</tr>\n";
-
-      // Display auto inventory information
-      if (!empty($ID)
-         && $this->fields["is_dynamic"]) {
-         echo "<tr class='tab_bg_1'><td colspan='4'>";
-         Plugin::doHook("autoinventory_information", $this);
-         echo "</td></tr>";
-      }
-
-      $this->showFormButtons($options);
-
+      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
+      
+      ob_start();
+      Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
+         'colspan'      => 2,
+         'withtemplate' => '',
+         'candel'       => true,
+         'canedit'      => true,
+         'addbuttons'   => [],
+         'formfooter'   => null,
+         ]]);
+      $additionnalHtml = ob_get_clean();
+         
+      renderTwigForm($form, $additionnalHtml);
       return true;
    }
 

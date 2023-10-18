@@ -303,18 +303,6 @@ class Computer extends CommonDBTM {
       include_once GLPI_ROOT . "/ng/form.utils.php";
 
       $title = __('New item').' - '.self::getTypeName(1);
-      $info = [
-         "onClick" => <<<JS
-         console.log("test")
-         JS,
-         "icon" => "fas fa-info"
-      ];
-      $add = [
-         "onClick" => <<<JS
-         console.log("test")
-         JS,
-         "icon" => "fas fa-plus"
-      ];
       $form = [
          'action' => $this->getFormURL(),
          'content' => [
@@ -331,49 +319,49 @@ class Computer extends CommonDBTM {
                      'type' => 'select',
                      'values' => getOptionForItems('State', ['is_visible_computer' => 1]),
                      'value' => $this->fields['states_id'],
-                     'actions' => [$info, $add],
+                     'actions' => getItemActionButtons(['info', 'add'], "State"),
                   ],
                   __('Location') => [
                      'name' => 'locations_id',
                      'type' => 'select',
                      'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id'],]),
                      'value' => $this->fields['locations_id'],
-                     'actions' => [$info, $add],
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
                   ],
                   _n('Type', 'Types', 1) => [
                      'name' => 'computertypes_id',
                      'type' => 'select',
                      'values' => getOptionForItems('ComputerType'),
                      'value' => $this->fields['computertypes_id'],
-                     'actions' => [$info, $add],
+                     'actions' => getItemActionButtons(['info', 'add'], "ComputerType"),
                   ],
                   __("Technician in charge of the hardware") => [
                      'name' => 'users_id_tech',
                      'type' => 'select',
                      'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id'],]),
                      'value' => $this->fields['users_id_tech'],
-                     'actions' => ['info'],
+                     'actions' => getItemActionButtons(['info'], "User"),
                   ],
                   Manufacturer::getTypeName(1) => [
                      'name' => 'manufacturers_id',
                      'type' => 'select',
                      'values' => getOptionForItems('Manufacturer'),
                      'value' => $this->fields['manufacturers_id'],
-                     'actions' => [$info, $add],
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                   ],
                   __('Group in charge of the hardware') => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
                      'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['groups_id_tech'],
-                     'actions' => [$info, $add],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   _n('Model', 'Models', 1) => [
                      'name' => 'computermodels_id',
                      'type' => 'select',
                      'values' => getOptionForItems('ComputerModel'),
                      'value' => $this->fields['computermodels_id'],
-                     'actions' => [$info, $add],
+                     'actions' => getItemActionButtons(['info', 'add'], "ComputerModel"),
                   ],
                   __('Alternate username number') => [
                      'name' => 'contact_num',
@@ -400,21 +388,21 @@ class Computer extends CommonDBTM {
                      'type' => 'select',
                      'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]), // TODO : add right => all
                      'value' => $this->fields['users_id'],
-                     'actions' => ['info'],
+                     'actions' => getItemActionButtons(['info'], "User"),
                   ],
                   _n('Network', 'Networks', 1) => [
                      'name' => 'networks_id',
                      'type' => 'select',
                      'values' => getOptionForItems('Network'),
                      'value' => $this->fields['networks_id'],
-                     'actions' => [$info, $add],
+                     'actions' => getItemActionButtons(['info'], "Network"),
                   ],
                   Group::getTypeName(1) => [
                      'name' => 'groups_id',
                      'type' => 'select',
                      'values' => getOptionForItems('Group', ['is_itemgroup' => 1, 'entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['groups_id'],
-                     'actions' => [$info, $add],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __('UUID') => [
                      'name' => 'uuid',
@@ -426,7 +414,7 @@ class Computer extends CommonDBTM {
                      'type' => 'select',
                      'values' => getOptionForItems('AutoUpdateSystem'),
                      'value' => $this->fields['autoupdatesystems_id'],
-                     'actions' => [$info, $add],
+                     'actions' => getItemActionButtons(['info', 'add'], "AutoUpdateSystem"),
                   ],
                   __('Comments') => [
                      'name' => 'comment',

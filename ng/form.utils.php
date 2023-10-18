@@ -102,3 +102,32 @@ function getHiddenInputsForItemForm($item, $options)
         ]
     ];
 }
+
+function getItemActionButtons(array $actions, string $itemType): array {
+    $buttons = [];
+
+    foreach ($actions as $action) {
+        $content = [];
+        switch($action) {
+            case 'info':
+                $item = new $itemType();
+                $itemSearchUrl = $item->getSearchUrl();
+                $content = [
+                    'icon' => 'fas fa-info',
+                    'onClick' => "window.location.href = '$itemSearchUrl'",
+                ];
+            break;
+                case 'add':
+                $item = new $itemType();
+                $itemFormUrl = $item->getFormUrl();
+                $content = [
+                    'icon' => 'fas fa-plus',
+                    'onClick' => "window.location.href = '$itemFormUrl'",
+                ];
+            break;         
+        }
+        $buttons[$action] = $content;
+    }
+    
+    return $buttons;
+}

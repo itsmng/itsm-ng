@@ -283,42 +283,49 @@ class NetworkEquipment extends CommonDBTM {
                      'type' => 'select',
                      'value' => $this->fields['states_id'],
                      'values' => getOptionForItems('State', ['is_visible_networkequipment' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'actions' => getItemActionButtons(['info', 'add'], "State"),
                   ],
                   __('Location') => [
                      'name' => 'locations_id',
                      'type' => 'select',
                      'value' => $this->fields['locations_id'],
                      'values' => getOptionForItems("Location", ['entities_id' => $this->fields['entities_id']]),
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
                   ],
                   __('Type') => [
                      'name' => 'networkequipmenttypes_id',
                      'type' => 'select',
                      'value' => $this->fields['networkequipmenttypes_id'],
                      'values' => getOptionForItems("NetworkEquipmentType"),
+                     'actions' => getItemActionButtons(['info', 'add'], "NetworkEquipmentType"),
                   ],
                   __("Technician in charge of the software") => [
                      'name' => 'users_id_tech',
                      'type' => 'select',
                      'value' => $this->fields['users_id_tech'],
                      'values' => getOptionForItems("User", ['entities_id' => $this->fields['entities_id']]), // NEED right => own_ticket
+                     'actions' => getItemActionButtons(['info'], "User"),
                   ],
                   __("Manufacturer") => [
                      'name' => 'manufacturers_id',
                      'type' => 'select',
                      'value' => $this->fields['manufacturers_id'],
                      'values' => getOptionForItems("Manufacturer"),
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                   ],
                   __("Group in charge of the software") => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
                      'value' => $this->fields['groups_id_tech'],
                      'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]), // NEED right => own_ticket
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __("Model") => [
                      'name' => 'manufacturers_id',
                      'type' => 'select',
                      'value' => $this->fields['manufacturers_id'],
                      'values' => getOptionForItems("NetworkEquipmentModel"),
+                     'actions' => getItemActionButtons(['info', 'add'], "NetworkEquipmentModel"),
                   ],
                   __("Alternate username number") => [
                      'name' => 'contact_num',
@@ -345,18 +352,21 @@ class NetworkEquipment extends CommonDBTM {
                      'type' => 'select',
                      'value' => $this->fields['users_id'],
                      'values' => getOptionForItems("User", ['entities_id' => $this->fields['entities_id']]),
+                     'actions' => getItemActionButtons(['info'], "User"),
                   ],
                   __("Network") => [
                      'name' => 'networks_id',
                      'type' => 'select',
                      'value' => $this->fields['networks_id'],
                      'values' => getOptionForItems("Network"),
+                     'actions' => getItemActionButtons(['info', 'add'], "Network"),
                   ],
                   __("Group") => [
                      'name' => 'groups_id',
                      'type' => 'select',
                      'value' => $this->fields['groups_id'],
                      'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]),
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __("Memory") => [
                      'name' => 'ram',

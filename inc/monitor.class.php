@@ -168,7 +168,7 @@ class Monitor extends CommonDBTM {
                      'type' => 'select',
                      'values' => getOptionForItems('State', ['is_visible_monitor' => 1, 'entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['states_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => getItemActionButtons(['info', 'add'], "State"),
                   ],
                   __("Location") => [
                      'name' => 'locations_id',
@@ -176,42 +176,42 @@ class Monitor extends CommonDBTM {
                      'type' => 'select',
                      'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['locations_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
                   ],
                   __("Type") => [
                      'name' => 'monitortypes_id',
                      'type' => 'select',
                      'values' => getOptionForItems('MonitorType'),
                      'value' => $this->fields['monitortypes_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => getItemActionButtons(['info', 'add'], "MonitorType"),
                   ],
                   __("Technician in charge of the hardware") => [
                      'name' => 'users_id_tech',
                      'type' => 'select',
                      'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]), // TODO: add right => 'own_ticket'
                      'value' => $this->fields['users_id_tech'],
-                     'actions' => ['info'],
+                     'actions' => getItemActionButtons(['info'], "User"),
                   ],
                   __("Manufacturer") => [
                      'name' => 'manufacturer_id',
                      'type' => 'select',
                      'values' => getOptionForItems('Manufacturer'),
                      'value' => $this->fields['manufacturers_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                   ],
                   __("Group in charge of the hardware") => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
                      'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['groups_id_tech'],
-                     'actions' => ['info', 'add'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __("Model") => [
                      'name' => 'monitormodels_id',
                      'type' => 'select',
                      'values' => getOptionForItems('MonitorModel'),
                      'value' => $this->fields['monitormodels_id'],
-                     'actions' => ['info', 'add'],
+                     'actions' => getItemActionButtons(['info', 'add'], "MonitorModel"),
                   ],
                   __("Serial number") => [
                      'name' => 'serial',
@@ -227,13 +227,14 @@ class Monitor extends CommonDBTM {
                      'type' => 'select',
                      'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['users_id'],
-                     'actions' => ['info'],
+                     'actions' => getItemActionButtons(['info'], "User"),
                   ],
                   Group::getTypeName() => [
                      'name' => 'groups_id',
                      'type' => 'select',
                      'values' => getOptionForItems('Group', ['is_itemgroup' => 1, 'entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['groups_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __('Comments') => [
                      'name' => 'comment',
@@ -305,13 +306,6 @@ class Monitor extends CommonDBTM {
             ],
          ]
       ];
-
-      // Dropdown::showGlobalSwitch($this->fields["id"],
-      //                            ['withtemplate' => $withtemplate,
-      //                                  'value'        => $this->fields["is_global"],
-      //                                  'management_restrict'
-      //                                                 => $CFG_GLPI["monitors_management_restrict"],
-      //                                  'target'       => $target]);
 
       $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
       

@@ -180,73 +180,91 @@ class CartridgeItem extends CommonDBTM {
    **/
    function showForm($ID, $options = []) {
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
+      include_once (GLPI_ROOT."/ng/form.utils.php");
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-      echo "<td>"._n('Type', 'Types', 1)."</td>";
-      echo "<td>";
-      CartridgeItemType::dropdown(['value' => $this->fields["cartridgeitemtypes_id"]]);
-      echo "</td></tr>";
+      $form = [
+         'action' => $this->getFormURL(),
+         'content' => [
+            __('General') => [
+               'inputs' => [
+                  __('Name') => [
+                  'name' => 'name',
+                  'type' => 'text',
+                  'value' => $this->fields["name"],
+                  ],
+                  _n('Type', 'Types', 1) => [
+                     'name' => 'cartridgeitemtypes_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('CartridgeItemType'),
+                     'value' => $this->fields["cartridgeitemtypes_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], "CartridgeItemType"),
+                  ],
+                  __('Reference') => [
+                     'name' => 'ref',
+                     'type' => 'text',
+                     'value' => $this->fields["ref"],
+                  ],
+                  Manufacturer::getTypeName(1) => [
+                     'name' => 'manufacturers_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Manufacturer'),
+                     'value' => $this->fields["manufacturers_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
+                  ],
+                  __('Technician in charge of the hardware') => [
+                     'name' => 'users_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields["entities_id"]]),
+                     'entity' => $this->fields["entities_id"],
+                     'value' => $this->fields["users_id_tech"],
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  __('Comments') => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields["comment"],
+                  ],
+                  __('Group in charge of the hardware') => [
+                     'name' => 'groups_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields["groups_id_tech"],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  __('Stock location') => [
+                     'name' => 'locations_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields["locations_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
+                  ],
+                  __('Alert threshold') => [
+                     'name' => 'alarm_threshold',
+                     'type' => 'number',
+                     'value' => $this->fields["alarm_threshold"],
+                     'min' => 0,
+                     'max' => 100,
+                     'step' => 1,
+                  ]
+               ]
+            ],
+         ]
+      ];
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Reference')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "ref");
-      echo "</td>";
-      echo "<td>".Manufacturer::getTypeName(1)."</td>";
-      echo "<td>";
-      Manufacturer::dropdown(['value' => $this->fields["manufacturers_id"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Technician in charge of the hardware')."</td>";
-      echo "<td>";
-      User::dropdown(['name'   => 'users_id_tech',
-                           'value'  => $this->fields["users_id_tech"],
-                           'right'  => 'own_ticket',
-                           'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td rowspan='4' class='middle'>".__('Comments')."</td>";
-      echo "<td class='middle' rowspan='4'>
-             <textarea cols='45' rows='9' name='comment'>".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Group in charge of the hardware')."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id_tech',
-         'value'     => $this->fields['groups_id_tech'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_assign' => 1]
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Stock location')."</td>";
-      echo "<td>";
-      Location::dropdown(['value'  => $this->fields["locations_id"],
-                               'entity' => $this->fields["entities_id"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Alert threshold')."</td>";
-      echo "<td>";
-      Dropdown::showNumber('alarm_threshold', ['value' => $this->fields["alarm_threshold"],
-                                                    'min'   => 0,
-                                                    'max'   => 100,
-                                                    'step'  => 1,
-                                                    'toadd' => ['-1' => __('Never')]]);
-      Alert::displayLastAlert('CartridgeItem', $ID);
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
-
+      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
+      
+      ob_start();
+      Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
+         'colspan'      => 2,
+         'withtemplate' => '',
+         'candel'       => true,
+         'canedit'      => true,
+         'addbuttons'   => [],
+         'formfooter'   => null,
+         ]]);
+      $additionnalHtml = ob_get_clean();
+         
+      renderTwigForm($form, $additionnalHtml);
       return true;
    }
 
