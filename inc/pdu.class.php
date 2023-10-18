@@ -76,132 +76,102 @@ class PDU extends CommonDBTM {
    }
 
    function showForm($ID, $options = []) {
-      $rand = mt_rand();
-      $tplmark = $this->getAutofillMark('name', $options);
+      include_once GLPI_ROOT . "/ng/form.utils.php";
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='textfield_name$rand'>".__('Name')."</label></td>";
-      echo "<td>";
-      $objectName = autoName(
-         $this->fields["name"],
-         "name",
-         (isset($options['withtemplate']) && ( $options['withtemplate']== 2)),
-         $this->getType(),
-         $this->fields["entities_id"]
-      );
-      Html::autocompletionTextField(
-         $this,
-         'name',
-         [
-            'value'     => $objectName,
-            'rand'      => $rand
+      $title = __('New item').' - '.self::getTypeName(1);
+      $form = [
+         'action' => $this->getFormURL(),
+         'content' => [
+            $title => [
+               'visible' => true,
+               'inputs' => [
+                  __('Name') => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'],
+                  ],
+                  __('Status') => [
+                     'name' => 'states_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('State', ['is_visible_pdu' => 1]),
+                     'value' => $this->fields['states_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "State"),
+                  ],
+                  __('Location') => [
+                     'name' => 'locations_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id'],]),
+                     'value' => $this->fields['locations_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
+                  ],
+                  __('Type') => [
+                     'name' => 'pdutypes_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('PDUType'),
+                     'value' => $this->fields['pdutypes_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "PDUType"),
+                  ],
+                  __("Technician in charge of the hardware") => [
+                     'name' => 'users_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id'],]),
+                     'value' => $this->fields['users_id_tech'],
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  Manufacturer::getTypeName(1) => [
+                     'name' => 'manufacturers_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Manufacturer'),
+                     'value' => $this->fields['manufacturers_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
+                  ],
+                  __('Group in charge of the hardware') => [
+                     'name' => 'groups_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['groups_id_tech'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  _n('Model', 'Models', 1) => [
+                     'name' => 'pdumodels_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('PDUModel'),
+                     'value' => $this->fields['pdumodels_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "PDUModel"),
+                  ],
+                  __('Serial number') => [
+                     'name' => 'serial',
+                     'type' => 'text',
+                     'value' => $this->fields['serial'],
+                  ],
+                  __('Inventory number') => [
+                     'name' => 'otherserial',
+                     'type' => 'text',
+                     'value' => $this->fields['serial'],
+                  ],
+                  __('Comments') => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'],
+                  ],
+               ]
+            ]
          ]
-      );
-      echo "</td>";
-
-      echo "<td><label for='dropdown_states_id$rand'>".__('Status')."</label></td>";
-      echo "<td>";
-      State::dropdown([
-         'value'     => $this->fields["states_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_visible_pdu' => 1],
-         'rand'      => $rand]
-      );
-      echo "</td></tr>\n";
-
-      $this->showDcBreadcrumb();
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_locations_id$rand'>".Location::getTypeName(1)."</label></td>";
-      echo "<td>";
-      Location::dropdown([
-         'value'  => $this->fields["locations_id"],
-         'entity' => $this->fields["entities_id"],
-         'rand'   => $rand
-      ]);
-      echo "</td>";
-      echo "<td><label for='dropdown_pdutypes_id$rand'>"._n('Type', 'Types', 1)."</label></td>";
-      echo "<td>";
-      PDUType::dropdown([
-         'value'  => $this->fields["pdutypes_id"],
-         'rand'   => $rand
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_users_id_tech$rand'>".__('Technician in charge of the hardware')."</label></td>";
-      echo "<td>";
-      User::dropdown([
-         'name'   => 'users_id_tech',
-         'value'  => $this->fields["users_id_tech"],
-         'right'  => 'own_ticket',
-         'entity' => $this->fields["entities_id"],
-         'rand'   => $rand
-      ]);
-      echo "</td>";
-      echo "<td><label for='dropdown_manufacturers_id$rand'>".Manufacturer::getTypeName(1)."</label></td>";
-      echo "<td>";
-      Manufacturer::dropdown([
-         'value' => $this->fields["manufacturers_id"],
-         'rand' => $rand
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_groups_id_tech$rand'>".__('Group in charge of the hardware')."</label></td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id_tech',
-         'value'     => $this->fields['groups_id_tech'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_assign' => 1],
-         'rand'      => $rand
-      ]);
-
-      echo "</td>";
-      echo "<td><label for='dropdown_pdumodels_id$rand'>"._n('Model', 'Models', 1)."</label></td>";
-      echo "<td>";
-      PDUModel::dropdown([
-         'value'  => $this->fields["pdumodels_id"],
-         'rand'   => $rand
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='textfield_serial$rand'>".__('Serial number')."</label></td>";
-      echo "<td >";
-      Html::autocompletionTextField($this, 'serial', ['rand' => $rand]);
-      echo "</td>";
-
-      echo "<td><label for='textfield_otherserial$rand'>".sprintf(__('%1$s%2$s'), __('Inventory number'), $tplmark).
-           "</label></td>";
-      echo "<td>";
-
-      $objectName = autoName($this->fields["otherserial"], "otherserial",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField(
-         $this,
-         'otherserial',
-         [
-            'value'     => $objectName,
-            'rand'      => $rand
-         ]
-      );
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='comment'>".__('Comments')."</label></td>";
-      echo "<td colspan='3' class='middle'>";
-
-      echo "<textarea cols='45' rows='3' id='comment' name='comment' >".
-           $this->fields["comment"];
-      echo "</textarea></td></tr>";
-
-      $this->showFormButtons($options);
+      ];
+      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
+      
+      ob_start();
+      Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
+         'colspan'      => 2,
+         'withtemplate' => '',
+         'candel'       => true,
+         'canedit'      => true,
+         'addbuttons'   => [],
+         'formfooter'   => null,
+         ]]);
+      $additionnalHtml = ob_get_clean();
+         
+      renderTwigForm($form, $additionnalHtml);
       return true;
    }
 

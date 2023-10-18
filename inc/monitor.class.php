@@ -148,175 +148,179 @@ class Monitor extends CommonDBTM {
     *
     * @return boolean item found
     **/
-   function showForm($ID, $options = []) {
+    function showForm($ID, $options = []) {
+      require_once GLPI_ROOT . "/ng/form.utils.php";
       global $CFG_GLPI;
+      $form = [
+         'action' => $this->getFormURL(),
+         'content' => [
+            __('General') => [
+               'visible' => true,
+               'inputs' => [
+                  __("Name") => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'],
+                     'placeholder' => ''
+                  ],
+                  __("Status") => [
+                     'name' => 'states_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('State', ['is_visible_monitor' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['states_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "State"),
+                  ],
+                  __("Location") => [
+                     'name' => 'locations_id',
+                     'id' => 'locations_id_dropdown',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['locations_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
+                  ],
+                  __("Type") => [
+                     'name' => 'monitortypes_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('MonitorType'),
+                     'value' => $this->fields['monitortypes_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "MonitorType"),
+                  ],
+                  __("Technician in charge of the hardware") => [
+                     'name' => 'users_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]), // TODO: add right => 'own_ticket'
+                     'value' => $this->fields['users_id_tech'],
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  __("Manufacturer") => [
+                     'name' => 'manufacturer_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Manufacturer'),
+                     'value' => $this->fields['manufacturers_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
+                  ],
+                  __("Group in charge of the hardware") => [
+                     'name' => 'groups_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['groups_id_tech'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  __("Model") => [
+                     'name' => 'monitormodels_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('MonitorModel'),
+                     'value' => $this->fields['monitormodels_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "MonitorModel"),
+                  ],
+                  __("Serial number") => [
+                     'name' => 'serial',
+                     'type' => 'text',
+                     'value' => $this->fields['serial'],
+                  ], // DOES NOT TAKE INTO ACCOUNT AUTOCOMPLETION FIELD
+                  __("Inventory/Asset number") => [
+                     'name' => 'otherserial',
+                     'type' => 'text',
+                     'value' => $this->fields['otherserial'],
+                  ], // DOES NOT TAKE INTO ACCOUNT AUTOCOMPLETION FIELD
+                    User::getTypeName(1) => [
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['users_id'],
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  Group::getTypeName() => [
+                     'name' => 'groups_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_itemgroup' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['groups_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  __('Comments') => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'],
+                  ],
+                  __('Size') => [
+                     'name' => 'size',
+                     'type' => 'text',
+                     'value' => $this->fields['size'],
+                     'after' => '"',
+                  ],
+                  __('Management Type') => [
+                     'name' => 'is_global',
+                     'type' => 'select',
+                     'values' => [
+                           0 => __('Unit Management'),
+                           1 => __('Global Management'),
+                     ],
+                     'disabled' => $CFG_GLPI['monitors_management_restrict'] != 2 , 
+                     'value' => $this->fields['is_global'],
+                  ],
+               ],
+            ],
+            __('Flags') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Microphone') => [
+                     'name' => 'have_micro',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['have_micro'],
+                  ],
+                  __('Speakers') => [
+                     'name' => 'have_speaker',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['have_speaker'],
+                  ],
+                  __('Sub-D') => [
+                     'name' => 'have_subd',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['have_subd'],
+                  ],
+                  __('BNC') => [
+                     'name' => 'have_bnc',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['have_bnc'],
+                  ],
+                  __('DVI') => [
+                     'name' => 'have_dvi',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['have_dvi'],
+                  ],
+                  __('Pivot') => [
+                     'name' => 'have_pivot',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['have_pivot'],
+                  ],
+                  __('HDMI') => [
+                     'name' => 'have_hdmi',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['have_hdmi'],
+                  ],
+                  __('DisplayPort') => [
+                     'name' => 'have_displayport',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['have_displayport'],
+                  ],
+               ],
+            ],
+         ]
+      ];
 
-      $target       = $this->getFormURL();
-      $withtemplate = $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      $tplmark = $this->getAutofillMark('name', $options);
-      echo "<tr class='tab_bg_1'>";
-      //TRANS: %1$s is a string, %2$s a second one without spaces between them : to change for RTL
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Name'), $tplmark);
-      echo "</td>";
-      echo "<td>";
-      $objectName = autoName($this->fields["name"], "name",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, "name", ['value' => $objectName]);
-      echo "</td>";
-      echo "<td>".__('Status')."</td>";
-      echo "<td>";
-      State::dropdown([
-         'value'     => $this->fields["states_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_visible_monitor' => 1]
-      ]);
-      echo "</td></tr>";
-
-      $this->showDcBreadcrumb();
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Location::getTypeName(1)."</td>";
-      echo "<td>";
-      Location::dropdown(['value'  => $this->fields["locations_id"],
-                               'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>"._n('Type', 'Types', 1)."</td>";
-      echo "<td>";
-      MonitorType::dropdown(['value' => $this->fields["monitortypes_id"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Technician in charge of the hardware')."</td>";
-      echo "<td>";
-      User::dropdown(['name'   => 'users_id_tech',
-                           'value'  => $this->fields["users_id_tech"],
-                           'right'  => 'own_ticket',
-                           'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>".Manufacturer::getTypeName(1)."</td>";
-      echo "<td>";
-      Manufacturer::dropdown(['value' => $this->fields["manufacturers_id"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Group in charge of the hardware')."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id_tech',
-         'value'     => $this->fields['groups_id_tech'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_assign' => 1]
-      ]);
-      echo "</td>";
-      echo "<td>"._n('Model', 'Models', 1)."</td>";
-      echo "<td>";
-      MonitorModel::dropdown(['value' => $this->fields["monitormodels_id"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Alternate username number')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "contact_num");
-      echo "</td>";
-      echo "<td>".__('Serial number')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "serial");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Alternate username')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "contact");
-      echo "</td>";
-
-      $tplmark = $this->getAutofillMark('otherserial', $options);
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Inventory number'), $tplmark).
-           "</td>";
-      echo "<td>";
-      $objectName = autoName($this->fields["otherserial"], "otherserial",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, "otherserial", ['value' => $objectName]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".User::getTypeName(1)."</td>";
-      echo "<td>";
-      User::dropdown(['value'  => $this->fields["users_id"],
-                           'entity' => $this->fields["entities_id"],
-                           'right'  => 'all']);
-      echo "</td>";
-      echo "<td>".__('Management type')."</td>";
-      echo "<td>";
-      Dropdown::showGlobalSwitch($this->fields["id"],
-                                 ['withtemplate' => $withtemplate,
-                                       'value'        => $this->fields["is_global"],
-                                       'management_restrict'
-                                                      => $CFG_GLPI["monitors_management_restrict"],
-                                       'target'       => $target]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Group::getTypeName(1)."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'value'     => $this->fields["groups_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_itemgroup' => 1]
-      ]);
-      echo "</td>";
-      echo "<td rowspan='3'>" . __('Comments')."</td>";
-      echo "<td rowspan='3'>
-            <textarea cols='45' rows='10' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Size')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "size");
-      echo "\"</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".('Flags')."</td>";
-      echo "<td><table>";
-      // micro?
-      echo "<tr><td width='20%'>".__('Microphone')."</td><td width='30%'>";
-      Dropdown::showYesNo("have_micro", $this->fields["have_micro"]);
-      // speakers?
-      echo "</td><td width='20%'>".__('Speakers')."</td><td width='30%'>";
-      Dropdown::showYesNo("have_speaker", $this->fields["have_speaker"]);
-      echo "</td></tr>";
-
-      // sub-d?
-      echo "<tr><td width='20%'>".__('Sub-D')."</td><td width='30%'>";
-      Dropdown::showYesNo("have_subd", $this->fields["have_subd"]);
-      // bnc?
-      echo "</td><td width='20%'>".__('BNC')."</td><td width='30%'>";
-      Dropdown::showYesNo("have_bnc", $this->fields["have_bnc"]);
-      echo "</td></tr>";
-
-      // dvi?
-      echo "<tr><td>".__('DVI')."</td><td>";
-      Dropdown::showYesNo("have_dvi", $this->fields["have_dvi"]);
-      // pivot ?
-      echo "</td><td>".__('Pivot')."</td><td>";
-      Dropdown::showYesNo("have_pivot", $this->fields["have_pivot"]);
-      echo "</td></tr>";
-      // hdmi?
-      echo "<tr><td>".__('HDMI')."</td><td>";
-      Dropdown::showYesNo("have_hdmi", $this->fields["have_hdmi"]);
-      //Displayport
-      echo "</td><td>".__('DisplayPort')."</td><td>";
-      Dropdown::showYesNo("have_displayport", $this->fields["have_displayport"]);
-      echo "</td></tr>";
-      echo "</table></td></tr>";
-
-      $this->showFormButtons($options);
-
+      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
+      
+      ob_start();
+      Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
+         'colspan'      => 2,
+         'withtemplate' => '',
+         'candel'       => true,
+         'canedit'      => true,
+         'addbuttons'   => [],
+         'formfooter'   => null,
+         ]]);
+      $additionnalHtml = ob_get_clean();
+         
+      renderTwigForm($form, $additionnalHtml);
       return true;
    }
 

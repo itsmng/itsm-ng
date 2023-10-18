@@ -1,0 +1,53 @@
+{% from 'macros/input.twig' import input %}
+
+{% set options = ['actions', 'after', 'before', 'hooks'] %}
+
+<form name="form" action="{{form.action}}" enctype="multipart/form-data" method='post' class="container">
+{% for key, bloc in form.content  %}
+<div class="container mb-3">
+    {% if bloc.visible %}
+        <h2 class='header'>{{key}}</h2>
+    {% endif %}
+    {% for row in bloc.inputs|batch(col) %}
+    <div class="row">
+        {% for title, input in row %}
+        <div class="col col-lg-5 col-md-6 d-flex align-items-center left">
+            {% if input.type != 'hidden' %}<label class="form-label col-4" for="{{input.name}}">{{title}}</label>{% endif %}
+            <div class="d-flex align-items-center left">
+                {% set attributes = input | filter((v, k) => k not in options) %}
+                {{input(attributes)}}
+                {% if input.after %}
+                <div class="form-text mx-2">{{input.after}}</div>
+                {% endif %}
+                {% for action in input.actions %}
+                <button type="button" class="btn btn-link ps-1 pe-0" onClick="{{action.onClick}}"><a class="{{action.icon}}"></a></button>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+<div>
+{{additionnalHtml|raw}}
+</div>
+<button type="submit" class="btn btn-warning mt-3">{{"Submit"|trans}}</button>
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+{% for bloc in form.content %}
+    {% for input in bloc.inputs %}
+    {% if input.init %}
+    {{input.init|raw}}
+    {% endif %}
+    {% if input.hooks %}
+    {% for hook, script in input.hooks %}
+$("#{{input.id}}").on("{{hook}}", function() {
+    {{script|raw}}
+})
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+{% endfor %}
+</script>

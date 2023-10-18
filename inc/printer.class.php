@@ -265,191 +265,167 @@ class Printer  extends CommonDBTM {
    function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
-      $target       = $this->getFormURL();
-      $withtemplate = $this->initForm($ID, $options);
-      $this->showFormHeader($options);
+      include_once (GLPI_ROOT."/ng/form.utils.php");
 
-      $tplmark = $this->getAutofillMark('name', $options);
-      echo "<tr class='tab_bg_1'>";
-      //TRANS: %1$s is a string, %2$s a second one without spaces between them : to change for RTL
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Name'), $tplmark).
-           "</td>\n";
-      echo "<td>";
-      $objectName = autoName($this->fields["name"], "name",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, 'name', ['value' => $objectName]);
-      echo "</td>\n";
-      echo "<td>".__('Status')."</td>\n";
-      echo "<td>";
-      State::dropdown([
-         'value'     => $this->fields["states_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_visible_printer' => 1]
-      ]);
-      echo "</td></tr>\n";
+      $form = [
+         'action' => $this->getFormURL(),
+         'content' => [
+            'General' => [
+               'inputs' => [
+                  __('Name') => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields["name"],
+                  ],
+                  __('State') => [
+                     'name' => 'states_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('State', ['is_visible_printer' => 1,'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields["states_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], "State"),
+                  ],
+                  Location::getTypeName(1) => [
+                     'name' => 'locations_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields["locations_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
+                  ],
+                  _n('Type', 'Types', 1) => [
+                     'name' => 'printertypes_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('PrinterType'),
+                     'value' => $this->fields["printertypes_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], "PrinterType"),
+                  ],
+                  __('Technician in charge of the hardware') => [
+                     'name' => 'users_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields["entities_id"]]), // TODO : right => own_ticket
+                     'value' => $this->fields["users_id_tech"],
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  Manufacturer::getTypeName(1) => [
+                     'name' => 'manufacturers_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Manufacturer'),
+                     'value' => $this->fields["manufacturers_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
+                  ],
+                  __('Group in charge of the hardware') => [
+                     'name' => 'groups_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_assign' => 1,'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields["groups_id_tech"],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  _n('Model', 'Models', 1) => [
+                     'name' => 'printermodels_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('PrinterModel'),
+                     'value' => $this->fields["printermodels_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], "PrinterModel"),
+                  ],
+                  __('Alternate username number') => [
+                     'name' => 'contact_num',
+                     'type' => 'text',
+                     'value' => $this->fields["contact_num"],
+                  ],
+                  __('Serial number') => [
+                     'name' => 'serial',
+                     'type' => 'text',
+                     'value' => $this->fields["serial"],
+                  ],
+                  __('Alternate username') => [
+                     'name' => 'contact',
+                     'type' => 'text',
+                     'value' => $this->fields["contact"],
+                  ],
+                  __('Inventory number') => [
+                     'name' => 'otherserial',
+                     'type' => 'text',
+                     'value' => $this->fields["otherserial"],
+                  ],
+                  User::getTypeName(1) => [
+                     'name' => 'users_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields["entities_id"]]),
+                     'value' => $this->fields["users_id"],
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  __('Management Type') => [
+                     'name' => 'is_global',
+                     'type' => 'select',
+                     'values' => [
+                           0 => __('Unit Management'),
+                           1 => __('Global Management'),
+                     ],
+                     'disabled' => $CFG_GLPI['printers_management_restrict'] != 2 , 
+                     'value' => $this->fields['is_global'],
+                  ],
+                  Group::getTypeName(1) => [
+                     'name' => 'groups_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_assign' => 1,'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields["groups_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  _n('Network', 'Networks', 1) => [
+                     'name' => 'networks_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Network'),
+                     'value' => $this->fields["networks_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], "Network"),
+                  ],
+               ]
+            ],
+            __("Ports") => [
+               'visible' => true,
+               'inputs' => [
+                  __("Serial") => [
+                     'name' => 'have_serial',
+                     'type' => 'checkbox',
+                     'value' => $this->fields["have_serial"],
+                  ],
+                  __("Parallel") => [
+                     'name' => 'have_parallel',
+                     'type' => 'checkbox',
+                     'value' => $this->fields["have_parallel"],
+                  ],
+                  __("USB") => [
+                     'name' => 'have_usb',
+                     'type' => 'checkbox',
+                     'value' => $this->fields["have_usb"],
+                  ],
+                  __("Ethernet") => [
+                     'name' => 'have_ethernet',
+                     'type' => 'checkbox',
+                     'value' => $this->fields["have_ethernet"],
+                  ],
+                  __("Wifi") => [
+                     'name' => 'have_wifi',
+                     'type' => 'checkbox',
+                     'value' => $this->fields["have_wifi"],
+                  ],
+               ]
+            ]
+         ]
+      ];
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Location::getTypeName(1)."</td>\n";
-      echo "<td>";
-      Location::dropdown(['value'  => $this->fields["locations_id"],
-                               'entity' => $this->fields["entities_id"]]);
-      echo "</td>\n";
-      echo "<td>"._n('Type', 'Types', 1)."</td>\n";
-      echo "<td>";
-      PrinterType::dropdown(['value' => $this->fields["printertypes_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Technician in charge of the hardware')."</td>\n";
-      echo "<td>";
-      User::dropdown(['name'   => 'users_id_tech',
-                           'value'  => $this->fields["users_id_tech"],
-                           'right'  => 'own_ticket',
-                           'entity' => $this->fields["entities_id"]]);
-      echo "</td>\n";
-      echo "<td>".Manufacturer::getTypeName(1)."</td>\n";
-      echo "<td>";
-      Manufacturer::dropdown(['value' => $this->fields["manufacturers_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Group in charge of the hardware')."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id_tech',
-         'value'     => $this->fields['groups_id_tech'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_assign' => 1]
-      ]);
-      echo "</td>";
-      echo "<td>"._n('Model', 'Models', 1)."</td>\n";
-      echo "<td>";
-      PrinterModel::dropdown(['value' => $this->fields["printermodels_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Alternate username number')."</td>\n";
-      echo "<td>";
-      Html::autocompletionTextField($this, "contact_num");
-      echo "</td>\n";
-      echo "<td>".__('Serial number')."</td>\n";
-      echo "<td>";
-      Html::autocompletionTextField($this, "serial");
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Alternate username')."</td>\n";
-      echo "<td>";
-      Html::autocompletionTextField($this, "contact");
-      echo "</td>\n";
-
-      $tplmark = $this->getAutofillMark('otherserial', $options);
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Inventory number'), $tplmark).
-           "</td>\n";
-      echo "<td>";
-      $objectName = autoName($this->fields["otherserial"], "otherserial",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, 'otherserial', ['value' => $objectName]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".User::getTypeName(1)."</td>\n";
-      echo "<td>";
-      User::dropdown(['value'  => $this->fields["users_id"],
-                           'entity' => $this->fields["entities_id"],
-                           'right'  => 'all']);
-      echo "</td>\n";
-      echo "<td>".__('Management type')."</td>";
-      echo "<td>";
-      $globalitem = [];
-      $globalitem['withtemplate'] = $withtemplate;
-      $globalitem['value']        = $this->fields["is_global"];
-      $globalitem['target']       = $target;
-
-      if ($this->can($ID, UPDATE)) {
-         $globalitem['management_restrict'] = $CFG_GLPI["printers_management_restrict"];
-      }
-      Dropdown::showGlobalSwitch($this->fields["id"], $globalitem);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Group::getTypeName(1)."</td>\n";
-      echo "<td>";
-      Group::dropdown([
-         'value'     => $this->fields["groups_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_itemgroup' => 1]
-      ]);
-      echo "</td>\n";
-      echo "<td>"._n('Network', 'Networks', 1)."</td>\n";
-      echo "<td>";
-      Network::dropdown(['value' => $this->fields["networks_id"]]);
-      echo "</td></tr>\n";
-
-      // Display auto inventory information
-      $rowspan        = 5;
-      echo "<tr class='tab_bg_1'>";
-      echo "<td colspan='2'></td>\n";
-      echo "<td rowspan='$rowspan'>".__('Comments')."</td>\n";
-      echo "<td rowspan='$rowspan'>";
-      echo "<textarea cols='45' rows='".($rowspan+3)."' name='comment' >".$this->fields["comment"];
-      echo "</textarea></td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Memory', 'Memories', 1)."</td>\n";
-      echo "<td>";
-      Html::autocompletionTextField($this, "memory_size");
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Initial page counter')."</td>\n";
-      echo "<td>";
-      Html::autocompletionTextField($this, "init_pages_counter", ['size' => 10]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Current counter of pages')."</td>\n";
-      echo "<td>";
-      Html::autocompletionTextField($this, "last_pages_counter", ['size' => 10]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Port', 'Ports', Session::getPluralNumber())."</td>";
-      echo "<td>\n<table>";
-      // serial interface
-      echo "<tr><td>".__('Serial')."</td><td width='80'>";
-      Dropdown::showYesNo("have_serial", $this->fields["have_serial"]);
-      echo "</td>";
-      // parallel interface?
-      echo "<td>".__('Parallel')."</td><td width='80'>";
-      Dropdown::showYesNo("have_parallel", $this->fields["have_parallel"]);
-      echo "</td></tr>";
-      // USB interface?
-      echo "<tr><td>".__('USB')."</td><td>";
-      Dropdown::showYesNo("have_usb", $this->fields["have_usb"]);
-      echo "</td>";
-      // ethernet interface?
-      echo "<td>".__('Ethernet')."</td><td>";
-      Dropdown::showYesNo("have_ethernet", $this->fields["have_ethernet"]);
-      echo "</td></tr>";
-      // wifi ?
-      echo "<tr><td>".__('Wifi')."</td><td colspan='3'>";
-      Dropdown::showYesNo("have_wifi", $this->fields["have_wifi"]);
-      echo "</td></tr></table>\n";
-      echo "</td>";
-      echo "</tr>";
-      // Display auto inventory information
-      if (!empty($ID)
-         && $this->fields["is_dynamic"]) {
-         echo "<tr class='tab_bg_1'><td colspan='4'>";
-         Plugin::doHook("autoinventory_information", $this);
-         echo "</td></tr>";
-      }
-
-      $this->showFormButtons($options);
-
+      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
+      
+      ob_start();
+      Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
+         'colspan'      => 2,
+         'withtemplate' => '',
+         'candel'       => true,
+         'canedit'      => true,
+         'addbuttons'   => [],
+         'formfooter'   => null,
+         ]]);
+      $additionnalHtml = ob_get_clean();
+         
+      renderTwigForm($form, $additionnalHtml);
       return true;
    }
 

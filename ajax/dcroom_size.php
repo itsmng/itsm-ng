@@ -48,15 +48,7 @@ if ($room->getFromDB($id)) {
    $used = $room->getFilled($current);
    $positions = $room->getAllPositions();
 
-   Dropdown::showFromArray(
-      'position',
-      $positions, [
-         'value'                 => $current,
-         'rand'                  => $rand,
-         'display_emptychoice'   => true,
-         'used'                  => $used
-      ]
-   );
+   echo json_encode(array_diff_key($positions, $used));
 } else {
-   echo __('No room found or selected');
+   echo json_encode([]);
 }

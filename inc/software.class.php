@@ -220,84 +220,115 @@ class Software extends CommonDBTM {
     *@return boolean item found
    **/
    function showForm($ID, $options = []) {
+      include_once GLPI_ROOT . '/ng/form.utils.php';
+      $title = __('New item').' - '.self::getTypeName(1);
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
+      $form = [
+         'action' => $this->getFormURL(),
+         'content' => [
+            $title => [
+               'visible' => true,
+               'inputs' => [
+                  __('Name') => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'],
+                  ],
+                  __('Publisher') => [
+                     'name' => 'manufacturers_id',
+                     'type' => 'select',
+                     'value' => $this->fields['manufacturers_id'],
+                     'values' => getOptionForItems("Manufacturer"),
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
+                  ],
+                  __('Location') => [
+                     'name' => 'locations_id',
+                     'type' => 'select',
+                     'value' => $this->fields['locations_id'],
+                     'values' => getOptionForItems("Location", ['entities_id' => $this->fields['entities_id']]),
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
+                  ],
+                  __('Category') => [
+                     'name' => 'softwarecategories_id',
+                     'type' => 'select',
+                     'value' => $this->fields['softwarecategories_id'],
+                     'values' => getOptionForItems("SoftwareCategory"),
+                     'actions' => getItemActionButtons(['info', 'add'], "SoftwareCategory"),
+                  ],
+                  __("Technician in charge of the software") => [
+                     'name' => 'users_id_tech',
+                     'type' => 'select',
+                     'value' => $this->fields['users_id_tech'],
+                     'values' => getOptionForItems("User", ['entities_id' => $this->fields['entities_id']]), // NEED right => own_ticket
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  __("Associable to a ticket") => [
+                     'name' => 'is_helpdesk_visible',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['is_helpdesk_visible'],
+                  ],
+                  __("Group in charge of the software") => [
+                     'name' => 'groups_id_tech',
+                     'type' => 'select',
+                     'value' => $this->fields['groups_id_tech'],
+                     'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]), // NEED right => own_ticket
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  __("User") => [
+                     'name' => 'users_id',
+                     'type' => 'select',
+                     'value' => $this->fields['users_id'],
+                     'values' => getOptionForItems("User", ['entities_id' => $this->fields['entities_id']]), // NEED right => all
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  __("Group") => [
+                     'name' => 'groups_id',
+                     'type' => 'select',
+                     'value' => $this->fields['groups_id'],
+                     'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]), // NEED right => all
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+               ]
+            ],
+            __('Upgrade') => [
+               'visible' => true,
+               'inputs' => [
+                  __("Upgrade") => [
+                     'name' => 'is_update',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['is_update'],
+                     'id' => 'is_update_checkbox',
+                     'hooks' => [
+                        'click' => <<<JS
+                        console.log('click !')
+                        JS
+                     ],
+                  ],
+                  __('from') => [
+                     'name' => 'softwares_id',
+                     'type' => 'select',
+                     'value' => $this->fields['softwares_id'],
+                     'values' => getOptionForItems("Software", ['entities_id' => $this->fields['entities_id']]),
+                  ],
+               ]
+            ]
+         ]
+      ];
 
-      $canedit = $this->canEdit($ID);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Name') . "</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-      echo "<td>" . __('Publisher')."</td><td>";
-      Manufacturer::dropdown(['value' => $this->fields["manufacturers_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . Location::getTypeName(1) . "</td><td>";
-      Location::dropdown(['value'  => $this->fields["locations_id"],
-                               'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>" . __('Category') . "</td><td>";
-      SoftwareCategory::dropdown(['value' => $this->fields["softwarecategories_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Technician in charge of the software') . "</td><td>";
-      User::dropdown(['name'   => 'users_id_tech',
-                           'value'  => $this->fields["users_id_tech"],
-                           'right'  => 'own_ticket',
-                           'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>" . __('Associable to a ticket') . "</td><td>";
-      Dropdown::showYesNo('is_helpdesk_visible', $this->fields['is_helpdesk_visible']);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Group in charge of the software')."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id_tech',
-         'value'     => $this->fields['groups_id_tech'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_assign' => 1]
-      ]);
-      echo "</td>";
-      echo "<td rowspan='4' class='middle'>".__('Comments') . "</td>";
-      echo "<td class='center middle' rowspan='4'>";
-      echo "<textarea cols='45' rows='8' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td >" . User::getTypeName(1) . "</td>";
-      echo "<td >";
-      User::dropdown(['value'  => $this->fields["users_id"],
-                           'entity' => $this->fields["entities_id"],
-                           'right'  => 'all']);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . Group::getTypeName(1) . "</td><td>";
-      Group::dropdown([
-         'value'     => $this->fields["groups_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_itemgroup' => 1]
-      ]);
-      echo "</td></tr>\n";
-
-      // UPDATE
-      echo "<tr class='tab_bg_1'>";
-      //TRANS: a noun, (ex : this software is an upgrade of..)
-      echo "<td>" . __('Upgrade') . "</td><td>";
-      Dropdown::showYesNo("is_update", $this->fields['is_update']);
-      echo "&nbsp;" . __('from') . "&nbsp;";
-      Software::dropdown(['value' => $this->fields["softwares_id"]]);
-      echo "</td></tr>\n";
-
-      $this->showFormButtons($options);
-
+      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
+      
+      ob_start();
+      Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
+         'colspan'      => 2,
+         'withtemplate' => '',
+         'candel'       => true,
+         'canedit'      => true,
+         'addbuttons'   => [],
+         'formfooter'   => null,
+         ]]);
+      $additionnalHtml = ob_get_clean();
+         
+      renderTwigForm($form, $additionnalHtml);
       return true;
    }
 

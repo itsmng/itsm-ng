@@ -58,8 +58,22 @@ if (isset($_REQUEST['is_recursive'])) {
    $is_recursive = (bool) $_REQUEST['is_recursive'];
 }
 
-echo Location::dropdown([
-   'value'        => $locations_id,
-   'entity'       => $entities_id,
-   'entity_sons'  => $is_recursive,
-]);
+global $DB;
+$request = [
+   'SELECT' => ['id', 'name'],
+   'FROM'   => Location::getTable(),
+   'WHERE'  => [
+      'entities_id'  => $entities_id,
+   ],
+];
+if ($locations_id != 0) {
+   $request['WHERE']['id'] = $locations_id;
+};
+$iterator = $DB->request($request);
+
+$result = [];
+while ($row = $iterator->next()) {
+   $result += [$row['id'] => $row['name']];
+}
+$result += ['selected' => $locations_id];
+echo json_encode($result);

@@ -1481,6 +1481,8 @@ class Search {
          $row_num++;
          $col_num = 0;
          $value[$row_num] = [];
+         
+         $values[$row_num][0] = 'item['.$data['itemtype'].']['.$row['id'].']';
 
          foreach ($data['data']['cols'] as $col) {
             $col_num++;
@@ -1491,7 +1493,6 @@ class Search {
             }
          }
       }
-
       $pref_url = $CFG_GLPI["root_doc"]."/front/displaypreference.form.php?itemtype=".$data['itemtype'];
       
       echo Ajax::createIframeModalWindow(
@@ -1508,15 +1509,19 @@ class Search {
          DisplayPreference::PERSONAL,
          DisplayPreference::GENERAL
       ]);
-      
+
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
+      Html::showMassiveActions(['display_arrow' => false, 'container' => "search-table"]);
+      
       echo $twig->render('search.twig', [
          'is_trash' => $_GET['is_deleted'] ?? 0,
          'itemtype' => $data['itemtype'],
          'fields' => $fields,
          'values' => $values,
          'searchConfigRights' => $searchconfigRights,
+         
       ]);
+      
    }
 
 

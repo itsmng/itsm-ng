@@ -147,169 +147,167 @@ class Phone extends CommonDBTM {
    function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
-      $target       = $this->getFormURL();
-      $withtemplate = $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      $tplmark = $this->getAutofillMark('name', $options);
-      echo "<tr class='tab_bg_1'>";
-      //TRANS: %1$s is a string, %2$s a second one without spaces between them : to change for RTL
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Name'), $tplmark).
-           "</td>";
-      echo "<td>";
-      $objectName = autoName($this->fields["name"], "name",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, 'name', ['value' => $objectName]);
-      echo "</td>";
-      echo "<td>".__('Status')."</td>";
-      echo "<td>";
-      State::dropdown([
-         'value'     => $this->fields["states_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_visible_phone' => 1]
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Location::getTypeName(1)."</td>";
-      echo "<td>";
-      Location::dropdown(['value'  => $this->fields["locations_id"],
-                               'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>"._n('Type', 'Types', 1)."</td>";
-      echo "<td>";
-      PhoneType::dropdown(['value' => $this->fields["phonetypes_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Technician in charge of the hardware')."</td>";
-      echo "<td>";
-      User::dropdown(['name'   => 'users_id_tech',
-                           'value'  => $this->fields["users_id_tech"],
-                           'right'  => 'own_ticket',
-                           'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>".Manufacturer::getTypeName(1)."</td>";
-      echo "<td>";
-      Manufacturer::dropdown(['value' => $this->fields["manufacturers_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Group in charge of the hardware')."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id_tech',
-         'value'     => $this->fields['groups_id_tech'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_assign' => 1]
-      ]);
-      echo "</td>";
-      echo "<td>"._n('Model', 'Models', 1)."</td>";
-      echo "<td>";
-      PhoneModel::dropdown(['value' => $this->fields["phonemodels_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Alternate username number')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "contact_num");
-      echo "</td>";
-      echo "<td>".__('Serial number')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "serial");
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Alternate username')."</td><td>";
-      Html::autocompletionTextField($this, "contact");
-      echo "</td>";
-
-      $tplmark = $this->getAutofillMark('otherserial', $options);
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Inventory number'), $tplmark).
-           "</td>";
-      echo "<td>";
-      $objectName = autoName($this->fields["otherserial"], "otherserial",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, 'otherserial', ['value' => $objectName]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".User::getTypeName(1)."</td>";
-      echo "<td>";
-      User::dropdown(['value'  => $this->fields["users_id"],
-                           'entity' => $this->fields["entities_id"],
-                           'right'  => 'all']);
-      echo "</td>";
-      echo "<td>".__('Management type')."</td>";
-      echo "<td>";
-      Dropdown::showGlobalSwitch($this->fields["id"],
-                                 ['withtemplate' => $withtemplate,
-                                       'value'        => $this->fields["is_global"],
-                                       'management_restrict'
-                                                      => $CFG_GLPI["phones_management_restrict"],
-                                       'target'       => $target]);
-      echo "</td></tr>\n";
-
-      $rowspan        = 5;
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Group::getTypeName(1)."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'value'     => $this->fields["groups_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_itemgroup' => 1]
-      ]);
-      echo "</td>";
-      echo "<td rowspan='$rowspan'>".__('Comments')."</td>";
-      echo "<td rowspan='$rowspan'>
-            <textarea cols='45' rows='".($rowspan+3)."' name='comment' >".$this->fields["comment"];
-      echo "</textarea></td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Brand')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "brand");
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".DevicePowerSupply::getTypeName(1)."</td>";
-      echo "<td>";
-      PhonePowerSupply::dropdown(['value' => $this->fields["phonepowersupplies_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._x('quantity', 'Number of lines')."</td><td>";
-      Html::autocompletionTextField($this, "number_line");
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Flags')."</td>";
-      echo "<td>";
-      // micro?
-      echo "\n<table><tr><td>".__('Headset')."</td>";
-      echo "<td>&nbsp;";
-      Dropdown::showYesNo("have_headset", $this->fields["have_headset"]);
-      echo "</td></tr>";
-      // hp?
-      echo "<tr><td>".__('Speaker')."</td>";
-      echo "<td>&nbsp;";
-      Dropdown::showYesNo("have_hp", $this->fields["have_hp"]);
-      echo "</td></tr></table>\n";
-      echo "</td>";
-
-      echo "</tr>\n";
-
-      if (!empty($ID)
-         && $this->fields["is_dynamic"]) {
-         echo "<tr class='tab_bg_1'><td colspan='4'>";
-         Plugin::doHook("autoinventory_information", $this);
-         echo "</td></tr>";
-      }
-
-      $this->showFormButtons($options);
-
+      require_once GLPI_ROOT . "/ng/form.utils.php";
+      $form = [
+         'action' => $this->getFormURL(),
+         'content' => [
+            __('General') => [
+               'visible' => true,
+               'inputs' => [
+                  __("Name") => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'],
+                     'placeholder' => ''
+                  ],
+                  __('Status') => [
+                     'name' => 'states_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('State', ['is_visible_phone' => 1]),
+                     'value' => $this->fields['states_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "State"),
+                  ],
+                  __('Location') => [
+                     'name' => 'locations_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id'],]),
+                     'value' => $this->fields['locations_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
+                  ],
+                  _n('Type', 'Types', 1) => [
+                     'name' => 'computertypes_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('PhoneType'),
+                     'value' => $this->fields['phonetypes_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "PhoneType"),
+                  ],
+                  __("Technician in charge of the hardware") => [
+                     'name' => 'users_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id'],]),
+                     'value' => $this->fields['users_id_tech'],
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  Manufacturer::getTypeName(1) => [
+                     'name' => 'manufacturers_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Manufacturer'),
+                     'value' => $this->fields['manufacturers_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
+                  ],
+                  __('Group in charge of the hardware') => [
+                     'name' => 'groups_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['groups_id_tech'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  _n('Model', 'Models', 1) => [
+                     'name' => 'phonemodels_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('PhoneModel'),
+                     'value' => $this->fields['phonemodels_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "PhoneModel"),
+                  ],
+                  __('Alternate username number') => [
+                     'name' => 'contact_num',
+                     'type' => 'text',
+                     'value' => $this->fields['contact_num'],
+                  ],
+                  __('Serial number') => [
+                     'name' => 'serial',
+                     'type' => 'text',
+                     'value' => $this->fields['serial'],
+                  ],
+                  __('Inventory number') => [
+                     'name' => 'otherserial',
+                     'type' => 'text',
+                     'value' => $this->fields['otherserial'],
+                  ],
+                  __('Alternate username') => [
+                     'name' => 'contact',
+                     'type' => 'text',
+                     'value' => $this->fields['contact'],
+                  ],
+                  User::getTypeName(1) => [
+                     'name' => 'users_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]), // TODO : add right => all
+                     'value' => $this->fields['users_id'],
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  __('Management Type') => [
+                     'name' => 'is_global',
+                     'type' => 'select',
+                     'values' => [
+                           0 => __('Unit Management'),
+                           1 => __('Global Management'),
+                     ],
+                     'disabled' => $CFG_GLPI['phones_management_restrict'] != 2 , 
+                     'value' => $this->fields['is_global'],
+                  ],
+                  Group::getTypeName(1) => [
+                     'name' => 'groups_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_assign' => 1,'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields["groups_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  __('Brand') => [
+                     'name' => 'brand',
+                     'type' => 'text',
+                     'value' => $this->fields['brand'],
+                  ],
+                  PhonePowerSupply::getTypeName(1) => [
+                     'name' => 'phonepowersupplies_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('PhonePowerSupply'),
+                     'value' => $this->fields['phonepowersupplies_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "PhonePowerSupply"),
+                  ],
+                  _x('quantity', 'Number of lines') => [
+                     'name' => 'number_line',
+                     'type' => 'text',
+                     'value' => $this->fields['number_line'],
+                  ],
+                  __("Comments") => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'],
+                  ],
+               ]
+            ],
+            __('Flags') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Headset') => [
+                     'name' => 'have_headset',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['have_headset'],
+                  ],
+                  __('Speaker') => [
+                     'name' => 'have_hp',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['have_hp'],
+                  ],
+               ]
+            ],
+         ]
+      ];
+      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
+      
+      ob_start();
+      Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
+         'colspan'      => 2,
+         'withtemplate' => '',
+         'candel'       => true,
+         'canedit'      => true,
+         'addbuttons'   => [],
+         'formfooter'   => null,
+         ]]);
+      $additionnalHtml = ob_get_clean();
+         
+      renderTwigForm($form, $additionnalHtml);
       return true;
    }
 

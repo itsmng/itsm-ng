@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -36,8 +37,9 @@ if (!defined('GLPI_ROOT')) {
 
 /**
  * Rack Class
-**/
-class Rack extends CommonDBTM {
+ **/
+class Rack extends CommonDBTM
+{
    use Glpi\Features\DCBreadcrumb;
 
    const FRONT    = 0;
@@ -57,12 +59,14 @@ class Rack extends CommonDBTM {
    public $dohistory                   = true;
    static $rightname                   = 'datacenter';
 
-   static function getTypeName($nb = 0) {
+   static function getTypeName($nb = 0)
+   {
       //TRANS: Test of comment for translation (mark : //TRANS)
       return _n('Rack', 'Racks', $nb);
    }
 
-   function defineTabs($options = []) {
+   function defineTabs($options = [])
+   {
       $ong = [];
       $this
          ->addStandardTab('Item_Rack', $ong, $options)
@@ -79,259 +83,241 @@ class Rack extends CommonDBTM {
    }
 
 
-   function showForm($ID, $options = []) {
-      global $DB, $CFG_GLPI;
-      $rand = mt_rand();
-      $tplmark = $this->getAutofillMark('name', $options);
+   function showForm($ID, $options = [])
+   {
+      global $CFG_GLPI;
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='textfield_name$rand'>".__('Name')."</label></td>";
-      echo "<td>";
-      $objectName = autoName(
-         $this->fields["name"],
-         "name",
-         (isset($options['withtemplate']) && ( $options['withtemplate']== 2)),
-         $this->getType(),
-         $this->fields["entities_id"]
-      );
-      Html::autocompletionTextField(
-         $this,
-         'name',
-         [
-            'value'     => $objectName,
-            'rand'      => $rand
-         ]
-      );
-      echo "</td>";
-
-      echo "<td><label for='dropdown_states_id$rand'>".__('Status')."</label></td>";
-      echo "<td>";
-      State::dropdown([
-         'value'     => $this->fields["states_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_visible_rack' => 1],
-         'rand'      => $rand]
-      );
-      echo "</td></tr>\n";
-
-      $this->showDcBreadcrumb();
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_locations_id$rand'>".Location::getTypeName(1)."</label></td>";
-      echo "<td>";
-      Location::dropdown([
-         'value'  => $this->fields["locations_id"],
-         'entity' => $this->fields["entities_id"],
-         'rand'   => $rand
-      ]);
-      echo "</td>";
-      echo "<td><label for='dropdown_racktypes_id$rand'>"._n('Type', 'Types', 1)."</label></td>";
-      echo "<td>";
-      RackType::dropdown([
-         'value'  => $this->fields["racktypes_id"],
-         'rand'   => $rand
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_users_id_tech$rand'>".__('Technician in charge of the hardware')."</label></td>";
-      echo "<td>";
-      User::dropdown([
-         'name'   => 'users_id_tech',
-         'value'  => $this->fields["users_id_tech"],
-         'right'  => 'own_ticket',
-         'entity' => $this->fields["entities_id"],
-         'rand'   => $rand
-      ]);
-      echo "</td>";
-      echo "<td><label for='dropdown_manufacturers_id$rand'>".Manufacturer::getTypeName(1)."</label></td>";
-      echo "<td>";
-      Manufacturer::dropdown([
-         'value' => $this->fields["manufacturers_id"],
-         'rand' => $rand
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_groups_id_tech$rand'>".__('Group in charge of the hardware')."</label></td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id_tech',
-         'value'     => $this->fields['groups_id_tech'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_assign' => 1],
-         'rand'      => $rand
-      ]);
-
-      echo "</td>";
-      echo "<td><label for='dropdown_rackmodels_id$rand'>"._n('Model', 'Models', 1)."</label></td>";
-      echo "<td>";
-      RackModel::dropdown([
-         'value'  => $this->fields["rackmodels_id"],
-         'rand'   => $rand
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='textfield_serial$rand'>".__('Serial number')."</label></td>";
-      echo "<td >";
-      Html::autocompletionTextField($this, 'serial', ['rand' => $rand]);
-      echo "</td>";
-
-      echo "<td><label for='textfield_otherserial$rand'>".sprintf(__('%1$s%2$s'), __('Inventory number'), $tplmark).
-           "</label></td>";
-      echo "<td>";
-
-      $objectName = autoName($this->fields["otherserial"], "otherserial",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField(
-         $this,
-         'otherserial',
-         [
-            'value'     => $objectName,
-            'rand'      => $rand
-         ]
-      );
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_dcrooms_id$rand'>".DCRoom::getTypeName(1)."</label></td>";
-      echo "<td>";
-      $rooms = $DB->request([
-         'SELECT' => ['id', 'name'],
-         'FROM'   => DCRoom::getTable()
-      ]);
-      $rooms_list = [];
-      while ($row = $rooms->next()) {
-         $rooms_list[$row['id']] = $row['name'];
+      $loadLocationHook = <<<JS
+      function addLocationOpt(val, text) {
+         var opt = document.createElement('option');
+         opt.value = val;
+         opt.text = text;
+         $("#locations_id_dropdown").append(opt);
       }
-      Dropdown::showFromArray(
-         "dcrooms_id",
-         $rooms_list, [
-            'value'                 => $this->fields["dcrooms_id"],
-            'rand'                  => $rand,
-            'display_emptychoice'   => true
-         ]
-      );
-      $current = $this->fields['position'];
+      $.ajax({
+         type: "POST",
+         url: "../ajax/dropdownLocation.php",
+         data: {
+            itemtype: 'DcRoom',
+            items_id: $('#dcrooms_dropdown_id').val(),
+         },
+         success: function (data) {
+            $("#locations_id_dropdown").empty();
+            addLocationOpt(0, '-----');
+            data_json = JSON.parse(data)
+            selected = data_json.selected;
+            delete data_json.selected;
+            for (key in data_json) {
+               addLocationOpt(key, data_json[key]);
+            }
+            $("#locations_id_dropdown")[0].value = selected;
+         }
+      });
+      JS;
 
-      Ajax::updateItemOnSelectEvent(
-         "dropdown_dcrooms_id$rand",
-         "room_positions",
-         $CFG_GLPI["root_doc"]."/ajax/dcroom_size.php",
-         ['id' => '__VALUE__', 'current' => $current, 'rand' => $rand]
-      );
-      Ajax::updateItemOnSelectEvent(
-         "dropdown_dcrooms_id$rand",
-         "dropdown_locations_id$rand",
-         $CFG_GLPI["root_doc"]."/ajax/dropdownLocation.php", [
-            'items_id' => '__VALUE__',
-            'itemtype' => 'DCRoom'
-         ]
-      );
+      $position = $this->fields['position'];
+      $loadDcPositionHook = <<<JS
+      function addPositionOpt(val, text) {
+         var opt = document.createElement('option');
+         opt.value = val;
+         opt.text = text;
+         $("#room_position_dropdown").append(opt);
+      }
+      $.ajax({
+         type: "POST",
+         url: "../ajax/dcroom_size.php",
+         data: {
+            id: $('#dcrooms_dropdown_id').val(),
+            current: $("#room_position_dropdown").attr("value"),
+         },
+         success: function (data) {
+            $("#room_position_dropdown").empty();
+            addPositionOpt(0, '-----');
+            data_json = JSON.parse(data)
+            for (key in data_json) {
+               addPositionOpt(key, data_json[key]);
+            }
+            // if the value is in the data keys
+            if ($("#room_position_dropdown").attr("value") in data_json)
+               $("#room_position_dropdown")[0].value = $("#room_position_dropdown").attr("value");
+         }
+      });
+      JS;
+      
+      $room = new DCRoom();
+      $room->getFromDB($this->fields['dcrooms_id']);
+      $all_positions = isset($this->fields['vis_cols']) ? $room->getAllPositions() : [];
+      $positions = array_diff_key($all_positions, $room->getFilled($this->fields['position']));
+   
+      require_once GLPI_ROOT . "/ng/form.utils.php";
 
-      echo "</td>";
-
-      echo "<td><label for='dropdown_position$rand'>".__('Position in room')."</label></td>";
-      echo "<td id='room_positions'>";
-      $dcroom = new DCRoom();
-      $positions = [];
-      $used = [];
-      if ((int)$this->fields['dcrooms_id'] > 0 && $dcroom->getFromDB($this->fields['dcrooms_id'])) {
-         $used = $dcroom->getFilled($current);
-         $positions = $dcroom->getAllPositions();
-         Dropdown::showFromArray(
-            'position',
-            $positions, [
-               'value'                 => $current,
-               'rand'                  => $rand,
-               'display_emptychoice'   => true,
-               'used'                  => $used
+      $title = __('New element').' '.self::getTypeName(1);
+      $form = [
+         'action' => $CFG_GLPI['root_doc'] . '/front/rack.form.php',
+         'content' => [
+            $title => [
+               'inputs' => [
+                  __("Name") => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'],
+                  ],
+                  __("Status") => [
+                     'name' => 'states_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('State', ['is_visible_computer' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['states_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "State"),
+                  ],
+                  __("Location") => [
+                     'name' => 'locations_id',
+                     'id' => 'locations_id_dropdown',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['locations_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
+                  ],
+                  __("Type") => [
+                     'name' => 'racktypes_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('RackType'),
+                     'value' => $this->fields['racktypes_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "RackType"),
+                  ],
+                  __("Technician in charge of the hardware") => [
+                     'name' => 'users_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]), // TODO : add right => own_ticket
+                     'value' => $this->fields['users_id_tech'],
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  __("Manufacturer") => [
+                     'name' => 'manufacturer_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Manufacturer'),
+                     'value' => $this->fields['manufacturers_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
+                  ],
+                  __("Group in charge of the hardware") => [
+                     'name' => 'groups_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['entities_id' => $this->fields['entities_id'], 'is_assign' => 1]),
+                     'value' => $this->fields['groups_id_tech'],
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  __("Model") => [
+                     'name' => 'rackmodels_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('RackModel'),
+                     'value' => $this->fields['rackmodels_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "RackModel"),
+                  ],
+                  __("Serial number") => [
+                     'name' => 'serial',
+                     'type' => 'text',
+                     'value' => $this->fields['serial'],
+                  ], // DOES NOT TAKE INTO ACCOUNT AUTOCOMPLETION FIELD
+                  __("Inventory/Asset number") => [
+                     'name' => 'otherserial',
+                     'type' => 'text',
+                     'value' => $this->fields['otherserial'],
+                  ], // DOES NOT TAKE INTO ACCOUNT AUTOCOMPLETION FIELD
+                  __("Server room") => [
+                     'name' => 'dcrooms_id',
+                     'type' => 'select',
+                     'id' => 'dcrooms_dropdown_id',
+                     'values' => getOptionForItems('DcRoom', ['entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['dcrooms_id'],
+                     'hooks' => [
+                        'change' => $loadDcPositionHook . $loadLocationHook,
+                     ],
+                  ],
+                  __("Position in room") => [
+                     'name' => 'position',
+                     'id' => 'room_position_dropdown',
+                     'type' => 'select',
+                     'values' => [$positions ? $positions : 0 => '-----'],
+                     'value' => $this->fields['position'],
+                  ],
+                  __("Door orientation in room") => [
+                     'name' => 'room_orientation',
+                     'type' => 'select',
+                     'values' => [
+                        self::ROOM_O_NORTH => __('North'),
+                        self::ROOM_O_EAST => __('East'),
+                        self::ROOM_O_SOUTH => __('South'),
+                        self::ROOM_O_WEST => __('West'),
+                     ],
+                     'value' => $this->fields['room_orientation']
+                  ],
+                  __("Number of units") => [
+                     'name' => 'number_units',
+                     'type' => 'number',
+                     'value' => $this->fields['number_units'] ? $this->fields['number_units'] : 42,
+                     'min' => 1,
+                     'max' => 100,
+                     'step' => 1,
+                     'after' => __('U'),
+                  ],
+                  __("Width") => [
+                     'name' => 'width',
+                     'type' => 'text',
+                     'value' => $this->fields['width'],
+                  ],
+                  __("Height") => [
+                     'name' => 'height',
+                     'type' => 'text',
+                     'value' => $this->fields['height'],
+                  ],
+                  __("Depth") => [
+                     'name' => 'depth',
+                     'type' => 'text',
+                     'value' => $this->fields['depth'],
+                  ],
+                  __("Max. power (in watts)") => [
+                     'name' => 'max_power',
+                     'type' => 'text',
+                     'value' => $this->fields['max_power'],
+                  ],
+                  __("Measured power (in watts)") => [
+                     'name' => 'mesured_power',
+                     'type' => 'text',
+                     'value' => $this->fields['mesured_power'],
+                  ],
+                  __("Max. weight") => [
+                     'name' => 'max_weight',
+                     'type' => 'text',
+                     'value' => $this->fields['max_weight'],
+                  ],
+                  __("Background color") => [
+                     'name' => 'bgcolor',
+                     'type' => 'color',
+                     'value' => $this->fields['bgcolor'],
+                  ],
+                  __("Comments") => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'],
+                  ],
+               ]
             ]
-         );
-      } else {
-         echo __('No room found or selected');
-      }
-
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_room_orientation$rand'>".__('Door orientation in room')."</label></td>";
-      echo "<td>";
-      Dropdown::showFromArray(
-         "room_orientation",
-         [
-            self::ROOM_O_NORTH => __('North'),
-            self::ROOM_O_EAST  => __('East'),
-            self::ROOM_O_SOUTH => __('South'),
-            self::ROOM_O_WEST  => __('West'),
-         ], [
-            'value'                 => $this->fields["room_orientation"],
-            'rand'                  => $rand,
-            'display_emptychoice'   => true
          ]
-      );
-      echo "</td>";
-      echo "<td colspan='2'></td>";
-      echo "</tr>";
+      ];
+      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_number_units$rand'>" . __('Number of units') . "</label></td><td>";
-      Dropdown::showNumber(
-         "number_units", [
-            'value'  => $this->fields["number_units"],
-            'min'    => 1,
-            'max'    => 100,
-            'step'   => 1,
-            'rand'   => $rand
-         ]
-      );
-      echo "&nbsp;".__('U')."</td>";
+      ob_start();
+      Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
+         'colspan'      => 2,
+         'withtemplate' => '',
+         'candel'       => true,
+         'canedit'      => true,
+         'addbuttons'   => [],
+         'formfooter'   => null,
+      ]]);
+      $additionnalHtml = ob_get_clean();
 
-      echo "<td><label for='width$rand'>".__('Width')."</label></td>";
-      echo "<td>".Html::input("width", ['id' => "width$rand", 'value' => $this->fields["width"]]);
-      echo "</td></tr>\n";
+      renderTwigForm($form, $additionnalHtml);
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='height$rand'>".__('Height')."</label></td>";
-      echo "<td>".Html::input("height", ['id' => "height$rand", 'value' => $this->fields["height"]]);
-      echo "<td><label for='depth$rand'>".__('Depth')."</label></td>";
-      echo "<td>".Html::input("depth", ['id' => "depth$rand", 'value' => $this->fields["depth"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='max_power$rand'>".__('Max. power (in watts)')."</label></td>";
-      echo "<td>".Html::input("max_power", ['id' => "max_power$rand", 'value' => $this->fields["max_power"]]);
-      echo "<td><label for='mesured_power$rand'>".__('Measured power (in watts)')."</label></td>";
-      echo "<td>".Html::input("mesured_power", ['id' => "mesured_power$rand", 'value' => $this->fields["mesured_power"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='max_weight$rand'>".__('Max. weight')."</label></td>";
-      echo "<td>".Html::input("max_weight", ['id' => "max_weight$rand", 'value' => $this->fields["max_weight"]]);
-      echo "<td><label for='bgcolor$rand'>".__('Background color')."</label></td>";
-      echo "<td>";
-      Html::showColorField(
-         'bgcolor', [
-            'value'  => $this->fields['bgcolor'],
-            'rand'   => $rand
-         ]
-      );
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='comment'>".__('Comments')."</label></td>";
-      echo "<td colspan='3' class='middle'>";
-
-      echo "<textarea cols='45' rows='3' id='comment' name='comment' >".
-           $this->fields["comment"];
-      echo "</textarea></td></tr>";
-
-      $this->showFormButtons($options);
       return true;
    }
 
