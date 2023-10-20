@@ -66,6 +66,7 @@ class HTMLTableMain extends HTMLTableBase {
 
    private $groups    = [];
    private $itemtypes = [];
+   private $title     = '';
 
 
    function __construct() {
