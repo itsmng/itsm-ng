@@ -493,7 +493,7 @@ class Auth extends CommonGLPI {
             }
 
             // no SSL validation for the CAS server
-            phpCAS::setNoCasServerValidation();
+            // phpCAS::setNoCasServerValidation();
 
             // force CAS authentication
             phpCAS::forceAuthentication();
