@@ -7,6 +7,7 @@
  * http://glpi-project.org
  *
  * based on GLPI - Gestionnaire Libre de Parc Informatique
+ * Copyright (C) 2015-2022 Teclib' and contributors.
  * Copyright (C) 2003-2014 by the INDEPNET Development Team.
  *
  * ---------------------------------------------------------------------
@@ -41,6 +42,7 @@ if (!defined('GLPI_ROOT')) {
  *
  * @since 0.85
 **/
+#[\AllowDynamicProperties]
 class MassiveAction {
 
    const CLASS_ACTION_SEPARATOR  = ':';
