@@ -95,7 +95,7 @@ var libsConfig = {
          },
          {
             // Build styles
-            test: /\.css$/,
+            test: /\.css$/i,
             use: [MiniCssExtractPlugin.loader, 'css-loader'],
          },
          {
@@ -125,12 +125,6 @@ var libsConfig = {
          },
       ],
    },
-   node: {
-      // console is present in all browsers, no need to import "console-browserify"
-      // prevent circular dependency util -> console-browserify -> assert -> util
-      // (assert.js:164 Uncaught TypeError: util.inherits is not a function)
-      console: true,
-   },
    plugins: [
       new CleanWebpackPlugin(), // Clean lib dir content
       new MiniCssExtractPlugin({ filename: '[name].css' }), // Extract styles into CSS files
@@ -140,8 +134,14 @@ var libsConfig = {
       mainFields: [
          'main',
       ],
+      fallback: {
+         'tty': require.resolve('tty-browserify'),
+         'stream': require.resolve('stream-browserify'),
+         "buffer": require.resolve("buffer/"),
+         "os": require.resolve("os-browserify/browser"),
+      },
    },
-};
+}
 
 var libs = {
    '@fullcalendar': [
