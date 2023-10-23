@@ -1136,3 +1136,21 @@ div.chip>p {
 .login_input i {
     color: $primary-text-color;
 }
+
+#searchcriteria {
+    width: max-content;
+    text-align: center;
+    margin: 0 auto;
+    display: none;
+
+    .search_actions {
+        span {
+            background: $secondary-color;
+            color: $primary-text-color;
+        }
+        input[type="submit"] {
+            background: $primary-color;
+            color: $primary-text-color;
+        }
+    }
+}

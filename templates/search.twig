@@ -28,7 +28,7 @@
 		data-sortable="true"
 		data-show-export="true"
 		data-buttons="buttons"
-		style="box-sizing: border-box">
+		sylte="box-sizing: border-box">
 		<thead class="table-light">
 			<tr>
 				<th data-field="state" data-checkbox="true"></th>
@@ -75,12 +75,11 @@
 				icon: 'fas fa-trash-alt',
 				event: function () {
 				toogle('is_deleted', '', '', '');
-				document.forms['searchform    {{ itemtype }}'].submit();
+				document.forms['searchform{{ itemtype }}'].submit();
 				},
 				attributes: {
-				title: {{ 'Show trash content'|trans|json_encode|raw }},
-
-				style: {{ (is_trash == 1) ? 'background : #7b081d'|json_encode|raw : ''|json_encode|raw }}
+					title: {{ 'Show trash content'|trans|json_encode|raw }},
+					style: {{ (is_trash == 1) ? 'background : #7b081d'|json_encode|raw : ''|json_encode|raw }}
 				}
 			}
 		}

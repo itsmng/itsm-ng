@@ -14,7 +14,7 @@
     </span>
     <span>
 {% if links['search'] is defined %}
-        <a href='{{root_doc}}{{links['search']}}' class='pointer' title="{{'Search'|trans}}">
+        <a onClick='$(searchcriteria).toggle()' class='pointer' title="{{'Search'|trans}}">
             <i class='fa fa-search'></i>
             <span class='sr-only'>{{'Search'|trans}}</span>
         </a>

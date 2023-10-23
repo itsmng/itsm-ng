@@ -1514,7 +1514,7 @@ class Search {
       Html::showMassiveActions(['display_arrow' => false, 'container' => "search-table"]);
       
       echo $twig->render('search.twig', [
-         'is_trash' => $_GET['is_deleted'] ?? 0,
+         'is_trash' =>$data['search']['is_deleted'],
          'itemtype' => $data['itemtype'],
          'fields' => $fields,
          'values' => $values,
@@ -1983,6 +1983,7 @@ class Search {
       $nbsearchcountvar      = 'nbcriteria'.strtolower($itemtype).mt_rand();
       $searchcriteriatableid = 'criteriatable'.strtolower($itemtype).mt_rand();
       // init criteria count
+      echo "<hr>";
       echo Html::scriptBlock("
          var $nbsearchcountvar = ".count($p['criteria']).";
       ");
@@ -2149,6 +2150,7 @@ JAVASCRIPT;
          echo Html::hidden('start', ['value'    => 0]);
       }
 
+      echo "<hr>";
       echo "</div>";
       if ($p['mainform']) {
          Html::closeForm();
