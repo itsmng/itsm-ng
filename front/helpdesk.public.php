@@ -94,7 +94,7 @@ if (isset($_GET['create_ticket'])) {
    $ticket->showFormHelpdesk(Session::getLoginUserID());
 
 } else {
-   Html::helpHeader(__('Home'), $_SERVER['PHP_SELF'], $_SESSION["glpiname"]);
+   Html::header(__('Home'), $_SERVER['PHP_SELF'], $_SESSION["glpiname"]);
    echo "<table class='tab_cadre_postonly'>";
 
    $user = new User();
@@ -172,5 +172,5 @@ if (isset($_GET['create_ticket'])) {
 
 }
 
-Html::helpFooter();
+Html::footer();
 

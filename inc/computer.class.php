@@ -338,7 +338,7 @@ class Computer extends CommonDBTM {
                   __("Technician in charge of the hardware") => [
                      'name' => 'users_id_tech',
                      'type' => 'select',
-                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id'],]),
+                     'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['users_id_tech'],
                      'actions' => getItemActionButtons(['info'], "User"),
                   ],
@@ -386,7 +386,7 @@ class Computer extends CommonDBTM {
                   User::getTypeName(1) => [
                      'name' => 'users_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]), // TODO : add right => all
+                     'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['users_id'],
                      'actions' => getItemActionButtons(['info'], "User"),
                   ],

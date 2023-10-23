@@ -46,6 +46,21 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true)
     return $options;
 }
 
+function getOptionsForUsers($right, $conditions = [], $display_emptychoice = true)
+{
+    global $DB;
+
+    $users = iterator_to_array(User::getSqlSearchResult(false, $right, $conditions['entities_id']));
+    $options = [];
+    if ($display_emptychoice) {
+        $options[0] = Dropdown::EMPTY_VALUE;
+    }
+    foreach ($users as $user) {
+        $options[$user['id']] = $user['name'];
+    }
+    return $options;
+}
+
 /**
  * @param $form
  * @param $additionnalHtml

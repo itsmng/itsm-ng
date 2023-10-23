@@ -259,7 +259,7 @@ class Software extends CommonDBTM {
                      'name' => 'users_id_tech',
                      'type' => 'select',
                      'value' => $this->fields['users_id_tech'],
-                     'values' => getOptionForItems("User", ['entities_id' => $this->fields['entities_id']]), // NEED right => own_ticket
+                     'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                      'actions' => getItemActionButtons(['info'], "User"),
                   ],
                   __("Associable to a ticket") => [

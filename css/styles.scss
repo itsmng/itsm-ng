@@ -836,15 +836,12 @@ input {
 }
 
 .layout_lefttab .ui-tabs, .layout_classic .ui-tabs, .layout_vsplit .ui-tabs {
-   border: 1px solid #e1e1e1;
    border-top-width: 0;
    box-sizing: border-box;
 }
 
 .ui-tabs {
    background: #FFF repeat-x top left;
-   box-shadow: 0px 3px 1px #dfdfdf;
-   width: 90%;
 }
 
 .ui-tabs-anchor {
@@ -1645,9 +1642,6 @@ td, th {
 #page .navigationheader {
    margin: 0 auto;
    padding: 7px 10px;
-   width: 90%;
-   border: 1px solid #e1e1e1;
-   background-color: #FFF;
    box-sizing: border-box;
    display: flex;
 
