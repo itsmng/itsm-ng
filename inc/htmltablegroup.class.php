@@ -42,10 +42,9 @@ class HTMLTableGroup extends HTMLTableBase {
 
    private $name;
    private $content;
-   private $new_headers = [];
    private $table;
    private $rows = [];
-
+   private $ordered_headers;
 
    /**
     * @param $table     HTMLTableMain object
@@ -59,7 +58,6 @@ class HTMLTableGroup extends HTMLTableBase {
       $this->name       = $name;
       $this->content    = $content;
    }
-
 
    function getName() {
       return $this->name;
