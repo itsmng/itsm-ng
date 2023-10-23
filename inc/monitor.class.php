@@ -188,7 +188,7 @@ class Monitor extends CommonDBTM {
                   __("Technician in charge of the hardware") => [
                      'name' => 'users_id_tech',
                      'type' => 'select',
-                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]), // TODO: add right => 'own_ticket'
+                     'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['users_id_tech'],
                      'actions' => getItemActionButtons(['info'], "User"),
                   ],
