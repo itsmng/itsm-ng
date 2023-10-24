@@ -1,6 +1,8 @@
 $(document).ready((e) => {
     if ($('#main-test').hasClass('menu-bubble')) {
-      activateMenuBubble();
+        activateMenuBubble();
+    } else if ($('#main-test').hasClass('menu-top')) {
+        $("html").css("--nav-top-height", "2rem");
     }
     initializeListeners();
 });
@@ -8,7 +10,7 @@ $(document).ready((e) => {
 function initializeListeners(){
     $('.menu-position-bouton').on('change', function(e){
         e.stopPropagation();
-        changeMenuPosition($(this).attr('id'));}
+        changeMenuPosition(this.value);}
     );
     $('#menu-collapse-toggle').on('change', function(e){
         e.stopPropagation();
@@ -190,6 +192,9 @@ function changeMenuPosition(class_name){ //select menu left, right, top, bubble
     if ($('#main-test').hasClass('menu-top') || class_name == 'menu-top'){
         clearMenuOpen();
         deactivateMenuBubble();
+        $("html").css("--nav-top-height", "2rem");
+    } else {
+        $("html").css("--nav-top-height", "0rem");
     }
 
     if ($('#main-test').hasClass('menu-bubble')) {

@@ -9,7 +9,7 @@
 		:
 		<button id"reset-bubble-button" type="button" class="btn btn-primary btn-sm">Reset</button>
 	</span>
-	<div class="dropdown-divider"></div>
+	<hr>
 	<h6 class="dropdown-header">{{'Menu favorite'|trans}}</h6>
 	<span class="dropdown-item" href="#">{{'Activate menu favorite'|trans}}
 		:
@@ -17,30 +17,18 @@
 	<span class="dropdown-item" href="#">{{'Activate favorite selection'|trans}}
 		:
 		{{input("", "", "checkbox", "form-check-input", "menu-favorite-selection-toggle")}}</span>
-	<div class="dropdown-divider"></div>
-	<h6 class="dropdown-header">{{'Menu position'|trans}}</h6>
-	<span class="dropdown-item" href="#">
-		<i class="fas fa-arrow-alt-circle-left"></i>
-		{{'Left'|trans}}
-		:
-		{{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-left", "", "", "", menu_position == 'menu-left' ? 'true')}}</span>
-	<span class="dropdown-item" href="#">
-		<i class="fas fa-arrow-alt-circle-up"></i>
-		{{'Up'|trans}}
-		:
-		{{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-top", "", "", "", menu_position == 'menu-top' ? 'true')}}</span>
-	<span class="dropdown-item" href="#">
-		<i class="fas fa-arrow-alt-circle-right"></i>
-		{{'Right'|trans}}
-		:
-		{{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-right", "", "", "", menu_position == 'menu-right' ? 'true')}}</span>
-	<span class="dropdown-item" href="#">
-		<i class="fas fa-circle"></i>
-		{{'Bubble'|trans}}
-		:
-		{{input("menu-position", "", "radio", "form-check-input menu-position-bouton", "menu-bubble", "", "", "", menu_position == 'menu-bubble' ? 'true')}}</span>
+	<hr>
+	<div class="d-flex flex-row">
+		<h6 class="dropdown-header">{{'Menu position'|trans}}</h6>
+		<select class="menu-position-bouton mx-auto">
+			<option value="menu-left" {{menu_position == 'menu-left' ? 'selected'}}>{{'Left'|trans}}</option>
+			<option value="menu-top" {{menu_position == 'menu-top' ? 'selected'}}>{{'Up'|trans}}</option>
+			<option value="menu-right" {{menu_position == 'menu-right' ? 'selected'}}>{{'Right'|trans}}</option>
+			<option value="menu-bubble" {{menu_position == 'menu-bubble' ? 'selected'}}>{{'Bubble'|trans}}</option>
+		</select>
+	</div>
 	<div class="divers">
-		<div class="dropdown-divider"></div>
+		<hr>
 		<h6 class="dropdown-header">Divers</h6>
 		<ul class="in-dropdown">
 			<a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}} class='fa fa-sign-out-alt'>
