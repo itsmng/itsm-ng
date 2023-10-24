@@ -1,8 +1,8 @@
 {
-    "name": "@glpi/glpi",
+    "name": "@itsmng/itsm-ng",
     "version": "",
     "private": true,
-    "description": "GLPI dependencies",
+    "description": "ITSM-ng dependencies",
     "license": "GPL-2.0",
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.4",
