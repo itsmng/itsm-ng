@@ -1,0 +1,74 @@
+<div class="dropdown-center text-center">
+	<button type="button" class="btn btn-lg btn-primary dropdown-toggle mb-3" data-bs-toggle="dropdown">
+		Tab Selection
+	</button>
+	<ul class="dropdown-menu">
+	{% for tab in tabs %}
+		<li>
+			<a href="#" class="dropdown-item" class="small" data-value="{{tab['title']|slug}}" style="user-select: none; --webkit-user-select: none;">
+				<input type="checkbox" {{loop.first ? 'checked' : ''}}/>&nbsp;{{tab['title']|raw}}
+			</a>
+		</li>
+	{% endfor %}
+	<li>
+			<a href="#" class="dropdown-item" class="small" data-value="all" style="user-select: none; --webkit-user-select: none;">
+				<input type="checkbox" {{loop.first ? 'checked' : ''}}/>&nbsp;{{'Select all'|trans}}
+			</a>
+		</li>
+	</ul>
+</div>
+<div class="d-flex flex-column" id="ContentForTabs">
+{% for tab in tabs %}
+<div class="{{loop.first ? '' : 'd-none'}}" id="ContentFor{{tab['title']|slug}}">
+{{tab['content']|raw}}
+</div>
+{% endfor %}
+</div>
+
+<script>
+var options = [];
+
+// add every checked values to the options array
+$(document).ready((e) => {
+	$('.dropdown-menu a').each((i, e) => {
+		if ($(e).find('input').prop('checked')) {
+			options.push($(e).attr('data-value'));
+		}
+	});
+});
+
+$( '.dropdown-menu a' ).on( 'click', function( event ) {
+	var $target = $( event.currentTarget ),
+		val = $target.attr( 'data-value' ),
+		$inp = $target.find( 'input' ),
+		idx;
+	if ( ( idx = options.indexOf( val ) ) > -1 ) {
+		options.splice( idx, 1 );
+		setTimeout( function() { $inp.prop( 'checked', false ) }, 0);
+	} else {
+		options.push( val );
+		setTimeout( function() { $inp.prop( 'checked', true ) }, 0);
+	}
+
+	for (option of $('#ContentForTabs > div')) {
+		if (options.includes('all')) {
+			if ( $(option).hasClass( 'd-none' ) ) {
+				$(option).removeClass( 'd-none' );
+			}
+		} else {
+			if ( !$(option).hasClass( 'd-none' ) ) {
+				$(option).addClass( 'd-none' );
+			}
+		}
+	}
+
+	for (option of options) {
+		if ( $( '#ContentFor' + option ).hasClass( 'd-none' ) ) {
+			$( '#ContentFor' + option ).removeClass( 'd-none' );
+		}
+	}
+
+	$( event.target ).blur();
+	return false;
+});
+</script>

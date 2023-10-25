@@ -1,5 +1,5 @@
 {% macro select(attributes) %}
-<select {% for name, value in attributes %} {% if name != 'values'%}{{name}}="{{value}}"{% endif %} {% endfor %}>
+<select class='form-select' {% for name, value in attributes %} {% if name != 'values'%}{{name}}="{{value}}"{% endif %} {% endfor %}>
     {% for key, item in attributes.values %}
         <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
     {% endfor %}
@@ -11,11 +11,11 @@
     {% if attributes.type == 'checkbox' %}
 <input {% for name, value in attributes|filter(k,v => k != 'value') %} {{name}}="{{value}}" {% endfor %} {{ (attributes.value == 1) ? "checked" : "" }}/>
     {% elseif attributes.type == 'textarea' %}
-<textarea {% for name, value in attributes|filter(k,v => k != 'value') %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default("")}}</textarea>
+<textarea class='form-control' {% for name, value in attributes|filter(k,v => k != 'value') %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default("")}}</textarea>
     {% elseif attributes.type == 'select' %}
 {{_self.select(attributes)}}
     {% else %}
-<input {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+<input class='form-control' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
     {% endif %}
 {% endmacro %}
 

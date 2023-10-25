@@ -412,13 +412,6 @@ hr {
    min-height: 80%;
    margin: 15px auto;
 
-   form {
-      font-size: 12px;
-      margin: 0;
-      margin-bottom: 5px;
-      padding: 0;
-   }
-
    .form #page {
       max-width: 1400px;
    }
@@ -445,22 +438,6 @@ select {
    border: 1px solid #bbb;
 }
 
-textarea, input:not(.submit):not([type=submit]):not([type=reset]):not([type=checkbox]):not([type=radio]):not(.select2-search__field):not(.numInput) {
-   border: 1px solid #D3D3D3;
-   font-size: 11px;
-   border-radius: 3px;
-   padding: 0 5px;
-}
-
-textarea:not([disabled]), input:not(.submit):not([type=submit]):not([type=reset]):not([type=checkbox]):not([type=radio]):not(.select2-search__field):not(.numInput):not([disabled]) {
-   background-color: #FCFCFC;
-   color: black;
-}
-
-textarea:focus, input:not([type=submit]):not([type=reset]):not([type=checkbox]):not([type=radio]):not(.select2-search__field):not(.numInput):focus {
-   border-color: #5897fb;
-}
-
 .select2-container--open {
    .select2-selection, .select2-dropdown {
       border-color: #5897fb;
@@ -468,9 +445,6 @@ textarea:focus, input:not([type=submit]):not([type=reset]):not([type=checkbox]):
 }
 
 input {
-   height: 17px;
-   vertical-align: middle;
-
    &:required {
       border: 1px rgba(255, 0, 0, 0.6) solid !important;
       border-left-width: 3px !important;
@@ -845,7 +819,7 @@ input {
 }
 
 .ui-tabs-anchor {
-   height: 18px;
+   font-size: 1rem;
 }
 
 .ui-tabs sup.tab_nb {
@@ -1243,9 +1217,7 @@ th, td {}
    border-radius: 0;
    margin: 0;
    font-size: 1.1em;
-   color: #000;
    padding: 10px 5px;
-   background-color: #F1F1F1;
 }
 
 .tab_spaced {
