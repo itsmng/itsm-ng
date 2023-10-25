@@ -412,7 +412,7 @@ class Printer  extends CommonDBTM {
          ]
       ];
 
-      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
+      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $this->fields)];
       
       ob_start();
       Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
