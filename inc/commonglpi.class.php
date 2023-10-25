@@ -889,32 +889,29 @@ class CommonGLPI {
                   $shortcut = false;
                }
             }
+            ob_start();
+            CommonGLPI::displayStandardTab($this, $key, $options);
+            $content = ob_get_clean();
             $tabs[$key] = [
                   'title'    => $val,
                   'shortcut' => $shortcut,
                   'url'      => $tabpage,
                   'params'   => "_target=$target&amp;_itemtype=".$this->getType().
-                              "&amp;_glpi_tab=$key&amp;id=$ID$extraparamhtml"
+                              "&amp;_glpi_tab=$key&amp;id=$ID$extraparamhtml",
+                  'content'  => $content,
             ];
          }
-
-         // Not all tab for templates and if only 1 tab
-         if ($display_all
-             && empty($withtemplate)
-             && (count($tabs) > 1)) {
-            $tabs[-1] = [
-               'title'    => __('All'),
-               'shortcut' => false,
-               'url'      => $tabpage,
-               'params'   => "_target=$target&amp;_itemtype=".$this->getType().
-                              "&amp;_glpi_tab=-1&amp;id=$ID$extraparamhtml"
-            ];
-         }
-
-         Ajax::createTabs('tabspanel', 'tabcontent', $tabs, $this->getType(), $ID,
-                          $this->taborientation, $options);
       }
       echo "</div>";
+      require_once GLPI_ROOT . "/ng/twig.class.php";
+      $twig = Twig::load(GLPI_ROOT . "/templates", false);
+      try {
+         echo $twig->render('item.twig', [
+            'tabs' => $tabs,
+         ]);
+      } catch (Exception $e) {
+         echo $e->getMessage();
+      }
    }
 
 
@@ -1254,7 +1251,6 @@ class CommonGLPI {
          }
          $this->showPrimaryForm($options);
       }
-
       $this->showTabsContent($options);
    }
 
