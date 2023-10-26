@@ -381,7 +381,8 @@ HTML;
          $grid_guide
          <div class="grid-stack grid-stack-{$this->grid_cols}"
             id="grid-stack-$rand"
-            style="width: 100%">
+            style="width: 100%;min-height: 10rem;"
+            >
             $gridstack_items
          </div>
       </div>
@@ -527,12 +528,12 @@ JAVASCRIPT;
       if ($with_lock) {
          $this->items[] = <<<HTML
          <div class="grid-stack-item lock-bottom"
-            data-gs-no-resize="true"
-            data-gs-no-move="true"
-            data-gs-height="1"
-            data-gs-width="{$this->grid_cols}"
-            data-gs-x="0"
-            data-gs-y="{$this->grid_rows}"></div>
+            gs-no-resize="true"
+            gs-no-move="true"
+            gs-h="1"
+            gs-w="{$this->grid_cols}"
+            gs-x="0"
+            gs-y="{$this->grid_rows}"></div>
 HTML;
       }
 
@@ -564,11 +565,11 @@ HTML;
       array $data_option = []) {
 
       // let grid-stack to autoposition item
-      $autoposition = 'data-gs-auto-position="true"';
+      $autoposition = 'gs-auto-position="true"';
       $coordinates  = '';
       if ((int) $x >= 0 && (int) $y >= 0) {
          $autoposition = "";
-         $coordinates  = "data-gs-x='$x' data-gs-y='$y'";
+         $coordinates  = "gs-x='$x' gs-y='$y'";
       }
 
       $color    = $data_option['color'] ?? "#FFFFFF";
@@ -588,9 +589,9 @@ HTML;
 
       $this->items[] = <<<HTML
          <div class="grid-stack-item"
-               data-gs-id="{$gridstack_id}"
-               data-gs-width="{$width}"
-               data-gs-height="{$height}"
+               gs-id="{$gridstack_id}"
+               gs-w="{$width}"
+               gs-h="{$height}"
                {$coordinates}
                {$autoposition}
                {$data_option_attr}

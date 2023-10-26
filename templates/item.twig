@@ -1,7 +1,9 @@
 <div class="dropdown-center text-center">
-	<button type="button" class="btn btn-lg btn-primary dropdown-toggle mb-3" data-bs-toggle="dropdown">
+	{% if tabs|length > 1 %}
+	<button type="button" class="btn btn-primary dropdown-toggle mb-3" data-bs-toggle="dropdown">
 		Tab Selection
 	</button>
+	{% endif %}
 	<ul class="dropdown-menu">
 	{% for tab in tabs %}
 		<li>
@@ -17,22 +19,38 @@
 		</li>
 	</ul>
 </div>
-<div class="d-flex flex-column" id="ContentForTabs">
-{% for tab in tabs %}
-<div class="{{loop.first ? '' : 'd-none'}}" id="ContentFor{{tab['title']|slug}}">
-{{tab['content']|raw}}
+
+<div class="grid-stack" id="ContentForTabs">
+
 </div>
+<div class='d-none' id="hidden_gridStack_items">
+{% for tab in tabs %}
+<div 
+	class="grid-stack-item"
+	id="ContentFor{{tab['title']|slug}}"
+	gs-h='6' gs-w='6'
+	gs-auto-position='true'
+	>
+		<div class="card grid-stack-item-content position-relative">
+			<div class="card-header position-sticky">{{tab['title']|raw}}</div>
+			<div class="card-body">{{tab['content']|raw}}</div>
+		</div>
+	</div>
 {% endfor %}
 </div>
 
-<script>
-var options = [];
+<link href="../node_modules/gridstack/dist/gridstack.min.css" rel="stylesheet"/>
+<script src="../node_modules/gridstack/dist/gridstack-all.js"></script>
 
+<script> // dropdown display
+var options = [];
 // add every checked values to the options array
 $(document).ready((e) => {
 	$('.dropdown-menu a').each((i, e) => {
 		if ($(e).find('input').prop('checked')) {
 			options.push($(e).attr('data-value'));
+			$( '#ContentFor' + $(e).attr('data-value') ).detach().appendTo( '#ContentForTabs' );
+			grid.makeWidget($( '#ContentFor' + $(e).attr('data-value') )[0]);
 		}
 	});
 });
@@ -51,24 +69,24 @@ $( '.dropdown-menu a' ).on( 'click', function( event ) {
 	}
 
 	for (option of $('#ContentForTabs > div')) {
-		if (options.includes('all')) {
-			if ( $(option).hasClass( 'd-none' ) ) {
-				$(option).removeClass( 'd-none' );
-			}
-		} else {
-			if ( !$(option).hasClass( 'd-none' ) ) {
-				$(option).addClass( 'd-none' );
-			}
-		}
+		grid.removeWidget(option, false);
+		$( option).detach().appendTo('#hidden_gridStack_items');
 	}
 
 	for (option of options) {
-		if ( $( '#ContentFor' + option ).hasClass( 'd-none' ) ) {
-			$( '#ContentFor' + option ).removeClass( 'd-none' );
-		}
+		$( '#ContentFor' + option ).detach().appendTo( '#ContentForTabs' );
+		grid.makeWidget($( '#ContentFor' + option )[0]);
 	}
-
-	$( event.target ).blur();
 	return false;
 });
+</script>
+
+
+<script> // gridstack
+var grid = GridStack.init({
+	cellHeight: 'auto',
+	cellWidth: '1rem',
+	handle: '.card-header',
+});
+grid.load();
 </script>

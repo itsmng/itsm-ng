@@ -86,7 +86,7 @@ var Dashboard = {
       this.cols         = options.cols;
       this.cache_key    = options.cache_key || "";
 
-      $('#grid-stack-'+options.rand).gridstack({
+      let gridStack = GridStack.init({
          column: options.cols,
          maxRow: (options.rows + 1), // +1 for a hidden item at bottom (to fix height)
          verticalMargin: this.cell_margin,
@@ -95,8 +95,8 @@ var Dashboard = {
          draggable: { // override jquery ui draggable options
             'cancel': 'textarea' // avoid draggable on some child elements
          }
-      });
-      Dashboard.grid = $('#grid-stack-'+options.rand).data('gridstack');
+      }, $('#grid-stack-'+options.rand)[0]);
+      Dashboard.grid = gridStack;
 
       // set grid in static to prevent edition (unless user click on edit button)
       // previously in option, but current version of gridstack has a bug with one column mode (responsive)
@@ -298,7 +298,7 @@ var Dashboard = {
          var item = refresh_ctrl.closest('.grid-stack-item');
          var id = item.data('gs-id');
 
-         Dashboard.getCardsAjax("[data-gs-id="+id+"]");
+         Dashboard.getCardsAjax("[gs-id="+id+"]");
       });
 
       // edit item
@@ -315,8 +315,8 @@ var Dashboard = {
                card_id:      card_opt.card_id,
                x:            item.data('gs-x'),
                y:            item.data('gs-y'),
-               width:        item.data('gs-width'),
-               height:       item.data('gs-height'),
+               width:        item.data('gs-w'),
+               height:       item.data('gs-h'),
                card_options: card_opt,
             }, function() {
                $(this).dialog({
@@ -538,7 +538,7 @@ var Dashboard = {
          if (form_data.old_id === "0") {
             return false;
          }
-         var item = $('.grid-stack-item[data-gs-id='+form_data.old_id+']');
+         var item = $('.grid-stack-item[gs-id='+form_data.old_id+']');
          Dashboard.grid.removeWidget(item);
       }
 
@@ -681,7 +681,7 @@ var Dashboard = {
       $('.dashboard .card.filter-'+filter_id).each(function () {
          var gridstack_item = $(this).closest(".grid-stack-item");
          var card_id = gridstack_item.data('gs-id');
-         Dashboard.getCardsAjax("[data-gs-id="+card_id+"]");
+         Dashboard.getCardsAjax("[gs-id="+card_id+"]");
       });
    },
 
@@ -983,16 +983,16 @@ var Dashboard = {
 
       let requested_cards = [];
       let card_ajax_data = [];
-      $(".grid-stack-item:not(.lock-bottom)"+specific_one).each(function() {
+      $(".dashboard .grid-stack-item:not(.lock-bottom)"+specific_one).each(function() {
          var card         = $(this);
-         var card_opt     = card.data('card-options');
+         var card_opt     = JSON.parse(card.attr('data-card-options'));
          var gridstack_id = card.data('gs-id');
          var card_id      = card_opt.card_id || card.data('gs-id');
 
          card_opt.gridstack_id = gridstack_id;
 
          // store markdown after card reload
-         if ("markdown_content" in card_opt) {
+         if (card_opt.hasOwnProperty("markdown_content")) {
             Dashboard.markdown_contents[gridstack_id] = card_opt.markdown_content;
          }
 
@@ -1032,7 +1032,7 @@ var Dashboard = {
                if (crd.card_id === card_id) {
                   const html = card_result;
                   has_result = true;
-                  card.children('.grid-stack-item-content').html(html);
+                  card_children = card.children('.grid-stack-item-content')?.html(html);
 
                   Dashboard.fitNumbers(card);
                   Dashboard.animateNumbers(card);
@@ -1082,10 +1082,10 @@ var Dashboard = {
          var left  = i * width_percent;
          var width = (i+1) * width_percent;
 
-         style+= this.elem_id+" .grid-stack > .grid-stack-item[data-gs-x='"+i+"'] { \
+         style+= this.elem_id+" .grid-stack > .grid-stack-item[gs-x='"+i+"'] { \
             left: "+left+"%; \
          } \
-         "+this.elem_id+" .grid-stack > .grid-stack-item[data-gs-width='"+(i+1)+"'] { \
+         "+this.elem_id+" .grid-stack > .grid-stack-item[gs-w='"+(i+1)+"'] { \
             min-width: "+width_percent+"%; \
             width: "+width+"%; \
          }";
