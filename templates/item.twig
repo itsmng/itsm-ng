@@ -31,8 +31,13 @@
 	gs-h='6' gs-w='6'
 	gs-auto-position='true'
 	>
+<<<<<<< HEAD
 		<div class="card grid-stack-item-content position-relative">
 			<div class="card-header position-sticky">{{tab['title']|raw}}</div>
+=======
+		<div class="card grid-stack-item-content" id="ContentFor{{tab['title']|slug}}">
+			<div class="card-header">{{tab['title']|raw}}</div>
+>>>>>>> origin/form_styling
 			<div class="card-body">{{tab['content']|raw}}</div>
 		</div>
 	</div>
