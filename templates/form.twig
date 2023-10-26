@@ -6,7 +6,6 @@
 {% for key, bloc in form.content  %}
 <div class="container mb-3">
     {% if bloc.visible %}
-        <hr>
         <h2 class="text-start">{{key}}</h2>
     {% endif %}
     <div class="row row-cols-{{col}}">
