@@ -947,7 +947,7 @@ JAVASCRIPT;
       $height = "100";
       $legend_options = "";
       if ($p['legend']) {
-         $height = "calc(100% - 40px)";
+         $height = "100";
          $legend_options = "
             Chartist.plugins.legend(),";
       }

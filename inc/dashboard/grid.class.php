@@ -381,8 +381,7 @@ HTML;
          $grid_guide
          <div class="grid-stack grid-stack-{$this->grid_cols}"
             id="grid-stack-$rand"
-            style="width: 100%;min-height: 10rem;"
-            >
+            style="width: 100%">
             $gridstack_items
          </div>
       </div>

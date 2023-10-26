@@ -20,7 +20,7 @@
 	</ul>
 </div>
 
-<div class="grid-stack" id="ContentForTabs">
+<div class="grid-stack w-100" id="ContentForTabs">
 
 </div>
 <div class='d-none' id="hidden_gridStack_items">
@@ -29,11 +29,12 @@
 	class="grid-stack-item"
 	id="ContentFor{{tab['title']|slug}}"
 	gs-h='6' gs-w='6'
-	gs-auto-position='true'
 	>
-		<div class="card grid-stack-item-content position-relative">
-			<div class="card-header position-sticky">{{tab['title']|raw}}</div>
-			<div class="card-body">{{tab['content']|raw}}</div>
+		<div class="card grid-stack-item-content">
+			<div>
+				<div class="card-header position-sticky">{{tab['title']|raw}}</div>
+				<div class="card-body">{{tab['content']|raw}}</div>
+			</div>
 		</div>
 	</div>
 {% endfor %}
@@ -70,7 +71,9 @@ $( '.dropdown-menu a' ).on( 'click', function( event ) {
 
 	for (option of $('#ContentForTabs > div')) {
 		grid.removeWidget(option, false);
-		$( option).detach().appendTo('#hidden_gridStack_items');
+		$(option).attr('gs-x', 'false')
+		$(option).attr('gs-y', 'false')
+		$(option).detach().appendTo('#hidden_gridStack_items');
 	}
 
 	for (option of options) {
@@ -87,6 +90,7 @@ var grid = GridStack.init({
 	cellHeight: 'auto',
 	cellWidth: '1rem',
 	handle: '.card-header',
+	sizeToContent: true,
 });
 grid.load();
 </script>
