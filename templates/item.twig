@@ -28,7 +28,7 @@
 <div 
 	class="grid-stack-item"
 	id="ContentFor{{tab['title']|slug}}"
-	gs-h='6' gs-w='6'
+	gs-h='6' gs-min-w='6'
 	>
 		<div class="card grid-stack-item-content">
 			<div>
@@ -44,23 +44,29 @@
 <script src="../node_modules/gridstack/dist/gridstack-all.js"></script>
 
 <script> // dropdown display
-var options = [];
-// add every checked values to the options array
-$(document).ready((e) => {
-	$('.dropdown-menu a').each((i, e) => {
-		if ($(e).find('input').prop('checked')) {
-			options.push($(e).attr('data-value'));
-			$( '#ContentFor' + $(e).attr('data-value') ).detach().appendTo( '#ContentForTabs' );
-			grid.makeWidget($( '#ContentFor' + $(e).attr('data-value') )[0]);
-		}
-	});
-});
 
-$( '.dropdown-menu a' ).on( 'click', function( event ) {
+function updateWidgetWidth() {
+	var columnWidgets = grid.getGridItems();
+	if (columnWidgets.length === 1) {
+		// If it's the only widget in the column, set it to full width
+		grid.batchUpdate();
+		grid.update(columnWidgets[0], {w: 12}); // Assuming 12 columns in your grid
+		grid.commit();
+	} else {
+		// If there are other widgets in the column, set it to the desired width
+		grid.batchUpdate();
+		grid.update(columnWidgets[0], {w: 6}); // Assuming 12 columns in your grid
+		grid.compact();
+		grid.commit();
+	}
+}
+
+function updateGridContent() {
 	var $target = $( event.currentTarget ),
 		val = $target.attr( 'data-value' ),
 		$inp = $target.find( 'input' ),
 		idx;
+	
 	if ( ( idx = options.indexOf( val ) ) > -1 ) {
 		options.splice( idx, 1 );
 		setTimeout( function() { $inp.prop( 'checked', false ) }, 0);
@@ -80,6 +86,24 @@ $( '.dropdown-menu a' ).on( 'click', function( event ) {
 		$( '#ContentFor' + option ).detach().appendTo( '#ContentForTabs' );
 		grid.makeWidget($( '#ContentFor' + option )[0]);
 	}
+}
+
+var options = [];
+// add every checked values to the options array
+$(document).ready((e) => {
+	$('.dropdown-menu a').each((i, e) => {
+		if ($(e).find('input').prop('checked')) {
+			options.push($(e).attr('data-value'));
+			$( '#ContentFor' + $(e).attr('data-value') ).detach().appendTo( '#ContentForTabs' );
+			grid.makeWidget($( '#ContentFor' + $(e).attr('data-value') )[0]);
+		}
+	});
+	updateWidgetWidth();
+});
+
+$( '.dropdown-menu a' ).on( 'click', function( event ) {
+	updateGridContent();
+	updateWidgetWidth();
 	return false;
 });
 </script>
