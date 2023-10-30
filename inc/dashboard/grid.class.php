@@ -55,7 +55,7 @@ if (!defined('GLPI_ROOT')) {
 
 class Grid extends CommonGLPI {
    protected $cell_margin     = 6;
-   protected $grid_cols       = 26;
+   protected $grid_cols       = 12;
    protected $grid_rows       = 24;
    protected $current         = "";
    protected $dashboard       = null;
@@ -67,7 +67,7 @@ class Grid extends CommonGLPI {
 
    public function __construct(
       string $dashboard_key = "central",
-      int $grid_cols = 26,
+      int $grid_cols = 12,
       int $grid_rows = 24,
       string $context = "core"
    ) {
@@ -381,8 +381,9 @@ HTML;
          $grid_guide
          <div class="grid-stack grid-stack-{$this->grid_cols}"
             id="grid-stack-$rand"
-            style="width: 100%">
-            $gridstack_items
+            gs-no-move='true'
+            gs-no-resize='true'>
+            EN COURS DE REFONTE
          </div>
       </div>
 HTML;
@@ -523,18 +524,6 @@ JAVASCRIPT;
       }
 
       $this->getCards();
-
-      if ($with_lock) {
-         $this->items[] = <<<HTML
-         <div class="grid-stack-item lock-bottom"
-            gs-no-resize="true"
-            gs-no-move="true"
-            gs-h="1"
-            gs-w="{$this->grid_cols}"
-            gs-x="0"
-            gs-y="{$this->grid_rows}"></div>
-HTML;
-      }
 
       // append all elements to insert them in html
       return implode("", $this->items);
