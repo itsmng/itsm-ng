@@ -97,7 +97,7 @@ function getHiddenInputsForItemForm($item, $options)
         ],
         [
             'type' => 'hidden',
-            'name' => isset($options['id']) ? 'update' : 'add',
+            'name' => isset($options['id']) && $options['id'] != '' ? 'update' : 'add',
             'value' => '',
         ],
         [
