@@ -6,27 +6,29 @@
 {% for key, bloc in form.content  %}
 <div class="container mb-3">
     {% if bloc.visible %}
-        <h2 class='header'>{{key}}</h2>
+        <h2 class="text-start">{{key}}</h2>
     {% endif %}
-    {% for row in bloc.inputs|batch(col) %}
-    <div class="row">
-        {% for title, input in row %}
-        <div class="col col-lg-5 col-md-6 d-flex align-items-center left">
-            {% if input.type != 'hidden' %}<label class="form-label col-4" for="{{input.name}}">{{title}}</label>{% endif %}
-            <div class="d-flex align-items-center left">
+    <div class="row row-cols-{{col}}">
+    {% for title, input in bloc.inputs %}
+        {% if input.type != 'hidden' %}
+        <div class="col col-lg-4 col-md-6 col-12 text-start">
+            <label for="{{input.name}}">{{title}}</label>
+            <div class="d-flex justify-content-between align-items-center btn-group my-1">
+        {% endif %}
                 {% set attributes = input | filter((v, k) => k not in options) %}
                 {{input(attributes)}}
                 {% if input.after %}
                 <div class="form-text mx-2">{{input.after}}</div>
                 {% endif %}
                 {% for action in input.actions %}
-                <button type="button" class="btn btn-link ps-1 pe-0" onClick="{{action.onClick}}"><a class="{{action.icon}}"></a></button>
+                    <button type="button" class="btn border" onClick="{{action.onClick}}"><a class="{{action.icon}}"></a></button>
                 {% endfor %}
+        {% if input.type != 'hidden' %}
             </div>
         </div>
-        {% endfor %}
-    </div>
+        {% endif %}
     {% endfor %}
+    </div>
 </div>
 {% endfor %}
 <div>

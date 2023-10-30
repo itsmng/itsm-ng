@@ -302,11 +302,10 @@ class Computer extends CommonDBTM {
    {
       include_once GLPI_ROOT . "/ng/form.utils.php";
 
-      $title = __('New item').' - '.self::getTypeName(1);
       $form = [
          'action' => $this->getFormURL(),
          'content' => [
-            $title => [
+            'General' => [
                'visible' => true,
                'inputs' => [
                   __('Name') => [
@@ -426,7 +425,7 @@ class Computer extends CommonDBTM {
          ]
       ];
 
-      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $options)];
+      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $this->fields)];
       
       ob_start();
       Plugin::doHook("post_item_form", ['item' => $this, 'options' => [

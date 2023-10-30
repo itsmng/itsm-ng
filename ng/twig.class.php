@@ -13,6 +13,7 @@ class Twig{
         ]);
         self::load_filters($twig);
         $twig->addExtension(new \Twig\Extension\DebugExtension());
+        $twig->addExtension(new \Twig\Extra\String\StringExtension());
         return $twig;
     }
 

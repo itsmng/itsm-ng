@@ -1,0 +1,120 @@
+<div class="dropdown-center text-center">
+	{% if tabs|length > 1 %}
+	<button type="button" class="btn btn-primary dropdown-toggle mb-3" data-bs-toggle="dropdown">
+		Tab Selection
+	</button>
+	{% endif %}
+	<ul class="dropdown-menu">
+	{% for tab in tabs %}
+		<li>
+			<a href="#" class="dropdown-item" class="small" data-value="{{tab['title']|slug}}" style="user-select: none; --webkit-user-select: none;">
+				<input type="checkbox" {{loop.first ? 'checked' : ''}}/>&nbsp;{{tab['title']|raw}}
+			</a>
+		</li>
+	{% endfor %}
+	<li>
+			<a href="#" class="dropdown-item" class="small" data-value="all" style="user-select: none; --webkit-user-select: none;">
+				<input type="checkbox" {{loop.first ? 'checked' : ''}}/>&nbsp;{{'Select all'|trans}}
+			</a>
+		</li>
+	</ul>
+</div>
+
+<div class="grid-stack w-100" id="ContentForTabs">
+
+</div>
+<div class='d-none' id="hidden_gridStack_items">
+{% for tab in tabs %}
+<div 
+	class="grid-stack-item"
+	id="ContentFor{{tab['title']|slug}}"
+	gs-h='6' gs-min-w='6'
+	>
+		<div class="card grid-stack-item-content">
+			<div>
+				<div class="card-header position-sticky">{{tab['title']|raw}}</div>
+				<div class="card-body">{{tab['content']|raw}}</div>
+			</div>
+		</div>
+	</div>
+{% endfor %}
+</div>
+
+<link href="../node_modules/gridstack/dist/gridstack.min.css" rel="stylesheet"/>
+<script src="../node_modules/gridstack/dist/gridstack-all.js"></script>
+
+<script> // dropdown display
+
+function updateWidgetWidth() {
+	var columnWidgets = grid.getGridItems();
+	if (columnWidgets.length === 1) {
+		// If it's the only widget in the column, set it to full width
+		grid.batchUpdate();
+		grid.update(columnWidgets[0], {w: 12}); // Assuming 12 columns in your grid
+		grid.commit();
+	} else {
+		// If there are other widgets in the column, set it to the desired width
+		grid.batchUpdate();
+		grid.update(columnWidgets[0], {w: 6}); // Assuming 12 columns in your grid
+		grid.compact();
+		grid.commit();
+	}
+}
+
+function updateGridContent() {
+	var $target = $( event.currentTarget ),
+		val = $target.attr( 'data-value' ),
+		$inp = $target.find( 'input' ),
+		idx;
+	
+	if ( ( idx = options.indexOf( val ) ) > -1 ) {
+		options.splice( idx, 1 );
+		setTimeout( function() { $inp.prop( 'checked', false ) }, 0);
+	} else {
+		options.push( val );
+		setTimeout( function() { $inp.prop( 'checked', true ) }, 0);
+	}
+
+	for (option of $('#ContentForTabs > div')) {
+		grid.removeWidget(option, false);
+		$(option).attr('gs-x', 'false')
+		$(option).attr('gs-y', 'false')
+		$(option).detach().appendTo('#hidden_gridStack_items');
+	}
+
+	for (option of options) {
+		$( '#ContentFor' + option ).detach().appendTo( '#ContentForTabs' );
+		grid.makeWidget($( '#ContentFor' + option )[0]);
+	}
+}
+
+var options = [];
+// add every checked values to the options array
+$(document).ready((e) => {
+	$('.dropdown-menu a').each((i, e) => {
+		if ($(e).find('input').prop('checked')) {
+			options.push($(e).attr('data-value'));
+			$( '#ContentFor' + $(e).attr('data-value') ).detach().appendTo( '#ContentForTabs' );
+			grid.makeWidget($( '#ContentFor' + $(e).attr('data-value') )[0]);
+		}
+	});
+	updateWidgetWidth();
+});
+
+$( '.dropdown-menu a' ).on( 'click', function( event ) {
+	updateGridContent();
+	updateWidgetWidth();
+	return false;
+});
+</script>
+
+
+<script> // gridstack
+var grid = GridStack.init({
+	cellHeight: 'auto',
+	cellWidth: '1rem',
+	handle: '.card-header',
+	sizeToContent: true,
+});
+grid.load();
+</script>

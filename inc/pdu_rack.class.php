@@ -554,8 +554,8 @@ JAVASCRIPT;
          if ($float) {
             echo "<div class='side_pdus_graph grid-stack grid-stack-1'
                        id='side_pdus_$rand'
-                       data-gs-column='1'
-                       data-gs-max-row='".($rack->fields['number_units'] + 1)."'>";
+                       gs-column='1'
+                       gs-max-row='".($rack->fields['number_units'] + 1)."'>";
          }
 
          foreach ($found_pdus_side as $current) {
@@ -623,9 +623,9 @@ JAVASCRIPT;
 
                echo "<div class='grid-stack-item $picture_c'
                        id='item_$item_rand'
-                       data-gs-id='{$current['id']}'
-                       data-gs-height='$height' data-gs-width='1'
-                       data-gs-x='0' data-gs-y='$y'
+                       gs-id='{$current['id']}'
+                       gs-h='$height' gs-width='1'
+                       gs-x='0' gs-y='$y'
                        style='background-color: $bg_color; color: $fg_color;'>
                   <div class='grid-stack-item-content' style='$fg_color_s'>
                      <i class='item_rack_icon fa fa-plug fa-rotate-270'></i>
@@ -649,9 +649,9 @@ JAVASCRIPT;
 
          if ($float) {
             echo "<div class='grid-stack-item lock-bottom'
-                    data-gs-no-resize='true' data-gs-no-move='true'
-                    data-gs-height='1'       data-gs-width='1'
-                    data-gs-x='0'            data-gs-y='$num_u'>
+                    gs-no-resize='true' gs-no-move='true'
+                    gs-h='1'       gs-w='1'
+                    gs-x='0'            gs-y='$num_u'>
                </div>";
 
             echo "</div>"; // .side_pdus_graph

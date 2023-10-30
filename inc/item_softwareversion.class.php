@@ -1083,7 +1083,6 @@ class Item_SoftwareVersion extends CommonDBRelation {
       } else {
          echo "<p class='center b'>".__('No item found')."</p>";
       }
-      echo "</div>\n";
       if ((empty($withtemplate) || ($withtemplate != 2))
           && $canedit) {
          echo "<form method='post' action='".Item_SoftwareLicense::getFormURL()."'>";

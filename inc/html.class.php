@@ -1377,11 +1377,6 @@ class Html
             Html::requireJs('rack');
          }
 
-         if (in_array('gridstack', $jslibs)) {
-            echo Html::css('public/lib/gridstack.css');
-            Html::requireJs('gridstack');
-         }
-
          if (in_array('sortable', $jslibs)) {
             Html::requireJs('sortable');
          }
@@ -1918,7 +1913,7 @@ JAVASCRIPT
       };
 
       ob_start();
-         Html::showProfileSelecter('test');
+         Html::showProfileSelecter($_SERVER['REQUEST_URI']);
       $twig_vars['profileSelect'] = ob_get_clean();
 
       require_once GLPI_ROOT . "/ng/twig.class.php";
@@ -1995,6 +1990,8 @@ JAVASCRIPT
       echo Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js");
       echo Html::script("js/bootstrap-table-export.min.js");
       echo Html::script("ng/ngFunctions.js");
+      echo Html::script("node_modules/gridstack/dist/gridstack-all.js");
+      echo Html::css("node_modules/gridstack/dist/gridstack-extra.css");
 
       echo "</body></html>";
 
@@ -3995,23 +3992,7 @@ JS;
             ]
          );
       }
-      $js = "$(function(){";
-      $js .= Html::jsGetElementbyID($param['applyto']) . ".qtip({
-         position: { viewport: $(window) },
-         content: {text: " . Html::jsGetElementbyID($param['contentid']);
-      if (!$param['autoclose']) {
-         $js .= ", title: {text: ' ',button: true}";
-      }
-      $js .= "}, style: { classes: 'qtip-shadow qtip-bootstrap'}";
-      if ($param['onclick']) {
-         $js .= ",show: 'click', hide: false,";
-      } else if (!$param['autoclose']) {
-         $js .= ",show: {
-                        solo: true, // ...and hide all other tooltips...
-                }, hide: false,";
-      }
-      $js .= "});";
-      $js .= "});";
+      $js = "";
       $out .= Html::scriptBlock($js);
 
       if ($param['display']) {
@@ -4989,99 +4970,7 @@ JAVASCRIPT
          $placeholder = "placeholder: " . json_encode($params["placeholder"]) . ",";
       }
 
-      $js = "$(function() {
-         $('#$id').select2({
-            $placeholder
-            width: '$width',
-            dropdownAutoWidth: true,
-            quietMillis: 100,
-            minimumResultsForSearch: " . $CFG_GLPI['ajax_limit_count'] . ",
-            matcher: function(params, data) {
-               // store last search in the global var
-               query = params;
-
-               // If there are no search terms, return all of the data
-               if ($.trim(params.term) === '') {
-                  return data;
-               }
-
-               var searched_term = getTextWithoutDiacriticalMarks(params.term);
-               var data_text = typeof(data.text) === 'string'
-                  ? getTextWithoutDiacriticalMarks(data.text)
-                  : '';
-               var select2_fuzzy_opts = {
-                  pre: '<span class=\"select2-rendered__match\">',
-                  post: '</span>',
-               };
-
-               if (data_text.indexOf('>') !== -1 || data_text.indexOf('<') !== -1) {
-                  // escape text, if it contains chevrons (can already be escaped prior to this point :/)
-                  data_text = jQuery.fn.select2.defaults.defaults.escapeMarkup(data_text);
-               }
-
-               // Skip if there is no 'children' property
-               if (typeof data.children === 'undefined') {
-                  var match  = fuzzy.match(searched_term, data_text, select2_fuzzy_opts);
-                  if (match == null) {
-                     return false;
-                  }
-                  data.rendered_text = match.rendered_text;
-                  data.score = match.score;
-                  return data;
-               }
-
-               // `data.children` contains the actual options that we are matching against
-               // also check in `data.text` (optgroup title)
-               var filteredChildren = [];
-
-               $.each(data.children, function (idx, child) {
-                  var child_text = typeof(child.text) === 'string'
-                     ? getTextWithoutDiacriticalMarks(child.text)
-                     : '';
-
-                  if (child_text.indexOf('>') !== -1 || child_text.indexOf('<') !== -1) {
-                     // escape text, if it contains chevrons (can already be escaped prior to this point :/)
-                     child_text = jQuery.fn.select2.defaults.defaults.escapeMarkup(child_text);
-                  }
-
-                  var match_child = fuzzy.match(searched_term, child_text, select2_fuzzy_opts);
-                  var match_text  = fuzzy.match(searched_term, data_text, select2_fuzzy_opts);
-                  if (match_child !== null || match_text !== null) {
-                     if (match_text !== null) {
-                        data.score         = match_text.score;
-                        data.rendered_text = match_text.rendered;
-                     }
-
-                     if (match_child !== null) {
-                        child.score         = match_child.score;
-                        child.rendered_text = match_child.rendered;
-                     }
-                     filteredChildren.push(child);
-                  }
-               });
-
-               // If we matched any of the group's children, then set the matched children on the group
-               // and return the group object
-               if (filteredChildren.length) {
-                  var modifiedData = $.extend({}, data, true);
-                  modifiedData.children = filteredChildren;
-
-                  // You can return modified objects from here
-                  // This includes matching the `children` how you want in nested data sets
-                  return modifiedData;
-               }
-
-               // Return `null` if the term should not be displayed
-               return null;
-            },
-            templateResult: templateResult,
-            templateSelection: templateSelection,
-         })
-         .bind('setValue', function(e, value) {
-            $('#$id').val(value).trigger('change');
-         })
-         $('label[for=$id]').on('click', function(){ $('#$id').select2('open'); });
-      });";
+      $js = "";
       return Html::scriptBlock($js);
    }
 
@@ -5183,77 +5072,7 @@ JAVASCRIPT
             $js .= "$key: " . json_encode($val) . ",\n";
          }
       }
-      $js .= "};
-
-         $('#$field_id').select2({
-            width: '$width',
-            placeholder: '$placeholder',
-            allowClear: $allowclear,
-            minimumInputLength: 0,
-            quietMillis: 100,
-            dropdownAutoWidth: true,
-            minimumResultsForSearch: " . $CFG_GLPI['ajax_limit_count'] . ",
-            ajax: {
-               url: '$url',
-               dataType: 'json',
-               type: 'POST',
-               data: function (params) {
-                  query = params;
-                  return $.extend({}, params_$field_id, {
-                     searchText: params.term,
-                     page_limit: " . $CFG_GLPI['dropdown_max'] . ", // page size
-                     page: params.page || 1, // page number
-                  });
-               },
-               processResults: function (data, params) {
-                  params.page = params.page || 1;
-                  var more = (data.count >= " . $CFG_GLPI['dropdown_max'] . ");
-
-                  return {
-                     results: data.results,
-                     pagination: {
-                           more: more
-                     }
-                  };
-               }
-            },
-            templateResult: templateResult,
-            templateSelection: templateSelection
-         })
-         .bind('setValue', function(e, value) {
-            $.ajax('$url', {
-               data: $.extend({}, params_$field_id, {
-                  _one_id: value,
-               }),
-               dataType: 'json',
-               type: 'POST',
-            }).done(function(data) {
-
-               var iterate_options = function(options, value) {
-                  var to_return = false;
-                  $.each(options, function(index, option) {
-                     if (option.hasOwnProperty('id')
-                         && option.id == value) {
-                        to_return = option;
-                        return false; // act as break;
-                     }
-
-                     if (option.hasOwnProperty('children')) {
-                        to_return = iterate_options(option.children, value);
-                     }
-                  });
-
-                  return to_return;
-               };
-
-               var option = iterate_options(data.results, value);
-               if (option !== false) {
-                  var newOption = new Option(option.text, option.id, true, true);
-                   $('#$field_id').append(newOption).trigger('change');
-               }
-            });
-         });
-         ";
+      $js .= "";
       if (!empty($on_change)) {
          $js .= " $('#$field_id').on('change', function(e) {" .
             stripslashes($on_change) . "});";
@@ -6949,9 +6768,6 @@ JAVASCRIPT;
             break;
          case 'dashboard':
             $_SESSION['glpi_js_toload'][$name][] = 'js/dashboard.js';
-            break;
-         case 'gridstack':
-            $_SESSION['glpi_js_toload'][$name][] = 'public/lib/gridstack.js';
             break;
          case 'sortable':
             $_SESSION['glpi_js_toload'][$name][] = 'public/lib/sortable.js';

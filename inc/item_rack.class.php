@@ -314,8 +314,8 @@ class Item_Rack extends CommonDBRelation {
       echo '<ul class="indexes"></ul>
             <div class="grid-stack grid-stack-2 grid-rack"
                  id="grid-front"
-                 data-gs-column="2"
-                 data-gs-max-row="'.($rack->fields['number_units'] + 1).'">';
+                 gs-column="2"
+                 gs-max-row="'.($rack->fields['number_units'] + 1).'">';
 
       if ($link->canCreate()) {
          echo '<div class="racks_add"></div>';
@@ -325,8 +325,8 @@ class Item_Rack extends CommonDBRelation {
          echo self::getCell($current_item, !$canedit);
       }
       echo '   <div class="grid-stack-item lock-bottom"
-                    data-gs-no-resize="true" data-gs-no-move="true"
-                    data-gs-height="1" data-gs-width="2" data-gs-x="0" data-gs-y="'.$rack->fields['number_units'].'"></div>
+                    gs-no-resize="true" gs-no-move="true"
+                    gs-h="1" gs-w="2" gs-x="0" gs-y="'.$rack->fields['number_units'].'"></div>
             </div>
             <ul class="indexes"></ul>';
       // append some spaces on bottom for having symetrical view between front and rear
@@ -343,8 +343,8 @@ class Item_Rack extends CommonDBRelation {
       echo '<ul class="indexes"></ul>
             <div class="grid-stack grid-stack-2 grid-rack"
                  id="grid2-rear"
-                 data-gs-column="2"
-                 data-gs-max-row="'.($rack->fields['number_units'] + 1).'">';
+                 gs-column="2"
+                 gs-max-row="'.($rack->fields['number_units'] + 1).'">';
 
       if ($link->canCreate()) {
          echo '<div class="racks_add"></div>';
@@ -354,8 +354,8 @@ class Item_Rack extends CommonDBRelation {
          echo self::getCell($current_item, !$canedit);
       }
       echo '   <div class="grid-stack-item lock-bottom"
-                    data-gs-no-resize="true" data-gs-no-move="true"
-                    data-gs-height="1" data-gs-width="2" data-gs-x="0" data-gs-y="'.$rack->fields['number_units'].'">
+                    gs-no-resize="true" gs-no-move="true"
+                    gs-h="1" gs-w="2" gs-x="0" gs-y="'.$rack->fields['number_units'].'">
                </div>
             </div>
             <ul class="indexes"></ul>';
@@ -424,7 +424,7 @@ class Item_Rack extends CommonDBRelation {
                         var other_side_cls = $(item.el).hasClass('item_rear')
                            ? "item_front"
                            : "item_rear";
-                        var other_side_el = $('.grid-stack-item.'+other_side_cls+'[data-gs-id='+item.id+']');
+                        var other_side_el = $('.grid-stack-item.'+other_side_cls+'[gs-id='+item.id+']');
 
                         if (other_side_el.length) {
                            var other_side_grid = $(other_side_el).parent().data('gridstack');
@@ -866,12 +866,12 @@ JAVASCRIPT;
 
          $tip.= "</span>";
 
-         $readonly_attr = $readonly ? 'data-gs-no-move="true"' : '';
+         $readonly_attr = $readonly ? 'gs-no-move="true"' : '';
          return "
          <div class='grid-stack-item $back_class $half_class $reserved_cl $img_class'
-               data-gs-width='{$gs_item['width']}' data-gs-height='{$gs_item['height']}'
-               data-gs-x='{$gs_item['x']}' data-gs-y='{$gs_item['y']}'
-               data-gs-id='{$gs_item['id']}' {$readonly_attr}
+               gs-width='{$gs_item['width']}' gs-h='{$gs_item['height']}'
+               gs-x='{$gs_item['x']}' gs-y='{$gs_item['y']}'
+               gs-id='{$gs_item['id']}' {$readonly_attr}
                style='background-color: $bg_color; color: $fg_color;'>
             <div class='grid-stack-item-content' style='$fg_color_s $img_s'>
                $icon".

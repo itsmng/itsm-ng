@@ -239,12 +239,6 @@ textarea {
    border: 1px solid #5D5D5D;
 }
 
-input {
-   &[type=text], &[type=password], &[type=number] {
-      border: 1px solid #5D5D5D;
-   }
-}
-
 .select2-choice, .select2-container--default .select2-selection--single {
    border: 1px solid #5D5D5D !important;
 }

@@ -591,8 +591,6 @@ HTML;
             labels: {$labels},
             series: {$series},
          }, {
-            width: 'calc(100% - 5px)',
-            height: 'calc({$height} - 5px)',
             chartPadding: {$chartPadding},
             donut: {$donut},
             $donut_opts
@@ -946,10 +944,10 @@ JAVASCRIPT;
             <span>";
       }
 
-      $height = "calc(100% - 5px)";
+      $height = "100";
       $legend_options = "";
       if ($p['legend']) {
-         $height = "calc(100% - 40px)";
+         $height = "100";
          $legend_options = "
             Chartist.plugins.legend(),";
       }

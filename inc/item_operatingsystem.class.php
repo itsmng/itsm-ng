@@ -296,72 +296,78 @@ class Item_OperatingSystem extends CommonDBRelation {
    function showForm($ID, $options = []) {
       $colspan = 4;
 
-      echo "<div class='center'>";
+      $form = [
+         'action' => $this->getFormURL(),
+         'content' => [
+            '' => [
+               'visible' => true,
+               'inputs' => [
+                  __("itemtype") => [
+                     'type' => 'hidden',
+                     'name' => 'itemtype',
+                     'value' => $this->fields['itemtype'],
+                  ],
+                  __("items_id") => [
+                     'type' => 'hidden',
+                     'name' => 'items_id',
+                     'value' => $this->fields['items_id'],
+                  ],
+                  __("Name") => [
+                     'type' => 'select',
+                     'name' => 'operatingsystems_id',
+                     'values' => getOptionForItems('OperatingSystem'),
+                  ],
+                  _n('Version', 'Versions', 1) => [
+                     'type' => 'select',
+                     'name' => 'operatingsystemversions_id',
+                     'values' => getOptionForItems('OperatingSystemVersion'),
+                  ],
+                  _n('Architecture', 'Architectures', 1) => [
+                     'type' => 'select',
+                     'name' => 'operatingsystemarchitectures_id',
+                     'values' => getOptionForItems('OperatingSystemArchitecture'),
+                  ],
+                  OperatingSystemServicePack::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'operatingsystemservicepacks_id',
+                     'values' => getOptionForItems('OperatingSystemServicePack'),
+                  ],
+                  _n('Kernel', 'Kernels', 1) => [
+                     'type' => 'select',
+                     'name' => 'operatingsystemkernels_id',
+                     'values' => getOptionForItems('OperatingSystemKernel'),
+                  ],
+                  _n('Edition', 'Editions', 1) => [
+                     'type' => 'select',
+                     'name' => 'operatingsystemeditions_id',
+                     'values' => getOptionForItems('OperatingSystemEdition'),
+                  ],
+                  __('Product ID') => [
+                     'type' => 'text',
+                     'name' => 'licenseid',
+                  ],
+                  __('Serial number') => [
+                     'type' => 'text',
+                     'name' => 'license_number',
+                  ],
+               ] 
+            ]
+         ]
+      ];
 
-      $this->initForm($ID, $this->fields);
-      $this->showFormHeader(['formtitle' => false]);
-
-      $rand = mt_rand();
-
-      echo "<tr class='headerRow'><th colspan='".$colspan."'>";
-      echo OperatingSystem::getTypeName(1);
-      echo Html::hidden('itemtype', ['value' => $this->fields['itemtype']]);
-      echo Html::hidden('items_id', ['value' => $this->fields['items_id']]);
-      echo "</th></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_operatingsystems_id$rand'>".__('Name')."</label></td>";
-      echo "<td>";
-      OperatingSystem::dropdown(['value' => $this->fields["operatingsystems_id"], 'rand' => $rand]);
-      echo "</td>";
-      echo "<td><label for='dropdown_operatingsystemversions_id$rand'>"._n('Version', 'Versions', 1)."</label></td>";
-      echo "<td >";
-      OperatingSystemVersion::dropdown(['value' => $this->fields["operatingsystemversions_id"], 'rand' => $rand]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_operatingsystemarchitectures_id$rand'>"._n('Architecture', 'Architectures', 1)."</label></td>";
-      echo "<td >";
-      OperatingSystemArchitecture::dropdown(['value'
-                                                 => $this->fields["operatingsystemarchitectures_id"], 'rand' => $rand]);
-      echo "</td>";
-      echo "<td><label for='dropdown_operatingsystemservicepacks_id$rand'>".OperatingSystemServicePack::getTypeName(1)."</label></td>";
-      echo "<td >";
-      OperatingSystemServicePack::dropdown(['value'
-                                                 => $this->fields["operatingsystemservicepacks_id"], 'rand' => $rand]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_operatingsystemkernelversions_id$rand'>"._n('Kernel', 'Kernels', 1)."</label></td>";
-      echo "<td >";
-      OperatingSystemKernelVersion::dropdown([
-         'value'  => $this->fields['operatingsystemkernelversions_id'],
-         'rand'   => $rand,
-         'displaywith'  => ['operatingsystemkernels_id']
-      ]);
-      echo "</td>";
-
-      echo "<td><label for='dropdown_operatingsystemeditions_id$rand'>" . _n('Edition', 'Editions', 1) . "</label></td>";
-      echo "<td >";
-      OperatingSystemEdition::dropdown([
-         'value'  => $this->fields['operatingsystemeditions_id'],
-         'rand'   => $rand
-      ]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='textfield_licenseid$rand'>".__('Product ID')."</label></td>";
-      echo "<td >";
-      Html::autocompletionTextField($this, 'licenseid', ['rand' => $rand]);
-      echo "</td>";
-
-      echo "<td><label for='textfield_license_number$rand'>".__('Serial number')."</label></td>";
-      echo "<td >";
-      Html::autocompletionTextField($this, 'license_number', ['rand' => $rand]);
-      echo "</td></tr>";
-      $options['formfooter'] = false;
-      $this->showFormButtons($options);
+      ob_start();
+      Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
+         'colspan'      => 2,
+         'withtemplate' => '',
+         'candel'       => true,
+         'canedit'      => true,
+         'addbuttons'   => [],
+         'formfooter'   => null,
+         ]]);
+      $additionnalHtml = ob_get_clean();
+         
+      renderTwigForm($form, $additionnalHtml);
+      return true;
    }
 
    protected function computeFriendlyName() {

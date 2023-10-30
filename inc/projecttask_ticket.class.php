@@ -369,6 +369,7 @@ class ProjectTask_Ticket extends CommonDBRelation{
          echo "</table>";
          Html::closeForm();
          echo "</div>";
+         echo "</div>";
       }
 
       echo "<div class='spaced'>";
