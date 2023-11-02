@@ -5,6 +5,12 @@
 	</button>
 	{% endif %}
 	<ul class="dropdown-menu">
+		<li>
+			<a href="#" class="dropdown-item" class="small" data-value="all" style="user-select: none; --webkit-user-select: none;">
+				<input type="checkbox" {{loop.first ? 'checked' : ''}}/>&nbsp;{{'Select all'|trans}}
+			</a>
+		</li>
+		<li><hr class="dropdown-divider"></li>
 	{% for tab in tabs %}
 		<li>
 			<a href="#" class="dropdown-item" class="small" data-value="{{tab['title']|slug}}" style="user-select: none; --webkit-user-select: none;">
@@ -12,15 +18,10 @@
 			</a>
 		</li>
 	{% endfor %}
-	<li>
-			<a href="#" class="dropdown-item" class="small" data-value="all" style="user-select: none; --webkit-user-select: none;">
-				<input type="checkbox" {{loop.first ? 'checked' : ''}}/>&nbsp;{{'Select all'|trans}}
-			</a>
-		</li>
 	</ul>
 </div>
 
-<div class="grid-stack w-100" id="ContentForTabs">
+<div class="grid-stack" id="ContentForTabs">
 
 </div>
 <div class='d-none' id="hidden_gridStack_items">
@@ -46,6 +47,7 @@
 <script> // dropdown display
 
 function updateWidgetWidth() {
+	
 	var columnWidgets = grid.getGridItems();
 	if (columnWidgets.length === 1) {
 		// If it's the only widget in the column, set it to full width
@@ -79,12 +81,19 @@ function updateGridContent() {
 		grid.removeWidget(option, false);
 		$(option).attr('gs-x', 'false')
 		$(option).attr('gs-y', 'false')
-		$(option).detach().appendTo('#hidden_gridStack_items');
+		$(option).detach().prependTo('#hidden_gridStack_items');
 	}
 
-	for (option of options) {
-		$( '#ContentFor' + option ).detach().appendTo( '#ContentForTabs' );
-		grid.makeWidget($( '#ContentFor' + option )[0]);
+	if (options.includes('all')) {
+		for (option of $('#hidden_gridStack_items > div')) {
+			$(option).detach().prependTo( '#ContentForTabs' );
+			grid.makeWidget($($(option))[0]);
+		}
+	} else {
+		for (option of options) {
+			$( '#ContentFor' + option ).detach().appendTo( '#ContentForTabs' );
+			grid.makeWidget($( '#ContentFor' + option )[0]);
+		}
 	}
 }
 
@@ -99,6 +108,9 @@ $(document).ready((e) => {
 		}
 	});
 	updateWidgetWidth();
+	if ({{tabs|length == 1 ? 1 : 0}}) {
+		grid.setStatic(true)
+	}
 });
 
 $( '.dropdown-menu a' ).on( 'click', function( event ) {
