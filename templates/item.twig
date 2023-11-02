@@ -7,14 +7,14 @@
 	<ul class="dropdown-menu">
 		<li>
 			<a href="#" class="dropdown-item" class="small" data-value="all" style="user-select: none; --webkit-user-select: none;">
-				<input type="checkbox" {{loop.first ? 'checked' : ''}}/>&nbsp;{{'Select all'|trans}}
+				<input type="checkbox"/>&nbsp;{{'Select all'|trans}}
 			</a>
 		</li>
 		<li><hr class="dropdown-divider"></li>
 	{% for tab in tabs %}
 		<li>
-			<a href="#" class="dropdown-item" class="small" data-value="{{tab['title']|slug}}" style="user-select: none; --webkit-user-select: none;">
-				<input type="checkbox" {{loop.first ? 'checked' : ''}}/>&nbsp;{{tab['title']|raw}}
+			<a href="#" class="dropdown-item isTabButton" class="small" data-value="{{tab['title']|slug}}" style="user-select: none; --webkit-user-select: none;">
+				<input type="checkbox"/>&nbsp;{{tab['title']|raw}}
 			</a>
 		</li>
 	{% endfor %}
@@ -76,6 +76,7 @@ function updateGridContent() {
 		options.push( val );
 		setTimeout( function() { $inp.prop( 'checked', true ) }, 0);
 	}
+	sessionStorage.setItem('grid-layout-{{layoutFor|slug}}', options);
 
 	for (option of $('#ContentForTabs > div')) {
 		grid.removeWidget(option, false);
@@ -96,14 +97,31 @@ function updateGridContent() {
 		}
 	}
 }
-
 var options = [];
+
+function initCheckboxFromSession() {
+	checkedValues = sessionStorage.getItem('grid-layout-{{layoutFor|slug}}');
+	if (!checkedValues) {
+			console.log($('.isTabButton').first());
+			$('.isTabButton').first().find('input').prop('checked', true)
+	} else {
+		checkedValues = checkedValues.split(',')
+		$('.dropdown-menu a').each((i, e) => {
+			if (checkedValues.includes($(e).data('value'))) {
+				$(e).find('input').prop('checked', true);
+			}
+		});
+	}
+}
+
 // add every checked values to the options array
 $(document).ready((e) => {
+	initCheckboxFromSession();
 	$('.dropdown-menu a').each((i, e) => {
 		if ($(e).find('input').prop('checked')) {
 			options.push($(e).attr('data-value'));
 			$( '#ContentFor' + $(e).attr('data-value') ).detach().appendTo( '#ContentForTabs' );
+
 			grid.makeWidget($( '#ContentFor' + $(e).attr('data-value') )[0]);
 		}
 	});
