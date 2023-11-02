@@ -1474,10 +1474,18 @@ class Search {
       require_once GLPI_ROOT . "/ng/twig.class.php";
       global $CFG_GLPI;
 
+
+      // Init list of items displayed
+      if ($data['display_type'] == self::HTML_OUTPUT) {
+         Session::initNavigateListItems($data['itemtype']);
+      }
+
       $fields = $data['data']['cols'];
       $values = [];
       $row_num = 0;
       foreach ($data['data']['rows'] as $row) {
+         Session::addToNavigateListItems($data['itemtype'], $row["id"]);
+
          $row_num++;
          $col_num = 0;
          $value[$row_num] = [];

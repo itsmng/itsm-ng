@@ -908,6 +908,7 @@ class CommonGLPI {
       try {
          echo $twig->render('item.twig', [
             'tabs' => $tabs,
+            'layoutFor' => $target,
          ]);
       } catch (Exception $e) {
          echo $e->getMessage();
