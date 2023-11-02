@@ -1720,7 +1720,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
          Html::closeForm();
       }
 
-      echo "</div>";
+      echo "</div></div>";
       // Add items
 
       return true;
