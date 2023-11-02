@@ -86,7 +86,7 @@ class Item_Devices extends CommonDBRelation {
 
    static function getTypeName($nb = 0) {
       $device_type = static::getDeviceType();
-      return $device_type::getTypeName($nb);
+      return class_exists($device_type) ? $device_type::getTypeName($nb) : $device_type;
    }
 
 

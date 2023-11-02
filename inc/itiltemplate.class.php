@@ -139,7 +139,7 @@ abstract class ITILTemplate extends CommonDropdown {
       //TRANS %1$S is the ITIL type
       return sprintf(
          _n('%1$s template', '%1$s templates', $nb),
-         $itiltype::getTypeName()
+         class_exists($itiltype) ? $itiltype::getTypeName() : $itiltype
       );
    }
 

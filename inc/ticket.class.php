@@ -4979,7 +4979,7 @@ class Ticket extends CommonITILObject {
 
       if ($display_save_btn
           && !$options['template_preview']) {
-         if ($ID) {
+         if ($ID && $ID >= 0) {
             echo "<div class='center'>";
             if ($this->fields["is_deleted"] == 1) {
                if (self::canDelete()) {
@@ -5007,6 +5007,7 @@ class Ticket extends CommonITILObject {
             echo "<input type='hidden' name='_read_date_mod' value='".$this->getField('date_mod')."'>";
             echo "</div>";
          } else {
+            $ID = 0;
             echo "<div class='tab_bg_2 center'>";
             $add_params = ['name' => 'add'];
             if ($options['_promoted_fup_id']) {
