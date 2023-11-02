@@ -890,7 +890,7 @@ class CommonGLPI {
                }
             }
             ob_start();
-            CommonGLPI::displayStandardTab($this, $key, $options);
+            CommonGLPI::displayStandardTab($this, $key, $withtemplate, $options);
             $content = ob_get_clean();
             $tabs[$key] = [
                   'title'    => $val,
