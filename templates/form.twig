@@ -40,7 +40,7 @@
 </div>
 <div class="d-flex justify-content-around">
 {% if not form.buttons %}
-<button type="submit" class='btn btn-primary'>{{"Sumbit"|trans}}</button>
+<button type="submit" class='btn btn-primary'>{{"Submit"|trans}}</button>
 {% endif %}
 {% for button in form.buttons %}
 <button {% for attr, val in button %} {{attr}}='{{val}}' {% endfor %}>
