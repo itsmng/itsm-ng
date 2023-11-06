@@ -2,7 +2,7 @@
 
 {% set options = ['actions', 'after', 'before', 'hooks'] %}
 
-<form name="form" action="{{form.action}}" enctype="multipart/form-data" method='post' class="container">
+<form name="form" action="{{form.action}}" enctype="multipart/form-data" method={{form.method|default('post')}} class="container">
 {% for key, bloc in form.content  %}
 <div class="container mb-3">
     {% if bloc.visible %}
@@ -34,7 +34,7 @@
 <div>
 {{additionnalHtml|raw}}
 </div>
-<button type="submit" class="btn btn-warning mt-3">{{"Submit"|trans}}</button>
+<button type="submit" class="btn btn-warning mt-3">{{form.submit|default("Submit"|trans)}}</button>
 </form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>

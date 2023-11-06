@@ -67,7 +67,7 @@ function getOptionsForUsers($right, $conditions = [], $display_emptychoice = tru
  * 
  * @return string
  */
-function renderTwigForm($form, $additionnalHtml, $colAmount = 2)
+function renderTwigForm($form, $additionnalHtml = '', $colAmount = 2)
 {
     require_once GLPI_ROOT . "/ng/twig.class.php";
     $twig = Twig::load(GLPI_ROOT . "/templates", false);
