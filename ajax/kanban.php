@@ -73,8 +73,7 @@ if (isset($itemtype)) {
       }
    }
    if (in_array($action, ['update'])) {
-      $item->getFromDB($_REQUEST['items_id']);
-      if (!$item->canUpdateItem()) {
+      if (!$item->can($_REQUEST['items_id'], UPDATE)) {
          // Missing rights
          http_response_code(403);
          return;
