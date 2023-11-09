@@ -574,6 +574,16 @@ class User extends CommonDBTM {
       return $this->getFromDBByCrit([$this->getTable() . ".$field" => $token]);
    }
 
+   public static function unsetUndisclosedFields(&$fields) {
+      parent::unsetUndisclosedFields($fields);
+
+      if (
+         !array_key_exists('id', $fields)
+         || !(new self())->currentUserHaveMoreRightThan($fields['id'])
+      ) {
+         unset($fields['password_forget_token'], $fields['password_forget_token_date']);
+      }
+   }
 
    function prepareInputForAdd($input) {
       global $DB;
