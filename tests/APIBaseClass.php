@@ -1441,7 +1441,8 @@ abstract class APIBaseClass extends atoum {
                           200);
       // get the password recovery token
       $user = getItemByTypeName('User', TU_USER);
-      $token = $user->getField('password_forget_token');
+      $token = $user->fields['password_forget_token'];
+      $this->string($token)->isNotEmpty();
 
       // Test reset password with a bad token
       $res = $this->query('lostPassword',
@@ -1469,15 +1470,21 @@ abstract class APIBaseClass extends atoum {
       $newHash = $user->getField('password');
 
       // Restore the initial password in the DB
-      $updateSuccess = $user->update([
-            'id'        => $user->getID(),
-            'password'  => TU_PASS,
-            'password2' => TU_PASS
-      ]);
+      global $DB;
+         $updateSuccess = $DB->update(
+            'glpi_users',
+            ['password' => Auth::getPasswordHash(TU_PASS)],
+            ['id'       => $user->getID()]
+      );
       $this->variable($updateSuccess)->isNotFalse('password update failed');
 
       // Test the new password was saved
       $this->variable(\Auth::checkPassword('NewPassword', $newHash))->isNotFalse();
+
+      // Validates that password reset token has been removed
+      $user = getItemByTypeName('User', TU_USER);
+      $token = $user->fields['password_forget_token'];
+      $this->string($token)->isEmpty();
 
       //diable notifications
       Config::setConfigurationValues('core', [
