@@ -102,7 +102,6 @@ var options = [];
 function initCheckboxFromSession() {
 	checkedValues = sessionStorage.getItem('grid-layout-{{layoutFor|slug}}');
 	if (!checkedValues) {
-			console.log($('.isTabButton').first());
 			$('.isTabButton').first().find('input').prop('checked', true)
 	} else {
 		checkedValues = checkedValues.split(',')

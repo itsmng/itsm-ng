@@ -2,7 +2,7 @@
 
 {% set options = ['actions', 'after', 'before', 'hooks'] %}
 
-<form name="form" action="{{form.action}}" enctype="multipart/form-data" method='post' class="container">
+<form name="form" action="{{form.action}}" enctype="multipart/form-data" method={{form.method|default('post')}} class="container">
 {% for key, bloc in form.content  %}
 <div class="container mb-3">
     {% if bloc.visible %}
@@ -10,20 +10,24 @@
     {% endif %}
     <div class="row row-cols-{{col}}">
     {% for title, input in bloc.inputs %}
-        {% if input.type != 'hidden' %}
+        {% if input.type and input.type != 'hidden' %}
         <div class="col col-lg-4 col-md-6 col-12 text-start">
-            <label for="{{input.name}}">{{title}}</label>
+            <label for="{{input.name}}">{{title|raw}}</label>
             <div class="d-flex justify-content-between align-items-center btn-group my-1">
         {% endif %}
                 {% set attributes = input | filter((v, k) => k not in options) %}
+                {% if input.type %}
                 {{input(attributes)}}
+                {% else %}
+                {{ input.content|raw }}
+                {% endif %}
                 {% if input.after %}
                 <div class="form-text mx-2">{{input.after}}</div>
                 {% endif %}
                 {% for action in input.actions %}
                     <button type="button" class="btn border" onClick="{{action.onClick}}"><a class="{{action.icon}}"></a></button>
                 {% endfor %}
-        {% if input.type != 'hidden' %}
+        {% if input.type and input.type != 'hidden' %}
             </div>
         </div>
         {% endif %}
@@ -34,7 +38,16 @@
 <div>
 {{additionnalHtml|raw}}
 </div>
-<button type="submit" class="btn btn-warning mt-3">{{"Submit"|trans}}</button>
+<div class="d-flex justify-content-around">
+{% if not form.buttons %}
+<button type="submit" class='btn btn-primary'>{{"Submit"|trans}}</button>
+{% endif %}
+{% for button in form.buttons %}
+<button {% for attr, val in button %} {{attr}}='{{val}}' {% endfor %}>
+    {% if button.icon %}<i class='{{button.icon}} mx-2'></i>{% endif %}{{button.value}}
+</button>
+{% endfor %}
+</div>
 </form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
