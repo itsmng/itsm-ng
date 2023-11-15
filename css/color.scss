@@ -25,4 +25,8 @@ $logo-file: url("../pics/fd_logo.png") !default;
 $primary: $primary-color;
 $secondary: $secondary-color;
 
+$danger:    #dc3545;
+$warning:   #ffc107;
+$info:      #1b1d1d;
+
 @import "../vendor/twbs/bootstrap/scss/bootstrap.scss";
