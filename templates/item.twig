@@ -93,14 +93,20 @@ function initCheckboxFromSession() {
 // add every checked values to the options array
 $(document).ready((e) => {
 	initCheckboxFromSession();
-	$('.dropdown-menu a').each((i, e) => {
-		if ($(e).find('input').prop('checked')) {
-			options.push($(e).attr('data-value'));
-			$( '#ContentFor' + $(e).attr('data-value') ).detach().appendTo( '#ContentForTabs' );
+	if ({{tabs | length == 1 ? 1 : 0}}) {
+		$('#hidden_gridStack_items > div').first().detach().appendTo( '#ContentForTabs' );
+		options.push($('#ContentForTabs > div').first().attr('id').replace('ContentFor', ''));
+		grid.makeWidget($('#ContentForTabs > div')[0]); 
+	} else {
+		$('.dropdown-menu a').each((i, e) => {
+			if ($(e).find('input').prop('checked')) {
+				options.push($(e).attr('data-value'));
+				$( '#ContentFor' + $(e).attr('data-value') ).detach().appendTo( '#ContentForTabs' );
 
-			grid.makeWidget($( '#ContentFor' + $(e).attr('data-value') )[0]);
-		}
-	});
+				grid.makeWidget($( '#ContentFor' + $(e).attr('data-value') )[0]);
+			}
+		});
+	}
 	updateWidgetWidth();
 	if ({{tabs|length == 1 ? 1 : 0}}) {
 		grid.setStatic(true)
