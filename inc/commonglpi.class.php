@@ -956,6 +956,7 @@ class CommonGLPI {
          $extraparamhtml = "&amp;".Toolbox::append_params($cleanoptions, '&amp;');
       }
 
+      $tabs = $this->defineAllTabs($options);
       if (empty($withtemplate)
           && !$this->isNewID($ID)
           && $this->getType()
@@ -1031,7 +1032,6 @@ class CommonGLPI {
                   <i class='far fa-list-alt pointer'></i>
                </a>";
 
-         $tabs = $this->defineAllTabs($options);
          require_once GLPI_ROOT . "/ng/twig.class.php";
          $twig = Twig::load(GLPI_ROOT . "/templates", false);
          try {
@@ -1152,6 +1152,7 @@ class CommonGLPI {
                   );
                });
             });");
+            
          }
 
          if ($current !== false) {
@@ -1181,7 +1182,19 @@ class CommonGLPI {
          }
 
          echo "</div>"; // .navigationheader
+         
+      } else {
+         require_once GLPI_ROOT . "/ng/twig.class.php";
+         $twig = Twig::load(GLPI_ROOT . "/templates", false);
+         try {
+            echo $twig->render('tabSelection.twig', [
+                  'tabs' => $tabs,
+            ]);
+         } catch (Exception $e) {
+            echo $e->getMessage();
+         }
       }
+
    }
 
 
