@@ -1092,18 +1092,17 @@ class CommonGLPI {
             $rand          = mt_rand();
 
             if (count($actions)) {
-               echo "<span class='single-actions'>";
-               echo "<button type='button' class='btn btn-secondary moreactions'>
+               echo "<div class='dropdown'>";
+               echo "<button type='button' class='btn btn-sm btn-secondary dropdown-toggle' data-bs-toggle='dropdown'>
                         ".__("Actions")."
-                        <i class='fas fa-caret-down'></i>
                      </button>";
 
-               echo "<div class='dropdown-menu' aria-labelledby='btnGroupDrop1'>";
+               echo "<ul class='dropdown-menu dropdown-menu-end' aria-labelledby='btnGroupDrop1'>";
                foreach ($actions as $key => $action) {
-                  echo "<a class='dropdown-item' data-action='$key' href='#'>$action</a>";
+                  echo "<li><a class='dropdown-item' data-action='$key' href='#'>$action</a></li>";
                }
+               echo "</ul>";
                echo "</div>";
-               echo "</span>";
             }
 
             Html::openMassiveActionsForm();
