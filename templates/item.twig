@@ -1,27 +1,4 @@
-<div class="dropdown-center text-center">
-	{% if tabs|length > 1 %}
-	<button type="button" class="btn btn-primary dropdown-toggle mb-3" data-bs-toggle="dropdown">
-		Tab Selection
-	</button>
-	{% endif %}
-	<ul class="dropdown-menu">
-		<li>
-			<a href="#" class="dropdown-item" class="small" data-value="all" style="user-select: none; --webkit-user-select: none;">
-				<input type="checkbox"/>&nbsp;{{'Select all'|trans}}
-			</a>
-		</li>
-		<li><hr class="dropdown-divider"></li>
-	{% for tab in tabs %}
-		<li>
-			<a href="#" class="dropdown-item isTabButton" class="small" data-value="{{tab['title']|slug}}" style="user-select: none; --webkit-user-select: none;">
-				<input type="checkbox"/>&nbsp;{{tab['title']|raw}}
-			</a>
-		</li>
-	{% endfor %}
-	</ul>
-</div>
-
-<div class="grid-stack" id="ContentForTabs">
+<div class="grid-stack border" id="ContentForTabs">
 
 </div>
 <div class='d-none' id="hidden_gridStack_items">
@@ -34,7 +11,7 @@
 		<div class="card grid-stack-item-content">
 			<div>
 				<div class="card-header position-sticky">{{tab['title']|raw}}</div>
-				<div class="card-body">{{tab['content']|raw}}</div>
+				<div class="card-body" style="cursor: default">{{tab['content']|raw}}</div>
 			</div>
 		</div>
 	</div>

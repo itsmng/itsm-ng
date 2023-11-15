@@ -1031,6 +1031,17 @@ class CommonGLPI {
                   <i class='far fa-list-alt pointer'></i>
                </a>";
 
+         $tabs = $this->defineAllTabs($options);
+         require_once GLPI_ROOT . "/ng/twig.class.php";
+         $twig = Twig::load(GLPI_ROOT . "/templates", false);
+         try {
+            echo $twig->render('tabSelection.twig', [
+                  'tabs' => $tabs,
+            ]);
+         } catch (Exception $e) {
+            echo $e->getMessage();
+         }
+
          $name = '';
          if (isset($this->fields['id']) && ($this instanceof CommonDBTM)) {
             $name = $this->getName();

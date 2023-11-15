@@ -41,7 +41,7 @@ $break_tablets: 1300px;
 /* ################--------------- Default style  ---------------#################### */
 
 body {
-   font-family: 'Bitstream Vera Sans', Verdana, Tahoma, 'Sans serif';
+   position: relative;
    font-size: 12px;
    margin: 0;
    padding: 0;
@@ -1591,10 +1591,6 @@ td, th {
 
    .center {
       margin: 0 auto;
-   }
-
-   .dropdown-menu {
-      display: none;
    }
 
    .nav_title {
@@ -3455,7 +3451,6 @@ a.copyright {
    text-align: left;
    padding: 4px 8px;
    margin-top: -10px;
-   font-family: 'Bitstream Vera Sans', Verdana, Tahoma, 'Sans serif';
 
    .break {
       clear: both;

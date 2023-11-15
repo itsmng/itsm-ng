@@ -1,0 +1,22 @@
+<div class="dropdown text-center">
+	{% if tabs|length > 1 %}
+	<button type="button" class="btn btn-sm btn-primary dropdown-toggle mb-3" data-bs-toggle="dropdown">
+		Tab Selection
+	</button>
+	{% endif %}
+	<ul class="dropdown-menu">
+		<li>
+			<a href="#" class="dropdown-item" class="small" data-value="all" style="user-select: none; --webkit-user-select: none;">
+				<input type="checkbox"/>&nbsp;{{'Select all'|trans}}
+			</a>
+		</li>
+		<li><hr class="dropdown-divider"></li>
+	{% for tab in tabs %}
+		<li>
+			<a href="#" class="dropdown-item isTabButton" class="small" data-value="{{tab|slug}}" style="user-select: none; --webkit-user-select: none;">
+				<input type="checkbox"/>&nbsp;{{tab|raw}}
+			</a>
+		</li>
+	{% endfor %}
+	</ul>
+</div>
