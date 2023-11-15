@@ -36,16 +36,10 @@ use Glpi\Exception\PasswordTooWeakException;
 
 Session::checkLoginUser();
 
-switch (Session::getCurrentInterface()) {
-   case 'central':
-      Html::header(__('Update password'), $_SERVER['PHP_SELF']);
-      break;
-   case 'helpdesk':
-      Html::helpHeader(__('Update password'), $_SERVER['PHP_SELF']);
-      break;
-   default:
-      Html::simpleHeader(__('Update password'));
-      break;
+if (Session::getCurrentInterface() == 'central' || Session::getCurrentInterface() == 'helpdesk') {
+   Html::header(__('Update password'), $_SERVER['PHP_SELF']);
+} else {
+   Html::simpleHeader(__('Update password'));
 }
 
 $user = new User();
@@ -105,7 +99,7 @@ switch (Session::getCurrentInterface()) {
       Html::footer();
       break;
    case 'helpdesk':
-      Html::helpFooter();
+      Html::footer();
       break;
    default:
       Html::nullFooter();

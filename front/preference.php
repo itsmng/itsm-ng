@@ -61,19 +61,11 @@ if (isset($_POST["update"])
    Html::back();
 
 } else {
-   if (Session::getCurrentInterface() == "central") {
-      Html::header(Preference::getTypeName(1), $_SERVER['PHP_SELF'], 'preference');
-   } else {
-      Html::helpHeader(Preference::getTypeName(1), $_SERVER['PHP_SELF']);
-   }
+   Html::header(Preference::getTypeName(1), $_SERVER['PHP_SELF'], 'preference');
 
    $pref = new Preference();
    $pref->display(['main_class' => 'tab_cadre_fixe']);
 
-   if (Session::getCurrentInterface() == "central") {
-      Html::footer();
-   } else {
-      Html::helpFooter();
-   }
+   Html::footer();
 }
 

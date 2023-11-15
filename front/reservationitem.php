@@ -34,11 +34,7 @@ include ('../inc/includes.php');
 
 Session::checkRightsOr('reservation', [READ, ReservationItem::RESERVEANITEM]);
 
-if (Session::getCurrentInterface() == "helpdesk") {
-   Html::helpHeader(__('Simplified interface'), $_SERVER['PHP_SELF'], $_SESSION["glpiname"]);
-} else {
-   Html::header(Reservation::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "tools", "reservationitem");
-}
+Html::header(Reservation::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "tools", "reservationitem");
 
 $res = new ReservationItem();
 $res->display($_GET);
@@ -49,8 +45,4 @@ if (isset($_POST['submit'])) {
    unset($_SESSION['glpi_saved']['ReservationItem']);
 }
 
-if (Session::getCurrentInterface() == "helpdesk") {
-   Html::helpFooter();
-} else {
-   Html::footer();
-}
+Html::footer();

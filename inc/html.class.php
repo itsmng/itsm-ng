@@ -624,10 +624,8 @@ class Html
       if (!$HEADER_LOADED) {
          if (!Session::getCurrentInterface()) {
             self::nullHeader(__('Access denied'));
-         } else if (Session::getCurrentInterface() == "central") {
+         } else {
             self::header(__('Access denied'));
-         } else if (Session::getCurrentInterface() == "helpdesk") {
-            self::helpHeader(__('Access denied'));
          }
       }
       echo "<div class='center'><br><br>";
@@ -1017,10 +1015,8 @@ class Html
       if (!$HEADER_LOADED) {
          if ($minimal || !Session::getCurrentInterface()) {
             self::nullHeader(__('Access denied'), '');
-         } else if (Session::getCurrentInterface() == "central") {
+         } else {
             self::header(__('Access denied'), '');
-         } else if (Session::getCurrentInterface() == "helpdesk") {
-            self::helpHeader(__('Access denied'), '');
          }
       }
       echo "<div class='center'><br><br>";
@@ -2119,56 +2115,7 @@ JAVASCRIPT
     **/
    static function helpHeader($title, $url = '')
    {
-      global $CFG_GLPI, $HEADER_LOADED;
-
-      // Print a nice HTML-head for help page
-      if ($HEADER_LOADED) {
-         return;
-      }
-      $HEADER_LOADED = true;
-
-      self::includeHeader($title, 'self-service');
-
-      // Body
-      $body_class = "layout_" . $_SESSION['glpilayout'];
-      if ((strpos($_SERVER['REQUEST_URI'], "form.php") !== false)
-         && isset($_GET['id']) && ($_GET['id'] > 0)
-      ) {
-         if (!CommonGLPI::isLayoutExcludedPage()) {
-            $body_class .= " form";
-         } else {
-            $body_class = "";
-         }
-      }
-      echo "<body class='$body_class'>";
-
-      Html::displayImpersonateBanner();
-
-      echo "<div >";
-      // Main Headline
-      echo "<header id='header'>";
-      echo "<div>";
-      echo "<div role='banner' id='header_top'>";
-
-      echo "<div id='c_logo'>";
-      echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php' accesskey='1' title=\"" .
-         __s('Home') . "\"><span class='invisible'>Logo</span></a>";
-      echo "</div>";
-
-      //Preferences and logout link
-      self::displayTopMenu(false);
-      echo "</div>"; // header_top
-
-      //Main menu
-      self::displayMainMenu(false);
-
-      echo "</div>";
-      echo "</header>"; // fin header
-      echo "<main role='main' id='page'>";
-
-      // call static function callcron() every 5min
-      CronTask::callCron();
-      self::displayMessageAfterRedirect();
+      self::header($title, $url);
    }
 
 
@@ -2177,25 +2124,7 @@ JAVASCRIPT
     **/
    static function helpFooter()
    {
-      global $FOOTER_LOADED;
-
-      // Print foot for help page
-      if ($FOOTER_LOADED) {
-         return;
-      }
-      $FOOTER_LOADED = true;
-
-      echo "</main>"; // end of "main role='main'"
-
-      echo "<footer role='contentinfo' id='footer'>";
-      echo "<table role='presentation' width='100%'><tr><td class='right'>" . self::getCopyrightMessage(false);
-      echo "</td></tr></table></footer>";
-
-      echo "</div>";
-      self::displayDebugInfos();
-      echo "</body></html>";
-      self::loadJavascript();
-      closeDBConnections();
+      self::footer();
    }
 
 

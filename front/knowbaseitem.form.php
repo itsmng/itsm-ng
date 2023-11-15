@@ -155,11 +155,7 @@ if (isset($_POST["add"])) {
       // check we can read the article
       $kb->check($_GET["id"], READ);
 
-      if (Session::getCurrentInterface() == "central") {
-         Html::header(KnowbaseItem::getTypeName(1), $_SERVER['PHP_SELF'], "tools", "knowbaseitem");
-      } else {
-         Html::helpHeader(__('FAQ'), $_SERVER['PHP_SELF']);
-      }
+      Html::header(KnowbaseItem::getTypeName(1), $_SERVER['PHP_SELF'], "tools", "knowbaseitem");
 
       $available_options = ['item_itemtype', 'item_items_id', 'id'];
       $options           = [];
@@ -170,10 +166,6 @@ if (isset($_POST["add"])) {
       }
       $kb->display($options);
 
-      if (Session::getCurrentInterface() == "central") {
-         Html::footer();
-      } else {
-         Html::helpFooter();
-      }
+      Html::footer();
    }
 }
