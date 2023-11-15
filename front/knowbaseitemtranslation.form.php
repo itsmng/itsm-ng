@@ -72,12 +72,7 @@ if (isset($_POST['add'])) {
    $translation->check($_GET["id"], READ);
 
    if (Session::getLoginUserID()) {
-      if (Session::getCurrentInterface() == "central") {
          Html::header(KnowbaseItem::getTypeName(1), $_SERVER['PHP_SELF'], "tools", "knowbaseitemtranslation");
-      } else {
-         Html::helpHeader(__('FAQ'), $_SERVER['PHP_SELF']);
-      }
-      Html::helpHeader(__('FAQ'), $_SERVER['PHP_SELF'], $_SESSION["glpiname"]);
    } else {
       $_SESSION["glpilanguage"] = $CFG_GLPI['language'];
       // Anonymous FAQ
@@ -89,13 +84,5 @@ if (isset($_POST['add'])) {
 
    $translation->display(['id' => $_GET['id']]);
 
-   if (Session::getLoginUserID()) {
-      if (Session::getCurrentInterface() == "central") {
-         Html::footer();
-      } else {
-         Html::helpFooter();
-      }
-   } else {
-      Html::helpFooter();
-   }
+   Html::footer();
 }

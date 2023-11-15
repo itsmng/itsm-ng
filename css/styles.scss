@@ -41,7 +41,7 @@ $break_tablets: 1300px;
 /* ################--------------- Default style  ---------------#################### */
 
 body {
-   font-family: 'Bitstream Vera Sans', Verdana, Tahoma, 'Sans serif';
+   position: relative;
    font-size: 12px;
    margin: 0;
    padding: 0;
@@ -1593,10 +1593,6 @@ td, th {
       margin: 0 auto;
    }
 
-   .dropdown-menu {
-      display: none;
-   }
-
    .nav_title {
       font-size: 13px;
       font-weight: bold;
@@ -1628,31 +1624,6 @@ td, th {
 
          i.fa-caret-down {
             margin-left: 5px;
-         }
-      }
-
-      .dropdown-menu {
-         background-color: #fff;
-         background-clip: padding-box;
-         border: 1px solid rgba(0,0,0,.15);
-         position: absolute;
-         top: 25px;
-         right: 0;
-         white-space: nowrap;
-         padding: 5px 10px;
-         z-index: 1000;
-         font-size: 11px;
-         border-radius: 2px;
-         box-shadow: 0 1px 3px rgba(0,0,0,0.12),
-                     0 1px 2px rgba(0,0,0,0.24);
-
-         a {
-            padding: 5px;
-            display: block;
-
-            &:hover {
-               background-color: #CCC;
-            }
          }
       }
    }
@@ -3455,7 +3426,6 @@ a.copyright {
    text-align: left;
    padding: 4px 8px;
    margin-top: -10px;
-   font-family: 'Bitstream Vera Sans', Verdana, Tahoma, 'Sans serif';
 
    .break {
       clear: both;

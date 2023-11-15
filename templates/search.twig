@@ -27,8 +27,11 @@
 		data-sortable="true"
 		data-show-export="true"
 		data-buttons="buttons"
-		sylte="box-sizing: border-box">
-		<thead class="table-light">
+		data-show-columns="true"
+		data-icons="icons"
+		data-show-columns-toggle-all="true"
+		>
+		<thead class="table-{{ (is_trash == 1) ? 'primary' : 'light' }}">
 			<tr>
 				<th data-field="state" data-checkbox="true"></th>
 				<th class="d-none"></th>
@@ -38,7 +41,7 @@
 				{% endfor %}
 			</tr>
 		</thead>
-		<tbody>
+		<tbody class="table-{{ (is_trash == 1) ? 'primary' : 'light' }}">
 			{% for key, value in values %}
 				<tr>
 					<td></td>
@@ -54,21 +57,17 @@
 </div>
 
 <script>
+	window.icons = {
+		columns: 'fas fa-columns',
+		export: 'fas fa-file-export',
+	}
+
 	function populateModal() {
     	massiveaction_window.dialog('open');
 	}
 
 	function buttons() {
 		buttons = {
-			btnAsMap: {
-				text: 'Show as map',
-				icon: 'fas fa-globe-europe',
-				event: function () {
-				},
-				attributes: {
-					title: {{ 'Show list as map'|trans|json_encode|raw }}
-				}
-			},
 			btnshowTrash: {
 				text: 'Show trash',
 				icon: 'fas fa-trash-alt',
@@ -79,18 +78,6 @@
 				attributes: {
 					title: {{ 'Show trash content'|trans|json_encode|raw }},
 					style: {{ (is_trash == 1) ? 'background : #7b081d'|json_encode|raw : ''|json_encode|raw }}
-				}
-			}
-		}
-		if ('{{ searchConfigRights }}' === '1') {
-			buttons.btnEditColumns = {
-				text: 'Edit columns',
-				icon: 'fas fa-wrench',
-				event: function () {
-					$('#search-config').dialog("open");
-				},
-				attributes: {
-					title: {{ 'Edit columns position and content'|trans|json_encode|raw }}
 				}
 			}
 		}

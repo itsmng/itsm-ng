@@ -956,6 +956,7 @@ class CommonGLPI {
          $extraparamhtml = "&amp;".Toolbox::append_params($cleanoptions, '&amp;');
       }
 
+      $tabs = $this->defineAllTabs($options);
       if (empty($withtemplate)
           && !$this->isNewID($ID)
           && $this->getType()
@@ -1031,6 +1032,16 @@ class CommonGLPI {
                   <i class='far fa-list-alt pointer'></i>
                </a>";
 
+         require_once GLPI_ROOT . "/ng/twig.class.php";
+         $twig = Twig::load(GLPI_ROOT . "/templates", false);
+         try {
+            echo $twig->render('tabSelection.twig', [
+                  'tabs' => $tabs,
+            ]);
+         } catch (Exception $e) {
+            echo $e->getMessage();
+         }
+
          $name = '';
          if (isset($this->fields['id']) && ($this instanceof CommonDBTM)) {
             $name = $this->getName();
@@ -1081,18 +1092,17 @@ class CommonGLPI {
             $rand          = mt_rand();
 
             if (count($actions)) {
-               echo "<span class='single-actions'>";
-               echo "<button type='button' class='btn btn-secondary moreactions'>
+               echo "<div class='dropdown'>";
+               echo "<button type='button' class='btn btn-sm btn-secondary dropdown-toggle' data-bs-toggle='dropdown'>
                         ".__("Actions")."
-                        <i class='fas fa-caret-down'></i>
                      </button>";
 
-               echo "<div class='dropdown-menu' aria-labelledby='btnGroupDrop1'>";
+               echo "<ul class='dropdown-menu dropdown-menu-end' aria-labelledby='btnGroupDrop1'>";
                foreach ($actions as $key => $action) {
-                  echo "<a class='dropdown-item' data-action='$key' href='#'>$action</a>";
+                  echo "<li><a class='dropdown-item' data-action='$key' href='#'>$action</a></li>";
                }
+               echo "</ul>";
                echo "</div>";
-               echo "</span>";
             }
 
             Html::openMassiveActionsForm();
@@ -1141,6 +1151,7 @@ class CommonGLPI {
                   );
                });
             });");
+            
          }
 
          if ($current !== false) {
@@ -1170,7 +1181,19 @@ class CommonGLPI {
          }
 
          echo "</div>"; // .navigationheader
+         
+      } else {
+         require_once GLPI_ROOT . "/ng/twig.class.php";
+         $twig = Twig::load(GLPI_ROOT . "/templates", false);
+         try {
+            echo $twig->render('tabSelection.twig', [
+                  'tabs' => $tabs,
+            ]);
+         } catch (Exception $e) {
+            echo $e->getMessage();
+         }
       }
+
    }
 
 

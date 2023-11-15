@@ -40,15 +40,11 @@ if (isset($_GET["redirect"])) {
 Session::checkFaqAccess();
 Html::requireJs('jstree');
 
-if (Session::getLoginUserID()) {
-   Html::helpHeader(__('FAQ'), $_SERVER['PHP_SELF'], $_SESSION["glpiname"]);
-} else {
-   $_SESSION["glpilanguage"] = $_SESSION['glpilanguage'] ?? $CFG_GLPI['language'];
-   // Anonymous FAQ
-   Html::simpleHeader(__('FAQ'), [
-      __('FAQ') => $CFG_GLPI['root_doc'].'/front/helpdesk.faq.php'
-   ]);
-}
+$_SESSION["glpilanguage"] = $_SESSION['glpilanguage'] ?? $CFG_GLPI['language'];
+// Anonymous FAQ
+Html::header(__('FAQ'), [
+   __('FAQ') => $CFG_GLPI['root_doc'].'/front/helpdesk.faq.php'
+]);
 
 if (isset($_GET["id"])) {
    $kb = new KnowbaseItem();
@@ -67,4 +63,4 @@ if (isset($_GET["id"])) {
    $kb->display($_GET);
 }
 
-Html::helpFooter();
+Html::footer();

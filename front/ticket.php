@@ -34,11 +34,7 @@ include ('../inc/includes.php');
 
 Session::checkLoginUser();
 
-if (Session::getCurrentInterface() == "helpdesk") {
-   Html::helpHeader(Ticket::getTypeName(Session::getPluralNumber()), '', $_SESSION["glpiname"]);
-} else {
-   Html::header(Ticket::getTypeName(Session::getPluralNumber()), '', "helpdesk", "ticket");
-}
+Html::header(Ticket::getTypeName(Session::getPluralNumber()), '', "helpdesk", "ticket");
 
 $callback = <<<JS
    if ($('div[role="dialog"]:visible').length === 0) {
@@ -55,9 +51,4 @@ if ($default = Glpi\Dashboard\Grid::getDefaultDashboardForMenu('mini_ticket', tr
 
 Search::show('Ticket');
 
-if (Session::getCurrentInterface() == "helpdesk") {
-   Html::helpFooter();
-} else {
-   Html::footer();
-}
-
+Html::footer();

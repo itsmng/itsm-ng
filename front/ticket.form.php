@@ -202,11 +202,7 @@ if (isset($_POST["add"])) {
 }
 
 if (isset($_GET["id"]) && ($_GET["id"] > 0)) {
-   if (Session::getCurrentInterface() == "helpdesk") {
-      Html::helpHeader(Ticket::getTypeName(Session::getPluralNumber()), '', $_SESSION["glpiname"]);
-   } else {
-      Html::header(Ticket::getTypeName(Session::getPluralNumber()), '', "helpdesk", "ticket");
-   }
+   Html::header(Ticket::getTypeName(Session::getPluralNumber()), '', "helpdesk", "ticket");
 
    $available_options = ['load_kb_sol', '_openfollowup'];
    $options           = [];
@@ -255,9 +251,4 @@ if (isset($_GET["id"]) && ($_GET["id"] > 0)) {
    $track->display($_REQUEST);
 }
 
-
-if (Session::getCurrentInterface() == "helpdesk") {
-   Html::helpFooter();
-} else {
-   Html::footer();
-}
+Html::footer();

@@ -13,7 +13,7 @@
         {% if input.type and input.type != 'hidden' %}
         <div class="col col-lg-4 col-md-6 col-12 text-start">
             <label for="{{input.name}}">{{title|raw}}</label>
-            <div class="d-flex justify-content-between align-items-center btn-group my-1">
+            <div class="d-flex justify-content-between align-items-center input-group my-1">
         {% endif %}
                 {% set attributes = input | filter((v, k) => k not in options) %}
                 {% if input.type %}

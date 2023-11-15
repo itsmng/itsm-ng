@@ -88,13 +88,12 @@ if (!Session::haveRight('ticket', CREATE)
 Session::checkHelpdeskAccess();
 
 
+Html::header(__('Home'), $_SERVER['PHP_SELF'], $_SESSION["glpiname"]);
 if (isset($_GET['create_ticket'])) {
-   Html::helpHeader(__('New ticket'), $_SERVER['PHP_SELF'], $_SESSION["glpiname"]);
    $ticket = new Ticket();
    $ticket->showFormHelpdesk(Session::getLoginUserID());
 
 } else {
-   Html::header(__('Home'), $_SERVER['PHP_SELF'], $_SESSION["glpiname"]);
    echo "<table class='tab_cadre_postonly'>";
 
    $user = new User();

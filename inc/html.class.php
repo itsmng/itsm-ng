@@ -624,10 +624,8 @@ class Html
       if (!$HEADER_LOADED) {
          if (!Session::getCurrentInterface()) {
             self::nullHeader(__('Access denied'));
-         } else if (Session::getCurrentInterface() == "central") {
+         } else {
             self::header(__('Access denied'));
-         } else if (Session::getCurrentInterface() == "helpdesk") {
-            self::helpHeader(__('Access denied'));
          }
       }
       echo "<div class='center'><br><br>";
@@ -652,104 +650,68 @@ class Html
    /**
     * Display a div containing messages set in session in the previous page
     **/
-   static function displayMessageAfterRedirect()
-   {
-
-      // Affichage du message apres redirection
-      if (
-         isset($_SESSION["MESSAGE_AFTER_REDIRECT"])
-         && count($_SESSION["MESSAGE_AFTER_REDIRECT"]) > 0
-      ) {
-
-         foreach ($_SESSION['MESSAGE_AFTER_REDIRECT'] as $msgtype => $messages) {
-            //get messages
-            if (count($messages) > 0) {
-               $html_messages = implode('<br/>', $messages);
-            } else {
-               continue;
+    static function displayMessageAfterRedirect()
+    {
+        if (
+            isset($_SESSION["MESSAGE_AFTER_REDIRECT"])
+            && count($_SESSION["MESSAGE_AFTER_REDIRECT"]) > 0
+        ) {
+            echo "<div class=\"toast-container position-fixed bottom-0 end-0 p-3\">";
+    
+            foreach ($_SESSION['MESSAGE_AFTER_REDIRECT'] as $msgtype => $messages) {
+                if (count($messages) > 0) {
+                    $html_messages = implode('<br/>', $messages);
+                } else {
+                    continue;
+                }
+    
+                switch ($msgtype) {
+                    case ERROR:
+                        $title = 'Error';
+                        $class = 'bg-danger text-white';
+                        $autoClose = false; // Disable auto-closing for ERROR messages
+                        break;
+                    case WARNING:
+                        $title = 'Warning';
+                        $class = 'bg-warning text-dark';
+                        $autoClose = true; // Allow auto-closing for WARNING messages
+                        break;
+                    case INFO:
+                        $title = 'Information';
+                        $class = 'bg-info text-white';
+                        $autoClose = true; // Allow auto-closing for INFO messages
+                        break;
+                }
+    
+                $autoCloseAttribute = $autoClose ? '' : 'data-bs-autohide="false"';
+    
+                echo <<<HTML
+                     <div class="toast {$class}" role="alert" aria-live="assertive" aria-atomic="true" {$autoCloseAttribute}>
+                        <div class="toast-header">
+                           <strong class="me-auto">{$title}</strong>
+                           <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                           $html_messages
+                        </div>
+                     </div>
+                HTML;
+    
+                $scriptblock = <<<JS
+                   $(function() {
+                      $('.toast').toast({ delay: 5000 }).toast('show');
+                   });
+                JS;
+    
+                echo Html::scriptBlock($scriptblock);
             }
-
-            //set title and css class
-            switch ($msgtype) {
-               case ERROR:
-                  $title = __s('Error');
-                  $class = 'err_msg';
-                  break;
-               case WARNING:
-                  $title = __s('Warning');
-                  $class = 'warn_msg';
-                  break;
-               case INFO:
-                  $title = _sn('Information', 'Information', 1);
-                  $class = 'info_msg';
-                  break;
-            }
-
-            echo "<div id=\"message_after_redirect_$msgtype\" title=\"$title\">";
-            echo $html_messages;
+    
             echo "</div>";
-
-            $scriptblock = "
-               $(function() {
-                  var _of = window;
-                  var _at = 'right-20 bottom-20';
-                  //calculate relative dialog position
-                  $('.message_after_redirect').each(function() {
-                     var _this = $(this);
-                     if (_this.attr('aria-describedby') != 'message_after_redirect_$msgtype') {
-                        _of = _this;
-                        _at = 'right top-' + (10 + _this.outerHeight());
-                     }
-                  });
-
-                  $('#message_after_redirect_$msgtype').dialog({
-                     dialogClass: 'message_after_redirect $class',
-                     minHeight: 40,
-                     minWidth: 200,
-                     position: {
-                        my: 'right bottom',
-                        at: _at,
-                        of: _of,
-                        collision: 'none'
-                     },
-                     autoOpen: false,
-                     show: {
-                       effect: 'slide',
-                       direction: 'down',
-                       'duration': 800
-                     }
-                  })
-                  .dialog('open');";
-
-            //do not autoclose errors
-            if ($msgtype != ERROR) {
-               $scriptblock .= "
-
-                  // close dialog on outside click
-                  $(document.body).on('click', function(e){
-                     if ($('#message_after_redirect_$msgtype').dialog('isOpen')
-                         && !$(e.target).is('.ui-dialog, a')
-                         && !$(e.target).closest('.ui-dialog').length) {
-                        $('#message_after_redirect_$msgtype').remove();
-                        // redo focus on initial element
-                        e.target.focus();
-                     }
-                  });";
-            }
-
-            $scriptblock .= "
-
-               });
-            ";
-
-            echo Html::scriptBlock($scriptblock);
-         }
-      }
-
-      // Clean message
-      $_SESSION["MESSAGE_AFTER_REDIRECT"] = [];
-   }
-
+        }
+    
+        // Clean message
+        $_SESSION["MESSAGE_AFTER_REDIRECT"] = [];
+    }    
 
    static function displayAjaxMessageAfterRedirect()
    {
@@ -1017,10 +979,8 @@ class Html
       if (!$HEADER_LOADED) {
          if ($minimal || !Session::getCurrentInterface()) {
             self::nullHeader(__('Access denied'), '');
-         } else if (Session::getCurrentInterface() == "central") {
+         } else {
             self::header(__('Access denied'), '');
-         } else if (Session::getCurrentInterface() == "helpdesk") {
-            self::helpHeader(__('Access denied'), '');
          }
       }
       echo "<div class='center'><br><br>";
@@ -2119,56 +2079,7 @@ JAVASCRIPT
     **/
    static function helpHeader($title, $url = '')
    {
-      global $CFG_GLPI, $HEADER_LOADED;
-
-      // Print a nice HTML-head for help page
-      if ($HEADER_LOADED) {
-         return;
-      }
-      $HEADER_LOADED = true;
-
-      self::includeHeader($title, 'self-service');
-
-      // Body
-      $body_class = "layout_" . $_SESSION['glpilayout'];
-      if ((strpos($_SERVER['REQUEST_URI'], "form.php") !== false)
-         && isset($_GET['id']) && ($_GET['id'] > 0)
-      ) {
-         if (!CommonGLPI::isLayoutExcludedPage()) {
-            $body_class .= " form";
-         } else {
-            $body_class = "";
-         }
-      }
-      echo "<body class='$body_class'>";
-
-      Html::displayImpersonateBanner();
-
-      echo "<div >";
-      // Main Headline
-      echo "<header id='header'>";
-      echo "<div>";
-      echo "<div role='banner' id='header_top'>";
-
-      echo "<div id='c_logo'>";
-      echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php' accesskey='1' title=\"" .
-         __s('Home') . "\"><span class='invisible'>Logo</span></a>";
-      echo "</div>";
-
-      //Preferences and logout link
-      self::displayTopMenu(false);
-      echo "</div>"; // header_top
-
-      //Main menu
-      self::displayMainMenu(false);
-
-      echo "</div>";
-      echo "</header>"; // fin header
-      echo "<main role='main' id='page'>";
-
-      // call static function callcron() every 5min
-      CronTask::callCron();
-      self::displayMessageAfterRedirect();
+      self::header($title, $url);
    }
 
 
@@ -2177,25 +2088,7 @@ JAVASCRIPT
     **/
    static function helpFooter()
    {
-      global $FOOTER_LOADED;
-
-      // Print foot for help page
-      if ($FOOTER_LOADED) {
-         return;
-      }
-      $FOOTER_LOADED = true;
-
-      echo "</main>"; // end of "main role='main'"
-
-      echo "<footer role='contentinfo' id='footer'>";
-      echo "<table role='presentation' width='100%'><tr><td class='right'>" . self::getCopyrightMessage(false);
-      echo "</td></tr></table></footer>";
-
-      echo "</div>";
-      self::displayDebugInfos();
-      echo "</body></html>";
-      self::loadJavascript();
-      closeDBConnections();
+      self::footer();
    }
 
 

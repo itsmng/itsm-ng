@@ -38,11 +38,7 @@ Session::checkRight("reservation", ReservationItem::RESERVEANITEM);
 
 $rr = new Reservation();
 
-if (Session::getCurrentInterface() == "helpdesk") {
-   Html::helpHeader(__('Simplified interface'), $_SERVER['PHP_SELF'], $_SESSION["glpiname"]);
-} else {
-   Html::header(Reservation::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "tools", "reservationitem");
-}
+Html::header(Reservation::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "tools", "reservationitem");
 
 if (isset($_POST["update"])) {
    list($begin_year,$begin_month) = explode("-", $_POST['resa']["begin"]);
@@ -153,8 +149,4 @@ if (isset($_POST["update"])) {
    }
 }
 
-if (Session::getCurrentInterface() == "helpdesk") {
-   Html::helpFooter();
-} else {
-   Html::footer();
-}
+Html::footer();
