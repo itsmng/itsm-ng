@@ -64,10 +64,10 @@
     }
   }</script>
 
-<button onClick="fullscreen()">Fullscreen</button>
+{# <button onClick="fullscreen()">Fullscreen</button> #}
 <div id="main-dashboard" class='container bg-white'>
 	{% for row in widgetGrid %}
-		<div class="row">
+		<div class="row bg-light">
 			{% for widget in row %}
 				<div class="col border d-flex align-items-center justify-content-center m-0 p-0 {{widget.background ? 'bg-' ~ widget.background : ''}}">
 					<div class="d-flex flex-column-reverse justify-content-center align-items-center w-100 h-100">
