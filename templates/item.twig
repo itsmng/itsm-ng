@@ -108,6 +108,9 @@ $(document).ready((e) => {
 		});
 	}
 	updateWidgetWidth();
+	setTimeout(() => {
+		grid.resizeToContent($('#ContentForTabs > div')[0]);
+	}, 300);
 	if ({{tabs|length == 1 ? 1 : 0}}) {
 		grid.setStatic(true)
 	}

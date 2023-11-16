@@ -19,6 +19,9 @@
 				series: {{series | json_encode | raw}},
 			}, {{options | json_encode | raw}}
 		);
+		setTimeout(function() {
+			chart.update();
+		}, 500);
 	});
 	</script>
 {% endmacro %}
