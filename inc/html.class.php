@@ -2748,7 +2748,7 @@ JAVASCRIPT
       $p['forcecreate']       = false;
       $p['check_itemtype']    = '';
       $p['check_items_id']    = '';
-      $p['is_deleted']        = false;
+      $p['is_deleted']        = true;
       $p['extraparams']       = [];
       $p['width']             = 800;
       $p['height']            = 400;

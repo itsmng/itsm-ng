@@ -116,7 +116,58 @@ class Central extends CommonGLPI {
 
       $default   = Glpi\Dashboard\Grid::getDefaultDashboardForMenu('central');
       $dashboard = new Glpi\Dashboard\Grid($default);
-      $dashboard->show();
+      $dashboard->show([
+         'widgetGrid' => [
+            [
+               [
+                  'type' => 'number',
+                  'title' => 'test',
+                  'value' => 50,
+                  'icon' => 'fas fa-user',
+               ],
+               [
+                  'type' => 'number',
+                  'title' => 'test',
+                  'value' => 5360,
+                  'icon' => 'fas fa-cog',
+               ],
+               [
+                  'type' => 'LineChart',
+                  'title' => 'chart1',
+                  'labels' => [1, 2, 3, 4, 5, 6, 7, 8],
+                  'series' => [[5, 9, 7, 8, 5, 3, 5, 4]],
+                  'options' => [ 'low' => 0, 'showArea' => true],
+               ],
+               [
+                  'type' => 'PieChart',
+                  'title' => 'chart2',
+                  'labels' => ['Bananas', 'Apples', 'Grapes'],
+                  'series' => [20, 15, 40],
+                  'options' => [],
+               ],
+            ], [
+               [
+                  'type' => 'number',
+                  'title' => 'test',
+                  'value' => 5360,
+                  'icon' => 'fas fa-cog',
+               ],
+               [
+                  'type' => 'BarChart',
+                  'title' => 'chart3',
+                  'labels' => ['Bananas', 'Apples', 'Grapes'],
+                  'series' => [[20, 15, -5], [5, 15, -2]],
+                  'options' => [],
+               ],
+               [
+                  'type' => 'number',
+                  'title' => 'test2',
+                  'value' => 5360,
+                  'icon' => 'fas fa-cog',
+               ],
+            ]
+         ]
+      ]);
 
       Html::accessibilityHeader();
    }
