@@ -221,6 +221,7 @@ HTML;
     */
    public function show($content) {
       require_once GLPI_ROOT . "/ng/twig.class.php";
+      Html::requireJs('charts');
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
       try {
          echo $twig->render('dashboard.twig', $content);

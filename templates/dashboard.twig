@@ -10,7 +10,8 @@
 
 {% macro chart(type = 'LineChart', title = '', labels = [], series = [], options = [], color = "black") %}
 	<div class="fw-bold fs-6 text-{{color}}">{{title}}</div>
-	<div class="ct-chart ct-golden-section" id="widgetFor{{title|slug}}"></div>
+	<div class="ct-chart ct-golden-section" id="widgetFor{{title|slug}}" {% if options.height %}style="height: {{options.height}}"{% endif %}></div>
+
 	<script>
 	$(document).ready(function() {
 		var chart = new Chartist.{{type}}("#widgetFor{{title|slug}}",
@@ -64,19 +65,17 @@
     }
   }</script>
 
-{# <button onClick="fullscreen()">Fullscreen</button> #}
+{# <button onClick="fullscreen()" class="ms-0 btn btn-secondary btn-sm">Fullscreen</button> #}
 <div id="main-dashboard" class='container bg-white'>
 	{% for row in widgetGrid %}
-		<div class="row bg-light">
+		<div class="row bg-light" style="height: calc( 100% / {{widgetGrid|length}})">
 			{% for widget in row %}
-				<div class="col border d-flex align-items-center justify-content-center m-0 p-0 {{widget.background ? 'bg-' ~ widget.background : ''}}">
-					<div class="d-flex flex-column-reverse justify-content-center align-items-center w-100 h-100">
+				<div class="col border d-flex flex-column-reverse align-items-center justify-content-center m-0 p-0 {{widget.background ? 'bg-' ~ widget.background : ''}}">
 					{% if widget.type == 'number' %}
 						{{ _self.number(widget.title, widget.value, widget.icon, widget.color) }}
 					{% else %}
 						{{ _self.chart(widget.type, widget.title, widget.labels, widget.series, widget.options, widget.color) }}
 					{% endif %}
-					</div>
 				</div>
 			{% endfor %}
 		</div>

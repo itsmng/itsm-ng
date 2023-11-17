@@ -116,54 +116,81 @@ class Central extends CommonGLPI {
 
       $default   = Glpi\Dashboard\Grid::getDefaultDashboardForMenu('central');
       $dashboard = new Glpi\Dashboard\Grid($default);
+      global $DB;
+      $ticketsByStatus = iterator_to_array($DB->query('SELECT 
+      status,
+      COUNT(*) AS ticket_count
+         FROM 
+            glpi_tickets
+         WHERE 
+            is_deleted = 0
+         GROUP BY 
+            status;
+      '));
+      $finalResult = [];
+      foreach (Ticket::getAllStatusArray() as $index => $status) {
+         $finalResult[$index] = [
+            'status' => $index,
+            'ticket_count' => 0
+         ];
+      }
+      foreach ($ticketsByStatus as $ticket) {
+         $finalResult[$ticket['status']] = $ticket;
+      }
+      
       $dashboard->show([
          'widgetGrid' => [
             [
                [
                   'type' => 'number',
-                  'title' => 'test',
-                  'value' => 50,
-                  'icon' => 'fas fa-user',
+                  'title' => __('Computer'),
+                  'value' => countElementsInTable('glpi_computers'),
+                  'icon' => 'fas fa-laptop',
                ],
                [
                   'type' => 'number',
-                  'title' => 'test',
-                  'value' => 5360,
-                  'icon' => 'fas fa-cog',
+                  'title' => __('Rack'),
+                  'value' => countElementsInTable('glpi_racks'),
+                  'icon' => 'fas fa-server',
                ],
                [
-                  'type' => 'LineChart',
-                  'title' => 'chart1',
-                  'labels' => [1, 2, 3, 4, 5, 6, 7, 8],
-                  'series' => [[5, 9, 7, 8, 5, 3, 5, 4]],
-                  'options' => [ 'low' => 0, 'showArea' => true],
+                  'type' => 'number',
+                  'title' => __('Network device'),
+                  'value' => countElementsInTable('glpi_networkequipments'),
+                  'icon' => 'fas fa-network-wired',
                ],
                [
-                  'type' => 'PieChart',
-                  'title' => 'chart2',
-                  'labels' => ['Bananas', 'Apples', 'Grapes'],
-                  'series' => [20, 15, 40],
-                  'options' => [],
+                  'type' => 'number',
+                  'title' => __('Softwares'),
+                  'value' => countElementsInTable('glpi_softwares'),
+                  'icon' => 'fas fa-cube',
+               ],
+            ], [
+               [
+                  'type' => 'BarChart',
+                  'title' => __('Tickets by status'),
+                  'labels' => array_values(Ticket::getAllStatusArray()),
+                  'series' => [array_column($finalResult, 'ticket_count')],
+                  'options' => ['height' => '10rem'],
                ],
             ], [
                [
                   'type' => 'number',
-                  'title' => 'test',
-                  'value' => 5360,
-                  'icon' => 'fas fa-cog',
-               ],
-               [
-                  'type' => 'BarChart',
-                  'title' => 'chart3',
-                  'labels' => ['Bananas', 'Apples', 'Grapes'],
-                  'series' => [[20, 15, -5], [5, 15, -2]],
-                  'options' => [],
+                  'title' => __('Ticket'),
+                  'value' => countElementsInTable('glpi_tickets'),
+                  'icon' => 'fas fa-ticket',
                ],
                [
                   'type' => 'number',
-                  'title' => 'test2',
-                  'value' => 5360,
-                  'icon' => 'fas fa-cog',
+                  'title' => __('User'),
+                  'value' => countElementsInTable('glpi_users'),
+                  'icon' => 'fas fa-ticket',
+               ],
+               [
+                  'type' => 'number',
+                  'title' => __('Entity'),
+                  'value' => countElementsInTable('glpi_entities'),
+                  'icon' => 'fas fa-ticket',
                ],
             ]
          ]
