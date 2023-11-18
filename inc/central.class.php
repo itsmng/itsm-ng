@@ -116,7 +116,85 @@ class Central extends CommonGLPI {
 
       $default   = Glpi\Dashboard\Grid::getDefaultDashboardForMenu('central');
       $dashboard = new Glpi\Dashboard\Grid($default);
-      $dashboard->show();
+      global $DB;
+      $ticketsByStatus = iterator_to_array($DB->query('SELECT 
+      status,
+      COUNT(*) AS ticket_count
+         FROM 
+            glpi_tickets
+         WHERE 
+            is_deleted = 0
+         GROUP BY 
+            status;
+      '));
+      $finalResult = [];
+      foreach (Ticket::getAllStatusArray() as $index => $status) {
+         $finalResult[$index] = [
+            'status' => $index,
+            'ticket_count' => 0
+         ];
+      }
+      foreach ($ticketsByStatus as $ticket) {
+         $finalResult[$ticket['status']] = $ticket;
+      }
+      
+      $dashboard->show([
+         'widgetGrid' => [
+            [
+               [
+                  'type' => 'number',
+                  'title' => __('Computer'),
+                  'value' => countElementsInTable('glpi_computers'),
+                  'icon' => 'fas fa-laptop',
+               ],
+               [
+                  'type' => 'number',
+                  'title' => __('Rack'),
+                  'value' => countElementsInTable('glpi_racks'),
+                  'icon' => 'fas fa-server',
+               ],
+               [
+                  'type' => 'number',
+                  'title' => __('Network device'),
+                  'value' => countElementsInTable('glpi_networkequipments'),
+                  'icon' => 'fas fa-network-wired',
+               ],
+               [
+                  'type' => 'number',
+                  'title' => __('Softwares'),
+                  'value' => countElementsInTable('glpi_softwares'),
+                  'icon' => 'fas fa-cube',
+               ],
+            ], [
+               [
+                  'type' => 'BarChart',
+                  'title' => __('Tickets by status'),
+                  'labels' => array_values(Ticket::getAllStatusArray()),
+                  'series' => [array_column($finalResult, 'ticket_count')],
+                  'options' => ['height' => '10rem'],
+               ],
+            ], [
+               [
+                  'type' => 'number',
+                  'title' => __('Ticket'),
+                  'value' => countElementsInTable('glpi_tickets'),
+                  'icon' => 'fas fa-ticket',
+               ],
+               [
+                  'type' => 'number',
+                  'title' => __('User'),
+                  'value' => countElementsInTable('glpi_users'),
+                  'icon' => 'fas fa-ticket',
+               ],
+               [
+                  'type' => 'number',
+                  'title' => __('Entity'),
+                  'value' => countElementsInTable('glpi_entities'),
+                  'icon' => 'fas fa-ticket',
+               ],
+            ]
+         ]
+      ]);
 
       Html::accessibilityHeader();
    }

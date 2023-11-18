@@ -1,0 +1,83 @@
+{% macro number(title = '', value = 0, icon = '', color = "black") %}
+	<div class="d-flex justify-content-center align-items-center">
+		<i class="{{icon}} fs-1 text-{{color}}"></i>
+		<div class="ms-3">
+			<div class="fw-bold fs-6 text-{{color}}">{{title}}</div>
+			<div class="fs-3 text-${color}">{{value}}</div>
+		</div>
+	</div>
+{% endmacro %}
+
+{% macro chart(type = 'LineChart', title = '', labels = [], series = [], options = [], color = "black") %}
+	<div class="fw-bold fs-6 text-{{color}}">{{title}}</div>
+	<div class="ct-chart ct-golden-section" id="widgetFor{{title|slug}}" {% if options.height %}style="height: {{options.height}}"{% endif %}></div>
+
+	<script>
+	$(document).ready(function() {
+		var chart = new Chartist.{{type}}("#widgetFor{{title|slug}}",
+			{
+				labels: {{labels | json_encode | raw}},
+				series: {{series | json_encode | raw}},
+			}, {{options | json_encode | raw}}
+		);
+		setTimeout(function() {
+			chart.update();
+		}, 500);
+	});
+	</script>
+{% endmacro %}
+
+<script>
+  function fullscreen() {
+    var mainDashboard = document.getElementById("main-dashboard");
+
+    if (document.fullscreenElement || document.webkitFullscreenElement ||
+        document.mozFullScreenElement || document.msFullscreenElement) {
+      // If any element is in fullscreen, exit fullscreen
+      exitFullscreen();
+    } else {
+      // Otherwise, make the main dashboard fullscreen
+      requestFullscreen(mainDashboard);
+    }
+  }
+
+  function requestFullscreen(element) {
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if (element.webkitRequestFullscreen) { // Safari
+      element.webkitRequestFullscreen();
+    } else if (element.mozRequestFullScreen) { // Firefox
+      element.mozRequestFullScreen();
+    } else if (element.msRequestFullscreen) { // IE/Edge
+      element.msRequestFullscreen();
+    }
+  }
+
+  function exitFullscreen() {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) { // Safari
+      document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) { // Firefox
+      document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) { // IE/Edge
+      document.msExitFullscreen();
+    }
+  }</script>
+
+{# <button onClick="fullscreen()" class="ms-0 btn btn-secondary btn-sm">Fullscreen</button> #}
+<div id="main-dashboard" class='container bg-white'>
+	{% for row in widgetGrid %}
+		<div class="row bg-light" style="height: calc( 100% / {{widgetGrid|length}})">
+			{% for widget in row %}
+				<div class="col border d-flex flex-column-reverse align-items-center justify-content-center m-0 p-0 {{widget.background ? 'bg-' ~ widget.background : ''}}">
+					{% if widget.type == 'number' %}
+						{{ _self.number(widget.title, widget.value, widget.icon, widget.color) }}
+					{% else %}
+						{{ _self.chart(widget.type, widget.title, widget.labels, widget.series, widget.options, widget.color) }}
+					{% endif %}
+				</div>
+			{% endfor %}
+		</div>
+		{% endfor %}
+</div>

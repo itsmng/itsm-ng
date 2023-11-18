@@ -33,21 +33,17 @@
 namespace Glpi\Dashboard;
 
 use Ramsey\Uuid\Uuid;
-
-use Config;
 use CommonGLPI;
 use Dropdown;
 use DBConnection;
-use Entity;
-use Group;
 use Html;
 use Plugin;
-use Profile;
 use Session;
 use ShareDashboardDropdown;
 use Telemetry;
 use Toolbox;
-use User;
+use Twig;
+use Exception;
 
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
@@ -223,195 +219,15 @@ HTML;
     *
     * @return void display html of the grid
     */
-   public function show(bool $mini = false) {
-      $rand = mt_rand();
-
-      if (!self::$embed && !$this->dashboard->canViewCurrent()) {
-         return;
+   public function show($content) {
+      require_once GLPI_ROOT . "/ng/twig.class.php";
+      Html::requireJs('charts');
+      $twig = Twig::load(GLPI_ROOT . "/templates", false);
+      try {
+         echo $twig->render('dashboard.twig', $content);
+      } catch (Exception $e) {
+         echo $e->getMessage();
       }
-
-      self::loadAllDashboards();
-
-      $this->restoreLastDashboard();
-
-      if ($mini) {
-         $this->cell_margin = 3;
-      }
-
-      $embed_str     = self::$embed ? "true" : "false";
-      $embed_class   = self::$embed ? "embed" : "";
-      $mini_class    = $mini ? "mini" : "";
-
-      $nb_dashboards = count(self::$all_dashboards);
-
-      $can_view_all  = Session::haveRight('dashboard', READ) || self::$embed;
-      $can_create    = Session::haveRight('dashboard', CREATE);
-      $can_edit      = Session::haveRight('dashboard', UPDATE) && $nb_dashboards;
-      $can_purge     = Session::haveRight('dashboard', PURGE) && $nb_dashboards;
-      $can_clone     = $can_create && $nb_dashboards;
-
-      // prepare html for add controls
-      $add_controls = "";
-      for ($y = 0; $y < $this->grid_rows; $y++) {
-         for ($x = 0; $x < $this->grid_cols; $x++) {
-            $add_controls.= "<div class='cell-add' data-x='$x' data-y='$y'>&nbsp;</div>";
-         }
-      }
-
-      // prepare all available cards
-      $cards = $this->getAllDasboardCards();
-      $cards_json = json_encode($cards);
-
-      // prepare all available widgets
-      $all_widgets = Widget::getAllTypes();
-      $all_widgets_json = json_encode($all_widgets);
-
-      // prepare labels
-      $embed_label      = __("Share or embed this dashboard");
-      $delete_label     = __("Delete this dashboard");
-      $history_label    = __("Toggle auto-refresh");
-      $night_label      = __("Toggle night mode");
-      $fs_label         = __("Toggle fullscreen");
-      $clone_label      = __("Clone this dashboard");
-      $edit_label       = __("Toggle edit mode");
-      $add_filter_lbl   = __("Add filter");
-      $add_dash_label   = __("Add a new dashboard");
-      $save_label       = _x('button', "Save");
-
-      $gridstack_items = $this->getGridItemsHtml();
-
-      $dropdown_dashboards = "";
-      if ($nb_dashboards) {
-         $dropdown_dashboards = self::dropdownDashboard("", [
-            'value'        => $this->current,
-            'display'      => false,
-            'class'        => 'dashboard_select',
-            'can_view_all' => $can_view_all,
-            'noselect2'    => true,
-         ]);
-      }
-
-      $dashboard_title = $this->dashboard->getTitle();
-
-      $l_tb_icons   = "";
-      $r_tb_icons   = "";
-      $rename       = "";
-      $left_toolbar = "";
-      $grid_guide   = "";
-
-      if (!self::$embed) {
-         if (!$mini && $can_create) {
-            $l_tb_icons.= "<i class='fas fa-plus fs-toggle add-dashboard' title='$add_dash_label'></i>";
-         }
-         if (!$mini && $can_clone) {
-            $r_tb_icons.= "<i class='fas fa-clone fs-toggle clone-dashboard' title='$clone_label'></i>";
-         }
-         if (!$mini && $can_edit) {
-            $r_tb_icons.= "<i class='fas fa-share-alt fs-toggle open-embed' title='$embed_label'></i>";
-            $rename = "<div class='edit-dashboard-properties'>
-               <input type='text' class='dashboard-name' value='{$dashboard_title}' size='1'>
-               <i class='fas fa-save save-dashboard-name' title='{$save_label}'></i>
-               <span class='display-message'></span>
-            </div>";
-         }
-         if (!$mini && $can_purge) {
-            $r_tb_icons.= "<i class='fas fa-trash fs-toggle delete-dashboard' title='$delete_label'></i>";
-         }
-         if ($can_edit) {
-            $r_tb_icons.= "<i class='fas fa-edit fs-toggle edit-dashboard' title='$edit_label'></i>";
-         }
-
-         if (!$mini) {
-            $r_tb_icons.= "<i class='fas fa-expand toggle-fullscreen' title='$fs_label'></i>";
-         }
-
-         if (!$mini) {
-            $left_toolbar = <<<HTML
-               <span class="toolbar left-toolbar">
-                  <div class="change-dashboard">
-                     $dropdown_dashboards
-                     $l_tb_icons
-                  </div>
-                  $rename
-               </span>
-HTML;
-         }
-
-         $grid_guide = <<<HTML
-            <div class="grid-guide">
-               $add_controls
-            </div>
-HTML;
-      }
-
-      $toolbars = <<<HTML
-         $left_toolbar
-         <span class="toolbar">
-            <i class="fas fa-history auto-refresh" title="$history_label"></i>
-            <i class="fas fa-moon night-mode" title="$night_label"></i>
-            $r_tb_icons
-         </span>
-HTML;
-
-      $filters = "";
-      if (!$mini) {
-         $filters = <<<HTML
-         <div class='filters_toolbar'>
-            <span class='filters'></span>
-            <span class='filters-control'>
-               <i class="fas fa-plus-square plus-sign add-filter">
-                  <span class='add-filter-lbl'>{$add_filter_lbl}</span>
-               </i>
-            </span>
-         </div>
-HTML;
-      }
-
-      $embed_watermark = "";
-      if (self::$embed) {
-         $embed_watermark = "<span class='glpi_logo'></span>";
-      }
-
-      // display the grid
-      $html = <<<HTML
-      <div class="dashboard {$embed_class} {$mini_class}" id="dashboard-{$rand}">
-         $embed_watermark
-         $toolbars
-         $filters
-         $grid_guide
-         <div class="grid-stack grid-stack-{$this->grid_cols}"
-            id="grid-stack-$rand"
-            gs-no-move='true'
-            gs-no-resize='true'>
-            EN COURS DE REFONTE
-         </div>
-      </div>
-HTML;
-
-      $ajax_cards = GLPI_AJAX_DASHBOARD;
-      $context    = self::$context;
-      $cache_key  = sha1($_SESSION['glpiactiveentities_string '] ?? "");
-
-      $js = <<<JAVASCRIPT
-      $(function () {
-         Dashboard.display({
-            current:     '{$this->current}',
-            cols:        {$this->grid_cols},
-            rows:        {$this->grid_rows},
-            cell_margin: {$this->cell_margin},
-            rand:        '{$rand}',
-            embed:       {$embed_str},
-            ajax_cards:  {$ajax_cards},
-            all_cards:   {$cards_json},
-            all_widgets: {$all_widgets_json},
-            context:     "{$context}",
-            cache_key:   "{$cache_key}",
-         })
-      });
-JAVASCRIPT;
-      $js = Html::scriptBlock($js);
-
-      echo $html.$js;
    }
 
 

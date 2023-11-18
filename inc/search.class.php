@@ -1519,7 +1519,12 @@ class Search {
       ]);
 
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
-      Html::showMassiveActions(['display_arrow' => false, 'container' => "search-table"]);
+      $massiveactionparams                   = $data['search']['massiveactionparams'];
+      $massiveactionparams['container']      = "search-table";
+      $massiveactionparams['display_arrow']  = false;
+      $massiveactionparams['itemtype']       = $data['itemtype'];
+
+      Html::showMassiveActions($massiveactionparams);
       
       echo $twig->render('search.twig', [
          'is_trash' =>$data['search']['is_deleted'],
