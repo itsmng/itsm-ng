@@ -65,7 +65,7 @@
     }
   }</script>
 
-{# <button onClick="fullscreen()" class="ms-0 btn btn-secondary btn-sm">Fullscreen</button> #}
+<button onClick="fullscreen()" class="ms-auto me-0 btn btn-link btn-sm"><i class='fas fa-expand'></i></button>
 <div id="main-dashboard" class='container bg-white'>
 	{% for row in widgetGrid %}
 		<div class="row bg-light" style="height: calc( 100% / {{widgetGrid|length}})">

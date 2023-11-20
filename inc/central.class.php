@@ -123,7 +123,7 @@ class Central extends CommonGLPI {
          FROM 
             glpi_tickets
          WHERE 
-            is_deleted = 0
+            is_deleted = 0 AND entities_id = ' . Session::getActiveEntity() . '
          GROUP BY 
             status;
       '));
@@ -138,31 +138,32 @@ class Central extends CommonGLPI {
          $finalResult[$ticket['status']] = $ticket;
       }
       
+      $conditions = ['entities_id' => Session::getActiveEntity()];
       $dashboard->show([
          'widgetGrid' => [
             [
                [
                   'type' => 'number',
                   'title' => __('Computer'),
-                  'value' => countElementsInTable('glpi_computers'),
+                  'value' => countElementsInTable('glpi_computers', $conditions),
                   'icon' => 'fas fa-laptop',
                ],
                [
                   'type' => 'number',
                   'title' => __('Rack'),
-                  'value' => countElementsInTable('glpi_racks'),
+                  'value' => countElementsInTable('glpi_racks', $conditions),
                   'icon' => 'fas fa-server',
                ],
                [
                   'type' => 'number',
                   'title' => __('Network device'),
-                  'value' => countElementsInTable('glpi_networkequipments'),
+                  'value' => countElementsInTable('glpi_networkequipments', $conditions),
                   'icon' => 'fas fa-network-wired',
                ],
                [
                   'type' => 'number',
                   'title' => __('Softwares'),
-                  'value' => countElementsInTable('glpi_softwares'),
+                  'value' => countElementsInTable('glpi_softwares', $conditions),
                   'icon' => 'fas fa-cube',
                ],
             ], [
@@ -177,20 +178,14 @@ class Central extends CommonGLPI {
                [
                   'type' => 'number',
                   'title' => __('Ticket'),
-                  'value' => countElementsInTable('glpi_tickets'),
-                  'icon' => 'fas fa-ticket',
+                  'value' => countElementsInTable('glpi_tickets', $conditions),
+                  'icon' => 'fas fa-ticket-alt',
                ],
                [
                   'type' => 'number',
                   'title' => __('User'),
-                  'value' => countElementsInTable('glpi_users'),
-                  'icon' => 'fas fa-ticket',
-               ],
-               [
-                  'type' => 'number',
-                  'title' => __('Entity'),
-                  'value' => countElementsInTable('glpi_entities'),
-                  'icon' => 'fas fa-ticket',
+                  'value' => countElementsInTable('glpi_users', $conditions),
+                  'icon' => 'fas fa-user',
                ],
             ]
          ]
