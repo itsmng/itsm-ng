@@ -41,14 +41,13 @@
 					<a title={{'Help'|trans}} href="https://www.itsm-ng.org">
 						<i class="fas fa-question"></i>
 					</a>
-                    {% include "nav-settings.twig" %}
 				</li>
 				<li id='preferences_link' class='p-2'>
 					<a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}">
 						<i class='fa fa-cog'></i>
                         <span class='sr-only'>{{'My settings'|trans}}</span>
 						{% if username %}
-							<span id='myname'>{{username}}</span>
+							<span id='myname test-info'>{{username}}</span>
 						{% endif %}
 					</a>
 				</li>

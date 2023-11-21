@@ -1,0 +1,9 @@
+<div class="container">
+    {% for row in range(0,row_amount) %}
+    <div class='row'>
+        {% for col in range(0,col_amount) %}
+            <div class='col border'>{{col}}</div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
