@@ -68,7 +68,7 @@ class Central extends CommonGLPI {
             4 => _n('RSS feed', 'RSS feeds', Session::getPluralNumber()),
          ];
 
-         $grid = new Glpi\Dashboard\Grid('central');
+         $grid = new Grid('central');
          if ($grid->canViewOneDashboard()) {
             array_unshift($tabs, __('Dashboard'));
          }
@@ -114,8 +114,9 @@ class Central extends CommonGLPI {
 
       self::showMessages();
 
-      $default   = Glpi\Dashboard\Grid::getDefaultDashboardForMenu('central');
-      $dashboard = new Glpi\Dashboard\Grid($default);
+      $dashboard = new Dashboard();
+      $dashboard->getFromDB($dashboard->getByName('central')['id']);
+
       global $DB;
       $ticketsByStatus = iterator_to_array($DB->query('SELECT 
       status,
@@ -138,58 +139,7 @@ class Central extends CommonGLPI {
          $finalResult[$ticket['status']] = $ticket;
       }
       
-      $conditions = ['entities_id' => Session::getActiveEntity()];
-      $dashboard->show([
-         'widgetGrid' => [
-            [
-               [
-                  'type' => 'number',
-                  'title' => __('Computer'),
-                  'value' => countElementsInTable('glpi_computers', $conditions),
-                  'icon' => 'fas fa-laptop',
-               ],
-               [
-                  'type' => 'number',
-                  'title' => __('Rack'),
-                  'value' => countElementsInTable('glpi_racks', $conditions),
-                  'icon' => 'fas fa-server',
-               ],
-               [
-                  'type' => 'number',
-                  'title' => __('Network device'),
-                  'value' => countElementsInTable('glpi_networkequipments', $conditions),
-                  'icon' => 'fas fa-network-wired',
-               ],
-               [
-                  'type' => 'number',
-                  'title' => __('Softwares'),
-                  'value' => countElementsInTable('glpi_softwares', $conditions),
-                  'icon' => 'fas fa-cube',
-               ],
-            ], [
-               [
-                  'type' => 'BarChart',
-                  'title' => __('Tickets by status'),
-                  'labels' => array_values(Ticket::getAllStatusArray()),
-                  'series' => [array_column($finalResult, 'ticket_count')],
-                  'options' => ['height' => '10rem'],
-               ],
-            ], [
-               [
-                  'type' => 'number',
-                  'title' => __('Ticket'),
-                  'value' => countElementsInTable('glpi_tickets', $conditions),
-                  'icon' => 'fas fa-ticket-alt',
-               ],
-               [
-                  'type' => 'number',
-                  'title' => __('User'),
-                  'value' => countElementsInTable('glpi_users', $conditions),
-                  'icon' => 'fas fa-user',
-               ],
-            ]
-         ]
-      ]);
+      $dashboard->show();
 
       Html::accessibilityHeader();
    }

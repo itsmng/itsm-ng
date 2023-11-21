@@ -73,7 +73,7 @@ header {
     z-index: 50;
     font-size: var(--nav-size);
 
-    i {
+    i, span {
         color: $header-text-color !important;
     }
 }

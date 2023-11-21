@@ -29,21 +29,7 @@
  * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
  */
-
-namespace Glpi\Dashboard;
-
 use Ramsey\Uuid\Uuid;
-use CommonGLPI;
-use Dropdown;
-use DBConnection;
-use Html;
-use Plugin;
-use Session;
-use ShareDashboardDropdown;
-use Telemetry;
-use Toolbox;
-use Twig;
-use Exception;
 
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
@@ -220,9 +206,14 @@ HTML;
     * @return void display html of the grid
     */
    public function show($content) {
+      global $CFG_GLPI;
       require_once GLPI_ROOT . "/ng/twig.class.php";
       Html::requireJs('charts');
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
+      $content['edit'] = true;
+      $content['data_types'] = $CFG_GLPI['globalsearch_types'];
+      $content['dashboardId'] = $this->current;
+      $content['addWidget_action'] = Dashboard::getFormURL();
       try {
          echo $twig->render('dashboard.twig', $content);
       } catch (Exception $e) {
@@ -816,7 +807,7 @@ HTML;
       $widget_args = array_merge($widget_args ?? [], $card_options['args'] ?? []);
 
       // call widget function to construct html
-      $all_widgets = Widget::getAllTypes();
+      $all_widgets = Glpi\Dashboard\Widget::getAllTypes();
       $widgettype  = $card_options['args']['widgettype'] ?? "";
       $widgetfct   = $all_widgets[$widgettype]['function'] ?? "";
       if (strlen($widgetfct)) {

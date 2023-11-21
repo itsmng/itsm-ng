@@ -1567,44 +1567,16 @@ CREATE TABLE `glpi_crontasks` (
 
 ### Dump table glpi_dashboards_dashboards
 
-DROP TABLE IF EXISTS `glpi_dashboards_dashboards`;
-CREATE TABLE `glpi_dashboards_dashboards` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `key` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `context` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'core',
+DROP TABLE IF EXISTS `glpi_dashboards`;
+CREATE TABLE `glpi_dashboards` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `key` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` LONGTEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `profileId` int(11) NOT NULL DEFAULT 0,
+  `userId` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `key` (`key`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-### Dump table glpi_dashboards_items
-
-DROP TABLE IF EXISTS `glpi_dashboards_items`;
-CREATE TABLE `glpi_dashboards_items` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `dashboards_dashboards_id` int(11) NOT NULL,
-  `gridstack_id` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `card_id` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `x` int(11) DEFAULT NULL,
-  `y` int(11) DEFAULT NULL,
-  `width` int(11) DEFAULT NULL,
-  `height` int(11) DEFAULT NULL,
-  `card_options` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`id`),
-  KEY `dashboards_dashboards_id` (`dashboards_dashboards_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-### Dump table glpi_dashboards_rights
-
-DROP TABLE IF EXISTS `glpi_dashboards_rights`;
-CREATE TABLE `glpi_dashboards_rights` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `dashboards_dashboards_id` int(11) NOT NULL,
-  `itemtype` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `items_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `dashboards_dashboards_id` (`dashboards_dashboards_id`),
-  UNIQUE KEY `unicity` (`dashboards_dashboards_id`, `itemtype`,`items_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ### Dump table glpi_devicecasemodels

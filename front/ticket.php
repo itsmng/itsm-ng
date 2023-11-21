@@ -44,8 +44,8 @@ JS;
 
 echo Html::manageRefreshPage(false, $callback);
 
-if ($default = Glpi\Dashboard\Grid::getDefaultDashboardForMenu('mini_ticket', true)) {
-   $dashboard = new Glpi\Dashboard\Grid($default, 33, 2, 'mini_core');
+if ($default = Grid::getDefaultDashboardForMenu('mini_ticket', true)) {
+   $dashboard = new Grid($default, 33, 2, 'mini_core');
    $dashboard->show([
       'widgetGrid' => [
          [

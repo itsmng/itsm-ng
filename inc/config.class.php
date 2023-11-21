@@ -30,7 +30,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Glpi\Dashboard\Grid;
 use Glpi\Cache\SimpleCache;
 use Glpi\Exception\PasswordTooWeakException;
 use Glpi\System\RequirementsManager;

@@ -30,8 +30,6 @@
  * ---------------------------------------------------------------------
  */
 
-namespace Glpi\Dashboard;
-
 use Ramsey\Uuid\Uuid;
 
 if (!defined('GLPI_ROOT')) {
@@ -55,11 +53,6 @@ class Dashboard extends \CommonDBTM {
    }
 
 
-   static function getIndexName() {
-      return "key";
-   }
-
-
    /**
     * Retrieve the current dashboard from the DB (or from cache)
     * with its rights and items
@@ -69,25 +62,7 @@ class Dashboard extends \CommonDBTM {
     * @return int
     */
    public function load(bool $force = false): int {
-      $loaded = true;
-      if ($force
-          || count($this->fields) == 0
-          || $this->fields['id'] == 0
-          || strlen($this->fields['name']) == 0) {
-         $loaded = $this->getFromDB($this->key);
-      }
-
-      if ($loaded) {
-         if ($force || $this->items === null) {
-            $this->items = Item::getForDashboard($this->fields['id']);
-         }
-
-         if ($force || $this->rights === null) {
-            $this->rights = Right::getForDashboard($this->fields['id']);
-         }
-      }
-
-      return $this->fields['id'] ?? false;
+      return 1;
    }
 
 
@@ -97,7 +72,7 @@ class Dashboard extends \CommonDBTM {
       $iterator = $DB->request([
          'FROM'  => self::getTable(),
          'WHERE' => [
-            'key' => $ID
+            'id' => $ID
          ],
          'LIMIT' => 1
       ]);
@@ -486,5 +461,140 @@ class Dashboard extends \CommonDBTM {
       }
 
       return true;
+   }
+
+   static function getMenuName() {
+      return __('Dashboards');
+   }
+
+   static function getMenuContent()
+   {
+      $menu = [
+         'title' => self::getMenuName(),
+         'page' => '/front/dashboard.form.php',
+         'icon' => 'fas fa-chart-line'
+       ];
+   
+       return $menu;
+   }
+
+   function showForm($ID, $options = []) {
+      $this->getFromDB($ID);
+      Html::requireJs('charts');
+
+      $form = [
+         'action' => $this->getFormURL(),
+         'content' => [
+            __('General') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Name') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields['name'] ?? '',
+                     'required' => true,
+                  ],
+               ]
+            ]
+         ]
+      ];
+      include_once GLPI_ROOT . '/ng/form.utils.php';
+      renderTwigForm($form);
+      $this->show(true);
+   }
+
+   function getByName($name) {
+      global $DB;
+
+      $iterator = $DB->request([
+         'FROM'  => self::getTable(),
+         'WHERE' => [
+            'name' => $name
+         ],
+         'LIMIT' => 1
+      ]);
+      return $iterator->next();
+   }
+
+   private function getWidgetList() {
+      $grid = new Grid();
+      $cards = $grid->getAllDasboardCards();
+      $list_cards = [];
+      array_walk($cards, function($data, $index) use (&$list_cards) {
+         $group = $data['group'] ?? __("others");
+         $list_cards[$group][$index] = $data['label'] ?? $data['itemtype']::getTypeName();
+      });
+      return $list_cards;
+
+   }
+
+   function show($edit = false) {
+      $content = ['widgetGrid' => json_decode($this->fields['content'])];
+      $list_cards = $this->getWidgetList();
+      Html::requireJs('charts');
+      $twig = Twig::load(GLPI_ROOT . "/templates", false);
+      $content['edit'] = $edit;
+      $content['data_types'] = $list_cards;
+      $content['dashboardId'] = $this->fields['id'];
+      $content['addWidget_action'] = Dashboard::getFormURL();
+      $content['ajax_endpoint'] = "../ajax/dashboard.php";
+      try {
+         echo $twig->render('dashboard.twig', $content);
+      } catch (Exception $e) {
+         echo $e->getMessage();
+      }
+   }
+
+   private function placeWidgetAtCoord(&$content, $widget, $coords) {
+      [$x, $y] = $coords;
+      if ($x == -1) {
+         array_unshift($content, [$widget]);
+      } else if ($x > count($content)) {
+         array_push($content, [$widget]);
+      } else {
+         if ($y == -1) {
+            array_unshift($content[$x], $widget);
+         } else if ($y > count($content[$x])) {
+            array_push($content[$x], $widget);
+         } else { // add the widget in between
+            array_splice($content[$x], $y, 0, [$widget]);
+         }
+      }
+   }
+
+   function addWidget($data) {
+      $grid = new Grid();
+      $card = $grid->getAllDasboardCards()[$data['widget']];
+      $dashboard = json_decode($this->fields['content'], true);
+      $label = $card['label'];
+      $provider = $card['provider'];
+
+      switch ($card['widgettype'][0]) {
+         case 'bigNumber':
+            $providedWidget = $provider();
+            $widget = [
+               'type' => 'number',
+               'title' => $label,
+               'value' => $providedWidget['number'],
+               'icon' => $providedWidget['icon']
+            ];
+            break;
+      }
+      $this->placeWidgetAtCoord($dashboard, $widget, json_decode($data['coords']));
+      if ($widget && $this->update(['id' => $this->fields['id'], 'content' => json_encode($dashboard, JSON_UNESCAPED_UNICODE)]))
+         Session::addMessageAfterRedirect(__("Widget added successfuly"));
+      else
+         Session::addMessageAfterRedirect(__("Widget could not be added"), false, ERROR);
+      Html::back();
+   }
+
+   function deleteWidget($coords) {
+      [$x, $y] = $coords;
+      $dashboard = json_decode($this->fields['content'], true);
+      array_splice($dashboard[$x], $y, 1);
+      if (empty($dashboard[$x])) {
+         array_splice($dashboard, $x, 1);
+      }
+      return ($this->update(['id' => $this->fields['id'], 'content' => json_encode($dashboard, JSON_UNESCAPED_UNICODE)]));
    }
 }

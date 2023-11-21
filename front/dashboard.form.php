@@ -1,10 +1,11 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
- * ITSM-NG 
+ * ITSM-NG
  * Copyright (C) 2022 ITSM-NG and contributors.
  *
- * https://www.itsm-ng.org/
+ * https://www.itsm-ng.org
  *
  * based on GLPI - Gestionnaire Libre de Parc Informatique
  * Copyright (C) 2003-2014 by the INDEPNET Development Team.
@@ -30,14 +31,21 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+ include ('../inc/includes.php');
 
-$dropdown = new SpecialStatus();
+ Session::checkRight("dashboard", UPDATE);
+ 
+ Html::header(Dashboard::getMenuName(), $_SERVER['PHP_SELF'], "config", "Dashboard");
+if (isset($_POST['update']) && isset($_POST['id'])) {
+    $dashboard = new Dashboard();
+    $dashboard->getFromDB($_POST['id']);
+    $dashboard->addWidget($_POST);
+} else if (isset($_GET['id'])) {
+    $dashboard = new Dashboard();
+    $dashboard->showForm($_GET['id'], $_GET);
+} else {
+    Search::show('Dashboard');
+}
 
-$dropdown->displayHeader();
-$dropdown->title();
-$dropdown->statusForm();
-$dropdown->oldStatusOrder();
-
-Html::footer();
-//include (GLPI_ROOT . "/front/dropdown.common.php");
+ Html::footer();
+?>
