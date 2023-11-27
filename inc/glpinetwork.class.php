@@ -126,7 +126,7 @@ class GLPINetwork extends CommonGLPI {
     * @return string
     */
    public static function getGlpiUserAgent(): string {
-      $version = defined('GLPI_PREVER') ? GLPI_PREVER : GLPI_VERSION;
+      $version = defined('ITSM_PREVER') ? ITSM_PREVER : ITSM_VERSION;
       $comments = sprintf('installation-mode:%s', GLPI_INSTALL_MODE);
       if (!empty(GLPI_USER_AGENT_EXTRA_COMMENTS)) {
          // append extra comments (remove '(' and ')' chars to not break UA string)

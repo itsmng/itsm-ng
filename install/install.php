@@ -1,6 +1,35 @@
 <?php
+/**
+ * ---------------------------------------------------------------------
+ * GLPI - Gestionnaire Libre de Parc Informatique
+ * Copyright (C) 2015-2022 Teclib' and contributors.
+ *
+ * http://glpi-project.org
+ *
+ * based on GLPI - Gestionnaire Libre de Parc Informatique
+ * Copyright (C) 2003-2014 by the INDEPNET Development Team.
+ *
+ * ---------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of GLPI.
+ *
+ * GLPI is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GLPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
+ * ---------------------------------------------------------------------
+ */
 
-session_start();
 define('GLPI_ROOT', realpath('..'));
 
 include_once (GLPI_ROOT . "/inc/based_config.php");
@@ -11,262 +40,617 @@ $GLPI->initLogger();
 $GLPI->initErrorHandler();
 
 Config::detectRootDoc();
-require_once '../vendor/autoload.php';
-use Glpi\System\RequirementsManager;
 
-require_once GLPI_ROOT . "/ng/languages/language.class.php";
-require_once GLPI_ROOT . "/ng/twig.class.php";
-$twig = Twig::load(GLPI_ROOT . "/templates", false);
+//Print a correct  Html header for application
+function header_html($etape) {
+   global $CFG_GLPI;
 
-//allow previous page action
-header("Cache-Control: private, max-age=10800, pre-check=10800");
-header("Pragma: private");
-header("Expires: " . date(DATE_RFC822,strtotime("+2 day")));
+   // Send UTF8 Headers
+   header("Content-Type: text/html; charset=UTF-8");
 
-//get header data, raw in TWIG
-$header_data = [  
-    "javascript"    =>  [
-        Html::script("public/lib/base.js"),
-        Html::script("public/lib/fuzzy.js"),
-        Html::script("js/common.js"),
-        Html::script("js/tableExport.min.js"),
-        Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"),
-        Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"),
-        Html::script("js/bootstrap-table-export.min.js"),
-        ],
-    "css"     =>  [
-        Html::css('vendor/twbs/bootstrap/dist/css/bootstrap.min.css'),
-        Html::css('vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css'),
-        Html::css('public/lib/base.css'),
-        Html::css("css/style_install.css"),
-        ]
-];
+   echo "<!DOCTYPE html'>";
+   echo "<html lang='fr'>";
+    echo "<head>";
+    echo "<meta charset='utf-8'>";
+   echo "<meta http-equiv='Content-Script-Type' content='text/javascript'> ";
+    echo "<meta http-equiv='Content-Style-Type' content='text/css'> ";
+   echo "<title>Setup ITSM-NG</title>";
 
-$steps =   ['0', '1', '2', '3', '4', '5', '6','7','8', 'error'];
-$steps_name = ['languages', 'license', 'install', 'requirement', 'login', 'databases', 'initialization', 'initialized', 'done', 'error'];
+   // CFG
+   echo Html::getCoreVariablesForJavascript();
 
-$header_data["steps_name"] = $steps_name;
-global $CFG_GLPI;
+    // LIBS
+   echo Html::script("public/lib/base.js");
+   echo Html::script("public/lib/fuzzy.js");
+   echo Html::script("js/common.js");
 
-//checks if the step is valid
-if (isset($_GET['step']) and in_array($_GET['step'], $steps)) {
-    $step = $_GET['step'];
-} else {
-    $step = '0';
+    // CSS
+   echo Html::css('public/lib/base.css');
+   echo Html::css("css/style_install.css");
+   echo "</head>";
+   echo "<body>";
+   echo "<div id='principal'>";
+   echo "<div id='bloc'>";
+   echo "<div id='logo_bloc'></div>";
+   echo "<h2>ITSM-NG SETUP</h2>";
+   echo "<br><h3>". $etape ."</h3>";
 }
 
-$twig_vars = [];
-Session::loadLanguage('', false);
-switch ($step) {
-    case "0":
-        $regions = Language::getLanguagesByRegion();
 
-        if (isset($_SESSION['language'])){
-            $language = $_SESSION['language'];
-        } else {
-            $language = Session::getPreferredLanguage();
-        }
-        $twig_vars = ['languages' => $regions , 'preferred_language' =>  $language];
-        break;
+//Display a great footer.
+function footer_html() {
+   echo "</div></div></body></html>";
+}
 
-    case "1":
-        if (isset($_POST['language'])){
-            $_SESSION['language'] = $_POST['language'];
-            $_SESSION['glpilanguage'] = $_SESSION['language']; //required due to the way Session::loadLanguage works
-        }
-        Session::loadLanguage($_SESSION['language'], false);
-        $license = file_get_contents("../COPYING.txt");
-        $twig_vars = ['license' => $license];
-        break;
 
-    case "3":
-        if (isset($_POST['install'])){
-            $_SESSION['action'] = 'install';
-        } else if (isset($_POST['update'])){
-            $_SESSION['action'] = 'update';
-        }
-        $raw_requirements = (new RequirementsManager())->getCoreRequirementList(null);
-        $requirements = [];
-        foreach ($raw_requirements as $raw_requirement) {
-            if (!$raw_requirement->isOutOfContext()) { // skips raw_requirement if not relevant
-                $title = $raw_requirement->getTitle();
-                $required = $raw_requirement->isMissing() && !$raw_requirement->isOptional();
-                $optional = $raw_requirement->isMissing() && $raw_requirement->isOptional();
-                $validated = $raw_requirement->isValidated();
-                $message = implode('. ', Html::entities_deep($raw_requirement->getValidationMessages()));
-                $requirement = ['title' => $title, 'required' => $required, 'validated' => $validated, 'optional' => $optional, 'message' => $message];
-                $requirements[] = $requirement;
+// choose language
+function choose_language() {
+   global $CFG_GLPI;
+
+   echo "<form action='install.php' method='post'>";
+   echo "<p class='center'>";
+
+   // fix missing param for js drodpown
+   $CFG_GLPI['ajax_limit_count'] = 15;
+
+   Dropdown::showLanguages("language", ['value' => $_SESSION['glpilanguage']]);
+   echo "</p>";
+   echo "";
+   echo "<p class='submit'><input type='hidden' name='install' value='lang_select'>";
+   echo "<input type='submit' name='submit' class='submit' value='OK'></p>";
+   Html::closeForm();
+}
+
+
+function acceptLicense() {
+
+   echo "<div class='center'>";
+   echo "<textarea id='license' cols='85' rows='10' readonly='readonly'>";
+   readfile("../COPYING.txt");
+   echo "</textarea>";
+
+   echo "<br><a target='_blank' href='http://www.gnu.org/licenses/old-licenses/gpl-2.0-translations.html'>".
+         __('Unofficial translations are also available')."</a>";
+
+   echo "<form action='install.php' method='post'>";
+   echo "<p id='license'>";
+
+   echo "<label for='agree' class='radio'>";
+   echo "<input type='radio' name='install' id='agree' value='License'>";
+   echo "<span class='outer'><span class='inner'></span></span>";
+   echo __('I have read and ACCEPT the terms of the license written above.');
+   echo " </label>";
+
+   echo "<label for='disagree' class='radio'>";
+   echo "<input type='radio' name='install' value='lang_select' id='disagree' checked='checked'>";
+   echo "<span class='outer'><span class='inner'></span></span>";
+   echo __('I have read and DO NOT ACCEPT the terms of the license written above');
+   echo " </label>";
+
+   echo "<p><input type='submit' name='submit' class='submit' value=\"".__s('Continue')."\"></p>";
+   Html::closeForm();
+   echo "</div>";
+}
+
+
+//confirm install form
+function step0() {
+
+   echo "<h3>".__('Installation or update of GLPI')."</h3>";
+   echo "<p>".__s("Choose 'Install' for a completely new installation of GLPI.")."</p>";
+   echo "<p> ".__s("Select 'Upgrade' to update your version of GLPI from an earlier version")."</p>";
+   echo "<form action='install.php' method='post'>";
+   echo "<input type='hidden' name='update' value='no'>";
+   echo "<p class='submit'><input type='hidden' name='install' value='Etape_0'>";
+   echo "<input type='submit' name='submit' class='submit' value=\""._sx('button', 'Install')."\"></p>";
+   Html::closeForm();
+
+   echo "<form action='install.php' method='post'>";
+   echo "<input type='hidden' name='update' value='yes'>";
+   echo "<p class='submit'><input type='hidden' name='install' value='Etape_0'>";
+   echo "<input type='submit' name='submit' class='submit' value=\""._sx('button', 'Upgrade')."\"></p>";
+   Html::closeForm();
+}
+
+
+//Step 1 checking some compatibility issue and some write tests.
+function step1($update) {
+   echo "<h3>".__s('Checking of the compatibility of your environment with the execution of GLPI').
+        "</h3>";
+   echo "<table class='tab_check'>";
+
+   $error = Toolbox::commonCheckForUseGLPI(true);
+
+   echo "</table>";
+   switch ($error) {
+      case 0 :
+         echo "<form action='install.php' method='post'>";
+         echo "<input type='hidden' name='update' value='". $update."'>";
+         echo "<input type='hidden' name='language' value='". $_SESSION['glpilanguage']."'>";
+         echo "<p class='submit'><input type='hidden' name='install' value='Etape_1'>";
+         echo "<input type='submit' name='submit' class='submit' value=\"".__('Continue')."\">";
+         echo "</p>";
+         Html::closeForm();
+         break;
+
+      case 1 :
+         echo "<h3>".__('Do you want to continue?')."</h3>";
+         echo "<div class='submit'><form action='install.php' method='post' class='inline'>";
+         echo "<input type='hidden' name='install' value='Etape_1'>";
+         echo "<input type='hidden' name='update' value='". $update."'>";
+         echo "<input type='hidden' name='language' value='". $_SESSION['glpilanguage']."'>";
+         echo "<input type='submit' name='submit' class='submit' value=\"".__('Continue')."\">";
+         Html::closeForm();
+         echo "&nbsp;&nbsp;";
+
+         echo "<form action='install.php' method='post' class='inline'>";
+         echo "<input type='hidden' name='update' value='". $update."'>";
+         echo "<input type='hidden' name='language' value='". $_SESSION['glpilanguage']."'>";
+         echo "<input type='hidden' name='install' value='Etape_0'>";
+         echo "<input type='submit' name='submit' class='submit' value=\"".__('Try again')."\">";
+         Html::closeForm();
+         echo "</div>";
+         break;
+
+      case 2 :
+         echo "<h3>".__('Do you want to continue?')."</h3>";
+         echo "<form action='install.php' method='post'>";
+         echo "<input type='hidden' name='update' value='".$update."'>";
+         echo "<p class='submit'><input type='hidden' name='install' value='Etape_0'>";
+         echo "<input type='submit' name='submit' class='submit' value=\"".__('Try again')."\">";
+         echo "</p>";
+         Html::closeForm();
+         break;
+   }
+
+}
+
+
+//step 2 import mysql settings.
+function step2($update) {
+
+   echo "<h3>".__('Database connection setup')."</h3>";
+   echo "<form action='install.php' method='post'>";
+   echo "<input type='hidden' name='update' value='".$update."'>";
+   echo "<fieldset><legend>".__('Database connection parameters')."</legend>";
+   echo "<p><label class='block'>".__('SQL server (MariaDB or MySQL)') ." </label>";
+   echo "<input type='text' name='db_host'><p>";
+   echo "<p><label class='block'>".__('SQL user') ." </label>";
+   echo "<input type='text' name='db_user'></p>";
+   echo "<p><label class='block'>".__('SQL password')." </label>";
+   echo "<input type='password' name='db_pass'></p></fieldset>";
+   echo "<input type='hidden' name='install' value='Etape_2'>";
+   echo "<p class='submit'><input type='submit' name='submit' class='submit' value='".
+         __('Continue')."'></p>";
+   Html::closeForm();
+}
+
+
+//step 3 test mysql settings and select database.
+function step3($host, $user, $password, $update) {
+
+   error_reporting(16);
+   echo "<h3>".__('Test of the connection at the database')."</h3>";
+
+   //Check if the port is in url
+   $hostport = explode(":", $host);
+   if (count($hostport) < 2) {
+      $link = new mysqli($hostport[0], $user, $password);
+   } else {
+      $link = new mysqli($hostport[0], $user, $password, '', $hostport[1]);
+   }
+
+   if ($link->connect_error
+       || empty($host)
+       || empty($user)) {
+      echo "<p>".__("Can't connect to the database")."\n <br>".
+           sprintf(__('The server answered: %s'), $link->connect_error)."</p>";
+
+      if (empty($host)
+          || empty($user)) {
+         echo "<p>".__('The server or/and user field is empty')."</p>";
+      }
+
+      echo "<form action='install.php' method='post'>";
+      echo "<input type='hidden' name='update' value='".$update."'>";
+      echo "<input type='hidden' name='install' value='Etape_1'>";
+      echo "<p class='submit'><input type='submit' name='submit' class='submit' value='".
+            __s('Back')."'></p>";
+      Html::closeForm();
+
+   } else {
+      $_SESSION['db_access'] = ['host'     => $host,
+                                     'user'     => $user,
+                                     'password' => $password];
+      echo  "<h3>".__('Database connection successful')."</h3>";
+
+      //get database raw version
+      $DB_ver = $link->query("SELECT version()");
+      $row = $DB_ver->fetch_array();
+      echo "<p class='center'>";
+      $checkdb = Config::displayCheckDbEngine(true, $row[0]);
+      echo "</p>";
+      if ($checkdb > 0) {
+         return;
+      }
+
+      if ($update == "no") {
+         echo "<p>".__('Please select a database:')."</p>";
+         echo "<form action='install.php' method='post'>";
+
+         if ($DB_list = $link->query("SHOW DATABASES")) {
+            while ($row = $DB_list->fetch_array()) {
+               if (!in_array($row['Database'], ["information_schema",
+                                                     "mysql",
+                                                     "performance_schema"] )) {
+                  echo "<p>";
+                  echo "<label class='radio'>";
+                  echo "<input type='radio' name='databasename' value='". $row['Database']."'>";
+
+                  echo "<span class='outer'><span class='inner'></span></span>";
+                  echo $row['Database'];
+                  echo " </label>";
+                  echo " </p>";
+               }
             }
-        }
-        if ($raw_requirements->hasMissingMandatoryRequirements()) {
-            $missing_requirements = "mandatory";
-        } else if ($raw_requirements->hasMissingOptionalRequirements()) {
-            $missing_requirements = "optional";
-        } else {
-            $missing_requirements = "none";
-        }
+         }
 
-        $twig_vars = ['requirements' => $requirements, 'missing_requirements' => $missing_requirements ];
-        break;
+         echo "<p>";
+         echo "<label class='radio'>";
+         echo "<input type='radio' name='databasename' value='0'>";
+         echo __('Create a new database or use an existing one:');
+         echo "<span class='outer'><span class='inner'></span></span>";
+         echo "&nbsp;<input type='text' name='newdatabasename'>";
+         echo " </label>";
+         echo "</p>";
+         echo "<input type='hidden' name='install' value='Etape_3'>";
+         echo "<p class='submit'><input type='submit' name='submit' class='submit' value='".
+               __('Continue')."'></p>";
+         $link->close();
+         Html::closeForm();
 
-    case "4":
-        $host = isset($_SESSION['db_host']) ? $_SESSION['db_host'] : "";
-        $user = isset($_SESSION['db_user']) ? $_SESSION['db_user'] : "";
+      } else if ($update == "yes") {
+         echo "<p>".__('Please select the database to update:')."</p>";
+         echo "<form action='install.php' method='post'>";
 
-        $twig_vars = ['host' => $host, 'user' => $user];
-        break;
+         $DB_list = $link->query("SHOW DATABASES");
+         while ($row = $DB_list->fetch_array()) {
+            echo "<p>";
+            echo "<label class='radio'>";
+            echo "<input type='radio' name='databasename' value='". $row['Database']."'>";
+            echo "<span class='outer'><span class='inner'></span></span>";
+            echo $row['Database'];
+            echo " </label>";
+            echo "</p>";
+         }
 
-    case "5":
-        if (isset($_POST['db_host'])){
-            $_SESSION['db_host'] = $_POST['db_host'];
-            $_SESSION['db_user'] = $_POST['db_user'];
-            $_SESSION['db_pass'] = $_POST['db_pass'];
-        }
-        error_reporting(16);
-        mysqli_report(MYSQLI_REPORT_OFF);
-        $hostport = explode(":", $_SESSION['db_host']);
-        if (count($hostport) < 2) {
-            $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass']);
-        } else {
-            $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass'], '', $hostport[1]);
-        } 
-        $connect_error = $link->connect_error;
-        if (!$connect_error){
-            $DB_ver = $link->query("SELECT version()");
-            $row = $DB_ver->fetch_array();
-            $version = $row[0];
-            $result = Config::checkDbEngine($version);
-            $version = key($result);
-            $db_ver = $result[$version];
-            if (!$db_ver) {
-                $ver_too_old = true;
-            } else {
-                $ver_too_old = false;
-                $databases_info = [];
-                $db_info = [];
-                if ($DB_list = $link->query(   
-                   "SELECT S.schema_name AS 'name', COUNT(T.table_name) AS 'table_count', DATE(MIN(T.create_time)) AS 'table_create', DATE(MAX(T.update_time)) AS 'table_update'
-                    FROM information_schema.tables AS T 
-                    RIGHT JOIN information_schema.schemata AS S 
-                    ON S.schema_name = T.table_schema
-                    GROUP BY S.schema_name;")){
-                    while ($row = $DB_list->fetch_array(MYSQLI_NUM)) {
-                        if (!in_array($row[0],["information_schema","mysql","performance_schema","sys"])){
-                            $databases_info[] = $row;
-                        }
-                    }
-                }
-            }
-            $link->close();
-        }
-        $twig_vars = [  'host' =>           $_SESSION['db_host'],   'user' =>       $_SESSION['db_user'], 
-                        'connect_error' =>  $connect_error,         'version' =>    $version, 
-                        'ver_too_old' =>    $ver_too_old,           'action' =>     $_SESSION['action'],
-                        'databases' =>      $databases_info];
-        break;
+         echo "<input type='hidden' name='install' value='update_1'>";
+         echo "<p class='submit'><input type='submit' name='submit' class='submit' value='".
+                __('Continue')."'></p>";
+         $link->close();
+         Html::closeForm();
+      }
 
-    case "6":
-        if (isset($_POST['newdatabasename']) and $_POST['newdatabasename'] != ""){
-            $new_db = true;
-            $_SESSION["databasename"] = $_POST['newdatabasename'];
-        } else {
-            $new_db = false;
-            $_SESSION["databasename"] = json_decode($_POST["database"], true)[0]["name"];
-        }
-        $db_created = false;
-        $sql_error = "";
-        $error = "";
-        $db_state = "";
-        if ($_SESSION['action'] == 'install'){
-            $glpikey = new GLPIKey();
-            $secured = $glpikey->keyExists();
-            if (!$secured) {
-                $secured = $glpikey->generate();
-                $error = "secured";
-            }
-            if ($secured){
-                mysqli_report(MYSQLI_REPORT_OFF);
-                $hostport = explode(":", $_SESSION['db_host']);
-                if (count($hostport) < 2) {
-                    $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass']);
-                } else {
-                    $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass'], '', $hostport[1]);
-                } 
-                $databasename = $link->real_escape_string($_SESSION['databasename']);// use db already created
-                $DB_selected = $link->select_db($databasename);
-                if ($new_db && !$DB_selected) {
-                    if ($link->query("CREATE DATABASE IF NOT EXISTS `".$databasename."`")) {
-                        $DB_selected = $link->select_db($databasename);
-                        $db_created = true;
-                    } else {
-                        $error = "create_db";
-                    }
-                }
-                if (!$DB_selected){
-                    $sql_error = $link->error;
-                    $error = "use";
-                } else {
-                    if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'])){
-                    } else { 
-                        $error = "setup";
-                    }
-                } 
-            } else {
-                $error = "select";
-            }
-        } else if ($_SESSION['action'] == 'update') {
-            if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'])){
-                global $DB;
-                $update = [
-                    'db' => $_SESSION['databasename'],
-                ];
+   }
+}
+
+
+//Step 4 Create and fill database.
+function step4 ($databasename, $newdatabasename) {
+
+   $host     = $_SESSION['db_access']['host'];
+   $user     = $_SESSION['db_access']['user'];
+   $password = $_SESSION['db_access']['password'];
+
+   //display the form to return to the previous step.
+   echo "<h3>".__('Initialization of the database')."</h3>";
+
+   function prev_form($host, $user, $password) {
+
+      echo "<br><form action='install.php' method='post'>";
+      echo "<input type='hidden' name='db_host' value='". $host ."'>";
+      echo "<input type='hidden' name='db_user' value='". $user ."'>";
+      echo " <input type='hidden' name='db_pass' value='". rawurlencode($password) ."'>";
+      echo "<input type='hidden' name='update' value='no'>";
+      echo "<input type='hidden' name='install' value='Etape_2'>";
+      echo "<p class='submit'><input type='submit' name='submit' class='submit' value='".
+            __s('Back')."'></p>";
+      Html::closeForm();
+   }
+
+   //Display the form to go to the next page
+   function next_form() {
+
+      echo "<br><form action='install.php' method='post'>";
+      echo "<input type='hidden' name='install' value='Etape_4'>";
+      echo "<p class='submit'><input type='submit' name='submit' class='submit' value='".
+             __('Continue')."'></p>";
+      Html::closeForm();
+   }
+
+   //create security key
+   $glpikey = new GLPIKey();
+   $secured = $glpikey->keyExists();
+   if (!$secured) {
+      $secured = $glpikey->generate();
+   }
+
+   if (!$secured) {
+      echo "<p><strong>".__('Security key cannot be generated!')."</strong></p>";
+      prev_form($host, $user, $password);
+      return;
+   }
+
+   //Check if the port is in url
+   $hostport = explode(":", $host);
+   if (count($hostport) < 2) {
+      $link = new mysqli($hostport[0], $user, $password);
+   } else {
+      $link = new mysqli($hostport[0], $user, $password, '', $hostport[1]);
+   }
+
+   $databasename    = $link->real_escape_string($databasename);
+   $newdatabasename = $link->real_escape_string($newdatabasename);
+
+   if (!empty($databasename)) { // use db already created
+      $DB_selected = $link->select_db($databasename);
+
+      if (!$DB_selected) {
+         echo __('Impossible to use the database:');
+         echo "<br>".sprintf(__('The server answered: %s'), $link->error);
+         prev_form($host, $user, $password);
+
+      } else {
+         if (DBConnection::createMainConfig($host, $user, $password, $databasename)) {
+            Toolbox::createSchema($_SESSION["glpilanguage"]);
+            echo "<p>".__('OK - database was initialized')."</p>";
+
+            next_form();
+
+         } else { // can't create config_db file
+            echo "<p>".__('Impossible to write the database setup file')."</p>";
+            prev_form($host, $user, $password);
+         }
+      }
+
+   } else if (!empty($newdatabasename)) { // create new db
+      // Try to connect
+      if ($link->select_db($newdatabasename)) {
+         echo "<p>".__('Database created')."</p>";
+
+         if (DBConnection::createMainConfig($host, $user, $password, $newdatabasename)) {
+            Toolbox::createSchema($_SESSION["glpilanguage"]);
+            echo "<p>".__('OK - database was initialized')."</p>";
+            next_form();
+
+         } else { // can't create config_db file
+            echo "<p>".__('Impossible to write the database setup file')."</p>";
+            prev_form($host, $user, $password);
+         }
+
+      } else { // try to create the DB
+         if ($link->query("CREATE DATABASE IF NOT EXISTS `".$newdatabasename."`")) {
+            echo "<p>".__('Database created')."</p>";
+
+            if ($link->select_db($newdatabasename)
+                && DBConnection::createMainConfig($host, $user, $password, $newdatabasename)) {
+
+               Toolbox::createSchema($_SESSION["glpilanguage"]);
+               echo "<p>".__('OK - database was initialized')."</p>";
+               next_form();
+
             } else { // can't create config_db file
-                $error = "create_config";
+               echo "<p>".__('Impossible to write the database setup file')."</p>";
+               prev_form($host, $user, $password);
             }
-        }
-        
-        if (!isset($secured)) {
-            $secured = false;
-        }
-            
-        $twig_vars = [  'action'    => $_SESSION['action'],
-                        'created'   =>  $db_created,            
-                        'error'     => $error,          
-                        'secured'   => $secured,
-                        'sql_error' => $sql_error,
-                        'update'    => isset($update) ? $update : null,
-                    ];
-        break;
-    case "7":
-        Toolbox::createSchema($_SESSION['language']);
-    case "8":
-        include_once(GLPI_ROOT . "/inc/dbmysql.class.php");
-        include_once(GLPI_CONFIG_DIR . "/config_db.php");
-        $DB = new DB();
 
-        $url_base = str_replace("/install/install.php", "", $_SERVER['HTTP_REFERER']);
-        $DB->update(
-            'glpi_configs',
-            ['value' => $DB->escape($url_base)], [
-                'context'   => 'core',
-                'name'      => 'url_base'
-            ]
-        );
+         } else { // can't create database
+            echo __('Error in creating database!');
+            echo "<br>".sprintf(__('The server answered: %s'), $link->error);
+            prev_form($host, $user, $password);
+         }
+      }
 
-        $url_base_api = "$url_base/apirest.php/";
-        $DB->update(
-            'glpi_configs',
-            ['value' => $DB->escape($url_base_api)], [
-                'context'   => 'core',
-                'name'      => 'url_base_api'
-            ]
-        );
+   } else { // no db selected
+      echo "<p>".__("You didn't select a database!"). "</p>";
+      //prev_form();
+      prev_form($host, $user, $password);
+   }
+
+   $link->close();
+
 }
-    
-try {
-    echo $twig->render('install/index.twig',  [
-        'step' => ['number' => $step, 'progress' => $step / count($steps), 'name' => $steps_name[$step]],
-        'header_data' => $header_data] + $twig_vars);
-} catch (\Exception $e) {
-    echo $e->getMessage();
+
+// finish installation
+function step8() {
+   include_once(GLPI_ROOT . "/inc/dbmysql.class.php");
+   include_once(GLPI_CONFIG_DIR . "/config_db.php");
+   $DB = new DB();
+
+   if (isset($_POST['send_stats'])) {
+      //user has accepted to send telemetry infos; activate cronjob
+      $DB->update(
+         'glpi_crontasks',
+         ['state' => 1],
+         ['name' => 'telemetry']
+      );
+   }
+
+   $url_base = str_replace("/install/install.php", "", $_SERVER['HTTP_REFERER']);
+   $DB->update(
+      'glpi_configs',
+      ['value' => $DB->escape($url_base)], [
+         'context'   => 'core',
+         'name'      => 'url_base'
+      ]
+   );
+
+   $url_base_api = "$url_base/apirest.php/";
+   $DB->update(
+      'glpi_configs',
+      ['value' => $DB->escape($url_base_api)], [
+         'context'   => 'core',
+         'name'      => 'url_base_api'
+      ]
+   );
+
+   Session::destroy(); // Remove session data (debug mode for instance) set by web installation
+
+   echo "<h2>".__('The installation is finished')."</h2>";
+
+   echo "<p>".__('Default logins / passwords are:')."</p>";
+   echo "<p><ul><li> ".__('itsm/itsm for the administrator account')."</li>";
+   echo "<li>".__('tech/tech for the technician account')."</li>";
+   echo "<li>".__('normal/normal for the normal account')."</li>";
+   echo "<li>".__('post-only/postonly for the postonly account')."</li></ul></p>";
+   echo "<p>".__('You can delete or modify these accounts as well as the initial data.')."</p>";
+   echo "<p class='center'><a class='vsubmit' href='../index.php'>".__('Use GLPI');
+   echo "</a></p>";
 }
+
+
+function update1($DBname) {
+
+   $host     = $_SESSION['db_access']['host'];
+   $user     = $_SESSION['db_access']['user'];
+   $password = $_SESSION['db_access']['password'];
+
+   if (DBConnection::createMainConfig($host, $user, $password, $DBname) && !empty($DBname)) {
+      $from_install = true;
+      include_once(GLPI_ROOT ."/install/update.php");
+
+   } else { // can't create config_db file
+      echo __("Can't create the database connection file, please verify file permissions.");
+      echo "<h3>".__('Do you want to continue?')."</h3>";
+      echo "<form action='install.php' method='post'>";
+      echo "<input type='hidden' name='update' value='yes'>";
+      echo "<p class='submit'><input type='hidden' name='install' value='Etape_0'>";
+      echo "<input type='submit' name='submit' class='submit' value=\"".__('Continue')."\">";
+      echo "</p>";
+      Html::closeForm();
+   }
+}
+
+
+
+//------------Start of install script---------------------------
+
+
+// Use default session dir if not writable
+if (is_writable(GLPI_SESSION_DIR)) {
+   Session::setPath();
+}
+
+Session::start();
+error_reporting(0); // we want to check system before affraid the user.
+
+if (isset($_POST["language"])) {
+   $_SESSION["glpilanguage"] = $_POST["language"];
+}
+
+Session::loadLanguage('', false);
+
+/**
+ * @since 0.84.2
+**/
+function checkConfigFile() {
+
+   if (file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
+      Html::redirect($CFG_GLPI['root_doc'] ."/index.php");
+      die();
+   }
+}
+
+if (!isset($_SESSION['can_process_install']) || !isset($_POST["install"])) {
+   $_SESSION = [];
+
+   $_SESSION["glpilanguage"] = Session::getPreferredLanguage();
+
+   checkConfigFile();
+
+   // Add a flag that will be used to validate that installation can be processed.
+   // This flag is put here just after checking that DB config file does not exist yet.
+   // It is mandatory to validate that `Etape_4` to `Etape_6` are not used outside installation process
+   // to change GLPI base URL without even being authenticated.
+   $_SESSION['can_process_install'] = true;
+
+   header_html(__("Select your language"));
+   choose_language();
+
+} else {
+   // Check valid Referer :
+   Toolbox::checkValidReferer();
+   // Check CSRF: ensure nobody strap first page that checks if config file exists ...
+   Session::checkCSRF($_POST);
+
+   // DB clean
+   if (isset($_POST["db_pass"])) {
+      $_POST["db_pass"] = stripslashes($_POST["db_pass"]);
+      $_POST["db_pass"] = rawurldecode($_POST["db_pass"]);
+      $_POST["db_pass"] = stripslashes($_POST["db_pass"]);
+   }
+
+   switch ($_POST["install"]) {
+      case "lang_select" : // lang ok, go accept licence
+         checkConfigFile();
+         header_html(SoftwareLicense::getTypeName(1));
+         acceptLicense();
+         break;
+
+      case "License" : // licence  ok, go choose installation or Update
+         checkConfigFile();
+         header_html(__('Beginning of the installation'));
+         step0();
+         break;
+
+      case "Etape_0" : // choice ok , go check system
+         checkConfigFile();
+         //TRANS %s is step number
+         header_html(sprintf(__('Step %d'), 0));
+         $_SESSION["Test_session_GLPI"] = 1;
+         step1($_POST["update"]);
+         break;
+
+      case "Etape_1" : // check ok, go import mysql settings.
+         checkConfigFile();
+         // check system ok, we can use specific parameters for debug
+         Toolbox::setDebugMode(Session::DEBUG_MODE, 0, 0, 1);
+
+         header_html(sprintf(__('Step %d'), 1));
+         step2($_POST["update"]);
+         break;
+
+      case "Etape_2" : // mysql settings ok, go test mysql settings and select database.
+         checkConfigFile();
+         header_html(sprintf(__('Step %d'), 2));
+         step3($_POST["db_host"], $_POST["db_user"], $_POST["db_pass"], $_POST["update"]);
+         break;
+
+      case "Etape_3" : // Create and fill database
+         checkConfigFile();
+         header_html(sprintf(__('Step %d'), 3));
+         if (empty($_POST["databasename"])) {
+            $_POST["databasename"] = "";
+         }
+         if (empty($_POST["newdatabasename"])) {
+            $_POST["newdatabasename"] = "";
+         }
+         step4($_POST["databasename"],
+               $_POST["newdatabasename"]);
+         break;
+
+      case "Etape_4" : // finish installation
+         header_html(sprintf(__('Step %d'), 4));
+         step8();
+         break;
+
+      case "update_1" :
+         checkConfigFile();
+         if (empty($_POST["databasename"])) {
+            $_POST["databasename"] = "";
+         }
+         update1($_POST["databasename"]);
+         break;
+   }
+}
+footer_html();
