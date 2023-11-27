@@ -35,7 +35,7 @@
  *
  * @return bool for success (will die for most error)
  **/
-function update151to200() {
+function update151to200() : bool {
     /** @global Migration $migration */
     global $DB, $migration;
 
@@ -66,8 +66,8 @@ function update151to200() {
         $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
     }
 
-    if(!$DB->fieldExists('glpi_users', 'menu_small')) {
-        $query = "alter table glpi_users add column menu_small text default 'false';";
+    if(!$DB->fieldExists('glpi_users', 'menu_width')) {
+        $query = "alter table glpi_users add column menu_width text default 'null';";
         $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
     }
 
@@ -83,6 +83,5 @@ function update151to200() {
 
     // ************ Keep it at the end **************
     $migration->executeMigration();
-    die(var_dump($updateresult));
     return $updateresult;
 }
