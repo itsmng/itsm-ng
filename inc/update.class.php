@@ -536,14 +536,12 @@ class Update extends CommonGLPI {
          case "1.4.0":
          case "1.5.0":
          case "1.5.1":
+         case "1.6.0":
              include_once "{$updir}itsm_update_150_151.php";
              update150to151();
-         case "1.6.0":
          case "2.0.0":
              include_once "{$updir}itsm_update_151_200.php";
              update151to200();
-         case "2.0.1":
-            break;
 
          case ITSM_VERSION:
          case ITSM_SCHEMA_VERSION:
@@ -566,6 +564,8 @@ class Update extends CommonGLPI {
       // Update version number and default langage and new version_founded ---- LEAVE AT THE END
       Config::setConfigurationValues('core', ['version'             => ITSM_VERSION,
                                               'dbversion'           => ITSM_SCHEMA_VERSION,
+                                              'itsmversion'         => ITSM_VERSION,
+                                              'itsmdbversion'       => ITSM_SCHEMA_VERSION,
                                               'language'            => $this->language,
                                               'founded_new_version' => '']);
 

@@ -240,9 +240,9 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
             } else if ($dev === true) {
                echo "<p class='red'><strong>".
                      __('You are trying to update to a development version from a development version. This is not supported.')."</strong></p>";
-               } else { // for GLPI 10
-                  echo "<p class='red'><strong>".
-                           __('Upgrade from GLPI 10 is not supported.')."</strong></p>";
+            } else { // for GLPI 10
+               echo "<p class='red'><strong>".
+                        __('Upgrade from GLPI 10 is not supported.')."</strong></p>";
             }
          }
 
