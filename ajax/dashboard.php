@@ -46,4 +46,7 @@ if ($_REQUEST['action'] == 'delete' && isset($_REQUEST['id']) && isset($_REQUEST
       echo json_encode(["status" => "error"]);
    }
    exit;
+} else if ($_REQUEST['action'] == 'getColumns' && isset($_REQUEST['asset'])) {
+   $asset = new $_REQUEST['asset']();
+   echo json_encode($asset->rawSearchOptions());
 }

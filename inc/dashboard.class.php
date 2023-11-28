@@ -190,8 +190,8 @@ class Dashboard extends \CommonDBTM {
 
    function cleanDBonPurge() {
       $this->deleteChildrenAndRelationsFromDb([
-         Item::class,
-         Right::class,
+         Glpi\Dashboard\Item::class,
+         Glpi\Dashboard\Right::class,
       ]);
    }
 
@@ -214,10 +214,10 @@ class Dashboard extends \CommonDBTM {
       $this->items   = $items;
 
       $this->deleteChildrenAndRelationsFromDb([
-         Item::class,
+         Glpi\Dashboard\Item::class,
       ]);
 
-      Item::addForDashboard($this->fields['id'], $items);
+      Glpi\Dashboard\Item::addForDashboard($this->fields['id'], $items);
    }
 
    /**
@@ -290,67 +290,6 @@ class Dashboard extends \CommonDBTM {
          'key'   => $this->key
       ];
    }
-
-
-   /**
-    * Retrieve all dashboards and store them into a static var
-    *
-    * @param bool   $force don't check dashboard are already loaded and force their load
-    * @param bool   $check_rights use to remove rights checking (use in embed)
-    * @param string $context only dashboard for given context
-    *
-    * @return array dasboards
-    */
-   static function getAll(
-      bool $force = false,
-      bool $check_rights = true,
-      string $context = 'core'
-   ): array {
-      global $DB;
-
-      if (!$force && count(self::$all_dashboards) > 0) {
-         return self::$all_dashboards;
-      }
-
-      // empty previous data
-      self::$all_dashboards = [];
-
-      $dashboard_criteria = [];
-      if (strlen($context)) {
-         $dashboard_criteria['context'] = $context;
-      }
-
-      $dashboards = iterator_to_array($DB->request(self::getTable(), ['WHERE' => $dashboard_criteria]));
-      $items      = iterator_to_array($DB->request(Item::getTable()));
-      $rights     = iterator_to_array($DB->request(Right::getTable()));
-
-      foreach ($dashboards as $dashboard) {
-         $key = $dashboard['key'];
-         $id  = $dashboard['id'];
-
-         $d_rights = array_filter($rights, function($right_line) use($id) {
-            return $right_line['dashboards_dashboards_id'] == $id;
-         });
-         if ($check_rights && !self::checkRights(self::convertRights($d_rights))) {
-            continue;
-         }
-         $dashboard['rights'] = self::convertRights($d_rights);
-
-         $d_items = array_filter($items, function($item) use($id) {
-            return $item['dashboards_dashboards_id'] == $id;
-         });
-         $d_items = array_map(function($item) {
-            $item['card_options'] = importArrayFromDB($item['card_options']);
-            return $item;
-         }, $d_items);
-         $dashboard['items'] = $d_items;
-
-         self::$all_dashboards[$key] = $dashboard;
-      }
-
-      return self::$all_dashboards;
-   }
-
 
    /**
     * Convert right from DB entries to a array with type foreign keys.
@@ -479,6 +418,7 @@ class Dashboard extends \CommonDBTM {
    }
 
    function showForm($ID, $options = []) {
+      include_once GLPI_ROOT . '/ng/form.utils.php';
       $this->getFromDB($ID);
       Html::requireJs('charts');
 
@@ -494,11 +434,28 @@ class Dashboard extends \CommonDBTM {
                      'value' => $this->fields['name'] ?? '',
                      'required' => true,
                   ],
+                  __('Profile') => [
+                     'type' => 'select',
+                     'id' => 'ProfileDropdownForDashboard',
+                     'searchable' => true,
+                     'name' => 'profileId',
+                     'value' => $this->fields['profileId'] ?? '',
+                     'values' => getOptionForItems(Profile::class),
+                     'required' => true,
+                  ],
+                  __('User') => [
+                     'type' => 'select',
+                     'id' => 'UserDropdownForDashboard',
+                     'searchable' => true,
+                     'name' => 'userId',
+                     'value' => $this->fields['userId'] ?? '',
+                     'values' => getOptionForItems(User::class),
+                     'required' => true,
+                  ],
                ]
             ]
          ]
       ];
-      include_once GLPI_ROOT . '/ng/form.utils.php';
       renderTwigForm($form);
       $this->show(true);
    }
@@ -517,27 +474,48 @@ class Dashboard extends \CommonDBTM {
    }
 
    private function getWidgetList() {
-      $grid = new Grid();
-      $cards = $grid->getAllDasboardCards();
-      $list_cards = [];
-      array_walk($cards, function($data, $index) use (&$list_cards) {
-         $group = $data['group'] ?? __("others");
-         $list_cards[$group][$index] = $data['label'] ?? $data['itemtype']::getTypeName();
-      });
-      return $list_cards;
+      global $CFG_GLPI;
+      // get all assets
+      $assets = [
+         __('Data') => array_combine($CFG_GLPI['globalsearch_types'], $CFG_GLPI['globalsearch_types']),
 
+      ];
+      return $assets;
+   }
+
+   private function expandContent($content) {
+      foreach ($content as $rowIdx => $row) {
+         foreach ($row as $colIdx => $col) {
+            $data = $col['provider']();
+            if (isset($data['value'])) {
+               $content[$rowIdx][$colIdx]['type'] = 'number';
+            } else if (isset($data['data'])) {
+
+            }
+            switch ($col['type']) {
+               case 'bigNumber':
+                  $content[$rowIdx][$colIdx]['type'] = 'number';
+                  $content[$rowIdx][$colIdx]['title'] = $data['label'];
+                  $content[$rowIdx][$colIdx]['value'] = $data['number'];
+                  $content[$rowIdx][$colIdx]['icon'] = $data['icon'];
+                  break;
+            }
+         }
+      }
+      return $content;
    }
 
    function show($edit = false) {
-      $content = ['widgetGrid' => json_decode($this->fields['content'])];
-      $list_cards = $this->getWidgetList();
       Html::requireJs('charts');
-      $twig = Twig::load(GLPI_ROOT . "/templates", false);
+      $content = ['widgetGrid' => $this->expandContent(json_decode($this->fields['content'], true) ?? [])];
       $content['edit'] = $edit;
-      $content['data_types'] = $list_cards;
       $content['dashboardId'] = $this->fields['id'];
       $content['addWidget_action'] = Dashboard::getFormURL();
       $content['ajax_endpoint'] = "../ajax/dashboard.php";
+      $list_cards = $this->getWidgetList();
+      $content['data_types'] = $list_cards;
+      
+      $twig = Twig::load(GLPI_ROOT . "/templates", false);
       try {
          echo $twig->render('dashboard.twig', $content);
       } catch (Exception $e) {
@@ -565,23 +543,17 @@ class Dashboard extends \CommonDBTM {
    function addWidget($data) {
       $grid = new Grid();
       $card = $grid->getAllDasboardCards()[$data['widget']];
-      $dashboard = json_decode($this->fields['content'], true);
-      $label = $card['label'];
+      $dashboard = json_decode($this->fields['content'], true) ?? [];
       $provider = $card['provider'];
+      $widget = [
+         'type' => $card['widgettype'][0],
+         'provider' => $provider,
+      ];
 
-      switch ($card['widgettype'][0]) {
-         case 'bigNumber':
-            $providedWidget = $provider();
-            $widget = [
-               'type' => 'number',
-               'title' => $label,
-               'value' => $providedWidget['number'],
-               'icon' => $providedWidget['icon']
-            ];
-            break;
-      }
       $this->placeWidgetAtCoord($dashboard, $widget, json_decode($data['coords']));
-      if ($widget && $this->update(['id' => $this->fields['id'], 'content' => json_encode($dashboard, JSON_UNESCAPED_UNICODE)]))
+      
+      $content = str_replace("\\", "\\\\", json_encode($dashboard, JSON_UNESCAPED_UNICODE));
+      if ($widget && $this->update(['id' => $this->fields['id'], 'content' => $content]))
          Session::addMessageAfterRedirect(__("Widget added successfuly"));
       else
          Session::addMessageAfterRedirect(__("Widget could not be added"), false, ERROR);
@@ -595,6 +567,7 @@ class Dashboard extends \CommonDBTM {
       if (empty($dashboard[$x])) {
          array_splice($dashboard, $x, 1);
       }
-      return ($this->update(['id' => $this->fields['id'], 'content' => json_encode($dashboard, JSON_UNESCAPED_UNICODE)]));
+      $content = str_replace("\\", "\\\\", json_encode($dashboard, JSON_UNESCAPED_UNICODE));
+      return ($this->update(['id' => $this->fields['id'], 'content' => $content]));
    }
 }

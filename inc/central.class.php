@@ -69,9 +69,6 @@ class Central extends CommonGLPI {
          ];
 
          $grid = new Grid('central');
-         if ($grid->canViewOneDashboard()) {
-            array_unshift($tabs, __('Dashboard'));
-         }
 
          return $tabs;
       }

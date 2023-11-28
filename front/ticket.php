@@ -44,57 +44,55 @@ JS;
 
 echo Html::manageRefreshPage(false, $callback);
 
-if ($default = Grid::getDefaultDashboardForMenu('mini_ticket', true)) {
-   $dashboard = new Grid($default, 33, 2, 'mini_core');
-   $dashboard->show([
-      'widgetGrid' => [
+$dashboard = new Grid();
+$dashboard->show([
+   'widgetGrid' => [
+      [
          [
-            [
-               'type' => 'number',
-               'title' => __('Tickets'),
-               'value' => countElementsInTable('glpi_tickets'),
-               'icon' => 'fas fa-ticket-alt',
-            ],
-            [
-               'type' => 'number',
-               'title' => __('New tickets'),
-               'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::INCOMING]),
-               'icon' => 'fas fa-exclamation-circle',
-            ],
-            [
-               'type' => 'number',
-               'title' => __('Pending tickets'),
-               'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::WAITING]),
-               'icon' => 'fas fa-pause-circle',
-            ],
-            [
-               'type' => 'number',
-               'title' => __('Assigned tickets'),
-               'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::ASSIGNED]),
-               'icon' => 'fas fa-users',
-            ],
-            [
-               'type' => 'number',
-               'title' => __('Planned tickets'),
-               'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::PLANNED]),
-               'icon' => 'fas fa-users',
-            ],
-            [
-               'type' => 'number',
-               'title' => 'Solved tickets',
-               'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::SOLVED]),
-               'icon' => 'fas fa-check-circle',
-            ],
-            [
-               'type' => 'number',
-               'title' => 'Closed tickets',
-               'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::CLOSED]),
-               'icon' => 'fas fa-times-circle',
-            ],
-         ]
+            'type' => 'number',
+            'title' => __('Tickets'),
+            'value' => countElementsInTable('glpi_tickets'),
+            'icon' => 'fas fa-ticket-alt',
+         ],
+         [
+            'type' => 'number',
+            'title' => __('New tickets'),
+            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::INCOMING]),
+            'icon' => 'fas fa-exclamation-circle',
+         ],
+         [
+            'type' => 'number',
+            'title' => __('Pending tickets'),
+            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::WAITING]),
+            'icon' => 'fas fa-pause-circle',
+         ],
+         [
+            'type' => 'number',
+            'title' => __('Assigned tickets'),
+            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::ASSIGNED]),
+            'icon' => 'fas fa-users',
+         ],
+         [
+            'type' => 'number',
+            'title' => __('Planned tickets'),
+            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::PLANNED]),
+            'icon' => 'fas fa-users',
+         ],
+         [
+            'type' => 'number',
+            'title' => 'Solved tickets',
+            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::SOLVED]),
+            'icon' => 'fas fa-check-circle',
+         ],
+         [
+            'type' => 'number',
+            'title' => 'Closed tickets',
+            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::CLOSED]),
+            'icon' => 'fas fa-times-circle',
+         ],
       ]
-   ]);
-}
+   ]
+]);
 
 Search::show('Ticket');
 
