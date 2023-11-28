@@ -538,7 +538,7 @@ class Update extends CommonGLPI {
              update150to151();
              
          case "1.6.0":
-             break;
+            continue;
 
          case ITSM_VERSION:
          case ITSM_SCHEMA_VERSION:
@@ -561,6 +561,8 @@ class Update extends CommonGLPI {
       // Update version number and default langage and new version_founded ---- LEAVE AT THE END
       Config::setConfigurationValues('core', ['version'             => ITSM_VERSION,
                                               'dbversion'           => ITSM_SCHEMA_VERSION,
+                                              'itsmversion'         => ITSM_VERSION,
+                                             'itsmdbversion'       => ITSM_SCHEMA_VERSION,
                                               'language'            => $this->language,
                                               'founded_new_version' => '']);
 
