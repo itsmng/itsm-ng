@@ -1939,7 +1939,7 @@ class Plugin extends CommonDBTM {
     * @return string
     */
    public function getGlpiPrever() {
-      return GLPI_PREVER;
+      return ITSM_PREVER;
    }
 
    /**
@@ -1950,7 +1950,7 @@ class Plugin extends CommonDBTM {
     * @return string
     */
    public function isGlpiPrever() {
-      return defined('GLPI_PREVER');
+      return defined('ITSM_PREVER');
    }
 
    /**

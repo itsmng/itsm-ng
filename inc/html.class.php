@@ -1456,7 +1456,7 @@ class Html
       echo Html::script('public/lib/base.js');
 
       // Locales
-      $locales_domains = ['glpi' => GLPI_VERSION]; // base domain
+      $locales_domains = ['glpi' => ITSM_VERSION]; // base domain
       $plugins = Plugin::getPlugins();
       foreach ($plugins as $plugin) {
          $locales_domains[$plugin] = Plugin::getInfo($plugin, 'version');
@@ -1923,7 +1923,7 @@ JAVASCRIPT
       }
       $twig_vars["mode_debug"] = $mode_debug;
       $twig_vars["timedebug"] = $timedebug;
-      $currentVersion = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
+      $currentVersion = preg_replace('/^((\d+\.?)+).*$/', '$1', ITSM_VERSION);
       $foundedNewVersion = array_key_exists('founded_new_version', $CFG_GLPI)
          ? $CFG_GLPI['founded_new_version']
          : '';
@@ -4054,7 +4054,7 @@ JS;
             statusbar: false,
             skin_url: '" . $CFG_GLPI['root_doc'] . "/css/tiny_mce/skins/light',
             content_css: '$darker_css," . $CFG_GLPI['root_doc'] . "/css/tiny_mce_custom.css',
-            cache_suffix: '?v=" . GLPI_VERSION . "',
+            cache_suffix: '?v=" . ITSM_VERSION . "',
             min_height: '150px',
             setup: function(editor) {
                if ($('#$name').attr('required') == 'required') {
@@ -5529,7 +5529,7 @@ JAVASCRIPT;
     **/
    static function script($url, $options = [], $minify = true)
    {
-      $version = GLPI_VERSION;
+      $version = ITSM_VERSION;
       if (isset($options['version'])) {
          $version = $options['version'];
          unset($options['version']);
@@ -7872,7 +7872,7 @@ JAVASCRIPT;
       global $CFG_GLPI, $GLPI_CACHE;
 
       $ckey = 'css_';
-      $ckey .= isset($args['v']) ? $args['v'] : GLPI_SCHEMA_VERSION;
+      $ckey .= isset($args['v']) ? $args['v'] : ITSM_SCHEMA_VERSION;
 
       $scss = new Compiler();
       $scss->setFormatter('ScssPhp\ScssPhp\Formatter\Crunched');

@@ -31,24 +31,22 @@
  * ---------------------------------------------------------------------
  */
 
-// Current version of GLPI
+// Last version of GLPI only for plugin compatibility
 define('GLPI_VERSION', '9.5.13');
-if (substr(GLPI_VERSION, -4) === '-dev') {
+define('ITSM_VERSION', '2.0.0');
+if (substr(ITSM_VERSION, -4) === '-dev') {
    //for dev version
-   define('GLPI_PREVER', str_replace('-dev', '', GLPI_VERSION));
+   define('ITSM_PREVER', str_replace('-dev', '', ITSM_VERSION));
    define(
-      'GLPI_SCHEMA_VERSION',
-      GLPI_PREVER . '@' . sha1_file(GLPI_ROOT . '/install/mysql/glpi-empty.sql')
+      'ITSM_SCHEMA_VERSION',
+      ITSM_PREVER . '@' . sha1_file(GLPI_ROOT . '/install/mysql/glpi-empty.sql')
    );
 } else {
    //for stable version
-   define("GLPI_SCHEMA_VERSION", '9.5.13');
+   define("ITSM_SCHEMA_VERSION", '2.0.0');
 }
 
 // Current version of ITSM-NG
-define('ITSM_VERSION', '2.0.0');
-define('ITSM_SCHEMA_VERSION', '2.0.0');
-define('ITSM_MIN_PHP', '7.4.0'); // Must also be changed in top of index.php
 define('ITSM_YEAR', '2023');
 
 //Define a global recipient address for email notifications

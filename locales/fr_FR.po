@@ -23070,7 +23070,7 @@ msgid ""
 "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
 "Choisissez 'Mise à jour' pour lancer la mise à jour de votre version de ITSM-NG"
-" à partir d'une version antérieure."
+" à partir d'une version antérieure ou d'une version de GLPI.."
 
 #: install/install.php:158
 msgid ""

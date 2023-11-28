@@ -118,7 +118,7 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
       $itsm_current_db_version   = $currents['itsmdbversion'] ?? '1.0.0';
 
       global $migration; // Migration scripts are using global migrations
-      $migration = new Migration(GLPI_SCHEMA_VERSION);
+      $migration = new Migration(ITSM_SCHEMA_VERSION);
       $migration->setOutputHandler($output);
       $update->setMigration($migration);
 
@@ -131,13 +131,13 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
       $informations->addRow([__('GLPI database version'), $itsm_current_db_version, ITSM_SCHEMA_VERSION]);
       $informations->render();
 
-      if (defined('GLPI_PREVER')) {
+      if (defined('ITSM_PREVER')) {
          // Prevent unstable update unless explicitly asked
-         if (!$allow_unstable && version_compare($current_db_version, GLPI_SCHEMA_VERSION, 'ne')) {
+         if (!$allow_unstable && version_compare($current_db_version, ITSM_SCHEMA_VERSION, 'ne')) {
             $output->writeln(
                sprintf(
                   '<error>' . __('%s is not a stable release. Please upgrade manually or add --allow-unstable option.') . '</error>',
-                  GLPI_SCHEMA_VERSION
+                  ITSM_SCHEMA_VERSION
                ),
                OutputInterface::VERBOSITY_QUIET
             );
@@ -145,7 +145,7 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
          }
       }
 
-      if (version_compare($current_db_version, GLPI_SCHEMA_VERSION, 'eq') && !$force && version_compare($itsm_current_db_version, ITSM_SCHEMA_VERSION, 'eq')) {
+      if (version_compare($current_db_version, ITSM_SCHEMA_VERSION, 'eq') && !$force && version_compare($itsm_current_db_version, ITSM_SCHEMA_VERSION, 'eq')) {
          $output->writeln('<info>' . __('No migration needed.') . '</info>');
          return 0;
       }
@@ -182,15 +182,11 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
          }
       }
 
-      if (version_compare($current_db_version, GLPI_SCHEMA_VERSION, 'ne')) {
+      if (version_compare($current_db_version, ITSM_SCHEMA_VERSION, 'ne')) {
          $update->doUpdates($current_version);
       }
 
-      if (version_compare($itsm_current_db_version, ITSM_SCHEMA_VERSION, 'ne')) {
-         $update->doItsmUpdates($itsm_current_version);
-      }
-
-      if (version_compare($current_db_version, GLPI_SCHEMA_VERSION, 'ne') && version_compare($itsm_current_db_version, ITSM_SCHEMA_VERSION, 'ne')) {
+      if (version_compare($current_db_version, ITSM_SCHEMA_VERSION, 'ne') && version_compare($itsm_current_db_version, ITSM_SCHEMA_VERSION, 'ne')) {
          // Migration is considered as done as Update class has the responsibility
          // to run updates if schema has changed (even for "pre-versions".
          $output->writeln('<info>' . __('Migration done.') . '</info>');
