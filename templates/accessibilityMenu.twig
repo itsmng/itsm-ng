@@ -59,10 +59,11 @@
 
         if (!isClassPresent) {
             body.addClass(className);
+            sessionStorage.setItem(className, !isClassPresent);
         } else {
             body.removeClass(className);
+            sessionStorage.removeItem(className);
         }
-        sessionStorage.setItem(className, !isClassPresent);
     }
 
     function changeFontSize(size) {
@@ -105,11 +106,11 @@
             body.removeClass('accessibility-high-contrast');
         if (!isHighContrast) {
             body.addClass('accessibility-negative-high-contrast');
+            sessionStorage.setItem('accessibility-negative-high-contrast', !isHighContrast);
         } else {
-            body.removeClass('accessibility-high-contrast');
             body.removeClass('accessibility-negative-high-contrast');
+            sessionStorage.removeItem('accessibility-negative-high-contrast');            
         }
-        sessionStorage.setItem('accessibility-negative-high-contrast', !isHighContrast);
     }
 
     function resetAllAccessibilityOptions() {
