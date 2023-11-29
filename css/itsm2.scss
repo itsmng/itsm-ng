@@ -15,6 +15,10 @@
     --nav-top-height: 0;
 }
 
+body {
+    overflow-x: hidden;
+}
+
 .main-container a {
     box-sizing: content-box;
 }
@@ -1144,3 +1148,44 @@ div.chip>p {
         }
     }
 }
+
+/******************************************************/
+/*                    ACCESSIBILITY                   */
+/******************************************************/
+
+.btn-accessibility {
+    background-color: #4054b2 !important;
+    color: white !important;
+    border-radius: 0 !important;
+    padding: 0.5rem !important;
+}
+
+.accessibility-grayscale {
+    filter: grayscale(1);
+}
+
+
+.accessibility-high-contrast * {
+    background-color: black !important;
+    color: white !important;
+}
+
+.accessibility-negative-high-contrast {
+    filter: invert(1) !important;
+    & * {
+        background-color: black !important;
+        color: white !important;    
+    }
+}
+
+.accessibility-link-underline a, .accessibility-link-underline button {
+    text-decoration: underline !important;
+}
+
+.accessibility-readable-font *:not(i) {
+    font-family: 'OpenDyslexic', Arial, sans-serif !important;
+}
+
+/******************************************************/
+/*                    /ACCESSIBILITY                  */
+/******************************************************/
