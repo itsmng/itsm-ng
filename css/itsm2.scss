@@ -4,6 +4,7 @@
 // RUNTIME VARIABLES
 :root {
     --header-height: 3.5rem;
+    --subheader-height: 2.5rem;
     --nav-open-width: 11rem;
     --nav-close-width: 5em;
     --nav-transition-time: 0s;
@@ -83,6 +84,7 @@ header {
 }
 
 #subheader {
+    height: var(--subheader-height);
     margin-top: var(--nav-top-height);
     a {
         font-size: var(--nav-size);
@@ -1152,6 +1154,10 @@ div.chip>p {
 /******************************************************/
 /*                    ACCESSIBILITY                   */
 /******************************************************/
+
+#accessibility-menu {
+    top: calc(var(--header-height) + var(--subheader-height));
+}
 
 .btn-accessibility {
     background-color: #4054b2 !important;
