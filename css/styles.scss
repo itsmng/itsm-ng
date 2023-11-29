@@ -5625,7 +5625,6 @@ div#viewgraph {
 
    /** should be erased by lib, defined for case without lib **/
    &:not(.lock-bottom) .grid-stack-item-content {
-      font-size: 11px;
       text-align: center;
       overflow: hidden;
       cursor: move;

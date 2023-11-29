@@ -2602,7 +2602,8 @@ JAVASCRIPT;
             'action' => $target,
             'method' => 'post',
             'content' => [
-               sprintf(__('%1$s: %2$s'), __('Login'), $this->fields["name"]) => [
+               '<img class="border border-primary rounded" alt="Current picture" src="'.$current_picture.'" />'
+                  .sprintf(__(' %1$s: %2$s'), __('Login'), $this->fields["name"]) => [
                   'visible' => true,
                   'inputs' => [
                      'name' => [
@@ -2635,9 +2636,6 @@ JAVASCRIPT;
                      __('Picture') =>
                      !empty($this->fields["name"]) ? [
                         'type' => 'file',
-                        'before' => <<<HTML
-                           <img class='border border-info rounded' alt="Current picture" src="{$current_picture}" />
-                        HTML,
                         'style' => 'height: 100%',
                         'col_lg' => 6,
                         'col_md' => 6,
