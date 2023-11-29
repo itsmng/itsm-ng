@@ -1275,42 +1275,42 @@ class Config extends CommonDBTM {
                      'col_md' => '6',
                      'col_lg' => '6',
                   ] : [],
-                  __('Priority colors 1') => [
+                  __('Priority color 1') => [
                      'type' => 'color',
                      'name' => 'priority_1',
                      'value' => $data["priority_1"],
                      'col_md' => '2',
                      'col_lg' => '2',
                   ],
-                  __('Priority colors 2') => [
+                  __('Priority color 2') => [
                      'type' => 'color',
                      'name' => 'priority_2',
                      'value' => $data["priority_2"],
                      'col_md' => '2',
                      'col_lg' => '2',
                   ],
-                  __('Priority colors 3') => [
+                  __('Priority color 3') => [
                      'type' => 'color',
                      'name' => 'priority_3',
                      'value' => $data["priority_3"],
                      'col_md' => '2',
                      'col_lg' => '2',
                   ],
-                  __('Priority colors 4') => [
+                  __('Priority color 4') => [
                      'type' => 'color',
                      'name' => 'priority_4',
                      'value' => $data["priority_4"],
                      'col_md' => '2',
                      'col_lg' => '2',
                   ],
-                  __('Priority colors 5') => [
+                  __('Priority color 5') => [
                      'type' => 'color',
                      'name' => 'priority_5',
                      'value' => $data["priority_5"],
                      'col_md' => '2',
                      'col_lg' => '2',
                   ],
-                  __('Priority colors 6') => [
+                  __('Priority color 6') => [
                      'type' => 'color',
                      'name' => 'priority_6',
                      'value' => $data["priority_6"],

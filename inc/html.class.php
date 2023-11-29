@@ -808,14 +808,16 @@ class Html
       // Only for debug mode so not need to be translated
       if ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE) { // mode debug
          $rand = mt_rand();
-         echo "<div class='debug " . ($ajax ? "debug_ajax" : "") . "'>";
+         echo "<div class='debug " . ($ajax ? "debug_ajax" : "") . "' bg-primary>";
          if (!$ajax) {
-            echo "<span class='fa-stack fa-lg' id='see_debug'>
-                     <i class='fa fa-circle fa-stack-2x primary-fg-inverse'></i>
-                     <a href='#' class='fa fa-bug fa-stack-1x primary-fg' title='" . __s('Display GLPI debug information')  . "'>
-                        <span class='sr-only'>See GLPI DEBUG</span>
-                     </a>
-            </span>";
+            echo <<<HTML
+            <span class='fa-stack fa-lg' id='see_debug'>
+               <i class='fa fa-circle fa-stack-2x text-primary'></i>
+               <a href='#' class='fa fa-bug fa-stack-1x text-white' title='" . __s('Display GLPI debug information')  . "'>
+                  <span class='sr-only'>See GLPI DEBUG</span>
+               </a>
+            </span>
+            HTML;
          }
 
          echo "<div id='debugtabs$rand'><ul>";
