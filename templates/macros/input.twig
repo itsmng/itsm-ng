@@ -27,7 +27,7 @@
     {% elseif attributes.type == 'twig' %}
     {% include attributes.template with attributes only %}
     {% else %}
-<input class='form-control' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+<input class='form-control h-100' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
     {% endif %}
 {% endmacro %}
 

@@ -2578,6 +2578,7 @@ JAVASCRIPT;
     */
    function showMyForm($target, $ID) {
       global $CFG_GLPI, $DB;
+      include_once (GLPI_ROOT . "/ng/form.utils.php");
 
       // Affiche un formulaire User
       if (($ID != Session::getLoginUserID())
@@ -2596,49 +2597,57 @@ JAVASCRIPT;
          $save_autocompletion                 = $CFG_GLPI["use_ajax_autocompletion"];
          $CFG_GLPI["use_ajax_autocompletion"] = false;
 
-         echo "<div class='center'>";
-         echo "<form method='post' name='user_manager' enctype='multipart/form-data' action='".$target."' autocomplete='off'>";
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr><th colspan='4'>".sprintf(__('%1$s: %2$s'), __('Login'), $this->fields["name"]);
-         echo "<input type='hidden' name='name' value='" . $this->fields["name"] . "'>";
-         echo "<input type='hidden' name='id' value='" . $this->fields["id"] . "'>";
-         echo "</th></tr>";
+         $current_picture = User::getThumbnailURLForPicture($this->fields['picture']);
+         $form = [
+            'action' => $target,
+            'method' => 'post',
+            'content' => [
+               sprintf(__('%1$s: %2$s'), __('Login'), $this->fields["name"]) => [
+                  'visible' => true,
+                  'inputs' => [
+                     'name' => [
+                        'type' => 'hidden',
+                        'name' => 'name',
+                        'value' => $this->fields['name'],
+                     ],
+                     'id' => [
+                        'type' => 'hidden',
+                        'name' => 'id',
+                        'value' => $this->fields['id'],
+                     ],
+                     __('Surname') => 
+                     !($extauth && isset($authtype['realname_field']) && !empty($authtype['realname_field'])) ? [
+                        'type' => 'text',
+                        'name' => 'realname',
+                        'value' => $this->fields['realname'],
+                        'rand' => $rand,
+                        'before' => 'test'
+                     ] : [],
+                     __('First name') => [
+                        'type' => 'text',
+                        'name' => 'firstname',
+                        'value' => $this->fields['firstname'],
+                        'rand' => $rand,
+                     ],
+                     __('Picture') =>
+                     !empty($this->fields["name"]) ? [
+                        'type' => 'file',
+                        'before' => <<<HTML
+                           <img class='p-2 border border-info rounded' alt="Current picture" src="{$current_picture}" />
+                        HTML,
+                     ] : [],
+                     __('Clear') => [
+                        'type' => 'checkbox',
+                        'name' => '_blank_picture',
+                        'title' => __('Clear'),
+                     ],
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
 
          $surnamerand = mt_rand();
-         echo "<tr class='tab_bg_1'><td><label for='textfield_realname$surnamerand'>" . __('Surname') . "</label></td><td>";
-
-         if ($extauth
-             && isset($authtype['realname_field'])
-             && !empty($authtype['realname_field'])) {
-
-            echo $this->fields["realname"];
-         } else {
-            Html::autocompletionTextField($this, "realname", ['rand' => $surnamerand]);
-         }
-         echo "</td>";
-
-         if (!empty($this->fields["name"])) {
-            echo "<td rowspan='7'>" . __('Picture') . "</td>";
-            echo "<td rowspan='7'>";
-            echo "<div class='user_picture_border_small' id='picture$rand'>";
-            echo "<img class='user_picture_small' alt=\"".__s('Picture')."\" src='".
-                   User::getThumbnailURLForPicture($this->fields['picture'])."'>";
-            echo "</div>";
-            $full_picture  = "<div class='user_picture_border'>";
-            $full_picture .= "<img class='user_picture' alt=\"".__s('Picture')."\" src='".
-                              User::getURLForPicture($this->fields['picture'])."'>";
-            $full_picture .= "</div>";
-
-            Html::showTooltip($full_picture, ['applyto' => "picture$rand"]);
-            echo Html::file(['name' => 'picture', 'display' => false, 'onlyimages' => true]);
-
-            echo "&nbsp;";
-            Html::showCheckbox(['name' => '_blank_picture', 'title' => __('Clear')]);
-            echo "&nbsp;".__('Clear');
-
-            echo "</td>";
-            echo "</tr>";
-         }
 
          $firstnamerand = mt_rand();
          echo "<tr class='tab_bg_1'><td><label for='textfield_firstname$firstnamerand'>" . __('First name') . "</label></td><td>";
