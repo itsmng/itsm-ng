@@ -1875,6 +1875,7 @@ JAVASCRIPT
       ob_start();
          Html::showProfileSelecter($_SERVER['REQUEST_URI']);
       $twig_vars['profileSelect'] = ob_get_clean();
+      $twig_vars['accessibilityMenu'] = Session::haveRight("accessibility", READ);
 
       require_once GLPI_ROOT . "/ng/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
