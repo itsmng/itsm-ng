@@ -163,6 +163,15 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
       }
    }
    // Check version
+
+   // die(var_dump($CFG_GLPI));
+   if(isset($CFG_GLPI['itsmdbversion'])) {
+      if ($CFG_GLPI['dbversion'] != $CFG_GLPI['itsmdbversion']){
+         $query = "UPDATE glpi_configs SET value = '{$CFG_GLPI['itsmdbversion']}' WHERE name = 'dbversion' ";
+         $DB->queryOrDie($query, $DB->error());
+      }
+   }
+
    if ((!isset($CFG_GLPI['dbversion']) || (trim($CFG_GLPI["dbversion"]) != ITSM_SCHEMA_VERSION))
        && !isset($_GET["donotcheckversion"])) {
 
