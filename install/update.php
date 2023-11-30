@@ -470,17 +470,16 @@ function doUpdateDb() {
    $itsm_current_version      = $currents['itsmversion'];
    $itsm_current_db_version   = $currents['itsmdbversion'];
 
-   $migration = new Migration(GLPI_SCHEMA_VERSION);
+   $migration = new Migration(ITSM_SCHEMA_VERSION);
    $update->setMigration($migration);
 
-   if (defined('GLPI_PREVER')) {
-      if ($current_db_version != GLPI_SCHEMA_VERSION && !isset($_POST['agree_dev'])) {
+   if (defined('ITSM_PREVER')) {
+      if ($current_db_version != ITSM_SCHEMA_VERSION && !isset($_POST['agree_dev'])) {
          return;
       }
    }
 
    $update->doUpdates($current_version);
-   $update->doItsmUpdates($itsm_current_version);
    $GLPI_CACHE->clear();
 }
 
@@ -589,7 +588,7 @@ if (empty($_POST["continuer"]) && empty($_POST["from_update"])) {
       echo "<h3><span class='migred'>".sprintf(__('Caution! You will update the GLPI database named: %s'), $DB->dbdefault) ."</h3>";
 
       echo "<form action='update.php' method='post'>";
-      if (strlen(GLPI_SCHEMA_VERSION) > 40) {
+      if (strlen(ITSM_SCHEMA_VERSION) > 40) {
          echo Config::agreeDevMessage();
       }
       echo "<input type='submit' class='submit' name='continuer' value=\"".__('Continue')."\">";

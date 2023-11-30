@@ -4,6 +4,7 @@
 // RUNTIME VARIABLES
 :root {
     --header-height: 3.5rem;
+    --subheader-height: 2.5rem;
     --nav-open-width: 11rem;
     --nav-close-width: 5em;
     --nav-transition-time: 0s;
@@ -13,6 +14,10 @@
     --table-border-radius: 0;
     --nav-size: 1rem;
     --nav-top-height: 0;
+}
+
+body {
+    overflow-x: hidden;
 }
 
 .main-container a {
@@ -79,6 +84,7 @@ header {
 }
 
 #subheader {
+    height: var(--subheader-height);
     margin-top: var(--nav-top-height);
     a {
         font-size: var(--nav-size);
@@ -1144,3 +1150,48 @@ div.chip>p {
         }
     }
 }
+
+/******************************************************/
+/*                    ACCESSIBILITY                   */
+/******************************************************/
+
+#accessibility-menu {
+    top: calc(var(--header-height) + var(--subheader-height));
+}
+
+.btn-accessibility {
+    background-color: #4054b2 !important;
+    color: white !important;
+    border-radius: 0 !important;
+    padding: 0.5rem !important;
+}
+
+.accessibility-grayscale {
+    filter: grayscale(1);
+}
+
+
+.accessibility-high-contrast * {
+    background-color: black !important;
+    color: white !important;
+}
+
+.accessibility-negative-high-contrast {
+    filter: invert(1) !important;
+    & * {
+        background-color: black !important;
+        color: white !important;    
+    }
+}
+
+.accessibility-link-underline a, .accessibility-link-underline button {
+    text-decoration: underline !important;
+}
+
+.accessibility-readable-font *:not(i) {
+    font-family: 'OpenDyslexic', Arial, sans-serif !important;
+}
+
+/******************************************************/
+/*                    /ACCESSIBILITY                  */
+/******************************************************/

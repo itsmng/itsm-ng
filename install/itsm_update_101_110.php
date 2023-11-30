@@ -31,34 +31,47 @@
  */
 
 /**
- * Update ITSM-NG from 1.0.0 to 1.0.1
+ * Update ITSM-NG from 1.0.1 to 1.1.0
  *
  * @return bool for success (will die for most error)
  **/
-function update100to101() {
+function update101to110() {
    /** @global Migration $migration */
-   global $DB, $migration, $CFG_GLPI;
+   global $DB, $migration;
 
    $current_config   = Config::getConfigurationValues('core');
    $updateresult     = true;
    $ADDTODISPLAYPREF = [];
 
-   //TRANS: %s is the number of new version
-   $migration->displayTitle(sprintf(__('Update to %s'), '1.0.1'));
-   $migration->setVersion('9.5.7');
+   $migration->displayTitle(sprintf(__('Update to %s'), '1.1.0'));
+   $migration->setVersion('1.1.0');
 
-   /** Replace auror values where glpi_configs.name field = palette */
-   $migration->addPostQuery(
-       $DB->buildUpdate(
-           'glpi_configs',
-           ['value' => 'itsmng'],
-           ['name' => 'palette']
-       )
-   );
-   /** /Replace auror values where glpi_configs.name field = palette */
+
+   /** Create new table for Open ID connect's config */
+   if (!$DB->tableExists("glpi_oidc_config")) {
+    $config = "CREATE TABLE `glpi_oidc_config` (
+        `id` INT(11) NOT NULL DEFAULT 0,
+        `Provider` varchar(255) DEFAULT NULL,
+        `ClientID` varchar(255) DEFAULT NULL,
+        `ClientSecret` varchar(255) DEFAULT NULL,
+        `is_activate`   TINYINT(1) NOT NULL DEFAULT 0,
+        `is_forced`   TINYINT(1) NOT NULL DEFAULT 0,
+        PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+        $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
+    }
+
+    $oidc_config = [
+        "is_activate" => 0,
+        "is_forced" => 0
+    ];
+
+    // Update or insert OIDC config
+    $DB->updateOrInsert("glpi_oidc_config", $oidc_config, ['id' => 0]);
+
+   /** /Create new table for Open ID connect's config */
 
    // ************ Keep it at the end **************
    $migration->executeMigration();
-
    return $updateresult;
 }

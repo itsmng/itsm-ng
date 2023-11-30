@@ -44,6 +44,7 @@ function update110to120() {
    $ADDTODISPLAYPREF = [];
 
    $migration->displayTitle(sprintf(__('Update to %s'), '1.2.0'));
+   $migration->setVersion('1.2.0');
 
 
    /** Create new table for Open ID connect's config */
