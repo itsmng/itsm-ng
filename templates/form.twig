@@ -1,20 +1,27 @@
 {% from 'macros/input.twig' import input %}
 
-{% set options = ['actions', 'after', 'before', 'hooks'] %}
+{% set options = ['actions', 'after', 'before', 'hooks', 'init'] %}
 
 <form name="form" action="{{form.action}}" enctype="multipart/form-data" method={{form.method|default('post')}} class="container">
 {% for key, bloc in form.content  %}
 <div class="container mb-3">
     {% if bloc.visible %}
-        <h2 class="text-start">{{key}}</h2>
+        <h2 class="text-start">{{key|raw}}</h2>
     {% endif %}
     <div class="row row-cols-{{col}}">
     {% for title, input in bloc.inputs %}
         {% if input.type and input.type != 'hidden' %}
-        <div class="col col-lg-4 col-md-6 col-12 text-start">
+        <div class="
+            col{{ input.col ? '-' ~ input.col : '-12' }}
+            col-lg{{ input.col_lg ? '-' ~ input.col_lg : '-4' }}
+            col-md{{ input.col_md ? '-' ~ input.col_mg : '-2' }} text-start
+            ">
             <label for="{{input.name}}">{{title|raw}}</label>
             <div class="d-flex justify-content-between align-items-center input-group my-1">
         {% endif %}
+                {% if input.before %}
+                <div class="form-text mx-2">{{input.before | raw}}</div>
+                {% endif %}
                 {% set attributes = input | filter((v, k) => k not in options) %}
                 {% if input.type %}
                 {{input(attributes)}}

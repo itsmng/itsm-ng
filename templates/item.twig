@@ -2,10 +2,10 @@
 
 </div>
 <div class='d-none' id="hidden_gridStack_items">
-{% for key, tab in tabs %}
+{% for tab in tabs %}
 <div 
-	class="grid-stack-item" 
-	id="ContentFor{{key|slug}}"
+	class="grid-stack-item"
+	id="ContentFor{{tab['title']|slug}}"
 	gs-h='6' gs-min-w='6'
 	>
 		<div class="card grid-stack-item-content">
@@ -41,18 +41,18 @@ function updateWidgetWidth() {
 }
 
 function updateGridContent() {
-	var target = $( event.currentTarget ),
-		val = target.attr( 'data-value' ),
-		inp = target.find( 'input' ),
+	var $target = $( event.currentTarget ),
+		val = $target.attr( 'data-value' ),
+		$inp = $target.find( 'input' ),
 		idx;
+	
 	if ( ( idx = options.indexOf( val ) ) > -1 ) {
 		options.splice( idx, 1 );
-		setTimeout( function() { inp.prop( 'checked', false ) }, 0);
+		setTimeout( function() { $inp.prop( 'checked', false ) }, 0);
 	} else {
 		options.push( val );
-		setTimeout( function() { inp.prop( 'checked', true ) }, 0);
+		setTimeout( function() { $inp.prop( 'checked', true ) }, 0);
 	}
-	console.log(target)
 	sessionStorage.setItem('grid-layout-{{layoutFor|slug}}', options);
 
 	for (option of $('#ContentForTabs > div')) {

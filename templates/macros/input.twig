@@ -4,16 +4,30 @@
         <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
     {% endfor %}
 </select>
+{% if attributes.searchable %}
+<script>
+    $(document).ready(function() {
+        var select_box_element = document.querySelector('#{{attributes.id}}');
+        dselect(select_box_element, {
+        search: true
+    });
+    });
+</script>
+{% endif %}
 {% endmacro %}
 
 
 {% macro input(attributes) %}
     {% if attributes.type == 'checkbox' %}
-<input class='form-check-input' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+<div class="form-switch">
+    <input class='form-check-input' role="switch"  {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+</div>
     {% elseif attributes.type == 'textarea' %}
-<textarea class='form-control' {% for name, value in attributes|filter(k,v => k != 'value') %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default("")}}</textarea>
+<textarea class='form-control' {% for name, value in attributes|filter(k,v => k != 'value') %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default("")|raw}}</textarea>
     {% elseif attributes.type == 'select' %}
 {{_self.select(attributes)}}
+    {% elseif attributes.type == 'twig' %}
+    {% include attributes.template with attributes only %}
     {% else %}
 <input class='form-control' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
     {% endif %}
