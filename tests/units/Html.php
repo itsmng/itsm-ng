@@ -526,7 +526,7 @@ class Html extends \GLPITestCase {
       //expect minified file and specific version
       $fake_version = '0.0.1';
       $expected = str_replace(
-         ['%url', '%attrs', GLPI_VERSION],
+         ['%url', '%attrs', ITSM_VERSION],
          ['file.min.css', $base_attrs, $fake_version],
          $base_expected
       );
@@ -558,7 +558,7 @@ class Html extends \GLPITestCase {
       ];
       $dir = str_replace(realpath(GLPI_ROOT), '', realpath(GLPI_TMP_DIR));
       $base_expected = '<script type="text/javascript" src="'.
-         $CFG_GLPI['root_doc'] . $dir .'/%url?v='. GLPI_VERSION .'"></script>';
+         $CFG_GLPI['root_doc'] . $dir .'/%url?v='. ITSM_VERSION .'"></script>';
 
       //create test files
       foreach ($fake_files as $fake_file) {
@@ -618,7 +618,7 @@ class Html extends \GLPITestCase {
       //expect minified file and specific version
       $fake_version = '0.0.1';
       $expected = str_replace(
-         ['%url', GLPI_VERSION],
+         ['%url', ITSM_VERSION],
          ['file.min.js', $fake_version],
          $base_expected
       );
