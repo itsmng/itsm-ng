@@ -16,7 +16,6 @@ on:
 jobs:
   lint:
     # Do not run scheduled lint on tier repositories
-    if: github.repository == 'itsmng/itsm-ng'
     name: "Lint on PHP ${{ matrix.php-version }}"
     # Choose Ubuntu docker image
     runs-on: ubuntu-latest
