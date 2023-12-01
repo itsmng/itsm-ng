@@ -62,14 +62,12 @@ class Central extends CommonGLPI {
 
       if ($item->getType() == __CLASS__) {
          $tabs = [
+            0 => __('Dashboard'),
             1 => __('Personal View'),
             2 => __('Group View'),
             3 => __('Global View'),
             4 => _n('RSS feed', 'RSS feeds', Session::getPluralNumber()),
          ];
-
-         $grid = new Grid('central');
-
          return $tabs;
       }
       return '';
@@ -112,7 +110,7 @@ class Central extends CommonGLPI {
       self::showMessages();
 
       $dashboard = new Dashboard();
-      $dashboard->getFromDB($dashboard->getByName('central')['id']);
+      // $dashboard->getFromDB(0);
 
       global $DB;
       $ticketsByStatus = iterator_to_array($DB->query('SELECT 

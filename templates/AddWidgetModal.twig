@@ -1,0 +1,210 @@
+{% from 'macros/collapseChecklist.twig' import collapseChecklist %}
+
+<div class="modal modal-lg fade" id="widgetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+		<form action="{{addWidget_action}}" method="post" class="text-center">
+			<div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{"New widget"|trans}}</h1>
+                <div>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Add widget</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+			</div>
+			<div class="modal-body row">
+                <div id="data-selection-widget-modal" class="col-12 col-lg-4 accordion accordion-flush">
+                    {% set dataGroup = [
+                        {'title': 'Asset', 'content': {
+                            'Computer': {
+                                'value': 'computer',
+                                'content' : {
+                                    'Model' : {
+                                        'value': 'model',
+                                        'content': {
+                                            'Dell xps': {
+                                                'value': 'dellxps',
+                                            },
+                                            'Asus vivobook': {
+                                                'value': 'vivobook',
+                                            },
+                                            'thinkstation': {
+                                                'value': 'thinkstation',
+                                            },
+
+                                        }
+                                    },
+                                    'Type' : {
+                                        'value': 'type',
+                                        'content': {
+                                            'Laptop': {
+                                                'value': 'laptop',
+                                            },
+                                            'Desktop': {
+                                                'value': 'desktop',
+                                            },
+                                        }
+                                    },
+                                }
+                            },
+                            'Monitor': {}
+                        }},
+                        {'title': 'Ticket', 'content': []},
+                        {'title': 'User', 'content': []},
+                        {'title': 'Group', 'content': []}
+                    ] %}
+                    {% for data in dataGroup %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{data.title|slug}}"
+                                aria-expanded="false" aria-controls="flush-collapseOne">
+                                {{data.title|raw}}
+                            </button>
+                        </h2>
+                        <div id="flush-collapse-{{data.title|slug}}" class="accordion-collapse collapse"
+                            data-bs-parent="#data-selection-widget-modal">
+                            <div class="accordion-body text-start">
+                                {{collapseChecklist(data.content)|raw}}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="col-12 col-lg-8 d-flex flex-column p-0">
+                    <div id="format-selection-widget-modal p-0 m-0 row border" class="d-flex">
+                        {% set formats = [
+                            { 'value': 'count', 'icon': 'fas fa-hashtag', 'name': 'Count' },
+                            { 'value': 'line', 'icon': 'fas fa-chart-line', 'name': 'Line' },
+                            { 'value': 'bar', 'icon': 'fas fa-chart-bar', 'name': 'Bar' },
+                            { 'value': 'pie', 'icon': 'fas fa-chart-pie', 'name': 'Pie' },
+                        ] %}
+                        {%  for format in formats %}
+                        <div class="col-3 p-0 m-0">
+                            <input type="radio" class="btn-check" name="format" id="format-{{format.value}}"
+                                autocomplete="off" value="{{format.value}}" onchange="changeType(this)">
+                            <label class="btn col-12" for="format-{{format.value}}">
+                                <i class="{{format.icon}} fs-2"></i>
+                                <p style="font-size: .8rem">{{format.name|trans}}</p>
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div id="parameter-selection-widget-modal" class="px-3">
+                        <div class="input-group my-3">
+                            <label for="parameter-selection-widget-modal-select" class="input-group-text">{{"Order by"}}: </label>
+                            <select name="orderBy" id="parameter-selection-widget-modal-select" class="form-select">
+                            </select>
+                        </div>
+                        <div class="input-group my-3">
+                            <label for="direction-selection-widget-modal-select" class="input-group-text">{{"Direction"}}: </label>
+                            <select name="orderBy" id="direction-selection-widget-modal-select" class="form-select">
+                                <option value="vertical">{{"Vertical"|trans}}
+                                <option value="horizontal">{{"Horizontal"|trans}}
+                            </select>
+                        </div>
+                    </div>
+                    <div id="preview-graph-widget-modal" style="height: 15rem">
+                    </div>
+                </div>
+			</div>
+            <input type="hidden" name="id" value="{{dashboardId}}"/>
+            <input type="hidden" name="coords" value="[-1, -1]"/>
+            <input type="hidden" name="update" value="update"/>
+		</form>
+    </div>
+  </div>
+</div>
+<script>
+	$(document).ready(function() {
+		$('#widgetModal').insertAfter($('body'));
+		for (select of ['#assetSelect']) {
+			var select_box_element = document.querySelector(select);
+			dselect(select_box_element, {
+				search: true
+			});
+		}
+	});
+	function openWidgetModal(coords) {
+		$('#widgetModal input[name="coords"]').val(JSON.stringify(coords));
+		$("#widgetModal").modal("show");
+	}
+
+	function toggleEdit() {
+		// toggle display of all edit button
+		var editButtons = document.getElementsByClassName("editButton");
+		for (var i = 0; i < editButtons.length; i++) {
+			editButtons[i].style.display = editButtons[i].style.display == "none" ? "block" : "none";
+		}
+	}
+
+	function removeWidget(x, y) {
+		$.ajax({
+			url: "{{ajax_endpoint}}",
+			type: "POST",
+			data: {
+				id: "{{dashboardId}}",
+				action: "delete",
+				coords: JSON.stringify([x, y]),
+			},
+			success: function(data) {
+				location.reload();
+			},
+			error: function(data) {
+				console.log(data);
+			}
+		});
+	}
+
+	function changeType(event) {
+		if (event.value == 'count') {
+			$('#col2Select').hide();
+		} else {
+			$('#col2Select').show();
+		}
+	}
+
+	function getAssetColumns(event) {
+		fields = [
+			'string',
+			'number',
+			'text',
+			'datetime',
+			'count',
+			'dropdown',
+		]
+		$.ajax({
+			url: "{{ajax_endpoint}}",
+			type: "POST",
+			data: {
+				action: "getColumns",
+				asset: event.value,
+			},
+			success: function(data) {
+				var columns = JSON.parse(data);
+				values = columns.map(function(col) {
+					if (col.table && col.field && col.name && (fields.includes(col.datatype)))
+						return {table: col.table, field: col.field, name: col.name};
+					else
+						return null;
+				}).filter(val => val != null);
+				$('#col1Select').empty();
+				$('#col2Select').empty();
+				for (value of values) {
+					$('#col1Select').append($('<option>', {
+						value: value.table + '_' + value.field,
+						text: value.name,
+					}));
+					$('#col2Select').append($('<option>', {
+						value: value.table + '_' + value.field,
+						text: value.name,
+					}));
+				}
+			},
+			error: function(data) {
+				console.log(data);
+			}
+		});
+	
+	}
+</script>
