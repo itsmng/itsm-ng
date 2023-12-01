@@ -464,10 +464,10 @@ function doUpdateDb() {
    Toolbox::setDebugMode(Session::DEBUG_MODE, 0, 0, 1);
 
    $currents                  = $update->getCurrents();
-   $current_version           = $currents['version'];
+   $current_version           = $currents['itsmversion'];
    $current_db_version        = $currents['dbversion'];
    $glpilanguage              = $currents['language'];
-   $itsm_current_version      = $currents['itsmversion'];
+   $itsm_current_version      = $currents['itsmversion'] ?? '1.0.0';
    $itsm_current_db_version   = $currents['itsmdbversion'];
 
    $migration = new Migration(ITSM_SCHEMA_VERSION);
