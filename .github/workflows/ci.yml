@@ -84,8 +84,8 @@ jobs:
       matrix:
         include:
           # test higher PHP version with higher MariaDB and MySQL versions
-          - {php-version: "8.2", db-image: "mariadb:10.9", always: true}
-          - {php-version: "8.2", db-image: "mysql:8.0", always: true}
+          - {php-version: "8.0", db-image: "mariadb:10.9", always: true}
+          - {php-version: "8.0", db-image: "mysql:8.0", always: true}
     env:
       if: github.repository == 'itsmng/itsm-ng'
       # Skip jobs that should not be always run on pull requests or on push on tier repository (to limit workers usage).
