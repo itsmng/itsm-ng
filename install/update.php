@@ -463,12 +463,15 @@ function doUpdateDb() {
    // Only show errors
    Toolbox::setDebugMode(Session::DEBUG_MODE, 0, 0, 1);
 
-   $currents                  = $update->getCurrents();
-   $current_version           = $currents['itsmversion'];
-   $current_db_version        = $currents['dbversion'];
-   $glpilanguage              = $currents['language'];
-   $itsm_current_version      = $currents['itsmversion'] ?? '1.0.0';
-   $itsm_current_db_version   = $currents['itsmdbversion'];
+   $currents = $update->getCurrents();
+
+   if (!isset($currents['itsmversion'])) {
+      $current_version           = $currents['version'];
+      $current_db_version        = $currents['dbversion'];
+   } else {
+      $current_version           = $currents['itsmversion'];
+      $current_db_version        = $currents['itsmdbversion'];
+   }
 
    $migration = new Migration(ITSM_SCHEMA_VERSION);
    $update->setMigration($migration);
