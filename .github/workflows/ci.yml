@@ -16,7 +16,6 @@ on:
 jobs:
   lint:
     # Do not run scheduled lint on tier repositories
-    if: github.repository == 'itsmng/itsm-ng'
     name: "Lint on PHP ${{ matrix.php-version }}"
     # Choose Ubuntu docker image
     runs-on: ubuntu-latest
@@ -25,7 +24,6 @@ jobs:
       # Execute tests with several versions of php
       matrix:
         include:
-          - {php-version: "8.0"}
           - {php-version: "8.2"}
     # Define environement variable
     env:
@@ -79,7 +77,6 @@ jobs:
           .github/actions/teardown_containers-cleanup.sh
 
   tests:
-    if: github.repository == 'itsmng/itsm-ng'
     name: "Test on PHP ${{ matrix.php-version }} using ${{ matrix.db-image }}"
     runs-on: ubuntu-latest
     strategy:
@@ -150,24 +147,6 @@ jobs:
         if: env.skip != 'true'
         run: |
           docker-compose exec -T app .github/actions/test_tests-units.sh
-      - name: "Web tests"
-        if: env.skip != 'true'
-        run: |
-          docker-compose exec -T app .github/actions/test_tests-web.sh    
-      #- name: "Functionnal tests"
-      #  if: env.skip != 'true'
-      #  run: |
-      #    docker-compose exec -T app .github/actions/test_tests-functionnal.sh
-      #- name: "LDAP tests"
-      #  if: env.skip != 'true'
-      #  run: |
-      #    .github/actions/init_initialize-ldap-fixtures.sh
-      #    docker-compose exec -T app .github/actions/test_tests-ldap.sh
-      #- name: "IMAP tests"
-      #  if: env.skip != 'true'
-      #  run: |
-      #    .github/actions/init_initialize-imap-fixtures.sh
-      #    docker-compose exec -T app .github/actions/test_tests-imap.sh
       - name: "Cleanup containers"
         if: env.skip != 'true' && always()
         run: |
