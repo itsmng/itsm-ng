@@ -2,8 +2,8 @@
 @import "custom";
 
 // PRECOMPILED VARIABLES
-$primary-color:             #7b081d !default;
-$secondary-color:           #ae0c2a !default;
+$primary-color:             #0b0624 !default;
+$secondary-color:           #0e2045 !default;
 
 
 $primary-text-color:        #ffffff !default;
@@ -25,9 +25,9 @@ $logo-file: url("../pics/fd_logo.png") !default;
 $primary: $primary-color;
 $secondary: $secondary-color;
 
-$danger:    #dc3545;
-$warning:   #ffc107;
-$info:      #1b1d1d;
+$danger:    #ff5454;
+$warning:   #ffd34e;
+$info:      #5998ff;
 
 $light:    #f8f9fa;
 $dark:     #343a40;

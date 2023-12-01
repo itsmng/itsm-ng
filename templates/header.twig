@@ -61,6 +61,10 @@
 			</ul>
 		</header>
 
+		{% if accessibilityMenu %}
+			{% include "accessibilityMenu.twig" %}
+		{% endif %}
+
 		<div id="main-test" class="{{menu_position}}">
 			<nav id="menu" class="{{menu_small ? 'menu-close' : 'menu-open'}}">
 				<div id="bubble">

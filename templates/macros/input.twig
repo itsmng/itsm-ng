@@ -19,7 +19,9 @@
 
 {% macro input(attributes) %}
     {% if attributes.type == 'checkbox' %}
-<input class='form-check-input' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+<div class="form-switch">
+    <input class='form-check-input' role="switch"  {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+</div>
     {% elseif attributes.type == 'textarea' %}
 <textarea class='form-control' {% for name, value in attributes|filter(k,v => k != 'value') %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default("")|raw}}</textarea>
     {% elseif attributes.type == 'select' %}

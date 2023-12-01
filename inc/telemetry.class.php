@@ -69,7 +69,7 @@ class Telemetry extends CommonGLPI {
 
       $glpi = [
          'uuid'               => self::getInstanceUuid(),
-         'version'            => GLPI_VERSION,
+         'version'            => ITSM_VERSION,
          'plugins'            => [],
          'default_language'   => $CFG_GLPI['language'],
          'install_mode'       => GLPI_INSTALL_MODE,

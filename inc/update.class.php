@@ -44,6 +44,8 @@ class Update extends CommonGLPI {
    private $version;
    private $dbversion;
    private $language;
+   private $itsmversion;
+   private $itsmdbversion;
 
    /**
     * Constructor
@@ -148,133 +150,6 @@ class Update extends CommonGLPI {
       return $currents;
    }
 
-   /**
-    * Run ITSM-NG updates
-    *
-    * @param string $itsm_current_version ITSM Current version
-    *
-    * @return void
-    */
-   public function doItsmUpdates($itsm_current_version = null) {
-      if ($itsm_current_version === null) {
-         if ($this->itsmversion === null) {
-            throw new \RuntimeException('Cannot process ITSM-NG updates without any version specified!');
-         }
-         $itsm_current_version = $this->itsmversion;
-      }
-
-      $DB = $this->DB;
-
-      // To prevent problem of execution time
-      ini_set("max_execution_time", "0");
-
-      $updir = __DIR__ . "/../install/itsm_update/";
-
-      if (isCommandLine() && version_compare($itsm_current_version, '0.72.3', 'lt')) {
-         echo 'Upgrade from command line is not supported before 0.72.3!';
-         die(1);
-      }
-
-      // Update process desactivate all plugins
-      $plugin = new Plugin();
-      $plugin->unactivateAll();
-
-      switch ($itsm_current_version) {
-         case '1.0.0':
-            include_once "{$updir}update_100_101.php";
-            update100to101();
-            include_once "{$updir}update_101_110.php";
-            update101to110();
-            include_once "{$updir}update_110_120.php";
-            update110to120();
-            include_once "{$updir}update_120_130.php";
-            update120to130();
-            include_once "{$updir}update_130_140.php";
-            update130to140();
-            include_once "{$updir}update_140_150.php";
-            update140to150();
-            include_once "{$updir}update_150_151.php";
-            update150to151();
-            break;
-         case '1.0.1':
-            include_once "{$updir}update_101_110.php";
-            update101to110();
-            include_once "{$updir}update_110_120.php";
-            update110to120();
-            include_once "{$updir}update_120_130.php";
-            update120to130();
-            include_once "{$updir}update_130_140.php";
-            update130to140();
-            include_once "{$updir}update_140_150.php";
-            update140to150();
-            include_once "{$updir}update_150_151.php";
-            update150to151();
-            break;
-         case '1.1.0':
-            include_once "{$updir}update_110_120.php";
-            update110to120();
-            include_once "{$updir}update_120_130.php";
-            update120to130();
-            include_once "{$updir}update_130_140.php";
-            update130to140();
-            include_once "{$updir}update_140_150.php";
-            update140to150();
-            include_once "{$updir}update_150_151.php";
-            update150to151();
-            break;
-         case '1.2.0':
-            include_once "{$updir}update_120_130.php";
-            update120to130();
-            include_once "{$updir}update_130_140.php";
-            update130to140();
-            include_once "{$updir}update_140_150.php";
-            update140to150();
-            include_once "{$updir}update_150_151.php";
-            update150to151();
-            break;
-         case '1.3.0':
-            include_once "{$updir}update_130_140.php";
-            update130to140();
-            include_once "{$updir}update_140_150.php";
-            update140to150();
-            include_once "{$updir}update_150_151.php";
-            update150to151();
-            break;
-         case '1.4.0':
-            include_once "{$updir}update_140_150.php";
-            update140to150();
-            include_once "{$updir}update_150_151.php";
-            update150to151();
-            break;
-         case '1.5.0':
-            include_once "{$updir}update_150_151.php";
-            update150to151();
-            break;
-
-         case ITSM_VERSION:
-         case ITSM_SCHEMA_VERSION:
-            break;
-
-         default :
-            $message = sprintf(
-               __('Unsupported version (%1$s)'),
-               $current_version
-            );
-            if (isCommandLine()) {
-               echo "$message\n";
-               die(1);
-            } else {
-               $this->migration->displayWarning($message, true);
-               die(1);
-            }
-      }
-
-      // Update version number ---- LEAVE AT THE END
-      Config::setConfigurationValues('core', ['itsmversion'             => ITSM_VERSION,
-                                              'itsmdbversion'           => ITSM_SCHEMA_VERSION]);
-
-   }
-
 
    /**
     * Run updates
@@ -302,7 +177,7 @@ class Update extends CommonGLPI {
          echo 'Upgrade from command line is not supported before 0.72.3!';
          die(1);
       }
-
+      
       // Update process desactivate all plugins
       $plugin = new Plugin();
       $plugin->unactivateAll();
@@ -634,17 +509,42 @@ class Update extends CommonGLPI {
          case "9.5.6":
             include_once "{$updir}update_956_957.php";
             update956to957();
-            break;
 
          case "9.5.7":
          case "9.5.8":
          case "9.5.9":
          case "9.5.10":
          case "9.5.11":
-            break;
+         case "9.5.12":
+         case "9.5.13":
+             include_once "{$updir}itsm_update_100_101.php";
+             update100to101();
+             
+         case "1.0.1":
+             include_once "{$updir}itsm_update_101_110.php";
+             update101to110();
+             
+         case "1.1.0":
+             include_once "{$updir}itsm_update_110_120.php";
+             update110to120();
+             
+         case "1.2.0":
+             include_once "{$updir}itsm_update_120_130.php";
+             update120to130();
+         
+         case "1.3.0":
+         case "1.4.0":
+         case "1.5.0":
+         case "1.5.1":
+         case "1.6.0":
+             include_once "{$updir}itsm_update_150_151.php";
+             update150to151();
+         case "2.0.0":
+             include_once "{$updir}itsm_update_151_200.php";
+             update151to200();
 
-         case GLPI_VERSION:
-         case GLPI_SCHEMA_VERSION:
+         case ITSM_VERSION:
+         case ITSM_SCHEMA_VERSION:
             break;
 
          default :
@@ -662,8 +562,10 @@ class Update extends CommonGLPI {
       }
 
       // Update version number and default langage and new version_founded ---- LEAVE AT THE END
-      Config::setConfigurationValues('core', ['version'             => GLPI_VERSION,
-                                              'dbversion'           => GLPI_SCHEMA_VERSION,
+      Config::setConfigurationValues('core', ['version'             => ITSM_VERSION,
+                                              'dbversion'           => ITSM_SCHEMA_VERSION,
+                                              'itsmversion'         => ITSM_VERSION,
+                                              'itsmdbversion'       => ITSM_SCHEMA_VERSION,
                                               'language'            => $this->language,
                                               'founded_new_version' => '']);
 

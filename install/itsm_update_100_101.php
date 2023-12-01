@@ -31,23 +31,34 @@
  */
 
 /**
- * Update ITSM-NG from 1.4.0 to 1.5.0
+ * Update ITSM-NG from 1.0.0 to 1.0.1
  *
  * @return bool for success (will die for most error)
  **/
-function update140to150() {
-    /** @global Migration $migration */
-    global $DB, $migration;
+function update100to101() {
+   /** @global Migration $migration */
+   global $DB, $migration, $CFG_GLPI;
 
-    $current_config   = Config::getConfigurationValues('core');
-    $updateresult     = true;
-    $ADDTODISPLAYPREF = [];
+   $current_config   = Config::getConfigurationValues('core');
+   $updateresult     = true;
+   $ADDTODISPLAYPREF = [];
 
-    $migration->displayTitle(sprintf(__('Update to %s'), '1.5.0'));
+   //TRANS: %s is the number of new version
+   $migration->displayTitle(sprintf(__('Update to %s'), '1.0.1'));
+   $migration->setVersion('1.0.1');
 
-    /** NO SQL UPDATE FOR 1.5.0 */
+   /** Replace auror values where glpi_configs.name field = palette */
+   $migration->addPostQuery(
+       $DB->buildUpdate(
+           'glpi_configs',
+           ['value' => 'itsmng'],
+           ['name' => 'palette']
+       )
+   );
+   /** /Replace auror values where glpi_configs.name field = palette */
 
-    // ************ Keep it at the end **************
-    $migration->executeMigration();
-    return $updateresult;
+   // ************ Keep it at the end **************
+   $migration->executeMigration();
+
+   return $updateresult;
 }

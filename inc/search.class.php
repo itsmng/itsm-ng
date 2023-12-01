@@ -916,8 +916,8 @@ class Search {
                   $WHERE.
                   $GROUPBY.
                   $HAVING.
-                  $ORDER.
-                  $LIMIT;
+                  $ORDER;/*.
+                  $LIMIT;*/
       }
       $data['sql']['search'] = $QUERY;
    }
@@ -1366,7 +1366,7 @@ class Search {
 
          self::$output_type = $data['display_type'];
 
-         while (($i < $data['data']['totalcount']) && ($i <= $data['data']['end'])) {
+         while (($i < $data['data']['totalcount'])) {
             $row = $DBread->fetchAssoc($result);
             $newrow        = [];
             $newrow['raw'] = $row;

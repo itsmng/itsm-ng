@@ -16,8 +16,8 @@
 
 
 :root {
-   --primary-color:             #7b081d;
-   --secondary-color:           #ae0c2a;
+   --primary-color:             #0b0624;
+   --secondary-color:           #0e2045;
    
    --primary-text-color:        rgb(255, 255, 255);
    --secondary-text-color:      black;
@@ -97,7 +97,7 @@ ul {
    margin-left: 2.5%;
    width: 95%;
    height: 10px;
-   background: #7b081d75;
+   background: var(--primary-color);
    position: absolute;
    z-index: 1;
 }
@@ -107,7 +107,7 @@ ul {
    z-index: 2;
    width: calc(var(--step) / (var(--maxstep))* 100% + calc(var(--step) * 35px / 2));
    height: 10px;
-   background-color: var(--primary-color);
+   background-color: #007ACC;
    border-radius: 5px;
    left: 0;
    top: 0;
@@ -130,7 +130,7 @@ ul {
    --size: 35px;
    width: var(--size);
    height: var(--size);
-   background: var(--primary-color);
+   background: #007ACC;
    background-size: 10000%;
    border-radius: 50%;
    background-position: calc(100%/(var(--maxstep) - 1) * var(--step));
@@ -142,6 +142,6 @@ ul {
    opacity: 1;
 }
 .hidden{
-   background: #7b081d50;
+   background: var(--secondary-color);
    pointer-events: none;
 }

@@ -1009,12 +1009,12 @@ class Config extends CommonDBTM {
          echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
          echo "</td></tr>";
       }
-
+      
       echo "</table></div>";
       Html::closeForm();
    }
-
-
+   
+   
    /**
     * Print the config form for default user prefs
     *
@@ -1022,8 +1022,9 @@ class Config extends CommonDBTM {
     * (CFG_GLPI for global config / glpi_users fields for user prefs)
     *
     * @return void
-   **/
-   function showFormUserPrefs($data = []) {
+    **/
+    function showFormUserPrefs($data = []) {
+      include_once GLPI_ROOT . '/ng/form.utils.php';
       global $CFG_GLPI, $DB;
 
       $oncentral = (Session::getCurrentInterface() == "central");
@@ -1035,162 +1036,7 @@ class Config extends CommonDBTM {
       $canedituser = Session::haveRight('personalization', UPDATE);
       if (array_key_exists('last_login', $data)) {
          $userpref = true;
-         if ($data["id"] === Session::getLoginUserID()) {
-            $url  = $CFG_GLPI['root_doc']."/front/preference.php";
-         } else {
-            $url  = User::getFormURL();
-         }
       }
-
-      if ((!$userpref && $canedit) || ($userpref && $canedituser)) {
-         echo "<form name='form' action='$url' method='post' data-track-changes='true'>";
-      }
-
-      // Only set id for user prefs
-      if ($userpref) {
-         echo "<input type='hidden' name='id' value='".$data['id']."'>";
-      }
-      echo "<div class='center' id='tabsbody'>";
-      echo "<table class='tab_cadre_fixe'>";
-
-      echo "<tr><th colspan='4'>" . __('Personalization') . "</th></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td width='30%'><label for='dropdown_language$rand'>" . ($userpref?__('Language'):__('Default language')) . "</label></td>";
-      echo "<td width='20%'>";
-      if (Config::canUpdate()
-          || !GLPI_DEMO_MODE) {
-         Dropdown::showLanguages("language", ['value' => $data["language"], 'rand' => $rand]);
-      } else {
-         echo "&nbsp;";
-      }
-
-      echo "<td width='30%'><label for='dropdown_date_format$rand'>" . __('Date format') ."</label></td>";
-      echo "<td width='20%'>";
-      Dropdown::showFromArray('date_format', Toolbox::phpDateFormats(), ['value' => $data["date_format"], 'rand' => $rand]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='dropdown_names_format$rand'>".__('Display order of surnames firstnames')."</label></td><td>";
-      $values = [User::REALNAME_BEFORE  => __('Surname, First name'),
-                 User::FIRSTNAME_BEFORE => __('First name, Surname')];
-      Dropdown::showFromArray('names_format', $values, ['value' => $data["names_format"], 'rand' => $rand]);
-      echo "</td>";
-      echo "<td><label for='dropdown_number_format$rand'>" .__('Number format') . "</label></td>";
-      $values = [0 => '1 234.56',
-                 1 => '1,234.56',
-                 2 => '1 234,56',
-                 3 => '1234.56',
-                 4 => '1234,56'];
-      echo "<td>";
-      Dropdown::showFromArray('number_format', $values, ['value' => $data["number_format"], 'rand' => $rand]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='dropdown_list_limit$rand'>" . __('Results to display by page')."</label></td><td>";
-      // Limit using global config
-      $value = (($data['list_limit'] < $CFG_GLPI['list_limit_max'])
-                ? $data['list_limit'] : $CFG_GLPI['list_limit_max']);
-      Dropdown::showNumber('list_limit', ['value' => $value,
-                                          'min'   => 5,
-                                          'max'   => $CFG_GLPI['list_limit_max'],
-                                          'step'  => 5,
-                                          'rand'  => $rand]);
-      echo "</td>";
-      echo "<td><label for='dropdown_backcreated$rand'>".__('Go to created item after creation')."</label></td>";
-      echo "<td>";
-      Dropdown::showYesNo("backcreated", $data["backcreated"], -1, ['rand' => $rand]);
-      echo "</td>";
-
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      if ($oncentral) {
-         echo "<td><label for='dropdown_use_flat_dropdowntree$rand'>" . __('Display the complete name in tree dropdowns') . "</label></td><td>";
-         Dropdown::showYesNo('use_flat_dropdowntree', $data["use_flat_dropdowntree"], -1, ['rand' => $rand]);
-         echo "</td>";
-      } else {
-         echo "<td colspan='2'>&nbsp;</td>";
-      }
-
-      if (!$userpref
-          || ($CFG_GLPI['show_count_on_tabs'] != -1)) {
-         echo "<td><label for='dropdown_show_count_on_tabs$rand'>".__('Display counters')."</label></td><td>";
-
-         $values = [0 => __('No'),
-                    1 => __('Yes')];
-
-         if (!$userpref) {
-            $values[-1] = __('Never');
-         }
-         Dropdown::showFromArray('show_count_on_tabs', $values,
-                                 ['value' => $data["show_count_on_tabs"], 'rand' => $rand]);
-         echo "</td>";
-      } else {
-         echo "<td colspan='2'>&nbsp;</td>";
-      }
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      if ($oncentral) {
-         echo "<td><label for='dropdown_is_ids_visible$rand'>" . __('Show GLPI ID') . "</label></td><td>";
-         Dropdown::showYesNo("is_ids_visible", $data["is_ids_visible"], -1, ['rand' => $rand]);
-         echo "</td>";
-      } else {
-         echo "<td colspan='2'></td>";
-      }
-
-      echo "<td><label for='dropdown_keep_devices_when_purging_item$rand'>" . __('Keep devices when purging an item') . "</label></td><td>";
-      Dropdown::showYesNo('keep_devices_when_purging_item',
-                          $data['keep_devices_when_purging_item'],
-                          -1,
-                          ['rand' => $rand]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='dropdown_notification_to_myself$rand'>" . __('Notifications for my changes') . "</label></td><td>";
-      Dropdown::showYesNo("notification_to_myself", $data["notification_to_myself"], -1, ['rand' => $rand]);
-      echo "</td>";
-      if ($oncentral) {
-         echo "<td><label for='dropdown_display_count_on_home$rand'>".__('Results to display on home page')."</label></td><td>";
-         Dropdown::showNumber('display_count_on_home',
-                              ['value' => $data['display_count_on_home'],
-                               'min'   => 0,
-                               'max'   => 30,
-                               'rand'  => $rand]);
-         echo "</td>";
-      } else {
-         echo "<td colspan='2'>&nbsp;</td>";
-      }
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='dropdown_pdffont$rand'>" . __('PDF export font') . "</label></td><td>";
-      Dropdown::showFromArray("pdffont", GLPIPDF::getFontList(),
-                              ['value' => $data["pdffont"],
-                               'width' => 200,
-                               'rand'  => $rand]);
-      echo "</td>";
-
-      echo "<td><label for='dropdown_csv_delimiter$rand'>".__('CSV delimiter')."</label></td><td>";
-      $values = [';' => ';',
-                 ',' => ','];
-      Dropdown::showFromArray('csv_delimiter', $values, ['value' => $data["csv_delimiter"], 'rand' => $rand]);
-
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='theme-selector'>" . __("Color palette") . "</label></td><td>";
-      echo Html::select(
-         'palette',
-         $this->getPalettes(),
-         [
-            'id'        => 'theme-selector',
-            'selected'  => $data['palette']
-         ]
-      );
       echo Html::scriptBlock("
          function formatThemes(theme) {
              if (!theme.id) {
@@ -1208,209 +1054,372 @@ class Config extends CommonDBTM {
          });
          $('label[for=theme-selector]').on('click', function(){ $('#theme-selector').select2('open'); });
       ");
-      echo "</td>";
-      echo "<td><label for='layout-selector'>" . __('Layout')."</label></td><td>";
-
-      $layout_options = [
-         'lefttab' => __("Tabs on left"),
-         'classic' => __("Classic view"),
-         'vsplit'  => __("Vertical split")
-      ];
-
-      echo Html::select(
-         'layout',
-         $layout_options,
-         [
-            'id'        => 'layout-selector',
-            'selected'  => $data['layout']
-         ]
-      );
-
-      echo Html::scriptBlock("
-         function formatLayout(layout) {
-             if (!layout.id) {
-                return layout.text;
-             }
-             return $('<span></span>').html('<img src=\'../pics/layout_' + layout.id.toLowerCase() + '.png\'/>'
-                      + '&nbsp;' + layout.text);
-         }
-         $(\"#layout-selector\").select2({
-             dropdownAutoWidth: true,
-             templateResult: formatLayout,
-             templateSelection: formatLayout
-         });
-         $('label[for=layout-selector]').on('click', function(){ $('#layout-selector').select2('open'); });
-      ");
-      echo "</select>";
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'><td><label for='dropdown_highcontrast_css$rand'>".__('Enable high contrast')."</label></td>";
-      echo "<td>";
-      Dropdown::showYesNo('highcontrast_css', $data['highcontrast_css'], -1, ['rand' => $rand]);
-      echo "</td>";
-      echo "<td><label for='dropdown_timezone$rand'>" . __('Timezone') . "</label></td>";
-      echo "<td>";
       $tz_warning = '';
-      $tz_available = $DB->areTimezonesAvailable($tz_warning);
-      if ($tz_available) {
-         $timezones = $DB->getTimezones();
-         Dropdown::showFromArray(
-            'timezone',
-            $timezones, [
-               'value'                 => $data["timezone"],
-               'display_emptychoice'   => true,
-               'emptylabel'            => __('Use server configuration')
-            ]
-         );
-      } else {
-         echo "<img src=\"{$CFG_GLPI['root_doc']}/pics/warning_min.png\">";
-         echo $tz_warning;
-      }
-      echo "</td>";
-      echo "</tr>";
 
-      if ($oncentral) {
-         echo "<tr class='tab_bg_1'><th colspan='4'>".__('Assistance')."</th></tr>";
-
-         echo "<tr class='tab_bg_2'>";
-         echo "<td><label for='dropdown_followup_private$rand'>".__('Private followups by default')."</label></td><td>";
-         Dropdown::showYesNo("followup_private", $data["followup_private"], -1, ['rand' => $rand]);
-         echo "</td><td><label for='dropdown_show_jobs_at_login$rand'>". __('Show new tickets on the home page') . "</label></td><td>";
-         if (Session::haveRightsOr("ticket",
-                                   [Ticket::READMY, Ticket::READALL, Ticket::READASSIGN])) {
-            Dropdown::showYesNo("show_jobs_at_login", $data["show_jobs_at_login"], -1, ['rand' => $rand]);
-         } else {
-            echo Dropdown::getYesNo(0);
-         }
-         echo " </td></tr>";
-
-         echo "<tr class='tab_bg_2'><td><label for='dropdown_task_private$rand'>" . __('Private tasks by default') . "</label></td><td>";
-         Dropdown::showYesNo("task_private", $data["task_private"], -1, ['rand' => $rand]);
-         echo "</td><td><label for='dropdown_default_requesttypes_id$rand'>" . __('Request sources by default') . "</label></td><td>";
-         RequestType::dropdown([
-            'value'      => $data["default_requesttypes_id"],
-            'name'       => "default_requesttypes_id",
-            'condition'  => ['is_active' => 1, 'is_ticketheader' => 1],
-            'rand'       => $rand
-         ]);
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_2'><td><label for='dropdown_task_state$rand'>" . __('Tasks state by default') . "</label></td><td>";
-         Planning::dropdownState("task_state", $data["task_state"], true, ['rand' => $rand]);
-         echo "</td><td><label for='dropdown_refresh_views$rand'>" . __('Automatically refresh data (tickets list, project kanban) in minutes.') . "</label></td><td>";
-         Dropdown::showNumber('refresh_views', ['value' => $data["refresh_views"],
-                                                      'min'   => 1,
-                                                      'max'   => 30,
-                                                      'step'  => 1,
-                                                      'toadd' => [0 => __('Never')],
-                                                      'rand'  => $rand]);
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_2'><td><label for='dropdown_set_default_tech$rand'>".__('Pre-select me as a technician when creating a ticket').
-              "</label></td><td>";
-         if (!$userpref || Session::haveRight('ticket', Ticket::OWN)) {
-            Dropdown::showYesNo("set_default_tech", $data["set_default_tech"], -1, ['rand' => $rand]);
-         } else {
-            echo Dropdown::getYesNo(0);
-         }
-         echo "</td><td><label for='dropdown_set_default_requester$rand'>" . __('Pre-select me as a requester when creating a ticket') . "</label></td><td>";
-         if (!$userpref || Session::haveRight('ticket', CREATE)) {
-            Dropdown::showYesNo("set_default_requester", $data["set_default_requester"], -1, ['rand' => $rand]);
-         } else {
-            echo Dropdown::getYesNo(0);
-         }
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_2'>";
-         echo "<td>" . __('Priority colors') . "</td>";
-         echo "<td colspan='3'>";
-
-         echo "<table><tr>";
-         echo "<td><label for='dropdown_priority_1$rand'>1</label>&nbsp;";
-         Html::showColorField('priority_1', ['value' => $data["priority_1"], 'rand' => $rand]);
-         echo "</td>";
-         echo "<td><label for='dropdown_priority_2$rand'>2</label>&nbsp;";
-         Html::showColorField('priority_2', ['value' => $data["priority_2"], 'rand' => $rand]);
-         echo "</td>";
-         echo "<td><label for='dropdown_priority_3$rand'>3</label>&nbsp;";
-         Html::showColorField('priority_3', ['value' => $data["priority_3"], 'rand' => $rand]);
-         echo "</td>";
-         echo "<td><label for='dropdown_priority_4$rand'>4</label>&nbsp;";
-         Html::showColorField('priority_4', ['value' => $data["priority_4"], 'rand' => $rand]);
-         echo "</td>";
-         echo "<td><label for='dropdown_priority_5$rand'>5</label>&nbsp;";
-         Html::showColorField('priority_5', ['value' => $data["priority_5"], 'rand' => $rand]);
-         echo "</td>";
-         echo "<td><label for='dropdown_priority_6$rand'>6</label>&nbsp;";
-         Html::showColorField('priority_6', ['value' => $data["priority_6"], 'rand' => $rand]);
-         echo "</td>";
-         echo "</tr></table>";
-
-         echo "</td></tr>";
-      }
-
-      echo "<tr><th colspan='4'>".__('Due date progression')."</th></tr>";
-
-      echo "<tr class='tab_bg_1'>".
-           "<td>".__('OK state color')."</td>";
-      echo "<td>";
-      Html::showColorField('duedateok_color', ['value' => $data["duedateok_color"]]);
-      echo "</td><td colspan='2'>&nbsp;</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Warning state color')."</td>";
-      echo "<td>";
-      Html::showColorField('duedatewarning_color', ['value' => $data["duedatewarning_color"]]);
-      echo "</td>";
-      echo "<td>".__('Warning state threshold')."</td>";
-      echo "<td>";
-      Dropdown::showNumber("duedatewarning_less", ['value' => $data['duedatewarning_less']]);
-      $elements = ['%'     => '%',
+      $form = [
+         'action' => $data["id"] === Session::getLoginUserID() ? $CFG_GLPI['root_doc']."/front/preference.php" : User::getFormURL(),
+         'method' => 'post',
+         'content' => [
+            __('Personalization') => [
+               'visible' => true,
+               'inputs' => [
+                  $userpref && 'id' => [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $data['id'],
+                  ],
+                  (Config::canUpdate() || !GLPI_DEMO_MODE) && $userpref?__('Language'):__('Default language') => [
+                     'type' => 'select',
+                     'name' => 'language',
+                     'values' => Dropdown::getLanguages(),
+                     'value' => $data["language"],
+                  ],
+                  __('Date format') => [
+                     'type' => 'select',
+                     'name' => 'date_format',
+                     'values' => Toolbox::phpDateFormats(),
+                     'value' => $data["date_format"],
+                  ],
+                  __('Display order of surnames firstnames') => [
+                     'type' => 'select',
+                     'name' => 'names_format',
+                     'values' => [
+                        User::REALNAME_BEFORE  => __('Surname, First name'),
+                        User::FIRSTNAME_BEFORE => __('First name, Surname'),
+                     ],
+                     'value' => $data["names_format"],
+                  ],
+                  __('Number format') => [
+                     'type' => 'select',
+                     'name' => 'number_format',
+                     'values' => [
+                        0 => '1 234.56',
+                        1 => '1,234.56',
+                        2 => '1 234,56',
+                        3 => '1234.56',
+                        4 => '1234,56',
+                     ],
+                     'value' => $data["number_format"],
+                  ],
+                  __('Results to display by page') => [
+                     'type' => 'number',
+                     'name' => 'list_limit',
+                     'min' => 5,
+                     'max' => $CFG_GLPI['list_limit_max'],
+                     'step' => 5,
+                     'value' => $data['list_limit'],
+                  ],
+                  __('Go to created item after creation') => [
+                     'type' => 'select',
+                     'name' => 'backcreated',
+                     'values' => [
+                        0 => __('No'),
+                        1 => __('Yes'),
+                     ],
+                     'value' => $data['backcreated'],
+                  ],
+                  __('Display the complete name in tree dropdowns') => [
+                     'type' => 'select',
+                     'name' => 'use_flat_dropdowntree',
+                     'values' => [
+                        0 => __('No'),
+                        1 => __('Yes'),
+                     ],
+                     'value' => $data["use_flat_dropdowntree"],
+                     $oncentral ? 'disabled' : '' => '',
+                  ],
+                  __('Display counters') => (!$userpref || ($CFG_GLPI['show_count_on_tabs'] != -1)) ? [
+                     'type' => 'select',
+                     'name' => 'show_count_on_tabs',
+                     'values' => [
+                        0 => __('No'),
+                        1 => __('Yes')
+                     ] + (!$userpref ? [-1 => __('Never')] : []),
+                     'value' => $data["show_count_on_tabs"],
+                  ] : [],
+                  __('Display the number of items in the menu') => $oncentral ? [
+                     'type' => 'select',
+                     'name' => 'is_ids_visible',
+                     'values' => [
+                        0 => __('No'),
+                        1 => __('Yes')
+                     ],
+                     'value' => $data["is_ids_visible"],
+                  ] : [],
+                  __('Keep devices when purging an item') => [
+                     'type' => 'select',
+                     'name' => 'keep_devices_when_purging_item',
+                     'values' => [
+                        0 => __('No'),
+                        1 => __('Yes')
+                     ],
+                     'value' => $data["keep_devices_when_purging_item"],
+                  ],
+                  __('Notifications for my changes') => [
+                     'type' => 'select',
+                     'name' => 'notification_to_myself',
+                     'values' => [
+                        0 => __('No'),
+                        1 => __('Yes')
+                     ],
+                     'value' => $data["notification_to_myself"],
+                  ],
+                  __('Results to display on home page') => $oncentral ? [
+                     'type' => 'number',
+                     'name' => 'display_count_on_home',
+                     'min' => 0,
+                     'max' => 30,
+                     'value' => $data['display_count_on_home'],
+                  ] : [],
+                  __('PDF export font') => [
+                     'type' => 'select',
+                     'name' => 'pdffont',
+                     'values' => GLPIPDF::getFontList(),
+                     'value' => $data["pdffont"],
+                  ],
+                  __('CSV delimiter') => [
+                     'type' => 'select',
+                     'name' => 'csv_delimiter',
+                     'values' => [
+                        ';' => ';',
+                        ',' => ','
+                     ],
+                     'value' => $data["csv_delimiter"],
+                  ],
+                  __('Timezone') => $DB->areTimezonesAvailable($tz_warning) ? [
+                     'type' => 'select',
+                     'name' => 'timezone',
+                     'values' => array_merge([0 => __('Use server configuration')], $DB->getTimezones()),
+                     'value' => $data["timezone"],
+                  ] : [],
+               ],
+            ],
+            __('Assistance') => [
+               'visible' => $oncentral,
+               'inputs' => [
+                  __('Private followups by default') => [
+                     'type' => 'select',
+                     'name' => 'followup_private',
+                     'values' => [
+                        0 => __('No'),
+                        1 => __('Yes')
+                     ],
+                     'value' => $data["followup_private"],
+                  ],
+                  __('Show new tickets on the home page') =>
+                  Session::haveRightsOr("ticket", [Ticket::READMY, Ticket::READALL, Ticket::READASSIGN]) ? [
+                     'type' => 'select',
+                     'name' => 'show_jobs_at_login',
+                     'values' => [
+                        0 => __('No'),
+                        1 => __('Yes')
+                     ],
+                     'value' => $data["show_jobs_at_login"],
+                  ] : [],
+                  __('Private tasks by default') => [
+                     'type' => 'select',
+                     'name' => 'task_private',
+                     'values' => [
+                        0 => __('No'),
+                        1 => __('Yes')
+                     ],
+                     'value' => $data["task_private"],
+                  ],
+                  __('Request sources by default') => [
+                     'type' => 'select',
+                     'name' => 'default_requesttypes_id',
+                     'values' => getOptionForItems('RequestType', ['is_active' => 1, 'is_ticketheader' => 1]),
+                     'value' => $data["default_requesttypes_id"],
+                  ],
+                  __('Tasks state by default') => [
+                     'type' => 'select',
+                     'name' => 'task_state',
+                     'values' => [
+                        Planning::INFO => _n('Information', 'Information', 1),
+                        Planning::TODO => __('To do'),
+                        Planning::DONE => __('Done')
+                     ],
+                     'value' => $data["task_state"],
+                  ],
+                  __('Automatically refresh data (tickets list, project kanban) in minutes') => [
+                     'type' => 'number',
+                     'name' => 'refresh_views',
+                     'min' => 0,
+                     'max' => 30,
+                     'step' => 1,
+                     'after' => "0 => ".__('Never'),
+                     'value' => $data["refresh_views"],
+                  ],
+                  __('Pre-select me as a technician when creating a ticket') =>
+                  !$userpref || Session::haveRight('ticket', Ticket::OWN) ? [
+                     'type' => 'select',
+                     'name' => 'set_default_tech',
+                     'values' => [
+                        0 => __('No'),
+                        1 => __('Yes')
+                     ],
+                     'value' => $data["set_default_tech"],
+                     'col_md' => '6',
+                     'col_lg' => '6',
+                  ] : [],
+                  __('Pre-select me as a requester when creating a ticket') => 
+                  !$userpref || Session::haveRight('ticket', CREATE) ? [
+                     'type' => 'select',
+                     'name' => 'set_default_requester',
+                     'values' => [
+                        0 => __('No'),
+                        1 => __('Yes')
+                     ],
+                     'value' => $data["set_default_requester"],
+                     'col_md' => '6',
+                     'col_lg' => '6',
+                  ] : [],
+                  __('Priority color 1') => [
+                     'type' => 'color',
+                     'name' => 'priority_1',
+                     'value' => $data["priority_1"],
+                     'col_md' => '2',
+                     'col_lg' => '2',
+                  ],
+                  __('Priority color 2') => [
+                     'type' => 'color',
+                     'name' => 'priority_2',
+                     'value' => $data["priority_2"],
+                     'col_md' => '2',
+                     'col_lg' => '2',
+                  ],
+                  __('Priority color 3') => [
+                     'type' => 'color',
+                     'name' => 'priority_3',
+                     'value' => $data["priority_3"],
+                     'col_md' => '2',
+                     'col_lg' => '2',
+                  ],
+                  __('Priority color 4') => [
+                     'type' => 'color',
+                     'name' => 'priority_4',
+                     'value' => $data["priority_4"],
+                     'col_md' => '2',
+                     'col_lg' => '2',
+                  ],
+                  __('Priority color 5') => [
+                     'type' => 'color',
+                     'name' => 'priority_5',
+                     'value' => $data["priority_5"],
+                     'col_md' => '2',
+                     'col_lg' => '2',
+                  ],
+                  __('Priority color 6') => [
+                     'type' => 'color',
+                     'name' => 'priority_6',
+                     'value' => $data["priority_6"],
+                     'col_md' => '2',
+                     'col_lg' => '2',
+                  ],
+               ]
+            ],
+            __('Due date progression') => [
+               'visible' => true,
+               'inputs' => [
+                  __('OK state color') => [
+                  'type' => 'color',
+                  'name' => 'duedateok_color',
+                  'value' => $data["duedateok_color"],
+                  'col_md' => '4',
+                  'col_lg' => '4',
+                  ],
+                  __('Warning state color') => [
+                     'type' => 'color',
+                     'name' => 'duedatewarning_color',
+                     'value' => $data["duedatewarning_color"],
+                     'col_md' => '4',
+                     'col_lg' => '4',
+                  ],
+                  __('Critical state color') => [
+                     'type' => 'color',
+                     'name' => 'duedatecritical_color',
+                     'value' => $data["duedatecritical_color"],
+                     'col_md' => '4',
+                     'col_lg' => '4',
+                  ],
+                  __('Warning state threshold') => [
+                     'type' => 'number',
+                     'name' => 'duedatewarning_less',
+                     'min' => 0,
+                     'max' => 100,
+                     'step' => 1,
+                     'value' => $data["duedatewarning_less"],
+                     'col_md' => '3',
+                     'col_lg' => '3',
+                  ],
+                  __('Warning state unit') => [
+                     'type' => 'select',
+                     'name' => 'duedatewarning_unit',
+                     'values' => [
+                        '%' => '%',
                         'hours' => _n('Hour', 'Hours', Session::getPluralNumber()),
-                        'days'  => _n('Day', 'Days', Session::getPluralNumber())];
-      echo "&nbsp;";
-      Dropdown::showFromArray("duedatewarning_unit", $elements,
-                              ['value' => $data['duedatewarning_unit']]);
-      echo "</td></tr>";
+                        'days' => _n('Day', 'Days', Session::getPluralNumber()),
+                     ],
+                     'value' => $data["duedatewarning_unit"],
+                     'col_md' => '3',
+                     'col_lg' => '3',
+                  ],
+                  __('Critical state threshold') => [
+                     'type' => 'number',
+                     'name' => 'duedatecritical_less',
+                     'min' => 0,
+                     'max' => 100,
+                     'step' => 1,
+                     'value' => $data["duedatecritical_less"],
+                     'col_md' => '3',
+                     'col_lg' => '3',
+                  ],
+                  __('Critical state unit') => [
+                     'type' => 'select',
+                     'name' => 'duedatecritical_unit',
+                     'values' => [
+                        '%' => '%',
+                        'hours' => _n('Hour', 'Hours', Session::getPluralNumber()),
+                        'days' => _n('Day', 'Days', Session::getPluralNumber()),
+                     ],
+                     'value' => $data["duedatecritical_unit"],
+                     'col_md' => '3',
+                     'col_lg' => '3',
+                  ],
+               ],
+            ],
+            __('Item locks') => 
+            ($oncentral && $CFG_GLPI["lock_use_lock_item"]) ? [
+               'visible' => true,
+               'inputs' => [
+                  __('Auto-lock Mode') => [
+                     'type' => 'select',
+                     'name' => 'lock_autolock_mode',
+                     'values' => [
+                        0 => __('No'),
+                        1 => __('Yes')
+                     ],
+                     'value' => $data["lock_autolock_mode"],
+                     'col_md' => '6',
+                     'col_lg' => '6',
 
-      echo "<tr class='tab_bg_1'>".
-           "<td>".__('Critical state color')."</td>";
-      echo "<td>";
-      Html::showColorField('duedatecritical_color', ['value' => $data["duedatecritical_color"]]);
-      echo "</td>";
-      echo "<td>".__('Critical state threshold')."</td>";
-      echo "<td>";
-      Dropdown::showNumber("duedatecritical_less", ['value' => $data['duedatecritical_less']]);
-      echo "&nbsp;";
-      $elements = ['%'    => '%',
-                       'hours' => _n('Hour', 'Hours', Session::getPluralNumber()),
-                       'days'  => _n('Day', 'Days', Session::getPluralNumber())];
-      Dropdown::showFromArray("duedatecritical_unit", $elements,
-                              ['value' => $data['duedatecritical_unit']]);
-      echo "</td></tr>";
-
-      if ($oncentral && $CFG_GLPI["lock_use_lock_item"]) {
-         echo "<tr class='tab_bg_1'><th colspan='4' class='center b'>".__('Item locks')."</th></tr>";
-
-         echo "<tr class='tab_bg_2'>";
-         echo "<td>" . __('Auto-lock Mode') . "</td><td>";
-         Dropdown::showYesNo("lock_autolock_mode", $data["lock_autolock_mode"]);
-         echo "</td><td>". __('Direct Notification (requester for unlock will be the notification sender)').
-              "</td><td>";
-         Dropdown::showYesNo("lock_directunlock_notification", $data["lock_directunlock_notification"]);
-         echo "</td></tr>";
-      }
-
-      if ((!$userpref && $canedit) || ($userpref && $canedituser)) {
-         echo "<tr class='tab_bg_2'>";
-         echo "<td colspan='4' class='center'>";
-         echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
-         echo "</td></tr>";
-      }
-
-      echo "</table></div>";
-      Html::closeForm();
+                  ],
+                  __('Direct Notification (requester for unlock will be the notification sender)') => [
+                     'type' => 'select',
+                     'name' => 'lock_directunlock_notification',
+                     'values' => [
+                        0 => __('No'),
+                        1 => __('Yes')
+                     ],
+                     'value' => $data["lock_directunlock_notification"],
+                  ],
+                  'col_md' => '6',
+                  'col_lg' => '6',
+               ],
+            ] : []
+         ]
+      ];
+      renderTwigForm($form);
    }
 
    /**
@@ -3118,7 +3127,7 @@ class Config extends CommonDBTM {
       }
 
       if (!isset($opt['options']['namespace'])) {
-         $namespace = "glpi_{$optname}_" . GLPI_VERSION;
+         $namespace = "glpi_{$optname}_" . ITSM_VERSION;
          if ($DB) {
             $namespace .= md5(
                (is_array($DB->dbhost) ? implode(' ', $DB->dbhost) : $DB->dbhost) . $DB->dbdefault

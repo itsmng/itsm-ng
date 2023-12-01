@@ -1771,7 +1771,7 @@ class Profile extends CommonDBTM
          Html::closeForm();
       }
 
-      echo "<div/>";
+      echo "</div>";
 
       $this->showLegend();
    }
