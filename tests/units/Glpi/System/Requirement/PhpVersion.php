@@ -36,10 +36,10 @@ class PhpVersion extends \GLPITestCase {
 
    public function testCheckWithUpToDateVersion() {
 
-      $this->newTestedInstance(GLPI_MIN_PHP);
+      $this->newTestedInstance(ITSM_MIN_PHP);
       $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
       $this->array($this->testedInstance->getValidationMessages())
-         ->isEqualTo(['PHP version is at least ' . GLPI_MIN_PHP . ' - Perfect!']);
+         ->isEqualTo(['PHP version is at least ' . ITSM_MIN_PHP . ' - Perfect!']);
    }
 
    public function testCheckOutdatedVersion() {

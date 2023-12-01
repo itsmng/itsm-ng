@@ -449,7 +449,7 @@ class Html extends \GLPITestCase {
       ];
       $dir = str_replace(realpath(GLPI_ROOT), '', realpath(GLPI_TMP_DIR));
       $base_expected = '<link rel="stylesheet" type="text/css" href="'.
-         $CFG_GLPI['root_doc'] . $dir .'/%url?v='. GLPI_VERSION .'" %attrs>';
+         $CFG_GLPI['root_doc'] . $dir .'/%url?v='. ITSM_VERSION .'" %attrs>';
       $base_attrs = 'media="all"';
 
       //create test files
