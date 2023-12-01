@@ -19,4 +19,19 @@
 			</li>
 		{% endfor %}
 	</ul>
+	<script>
+	// Check all children when parent is checked
+	// if all children are checked, check parent
+	$(document).ready(function() {
+		$('input[type="checkbox"]').change(function() {
+			if ($(this).is(':checked')) {
+				$(this).parent().parent().find('input[type="checkbox"]').prop('checked', true);
+			} else {
+				$(this).parent().parent().find('input[type="checkbox"]').prop('checked', false);
+			}
+		});
+	});
+	
+	
+	</script>
 {% endmacro %}
