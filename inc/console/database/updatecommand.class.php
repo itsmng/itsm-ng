@@ -112,10 +112,16 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
 
       // Display current/future state informations
       $currents                  = $update->getCurrents();
-      $current_version           = $currents['version'];
-      $current_db_version        = $currents['dbversion'];
       $itsm_current_version      = $currents['itsmversion'] ?? '1.0.0';
       $itsm_current_db_version   = $currents['itsmdbversion'] ?? '1.0.0';
+
+      if (!isset($currents['itsmversion'])) {
+         $current_version           = $currents['version'];
+         $current_db_version        = $currents['dbversion'];
+      } else {
+         $current_version           = $currents['itsmversion'];
+         $current_db_version        = $currents['itsmdbversion'];
+      }
 
       global $migration; // Migration scripts are using global migrations
       $migration = new Migration(ITSM_SCHEMA_VERSION);
