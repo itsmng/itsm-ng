@@ -126,15 +126,6 @@ class Update extends CommonGLPI {
          if (!isset($currents['dbversion'])) {
             $currents['dbversion'] = $currents['version'];
          }
-
-         // Init ITSM-NG version
-         if (!isset($currents['itsmversion'])) {
-            $currents['itsmversion'] = "1.0.0";
-         }
-
-         if (!isset($currents['itsmdbversion'])) {
-            $currents['itsmdbversion'] = $currents['itsmversion'];
-         }
       }
 
       $this->version       = $currents['version'];
@@ -142,8 +133,8 @@ class Update extends CommonGLPI {
       $this->language      = $currents['language'];
 
       // Init ITSM-NG version
-      $this->itsmversion   = $currents['itsmversion'] ?? '1.0.0';
-      $this->itsmdbversion = $currents['itsmdbversion'] ?? '1.0.0';
+      $this->itsmversion   = $currents['itsmversion'];
+      $this->itsmdbversion = $currents['itsmdbversion'];
 
       return $currents;
    }
@@ -515,6 +506,7 @@ class Update extends CommonGLPI {
          case "9.5.11":
          case "9.5.12":
          case "9.5.13":
+         case "1.0.0": 
              include_once "{$updir}itsm_update_100_101.php";
              update100to101();
              
