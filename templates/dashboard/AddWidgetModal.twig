@@ -74,38 +74,7 @@
                 </div>
 
                 <div class="col-12 col-lg-8 d-flex flex-column p-0">
-                    <div id="format-selection-widget-modal p-0 m-0 row border" class="d-flex">
-                        {% set formats = [
-                            { 'value': 'count', 'icon': 'fas fa-hashtag', 'name': 'Count', 'checked': 'checked' },
-                            { 'value': 'line', 'icon': 'fas fa-chart-line', 'name': 'Line' },
-                            { 'value': 'bar', 'icon': 'fas fa-chart-bar', 'name': 'Bar' },
-                            { 'value': 'pie', 'icon': 'fas fa-chart-pie', 'name': 'Pie' },
-                        ] %}
-                        {%  for format in formats %}
-                        <div class="col-3 p-0 m-0">
-                            <input type="radio" class="btn-check" name="format" id="format-{{format.value}}"
-                                autocomplete="off" value="{{format.value}}" onchange="changeType(this)" {% if format.checked %}checked{% endif %}>
-                            <label class="btn col-12" for="format-{{format.value}}">
-                                <i class="{{format.icon}} fs-2"></i>
-                                <p style="font-size: .8rem">{{format.name|trans}}</p>
-                            </label>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <div id="parameter-selection-widget-modal" class="px-3">
-                        <div class="input-group my-3">
-                            <label for="parameter-selection-widget-modal-select" class="input-group-text">{{"Order by"}}: </label>
-                            <select name="orderBy" id="parameter-selection-widget-modal-select" class="form-select">
-                            </select>
-                        </div>
-                        <div class="input-group my-3">
-                            <label for="direction-selection-widget-modal-select" class="input-group-text">{{"Direction"}}: </label>
-                            <select name="orderBy" id="direction-selection-widget-modal-select" class="form-select">
-                                <option value="vertical">{{"Vertical"|trans}}
-                                <option value="horizontal">{{"Horizontal"|trans}}
-                            </select>
-                        </div>
-                    </div>
+                    {% include "dashboard/dashboardParams.twig" %}
                     <div id="preview-graph-widget-modal" style="height: 15rem">
                     </div>
                 </div>
@@ -156,14 +125,6 @@
 				console.log(data);
 			}
 		});
-	}
-
-	function changeType(event) {
-		if (event.value == 'count') {
-			$('#col2Select').hide();
-		} else {
-			$('#col2Select').show();
-		}
 	}
 
 	function getAssetColumns(event) {

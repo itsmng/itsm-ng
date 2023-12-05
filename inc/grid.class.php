@@ -100,7 +100,7 @@ class Grid extends CommonGLPI {
       $content['dashboardId'] = $this->current;
       $content['addWidget_action'] = Dashboard::getFormURL();
       try {
-         echo $twig->render('dashboard.twig', $content);
+         echo $twig->render('dashboard/dashboard.twig', $content);
       } catch (Exception $e) {
          echo $e->getMessage();
       }

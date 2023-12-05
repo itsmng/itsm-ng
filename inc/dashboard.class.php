@@ -156,7 +156,7 @@ class Dashboard extends \CommonDBTM {
 
       $twig_vars['edit'] = $edit;
       try {
-         echo $twig->render('dashboard.twig', $twig_vars);
+         echo $twig->render('dashboard/dashboard.twig', $twig_vars);
       } catch (Exception $e) {
          echo $e->getMessage();
       }
