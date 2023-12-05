@@ -8,7 +8,7 @@
 						<i class="fas fa-caret-right"></i>
 					</button>
 					{% endif %}
-					{% if content.value %}<input type="checkbox" id="{{title}}_{{content.value}}" name="{{title}}_{{content.value}}" value="{{content.value}}"/>{% endif %}
+					{% if content.value %}<input type="checkbox" id="{{title}}_{{content.value}}" name="{{title}}_{{content.value}}" value="{{content.value}}" onchange="checkChildren(this);checkParents(this)"/>{% endif %}
 					<label for="{{title}}_{{content.value}}" class="ms-3">{{title}}</label>
 				</div>
             	{% if content.content %}
@@ -20,18 +20,30 @@
 		{% endfor %}
 	</ul>
 	<script>
-	// Check all children when parent is checked
-	// if all children are checked, check parent
-	$(document).ready(function() {
-		$('input[type="checkbox"]').change(function() {
-			if ($(this).is(':checked')) {
-				$(this).parent().parent().find('input[type="checkbox"]').prop('checked', true);
-			} else {
-				$(this).parent().parent().find('input[type="checkbox"]').prop('checked', false);
+	// check all childs recursively
+	function checkChildren(element) {
+		var children = element.parentElement.parentElement.getElementsByClassName("collapse");
+		for (var i = 0; i < children.length; i++) {
+			var child = children[i];
+			var inputs = child.getElementsByTagName("input");
+			for (var j = 0; j < inputs.length; j++) {
+				var input = inputs[j];
+				input.checked = element.checked;
 			}
-		});
-	});
-	
-	
+		}
+	}
+
+	// check parents recursively like a lineage
+	function checkParents(element) {
+		var parent = element.parentElement.parentElement.parentElement.parentElement;
+		const elementIndex = Array.prototype.indexOf.call(parent.children, element.parentElement.parentElement.parentElement);
+		var parentInput = parent.parentElement.parentElement.getElementsByTagName("input")[elementIndex];
+		if (parentInput && parentInput != element) {
+			parentInput.checked = true;
+			checkParents(parentInput);
+		} else if (parentInput == element) {
+			checkParents(parentInput);
+		}
+	}
 	</script>
 {% endmacro %}
