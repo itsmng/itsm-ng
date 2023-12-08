@@ -905,10 +905,12 @@ class CommonGLPI {
       echo "</div>";
       require_once GLPI_ROOT . "/ng/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
+      global $CFG_GLPI;
       try {
          echo $twig->render('item.twig', [
             'tabs' => $tabs,
             'layoutFor' => $target,
+            'glpiroot' => $CFG_GLPI['root_doc'],
          ]);
       } catch (Exception $e) {
          echo $e->getMessage();
