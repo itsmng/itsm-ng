@@ -145,8 +145,44 @@ class Dashboard extends \CommonDBTM {
       $this->show(true);
    }
 
-   private function expandContent($content) {
-      return [];
+   private function parseDbResponseForChecklist($reponse) {
+      $result = [];
+      foreach ($reponse as $key => $value) {
+         $result[$value['name']] = ['value' => $value['name']];
+      }
+      return $result;
+   }
+
+   private function getCategories() {
+      global $DB;
+      $dashboard_assetTypes = iterator_to_array($DB->query("SELECT DISTINCT id, name FROM `Dashboard_AssetType`"));
+      $assetTypes = [];
+      foreach ($dashboard_assetTypes as $key => $value) {
+         $models = iterator_to_array($DB->query("
+            SELECT DISTINCT name FROM `Dashboard_Model`
+            WHERE assetId = '".$value['id']."'
+         "));
+         $types = iterator_to_array($DB->query("
+            SELECT DISTINCT name FROM `Dashboard_Type`
+            WHERE assetId = '".$value["id"]."'
+         "));
+         $assetTypes[$value['name']] = [
+            'value' => $value['name'],
+            'content' => [
+               'Model' => [
+                  'value' => 'Model',
+                  'content' => $this->parseDbResponseForChecklist($models),
+               ],
+               'Type' => [
+                  'value' => 'Type',
+                  'content' => $this->parseDbResponseForChecklist($types),
+               ],
+            ]
+         ];
+      }
+      return [
+         'Asset' => iterator_to_array($assetTypes),
+      ];
    }
 
    function show($edit = false) {
@@ -154,6 +190,10 @@ class Dashboard extends \CommonDBTM {
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
       $twig_vars = [];
 
+      if ($edit) {
+         $twig_vars['dataSet'] = [];
+         $twig_vars['dataGroups'] = $this->getCategories();
+      };
       $twig_vars['edit'] = $edit;
       try {
          echo $twig->render('dashboard/dashboard.twig', $twig_vars);

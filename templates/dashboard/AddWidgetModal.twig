@@ -7,70 +7,33 @@
 			<div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">{{"New widget"|trans}}</h1>
                 <div>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Add widget</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    <button type="submit" class="btn btn-primary">{{"Add widget"|trans}}</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">{{"Close"|trans}}</button>
                 </div>
 			</div>
 			<div class="modal-body row">
                 <div id="data-selection-widget-modal" class="col-12 col-lg-4 accordion accordion-flush">
-                    {% set dataGroup = [
-                        {'title': 'Asset', 'content': {
-                            'Computer': {
-                                'value': 'computer',
-                                'content' : {
-                                    'Model' : {
-                                        'value': 'model',
-                                        'content': {
-                                            'Dell xps': {
-                                                'value': 'dellxps',
-                                            },
-                                            'Asus vivobook': {
-                                                'value': 'vivobook',
-                                            },
-                                            'thinkstation': {
-                                                'value': 'thinkstation',
-                                            },
-
-                                        }
-                                    },
-                                    'Type' : {
-                                        'value': 'type',
-                                        'content': {
-                                            'Laptop': {
-                                                'value': 'laptop',
-                                            },
-                                            'Desktop': {
-                                                'value': 'desktop',
-                                            },
-                                        }
-                                    },
-                                }
-                            },
-                            'Monitor': {
-                                'value': 'monitor',
-                            },
-                        }},
-                        {'title': 'Ticket', 'content': []},
-                        {'title': 'User', 'content': []},
-                        {'title': 'Group', 'content': []}
-                    ] %}
-                    {% for data in dataGroup %}
+                    {% for key, data in dataGroups %}
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{data.title|slug}}"
-                                aria-expanded="false" aria-controls="flush-collapseOne">
-                                {{data.title|raw}}
+                                data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{key|slug}}"
+                                aria-expanded="false" aria-controls="flush-collapseOne"
+								onclick="selectStatType('{{key}}')"
+								>
+                                {{key|raw}}
                             </button>
                         </h2>
-                        <div id="flush-collapse-{{data.title|slug}}" class="accordion-collapse collapse"
+                        <div id="flush-collapse-{{key|slug}}" class="accordion-collapse collapse"
                             data-bs-parent="#data-selection-widget-modal">
                             <div class="accordion-body text-start">
-                                {{collapseChecklist(data.content)|raw}}
+                                {{collapseChecklist(data)|raw}}
                             </div>
                         </div>
                     </div>
                     {% endfor %}
+					<input type='hidden' name="statType" value=""/>
+					<input type='hidden' name="statSelection" id="stateSelectionInput" value="{}"/>
                 </div>
 
                 <div class="col-12 col-lg-8 d-flex flex-column p-0">
@@ -96,6 +59,7 @@
 			});
 		}
 	});
+
 	function openWidgetModal(coords) {
 		$('#widgetModal input[name="coords"]').val(JSON.stringify(coords));
 		$("#widgetModal").modal("show");
@@ -107,6 +71,10 @@
 		for (var i = 0; i < editButtons.length; i++) {
 			editButtons[i].style.display = editButtons[i].style.display == "none" ? "block" : "none";
 		}
+	}
+
+	function selectStatType(statType) {
+		$('#widgetModal input[name="statType"]').val(statType);
 	}
 
 	function removeWidget(x, y) {

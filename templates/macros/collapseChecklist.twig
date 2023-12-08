@@ -1,26 +1,33 @@
-{% macro collapseChecklist(data, previous_padding = 0) %}
+{% macro collapseChecklist(data, previous_padding = 0, parent_name = '') %}
+	{% if parent_name != '' %}
+		{% set current_name = parent_name ~ '_' %}
+	{% else %}
+		{% set current_name = parent_name %}
+	{% endif %}
 	<ul class="ps-{{previous_padding}}">
 		{% for title, content in data %}
 			<li class="d-flex flex-column justify-content-start">
 				<div class="d-flex align-items-center input-group">
-					{% if content.content %}
 					<button type="button" class="btn btn-link dropdown-checkbox-toggle" data-bs-toggle="collapse" href="#list-for-{{title|slug}}" aria-expanded="false">
-						<i class="fas fa-caret-right"></i>
+						<i {% if content.content %}class="fas fa-caret-right"{% endif %}></i>
 					</button>
+					{% if content.value %}
+						<input type="checkbox" id="{{title}}_{{content.value}}" name="{{parent_name}}" value="{{current_name}}{{content.value}}" onchange="checkChildren(this);checkParents(this)"/>
 					{% endif %}
-					{% if content.value %}<input type="checkbox" id="{{title}}_{{content.value}}" name="{{title}}_{{content.value}}" value="{{content.value}}" onchange="checkChildren(this);checkParents(this)"/>{% endif %}
 					<label for="{{title}}_{{content.value}}" class="ms-3">{{title}}</label>
 				</div>
             	{% if content.content %}
                     <div class="collapse" id="list-for-{{title|slug}}">
-                        {{_self.collapseChecklist(content.content, previous_padding + 2)}}
+                        {{_self.collapseChecklist(content.content, previous_padding + 2, current_name ~ title)}}
                     </div>
                 {% endif %}
 			</li>
 		{% endfor %}
 	</ul>
+	{% if parent_name == '' %}
 	<script>
-	// check all childs recursively
+
+	// check all childs
 	function checkChildren(element) {
 		var children = element.parentElement.parentElement.getElementsByClassName("collapse");
 		for (var i = 0; i < children.length; i++) {
@@ -36,14 +43,57 @@
 	// check parents recursively like a lineage
 	function checkParents(element) {
 		var parent = element.parentElement.parentElement.parentElement.parentElement;
+		if (!parent) {
+			return;
+		}
 		const elementIndex = Array.prototype.indexOf.call(parent.children, element.parentElement.parentElement.parentElement);
 		var parentInput = parent.parentElement.parentElement.getElementsByTagName("input")[elementIndex];
 		if (parentInput && parentInput != element) {
 			parentInput.checked = true;
 			checkParents(parentInput);
-		} else if (parentInput == element) {
-			checkParents(parentInput);
 		}
 	}
+
+	function updateValues() {
+		const values = {};
+
+		$('input[type="checkbox"]:checked').each(function() {
+			const parents = $(this).attr('name').split('_');
+			let currentObject = values;
+
+			for (const key of parents) {
+				currentObject[key] = currentObject[key] || {};
+				currentObject = currentObject[key];
+			}
+		});
+
+		$("#stateSelectionInput").val(JSON.stringify(values));
+	}
+
+	function updateValues() {
+		const values = {};
+
+		$('input[type="checkbox"]:checked').each(function() {
+			const parents = $(this).attr('value').split('_');
+			let currentObject = values;
+
+			for (let i = 0; i < parents.length; i++) {
+				currentObject[parents[i]] = currentObject[parents[i]] || {};
+				currentObject = currentObject[parents[i]];
+			}
+		});
+		if (values['']) {
+			delete values[''];
+		}
+
+		$("#stateSelectionInput").val(JSON.stringify(values));
+	}
+
+	$('input[type="checkbox"]').on('change', function() {
+		updateValues();
+		console.log($("#stateSelectionInput").val());
+	});
+
 	</script>
+	{% endif %}
 {% endmacro %}
