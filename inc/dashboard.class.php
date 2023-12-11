@@ -170,11 +170,11 @@ class Dashboard extends \CommonDBTM {
             'value' => $value['name'],
             'content' => [
                'Model' => [
-                  'value' => 'Model',
+                  'value' => 'model',
                   'content' => $this->parseDbResponseForChecklist($models),
                ],
                'Type' => [
-                  'value' => 'Type',
+                  'value' => 'type',
                   'content' => $this->parseDbResponseForChecklist($types),
                ],
             ]
@@ -186,6 +186,8 @@ class Dashboard extends \CommonDBTM {
    }
 
    function show($edit = false) {
+      global $CFG_GLPI;
+
       Html::requireJs('charts');
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
       $twig_vars = [];
@@ -194,6 +196,8 @@ class Dashboard extends \CommonDBTM {
          $twig_vars['dataSet'] = [];
          $twig_vars['dataGroups'] = $this->getCategories();
       };
+      $twig_vars['dashboardApiUrl'] = "http://localhost:3000/dashboard";
+      $twig_vars['ajaxUrl'] = $CFG_GLPI['root_doc'] . "/ajax/dashboard.php";
       $twig_vars['edit'] = $edit;
       try {
          echo $twig->render('dashboard/dashboard.twig', $twig_vars);
@@ -220,7 +224,6 @@ class Dashboard extends \CommonDBTM {
    }
 
    function addWidget($data) {
-      $grid = new Grid();
       $card = [];
       $dashboard = json_decode($this->fields['content'], true) ?? [];
       $provider = $card['provider'];

@@ -1,5 +1,4 @@
 {% from 'macros/collapseChecklist.twig' import collapseChecklist %}
-
 <div class="modal modal-lg fade" id="widgetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -105,7 +104,7 @@
 			'dropdown',
 		]
 		$.ajax({
-			url: "{{ajax_endpoint}}",
+			url: "{{ajaxUrl}}",
 			type: "POST",
 			data: {
 				action: "getColumns",
@@ -136,6 +135,30 @@
 				console.log(data);
 			}
 		});
-	
 	}
+
+	$("#widgetModal").on("change", function(event) {
+		// update preview with {{dashboardApiUrl}}/count
+		var statType = $('#widgetModal input[name="statType"]').val();
+		var statSelection = $('#stateSelectionInput').val();
+
+
+		$.ajax({
+			url: "{{ajaxUrl}}",
+			type: "POST",
+			data: {
+				action: "preview",
+				statType,
+				statSelection: statSelection
+			},
+			success: function(data) {
+				console.log(data);
+				// update preview with the raw html returned
+				$('#preview-graph-widget-modal').html(data);
+			},
+			error: function(data) {
+				console.log(data);
+			}
+		});
+	})
 </script>

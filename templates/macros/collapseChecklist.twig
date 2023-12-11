@@ -18,7 +18,7 @@
 				</div>
             	{% if content.content %}
                     <div class="collapse" id="list-for-{{title|slug}}">
-                        {{_self.collapseChecklist(content.content, previous_padding + 2, current_name ~ title)}}
+                        {{_self.collapseChecklist(content.content, previous_padding + 2, current_name ~ content.value)}}
                     </div>
                 {% endif %}
 			</li>

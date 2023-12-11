@@ -35,8 +35,29 @@ include ('../inc/includes.php');
 if (!isset($_REQUEST["action"])) {
    exit;
 }
+if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_REQUEST['statSelection'])) {
+   Session::checkRight("dashboard", READ);
+   $statType = $_REQUEST['statType'];
+   $statSelection = stripslashes($_REQUEST['statSelection']);
 
-if ($_REQUEST['action'] == 'delete' && isset($_REQUEST['id']) && isset($_REQUEST['coords'])) {
+   $data = 
+      file_get_contents(
+         "http://localhost:3000/dashboard/count?statType=$statType&statSelection=$statSelection"
+      );
+   $widget = [
+      'type' => 'number',
+      'value' => $data,
+   ];
+   require_once GLPI_ROOT . "/ng/twig.class.php";
+   $twig = Twig::load(GLPI_ROOT . "/templates", false);
+   try {
+      echo $twig->render('dashboard/widget.twig', [
+         'widget' => $widget,
+      ]);
+   } catch (Exception $e) {
+      echo $e->getMessage();
+   }
+} else if (($_REQUEST['action'] == 'delete') && isset($_REQUEST['coords']) && isset($_REQUEST['id'])) {
    Session::checkRight("dashboard", UPDATE);
    $dashboard = new Dashboard();
    $dashboard->getFromDB($_REQUEST['id']);
@@ -46,7 +67,4 @@ if ($_REQUEST['action'] == 'delete' && isset($_REQUEST['id']) && isset($_REQUEST
       echo json_encode(["status" => "error"]);
    }
    exit;
-} else if ($_REQUEST['action'] == 'getColumns' && isset($_REQUEST['asset'])) {
-   $asset = new $_REQUEST['asset']();
-   echo json_encode($asset->rawSearchOptions());
 }

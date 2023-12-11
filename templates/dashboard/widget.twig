@@ -1,0 +1,35 @@
+{% if widget.type == 'number' %}
+    {{ _self.number(widget.title, widget.value, widget.icon, widget.color) }}
+{% else %}
+    {{ _self.chart(widget.chartType, widget.title, widget.labels, widget.series, widget.options, widget.color) }}
+{% endif %}
+
+{% macro number(title = '', value = 0, icon = '', color = "black") %}
+	<div class="d-flex justify-content-center align-items-center">
+		<i class="{{icon}} fs-1 text-{{color}}"></i>
+		<div class="ms-3">
+			<div class="fw-bold text-{{color}} text-wrap">{{title|raw}}</div>
+			<div class="fs-3 text-${color}">{{value}}</div>
+		</div>
+	</div>
+{% endmacro %}
+
+{% macro chart(type = 'LineChart', title = '', labels = [], series = [], options = [], color = "black") %}
+{% set rand = random() %}
+	<div class="fw-bold fs-6 text-{{color}}">{{title}}</div>
+	<div class="ct-chart ct-golden-section w-100" id="widgetFor{{title|slug}}_{{rand}}" {% if options.height %}style="height: {{options.height}}"{% endif %}></div>
+
+	<script>
+	$(document).ready(function() {
+		var chart = new Chartist.{{type}}("#widgetFor{{title|slug}}_{{rand}}",
+			{
+				labels: {{labels | json_encode | raw}},
+				series: {{series | json_encode | raw}},
+			}, {{options | json_encode | raw}}
+		);
+		setTimeout(function() {
+			chart.update();
+		}, 500);
+	});
+	</script>
+{% endmacro %}
