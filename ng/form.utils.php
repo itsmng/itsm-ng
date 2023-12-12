@@ -84,17 +84,18 @@ function renderTwigForm($form, $additionnalHtml = '', $colAmount = 2)
 
 function getHiddenInputsForItemForm($item, $options)
 {
+    die(var_dump($options));
     return [
-        [
+        $options['id'] != '' ?[
             'type' => 'hidden',
             'name' => 'entities_id',
             'value' => $item->fields['entities_id'],
-        ],
-        [
+        ] : [],
+        $options['id'] != '' ? [
             'type' => 'hidden',
             'name' => 'is_recursive',
             'value' => $item->fields['is_recursive'],
-        ],
+        ] : [],
         [
             'type' => 'hidden',
             'name' => isset($options['id']) && $options['id'] != '' ? 'update' : 'add',

@@ -42,7 +42,13 @@ if (isset($_POST['update']) && isset($_POST['id'])) {
     $dashboard->update($_POST);
 } else if (isset($_POST['add'])) {
     $dashboard = new Dashboard();
-    $dashboard->add($_POST);    
+    if ($dashboard->add($_POST)) {
+        Session::addMessageAfterRedirect(__('Dashboard added', 'itsmng'), true);
+        Html::back();
+    } else {
+        Session::addMessageAfterRedirect(__('Error adding dashboard', 'itsmng'), false);
+        Html::back();
+    }
 } else {
     $dashboard = new Dashboard();
     $dashboard->showForm($_GET['id'] ?? null, $_GET);

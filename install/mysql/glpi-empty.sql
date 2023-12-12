@@ -1570,13 +1570,11 @@ CREATE TABLE `glpi_crontasks` (
 DROP TABLE IF EXISTS `glpi_dashboards`;
 CREATE TABLE `glpi_dashboards` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `key` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` LONGTEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `profileId` int(11) NOT NULL DEFAULT 0,
   `userId` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `key` (`key`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ### Dump table glpi_devicecasemodels

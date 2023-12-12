@@ -78,9 +78,9 @@ class Central extends CommonGLPI {
 
       if ($item->getType() == __CLASS__) {
          switch ($tabnum) {
-            case 0 :
-               $item->showGlobalDashboard();
-               break;
+            // case 0 :
+            //    $item->showGlobalDashboard();
+            //    break;
 
             case 1 :
                $item->showMyView();

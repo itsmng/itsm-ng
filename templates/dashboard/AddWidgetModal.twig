@@ -6,7 +6,7 @@
 			<div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">{{"New widget"|trans}}</h1>
                 <div>
-                    <button type="submit" class="btn btn-primary">{{"Add widget"|trans}}</button>
+                    <button type="button" class="btn btn-primary" onclick="addWidget()">{{"Add widget"|trans}}</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">{{"Close"|trans}}</button>
                 </div>
 			</div>
@@ -59,6 +59,28 @@
 		}
 	});
 
+	function addWidget() {
+		$.ajax({
+			url: "{{ajaxUrl}}",
+			type: "POST",
+			data: {
+				id: "{{dashboardId}}",
+				action: "add",
+				coords: $('#widgetModal input[name="coords"]').val(),
+				statType: $('#widgetModal input[name="statType"]').val(),
+				statSelection: $('#stateSelectionInput').val(),
+				title: $('#title-widget-modal').val(),
+			},
+			success: function(data) {
+				{# location.reload(); #}
+			},
+			error: function(data) {
+				console.log(data);
+			}
+		});
+	
+	}
+
 	function openWidgetModal(coords) {
 		$('#widgetModal input[name="coords"]').val(JSON.stringify(coords));
 		$("#widgetModal").modal("show");
@@ -78,7 +100,7 @@
 
 	function removeWidget(x, y) {
 		$.ajax({
-			url: "{{ajax_endpoint}}",
+			url: "{{ajaxUrl}}",
 			type: "POST",
 			data: {
 				id: "{{dashboardId}}",
@@ -95,7 +117,7 @@
 	}
 
 	function getAssetColumns(event) {
-		fields = [
+		const fields = [
 			'string',
 			'number',
 			'text',
@@ -141,16 +163,13 @@
 		// update preview with {{dashboardApiUrl}}/count
 		var statType = $('#widgetModal input[name="statType"]').val();
 		var statSelection = $('#stateSelectionInput').val();
+		var title = $('#title-widget-modal').val();
 
 
 		$.ajax({
 			url: "{{ajaxUrl}}",
 			type: "POST",
-			data: {
-				action: "preview",
-				statType,
-				statSelection: statSelection
-			},
+			data: { action: "preview", statType, statSelection, title, },
 			success: function(data) {
 				console.log(data);
 				// update preview with the raw html returned

@@ -36,39 +36,6 @@ if (!defined('GLPI_ROOT')) {
 class Dashboard extends \CommonDBTM {
    static $rightname = 'dashboard';
 
-
-   function __construct(string $dashboard_key = "") {
-      $this->key = $dashboard_key;
-   }
-
-   function getFromDB($ID) {
-      global $DB;
-
-      $iterator = $DB->request([
-         'FROM'  => self::getTable(),
-         'WHERE' => [
-            'id' => $ID
-         ],
-         'LIMIT' => 1
-      ]);
-      if (count($iterator) == 1) {
-         $this->fields = $iterator->next();
-         $this->key    = $ID;
-         $this->post_getFromDB();
-         return true;
-      } else if (count($iterator) > 1) {
-         \Toolbox::logWarning(
-            sprintf(
-               'getFromDB expects to get one result, %1$s found!',
-               count($iterator)
-            )
-         );
-      }
-
-      return false;
-   }
-
-
    /**
     * Return the title of the current dasbhoard
     *
@@ -104,7 +71,9 @@ class Dashboard extends \CommonDBTM {
 
    function showForm($ID, $options = []) {
       include_once GLPI_ROOT . '/ng/form.utils.php';
-      $this->getFromDB($ID);
+      if ($ID) {
+         $this->getFromDB($ID);
+      }
       Html::requireJs('charts');
 
       $form = [
@@ -138,16 +107,33 @@ class Dashboard extends \CommonDBTM {
                      'required' => true,
                   ],
                ]
+            ],
+            "Hidden" => [
+               'visible' => false,
+               'inputs' => [
+                  [
+                     'type' => 'hidden',
+                     'name' => isset($ID) ? 'update' : 'add',
+                     'value' => '',
+                  ],
+                  [
+                     'type' => 'hidden',
+                     'name' => '_glpi_csrf_token',
+                     'value' => Session::getNewCSRFToken()
+                 ],
+               ]
             ]
          ]
       ];
       renderTwigForm($form);
-      $this->show(true);
+      if ($ID) {
+         $this->show($ID, true);
+      }
    }
 
    private function parseDbResponseForChecklist($reponse) {
       $result = [];
-      foreach ($reponse as $key => $value) {
+      foreach ($reponse as $value) {
          $result[$value['name']] = ['value' => $value['name']];
       }
       return $result;
@@ -157,7 +143,7 @@ class Dashboard extends \CommonDBTM {
       global $DB;
       $dashboard_assetTypes = iterator_to_array($DB->query("SELECT DISTINCT id, name FROM `Dashboard_AssetType`"));
       $assetTypes = [];
-      foreach ($dashboard_assetTypes as $key => $value) {
+      foreach ($dashboard_assetTypes as $value) {
          $models = iterator_to_array($DB->query("
             SELECT DISTINCT name FROM `Dashboard_Model`
             WHERE assetId = '".$value['id']."'
@@ -185,7 +171,20 @@ class Dashboard extends \CommonDBTM {
       ];
    }
 
-   function show($edit = false) {
+   function getGridContent($content) {
+      foreach ($content as $rowIdx => $row) {
+         foreach ($row as $colIdx => $widget) {
+            $content[$rowIdx][$colIdx] = array_merge(
+               $content[$rowIdx][$colIdx],
+               ['value' => file_get_contents($widget['url'])]
+            );
+            unset ($content[$rowIdx][$colIdx]['url']);
+         }
+      }
+      return $content;
+   }
+
+   function show($ID, $edit = false) {
       global $CFG_GLPI;
 
       Html::requireJs('charts');
@@ -199,6 +198,8 @@ class Dashboard extends \CommonDBTM {
       $twig_vars['dashboardApiUrl'] = "http://localhost:3000/dashboard";
       $twig_vars['ajaxUrl'] = $CFG_GLPI['root_doc'] . "/ajax/dashboard.php";
       $twig_vars['edit'] = $edit;
+      $twig_vars['dashboardId'] = $ID;
+      $twig_vars['widgetGrid'] = $this->getGridContent(json_decode($this->fields['content'] ?? '[]', true) ?? []);
       try {
          echo $twig->render('dashboard/dashboard.twig', $twig_vars);
       } catch (Exception $e) {
@@ -223,16 +224,17 @@ class Dashboard extends \CommonDBTM {
       }
    }
 
-   function addWidget($data) {
-      $card = [];
+   function addWidget($dataType = 'number', $coords = [0, 0], $title = '', $statType = '', $statSelection = '', $icon = "fas fa-chart-pie") {
       $dashboard = json_decode($this->fields['content'], true) ?? [];
-      $provider = $card['provider'];
+      $urlStatSelection = stripslashes($statSelection);   
       $widget = [
-         'type' => $card['widgettype'][0],
-         'provider' => $provider,
+         'type' => $dataType,
+         'title' => $title ?? $statType,
+         'icon' => $icon,
+         'url' => "http://localhost:3000/dashboard/count?statType=$statType&statSelection=$urlStatSelection",
       ];
 
-      $this->placeWidgetAtCoord($dashboard, $widget, json_decode($data['coords']));
+      $this->placeWidgetAtCoord($dashboard, $widget, $coords);
       
       $content = str_replace("\\", "\\\\", json_encode($dashboard, JSON_UNESCAPED_UNICODE));
       if ($widget && $this->update(['id' => $this->fields['id'], 'content' => $content]))

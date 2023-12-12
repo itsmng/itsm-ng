@@ -47,6 +47,8 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
    $widget = [
       'type' => 'number',
       'value' => $data,
+      'title' => $_REQUEST['title'] ?? $_REQUEST['statType'],
+      'icon' => 'fas fa-chart-pie',
    ];
    require_once GLPI_ROOT . "/ng/twig.class.php";
    $twig = Twig::load(GLPI_ROOT . "/templates", false);
@@ -62,6 +64,23 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
    $dashboard = new Dashboard();
    $dashboard->getFromDB($_REQUEST['id']);
    if ($dashboard->deleteWidget(json_decode($_REQUEST['coords']))) {
+      echo json_encode(["status" => "success"]);
+   } else {
+      echo json_encode(["status" => "error"]);
+   }
+   exit;
+} else if (($_REQUEST['action'] == 'add') && isset($_REQUEST['coords']) && isset($_REQUEST['id'])) {
+   Session::checkRight("dashboard", UPDATE);
+   $dashboard = new Dashboard();
+   $dashboard->getFromDB($_REQUEST['id']);
+   if ($dashboard->addWidget(
+      $_REQUEST['dataType'] ?? 'number',
+      json_decode($_REQUEST['coords']),
+      $_REQUEST['title'],
+      $_REQUEST['statType'],
+      $_REQUEST['statSelection'],
+      $_REQUEST['icon']
+   )) {
       echo json_encode(["status" => "success"]);
    } else {
       echo json_encode(["status" => "error"]);
