@@ -1199,10 +1199,10 @@ div.chip>p {
 /******************************************************/
 /*                    DASHBOARD                       */
 /******************************************************/
-.dropdown-checkbox-toggle > i {
+.dropdown-checkbox-toggle i {
     transition: rotate 0.3s ease;
 }
 
-.dropdown-checkbox-toggle[aria-expanded="true"] > i {
+.dropdown-checkbox-toggle[aria-expanded="true"] i {
     rotate: 90deg;
 }
