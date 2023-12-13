@@ -48,7 +48,8 @@
 		}
 		const elementIndex = Array.prototype.indexOf.call(parent.children, element.parentElement.parentElement.parentElement);
 		var parentInput = parent.parentElement.parentElement.getElementsByTagName("input")[elementIndex];
-		if (parentInput && parentInput != element) {
+		if (parentInput && parentInput != element
+			&& parentInput.parentElement.parentElement.parentElement != element.parentElement.parentElement.parentElement ) {
 			parentInput.checked = true;
 			checkParents(parentInput);
 		}

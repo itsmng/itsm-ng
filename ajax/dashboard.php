@@ -48,7 +48,7 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
       'type' => 'number',
       'value' => $data,
       'title' => $_REQUEST['title'] ?? $_REQUEST['statType'],
-      'icon' => 'fas fa-chart-pie',
+      'icon' => $_REQUEST['icon'] ?? '',
    ];
    require_once GLPI_ROOT . "/ng/twig.class.php";
    $twig = Twig::load(GLPI_ROOT . "/templates", false);

@@ -70,9 +70,10 @@
 				statType: $('#widgetModal input[name="statType"]').val(),
 				statSelection: $('#stateSelectionInput').val(),
 				title: $('#title-widget-modal').val(),
+				icon: $('#icon-widget-modal').val(),
 			},
 			success: function(data) {
-				{# location.reload(); #}
+				location.reload();
 			},
 			error: function(data) {
 				console.log(data);
@@ -164,12 +165,13 @@
 		var statType = $('#widgetModal input[name="statType"]').val();
 		var statSelection = $('#stateSelectionInput').val();
 		var title = $('#title-widget-modal').val();
+		var icon = $('#icon-widget-modal').val();
 
 
 		$.ajax({
 			url: "{{ajaxUrl}}",
 			type: "POST",
-			data: { action: "preview", statType, statSelection, title, },
+			data: { action: "preview", statType, statSelection, title, icon},
 			success: function(data) {
 				console.log(data);
 				// update preview with the raw html returned
