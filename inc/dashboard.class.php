@@ -176,7 +176,7 @@ class Dashboard extends \CommonDBTM {
          foreach ($row as $colIdx => $widget) {
             $content[$rowIdx][$colIdx] = array_merge(
                $content[$rowIdx][$colIdx],
-               ['value' => file_get_contents($widget['url'])]
+               ['value' => json_decode(file_get_contents($widget['url']))]
             );
             unset ($content[$rowIdx][$colIdx]['url']);
          }
@@ -200,6 +200,7 @@ class Dashboard extends \CommonDBTM {
       $twig_vars['edit'] = $edit;
       $twig_vars['dashboardId'] = $ID;
       $twig_vars['widgetGrid'] = $this->getGridContent(json_decode($this->fields['content'] ?? '[]', true) ?? []);
+      $twig_vars['base'] = $CFG_GLPI['root_doc'];
       try {
          echo $twig->render('dashboard/dashboard.twig', $twig_vars);
       } catch (Exception $e) {
@@ -223,15 +224,23 @@ class Dashboard extends \CommonDBTM {
          }
       }
    }
+   
+   static function getWidgetUrl($type, $statType, $statSelection, $comparison = '') {
+      $url = "http://localhost:3000/dashboard/$type?statType=$statType&statSelection=$statSelection";
+      if ($type != 'count') {
+         $url .= "&comparison=$comparison";
+      }
+      return $url;
+   }
 
-   function addWidget($dataType = 'number', $coords = [0, 0], $title = '', $statType = '', $statSelection = '', $icon = "fas fa-chart-pie") {
+   function addWidget($format = 'count', $coords = [0, 0], $title = '', $statType = '', $statSelection = '', $icon = "fas fa-chart-pie", $comparison = '') {
       $dashboard = json_decode($this->fields['content'], true) ?? [];
       $urlStatSelection = stripslashes($statSelection);   
       $widget = [
-         'type' => $dataType,
+         'type' => $format,
          'title' => $title ?? $statType,
          'icon' => $icon,
-         'url' => "http://localhost:3000/dashboard/count?statType=$statType&statSelection=$urlStatSelection",
+         'url' => Dashboard::getWidgetUrl($format, $statType, $urlStatSelection, $comparison)
       ];
 
       $this->placeWidgetAtCoord($dashboard, $widget, $coords);

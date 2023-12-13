@@ -1,7 +1,7 @@
-{% if widget.type == 'number' %}
+{% if widget.type == 'count' %}
     {{ _self.number(widget.title, widget.value, widget.icon, widget.color) }}
 {% else %}
-    {{ _self.chart(widget.chartType, widget.title, widget.labels, widget.series, widget.options, widget.color) }}
+    {{ _self.chart(widget.type, widget.title, widget.value[0], widget.value[1], widget.options, widget.color) }}
 {% endif %}
 
 {% macro number(title = '', value = 0, icon = '', color = "black") %}
@@ -16,16 +16,19 @@
 
 {% macro chart(type = 'LineChart', title = '', labels = [], series = [], options = [], color = "black") %}
 {% set rand = random() %}
-	<div class="fw-bold fs-6 text-{{color}}">{{title}}</div>
-	<div class="ct-chart ct-golden-section w-100" id="widgetFor{{title|slug}}_{{rand}}" {% if options.height %}style="height: {{options.height}}"{% endif %}></div>
-
+	<div class="fw-bold fs-6 {{color ? "text-" ~ color : ''}}">{{title}}</div>
+	<div class="ct-chart ct-golden-section w-100 h-75" id="widgetFor{{title|slug}}_{{rand}}"></div>
+	<link rel="stylesheet" href="/~antoine/itsm-ng2.0/node_modules/chartist/dist/index.css">
 	<script>
 	$(document).ready(function() {
-		var chart = new Chartist.{{type}}("#widgetFor{{title|slug}}_{{rand}}",
+		console.log('{{options}}');
+		var chart = new Chartist.{{type|capitalize ~ 'Chart'}}("#widgetFor{{title|slug}}_{{rand}}",
 			{
 				labels: {{labels | json_encode | raw}},
 				series: {{series | json_encode | raw}},
-			}, {{options | json_encode | raw}}
+			}, {
+				distributeSeries: true,
+			}
 		);
 		setTimeout(function() {
 			chart.update();
