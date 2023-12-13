@@ -146,11 +146,9 @@ class Dashboard extends \CommonDBTM {
       foreach ($dashboard_assetTypes as $value) {
          $models = iterator_to_array($DB->query("
             SELECT DISTINCT name FROM `Dashboard_Model`
-            WHERE assetId = '".$value['id']."'
          "));
          $types = iterator_to_array($DB->query("
             SELECT DISTINCT name FROM `Dashboard_Type`
-            WHERE assetId = '".$value["id"]."'
          "));
          $assetTypes[$value['name']] = [
             'value' => $value['name'],
@@ -225,10 +223,15 @@ class Dashboard extends \CommonDBTM {
       }
    }
    
-   static function getWidgetUrl($type, $statType, $statSelection, $comparison = '') {
+   static function getWidgetUrl($type, $statType, $statSelection, $options = []) {
       $url = "http://localhost:3000/dashboard/$type?statType=$statType&statSelection=$statSelection";
       if ($type != 'count') {
-         $url .= "&comparison=$comparison";
+         $comparison = $options['comparison'] ?? 'id';
+         $url .= "&comparison={$comparison}";
+         if ($type == 'bar') {
+            $direction = $options['direction'] ?? 'vertical';
+            $url .= "&direction={$direction}";
+         }
       }
       return $url;
    }

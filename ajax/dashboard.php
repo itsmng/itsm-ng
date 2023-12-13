@@ -36,18 +36,18 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
    Session::checkRight("dashboard", READ);
    $statType = $_REQUEST['statType'];
    $statSelection = stripslashes($_REQUEST['statSelection']);
-   $comparison = $_REQUEST['comparison'] ?? '';
    
    $format = $_REQUEST['format'] ?? 'count';
-   $url = Dashboard::getWidgetUrl($format, $statType, $statSelection, 'model');
-
+   $url = Dashboard::getWidgetUrl($format, $statType, $statSelection, $_REQUEST['options']);
    $data = json_decode(file_get_contents($url));
+   
    $widget = [
       'type' => $format,
       'value' => $data,
       'title' => $_REQUEST['title'] ?? $_REQUEST['statType'],
       'icon' => $_REQUEST['icon'] ?? '',
    ];
+
    require_once GLPI_ROOT . "/ng/twig.class.php";
    $twig = Twig::load(GLPI_ROOT . "/templates", false);
    try {
@@ -84,5 +84,12 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
    } else {
       echo json_encode(["status" => "error"]);
    }
+   exit;
+} else if (($_REQUEST['action'] == 'getColumns')  && isset($_REQUEST['statType'])) {
+   Session::checkRight("dashboard", READ);
+   $statType = $_REQUEST['statType'];
+   $url = "http://localhost:3000/dashboard/comparisons/" . $statType;
+   $data = json_decode(file_get_contents($url));
+   echo json_encode($data);
    exit;
 }

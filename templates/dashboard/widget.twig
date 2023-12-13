@@ -21,7 +21,6 @@
 	<link rel="stylesheet" href="/~antoine/itsm-ng2.0/node_modules/chartist/dist/index.css">
 	<script>
 	$(document).ready(function() {
-		console.log('{{options}}');
 		var chart = new Chartist.{{type|capitalize ~ 'Chart'}}("#widgetFor{{title|slug}}_{{rand}}",
 			{
 				labels: {{labels | json_encode | raw}},

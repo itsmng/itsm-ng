@@ -57,6 +57,7 @@
 				search: true
 			});
 		}
+		updateComparisonInput();
 	});
 
 	function addWidget() {
@@ -118,64 +119,48 @@
 		});
 	}
 
-	function getAssetColumns(event) {
-		const fields = [
-			'string',
-			'number',
-			'text',
-			'datetime',
-			'count',
-			'dropdown',
-		]
+	function updateComparisonInput() {
 		$.ajax({
 			url: "{{ajaxUrl}}",
 			type: "POST",
 			data: {
 				action: "getColumns",
-				asset: event.value,
+				statType: $('#widgetModal input[name="statType"]').val(),
 			},
 			success: function(data) {
-				var columns = JSON.parse(data);
-				values = columns.map(function(col) {
-					if (col.table && col.field && col.name && (fields.includes(col.datatype)))
-						return {table: col.table, field: col.field, name: col.name};
-					else
-						return null;
-				}).filter(val => val != null);
-				$('#col1Select').empty();
-				$('#col2Select').empty();
-				for (value of values) {
-					$('#col1Select').append($('<option>', {
-						value: value.table + '_' + value.field,
-						text: value.name,
-					}));
-					$('#col2Select').append($('<option>', {
-						value: value.table + '_' + value.field,
-						text: value.name,
+				jsonData = JSON.parse(data);
+				$('#parameter-selection-widget-modal-select').empty();
+				for (const [key, value] of Object.entries(jsonData)) {
+					$('#parameter-selection-widget-modal-select').append($('<option>', {
+						value: value,
+						text: value
 					}));
 				}
 			},
-			error: function(data) {
-				console.log(data);
-			}
-		});
-	}
+		})
+	};
+
+	$("#data-selection-widget-modal").on("change", function(event) {
+		updateComparisonInput();
+	})
 
 	$("#widgetModal").on("change", function(event) {
 		// update preview with {{dashboardApiUrl}}/count
-		var statType = $('#widgetModal input[name="statType"]').val();
-		var statSelection = $('#stateSelectionInput').val();
-		var title = $('#title-widget-modal').val();
-		var icon = $('#icon-widget-modal').val();
-        let format = $('input[name="format"]:checked').val();
+		const statType = $('#widgetModal input[name="statType"]').val();
+		const statSelection = $('#stateSelectionInput').val();
+		const title = $('#title-widget-modal').val();
+		const icon = $('#icon-widget-modal').val();
+        const format = $('input[name="format"]:checked').val();
+		const direction = $('#direction-selection-widget-modal-select').val();
+		const comparison = $('#parameter-selection-widget-modal-select').val();
+
+		const options = { direction ,comparison}
 
 		$.ajax({
 			url: "{{ajaxUrl}}",
 			type: "POST",
-			data: { action: "preview", statType, statSelection, title, icon, format},
+			data: { action: "preview", statType, statSelection, title, icon, format, options},
 			success: function(data) {
-				console.log(data);
-				// update preview with the raw html returned
 				$('#preview-graph-widget-modal').html(data);
 			},
 			error: function(data) {
