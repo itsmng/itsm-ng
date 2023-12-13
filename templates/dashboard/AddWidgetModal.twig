@@ -166,12 +166,12 @@
 		var statSelection = $('#stateSelectionInput').val();
 		var title = $('#title-widget-modal').val();
 		var icon = $('#icon-widget-modal').val();
-
+        let format = $('input[name="format"]:checked').val();
 
 		$.ajax({
 			url: "{{ajaxUrl}}",
 			type: "POST",
-			data: { action: "preview", statType, statSelection, title, icon},
+			data: { action: "preview", statType, statSelection, title, icon, format},
 			success: function(data) {
 				console.log(data);
 				// update preview with the raw html returned
