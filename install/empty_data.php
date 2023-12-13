@@ -259,6 +259,7 @@ $default_prefs = [
    'enable_api_login_credentials'            => '0',
    'enable_api_login_external_token'         => '1',
    'url_base_api'                            => 'http://localhost/itsm-ng/api',
+   'url_dashboard_api'                       => 'http://localhost:3000',
    'login_remember_time'                     => '604800',
    'login_remember_default'                  => '1',
    'use_notifications'                       => '0',

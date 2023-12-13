@@ -779,72 +779,65 @@ class Config extends CommonDBTM {
     *
     * @since 9.1
     * @return void
-   **/
-   function showFormAPI() {
-      global $CFG_GLPI;
+    **/
+    function showFormAPI() {
+       global $CFG_GLPI;
+       include_once GLPI_ROOT . '/ng/form.utils.php';
+       
+       if (!self::canView()) {
+          return;
+         }
+         
+      $inline_doc_api = trim($CFG_GLPI['url_base_api'], '/')."/";
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+         'method' => 'post',
+         'content' => [
+            __('API') => [
+               'visible' => true,
+               'inputs' => [
+                  __('URL of the API') => [
+                     'name' => 'url_base_api',
+                     'type' => 'text',
+                     'size' => 80,
+                     'value' => $CFG_GLPI["url_base_api"]
+                  ],
+                  __('URL of the dashboard API') => [
+                     'name' => 'url_dashboard_api',
+                     'type' => 'text',
+                     'size' => 80,
+                     'value' => $CFG_GLPI["url_dashboard_api"]
+                  ],
+                  __('Enable Rest API') => [
+                     'name' => 'enable_api',
+                     'type' => 'checkbox',
+                     'value' => $CFG_GLPI["enable_api"]
+                  ],
+                  '' => $CFG_GLPI['enable_api'] ? [
+                     'content' => "<a href='$inline_doc_api'>".__("API inline Documentation")."</a>"
+                  ] : [],
+               ]
+            ],
+            __('Authentication') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Enable login with credentials') => [
+                     'name' => 'enable_api_login_credentials',
+                     'type' => 'checkbox',
+                     'value' => $CFG_GLPI["enable_api_login_credentials"]
+                  ],
+                  __('Enable login with external token') => [
+                     'name' => 'enable_api_login_external_token',
+                     'type' => 'checkbox',
+                     'value' => $CFG_GLPI["enable_api_login_external_token"]
+                  ],
+               ]
+            ],
+         ]
+      ];
 
-      if (!self::canView()) {
-         return;
-      }
+      renderTwigForm($form);
 
-      echo "<div class='center spaced' id='tabsbody'>";
-
-      $rand = mt_rand();
-      $canedit = Config::canUpdate();
-      if ($canedit) {
-         echo "<form name='form' action=\"".Toolbox::getItemTypeFormURL(__CLASS__)."\" method='post' data-track-changes='true'>";
-      }
-      echo "<table class='tab_cadre_fixe'>";
-
-      echo "<tr><th colspan='4'>" . __('API') . "</th></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='url_base_api'>" . __('URL of the API') . "</label></td>";
-      echo "<td colspan='3'><input type='text' name='url_base_api' id='url_base_api' size='80' value='".$CFG_GLPI["url_base_api"]."'></td>";
-      echo "</tr>";
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='dropdown_enable_api$rand'>" . __("Enable Rest API") . "</label></td>";
-      echo "<td>";
-      Dropdown::showYesNo("enable_api", $CFG_GLPI["enable_api"], -1, ['rand' => $rand]);
-      echo "</td>";
-      if ($CFG_GLPI["enable_api"]) {
-         echo "<td colspan='2'>";
-         $inline_doc_api = trim($CFG_GLPI['url_base_api'], '/')."/";
-         echo "<a href='$inline_doc_api'>".__("API inline Documentation")."</a>";
-         echo "</td>";
-      }
-      echo "</tr>";
-
-      echo "<tr><th colspan='4'>" . __('Authentication') . "</th></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='dropdown_enable_api_login_credentials$rand'>";
-      echo __("Enable login with credentials")."</label>&nbsp;";
-      Html::showToolTip(__("Allow to login to API and get a session token with user credentials"));
-      echo "</td>";
-      echo "<td>";
-      Dropdown::showYesNo("enable_api_login_credentials", $CFG_GLPI["enable_api_login_credentials"], -1, ['rand' => $rand]);
-      echo "</td>";
-      echo "<td><label for='dropdown_enable_api_login_external_token$rand'>";
-      echo __("Enable login with external token")."</label>&nbsp;";
-      Html::showToolTip(__("Allow to login to API and get a session token with user external token. See Remote access key in user Settings tab "));
-      echo "</td>";
-      echo "<td>";
-      Dropdown::showYesNo("enable_api_login_external_token", $CFG_GLPI["enable_api_login_external_token"], -1, ['rand' => $rand]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'><td colspan='4' class='center'>";
-      echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
-      echo "<br><br><br>";
-      echo "</td></tr>";
-
-      echo "</table>";
-      Html::closeForm();
-
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><td>";
-      echo "<hr>";
       $buttons = [
          'apiclient.form.php' => __('Add API client'),
       ];

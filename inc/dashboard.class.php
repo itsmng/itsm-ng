@@ -193,7 +193,7 @@ class Dashboard extends \CommonDBTM {
          $twig_vars['dataSet'] = [];
          $twig_vars['dataGroups'] = $this->getCategories();
       };
-      $twig_vars['dashboardApiUrl'] = "http://localhost:3000/dashboard";
+      $twig_vars['dashboardApiUrl'] = $CFG_GLPI["url_dashboard_api"] . "/dashboard";
       $twig_vars['ajaxUrl'] = $CFG_GLPI['root_doc'] . "/ajax/dashboard.php";
       $twig_vars['edit'] = $edit;
       $twig_vars['dashboardId'] = $ID;
@@ -224,7 +224,8 @@ class Dashboard extends \CommonDBTM {
    }
    
    static function getWidgetUrl($type, $statType, $statSelection, $options = []) {
-      $url = "http://localhost:3000/dashboard/$type?statType=$statType&statSelection=$statSelection";
+      global $CFG_GLPI;
+      $url = $CFG_GLPI["url_dashboard_api"] . "/dashboard/$type?statType=$statType&statSelection=$statSelection";
       if ($type != 'count') {
          $comparison = $options['comparison'] ?? 'id';
          $url .= "&comparison={$comparison}";

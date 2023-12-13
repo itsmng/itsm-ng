@@ -32,6 +32,9 @@ include ('../inc/includes.php');
 if (!isset($_REQUEST["action"])) {
    exit;
 }
+
+global $CFG_GLPI;
+
 if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_REQUEST['statSelection'])) {
    Session::checkRight("dashboard", READ);
    $statType = $_REQUEST['statType'];
@@ -88,7 +91,7 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
 } else if (($_REQUEST['action'] == 'getColumns')  && isset($_REQUEST['statType'])) {
    Session::checkRight("dashboard", READ);
    $statType = $_REQUEST['statType'];
-   $url = "http://localhost:3000/dashboard/comparisons/" . $statType;
+   $url = $CFG_GLPI["url_dashboard_api"] . "/dashboard/comparisons/" . $statType;
    $data = json_decode(file_get_contents($url));
    echo json_encode($data);
    exit;

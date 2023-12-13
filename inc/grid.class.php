@@ -99,7 +99,7 @@ class Grid extends CommonGLPI {
       $content['data_types'] = $CFG_GLPI['globalsearch_types'];
       $content['dashboardId'] = $this->current;
       $content['addWidget_action'] = Dashboard::getFormURL();
-      $content['dashboardApiUrl'] = "http://localhost:3000";
+      $content['dashboardApiUrl'] = $CFG_GLPI["url_dashboard_api"];
       try {
          echo $twig->render('dashboard/dashboard.twig', $content);
       } catch (Exception $e) {
