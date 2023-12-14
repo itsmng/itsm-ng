@@ -84,7 +84,6 @@ function renderTwigForm($form, $additionnalHtml = '', $colAmount = 2)
 
 function getHiddenInputsForItemForm($item, $options)
 {
-    die(var_dump($options));
     return [
         $options['id'] != '' ?[
             'type' => 'hidden',
