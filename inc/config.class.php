@@ -846,8 +846,6 @@ class Config extends CommonDBTM {
                          "",
                          $buttons);
       Search::show("APIClient");
-      echo "</td></tr>";
-      echo "</table></div>";
    }
 
 

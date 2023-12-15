@@ -58,22 +58,6 @@
 		const values = {};
 
 		$('input[type="checkbox"]:checked').each(function() {
-			const parents = $(this).attr('name').split('_');
-			let currentObject = values;
-
-			for (const key of parents) {
-				currentObject[key] = currentObject[key] || {};
-				currentObject = currentObject[key];
-			}
-		});
-
-		$("#stateSelectionInput").val(JSON.stringify(values));
-	}
-
-	function updateValues() {
-		const values = {};
-
-		$('input[type="checkbox"]:checked').each(function() {
 			const parents = $(this).attr('value').split('_');
 			let currentObject = values;
 

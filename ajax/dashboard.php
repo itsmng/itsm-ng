@@ -45,7 +45,7 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
       $statSelection = stripslashes($_REQUEST['statSelection']);
       
       $format = $_REQUEST['format'] ?? 'count';
-      $url = Dashboard::getWidgetUrl($format, $statType, $statSelection, $_REQUEST['options']);
+      $url = $CFG_GLPI["url_dashboard_api"] . Dashboard::getWidgetUrl($format, $statType, $statSelection, $_REQUEST['options']);
       $encoded_data = @file_get_contents($url);
       $data = json_decode($encoded_data);
       $widget = [
@@ -54,7 +54,7 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
          'title' => $_REQUEST['title'] ?? $_REQUEST['statType'],
          'icon' => $_REQUEST['icon'] ?? '',
       ];
-   
+      
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
       echo $twig->render('dashboard/widget.twig', [
          'widget' => $widget,
@@ -76,20 +76,25 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
    exit;
 } else if (($_REQUEST['action'] == 'add') && isset($_REQUEST['coords']) && isset($_REQUEST['id'])) {
    Session::checkRight("dashboard", UPDATE);
+   
    $dashboard = new Dashboard();
    $dashboard->getFromDB($_REQUEST['id']);
-   if ($dashboard->addWidget(
-      $_REQUEST['format'] ?? 'count',
-      json_decode($_REQUEST['coords']),
-      $_REQUEST['title'],
-      $_REQUEST['statType'],
-      $_REQUEST['statSelection'],
-      $_REQUEST['icon'],
-      $_REQUEST['comparison'] ?? 'model'
-   )) {
-      echo json_encode(["status" => "success"]);
-   } else {
-      echo json_encode(["status" => "error"]);
+   
+   $format = $_REQUEST['format'] ?? 'count';
+   $coords = $_REQUEST['coords'];
+   $title = $_REQUEST['title'] ?? $_REQUEST['statType'];
+   $statType = $_REQUEST['statType'];
+   $statSelection = stripslashes($_REQUEST['statSelection']);
+   $options = [
+      'icon' => $_REQUEST['icon'] ?? '',
+      'comparison' => $_REQUEST['comparison'] ?? 'id',
+      'direction' => $_REQUEST['direction'] ?? 'vertical',
+   ];
+   
+   if ($dashboard->addWidget($format, $coords, $title, $statType, $statSelection, $options)) {
+         echo json_encode(["status" => "success"]);
+      } else {
+         echo json_encode(["status" => "error"]);
    }
    exit;
 } else if (($_REQUEST['action'] == 'getColumns')  && isset($_REQUEST['statType'])) {

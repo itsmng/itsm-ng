@@ -61,21 +61,28 @@
 	});
 
 	function addWidget() {
+		let coords = JSON.parse($('#widgetModal input[name="coords"]').val());
+		let statType = $('#widgetModal input[name="statType"]').val();
+		let statSelection = $('#stateSelectionInput').val();
+		let title = $('#title-widget-modal').val();
+		let format = $('input[name="format"]:checked').val();
+		let icon = $('#icon-widget-modal').val();
+		let comparison = $('#parameter-selection-widget-modal-select').val();
+		let direction = $('#direction-selection-widget-modal-select').val();
+
+	console.log({
+				title, format, icon, comparison, direction
+			});
 		$.ajax({
 			url: "{{ajaxUrl}}",
 			type: "POST",
 			data: {
 				id: "{{dashboardId}}",
 				action: "add",
-				coords: $('#widgetModal input[name="coords"]').val(),
-				statType: $('#widgetModal input[name="statType"]').val(),
-				statSelection: $('#stateSelectionInput').val(),
-				title: $('#title-widget-modal').val(),
-				icon: $('#icon-widget-modal').val(),
-				format: $('input[name="format"]:checked').val(),
+				coords, statType, statSelection, title, format, icon, comparison, direction
 			},
 			success: function(data) {
-				location.reload();
+				{# location.reload(); #}
 			},
 			error: function(data) {
 				console.log(data);
@@ -120,6 +127,7 @@
 	}
 
 	function updateComparisonInput() {
+		previousValue = $('#parameter-selection-widget-modal-select').val();
 		$.ajax({
 			url: "{{ajaxUrl}}",
 			type: "POST",
@@ -135,6 +143,9 @@
 						value: value,
 						text: value
 					}));
+				}
+				if ($('#parameter-selection-widget-modal-select option[value="' + previousValue + '"]').length > 0) {
+					$('#parameter-selection-widget-modal-select').val(previousValue);
 				}
 			},
 		})

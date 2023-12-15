@@ -37,13 +37,13 @@
     <div class="input-group my-3 d-none">
         <label for="parameter-selection-widget-modal-select" class="input-group-text">{{"Order by"}}:
         </label>
-        <select name="orderBy" id="parameter-selection-widget-modal-select" class="form-select"></select>
+        <select name="comparison" id="parameter-selection-widget-modal-select" class="form-select"></select>
     </div>
 
     <div class="input-group my-3 d-none">
         <label for="direction-selection-widget-modal-select" class="input-group-text">{{"Direction"}}:
         </label>
-        <select name="orderBy" id="direction-selection-widget-modal-select" class="form-select">
+        <select name="direction" id="direction-selection-widget-modal-select" class="form-select">
             <option value="vertical">{{"Vertical"|trans}}</option>
             <option value="horizontal">{{"Horizontal"|trans}}</option>
         </select>
@@ -55,15 +55,18 @@
         let type = $('input[name="format"]:checked').val();
         let params = $('input[name="format"]:checked').parent().data('params');
         let direction = $('input[name="format"]:checked').parent().data('direction');
-        let orderBy = $('#parameter-selection-widget-modal-select');
+        let comparison = $('#parameter-selection-widget-modal-select');
         let directionSelect = $('#direction-selection-widget-modal-select');
+        let icon = $('#icon-widget-modal');
 
         if (params == 1) {
-            orderBy.parent().addClass('d-none');
+            comparison.parent().addClass('d-none');
             directionSelect.parent().addClass('d-none');
+            icon.parent().removeClass('d-none');
         } else {
-            orderBy.parent().removeClass('d-none');
+            comparison.parent().removeClass('d-none');
             directionSelect.parent().removeClass('d-none');
+            icon.parent().addClass('d-none');
         }
 
         if (direction) {
@@ -73,7 +76,7 @@
         }
 
         if (type == 'pie') {
-            orderBy.parent().removeClass('d-none');
+            comparison.parent().removeClass('d-none');
         }
 
         if (type == 'bar') {
