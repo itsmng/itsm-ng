@@ -40,6 +40,7 @@ if (isset($_POST['update']) && isset($_POST['id'])) {
     $dashboard = new Dashboard();
     $dashboard->getFromDB($_POST['id']);
     $dashboard->update($_POST);
+    Html::back();
 } else if (isset($_POST['add'])) {
     $dashboard = new Dashboard();
     if ($dashboard->add($_POST)) {

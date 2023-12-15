@@ -118,7 +118,12 @@ class Dashboard extends \CommonDBTM {
                   [
                      'type' => 'hidden',
                      'name' => isset($ID) ? 'update' : 'add',
-                     'value' => '',
+                     'value' => 'true',
+                  ],
+                  [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
                   ],
                   [
                      'type' => 'hidden',
@@ -135,41 +140,42 @@ class Dashboard extends \CommonDBTM {
       }
    }
 
-   private function parseDbResponseForChecklist($reponse) {
-      $result = [];
-      foreach ($reponse as $value) {
-         $result[$value['name']] = ['value' => $value['name']];
-      }
-      return $result;
-   }
-
    private function getCategories() {
-      global $DB;
+      global $DB, $CFG_GLPI;
       $dashboard_assetTypes = iterator_to_array($DB->query("SELECT DISTINCT id, name FROM `Dashboard_AssetType`"));
       $assetTypes = [];
+      $comparisons = file_get_contents($CFG_GLPI["url_dashboard_api"] . "/dashboard/comparisons/Asset");
+      $forbidenComparisons = ['id', 'name', 'entity', 'assetType'];
       foreach ($dashboard_assetTypes as $value) {
-         $models = iterator_to_array($DB->query("
-            SELECT DISTINCT name FROM `Dashboard_Model`
-         "));
-         $types = iterator_to_array($DB->query("
-            SELECT DISTINCT name FROM `Dashboard_Type`
-         "));
          $assetTypes[$value['name']] = [
             'value' => $value['name'],
-            'content' => [
-               'Model' => [
-                  'value' => 'model',
-                  'content' => $this->parseDbResponseForChecklist($models),
-               ],
-               'Type' => [
-                  'value' => 'type',
-                  'content' => $this->parseDbResponseForChecklist($types),
-               ],
-            ]
+            'content' => []
          ];
+         foreach (json_decode($comparisons, true) as $comparison) {
+            if (in_array($comparison, $forbidenComparisons)) continue;
+            $table = "Dashboard_".ucfirst($comparison);
+            $assetTypeId = $value['id'];
+            $columnExists = count(iterator_to_array($DB->query("SHOW COLUMNS FROM `$table` LIKE 'assetTypeId'"))) > 0;
+            $query = "SELECT name from `$table`";
+            if ($columnExists) {
+               $query .= " WHERE assetTypeId = $assetTypeId";
+            }
+            $values = array_column(iterator_to_array( $DB->query($query)), 'name');
+            $mappedValues = array_combine($values, array_map(function($value) {
+               return ['name' => $value, 'value' => $value];
+            }, $values));
+            $assetTypes[$value['name']]['content'][$comparison] = [
+               'value' => $comparison,
+               'content' => $mappedValues,
+            ];
+         }
       }
       return [
-         'Asset' => iterator_to_array($assetTypes),
+         'Asset' => $assetTypes,
+         'Ticket' => [],
+         'Entity' => [],
+         'Group' => [],
+         'User' => [],
       ];
    }
 
