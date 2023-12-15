@@ -27,6 +27,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Http\Client\Exception\HttpException;
+
 include ('../inc/includes.php');
 
 if (!isset($_REQUEST["action"])) {
@@ -37,26 +39,28 @@ global $CFG_GLPI;
 
 if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_REQUEST['statSelection'])) {
    Session::checkRight("dashboard", READ);
-   $statType = $_REQUEST['statType'];
-   $statSelection = stripslashes($_REQUEST['statSelection']);
-   
-   $format = $_REQUEST['format'] ?? 'count';
-   $url = Dashboard::getWidgetUrl($format, $statType, $statSelection, $_REQUEST['options']);
-   $data = json_decode(file_get_contents($url));
-   
-   $widget = [
-      'type' => $format,
-      'value' => $data,
-      'title' => $_REQUEST['title'] ?? $_REQUEST['statType'],
-      'icon' => $_REQUEST['icon'] ?? '',
-   ];
-
    require_once GLPI_ROOT . "/ng/twig.class.php";
-   $twig = Twig::load(GLPI_ROOT . "/templates", false);
    try {
+      $statType = $_REQUEST['statType'];
+      $statSelection = stripslashes($_REQUEST['statSelection']);
+      
+      $format = $_REQUEST['format'] ?? 'count';
+      $url = Dashboard::getWidgetUrl($format, $statType, $statSelection, $_REQUEST['options']);
+      $encoded_data = @file_get_contents($url);
+      $data = json_decode($encoded_data);
+      $widget = [
+         'type' => $format,
+         'value' => $data,
+         'title' => $_REQUEST['title'] ?? $_REQUEST['statType'],
+         'icon' => $_REQUEST['icon'] ?? '',
+      ];
+   
+      $twig = Twig::load(GLPI_ROOT . "/templates", false);
       echo $twig->render('dashboard/widget.twig', [
          'widget' => $widget,
       ]);
+   } catch (HttpException $e) {
+      echo json_encode(["status" => "error", "message" => $e->getMessage()]);
    } catch (Exception $e) {
       echo $e->getMessage();
    }

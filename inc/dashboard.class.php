@@ -27,8 +27,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Ramsey\Uuid\Uuid;
-
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
@@ -68,8 +66,14 @@ class Dashboard extends \CommonDBTM {
       return false;
    }
 
-
-   function showForm($ID, $options = []) {
+   /**
+    * Show the form to create or edit a dashboard
+    *
+    * @param $ID: [profileId, userId]
+    *
+    * @return void
+    */
+   function showForm($ID) {
       include_once GLPI_ROOT . '/ng/form.utils.php';
       if ($ID) {
          $this->getFromDB($ID);
