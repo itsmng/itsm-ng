@@ -60,53 +60,6 @@
 		updateComparisonInput();
 	});
 
-	function addWidget() {
-		const coords = JSON.parse($('#widgetModal input[name="coords"]').val());
-		
-		const statType = $('#widgetModal input[name="statType"]').val();
-		const statSelection = $('#stateSelectionInput').val();
-		
-		const format = $('input[name="format"]:checked').val();
-		
-		const title = $('#title-widget-modal').val();
-		const icon = $('#icon-widget-modal').val();
-		
-		const comparison = $('#parameter-selection-widget-modal-select').val();
-
-		const direction = $('#direction-selection-widget-modal-select').val();
-		const pieFormat = $('#pie-format-selection-widget-modal-select').val();
-
-		const options = {
-			comparison, icon
-		}
-		if (direction == 'horizontal') {
-			options['horizontalBars'] = true;
-		}
-
-		if (pieFormat == 'half') {
-			options['total'] = 'half';
-			options['startAngle'] = 270;
-		} else if (pieFormat == 'donut') {
-			options['donut'] = true;
-		}
-		
-		$.ajax({
-			url: "{{ajaxUrl}}",
-			type: "POST",
-			data: {
-				id: "{{dashboardId}}",
-				action: "add",
-				coords, statType, statSelection, title, format, options
-			},
-			success: function(data) {
-				location.reload();
-			},
-			error: function(data) {
-				console.log(data);
-			}
-		});
-	
-	}
 
 	function openWidgetModal(coords) {
 		$('#widgetModal input[name="coords"]').val(JSON.stringify(coords));
@@ -172,19 +125,19 @@
 		updateComparisonInput();
 	})
 
-	$("#widgetModal").on("change", function(event) {
-		// update preview with {{dashboardApiUrl}}/count
+	function getChartParams() {
 		const statType = $('#widgetModal input[name="statType"]').val();
 		const statSelection = $('#stateSelectionInput').val();
 		const title = $('#title-widget-modal').val();
 		const icon = $('#icon-widget-modal').val();
-        const format = $('input[name="format"]:checked').val();
-		const direction = $('#direction-selection-widget-modal-select').val();
-		const pieFormat = $('#pie-format-selection-widget-modal-select').val();
+		const format = $('input[name="format"]:checked').val();
 		const comparison = $('#parameter-selection-widget-modal-select').val();
 
+		const direction = $('#direction-selection-widget-modal-select').val();
+		const pieFormat = $('#pie-format-selection-widget-modal-select').val();
+
 		const options = {
-			comparison
+			comparison, icon
 		}
 		if (direction == 'horizontal') {
 			options['horizontalBars'] = true;
@@ -196,6 +149,16 @@
 		} else if (pieFormat == 'donut') {
 			options['donut'] = true;
 		}
+
+		return {
+			statType, statSelection, title, format, options
+		}
+	
+	}
+
+	$("#widgetModal").on("change", function(event) {
+		// update preview with {{dashboardApiUrl}}/count
+		const {statType, statSelection, title, icon, format, options} = getChartParams();
 
 		$.ajax({
 			url: "{{ajaxUrl}}",
@@ -209,4 +172,26 @@
 			}
 		});
 	})
+
+	function addWidget() {
+		const coords = JSON.parse($('#widgetModal input[name="coords"]').val());
+		const {statType, statSelection, title, format, options} = getChartParams();
+
+		$.ajax({
+			url: "{{ajaxUrl}}",
+			type: "POST",
+			data: {
+				id: "{{dashboardId}}",
+				action: "add",
+				coords, statType, statSelection, title, format, options
+			},
+			success: function(data) {
+				location.reload();
+			},
+			error: function(data) {
+				console.log(data);
+			}
+		});
+	
+	}
 </script>
