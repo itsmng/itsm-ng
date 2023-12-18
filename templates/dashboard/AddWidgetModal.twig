@@ -61,15 +61,20 @@
 	});
 
 	function addWidget() {
-		let coords = JSON.parse($('#widgetModal input[name="coords"]').val());
-		let statType = $('#widgetModal input[name="statType"]').val();
-		let statSelection = $('#stateSelectionInput').val();
-		let title = $('#title-widget-modal').val();
-		let format = $('input[name="format"]:checked').val();
-		let icon = $('#icon-widget-modal').val();
-		let comparison = $('#parameter-selection-widget-modal-select').val();
-		let direction = $('#direction-selection-widget-modal-select').val();
+		const coords = JSON.parse($('#widgetModal input[name="coords"]').val());
+		
+		const statType = $('#widgetModal input[name="statType"]').val();
+		const statSelection = $('#stateSelectionInput').val();
+		
+		const format = $('input[name="format"]:checked').val();
+		
+		const title = $('#title-widget-modal').val();
+		const icon = $('#icon-widget-modal').val();
+		
+		const comparison = $('#parameter-selection-widget-modal-select').val();
 
+		const direction = $('#direction-selection-widget-modal-select').val();
+		const pieFormat = $('#pie-format-selection-widget-modal-select').val();
 
 		const options = {
 			comparison, icon
@@ -77,6 +82,14 @@
 		if (direction == 'horizontal') {
 			options['horizontalBars'] = true;
 		}
+
+		if (pieFormat == 'half') {
+			options['total'] = 'half';
+			options['startAngle'] = 270;
+		} else if (pieFormat == 'donut') {
+			options['donut'] = true;
+		}
+		
 		$.ajax({
 			url: "{{ajaxUrl}}",
 			type: "POST",
@@ -167,6 +180,7 @@
 		const icon = $('#icon-widget-modal').val();
         const format = $('input[name="format"]:checked').val();
 		const direction = $('#direction-selection-widget-modal-select').val();
+		const pieFormat = $('#pie-format-selection-widget-modal-select').val();
 		const comparison = $('#parameter-selection-widget-modal-select').val();
 
 		const options = {
@@ -174,6 +188,13 @@
 		}
 		if (direction == 'horizontal') {
 			options['horizontalBars'] = true;
+		}
+
+		if (pieFormat == 'half') {
+			options['total'] = 'half';
+			options['startAngle'] = 270;
+		} else if (pieFormat == 'donut') {
+			options['donut'] = true;
 		}
 
 		$.ajax({

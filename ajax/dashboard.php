@@ -29,6 +29,8 @@
 
 use Http\Client\Exception\HttpException;
 
+use function Sabre\Uri\parse;
+
 include ('../inc/includes.php');
 
 if (!isset($_REQUEST["action"])) {
@@ -48,7 +50,8 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
       $url = $CFG_GLPI["url_dashboard_api"] . Dashboard::getWidgetUrl($format, $statType, $statSelection, $_REQUEST['options']);
       $encoded_data = @file_get_contents($url);
       $data = json_decode($encoded_data);
-      $options = $_REQUEST['options'] ?? [];
+      $options = Dashboard::parseOptions($_REQUEST['options'] ?? [], $data);
+
       $widget = [
          'type' => $format,
          'value' => $data,
@@ -88,7 +91,6 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
    $statType = $_REQUEST['statType'];
    $statSelection = stripslashes($_REQUEST['statSelection']);
    $options = $_REQUEST['options'] ?? [];
-   
    if ($dashboard->addWidget($format, $coords, $title, $statType, $statSelection, $options)) {
          echo json_encode(["status" => "success"]);
       } else {

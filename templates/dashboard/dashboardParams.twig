@@ -2,11 +2,18 @@
     {% set formats = [
         { 'value': 'count', 'icon': 'fas fa-hashtag', 'name': 'Count', 'checked': 'checked', 'params': 1 },
         { 'value': 'line', 'icon': 'fas fa-chart-line', 'name': 'Line', 'params': 2 },
-        { 'value': 'pie', 'icon': 'fas fa-chart-pie', 'name': 'Pie', 'params': 2 },
+        { 'value': 'pie', 'icon': 'fas fa-chart-pie', 'name': 'Pie', 'params': 2, 'pieFormat': true },
         { 'value': 'bar', 'icon': 'fas fa-chart-bar', 'name': 'Bar', 'params': 2, 'direction': true },
     ] %}
     {%  for format in formats %}
-        <div class="col-3 p-0 m-0" data-params='{{format.params}}' data-direction='{{format.direction ?? false}}'>
+        <div class="col-3 p-0 m-0"
+            data-params='{{format.params}}'
+            {% if format.direction %}
+                data-direction='{{format.direction ?? false}}' 
+            {% elseif format.pieFormat %}
+                data-pieformat='{{format.pieFormat ?? false}}'
+            {% endif %}
+            >
             <input type="radio"
                 class="btn-check"
                 name="format"
@@ -48,25 +55,42 @@
             <option value="horizontal">{{"Horizontal"|trans}}</option>
         </select>
     </div>
+
+    <div class="input-group my-3 d-none">
+        <label for="pie-format-selection-widget-modal-select" class="input-group-text">{{"Format"}}:
+        </label>
+        <select name="pieFormat" id="pie-format-selection-widget-modal-select" class="form-select">
+            <option value="filled">{{"Filled"|trans}}</option>
+            <option value="donut">{{"Donut"|trans}}</option>
+            <option value="half">{{"Half"|trans}}</option>
+        </select>
+    </div>
 </div>
 
 <script>
     function changeType() {
-        let type = $('input[name="format"]:checked').val();
-        let params = $('input[name="format"]:checked').parent().data('params');
-        let direction = $('input[name="format"]:checked').parent().data('direction');
-        let comparison = $('#parameter-selection-widget-modal-select');
-        let directionSelect = $('#direction-selection-widget-modal-select');
-        let icon = $('#icon-widget-modal');
+        const type = $('input[name="format"]:checked').val();
+        const params = $('input[name="format"]:checked').parent().data('params');
 
-        if (params == 1) {
-            comparison.parent().addClass('d-none');
-            directionSelect.parent().addClass('d-none');
-            icon.parent().removeClass('d-none');
-        } else {
+        const direction = $('input[name="format"]:checked').parent().data('direction');
+        const pieFormat = $('input[name="format"]:checked').parent().data('pieformat');
+        const comparison = $('#parameter-selection-widget-modal-select');
+
+        
+        const directionSelect = $('#direction-selection-widget-modal-select');
+        const pieFormatSelect = $('#pie-format-selection-widget-modal-select');
+        
+        const icon = $('#icon-widget-modal');
+
+        icon.parent().addClass('d-none');
+        comparison.parent().addClass('d-none');
+        directionSelect.parent().addClass('d-none');
+        pieFormatSelect.parent().addClass('d-none');
+
+        if (params > 1) {
             comparison.parent().removeClass('d-none');
-            directionSelect.parent().removeClass('d-none');
-            icon.parent().addClass('d-none');
+        } else {
+            icon.parent().removeClass('d-none');
         }
 
         if (direction) {
@@ -75,12 +99,11 @@
             directionSelect.parent().addClass('d-none');
         }
 
-        if (type == 'pie') {
-            comparison.parent().removeClass('d-none');
+        if (pieFormat) {
+            pieFormatSelect.parent().removeClass('d-none');
+        } else {
+            pieFormatSelect.parent().addClass('d-none');
         }
 
-        if (type == 'bar') {
-            directionSelect.parent().removeClass('d-none');
-        }
     }
 </script>

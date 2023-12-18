@@ -179,6 +179,15 @@ class Dashboard extends \CommonDBTM {
       ];
    }
 
+
+   static function parseOptions($options, $data) {
+      if (isset($options['total'])) {
+         $options['total'] = array_sum($data['1']) * 2;
+         $options['startAngle'] = intval($options['startAngle']);
+      }
+      return $options;
+   }
+
    function getGridContent($content) {
       global $CFG_GLPI;
       
@@ -186,8 +195,9 @@ class Dashboard extends \CommonDBTM {
          foreach ($row as $colIdx => $widget) {
             $content[$rowIdx][$colIdx] = array_merge(
                $content[$rowIdx][$colIdx],
-               ['value' => json_decode(file_get_contents($CFG_GLPI["url_dashboard_api"] . $widget['url']))]
+               ['value' => json_decode(file_get_contents($CFG_GLPI["url_dashboard_api"] . $widget['url']))],
             );
+            $content[$rowIdx][$colIdx]['options'] = $this::parseOptions($widget['options'] ?? [], $content[$rowIdx][$colIdx]['value']);
             unset ($content[$rowIdx][$colIdx]['url']);
          }
       }
