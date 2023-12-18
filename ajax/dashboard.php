@@ -48,11 +48,13 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
       $url = $CFG_GLPI["url_dashboard_api"] . Dashboard::getWidgetUrl($format, $statType, $statSelection, $_REQUEST['options']);
       $encoded_data = @file_get_contents($url);
       $data = json_decode($encoded_data);
+      $options = $_REQUEST['options'] ?? [];
       $widget = [
          'type' => $format,
          'value' => $data,
          'title' => $_REQUEST['title'] ?? $_REQUEST['statType'],
          'icon' => $_REQUEST['icon'] ?? '',
+         'options' => $options,
       ];
       
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
@@ -85,11 +87,7 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
    $title = $_REQUEST['title'] ?? $_REQUEST['statType'];
    $statType = $_REQUEST['statType'];
    $statSelection = stripslashes($_REQUEST['statSelection']);
-   $options = [
-      'icon' => $_REQUEST['icon'] ?? '',
-      'comparison' => $_REQUEST['comparison'] ?? 'id',
-      'direction' => $_REQUEST['direction'] ?? 'vertical',
-   ];
+   $options = $_REQUEST['options'] ?? [];
    
    if ($dashboard->addWidget($format, $coords, $title, $statType, $statSelection, $options)) {
          echo json_encode(["status" => "success"]);

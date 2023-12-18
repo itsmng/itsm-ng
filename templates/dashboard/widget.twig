@@ -17,7 +17,7 @@
 {% macro chart(type = 'LineChart', title = '', labels = [], series = [], options = [], color = "black") %}
 {% set rand = random() %}
 	<div class="fw-bold fs-6 {{color ? "text-" ~ color : ''}}">{{title}}</div>
-	<div class="ct-chart ct-golden-section w-100 h-75" id="widgetFor{{title|slug}}_{{rand}}"></div>
+	<div class="ct-chart ct-golden-section w-100" style="max-height: 20rem" id="widgetFor{{title|slug}}_{{rand}}"></div>
 	<link rel="stylesheet" href="/~antoine/itsm-ng2.0/node_modules/chartist/dist/index.css">
 	<script>
 	$(document).ready(function() {
@@ -27,6 +27,9 @@
 				series: {{series | json_encode | raw}},
 			}, {
 				distributeSeries: true,
+				{% for key, option in options %}
+					{{key}}: {{option | json_encode | raw}},
+				{% endfor %}
 			}
 		);
 		setTimeout(function() {

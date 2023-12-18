@@ -241,10 +241,6 @@ class Dashboard extends \CommonDBTM {
       if ($type != 'count') {
          $comparison = $options['comparison'] ?? 'id';
          $url .= "&comparison={$comparison}";
-         if ($type == 'bar') {
-            $direction = $options['direction'] ?? 'vertical';
-            $url .= "&direction={$direction}";
-         }
       }
       return $url;
    }
@@ -256,7 +252,8 @@ class Dashboard extends \CommonDBTM {
          'type' => $format,
          'title' => $title ?? $statType,
          'icon' => $options['icon'] ?? '',
-         'url' => Dashboard::getWidgetUrl($format, $statType, $urlStatSelection, $options)
+         'url' => Dashboard::getWidgetUrl($format, $statType, $urlStatSelection, $options),
+         'options' => $options,
       ];
 
       $this->placeWidgetAtCoord($dashboard, $widget, $coords);

@@ -15,7 +15,7 @@
 		{{_self.editButton(true, [ rowIndex, -1 ])}}
 	{% endif %}
 			{% for colIndex, widget in row %}
-				<div class="col border d-flex flex-column-reverse align-items-center justify-content-center h-100
+				<div class="col border d-flex flex-column-reverse align-items-center justify-content-center 
 				{{widget.background ? 'bg-' ~ widget.background : ''}}
 				">
 					{% include 'dashboard/widget.twig' with widget %}

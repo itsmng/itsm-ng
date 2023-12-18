@@ -37,7 +37,7 @@
 
                 <div class="col-12 col-lg-8 d-flex flex-column p-0">
                     {% include "dashboard/dashboardParams.twig" %}
-                    <div id="preview-graph-widget-modal" style="height: 15rem">
+                    <div id="preview-graph-widget-modal" style="height: 25rem">
                     </div>
                 </div>
 			</div>
@@ -70,19 +70,23 @@
 		let comparison = $('#parameter-selection-widget-modal-select').val();
 		let direction = $('#direction-selection-widget-modal-select').val();
 
-	console.log({
-				title, format, icon, comparison, direction
-			});
+
+		const options = {
+			comparison, icon
+		}
+		if (direction == 'horizontal') {
+			options['horizontalBars'] = true;
+		}
 		$.ajax({
 			url: "{{ajaxUrl}}",
 			type: "POST",
 			data: {
 				id: "{{dashboardId}}",
 				action: "add",
-				coords, statType, statSelection, title, format, icon, comparison, direction
+				coords, statType, statSelection, title, format, options
 			},
 			success: function(data) {
-				{# location.reload(); #}
+				location.reload();
 			},
 			error: function(data) {
 				console.log(data);
@@ -165,7 +169,12 @@
 		const direction = $('#direction-selection-widget-modal-select').val();
 		const comparison = $('#parameter-selection-widget-modal-select').val();
 
-		const options = { direction ,comparison}
+		const options = {
+			comparison
+		}
+		if (direction == 'horizontal') {
+			options['horizontalBars'] = true;
+		}
 
 		$.ajax({
 			url: "{{ajaxUrl}}",
