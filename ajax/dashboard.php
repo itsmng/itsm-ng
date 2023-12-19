@@ -48,15 +48,15 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
       
       $format = $_REQUEST['format'] ?? 'count';
       $url = $CFG_GLPI["url_dashboard_api"] . Dashboard::getWidgetUrl($format, $statType, $statSelection, $_REQUEST['options']);
-      $encoded_data = @file_get_contents($url);
+      $encoded_data = file_get_contents($url);
       $data = json_decode($encoded_data);
-      $options = Dashboard::parseOptions($_REQUEST['options'] ?? [], $data);
-
+      $options = Dashboard::parseOptions($format, $_REQUEST['options'] ?? [], $data);
+      
       $widget = [
          'type' => $format,
          'value' => $data,
          'title' => $_REQUEST['title'] ?? $_REQUEST['statType'],
-         'icon' => $_REQUEST['icon'] ?? '',
+         'icon' => $options['icon'] ?? '',
          'options' => $options,
       ];
       

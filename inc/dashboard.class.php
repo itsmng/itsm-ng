@@ -155,15 +155,27 @@ class Dashboard extends \CommonDBTM {
             if (in_array($comparison, $forbidenComparisons)) continue;
             $table = "Dashboard_".ucfirst($comparison);
             $assetTypeId = $value['id'];
+
+            
             $columnExists = count(iterator_to_array($DB->query("SHOW COLUMNS FROM `$table` LIKE 'assetTypeId'"))) > 0;
+            
             $query = "SELECT name from `$table`";
             if ($columnExists) {
                $query .= " WHERE assetTypeId = $assetTypeId";
             }
-            $values = array_column(iterator_to_array( $DB->query($query)), 'name');
+            $values = array_column(iterator_to_array($DB->query($query)), 'name');
             $mappedValues = array_combine($values, array_map(function($value) {
                return ['name' => $value, 'value' => $value];
             }, $values));
+            
+            $columnQuery = $DB->query("SELECT * from INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='Dashboard_Asset'");
+            $columnsInfo = iterator_to_array($columnQuery);
+            $isComparisonNullable = array_column($columnsInfo, 'IS_NULLABLE', 'COLUMN_NAME')[$comparison . "Id"] == 'YES';
+
+            if ($isComparisonNullable) {
+               $mappedValues[__('None')] = ['name' => 'null', 'value' => 'null'];
+            }
+
             $assetTypes[$value['name']]['content'][$comparison] = [
                'value' => $comparison,
                'content' => $mappedValues,
@@ -180,8 +192,8 @@ class Dashboard extends \CommonDBTM {
    }
 
 
-   static function parseOptions($options, $data) {
-      if (isset($options['total'])) {
+   static function parseOptions($format, $options, $data) {
+      if (isset($options['total']) && $format == 'pie') {
          $options['total'] = array_sum($data['1']) * 2;
          $options['startAngle'] = intval($options['startAngle']);
       }
@@ -197,7 +209,10 @@ class Dashboard extends \CommonDBTM {
                $content[$rowIdx][$colIdx],
                ['value' => json_decode(file_get_contents($CFG_GLPI["url_dashboard_api"] . $widget['url']))],
             );
-            $content[$rowIdx][$colIdx]['options'] = $this::parseOptions($widget['options'] ?? [], $content[$rowIdx][$colIdx]['value']);
+            $content[$rowIdx][$colIdx]['options'] = $this::parseOptions(
+               $content[$rowIdx][$colIdx]['type'] ,
+               $widget['options'] ?? [],
+               $content[$rowIdx][$colIdx]['value']);
             unset ($content[$rowIdx][$colIdx]['url']);
          }
       }
@@ -246,8 +261,8 @@ class Dashboard extends \CommonDBTM {
    }
    
    static function getWidgetUrl($type, $statType, $statSelection, $options = []) {
-      global $CFG_GLPI;
-      $url = "/dashboard/$type?statType=$statType&statSelection=$statSelection";
+      $encodedSelection = urlencode($statSelection);
+      $url = "/dashboard/$type?statType=$statType&statSelection=$encodedSelection";
       if ($type != 'count') {
          $comparison = $options['comparison'] ?? 'id';
          $url .= "&comparison={$comparison}";
