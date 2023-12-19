@@ -900,10 +900,8 @@ class CommonGLPI {
             ];
          }
       }
-      require_once GLPI_ROOT . "/ng/twig.class.php";
-      $twig = Twig::load(GLPI_ROOT . "/templates", false);
       try {
-         echo $twig->render('item.twig', [
+         renderTwigTemplate('item.twig', [
             'tabs' => $tabs,
             'layoutFor' => $target,
          ]);
@@ -1029,10 +1027,8 @@ class CommonGLPI {
                   <i class='far fa-list-alt pointer'></i>
                </a>";
 
-         require_once GLPI_ROOT . "/ng/twig.class.php";
-         $twig = Twig::load(GLPI_ROOT . "/templates", false);
          try {
-            echo $twig->render('tabSelection.twig', [
+            renderTwigTemplate('tabSelection.twig', [
                   'tabs' => $tabs,
             ]);
          } catch (Exception $e) {
@@ -1180,10 +1176,8 @@ class CommonGLPI {
          echo "</div>"; // .navigationheader
          
       } else {
-         require_once GLPI_ROOT . "/ng/twig.class.php";
-         $twig = Twig::load(GLPI_ROOT . "/templates", false);
          try {
-            echo $twig->render('tabSelection.twig', [
+            renderTwigTemplate('tabSelection.twig', [
                   'tabs' => $tabs,
             ]);
          } catch (Exception $e) {
@@ -1214,16 +1208,7 @@ class CommonGLPI {
     * @return boolean
     */
    public static function isLayoutExcludedPage() {
-      global $CFG_GLPI;
-
-      if (basename($_SERVER['SCRIPT_NAME']) == "updatecurrenttab.php") {
-         $base_referer = basename($_SERVER['HTTP_REFERER']);
-         $base_referer = explode("?", $base_referer);
-         $base_referer = $base_referer[0];
-         return in_array($base_referer, $CFG_GLPI['layout_excluded_pages']);
-      }
-
-      return in_array(basename($_SERVER['SCRIPT_NAME']), $CFG_GLPI['layout_excluded_pages']);
+      return true;
    }
 
 

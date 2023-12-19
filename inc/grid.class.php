@@ -93,7 +93,6 @@ class Grid extends CommonGLPI {
     */
    public function show($content) {
       global $CFG_GLPI;
-      require_once GLPI_ROOT . "/ng/twig.class.php";
       Html::requireJs('charts');
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
       $content['data_types'] = $CFG_GLPI['globalsearch_types'];
@@ -101,7 +100,7 @@ class Grid extends CommonGLPI {
       $content['addWidget_action'] = Dashboard::getFormURL();
       $content['dashboardApiUrl'] = $CFG_GLPI["url_dashboard_api"];
       try {
-         echo $twig->render('dashboard/dashboard.twig', $content);
+         renderTwigTemplate('dashboard/dashboard.twig', $content);
       } catch (Exception $e) {
          echo $e->getMessage();
       }

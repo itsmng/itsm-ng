@@ -1862,7 +1862,7 @@ JAVASCRIPT;
       $twig_vars['accessibilityMenu'] = Session::haveRight("accessibility", READ);
 
       $twig_vars['username'] = getUserName(Session::getLoginUserID());
-      require_once GLPI_ROOT . "/ng/twig.class.php";
+      require_once GLPI_ROOT . "/src/twig/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
       try {
          echo $twig->render('menus/headers/header.twig',  $twig_vars );
@@ -1923,7 +1923,7 @@ JAVASCRIPT;
       $twig_vars["copyright_message"] = self::getCopyrightMessage(); 
       $twig_vars["maintenance_mode"] = $CFG_GLPI['maintenance_mode'];
       
-      require_once GLPI_ROOT . "/ng/twig.class.php";
+      require_once GLPI_ROOT . "/src/twig/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
       try {
          echo $twig->render('footer.twig',  $twig_vars );
@@ -7481,7 +7481,7 @@ JAVASCRIPT;
       $user_form_url = User::getFormURL();
       $impersonate_name = $_SESSION['glpiname'];
       $csrf_token =  Session::getNewCSRFToken();  
-      $template_path = 'impersonate_banner.twig';
+      $template_path = 'menus/headers/utils/impersonate_banner.twig';
       $twig_vars = [
          "root_doc" => $CFG_GLPI['root_doc'],
          "user_form_url" => $user_form_url,

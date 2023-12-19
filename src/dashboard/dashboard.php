@@ -1,14 +1,10 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * ITSM-NG
  * Copyright (C) 2022 ITSM-NG and contributors.
  *
  * https://www.itsm-ng.org
- *
- * based on GLPI - Gestionnaire Libre de Parc Informatique
- * Copyright (C) 2003-2014 by the INDEPNET Development Team.
  *
  * ---------------------------------------------------------------------
  *
@@ -31,29 +27,12 @@
  * ---------------------------------------------------------------------
  */
 
- include ('../inc/includes.php');
+include ('../../inc/includes.php');
 
- Session::checkRight("dashboard", UPDATE);
- 
- Html::header(Dashboard::getMenuName(), $_SERVER['PHP_SELF'], "config", "Dashboard");
-if (isset($_POST['update']) && isset($_POST['id'])) {
-    $dashboard = new Dashboard();
-    $dashboard->getFromDB($_POST['id']);
-    $dashboard->update($_POST);
-    Html::back();
-} else if (isset($_POST['add'])) {
-    $dashboard = new Dashboard();
-    if ($dashboard->add($_POST)) {
-        Session::addMessageAfterRedirect(__('Dashboard added', 'itsmng'), true);
-        Html::back();
-    } else {
-        Session::addMessageAfterRedirect(__('Error adding dashboard', 'itsmng'), false);
-        Html::back();
-    }
-} else {
-    $dashboard = new Dashboard();
-    $dashboard->showForm($_GET['id'] ?? null, $_GET);
-}
+Session::checkRight("config", UPDATE);
 
- Html::footer();
-?>
+Html::header(__('Setup'), $_SERVER['PHP_SELF'], "config", "dashboard");
+
+Search::show('Dashboard');
+
+Html::footer();

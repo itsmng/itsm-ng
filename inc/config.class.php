@@ -782,7 +782,6 @@ class Config extends CommonDBTM {
     **/
     function showFormAPI() {
        global $CFG_GLPI;
-       include_once GLPI_ROOT . '/ng/form.utils.php';
        
        if (!self::canView()) {
           return;
@@ -1015,7 +1014,6 @@ class Config extends CommonDBTM {
     * @return void
     **/
     function showFormUserPrefs($data = []) {
-      include_once GLPI_ROOT . '/ng/form.utils.php';
       global $CFG_GLPI, $DB;
 
       $oncentral = (Session::getCurrentInterface() == "central");

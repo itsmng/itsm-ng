@@ -57,13 +57,21 @@ class Dashboard extends \CommonDBTM {
       if (static::canView()) {
 
          $menu['title'] = self::getMenuName();
-         $menu['page']  = '/front/dashboard.php';
+         $menu['page']  = '/src/dashboard/dashboard.php';
          $menu['icon']  = self::getIcon();
       }
       if (count($menu)) {
          return $menu;
       }
       return false;
+   }
+
+   static function getFormUrl($full = true) {
+      global $CFG_GLPI;
+      if ($full) {
+         return $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.form.php";
+      }
+      return "/src/dashboard/dashboard.form.php";
    }
 
    /**
@@ -74,7 +82,6 @@ class Dashboard extends \CommonDBTM {
     * @return void
     */
    function showForm($ID) {
-      include_once GLPI_ROOT . '/ng/form.utils.php';
       if ($ID) {
          $this->getFromDB($ID);
       }

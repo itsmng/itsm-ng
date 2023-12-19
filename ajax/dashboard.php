@@ -41,7 +41,6 @@ global $CFG_GLPI;
 
 if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_REQUEST['statSelection'])) {
    Session::checkRight("dashboard", READ);
-   require_once GLPI_ROOT . "/ng/twig.class.php";
    try {
       $statType = $_REQUEST['statType'];
       $statSelection = stripslashes($_REQUEST['statSelection']);
@@ -60,10 +59,7 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
          'options' => $options,
       ];
       
-      $twig = Twig::load(GLPI_ROOT . "/templates", false);
-      echo $twig->render('dashboard/widget.twig', [
-         'widget' => $widget,
-      ]);
+      renderTwigTemplate('dashboard/widget.twig', [ 'widget' => $widget ]);
    } catch (HttpException $e) {
       echo json_encode(["status" => "error", "message" => $e->getMessage()]);
    } catch (Exception $e) {

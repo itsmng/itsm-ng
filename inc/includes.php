@@ -40,6 +40,7 @@ include_once GLPI_ROOT . '/inc/based_config.php';
 $TIMER_DEBUG = new Timer();
 $TIMER_DEBUG->start();
 
+include_once (GLPI_ROOT . "/src/twig/twig.utils.php");
 
 /// TODO try to remove them if possible
 include_once (GLPI_ROOT . "/inc/db.function.php");

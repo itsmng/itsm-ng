@@ -180,8 +180,6 @@ class CartridgeItem extends CommonDBTM {
    **/
    function showForm($ID, $options = []) {
 
-      include_once (GLPI_ROOT."/ng/form.utils.php");
-
       $form = [
          'action' => $this->getFormURL(),
          'content' => [

@@ -61,6 +61,16 @@ function getOptionsForUsers($right, $conditions = [], $display_emptychoice = tru
     return $options;
 }
 
+function renderTwigTemplate($path, $vars) {
+    require_once GLPI_ROOT . "/src/twig/twig.class.php";
+    $twig = Twig::load(GLPI_ROOT . "/templates", false);
+    try {
+        echo $twig->render($path, $vars);
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+}
+
 /**
  * @param $form
  * @param $additionnalHtml
@@ -69,7 +79,7 @@ function getOptionsForUsers($right, $conditions = [], $display_emptychoice = tru
  */
 function renderTwigForm($form, $additionnalHtml = '', $colAmount = 2)
 {
-    require_once GLPI_ROOT . "/ng/twig.class.php";
+    require_once GLPI_ROOT . "/src/twig/twig.class.php";
     $twig = Twig::load(GLPI_ROOT . "/templates", false);
     try {
         echo $twig->render('form.twig', [

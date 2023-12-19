@@ -149,8 +149,8 @@ class Monitor extends CommonDBTM {
     * @return boolean item found
     **/
     function showForm($ID, $options = []) {
-      require_once GLPI_ROOT . "/ng/form.utils.php";
       global $CFG_GLPI;
+      
       $form = [
          'action' => $this->getFormURL(),
          'content' => [

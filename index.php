@@ -8,9 +8,6 @@ if (version_compare(PHP_VERSION, '8.0.0') < 0) {
 define('GLPI_ROOT', __DIR__);
 include (GLPI_ROOT . "/inc/based_config.php");
 
-require_once GLPI_ROOT . "/ng/twig.class.php";
-$twig = Twig::load(GLPI_ROOT . "/templates", false);
-
 define('DO_NOT_CHECK_HTTP_REFERER', 1);
 
 // If config_db doesn't exist -> start installation
@@ -153,7 +150,7 @@ if (!GLPI_DEMO_MODE) {
 
 
 try {
-    echo $twig->render('index.twig',  ["root_doc" => $CFG_GLPI['root_doc'], 'header_data' => $header_data] + $twig_vars);
+    renderTwigTemplate('index.twig', ["root_doc" => $CFG_GLPI['root_doc'], 'header_data' => $header_data] + $twig_vars);
 } catch (\Exception $e) {
     echo $e->getMessage();
 }
