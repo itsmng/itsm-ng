@@ -925,17 +925,6 @@ input {
    }
 
    .layout_vsplit {
-      #page {
-         max-width: inherit;
-         min-height: 0;
-         position: absolute;
-         top: 105px;
-         bottom: 15px;
-         width: 100%;
-         padding: 0;
-         overflow: auto;
-      }
-
       &.form #page {
          overflow: hidden;
       }
