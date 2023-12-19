@@ -1531,25 +1531,6 @@ JAVASCRIPT;
               default:
                   break;
           }
-          echo Html::scriptBlock(<<<JAVASCRIPT
-          $(function() {
-              $("body").css({
-                  "zoom": "$factor%",
-                  "font-family": "'$font', Verdana, Tahoma, 'Sans serif'"
-                 });
-               $("div").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
-               $(".secondary").css("font-family", "'$font', Arial, Helvetica");
-               $("button").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
-               $(".vsubmit").css("font-family", "'$font', Arial, Helvetica");
-               $("input").css("font-family", "'$font', Verdana, Tahoma, 'Sans serif'");
-               $("#myname").css("font-family", "'$font', Verdana, Tahoma, 'Sans serif'");
-               $("div.timeline_box").children().css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
-               $("ul").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
-               $("li").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
-               $("select").css("font-family", "'$font', Verdana, Arial, 'Sans serif'");
-          })
-JAVASCRIPT
-          );
       }
    }
 
@@ -1884,7 +1865,7 @@ JAVASCRIPT
       require_once GLPI_ROOT . "/ng/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
       try {
-         echo $twig->render('header.twig',  $twig_vars );
+         echo $twig->render('menus/headers/header.twig',  $twig_vars );
       } catch (\Exception $e) {
          echo $e->getMessage();
       }
@@ -3752,7 +3733,7 @@ JS;
       global $CFG_GLPI;
 
       if (count($_SESSION["glpiprofiles"]) > 1) {
-         echo '<li class="profile-selector"><form name="form" method="post" action="' . $target . '">';
+         echo '<form name="form" method="post" action="' . $target . '">';
          $values = [];
          foreach ($_SESSION["glpiprofiles"] as $key => $val) {
             $values[$key] = $val['name'];
@@ -7220,7 +7201,7 @@ JAVASCRIPT;
          $twig_vars['url_validate'] = $CFG_GLPI["root_doc"] . "/front/ticket.php?" . Toolbox::append_params($opt, '&amp;');
          $twig_vars['opt'] = $opt;
       }
-      $template_path = 'menu.twig';
+      $template_path = 'menus/nav/menu.twig';
       $twig_vars += [ "root_doc" => $CFG_GLPI['root_doc'], "menu" => $menu, 
       "mainurl" => $mainurl, "show_page" => $show_page, 
       "link" => $link, "item" => $item, 

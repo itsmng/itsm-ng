@@ -869,8 +869,6 @@ class CommonGLPI {
 
          $extraparamhtml = "&amp;".Toolbox::append_params($cleaned_options, '&amp;');
       }
-      echo "<div class='glpi_tabs ".($this->isNewID($ID)?"new_form_tabs":"")."'>";
-      echo "<div id='tabspanel' class='center-h'></div>";
       $onglets     = $this->defineAllTabs($options);
       $display_all = true;
       if (isset($onglets['no_all_tab'])) {
@@ -902,7 +900,6 @@ class CommonGLPI {
             ];
          }
       }
-      echo "</div>";
       require_once GLPI_ROOT . "/ng/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false);
       try {

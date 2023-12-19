@@ -35,7 +35,7 @@
 					<a title={{'Options'|trans}} data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<i class="fas fa-sort-amount-down"></i>
 					</a>
-                    {% include "nav-settings.twig" %}
+                    {% include "menus/nav/nav-settings.twig" %}
 				</li>
 				<li id='menu-options' class="dropdown p-2">
 					<a title={{'Help'|trans}} href="https://www.itsm-ng.org">
@@ -62,7 +62,7 @@
 		</header>
 
 		{% if accessibilityMenu %}
-			{% include "accessibilityMenu.twig" %}
+			{% include "menus/accessibilityMenu.twig" %}
 		{% endif %}
 
 		<div id="main-test" class="{{menu_position}}">
@@ -79,8 +79,8 @@
 			</nav>
 			<div class="main-container">
 				<div id="subheader" class="d-flex justify-content-between p-2">
-					{% include "breadcrumb.twig" with { 'items': breadcrumb_items } %}
+					{% include "menus/headers/utils/breadcrumb.twig" with { 'items': breadcrumb_items } %}
 					{{profileSelect|raw}}
-					{% include "actions.twig" with {'links': links, 'root_doc':root_doc} %}
+					{% include "menus/headers/utils/actions.twig" with {'links': links, 'root_doc':root_doc} %}
 				</div>
 				<main role='main' id='page'>

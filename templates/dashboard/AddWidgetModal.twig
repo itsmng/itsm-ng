@@ -157,9 +157,11 @@
 	}
 
 	$("#widgetModal").on("change", function(event) {
-		// update preview with {{dashboardApiUrl}}/count
 		const {statType, statSelection, title, icon, format, options} = getChartParams();
 
+		console.log(statSelection)
+		if (statSelection == '{}')
+			return;
 		$.ajax({
 			url: "{{ajaxUrl}}",
 			type: "POST",
