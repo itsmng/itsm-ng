@@ -27,11 +27,7 @@
  * ---------------------------------------------------------------------
  */
 
-use Http\Client\Exception\HttpException;
-
-use function Sabre\Uri\parse;
-
-include ('../inc/includes.php');
+include ('../../inc/includes.php');
 
 if (!isset($_REQUEST["action"])) {
    exit;
@@ -46,9 +42,9 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
       $statSelection = stripslashes($_REQUEST['statSelection']);
       
       $format = $_REQUEST['format'] ?? 'count';
-      $url = $CFG_GLPI["url_dashboard_api"] . Dashboard::getWidgetUrl($format, $statType, $statSelection, $_REQUEST['options']);
-      $encoded_data = file_get_contents($url);
-      $data = json_decode($encoded_data);
+      
+      $data = Dashboard::getDashboardData(Dashboard::getWidgetUrl($format, $statType, $statSelection, $_REQUEST['options']));
+
       $options = Dashboard::parseOptions($format, $_REQUEST['options'] ?? [], $data);
       
       $widget = [
@@ -60,8 +56,6 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
       ];
       
       renderTwigTemplate('dashboard/widget.twig', [ 'widget' => $widget ]);
-   } catch (HttpException $e) {
-      echo json_encode(["status" => "error", "message" => $e->getMessage()]);
    } catch (Exception $e) {
       echo $e->getMessage();
    }
@@ -96,8 +90,7 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
 } else if (($_REQUEST['action'] == 'getColumns')  && isset($_REQUEST['statType'])) {
    Session::checkRight("dashboard", READ);
    $statType = $_REQUEST['statType'];
-   $url = $CFG_GLPI["url_dashboard_api"] . "/dashboard/comparisons/" . $statType;
-   $data = json_decode(file_get_contents($url));
+   $data = Dashboard::getDashboardData("/dashboard/comparisons/" . $statType);
    echo json_encode($data);
    exit;
 }

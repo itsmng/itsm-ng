@@ -792,7 +792,7 @@ header {
         justify-content: center;
         align-items: center;
         flex-shrink: 0;
-        cursor: url("../ng/pics/star.png"), auto;
+        cursor: url("../src/pics/star.png"), auto;
         &::before {
             color: $favorite-color;
             display: none;

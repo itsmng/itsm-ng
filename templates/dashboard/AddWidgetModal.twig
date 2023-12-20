@@ -159,7 +159,6 @@
 	$("#widgetModal").on("change", function(event) {
 		const {statType, statSelection, title, icon, format, options} = getChartParams();
 
-		console.log(statSelection)
 		if (statSelection == '{}')
 			return;
 		$.ajax({

@@ -32,8 +32,6 @@
  */
 
 include('../inc/includes.php');
-include( GLPI_ROOT . "/ng/twig.class.php");
-
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
@@ -63,8 +61,7 @@ $POST['items'] = $POST;
 $POST['items'] = $POST['item'];
 
 try {
-   $twig = Twig::load(GLPI_ROOT . "/templates", false);
-   echo $twig->render('massiveaction.twig', [
+   renderTwigForm('massiveaction.twig', [
       'actions' => $actions,
       'subformBody' => $POST,
    ]);

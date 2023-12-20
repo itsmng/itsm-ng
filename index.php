@@ -101,7 +101,7 @@ if (isset($_GET["redirect"])) {
 
 if (GLPI_DEMO_MODE) {
     //lang selector
-    require_once GLPI_ROOT . "/ng/languages/language.class.php";
+    require_once GLPI_ROOT . "/src/languages/language.class.php";
     $twig_vars["demo_mode"] = true;
     $twig_vars["languages"] = Language::getLanguages();
     $twig_vars["current_language"] = $_SESSION["glpilanguage"];

@@ -1270,6 +1270,8 @@ class Html
       echo Html::css('vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css');
       echo Html::css('css/bootstrap-select.min.css');
       echo Html::css('node_modules/@jarstone/dselect/dist/css/dselect.min.css');
+      echo Html::css("node_modules/jquery-ui-dist/jquery-ui.min.css");
+
 
       echo Html::css('public/lib/base.css');
       //JSTree JS part is loaded on demand... But from an ajax call to display entities. Need to have CSS loaded.
@@ -1932,11 +1934,12 @@ JAVASCRIPT;
       }
       self::displayDebugInfos();
       self::loadJavascript();
+      echo Html::script("node_modules/jquery-ui-dist/jquery-ui.min.js");
       echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
       echo Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js");
       echo Html::script("js/bootstrap-table-export.min.js");
       echo Html::script("node_modules/@jarstone/dselect/dist/js/dselect.min.js");
-      echo Html::script("ng/ngFunctions.js");
+      echo Html::script("src/ngFunctions.js");
       echo Html::script("node_modules/gridstack/dist/gridstack-all.js");
       echo Html::css("node_modules/gridstack/dist/gridstack-extra.css");
 
@@ -4958,7 +4961,7 @@ JAVASCRIPT
             stripslashes($on_change) . "});";
       }
 
-      $js .= " $('label[for=$field_id]').on('click', function(){ $('#$field_id').select2('open'); });";
+      $js .= "}; $('label[for=$field_id]').on('click', function(){ $('#$field_id').select2('open'); });";
 
       $output .= Html::scriptBlock('$(function() {' . $js . '});');
       return $output;

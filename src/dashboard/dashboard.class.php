@@ -147,18 +147,34 @@ class Dashboard extends \CommonDBTM {
       }
    }
 
+   static public function getDashboardData($uri) {
+      global $CFG_GLPI;
+
+      $opts = [
+         'http' => [
+            'method' => 'GET',
+            'header' => 
+               "Accept: application/json\r\n".
+               "api-key: ". $CFG_GLPI["dashboard_api_token"] ."\r\n"
+         ]
+      ];
+      $context = stream_context_create($opts);
+      $encoded_data = file_get_contents($CFG_GLPI['url_dashboard_api'] . $uri, false, $context);
+      return json_decode($encoded_data, true);
+   }
+
    private function getCategories() {
-      global $DB, $CFG_GLPI;
+      global $DB;
       $dashboard_assetTypes = iterator_to_array($DB->query("SELECT DISTINCT id, name FROM `Dashboard_AssetType`"));
       $assetTypes = [];
-      $comparisons = file_get_contents($CFG_GLPI["url_dashboard_api"] . "/dashboard/comparisons/Asset");
+      $comparisons = self::getDashboardData("/dashboard/comparisons/Asset");
       $forbidenComparisons = ['id', 'name', 'entity', 'assetType'];
       foreach ($dashboard_assetTypes as $value) {
          $assetTypes[$value['name']] = [
             'value' => $value['name'],
             'content' => []
          ];
-         foreach (json_decode($comparisons, true) as $comparison) {
+         foreach ($comparisons as $comparison) {
             if (in_array($comparison, $forbidenComparisons)) continue;
             $table = "Dashboard_".ucfirst($comparison);
             $assetTypeId = $value['id'];
@@ -214,7 +230,7 @@ class Dashboard extends \CommonDBTM {
          foreach ($row as $colIdx => $widget) {
             $content[$rowIdx][$colIdx] = array_merge(
                $content[$rowIdx][$colIdx],
-               ['value' => json_decode(file_get_contents($CFG_GLPI["url_dashboard_api"] . $widget['url']))],
+               ['value' => self::getDashboardData($CFG_GLPI["url_dashboard_api"] . $widget['url'])],
             );
             $content[$rowIdx][$colIdx]['options'] = $this::parseOptions(
                $content[$rowIdx][$colIdx]['type'] ,
@@ -230,21 +246,20 @@ class Dashboard extends \CommonDBTM {
       global $CFG_GLPI;
 
       Html::requireJs('charts');
-      $twig = Twig::load(GLPI_ROOT . "/templates", false);
       $twig_vars = [];
-
+      
       if ($edit) {
          $twig_vars['dataSet'] = [];
          $twig_vars['dataGroups'] = $this->getCategories();
       };
       $twig_vars['dashboardApiUrl'] = $CFG_GLPI["url_dashboard_api"] . "/dashboard";
-      $twig_vars['ajaxUrl'] = $CFG_GLPI['root_doc'] . "/ajax/dashboard.php";
+      $twig_vars['ajaxUrl'] = $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.ajax.php";
       $twig_vars['edit'] = $edit;
       $twig_vars['dashboardId'] = $ID;
       $twig_vars['widgetGrid'] = $this->getGridContent(json_decode($this->fields['content'] ?? '[]', true) ?? []);
       $twig_vars['base'] = $CFG_GLPI['root_doc'];
       try {
-         echo $twig->render('dashboard/dashboard.twig', $twig_vars);
+         renderTwigTemplate('dashboard/dashboard.twig', $twig_vars);
       } catch (Exception $e) {
          echo $e->getMessage();
       }

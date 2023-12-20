@@ -14,7 +14,7 @@ Config::detectRootDoc();
 require_once '../vendor/autoload.php';
 use Glpi\System\RequirementsManager;
 
-require_once GLPI_ROOT . "/ng/languages/language.class.php";
+require_once GLPI_ROOT . "/src/languages/language.class.php";
 
 //allow previous page action
 header("Cache-Control: private, max-age=10800, pre-check=10800");
@@ -262,6 +262,7 @@ switch ($step) {
 }
     
 try {
+    include_once(GLPI_ROOT . "/src/twig/twig.utils.php");
     renderTwigTemplate('install/index.twig',  [
         'step' => ['number' => $step, 'progress' => $step / count($steps), 'name' => $steps_name[$step]],
         'header_data' => $header_data] + $twig_vars);
