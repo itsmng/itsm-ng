@@ -1595,17 +1595,17 @@ SET foreign_key_checks = 1;
 -- CreateTable
 
 CREATE TABLE `Dashboard_Entity` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `parentId` INTEGER NULL,
 
-    UNIQUE INDEX `Dashboard_Entity_parentId_key`(`parentId`),
+    INDEX `Dashboard_Entity_parentId_key`(`parentId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Dashboard_Profile` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -1613,29 +1613,29 @@ CREATE TABLE `Dashboard_Profile` (
 
 -- CreateTable
 CREATE TABLE `Dashboard_Group` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `entityId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `Dashboard_Group_entityId_key`(`entityId`),
+    INDEX `Dashboard_Group_entityId_key`(`entityId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Dashboard_User` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
-    `groupId` INTEGER NOT NULL,
+    `groupId` INTEGER NULL,
     `profileId` INTEGER NULL,
 
-    UNIQUE INDEX `Dashboard_User_groupId_key`(`groupId`),
-    UNIQUE INDEX `Dashboard_User_profileId_key`(`profileId`),
+    INDEX `Dashboard_User_groupId_key`(`groupId`),
+    INDEX `Dashboard_User_profileId_key`(`profileId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Dashboard_Location` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -1643,7 +1643,7 @@ CREATE TABLE `Dashboard_Location` (
 
 -- CreateTable
 CREATE TABLE `Dashboard_AssetType` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `Dashboard_AssetType_name_key`(`name`),
@@ -1652,25 +1652,25 @@ CREATE TABLE `Dashboard_AssetType` (
 
 -- CreateTable
 CREATE TABLE `Dashboard_Type` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `assetTypeId` INTEGER NOT NULL,
 
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`, `assetTypeId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Dashboard_Model` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `assetTypeId` INTEGER NOT NULL,
 
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`, `assetTypeId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Dashboard_Asset` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `entityId` INTEGER NOT NULL,
     `assetTypeId` INTEGER NOT NULL,
@@ -1678,7 +1678,7 @@ CREATE TABLE `Dashboard_Asset` (
     `modelId` INTEGER NULL,
     `typeId` INTEGER NULL,
 
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`, `assetTypeId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
