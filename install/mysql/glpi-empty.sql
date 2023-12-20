@@ -1580,7 +1580,20 @@ CREATE TABLE `glpi_dashboards` (
 ############################################
 ### DASHBOARD TABLES                     ###
 ############################################
+SET foreign_key_checks = 0;
+DROP TABLE IF EXISTS `Dashboard_Entity`;
+DROP TABLE IF EXISTS `Dashboard_Profile`;
+DROP TABLE IF EXISTS `Dashboard_Group`;
+DROP TABLE IF EXISTS `Dashboard_User`;
+DROP TABLE IF EXISTS `Dashboard_Location`;
+DROP TABLE IF EXISTS `Dashboard_AssetType`;
+DROP TABLE IF EXISTS `Dashboard_Type`;
+DROP TABLE IF EXISTS `Dashboard_Model`;
+DROP TABLE IF EXISTS `Dashboard_Asset`;
+SET foreign_key_checks = 1;
+
 -- CreateTable
+
 CREATE TABLE `Dashboard_Entity` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,

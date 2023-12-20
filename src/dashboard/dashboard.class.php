@@ -161,11 +161,11 @@ class Dashboard extends \CommonDBTM {
       $context = stream_context_create($opts);
       try {
          if ($CFG_GLPI['url_dashboard_api'] == '') {
-            throw new Exception("Dashboard API URL is not set");
+            throw new Exception(__("Dashboard API URL is not set"));
          }
          $encoded_data = @file_get_contents($CFG_GLPI['url_dashboard_api'] . $uri, false, $context);
          if ($encoded_data === FALSE) {
-            throw new Exception("Could not fetch data from dashboard API");
+            throw new Exception(__("Could not fetch data from dashboard API"));
          }
          return json_decode($encoded_data, true);
       } catch (Exception $e) {
@@ -277,20 +277,24 @@ class Dashboard extends \CommonDBTM {
       Html::requireJs('charts');
       $twig_vars = [];
       
-      if ($edit) {
-         $twig_vars['dataSet'] = [];
-         $twig_vars['dataGroups'] = $this->getCategories();
-      };
-      $twig_vars['dashboardApiUrl'] = $CFG_GLPI["url_dashboard_api"] . "/dashboard";
-      $twig_vars['ajaxUrl'] = $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.ajax.php";
-      $twig_vars['edit'] = $edit;
-      $twig_vars['dashboardId'] = $ID ?? $this->fields['id'];
-      $twig_vars['widgetGrid'] = $this->getGridContent(json_decode($this->fields['content'] ?? '[]', true) ?? []);
-      $twig_vars['base'] = $CFG_GLPI['root_doc'];
       try {
+         if ($edit) {
+            $twig_vars['dataSet'] = [];
+            $twig_vars['dataGroups'] = $this->getCategories();
+         };
+         $twig_vars['dashboardApiUrl'] = $CFG_GLPI["url_dashboard_api"] . "/dashboard";
+         $twig_vars['ajaxUrl'] = $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.ajax.php";
+         $twig_vars['edit'] = $edit;
+         $twig_vars['dashboardId'] = $ID ?? $this->fields['id'];
+         $twig_vars['widgetGrid'] = $this->getGridContent(json_decode($this->fields['content'] ?? '[]', true) ?? []);
+         $twig_vars['base'] = $CFG_GLPI['root_doc'];
          renderTwigTemplate('dashboard/dashboard.twig', $twig_vars);
       } catch (Exception $e) {
-         echo $e->getMessage();
+         echo <<<HTML
+         <div class="center b">
+            {$e->getMessage()}
+         </div>
+         HTML;
       }
    }
 
