@@ -830,6 +830,7 @@ class CommonGLPI {
     * @return void
    **/
    function showTabsContent($options = []) {
+      global $CFG_GLPI;
 
       // for objects not in table like central
       if (isset($this->fields['id'])) {
@@ -904,6 +905,7 @@ class CommonGLPI {
          renderTwigTemplate('item.twig', [
             'tabs' => $tabs,
             'layoutFor' => $target,
+            'glpiroot' => $CFG_GLPI['root_doc'],
          ]);
       } catch (Exception $e) {
          echo $e->getMessage();
