@@ -43,11 +43,11 @@ if (isset($_POST['update']) && isset($_POST['id'])) {
     Html::back();
 } else if (isset($_POST['add'])) {
     $dashboard = new Dashboard();
-    if ($dashboard->add($_POST)) {
-        Session::addMessageAfterRedirect(__('Dashboard added', 'itsmng'), true);
+    try {
+        $dashboard->add($_POST);
         Html::back();
-    } else {
-        Session::addMessageAfterRedirect(__('Error adding dashboard', 'itsmng'), false);
+    } catch (Exception $e) {
+        Session::addMessageAfterRedirect(__('Could not create dashboard', 'itsmng'), false);
         Html::back();
     }
 } else {

@@ -42,7 +42,6 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
       $statSelection = stripslashes($_REQUEST['statSelection']);
       
       $format = $_REQUEST['format'] ?? 'count';
-      
       $data = Dashboard::getDashboardData(Dashboard::getWidgetUrl($format, $statType, $statSelection, $_REQUEST['options']));
 
       $options = Dashboard::parseOptions($format, $_REQUEST['options'] ?? [], $data);
@@ -82,9 +81,9 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
    $statSelection = stripslashes($_REQUEST['statSelection']);
    $options = $_REQUEST['options'] ?? [];
    if ($dashboard->addWidget($format, $coords, $title, $statType, $statSelection, $options)) {
-         echo json_encode(["status" => "success"]);
-      } else {
-         echo json_encode(["status" => "error"]);
+      echo json_encode(["status" => "success"]);
+   } else {
+      echo json_encode(["status" => "error"]);
    }
    exit;
 } else if (($_REQUEST['action'] == 'getColumns')  && isset($_REQUEST['statType'])) {

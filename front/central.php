@@ -86,6 +86,7 @@ if (isset($_GET["redirect"])) {
 }
 
 $central = new Central();
+$central->showMessages();
 $central->display();
 
 Html::footer();

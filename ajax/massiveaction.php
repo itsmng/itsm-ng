@@ -62,7 +62,6 @@ foreach ($input as $key => $val) {
 }
 
 $actions = $params['actions'];
-die(var_dump($ma->getInput()));
 
 if (count($actions)) {
    if (isset($params['hidden']) && is_array($params['hidden'])) {

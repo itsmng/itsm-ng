@@ -1569,12 +1569,12 @@ CREATE TABLE `glpi_crontasks` (
 
 DROP TABLE IF EXISTS `glpi_dashboards`;
 CREATE TABLE `glpi_dashboards` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL UNIQUE AUTO_INCREMENT,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` LONGTEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `profileId` int(11) NOT NULL DEFAULT 0,
   `userId` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`profileId`, `userId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ############################################

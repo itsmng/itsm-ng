@@ -159,8 +159,18 @@ class Dashboard extends \CommonDBTM {
          ]
       ];
       $context = stream_context_create($opts);
-      $encoded_data = file_get_contents($CFG_GLPI['url_dashboard_api'] . $uri, false, $context);
-      return json_decode($encoded_data, true);
+      try {
+         if ($CFG_GLPI['url_dashboard_api'] == '') {
+            throw new Exception("Dashboard API URL is not set");
+         }
+         $encoded_data = @file_get_contents($CFG_GLPI['url_dashboard_api'] . $uri, false, $context);
+         if ($encoded_data === FALSE) {
+            throw new Exception("Could not fetch data from dashboard API");
+         }
+         return json_decode($encoded_data, true);
+      } catch (Exception $e) {
+         throw new Exception($e->getMessage());
+      }
    }
 
    private function getCategories() {
@@ -214,6 +224,25 @@ class Dashboard extends \CommonDBTM {
       ];
    }
 
+   function getForUser() {
+      global $DB;
+
+      $profileId = $_SESSION['glpiactiveprofile']['id'];
+      $userId = Session::getLoginUserID();
+
+      $dashboardId = iterator_to_array(
+         $DB->query("SELECT id FROM `".self::getTable()."` WHERE profileId = $profileId AND userId = $userId")
+      );
+      if (!$dashboardId) {
+         $dashboardId = iterator_to_array(
+            $DB->query("SELECT id FROM `".self::getTable()."` WHERE profileId = $profileId AND userId = 0")
+         );
+      }
+      if (!$dashboardId)
+         return false;
+      $this->getFromDB($dashboardId[0]['id']);
+      return true;
+   }
 
    static function parseOptions($format, $options, $data) {
       if (isset($options['total']) && $format == 'pie') {
@@ -230,7 +259,7 @@ class Dashboard extends \CommonDBTM {
          foreach ($row as $colIdx => $widget) {
             $content[$rowIdx][$colIdx] = array_merge(
                $content[$rowIdx][$colIdx],
-               ['value' => self::getDashboardData($CFG_GLPI["url_dashboard_api"] . $widget['url'])],
+               ['value' => self::getDashboardData($widget['url'])],
             );
             $content[$rowIdx][$colIdx]['options'] = $this::parseOptions(
                $content[$rowIdx][$colIdx]['type'] ,
@@ -242,7 +271,7 @@ class Dashboard extends \CommonDBTM {
       return $content;
    }
 
-   function show($ID, $edit = false) {
+   function show($ID = null, $edit = false) {
       global $CFG_GLPI;
 
       Html::requireJs('charts');
@@ -255,7 +284,7 @@ class Dashboard extends \CommonDBTM {
       $twig_vars['dashboardApiUrl'] = $CFG_GLPI["url_dashboard_api"] . "/dashboard";
       $twig_vars['ajaxUrl'] = $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.ajax.php";
       $twig_vars['edit'] = $edit;
-      $twig_vars['dashboardId'] = $ID;
+      $twig_vars['dashboardId'] = $ID ?? $this->fields['id'];
       $twig_vars['widgetGrid'] = $this->getGridContent(json_decode($this->fields['content'] ?? '[]', true) ?? []);
       $twig_vars['base'] = $CFG_GLPI['root_doc'];
       try {

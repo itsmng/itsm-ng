@@ -830,6 +830,11 @@ class Config extends CommonDBTM {
                      'type' => 'checkbox',
                      'value' => $CFG_GLPI["enable_api_login_external_token"]
                   ],
+                  [
+                     'name' => 'update',
+                     'type' => 'hidden',
+                     'value' => 1
+                  ]
                ]
             ],
          ]
