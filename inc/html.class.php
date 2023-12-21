@@ -1360,7 +1360,6 @@ class Html
 
          if (in_array('charts', $jslibs)) {
             echo Html::css('node_modules/chartist/dist/index.css');
-            echo Html::css('css/chartists-glpi.css');
             Html::requireJs('charts');
          }
 
