@@ -83,5 +83,6 @@ if ($_POST['softwares_id'] > 0) {
 
    }
 
-   Dropdown::showFromArray($_POST['myname'], $values, ['display_emptychoice' => true]);
+   echo json_encode($values);
+   // Dropdown::showFromArray($_POST['myname'], $values, ['display_emptychoice' => true]);
 }

@@ -10,7 +10,7 @@
     {% endif %}
     <div class="row row-cols-{{col}}">
     {% for title, input in bloc.inputs %}
-        {% if input.type and input.type != 'hidden' %}
+        {% if input.type != 'hidden' %}
         <div class="
             col{{ input.col ? '-' ~ input.col : '-12' }}
             col-md{{ input.col_md ? '-' ~ input.col_md : '-6' }}
@@ -34,7 +34,7 @@
                 {% for action in input.actions %}
                     <button type="button" class="btn border" onClick="{{action.onClick}}"><a class="{{action.icon}}"></a></button>
                 {% endfor %}
-        {% if input.type and input.type != 'hidden' %}
+        {% if input.type != 'hidden' %}
             </div>
         </div>
         {% endif %}
@@ -51,7 +51,7 @@
 {% endif %}
 {% for button in form.buttons %}
 <button {% for attr, val in button %} {{attr}}='{{val}}' {% endfor %}>
-    {% if button.icon %}<i class='{{button.icon}} mx-2'></i>{% endif %}{{button.value}}
+    {% if button.icon %}<i class='{{button.icon}} mx-2'></i>{% endif %}{{button.value|raw}}
 </button>
 {% endfor %}
 </div>

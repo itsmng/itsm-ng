@@ -32,3 +32,5 @@
     {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
     {% endif %}
 {% endmacro %}
+
+{{_self.input(_context)}}
