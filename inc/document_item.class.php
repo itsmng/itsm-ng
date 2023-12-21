@@ -643,36 +643,94 @@ class Document_Item extends CommonDBRelation{
             $used[$item->getID()] = $item->getID();
          }
 
-         echo "<div class='firstbloc'>";
-         echo "<form name='documentitem_form".$params['rand']."' id='documentitem_form".
-               $params['rand']."' method='post' action='".Toolbox::getItemTypeFormURL('Document').
-               "' enctype=\"multipart/form-data\">";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th colspan='5'>".__('Add a document')."</th></tr>";
-         echo "<tr class='tab_bg_1'>";
-
-         echo "<td class='center'>";
-         echo __('Heading');
-         echo "</td><td width='20%'>";
-         DocumentCategory::dropdown(['entity' => $entities]);
-         echo "</td>";
-         echo "<td class='right'>";
-         echo "<input type='hidden' name='entities_id' value='$entity'>";
-         echo "<input type='hidden' name='is_recursive' value='".$item->isRecursive()."'>";
-         echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
-         echo "<input type='hidden' name='items_id' value='".$item->getID()."'>";
-         if ($item->getType() == 'Ticket') {
-            echo "<input type='hidden' name='tickets_id' value='".$item->getID()."'>";
-         }
-         Html::file(['multiple' => true]);
-         echo "</td><td class='left'>(".Document::getMaxUploadSize().")&nbsp;</td>";
-         echo "<td class='center' width='20%'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add a new file')."\"
-                class='submit'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
+         $form = [
+            'method' => 'post',
+            'action' => Toolbox::getItemTypeFormURL('Document'),
+            'buttons' => [
+               'submit' => [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add a new file'),
+                  'class' => 'btn btn-primary mb-3'
+               ]
+            ],
+            'content' => [
+               __('Add a document') => [
+                  'visible' => true,
+                  'inputs' => [
+                     __('Heading') => [
+                        'type' => 'select',
+                        'name' => 'documentcategories_id',
+                        'values' => getOptionForItems('DocumentCategory'),
+                        'actions' => getItemActionButtons(['info', 'add'], 'DocumentCategory'),
+                        'col_lg' => 6,
+                     ],
+                     __('File') => [
+                        'type' => 'file',
+                        'name' => 'filenames',
+                        'id' => 'fileSelectorForDocument',
+                        'multiple' => 'multiple',
+                        'col_lg' => 6,
+                        'hooks' => [
+                           'change' => <<<JS
+                              let formData = new FormData();
+                              formData.append('name', 'filename');
+                              formData.append('showFileSize', $('#fileSelectorForDocument').prop('files').length);
+                              for (let i = 0; i < $('#fileSelectorForDocument').prop('files').length; i++) {
+                                 formData.append(i, $('#fileSelectorForDocument').prop('files')[i]);
+                              }
+                              $.ajax({
+                              url: '{$CFG_GLPI['root_doc']}' + '/ajax/fileupload.php',
+                                 type: 'POST',
+                                 data: formData,
+                                 processData: false,
+                                 contentType: false,
+                                 success: function(data) {
+                                    // add an hidden input containing the data for all files
+                                    let files = JSON.parse(data);
+                                    $('#hiddenInputForFiles').val(data);
+                                 }
+                              });
+                           JS,
+                        ]
+                        //onchange ajax call to 
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'entities_id',
+                        'value' => $entity
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'is_recursive',
+                        'value' => $item->isRecursive()
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'itemtype',
+                        'value' => $item->getType()
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'items_id',
+                        'value' => $item->getID()
+                     ],
+                     $item->getType() == 'Ticket' ? [
+                        'type' => 'hidden',
+                        'name' => 'tickets_id',
+                        'value' => $item->getID()
+                     ] : [],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'files',
+                        'id' => "hiddenInputForFiles",
+                        'value' => '[]'
+                     ],
+                  ]
+               ] 
+            ]
+         ];
+         renderTwigForm($form);
 
          if (Document::canView()
              && ($nb > count($used))) {
@@ -699,8 +757,6 @@ class Document_Item extends CommonDBRelation{
             echo "</table>";
             Html::closeForm();
          }
-
-         echo "</div>";
       }
    }
 

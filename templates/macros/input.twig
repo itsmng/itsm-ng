@@ -16,7 +16,6 @@
 {% endif %}
 {% endmacro %}
 
-
 {% macro input(attributes) %}
     {% if attributes.type == 'checkbox' %}
 <div class="form-switch">
@@ -29,7 +28,7 @@
     {% elseif attributes.type == 'twig' %}
     {% include attributes.template with attributes only %}
     {% else %}
-<input class='form-control' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+<input class='form-control{% if attributes.type == 'file' %} h-100{% endif %}'
+    {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
     {% endif %}
 {% endmacro %}
-

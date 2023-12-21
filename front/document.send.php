@@ -43,12 +43,12 @@ if (isset($_GET['docid'])) { // docid for document
       Html::displayErrorAndDie(__('Unknown file'), true);
    }
 
-   if (!file_exists(GLPI_DOC_DIR."/".$doc->fields['filepath'])) {
+   if (!file_exists(GLPI_ROOT . $doc->fields['filepath'])) {
       Html::displayErrorAndDie(__('File not found'), true); // Not found
 
    } else if ($doc->canViewFile($_GET)) {
       if ($doc->fields['sha1sum']
-          && $doc->fields['sha1sum'] != sha1_file(GLPI_DOC_DIR."/".$doc->fields['filepath'])) {
+          && $doc->fields['sha1sum'] != sha1_file($doc->fields['filepath'])) {
 
          Html::displayErrorAndDie(__('File is altered (bad checksum)'), true); // Doc alterated
       } else {

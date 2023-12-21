@@ -1,6 +1,6 @@
 {% from 'macros/input.twig' import input %}
 
-{% set options = ['actions', 'after', 'before', 'hooks', 'init', 'init'] %}
+{% set options = ['actions', 'after', 'before', 'hooks', 'init', 'init', 'col', 'col_md', 'col_lg'] %}
 
 <form name="form" action="{{form.action}}" enctype="multipart/form-data" method={{form.method|default('post')}} class="container">
 {% for key, bloc in form.content  %}

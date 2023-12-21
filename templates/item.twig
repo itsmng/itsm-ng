@@ -107,7 +107,9 @@ $(document).ready((e) => {
 	if ({{tabs|length == 1 ? 1 : 0}}) {
 		grid.setStatic(true)
 	}
-	grid.load();
+	setTimeout(() => {
+		grid.load();
+	}, 300);
 });
 
 $( '.dropdown-menu a' ).on( 'click', function( event ) {
