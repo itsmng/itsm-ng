@@ -24,7 +24,7 @@
                 {% endif %}
                 {% set attributes = input | filter((v, k) => k not in options) %}
                 {% if input.type %}
-                {{input(attributes)}}
+                {{input(attributes, root_doc)}}
                 {% else %}
                 {{ input.content|raw }}
                 {% endif %}

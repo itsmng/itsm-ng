@@ -47,17 +47,8 @@ if (isset($_POST["add"])) {
    if (isset($_POST['files']) && isset($_POST['entities_id']) &&
       isset($_POST['is_recursive']) && isset($_POST['documentcategories_id'])
       ) {
+         $baseDoc = ItsmngUploadHandler::generateBaseDocumentFromPost($_POST);
          $files = json_decode(stripslashes($_POST['files']), true);
-         $baseDoc = [
-            'entities_id'           => $_POST['entities_id'],
-            'is_recursive'          => $_POST['is_recursive'],
-            'documentcategories_id' => $_POST['documentcategories_id'],
-            'name'                  => $_POST['name'] ?? '',
-            'comment'               => $_POST['comment'] ?? '',
-            'users_id'              => Session::getLoginUserID(),
-            'is_deleted'            => $_POST['is_deleted'] ?? 0,
-            'tickets_id'            => $_POST['tickets_id'] ?? 0,
-         ];
          foreach ($files as $file) {
             $newDoc = $baseDoc;
             $newDoc['filename'] = $file['name'];
@@ -119,6 +110,15 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["update"])) {
    $doc->check($_POST["id"], UPDATE);
 
+   if ((isset($_POST['files']) && $_POST['files'] != '[]')) {
+      $file = json_decode(stripslashes($_POST['files']), true)[0];
+      $_POST['filename'] = $file['name'];
+      $_POST['filepath'] = ItsmngUploadHandler::uploadFiles(
+         $file['path'],
+         $file['format'],
+         $file['name']
+      );
+   }
    if ($doc->update($_POST)) {
       Event::log($_POST["id"], "documents", 4, "document",
                  //TRANS: %s is the user login

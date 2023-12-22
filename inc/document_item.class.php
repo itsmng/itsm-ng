@@ -671,29 +671,6 @@ class Document_Item extends CommonDBRelation{
                         'id' => 'fileSelectorForDocument',
                         'multiple' => 'multiple',
                         'col_lg' => 6,
-                        'hooks' => [
-                           'change' => <<<JS
-                              let formData = new FormData();
-                              formData.append('name', 'filename');
-                              formData.append('showFileSize', $('#fileSelectorForDocument').prop('files').length);
-                              for (let i = 0; i < $('#fileSelectorForDocument').prop('files').length; i++) {
-                                 formData.append(i, $('#fileSelectorForDocument').prop('files')[i]);
-                              }
-                              $.ajax({
-                              url: '{$CFG_GLPI['root_doc']}' + '/ajax/fileupload.php',
-                                 type: 'POST',
-                                 data: formData,
-                                 processData: false,
-                                 contentType: false,
-                                 success: function(data) {
-                                    // add an hidden input containing the data for all files
-                                    let files = JSON.parse(data);
-                                    $('#hiddenInputForFiles').val(data);
-                                 }
-                              });
-                           JS,
-                        ]
-                        //onchange ajax call to 
                      ],
                      [
                         'type' => 'hidden',

@@ -16,7 +16,35 @@
 {% endif %}
 {% endmacro %}
 
-{% macro input(attributes) %}
+{% macro file(attributes, root_doc) %}
+<input class='form-control h-100' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+<script>
+$('#{{attributes.id}}').on('change', function() {
+    let formData = new FormData();
+    formData.append('name', 'filename');
+    formData.append('showFileSize', $('#fileSelectorForDocument').prop('files').length);
+    for (let i = 0; i < $('#fileSelectorForDocument').prop('files').length; i++) {
+        formData.append(i, $('#fileSelectorForDocument').prop('files')[i]);
+    }
+    $.ajax({
+    url: '{{root_doc}}' + '/ajax/fileupload.php',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+        // add an hidden input containing the data for all files
+            if ($('#hiddenInputForFiles').length == 0) {
+                $('#{{attributes.id}}').after('<input type="hidden" id="hiddenInputForFiles" name="files" value="">');
+            }
+            $('#hiddenInputForFiles').val(data);
+        }
+    });    
+})
+</script>
+{% endmacro %}
+
+{% macro input(attributes, root_doc = '') %}
     {% if attributes.type == 'checkbox' %}
 <div class="form-switch">
     <input class='form-check-input' role="switch"  {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
@@ -26,10 +54,11 @@
     {% elseif attributes.type == 'select' %}
 {{_self.select(attributes)}}
     {% elseif attributes.type == 'twig' %}
-    {% include attributes.template with attributes only %}
+{% include attributes.template with attributes only %}
+    {% elseif attributes.type == 'file' %}
+{{_self.file(attributes, root_doc)}}
     {% else %}
-<input class='form-control{% if attributes.type == 'file' %} h-100{% endif %}'
-    {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+<input class='form-control' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
     {% endif %}
 {% endmacro %}
 

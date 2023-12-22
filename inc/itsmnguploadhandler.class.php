@@ -50,6 +50,20 @@ class ItsmngUploadHandler {
       return $upload_path;
    }
 
+   static function generateBaseDocumentFromPost($POST) {
+      $baseDoc = [
+         'entities_id'           => $POST['entities_id'],
+         'is_recursive'          => $POST['is_recursive'],
+         'documentcategories_id' => $POST['documentcategories_id'],
+         'name'                  => $POST['name'] ?? '',
+         'comment'               => $POST['comment'] ?? '',
+         'users_id'              => Session::getLoginUserID(),
+         'is_deleted'            => $POST['is_deleted'] ?? 0,
+         'tickets_id'            => $POST['tickets_id'] ?? 0,
+      ];
+      return $baseDoc;
+   }
+
    static function storeTmpFiles($files) {
       $path = GLPI_ROOT . "/files/_tmp/";
       if (!file_exists($path)) {

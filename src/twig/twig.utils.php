@@ -79,13 +79,15 @@ function renderTwigTemplate($path, $vars) {
  */
 function renderTwigForm($form, $additionnalHtml = '', $colAmount = 2)
 {
-    require_once GLPI_ROOT . "/src/twig/twig.class.php";
+    global $CFG_GLPI;
+
     $twig = Twig::load(GLPI_ROOT . "/templates", false);
     try {
         echo $twig->render('form.twig', [
             'form' => $form,
             'col' => $colAmount,
             'additionnalHtml' => $additionnalHtml,
+            'root_doc' => $CFG_GLPI['root_doc'],
         ]);
     } catch (Exception $e) {
         echo $e->getMessage();
