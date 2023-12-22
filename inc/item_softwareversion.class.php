@@ -1147,20 +1147,82 @@ class Item_SoftwareVersion extends CommonDBRelation {
       }
       if ((empty($withtemplate) || ($withtemplate != 2))
           && $canedit) {
-         echo "<form method='post' action='".Item_SoftwareLicense::getFormURL()."'>";
-         echo "<div class='spaced'><table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_1'><th colspan='2'>".SoftwareLicense::getTypeName(Session::getPluralNumber())."</th></tr>";
-         echo "<tr class='tab_bg_1'>";
-         echo "<td class='center'>";
-         echo SoftwareLicense::getTypeName(Session::getPluralNumber())."&nbsp;&nbsp;";
-         echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-         echo "<input type='hidden' name='items_id' value='$items_id'>";
-         Software::dropdownLicenseToInstall("softwarelicenses_id", $entities_id);
-         echo "</td><td width='20%'>";
-         echo "<input type='submit' name='add' value=\"" ._sx('button', 'Add')."\" class='submit'>";
-         echo "</td></tr>\n";
-         echo "</table></div>\n";
-         Html::closeForm();
+         $form = [
+            'action' => Item_SoftwareVersion::getFormURL(),
+            'buttons' => [
+               'Install' => [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _x('button', 'Install'),
+                  'class' => 'btn btn-primary mb-3'
+               ]
+            ],
+            'content' => [
+               SoftwareLicense::getTypeName(Session::getPluralNumber()) => [
+                  'visible' => 'true',
+                  'inputs' => [
+                     Software::getTypeName(Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'id' => 'softwareDropdownForLicence',
+                        'name' => 'softwares_id',
+                        'values' => getOptionForItems('Software', ['entities_id' => $entities_id]),
+                        'col_lg' => 6,
+                        'hooks' => [
+                           'change' => <<<JS
+                              var softwareversions_id = $(this).val();
+                              var url = '{$CFG_GLPI["root_doc"]}/ajax/dropdownSoftwareLicense.php';
+
+                              if (softwareversions_id == 0) {
+                                 $('#licenceDropdown').empty();
+                                 $('#licenceDropdown').prop('disabled', true);
+                                 return;
+                              }
+                              $.ajax({
+                                 url: url,
+                                 type: 'POST',
+                                 data: {
+                                    softwares_id: softwareversions_id,
+                                    myname: 'softwares_id',
+                                    entity_restrict: 0,
+                                 },
+                                 dataType: 'json',
+                                 success: function(data) {
+
+                                    $('#licenceDropdown').prop('disabled', false);
+                                    $('#licenceDropdown').empty();
+                                    for (const [key, value] of Object.entries(data)) {
+                                       $('#licenceDropdown').append(
+                                          $('<option></option>').val(key).html(value)
+                                       )
+                                    }
+                                 },
+                              });
+                           JS,
+                        ]
+                     ],
+                     SoftwareLicense::getTypeName(Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'id' => 'licenceDropdown',
+                        'name' => 'softwarelicenses_id',
+                        'values' => getOptionForItems('SoftwareLicense', ['entities_id' => $entities_id]),
+                        'disabled' => true,
+                        'col_lg' => 6,
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'itemtype',
+                        'value' => $itemtype
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'items_id',
+                        'value' => $items_id
+                     ],
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
       echo "<div class='spaced'>";
       // Affected licenses NOT installed
