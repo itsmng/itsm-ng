@@ -1071,6 +1071,16 @@ class Infocom extends CommonDBChild {
                         ] : []
                   ],
                   'content' => [
+                     [
+                        'visible' => false,
+                        'inputs' => [
+                           'id' => [
+                              'type' => 'hidden',
+                              'name' => 'id',
+                              'value' => $ic->fields['id']
+                           ],
+                        ]
+                     ],
                      __('Asset lifecycle') => [
                         'visible' => true,
                         'inputs' => [
@@ -1257,13 +1267,13 @@ class Infocom extends CommonDBChild {
                      ]
                   ]
                ];
-               renderTwigForm($form);
-            }
 
-            //We use a static method to call the hook
-            //It's then easier for plugins to detect if the hook is available or not
-            //The just have to look for the addPluginInfos method
-            self::addPluginInfos($item);
+               ob_start();
+               self::addPluginInfos($item);
+               $hook = ob_get_clean();
+               renderTwigForm($form, $hook);
+
+            }
          }
       }
    }
