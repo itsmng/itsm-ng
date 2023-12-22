@@ -139,41 +139,59 @@ class KnowbaseItem_Item extends CommonDBRelation {
       }
 
       if ($canedit && $ok_state) {
-         echo '<form method="post" action="' . Toolbox::getItemTypeFormURL(__CLASS__) . '">';
-         echo "<div class='center'>";
-         echo "<table class=\"tab_cadre_fixe\">";
-         echo "<tr><th colspan=\"2\">";
-         if ($item_type == KnowbaseItem::getType()) {
-            echo  __('Add a linked item');
-         } else {
-            echo __('Link a knowledge base entry');
-         }
-         echo "</th><tr>";
-         echo "<tr class='tab_bg_2'><td>";
-         if ($item_type == KnowbaseItem::getType()) {
-            //TODO: pass used array to restrict visible items in list
-            $rand = self::dropdownAllTypes($item, 'items_id');
-         } else {
-            $visibility = KnowbaseItem::getVisibilityCriteria();
-            $condition = (isset($visibility['WHERE']) && count($visibility['WHERE'])) ? $visibility['WHERE'] : [];
-            $rand = KnowbaseItem::dropdown([
-               'entity'    => $item->getEntityID(),
-               'used'      => self::getItems($item, 0, 0, true),
-               'condition' => $condition
-            ]);
-         }
-         echo "</td><td>";
-         echo "<input type=\"submit\" name=\"add\" value=\""._sx('button', 'Add')."\" class=\"submit\">";
-         echo "</td></tr>";
-         echo "</table>";
-         if ($item_type == KnowbaseItem::getType()) {
-            echo '<input type="hidden" name="knowbaseitems_id" value="' . $item->getID() . '">';
-         } else {
-            echo "<input type=\"hidden\" name=\"items_id\" value=\"" . $item->getID() . "\">";
-            echo "<input type=\"hidden\" name=\"itemtype\" value=\"" . $item::getType() . "\">";
-         }
-         echo "</div>";
-         Html::closeForm();
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               [
+                  'visible' => false,
+                  'inputs' => [
+                     $item_type == KnowbaseItem::getType() ? [
+                        'type' => 'hidden',
+                        'name' => 'knowbaseitems_id',
+                        'value' => $item->getID(),
+                     ] :
+                     [
+                        'type' => 'hidden',
+                        'name' => 'itemtype',
+                        'value' => $item->getType(),
+                     ],
+                     $item_type != KnowbaseItem::getType() ? [
+                        'type' => 'hidden',
+                        'name' => 'items_id',
+                        'value' => $item->getID(),
+                     ] : [
+                     ]
+
+                  ]
+               ],
+               ($item_type == KnowbaseItem::getType()) ? __('Add a linked item') : __('Link a knowledge base entry') => [
+                  'visible' => true,
+                  'inputs' => [
+                     _('Link') => ($item_type == KnowbaseItem::getType()) ? [
+                        'content' => '<h1>TODO</h1>'
+                     ] : [
+                        'type' => 'select',
+                        'name' => 'knowbaseitems_id',
+                        'values' => getOptionForItems('KnowbaseItem',
+                           (isset(KnowbaseItem::getVisibilityCriteria()['WHERE'])
+                              && count(KnowbaseItem::getVisibilityCriteria()['WHERE'])) 
+                                 ? KnowbaseItem::getVisibilityCriteria()['WHERE'] : [],
+                        ),
+                        'value' => '',
+                     ]
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
       // No Events in database
