@@ -31,6 +31,7 @@
  */
 
 use Glpi\Toolbox\URL;
+use SimplePie\SimplePie;
 
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
@@ -820,7 +821,8 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
    function showDiscoveredFeeds() {
 
       $feed = new SimplePie();
-      $feed->set_cache_location(GLPI_RSS_DIR);
+      //$feed->set_cache_location(GLPI_RSS_DIR);
+      $feed->set_cache(new Psr\SimpleCache\CacheInterface);
       $feed->enable_cache(false);
       $feed->set_feed_url($this->fields['url']);
       $feed->init();
@@ -979,7 +981,7 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
       echo "</div></th></tr>\n";
 
       if ($nb) {
-         usort($items, ['SimplePie', 'sort_items']);
+         usort($items, ['SimplePie\SimplePie', 'sort_items']);
          foreach ($items as $item) {
             echo "<tr class='tab_bg_1'><td>";
             echo Html::convDateTime($item->get_date('Y-m-d H:i:s'));
