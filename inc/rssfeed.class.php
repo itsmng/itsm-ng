@@ -36,26 +36,6 @@ use SimplePie\SimplePie;
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
-// $feed = new SimplePie();
-// $feed->set_cache_location('../files/_rss');
-// $feed->set_cache_duration(3600);
-// $feed->set_feed_url('http://linuxfr.org/news.atom');
-// $feed->force_feed(true);
-// // Initialize the whole SimplePie object.  Read the feed, process it, parse it, cache it, and
-// // all that other good stuff.  The feed's information will not be available to SimplePie before
-// // this is called.
-// $success = $feed->init();
-//
-// // We'll make sure that the right content type and character encoding gets set automatically.
-// // This function will grab the proper character encoding, as well as set the content type to text/html.
-// $feed->handle_content_type();
-// if ($feed->error())
-// {
-//    echo "ERROR";
-// } else {
-//    echo $feed->get_title();
-//    echo $feed->get_link();
-// }
 
 /**
  * RSSFeed Class
