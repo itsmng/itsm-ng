@@ -81,6 +81,18 @@ function update151to200() : bool {
         $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
     }
 
+    if(!isset($current_config['dashboard_api_token'])) {
+        $migration->addConfig([
+            'dashboard_api_token' => Toolbox::getRandomString(32)
+        ]);
+    }
+
+    if (!isset($current_config['url_dashboard_api'])) {
+        $migration->addConfig([
+            'url_dashboard_api' => 'localhost:3000'
+        ]);
+    }
+
     if(!$DB->tableExists('glpi_dashboards')) {
         $query = "
         CREATE TABLE `glpi_dashboards` (
