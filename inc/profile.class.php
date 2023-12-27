@@ -702,9 +702,6 @@ class Profile extends CommonDBTM
     **/
    function showForm($ID, $options = [])
    {
-
-      dump($this->fields);
-
       $form = [
 			'action' => Toolbox::getItemTypeFormURL('profile'),
 			'buttons' => [],
