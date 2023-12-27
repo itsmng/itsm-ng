@@ -715,33 +715,55 @@ class ITILFollowup  extends CommonDBChild {
       if (($itilobject->fields["status"] == CommonITILObject::SOLVED)
           && $itilobject->canApprove()
           && $itilobject->isAllowedStatus($itilobject->fields['status'], CommonITILObject::CLOSED)) {
-         echo "<form name='form' method='post' action='".$this->getFormURL()."'>";
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr><th colspan='4'>". __('Approval of the solution')."</th></tr>";
 
-         echo "<tr class='tab_bg_1'>";
-         echo "<td colspan='2'>".__('Comments')."<br>(".__('Optional when approved').")</td>";
-         echo "<td class='center middle' colspan='2'>";
-         echo "<textarea name='content' cols='70' rows='6'></textarea>";
-         echo "<input type='hidden' name='itemtype' value='".$itilobject->getType()."'>";
-         echo "<input type='hidden' name='items_id' value='".$itilobject->getField('id')."'>";
-         echo "<input type='hidden' name='requesttypes_id' value='".
-                RequestType::getDefault('followup')."'>";
-         echo "</td></tr>\n";
+         $form = [
+            'action' => $this->getFormURL(),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'add_reopen',
+                  'value' => __('Refuse the solution'),
+                  'class' => 'submit-button btn btn-warning',
+               ],
+               [
+                  'type' => 'submit',
+                  'name' => 'add_close',
+                  'value' => __('Approve the solution'),
+                  'class' => 'submit-button btn btn-warning',
+               ],
+            ],
+            'content' => [
+               __('Approbation de la solution') => [
+                  'visible' => true,
+                  'inputs' => [
+                     __('itemtype') => [
+                        'name' => 'itemtype',
+                        'type' => 'hidden',
+                        'value' => $itilobject->getType(),
+                     ],
+                     __('items_id') => [
+                        'name' => 'items_id',
+                        'type' => 'hidden',
+                        'value' => $itilobject->getField('id'),
+                     ],
+                     __('requesttypes_id') => [
+                        'name' => 'requesttypes_id',
+                        'type' => 'hidden',
+                        'value' => RequestType::getDefault('followup'),
+                     ],
+                     __('Comments') => [
+                        'name' => 'content',
+                        'type' => 'textarea',
+                     ],
+                  ]
+               ]
+            ]
+         ];
 
-         echo "<tr class='tab_bg_2'>";
-         echo "<td class='tab_bg_2 center' colspan='2' width='200'>\n";
-         echo "<input type='submit' name='add_reopen' value=\"".__('Refuse the solution')."\"
-                class='submit'>";
-         echo "</td>\n";
-         echo "<td class='tab_bg_2 center' colspan='2'>\n";
-         echo "<input type='submit' name='add_close' value=\"".__('Approve the solution')."\"
-                class='submit'>";
-         echo "</td></tr>\n";
-         echo "</table>";
-         Html::closeForm();
       }
 
+      require_once GLPI_ROOT . '/ng/form.utils.php';
+      renderTwigForm($form);
       return true;
    }
 

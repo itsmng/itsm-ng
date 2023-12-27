@@ -39,190 +39,196 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class Line extends CommonDBTM {
-   // From CommonDBTM
-   public $dohistory                   = true;
+	// From CommonDBTM
+	public $dohistory                   = true;
 
-   static $rightname                   = 'line';
-   protected $usenotepad               = true;
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Line', 'Lines', $nb);
-   }
+	static $rightname                   = 'line';
+	protected $usenotepad               = true;
 
 
-   /**
-    * @see CommonDBTM::useDeletedToLockIfDynamic()
+	static function getTypeName($nb = 0) {
+    	return _n('Line', 'Lines', $nb);
+   	}
+
+
+	/**
+	* @see CommonDBTM::useDeletedToLockIfDynamic()
     *
     * @since 0.84
     **/
-   function useDeletedToLockIfDynamic() {
-      return false;
-   }
+	function useDeletedToLockIfDynamic() {
+    	return false;
+	}
+
+	function defineTabs($options = []) {
+
+    	$ong = [];
+    	$this->addDefaultFormTab($ong);
+		$this->addImpactTab($ong, $options);
+		$this->addStandardTab('Infocom', $ong, $options);
+		$this->addStandardTab('Contract_Item', $ong, $options);
+		$this->addStandardTab('Document_Item', $ong, $options);
+		$this->addStandardTab('Notepad', $ong, $options);
+		$this->addStandardTab('Log', $ong, $options);
+
+		return $ong;
+	}
+
+	/**
+	* Print the contact form
+	*
+	* @param $ID        integer ID of the item
+	* @param $options   array of possible options:
+	*     - target for the Form
+	*     - withtemplate : template or basic item
+	*
+	* @return void
+	**/
+	function showForm($ID, $options = []) {
+		require_once GLPI_ROOT . '/ng/twig.class.php';
+		require_once GLPI_ROOT . '/ng/form.utils.php';
+
+		$form = [
+			'action' => Toolbox::getItemTypeFormURL('line'),
+			'buttons' => [
+				[
+					'type' => 'submit',
+					'name' => 'add',
+					'value' => __('Add'),
+					'class' => 'submit-button btn btn-warning',
+				]
+			],
+            'content' => [
+				__('Line') => [
+					'visible' => true,
+					'inputs' => [
+						__('Name') => [
+							'name' => 'name',
+							'type' => 'text',
+							'value' => $this->fields['name'] ?? '',
+						],
+						__('Location') => [
+							'name' => 'locations_id',
+							'type' => 'select',
+							'values' => getOptionForItems("Location"),
+							'value' => $this->fields['locations_id'] ?? '',
+						],
+						__('Caller number') => [
+							'name' => 'caller_num',
+							'type' => 'text',
+							'value' => $this->fields['caller_num'] ?? '',
+						],
+						__('User') => [
+							'name' => 'users_id',
+							'type' => 'select',
+							'values' => getOptionForItems("User"),
+							'value' => $this->fields['users_id'] ?? ''
+						],
+						__('Group') => [
+							'name' => 'groups_id',
+							'type' => 'select',
+							'values' => getOptionForItems("Group"),
+							'value' => $this->fields['groups_id'] ?? ''
+						],
+						__('Line operator') => [
+							'name' => 'lineoperators_id',
+							'type' => 'select',
+							'values' => getOptionForItems("LineOperators"),
+							'value' => $this->fields['lineoperators_id'] ?? ''
+						],
+						__('Status') => [
+							'name' => 'states_id',
+							'type' => 'select',
+							'values' => getOptionForItems('State', ['is_visible_line' => 1]),
+							'value' => $this->fields['states_id'] ?? ''
+						],
+						__('Line type') => [
+							'name' => 'linetypes_id',
+							'type' => 'select',
+							'values' => getOptionForItems("LineTypes"),
+							'value' => $this->fields['linetypes_id'] ?? ''
+						],
+						__('Caller name') => [
+							'name' => 'caller_name',
+							'type' => 'text',
+							'value' => $this->fields['caller_name'] ?? ''
+						],
+						__('Comment') => [
+							'name' => 'comment',
+							'type' => 'textarea',
+							'value' => $this->fields['comment'] ?? ''
+						],
+                	]
+            	]
+        	]
+		];
+
+		if ($_GET['id'] != '') {
+			$delete['Button'] = [
+				'type' => 'submit',
+				'name' => 'delete',
+				'value' => __('Put in trashbin'),
+				'class' => 'submit-button btn btn-warning'
+			];
+
+			array_push($form['buttons'], $delete['Button']);
+		}	
+
+    	renderTwigForm($form);
+
+    	return true;
+    }
 
 
-   function defineTabs($options = []) {
+	function rawSearchOptions() {
+    	$tab = parent::rawSearchOptions();
 
-      $ong = [];
-      $this->addDefaultFormTab($ong);
-      $this->addImpactTab($ong, $options);
-      $this->addStandardTab('Infocom', $ong, $options);
-      $this->addStandardTab('Contract_Item', $ong, $options);
-      $this->addStandardTab('Document_Item', $ong, $options);
-      $this->addStandardTab('Notepad', $ong, $options);
-      $this->addStandardTab('Log', $ong, $options);
+    	$tab = array_merge($tab, Location::rawSearchOptionsToAdd());
 
-      return $ong;
-   }
-
-   /**
-    * Print the contact form
-    *
-    * @param $ID        integer ID of the item
-    * @param $options   array of possible options:
-    *     - target for the Form
-    *     - withtemplate : template or basic item
-    *
-    * @return void
-    **/
-   function showForm($ID, $options = []) {
-
-      $rowspan = 3;
-      if ($ID > 0) {
-         $rowspan++;
-      }
-
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-
-      echo "<td>".__('Status')."</td>";
-      echo "<td>";
-      State::dropdown(['value'     => $this->fields["states_id"],
-            'entity'    => $this->fields["entities_id"],
-            'condition' => ['is_visible_line' => 1]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Location::getTypeName(1)."</td>";
-      echo "<td>";
-      Location::dropdown(['value'  => $this->fields["locations_id"],
-            'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-
-      echo "<td>".LineType::getTypeName(1)."</td>";
-      echo "<td>";
-      LineType::dropdown(['value'  => $this->fields["linetypes_id"],
-            'entity' => $this->fields["entities_id"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Caller number')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "caller_num");
-      echo "</td>";
-
-      echo "<td>".__('Caller name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "caller_name");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_users_id$randDropdown'>".User::getTypeName(1)."</label></td>";
-      echo "<td>";
-      User::dropdown(['value'  => $this->fields["users_id"],
-            'entity' => $this->fields["entities_id"],
-            'right'  => 'all',
-            'rand'   => $randDropdown]);
-      echo "</td>";
-
-      $rowspan = 3;
-
-      echo "<td rowspan='$rowspan'>" . __('Comments')."</td>";
-      echo "<td rowspan='$rowspan'>
-      <textarea cols='45' rows='10' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_users_id$randDropdown'>".Group::getTypeName(1)."</label></td>";
-      echo "<td>";
-      Group::dropdown(['value'  => $this->fields["groups_id"],
-            'entity' => $this->fields["entities_id"],
-            'right'  => 'all',
-            'rand'   => $randDropdown]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_users_id$randDropdown'>".LineOperator::getTypeName(1)."</label></td>";
-      echo "<td>";
-      LineOperator::dropdown(['value'  => $this->fields["lineoperators_id"],
-            'entity' => $this->fields["entities_id"],
-            'right'  => 'all',
-            'rand'   => $randDropdown]);
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
-      return true;
-   }
-
-
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
-
-      $tab = array_merge($tab, Location::rawSearchOptionsToAdd());
-
-      $tab[] = [
+    	$tab[] = [
             'id'                 => '2',
             'table'              => $this->getTable(),
             'field'              => 'id',
             'name'               => __('ID'),
             'massiveaction'      => false,
             'datatype'           => 'number'
-      ];
+    	];
 
-      $tab[] = [
+    	$tab[] = [
             'id'                 => '4',
             'table'              => 'glpi_linetypes',
             'field'              => 'name',
             'name'               => LineType::getTypeName(1),
             'datatype'           => 'dropdown',
-      ];
+    	];
 
-      $tab[] = [
-            'id'                 => '16',
+    	$tab[] = [
+        	'id'                 => '16',
             'table'              => $this->getTable(),
             'field'              => 'comment',
             'name'               => __('Comments'),
             'datatype'           => 'text'
-      ];
+    	];
 
-      $tab[] = [
+    	$tab[] = [
             'id'                 => '19',
             'table'              => $this->getTable(),
             'field'              => 'date_mod',
             'name'               => __('Last update'),
             'datatype'           => 'datetime',
             'massiveaction'      => false
-      ];
+    	];
 
-      $tab[] = [
+      	$tab[] = [
             'id'                 => '31',
             'table'              => 'glpi_states',
             'field'              => 'completename',
             'name'               => __('Status'),
             'datatype'           => 'dropdown',
             'condition'          => ['is_visible_line' => 1]
-      ];
+    	];
 
-      $tab[] = [
+    	$tab[] = [
             'id'                 => '70',
             'table'              => 'glpi_users',
             'field'              => 'name',

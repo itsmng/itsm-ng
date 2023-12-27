@@ -89,49 +89,69 @@ class NotificationSettingConfig extends CommonDBTM {
       $out = '';
       $modes_settings = [];
       if (Session::haveRight("config", UPDATE)) {
-         $out .= "<div class='center notifs_setup'>";
-         $out .= "<form method='POST' action='{$CFG_GLPI['root_doc']}/front/setup.notification.php'>";
 
-         $out .= "<table class='tab_cadre'>";
-         $out .= "<tr><th colspan='3'>" . __('Notifications configuration') . "</th></tr>";
-         if ($CFG_GLPI['use_notifications'] && !Notification_NotificationTemplate::hasActiveMode()) {
-            $out .= "<tr><td colspan='3'><div class='warning'><i class='fa fa-exclamation-triangle'></i>".__('You must enable at least one notification mode.')."</div></td></tr>";
-         }
-         $out .= "<tr>";
-         $out .= "<td>" . __('Enable followup') . "</td>";
-         $out .= "<td>";
-         $out .= Dropdown::showYesNo('use_notifications', $CFG_GLPI['use_notifications'], -1, ['display' => false]);
-         $out .= "</td>";
-         $out .= "</tr>";
+         $form = [
+            'action' => $CFG_GLPI['root_doc'] . '/front/setup.notification.php',
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'value' => __('Save'),
+                  'class' => 'submit-button btn btn-warning',
+               ],
+            ],
+            'content' => [
+               __('Notifications configuration') => [
+                  'visible' => true,
+                  'inputs' => [
+                     __('Enable followup') => [
+                        'name' => 'use_notifications',
+                        'type' => 'select',
+                        'values' => [
+                           '0' => __('No'),
+                           '1' => __('Yes'),
+                        ],
+                        'value' => $CFG_GLPI['use_notifications']
+                     ],
+                     __('Enable followups via email') => [
+                        'name' => 'notifications_mailing',
+                        'type' => 'select',
+                        'values' => [
+                           '0' => __('No'),
+                           '1' => __('Yes'),
+                        ],
+                        'value' => $CFG_GLPI['notifications_mailing']
+                     ],
+                     __('Enable followups from browser') => [
+                        'name' => 'notifications_ajax',
+                        'type' => 'select',
+                        'values' => [
+                           '0' => __('No'),
+                           '1' => __('Yes'),
+                        ],
+                        'value' => $CFG_GLPI['notifications_ajax']
+                     ],
+                     __('Enable followups via chat') => [
+                        'name' => 'notifications_chat',
+                        'type' => 'select',
+                        'values' => [
+                           '0' => __('No'),
+                           '1' => __('Yes'),
+                        ],
+                        'value' => $CFG_GLPI['notifications_chat']
+                     ],
+                  ]
+               ]
+            ]
+         ];
+
+         require_once GLPI_ROOT . '/ng/form.utils.php';
+         renderTwigForm($form);
 
          foreach (array_keys($modes) as $mode) {
             $settings_class = Notification_NotificationTemplate::getModeClass($mode, 'setting');
             $settings = new $settings_class();
             $modes_settings[$mode] = $settings;
-
-            $out .= "<tr>";
-            $out .= "<td>" . $settings->getEnableLabel() . "</td>";
-            $out .= "<td>";
-            $out .= Dropdown::showYesNo("notifications_$mode", $CFG_GLPI["notifications_$mode"], -1, ['display' => false, 'disabled' => !$CFG_GLPI['use_notifications']]);
-            $out .= "</td>";
-            $out .= "</tr>";
          }
-
-         $out .= "<tr><td colspan='3' class='center'><input class='submit' type='submit' value='" . __('Save')  . "'/></td></tr>";
-         $out .= "</table>";
-         $out .= Html::closeForm(false);
-
-         $js = "$(function(){
-            $('[name=use_notifications]').on('change', function() {
-               var _val = $(this).find('option:selected').val();
-               if (_val == '1') {
-                  $('select[name!=use_notifications]').prop('disabled', false);
-               } else {
-                  $('select[name!=use_notifications]').select2('enable', false);
-               }
-            });
-         })";
-         $out .= Html::scriptBlock($js);
       }
 
       $notifs_on = false;
@@ -145,6 +165,7 @@ class NotificationSettingConfig extends CommonDBTM {
       }
 
       if ($notifs_on) {
+
          $out .= "<table class='tab_cadre'>";
          $out .= "<tr><th>" . _n('Notification', 'Notifications', Session::getPluralNumber())."</th></tr>";
 
