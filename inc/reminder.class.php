@@ -573,170 +573,226 @@ class Reminder extends CommonDBVisible implements
    function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
-      $this->initForm($ID, $options);
-      $rand = mt_rand();
+      // $this->initForm($ID, $options);
+      // $rand = mt_rand();
 
-      // Show Reminder or blank form
-      $onfocus = "";
-      if (!$ID > 0) {
-         // Create item : do getempty before check right to set default values
-         $onfocus="onfocus=\"if (this.value=='".$this->fields['name']."') this.value='';\"";
-      }
+      // // Show Reminder or blank form
+      // $onfocus = "";
+      // if (!$ID > 0) {
+      //    // Create item : do getempty before check right to set default values
+      //    $onfocus="onfocus=\"if (this.value=='".$this->fields['name']."') this.value='';\"";
+      // }
 
-      $canedit = $this->can($ID, UPDATE);
+      // $canedit = $this->can($ID, UPDATE);
 
-      $this->showFormHeader($options);
+      // $this->showFormHeader($options);
 
-      echo "<tr class='tab_bg_2'><td>".__('Title')."</td>";
-      echo "<td colspan='2'>";
-      if (!$ID) {
-         echo "<input type='hidden' name='users_id' value='".$this->fields['users_id']."'>\n";
-      }
-      if ($canedit) {
-         Html::autocompletionTextField($this, "name",
-                                       ['size'   => '80',
-                                             'entity' => -1,
-                                             'user'   => $this->fields["users_id"],
-                                             'option' => $onfocus]);
-      } else {
-         echo $this->fields['name'];
-      }
-      if (isset($options['from_planning_edit_ajax']) && $options['from_planning_edit_ajax']) {
-         echo Html::hidden('from_planning_edit_ajax');
-      }
-      echo "</td>";
-      echo "</tr>";
+      // echo "<tr class='tab_bg_2'><td>".__('Title')."</td>";
+      // echo "<td colspan='2'>";
+      // if (!$ID) {
+      //    echo "<input type='hidden' name='users_id' value='".$this->fields['users_id']."'>\n";
+      // }
+      // if ($canedit) {
+      //    Html::autocompletionTextField($this, "name",
+      //                                  ['size'   => '80',
+      //                                        'entity' => -1,
+      //                                        'user'   => $this->fields["users_id"],
+      //                                        'option' => $onfocus]);
+      // } else {
+      //    echo $this->fields['name'];
+      // }
+      // if (isset($options['from_planning_edit_ajax']) && $options['from_planning_edit_ajax']) {
+      //    echo Html::hidden('from_planning_edit_ajax');
+      // }
+      // echo "</td>";
+      // echo "</tr>";
 
-      if (!isset($options['from_planning_ajax'])) {
-         echo "<tr class='tab_bg_2'>";
-         echo "<td>".__('Visibility')."</td>";
-         echo "<td colspan='2'>";
-         echo '<table><tr><td>';
-         echo __('Begin').'</td><td>';
-         Html::showDateTimeField("begin_view_date",
-                                 ['value'      => $this->fields["begin_view_date"],
-                                       'maybeempty' => true,
-                                       'canedit'    => $canedit]);
-         echo '</td><td>'.__('End').'</td><td>';
-         Html::showDateTimeField("end_view_date",
-                                 ['value'      => $this->fields["end_view_date"],
-                                       'maybeempty' => true,
-                                       'canedit'    => $canedit]);
-         echo '</td></tr></table>';
-         echo "</td>";
-         echo "</tr>";
-      }
+      // if (!isset($options['from_planning_ajax'])) {
+      //    echo "<tr class='tab_bg_2'>";
+      //    echo "<td>".__('Visibility')."</td>";
+      //    echo "<td colspan='2'>";
+      //    echo '<table><tr><td>';
+      //    echo __('Begin').'</td><td>';
+      //    Html::showDateTimeField("begin_view_date",
+      //                            ['value'      => $this->fields["begin_view_date"],
+      //                                  'maybeempty' => true,
+      //                                  'canedit'    => $canedit]);
+      //    echo '</td><td>'.__('End').'</td><td>';
+      //    Html::showDateTimeField("end_view_date",
+      //                            ['value'      => $this->fields["end_view_date"],
+      //                                  'maybeempty' => true,
+      //                                  'canedit'    => $canedit]);
+      //    echo '</td></tr></table>';
+      //    echo "</td>";
+      //    echo "</tr>";
+      // }
 
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Status')."</td>";
-      echo "<td colspan='2'>";
-      if ($canedit) {
-         Planning::dropdownState("state", $this->fields["state"]);
-      } else {
-         echo Planning::getState($this->fields["state"]);
-      }
-      echo "</td>\n";
-      echo "</tr>\n";
+      // echo "<tr class='tab_bg_2'>";
+      // echo "<td>".__('Status')."</td>";
+      // echo "<td colspan='2'>";
+      // if ($canedit) {
+      //    Planning::dropdownState("state", $this->fields["state"]);
+      // } else {
+      //    echo Planning::getState($this->fields["state"]);
+      // }
+      // echo "</td>\n";
+      // echo "</tr>\n";
 
-      echo "<tr class='tab_bg_2'><td>"._n('Calendar', 'Calendars', 1)."</td>";
-      $active_recall = ($ID && $this->fields["is_planned"] && PlanningRecall::isAvailable());
+      // echo "<tr class='tab_bg_2'><td>"._n('Calendar', 'Calendars', 1)."</td>";
+      // $active_recall = ($ID && $this->fields["is_planned"] && PlanningRecall::isAvailable());
 
-      echo "<td";
-      if (!$active_recall) {
-         echo " colspan='2'";
-      }
-      echo ">";
-      if (isset($options['from_planning_ajax'])
-          && $options['from_planning_ajax']) {
-         echo Html::hidden('plan[begin]', ['value' => $options['begin']]);
-         echo Html::hidden('plan[end]', ['value' => $options['end']]);
-         printf(__('From %1$s to %2$s'), Html::convDateTime($options["begin"]),
-                                         Html::convDateTime($options["end"]));
-         echo "</td>";
-      } else {
-         if ($canedit) {
-            echo "<script type='text/javascript' >\n";
-            echo "function showPlan$rand() {\n";
-            echo Html::jsHide("plan$rand");
-            $params = ['action'   => 'add_event_classic_form',
-                       'form'     => 'remind',
-                       'users_id' => $this->fields["users_id"],
-                       'itemtype' => $this->getType(),
-                       'items_id' => $this->getID()];
+      // echo "<td";
+      // if (!$active_recall) {
+      //    echo " colspan='2'";
+      // }
+      // echo ">";
+      // if (isset($options['from_planning_ajax'])
+      //     && $options['from_planning_ajax']) {
+      //    echo Html::hidden('plan[begin]', ['value' => $options['begin']]);
+      //    echo Html::hidden('plan[end]', ['value' => $options['end']]);
+      //    printf(__('From %1$s to %2$s'), Html::convDateTime($options["begin"]),
+      //                                    Html::convDateTime($options["end"]));
+      //    echo "</td>";
+      // } else {
+      //    if ($canedit) {
+      //       echo "<script type='text/javascript' >\n";
+      //       echo "function showPlan$rand() {\n";
+      //       echo Html::jsHide("plan$rand");
+      //       $params = ['action'   => 'add_event_classic_form',
+      //                  'form'     => 'remind',
+      //                  'users_id' => $this->fields["users_id"],
+      //                  'itemtype' => $this->getType(),
+      //                  'items_id' => $this->getID()];
 
-            if ($ID && $this->fields["is_planned"]) {
-                  $params['begin'] = $this->fields["begin"];
-                  $params['end']   = $this->fields["end"];
-            }
+      //       if ($ID && $this->fields["is_planned"]) {
+      //             $params['begin'] = $this->fields["begin"];
+      //             $params['end']   = $this->fields["end"];
+      //       }
 
-            Ajax::updateItemJsCode("viewplan$rand", $CFG_GLPI["root_doc"]."/ajax/planning.php", $params);
-            echo "}";
-            echo "</script>\n";
-         }
+      //       Ajax::updateItemJsCode("viewplan$rand", $CFG_GLPI["root_doc"]."/ajax/planning.php", $params);
+      //       echo "}";
+      //       echo "</script>\n";
+      //    }
 
-         if (!$ID
-             || !$this->fields["is_planned"]) {
+      //    if (!$ID
+      //        || !$this->fields["is_planned"]) {
 
-            if (Session::haveRightsOr("planning", [Planning::READMY, Planning::READGROUP,
-                                                        Planning::READALL])) {
+      //       if (Session::haveRightsOr("planning", [Planning::READMY, Planning::READGROUP,
+      //                                                   Planning::READALL])) {
 
-               echo "<div id='plan$rand' onClick='showPlan$rand()'>\n";
-               echo "<a href='#' class='vsubmit'>".__('Add to schedule')."</a>";
-            }
+      //          echo "<div id='plan$rand' onClick='showPlan$rand()'>\n";
+      //          echo "<a href='#' class='vsubmit'>".__('Add to schedule')."</a>";
+      //       }
 
-         } else {
-            if ($canedit) {
-               echo "<div id='plan$rand' onClick='showPlan$rand()'>\n";
-               echo "<span class='showplan'>";
-            }
+      //    } else {
+      //       if ($canedit) {
+      //          echo "<div id='plan$rand' onClick='showPlan$rand()'>\n";
+      //          echo "<span class='showplan'>";
+      //       }
 
-            //TRANS: %1$s is the begin date, %2$s is the end date
-            printf(__('From %1$s to %2$s'), Html::convDateTime($this->fields["begin"]),
-                   Html::convDateTime($this->fields["end"]));
+      //       //TRANS: %1$s is the begin date, %2$s is the end date
+      //       printf(__('From %1$s to %2$s'), Html::convDateTime($this->fields["begin"]),
+      //              Html::convDateTime($this->fields["end"]));
 
-            if ($canedit) {
-               echo "</span>";
-            }
-         }
+      //       if ($canedit) {
+      //          echo "</span>";
+      //       }
+      //    }
 
-         if ($canedit) {
-            echo "</div>\n";
-            echo "<div id='viewplan$rand'>\n</div>\n";
-         }
-         echo "</td>";
+      //    if ($canedit) {
+      //       echo "</div>\n";
+      //       echo "<div id='viewplan$rand'>\n</div>\n";
+      //    }
+      //    echo "</td>";
 
-         if ($active_recall) {
-            echo "<td><table><tr><td>"._x('Planning', 'Reminder')."</td>";
-            echo "<td>";
-            if ($canedit) {
-               PlanningRecall::dropdown(['itemtype' => 'Reminder',
-                                              'items_id' => $ID]);
-            } else { // No edit right : use specific Planning Recall Form
-               PlanningRecall::specificForm(['itemtype' => 'Reminder',
-                                                  'items_id' => $ID]);
-            }
-            echo "</td></tr></table></td>";
-         }
-      }
-      echo "</tr>\n";
+      //    if ($active_recall) {
+      //       echo "<td><table><tr><td>"._x('Planning', 'Reminder')."</td>";
+      //       echo "<td>";
+      //       if ($canedit) {
+      //          PlanningRecall::dropdown(['itemtype' => 'Reminder',
+      //                                         'items_id' => $ID]);
+      //       } else { // No edit right : use specific Planning Recall Form
+      //          PlanningRecall::specificForm(['itemtype' => 'Reminder',
+      //                                             'items_id' => $ID]);
+      //       }
+      //       echo "</td></tr></table></td>";
+      //    }
+      // }
+      // echo "</tr>\n";
 
-      echo "<tr class='tab_bg_2'><td>".__('Description')."</td>".
-           "<td colspan='3'>";
+      // echo "<tr class='tab_bg_2'><td>".__('Description')."</td>".
+      //      "<td colspan='3'>";
 
-      if ($canedit) {
-         Html::textarea(['name'              => 'text',
-                         'value'             => $this->fields["text"],
-                         'enable_richtext'   => true,
-                         'enable_fileupload' => true]);
-      } else {
-         echo "<div  id='kbanswer'>";
-         echo Toolbox::unclean_html_cross_side_scripting_deep($this->fields["text"]);
-         echo "</div>";
-      }
+      // if ($canedit) {
+      //    Html::textarea(['name'              => 'text',
+      //                    'value'             => $this->fields["text"],
+      //                    'enable_richtext'   => true,
+      //                    'enable_fileupload' => true]);
+      // } else {
+      //    echo "<div  id='kbanswer'>";
+      //    echo Toolbox::unclean_html_cross_side_scripting_deep($this->fields["text"]);
+      //    echo "</div>";
+      // }
 
-      echo "</td></tr>\n";
+      // echo "</td></tr>\n";
 
-      $this->showFormButtons($options);
+      // $this->showFormButtons($options);
+
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL('reminder'),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => 'add',
+               'value' => __('Add'),
+               'class' => 'submit-button btn btn-warning',
+            ],
+         ],
+         'content' => [
+            __('New item') . " - " . __('Note') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Title') => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'],
+                  ],
+                  __('begin_view_date') => [
+                     'name' => 'begin_view_date',
+                     'type' => 'date',
+                     'value' => $this->fields['begin_view_date'],
+                  ],
+                  __('end_view_date') => [
+                     'name' => 'end_view_date',
+                     'type' => 'date',
+                     'value' => $this->fields['end_view_date'],
+                  ],
+                  __('Status') => [
+                     'name' => 'state',
+                     'type' => 'select',
+                     'values' => [
+                        '0' => __('Information'),
+                        '1' => __('To do'),
+                        '2' => __('Done'),
+                     ]
+                  ],
+                  __('Description') => [
+                     'name' => 'text',
+                     'type' => 'textarea',
+                     'value' => $this->fields['end_view_date'],
+                  ],
+                  __('fileupload') => [
+                     'id' => mt_rand(),
+                     'name' => 'fileupload',
+                     'type' => 'file',
+                  ]
+               ]
+            ]
+         ]
+      ];
+
+      require_once GLPI_ROOT . '/ng/form.utils.php';
+      renderTwigForm($form);
 
       return true;
    }
