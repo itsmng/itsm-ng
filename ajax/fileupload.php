@@ -37,4 +37,5 @@
 include ('../inc/includes.php');
 
 Session::checkLoginUser();
-GLPIUploadHandler::uploadFiles($_POST);
+$tmpFiles = ItsmngUploadHandler::storeTmpFiles($_FILES);
+echo json_encode($tmpFiles);

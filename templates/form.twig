@@ -1,6 +1,6 @@
 {% from 'macros/input.twig' import input %}
 
-{% set options = ['actions', 'after', 'before', 'hooks', 'init', 'init'] %}
+{% set options = ['actions', 'after', 'before', 'hooks', 'init', 'init', 'col', 'col_md', 'col_lg'] %}
 
 <form name="form" action="{{form.action}}" enctype="multipart/form-data" method={{form.method|default('post')}} class="container">
 {% for key, bloc in form.content  %}
@@ -10,7 +10,7 @@
     {% endif %}
     <div class="row row-cols-{{col}}">
     {% for title, input in bloc.inputs %}
-        {% if input.type and input.type != 'hidden' %}
+        {% if input.type != 'hidden' and input|length > 0 %}
         <div class="
             col{{ input.col ? '-' ~ input.col : '-12' }}
             col-md{{ input.col_md ? '-' ~ input.col_md : '-6' }}
@@ -24,7 +24,7 @@
                 {% endif %}
                 {% set attributes = input | filter((v, k) => k not in options) %}
                 {% if input.type %}
-                {{input(attributes)}}
+                {{input(attributes, root_doc)}}
                 {% else %}
                 {{ input.content|raw }}
                 {% endif %}
@@ -34,7 +34,7 @@
                 {% for action in input.actions %}
                     <button type="button" class="btn border" onClick="{{action.onClick}}"><a class="{{action.icon}}"></a></button>
                 {% endfor %}
-        {% if input.type and input.type != 'hidden' %}
+        {% if input.type != 'hidden' and input|length > 0 %}
             </div>
         </div>
         {% endif %}
@@ -51,7 +51,7 @@
 {% endif %}
 {% for button in form.buttons %}
 <button {% for attr, val in button %} {{attr}}='{{val}}' {% endfor %}>
-    {% if button.icon %}<i class='{{button.icon}} mx-2'></i>{% endif %}{{button.value}}
+    {% if button.icon %}<i class='{{button.icon}} mx-2'></i>{% endif %}{{button.value|raw}}
 </button>
 {% endfor %}
 </div>

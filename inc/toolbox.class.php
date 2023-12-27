@@ -896,7 +896,7 @@ class Toolbox {
       }
       header(
          "Content-disposition:$attachment filename=\"" .
-         addslashes(utf8_decode($filename)) .
+         addslashes(mb_convert_encoding($filename, 'UTF-8', mb_detect_encoding($filename))) .
          "\"; filename*=utf-8''" .
          rawurlencode($filename)
       );

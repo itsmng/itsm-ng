@@ -952,7 +952,7 @@ class Item_SoftwareVersion extends CommonDBRelation {
     * @return void
    **/
    static function showForItem(CommonDBTM $item, $withtemplate = 0) {
-      global $DB;
+      global $DB, $CFG_GLPI;
 
       if (!Software::canView()) {
          return;
@@ -970,44 +970,106 @@ class Item_SoftwareVersion extends CommonDBRelation {
 
       if ((empty($withtemplate) || ($withtemplate != 2))
           && $canedit) {
-         echo "<form method='post' action='".Item_SoftwareVersion::getFormURL()."'>";
-         echo "<div class='spaced'><table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_1'><td class='center'>";
-         echo _n('Software', 'Software', Session::getPluralNumber())."&nbsp;&nbsp;";
-         echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-         echo "<input type='hidden' name='items_id' value='$items_id'>";
-         Software::dropdownSoftwareToInstall("softwareversions_id", $entities_id);
-         echo "</td><td width='20%'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Install')."\"
-                class='submit'>";
-         echo "</td>";
-         echo "</tr>\n";
-         echo "</table></div>\n";
-         Html::closeForm();
+         $form = [
+            'action' => Item_SoftwareVersion::getFormURL(),
+            'buttons' => [
+               'Install' => [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _x('button', 'Install'),
+                  'class' => 'btn btn-primary mb-3'
+               ]
+            ],
+            'content' => [
+               __("Software") => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'itemtype',
+                        'value' => $itemtype
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'items_id',
+                        'value' => $items_id
+                     ],
+                     _n('Software', 'Software', Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'id' => 'dropdownForSoftware',
+                        'name' => 'softwareversions_id',
+                        'values' => getOptionForItems('Software', ['entities_id' => $entities_id]),
+                        'col_lg' => 6,
+                        'hooks' => [
+                           'change' => <<<JS
+                              var softwareversions_id = $(this).val();
+                              var url = '{$CFG_GLPI["root_doc"]}/ajax/dropdownInstallVersion.php';
+
+                              if (softwareversions_id == 0) {
+                                 $('#dropdownForSoftwareVersion').empty();
+                                 $('#dropdownForSoftwareVersion').prop('disabled', true);
+                                 return;
+                              }
+                              $.ajax({
+                                 url: url,
+                                 type: 'POST',
+                                 data: {
+                                    softwares_id: softwareversions_id,
+                                    myname: 'softwareversions_id',
+                                 },
+                                 dataType: 'json',
+                                 success: function(data) {
+
+                                    $('#dropdownForSoftwareVersion').prop('disabled', false);
+                                    $('#dropdownForSoftwareVersion').empty();
+                                    for (const [key, value] of Object.entries(data)) {
+                                       $('#dropdownForSoftwareVersion').append(
+                                          $('<option></option>').val(key).html(value)
+                                       )
+                                    }
+                                 },
+                              });
+                           JS,
+                        ]
+                     ],
+                     __("Version") => [
+                        'type' => 'select',
+                        'id' => 'dropdownForSoftwareVersion',
+                        'name' => 'softwareversions_id',
+                        'values' => getOptionForItems('Software', ['entities_id' => $entities_id]),
+                        'col_lg' => 6,
+                        'disabled' => true,
+                     ],
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
-      echo "<div class='spaced'>";
-
-      Session::initNavigateListItems('Software',
-                           //TRANS : %1$s is the itemtype name,
-                           //        %2$s is the name of the item (used for headings of a list)
-                                     sprintf(__('%1$s = %2$s'),
-                                             $itemtype::getTypeName(1), $item->getName()));
-      Session::initNavigateListItems('SoftwareLicense',
-                           //TRANS : %1$s is the itemtype name,
-                           //        %2$s is the name of the item (used for headings of a list)
-                                     sprintf(__('%1$s = %2$s'),
-                                             $itemtype::getTypeName(1), $item->getName()));
-
-      // Mini Search engine
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr class='tab_bg_1'><th colspan='2'>".Software::getTypeName(Session::getPluralNumber())."</th></tr>";
-      echo "<tr class='tab_bg_1'><td>";
-      echo __('Category')."</td><td>";
-      SoftwareCategory::dropdown(['value'      => $crit,
-                                       'toadd'      => ['-1' =>  __('All categories')],
-                                       'emptylabel' => __('Uncategorized software'),
-                                       'on_change'  => 'reloadTab("start=0&criterion="+this.value)']);
-      echo "</td></tr></table></div>";
+      ob_start();
+      renderTwigTemplate('macros/input.twig', [
+         'type' => 'select',
+         'name' => 'criterion',
+         'id' => 'dropdownForSoftwareCategory',
+         'values' => [ -1 => __('All categories') ] + getOptionForItems('SoftwareCategory'),
+         'class' => 'form-control',
+         'on_change' => 'reloadTab("start=0&criterion="+this.value)'
+      ]);
+      $categoryDropdown = ob_get_clean();
+      $dropdownLabel = __('Category');
+      echo <<<HTML
+         <div class="container w-75 text-start">
+            <label for="dropdownForSoftwareCategory" class="me-2">
+               {$dropdownLabel}
+            </label>
+            {$categoryDropdown}
+         </div>
+         <script>
+            $('#dropdownForSoftwareCategory').on('change', function() {
+               reloadTab("start=0&criterion="+this.value);
+            })
+         </script>
+      HTML;
       $number = count($iterator);
       $start  = (isset($_REQUEST['start']) ? intval($_REQUEST['start']) : 0);
       if ($start >= $number) {
@@ -1085,20 +1147,82 @@ class Item_SoftwareVersion extends CommonDBRelation {
       }
       if ((empty($withtemplate) || ($withtemplate != 2))
           && $canedit) {
-         echo "<form method='post' action='".Item_SoftwareLicense::getFormURL()."'>";
-         echo "<div class='spaced'><table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_1'><th colspan='2'>".SoftwareLicense::getTypeName(Session::getPluralNumber())."</th></tr>";
-         echo "<tr class='tab_bg_1'>";
-         echo "<td class='center'>";
-         echo SoftwareLicense::getTypeName(Session::getPluralNumber())."&nbsp;&nbsp;";
-         echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-         echo "<input type='hidden' name='items_id' value='$items_id'>";
-         Software::dropdownLicenseToInstall("softwarelicenses_id", $entities_id);
-         echo "</td><td width='20%'>";
-         echo "<input type='submit' name='add' value=\"" ._sx('button', 'Add')."\" class='submit'>";
-         echo "</td></tr>\n";
-         echo "</table></div>\n";
-         Html::closeForm();
+         $form = [
+            'action' => Item_SoftwareVersion::getFormURL(),
+            'buttons' => [
+               'Install' => [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _x('button', 'Install'),
+                  'class' => 'btn btn-primary mb-3'
+               ]
+            ],
+            'content' => [
+               SoftwareLicense::getTypeName(Session::getPluralNumber()) => [
+                  'visible' => 'true',
+                  'inputs' => [
+                     Software::getTypeName(Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'id' => 'softwareDropdownForLicence',
+                        'name' => 'softwares_id',
+                        'values' => getOptionForItems('Software', ['entities_id' => $entities_id]),
+                        'col_lg' => 6,
+                        'hooks' => [
+                           'change' => <<<JS
+                              var softwareversions_id = $(this).val();
+                              var url = '{$CFG_GLPI["root_doc"]}/ajax/dropdownSoftwareLicense.php';
+
+                              if (softwareversions_id == 0) {
+                                 $('#licenceDropdown').empty();
+                                 $('#licenceDropdown').prop('disabled', true);
+                                 return;
+                              }
+                              $.ajax({
+                                 url: url,
+                                 type: 'POST',
+                                 data: {
+                                    softwares_id: softwareversions_id,
+                                    myname: 'softwares_id',
+                                    entity_restrict: 0,
+                                 },
+                                 dataType: 'json',
+                                 success: function(data) {
+
+                                    $('#licenceDropdown').prop('disabled', false);
+                                    $('#licenceDropdown').empty();
+                                    for (const [key, value] of Object.entries(data)) {
+                                       $('#licenceDropdown').append(
+                                          $('<option></option>').val(key).html(value)
+                                       )
+                                    }
+                                 },
+                              });
+                           JS,
+                        ]
+                     ],
+                     SoftwareLicense::getTypeName(Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'id' => 'licenceDropdown',
+                        'name' => 'softwarelicenses_id',
+                        'values' => getOptionForItems('SoftwareLicense', ['entities_id' => $entities_id]),
+                        'disabled' => true,
+                        'col_lg' => 6,
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'itemtype',
+                        'value' => $itemtype
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'items_id',
+                        'value' => $items_id
+                     ],
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
       echo "<div class='spaced'>";
       // Affected licenses NOT installed
@@ -1213,7 +1337,7 @@ class Item_SoftwareVersion extends CommonDBRelation {
          echo "<p class='center b'>".__('No item found')."</p>";
       }
 
-      echo "</div>\n";
+      echo "</div></div>\n";
 
    }
 

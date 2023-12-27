@@ -221,7 +221,7 @@ function menuFavoriteEnable(enable=true){
     $('#menu-favorite').toggleClass('hidden', !enable);
     $.ajax({
         type: "POST",
-        url: "../ng/db.activateMenuFavorite.php",
+        url: "../src/db.activateMenuFavorite.php",
         data: {
             menu_favorite_on: enable,
         },
@@ -284,7 +284,7 @@ function changeMenuState(is_menu_close=null){ //whether menu is open or collapse
     }
     $.ajax({
         type: "POST",
-        url: "../ng/db.menuSmall.php",
+        url: "../src/db.menuSmall.php",
         data: {
         small: !is_menu_close,
         },
@@ -339,7 +339,7 @@ function addFavorite(){
     }
     $.ajax({
         type: "POST",
-        url: "../ng/db.addFavorite.php",
+        url: "../src/db.addFavorite.php",
         data: {
         remove: is_menu_favorite,
         menu_name: menu_name,

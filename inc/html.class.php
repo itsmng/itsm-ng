@@ -1360,7 +1360,6 @@ class Html
 
          if (in_array('charts', $jslibs)) {
             echo Html::css('node_modules/chartist/dist/index.css');
-            echo Html::css('css/chartists-glpi.css');
             Html::requireJs('charts');
          }
 
@@ -6636,8 +6635,6 @@ JAVASCRIPT;
             break;
          case 'fileupload':
             $_SESSION['glpi_js_toload'][$name][] = 'public/lib/file-type.js';
-            $_SESSION['glpi_js_toload'][$name][] = 'public/lib/jquery-file-upload.js';
-            $_SESSION['glpi_js_toload'][$name][] = 'js/fileupload.js';
             break;
          case 'charts':
             $_SESSION['glpi_js_toload']['charts'][] = 'public/lib/chartist.js';

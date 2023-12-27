@@ -78,9 +78,10 @@ header {
     z-index: 50;
     font-size: var(--nav-size);
 
-    i, span {
+    i, li > a span {
         color: $header-text-color !important;
     }
+
 }
 
 #subheader {
