@@ -39,7 +39,7 @@ include ('../inc/includes.php');
 
 
 Session::checkCentralAccess();
-$default = Glpi\Dashboard\Grid::getDefaultDashboardForMenu('helpdesk');
+$default = Grid::getDefaultDashboardForMenu('helpdesk');
 
 // Redirect to "/front/ticket.php" if no dashboard found
 if ($default == "") {
@@ -48,7 +48,7 @@ if ($default == "") {
 
 Html::header(__('Helpdesk Dashboard'), $_SERVER['PHP_SELF'], "helpdesk", "dashboard");
 
-$dashboard = new Glpi\Dashboard\Grid($default);
+$dashboard = new Grid($default);
 $dashboard->showDefault();
 
 Html::footer();

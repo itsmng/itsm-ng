@@ -108,43 +108,72 @@ class SoftwareVersion extends CommonDBChild {
          $this->check(-1, CREATE, $options);
       }
 
-      $this->showFormHeader($options);
+      $form = [
+         'action' => $this->getFormURL(),
+         'content' => [
+            __('New element').' '.self::getTypeName(1) => [
+               'visible' => 'true',
+               'inputs' => [
+                  _n('Software', 'Software', Session::getPluralNumber()) => [
+                     'content' => '<a href="' . Software::getFormURLWithID($softwares_id) . '">'
+                        .Dropdown::getDropdownName("glpi_softwares", $softwares_id)
+                        .'</a>',
+                  ],
+                  $this->isNewID($ID) ? [
+                     'type' => 'hidden',
+                     'name' => 'softwares_id',
+                     'value' => $softwares_id
+                  ] : [],
+                  __('Comments') => [
+                     'type' => 'textarea',
+                     'name' => 'comment',
+                     'value' => $this->fields["comment"]
+                  ],
+                  __('Name') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields["name"]
+                  ],
+                  OperatingSystem::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'operatingsystems_id',
+                     'values' => getOptionForItems('OperatingSystem'),
+                     'value' => $this->fields["operatingsystems_id"] ?? 0,
+                  ],
+                  __('Status') => [
+                     'type' => 'select',
+                     'name' => 'states_id',
+                     'values' => getOptionForItems('State',
+                        ['is_visible_softwareversion' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields["states_id"]
+                  ],
+                  'action' => [
+                     'type' => 'hidden',
+                     'name' => $this->isNewID($ID) ? 'add' : 'update',
+                     'value' => $this->isNewID($ID) ? 'add' : 'update'
+                  ],
+                  'id' => $this->isNewID($ID) ? [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID
+                  ] : [],
+                  'entities_id' => [
+                     'type' => 'hidden',
+                     'name' => 'entities_id',
+                     'value' => $this->fields['entities_id']
+                  ],
+               ]
+            ]
+         ]
+      ];
 
-      echo "<tr class='tab_bg_1'><td>"._n('Software', 'Software', Session::getPluralNumber())."</td>";
-      echo "<td>";
-      if ($this->isNewID($ID)) {
-         echo "<input type='hidden' name='softwares_id' value='$softwares_id'>";
-      }
-      echo "<a href='".Software::getFormURLWithID($softwares_id)."'>".
-             Dropdown::getDropdownName("glpi_softwares", $softwares_id)."</a>";
-      echo "</td>";
-      echo "<td rowspan='4' class='middle'>".__('Comments')."</td>";
-      echo "<td class='center middle' rowspan='4'>";
-      echo "<textarea cols='45' rows='3' name='comment' >".$this->fields["comment"];
-      echo "</textarea></td></tr>\n";
-
-      echo "<tr class='tab_bg_1'><td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'><td>" . OperatingSystem::getTypeName(1) . "</td><td>";
-      OperatingSystem::dropdown(['value' => $this->fields["operatingsystems_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'><td>" . __('Status') . "</td><td>";
-      State::dropdown(['value'     => $this->fields["states_id"],
-                            'entity'    => $this->fields["entities_id"],
-                            'condition' => ['is_visible_softwareversion' => 1]]);
-      echo "</td></tr>\n";
+      renderTwigForm($form);
 
       // Only count softwareversions_id_buy (don't care of softwareversions_id_use if no installation)
       if ((SoftwareLicense::countForVersion($ID) > 0)
           || (Item_SoftwareVersion::countForVersion($ID) > 0)) {
          $options['candel'] = false;
       }
-
-      $this->showFormButtons($options);
 
       return true;
    }
@@ -299,10 +328,13 @@ class SoftwareVersion extends CommonDBChild {
       echo "<div class='spaced'>";
 
       if ($canedit) {
-         echo "<div class='center firstbloc'>";
-         echo "<a class='vsubmit' href='".SoftwareVersion::getFormURL()."?softwares_id=$softwares_id'>".
-                _x('button', 'Add a version')."</a>";
-         echo "</div>";
+         $action = SoftwareVersion::getFormURL()."?softwares_id=$softwares_id'>";
+         $label  = _x('button', 'Add a version');
+         echo <<<HTML
+         <div class='center b mb-3'>
+            <a class="btn btn-secondary" href="{$action}">{$label}</a>
+         </div>
+         HTML;
       }
 
       $iterator = $DB->request([

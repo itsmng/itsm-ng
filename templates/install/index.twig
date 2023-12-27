@@ -6,9 +6,6 @@
     <meta http-equiv='Content-Script-Type' content='text/javascript'> 
     <meta http-equiv='Content-Style-Type' content='text/css'>
 
-    <link rel="stylesheet" href="https://unpkg.com/@jarstone/dselect/dist/css/dselect.css">
-    <script src="https://unpkg.com/@jarstone/dselect/dist/js/dselect.js"></script>
-
 {% for array in header_data[:-1] %}
     {% for e in array %}
     {# add raw html from install.php #}
@@ -27,7 +24,7 @@
                 <div class="step">
                     <a  href={{"install.php?step="~loop.index0}}
                         title={{header_data["steps_name"][loop.index0]|capitalize}}
-                        class={% if loop.index0 <= step['number'] %}"circle"{% else %}"circle hidden"{% endif %}
+                        class="{% if loop.index0 <= step['number'] %}circle{% else %}circle hidden{% endif %}"
                         style={{'--step:' ~ loop.index0 ~ ';--maxstep:' ~ maxstep ~ ';'}}>
                     {{loop.index0}}
                     </a>

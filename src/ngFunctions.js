@@ -77,7 +77,7 @@ function menuDrag(){ //to move menu bubble
         removeEventListener("mousemove", menuDragEventHandler);
         $.ajax({
             type: "POST",
-            url: "../ng/db.changeBubblePos.php",
+            url: "../src/db.changeBubblePos.php",
             data: {
                 x: $('#bubble').css('left'),
                 y: $('#bubble').css('top')
@@ -92,7 +92,7 @@ function resetMenuBubblePos(){ //TODO: add limit to menu bubble pos to prevent g
     $('#bubble').css('top', 100 + 'px');
     $.ajax({
         type: "POST",
-        url: "../ng/db.changeBubblePos.php",
+        url: "../src/db.changeBubblePos.php",
         data: {
             x: $('#bubble').css('left'),
             y: $('#bubble').css('top')
@@ -209,7 +209,7 @@ function changeMenuPosition(class_name){ //select menu left, right, top, bubble
     $('#main-test').attr("class", class_name);
     $.ajax({
         type: "POST",
-        url: "../ng/db.changeMenuPosition.php",
+        url: "../src/db.changeMenuPosition.php",
         data: {
             position: class_name,
         },
@@ -221,7 +221,7 @@ function menuFavoriteEnable(enable=true){
     $('#menu-favorite').toggleClass('hidden', !enable);
     $.ajax({
         type: "POST",
-        url: "../ng/db.activateMenuFavorite.php",
+        url: "../src/db.activateMenuFavorite.php",
         data: {
             menu_favorite_on: enable,
         },
@@ -233,7 +233,7 @@ function clearMenuOpen(){ //close all menu, for menu top and menu bubble
     menus.children('ul').removeClass('show');
     $.ajax({
         type: "POST",
-        url: "../ng/db.openMenu.php",
+        url: "../src/db.openMenu.php",
         data: {
         clear: true,
         },
@@ -251,7 +251,7 @@ function resizeMenu(){ //TODO: remove resizing on menu collapsed
         removeEventListener("mousemove", changeMenuWidth);
         $.ajax({
             type: "POST",
-            url: "../ng/db.changeMenuSize.php",
+            url: "../src/db.changeMenuSize.php",
             data: {
                 menu : is_menu_close ? "menu-close" : "menu-open",
                 width: $('body').css(width_var),
@@ -284,7 +284,7 @@ function changeMenuState(is_menu_close=null){ //whether menu is open or collapse
     }
     $.ajax({
         type: "POST",
-        url: "../ng/db.menuSmall.php",
+        url: "../src/db.menuSmall.php",
         data: {
         small: !is_menu_close,
         },
@@ -306,7 +306,7 @@ function openMenu(item, menu_name){ //uncollapsed menu
     was_menu_open = $(item).hasClass('collapsed');
     $.ajax({
         type: "POST",
-        url: "../ng/db.openMenu.php",
+        url: "../src/db.openMenu.php",
         data: {
             clear: false,
             menu_name: menu_name,
@@ -339,7 +339,7 @@ function addFavorite(){
     }
     $.ajax({
         type: "POST",
-        url: "../ng/db.addFavorite.php",
+        url: "../src/db.addFavorite.php",
         data: {
         remove: is_menu_favorite,
         menu_name: menu_name,

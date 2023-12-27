@@ -369,94 +369,133 @@ class Document extends CommonDBTM {
     * @return void
    **/
    function showForm($ID, $options = []) {
-      $this->initForm($ID, $options);
-      // $options['formoptions'] = " enctype='multipart/form-data'";
-      $this->showFormHeader($options);
-
       $showuserlink = 0;
       if (Session::haveRight('user', READ)) {
          $showuserlink = 1;
       }
-      if ($ID > 0) {
-         echo "<tr><th colspan='2'>";
-         if ($this->fields["users_id"]>0) {
-            printf(__('Added by %s'), getUserName($this->fields["users_id"], $showuserlink));
-         } else {
-            echo "&nbsp;";
+
+      $uploaded_files = [];
+      if ($handle = opendir(GLPI_UPLOAD_DIR)) {
+         while (false !== ($file = readdir($handle))) {
+            if (($file != '.') && ($file != '..') && ($file != 'remove.txt')) {
+               $dir = self::isValidDoc($file);
+               if (!empty($dir)) {
+                  $uploaded_files[$file] = $file;
+               }
+            }
          }
-         echo "</th>";
-         echo "<th colspan='2'>";
-
-         //TRANS: %s is the datetime of update
-         printf(__('Last update on %s'), Html::convDateTime($this->fields["date_mod"]));
-
-         echo "</th></tr>\n";
+         closedir($handle);
       }
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-      if ($ID > 0) {
-         echo "<td>".__('Current file')."</td>";
-         echo "<td>".$this->getDownloadLink('', 45);
-         echo "<input type='hidden' name='current_filepath' value='".$this->fields["filepath"]."'>";
-         echo "<input type='hidden' name='current_filename' value='".$this->fields["filename"]."'>";
-         echo "</td>";
-      } else {
-         echo "<td colspan=2>&nbsp;</td>";
-      }
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Heading')."</td>";
-      echo "<td>";
-      DocumentCategory::dropdown(['value' => $this->fields["documentcategories_id"]]);
-      echo "</td>";
-      if ($ID > 0) {
-         echo "<td>".sprintf(__('%1$s (%2$s)'), __('Checksum'), __('SHA1'))."</td>";
-         echo "<td>".$this->fields["sha1sum"];
-         echo "</td>";
-      } else {
-         echo "<td colspan=2>&nbsp;</td>";
-      }
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Web link')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "link");
-      echo "</td>";
-      echo "<td rowspan='3' class='middle'>".__('Comments')."</td>";
-      echo "<td class='middle' rowspan='3'>";
-      echo "<textarea cols='45' rows='6' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('MIME type')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "mime");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Blacklisted for import')."</td>";
-      echo "<td>";
-      Dropdown::showYesNo("is_blacklisted", $this->fields["is_blacklisted"]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Use a FTP installed file')."</td>";
-      echo "<td>";
-      $this->showUploadedFilesDropdown("upload_file");
-      echo "</td>";
-
-      echo "<td>".sprintf(__('%1$s (%2$s)'), __('File'), self::getMaxUploadSize())."</td>";
-      echo "<td>";
-      Html::file();
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            [
+               'name' => $ID > 0 ? 'update' : 'add',
+               'type' => 'submit',
+               'value' => $ID > 0 ? __('Update') : __('Add'),
+            ],
+         ],
+         'content' => [
+            self::getTypeName(1) => [
+               'visible' => 'true',
+               'inputs' => [
+                  __('Added by') => ($ID > 0 && $this->fields['users_id'] > 0) ? [
+                     'content' => getUserName($this->fields["users_id"], $showuserlink),
+                  ] : [],
+                  __('Last update on') => ($ID > 0) ? [
+                     'content' => Html::convDateTime($this->fields["date_mod"]),
+                  ] : [],
+                  __('Name') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields["name"],
+                  ],
+                  __('Current file') => ($ID > 0) ? [
+                     'content' => $this->getDownloadLink('', 45),
+                  ] : [],
+                  __('Heading') => [
+                     'type' => 'select',
+                     'name' => 'documentcategories_id',
+                     'values' => getOptionForItems('DocumentCategory'),
+                     'value' => $this->fields["documentcategories_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], 'DocumentCategory')
+                  ],
+                  sprintf(__('%1$s (%2$s)'), __('Checksum'), __('SHA1')) => ($ID > 0) ? [
+                     'content' => $this->fields["sha1sum"],
+                  ] : [],
+                  __('Web link') => [
+                     'type' => 'text',
+                     'name' => 'link',
+                     'value' => $this->fields["link"],
+                  ],
+                  __('Comments') => [
+                     'type' => 'textarea',
+                     'name' => 'comment',
+                     'value' => $this->fields["comment"],
+                  ],
+                  __('MIME type') => [
+                     'type' => 'text',
+                     'name' => 'mime',
+                     'value' => $this->fields["mime"],
+                  ],
+                  __('Blacklisted for import') => [
+                     'type' => 'checkbox',
+                     'name' => 'is_blacklisted',
+                     'value' => $this->fields["is_blacklisted"],
+                  ],
+                  __('Use a FTP installed file') => [
+                     'type' => 'select',
+                     'name' => 'upload_file',
+                     'values' => $uploaded_files,
+                     'value' => '',
+                  ],
+                  sprintf(__('%1$s (%2$s)'), __('File'), self::getMaxUploadSize()) => [
+                     'type' => 'file',
+                     'name' => 'filenames',
+                     'id' => 'fileSelectorForDocument',
+                  ],
+               ],
+            ],
+            [
+               'visible' => false,
+               'inputs' => [
+                  'current_filepath' => ($ID > 0) ? [
+                     'type' => 'hidden',
+                     'name' => 'current_filepath',
+                     'value' => $this->fields["filepath"],
+                  ] : [],
+                  'current_filename' => ($ID > 0) ? [
+                     'type' => 'hidden',
+                     'name' => 'current_filename',
+                     'value' => $this->fields["filename"],
+                  ] : [],
+                  [
+                     'name' => 'id',
+                     'type' => 'hidden',
+                     'value' => $ID,
+                  ],
+                  [
+                     'name' => 'entities_id',
+                     'type' => 'hidden',
+                     'value' => $this->fields["entities_id"] ?? 0,
+                  ],
+                  [
+                     'name' => 'is_recursive',
+                     'type' => 'hidden',
+                     'value' => $this->fields["is_recursive"] ?? 0,
+                  ],
+                  [
+                     'type' => 'hidden',
+                     'name' => 'files',
+                     'id' => "hiddenInputForFiles",
+                     'value' => '[]'
+                  ],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
 
       return true;
    }
@@ -480,7 +519,7 @@ class Document extends CommonDBTM {
     * @param string $context Context to resize image, if any
    **/
    function send($context = null) {
-      $file = GLPI_DOC_DIR."/".$this->fields['filepath'];
+      $file = GLPI_ROOT . $this->fields['filepath'];
       if ($context !== null) {
          $file = self::getImage($file, $context);
       }

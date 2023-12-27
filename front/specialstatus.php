@@ -30,8 +30,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Glpi\Dashboard\Provider;
-
 include ('../inc/includes.php');
 
 $dropdown = new SpecialStatus();

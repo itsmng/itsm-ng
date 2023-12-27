@@ -1,0 +1,198 @@
+{% from 'macros/collapseChecklist.twig' import collapseChecklist %}
+<div class="modal modal-lg fade" id="widgetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+		<form action="{{addWidget_action}}" method="get" class="text-center">
+			<div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{"New widget"|trans}}</h1>
+                <div>
+                    <button type="button" class="btn btn-primary" onclick="addWidget()">{{"Add widget"|trans}}</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">{{"Close"|trans}}</button>
+                </div>
+			</div>
+			<div class="modal-body row">
+                <div id="data-selection-widget-modal" class="col-12 col-lg-4 accordion accordion-flush">
+                    {% for key, data in dataGroups %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{key|slug}}"
+                                aria-expanded="false" aria-controls="flush-collapseOne"
+								onclick="selectStatType('{{key}}')"
+								>
+                                {{key|raw}}
+                            </button>
+                        </h2>
+                        <div id="flush-collapse-{{key|slug}}" class="accordion-collapse collapse"
+                            data-bs-parent="#data-selection-widget-modal">
+                            <div class="accordion-body text-start">
+                                {{collapseChecklist(data)|raw}}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+					<input type='hidden' name="statType" value=""/>
+					<input type='hidden' name="statSelection" id="stateSelectionInput" value="{}"/>
+                </div>
+
+                <div class="col-12 col-lg-8 d-flex flex-column p-0">
+                    {% include "dashboard/dashboardParams.twig" %}
+                    <div id="preview-graph-widget-modal" style="height: 25rem">
+                    </div>
+                </div>
+			</div>
+            <input type="hidden" name="id" value="{{dashboardId}}"/>
+            <input type="hidden" name="coords" value="[-1, -1]"/>
+            <input type="hidden" name="update" value="update"/>
+		</form>
+    </div>
+  </div>
+</div>
+<script>
+	$(document).ready(function() {
+		$('#widgetModal').insertAfter($('body'));
+		for (select of ['#assetSelect']) {
+			var select_box_element = document.querySelector(select);
+			dselect(select_box_element, {
+				search: true
+			});
+		}
+		updateComparisonInput();
+	});
+
+
+	function openWidgetModal(coords) {
+		$('#widgetModal input[name="coords"]').val(JSON.stringify(coords));
+		$("#widgetModal").modal("show");
+	}
+
+	function toggleEdit() {
+		// toggle display of all edit button
+		var editButtons = document.getElementsByClassName("editButton");
+		for (var i = 0; i < editButtons.length; i++) {
+			editButtons[i].style.display = editButtons[i].style.display == "none" ? "block" : "none";
+		}
+	}
+
+	function selectStatType(statType) {
+		$('#widgetModal input[name="statType"]').val(statType);
+	}
+
+	function removeWidget(x, y) {
+		$.ajax({
+			url: "{{ajaxUrl}}",
+			type: "POST",
+			data: {
+				id: "{{dashboardId}}",
+				action: "delete",
+				coords: JSON.stringify([x, y]),
+			},
+			success: function(data) {
+				location.reload();
+			},
+			error: function(data) {
+				console.log(data);
+			}
+		});
+	}
+
+	function updateComparisonInput() {
+		previousValue = $('#parameter-selection-widget-modal-select').val();
+		$.ajax({
+			url: "{{ajaxUrl}}",
+			type: "POST",
+			data: {
+				action: "getColumns",
+				statType: $('#widgetModal input[name="statType"]').val(),
+			},
+			success: function(data) {
+				jsonData = JSON.parse(data);
+				$('#parameter-selection-widget-modal-select').empty();
+				for (const [key, value] of Object.entries(jsonData)) {
+					$('#parameter-selection-widget-modal-select').append($('<option>', {
+						value: value,
+						text: value
+					}));
+				}
+				if ($('#parameter-selection-widget-modal-select option[value="' + previousValue + '"]').length > 0) {
+					$('#parameter-selection-widget-modal-select').val(previousValue);
+				}
+			},
+		})
+	};
+
+	$("#data-selection-widget-modal").on("change", function(event) {
+		updateComparisonInput();
+	})
+
+	function getChartParams() {
+		const statType = $('#widgetModal input[name="statType"]').val();
+		const statSelection = $('#stateSelectionInput').val();
+		const title = $('#title-widget-modal').val();
+		const icon = $('#icon-widget-modal').val();
+		const format = $('input[name="format"]:checked').val();
+		const comparison = $('#parameter-selection-widget-modal-select').val();
+
+		const direction = $('#direction-selection-widget-modal-select').val();
+		const pieFormat = $('#pie-format-selection-widget-modal-select').val();
+
+		const options = {
+			comparison, icon
+		}
+		if (direction == 'horizontal') {
+			options['horizontalBars'] = true;
+		}
+
+		if (pieFormat == 'half') {
+			options['total'] = 'half';
+			options['startAngle'] = 270;
+		} else if (pieFormat == 'donut') {
+			options['donut'] = true;
+		}
+
+		return {
+			statType, statSelection, title, format, options
+		}
+	
+	}
+
+	$("#widgetModal").on("change", function(event) {
+		const {statType, statSelection, title, icon, format, options} = getChartParams();
+
+		if (statSelection == '{}')
+			return;
+		$.ajax({
+			url: "{{ajaxUrl}}",
+			type: "POST",
+			data: { action: "preview", statType, statSelection, title, icon, format, options},
+			success: function(data) {
+				$('#preview-graph-widget-modal').html(data);
+			},
+			error: function(data) {
+				console.log(data);
+			}
+		});
+	})
+
+	function addWidget() {
+		const coords = JSON.parse($('#widgetModal input[name="coords"]').val());
+		const {statType, statSelection, title, format, options} = getChartParams();
+
+		$.ajax({
+			url: "{{ajaxUrl}}",
+			type: "POST",
+			data: {
+				id: "{{dashboardId}}",
+				action: "add",
+				coords, statType, statSelection, title, format, options
+			},
+			success: function(data) {
+				{# location.reload(); #}
+			},
+			error: function(data) {
+				console.log(data);
+			}
+		});
+	
+	}
+</script>

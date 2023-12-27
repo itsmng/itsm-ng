@@ -1,0 +1,81 @@
+{% macro collapseChecklist(data, previous_padding = 0, parent_name = '') %}
+	{% if parent_name != '' %}
+		{% set current_name = parent_name ~ '_' %}
+	{% else %}
+		{% set current_name = parent_name %}
+	{% endif %}
+	<ul class="ps-{{previous_padding}}">
+		{% for title, content in data %}
+			{% set rand = random() %}
+			<li class="d-flex flex-column justify-content-start">
+				<div class="d-flex align-items-center input-group">
+					<button type="button" class="btn btn-link dropdown-checkbox-toggle" data-bs-toggle="collapse" href="#list-for-{{title|slug}}-{{rand}}" aria-expanded="false">
+						<i class="fas fa-caret-right" style="{% if content.content|length == 0 %} opacity: .2 {% endif %}"></i>
+					</button>
+					{% if content.value %}
+						<input type="checkbox" id="{{title}}_{{content.value}}" name="{{parent_name}}" value="{{current_name}}{{content.value}}" onchange="checkChildren(this);checkParents(this)"/>
+					{% endif %}
+					<label for="{{title}}_{{content.value}}" class="ms-3">{{title}}</label>
+				</div>
+            	{% if content.content %}
+                    <div class="collapse" id="list-for-{{title|slug}}-{{rand}}">
+                        {{_self.collapseChecklist(content.content, previous_padding + 2, current_name ~ content.value)}}
+                    </div>
+                {% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+	{% if parent_name == '' %}
+	<script>
+
+	// check all childs
+	function checkChildren(element) {
+		var children = element.parentElement.parentElement.getElementsByClassName("collapse");
+		for (var i = 0; i < children.length; i++) {
+			var child = children[i];
+			var inputs = child.getElementsByTagName("input");
+			for (var j = 0; j < inputs.length; j++) {
+				var input = inputs[j];
+				input.checked = element.checked;
+			}
+		}
+	}
+
+	// check all parents
+	function checkParents(element) {
+		var parentListItem = element.closest('li').parentNode.closest('li');
+		if (!parentListItem) {
+			return;
+		}
+		var parentInput = parentListItem.querySelector('input[type="checkbox"]');
+		if (parentInput && parentInput !== element) {
+			parentInput.checked = true;
+			checkParents(parentInput);
+		}
+	}
+
+	function updateValues() {
+		const values = {};
+
+		$('input[type="checkbox"]:checked').each(function() {
+			const parents = $(this).attr('value').split('_');
+			let currentObject = values;
+
+			for (let i = 0; i < parents.length; i++) {
+				currentObject[parents[i]] = currentObject[parents[i]] || {};
+				currentObject = currentObject[parents[i]];
+			}
+		});
+		if (values['']) {
+			delete values[''];
+		}
+
+		$("#stateSelectionInput").val(JSON.stringify(values));
+	}
+
+	$('input[type="checkbox"]').on('change', function() {
+		updateValues();
+	});
+	</script>
+	{% endif %}
+{% endmacro %}

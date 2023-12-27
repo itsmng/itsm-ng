@@ -142,6 +142,6 @@ ul {
    opacity: 1;
 }
 .hidden{
-   background: var(--secondary-color);
+   background: var(--primary-color);
    pointer-events: none;
 }

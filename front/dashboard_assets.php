@@ -39,7 +39,7 @@ include ('../inc/includes.php');
 
 
 Session::checkCentralAccess();
-$default = Glpi\Dashboard\Grid::getDefaultDashboardForMenu('assets');
+$default = Grid::getDefaultDashboardForMenu('assets');
 
 // Redirect to "/front/computer.php" if no dashboard found
 if ($default == "") {
@@ -48,7 +48,7 @@ if ($default == "") {
 
 Html::header(__('Assets Dashboard'), $_SERVER['PHP_SELF'], "assets", "dashboard");
 
-$dashboard = new Glpi\Dashboard\Grid($default);
+$dashboard = new Grid($default);
 $dashboard->showDefault();
 
 Html::footer();

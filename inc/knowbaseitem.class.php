@@ -716,148 +716,142 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
                   $ic = new ITILCategory();
                   if ($ic->getFromDB($item->getField('itilcategories_id'))) {
                      $this->fields['knowbaseitemcategories_id']
-                           = $ic->getField('knowbaseitemcategories_id');
+                     = $ic->getField('knowbaseitemcategories_id');
                   }
                }
             }
          }
       }
-      $rand = mt_rand();
-
-      $this->initForm($ID, $options);
-      $options['formoptions'] = "data-track-changes=true";
-      $this->showFormHeader($options);
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Category name')."</td>";
-      echo "<td>";
-      echo "<input type='hidden' name='users_id' value=\"".Session::getLoginUserID()."\">";
-      KnowbaseItemCategory::dropdown(['value' => $this->fields["knowbaseitemcategories_id"]]);
-      echo "</td>";
-      echo "<td>";
-      if ($this->fields["date"]) {
-         //TRANS: %s is the datetime of insertion
-         printf(__('Created on %s'), Html::convDateTime($this->fields["date"]));
-      }
-      echo "</td><td>";
-      if ($this->fields["date_mod"]) {
-         //TRANS: %s is the datetime of update
-         printf(__('Last update on %s'), Html::convDateTime($this->fields["date_mod"]));
-      }
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      if (Session::haveRight(self::$rightname, self::PUBLISHFAQ)) {
-         echo "<td>".__('Put this item in the FAQ')."</td>";
-         echo "<td>";
-         Dropdown::showYesNo('is_faq', $this->fields["is_faq"]);
-         echo "</td>";
-      } else {
-         echo "<td colspan='2'>";
-         if ($this->fields["is_faq"]) {
-            echo __('This item is part of the FAQ');
-         } else {
-            echo __('This item is not part of the FAQ');
-         }
-         echo "</td>";
-      }
-      echo "<td>";
+      
       $showuserlink = 0;
       if (Session::haveRight('user', READ)) {
          $showuserlink = 1;
       }
-      if ($this->fields["users_id"]) {
-         //TRANS: %s is the writer name
-         printf(__('%1$s: %2$s'), __('Writer'), getUserName($this->fields["users_id"],
-                                                            $showuserlink));
-      }
-      echo "</td><td>";
-      //TRANS: %d is the number of view
-      if ($ID) {
-         printf(_n('%d view', '%d views', $this->fields["view"]), $this->fields["view"]);
-      }
-      echo "</td>";
-      echo "</tr>\n";
 
-      //Link with solution
-      if ($item != null) {
+      $form = [
+         'action' => self::getFormURL(),
+         'buttons' => [
+            $canedit ? [
+               'type' => 'submit',
+               'name' => self::isNewID($ID) ? 'add' : 'update',
+               'value' => self::isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary'
+            ] : [],
+         ],
+         'content' => [
+            [
+               'visible' => false,
+               'inputs' => [
+                  !self::isNewID($ID) ? [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ] : [],
+                  [
+                     'type' => 'hidden',
+                     'name' => 'users_id',
+                     'value' => Session::getLoginUserID(),
+                  ],
+                  ($item != null
+                     && $item = getItemForItemtype($options['item_itemtype'])
+                     && $item->getFromDB($options['item_items_id'])) ? [
+                     'type' => 'hidden',
+                     'name' => '_itemtype',
+                     'value' => $item->getType(),
+                  ] : [],
+                  ($item != null
+                     && $item = getItemForItemtype($options['item_itemtype'])
+                     && $item->getFromDB($options['item_items_id'])) ? [
+                     'type' => 'hidden',
+                     'name' => '_items_id',
+                     'value' => $item->getID(),
+                  ] : [],
+               ]
+            ],
+            self::getTypeName(1) => [
+               'visible' => true,
+               'inputs' => [
+                  __('Category name') => [
+                     'type' => 'select',
+                     'name' => 'knowbaseitemcategories_id',
+                     'values' => getOptionForItems('KnowbaseItemCategory'),
+                     'value' => $this->fields["knowbaseitemcategories_id"],
+                  ],
+                  __('Created on:') => $this->fields["date"] ? [
+                     'content' =>  Html::convDateTime($this->fields["date"]),
+                  ] : [],
+                  __('Last update on:') => $this->fields["date_mod"] ? [
+                     'content' =>  Html::convDateTime($this->fields["date_mod"]),
+                  ] : [],
+                  __('Put this item in the FAQ') => Session::haveRight(self::$rightname,
+                                                                        self::PUBLISHFAQ) ? [
+                     'type' => 'checkbox',
+                     'name' => 'is_faq',
+                     'value' => $this->fields["is_faq"],
+                  ] : [
+                     'content' => $this->fields["is_faq"] ? __('This item is part of the FAQ')
+                                                          : __('This item is not part of the FAQ'),
+                  ],
+                  __('Writer') => $this->fields["users_id"] ? [
+                     'content' => getUserName($this->fields["users_id"], $showuserlink),
+                  ] : [],
+                  __('Views') => $ID ? [
+                     'content' => sprintf(_n('%d view', '%d views', $this->fields["view"]),
+                                          $this->fields["view"]),
+                  ] : [],
+                  __('Add link') => ($item != null
+                     && $item = getItemForItemtype($options['item_itemtype'])
+                     && $item->getFromDB($options['item_items_id'])) ? [
+                     'type' => 'checkbox',
+                     'name' => '_do_item_link',
+                     'value' => 1,
+                     'after' => sprintf(
+                        __('link with %1$s'),
+                        $item->getLink()
+                     ),
+                  ] : [],
+                  __('Visible since') => [
+                     'type' => 'date',
+                     'name' => 'begin_date',
+                     'value' => $this->fields["begin_date"],
+                     'col_lg' => 6,
+                  ],
+                  __('Visible until') => [
+                     'type' => 'date',
+                     'name' => 'end_date',
+                     'value' => $this->fields["end_date"],
+                     'col_lg' => 6,
+                  ],
+                  __('Subject') => [
+                     'type' => 'textarea',
+                     'name' => 'name',
+                     'value' => $this->fields["name"],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                     'rows' => 1,
+                  ],
+                  __('Content') => [
+                     'type' => 'textarea',
+                     'name' => 'answer',
+                     'value' => $this->fields["answer"],
+                     'enable_fileupload' => true,
+                     'enable_richtext' => true,
+                     'rows' => 10,
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  _n('Target', 'Targets', 1) => $this->isNewID($ID) ? [
+                     'type' => 'select',
+                     'name' => '_visibility[_type]',
+                     'values' => [Dropdown::EMPTY_VALUE, 'Entity', 'Group', 'Profile', 'User'],
+                     'value' => '',
+                  ] : [],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
 
-         if ($item = getItemForItemtype($options['item_itemtype'])) {
-            if ($item->getFromDB($options['item_items_id'])) {
-               echo "<tr>";
-               echo "<td>".__('Add link')."</td>";
-               echo "<td colspan='3'>";
-               echo "<input type='checkbox' name='_do_item_link' value='1' checked='checked'/> ";
-               echo Html::hidden('_itemtype', ['value' => $item->getType()]);
-               echo Html::hidden('_items_id', ['value' => $item->getID()]);
-               echo sprintf(
-                  __('link with %1$s'),
-                  $item->getLink()
-               );
-               echo "</td>";
-               echo "</tr>\n";
-            }
-         }
-      }
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Visible since')."</td><td>";
-      Html::showDateTimeField("begin_date", ['value'       => $this->fields["begin_date"],
-                                                  'maybeempty' => true,
-                                                  'canedit'    => $canedit]);
-      echo "</td>";
-      echo "<td>".__('Visible until')."</td><td>";
-      Html::showDateTimeField("end_date", ['value'       => $this->fields["end_date"],
-                                                'maybeempty' => true,
-                                                'canedit'    => $canedit]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Subject')."</td>";
-      echo "<td colspan='3'>";
-      echo "<textarea cols='100' rows='1' name='name'>".$this->fields["name"]."</textarea>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Content')."</td>";
-      echo "<td colspan='3'>";
-
-      $cols = 100;
-      $rows = 30;
-      if (isset($options['_in_modal']) && $options['_in_modal']) {
-         $rows = 15;
-         echo Html::hidden('_in_modal', ['value' => 1]);
-      }
-      Html::textarea(['name'              => 'answer',
-                      'value'             => $this->fields["answer"],
-                      'enable_fileupload' => true,
-                      'enable_richtext'   => true,
-                      'cols'              => $cols,
-                      'rows'              => $rows]);
-      echo "</td>";
-      echo "</tr>";
-
-      if ($this->isNewID($ID)) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>"._n('Target', 'Targets', 1)."</td>";
-         echo "<td>";
-         $types   = ['Entity', 'Group', 'Profile', 'User'];
-         $addrand = Dropdown::showItemTypes('_visibility[_type]', $types);
-         echo "</td><td colspan='2'>";
-         $params  = ['type'     => '__VALUE__',
-                          'right'    => 'knowbase',
-                          'prefix'   => '_visibility',
-                          'nobutton' => 1];
-
-         Ajax::updateItemOnSelectEvent("dropdown__visibility__type_".$addrand, "visibility$rand",
-                                       $CFG_GLPI["root_doc"]."/ajax/visibility.php",
-                                       $params);
-         echo "<span id='visibility$rand'></span>";
-         echo "</td></tr>\n";
-      }
-
-      $this->showFormButtons($options);
       return true;
    } // function showForm
 

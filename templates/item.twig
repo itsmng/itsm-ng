@@ -18,27 +18,21 @@
 {% endfor %}
 </div>
 
-<link href={{ glpiroot }}"/node_modules/gridstack/dist/gridstack.min.css" rel="stylesheet"/>
-<script src={{ glpiroot }}"/node_modules/gridstack/dist/gridstack-all.js"></script>
+<link href="{{ glpiroot }}/node_modules/gridstack/dist/gridstack.min.css" rel="stylesheet"/>
+<script src="{{ glpiroot }}/node_modules/gridstack/dist/gridstack-all.js"></script>
 
 <script> // dropdown display
 
 function updateWidgetWidth() {
-	
-	var columnWidgets = grid.getGridItems();
-	if (columnWidgets.length === 1) {
-		// If it's the only widget in the column, set it to full width
-		grid.batchUpdate();
-		grid.update(columnWidgets[0], {w: 12}); // Assuming 12 columns in your grid
-		grid.commit();
-	} else {
-		// If there are other widgets in the column, set it to the desired width
-		grid.batchUpdate();
-		grid.update(columnWidgets[0], {w: 6}); // Assuming 12 columns in your grid
-		grid.compact();
-		grid.commit();
-	}
-}
+        var columnWidgets = grid.getGridItems();
+        var targetWidth = columnWidgets.length === 1 ? 12 : 6; // Full width for single widget, else half
+        grid.batchUpdate();
+        grid.update(columnWidgets[0], { w: targetWidth });
+        if(columnWidgets.length > 1) {
+            grid.compact();
+        }
+        grid.commit();
+    }
 
 function updateGridContent() {
 	var $target = $( event.currentTarget ),
@@ -90,7 +84,6 @@ function initCheckboxFromSession() {
 	}
 }
 
-// add every checked values to the options array
 $(document).ready((e) => {
 	initCheckboxFromSession();
 	if ({{tabs | length == 1 ? 1 : 0}}) {
@@ -114,6 +107,9 @@ $(document).ready((e) => {
 	if ({{tabs|length == 1 ? 1 : 0}}) {
 		grid.setStatic(true)
 	}
+	setTimeout(() => {
+		grid.load();
+	}, 300);
 });
 
 $( '.dropdown-menu a' ).on( 'click', function( event ) {
@@ -121,15 +117,11 @@ $( '.dropdown-menu a' ).on( 'click', function( event ) {
 	updateWidgetWidth();
 	return false;
 });
-</script>
 
-
-<script> // gridstack
 var grid = GridStack.init({
 	cellHeight: 'auto',
 	cellWidth: '1rem',
 	handle: '.card-header',
 	sizeToContent: true,
 });
-grid.load();
 </script>

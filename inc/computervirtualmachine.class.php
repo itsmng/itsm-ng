@@ -123,104 +123,106 @@ class ComputerVirtualMachine extends CommonDBChild {
          $comp->getFromDB($options['computers_id']);
       }
 
-      $this->showFormHeader($options);
-
-      if ($this->isNewID($ID)) {
-         echo "<input type='hidden' name='computers_id' value='".$options['computers_id']."'>";
+      $autoinventory_information = '';
+      if ($ID && $this->fields['is_dynamic']) {
+         ob_start();
+         Plugin::doHook("autoinventory_information", $this);
+         $autoinventory_information = ob_get_clean();
       }
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Computer::getTypeName(1)."</td>";
-      echo "<td>".$comp->getLink()."</td>";
-      if (Plugin::haveImport()) {
-         echo "<td>".__('Automatic inventory')."</td>";
-         echo "<td>";
-         if ($ID && $this->fields['is_dynamic']) {
-            Plugin::doHook("autoinventory_information", $this);
-         } else {
-            echo __('No');
-         }
-         echo "</td>";
-      } else {
-         echo "<td colspan='2'></td>";
-      }
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td><td rowspan='4'>".__('Comments')."</td>";
-      echo "<td rowspan='4'>";
-      echo "<textarea cols='45' rows='6' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".VirtualMachineType::getTypeName(1)."</td>";
-      echo "<td>";
-      VirtualMachineType::dropdown(['value' => $this->fields['virtualmachinetypes_id']]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".VirtualMachineSystem::getTypeName(1)."</td>";
-      echo "<td>";
-      VirtualMachineSystem::dropdown(['value' => $this->fields['virtualmachinesystems_id']]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>".VirtualMachineState::getTypeName(1)."</td>";
-      echo "<td>";
-      VirtualMachineState::dropdown(['value' => $this->fields['virtualmachinestates_id']]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('UUID')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "uuid");
-      echo "</td>";
-
-      echo "<td>".__('Machine')."</td>";
-      echo "<td>";
+      $computerValue = '';
       if ($link_computer = self::findVirtualMachine($this->fields)) {
          $computer = new Computer();
          if ($computer->getFromDB($link_computer)) {
-            echo $computer->getLink(['comments' => true]);
+            $computerValue = $computer->getLink(['comments' => true]);
          } else {
-            echo NOT_AVAILABLE;
+            $computerValue = NOT_AVAILABLE;
          }
       }
-      echo "</td>";
-      echo "</tr>";
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".sprintf(__('%1$s (%2$s)'), _n('Memory', 'Memories', 1), __('Mio'))."</td>";
-      echo "<td>";
-      Html::autocompletionTextField(
-         $this,
-         'ram',
-         [
-            'type' => 'number',
-            'attrs' => [
-               'min'    => 0
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            'submit' => [
+               'type' => 'submit',
+               'name' => self::isNewID($ID) ? 'add' : 'update',
+               'value' => self::isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary'
+            ],
+         ],
+         'content' => [
+            [
+               'visible' => false,
+               'inputs' => [
+                  $this->isNewId($ID) ? [
+                     'type' => 'hidden',
+                     'name' => 'computers_id',
+                     'value' => $options['computers_id']
+                  ] : [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID
+                  ]
+               ]
+            ],
+            __('New item') . ' - ' . self::getTypeName(1) => [
+               'visible' => true,
+               'inputs' => [
+                  Computer::getTypeName() => [
+                     'content' => $comp->getLink(['comments' => true]),
+                  ],
+                  __('Automatic inventory') => Plugin::haveImport() ? [
+                        'content' => $ID && $this->fields['is_dynamic'] ? $autoinventory_information : __('No'),
+                  ]: [],
+                  __('Name') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields['name'],
+                  ],
+                  __('Comments') => [
+                     'type' => 'textarea',
+                     'name' => 'comment',
+                     'value' => $this->fields['comment'],
+                  ],
+                  VirtualMachineSystem::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'virtualmachinesystems_id',
+                     'values' => getOptionForItems('VirtualMachineSystem'),
+                     'value' => $this->fields['virtualmachinesystems_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'VirtualMachineSystem')
+                  ],
+                  VirtualMachineState::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'virtualmachinestates_id',
+                     'values' => getOptionForItems('VirtualMachineState'),
+                     'value' => $this->fields['virtualmachinestates_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'VirtualMachineState')
+                  ],
+                  __('UUID') => [
+                     'type' => 'text',
+                     'name' => 'uuid',
+                     'value' => $this->fields['uuid'],
+                  ],
+                  __('Machine') => [
+                     'content' => $computerValue,
+                  ],
+                  sprintf(__('%1$s (%2$s)'), _n('Memory', 'Memories', 1), __('Mio')) => [
+                     'type' => 'number',
+                     'name' => 'ram',
+                     'value' => $this->fields['ram'],
+                     'min'    => 0
+                  ],
+                  _x('quantity', 'Processors number') => [
+                     'type' => 'number',
+                     'name' => 'vcpu',
+                     'value' => $this->fields['vcpu'],
+                     'min'    => 0
+                  ],
+               ]
             ]
          ]
-      );
-      echo "</td>";
-
-      echo "<td>"._x('quantity', 'Processors number')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField(
-         $this,
-         'vcpu',
-         [
-            'type'   => 'number',
-            'attrs'  => [
-               'min' => 0
-            ]
-         ]
-      );
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
+      ];
+      renderTwigForm($form);
 
       return true;
    }
@@ -316,7 +318,7 @@ class ComputerVirtualMachine extends CommonDBChild {
 
       if ($canedit) {
          echo "<div class='center firstbloc'>".
-                "<a class='vsubmit' href='".ComputerVirtualMachine::getFormURL()."?computers_id=$ID'>";
+                "<a class='btn btn-secondary' href='".ComputerVirtualMachine::getFormURL()."?computers_id=$ID'>";
          echo __('Add a virtual machine');
          echo "</a></div>\n";
       }

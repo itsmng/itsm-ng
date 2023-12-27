@@ -272,69 +272,88 @@ class ComputerAntivirus extends CommonDBChild {
          $comp->getFromDB($options['computers_id']);
       }
 
-      $this->showFormHeader($options);
-
-      if ($this->isNewID($ID)) {
-         echo "<input type='hidden' name='computers_id' value='".$options['computers_id']."'>";
+      $plugin = __('No');
+      if (Plugin::haveImport() && $ID && $this->fields['is_dynamic']) {
+         ob_start();
+         Plugin::doHook("autoinventory_form", $this);
+         $plugin = ob_get_clean();
       }
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Computer::getTypeName(1)."</td>";
-      echo "<td>".$comp->getLink()."</td>";
-      if (Plugin::haveImport()) {
-         echo "<td>".__('Automatic inventory')."</td>";
-         echo "<td>";
-         if ($ID && $this->fields['is_dynamic']) {
-            Plugin::doHook("autoinventory_information", $this);
-         } else {
-            echo __('No');
-         }
-         echo "</td>";
-      } else {
-         echo "<td colspan='2'></td>";
-      }
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-      echo "<td>".__('Active')."</td>";
-      echo "<td>";
-      Dropdown::showYesNo('is_active', $this->fields['is_active']);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Manufacturer::getTypeName(1)."</td>";
-      echo "<td>";
-      Dropdown::show('Manufacturer', ['value' => $this->fields["manufacturers_id"]]);
-      echo "</td>";
-      echo "<td>".__('Up to date')."</td>";
-      echo "<td>";
-      Dropdown::showYesNo('is_uptodate', $this->fields['is_uptodate']);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>". __('Antivirus version')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "antivirus_version");
-      echo "</td>";
-      echo "<td>".__('Signature database version')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "signature_version");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Expiration date')."</td>";
-      echo "<td>";
-      Html::showDateField("date_expiration", ['value' => $this->fields['date_expiration']]);
-      echo "</td>";
-      echo "<td colspan='2'></td>";
-      echo "</tr>";
-
-      $options['canedit'] = Session::haveRight("computer", UPDATE);
-      $this->showFormButtons($options);
+      $form = [
+         'action' => self::getFormURL(),
+         'buttons' => [
+            Session::haveRight("computer", UPDATE) ? [
+               'type' => 'submit',
+               'name' => self::isNewID($ID) ? 'add' : 'update',
+               'value' => self::isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary'
+            ] : []
+         ],
+         'content' => [
+            [
+               'visible' => false,
+               'inputs' => [
+                  $this->isNewID($ID) ? [
+                     'type' => 'hidden',
+                     'name' => 'computers_id',
+                     'value' => $options['computers_id'],
+                  ] : [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ]
+               ]
+            ],
+            'New item - ' . self::getTypeName(1) => [
+               'visible' => true,
+               'inputs' => [
+                  Computer::getTypeName(1) => [
+                     'content' => $comp->getLink(),
+                  ],
+                  __('Automatic inventory') => Plugin::haveImport() ? [
+                     'content' => $plugin,
+                  ] : [],
+                  __('Name') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields['name'],
+                  ],
+                  __('Active') => [
+                     'type' => 'checkbox',
+                     'name' => 'is_active',
+                     'value' => $this->fields['is_active'],
+                  ],
+                  Manufacturer::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'manufacturers_id',
+                     'values' => getOptionForItems('Manufacturer'),
+                     'value' => $this->fields['manufacturers_id'],
+                  ],
+                  __('Up to date') => [
+                     'type' => 'checkbox',
+                     'name' => 'is_uptodate',
+                     'value' => $this->fields['is_uptodate'],
+                  ],
+                  __('Antivirus version') => [
+                     'type' => 'text',
+                     'name' => 'antivirus_version',
+                     'value' => $this->fields['antivirus_version'],
+                  ],
+                  __('Signature database version') => [
+                     'type' => 'text',
+                     'name' => 'signature_version',
+                     'value' => $this->fields['signature_version'],
+                  ],
+                  __('Expiration date') => [
+                     'type' => 'date',
+                     'name' => 'date_expiration',
+                     'value' => $this->fields['date_expiration'],
+                  ],
+               ]
+            ],
+         ]
+      ];
+      renderTwigForm($form);   
 
       return true;
    }
@@ -362,7 +381,7 @@ class ComputerAntivirus extends CommonDBChild {
       if ($canedit
           && !(!empty($withtemplate) && ($withtemplate == 2))) {
          echo "<div class='center firstbloc'>".
-               "<a class='vsubmit' href='".ComputerAntivirus::getFormURL()."?computers_id=$ID&amp;withtemplate=".
+               "<a class='btn btn-secondary' href='".ComputerAntivirus::getFormURL()."?computers_id=$ID&amp;withtemplate=".
                   $withtemplate."'>";
          echo __('Add an antivirus');
          echo "</a></div>\n";

@@ -43,31 +43,36 @@ if (!isset($_GET["id"])) {
 $doc          = new Document();
 
 if (isset($_POST["add"])) {
-
    $doc->check(-1, CREATE, $_POST);
-   if (isset($_POST['_filename']) && is_array($_POST['_filename'])) {
-      $fic = $_POST['_filename'];
-      $tag = $_POST['_tag_filename'];
-      $prefix = $_POST['_prefix_filename'];
-      foreach (array_keys($fic) as $key) {
-         $_POST['_filename']        = [$fic[$key]];
-         $_POST['_tag_filename']    = [$tag[$key]];
-         $_POST['_prefix_filename'] = [$prefix[$key]];
-         if ($newID = $doc->add($_POST)) {
-            Event::log($newID, "documents", 4, "login",
-            sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $doc->fields["name"]));
+   if (isset($_POST['files']) && isset($_POST['entities_id']) &&
+      isset($_POST['is_recursive']) && isset($_POST['documentcategories_id'])
+      ) {
+         $baseDoc = ItsmngUploadHandler::generateBaseDocumentFromPost($_POST);
+         $files = json_decode(stripslashes($_POST['files']), true);
+         foreach ($files as $file) {
+            $newDoc = $baseDoc;
+            $newDoc['filename'] = $file['name'];
+            $newDoc['filepath'] = ItsmngUploadHandler::uploadFiles(
+               $file['path'],
+               $file['format'],
+               $file['name']
+            );
+            $newDoc['mime'] = $file['format'];
+            $doc->add($newDoc);
+            if (isset($_POST['items_id']) && isset($_POST['itemtype'])) {
+               $docItem = new Document_Item();
+               $docItem->add([
+                  'documents_id' => $doc->getID(),
+                  'items_id'     => $_POST['items_id'],
+                  'itemtype'     => $_POST['itemtype'],
+                  'entities_id'  => $_POST['entities_id'] ?? 0,
+                  'is_recursive' => $_POST['is_recursive'] ?? 0,
+                  'users_id'     => Session::getLoginUserID(),
+               ]);
+            }
          }
-      }
-      if ($_SESSION['glpibackcreated'] && (!isset($_POST['itemtype']) || !isset($_POST['items_id']))) {
-         Html::redirect($doc->getLinkURL());
-      }
-   } else if ($newID = $doc->add($_POST)) {
-      Event::log($newID, "documents", 4, "login",
-                 sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $doc->fields["name"]));
-      // Not from item tab
-      if ($_SESSION['glpibackcreated'] && (!isset($_POST['itemtype']) || !isset($_POST['items_id']))) {
-         Html::redirect($doc->getLinkURL());
-      }
+   } else {
+      Html::displayMessageAfterRedirect(__('Could not add document'), false, false, 'error');
    }
 
    Html::back();
@@ -105,6 +110,15 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["update"])) {
    $doc->check($_POST["id"], UPDATE);
 
+   if ((isset($_POST['files']) && $_POST['files'] != '[]')) {
+      $file = json_decode(stripslashes($_POST['files']), true)[0];
+      $_POST['filename'] = $file['name'];
+      $_POST['filepath'] = ItsmngUploadHandler::uploadFiles(
+         $file['path'],
+         $file['format'],
+         $file['name']
+      );
+   }
    if ($doc->update($_POST)) {
       Event::log($_POST["id"], "documents", 4, "document",
                  //TRANS: %s is the user login

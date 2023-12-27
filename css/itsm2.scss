@@ -78,9 +78,10 @@ header {
     z-index: 50;
     font-size: var(--nav-size);
 
-    i {
+    i, li > a span {
         color: $header-text-color !important;
     }
+
 }
 
 #subheader {
@@ -792,7 +793,7 @@ header {
         justify-content: center;
         align-items: center;
         flex-shrink: 0;
-        cursor: url("../ng/pics/star.png"), auto;
+        cursor: url("../src/pics/star.png"), auto;
         &::before {
             color: $favorite-color;
             display: none;
@@ -1195,3 +1196,14 @@ div.chip>p {
 /******************************************************/
 /*                    /ACCESSIBILITY                  */
 /******************************************************/
+
+/******************************************************/
+/*                    DASHBOARD                       */
+/******************************************************/
+.dropdown-checkbox-toggle i {
+    transition: rotate 0.3s ease;
+}
+
+.dropdown-checkbox-toggle[aria-expanded="true"] i {
+    rotate: 90deg;
+}

@@ -184,184 +184,179 @@ class Contract extends CommonDBTM {
    **/
    function showForm($ID, $options = []) {
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td><td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-      echo "<td>".ContractType::getTypeName(1)."</td><td >";
-      ContractType::dropdown(['value' => $this->fields["contracttypes_id"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._x('phone', 'Number')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "num");
-      echo "</td>";
-
-      $randDropdown = mt_rand();
-      echo "<td><label for='dropdown_states_id$randDropdown'>".__('Status')."</label></td>";
-      echo "<td>";
-      State::dropdown([
-         'value'     => $this->fields["states_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_visible_contract' => 1],
-         'rand'      => $randDropdown
-      ]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Start date')."</td>";
-      echo "<td>";
-      Html::showDateField("begin_date", ['value' => $this->fields["begin_date"]]);
-      echo "</td>";
-      echo "<td>".__('Initial contract period')."</td><td>";
-      Dropdown::showNumber("duration", ['value' => $this->fields["duration"],
-                                             'min'   => 1,
-                                             'max'   => 120,
-                                             'step'  => 1,
-                                             'toadd' => [0 => Dropdown::EMPTY_VALUE],
-                                             'unit'  => 'month']);
-      if (!empty($this->fields["begin_date"])) {
-         echo " -> " . Infocom::getWarrantyExpir(
-            $this->fields["begin_date"],
-            $this->fields["duration"],
-            0,
-            true,
-            $this->fields['renewal'] == self::RENEWAL_TACIT
-         );
-      }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Notice')."</td><td>";
-      Dropdown::showNumber("notice", ['value' => $this->fields["notice"],
-                                           'min'   => 0,
-                                           'max'   => 120,
-                                           'step'  => 1,
-                                           'toadd' => [],
-                                           'unit'  => 'month']);
-      if (!empty($this->fields["begin_date"])
-          && ($this->fields["notice"] > 0)) {
-         echo " -> ".Infocom::getWarrantyExpir($this->fields["begin_date"],
-                                               $this->fields["duration"], $this->fields["notice"],
-                                               true);
-      }
-      echo "</td>";
-      echo "<td>".__('Account number')."</td><td>";
-      Html::autocompletionTextField($this, "accounting_number");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Contract renewal period')."</td><td>";
-      Dropdown::showNumber("periodicity",
-                           ['value' => $this->fields["periodicity"],
-                                 'min'   => 12,
-                                 'max'   => 60,
-                                 'step'  => 12,
-                                 'toadd' => [0 => Dropdown::EMPTY_VALUE,
-                                                  1 => sprintf(_n('%d month', '%d months', 1), 1),
-                                                  2 => sprintf(_n('%d month', '%d months', 2), 2),
-                                                  3 => sprintf(_n('%d month', '%d months', 3), 3),
-                                                  6 => sprintf(_n('%d month', '%d months', 6), 6)],
-                                 'unit'  => 'month']);
-      echo "</td>";
-      echo "<td>".__('Invoice period')."</td>";
-      echo "<td>";
-      Dropdown::showNumber("billing",
-                           ['value' => $this->fields["billing"],
-                                 'min'   => 12,
-                                 'max'   => 60,
-                                 'step'  => 12,
-                                 'toadd' => [0 => Dropdown::EMPTY_VALUE,
-                                                  1 => sprintf(_n('%d month', '%d months', 1), 1),
-                                                  2 => sprintf(_n('%d month', '%d months', 2), 2),
-                                                  3 => sprintf(_n('%d month', '%d months', 3), 3),
-                                                  6 => sprintf(_n('%d month', '%d months', 6), 6)],
-                                 'unit'  => 'month']);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>".__('Renewal')."</td><td>";
-      self::dropdownContractRenewal("renewal", $this->fields["renewal"]);
-      echo "</td>";
-      echo "<td>".__('Max number of items')."</td><td>";
-      Dropdown::showNumber("max_links_allowed", ['value' => $this->fields["max_links_allowed"],
-                                                      'min'   => 1,
-                                                      'max'   => 200000,
-                                                      'step'  => 1,
-                                                      'toadd' => [0 => __('Unlimited')]]);
-      echo "</td></tr>";
-
-      if (Entity::getUsedConfig("use_contracts_alert", $this->fields["entities_id"])) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Email alarms')."</td>";
-         echo "<td>";
-         self::dropdownAlert(['name'  => "alert",
-                                   'value' => $this->fields["alert"]]);
-         Alert::displayLastAlert(__CLASS__, $ID);
-         echo "</td>";
-         echo "<td colspan='2'>&nbsp;</td>";
-         echo "</tr>";
-      }
-      echo "<tr class='tab_bg_1'><td class='top'>".__('Comments')."</td>";
-      echo "<td class='center' colspan='3'>";
-      echo "<textarea cols='50' rows='4' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>".__('Support hours')."</td>";
-      echo "<td colspan='3'>&nbsp;</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('on week')."</td>";
-      echo "<td colspan='3'>";
-      echo "<table width='100%'><tr><td width='20%'>&nbsp;</td>";
-      echo "<td width='20%'>";
-      echo "<span class='small_space'>".__('Start')."</span>";
-      echo "</td><td width='20%'>";
-      Dropdown::showHours("week_begin_hour", ['value' => $this->fields["week_begin_hour"]]);
-      echo "</td><td width='20%'>";
-      echo "<span class='small_space'>".__('End')."</span></td><td width='20%'>";
-      Dropdown::showHours("week_end_hour", ['value' => $this->fields["week_end_hour"]]);
-      echo "</td></tr></table>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('on Saturday')."</td>";
-      echo "<td colspan='3'>";
-      echo "<table width='100%'><tr><td width='20%'>";
-      Dropdown::showYesNo("use_saturday", $this->fields["use_saturday"]);
-      echo "</td><td width='20%'>";
-      echo "<span class='small_space'>".__('Start')."</span>";
-      echo "</td><td width='20%'>";
-      Dropdown::showHours("saturday_begin_hour",
-                          ['value' => $this->fields["saturday_begin_hour"]]);
-      echo "</td><td width='20%'>";
-      echo "<span class='small_space'>".__('End')."</span>";
-      echo "</td><td width='20%'>";
-      Dropdown::showHours("saturday_end_hour",
-                          ['value' => $this->fields["saturday_end_hour"]]);
-      echo "</td></tr></table>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Sundays and holidays')."</td>";
-      echo "<td colspan='3'>";
-      echo "<table width='100%'><tr><td width='20%'>";
-      Dropdown::showYesNo("use_monday", $this->fields["use_monday"]);
-      echo "</td><td width='20%'>";
-      echo "<span class='small_space'>".__('Start')."</span>";
-      echo "</td><td width='20%'>";
-      Dropdown::showHours("monday_begin_hour", ['value' => $this->fields["monday_begin_hour"]]);
-      echo "</td><td width='20%'>";
-      echo "<span class='small_space'>".__('End')."</span>";
-      echo "</td><td width='20%'>";
-      Dropdown::showHours("monday_end_hour", ['value' => $this->fields["monday_end_hour"]]);
-      echo "</td></tr></table>";
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
+      $form = [
+         'action' => $this->getFormURL(),
+         'content' => [
+            __('Add a contract') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Name') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields['name'],
+                  ],
+                  ContractType::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'contracttypes_id',
+                     'values' => getOptionForItems('ContractType'),
+                     'value' => $this->fields['contracttypes_id'],
+                  ],
+                  _x('phone', 'Number') => [
+                     'type' => 'text',
+                     'name' => 'num',
+                     'value' => $this->fields['num'],
+                  ],
+                  __('Status') => [
+                     'type' => 'select',
+                     'name' => 'states_id',
+                     'values' => getOptionForItems('State',
+                     ['is_visible_contract' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'value' => $this->fields['states_id'],
+                  ],
+                  __('Start date') => [
+                     'type' => 'date',
+                     'name' => 'begin_date',
+                     'value' => $this->fields['begin_date'],
+                  ],
+                  __('Initial contract period') => [
+                     'type' => 'number',
+                     'name' => 'duration',
+                     'min' => 0,
+                     'max' => 120,
+                     'step' => 1,
+                     'after' => __('month') . !empty($this->fields["begin_date"] ? (' -> ' . Infocom::getWarrantyExpir(
+                        $this->fields["begin_date"],
+                        $this->fields["duration"],
+                        0,
+                        true,
+                        $this->fields['renewal'] == self::RENEWAL_TACIT
+                     )) : ''),
+                     'value' => $this->fields['duration'],
+                  ],
+                  __('Notice') => [
+                     'type' => 'number',
+                     'name' => 'notice',
+                     'min' => 0,
+                     'max' => 120,
+                     'step' => 1,
+                     'after' => __('month') . !empty($this->fields["begin_date"] ? (' -> ' . Infocom::getWarrantyExpir(
+                        $this->fields["begin_date"],
+                        $this->fields["duration"],
+                        $this->fields["notice"],
+                        true,
+                        $this->fields['renewal'] == self::RENEWAL_TACIT
+                     )) : ''),
+                     'value' => $this->fields['notice'],
+                  ],
+                  __('Account number') => [
+                     'type' => 'text',
+                     'name' => 'accounting_number',
+                     'value' => $this->fields['accounting_number'],
+                  ],
+                  __('Contract renewal period') => [
+                     'type' => 'number',
+                     'name' => 'periodicity',
+                     'min' => 12,
+                     'max' => 60,
+                     'step' => 12,
+                     'after' => __('month'),
+                     'value' => $this->fields['periodicity'],
+                  ],
+                  __('Invoice period') => [
+                     'type' => 'number',
+                     'name' => 'billing',
+                     'min' => 12,
+                     'max' => 60,
+                     'step' => 12,
+                     'after' => __('month'),
+                     'value' => $this->fields['billing'],
+                  ],
+                  __('Renewal') => [
+                     'type' => 'select',
+                     'name' => 'renewal',
+                     'values' => [
+                        self::RENEWAL_NEVER => __('Never'),
+                        self::RENEWAL_TACIT => __('Tacit'),
+                        self::RENEWAL_EXPRESS => __('Express'),
+                     ],
+                     'value' => $this->fields['renewal'],
+                  ],
+                  __('Max number of items') => [
+                     'type' => 'number',
+                     'name' => 'max_links_allowed',
+                     'min' => 1,
+                     'max' => 200000,
+                     'step' => 1,
+                     'AFTER' => "(0:" . __('Unlimited'),
+                     'value' => $this->fields['max_links_allowed'],
+                  ],
+                  __('Email alarms') => (Entity::getUsedConfig("use_contracts_alert", $this->fields["entities_id"])) ?
+                     [
+                        'type' => 'select',
+                        'name' => 'alert',
+                        'values' => [
+                           Alert::END => __('End'),
+                           Alert::NOTICE => __('Notice'),
+                        ],
+                        'value' => $this->fields['alert'],
+                     ] : [],
+                  __('Comments') => [
+                     'type' => 'textarea',
+                     'name' => 'comment',
+                     'value' => $this->fields['comment'],
+                  ],
+               ]
+            ],
+            __('Support hours') => [
+               'visible' => true,
+               'inputs' => [
+                  __('on week start') => [
+                     'type' => 'time',
+                     'name' => 'week_begin_hour',
+                     'value' => $this->fields['week_begin_hour'],
+                     'col_lg' => 6,
+                  ],
+                  __('on week end') => [
+                     'type' => 'time',
+                     'name' => 'week_end_hour',
+                     'value' => $this->fields['week_end_hour'],
+                     'col_lg' => 6,
+                  ],
+                  __('on Saturday') => [
+                     'type' => 'checkbox',
+                     'name' => 'use_saturday',
+                     'value' => $this->fields['use_saturday'],
+                  ],
+                  __('on Saturday start') => [
+                     'type' => 'time',
+                     'name' => 'saturday_begin_hour',
+                     'value' => $this->fields['saturday_begin_hour'],
+                  ],
+                  __('on Saturday end') => [
+                     'type' => 'time',
+                     'name' => 'saturday_end_hour',
+                     'value' => $this->fields['saturday_end_hour'],
+                  ],
+                  __('Sundays and holidays') => [
+                     'type' => 'checkbox',
+                     'name' => 'use_sunday',
+                     'value' => $this->fields['use_monday'],
+                  ],
+                  __('on Sunday start') => [
+                     'type' => 'time',
+                     'name' => 'sunday_begin_hour',
+                     'value' => $this->fields['monday_begin_hour'],
+                  ],
+                  __('on Sunday end') => [
+                     'type' => 'time',
+                     'name' => 'sunday_end_hour',
+                     'value' => $this->fields['monday_end_hour'],
+                  ],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
 
       return true;
    }

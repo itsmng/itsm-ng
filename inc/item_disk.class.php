@@ -168,80 +168,103 @@ class Item_Disk extends CommonDBChild {
          $item->getFromDB($options['items_id']);
       }
 
-      $this->showFormHeader($options);
-
-      if ($this->isNewID($ID)) {
-         echo "<input type='hidden' name='items_id' value='".$options['items_id']."'>";
-         echo "<input type='hidden' name='itemtype' value='".$options['itemtype']."'>";
+      $form = [
+         'action' => self::getFormURL(),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => 'add',
+               'value' => '<i class="fas fa-plus"></i>' . __('Add'),
+               'class' => 'btn btn-secondary'
+            ]
+         ],
+         'content' => [
+            [
+               'visible' => false,
+               'inputs' => [
+                  $this->isNewID($ID) ? [
+                     'type' => 'hidden',
+                     'name' => 'itemtype',
+                     'value' => $options['itemtype']
+                  ] : [],
+                  $this->isNewID($ID) ? [
+                     'type' => 'hidden',
+                     'name' => 'items_id',
+                     'value' => $options['items_id']
+                  ] : [],
+               ]
+                  ],
+            __('New item') . ' ' . $this->getTypeName(1) => [
+               'visible' => true,
+               'inputs' => [
+                  __('Name') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields['name'],
+                  ],
+                  __('Partition') => [
+                     'type' => 'text',
+                     'name' => 'device',
+                     'value' => $this->fields['device'],
+                  ],
+                  __('Mount point') => [
+                     'type' => 'text',
+                     'name' => 'mountpoint',
+                     'value' => $this->fields['mountpoint'],
+                  ],
+                  Filesystem::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'filesystems_id',
+                     'values' => getOptionForItems('Filesystem'),
+                     'value' => $this->fields['filesystems_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'Filesystem'),
+                  ],
+                  __('Global size') => [
+                     'type' => 'text',
+                     'name' => 'totalsize',
+                     'value' => $this->fields['totalsize'],
+                     'after' => __('Mio'),
+                  ],
+                  __('Free size') => [
+                     'type' => 'text',
+                     'name' => 'freesize',
+                     'value' => $this->fields['freesize'],
+                     'after' => __('Mio'),
+                  ],
+                  __('Encryption') => [
+                     'type' => 'select',
+                     'name' => 'encryption_status',
+                     'values' => self::getAllEncryptionStatus(),
+                     'value' => $this->fields['encryption_status'],
+                  ],
+                  __('Encryption tool') => [
+                     'type' => 'text',
+                     'name' => 'encryption_tool',
+                     'value' => $this->fields['encryption_tool'],
+                  ],
+                  __('Encryption algorithm') => [
+                     'type' => 'text',
+                     'name' => 'encryption_algorithm',
+                     'value' => $this->fields['encryption_algorithm'],
+                  ],
+                  __('Encryption type') => [
+                     'type' => 'text',
+                     'name' => 'encryption_type',
+                     'value' => $this->fields['encryption_type'],
+                  ],
+               ]
+            ]
+         ]
+      ];
+      if (Plugin::haveImport() && $ID && $this->fields['is_dynamic']) {
+         ob_start();
+         Plugin::doHook("autoinventory_form", $this, $form);
+         $hook = ob_get_clean();
+         $form[__('New item') . ' ' . $this->getTypeName(1)][__('Automatic inventory')] = [
+            'content' => $hook,
+         ];
       }
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Item', 'Items', 1)."</td>";
-      echo "<td>".$item->getLink()."</td>";
-      if (Plugin::haveImport()) {
-         echo "<td>".__('Automatic inventory')."</td>";
-         echo "<td>";
-         if ($ID && $this->fields['is_dynamic']) {
-            Plugin::doHook("autoinventory_information", $this);
-         } else {
-            echo __('No');
-         }
-         echo "</td>";
-      } else {
-         echo "<td colspan='2'></td>";
-      }
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td><td>".__('Partition')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "device");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Mount point')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "mountpoint");
-      echo "</td><td>".Filesystem::getTypeName(1)."</td>";
-      echo "<td>";
-      Filesystem::dropdown(['value' => $this->fields["filesystems_id"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Global size')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "totalsize");
-      echo "&nbsp;".__('Mio')."</td>";
-
-      echo "<td>".__('Free size')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "freesize");
-      echo "&nbsp;".__('Mio')."</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Encryption')."</td>";
-      echo "<td>";
-      echo self::getEncryptionStatusDropdown($this->fields['encryption_status']);
-      echo "</td><td>".__('Encryption tool')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "encryption_tool");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Encryption algorithm')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "encryption_algorithm");
-      echo "</td><td>".__('Encryption type')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "encryption_type");
-      echo "</td></tr>";
-
-      $itemtype = $this->fields['itemtype'];
-      $options['canedit'] = Session::haveRight($itemtype::$rightname, UPDATE);
-      $this->showFormButtons($options);
+      renderTwigForm($form);
 
       return true;
 
@@ -304,7 +327,7 @@ class Item_Disk extends CommonDBChild {
       if ($canedit
           && !(!empty($withtemplate) && ($withtemplate == 2))) {
          echo "<div class='center firstbloc'>".
-               "<a class='vsubmit' href='".self::getFormURL()."?itemtype=$itemtype&items_id=$ID&amp;withtemplate=".
+               "<a class='btn btn-secondary' href='".self::getFormURL()."?itemtype=$itemtype&items_id=$ID&amp;withtemplate=".
                   $withtemplate."'>";
          echo __('Add a volume');
          echo "</a></div>\n";

@@ -830,6 +830,7 @@ class CommonGLPI {
     * @return void
    **/
    function showTabsContent($options = []) {
+      global $CFG_GLPI;
 
       // for objects not in table like central
       if (isset($this->fields['id'])) {
@@ -869,8 +870,6 @@ class CommonGLPI {
 
          $extraparamhtml = "&amp;".Toolbox::append_params($cleaned_options, '&amp;');
       }
-      echo "<div class='glpi_tabs ".($this->isNewID($ID)?"new_form_tabs":"")."'>";
-      echo "<div id='tabspanel' class='center-h'></div>";
       $onglets     = $this->defineAllTabs($options);
       $display_all = true;
       if (isset($onglets['no_all_tab'])) {
@@ -902,12 +901,8 @@ class CommonGLPI {
             ];
          }
       }
-      echo "</div>";
-      require_once GLPI_ROOT . "/ng/twig.class.php";
-      $twig = Twig::load(GLPI_ROOT . "/templates", false);
-      global $CFG_GLPI;
       try {
-         echo $twig->render('item.twig', [
+         renderTwigTemplate('item.twig', [
             'tabs' => $tabs,
             'layoutFor' => $target,
             'glpiroot' => $CFG_GLPI['root_doc'],
@@ -1034,10 +1029,8 @@ class CommonGLPI {
                   <i class='far fa-list-alt pointer'></i>
                </a>";
 
-         require_once GLPI_ROOT . "/ng/twig.class.php";
-         $twig = Twig::load(GLPI_ROOT . "/templates", false);
          try {
-            echo $twig->render('tabSelection.twig', [
+            renderTwigTemplate('tabSelection.twig', [
                   'tabs' => $tabs,
             ]);
          } catch (Exception $e) {
@@ -1185,10 +1178,8 @@ class CommonGLPI {
          echo "</div>"; // .navigationheader
          
       } else {
-         require_once GLPI_ROOT . "/ng/twig.class.php";
-         $twig = Twig::load(GLPI_ROOT . "/templates", false);
          try {
-            echo $twig->render('tabSelection.twig', [
+            renderTwigTemplate('tabSelection.twig', [
                   'tabs' => $tabs,
             ]);
          } catch (Exception $e) {
@@ -1219,16 +1210,7 @@ class CommonGLPI {
     * @return boolean
     */
    public static function isLayoutExcludedPage() {
-      global $CFG_GLPI;
-
-      if (basename($_SERVER['SCRIPT_NAME']) == "updatecurrenttab.php") {
-         $base_referer = basename($_SERVER['HTTP_REFERER']);
-         $base_referer = explode("?", $base_referer);
-         $base_referer = $base_referer[0];
-         return in_array($base_referer, $CFG_GLPI['layout_excluded_pages']);
-      }
-
-      return in_array(basename($_SERVER['SCRIPT_NAME']), $CFG_GLPI['layout_excluded_pages']);
+      return true;
    }
 
 

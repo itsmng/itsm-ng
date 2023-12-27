@@ -259,6 +259,8 @@ $default_prefs = [
    'enable_api_login_credentials'            => '0',
    'enable_api_login_external_token'         => '1',
    'url_base_api'                            => 'http://localhost/itsm-ng/api',
+   'url_dashboard_api'                       => 'http://localhost:3000',
+   'dashboard_api_token'                     => Toolbox::getRandomString(32),
    'login_remember_time'                     => '604800',
    'login_remember_default'                  => '1',
    'use_notifications'                       => '0',
@@ -694,29 +696,6 @@ $tables['glpi_crontasks'] = [
       'logs_lifetime' => 30,
    ],
 ];
-
-$dashboards_data = include_once __DIR__ . "/update_94_95/dashboards.php";
-$tables['glpi_dashboards_dashboards'] = [];
-$tables['glpi_dashboards_items'] = [];
-$i = $j = 1;
-foreach ($dashboards_data as $default_dashboard) {
-   $items = $default_dashboard['_items'];
-   unset($default_dashboard['_items']);
-   $tables['glpi_dashboards_dashboards'][] = array_merge([
-      'id' => $i
-   ], $default_dashboard);
-
-   foreach ($items as $item) {
-      $tables['glpi_dashboards_items'][] = array_merge([
-         'id' => $j,
-         'dashboards_dashboards_id' => $i,
-      ], $item);
-
-      $j++;
-   }
-
-   $i++;
-}
 
 $tables['glpi_devicememorytypes'] = [
    [

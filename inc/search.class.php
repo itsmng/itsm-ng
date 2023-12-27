@@ -1471,7 +1471,6 @@ class Search {
     * @return void
    **/
    static function displayData(array $data) {
-      require_once GLPI_ROOT . "/ng/twig.class.php";
       global $CFG_GLPI;
 
 
@@ -1526,15 +1525,13 @@ class Search {
 
       Html::showMassiveActions($massiveactionparams);
       
-      echo $twig->render('search.twig', [
+      renderTwigTemplate('search.twig', [
          'is_trash' =>$data['search']['is_deleted'],
          'itemtype' => $data['itemtype'],
          'fields' => $fields,
          'values' => $values,
          'searchConfigRights' => $searchconfigRights,
-         
       ]);
-      
    }
 
 

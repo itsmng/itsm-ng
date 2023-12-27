@@ -7,7 +7,7 @@
 
 class Language {
 
-    private static $languages_json_path = GLPI_ROOT . "/ng/languages/languages.json";
+    private static $languages_json_path = GLPI_ROOT . "/src/languages/languages.json";
 
 
 

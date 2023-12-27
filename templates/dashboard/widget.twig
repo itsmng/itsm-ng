@@ -1,0 +1,40 @@
+{% if widget.type == 'count' %}
+    {{ _self.number(widget.title, widget.value, widget.icon, widget.color) }}
+{% else %}
+    {{ _self.chart(widget.type, widget.title, widget.value[0], widget.value[1], widget.options, widget.color) }}
+{% endif %}
+
+{% macro number(title = '', value = 0, icon = '', color = "black") %}
+	<div class="d-flex justify-content-center align-items-center">
+		<i class="{{icon}} fs-1 text-{{color}}"></i>
+		<div class="ms-3">
+			<div class="fw-bold text-{{color}} text-wrap">{{title|raw}}</div>
+			<div class="fs-3 text-${color}">{{value}}</div>
+		</div>
+	</div>
+{% endmacro %}
+
+{% macro chart(type = 'LineChart', title = '', labels = [], series = [], options = [], color = "black") %}
+{% set rand = random() %}
+	<div class="fw-bold fs-6 {{color ? "text-" ~ color : ''}}">{{title}}</div>
+	<div class="ct-chart ct-golden-section w-100" style="max-height: 20rem" id="widgetFor{{title|slug}}_{{rand}}"></div>
+	<link rel="stylesheet" href="/~antoine/itsm-ng2.0/node_modules/chartist/dist/index.css">
+	<script>
+	$(document).ready(function() {
+		var chart = new Chartist.{{type|capitalize ~ 'Chart'}}("#widgetFor{{title|slug}}_{{rand}}",
+			{
+				labels: {{labels | json_encode | raw}},
+				series: {{series | json_encode | raw}},
+			}, {
+				distributeSeries: true,
+				{% for key, option in options %}
+					{{key}}: {{option | json_encode | raw}},
+				{% endfor %}
+			}
+		);
+		setTimeout(function() {
+			chart.update();
+		}, 500);
+	});
+	</script>
+{% endmacro %}
