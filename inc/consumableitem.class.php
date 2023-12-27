@@ -125,7 +125,6 @@ class ConsumableItem extends CommonDBTM {
     * @return true
     */
    function showForm($ID, $options = []) {
-      require_once GLPI_ROOT . "/ng/form.utils.php";
       $form = [
          'action' => $this->getFormURL(),
          'content' => [

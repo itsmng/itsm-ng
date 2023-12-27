@@ -288,7 +288,7 @@ function glpi_autoload($classname) {
       return true;
    }
 
-   $dir = GLPI_ROOT . "/inc/";
+   $dirs = array_merge([GLPI_ROOT . "/inc/"], glob(GLPI_ROOT . "/src/*/"));
 
    // Deprecation warn for Computer_Software* classes
    if ($classname === 'Computer_SoftwareLicense') {
@@ -344,17 +344,18 @@ function glpi_autoload($classname) {
       }
    }
 
-   if (file_exists("$dir$item.class.php")) {
-      include_once("$dir$item.class.php");
-      if (isset($_SESSION['glpi_use_mode'])
-          && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
-         $DEBUG_AUTOLOAD[] = $classname;
+   foreach ($dirs as $dir) {
+      if (file_exists("$dir$item.class.php")) {
+         include_once("$dir$item.class.php");
+         if (isset($_SESSION['glpi_use_mode'])
+             && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
+            $DEBUG_AUTOLOAD[] = $classname;
+         } else if (!isset($notfound["x$classname"])) {
+            // trigger an error to get a backtrace, but only once (use prefix 'x' to handle empty case)
+            // trigger_error("GLPI autoload : file $dir$item.class.php not founded trying to load class '$classname'");
+            $notfound["x$classname"] = true;
+         }
       }
-
-   } else if (!isset($notfound["x$classname"])) {
-      // trigger an error to get a backtrace, but only once (use prefix 'x' to handle empty case)
-      // trigger_error("GLPI autoload : file $dir$item.class.php not founded trying to load class '$classname'");
-      $notfound["x$classname"] = true;
    }
 }
 

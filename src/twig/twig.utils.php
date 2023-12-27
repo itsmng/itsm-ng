@@ -61,6 +61,16 @@ function getOptionsForUsers($right, $conditions = [], $display_emptychoice = tru
     return $options;
 }
 
+function renderTwigTemplate($path, $vars) {
+    require_once GLPI_ROOT . "/src/twig/twig.class.php";
+    $twig = Twig::load(GLPI_ROOT . "/templates", false);
+    try {
+        echo $twig->render($path, $vars);
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+}
+
 /**
  * @param $form
  * @param $additionnalHtml
@@ -69,7 +79,7 @@ function getOptionsForUsers($right, $conditions = [], $display_emptychoice = tru
  */
 function renderTwigForm($form, $additionnalHtml = '', $colAmount = 2)
 {
-    require_once GLPI_ROOT . "/ng/twig.class.php";
+    require_once GLPI_ROOT . "/src/twig/twig.class.php";
     $twig = Twig::load(GLPI_ROOT . "/templates", false);
     try {
         echo $twig->render('form.twig', [
@@ -85,16 +95,16 @@ function renderTwigForm($form, $additionnalHtml = '', $colAmount = 2)
 function getHiddenInputsForItemForm($item, $options)
 {
     return [
-        [
+        $options['id'] != '' ?[
             'type' => 'hidden',
             'name' => 'entities_id',
             'value' => $item->fields['entities_id'],
-        ],
-        [
+        ] : [],
+        $options['id'] != '' ? [
             'type' => 'hidden',
             'name' => 'is_recursive',
             'value' => $item->fields['is_recursive'],
-        ],
+        ] : [],
         [
             'type' => 'hidden',
             'name' => isset($options['id']) && $options['id'] != '' ? 'update' : 'add',

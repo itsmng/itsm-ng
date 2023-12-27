@@ -294,7 +294,7 @@ class Item_OperatingSystem extends CommonDBRelation {
 
 
    function showForm($ID, $options = []) {
-      $colspan = 4;
+   $colspan = 4;
 
       $form = [
          'action' => $this->getFormURL(),

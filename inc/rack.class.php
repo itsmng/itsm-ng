@@ -149,8 +149,6 @@ class Rack extends CommonDBTM
       $all_positions = isset($this->fields['vis_cols']) ? $room->getAllPositions() : [];
       $positions = array_diff_key($all_positions, $room->getFilled($this->fields['position']));
    
-      require_once GLPI_ROOT . "/ng/form.utils.php";
-
       $title = __('New element').' '.self::getTypeName(1);
       $form = [
          'action' => $CFG_GLPI['root_doc'] . '/front/rack.form.php',

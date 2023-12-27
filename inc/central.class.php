@@ -31,6 +31,7 @@
  */
 
 use Glpi\Event;
+use Sabre\HTTP\HttpException;
 
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
@@ -62,17 +63,12 @@ class Central extends CommonGLPI {
 
       if ($item->getType() == __CLASS__) {
          $tabs = [
+            0 => __('Dashboard'),
             1 => __('Personal View'),
             2 => __('Group View'),
             3 => __('Global View'),
             4 => _n('RSS feed', 'RSS feeds', Session::getPluralNumber()),
          ];
-
-         $grid = new Glpi\Dashboard\Grid('central');
-         if ($grid->canViewOneDashboard()) {
-            array_unshift($tabs, __('Dashboard'));
-         }
-
          return $tabs;
       }
       return '';
@@ -112,89 +108,95 @@ class Central extends CommonGLPI {
       Plugin::doHook('display_central');
       echo "</table>";
 
-      self::showMessages();
-
-      $default   = Glpi\Dashboard\Grid::getDefaultDashboardForMenu('central');
-      $dashboard = new Glpi\Dashboard\Grid($default);
-      global $DB;
-      $ticketsByStatus = iterator_to_array($DB->query('SELECT 
-      status,
-      COUNT(*) AS ticket_count
-         FROM 
-            glpi_tickets
-         WHERE 
-            is_deleted = 0
-         GROUP BY 
-            status;
-      '));
-      $finalResult = [];
-      foreach (Ticket::getAllStatusArray() as $index => $status) {
-         $finalResult[$index] = [
-            'status' => $index,
-            'ticket_count' => 0
-         ];
-      }
-      foreach ($ticketsByStatus as $ticket) {
-         $finalResult[$ticket['status']] = $ticket;
-      }
+      $dashboard = new Dashboard();
+      if ($dashboard->getForUser()) {
+         $dashboard->show();
+      } else {
+         try {
+            $dashboard->getDashboardData('');
+            echo "<div class='center b'>";
+            echo __('No dashboard available');
+            echo "</div>";
+         } catch (Exception $e) {
+            global $DB;
       
-      $dashboard->show([
-         'widgetGrid' => [
-            [
-               [
-                  'type' => 'number',
-                  'title' => __('Computer'),
-                  'value' => countElementsInTable('glpi_computers'),
-                  'icon' => 'fas fa-laptop',
-               ],
-               [
-                  'type' => 'number',
-                  'title' => __('Rack'),
-                  'value' => countElementsInTable('glpi_racks'),
-                  'icon' => 'fas fa-server',
-               ],
-               [
-                  'type' => 'number',
-                  'title' => __('Network device'),
-                  'value' => countElementsInTable('glpi_networkequipments'),
-                  'icon' => 'fas fa-network-wired',
-               ],
-               [
-                  'type' => 'number',
-                  'title' => __('Softwares'),
-                  'value' => countElementsInTable('glpi_softwares'),
-                  'icon' => 'fas fa-cube',
-               ],
-            ], [
-               [
-                  'type' => 'BarChart',
-                  'title' => __('Tickets by status'),
-                  'labels' => array_values(Ticket::getAllStatusArray()),
-                  'series' => [array_column($finalResult, 'ticket_count')],
-                  'options' => ['height' => '10rem'],
-               ],
-            ], [
-               [
-                  'type' => 'number',
-                  'title' => __('Ticket'),
-                  'value' => countElementsInTable('glpi_tickets'),
-                  'icon' => 'fas fa-ticket',
-               ],
-               [
-                  'type' => 'number',
-                  'title' => __('User'),
-                  'value' => countElementsInTable('glpi_users'),
-                  'icon' => 'fas fa-ticket',
-               ],
-               [
-                  'type' => 'number',
-                  'title' => __('Entity'),
-                  'value' => countElementsInTable('glpi_entities'),
-                  'icon' => 'fas fa-ticket',
-               ],
-            ]
-         ]
-      ]);
+            $ticketsByStatus = iterator_to_array($DB->query('SELECT status,
+               COUNT(*) AS ticket_count
+               FROM 
+                  glpi_tickets
+               WHERE 
+                  is_deleted = 0
+               GROUP BY 
+                  status;
+            '));
+            $finalResult = [];
+            foreach (Ticket::getAllStatusArray() as $index => $status) {
+               $finalResult[$index] = [
+                  'status' => $index,
+                  'ticket_count' => 0
+               ];
+            }
+            foreach ($ticketsByStatus as $ticket) {
+               $finalResult[$ticket['status']] = $ticket;
+            }
+
+            renderTwigTemplate('dashboard/dashboard.twig', [
+               'widgetGrid' => [
+                  [
+                     [
+                        'type' => 'count',
+                        'title' => __('Computer'),
+                        'value' => countElementsInTable('glpi_computers', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                        'icon' => 'fas fa-laptop',
+                     ],
+                     [
+                        'type' => 'count',
+                        'title' => __('Rack'),
+                        'value' => countElementsInTable('glpi_racks', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                        'icon' => 'fas fa-server',
+                     ],
+                     [
+                        'type' => 'count',
+                        'title' => __('Network device'),
+                        'value' => countElementsInTable('glpi_networkequipments', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                        'icon' => 'fas fa-network-wired',
+                     ],
+                     [
+                        'type' => 'count',
+                        'title' => __('Softwares'),
+                        'value' => countElementsInTable('glpi_softwares', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                        'icon' => 'fas fa-cube',
+                     ],
+                  ], [
+                     [
+                        'type' => 'bar',
+                        'title' => __('Tickets by status'),
+                        'value' => [array_values(Ticket::getAllStatusArray()), [array_column($finalResult, 'ticket_count')]],
+                     ],
+                  ], [
+                     [
+                        'type' => 'count',
+                        'title' => __('Ticket'),
+                        'value' => countElementsInTable('glpi_tickets', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                        'icon' => 'fas fa-ticket-alt',
+                     ],
+                     [
+                        'type' => 'count',
+                        'title' => __('User'),
+                        'value' => countElementsInTable('glpi_users', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                        'icon' => 'fas fa-user',
+                     ],
+                     [
+                        'type' => 'count',
+                        'title' => __('Entity'),
+                        'value' => countElementsInTable('glpi_entities', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                        'icon' => 'fas fa-sitemap',
+                     ],
+                  ]
+               ]
+            ]);
+         }
+      }
 
       Html::accessibilityHeader();
    }

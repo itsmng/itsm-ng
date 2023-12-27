@@ -2003,7 +2003,7 @@ class Profile extends CommonDBTM
             'field'  => 'personalization'
          ],
          [
-            'itemtype'  => 'Glpi\Dashboard\Grid',
+            'itemtype'  => 'Grid',
             'label'     => __('All dashboards'),
             'field'     => 'dashboard'
          ],

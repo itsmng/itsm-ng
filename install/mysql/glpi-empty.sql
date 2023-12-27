@@ -1567,45 +1567,158 @@ CREATE TABLE `glpi_crontasks` (
 
 ### Dump table glpi_dashboards_dashboards
 
-DROP TABLE IF EXISTS `glpi_dashboards_dashboards`;
-CREATE TABLE `glpi_dashboards_dashboards` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `key` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `context` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'core',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `key` (`key`)
+DROP TABLE IF EXISTS `glpi_dashboards`;
+CREATE TABLE `glpi_dashboards` (
+  `id` int(11) NOT NULL UNIQUE AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` LONGTEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `profileId` int(11) NOT NULL DEFAULT 0,
+  `userId` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`profileId`, `userId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-### Dump table glpi_dashboards_items
+############################################
+### DASHBOARD TABLES                     ###
+############################################
+SET foreign_key_checks = 0;
+DROP TABLE IF EXISTS `Dashboard_Entity`;
+DROP TABLE IF EXISTS `Dashboard_Profile`;
+DROP TABLE IF EXISTS `Dashboard_Group`;
+DROP TABLE IF EXISTS `Dashboard_User`;
+DROP TABLE IF EXISTS `Dashboard_Location`;
+DROP TABLE IF EXISTS `Dashboard_AssetType`;
+DROP TABLE IF EXISTS `Dashboard_Type`;
+DROP TABLE IF EXISTS `Dashboard_Model`;
+DROP TABLE IF EXISTS `Dashboard_Asset`;
+SET foreign_key_checks = 1;
 
-DROP TABLE IF EXISTS `glpi_dashboards_items`;
-CREATE TABLE `glpi_dashboards_items` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `dashboards_dashboards_id` int(11) NOT NULL,
-  `gridstack_id` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `card_id` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `x` int(11) DEFAULT NULL,
-  `y` int(11) DEFAULT NULL,
-  `width` int(11) DEFAULT NULL,
-  `height` int(11) DEFAULT NULL,
-  `card_options` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`id`),
-  KEY `dashboards_dashboards_id` (`dashboards_dashboards_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+-- CreateTable
 
-### Dump table glpi_dashboards_rights
+CREATE TABLE `Dashboard_Entity` (
+    `id` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `parentId` INTEGER NULL,
 
-DROP TABLE IF EXISTS `glpi_dashboards_rights`;
-CREATE TABLE `glpi_dashboards_rights` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `dashboards_dashboards_id` int(11) NOT NULL,
-  `itemtype` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `items_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `dashboards_dashboards_id` (`dashboards_dashboards_id`),
-  UNIQUE KEY `unicity` (`dashboards_dashboards_id`, `itemtype`,`items_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    INDEX `Dashboard_Entity_parentId_key`(`parentId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Dashboard_Profile` (
+    `id` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Dashboard_Group` (
+    `id` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `entityId` INTEGER NOT NULL,
+
+    INDEX `Dashboard_Group_entityId_key`(`entityId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Dashboard_User` (
+    `id` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `groupId` INTEGER NULL,
+    `profileId` INTEGER NULL,
+
+    INDEX `Dashboard_User_groupId_key`(`groupId`),
+    INDEX `Dashboard_User_profileId_key`(`profileId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Dashboard_Location` (
+    `id` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Dashboard_AssetType` (
+    `id` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `Dashboard_AssetType_name_key`(`name`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Dashboard_Type` (
+    `id` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `assetTypeId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`, `assetTypeId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Dashboard_Model` (
+    `id` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `assetTypeId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`, `assetTypeId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Dashboard_Asset` (
+    `id` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `entityId` INTEGER NOT NULL,
+    `assetTypeId` INTEGER NOT NULL,
+    `locationId` INTEGER NULL,
+    `modelId` INTEGER NULL,
+    `typeId` INTEGER NULL,
+
+    PRIMARY KEY (`id`, `assetTypeId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Dashboard_Entity` ADD CONSTRAINT `Dashboard_Entity_parentId_fkey` FOREIGN KEY (`parentId`) REFERENCES `Dashboard_Entity`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Dashboard_Group` ADD CONSTRAINT `Dashboard_Group_entityId_fkey` FOREIGN KEY (`entityId`) REFERENCES `Dashboard_Entity`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Dashboard_User` ADD CONSTRAINT `Dashboard_User_groupId_fkey` FOREIGN KEY (`groupId`) REFERENCES `Dashboard_Group`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Dashboard_User` ADD CONSTRAINT `Dashboard_User_profileId_fkey` FOREIGN KEY (`profileId`) REFERENCES `Dashboard_Profile`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Dashboard_Type` ADD CONSTRAINT `Dashboard_Type_assetTypeId_fkey` FOREIGN KEY (`assetTypeId`) REFERENCES `Dashboard_AssetType`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Dashboard_Model` ADD CONSTRAINT `Dashboard_Model_assetTypeId_fkey` FOREIGN KEY (`assetTypeId`) REFERENCES `Dashboard_AssetType`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Dashboard_Asset` ADD CONSTRAINT `Dashboard_Asset_entityId_fkey` FOREIGN KEY (`entityId`) REFERENCES `Dashboard_Entity`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Dashboard_Asset` ADD CONSTRAINT `Dashboard_Asset_assetTypeId_fkey` FOREIGN KEY (`assetTypeId`) REFERENCES `Dashboard_AssetType`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Dashboard_Asset` ADD CONSTRAINT `Dashboard_Asset_locationId_fkey` FOREIGN KEY (`locationId`) REFERENCES `Dashboard_Location`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Dashboard_Asset` ADD CONSTRAINT `Dashboard_Asset_modelId_fkey` FOREIGN KEY (`modelId`) REFERENCES `Dashboard_Model`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Dashboard_Asset` ADD CONSTRAINT `Dashboard_Asset_typeId_fkey` FOREIGN KEY (`typeId`) REFERENCES `Dashboard_Type`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+
+############################################
+### /DASHBOARD TABLES                    ###
+############################################
+
 
 ### Dump table glpi_devicecasemodels
 

@@ -76,8 +76,6 @@ class PDU extends CommonDBTM {
    }
 
    function showForm($ID, $options = []) {
-      include_once GLPI_ROOT . "/ng/form.utils.php";
-
       $title = __('New item').' - '.self::getTypeName(1);
       $form = [
          'action' => $this->getFormURL(),

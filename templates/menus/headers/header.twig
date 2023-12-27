@@ -35,20 +35,19 @@
 					<a title={{'Options'|trans}} data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<i class="fas fa-sort-amount-down"></i>
 					</a>
-                    {% include "nav-settings.twig" %}
+                    {% include "menus/nav/nav-settings.twig" %}
 				</li>
 				<li id='menu-options' class="dropdown p-2">
 					<a title={{'Help'|trans}} href="https://www.itsm-ng.org">
 						<i class="fas fa-question"></i>
 					</a>
-                    {% include "nav-settings.twig" %}
 				</li>
 				<li id='preferences_link' class='p-2'>
 					<a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}">
 						<i class='fa fa-cog'></i>
                         <span class='sr-only'>{{'My settings'|trans}}</span>
 						{% if username %}
-							<span id='myname'>{{username}}</span>
+							<span id='myname test-info'>{{username}}</span>
 						{% endif %}
 					</a>
 				</li>
@@ -63,7 +62,7 @@
 		</header>
 
 		{% if accessibilityMenu %}
-			{% include "accessibilityMenu.twig" %}
+			{% include "menus/accessibilityMenu.twig" %}
 		{% endif %}
 
 		<div id="main-test" class="{{menu_position}}">
@@ -80,8 +79,8 @@
 			</nav>
 			<div class="main-container">
 				<div id="subheader" class="d-flex justify-content-between p-2">
-					{% include "breadcrumb.twig" with { 'items': breadcrumb_items } %}
+					{% include "menus/headers/utils/breadcrumb.twig" with { 'items': breadcrumb_items } %}
 					{{profileSelect|raw}}
-					{% include "actions.twig" with {'links': links, 'root_doc':root_doc} %}
+					{% include "menus/headers/utils/actions.twig" with {'links': links, 'root_doc':root_doc} %}
 				</div>
 				<main role='main' id='page'>

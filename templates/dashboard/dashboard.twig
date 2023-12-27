@@ -1,0 +1,89 @@
+<link rel="stylesheet" href="{{base}}/node_modules/chartist/dist/index.css">
+<div class="ms-auto text-end">
+{% if edit %}
+	<button type="button" onClick="toggleEdit()" class="btn btn-link btn-sm text-end"><i class='fas fa-edit'></i></button>
+{% endif %}
+	<button type="button" onClick="fullscreen()" class="btn btn-link btn-sm text-end"><i class='fas fa-expand'></i></button>
+</div>
+<div id="main-dashboard" class='container bg-white'>
+{% if edit %}
+	{{_self.editButton(false, [-1, -1])}}
+{% endif %}
+{% for rowIndex, row in widgetGrid %}
+	<div class="row bg-light mx-auto" style="height: calc( 100% / {{widgetGrid|length}});{{ edit ? 'width: 100%' : '' }}">
+	{% if edit %}
+		{{_self.editButton(true, [ rowIndex, -1 ])}}
+	{% endif %}
+			{% for colIndex, widget in row %}
+				<div class="col border d-flex flex-column-reverse align-items-center justify-content-center 
+				{{widget.background ? 'bg-' ~ widget.background : ''}}
+				">
+					{% include 'dashboard/widget.twig' with widget %}
+					{% if edit %}
+						<button type="button" class="ms-auto btn btn-link editButton" onClick="removeWidget({{rowIndex}},{{colIndex}})">
+							<i class="fas fa-trash-alt"></i>
+						</button>
+					{% endif %}
+				</div>
+				{% if edit %} {{_self.editButton(true, [rowIndex, colIndex + 1])}} {% endif %}
+			{% endfor %}
+		</div>
+	{% endfor %}
+	{% if edit %} {{_self.editButton(false, [widgetGrid|length + 1, -1])}} {% endif %}
+</div>
+
+{% if edit %}
+{% include 'dashboard/AddWidgetModal.twig' %}
+{% endif %}
+
+
+<script>
+	function fullscreen() {
+		var mainDashboard = document.getElementById("main-dashboard");
+
+		if (document.fullscreenElement || document.webkitFullscreenElement ||
+			document.mozFullScreenElement || document.msFullscreenElement) {
+			// If any element is in fullscreen, exit fullscreen
+			exitFullscreen();
+		} else {
+			// Otherwise, make the main dashboard fullscreen
+			requestFullscreen(mainDashboard);
+		}
+	}
+
+	function requestFullscreen(element) {
+		if (element.requestFullscreen) {
+			element.requestFullscreen();
+		} else if (element.webkitRequestFullscreen) { // Safari
+			element.webkitRequestFullscreen();
+		} else if (element.mozRequestFullScreen) { // Firefox
+			element.mozRequestFullScreen();
+		} else if (element.msRequestFullscreen) { // IE/Edge
+			element.msRequestFullscreen();
+		}
+	}
+
+	function exitFullscreen() {
+		if (document.exitFullscreen) {
+			document.exitFullscreen();
+		} else if (document.webkitExitFullscreen) { // Safari
+			document.webkitExitFullscreen();
+		} else if (document.mozCancelFullScreen) { // Firefox
+			document.mozCancelFullScreen();
+		} else if (document.msExitFullscreen) { // IE/Edge
+			document.msExitFullscreen();
+		}
+	}
+</script>
+
+{% macro editButton(isSide = true, coords = [0, 0]) %}
+{% if isSide %}
+	{% set class = "text-center" %}
+	{% set style = "width: 2rem" %}
+{% else %}
+	{% set class = "row w-100 mx-auto"%}
+{% endif %}
+<button type="button" class="{{class}} editButton btn btn-light border p-1" style="{{style}}" onClick="openWidgetModal({{coords|json_encode}})">
+	<i class="fas fa-plus mx-auto"></i>
+</button>
+{% endmacro %}

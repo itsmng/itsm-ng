@@ -152,8 +152,6 @@ class Peripheral extends CommonDBTM {
    function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
-      include_once (GLPI_ROOT."/ng/form.utils.php");
-
       $form = [
          'action' => $this->getFormURL(),
          'content' => [

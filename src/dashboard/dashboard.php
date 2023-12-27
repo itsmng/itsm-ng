@@ -1,14 +1,10 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * ITSM-NG
  * Copyright (C) 2022 ITSM-NG and contributors.
  *
  * https://www.itsm-ng.org
- *
- * based on GLPI - Gestionnaire Libre de Parc Informatique
- * Copyright (C) 2003-2014 by the INDEPNET Development Team.
  *
  * ---------------------------------------------------------------------
  *
@@ -31,40 +27,12 @@
  * ---------------------------------------------------------------------
  */
 
-include('../inc/includes.php');
+include ('../../inc/includes.php');
 
-header("Content-Type: text/html; charset=UTF-8");
-Html::header_nocache();
+Session::checkRight("config", UPDATE);
 
-Session::checkLoginUser();
+Html::header(__('Setup'), $_SERVER['PHP_SELF'], "config", "dashboard");
 
-try {
-   $ma = new MassiveAction($_POST, $_GET, 'initial');
-} catch (Exception $e) {
-   
-   echo "<div class='center'><img src='" . $CFG_GLPI["root_doc"] . "/pics/warning.png' alt='" .
-   __s('Warning') . "'><br><br>";
-   echo "<span class='b'>" . $e->getMessage() . "</span><br>";
-   echo "</div>";
-   exit();
-}
+Search::show('Dashboard');
 
-$params = ['action' => '__VALUE__'];
-$input  = $ma->getInput();
-foreach ($input as $key => $val) {
-   $params[$key] = $val;
-}
-$actions = $params['actions'];
-
-$POST = $_POST;
-$POST['items'] = $POST;
-$POST['items'] = $POST['item'];
-
-try {
-   renderTwigForm('massiveaction.twig', [
-      'actions' => $actions,
-      'subformBody' => $POST,
-   ]);
-} catch (Exception $e) {
-   echo $e->getMessage();
-}
+Html::footer();

@@ -2578,7 +2578,6 @@ JAVASCRIPT;
     */
    function showMyForm($target, $ID) {
       global $CFG_GLPI, $DB;
-      include_once (GLPI_ROOT . "/ng/form.utils.php");
       
       // Affiche un formulaire User
       if (($ID != Session::getLoginUserID()) && !$this->currentUserHaveMoreRightThan($ID)) {

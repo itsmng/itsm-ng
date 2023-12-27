@@ -31,40 +31,29 @@
  * ---------------------------------------------------------------------
  */
 
-include('../inc/includes.php');
+ include ('../../inc/includes.php');
 
-header("Content-Type: text/html; charset=UTF-8");
-Html::header_nocache();
-
-Session::checkLoginUser();
-
-try {
-   $ma = new MassiveAction($_POST, $_GET, 'initial');
-} catch (Exception $e) {
-   
-   echo "<div class='center'><img src='" . $CFG_GLPI["root_doc"] . "/pics/warning.png' alt='" .
-   __s('Warning') . "'><br><br>";
-   echo "<span class='b'>" . $e->getMessage() . "</span><br>";
-   echo "</div>";
-   exit();
+ Session::checkRight("dashboard", UPDATE);
+ 
+ Html::header(Dashboard::getMenuName(), $_SERVER['PHP_SELF'], "config", "Dashboard");
+if (isset($_POST['update']) && isset($_POST['id'])) {
+    $dashboard = new Dashboard();
+    $dashboard->getFromDB($_POST['id']);
+    $dashboard->update($_POST);
+    Html::back();
+} else if (isset($_POST['add'])) {
+    $dashboard = new Dashboard();
+    try {
+        $dashboard->add($_POST);
+        Html::back();
+    } catch (Exception $e) {
+        Session::addMessageAfterRedirect(__('Could not create dashboard', 'itsmng'), false);
+        Html::back();
+    }
+} else {
+    $dashboard = new Dashboard();
+    $dashboard->showForm($_GET['id'] ?? null, $_GET);
 }
 
-$params = ['action' => '__VALUE__'];
-$input  = $ma->getInput();
-foreach ($input as $key => $val) {
-   $params[$key] = $val;
-}
-$actions = $params['actions'];
-
-$POST = $_POST;
-$POST['items'] = $POST;
-$POST['items'] = $POST['item'];
-
-try {
-   renderTwigForm('massiveaction.twig', [
-      'actions' => $actions,
-      'subformBody' => $POST,
-   ]);
-} catch (Exception $e) {
-   echo $e->getMessage();
-}
+ Html::footer();
+?>
