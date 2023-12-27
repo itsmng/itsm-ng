@@ -265,8 +265,6 @@ function update151to200() : bool {
         ", "erreur lors de la mise a jour de la table de Dashboard_Profile".$DB->error());
     }
 
-    if ($DB)
-
     // ************ Keep it at the end **************
     $migration->executeMigration();
     return $updateresult;
