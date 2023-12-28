@@ -1521,7 +1521,8 @@ class Search {
       $massiveactionparams                   = $data['search']['massiveactionparams'];
       $massiveactionparams['container']      = "search-table";
       $massiveactionparams['display_arrow']  = false;
-      $massiveactionparams['itemtype']       = $data['itemtype'];
+      $massiveactionparams['is_deleted']  = $data['search']['is_deleted'];
+      // $massiveactionparams['itemtype']       = $data['itemtype'];
 
       Html::showMassiveActions($massiveactionparams);
       
