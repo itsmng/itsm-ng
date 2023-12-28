@@ -265,6 +265,12 @@ function update151to200() : bool {
         ", "erreur lors de la mise a jour de la table de Dashboard_Profile".$DB->error());
     }
 
+    // add the dashboard table population
+    CronTask::register('Dashboard', 'dashboard', DAY_TIMESTAMP / 2, [
+        'comment' => __('Update dashboard'),
+        'mode'    => CronTask::MODE_INTERNAL,
+    ]);
+
     // ************ Keep it at the end **************
     $migration->executeMigration();
     return $updateresult;

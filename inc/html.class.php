@@ -4608,7 +4608,7 @@ JAVASCRIPT
       // Do not force class if already defined
       if (!strstr($btoption, 'class=')) {
          if (empty($btimage)) {
-            $link .= " class='vsubmit' ";
+            $link .= " class='btn btn-secondary' ";
          } else {
             $link .= " class='pointer' ";
          }

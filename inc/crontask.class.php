@@ -527,6 +527,39 @@ class CronTask extends CommonDBTM{
       }
    }
 
+   function getNextRunTime() {
+      $next = strtotime($this->fields['lastrun'])+$this->fields['frequency'];
+      $hour    = date('H', $next);
+      $start  = ($this->fields['hourmin'] < 10 ? "0".$this->fields['hourmin']
+                                             : $this->fields['hourmin']);
+      $end  = ($this->fields['hourmax'] < 10 ? "0".$this->fields['hourmax']
+                                             : $this->fields['hourmax']);
+
+      if (($start < $end)
+            && ($hour < $start)) {
+         $disp = date('Y-m-d', $next). " $start:00:00";
+         $next = strtotime($disp);
+      } else if (($start < $end)
+                  && ($hour >= $this->fields['hourmax'])) {
+         $disp = date('Y-m-d', $next+DAY_TIMESTAMP). " $start:00:00";
+         $next = strtotime($disp);
+      }
+
+      if (($start > $end)
+            && ($hour < $start)
+            && ($hour >= $end)) {
+         $disp = date('Y-m-d', $next). " $start:00:00";
+         $next = strtotime($disp);
+      } else {
+         $disp = date("Y-m-d H:i:s", $next);
+      }
+
+      if ($next < time()) {
+         echo __('As soon as possible').'<br>('.Html::convDateTime($disp).') ';
+      } else {
+         echo Html::convDateTime($disp);
+      }
+   }
 
    /**
     * Print the contact form
@@ -537,7 +570,7 @@ class CronTask extends CommonDBTM{
     *     - withtemplate boolean : template or basic item
     *
     * @return boolean
-   **/
+    **/
    function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
@@ -545,164 +578,145 @@ class CronTask extends CommonDBTM{
          return false;
       }
       $options['candel'] = false;
-      $this->showFormHeader($options);
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td class ='b'>";
-      $name = $this->fields["name"];
-      if ($isplug = isPluginItemType($this->fields["itemtype"])) {
-         $name = sprintf(__('%1$s - %2$s'), $isplug["plugin"], $name);
-      }
-      echo $name."</td>";
-      echo "<td rowspan='6' class='middle right'>".__('Comments')."</td>";
-      echo "<td class='center middle' rowspan='6'>";
-      echo "<textarea cols='45' rows='8' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>".__('Description')."</td><td>";
-      echo $this->getDescription($ID);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>".__('Run frequency')."</td><td>";
-      $this->dropdownFrequency('frequency', $this->fields["frequency"]);
-      echo "</td></tr>";
-
-      $tmpstate = $this->fields["state"];
-      echo "<tr class='tab_bg_1'><td>".__('Status')."</td><td>";
-      if (is_file(GLPI_CRON_DIR. '/'.$this->fields["name"].'.lock')
-          || is_file(GLPI_CRON_DIR. '/all.lock')) {
-         echo "<span class='b'>" . __('System lock')."</span><br>";
-         $tmpstate = self::STATE_DISABLE;
-      }
-
+      $isplug = isPluginItemType($this->fields["itemtype"]);
       if ($isplug) {
          $plug = new Plugin();
-         if (!$plug->isActivated($isplug["plugin"])) {
-            echo "<span class='b'>" . __('Disabled plugin')."</span><br>";
-            $tmpstate = self::STATE_DISABLE;
-         }
       }
-
-      if ($this->fields["state"] == self::STATE_RUNNING) {
-         echo "<span class='b'>" . $this->getStateName(self::STATE_RUNNING)."</span>";
-      } else {
-         self::dropdownState('state', $this->fields["state"]);
-      }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>".__('Run mode')."</td><td>";
-      $modes = [];
-      if ($this->fields['allowmode']&self::MODE_INTERNAL) {
-         $modes[self::MODE_INTERNAL] = self::getModeName(self::MODE_INTERNAL);
-      }
-      if ($this->fields['allowmode']&self::MODE_EXTERNAL) {
-         $modes[self::MODE_EXTERNAL] = self::getModeName(self::MODE_EXTERNAL);
-      }
-      Dropdown::showFromArray('mode', $modes, ['value' => $this->fields['mode']]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>".__('Run period')."</td><td>";
-      Dropdown::showNumber('hourmin', ['value' => $this->fields['hourmin'],
-                                            'min'   => 0,
-                                            'max'   => 24]);
-      echo "&nbsp;->&nbsp;";
-      Dropdown::showNumber('hourmax', ['value' => $this->fields['hourmax'],
-                                            'min'   => 0,
-                                            'max'   => 24]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>".__('Number of days this action logs are stored')."</td><td>";
-      Dropdown::showNumber('logs_lifetime', ['value' => $this->fields['logs_lifetime'],
-                                                  'min'   => 10,
-                                                  'max'   => 360,
-                                                  'step'  => 10,
-                                                  'toadd' => [0 => __('Infinite')]]);
-      echo "</td><td>".__('Last run')."</td><td>";
-
-      if (empty($this->fields['lastrun'])) {
-         echo __('Never');
-      } else {
-         echo Html::convDateTime($this->fields['lastrun']);
-         echo "&nbsp;";
-         Html::showSimpleForm(static::getFormURL(), 'resetdate', __('Blank'),
-                              ['id' => $ID], 'fa-times-circle');
-      }
-      echo "</td></tr>";
-
+      
       $label = $this->getParameterDescription();
-      echo "<tr class='tab_bg_1'><td>";
-      if (empty($label)) {
-         echo "&nbsp;</td><td>&nbsp;";
-      } else {
-         echo $label."&nbsp;</td><td>";
-         Dropdown::showNumber('param', ['value' => $this->fields['param'],
-                                             'min'   => 0,
-                                             'max'   => 400]);
-      }
-      echo "</td><td>".__('Next run')."</td><td>";
-
-      if ($tmpstate == self::STATE_RUNNING) {
+      
+      if ($this->fields['state'] == self::STATE_RUNNING) {
          $launch = false;
       } else {
          $launch = $this->fields['allowmode']&self::MODE_INTERNAL;
       }
 
-      if ($tmpstate != self::STATE_WAITING) {
-         echo $this->getStateName($tmpstate);
-      } else if (empty($this->fields['lastrun'])) {
-         echo __('As soon as possible');
-      } else {
-         $next = strtotime($this->fields['lastrun'])+$this->fields['frequency'];
-         $h    = date('H', $next);
-         $deb  = ($this->fields['hourmin'] < 10 ? "0".$this->fields['hourmin']
-                                                : $this->fields['hourmin']);
-         $fin  = ($this->fields['hourmax'] < 10 ? "0".$this->fields['hourmax']
-                                                : $this->fields['hourmax']);
-
-         if (($deb < $fin)
-             && ($h < $deb)) {
-            $disp = date('Y-m-d', $next). " $deb:00:00";
-            $next = strtotime($disp);
-         } else if (($deb < $fin)
-                    && ($h >= $this->fields['hourmax'])) {
-            $disp = date('Y-m-d', $next+DAY_TIMESTAMP). " $deb:00:00";
-            $next = strtotime($disp);
-         }
-
-         if (($deb > $fin)
-             && ($h < $deb)
-             && ($h >= $fin)) {
-            $disp = date('Y-m-d', $next). " $deb:00:00";
-            $next = strtotime($disp);
-         } else {
-            $disp = date("Y-m-d H:i:s", $next);
-         }
-
-         if ($next < time()) {
-            echo __('As soon as possible').'<br>('.Html::convDateTime($disp).') ';
-         } else {
-            echo Html::convDateTime($disp);
-         }
-      }
-
-      if (isset($CFG_GLPI['maintenance_mode']) && $CFG_GLPI['maintenance_mode']) {
-         echo "<div class='warning'>".
-              __('Maintenance mode enabled, running tasks is disabled').
-              "</div>";
-      } else if ($launch) {
-         echo "&nbsp;";
-         Html::showSimpleForm(static::getFormURL(), ['execute' => $this->fields['name']],
-                              __('Execute'));
-      }
-      if ($tmpstate == self::STATE_RUNNING) {
-         Html::showSimpleForm(static::getFormURL(), 'resetstate', __('Blank'),
-                              ['id' => $ID], 'fa-times-circle');
-      }
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
-
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => $this->isNewID($ID) ? 'add' : 'update',
+               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary'
+            ]
+         ],
+         'content' => [
+            $this->getMenuName() => [
+               'visible' => true,
+               'inputs' => [
+                  __('Name') => [
+                     'content' => $isplug ?
+                        sprintf(__('%1$s - %2$s'), $isplug["plugin"], $this->fields["name"]) :
+                        $this->fields["name"]
+                  ],
+                  __('Description') => [
+                     'content' => $this->getDescription($ID)
+                  ],
+                  __('Comments') => [
+                     'type' => 'textarea',
+                     'name' => 'comment',
+                     'value' => $this->fields["comment"]
+                  ],
+                  __('Run frequency') => [
+                     'type' => 'select',
+                     'name' => 'frequency',
+                     'values' => $this->getFrequencies(),
+                     'value' => $this->fields["frequency"],
+                  ],
+                  __('Status') => $this->fields['state'] == self::STATE_RUNNING ? [
+                     'content' => $this->getStateName(self::STATE_RUNNING)
+                  ] : [
+                     'type' => 'select',
+                     'name' => 'state',
+                     'values' => [
+                        self::STATE_DISABLE => __('Disabled'),
+                        self::STATE_WAITING => __('Scheduled')
+                     ],
+                     'value' => $this->fields["state"]
+                  ],
+                  __('System lock') => (is_file(GLPI_CRON_DIR. '/'.$this->fields["name"].'.lock')
+                  || is_file(GLPI_CRON_DIR. '/all.lock')) ? [
+                     'content' => __('System lock')
+                  ] : [],
+                  __('Plugin lock') => $isplug && !$plug->isActivated($isplug["plugin"]) ? [
+                     'content' => __('Disabled plugin')
+                  ] : [],
+                  __('Run mode') => [
+                     'type' => 'select',
+                     'name' => 'mode',
+                     'values' => [
+                        self::MODE_INTERNAL => self::getModeName(self::MODE_INTERNAL),
+                        self::MODE_EXTERNAL => self::getModeName(self::MODE_EXTERNAL)
+                     ],
+                     'value' => $this->fields["mode"]
+                  ],
+                  __('Min run period') => [
+                     'type' => 'number',
+                     'name' => 'hourmin',
+                     'min' => 0,
+                     'max' => 24,
+                     'value' => $this->fields["hourmin"]
+                  ],
+                  __('Max run period') => [
+                     'type' => 'number',
+                     'name' => 'hourmax',
+                     'min' => 0,
+                     'max' => 24,
+                     'value' => $this->fields["hourmax"]
+                  ],
+                  __('Number of days this action logs are stored') => [
+                     'type' => 'number',
+                     'name' => 'logs_lifetime',
+                     'min' => 0,
+                     'max' => 360,
+                     'step' => 10,
+                     'after' => '(0 => '.__('Infinite').')',
+                     'value' => $this->fields["logs_lifetime"]
+                  ],
+                  __('Last run') => [
+                     'content' => empty($this->fields['lastrun']) ? __('Never') :
+                        Html::convDateTime($this->fields['lastrun']) . "&nbsp;" . Html::showSimpleForm(
+                           static::getFormURL(),
+                           'resetdate',
+                           __('Blank'),
+                           ['id' => $ID],
+                           'fa-times-circle'
+                        )
+                  ],
+                  $label => empty($label) ? [] : [
+                     'type' => 'number',
+                     'name' => 'param',
+                     'min' => 0,
+                     'max' => 400,
+                     'value' => $this->fields["param"]
+                  ],
+                  __('Next run') => [
+                     'content' => $this->fields['state'] != self::STATE_WAITING ?
+                        $this->getStateName($this->fields['state']) : (
+                           empty($this->fields['lastrun']) ? 
+                           __('As soon as possible') : $this->getNextRunTime()
+                        )
+                  ],
+                  __('Maintenance mode') => [
+                     'content' => isset($CFG_GLPI['maintenance_mode']) && $CFG_GLPI['maintenance_mode'] ?
+                        __('enabled') : (
+                           $launch ? Html::getSimpleForm(static::getFormURL(), ['execute' => $this->fields['name']],
+                           __('Execute')) : __('disabled')
+                        )
+                  ],
+                  !$this->isNewID($ID) ? [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID
+                  ] : [],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
+      
       return true;
    }
 
@@ -1934,7 +1948,7 @@ class CronTask extends CommonDBTM{
     *
     * @return string|integer HTML output, or random part of dropdown ID.
    **/
-   function dropdownFrequency($name, $value = 0) {
+   function getFrequencies() {
 
       $tab = [];
 
@@ -1958,8 +1972,8 @@ class CronTask extends CommonDBTM{
 
       $tab[WEEK_TIMESTAMP]  = __('Each week');
       $tab[MONTH_TIMESTAMP] = __('Each month');
-
-      Dropdown::showFromArray($name, $tab, ['value' => $value]);
+      
+      return $tab;
    }
 
 
