@@ -2820,16 +2820,20 @@ JAVASCRIPT;
             || (isset($p['forcecreate']) && $p['forcecreate'])
          ) {
             $out .= "<div id='massiveactioncontent$identifier'></div>";
-            
             if (!empty($p['tag_to_send'])) {
                $container = $p['container'];
                $js_modal_fields = <<<JS
                   var items = $("#$container").bootstrapTable('getData');
-                  fields = {};
                   for (item of items) {
                      fields[item[2]] = item['state'] ? 1 : 0;
-                  }
-                  console.table(fields)
+                  };
+                  $('[id={$p['container']}] [data-glpicore-ma-tags~={$p['tag_to_send']}]').each(function( index ) {
+                     fields[$(this).attr('name')] = $(this).attr('value');
+                     if (($(this).attr('type') == 'checkbox') && (!$(this).is(':checked'))) {
+                        fields[$(this).attr('name')] = 0;
+                     }
+                  });
+                  console.log(fields)
                JS;
             } else {
                $js_modal_fields = "";

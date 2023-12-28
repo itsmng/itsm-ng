@@ -1845,6 +1845,8 @@ class Dropdown {
 
          if ($param['class']) {
             $output .= ' class="'.Html::entities_deep($param['class']).'"';
+         } else {
+            $output .= ' class="form-select"';
          }
 
          if (!empty($param["on_change"])) {
