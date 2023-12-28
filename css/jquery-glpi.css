@@ -270,11 +270,6 @@
    font-size: 1em;
  }
  
- .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button
- {
-   font-family: 'Bitstream Vera Sans', arial, Tahoma, 'Sans serif';
-   font-size: 11px;
- }
  .select2-results li {
     font-family: 'Bitstream Vera Sans', arial, Tahoma, 'Sans serif';
     font-size: 11px;
