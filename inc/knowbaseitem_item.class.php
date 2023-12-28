@@ -175,7 +175,7 @@ class KnowbaseItem_Item extends CommonDBRelation {
                ($item_type == KnowbaseItem::getType()) ? __('Add a linked item') : __('Link a knowledge base entry') => [
                   'visible' => true,
                   'inputs' => [
-                     _('Link') => ($item_type == KnowbaseItem::getType()) ? [
+                     __('Link') => ($item_type == KnowbaseItem::getType()) ? [
                         'content' => '<h1>TODO</h1>'
                      ] : [
                         'type' => 'select',

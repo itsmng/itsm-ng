@@ -738,6 +738,15 @@ class Reminder extends CommonDBVisible implements
 
       // $this->showFormButtons($options);
 
+      if(isset($this->fields['begin_view_date']) && isset($this->fields['end_view_date'])){
+         preg_match('/^\d{4}-\d{2}-\d{2}/', $this->fields['begin_view_date'], $begin_view_date);
+         $begin_view_date = $begin_view_date[0] ?? '';
+
+         preg_match('/^\d{4}-\d{2}-\d{2}/', $this->fields['end_view_date'], $end_view_date);
+         $end_view_date = $end_view_date[0] ?? '';
+
+      }
+
       $form = [
          'action' => Toolbox::getItemTypeFormURL('reminder'),
          'buttons' => [
@@ -760,12 +769,12 @@ class Reminder extends CommonDBVisible implements
                   __('begin_view_date') => [
                      'name' => 'begin_view_date',
                      'type' => 'date',
-                     'value' => $this->fields['begin_view_date'],
+                     'value' => $begin_view_date,
                   ],
                   __('end_view_date') => [
                      'name' => 'end_view_date',
                      'type' => 'date',
-                     'value' => $this->fields['end_view_date'],
+                     'value' => $end_view_date,
                   ],
                   __('Status') => [
                      'name' => 'state',
@@ -779,7 +788,7 @@ class Reminder extends CommonDBVisible implements
                   __('Description') => [
                      'name' => 'text',
                      'type' => 'textarea',
-                     'value' => $this->fields['end_view_date'],
+                     'value' => $this->fields['text'],
                   ],
                   __('fileupload') => [
                      'id' => mt_rand(),
@@ -791,7 +800,7 @@ class Reminder extends CommonDBVisible implements
          ]
       ];
 
-      require_once GLPI_ROOT . '/ng/form.utils.php';
+      require_once GLPI_ROOT . '/src/twig/twig.utils.php';
       renderTwigForm($form);
 
       return true;
