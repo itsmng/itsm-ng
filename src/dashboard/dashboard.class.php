@@ -75,6 +75,33 @@ class Dashboard extends \CommonDBTM {
    }
 
    /**
+    * @param $name
+   **/
+   static function cronInfo($name) {
+      return ['description' => __('Update the dashboard tables')];
+   }
+
+   /**
+    * Cron action on dashboard : populate databases for dashboard
+    *
+    * @param CronTask $task CronTask for log, display information if NULL? (default NULL)
+    *
+    * @return void
+   **/
+   static function crondashboard($task = null) {
+      global $DB;
+
+      $scriptPath = '/src/dashboard/dashboardPopulation.sql';
+      $script = file_get_contents(GLPI_ROOT . $scriptPath);
+      if ($script === false) {
+         throw new Exception(__("Could not find dashboard population script"));
+      }
+      $DB->queryOrDie($script);
+      $task->log('Dashboard tables populated');
+      $task->addVolume(1);
+   }
+
+   /**
     * Show the form to create or edit a dashboard
     *
     * @param $ID: [profileId, userId]

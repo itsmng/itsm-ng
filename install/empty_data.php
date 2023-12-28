@@ -694,6 +694,16 @@ $tables['glpi_crontasks'] = [
       'mode'          => 1,
       'lastrun'       => null,
       'logs_lifetime' => 30,
+   ], [
+      'id'            => 41,
+      'itemtype'      => 'Dashboard',
+      'name'          => 'dashboard',
+      'frequency'     => 43200,
+      'param'         => 30,
+      'state'         => 1,
+      'mode'          => 1,
+      'lastrun'       => null,
+      'logs_lifetime' => 30,
    ],
 ];
 
