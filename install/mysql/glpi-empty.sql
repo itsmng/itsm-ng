@@ -1590,6 +1590,9 @@ DROP TABLE IF EXISTS `Dashboard_AssetType`;
 DROP TABLE IF EXISTS `Dashboard_Type`;
 DROP TABLE IF EXISTS `Dashboard_Model`;
 DROP TABLE IF EXISTS `Dashboard_Asset`;
+DROP TABLE IF EXISTS `_Dashboard_ProfileEntityToDashboard_User`;
+DROP TABLE IF EXISTS `_Dashboard_GroupToDashboard_User`;
+
 SET foreign_key_checks = 1;
 
 

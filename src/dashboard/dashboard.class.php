@@ -91,12 +91,11 @@ class Dashboard extends \CommonDBTM {
    static function crondashboard($task = null) {
       global $DB;
 
-      $scriptPath = '/src/dashboard/dashboardPopulation.sql';
-      $script = file_get_contents(GLPI_ROOT . $scriptPath);
-      if ($script === false) {
-         throw new Exception(__("Could not find dashboard population script"));
-      }
-      $DB->queryOrDie($script);
+      $scriptPath = GLPI_ROOT . '/src/dashboard/dashboardPopulation.sql';
+      if (!$DB->runFile($scriptPath)) {
+         $task->log('[ERROR] Dashboard tables could not be populated');
+         return;
+      };
       $task->log('Dashboard tables populated');
       $task->addVolume(1);
    }

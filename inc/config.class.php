@@ -3262,7 +3262,7 @@ class Config extends CommonDBTM {
          }
          if (isset($_SESSION['glpi_use_mode'])
              && Session::DEBUG_MODE == $_SESSION['glpi_use_mode']) {
-            Toolbox::logDebug($e->getMessage());
+            // Toolbox::logDebug($e->getMessage());
          }
       }
 
