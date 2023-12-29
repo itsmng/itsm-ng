@@ -685,6 +685,11 @@ class Profile extends CommonDBTM
       $this->fields = array_merge($this->fields, ProfileRight::getProfileRights($this->getID()));
    }
 
+   // function __construct()
+   // {
+   //    die(dump($_POST));
+   // }
+
    /**
     * Print the profile form headers
     *
@@ -697,62 +702,86 @@ class Profile extends CommonDBTM
     **/
    function showForm($ID, $options = [])
    {
+      $form = [
+			'action' => Toolbox::getItemTypeFormURL('profile'),
+			'buttons' => [],
+         'content' => [
+				__('Profile') => [
+					'visible' => true,
+					'inputs' => [
+						__('Name') => [
+							'name' => 'name',
+							'type' => 'text',
+							'value' => $this->fields['name'] ?? '',
+						],
+						__('Default profile') => [
+							'name' => 'is_default',
+							'type' => 'select',
+                     'id' => 'is_default',
+                     'values' => [
+                        '0' => __('No'),
+                        '1' => __('Yes'),
+                     ],
+							'value' => $this->fields['is_default']
+						],
+						__('Profile\'s interface') => [
+							'name' => 'interface',
+							'type' => 'select',
+							'value' => $this->fields['interface'],
+                     'values' => [
+                        'central' => __('Standard interface'),
+                        'helpdesk' => __('Simplified interface'),
+                     ]
+						],
+						__('Update password') => [
+							'name' => 'password_update',
+							'type' => 'select',
+                     'id' => 'password_update',
+                     'values' => [
+                        '0' => __('No'),
+                        '1' => __('Yes'),
+                     ],
+							'value' => $this->fields['password_update']
+						],
+						__('Ticket creation form on login') => [
+							'name' => 'create_ticket_on_login',
+							'type' => 'select',
+                     'id' => 'create_ticket_on_login',
+                     'values' => [
+                        '0' => __('No'),
+                        '1' => __('Yes'),
+                     ],
+							'value' => $this->fields['create_ticket_on_login']
+						],
+						__('Comment') => [
+							'name' => 'comment',
+							'type' => 'textarea',
+							'value' => $this->fields['comment'] ?? ''
+						],
+               ]
+            ]
+        	]
+		];
 
-      $onfocus = "";
-      $new     = false;
-      $rowspan = 4;
-      if ($ID > 0) {
-         $rowspan++;
-         $this->check($ID, READ);
+      if ($_GET['id'] <= 0) {
+         $button['Button'] = [
+				'type' => 'submit',
+				'name' => 'add',
+				'value' => __('Add'),
+				'class' => 'submit-button btn btn-warning'
+			];         
       } else {
-         // Create item
-         $this->check(-1, CREATE);
-         $onfocus = "onfocus=\"if (this.value=='" . $this->fields["name"] . "') this.value='';\"";
-         $new     = true;
+         $button['Button'] = [
+				'type' => 'submit',
+				'name' => 'save',
+				'value' => __('Save'),
+				'class' => 'submit-button btn btn-warning'
+			];    
       }
+     
+      array_push($form['buttons'], $button['Button']);
 
-      $rand = mt_rand();
-
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'><td>" . __('Name') . "</td>";
-      echo "<td><input type='text' name='name' value=\"" . $this->fields["name"] . "\" $onfocus></td>";
-      echo "<td rowspan='$rowspan' class='middle right'>" . __('Comments') . "</td>";
-      echo "<td class='center middle' rowspan='$rowspan'>";
-      echo "<textarea cols='45' rows='4' name='comment' >" . $this->fields["comment"] . "</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>" . __('Default profile') . "</td><td>";
-      Html::showCheckbox([
-         'name'    => 'is_default',
-         'checked' => $this->fields['is_default']
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'><td>" . __("Profile's interface") . "</td>";
-      echo "<td>";
-      Dropdown::showFromArray(
-         'interface',
-         self::getInterfaces(),
-         ['value' => $this->fields["interface"]]
-      );
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'><td>" . __('Update password') . "</td><td>";
-      Html::showCheckbox([
-         'name'    => '_password_update',
-         'checked' => $this->fields['password_update']
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'><td>" . __('Ticket creation form on login') . "</td><td>";
-      Html::showCheckbox([
-         'name'    => 'create_ticket_on_login',
-         'checked' => $this->fields['create_ticket_on_login']
-      ]);
-      echo "</td></tr>\n";
-
-      $this->showFormButtons($options);
+      renderTwigForm($form);
 
       return true;
    }
