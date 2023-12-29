@@ -49,11 +49,11 @@
 {% if not form.buttons %}
 <button type="submit" class='btn btn-primary'>{{"Submit"|trans}}</button>
 {% endif %}
-{% for button in form.buttons %}
+{% for button in form.buttons %}{% if button|length > 0 %}
 <button {% for attr, val in button %} {{attr}}='{{val}}' {% endfor %}>
     {% if button.icon %}<i class='{{button.icon}} mx-2'></i>{% endif %}{{button.value|raw}}
 </button>
-{% endfor %}
+{% endif %}{% endfor %}
 </div>
 </form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

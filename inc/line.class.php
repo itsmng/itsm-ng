@@ -85,7 +85,6 @@ class Line extends CommonDBTM {
 	* @return void
 	**/
 	function showForm($ID, $options = []) {
-		require_once GLPI_ROOT . '/src/twig/twig.class.php';
 		require_once GLPI_ROOT . '/src/twig/twig.utils.php';
 
 		$form = [
@@ -93,15 +92,26 @@ class Line extends CommonDBTM {
 			'buttons' => [
 				[
 					'type' => 'submit',
-					'name' => 'add',
-					'value' => __('Add'),
-					'class' => 'submit-button btn btn-warning',
+					'name' => $this->isNewID($ID) ? 'add' : 'update',
+					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+					'class' => 'btn btn-secondary',
+				],
+				$this->isNewID($ID) ? [] : [
+					'type' => 'submit',
+					'name' => 'delete',
+					'value' => __('Put in trashbin'),
+					'class' => 'btn btn-secondary'
 				]
 			],
             'content' => [
 				__('Line') => [
 					'visible' => true,
 					'inputs' => [
+						$this->isNewID($ID) ? [] : [
+							'type' => 'hidden',
+							'name' => 'id',
+							'value' => $ID
+						],
 						__('Name') => [
 							'name' => 'name',
 							'type' => 'text',
@@ -162,18 +172,6 @@ class Line extends CommonDBTM {
             	]
         	]
 		];
-
-		if ($_GET['id'] != '') {
-			$delete['Button'] = [
-				'type' => 'submit',
-				'name' => 'delete',
-				'value' => __('Put in trashbin'),
-				'class' => 'submit-button btn btn-warning'
-			];
-
-			array_push($form['buttons'], $delete['Button']);
-		}	
-
     	renderTwigForm($form);
 
     	return true;
