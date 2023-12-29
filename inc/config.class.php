@@ -3131,9 +3131,7 @@ class Config extends CommonDBTM {
       }
       if (!isset($opt['adapter'])) {
          if (function_exists('apcu_fetch')) {
-            $opt['adapter'] = (version_compare(PHP_VERSION, '7.0.0') >= 0) ? 'apcu' : 'apc';
-         } else if (function_exists('wincache_ucache_add')) {
-            $opt['adapter'] = 'wincache';
+            $opt['adapter'] = 'apcu';
          } else {
             $opt['adapter'] = 'filesystem';
          }
@@ -3150,34 +3148,17 @@ class Config extends CommonDBTM {
 
          switch ($opt['adapter']) {
             // Cache adapters that can share their data accross processes
-            case 'dba':
-            case 'ext_mongo_db':
-            case 'extmongodb':
             case 'filesystem':
             case 'memcache':
             case 'memcached':
-            case 'mongo_db':
-            case 'mongodb':
             case 'redis':
                $skip_integrity_checks = true;
                break;
 
             // Cache adapters that cannot share their data accross processes
-            case 'apc':
             case 'apcu':
             case 'memory':
             case 'session':
-
-               // wincache activation uses different configuration variable for CLI and web server
-               // so it may not be available for all contexts
-            case 'win_cache':
-            case 'wincache':
-
-               // zend server adapters are not available for CLI context
-            case 'zend_server_disk':
-            case 'zendserverdisk':
-            case 'zend_server_shm':
-            case 'zendservershm':
 
             default:
                $skip_integrity_checks = false;
