@@ -1333,11 +1333,6 @@ class Html
             Html::requireJs('rateit');
          }
 
-         if (in_array('dashboard', $jslibs)) {
-            echo Html::scss('css/dashboard');
-            Html::requireJs('dashboard');
-         }
-
          if (in_array('rack', $jslibs)) {
             Html::requireJs('rack');
          }
