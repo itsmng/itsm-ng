@@ -47,7 +47,10 @@ $('#{{attributes.id}}').on('change', function() {
 {% macro input(attributes, root_doc = '') %}
     {% if attributes.type == 'checkbox' %}
 <div class="form-switch">
-    <input class='form-check-input' role="switch"  {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+    <input type="hidden" name="{{attributes.name}}" value="0">
+    <input class='form-check-input' role="switch"
+        {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %} value="1"
+        {% if attributes.value == 1 %} checked {% endif %}/>
 </div>
     {% elseif attributes.type == 'textarea' %}
 <textarea class='form-control' {% for name, value in attributes|filter(k,v => k != 'value') %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default("")|raw}}</textarea>
