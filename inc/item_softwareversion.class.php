@@ -1337,7 +1337,7 @@ class Item_SoftwareVersion extends CommonDBRelation {
          echo "<p class='center b'>".__('No item found')."</p>";
       }
 
-      echo "</div></div>\n";
+      echo "</div>\n";
 
    }
 
