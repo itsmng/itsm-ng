@@ -52,12 +52,12 @@ class ItsmngUploadHandler {
 
    static function generateBaseDocumentFromPost($POST) {
       $baseDoc = [
-         'entities_id'           => $POST['entities_id'],
-         'is_recursive'          => $POST['is_recursive'],
-         'documentcategories_id' => $POST['documentcategories_id'],
+         'entities_id'           => $POST['entities_id'] ?? 0,
+         'is_recursive'          => $POST['is_recursive'] ?? 0,
+         'documentcategories_id' => $POST['documentcategories_id'] ?? 0,
          'name'                  => $POST['name'] ?? '',
          'comment'               => $POST['comment'] ?? '',
-         'users_id'              => Session::getLoginUserID(),
+         'users_id'              => Session::getLoginUserID() ?? 0,
          'is_deleted'            => $POST['is_deleted'] ?? 0,
          'tickets_id'            => $POST['tickets_id'] ?? 0,
       ];
@@ -69,6 +69,7 @@ class ItsmngUploadHandler {
       if (!file_exists($path)) {
          mkdir($path, 0777, true);
       }
+      $tmpFiles = [];
       foreach ($files as $file) {
          $filename = uniqid() . '_' . $file['name'];
          $filepath = $path . $filename;
@@ -97,5 +98,31 @@ class ItsmngUploadHandler {
          throw new Exception("Failed to move uploaded file.");
       }
       return self::get_upload_path($format, false) . '/' . $filename;
+   }
+
+   static function addFileToDb($file) {
+      $doc = new Document();
+      $newDoc = ItsmngUploadHandler::generateBaseDocumentFromPost($_POST);
+      $newDoc['filename'] = $file['name'];
+      $newDoc['filepath'] = ItsmngUploadHandler::uploadFiles(
+         $file['path'],
+         $file['format'],
+         $file['name']
+      );
+      $newDoc['mime'] = $file['format'];
+      $doc->add($newDoc);
+      return $doc;
+   }
+
+   static function linkDocToItem($id, $entity, $isRecursive, $itemType, $itemId, $userId) {
+      $docItem = new Document_Item();
+      $docItem->add([
+         'documents_id' => $id,
+         'entities_id'  => $entity,
+         'is_recursive' => $isRecursive,
+         'itemtype'     => $itemType,
+         'items_id'     => $itemId,
+         'users_id'     => $userId,
+      ]);
    }
 }

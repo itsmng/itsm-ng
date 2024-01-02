@@ -22,9 +22,9 @@
 $('#{{attributes.id}}').on('change', function() {
     let formData = new FormData();
     formData.append('name', 'filename');
-    formData.append('showFileSize', $('#fileSelectorForDocument').prop('files').length);
-    for (let i = 0; i < $('#fileSelectorForDocument').prop('files').length; i++) {
-        formData.append(i, $('#fileSelectorForDocument').prop('files')[i]);
+    formData.append('showFileSize', $('#{{attributes.id}}').prop('files').length);
+    for (let i = 0; i < $('#{{attributes.id}}').prop('files').length; i++) {
+        formData.append(i, $('#{{attributes.id}}').prop('files')[i]);
     }
     $.ajax({
     url: '{{root_doc}}' + '/ajax/fileupload.php',
@@ -44,6 +44,17 @@ $('#{{attributes.id}}').on('change', function() {
 </script>
 {% endmacro %}
 
+{% macro datetime(attributes) %}
+    <input class='form-control' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+    <input type="hidden" name="{{attributes.name}}" value="{{attributes.value|default("")|raw}}" />
+    <script>
+    $('#{{attributes.id}}').on('change', function() {
+        $('input[name="{{attributes.name}}"]').val($('#{{attributes.id}}').val().replace('T', ' '))
+        console.log($('input[name="{{attributes.name}}"]').last().val())
+    })
+    </script>
+{% endmacro %}
+
 {% macro input(attributes, root_doc = '') %}
     {% if attributes.type == 'checkbox' %}
 <div class="form-switch">
@@ -60,6 +71,8 @@ $('#{{attributes.id}}').on('change', function() {
 {% include attributes.template with attributes only %}
     {% elseif attributes.type == 'file' %}
 {{_self.file(attributes, root_doc)}}
+    {% elseif attributes.type == 'datetime-local' %}
+{{_self.datetime(attributes)}}
     {% else %}
 <input class='form-control' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
     {% endif %}
