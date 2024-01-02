@@ -207,6 +207,74 @@ function update151to200() : bool {
     ";
     $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de Dashboard_Entity".$DB->error());
 
+    $DB->queryOrDie("CREATE TABLE `Dashboard_TicketStatus` (
+        `id` INTEGER NOT NULL,
+        `name` VARCHAR(191) NOT NULL,
+    
+        PRIMARY KEY (`id`)
+    ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    
+    ", "erreur lors de la mise a jour de la table de Dashboard_TicketStatus".$DB->error());
+
+    $DB->queryOrDie("CREATE TABLE `Dashboard_TicketType` (
+        `id` INTEGER NOT NULL,
+        `name` VARCHAR(191) NOT NULL,
+    
+        PRIMARY KEY (`id`)
+    ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    ", "erreur lors de la mise a jour de la table de Dashboard_TicketType".$DB->error());
+
+    $DB->queryOrDie("CREATE TABLE `Dashboard_Urgency` (
+        `id` INTEGER NOT NULL,
+        `name` VARCHAR(191) NOT NULL,
+
+        PRIMARY KEY (`id`)
+    ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    ", "erreur lors de la mise a jour de la table de Dashboard_Urgency".$DB->error());
+
+    $DB->queryOrDie("CREATE TABLE `Dashboard_Impact` (
+        `id` INTEGER NOT NULL,
+        `name` VARCHAR(191) NOT NULL,
+    
+        PRIMARY KEY (`id`)
+    ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    ", "erreur lors de la mise a jour de la table de Dashboard_Impact".$DB->error());
+
+    $DB->queryOrDie("CREATE TABLE `Dashboard_Priority` (
+        `id` INTEGER NOT NULL,
+        `name` VARCHAR(191) NOT NULL,
+    
+        PRIMARY KEY (`id`)
+    ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    ", "erreur lors de la mise a jour de la table de Dashboard_Priority".$DB->error());
+
+    $DB->queryOrDie("CREATE TABLE `Dashboard_ITILCategory` (
+        `id` INTEGER NOT NULL,
+        `name` VARCHAR(191) NOT NULL,
+    
+        PRIMARY KEY (`id`)
+    ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    ", "erreur lors de la mise a jour de la table de Dashboard_ITILCategory".$DB->error());
+
+    $DB->queryOrDie("CREATE TABLE `Dashboard_Ticket` (
+        `id` INTEGER NOT NULL,
+        `name` VARCHAR(191) NOT NULL,
+        `entityId` INTEGER NOT NULL,
+        `date` DATETIME(3) NOT NULL,
+        `closeDate` DATETIME(3) NULL,
+        `solveDate` DATETIME(3) NULL,
+        `statusId` INTEGER NOT NULL,
+        `typeId` INTEGER NOT NULL,
+        `recipientId` INTEGER NOT NULL,
+        `urgencyId` INTEGER NOT NULL,
+        `impactId` INTEGER NOT NULL,
+        `priorityId` INTEGER NOT NULL,
+        `ITILCategoryId` INTEGER NOT NULL,
+    
+        PRIMARY KEY (`id`)
+    ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    ", "erreur lors de la mise a jour de la table de Dashboard_Ticket".$DB->error());
+
     $query = "CREATE TABLE `_Dashboard_ProfileEntityToDashboard_User` (
         `A` INTEGER NOT NULL,
         `B` INTEGER NOT NULL,
@@ -272,7 +340,31 @@ function update151to200() : bool {
     $DB->queryOrDie(
         "ALTER TABLE `_Dashboard_GroupToDashboard_User` ADD CONSTRAINT `_Dashboard_GroupToDashboard_User_B_fkey` FOREIGN KEY (`B`) REFERENCES `Dashboard_User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
         ", "erreur lors de la mise a jour de la table de Dashboard_Entity".$DB->error());
-
+    $DB->queryOrDie(
+        "ALTER TABLE `Dashboard_Ticket` ADD CONSTRAINT `Dashboard_Ticket_statusId_fkey` FOREIGN KEY (`statusId`) REFERENCES `Dashboard_TicketStatus`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+        ", "erreur lors de la mise a jour de la table de Dashboard_Ticket".$DB->error());
+    $DB->queryOrDie(
+        "ALTER TABLE `Dashboard_Ticket` ADD CONSTRAINT `Dashboard_Ticket_typeId_fkey` FOREIGN KEY (`typeId`) REFERENCES `Dashboard_TicketType`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+        ", "erreur lors de la mise a jour de la table de Dashboard_Ticket".$DB->error());
+    $DB->queryOrDie(
+        "ALTER TABLE `Dashboard_Ticket` ADD CONSTRAINT `Dashboard_Ticket_entityId_fkey` FOREIGN KEY (`entityId`) REFERENCES `Dashboard_Entity`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+        ", "erreur lors de la mise a jour de la table de Dashboard_Ticket".$DB->error());
+    $DB->queryOrDie(
+        "ALTER TABLE `Dashboard_Ticket` ADD CONSTRAINT `Dashboard_Ticket_recipientId_fkey` FOREIGN KEY (`recipientId`) REFERENCES `Dashboard_User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+        ", "erreur lors de la mise a jour de la table de Dashboard_Ticket".$DB->error());
+    $DB->queryOrDie(
+        "ALTER TABLE `Dashboard_Ticket` ADD CONSTRAINT `Dashboard_Ticket_urgencyId_fkey` FOREIGN KEY (`urgencyId`) REFERENCES `Dashboard_Urgency`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+        ", "erreur lors de la mise a jour de la table de Dashboard_Ticket".$DB->error());
+    $DB->queryOrDie(
+        "ALTER TABLE `Dashboard_Ticket` ADD CONSTRAINT `Dashboard_Ticket_impactId_fkey` FOREIGN KEY (`impactId`) REFERENCES `Dashboard_Impact`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+        ", "erreur lors de la mise a jour de la table de Dashboard_Ticket".$DB->error());
+    $DB->queryOrDie(
+        "ALTER TABLE `Dashboard_Ticket` ADD CONSTRAINT `Dashboard_Ticket_priorityId_fkey` FOREIGN KEY (`priorityId`) REFERENCES `Dashboard_Priority`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+        ", "erreur lors de la mise a jour de la table de Dashboard_Ticket".$DB->error());
+    $DB->queryOrDie(
+        "ALTER TABLE `Dashboard_Ticket` ADD CONSTRAINT `Dashboard_Ticket_ITILCategoryId_fkey` FOREIGN KEY (`ITILCategoryId`) REFERENCES `Dashboard_ITILCategory`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+        ", "erreur lors de la mise a jour de la table de Dashboard_Ticket".$DB->error());
+                                                       
 
     // add the dashboard table population
     CronTask::register('Dashboard', 'dashboard', DAY_TIMESTAMP / 2, [
