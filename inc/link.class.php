@@ -143,46 +143,65 @@ class Link extends CommonDBTM {
    **/
    function showForm($ID, $options = []) {
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
+		require_once GLPI_ROOT . '/src/twig/twig.utils.php';
 
-      echo "<tr class='tab_bg_1'><td height='23'>".__('Valid tags')."</td>";
-      echo "<td colspan='3'>";
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL('link'),
+			'buttons' => [
+				[
+					'type' => 'submit',
+					'name' => $this->isNewID($ID) ? 'add' : 'update',
+					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+					'class' => 'btn btn-secondary',
+				],
+				$this->isNewID($ID) ? [] : [
+					'type' => 'submit',
+					'name' => 'delete',
+					'value' => __('Put in trashbin'),
+					'class' => 'btn btn-secondary'
+				]
+			],
+         'content' => [
+				__('New item') . ' - ' . __('External links') => [
+					'visible' => true,
+					'inputs' => [
+						__('Name') => [
+							'name' => 'name',
+							'type' => 'text',
+							'value' => $this->fields['name'] ?? '',
+						],
+                  __('Link or filename') => [
+							'name' => 'link',
+							'type' => 'text',
+							'value' => $this->fields['link'] ?? '',
+						],
+						__('Open in a new window') => [
+							'name' => 'open_window',
+							'type' => 'select',
+							'values' => [
+                        '0' => __('No'),
+                        '1' => __('Yes'),
+                     ],
+							'value' => $this->fields['open_window'] ?? '',
+						],
+                  __('File content') => [
+							'name' => 'data',
+							'type' => 'textarea',
+							'value' => $this->fields['data'] ?? '',
+						],
+                  __('Valid tags') => [
+                     "content" => "<p>[LOGIN] [ID] [NAME] [LOCATION] [LOCATIONID] [IP] [MAC] [NETWORK] 
+                     [DOMAIN] [SERIAL] [OTHERSERIAL] [USER] [GROUP] [REALNAME] [FIRSTNAME]
+                     <br>ou<br>
+                     [FIELD:nom du champ en base] (Exemple : [FIELD:name], [FIELD:content], ...)
+                     </p>"
+                  ],
+               ]
+            ]
+        	]
+      ];
 
-      $count = count(self::$tags);
-      $i     = 0;
-      foreach (self::$tags as $tag) {
-         echo $tag;
-         echo "&nbsp;";
-         $i++;
-         if (($i%8 == 0) && ($count > 1)) {
-            echo "<br>";
-         }
-      }
-      echo "<br>" . __('or') . "<br>[FIELD:<i>" . __('field name in DB') . "</i>] (" . __('Example:') . " [FIELD:name], [FIELD:content], ...)";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>".__('Name')."</td>";
-      echo "<td colspan='3'>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>".__('Link or filename')."</td>";
-      echo "<td colspan='3'>";
-      Html::autocompletionTextField($this, "link", ['size' => 84]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>".__('Open in a new window')."</td><td>";
-      Dropdown::showYesNo('open_window', $this->fields['open_window']);
-      echo "</td><td colspan='2'>&nbsp;</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>".__('File content')."</td>";
-      echo "<td colspan='3'>";
-      echo "<textarea name='data' rows='10' cols='96'>".$this->fields["data"]."</textarea>";
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
-
+      renderTwigForm($form);
       return true;
    }
 

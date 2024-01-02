@@ -30,13 +30,14 @@
  * ---------------------------------------------------------------------
  */
 
+use itsmng\Timezone;
 use Glpi\Cache\SimpleCache;
-use Glpi\Exception\PasswordTooWeakException;
+use PHPMailer\PHPMailer\PHPMailer;
 use Glpi\System\RequirementsManager;
-use Laminas\Cache\Storage\AvailableSpaceCapableInterface;
+use Glpi\Exception\PasswordTooWeakException;
 use Laminas\Cache\Storage\FlushableInterface;
 use Laminas\Cache\Storage\TotalSpaceCapableInterface;
-use PHPMailer\PHPMailer\PHPMailer;
+use Laminas\Cache\Storage\AvailableSpaceCapableInterface;
 
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
@@ -674,35 +675,58 @@ class Config extends CommonDBTM {
          return;
       }
 
-      echo "<form name='form' action=\"".Toolbox::getItemTypeFormURL(__CLASS__)."\" method='post' data-track-changes='true'>";
-      echo "<div class='center' id='tabsbody'>";
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='4'>" . __('Authentication') . "</th></tr>";
+      require_once GLPI_ROOT . '/src/twig/twig.utils.php';
 
-      echo "<tr class='tab_bg_2'>";
-      echo "<td width='30%'>". __('Automatically add users from an external authentication source').
-           "</td><td width='20%'>";
-      Dropdown::showYesNo("is_users_auto_add", $CFG_GLPI["is_users_auto_add"]);
-      echo "</td><td width='30%'>". __('Add a user without accreditation from a LDAP directory').
-           "</td><td width='20%'>";
-      Dropdown::showYesNo("use_noright_users_add", $CFG_GLPI["use_noright_users_add"]);
-      echo "</td></tr>";
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL('config'),
+			'buttons' => [
+				[
+					'type' => 'submit',
+					'name' => 'update_auth',
+					'value' => _sx('button', 'Save'),
+					'class' => 'btn btn-secondary',
+				],
+         ],
+         'content' => [
+				__('Authentication') => [
+					'visible' => true,
+               'inputs' => [
+                  __('Automatically add users from an external authentication source') => [
+                     'name' => 'is_users_auto_add',
+                     'type' => 'select',
+                     'values' => [
+                        '0' => __('No'),
+                        '1' => __('Yes'),
+                     ],
+                     'value' => $CFG_GLPI["is_users_auto_add"],
+                  ],
+                  __('Add a user without accreditation from a LDAP directory') => [
+                     'name' => 'use_noright_users_add',
+                     'type' => 'select',
+                     'values' => [
+                        '0' => __('No'),
+                        '1' => __('Yes'),
+                     ],
+                     'value' => $CFG_GLPI["use_noright_users_add"],
+                  ],
+                  __('Action when a user is deleted from the LDAP directory') => [
+                     'name' => 'user_deleted_ldap',
+                     'type' => 'select',
+                     'values' => AuthLDAP::getLdapDeletedUserActionOptions(),
+                     'value' => $CFG_GLPI["user_deleted_ldap"],
+                  ],
+                  __('GLPI server time zone') => [
+                     'name' => 'time_offset',
+                     'type' => 'select',
+                     'values' => Timezone::showGMT(),
+                     'value' => $CFG_GLPI["time_offset"],
+                  ],
+               ],
+            ],
+         ]
+      ];
 
-      echo "<tr class='tab_bg_2'>";
-      echo "<td> " . __('Action when a user is deleted from the LDAP directory') . "</td><td>";
-      AuthLDAP::dropdownUserDeletedActions($CFG_GLPI["user_deleted_ldap"]);
-      echo "</td><td> " . __('GLPI server time zone') . "</td><td>";
-      Dropdown::showGMT("time_offset", $CFG_GLPI["time_offset"]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td colspan='4' class='center'>";
-      echo "<input type='submit' name='update_auth' class='submit' value=\""._sx('button', 'Save').
-           "\">";
-      echo "</td></tr>";
-
-      echo "</table></div>";
-      Html::closeForm();
+      renderTwigForm($form);
    }
 
 

@@ -92,6 +92,11 @@
             "pestphp/pest-plugin": true
         }
     },
+    "autoload": {
+        "psr-4": {
+            "itsmng\\": "src/"
+        }
+    },
     "scripts": {
         "test:units": "vendor/bin/pest",
         "server": "php -S localhost:8000"

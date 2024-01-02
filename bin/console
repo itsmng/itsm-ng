@@ -41,6 +41,9 @@ if (isset($_SERVER['argv'])) {
    }
 }
 
+$exit_code = 0;
+
+
 // Handle specific dependencies update command that cannot be made upon symfony console
 if (isset($_SERVER['argv']) && ['dependencies', 'install'] === array_slice($_SERVER['argv'], 1, 2)) {
    $composer_command = 'composer install --ansi --no-interaction';
@@ -51,8 +54,6 @@ if (isset($_SERVER['argv']) && ['dependencies', 'install'] === array_slice($_SER
    }
 
    chdir(dirname(__FILE__, 2));
-
-   $exit_code = 0;
 
    passthru($composer_command, $exit_code);
    if ($exit_code > 0) {
@@ -67,6 +68,21 @@ if (isset($_SERVER['argv']) && ['dependencies', 'install'] === array_slice($_SER
    file_put_contents('.package.hash', sha1_file('package-lock.json'));
 
    passthru('npm run-script build', $exit_code);
+   exit($exit_code);
+}
+
+if (isset($_SERVER['argv']) && ['locales', 'compile'] === array_slice($_SERVER['argv'], 1, 2)) {
+   chdir(dirname(__FILE__, 2));
+
+   $po_files = preg_grep('/\.po$/', scandir('./locales'));
+   foreach ($po_files as $po_file) {
+      $mo_file = preg_replace('/\.po$/', '.mo', $po_file);
+      passthru("cd ./locales && msgfmt -f -o {$mo_file} {$po_file}", $exit_code);
+      if ($exit_code > 0) {
+         exit($exit_code);
+      }
+   }
+
    exit($exit_code);
 }
 
