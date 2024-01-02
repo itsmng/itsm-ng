@@ -144,7 +144,7 @@ class NotificationSettingConfig extends CommonDBTM {
             ]
          ];
 
-         require_once GLPI_ROOT . '/ng/form.utils.php';
+         require_once GLPI_ROOT . '/src/twig/twig.utils.php';
          renderTwigForm($form);
 
          foreach (array_keys($modes) as $mode) {
