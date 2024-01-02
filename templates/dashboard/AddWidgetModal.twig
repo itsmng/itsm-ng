@@ -110,8 +110,8 @@
 				$('#parameter-selection-widget-modal-select').empty();
 				for (const [key, value] of Object.entries(jsonData)) {
 					$('#parameter-selection-widget-modal-select').append($('<option>', {
-						value: value,
-						text: value
+						value: value.name,
+						text: value.name
 					}));
 				}
 				if ($('#parameter-selection-widget-modal-select option[value="' + previousValue + '"]').length > 0) {
