@@ -2,7 +2,6 @@
 
 /**
  * @param $form
- * 
  */
 function getOptionForItems($item, $conditions = [], $display_emptychoice = true)
 {
@@ -10,9 +9,9 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true)
 
     $table = getTableForItemType($item);
     $iterator = $DB->request([
-        'SELECT'          => ['id', 'name'],
-        'FROM'            => $table,
-        'WHERE'           => $conditions,
+        'SELECT' => ['id', 'name'],
+        'FROM' => $table,
+        'WHERE' => $conditions,
     ]);
 
     $options = [];
@@ -22,6 +21,7 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true)
     while ($val = $iterator->next()) {
         $options[$val['id']] = $val['name'];
     }
+
     return $options;
 }
 
@@ -36,13 +36,14 @@ function getOptionsForUsers($right, $conditions = [], $display_emptychoice = tru
     foreach ($users as $user) {
         $options[$user['id']] = $user['name'];
     }
+
     return $options;
 }
 
 function renderTwigTemplate($path, $vars)
 {
-    require_once GLPI_ROOT . "/src/twig/twig.class.php";
-    $twig = Twig::load(GLPI_ROOT . "/templates", false);
+    require_once GLPI_ROOT . '/src/twig/twig.class.php';
+    $twig = Twig::load(GLPI_ROOT . '/templates', false);
     try {
         echo $twig->render($path, $vars);
     } catch (Exception $e) {
@@ -51,16 +52,13 @@ function renderTwigTemplate($path, $vars)
 }
 
 /**
- * @param $form
- * @param $additionnalHtml
- * 
  * @return string
  */
 function renderTwigForm($form, $additionnalHtml = '', $colAmount = 2)
 {
     global $CFG_GLPI;
 
-    $twig = Twig::load(GLPI_ROOT . "/templates", false);
+    $twig = Twig::load(GLPI_ROOT . '/templates', false);
     try {
         echo $twig->render('form.twig', [
             'form' => $form,
@@ -93,19 +91,19 @@ function getHiddenInputsForItemForm($item, $options)
         ],
         [
             'type' => 'hidden',
-            'name' =>  'id',
+            'name' => 'id',
             'value' => isset($options['id']) ? $options['id'] : 0,
         ],
         [
             'type' => 'hidden',
             'name' => '_glpi_csrf_token',
-            'value' => Session::getNewCSRFToken()
+            'value' => Session::getNewCSRFToken(),
         ],
         [
             'type' => 'hidden',
             'name' => '_read_date_mod',
-            'value' => (new DateTime())->format('Y-m-d H:i:s'),
-        ]
+            'value' => (new DateTime)->format('Y-m-d H:i:s'),
+        ],
     ];
 }
 
@@ -117,19 +115,19 @@ function getItemActionButtons(array $actions, string $itemType): array
         $content = [];
         switch ($action) {
             case 'info':
-                $item = new $itemType();
+                $item = new $itemType;
                 $itemSearchUrl = $item->getSearchUrl();
                 $content = [
                     'icon' => 'fas fa-info',
-                    'onClick' => "window.location.href = '$itemSearchUrl'",
+                    'onClick' => "window.location.href = '{$itemSearchUrl}'",
                 ];
                 break;
             case 'add':
-                $item = new $itemType();
+                $item = new $itemType;
                 $itemFormUrl = $item->getFormUrl();
                 $content = [
                     'icon' => 'fas fa-plus',
-                    'onClick' => "window.location.href = '$itemFormUrl'",
+                    'onClick' => "window.location.href = '{$itemFormUrl}'",
                 ];
                 break;
         }
