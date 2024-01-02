@@ -1,27 +1,6 @@
 <?php
 
 /**
- * @param $item
- * 
- * @global $DB
- * @return array
- */
-function getFormForItemType($item) {
-    global $DB; 
-    $database = $DB->dbdefault;
-    $table = $item->getTable();
-
-    $columns = iterator_to_array($DB->request([
-        'SELECT' => ['COLUMN_NAME', 'DATA_TYPE'],
-        'FROM' => 'INFORMATION_SCHEMA.COLUMNS',
-        'WHERE' => [
-            'TABLE_SCHEMA' => $database,
-            'TABLE_NAME' => $table,
-        ]
-    ]));
-}
-
-/**
  * @param $form
  * 
  */
@@ -48,7 +27,6 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true)
 
 function getOptionsForUsers($right, $conditions = [], $display_emptychoice = true)
 {
-    global $DB;
 
     $users = iterator_to_array(User::getSqlSearchResult(false, $right, $conditions['entities_id']));
     $options = [];
@@ -61,7 +39,8 @@ function getOptionsForUsers($right, $conditions = [], $display_emptychoice = tru
     return $options;
 }
 
-function renderTwigTemplate($path, $vars) {
+function renderTwigTemplate($path, $vars)
+{
     require_once GLPI_ROOT . "/src/twig/twig.class.php";
     $twig = Twig::load(GLPI_ROOT . "/templates", false);
     try {
@@ -97,7 +76,7 @@ function renderTwigForm($form, $additionnalHtml = '', $colAmount = 2)
 function getHiddenInputsForItemForm($item, $options)
 {
     return [
-        $options['id'] != '' ?[
+        $options['id'] != '' ? [
             'type' => 'hidden',
             'name' => 'entities_id',
             'value' => $item->fields['entities_id'],
@@ -130,12 +109,13 @@ function getHiddenInputsForItemForm($item, $options)
     ];
 }
 
-function getItemActionButtons(array $actions, string $itemType): array {
+function getItemActionButtons(array $actions, string $itemType): array
+{
     $buttons = [];
 
     foreach ($actions as $action) {
         $content = [];
-        switch($action) {
+        switch ($action) {
             case 'info':
                 $item = new $itemType();
                 $itemSearchUrl = $item->getSearchUrl();
@@ -143,18 +123,18 @@ function getItemActionButtons(array $actions, string $itemType): array {
                     'icon' => 'fas fa-info',
                     'onClick' => "window.location.href = '$itemSearchUrl'",
                 ];
-            break;
-                case 'add':
+                break;
+            case 'add':
                 $item = new $itemType();
                 $itemFormUrl = $item->getFormUrl();
                 $content = [
                     'icon' => 'fas fa-plus',
                     'onClick' => "window.location.href = '$itemFormUrl'",
                 ];
-            break;         
+                break;
         }
         $buttons[$action] = $content;
     }
-    
+
     return $buttons;
 }
