@@ -41,7 +41,6 @@ function update120to130() {
 
     $current_config   = Config::getConfigurationValues('core');
     $updateresult     = true;
-    $ADDTODISPLAYPREF = [];
 
     $migration->displayTitle(sprintf(__('Update to %s'), '1.3.0'));
     $migration->setVersion('1.3.0');

@@ -39,9 +39,7 @@ function update150to151() {
     /** @global Migration $migration */
     global $DB, $migration;
 
-    $current_config   = Config::getConfigurationValues('core');
     $updateresult     = true;
-    $ADDTODISPLAYPREF = [];
 
     $migration->displayTitle(sprintf(__('Update to %s'), '1.5.1'));
     $migration->setVersion('1.5.1');

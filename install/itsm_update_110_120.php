@@ -39,9 +39,7 @@ function update110to120() {
    /** @global Migration $migration */
    global $DB, $migration;
 
-   $current_config   = Config::getConfigurationValues('core');
    $updateresult     = true;
-   $ADDTODISPLAYPREF = [];
 
    $migration->displayTitle(sprintf(__('Update to %s'), '1.2.0'));
    $migration->setVersion('1.2.0');

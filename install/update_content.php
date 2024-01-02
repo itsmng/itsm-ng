@@ -242,7 +242,7 @@ function UpdateContent($DB, $duree, $rowlimit, $conv_utf8, $complete_utf8) {
 
    if ($DB->error()) {
       echo "<hr>";
-      printf(__("SQL error starting from %s"), "[$formattedQuery]");
+      print(__("SQL error starting"));
       echo "<br>".$DB->error()."<hr>";
    }
 
