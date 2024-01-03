@@ -56,29 +56,45 @@ class Datacenter extends CommonDBTM {
       return $ong;
    }
 
-   function showForm($ID, $options = []) {
-      $rand = mt_rand();
+   function showForm($ID) {
+      $form = [
+	      'action' => Toolbox::getItemTypeFormURL('datacenter'),
+		   'buttons' => [
+		      [
+			   'type' => 'submit',
+			   'name' => $this->isNewID($ID) ? 'add' : 'update',
+			   'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+			   'class' => 'btn btn-secondary',
+            ],
+         ],
+         'content' => [
+             __('Data center') => [
+               'visible' => true,
+               'inputs' => [
+                  $this->isNewID($ID) ? [] : [
+                        'type' => 'hidden',
+                        'name' => 'id',
+                        'value' => $ID
+                  ],
+                  __('Name') => [
+                        'name' => 'name',
+                        'type' => 'text',
+                        'value' => $this->fields['name'] ?? '',
+                  ],
+                  __('Location') => [
+                        'name' => 'locations_id',
+                        'type' => 'select',
+                        'values' => getOptionForItems("Location"),
+                        'value' => $this->fields['locations_id'] ?? '',
+                  ],
+               ]
+             ]
+         ]
+      ];
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
+      require_once GLPI_ROOT . '/src/twig/twig.utils.php';
+      renderTwigForm($form); 
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='textfield_name$rand'>".__('Name')."</label></td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name", ['rand' => $rand]);
-      echo "</td>";
-
-      echo "<td><label for='dropdown_locations_id$rand'>".Location::getTypeName(1)."</label></td>";
-      echo "<td>";
-      Location::dropdown([
-         'value'  => $this->fields["locations_id"],
-         'entity' => $this->fields["entities_id"],
-         'rand'   => $rand
-      ]);
-      echo "</td>";
-      echo "</tr>";
-
-      $this->showFormButtons($options);
       return true;
    }
 
