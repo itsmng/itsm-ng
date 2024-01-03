@@ -723,13 +723,13 @@ class ITILFollowup  extends CommonDBChild {
                   'type' => 'submit',
                   'name' => 'add_reopen',
                   'value' => __('Refuse the solution'),
-                  'class' => 'submit-button btn btn-warning',
+                  'class' => 'submit-button btn btn-secondary',
                ],
                [
                   'type' => 'submit',
                   'name' => 'add_close',
                   'value' => __('Approve the solution'),
-                  'class' => 'submit-button btn btn-warning',
+                  'class' => 'submit-button btn btn-secondary',
                ],
             ],
             'content' => [
@@ -762,7 +762,6 @@ class ITILFollowup  extends CommonDBChild {
 
       }
 
-      require_once GLPI_ROOT . '/ng/form.utils.php';
       renderTwigForm($form);
       return true;
    }
