@@ -1062,6 +1062,23 @@ class DBmysql {
       return false;
    }
 
+  public function constraintExists($table, $constraint) {
+      if (!$this->tableExists($table)) {
+         trigger_error("Table $table does not exists", E_USER_WARNING);
+         return false;
+      }
+      $result = $this->query("SHOW CREATE TABLE `$table`");
+      if ($result) {
+         if ($this->numrows($result) > 0) {
+            $data = $this->fetchArray($result);
+            if (preg_match("/CONSTRAINT `$constraint` FOREIGN KEY/", $data[1])) {
+               return true;
+            }
+         }
+      }
+      return false;
+  }
+
    /**
     * Disable table cache globally; usefull for migrations
     *
