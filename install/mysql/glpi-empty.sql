@@ -8477,6 +8477,8 @@ CREATE TABLE IF NOT EXISTS `glpi_oidc_config` (
         `is_activate`   TINYINT(1) NOT NULL DEFAULT 0,
         `is_forced`   TINYINT(1) NOT NULL DEFAULT 0,
         `scope` varchar(255) DEFAULT NULL,
+        `proxy` varchar(255) DEFAULT NULL,
+        `cert` VARCHAR(255) DEFAULT NULL,
         PRIMARY KEY (`id`)
         ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

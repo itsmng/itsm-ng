@@ -316,27 +316,6 @@ function glpi_autoload($classname) {
             break;
          }
       }
-   } else if (strpos($classname, 'Glpi\Tests\Web\Deprecated') !== false) {
-      // Special case to autoload files in the tests dir that have a namespace
-      // and are not an atoum test case
-      $dir = GLPI_ROOT . "/tests/";
-
-      // Convert classname to array
-      $path = explode('\\', $classname);
-
-      // Remove first two items (Glpi\Tests)
-      array_splice($path, 0, 2);
-
-      // Extract file name
-      $item = array_pop($path);
-
-      // Convert all remaining path to lowercase
-      $path = array_map(function($folder) {
-         return strtolower($folder);
-      }, $path);
-
-      // Revert to string and add to dir path
-      $dir .= implode('/', $path) . '/';
    } else {
       $item = strtolower($classname);
       if (substr($classname, 0, \strlen(NS_GLPI)) === NS_GLPI) {
@@ -358,7 +337,6 @@ function glpi_autoload($classname) {
       }
    }
 }
-
 
 // Check if dependencies are up to date
 $needrun  = false;
