@@ -329,6 +329,15 @@ function update151to200() : bool {
             ", "erreur lors de la mise a jour de la table de Dashboard_Entity".$DB->error());
     }
 
+    // FIX OIDC
+    if ($DB->fieldExists('glpi_oidc_config', 'proxy')) {
+        $DB->queryOrDie("ALTER TABLE `glpi_oidc_config` ADD `proxy` VARCHAR(255) NULL AFTER `scope`;");
+    }
+
+    if ($DB->fieldExists('glpi_oidc_config', 'cert')) {
+        $DB->queryOrDie("ALTER TABLE `glpi_oidc_config` ADD `cert` VARCHAR(255) NULL AFTER `proxy`;");
+    }
+
     // add the dashboard table population
     CronTask::register('Dashboard', 'dashboard', DAY_TIMESTAMP / 2, [
         'comment' => __('Update dashboard'),
