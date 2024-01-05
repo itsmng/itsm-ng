@@ -31,40 +31,36 @@
  */
 
 if (strpos($_SERVER['PHP_SELF'], "dropdownTicketCategories.php")) {
-   include ('../inc/includes.php');
-   header("Content-Type: text/html; charset=UTF-8");
-   Html::header_nocache();
+  include ('../inc/includes.php');
+  header("Content-Type: text/html; charset=UTF-8");
+  Html::header_nocache();
 } else if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+  die("Sorry. You can't access this file directly");
 }
 
 $opt = ['entity' => $_POST["entity_restrict"]];
 $condition  =[];
 
 if (Session::getCurrentInterface() == "helpdesk") {
-   $condition['is_helpdeskvisible'] = 1;
+  $condition['is_helpdeskvisible'] = 1;
 }
-
-$currentcateg = new ITILCategory();
-$currentcateg->getFromDB($_POST['value']);
-
+$query = <<<SQL
+SELECT * from glpi_itilcategories
+SQL;
 if ($_POST["type"]) {
-   switch ($_POST['type']) {
-      case Ticket::INCIDENT_TYPE :
-         $condition['is_incident'] = 1;
-         if ($currentcateg->getField('is_incident') == 1) {
-            $opt['value'] = $_POST['value'];
-         }
-         break;
+  switch ($_POST['type']) {
+    case Ticket::INCIDENT_TYPE :
+      $query .= ' WHERE is_incident = 1';
+      break;
 
-      case Ticket::DEMAND_TYPE:
-         $condition['is_request'] = 1;
-         if ($currentcateg->getField('is_request') == 1) {
-            $opt['value'] = $_POST['value'];
-         }
-         break;
-   }
+    case Ticket::DEMAND_TYPE:
+      $query .= ' WHERE is_request = 1';
+      break;
+  }
 }
 
-$opt['condition'] = $condition;
-ITILCategory::dropdown($opt);
+global $DB;
+$values = iterator_to_array($DB->query($query));
+$values = array_combine(array_column($values, 'id'), array_column($values, 'completename'));
+$values[0] = Dropdown::EMPTY_VALUE;
+echo json_encode($values);
