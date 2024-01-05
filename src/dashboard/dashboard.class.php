@@ -52,7 +52,7 @@ class Dashboard extends \CommonDBTM {
    }
 
    static function getMenuContent() {
-      $menu = parent::getMenuContent() ?: [];
+      $menu = [];
 
       if (static::canView()) {
 
@@ -77,7 +77,7 @@ class Dashboard extends \CommonDBTM {
    /**
     * @param $name
    **/
-   static function cronInfo($name) {
+   static function cronInfo() {
       return ['description' => __('Update the dashboard tables')];
    }
 
@@ -199,51 +199,42 @@ class Dashboard extends \CommonDBTM {
       }
    }
 
+  private function generateListFromColumns($columns, $assetType = null) {
+    global $DB;
+    $output = [];
+    foreach ($columns as $column) {
+      if ($column['name'] == 'assetType') continue;
+      $query = "SELECT name FROM `{$column['type']}`";
+      $columnExists = count(iterator_to_array($DB->query("SHOW COLUMNS FROM `{$column['type']}` LIKE 'assetTypeId'"))) > 0;
+      if ($columnExists && $assetType) {
+        $query .= " WHERE assetTypeId = $assetType";
+      }
+      $values = array_column(iterator_to_array($DB->query($query)), 'name');
+      $mappedValues = array_combine($values, array_map(function($value) {
+         return ['name' => $value, 'value' => $value];
+      }, $values));
+      $output[$column['name']] = [
+         'value' => $column['name'],
+         'content' => $mappedValues,
+      ];
+    }
+    return $output;
+  }
+
    private function getCategories() {
       global $DB;
       $dashboard_assetTypes = iterator_to_array($DB->query("SELECT DISTINCT id, name FROM `Dashboard_AssetType`"));
       $assetTypes = [];
       $comparisons = self::getDashboardData("/dashboard/comparisons/Asset");
-      $forbidenComparisons = ['id', 'name', 'entity', 'assetType'];
       foreach ($dashboard_assetTypes as $value) {
          $assetTypes[$value['name']] = [
             'value' => $value['name'],
-            'content' => []
+            'content' => $this->generateListFromColumns($comparisons, $value['id']),
          ];
-         foreach ($comparisons as $comparison) {
-            if (in_array($comparison, $forbidenComparisons)) continue;
-            $table = "Dashboard_".ucfirst($comparison);
-            $assetTypeId = $value['id'];
-
-            
-            $columnExists = count(iterator_to_array($DB->query("SHOW COLUMNS FROM `$table` LIKE 'assetTypeId'"))) > 0;
-            
-            $query = "SELECT name from `$table`";
-            if ($columnExists) {
-               $query .= " WHERE assetTypeId = $assetTypeId";
-            }
-            $values = array_column(iterator_to_array($DB->query($query)), 'name');
-            $mappedValues = array_combine($values, array_map(function($value) {
-               return ['name' => $value, 'value' => $value];
-            }, $values));
-            
-            $columnQuery = $DB->query("SELECT * from INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='Dashboard_Asset'");
-            $columnsInfo = iterator_to_array($columnQuery);
-            $isComparisonNullable = array_column($columnsInfo, 'IS_NULLABLE', 'COLUMN_NAME')[$comparison . "Id"] == 'YES';
-
-            if ($isComparisonNullable) {
-               $mappedValues[__('None')] = ['name' => 'null', 'value' => 'null'];
-            }
-
-            $assetTypes[$value['name']]['content'][$comparison] = [
-               'value' => $comparison,
-               'content' => $mappedValues,
-            ];
-         }
       }
       return [
          'Asset' => $assetTypes,
-         'Ticket' => [],
+         'Ticket' => $this->generateListFromColumns(self::getDashboardData("/dashboard/comparisons/Ticket")),
          'Entity' => [],
          'Group' => [],
          'User' => [],
@@ -279,8 +270,6 @@ class Dashboard extends \CommonDBTM {
    }
 
    function getGridContent($content) {
-      global $CFG_GLPI;
-      
       foreach ($content as $rowIdx => $row) {
          foreach ($row as $colIdx => $widget) {
             $content[$rowIdx][$colIdx] = array_merge(
@@ -380,6 +369,7 @@ class Dashboard extends \CommonDBTM {
          array_splice($dashboard, $x, 1);
       }
       $content = str_replace("\\", "\\\\", json_encode($dashboard, JSON_UNESCAPED_UNICODE));
+      
       return ($this->update(['id' => $this->fields['id'], 'content' => $content]));
    }
 }
