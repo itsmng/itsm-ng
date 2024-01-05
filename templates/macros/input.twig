@@ -226,10 +226,10 @@ $('#{{attributes.id}}').on('change', function() {
 </script>
 {% endmacro %}
 
-{% macro richtextarea(attributes) %}
-<link rel="stylesheet" href="/~antoine/itsm-ng2.0/node_modules/trumbowyg/dist/ui/trumbowyg.min.css">
+{% macro richtextarea(attributes, root_doc) %}
+<link rel="stylesheet" href="{{root_doc}}/node_modules/trumbowyg/dist/ui/trumbowyg.min.css">
 <textarea {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default('')|raw}}</textarea>
-<script src="/~antoine/itsm-ng2.0/node_modules/trumbowyg/dist/trumbowyg.min.js"></script>
+<script src="{{root_doc}}/node_modules/trumbowyg/dist/trumbowyg.min.js"></script>
 <script>
 $('textarea[name="{{attributes.name}}"]').trumbowyg({
   btns: [
@@ -268,7 +268,7 @@ $('textarea[name="{{attributes.name}}"]').trumbowyg({
     {% elseif attributes.type == 'textarea' %}
 <textarea class='form-control' {% for name, value in attributes|filter(k,v => k != 'value') %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default("")|raw}}</textarea>
     {% elseif attributes.type == 'richtextarea' %}
-{{_self.richtextarea(attributes)}}
+{{_self.richtextarea(attributes, root_doc)}}
     {% elseif attributes.type == 'select' %}
 {{_self.select(attributes)}}
     {% elseif attributes.type == 'actorSelect' %}
