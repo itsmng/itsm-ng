@@ -1687,96 +1687,73 @@ class Auth extends CommonGLPI {
           $oidc_db['proxy'] = $iterator['proxy'];
           $oidc_db['cert'] = $iterator['cert'];
       }
-      
 
-      echo "<form method='post' action='./auth.oidc.php' method='post'>";
-      echo "<table class='tab_cadre' cellpadding='5'>";
-      echo "<tr><th colspan='2'>".__("Open ID connect configuration")."</th></tr>";
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__("Activate open ID connect")."</td>";
-      echo "<td>";
-      if (isset($oidc_db['is_activate'])) {
-       Dropdown::showYesNo('useoidc', $oidc_db['is_activate'],-1,['use_checkbox' => false]);
-   } else {
-       Dropdown::showYesNo('useoidc', 0,-1,['use_checkbox' => false]);
-   }
-      echo "</td></tr>";
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__("Forced connection with open ID connect")."</td>";
-      echo "<td>";
-      if (isset($oidc_db['is_forced'])) {
-       Dropdown::showYesNo('forceoidc', $oidc_db['is_forced'],-1,['use_checkbox' => false]);
-   } else {
-       Dropdown::showYesNo('forceoidc', 0,-1,['use_checkbox' => false]);
-   }
-      echo "</td></tr>";
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>Provider</td>";
-      echo "<td>";
-      if (isset($oidc_db['Provider'])) {
-       echo "<input type='text' id='provider' name='provider'value=". $oidc_db['Provider'] .">";
-   } else {
-       echo "<input type='text' id='provider' name='provider' placeholder='https://id.provider.com'>";
-   }
-      echo "</td></tr>";
+      $form = [
+         'action' => '/front/auth.oidc.php',
+			'buttons' => [
+				[
+					'type' => 'submit',
+					'name' => 'update',
+					'value' => __s('Save'),
+					'class' => 'btn btn-secondary',
+				],
+				[
+					'type' => 'submit',
+					'name' => 'mapping',
+					'value' => __s('Mapping'),
+					'class' => 'btn btn-secondary'
+				]
+			],
+         'content' => [
+				__('Mapping of fields according to provider') => [
+					'visible' => true,
+					'inputs' => [
+						__('Activate open ID connect') => [
+							'name' => 'useoidc',
+							'type' => 'checkbox',
+							'value' => $oidc_db['is_activate'],
+						],
+                  __('Forced connection with open ID connect') => [
+							'name' => 'forceoidc',
+							'type' => 'checkbox',
+							'value' => $oidc_db['is_forced'],
+						],
+                  __('Provider') => [
+							'name' => 'provider',
+							'type' => 'text',
+							'value' => $oidc_db['Provider'],
+						],
+                  __('Client ID') => [
+							'name' => 'clientID',
+							'type' => 'text',
+							'value' => $oidc_db['ClientID'],
+						],
+                  __('Client Secret') => [
+							'name' => 'clientSecret',
+							'type' => 'text',
+							'value' => $oidc_db['ClientSecret'],
+						],
+                  __('Scope') => [
+							'name' => 'scope',
+							'type' => 'text',
+							'value' => $oidc_db['scope'],
+						],
+                  __('Proxy') => [
+							'name' => 'proxy',
+							'type' => 'text',
+							'value' => $oidc_db['proxy'],
+						],
+                  __('Certificate Path') => [
+							'name' => 'cert',
+							'type' => 'text',
+							'value' => $oidc_db['cert'],
+						],
+               ]
+            ]
+         ]
+      ];
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>Client ID</td>";
-      echo "<td>";
-   if (isset($oidc_db['ClientID'])) {
-       echo "<input type='text' id='clientID' name='clientID'value=". $oidc_db['ClientID'] .">";
-   } else {
-       echo "<input type='text' id='clientID' name='clientID'>";
-   }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>Client Secret</td>";
-      echo "<td>";
-   if (isset($oidc_db['ClientSecret'])) {
-       echo "<input type='password' id='clientSecret' name='clientSecret'value=". $oidc_db['ClientSecret'] .">";
-   } else {
-       echo "<input type='password' id='clientSecret' name='clientSecret' >";
-   }
-      echo "</td></tr>";
-      
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Scopes') . "</td>";
-      echo "<td>";
-   if (isset($oidc_db['scope'])) {
-       echo "<input type='text' id='scope' name='scope'value=". str_replace(' ', '', $oidc_db['scope']) .">";
-   } else {
-       echo "<input type='text' id='scope' name='scope' placeholder='scope1,scope2'>";
-   }
-      echo "</td></tr>";
-      
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Proxy') . "</td>";
-      echo "<td>";
-   if (isset($oidc_db['proxy'])) {
-       echo "<input type='text' id='proxy' name='proxy'value=". str_replace(' ', '', $oidc_db['proxy']) .">";
-   } else {
-       echo "<input type='text' id='proxy' name='proxy' placeholder='http://my.proxy.com:80/'>";
-   }
-      echo "</td></tr>";
-      
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Certificate') . "</td>";
-      echo "<td>";
-   if (isset($oidc_db['cert'])) {
-       echo "<input type='text' id='cert' name='cert'value=". str_replace(' ', '', $oidc_db['cert']) .">";
-   } else {
-       echo "<input type='text' id='cert' name='cert' placeholder='/path/to/my.cert'>";
-   }
-      echo "</td></tr>";
-      
-      echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
-      echo "<input type='submit' name='update' class='submit' value=\"".__s('Save')."\">" . '&nbsp;';
-      echo "<input type='submit' name='mapping' class='submit' value=\"".__s('Mapping')."\" >";
-      echo "</td></tr>";
-      echo "</table>";
-      Html::closeForm();
-      
+      renderTwigForm($form);
   }
 
    /**
