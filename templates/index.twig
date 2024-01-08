@@ -32,7 +32,12 @@
             </p>
             {% endif %}
             {% if display_login_source %}
-            {{auth_dropdown|raw}}
+            <select name="auth" class="login_input">
+                {% for key,login_method in auth_dropdown %}
+                <option value="{{key}}">{{login_method}}</option>
+                {% endfor %}
+            </select>
+
             {% endif %}
             {% if login_remember_time  %}
             <p class="login_input">
