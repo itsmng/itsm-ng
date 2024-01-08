@@ -286,41 +286,76 @@ class Oidc extends CommonDBTM {
          $oidc_db['date_mod']  = $iterator["date_mod"];
       }
 
-      echo "<div class='center'>";
-      echo "<form method='post' action='./auth.oidc_profile.php'>";
-      echo "<input type='hidden' name='id' value='JAAJ'>";
-      echo "<table class='tab_cadre_fixe'>";
+      $form = [
+         'action' => '/front/auth.oidc_profile.php',
+			'buttons' => [
+				[
+					'type' => 'submit',
+					'name' => 'update',
+					'value' => __s('Save'),
+					'class' => 'btn btn-secondary',
+				],
+				[
+					'type' => 'submit',
+					'name' => 'config',
+					'value' => __s('Configuration'),
+					'class' => 'btn btn-secondary'
+				]
+			],
+         'content' => [
+				__('Mapping of fields according to provider') => [
+					'visible' => true,
+					'inputs' => [
+                  ('') => [
+                     'name' => 'id',
+                     'type' => 'hidden',
+                     'value' => '',
+                  ],
+						__('Surname') => [
+							'name' => 'family_name',
+							'type' => 'text',
+							'value' => $oidc_db['family_name'],
+						],
+                  __('First name') => [
+							'name' => 'given_name',
+							'type' => 'text',
+							'value' => $oidc_db['given_name'],
+						],
+                  __('Email') => [
+							'name' => 'email',
+							'type' => 'text',
+							'value' => $oidc_db['email'],
+						],
+                  __('Phone') => [
+                     'name' => 'phone_number',
+                     'type' => 'text',
+                     'value' => $oidc_db['phone_number'],
+                  ],
+                  __('Locale') => [
+							'name' => 'locale',
+							'type' => 'text',
+							'value' => $oidc_db['locale'],
+						],
+                  __('Picture') => [
+							'name' => 'picture',
+							'type' => 'text',
+							'value' => $oidc_db['picture'],
+						],
+                  __('Group') => [
+							'name' => 'group',
+							'type' => 'text',
+							'value' => $oidc_db['group'],
+						],
+                  __('Last update') => [
+							'name' => 'date_mod',
+							'type' => 'text',
+							'value' => $oidc_db['date_mod'],
+						]
+               ]
+            ]
+         ]
+      ];
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<th class='center' colspan='4'>" . __('Mapping of fields according to provider') . "</th></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Surname') . "</td>";
-      echo "<td><input type='text' name='family_name' value='". $oidc_db['family_name'] ."'></td>";
-      echo "<td>" . __('First name') . "</td>";
-      echo "<td><input type='text' name='given_name' value='". $oidc_db['given_name'] ."'></td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Email') . "</td>";
-      echo "<td><input type='text' name='email' value='". $oidc_db['email'] ."'></td>";
-      echo "<td>" . __('Phone') . "</td>";
-      echo "<td><input type='text' name='phone_number' value='". $oidc_db['phone_number'] ."'></td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Locale') . "</td>";
-      echo "<td><input type='text' name='locale' value='". $oidc_db['locale'] ."'></td>";
-      echo "<td>" . __('Picture') . "</td>";
-      echo "<td><input type='text' name='picture' value='". $oidc_db['picture'] ."'></td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Group') . "</td>";
-      echo "<td><input type='text' name='group' value='". $oidc_db['group'] ."'></td>";
-      echo "<td>" . __('Last update') . "</td>";
-      echo "<td><input type='text' name='date_mod' value='". $oidc_db['date_mod'] ."'></td></tr>";
-
-      echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
-      echo "<input type='submit' name='update' class='submit' value=\"".__s('Save')."\">" . '&nbsp;';
-      echo "<input type='submit' name='config' class='submit' value=\"".__s('Configuration')."\" >";
-      echo "</td></tr>";
-      echo "</table>";
-      Html::closeForm();
-
-      echo "</div>";
+      renderTwigForm($form);
    }
 }
