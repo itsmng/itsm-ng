@@ -288,7 +288,9 @@ function glpi_autoload($classname) {
       return true;
    }
 
-   $dirs = array_merge([GLPI_ROOT . "/inc/"], glob(GLPI_ROOT . "/src/*/"));
+   // $dirs = array_merge([GLPI_ROOT . "/inc/"], glob(GLPI_ROOT . "/src/*/"));
+   $dir = GLPI_ROOT . "/inc/";
+   $newdir = GLPI_ROOT . "/src/";
 
    // Deprecation warn for Computer_Software* classes
    if ($classname === 'Computer_SoftwareLicense') {
@@ -323,19 +325,22 @@ function glpi_autoload($classname) {
       }
    }
 
-   foreach ($dirs as $dir) {
-      if (file_exists("$dir$item.class.php")) {
-         include_once("$dir$item.class.php");
-         if (isset($_SESSION['glpi_use_mode'])
-             && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
-            $DEBUG_AUTOLOAD[] = $classname;
-         } else if (!isset($notfound["x$classname"])) {
-            // trigger an error to get a backtrace, but only once (use prefix 'x' to handle empty case)
-            // trigger_error("GLPI autoload : file $dir$item.class.php not founded trying to load class '$classname'");
-            $notfound["x$classname"] = true;
-         }
+   if (file_exists("$dir$item.class.php")) {
+      include_once("$dir$item.class.php");
+      if (isset($_SESSION['glpi_use_mode'])
+          && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
+         $DEBUG_AUTOLOAD[] = $classname;
       }
    }
+
+   foreach (glob("$newdir*/$item.class.php") as $file) {
+      include_once($file);
+      if (isset($_SESSION['glpi_use_mode'])
+          && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
+         $DEBUG_AUTOLOAD[] = $classname;
+      }
+   }
+
 }
 
 // Check if dependencies are up to date
