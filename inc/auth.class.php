@@ -1925,21 +1925,27 @@ class Auth extends CommonGLPI
    }
 
    /**
-    * Display the authentication source dropdown for login form
+    * Get the authentication methods for login
     */
    static function dropdownLogin(): array
    {
       $elements = self::getLoginAuthMethods();
-      $default = $elements['_default'];
-      unset($elements['_default']);
-      // show dropdown of login src only when multiple src
       if (count($elements) > 1) {
+         unset ($elements['_default']);
          return $elements;
       } else if (count($elements) == 1) {
          return null;
       }
    }
 
+   /**
+    * Get the authentication source for login
+    */
+   static function getDefaultLoginAuthSource(): string
+   {
+      $elements = self::getLoginAuthMethods();
+      return $elements['_default'];
+   }
 
    static function getIcon()
    {

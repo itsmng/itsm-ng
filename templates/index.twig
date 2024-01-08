@@ -34,7 +34,7 @@
             {% if display_login_source %}
             <select name="auth" class="login_input">
                 {% for key,login_method in auth_dropdown %}
-                <option value="{{key}}">{{login_method}}</option>
+                <option value="{{key}}" {% if auth_dropdown_default == key %} selected {% endif %}>{{login_method}}</option>
                 {% endfor %}
             </select>
 

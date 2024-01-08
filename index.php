@@ -111,6 +111,7 @@ if (GLPI_DEMO_MODE) {
 if ($CFG_GLPI['display_login_source']) {
     $twig_vars["display_login_source"] = true;
     $twig_vars["auth_dropdown"] = Auth::dropdownLogin();
+    $twig_vars["auth_dropdown_default"] = Auth::getDefaultLoginAuthSource();
 }
 
 if ($CFG_GLPI["login_remember_time"]) {
