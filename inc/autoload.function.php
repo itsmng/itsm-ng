@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -34,15 +35,16 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-define ('NS_GLPI', 'Glpi\\');
-define ('NS_PLUG', 'GlpiPlugin\\');
+define('NS_GLPI', 'Glpi\\');
+define('NS_PLUG', 'GlpiPlugin\\');
 
 /**
  * Is the script launch in Command line?
  *
  * @return boolean
  */
-function isCommandLine() {
+function isCommandLine()
+{
    return (PHP_SAPI == 'cli');
 }
 
@@ -51,14 +53,15 @@ function isCommandLine() {
  *
  * @return boolean
  */
-function isAPI() {
+function isAPI()
+{
    global $CFG_GLPI;
 
    $called_url = (!empty($_SERVER['HTTPS'] ?? "") && ($_SERVER['HTTPS'] ?? "") !== 'off'
-                     ? 'https'
-                     : 'http').
-                 '://' . ($_SERVER['HTTP_HOST'] ?? "").
-                 ($_SERVER['REQUEST_URI'] ?? "");
+      ? 'https'
+      : 'http') .
+      '://' . ($_SERVER['HTTP_HOST'] ?? "") .
+      ($_SERVER['REQUEST_URI'] ?? "");
 
    $base_api_url = $CFG_GLPI['url_base_api'] ?? ""; // $CFG_GLPI may be not defined if DB is not available
    if (!empty($base_api_url) && strpos($called_url, $base_api_url) !== false) {
@@ -84,7 +87,8 @@ function isAPI() {
  *
  * @return boolean|array False or an array containing plugin name and class name
  */
-function isPluginItemType($classname) {
+function isPluginItemType($classname)
+{
 
    /** @var array $matches */
    if (preg_match("/^Plugin([A-Z][a-z0-9]+)([A-Z]\w+)$/", $classname, $matches)) {
@@ -92,7 +96,6 @@ function isPluginItemType($classname) {
       $plug['plugin'] = $matches[1];
       $plug['class']  = $matches[2];
       return $plug;
-
    } else if (substr($classname, 0, \strlen(NS_PLUG)) === NS_PLUG) {
       $tab = explode('\\', $classname, 3);
       $plug           = [];
@@ -115,7 +118,8 @@ function isPluginItemType($classname) {
  *
  * @return string translated string
  */
-function __($str, $domain = 'glpi') {
+function __($str, $domain = 'glpi')
+{
    global $TRANSLATE;
 
    if (is_null($TRANSLATE)) { // before login
@@ -140,7 +144,8 @@ function __($str, $domain = 'glpi') {
  *
  * @return string
  */
-function __s($str, $domain = 'glpi') {
+function __s($str, $domain = 'glpi')
+{
    return htmlentities(__($str, $domain), ENT_QUOTES, 'UTF-8');
 }
 
@@ -156,7 +161,8 @@ function __s($str, $domain = 'glpi') {
  *
  * @return string protected string (with htmlentities)
  */
-function _sx($ctx, $str, $domain = 'glpi') {
+function _sx($ctx, $str, $domain = 'glpi')
+{
    return htmlentities(_x($ctx, $str, $domain), ENT_QUOTES, 'UTF-8');
 }
 
@@ -173,7 +179,8 @@ function _sx($ctx, $str, $domain = 'glpi') {
  *
  * @return string translated string
  */
-function _n($sing, $plural, $nb, $domain = 'glpi') {
+function _n($sing, $plural, $nb, $domain = 'glpi')
+{
    global $TRANSLATE;
 
    if (is_null($TRANSLATE)) { // before login
@@ -200,7 +207,8 @@ function _n($sing, $plural, $nb, $domain = 'glpi') {
  *
  * @return string protected string (with htmlentities)
  */
-function _sn($sing, $plural, $nb, $domain = 'glpi') {
+function _sn($sing, $plural, $nb, $domain = 'glpi')
+{
    return htmlentities(_n($sing, $plural, $nb, $domain), ENT_QUOTES, 'UTF-8');
 }
 
@@ -216,10 +224,11 @@ function _sn($sing, $plural, $nb, $domain = 'glpi') {
  *
  * @return string
  */
-function _x($ctx, $str, $domain = 'glpi') {
+function _x($ctx, $str, $domain = 'glpi')
+{
 
    // simulate pgettext
-   $msg   = $ctx."\004".$str;
+   $msg   = $ctx . "\004" . $str;
    $trans = __($msg, $domain);
 
    if ($trans == $msg) {
@@ -243,11 +252,12 @@ function _x($ctx, $str, $domain = 'glpi') {
  *
  * @return string
  */
-function _nx($ctx, $sing, $plural, $nb, $domain = 'glpi') {
+function _nx($ctx, $sing, $plural, $nb, $domain = 'glpi')
+{
 
    // simulate pgettext
-   $singmsg    = $ctx."\004".$sing;
-   $pluralmsg  = $ctx."\004".$plural;
+   $singmsg    = $ctx . "\004" . $sing;
+   $pluralmsg  = $ctx . "\004" . $plural;
    $trans      = _n($singmsg, $pluralmsg, $nb, $domain);
 
    if ($trans == $singmsg) {
@@ -269,10 +279,13 @@ function _nx($ctx, $sing, $plural, $nb, $domain = 'glpi') {
  *
  * @return void|boolean
  */
-function glpi_autoload($classname) {
+function glpi_autoload($classname)
+{
    global $DEBUG_AUTOLOAD;
-   static $notfound = ['xStates'    => true,
-                            'xAllAssets' => true, ];
+   static $notfound = [
+      'xStates'    => true,
+      'xAllAssets' => true,
+   ];
    // empty classname or non concerted plugin or classname containing dot (leaving GLPI main treee)
    if (empty($classname) || is_numeric($classname) || (strpos($classname, '.') !== false)) {
       trigger_error(
@@ -282,13 +295,17 @@ function glpi_autoload($classname) {
       return false;
    }
 
-   if ($classname === 'phpCAS'
-       && file_exists(stream_resolve_include_path("CAS.php"))) {
+   if (
+      $classname === 'phpCAS'
+      && file_exists(stream_resolve_include_path("CAS.php"))
+   ) {
       include_once('CAS.php');
       return true;
    }
 
-   $dirs = array_merge([GLPI_ROOT . "/inc/"], glob(GLPI_ROOT . "/src/*/"));
+   // $dirs = array_merge([GLPI_ROOT . "/inc/"], glob(GLPI_ROOT . "/src/*/"));
+   $dir = GLPI_ROOT . "/inc/";
+   $newdir = GLPI_ROOT . "/src/";
 
    // Deprecation warn for Computer_Software* classes
    if ($classname === 'Computer_SoftwareLicense') {
@@ -323,17 +340,23 @@ function glpi_autoload($classname) {
       }
    }
 
-   foreach ($dirs as $dir) {
-      if (file_exists("$dir$item.class.php")) {
-         include_once("$dir$item.class.php");
-         if (isset($_SESSION['glpi_use_mode'])
-             && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
-            $DEBUG_AUTOLOAD[] = $classname;
-         } else if (!isset($notfound["x$classname"])) {
-            // trigger an error to get a backtrace, but only once (use prefix 'x' to handle empty case)
-            // trigger_error("GLPI autoload : file $dir$item.class.php not founded trying to load class '$classname'");
-            $notfound["x$classname"] = true;
-         }
+   if (file_exists("$dir$item.class.php")) {
+      include_once("$dir$item.class.php");
+      if (
+         isset($_SESSION['glpi_use_mode'])
+         && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
+      ) {
+         $DEBUG_AUTOLOAD[] = $classname;
+      }
+   }
+
+   foreach (glob("$newdir*/$item.class.php") as $file) {
+      include_once($file);
+      if (
+         isset($_SESSION['glpi_use_mode'])
+         && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
+      ) {
+         $DEBUG_AUTOLOAD[] = $classname;
       }
    }
 }
@@ -364,9 +387,9 @@ if ($needrun) {
    $deps_install_msg[] = 'Application dependencies are not up to date.';
    $deps_install_msg[] = 'Run "php bin/console dependencies install" in the ITSM-NG tree to fix this.';
    if (isCommandLine()) {
-      echo implode(PHP_EOL,$deps_install_msg);
+      echo implode(PHP_EOL, $deps_install_msg);
    } else {
-      $msg=$deps_install_msg;
+      $msg = $deps_install_msg;
       require_once("front/error.php");
    }
    die(1);
