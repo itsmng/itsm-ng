@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -35,10 +36,11 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+	die("Sorry. You can't access this file directly");
 }
 
-class Line extends CommonDBTM {
+class Line extends CommonDBTM
+{
 	// From CommonDBTM
 	public $dohistory                   = true;
 
@@ -46,24 +48,27 @@ class Line extends CommonDBTM {
 	protected $usenotepad               = true;
 
 
-	static function getTypeName($nb = 0) {
-    	return _n('Line', 'Lines', $nb);
-   	}
+	static function getTypeName($nb = 0)
+	{
+		return _n('Line', 'Lines', $nb);
+	}
 
 
 	/**
-	* @see CommonDBTM::useDeletedToLockIfDynamic()
-    *
-    * @since 0.84
-    **/
-	function useDeletedToLockIfDynamic() {
-    	return false;
+	 * @see CommonDBTM::useDeletedToLockIfDynamic()
+	 *
+	 * @since 0.84
+	 **/
+	function useDeletedToLockIfDynamic()
+	{
+		return false;
 	}
 
-	function defineTabs($options = []) {
+	function defineTabs($options = [])
+	{
 
-    	$ong = [];
-    	$this->addDefaultFormTab($ong);
+		$ong = [];
+		$this->addDefaultFormTab($ong);
 		$this->addImpactTab($ong, $options);
 		$this->addStandardTab('Infocom', $ong, $options);
 		$this->addStandardTab('Contract_Item', $ong, $options);
@@ -75,16 +80,17 @@ class Line extends CommonDBTM {
 	}
 
 	/**
-	* Print the contact form
-	*
-	* @param $ID        integer ID of the item
-	* @param $options   array of possible options:
-	*     - target for the Form
-	*     - withtemplate : template or basic item
-	*
-	* @return void
-	**/
-	function showForm($ID, $options = []) {
+	 * Print the contact form
+	 *
+	 * @param $ID        integer ID of the item
+	 * @param $options   array of possible options:
+	 *     - target for the Form
+	 *     - withtemplate : template or basic item
+	 *
+	 * @return void
+	 **/
+	function showForm($ID, $options = [])
+	{
 		require_once GLPI_ROOT . '/src/twig/twig.utils.php';
 
 		$form = [
@@ -103,7 +109,7 @@ class Line extends CommonDBTM {
 					'class' => 'btn btn-secondary'
 				]
 			],
-            'content' => [
+			'content' => [
 				__('Line') => [
 					'visible' => true,
 					'inputs' => [
@@ -174,132 +180,134 @@ class Line extends CommonDBTM {
 							'type' => 'textarea',
 							'value' => $this->fields['comment'] ?? ''
 						],
-                	]
-            	]
-        	]
+					]
+				]
+			]
 		];
-    	renderTwigForm($form);
+		renderTwigForm($form);
 
-    	return true;
-    }
-
-
-	function rawSearchOptions() {
-    	$tab = parent::rawSearchOptions();
-
-    	$tab = array_merge($tab, Location::rawSearchOptionsToAdd());
-
-    	$tab[] = [
-            'id'                 => '2',
-            'table'              => $this->getTable(),
-            'field'              => 'id',
-            'name'               => __('ID'),
-            'massiveaction'      => false,
-            'datatype'           => 'number'
-    	];
-
-    	$tab[] = [
-            'id'                 => '4',
-            'table'              => 'glpi_linetypes',
-            'field'              => 'name',
-            'name'               => LineType::getTypeName(1),
-            'datatype'           => 'dropdown',
-    	];
-
-    	$tab[] = [
-        	'id'                 => '16',
-            'table'              => $this->getTable(),
-            'field'              => 'comment',
-            'name'               => __('Comments'),
-            'datatype'           => 'text'
-    	];
-
-    	$tab[] = [
-            'id'                 => '19',
-            'table'              => $this->getTable(),
-            'field'              => 'date_mod',
-            'name'               => __('Last update'),
-            'datatype'           => 'datetime',
-            'massiveaction'      => false
-    	];
-
-      	$tab[] = [
-            'id'                 => '31',
-            'table'              => 'glpi_states',
-            'field'              => 'completename',
-            'name'               => __('Status'),
-            'datatype'           => 'dropdown',
-            'condition'          => ['is_visible_line' => 1]
-    	];
-
-    	$tab[] = [
-            'id'                 => '70',
-            'table'              => 'glpi_users',
-            'field'              => 'name',
-            'name'               => User::getTypeName(1),
-            'datatype'           => 'dropdown',
-            'right'              => 'all'
-      ];
-
-      $tab[] = [
-            'id'                 => '71',
-            'table'              => 'glpi_groups',
-            'field'              => 'completename',
-            'name'               => Group::getTypeName(1),
-            'condition'          => ['is_itemgroup' => 1],
-            'datatype'           => 'dropdown'
-      ];
-
-      $tab[] = [
-            'id'                 => '80',
-            'table'              => 'glpi_entities',
-            'field'              => 'completename',
-            'name'               => Entity::getTypeName(1),
-            'massiveaction'      => false,
-            'datatype'           => 'dropdown'
-      ];
-
-      $tab[] = [
-            'id'                 => '121',
-            'table'              => $this->getTable(),
-            'field'              => 'date_creation',
-            'name'               => __('Creation date'),
-            'datatype'           => 'datetime',
-            'massiveaction'      => false
-      ];
-
-      $tab[] = [
-            'id'                 => '184',
-            'table'              => 'glpi_lineoperators',
-            'field'              => 'name',
-            'name'               => LineOperator::getTypeName(1),
-            'massiveaction'      => true,
-            'datatype'           => 'dropdown'
-      ];
-
-      $tab[] = [
-            'id'                 => '185',
-            'table'              => $this->getTable(),
-            'field'              => 'caller_num',
-            'name'               => __('Caller number'),
-            'datatype'           => 'string',
-            'autocomplete'       => true,
-      ];
-
-      $tab[] = [
-            'id'                 => '186',
-            'table'              => $this->getTable(),
-            'field'              => 'caller_name',
-            'name'               => __('Caller name'),
-            'datatype'           => 'string',
-            'autocomplete'       => true,
-      ];
-
-      return $tab;
-   }
+		return true;
+	}
 
 
-   static function getIcon() {
-      return "fas fa-phone";
-   }
+	function rawSearchOptions()
+	{
+		$tab = parent::rawSearchOptions();
+
+		$tab = array_merge($tab, Location::rawSearchOptionsToAdd());
+
+		$tab[] = [
+			'id'                 => '2',
+			'table'              => $this->getTable(),
+			'field'              => 'id',
+			'name'               => __('ID'),
+			'massiveaction'      => false,
+			'datatype'           => 'number'
+		];
+
+		$tab[] = [
+			'id'                 => '4',
+			'table'              => 'glpi_linetypes',
+			'field'              => 'name',
+			'name'               => LineType::getTypeName(1),
+			'datatype'           => 'dropdown',
+		];
+
+		$tab[] = [
+			'id'                 => '16',
+			'table'              => $this->getTable(),
+			'field'              => 'comment',
+			'name'               => __('Comments'),
+			'datatype'           => 'text'
+		];
+
+		$tab[] = [
+			'id'                 => '19',
+			'table'              => $this->getTable(),
+			'field'              => 'date_mod',
+			'name'               => __('Last update'),
+			'datatype'           => 'datetime',
+			'massiveaction'      => false
+		];
+
+		$tab[] = [
+			'id'                 => '31',
+			'table'              => 'glpi_states',
+			'field'              => 'completename',
+			'name'               => __('Status'),
+			'datatype'           => 'dropdown',
+			'condition'          => ['is_visible_line' => 1]
+		];
+
+		$tab[] = [
+			'id'                 => '70',
+			'table'              => 'glpi_users',
+			'field'              => 'name',
+			'name'               => User::getTypeName(1),
+			'datatype'           => 'dropdown',
+			'right'              => 'all'
+		];
+
+		$tab[] = [
+			'id'                 => '71',
+			'table'              => 'glpi_groups',
+			'field'              => 'completename',
+			'name'               => Group::getTypeName(1),
+			'condition'          => ['is_itemgroup' => 1],
+			'datatype'           => 'dropdown'
+		];
+
+		$tab[] = [
+			'id'                 => '80',
+			'table'              => 'glpi_entities',
+			'field'              => 'completename',
+			'name'               => Entity::getTypeName(1),
+			'massiveaction'      => false,
+			'datatype'           => 'dropdown'
+		];
+
+		$tab[] = [
+			'id'                 => '121',
+			'table'              => $this->getTable(),
+			'field'              => 'date_creation',
+			'name'               => __('Creation date'),
+			'datatype'           => 'datetime',
+			'massiveaction'      => false
+		];
+
+		$tab[] = [
+			'id'                 => '184',
+			'table'              => 'glpi_lineoperators',
+			'field'              => 'name',
+			'name'               => LineOperator::getTypeName(1),
+			'massiveaction'      => true,
+			'datatype'           => 'dropdown'
+		];
+
+		$tab[] = [
+			'id'                 => '185',
+			'table'              => $this->getTable(),
+			'field'              => 'caller_num',
+			'name'               => __('Caller number'),
+			'datatype'           => 'string',
+			'autocomplete'       => true,
+		];
+
+		$tab[] = [
+			'id'                 => '186',
+			'table'              => $this->getTable(),
+			'field'              => 'caller_name',
+			'name'               => __('Caller name'),
+			'datatype'           => 'string',
+			'autocomplete'       => true,
+		];
+
+		return $tab;
+	}
+
+
+	static function getIcon()
+	{
+		return "fas fa-phone";
+	}
 }
