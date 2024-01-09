@@ -1,10 +1,10 @@
 <?php
 /**
  * ---------------------------------------------------------------------
- * GLPI - Gestionnaire Libre de Parc Informatique
- * Copyright (C) 2015-2022 Teclib' and contributors.
+ * ITSM-NG
+ * Copyright (C) 2022 ITSM-NG and contributors.
  *
- * http://glpi-project.org
+ * https://www.itsm-ng.org
  *
  * based on GLPI - Gestionnaire Libre de Parc Informatique
  * Copyright (C) 2003-2014 by the INDEPNET Development Team.
@@ -13,20 +13,20 @@
  *
  * LICENSE
  *
- * This file is part of GLPI.
+ * This file is part of ITSM-NG.
  *
- * GLPI is free software; you can redistribute it and/or modify
+ * ITSM-NG is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * GLPI is distributed in the hope that it will be useful,
+ * ITSM-NG is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
+ * along with ITSM-NG. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
  */
 
@@ -4213,10 +4213,10 @@ class Ticket extends CommonITILObject {
       $supplierActors = $this->getSuppliers($action);
       foreach ($supplierActors as $supplierActor) {
         $supplier = new Supplier();
-        $supplier->getFromDB($supplierActor['groups_id']);
+        $supplier->getFromDB($supplierActor['suppliers_id']);
         $actors[] = [
           'name' => $supplier->getName(),
-          'id' => $supplierActor['groups_id'],
+          'id' => $supplierActor['suppliers_id'],
           'type' => 'supplier',
           'icon' => Supplier::getIcon(),
         ];
@@ -4516,6 +4516,7 @@ class Ticket extends CommonITILObject {
               ] : [],
               __('Opening date') => $ID ? [
                 'type' => 'datetime-local',
+                'id' => rand(),
                 'name' => 'date',
                 'value' => $this->fields["date"],
                 $canupdate ? '' : 'disabled' => ''
@@ -4535,24 +4536,28 @@ class Ticket extends CommonITILObject {
               __('Time to own') => $ID ? [
                 'type' => 'datetime-local',
                 'name' => 'time_to_own',
+                'id' => rand(),
                 'value' => $this->fields["time_to_own"],
                 'col_lg' => 6,
               ] : [],
               __('Time to resolve') => $ID ? [
                 'type' => 'datetime-local',
                 'name' => 'time_to_resolve',
+                'id' => rand(),
                 'value' => $this->fields["time_to_resolve"],
                 'col_lg' => 6,
               ] : [],
               __('Internal time to own') => $ID ? [
                 'type' => 'datetime-local',
                 'name' => 'time_to_resolve',
+                'id' => rand(),
                 'value' => $this->fields["time_to_resolve"],
                 'col_lg' => 6,
               ] : [],
               __('Internal time to resolve') => $ID ? [
                 'type' => 'datetime-local',
                 'name' => 'time_to_resolve',
+                'id' => rand(),
                 'value' => $this->fields["time_to_resolve"],
                 'col_lg' => 6,
               ] : [],
@@ -4712,35 +4717,44 @@ class Ticket extends CommonITILObject {
                 'type' => 'actorSelect',
                 'name' => '_users_id_requester',
                 'actorTypes' => [
+                  Dropdown::EMPTY_VALUE => 0,
                   User::getTypeName() => 'user',
                   Group::getTypeName() => 'group',
                 ],
                 'values' => $this->getActorsForAction(CommonITILActor::REQUESTER),
+                'actorTypeId' => CommonITILActor::REQUESTER,
                 'itemType' => 'Ticket',
                 'actorType' => 'requester',
+                'ticketId' => $this->isNewID($ID) ? 0 : $ID,
               ],
               __('Watcher') => [
                 'type' => 'actorSelect',
                 'name' => '_users_id_observer',
                 'actorTypes' => [
+                  Dropdown::EMPTY_VALUE => 0,
                   User::getTypeName() => 'user',
                   Group::getTypeName() => 'group',
                 ],
                 'values' => $this->getActorsForAction(CommonITILActor::OBSERVER),
+                'actorTypeId' => CommonITILActor::OBSERVER,
                 'itemType' => 'Ticket',
-                'actorType' => 'requester',
+                'actorType' => 'observer',
+                'ticketId' => $this->isNewID($ID) ? 0 : $ID,
               ],
               __('Assigned to') => [
                 'type' => 'actorSelect',
                 'name' => '_users_id_assign',
                 'actorTypes' => [
+                  Dropdown::EMPTY_VALUE => 0,
                   User::getTypeName() => 'user',
                   Group::getTypeName() => 'group',
                   Supplier::getTypeName() => 'supplier',
                 ],
                 'values' => $this->getActorsForAction(CommonITILActor::ASSIGN),
+                'actorTypeId' => CommonITILActor::ASSIGN,
                 'itemType' => 'Ticket',
-                'actorType' => 'requester',
+                'actorType' => 'assign',
+                'ticketId' => $this->isNewID($ID) ? 0 : $ID,
               ],
             ]
           ],
@@ -4762,22 +4776,29 @@ class Ticket extends CommonITILObject {
                 $canupdate ? '' : 'disabled' => '',
                 'col_lg' => 12,
                 'col_md' => 12,
-                
+                'required' => true,
               ],
               _n('Linked ticket', 'Linked tickets', Session::getPluralNumber()) => [
-                'type' => 'multiSelect',
+                'type' => 'ticketSelect',
                 'name' => '_link',
-                'options' => getOptionForItems('Ticket'),
+                'relations' => [
+                  Ticket_Ticket::LINK_TO => __('Linked to'),
+                  Ticket_Ticket::DUPLICATE_WITH => __('Duplicates'),
+                  Ticket_Ticket::SON_OF => __('Son of'),
+                  Ticket_Ticket::PARENT_OF => __('Parent of'),
+                ],
+                'options' => getOptionForItems('Ticket', ['is_deleted' => 0, 'NOT' => ['id' => $ID]]),
                 'values' => Ticket_Ticket::getLinkedTicketsTo($ID),
                 $canupdate ? '' : 'disabled' => '',
+                'ticket_id' => $ID,
                 'col_lg' => 6,
               ],
-              sprintf(__('%1$s (%2$s)'), __('File'), Document::getMaxUploadSize()) => [
-                 'type' => 'file',
-                 'name' => 'filenames',
-                 'id' => 'fileSelectorForDocument',
-                 'col_lg' => 6,
-              ],
+            //   sprintf(__('%1$s (%2$s)'), __('File'), Document::getMaxUploadSize()) => [
+            //      'type' => 'file',
+            //      'name' => 'filenames',
+            //      'id' => 'fileSelectorForDocument',
+            //      'col_lg' => 6,
+            //   ],
             ]
           ]
         ]
@@ -6979,7 +7000,7 @@ class Ticket extends CommonITILObject {
                   }
                }
                if (isset($p['append_actors'])) {
-                  $tu = new Ticket_User();
+                  $tu = new User_ticket();
                   $existing_users = $tu->find(['tickets_id' => $merge_target_id]);
                   $gt = new Group_Ticket();
                   $existing_groups = $gt->find(['tickets_id' => $merge_target_id]);

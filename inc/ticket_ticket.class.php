@@ -142,15 +142,23 @@ class Ticket_Ticket extends CommonDBRelation {
       $tickets = [];
 
       while ($data = $iterator->next()) {
+         $ticket = new Ticket();
          if ($data['tickets_id_1'] != $ID) {
+            $ticket->getFromDB($data['tickets_id_1']);
             $tickets[$data['id']] = [
                'link'         => $data['link'],
+               'url'          => $ticket->getStatusIcon($ticket->fields['status'])
+                  ." <a href=".Ticket::getFormURLWithID($data['tickets_id_1']).">"
+                  .$ticket->fields['name']."</a>",
                'tickets_id_1' => $data['tickets_id_1'],
                'tickets_id'   => $data['tickets_id_1']
             ];
          } else {
+            $ticket->getFromDB($data['tickets_id_2']);
             $tickets[$data['id']] = [
                'link'       => $data['link'],
+               'url'          => $ticket->getStatusIcon($ticket->fields['status'])." <a href=".Ticket::getFormURLWithID($data['tickets_id_2']).">"
+                  .$ticket->fields['name']."</a>",
                'tickets_id' => $data['tickets_id_2']
             ];
          }
