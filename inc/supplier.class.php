@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -36,8 +37,9 @@ if (!defined('GLPI_ROOT')) {
 
 /**
  * Supplier class (suppliers)
-**/
-class Supplier extends CommonDBTM {
+ **/
+class Supplier extends CommonDBTM
+{
 
    // From CommonDBTM
    public $dohistory           = true;
@@ -51,13 +53,15 @@ class Supplier extends CommonDBTM {
     * Name of the type
     *
     * @param $nb : number of item in the type
-   **/
-   static function getTypeName($nb = 0) {
+    **/
+   static function getTypeName($nb = 0)
+   {
       return _n('Supplier', 'Suppliers', $nb);
    }
 
 
-   function cleanDBonPurge() {
+   function cleanDBonPurge()
+   {
 
       $this->deleteChildrenAndRelationsFromDb(
          [
@@ -76,7 +80,8 @@ class Supplier extends CommonDBTM {
    }
 
 
-   function defineTabs($options = []) {
+   function defineTabs($options = [])
+   {
 
       $ong = [];
       $this->addDefaultFormTab($ong);
@@ -105,117 +110,118 @@ class Supplier extends CommonDBTM {
     *     - withtemplate boolean : template or basic item
     *
     *@return void
-   **/
-   function showForm($ID) {
+    **/
+   function showForm($ID)
+   {
 
       $form = [
-			'action' => Toolbox::getItemTypeFormURL('supplier'),
-			'buttons' => [
-				[
-					'type' => 'submit',
-					'name' => $this->isNewID($ID) ? 'add' : 'update',
-					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-					'class' => 'btn btn-secondary',
-				],
-				$this->isNewID($ID) ? [] : [
-					'type' => 'submit',
-					'name' => 'delete',
-					'value' => __('Put in trashbin'),
-					'class' => 'btn btn-secondary'
-				]
-			],
-            'content' => [
-				__('Line') => [
-					'visible' => true,
-					'inputs' => [
-						$this->isNewID($ID) ? [] : [
-							'type' => 'hidden',
-							'name' => 'id',
-							'value' => $ID
-						],
+         'action' => Toolbox::getItemTypeFormURL('supplier'),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => $this->isNewID($ID) ? 'add' : 'update',
+               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary',
+            ],
+            $this->isNewID($ID) ? [] : [
+               'type' => 'submit',
+               'name' => 'delete',
+               'value' => __('Put in trashbin'),
+               'class' => 'btn btn-secondary'
+            ]
+         ],
+         'content' => [
+            __('Line') => [
+               'visible' => true,
+               'inputs' => [
+                  $this->isNewID($ID) ? [] : [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID
+                  ],
                   __('Name') => [
-							'name' => 'name',
-							'type' => 'text',
-							'value' => $this->fields['name'],
-						],
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'],
+                  ],
                   __('Phone') => [
-							'name' => 'phonenumber',
-							'type' => 'text',
-							'value' => $this->fields['phonenumber'],
-						],
+                     'name' => 'phonenumber',
+                     'type' => 'text',
+                     'value' => $this->fields['phonenumber'],
+                  ],
                   __('Fax') => [
-							'name' => 'fax',
-							'type' => 'text',
-							'value' => $this->fields['fax'],
-						],
-						__('Website') => [
-							'name' => 'website',
-							'type' => 'text',
-							'value' => $this->fields['website'],
-						],
+                     'name' => 'fax',
+                     'type' => 'text',
+                     'value' => $this->fields['fax'],
+                  ],
+                  __('Website') => [
+                     'name' => 'website',
+                     'type' => 'text',
+                     'value' => $this->fields['website'],
+                  ],
                   __('Name') => [
-							'name' => 'email',
-							'type' => 'text',
-							'value' => $this->fields['email'],
-						],
+                     'name' => 'email',
+                     'type' => 'text',
+                     'value' => $this->fields['email'],
+                  ],
                   __('Email') => [
-							'name' => 'name',
-							'type' => 'text',
-							'value' => $this->fields['name'],
-						],
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'],
+                  ],
                   __('Address') => [
-							'name' => 'address',
-							'type' => 'textarea',
-							'value' => $this->fields['address'],
-						],
-						__('Postal code') => [
-							'name' => 'postcode',
-							'type' => 'text',
-							'value' => $this->fields['postcode'],
-						],
+                     'name' => 'address',
+                     'type' => 'textarea',
+                     'value' => $this->fields['address'],
+                  ],
+                  __('Postal code') => [
+                     'name' => 'postcode',
+                     'type' => 'text',
+                     'value' => $this->fields['postcode'],
+                  ],
                   __('Town') => [
-							'name' => 'town',
-							'type' => 'text',
-							'value' => $this->fields['town']
-						],
-						__('State') => [
-							'name' => 'state',
-							'type' => 'text',
-							'value' => $this->fields['state']
-						],
-						__('Country') => [
-							'name' => 'country',
-							'type' => 'text',
-							'value' => $this->fields['country']
-						],
-						__('Third party type') => [
-							'name' => 'suppliertypes_id',
-							'type' => 'select',
-							'values' => getOptionForItems("suppliertypes"),
+                     'name' => 'town',
+                     'type' => 'text',
+                     'value' => $this->fields['town']
+                  ],
+                  __('State') => [
+                     'name' => 'state',
+                     'type' => 'text',
+                     'value' => $this->fields['state']
+                  ],
+                  __('Country') => [
+                     'name' => 'country',
+                     'type' => 'text',
+                     'value' => $this->fields['country']
+                  ],
+                  __('Third party type') => [
+                     'name' => 'suppliertypes_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems("suppliertypes"),
                      'actions' => getItemActionButtons(['info', 'add'], "SupplierType"),
-							'value' => $this->fields['suppliertypes_id']
-						],
-						__('Comment') => [
-							'name' => 'comment',
-							'type' => 'textarea',
-							'value' => $this->fields['comment']
-						],
+                     'value' => $this->fields['suppliertypes_id']
+                  ],
+                  __('Comment') => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment']
+                  ],
                   __('Active') => [
-							'name' => 'is_active',
-							'type' => 'checkbox',
-							'value' => $this->fields['is_active']
-						]
-                	]
-            	]
-        	]
-		];
-    	renderTwigForm($form);
+                     'name' => 'is_active',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['is_active']
+                  ]
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
 
       return true;
-
    }
 
-   static function dropdown($options = []) {
+   static function dropdown($options = [])
+   {
       $condition = ['is_active' => true];
       $options['condition'] = (isset($options['condition']) ? $options['condition'] + $condition : $condition);
       return Dropdown::show(get_called_class(), $options);
@@ -223,19 +229,21 @@ class Supplier extends CommonDBTM {
 
    /**
     * @see CommonDBTM::getSpecificMassiveActions()
-   **/
-   function getSpecificMassiveActions($checkitem = null) {
+    **/
+   function getSpecificMassiveActions($checkitem = null)
+   {
 
       $isadmin = static::canUpdate();
       $actions = parent::getSpecificMassiveActions($checkitem);
       if ($isadmin) {
-         $actions['Contact_Supplier'.MassiveAction::CLASS_ACTION_SEPARATOR.'add']
-               = _x('button', 'Add a contact');
+         $actions['Contact_Supplier' . MassiveAction::CLASS_ACTION_SEPARATOR . 'add']
+            = _x('button', 'Add a contact');
       }
       return $actions;
    }
 
-   function rawSearchOptions() {
+   function rawSearchOptions()
+   {
       global $DB;
 
       $tab = [];
@@ -386,7 +394,7 @@ class Supplier extends CommonDBTM {
          'forcegroupby'       => true,
          'datatype'           => 'itemlink',
          'massiveaction'      => false,
-         'computation'        => "CONCAT(".$DB->quoteName("TABLE.$name1").", ' ', ".$DB->quoteName("TABLE.$name2").")",
+         'computation'        => "CONCAT(" . $DB->quoteName("TABLE.$name1") . ", ' ', " . $DB->quoteName("TABLE.$name2") . ")",
          'computationgroupby' => true,
          'joinparams'         => [
             'beforejoin'         => [
@@ -454,8 +462,9 @@ class Supplier extends CommonDBTM {
     * Get links for an enterprise (website / edit)
     *
     * @param $withname boolean : also display name ? (false by default)
-   **/
-   function getLinks($withname = false) {
+    **/
+   function getLinks($withname = false)
+   {
       global $CFG_GLPI;
 
       $ret = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -466,15 +475,15 @@ class Supplier extends CommonDBTM {
       }
 
       if (!empty($this->fields['website'])) {
-         $ret .= "<a href='".Toolbox::formatOutputWebLink($this->fields['website'])."' target='_blank'>
-                  <img src='".$CFG_GLPI["root_doc"]."/pics/web.png' class='middle' alt=\"".
-                   __s('Web')."\" title=\"".__s('Web')."\"></a>&nbsp;&nbsp;";
+         $ret .= "<a href='" . Toolbox::formatOutputWebLink($this->fields['website']) . "' target='_blank'>
+                  <img src='" . $CFG_GLPI["root_doc"] . "/pics/web.png' class='middle' alt=\"" .
+            __s('Web') . "\" title=\"" . __s('Web') . "\"></a>&nbsp;&nbsp;";
       }
 
       if ($this->can($this->fields['id'], READ)) {
-         $ret .= "<a href='".Supplier::getFormURLWithID($this->fields['id'])."'>
-                  <img src='".$CFG_GLPI["root_doc"]."/pics/edit.png' class='middle' alt=\"".
-                   __s('Update')."\" title=\"".__s('Update')."\"></a>";
+         $ret .= "<a href='" . Supplier::getFormURLWithID($this->fields['id']) . "'>
+                  <img src='" . $CFG_GLPI["root_doc"] . "/pics/edit.png' class='middle' alt=\"" .
+            __s('Update') . "\" title=\"" . __s('Update') . "\"></a>";
       }
       return $ret;
    }
@@ -485,8 +494,9 @@ class Supplier extends CommonDBTM {
     *
     *@return void
     *
-   **/
-   function showInfocoms() {
+    **/
+   function showInfocoms()
+   {
       global $DB;
 
       $instID = $this->fields['id'];
@@ -507,11 +517,11 @@ class Supplier extends CommonDBTM {
          echo _n('Associated item', 'Associated items', $number);
       }
       echo "</th></tr>";
-      echo "<tr><th>"._n('Type', 'Types', 1)."</th>";
-      echo "<th>".Entity::getTypeName(1)."</th>";
-      echo "<th>".__('Name')."</th>";
-      echo "<th>".__('Serial number')."</th>";
-      echo "<th>".__('Inventory number')."</th>";
+      echo "<tr><th>" . _n('Type', 'Types', 1) . "</th>";
+      echo "<th>" . Entity::getTypeName(1) . "</th>";
+      echo "<th>" . __('Name') . "</th>";
+      echo "<th>" . __('Serial number') . "</th>";
+      echo "<th>" . __('Inventory number') . "</th>";
       echo "</tr>";
 
       $num = 0;
@@ -604,24 +614,27 @@ class Supplier extends CommonDBTM {
                if ($nb > 0) {
                   $title = sprintf(__('%1$s: %2$s'), $title, $nb);
                }
-               echo "<td class='center'>".$title."</td>";
+               echo "<td class='center'>" . $title . "</td>";
                echo "<td class='center' colspan='2'>";
-               $opt = ['order'      => 'ASC',
-                            'is_deleted' => 0,
-                            'reset'      => 'reset',
-                            'start'      => 0,
-                            'sort'       => 80,
-                            'criteria'   => [0 => ['value'      => '$$$$'.$instID,
-                                                             'searchtype' => 'contains',
-                                                             'field'      => 53]]];
+               $opt = [
+                  'order'      => 'ASC',
+                  'is_deleted' => 0,
+                  'reset'      => 'reset',
+                  'start'      => 0,
+                  'sort'       => 80,
+                  'criteria'   => [0 => [
+                     'value'      => '$$$$' . $instID,
+                     'searchtype' => 'contains',
+                     'field'      => 53
+                  ]]
+               ];
                $link = $linktype::getSearchURL();
-               $link.= (strpos($link, '?') ? '&amp;':'?');
+               $link .= (strpos($link, '?') ? '&amp;' : '?');
 
                echo "<a href='$link" .
-                     Toolbox::append_params($opt). "'>" . __('Device list')."</a></td>";
+                  Toolbox::append_params($opt) . "'>" . __('Device list') . "</a></td>";
 
                echo "<td class='center'>-</td><td class='center'>-</td></tr>";
-
             } else if ($nb) {
                $prem = true;
                while ($data = $iterator->next()) {
@@ -630,7 +643,7 @@ class Supplier extends CommonDBTM {
                      $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
                   }
                   $link = $linktype::getFormURLWithID($data[$linkfield]);
-                  $name = "<a href='$link'>".$name."</a>";
+                  $name = "<a href='$link'>" . $name . "</a>";
 
                   echo "<tr class='tab_bg_1";
                   if (isset($data['is_template']) && $data['is_template'] == 1) {
@@ -643,17 +656,19 @@ class Supplier extends CommonDBTM {
                      if ($nb > 0) {
                         $title = sprintf(__('%1$s: %2$s'), $title, $nb);
                      }
-                     echo "<td class='center top' rowspan='$nb'>".$title."</td>";
+                     echo "<td class='center top' rowspan='$nb'>" . $title . "</td>";
                   }
-                  echo "<td class='center'>".Dropdown::getDropdownName("glpi_entities",
-                                                                       $data["entities_id"])."</td>";
+                  echo "<td class='center'>" . Dropdown::getDropdownName(
+                     "glpi_entities",
+                     $data["entities_id"]
+                  ) . "</td>";
                   echo "<td class='center";
-                  echo ((isset($data['is_deleted']) && $data['is_deleted']) ?" tab_bg_2_2'" :"'").">";
-                  echo $name."</td>";
-                  echo "<td class='center'>".
-                         (isset($data["serial"])?"".$data["serial"]."":"-")."</td>";
-                  echo "<td class='center'>".
-                         (isset($data["otherserial"])? "".$data["otherserial"]."" :"-")."</td>";
+                  echo ((isset($data['is_deleted']) && $data['is_deleted']) ? " tab_bg_2_2'" : "'") . ">";
+                  echo $name . "</td>";
+                  echo "<td class='center'>" .
+                     (isset($data["serial"]) ? "" . $data["serial"] . "" : "-") . "</td>";
+                  echo "<td class='center'>" .
+                     (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-") . "</td>";
                   echo "</tr>";
                }
             }
@@ -661,8 +676,8 @@ class Supplier extends CommonDBTM {
          }
       }
       echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>".(($num > 0) ? sprintf(__('%1$s = %2$s'), __('Total'), $num)
-                                             : "&nbsp;")."</td>";
+      echo "<td class='center'>" . (($num > 0) ? sprintf(__('%1$s = %2$s'), __('Total'), $num)
+         : "&nbsp;") . "</td>";
       echo "<td colspan='4'>&nbsp;</td></tr> ";
       echo "</table></div>";
    }
@@ -673,8 +688,9 @@ class Supplier extends CommonDBTM {
     * @since 9.5
     *
     * @param $email boolean : also display name ? (false by default)
-   **/
-   public static function getSuppliersByEmail($email) {
+    **/
+   public static function getSuppliersByEmail($email)
+   {
       global $DB;
 
       $suppliers = $DB->request([
@@ -687,7 +703,8 @@ class Supplier extends CommonDBTM {
    }
 
 
-   static function getIcon() {
+   static function getIcon()
+   {
       return "fas fa-dolly";
    }
 }
