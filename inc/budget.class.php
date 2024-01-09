@@ -121,6 +121,8 @@ class Budget extends CommonDropdown{
          $rowspan++;
       }
 
+      // die(dump($_POST));
+
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
 
@@ -165,6 +167,78 @@ class Budget extends CommonDropdown{
       echo "</td><td colspan='2'></td></tr>";
 
       $this->showFormButtons($options);
+
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL('budget'),
+			'buttons' => [
+				[
+					'type' => 'submit',
+					'name' => $this->isNewID($ID) ? 'add' : 'update',
+					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+					'class' => 'btn btn-secondary',
+				],
+            $this->isNewID($ID) ? [] : [
+					'type' => 'submit',
+					'name' => 'delete',
+					'value' => __('Put in trashbin'),
+					'class' => 'btn btn-secondary'
+            ],
+			],
+         'content' => [
+				'' => [
+					'visible' => true,
+					'inputs' => [
+                  $this->isNewID($ID) ? [] : [
+							'type' => 'hidden',
+							'name' => 'id',
+							'value' => $ID
+						],
+						__('Name') => [
+							'name' => 'name',
+							'type' => 'text',
+							'value' => $this->fields['name'],
+						],
+                  _x('price', 'Value') => [
+							'name' => 'value',
+							'type' => 'number',
+							'value' => $this->fields['value'],
+						],
+                  __('Type') => [
+							'name' => 'budgettypes_id',
+							'type' => 'select',
+                     'values' => getOptionForItems("BudgetTypes"),
+							'value' => $this->fields['budgettypes_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "budgettype"),
+						],
+                  __('Start date') => [
+                     'name' => 'begin_date',
+                     'type'  => 'datetime-local',
+                     'value' => $this->fields['begin_date'],
+                  ],
+                  __('End date') => [
+							'name' => 'end_date',
+							'type'  => 'datetime-local',
+							'value' => $this->fields['end_date'],
+						],
+                  __('Location') => [
+							'name' => 'locations_id',
+							'type' => 'select',
+                     'values' => getOptionForItems("Location"),
+							'value' => $this->fields['locations_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "location"),
+						],
+                  __('Comments') => [
+							'name' => 'comment',
+							'type' => 'textarea',
+							'value' => $this->fields['comment'],
+						]
+               ]
+            ]
+         ]
+      ];
+
+      renderTwigForm($form);
+
       return true;
    }
 
