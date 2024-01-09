@@ -89,7 +89,7 @@ class Appliance extends CommonDBTM
    }
 
 
-   function showForm($ID, $options = [])
+   function showForm($ID)
    {
       $form = [
          'action' => Toolbox::getItemTypeFormURL('appliance'),
