@@ -532,11 +532,11 @@ function update151to200() : bool {
     }                                              
 
     // FIX OIDC
-    if ($DB->fieldExists('glpi_oidc_config', 'proxy')) {
+    if (!$DB->fieldExists('glpi_oidc_config', 'proxy')) {
         $DB->queryOrDie("ALTER TABLE `glpi_oidc_config` ADD `proxy` VARCHAR(255) NULL AFTER `scope`;");
     }
 
-    if ($DB->fieldExists('glpi_oidc_config', 'cert')) {
+    if (!$DB->fieldExists('glpi_oidc_config', 'cert')) {
         $DB->queryOrDie("ALTER TABLE `glpi_oidc_config` ADD `cert` VARCHAR(255) NULL AFTER `proxy`;");
     }
 
