@@ -120,54 +120,6 @@ class Budget extends CommonDropdown{
       if ($ID > 0) {
          $rowspan++;
       }
-
-      // die(dump($_POST));
-
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-
-      echo "<td>"._n('Type', 'Types', 1)."</td>";
-      echo "<td>";
-      Dropdown::show('BudgetType', ['value' => $this->fields['budgettypes_id']]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._x('price', 'Value')."</td>";
-      echo "<td><input type='text' name='value' size='14'
-                 value='".Html::formatNumber($this->fields["value"], true)."'></td>";
-
-                 echo "<td rowspan='$rowspan' class='middle right'>".__('Comments')."</td>";
-                 echo "<td class='center middle' rowspan='$rowspan'>".
-                      "<textarea cols='45' rows='4' name='comment' >".$this->fields["comment"]."</textarea>".
-                      "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Start date')."</td>";
-      echo "<td>";
-      Html::showDateField("begin_date", ['value' => $this->fields["begin_date"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('End date')."</td>";
-      echo "<td>";
-      Html::showDateField("end_date", ['value' => $this->fields["end_date"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Location::getTypeName(1)."</td>";
-      echo "<td>";
-      Location::dropdown(['value'  => $this->fields["locations_id"],
-                               'entity' => $this->fields["entities_id"]]);
-      echo "</td><td colspan='2'></td></tr>";
-
-      $this->showFormButtons($options);
-
       $form = [
          'action' => Toolbox::getItemTypeFormURL('budget'),
 			'buttons' => [
