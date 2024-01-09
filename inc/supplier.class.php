@@ -106,81 +106,110 @@ class Supplier extends CommonDBTM {
     *
     *@return void
    **/
-   function showForm($ID, $options = []) {
+   function showForm($ID) {
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-      echo "<td>".SupplierType::getTypeName(1)."</td>";
-      echo "<td>";
-      SupplierType::dropdown(['value' => $this->fields["suppliertypes_id"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>". Phone::getTypeName(1)."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "phonenumber");
-      echo "</td>";
-      echo "<td rowspan='7' class='middle'>".__('Comments')."</td>";
-      echo "<td class='middle' rowspan='7'>";
-      echo "<textarea cols='45' rows='13' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Fax')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "fax");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Website')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "website");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Email', 'Emails', 1)."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "email");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td class='middle'>".__('Address')."</td>";
-      echo "<td class='middle'>";
-      echo "<textarea cols='37' rows='3' name='address'>".$this->fields["address"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1' style='white-space: nowrap'>";
-      echo "<td>".__('Postal code')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "postcode", ['size' => 10]);
-      echo "&nbsp;&nbsp;". __('City'). "&nbsp;";
-      Html::autocompletionTextField($this, "town", ['size' => 23]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._x('location', 'State')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "state");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Country')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "country");
-      echo "</td>";
-
-      echo "<td>".__('Active')."</td>";
-      echo "<td>";
-      Dropdown::showYesNo('is_active', $this->fields['is_active']);
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
+      $form = [
+			'action' => Toolbox::getItemTypeFormURL('supplier'),
+			'buttons' => [
+				[
+					'type' => 'submit',
+					'name' => $this->isNewID($ID) ? 'add' : 'update',
+					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+					'class' => 'btn btn-secondary',
+				],
+				$this->isNewID($ID) ? [] : [
+					'type' => 'submit',
+					'name' => 'delete',
+					'value' => __('Put in trashbin'),
+					'class' => 'btn btn-secondary'
+				]
+			],
+            'content' => [
+				__('Line') => [
+					'visible' => true,
+					'inputs' => [
+						$this->isNewID($ID) ? [] : [
+							'type' => 'hidden',
+							'name' => 'id',
+							'value' => $ID
+						],
+                  __('Name') => [
+							'name' => 'name',
+							'type' => 'text',
+							'value' => $this->fields['name'],
+						],
+                  __('Phone') => [
+							'name' => 'phonenumber',
+							'type' => 'text',
+							'value' => $this->fields['phonenumber'],
+						],
+                  __('Fax') => [
+							'name' => 'fax',
+							'type' => 'text',
+							'value' => $this->fields['fax'],
+						],
+						__('Website') => [
+							'name' => 'website',
+							'type' => 'text',
+							'value' => $this->fields['website'],
+						],
+                  __('Name') => [
+							'name' => 'email',
+							'type' => 'text',
+							'value' => $this->fields['email'],
+						],
+                  __('Email') => [
+							'name' => 'name',
+							'type' => 'text',
+							'value' => $this->fields['name'],
+						],
+                  __('Address') => [
+							'name' => 'address',
+							'type' => 'textarea',
+							'value' => $this->fields['address'],
+						],
+						__('Postal code') => [
+							'name' => 'postcode',
+							'type' => 'text',
+							'value' => $this->fields['postcode'],
+						],
+                  __('Town') => [
+							'name' => 'town',
+							'type' => 'text',
+							'value' => $this->fields['town']
+						],
+						__('State') => [
+							'name' => 'state',
+							'type' => 'text',
+							'value' => $this->fields['state']
+						],
+						__('Country') => [
+							'name' => 'country',
+							'type' => 'text',
+							'value' => $this->fields['country']
+						],
+						__('Third party type') => [
+							'name' => 'suppliertypes_id',
+							'type' => 'select',
+							'values' => getOptionForItems("suppliertypes"),
+                     'actions' => getItemActionButtons(['info', 'add'], "SupplierType"),
+							'value' => $this->fields['suppliertypes_id']
+						],
+						__('Comment') => [
+							'name' => 'comment',
+							'type' => 'textarea',
+							'value' => $this->fields['comment']
+						],
+                  __('Active') => [
+							'name' => 'is_active',
+							'type' => 'checkbox',
+							'value' => $this->fields['is_active']
+						]
+                	]
+            	]
+        	]
+		];
+    	renderTwigForm($form);
 
       return true;
 
