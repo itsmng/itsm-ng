@@ -337,48 +337,48 @@ class Domain extends CommonDropdown
                   __('Name') => [
                      'name' => 'name',
                      'type' => 'text',
-                     'value' => $this->fields['name'],
+                     'value' => $this->fields['name'] ?? '',
                   ],
                   __('Creation date') => [
                      'name' => 'date_creation',
                      'type' => 'datetime-local',
-                     'value' => $this->fields['date_creation'],
+                     'value' => $this->fields['date_creation'] ?? '',
                   ],
                   __('Expiration date') => [
                      'name' => 'date_expiration',
                      'type' => 'datetime-local',
-                     'value' => $this->fields['date_expiration'],
+                     'value' => $this->fields['date_expiration'] ?? '',
                   ],
                   __('Group in charge') => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
                      'values' => getOptionForItems("Group"),
-                     'value' => $this->fields['groups_id_tech'],
+                     'value' => $this->fields['groups_id_tech'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __('Others') => [
                      'name' => 'others',
                      'type' => 'text',
-                     'value' => $this->fields['others'],
+                     'value' => $this->fields['others'] ?? '',
                   ],
                   __('Types') => [
                      'name' => 'domaintypes_id',
                      'type' => 'select',
                      'values' => getOptionForItems("DomainType"),
-                     'value' => $this->fields['domaintypes_id'],
+                     'value' => $this->fields['domaintypes_id'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "DomainType"),
                   ],
                   __('Technician in charge') => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
-                     'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
-                     'value' => $this->fields['groups_id_tech'],
+                     'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']  ?? '']),
+                     'value' => $this->fields['groups_id_tech'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "DomainType"),
                   ],
                   __('Comments') => [
                      'name' => 'comment',
                      'type' => 'textarea',
-                     'value' => $this->fields['comment'],
+                     'value' => $this->fields['comment'] ?? '',
                   ]
                ]
             ]
