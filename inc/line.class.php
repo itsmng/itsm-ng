@@ -122,6 +122,7 @@ class Line extends CommonDBTM {
 							'type' => 'select',
 							'values' => getOptionForItems("Location"),
 							'value' => $this->fields['locations_id'] ?? '',
+							'actions' => getItemActionButtons(['info', 'add'], "Location"),
 						],
 						__('Caller number') => [
 							'name' => 'caller_num',
@@ -132,31 +133,36 @@ class Line extends CommonDBTM {
 							'name' => 'users_id',
 							'type' => 'select',
 							'values' => getOptionForItems("User"),
-							'value' => $this->fields['users_id'] ?? ''
+							'value' => $this->fields['users_id'] ?? '',
+							'actions' => getItemActionButtons(['info', 'add'], "User"),
 						],
 						__('Group') => [
 							'name' => 'groups_id',
 							'type' => 'select',
 							'values' => getOptionForItems("Group"),
-							'value' => $this->fields['groups_id'] ?? ''
+							'value' => $this->fields['groups_id'] ?? '',
+							'actions' => getItemActionButtons(['info', 'add'], "Group"),
 						],
 						__('Line operator') => [
 							'name' => 'lineoperators_id',
 							'type' => 'select',
 							'values' => getOptionForItems("LineOperators"),
-							'value' => $this->fields['lineoperators_id'] ?? ''
+							'value' => $this->fields['lineoperators_id'] ?? '',
+							'actions' => getItemActionButtons(['info', 'add'], "LineOperator"),
 						],
 						__('Status') => [
 							'name' => 'states_id',
 							'type' => 'select',
 							'values' => getOptionForItems('State', ['is_visible_line' => 1]),
-							'value' => $this->fields['states_id'] ?? ''
+							'value' => $this->fields['states_id'] ?? '',
+							'actions' => getItemActionButtons(['info', 'add'], "State"),
 						],
 						__('Line type') => [
 							'name' => 'linetypes_id',
 							'type' => 'select',
 							'values' => getOptionForItems("LineTypes"),
-							'value' => $this->fields['linetypes_id'] ?? ''
+							'value' => $this->fields['linetypes_id'] ?? '',
+							'actions' => getItemActionButtons(['info', 'add'], "LineType"),
 						],
 						__('Caller name') => [
 							'name' => 'caller_name',
