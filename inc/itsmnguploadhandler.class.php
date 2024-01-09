@@ -42,8 +42,8 @@ if (!defined('GLPI_ROOT')) {
 **/
 class ItsmngUploadHandler {
 
-   static function get_upload_path($path, $absolute = true) {
-      $upload_path = ($absolute ? GLPI_ROOT : '') . "/files/_upload/$path";
+   static function get_upload_path($path, $absolute = false) {
+      $upload_path = ($absolute ? '' : GLPI_ROOT) . "/files/_upload/$path";
       if (!file_exists($upload_path)) {
          mkdir($upload_path, 0777, true);
       }

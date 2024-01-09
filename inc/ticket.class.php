@@ -4793,12 +4793,14 @@ class Ticket extends CommonITILObject {
                 'ticket_id' => $ID,
                 'col_lg' => 6,
               ],
-            //   sprintf(__('%1$s (%2$s)'), __('File'), Document::getMaxUploadSize()) => [
-            //      'type' => 'file',
-            //      'name' => 'filenames',
-            //      'id' => 'fileSelectorForDocument',
-            //      'col_lg' => 6,
-            //   ],
+              sprintf(__('%1$s (%2$s)'), __('File'), Document::getMaxUploadSize()) => [
+                 'type' => 'file',
+                 'name' => 'filenames',
+                 'id' => 'fileSelectorForDocument',
+                 'multiple' => true,
+                 'values' => getLinkedDocumentsForItem('Ticket', $ID),
+                 'col_lg' => 6,
+              ],
             ]
           ]
         ]
