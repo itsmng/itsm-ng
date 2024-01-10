@@ -25,10 +25,37 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true)
     return $options;
 }
 
+function getLinkedDocumentsForItem($itemType, $items_id) {
+    global $DB;
+
+    $iterator = $DB->request([
+        'SELECT' => ['id', 'documents_id'],
+        'FROM' => Document_Item::getTable(),
+        'WHERE' => [
+            'itemType' => $itemType,
+            'items_id' => $items_id,
+        ],
+    ]);
+
+    $options = [];
+    $document = new Document();
+    while ($val = $iterator->next()) {
+        $document->getFromDB($val['documents_id']);
+        $options[$val['id']] = "<a href=".$document->getFormURLWithID($val['documents_id'])
+            .">".$document->fields['filename']." (".filesize(GLPI_DOC_DIR . $document->fields['filepath'])."B)</a>";
+    }
+
+    return $options;
+}
+
 function getOptionsForUsers($right, $conditions = [], $display_emptychoice = true)
 {
 
-    $users = iterator_to_array(User::getSqlSearchResult(false, $right, $conditions['entities_id']));
+    if (isset($conditions['entities_id'])) {
+      $users = iterator_to_array(User::getSqlSearchResult(false, $right, $conditions['entities_id']));
+    } else {
+      $users = iterator_to_array(User::getSqlSearchResult(false, $right));
+    }
     $options = [];
     if ($display_emptychoice) {
         $options[0] = Dropdown::EMPTY_VALUE;

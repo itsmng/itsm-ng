@@ -42,10 +42,10 @@ if (!defined('GLPI_ROOT')) {
 **/
 class ItsmngUploadHandler {
 
-   static function get_upload_path($path, $absolute = true) {
-      $upload_path = ($absolute ? GLPI_ROOT : '') . "/files/_upload/$path";
-      if (!file_exists($upload_path)) {
-         mkdir($upload_path, 0777, true);
+   static function get_upload_path($path) {
+      $upload_path = "/_uploads/$path";
+      if (!file_exists(GLPI_DOC_DIR . $upload_path)) {
+         mkdir(GLPI_DOC_DIR . $upload_path, 0777, true);
       }
       return $upload_path;
    }
@@ -65,7 +65,7 @@ class ItsmngUploadHandler {
    }
 
    static function storeTmpFiles($files) {
-      $path = GLPI_ROOT . "/files/_tmp/";
+      $path = GLPI_DOC_DIR . "/_tmp/";
       if (!file_exists($path)) {
          mkdir($path, 0777, true);
       }
@@ -84,17 +84,17 @@ class ItsmngUploadHandler {
    static function uploadFiles($filepath, $format, $filename) {
       $upload_path = self::get_upload_path($format);
       // die(var_dump($upload_path));
-      $uploadfile = $upload_path . '/' . $filename;
+      $uploadfile = GLPI_DOC_DIR . $upload_path . '/' . $filename;
       if (file_exists($uploadfile)) {
-         $filename = uniqid() . '_' . $filename;
+         $filename = uniqid() . '.' . pathinfo($filename, PATHINFO_EXTENSION);
          $uploadfile = $upload_path . '/' . $filename;
       }
-      if (!file_exists($upload_path)) {
-         if (!mkdir($upload_path, 0777, true)) {
+      if (!file_exists(GLPI_DOC_DIR . $upload_path)) {
+         if (!mkdir(GLPI_DOC_DIR . $upload_path, 0777, true)) {
             throw new Exception("Failed to create upload directory.");
          }
       }
-      if (!rename($filepath, $uploadfile)) {
+      if (!rename($filepath, GLPI_DOC_DIR . $uploadfile)) {
          throw new Exception("Failed to move uploaded file.");
       }
       return self::get_upload_path($format, false) . '/' . $filename;

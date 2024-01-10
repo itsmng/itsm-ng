@@ -48,99 +48,90 @@ class ITILCategory extends CommonTreeDropdown {
    function getAdditionalFields() {
 
       $tab = [
-         [
+          __('As child of') => [
+            'type' => 'select',
             'name' => $this->getForeignKeyField(),
-            'label' => __('As child of'),
-            'type' => 'parent',
-            'list' => false
+            'values' => getOptionForItems('ITILCategory'),
+            'value' => $this->fields[$this->getForeignKeyField()]
          ],
-         [
+         __('Technician in charge of the hardware') => [
+            'type' => 'select',
             'name' => 'users_id',
-            'label' => __('Technician in charge of the hardware'),
-            'type' => 'UserDropdown',
-            'right' => 'own_ticket',
-            'list' => true
+            'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+            'value' => $this->fields['users_id']
          ],
-         [
+         __('Group in charge of the hardware') => [
+            'type' => 'select',
             'name' => 'groups_id',
-            'label' => __('Group in charge of the hardware'),
-            'type' => 'dropdownValue',
-            'condition' => ['is_assign' => 1],
-            'list' => true
+            'values' => getOptionForItems('Group', ['is_assign' => 1])
          ],
-         [
+         __('Knowledge base') => [
+            'type' => 'select',
             'name' => 'knowbaseitemcategories_id',
-            'label' => __('Knowledge base'),
-            'type' => 'dropdownValue',
-            'list' => true
+            'values' => getOptionForItems('KnowbaseItemCategory'),
+            'value' => $this->fields['knowbaseitemcategories_id']
          ],
-         [
-            'name' => 'code',
-            'label' => __('Code representing the ticket category'),
+         __('Code representing the ticket category') => [
             'type' => 'text',
-            'list' => false
+            'name' => 'code',
+            'value' => $this->fields['code']
          ],
-         [
+         __('Visible in the simplified interface') => [
+            'type' => 'checkbox',
             'name' => 'is_helpdeskvisible',
-            'label' => __('Visible in the simplified interface'),
-            'type' => 'bool',
-            'list' => true
+            'value' => $this->fields['is_helpdeskvisible']
          ],
-         [
+         __('Visible for an incident') => [
+            'type' => 'checkbox',
             'name' => 'is_incident',
-            'label' => __('Visible for an incident'),
-            'type' => 'bool',
-            'list' => true
+            'value' => $this->fields['is_incident']
          ],
-         [
+         __('Visible for a request') => [
+            'type' => 'checkbox',
             'name' => 'is_request',
-            'label' => __('Visible for a request'),
-            'type' => 'bool',
-            'list' => true
+            'value' => $this->fields['is_request']
          ],
       ];
 
       $show_for_problem = Session::haveRightsOr('problem', [CREATE, UPDATE, DELETE, Problem::READALL, Problem::READMY]);
 
       if ($show_for_problem) {
-         $tab[] = [
+         $tab[__('Visible for a problem')] = [
+            'type' => 'checkbox',
             'name' => 'is_problem',
-            'label' => __('Visible for a problem'),
-            'type' => 'bool',
-            'list' => true
+            'value' => $this->fields['is_problem'],
          ];
       }
 
       $tab = array_merge($tab, [
-         [
+         __('Visible for a change') => [
+            'type' => 'checkbox',
             'name' => 'is_change',
-            'label' => __('Visible for a change'),
-            'type' => 'bool',
-            'list' => true
+            'value' => $this->fields['is_change']
          ],
-         [
+         __('Template for a request') => [
+            'type' => 'select',
             'name' => 'tickettemplates_id_demand',
-            'label' => __('Template for a request'),
-            'type' => 'dropdownValue',
-            'list' => true
+            'values' => getOptionForItems('TicketTemplate'),
+            'value' => $this->fields['tickettemplates_id_demand']
          ],
-         [
+         __('Template for an incident') => [
+            'type' => 'select',
             'name' => 'tickettemplates_id_incident',
-            'label' => __('Template for an incident'),
-            'type' => 'dropdownValue',
-            'list' => true
+            'values' => getOptionForItems('TicketTemplate'),
+            'value' => $this->fields['tickettemplates_id_incident']
          ],
-         [
+         __('Template for a change') => [
+            'type' => 'select',
             'name' => 'changetemplates_id',
-            'label' => __('Template for a change'),
-            'type' => 'dropdownValue',
-            'list' => true
+            'values' => getOptionForItems('TicketTemplate'),
+            'value' => $this->fields['changetemplates_id']
          ],
-         [
+         __('Template for a problem') => [
+            'type' => 'select',
             'name' => 'problemtemplates_id',
-            'label' => __('Template for a problem'),
-            'type' => 'dropdownValue',
-            'list' => true
+            'values' => getOptionForItems('TicketTemplate'),
+            'value' => $this->fields['problemtemplates_id']
          ],
       ]);
       return $tab;

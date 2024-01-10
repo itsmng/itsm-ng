@@ -1,3 +1,161 @@
+{% macro ticketSelect(attributes, root_doc) %}
+<div {% if attributes.id %} id="{{attributes.id}}" {% endif %} class="w-100">
+  <input type="hidden" name="{{attributes.name|default('')}}" value="[]">
+  <div class="input-group m-0">
+    <select class="form-select" id="TicketRelationSelector_{{rand}}" name="_link[link]">
+      {% for value, name in attributes.relations %}
+        <option value="{{value}}">{{name|raw}}
+      {% endfor %}
+    </select>
+    <input type="hidden" name="_link[tickets_id_1]" value="{{attributes.ticket_id}}">
+    <select class="form-select" id="TicketSelector_{{rand}}" name="_link[tickets_id_2]">
+      {% for value, name in attributes.options %}
+        <option value="{{value}}">{{name|raw}}
+      {% endfor %}
+    </select>
+  </div>
+  <table id="ObjectTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
+    <tbody>
+      {% for object in attributes.values %}
+          <tr data-id="{{object.tickets_id}}" data-type="{{object.link}}">
+            <td>
+              {{ attributes.relations[object.link] }}
+            </td>
+            <td> {{object.url|raw}} </td>
+            <td class="d-flex flex-row-reverse">
+              <button type="button" class="btn btn-sm btn-outline-danger" onClick="removeObject{{rand}}('{{object.link}}', '{{object.tickets_id}}')">
+                <i class="fas fa-times"></i>
+              </button>
+            </td>
+          </tr>
+          {{dump(object)}}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+
+function removeObject{{rand}}(type, id) {
+  $.ajax({
+    url: "{{root_doc}}/ajax/deleteItilActor.php",
+    type: "POST",
+    data: {
+      linkId: 'ticket',
+      objectTypeId: $('#TicketRelationSelector_{{rand}}').val(),
+      objectId: id,
+      ticketId: '{{attributes.ticket_id}}',
+    },
+  })
+  $(`#ObjectTable_{{rand}} tr[data-id='${id}'][data-type='${type}']`).remove();
+}
+
+$(document).ready(() => {
+  // add all already present actors
+  let letJsonSelection = '';
+  let selection = '';
+  let newSelection = '';
+  {% for actor in attributes.values %}
+    letJsonSelection = $('input[name="{{attributes.name|default('')}}"]').val();
+    selection = JSON.parse(letJsonSelection);
+    newSelection = [...selection, {type: '{{actor.type}}', id: '{{actor.id}}'}];
+    $('input[name="{{attributes.name|default('')}}"]').val(JSON.stringify(newSelection));
+  {% endfor %}
+})
+</script>
+{% endmacro %}
+
+{% macro actorSelect(attributes, root_doc) %}
+{% set rand=random() %}
+<div {% if attributes.id %} id="{{attributes.id}}" {% endif %} class="w-100">
+  <div class="input-group m-0">
+    <select class="form-select" id="ActorTypeSelector_{{rand}}" name="_itil_{{attributes.actorType}}[_type]">
+      {% if attributes.actorTypes %}
+        {% for name, value in attributes.actorTypes %}
+          <option value="{{value}}">{{name|raw}}
+        {% endfor %}
+      {% endif %}
+    </select>
+    <select class="form-select" id="ActorSelector_{{rand}}">
+    </select>
+  </div>
+  <table id="ActorTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
+    <tbody>
+      {% for actor in attributes.values %}
+          <tr data-id="{{actor.id}}" data-type="{{actor.type}}">
+            <td>
+              <i class="{{ actor.icon|raw }}"></i>
+            </td>
+            <td> {{actor.name|raw}} </td>
+            <td class="d-flex flex-row-reverse">
+              <button type="button" class="btn btn-sm btn-outline-danger" onClick="removeActor{{rand}}('{{actor.type}}', '{{actor.id}}')"><i class="fas fa-times"></i></button>
+            </td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+
+function removeActor{{rand}}(type,id) {
+  $.ajax({
+    url: "{{root_doc}}/ajax/deleteItilActor.php",
+    type: "POST",
+    data: {
+      linkId: type,
+      objectTypeId: '{{attributes.actorTypeId}}',
+      objectId: id,
+      ticketId: '{{attributes.ticketId}}',
+    }
+  })
+  // remove the row from the table
+  $(`#ActorTable_{{rand}} tr[data-id='${id}'][data-type='${type}']`).remove();
+}
+
+function setActorSelectValues{{rand}}() {
+  $("#ActorSelector_{{rand}}").attr("name", "_itil_{{attributes.actorType}}[" +
+    $("#ActorTypeSelector_{{rand}}")[0].value + "s_id]");
+  if ($("#ActorTypeSelector_{{rand}}").val() == 0) {
+    $("#ActorSelector_{{rand}}").empty();
+    $("#ActorSelector_{{rand}}").attr("disabled", true);
+    return;
+  } else {
+    $("#ActorSelector_{{rand}}").attr("disabled", false);
+  };
+  $.ajax({
+    url: "{{root_doc}}/ajax/dropdownItilActors.php",
+    type: "POST",
+    data: {
+      type: $("#ActorTypeSelector_{{rand}}").val(),
+      actorType: '{{attributes.actorType}}',
+      actorTypeId: '{{attributes.actorTypeId}}',
+      itemtype: '{{attributes.itemType}}',
+      ticketId: '{{attributes.ticketId}}',
+    },
+    success: function (data) {
+      jsonData = JSON.parse(data);
+      $("#ActorSelector_{{rand}}").empty();
+      for (const key in jsonData) {
+        $("#ActorSelector_{{rand}}").append(
+          $("<option>", {
+            value: key,
+            text: jsonData[key],
+          })
+        );
+      }
+    },
+  });
+}
+$(document).ready(() => {
+  setActorSelectValues{{rand}}()
+  // add all already present actors
+  let letJsonSelection = '';
+  let selection = '';
+  let newSelection = '';
+})
+$("#ActorTypeSelector_{{rand}}").on("change", setActorSelectValues{{rand}})
+</script>
+{% endmacro %}
+
 {% macro select(attributes) %}
 <select class='form-select' {% for name, value in attributes %} {% if name != 'values'%}{{name}}="{{value}}"{% endif %} {% endfor %}>
     {% for key, item in attributes.values %}
@@ -9,16 +167,43 @@
     $(document).ready(function() {
         var select_box_element = document.querySelector('#{{attributes.id}}');
         dselect(select_box_element, {
-        search: true
-    });
+          search: true
+        });
     });
 </script>
 {% endif %}
 {% endmacro %}
 
 {% macro file(attributes, root_doc) %}
-<input class='form-control h-100' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+<div>
+  <input class='form-control h-100' {% for name, value in attributes|filter((v, k) => k != 'values') %} {{name}}="{{value}}" {% endfor %}/>
+  <table class="w-100 fs-6 table table-sm table-hover align-middle text-center">
+    <tbody>
+      {% for documentId, title in attributes.values %}
+          <tr data-id="{{documentId}}">
+            <td>
+              {{title|raw}}
+            </td>
+            <td class="d-flex flex-row-reverse">
+              <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFileLink({{documentId}})"><i class="fas fa-times"></i></button>
+            </td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 <script>
+function removeFileLink{{rand}}(id) {
+  $.ajax({
+    url: "{{root_doc}}/ajax/deleteItilActor.php",
+    type: "POST",
+    data: {
+      id: '{{attributes.ticket_id}}',
+    },
+  })
+  $(`#ObjectTable_{{rand}} tr[data-id='${id}'][data-type='${type}']`).remove();
+}
+
 $('#{{attributes.id}}').on('change', function() {
     let formData = new FormData();
     formData.append('name', 'filename');
@@ -44,13 +229,33 @@ $('#{{attributes.id}}').on('change', function() {
 </script>
 {% endmacro %}
 
+{% macro richtextarea(attributes, root_doc) %}
+<link rel="stylesheet" href="{{root_doc}}/node_modules/trumbowyg/dist/ui/trumbowyg.min.css">
+<textarea {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default('')|raw}}</textarea>
+<script src="{{root_doc}}/node_modules/trumbowyg/dist/trumbowyg.min.js"></script>
+<script>
+$('textarea[name="{{attributes.name}}"]').trumbowyg({
+  btns: [
+    ['viewHTML'],
+    ['undo', 'redo'],
+    ['formatting'],
+    ['strong', 'em'],
+    ['link'],
+    ['insertImage'],
+    ['unorderedList', 'orderedList'],
+    ['horizontalRule'],
+    ['removeformat'],
+  ]
+});
+</script>
+{% endmacro %}
+
 {% macro datetime(attributes) %}
     <input class='form-control' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
     <input type="hidden" name="{{attributes.name}}" value="{{attributes.value|default("")|raw}}" />
     <script>
     $('#{{attributes.id}}').on('change', function() {
-        $('input[name="{{attributes.name}}"]').val($('#{{attributes.id}}').val().replace('T', ' '))
-        console.log($('input[name="{{attributes.name}}"]').last().val())
+        $('input[name="{{attributes.name}}"]').val($('#{{attributes.id}}').val().replace('T', ' ') + ':00')
     })
     </script>
 {% endmacro %}
@@ -65,8 +270,14 @@ $('#{{attributes.id}}').on('change', function() {
 </div>
     {% elseif attributes.type == 'textarea' %}
 <textarea class='form-control' {% for name, value in attributes|filter(k,v => k != 'value') %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default("")|raw}}</textarea>
+    {% elseif attributes.type == 'richtextarea' %}
+{{_self.richtextarea(attributes, root_doc)}}
     {% elseif attributes.type == 'select' %}
 {{_self.select(attributes)}}
+    {% elseif attributes.type == 'actorSelect' %}
+{{_self.actorSelect(attributes, root_doc)}}
+    {% elseif attributes.type == 'ticketSelect' %}
+{{_self.ticketSelect(attributes, root_doc)}}
     {% elseif attributes.type == 'twig' %}
 {% include attributes.template with attributes only %}
     {% elseif attributes.type == 'file' %}
