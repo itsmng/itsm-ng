@@ -54,88 +54,98 @@ abstract class CommonDCModelDropdown extends CommonDropdown {
 
       $fields = [];
       if ($DB->fieldExists($this->getTable(), 'product_number')) {
-         $fields[] = [
+         $fields[__('Product Number')] = [
             'name'   => 'product_number',
             'type'   => 'text',
-            'label'  => __('Product Number')
+            'value' => $this->fields['product_number'],
          ];
       }
 
       if ($DB->fieldExists($this->getTable(), 'weight')) {
-         $fields[] = [
+         $fields[__('Weight')] = [
             'name'   => 'weight',
-            'type'   => 'integer',
-            'label'  => __('Weight'),
-            'max'    => 1000
+            'type'   => 'number',
+            'min' => 0,
+            'max' => 1000,
+            'value' => $this->fields['weight'],
          ];
       }
 
       if ($DB->fieldExists($this->getTable(), 'required_units')) {
-         $fields[] = [
+         $fields[__('Required units')] = [
             'name'   => 'required_units',
-            'type'   => 'integer',
+            'type'   => 'number',
             'min'    => 1,
-            'label'  => __('Required units')
+            'value'  => $this->fields['required_units'],
          ];
       }
 
       if ($DB->fieldExists($this->getTable(), 'depth')) {
-         $fields[] = [
+         $fields[__('Depth')] = [
             'name'   => 'depth',
-            'type'   => 'depth',
-            'label'  => __('Depth')
+            'type'   => 'select',
+            'values' => [
+               '1'      => __('1'),
+               '0.5'    => __('1/2'),
+               '0.33'   => __('1/3'),
+               '0.25'   => __('1/4')
+            ],
+            'value' => $this->fields['depth'],
          ];
       }
 
       if ($DB->fieldExists($this->getTable(), 'power_connections')) {
-         $fields[] = [
+         $fields[__('Power connections')] = [
             'name'   => 'power_connections',
-            'type'   => 'integer',
-            'label'  => __('Power connections')
+            'type'   => 'number',
+            'min' => 0,
+            'max' => 1000,
+            'value' => $this->fields['power_connections'],
          ];
       }
 
       if ($DB->fieldExists($this->getTable(), 'power_consumption')) {
-         $fields[] = [
+         $fields[__('Power consumption')] = [
             'name'   => 'power_consumption',
-            'type'   => 'integer',
-            'label'  => __('Power consumption'),
-            'unit'   => __('watts'),
+            'type'   => 'number',
+            'after'   => __('watts'),
+            'min' => 0,
             'html'   => true
          ];
       }
 
       if ($DB->fieldExists($this->getTable(), 'max_power')) {
-         $fields[] = [
+         $fields[__('Max. power (in watts)')] = [
             'name'   => 'max_power',
-            'type'   => 'integer',
-            'label'  => __('Max. power (in watts)'),
-            'unit'   => __('watts'),
+            'type'   => 'number',
+            'after'   => __('watts'),
+            'min' => 0,
             'html'   => true
          ];
       }
 
       if ($DB->fieldExists($this->getTable(), 'is_half_rack')) {
-         $fields[] = [
+         $fields[__('Is half rack')] = [
             'name'   => 'is_half_rack',
-            'type'   => 'bool',
-            'label'  => __('Is half rack')
+            'type'   => 'checkbox',
          ];
       }
 
       if ($DB->fieldExists($this->getTable(), 'picture_front')) {
-         $fields[] = [
+         $fields[__('Front picture')] = [
             'name'   => 'picture_front',
-            'type'   => 'picture',
-            'label'  => __('Front picture')
+            'type'   => 'file',
+            'id'     => rand(),
+            'accept' => 'image/*',
          ];
       }
 
       if ($DB->fieldExists($this->getTable(), 'picture_rear')) {
-         $fields[] = [
+         $fields[__('Rear picture')] = [
             'name'   => 'picture_rear',
-            'type'   => 'picture',
-            'label'  => __('Rear picture')
+            'type'   => 'file',
+            'id'     => rand(),
+            'accept' => 'image/*',
          ];
       }
 

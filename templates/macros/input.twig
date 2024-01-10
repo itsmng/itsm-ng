@@ -175,6 +175,7 @@ $("#ActorTypeSelector_{{rand}}").on("change", setActorSelectValues{{rand}})
 {% endmacro %}
 
 {% macro file(attributes, root_doc) %}
+{% set rand=random() %}
 <div>
   <input class='form-control h-100' {% for name, value in attributes|filter((v, k) => k != 'values') %} {{name}}="{{value}}" {% endfor %}/>
   <table class="w-100 fs-6 table table-sm table-hover align-middle text-center">
@@ -220,9 +221,9 @@ $('#{{attributes.id}}').on('change', function() {
         success: function(data) {
         // add an hidden input containing the data for all files
             if ($('#hiddenInputForFiles').length == 0) {
-                $('#{{attributes.id}}').after('<input type="hidden" id="hiddenInputForFiles" name="files" value="">');
+                $('#{{attributes.id}}').after('<input type="hidden" id="hiddenInputForFiles{{rand}}" name="{{attributes.name}}" value="">');
             }
-            $('#hiddenInputForFiles').val(data);
+            $('#hiddenInputForFiles{{rand}}').val(data);
         }
     });    
 })

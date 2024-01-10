@@ -34,7 +34,6 @@
  * Following variables have to be defined before inclusion of this file:
  * @var CommonDropdown $dropdown
  */
-
 use Glpi\Event;
 
 if (!($dropdown instanceof CommonDropdown)) {
