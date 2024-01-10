@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,14 +42,16 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Class to declare a certificate
  */
-class Certificate extends CommonDBTM {
+class Certificate extends CommonDBTM
+{
    use Glpi\Features\Clonable;
 
    public $dohistory           = true;
    static $rightname           = "certificate";
    protected $usenotepad       = true;
 
-   public function getCloneRelations() :array {
+   public function getCloneRelations(): array
+   {
       return [
          Infocom::class,
          Contract_Item::class,
@@ -57,14 +60,16 @@ class Certificate extends CommonDBTM {
       ];
    }
 
-   static function getTypeName($nb = 0) {
+   static function getTypeName($nb = 0)
+   {
       return _n('Certificate', 'Certificates', $nb);
    }
 
    /**
     * Clean certificate items
     */
-   function cleanDBonPurge() {
+   function cleanDBonPurge()
+   {
 
       $this->deleteChildrenAndRelationsFromDb(
          [
@@ -73,7 +78,8 @@ class Certificate extends CommonDBTM {
       );
    }
 
-   function rawSearchOptions() {
+   function rawSearchOptions()
+   {
 
       $tab = [];
 
@@ -346,7 +352,8 @@ class Certificate extends CommonDBTM {
       return $tab;
    }
 
-   static function rawSearchOptionsToAdd($itemtype = null) {
+   static function rawSearchOptionsToAdd($itemtype = null)
+   {
       $tab = [];
       $name = static::getTypeName(Session::getPluralNumber());
 
@@ -448,7 +455,8 @@ class Certificate extends CommonDBTM {
     * @param array $options
     * @return array
     */
-   function defineTabs($options = []) {
+   function defineTabs($options = [])
+   {
       $ong = [];
       $this->addDefaultFormTab($ong)
          ->addStandardTab(__CLASS__, $ong, $options)
@@ -469,7 +477,8 @@ class Certificate extends CommonDBTM {
       return $ong;
    }
 
-   function prepareInputForAdd($input) {
+   function prepareInputForAdd($input)
+   {
 
       if (isset($input["id"]) && ($input["id"] > 0)) {
          $input["_oldID"] = $input["id"];
@@ -486,44 +495,45 @@ class Certificate extends CommonDBTM {
     * @param array $options
     * @return bool
     */
-   function showForm($ID) {
+   function showForm($ID)
+   {
       $form = [
-			'action' => Toolbox::getItemTypeFormURL('certificate'),
-			'buttons' => [
-				[
-					'type' => 'submit',
-					'name' => $this->isNewID($ID) ? 'add' : 'update',
-					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-					'class' => 'btn btn-secondary',
-				],
-				$this->isNewID($ID) ? [] : [
-					'type' => 'submit',
-					'name' => 'delete',
-					'value' => __('Put in trashbin'),
-					'class' => 'btn btn-secondary'
-				]
-			],
-			'content' => [
-				__('Certificate') => [
-					'visible' => true,
-					'inputs' => [
-						$this->isNewID($ID) ? [] : [
-							'type' => 'hidden',
-							'name' => 'id',
-							'value' => $ID
-						],
-						__('Name') => [
-							'name' => 'name',
-							'type' => 'text',
-							'value' => $this->fields['name'] ?? '',
-						],
-						__('Location') => [
-							'name' => 'locations_id',
-							'type' => 'select',
-							'values' => getOptionForItems("Location"),
-							'value' => $this->fields['locations_id'] ?? '',
-							'actions' => getItemActionButtons(['info', 'add'], "Location"),
-						],
+         'action' => Toolbox::getItemTypeFormURL('certificate'),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => $this->isNewID($ID) ? 'add' : 'update',
+               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary',
+            ],
+            $this->isNewID($ID) ? [] : [
+               'type' => 'submit',
+               'name' => 'delete',
+               'value' => __('Put in trashbin'),
+               'class' => 'btn btn-secondary'
+            ]
+         ],
+         'content' => [
+            __('Certificate') => [
+               'visible' => true,
+               'inputs' => [
+                  $this->isNewID($ID) ? [] : [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID
+                  ],
+                  __('Name') => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'] ?? '',
+                  ],
+                  __('Location') => [
+                     'name' => 'locations_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems("Location"),
+                     'value' => $this->fields['locations_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
+                  ],
                   __('Technician in charge of the hardware') => [
                      'name' => 'users_id_tech',
                      'type' => 'select',
@@ -626,11 +636,11 @@ class Certificate extends CommonDBTM {
                      'type' => 'textarea',
                      'value' => $this->fields['certificate_item'] ?? '',
                   ],
-					]
-				]
-			]
-		];
-		renderTwigForm($form);
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
 
       return true;
    }
@@ -642,7 +652,8 @@ class Certificate extends CommonDBTM {
     * @param null $checkitem
     * @return array
     */
-   function getSpecificMassiveActions($checkitem = null) {
+   function getSpecificMassiveActions($checkitem = null)
+   {
       $actions = parent::getSpecificMassiveActions($checkitem);
 
       if (Session::getCurrentInterface() == 'central') {
@@ -664,24 +675,27 @@ class Certificate extends CommonDBTM {
     * @param MassiveAction $ma
     * @return bool|false
     */
-   static function showMassiveActionsSubForm(MassiveAction $ma) {
+   static function showMassiveActionsSubForm(MassiveAction $ma)
+   {
 
       switch ($ma->getAction()) {
-         case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'install' :
-            Dropdown::showSelectItemFromItemtypes(['items_id_name' => 'item_item',
-                                                   'itemtype_name' => 'typeitem',
-                                                   'itemtypes'     => self::getTypes(true),
-                                                    'checkright'   => true
-                                                  ]);
+         case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'install':
+            Dropdown::showSelectItemFromItemtypes([
+               'items_id_name' => 'item_item',
+               'itemtype_name' => 'typeitem',
+               'itemtypes'     => self::getTypes(true),
+               'checkright'   => true
+            ]);
             echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
             return true;
             break;
-         case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'uninstall' :
-            Dropdown::showSelectItemFromItemtypes(['items_id_name' => 'item_item',
-                                                   'itemtype_name' => 'typeitem',
-                                                   'itemtypes'     => self::getTypes(true),
-                                                   'checkright'    => true
-                                                  ]);
+         case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'uninstall':
+            Dropdown::showSelectItemFromItemtypes([
+               'items_id_name' => 'item_item',
+               'itemtype_name' => 'typeitem',
+               'itemtypes'     => self::getTypes(true),
+               'checkright'    => true
+            ]);
             echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
             return true;
             break;
@@ -699,9 +713,11 @@ class Certificate extends CommonDBTM {
     * @param array $ids
     * @return void
     */
-   static function processMassiveActionsForOneItemtype(MassiveAction $ma,
-                                                       CommonDBTM $item,
-                                                       array $ids) {
+   static function processMassiveActionsForOneItemtype(
+      MassiveAction $ma,
+      CommonDBTM $item,
+      array $ids
+   ) {
 
       $certif_item = new Certificate_Item();
 
@@ -709,10 +725,11 @@ class Certificate extends CommonDBTM {
          case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'add_item':
             $input = $ma->getInput();
             foreach ($ids as $id) {
-               $input = ['certificates_id' => $input['certificates_id'],
-                         'items_id'        => $id,
-                         'itemtype'        => $item->getType()
-                        ];
+               $input = [
+                  'certificates_id' => $input['certificates_id'],
+                  'items_id'        => $id,
+                  'itemtype'        => $item->getType()
+               ];
                if ($certif_item->can(-1, UPDATE, $input)) {
                   if ($certif_item->add($input)) {
                      $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
@@ -726,13 +743,15 @@ class Certificate extends CommonDBTM {
 
             return;
 
-         case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'install' :
+         case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'install':
             $input = $ma->getInput();
             foreach ($ids as $key) {
                if ($item->can($key, UPDATE)) {
-                  $values = ['certificates_id' => $key,
-                             'items_id' => $input["item_item"],
-                             'itemtype' => $input['typeitem']];
+                  $values = [
+                     'certificates_id' => $key,
+                     'items_id' => $input["item_item"],
+                     'itemtype' => $input['typeitem']
+                  ];
                   if ($certif_item->add($values)) {
                      $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                   } else {
@@ -766,7 +785,8 @@ class Certificate extends CommonDBTM {
     *
     * @return array of types
     **/
-   static function getTypes($all = false) {
+   static function getTypes($all = false)
+   {
       global $CFG_GLPI;
 
       $types = $CFG_GLPI['certificate_types'];
@@ -788,8 +808,9 @@ class Certificate extends CommonDBTM {
     * @param $name : task's name
     *
     * @return array
-   **/
-   static function cronInfo($name) {
+    **/
+   static function cronInfo($name)
+   {
       return ['description' => __('Send alarms on expired certificate')];
    }
 
@@ -799,8 +820,9 @@ class Certificate extends CommonDBTM {
     * @param CronTask $task CronTask to log, if NULL display (default NULL)
     *
     * @return integer 0 : nothing to do 1 : done with success
-   **/
-   static function cronCertificate($task = null) {
+    **/
+   static function cronCertificate($task = null)
+   {
       global $DB, $CFG_GLPI;
 
       $cron_status = 1;
@@ -854,10 +876,13 @@ class Certificate extends CommonDBTM {
          $items   = [];
 
          foreach ($result as $certificate) {
-            $name     = $certificate['name'].' - '.$certificate['serial'];
+            $name     = $certificate['name'] . ' - ' . $certificate['serial'];
             //TRANS: %1$s the license name, %2$s is the expiration date
-            $message .= sprintf(__('Certificate %1$s expired on %2$s'),
-                                Html::convDate($certificate["date_expiration"]), $name)."<br>\n";
+            $message .= sprintf(
+               __('Certificate %1$s expired on %2$s'),
+               Html::convDate($certificate["date_expiration"]),
+               $name
+            ) . "<br>\n";
             $items[$certificate['id']] = $certificate;
          }
 
@@ -872,11 +897,14 @@ class Certificate extends CommonDBTM {
                $entityname = Dropdown::getDropdownName("glpi_entities", $entity);
                if ($task) {
                   //TRANS: %1$s is the entity, %2$s is the message
-                  $task->log(sprintf(__('%1$s: %2$s')."\n", $entityname, $message));
+                  $task->log(sprintf(__('%1$s: %2$s') . "\n", $entityname, $message));
                   $task->addVolume(1);
                } else {
-                  Session::addMessageAfterRedirect(sprintf(__('%1$s: %2$s'),
-                                                           $entityname, $message));
+                  Session::addMessageAfterRedirect(sprintf(
+                     __('%1$s: %2$s'),
+                     $entityname,
+                     $message
+                  ));
                }
 
                $input = [
@@ -890,7 +918,6 @@ class Certificate extends CommonDBTM {
                   $alert->add($input);
                   unset($alert->fields['id']);
                }
-
             } else {
                $entityname = Dropdown::getDropdownName('glpi_entities', $entity);
                //TRANS: %s is entity name
@@ -908,13 +935,15 @@ class Certificate extends CommonDBTM {
 
    /**
     * Display debug information for current object
-   **/
-   function showDebug() {
+    **/
+   function showDebug()
+   {
       NotificationEvent::debugEvent($this);
    }
 
 
-   static function getIcon() {
+   static function getIcon()
+   {
       return "fas fa-certificate";
    }
 }
