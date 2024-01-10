@@ -51,15 +51,23 @@ class Holiday extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => 'begin_date',
-                         'label' => __('Start'),
-                         'type'  => 'date'],
-                   ['name'  => 'end_date',
-                         'label' => __('End'),
-                         'type'  => 'date'],
-                   ['name'  => 'is_perpetual',
-                         'label' => __('Recurrent'),
-                         'type'  => 'bool']];
+      return [
+         __('Start') => [
+            'name'  => 'begin_date',
+            'type'  => 'date',
+            'value' => $this->fields['begin_date']
+         ],
+         __('End') => [
+            'name'  => 'end_date',
+            'type'  => 'date',
+            'value' => $this->fields['end_date']
+         ],
+         __('Recurrent') => [
+            'name'  => 'is_perpetual',
+            'type'  => 'checkbox',
+            'value' => $this->fields['is_perpetual']
+         ]
+      ];
    }
 
 
