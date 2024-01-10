@@ -52,12 +52,15 @@ class FQDN extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'    => 'fqdn',
-                         'label'   => __('FQDN'),
-                         'type'    => 'text',
-                         'comment'
-                          => __('Fully Qualified Domain Name. Use the classical notation (labels separated by dots). For example: indepnet.net'),
-                         'list'    => true]];
+      return [
+         __('FQDN') => [
+            'name'    => 'fqdn',
+            'type'    => 'text',
+            'title'
+            => __('Fully Qualified Domain Name. Use the classical notation (labels separated by dots). For example: indepnet.net'),
+            'required' => true
+            ]
+         ];
    }
 
 

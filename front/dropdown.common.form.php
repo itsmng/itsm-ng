@@ -34,7 +34,6 @@
  * Following variables have to be defined before inclusion of this file:
  * @var CommonDropdown $dropdown
  */
-
 use Glpi\Event;
 
 if (!($dropdown instanceof CommonDropdown)) {
@@ -56,7 +55,23 @@ if (isset($_POST["id"])) {
 if (isset($_POST["add"])) {
    $dropdown->check(-1, CREATE, $_POST);
 
-   if ($newID=$dropdown->add($_POST)) {
+   $POST = $_POST;
+   if (isset($_POST['picture_front'])) {
+      $files = json_decode(stripslashes($_POST['files']), true);
+      foreach ($files as $file) {
+         $doc = ItsmngUploadHandler::addFileToDb($file);
+         $POST['picture_front'] = $doc->fields['filepath'];
+      }
+   }
+   if (isset($_POST['picture_rear'])) {
+      $files = json_decode(stripslashes($_POST['files']), true);
+      foreach ($files as $file) {
+         $doc = ItsmngUploadHandler::addFileToDb($file);
+         $POST['picture_rear'] = $doc->fields['filepath'];
+      }
+   }
+
+   if ($newID=$dropdown->add($POST)) {
       if ($dropdown instanceof CommonDevice) {
          Event::log($newID, get_class($dropdown), 4, "inventory",
                     sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"],
@@ -103,7 +118,26 @@ if (isset($_POST["add"])) {
 
 } else if (isset($_POST["update"])) {
    $dropdown->check($_POST["id"], UPDATE);
-   $dropdown->update($_POST);
+   $POST = $_POST;
+   if (isset($_POST['picture_front'])) {
+      $file = json_decode(stripslashes($_POST['picture_front']), true)[0];
+      $path = ItsmngUploadHandler::uploadFiles(
+         $file['path'],
+         $file['format'],
+         $file['name']
+      );
+      $POST['picture_front'] = $path;
+   }
+   if (isset($_POST['picture_rear'])) {
+      $file = json_decode(stripslashes($_POST['picture_rear']), true)[0];
+      $path = ItsmngUploadHandler::uploadFiles(
+         $file['path'],
+         $file['format'],
+         $file['name']
+      );
+      $POST['picture_rear'] = $path;
+   }
+   $dropdown->update($POST);
 
    Event::log($_POST["id"], get_class($dropdown), 4, "setup",
               //TRANS: %s is the user login

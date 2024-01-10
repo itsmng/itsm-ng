@@ -139,9 +139,13 @@ abstract class CommonDropdown extends CommonDBTM {
       global $DB;
 
       if ($DB->fieldExists($this->getTable(), 'product_number')) {
-         return [['name' => 'product_number',
-                            'type' => 'text',
-                            'label' => __('Product Number')]];
+         return [
+            __('Product Number') => [
+               'name' => 'product_number',
+               'type' => 'text',
+               'value' => $this->fields['product_number'],
+            ]
+         ];
       } else {
          return [];
       }
@@ -273,7 +277,7 @@ abstract class CommonDropdown extends CommonDBTM {
               ],
               __('Comments') => [
                 'type' => 'textarea',
-                'name' => 'comments',
+                'name' => 'comment',
                 'value' => $this->fields['comment'],
               ],
             ]

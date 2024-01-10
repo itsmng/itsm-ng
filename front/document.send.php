@@ -64,18 +64,9 @@ if (isset($_GET['docid'])) { // docid for document
    if (count($splitter) == 2) {
       $expires_headers = false;
       $send = false;
-      if (($splitter[0] == "_dumps")
-          && Session::haveRight("backup", CREATE)) {
-         $send = GLPI_DUMP_DIR . '/' . $splitter[1];
-      }
 
-      if ($splitter[0] == "_pictures") {
-         if (Document::isImage(GLPI_PICTURE_DIR . '/' . $splitter[1])) {
-            // Can use expires header as picture file path changes when picture changes.
-            $expires_headers = true;
-            $send = GLPI_PICTURE_DIR . '/' . $splitter[1];
-         }
-      }
+      $expires_headers = true;
+      $send = GLPI_DOC_DIR . '/' . $splitter[1];
 
       if ($send && file_exists($send)) {
          Toolbox::sendFile($send, $splitter[1], null, $expires_headers);

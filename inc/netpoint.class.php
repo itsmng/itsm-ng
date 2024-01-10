@@ -49,10 +49,15 @@ class Netpoint extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => 'locations_id',
-                         'label' => Location::getTypeName(1),
-                         'type'  => 'dropdownValue',
-                         'list'  => true]];
+      return [
+         Location::getTypeName(1) => [
+            'name'  => 'locations_id',
+            'type'  => 'select',
+            'values' => getOptionForItems('Location'),
+            'value' => $this->fields['locations_id'],
+            'actions' => getItemActionButtons(['info', 'add'], 'Location')
+         ],
+      ];
    }
 
 

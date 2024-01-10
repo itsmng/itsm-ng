@@ -49,14 +49,17 @@ class LineOperator extends CommonDropdown {
    }
 
    function getAdditionalFields() {
-      return [['name'  => 'mcc',
-                  'label' => __('Mobile Country Code'),
-                  'type'  => 'text',
-                  'list'  => true],
-            ['name'  => 'mnc',
-                  'label' => __('Mobile Network Code'),
-                  'type'  => 'text',
-                  'list'  => true],
+      return [
+         __('Mobile Country Code') => [
+            'name'  => 'mcc',
+            'type'  => 'number',
+            'value' => $this->fields['mcc'],
+         ],
+         __('Mobile Network Code') => [
+            'name'  => 'mnc',
+            'type'  => 'number',
+            'value' => $this->fields['mnc'],
+         ],
       ];
    }
 

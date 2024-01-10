@@ -84,7 +84,7 @@ class ItsmngUploadHandler {
    static function uploadFiles($filepath, $format, $filename) {
       $upload_path = self::get_upload_path($format);
       // die(var_dump($upload_path));
-      $uploadfile = GLPI_DOC_DIR . $upload_path . '/' . $filename;
+      $uploadfile = $upload_path . '/' . $filename;
       if (file_exists($uploadfile)) {
          $filename = uniqid() . '.' . pathinfo($filename, PATHINFO_EXTENSION);
          $uploadfile = $upload_path . '/' . $filename;

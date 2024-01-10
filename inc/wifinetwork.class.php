@@ -96,14 +96,19 @@ class WifiNetwork extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => 'essid',
-                         'label' => __('ESSID'),
-                         'type'  => 'text',
-                         'list'  => true],
-                   ['name'  => 'mode',
-                         'label' => __('Wifi network type'),
-                         'type'  => 'wifi_mode',
-                         'list'  => true]];
+      return [
+         __('ESSID') => [
+            'name'  => 'essid',
+            'type'  => 'text',
+            'value' => $this->fields['essid'],
+         ],
+         __('Wifi network type') => [
+            'name'  => 'mode',
+            'type'  => 'select',
+            'values' => self::getWifiNetworkModes(),
+            'value' => $this->fields['mode'],
+         ]
+      ];
    }
 
 

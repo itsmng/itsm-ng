@@ -4795,7 +4795,7 @@ class Ticket extends CommonITILObject {
               ],
               sprintf(__('%1$s (%2$s)'), __('File'), Document::getMaxUploadSize()) => [
                  'type' => 'file',
-                 'name' => 'filenames',
+                 'name' => 'files',
                  'id' => 'fileSelectorForDocument',
                  'multiple' => true,
                  'values' => getLinkedDocumentsForItem('Ticket', $ID),
