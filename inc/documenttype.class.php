@@ -44,19 +44,47 @@ class DocumentType  extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => 'icon',
-                         'label' => __('Icon'),
-                         'type'  => 'icon'],
-                   ['name'  => 'is_uploadable',
-                         'label' => __('Authorized upload'),
-                         'type'  => 'bool'],
-                   ['name'    => 'ext',
-                         'label'   => __('Extension'),
-                         'type'    => 'text',
-                         'comment' => __('May be a regular expression')],
-                   ['name'  => 'mime',
-                         'label' => __('MIME type'),
-                         'type'  => 'text']];
+      $values = [];
+      if ($dh = opendir(GLPI_ROOT."/pics/icones")) {
+         $files = [];
+         while (($file = readdir($dh)) !== false) {
+            $files[] = $file;
+         }
+         closedir($dh);
+         sort($files);
+
+         foreach ($files as $file) {
+            if (preg_match("/\.png$/i", $file)) {
+               $values[$file] = $file;
+            }
+         }
+      }
+
+      return [
+         __('Icon') => [
+            'name'  => 'icon',
+            'type'  => 'select',
+            'values'  => $values,
+            'value' => $this->fields['icon']
+
+         ],
+         __('Authorized upload') => [
+            'name'  => 'is_uploadable',
+            'type'  => 'checkbox',
+            'value' => $this->fields['is_uploadable']
+         ],
+         __('Extension') => [
+            'name'    => 'ext',
+            'type'    => 'text',
+            'title' => __('May be a regular expression'),
+            'value' => $this->fields['ext']
+         ],
+         __('MIME type') => [
+            'name'  => 'mime',
+            'type'  => 'text',
+            'value' => $this->fields['mime']
+         ]
+      ];
    }
 
 
