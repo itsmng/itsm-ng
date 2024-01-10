@@ -42,7 +42,7 @@ function getLinkedDocumentsForItem($itemType, $items_id) {
     while ($val = $iterator->next()) {
         $document->getFromDB($val['documents_id']);
         $options[$val['id']] = "<a href=".$document->getFormURLWithID($val['documents_id'])
-            .">".$document->fields['filename']." (".filesize($document->fields['filepath'])."B)</a>";
+            .">".$document->fields['filename']." (".filesize(GLPI_DOC_DIR . $document->fields['filepath'])."B)</a>";
     }
 
     return $options;
