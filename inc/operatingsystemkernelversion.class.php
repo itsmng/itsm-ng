@@ -44,11 +44,11 @@ class OperatingSystemKernelVersion extends CommonDropdown {
 
    function getAdditionalFields() {
       $fields   = parent::getAdditionalFields();
-      $fields[] = [
-         'label'  => OperatingSystemKernel::getTypeName(1),
-         'name'   => OperatingSystemKernel::getTypeName(Session::getPluralNumber()),
-         'list'   => true,
-         'type'   => 'oskernel'
+      $fields[OperatingSystemKernel::getTypeName(1)] = [
+         'name'   => 'operatingsystemkernels_id',
+         'type'   => 'select',
+         'values' => getOptionForItems('OperatingSystemKernel'),
+         'value' => $this->fields['operatingsystemkernels_id']
       ];
 
       return $fields;
