@@ -134,18 +134,20 @@ abstract class CommonDCModelDropdown extends CommonDropdown {
       if ($DB->fieldExists($this->getTable(), 'picture_front')) {
          $fields[__('Front picture')] = [
             'name'   => 'picture_front',
-            'type'   => 'file',
+            'type'   => 'imageUpload',
             'id'     => rand(),
             'accept' => 'image/*',
+            'value'  => $this->fields['picture_front']
          ];
       }
 
       if ($DB->fieldExists($this->getTable(), 'picture_rear')) {
          $fields[__('Rear picture')] = [
             'name'   => 'picture_rear',
-            'type'   => 'file',
+            'type'   => 'imageUpload',
             'id'     => rand(),
             'accept' => 'image/*',
+            'value'  => $this->fields['picture_rear']
          ];
       }
 
