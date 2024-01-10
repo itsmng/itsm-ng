@@ -177,7 +177,7 @@ class SpecialStatus extends CommonTreeDropdown {
          echo "</td></tr>";
       }
       echo "<tr class='tab_bg_1'><td class='center' colspan='5'>";
-      echo "<input type='submit' name='update' value='". _sx('button', 'Save') ."' class='submit'>";
+      echo "<input type='submit' name='update' value='". _sx('button', 'Save') ."' class='btn btn-secondary'>";
       echo "</td></tr>";
       echo "</table>";
       Html::closeForm();
