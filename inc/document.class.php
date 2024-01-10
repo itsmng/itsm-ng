@@ -394,6 +394,7 @@ class Document extends CommonDBTM {
                'name' => $ID > 0 ? 'update' : 'add',
                'type' => 'submit',
                'value' => $ID > 0 ? __('Update') : __('Add'),
+               'class' => 'btn btn-secondary'
             ],
          ],
          'content' => [
@@ -452,7 +453,7 @@ class Document extends CommonDBTM {
                   ],
                   sprintf(__('%1$s (%2$s)'), __('File'), self::getMaxUploadSize()) => [
                      'type' => 'file',
-                     'name' => 'filenames',
+                     'name' => 'files',
                      'id' => 'fileSelectorForDocument',
                   ],
                ],
@@ -484,12 +485,6 @@ class Document extends CommonDBTM {
                      'name' => 'is_recursive',
                      'type' => 'hidden',
                      'value' => $this->fields["is_recursive"] ?? 0,
-                  ],
-                  [
-                     'type' => 'hidden',
-                     'name' => 'files',
-                     'id' => "hiddenInputForFiles",
-                     'value' => '[]'
                   ],
                ]
             ]
