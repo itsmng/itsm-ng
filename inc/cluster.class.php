@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -36,25 +37,29 @@ if (!defined('GLPI_ROOT')) {
 
 /**
  * Cluster Class
-**/
-class Cluster extends CommonDBTM {
+ **/
+class Cluster extends CommonDBTM
+{
    use Glpi\Features\Clonable;
 
    // From CommonDBTM
    public $dohistory                   = true;
    static $rightname                   = 'cluster';
 
-   public function getCloneRelations() :array {
+   public function getCloneRelations(): array
+   {
       return [
          NetworkPort::class
       ];
    }
 
-   static function getTypeName($nb = 0) {
+   static function getTypeName($nb = 0)
+   {
       return _n('Cluster', 'Clusters', $nb);
    }
 
-   function defineTabs($options = []) {
+   function defineTabs($options = [])
+   {
       $ong = [];
       $this->addDefaultFormTab($ong)
          ->addImpactTab($ong, $options)
@@ -72,44 +77,45 @@ class Cluster extends CommonDBTM {
    }
 
 
-   function showForm($ID) {
+   function showForm($ID)
+   {
       $form = [
-			'action' => Toolbox::getItemTypeFormURL('cluster'),
-			'buttons' => [
-				[
-					'type' => 'submit',
-					'name' => $this->isNewID($ID) ? 'add' : 'update',
-					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-					'class' => 'btn btn-secondary',
-				],
-				$this->isNewID($ID) ? [] : [
-					'type' => 'submit',
-					'name' => 'delete',
-					'value' => __('Put in trashbin'),
-					'class' => 'btn btn-secondary'
-				]
-			],
-			'content' => [
-				__('Cluster') => [
-					'visible' => true,
-					'inputs' => [
-						$this->isNewID($ID) ? [] : [
-							'type' => 'hidden',
-							'name' => 'id',
-							'value' => $ID
-						],
-						__('Name') => [
-							'name' => 'name',
-							'type' => 'text',
-							'value' => $this->fields['name'] ?? '',
+         'action' => Toolbox::getItemTypeFormURL('cluster'),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => $this->isNewID($ID) ? 'add' : 'update',
+               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary',
+            ],
+            $this->isNewID($ID) ? [] : [
+               'type' => 'submit',
+               'name' => 'delete',
+               'value' => __('Put in trashbin'),
+               'class' => 'btn btn-secondary'
+            ]
+         ],
+         'content' => [
+            __('Cluster') => [
+               'visible' => true,
+               'inputs' => [
+                  $this->isNewID($ID) ? [] : [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID
+                  ],
+                  __('Name') => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'] ?? '',
                   ],
                   __('Status') => [
-							'name' => 'states_id',
-							'type' => 'select',
-							'values' => getOptionForItems('State', ['is_visible_line' => 1]),
-							'value' => $this->fields['states_id'] ?? '',
-							'actions' => getItemActionButtons(['info', 'add'], "State"),
-						],
+                     'name' => 'states_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('State', ['is_visible_line' => 1]),
+                     'value' => $this->fields['states_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "State"),
+                  ],
                   __('UUID') => [
                      'name' => 'uuid',
                      'type' => 'text',
@@ -153,16 +159,17 @@ class Cluster extends CommonDBTM {
                      'type' => 'textarea',
                      'value' => $this->fields['comment'] ?? '',
                   ],
-					]
-				]
-			]
-		];
-		renderTwigForm($form);
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
 
       return true;
    }
 
-   function rawSearchOptions() {
+   function rawSearchOptions()
+   {
       $tab = parent::rawSearchOptions();
 
       $tab[] = [
@@ -233,7 +240,8 @@ class Cluster extends CommonDBTM {
       return $tab;
    }
 
-   function cleanDBonPurge() {
+   function cleanDBonPurge()
+   {
 
       $this->deleteChildrenAndRelationsFromDb(
          [
@@ -243,7 +251,8 @@ class Cluster extends CommonDBTM {
    }
 
 
-   static function getIcon() {
+   static function getIcon()
+   {
       return "fas fa-project-diagram";
    }
 }
