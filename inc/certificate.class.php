@@ -486,169 +486,151 @@ class Certificate extends CommonDBTM {
     * @param array $options
     * @return bool
     */
-   function showForm($ID, $options = []) {
-
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      //TRANS: %1$s is a string, %2$s a second one without spaces between them : to change for RTL
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Name'),
-                          (isset($options['withtemplate'])
-                             && $options['withtemplate']?"*":"")).
-           "</td>";
-      echo "<td>";
-      $objectName = autoName($this->fields["name"], "name",
-                             (isset($options['withtemplate'])
-                                && ( $options['withtemplate']== 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, 'name', ['value' => $objectName]);
-      echo "</td>";
-      echo "<td>".__('Status')."</td>";
-      echo "<td>";
-      State::dropdown([
-         'value'     => $this->fields["states_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_visible_certificate' => 1]
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Location::getTypeName(1)."</td>";
-      echo "<td>";
-      Location::dropdown(['value'  => $this->fields["locations_id"],
-                          'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>"._n('Type', 'Types', 1)."</td>";
-      echo "<td>";
-      Dropdown::show('CertificateType',
-                     ['name'   => "certificatetypes_id",
-                      'value'  => $this->fields["certificatetypes_id"],
-                      'entity' => $this->fields["entities_id"]
-                     ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Technician in charge of the hardware')."</td>";
-      echo "<td>";
-      User::dropdown(['name'   => 'users_id_tech',
-                      'value'  => $this->fields["users_id_tech"],
-                      'right'  => 'own_ticket',
-                      'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>".Manufacturer::getTypeName(1)." (" . __('Root CA') . ")";
-      echo "<td>";
-      Manufacturer::dropdown(['value' => $this->fields["manufacturers_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Serial number')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, 'serial');
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Inventory number'),
-                          (isset($options['withtemplate']) && $options['withtemplate']?"*":"")).
-           "</td>";
-      echo "<td>";
-      $objectName = autoName($this->fields["otherserial"], "otherserial",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, 'otherserial', ['value' => $objectName]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Group in charge of the hardware')."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id_tech',
-         'value'     => $this->fields['groups_id_tech'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_assign' => 1]
-      ]);
-
-      echo "</td><td colspan='2'></td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".User::getTypeName(1)."</td>";
-      echo "<td>";
-      User::dropdown(['value'  => $this->fields["users_id"],
-                      'entity' => $this->fields["entities_id"],
-                      'right'  => 'all']);
-      echo "</td>";
-      echo "<td>".Group::getTypeName(1)."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'value'     => $this->fields["groups_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_itemgroup' => 1]
-      ]);
-
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Alternate username number')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "contact_num");
-      echo "</td>";
-      echo "<td>".__('Alternate username')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "contact");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Self-signed') . "</td>";
-      echo "<td>";
-      Dropdown::showYesNo('is_autosign', $this->fields["is_autosign"]);
-      echo "<td rowspan='4'>".__('Comments')."</td>";
-      echo "<td rowspan='4' class='middle'>";
-      echo "<textarea cols='45' rows='4' name='comment' >".
-           $this->fields["comment"];
-      echo "</textarea></td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('DNS name') . "</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "dns_name");
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('DNS suffix') . "</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "dns_suffix");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Expiration date');
-      echo "&nbsp;";
-      Html::showToolTip(nl2br(__('Empty for infinite')));
-      echo "&nbsp;</td>";
-      echo "<td>";
-      Html::showDateField('date_expiration', ['value' => $this->fields["date_expiration"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>";
-      echo __('Command used') . "</td>";
-      echo "<td colspan='3'>";
-      echo "<textarea cols='100%' rows='4' name='command' >";
-      echo $this->fields["command"] . "</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>";
-      echo __('Certificate request (CSR)') . "</td>";
-      echo "<td colspan='3'>";
-      echo "<textarea cols='100%' rows='4' name='certificate_request' >";
-      echo $this->fields["certificate_request"] . "</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>". self::getTypeName(1) . "</td>";
-      echo "<td colspan='3'>";
-      echo "<textarea cols='100%' rows='4' name='certificate_item' >";
-      echo $this->fields["certificate_item"] . "</textarea>";
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
+   function showForm($ID) {
+      $form = [
+			'action' => Toolbox::getItemTypeFormURL('certificate'),
+			'buttons' => [
+				[
+					'type' => 'submit',
+					'name' => $this->isNewID($ID) ? 'add' : 'update',
+					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+					'class' => 'btn btn-secondary',
+				],
+				$this->isNewID($ID) ? [] : [
+					'type' => 'submit',
+					'name' => 'delete',
+					'value' => __('Put in trashbin'),
+					'class' => 'btn btn-secondary'
+				]
+			],
+			'content' => [
+				__('Certificate') => [
+					'visible' => true,
+					'inputs' => [
+						$this->isNewID($ID) ? [] : [
+							'type' => 'hidden',
+							'name' => 'id',
+							'value' => $ID
+						],
+						__('Name') => [
+							'name' => 'name',
+							'type' => 'text',
+							'value' => $this->fields['name'] ?? '',
+						],
+						__('Location') => [
+							'name' => 'locations_id',
+							'type' => 'select',
+							'values' => getOptionForItems("Location"),
+							'value' => $this->fields['locations_id'] ?? '',
+							'actions' => getItemActionButtons(['info', 'add'], "Location"),
+						],
+                  __('Technician in charge of the hardware') => [
+                     'name' => 'users_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']  ?? '']),
+                     'value' => $this->fields['users_id_tech'] ?? '',
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  __('Types') => [
+                     'name' => 'certificatetypes_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems("CertificateType"),
+                     'value' => $this->fields['certificatetypes_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "CertificateType"),
+                  ],
+                  __('Manufacturer') . ' (' .  __('Root CA') . ')' => [
+                     'name' => 'manufacturers_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems("Manufacturer"),
+                     'value' => $this->fields['manufacturers_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
+                  ],
+                  __('Serial number') => [
+                     'name' => 'serial',
+                     'type' => 'text',
+                     'value' => $this->fields['serial'] ?? '',
+                  ],
+                  __('Inventory number') => [
+                     'name' => 'otherserial',
+                     'type' => 'text',
+                     'value' => $this->fields['otherserial'] ?? '',
+                  ],
+                  __('Group in charge of the hardware') => [
+                     'name' => 'groups_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems("Group"),
+                     'value' => $this->fields['groups_id_tech'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  __('User') => [
+                     'name' => 'users_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems("User"),
+                     'value' => $this->fields['users_id'] ?? '',
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  __('Group') => [
+                     'name' => 'groups_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems("Group"),
+                     'value' => $this->fields['groups_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  __('Alternate username number') => [
+                     'name' => 'others',
+                     'type' => 'text',
+                     'value' => $this->fields['others'] ?? '',
+                  ],
+                  __('Alternate username') => [
+                     'name' => 'contact_num',
+                     'type' => 'text',
+                     'value' => $this->fields['contact_num'] ?? '',
+                  ],
+                  __('Self-signed') => [
+                     'name' => 'is_autosign',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['is_autosign'] ?? '',
+                  ],
+                  __('DNS name') => [
+                     'name' => 'dns_name',
+                     'type' => 'text',
+                     'value' => $this->fields['dns_name'] ?? '',
+                  ],
+                  __('DNS suffix') => [
+                     'name' => 'dns_suffix',
+                     'type' => 'text',
+                     'value' => $this->fields['dns_suffix'] ?? '',
+                  ],
+                  __('Comments') => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'] ?? '',
+                  ],
+                  __('Expiration date') => [
+                     'name' => 'date_expiration',
+                     'type' => 'date',
+                     'value' => $this->fields['date_expiration'] ?? '',
+                  ],
+                  __('Command used') => [
+                     'name' => 'command',
+                     'type' => 'textarea',
+                     'value' => $this->fields['command'] ?? '',
+                  ],
+                  __('Certificate request (CSR)') => [
+                     'name' => 'certificate_request',
+                     'type' => 'textarea',
+                     'value' => $this->fields['certificate_request'] ?? '',
+                  ],
+                  __('Certificat') => [
+                     'name' => 'certificate_item',
+                     'type' => 'textarea',
+                     'value' => $this->fields['certificate_item'] ?? '',
+                  ],
+					]
+				]
+			]
+		];
+		renderTwigForm($form);
 
       return true;
    }
