@@ -52,6 +52,7 @@
         "spin.js": "^4.1.0",
         "tinymce": "^6.7.1",
         "tinymce-i18n": "^23.6.19",
+        "trumbowyg": "^2.27.3",
         "unorm": "^1.6.0"
     },
     "scripts": {

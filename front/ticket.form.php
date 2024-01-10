@@ -88,6 +88,21 @@ if (isset($_POST["add"])) {
       }
    }
 
+   if (isset($_POST['files'])) {
+      $files = json_decode(stripslashes($_POST['files']), true);
+      foreach ($files as $file) {
+         $doc = ItsmngUploadHandler::addFileToDb($file);
+         ItsmngUploadHandler::linkDocToItem(
+            $doc->getID(),
+            Session::getActiveEntity(),
+            Session::getIsActiveEntityRecursive(),
+            'Ticket',
+            $_POST['id'],
+            Session::getLoginUserID()
+         );
+      }
+   }
+
    Event::log($_POST["id"], "ticket", 4, "tracking",
               //TRANS: %s is the user login
               sprintf(__('%s updates an item'), $_SESSION["glpiname"]));
