@@ -96,7 +96,7 @@ class NotificationSettingConfig extends CommonDBTM {
                [
                   'type' => 'submit',
                   'value' => __('Save'),
-                  'class' => 'submit-button btn btn-warning',
+                  'class' => 'submit-button btn btn-secondary',
                ],
             ],
             'content' => [
@@ -144,7 +144,6 @@ class NotificationSettingConfig extends CommonDBTM {
             ]
          ];
 
-         require_once GLPI_ROOT . '/src/twig/twig.utils.php';
          renderTwigForm($form);
 
          foreach (array_keys($modes) as $mode) {

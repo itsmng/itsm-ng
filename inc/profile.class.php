@@ -768,14 +768,14 @@ class Profile extends CommonDBTM
 				'type' => 'submit',
 				'name' => 'add',
 				'value' => __('Add'),
-				'class' => 'submit-button btn btn-warning'
+				'class' => 'submit-button btn btn-secondary'
 			];         
       } else {
          $button['Button'] = [
 				'type' => 'submit',
 				'name' => 'save',
 				'value' => __('Save'),
-				'class' => 'submit-button btn btn-warning'
+				'class' => 'submit-button btn btn-secondary'
 			];    
       }
      
