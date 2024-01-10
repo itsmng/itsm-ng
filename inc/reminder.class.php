@@ -578,7 +578,7 @@ class Reminder extends CommonDBVisible implements
                'type' => 'submit',
                'name' => $this->isNewID($ID) ? 'add' : 'update',
                'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-               'class' => 'submit-button btn btn-warning',
+               'class' => 'submit-button btn btn-secondary',
             ],
          ],
          'content' => [
@@ -623,14 +623,14 @@ class Reminder extends CommonDBVisible implements
                      'id' => 'visibilityBeginDate',
                      'name' => 'begin_view_date',
                      'type' => 'datetime-local',
-                     'value' => str_replace(' ', 'T', $this->fields['begin_view_date']),
+                     'value' => str_replace(' ', 'T', $this->fields['begin_view_date'] ?? ''),
                      'step' => 1,
                   ],
                   __('End') => [
                      'id' => 'visibilityEndDate',
                      'name' => 'end_view_date',
                      'type' => 'datetime-local',
-                     'value' => str_replace(' ', 'T', $this->fields['end_view_date']),
+                     'value' => str_replace(' ', 'T', $this->fields['end_view_date'] ?? ''),
                      'step' => 1,
                   ],
                ]

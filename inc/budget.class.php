@@ -120,51 +120,77 @@ class Budget extends CommonDropdown{
       if ($ID > 0) {
          $rowspan++;
       }
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL('budget'),
+			'buttons' => [
+				[
+					'type' => 'submit',
+					'name' => $this->isNewID($ID) ? 'add' : 'update',
+					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+					'class' => 'btn btn-secondary',
+				],
+            $this->isNewID($ID) ? [] : [
+					'type' => 'submit',
+					'name' => 'delete',
+					'value' => __('Put in trashbin'),
+					'class' => 'btn btn-secondary'
+            ],
+			],
+         'content' => [
+				'' => [
+					'visible' => true,
+					'inputs' => [
+                  $this->isNewID($ID) ? [] : [
+							'type' => 'hidden',
+							'name' => 'id',
+							'value' => $ID
+						],
+						__('Name') => [
+							'name' => 'name',
+							'type' => 'text',
+							'value' => $this->fields['name'],
+						],
+                  _x('price', 'Value') => [
+							'name' => 'value',
+							'type' => 'number',
+							'value' => $this->fields['value'],
+						],
+                  __('Type') => [
+							'name' => 'budgettypes_id',
+							'type' => 'select',
+                     'values' => getOptionForItems("BudgetTypes"),
+							'value' => $this->fields['budgettypes_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "budgettype"),
+						],
+                  __('Start date') => [
+                     'name' => 'begin_date',
+                     'type'  => 'datetime-local',
+                     'value' => $this->fields['begin_date'],
+                  ],
+                  __('End date') => [
+							'name' => 'end_date',
+							'type'  => 'datetime-local',
+							'value' => $this->fields['end_date'],
+						],
+                  __('Location') => [
+							'name' => 'locations_id',
+							'type' => 'select',
+                     'values' => getOptionForItems("Location"),
+							'value' => $this->fields['locations_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "location"),
+						],
+                  __('Comments') => [
+							'name' => 'comment',
+							'type' => 'textarea',
+							'value' => $this->fields['comment'],
+						]
+               ]
+            ]
+         ]
+      ];
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
+      renderTwigForm($form);
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-
-      echo "<td>"._n('Type', 'Types', 1)."</td>";
-      echo "<td>";
-      Dropdown::show('BudgetType', ['value' => $this->fields['budgettypes_id']]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._x('price', 'Value')."</td>";
-      echo "<td><input type='text' name='value' size='14'
-                 value='".Html::formatNumber($this->fields["value"], true)."'></td>";
-
-                 echo "<td rowspan='$rowspan' class='middle right'>".__('Comments')."</td>";
-                 echo "<td class='center middle' rowspan='$rowspan'>".
-                      "<textarea cols='45' rows='4' name='comment' >".$this->fields["comment"]."</textarea>".
-                      "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Start date')."</td>";
-      echo "<td>";
-      Html::showDateField("begin_date", ['value' => $this->fields["begin_date"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('End date')."</td>";
-      echo "<td>";
-      Html::showDateField("end_date", ['value' => $this->fields["end_date"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Location::getTypeName(1)."</td>";
-      echo "<td>";
-      Location::dropdown(['value'  => $this->fields["locations_id"],
-                               'entity' => $this->fields["entities_id"]]);
-      echo "</td><td colspan='2'></td></tr>";
-
-      $this->showFormButtons($options);
       return true;
    }
 
