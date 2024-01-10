@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,14 +42,16 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Class to declare a certificate
  */
-class Certificate extends CommonDBTM {
+class Certificate extends CommonDBTM
+{
    use Glpi\Features\Clonable;
 
    public $dohistory           = true;
    static $rightname           = "certificate";
    protected $usenotepad       = true;
 
-   public function getCloneRelations() :array {
+   public function getCloneRelations(): array
+   {
       return [
          Infocom::class,
          Contract_Item::class,
@@ -57,14 +60,16 @@ class Certificate extends CommonDBTM {
       ];
    }
 
-   static function getTypeName($nb = 0) {
+   static function getTypeName($nb = 0)
+   {
       return _n('Certificate', 'Certificates', $nb);
    }
 
    /**
     * Clean certificate items
     */
-   function cleanDBonPurge() {
+   function cleanDBonPurge()
+   {
 
       $this->deleteChildrenAndRelationsFromDb(
          [
@@ -73,7 +78,8 @@ class Certificate extends CommonDBTM {
       );
    }
 
-   function rawSearchOptions() {
+   function rawSearchOptions()
+   {
 
       $tab = [];
 
@@ -346,7 +352,8 @@ class Certificate extends CommonDBTM {
       return $tab;
    }
 
-   static function rawSearchOptionsToAdd($itemtype = null) {
+   static function rawSearchOptionsToAdd($itemtype = null)
+   {
       $tab = [];
       $name = static::getTypeName(Session::getPluralNumber());
 
@@ -448,7 +455,8 @@ class Certificate extends CommonDBTM {
     * @param array $options
     * @return array
     */
-   function defineTabs($options = []) {
+   function defineTabs($options = [])
+   {
       $ong = [];
       $this->addDefaultFormTab($ong)
          ->addStandardTab(__CLASS__, $ong, $options)
@@ -469,7 +477,8 @@ class Certificate extends CommonDBTM {
       return $ong;
    }
 
-   function prepareInputForAdd($input) {
+   function prepareInputForAdd($input)
+   {
 
       if (isset($input["id"]) && ($input["id"] > 0)) {
          $input["_oldID"] = $input["id"];
@@ -486,169 +495,152 @@ class Certificate extends CommonDBTM {
     * @param array $options
     * @return bool
     */
-   function showForm($ID, $options = []) {
-
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      //TRANS: %1$s is a string, %2$s a second one without spaces between them : to change for RTL
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Name'),
-                          (isset($options['withtemplate'])
-                             && $options['withtemplate']?"*":"")).
-           "</td>";
-      echo "<td>";
-      $objectName = autoName($this->fields["name"], "name",
-                             (isset($options['withtemplate'])
-                                && ( $options['withtemplate']== 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, 'name', ['value' => $objectName]);
-      echo "</td>";
-      echo "<td>".__('Status')."</td>";
-      echo "<td>";
-      State::dropdown([
-         'value'     => $this->fields["states_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_visible_certificate' => 1]
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Location::getTypeName(1)."</td>";
-      echo "<td>";
-      Location::dropdown(['value'  => $this->fields["locations_id"],
-                          'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>"._n('Type', 'Types', 1)."</td>";
-      echo "<td>";
-      Dropdown::show('CertificateType',
-                     ['name'   => "certificatetypes_id",
-                      'value'  => $this->fields["certificatetypes_id"],
-                      'entity' => $this->fields["entities_id"]
-                     ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Technician in charge of the hardware')."</td>";
-      echo "<td>";
-      User::dropdown(['name'   => 'users_id_tech',
-                      'value'  => $this->fields["users_id_tech"],
-                      'right'  => 'own_ticket',
-                      'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>".Manufacturer::getTypeName(1)." (" . __('Root CA') . ")";
-      echo "<td>";
-      Manufacturer::dropdown(['value' => $this->fields["manufacturers_id"]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Serial number')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, 'serial');
-      echo "<td>".sprintf(__('%1$s%2$s'), __('Inventory number'),
-                          (isset($options['withtemplate']) && $options['withtemplate']?"*":"")).
-           "</td>";
-      echo "<td>";
-      $objectName = autoName($this->fields["otherserial"], "otherserial",
-                             (isset($options['withtemplate']) && ($options['withtemplate'] == 2)),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, 'otherserial', ['value' => $objectName]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Group in charge of the hardware')."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id_tech',
-         'value'     => $this->fields['groups_id_tech'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_assign' => 1]
-      ]);
-
-      echo "</td><td colspan='2'></td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".User::getTypeName(1)."</td>";
-      echo "<td>";
-      User::dropdown(['value'  => $this->fields["users_id"],
-                      'entity' => $this->fields["entities_id"],
-                      'right'  => 'all']);
-      echo "</td>";
-      echo "<td>".Group::getTypeName(1)."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'value'     => $this->fields["groups_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_itemgroup' => 1]
-      ]);
-
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Alternate username number')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "contact_num");
-      echo "</td>";
-      echo "<td>".__('Alternate username')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "contact");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Self-signed') . "</td>";
-      echo "<td>";
-      Dropdown::showYesNo('is_autosign', $this->fields["is_autosign"]);
-      echo "<td rowspan='4'>".__('Comments')."</td>";
-      echo "<td rowspan='4' class='middle'>";
-      echo "<textarea cols='45' rows='4' name='comment' >".
-           $this->fields["comment"];
-      echo "</textarea></td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('DNS name') . "</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "dns_name");
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('DNS suffix') . "</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "dns_suffix");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Expiration date');
-      echo "&nbsp;";
-      Html::showToolTip(nl2br(__('Empty for infinite')));
-      echo "&nbsp;</td>";
-      echo "<td>";
-      Html::showDateField('date_expiration', ['value' => $this->fields["date_expiration"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>";
-      echo __('Command used') . "</td>";
-      echo "<td colspan='3'>";
-      echo "<textarea cols='100%' rows='4' name='command' >";
-      echo $this->fields["command"] . "</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>";
-      echo __('Certificate request (CSR)') . "</td>";
-      echo "<td colspan='3'>";
-      echo "<textarea cols='100%' rows='4' name='certificate_request' >";
-      echo $this->fields["certificate_request"] . "</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>". self::getTypeName(1) . "</td>";
-      echo "<td colspan='3'>";
-      echo "<textarea cols='100%' rows='4' name='certificate_item' >";
-      echo $this->fields["certificate_item"] . "</textarea>";
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
+   function showForm($ID)
+   {
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL('certificate'),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => $this->isNewID($ID) ? 'add' : 'update',
+               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary',
+            ],
+            $this->isNewID($ID) ? [] : [
+               'type' => 'submit',
+               'name' => 'delete',
+               'value' => __('Put in trashbin'),
+               'class' => 'btn btn-secondary'
+            ]
+         ],
+         'content' => [
+            __('Certificate') => [
+               'visible' => true,
+               'inputs' => [
+                  $this->isNewID($ID) ? [] : [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID
+                  ],
+                  __('Name') => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'] ?? '',
+                  ],
+                  __('Location') => [
+                     'name' => 'locations_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems("Location"),
+                     'value' => $this->fields['locations_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
+                  ],
+                  __('Technician in charge of the hardware') => [
+                     'name' => 'users_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']  ?? '']),
+                     'value' => $this->fields['users_id_tech'] ?? '',
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  __('Types') => [
+                     'name' => 'certificatetypes_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems("CertificateType"),
+                     'value' => $this->fields['certificatetypes_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "CertificateType"),
+                  ],
+                  __('Manufacturer') . ' (' .  __('Root CA') . ')' => [
+                     'name' => 'manufacturers_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems("Manufacturer"),
+                     'value' => $this->fields['manufacturers_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
+                  ],
+                  __('Serial number') => [
+                     'name' => 'serial',
+                     'type' => 'text',
+                     'value' => $this->fields['serial'] ?? '',
+                  ],
+                  __('Inventory number') => [
+                     'name' => 'otherserial',
+                     'type' => 'text',
+                     'value' => $this->fields['otherserial'] ?? '',
+                  ],
+                  __('Group in charge of the hardware') => [
+                     'name' => 'groups_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems("Group"),
+                     'value' => $this->fields['groups_id_tech'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  __('User') => [
+                     'name' => 'users_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems("User"),
+                     'value' => $this->fields['users_id'] ?? '',
+                     'actions' => getItemActionButtons(['info'], "User"),
+                  ],
+                  __('Group') => [
+                     'name' => 'groups_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems("Group"),
+                     'value' => $this->fields['groups_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  __('Alternate username number') => [
+                     'name' => 'others',
+                     'type' => 'text',
+                     'value' => $this->fields['others'] ?? '',
+                  ],
+                  __('Alternate username') => [
+                     'name' => 'contact_num',
+                     'type' => 'text',
+                     'value' => $this->fields['contact_num'] ?? '',
+                  ],
+                  __('Self-signed') => [
+                     'name' => 'is_autosign',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['is_autosign'] ?? '',
+                  ],
+                  __('DNS name') => [
+                     'name' => 'dns_name',
+                     'type' => 'text',
+                     'value' => $this->fields['dns_name'] ?? '',
+                  ],
+                  __('DNS suffix') => [
+                     'name' => 'dns_suffix',
+                     'type' => 'text',
+                     'value' => $this->fields['dns_suffix'] ?? '',
+                  ],
+                  __('Comments') => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'] ?? '',
+                  ],
+                  __('Expiration date') => [
+                     'name' => 'date_expiration',
+                     'type' => 'date',
+                     'value' => $this->fields['date_expiration'] ?? '',
+                  ],
+                  __('Command used') => [
+                     'name' => 'command',
+                     'type' => 'textarea',
+                     'value' => $this->fields['command'] ?? '',
+                  ],
+                  __('Certificate request (CSR)') => [
+                     'name' => 'certificate_request',
+                     'type' => 'textarea',
+                     'value' => $this->fields['certificate_request'] ?? '',
+                  ],
+                  __('Certificat') => [
+                     'name' => 'certificate_item',
+                     'type' => 'textarea',
+                     'value' => $this->fields['certificate_item'] ?? '',
+                  ],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
 
       return true;
    }
@@ -660,7 +652,8 @@ class Certificate extends CommonDBTM {
     * @param null $checkitem
     * @return array
     */
-   function getSpecificMassiveActions($checkitem = null) {
+   function getSpecificMassiveActions($checkitem = null)
+   {
       $actions = parent::getSpecificMassiveActions($checkitem);
 
       if (Session::getCurrentInterface() == 'central') {
@@ -682,24 +675,27 @@ class Certificate extends CommonDBTM {
     * @param MassiveAction $ma
     * @return bool|false
     */
-   static function showMassiveActionsSubForm(MassiveAction $ma) {
+   static function showMassiveActionsSubForm(MassiveAction $ma)
+   {
 
       switch ($ma->getAction()) {
-         case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'install' :
-            Dropdown::showSelectItemFromItemtypes(['items_id_name' => 'item_item',
-                                                   'itemtype_name' => 'typeitem',
-                                                   'itemtypes'     => self::getTypes(true),
-                                                    'checkright'   => true
-                                                  ]);
+         case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'install':
+            Dropdown::showSelectItemFromItemtypes([
+               'items_id_name' => 'item_item',
+               'itemtype_name' => 'typeitem',
+               'itemtypes'     => self::getTypes(true),
+               'checkright'   => true
+            ]);
             echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
             return true;
             break;
-         case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'uninstall' :
-            Dropdown::showSelectItemFromItemtypes(['items_id_name' => 'item_item',
-                                                   'itemtype_name' => 'typeitem',
-                                                   'itemtypes'     => self::getTypes(true),
-                                                   'checkright'    => true
-                                                  ]);
+         case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'uninstall':
+            Dropdown::showSelectItemFromItemtypes([
+               'items_id_name' => 'item_item',
+               'itemtype_name' => 'typeitem',
+               'itemtypes'     => self::getTypes(true),
+               'checkright'    => true
+            ]);
             echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
             return true;
             break;
@@ -717,9 +713,11 @@ class Certificate extends CommonDBTM {
     * @param array $ids
     * @return void
     */
-   static function processMassiveActionsForOneItemtype(MassiveAction $ma,
-                                                       CommonDBTM $item,
-                                                       array $ids) {
+   static function processMassiveActionsForOneItemtype(
+      MassiveAction $ma,
+      CommonDBTM $item,
+      array $ids
+   ) {
 
       $certif_item = new Certificate_Item();
 
@@ -727,10 +725,11 @@ class Certificate extends CommonDBTM {
          case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'add_item':
             $input = $ma->getInput();
             foreach ($ids as $id) {
-               $input = ['certificates_id' => $input['certificates_id'],
-                         'items_id'        => $id,
-                         'itemtype'        => $item->getType()
-                        ];
+               $input = [
+                  'certificates_id' => $input['certificates_id'],
+                  'items_id'        => $id,
+                  'itemtype'        => $item->getType()
+               ];
                if ($certif_item->can(-1, UPDATE, $input)) {
                   if ($certif_item->add($input)) {
                      $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
@@ -744,13 +743,15 @@ class Certificate extends CommonDBTM {
 
             return;
 
-         case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'install' :
+         case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'install':
             $input = $ma->getInput();
             foreach ($ids as $key) {
                if ($item->can($key, UPDATE)) {
-                  $values = ['certificates_id' => $key,
-                             'items_id' => $input["item_item"],
-                             'itemtype' => $input['typeitem']];
+                  $values = [
+                     'certificates_id' => $key,
+                     'items_id' => $input["item_item"],
+                     'itemtype' => $input['typeitem']
+                  ];
                   if ($certif_item->add($values)) {
                      $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                   } else {
@@ -784,7 +785,8 @@ class Certificate extends CommonDBTM {
     *
     * @return array of types
     **/
-   static function getTypes($all = false) {
+   static function getTypes($all = false)
+   {
       global $CFG_GLPI;
 
       $types = $CFG_GLPI['certificate_types'];
@@ -806,8 +808,9 @@ class Certificate extends CommonDBTM {
     * @param $name : task's name
     *
     * @return array
-   **/
-   static function cronInfo($name) {
+    **/
+   static function cronInfo($name)
+   {
       return ['description' => __('Send alarms on expired certificate')];
    }
 
@@ -817,8 +820,9 @@ class Certificate extends CommonDBTM {
     * @param CronTask $task CronTask to log, if NULL display (default NULL)
     *
     * @return integer 0 : nothing to do 1 : done with success
-   **/
-   static function cronCertificate($task = null) {
+    **/
+   static function cronCertificate($task = null)
+   {
       global $DB, $CFG_GLPI;
 
       $cron_status = 1;
@@ -872,10 +876,13 @@ class Certificate extends CommonDBTM {
          $items   = [];
 
          foreach ($result as $certificate) {
-            $name     = $certificate['name'].' - '.$certificate['serial'];
+            $name     = $certificate['name'] . ' - ' . $certificate['serial'];
             //TRANS: %1$s the license name, %2$s is the expiration date
-            $message .= sprintf(__('Certificate %1$s expired on %2$s'),
-                                Html::convDate($certificate["date_expiration"]), $name)."<br>\n";
+            $message .= sprintf(
+               __('Certificate %1$s expired on %2$s'),
+               Html::convDate($certificate["date_expiration"]),
+               $name
+            ) . "<br>\n";
             $items[$certificate['id']] = $certificate;
          }
 
@@ -890,11 +897,14 @@ class Certificate extends CommonDBTM {
                $entityname = Dropdown::getDropdownName("glpi_entities", $entity);
                if ($task) {
                   //TRANS: %1$s is the entity, %2$s is the message
-                  $task->log(sprintf(__('%1$s: %2$s')."\n", $entityname, $message));
+                  $task->log(sprintf(__('%1$s: %2$s') . "\n", $entityname, $message));
                   $task->addVolume(1);
                } else {
-                  Session::addMessageAfterRedirect(sprintf(__('%1$s: %2$s'),
-                                                           $entityname, $message));
+                  Session::addMessageAfterRedirect(sprintf(
+                     __('%1$s: %2$s'),
+                     $entityname,
+                     $message
+                  ));
                }
 
                $input = [
@@ -908,7 +918,6 @@ class Certificate extends CommonDBTM {
                   $alert->add($input);
                   unset($alert->fields['id']);
                }
-
             } else {
                $entityname = Dropdown::getDropdownName('glpi_entities', $entity);
                //TRANS: %s is entity name
@@ -926,13 +935,15 @@ class Certificate extends CommonDBTM {
 
    /**
     * Display debug information for current object
-   **/
-   function showDebug() {
+    **/
+   function showDebug()
+   {
       NotificationEvent::debugEvent($this);
    }
 
 
-   static function getIcon() {
+   static function getIcon()
+   {
       return "fas fa-certificate";
    }
 }

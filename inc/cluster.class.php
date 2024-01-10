@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -36,25 +37,29 @@ if (!defined('GLPI_ROOT')) {
 
 /**
  * Cluster Class
-**/
-class Cluster extends CommonDBTM {
+ **/
+class Cluster extends CommonDBTM
+{
    use Glpi\Features\Clonable;
 
    // From CommonDBTM
    public $dohistory                   = true;
    static $rightname                   = 'cluster';
 
-   public function getCloneRelations() :array {
+   public function getCloneRelations(): array
+   {
       return [
          NetworkPort::class
       ];
    }
 
-   static function getTypeName($nb = 0) {
+   static function getTypeName($nb = 0)
+   {
       return _n('Cluster', 'Clusters', $nb);
    }
 
-   function defineTabs($options = []) {
+   function defineTabs($options = [])
+   {
       $ong = [];
       $this->addDefaultFormTab($ong)
          ->addImpactTab($ong, $options)
@@ -72,101 +77,99 @@ class Cluster extends CommonDBTM {
    }
 
 
-   function showForm($ID, $options = []) {
-      $rand = mt_rand();
-
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='textfield_name$rand'>".__('Name')."</label></td>";
-      echo "<td>";
-      $objectName = autoName(
-         $this->fields["name"],
-         "name",
-         (isset($options['withtemplate']) && ( $options['withtemplate']== 2)),
-         $this->getType(),
-         $this->fields["entities_id"]
-      );
-      Html::autocompletionTextField(
-         $this,
-         'name',
-         [
-            'value'     => $objectName,
-            'rand'      => $rand
+   function showForm($ID)
+   {
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL('cluster'),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => $this->isNewID($ID) ? 'add' : 'update',
+               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary',
+            ],
+            $this->isNewID($ID) ? [] : [
+               'type' => 'submit',
+               'name' => 'delete',
+               'value' => __('Put in trashbin'),
+               'class' => 'btn btn-secondary'
+            ]
+         ],
+         'content' => [
+            __('Cluster') => [
+               'visible' => true,
+               'inputs' => [
+                  $this->isNewID($ID) ? [] : [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID
+                  ],
+                  __('Name') => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'] ?? '',
+                  ],
+                  __('Status') => [
+                     'name' => 'states_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('State', ['is_visible_line' => 1]),
+                     'value' => $this->fields['states_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "State"),
+                  ],
+                  __('UUID') => [
+                     'name' => 'uuid',
+                     'type' => 'text',
+                     'value' => $this->fields['uuid'] ?? '',
+                  ],
+                  __('Version') => [
+                     'name' => 'version',
+                     'type' => 'text',
+                     'value' => $this->fields['version'] ?? '',
+                  ],
+                  __('Type') => [
+                     'name' => 'clustertypes_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('ClusterType'),
+                     'value' => $this->fields['clustertypes_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "ClusterType"),
+                  ],
+                  __('Auto update system') => [
+                     'name' => 'autoupdatesystems_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('AutoUpdateSystem'),
+                     'value' => $this->fields['autoupdatesystems_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "AutoUpdateSystem"),
+                  ],
+                  __('Technician in charge of the hardware') => [
+                     'name' => 'users_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']  ?? '']),
+                     'value' => $this->fields['users_id_tech'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "User"),
+                  ],
+                  __('Group in charge of the hardware') => [
+                     'name' => 'groups_id_tech',
+                     'type' => 'select',
+                     'values' => getOptionForItems('Group', ['is_assign' => 1]),
+                     'value' => $this->fields['groups_id_tech'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                  ],
+                  __('Comments') => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'] ?? '',
+                  ],
+               ]
+            ]
          ]
-      );
-      echo "</td>";
+      ];
+      renderTwigForm($form);
 
-      echo "<td><label for='dropdown_states_id$rand'>".__('Status')."</label></td>";
-      echo "<td>";
-      State::dropdown([
-         'value'     => $this->fields["states_id"],
-         'entity'    => $this->fields["entities_id"],
-         'condition' => ['is_visible_cluster' => 1],
-         'rand'      => $rand
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='uuid$rand'>".__('UUID')."</label></td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, 'uuid', ['rand' => $rand]);
-      echo "</td><td><label for='version$rand'>"._n('Version', 'Versions', 1)."</label></td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, 'version', ['rand' => $rand]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_types_id$rand'>"._n('Type', 'Types', 1)."</label></td>";
-      echo "<td>";
-      ClusterType::dropdown([
-         'value'  => $this->fields["clustertypes_id"],
-         'entity' => $this->fields["entities_id"],
-         'rand'   => $rand
-      ]);
-      echo "</td>";
-      echo "<td><label for='dropdown_autoupdatesystems_id$rand'>".AutoUpdateSystem::getTypeName(1)."</label></td>";
-      echo "<td >";
-      AutoUpdateSystem::dropdown(['value' => $this->fields["autoupdatesystems_id"], 'rand' => $rand]);
-      echo "</td></tr>";
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_users_id_tech$rand'>".__('Technician in charge of the hardware')."</label></td>";
-      echo "<td>";
-      User::dropdown([
-         'name'   => 'users_id_tech',
-         'value'  => $this->fields["users_id_tech"],
-         'right'  => 'own_ticket',
-         'entity' => $this->fields["entities_id"],
-         'rand'   => $rand
-      ]);
-      echo "</td>";
-      echo "<td><label for='dropdown_groups_id_tech$rand'>".__('Group in charge of the hardware')."</label></td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id_tech',
-         'value'     => $this->fields['groups_id_tech'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_assign' => 1],
-         'rand'      => $rand
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='comment'>".__('Comments')."</label></td>";
-      echo "<td colspan='3' class='middle'>";
-      echo "<textarea cols='45' rows='4' id='comment' name='comment' >".
-           $this->fields["comment"];
-      echo "</textarea></td></tr>";
-      echo "</td></tr>\n";
-
-      $this->showFormButtons($options);
       return true;
    }
 
-   function rawSearchOptions() {
+   function rawSearchOptions()
+   {
       $tab = parent::rawSearchOptions();
 
       $tab[] = [
@@ -237,7 +240,8 @@ class Cluster extends CommonDBTM {
       return $tab;
    }
 
-   function cleanDBonPurge() {
+   function cleanDBonPurge()
+   {
 
       $this->deleteChildrenAndRelationsFromDb(
          [
@@ -247,7 +251,8 @@ class Cluster extends CommonDBTM {
    }
 
 
-   static function getIcon() {
+   static function getIcon()
+   {
       return "fas fa-project-diagram";
    }
 }
