@@ -51,10 +51,14 @@ class Vlan extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'     => 'tag',
-                         'label'    => __('ID TAG'),
-                         'type'     => '',
-                         'list'     => true]];
+      return [
+         __('ID TAG') => [
+            'name'     => 'tag',
+            'type'     => 'number',
+            'min'     => 1,
+            'value' => $this->fields['tag']
+         ]
+      ];
    }
 
 

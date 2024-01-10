@@ -432,10 +432,10 @@ class IPAddress extends CommonDBChild {
       $this->version    = $array[$versionField];
       $this->textual    = $array[$textualField];
       $this->binary     = [];
-      $this->binary[0]  = ($array[$binaryField."_0"] + 0);
-      $this->binary[1]  = ($array[$binaryField."_1"] + 0);
-      $this->binary[2]  = ($array[$binaryField."_2"] + 0);
-      $this->binary[3]  = ($array[$binaryField."_3"] + 0);
+      $this->binary[0]  = intval($array[$binaryField."_0"]);
+      $this->binary[1]  = intval($array[$binaryField."_1"]);
+      $this->binary[2]  = intval($array[$binaryField."_2"]);
+      $this->binary[3]  = intval($array[$binaryField."_3"]);
       return true;
    }
 

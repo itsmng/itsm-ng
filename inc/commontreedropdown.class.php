@@ -46,10 +46,13 @@ abstract class CommonTreeDropdown extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => $this->getForeignKeyField(),
-                         'label' => __('As child of'),
-                         'type'  => 'parent',
-                         'list'  => false]];
+      return [
+         __('As child of') => [
+            'name'  => $this->getForeignKeyField(),
+            'type'  => 'select',
+            'list'  => false
+         ]
+      ];
    }
 
 

@@ -170,19 +170,25 @@ class IPNetwork extends CommonImplicitTreeDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'     => 'network',
-                         'label'    => self::getTypeName(1),
-                         'type'     => 'text',
-                         'list'     => true,
-                         'comment'  => __('Set the network using notation address/mask')],
-                   ['name'     => 'gateway',
-                         'label'    => __('Gateway'),
-                         'type'     => 'text',
-                         'list'     => true],
-                   ['name'     => 'addressable',
-                         'label'    => __('Addressable network'),
-                         'comment'  => __('An addressable network is a network defined on an equipment'),
-                         'type'     => 'bool']];
+      return [
+         self::getTypeName(1) => [
+            'name'     => 'address',
+            'type'     => 'text',
+            'title'  => __('Set the network using notation address/mask'),
+            'value' => $this->fields['address'],
+         ],
+         __('Gateway') => [
+            'name'     => 'gateway',
+            'type'     => 'text',
+            'value' => $this->fields['gateway'],
+         ],
+         __('Addressable network') => [
+            'name'     => 'addressable',
+            'title'  => __('An addressable network is a network defined on an equipment'),
+            'type'     => 'checkbox',
+            'value' => $this->fields['addressable'],
+         ]
+      ];
    }
 
 

@@ -3283,7 +3283,7 @@ class Toolbox {
          return null;
       }
 
-      return $CFG_GLPI["root_doc"] . '/front/document.send.php?file=_pictures/' . $path;
+      return $CFG_GLPI["root_doc"] . '/front/document.send.php?file=' . GLPI_DOC_DIR . $path;
    }
 
    /**
