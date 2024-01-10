@@ -172,10 +172,10 @@ class IPNetwork extends CommonImplicitTreeDropdown {
 
       return [
          self::getTypeName(1) => [
-            'name'     => 'network',
+            'name'     => 'address',
             'type'     => 'text',
             'title'  => __('Set the network using notation address/mask'),
-            'value' => $this->fields['address'] ? $this->fields['address'] . '/' . $this->fields['netmask'] : '',
+            'value' => $this->fields['address'],
          ],
          __('Gateway') => [
             'name'     => 'gateway',
