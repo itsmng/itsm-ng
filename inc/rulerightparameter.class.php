@@ -41,7 +41,6 @@ class RuleRightParameter extends CommonDropdown {
 
    public $can_be_translated = false;
 
-
    /**
     * @see CommonDBTM::prepareInputForAdd()
    **/
@@ -56,10 +55,13 @@ class RuleRightParameter extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => 'value',
-                         'label' => _n('Criterion', 'Criteria', 1),
-                         'type'  => 'text',
-                         'list'  => false]];
+      return [
+         _n('Criterion', 'Criteria', 1) => [
+            'name'  => 'value',
+            'type'  => 'text',
+            'value' => $this->fields['value'],
+         ]
+      ];
    }
 
 
