@@ -95,36 +95,57 @@ class SLM extends CommonDBTM {
     * Print the slm form
     *
     * @param integer $ID ID of the item
-    * @param array   $options of possible options:
-    *     - target filename : where to go when done.
-    *     - withtemplate boolean : template or basic item
     *
     * @return boolean item found
    **/
-   function showForm($ID, $options = []) {
-
-      $rowspan = 2;
-
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name", ['value' => $this->fields["name"]]);
-      echo "<td rowspan='".$rowspan."'>".__('Comments')."</td>";
-      echo "<td rowspan='".$rowspan."'>
-            <textarea cols='45' rows='8' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>"._n('Calendar', 'Calendars', 1)."</td>";
-      echo "<td>";
-
-      Calendar::dropdown(['value'      => $this->fields["calendars_id"],
-                          'emptylabel' => __('24/7'),
-                          'toadd'      => ['-1' => __('Calendar of the ticket')]]);
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
+   function showForm($ID) {
+      $form = [
+			'action' => Toolbox::getItemTypeFormURL('slm'),
+			'buttons' => [
+				[
+					'type' => 'submit',
+					'name' => $this->isNewID($ID) ? 'add' : 'update',
+					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+					'class' => 'btn btn-secondary',
+				],
+				$this->isNewID($ID) ? [] : [
+					'type' => 'submit',
+					'name' => 'purge',
+					'value' => __('Delete permanently'),
+					'class' => 'btn btn-secondary'
+				]
+			],
+			'content' => [
+				__('Niveau de services') => [
+					'visible' => true,
+					'inputs' => [
+						$this->isNewID($ID) ? [] : [
+							'type' => 'hidden',
+							'name' => 'id',
+							'value' => $ID
+						],
+						__('Name') => [
+							'name' => 'name',
+							'type' => 'text',
+							'value' => $this->fields['name'] ?? '',
+						],
+						__('Calendar') => [
+							'name' => 'calendars_id',
+							'type' => 'select',
+							'values' => getOptionForItems("Calendar"),
+							'value' => $this->fields['calendars_id'] ?? '',
+							'actions' => getItemActionButtons(['info', 'add'], "Calendar"),
+						],
+                  __('Comments') => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'] ?? '',
+                  ],
+					]
+				]
+			]
+		];
+		renderTwigForm($form);
 
       return true;
    }
