@@ -91,8 +91,6 @@ class Line extends CommonDBTM
 	 **/
 	function showForm($ID, $options = [])
 	{
-		require_once GLPI_ROOT . '/src/twig/twig.utils.php';
-
 		$form = [
 			'action' => Toolbox::getItemTypeFormURL('line'),
 			'buttons' => [
