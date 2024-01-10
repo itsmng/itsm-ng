@@ -39,6 +39,18 @@ class SoftwareCategory extends CommonTreeDropdown {
 
    public $can_be_translated = true;
 
+   function getAdditionalFields() {
+
+      return [
+         __('As child of') => [
+            'name'  => $this->getForeignKeyField(),
+            'type'  => 'select',
+            'values'  => getOptionForItems('SoftwareCategory', ['NOT' => ['id' => $this->getID()]]),
+            'value' => $this->fields[$this->getForeignKeyField()],
+         ]
+      ];
+   }
+
 
    static function getTypeName($nb = 0) {
       return _n('Software category', 'Software categories', $nb);
