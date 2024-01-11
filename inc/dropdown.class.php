@@ -1091,7 +1091,8 @@ class Dropdown {
 
    /**
     * Dropdown available languages
-    *
+    * @deprecated since 2.0.0
+    * use Language::getLanguages() instead
     * @param string $myname   select name
     * @param array  $options  array of additionnal options:
     *    - display_emptychoice : allow selection of no language
@@ -1108,7 +1109,7 @@ class Dropdown {
          unset($options['display_emptychoice']);
       }
 
-      $values = array_merge($values, self::getLanguages());
+      $values = array_merge($values, Language::getLanguages());
       return self::showFromArray($myname, $values, $options);
    }
 
