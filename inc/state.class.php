@@ -63,15 +63,19 @@ class State extends CommonTreeDropdown {
    function getAdditionalFields() {
 
       $fields   = parent::getAdditionalFields();
-      $fields[] = ['label' => __('Visibility'),
-                        'name'  => 'header',
-                        'list'  => false];
+      $fields[__('As child of')] = [
+         'name'  => 'states_id',
+         'type' => 'select',
+         'values' => getOptionForItems('State', ['NOT' => ['id' => $this->getId()]]),
+         'value' => $this->fields['states_id'],
+      ];
 
       foreach ($this->getvisibilityFields() as $type => $field) {
-         $fields[] = ['name'  => $field,
-                           'label' => $type::getTypeName(Session::getPluralNumber()),
-                           'type'  => 'bool',
-                           'list'  => true];
+         $fields[$type::getTypeName(Session::getPluralNumber())] = [
+            'name'  => $field,
+            'type'  => 'checkbox',
+            'value' => $this->fields[$field],
+         ];
       }
       return $fields;
    }
