@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 
  * ITSM-NG
@@ -7,9 +8,7 @@
 
 class Language {
 
-    private static $languages_json_path = GLPI_ROOT . "/src/languages/languages.json";
-
-
+    const EMPTY_VALUE = '-----';
 
     /**
     * Get all available languages
@@ -19,15 +18,39 @@ class Language {
     * @return array
     */
     public static function getLanguages(): array{
+        global $CFG_GLPI;
 
-    $languages = [];
-    foreach (json_decode(file_get_contents(self::$languages_json_path), true) as $code => $language) {
-        if (isset($language['file']) && is_file(GLPI_ROOT . "/locales/" . $language['file'])) {
-            $languages[$code] = $language;
+        foreach ($CFG_GLPI["languages"] as $key => $val) {
+            if (isset($val[1]) && is_file(GLPI_ROOT ."/locales/".$val[1])) {
+            $languages[$key] = $val[0];
+            }
         }
+        return $languages;
     }
-    return $languages;
+
+    /**
+    * Dropdown available languages
+    *
+    * @param array  $options  array of additionnal options:
+    *    - display_emptychoice : allow selection of no language
+    *    - emptylabel          : specific string to empty label if display_emptychoice is true
+    **/
+   static function showLanguages($options = []) : Array {
+    $values = [];
+    if (isset($options['display_emptychoice']) && ($options['display_emptychoice'])) {
+       if (isset($options['emptylabel'])) {
+          $values[''] = $options['emptylabel'];
+       } else {
+          $values[''] = self::EMPTY_VALUE;
+       }
+       unset($options['display_emptychoice']);
     }
+
+    $values = array_merge($values, self::getLanguages());
+    return $values;
+ }
+
+    
 
     /**
     * Get available languages by regions, currently only Europe and Others
