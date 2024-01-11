@@ -48,25 +48,29 @@ class DeviceFirmware extends CommonDevice {
       return array_merge(
          parent::getAdditionalFields(),
          [
-            [
+            _n('Type', 'Types', 1) => [
                'name'  => 'devicefirmwaretypes_id',
-               'label' => _n('Type', 'Types', 1),
-               'type'  => 'dropdownValue'
+               'type'  => 'select',
+               'values' => getOptionForItems('DeviceFirmwareType'),
+               'value' => $this->fields['devicefirmwaretypes_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'DeviceFirmwareType')
             ],
-            [
+            __('Installation date') => [
                'name'   => 'date',
-               'label'  => __('Installation date'),
-               'type'   => 'date'
+               'type'   => 'date',
+               'value' => $this->fields['date']
             ],
-            [
+            _n('Version', 'Versions', 1) => [
                'name'   => 'version',
-               'label'  => _n('Version', 'Versions', 1),
-               'type'   => 'text'
+               'type'   => 'text',
+               'value' => $this->fields['version']
             ],
-            [
+            _n('Model', 'Models', 1) => [
                'name'   => 'devicefirmwaremodels_id',
-               'label'  => _n('Model', 'Models', 1),
-               'type'   => 'dropdownValue'
+               'type'   => 'select',
+               'values' => getOptionForItems('DeviceFirmwareModel'),
+               'value' => $this->fields['devicefirmwaremodels_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'DeviceFirmwareModel')
             ]
          ]
       );
