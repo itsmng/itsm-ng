@@ -150,9 +150,15 @@ abstract class CommonDevice extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => 'manufacturers_id',
-                         'label' => Manufacturer::getTypeName(1),
-                         'type'  => 'dropdownValue']];
+      return [
+         Manufacturer::getTypeName(1) => [
+            'name'  => 'manufacturers_id',
+            'type'  => 'select',
+            'values' => getOptionForItems('Manufacturer'),
+            'value' => $this->fields['manufacturers_id'],
+            'actions' => getItemActionButtons(['info', 'add'], 'Manufacturer')
+         ]
+      ];
    }
 
    /**
