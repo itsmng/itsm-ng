@@ -50,66 +50,66 @@ class Location extends CommonTreeDropdown {
    function getAdditionalFields() {
 
       return [
-         [
+         __('As child of') => [
             'name'  => $this->getForeignKeyField(),
-            'label' => __('As child of'),
-            'type'  => 'parent',
-            'list'  => false
-         ], [
+            'type'  => 'select',
+            'values'  => getOptionForItems('Location', ['NOT' => ['id' => $this->getID()]]),
+            'value' => $this->fields[$this->getForeignKeyField()],
+         ],
+         __('Address') => [
             'name'   => 'address',
-            'label'  => __('Address'),
             'type'   => 'text',
-            'list'   => true
-         ], [
+            'value' => $this->fields['address'],
+         ], 
+         __('Postal code') => [
             'name'   => 'postcode',
-            'label'  => __('Postal code'),
             'type'   => 'text',
-            'list'   => true
-         ], [
+            'value' => $this->fields['postcode'],
+         ], 
+         __('Town') => [
             'name'   => 'town',
-            'label'  => __('Town'),
             'type'   => 'text',
-            'list'   => true
-         ], [
+            'value' => $this->fields['town'],
+         ],
+         _x('location', 'State') => [
             'name'   => 'state',
-            'label'  => _x('location', 'State'),
             'type'   => 'text',
-            'list'   => true
-         ], [
+            'value' => $this->fields['state'],
+         ],
+         __('Country') => [
             'name'   => 'country',
-            'label'  => __('Country'),
             'type'   => 'text',
-            'list'   => true
-         ], [
+            'value' => $this->fields['country'],
+         ],
+         __('Building number') => [
             'name'  => 'building',
-            'label' => __('Building number'),
             'type'  => 'text',
-            'list'  => true
-         ], [
+            'value' => $this->fields['building'],
+         ],
+         __('Room number') => [
             'name'  => 'room',
-            'label' => __('Room number'),
             'type'  => 'text',
-            'list'  => true
-         ], [
-            'name'   => 'setlocation',
-            'type'   => 'setlocation',
-            'label'  => __('Location on map'),
-            'list'   => false
-         ], [
+            'value' => $this->fields['room'],
+         ],
+         // __('Location on map') => [
+         //    'name'   => 'setlocation',
+         //    'type'   => 'setlocation',
+         //    'list'   => false
+         // ],
+         __('Latitude') => [
             'name'  => 'latitude',
-            'label' => __('Latitude'),
             'type'  => 'text',
-            'list'  => true
-         ], [
+            'value' => $this->fields['latitude'],
+         ],
+         __('Longitude') => [
             'name'  => 'longitude',
-            'label' => __('Longitude'),
             'type'  => 'text',
-            'list'  => true
-         ], [
+            'value' => $this->fields['longitude'],
+         ],
+         __('Altitude') => [
             'name'  => 'altitude',
-            'label' => __('Altitude'),
             'type'  => 'text',
-            'list'  => true
+            'value' => $this->fields['altitude'],
          ]
       ];
    }

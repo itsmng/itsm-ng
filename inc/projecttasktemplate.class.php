@@ -30,6 +30,8 @@
  * ---------------------------------------------------------------------
  */
 
+use itsmng\Timezone;
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
@@ -53,46 +55,98 @@ class ProjectTaskTemplate extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => 'projectstates_id',
-               'label' => _x('item', 'State'),
-               'type'  => 'dropdownValue',
-               'list'  => true],
-              ['name'  => 'projecttasktypes_id',
-               'label' => _n('Type', 'Types', 1),
-               'type'  => 'dropdownValue'],
-              ['name'  => 'projecttasks_id',
-               'label' => __('As child of'),
-               'type'  => 'dropdownValue'],
-              ['name'  => 'percent_done',
-               'label' => __('Percent done'),
-               'type'  => 'percent_done'],
-              ['name'  => 'is_milestone',
-               'label' => __('Milestone'),
-               'type'  => 'bool'],
-              ['name'  => 'plan_start_date',
-               'label' => __('Planned start date'),
-               'type'  => 'datetime'],
-              ['name'  => 'real_start_date',
-               'label' => __('Real start date'),
-               'type'  => 'datetime'],
-              ['name'  => 'plan_end_date',
-               'label' => __('Planned end date'),
-               'type'  => 'datetime'],
-              ['name'  => 'real_end_date',
-               'label' => __('Real end date'),
-               'type'  => 'datetime'],
-              ['name'  => 'planned_duration',
-               'label' => __('Planned duration'),
-               'type'  => 'actiontime'],
-              ['name'  => 'effective_duration',
-               'label' => __('Effective duration'),
-               'type'  => 'actiontime'],
-              ['name'  => 'description',
-               'label' => __('Description'),
-               'type'  => 'tinymce'],
-              ['name'  => 'comments',
-               'label' => __('Comments'),
-               'type'  => 'textarea'],
+      return [
+         _x('item', 'State') => [
+            'name'  => 'projectstates_id',
+            'type'  => 'select',
+            'values' => getOptionForItems('ProjectState'),
+            'value' => $this->fields['projectstates_id'],
+         ],
+         _n('Type', 'Types', 1) => [
+            'name'  => 'projecttasktypes_id',
+            'type'  => 'select',
+            'values' => getOptionForItems('ProjectTaskType'),
+            'value' => $this->fields['projecttasktypes_id'],
+         ],
+         __('As child of') => [
+            'name'  => 'projecttasks_id',
+            'type'  => 'select',
+            'values' => getOptionForItems('ProjectTask', ['NOT' => ['id' => $this->getID()]]),
+            'value' => $this->fields['projecttasks_id'],
+         ],
+         __('Percent done') => [
+            'name'  => 'percent_done',
+            'type'  => 'number',
+            'min' => 0,
+            'max' => 100,
+            'step' => 1,
+            'value' => $this->fields['percent_done'],
+            'after' => '%'
+         ],
+         __('Milestone') => [
+            'name'  => 'is_milestone',
+            'type'  => 'checkbox',
+            'value' => $this->fields['is_milestone'],
+         ],
+         __('Planned start date') => [
+            'name'  => 'plan_start_date',
+            'type'  => 'datetime-local',
+            'value' => $this->fields['plan_start_date'],
+            'col_lg' => 6
+         ],
+         __('Real start date') => [
+            'name'  => 'real_start_date',
+            'type'  => 'datetime-local',
+            'value' => $this->fields['real_start_date'],
+            'col_lg' => 6
+         ],
+         __('Planned end date') => [
+            'name'  => 'plan_end_date',
+            'type' => 'datetime-local',
+            'value' => $this->fields['plan_end_date'],            
+            'col_lg' => 6
+         ],
+         __('Real end date') => [
+            'name'  => 'real_end_date',
+            'type'  => 'datetime-local',
+            'value' => $this->fields['real_end_date'],
+            'col_lg' => 6
+         ],
+         __('Planned duration') => [
+            'name'  => 'planned_duration',
+            'type'  => 'select',
+            'values' => Timezone::GetTimeStamp([
+               'value' => $this->fields['planned_duration'],
+               'min'   => 0,
+               'max'   => 100 * HOUR_TIMESTAMP,
+               'step'  => HOUR_TIMESTAMP,
+               'addfirstminutes' => true,
+               'inhours'         => true
+            ]),
+            'value' => $this->fields['planned_duration'],
+            'col_lg' => 6
+         ],
+         __('Effective duration') => [
+            'name'  => 'effective_duration',
+            'type'  => 'select',
+            'values' => Timezone::GetTimeStamp([
+               'value' => $this->fields['effective_duration'],
+               'min'   => 0,
+               'max'   => 100 * HOUR_TIMESTAMP,
+               'step'  => HOUR_TIMESTAMP,
+               'addfirstminutes' => true,
+               'inhours'         => true
+            ]),
+            'value' => $this->fields['effective_duration'],
+            'col_lg' => 6
+         ],
+         __('Description') => [
+            'name'  => 'description',
+            'type'  => 'richtextarea',
+            'value' => $this->fields['description'],
+            'col_lg' => 12,
+            'col_md' => 12,
+         ],
       ];
    }
 

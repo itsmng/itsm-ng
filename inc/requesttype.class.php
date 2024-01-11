@@ -45,28 +45,43 @@ class RequestType extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => 'is_active',
-                         'label' => __('Active'),
-                         'type'  => 'bool'],
-                   ['name'  => 'is_helpdesk_default',
-                         'label' => __('Default for tickets'),
-                         'type'  => 'bool'],
-                   ['name'  => 'is_followup_default',
-                         'label' => __('Default for followups'),
-                         'type'  => 'bool'],
-                   ['name'  => 'is_mail_default',
-                         'label' => __('Default for mail recipients'),
-                         'type'  => 'bool'],
-                   ['name'  => 'is_mailfollowup_default',
-                         'label' => __('Default for followup mail recipients'),
-                         'type'  => 'bool'],
-                   ['name'  => 'is_ticketheader',
-                         'label' => __('Request source visible for tickets'),
-                         'type'  => 'bool'],
-                   ['name'  => 'is_itilfollowup',
-                         'label' => __('Request source visible for followups'),
-                         'type'  => 'bool'],
-                         ];
+      return [
+         __('Active') => [
+            'name'  => 'is_active',
+            'type'  => 'checkbox',
+            'value' => $this->fields['is_active']
+         ],
+         __('Default for tickets') => [
+            'name'  => 'is_helpdesk_default',
+            'type'  => 'checkbox',
+            'value' => $this->fields['is_helpdesk_default']
+         ],
+         __('Default for followups') => [
+            'name'  => 'is_followup_default',
+            'type'  => 'checkbox',
+            'value' => $this->fields['is_followup_default']
+         ],
+         __('Default for mail recipients') => [
+            'name'  => 'is_mail_default',
+            'type'  => 'checkbox',
+            'value' => $this->fields['is_mail_default']
+         ],
+         __('Default for followup mail recipients') => [
+            'name'  => 'is_mailfollowup_default',
+            'type'  => 'checkbox',
+            'value' => $this->fields['is_mailfollowup_default']
+         ],
+         __('Request source visible for tickets') => [
+            'name'  => 'is_ticketheader',
+            'type'  => 'checkbox',
+            'value' => $this->fields['is_ticketheader']
+         ],
+         __('Request source visible for followups') => [
+            'name'  => 'is_itilfollowup',
+            'type'  => 'checkbox',
+            'value' => $this->fields['is_itilfollowup']
+         ],
+      ];
    }
 
 

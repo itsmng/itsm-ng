@@ -274,11 +274,13 @@ abstract class CommonDropdown extends CommonDBTM {
                 'type' => 'text',
                 'name' => 'name',
                 'value' => $this->fields['name'],
+                'col_lg' => 6,
               ],
               __('Comments') => [
                 'type' => 'textarea',
                 'name' => 'comment',
                 'value' => $this->fields['comment'],
+                'col_lg' => 6,
               ],
             ]
           ] 

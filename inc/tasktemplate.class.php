@@ -30,6 +30,8 @@
  * ---------------------------------------------------------------------
  */
 
+use itsmng\Timezone;
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
@@ -55,30 +57,56 @@ class TaskTemplate extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => 'content',
-                         'label' => __('Content'),
-                         'type'  => 'tinymce',
-                         'rows' => 10],
-                   ['name'  => 'taskcategories_id',
-                         'label' => TaskCategory::getTypeName(1),
-                         'type'  => 'dropdownValue',
-                         'list'  => true],
-                   ['name'  => 'state',
-                         'label' => __('Status'),
-                         'type'  => 'state'],
-                   ['name'  => 'is_private',
-                         'label' => __('Private'),
-                         'type'  => 'bool'],
-                   ['name'  => 'actiontime',
-                         'label' => __('Duration'),
-                         'type'  => 'actiontime'],
-                   ['name'  => 'users_id_tech',
-                         'label' => __('By'),
-                         'type'  => 'users_id_tech'],
-                   ['name'  => 'groups_id_tech',
-                         'label' => Group::getTypeName(1),
-                         'type'  => 'groups_id_tech'],
-                  ];
+      return [
+         __('Content') => [
+            'name'  => 'content',
+            'type'  => 'richtextarea',
+            'value' => $this->fields['content'],
+            'col_lg' => 12,
+            'col_md' => 12,
+         ],
+         TaskCategory::getTypeName(1) => [
+            'name'  => 'taskcategories_id',
+            'type'  => 'select',
+            'values' => getOptionForItems('TaskCategory'),
+            'value' => $this->fields['taskcategories_id']
+         ],
+         __('Status') => [
+            'name'  => 'state',
+            'type'  => 'select',
+            'values' => getOptionForItems('State'),
+            'value' => $this->fields['state']
+         ],
+         __('Private') => [
+            'name'  => 'is_private',
+            'type'  => 'checkbox',
+            'value' => $this->fields['is_private']
+         ],
+         __('Duration') => [
+            'name'  => 'actiontime',
+            'type'  => 'select',
+            'values' => Timezone::GetTimeStamp([
+               'min'             => 1,
+               'max'             => 100*HOUR_TIMESTAMP,
+               'value'           => $this->fields["actiontime"],
+               'addfirstminutes' => true,
+               'inhours'         => true
+            ])
+
+         ],
+         __('By') => [
+            'name'  => 'users_id_tech',
+            'type'  => 'select',
+            'values' => getOptionsForUsers('own_ticket'),
+            'value' => $this->fields['users_id_tech']
+         ],
+         Group::getTypeName(1) => [
+            'name'  => 'groups_id_tech',
+            'type'  => 'select',
+            'values' => getOptionForItems('Group', ['is_task' => 1]),
+            'value' => $this->fields['groups_id_tech']
+         ],
+      ];
    }
 
 

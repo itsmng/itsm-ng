@@ -54,13 +54,22 @@ class SolutionTemplate extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => 'solutiontypes_id',
-                         'label' => SolutionType::getTypeName(1),
-                         'type'  => 'dropdownValue',
-                         'list'  => true],
-                   ['name'  => 'content',
-                         'label' => __('Content'),
-                         'type'  => 'tinymce']];
+      return [
+         SolutionType::getTypeName(1) => [
+            'name'  => 'solutiontypes_id',
+            'type'  => 'select',
+            'values' => getOptionForItems('SolutionType'),
+            'value' => $this->fields['solutiontypes_id'],
+            'actions' => getItemActionButtons(['info', 'add'], 'SolutionType')
+         ],
+         __('Content') => [
+            'name'  => 'content',
+            'type'  => 'richtextarea',
+            'value' => $this->fields['content'],
+            'col_lg' => 12,
+            'col_md' => 12,
+         ]
+      ];
    }
 
 
