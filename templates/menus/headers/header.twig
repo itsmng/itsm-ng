@@ -23,6 +23,12 @@
 				<i class="fa fa-search"></i>
 			</div>
 			<ul class='d-flex justify-content-around m-0'>
+				<li id='language_link' class="p-2">
+					<a href="{{root_doc}}/front/preference.php?forcetab=User$1" title={{'Language'|trans}}>
+						<i class='fa fa-globe '></i>
+					</a>
+				</li>
+
 				{% if can_update %}
 					<li id='debug_mode' class='p-2'>
 						<a href='{{root_doc}}/ajax/switchdebug.php' class="debug{{is_debug_active ? 'on' : 'off'}}" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
