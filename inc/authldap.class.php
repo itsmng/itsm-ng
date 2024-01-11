@@ -344,105 +344,102 @@ class AuthLDAP extends CommonDBTM {
       }
 
       if (Toolbox::canUseLdap()) {
-         $this->showFormHeader($options);
-         if (empty($ID)) {
-            $target = $this->getFormURL();
-            echo "<tr class='tab_bg_2'><td>".__('Preconfiguration')."</td> ";
-            echo "<td colspan='3'>";
-            echo "<a href='$target?preconfig=AD'>".__('Active Directory')."</a>";
-            echo "&nbsp;&nbsp;/&nbsp;&nbsp;";
-            echo "<a href='$target?preconfig=default'>".__('Default values');
-            echo "</a></td></tr>";
-         }
-         echo "<tr class='tab_bg_1'><td><label for='name'>" . __('Name') . "</label></td>";
-         echo "<td><input type='text' id='name' name='name' value='". $this->fields["name"] ."'></td>";
-         if ($ID > 0) {
-            echo "<td>".__('Last update')."</td><td>".Html::convDateTime($this->fields["date_mod"]);
-         } else {
-            echo "<td colspan='2'>&nbsp;";
-         }
-         echo "</td></tr>";
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL('authldap'),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => $this->isNewID($ID) ? 'add' : 'update',
+                  'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+                  'class' => 'btn btn-secondary',
+               ],
+               $this->isNewID($ID) ? [] : [
+                  'type' => 'submit',
+                  'name' => 'purge',
+                  'value' => __('Delete permanently'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               __('LDAP directory') => [
+                  'visible' => true,
+                  'inputs' => [
+                     $this->isNewID($ID) ? [] : [
+                        'type' => 'hidden',
+                        'name' => 'id',
+                        'value' => $ID
+                     ],
+                     __('Name') => [
+                        'name' => 'name',
+                        'type' => 'text',
+                        'value' => $this->fields['name'] ?? '',
+                     ],
+                     __('Default server') => [
+                        'name' => 'is_default',
+                        'type' => 'checkbox',
+                        'value' => $this->fields['is_default'] ?? '',
+                     ],
+                     __('Active') => [
+                        'name' => 'is_active',
+                        'type' => 'checkbox',
+                        'value' => $this->fields['is_active'] ?? '',
+                     ],
+                     __('Server') => [
+                        'name' => 'host',
+                        'type' => 'text',
+                        'value' => $this->fields['host'] ?? '',
+                     ],
+                     __('Port (default=389)') => [
+                        'name' => 'port',
+                        'type' => 'text',
+                        'value' => $this->fields['port'] ?? '',
+                     ],
+                     __('Connection filter') => [
+                        'name' => 'condition',
+                        'type' => 'textarea',
+                        'value' => $this->fields['condition'] ?? '',
+                     ],
+                     __('BaseDN') => [
+                        'name' => 'basedn',
+                        'type' => 'text',
+                        'value' => $this->fields['basedn'] ?? '',
+                     ],
+                     __('RootDN (for non anonymous binds)') => [
+                        'name' => 'rootdn',
+                        'type' => 'text',
+                        'value' => $this->fields['rootdn'] ?? '',
+                     ],
+                     __('Password (for non-anonymous binds)') => [
+                        'name' => 'rootdn_passwd',
+                        'type' => 'password',
+                        'value' => $this->fields['rootdn_passwd'] ?? '',
+                     ],
+                     __('Clear') => [
+                        'name' => '_blank_passwd',
+                        'type' => 'checkbox',
+                        'value' => '',
+                     ],
+                     __('Comments') => [
+                        'name' => 'comment',
+                        'type' => 'textarea',
+                        'value' => $this->fields['comment'] ?? '',
+                     ],
+                     __('Login field') => [
+                        'name' => 'login_field',
+                        'type' => 'text',
+                        'value' => $this->fields['login_field'] ?? '',
+                     ],
+                     __('Synchronization field') => [
+                        'name' => 'sync_field',
+                        'type' => 'text',
+                        'value' => $this->fields['sync_field'] ?? '',
+                     ]
+                  ]
+               ]
+            ]
+         ];
 
-         $defaultrand = mt_rand();
-         echo "<tr class='tab_bg_1'><td><label for='dropdown_is_default$defaultrand'>" . __('Default server') . "</label></td>";
-         echo "<td>";
-         Dropdown::showYesNo('is_default', $this->fields['is_default'], -1, ['rand' => $defaultrand]);
-         echo "</td>";
-         $activerand = mt_rand();
-         echo "<td><label for='dropdown_is_active$activerand'>" . __('Active'). "</label></td>";
-         echo "<td>";
-         Dropdown::showYesNo('is_active', $this->fields['is_active'], -1, ['rand' => $activerand]);
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_1'><td><label for='host'>" . __('Server') . "</label></td>";
-         echo "<td><input type='text' id='host' name='host' value='" . $this->fields["host"] . "'></td>";
-         echo "<td><label for='port'>" . __('Port (default=389)') . "</label></td>";
-         echo "<td><input id='port' type='text' id='port' name='port' value='".$this->fields["port"]."'>";
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_1'><td><label for='condition'>" . __('Connection filter') . "</label></td>";
-         echo "<td colspan='3'>";
-         echo "<textarea cols='100' rows='1' id='condition' name='condition'>".$this->fields["condition"];
-         echo "</textarea>";
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_1'><td><label for='basedn'>" . __('BaseDN') . "</label></td>";
-         echo "<td colspan='3'>";
-         echo "<input type='text' id='basedn' name='basedn' size='100' value=\"".$this->fields["basedn"]."\">";
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_1'><td><label for='rootdn'>" . __('RootDN (for non anonymous binds)') . "</label></td>";
-         echo "<td colspan='3'><input type='text' name='rootdn' id='rootdn' size='100' value=\"".
-                $this->fields["rootdn"]."\">";
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_1'><td><label for='rootdn_passwd'>" .
-            __('Password (for non-anonymous binds)') . "</label></td>";
-         echo "<td><input type='password' id='rootdn_passwd' name='rootdn_passwd' value='' autocomplete='new-password'>";
-         if ($ID) {
-            echo "<input type='checkbox' name='_blank_passwd' id='_blank_passwd'>&nbsp;"
-               . "<label for='_blank_passwd'>" . __('Clear') . "</label>";
-         }
-         echo "</td>";
-         echo "<td rowspan='3'><label for='comment'>".__('Comments')."</label></td>";
-         echo "<td rowspan='3' class='middle'>";
-         echo "<textarea cols='40' rows='4' name='comment' id='comment'>".$this->fields["comment"]."</textarea>";
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_1'>";
-         echo "<td><label for='login_field'>" . __('Login field') . "</label></td>";
-         echo "<td><input type='text' id='login_field' name='login_field' value='".$this->fields["login_field"]."'>";
-         echo "</td></tr>";
-
-         $info_message = __s('Synchronization field cannot be changed once in use.');
-         echo "<tr class='tab_bg_1'>";
-         echo "<td><label for='sync_field'>" . __('Synchronization field') . "<i class='pointer fa fa-info' title='$info_message'></i></td>";
-         echo "<td><input type='text' id='sync_field' name='sync_field' value='{$this->fields["sync_field"]}' title='$info_message'";
-         if ($this->isSyncFieldEnabled() && $this->isSyncFieldUsed()) {
-            echo " disabled='disabled'";
-         }
-         echo ">";
-         echo "</td></tr>";
-
-         //Fill fields when using preconfiguration models
-         if (!$ID) {
-            $hidden_fields = ['comment_field', 'email1_field', 'email2_field',
-                                   'email3_field', 'email4_field', 'entity_condition',
-                                   'entity_field', 'firstname_field', 'group_condition',
-                                   'group_field', 'group_member_field', 'group_search_type',
-                                   'mobile_field', 'phone_field', 'phone2_field',
-                                   'realname_field', 'registration_number_field', 'title_field',
-                                   'use_dn', 'use_tls', 'responsible_field'];
-
-            foreach ($hidden_fields as $hidden_field) {
-               echo "<input type='hidden' name='$hidden_field' value='".
-                      $this->fields[$hidden_field]."'>";
-            }
-         }
-
-         echo "</td></tr>";
-
-         $this->showFormButtons($options);
+         renderTwigForm($form);
 
       } else {
          echo "<div class='center'>&nbsp;<table class='tab_cadre_fixe'>";

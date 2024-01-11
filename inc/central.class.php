@@ -426,11 +426,11 @@ class Central extends CommonGLPI {
       }
 
       if (count($warnings)) {
-         echo "<div class='warning'>";
-         echo "<i class='fa fa-exclamation-triangle fa-5x'></i>";
-         echo "<ul><li>" . implode('</li><li>', $warnings) . "</li></ul>";
-         echo "<div class='sep'></div>";
-         echo "</div>";
+      ?>
+         <div class='alert alert-warning'>
+            <?php echo "<ul><li>" . implode('</li><li>', $warnings) . "</li></ul>" ?>
+         </div>
+      <?php
       }
    }
 
