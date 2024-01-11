@@ -52,7 +52,6 @@ class Dashboard extends \CommonDBTM {
    }
 
    static function getMenuContent() {
-      global $CFG_GLPI;
       $menu = [];
 
       if (static::canView()) {

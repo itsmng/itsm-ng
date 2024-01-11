@@ -295,6 +295,36 @@
   </script>
 {% endmacro %}
 
+{% macro multiselect(attributes) %}
+  <div {% if attributes.id %} id="{{attributes.id}}" {% endif %} class="w-100">
+    <div class="input-group m-0">
+      {% for input in attributes.inputs %}
+        {{_self.input(input)}}
+      {% endfor %}
+    </div>
+    <table id="OptionTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
+      <tbody>
+        {% for title, value in attributes.values %}
+            <tr data-value="{{value}}}">
+              <td>
+                <input type="hidden" name="{{attributes.optionsName}}[{{loop.index + 1}}]"/>
+                {{title}}
+              </td>
+              <td class="d-flex flex-row-reverse">
+                <button type="button" class="btn btn-sm btn-outline-danger" onClick="removeOption{{rand}}('{{value}})"><i class="fas fa-times"></i></button>
+              </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <script>
+  function removeOption{{rand}}(value) {
+    $(`#OptionTable_{{rand}} tr[data-value='${value}']`).remove();
+  }
+  </script>
+{% endmacro %}
+
 {% macro input(attributes, root_doc = '') %}
   {% if attributes.type == 'checkbox' %}
     <div class="form-switch">
