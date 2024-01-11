@@ -46,25 +46,45 @@ class DeviceProcessor extends CommonDevice {
 
    function getAdditionalFields() {
 
-      return array_merge(parent::getAdditionalFields(),
-                         [['name'  => 'frequency_default',
-                                     'label' => __('Frequency by default'),
-                                     'type'  => 'text',
-                                     'unit'  => __('MHz')],
-                               ['name'  => 'frequence',
-                                     'label' => __('Frequency'),
-                                     'type'  => 'text',
-                                     'unit'  => __('MHz')],
-                               ['name'  => 'nbcores_default',
-                                     'label' => __('Number of cores'),
-                                     'type'  => 'integer'],
-                               ['name'  => 'nbthreads_default',
-                                     'label' => __('Number of threads'),
-                                     'type'  => 'integer'],
-                               ['name'  => 'deviceprocessormodels_id',
-                                     'label' => _n('Model', 'Models', 1),
-                                     'type'  => 'dropdownValue']
-                           ]);
+      return array_merge(
+         parent::getAdditionalFields(),
+         [
+            __('Frequency by default') => [
+               'name'  => 'frequency_default',
+               'type'  => 'number',
+               'after'  => __('MHz'),
+               'value' => $this->fields['frequency_default']
+            ],
+            __('Frequency') => [
+               'name'  => 'frequence',
+               'type'  => 'number',
+               'after'  => __('MHz'),
+               'value' => $this->fields['frequence']
+            ],
+            __('Number of cores') => [
+               'name'  => 'nbcores_default',
+               'type'  => 'number',
+               'value' => $this->fields['nbcores_default'],
+               'step' => 1,
+               'min' => 0
+            ],
+            __('Number of threads') => [
+               'name'  => 'nbthreads_default',
+               'type'  => 'number',
+               'value' => $this->fields['nbthreads_default'],
+               'step' => 1,
+               'min' => 0,
+
+            ],
+            _n('Model', 'Models', 1) => [
+               'name'  => 'deviceprocessormodels_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('DeviceProcessorModel'),
+               'value' => $this->fields['deviceprocessormodels_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'DeviceProcessorModel')
+            ]
+         ]
+      );
    }
 
 
