@@ -52,19 +52,23 @@ class ITILFollowupTemplate extends CommonDropdown {
 
    function getAdditionalFields() {
       return [
-         [
+         __('Content') => [
             'name'  => 'content',
-            'label' => __('Content'),
-            'type'  => 'tinymce',
-         ], [
+            'type'  => 'richtextarea',
+            'value' => $this->fields['content'],
+            'col_lg' => 12,
+            'col_md' => 12,
+         ],
+         __('Source of followup') => [
             'name'  => 'requesttypes_id',
-            'label' => __('Source of followup'),
-            'type'  => 'dropdownValue',
-            'list'  => true
-         ], [
+            'type'  => 'select',
+            'values' => getOptionForItems('RequestType'),
+            'value' => $this->fields['requesttypes_id']
+         ],
+         __('Private') => [
             'name'  => 'is_private',
-            'label' => __('Private'),
-            'type'  => 'bool'
+            'type'  => 'checkbox',
+            'value' => $this->fields['is_private']
          ]
       ];
    }
