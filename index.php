@@ -103,7 +103,11 @@ if (GLPI_DEMO_MODE) {
     //lang selector
     require_once GLPI_ROOT . "/src/languages/language.class.php";
     $twig_vars["demo_mode"] = true;
-    $twig_vars["languages"] = Language::getLanguages();
+    $twig_vars["languages"] = Language::showLanguages(         'language', [
+        'display_emptychoice'   => true,
+        'emptylabel'            => __('Default (from user profile)'),
+        'width'                 => '100%'
+     ]);
     $twig_vars["current_language"] = $_SESSION["glpilanguage"];
 }
 

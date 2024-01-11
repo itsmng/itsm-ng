@@ -6,12 +6,6 @@
         <div id='text-login'>{{text_login}}</div>
     {{text_login}}
     <div id='boxlogin'>
-        {% if is_activate %}
-        <form method='post' action='./index.php'>
-            <p class='login_input'><input type='submit' name='login_oidc' value='{{"SSO Login"|trans}}' class='submit'></p>
-            <p class='login_input'><hr></p>
-        </form>
-        {% endif %}
         <form action='{{root_doc}}/front/login.php' method='post'>
             {% if noAUTO_set %}
             <input type='hidden' name='noAUTO' value='1' />
@@ -27,9 +21,13 @@
                 <input type="password" name="{{pwdfield}}" id="login_password" required="required" placeholder="{{"Password"|trans}}"/>
             </p>
             {% if demo_mode %}
-            <p class="login_input" id="login_lang">
-                {{language_dropdown(languages, current_language)}}
-            </p>
+                <p class="login_input" id="login_lang">
+                    <select name="language" class="login_input">
+                        {% for key,language in languages %}
+                        <option value="{{key}}" {% if current_language == key %} selected {% endif %}>{{language}}</option>
+                        {% endfor %}
+                    </select>
+                </p>
             {% endif %}
             {% if display_login_source %}
             <select name="auth" class="login_input">
@@ -52,6 +50,13 @@
             <a id="forget" href="front/lostpassword.php?lostpassword=1">{{"Forgotten password?"|trans}}</a>
             {% endif %}
         </form>
+        {% if is_activate %}
+            <form method='post' action='./index.php'>
+                <p class="login_input">
+                    <button type='submit' name='login_oidc' class='btn btn-info w-100 h-auto'>{{"SSO Login"|trans}}</button>
+                </p>
+            </form>
+        {% endif %}
     </div>
     <div class='error'>
         <noscript>

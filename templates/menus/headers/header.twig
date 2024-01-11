@@ -14,7 +14,7 @@
 
 		<header role='banner' id='header_top' class='d-flex justify-content-between align-items-center'>
 			<div class="header_logo m-3" id='c_logo'>
-				<a href="{{root_doc}}/front/central.php" accesskey='1' title={{"Home"|trans}}>
+				<a href="{{root_doc}}/" accesskey='1' title={{"Home"|trans}}>
 					<span class='sr-only'>{{"Home"|trans}}</span>
 				</a>
 			</div>
@@ -23,6 +23,12 @@
 				<i class="fa fa-search"></i>
 			</div>
 			<ul class='d-flex justify-content-around m-0'>
+				<li id='language_link' class="p-2">
+					<a href="{{root_doc}}/front/preference.php?forcetab=User$1" title={{'Language'|trans}}>
+						<i class='fa fa-globe '></i>
+					</a>
+				</li>
+
 				{% if can_update %}
 					<li id='debug_mode' class='p-2'>
 						<a href='{{root_doc}}/ajax/switchdebug.php' class="debug{{is_debug_active ? 'on' : 'off'}}" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
@@ -74,7 +80,7 @@
 				<div id="menu-border" onmousedown="resizeMenu()"></div>
 				{% include main_menu.path with main_menu.args %}
 				<div class="menu-bottom">
-					<a class="copyright-message" href="https://www.itsm-ng.org" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors"></a>
+					<a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors"></a>
 				</div>
 			</nav>
 			<div class="main-container">
