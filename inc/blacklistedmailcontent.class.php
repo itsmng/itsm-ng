@@ -66,11 +66,16 @@ class BlacklistedMailContent extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => 'content',
-                         'label' => __('Content'),
-                         'type'  => 'textarea',
-                         'rows'  => 20,
-                         'list'  => true]];
+      return [
+         __('Content') => [
+            'name'  => 'content',
+            'type'  => 'textarea',
+            'value' => $this->fields['content'],
+            'rows'  => 10,
+            'col_lg' => 12,
+            'col_md' => 12,
+         ]
+      ];
    }
 
 
