@@ -30,6 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
+use itsmng\Timezone;
 use Glpi\Toolbox\URL;
 use SimplePie\SimplePie;
 
@@ -638,12 +639,6 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
          return false;
       }
 
-      $this->initForm($ID, $options);
-
-      $this->showFormHeader($options);
-
-      $rowspan = 4;
-
       if (!$this->isNewID($ID)) {
          // Force getting feed :
          $feed = self::getRSSFeed($this->fields['url'], $this->fields['refresh_rate']);
@@ -652,73 +647,84 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
          } else {
             $this->setError(false);
          }
-         echo "<tr class='tab_bg_2'>";
-         echo "<td>".__('Name')."</td>";
-         echo "<td>";
-         Html::autocompletionTextField($this, "name",
-                                       ['entity' => -1,
-                                             'user'   => $this->fields["users_id"]]);
-         echo "</td><td colspan ='2'>&nbsp;</td></tr>\n";
       }
 
-      echo "<tr class='tab_bg_1'><td>" . __('URL') . "</td>";
-      echo "<td colspan='3'>";
-      echo "<input type='text' name='url' size='100' value='".$this->fields["url"]."'>";
-      echo "</td></tr>";
+      $this->initForm($ID, $options);
 
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('By')."</td>";
-      echo "<td>";
-      echo getUserName($this->fields["users_id"]);
-      echo "<input type='hidden' name='users_id' value='".$this->fields['users_id']."'>\n";
-      echo "</td>";
-      echo "<td rowspan='$rowspan'>".__('Comments')."</td>";
-      echo "<td rowspan='$rowspan' class='middle'>";
-      echo "<textarea cols='45' rows='".($rowspan+3)."' name='comment' >".$this->fields["comment"].
-           "</textarea>";
-      echo "</td></tr>\n";
+      $form = [
+			'action' => Toolbox::getItemTypeFormURL('rssfeed'),
+			'buttons' => [
+				[
+					'type' => 'submit',
+					'name' => $this->isNewID($ID) ? 'add' : 'update',
+					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+					'class' => 'btn btn-secondary',
+				],
+				$this->isNewID($ID) ? [] : [
+					'type' => 'submit',
+					'name' => 'purge',
+					'value' => __('Delete permanently'),
+					'class' => 'btn btn-secondary'
+				]
+			],
+			'content' => [
+				__('RSS feed') => [
+					'visible' => true,
+					'inputs' => [
+						$this->isNewID($ID) ? [] : [
+							'type' => 'hidden',
+							'name' => 'id',
+							'value' => $ID
+						],
+						__('URL') => [
+							'name' => 'url',
+							'type' => 'text',
+							'value' => $this->fields['url'] ?? ''
+						],
+                  __('By') => [
+							'name' => '',
+							'type' => 'text',
+							'value' => getUserName($this->fields["users_id"]),
+                     'disabled' => true
+						],
+                  __('') => [
+                     'name' => 'users_id',
+                     'type' => 'hidden',
+                     'value' => $this->fields['users_id'] ?? ''
+                  ],
+						__('Active') => [
+							'name' => 'is_active',
+							'type' => 'checkbox',
+							'value' => $this->fields['is_active'] ?? ''
+						],
+                  __('Refresh rate') => [
+                     'name' => 'refresh_rate',
+                     'type' => 'select',
+                     'values' => Timezone::GetTimeStamp(),
+                     'value' => $this->fields['refresh_rate'] ?? ''
 
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Active')."</td>";
-      echo "<td>";
-      Dropdown::showYesNo('is_active', $this->fields['is_active']);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Refresh rate')."</td>";
-      echo "<td>";
-      Dropdown::showTimeStamp("refresh_rate",
-                              ['value'                => $this->fields["refresh_rate"],
-                                    'min'                  => HOUR_TIMESTAMP,
-                                    'max'                  => DAY_TIMESTAMP,
-                                    'step'                 => HOUR_TIMESTAMP,
-                                    'display_emptychoice'  => false,
-                                    'toadd'                => [5*MINUTE_TIMESTAMP,
-                                                                    15*MINUTE_TIMESTAMP,
-                                                                    30*MINUTE_TIMESTAMP,
-                                                                    45*MINUTE_TIMESTAMP]]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Number of items displayed')."</td>";
-      echo "<td>";
-      Dropdown::showNumber("max_items", ['value'                => $this->fields["max_items"],
-                                              'min'                  => 5,
-                                              'max'                  => 100,
-                                              'step'                 => 5,
-                                              'toadd'                => [1],
-                                              'display_emptychoice'  => false]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Error retrieving RSS feed')."</td>";
-      echo "<td>";
-      echo Dropdown::getYesNo($this->fields['have_error']);
-      echo "</td>";
-      echo "<td colspan='2'>&nbsp;</td>";
-      echo "</tr>";
-
-      $this->showFormButtons($options);
+                  ],
+                  __('Number of items displayed') => [
+                     'name' => 'max_items',
+                     'type' => 'select',
+                     'values' => [ '20' => 20]
+                  ],
+                  __('Error retrieving RSS feed') => [
+                     'name' => 'have_error',
+                     'type' => 'checkbox',
+                     'value' => $this->fields['have_error'] ?? '',
+                     'disabled' => true
+                  ],
+                  __('Comments') => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'] ?? ''
+                  ]
+					]
+				]
+			]
+		];
+		renderTwigForm($form);
 
       return true;
    }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -40,8 +41,9 @@ if (!defined('GLPI_ROOT')) {
 
 /**
  * SLM Class
-**/
-class SLM extends CommonDBTM {
+ **/
+class SLM extends CommonDBTM
+{
 
    // From CommonDBTM
    public $dohistory                   = true;
@@ -53,7 +55,8 @@ class SLM extends CommonDBTM {
    const TTR = 0; // Time to resolve
    const TTO = 1; // Time to own
 
-   static function getTypeName($nb = 0) {
+   static function getTypeName($nb = 0)
+   {
       return _n('Service level', 'Service levels', $nb);
    }
 
@@ -61,15 +64,17 @@ class SLM extends CommonDBTM {
     * Force calendar of the SLM if value -1: calendar of the entity
     *
     * @param integer $calendars_id calendars_id of the ticket
-   **/
-   function setTicketCalendar($calendars_id) {
+    **/
+   function setTicketCalendar($calendars_id)
+   {
 
       if ($this->fields['calendars_id'] == -1) {
          $this->fields['calendars_id'] = $calendars_id;
       }
    }
 
-   function defineTabs($options = []) {
+   function defineTabs($options = [])
+   {
 
       $ong = [];
       $this->addDefaultFormTab($ong);
@@ -81,7 +86,8 @@ class SLM extends CommonDBTM {
       return $ong;
    }
 
-   function cleanDBonPurge() {
+   function cleanDBonPurge()
+   {
 
       $this->deleteChildrenAndRelationsFromDb(
          [
@@ -95,42 +101,65 @@ class SLM extends CommonDBTM {
     * Print the slm form
     *
     * @param integer $ID ID of the item
-    * @param array   $options of possible options:
-    *     - target filename : where to go when done.
-    *     - withtemplate boolean : template or basic item
     *
     * @return boolean item found
-   **/
-   function showForm($ID, $options = []) {
-
-      $rowspan = 2;
-
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name", ['value' => $this->fields["name"]]);
-      echo "<td rowspan='".$rowspan."'>".__('Comments')."</td>";
-      echo "<td rowspan='".$rowspan."'>
-            <textarea cols='45' rows='8' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>"._n('Calendar', 'Calendars', 1)."</td>";
-      echo "<td>";
-
-      Calendar::dropdown(['value'      => $this->fields["calendars_id"],
-                          'emptylabel' => __('24/7'),
-                          'toadd'      => ['-1' => __('Calendar of the ticket')]]);
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
+    **/
+   function showForm($ID)
+   {
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL('slm'),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => $this->isNewID($ID) ? 'add' : 'update',
+               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary',
+            ],
+            $this->isNewID($ID) ? [] : [
+               'type' => 'submit',
+               'name' => 'purge',
+               'value' => __('Delete permanently'),
+               'class' => 'btn btn-secondary'
+            ]
+         ],
+         'content' => [
+            __('Niveau de services') => [
+               'visible' => true,
+               'inputs' => [
+                  $this->isNewID($ID) ? [] : [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID
+                  ],
+                  __('Name') => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'] ?? '',
+                  ],
+                  __('Calendar') => [
+                     'name' => 'calendars_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems("Calendar"),
+                     'value' => $this->fields['calendars_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], "Calendar"),
+                  ],
+                  __('Comments') => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'] ?? '',
+                  ],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
 
       return true;
    }
 
 
-   function rawSearchOptions() {
+   function rawSearchOptions()
+   {
       $tab = [];
 
       $tab[] = [
@@ -177,7 +206,8 @@ class SLM extends CommonDBTM {
    }
 
 
-   static function getMenuContent() {
+   static function getMenuContent()
+   {
 
       $menu = [];
       if (static::canView()) {
@@ -204,7 +234,6 @@ class SLM extends CommonDBTM {
          $menu['options']['olalevel']['title']           = OlaLevel::getTypeName(Session::getPluralNumber());
          $menu['options']['olalevel']['page']            = OlaLevel::getSearchURL(false);
          $menu['options']['olalevel']['links']['search'] = OlaLevel::getSearchURL(false);
-
       }
       if (count($menu)) {
          return $menu;
@@ -213,7 +242,8 @@ class SLM extends CommonDBTM {
    }
 
 
-   static function getIcon() {
+   static function getIcon()
+   {
       return "fas fa-file-contract";
    }
 }
