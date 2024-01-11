@@ -2576,204 +2576,174 @@ JAVASCRIPT;
     *
     * @return boolean true if user found, false otherwise
     */
-   function showMyForm($target, $ID) {
+    function showMyForm($target, $ID) {
       global $CFG_GLPI, $DB;
-      
+
+      $user_id = Session::getLoginUserID();
+
       // Affiche un formulaire User
-      if (($ID != Session::getLoginUserID()) && !$this->currentUserHaveMoreRightThan($ID)) {
+      if (($ID != Session::getLoginUserID())
+          && !$this->currentUserHaveMoreRightThan($ID)) {
          return false;
       }
       if ($this->getFromDB($ID)) {
-         $rand     = mt_rand();
-         $authtype = $this->getAuthMethodsByID();
-         
          $extauth  = !(($this->fields["authtype"] == Auth::DB_GLPI)
-         || (($this->fields["authtype"] == Auth::NOT_YET_AUTHENTIFIED)
-         && !empty($this->fields["password"])));
-         
-         // No autocopletion :
-         $save_autocompletion                 = $CFG_GLPI["use_ajax_autocompletion"];
-         $CFG_GLPI["use_ajax_autocompletion"] = false;
-         
-         $current_picture = User::getThumbnailURLForPicture($this->fields['picture']);
-         $tz_warning = '';
+                       || (($this->fields["authtype"] == Auth::NOT_YET_AUTHENTIFIED)
+                           && !empty($this->fields["password"])));
+
+         // Get all available profile of user
+         $query = "SELECT DISTINCT `glpi_profiles`.`id`, `glpi_profiles`.`name`
+                   FROM `glpi_profiles`
+                   JOIN `glpi_profiles_users`
+                     ON (`glpi_profiles_users`.`profiles_id` = `glpi_profiles`.`id`)
+                   WHERE `glpi_profiles_users`.`users_id` = '$user_id'
+                   ORDER BY `glpi_profiles`.`id`";
+         $result = $DB->query($query);
+         // Initialize an empty array to store the results
+         $User_profile = array();
+
+         // Fetch all rows
+         while ($row = $DB->fetchRow($result)) {
+            // Use the 'id' column as the key and 'name' column as the value
+            $User_profile[$row[0]] = $row[1];
+         }
+
+         // Display the result
          $form = [
-            'action' => $target,
-            'method' => 'post',
+            'action' => '/front/preference.php',
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'update',
+                  'value' => __('Update'),
+                  'class' => 'btn btn-secondary',
+               ]
+            ],
             'content' => [
-               '<img class="border border-primary rounded" alt="Current picture" src="'.$current_picture.'" />'
-                  .sprintf(__(' %1$s: %2$s'), __('Login'), $this->fields["name"]) => [
+               __('Login') . ' : ' . $this->fields["name"] => [
                   'visible' => true,
                   'inputs' => [
-                     'name' => [
-                        'type' => 'hidden',
-                        'name' => 'name',
-                        'value' => $this->fields['name'],
-                     ],
-                     'id' => [
+                     $this->isNewID($ID) ? [] : [
                         'type' => 'hidden',
                         'name' => 'id',
-                        'value' => $this->fields['id'],
+                        'value' => $ID
                      ],
-                     __('Surname') => 
-                     !($extauth && isset($authtype['realname_field']) && !empty($authtype['realname_field'])) ? [
-                        'type' => 'text',
+                     __('Surname') => [
                         'name' => 'realname',
-                        'value' => $this->fields['realname'],
-                        'rand' => $rand,
-                        'col_lg' => 6,
-                        'col_md' => 6,
-                     ] : [],
+                        'type' => 'text',
+                        'value' => $this->fields['realname'] ?? '',
+                     ],
                      __('First name') => [
-                        'type' => 'text',
                         'name' => 'firstname',
-                        'value' => $this->fields['firstname'],
-                        'rand' => $rand,
-                        'col_lg' => 6,
-                        'col_md' => 6,
+                        'type' => 'text',
+                        'value' => $this->fields['firstname'] ?? '',
                      ],
-                     __('Picture') =>
-                     !empty($this->fields["name"]) ? [
-                        'type' => 'file',
-                        'style' => 'height: 100%',
-                        'col_lg' => 6,
-                        'col_md' => 6,
-                     ] : [],
-                     __('Clear') => [
-                        'type' => 'checkbox',
-                        'name' => '_blank_picture',
-                        'col_lg' => 6,
-                        'col_md' => 6,
-                     ],
-                     __('Language') => 
-                     !GLPI_DEMO_MODE ? [
-                        'type' => 'select',
+                     __('Language') => [
                         'name' => 'language',
-                        'value' => $this->fields['language'] ?? $CFG_GLPI['language'],
-                        'values' => array_merge(['' => Dropdown::EMPTY_VALUE], Dropdown::getLanguages()),
-                     ] : [],
-                     __('Password') =>
-                     (!$extauth && Session::haveRight("password_update", "1")) ? [
-                        'type' => 'password',
+                        'type' => 'select',
+                        'values' => Language::getLanguages(),
+                        'value' => $this->fields['language'] ?? '',
+                     ],
+                     __('Password') => (!$extauth && Session::haveRight("password_update", "1")) ? [
                         'name' => 'password',
-                        'hooks' => [
-                           'keyup' => 'return passwordCheck();',
-                        ],
+                        'type' => 'password'
                      ] : [],
-                     __('Password confirmation') =>
-                     (!$extauth && Session::haveRight("password_update", "1")) ? [
-                        'type' => 'password',
+                     __('Password confirmation') => (!$extauth && Session::haveRight("password_update", "1")) ? [
                         'name' => 'password2',
+                        'type' => 'password',
                      ] : [],
-                     __('Time zone') => 
-                     ($DB->areTimezonesAvailable($tz_warning) || Session::haveRight("config", READ)) ? [
-                        'type' => 'select',
+                     __('Time zone') => [
                         'name' => 'timezone',
-                        'value' => $this->fields["timezone"],
+                        'type' => 'select',
                         'values' => $DB->getTimezones(),
-                        'display_emptychoice' => true,
-                        'emptylabel' => __('Use server configuration'),
-                     ] : [],
-                     __('Phone') =>
-                     !($extauth && isset($authtype['phone_field']) && !empty($authtype['phone_field'])) ? [
-                        'type' => 'text',
+                        'value' => $this->fields['timezone'] ?? '',
+                     ],
+                     __('Phone') => [
                         'name' => 'phone',
-                        'value' => $this->fields['phone'],
-                     ] : [],
-                     __('Mobile phone') => [
                         'type' => 'text',
-                        'name' => 'mobile',
-                        'value' => $this->fields['mobile'],
-                        ($extauth && isset($authtype['mobile_field'])
-                           && !empty($authtype['mobile_field'])) ? 'disabled' : '' => '',
+                        'value' => $this->fields['phone'] ?? '',
                      ],
-                     __('Default profile') =>
-                     (count($_SESSION['glpiprofiles']) >1) ?  [
-                        'type' => 'select',
-                        'name' => 'profiles_id',
-                        'value' => $this->fields["profiles_id"],
-                        'values' => Dropdown::getDropdownArrayNames('glpi_profiles',
-                                                                    Profile_User::getUserProfiles($this->fields['id'])),
-                     ] : [],
                      __('Phone 2') => [
-                        'type' => 'text',
                         'name' => 'phone2',
-                        'value' => $this->fields['phone2'],
-                        ($extauth && isset($authtype['phone2_field'])
-                           && !empty($authtype['phone2_field'])) ? 'disabled' : '' => '',
-                     ],
-                     __('Default entity') =>
-                     (!GLPI_DEMO_MODE && count($_SESSION['glpiactiveentities']) > 1) ? [
-                        'type' => 'select',
-                        'name' => 'entities_id',
-                        'value' => $this->fields["entities_id"],
-                        'values' => getOptionForItems('Entity', ['entities_id' => $_SESSION['glpiactiveentities']]),
-                     ] : [],
-                     __('Administrative number') =>
-                     ($extauth && isset($authtype['registration_number_field'])
-                        && !empty($authtype['registration_number_field'])) ? [
                         'type' => 'text',
-                        'name' => 'registration_number',
-                        'value' => $this->fields['registration_number'],
-                     ] : [],
-                     Location::getTypeName(1) => [
-                        'type' => 'select',
-                        'name' => 'locations_id',
-                        'value' => $this->fields["locations_id"],
-                        'values' => getOptionForItems('Location', ['entities_id' => $_SESSION['glpiactiveentities']]),
+                        'value' => $this->fields['phone2'] ?? '',
                      ],
-                     __('Use ITSM_NG in mode') =>
-                     Config::canUpdate() ? [
+                     __('Mobile phone') => [
+                        'name' => 'mobile',
+                        'type' => 'text',
+                        'value' => $this->fields['mobile'] ?? '',
+                     ],
+                     __('Administrative number') => [
+                        'name' => 'registration_number',
+                        'type' => 'text',
+                        'value' => $this->fields['registration_number'] ?? '',
+                     ],
+                     __('Location') => [
+                        'name' => 'locations_id',
                         'type' => 'select',
+                        'values' => getOptionForItems("Location"),
+                        'value' => $this->fields['locations_id'] ?? '',
+                        'actions' => getItemActionButtons(['info', 'add'], "Location"),
+                     ],
+                     __('Email') => [
+                        'name' => '_useremails[-1]',
+                        'type' => 'text',
+                        'value' =>  $this->fields['_useremails[-1]'] ?? '',
+                     ],
+                     __('Default profile') => [
+                        'name' => 'profiles_id',
+                        'type' => 'select',
+                        'values' => $User_profile,
+                        'value' => $this->fields['profiles_id'] ?? '',
+                     ],
+                     __('Use GLPI in mode') => (Session::haveRight("config", "1")) ? [
                         'name' => 'use_mode',
-                        'value' => $this->fields["use_mode"],
+                        'type' => 'select',
                         'values' => [
                            Session::NORMAL_MODE => __('Normal'),
                            Session::DEBUG_MODE  => __('Debug'),
                         ],
-                     ] : [],
+                        'value' => $this->fields['use_mode'] ?? '',
+                     ] : [], 
                   ]
                ],
                __('Remote access keys') => [
                   'visible' => true,
                   'inputs' => [
-                     __("Personal token") => (!empty($this->fields["personal_token"])) ? [
-                        'type' => 'text',
+                     __('Personal token') => [
                         'name' => '_personal_token',
-                        'value' => $this->fields["personal_token"],
-                        'after' => sprintf(__('generated on %s'),
-                                           Html::convDateTime($this->fields["personal_token_date"])),
-                     ] : [],
-                     __('Regenerate') => (!empty($this->fields["personal_token"])) ? [
-                        'type' => 'checkbox',
-                        'name' => '_reset_personal_token',
-                     ] : [],
-                     __("API token") => (!empty($this->fields["api_token"])) ? [
                         'type' => 'text',
-                        'name' => '_api_token',
-                        'value' => $this->fields["api_token"],
-                        'after' => sprintf(__('generated on %s'),
-                                           Html::convDateTime($this->fields["api_token_date"])),
-                     ] : [],
-                     __('Regenerate') => (!empty($this->fields["api_token"])) ? [
+                        'value' => $this->fields['personal_token'] ?? '',
+                        'disabled' => true,
+                     ],
+                     __('Reset personal token') => [
+                        'name' => '_reset_personal_token',
                         'type' => 'checkbox',
+                     ],
+                     '' => [
+                        'name' => '',
+                        'type' => '',
+                        'value' => '<br>',
+                     ],
+                     __('API token') => [
+                        'name' => '_api_token',
+                        'type' => 'text',
+                        'value' => $this->fields['api_token'] ?? '',
+                        'disabled' => true,
+                     ],
+                     __('Reset API token') => [
                         'name' => '_reset_api_token',
-                     ] : [],
+                        'type' => 'checkbox',
+                     ],
                   ]
                ]
             ]
          ];
-         renderTwigForm($form);
-
-
-         echo "<td class='top'>" . _n('Email', 'Emails', Session::getPluralNumber());
-         UserEmail::showAddEmailButton($this);
-         echo "</td><td>";
-         UserEmail::showForUser($this);
-         return true;
       }
-      return false;
+		renderTwigForm($form);
+      return true;
    }
+
 
 
    /**

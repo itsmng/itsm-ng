@@ -27,9 +27,13 @@
                 <input type="password" name="{{pwdfield}}" id="login_password" required="required" placeholder="{{"Password"|trans}}"/>
             </p>
             {% if demo_mode %}
-            <p class="login_input" id="login_lang">
-                {{language_dropdown(languages, current_language)}}
-            </p>
+                <p class="login_input" id="login_lang">
+                    <select name="language" class="login_input">
+                        {% for key,language in languages %}
+                        <option value="{{key}}" {% if current_language == key %} selected {% endif %}>{{language}}</option>
+                        {% endfor %}
+                    </select>
+                </p>
             {% endif %}
             {% if display_login_source %}
             <select name="auth" class="login_input">

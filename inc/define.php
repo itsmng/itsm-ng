@@ -47,7 +47,7 @@ if (substr(ITSM_VERSION, -4) === '-dev') {
 }
 
 // Current version of ITSM-NG
-define('ITSM_YEAR', '2023');
+define('ITSM_YEAR', date("Y"));
 
 //Define a global recipient address for email notifications
 //define('GLPI_FORCE_MAIL', 'me@localhost');
