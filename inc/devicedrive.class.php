@@ -46,19 +46,36 @@ class DeviceDrive extends CommonDevice {
 
    function getAdditionalFields() {
 
-      return array_merge(parent::getAdditionalFields(),
-                         [['name'  => 'is_writer',
-                                     'label' => __('Writing ability'),
-                                     'type'  => 'bool'],
-                               ['name'  => 'speed',
-                                     'label' => __('Speed'),
-                                     'type'  => 'text'],
-                               ['name'  => 'interfacetypes_id',
-                                     'label' => __('Interface'),
-                                     'type'  => 'dropdownValue'],
-                               ['name'  => 'devicedrivemodels_id',
-                                     'label' => _n('Model', 'Models', 1),
-                                     'type'  => 'dropdownValue']]);
+      return array_merge(
+         parent::getAdditionalFields(),
+         [
+            __('Writing ability') => [
+               'name'  => 'is_writer',
+               'type'  => 'checkbox',
+               'value' => $this->fields['is_writer'],
+            ],
+            __('Speed') => [
+               'name'  => 'speed',
+               'type'  => 'text',
+               'value' => $this->fields['speed'],
+            ],
+            __('Interface') => [
+               'name'  => 'interfacetypes_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('InterfaceType'),
+               'value' => $this->fields['interfacetypes_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'InterfaceType'),
+            ],
+            _n('Model', 'Models', 1) => [
+               'name'  => 'devicedrivemodels_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('DeviceDriveModel'),
+               'value' => $this->fields['devicedrivemodels_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'DeviceDriveModel'),
+
+            ]
+         ]
+      );
    }
 
 
