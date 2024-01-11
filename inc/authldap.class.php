@@ -345,7 +345,7 @@ class AuthLDAP extends CommonDBTM {
 
       if (Toolbox::canUseLdap()) {
          $this->showFormHeader($options);
-         if (empty($ID)) {
+         if (empty($ID) || ($ID == -1)) {
             $target = $this->getFormURL();
             echo "<tr class='tab_bg_2'><td>".__('Preconfiguration')."</td> ";
             echo "<td colspan='3'>";
