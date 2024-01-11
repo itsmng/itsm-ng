@@ -43,10 +43,10 @@ class PlanningEventCategory extends CommonDropdown {
 
    function getAdditionalFields() {
       return [
-         [
+         __('Color') => [
             'name'  => 'color',
-            'label' => __('Color'),
             'type'  => 'color',
+            'value' => $this->fields['color']
          ]
       ];
    }
