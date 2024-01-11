@@ -46,21 +46,37 @@ class DeviceMemory extends CommonDevice {
 
    function getAdditionalFields() {
 
-      return array_merge(parent::getAdditionalFields(),
-                         [['name'  => 'size_default',
-                                     'label' => __('Size by default'),
-                                     'type'  => 'text',
-                                     'unit'  => __('Mio')],
-                               ['name'  => 'frequence',
-                                     'label' => __('Frequency'),
-                                     'type'  => 'text',
-                                     'unit'  => __('MHz')],
-                               ['name'  => 'devicememorytypes_id',
-                                     'label' => _n('Type', 'Types', 1),
-                                     'type'  => 'dropdownValue'],
-                               ['name'  => 'devicememorymodels_id',
-                                     'label' => _n('Model', 'Models', 1),
-                                     'type'  => 'dropdownValue']]);
+      return array_merge(
+         parent::getAdditionalFields(),
+         [
+            __('Size by default') => [
+               'name'  => 'size_default',
+               'type'  => 'number',
+               'value' => $this->fields['size_default'],
+               'after'  => __('Mio')
+            ],
+            __('Frequency') => [
+               'name'  => 'frequence',
+               'type'  => 'number',
+               'after'  => __('MHz'),
+               'value' => $this->fields['frequence'],
+            ],
+            _n('Type', 'Types', 1) => [
+               'name'  => 'devicememorytypes_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('DeviceMemoryType'),
+               'value' => $this->fields['devicememorytypes_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'DeviceMemoryType')
+            ],
+            _n('Model', 'Models', 1) => [
+               'name'  => 'devicememorymodels_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('DeviceMemoryModel'),
+               'value' => $this->fields['devicememorymodels_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'DeviceMemoryModel')
+            ]
+         ]
+      );
    }
 
 
