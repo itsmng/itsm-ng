@@ -48,10 +48,18 @@ class DeviceSensor extends CommonDevice {
 
    function getAdditionalFields() {
 
-      return array_merge(parent::getAdditionalFields(),
-                         [['name'  => 'devicesensortypes_id',
-                           'label' => _n('Type', 'Types', 1),
-                           'type'  => 'dropdownValue']]);
+      return array_merge(
+         parent::getAdditionalFields(),
+         [
+            _n('Type', 'Types', 1) => [
+               'name'  => 'devicesensortypes_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('DeviceSensorType'),
+               'value' => $this->fields['devicesensortypes_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'DeviceSensorType')
+            ]
+         ]
+      );
    }
 
 
