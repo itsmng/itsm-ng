@@ -74,14 +74,19 @@ class Blacklist extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => 'value',
-                         'label' => __('Value'),
-                         'type'  => 'text',
-                         'list'  => true],
-                   ['name'  => 'type',
-                         'label' => _n('Type', 'Types', 1),
-                         'type'  => '',
-                         'list'  => true]];
+      return [
+         __('Value') => [
+            'name'  => 'value',
+            'type'  => 'text',
+            'value' => $this->fields['value'],
+         ],
+         _n('Type', 'Types', 1) => [
+            'name'  => 'type',
+            'type'  => 'select',
+            'values' => self::getTypes(),
+            'value' => $this->fields['type'],
+         ]
+      ];
    }
 
 
