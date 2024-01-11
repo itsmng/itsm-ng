@@ -46,13 +46,23 @@ class DeviceMotherboard extends CommonDevice {
 
    function getAdditionalFields() {
 
-      return array_merge(parent::getAdditionalFields(),
-                         [['name'  => 'chipset',
-                                     'label' => __('Chipset'),
-                                     'type'  => 'text'],
-                              ['name'  => 'devicemotherboardmodels_id',
-                                     'label' => _n('Model', 'Models', 1),
-                                     'type'  => 'dropdownValue']]);
+      return array_merge(
+         parent::getAdditionalFields(),
+         [
+            __('Chipset') => [
+               'name'  => 'chipset',
+               'type'  => 'text',
+               'value' => $this->fields['chipset'],
+            ],
+            _n('Model', 'Models', 1) => [
+               'name'  => 'devicemotherboardmodels_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('DeviceMotherBoardModel'),
+               'value' => $this->fields['devicemotherboardmodels_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'DeviceMotherBoardModel'),
+            ]
+         ]
+      );
    }
 
 

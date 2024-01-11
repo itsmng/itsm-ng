@@ -46,16 +46,28 @@ class DevicePowerSupply extends CommonDevice {
 
    function getAdditionalFields() {
 
-      return array_merge(parent::getAdditionalFields(),
-                         [['name'  => 'is_atx',
-                                     'label' => __('ATX'),
-                                     'type'  => 'bool'],
-                               ['name'  => 'power',
-                                     'label' => __('Power'),
-                                     'type'  => 'text'],
-                               ['name'  => 'devicepowersupplymodels_id',
-                                     'label' => _n('Model', 'Models', 1),
-                                     'type'  => 'dropdownValue']]);
+      return array_merge(
+         parent::getAdditionalFields(),
+         [
+            __('ATX') => [
+               'name'  => 'is_atx',
+               'type'  => 'checkbox',
+               'value' => $this->fields['is_atx']
+            ],
+            __('Power') => [
+               'name'  => 'power',
+               'type'  => 'text',
+               'value' => $this->fields['power']
+            ],
+            _n('Model', 'Models', 1) => [
+               'name'  => 'devicepowersupplymodels_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('DevicePowerSupplyModel'),
+               'value' => $this->fields['devicepowersupplymodels_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'DevicePowerSupplyModel')
+            ]
+         ]
+      );
    }
 
 

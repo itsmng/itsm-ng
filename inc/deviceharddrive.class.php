@@ -46,24 +46,42 @@ class DeviceHardDrive extends CommonDevice {
 
    function getAdditionalFields() {
 
-      return array_merge(parent::getAdditionalFields(),
-                         [['name'  => 'capacity_default',
-                                     'label' => __('Capacity by default'),
-                                     'type'  => 'text',
-                                     'unit'  => __('Mio')],
-                               ['name'  => 'rpm',
-                                     'label' => __('Rpm'),
-                                     'type'  => 'text'],
-                               ['name'  => 'cache',
-                                     'label' => __('Cache'),
-                                     'type'  => 'text',
-                                     'unit'  => __('Mio')],
-                               ['name'  => 'deviceharddrivemodels_id',
-                                     'label' => _n('Model', 'Models', 1),
-                                     'type'  => 'dropdownValue'],
-                               ['name'  => 'interfacetypes_id',
-                                     'label' => __('Interface'),
-                                     'type'  => 'dropdownValue']]);
+      return array_merge(
+         parent::getAdditionalFields(),
+         [
+            __('Capacity by default') => [
+               'name'  => 'capacity_default',
+               'type'  => 'number',
+               'after'  => __('Mio'),
+               'value' => $this->fields['capacity_default']
+            ],
+            __('Rpm') => [
+               'name'  => 'rpm',
+               'type'  => 'number',
+               'value' => $this->fields['rpm']
+            ],
+            __('Cache') => [
+               'name'  => 'cache',
+               'type'  => 'number',
+               'after'  => __('Mio'),
+               'value' => $this->fields['cache']
+            ],
+            _n('Model', 'Models', 1) => [
+               'name'  => 'deviceharddrivemodels_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('DeviceHardDriveModel'),
+               'value' => $this->fields['deviceharddrivemodels_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'DeviceHardDriveModel')
+            ],
+            __('Interface') => [
+               'name'  => 'interfacetypes_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('InterfaceType'),
+               'value' => $this->fields['interfacetypes_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'InterfaceType')
+            ]
+         ]
+      );
    }
 
 

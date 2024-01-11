@@ -46,10 +46,18 @@ class DeviceGeneric extends CommonDevice {
 
    function getAdditionalFields() {
 
-      return array_merge(parent::getAdditionalFields(),
-                         [['name'  => 'devicegenerictypes_id',
-                                     'label' => _n('Type', 'Types', 1),
-                                     'type'  => 'dropdownValue']]);
+      return array_merge(
+         parent::getAdditionalFields(),
+         [
+            _n('Type', 'Types', 1) => [
+               'name'  => 'devicegenerictypes_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('DeviceGenericType'),
+               'value' => $this->fields['devicegenerictypes_id'],
+               'actions' => getItemActionButtons(['add', 'info'], 'DeviceGenericType')
+            ]
+         ]
+      );
    }
 
 

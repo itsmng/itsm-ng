@@ -59,6 +59,9 @@ class Dashboard extends \CommonDBTM {
          $menu['title'] = self::getMenuName();
          $menu['page']  = '/src/dashboard/dashboard.php';
          $menu['icon']  = self::getIcon();
+         $menu['links'] = [
+            'add' => '/src/dashboard/dashboard.form.php'
+         ];
       }
       if (count($menu)) {
          return $menu;

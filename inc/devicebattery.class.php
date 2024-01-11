@@ -47,22 +47,25 @@ class DeviceBattery extends CommonDevice {
       return array_merge(
          parent::getAdditionalFields(),
          [
-            [
+            _n('Type', 'Types', 1) => [
                'name'  => 'devicebatterytypes_id',
-               'label' => _n('Type', 'Types', 1),
-               'type'  => 'dropdownValue'
+               'type'  => 'select',
+               'values' => getOptionForItems('DeviceBatteryType'),
+               'value' => $this->fields['devicebatterytypes_id']
             ],
-            [
+            __('Capacity') => [
                'name'   => 'capacity',
-               'label'  => __('Capacity'),
-               'type'   => 'text',
-               'unit'   => __('mWh')
+               'type'   => 'number',
+               'after'   => __('mWh'),
+               'value' => $this->fields['capacity'],
+               'min' => 0
             ],
-            [
+            __('Voltage') => [
                'name'   => 'voltage',
-               'label'  => __('Voltage'),
-               'type'   => 'text',
-               'unit'   => __('mV')
+               'type'   => 'number',
+               'after'   => __('mV'),
+               'value' => $this->fields['voltage'],
+               'min' => 0
             ]
          ]
       );
