@@ -54,14 +54,18 @@ class ProjectState extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'     => 'color',
-                         'label'    => __('Color'),
-                         'type'     => 'color',
-                         'list'     => true],
-                   ['name'     => 'is_finished',
-                         'label'    => __('Finished state'),
-                         'type'     => 'bool',
-                         'list'     => true],];
+      return [
+         __('Color') => [
+            'name'     => 'color',
+            'type'     => 'color',
+            'value' => $this->fields['color'],
+         ],
+         __('Finished state') => [
+            'name'     => 'is_finished',
+            'type'     => 'checkbox',
+            'value' => $this->fields['is_finished'],
+         ],
+      ];
    }
 
 
