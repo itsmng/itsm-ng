@@ -78,6 +78,12 @@ header {
     z-index: 50;
     font-size: var(--nav-size);
 
+    li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     i, li > a span {
         color: $header-text-color !important;
     }
