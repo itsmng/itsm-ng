@@ -183,38 +183,6 @@ class AuthMail extends CommonDBTM
             $this->getFromDB($ID);
         }
 
-        //   $options['colspan'] = 1;
-        //   $this->showFormHeader($options);
-
-        //   echo "<tr class='tab_bg_1'><td>" . __('Name') . "</td>";
-        //   echo "<td><input size='30' type='text' name='name' value='" . $this->fields["name"] . "'>";
-        //   echo "</td></tr>";
-
-        //   echo "<tr class='tab_bg_1'>";
-        //   echo "<td>" . __('Active') . "</td>";
-        //   echo "<td colspan='3'>";
-        //   Dropdown::showYesNo('is_active', $this->fields['is_active']);
-        //   echo "</td></tr>";
-
-        //   echo "<tr class='tab_bg_1'>";
-        //   echo "<td>" . __('Email domain Name (users email will be login@domain)') . "</td>";
-        //   echo "<td><input size='30' type='text' name='host' value='" . $this->fields["host"] . "'>";
-        //   echo "</td></tr>";
-
-        //   MailServer::showMailServerConfig($this->fields["connect_string"]);
-
-        //   echo "<tr class='tab_bg_1'><td>" . __('Comments') . "</td>";
-        //   echo "<td>";
-        //   echo "<textarea cols='40' rows='4' name='comment'>" . $this->fields["comment"] . "</textarea>";
-        //   if ($ID > 0) {
-        //      echo "<br>";
-        //      //TRANS: %s is the datetime of update
-        //      printf(__('Last update on %s'), Html::convDateTime($this->fields["date_mod"]));
-        //   }
-
-        //   echo "</td></tr>";
-
-        //   $this->showFormButtons($options);
         $FromMailServerConfig = MailServer::showMailServerConfig($this->fields["connect_string"]);
         $data = MailServer::parseMailServerConnectString($this->fields["connect_string"]);
 
