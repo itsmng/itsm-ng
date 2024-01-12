@@ -311,33 +311,105 @@ class Computer_Item extends CommonDBRelation{
             }
          }
       }
+      $AjaxUsedData = json_encode($used);
       $number = count($datas);
 
       if ($canedit
           && !(!empty($withtemplate) && ($withtemplate == 2))) {
-         echo "<div class='firstbloc'>";
-         echo "<form name='computeritem_form$rand' id='computeritem_form$rand' method='post'
-                action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th colspan='2'>".__('Connect an item')."</th></tr>";
-
-         echo "<tr class='tab_bg_1'><td>";
-         if (!empty($withtemplate)) {
-            echo "<input type='hidden' name='_no_history' value='1'>";
+         $valuesForDropdown = [];
+         foreach ($CFG_GLPI['directconnect_types'] as $type) {
+            if ($item = getItemForItemtype($type)) {
+               if (!$item->canView()) {
+                  continue;
+               }
+               $valuesForDropdown[$type] = $item->getTypeName(1);
+            }
          }
-         $entities = $comp->fields["entities_id"];
-         if ($comp->isRecursive()) {
-            $entities = getSonsOf("glpi_entities", $comp->getEntityID());
-         }
-         self::dropdownAllConnect('Computer', "items_id", $entities, $withtemplate, $used);
-         echo "</td><td class='center' width='20%'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Connect')."\" class='submit'>";
-         echo "<input type='hidden' name='computers_id' value='".$comp->fields['id']."'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'type'  => 'submit',
+                  'name'  => 'add',
+                  'value' => _sx('button', 'Connect'),
+                  'class' => 'btn btn-secondary',
+               ]
+               ],
+               'content' => [
+                  __('Connect an item') => [
+                     'visible' => true,
+                     'inputs' => [
+                        [
+                           'type'  => 'hidden',
+                           'name'  => 'computers_id',
+                           'value' => $comp->fields['id'],
+                        ],
+                        [
+                           'type'  => 'hidden',
+                           'name'  => 'itemtype',
+                           'value' => $comp::class,
+                        ],
+                        [
+                           'type'  => 'hidden',
+                           'name'  => 'items_id',
+                           'value' => $comp->getID(),
+                        ],
+                        !empty($withtemplate) ? [
+                           'type'  => 'hidden',
+                           'name'  => '_no_history',
+                           'value' => '1',
+                        ] : [],
+                        __('Device type') => [
+                           'type' => 'select',
+                           'name' => 'itemtype',
+                           'id' => 'ItemTypeConnectDropdown',
+                           'values' => array_merge([ Dropdown::EMPTY_VALUE ], $valuesForDropdown),
+                           'value' => '',
+                           'col_lg' => 6,
+                           'hooks' => [
+                              'change' => <<<JS
+                                 $('select[name="items_id"]').empty();
+                                 if ($('select[name="itemtype"]').val() == 0) {
+                                    $('select[name="items_id"]').prop('disabled', true);
+                                 } else {
+                                    $('select[name="items_id"]').prop('disabled', false);
+                                 }
+                                 $.ajax({
+                                    url: '{$CFG_GLPI['root_doc']}/ajax/dropdownConnect.php',
+                                    type: 'POST',
+                                    data: {
+                                       itemtype: $('select[name="itemtype"]').val(),
+                                       fromtype: 'Computer',
+                                       value: 0,
+                                       myname: 'items_id',
+                                       onlyglobal: '',
+                                       'used': JSON.parse('{$AjaxUsedData}'),
+                                       entity_restrict: {$comp->getEntityID()},
+                                    },
+                                    dataType: 'json',
+                                    success: function(data) {
+                                       $.each(data, function(key, value) {
+                                          $('#ItemConnectDropdown').append('<option value="' + key + '">' + value + '</option>');
+                                       });
+                                    }
+                                 });
+                              JS,
+                           ]
+                        ],
+                        __('Device') => [
+                           'type' => 'select',
+                           'id' => 'ItemConnectDropdown',
+                           'name' => 'items_id',
+                           'values' => [],
+                           'value' => '',
+                           'col_lg' => 6,
+                           'disabled' => true,
+                        ],
+                     ],
+                  ]
+               ]
+         ];
+         renderTwigForm($form);
       }
 
       if ($number) {
