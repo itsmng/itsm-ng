@@ -693,20 +693,12 @@ class Config extends CommonDBTM {
                'inputs' => [
                   __('Automatically add users from an external authentication source') => [
                      'name' => 'is_users_auto_add',
-                     'type' => 'select',
-                     'values' => [
-                        '0' => __('No'),
-                        '1' => __('Yes'),
-                     ],
+                     'type' => 'checkbox',
                      'value' => $CFG_GLPI["is_users_auto_add"],
                   ],
                   __('Add a user without accreditation from a LDAP directory') => [
                      'name' => 'use_noright_users_add',
-                     'type' => 'select',
-                     'values' => [
-                        '0' => __('No'),
-                        '1' => __('Yes'),
-                     ],
+                     'type' => 'checkbox',
                      'value' => $CFG_GLPI["use_noright_users_add"],
                   ],
                   __('Action when a user is deleted from the LDAP directory') => [
