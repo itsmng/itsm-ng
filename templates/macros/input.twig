@@ -345,6 +345,9 @@
     inputCell.append(content.title);
     row.append($('<td>').append($('<button>', {type: 'button', class: 'btn btn-sm btn-outline-danger', onClick: `removeOption{{rand}}('${content.values[Object.keys(content.values)[0]]}')`}).append($('<i>', {class: 'fas fa-times'}))));
     $('#OptionTable_{{rand}} tbody').append(row);
+    if (grid) {
+      grid.resizeToContent($('#ContentForTabs > div').first()[0]);
+    }
   }
   </script>
 {% endmacro %}
