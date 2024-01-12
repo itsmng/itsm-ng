@@ -163,3 +163,26 @@ function getItemActionButtons(array $actions, string $itemType): array
 
     return $buttons;
 }
+
+function getOptionsWithNameForItem(string $itemType, array $conditions, array $names): array
+{
+    global $DB;
+
+    $table = getTableForItemType($itemType);
+    $iterator = $DB->request([
+        'SELECT' => array_merge(['id'], array_values($names)),
+        'FROM' => $table,
+        'WHERE' => $conditions,
+    ]);
+
+    $options = [];
+    while ($val = $iterator->next()) {
+        $newItem = ['id' => $val['id']];
+        foreach ($names as $key => $name) {
+            $newItem[$key] = $val[$name];
+        }
+        $options[] = $newItem;
+    }
+
+    return $options;
+}
