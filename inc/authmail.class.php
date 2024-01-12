@@ -213,23 +213,39 @@ class AuthMail extends CommonDBTM {
       $ID = $this->getField('id');
 
       if ($this->getFromDB($ID)) {
-         echo "<form method='post' action='".$this->getFormURL()."'>";
-         echo "<input type='hidden' name='imap_string' value=\"".$this->fields['connect_string']."\">";
-         echo "<div class='center'><table class='tab_cadre'>";
-         echo "<tr><th colspan='2'>" . __('Test connection to email server') . "</th></tr>";
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL('authmail'),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'test',
+                  'value' => __('Test'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               __('Test connection to email server') => [
+                  'visible' => true,
+                  'inputs' => [
+                     ('') => [
+                        'name' => 'imap_string',
+                        'type' => 'hidden',
+                        'value' => $this->fields['connect_string']
+                     ],
+                     __('Login') => [
+                        'name' => 'imap_login',
+                        'type' => 'text',
+                     ],
+                     __('Password') => [
+                        'name' => 'imap_password',
+                        'type' => 'password',
+                     ]
+                  ]
+               ]
+            ]
+         ];
 
-         echo "<tr class='tab_bg_2'><td class='center'>" . __('Login') . "</td>";
-         echo "<td><input size='30' type='text' name='imap_login' value=''></td></tr>";
-
-         echo "<tr class='tab_bg_2'><td class='center'>" . __('Password') . "</td>";
-         echo "<td><input size='30' type='password' name='imap_password' value=''
-                    autocomplete='new-password'></td></tr>";
-
-         echo "<tr class='tab_bg_2'><td class='center' colspan='2'>";
-         echo "<input type='submit' name='test' class='submit' value=\""._sx('button', 'Test')."\">".
-              "</td>";
-         echo "</tr></table></div>";
-         Html::closeForm();
+         renderTwigForm($form);
       }
    }
 
