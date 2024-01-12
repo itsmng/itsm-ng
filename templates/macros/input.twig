@@ -326,6 +326,7 @@
     </table>
   </div>
   <script>
+  let current = -2;
   function removeOption{{rand}}(value) {
     $(`#OptionTable_{{rand}} tr[data-value='${value}'] input[type='hidden']`).val('0');
     $(`#OptionTable_{{rand}} tr[data-value='${value}']`).hide();
@@ -338,8 +339,9 @@
     let row = $('<tr>').append($('<td>'));
     const inputCell = row.find('td');
     for (const [name, value] of Object.entries(content.values)) {
-      inputCell.append($('<input>', {type: 'hidden', name: name + '[' + $('#OptionTable_{{rand}} tbody tr').length + ']', value}));
+      inputCell.append($('<input>', {type: 'hidden', name: name + '[' + current + ']', value}));
     }
+    current--;
     inputCell.append(content.title);
     row.append($('<td>').append($('<button>', {type: 'button', class: 'btn btn-sm btn-outline-danger', onClick: `removeOption{{rand}}('${content.values[Object.keys(content.values)[0]]}')`}).append($('<i>', {class: 'fas fa-times'}))));
     $('#OptionTable_{{rand}} tbody').append(row);

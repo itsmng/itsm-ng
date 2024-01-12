@@ -68,26 +68,26 @@ class DevicePci extends CommonDevice {
                'type'  => 'multiSelect',
                'inputs' => [
                   [
-                     'name' => '_registeredID_type[-1]',
+                     'name' => 'current_registeredID_type',
                      'type' => 'select',
                      'values' => array_merge([ Dropdown::EMPTY_VALUE ], RegisteredID::getRegisteredIDTypes()),
                   ],
                   [
-                     'name' => '_registeredID[-1]',
+                     'name' => 'current_registeredID',
                      'type' => 'text',
                      'size' => 30,
                   ],
                ],
                'getInputAdd' => <<<JS
                   function () {
-                     if ($('select[name="_registeredID_type[-1]"]').val() == 0) {
+                     if (!$('input[name="current_registeredID"]').val()) {
                         return;
                      }
                      var values = {
-                        _registeredID_type: $('select[name="_registeredID_type[-1]"]').val(),
-                        _registeredID: $('input[name="_registeredID[-1]').val()
+                        _registeredID_type: $('select[name="current_registeredID_type"]').val(),
+                        _registeredID: $('input[name="current_registeredID').val()
                      };
-                     var title = $('select[name="_registeredID_type[-1]"] option:selected').text() + ' ' + $('input[name="_registeredID[-1]"').val();
+                     var title = $('select[name="current_registeredID_type"] option:selected').text() + ' ' + $('input[name="current_registeredID"').val();
                      return {values, title};
                   }
                JS,
