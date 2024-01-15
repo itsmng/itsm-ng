@@ -42,3 +42,7 @@ You will find all ITSM-NG releases [here](https://github.com/itsmng/itsm-ng/rele
 ## Documentation
 
 ITSM-NG documentation is avalaible at the following link : [Wiki](https://wiki.itsm-ng.org/).
+
+## Translation
+
+You can translate ITSM-NG on [Weblate](https://hosted.weblate.org/projects/itsm-ng/itsm-ng/)
