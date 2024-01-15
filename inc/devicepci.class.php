@@ -44,24 +44,62 @@ class DevicePci extends CommonDevice {
    static function getTypeName($nb = 0) {
       return _n('PCI device', 'PCI devices', $nb);
    }
-
-
+   
+   
    /**
     * @see CommonDevice::getAdditionalFields()
     * @since 0.85
     */
-   function getAdditionalFields() {
-
-      return array_merge(parent::getAdditionalFields(),
-                         [['name'  => 'none',
-                                     'label' => RegisteredID::getTypeName(Session::getPluralNumber()).
-                                        RegisteredID::showAddChildButtonForItemForm($this,
-                                                                                    '_registeredID',
-                                                                                    null, false),
-                                     'type'  => 'registeredIDChooser'],
-                         ['name'  => 'devicepcimodels_id',
-                                     'label' => _n('Model', 'Models', 1),
-                                     'type'  => 'dropdownValue']]);
+    function getAdditionalFields() {
+       
+       return array_merge(
+          parent::getAdditionalFields(),
+          [
+             _n('Model', 'Models', 1) => [
+               'name'  => 'devicepcimodels_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('DevicePciModel'),
+               'value' => $this->fields['devicepcimodels_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'DevicePciModel'),
+               'col_lg' => 8,
+            ],
+            RegisteredID::getTypeName(Session::getPluralNumber()) => [
+               'name'  => 'none',
+               'type'  => 'multiSelect',
+               'inputs' => [
+                  [
+                     'name' => 'current_registeredID_type',
+                     'type' => 'select',
+                     'values' => array_merge([ Dropdown::EMPTY_VALUE ], RegisteredID::getRegisteredIDTypes()),
+                  ],
+                  [
+                     'name' => 'current_registeredID',
+                     'type' => 'text',
+                     'size' => 30,
+                  ],
+               ],
+               'getInputAdd' => <<<JS
+                  function () {
+                     if (!$('input[name="current_registeredID"]').val()) {
+                        return;
+                     }
+                     var values = {
+                        _registeredID_type: $('select[name="current_registeredID_type"]').val(),
+                        _registeredID: $('input[name="current_registeredID').val()
+                     };
+                     var title = $('select[name="current_registeredID_type"] option:selected').text() + ' ' + $('input[name="current_registeredID"').val();
+                     return {values, title};
+                  }
+               JS,
+               'values' => getOptionsWithNameForItem('RegisteredID',
+                  ['itemtype' => $this::class, 'items_id' => $this->getID()],
+                  ['_registeredID_type' => 'device_type', '_registeredID' => 'name']
+               ),
+               'col_lg' => 12,
+               'col_md' => 12,
+            ],
+         ]
+      );
    }
 
    function rawSearchOptions() {

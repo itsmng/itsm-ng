@@ -30,6 +30,8 @@
  * ---------------------------------------------------------------------
  */
 
+use function PHPSTORM_META\map;
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
@@ -63,16 +65,89 @@ class Fieldblacklist extends CommonDropdown {
 
 
    function getAdditionalFields() {
+      global $CFG_GLPI;
 
-      return [['name'  => 'itemtype',
-                         'label' => _n('Type', 'Types', 1),
-                         'type'  => 'blacklist_itemtype'],
-                   ['name'  => 'field',
-                         'label' => _n('Field', 'Fields', 1),
-                         'type'  => 'blacklist_field'],
-                   ['name'  => 'value',
-                         'label' => __('Value'),
-                         'type'  => 'blacklist_value']];
+      $loadFields = <<<JS
+         $.ajax({
+            url: "{$CFG_GLPI['root_doc']}/ajax/dropdownFieldsBlacklist.php",
+            type: 'POST',
+            data: {
+               itemtype: $('#ItemTypeDropdown').val(),
+               id: '{$this->getID()}'
+            },
+            success: function(data) {
+               const jsonData = JSON.parse(data);
+               const currentvalue = $('#FieldDropdown').val();
+               $('#FieldDropdown').empty();
+               for (const [key, value] of Object.entries(jsonData)) {
+                  $('#FieldDropdown').append($('<option>', {
+                     value: key,
+                     text: value
+                  }));
+               }
+               if (Object.keys(jsonData).length > 0) {
+                  $('#FieldDropdown').removeAttr('disabled');
+                  $('#ValueInput').removeAttr('disabled');
+               } else {
+                  $('#FieldDropdown').attr('disabled', 'disabled');
+                  $('#ValueInput').attr('disabled', 'disabled');
+               }
+               setTimeout(() => {
+                  $('#FieldDropdown').val(currentvalue);
+               }, 400);
+            }
+         });
+      JS;
+
+      $loadValueInput = <<<JS
+         $.ajax({
+            url: "{$CFG_GLPI['root_doc']}/ajax/dropdownValuesBlacklist.php",
+            type: 'POST',
+            data: {
+               itemtype: $('#ItemTypeDropdown').val(),
+               id_field: $('#FieldDropdown').val() ?? '{$this->fields['field']}',
+               id: '{$this->getID()}'
+            },
+            success: function(data) {
+               console.table({
+               itemtype: $('#ItemTypeDropdown').val(),
+               id_field: $('#FieldDropdown').val(),
+               id: '{$this->getID()}'
+            });
+               const htmlObject = document.createElement('div');
+               htmlObject.innerHTML = data.trim();
+               $('#ValueInput').html(htmlObject);
+            }
+         });
+      JS;
+      return [
+         _n('Type', 'Types', 1) => [
+            'name'  => 'itemtype',
+            'type'  => 'select',
+            'id'    => 'ItemTypeDropdown',
+            'values' => array_merge([ Dropdown::EMPTY_VALUE ], array_combine($CFG_GLPI['unicity_types'], $CFG_GLPI['unicity_types'])),
+            'value' => isset($this->fields['itemtype']) ? $this->fields['itemtype'] : '',
+            isset($this->fields['itemtype']) ? 'disabled' : '' => '',
+            'hooks' => [
+               'change' => $loadFields
+            ]
+         ],
+         _n('Field', 'Fields', 1) => [
+            'name'  => 'field',
+            'type'  => 'select',
+            'id' => 'FieldDropdown',
+            'values' => $this->selectCriterias(),
+            'value' => isset($this->fields['field']) ? $this->fields['field'] : '',
+            !isset($this->fields['itemtype']) ? 'disabled' : '',
+            'hooks' => [
+               'change' => $loadValueInput,
+            ],
+         ],
+         __('Value') => [
+            'content' => '<div id="ValueInput"></div>',
+            'init' => $loadValueInput,
+         ]
+      ];
    }
 
 
@@ -267,9 +342,7 @@ class Fieldblacklist extends CommonDropdown {
 
 
    function selectCriterias() {
-      global $CFG_GLPI;
-
-      echo "<span id='span_fields' name='span_fields'>";
+      global $CFG_GLPI, $DB;
 
       if (!isset($this->fields['itemtype']) || !$this->fields['itemtype']) {
          echo "</span>";
@@ -280,16 +353,19 @@ class Fieldblacklist extends CommonDropdown {
          $this->fields['entities_id'] = $_SESSION['glpiactive_entity'];
       }
 
-      if ($rand = self::dropdownField($this->fields['itemtype'],
-                                      ['value' => $this->fields['field']])) {
-         $params = ['itemtype' => $this->fields['itemtype'],
-                         'id_field' => '__VALUE__',
-                         'id'       => $this->fields['id']];
-         Ajax::updateItemOnSelectEvent("dropdown_field$rand", "span_values",
-                                       $CFG_GLPI["root_doc"]."/ajax/dropdownValuesBlacklist.php",
-                                       $params);
+      if ($target = getItemForItemtype($this->fields['itemtype'])) {
+         $criteria = [];
+         foreach ($DB->listFields($target->getTable()) as $field) {
+            $searchOption = $target->getSearchOptionByField('field', $field['Field']);
+
+            if (!empty($searchOption)
+                  && !in_array($field['Type'], $target->getUnallowedFieldsForUnicity())
+                  && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
+               $criteria[$field['Field']] = $searchOption['name'];
+            }
+         }
+         return $criteria;
       }
-      echo "</span>";
    }
 
 
@@ -318,13 +394,6 @@ class Fieldblacklist extends CommonDropdown {
          foreach ($DB->listFields($target->getTable()) as $field) {
             $searchOption = $target->getSearchOptionByField('field', $field['Field']);
 
-            // MoYo : do not know why  this part ?
-            // if (empty($searchOption)) {
-            //    if ($table = getTableNameForForeignKeyField($field['Field'])) {
-            //       $searchOption = $target->getSearchOptionByField('field', 'name', $table);
-            //    }
-            // }
-
             if (!empty($searchOption)
                 && !in_array($field['Type'], $target->getUnallowedFieldsForUnicity())
                 && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
@@ -344,7 +413,6 @@ class Fieldblacklist extends CommonDropdown {
       if ($field == '') {
          $field = $this->fields['field'];
       }
-      echo "<span id='span_values' name='span_values'>";
       if ($this->fields['itemtype'] != '') {
          if ($item = getItemForItemtype($this->fields['itemtype'])) {
             $searchOption = $item->getSearchOptionByField('field', $field);
@@ -356,7 +424,6 @@ class Fieldblacklist extends CommonDropdown {
             echo $item->getValueToSelect($searchOption, 'value', $this->fields['value'], $options);
          }
       }
-      echo "</span>";
    }
 
 

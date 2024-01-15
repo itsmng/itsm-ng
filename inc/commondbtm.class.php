@@ -31,6 +31,7 @@
  */
 
 use Glpi\Event;
+use itsmng\Timezone;
 
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
@@ -4876,15 +4877,18 @@ class CommonDBTM extends CommonGLPI {
             case "count" :
             case "number" :
             case "integer" :
-               $copytooption = ['min', 'max', 'step', 'toadd', 'unit'];
+               $copytooption = ['min', 'max', 'step', 'unit'];
+               $input = [
+                  'type'    => 'number',
+                  'name'    => $name,
+               ];
                foreach ($copytooption as $key) {
                   if (isset($searchoptions[$key]) && !isset($options[$key])) {
-                     $options[$key] = $searchoptions[$key];
+                     $input[$key] = $searchoptions[$key];
                   }
                }
-               $options['value'] = $value;
-               return Dropdown::showNumber($name, $options);
-
+               $input['value'] = $value;
+               return renderTwigTemplate('macros/input.twig', $input);
             case "decimal" :
             case "mac" :
             case "ip" :
@@ -4892,55 +4896,46 @@ class CommonDBTM extends CommonGLPI {
             case "email" :
             case "weblink" :
                $this->fields[$name] = $value;
-               return Html::autocompletionTextField($this, $name, $options);
-
+               return renderTwigTemplate('macros/input.twig', [
+                  'type' => 'text',
+                  'name' => $name,
+                  'value' => $value,
+               ]);
             case "text" :
-               $out = '';
-               if (isset($searchoptions['htmltext']) && $searchoptions['htmltext']) {
-                  $out = Html::initEditorSystem($name, '', false);
-               }
-               return $out."<textarea cols='45' rows='5' name='$name'>$value</textarea>";
+               return renderTwigTemplate('macros/input.twig', [
+                  'type' => 'area',
+                  'name' => $name,
+                  'value' => $value,
+               ]);
 
             case "bool" :
-               return Dropdown::showYesNo($name, $value, -1, $options);
+               return renderTwigTemplate('macros/input.twig', [
+                  'type' => 'checkbox',
+                  'name' => $name,
+                  'value' => $value,
+               ]);
 
             case "color" :
-               return Html::showColorField($name, $options);
+               return renderTwigTemplate('macros/input.twig', [
+                  'type' => 'color',
+                  'name' => $name,
+                  'value' => $value,
+               ]);
 
             case "date" :
             case "date_delay" :
-               if (isset($options['relative_dates']) && $options['relative_dates']) {
-                  if (isset($searchoptions['maybefuture']) && $searchoptions['maybefuture']) {
-                     $options['with_future'] = true;
-                  }
-                  return Html::showGenericDateTimeSearch($name, $value, $options);
-               }
-               $copytooption = ['min', 'max', 'maybeempty', 'showyear'];
-               foreach ($copytooption as $key) {
-                  if (isset($searchoptions[$key]) && !isset($options[$key])) {
-                     $options[$key] = $searchoptions[$key];
-                  }
-               }
-               $options['value'] = $value;
-               return Html::showDateField($name, $options);
+               return renderTwigTemplate('macros/input.twig', [
+                  'type' => 'datetime-local',
+                  'name' => $name,
+                  'value' => $value,
+               ]);
 
             case "datetime" :
-               if (isset($options['relative_dates']) && $options['relative_dates']) {
-                  if (isset($searchoptions['maybefuture']) && $searchoptions['maybefuture']) {
-                     $options['with_future'] = true;
-                  }
-                  $options['with_time'] = true;
-                  return Html::showGenericDateTimeSearch($name, $value, $options);
-               }
-               $copytooption = ['mindate', 'maxdate', 'mintime', 'maxtime',
-                                     'maybeempty', 'timestep'];
-               foreach ($copytooption as $key) {
-                  if (isset($searchoptions[$key]) && !isset($options[$key])) {
-                     $options[$key] = $searchoptions[$key];
-                  }
-               }
-               $options['value'] = $value;
-               return Html::showDateTimeField($name, $options);
+               return renderTwigTemplate('macros/input.twig', [
+                  'type' => 'datetime-local',
+                  'name' => $name,
+                  'value' => $value,
+               ]);
 
             case "timestamp" :
                $copytooption = ['addfirstminutes', 'emptylabel', 'inhours',  'max', 'min',
@@ -4950,9 +4945,12 @@ class CommonDBTM extends CommonGLPI {
                      $options[$key] = $searchoptions[$key];
                   }
                }
-               $options['value'] = $value;
-               return Dropdown::showTimeStamp($name, $options);
-
+               return renderTwigTemplate('macros/input.twig', [
+                  'type' => 'select',
+                  'name' => $name,
+                  'values' => Timezone::GetTimeStamp($options),
+                  'value' => $value,
+               ]);
             case "itemlink" :
                // Do not use dropdown if wanted to select string value instead of ID
                if (isset($options['itemlink_as_string']) && $options['itemlink_as_string']) {
@@ -4960,22 +4958,12 @@ class CommonDBTM extends CommonGLPI {
                }
 
             case "dropdown" :
-               $copytooption     = ['condition', 'displaywith', 'emptylabel',
-                                         'right', 'toadd'];
-               $options['name']  = $name;
-               $options['value'] = $value;
-               foreach ($copytooption as $key) {
-                  if (isset($searchoptions[$key]) && !isset($options[$key])) {
-                     $options[$key] = $searchoptions[$key];
-                  }
-               }
-               if (!isset($options['entity'])) {
-                  $options['entity'] = $_SESSION['glpiactiveentities'];
-               }
-               $itemtype = getItemTypeForTable($searchoptions['table']);
-
-               return $itemtype::dropdown($options);
-
+               return renderTwigTemplate('macros/input.twig', [
+                  'type' => 'select',
+                  'name' => $name,
+                  'values' => getOptionForItems(getItemTypeForTable($searchoptions['table']), $options['condition'] ?? []),
+                  'value' => $value,
+               ]);
             case "right" :
                 return Profile::dropdownRights(Profile::getRightsFor($searchoptions['rightclass']),
                                                $name, $value, ['multiple' => false,

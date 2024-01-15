@@ -48,22 +48,67 @@ class DeviceControl extends CommonDevice {
 
    function getAdditionalFields() {
 
-      return array_merge(parent::getAdditionalFields(),
-                         [['name'  => 'is_raid',
-                                     'label' => __('RAID'),
-                                     'type'  => 'bool'],
-                               ['name'  => 'interfacetypes_id',
-                                     'label' => __('Interface'),
-                                     'type'  => 'dropdownValue'],
-                               ['name'  => 'devicecontrolmodels_id',
-                                     'label' => _n('Model', 'Models', 1),
-                                     'type'  => 'dropdownValue'],
-                               ['name'  => 'none',
-                                     'label' => RegisteredID::getTypeName(Session::getPluralNumber()).
-                                        RegisteredID::showAddChildButtonForItemForm($this,
-                                                                                    '_registeredID',
-                                                                                    null, false),
-                                     'type'  => 'registeredIDChooser']]);
+      return array_merge(
+         parent::getAdditionalFields(),
+         [
+            __('RAID') => [
+               'name'  => 'is_raid',
+               'type'  => 'checkbox',
+               'value' => $this->fields['is_raid']
+            ],
+            __('Interface') => [
+               'name'  => 'interfacetypes_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('InterfaceType'),
+               'value' => $this->fields['interfacetypes_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'InterfaceType'),
+               'col_lg' => 6,
+            ],
+            _n('Model', 'Models', 1) => [
+               'name'  => 'devicecontrolmodels_id',
+               'type'  => 'select',
+               'values' => getOptionForItems('DeviceControlModel'),
+               'value' => $this->fields['devicecontrolmodels_id'],
+               'actions' => getItemActionButtons(['info', 'add'], 'DeviceControlModel'),
+               'col_lg' => 6,
+            ],
+            RegisteredID::getTypeName(Session::getPluralNumber()) => [
+               'name'  => 'none',
+               'type'  => 'multiSelect',
+               'inputs' => [
+                  [
+                     'name' => 'current_registeredID_type',
+                     'type' => 'select',
+                     'values' => array_merge([ Dropdown::EMPTY_VALUE ], RegisteredID::getRegisteredIDTypes()),
+                  ],
+                  [
+                     'name' => 'current_registeredID',
+                     'type' => 'text',
+                     'size' => 30,
+                  ],
+               ],
+               'getInputAdd' => <<<JS
+                  function () {
+                     if (!$('input[name="current_registeredID"]').val()) {
+                        return;
+                     }
+                     var values = {
+                        _registeredID_type: $('select[name="current_registeredID_type"]').val(),
+                        _registeredID: $('input[name="current_registeredID').val()
+                     };
+                     var title = $('select[name="current_registeredID_type"] option:selected').text() + ' ' + $('input[name="current_registeredID"').val();
+                     return {values, title};
+                  }
+               JS,
+               'values' => getOptionsWithNameForItem('RegisteredID',
+                  ['itemtype' => $this::class, 'items_id' => $this->getID()],
+                  ['_registeredID_type' => 'device_type', '_registeredID' => 'name']
+               ),
+               'col_lg' => 12,
+               'col_md' => 12,
+            ],
+         ]
+      );
    }
 
 

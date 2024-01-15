@@ -74,11 +74,11 @@ class NetworkName extends FQDNLabel {
       $this->addDefaultFormTab($ong);
       $this->addStandardTab('NetworkAlias', $ong, $options);
       $this->addStandardTab('Log', $ong, $options);
-
+      
       return $ong;
    }
-
-
+   
+   
    /**
     * Print the network name form
     *
@@ -88,72 +88,100 @@ class NetworkName extends FQDNLabel {
     *     - withtemplate template or basic computer
     *
     *@return void
-   **/
-   function showForm($ID, $options = []) {
-      $this->initForm($ID, $options);
-
+    **/
+    function showForm($ID, $options = []) {
       $recursiveItems = $this->recursivelyGetItems();
-      if (count($recursiveItems) != 0) {
+      $content = '';
+       if (count($recursiveItems) > 0) {
          $lastItem               = $recursiveItems[count($recursiveItems) - 1];
          $options['entities_id'] = $lastItem->getField('entities_id');
+         ob_start();
+            $this->displayRecursiveItems($recursiveItems, "Link");
+            $this->displayRecursiveItems($recursiveItems, 'Type');
+            Html::showSimpleForm($this->getFormURL(), 'unaffect', _sx('button', 'Dissociate'),
+               ['id' => $ID]);
+         $content = ob_get_clean();
       }
 
-      $this->showFormHeader($options);
 
-      echo "<tr class='tab_bg_1'><td>";
-      if (count($recursiveItems) > 0) {
-         $this->displayRecursiveItems($recursiveItems, 'Type');
-      }
-      echo "</td>\n<td colspan='3'>";
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            $this->canUpdateItem() ? [
+               'type' => 'submit',
+               'name' => $this->isNewID($ID) ? 'add' : 'update',
+               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary'
+            ] : [],
+            (!$this->isNewID($ID) && self::canPurge() ? [
+               'type' => 'submit',
+               'name' => 'purge',
+               'value' => __('Delete permanently'),
+               'class' => 'btn btn-danger'
+            ] : []),
+         ],
+         'content' => [
+            $this->getTypeName() => [
+               'visible' => 'true',
+               'inputs' => [
+                  __('Linked to') => [
+                     'content' => $content,
+                  ],
+                  !$this->isNewID($ID) ? [
+                     'name' => 'id',
+                     'type' => 'hidden',
+                     'value' => $ID,
+                  ] : [],
+                  __('Name') => [
+                     'name' => 'name',
+                     'type' => 'text',
+                     'value' => $this->fields['name'] ?? '',
+                  ],
+                  FQDN::getTypeName(1) => [
+                     'name' => 'fqdns_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('FQDN'),
+                     'value' => $this->fields['fqdns_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], 'FQDN'),
+                  ],
+                  IPAddress::getTypeName(Session::getPluralNumber()) => [
+                     'type' => 'multiSelect',
+                     'inputs' => [
+                        [
+                           'name' => 'current_ipaddress',
+                           'type' => 'text',
+                           'size' => 30,
+                        ],
+                     ],
+                     'getInputAdd' => <<<JS
+                        function () {
+                           if (!$('input[name="current_ipaddress"]').val()) {
+                              return;
+                           }
+                           var values = {
+                              _ipaddresses: $('input[name="current_ipaddress"]').val()
+                           };
+                           var title = $('input[name="current_ipaddress"]').val();
+                           return {values, title};
+                        }
+                     JS,
+                     'values' => getOptionsWithNameForItem('IpAddress',
+                        ['itemtype' => $this::class, 'items_id' => $this->getID()],
+                        ['_ipaddresses' => 'name']
+                     ),
+                  ],
+                  __('Comments') => [
+                     'name' => 'comment',
+                     'type' => 'textarea',
+                     'value' => $this->fields['comment'] ?? '',
+                  ],
+               ],
 
-      if (!($ID > 0)) {
-         echo "<input type='hidden' name='items_id' value='".$this->fields["items_id"]."'>\n";
-         echo "<input type='hidden' name='itemtype' value='".$this->fields["itemtype"]."'>\n";
-      }
-      $this->displayRecursiveItems($recursiveItems, "Link");
-      if ((count($recursiveItems) > 0) && $this->canUpdate()) {
-         Html::showSimpleForm($this->getFormURL(), 'unaffect', _sx('button', 'Dissociate'),
-                              ['id' => $ID]);
-      }
-
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Name') . "</td><td>\n";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>\n";
-
-      echo "<td>".FQDN::getTypeName(1)."</td><td>";
-      Dropdown::show(getItemTypeForTable(getTableNameForForeignKeyField("fqdns_id")),
-                     ['value'       => $this->fields["fqdns_id"],
-                           'name'        => 'fqdns_id',
-                           'entity'      => $this->getEntityID(),
-                           'displaywith' => ['view']]);
-      echo "</td>\n</tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".IPAddress::getTypeName(Session::getPluralNumber());
-      IPAddress::showAddChildButtonForItemForm($this, '_ipaddresses');
-      echo "</td>";
-      echo "<td>";
-      IPAddress::showChildsForItemForm($this, '_ipaddresses');
-      echo "</td>\n";
-
-      echo "<td rowspan='3'>".__('Comments')."</td>";
-      echo "<td rowspan='3'><textarea cols='45' rows='4' name='comment' >".$this->fields["comment"];
-      echo "</textarea></td>\n";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".IPNetwork::getTypeName(Session::getPluralNumber())."</td><td>";
-      echo __('IP network is not included in the database. However, you can see current available networks.');
-      echo "</td></tr>";
-      echo "<tr class='tab_bg_1'><td>&nbsp;</td><td>";
-      IPNetwork::showIPNetworkProperties($this->getEntityID());
-      echo "</td></tr>\n";
-
-      $this->showFormButtons($options);
-
+            ]
+         ]
+      ];
+      // dump values of ipaddresses
+      renderTwigForm($form);
       return true;
    }
 

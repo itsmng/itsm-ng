@@ -48,5 +48,13 @@ $used = [];
 if (isset($_POST["used"])) {
    $used = $_POST["used"];
 }
-Computer_Item::dropdownConnect($_POST["itemtype"], $_POST['fromtype'], $_POST['myname'],
-                               $_POST["entity_restrict"], $_POST["onlyglobal"], $used);
+$options = getOptionForItems(
+   $_POST['itemtype'],
+   [ 'entities_id' => $_POST["entity_restrict"] ]
+);
+if (isset($used[$_POST['itemtype']])) {
+   $options = array_diff_key($options, array_combine($used[$_POST['itemtype']], $used[$_POST['itemtype']]));
+}
+echo json_encode($options);
+// Computer_Item::dropdownConnect($_POST["itemtype"], $_POST['fromtype'], $_POST['myname'],
+//                                $_POST["entity_restrict"], $_POST["onlyglobal"], $used);
