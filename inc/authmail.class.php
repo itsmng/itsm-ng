@@ -183,122 +183,7 @@ class AuthMail extends CommonDBTM
             $this->getFromDB($ID);
         }
 
-        $FromMailServerConfig = MailServer::showMailServerConfig($this->fields["connect_string"]);
-        $data = MailServer::parseMailServerConnectString($this->fields["connect_string"]);
-
-        foreach ($FromMailServerConfig['protocols'] as $key => $params) {
-            $protocols['/' . $key] = $params['label'];
-        }
-
-        $form = [
-            'action' => Toolbox::getItemTypeFormURL('authmail'),
-            'buttons' => [
-                [
-                    'type' => 'submit',
-                    'name' => $this->isNewID($ID) ? 'add' : 'update',
-                    'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-                    'class' => 'btn btn-secondary',
-                ],
-                $this->isNewID($ID) ? [] : [
-                    'type' => 'submit',
-                    'name' => 'purge',
-                    'value' => __('Delete permanently'),
-                    'class' => 'btn btn-secondary'
-                ]
-            ],
-            'content' => [
-                __('Test connection to email server') => [
-                    'visible' => true,
-                    'inputs' => [
-                        $this->isNewID($ID) ? [] : [
-                            'type' => 'hidden',
-                            'name' => 'id',
-                            'value' => $ID
-                        ],
-                        __('Name') => [
-                            'name' => 'name',
-                            'type' => 'text',
-                            'value' => $this->fields['name'] ?? '',
-                        ],
-                        __('Active') => [
-                            'name' => 'is_active',
-                            'type' => 'checkbox',
-                            'value' => $this->fields['is_active'] ?? '',
-                        ],
-                        __('Email domain Name (users email will be login@domain)') => [
-                            'name' => 'host',
-                            'type' => 'text',
-                            'value' => $this->fields['host'] ?? '',
-                        ],
-                        __('Server') => [
-                            'name' => 'mail_server',
-                            'type' => 'text',
-                            'value' => $FromMailServerConfig['address'] ?? '',
-                        ],
-                        __('Protocol') => [
-                            'name' => 'server_type',
-                            'type' => 'select',
-                            'values' => $protocols,
-                            'value' => $FromMailServerConfig['select_type'],
-                        ],
-                        __('Security') => [
-                            'name' => 'server_ssl',
-                            'type' => 'select',
-                            'values' => $FromMailServerConfig['ssl'],
-                            'value' => $FromMailServerConfig['select_ssl'],
-                        ],
-                        __('Encryption') => [
-                            'name' => 'server_tls',
-                            'type' => 'select',
-                            'values' => $FromMailServerConfig['tls_types'],
-                            'value' => $FromMailServerConfig['select_tls'],
-                        ],
-                        __('Verify Certificat') => [
-                            'name' => 'server_cert',
-                            'type' => 'select',
-                            'values' => $FromMailServerConfig['validate_cert'],
-                            'value' => $FromMailServerConfig['select_validate_cert'],
-                        ],
-                        __('RSH') => [
-                            'name' => 'server_rsh',
-                            'type' => 'select',
-                            'values' => $FromMailServerConfig['norsh'],
-                            'value' => $FromMailServerConfig['select_norsh'],
-                        ],
-                        __('Secure') => [
-                            'name' => 'server_secure',
-                            'type' => 'select',
-                            'values' => $FromMailServerConfig['secure'],
-                            'value' => $FromMailServerConfig['select_secure'],
-                        ],
-                        __('Debug') => [
-                            'name' => 'server_debug',
-                            'type' => 'select',
-                            'values' => $FromMailServerConfig['debug'],
-                            'value' => $FromMailServerConfig['select_debug'],
-                        ],
-                        __('Incoming mail folder (optional, often INBOX)') => [
-                            'name' => 'server_mailbox',
-                            'type' => 'text',
-                            'value' => $data['mailbox'] ?? '',
-                        ],
-                        __('Port') => [
-                            'name' => 'server_port',
-                            'type' => 'text',
-                            'value' => $data['port'] ?? '',
-                        ],
-                        __('Connection string') => [
-                            'name' => 'imap_string',
-                            'type' => 'text',
-                            'disabled' => true,
-                            'value' => ($this->fields["connect_string"]) ?? '',
-                        ],
-                    ],
-                ]
-            ]
-        ];
-
-        renderTwigForm($form);
+        return MailServer::showMailServerConfigForm('authmail', $this->fields, $this->isNewID($ID), $ID);
     }
 
     /**
@@ -334,10 +219,12 @@ class AuthMail extends CommonDBTM
                             __('Login') => [
                                 'name' => 'imap_login',
                                 'type' => 'text',
+                                'required' => true,
                             ],
                             __('Password') => [
                                 'name' => 'imap_password',
                                 'type' => 'password',
+                                'required' => true,
                             ]
                         ]
                     ]
