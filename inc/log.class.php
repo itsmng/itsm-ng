@@ -267,7 +267,6 @@ class Log extends CommonDBTM {
       $itemtype = $item->getType();
       $items_id = $item->getField('id');
 
-      $SEARCHOPTION = Search::getOptions($itemtype);
       if (isset($_GET["start"])) {
          $start = intval($_GET["start"]);
       } else {
@@ -279,7 +278,6 @@ class Log extends CommonDBTM {
       // Total Number of events
       $total_number    = countElementsInTable("glpi_logs", ['items_id' => $items_id, 'itemtype' => $itemtype ]);
       $filtered_number = countElementsInTable("glpi_logs", ['items_id' => $items_id, 'itemtype' => $itemtype ] + $sql_filters);
-
       // No Events in database
       if ($total_number < 1) {
          echo "<div class='center'>";
@@ -290,106 +288,33 @@ class Log extends CommonDBTM {
          return;
       }
 
-      // Display the pager
-      $additional_params = isset($_GET['filters']) ? http_build_query(['filters' => $_GET['filters']]) : '';
-      Html::printAjaxPager(self::getTypeName(1), $start, $filtered_number, '', true, $additional_params);
-
-      // Output events
-      echo "<div class='center'>";
-      echo "<table class='tab_cadre_fixehov'>";
-
-      $header = "<tr>";
-      $header .= "<th>".__('ID')."</th>";
-      $header .= "<th>"._n('Date', 'Dates', 1)."</th>";
-      $header .= "<th>".User::getTypeName(1)."</th>";
-      $header .= "<th>"._n('Field', 'Fields', 1)."</th>";
-      //TRANS: a noun, modification, change
-      $header .= "<th>"._x('name', 'Update')."</th>";
-      $header .= "</tr>";
-
-      echo "<thead>";
-      echo $header;
-      if (isset($_GET['filters'])) {
-         echo "<tr class='log_history_filter_row'>";
-         echo "<th>";
-         echo "<input type='hidden' name='filters[active]' value='1' />";
-         echo "<input type='hidden' name='items_id' value='$items_id' />";
-         echo "</th>";
-         $dateValue = isset($_GET['filters']['date']) ? Html::cleanInputText($_GET['filters']['date']) : null;
-         echo "<th><input type='date' name='filters[date]' value='$dateValue' /></th>";
-         echo "<th>";
-         Dropdown::showFromArray(
-            "filters[users_names]",
-            Log::getDistinctUserNamesValuesInItemLog($item),
-            [
-               'multiple'            => true,
-               'display_emptychoice' => true,
-               'values'              => isset($_GET['filters']['users_names']) ? $_GET['filters']['users_names'] : [],
-               'width'               => "100%",
-            ]
-         );
-         echo "</th>";
-         echo "<th>";
-         Dropdown::showFromArray(
-            "filters[affected_fields]",
-            Log::getDistinctAffectedFieldValuesInItemLog($item),
-            [
-               'multiple'            => true,
-               'display_emptychoice' => true,
-               'values'              => isset($_GET['filters']['affected_fields']) ? $_GET['filters']['affected_fields'] : [],
-               'width'               => "100%",
-            ]
-         );
-         echo "</th>";
-         echo "<th>";
-         Dropdown::showFromArray(
-            "filters[linked_actions]",
-            Log::getDistinctLinkedActionValuesInItemLog($item),
-            [
-               'multiple'            => true,
-               'display_emptychoice' => true,
-               'values'              => isset($_GET['filters']['linked_actions']) ? $_GET['filters']['linked_actions'] : [],
-               'width'               => "100%",
-            ]
-         );
-         echo "</th>";
-         echo "</tr>";
-      } else {
-         echo "<tr>";
-         echo "<th colspan='5'>";
-         echo "<a href='#' class='show_log_filters'>" . __('Show filters') . " <span class='fa fa-filter pointer'></span></a>";
-         echo "</th>";
-         echo "</tr>";
-      }
-      echo "</thead>";
-
-      echo "<tfoot>$header</tfoot>";
-
-      echo "<tbody>";
+      $fields = [
+         __('ID'),
+         _n('Date', 'Dates', 1),
+         User::getTypeName(1),
+         _n('Field', 'Fields', 1),
+         _x('name', 'Update')
+      ];
+      $values = [];
       if ($filtered_number > 0) {
          foreach (self::getHistoryData($item, $start, $_SESSION['glpilist_limit'], $sql_filters) as $data) {
             if ($data['display_history']) {
-               // show line
-               echo "<tr class='tab_bg_2'>";
-               echo "<td>".$data['id']."</td>";
-               echo "<td class='tab_date'>".$data['date_mod']."</td>";
-               echo "<td>".$data['user_name']."</td>";
-               echo "<td>".$data['field']."</td>";
-               echo "<td width='60%'>".Html::entities_deep($data['change'])."</td>";
-               echo "</tr>";
+               $values[] = [
+                  $data['id'],
+                  $data['date_mod'],
+                  $data['user_name'],
+                  $data['field'],
+                  Html::entities_deep($data['change']),
+               ];
             }
          }
-      } else {
-         echo "<tr>";
-         echo "<th colspan='5'>" . __('No historical matching your filters') . "</th>";
-         echo "</tr>";
       }
-      echo "</tbody>";
 
-      echo "</table>";
-      echo "</div>";
-
-      Html::printAjaxPager(self::getTypeName(1), $start, $filtered_number, '', true, $additional_params);
+      renderTwigTemplate('table.twig', [
+         'id' => 'HistoricalTable',
+         'fields' => $fields,
+         'values' => $values,
+      ]);
    }
 
    /**

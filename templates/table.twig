@@ -1,15 +1,17 @@
 <div class="table-container">
+	{% set rand=random() %}
 	<div
-		id="toolbar">
-		<!-- Button trigger modal -->
-		<button type="button" class="btn btn-secondary" onclick="populateModal()">
+		id="toolbar{{rand}}">
+		{% if massive_action is defined %}
+		<button type="button" class="btn btn-secondary" onclick="populateModal{{rand}}()">
 			<i class="fas fa-hammer text-white"></i>
 		</button>
+		{% endif %}
 	</div>
 	<table
 		id="{{id}}"
 		class="table table-striped table-bordered table-hover"
-		data-toolbar="#toolbar"
+		data-toolbar="#toolbar{{rand}}"
 		data-virtual-scroll="true"
 		data-toggle="table"
 		data-click-to-select="true"
@@ -18,16 +20,14 @@
 		data-search="true"
 		data-sortable="true"
 		data-show-export="true"
-		data-buttons="buttons"
 		data-show-columns="true"
 		data-icons="icons"
 		data-show-columns-toggle-all="true"
+		{% if is_trash is defined %} data-buttons="buttons{{rand}}" {% endif %}
 		>
 		<thead class="table-light">
 			<tr>
 				<th data-field="state" data-checkbox="true"></th>
-				<th class="d-none"></th>
-				<th class="d-none"></th>
 				{% for field in fields %}
 					<th data-sortable="true">{{ field }}</th>
 				{% endfor %}
@@ -35,12 +35,13 @@
 		</thead>
 		<tbody class="table-{{ (is_trash == 1) ? 'primary' : 'light' }}">
 			{% for key, value in values %}
-				<tr>
+				<tr 
+				{% if massive_action is defined %}
+					data-id="{{key}}" data-value='{{massive_action[key]}}'
+				{% endif %}>
 					<td></td>
-					<td data-title='id'>{{key}}</td>
-					<td >{{value[0]}}</td>
 					{% for col in fields|keys %}
-						<td>{{ value[col + 1] | raw }}</td>
+						<td>{{ value[col] | raw }}</td>
 					{% endfor %}
 				</tr>
 			{% endfor %}
@@ -54,7 +55,28 @@
 		export: 'fas fa-file-export',
 	}
 
-	function populateModal() {
+	function populateModal{{rand}}() {
     	massiveaction_window{{id}}.dialog('open');
 	}
+
+
+	{% if is_trash is defined %}
+		function buttons{{rand}}() {
+			buttons = {
+				btnshowTrash: {
+					text: 'Show trash',
+					icon: 'fas fa-trash-alt',
+					event: function () {
+						toogle('is_deleted', '', '', '');
+						document.forms['searchform{{ itemtype }}'].submit();
+					},
+					attributes: {
+						title: {{ 'Show trash content'|trans|json_encode|raw }},
+						style: {{ (is_trash == 1) ? 'background : #7b081d'|json_encode|raw : ''|json_encode|raw }}
+					}
+				}
+			}
+			return buttons;
+		}
+	{% endif %}
 </script>

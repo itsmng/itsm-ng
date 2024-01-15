@@ -1479,9 +1479,10 @@ class Search {
          Session::initNavigateListItems($data['itemtype']);
       }
 
-      $fields = $data['data']['cols'];
+      $fields = array_column($data['data']['cols'], 'name');
       $values = [];
       $row_num = 0;
+      $massiveActionValues = [];
       foreach ($data['data']['rows'] as $row) {
          Session::addToNavigateListItems($data['itemtype'], $row["id"]);
 
@@ -1489,15 +1490,15 @@ class Search {
          $col_num = 0;
          $value[$row_num] = [];
          
-         $values[$row_num][0] = 'item['.$data['itemtype'].']['.$row['id'].']';
+         $massiveActionValues[$row_num] = 'item['.$data['itemtype'].']['.$row['id'].']';
 
          foreach ($data['data']['cols'] as $col) {
-            $col_num++;
             $colkey = "{$col['itemtype']}_{$col['id']}";
             
             if (isset($row[$colkey]['displayname']) && $row[$colkey]['displayname']) {
                $values[$row_num][$col_num] = $row[$colkey]['displayname'];
             }
+            $col_num++;
          }
       }
       $pref_url = $CFG_GLPI["root_doc"]."/front/displaypreference.form.php?itemtype=".$data['itemtype'];
@@ -1518,19 +1519,20 @@ class Search {
       ]);
 
       $massiveactionparams                   = $data['search']['massiveactionparams'];
-      $massiveactionparams['container']      = "search_table";
+      $massiveactionparams['container']      = 'SearchTableFor'.$data['itemtype'];
       $massiveactionparams['display_arrow']  = false;
       $massiveactionparams['is_deleted']  = $data['search']['is_deleted'];
       // $massiveactionparams['itemtype']       = $data['itemtype'];
 
       Html::showMassiveActions($massiveactionparams);
-      
-      renderTwigTemplate('search.twig', [
-         'is_trash' =>$data['search']['is_deleted'],
-         'itemtype' => $data['itemtype'],
+
+      renderTwigTemplate('table.twig', [
+         'id' => 'SearchTableFor'.$data['itemtype'],
          'fields' => $fields,
          'values' => $values,
-         'searchConfigRights' => $searchconfigRights,
+         'is_trash' => $data['search']['is_deleted'],
+         'itemtype' => $data['itemtype'],
+         'massive_action' => $massiveActionValues,
       ]);
    }
 
