@@ -186,10 +186,29 @@ class Contract extends CommonDBTM {
 
       $form = [
          'action' => $this->getFormURL(),
+         'buttons' => [
+				[
+					'type' => 'submit',
+					'name' => $this->isNewID($ID) ? 'add' : 'update',
+					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+					'class' => 'btn btn-secondary',
+				],
+				$this->isNewID($ID) ? [] : [
+					'type' => 'submit',
+					'name' => 'delete',
+					'value' => __('Put in trashbin'),
+					'class' => 'btn btn-secondary'
+				]
+			],
          'content' => [
             __('Add a contract') => [
                'visible' => true,
                'inputs' => [
+                  $this->isNewID($ID) ? [] : [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID
+                  ],
                   __('Name') => [
                      'type' => 'text',
                      'name' => 'name',
