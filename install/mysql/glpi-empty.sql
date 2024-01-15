@@ -8512,3 +8512,10 @@ CREATE TABLE IF NOT EXISTS `glpi_oidc_users` (
         `update`   TINYINT(1) NOT NULL DEFAULT 0,
         PRIMARY KEY (`id`)
         ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `glpi_user_menu` (
+  `name` VARCHAR(255) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `content` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`name`, `user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

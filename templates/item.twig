@@ -46,7 +46,17 @@ function updateGridContent() {
 		options.push( val );
 		setTimeout( function() { $inp.prop( 'checked', true ) }, 0);
 	}
-	sessionStorage.setItem('grid-layout-{{layoutFor|slug}}', options);
+	$.ajax({
+		url: '{{glpiroot}}/ajax/updateUserMenu.php',
+		type: 'POST',
+		data: {
+			'itemName': '{{formName}}',
+			'content': options,
+		},
+		success: function(data) {
+			console.log(data);
+		}
+	});
 
 	for (option of $('#ContentForTabs > div')) {
 		grid.removeWidget(option, false);
@@ -69,12 +79,15 @@ function updateGridContent() {
 }
 var options = [];
 
-function initCheckboxFromSession() {
-	checkedValues = sessionStorage.getItem('grid-layout-{{layoutFor|slug}}');
-	if (!checkedValues) {
-			$('.isTabButton').first().find('input').prop('checked', true)
+function initCheckbox() {
+	const checkedValues = [
+		{% for value in selectedTabs %}
+			"{{value|slug}}",
+		{% endfor %}
+	];
+	if (!checkedValues.length) {
+		$('.isTabButton').first().find('input').prop('checked', true)
 	} else {
-		checkedValues = checkedValues.split(',')
 		$('.dropdown-menu a').each((i, e) => {
 			if (checkedValues.includes($(e).data('value'))) {
 				$(e).find('input').prop('checked', true);
@@ -84,7 +97,7 @@ function initCheckboxFromSession() {
 }
 
 $(document).ready((e) => {
-	initCheckboxFromSession();
+	initCheckbox();
 	if ({{tabs | length == 1 ? 1 : 0}}) {
 		$('#hidden_gridStack_items > div').first().detach().appendTo( '#ContentForTabs' );
 		options.push($('#ContentForTabs > div').first().attr('id').replace('ContentFor', ''));
