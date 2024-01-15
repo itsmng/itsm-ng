@@ -1517,9 +1517,8 @@ class Search {
          DisplayPreference::GENERAL
       ]);
 
-      $twig = Twig::load(GLPI_ROOT . "/templates", false);
       $massiveactionparams                   = $data['search']['massiveactionparams'];
-      $massiveactionparams['container']      = "search-table";
+      $massiveactionparams['container']      = "search_table";
       $massiveactionparams['display_arrow']  = false;
       $massiveactionparams['is_deleted']  = $data['search']['is_deleted'];
       // $massiveactionparams['itemtype']       = $data['itemtype'];

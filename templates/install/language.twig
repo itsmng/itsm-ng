@@ -4,15 +4,15 @@
 <h3>{{'Select your language'|trans}}</h3>
 <div class="container mt-5">
     <form action="install.php?step=1" method="post">
-        <select name="language" id="select_box" class="form-control p-0 mb-3">
+        <select name="language" id="select_box" class="form-select p-0 mb-3">
             {% for region,language_list in languages %}
             <optgroup label={{region|capitalize}}>
             {% for language_data in language_list %}
                     {% for code, language in language_data %}
                         {% if code == selected_language %}
-                <option value={{code}} selected>{{language['native']}}</option>
+                <option value={{code}} selected>{{language}}</option>
                         {% else %}
-                <option value={{code}}>{{language['native']}}</option>
+                <option value={{code}}>{{language}}</option>
                         {% endif %}
                     {% endfor %}
                 {% endfor %}

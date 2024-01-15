@@ -295,7 +295,6 @@ class Computer_Item extends CommonDBRelation{
 
       $ID      = $comp->fields['id'];
       $canedit = $comp->canEdit($ID);
-      $rand    = mt_rand();
 
       $datas = [];
       $used  = [];
@@ -413,84 +412,54 @@ class Computer_Item extends CommonDBRelation{
       }
 
       if ($number) {
-         echo "<div class='spaced'>";
          if ($canedit) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-            $massiveactionparams
-               = ['num_displayed'
-                           => min($_SESSION['glpilist_limit'], $number),
-                       'specific_actions'
-                           => ['purge' => _x('button', 'Disconnect')],
-                       'container'
-                           => 'mass'.__CLASS__.$rand];
+            $massiveactionparams                   = [
+               'container' => "ComputerConnectionTable",
+               'display_arrow' => false,
+               'specific_actions' => [
+                  'purge' => __('Disconnect'),
+               ],
+               'is_deleted' => false,
+            ];
+
             Html::showMassiveActions($massiveactionparams);
          }
-         echo "<table class='tab_cadre_fixehov'>";
-         $header_begin  = "<tr>";
-         $header_top    = '';
-         $header_bottom = '';
-         $header_end    = '';
-
-         if ($canedit) {
-            $header_top    .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header_top    .= "</th>";
-            $header_bottom .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header_bottom .=  "</th>";
-         }
-
-         $header_end .= "<th>"._n('Type', 'Types', 1)."</th>";
-         $header_end .= "<th>".__('Name')."</th>";
-         if (Plugin::haveImport()) {
-            $header_end .= "<th>".__('Automatic inventory')."</th>";
-         }
-         $header_end .= "<th>".Entity::getTypeName(1)."</th>";
-         $header_end .= "<th>".__('Serial number')."</th>";
-         $header_end .= "<th>".__('Inventory number')."</th>";
-         $header_end .= "</tr>";
-         echo $header_begin.$header_top.$header_end;
-
+         $fields = [
+            _n('Type', 'Types', 1),
+            __('Name'),
+            Entity::getTypeName(1),
+            __('Serial number'),
+            __('Inventory number'),
+         ];
+         $values = [];
          foreach ($datas as $data) {
             $linkname = $data["name"];
-            $itemtype = $data['assoc_itemtype'];
             if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
                $linkname = sprintf(__('%1$s (%2$s)'), $linkname, $data["id"]);
             }
-            $link = $itemtype::getFormURLWithID($data["id"]);
-            $name = "<a href=\"".$link."\">".$linkname."</a>";
-
-            echo "<tr class='tab_bg_1'>";
-
-            if ($canedit) {
-               echo "<td width='10'>";
-               Html::showMassiveActionCheckBox(__CLASS__, $data["linkid"]);
-               echo "</td>";
-            }
-            echo "<td>".$data['assoc_itemtype']::getTypeName(1)."</td>";
-            echo "<td ".
-                  ((isset($data['is_deleted']) && $data['is_deleted'])?"class='tab_bg_2_2'":"").
-                 ">".$name."</td>";
+            $link = $data['assoc_itemtype']::getFormURLWithID($data["id"]);
+            $values[$data['id']] = [
+               0 => 'item[Computer_Item]['.$data['linkid'].']',
+               1 => $data['assoc_itemtype']::getTypeName(1),
+               2 => "<a href=\"".$link."\">".$linkname."</a>",
+               3 => Dropdown::getDropdownName("glpi_entities", $data['entities_id']),
+               4 => (isset($data["serial"])? "".$data["serial"]."" :"-"),
+               5 => (isset($data["otherserial"])? "".$data["otherserial"]."" :"-"),
+            ];
             if (Plugin::haveImport()) {
-               $dynamic_field = static::getTable() . '_is_dynamic';
-               echo "<td>".Dropdown::getYesNo($data[$dynamic_field])."</td>";
+               $values[$data['id']][6] = Dropdown::getYesNo($data[static::getTable() . '_is_dynamic']);
             }
-            echo "<td>".Dropdown::getDropdownName("glpi_entities",
-                                                               $data['entities_id']);
-            echo "</td>";
-            echo "<td>".
-                   (isset($data["serial"])? "".$data["serial"]."" :"-")."</td>";
-            echo "<td>".
-                   (isset($data["otherserial"])? "".$data["otherserial"]."" :"-")."</td>";
-            echo "</tr>";
-         }
-         echo $header_begin.$header_bottom.$header_end;
 
-         echo "</table>";
-         if ($canedit && $number) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
          }
-         echo "</div>";
+         $twig_vars = [
+            'id' => 'ComputerConnectionTable',
+            'fields' => $fields, 
+            'values' => $values, 
+         ];
+         if (Plugin::haveImport()) {
+            $twig_vars['fields'][] = __('Automatic inventory');
+         }
+         renderTwigTemplate('table.twig', $twig_vars);
       }
    }
 

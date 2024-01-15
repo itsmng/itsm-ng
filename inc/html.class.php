@@ -2792,7 +2792,7 @@ JAVASCRIPT;
          $width = '95%';
       }
 
-      $identifier = '';//md5($url . serialize($p['extraparams']) . $p['rand']);
+      $identifier = $p['container'];
       $max        = Toolbox::get_max_input_vars();
       $out = '';
 
@@ -2852,8 +2852,8 @@ JAVASCRIPT;
                ]
             );
          }
-         $out .= "<table class='tab_glpi' width='$width'><tr>";
          if ($p['display_arrow']) {
+            $out .= "<table class='tab_glpi' width='$width'><tr>";
             $out .= "<td width='30px'><img src='" . $CFG_GLPI["root_doc"] . "/pics/arrow-left" .
                ($p['ontop'] ? '-top' : '') . ".png' alt=''></td>";
                $out .= "<td width='100%' class='left'>";
