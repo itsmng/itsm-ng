@@ -830,7 +830,7 @@ class CommonGLPI {
     * @return void
    **/
    function showTabsContent($options = []) {
-      global $CFG_GLPI;
+      global $CFG_GLPI, $DB;
 
       // for objects not in table like central
       if (isset($this->fields['id'])) {
@@ -881,6 +881,20 @@ class CommonGLPI {
          $tabpage = $this->getTabsURL();
          $tabs    = [];
 
+         $selected_tabs = iterator_to_array($DB->request([
+            'SELECT' => 'content',
+            'FROM'   => 'glpi_user_menu',
+            'WHERE' => [
+               'user_id' => Session::getLoginUserID(),
+               'name' => $this->getTypeName(),
+            ],
+         ]));
+         if (!count($selected_tabs)) {
+            $selected_tabs = [];
+         } else {
+            $selected_tabs = json_decode($selected_tabs[0]['content'], true);
+         }
+
          foreach ($onglets as $key => $val) {
             if($item = getItemForItemtype(explode("$", $key)[0])) {
                $shortcut = $item->getShortcutsForItem();
@@ -901,15 +915,13 @@ class CommonGLPI {
             ];
          }
       }
-      try {
-         renderTwigTemplate('item.twig', [
-            'tabs' => $tabs,
-            'layoutFor' => $target,
-            'glpiroot' => $CFG_GLPI['root_doc'],
-         ]);
-      } catch (Exception $e) {
-         echo $e->getMessage();
-      }
+      renderTwigTemplate('item.twig', [
+         'tabs' => $tabs,
+         'layoutFor' => $target,
+         'formName' => $this->getTypeName(),
+         'selectedTabs' => $selected_tabs,
+         'glpiroot' => $CFG_GLPI['root_doc'],
+      ]);
    }
 
 
