@@ -1981,7 +1981,8 @@ class Toolbox {
    /**
     * Parse imap open connect string
     *
-    * @since 0.84
+    * @deprecated
+    * use itsmng\MailServer:parseMailServerConnectString
     *
     * @param string  $value      connect string
     * @param boolean $forceport  force compute port if not set
@@ -2240,6 +2241,8 @@ class Toolbox {
 
    /**
     * Retuns available mail servers protocols.
+    * @deprecated ITSM 2.0.0
+    * use itsmng\MailServer::getMailServerProtocols
     *
     * For each returned element:
     *  - key is type used in connection string;
