@@ -182,31 +182,55 @@ class CartridgeItem extends CommonDBTM {
 
       $form = [
          'action' => $this->getFormURL(),
+         'buttons' => [
+            isset($this->fields["is_deleted"]) && $this->fields["is_deleted"] == 1 && self::canDelete() ? [
+              'type' => 'submit',
+              'name' => 'restore',
+              'value' => __('Restore'),
+              'class' => 'btn btn-secondary'
+            ] : ($this->canUpdateItem() ? [
+              'type' => 'submit',
+              'name' => $this->isNewID($ID) ? 'add' : 'update',
+              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+              'class' => 'btn btn-secondary'
+            ] : []),
+            !$this->isNewID($ID) && !$this->isDeleted() && $this->canDeleteItem() ? [
+              'type' => 'submit',
+              'name' => 'delete',
+              'value' => __('Put in trashbin'),
+              'class' => 'btn btn-danger'
+            ] : (!$this->isNewID($ID) && self::canPurge() ? [
+              'type' => 'submit',
+              'name' => 'purge',
+              'value' => __('Delete permanently'),
+              'class' => 'btn btn-danger'
+            ] : []),
+          ],
          'content' => [
             __('General') => [
                'inputs' => [
                   __('Name') => [
                   'name' => 'name',
                   'type' => 'text',
-                  'value' => $this->fields["name"],
+                  'value' => $this->fields["name"] ?? '',
                   ],
                   _n('Type', 'Types', 1) => [
                      'name' => 'cartridgeitemtypes_id',
                      'type' => 'select',
                      'values' => getOptionForItems('CartridgeItemType'),
-                     'value' => $this->fields["cartridgeitemtypes_id"],
+                     'value' => $this->fields["cartridgeitemtypes_id"] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "CartridgeItemType"),
                   ],
                   __('Reference') => [
                      'name' => 'ref',
                      'type' => 'text',
-                     'value' => $this->fields["ref"],
+                     'value' => $this->fields["ref"] ?? '',
                   ],
                   Manufacturer::getTypeName(1) => [
                      'name' => 'manufacturers_id',
                      'type' => 'select',
                      'values' => getOptionForItems('Manufacturer'),
-                     'value' => $this->fields["manufacturers_id"],
+                     'value' => $this->fields["manufacturers_id"] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                   ],
                   __('Technician in charge of the hardware') => [
@@ -214,32 +238,32 @@ class CartridgeItem extends CommonDBTM {
                      'type' => 'select',
                      'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                      'entity' => $this->fields["entities_id"],
-                     'value' => $this->fields["users_id_tech"],
+                     'value' => $this->fields["users_id_tech"] ?? '',
                      'actions' => getItemActionButtons(['info'], "User"),
                   ],
                   __('Comments') => [
                      'name' => 'comment',
                      'type' => 'textarea',
-                     'value' => $this->fields["comment"],
+                     'value' => $this->fields["comment"] ?? '',
                   ],
                   __('Group in charge of the hardware') => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
                      'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
-                     'value' => $this->fields["groups_id_tech"],
+                     'value' => $this->fields["groups_id_tech"] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __('Stock location') => [
                      'name' => 'locations_id',
                      'type' => 'select',
                      'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
-                     'value' => $this->fields["locations_id"],
+                     'value' => $this->fields["locations_id"] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "Location"),
                   ],
                   __('Alert threshold') => [
                      'name' => 'alarm_threshold',
                      'type' => 'number',
-                     'value' => $this->fields["alarm_threshold"],
+                     'value' => $this->fields["alarm_threshold"] ?? '',
                      'min' => 0,
                      'max' => 100,
                      'step' => 1,
