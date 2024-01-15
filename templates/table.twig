@@ -2,7 +2,7 @@
 	{% set rand=random() %}
 	<div
 		id="toolbar{{rand}}">
-		{% if massive_action %}
+		{% if massive_action is defined %}
 		<button type="button" class="btn btn-secondary" onclick="populateModal{{rand}}()">
 			<i class="fas fa-hammer text-white"></i>
 		</button>
@@ -35,10 +35,13 @@
 		</thead>
 		<tbody class="table-{{ (is_trash == 1) ? 'primary' : 'light' }}">
 			{% for key, value in values %}
-				<tr data-id="{{key}}" data-value='{{massive_action[key]}}'>
+				<tr 
+				{% if massive_action is defined %}
+					data-id="{{key}}" data-value='{{massive_action[key]}}'
+				{% endif %}>
 					<td></td>
 					{% for col in fields|keys %}
-						<td>{{ value[col + 1] | raw }}</td>
+						<td>{{ value[col] | raw }}</td>
 					{% endfor %}
 				</tr>
 			{% endfor %}

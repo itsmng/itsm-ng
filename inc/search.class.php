@@ -1493,12 +1493,12 @@ class Search {
          $massiveActionValues[$row_num] = 'item['.$data['itemtype'].']['.$row['id'].']';
 
          foreach ($data['data']['cols'] as $col) {
-            $col_num++;
             $colkey = "{$col['itemtype']}_{$col['id']}";
             
             if (isset($row[$colkey]['displayname']) && $row[$colkey]['displayname']) {
                $values[$row_num][$col_num] = $row[$colkey]['displayname'];
             }
+            $col_num++;
          }
       }
       $pref_url = $CFG_GLPI["root_doc"]."/front/displaypreference.form.php?itemtype=".$data['itemtype'];
