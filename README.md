@@ -15,7 +15,7 @@ Here is the list of the different libraries and modules and their versions usefu
 
 * Apache, Nginx, IIS, etc
 * MariaDB >= 10.0 or MySQL >= 5.6
-* PHP 7.2 or newer
+* PHP 8.1 or newer
 * Required PHP extensions :
     - ctype
     - curl
