@@ -279,7 +279,6 @@ class Log extends CommonDBTM {
       // Total Number of events
       $total_number    = countElementsInTable("glpi_logs", ['items_id' => $items_id, 'itemtype' => $itemtype ]);
       $filtered_number = countElementsInTable("glpi_logs", ['items_id' => $items_id, 'itemtype' => $itemtype ] + $sql_filters);
-
       // No Events in database
       if ($total_number < 1) {
          echo "<div class='center'>";
@@ -295,6 +294,34 @@ class Log extends CommonDBTM {
       Html::printAjaxPager(self::getTypeName(1), $start, $filtered_number, '', true, $additional_params);
 
       // Output events
+      $fields = [
+         __('ID'),
+         _n('Date', 'Dates', 1),
+         User::getTypeName(1),
+         _n('Field', 'Fields', 1),
+         _x('name', 'Update')
+      ];
+      $values = [];
+      if ($filtered_number > 0) {
+         foreach (self::getHistoryData($item, $start, $_SESSION['glpilist_limit'], $sql_filters) as $data) {
+            if ($data['display_history']) {
+               $values[] = [
+                  $data['id'],
+                  $data['date_mod'],
+                  $data['user_name'],
+                  $data['field'],
+                  Html::entities_deep($data['change']),
+               ];
+            }
+         }
+      }
+
+      renderTwigTemplate('table.twig', [
+         'id' => 'HistoricalTable',
+         'fields' => $fields,
+         'values' => $values,
+      ]);
+
       echo "<div class='center'>";
       echo "<table class='tab_cadre_fixehov'>";
 

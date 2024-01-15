@@ -432,19 +432,20 @@ class Computer_Item extends CommonDBRelation{
             __('Inventory number'),
          ];
          $values = [];
+         $massiveActionValues = [];
          foreach ($datas as $data) {
             $linkname = $data["name"];
             if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
                $linkname = sprintf(__('%1$s (%2$s)'), $linkname, $data["id"]);
             }
             $link = $data['assoc_itemtype']::getFormURLWithID($data["id"]);
+            $massiveActionValues[$data['id']] = 'item[Computer_Item]['.$data['linkid'].']';
             $values[$data['id']] = [
-               0 => 'item[Computer_Item]['.$data['linkid'].']',
-               1 => $data['assoc_itemtype']::getTypeName(1),
-               2 => "<a href=\"".$link."\">".$linkname."</a>",
-               3 => Dropdown::getDropdownName("glpi_entities", $data['entities_id']),
-               4 => (isset($data["serial"])? "".$data["serial"]."" :"-"),
-               5 => (isset($data["otherserial"])? "".$data["otherserial"]."" :"-"),
+               $data['assoc_itemtype']::getTypeName(1),
+               "<a href=\"".$link."\">".$linkname."</a>",
+               Dropdown::getDropdownName("glpi_entities", $data['entities_id']),
+               (isset($data["serial"])? "".$data["serial"]."" :"-"),
+               (isset($data["otherserial"])? "".$data["otherserial"]."" :"-"),
             ];
             if (Plugin::haveImport()) {
                $values[$data['id']][6] = Dropdown::getYesNo($data[static::getTable() . '_is_dynamic']);
@@ -454,7 +455,8 @@ class Computer_Item extends CommonDBRelation{
          $twig_vars = [
             'id' => 'ComputerConnectionTable',
             'fields' => $fields, 
-            'values' => $values, 
+            'values' => $values,
+            'massive_action' => $massiveActionValues,
          ];
          if (Plugin::haveImport()) {
             $twig_vars['fields'][] = __('Automatic inventory');
