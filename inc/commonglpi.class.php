@@ -901,15 +901,11 @@ class CommonGLPI {
             ];
          }
       }
-      try {
-         renderTwigTemplate('item.twig', [
-            'tabs' => $tabs,
-            'layoutFor' => $target,
-            'glpiroot' => $CFG_GLPI['root_doc'],
-         ]);
-      } catch (Exception $e) {
-         echo $e->getMessage();
-      }
+      renderTwigTemplate('item.twig', [
+         'tabs' => $tabs,
+         'layoutFor' => $target,
+         'glpiroot' => $CFG_GLPI['root_doc'],
+      ]);
    }
 
 

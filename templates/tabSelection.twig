@@ -11,9 +11,9 @@
 			</a>
 		</li>
 		<li><hr class="dropdown-divider"></li>
-	{% for tab in tabs %}
+	{% for key, tab in tabs %}
 		<li>
-			<a href="#" class="dropdown-item isTabButton" class="small" data-value="{{tab|slug}}" style="user-select: none; --webkit-user-select: none;">
+			<a href="#" class="dropdown-item isTabButton" class="small" data-value="{{key|slug}}" style="user-select: none; --webkit-user-select: none;">
 				<input type="checkbox"/>&nbsp;{{tab|raw}}
 			</a>
 		</li>
