@@ -7,8 +7,6 @@
 [![Translation](https://hosted.weblate.org/widget/itsm-ng/itsm-ng/svg-badge.svg)](https://hosted.weblate.org/projects/itsm-ng/itsm-ng)
 
 
-https://hosted.weblate.org/widget/itsm-ng/itsm-ng/svg-badge.svg
-
 ITSM-NG is a GLPI fork with the objective of offering a strong community component and relevant technological choices.
 
 ## Prerequisites
