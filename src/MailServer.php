@@ -4,9 +4,11 @@ namespace itsmng;
 
 use Config;
 use Plugin;
+use Toolbox;
 
 class MailServer
 {
+
     /**
      * Retuns available mail servers protocols.
      *
@@ -261,6 +263,249 @@ class MailServer
 
         $data['debug'] = $values;
         $data['select_debug'] = $svalue;
+
+        return $data;
+    }
+
+    /**
+     * Return a mail server, mail collector config form
+     *
+     * @return void
+     **/
+    static function showMailServerConfigForm($action, $fields, $is_ID, $ID)
+    {
+        $data = self::parseMailServerConnectString($fields["connect_string"] ?? '');
+
+        $FromMailServerConfig = self::showMailServerConfig($fields["connect_string"] ?? '');
+        foreach ($FromMailServerConfig['protocols'] as $key => $params) {
+            $protocols['/' . $key] = $params['label'];
+        }
+
+        $authmail = false;
+        $mailcollector = false;
+
+        if ($action == 'authmail') {
+            $authmail = true;
+            $title = __('Email server');
+
+        } elseif ($action == 'mailcollector') {
+            $mailcollector = true;
+            $title = __('Receiver');
+
+            if (!empty($fields['host'])) {
+                $field = self::getMailCollectorConfig($fields['host']);
+            }
+        }
+
+        $form = [
+            'action' => Toolbox::getItemTypeFormURL($action),
+            'buttons' => [
+                [
+                    'type' => 'submit',
+                    'name' => $is_ID ? 'add' : 'update',
+                    'value' => $is_ID ? __('Add') : __('Update'),
+                    'class' => 'btn btn-secondary',
+                ],
+                $is_ID ? [] : [
+                    'type' => 'submit',
+                    'name' => 'purge',
+                    'value' => __('Delete permanently'),
+                    'class' => 'btn btn-secondary'
+                ]
+            ],
+            'content' => [
+                ($title) => [
+                    'visible' => true,
+                    'inputs' => [
+                        $is_ID ? [] : [
+                            'type' => 'hidden',
+                            'name' => 'id',
+                            'value' => $ID
+                        ],
+                        __('Name') => [
+                            'name' => 'name',
+                            'type' => 'text',
+                            'value' => $fields['name'] ?? '',
+                        ],
+                        __('Active') => [
+                            'name' => 'is_active',
+                            'type' => 'checkbox',
+                            'value' => $fields['is_active'] ?? '',
+                        ],
+                        __('Email domain Name (users email will be login@domain)') => $mailcollector ? [] : [
+                            'type' => 'host',
+                            'name' => 'text',
+                            'value' => $fields['host'] ?? ''
+                        ],
+                        __('Server') => [
+                            'name' => 'mail_server',
+                            'type' => 'text',
+                            'value' => $field['host'] ?? $FromMailServerConfig['address'],
+                        ],
+                        __('Protocol') => [
+                            'name' => 'server_type',
+                            'type' => 'select',
+                            'values' => $protocols,
+                            'value' => $field['protocol'] ?? $FromMailServerConfig['select_type'] ?? '',
+                        ],
+                        __('Security') => [
+                            'name' => 'server_ssl',
+                            'type' => 'select',
+                            'values' => $FromMailServerConfig['ssl'],
+                            'value' => $field['security'] ?? $FromMailServerConfig['select_ssl'],
+                        ],
+                        __('Encryption') => [
+                            'name' => 'server_tls',
+                            'type' => 'select',
+                            'values' => $FromMailServerConfig['tls_types'],
+                            'value' => $field['tls'] ?? $FromMailServerConfig['select_tls'],
+                        ],
+                        __('Verify Certificat') => [
+                            'name' => 'server_cert',
+                            'type' => 'select',
+                            'values' => $FromMailServerConfig['validate_cert'],
+                            'value' => $field['cert-validation'] ?? $FromMailServerConfig['select_validate_cert'],
+                        ],
+                        __('RSH') => [
+                            'name' => 'server_rsh',
+                            'type' => 'select',
+                            'values' => $FromMailServerConfig['norsh'],
+                            'value' => $field['norsh'] ?? $FromMailServerConfig['select_norsh'],
+                        ],
+                        __('Secure') => [
+                            'name' => 'server_secure',
+                            'type' => 'select',
+                            'values' => $FromMailServerConfig['secure'],
+                            'value' => $field['secure'] ?? $FromMailServerConfig['select_secure'],
+                        ],
+                        __('Debug') => [
+                            'name' => 'server_debug',
+                            'type' => 'select',
+                            'values' => $FromMailServerConfig['debug'],
+                            'value' => $field['debug'] ?? $FromMailServerConfig['select_debug'],
+                        ],
+                        __('Incoming mail folder (optional, often INBOX)') => [
+                            'name' => 'server_mailbox',
+                            'type' => 'text',
+                            'value' => $field['mailbox'] ?? $data['mailbox'] ?? '',
+                        ],
+                        __('Port') => [
+                            'name' => 'server_port',
+                            'type' => 'number',
+                            'value' => $field['port'] ?? $data['port'] ?? '',
+                        ],
+                        __('Connection string') => [
+                            'name' => 'imap_string',
+                            'type' => 'text',
+                            'disabled' => true,
+                            'value' => ($fields["connect_string"]) ?? $fields['host'] ?? '',
+                        ],
+                        __('Login') => $authmail ? [] : [
+                            'name' => 'login',
+                            'type' => 'text',
+                            'value' => $fields['login'] ?? ''
+                        ],
+                        __('Password') => $authmail ? [] : [
+                            'name' => 'passwd',
+                            'type' => 'password'
+                        ],
+                        __('Accepted mail archive folder (optional)') => $authmail ? [] : [
+                            'name' => 'accepted',
+                            'type' => 'text',
+                            'value' => $fields['accepted'] ?? ''
+                        ],
+                        __('Refused mail archive folder (optional)') => $authmail ? [] : [
+                            'name' => 'refused',
+                            'type' => 'text',
+                            'value' => $fields['refused'] ?? ''
+                        ],
+                        __('Maximum size of each file imported by the mails receiver') => $authmail ? [] : [
+                            'name' => 'filesize_max',
+                            'type' => 'select',
+                            'values' => self::dropdown_upload_size(),
+                            'value' => $fields['filesize_max'] ?? ''
+                        ],
+                        __('Use mail date, instead of collect one') => $authmail ? [] : [
+                            'name' => 'use_mail_date',
+                            'type' => 'checkbox',
+                            'value' => $fields['use_mail_date'] ?? ''
+                        ],
+                        __('Use Reply-To as requester (when available)') => $authmail ? [] : [
+                            'name' => 'requester_field',
+                            'type' => 'checkbox',
+                            'value' => $fields['requester_field'] ?? ''
+                        ],
+                        __('Add CC users as observer') => $authmail ? [] : [
+                            'name' => 'add_cc_to_observer',
+                            'type' => 'checkbox',
+                            'value' => $fields['add_cc_to_observer'] ?? ''
+                        ],
+                        __('Collect only unread mail') => $authmail ? [] : [
+                            'name' => 'collect_only_unread',
+                            'type' => 'checkbox',
+                            'value' => $fields['collect_only_unread'] ?? ''
+                        ],
+                        __('Comments') => [
+                            'name' => 'comment',
+                            'type' => 'textarea',
+                            'value' => $fields['comment'] ?? ''
+                        ],
+
+                    ],
+                ]
+            ]
+        ];
+
+        renderTwigForm($form);
+    }
+
+    static function dropdown_upload_size() : array
+    {
+        $i = 0;
+        $size = 0;
+        $data = array();
+
+        $data[$i] = __('No import');
+        for ($i = 1; $i < 100; $i++ ) {
+            $size = $size + 1048576;
+            $data[$size] = $i . ' Mio';
+        }
+        return $data;
+    }
+
+    static function getMailCollectorConfig($entry) : bool|array
+    {
+
+        if (empty($entry)) {
+            return false;
+        }
+
+        $data = array();
+
+        $pattern = '/{([^:]+):(\d+)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/([^}]+)/';
+        preg_match($pattern, $entry, $matches);
+
+        $key = ['host', 'port', 'protocol', 'security', 'cert-validation', 'tls', 'norsh'];
+        foreach ($key as $k => $v) {
+            if($v == 'protocol' || $v == 'security' || $v == 'cert-validation' || $v == 'tls' || $v == 'norsh') {
+                $data[$v] = '/' . $matches[$k + 1] ?? '';
+            } else {
+                $data[$v] = $matches[$k + 1] ?? '';
+            }
+        }
+
+        if(strstr($entry, '/secure')) {
+            $data['secure'] = '/secure';
+            $data['norsh'] = str_replace('/secure', '', $data['norsh']);
+
+        }
+        if(strstr($entry, '/debug')) {
+            $data['debug'] = '/debug';
+            $data['norsh'] = str_replace('/debug', '', $data['norsh']);
+        }
+
+        $mailbox = explode('}', $entry, 2);
+        $data['mailbox'] = $mailbox[1];
 
         return $data;
     }
