@@ -234,7 +234,7 @@ class MailServer
         $data['select_validate_cert'] = $svalue;
 
         $values = [ //TRANS: imap_open option see http://www.php.net/manual/en/function.imap-open.php
-            '' => '-----',
+            '/rsh' => '-----',
             '/norsh' => __('NORSH')
         ];
 
@@ -245,7 +245,7 @@ class MailServer
         $data['select_norsh'] = $svalue;
 
         $values = [ //TRANS: imap_open option see http://www.php.net/manual/en/function.imap-open.php
-            '' => '-----',
+            '/nosecure' => '-----',
             '/secure' => __('SECURE')
         ];
 
@@ -340,7 +340,8 @@ class MailServer
                         __('Server') => [
                             'name' => 'mail_server',
                             'type' => 'text',
-                            'value' => $field['host'] ?? $FromMailServerConfig['address'],
+                            'value' => $field['host'] ?? $FromMailServerConfig['address'] ?? '',
+                            'required' => true,
                         ],
                         __('Protocol') => [
                             'name' => 'server_type',
@@ -352,37 +353,37 @@ class MailServer
                             'name' => 'server_ssl',
                             'type' => 'select',
                             'values' => $FromMailServerConfig['ssl'],
-                            'value' => $field['security'] ?? $FromMailServerConfig['select_ssl'],
+                            'value' => $field['security'] ?? $FromMailServerConfig['select_ssl'] ?? '',
                         ],
                         __('Encryption') => [
                             'name' => 'server_tls',
                             'type' => 'select',
                             'values' => $FromMailServerConfig['tls_types'],
-                            'value' => $field['tls'] ?? $FromMailServerConfig['select_tls'],
+                            'value' => $field['tls'] ?? $FromMailServerConfig['select_tls'] ?? '',
                         ],
                         __('Verify Certificat') => [
                             'name' => 'server_cert',
                             'type' => 'select',
                             'values' => $FromMailServerConfig['validate_cert'],
-                            'value' => $field['cert-validation'] ?? $FromMailServerConfig['select_validate_cert'],
+                            'value' => $field['cert-validation'] ?? $FromMailServerConfig['select_validate_cert'] ?? '',
                         ],
                         __('RSH') => [
                             'name' => 'server_rsh',
                             'type' => 'select',
                             'values' => $FromMailServerConfig['norsh'],
-                            'value' => $field['norsh'] ?? $FromMailServerConfig['select_norsh'],
+                            'value' => $field['norsh'] ?? $FromMailServerConfig['select_norsh'] ?? '',
                         ],
                         __('Secure') => [
                             'name' => 'server_secure',
                             'type' => 'select',
                             'values' => $FromMailServerConfig['secure'],
-                            'value' => $field['secure'] ?? $FromMailServerConfig['select_secure'],
+                            'value' => $field['secure'] ?? $FromMailServerConfig['select_secure'] ?? '',
                         ],
                         __('Debug') => [
                             'name' => 'server_debug',
                             'type' => 'select',
                             'values' => $FromMailServerConfig['debug'],
-                            'value' => $field['debug'] ?? $FromMailServerConfig['select_debug'],
+                            'value' => $field['debug'] ?? $FromMailServerConfig['select_debug'] ?? '',
                         ],
                         __('Incoming mail folder (optional, often INBOX)') => [
                             'name' => 'server_mailbox',
@@ -392,7 +393,8 @@ class MailServer
                         __('Port') => [
                             'name' => 'server_port',
                             'type' => 'number',
-                            'value' => $field['port'] ?? $data['port'] ?? '',
+                            'value' => $field['port'] ?? $data['port'] ?? '993',
+                            'required' => true,
                         ],
                         __('Connection string') => [
                             'name' => 'imap_string',
