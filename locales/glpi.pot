@@ -22956,3 +22956,19 @@ msgstr ""
 #: inc/auth.class.php:1732
 msgid "Mapping"
 msgstr ""
+
+#: inc/central.class.php:173
+msgid "Tickets by status"
+msgstr ""
+
+#: templates/install/index.twig:31
+msgid "Initialization"
+msgstr ""
+
+#: templates/install/index.twig:31
+msgid "Initialized"
+msgstr ""
+
+#: templates/install/index.twig:31
+msgid "Languages"
+msgstr ""
