@@ -119,14 +119,14 @@ class Central extends CommonGLPI {
             echo "</div>";
          } catch (Exception $e) {
             global $DB;
-      
+
             $ticketsByStatus = iterator_to_array($DB->query('SELECT status,
                COUNT(*) AS ticket_count
-               FROM 
+               FROM
                   glpi_tickets
-               WHERE 
+               WHERE
                   is_deleted = 0
-               GROUP BY 
+               GROUP BY
                   status;
             '));
             $finalResult = [];
@@ -163,7 +163,7 @@ class Central extends CommonGLPI {
                      ],
                      [
                         'type' => 'count',
-                        'title' => __('Softwares'),
+                        'title' => __('Software'),
                         'value' => countElementsInTable('glpi_softwares', ['entities_id' => $_SESSION['glpiactive_entity']]),
                         'icon' => 'fas fa-cube',
                      ],

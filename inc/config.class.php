@@ -710,7 +710,8 @@ class Config extends CommonDBTM {
                   __('GLPI server time zone') => [
                      'name' => 'time_offset',
                      'type' => 'select',
-                     'values' => Timezone::showGMT(),
+                    //  'values' => '' ?? Timezone::showGMT(),
+                     'values' => [],
                      'value' => $CFG_GLPI["time_offset"],
                   ],
                ],
@@ -798,11 +799,11 @@ class Config extends CommonDBTM {
     **/
     function showFormAPI() {
        global $CFG_GLPI;
-       
+
        if (!self::canView()) {
           return;
          }
-         
+
       $inline_doc_api = trim($CFG_GLPI['url_base_api'], '/')."/";
       $form = [
          'action' => Toolbox::getItemTypeFormURL(__CLASS__),
@@ -1020,12 +1021,12 @@ class Config extends CommonDBTM {
          echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
          echo "</td></tr>";
       }
-      
+
       echo "</table></div>";
       Html::closeForm();
    }
-   
-   
+
+
    /**
     * Print the config form for default user prefs
     *
@@ -1272,7 +1273,7 @@ class Config extends CommonDBTM {
                      'col_md' => '6',
                      'col_lg' => '6',
                   ] : [],
-                  __('Pre-select me as a requester when creating a ticket') => 
+                  __('Pre-select me as a requester when creating a ticket') =>
                   !$userpref || Session::haveRight('ticket', CREATE) ? [
                      'type' => 'select',
                      'name' => 'set_default_requester',
@@ -1398,7 +1399,7 @@ class Config extends CommonDBTM {
                   ],
                ],
             ],
-            __('Item locks') => 
+            __('Item locks') =>
             ($oncentral && $CFG_GLPI["lock_use_lock_item"]) ? [
                'visible' => true,
                'inputs' => [

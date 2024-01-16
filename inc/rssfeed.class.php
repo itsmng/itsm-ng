@@ -700,7 +700,8 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
                   __('Refresh rate') => [
                      'name' => 'refresh_rate',
                      'type' => 'select',
-                     'values' => Timezone::GetTimeStamp(),
+                    //  'values' => Timezone::GetTimeStamp(),
+                    'values' => [],
                      'value' => $this->fields['refresh_rate'] ?? ''
 
                   ],
