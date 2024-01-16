@@ -3,13 +3,14 @@
 /**
  * @param $form
  */
-function getOptionForItems($item, $conditions = [], $display_emptychoice = true)
+function getOptionForItems($item, $conditions = [], $display_emptychoice = true, $isDevice = false)
 {
     global $DB;
 
     $table = getTableForItemType($item);
+    $name = $isDevice ? 'designation' : 'name';
     $iterator = $DB->request([
-        'SELECT' => ['id', 'name'],
+        'SELECT' => ['id', $name ],
         'FROM' => $table,
         'WHERE' => $conditions,
     ]);
@@ -19,7 +20,7 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true)
         $options[0] = Dropdown::EMPTY_VALUE;
     }
     while ($val = $iterator->next()) {
-        $options[$val['id']] = $val['name'] == '' ? '(' . $val['id'] . ')' : $val['name'];
+        $options[$val['id']] = $val[$name] == '' ? '(' . $val['id'] . ')' : $val[$name];
     }
 
     return $options;
