@@ -283,6 +283,7 @@ class Contract_Item extends CommonDBRelation{
     * @return void
    **/
    static function showForItem(CommonDBTM $item, $withtemplate = 0) {
+      global $DB;
 
       $itemtype = $item->getType();
       $ID       = $item->fields['id'];
@@ -293,8 +294,6 @@ class Contract_Item extends CommonDBRelation{
       }
 
       $canedit = $item->can($ID, UPDATE);
-      $rand = mt_rand();
-
       $iterator = self::getListForItem($item);
       $number = count($iterator);
 
@@ -305,120 +304,112 @@ class Contract_Item extends CommonDBRelation{
          $used[$data['id']]      = $data['id'];
       }
       if ($canedit && ($withtemplate != 2)) {
-         echo "<div class='firstbloc'>";
-         echo "<form name='contractitem_form$rand' id='contractitem_form$rand' method='post'
-                action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-         echo "<input type='hidden' name='items_id' value='$ID'>";
-         echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th colspan='2'>".__('Add a contract')."</th></tr>";
-
-         echo "<tr class='tab_bg_1'><td>";
-         Contract::dropdown(['entity'  => $item->getEntityID(),
-                                  'used'    => $used,
-                                  'expired' => false]);
-
-         echo "</td><td class='center'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         if (!count($used)) {
+            $usedCondition = [];
+         } else {
+            $usedCondition = ['NOT' => ['id' => $used]];
+         };
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add'),
+                  'class' => 'btn btn-secondary',
+               ]
+            ],
+            'content' => [
+               '' => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'itemtype',
+                        'value' => $itemtype
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'items_id',
+                        'value' => $ID
+                     ],
+                     __('Add a contract') => [
+                        'type' => 'select',
+                        'name' => 'contracts_id',
+                        'values' => getOptionForItems('Contract', array_merge([
+                           'OR' => [
+                              'renewal' => 1,
+                              new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName('begin_date') . ', INTERVAL ' . $DB->quoteName('duration') . ' MONTH), CURDATE()) > 0'),
+                              'begin_date'   => null,
+                           ],
+                           'is_deleted' => 0,
+                        ], $usedCondition)),
+                     ]
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
-      echo "<div class='spaced'>";
       if ($withtemplate != 2) {
          if ($canedit && $number) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-            $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $number),
-                                         'container'     => 'mass'.__CLASS__.$rand];
+            $massiveactionparams = [
+               'num_displayed' => min($_SESSION['glpilist_limit'], $number),
+               'container'     => 'TableFor'.__CLASS__,
+               'display_arrow' => false,
+               'specific_actions' => [
+                  'purge' => __('Delete permanently the relation with selected elements')
+               ]
+            ];
             Html::showMassiveActions($massiveactionparams);
          }
       }
-      echo "<table class='tab_cadre_fixehov'>";
-
-      $header_begin = "<tr>";
-      $header_top = '';
-      $header_bottom = '';
-      $header_end = '';
-      if ($canedit && $number && ($withtemplate != 2)) {
-         $header_top    .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_top    .= "</th>";
-         $header_bottom .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_bottom .= "</th>";
-      }
-
-      $header_end .= "<th>".__('Name')."</th>";
-      $header_end .= "<th>".Entity::getTypeName(1)."</th>";
-      $header_end .= "<th>"._x('phone', 'Number')."</th>";
-      $header_end .= "<th>".ContractType::getTypeName(1)."</th>";
-      $header_end .= "<th>".Supplier::getTypeName(1)."</th>";
-      $header_end .= "<th>".__('Start date')."</th>";
-      $header_end .= "<th>".__('Initial contract period')."</th>";
-      $header_end .= "</tr>";
-
-      if ($number > 0) {
-         echo $header_begin.$header_top.$header_end;
-         Session::initNavigateListItems(__CLASS__,
-                              //TRANS : %1$s is the itemtype name,
-                              //         %2$s is the name of the item (used for headings of a list)
-                                        sprintf(__('%1$s = %2$s'),
-                                                $item->getTypeName(1), $item->getName()));
-         foreach ($contracts as $data) {
-            $cID         = $data["id"];
-            Session::addToNavigateListItems(__CLASS__, $cID);
-            $contracts[] = $cID;
-            $assocID     = $data["linkid"];
-            $con         = new Contract();
-            $con->getFromResultSet($data);
-            echo "<tr class='tab_bg_1".($con->fields["is_deleted"]?"_2":"")."'>";
-            if ($canedit && ($withtemplate != 2)) {
-               echo "<td width='10'>";
-               Html::showMassiveActionCheckBox(__CLASS__, $assocID);
-               echo "</td>";
-            }
-            echo "<td class='center b'>";
-            $name = $con->fields["name"];
-            if ($_SESSION["glpiis_ids_visible"]
-                || empty($con->fields["name"])) {
-               $name = sprintf(__('%1$s (%2$s)'), $name, $con->fields["id"]);
-            }
-            echo "<a href='".Contract::getFormURLWithID($cID)."'>".$name;
-            echo "</a></td>";
-            echo "<td class='center'>";
-            echo Dropdown::getDropdownName("glpi_entities", $con->fields["entities_id"])."</td>";
-            echo "<td class='center'>".$con->fields["num"]."</td>";
-            echo "<td class='center'>";
-            echo Dropdown::getDropdownName("glpi_contracttypes", $con->fields["contracttypes_id"]).
-               "</td>";
-            echo "<td class='center'>".$con->getSuppliersNames()."</td>";
-            echo "<td class='center'>".Html::convDate($con->fields["begin_date"])."</td>";
-
-            echo "<td class='center'>".sprintf(__('%1$s %2$s'), $con->fields["duration"],
-                                               _n('month', 'months', $con->fields["duration"]));
-            if (($con->fields["begin_date"] != '')
-                && !empty($con->fields["begin_date"])) {
-               echo " -> ".Infocom::getWarrantyExpir($con->fields["begin_date"],
-                                                     $con->fields["duration"], 0, true);
-            }
-            echo "</td>";
-            echo "</tr>";
+      $fields = [
+         __('Name'),
+         Entity::getTypeName(1),
+         _x('phone', 'Number'),
+         ContractType::getTypeName(1),
+         Supplier::getTypeName(1),
+         __('Start date'),
+         __('Initial contract period'),
+      ];
+      $values = [];
+      $massive_action_values = [];
+      foreach ($contracts as $data) {
+         $cID         = $data["id"];
+         $assocID     = $data["linkid"];
+         $con         = new Contract();
+         $con->getFromResultSet($data);
+         $name = $con->fields["name"];
+         if ($_SESSION["glpiis_ids_visible"]
+             || empty($con->fields["name"])) {
+            $name = sprintf(__('%1$s (%2$s)'), $name, $con->fields["id"]);
          }
-         echo $header_begin.$header_bottom.$header_end;
-         echo "</table>";
-      } else {
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr><th>".__('No item found')."</th></tr></table>";
+         $newValue = [
+            "<a href='".Contract::getFormURLWithID($cID)."'>".$name."</a>",
+            Dropdown::getDropdownName("glpi_entities", $con->fields["entities_id"]),
+            $con->fields["num"],
+            Dropdown::getDropdownName("glpi_contracttypes", $con->fields["contracttypes_id"]),
+            $con->getSuppliersNames(),
+            Html::convDate($con->fields["begin_date"]),
+            sprintf(__('%1$s %2$s'), $con->fields["duration"],
+                    _n('month', 'months', $con->fields["duration"])),
+         ];
+         if (($con->fields["begin_date"] != '')
+             && !empty($con->fields["begin_date"])) {
+            $newValue[] = Infocom::getWarrantyExpir($con->fields["begin_date"],
+                                                    $con->fields["duration"], 0, true);
+            }
+         $massive_action_values[] = 'item['.__CLASS__.']['.$assocID.']';
+         $values[] = $newValue;
       }
-
-      echo "</table>";
-      if ($canedit && $number && ($withtemplate != 2)) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+         'id' => 'TableFor'.__CLASS__,
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action_values,
+      ]);
    }
 
 

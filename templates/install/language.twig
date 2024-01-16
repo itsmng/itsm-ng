@@ -9,11 +9,7 @@
             <optgroup label={{region|capitalize}}>
             {% for language_data in language_list %}
                     {% for code, language in language_data %}
-                        {% if code == selected_language %}
-                <option value={{code}} selected>{{language}}</option>
-                        {% else %}
-                <option value={{code}}>{{language}}</option>
-                        {% endif %}
+                        <option value={{code}} {{code == preferred_language ? 'selected' : ''}}>{{language}}</option>
                     {% endfor %}
                 {% endfor %}
             {% endfor %}
