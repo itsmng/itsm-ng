@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Cédric Anne, 2019
 # Thierry Bugier <tbugier@teclib.com>, 2019
@@ -19,7 +19,7 @@
 # Johan Cwiklinski <jcwiklinski@teclib.com>, 2021
 # Legastelois François <flegastelois@teclib.com>, 2021
 # CupidSG, 2021
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -23555,3 +23555,7 @@ msgstr "Changer le zoom"
 #: inc/profile.class.php:1771
 msgid "Use shortcuts"
 msgstr "Utiliser les raccourcis"
+
+#: inc/central.class.php:173
+msgid "Tickets by status"
+msgstr "Tickets par status"
