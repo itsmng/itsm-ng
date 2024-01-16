@@ -1670,16 +1670,20 @@ class DBmysql {
       $from_php = \DateTimeZone::listIdentifiers();
       $now = new \DateTime();
 
-      $iterator = $this->request([
-         'SELECT' => 'Name',
-         'FROM'   => 'mysql.time_zone_name',
-         'WHERE'  => ['Name' => $from_php]
-      ]);
-
-      while ($from_mysql = $iterator->next()) {
-         $now->setTimezone(new \DateTimeZone($from_mysql['Name']));
-         $list[$from_mysql['Name']] = $from_mysql['Name'] . $now->format(" (T P)");
+      try {
+         $iterator = $this->request([
+            'SELECT' => 'Name',
+            'FROM'   => 'mysql.time_zone_name',
+            'WHERE'  => ['Name' => $from_php]
+         ]);
+         while ($from_mysql = $iterator->next()) {
+            $now->setTimezone(new \DateTimeZone($from_mysql['Name']));
+            $list[$from_mysql['Name']] = $from_mysql['Name'] . $now->format(" (T P)");
+         }
+      } catch (\Exception $e) {
+         //do nothing
       }
+
 
       return $list;
    }

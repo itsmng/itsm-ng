@@ -2642,7 +2642,7 @@ JAVASCRIPT;
                         'name' => 'language',
                         'type' => 'select',
                         'values' => Language::getLanguages(),
-                        'value' => $this->fields['language'] ?? '',
+                        'value' => $this->fields['language'] ?? Session::getPreferredLanguage(),
                      ],
                      __('Password') => (!$extauth && Session::haveRight("password_update", "1")) ? [
                         'name' => 'password',
