@@ -2281,8 +2281,11 @@ class Config extends CommonDBTM {
 
       } else if ($item->getType() == 'User') {
          $config = new self();
-         $item->computePreferences();
-         $config->showFormUserPrefs($item->fields);
+         $user   = new User();
+         if ($user->getFromDB(Session::getLoginUserID())) {
+            $user->computePreferences();
+            $config->showFormUserPrefs($user->fields);
+         }
 
       } else if ($item->getType() == __CLASS__) {
          switch ($tabnum) {
