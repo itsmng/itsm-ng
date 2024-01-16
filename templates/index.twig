@@ -29,7 +29,7 @@
                     </select>
                 </p>
             {% endif %}
-            {% if display_login_source %}
+            {% if display_login_source and auth_dropdown|length > 1 %}
             <select name="auth" class="login_input">
                 {% for key,login_method in auth_dropdown %}
                 <option value="{{key}}" {% if auth_dropdown_default == key %} selected {% endif %}>{{login_method}}</option>

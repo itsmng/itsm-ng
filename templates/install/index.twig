@@ -28,7 +28,7 @@
                         style={{'--step:' ~ loop.index0 ~ ';--maxstep:' ~ maxstep ~ ';'}}>
                     {{loop.index0}}
                     </a>
-                    <p>{{header_data["steps_name"][loop.index0]|capitalize}}</p>
+                    <p>{{header_data["steps_name"][loop.index0]|capitalize|trans}}</p>
                 </div>
             {% endfor %}
             </div>

@@ -294,61 +294,89 @@ class Item_OperatingSystem extends CommonDBRelation {
 
 
    function showForm($ID, $options = []) {
-   $colspan = 4;
 
+      if (!$this->isNewID($ID)) {
+         $this->getFromDB($ID);
+      }
       $form = [
          'action' => $this->getFormURL(),
+         'buttons' => [
+            [
+              'type' => 'submit',
+              'name' => $this->isNewID($ID) ? 'add' : 'update',
+              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+              'class' => 'btn btn-secondary'
+            ], !$this->isNewID($ID) ? [
+              'type' => 'submit',
+              'name' => 'purge',
+              'value' => __('Delete permanently'),
+              'class' => 'btn btn-secondary'
+            ] : []
+          ],
          'content' => [
             '' => [
                'visible' => true,
                'inputs' => [
-                  __("itemtype") => [
+                  !$this->isNewID($ID) ? [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ] : [],
+                  [
                      'type' => 'hidden',
                      'name' => 'itemtype',
-                     'value' => $this->fields['itemtype'],
+                     'value' => $this->fields['itemtype'] ?? '',
                   ],
-                  __("items_id") => [
+                  [
                      'type' => 'hidden',
                      'name' => 'items_id',
-                     'value' => $this->fields['items_id'],
+                     'value' => $this->fields['items_id'] ?? '',
                   ],
                   __("Name") => [
                      'type' => 'select',
                      'name' => 'operatingsystems_id',
                      'values' => getOptionForItems('OperatingSystem'),
+                     'value' => $this->fields['operatingsystems_id'] ?? '',
                   ],
                   _n('Version', 'Versions', 1) => [
                      'type' => 'select',
                      'name' => 'operatingsystemversions_id',
                      'values' => getOptionForItems('OperatingSystemVersion'),
+                     'value' => $this->fields['operatingsystemversions_id'] ?? '',
                   ],
                   _n('Architecture', 'Architectures', 1) => [
                      'type' => 'select',
                      'name' => 'operatingsystemarchitectures_id',
                      'values' => getOptionForItems('OperatingSystemArchitecture'),
+                     'value' => $this->fields['operatingsystemarchitectures_id'] ?? '',
                   ],
                   OperatingSystemServicePack::getTypeName(1) => [
                      'type' => 'select',
                      'name' => 'operatingsystemservicepacks_id',
                      'values' => getOptionForItems('OperatingSystemServicePack'),
+                     'value' => $this->fields['operatingsystemservicepacks_id'] ?? '',
                   ],
                   _n('Kernel', 'Kernels', 1) => [
                      'type' => 'select',
-                     'name' => 'operatingsystemkernels_id',
-                     'values' => getOptionForItems('OperatingSystemKernel'),
+                     'name' => 'operatingsystemkernelversions_id',
+                     'values' => getOptionForItems('OperatingSystemKernelVersion'),
+                     'value' => $this->fields['operatingsystemkernelversions_id'] ?? '',
                   ],
                   _n('Edition', 'Editions', 1) => [
                      'type' => 'select',
                      'name' => 'operatingsystemeditions_id',
                      'values' => getOptionForItems('OperatingSystemEdition'),
+                     'value' => $this->fields['operatingsystemeditions_id'] ?? '',
                   ],
                   __('Product ID') => [
                      'type' => 'text',
                      'name' => 'licenseid',
+                     'value' => $this->fields['licenseid'] ?? '',
                   ],
                   __('Serial number') => [
                      'type' => 'text',
                      'name' => 'license_number',
+                     'value' => $this->fields['license_number'] ?? '',
                   ],
                ] 
             ]

@@ -648,7 +648,7 @@ if (empty($_POST["continuer"]) && empty($_POST["from_update"])) {
                   echo "<input type='hidden' name='update_end' value='1'/>";
 
                   echo "<p class='submit'><input type='submit' name='submit' class='submit' value='".
-                           __('Use GLPI')."'></p>";
+                           __('Use ITSM-NG')."'></p>";
                   Html::closeForm();
             }
          }

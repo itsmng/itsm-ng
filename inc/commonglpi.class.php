@@ -886,7 +886,7 @@ class CommonGLPI {
             'FROM'   => 'glpi_user_menu',
             'WHERE' => [
                'user_id' => Session::getLoginUserID(),
-               'name' => $this->getTypeName(),
+               'name' => $this::class,
             ],
          ]));
          if (!count($selected_tabs)) {
@@ -918,6 +918,7 @@ class CommonGLPI {
       renderTwigTemplate('item.twig', [
          'tabs' => $tabs,
          'layoutFor' => $target,
+         'itemName' => $this::class,
          'formName' => $this->getTypeName(),
          'selectedTabs' => $selected_tabs,
          'glpiroot' => $CFG_GLPI['root_doc'],
