@@ -11,20 +11,21 @@
 # alexandre delaunay <delaunay.alexandre@gmail.com>, 2021
 # FranciscoFJ <dev-ooo@satel-sa.com>, 2021
 # 
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-26 10:07+0200\n"
-"PO-Revision-Date: 2019-04-24 11:58+0000\n"
-"Last-Translator: FranciscoFJ <dev-ooo@satel-sa.com>, 2021\n"
-"Language-Team: Spanish (Spain) (https://www.transifex.com/glpi/teams/1637/es_ES/)\n"
+"PO-Revision-Date: 2024-01-17 07:54+0000\n"
+"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
+"es/>\n"
+"Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_ES\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ajax/subvisibility.php:59
 msgid "No restriction"
@@ -2936,8 +2937,8 @@ msgstr "Hardware con contrato"
 #: inc/notificationtargetcontract.class.php:186 inc/entity.class.php:1951
 msgid "Contract"
 msgid_plural "Contract"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Contrato"
+msgstr[1] "Contratos"
 
 #: front/ldap.group.import.php:71 inc/authldap.class.php:3496
 #: inc/auth.class.php:260 inc/auth.class.php:284
@@ -4880,12 +4881,14 @@ msgstr "Correo %s no encontrado. Importación imposible."
 #: inc/mailcollector.class.php:727
 #, php-format
 msgid "Message is invalid (%s). Check in \"%s\" for more details"
-msgstr ""
+msgstr "El mensaje no es válido (%s). Compruebe en \"%s\" para más detalles"
 
 #: inc/mailcollector.class.php:781
 #, php-format
 msgid "Error during message parsing (%s). Check in \"%s\" for more details"
 msgstr ""
+"Error durante el análisis sintáctico del mensaje (%s). Compruebe en \"%s\" "
+"para más detalles"
 
 #: inc/mailcollector.class.php:920
 #, php-format
@@ -7585,12 +7588,12 @@ msgstr "La acción que ha solicitado no está permitida."
 #: inc/session.class.php:1523
 #, php-format
 msgid "%1$s starts impersonating user %2$s"
-msgstr ""
+msgstr "%1$s comienza a suplantar al usuario %2$s"
 
 #: inc/session.class.php:1553
 #, php-format
 msgid "%1$s stops impersonating user %2$s"
-msgstr ""
+msgstr "%1$s dejar de suplantar al usuario %2$s"
 
 #: inc/notificationtemplatetranslation.class.php:50
 msgid "Template translation"
@@ -9072,7 +9075,7 @@ msgstr "Prueba de conexión al servidor de correo electrónico"
 
 #: inc/console/ldap/synchronizeuserscommand.class.php:76
 msgid "Synchronize users against LDAP server information"
-msgstr ""
+msgstr "Sincronizar usuarios con la información del servidor LDAP"
 
 #: inc/console/ldap/synchronizeuserscommand.class.php:82
 msgid "Only create new users"
@@ -9231,18 +9234,22 @@ msgstr "--ldap-server-id value \"%s\" no es un ID de servidor LDAP válido."
 #: inc/console/ldap/synchronizeuserscommand.class.php:451
 #, php-format
 msgid "Unable to parse --%1$s value \"%2$s\"."
-msgstr ""
+msgstr "No se ha podido analizar --%1$s valor \"%2$s\"."
 
 #: inc/console/ldap/synchronizeuserscommand.class.php:462
 msgid ""
 "Options --begin-date and --end-date can only be used with --only-create-new "
 "or --only-update-existing option."
 msgstr ""
+"Las opciones --begin-date y --end-date sólo pueden utilizarse con las "
+"opciones --only-create-new o --only-update-existing."
 
 #: inc/console/ldap/synchronizeuserscommand.class.php:467
 msgid ""
 "Option --begin-date value has to be lower than option --end-date value."
 msgstr ""
+"El valor de la opción --begin-date debe ser inferior al de la opción --end-"
+"date."
 
 #: inc/console/ldap/synchronizeuserscommand.class.php:477
 #, php-format
@@ -9396,7 +9403,7 @@ msgstr "Ejecutando %s"
 #: inc/console/migration/timestampscommand.class.php:206
 #, php-format
 msgid "Update of `%s` failed with message \"(%s) %s\"."
-msgstr ""
+msgstr "La actualización de `%s` ha fallado con el mensaje \"(%s) %s\"."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
 msgid "Migrate Racks plugin data into GLPI core tables"
@@ -9404,7 +9411,7 @@ msgstr "Migrar datos del plugin Racks en tablas principales ITSM-NG"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:168
 msgid "Ignore \"PluginRacksOther\" models and elements"
-msgstr ""
+msgstr "Ignorar los modelos y elementos \"PluginRacksOther"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:175
 #: inc/console/migration/appliancesplugintocorecommand.class.php:151
@@ -9429,6 +9436,8 @@ msgid ""
 "Enable migration without plugin files (we cannot validate that plugin data "
 "are compatible with supported %s version)"
 msgstr ""
+"Permitir la migración sin archivos de plugin (no podemos validar que los "
+"datos del plugin sean compatibles con la versión %s soportada)"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:216
 msgid ""
@@ -9471,6 +9480,8 @@ msgstr ""
 msgid ""
 "You have to install Racks plugin files in version %s to be able to continue."
 msgstr ""
+"Tienes que instalar los archivos del plugin de Racks en la versión %s para "
+"poder continuar."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:317
 #: inc/console/migration/domainsplugintocorecommand.class.php:221
@@ -9490,11 +9501,13 @@ msgid ""
 "Racks plugin data has to be updated to %s version. It can be done using the "
 "--update-plugin option."
 msgstr ""
+"Los datos del plugin de Racks deben ser actualizados a la versión %s. Se "
+"puede hacer usando la opción --update-plugin."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:384
 #, php-format
 msgid "Racks plugin table \"%s\" is missing."
-msgstr ""
+msgstr "Falta la tabla de plugins de Racks \"%s\"."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:392
 #: inc/console/migration/appliancesplugintocorecommand.class.php:227
@@ -9532,6 +9545,8 @@ msgid ""
 "We found %d models for other items. For each, we will ask you where you want"
 " to import it."
 msgstr ""
+"Hemos encontrado %d modelos para otros artículos. Para cada uno, te "
+"preguntaremos dónde quieres importarlo."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:548
 #, php-format
@@ -9568,12 +9583,12 @@ msgstr "Importación de especificaciones de elementos..."
 #: inc/console/migration/racksplugintocorecommand.class.php:728
 #, php-format
 msgid "Importing specifications for model %s (%s)..."
-msgstr ""
+msgstr "Importando especificaciones para el modelo %s (%s)..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:742
 #, php-format
 msgid "Model %s (%s) not found."
-msgstr ""
+msgstr "Modelo %s (%s) no encontrado."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:767
 #, php-format
@@ -9660,16 +9675,16 @@ msgstr ""
 #: inc/console/migration/racksplugintocorecommand.class.php:1145
 #, php-format
 msgid "Importing rack \"%s\"..."
-msgstr ""
+msgstr "Importando rack \"%s\"..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:1213
 #, php-format
 msgid "Unable to import rack \"%s\"."
-msgstr ""
+msgstr "No se ha podido importar el rack \"%s\"."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:1235
 msgid "No racks found."
-msgstr ""
+msgstr "No se han encontrado racks."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:1253
 msgid "Importing rack items..."
