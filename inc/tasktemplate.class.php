@@ -85,13 +85,14 @@ class TaskTemplate extends CommonDropdown {
          __('Duration') => [
             'name'  => 'actiontime',
             'type'  => 'select',
-            'values' => Timezone::GetTimeStamp([
-               'min'             => 1,
-               'max'             => 100*HOUR_TIMESTAMP,
-               'value'           => $this->fields["actiontime"],
-               'addfirstminutes' => true,
-               'inhours'         => true
-            ])
+            // 'values' => Timezone::GetTimeStamp([
+            //    'min'             => 1,
+            //    'max'             => 100*HOUR_TIMESTAMP,
+            //    'value'           => $this->fields["actiontime"],
+            //    'addfirstminutes' => true,
+            //    'inhours'         => true
+            // ])
+            'values' => []
 
          ],
          __('By') => [

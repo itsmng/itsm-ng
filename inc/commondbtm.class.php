@@ -40,7 +40,7 @@ if (!defined('GLPI_ROOT')) {
 /**
 *  Common DataBase Table Manager Class - Persistent Object
 **/
-#[AllowDynamicProperties]  
+#[AllowDynamicProperties]
 class CommonDBTM extends CommonGLPI {
 
    /**
@@ -3762,7 +3762,7 @@ class CommonDBTM extends CommonGLPI {
    **/
    public final function searchOptions() {
       $options = [];
-   
+
       foreach ($this->rawSearchOptions() as $opt) {
          $missingFields = [];
          if (!isset($opt['id'])) {
@@ -4948,7 +4948,8 @@ class CommonDBTM extends CommonGLPI {
                return renderTwigTemplate('macros/input.twig', [
                   'type' => 'select',
                   'name' => $name,
-                  'values' => Timezone::GetTimeStamp($options),
+                //   'values' => Timezone::GetTimeStamp($options),
+                  'values' => [],
                   'value' => $value,
                ]);
             case "itemlink" :

@@ -103,7 +103,7 @@ class ProjectTaskTemplate extends CommonDropdown {
          __('Planned end date') => [
             'name'  => 'plan_end_date',
             'type' => 'datetime-local',
-            'value' => $this->fields['plan_end_date'],            
+            'value' => $this->fields['plan_end_date'],
             'col_lg' => 6
          ],
          __('Real end date') => [
@@ -115,28 +115,30 @@ class ProjectTaskTemplate extends CommonDropdown {
          __('Planned duration') => [
             'name'  => 'planned_duration',
             'type'  => 'select',
-            'values' => Timezone::GetTimeStamp([
-               'value' => $this->fields['planned_duration'],
-               'min'   => 0,
-               'max'   => 100 * HOUR_TIMESTAMP,
-               'step'  => HOUR_TIMESTAMP,
-               'addfirstminutes' => true,
-               'inhours'         => true
-            ]),
+            // 'values' => '' ?? Timezone::GetTimeStamp([
+            //    'value' => $this->fields['planned_duration'],
+            //    'min'   => 0,
+            //    'max'   => 100 * HOUR_TIMESTAMP,
+            //    'step'  => HOUR_TIMESTAMP,
+            //    'addfirstminutes' => true,
+            //    'inhours'         => true
+            // ]),
+            'values' => [],
             'value' => $this->fields['planned_duration'],
             'col_lg' => 6
          ],
          __('Effective duration') => [
             'name'  => 'effective_duration',
             'type'  => 'select',
-            'values' => Timezone::GetTimeStamp([
-               'value' => $this->fields['effective_duration'],
-               'min'   => 0,
-               'max'   => 100 * HOUR_TIMESTAMP,
-               'step'  => HOUR_TIMESTAMP,
-               'addfirstminutes' => true,
-               'inhours'         => true
-            ]),
+            'values' => [],
+            // 'values' => Timezone::GetTimeStamp([
+            //    'value' => $this->fields['effective_duration'],
+            //    'min'   => 0,
+            //    'max'   => 100 * HOUR_TIMESTAMP,
+            //    'step'  => HOUR_TIMESTAMP,
+            //    'addfirstminutes' => true,
+            //    'inhours'         => true
+            // ]),
             'value' => $this->fields['effective_duration'],
             'col_lg' => 6
          ],
