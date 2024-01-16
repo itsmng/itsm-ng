@@ -2610,7 +2610,7 @@ JAVASCRIPT;
 
          // Display the result
          $form = [
-            'action' => '/front/preference.php',
+            'action' => $CFG_GLPI['root_doc'] . '/front/preference.php',
             'buttons' => [
                [
                   'type' => 'submit',

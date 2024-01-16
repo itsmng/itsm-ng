@@ -1931,7 +1931,8 @@ JAVASCRIPT;
       echo Html::script("node_modules/jquery-ui-dist/jquery-ui.min.js");
       echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
       echo Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js");
-      echo Html::script("js/bootstrap-table-export.min.js");
+      echo Html::script("node_modules/tableexport.jquery.plugin/tableExport.min.js");
+      echo Html::script("vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js");
       echo Html::script("node_modules/@jarstone/dselect/dist/js/dselect.min.js");
       echo Html::script("src/ngFunctions.js");
 

@@ -258,7 +258,6 @@ class Central extends CommonGLPI {
       Plugin::doHook('display_central');
 
       echo "<tr><th colspan='2'>";
-      self::showMessages();
       echo "</th></tr>";
 
       echo "<tr class='noHover'><td class='top' width='50%'><table class='central'>";

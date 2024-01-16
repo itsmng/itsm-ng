@@ -56,8 +56,6 @@ class Preference extends CommonGLPI {
       }
       $this->addStandardTab('DisplayPreference', $ong, $options);
 
-      $ong['no_all_tab'] = true;
-
       return $ong;
    }
 }
