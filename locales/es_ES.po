@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-26 10:07+0200\n"
-"PO-Revision-Date: 2024-01-17 07:54+0000\n"
+"PO-Revision-Date: 2024-01-17 13:29+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "es/>\n"
@@ -23351,26 +23351,20 @@ msgid "Mapping"
 msgstr ""
 
 #: inc/central.class.php:173
-#, fuzzy
-#| msgid "Tickets on pending status"
 msgid "Tickets by status"
-msgstr "Peticiones con estado pendiente"
+msgstr "Entradas por estado"
 
 #: templates/install/index.twig:31
-#, fuzzy
-#| msgid "Virtualization"
 msgid "Initialization"
-msgstr "Virtualización"
+msgstr "Inicialización"
 
 #: templates/install/index.twig:31
 msgid "Initialized"
-msgstr ""
+msgstr "Inicializado"
 
 #: templates/install/index.twig:31
-#, fuzzy
-#| msgid "Language"
 msgid "Languages"
-msgstr "Idioma"
+msgstr "Idiomas"
 
 #: templates/menus/nav/menu.twig:23
 msgid ""
@@ -23378,35 +23372,30 @@ msgid ""
 "cogwheel then click and the star next to the menu you wish to add as a "
 "favorite."
 msgstr ""
+"Puede añadir su sección de favoritos a este menú. Para ello, haga clic en la "
+"rueda dentada y, a continuación, en la estrella situada junto al menú que "
+"desea añadir como favorito."
 
 #: templates/menus/nav/nav-settings.twig:4
 msgid "Menu"
-msgstr ""
+msgstr "Menú"
 
 #: templates/menus/nav/nav-settings.twig:5
-#, fuzzy
-#| msgid "Toggle collapse"
 msgid "Menu collapse"
-msgstr "Alternar contraíble"
+msgstr "Contraer el menú"
 
 #: templates/menus/nav/nav-settings.twig:8
-#, fuzzy
-#| msgid "Reserved position ?"
 msgid "Reset menu bubble position"
-msgstr "¿Posición reservada?"
+msgstr "Restablecer la posición de la burbuja del menú"
 
 #: templates/menus/nav/nav-settings.twig:14
-#, fuzzy
-#| msgid "Action aborted"
 msgid "Activate menu favorite"
-msgstr "Operación abortada"
+msgstr "Activar el menú de favoritos"
 
 #: templates/menus/nav/nav-settings.twig:17
 msgid "Activate favorite selection"
-msgstr ""
+msgstr "Activar la selección de favoritos"
 
 #: templates/menus/nav/nav-settings.twig:22
-#, fuzzy
-#| msgid "Data center position"
 msgid "Menu position"
-msgstr "Posición del centro de datos"
+msgstr "Posición del menú"
