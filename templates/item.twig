@@ -132,6 +132,8 @@
 
   // Handle widgets based on whether there's only one tab or more
   function handleInitialWidgets() {
+	const savedLayout = {{selectedTabs|json_encode|raw}} ?? [];
+
     if ({{tabs | length == 1 ? 1 : 0}}) {
       moveAndMakeWidget($('#hidden_gridStack_items > div').first().attr('id').replace('ContentFor', ''));
     } else {
@@ -141,9 +143,14 @@
         }
       });
     }
-    setTimeout(() => grid.resizeToContent($('#ContentForTabs > div')[0]), 300);
-    if ({{tabs|length == 1 ? 1 : 0}}) grid.setStatic(true);
-    setTimeout(() => grid.load(), 300);
+    setTimeout(() => {
+		console.log({{tabs|length == 1 ? 1 : 0}})
+    	if ({{tabs|length == 1 ? 1 : 0}}) {
+			updateWidgetWidth()
+			grid.setStatic(true);
+		}
+		grid.load()
+	}, 100);
   }
 
   // Dropdown menu item click handlers
