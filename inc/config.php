@@ -213,7 +213,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                } else if (!isset($CFG_GLPI['dbversion']) || trim($CFG_GLPI["dbversion"]) < ITSM_SCHEMA_VERSION) {
                   $older = true;
                } else if (trim($CFG_GLPI["dbversion"]) > ITSM_SCHEMA_VERSION) {
-               
+
                // test for GLPI version
                } else if (version_compare(trim($CFG_GLPI["dbversion"]), '10','>=')) {  // GLPI 10 not managed
                } else if (version_compare(trim($CFG_GLPI["dbversion"]), '9', '>=')) {  // for GLPI 9.x
@@ -236,7 +236,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                Html::closeForm();
             } else if ($newer === true) {
                echo "<p class='red'>".
-                     __('You are trying to use GLPI with outdated files compared to the version of the database. Please install the correct GLPI files corresponding to the version of your database.')."</p>";
+                     __('You are trying to use ITSM-NG with outdated files compared to the version of the database. Please install the correct ITSM-NG files corresponding to the version of your database.')."</p>";
             } else if ($dev === true) {
                echo "<p class='red'><strong>".
                      __('You are trying to update to a development version from a development version. This is not supported.')."</strong></p>";
@@ -261,9 +261,9 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
          if ($data['user_id'] == $_SESSION['glpiID']) {
             if ($data['update'] == 0) {
                Oidc::auth();
-            } 
+            }
          }
-      } 
+      }
    }
 
 }

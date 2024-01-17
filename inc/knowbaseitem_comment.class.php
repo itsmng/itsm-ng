@@ -174,7 +174,7 @@ class KnowbaseItem_Comment extends CommonDBTM {
                           _this.parents('.h_item').after(_form);
                        },
                        error: function() { ".
-                          Html::jsAlertCallback(__('Contact your GLPI admin!'), __('Unable to load revision!'))."
+                          Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!'))."
                        }
                     });
                  });
@@ -208,7 +208,7 @@ class KnowbaseItem_Comment extends CommonDBTM {
                            .append(_form);
                        },
                        error: function() { ".
-                          Html::jsAlertCallback(__('Contact your GLPI admin!'), __('Unable to load revision!'))."
+                          Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!'))."
                        }
                     });
                  });

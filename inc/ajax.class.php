@@ -415,7 +415,7 @@ class Ajax {
                 echo "<kbd>".implode("</kbd>+<kbd>", $currentShortcut)."</kbd>";
                 echo Html::scriptBlock("
                     hotkeys('".strtolower(implode("+", $currentShortcut))."', function(e, h) {
-                       e.preventDefault();                        
+                       e.preventDefault();
                        $('#".$shortcutWrapperID."').prev('a').trigger('click');
                     });
                 ");
@@ -452,7 +452,7 @@ class Ajax {
                         ui.panel.html(
                            '<div class=\'error\'><h3>" .
                            addslashes(__('An error occured loading contents!'))  . "</h3><p>" .
-                           addslashes(__('Please check GLPI logs or contact your administrator.'))  .
+                           addslashes(__('Please check ITSM-NG logs or contact your administrator.'))  .
                            "<br/>" . addslashes(__('or')) . " <a href=\'#\' onclick=\'return reloadTab()\'>" . addslashes(__('try to reload'))  . "</a></p></div>'
                         );
                      }

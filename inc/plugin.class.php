@@ -1637,7 +1637,7 @@ class Plugin extends CommonDBTM {
     * @return string
     */
    static public function messageIncompatible($type = 'core', $min = null, $max = null) {
-      $type = ($type === 'core' ? __('GLPI') : __('PHP'));
+      $type = ($type === 'core' ? __('ITSM-NG') : __('PHP'));
       if ($min === null && $max !== null) {
          return sprintf(
             __('This plugin requires %1$s < %2$s.'),
@@ -1703,7 +1703,7 @@ class Plugin extends CommonDBTM {
             break;
          case 'glpiparam':
             return sprintf(
-               __('This plugin requires GLPI parameter %1$s'),
+               __('This plugin requires ITSM-NG parameter %1$s'),
                $name
             );
             break;

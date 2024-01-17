@@ -78,7 +78,7 @@ class RuleImportComputer extends Rule {
 
       $criterias['states_id']['table']           = 'glpi_states';
       $criterias['states_id']['field']           = 'name';
-      $criterias['states_id']['name']            = __('Find computers in GLPI having the status');
+      $criterias['states_id']['name']            = __('Find computers in ITSM-NG having the status');
       $criterias['states_id']['linkfield']       = 'state';
       $criterias['states_id']['type']            = 'dropdown';
       //Means that this criterion can only be used in a global search query
@@ -175,8 +175,8 @@ class RuleImportComputer extends Rule {
    **/
    static function addMoreCriteria() {
 
-      return [Rule::PATTERN_FIND     => __('is already present in GLPI'),
-                   Rule::PATTERN_IS_EMPTY => __('is empty in GLPI')];
+      return [Rule::PATTERN_FIND     => __('is already present in ITSM-NG'),
+                   Rule::PATTERN_IS_EMPTY => __('is empty in ITSM-NG')];
    }
 
 

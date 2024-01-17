@@ -281,7 +281,7 @@ class Auth extends CommonGLPI
             if (Plugin::doHookFunction("restrict_ldap_auth", $infos)) {
                return $infos;
             }
-            $this->addToError(__('User not authorized to connect in GLPI'));
+            $this->addToError(__('User not authorized to connect in ITSM-NG'));
             //Use is present by has no right to connect because of a plugin
             return false;
          } else {
@@ -972,7 +972,7 @@ class Auth extends CommonGLPI
 
          if ($DB->isSlave()) {
             if (!$this->user_present) { // Can't add in slave mode
-               $this->addToError(__('User not authorized to connect in GLPI'));
+               $this->addToError(__('User not authorized to connect in ITSM-NG'));
                $this->auth_succeded = false;
             }
          } else {
@@ -1000,7 +1000,7 @@ class Auth extends CommonGLPI
                $this->user->add($input);
             } else {
                // Auto add not enable so auth failed
-               $this->addToError(__('User not authorized to connect in GLPI'));
+               $this->addToError(__('User not authorized to connect in ITSM-NG'));
                $this->auth_succeded = false;
             }
          }
@@ -1104,7 +1104,7 @@ class Auth extends CommonGLPI
       }
 
       $methods = [
-         self::DB_GLPI => __('Authentication on GLPI database'),
+         self::DB_GLPI => __('Authentication on ITSM-NG database'),
       ];
 
       $result = $DB->request([
@@ -1231,7 +1231,7 @@ class Auth extends CommonGLPI
             return __('Other');
 
          case self::DB_GLPI:
-            return __('GLPI internal database');
+            return __('ITSM-NG internal database');
 
          case self::API:
             return __("API");
@@ -1618,7 +1618,7 @@ class Auth extends CommonGLPI
             echo "</p>";
          }
          if (!Toolbox::canUseCAS()) {
-            echo "<p class='red'>" . __("The CAS lib isn't available, GLPI doesn't package it anymore for license compatibility issue.");
+            echo "<p class='red'>" . __("The CAS lib isn't available, ITSM-NG doesn't package it anymore for license compatibility issue.");
             echo "</p>";
          }
          echo "<p>" . __('Impossible to use CAS as external source of connection') . "</p>";
@@ -1889,7 +1889,7 @@ class Auth extends CommonGLPI
 
       $elements = [
          '_default'  => 'local',
-         'local'     => __("GLPI internal database")
+         'local'     => __("ITSM-NG internal database")
       ];
 
       // Get LDAP

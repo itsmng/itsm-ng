@@ -2696,7 +2696,7 @@ JAVASCRIPT;
                         'values' => $User_profile,
                         'value' => $this->fields['profiles_id'] ?? '',
                      ],
-                     __('Use GLPI in mode') => (Session::haveRight("config", "1")) ? [
+                     __('Use ITSM-NG in mode') => (Session::haveRight("config", "1")) ? [
                         'name' => 'use_mode',
                         'type' => 'select',
                         'values' => [
@@ -2704,7 +2704,7 @@ JAVASCRIPT;
                            Session::DEBUG_MODE  => __('Debug'),
                         ],
                         'value' => $this->fields['use_mode'] ?? '',
-                     ] : [], 
+                     ] : [],
                   ]
                ],
                __('Remote access keys') => [
@@ -4792,7 +4792,7 @@ JAVASCRIPT;
          echo $e->getMessage();
          return;
       }
-      echo __('If the given email address match an exisiting GLPI user, you will receive an email containing the informations required to reset your password. Please contact your administrator if you do not receive any email.');
+      echo __('If the given email address match an exisiting ITSM-NG user, you will receive an email containing the informations required to reset your password. Please contact your administrator if you do not receive any email.');
    }
 
    /**

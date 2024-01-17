@@ -707,7 +707,7 @@ class Config extends CommonDBTM {
                      'values' => AuthLDAP::getLdapDeletedUserActionOptions(),
                      'value' => $CFG_GLPI["user_deleted_ldap"],
                   ],
-                  __('GLPI server time zone') => [
+                  __('ITSM-NG server time zone') => [
                      'name' => 'time_offset',
                      'type' => 'select',
                     //  'values' => '' ?? Timezone::showGMT(),
@@ -1691,7 +1691,7 @@ class Config extends CommonDBTM {
          }
       } else {
          $msg = sprintf(__s('%s extension is not present'), $ext);
-         echo "<tr><td colspan='3'>" . sprintf(__('Installing and enabling the "%s" extension may improve GLPI performance'), $ext) . "</td>
+         echo "<tr><td colspan='3'>" . sprintf(__('Installing and enabling the "%s" extension may improve ITSM-NG performance'), $ext) . "</td>
                <td class='icons_block'><i class='fa fa-info-circle missing' title='$msg'></i><span class='sr-only'>$msg</span></td></tr>";
       }
 
