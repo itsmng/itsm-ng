@@ -100,28 +100,23 @@ class ProtectedWebAccess extends AbstractRequirement {
       }
       $uri = $protocol . '://' . $_SERVER['SERVER_NAME'] . $CFG_GLPI['root_doc'];
 
-      if ($fic = fopen($uri.'/index.php?skipCheckWriteAccessToDirs=1', 'r', false, $context)) {
-         fclose($fic);
-         if ($fic = fopen($uri.'/files/_log/php-errors.log', 'r', false, $context)) {
-            fclose($fic);
+      $ch = curl_init($uri . '/files/_log/php-errors.log');
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_exec($ch);
+      $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-            $this->validated = false;
-            $this->validation_messages[] = __('Web access to the files directory should not be allowed');
-            $this->validation_messages[] = __('Check the .htaccess file and the web server configuration.');
-         } else {
-            $this->validated = true;
-            $this->validation_messages[] = __('Web access to files directory is protected');
-         }
+      if ($httpCode == 403) {
+         $this->validated = true;
+         $this->validation_messages[] = __('Web access to files directory is protected');
       } else {
-         $this->validated = false;
+        $this->validated = false;
          $this->validation_messages[] = __('Web access to the files directory should not be allowed but this cannot be checked automatically on this instance.');
          $this->validation_messages[] = sprintf(
             __('Make sure access to %s (%s) is forbidden; otherwise review .htaccess file and web server configuration.'),
             __('error log file'),
             $CFG_GLPI['root_doc'] . '/files/_log/php-errors.log'
          );
-      }
-
+    }
       error_reporting($oldlevel);
       set_error_handler($oldhand);
    }
