@@ -43,7 +43,7 @@ then
       --todo \
       --deprecated \
       --tree \
-      --title "GLPI version $version API" \
+      --title "ITSM-NG version $version API" \
       --source ../inc \
       --destination api
 

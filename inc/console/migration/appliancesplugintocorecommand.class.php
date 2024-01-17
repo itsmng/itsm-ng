@@ -142,7 +142,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand {
       parent::configure();
 
       $this->setName('itsmng:migration:appliances_plugin_to_core');
-      $this->setDescription(__('Migrate Appliances plugin data into GLPI core tables'));
+      $this->setDescription(__('Migrate Appliances plugin data into ITSM-ng core tables'));
 
       $this->addOption(
          'skip-errors',
@@ -157,7 +157,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand {
       if (!$no_interaction) {
          // Ask for confirmation (unless --no-interaction)
          $output->writeln([
-               __('You are about to launch migration of Appliances plugin data into GLPI core tables.'),
+               __('You are about to launch migration of Appliances plugin data into ITSM-ng core tables.'),
                __('Any previous appliance created in core will be lost.'),
                __('It is better to make a backup of your existing data before continuing.')
             ]
@@ -331,7 +331,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand {
     */
    private function updateItemtypes(): bool {
       $this->output->writeln(
-         '<comment>' . __('Updating GLPI itemtypes...') . '</comment>',
+         '<comment>' . __('Updating ITSM-NG itemtypes...') . '</comment>',
          OutputInterface::VERBOSITY_NORMAL
       );
       $itemtypes_tables = [

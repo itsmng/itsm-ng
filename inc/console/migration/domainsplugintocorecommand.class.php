@@ -88,7 +88,7 @@ class DomainsPluginToCoreCommand extends AbstractCommand {
       parent::configure();
 
       $this->setName('itsmng:migration:domains_plugin_to_core');
-      $this->setDescription(__('Migrate Domains plugin data into GLPI core tables'));
+      $this->setDescription(__('Migrate Domains plugin data into ITSM-NG core tables'));
 
       $this->addOption(
          'update-plugin',
@@ -121,7 +121,7 @@ class DomainsPluginToCoreCommand extends AbstractCommand {
          // Ask for confirmation (unless --no-interaction)
          $output->writeln(
             [
-               __('You are about to launch migration of Domains plugin data into GLPI core tables.'),
+               __('You are about to launch migration of Domains plugin data into ITSM-NG core tables.'),
                __('It is better to make a backup of your existing data before continuing.')
             ]
          );
@@ -179,7 +179,7 @@ class DomainsPluginToCoreCommand extends AbstractCommand {
          $plugin->checkPluginState('domains');
 
          if (!$plugin->getFromDBbyDir('domains')) {
-            $message  = __('Domains plugin is not part of GLPI plugin list. It has never been installed or has been cleaned.')
+            $message  = __('Domains plugin is not part of ITSM-NG plugin list. It has never been installed or has been cleaned.')
                . ' '
                . sprintf(
                   __('You have to install Domains plugin files in version %s to be able to continue.'),
