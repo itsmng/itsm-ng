@@ -51,4 +51,12 @@ LANG=C msginit --no-translator -i locales/glpi.pot -l en_GB -o locales/en_GB.po
 ## tx push -s
 ## tx pull -a
 
+# Update all languages and remove unused strings
+for lang in `find locales -name "*.po" -type f -printf "%f\n" | sed 's/.po//g'`
+do
+    echo "Updating $lang"
+    msgmerge -U locales/$lang.po locales/glpi.pot
+done
+
+rm locales/*.po~
 
