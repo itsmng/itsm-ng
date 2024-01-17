@@ -3,10 +3,10 @@
 
 <h3>{{'Checking of the compatibility of your environment with the execution of GLPI'|trans}}</h3>
 <div class="table-container">
-    <table 
+    <table
     data-toggle="table"
-    data-search="true" 
-    data-height="460" 
+    data-search="true"
+    data-height="460"
     data-show-export="true"
     data-icons-prefix="fas"
     data-sort-name="result"
@@ -44,14 +44,14 @@
                         {% endif %}
                     </td>
                 </tr>
-    
+
             {% endfor %}
         </tbody>
     </table>
 </div>
 <h3>{{'Do you want to continue?'|trans}}</h3>
 
-{% if (missing_requirements  == "mandatory") or (missing_requirements  == "none") %}
+{% if (missing_requirements  == "none") %}
 
 <div class="buttons">
     <form action="install.php?step=4" method="post">
