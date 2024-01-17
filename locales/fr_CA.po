@@ -7,21 +7,21 @@
 # alexandre delaunay <delaunay.alexandre@gmail.com>, 2021
 # Tiago Graça, 2021
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-26 10:07+0200\n"
-"PO-Revision-Date: 2019-04-24 11:58+0000\n"
-"Last-Translator: Tiago Graça, 2021\n"
-"Language-Team: French (Canada) (https://www.transifex.com/glpi/teams/1637/"
-"fr_CA/)\n"
+"PO-Revision-Date: 2024-01-17 13:29+0000\n"
+"Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
+"Language-Team: French (Canada) <https://hosted.weblate.org/projects/itsm-ng/"
+"itsm-ng/fr_CA/>\n"
 "Language: fr_CA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ajax/subvisibility.php:59
 msgid "No restriction"
@@ -41,7 +41,7 @@ msgstr "Authentification par certificat x509"
 
 #: front/oidc.php:55
 msgid "Missing or wrong fields in open ID connect config"
-msgstr ""
+msgstr "Champs manquants ou erronés dans la configuration open ID connect"
 
 #: inc/auth.class.php:1678
 #, fuzzy
@@ -51,11 +51,11 @@ msgstr "Voir la configuration"
 
 #: inc/auth.class.php:1680
 msgid "Activate open ID connect"
-msgstr ""
+msgstr "Activer open ID connect"
 
 #: inc/auth.class.php:1689
 msgid "Forced connection with open ID connect"
-msgstr ""
+msgstr "Connexion forcée avec open ID connect"
 
 #: ajax/subvisibility.php:66 ajax/visibility.php:91 ajax/private_public.php:67
 #: inc/rule.class.php:740 inc/ruleimportentity.class.php:172
@@ -7333,7 +7333,7 @@ msgstr "Dernière mise à jour dans l'annuaire LDAP"
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
 msgid "Last update in GLPI"
-msgstr "Dernière mise à jour dans GLPI"
+msgstr "Dernière mise à jour dans ITSM-ng"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
 msgid "No user to be synchronized"
@@ -7368,7 +7368,7 @@ msgstr "Choix de l'annuaire LDAP"
 
 #: inc/authldap.class.php:2401
 msgid "No LDAP directory defined in GLPI"
-msgstr "Aucun annuaire LDAP défini dans GLPI"
+msgstr "Aucun annuaire LDAP défini dans ITSM-ng"
 
 #: inc/authldap.class.php:2772
 msgid "User not found or several users found"
@@ -9391,7 +9391,7 @@ msgstr "Mise à jour de `%s` a échoué avec le message \"(%s) %s\"."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
 msgid "Migrate Racks plugin data into GLPI core tables"
-msgstr "Migrer les données du plugin Baies dans les tables du cœur de GLPI"
+msgstr "Migrer les données du plugin Baies dans les tables du cœur de ITSM-ng"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:168
 msgid "Ignore \"PluginRacksOther\" models and elements"
@@ -9428,7 +9428,7 @@ msgid ""
 "You are about to launch migration of Racks plugin data into GLPI core tables."
 msgstr ""
 "Vous êtes prêt à lancer la migration des données du plugin Baies dans les "
-"tables du cœur de GLPI."
+"tables du cœur de ITSM-ng."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:217
 #: inc/console/migration/appliancesplugintocorecommand.class.php:162
@@ -9454,8 +9454,8 @@ msgid ""
 "Racks plugin is not part of GLPI plugin list. It has never been installed or "
 "has been cleaned."
 msgstr ""
-"Le plugin Baies n'est pas dans la liste des plugins GLPI. Il n'a jamais été "
-"installé ou a été purgé."
+"Le plugin Baies n'est pas dans la liste des plugins ITSM-ng. Il n'a jamais "
+"été installé ou a été purgé."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:281
 #: inc/console/migration/racksplugintocorecommand.class.php:296
@@ -9520,7 +9520,7 @@ msgstr "Importation des modèles autres ..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
 msgid "Other items do not exist in GLPI core."
-msgstr "Les éléments autres n'existent pas dans le cœur de GLPI."
+msgstr "Les éléments autres n'existent pas dans le cœur de ITSM-ng."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
 #, php-format
@@ -9704,7 +9704,8 @@ msgstr "Impossible de créer la pièce par défaut."
 #: inc/console/migration/appliancesplugintocorecommand.class.php:145
 msgid "Migrate Appliances plugin data into GLPI core tables"
 msgstr ""
-"Migrer les données du plugin Applicatifs vers les tables principales de GLPI"
+"Migrer les données du plugin Applicatifs vers les tables principales d'ITSM-"
+"ng"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:160
 msgid ""
@@ -9712,7 +9713,7 @@ msgid ""
 "tables."
 msgstr ""
 "Vous êtes prêt à lancer la migration des données du plugin Applicatifs dans "
-"les tables du cœur de GLPI."
+"les tables du cœur d'ITSM-ng."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:161
 msgid "Any previous appliance created in core will be lost."
@@ -9745,7 +9746,7 @@ msgstr "Matériels associables à un ticket"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:334
 msgid "Updating GLPI itemtypes..."
-msgstr "Mise à jour des itemtypes GLPI..."
+msgstr "Mise à jour des itemtypes d'ITSM-ng..."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:359
 #, php-format
@@ -9844,7 +9845,7 @@ msgstr "Mise à jour de  `%s`.`%s` a échouée avec le message \"(%s) %s\"."
 #: inc/console/migration/domainsplugintocorecommand.class.php:91
 msgid "Migrate Domains plugin data into GLPI core tables"
 msgstr ""
-"Migration des données du plugin Domaines dans les tables du cœur de GLPI"
+"Migration des données du plugin Domaines dans les tables du cœur d'ITSM-ng"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:98
 #, php-format
@@ -9859,15 +9860,15 @@ msgid ""
 "tables."
 msgstr ""
 "Vous êtes prêt à lancer la migration des données du plugin Domaines dans les "
-"tables du cœur de GLPI."
+"tables du cœur de ITSM-ng."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:182
 msgid ""
 "Domains plugin is not part of GLPI plugin list. It has never been installed "
 "or has been cleaned."
 msgstr ""
-"Le plugin Domaines n'est pas dans la liste des plugins GLPI. Il n'a jamais "
-"été installé ou a été purgé."
+"Le plugin Domaines n'est pas dans la liste des plugins d'ITSM-ng. Il n'a "
+"jamais été installé ou a été purgé."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:185
 #: inc/console/migration/domainsplugintocorecommand.class.php:200
@@ -10104,7 +10105,7 @@ msgstr "Paramétrer le dossier à utiliser"
 #: inc/console/application.class.php:185
 msgid "Disable GLPI plugins (unless commands forces plugins loading)"
 msgstr ""
-"Désactiver les plugins GLPI (à moins que la commande n'en force le "
+"Désactiver les plugins d'ITSM-ng (à moins que la commande n'en force le "
 "chargement)"
 
 #: inc/console/application.class.php:191
@@ -10112,8 +10113,8 @@ msgid ""
 "Output language (default value is existing GLPI \"language\" configuration "
 "or \"en_GB\")"
 msgstr ""
-"Langue de sortie (la valeur par défaut est celle de la configuration de GLPI "
-"ou \"en_GB\")"
+"Langue de sortie (la valeur par défaut est celle de la configuration d'ITSM-"
+"ng ou \"en_GB\")"
 
 #: inc/console/application.class.php:212
 #, php-format
@@ -10260,7 +10261,7 @@ msgstr "La valeur de l'option --db-password  ne peut être nulle"
 
 #: inc/console/database/installcommand.class.php:91
 msgid "Default language of GLPI"
-msgstr "Langue par défaut de GLPI"
+msgstr "Langue par défaut de ITSM-ng"
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -10327,7 +10328,7 @@ msgid ""
 "Force execution of update from v-1 version of GLPI even if schema did not "
 "changed"
 msgstr ""
-"Forcer l'exécution de la mise à jour depuis la version v-1 de GLPI même si "
+"Forcer l'exécution de la mise à jour depuis la version v-1 d'ITSM-ng même si "
 "le schéma n'a pas changé"
 
 #: inc/console/database/updatecommand.class.php:124
@@ -10336,7 +10337,7 @@ msgstr "Actuel"
 
 #: inc/console/database/updatecommand.class.php:128
 msgid "GLPI version"
-msgstr "Version de GLPI"
+msgstr "Version de ITSM"
 
 #: inc/console/database/updatecommand.class.php:129
 msgid "GLPI database version"
@@ -23408,10 +23409,12 @@ msgstr "La recherche a été sauvegardée"
 #: inc/specialstatus.class.php:205
 msgid "Ticket is still using this status, are you sure to remove the status?"
 msgstr ""
+"Le ticket utilise toujours ce statut, êtes-vous sûr de pouvoir le supprimer ?"
 
 #: inc/specialstatus.class.php:207
 msgid "Tickets are still using this status, are you sure to remove the status?"
 msgstr ""
+"Le ticket utilise toujours ce statut, êtes-vous sûr de pouvoir le supprimer ?"
 
 #: inc/specialstatus.class.php:209
 #, fuzzy
@@ -23427,15 +23430,15 @@ msgstr "La recherche a été sauvegardée"
 
 #: inc/specialstatus.class.php:243
 msgid "New Status - Special status"
-msgstr ""
+msgstr "Nouveau statut - Statut spécial"
 
 #: inc/oidc.class.php:261
 msgid "Mapping of fields according to provider"
-msgstr ""
+msgstr "Mappage des champs en fonction du fournisseur"
 
 #: inc/auth.class.php:1732
 msgid "Mapping"
-msgstr ""
+msgstr "Mappage"
 
 #: inc/central.class.php:173
 msgid "Tickets by status"
@@ -23449,7 +23452,7 @@ msgstr "Virtualisation"
 
 #: templates/install/index.twig:31
 msgid "Initialized"
-msgstr ""
+msgstr "Initialiser"
 
 #: templates/install/index.twig:31
 #, fuzzy
@@ -23463,10 +23466,13 @@ msgid ""
 "cogwheel then click and the star next to the menu you wish to add as a "
 "favorite."
 msgstr ""
+"Vous pouvez ajouter votre section favorite à ce menu. Pour ce faire, cliquez "
+"sur la roue dentée, puis sur l'étoile située à côté du menu que vous "
+"souhaitez ajouter en tant que favori."
 
 #: templates/menus/nav/nav-settings.twig:4
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
@@ -23488,7 +23494,7 @@ msgstr "Action interrompue"
 
 #: templates/menus/nav/nav-settings.twig:17
 msgid "Activate favorite selection"
-msgstr ""
+msgstr "Activer la sélection des favoris"
 
 #: templates/menus/nav/nav-settings.twig:22
 #, fuzzy
