@@ -37,9 +37,13 @@
   function saveGrid() {
 	let save = grid.save();
 	items = grid.getGridItems();
-	for (const i in save) {
-		save[i].name = items[i].id.replace('ContentFor', '');
-		delete(save[i].content);
+	for (i in save) {
+		for (j in items) {
+			if ($(items[j]).find('div').html() === save[i].content) {
+				save[i].name = $(items[j]).attr('id').replace('ContentFor', '');
+			}
+		};
+		delete save[i].content;
 	}
 	$.ajax({
 		url: '{{glpiroot}}/ajax/updateUserMenu.php',
@@ -103,11 +107,13 @@
 
   // Initialize checkboxes based on selectedTabs
   function initCheckbox() {
-    const savedLayout = {{selectedTabs|json_encode|raw}};
+    const savedLayout = {{selectedTabs|json_encode|raw}} ?? [];
 	for (widget of savedLayout) {
 		const name = widget.name;
 		const element = $(`#ContentFor${name}`);
+		console.table(widget);
 		delete widget.name;
+		console.table(name);
 
 		for (param of Object.entries(widget)) {
 			element.attr('gs-'
