@@ -315,7 +315,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection {
       }
       $soft = new Software();
       if (isset($res_rules['_ignore_import']) && ($res_rules['_ignore_import'] == 1)) {
-          $soft->putInTrash($ID, __('Software deleted by GLPI dictionary rules'));
+          $soft->putInTrash($ID, __('Software deleted by ITSM-NG dictionary rules'));
           return;
       }
 
@@ -428,7 +428,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection {
 
          $software = new Software();
          while ($soft = $iterator->next()) {
-            $software->putInTrash($soft["id"], __('Software deleted by GLPI dictionary rules'));
+            $software->putInTrash($soft["id"], __('Software deleted by ITSM-NG dictionary rules'));
          }
       }
    }

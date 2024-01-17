@@ -414,10 +414,9 @@ class Telemetry extends CommonGLPI {
    public static function showTelemetry() {
       $out = "<h4><input type='checkbox' checked='checked' value='1' name='send_stats' id='send_stats'/>";
       $out .= "<label for='send_stats'>" . __('Send "usage statistics"')  . "</label></h4>";
-      $out .= "<p><strong>" . __("We need your help to improve GLPI and the plugins ecosystem!") ."</strong></p>";
-      $out .= "<p>" . __("Since GLPI 9.2, we’ve introduced a new statistics feature called “Telemetry”, that anonymously with your permission, sends data to our telemetry website.") . " ";
-      $out .= __("Once sent, usage statistics are aggregated and made available to a broad range of GLPI developers.") . "</p>";
-      $out .= "<p>" . __("Let us know your usage to improve future versions of GLPI and its plugins!") . "</p>";
+      $out .= "<p><strong>" . __("We need your help to improve ITSM-NG and the plugins ecosystem!") ."</strong></p>";
+      $out .= __("Once sent, usage statistics are aggregated and made available to a broad range of ITSM-NG developers.") . "</p>";
+      $out .= "<p>" . __("Let us know your usage to improve future versions of ITSM-NG and its plugins!") . "</p>";
 
       $out .= "<p>" . self::getViewLink() . "</p>";
       return $out;
@@ -430,7 +429,7 @@ class Telemetry extends CommonGLPI {
     */
    public static function showReference() {
       $out = "<hr/>";
-      $out .= "<h4>" . __('Reference your GLPI') . "</h4>";
+      $out .= "<h4>" . __('Reference your ITSM-NG') . "</h4>";
       $out .= "<p>" . sprintf(
          __("Besides, if you appreciate GLPI and its community, ".
          "please take a minute to reference your organization by filling %1\$s."),

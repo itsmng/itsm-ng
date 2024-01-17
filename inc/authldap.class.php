@@ -1606,7 +1606,7 @@ class AuthLDAP extends CommonDBTM {
                                                 "?order=".($values['order']=="DESC"?"ASC":"DESC"));
             echo "<th>".__('Last update in the LDAP directory')."</th>";
             if ($_SESSION['ldap_import']['mode']) {
-               echo "<th>".__('Last update in GLPI')."</th>";
+               echo "<th>".__('Last update in ITSM-NG')."</th>";
             }
             echo "</tr>";
             echo "</table>";

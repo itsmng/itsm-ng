@@ -72,7 +72,7 @@ class MemoryLimit extends AbstractRequirement {
       } else {
          $this->validated = false;
          $this->validation_messages[] = sprintf( __('%1$s: %2$s'), __('Allocated memory'), \Toolbox::getSize($limit));
-         $this->validation_messages[] = sprintf(__('A minimum of %s is commonly required for GLPI.'), \Toolbox::getSize($this->min));
+         $this->validation_messages[] = sprintf(__('A minimum of %s is commonly required for ITSM-NG.'), \Toolbox::getSize($this->min));
          $this->validation_messages[] = __('Try increasing the memory_limit parameter in the php.ini file.');
       }
    }

@@ -154,7 +154,7 @@ class ObjectLock extends CommonDBTM {
                            }") ."
                      },
                   error: function() { ".
-                        Html::jsAlertCallback(__('Contact your GLPI admin!'), __('Item NOT unlocked!'))."
+                        Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Item NOT unlocked!'))."
                      }
                });
             }".

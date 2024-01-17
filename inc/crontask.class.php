@@ -583,9 +583,9 @@ class CronTask extends CommonDBTM{
       if ($isplug) {
          $plug = new Plugin();
       }
-      
+
       $label = $this->getParameterDescription();
-      
+
       if ($this->fields['state'] == self::STATE_RUNNING) {
          $launch = false;
       } else {
@@ -695,7 +695,7 @@ class CronTask extends CommonDBTM{
                   __('Next run') => [
                      'content' => $this->fields['state'] != self::STATE_WAITING ?
                         $this->getStateName($this->fields['state']) : (
-                           empty($this->fields['lastrun']) ? 
+                           empty($this->fields['lastrun']) ?
                            __('As soon as possible') : $this->getNextRunTime()
                         )
                   ],
@@ -716,7 +716,7 @@ class CronTask extends CommonDBTM{
          ]
       ];
       renderTwigForm($form);
-      
+
       return true;
    }
 
@@ -852,7 +852,7 @@ class CronTask extends CommonDBTM{
 
       switch ($mode) {
          case self::MODE_INTERNAL :
-            return __('GLPI');
+            return __('ITSM-NG');
 
          case self::MODE_EXTERNAL :
             return __('CLI');
@@ -919,7 +919,7 @@ class CronTask extends CommonDBTM{
          // If cron is launched in command line, and if memory is insufficient,
          // display a warning in the logs
          if (Toolbox::checkMemoryLimit() == 2) {
-            Toolbox::logInFile('cron', __('A minimum of 64 Mio is commonly required for GLPI.')."\n");
+            Toolbox::logInFile('cron', __('A minimum of 64 Mio is commonly required for ITSM-NG.')."\n");
          }
          // If no task in CLI mode, call cron.php from command line is not really usefull ;)
          if (!countElementsInTable($crontask->getTable(), ['mode' => abs($mode)])) {
@@ -1972,7 +1972,7 @@ class CronTask extends CommonDBTM{
 
       $tab[WEEK_TIMESTAMP]  = __('Each week');
       $tab[MONTH_TIMESTAMP] = __('Each month');
-      
+
       return $tab;
    }
 
