@@ -2596,6 +2596,31 @@ class User extends CommonDBTM {
             $User_profile[$row[0]] = $row[1];
          }
 
+         $emails = iterator_to_array($DB->request([
+            'SELECT' => [
+               'id',
+               'is_default',
+               'email',
+            ],
+            'FROM'   => 'glpi_useremails',
+            'WHERE'  => ['users_id' => $ID]
+         ]));
+         $emailsValues = [];
+         $defaultEmailTitle = __('Default email');
+         foreach($emails as $email) {
+            $emailsValues[] = [
+               "<input type='radio' class='form-check-input mx-1' title='{$defaultEmailTitle}' name='_default_email' value='".$email['id']."' ".($email['is_default'] ? 'checked' : '').">",
+               "<input type='email' class='form-control' name='_useremails[{$email['id']}]' value='".$email['email']."'>",
+            ];
+         }
+   
+         $tz_warning = '';
+         $tz_available = $DB->areTimezonesAvailable($tz_warning);
+         if ($tz_available) {
+            $timezones = $DB->getTimezones();
+         }
+   
+
          // Display the result
          $form = [
             'action' => $CFG_GLPI['root_doc'] . '/front/preference.php',
@@ -2640,12 +2665,14 @@ class User extends CommonDBTM {
                         'name' => 'password2',
                         'type' => 'password',
                      ] : [],
-                     __('Time zone') => [
-                        'name' => 'timezone',
+                     __('Time zone') => ($tz_available || Session::haveRight("config", READ)) ? ( $tz_available ? [
                         'type' => 'select',
-                        'values' => $DB->getTimezones(),
-                        'value' => $this->fields['timezone'] ?? '',
-                     ],
+                        'name' => 'timezone',
+                        'values' => array_merge([__('Use server configuration')], $timezones),
+                        'value' => $this->fields["timezone"],
+                     ] : [
+                        'content' => "<img src=\"{$CFG_GLPI['root_doc']}/pics/warning_min.png\">"
+                     ]) : [],
                      __('Phone') => [
                         'name' => 'phone',
                         'type' => 'text',
@@ -2673,10 +2700,28 @@ class User extends CommonDBTM {
                         'value' => $this->fields['locations_id'] ?? '',
                         'actions' => getItemActionButtons(['info', 'add'], "Location"),
                      ],
-                     __('Email') => [
-                        'name' => '_useremails[-1]',
-                        'type' => 'text',
-                        'value' =>  $this->fields['_useremails[-1]'] ?? '',
+                     _n('Email', 'Emails', Session::getPluralNumber()) => [
+                        'type' => 'multiSelect',
+                        'name' => '_useremails',
+                        'inputs' => [
+                           [
+                              'name' => 'current_useremails',
+                              'type' => 'email',
+                           ]
+                        ],
+                        'values' => $emailsValues,
+                        'getInputAdd' => <<<JS
+                        function () {
+                           let re = /\S+@\S+\.\S+/;
+                           if (!$('input[name="current_useremails"]').val() || !re.test($('input[name="current_useremails"]').val())) {
+                              return;
+                           }
+                           var values = {};
+                           var title = "<input type='radio' class='form-check-input mx-1' title='{$defaultEmailTitle}' name='_default_email' value='-1'>" +
+                                       "<input type='email' class='form-control' name='_useremails[-1]' value='" + $('input[name="current_useremails"]').val() + "'>";
+                           return {values, title};
+                        }
+                        JS,
                      ],
                      __('Default profile') => [
                         'name' => 'profiles_id',
