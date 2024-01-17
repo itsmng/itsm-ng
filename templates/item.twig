@@ -105,10 +105,8 @@
   function initCheckbox() {
     const savedLayout = {{selectedTabs|json_encode|raw}};
 	for (widget of savedLayout) {
-		console.log(widget);
 		const name = widget.name;
 		const element = $(`#ContentFor${name}`);
-		console.log(element);
 		delete widget.name;
 
 		for (param of Object.entries(widget)) {
