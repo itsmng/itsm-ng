@@ -22628,7 +22628,7 @@ msgid "Default logins / passwords are:"
 msgstr ""
 
 #: install/install.php:540
-msgid "glpi/glpi for the administrator account"
+msgid "itsm/itsm for the administrator account"
 msgstr ""
 
 #: install/install.php:541
