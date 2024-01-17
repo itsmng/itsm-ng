@@ -25,7 +25,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-26 10:07+0200\n"
-"PO-Revision-Date: 2024-01-17 13:29+0000\n"
+"PO-Revision-Date: 2024-01-17 13:39+0000\n"
 "Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "fr/>\n"
@@ -13003,7 +13003,7 @@ msgstr "Le plugin %1$s a été désactivé !"
 
 #: inc/plugin.class.php:1662 inc/crontask.class.php:841
 msgid "ITSM-NG"
-msgstr ""
+msgstr "ITSM-NG"
 
 #: inc/plugin.class.php:1662 inc/notificationmailingsetting.class.php:156
 msgid "PHP"
