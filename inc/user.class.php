@@ -2109,7 +2109,7 @@ class User extends CommonDBTM {
       $formtitle = $this->getTypeName(1);
 
       if ($ID > 0) {
-         $formtitle .= "<a class='pointer far fa-address-card fa-lg' target='_blank' href='".
+         $formtitle .= "&nbsp;<a class='pointer far fa-address-card fa-lg' target='_blank' href='".
                        User::getFormURLWithID($ID)."&amp;getvcard=1' title='".__s('Download user VCard').
                        "'><span class='sr-only'>". __('Vcard')."</span></a>";
          if (Session::canImpersonate($ID)) {
@@ -2121,7 +2121,7 @@ class User extends CommonDBTM {
             // "impersonate" button type is set to "button" on form display to prevent it to be used
             // by default (as it is the first found in current form) when pressing "enter" key.
             // When clicking it, switch to "submit" type to make it submit current user form.
-            $impersonate_js = <<<JAVASCRIPT
+            $impersonate_js = <<<JS
                (function($) {
                   $('button[type="button"][name="impersonate"]').click(
                      function () {
@@ -2129,371 +2129,359 @@ class User extends CommonDBTM {
                      }
                   );
                })(jQuery);
-JAVASCRIPT;
+            JS;
             $formtitle .= Html::scriptBlock($impersonate_js);
          }
       }
 
-      $options['formtitle']   = $formtitle;
-      $options['formoptions'] = ($options['formoptions'] ?? '') . " enctype='multipart/form-data'";
-      $this->showFormHeader($options);
-      $rand = mt_rand();
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='name'>" . __('Login') . "</label></td>";
-      if ($this->fields["name"] == "" ||
-          !empty($this->fields["password"])
-          || ($this->fields["authtype"] == Auth::DB_GLPI)) {
-         //display login field for new records, or if this is not external auth
-         echo "<td><input name='name' id='name' value=\"" . $this->fields["name"] . "\"></td>";
-      } else {
-         echo "<td class='b'>" . $this->fields["name"];
-         echo "<input type='hidden' name='name' value=\"" . $this->fields["name"] . "\"></td>";
-      }
-
-      if (!empty($this->fields["name"])) {
-         echo "<td rowspan='7'>" . __('Picture') . "</td>";
-         echo "<td rowspan='7'>";
-         echo "<div class='user_picture_border_small' id='picture$rand'>";
-         echo "<img class='user_picture_small' alt=\"".__s('Picture')."\" src='".
-                User::getThumbnailURLForPicture($this->fields['picture'])."'>";
-         // echo "<img src='".self::getURLForPicture($this->fields["picture"])."' class='user_picture'/>";
-         echo "</div>";
-         $full_picture = "<div class='user_picture_border'>";
-         $full_picture .= "<img class='user_picture' alt=\"".__s('Picture')."\" src='".
-                            User::getURLForPicture($this->fields['picture'])."'>";
-         $full_picture .= "</div>";
-
-         Html::showTooltip($full_picture, ['applyto' => "picture$rand"]);
-         echo Html::file(['name' => 'picture', 'display' => false, 'onlyimages' => true]);
-         echo "<input type='checkbox' name='_blank_picture'>&nbsp;".__('Clear');
-         echo "</td>";
-      } else {
-         echo "<td rowspan='7'></td>";
-         echo "<td rowspan='7'></td>";
-      }
-      echo "</tr>";
-
-      //If it's an external auth, check if the sync_field must be displayed
-      if ($extauth
-         && $this->fields['auths_id']
-            && AuthLDAP::isSyncFieldConfigured($this->fields['auths_id'])) {
-         $syncrand = mt_rand();
-         echo "<tr class='tab_bg_1'><td><label for='textfield_sync_field$syncrand'>" . __('Synchronization field') . "</label></td><td>";
-         if (self::canUpdate()
-             && (!$extauth || empty($ID))) {
-                Html::autocompletionTextField($this, "sync_field", ['rand' => $syncrand]);
-         } else {
-            if (empty($this->fields['sync_field'])) {
-               echo Dropdown::EMPTY_VALUE;
-            } else {
-               echo $this->fields['sync_field'];
-            }
-         }
-         echo "</td></tr>";
-      } else {
-         echo "<tr class='tab_bg_1'><td colspan='2'></td></tr>";
-      }
-
-      $surnamerand = mt_rand();
-      echo "<tr class='tab_bg_1'><td><label for='textfield_realname$surnamerand'>" . __('Surname') . "</label></td><td>";
-      Html::autocompletionTextField($this, "realname", ['rand' => $surnamerand]);
-      echo "</td></tr>";
-
-      $firstnamerand = mt_rand();
-      echo "<tr class='tab_bg_1'><td><label for='textfield_firstname$firstnamerand'>" . __('First name') . "</label></td><td>";
-      Html::autocompletionTextField($this, "firstname", ['rand' => $firstnamerand]);
-      echo "</td></tr>";
-
-      //do some rights verification
-      if (self::canUpdate()
-          && (!$extauth || empty($ID))
-          && $caneditpassword) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td><label for='password'>" . __('Password')."</label></td>";
-         echo "<td><input id='password' type='password' name='password' value='' size='20'
-                    autocomplete='new-password' onkeyup=\"return passwordCheck();\"></td>";
-
-         echo "<tr class='tab_bg_1'>";
-         echo "<td><label for='password2'>" . __('Password confirmation') . "</label></td>";
-         echo "<td><input type='password' id='password2' name='password2' value='' size='20' autocomplete='new-password'>";
-         echo "</td></tr>";
-
-         if ($CFG_GLPI["use_password_security"]) {
-            echo "<tr class='tab_bg_1'>";
-            echo "<td rowspan='2'>";
-            echo __('Password security policy');
-            echo "</td>";
-            echo "<td rowspan='2'>";
-            Config::displayPasswordSecurityChecks();
-            echo "</td>";
-            echo "</tr>";
-         }
-
-      } else {
-         echo "<tr class='tab_bg_1'><td></td><td></td></tr>";
-         echo "<tr class='tab_bg_1'><td></td><td></td></tr>";
-      }
-
       $tz_warning = '';
       $tz_available = $DB->areTimezonesAvailable($tz_warning);
-      if ($tz_available || Session::haveRight("config", READ)) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td><label for='timezone'>".__('Time zone')."</label></td><td>";
-         if ($tz_available) {
-            $timezones = $DB->getTimezones();
-            Dropdown::showFromArray(
-               'timezone',
-               $timezones, [
-                  'value'                 => $this->fields["timezone"],
-                  'display_emptychoice'   => true,
-                  'emptylabel'            => __('Use server configuration')
+      if ($tz_available) {
+         $timezones = $DB->getTimezones();
+      }
+
+      $emails = iterator_to_array($DB->request([
+         'SELECT' => [
+            'id',
+            'is_default',
+            'email',
+         ],
+         'FROM'   => 'glpi_useremails',
+         'WHERE'  => ['users_id' => $ID]
+      ]));
+      $emailsValues = [];
+      $defaultEmailTitle = __('Default email');
+      foreach($emails as $email) {
+         $emailsValues[] = [
+            "<input type='radio' class='form-check-input mx-1' title='{$defaultEmailTitle}' name='_default_email' value='".$email['id']."' ".($email['is_default'] ? 'checked' : '').">",
+            "<input type='email' class='form-control' name='_useremails[{$email['id']}]' value='".$email['email']."'>",
+         ];
+      }
+      $groupUser = [];
+      foreach (Group_User::getUserGroups($this->fields['id']) as $group) {
+         $groupUser[$group['id']] = $group['completename'];
+      }
+
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            $this->fields["is_deleted"] == 1 && self::canDelete() ? [
+              'type' => 'submit',
+              'name' => 'restore',
+              'value' => __('Restore'),
+              'class' => 'btn btn-secondary'
+            ] : ($this->canUpdateItem() ? [
+              'type' => 'submit',
+              'name' => $this->isNewID($ID) ? 'add' : 'update',
+              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+              'class' => 'btn btn-secondary'
+            ] : []),
+            !$this->isNewID($ID) && !$this->isDeleted() && $this->canDeleteItem() ? [
+              'type' => 'submit',
+              'name' => 'delete',
+              'value' => __('Put in trashbin'),
+              'class' => 'btn btn-danger'
+            ] : (!$this->isNewID($ID) && self::canPurge() ? [
+              'type' => 'submit',
+              'name' => 'purge',
+              'value' => __('Delete permanently'),
+              'class' => 'btn btn-danger'
+            ] : []),
+          ],
+          'content' => [
+            $formtitle => [
+               'visible' => true,
+               'inputs' => [
+                  empty($ID) => [
+                     'type' => 'hidden',
+                     'name' => 'authtype',
+                     'value' => 1,
+                  ],
+                  __('Login') => [
+                     'type' => ($this->fields["name"] == ""
+                     || !empty($this->fields["password"])
+                     || ($this->fields["authtype"] == Auth::DB_GLPI))
+                     ? 'text'
+                     : 'hidden',
+                     'name' => 'name',
+                     'value' => $this->fields['name'],
+                  ],
+                  $this->isNewID($ID) ? [] : [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ],
+                  __('Synchronization field') => ($extauth
+                  && $this->fields['auths_id']
+                  && AuthLDAP::isSyncFieldConfigured($this->fields['auths_id']))
+                  ? [
+                     'type' => 'text',
+                        'name' => 'sync_field',
+                        'value' => $this->fields['sync_field'],
+                        (self::canUpdate() && (!$extauth || empty($ID))) ? 'disabled' : '',
+                  ] : [],
+                  __('Surname') => [
+                     'type' => 'text',
+                     'name' => 'realname',
+                     'value' => $this->fields['realname'],
+                  ],
+                  __('First name') => [
+                     'type' => 'text',
+                     'name' => 'firstname',
+                     'value' => $this->fields['firstname'],
+                  ],
+                  __('Password') => (self::canUpdate()
+                     && (!$extauth || empty($ID))
+                     && $caneditpassword)
+                        ? [
+                           'type' => 'password',
+                           'name' => 'password',
+                           'value' => '',
+                           'size' => '20',
+                           'col_lg' => 6,
+                  ] : [],
+                  __('Password confirmation') => (self::canUpdate()
+                     && (!$extauth || empty($ID))
+                     && $caneditpassword)
+                        ? [
+                           'type' => 'password',
+                           'name' => 'password2',
+                           'value' => '',
+                           'size' => '20',
+                           'col_lg' => 6,
+                  ] : [],
+                  __('Time zone') => ($tz_available || Session::haveRight("config", READ)) ? ( $tz_available ? [
+                     'type' => 'select',
+                     'name' => 'timezone',
+                     'values' => array_merge([__('Use server configuration')], $timezones),
+                     'value' => $this->fields["timezone"],
+                  ] : [
+                     'content' => "<img src=\"{$CFG_GLPI['root_doc']}/pics/warning_min.png\">"
+                  ]) : [],
+                  __('Active') => (!GLPI_DEMO_MODE) ? [
+                     'type' => 'checkbox',
+                     'name' => 'is_active',
+                     'value' => $this->fields['is_active'],
+                  ] : [],
+                  _n('Email', 'Emails', Session::getPluralNumber()) => [
+                     'type' => 'multiSelect',
+                     'name' => '_useremails',
+                     'inputs' => [
+                        [
+                           'name' => 'current_useremails',
+                           'type' => 'email',
+                        ]
+                     ],
+                     'values' => $emailsValues,
+                     'getInputAdd' => <<<JS
+                     function () {
+                        let re = /\S+@\S+\.\S+/;
+                        if (!$('input[name="current_useremails"]').val() || !re.test($('input[name="current_useremails"]').val())) {
+                           return;
+                        }
+                        var values = {};
+                        var title = "<input type='radio' class='form-check-input mx-1' title='{$defaultEmailTitle}' name='_default_email' value='-1'>" +
+                                    "<input type='email' class='form-control' name='_useremails[-1]' value='" + $('input[name="current_useremails"]').val() + "'>";
+                        return {values, title};
+                     }
+                     JS,
+                  ],
+                  __('Valid since') => (!GLPI_DEMO_MODE) ? [
+                     'type' => 'datetime-local',
+                     'name' => 'begin_date',
+                     'id' => 'BeginDatePicker',
+                     'value' => $this->fields['begin_date'],
+                     'col_lg' => 6,
+                  ] : [],
+                  __('Valid until') => (!GLPI_DEMO_MODE) ? [
+                     'type' => 'datetime-local',
+                     'name' => 'end_date',
+                     'id' => 'EndDatePicker',
+                     'value' => $this->fields['end_date'],
+                     'col_lg' => 6,
+                  ] : [],
+                  Phone::getTypeName(1) => [
+                     'type' => 'text',
+                     'name' => 'phone',
+                     'value' => $this->fields['phone'],
+                  ],
+                  __('Phone 2') => [
+                     'type' => 'text',
+                     'name' => 'phone2',
+                     'value' => $this->fields['phone2'],
+                  ],
+                  __('Mobile phone') => [
+                     'type' => 'text',
+                     'name' => 'mobile',
+                     'value' => $this->fields['mobile'],
+                  ],
+                  __('Authentication') => (!empty($ID)
+                     && Session::haveRight(self::$rightname, self::READAUTHENT)) ? [
+                        'content' => Auth::getMethodName($this->fields["authtype"], $this->fields["auths_id"]),
+                  ] : [],
+                  __('Last synchronization') => (!empty($ID)
+                     && Session::haveRight(self::$rightname, self::READAUTHENT
+                     && !empty($this->fields["date_sync"]))) ? [
+                        'content' => Html::convDateTime($this->fields["date_sync"]),
+                  ] : [],
+                  __('User DN') => (!empty($ID)
+                     && Session::haveRight(self::$rightname, self::READAUTHENT
+                     && !empty($this->fields["user_dn"]))) ? [
+                        'content' => $this->fields["user_dn"],
+                  ] : [],
+                  __('LDAP Directory') => (!empty($ID)
+                     && Session::haveRight(self::$rightname, self::READAUTHENT
+                     && $this->fields['is_deleted_ldap'])) ? [
+                        'content' => 'MISSING',
+                  ] : [],
+                  __('Administrative number') => [
+                     'type' => 'text',
+                     'name' => 'registration_number',
+                     'value' => $this->fields['registration_number'],
+                  ],
+                  _x('person', 'Title') => [
+                     'type' => 'select',
+                     'name' => 'usertitles_id',
+                     'values' => getOptionForItems('UserTitle'),
+                     'value' => $this->fields['usertitles_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'UserTitle'),
+                  ],
+                  Location::getTypeName(1) => (!empty($ID)) ? [
+                     'type' => 'select',
+                     'name' => 'locations_id',
+                     'values' => getOptionForItems('Location'),
+                     'value' => $this->fields['locations_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'Location'),
+                  ] : [],
                ]
-            );
-         } else if (Session::haveRight("config", READ)) {
-            // Display a warning but only if user is more or less an admin
-            echo "<img src=\"{$CFG_GLPI['root_doc']}/pics/warning_min.png\">";
-            echo $tz_warning;
-         }
-         echo "</td></tr>";
-      }
+            ],
+            _n('Authorization', 'Authorizations', 1) =>  [
+               'visible' => true,
+               'inputs' => (empty($ID)) ? [
+                  __('Recursive') => [
+                     'type' => 'checkbox',
+                     'name' => '_is_recursive',
+                     'value' => $this->fields['_is_recursive'],
+                  ],
+                  Profile::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => '_profiles_id',
+                     'values' => getOptionForItems('Profile'),
+                     'value' => $this->fields['_profiles_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'Profile'),
+                  ],
+                  Entity::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => '_entities_id',
+                     'values' => getOptionForItems('Entity'),
+                     'value' => $this->fields['_entities_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
+                  ],
+               ] : [
+                  __('Default profile') => ($higherrights || $ismyself) ? [
+                     'type' => 'select',
+                     'name' => 'profiles_id',
+                     'values' => getOptionForItems('Profile'),
+                     'value' => $this->fields['profiles_id'],
+                     'col_lg' => 6,
+                  ] : [],
+                  __('Default entity') => ($higherrights) ? [
+                     'type' => 'select',
+                     'name' => 'entities_id',
+                     'values' => getOptionForItems('Entity'),
+                     'value' => $this->fields['entities_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
+                     'col_lg' => 6,
+                     ] : [],
+                  __('Default group') => ($higherrights) ? [
+                     'type' => 'select',
+                     'name' => 'groups_id',
+                     'values' => array_merge([Dropdown::EMPTY_VALUE], $groupUser),
+                     'value' => $this->fields['groups_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'Group'),
+                     'col_lg' => 6,
+                  ] : [],
+                  __('Responsible') => ($higherrights) ? [
+                     'type' => 'select',
+                     'name' => 'users_id_supervisor',
+                     'values' => getOptionsForUsers('all'),
+                     'value' => $this->fields['users_id_supervisor'],
+                     'actions' => getItemActionButtons(['info'], 'User'),
+                     'col_lg' => 6,
+                  ] : [],
+               ]
+            ],
+            __('Remote access keys') => ($caneditpassword && !empty($ID)) ? [
+               'visible' => true,
+               'inputs' => [
+                  __("Personal token") => (!empty($this->fields["personal_token"])) ? [
+                     'type' => 'text',
+                     'name' => '_personal_token',
+                     'value' => $this->fields["personal_token"],
+                     'after' => sprintf(__('generated on %s'),
+                                        Html::convDateTime($this->fields["personal_token_date"])),
+                     'col_lg' => 8,
+                     'col_md' => 8,
+                  ] : [
+                     'content' => '',
+                     'col_lg' => 8,
+                     'col_md' => 8,
+                  ],
+                  __('Regenerate') . ' ' . __("Personal token") => [
+                     'type' => 'checkbox',
+                     'name' => '_reset_personal_token',
+                     'value' => '',
+                     'col_lg' => 4,
+                     'col_md' => 4,
+                  ],
+                  __("API token") => (!empty($this->fields["api_token"])) ? [
+                     'type' => 'text',
+                     'name' => '_api_token',
+                     'value' => $this->fields["api_token"],
+                     'after' => sprintf(__('generated on %s'),
+                                        Html::convDateTime($this->fields["api_token_date"])),
+                     'col_lg' => 8,
+                     'col_md' => 8,
+                  ] : [
+                     'content' => '',
+                     'col_lg' => 8,
+                     'col_md' => 8,
+                  ],
+                  __('Regenerate') . ' ' . __("API token") => [
+                     'type' => 'checkbox',
+                     'name' => '_reset_api_token',
+                     'value' => '',
+                     'col_lg' => 4,
+                     'col_md' => 4,
+                  ],
+               ]
+            ] : []
+          ]
+      ];
+      renderTwigForm($form);
 
-      echo "<tr class='tab_bg_1'>";
-      if (!GLPI_DEMO_MODE) {
-         $activerand = mt_rand();
-         echo "<td><label for='dropdown_is_active$activerand'>".__('Active')."</label></td><td>";
-         Dropdown::showYesNo('is_active', $this->fields['is_active'], -1, ['rand' => $activerand]);
-         echo "</td>";
-      } else {
-         echo "<td colspan='2'></td>";
-      }
-      echo "<td>" . _n('Email', 'Emails', Session::getPluralNumber());
-      UserEmail::showAddEmailButton($this);
-      echo "</td><td>";
-      UserEmail::showForUser($this);
-      echo "</td>";
-      echo "</tr>";
+      // if (!empty($this->fields["name"])) {
+      //    echo "<td rowspan='7'>" . __('Picture') . "</td>";
+      //    echo "<td rowspan='7'>";
+      //    echo "<div class='user_picture_border_small' id='picture$rand'>";
+      //    echo "<img class='user_picture_small' alt=\"".__s('Picture')."\" src='".
+      //           User::getThumbnailURLForPicture($this->fields['picture'])."'>";
+      //    // echo "<img src='".self::getURLForPicture($this->fields["picture"])."' class='user_picture'/>";
+      //    echo "</div>";
+      //    $full_picture = "<div class='user_picture_border'>";
+      //    $full_picture .= "<img class='user_picture' alt=\"".__s('Picture')."\" src='".
+      //                       User::getURLForPicture($this->fields['picture'])."'>";
+      //    $full_picture .= "</div>";
 
-      if (!GLPI_DEMO_MODE) {
-         $sincerand = mt_rand();
-         echo "<tr class='tab_bg_1'>";
-         echo "<td><label for='showdate$sincerand'>".__('Valid since')."</label></td><td>";
-         Html::showDateTimeField("begin_date", ['value'       => $this->fields["begin_date"],
-                                                'rand'        => $sincerand,
-                                                'maybeempty'  => true]);
-         echo "</td>";
-
-         $untilrand = mt_rand();
-         echo "<td><label for='showdate$untilrand'>".__('Valid until')."</label></td><td>";
-         Html::showDateTimeField("end_date", ['value'       => $this->fields["end_date"],
-                                              'rand'        => $untilrand,
-                                              'maybeempty'  => true]);
-         echo "</td></tr>";
-      }
-
-      $phonerand = mt_rand();
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='textfield_phone$phonerand'>" .  Phone::getTypeName(1) . "</label></td><td>";
-      Html::autocompletionTextField($this, "phone", ['rand' => $phonerand]);
-      echo "</td>";
-      //Authentications information : auth method used and server used
-      //don't display is creation of a new user'
-      if (!empty($ID)) {
-         if (Session::haveRight(self::$rightname, self::READAUTHENT)) {
-            echo "<td>" . __('Authentication') . "</td><td>";
-            echo Auth::getMethodName($this->fields["authtype"], $this->fields["auths_id"]);
-            if (!empty($this->fields["date_sync"])) {
-               //TRANS: %s is the date of last sync
-               echo '<br>'.sprintf(__('Last synchronization on %s'),
-                                   Html::convDateTime($this->fields["date_sync"]));
-            }
-            if (!empty($this->fields["user_dn"])) {
-               //TRANS: %s is the user dn
-               echo '<br>'.sprintf(__('%1$s: %2$s'), __('User DN'), $this->fields["user_dn"]);
-            }
-            if ($this->fields['is_deleted_ldap']) {
-               echo '<br>'.__('User missing in LDAP directory');
-            }
-
-            echo "</td>";
-         } else {
-            echo "<td colspan='2'>&nbsp;</td>";
-         }
-      } else {
-         echo "<td colspan='2'><input type='hidden' name='authtype' value='1'></td>";
-      }
-
-      echo "</tr>";
-
-      $mobilerand = mt_rand();
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='textfield_mobile$mobilerand'>" . __('Mobile phone') . "</label></td><td>";
-      Html::autocompletionTextField($this, "mobile", ['rand' => $mobilerand]);
-      echo "</td>";
-      $catrand = mt_rand();
-      echo "<td><label for='dropdown_usercategories_id$catrand'>" . __('Category') . "</label></td><td>";
-      UserCategory::dropdown(['value' => $this->fields["usercategories_id"], 'rand' => $catrand]);
-      echo "</td></tr>";
-
-      $phone2rand = mt_rand();
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='textfield_phone2$phone2rand'>" .  __('Phone 2') . "</label></td><td>";
-      Html::autocompletionTextField($this, "phone2", ['rand' => $phone2rand]);
-      echo "</td>";
-      echo "<td rowspan='4' class='middle'><label for='comment'>" . __('Comments') . "</label></td>";
-      echo "<td class='center middle' rowspan='4'>";
-      echo "<textarea cols='45' rows='6' id='comment' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      $admnumrand = mt_rand();
-      echo "<tr class='tab_bg_1'><td><label for='textfield_registration_number$admnumrand'>" . __('Administrative number') . "</label></td><td>";
-      Html::autocompletionTextField($this, "registration_number", ['rand' => $admnumrand]);
-      echo "</td></tr>";
-
-      $titlerand = mt_rand();
-      echo "<tr class='tab_bg_1'><td><label for='dropdown_usertitles_id$titlerand'>" . _x('person', 'Title') . "</label></td><td>";
-      UserTitle::dropdown(['value' => $this->fields["usertitles_id"], 'rand' => $titlerand]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      if (!empty($ID)) {
-         $locrand = mt_rand();
-         echo "<td><label for='dropdown_locations_id$locrand'>" . Location::getTypeName(1) . "</label></td><td>";
-         $entities = $this->getEntities();
-         if (count($entities) <= 0) {
-            $entities = -1;
-         }
-         Location::dropdown(['value'  => $this->fields["locations_id"],
-                             'rand'   => $locrand,
-                             'entity' => $entities]);
-         echo "</td>";
-      }
-      echo "</tr>";
-
-      if (empty($ID)) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<th colspan='2'>"._n('Authorization', 'Authorizations', 1)."</th>";
-         $recurrand = mt_rand();
-         echo "<td><label for='dropdown__is_recursive$recurrand'>" .  __('Recursive') . "</label></td><td>";
-         Dropdown::showYesNo("_is_recursive", 0, -1, ['rand' => $recurrand]);
-         echo "</td></tr>";
-         $profilerand = mt_rand();
-         echo "<tr class='tab_bg_1'>";
-         echo "<td><label for='dropdown__profiles_id$profilerand'>" .  Profile::getTypeName(1) . "</label></td><td>";
-         Profile::dropdownUnder(['name'  => '_profiles_id',
-                                 'rand'  => $profilerand,
-                                 'value' => Profile::getDefault()]);
-
-         $entrand = mt_rand();
-         echo "</td><td><label for='dropdown__entities_id$entrand'>" .  Entity::getTypeName(1) . "</label></td><td>";
-         Entity::dropdown(['name'                => '_entities_id',
-                           'display_emptychoice' => false,
-                           'rand'                => $entrand,
-                           'entity'              => $_SESSION['glpiactiveentities']]);
-         echo "</td></tr>";
-      } else {
-         if ($higherrights || $ismyself) {
-            $profilerand = mt_rand();
-            echo "<tr class='tab_bg_1'>";
-            echo "<td><label for='dropdown_profiles_id$profilerand'>" .  __('Default profile') . "</label></td><td>";
-
-            $options   = Dropdown::getDropdownArrayNames('glpi_profiles',
-                                                         Profile_User::getUserProfiles($this->fields['id']));
-
-            Dropdown::showFromArray("profiles_id", $options,
-                                    ['value'               => $this->fields["profiles_id"],
-                                     'rand'                => $profilerand,
-                                     'display_emptychoice' => true]);
-         }
-         if ($higherrights) {
-            $entrand = mt_rand();
-            echo "</td><td><label for='dropdown_entities_id$entrand'>" .  __('Default entity') . "</label></td><td>";
-            $entities = $this->getEntities();
-            Entity::dropdown(['value'  => $this->fields["entities_id"],
-                              'rand'   => $entrand,
-                              'entity' => $entities]);
-            echo "</td></tr>";
-
-            $grouprand = mt_rand();
-            echo "<tr class='tab_bg_1'>";
-            echo "<td><label for='dropdown_profiles_id$grouprand'>" .  __('Default group') . "</label></td><td>";
-
-            $options = [];
-            foreach (Group_User::getUserGroups($this->fields['id']) as $group) {
-               $options[$group['id']] = $group['completename'];
-            }
-
-            Dropdown::showFromArray("groups_id", $options,
-                                    ['value'               => $this->fields["groups_id"],
-                                     'rand'                => $grouprand,
-                                     'display_emptychoice' => true]);
-
-            echo "</td>";
-            $userrand = mt_rand();
-            echo "<td><label for='dropdown_users_id_supervisor_$userrand'>" .  __('Responsible') . "</label></td><td>";
-
-            User::dropdown(['name'   => 'users_id_supervisor',
-                            'value'  => $this->fields["users_id_supervisor"],
-                            'rand'   => $userrand,
-                            'entity' => $_SESSION["glpiactive_entity"],
-                            'right'  => 'all']);
-            echo "</td></tr>";
-         }
-
-         if ($caneditpassword) {
-            echo "<tr class='tab_bg_1'><th colspan='4'>". __('Remote access keys') ."</th></tr>";
-
-            echo "<tr class='tab_bg_1'><td>";
-            echo __("Personal token");
-            echo "</td><td colspan='2'>";
-
-            if (!empty($this->fields["personal_token"])) {
-               echo "<div class='copy_to_clipboard_wrapper'>";
-               echo Html::input('_personal_token', [
-                                    'value'    => $this->fields["personal_token"],
-                                    'style'    => 'width:90%'
-                                ]);
-               echo "</div>";
-               echo "(".sprintf(__('generated on %s'),
-                                   Html::convDateTime($this->fields["personal_token_date"])).")";
-            }
-            echo "</td><td>";
-            Html::showCheckbox(['name'  => '_reset_personal_token',
-                                'title' => __('Regenerate')]);
-            echo "&nbsp;&nbsp;".__('Regenerate');
-            echo "</td></tr>";
-
-            echo "<tr class='tab_bg_1'><td>";
-            echo __("API token");
-            echo "</td><td colspan='2'>";
-            if (!empty($this->fields["api_token"])) {
-               echo "<div class='copy_to_clipboard_wrapper'>";
-               echo Html::input('_api_token', [
-                                    'value'    => $this->fields["api_token"],
-                                    'style'    => 'width:90%'
-                                ]);
-               echo "</div>";
-               echo "(".sprintf(__('generated on %s'),
-                                   Html::convDateTime($this->fields["api_token_date"])).")";
-            }
-            echo "</td><td>";
-            Html::showCheckbox(['name'  => '_reset_api_token',
-                                'title' => __('Regenerate')]);
-            echo "&nbsp;&nbsp;".__('Regenerate');
-            echo "</td></tr>";
-         }
-
-         echo "<tr class='tab_bg_1'>";
-         echo "<td colspan='2' class='center'>";
-         if ($this->fields["last_login"]) {
-            printf(__('Last login on %s'), Html::convDateTime($this->fields["last_login"]));
-         }
-         echo "</td><td colspan='2'class='center'>";
-
-         echo "</td></tr>";
-      }
-
-      $this->showFormButtons($options);
+      //    Html::showTooltip($full_picture, ['applyto' => "picture$rand"]);
+      //    echo Html::file(['name' => 'picture', 'display' => false, 'onlyimages' => true]);
+      //    echo "<input type='checkbox' name='_blank_picture'>&nbsp;".__('Clear');
+      //    echo "</td>";
+      // } else {
+      //    echo "<td rowspan='7'></td>";
+      //    echo "<td rowspan='7'></td>";
+      // }
+      // echo "</tr>";
 
       return true;
    }
