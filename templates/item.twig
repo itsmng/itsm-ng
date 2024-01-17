@@ -111,9 +111,7 @@
 	for (widget of savedLayout) {
 		const name = widget.name;
 		const element = $(`#ContentFor${name}`);
-		console.table(widget);
 		delete widget.name;
-		console.table(name);
 
 		for (param of Object.entries(widget)) {
 			element.attr('gs-'
