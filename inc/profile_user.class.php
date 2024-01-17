@@ -178,8 +178,12 @@ class Profile_User extends CommonDBRelation {
       if ($canedit && $num) {
          $massiveactionparams = [   
             'num_displayed' => min($_SESSION['glpilist_limit'], $num),
-            'container'     => 'mass'.__CLASS__.$rand,
+            'container'     => 'TableForProfileUser',
             'display_arrow' => false,
+            'is_deleted' => 0,
+            'add_actions' => [
+               'MassiveAction:purge' => __('Delete permanently the relation with selected elements'),
+            ],
          ];
          Html::showMassiveActions($massiveactionparams);
       }
@@ -229,10 +233,12 @@ class Profile_User extends CommonDBRelation {
             }
             $entname = sprintf(__('%1$s%2$s'), $entname, ")</span>");
          }
+         $massiveActionValues[] = 'item['.self::class.']'.'['.$data['linkid'].']';
          $newValue[] = $entname;
          $values[] = $newValue;
       }
       renderTwigTemplate('table.twig', [
+         'id' => 'TableForProfileUser',
          'fields' => $fields,
          'values' => $values,
          $canedit ? 'massive_action' : '' => $massiveActionValues
