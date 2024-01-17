@@ -1,7 +1,7 @@
 <nav class="nav-side-menu">
 
     <div class="menu-list">
-  
+
         <ul id="menu-content" class="menu-content collapse out">
 
 {% for menu_name, data in menu|filter(data => data['show_menu']) %}
@@ -13,14 +13,14 @@
                 </a>
 
 
-            
+
     {% if data['show_sub_menu'] %}
 
             <ul class="sub-menu ssmenu collapse {{menu[menu_name]['is_open'] ? 'show'}}" id='submenu-{{menu_name}}'>
 
         {% if menu_name == 'favorite' %}
 
-                <p>You can add your favorite section to this menu. To do this click on the cogwheel then click and the star next to the menu you wish to add as a favorite.</p>
+                <p>{{'You can add your favorite section to this menu. To do this click on the cogwheel then click and the star next to the menu you wish to add as a favorite.'|trans}}</p>
             {# double loop inneficient, just add submenu favorite in php #}
                 {% for menu_name, data in menu|filter(data => data['show_menu']) %}
                 {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
