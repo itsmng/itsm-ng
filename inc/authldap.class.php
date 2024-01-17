@@ -1557,7 +1557,7 @@ class AuthLDAP extends CommonDBTM {
                                             "?order=".($values['order']=="DESC"?"ASC":"DESC"));
             echo "<th>".__('Last update in the LDAP directory')."</th>";
             if ($_SESSION['ldap_import']['mode']) {
-               echo "<th>".__('Last update in GLPI')."</th>";
+               echo "<th>".__('Last update in ITSM-ng')."</th>";
             }
             echo "</tr>";
 
@@ -2393,7 +2393,7 @@ class AuthLDAP extends CommonDBTM {
       } else {
          //No ldap server
          echo "<tr class='tab_bg_2'>".
-              "<td class='center' colspan='2'>".__('No LDAP directory defined in GLPI')."</td></tr>";
+              "<td class='center' colspan='2'>".__('No LDAP directory defined in ITSM-ng')."</td></tr>";
       }
       echo "</table>";
       Html::closeForm();

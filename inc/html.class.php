@@ -657,14 +657,14 @@ class Html
             && count($_SESSION["MESSAGE_AFTER_REDIRECT"]) > 0
         ) {
             echo "<div class=\"toast-container position-fixed bottom-0 end-0 p-3\">";
-    
+
             foreach ($_SESSION['MESSAGE_AFTER_REDIRECT'] as $msgtype => $messages) {
                 if (count($messages) > 0) {
                     $html_messages = implode('<br/>', $messages);
                 } else {
                     continue;
                 }
-    
+
                 switch ($msgtype) {
                     case ERROR:
                         $title = 'Error';
@@ -682,9 +682,9 @@ class Html
                         $autoClose = true; // Allow auto-closing for INFO messages
                         break;
                 }
-    
+
                 $autoCloseAttribute = $autoClose ? '' : 'data-bs-autohide="false"';
-    
+
                 echo <<<HTML
                      <div class="toast {$class}" role="alert" aria-live="assertive" aria-atomic="true" {$autoCloseAttribute}>
                         <div class="toast-header">
@@ -696,22 +696,22 @@ class Html
                         </div>
                      </div>
                 HTML;
-    
+
                 $scriptblock = <<<JS
                    $(function() {
                       $('.toast').toast({ delay: 5000 }).toast('show');
                    });
                 JS;
-    
+
                 echo Html::scriptBlock($scriptblock);
             }
-    
+
             echo "</div>";
         }
-    
+
         // Clean message
         $_SESSION["MESSAGE_AFTER_REDIRECT"] = [];
-    }    
+    }
 
    static function displayAjaxMessageAfterRedirect()
    {
@@ -1266,7 +1266,7 @@ class Html
 
       //detect theme
       $theme = isset($_SESSION['glpipalette']) ? $_SESSION['glpipalette'] : 'itsmng';
-      
+
       echo Html::css('vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css');
       echo Html::css('css/bootstrap-select.min.css');
       echo Html::css('node_modules/@jarstone/dselect/dist/css/dselect.min.css');
@@ -1371,7 +1371,7 @@ class Html
 
 
       Html::requireJs('hotkeys');
-      
+
       if (Session::getCurrentInterface() == "helpdesk") {
          echo Html::css('public/lib/jquery.rateit.css');
          Html::requireJs('rateit');
@@ -1502,7 +1502,7 @@ JAVASCRIPT;
       echo "</head>\n";
       self::glpi_flush();
    }
-   
+
    /**
     * accessibilityHeader
     *
@@ -1742,9 +1742,9 @@ JAVASCRIPT;
       // Force lower case for sector and item
       $sector = strtolower($sector);
       $item   = strtolower($item);
-      
+
       self::includeHeader($title, $sector, $item, $option);
-      
+
       $body_class = "layout_" . $_SESSION['glpilayout'];
       if ((strpos($_SERVER['REQUEST_URI'], ".form.php") !== false)
       && isset($_GET['id']) && ($_GET['id'] > 0)
@@ -1755,7 +1755,7 @@ JAVASCRIPT;
             $body_class = "";
          }
       }
-      
+
       // Body
       $twig_vars['body_class'] = $body_class;
       $twig_vars['root_doc'] = $CFG_GLPI['root_doc'];
@@ -1763,15 +1763,15 @@ JAVASCRIPT;
       if (!empty($impersonate_banner)) {
          $twig_vars += ["impersonate_banner" => $impersonate_banner];
       }
-      
+
       //Main menu
       $twig_vars += ["main_menu" => self::getMainMenu($sector, $item, $option)];
       $twig_vars += self::getMainMenu($sector, $item, $option)['args']; //TODO : change to only add breadcrumb var.
       // TODO : separate menu from header
       // Preferences and logout link
       $twig_vars += ["top_menu" => self::getBottomMenu(true)];
-               
-      $twig_vars["copyright_message"] = self::getCopyrightMessage(); 
+
+      $twig_vars["copyright_message"] = self::getCopyrightMessage();
       $twig_vars["ITSM_VERSION"] = ITSM_VERSION;
       $twig_vars["ITSM_YEAR"] = ITSM_YEAR;
       $twig_vars['is_slave'] = $DB->isSlave() && !$DB->first_connection;
@@ -1787,7 +1787,7 @@ JAVASCRIPT;
                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
              ]
       )->next()['menu_position'];
-   
+
       $twig_vars['menu_favorite_on'] = $DB->request(
                [
                   'SELECT' => 'menu_favorite_on',
@@ -1910,15 +1910,15 @@ JAVASCRIPT;
          ? $CFG_GLPI['founded_new_version']
          : '';
       if (!empty($foundedNewVersion) && version_compare($currentVersion, $foundedNewVersion, '<')) {
-         $twig_vars["latest_version"] = "<a href='http://www.glpi-project.org' target='_blank' title=\""
-            . __s('You will find it on the GLPI-PROJECT.org site.') . "\"> "
+         $twig_vars["latest_version"] = "<a href='https://www.itsm-ng.org/' target='_blank' title=\""
+            . __s('You will find it on the ITSM-NG.org site.') . "\"> "
             . $foundedNewVersion
             . "</a>";
 
       }
-      $twig_vars["copyright_message"] = self::getCopyrightMessage(); 
+      $twig_vars["copyright_message"] = self::getCopyrightMessage();
       $twig_vars["maintenance_mode"] = $CFG_GLPI['maintenance_mode'];
-      
+
       require_once GLPI_ROOT . "/src/twig/twig.class.php";
       $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
       try {
@@ -2867,7 +2867,7 @@ JAVASCRIPT;
                $out .= " href='#modal_massaction_content$identifier' title=\"" . htmlentities($p['title'], ENT_QUOTES, 'UTF-8') . "\">";
                $out .= $p['title'] . "</a>";
                $out .= "</td>";
-      
+
                $out .= "</tr></table>";
          }
          if (
@@ -6971,14 +6971,14 @@ JAVASCRIPT;
       unset($currentShortcut["update"]);
       foreach($currentShortcut as $name => $shortcut){
          if(is_subclass_of($name, "CommonGLPI")){
-            //echo $name . " - ". $shortcut. nl2br("<br>") ; 
+            //echo $name . " - ". $shortcut. nl2br("<br>") ;
             $url = Toolbox::getItemTypeFormURL($name);
             if($name == "Accessibility") $url = $CFG_GLPI['root_doc']."/front/preference.php"; // Redirect accessibility to preference
             echo Html::scriptBlock('hotkeys('."'$shortcut'".',function() {
                                     location.replace('."'$url'".');
                                  });
             ');
-         }                    
+         }
       }
 
 	}
@@ -7033,10 +7033,10 @@ JAVASCRIPT;
       /// Search engine
       $show_search = $CFG_GLPI['allow_search_global'];
       $template_path = 'topmenu.twig';
-      $twig_vars =   [  
-                        "root_doc"        => $CFG_GLPI['root_doc'],  "noAUTO"       => $noAuto, 
-                        "username"        => $username,              "can_update"   => $can_update, 
-                        "is_debug_active" => isset($is_debug_active) ? $is_debug_active : 0,       "show_search"  => $show_search, 
+      $twig_vars =   [
+                        "root_doc"        => $CFG_GLPI['root_doc'],  "noAUTO"       => $noAuto,
+                        "username"        => $username,              "can_update"   => $can_update,
+                        "is_debug_active" => isset($is_debug_active) ? $is_debug_active : 0,       "show_search"  => $show_search,
                         "sanitizedURL"    => $sanitizedURL
                      ];
       return ["path" => $template_path, "args" => $twig_vars];
@@ -7067,7 +7067,7 @@ JAVASCRIPT;
              'WHERE'  => ['id' => $_SESSION["glpiID"]]
          ]
       );
-     
+
      $menu_favorites = json_decode($menu_favorites->next()['menu_favorite'], true);
      $menu_collapse = $DB->request(
       [
@@ -7077,7 +7077,7 @@ JAVASCRIPT;
       ]
       );
       $menu_collapse = json_decode($menu_collapse->next()['menu_open'], true);
-      $icons = [  
+      $icons = [
          'favorite' => 'fa-star',
          'assets' => 'fa-warehouse',
          'helpdesk' => 'fa-hands-helping',
@@ -7086,9 +7086,9 @@ JAVASCRIPT;
          'plugins' => 'fa-puzzle-piece',
          'admin' => 'fa-users-cog',
          'config' => 'fa-clipboard-list',
-         'preference' => 'fa-cog'            
+         'preference' => 'fa-cog'
       ];
-      $favorite = 
+      $favorite =
       ['favorite' => [
          'title' => 'Favorite',
          'types' => [],
@@ -7096,7 +7096,7 @@ JAVASCRIPT;
          'content' => [],
       ]];
 
-      $menu = array_merge($favorite, $menu);   
+      $menu = array_merge($favorite, $menu);
       // Format $menu to pass to Twig
       // print_r($menu);
       foreach ($menu as $part => $data) {
@@ -7113,7 +7113,7 @@ JAVASCRIPT;
             $menu[$part]['show_sub_menu'] = false;
 
             if (!isset($data['content'][0]) || $data['content'][0] !== true) { //false ?
-               $menu[$part]['show_sub_menu'] = true; 
+               $menu[$part]['show_sub_menu'] = true;
                // list menu item
                foreach ($data['content'] as $key => $val) {
                   // some menu arent arrays and should'nt be showed
@@ -7148,7 +7148,7 @@ JAVASCRIPT;
                         }
                         $menu[$part]['content'][$key]['title'] = $val['title'];
                      }
-                     
+
                      if (!isset($val['icon'])) {
                         $menu[$part]['content'][$key]['icon'] = "";
                      }
@@ -7206,9 +7206,9 @@ JAVASCRIPT;
          $twig_vars['opt'] = $opt;
       }
       $template_path = 'menus/nav/menu.twig';
-      $twig_vars += [ "root_doc" => $CFG_GLPI['root_doc'], "menu" => $menu, 
-      "mainurl" => $mainurl, "show_page" => $show_page, 
-      "link" => $link, "item" => $item, 
+      $twig_vars += [ "root_doc" => $CFG_GLPI['root_doc'], "menu" => $menu,
+      "mainurl" => $mainurl, "show_page" => $show_page,
+      "link" => $link, "item" => $item,
       "option" => $option, "sector"=> $sector];
       $twig_vars['links'] = $links;
 
@@ -7224,7 +7224,7 @@ JAVASCRIPT;
    static function addMenuFavorite($menu, $menu_name, $sub_menu_name) : void {
       $menu['favorite'][] = $menu[$menu_name]['content'][$sub_menu_name];
    }
-   
+
    /**
     * Invert the input color (usefull for label bg on top of a background)
     * inpiration: https://github.com/onury/invert-color
@@ -7450,11 +7450,11 @@ JAVASCRIPT;
     */
     public static function displayImpersonateBanner()
     {
- 
+
        if (!Session::isImpersonateActive()) {
           return;
        }
- 
+
        echo '<div class="banner-impersonate">';
        echo '<form name="form" method="post" action="' . User::getFormURL() . '">';
        echo sprintf(__('You are impersonating %s.'), $_SESSION['glpiname']);
@@ -7478,13 +7478,13 @@ JAVASCRIPT;
    public static function getImpersonateBanner() : array
    {
       global $CFG_GLPI;
-      
+
       if (!Session::isImpersonateActive()) {
          return [];
       }
       $user_form_url = User::getFormURL();
       $impersonate_name = $_SESSION['glpiname'];
-      $csrf_token =  Session::getNewCSRFToken();  
+      $csrf_token =  Session::getNewCSRFToken();
       $template_path = 'menus/headers/utils/impersonate_banner.twig';
       $twig_vars = [
          "root_doc" => $CFG_GLPI['root_doc'],

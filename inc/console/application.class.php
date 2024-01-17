@@ -182,13 +182,13 @@ class Application extends BaseApplication {
                '--no-plugins',
                null,
                InputOption::VALUE_NONE,
-               __('Disable GLPI plugins (unless commands forces plugins loading)')
+               __('Disable ITSM-NG plugins (unless commands forces plugins loading)')
             ),
             new InputOption(
                '--lang',
                null,
                InputOption::VALUE_OPTIONAL,
-               __('Output language (default value is existing GLPI "language" configuration or "en_GB")')
+               __('Output language (default value is existing Disable ITSM-NG "language" configuration or "en_GB")')
             )
          ]
       );

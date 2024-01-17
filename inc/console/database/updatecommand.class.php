@@ -84,7 +84,7 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
          'force',
          'f',
          InputOption::VALUE_NONE,
-         __('Force execution of update from v-1 version of GLPI even if schema did not changed')
+         __('Force execution of update from v-1 version of ITSM-ng even if schema did not changed')
       );
    }
 
@@ -127,8 +127,8 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
       $informations->addRow([__('Database host'), $this->db->dbhost, '']);
       $informations->addRow([__('Database name'), $this->db->dbdefault, '']);
       $informations->addRow([__('Database user'), $this->db->dbuser, '']);
-      $informations->addRow([__('GLPI version'), $itsm_current_version, ITSM_VERSION]);
-      $informations->addRow([__('GLPI database version'), $itsm_current_db_version, ITSM_SCHEMA_VERSION]);
+      $informations->addRow([__('ITSM version'), $itsm_current_version, ITSM_VERSION]);
+      $informations->addRow([__('ITSM database version'), $itsm_current_db_version, ITSM_SCHEMA_VERSION]);
       $informations->render();
 
       if (defined('ITSM_PREVER')) {

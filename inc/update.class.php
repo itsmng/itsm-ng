@@ -177,7 +177,7 @@ class Update extends CommonGLPI {
          echo 'Upgrade from command line is not supported before 0.72.3!';
          die(1);
       }
-      
+
       // Update process desactivate all plugins
       $plugin = new Plugin();
       $plugin->unactivateAll();
@@ -519,19 +519,19 @@ class Update extends CommonGLPI {
          case "9.5.13":
              include_once "{$updir}itsm_update_100_101.php";
              update100to101();
-             
+
          case "1.0.1":
              include_once "{$updir}itsm_update_101_110.php";
              update101to110();
-             
+
          case "1.1.0":
              include_once "{$updir}itsm_update_110_120.php";
              update110to120();
-             
+
          case "1.2.0":
              include_once "{$updir}itsm_update_120_130.php";
              update120to130();
-         
+
          case "1.3.0":
          case "1.4.0":
          case "1.5.0":
@@ -592,7 +592,7 @@ class Update extends CommonGLPI {
       //generate security key if missing, and update db
       $glpikey = new GLPIKey();
       if (!$glpikey->keyExists() && !$glpikey->generate()) {
-         $this->migration->displayWarning(__('Unable to create security key file! You have to run "php bin/console glpi:security:change_key" command to manually create this file.'), true);
+         $this->migration->displayWarning(__('Unable to create security key file! You have to run "php bin/console itsmng:security:change_key" command to manually create this file.'), true);
       }
    }
 

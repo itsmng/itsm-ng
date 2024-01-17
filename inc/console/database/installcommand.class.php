@@ -88,7 +88,7 @@ class InstallCommand extends AbstractConfigureCommand {
          'default-language',
          'L',
          InputOption::VALUE_OPTIONAL,
-         __('Default language of GLPI'),
+         __('Default language of ITSM-NG'),
          'en_GB'
       );
 
