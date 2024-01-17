@@ -5055,8 +5055,12 @@ msgid "Unsupported version (%1$s)"
 msgstr "Versión no admitida (%1$s)"
 
 #: inc/update.class.php:546
+#, fuzzy
+#| msgid ""
+#| "Unable to create security key file! You have to run \"php bin/console "
+#| "glpi:security:change_key\" command to manually create this file."
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console glpi:"
+"Unable to create security key file! You have to run \"php bin/console itsmng:"
 "security:change_key\" command to manually create this file."
 msgstr ""
 "¡No se puede crear el archivo de clave de seguridad! Usted tiene que "
@@ -7336,7 +7340,9 @@ msgid "Last update in the LDAP directory"
 msgstr "Última actualización en el directorio LDAP"
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
-msgid "Last update in GLPI"
+#, fuzzy
+#| msgid "Last update in GLPI"
+msgid "Last update in ITSM-NG"
 msgstr "Última actualización en ITSM-NG"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
@@ -7369,7 +7375,9 @@ msgid "LDAP directory choice"
 msgstr "Elección del directorio LDAP"
 
 #: inc/authldap.class.php:2401
-msgid "No LDAP directory defined in GLPI"
+#, fuzzy
+#| msgid "No LDAP directory defined in GLPI"
+msgid "No LDAP directory defined in ITSM-NG"
 msgstr "No se ha definido ningún directorio LDAP en ITSM-NG"
 
 #: inc/authldap.class.php:2772
@@ -9319,8 +9327,11 @@ msgstr "Faltan algunos requisitos opcionales del sistema."
 
 #: inc/console/abstractcommand.class.php:197
 #: inc/console/application.class.php:472
+#, fuzzy
+#| msgid ""
+#| "Run \"php bin/console glpi:system:check_requirements\" for more details."
 msgid ""
-"Run \"php bin/console glpi:system:check_requirements\" for more details."
+"Run \"php bin/console itsmng:system:check_requirements\" for more details."
 msgstr ""
 "Para obtener más detalles, ejecute \"php bin/console itsmng:system:"
 "check_requirements\"."
@@ -9388,7 +9399,9 @@ msgid "Update of `%s` failed with message \"(%s) %s\"."
 msgstr "La actualización de `%s` ha fallado con el mensaje \"(%s) %s\"."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
-msgid "Migrate Racks plugin data into GLPI core tables"
+#, fuzzy
+#| msgid "Migrate Racks plugin data into GLPI core tables"
+msgid "Migrate Racks plugin data into ITSM-NG core tables"
 msgstr "Migrar datos del plugin Racks en tablas principales ITSM-NG"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:168
@@ -9422,8 +9435,13 @@ msgstr ""
 "datos del plugin sean compatibles con la versión %s soportada)"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:216
+#, fuzzy
+#| msgid ""
+#| "You are about to launch migration of Racks plugin data into GLPI core "
+#| "tables."
 msgid ""
-"You are about to launch migration of Racks plugin data into GLPI core tables."
+"You are about to launch migration of Racks plugin data into ITSM-NG core "
+"tables."
 msgstr ""
 "Está a punto de iniciar la migración de los datos del plugin Racks en las "
 "tablas principales de ITSM-NG."
@@ -9448,9 +9466,13 @@ msgid "Checking plugin version..."
 msgstr "Comprobando la versión del plugin..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:278
+#, fuzzy
+#| msgid ""
+#| "Racks plugin is not part of GLPI plugin list. It has never been installed "
+#| "or has been cleaned."
 msgid ""
-"Racks plugin is not part of GLPI plugin list. It has never been installed or "
-"has been cleaned."
+"Racks plugin is not part of ITSM-NG plugin list. It has never been installed "
+"or has been cleaned."
 msgstr ""
 "Racks plugin no es parte de la lista de plugins ITSM-NG. Nunca se ha "
 "instalado o se ha limpiado."
@@ -9517,7 +9539,9 @@ msgid "Importing other models..."
 msgstr "Importación de otros modelos..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
-msgid "Other items do not exist in GLPI core."
+#, fuzzy
+#| msgid "Other items do not exist in GLPI core."
+msgid "Other items do not exist in ITSM-NG core."
 msgstr "Otros elementos no existen en el núcleo ITSM-NG."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
@@ -9700,14 +9724,22 @@ msgid "Unable to create default room."
 msgstr "No se pudo crear la sala predeterminada."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:145
-msgid "Migrate Appliances plugin data into GLPI core tables"
-msgstr ""
+#, fuzzy
+#| msgid "Migrate Racks plugin data into GLPI core tables"
+msgid "Migrate Appliances plugin data into ITSM-NG core tables"
+msgstr "Migrar datos del plugin Racks en tablas principales ITSM-NG"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:160
+#, fuzzy
+#| msgid ""
+#| "You are about to launch migration of Racks plugin data into GLPI core "
+#| "tables."
 msgid ""
-"You are about to launch migration of Appliances plugin data into GLPI core "
-"tables."
+"You are about to launch migration of Appliances plugin data into ITSM-NG "
+"core tables."
 msgstr ""
+"Está a punto de iniciar la migración de los datos del plugin Racks en las "
+"tablas principales de ITSM-NG."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:161
 msgid "Any previous appliance created in core will be lost."
@@ -9739,8 +9771,10 @@ msgid "Associable items to a ticket"
 msgstr "Elementos asociables con una petición"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:334
-msgid "Updating GLPI itemtypes..."
-msgstr ""
+#, fuzzy
+#| msgid "Updating profiles..."
+msgid "Updating ITSM-NG itemtypes..."
+msgstr "Actualizando perfiles..."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:359
 #, php-format
@@ -9835,8 +9869,10 @@ msgid "Update of `%s`.`%s` failed with message \"(%s) %s\"."
 msgstr ""
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:91
-msgid "Migrate Domains plugin data into GLPI core tables"
-msgstr ""
+#, fuzzy
+#| msgid "Migrate Racks plugin data into GLPI core tables"
+msgid "Migrate Domains plugin data into ITSM-NG core tables"
+msgstr "Migrar datos del plugin Racks en tablas principales ITSM-NG"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:98
 #, php-format
@@ -9844,16 +9880,28 @@ msgid "Run Domains plugin update (you need version %s files to do this)"
 msgstr ""
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:124
+#, fuzzy
+#| msgid ""
+#| "You are about to launch migration of Racks plugin data into GLPI core "
+#| "tables."
 msgid ""
-"You are about to launch migration of Domains plugin data into GLPI core "
+"You are about to launch migration of Domains plugin data into ITSM-NG core "
 "tables."
 msgstr ""
+"Está a punto de iniciar la migración de los datos del plugin Racks en las "
+"tablas principales de ITSM-NG."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:182
+#, fuzzy
+#| msgid ""
+#| "Racks plugin is not part of GLPI plugin list. It has never been installed "
+#| "or has been cleaned."
 msgid ""
-"Domains plugin is not part of GLPI plugin list. It has never been installed "
-"or has been cleaned."
+"Domains plugin is not part of ITSM-NG plugin list. It has never been "
+"installed or has been cleaned."
 msgstr ""
+"Racks plugin no es parte de la lista de plugins ITSM-NG. Nunca se ha "
+"instalado o se ha limpiado."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:185
 #: inc/console/migration/domainsplugintocorecommand.class.php:200
@@ -10077,15 +10125,17 @@ msgid "Configuration directory to use"
 msgstr "Directorio de configuración a utilizar"
 
 #: inc/console/application.class.php:185
-msgid "Disable GLPI plugins (unless commands forces plugins loading)"
+#, fuzzy
+#| msgid "Disable GLPI plugins (unless commands forces plugins loading)"
+msgid "Disable ITSM-NG plugins (unless commands forces plugins loading)"
 msgstr ""
 "Desactivar plugins ITSM-NG (a menos que los comandos obligen a cargar "
 "plugins)"
 
 #: inc/console/application.class.php:191
 msgid ""
-"Output language (default value is existing GLPI \"language\" configuration "
-"or \"en_GB\")"
+"Output language (default value is existing ITSM-NG \"language\" "
+"configuration or \"en_GB\")"
 msgstr ""
 
 #: inc/console/application.class.php:212
@@ -10234,7 +10284,9 @@ msgid "--db-password option value cannot be null."
 msgstr "--db-password valor de opción no puede ser null."
 
 #: inc/console/database/installcommand.class.php:91
-msgid "Default language of GLPI"
+#, fuzzy
+#| msgid "Default language of GLPI"
+msgid "Default language of ITSM-NG"
 msgstr "Idioma predeterminado de ITSM-NG"
 
 #: inc/console/database/installcommand.class.php:99
@@ -10296,8 +10348,12 @@ msgid "Allow update to an unstable version"
 msgstr "Permitir la actualización a una versión inestable"
 
 #: inc/console/database/updatecommand.class.php:87
+#, fuzzy
+#| msgid ""
+#| "Force execution of update from v-1 version of GLPI even if schema did not "
+#| "changed"
 msgid ""
-"Force execution of update from v-1 version of GLPI even if schema did not "
+"Force execution of update from v-1 version of ITSM-NG even if schema did not "
 "changed"
 msgstr ""
 "Forzar la ejecución de la actualización desde la versión v-1 de ITSM-NG "
@@ -10308,11 +10364,15 @@ msgid "Current"
 msgstr "Actual"
 
 #: inc/console/database/updatecommand.class.php:128
-msgid "GLPI version"
-msgstr "Versión ITSM-NG"
+#, fuzzy
+#| msgid "IP version"
+msgid "ITSM-NG version"
+msgstr "Versión IP"
 
 #: inc/console/database/updatecommand.class.php:129
-msgid "GLPI database version"
+#, fuzzy
+#| msgid "GLPI database version"
+msgid "ITSM-NG database version"
 msgstr "Versión de la base de datos ITSM-NG"
 
 #: inc/console/database/updatecommand.class.php:137
@@ -11975,8 +12035,9 @@ msgid "Allocated memory"
 msgstr "Memoria asignada"
 
 #: inc/system/requirement/memorylimit.class.php:75
-#, php-format
-msgid "A minimum of %s is commonly required for GLPI."
+#, fuzzy, php-format
+#| msgid "A minimum of %s is commonly required for GLPI."
+msgid "A minimum of %s is commonly required for ITSM-NG."
 msgstr "Normalmente se requiere un mínimo de %s para ITSM-NG."
 
 #: inc/system/requirement/memorylimit.class.php:76
@@ -12055,8 +12116,10 @@ msgid "\"session.use_trans_sid\" must be set to off."
 msgstr "\"session.use_trans_sid\" debe estar desactivado."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
-msgid "See .htaccess file in the GLPI root for more information."
-msgstr ""
+#, fuzzy
+#| msgid "Check the .htaccess file and the web server configuration."
+msgid "See .htaccess file in the ITSM-NG root for more information."
+msgstr "Compruebe el archivo .htaccess y la configuración del servidor web."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -12905,8 +12968,8 @@ msgid "Plugin %1$s has been deactivated!"
 msgstr "¡Complemento %1$s ha sido desactivado!"
 
 #: inc/plugin.class.php:1662 inc/crontask.class.php:841
-msgid "GLPI"
-msgstr "ITSM-NG"
+msgid "ITSM-NG"
+msgstr ""
 
 #: inc/plugin.class.php:1662 inc/notificationmailingsetting.class.php:156
 msgid "PHP"
@@ -12948,8 +13011,9 @@ msgid "This plugin requires PHP parameter %1$s"
 msgstr "Este complemento requiere el parámetro php %1$s"
 
 #: inc/plugin.class.php:1728
-#, php-format
-msgid "This plugin requires GLPI parameter %1$s"
+#, fuzzy, php-format
+#| msgid "This plugin requires GLPI parameter %1$s"
+msgid "This plugin requires ITSM-NG parameter %1$s"
 msgstr "Este complemento requiere el parámetro ITSM-NG %1$s"
 
 #: inc/plugin.class.php:2004 inc/plugin.class.php:2443
@@ -14307,7 +14371,9 @@ msgid "CLI"
 msgstr "CLI"
 
 #: inc/crontask.class.php:908
-msgid "A minimum of 64 Mio is commonly required for GLPI."
+#, fuzzy
+#| msgid "A minimum of 64 Mio is commonly required for GLPI."
+msgid "A minimum of 64 Mio is commonly required for ITSM-NG."
 msgstr "Se requiere un mínimo de 64 MB para ITSM-NG."
 
 #: inc/crontask.class.php:913
@@ -14527,9 +14593,14 @@ msgid "Try again"
 msgstr "Inténtalo de nuevo"
 
 #: inc/config.php:232
+#, fuzzy
+#| msgid ""
+#| "You are trying to use GLPI with outdated files compared to the version of "
+#| "the database. Please install the correct GLPI files corresponding to the "
+#| "version of your database."
 msgid ""
-"You are trying to use GLPI with outdated files compared to the version of "
-"the database. Please install the correct GLPI files corresponding to the "
+"You are trying to use ITSM-NG with outdated files compared to the version of "
+"the database. Please install the correct ITSM-NG files corresponding to the "
 "version of your database."
 msgstr ""
 "Está intentando utilizar ITSM-NG con archivos obsoletos en comparación con "
@@ -15428,7 +15499,9 @@ msgstr "¡Elemento desbloqueado!"
 #: inc/knowbaseitem_comment.class.php:211
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_revision.class.php:262
-msgid "Contact your GLPI admin!"
+#, fuzzy
+#| msgid "Contact your GLPI admin!"
+msgid "Contact your ITSM-NG admin!"
 msgstr "¡Contacta con tu administrador de ITSM-NG!"
 
 #: inc/objectlock.class.php:157
@@ -16374,13 +16447,20 @@ msgid "Send \"usage statistics\""
 msgstr "Enviar estadísticas de uso."
 
 #: inc/telemetry.class.php:417
-msgid "We need your help to improve GLPI and the plugins ecosystem!"
+#, fuzzy
+#| msgid "We need your help to improve GLPI and the plugins ecosystem!"
+msgid "We need your help to improve ITSM-NG and the plugins ecosystem!"
 msgstr ""
 "¡Necesitamos su ayuda para mejorar ITSM-NG y el ecosistema de complementos!"
 
 #: inc/telemetry.class.php:418
+#, fuzzy
+#| msgid ""
+#| "Since GLPI 9.2, we’ve introduced a new statistics feature called "
+#| "“Telemetry”, that anonymously with your permission, sends data to our "
+#| "telemetry website."
 msgid ""
-"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"Since ITSM-NG 9.2, we’ve introduced a new statistics feature called "
 "“Telemetry”, that anonymously with your permission, sends data to our "
 "telemetry website."
 msgstr ""
@@ -16389,29 +16469,41 @@ msgstr ""
 "nuestro sitio web de telemetría."
 
 #: inc/telemetry.class.php:419
+#, fuzzy
+#| msgid ""
+#| "Once sent, usage statistics are aggregated and made available to a broad "
+#| "range of GLPI developers."
 msgid ""
 "Once sent, usage statistics are aggregated and made available to a broad "
-"range of GLPI developers."
+"range of ITSM-NG developers."
 msgstr ""
 "Una vez enviadas, las estadísticas de uso se agregan y se ponen a "
 "disposición de una amplia gama de desarrolladores de ITSM-NG."
 
 #: inc/telemetry.class.php:420
+#, fuzzy
+#| msgid ""
+#| "Let us know your usage to improve future versions of GLPI and its plugins!"
 msgid ""
-"Let us know your usage to improve future versions of GLPI and its plugins!"
+"Let us know your usage to improve future versions of ITSM-NG and its plugins!"
 msgstr ""
 "¡Déjenos conocer su uso para mejorar las versiones futuras de ITSM-NG y sus "
 "complementos!"
 
 #: inc/telemetry.class.php:433
-msgid "Reference your GLPI"
+#, fuzzy
+#| msgid "Reference your GLPI"
+msgid "Reference your ITSM-NG"
 msgstr "Una referencia a su ITSM-NG"
 
 #: inc/telemetry.class.php:435
-#, php-format
+#, fuzzy, php-format
+#| msgid ""
+#| "Besides, if you appreciate GLPI and its community, please take a minute "
+#| "to reference your organization by filling %1$s."
 msgid ""
-"Besides, if you appreciate GLPI and its community, please take a minute to "
-"reference your organization by filling %1$s."
+"Besides, if you appreciate ITSM-NG and its community, please take a minute "
+"to reference your organization by filling %1$s."
 msgstr ""
 "Además, si aprecia ITSM-NG y su comunidad, tómese un minuto para hacer "
 "referencia a su organización rellenando. %1$s."
@@ -17044,7 +17136,9 @@ msgid "Clean"
 msgstr "Limpiar"
 
 #: inc/marketplace/view.class.php:670
-msgid "This plugin is not available for your GLPI version."
+#, fuzzy
+#| msgid "This plugin is not available for your GLPI version."
+msgid "This plugin is not available for your ITSM-NG version."
 msgstr "Este complemento no está disponible para su versión de ITSM-NG."
 
 #: inc/marketplace/view.class.php:682
@@ -17063,11 +17157,6 @@ msgstr ""
 #, php-format
 msgid "A new version (%s) is available, update ?"
 msgstr "Hay una nueva versión (%s) disponible, ¿actualizar?"
-
-#: inc/marketplace/view.class.php:722
-#, php-format
-msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-msgstr ""
 
 #: inc/marketplace/view.class.php:734
 msgid "Install"
@@ -17098,23 +17187,9 @@ msgid_plural "%s plugins"
 msgstr[0] "%s complemento"
 msgstr[1] "%s complementos"
 
-#: inc/marketplace/view.class.php:988
-msgid "GLPI provides a new marketplace to download and install plugins."
-msgstr ""
-"ITSM-NG proporciona un nuevo mercado para descargar e instalar plugins."
-
-#: inc/marketplace/view.class.php:990
-msgid "Do you want to replace the plugins setup page by the new marketplace ?"
-msgstr ""
-"¿Desea reemplazar la página de configuración de plugins por el nuevo mercado?"
-
 #: inc/marketplace/view.class.php:1001
 msgid "Later"
 msgstr "Más tarde"
-
-#: inc/marketplace/view.class.php:1013
-msgid "Switch to marketplace"
-msgstr "Cambiar al mercado"
 
 #: inc/marketplace/notificationtargetcontroller.class.php:91
 msgid "Some updates are available for your installed plugins!"
@@ -17281,7 +17356,9 @@ msgid "Target entity for the computer"
 msgstr "Entidad destino para el computador"
 
 #: inc/ruleimportcomputer.class.php:81
-msgid "Find computers in GLPI having the status"
+#, fuzzy
+#| msgid "Find computers in GLPI having the status"
+msgid "Find computers in ITSM-NG having the status"
 msgstr "Buscar los computadores en ITSM-NG con el estado"
 
 #: inc/ruleimportcomputer.class.php:90
@@ -17305,11 +17382,15 @@ msgid "Yes if empty"
 msgstr "Sí, si está vacío"
 
 #: inc/ruleimportcomputer.class.php:178
-msgid "is already present in GLPI"
+#, fuzzy
+#| msgid "is already present in GLPI"
+msgid "is already present in ITSM-NG"
 msgstr "ya está presente en ITSM-NG"
 
 #: inc/ruleimportcomputer.class.php:179
-msgid "is empty in GLPI"
+#, fuzzy
+#| msgid "is empty in GLPI"
+msgid "is empty in ITSM-NG"
 msgstr "está vacío en ITSM-NG"
 
 #: inc/enclosure.class.php:57
@@ -17346,102 +17427,6 @@ msgid "User category"
 msgid_plural "User categories"
 msgstr[0] "Categoría de usuario"
 msgstr[1] "Categorías de usuario"
-
-#: inc/glpinetwork.class.php:64
-msgid "Registration"
-msgstr "Registro"
-
-#: inc/glpinetwork.class.php:68
-msgid ""
-"A registration key is needed to use advanced feature (like marketplace) in "
-"GLPI"
-msgstr ""
-"Se necesita una clave de registro para utilizar funciones avanzadas (como "
-"mercado) en ITSM-NG"
-
-#: inc/glpinetwork.class.php:69
-#, php-format
-msgid "Register on %1$s!"
-msgstr ""
-
-#: inc/glpinetwork.class.php:70
-msgid "And retrieve your key to paste it below"
-msgstr ""
-
-#: inc/glpinetwork.class.php:83
-#, php-format
-msgid "Error was: %s"
-msgstr ""
-
-#: inc/glpinetwork.class.php:91
-msgid "Registration key"
-msgstr "Clave de registro"
-
-#: inc/glpinetwork.class.php:110
-msgid "Subscription"
-msgstr "Suscripción"
-
-#: inc/glpinetwork.class.php:111 inc/glpinetwork.class.php:116
-msgid "Unknown"
-msgstr "Desconocido"
-
-#: inc/glpinetwork.class.php:115
-msgid "Registered by"
-msgstr "Registrado por"
-
-#: inc/glpinetwork.class.php:220
-msgid "Unable to fetch registration information."
-msgstr ""
-
-#: inc/glpinetwork.class.php:233
-msgid "The registration key is invalid."
-msgstr "La clave de registro no es válida."
-
-#: inc/glpinetwork.class.php:235
-msgid "The registration key refers to a terminated subscription."
-msgstr ""
-
-#: inc/glpinetwork.class.php:237
-msgid "The registration key is valid."
-msgstr "La clave de registro es válida."
-
-#: inc/glpinetwork.class.php:257
-#, php-format
-msgid ""
-"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
-"pre-configured rules or dictionaries?\n"
-"\n"
-"We provide the %s space for you.\n"
-"GLPI-Network is a commercial product that includes a subscription for tier 3 "
-"support, ensuring the correction of bugs encountered with a commitment "
-"time.\n"
-"\n"
-"In this same space, you will be able to <b>contact an official partner</b> "
-"to help you with your GLPI integration.\n"
-"\n"
-"Or, support the GLPI development effort by <b>donating</b>."
-msgstr ""
-"¿Necesita ayuda para integrar ITSM-NG en su IT, tener un bug arreglado o "
-"beneficiarse de reglas preconfiguradas o diccionarios?\n"
-"\n"
-"Proporcionamos el %s espacio para usted.\n"
-"ITSM-NG-Network es un producto comercial que incluye una suscripción para "
-"soporte de Tier 3, asegurando la corrección de errores encontrados con un "
-"tiempo de compromiso.\n"
-"\n"
-"En este mismo espacio podrás <b>contactar con un socio oficial</b> para "
-"ayudarte con tu integración ITSM-NG.\n"
-"\n"
-"O, apoye el esfuerzo de desarrollo de ITSM-NG <b>donando</b>."
-
-#: inc/glpinetwork.class.php:266
-#, php-format
-msgid ""
-"Having troubles setting up an advanced GLPI module?\n"
-"We can help you solve them. Sign up for support on %s."
-msgstr ""
-"¿Tiene problemas para configurar un módulo ITSM-NG avanzado?\n"
-"Podemos ayudarle a resolverlos. Regístrese para obtener asistencia en %s."
 
 #: inc/devicesimcardtype.class.php:44
 msgid "Simcard type"
@@ -17996,7 +17981,9 @@ msgid "Last login on %s"
 msgstr "Último inicio de sesión en %s"
 
 #: inc/user.class.php:2802
-msgid "Use GLPI in mode"
+#, fuzzy
+#| msgid "Use GLPI in mode"
+msgid "Use ITSM-NG in mode"
 msgstr "Utilizar ITSM-NG en modo"
 
 #: inc/user.class.php:2804
@@ -18500,7 +18487,9 @@ msgstr ""
 
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
-msgid "Software deleted by GLPI dictionary rules"
+#, fuzzy
+#| msgid "Software deleted by GLPI dictionary rules"
+msgid "Software deleted by ITSM-NG dictionary rules"
 msgstr "Software suprimido por las reglas del diccionario de ITSM-NG"
 
 #: inc/location.class.php:70 inc/location.class.php:156
@@ -19290,8 +19279,9 @@ msgid "Adding unicity indices - %s"
 msgstr "Agregando índices unicidad - %s"
 
 #: inc/migration.class.php:792
-#, php-format
-msgid "Automatically generated by GLPI %s"
+#, fuzzy, php-format
+#| msgid "Automatically generated by GLPI %s"
+msgid "Automatically generated by ITSM-NG %s"
 msgstr "Generado automáticamente por ITSM-NG %s"
 
 #. TRANS: %s is the table or item to migrate
@@ -19438,7 +19428,9 @@ msgstr[0] "%1$s%2$s segundo"
 msgstr[1] "%1$s%2$s segundos"
 
 #: inc/html.class.php:791
-msgid "Display GLPI debug information"
+#, fuzzy
+#| msgid "Display GLPI debug information"
+msgid "Display ITSM-NG debug information"
 msgstr "Mostrar información de depuración ITSM-NG"
 
 #: inc/html.class.php:1156
@@ -19455,7 +19447,9 @@ msgid "Back to top of the page"
 msgstr "Volver a la parte superior de la página"
 
 #: inc/html.class.php:1789
-msgid "You will find it on the GLPI-PROJECT.org site."
+#, fuzzy
+#| msgid "You will find it on the GLPI-PROJECT.org site."
+msgid "You will find it on the ITSM-NG.org site."
 msgstr "La encontrará en la página itsm-ng.com."
 
 #: inc/html.class.php:1880 inc/html.class.php:1881 inc/html.class.php:6884
@@ -19699,7 +19693,9 @@ msgstr "CSS"
 
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
-msgid "Automatically generated by GLPI"
+#, fuzzy
+#| msgid "Automatically generated by GLPI"
+msgid "Automatically generated by ITSM-NG"
 msgstr "Generado automáticamente por ITSM-NG"
 
 #: inc/networkportlocal.class.php:47
@@ -20057,7 +20053,9 @@ msgid "Action when a user is deleted from the LDAP directory"
 msgstr "Acción cuando se suprime un usuario de un directorio LDAP"
 
 #: inc/config.class.php:696
-msgid "GLPI server time zone"
+#, fuzzy
+#| msgid "GLPI server time zone"
+msgid "ITSM-NG server time zone"
 msgstr "Zona horaria del servidor ITSM-NG"
 
 #: inc/config.class.php:738 install/install.php:216
@@ -20226,7 +20224,9 @@ msgid "Display counters"
 msgstr "Mostrar contadores"
 
 #: inc/config.class.php:1138
-msgid "Show GLPI ID"
+#, fuzzy
+#| msgid "Show GLPI ID"
+msgid "Show ITSM-NG ID"
 msgstr "Mostrar ID ITSM-NG"
 
 #: inc/config.class.php:1145
@@ -20463,9 +20463,11 @@ msgid "Reset"
 msgstr "Reinicio"
 
 #: inc/config.class.php:1698
-#, php-format
+#, fuzzy, php-format
+#| msgid ""
+#| "Installing and enabling the \"%s\" extension may improve GLPI performance"
 msgid ""
-"Installing and enabling the \"%s\" extension may improve GLPI performance"
+"Installing and enabling the \"%s\" extension may improve ITSM-NG performance"
 msgstr ""
 "Instalando y habilitando la extensión \"%s\" puede mejorar el rendimiento de "
 "ITSM-NG"
@@ -22160,7 +22162,9 @@ msgid "An error occured loading contents!"
 msgstr "¡Ocurrió un error cargando el contenido!"
 
 #: inc/ajax.class.php:431
-msgid "Please check GLPI logs or contact your administrator."
+#, fuzzy
+#| msgid "Please check GLPI logs or contact your administrator."
+msgid "Please check ITSM-NG logs or contact your administrator."
 msgstr ""
 "Por favor, consulta los logs del ITSM-NG o contacta con tu administrador."
 
@@ -22201,7 +22205,9 @@ msgid "Incorrect username or password"
 msgstr "Usuario o contraseña incorrecto"
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
-msgid "User not authorized to connect in GLPI"
+#, fuzzy
+#| msgid "User not authorized to connect in GLPI"
+msgid "User not authorized to connect in ITSM-NG"
 msgstr "Usuario no autorizado a conectarse a ITSM-NG"
 
 #: inc/auth.class.php:590
@@ -22245,7 +22251,9 @@ msgid "Failed login for %1$s from IP %2$s"
 msgstr "Fallo en el inicio de sesión de %1$s desde la IP %2$s"
 
 #: inc/auth.class.php:1019
-msgid "Authentication on GLPI database"
+#, fuzzy
+#| msgid "Authentication on GLPI database"
+msgid "Authentication on ITSM-NG database"
 msgstr "Autenticación sobre la base de datos de ITSM-NG"
 
 #: inc/auth.class.php:1031
@@ -22277,7 +22285,9 @@ msgid "x509 certificate authentication"
 msgstr "Autenticación por certificado x509"
 
 #: inc/auth.class.php:1130 inc/auth.class.php:1657
-msgid "GLPI internal database"
+#, fuzzy
+#| msgid "GLPI internal database"
+msgid "ITSM-NG internal database"
 msgstr "Base de datos interna de ITSM-NG"
 
 #: inc/auth.class.php:1136
@@ -22326,8 +22336,12 @@ msgid "The CURL extension for your PHP parser isn't installed"
 msgstr "La extensión CURL de su intérprete PHP no está instalada"
 
 #: inc/auth.class.php:1497
+#, fuzzy
+#| msgid ""
+#| "The CAS lib isn't available, GLPI doesn't package it anymore for license "
+#| "compatibility issue."
 msgid ""
-"The CAS lib isn't available, GLPI doesn't package it anymore for license "
+"The CAS lib isn't available, ITSM-NG doesn't package it anymore for license "
 "compatibility issue."
 msgstr ""
 "La librería de CAS no está disponible, ITSM-NG ya no lo empaqueta por "
@@ -22821,12 +22835,15 @@ msgid "Impossible to accomplish an update by this way!"
 msgstr "¡Imposible realizar una actualización de esta forma!"
 
 #: install/update.php:577
-msgid "Go back to GLPI"
+#, fuzzy
+#| msgid "Go back to GLPI"
+msgid "Go back to ITSM-NG"
 msgstr "Volver a ITSM-NG"
 
 #: install/update.php:582
-#, php-format
-msgid "Caution! You will update the GLPI database named: %s"
+#, fuzzy, php-format
+#| msgid "Caution! You will update the GLPI database named: %s"
+msgid "Caution! You will update the ITSM-NG database named: %s"
 msgstr "¡Atención! Va a actualizar la base de datos de ITSM-NG: %s"
 
 #: install/update.php:588 install/install.php:130 install/install.php:171
@@ -22850,8 +22867,10 @@ msgstr "Donar"
 
 #: install/update.php:660 install/update_content.php:367
 #: install/install.php:545
-msgid "Use GLPI"
-msgstr "Utilizar ITSM-NG"
+#, fuzzy
+#| msgid "Use TLS"
+msgid "Use ITSM-NG"
+msgstr "Utilizar TLS"
 
 #: install/update.php:669
 msgid ""
@@ -22904,22 +22923,35 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "He leído y NO ACEPTO los términos de la licencia enunciados arriba."
 
 #: install/install.php:139
-msgid "Installation or update of GLPI"
+#, fuzzy
+#| msgid "Installation or update of GLPI"
+msgid "Installation or update of ITSM-NG"
 msgstr "Instalación o actualización de ITSM-NG"
 
 #: install/install.php:140
-msgid "Choose 'Install' for a completely new installation of GLPI."
+#, fuzzy
+#| msgid "Choose 'Install' for a completely new installation of GLPI."
+msgid "Choose 'Install' for a completely new installation of ITSM-NG."
 msgstr "Elija 'Instalar' para una instalación completamente nueva de ITSM-NG."
 
 #: install/install.php:141
-msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+#, fuzzy
+#| msgid ""
+#| "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgid ""
+"Select 'Upgrade' to update your version of ITSM-NG from an earlier version"
 msgstr ""
 "Seleccione 'Actualizar' para actualizar su versión de ITSM-NG desde una "
 "versión anterior."
 
 #: install/install.php:158
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
 msgid ""
-"Checking of the compatibility of your environment with the execution of GLPI"
+"Checking of the compatibility of your environment with the execution of ITSM-"
+"NG"
 msgstr "Verificar la compatibilidad de su entorno con la ejecución de ITSM-NG"
 
 #: install/install.php:177 install/install.php:196 install/install.php:562
@@ -23004,7 +23036,9 @@ msgid "Default logins / passwords are:"
 msgstr "Los usuarios / contraseñas predeterminadas son:"
 
 #: install/install.php:540
-msgid "glpi/glpi for the administrator account"
+#, fuzzy
+#| msgid "glpi/glpi for the administrator account"
+msgid "itsm/itsm for the administrator account"
 msgstr "glpi/glpi para la cuenta de administrador"
 
 #: install/install.php:541
@@ -23068,7 +23102,9 @@ msgid "New"
 msgstr "Nuevos"
 
 #: index.php:74
-msgid "GLPI - Authentication"
+#, fuzzy
+#| msgid "GLPI - Authentication"
+msgid "ITSM-ng - Authentication"
 msgstr "ITSM-NG - Autenticación"
 
 #: index.php:147
@@ -23399,3 +23435,89 @@ msgstr "Activar la selección de favoritos"
 #: templates/menus/nav/nav-settings.twig:22
 msgid "Menu position"
 msgstr "Posición del menú"
+
+#~ msgid "GLPI version"
+#~ msgstr "Versión ITSM-NG"
+
+#~ msgid "GLPI"
+#~ msgstr "ITSM-NG"
+
+#~ msgid "GLPI provides a new marketplace to download and install plugins."
+#~ msgstr ""
+#~ "ITSM-NG proporciona un nuevo mercado para descargar e instalar plugins."
+
+#~ msgid ""
+#~ "Do you want to replace the plugins setup page by the new marketplace ?"
+#~ msgstr ""
+#~ "¿Desea reemplazar la página de configuración de plugins por el nuevo "
+#~ "mercado?"
+
+#~ msgid "Switch to marketplace"
+#~ msgstr "Cambiar al mercado"
+
+#~ msgid "Registration"
+#~ msgstr "Registro"
+
+#~ msgid ""
+#~ "A registration key is needed to use advanced feature (like marketplace) "
+#~ "in GLPI"
+#~ msgstr ""
+#~ "Se necesita una clave de registro para utilizar funciones avanzadas (como "
+#~ "mercado) en ITSM-NG"
+
+#~ msgid "Registration key"
+#~ msgstr "Clave de registro"
+
+#~ msgid "Subscription"
+#~ msgstr "Suscripción"
+
+#~ msgid "Unknown"
+#~ msgstr "Desconocido"
+
+#~ msgid "Registered by"
+#~ msgstr "Registrado por"
+
+#~ msgid "The registration key is invalid."
+#~ msgstr "La clave de registro no es válida."
+
+#~ msgid "The registration key is valid."
+#~ msgstr "La clave de registro es válida."
+
+#, php-format
+#~ msgid ""
+#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
+#~ "from pre-configured rules or dictionaries?\n"
+#~ "\n"
+#~ "We provide the %s space for you.\n"
+#~ "GLPI-Network is a commercial product that includes a subscription for "
+#~ "tier 3 support, ensuring the correction of bugs encountered with a "
+#~ "commitment time.\n"
+#~ "\n"
+#~ "In this same space, you will be able to <b>contact an official partner</"
+#~ "b> to help you with your GLPI integration.\n"
+#~ "\n"
+#~ "Or, support the GLPI development effort by <b>donating</b>."
+#~ msgstr ""
+#~ "¿Necesita ayuda para integrar ITSM-NG en su IT, tener un bug arreglado o "
+#~ "beneficiarse de reglas preconfiguradas o diccionarios?\n"
+#~ "\n"
+#~ "Proporcionamos el %s espacio para usted.\n"
+#~ "ITSM-NG-Network es un producto comercial que incluye una suscripción para "
+#~ "soporte de Tier 3, asegurando la corrección de errores encontrados con un "
+#~ "tiempo de compromiso.\n"
+#~ "\n"
+#~ "En este mismo espacio podrás <b>contactar con un socio oficial</b> para "
+#~ "ayudarte con tu integración ITSM-NG.\n"
+#~ "\n"
+#~ "O, apoye el esfuerzo de desarrollo de ITSM-NG <b>donando</b>."
+
+#, php-format
+#~ msgid ""
+#~ "Having troubles setting up an advanced GLPI module?\n"
+#~ "We can help you solve them. Sign up for support on %s."
+#~ msgstr ""
+#~ "¿Tiene problemas para configurar un módulo ITSM-NG avanzado?\n"
+#~ "Podemos ayudarle a resolverlos. Regístrese para obtener asistencia en %s."
+
+#~ msgid "Use GLPI"
+#~ msgstr "Utilizar ITSM-NG"

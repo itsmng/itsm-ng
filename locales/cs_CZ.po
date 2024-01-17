@@ -5167,8 +5167,12 @@ msgid "Unsupported version (%1$s)"
 msgstr "Nepodporovaná verze (%1$s)"
 
 #: inc/update.class.php:546
+#, fuzzy
+#| msgid ""
+#| "Unable to create security key file! You have to run \"php bin/console "
+#| "glpi:security:change_key\" command to manually create this file."
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console glpi:"
+"Unable to create security key file! You have to run \"php bin/console itsmng:"
 "security:change_key\" command to manually create this file."
 msgstr ""
 "Nelze vytvořit soubor bezpečnostního klíče! Chcete-li tento soubor vytvořit "
@@ -7554,7 +7558,9 @@ msgid "Last update in the LDAP directory"
 msgstr "Poslední změna v LDAP adresáři"
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
-msgid "Last update in GLPI"
+#, fuzzy
+#| msgid "Last update in GLPI"
+msgid "Last update in ITSM-NG"
 msgstr "Poslední změna v GLPI"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
@@ -7587,7 +7593,9 @@ msgid "LDAP directory choice"
 msgstr "Volba LDAP adresáře"
 
 #: inc/authldap.class.php:2401
-msgid "No LDAP directory defined in GLPI"
+#, fuzzy
+#| msgid "No LDAP directory defined in GLPI"
+msgid "No LDAP directory defined in ITSM-NG"
 msgstr "V GLPI nebyl určen žádný LDAP adresář"
 
 #: inc/authldap.class.php:2772
@@ -9607,8 +9615,11 @@ msgstr "Chybí některé volitelné systémové požadavky."
 
 #: inc/console/abstractcommand.class.php:197
 #: inc/console/application.class.php:472
+#, fuzzy
+#| msgid ""
+#| "Run \"php bin/console glpi:system:check_requirements\" for more details."
 msgid ""
-"Run \"php bin/console glpi:system:check_requirements\" for more details."
+"Run \"php bin/console itsmng:system:check_requirements\" for more details."
 msgstr ""
 "Pro více informací spusťte \"php bin/console glpi:system:"
 "check_requirements\" ."
@@ -9677,7 +9688,9 @@ msgid "Update of `%s` failed with message \"(%s) %s\"."
 msgstr "Aktualizace `%s` skončila s chybou \"(%s) %s\"."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
-msgid "Migrate Racks plugin data into GLPI core tables"
+#, fuzzy
+#| msgid "Migrate Racks plugin data into GLPI core tables"
+msgid "Migrate Racks plugin data into ITSM-NG core tables"
 msgstr "Toto ovlivní "
 
 #: inc/console/migration/racksplugintocorecommand.class.php:168
@@ -9711,8 +9724,13 @@ msgstr ""
 "zásuvného modulu kompatibilní s podporovanou verzí %s)"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:216
+#, fuzzy
+#| msgid ""
+#| "You are about to launch migration of Racks plugin data into GLPI core "
+#| "tables."
 msgid ""
-"You are about to launch migration of Racks plugin data into GLPI core tables."
+"You are about to launch migration of Racks plugin data into ITSM-NG core "
+"tables."
 msgstr ""
 "Chystáte se spustit migraci dat modulu Rackové skříně do tabulek jádra GLPI. "
 
@@ -9734,9 +9752,13 @@ msgid "Checking plugin version..."
 msgstr "Kontroluji verzi zásuvného modulu"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:278
+#, fuzzy
+#| msgid ""
+#| "Racks plugin is not part of GLPI plugin list. It has never been installed "
+#| "or has been cleaned."
 msgid ""
-"Racks plugin is not part of GLPI plugin list. It has never been installed or "
-"has been cleaned."
+"Racks plugin is not part of ITSM-NG plugin list. It has never been installed "
+"or has been cleaned."
 msgstr ""
 "Zásuvný modul Rackové skříně není součástí seznamu zásuvných modulů GLPI. "
 "Modul nebyl nikdy nainstalován nebo vyčištěn."
@@ -9801,7 +9823,9 @@ msgid "Importing other models..."
 msgstr "Import ostatních modelů..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
-msgid "Other items do not exist in GLPI core."
+#, fuzzy
+#| msgid "Other items do not exist in GLPI core."
+msgid "Other items do not exist in ITSM-NG core."
 msgstr "Ostatní položky neexistují v jádře GLPI."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
@@ -9984,13 +10008,19 @@ msgid "Unable to create default room."
 msgstr "Nelze vytvořit výchozí místnost."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:145
-msgid "Migrate Appliances plugin data into GLPI core tables"
+#, fuzzy
+#| msgid "Migrate Appliances plugin data into GLPI core tables"
+msgid "Migrate Appliances plugin data into ITSM-NG core tables"
 msgstr "Migrovat data zásuvného modulu Zařízení do tabulek jádra GLPI."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:160
+#, fuzzy
+#| msgid ""
+#| "You are about to launch migration of Appliances plugin data into GLPI "
+#| "core tables."
 msgid ""
-"You are about to launch migration of Appliances plugin data into GLPI core "
-"tables."
+"You are about to launch migration of Appliances plugin data into ITSM-NG "
+"core tables."
 msgstr ""
 "Chystáte se zahájit migraci dat zásuvného modulu Zařízení do tabulek jádra "
 "GLPI."
@@ -10025,7 +10055,9 @@ msgid "Associable items to a ticket"
 msgstr "Položky přiřaditelné k požadavku"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:334
-msgid "Updating GLPI itemtypes..."
+#, fuzzy
+#| msgid "Updating GLPI itemtypes..."
+msgid "Updating ITSM-NG itemtypes..."
 msgstr "Aktualizace typů položek GLPI..."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:359
@@ -10119,7 +10151,9 @@ msgid "Update of `%s`.`%s` failed with message \"(%s) %s\"."
 msgstr "Aktualizace `%s`.`%s`  skončila s chybou \"(%s) %s\"."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:91
-msgid "Migrate Domains plugin data into GLPI core tables"
+#, fuzzy
+#| msgid "Migrate Domains plugin data into GLPI core tables"
+msgid "Migrate Domains plugin data into ITSM-NG core tables"
 msgstr "Migrace dat zásuvného modulu Domény do tabulek jádra GLPI"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:98
@@ -10130,17 +10164,25 @@ msgstr ""
 "%s)"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:124
+#, fuzzy
+#| msgid ""
+#| "You are about to launch migration of Domains plugin data into GLPI core "
+#| "tables."
 msgid ""
-"You are about to launch migration of Domains plugin data into GLPI core "
+"You are about to launch migration of Domains plugin data into ITSM-NG core "
 "tables."
 msgstr ""
 "Chystáte se spustit migraci dat zásuvného modulu Domény do tabulek jádra "
 "GLPI."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:182
+#, fuzzy
+#| msgid ""
+#| "Domains plugin is not part of GLPI plugin list. It has never been "
+#| "installed or has been cleaned."
 msgid ""
-"Domains plugin is not part of GLPI plugin list. It has never been installed "
-"or has been cleaned."
+"Domains plugin is not part of ITSM-NG plugin list. It has never been "
+"installed or has been cleaned."
 msgstr ""
 "Zásuvný modul Domény naní součástí seznamu zásuvných modulů GLPI. Modul "
 "nebyl nikdy nainstalován nebo vyčištěn."
@@ -10375,15 +10417,21 @@ msgid "Configuration directory to use"
 msgstr "Konfigurační adresář, který se má použít "
 
 #: inc/console/application.class.php:185
-msgid "Disable GLPI plugins (unless commands forces plugins loading)"
+#, fuzzy
+#| msgid "Disable GLPI plugins (unless commands forces plugins loading)"
+msgid "Disable ITSM-NG plugins (unless commands forces plugins loading)"
 msgstr ""
 "Zakázat zásuvné moduly GLPI (pokud příkazy nevynutí načítání zásuvných "
 "modulů)"
 
 #: inc/console/application.class.php:191
+#, fuzzy
+#| msgid ""
+#| "Output language (default value is existing GLPI \"language\" "
+#| "configuration or \"en_GB\")"
 msgid ""
-"Output language (default value is existing GLPI \"language\" configuration "
-"or \"en_GB\")"
+"Output language (default value is existing ITSM-NG \"language\" "
+"configuration or \"en_GB\")"
 msgstr ""
 "Výstupní jazyk (výchozí hodnota je stávající konfigurace GLPI „jazyk“ nebo "
 "„en_GB“)"
@@ -10529,7 +10577,9 @@ msgid "--db-password option value cannot be null."
 msgstr "Hodnota volby --db-password nesmí být prázdná."
 
 #: inc/console/database/installcommand.class.php:91
-msgid "Default language of GLPI"
+#, fuzzy
+#| msgid "Default language of GLPI"
+msgid "Default language of ITSM-NG"
 msgstr "Výchozí jazyk GLPI"
 
 #: inc/console/database/installcommand.class.php:99
@@ -10590,8 +10640,12 @@ msgid "Allow update to an unstable version"
 msgstr "Povolit aktualizaci na nestabilní verzi"
 
 #: inc/console/database/updatecommand.class.php:87
+#, fuzzy
+#| msgid ""
+#| "Force execution of update from v-1 version of GLPI even if schema did not "
+#| "changed"
 msgid ""
-"Force execution of update from v-1 version of GLPI even if schema did not "
+"Force execution of update from v-1 version of ITSM-NG even if schema did not "
 "changed"
 msgstr ""
 "Vynutit provedení aktualizace z verze GLPI v-1, i když se schéma nezměnilo "
@@ -10601,11 +10655,15 @@ msgid "Current"
 msgstr "Aktuální"
 
 #: inc/console/database/updatecommand.class.php:128
-msgid "GLPI version"
-msgstr "Verze GLPI"
+#, fuzzy
+#| msgid "IP version"
+msgid "ITSM-NG version"
+msgstr "Generace IP protokolu"
 
 #: inc/console/database/updatecommand.class.php:129
-msgid "GLPI database version"
+#, fuzzy
+#| msgid "GLPI database version"
+msgid "ITSM-NG database version"
 msgstr "Verze databáze GLPI"
 
 #: inc/console/database/updatecommand.class.php:137
@@ -12317,8 +12375,9 @@ msgid "Allocated memory"
 msgstr "Předpřidělená paměť"
 
 #: inc/system/requirement/memorylimit.class.php:75
-#, php-format
-msgid "A minimum of %s is commonly required for GLPI."
+#, fuzzy, php-format
+#| msgid "A minimum of %s is commonly required for GLPI."
+msgid "A minimum of %s is commonly required for ITSM-NG."
 msgstr "Pro GLPI je vyžadováno minimum %s."
 
 #: inc/system/requirement/memorylimit.class.php:76
@@ -12396,7 +12455,9 @@ msgid "\"session.use_trans_sid\" must be set to off."
 msgstr "\"session.use_trans_sid\" musí být vypnuto."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
-msgid "See .htaccess file in the GLPI root for more information."
+#, fuzzy
+#| msgid "See .htaccess file in the GLPI root for more information."
+msgid "See .htaccess file in the ITSM-NG root for more information."
 msgstr "Podívejte se do souboru .htaccess v adresáři GLPI pro více informací."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
@@ -13273,8 +13334,8 @@ msgid "Plugin %1$s has been deactivated!"
 msgstr "Zásuvný modul %1$s byl vypnut!"
 
 #: inc/plugin.class.php:1662 inc/crontask.class.php:841
-msgid "GLPI"
-msgstr "GLPI"
+msgid "ITSM-NG"
+msgstr ""
 
 #: inc/plugin.class.php:1662 inc/notificationmailingsetting.class.php:156
 msgid "PHP"
@@ -13317,8 +13378,9 @@ msgid "This plugin requires PHP parameter %1$s"
 msgstr "Tento zásuvný modul vyžaduje PHP parametr %1$s"
 
 #: inc/plugin.class.php:1728
-#, php-format
-msgid "This plugin requires GLPI parameter %1$s"
+#, fuzzy, php-format
+#| msgid "This plugin requires GLPI parameter %1$s"
+msgid "This plugin requires ITSM-NG parameter %1$s"
 msgstr "Tento zásuvný modul vyžaduje GLPI parametr %1$s"
 
 #: inc/plugin.class.php:2004 inc/plugin.class.php:2443
@@ -14758,7 +14820,9 @@ msgid "CLI"
 msgstr "Příkazový řádek"
 
 #: inc/crontask.class.php:908
-msgid "A minimum of 64 Mio is commonly required for GLPI."
+#, fuzzy
+#| msgid "A minimum of 64 Mio is commonly required for GLPI."
+msgid "A minimum of 64 Mio is commonly required for ITSM-NG."
 msgstr "Obvykle je pro GLPI vyžadováno přinejmenším 64 MiB."
 
 #: inc/crontask.class.php:913
@@ -14988,9 +15052,14 @@ msgid "Try again"
 msgstr "Zkusit znovu"
 
 #: inc/config.php:232
+#, fuzzy
+#| msgid ""
+#| "You are trying to use GLPI with outdated files compared to the version of "
+#| "the database. Please install the correct GLPI files corresponding to the "
+#| "version of your database."
 msgid ""
-"You are trying to use GLPI with outdated files compared to the version of "
-"the database. Please install the correct GLPI files corresponding to the "
+"You are trying to use ITSM-NG with outdated files compared to the version of "
+"the database. Please install the correct ITSM-NG files corresponding to the "
 "version of your database."
 msgstr ""
 "Snažíte se používat GLPI se zastaralými soubory v porovnání s verzí "
@@ -15930,7 +15999,9 @@ msgstr "Položka odemčena!"
 #: inc/knowbaseitem_comment.class.php:211
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_revision.class.php:262
-msgid "Contact your GLPI admin!"
+#, fuzzy
+#| msgid "Contact your GLPI admin!"
+msgid "Contact your ITSM-NG admin!"
 msgstr "Kontaktujte svého správce GLPI!"
 
 #: inc/objectlock.class.php:157
@@ -16885,13 +16956,20 @@ msgid "Send \"usage statistics\""
 msgstr "Poslat statistiky využití"
 
 #: inc/telemetry.class.php:417
-msgid "We need your help to improve GLPI and the plugins ecosystem!"
+#, fuzzy
+#| msgid "We need your help to improve GLPI and the plugins ecosystem!"
+msgid "We need your help to improve ITSM-NG and the plugins ecosystem!"
 msgstr ""
 "Potřebujeme vaši pomoc pro zlepšení GLPI a ekosystému zásuvných modulů!"
 
 #: inc/telemetry.class.php:418
+#, fuzzy
+#| msgid ""
+#| "Since GLPI 9.2, we’ve introduced a new statistics feature called "
+#| "“Telemetry”, that anonymously with your permission, sends data to our "
+#| "telemetry website."
 msgid ""
-"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"Since ITSM-NG 9.2, we’ve introduced a new statistics feature called "
 "“Telemetry”, that anonymously with your permission, sends data to our "
 "telemetry website."
 msgstr ""
@@ -16900,28 +16978,40 @@ msgstr ""
 "telemetrický web."
 
 #: inc/telemetry.class.php:419
+#, fuzzy
+#| msgid ""
+#| "Once sent, usage statistics are aggregated and made available to a broad "
+#| "range of GLPI developers."
 msgid ""
 "Once sent, usage statistics are aggregated and made available to a broad "
-"range of GLPI developers."
+"range of ITSM-NG developers."
 msgstr ""
 "Po odeslání jsou statistiky využití sloučeny a zpřístupněny vývojářům GLPI."
 
 #: inc/telemetry.class.php:420
+#, fuzzy
+#| msgid ""
+#| "Let us know your usage to improve future versions of GLPI and its plugins!"
 msgid ""
-"Let us know your usage to improve future versions of GLPI and its plugins!"
+"Let us know your usage to improve future versions of ITSM-NG and its plugins!"
 msgstr ""
 "Dejte nám vědět jak GLPI používáte abychom mohli budoucí verze vylepšit, "
 "včetně zásuvných modulů!"
 
 #: inc/telemetry.class.php:433
-msgid "Reference your GLPI"
+#, fuzzy
+#| msgid "Reference your GLPI"
+msgid "Reference your ITSM-NG"
 msgstr "Odkažte na své GLPI"
 
 #: inc/telemetry.class.php:435
-#, php-format
+#, fuzzy, php-format
+#| msgid ""
+#| "Besides, if you appreciate GLPI and its community, please take a minute "
+#| "to reference your organization by filling %1$s."
 msgid ""
-"Besides, if you appreciate GLPI and its community, please take a minute to "
-"reference your organization by filling %1$s."
+"Besides, if you appreciate ITSM-NG and its community, please take a minute "
+"to reference your organization by filling %1$s."
 msgstr ""
 "Mimo to, pokud oceňujete GLPI a jeho komunitu, odkažte na svou organizaci "
 "vyplněním %1$s."
@@ -17570,7 +17660,9 @@ msgid "Clean"
 msgstr "Vyčistit"
 
 #: inc/marketplace/view.class.php:670
-msgid "This plugin is not available for your GLPI version."
+#, fuzzy
+#| msgid "This plugin is not available for your GLPI version."
+msgid "This plugin is not available for your ITSM-NG version."
 msgstr "Tento zásuvný modul není dostupný pro vaší verzi GLPI."
 
 #: inc/marketplace/view.class.php:682
@@ -17586,11 +17678,6 @@ msgstr ""
 #: inc/marketplace/view.class.php:709
 #, php-format
 msgid "A new version (%s) is available, update ?"
-msgstr ""
-
-#: inc/marketplace/view.class.php:722
-#, php-format
-msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
 msgstr ""
 
 #: inc/marketplace/view.class.php:734
@@ -17624,21 +17711,9 @@ msgstr[1] "%s zásuvných modulů"
 msgstr[2] "%s zásuvných modulů"
 msgstr[3] "%s zásuvných modulů"
 
-#: inc/marketplace/view.class.php:988
-msgid "GLPI provides a new marketplace to download and install plugins."
-msgstr ""
-
-#: inc/marketplace/view.class.php:990
-msgid "Do you want to replace the plugins setup page by the new marketplace ?"
-msgstr ""
-
 #: inc/marketplace/view.class.php:1001
 msgid "Later"
 msgstr "Později"
-
-#: inc/marketplace/view.class.php:1013
-msgid "Switch to marketplace"
-msgstr "Přejít na obchod"
 
 #: inc/marketplace/notificationtargetcontroller.class.php:91
 msgid "Some updates are available for your installed plugins!"
@@ -17808,7 +17883,9 @@ msgid "Target entity for the computer"
 msgstr "Cílová entita pro počítač"
 
 #: inc/ruleimportcomputer.class.php:81
-msgid "Find computers in GLPI having the status"
+#, fuzzy
+#| msgid "Find computers in GLPI having the status"
+msgid "Find computers in ITSM-NG having the status"
 msgstr "Najít v GLPI počítače mající tento stav"
 
 #: inc/ruleimportcomputer.class.php:90
@@ -17832,11 +17909,15 @@ msgid "Yes if empty"
 msgstr "Ano, pokud je prázdné"
 
 #: inc/ruleimportcomputer.class.php:178
-msgid "is already present in GLPI"
+#, fuzzy
+#| msgid "is already present in GLPI"
+msgid "is already present in ITSM-NG"
 msgstr "už je přítomno v GLPI"
 
 #: inc/ruleimportcomputer.class.php:179
-msgid "is empty in GLPI"
+#, fuzzy
+#| msgid "is empty in GLPI"
+msgid "is empty in ITSM-NG"
 msgstr "je prázdné v GLPI"
 
 #: inc/enclosure.class.php:57
@@ -17883,102 +17964,6 @@ msgstr[0] "Kategorie uživatelů"
 msgstr[1] "Kategorie uživatelů"
 msgstr[2] "Kategorií uživatelů"
 msgstr[3] "Kategorie uživatelů"
-
-#: inc/glpinetwork.class.php:64
-msgid "Registration"
-msgstr "Registrace"
-
-#: inc/glpinetwork.class.php:68
-msgid ""
-"A registration key is needed to use advanced feature (like marketplace) in "
-"GLPI"
-msgstr ""
-"Pro použití pokročilých funkcí (jako je katalog doplňků) je zapotřebí "
-"registračního klíče"
-
-#: inc/glpinetwork.class.php:69
-#, php-format
-msgid "Register on %1$s!"
-msgstr ""
-
-#: inc/glpinetwork.class.php:70
-msgid "And retrieve your key to paste it below"
-msgstr "A získejte klíč pro vás, který vložte do kolonky níže"
-
-#: inc/glpinetwork.class.php:83
-#, php-format
-msgid "Error was: %s"
-msgstr ""
-
-#: inc/glpinetwork.class.php:91
-msgid "Registration key"
-msgstr "Registrační klíč"
-
-#: inc/glpinetwork.class.php:110
-msgid "Subscription"
-msgstr "Předplatné"
-
-#: inc/glpinetwork.class.php:111 inc/glpinetwork.class.php:116
-msgid "Unknown"
-msgstr "Neznámé"
-
-#: inc/glpinetwork.class.php:115
-msgid "Registered by"
-msgstr "Registrováno na"
-
-#: inc/glpinetwork.class.php:220
-msgid "Unable to fetch registration information."
-msgstr ""
-
-#: inc/glpinetwork.class.php:233
-msgid "The registration key is invalid."
-msgstr "Registrační klíč není platný."
-
-#: inc/glpinetwork.class.php:235
-msgid "The registration key refers to a terminated subscription."
-msgstr ""
-
-#: inc/glpinetwork.class.php:237
-msgid "The registration key is valid."
-msgstr "Registrační klíč je platný."
-
-#: inc/glpinetwork.class.php:257
-#, php-format
-msgid ""
-"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
-"pre-configured rules or dictionaries?\n"
-"\n"
-"We provide the %s space for you.\n"
-"GLPI-Network is a commercial product that includes a subscription for tier 3 "
-"support, ensuring the correction of bugs encountered with a commitment "
-"time.\n"
-"\n"
-"In this same space, you will be able to <b>contact an official partner</b> "
-"to help you with your GLPI integration.\n"
-"\n"
-"Or, support the GLPI development effort by <b>donating</b>."
-msgstr ""
-"Potřebujete pomoct se začleněním GLPI do svého IT, přednostně opravit chybu "
-"nebo použít přednastavená pravidla a číselníky?\n"
-"\n"
-"Nabízíme vám službu %s .\n"
-"GLPI-Network je komerční produkt, který obsahuje předplatné pro 3. "
-"(nejvyšší) úroveň podpory, což zajišťuje opravu nalezených chyb ve "
-"stanoveném čase.\n"
-"\n"
-"V rámci toho je možné se <b>obracet na oficiálního partnera</b>, který vám "
-"pomůže se začleněním GLPI.\n"
-"\n"
-"Nebo vývoj GLPI podpořte <b>darováním</b>."
-
-#: inc/glpinetwork.class.php:266
-#, php-format
-msgid ""
-"Having troubles setting up an advanced GLPI module?\n"
-"We can help you solve them. Sign up for support on %s."
-msgstr ""
-"Máte potíže s nastavením pokročilého modulu pro GLPI?\n"
-"Můžeme vás pomoci s řešením. Napište si o podporu na %s."
 
 #: inc/devicesimcardtype.class.php:44
 msgid "Simcard type"
@@ -18541,7 +18526,9 @@ msgid "Last login on %s"
 msgstr "Minulé přihlášení v %s"
 
 #: inc/user.class.php:2802
-msgid "Use GLPI in mode"
+#, fuzzy
+#| msgid "Use GLPI in mode"
+msgid "Use ITSM-NG in mode"
 msgstr "Použít GLPI v režimu"
 
 #: inc/user.class.php:2804
@@ -19043,7 +19030,9 @@ msgstr "Zopakování pravidel na stávající databázi dokončeno v %s"
 
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
-msgid "Software deleted by GLPI dictionary rules"
+#, fuzzy
+#| msgid "Software deleted by GLPI dictionary rules"
+msgid "Software deleted by ITSM-NG dictionary rules"
 msgstr "Software smazán na základě pravidel GLPI číselníku"
 
 #: inc/location.class.php:70 inc/location.class.php:156
@@ -19873,8 +19862,9 @@ msgid "Adding unicity indices - %s"
 msgstr "Přidává se rejstřík pro jednotnost – %s"
 
 #: inc/migration.class.php:792
-#, php-format
-msgid "Automatically generated by GLPI %s"
+#, fuzzy, php-format
+#| msgid "Automatically generated by GLPI %s"
+msgid "Automatically generated by ITSM-NG %s"
 msgstr "Automaticky vytvořeno GLPI %s"
 
 #. TRANS: %s is the table or item to migrate
@@ -20031,7 +20021,9 @@ msgstr[2] "%1$s%2$s sekund"
 msgstr[3] "%1$s%2$s sekundy"
 
 #: inc/html.class.php:791
-msgid "Display GLPI debug information"
+#, fuzzy
+#| msgid "Display GLPI debug information"
+msgid "Display ITSM-NG debug information"
 msgstr "Zobrazit ladící informace GLPI"
 
 #: inc/html.class.php:1156
@@ -20048,7 +20040,9 @@ msgid "Back to top of the page"
 msgstr "Zpět na začátek stránky"
 
 #: inc/html.class.php:1789
-msgid "You will find it on the GLPI-PROJECT.org site."
+#, fuzzy
+#| msgid "You will find it on the GLPI-PROJECT.org site."
+msgid "You will find it on the ITSM-NG.org site."
 msgstr "Najdete na webu GLPI-PROJECT.org."
 
 #: inc/html.class.php:1880 inc/html.class.php:1881 inc/html.class.php:6884
@@ -20304,7 +20298,9 @@ msgstr "CSS"
 
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
-msgid "Automatically generated by GLPI"
+#, fuzzy
+#| msgid "Automatically generated by GLPI"
+msgid "Automatically generated by ITSM-NG"
 msgstr "Automaticky vytvořeno GLPI"
 
 #: inc/networkportlocal.class.php:47
@@ -20654,7 +20650,9 @@ msgid "Action when a user is deleted from the LDAP directory"
 msgstr "Akce, když bude uživatel smazán z LDAP adresáře"
 
 #: inc/config.class.php:696
-msgid "GLPI server time zone"
+#, fuzzy
+#| msgid "GLPI server time zone"
+msgid "ITSM-NG server time zone"
 msgstr "Časová zóna GLPI serveru"
 
 #: inc/config.class.php:738 install/install.php:216
@@ -20818,7 +20816,9 @@ msgid "Display counters"
 msgstr "Zobrazit počítadla"
 
 #: inc/config.class.php:1138
-msgid "Show GLPI ID"
+#, fuzzy
+#| msgid "Show GLPI ID"
+msgid "Show ITSM-NG ID"
 msgstr "Zobrazit GLPI identifikátor"
 
 #: inc/config.class.php:1145
@@ -21052,9 +21052,11 @@ msgid "Reset"
 msgstr "Reset"
 
 #: inc/config.class.php:1698
-#, php-format
+#, fuzzy, php-format
+#| msgid ""
+#| "Installing and enabling the \"%s\" extension may improve GLPI performance"
 msgid ""
-"Installing and enabling the \"%s\" extension may improve GLPI performance"
+"Installing and enabling the \"%s\" extension may improve ITSM-NG performance"
 msgstr "Instalace a zapnutí „%s“ rozšíření může zlepšit výkon GLPI"
 
 #: inc/config.class.php:1702
@@ -22792,7 +22794,9 @@ msgid "An error occured loading contents!"
 msgstr "Vyskytla se chyba při načítání obsahu!"
 
 #: inc/ajax.class.php:431
-msgid "Please check GLPI logs or contact your administrator."
+#, fuzzy
+#| msgid "Please check GLPI logs or contact your administrator."
+msgid "Please check ITSM-NG logs or contact your administrator."
 msgstr ""
 "Podívejte se do záznamu událostí (log) v GLPI nebo kontaktujte svého správce."
 
@@ -22841,7 +22845,9 @@ msgid "Incorrect username or password"
 msgstr "Neplatné uživatelské jméno nebo heslo"
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
-msgid "User not authorized to connect in GLPI"
+#, fuzzy
+#| msgid "User not authorized to connect in GLPI"
+msgid "User not authorized to connect in ITSM-NG"
 msgstr "Uživatel není pověřen pro připojení ke GLPI"
 
 #: inc/auth.class.php:590
@@ -22889,7 +22895,9 @@ msgid "Failed login for %1$s from IP %2$s"
 msgstr "Neúspěšné přihlášení uživatele %1$s z IP adresy %2$s"
 
 #: inc/auth.class.php:1019
-msgid "Authentication on GLPI database"
+#, fuzzy
+#| msgid "Authentication on GLPI database"
+msgid "Authentication on ITSM-NG database"
 msgstr "Ověřování v databázi GLPI"
 
 #: inc/auth.class.php:1031
@@ -22921,7 +22929,9 @@ msgid "x509 certificate authentication"
 msgstr "ověření x509 certifikátem"
 
 #: inc/auth.class.php:1130 inc/auth.class.php:1657
-msgid "GLPI internal database"
+#, fuzzy
+#| msgid "GLPI internal database"
+msgid "ITSM-NG internal database"
 msgstr "Vnitřní databáze GLPI"
 
 #: inc/auth.class.php:1136
@@ -22970,8 +22980,12 @@ msgid "The CURL extension for your PHP parser isn't installed"
 msgstr "Rozšíření CURL vašeho překladače PHP není nainstalováno"
 
 #: inc/auth.class.php:1497
+#, fuzzy
+#| msgid ""
+#| "The CAS lib isn't available, GLPI doesn't package it anymore for license "
+#| "compatibility issue."
 msgid ""
-"The CAS lib isn't available, GLPI doesn't package it anymore for license "
+"The CAS lib isn't available, ITSM-NG doesn't package it anymore for license "
 "compatibility issue."
 msgstr ""
 "Knihovna CAS není k dispozici, už není přibalována ke GLPI z důvodů "
@@ -23471,12 +23485,15 @@ msgid "Impossible to accomplish an update by this way!"
 msgstr "Takto není možné aktualizaci dokončit!"
 
 #: install/update.php:577
-msgid "Go back to GLPI"
+#, fuzzy
+#| msgid "Go back to GLPI"
+msgid "Go back to ITSM-NG"
 msgstr "Návrat zpět do GLPI"
 
 #: install/update.php:582
-#, php-format
-msgid "Caution! You will update the GLPI database named: %s"
+#, fuzzy, php-format
+#| msgid "Caution! You will update the GLPI database named: %s"
+msgid "Caution! You will update the ITSM-NG database named: %s"
 msgstr "Pozor! Bude aktualizována GLPI databáze nazvaná: %s"
 
 #: install/update.php:588 install/install.php:130 install/install.php:171
@@ -23500,8 +23517,10 @@ msgstr "Podpořit vývoj darováním"
 
 #: install/update.php:660 install/update_content.php:367
 #: install/install.php:545
-msgid "Use GLPI"
-msgstr "Používat GLPI"
+#, fuzzy
+#| msgid "Use TLS"
+msgid "Use ITSM-NG"
+msgstr "Použít TLS"
 
 #: install/update.php:669
 msgid ""
@@ -23555,20 +23574,33 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Přečetl jsem si výše uvedené licenční ujednání a NESOUHLASÍM s ním"
 
 #: install/install.php:139
-msgid "Installation or update of GLPI"
+#, fuzzy
+#| msgid "Installation or update of GLPI"
+msgid "Installation or update of ITSM-NG"
 msgstr "Instalace nebo aktualizace GLPI"
 
 #: install/install.php:140
-msgid "Choose 'Install' for a completely new installation of GLPI."
+#, fuzzy
+#| msgid "Choose 'Install' for a completely new installation of GLPI."
+msgid "Choose 'Install' for a completely new installation of ITSM-NG."
 msgstr "Pro úplně novou instalaci GLPI zvolte „Nainstalovat“."
 
 #: install/install.php:141
-msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+#, fuzzy
+#| msgid ""
+#| "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgid ""
+"Select 'Upgrade' to update your version of ITSM-NG from an earlier version"
 msgstr "Pro aktualizaci z dřívější verze GLPI zvolte „Přejít na novější verzi“"
 
 #: install/install.php:158
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
 msgid ""
-"Checking of the compatibility of your environment with the execution of GLPI"
+"Checking of the compatibility of your environment with the execution of ITSM-"
+"NG"
 msgstr "Kontrola kompatibility vašeho prostředí pro provoz GLPI"
 
 #: install/install.php:177 install/install.php:196 install/install.php:562
@@ -23653,7 +23685,9 @@ msgid "Default logins / passwords are:"
 msgstr "Výchozí přihlašovací jména / hesla jsou:"
 
 #: install/install.php:540
-msgid "glpi/glpi for the administrator account"
+#, fuzzy
+#| msgid "glpi/glpi for the administrator account"
+msgid "itsm/itsm for the administrator account"
 msgstr "glpi/glpi (účet správce)"
 
 #: install/install.php:541
@@ -23717,7 +23751,9 @@ msgid "New"
 msgstr "Nové"
 
 #: index.php:74
-msgid "GLPI - Authentication"
+#, fuzzy
+#| msgid "GLPI - Authentication"
+msgid "ITSM-ng - Authentication"
 msgstr "GLPI – ověření totožnosti"
 
 #: index.php:147
@@ -24057,3 +24093,82 @@ msgstr ""
 #| msgid "Data center position"
 msgid "Menu position"
 msgstr "Pozice datacentra"
+
+#~ msgid "GLPI version"
+#~ msgstr "Verze GLPI"
+
+#~ msgid "GLPI"
+#~ msgstr "GLPI"
+
+#~ msgid "Switch to marketplace"
+#~ msgstr "Přejít na obchod"
+
+#~ msgid "Registration"
+#~ msgstr "Registrace"
+
+#~ msgid ""
+#~ "A registration key is needed to use advanced feature (like marketplace) "
+#~ "in GLPI"
+#~ msgstr ""
+#~ "Pro použití pokročilých funkcí (jako je katalog doplňků) je zapotřebí "
+#~ "registračního klíče"
+
+#~ msgid "And retrieve your key to paste it below"
+#~ msgstr "A získejte klíč pro vás, který vložte do kolonky níže"
+
+#~ msgid "Registration key"
+#~ msgstr "Registrační klíč"
+
+#~ msgid "Subscription"
+#~ msgstr "Předplatné"
+
+#~ msgid "Unknown"
+#~ msgstr "Neznámé"
+
+#~ msgid "Registered by"
+#~ msgstr "Registrováno na"
+
+#~ msgid "The registration key is invalid."
+#~ msgstr "Registrační klíč není platný."
+
+#~ msgid "The registration key is valid."
+#~ msgstr "Registrační klíč je platný."
+
+#, php-format
+#~ msgid ""
+#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
+#~ "from pre-configured rules or dictionaries?\n"
+#~ "\n"
+#~ "We provide the %s space for you.\n"
+#~ "GLPI-Network is a commercial product that includes a subscription for "
+#~ "tier 3 support, ensuring the correction of bugs encountered with a "
+#~ "commitment time.\n"
+#~ "\n"
+#~ "In this same space, you will be able to <b>contact an official partner</"
+#~ "b> to help you with your GLPI integration.\n"
+#~ "\n"
+#~ "Or, support the GLPI development effort by <b>donating</b>."
+#~ msgstr ""
+#~ "Potřebujete pomoct se začleněním GLPI do svého IT, přednostně opravit "
+#~ "chybu nebo použít přednastavená pravidla a číselníky?\n"
+#~ "\n"
+#~ "Nabízíme vám službu %s .\n"
+#~ "GLPI-Network je komerční produkt, který obsahuje předplatné pro 3. "
+#~ "(nejvyšší) úroveň podpory, což zajišťuje opravu nalezených chyb ve "
+#~ "stanoveném čase.\n"
+#~ "\n"
+#~ "V rámci toho je možné se <b>obracet na oficiálního partnera</b>, který "
+#~ "vám pomůže se začleněním GLPI.\n"
+#~ "\n"
+#~ "Nebo vývoj GLPI podpořte <b>darováním</b>."
+
+#, php-format
+#~ msgid ""
+#~ "Having troubles setting up an advanced GLPI module?\n"
+#~ "We can help you solve them. Sign up for support on %s."
+#~ msgstr ""
+#~ "Máte potíže s nastavením pokročilého modulu pro GLPI?\n"
+#~ "Můžeme vás pomoci s řešením. Napište si o podporu na %s."
+
+#~ msgid "Use GLPI"
+#~ msgstr "Používat GLPI"
