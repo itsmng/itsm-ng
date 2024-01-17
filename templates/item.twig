@@ -1,7 +1,7 @@
 <div class="grid-stack border" id="ContentForTabs"></div>
 <div class='d-none' id="hidden_gridStack_items">
   {% for key, tab in tabs %}
-  <div class="grid-stack-item" id="ContentFor{{key|slug}}" gs-h='6' gs-min-w='6'>
+  <div class="grid-stack-item" id="ContentFor{{key|slug}}" gs-h='6' gs-min-w='6' data-gs-value="test">
     <div class="card grid-stack-item-content">
       <div>
         <div class="card-header position-sticky">{{tab['title']|raw}}</div>
@@ -32,9 +32,23 @@
     const columnWidgets = grid.getGridItems();
     const targetWidth = columnWidgets.length === 1 ? 12 : 6; // Full width for single widget, else half
     grid.update(columnWidgets[0], { w: targetWidth });
-    if (columnWidgets.length > 1) {
-      grid.compact();
-    }
+  }
+
+  function saveGrid() {
+	let save = grid.save();
+	items = grid.getGridItems();
+	for (const i in save) {
+		save[i].name = items[i].id.replace('ContentFor', '');
+		delete(save[i].content);
+	}
+	$.ajax({
+		url: '{{glpiroot}}/ajax/updateUserMenu.php',
+		type: 'POST',
+		data: {
+			'itemName': '{{itemName}}',
+			'content': save,
+		},
+	});
   }
 
   // Update grid content based on the user's interaction with the dropdown menu
@@ -54,14 +68,7 @@
       return;
     }
     handleDropdownOption(target, inp.prop('checked'));
-	$.ajax({
-		url: '{{glpiroot}}/ajax/updateUserMenu.php',
-		type: 'POST',
-		data: {
-			'itemName': '{{itemName}}',
-			'content': options,
-		},
-	});
+	saveGrid();
   }
 
   // Handles individual dropdown options
@@ -96,24 +103,28 @@
 
   // Initialize checkboxes based on selectedTabs
   function initCheckbox() {
-    const checkedValues = [{% for value in selectedTabs %}"{{value|slug}}", {% endfor %}];
-	if (!checkedValues.length) {
-    	$('.isTabButton').first().find('input').prop('checked', 1);
-		options.push($('.isTabButton').first().attr('data-value'));
+    const savedLayout = {{selectedTabs|json_encode|raw}};
+	for (widget of savedLayout) {
+		console.log(widget);
+		const name = widget.name;
+		const element = $(`#ContentFor${name}`);
+		console.log(element);
+		delete widget.name;
+
+		for (param of Object.entries(widget)) {
+			element.attr('gs-'
+				+ param[0].replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? "-" : "") + $.toLowerCase()),
+				param[1]);
+		}
+		$('.dropdown-menu a[data-value="' + name + '"] input').prop('checked', true);
+		options.push(name);
 	}
-    $('.dropdown-menu a').each((i, e) => {
-      if (checkedValues.includes($(e).data('value'))) {
-        $(e).find('input').prop('checked', true);
-		options.push($(e).data('value'));
-      }
-    });
   }
 
   // Document ready function
   $(document).ready(() => {
     initCheckbox();
     handleInitialWidgets();
-    updateWidgetWidth();
   });
 
   // Handle widgets based on whether there's only one tab or more
@@ -144,6 +155,14 @@
     event.preventDefault();
     updateGridContent($(this).parent());
     updateWidgetWidth();
+  });
+
+  grid.on('resizestop', (event, element) => {
+	saveGrid();
+  });
+
+  grid.on('dragstop', (event, element) => {
+	saveGrid();
   });
 
 </script>
