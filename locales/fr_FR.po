@@ -25,7 +25,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-26 10:07+0200\n"
-"PO-Revision-Date: 2024-01-17 09:11+0000\n"
+"PO-Revision-Date: 2024-01-17 13:29+0000\n"
 "Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "fr/>\n"
@@ -4192,9 +4192,6 @@ msgstr "En cours (Planifié)"
 #: inc/problem.class.php:680 inc/ticket.class.php:3360
 #: inc/dashboard/provider.class.php:907 inc/dashboard/provider.class.php:1246
 #: inc/change.class.php:541 inc/commonitilobject.class.php:5245
-#, fuzzy
-#| msgctxt "status"
-#| msgid "Pending"
 msgid "Pending"
 msgstr "En attente"
 
@@ -23437,7 +23434,7 @@ msgstr "Virtualisation"
 
 #: templates/install/index.twig:31
 msgid "Initialized"
-msgstr ""
+msgstr "Initialiser"
 
 #: templates/install/index.twig:31
 #, fuzzy
@@ -23451,10 +23448,13 @@ msgid ""
 "cogwheel then click and the star next to the menu you wish to add as a "
 "favorite."
 msgstr ""
+"Vous pouvez ajouter votre section favorite à ce menu. Pour ce faire, cliquez "
+"sur la roue dentée, puis sur l'étoile située à côté du menu que vous "
+"souhaitez ajouter en tant que favori."
 
 #: templates/menus/nav/nav-settings.twig:4
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
@@ -23476,7 +23476,7 @@ msgstr "Action interrompue"
 
 #: templates/menus/nav/nav-settings.twig:17
 msgid "Activate favorite selection"
-msgstr ""
+msgstr "Activer la sélection des favoris"
 
 #: templates/menus/nav/nav-settings.twig:22
 #, fuzzy
