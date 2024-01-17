@@ -188,7 +188,7 @@ class Application extends BaseApplication {
                '--lang',
                null,
                InputOption::VALUE_OPTIONAL,
-               __('Output language (default value is existing Disable ITSM-NG "language" configuration or "en_GB")')
+               __('Output language (default value is existing ITSM-NG "language" configuration or "en_GB")')
             )
          ]
       );
