@@ -32,6 +32,7 @@
     const columnWidgets = grid.getGridItems();
     const targetWidth = columnWidgets.length === 1 ? 12 : 6; // Full width for single widget, else half
     grid.update(columnWidgets[0], { w: targetWidth });
+	grid.compact();
   }
 
   function saveGrid() {
