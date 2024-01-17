@@ -1489,12 +1489,12 @@ class Search {
          $row_num++;
          $col_num = 0;
          $value[$row_num] = [];
-         
+
          $massiveActionValues[$row_num] = 'item['.$data['itemtype'].']['.$row['id'].']';
 
          foreach ($data['data']['cols'] as $col) {
             $colkey = "{$col['itemtype']}_{$col['id']}";
-            
+
             if (isset($row[$colkey]['displayname']) && $row[$colkey]['displayname']) {
                $values[$row_num][$col_num] = $row[$colkey]['displayname'];
             }
@@ -1502,7 +1502,7 @@ class Search {
          }
       }
       $pref_url = $CFG_GLPI["root_doc"]."/front/displaypreference.form.php?itemtype=".$data['itemtype'];
-      
+
       echo Ajax::createIframeModalWindow(
          'search-config',
          $pref_url,
@@ -7123,8 +7123,8 @@ JAVASCRIPT;
             if ($count !== null) {
                $pdf->setTotalCount($count);
             }
-            $pdf->SetCreator('GLPI');
-            $pdf->SetAuthor('GLPI');
+            $pdf->SetCreator('ITSM-NG');
+            $pdf->SetAuthor('ITSM-NG');
             $pdf->SetTitle($title);
             $pdf->SetHeaderData('', '', $title, '');
             $font       = 'helvetica';

@@ -159,7 +159,7 @@ class RacksPluginToCoreCommand extends AbstractCommand {
       parent::configure();
 
       $this->setName('itsmng:migration:racks_plugin_to_core');
-      $this->setDescription(__('Migrate Racks plugin data into GLPI core tables'));
+      $this->setDescription(__('Migrate Racks plugin data into ITSM-ng core tables'));
 
       $this->addOption(
          'ignore-other-elements',
@@ -213,7 +213,7 @@ class RacksPluginToCoreCommand extends AbstractCommand {
          // Ask for confirmation (unless --no-interaction)
          $output->writeln(
             [
-               __('You are about to launch migration of Racks plugin data into GLPI core tables.'),
+               __('You are about to launch migration of Racks plugin data into ITSM-ng core tables.'),
                __('It is better to make a backup of your existing data before continuing.')
             ]
          );
@@ -275,7 +275,7 @@ class RacksPluginToCoreCommand extends AbstractCommand {
          $plugin->checkPluginState('racks');
 
          if (!$plugin->getFromDBbyDir('racks')) {
-            $message  = __('Racks plugin is not part of GLPI plugin list. It has never been installed or has been cleaned.')
+            $message  = __('Racks plugin is not part of ITSM-ng plugin list. It has never been installed or has been cleaned.')
                . ' '
                . sprintf(
                   __('You have to install Racks plugin files in version %s to be able to continue.'),
@@ -524,7 +524,7 @@ class RacksPluginToCoreCommand extends AbstractCommand {
       if ($count_othermodels = $othermodels_iterator->count()) {
          $this->output->writeln(
             [
-               '<comment>' . __('Other items do not exist in GLPI core.') . '</comment>',
+               '<comment>' . __('Other items do not exist in ITSM-ng core.') . '</comment>',
                sprintf(
                   __('We found %d models for other items. For each, we will ask you where you want to import it.'),
                   $count_othermodels
