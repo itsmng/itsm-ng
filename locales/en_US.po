@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-17 16:21+0100\n"
+"POT-Creation-Date: 2024-01-18 14:42+0100\n"
 "PO-Revision-Date: 2019-04-24 11:58+0000\n"
 "Last-Translator: David Paulus <DiodeDave@gmail.com>, 2021\n"
 "Language-Team: English (United States) (https://www.transifex.com/glpi/"
@@ -22145,54 +22145,29 @@ msgstr ""
 "The dragged event is a recurring event. Do you want to move the series or "
 "just the instance?"
 
-#: templates/install/index.twig:31
 #, fuzzy
-msgid "Initialization"
-msgstr "Virtualization"
+#~ msgid "Initialization"
+#~ msgstr "Virtualization"
 
-#: templates/install/index.twig:31
-msgid "Initialized"
-msgstr ""
-
-#: templates/install/index.twig:31
 #, fuzzy
-msgid "Languages"
-msgstr "Language"
+#~ msgid "Languages"
+#~ msgstr "Language"
 
-#: templates/menus/nav/menu.twig:23
-msgid ""
-"You can add your favorite section to this menu. To do this click on the "
-"cogwheel then click and the star next to the menu you wish to add as a "
-"favorite."
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:4
-msgid "Menu"
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-msgid "Menu collapse"
-msgstr "Toggle Collapse"
+#~ msgid "Menu collapse"
+#~ msgstr "Toggle Collapse"
 
-#: templates/menus/nav/nav-settings.twig:8
 #, fuzzy
-msgid "Reset menu bubble position"
-msgstr "Reserved position ?"
+#~ msgid "Reset menu bubble position"
+#~ msgstr "Reserved position ?"
 
-#: templates/menus/nav/nav-settings.twig:14
 #, fuzzy
-msgid "Activate menu favorite"
-msgstr "Action Aborted"
+#~ msgid "Activate menu favorite"
+#~ msgstr "Action Aborted"
 
-#: templates/menus/nav/nav-settings.twig:17
-msgid "Activate favorite selection"
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:22
 #, fuzzy
-msgid "Menu position"
-msgstr "Data Center Position"
+#~ msgid "Menu position"
+#~ msgstr "Data Center Position"
 
 #, fuzzy
 #~| msgid "Login"

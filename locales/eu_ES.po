@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-17 16:21+0100\n"
+"POT-Creation-Date: 2024-01-18 14:42+0100\n"
 "PO-Revision-Date: 2019-04-24 11:58+0000\n"
 "Last-Translator: alexandre delaunay <delaunay.alexandre@gmail.com>, 2021\n"
 "Language-Team: Basque (Spain) (https://www.transifex.com/glpi/teams/1637/"
@@ -22054,53 +22054,25 @@ msgid ""
 "instance ?"
 msgstr ""
 
-#: templates/install/index.twig:31
 #, fuzzy
-msgid "Initialization"
-msgstr "Birtualizazioa"
+#~ msgid "Initialization"
+#~ msgstr "Birtualizazioa"
 
-#: templates/install/index.twig:31
-msgid "Initialized"
-msgstr ""
-
-#: templates/install/index.twig:31
 #, fuzzy
-msgid "Languages"
-msgstr "Hizkuntza"
+#~ msgid "Languages"
+#~ msgstr "Hizkuntza"
 
-#: templates/menus/nav/menu.twig:23
-msgid ""
-"You can add your favorite section to this menu. To do this click on the "
-"cogwheel then click and the star next to the menu you wish to add as a "
-"favorite."
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:4
-msgid "Menu"
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:5
-msgid "Menu collapse"
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:8
 #, fuzzy
-msgid "Reset menu bubble position"
-msgstr "Erreserbatutako tokia?"
+#~ msgid "Reset menu bubble position"
+#~ msgstr "Erreserbatutako tokia?"
 
-#: templates/menus/nav/nav-settings.twig:14
 #, fuzzy
-msgid "Activate menu favorite"
-msgstr "Akzioa bertan behera utzi da"
+#~ msgid "Activate menu favorite"
+#~ msgstr "Akzioa bertan behera utzi da"
 
-#: templates/menus/nav/nav-settings.twig:17
-msgid "Activate favorite selection"
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:22
 #, fuzzy
-msgid "Menu position"
-msgstr "Datu-zentroaren posizioa"
+#~ msgid "Menu position"
+#~ msgstr "Datu-zentroaren posizioa"
 
 #, fuzzy
 #~| msgid "Login"

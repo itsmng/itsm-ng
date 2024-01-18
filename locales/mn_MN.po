@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-17 16:21+0100\n"
+"POT-Creation-Date: 2024-01-18 14:42+0100\n"
 "PO-Revision-Date: 2019-04-24 11:58+0000\n"
 "Last-Translator: Odgerel Otgonbat <odgerel0531@gmail.com>, 2021\n"
 "Language-Team: Mongolian (Mongolia) (https://www.transifex.com/glpi/"
@@ -22230,54 +22230,29 @@ msgstr ""
 "Сонгосон үйл явдал нь давтагдах үйл явдал байна. Та сери эсвэл жишээг "
 "шилжүүлэхийг хүсч байна уу?"
 
-#: templates/install/index.twig:31
 #, fuzzy
-msgid "Initialization"
-msgstr "Виртуалчлал"
+#~ msgid "Initialization"
+#~ msgstr "Виртуалчлал"
 
-#: templates/install/index.twig:31
-msgid "Initialized"
-msgstr ""
-
-#: templates/install/index.twig:31
 #, fuzzy
-msgid "Languages"
-msgstr "Хэл"
+#~ msgid "Languages"
+#~ msgstr "Хэл"
 
-#: templates/menus/nav/menu.twig:23
-msgid ""
-"You can add your favorite section to this menu. To do this click on the "
-"cogwheel then click and the star next to the menu you wish to add as a "
-"favorite."
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:4
-msgid "Menu"
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-msgid "Menu collapse"
-msgstr "Задалж харах/харахгүй"
+#~ msgid "Menu collapse"
+#~ msgstr "Задалж харах/харахгүй"
 
-#: templates/menus/nav/nav-settings.twig:8
 #, fuzzy
-msgid "Reset menu bubble position"
-msgstr "Хадгалагдсан байрлал уу?"
+#~ msgid "Reset menu bubble position"
+#~ msgstr "Хадгалагдсан байрлал уу?"
 
-#: templates/menus/nav/nav-settings.twig:14
 #, fuzzy
-msgid "Activate menu favorite"
-msgstr "Үйлдлийг зогсоосон"
+#~ msgid "Activate menu favorite"
+#~ msgstr "Үйлдлийг зогсоосон"
 
-#: templates/menus/nav/nav-settings.twig:17
-msgid "Activate favorite selection"
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:22
 #, fuzzy
-msgid "Menu position"
-msgstr "Мэдээллийн төвийн байрлал"
+#~ msgid "Menu position"
+#~ msgstr "Мэдээллийн төвийн байрлал"
 
 #, fuzzy
 #~| msgid "Login"

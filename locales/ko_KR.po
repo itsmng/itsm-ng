@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-17 16:21+0100\n"
+"POT-Creation-Date: 2024-01-18 14:42+0100\n"
 "PO-Revision-Date: 2019-04-24 11:58+0000\n"
 "Last-Translator: alexandre delaunay <delaunay.alexandre@gmail.com>, 2021\n"
 "Language-Team: Korean (Korea) (https://www.transifex.com/glpi/teams/1637/"
@@ -21659,54 +21659,29 @@ msgid ""
 "instance ?"
 msgstr ""
 
-#: templates/install/index.twig:31
 #, fuzzy
-msgid "Initialization"
-msgstr "가상화"
+#~ msgid "Initialization"
+#~ msgstr "가상화"
 
-#: templates/install/index.twig:31
-msgid "Initialized"
-msgstr ""
-
-#: templates/install/index.twig:31
 #, fuzzy
-msgid "Languages"
-msgstr "언어"
+#~ msgid "Languages"
+#~ msgstr "언어"
 
-#: templates/menus/nav/menu.twig:23
-msgid ""
-"You can add your favorite section to this menu. To do this click on the "
-"cogwheel then click and the star next to the menu you wish to add as a "
-"favorite."
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:4
-msgid "Menu"
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-msgid "Menu collapse"
-msgstr "펼치기 전환"
+#~ msgid "Menu collapse"
+#~ msgstr "펼치기 전환"
 
-#: templates/menus/nav/nav-settings.twig:8
 #, fuzzy
-msgid "Reset menu bubble position"
-msgstr "예약된 위치 ?"
+#~ msgid "Reset menu bubble position"
+#~ msgstr "예약된 위치 ?"
 
-#: templates/menus/nav/nav-settings.twig:14
 #, fuzzy
-msgid "Activate menu favorite"
-msgstr "동작 취소됨"
+#~ msgid "Activate menu favorite"
+#~ msgstr "동작 취소됨"
 
-#: templates/menus/nav/nav-settings.twig:17
-msgid "Activate favorite selection"
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:22
 #, fuzzy
-msgid "Menu position"
-msgstr "데이터 센터 위치"
+#~ msgid "Menu position"
+#~ msgstr "데이터 센터 위치"
 
 #, fuzzy
 #~| msgid "Login"

@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-17 16:21+0100\n"
+"POT-Creation-Date: 2024-01-18 14:42+0100\n"
 "PO-Revision-Date: 2024-01-17 09:11+0000\n"
 "Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
@@ -22315,54 +22315,29 @@ msgstr ""
 "L'évènement glissé est un évènement recrurent. Voulez vous changer la série "
 "ou l'instance ?"
 
-#: templates/install/index.twig:31
 #, fuzzy
-msgid "Initialization"
-msgstr "Virtualisation"
+#~ msgid "Initialization"
+#~ msgstr "Virtualisation"
 
-#: templates/install/index.twig:31
-msgid "Initialized"
-msgstr ""
-
-#: templates/install/index.twig:31
 #, fuzzy
-msgid "Languages"
-msgstr "Langue"
+#~ msgid "Languages"
+#~ msgstr "Langue"
 
-#: templates/menus/nav/menu.twig:23
-msgid ""
-"You can add your favorite section to this menu. To do this click on the "
-"cogwheel then click and the star next to the menu you wish to add as a "
-"favorite."
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:4
-msgid "Menu"
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-msgid "Menu collapse"
-msgstr "afficher / masquer"
+#~ msgid "Menu collapse"
+#~ msgstr "afficher / masquer"
 
-#: templates/menus/nav/nav-settings.twig:8
 #, fuzzy
-msgid "Reset menu bubble position"
-msgstr "Emplacement réservé ?"
+#~ msgid "Reset menu bubble position"
+#~ msgstr "Emplacement réservé ?"
 
-#: templates/menus/nav/nav-settings.twig:14
 #, fuzzy
-msgid "Activate menu favorite"
-msgstr "Action interrompue"
+#~ msgid "Activate menu favorite"
+#~ msgstr "Action interrompue"
 
-#: templates/menus/nav/nav-settings.twig:17
-msgid "Activate favorite selection"
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:22
 #, fuzzy
-msgid "Menu position"
-msgstr "Position dans le centre de données"
+#~ msgid "Menu position"
+#~ msgstr "Position dans le centre de données"
 
 #~ msgid "SSO Login"
 #~ msgstr "Connection en SSO"
