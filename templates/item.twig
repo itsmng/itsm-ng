@@ -73,7 +73,6 @@
       return;
     }
     handleDropdownOption(target, inp.prop('checked'));
-	saveGrid();
   }
 
   // Handles individual dropdown options
@@ -158,6 +157,7 @@
     event.preventDefault();
     updateGridContent($(this));
     updateWidgetWidth();
+  	saveGrid();
 	return false;
   });
 
@@ -165,14 +165,15 @@
     event.preventDefault();
     updateGridContent($(this).parent());
     updateWidgetWidth();
+  	saveGrid();
   });
 
   grid.on('resizestop', (event, element) => {
-	saveGrid();
+	  saveGrid();
   });
 
   grid.on('dragstop', (event, element) => {
-	saveGrid();
+	  saveGrid();
   });
 
 </script>
