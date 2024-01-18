@@ -2187,9 +2187,7 @@ msgstr ""
 #: inc/projecttask.class.php:934 inc/transfer.class.php:86
 #: inc/transfer.class.php:3425 inc/group.class.php:216 inc/group.class.php:834
 msgid "Name"
-msgid_plural "Names"
-msgstr[0] ""
-msgstr[1] ""
+msgstr ""
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
