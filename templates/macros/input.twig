@@ -312,7 +312,7 @@
       <tbody>
         {% for inputs in attributes.values %}
             <tr data-value="{{loop.index}}" style="display: flex">
-              <td class="d-flex align-items-center">
+              <td class="d-flex align-items-center w-100">
                 {% for name, value in inputs|filter((v, k) => k != 'id') %}
                   {% if k %}
                     <input type="hidden" name="{{name}}[{{inputs.id}}]" value="{{value}}"/>
