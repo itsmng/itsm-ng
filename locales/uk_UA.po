@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-17 16:21+0100\n"
+"POT-Creation-Date: 2024-01-18 14:42+0100\n"
 "PO-Revision-Date: 2019-04-24 11:58+0000\n"
 "Last-Translator: Andriy Smilyanets <smile.andriy@gmail.com>, 2022\n"
 "Language-Team: Ukrainian (Ukraine) (https://www.transifex.com/glpi/"
@@ -22900,54 +22900,29 @@ msgstr ""
 "Подія, яка пересувається, крім того, повторюється. Посунути серію чи "
 "екземпляр?"
 
-#: templates/install/index.twig:31
 #, fuzzy
-msgid "Initialization"
-msgstr "Віртуалізація"
+#~ msgid "Initialization"
+#~ msgstr "Віртуалізація"
 
-#: templates/install/index.twig:31
-msgid "Initialized"
-msgstr ""
-
-#: templates/install/index.twig:31
 #, fuzzy
-msgid "Languages"
-msgstr "Мова"
+#~ msgid "Languages"
+#~ msgstr "Мова"
 
-#: templates/menus/nav/menu.twig:23
-msgid ""
-"You can add your favorite section to this menu. To do this click on the "
-"cogwheel then click and the star next to the menu you wish to add as a "
-"favorite."
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:4
-msgid "Menu"
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-msgid "Menu collapse"
-msgstr "Перемкнути згортання"
+#~ msgid "Menu collapse"
+#~ msgstr "Перемкнути згортання"
 
-#: templates/menus/nav/nav-settings.twig:8
 #, fuzzy
-msgid "Reset menu bubble position"
-msgstr "Зарезервована позиція?"
+#~ msgid "Reset menu bubble position"
+#~ msgstr "Зарезервована позиція?"
 
-#: templates/menus/nav/nav-settings.twig:14
 #, fuzzy
-msgid "Activate menu favorite"
-msgstr "Дія припинена"
+#~ msgid "Activate menu favorite"
+#~ msgstr "Дія припинена"
 
-#: templates/menus/nav/nav-settings.twig:17
-msgid "Activate favorite selection"
-msgstr ""
-
-#: templates/menus/nav/nav-settings.twig:22
 #, fuzzy
-msgid "Menu position"
-msgstr "Координати датацентру"
+#~ msgid "Menu position"
+#~ msgstr "Координати датацентру"
 
 #, fuzzy
 #~| msgid "Login"
