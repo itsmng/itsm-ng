@@ -108,19 +108,25 @@
   // Initialize checkboxes based on selectedTabs
   function initCheckbox() {
     const savedLayout = {{selectedTabs|json_encode|raw}} ?? [];
-	for (widget of savedLayout) {
-		const name = widget.name;
-		const element = $(`#ContentFor${name}`);
-		delete widget.name;
+    if (savedLayout.length === 0) {
+      $first = $('.dropdown-menu a.isTabButton').first();
+      $first.find('input').prop('checked', true);
+      options.push($first.attr('data-value'));
+      return;
+    }
+    for (widget of savedLayout) {
+      const name = widget.name;
+      const element = $(`#ContentFor${name}`);
+      delete widget.name;
 
-		for (param of Object.entries(widget)) {
-			element.attr('gs-'
-				+ param[0].replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? "-" : "") + $.toLowerCase()),
-				param[1]);
-		}
-		$('.dropdown-menu a[data-value="' + name + '"] input').prop('checked', true);
-		options.push(name);
-	}
+      for (param of Object.entries(widget)) {
+        element.attr('gs-'
+          + param[0].replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? "-" : "") + $.toLowerCase()),
+          param[1]);
+      }
+      $('.dropdown-menu a[data-value="' + name + '"] input').prop('checked', true);
+      options.push(name);
+    }
   }
 
   // Document ready function
@@ -158,11 +164,12 @@
     updateGridContent($(this));
     updateWidgetWidth();
   	saveGrid();
-	return false;
+	  return false;
   });
 
   $('.dropdown-menu input[type="checkbox"]').on('click', function(event) {
     event.preventDefault();
+    event.target.checked = !event.target.checked;
     updateGridContent($(this).parent());
     updateWidgetWidth();
   	saveGrid();
