@@ -538,14 +538,12 @@ msgid "Consider filling latitude and longitude on this location."
 msgstr "Подумайте про заповнення широти та довготи на цьому розташуванні."
 
 #: ajax/deleteItilActor.php:92
-#, fuzzy
 msgid "Actor deleted successfully"
-msgstr "Кеш успішно скинуто."
+msgstr ""
 
 #: ajax/deleteItilActor.php:98
-#, fuzzy
 msgid "Error while deleting actor"
-msgstr "Помилка виконання дії"
+msgstr ""
 
 #: ajax/telemetry.php:46
 msgid ""
@@ -1781,9 +1779,8 @@ msgid "Impossible to use LDAP as external source of connection"
 msgstr "Неможливо використати LDAP як джерело зовнішньої аутентифікації"
 
 #: front/setup.auth.php:58
-#, fuzzy
 msgid "Open ID connect authentication"
-msgstr "авторизація через сертифікат x509 "
+msgstr ""
 
 #: front/setup.auth.php:61
 msgid "Others authentication methods"
@@ -2230,13 +2227,12 @@ msgstr "Id"
 #: inc/slalevel.class.php:226 inc/projecttask.class.php:679
 #: inc/projecttask.class.php:934 inc/transfer.class.php:86
 #: inc/transfer.class.php:3425 inc/group.class.php:216 inc/group.class.php:834
-#, fuzzy
 msgid "Name"
 msgid_plural "Names"
-msgstr[0] "Ім’я"
-msgstr[1] "Ім’я"
-msgstr[2] "Ім’я"
-msgstr[3] "Ім’я"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
@@ -3324,9 +3320,8 @@ msgid "Unable to stop impersonating user"
 msgstr "Не можливо припинити персоналізацію користувача"
 
 #: front/document.form.php:66
-#, fuzzy
 msgid "Could not add document"
-msgstr "Додати документ"
+msgstr ""
 
 #: inc/operatingsystemedition.class.php:42
 #: inc/item_operatingsystem.class.php:365
@@ -3531,9 +3526,8 @@ msgstr[2] "Версії"
 msgstr[3] "Версії"
 
 #: inc/cluster.class.php:136
-#, fuzzy
 msgid "Auto update system"
-msgstr "Операційна система елементу"
+msgstr ""
 
 #: inc/cluster.class.php:143 inc/cluster.class.php:223
 #: inc/printer.class.php:323 inc/printer.class.php:750
@@ -3880,9 +3874,8 @@ msgid "\"session.use_trans_sid\" must be set to off."
 msgstr "Параметр \"session.use_trans_sid\" має бути вимкненим."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
-#, fuzzy
 msgid "See .htaccess file in the ITSM-NG root for more information."
-msgstr "Дивись .htaccess файл в корені GLPI для додаткової інформації."
+msgstr ""
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -4050,9 +4043,9 @@ msgid "Allocated memory"
 msgstr "Виділена пам’ять"
 
 #: inc/system/requirement/memorylimit.class.php:75
-#, fuzzy, php-format
+#, php-format
 msgid "A minimum of %s is commonly required for ITSM-NG."
-msgstr "Для GLPI зазвичай потрібно мінімум %s."
+msgstr ""
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -4588,9 +4581,8 @@ msgid "Action when a user is deleted from the LDAP directory"
 msgstr "Дія після видалення користувача з AD/LDAP"
 
 #: inc/config.class.php:710
-#, fuzzy
 msgid "ITSM-NG server time zone"
-msgstr "Годинний пояс сервера GLPI"
+msgstr ""
 
 #: inc/config.class.php:743 inc/config.class.php:1809 inc/config.class.php:2261
 #: inc/dbconnection.class.php:47
@@ -4646,9 +4638,8 @@ msgid "URL of the API"
 msgstr "URL API"
 
 #: inc/config.class.php:821
-#, fuzzy
 msgid "URL of the dashboard API"
-msgstr "URL API"
+msgstr ""
 
 #: inc/config.class.php:827
 msgid "Enable Rest API"
@@ -4781,9 +4772,8 @@ msgid "Display counters"
 msgstr "Показати лічильники"
 
 #: inc/config.class.php:1151
-#, fuzzy
 msgid "Display the number of items in the menu"
-msgstr "Показати (кількість елементів)"
+msgstr ""
 
 #: inc/config.class.php:1160
 msgid "Keep devices when purging an item"
@@ -4856,10 +4846,8 @@ msgid "Done"
 msgstr "Готово"
 
 #: inc/config.class.php:1255
-#, fuzzy
 msgid "Automatically refresh data (tickets list, project kanban) in minutes"
 msgstr ""
-"Автоматичне оновлення даних (список заявок, проектні kanban) в хвилинах."
 
 #: inc/config.class.php:1264
 msgid "Pre-select me as a technician when creating a ticket"
@@ -4870,34 +4858,28 @@ msgid "Pre-select me as a requester when creating a ticket"
 msgstr "Попередній вибір мене у якості замовника при створенні заявки"
 
 #: inc/config.class.php:1288
-#, fuzzy
 msgid "Priority color 1"
-msgstr "Кольори приорітету"
+msgstr ""
 
 #: inc/config.class.php:1295
-#, fuzzy
 msgid "Priority color 2"
-msgstr "Кольори приорітету"
+msgstr ""
 
 #: inc/config.class.php:1302
-#, fuzzy
 msgid "Priority color 3"
-msgstr "Кольори приорітету"
+msgstr ""
 
 #: inc/config.class.php:1309
-#, fuzzy
 msgid "Priority color 4"
-msgstr "Кольори приорітету"
+msgstr ""
 
 #: inc/config.class.php:1316
-#, fuzzy
 msgid "Priority color 5"
-msgstr "Кольори приорітету"
+msgstr ""
 
 #: inc/config.class.php:1323
-#, fuzzy
 msgid "Priority color 6"
-msgstr "Кольори приорітету"
+msgstr ""
 
 #: inc/config.class.php:1332
 msgid "Due date progression"
@@ -4920,9 +4902,8 @@ msgid "Warning state threshold"
 msgstr "Поріг стану попередження"
 
 #: inc/config.class.php:1366
-#, fuzzy
 msgid "Warning state unit"
-msgstr "Колір стану попередження"
+msgstr ""
 
 #: inc/config.class.php:1372 inc/config.class.php:1394
 #: inc/reservation.class.php:1025 inc/levelagreement.class.php:202
@@ -4940,9 +4921,8 @@ msgid "Critical state threshold"
 msgstr "Поріг критичного стану"
 
 #: inc/config.class.php:1388
-#, fuzzy
 msgid "Critical state unit"
-msgstr "Колір критичного стану"
+msgstr ""
 
 #: inc/config.class.php:1406
 msgid "Auto-lock Mode"
@@ -5082,11 +5062,10 @@ msgid "Reset"
 msgstr "Зкинути"
 
 #: inc/config.class.php:1694
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Installing and enabling the \"%s\" extension may improve ITSM-NG performance"
 msgstr ""
-"Встановлення та вмикання розширення \"%s\" може покращити продуктивність "
 
 #: inc/config.class.php:1698
 msgid "User data cache"
@@ -5490,9 +5469,8 @@ msgstr[3] "Принтери"
 #: inc/consumableitem.class.php:134 inc/software.class.php:231
 #: inc/peripheral.class.php:161 inc/phone.class.php:156
 #: inc/computer.class.php:309 inc/pdu.class.php:86 inc/ticket.class.php:4478
-#, fuzzy
 msgid "Restore"
-msgstr "Відновити"
+msgstr ""
 
 #: inc/printer.class.php:302 inc/project.class.php:562
 #: inc/appliance.class.php:164 inc/supplier.class.php:187
@@ -5517,21 +5495,18 @@ msgstr "Контактний номер"
 
 #: inc/printer.class.php:378 inc/monitor.class.php:274
 #: inc/peripheral.class.php:266 inc/phone.class.php:262
-#, fuzzy
 msgid "Management Type"
-msgstr "Тип керування"
+msgstr ""
 
 #: inc/printer.class.php:382 inc/monitor.class.php:278
 #: inc/peripheral.class.php:270 inc/phone.class.php:266
-#, fuzzy
 msgid "Unit Management"
-msgstr "Керування об’єктом"
+msgstr ""
 
 #: inc/printer.class.php:383 inc/monitor.class.php:279
 #: inc/peripheral.class.php:271 inc/phone.class.php:267
-#, fuzzy
 msgid "Global Management"
-msgstr "Глобальне керування"
+msgstr ""
 
 #: inc/printer.class.php:395 inc/printer.class.php:733
 #: inc/networkequipment.class.php:380 inc/networkequipment.class.php:598
@@ -5546,9 +5521,8 @@ msgstr[2] "Мережі"
 msgstr[3] "Мережі"
 
 #: inc/printer.class.php:404
-#, fuzzy
 msgid "Ports"
-msgstr "Порт"
+msgstr ""
 
 #: inc/printer.class.php:407 inc/printer.class.php:622
 #: inc/appliance_item.class.php:186
@@ -6073,9 +6047,9 @@ msgid "Task completed."
 msgstr "Завершено"
 
 #: inc/migration.class.php:792
-#, fuzzy, php-format
+#, php-format
 msgid "Automatically generated by ITSM-NG %s"
-msgstr "Автоматично згенеровано %s"
+msgstr ""
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -6334,14 +6308,12 @@ msgid "Associated item ID"
 msgstr "ID пов’язаного елемента"
 
 #: inc/queuedchat.class.php:260 inc/queuedchat.class.php:646
-#, fuzzy
 msgid "Entity name"
-msgstr "Організація"
+msgstr ""
 
 #: inc/queuedchat.class.php:269 inc/queuedchat.class.php:641
-#, fuzzy
 msgid "Server name"
-msgstr "Ім’я відправника"
+msgstr ""
 
 #: inc/queuedchat.class.php:278
 msgid "URl Hook"
@@ -6358,29 +6330,24 @@ msgid "Mode"
 msgstr "Режим"
 
 #: inc/queuedchat.class.php:382 inc/queuednotification.class.php:463
-#, fuzzy
 msgid "Send chat in queue"
-msgstr "Відправити листи з черги"
+msgstr ""
 
 #: inc/queuedchat.class.php:383 inc/queuednotification.class.php:464
-#, fuzzy
 msgid "Maximum chat to send at once"
-msgstr "Максимум листів для відсилання за один раз"
+msgstr ""
 
 #: inc/queuedchat.class.php:388
-#, fuzzy
 msgid "Clean chat queue"
-msgstr "Очистити чергу повідомлень"
+msgstr ""
 
 #: inc/queuedchat.class.php:389 inc/queuednotification.class.php:468
-#, fuzzy
 msgid "Days to keep sent chat"
-msgstr "Скільки днів зберігати відправлені листи"
+msgstr ""
 
 #: inc/queuedchat.class.php:615
-#, fuzzy
 msgid "Ticket ID"
-msgstr "Заявка"
+msgstr ""
 
 #: inc/queuedchat.class.php:651
 msgid "Rocket Hook Url"
@@ -6783,9 +6750,8 @@ msgstr[2] "Виробники"
 msgstr[3] "Виробники"
 
 #: inc/monitor.class.php:245
-#, fuzzy
 msgid "Inventory/Asset number"
-msgstr "Інвентарний номер"
+msgstr ""
 
 #: inc/monitor.class.php:268 inc/monitor.class.php:517
 #: inc/item_devicememory.class.php:54 inc/item_devicememory.class.php:56
@@ -6838,9 +6804,8 @@ msgid "Target entity for the computer"
 msgstr "Цільова організація комп’ютера"
 
 #: inc/ruleimportcomputer.class.php:81
-#, fuzzy
 msgid "Find computers in ITSM-NG having the status"
-msgstr "Шукати комп’ютери зі статусом"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -6883,14 +6848,12 @@ msgid "Yes if empty"
 msgstr "Так, якщо порожнє"
 
 #: inc/ruleimportcomputer.class.php:178
-#, fuzzy
 msgid "is already present in ITSM-NG"
-msgstr "вже присутній в GLPI"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:179
-#, fuzzy
 msgid "is empty in ITSM-NG"
-msgstr "є порожнім в GLPI"
+msgstr ""
 
 #: inc/commonitilvalidation.class.php:91 inc/commonitilobject.class.php:6856
 #: inc/change.class.php:539 inc/change.class.php:1061
@@ -7678,14 +7641,12 @@ msgid "Category name"
 msgstr "Назва категорії"
 
 #: inc/knowbaseitem.class.php:780
-#, fuzzy
 msgid "Created on:"
-msgstr "Створено %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:783
-#, fuzzy
 msgid "Last update on:"
-msgstr "Останнє оновлення %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:786
 msgid "Put this item in the FAQ"
@@ -7702,9 +7663,8 @@ msgid "This item is not part of the FAQ"
 msgstr "Це не є частиною FAQ"
 
 #: inc/knowbaseitem.class.php:798
-#, fuzzy
 msgid "Views"
-msgstr "Перегляд"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:799 inc/knowbaseitem.class.php:984
 #, php-format
@@ -7864,9 +7824,8 @@ msgid "Help"
 msgstr "Допомога"
 
 #: inc/link.class.php:165
-#, fuzzy
 msgid "External links"
-msgstr "Зовнішній зв’язок"
+msgstr ""
 
 #: inc/link.class.php:173 inc/link.class.php:240
 msgid "Link or filename"
@@ -7951,19 +7910,16 @@ msgstr "Кількість елементів"
 
 #: inc/specialstatus.class.php:44 inc/specialstatus.class.php:150
 #: inc/profile.class.php:2082
-#, fuzzy
 msgid "Special Status"
-msgstr "Вкажіть дату"
+msgstr ""
 
 #: inc/specialstatus.class.php:115
-#, fuzzy
 msgid "Status has been updated!"
-msgstr "Повідомлення створено!"
+msgstr ""
 
 #: inc/specialstatus.class.php:142
-#, fuzzy
 msgid "Status has been removed!"
-msgstr "Пошук збережено"
+msgstr ""
 
 #: inc/specialstatus.class.php:153 inc/specialstatus.class.php:246
 #: inc/commondcmodeldropdown.class.php:65
@@ -7986,9 +7942,8 @@ msgid "Tickets are still using this status, are you sure to remove the status?"
 msgstr ""
 
 #: inc/specialstatus.class.php:209
-#, fuzzy
 msgid "Are you sure to remove the status?"
-msgstr "Справді видалити дошку %s?"
+msgstr ""
 
 #: inc/specialstatus.class.php:214 inc/commondropdown.class.php:495
 msgctxt "button"
@@ -8002,9 +7957,8 @@ msgid "Cancel"
 msgstr "Відміна"
 
 #: inc/specialstatus.class.php:234
-#, fuzzy
 msgid "Status has been added!"
-msgstr "Пошук збережено"
+msgstr ""
 
 #: inc/specialstatus.class.php:243
 msgid "New Status - Special status"
@@ -8551,9 +8505,8 @@ msgid "System lock"
 msgstr "Системне блокування"
 
 #: inc/crontask.class.php:643
-#, fuzzy
 msgid "Plugin lock"
-msgstr "Плугін"
+msgstr ""
 
 #: inc/crontask.class.php:644
 msgid "Disabled plugin"
@@ -8564,14 +8517,12 @@ msgid "Run mode"
 msgstr "Метод виконання"
 
 #: inc/crontask.class.php:655
-#, fuzzy
 msgid "Min run period"
-msgstr "Період виконання"
+msgstr ""
 
 #: inc/crontask.class.php:662
-#, fuzzy
 msgid "Max run period"
-msgstr "Період виконання"
+msgstr ""
 
 #: inc/crontask.class.php:669 inc/crontask.class.php:1602
 msgid "Number of days this action logs are stored"
@@ -8586,14 +8537,12 @@ msgid "Last run"
 msgstr "Останнє виконання"
 
 #: inc/crontask.class.php:704
-#, fuzzy
 msgid "enabled"
-msgstr "Активізований"
+msgstr ""
 
 #: inc/crontask.class.php:706
-#, fuzzy
 msgid "disabled"
-msgstr "Вимкнене"
+msgstr ""
 
 #: inc/crontask.class.php:812 inc/crontask.class.php:1370
 msgid "Running"
@@ -8612,9 +8561,8 @@ msgid "Maintenance mode enabled, running tasks is disabled"
 msgstr "Увімкнено режим обслуговування, виконання завдань не дозволено"
 
 #: inc/crontask.class.php:922
-#, fuzzy
 msgid "A minimum of 64 Mio is commonly required for ITSM-NG."
-msgstr "Звичайно для GLPI потрібно мінімум 64 Mio."
+msgstr ""
 
 #: inc/crontask.class.php:927
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -8994,15 +8942,11 @@ msgid "Upgrade"
 msgstr "Оновити"
 
 #: inc/config.php:239
-#, fuzzy
 msgid ""
 "You are trying to use ITSM-NG with outdated files compared to the version of "
 "the database. Please install the correct ITSM-NG files corresponding to the "
 "version of your database."
 msgstr ""
-"Ви намагаєтесь використати GLPI зі старими файлами, порівняно з версією бази "
-"даних. Будь ласка встановіть належні файли, що відповідають версії Вашої "
-"бази даних."
 
 #: inc/config.php:242
 msgid ""
@@ -9258,13 +9202,12 @@ msgstr[3] "Типи комп’ютерів"
 
 #: inc/rulecollection.class.php:2050 inc/rule.class.php:371
 #: inc/monitortype.class.php:42
-#, fuzzy
 msgid "Monitor type"
 msgid_plural "Monitor types"
-msgstr[0] "Тип монітору"
-msgstr[1] "Типи моніторів"
-msgstr[2] "Типів моніторів"
-msgstr[3] "Типи моніторів"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: inc/rulecollection.class.php:2053 inc/rule.class.php:383
 #: inc/printertype.class.php:42
@@ -9683,14 +9626,13 @@ msgid "Begin"
 msgstr "Початок"
 
 #: inc/reminder.class.php:641
-#, fuzzy
 msgid "From"
-msgstr "Від %s"
+msgstr ""
 
 #: inc/reminder.class.php:642
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s to %2$s"
-msgstr "%1$s на %2$s"
+msgstr ""
 
 #: inc/ticketvalidation.class.php:99
 msgid "Create for request"
@@ -9854,9 +9796,8 @@ msgstr[2] "Полиць"
 msgstr[3] "Полиці"
 
 #: inc/enclosure.class.php:122
-#, fuzzy
 msgid "Power supplies"
-msgstr "Блок живлення"
+msgstr ""
 
 #: inc/contract_supplier.class.php:136 inc/contract.class.php:204
 #: inc/contract_item.class.php:336
@@ -9952,42 +9893,36 @@ msgid "Support hours"
 msgstr "Години підтримки"
 
 #: inc/contract.class.php:332
-#, fuzzy
 msgid "on week start"
-msgstr "в робочі дні"
+msgstr ""
 
 #: inc/contract.class.php:338
-#, fuzzy
 msgid "on week end"
-msgstr "в робочі дні"
+msgstr ""
 
 #: inc/contract.class.php:344
 msgid "on Saturday"
 msgstr "в Суботу"
 
 #: inc/contract.class.php:349
-#, fuzzy
 msgid "on Saturday start"
-msgstr "в Суботу"
+msgstr ""
 
 #: inc/contract.class.php:354
-#, fuzzy
 msgid "on Saturday end"
-msgstr "в Суботу"
+msgstr ""
 
 #: inc/contract.class.php:359
 msgid "Sundays and holidays"
 msgstr "Неділя та святкові дні"
 
 #: inc/contract.class.php:364
-#, fuzzy
 msgid "on Sunday start"
-msgstr "в Суботу"
+msgstr ""
 
 #: inc/contract.class.php:369
-#, fuzzy
 msgid "on Sunday end"
-msgstr "в Суботу"
+msgstr ""
 
 #: inc/contract.class.php:415
 msgctxt "quantity"
@@ -10792,14 +10727,12 @@ msgid "Last update in the LDAP directory"
 msgstr "Останнє оновлення в LDAP каталозі"
 
 #: inc/authldap.class.php:1560
-#, fuzzy
 msgid "Last update in ITSM-ng"
-msgstr "Останнє оновлення в GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:1609
-#, fuzzy
 msgid "Last update in ITSM-NG"
-msgstr "Останнє оновлення в GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:1621 inc/authldap.class.php:1626
 msgid "No user to be synchronized"
@@ -10831,9 +10764,8 @@ msgid "LDAP directory choice"
 msgstr "Вибрати каталог LDAP"
 
 #: inc/authldap.class.php:2396
-#, fuzzy
 msgid "No LDAP directory defined in ITSM-ng"
-msgstr "Не визначено каталог LDAP в GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:2767
 msgid "User not found or several users found"
@@ -11016,9 +10948,8 @@ msgstr[2] "Зв’язки Договір/Елемент"
 msgstr[3] "Зв’язки Договір/Елемент"
 
 #: inc/contract_item.class.php:362
-#, fuzzy
 msgid "Delete permanently the relation with selected elements"
-msgstr "Видалити назавжди зв'язок між обраними елементами"
+msgstr ""
 
 #: inc/planningexternalevent.class.php:54
 msgid "External event"
@@ -11247,9 +11178,8 @@ msgstr "Інструменти"
 #: inc/profile.class.php:1790 inc/profile.class.php:1835
 #: inc/profile.class.php:3022 inc/accessibility.class.php:36
 #: inc/accessibility.class.php:58 inc/accessibility.class.php:63
-#, fuzzy
 msgid "Accessibility"
-msgstr "Видимість"
+msgstr ""
 
 #: inc/profile.class.php:128 inc/profile.class.php:1197
 #: inc/profile.class.php:2435 inc/infocom.class.php:142
@@ -11507,9 +11437,8 @@ msgid "Life cycle of changes"
 msgstr "Життєвий цикл змін"
 
 #: inc/profile.class.php:1785 inc/profile.class.php:1830
-#, fuzzy
 msgid "Edit accessibility"
-msgstr "Видимість"
+msgstr ""
 
 #: inc/profile.class.php:1922 inc/profile.class.php:2743
 #: inc/rulerightcollection.class.php:57 inc/ruleright.class.php:56
@@ -11631,19 +11560,16 @@ msgid "Managed domain records types"
 msgstr "Типи керованих записів доменів"
 
 #: inc/profile.class.php:3032
-#, fuzzy
 msgid "Change font"
-msgstr "Завдання Зміни"
+msgstr ""
 
 #: inc/profile.class.php:3042
-#, fuzzy
 msgid "Change zoom"
-msgstr "Змінити режим"
+msgstr ""
 
 #: inc/profile.class.php:3053
-#, fuzzy
 msgid "Use shortcuts"
-msgstr "Використовувати блокування"
+msgstr ""
 
 #: inc/profile.class.php:3109 inc/auth.class.php:1224 inc/auth.class.php:1231
 #: install/update_0723_078.php:3667
@@ -12567,9 +12493,8 @@ msgid "Global View"
 msgstr "Загальне"
 
 #: inc/central.class.php:118
-#, fuzzy
 msgid "No dashboard available"
-msgstr "Немає наявних дій"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/central.class.php:154 inc/rack.class.php:65
@@ -12581,9 +12506,8 @@ msgstr[2] "Шаф"
 msgstr[3] "Шафи"
 
 #: inc/central.class.php:173
-#, fuzzy
 msgid "Tickets by status"
-msgstr "Заявки в статусі очікування"
+msgstr ""
 
 #: inc/central.class.php:395
 #, php-format
@@ -12842,9 +12766,8 @@ msgid "Entity-ID"
 msgstr "Entity-ID"
 
 #: inc/domain.class.php:364 inc/certificate.class.php:544
-#, fuzzy
 msgid "Types"
-msgstr "Тип"
+msgstr ""
 
 #: inc/domain.class.php:689
 msgid "Domains expired since more"
@@ -13003,9 +12926,8 @@ msgid "An appliance is required"
 msgstr "Потрібна система"
 
 #: inc/softwareversion.class.php:114
-#, fuzzy
 msgid "New element"
-msgstr "Новий коментар"
+msgstr ""
 
 #: inc/softwareversion.class.php:332
 msgctxt "button"
@@ -13495,9 +13417,8 @@ msgstr "В роботі (запланована)"
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541
-#, fuzzy
 msgid "Pending"
-msgstr "Очікує"
+msgstr ""
 
 #: inc/problem.class.php:686
 msgctxt "status"
@@ -14055,9 +13976,8 @@ msgstr "Показати версію %rev"
 #: inc/knowbaseitem_revision.class.php:262
 #: inc/knowbaseitem_comment.class.php:177
 #: inc/knowbaseitem_comment.class.php:211 inc/objectlock.class.php:157
-#, fuzzy
 msgid "Contact your ITSM-NG admin!"
-msgstr "Зв'яжіться з адміністратором GLPI!"
+msgstr ""
 
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_comment.class.php:177
@@ -14132,9 +14052,8 @@ msgstr "Виконати правила каталогу для виробник
 
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
-#, fuzzy
 msgid "Software deleted by ITSM-NG dictionary rules"
-msgstr "ПЗ, видалене правилами каталогів GLPI"
+msgstr ""
 
 #: inc/caldav/backend/calendar.class.php:89
 #: inc/caldav/backend/calendar.class.php:127
@@ -14800,9 +14719,8 @@ msgid "Connection string"
 msgstr "Параметри підключення"
 
 #: inc/authmail.class.php:206 inc/notificationchatsetting.class.php:295
-#, fuzzy
 msgid "Test"
-msgstr "Тест"
+msgstr ""
 
 #: inc/authmail.class.php:211
 msgid "Test connection to email server"
@@ -14819,9 +14737,8 @@ msgid "You cannot use predefined description verbatim"
 msgstr "Ви не можете дослівно використовувати попередньо призначений опис"
 
 #: inc/commonitilobject.class.php:1772
-#, fuzzy
 msgid "Incorrect value for date field."
-msgstr "Ігнороване значення для унікальності"
+msgstr ""
 
 #: inc/commonitilobject.class.php:2432
 msgctxt "priority"
@@ -15967,9 +15884,8 @@ msgid "An error occured loading contents!"
 msgstr "Під час завантаження сталась помилка!"
 
 #: inc/ajax.class.php:455
-#, fuzzy
 msgid "Please check ITSM-NG logs or contact your administrator."
-msgstr "Перевірте протоколи системи або зв'яжіться з адміністратором."
+msgstr ""
 
 #: inc/ajax.class.php:456
 msgid "try to reload"
@@ -16496,18 +16412,16 @@ msgstr "CSS"
 
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
-#, fuzzy
 msgid "Automatically generated by ITSM-NG"
-msgstr "Автоматично згенеровано GLPI %s"
+msgstr ""
 
 #: inc/oidc.class.php:80
 msgid "Missing or wrong fields in open ID connect config"
 msgstr ""
 
 #: inc/oidc.class.php:301
-#, fuzzy
 msgid "Configuration"
-msgstr "Попереднє налаштування"
+msgstr ""
 
 #: inc/oidc.class.php:306 inc/auth.class.php:1830
 msgid "Mapping of fields according to provider"
@@ -16588,9 +16502,8 @@ msgid "Incorrect username or password"
 msgstr "Невірний користувач або пароль"
 
 #: inc/auth.class.php:284 inc/auth.class.php:975 inc/auth.class.php:1003
-#, fuzzy
 msgid "User not authorized to connect in ITSM-NG"
-msgstr "Користувач не має дозволу входити в GLPI"
+msgstr ""
 
 #: inc/auth.class.php:631
 msgid "Login with external token disabled"
@@ -16635,9 +16548,8 @@ msgid "Failed login for %1$s from IP %2$s"
 msgstr "Невдала реєстрація %1$s з IP %2$s"
 
 #: inc/auth.class.php:1107
-#, fuzzy
 msgid "Authentication on ITSM-NG database"
-msgstr "Аутентифікація через базу GLPI"
+msgstr ""
 
 #: inc/auth.class.php:1119
 msgid "Authentication on a LDAP directory"
@@ -16668,9 +16580,8 @@ msgid "x509 certificate authentication"
 msgstr "авторизація через сертифікат x509 "
 
 #: inc/auth.class.php:1234 inc/auth.class.php:1892
-#, fuzzy
 msgid "ITSM-NG internal database"
-msgstr "Вбудована база GLPI"
+msgstr ""
 
 #: inc/auth.class.php:1240
 msgid "Not yet authenticated"
@@ -16722,13 +16633,10 @@ msgid "The CURL extension for your PHP parser isn't installed"
 msgstr "Розширення CURL вашого PHP не встановлено"
 
 #: inc/auth.class.php:1621
-#, fuzzy
 msgid ""
 "The CAS lib isn't available, ITSM-NG doesn't package it anymore for license "
 "compatibility issue."
 msgstr ""
-"Бібліотека CAS не доступна, GLPI  більше не включає її в пакет через "
-"проблеми сумісності ліцензій."
 
 #: inc/auth.class.php:1624
 msgid "Impossible to use CAS as external source of connection"
@@ -16788,9 +16696,8 @@ msgid "Proxy"
 msgstr ""
 
 #: inc/auth.class.php:1868
-#, fuzzy
 msgid "Certificate Path"
-msgstr "Сертифікат"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/datacenter.class.php:48 inc/datacenter.class.php:71
@@ -16916,29 +16823,25 @@ msgid "Unknown interface"
 msgstr "Невідомий інтерфейс"
 
 #: inc/notificationchatsetting.class.php:46
-#, fuzzy
 msgid "Chat followups configuration"
-msgstr "Налаштування відповідей електронною поштою"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:52
 #: inc/notificationsettingconfig.class.php:133
-#, fuzzy
 msgid "Enable followups via chat"
-msgstr "Увімкнути відповідь електронною поштою"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:120
-#, fuzzy
 msgid "Chat notification"
 msgid_plural "Chat notifications"
-msgstr[0] "Email повідомлення"
-msgstr[1] "Email повідомлення"
-msgstr[2] "Email повідомлення"
-msgstr[3] "Email повідомлення"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: inc/notificationchatsetting.class.php:132
-#, fuzzy
 msgid "Rocket chat"
-msgstr "Вартість Заявки"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:133
 msgid "Slack"
@@ -16993,9 +16896,8 @@ msgstr[2] "Типи сертифікатів"
 msgstr[3] "Типи сертифікатів"
 
 #: inc/accessibility.class.php:41
-#, fuzzy
 msgid "See this parameter in your settings"
-msgstr "Відсутній параметр email"
+msgstr ""
 
 #: inc/accessibility.class.php:43
 msgid "Edit this parameter in your settings"
@@ -17010,18 +16912,16 @@ msgid "UI Font"
 msgstr ""
 
 #: inc/accessibility.class.php:163
-#, fuzzy
 msgid "Enable shortcuts"
-msgstr "Увімкнути високий контраст"
+msgstr ""
 
 #: inc/accessibility.class.php:169
 msgid "Don't forget to save"
 msgstr ""
 
 #: inc/accessibility.class.php:169
-#, fuzzy
 msgid "Toggle view"
-msgstr "Перемкнути фільтри"
+msgstr ""
 
 #: inc/accessibility.class.php:189
 msgid "shift+alt+"
@@ -17254,9 +17154,8 @@ msgstr[2] "Рівнів обслуговування"
 msgstr[3] "Рівнів обслуговування"
 
 #: inc/slm.class.php:126
-#, fuzzy
 msgid "Niveau de services"
-msgstr "Пасивний пристрій"
+msgstr ""
 
 #: inc/cartridge.class.php:266
 msgid "Installing a cartridge"
@@ -17492,9 +17391,9 @@ msgid "This plugin requires PHP parameter %1$s"
 msgstr "Цей плугін вимагає параметр PHP %1$s"
 
 #: inc/plugin.class.php:1706
-#, fuzzy, php-format
+#, php-format
 msgid "This plugin requires ITSM-NG parameter %1$s"
-msgstr "Цей плугін вимагає параметр GLPI %1$s"
+msgstr ""
 
 #: inc/plugin.class.php:1982 inc/plugin.class.php:2421
 msgctxt "plugin"
@@ -17703,19 +17602,18 @@ msgid "Autofilled from template"
 msgstr "Автоматично заповнено з шаблону"
 
 #: inc/notificationchat.class.php:114
-#, fuzzy
 msgid "Error inserting chat to queue"
-msgstr "Помилка розміщення листа у черзі"
+msgstr ""
 
 #: inc/notificationchat.class.php:118
-#, fuzzy, php-format
+#, php-format
 msgid "Fatal-error: The chat %s was not added to queue "
-msgstr "Лист до %s розміщено у черзі"
+msgstr ""
 
 #: inc/notificationchat.class.php:129
-#, fuzzy, php-format
+#, php-format
 msgid "Rocket chat: The chat %s was added to queue "
-msgstr "Лист до %s розміщено у черзі"
+msgstr ""
 
 #: inc/rulecriteria.class.php:511
 msgid "does not contain"
@@ -18117,9 +18015,8 @@ msgid "Amortization type"
 msgstr "Тип амортизації"
 
 #: inc/infocom.class.php:1191 inc/infocom.class.php:1202
-#, fuzzy
 msgid "years"
-msgstr "По року"
+msgstr ""
 
 #: inc/infocom.class.php:1196 inc/infocom.class.php:1512
 #: inc/infocom.class.php:1743
@@ -18927,12 +18824,9 @@ msgstr "Деякі необов'язкові вимоги системи не в
 
 #: inc/console/abstractcommand.class.php:197
 #: inc/console/application.class.php:472
-#, fuzzy
 msgid ""
 "Run \"php bin/console itsmng:system:check_requirements\" for more details."
 msgstr ""
-"Більше деталей можете отримати, виконавши \"php bin/console itsmng:system:"
-"check_requirements\" ."
 
 #: inc/console/application.class.php:130
 msgid "The command to execute"
@@ -18975,19 +18869,14 @@ msgid "Configuration directory to use"
 msgstr "Каталог конфігурації для використання"
 
 #: inc/console/application.class.php:185
-#, fuzzy
 msgid "Disable ITSM-NG plugins (unless commands forces plugins loading)"
 msgstr ""
-"Вимкнути плугіни GLPI (поки команди не вимагатимуть завантаження плугінів)"
 
 #: inc/console/application.class.php:191
-#, fuzzy
 msgid ""
 "Output language (default value is existing ITSM-NG \"language\" "
 "configuration or \"en_GB\")"
 msgstr ""
-"Мова повідомлень (по замовчуванню існуюче налаштування мови GLPI або "
-"\"en_GB\")"
 
 #: inc/console/application.class.php:212
 #, php-format
@@ -19052,19 +18941,18 @@ msgid ""
 msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:153
-#, fuzzy, php-format
+#, php-format
 msgid "Migrating column \"%s.%s\"..."
-msgstr "Міграція таблиці \"%s\"..."
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:172
-#, fuzzy, php-format
+#, php-format
 msgid "Migration of column \"%s.%s\" failed with message \"(%s) %s\"."
-msgstr "Міграція таблиці \"%s\"  припинена з повідомленням \"(%s) %s\"."
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:192
-#, fuzzy
 msgid "Errors occured during migration."
-msgstr "Під час зміни паролю сталась помилка"
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:198
 #: inc/console/migration/buildmissingtimestampscommand.class.php:125
@@ -19094,9 +18982,8 @@ msgid "Update of `%s`.`%s` failed with message \"(%s) %s\"."
 msgstr "Оновлення `%s`.`%s` припинено з повідомленням \"(%s) %s\"."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
-#, fuzzy
 msgid "Migrate Racks plugin data into ITSM-ng core tables"
-msgstr "Міграція даних плугіну Шафи до основних таблиць GLPI"
+msgstr ""
 
 #: inc/console/migration/racksplugintocorecommand.class.php:168
 msgid "Ignore \"PluginRacksOther\" models and elements"
@@ -19127,11 +19014,10 @@ msgstr ""
 "плугіну сумісні з версією %s, що підтримується)"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:216
-#, fuzzy
 msgid ""
 "You are about to launch migration of Racks plugin data into ITSM-ng core "
 "tables."
-msgstr "Ви збираєтесь мігрувати дані плугіну Шафи до основних таблиць GLPI."
+msgstr ""
 
 #: inc/console/migration/racksplugintocorecommand.class.php:217
 #: inc/console/migration/appliancesplugintocorecommand.class.php:162
@@ -19151,13 +19037,10 @@ msgid "Checking plugin version..."
 msgstr "Перевірка версії плугіну..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:278
-#, fuzzy
 msgid ""
 "Racks plugin is not part of ITSM-ng plugin list. It has never been installed "
 "or has been cleaned."
 msgstr ""
-"Плугін Шафи не входить в перелік встановлених. Він не встановлювався або був "
-"видалений з очищенням."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:281
 #: inc/console/migration/racksplugintocorecommand.class.php:296
@@ -19219,9 +19102,8 @@ msgid "Importing other models..."
 msgstr "Імпорт інших моделей..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
-#, fuzzy
 msgid "Other items do not exist in ITSM-ng core."
-msgstr "Інші елементи не існують в ядрі GLPI."
+msgstr ""
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
 #, php-format
@@ -19424,17 +19306,14 @@ msgid "Update of `%s` failed with message \"(%s) %s\"."
 msgstr "Оновлення `%s`  припинено з повідомленням \"(%s) %s\"."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:145
-#, fuzzy
 msgid "Migrate Appliances plugin data into ITSM-ng core tables"
-msgstr "Міграція даних плугіну Appliances до основних таблиць GLPI"
+msgstr ""
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:160
-#, fuzzy
 msgid ""
 "You are about to launch migration of Appliances plugin data into ITSM-ng "
 "core tables."
 msgstr ""
-"Ви збираєтесь мігрувати дані плугіну Appliances до основних таблиць GLPI."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:161
 msgid "Any previous appliance created in core will be lost."
@@ -19460,9 +19339,8 @@ msgid "Unable to update \"%s\" in profiles."
 msgstr "Не можу оновити \"%s\" в профайлах."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:334
-#, fuzzy
 msgid "Updating ITSM-NG itemtypes..."
-msgstr "Оновлення типів елементів GLPI..."
+msgstr ""
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:359
 #, php-format
@@ -19541,9 +19419,8 @@ msgid "Unable to create Appliance Item Relation %d."
 msgstr "Не можу створити зв'язок елементу Система %d."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:91
-#, fuzzy
 msgid "Migrate Domains plugin data into ITSM-NG core tables"
-msgstr "Міграція даних плугіну Домени до основних таблиць GLPI"
+msgstr ""
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:98
 #, php-format
@@ -19552,20 +19429,16 @@ msgstr ""
 "Виконати оновлення плугіну Домени (для цього потрібна версія файлів %s)"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:124
-#, fuzzy
 msgid ""
 "You are about to launch migration of Domains plugin data into ITSM-NG core "
 "tables."
-msgstr "Ви збираєтесь мігрувати дані плугіну Домени до основних таблиць GLPI."
+msgstr ""
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:182
-#, fuzzy
 msgid ""
 "Domains plugin is not part of ITSM-NG plugin list. It has never been "
 "installed or has been cleaned."
 msgstr ""
-"Плугін Домени не входить в перелік встановлених. Він не встановлювався або "
-"був видалений з очищенням."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:185
 #: inc/console/migration/domainsplugintocorecommand.class.php:200
@@ -19760,9 +19633,8 @@ msgid "Number of softwares processed: %d."
 msgstr "Кількість обробленого ПЗ: %d. "
 
 #: inc/console/database/installcommand.class.php:91
-#, fuzzy
 msgid "Default language of ITSM-NG"
-msgstr "Мова GLPI по замовчуванню"
+msgstr ""
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -19836,13 +19708,10 @@ msgid "Allow update to an unstable version"
 msgstr "Дозволити оновлення до нестабільної версії"
 
 #: inc/console/database/updatecommand.class.php:87
-#, fuzzy
 msgid ""
 "Force execution of update from v-1 version of ITSM-ng even if schema did not "
 "changed"
 msgstr ""
-"Форсувати оновлення GLPI з версії v-1, навіть якщо схема бази даних не "
-"змінена."
 
 #: inc/console/database/updatecommand.class.php:126
 msgid "Current"
@@ -19867,14 +19736,12 @@ msgid "Database user"
 msgstr "Користувач бази даних"
 
 #: inc/console/database/updatecommand.class.php:130
-#, fuzzy
 msgid "ITSM version"
-msgstr "версія IP"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:131
-#, fuzzy
 msgid "ITSM database version"
-msgstr "Версія бази даних GLPI"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:139
 #, php-format
@@ -20388,14 +20255,12 @@ msgid "Invalid link"
 msgstr "Невірне посилання"
 
 #: inc/document.class.php:404
-#, fuzzy
 msgid "Added by"
-msgstr "Доданий %s"
+msgstr ""
 
 #: inc/document.class.php:407
-#, fuzzy
 msgid "Last update on"
-msgstr "Останнє оновлення %s"
+msgstr ""
 
 #: inc/document.class.php:415
 msgid "Current file"
@@ -20562,9 +20427,8 @@ msgid "Root CA"
 msgstr "Root CA"
 
 #: inc/certificate.class.php:634
-#, fuzzy
 msgid "Certificat"
-msgstr "Сертифікат"
+msgstr ""
 
 #: inc/certificate.class.php:662
 msgctxt "button"
@@ -20680,31 +20544,23 @@ msgid "Send \"usage statistics\""
 msgstr "Надіслати \"статистику використання\""
 
 #: inc/telemetry.class.php:417
-#, fuzzy
 msgid "We need your help to improve ITSM-NG and the plugins ecosystem!"
 msgstr ""
-"Нам необхідна ваша допомога для покращення GLPI та екосистеми плугінів!"
 
 #: inc/telemetry.class.php:418
-#, fuzzy
 msgid ""
 "Once sent, usage statistics are aggregated and made available to a broad "
 "range of ITSM-NG developers."
 msgstr ""
-"Отримана інформація агрегується і надається широкому колу розробників GLPI."
 
 #: inc/telemetry.class.php:419
-#, fuzzy
 msgid ""
 "Let us know your usage to improve future versions of ITSM-NG and its plugins!"
 msgstr ""
-"Дозвольте нам знати, як ви користуєтесь GLPI, щоб покращити наступні версії "
-"GLPI та його плугінів."
 
 #: inc/telemetry.class.php:432
-#, fuzzy
 msgid "Reference your ITSM-NG"
-msgstr "Опишіть ваш GLPI"
+msgstr ""
 
 #: inc/telemetry.class.php:434
 #, php-format
@@ -21094,9 +20950,8 @@ msgid "New"
 msgstr "Нові"
 
 #: inc/ticket.class.php:4566
-#, fuzzy
 msgid "Parameters"
-msgstr "Дивитись параметри"
+msgstr ""
 
 #: inc/ticket.class.php:4576
 msgid "Close date"
@@ -21204,9 +21059,8 @@ msgid "Purchase version"
 msgstr "Куплена версія"
 
 #: inc/softwarelicense.class.php:415
-#, fuzzy
 msgid "Quota Status"
-msgstr "Статус"
+msgstr ""
 
 #: inc/softwarelicense.class.php:417
 msgctxt "adjective"
@@ -21390,24 +21244,20 @@ msgid "Approve the solution"
 msgstr "Схвалити рішення"
 
 #: inc/itilfollowup.class.php:736
-#, fuzzy
 msgid "Approbation de la solution"
-msgstr "Схвалення рішення"
+msgstr ""
 
 #: inc/itilfollowup.class.php:739
-#, fuzzy
 msgid "itemtype"
-msgstr "Тип елементу"
+msgstr ""
 
 #: inc/itilfollowup.class.php:744
-#, fuzzy
 msgid "items_id"
-msgstr "states_id"
+msgstr ""
 
 #: inc/itilfollowup.class.php:749
-#, fuzzy
 msgid "requesttypes_id"
-msgstr "states_id"
+msgstr ""
 
 #: inc/itilfollowup.class.php:818
 msgid "If you want to reopen the ticket, you must specify a reason"
@@ -21451,13 +21301,10 @@ msgid "Unsupported version (%1$s)"
 msgstr "Версія не підтримується (%1$s)"
 
 #: inc/update.class.php:595
-#, fuzzy
 msgid ""
 "Unable to create security key file! You have to run \"php bin/console itsmng:"
 "security:change_key\" command to manually create this file."
 msgstr ""
-"Не можу створити файл security key! Для створення цього файлу необхідно "
-"вручну виконати команду \"php bin/console itsmng:security:change_key\"."
 
 #: inc/devicebatterymodel.class.php:44
 msgid "Device battery model"
@@ -21563,9 +21410,8 @@ msgid "Error: the two passwords do not match"
 msgstr "Помилка: два паролі не співпадають"
 
 #: inc/user.class.php:784
-#, fuzzy
 msgid "Moving temporary file failed."
-msgstr "Немає тимчасової папки"
+msgstr ""
 
 #: inc/user.class.php:789
 msgid "The file is not an image file."
@@ -21644,23 +21490,20 @@ msgid "Last login on %s"
 msgstr "Останній вхід %s"
 
 #: inc/user.class.php:2699
-#, fuzzy
 msgid "Use ITSM-NG in mode"
-msgstr "Використовувати GLPI у режимі"
+msgstr ""
 
 #: inc/user.class.php:2703
 msgid "Normal"
 msgstr "Нормальний"
 
 #: inc/user.class.php:2719
-#, fuzzy
 msgid "Reset personal token"
-msgstr "Особистий токен"
+msgstr ""
 
 #: inc/user.class.php:2734
-#, fuzzy
 msgid "Reset API token"
-msgstr "Токен API"
+msgstr ""
 
 #: inc/user.class.php:2777
 msgid "Unable to update login. A user already exists."
@@ -21769,11 +21612,8 @@ msgstr ""
 "ласка."
 
 #: inc/user.class.php:4613
-#, fuzzy
 msgid "Please enter your new password."
 msgstr ""
-"Будь ласка, підтвердіть вашу адресу електронної пошти та введіть новий "
-"пароль."
 
 #: inc/user.class.php:4657
 msgid ""
@@ -21784,9 +21624,8 @@ msgstr ""
 "Ви зможете обрати новий пароль."
 
 #: inc/user.class.php:4698 inc/user.class.php:4712
-#, fuzzy
 msgid "Unable to reset password, please contact your administrator"
-msgstr "Перевірте протоколи системи або зв'яжіться з адміністратором."
+msgstr ""
 
 #: inc/user.class.php:4719
 msgid ""
@@ -22519,9 +22358,8 @@ msgid "Update to %s"
 msgstr "Оновити до %s"
 
 #: install/itsm_update_151_200.php:557
-#, fuzzy
 msgid "Update dashboard"
-msgstr "Змінити пароль"
+msgstr ""
 
 #: install/empty_data.php:2079 install/empty_data.php:2081
 #: install/update_0831_084.php:270 install/update_0831_084.php:271
@@ -22622,14 +22460,13 @@ msgid "Impossible to accomplish an update by this way!"
 msgstr "Оновлення таким шляхом неможливе!!"
 
 #: install/update.php:583
-#, fuzzy
 msgid "Go back to ITSM-NG"
-msgstr "Повернутись в GLPI"
+msgstr ""
 
 #: install/update.php:588
-#, fuzzy, php-format
+#, php-format
 msgid "Caution! You will update the ITSM-NG database named: %s"
-msgstr "Увага! Ви збираєтесь оновити базу GLPI з назвою: %s"
+msgstr ""
 
 #: install/update.php:594
 msgid "Continue"
@@ -22640,9 +22477,8 @@ msgid "Database connection successful"
 msgstr "З’єднання з БД встановлено"
 
 #: install/update.php:651 install/update_content.php:367
-#, fuzzy
 msgid "Use ITSM-NG"
-msgstr "Використовувати TLS"
+msgstr ""
 
 #: install/update.php:660
 msgid ""
@@ -22681,9 +22517,8 @@ msgid "Fix URL of images in ITIL tasks, followups and solutions."
 msgstr "Виправити URL зображень в ITIL завданнях, відповідях та рішеннях."
 
 #: install/update_content.php:245
-#, fuzzy
 msgid "SQL error starting"
-msgstr "Помилка SQL, починаючи з %s"
+msgstr ""
 
 #: install/update_content.php:358
 msgid "Automatic redirection, else click"
@@ -22901,19 +22736,16 @@ msgstr ""
 "екземпляр?"
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialization"
-msgstr "Віртуалізація"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialized"
-msgstr "Віртуалізація"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Languages"
-msgstr "Мова"
+msgstr ""
 
 #: templates/menus/nav/menu.twig:23
 msgid ""
@@ -22927,39 +22759,32 @@ msgid "Menu"
 msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:5
-#, fuzzy
 msgid "Menu collapse"
-msgstr "Перемкнути згортання"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:25
+msgid "Up"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:27
+msgid "bubble"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:8
-#, fuzzy
 msgid "Reset menu bubble position"
-msgstr "Зарезервована позиція?"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:14
-#, fuzzy
 msgid "Activate menu favorite"
-msgstr "Дія припинена"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:17
-#, fuzzy
 msgid "Activate favorite selection"
-msgstr "Дія припинена"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:22
-#, fuzzy
 msgid "Menu position"
-msgstr "Координати датацентру"
-
-#, fuzzy
-#~| msgid "Login"
-#~ msgid "SSO Login"
-#~ msgstr "Ім’я користувача"
-
-#, fuzzy
-#~| msgid "See configuration"
-#~ msgid "Open ID connect configuration"
-#~ msgstr "Дивитись налаштування"
+msgstr ""
 
 #~ msgid "No room found or selected"
 #~ msgstr "Приміщення відсутнє або не обране"

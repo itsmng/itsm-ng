@@ -528,14 +528,12 @@ msgid "Consider filling latitude and longitude on this location."
 msgstr "ಈ ಸ್ಥಳದ ಮೇಲೆ ಅಕ್ಷಾಂಶ ಮತ್ತು ರೇಖಾಂಶವನ್ನು ಭರ್ತಿ ಮಾಡಿಕೊಳ್ಳಿ"
 
 #: ajax/deleteItilActor.php:92
-#, fuzzy
 msgid "Actor deleted successfully"
-msgstr "ಸಂಗ್ರಹ ಮರುಹೊಂದಿಸಲಾಗಿದೆ"
+msgstr ""
 
 #: ajax/deleteItilActor.php:98
-#, fuzzy
 msgid "Error while deleting actor"
-msgstr "ಕ್ರಿಯೆಯನ್ನು ನಿರ್ವಹಿಸುವಲ್ಲಿ ದೋಷ"
+msgstr ""
 
 #: ajax/telemetry.php:46
 msgid ""
@@ -1754,9 +1752,8 @@ msgid "Impossible to use LDAP as external source of connection"
 msgstr "ಸಂಪರ್ಕದ ಬಾಹ್ಯ ಮೂಲವಾಗಿ LDAP ಅನ್ನು ಬಳಸಲು ಅಸಾಧ್ಯ"
 
 #: front/setup.auth.php:58
-#, fuzzy
 msgid "Open ID connect authentication"
-msgstr "x509 ಪ್ರಮಾಣಪತ್ರ ದೃಢೀಕರಣ"
+msgstr ""
 
 #: front/setup.auth.php:61
 msgid "Others authentication methods"
@@ -2200,11 +2197,10 @@ msgstr ""
 #: inc/slalevel.class.php:226 inc/projecttask.class.php:679
 #: inc/projecttask.class.php:934 inc/transfer.class.php:86
 #: inc/transfer.class.php:3425 inc/group.class.php:216 inc/group.class.php:834
-#, fuzzy
 msgid "Name"
 msgid_plural "Names"
-msgstr[0] "ಹೆಸರು"
-msgstr[1] "ಹೆಸರು"
+msgstr[0] ""
+msgstr[1] ""
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
@@ -3271,9 +3267,8 @@ msgid "Unable to stop impersonating user"
 msgstr ""
 
 #: front/document.form.php:66
-#, fuzzy
 msgid "Could not add document"
-msgstr "ಡೀಫಾಲ್ಟ್ ಡಾಕ್ಯುಮೆಂಟ್ಗಳು:"
+msgstr ""
 
 #: inc/operatingsystemedition.class.php:42
 #: inc/item_operatingsystem.class.php:365
@@ -3470,9 +3465,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: inc/cluster.class.php:136
-#, fuzzy
 msgid "Auto update system"
-msgstr "%sಐಟಂ ನವೀಕರಿಸುತ್ತದೆ "
+msgstr ""
 
 #: inc/cluster.class.php:143 inc/cluster.class.php:223
 #: inc/printer.class.php:323 inc/printer.class.php:750
@@ -4689,9 +4683,8 @@ msgid "Display counters"
 msgstr ""
 
 #: inc/config.class.php:1151
-#, fuzzy
 msgid "Display the number of items in the menu"
-msgstr "ಪ್ರದರ್ಶಿಸು (ಐಟಂಗಳ ಸಂಖ್ಯೆ)"
+msgstr ""
 
 #: inc/config.class.php:1160
 msgid "Keep devices when purging an item"
@@ -4774,34 +4767,28 @@ msgid "Pre-select me as a requester when creating a ticket"
 msgstr ""
 
 #: inc/config.class.php:1288
-#, fuzzy
 msgid "Priority color 1"
-msgstr "ಆದ್ಯತೆ"
+msgstr ""
 
 #: inc/config.class.php:1295
-#, fuzzy
 msgid "Priority color 2"
-msgstr "ಆದ್ಯತೆ"
+msgstr ""
 
 #: inc/config.class.php:1302
-#, fuzzy
 msgid "Priority color 3"
-msgstr "ಆದ್ಯತೆ"
+msgstr ""
 
 #: inc/config.class.php:1309
-#, fuzzy
 msgid "Priority color 4"
-msgstr "ಆದ್ಯತೆ"
+msgstr ""
 
 #: inc/config.class.php:1316
-#, fuzzy
 msgid "Priority color 5"
-msgstr "ಆದ್ಯತೆ"
+msgstr ""
 
 #: inc/config.class.php:1323
-#, fuzzy
 msgid "Priority color 6"
-msgstr "ಆದ್ಯತೆ"
+msgstr ""
 
 #: inc/config.class.php:1332
 msgid "Due date progression"
@@ -4824,9 +4811,8 @@ msgid "Warning state threshold"
 msgstr ""
 
 #: inc/config.class.php:1366
-#, fuzzy
 msgid "Warning state unit"
-msgstr "ಯೋಜನೆ ಪ್ರಾರಂಭ ದಿನಾಂಕ"
+msgstr ""
 
 #: inc/config.class.php:1372 inc/config.class.php:1394
 #: inc/reservation.class.php:1025 inc/levelagreement.class.php:202
@@ -5379,9 +5365,8 @@ msgstr[1] ""
 #: inc/consumableitem.class.php:134 inc/software.class.php:231
 #: inc/peripheral.class.php:161 inc/phone.class.php:156
 #: inc/computer.class.php:309 inc/pdu.class.php:86 inc/ticket.class.php:4478
-#, fuzzy
 msgid "Restore"
-msgstr "ಮರುಸ್ಥಾಪಿಸಿ"
+msgstr ""
 
 #: inc/printer.class.php:302 inc/project.class.php:562
 #: inc/appliance.class.php:164 inc/supplier.class.php:187
@@ -5406,21 +5391,18 @@ msgstr "ಪರ್ಯಾಯ ಬಳಕೆದಾರಹೆಸರು ಸಂಖ್ಯ�
 
 #: inc/printer.class.php:378 inc/monitor.class.php:274
 #: inc/peripheral.class.php:266 inc/phone.class.php:262
-#, fuzzy
 msgid "Management Type"
-msgstr "ನಿರ್ವಹಣೆ ಪ್ರಕಾರ"
+msgstr ""
 
 #: inc/printer.class.php:382 inc/monitor.class.php:278
 #: inc/peripheral.class.php:270 inc/phone.class.php:266
-#, fuzzy
 msgid "Unit Management"
-msgstr "ಘಟಕ ನಿರ್ವಹಣೆ"
+msgstr ""
 
 #: inc/printer.class.php:383 inc/monitor.class.php:279
 #: inc/peripheral.class.php:271 inc/phone.class.php:267
-#, fuzzy
 msgid "Global Management"
-msgstr "ಜಾಗತಿಕ ನಿರ್ವಹಣೆ"
+msgstr ""
 
 #: inc/printer.class.php:395 inc/printer.class.php:733
 #: inc/networkequipment.class.php:380 inc/networkequipment.class.php:598
@@ -6197,14 +6179,12 @@ msgid "Associated item ID"
 msgstr ""
 
 #: inc/queuedchat.class.php:260 inc/queuedchat.class.php:646
-#, fuzzy
 msgid "Entity name"
-msgstr "ಘಟಕಗಳು"
+msgstr ""
 
 #: inc/queuedchat.class.php:269 inc/queuedchat.class.php:641
-#, fuzzy
 msgid "Server name"
-msgstr "ಕಳುಹಿಸುವವರ ಹೆಸರು"
+msgstr ""
 
 #: inc/queuedchat.class.php:278
 msgid "URl Hook"
@@ -6221,29 +6201,24 @@ msgid "Mode"
 msgstr ""
 
 #: inc/queuedchat.class.php:382 inc/queuednotification.class.php:463
-#, fuzzy
 msgid "Send chat in queue"
-msgstr "ಪ್ರಕಟಣೆ ಕ್ಯೂ ತೆರವುಗೊಳಿಸಿ"
+msgstr ""
 
 #: inc/queuedchat.class.php:383 inc/queuednotification.class.php:464
-#, fuzzy
 msgid "Maximum chat to send at once"
-msgstr "ಏಕಕಾಲದಲ್ಲಿ ಕಳುಹಿಸಲು ಗರಿಷ್ಠ ಇಮೇಲ್ಗಳು"
+msgstr ""
 
 #: inc/queuedchat.class.php:388
-#, fuzzy
 msgid "Clean chat queue"
-msgstr "ಪ್ರಕಟಣೆ ಕ್ಯೂ ತೆರವುಗೊಳಿಸಿ"
+msgstr ""
 
 #: inc/queuedchat.class.php:389 inc/queuednotification.class.php:468
-#, fuzzy
 msgid "Days to keep sent chat"
-msgstr "ಕಳುಹಿಸಿದ ಇಮೇಲ್ಗಳನ್ನು ಇರಿಸಿಕೊಳ್ಳಲು ದಿನಗಳು"
+msgstr ""
 
 #: inc/queuedchat.class.php:615
-#, fuzzy
 msgid "Ticket ID"
-msgstr "ಟಿಕೆಟ್ಗಳು"
+msgstr ""
 
 #: inc/queuedchat.class.php:651
 msgid "Rocket Hook Url"
@@ -6631,9 +6606,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: inc/monitor.class.php:245
-#, fuzzy
 msgid "Inventory/Asset number"
-msgstr "ಇನ್ವೆಂಟರಿ ಸಂಖ್ಯೆ"
+msgstr ""
 
 #: inc/monitor.class.php:268 inc/monitor.class.php:517
 #: inc/item_devicememory.class.php:54 inc/item_devicememory.class.php:56
@@ -7481,14 +7455,12 @@ msgid "Category name"
 msgstr ""
 
 #: inc/knowbaseitem.class.php:780
-#, fuzzy
 msgid "Created on:"
-msgstr "%sರಚಿಸಲಾಗಿದೆ"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:783
-#, fuzzy
 msgid "Last update on:"
-msgstr "ಕೊನೆಯ ನವೀಕರಣ"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:786
 msgid "Put this item in the FAQ"
@@ -7660,9 +7632,8 @@ msgid "Help"
 msgstr ""
 
 #: inc/link.class.php:165
-#, fuzzy
 msgid "External links"
-msgstr "ಬಾಹ್ಯ ದೃಢೀಕರಣಗಳು"
+msgstr ""
 
 #: inc/link.class.php:173 inc/link.class.php:240
 msgid "Link or filename"
@@ -7747,19 +7718,16 @@ msgstr ""
 
 #: inc/specialstatus.class.php:44 inc/specialstatus.class.php:150
 #: inc/profile.class.php:2082
-#, fuzzy
 msgid "Special Status"
-msgstr "ದಿನಾಂಕವನ್ನು ನಿರ್ದಿಷ್ಟಪಡಿಸಿ"
+msgstr ""
 
 #: inc/specialstatus.class.php:115
-#, fuzzy
 msgid "Status has been updated!"
-msgstr "ಅಧಿಸೂಚನೆಯನ್ನು ರಚಿಸಲಾಗಿದೆ!"
+msgstr ""
 
 #: inc/specialstatus.class.php:142
-#, fuzzy
 msgid "Status has been removed!"
-msgstr "ಹುಡುಕಾಟವನ್ನು ಉಳಿಸಲಾಗಿದೆ"
+msgstr ""
 
 #: inc/specialstatus.class.php:153 inc/specialstatus.class.php:246
 #: inc/commondcmodeldropdown.class.php:65
@@ -7797,9 +7765,8 @@ msgid "Cancel"
 msgstr "ರದ್ದುಮಾಡಿ"
 
 #: inc/specialstatus.class.php:234
-#, fuzzy
 msgid "Status has been added!"
-msgstr "ಹುಡುಕಾಟವನ್ನು ಉಳಿಸಲಾಗಿದೆ"
+msgstr ""
 
 #: inc/specialstatus.class.php:243
 msgid "New Status - Special status"
@@ -8309,9 +8276,8 @@ msgid "System lock"
 msgstr ""
 
 #: inc/crontask.class.php:643
-#, fuzzy
 msgid "Plugin lock"
-msgstr "ಪ್ಲಗಿನ್ಗಳು"
+msgstr ""
 
 #: inc/crontask.class.php:644
 msgid "Disabled plugin"
@@ -8342,14 +8308,12 @@ msgid "Last run"
 msgstr ""
 
 #: inc/crontask.class.php:704
-#, fuzzy
 msgid "enabled"
-msgstr "ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
+msgstr ""
 
 #: inc/crontask.class.php:706
-#, fuzzy
 msgid "disabled"
-msgstr "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
+msgstr ""
 
 #: inc/crontask.class.php:812 inc/crontask.class.php:1370
 msgid "Running"
@@ -9334,14 +9298,13 @@ msgid "Begin"
 msgstr ""
 
 #: inc/reminder.class.php:641
-#, fuzzy
 msgid "From"
-msgstr "ಗೆ ರಿಂದ"
+msgstr ""
 
 #: inc/reminder.class.php:642
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s to %2$s"
-msgstr "%1$s -%2$s"
+msgstr ""
 
 #: inc/ticketvalidation.class.php:99
 msgid "Create for request"
@@ -9594,14 +9557,12 @@ msgid "on Saturday"
 msgstr ""
 
 #: inc/contract.class.php:349
-#, fuzzy
 msgid "on Saturday start"
-msgstr "ಶನಿವಾರ"
+msgstr ""
 
 #: inc/contract.class.php:354
-#, fuzzy
 msgid "on Saturday end"
-msgstr "ಶನಿವಾರ"
+msgstr ""
 
 #: inc/contract.class.php:359
 msgid "Sundays and holidays"
@@ -9612,9 +9573,8 @@ msgid "on Sunday start"
 msgstr ""
 
 #: inc/contract.class.php:369
-#, fuzzy
 msgid "on Sunday end"
-msgstr "ರವಿವಾರ"
+msgstr ""
 
 #: inc/contract.class.php:415
 msgctxt "quantity"
@@ -10384,14 +10344,12 @@ msgid "Last update in the LDAP directory"
 msgstr "LDAP ಕೋಶದಲ್ಲಿ ಕೊನೆಯ ಅಪ್ಡೇಟ್"
 
 #: inc/authldap.class.php:1560
-#, fuzzy
 msgid "Last update in ITSM-ng"
-msgstr "ಜಿಎಲ್ಪಿಐನಲ್ಲಿ ಕೊನೆಯ ಅಪ್ಡೇಟ್"
+msgstr ""
 
 #: inc/authldap.class.php:1609
-#, fuzzy
 msgid "Last update in ITSM-NG"
-msgstr "ಜಿಎಲ್ಪಿಐನಲ್ಲಿ ಕೊನೆಯ ಅಪ್ಡೇಟ್"
+msgstr ""
 
 #: inc/authldap.class.php:1621 inc/authldap.class.php:1626
 msgid "No user to be synchronized"
@@ -10423,9 +10381,8 @@ msgid "LDAP directory choice"
 msgstr "LDAP ಡೈರೆಕ್ಟರಿ ಆಯ್ಕೆಯು"
 
 #: inc/authldap.class.php:2396
-#, fuzzy
 msgid "No LDAP directory defined in ITSM-ng"
-msgstr "GLPI ಯಲ್ಲಿ ವ್ಯಾಖ್ಯಾನಿಸಲಾಗಿಲ್ಲ LDAP ಡೈರೆಕ್ಟರಿ"
+msgstr ""
 
 #: inc/authldap.class.php:2767
 msgid "User not found or several users found"
@@ -10818,9 +10775,8 @@ msgstr "ಪರಿಕರಗಳು"
 #: inc/profile.class.php:1790 inc/profile.class.php:1835
 #: inc/profile.class.php:3022 inc/accessibility.class.php:36
 #: inc/accessibility.class.php:58 inc/accessibility.class.php:63
-#, fuzzy
 msgid "Accessibility"
-msgstr "ಗೋಚರತೆ"
+msgstr ""
 
 #: inc/profile.class.php:128 inc/profile.class.php:1197
 #: inc/profile.class.php:2435 inc/infocom.class.php:142
@@ -11052,9 +11008,8 @@ msgid "Life cycle of changes"
 msgstr "ಬದಲಾವಣೆಯ ಜೀವನ ಚಕ್ರ"
 
 #: inc/profile.class.php:1785 inc/profile.class.php:1830
-#, fuzzy
 msgid "Edit accessibility"
-msgstr "ಗೋಚರತೆ"
+msgstr ""
 
 #: inc/profile.class.php:1922 inc/profile.class.php:2743
 #: inc/rulerightcollection.class.php:57 inc/ruleright.class.php:56
@@ -11162,14 +11117,12 @@ msgid "Managed domain records types"
 msgstr ""
 
 #: inc/profile.class.php:3032
-#, fuzzy
 msgid "Change font"
-msgstr "ಬದಲಾವಣೆ ಮೋಡ್"
+msgstr ""
 
 #: inc/profile.class.php:3042
-#, fuzzy
 msgid "Change zoom"
-msgstr "ಬದಲಾವಣೆ ಮೋಡ್"
+msgstr ""
 
 #: inc/profile.class.php:3053
 msgid "Use shortcuts"
@@ -12073,9 +12026,8 @@ msgid "Global View"
 msgstr "ಜಾಗತಿಕ ನೋಟ"
 
 #: inc/central.class.php:118
-#, fuzzy
 msgid "No dashboard available"
-msgstr "ಯಾವುದೇ ಕಾರ್ಟ್ರಿಡ್ಜ್ ಲಭ್ಯವಿಲ್ಲ"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/central.class.php:154 inc/rack.class.php:65
@@ -12085,9 +12037,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: inc/central.class.php:173
-#, fuzzy
 msgid "Tickets by status"
-msgstr "ಬಾಕಿ ಇರುವ ಸ್ಥಿತಿಯಲ್ಲಿ ಟಿಕೆಟ್ಗಳು"
+msgstr ""
 
 #: inc/central.class.php:395
 #, php-format
@@ -12491,9 +12442,8 @@ msgid "An appliance is required"
 msgstr ""
 
 #: inc/softwareversion.class.php:114
-#, fuzzy
 msgid "New element"
-msgstr "ಅಂಶಗಳನ್ನು ತೋರಿಸು / ಮರೆಮಾಡು"
+msgstr ""
 
 #: inc/softwareversion.class.php:332
 msgctxt "button"
@@ -12967,9 +12917,8 @@ msgstr ""
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541
-#, fuzzy
 msgid "Pending"
-msgstr "ಬಾಕಿ ಉಳಿದಿದೆ"
+msgstr ""
 
 #: inc/problem.class.php:686
 msgctxt "status"
@@ -13583,9 +13532,8 @@ msgstr "ತಯಾರಕರುಗಳಿಗೆ ರಿಪ್ಲೇ ನಿಘಂಟ�
 
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
-#, fuzzy
 msgid "Software deleted by ITSM-NG dictionary rules"
-msgstr "ಜಿಎಲ್ಪಿಐ ನಿಘಂಟು ನಿಯಮಗಳಿಂದ ಅಳಿಸಲ್ಪಟ್ಟ ಸಾಫ್ಟ್ವೇರ್"
+msgstr ""
 
 #: inc/caldav/backend/calendar.class.php:89
 #: inc/caldav/backend/calendar.class.php:127
@@ -14210,9 +14158,8 @@ msgid "Connection string"
 msgstr "ಕನೆಕ್ಷನ್ ಸ್ಟ್ರಿಂಗ್"
 
 #: inc/authmail.class.php:206 inc/notificationchatsetting.class.php:295
-#, fuzzy
 msgid "Test"
-msgstr "ಪರಿಕ್ಷೆ"
+msgstr ""
 
 #: inc/authmail.class.php:211
 msgid "Test connection to email server"
@@ -15318,9 +15265,8 @@ msgid "An error occured loading contents!"
 msgstr "ವಿಷಯಗಳನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ ಸಂಭವಿಸಿದೆ!"
 
 #: inc/ajax.class.php:455
-#, fuzzy
 msgid "Please check ITSM-NG logs or contact your administrator."
-msgstr "ದಯವಿಟ್ಟು GLPI ಲಾಗ್ಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ಅಥವಾ ನಿಮ್ಮ ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಿ."
+msgstr ""
 
 #: inc/ajax.class.php:456
 msgid "try to reload"
@@ -15838,9 +15784,8 @@ msgid "Missing or wrong fields in open ID connect config"
 msgstr ""
 
 #: inc/oidc.class.php:301
-#, fuzzy
 msgid "Configuration"
-msgstr "ಪೂರ್ವ ಸಂರಚನೆ"
+msgstr ""
 
 #: inc/oidc.class.php:306 inc/auth.class.php:1830
 msgid "Mapping of fields according to provider"
@@ -15915,9 +15860,8 @@ msgid "Incorrect username or password"
 msgstr "ತಪ್ಪಾದ ಬಳಕೆದಾರಹೆಸರು ಅಥವಾ ಪಾಸ್ವರ್ಡ್"
 
 #: inc/auth.class.php:284 inc/auth.class.php:975 inc/auth.class.php:1003
-#, fuzzy
 msgid "User not authorized to connect in ITSM-NG"
-msgstr "GLPI ನಲ್ಲಿ ಸಂಪರ್ಕಿಸಲು ಬಳಕೆದಾರರಿಗೆ ಅಧಿಕಾರವಿಲ್ಲ"
+msgstr ""
 
 #: inc/auth.class.php:631
 msgid "Login with external token disabled"
@@ -15958,9 +15902,8 @@ msgid "Failed login for %1$s from IP %2$s"
 msgstr ""
 
 #: inc/auth.class.php:1107
-#, fuzzy
 msgid "Authentication on ITSM-NG database"
-msgstr "ಜಿಎಲ್ಪಿಐ ಡೇಟಾಬೇಸ್ನಲ್ಲಿ ದೃಢೀಕರಣ"
+msgstr ""
 
 #: inc/auth.class.php:1119
 msgid "Authentication on a LDAP directory"
@@ -15991,9 +15934,8 @@ msgid "x509 certificate authentication"
 msgstr "x509 ಪ್ರಮಾಣಪತ್ರ ದೃಢೀಕರಣ"
 
 #: inc/auth.class.php:1234 inc/auth.class.php:1892
-#, fuzzy
 msgid "ITSM-NG internal database"
-msgstr "ಜಿಎಲ್ಪಿಐ ಆಂತರಿಕ ಡೇಟಾಬೇಸ್"
+msgstr ""
 
 #: inc/auth.class.php:1240
 msgid "Not yet authenticated"
@@ -16108,9 +16050,8 @@ msgid "Proxy"
 msgstr ""
 
 #: inc/auth.class.php:1868
-#, fuzzy
 msgid "Certificate Path"
-msgstr "ಪ್ರಮಾಣಪತ್ರ ವಿನಂತಿ (ಸಿಎಸ್ಆರ್)"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/datacenter.class.php:48 inc/datacenter.class.php:71
@@ -16234,27 +16175,23 @@ msgid "Unknown interface"
 msgstr ""
 
 #: inc/notificationchatsetting.class.php:46
-#, fuzzy
 msgid "Chat followups configuration"
-msgstr "ಅನುಸರಣೆಯನ್ನು ನವೀಕರಿಸಿ (ಲೇಖಕ)"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:52
 #: inc/notificationsettingconfig.class.php:133
-#, fuzzy
 msgid "Enable followups via chat"
-msgstr "ಇಮೇಲ್  ಅನುಸರಣೆ"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:120
-#, fuzzy
 msgid "Chat notification"
 msgid_plural "Chat notifications"
-msgstr[0] "ಪ್ರಕಟಣೆ ಕ್ಯೂ ತೆರವುಗೊಳಿಸಿ"
-msgstr[1] "ಪ್ರಕಟಣೆ ಕ್ಯೂ ತೆರವುಗೊಳಿಸಿ"
+msgstr[0] ""
+msgstr[1] ""
 
 #: inc/notificationchatsetting.class.php:132
-#, fuzzy
 msgid "Rocket chat"
-msgstr "ಟಿಕೆಟ್ ಸ್ಥಳ"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:133
 msgid "Slack"
@@ -16303,9 +16240,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: inc/accessibility.class.php:41
-#, fuzzy
 msgid "See this parameter in your settings"
-msgstr "ಇಮೇಲ್ ಪ್ಯಾರಾಮೀಟರ್ ಕಾಣೆಯಾಗಿದೆ"
+msgstr ""
 
 #: inc/accessibility.class.php:43
 msgid "Edit this parameter in your settings"
@@ -16988,9 +16924,8 @@ msgid "Autofilled from template"
 msgstr "ಟೆಂಪ್ಲೇಟ್ನಿಂದ ಸ್ವಯಂತುಂಬಿದ"
 
 #: inc/notificationchat.class.php:114
-#, fuzzy
 msgid "Error inserting chat to queue"
-msgstr "ಡೇಟಾಬೇಸ್ ರಚಿಸುವಲ್ಲಿ ದೋಷ!"
+msgstr ""
 
 #: inc/notificationchat.class.php:118
 #, php-format
@@ -17385,9 +17320,8 @@ msgid "Amortization type"
 msgstr "ಭೋಗ್ಯ ಪ್ರಕಾರ"
 
 #: inc/infocom.class.php:1191 inc/infocom.class.php:1202
-#, fuzzy
 msgid "years"
-msgstr "ವರ್ಷಕ್ಕೆ"
+msgstr ""
 
 #: inc/infocom.class.php:1196 inc/infocom.class.php:1512
 #: inc/infocom.class.php:1743
@@ -18277,9 +18211,8 @@ msgid "Migration of column \"%s.%s\" failed with message \"(%s) %s\"."
 msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:192
-#, fuzzy
 msgid "Errors occured during migration."
-msgstr "ವಿಷಯಗಳನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ ಸಂಭವಿಸಿದೆ!"
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:198
 #: inc/console/migration/buildmissingtimestampscommand.class.php:125
@@ -18942,9 +18875,8 @@ msgid "Number of softwares processed: %d."
 msgstr ""
 
 #: inc/console/database/installcommand.class.php:91
-#, fuzzy
 msgid "Default language of ITSM-NG"
-msgstr " ಹಾಲಿ ವ್ಯವಸ್ಥೆ"
+msgstr ""
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -19041,9 +18973,8 @@ msgid "Database user"
 msgstr ""
 
 #: inc/console/database/updatecommand.class.php:130
-#, fuzzy
 msgid "ITSM version"
-msgstr "ಒಂದು ಆವೃತ್ತಿಯನ್ನು ಸೇರಿಸಿ"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:131
 msgid "ITSM database version"
@@ -19535,9 +19466,8 @@ msgid "Added by"
 msgstr ""
 
 #: inc/document.class.php:407
-#, fuzzy
 msgid "Last update on"
-msgstr "ಕೊನೆಯ ನವೀಕರಣ"
+msgstr ""
 
 #: inc/document.class.php:415
 msgid "Current file"
@@ -19815,30 +19745,23 @@ msgid "Send \"usage statistics\""
 msgstr "\"ಬಳಕೆಯ ಅಂಕಿಅಂಶಗಳನ್ನು\" ಕಳುಹಿಸಿ"
 
 #: inc/telemetry.class.php:417
-#, fuzzy
 msgid "We need your help to improve ITSM-NG and the plugins ecosystem!"
-msgstr "GLPI ಮತ್ತು ಪ್ಲಗ್ಇನ್ಗಳ ಪರಿಸರ ವ್ಯವಸ್ಥೆಯನ್ನು ಸುಧಾರಿಸಲು ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು!"
+msgstr ""
 
 #: inc/telemetry.class.php:418
-#, fuzzy
 msgid ""
 "Once sent, usage statistics are aggregated and made available to a broad "
 "range of ITSM-NG developers."
 msgstr ""
-"ಒಮ್ಮೆ ಕಳುಹಿಸಿದ ಬಳಿಕ, ಬಳಕೆಯ ಅಂಕಿಅಂಶಗಳನ್ನು ಒಟ್ಟುಗೂಡಿಸಲಾಗಿದೆ ಮತ್ತು ವಿಶಾಲ ವ್ಯಾಪ್ತಿಯ "
-"GLPI ಅಭಿವರ್ಧಕರಿಗೆ ಲಭ್ಯವಿರುತ್ತದೆ."
 
 #: inc/telemetry.class.php:419
-#, fuzzy
 msgid ""
 "Let us know your usage to improve future versions of ITSM-NG and its plugins!"
 msgstr ""
-"GLPI ಮತ್ತು ಅದರ ಪ್ಲಗಿನ್ಗಳ ಭವಿಷ್ಯದ ಆವೃತ್ತಿಗಳನ್ನು ಸುಧಾರಿಸಲು ನಿಮ್ಮ ಬಳಕೆಯನ್ನು ನಮಗೆ ತಿಳಿಸಿ!"
 
 #: inc/telemetry.class.php:432
-#, fuzzy
 msgid "Reference your ITSM-NG"
-msgstr "ನಿಮ್ಮ ಜಿಎಲ್ಪಿಐ ಅನ್ನು ಉಲ್ಲೇಖಿಸಿ"
+msgstr ""
 
 #: inc/telemetry.class.php:434
 #, php-format
@@ -20313,9 +20236,8 @@ msgid "Purchase version"
 msgstr ""
 
 #: inc/softwarelicense.class.php:415
-#, fuzzy
 msgid "Quota Status"
-msgstr "ದಿನಾಂಕವನ್ನು ನಿರ್ದಿಷ್ಟಪಡಿಸಿ"
+msgstr ""
 
 #: inc/softwarelicense.class.php:417
 msgctxt "adjective"
@@ -20497,23 +20419,20 @@ msgid "Approve the solution"
 msgstr "ಪರಿಹಾರವನ್ನು ಅನುಮೋದಿಸಿ"
 
 #: inc/itilfollowup.class.php:736
-#, fuzzy
 msgid "Approbation de la solution"
-msgstr "ಪರಿಹಾರದ ಅನುಮೋದನೆ"
+msgstr ""
 
 #: inc/itilfollowup.class.php:739
-#, fuzzy
 msgid "itemtype"
-msgstr "ಐಟಂ ಪ್ರಕಾರ"
+msgstr ""
 
 #: inc/itilfollowup.class.php:744
 msgid "items_id"
 msgstr ""
 
 #: inc/itilfollowup.class.php:749
-#, fuzzy
 msgid "requesttypes_id"
-msgstr "ವಿನಂತಿಗಳು"
+msgstr ""
 
 #: inc/itilfollowup.class.php:818
 msgid "If you want to reopen the ticket, you must specify a reason"
@@ -20665,9 +20584,8 @@ msgid "Error: the two passwords do not match"
 msgstr "ದೋಷ: ಎರಡು ಪಾಸ್ವರ್ಡ್ಗಳು ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ"
 
 #: inc/user.class.php:784
-#, fuzzy
 msgid "Moving temporary file failed."
-msgstr "ಸಾಧನ ತಾತ್ಕಾಲಿಕವಾಗಿ ಲಭ್ಯವಿಲ್ಲ"
+msgstr ""
 
 #: inc/user.class.php:789
 msgid "The file is not an image file."
@@ -20746,23 +20664,20 @@ msgid "Last login on %s"
 msgstr "ಕೊನೆಯ ಲಾಗಿನ್ %s"
 
 #: inc/user.class.php:2699
-#, fuzzy
 msgid "Use ITSM-NG in mode"
-msgstr "ಕ್ರಮದಲ್ಲಿ GLPI ಬಳಸಿ"
+msgstr ""
 
 #: inc/user.class.php:2703
 msgid "Normal"
 msgstr "ಸಾಮಾನ್ಯ"
 
 #: inc/user.class.php:2719
-#, fuzzy
 msgid "Reset personal token"
-msgstr "ವೈಯಕ್ತಿಕ ಹೊಂದಿಸಿ"
+msgstr ""
 
 #: inc/user.class.php:2734
-#, fuzzy
 msgid "Reset API token"
-msgstr "ಉಳಿದ API"
+msgstr ""
 
 #: inc/user.class.php:2777
 msgid "Unable to update login. A user already exists."
@@ -20869,10 +20784,8 @@ msgstr ""
 "ನವೀಕರಿಸಿ."
 
 #: inc/user.class.php:4613
-#, fuzzy
 msgid "Please enter your new password."
 msgstr ""
-"ದಯವಿಟ್ಟು ನಿಮ್ಮ ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ದೃಢೀಕರಿಸಿ ಮತ್ತು ನಿಮ್ಮ ಹೊಸ ಪಾಸ್ವರ್ಡ್ ಅನ್ನು ನಮೂದಿಸಿ."
 
 #: inc/user.class.php:4657
 msgid ""
@@ -20883,9 +20796,8 @@ msgstr ""
 "ಹೊಸ ಪಾಸ್ವರ್ಡ್ ಅನ್ನು ಆಯ್ಕೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ."
 
 #: inc/user.class.php:4698 inc/user.class.php:4712
-#, fuzzy
 msgid "Unable to reset password, please contact your administrator"
-msgstr "ದಯವಿಟ್ಟು GLPI ಲಾಗ್ಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ಅಥವಾ ನಿಮ್ಮ ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಿ."
+msgstr ""
 
 #: inc/user.class.php:4719
 msgid ""
@@ -21567,9 +21479,8 @@ msgid "Update to %s"
 msgstr "%sನವೀಕರಿಸಿ "
 
 #: install/itsm_update_151_200.php:557
-#, fuzzy
 msgid "Update dashboard"
-msgstr "ಪಾಸ್ವರ್ಡ್ ನವೀಕರಿಸಿ"
+msgstr ""
 
 #: install/empty_data.php:2079 install/empty_data.php:2081
 #: install/update_0831_084.php:270 install/update_0831_084.php:271
@@ -21668,14 +21579,13 @@ msgid "Impossible to accomplish an update by this way!"
 msgstr "ಈ ಮೂಲಕ ನವೀಕರಣವನ್ನು ಸಾಧಿಸಲು ಅಸಾಧ್ಯ!"
 
 #: install/update.php:583
-#, fuzzy
 msgid "Go back to ITSM-NG"
-msgstr "GLPI ಗೆ ಹಿಂತಿರುಗಿ"
+msgstr ""
 
 #: install/update.php:588
-#, fuzzy, php-format
+#, php-format
 msgid "Caution! You will update the ITSM-NG database named: %s"
-msgstr "ಎಚ್ಚರಿಕೆ! ನೀವು ಹೆಸರಿಸಿದ ಜಿಎಲ್ಪಿಐ ಡೇಟಾಬೇಸ್ ಅನ್ನು ನವೀಕರಿಸುತ್ತೀರಿ:%s"
+msgstr ""
 
 #: install/update.php:594
 msgid "Continue"
@@ -21686,9 +21596,8 @@ msgid "Database connection successful"
 msgstr "ಡೇಟಾಬೇಸ್ ಸಂಪರ್ಕ ಯಶಸ್ವಿಯಾಗಿದೆ"
 
 #: install/update.php:651 install/update_content.php:367
-#, fuzzy
 msgid "Use ITSM-NG"
-msgstr "TLS ಬಳಸಿ"
+msgstr ""
 
 #: install/update.php:660
 msgid ""
@@ -21728,9 +21637,8 @@ msgid "Fix URL of images in ITIL tasks, followups and solutions."
 msgstr ""
 
 #: install/update_content.php:245
-#, fuzzy
 msgid "SQL error starting"
-msgstr "%sರಿಂದ ಪ್ರಾರಂಭಿಸುವಲ್ಲಿ SQL ದೋಷ "
+msgstr ""
 
 #: install/update_content.php:358
 msgid "Automatic redirection, else click"
@@ -21947,19 +21855,16 @@ msgstr ""
 "ಎಳೆದ ಈವೆಂಟ್ ಪುನರಾವರ್ತಿತ ಘಟನೆಯಾಗಿದೆ. ನೀವು ಸರಣಿ ಅಥವಾ ಉದಾಹರಣೆಯನ್ನು ಸರಿಸಲು ಬಯಸುವಿರಾ?"
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialization"
-msgstr "ವೈಯಕ್ತೀಕರಣ"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialized"
-msgstr "ವೈಯಕ್ತೀಕರಣ"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Languages"
-msgstr "ಭಾಷೆ"
+msgstr ""
 
 #: templates/menus/nav/menu.twig:23
 msgid ""
@@ -21974,6 +21879,14 @@ msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:5
 msgid "Menu collapse"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:25
+msgid "Up"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:27
+msgid "bubble"
 msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:8
@@ -21991,16 +21904,6 @@ msgstr ""
 #: templates/menus/nav/nav-settings.twig:22
 msgid "Menu position"
 msgstr ""
-
-#, fuzzy
-#~| msgid "Login"
-#~ msgid "SSO Login"
-#~ msgstr "ಲಾಗಿನ್ ಮಾಡಿ"
-
-#, fuzzy
-#~| msgid "Preconfiguration"
-#~ msgid "Open ID connect configuration"
-#~ msgstr "ಪೂರ್ವ ಸಂರಚನೆ"
 
 #~ msgid "No room found or selected"
 #~ msgstr "ಯಾವುದೇ ಕೊಠಡಿ ಕಂಡುಬಂದಿಲ್ಲ ಅಥವಾ ಆಯ್ಕೆ ಮಾಡಿಲ್ಲ"

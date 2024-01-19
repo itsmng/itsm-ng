@@ -537,14 +537,12 @@ msgid "Consider filling latitude and longitude on this location."
 msgstr "Apsveriet, platuma un garuma noteikšanu šajā vietā."
 
 #: ajax/deleteItilActor.php:92
-#, fuzzy
 msgid "Actor deleted successfully"
-msgstr "Kešatmiņas atiestatīšana veiksmīga"
+msgstr ""
 
 #: ajax/deleteItilActor.php:98
-#, fuzzy
 msgid "Error while deleting actor"
-msgstr "Kļūda izpildot darbību"
+msgstr ""
 
 #: ajax/telemetry.php:46
 msgid ""
@@ -1770,9 +1768,8 @@ msgid "Impossible to use LDAP as external source of connection"
 msgstr "Nav iespējams lietot LDAP kā ārējo savienojuma avotu"
 
 #: front/setup.auth.php:58
-#, fuzzy
 msgid "Open ID connect authentication"
-msgstr "x509 sertifikāta autentifikācija"
+msgstr ""
 
 #: front/setup.auth.php:61
 msgid "Others authentication methods"
@@ -2217,12 +2214,11 @@ msgstr "ID"
 #: inc/slalevel.class.php:226 inc/projecttask.class.php:679
 #: inc/projecttask.class.php:934 inc/transfer.class.php:86
 #: inc/transfer.class.php:3425 inc/group.class.php:216 inc/group.class.php:834
-#, fuzzy
 msgid "Name"
 msgid_plural "Names"
-msgstr[0] "Nosaukums"
-msgstr[1] "Nosaukums"
-msgstr[2] "Nosaukums"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
@@ -3299,9 +3295,8 @@ msgid "Unable to stop impersonating user"
 msgstr "Neizdevās pārtraukt lietotāja personificēšanu"
 
 #: front/document.form.php:66
-#, fuzzy
 msgid "Could not add document"
-msgstr "Pievienot dokumentu"
+msgstr ""
 
 #: inc/operatingsystemedition.class.php:42
 #: inc/item_operatingsystem.class.php:365
@@ -3502,9 +3497,8 @@ msgstr[1] "Versija"
 msgstr[2] "Versijas"
 
 #: inc/cluster.class.php:136
-#, fuzzy
 msgid "Auto update system"
-msgstr "Vienības operētājsistēma"
+msgstr ""
 
 #: inc/cluster.class.php:143 inc/cluster.class.php:223
 #: inc/printer.class.php:323 inc/printer.class.php:750
@@ -3847,9 +3841,8 @@ msgid "\"session.use_trans_sid\" must be set to off."
 msgstr ""
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
-#, fuzzy
 msgid "See .htaccess file in the ITSM-NG root for more information."
-msgstr "Pārbaudiet .htaccess failu un web servera konfigurāciju."
+msgstr ""
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -4013,9 +4006,9 @@ msgid "Allocated memory"
 msgstr "Pieejamā atmiņa"
 
 #: inc/system/requirement/memorylimit.class.php:75
-#, fuzzy, php-format
+#, php-format
 msgid "A minimum of %s is commonly required for ITSM-NG."
-msgstr "Parasti GLPI ir nepieciešami vismaz 64MB atmiņas."
+msgstr ""
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -4546,9 +4539,8 @@ msgid "Action when a user is deleted from the LDAP directory"
 msgstr "Darbība, ja lietotājs dzēsts no LDAP direktorijas"
 
 #: inc/config.class.php:710
-#, fuzzy
 msgid "ITSM-NG server time zone"
-msgstr "GLPI servera laika zona"
+msgstr ""
 
 #: inc/config.class.php:743 inc/config.class.php:1809 inc/config.class.php:2261
 #: inc/dbconnection.class.php:47
@@ -4603,9 +4595,8 @@ msgid "URL of the API"
 msgstr "API URL"
 
 #: inc/config.class.php:821
-#, fuzzy
 msgid "URL of the dashboard API"
-msgstr "API URL"
+msgstr ""
 
 #: inc/config.class.php:827
 msgid "Enable Rest API"
@@ -4737,9 +4728,8 @@ msgid "Display counters"
 msgstr "Parādīt skaitītāju"
 
 #: inc/config.class.php:1151
-#, fuzzy
 msgid "Display the number of items in the menu"
-msgstr "Rādīt (ieraksta numuru)"
+msgstr ""
 
 #: inc/config.class.php:1160
 msgid "Keep devices when purging an item"
@@ -4823,34 +4813,28 @@ msgid "Pre-select me as a requester when creating a ticket"
 msgstr "Izveidojot pieteikumu, izvēlēties mani kā iesniedzēju"
 
 #: inc/config.class.php:1288
-#, fuzzy
 msgid "Priority color 1"
-msgstr "Prioritātes krāsas"
+msgstr ""
 
 #: inc/config.class.php:1295
-#, fuzzy
 msgid "Priority color 2"
-msgstr "Prioritātes krāsas"
+msgstr ""
 
 #: inc/config.class.php:1302
-#, fuzzy
 msgid "Priority color 3"
-msgstr "Prioritātes krāsas"
+msgstr ""
 
 #: inc/config.class.php:1309
-#, fuzzy
 msgid "Priority color 4"
-msgstr "Prioritātes krāsas"
+msgstr ""
 
 #: inc/config.class.php:1316
-#, fuzzy
 msgid "Priority color 5"
-msgstr "Prioritātes krāsas"
+msgstr ""
 
 #: inc/config.class.php:1323
-#, fuzzy
 msgid "Priority color 6"
-msgstr "Prioritātes krāsas"
+msgstr ""
 
 #: inc/config.class.php:1332
 msgid "Due date progression"
@@ -4873,9 +4857,8 @@ msgid "Warning state threshold"
 msgstr "Brīdinājuma stāvokļa slieksnis"
 
 #: inc/config.class.php:1366
-#, fuzzy
 msgid "Warning state unit"
-msgstr "Brīdinājuma stāvokļa krāsa"
+msgstr ""
 
 #: inc/config.class.php:1372 inc/config.class.php:1394
 #: inc/reservation.class.php:1025 inc/levelagreement.class.php:202
@@ -4892,9 +4875,8 @@ msgid "Critical state threshold"
 msgstr "Kritiskā stāvokļa slieksnis"
 
 #: inc/config.class.php:1388
-#, fuzzy
 msgid "Critical state unit"
-msgstr "Kritiskā stāvokļa krāsa"
+msgstr ""
 
 #: inc/config.class.php:1406
 msgid "Auto-lock Mode"
@@ -5032,11 +5014,10 @@ msgid "Reset"
 msgstr "Atiestate"
 
 #: inc/config.class.php:1694
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Installing and enabling the \"%s\" extension may improve ITSM-NG performance"
 msgstr ""
-"Instalēšana un ieslēgšana \"%s\" papild spraudņa var uzlabot GLPI veiktspēju"
 
 #: inc/config.class.php:1698
 msgid "User data cache"
@@ -5437,9 +5418,8 @@ msgstr[2] "Printeri"
 #: inc/consumableitem.class.php:134 inc/software.class.php:231
 #: inc/peripheral.class.php:161 inc/phone.class.php:156
 #: inc/computer.class.php:309 inc/pdu.class.php:86 inc/ticket.class.php:4478
-#, fuzzy
 msgid "Restore"
-msgstr "Atjaunot"
+msgstr ""
 
 #: inc/printer.class.php:302 inc/project.class.php:562
 #: inc/appliance.class.php:164 inc/supplier.class.php:187
@@ -5464,21 +5444,18 @@ msgstr "Alternatīvā lietotājvārda numurs"
 
 #: inc/printer.class.php:378 inc/monitor.class.php:274
 #: inc/peripheral.class.php:266 inc/phone.class.php:262
-#, fuzzy
 msgid "Management Type"
-msgstr "Pārvaldības tips"
+msgstr ""
 
 #: inc/printer.class.php:382 inc/monitor.class.php:278
 #: inc/peripheral.class.php:270 inc/phone.class.php:266
-#, fuzzy
 msgid "Unit Management"
-msgstr "Atsevišķa pārvaldība"
+msgstr ""
 
 #: inc/printer.class.php:383 inc/monitor.class.php:279
 #: inc/peripheral.class.php:271 inc/phone.class.php:267
-#, fuzzy
 msgid "Global Management"
-msgstr "Centralizēta pārvaldība"
+msgstr ""
 
 #: inc/printer.class.php:395 inc/printer.class.php:733
 #: inc/networkequipment.class.php:380 inc/networkequipment.class.php:598
@@ -5492,9 +5469,8 @@ msgstr[1] "Tīkls"
 msgstr[2] "Tīkli"
 
 #: inc/printer.class.php:404
-#, fuzzy
 msgid "Ports"
-msgstr "Porti"
+msgstr ""
 
 #: inc/printer.class.php:407 inc/printer.class.php:622
 #: inc/appliance_item.class.php:186
@@ -6011,9 +5987,9 @@ msgid "Task completed."
 msgstr "Darbs pabeigts."
 
 #: inc/migration.class.php:792
-#, fuzzy, php-format
+#, php-format
 msgid "Automatically generated by ITSM-NG %s"
-msgstr "Automātiski ģenerēts ar GLPI %s"
+msgstr ""
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -6270,14 +6246,12 @@ msgid "Associated item ID"
 msgstr "Saistīto ierakstu ID"
 
 #: inc/queuedchat.class.php:260 inc/queuedchat.class.php:646
-#, fuzzy
 msgid "Entity name"
-msgstr "Nodaļas"
+msgstr ""
 
 #: inc/queuedchat.class.php:269 inc/queuedchat.class.php:641
-#, fuzzy
 msgid "Server name"
-msgstr "Sūtītāja vārds"
+msgstr ""
 
 #: inc/queuedchat.class.php:278
 msgid "URl Hook"
@@ -6294,29 +6268,24 @@ msgid "Mode"
 msgstr "Režīms"
 
 #: inc/queuedchat.class.php:382 inc/queuednotification.class.php:463
-#, fuzzy
 msgid "Send chat in queue"
-msgstr "Sūtīt vēstules rindā"
+msgstr ""
 
 #: inc/queuedchat.class.php:383 inc/queuednotification.class.php:464
-#, fuzzy
 msgid "Maximum chat to send at once"
-msgstr "Maksimālais e-pasta ziņojumu skaits, ko vēlaties nosūtīt uzreiz"
+msgstr ""
 
 #: inc/queuedchat.class.php:388
-#, fuzzy
 msgid "Clean chat queue"
-msgstr "Iztīrīt paziņojumu rindu"
+msgstr ""
 
 #: inc/queuedchat.class.php:389 inc/queuednotification.class.php:468
-#, fuzzy
 msgid "Days to keep sent chat"
-msgstr "Dienas, lai saglabātu nosūtīto e-pastu"
+msgstr ""
 
 #: inc/queuedchat.class.php:615
-#, fuzzy
 msgid "Ticket ID"
-msgstr "Pieteikumi"
+msgstr ""
 
 #: inc/queuedchat.class.php:651
 msgid "Rocket Hook Url"
@@ -6713,9 +6682,8 @@ msgstr[1] "Ražotājs"
 msgstr[2] "Ražotāji"
 
 #: inc/monitor.class.php:245
-#, fuzzy
 msgid "Inventory/Asset number"
-msgstr "Inventāra Nr."
+msgstr ""
 
 #: inc/monitor.class.php:268 inc/monitor.class.php:517
 #: inc/item_devicememory.class.php:54 inc/item_devicememory.class.php:56
@@ -6768,9 +6736,8 @@ msgid "Target entity for the computer"
 msgstr "Mērķa nodaļa datoram"
 
 #: inc/ruleimportcomputer.class.php:81
-#, fuzzy
 msgid "Find computers in ITSM-NG having the status"
-msgstr "Atrast datorus, kuru statuss ir"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -6812,14 +6779,12 @@ msgid "Yes if empty"
 msgstr "Jā ja tukšs"
 
 #: inc/ruleimportcomputer.class.php:178
-#, fuzzy
 msgid "is already present in ITSM-NG"
-msgstr "jau atrodas GLPI"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:179
-#, fuzzy
 msgid "is empty in ITSM-NG"
-msgstr "GLPI ir tukšs"
+msgstr ""
 
 #: inc/commonitilvalidation.class.php:91 inc/commonitilobject.class.php:6856
 #: inc/change.class.php:539 inc/change.class.php:1061
@@ -7591,14 +7556,12 @@ msgid "Category name"
 msgstr "Kategorijas nosaukums"
 
 #: inc/knowbaseitem.class.php:780
-#, fuzzy
 msgid "Created on:"
-msgstr "Izveidots uz %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:783
-#, fuzzy
 msgid "Last update on:"
-msgstr "Pēdējās izmaiņas uz %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:786
 msgid "Put this item in the FAQ"
@@ -7615,9 +7578,8 @@ msgid "This item is not part of the FAQ"
 msgstr "Šis ieraksts nav daļa no publiski pieejamajiem BUJ"
 
 #: inc/knowbaseitem.class.php:798
-#, fuzzy
 msgid "Views"
-msgstr "Skatījumi"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:799 inc/knowbaseitem.class.php:984
 #, php-format
@@ -7774,9 +7736,8 @@ msgid "Help"
 msgstr "Palīdzība"
 
 #: inc/link.class.php:165
-#, fuzzy
 msgid "External links"
-msgstr "Ārējās saites"
+msgstr ""
 
 #: inc/link.class.php:173 inc/link.class.php:240
 msgid "Link or filename"
@@ -7861,19 +7822,16 @@ msgstr "Ierakstu skaits"
 
 #: inc/specialstatus.class.php:44 inc/specialstatus.class.php:150
 #: inc/profile.class.php:2082
-#, fuzzy
 msgid "Special Status"
-msgstr "Norādīt datumu"
+msgstr ""
 
 #: inc/specialstatus.class.php:115
-#, fuzzy
 msgid "Status has been updated!"
-msgstr "Paziņojums ir izveidots!"
+msgstr ""
 
 #: inc/specialstatus.class.php:142
-#, fuzzy
 msgid "Status has been removed!"
-msgstr "Meklēšana ir saglabāta"
+msgstr ""
 
 #: inc/specialstatus.class.php:153 inc/specialstatus.class.php:246
 #: inc/commondcmodeldropdown.class.php:65
@@ -7911,9 +7869,8 @@ msgid "Cancel"
 msgstr "Atcelt"
 
 #: inc/specialstatus.class.php:234
-#, fuzzy
 msgid "Status has been added!"
-msgstr "Meklēšana ir saglabāta"
+msgstr ""
 
 #: inc/specialstatus.class.php:243
 msgid "New Status - Special status"
@@ -8443,9 +8400,8 @@ msgid "System lock"
 msgstr "Sistēma bloķēta"
 
 #: inc/crontask.class.php:643
-#, fuzzy
 msgid "Plugin lock"
-msgstr "Spraudņi"
+msgstr ""
 
 #: inc/crontask.class.php:644
 msgid "Disabled plugin"
@@ -8456,14 +8412,12 @@ msgid "Run mode"
 msgstr "Darbības režīms"
 
 #: inc/crontask.class.php:655
-#, fuzzy
 msgid "Min run period"
-msgstr "Darbības periods"
+msgstr ""
 
 #: inc/crontask.class.php:662
-#, fuzzy
 msgid "Max run period"
-msgstr "Darbības periods"
+msgstr ""
 
 #: inc/crontask.class.php:669 inc/crontask.class.php:1602
 msgid "Number of days this action logs are stored"
@@ -8478,14 +8432,12 @@ msgid "Last run"
 msgstr "Pēdējā izpilde"
 
 #: inc/crontask.class.php:704
-#, fuzzy
 msgid "enabled"
-msgstr "Iespējots"
+msgstr ""
 
 #: inc/crontask.class.php:706
-#, fuzzy
 msgid "disabled"
-msgstr "Izslēgts"
+msgstr ""
 
 #: inc/crontask.class.php:812 inc/crontask.class.php:1370
 msgid "Running"
@@ -8504,9 +8456,8 @@ msgid "Maintenance mode enabled, running tasks is disabled"
 msgstr ""
 
 #: inc/crontask.class.php:922
-#, fuzzy
 msgid "A minimum of 64 Mio is commonly required for ITSM-NG."
-msgstr "Parasti GLPI ir nepieciešami vismaz 64MB atmiņas."
+msgstr ""
 
 #: inc/crontask.class.php:927
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -8869,15 +8820,11 @@ msgid "Upgrade"
 msgstr "Jaunināt"
 
 #: inc/config.php:239
-#, fuzzy
 msgid ""
 "You are trying to use ITSM-NG with outdated files compared to the version of "
 "the database. Please install the correct ITSM-NG files corresponding to the "
 "version of your database."
 msgstr ""
-"Jūs mēģināt izmantot GLPI ar novecojušām datnēm salīdzinot pret datubāzes "
-"versiju. Lūdzu instalēt korektus GLPI datnes atbilstoši jūsu datubāzes "
-"versijai."
 
 #: inc/config.php:242
 msgid ""
@@ -9524,14 +9471,13 @@ msgid "Begin"
 msgstr "No"
 
 #: inc/reminder.class.php:641
-#, fuzzy
 msgid "From"
-msgstr "No %s"
+msgstr ""
 
 #: inc/reminder.class.php:642
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s to %2$s"
-msgstr "%1$s uz %2$s"
+msgstr ""
 
 #: inc/ticketvalidation.class.php:99
 msgid "Create for request"
@@ -9686,9 +9632,8 @@ msgstr[1] "Korpuss"
 msgstr[2] "Korpusi"
 
 #: inc/enclosure.class.php:122
-#, fuzzy
 msgid "Power supplies"
-msgstr "Barošanas bloki"
+msgstr ""
 
 #: inc/contract_supplier.class.php:136 inc/contract.class.php:204
 #: inc/contract_item.class.php:336
@@ -9781,42 +9726,36 @@ msgid "Support hours"
 msgstr "Atbalsta stundas"
 
 #: inc/contract.class.php:332
-#, fuzzy
 msgid "on week start"
-msgstr "Nedēļā"
+msgstr ""
 
 #: inc/contract.class.php:338
-#, fuzzy
 msgid "on week end"
-msgstr "Nedēļā"
+msgstr ""
 
 #: inc/contract.class.php:344
 msgid "on Saturday"
 msgstr "Svētdienā"
 
 #: inc/contract.class.php:349
-#, fuzzy
 msgid "on Saturday start"
-msgstr "Svētdienā"
+msgstr ""
 
 #: inc/contract.class.php:354
-#, fuzzy
 msgid "on Saturday end"
-msgstr "Svētdienā"
+msgstr ""
 
 #: inc/contract.class.php:359
 msgid "Sundays and holidays"
 msgstr "Svētdienas un brīvdienas"
 
 #: inc/contract.class.php:364
-#, fuzzy
 msgid "on Sunday start"
-msgstr "Svētdienā"
+msgstr ""
 
 #: inc/contract.class.php:369
-#, fuzzy
 msgid "on Sunday end"
-msgstr "Svētdienā"
+msgstr ""
 
 #: inc/contract.class.php:415
 msgctxt "quantity"
@@ -10605,14 +10544,12 @@ msgid "Last update in the LDAP directory"
 msgstr "Pēdējais atjauninājums LDAP direktorijā"
 
 #: inc/authldap.class.php:1560
-#, fuzzy
 msgid "Last update in ITSM-ng"
-msgstr "Pēdējo reizi GLPI atjaunināts"
+msgstr ""
 
 #: inc/authldap.class.php:1609
-#, fuzzy
 msgid "Last update in ITSM-NG"
-msgstr "Pēdējo reizi GLPI atjaunināts"
+msgstr ""
 
 #: inc/authldap.class.php:1621 inc/authldap.class.php:1626
 msgid "No user to be synchronized"
@@ -10645,9 +10582,8 @@ msgid "LDAP directory choice"
 msgstr "LDAP direktorijas izvēle"
 
 #: inc/authldap.class.php:2396
-#, fuzzy
 msgid "No LDAP directory defined in ITSM-ng"
-msgstr "Nav definēta LDAP direktorija"
+msgstr ""
 
 #: inc/authldap.class.php:2767
 msgid "User not found or several users found"
@@ -10827,9 +10763,8 @@ msgstr[1] "Saistīts Līgums/Vienība"
 msgstr[2] "Saistīti Līgumi/Vienības"
 
 #: inc/contract_item.class.php:362
-#, fuzzy
 msgid "Delete permanently the relation with selected elements"
-msgstr "Izdzēst sasaisti ar izvēlētiem elementiem"
+msgstr ""
 
 #: inc/planningexternalevent.class.php:54
 msgid "External event"
@@ -11051,9 +10986,8 @@ msgstr "Rīki"
 #: inc/profile.class.php:1790 inc/profile.class.php:1835
 #: inc/profile.class.php:3022 inc/accessibility.class.php:36
 #: inc/accessibility.class.php:58 inc/accessibility.class.php:63
-#, fuzzy
 msgid "Accessibility"
-msgstr "Redzamība"
+msgstr ""
 
 #: inc/profile.class.php:128 inc/profile.class.php:1197
 #: inc/profile.class.php:2435 inc/infocom.class.php:142
@@ -11298,9 +11232,8 @@ msgid "Life cycle of changes"
 msgstr "Izmaiņu dzīves cikls"
 
 #: inc/profile.class.php:1785 inc/profile.class.php:1830
-#, fuzzy
 msgid "Edit accessibility"
-msgstr "Redzamība"
+msgstr ""
 
 #: inc/profile.class.php:1922 inc/profile.class.php:2743
 #: inc/rulerightcollection.class.php:57 inc/ruleright.class.php:56
@@ -11415,19 +11348,16 @@ msgid "Managed domain records types"
 msgstr ""
 
 #: inc/profile.class.php:3032
-#, fuzzy
 msgid "Change font"
-msgstr "Mainīt uzdevumus"
+msgstr ""
 
 #: inc/profile.class.php:3042
-#, fuzzy
 msgid "Change zoom"
-msgstr "Mainīt režīmu"
+msgstr ""
 
 #: inc/profile.class.php:3053
-#, fuzzy
 msgid "Use shortcuts"
-msgstr "Izmantot bloķēšanu"
+msgstr ""
 
 #: inc/profile.class.php:3109 inc/auth.class.php:1224 inc/auth.class.php:1231
 #: install/update_0723_078.php:3667
@@ -12337,9 +12267,8 @@ msgid "Global View"
 msgstr "Globālais skats"
 
 #: inc/central.class.php:118
-#, fuzzy
 msgid "No dashboard available"
-msgstr "Nav pieejamas darbības"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/central.class.php:154 inc/rack.class.php:65
@@ -12350,9 +12279,8 @@ msgstr[1] "Statne"
 msgstr[2] "Statnes"
 
 #: inc/central.class.php:173
-#, fuzzy
 msgid "Tickets by status"
-msgstr "Pieteikumi, kas gaida izskatīšanu"
+msgstr ""
 
 #: inc/central.class.php:395
 #, php-format
@@ -12762,9 +12690,8 @@ msgid "An appliance is required"
 msgstr ""
 
 #: inc/softwareversion.class.php:114
-#, fuzzy
 msgid "New element"
-msgstr "Jauna piezīme"
+msgstr ""
 
 #: inc/softwareversion.class.php:332
 msgctxt "button"
@@ -13246,9 +13173,8 @@ msgstr "Apstrādā (plānots)"
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541
-#, fuzzy
 msgid "Pending"
-msgstr "Gaida izpildi"
+msgstr ""
 
 #: inc/problem.class.php:686
 msgctxt "status"
@@ -13796,9 +13722,8 @@ msgstr "Parādīt pārskatu %rev"
 #: inc/knowbaseitem_revision.class.php:262
 #: inc/knowbaseitem_comment.class.php:177
 #: inc/knowbaseitem_comment.class.php:211 inc/objectlock.class.php:157
-#, fuzzy
 msgid "Contact your ITSM-NG admin!"
-msgstr "Sazinājāties ar jūsu GLPI administratoru!"
+msgstr ""
 
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_comment.class.php:177
@@ -13873,9 +13798,8 @@ msgstr "Parādīt vārdnīcas nosacījumus ražotājiem ( ----- = Visu)"
 
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
-#, fuzzy
 msgid "Software deleted by ITSM-NG dictionary rules"
-msgstr "Programmatūra izdzēsta ar GLPI vārdnīcas noteikumiem"
+msgstr ""
 
 #: inc/caldav/backend/calendar.class.php:89
 #: inc/caldav/backend/calendar.class.php:127
@@ -14522,9 +14446,8 @@ msgid "Connection string"
 msgstr "Pieslēgšanās parametri"
 
 #: inc/authmail.class.php:206 inc/notificationchatsetting.class.php:295
-#, fuzzy
 msgid "Test"
-msgstr "Pārbaudīt"
+msgstr ""
 
 #: inc/authmail.class.php:211
 msgid "Test connection to email server"
@@ -14541,9 +14464,8 @@ msgid "You cannot use predefined description verbatim"
 msgstr ""
 
 #: inc/commonitilobject.class.php:1772
-#, fuzzy
 msgid "Incorrect value for date field."
-msgstr "Ignorēt unikālu vērtību"
+msgstr ""
 
 #: inc/commonitilobject.class.php:2432
 msgctxt "priority"
@@ -15660,10 +15582,8 @@ msgid "An error occured loading contents!"
 msgstr "Ielādējot saturu, radās kļūda!"
 
 #: inc/ajax.class.php:455
-#, fuzzy
 msgid "Please check ITSM-NG logs or contact your administrator."
 msgstr ""
-"Lūdzu, pārbaudiet GLPI žurnālus vai sazinieties ar savu administratoru."
 
 #: inc/ajax.class.php:456
 msgid "try to reload"
@@ -16186,18 +16106,16 @@ msgstr "CSS"
 
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
-#, fuzzy
 msgid "Automatically generated by ITSM-NG"
-msgstr "GLPI automātiski ģenerēts"
+msgstr ""
 
 #: inc/oidc.class.php:80
 msgid "Missing or wrong fields in open ID connect config"
 msgstr ""
 
 #: inc/oidc.class.php:301
-#, fuzzy
 msgid "Configuration"
-msgstr "Iepriekšēja pielāgošana"
+msgstr ""
 
 #: inc/oidc.class.php:306 inc/auth.class.php:1830
 msgid "Mapping of fields according to provider"
@@ -16275,9 +16193,8 @@ msgid "Incorrect username or password"
 msgstr "Nepareizs lietotājvārds vai parole"
 
 #: inc/auth.class.php:284 inc/auth.class.php:975 inc/auth.class.php:1003
-#, fuzzy
 msgid "User not authorized to connect in ITSM-NG"
-msgstr "Lietotājam nav atļauts pieslēgties GLPI"
+msgstr ""
 
 #: inc/auth.class.php:631
 msgid "Login with external token disabled"
@@ -16320,9 +16237,8 @@ msgid "Failed login for %1$s from IP %2$s"
 msgstr "Neveiksmīgs meiģinājums pieteikties lietotājam %1$s no IP %2$s"
 
 #: inc/auth.class.php:1107
-#, fuzzy
 msgid "Authentication on ITSM-NG database"
-msgstr "Autentificēties izmantojot GLPI datubāzi"
+msgstr ""
 
 #: inc/auth.class.php:1119
 msgid "Authentication on a LDAP directory"
@@ -16353,9 +16269,8 @@ msgid "x509 certificate authentication"
 msgstr "x509 sertifikāta autentifikācija"
 
 #: inc/auth.class.php:1234 inc/auth.class.php:1892
-#, fuzzy
 msgid "ITSM-NG internal database"
-msgstr "GLPI iekšējā datubāze"
+msgstr ""
 
 #: inc/auth.class.php:1240
 msgid "Not yet authenticated"
@@ -16407,12 +16322,10 @@ msgid "The CURL extension for your PHP parser isn't installed"
 msgstr "Jūsu PHP parserim nav instalēts CURL paplašinājums"
 
 #: inc/auth.class.php:1621
-#, fuzzy
 msgid ""
 "The CAS lib isn't available, ITSM-NG doesn't package it anymore for license "
 "compatibility issue."
 msgstr ""
-"CAS lib nav pieejams, GLPI šo paku vairs neizmanto licenšu nesaderības dēļ."
 
 #: inc/auth.class.php:1624
 msgid "Impossible to use CAS as external source of connection"
@@ -16472,9 +16385,8 @@ msgid "Proxy"
 msgstr ""
 
 #: inc/auth.class.php:1868
-#, fuzzy
 msgid "Certificate Path"
-msgstr "Sertifikāti"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/datacenter.class.php:48 inc/datacenter.class.php:71
@@ -16599,28 +16511,24 @@ msgid "Unknown interface"
 msgstr "Nezināma saskarne"
 
 #: inc/notificationchatsetting.class.php:46
-#, fuzzy
 msgid "Chat followups configuration"
-msgstr "Epasta sekojumu uzstādījumi"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:52
 #: inc/notificationsettingconfig.class.php:133
-#, fuzzy
 msgid "Enable followups via chat"
-msgstr "Ieslēgt sekojumu sūtīšanu uz e-pastu"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:120
-#, fuzzy
 msgid "Chat notification"
 msgid_plural "Chat notifications"
-msgstr[0] "E-pasta paziņojumi"
-msgstr[1] "E-pasta paziņojums"
-msgstr[2] "E-pasta paziņojumi"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: inc/notificationchatsetting.class.php:132
-#, fuzzy
 msgid "Rocket chat"
-msgstr "Pieteikuma izmaksas"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:133
 msgid "Slack"
@@ -16672,9 +16580,8 @@ msgstr[1] "Sertifikātu tips"
 msgstr[2] "Sertifikātu tipi"
 
 #: inc/accessibility.class.php:41
-#, fuzzy
 msgid "See this parameter in your settings"
-msgstr "trūkst e-pasta parametra"
+msgstr ""
 
 #: inc/accessibility.class.php:43
 msgid "Edit this parameter in your settings"
@@ -16689,18 +16596,16 @@ msgid "UI Font"
 msgstr ""
 
 #: inc/accessibility.class.php:163
-#, fuzzy
 msgid "Enable shortcuts"
-msgstr "Iespējot augstu kontrastu"
+msgstr ""
 
 #: inc/accessibility.class.php:169
 msgid "Don't forget to save"
 msgstr ""
 
 #: inc/accessibility.class.php:169
-#, fuzzy
 msgid "Toggle view"
-msgstr "Mainīt filtrus"
+msgstr ""
 
 #: inc/accessibility.class.php:189
 msgid "shift+alt+"
@@ -17159,9 +17064,9 @@ msgid "This plugin requires PHP parameter %1$s"
 msgstr "Šis papild spraudni prasa PHP parametru %1$s"
 
 #: inc/plugin.class.php:1706
-#, fuzzy, php-format
+#, php-format
 msgid "This plugin requires ITSM-NG parameter %1$s"
-msgstr "Šis papild spraudni prasa GLPI parametru %1$s"
+msgstr ""
 
 #: inc/plugin.class.php:1982 inc/plugin.class.php:2421
 msgctxt "plugin"
@@ -17370,19 +17275,18 @@ msgid "Autofilled from template"
 msgstr "Automātiski aizpildīts no veidnes"
 
 #: inc/notificationchat.class.php:114
-#, fuzzy
 msgid "Error inserting chat to queue"
-msgstr "Kļūda ievietojot e-pastu rindā"
+msgstr ""
 
 #: inc/notificationchat.class.php:118
-#, fuzzy, php-format
+#, php-format
 msgid "Fatal-error: The chat %s was not added to queue "
-msgstr "E-pasts %s tika pievienots rindā"
+msgstr ""
 
 #: inc/notificationchat.class.php:129
-#, fuzzy, php-format
+#, php-format
 msgid "Rocket chat: The chat %s was added to queue "
-msgstr "E-pasts %s tika pievienots rindā"
+msgstr ""
 
 #: inc/rulecriteria.class.php:511
 msgid "does not contain"
@@ -17776,9 +17680,8 @@ msgid "Amortization type"
 msgstr "Amortizācijas tips"
 
 #: inc/infocom.class.php:1191 inc/infocom.class.php:1202
-#, fuzzy
 msgid "years"
-msgstr "Pēc gada"
+msgstr ""
 
 #: inc/infocom.class.php:1196 inc/infocom.class.php:1512
 #: inc/infocom.class.php:1743
@@ -18683,9 +18586,8 @@ msgid "Migration of column \"%s.%s\" failed with message \"(%s) %s\"."
 msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:192
-#, fuzzy
 msgid "Errors occured during migration."
-msgstr "Kļūda, atjaunojot paroli"
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:198
 #: inc/console/migration/buildmissingtimestampscommand.class.php:125
@@ -19348,9 +19250,8 @@ msgid "Number of softwares processed: %d."
 msgstr ""
 
 #: inc/console/database/installcommand.class.php:91
-#, fuzzy
 msgid "Default language of ITSM-NG"
-msgstr "Noklusētā valoda"
+msgstr ""
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -19447,14 +19348,12 @@ msgid "Database user"
 msgstr "Datubāzes lietotājs"
 
 #: inc/console/database/updatecommand.class.php:130
-#, fuzzy
 msgid "ITSM version"
-msgstr "IP versija"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:131
-#, fuzzy
 msgid "ITSM database version"
-msgstr "GLPI datubāzes versija"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:139
 #, php-format
@@ -19942,14 +19841,12 @@ msgid "Invalid link"
 msgstr ""
 
 #: inc/document.class.php:404
-#, fuzzy
 msgid "Added by"
-msgstr "Pievienoja %s"
+msgstr ""
 
 #: inc/document.class.php:407
-#, fuzzy
 msgid "Last update on"
-msgstr "Pēdējās izmaiņas uz %s"
+msgstr ""
 
 #: inc/document.class.php:415
 msgid "Current file"
@@ -20117,9 +20014,8 @@ msgid "Root CA"
 msgstr "Root CA"
 
 #: inc/certificate.class.php:634
-#, fuzzy
 msgid "Certificat"
-msgstr "Sertifikāti"
+msgstr ""
 
 #: inc/certificate.class.php:662
 msgctxt "button"
@@ -20234,33 +20130,23 @@ msgid "Send \"usage statistics\""
 msgstr "Sūtīt \"lietotāju statistiku\""
 
 #: inc/telemetry.class.php:417
-#, fuzzy
 msgid "We need your help to improve ITSM-NG and the plugins ecosystem!"
 msgstr ""
-"Mums vajadzīga jūsu palīdzība, lai uzlabotu GLPI un papild spraudņu "
-"ekosistēmu!"
 
 #: inc/telemetry.class.php:418
-#, fuzzy
 msgid ""
 "Once sent, usage statistics are aggregated and made available to a broad "
 "range of ITSM-NG developers."
 msgstr ""
-"Pēc nosūtīšanas lietošanas statistika tiek apkopota un pieejama plašam GLPI "
-"izstrādātāju lokam."
 
 #: inc/telemetry.class.php:419
-#, fuzzy
 msgid ""
 "Let us know your usage to improve future versions of ITSM-NG and its plugins!"
 msgstr ""
-"Informējiet mūs par savu lietošanu, lai uzlabotu GLPI un tā papild spraudņu "
-"nākamajās versijās!"
 
 #: inc/telemetry.class.php:432
-#, fuzzy
 msgid "Reference your ITSM-NG"
-msgstr "Atsauce uz jūsu GLPI"
+msgstr ""
 
 #: inc/telemetry.class.php:434
 #, php-format
@@ -20639,9 +20525,8 @@ msgid "New"
 msgstr "Jauns"
 
 #: inc/ticket.class.php:4566
-#, fuzzy
 msgid "Parameters"
-msgstr "Lasīt parametrus"
+msgstr ""
 
 #: inc/ticket.class.php:4576
 msgid "Close date"
@@ -20747,9 +20632,8 @@ msgid "Purchase version"
 msgstr "Iegādes versija"
 
 #: inc/softwarelicense.class.php:415
-#, fuzzy
 msgid "Quota Status"
-msgstr "Nav statusa"
+msgstr ""
 
 #: inc/softwarelicense.class.php:417
 msgctxt "adjective"
@@ -20932,24 +20816,20 @@ msgid "Approve the solution"
 msgstr "Apstiprināt risinājumu"
 
 #: inc/itilfollowup.class.php:736
-#, fuzzy
 msgid "Approbation de la solution"
-msgstr "Risinājuma apstiprināšana"
+msgstr ""
 
 #: inc/itilfollowup.class.php:739
-#, fuzzy
 msgid "itemtype"
-msgstr "objekta tips"
+msgstr ""
 
 #: inc/itilfollowup.class.php:744
-#, fuzzy
 msgid "items_id"
-msgstr "states_id"
+msgstr ""
 
 #: inc/itilfollowup.class.php:749
-#, fuzzy
 msgid "requesttypes_id"
-msgstr "states_id"
+msgstr ""
 
 #: inc/itilfollowup.class.php:818
 msgid "If you want to reopen the ticket, you must specify a reason"
@@ -21101,9 +20981,8 @@ msgid "Error: the two passwords do not match"
 msgstr "Kļūda: norādītās paroles nesakrīt"
 
 #: inc/user.class.php:784
-#, fuzzy
 msgid "Moving temporary file failed."
-msgstr "Trūkst pagaidu mape"
+msgstr ""
 
 #: inc/user.class.php:789
 msgid "The file is not an image file."
@@ -21182,23 +21061,20 @@ msgid "Last login on %s"
 msgstr "Pēdējā pieslēgšanās %s"
 
 #: inc/user.class.php:2699
-#, fuzzy
 msgid "Use ITSM-NG in mode"
-msgstr "Lietot GLPI šādā režīmā"
+msgstr ""
 
 #: inc/user.class.php:2703
 msgid "Normal"
 msgstr "Normāls"
 
 #: inc/user.class.php:2719
-#, fuzzy
 msgid "Reset personal token"
-msgstr "Personisks marķieris"
+msgstr ""
 
 #: inc/user.class.php:2734
-#, fuzzy
 msgid "Reset API token"
-msgstr "API marķieris"
+msgstr ""
 
 #: inc/user.class.php:2777
 msgid "Unable to update login. A user already exists."
@@ -21306,9 +21182,8 @@ msgstr ""
 "veiciet to vēlreiz."
 
 #: inc/user.class.php:4613
-#, fuzzy
 msgid "Please enter your new password."
-msgstr "Lūdzu apstipriniet jūsu e-pasta adresi un ievadiet jauno paroli."
+msgstr ""
 
 #: inc/user.class.php:4657
 msgid ""
@@ -21319,10 +21194,8 @@ msgstr ""
 "varēsiet izvēlēties jaunu paroli.."
 
 #: inc/user.class.php:4698 inc/user.class.php:4712
-#, fuzzy
 msgid "Unable to reset password, please contact your administrator"
 msgstr ""
-"Lūdzu, pārbaudiet GLPI žurnālus vai sazinieties ar savu administratoru."
 
 #: inc/user.class.php:4719
 msgid ""
@@ -22029,9 +21902,8 @@ msgid "Update to %s"
 msgstr "Atjaunināt uz %s"
 
 #: install/itsm_update_151_200.php:557
-#, fuzzy
 msgid "Update dashboard"
-msgstr "Atjaunot paroli"
+msgstr ""
 
 #: install/empty_data.php:2079 install/empty_data.php:2081
 #: install/update_0831_084.php:270 install/update_0831_084.php:271
@@ -22133,14 +22005,13 @@ msgid "Impossible to accomplish an update by this way!"
 msgstr "Neiespējami pabeigt atjaunināšanu šādā veidā!!"
 
 #: install/update.php:583
-#, fuzzy
 msgid "Go back to ITSM-NG"
-msgstr "Atgriezties GLPI"
+msgstr ""
 
 #: install/update.php:588
-#, fuzzy, php-format
+#, php-format
 msgid "Caution! You will update the ITSM-NG database named: %s"
-msgstr "Uzmanību! Tu atjaunināsi GLPI datubāzi: %s"
+msgstr ""
 
 #: install/update.php:594
 msgid "Continue"
@@ -22151,9 +22022,8 @@ msgid "Database connection successful"
 msgstr "Veiksmīga pieslēgšanās datubāzei"
 
 #: install/update.php:651 install/update_content.php:367
-#, fuzzy
 msgid "Use ITSM-NG"
-msgstr "Izmantot TLS"
+msgstr ""
 
 #: install/update.php:660
 msgid ""
@@ -22193,9 +22063,8 @@ msgid "Fix URL of images in ITIL tasks, followups and solutions."
 msgstr ""
 
 #: install/update_content.php:245
-#, fuzzy
 msgid "SQL error starting"
-msgstr "SQL kļūda sākas no %s"
+msgstr ""
 
 #: install/update_content.php:358
 msgid "Automatic redirection, else click"
@@ -22411,19 +22280,16 @@ msgid ""
 msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialization"
-msgstr "Virtualizācija"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialized"
-msgstr "Virtualizācija"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Languages"
-msgstr "Izvēlēties valodu"
+msgstr ""
 
 #: templates/menus/nav/menu.twig:23
 msgid ""
@@ -22440,35 +22306,29 @@ msgstr ""
 msgid "Menu collapse"
 msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:25
+msgid "Up"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:27
+msgid "bubble"
+msgstr ""
+
 #: templates/menus/nav/nav-settings.twig:8
-#, fuzzy
 msgid "Reset menu bubble position"
-msgstr "Rezervēt vietu?"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:14
-#, fuzzy
 msgid "Activate menu favorite"
-msgstr "Darbība pārtraukta"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:17
-#, fuzzy
 msgid "Activate favorite selection"
-msgstr "Darbība pārtraukta"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:22
-#, fuzzy
 msgid "Menu position"
-msgstr "Datu centra atrašanās vieta"
-
-#, fuzzy
-#~| msgid "Login"
-#~ msgid "SSO Login"
-#~ msgstr "Lietotājs"
-
-#, fuzzy
-#~| msgid "See configuration"
-#~ msgid "Open ID connect configuration"
-#~ msgstr "Skatīt konfigurāciju"
+msgstr ""
 
 #~ msgid "No room found or selected"
 #~ msgstr "Nav atrasta vai izvēlēta istaba"

@@ -3151,9 +3151,8 @@ msgid "Your password has been successfully updated."
 msgstr ""
 
 #: front/updatepassword.php:88
-#, fuzzy
 msgid "Log in"
-msgstr "再次登入"
+msgstr ""
 
 #: front/report.contract.list.php:45
 msgid "List of the hardware under contract"
@@ -21474,6 +21473,14 @@ msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:5
 msgid "Menu collapse"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:25
+msgid "Up"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:27
+msgid "bubble"
 msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:8
