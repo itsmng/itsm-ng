@@ -296,7 +296,7 @@
 {% endmacro %}
 
 {% macro multiselect(attributes) %}
-  <div {% if attributes.id %} id="{{attributes.id}}" {% endif %} class="w-100">
+  <div {% if attributes.id %} id="{{attributes.id}}" {% endif %} class="w-100 d-flex flex-column align-items-center">
     <div class="input-group m-0">
       {% for input in attributes.inputs %}
         {{_self.input(input)}}
@@ -310,14 +310,16 @@
     <table id="OptionTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
       <tbody>
         {% for inputs in attributes.values %}
-            <tr data-value="{{loop.index}}">
-              <td>
+            <tr data-value="{{loop.index}}" style="display: flex">
+              <td class="d-flex align-items-center">
                 {% for name, value in inputs|filter((v, k) => k != 'id') %}
-                  <input type="hidden" name="{{name}}[{{inputs.id}}]" value="{{value}}"/>
+                  {% if k %}
+                    <input type="hidden" name="{{name}}[{{inputs.id}}]" value="{{value}}"/>
+                  {% endif %}
                 {% endfor %}
-                {{inputs|filter((v, k) => k != 'id')|join(' ')}}
+                {{inputs|filter((v, k) => k != 'id')|join(' ')|raw}}
               </td>
-              <td class="d-flex flex-row-reverse">
+              <td class="d-flex">
                 <button type="button" class="btn btn-sm btn-outline-danger" onClick="removeOption{{rand}}('{{loop.index}}')"><i class="fas fa-times"></i></button>
               </td>
             </tr>
@@ -336,15 +338,22 @@
     if (!content) {
       return;
     }
-    let row = $('<tr>').append($('<td>'));
+    let row = $('<tr>', {'data-value': current, style: "display: flex"})
+      .append($('<td>',  {class: 'd-flex align-items-center'}));
     const inputCell = row.find('td');
     for (const [name, value] of Object.entries(content.values)) {
       inputCell.append($('<input>', {type: 'hidden', name: name + '[' + current + ']', value}));
     }
-    current--;
     inputCell.append(content.title);
-    row.append($('<td>').append($('<button>', {type: 'button', class: 'btn btn-sm btn-outline-danger', onClick: `removeOption{{rand}}('${content.values[Object.keys(content.values)[0]]}')`}).append($('<i>', {class: 'fas fa-times'}))));
+    row.append($('<td>', {class: 'd-flex align-items-center'})
+      .append($('<button>', {
+        type: 'button',
+        class: 'btn btn-sm btn-outline-danger',
+        onClick: `removeOption{{rand}}('${current}')`
+      })
+      .append($('<i>', {class: 'fas fa-times'}))));
     $('#OptionTable_{{rand}} tbody').append(row);
+    current--;
     if (grid) {
       grid.resizeToContent($('#ContentForTabs > div').first()[0]);
     }

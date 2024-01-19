@@ -1,136 +1,178 @@
-<div class="grid-stack border" id="ContentForTabs">
-</div>
+<div class="grid-stack border" id="ContentForTabs"></div>
 <div class='d-none' id="hidden_gridStack_items">
-{% for key, tab in tabs %}
-<div 
-	class="grid-stack-item"
-	id="ContentFor{{key|slug}}"
-	gs-h='6' gs-min-w='6'
-	>
-		<div class="card grid-stack-item-content">
-			<div>
-				<div class="card-header position-sticky">{{tab['title']|raw}}</div>
-				<div class="card-body" style="cursor: default">{{tab['content']|raw}}</div>
-			</div>
-		</div>
-	</div>
-{% endfor %}
+  {% for key, tab in tabs %}
+  <div class="grid-stack-item" id="ContentFor{{key|slug}}" gs-h='6' gs-min-w='6' data-gs-value="test">
+    <div class="card grid-stack-item-content">
+      <div>
+        <div class="card-header position-sticky">{{tab['title']|raw}}</div>
+        <div class="card-body" style="cursor: default">{{tab['content']|raw}}</div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
 </div>
 
 <link href="{{ glpiroot }}/node_modules/gridstack/dist/gridstack.min.css" rel="stylesheet"/>
 <script src="{{ glpiroot }}/node_modules/gridstack/dist/gridstack-all.js"></script>
 
-<script> // dropdown display
+<script>
+  // Initialize grid
+  const grid = GridStack.init({
+    cellHeight: 'auto',
+    cellWidth: '1rem',
+    handle: '.card-header',
+    sizeToContent: true,
+  });
 
-function updateWidgetWidth() {
-        var columnWidgets = grid.getGridItems();
-        var targetWidth = columnWidgets.length === 1 ? 12 : 6; // Full width for single widget, else half
-        grid.batchUpdate();
-        grid.update(columnWidgets[0], { w: targetWidth });
-        if(columnWidgets.length > 1) {
-            grid.compact();
-        }
-        grid.commit();
-    }
+  // Variables
+  const options = [];
 
-function updateGridContent() {
-	var $target = $( event.currentTarget ),
-		val = $target.attr( 'data-value' ),
-		$inp = $target.find( 'input' ),
-		idx;
-	
-	if ( ( idx = options.indexOf( val ) ) > -1 ) {
-		options.splice( idx, 1 );
-		setTimeout( function() { $inp.prop( 'checked', false ) }, 0);
-	} else {
-		options.push( val );
-		setTimeout( function() { $inp.prop( 'checked', true ) }, 0);
+  // Update the width of widgets based on the number of widgets present
+  function updateWidgetWidth() {
+    const columnWidgets = grid.getGridItems();
+    const targetWidth = columnWidgets.length === 1 ? 12 : 6; // Full width for single widget, else half
+    grid.update(columnWidgets[0], { w: targetWidth });
+	grid.compact();
+  }
+
+  function saveGrid() {
+	let save = grid.save();
+	items = grid.getGridItems();
+	for (i in save) {
+		for (j in items) {
+			if ($(items[j]).find('div').html() === save[i].content) {
+				save[i].name = $(items[j]).attr('id').replace('ContentFor', '');
+			}
+		};
+		delete save[i].content;
 	}
 	$.ajax({
 		url: '{{glpiroot}}/ajax/updateUserMenu.php',
 		type: 'POST',
 		data: {
 			'itemName': '{{itemName}}',
-			'content': options,
+			'content': save,
 		},
 	});
+  }
 
-	for (option of $('#ContentForTabs > div')) {
-		grid.removeWidget(option, false);
-		$(option).attr('gs-x', 'false')
-		$(option).attr('gs-y', 'false')
-		$(option).detach().prependTo('#hidden_gridStack_items');
-	}
-
-	if (options.includes('all')) {
-		for (option of $('#hidden_gridStack_items > div')) {
-			$(option).detach().prependTo( '#ContentForTabs' );
-			grid.makeWidget($($(option))[0]);
+  // Update grid content based on the user's interaction with the dropdown menu
+  function updateGridContent(target) {
+    const val = target.attr('data-value');
+    const inp = target.find('input');
+    inp.prop('checked', !inp.prop('checked'));
+    
+    if (val === 'all') {
+      $('.dropdown-menu a').each((i, e) => {
+		let otherInp = $(e).find('input');
+		if ($(e).attr('data-value') !== 'all') {
+			otherInp.prop('checked', inp.prop('checked'));
+			handleDropdownOption($(e), inp.prop('checked'))
 		}
-	} else {
-		for (option of options) {
-			$( '#ContentFor' + option ).detach().appendTo( '#ContentForTabs' );
-			grid.makeWidget($( '#ContentFor' + option )[0]);
+	  });
+      return;
+    }
+    handleDropdownOption(target, inp.prop('checked'));
+	saveGrid();
+  }
+
+  // Handles individual dropdown options
+  function handleDropdownOption(option, isChecked) {
+    const val = option.attr('data-value');
+    if (isChecked && !options.includes(val)) {
+      options.push(val);
+      moveAndMakeWidget(val);
+    } else if (!isChecked && options.includes(val)) {
+      options.splice(options.indexOf(val), 1);
+      moveAndRemoveWidget(val);
+    }
+  }
+
+  // Moves the widget to the grid and makes it a grid widget
+  function moveAndRemoveWidget(val) {
+    const element = $(`#ContentFor${val}`);
+    grid.removeWidget(element[0], false);
+    element.detach().prependTo('#hidden_gridStack_items');
+    setTimeout(() => {
+        element.removeAttr('gs-x gs-y').attr({'gs-w': 6, 'gs-min-w': 6});
+    }, 300);
+  }
+
+  // Moves the widget to hidden area and removes it from the grid
+  function moveAndMakeWidget(val) {
+	  const element = $(`#ContentFor${val}`);
+	  element.detach().appendTo('#ContentForTabs');
+	  grid.makeWidget(element[0]);  
+  }
+
+
+  // Initialize checkboxes based on selectedTabs
+  function initCheckbox() {
+    const savedLayout = {{selectedTabs|json_encode|raw}} ?? [];
+	for (widget of savedLayout) {
+		const name = widget.name;
+		const element = $(`#ContentFor${name}`);
+		delete widget.name;
+
+		for (param of Object.entries(widget)) {
+			element.attr('gs-'
+				+ param[0].replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? "-" : "") + $.toLowerCase()),
+				param[1]);
 		}
+		$('.dropdown-menu a[data-value="' + name + '"] input').prop('checked', true);
+		options.push(name);
 	}
-}
-var options = [];
+  }
 
-function initCheckbox() {
-	const checkedValues = [
-		{% for value in selectedTabs %}
-			"{{value|slug}}",
-		{% endfor %}
-	];
-	if (!checkedValues.length) {
-		$('.isTabButton').first().find('input').prop('checked', true)
-	} else {
-		$('.dropdown-menu a').each((i, e) => {
-			if (checkedValues.includes($(e).data('value'))) {
-				$(e).find('input').prop('checked', true);
-			}
-		});
-	}
-}
+  // Document ready function
+  $(document).ready(() => {
+    initCheckbox();
+    handleInitialWidgets();
+  });
 
-$(document).ready((e) => {
-	initCheckbox();
-	if ({{tabs | length == 1 ? 1 : 0}}) {
-		$('#hidden_gridStack_items > div').first().detach().appendTo( '#ContentForTabs' );
-		options.push($('#ContentForTabs > div').first().attr('id').replace('ContentFor', ''));
-		grid.makeWidget($('#ContentForTabs > div')[0]); 
-	} else {
-		$('.dropdown-menu a').each((i, e) => {
-			if ($(e).find('input').prop('checked')) {
-				options.push($(e).attr('data-value'));
-				$( '#ContentFor' + $(e).attr('data-value') ).detach().appendTo( '#ContentForTabs' );
+  // Handle widgets based on whether there's only one tab or more
+  function handleInitialWidgets() {
+	const savedLayout = {{selectedTabs|json_encode|raw}} ?? [];
 
-				grid.makeWidget($( '#ContentFor' + $(e).attr('data-value') )[0]);
-			}
-		});
-	}
-	updateWidgetWidth();
-	setTimeout(() => {
-		grid.resizeToContent($('#ContentForTabs > div')[0]);
-	}, 300);
-	if ({{tabs|length == 1 ? 1 : 0}}) {
-		grid.setStatic(true)
-	}
-	setTimeout(() => {
-		grid.load();
-	}, 300);
-});
+    if ({{tabs | length == 1 ? 1 : 0}}) {
+      moveAndMakeWidget($('#hidden_gridStack_items > div').first().attr('id').replace('ContentFor', ''));
+    } else {
+      $('.dropdown-menu a').each((i, e) => {
+        if ($(e).find('input').prop('checked')) {
+          moveAndMakeWidget($(e).attr('data-value'));
+        }
+      });
+    }
+    setTimeout(() => {
+		console.log({{tabs|length == 1 ? 1 : 0}})
+    	if ({{tabs|length == 1 ? 1 : 0}}) {
+			updateWidgetWidth()
+			grid.setStatic(true);
+		}
+		grid.load()
+	}, 100);
+  }
 
-$( '.dropdown-menu a' ).on( 'click', function( event ) {
-	updateGridContent();
-	updateWidgetWidth();
+  // Dropdown menu item click handlers
+  $('.dropdown-menu a').on('click', function(event) {
+    event.preventDefault();
+    updateGridContent($(this));
+    updateWidgetWidth();
 	return false;
-});
+  });
 
-var grid = GridStack.init({
-	cellHeight: 'auto',
-	cellWidth: '1rem',
-	handle: '.card-header',
-	sizeToContent: true,
-});
+  $('.dropdown-menu input[type="checkbox"]').on('click', function(event) {
+    event.preventDefault();
+    updateGridContent($(this).parent());
+    updateWidgetWidth();
+  });
+
+  grid.on('resizestop', (event, element) => {
+	saveGrid();
+  });
+
+  grid.on('dragstop', (event, element) => {
+	saveGrid();
+  });
+
 </script>

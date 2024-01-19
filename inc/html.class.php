@@ -1853,7 +1853,9 @@ JAVASCRIPT;
       };
 
       ob_start();
-         Html::showProfileSelecter($_SERVER['REQUEST_URI']);
+         Html::showProfileSelecter($CFG_GLPI["root_doc"]
+            . "/front/"
+            . (Session::getCurrentInterface() == 'central' ? 'central' : 'helpdesk.public') . ".php");
       $twig_vars['profileSelect'] = ob_get_clean();
       $twig_vars['accessibilityMenu'] = Session::haveRight("accessibility", READ);
 
