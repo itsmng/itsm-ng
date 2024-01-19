@@ -2,8 +2,17 @@
 
 {% set options = ['actions', 'after', 'before', 'hooks', 'init', 'init', 'col', 'col_md', 'col_lg'] %}
 
-<form name="form" action="{{form.action}}" enctype="multipart/form-data" method={{form.method|default('post')}} class="container">
+<form
+    name="form"
+    action="{{form.action}}"
+    enctype="multipart/form-data"
+    method={{form.method|default('post')}}
+    class="container"
+    {% for name, value in form.attributes %}
+    {{name}}="{{value}}"
+    {% endfor %}
 {% for key, bloc in form.content  %}
+>
 <div class="container mb-3">
     {% if bloc.visible %}
         <h2 class="text-start">{{key|raw}}</h2>
