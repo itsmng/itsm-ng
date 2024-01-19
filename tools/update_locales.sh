@@ -5,3 +5,5 @@ do
   echo "Updating $lang";
   msgmerge -U ../locales/$lang ../locales/glpi.pot
 done
+
+rm ../locales/*.po~
