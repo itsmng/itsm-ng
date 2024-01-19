@@ -816,22 +816,31 @@ class Config extends CommonDBTM {
                      'name' => 'url_base_api',
                      'type' => 'text',
                      'size' => 80,
-                     'value' => $CFG_GLPI["url_base_api"]
-                  ],
-                  __('URL of the dashboard API') => [
-                     'name' => 'url_dashboard_api',
-                     'type' => 'text',
-                     'size' => 80,
-                     'value' => $CFG_GLPI["url_dashboard_api"]
+                     'value' => $CFG_GLPI["url_base_api"],
+                     'col_lg' => 6,
                   ],
                   __('Enable Rest API') => [
                      'name' => 'enable_api',
                      'type' => 'checkbox',
-                     'value' => $CFG_GLPI["enable_api"]
+                     'value' => $CFG_GLPI["enable_api"],
+                     'col_lg' => 6,
                   ],
                   '' => $CFG_GLPI['enable_api'] ? [
                      'content' => "<a href='$inline_doc_api'>".__("API inline Documentation")."</a>"
                   ] : [],
+               ]
+            ],
+            __('Dashboard API') => [
+               'visible' => true,
+               'inputs' => [
+                  __('URL') => [
+                     'name' => 'url_dashboard_api',
+                     'type' => 'text',
+                     'size' => 80,
+                     'value' => $CFG_GLPI["url_dashboard_api"],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
                ]
             ],
             __('Authentication') => [

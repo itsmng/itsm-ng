@@ -11,8 +11,8 @@
     {% for name, value in form.attributes %}
     {{name}}="{{value}}"
     {% endfor %}
-{% for key, bloc in form.content  %}
 >
+{% for key, bloc in form.content  %}
 <div class="container mb-3">
     {% if bloc.visible %}
         <h2 class="text-start">{{key|raw}}</h2>
