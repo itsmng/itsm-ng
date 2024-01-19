@@ -76,7 +76,7 @@ echo "From : $from\n";
 echo "To : $dest\n";
 echo "Date : $dat\n";
 
-$mmail = new NotificationMailing();
+$mmail = new GLPIMailer();
 $mmail->From=$from;
 $mmail->FromName="GLPI test";
 $mmail->isHTML(true);
@@ -85,16 +85,16 @@ if ($enc) {
    $mmail->Encoding = $enc;
 }
 
-$mmail->Subject="GLPI test mail" . ($enc ? " ($enc)" : '');
-$mmail->Body="<html><body><h3>GLPI test mail</h3><p>Encoding = <span class='b'>$enc</span></p>".
+$mmail->Subject="ITSM-NG test mail" . ($enc ? " ($enc)" : '');
+$mmail->Body="<html><body><h3>ITSM-NG test mail</h3><p>Encoding = <span class='b'>$enc</span></p>".
              "<p>Date = <span class='b'>$dat</span></p><p>Secret = <span class='b'>$secret</span>".
              "</p></body></html>";
-$mmail->AltBody="GLPI test mail\nEncoding : $enc\nDate : $dat\nSecret=$secret";
+$mmail->AltBody="ITSM-NG test mail\nEncoding : $enc\nDate : $dat\nSecret=$secret";
 
 $mmail->AddAddress($dest, "");
 
 $logo=file_get_contents("../pics/fd_logo.png");
-$mmail->AddStringAttachment($logo, 'glpi.png', ($enc?$enc:'base64'), 'image/png');
+$mmail->AddStringAttachment($logo, 'itsm-ng.png', ($enc?$enc:'base64'), 'image/png');
 
 $mmail->AddStringAttachment($secret, 'secret.txt', ($enc?$enc:'base64'), 'text/plain');
 
