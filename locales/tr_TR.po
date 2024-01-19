@@ -22201,29 +22201,56 @@ msgstr ""
 "Taşınan etkinlik yineleniyor. Tüm diziyi mi yoksa bu kopyayı mı taşımak "
 "istiyorsunuz?"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Initialization"
-#~ msgstr "Sanallaştırma"
+msgid "Initialization"
+msgstr "Sanallaştırma"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Languages"
-#~ msgstr "Dil"
+msgid "Initialized"
+msgstr "Sanallaştırma"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Menu collapse"
-#~ msgstr "Genişlet/Daralt"
+msgid "Languages"
+msgstr "Dil"
 
-#, fuzzy
-#~ msgid "Reset menu bubble position"
-#~ msgstr "Ayırtlımış konum ?"
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
 
-#, fuzzy
-#~ msgid "Activate menu favorite"
-#~ msgstr "İşlem iptal edildi"
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-#~ msgid "Menu position"
-#~ msgstr "Veri merkezinin konumu"
+msgid "Menu collapse"
+msgstr "Genişlet/Daralt"
+
+#: templates/menus/nav/nav-settings.twig:8
+#, fuzzy
+msgid "Reset menu bubble position"
+msgstr "Ayırtlımış konum ?"
+
+#: templates/menus/nav/nav-settings.twig:14
+#, fuzzy
+msgid "Activate menu favorite"
+msgstr "İşlem iptal edildi"
+
+#: templates/menus/nav/nav-settings.twig:17
+#, fuzzy
+msgid "Activate favorite selection"
+msgstr "İşlem iptal edildi"
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "Veri merkezinin konumu"
 
 #, fuzzy
 #~| msgid "Login"

@@ -22900,29 +22900,56 @@ msgstr ""
 "Подія, яка пересувається, крім того, повторюється. Посунути серію чи "
 "екземпляр?"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Initialization"
-#~ msgstr "Віртуалізація"
+msgid "Initialization"
+msgstr "Віртуалізація"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Languages"
-#~ msgstr "Мова"
+msgid "Initialized"
+msgstr "Віртуалізація"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Menu collapse"
-#~ msgstr "Перемкнути згортання"
+msgid "Languages"
+msgstr "Мова"
 
-#, fuzzy
-#~ msgid "Reset menu bubble position"
-#~ msgstr "Зарезервована позиція?"
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
 
-#, fuzzy
-#~ msgid "Activate menu favorite"
-#~ msgstr "Дія припинена"
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-#~ msgid "Menu position"
-#~ msgstr "Координати датацентру"
+msgid "Menu collapse"
+msgstr "Перемкнути згортання"
+
+#: templates/menus/nav/nav-settings.twig:8
+#, fuzzy
+msgid "Reset menu bubble position"
+msgstr "Зарезервована позиція?"
+
+#: templates/menus/nav/nav-settings.twig:14
+#, fuzzy
+msgid "Activate menu favorite"
+msgstr "Дія припинена"
+
+#: templates/menus/nav/nav-settings.twig:17
+#, fuzzy
+msgid "Activate favorite selection"
+msgstr "Дія припинена"
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "Координати датацентру"
 
 #, fuzzy
 #~| msgid "Login"

@@ -22004,3 +22004,52 @@ msgid ""
 msgstr ""
 "The dragged event is a recurring event. Do you want to move the serie or "
 "instance ?"
+
+#: templates/install/index.twig:31
+#, fuzzy
+msgid "Initialization"
+msgstr "Virtualization"
+
+#: templates/install/index.twig:31
+msgid "Initialized"
+msgstr ""
+
+#: templates/install/index.twig:31
+#, fuzzy
+msgid "Languages"
+msgstr "Language"
+
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:5
+#, fuzzy
+msgid "Menu collapse"
+msgstr "Toggle collapse"
+
+#: templates/menus/nav/nav-settings.twig:8
+#, fuzzy
+msgid "Reset menu bubble position"
+msgstr "Reserved position ?"
+
+#: templates/menus/nav/nav-settings.twig:14
+#, fuzzy
+msgid "Activate menu favorite"
+msgstr "Action aborted"
+
+#: templates/menus/nav/nav-settings.twig:17
+msgid "Activate favorite selection"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "Data center position"

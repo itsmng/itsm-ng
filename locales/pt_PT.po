@@ -22254,29 +22254,56 @@ msgstr ""
 "O evento arrastado é um evento recorrente. Deseja mover a série ou o evento "
 "isolado?"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Initialization"
-#~ msgstr "Virtualização"
+msgid "Initialization"
+msgstr "Virtualização"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Languages"
-#~ msgstr "Idioma"
+msgid "Initialized"
+msgstr "Virtualização"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Menu collapse"
-#~ msgstr "Colapso de alternância"
+msgid "Languages"
+msgstr "Idioma"
 
-#, fuzzy
-#~ msgid "Reset menu bubble position"
-#~ msgstr "Posição reservada ?"
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
 
-#, fuzzy
-#~ msgid "Activate menu favorite"
-#~ msgstr "Acção recusada"
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-#~ msgid "Menu position"
-#~ msgstr "Posição na sala de sistemas"
+msgid "Menu collapse"
+msgstr "Colapso de alternância"
+
+#: templates/menus/nav/nav-settings.twig:8
+#, fuzzy
+msgid "Reset menu bubble position"
+msgstr "Posição reservada ?"
+
+#: templates/menus/nav/nav-settings.twig:14
+#, fuzzy
+msgid "Activate menu favorite"
+msgstr "Acção recusada"
+
+#: templates/menus/nav/nav-settings.twig:17
+#, fuzzy
+msgid "Activate favorite selection"
+msgstr "Acção recusada"
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "Posição na sala de sistemas"
 
 #, fuzzy
 #~| msgid "Login"

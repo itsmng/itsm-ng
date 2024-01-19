@@ -21792,29 +21792,56 @@ msgstr ""
 "ドラッグされたイベントは繰り返しイベントです。すべてのイベントまたは、ドラッ"
 "グされたイベントのみ移動しますか？"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Initialization"
-#~ msgstr "仮想化"
+msgid "Initialization"
+msgstr "仮想化"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Languages"
-#~ msgstr "言語"
+msgid "Initialized"
+msgstr "仮想化"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Menu collapse"
-#~ msgstr "折りたたみを切り替え"
+msgid "Languages"
+msgstr "言語"
 
-#, fuzzy
-#~ msgid "Reset menu bubble position"
-#~ msgstr "予約された位置?"
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
 
-#, fuzzy
-#~ msgid "Activate menu favorite"
-#~ msgstr "中止された動作"
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-#~ msgid "Menu position"
-#~ msgstr "データセンタの場所"
+msgid "Menu collapse"
+msgstr "折りたたみを切り替え"
+
+#: templates/menus/nav/nav-settings.twig:8
+#, fuzzy
+msgid "Reset menu bubble position"
+msgstr "予約された位置?"
+
+#: templates/menus/nav/nav-settings.twig:14
+#, fuzzy
+msgid "Activate menu favorite"
+msgstr "中止された動作"
+
+#: templates/menus/nav/nav-settings.twig:17
+#, fuzzy
+msgid "Activate favorite selection"
+msgstr "中止された動作"
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "データセンタの場所"
 
 #, fuzzy
 #~| msgid "Login"

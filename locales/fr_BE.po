@@ -22134,25 +22134,55 @@ msgid ""
 "instance ?"
 msgstr ""
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Initialization"
-#~ msgstr "Virtualisation"
+msgid "Initialization"
+msgstr "Virtualisation"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Languages"
-#~ msgstr "Langue"
+msgid "Initialized"
+msgstr "Virtualisation"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Reset menu bubble position"
-#~ msgstr "Emplacement réservé ?"
+msgid "Languages"
+msgstr "Langue"
 
-#, fuzzy
-#~ msgid "Activate menu favorite"
-#~ msgstr "Action interrompue"
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:5
+msgid "Menu collapse"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:8
 #, fuzzy
-#~ msgid "Menu position"
-#~ msgstr "Position dans le centre de données"
+msgid "Reset menu bubble position"
+msgstr "Emplacement réservé ?"
+
+#: templates/menus/nav/nav-settings.twig:14
+#, fuzzy
+msgid "Activate menu favorite"
+msgstr "Action interrompue"
+
+#: templates/menus/nav/nav-settings.twig:17
+#, fuzzy
+msgid "Activate favorite selection"
+msgstr "Action interrompue"
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "Position dans le centre de données"
 
 #, fuzzy
 #~| msgid "Login"
