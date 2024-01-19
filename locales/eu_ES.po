@@ -533,14 +533,12 @@ msgid "Consider filling latitude and longitude on this location."
 msgstr ""
 
 #: ajax/deleteItilActor.php:92
-#, fuzzy
 msgid "Actor deleted successfully"
-msgstr "Katxe memoria ondo ezabatu da"
+msgstr ""
 
 #: ajax/deleteItilActor.php:98
-#, fuzzy
 msgid "Error while deleting actor"
-msgstr "Errore bat gertatu da akzioa exekutatzerakoan"
+msgstr ""
 
 #: ajax/telemetry.php:46
 msgid ""
@@ -1758,9 +1756,8 @@ msgid "Impossible to use LDAP as external source of connection"
 msgstr "Ezinezkoa LDAP kanpoko konexio bezala erabiltzea"
 
 #: front/setup.auth.php:58
-#, fuzzy
 msgid "Open ID connect authentication"
-msgstr "X509 ziurtagiria"
+msgstr ""
 
 #: front/setup.auth.php:61
 msgid "Others authentication methods"
@@ -2205,11 +2202,10 @@ msgstr "Id"
 #: inc/slalevel.class.php:226 inc/projecttask.class.php:679
 #: inc/projecttask.class.php:934 inc/transfer.class.php:86
 #: inc/transfer.class.php:3425 inc/group.class.php:216 inc/group.class.php:834
-#, fuzzy
 msgid "Name"
 msgid_plural "Names"
-msgstr[0] "Izena"
-msgstr[1] "Izena"
+msgstr[0] ""
+msgstr[1] ""
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
@@ -3276,9 +3272,8 @@ msgid "Unable to stop impersonating user"
 msgstr ""
 
 #: front/document.form.php:66
-#, fuzzy
 msgid "Could not add document"
-msgstr "Dokumentua gehitu"
+msgstr ""
 
 #: inc/operatingsystemedition.class.php:42
 #: inc/item_operatingsystem.class.php:365
@@ -3475,9 +3470,8 @@ msgstr[0] "Bertsioa"
 msgstr[1] "Bertsioak"
 
 #: inc/cluster.class.php:136
-#, fuzzy
 msgid "Auto update system"
-msgstr "%s elementu bat eguneratzen du"
+msgstr ""
 
 #: inc/cluster.class.php:143 inc/cluster.class.php:223
 #: inc/printer.class.php:323 inc/printer.class.php:750
@@ -3818,9 +3812,8 @@ msgid "\"session.use_trans_sid\" must be set to off."
 msgstr ""
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
-#, fuzzy
 msgid "See .htaccess file in the ITSM-NG root for more information."
-msgstr "Egiaztatu .htaccess fitxategia eta web zerbitzariaren konfigurazioa."
+msgstr ""
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -3982,9 +3975,9 @@ msgid "Allocated memory"
 msgstr "Alokatutako memoria"
 
 #: inc/system/requirement/memorylimit.class.php:75
-#, fuzzy, php-format
+#, php-format
 msgid "A minimum of %s is commonly required for ITSM-NG."
-msgstr "Normalean 64Mb behar dira gutxienez GLPI-rentzako"
+msgstr ""
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -4512,9 +4505,8 @@ msgid "Action when a user is deleted from the LDAP directory"
 msgstr "Erabiltzailea LDAPetik ezabatzarekoan egin beharreko ekintza"
 
 #: inc/config.class.php:710
-#, fuzzy
 msgid "ITSM-NG server time zone"
-msgstr "GLPI zerbitzarean ordu-zona"
+msgstr ""
 
 #: inc/config.class.php:743 inc/config.class.php:1809 inc/config.class.php:2261
 #: inc/dbconnection.class.php:47
@@ -4568,9 +4560,8 @@ msgid "URL of the API"
 msgstr "API-aren URLa"
 
 #: inc/config.class.php:821
-#, fuzzy
 msgid "URL of the dashboard API"
-msgstr "API-aren URLa"
+msgstr ""
 
 #: inc/config.class.php:827
 msgid "Enable Rest API"
@@ -4703,9 +4694,8 @@ msgid "Display counters"
 msgstr ""
 
 #: inc/config.class.php:1151
-#, fuzzy
 msgid "Display the number of items in the menu"
-msgstr "Erakutsi (elementu kantitatea)"
+msgstr ""
 
 #: inc/config.class.php:1160
 msgid "Keep devices when purging an item"
@@ -4789,34 +4779,28 @@ msgid "Pre-select me as a requester when creating a ticket"
 msgstr "Aurretik ni eskatzaile bezala aukeratu tiket bat sortzerakoan"
 
 #: inc/config.class.php:1288
-#, fuzzy
 msgid "Priority color 1"
-msgstr "Lehentasun koloreak"
+msgstr ""
 
 #: inc/config.class.php:1295
-#, fuzzy
 msgid "Priority color 2"
-msgstr "Lehentasun koloreak"
+msgstr ""
 
 #: inc/config.class.php:1302
-#, fuzzy
 msgid "Priority color 3"
-msgstr "Lehentasun koloreak"
+msgstr ""
 
 #: inc/config.class.php:1309
-#, fuzzy
 msgid "Priority color 4"
-msgstr "Lehentasun koloreak"
+msgstr ""
 
 #: inc/config.class.php:1316
-#, fuzzy
 msgid "Priority color 5"
-msgstr "Lehentasun koloreak"
+msgstr ""
 
 #: inc/config.class.php:1323
-#, fuzzy
 msgid "Priority color 6"
-msgstr "Lehentasun koloreak"
+msgstr ""
 
 #: inc/config.class.php:1332
 msgid "Due date progression"
@@ -4839,9 +4823,8 @@ msgid "Warning state threshold"
 msgstr "Abisu egoeraren atari-maila"
 
 #: inc/config.class.php:1366
-#, fuzzy
 msgid "Warning state unit"
-msgstr "Abisu egoeraren kolorea"
+msgstr ""
 
 #: inc/config.class.php:1372 inc/config.class.php:1394
 #: inc/reservation.class.php:1025 inc/levelagreement.class.php:202
@@ -4857,9 +4840,8 @@ msgid "Critical state threshold"
 msgstr "Egoera kritikoaren atari-maila"
 
 #: inc/config.class.php:1388
-#, fuzzy
 msgid "Critical state unit"
-msgstr "Egoera kritikoaren kolorea"
+msgstr ""
 
 #: inc/config.class.php:1406
 msgid "Auto-lock Mode"
@@ -4998,10 +4980,10 @@ msgid "Reset"
 msgstr "Berrabiarazi"
 
 #: inc/config.class.php:1694
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Installing and enabling the \"%s\" extension may improve ITSM-NG performance"
-msgstr "\"%s\" extentsioaren instalatzeak GLPIren errendimendua hobetu dezake"
+msgstr ""
 
 #: inc/config.class.php:1698
 msgid "User data cache"
@@ -5397,9 +5379,8 @@ msgstr[1] "Inprimagailuak"
 #: inc/consumableitem.class.php:134 inc/software.class.php:231
 #: inc/peripheral.class.php:161 inc/phone.class.php:156
 #: inc/computer.class.php:309 inc/pdu.class.php:86 inc/ticket.class.php:4478
-#, fuzzy
 msgid "Restore"
-msgstr "Berrezarri"
+msgstr ""
 
 #: inc/printer.class.php:302 inc/project.class.php:562
 #: inc/appliance.class.php:164 inc/supplier.class.php:187
@@ -5424,21 +5405,18 @@ msgstr "Erabiltzaile zenbaki alternatiboa"
 
 #: inc/printer.class.php:378 inc/monitor.class.php:274
 #: inc/peripheral.class.php:266 inc/phone.class.php:262
-#, fuzzy
 msgid "Management Type"
-msgstr "Kudeaketa mota"
+msgstr ""
 
 #: inc/printer.class.php:382 inc/monitor.class.php:278
 #: inc/peripheral.class.php:270 inc/phone.class.php:266
-#, fuzzy
 msgid "Unit Management"
-msgstr "Unitateen gestioa"
+msgstr ""
 
 #: inc/printer.class.php:383 inc/monitor.class.php:279
 #: inc/peripheral.class.php:271 inc/phone.class.php:267
-#, fuzzy
 msgid "Global Management"
-msgstr "Kudeaketa orokorra"
+msgstr ""
 
 #: inc/printer.class.php:395 inc/printer.class.php:733
 #: inc/networkequipment.class.php:380 inc/networkequipment.class.php:598
@@ -5451,9 +5429,8 @@ msgstr[0] "Sarea"
 msgstr[1] "Sareak"
 
 #: inc/printer.class.php:404
-#, fuzzy
 msgid "Ports"
-msgstr "Portua"
+msgstr ""
 
 #: inc/printer.class.php:407 inc/printer.class.php:622
 #: inc/appliance_item.class.php:186
@@ -5963,9 +5940,9 @@ msgid "Task completed."
 msgstr "Zeregina amaitua."
 
 #: inc/migration.class.php:792
-#, fuzzy, php-format
+#, php-format
 msgid "Automatically generated by ITSM-NG %s"
-msgstr "GLPI-k automatikoki sortua %s"
+msgstr ""
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -6217,14 +6194,12 @@ msgid "Associated item ID"
 msgstr "Elkartutako elementu ID-a"
 
 #: inc/queuedchat.class.php:260 inc/queuedchat.class.php:646
-#, fuzzy
 msgid "Entity name"
-msgstr "Entitatea"
+msgstr ""
 
 #: inc/queuedchat.class.php:269 inc/queuedchat.class.php:641
-#, fuzzy
 msgid "Server name"
-msgstr "Bidaltzailearen izena"
+msgstr ""
 
 #: inc/queuedchat.class.php:278
 msgid "URl Hook"
@@ -6241,28 +6216,24 @@ msgid "Mode"
 msgstr "Modua"
 
 #: inc/queuedchat.class.php:382 inc/queuednotification.class.php:463
-#, fuzzy
 msgid "Send chat in queue"
-msgstr "Bidali kolan dauden postak"
+msgstr ""
 
 #: inc/queuedchat.class.php:383 inc/queuednotification.class.php:464
-#, fuzzy
 msgid "Maximum chat to send at once"
-msgstr "Aldi bakoitzeko bidaltzeko posta kopuru maximoa"
+msgstr ""
 
 #: inc/queuedchat.class.php:388
 msgid "Clean chat queue"
 msgstr ""
 
 #: inc/queuedchat.class.php:389 inc/queuednotification.class.php:468
-#, fuzzy
 msgid "Days to keep sent chat"
-msgstr "Bidalitako postak mantentzeko egun kopurua"
+msgstr ""
 
 #: inc/queuedchat.class.php:615
-#, fuzzy
 msgid "Ticket ID"
-msgstr "Intzidentzia"
+msgstr ""
 
 #: inc/queuedchat.class.php:651
 msgid "Rocket Hook Url"
@@ -6650,9 +6621,8 @@ msgstr[0] "Fabrikatzailea"
 msgstr[1] "Fabrikatzaileak"
 
 #: inc/monitor.class.php:245
-#, fuzzy
 msgid "Inventory/Asset number"
-msgstr "Inbentario zenbakia"
+msgstr ""
 
 #: inc/monitor.class.php:268 inc/monitor.class.php:517
 #: inc/item_devicememory.class.php:54 inc/item_devicememory.class.php:56
@@ -6705,9 +6675,8 @@ msgid "Target entity for the computer"
 msgstr "Ordenagailuarentzako helburu entitatea"
 
 #: inc/ruleimportcomputer.class.php:81
-#, fuzzy
 msgid "Find computers in ITSM-NG having the status"
-msgstr "Bilatu hurrengo egoera daukaten eta GPLIn dauden ordenagailuak"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -6748,14 +6717,12 @@ msgid "Yes if empty"
 msgstr "Hutsik badago bai"
 
 #: inc/ruleimportcomputer.class.php:178
-#, fuzzy
 msgid "is already present in ITSM-NG"
-msgstr "dagoeneko GLPI-n dago"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:179
-#, fuzzy
 msgid "is empty in ITSM-NG"
-msgstr "GPLIn hutsik dago"
+msgstr ""
 
 #: inc/commonitilvalidation.class.php:91 inc/commonitilobject.class.php:6856
 #: inc/change.class.php:539 inc/change.class.php:1061
@@ -7507,14 +7474,12 @@ msgid "Category name"
 msgstr "Kategoriaren izena"
 
 #: inc/knowbaseitem.class.php:780
-#, fuzzy
 msgid "Created on:"
-msgstr "%s-n sortua"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:783
-#, fuzzy
 msgid "Last update on:"
-msgstr "Azkenengo eguneraketa %s-n"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:786
 msgid "Put this item in the FAQ"
@@ -7531,9 +7496,8 @@ msgid "This item is not part of the FAQ"
 msgstr "Itema ez dago maiz egindako galderetan"
 
 #: inc/knowbaseitem.class.php:798
-#, fuzzy
 msgid "Views"
-msgstr "Bista"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:799 inc/knowbaseitem.class.php:984
 #, php-format
@@ -7687,9 +7651,8 @@ msgid "Help"
 msgstr "Laguntza"
 
 #: inc/link.class.php:165
-#, fuzzy
 msgid "External links"
-msgstr "Kanpoko lotura"
+msgstr ""
 
 #: inc/link.class.php:173 inc/link.class.php:240
 msgid "Link or filename"
@@ -7774,19 +7737,16 @@ msgstr "Elementu kopurua"
 
 #: inc/specialstatus.class.php:44 inc/specialstatus.class.php:150
 #: inc/profile.class.php:2082
-#, fuzzy
 msgid "Special Status"
-msgstr "Data zehaztu"
+msgstr ""
 
 #: inc/specialstatus.class.php:115
-#, fuzzy
 msgid "Status has been updated!"
-msgstr "Bilaketa gorde da"
+msgstr ""
 
 #: inc/specialstatus.class.php:142
-#, fuzzy
 msgid "Status has been removed!"
-msgstr "Bilaketa gorde da"
+msgstr ""
 
 #: inc/specialstatus.class.php:153 inc/specialstatus.class.php:246
 #: inc/commondcmodeldropdown.class.php:65
@@ -7824,9 +7784,8 @@ msgid "Cancel"
 msgstr "Ezeztatu"
 
 #: inc/specialstatus.class.php:234
-#, fuzzy
 msgid "Status has been added!"
-msgstr "Bilaketa gorde da"
+msgstr ""
 
 #: inc/specialstatus.class.php:243
 msgid "New Status - Special status"
@@ -8340,9 +8299,8 @@ msgid "System lock"
 msgstr "Sistema blokeatuta"
 
 #: inc/crontask.class.php:643
-#, fuzzy
 msgid "Plugin lock"
-msgstr "Gehigarria"
+msgstr ""
 
 #: inc/crontask.class.php:644
 msgid "Disabled plugin"
@@ -8353,14 +8311,12 @@ msgid "Run mode"
 msgstr "Exekutatze modua"
 
 #: inc/crontask.class.php:655
-#, fuzzy
 msgid "Min run period"
-msgstr "Exekutatze periodoa"
+msgstr ""
 
 #: inc/crontask.class.php:662
-#, fuzzy
 msgid "Max run period"
-msgstr "Exekutatze periodoa"
+msgstr ""
 
 #: inc/crontask.class.php:669 inc/crontask.class.php:1602
 msgid "Number of days this action logs are stored"
@@ -8375,14 +8331,12 @@ msgid "Last run"
 msgstr "Azken aldiz exekutatuta"
 
 #: inc/crontask.class.php:704
-#, fuzzy
 msgid "enabled"
-msgstr "Gaituta"
+msgstr ""
 
 #: inc/crontask.class.php:706
-#, fuzzy
 msgid "disabled"
-msgstr "Ezgaituta"
+msgstr ""
 
 #: inc/crontask.class.php:812 inc/crontask.class.php:1370
 msgid "Running"
@@ -8401,9 +8355,8 @@ msgid "Maintenance mode enabled, running tasks is disabled"
 msgstr ""
 
 #: inc/crontask.class.php:922
-#, fuzzy
 msgid "A minimum of 64 Mio is commonly required for ITSM-NG."
-msgstr "Normalean 64Mb behar dira gutxienez GLPI-rentzako"
+msgstr ""
 
 #: inc/crontask.class.php:927
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -8760,14 +8713,11 @@ msgid "Upgrade"
 msgstr "Eguneratu"
 
 #: inc/config.php:239
-#, fuzzy
 msgid ""
 "You are trying to use ITSM-NG with outdated files compared to the version of "
 "the database. Please install the correct ITSM-NG files corresponding to the "
 "version of your database."
 msgstr ""
-"Zure datu baseko bertsio zaharrarekin GLPI eguneratzen ari zara. Mesedez "
-"GLPIko artxibo zuzenak kargatu itzazu."
 
 #: inc/config.php:242
 msgid ""
@@ -9005,11 +8955,10 @@ msgstr[1] "Ordenagailu motak"
 
 #: inc/rulecollection.class.php:2050 inc/rule.class.php:371
 #: inc/monitortype.class.php:42
-#, fuzzy
 msgid "Monitor type"
 msgid_plural "Monitor types"
-msgstr[0] "Monitore mota"
-msgstr[1] "Monitore motak"
+msgstr[0] ""
+msgstr[1] ""
 
 #: inc/rulecollection.class.php:2053 inc/rule.class.php:383
 #: inc/printertype.class.php:42
@@ -9388,14 +9337,13 @@ msgid "Begin"
 msgstr "Hasi"
 
 #: inc/reminder.class.php:641
-#, fuzzy
 msgid "From"
-msgstr "Nork %s"
+msgstr ""
 
 #: inc/reminder.class.php:642
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s to %2$s"
-msgstr "%1$s %2$s-en"
+msgstr ""
 
 #: inc/ticketvalidation.class.php:99
 msgid "Create for request"
@@ -9546,9 +9494,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: inc/enclosure.class.php:122
-#, fuzzy
 msgid "Power supplies"
-msgstr "Energia iturria"
+msgstr ""
 
 #: inc/contract_supplier.class.php:136 inc/contract.class.php:204
 #: inc/contract_item.class.php:336
@@ -9638,42 +9585,36 @@ msgid "Support hours"
 msgstr "Laguntza orduak"
 
 #: inc/contract.class.php:332
-#, fuzzy
 msgid "on week start"
-msgstr "astean"
+msgstr ""
 
 #: inc/contract.class.php:338
-#, fuzzy
 msgid "on week end"
-msgstr "astean"
+msgstr ""
 
 #: inc/contract.class.php:344
 msgid "on Saturday"
 msgstr "larunbata"
 
 #: inc/contract.class.php:349
-#, fuzzy
 msgid "on Saturday start"
-msgstr "larunbata"
+msgstr ""
 
 #: inc/contract.class.php:354
-#, fuzzy
 msgid "on Saturday end"
-msgstr "larunbata"
+msgstr ""
 
 #: inc/contract.class.php:359
 msgid "Sundays and holidays"
 msgstr "igande eta jai egunak"
 
 #: inc/contract.class.php:364
-#, fuzzy
 msgid "on Sunday start"
-msgstr "larunbata"
+msgstr ""
 
 #: inc/contract.class.php:369
-#, fuzzy
 msgid "on Sunday end"
-msgstr "larunbata"
+msgstr ""
 
 #: inc/contract.class.php:415
 msgctxt "quantity"
@@ -10449,14 +10390,12 @@ msgid "Last update in the LDAP directory"
 msgstr "Azken eguneraketa LDAP direktorioan"
 
 #: inc/authldap.class.php:1560
-#, fuzzy
 msgid "Last update in ITSM-ng"
-msgstr "Azken eguneraketa GLPIn"
+msgstr ""
 
 #: inc/authldap.class.php:1609
-#, fuzzy
 msgid "Last update in ITSM-NG"
-msgstr "Azken eguneraketa GLPIn"
+msgstr ""
 
 #: inc/authldap.class.php:1621 inc/authldap.class.php:1626
 msgid "No user to be synchronized"
@@ -10490,9 +10429,8 @@ msgid "LDAP directory choice"
 msgstr "LDAP direktorio aukera"
 
 #: inc/authldap.class.php:2396
-#, fuzzy
 msgid "No LDAP directory defined in ITSM-ng"
-msgstr "Ez da LDAP direktoriorik definitu GLPIn"
+msgstr ""
 
 #: inc/authldap.class.php:2767
 msgid "User not found or several users found"
@@ -10669,9 +10607,8 @@ msgstr[0] "Kontratu/Elementu elkarketa"
 msgstr[1] "Kontratu/Elementu elkarketak"
 
 #: inc/contract_item.class.php:362
-#, fuzzy
 msgid "Delete permanently the relation with selected elements"
-msgstr "Aukeratutako elementuen arteko erlazioa betirako ezabatu"
+msgstr ""
 
 #: inc/planningexternalevent.class.php:54
 msgid "External event"
@@ -10886,9 +10823,8 @@ msgstr "Baliabideak"
 #: inc/profile.class.php:1790 inc/profile.class.php:1835
 #: inc/profile.class.php:3022 inc/accessibility.class.php:36
 #: inc/accessibility.class.php:58 inc/accessibility.class.php:63
-#, fuzzy
 msgid "Accessibility"
-msgstr "Ikuspena"
+msgstr ""
 
 #: inc/profile.class.php:128 inc/profile.class.php:1197
 #: inc/profile.class.php:2435 inc/infocom.class.php:142
@@ -11120,9 +11056,8 @@ msgid "Life cycle of changes"
 msgstr "Aldaketen bizitza zikloak"
 
 #: inc/profile.class.php:1785 inc/profile.class.php:1830
-#, fuzzy
 msgid "Edit accessibility"
-msgstr "Ikuspena"
+msgstr ""
 
 #: inc/profile.class.php:1922 inc/profile.class.php:2743
 #: inc/rulerightcollection.class.php:57 inc/ruleright.class.php:56
@@ -11230,19 +11165,16 @@ msgid "Managed domain records types"
 msgstr ""
 
 #: inc/profile.class.php:3032
-#, fuzzy
 msgid "Change font"
-msgstr "Zeregin bat aldatu"
+msgstr ""
 
 #: inc/profile.class.php:3042
-#, fuzzy
 msgid "Change zoom"
-msgstr "Aldatu modua"
+msgstr ""
 
 #: inc/profile.class.php:3053
-#, fuzzy
 msgid "Use shortcuts"
-msgstr "Erabilpen blokeoak"
+msgstr ""
 
 #: inc/profile.class.php:3109 inc/auth.class.php:1224 inc/auth.class.php:1231
 #: install/update_0723_078.php:3667
@@ -12146,9 +12078,8 @@ msgid "Global View"
 msgstr "Ikuspegi orokorra"
 
 #: inc/central.class.php:118
-#, fuzzy
 msgid "No dashboard available"
-msgstr "Ez dago akziorik erabilgarririk"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/central.class.php:154 inc/rack.class.php:65
@@ -12158,9 +12089,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: inc/central.class.php:173
-#, fuzzy
 msgid "Tickets by status"
-msgstr "Itxarote egoeran dauden tiketak"
+msgstr ""
 
 #: inc/central.class.php:395
 #, php-format
@@ -12408,9 +12338,8 @@ msgid "Entity-ID"
 msgstr "Entitate IDa"
 
 #: inc/domain.class.php:364 inc/certificate.class.php:544
-#, fuzzy
 msgid "Types"
-msgstr "Mota"
+msgstr ""
 
 #: inc/domain.class.php:689
 msgid "Domains expired since more"
@@ -12565,9 +12494,8 @@ msgid "An appliance is required"
 msgstr ""
 
 #: inc/softwareversion.class.php:114
-#, fuzzy
 msgid "New element"
-msgstr "Arazo berria"
+msgstr ""
 
 #: inc/softwareversion.class.php:332
 msgctxt "button"
@@ -13041,9 +12969,8 @@ msgstr "Egiten (planifikatua)"
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541
-#, fuzzy
 msgid "Pending"
-msgstr "Itxaroten"
+msgstr ""
 
 #: inc/problem.class.php:686
 msgctxt "status"
@@ -13587,9 +13514,8 @@ msgstr ""
 #: inc/knowbaseitem_revision.class.php:262
 #: inc/knowbaseitem_comment.class.php:177
 #: inc/knowbaseitem_comment.class.php:211 inc/objectlock.class.php:157
-#, fuzzy
 msgid "Contact your ITSM-NG admin!"
-msgstr "Zure GLPI administratzailearekin harremanetan jarri!"
+msgstr ""
 
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_comment.class.php:177
@@ -13663,9 +13589,8 @@ msgstr "Fabrikanteentzako hiztegi erregelak errepikatu (—— = Guztiak)"
 
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
-#, fuzzy
 msgid "Software deleted by ITSM-NG dictionary rules"
-msgstr "GPLI hiztegi erregelek ezabatutako software-a"
+msgstr ""
 
 #: inc/caldav/backend/calendar.class.php:89
 #: inc/caldav/backend/calendar.class.php:127
@@ -14294,9 +14219,8 @@ msgid "Connection string"
 msgstr "Konexio-katea"
 
 #: inc/authmail.class.php:206 inc/notificationchatsetting.class.php:295
-#, fuzzy
 msgid "Test"
-msgstr "Probatu"
+msgstr ""
 
 #: inc/authmail.class.php:211
 msgid "Test connection to email server"
@@ -14313,9 +14237,8 @@ msgid "You cannot use predefined description verbatim"
 msgstr ""
 
 #: inc/commonitilobject.class.php:1772
-#, fuzzy
 msgid "Incorrect value for date field."
-msgstr "Bakartasunerako baztertutako balioa"
+msgstr ""
 
 #: inc/commonitilobject.class.php:2432
 msgctxt "priority"
@@ -15407,10 +15330,8 @@ msgid "An error occured loading contents!"
 msgstr "Errorea gertatu da edukia kargatzean!"
 
 #: inc/ajax.class.php:455
-#, fuzzy
 msgid "Please check ITSM-NG logs or contact your administrator."
 msgstr ""
-"Mesedez, ikusi GLPI logak edo zure administratzailearekin kontaktuan jarri."
 
 #: inc/ajax.class.php:456
 msgid "try to reload"
@@ -15928,18 +15849,16 @@ msgstr "CSS"
 
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
-#, fuzzy
 msgid "Automatically generated by ITSM-NG"
-msgstr "GLPI-k automatikoki sortua %s"
+msgstr ""
 
 #: inc/oidc.class.php:80
 msgid "Missing or wrong fields in open ID connect config"
 msgstr ""
 
 #: inc/oidc.class.php:301
-#, fuzzy
 msgid "Configuration"
-msgstr "Aurreko ezarpenak"
+msgstr ""
 
 #: inc/oidc.class.php:306 inc/auth.class.php:1830
 msgid "Mapping of fields according to provider"
@@ -16014,9 +15933,8 @@ msgid "Incorrect username or password"
 msgstr "Erabiltzaile edo pasahitz okerra"
 
 #: inc/auth.class.php:284 inc/auth.class.php:975 inc/auth.class.php:1003
-#, fuzzy
 msgid "User not authorized to connect in ITSM-NG"
-msgstr "Erabiltzailea ez dago baimendua"
+msgstr ""
 
 #: inc/auth.class.php:631
 msgid "Login with external token disabled"
@@ -16057,9 +15975,8 @@ msgid "Failed login for %1$s from IP %2$s"
 msgstr "%1$s %2$s IP helbidetik sesioa hasteko arazoa"
 
 #: inc/auth.class.php:1107
-#, fuzzy
 msgid "Authentication on ITSM-NG database"
-msgstr "GLPI datu basearekin autentikatu"
+msgstr ""
 
 #: inc/auth.class.php:1119
 msgid "Authentication on a LDAP directory"
@@ -16090,9 +16007,8 @@ msgid "x509 certificate authentication"
 msgstr "X509 ziurtagiria"
 
 #: inc/auth.class.php:1234 inc/auth.class.php:1892
-#, fuzzy
 msgid "ITSM-NG internal database"
-msgstr "GLPI barne zerrenda"
+msgstr ""
 
 #: inc/auth.class.php:1240
 msgid "Not yet authenticated"
@@ -16207,9 +16123,8 @@ msgid "Proxy"
 msgstr ""
 
 #: inc/auth.class.php:1868
-#, fuzzy
 msgid "Certificate Path"
-msgstr "Zertifikatua egiaztatu"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/datacenter.class.php:48 inc/datacenter.class.php:71
@@ -16333,27 +16248,23 @@ msgid "Unknown interface"
 msgstr "Interfaze ezezaguna"
 
 #: inc/notificationchatsetting.class.php:46
-#, fuzzy
 msgid "Chat followups configuration"
-msgstr "Posta jarraipenen ezarpenak"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:52
 #: inc/notificationsettingconfig.class.php:133
-#, fuzzy
 msgid "Enable followups via chat"
-msgstr "Posta jarraipenen ezarpenak"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:120
-#, fuzzy
 msgid "Chat notification"
 msgid_plural "Chat notifications"
-msgstr[0] "Jakinarazpena bidali"
-msgstr[1] "Jakinarazpena bidali"
+msgstr[0] ""
+msgstr[1] ""
 
 #: inc/notificationchatsetting.class.php:132
-#, fuzzy
 msgid "Rocket chat"
-msgstr "Tiketaren kostua"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:133
 msgid "Slack"
@@ -16418,18 +16329,16 @@ msgid "UI Font"
 msgstr ""
 
 #: inc/accessibility.class.php:163
-#, fuzzy
 msgid "Enable shortcuts"
-msgstr "Kontraste handia aktibatu"
+msgstr ""
 
 #: inc/accessibility.class.php:169
 msgid "Don't forget to save"
 msgstr ""
 
 #: inc/accessibility.class.php:169
-#, fuzzy
 msgid "Toggle view"
-msgstr "Filtroak gaitu/ezgaitu"
+msgstr ""
 
 #: inc/accessibility.class.php:189
 msgid "shift+alt+"
@@ -17089,19 +16998,18 @@ msgid "Autofilled from template"
 msgstr ""
 
 #: inc/notificationchat.class.php:114
-#, fuzzy
 msgid "Error inserting chat to queue"
-msgstr "Posta bidaltze kolan sartzeak huts egin du"
+msgstr ""
 
 #: inc/notificationchat.class.php:118
-#, fuzzy, php-format
+#, php-format
 msgid "Fatal-error: The chat %s was not added to queue "
-msgstr "%s-(r)entzako emaila kolara sartu egin da"
+msgstr ""
 
 #: inc/notificationchat.class.php:129
-#, fuzzy, php-format
+#, php-format
 msgid "Rocket chat: The chat %s was added to queue "
-msgstr "%s-(r)entzako emaila kolara sartu egin da"
+msgstr ""
 
 #: inc/rulecriteria.class.php:511
 msgid "does not contain"
@@ -17487,9 +17395,8 @@ msgid "Amortization type"
 msgstr "Amortizazio mota"
 
 #: inc/infocom.class.php:1191 inc/infocom.class.php:1202
-#, fuzzy
 msgid "years"
-msgstr "Urteka"
+msgstr ""
 
 #: inc/infocom.class.php:1196 inc/infocom.class.php:1512
 #: inc/infocom.class.php:1743
@@ -18378,9 +18285,8 @@ msgid "Migration of column \"%s.%s\" failed with message \"(%s) %s\"."
 msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:192
-#, fuzzy
 msgid "Errors occured during migration."
-msgstr "Errore bat gertatu da pasahitza eguneratzean"
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:198
 #: inc/console/migration/buildmissingtimestampscommand.class.php:125
@@ -19043,9 +18949,8 @@ msgid "Number of softwares processed: %d."
 msgstr ""
 
 #: inc/console/database/installcommand.class.php:91
-#, fuzzy
 msgid "Default language of ITSM-NG"
-msgstr "GLPIren hizkuntza lehenetsia"
+msgstr ""
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -19142,14 +19047,12 @@ msgid "Database user"
 msgstr ""
 
 #: inc/console/database/updatecommand.class.php:130
-#, fuzzy
 msgid "ITSM version"
-msgstr "IP bertsioa"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:131
-#, fuzzy
 msgid "ITSM database version"
-msgstr "GLPIren datu-basearen bertsioa"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:139
 #, php-format
@@ -19636,14 +19539,12 @@ msgid "Invalid link"
 msgstr ""
 
 #: inc/document.class.php:404
-#, fuzzy
 msgid "Added by"
-msgstr "Nork gehituta %s"
+msgstr ""
 
 #: inc/document.class.php:407
-#, fuzzy
 msgid "Last update on"
-msgstr "Azkenengo eguneraketa %s-n"
+msgstr ""
 
 #: inc/document.class.php:415
 msgid "Current file"
@@ -19808,9 +19709,8 @@ msgid "Root CA"
 msgstr "Erro CA"
 
 #: inc/certificate.class.php:634
-#, fuzzy
 msgid "Certificat"
-msgstr "Zertifikatua egiaztatu"
+msgstr ""
 
 #: inc/certificate.class.php:662
 msgctxt "button"
@@ -20310,9 +20210,8 @@ msgid "New"
 msgstr "Berriak"
 
 #: inc/ticket.class.php:4566
-#, fuzzy
 msgid "Parameters"
-msgstr "Irakurri parametroak"
+msgstr ""
 
 #: inc/ticket.class.php:4576
 msgid "Close date"
@@ -20416,9 +20315,8 @@ msgid "Purchase version"
 msgstr "Erositako bertsioa"
 
 #: inc/softwarelicense.class.php:415
-#, fuzzy
 msgid "Quota Status"
-msgstr "Egoera"
+msgstr ""
 
 #: inc/softwarelicense.class.php:417
 msgctxt "adjective"
@@ -20602,14 +20500,12 @@ msgid "Approve the solution"
 msgstr "Konponbidea onartu"
 
 #: inc/itilfollowup.class.php:736
-#, fuzzy
 msgid "Approbation de la solution"
-msgstr "Konponbidearen onespena"
+msgstr ""
 
 #: inc/itilfollowup.class.php:739
-#, fuzzy
 msgid "itemtype"
-msgstr "Elementu mota"
+msgstr ""
 
 #: inc/itilfollowup.class.php:744
 msgid "items_id"
@@ -20662,13 +20558,10 @@ msgid "Unsupported version (%1$s)"
 msgstr "Onartzen ez den bertsioa (%1$s)"
 
 #: inc/update.class.php:595
-#, fuzzy
 msgid ""
 "Unable to create security key file! You have to run \"php bin/console itsmng:"
 "security:change_key\" command to manually create this file."
 msgstr ""
-"Ezin izan da seguritate kakoa sortu. \"php bin/console itsmng:security:"
-"change_key\" komandoa exekutatu behar duzu fitxategi hori sortzeko."
 
 #: inc/devicebatterymodel.class.php:44
 msgid "Device battery model"
@@ -20772,9 +20665,8 @@ msgid "Error: the two passwords do not match"
 msgstr "Hutsa : bi pasahitzak ez dira berdinak"
 
 #: inc/user.class.php:784
-#, fuzzy
 msgid "Moving temporary file failed."
-msgstr "Karpeta tenporala ez da aurkitu"
+msgstr ""
 
 #: inc/user.class.php:789
 msgid "The file is not an image file."
@@ -20853,23 +20745,20 @@ msgid "Last login on %s"
 msgstr "Azkeneko logina %s-n"
 
 #: inc/user.class.php:2699
-#, fuzzy
 msgid "Use ITSM-NG in mode"
-msgstr "Erabili GLPI hurrengo moduan"
+msgstr ""
 
 #: inc/user.class.php:2703
 msgid "Normal"
 msgstr "Normala"
 
 #: inc/user.class.php:2719
-#, fuzzy
 msgid "Reset personal token"
-msgstr "Pribatua egin"
+msgstr ""
 
 #: inc/user.class.php:2734
-#, fuzzy
 msgid "Reset API token"
-msgstr "Rest API-a"
+msgstr ""
 
 #: inc/user.class.php:2777
 msgid "Unable to update login. A user already exists."
@@ -20975,9 +20864,8 @@ msgstr ""
 "Pasahitza berrezartzeko galdera iraungi da ala ez da zuzena. Berriz ezarri."
 
 #: inc/user.class.php:4613
-#, fuzzy
 msgid "Please enter your new password."
-msgstr "Mesedez, zure posta berretsi eta pasahitz berria idatzi."
+msgstr ""
 
 #: inc/user.class.php:4657
 msgid ""
@@ -20988,10 +20876,8 @@ msgstr ""
 "pasahitz berri bat aukeratu ahal izango duzu."
 
 #: inc/user.class.php:4698 inc/user.class.php:4712
-#, fuzzy
 msgid "Unable to reset password, please contact your administrator"
 msgstr ""
-"Mesedez, ikusi GLPI logak edo zure administratzailearekin kontaktuan jarri."
 
 #: inc/user.class.php:4719
 msgid ""
@@ -21673,9 +21559,8 @@ msgid "Update to %s"
 msgstr "%s-ra eguneratu"
 
 #: install/itsm_update_151_200.php:557
-#, fuzzy
 msgid "Update dashboard"
-msgstr "Pasahitza eguneratu"
+msgstr ""
 
 #: install/empty_data.php:2079 install/empty_data.php:2081
 #: install/update_0831_084.php:270 install/update_0831_084.php:271
@@ -21777,14 +21662,13 @@ msgid "Impossible to accomplish an update by this way!"
 msgstr "Ezinezkoa da eguneraketara modu honetan iristea!"
 
 #: install/update.php:583
-#, fuzzy
 msgid "Go back to ITSM-NG"
-msgstr "GLPIra itzuli"
+msgstr ""
 
 #: install/update.php:588
-#, fuzzy, php-format
+#, php-format
 msgid "Caution! You will update the ITSM-NG database named: %s"
-msgstr "Kontuz! %s deituriko GLPI datu basea eguneratuko duzu"
+msgstr ""
 
 #: install/update.php:594
 msgid "Continue"
@@ -21795,9 +21679,8 @@ msgid "Database connection successful"
 msgstr "Datu basearekin ondo konektatu da"
 
 #: install/update.php:651 install/update_content.php:367
-#, fuzzy
 msgid "Use ITSM-NG"
-msgstr "TLS erabili"
+msgstr ""
 
 #: install/update.php:660
 msgid ""
@@ -21837,9 +21720,8 @@ msgid "Fix URL of images in ITIL tasks, followups and solutions."
 msgstr ""
 
 #: install/update_content.php:245
-#, fuzzy
 msgid "SQL error starting"
-msgstr "SQL arazoa %s-tik hasita"
+msgstr ""
 
 #: install/update_content.php:358
 msgid "Automatic redirection, else click"
@@ -22055,19 +21937,16 @@ msgid ""
 msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialization"
-msgstr "Birtualizazioa"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialized"
-msgstr "Birtualizazioa"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Languages"
-msgstr "Hizkuntza"
+msgstr ""
 
 #: templates/menus/nav/menu.twig:23
 msgid ""
@@ -22084,35 +21963,29 @@ msgstr ""
 msgid "Menu collapse"
 msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:25
+msgid "Up"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:27
+msgid "bubble"
+msgstr ""
+
 #: templates/menus/nav/nav-settings.twig:8
-#, fuzzy
 msgid "Reset menu bubble position"
-msgstr "Erreserbatutako tokia?"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:14
-#, fuzzy
 msgid "Activate menu favorite"
-msgstr "Akzioa bertan behera utzi da"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:17
-#, fuzzy
 msgid "Activate favorite selection"
-msgstr "Akzioa bertan behera utzi da"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:22
-#, fuzzy
 msgid "Menu position"
-msgstr "Datu-zentroaren posizioa"
-
-#, fuzzy
-#~| msgid "Login"
-#~ msgid "SSO Login"
-#~ msgstr "Erabiltzailea"
-
-#, fuzzy
-#~| msgid "See configuration"
-#~ msgid "Open ID connect configuration"
-#~ msgstr "Ikusi ezarpenak"
+msgstr ""
 
 #~ msgid "No room found or selected"
 #~ msgstr "Ez da gelarik aurkitu edo aukeratu"

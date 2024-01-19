@@ -22006,18 +22006,16 @@ msgstr ""
 "instance ?"
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialization"
-msgstr "Virtualization"
+msgstr ""
 
 #: templates/install/index.twig:31
 msgid "Initialized"
 msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Languages"
-msgstr "Language"
+msgstr ""
 
 #: templates/menus/nav/menu.twig:23
 msgid ""
@@ -22031,25 +22029,29 @@ msgid "Menu"
 msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:5
-#, fuzzy
 msgid "Menu collapse"
-msgstr "Toggle collapse"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:25
+msgid "Up"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:27
+msgid "bubble"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:8
-#, fuzzy
 msgid "Reset menu bubble position"
-msgstr "Reserved position ?"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:14
-#, fuzzy
 msgid "Activate menu favorite"
-msgstr "Action aborted"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:17
 msgid "Activate favorite selection"
 msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:22
-#, fuzzy
 msgid "Menu position"
-msgstr "Data center position"
+msgstr ""

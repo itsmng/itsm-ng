@@ -541,14 +541,12 @@ msgid "Consider filling latitude and longitude on this location."
 msgstr "Prego inserire latitudine e longitudine per questa posizione."
 
 #: ajax/deleteItilActor.php:92
-#, fuzzy
 msgid "Actor deleted successfully"
-msgstr "Reset cache avvenuto con successo"
+msgstr ""
 
 #: ajax/deleteItilActor.php:98
-#, fuzzy
 msgid "Error while deleting actor"
-msgstr "Errore nell'eseguire l'azione"
+msgstr ""
 
 #: ajax/telemetry.php:46
 msgid ""
@@ -1765,9 +1763,8 @@ msgid "Impossible to use LDAP as external source of connection"
 msgstr "Impossibile usare LDAP come fonte esterna di autenticazione"
 
 #: front/setup.auth.php:58
-#, fuzzy
 msgid "Open ID connect authentication"
-msgstr "Autenticazione con certificato X.509"
+msgstr ""
 
 #: front/setup.auth.php:61
 msgid "Others authentication methods"
@@ -2211,11 +2208,10 @@ msgstr "Id"
 #: inc/slalevel.class.php:226 inc/projecttask.class.php:679
 #: inc/projecttask.class.php:934 inc/transfer.class.php:86
 #: inc/transfer.class.php:3425 inc/group.class.php:216 inc/group.class.php:834
-#, fuzzy
 msgid "Name"
 msgid_plural "Names"
-msgstr[0] "Nome"
-msgstr[1] "Nome"
+msgstr[0] ""
+msgstr[1] ""
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
@@ -3286,9 +3282,8 @@ msgid "Unable to stop impersonating user"
 msgstr "Impossibile interrompere il riconoscimento dell'utente"
 
 #: front/document.form.php:66
-#, fuzzy
 msgid "Could not add document"
-msgstr "Aggiungi un documento"
+msgstr ""
 
 #: inc/operatingsystemedition.class.php:42
 #: inc/item_operatingsystem.class.php:365
@@ -3485,9 +3480,8 @@ msgstr[0] "Versione"
 msgstr[1] "Versioni"
 
 #: inc/cluster.class.php:136
-#, fuzzy
 msgid "Auto update system"
-msgstr "Elemento del Sistema Operativo"
+msgstr ""
 
 #: inc/cluster.class.php:143 inc/cluster.class.php:223
 #: inc/printer.class.php:323 inc/printer.class.php:750
@@ -3830,10 +3824,8 @@ msgid "\"session.use_trans_sid\" must be set to off."
 msgstr "\"session.use_trans_sid\" dev'essere impostato su off."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
-#, fuzzy
 msgid "See .htaccess file in the ITSM-NG root for more information."
 msgstr ""
-"Visualizza il file .htaccess nella root di GLPI per maggiori informazioni."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -4003,9 +3995,9 @@ msgid "Allocated memory"
 msgstr "Memoria allocata"
 
 #: inc/system/requirement/memorylimit.class.php:75
-#, fuzzy, php-format
+#, php-format
 msgid "A minimum of %s is commonly required for ITSM-NG."
-msgstr "GLPI richiede un minimo di %s."
+msgstr ""
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -4534,9 +4526,8 @@ msgid "Action when a user is deleted from the LDAP directory"
 msgstr "Azione quando un utente è eliminato dalla directory LDAP"
 
 #: inc/config.class.php:710
-#, fuzzy
 msgid "ITSM-NG server time zone"
-msgstr "Fuso orario del server GLPI"
+msgstr ""
 
 #: inc/config.class.php:743 inc/config.class.php:1809 inc/config.class.php:2261
 #: inc/dbconnection.class.php:47
@@ -4590,9 +4581,8 @@ msgid "URL of the API"
 msgstr "URL della API"
 
 #: inc/config.class.php:821
-#, fuzzy
 msgid "URL of the dashboard API"
-msgstr "URL della API"
+msgstr ""
 
 #: inc/config.class.php:827
 msgid "Enable Rest API"
@@ -4727,9 +4717,8 @@ msgid "Display counters"
 msgstr "Visualizza contatori"
 
 #: inc/config.class.php:1151
-#, fuzzy
 msgid "Display the number of items in the menu"
-msgstr "Visualizza (numero di elementi)"
+msgstr ""
 
 #: inc/config.class.php:1160
 msgid "Keep devices when purging an item"
@@ -4800,10 +4789,8 @@ msgid "Done"
 msgstr "Fatto"
 
 #: inc/config.class.php:1255
-#, fuzzy
 msgid "Automatically refresh data (tickets list, project kanban) in minutes"
 msgstr ""
-"Aggiorna automaticamente i dati (lista chiamate, progetto kanban) in minuti."
 
 #: inc/config.class.php:1264
 msgid "Pre-select me as a technician when creating a ticket"
@@ -4814,34 +4801,28 @@ msgid "Pre-select me as a requester when creating a ticket"
 msgstr "Selezionami come richiedente quando creo una chiamata"
 
 #: inc/config.class.php:1288
-#, fuzzy
 msgid "Priority color 1"
-msgstr "Colori delle priorità"
+msgstr ""
 
 #: inc/config.class.php:1295
-#, fuzzy
 msgid "Priority color 2"
-msgstr "Colori delle priorità"
+msgstr ""
 
 #: inc/config.class.php:1302
-#, fuzzy
 msgid "Priority color 3"
-msgstr "Colori delle priorità"
+msgstr ""
 
 #: inc/config.class.php:1309
-#, fuzzy
 msgid "Priority color 4"
-msgstr "Colori delle priorità"
+msgstr ""
 
 #: inc/config.class.php:1316
-#, fuzzy
 msgid "Priority color 5"
-msgstr "Colori delle priorità"
+msgstr ""
 
 #: inc/config.class.php:1323
-#, fuzzy
 msgid "Priority color 6"
-msgstr "Colori delle priorità"
+msgstr ""
 
 #: inc/config.class.php:1332
 msgid "Due date progression"
@@ -4864,9 +4845,8 @@ msgid "Warning state threshold"
 msgstr "Soglia dello stato Avviso"
 
 #: inc/config.class.php:1366
-#, fuzzy
 msgid "Warning state unit"
-msgstr "Colore dello stato Avviso"
+msgstr ""
 
 #: inc/config.class.php:1372 inc/config.class.php:1394
 #: inc/reservation.class.php:1025 inc/levelagreement.class.php:202
@@ -4882,9 +4862,8 @@ msgid "Critical state threshold"
 msgstr "Soglia dello stato Grave"
 
 #: inc/config.class.php:1388
-#, fuzzy
 msgid "Critical state unit"
-msgstr "Colore dello stato Grave"
+msgstr ""
 
 #: inc/config.class.php:1406
 msgid "Auto-lock Mode"
@@ -5023,12 +5002,10 @@ msgid "Reset"
 msgstr "Riavvio"
 
 #: inc/config.class.php:1694
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Installing and enabling the \"%s\" extension may improve ITSM-NG performance"
 msgstr ""
-"L'installazione e l'abilitazione dell'estensione \"%s\" può migliorare le "
-"performance di GLPI"
 
 #: inc/config.class.php:1698
 msgid "User data cache"
@@ -5424,9 +5401,8 @@ msgstr[1] "Stampanti"
 #: inc/consumableitem.class.php:134 inc/software.class.php:231
 #: inc/peripheral.class.php:161 inc/phone.class.php:156
 #: inc/computer.class.php:309 inc/pdu.class.php:86 inc/ticket.class.php:4478
-#, fuzzy
 msgid "Restore"
-msgstr "Ripristina"
+msgstr ""
 
 #: inc/printer.class.php:302 inc/project.class.php:562
 #: inc/appliance.class.php:164 inc/supplier.class.php:187
@@ -5451,21 +5427,18 @@ msgstr "Telefono"
 
 #: inc/printer.class.php:378 inc/monitor.class.php:274
 #: inc/peripheral.class.php:266 inc/phone.class.php:262
-#, fuzzy
 msgid "Management Type"
-msgstr "Tipo di gestione"
+msgstr ""
 
 #: inc/printer.class.php:382 inc/monitor.class.php:278
 #: inc/peripheral.class.php:270 inc/phone.class.php:266
-#, fuzzy
 msgid "Unit Management"
-msgstr "Gestione delle unità"
+msgstr ""
 
 #: inc/printer.class.php:383 inc/monitor.class.php:279
 #: inc/peripheral.class.php:271 inc/phone.class.php:267
-#, fuzzy
 msgid "Global Management"
-msgstr "Gestione globale"
+msgstr ""
 
 #: inc/printer.class.php:395 inc/printer.class.php:733
 #: inc/networkequipment.class.php:380 inc/networkequipment.class.php:598
@@ -5478,9 +5451,8 @@ msgstr[0] "Rete"
 msgstr[1] "Reti"
 
 #: inc/printer.class.php:404
-#, fuzzy
 msgid "Ports"
-msgstr "Porta"
+msgstr ""
 
 #: inc/printer.class.php:407 inc/printer.class.php:622
 #: inc/appliance_item.class.php:186
@@ -5990,9 +5962,9 @@ msgid "Task completed."
 msgstr "Attività completata."
 
 #: inc/migration.class.php:792
-#, fuzzy, php-format
+#, php-format
 msgid "Automatically generated by ITSM-NG %s"
-msgstr "Generato automaticamente da GLPI %s"
+msgstr ""
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -6248,14 +6220,12 @@ msgid "Associated item ID"
 msgstr "ID elemento associato"
 
 #: inc/queuedchat.class.php:260 inc/queuedchat.class.php:646
-#, fuzzy
 msgid "Entity name"
-msgstr "Entità"
+msgstr ""
 
 #: inc/queuedchat.class.php:269 inc/queuedchat.class.php:641
-#, fuzzy
 msgid "Server name"
-msgstr "Nome del mittente"
+msgstr ""
 
 #: inc/queuedchat.class.php:278
 msgid "URl Hook"
@@ -6272,29 +6242,24 @@ msgid "Mode"
 msgstr "Modalità"
 
 #: inc/queuedchat.class.php:382 inc/queuednotification.class.php:463
-#, fuzzy
 msgid "Send chat in queue"
-msgstr "Invia le e-mail in coda"
+msgstr ""
 
 #: inc/queuedchat.class.php:383 inc/queuednotification.class.php:464
-#, fuzzy
 msgid "Maximum chat to send at once"
-msgstr "Numero massimo di e-mail da inviare alla volta"
+msgstr ""
 
 #: inc/queuedchat.class.php:388
-#, fuzzy
 msgid "Clean chat queue"
-msgstr "Elimina la coda delle notifiche"
+msgstr ""
 
 #: inc/queuedchat.class.php:389 inc/queuednotification.class.php:468
-#, fuzzy
 msgid "Days to keep sent chat"
-msgstr "Numero di giorni per cui mantenere le e-mail inviate"
+msgstr ""
 
 #: inc/queuedchat.class.php:615
-#, fuzzy
 msgid "Ticket ID"
-msgstr "Chiamata"
+msgstr ""
 
 #: inc/queuedchat.class.php:651
 msgid "Rocket Hook Url"
@@ -6685,9 +6650,8 @@ msgstr[0] "Produttore"
 msgstr[1] "Produttori"
 
 #: inc/monitor.class.php:245
-#, fuzzy
 msgid "Inventory/Asset number"
-msgstr "Numero di inventario"
+msgstr ""
 
 #: inc/monitor.class.php:268 inc/monitor.class.php:517
 #: inc/item_devicememory.class.php:54 inc/item_devicememory.class.php:56
@@ -6740,9 +6704,8 @@ msgid "Target entity for the computer"
 msgstr "Entità destinazione per il computer"
 
 #: inc/ruleimportcomputer.class.php:81
-#, fuzzy
 msgid "Find computers in ITSM-NG having the status"
-msgstr "Trova i computer che hanno uno stato in GLPI"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -6783,14 +6746,12 @@ msgid "Yes if empty"
 msgstr "Sì, se vuoto"
 
 #: inc/ruleimportcomputer.class.php:178
-#, fuzzy
 msgid "is already present in ITSM-NG"
-msgstr "è già presente in GLPI"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:179
-#, fuzzy
 msgid "is empty in ITSM-NG"
-msgstr "in GLPI è vuoto"
+msgstr ""
 
 #: inc/commonitilvalidation.class.php:91 inc/commonitilobject.class.php:6856
 #: inc/change.class.php:539 inc/change.class.php:1061
@@ -7547,14 +7508,12 @@ msgid "Category name"
 msgstr "Categoria"
 
 #: inc/knowbaseitem.class.php:780
-#, fuzzy
 msgid "Created on:"
-msgstr "Creata il %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:783
-#, fuzzy
 msgid "Last update on:"
-msgstr "Ultimo aggiornamento il %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:786
 msgid "Put this item in the FAQ"
@@ -7571,9 +7530,8 @@ msgid "This item is not part of the FAQ"
 msgstr "Questo elemento non è nelle FAQ"
 
 #: inc/knowbaseitem.class.php:798
-#, fuzzy
 msgid "Views"
-msgstr "Vista"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:799 inc/knowbaseitem.class.php:984
 #, php-format
@@ -7727,9 +7685,8 @@ msgid "Help"
 msgstr "Aiuto"
 
 #: inc/link.class.php:165
-#, fuzzy
 msgid "External links"
-msgstr "Collegamento esterno"
+msgstr ""
 
 #: inc/link.class.php:173 inc/link.class.php:240
 msgid "Link or filename"
@@ -7814,19 +7771,16 @@ msgstr "Numero di elementi"
 
 #: inc/specialstatus.class.php:44 inc/specialstatus.class.php:150
 #: inc/profile.class.php:2082
-#, fuzzy
 msgid "Special Status"
-msgstr "Specifica una data"
+msgstr ""
 
 #: inc/specialstatus.class.php:115
-#, fuzzy
 msgid "Status has been updated!"
-msgstr "La notifica è stata creata!"
+msgstr ""
 
 #: inc/specialstatus.class.php:142
-#, fuzzy
 msgid "Status has been removed!"
-msgstr "La ricerca è stata salvata"
+msgstr ""
 
 #: inc/specialstatus.class.php:153 inc/specialstatus.class.php:246
 #: inc/commondcmodeldropdown.class.php:65
@@ -7849,9 +7803,8 @@ msgid "Tickets are still using this status, are you sure to remove the status?"
 msgstr ""
 
 #: inc/specialstatus.class.php:209
-#, fuzzy
 msgid "Are you sure to remove the status?"
-msgstr "Sei sicuro di voler eliminare il cruscotto %s?"
+msgstr ""
 
 #: inc/specialstatus.class.php:214 inc/commondropdown.class.php:495
 msgctxt "button"
@@ -7865,9 +7818,8 @@ msgid "Cancel"
 msgstr "Annulla"
 
 #: inc/specialstatus.class.php:234
-#, fuzzy
 msgid "Status has been added!"
-msgstr "La ricerca è stata salvata"
+msgstr ""
 
 #: inc/specialstatus.class.php:243
 msgid "New Status - Special status"
@@ -8379,9 +8331,8 @@ msgid "System lock"
 msgstr "Lock di sistema"
 
 #: inc/crontask.class.php:643
-#, fuzzy
 msgid "Plugin lock"
-msgstr "Plugin"
+msgstr ""
 
 #: inc/crontask.class.php:644
 msgid "Disabled plugin"
@@ -8392,14 +8343,12 @@ msgid "Run mode"
 msgstr "Modalità di esecuzione"
 
 #: inc/crontask.class.php:655
-#, fuzzy
 msgid "Min run period"
-msgstr "Periodo di esecuzione"
+msgstr ""
 
 #: inc/crontask.class.php:662
-#, fuzzy
 msgid "Max run period"
-msgstr "Periodo di esecuzione"
+msgstr ""
 
 #: inc/crontask.class.php:669 inc/crontask.class.php:1602
 msgid "Number of days this action logs are stored"
@@ -8416,14 +8365,12 @@ msgid "Last run"
 msgstr "Ultima esecuzione"
 
 #: inc/crontask.class.php:704
-#, fuzzy
 msgid "enabled"
-msgstr "Attivato"
+msgstr ""
 
 #: inc/crontask.class.php:706
-#, fuzzy
 msgid "disabled"
-msgstr "Disabilitato"
+msgstr ""
 
 #: inc/crontask.class.php:812 inc/crontask.class.php:1370
 msgid "Running"
@@ -8444,9 +8391,8 @@ msgstr ""
 "disabilitate"
 
 #: inc/crontask.class.php:922
-#, fuzzy
 msgid "A minimum of 64 Mio is commonly required for ITSM-NG."
-msgstr "GLPI, normalmente, richiede un minimo di 64 MiB."
+msgstr ""
 
 #: inc/crontask.class.php:927
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -8800,15 +8746,11 @@ msgid "Upgrade"
 msgstr "Aggiorna"
 
 #: inc/config.php:239
-#, fuzzy
 msgid ""
 "You are trying to use ITSM-NG with outdated files compared to the version of "
 "the database. Please install the correct ITSM-NG files corresponding to the "
 "version of your database."
 msgstr ""
-"Stai provando ad usare GLPI con una versione dei file obsoleta rispetto a "
-"quella del database. Per favore, installa la versione corretta dei file di "
-"GLPI corrispondenti alla versione del database."
 
 #: inc/config.php:242
 msgid ""
@@ -9048,11 +8990,10 @@ msgstr[1] "Tipi di computer"
 
 #: inc/rulecollection.class.php:2050 inc/rule.class.php:371
 #: inc/monitortype.class.php:42
-#, fuzzy
 msgid "Monitor type"
 msgid_plural "Monitor types"
-msgstr[0] "Tipo di schermo"
-msgstr[1] "Tipi di schermi"
+msgstr[0] ""
+msgstr[1] ""
 
 #: inc/rulecollection.class.php:2053 inc/rule.class.php:383
 #: inc/printertype.class.php:42
@@ -9431,14 +9372,13 @@ msgid "Begin"
 msgstr "Inizio"
 
 #: inc/reminder.class.php:641
-#, fuzzy
 msgid "From"
-msgstr "Da %s"
+msgstr ""
 
 #: inc/reminder.class.php:642
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s to %2$s"
-msgstr "%1$s su %2$s"
+msgstr ""
 
 #: inc/ticketvalidation.class.php:99
 msgid "Create for request"
@@ -9592,9 +9532,8 @@ msgstr[0] "Contenitore"
 msgstr[1] "Contenitori"
 
 #: inc/enclosure.class.php:122
-#, fuzzy
 msgid "Power supplies"
-msgstr "Alimentatore"
+msgstr ""
 
 #: inc/contract_supplier.class.php:136 inc/contract.class.php:204
 #: inc/contract_item.class.php:336
@@ -9684,42 +9623,36 @@ msgid "Support hours"
 msgstr "Orario di intervento"
 
 #: inc/contract.class.php:332
-#, fuzzy
 msgid "on week start"
-msgstr "durante la settimana"
+msgstr ""
 
 #: inc/contract.class.php:338
-#, fuzzy
 msgid "on week end"
-msgstr "durante la settimana"
+msgstr ""
 
 #: inc/contract.class.php:344
 msgid "on Saturday"
 msgstr "Sabato"
 
 #: inc/contract.class.php:349
-#, fuzzy
 msgid "on Saturday start"
-msgstr "Sabato"
+msgstr ""
 
 #: inc/contract.class.php:354
-#, fuzzy
 msgid "on Saturday end"
-msgstr "Sabato"
+msgstr ""
 
 #: inc/contract.class.php:359
 msgid "Sundays and holidays"
 msgstr "Domenica e festivi"
 
 #: inc/contract.class.php:364
-#, fuzzy
 msgid "on Sunday start"
-msgstr "Sabato"
+msgstr ""
 
 #: inc/contract.class.php:369
-#, fuzzy
 msgid "on Sunday end"
-msgstr "Sabato"
+msgstr ""
 
 #: inc/contract.class.php:415
 msgctxt "quantity"
@@ -10493,14 +10426,12 @@ msgid "Last update in the LDAP directory"
 msgstr "Ultimo aggiornamento nella directory LDAP"
 
 #: inc/authldap.class.php:1560
-#, fuzzy
 msgid "Last update in ITSM-ng"
-msgstr "Ultimo aggiornamento in GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:1609
-#, fuzzy
 msgid "Last update in ITSM-NG"
-msgstr "Ultimo aggiornamento in GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:1621 inc/authldap.class.php:1626
 msgid "No user to be synchronized"
@@ -10532,9 +10463,8 @@ msgid "LDAP directory choice"
 msgstr "Scelta directory LDAP"
 
 #: inc/authldap.class.php:2396
-#, fuzzy
 msgid "No LDAP directory defined in ITSM-ng"
-msgstr "Nessuna directory LDAP definita in GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:2767
 msgid "User not found or several users found"
@@ -10711,9 +10641,8 @@ msgstr[0] "Collegamento Contratto/Elemento"
 msgstr[1] "Collegamenti Contratto/Elemento"
 
 #: inc/contract_item.class.php:362
-#, fuzzy
 msgid "Delete permanently the relation with selected elements"
-msgstr "Elimina permanentemente la relazione tra gli elementi selezionati"
+msgstr ""
 
 #: inc/planningexternalevent.class.php:54
 msgid "External event"
@@ -10928,9 +10857,8 @@ msgstr "Utilità"
 #: inc/profile.class.php:1790 inc/profile.class.php:1835
 #: inc/profile.class.php:3022 inc/accessibility.class.php:36
 #: inc/accessibility.class.php:58 inc/accessibility.class.php:63
-#, fuzzy
 msgid "Accessibility"
-msgstr "Visibilità"
+msgstr ""
 
 #: inc/profile.class.php:128 inc/profile.class.php:1197
 #: inc/profile.class.php:2435 inc/infocom.class.php:142
@@ -11162,9 +11090,8 @@ msgid "Life cycle of changes"
 msgstr "Cicli di vita dei cambiamenti"
 
 #: inc/profile.class.php:1785 inc/profile.class.php:1830
-#, fuzzy
 msgid "Edit accessibility"
-msgstr "Visibilità"
+msgstr ""
 
 #: inc/profile.class.php:1922 inc/profile.class.php:2743
 #: inc/rulerightcollection.class.php:57 inc/ruleright.class.php:56
@@ -11272,19 +11199,16 @@ msgid "Managed domain records types"
 msgstr "Tipi di record di dominio gestiti"
 
 #: inc/profile.class.php:3032
-#, fuzzy
 msgid "Change font"
-msgstr "Cambia l'attività"
+msgstr ""
 
 #: inc/profile.class.php:3042
-#, fuzzy
 msgid "Change zoom"
-msgstr "Cambia modalità"
+msgstr ""
 
 #: inc/profile.class.php:3053
-#, fuzzy
 msgid "Use shortcuts"
-msgstr "Usa blocchi"
+msgstr ""
 
 #: inc/profile.class.php:3109 inc/auth.class.php:1224 inc/auth.class.php:1231
 #: install/update_0723_078.php:3667
@@ -12191,9 +12115,8 @@ msgid "Global View"
 msgstr "Vista generale"
 
 #: inc/central.class.php:118
-#, fuzzy
 msgid "No dashboard available"
-msgstr "Nessuna azione possibile"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/central.class.php:154 inc/rack.class.php:65
@@ -12203,9 +12126,8 @@ msgstr[0] "Rack"
 msgstr[1] "Rack"
 
 #: inc/central.class.php:173
-#, fuzzy
 msgid "Tickets by status"
-msgstr "Chiamate pendenti"
+msgstr ""
 
 #: inc/central.class.php:395
 #, php-format
@@ -12454,9 +12376,8 @@ msgid "Entity-ID"
 msgstr "ID-entità"
 
 #: inc/domain.class.php:364 inc/certificate.class.php:544
-#, fuzzy
 msgid "Types"
-msgstr "Tipo"
+msgstr ""
 
 #: inc/domain.class.php:689
 msgid "Domains expired since more"
@@ -12611,9 +12532,8 @@ msgid "An appliance is required"
 msgstr "E' richiesta una appliance"
 
 #: inc/softwareversion.class.php:114
-#, fuzzy
 msgid "New element"
-msgstr "Nuovo Commento"
+msgstr ""
 
 #: inc/softwareversion.class.php:332
 msgctxt "button"
@@ -13087,9 +13007,8 @@ msgstr "In lavorazione (pianificata)"
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541
-#, fuzzy
 msgid "Pending"
-msgstr "In sospeso"
+msgstr ""
 
 #: inc/problem.class.php:686
 msgctxt "status"
@@ -13633,9 +13552,8 @@ msgstr "Visualizza la revisione %rev"
 #: inc/knowbaseitem_revision.class.php:262
 #: inc/knowbaseitem_comment.class.php:177
 #: inc/knowbaseitem_comment.class.php:211 inc/objectlock.class.php:157
-#, fuzzy
 msgid "Contact your ITSM-NG admin!"
-msgstr "Contatta l'amministratore GLPI!"
+msgstr ""
 
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_comment.class.php:177
@@ -13710,9 +13628,8 @@ msgstr "Rielabora le regole del dizionario per i produttori (----- = Tutti)"
 
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
-#, fuzzy
 msgid "Software deleted by ITSM-NG dictionary rules"
-msgstr "Software eliminato dalle regole del dizionario di GLPI"
+msgstr ""
 
 #: inc/caldav/backend/calendar.class.php:89
 #: inc/caldav/backend/calendar.class.php:127
@@ -14344,9 +14261,8 @@ msgid "Connection string"
 msgstr "Stringa di connessione"
 
 #: inc/authmail.class.php:206 inc/notificationchatsetting.class.php:295
-#, fuzzy
 msgid "Test"
-msgstr "Test"
+msgstr ""
 
 #: inc/authmail.class.php:211
 msgid "Test connection to email server"
@@ -14363,9 +14279,8 @@ msgid "You cannot use predefined description verbatim"
 msgstr "Non puoi usare la descrizione predefinita alla lettera"
 
 #: inc/commonitilobject.class.php:1772
-#, fuzzy
 msgid "Incorrect value for date field."
-msgstr "Valore ignorato per l'unicità"
+msgstr ""
 
 #: inc/commonitilobject.class.php:2432
 msgctxt "priority"
@@ -15456,10 +15371,8 @@ msgid "An error occured loading contents!"
 msgstr "E' occorso un errore nel caricamento dei contenuti!"
 
 #: inc/ajax.class.php:455
-#, fuzzy
 msgid "Please check ITSM-NG logs or contact your administrator."
 msgstr ""
-"Prego controllare i log di GLPI o contattare il proprio amministratore."
 
 #: inc/ajax.class.php:456
 msgid "try to reload"
@@ -15981,18 +15894,16 @@ msgstr "CSS"
 
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
-#, fuzzy
 msgid "Automatically generated by ITSM-NG"
-msgstr "Generato automaticamente da GLPI"
+msgstr ""
 
 #: inc/oidc.class.php:80
 msgid "Missing or wrong fields in open ID connect config"
 msgstr ""
 
 #: inc/oidc.class.php:301
-#, fuzzy
 msgid "Configuration"
-msgstr "Preconfigurazione"
+msgstr ""
 
 #: inc/oidc.class.php:306 inc/auth.class.php:1830
 msgid "Mapping of fields according to provider"
@@ -16067,9 +15978,8 @@ msgid "Incorrect username or password"
 msgstr "Nome utente o password errata"
 
 #: inc/auth.class.php:284 inc/auth.class.php:975 inc/auth.class.php:1003
-#, fuzzy
 msgid "User not authorized to connect in ITSM-NG"
-msgstr "Utente non autorizzato a connettersi a GLPI"
+msgstr ""
 
 #: inc/auth.class.php:631
 msgid "Login with external token disabled"
@@ -16110,9 +16020,8 @@ msgid "Failed login for %1$s from IP %2$s"
 msgstr "Accesso non riuscito per %1$s dall'IP %2$s"
 
 #: inc/auth.class.php:1107
-#, fuzzy
 msgid "Authentication on ITSM-NG database"
-msgstr "Autenticazione sul database GLPI"
+msgstr ""
 
 #: inc/auth.class.php:1119
 msgid "Authentication on a LDAP directory"
@@ -16143,9 +16052,8 @@ msgid "x509 certificate authentication"
 msgstr "Autenticazione con certificato X.509"
 
 #: inc/auth.class.php:1234 inc/auth.class.php:1892
-#, fuzzy
 msgid "ITSM-NG internal database"
-msgstr "Elenco interno GLPI"
+msgstr ""
 
 #: inc/auth.class.php:1240
 msgid "Not yet authenticated"
@@ -16197,13 +16105,10 @@ msgid "The CURL extension for your PHP parser isn't installed"
 msgstr "L'estensione CURL per l'interprete PHP non è installata"
 
 #: inc/auth.class.php:1621
-#, fuzzy
 msgid ""
 "The CAS lib isn't available, ITSM-NG doesn't package it anymore for license "
 "compatibility issue."
 msgstr ""
-"La libreria CAS non è disponibile, GLPI crea più il pacchetto per problemi "
-"di compatibilità della licenza."
 
 #: inc/auth.class.php:1624
 msgid "Impossible to use CAS as external source of connection"
@@ -16263,9 +16168,8 @@ msgid "Proxy"
 msgstr ""
 
 #: inc/auth.class.php:1868
-#, fuzzy
 msgid "Certificate Path"
-msgstr "Certificato"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/datacenter.class.php:48 inc/datacenter.class.php:71
@@ -16389,27 +16293,23 @@ msgid "Unknown interface"
 msgstr "Interfaccia sconosciuta"
 
 #: inc/notificationchatsetting.class.php:46
-#, fuzzy
 msgid "Chat followups configuration"
-msgstr "Configurazione notifiche via e-mail"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:52
 #: inc/notificationsettingconfig.class.php:133
-#, fuzzy
 msgid "Enable followups via chat"
-msgstr "Abilita commenti via e-mail"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:120
-#, fuzzy
 msgid "Chat notification"
 msgid_plural "Chat notifications"
-msgstr[0] "Notifica via e-mail"
-msgstr[1] "Notifiche via e-mail"
+msgstr[0] ""
+msgstr[1] ""
 
 #: inc/notificationchatsetting.class.php:132
-#, fuzzy
 msgid "Rocket chat"
-msgstr "Costo della chiamata"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:133
 msgid "Slack"
@@ -16458,9 +16358,8 @@ msgstr[0] "Tipo di certificato"
 msgstr[1] "Tipi di certificati"
 
 #: inc/accessibility.class.php:41
-#, fuzzy
 msgid "See this parameter in your settings"
-msgstr "Parametro e-mail mancante"
+msgstr ""
 
 #: inc/accessibility.class.php:43
 msgid "Edit this parameter in your settings"
@@ -16475,18 +16374,16 @@ msgid "UI Font"
 msgstr ""
 
 #: inc/accessibility.class.php:163
-#, fuzzy
 msgid "Enable shortcuts"
-msgstr "Abilita contrasto elevato"
+msgstr ""
 
 #: inc/accessibility.class.php:169
 msgid "Don't forget to save"
 msgstr ""
 
 #: inc/accessibility.class.php:169
-#, fuzzy
 msgid "Toggle view"
-msgstr "Seleziona filtri"
+msgstr ""
 
 #: inc/accessibility.class.php:189
 msgid "shift+alt+"
@@ -16707,9 +16604,8 @@ msgstr[0] "Livello di servizio"
 msgstr[1] "Livelli dei servizi"
 
 #: inc/slm.class.php:126
-#, fuzzy
 msgid "Niveau de services"
-msgstr "Periferica passiva"
+msgstr ""
 
 #: inc/cartridge.class.php:266
 msgid "Installing a cartridge"
@@ -16939,9 +16835,9 @@ msgid "This plugin requires PHP parameter %1$s"
 msgstr "Questo plugin richiedere il parametro PHP %1$s"
 
 #: inc/plugin.class.php:1706
-#, fuzzy, php-format
+#, php-format
 msgid "This plugin requires ITSM-NG parameter %1$s"
-msgstr "Questo plugin richiedere il parametro GLPI %1$s"
+msgstr ""
 
 #: inc/plugin.class.php:1982 inc/plugin.class.php:2421
 msgctxt "plugin"
@@ -17152,19 +17048,18 @@ msgid "Autofilled from template"
 msgstr "Auto-compilato dal modello"
 
 #: inc/notificationchat.class.php:114
-#, fuzzy
 msgid "Error inserting chat to queue"
-msgstr "Errore nell'inserimento in coda dell'e-mail"
+msgstr ""
 
 #: inc/notificationchat.class.php:118
-#, fuzzy, php-format
+#, php-format
 msgid "Fatal-error: The chat %s was not added to queue "
-msgstr "Una e-mail per %s è stata aggiunta alla coda"
+msgstr ""
 
 #: inc/notificationchat.class.php:129
-#, fuzzy, php-format
+#, php-format
 msgid "Rocket chat: The chat %s was added to queue "
-msgstr "Una e-mail per %s è stata aggiunta alla coda"
+msgstr ""
 
 #: inc/rulecriteria.class.php:511
 msgid "does not contain"
@@ -17552,9 +17447,8 @@ msgid "Amortization type"
 msgstr "Tipo di ammortamento"
 
 #: inc/infocom.class.php:1191 inc/infocom.class.php:1202
-#, fuzzy
 msgid "years"
-msgstr "Per anno"
+msgstr ""
 
 #: inc/infocom.class.php:1196 inc/infocom.class.php:1512
 #: inc/infocom.class.php:1743
@@ -18337,12 +18231,9 @@ msgstr "Risultano mancanti alcuni requisiti di sistema opzionali."
 
 #: inc/console/abstractcommand.class.php:197
 #: inc/console/application.class.php:472
-#, fuzzy
 msgid ""
 "Run \"php bin/console itsmng:system:check_requirements\" for more details."
 msgstr ""
-"Esegui \"php bin/console itsmng:system:check_requirements\" per maggiori "
-"dettagli."
 
 #: inc/console/application.class.php:130
 msgid "The command to execute"
@@ -18385,19 +18276,14 @@ msgid "Configuration directory to use"
 msgstr "Configura la cartella da usare"
 
 #: inc/console/application.class.php:185
-#, fuzzy
 msgid "Disable ITSM-NG plugins (unless commands forces plugins loading)"
 msgstr ""
-"Disattivare i plugin GLPI (a meno che il comando non ne forzi il caricamento)"
 
 #: inc/console/application.class.php:191
-#, fuzzy
 msgid ""
 "Output language (default value is existing ITSM-NG \"language\" "
 "configuration or \"en_GB\")"
 msgstr ""
-"Lingua (il valore di default è definita nella configurazione della lingua di "
-"GLPI o è impostata a \"en_GB\")"
 
 #: inc/console/application.class.php:212
 #, php-format
@@ -18462,19 +18348,18 @@ msgid ""
 msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:153
-#, fuzzy, php-format
+#, php-format
 msgid "Migrating column \"%s.%s\"..."
-msgstr "Migrazione tabella \"%s\"..."
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:172
-#, fuzzy, php-format
+#, php-format
 msgid "Migration of column \"%s.%s\" failed with message \"(%s) %s\"."
-msgstr "Migrazione della tabella \"%s\" è fallita con errore \"(%s)%s\". "
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:192
-#, fuzzy
 msgid "Errors occured during migration."
-msgstr "Si è verificato un errore durante l'aggiornamento della password"
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:198
 #: inc/console/migration/buildmissingtimestampscommand.class.php:125
@@ -18504,9 +18389,8 @@ msgid "Update of `%s`.`%s` failed with message \"(%s) %s\"."
 msgstr "Aggiornamento di `%s`.`%s` fallito con errore \"(%s) %s\"."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
-#, fuzzy
 msgid "Migrate Racks plugin data into ITSM-ng core tables"
-msgstr "Migrazione dei dati del plugin Racks nelle tabelle core di GLPI."
+msgstr ""
 
 #: inc/console/migration/racksplugintocorecommand.class.php:168
 msgid "Ignore \"PluginRacksOther\" models and elements"
@@ -18539,13 +18423,10 @@ msgstr ""
 "dei plugin siano compatibili e supportati dalla versione %s)"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:216
-#, fuzzy
 msgid ""
 "You are about to launch migration of Racks plugin data into ITSM-ng core "
 "tables."
 msgstr ""
-"Stai per eseguire la migrazione dei dati del plugin Racks nelle tabelle di "
-"core di GLPI."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:217
 #: inc/console/migration/appliancesplugintocorecommand.class.php:162
@@ -18566,13 +18447,10 @@ msgid "Checking plugin version..."
 msgstr "Controllo versione componente aggiuntivo..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:278
-#, fuzzy
 msgid ""
 "Racks plugin is not part of ITSM-ng plugin list. It has never been installed "
 "or has been cleaned."
 msgstr ""
-"Il plugin Racks non è presente nella lista dei plugin GLPI installati. Non è "
-"mai stato installato oppure è stato cancellato."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:281
 #: inc/console/migration/racksplugintocorecommand.class.php:296
@@ -18635,9 +18513,8 @@ msgid "Importing other models..."
 msgstr "Importo altri modelli..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
-#, fuzzy
 msgid "Other items do not exist in ITSM-ng core."
-msgstr "Non esistono altri elementi nelle tabelle core di GLPI."
+msgstr ""
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
 #, php-format
@@ -18840,19 +18717,14 @@ msgid "Update of `%s` failed with message \"(%s) %s\"."
 msgstr "Aggiornamento di `%s` fallito con errore \"(%s) %s\"."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:145
-#, fuzzy
 msgid "Migrate Appliances plugin data into ITSM-ng core tables"
 msgstr ""
-"Migrazione dei dati del plugin Appliances nelle tabelle principali di GLPI."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:160
-#, fuzzy
 msgid ""
 "You are about to launch migration of Appliances plugin data into ITSM-ng "
 "core tables."
 msgstr ""
-"Stai per eseguire la migrazione dei dati del plugin Appliances nelle tabelle "
-"principali di GLPI."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:161
 msgid "Any previous appliance created in core will be lost."
@@ -18878,9 +18750,8 @@ msgid "Unable to update \"%s\" in profiles."
 msgstr "Impossibile aggiornare \"%s\" nei profili."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:334
-#, fuzzy
 msgid "Updating ITSM-NG itemtypes..."
-msgstr "Tipologie di GLPI in aggiornamento"
+msgstr ""
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:359
 #, php-format
@@ -18961,9 +18832,8 @@ msgid "Unable to create Appliance Item Relation %d."
 msgstr "Impossibile creare la relazione dell'Appliacne %d."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:91
-#, fuzzy
 msgid "Migrate Domains plugin data into ITSM-NG core tables"
-msgstr "Migrazione dei dati del plugin Domains nelle tabelle core di GLPI"
+msgstr ""
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:98
 #, php-format
@@ -18973,22 +18843,16 @@ msgstr ""
 "%s per fare questo passaggio)"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:124
-#, fuzzy
 msgid ""
 "You are about to launch migration of Domains plugin data into ITSM-NG core "
 "tables."
 msgstr ""
-"Stai per eseguire la migrazione dei dati del plugin Domains nelle tabelle "
-"core di GLPI."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:182
-#, fuzzy
 msgid ""
 "Domains plugin is not part of ITSM-NG plugin list. It has never been "
 "installed or has been cleaned."
 msgstr ""
-"Il plugin Domains non è presente nella lista dei plugin GLPI installati. Non "
-"è mai stato installato oppure è stato cancellato."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:185
 #: inc/console/migration/domainsplugintocorecommand.class.php:200
@@ -19184,9 +19048,8 @@ msgid "Number of softwares processed: %d."
 msgstr "Numero di software processati: %d."
 
 #: inc/console/database/installcommand.class.php:91
-#, fuzzy
 msgid "Default language of ITSM-NG"
-msgstr "Lingua predefinita per GLPI"
+msgstr ""
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -19262,13 +19125,10 @@ msgid "Allow update to an unstable version"
 msgstr "Permetti aggiornamenti a versioni unstable"
 
 #: inc/console/database/updatecommand.class.php:87
-#, fuzzy
 msgid ""
 "Force execution of update from v-1 version of ITSM-ng even if schema did not "
 "changed"
 msgstr ""
-"Forza esecuzione dell'aggiornamento dalla v-1 di GLPI anche se lo schema non "
-"è stato cambiato"
 
 #: inc/console/database/updatecommand.class.php:126
 msgid "Current"
@@ -19293,14 +19153,12 @@ msgid "Database user"
 msgstr "Utente database"
 
 #: inc/console/database/updatecommand.class.php:130
-#, fuzzy
 msgid "ITSM version"
-msgstr "Versione IP "
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:131
-#, fuzzy
 msgid "ITSM database version"
-msgstr "Versione database GLPI"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:139
 #, php-format
@@ -19821,14 +19679,12 @@ msgid "Invalid link"
 msgstr "Link non valido"
 
 #: inc/document.class.php:404
-#, fuzzy
 msgid "Added by"
-msgstr "Inserito da %s"
+msgstr ""
 
 #: inc/document.class.php:407
-#, fuzzy
 msgid "Last update on"
-msgstr "Ultimo aggiornamento il %s"
+msgstr ""
 
 #: inc/document.class.php:415
 msgid "Current file"
@@ -19994,9 +19850,8 @@ msgid "Root CA"
 msgstr "Root CA"
 
 #: inc/certificate.class.php:634
-#, fuzzy
 msgid "Certificat"
-msgstr "Certificato"
+msgstr ""
 
 #: inc/certificate.class.php:662
 msgctxt "button"
@@ -20110,32 +19965,23 @@ msgid "Send \"usage statistics\""
 msgstr "Invia le \"statistiche di utilizzo\""
 
 #: inc/telemetry.class.php:417
-#, fuzzy
 msgid "We need your help to improve ITSM-NG and the plugins ecosystem!"
 msgstr ""
-"Abbiamo bisogno del tuo aiuto per migliorare GLPI e l'ecosistema dei plugin!"
 
 #: inc/telemetry.class.php:418
-#, fuzzy
 msgid ""
 "Once sent, usage statistics are aggregated and made available to a broad "
 "range of ITSM-NG developers."
 msgstr ""
-"Una volta inviate, le statistiche di utilizzo sono aggregate e messe a "
-"disposizione degli sviluppatori GLPI."
 
 #: inc/telemetry.class.php:419
-#, fuzzy
 msgid ""
 "Let us know your usage to improve future versions of ITSM-NG and its plugins!"
 msgstr ""
-"Per migliorare le versioni future di GLPI e dei suoi plugin, facci sapere "
-"come lo utilizzi!"
 
 #: inc/telemetry.class.php:432
-#, fuzzy
 msgid "Reference your ITSM-NG"
-msgstr "Presentaci il tuo GLPI"
+msgstr ""
 
 #: inc/telemetry.class.php:434
 #, php-format
@@ -20508,9 +20354,8 @@ msgid "New"
 msgstr "Nuova"
 
 #: inc/ticket.class.php:4566
-#, fuzzy
 msgid "Parameters"
-msgstr "Leggi parametri"
+msgstr ""
 
 #: inc/ticket.class.php:4576
 msgid "Close date"
@@ -20614,9 +20459,8 @@ msgid "Purchase version"
 msgstr "Versione acquisita"
 
 #: inc/softwarelicense.class.php:415
-#, fuzzy
 msgid "Quota Status"
-msgstr "Stato"
+msgstr ""
 
 #: inc/softwarelicense.class.php:417
 msgctxt "adjective"
@@ -20800,24 +20644,20 @@ msgid "Approve the solution"
 msgstr "Convalida la soluzione"
 
 #: inc/itilfollowup.class.php:736
-#, fuzzy
 msgid "Approbation de la solution"
-msgstr "Convalida soluzione"
+msgstr ""
 
 #: inc/itilfollowup.class.php:739
-#, fuzzy
 msgid "itemtype"
-msgstr "Tipo elemento"
+msgstr ""
 
 #: inc/itilfollowup.class.php:744
-#, fuzzy
 msgid "items_id"
-msgstr "states_id"
+msgstr ""
 
 #: inc/itilfollowup.class.php:749
-#, fuzzy
 msgid "requesttypes_id"
-msgstr "states_id"
+msgstr ""
 
 #: inc/itilfollowup.class.php:818
 msgid "If you want to reopen the ticket, you must specify a reason"
@@ -20861,13 +20701,10 @@ msgid "Unsupported version (%1$s)"
 msgstr "Versione non supportata (%1$s)"
 
 #: inc/update.class.php:595
-#, fuzzy
 msgid ""
 "Unable to create security key file! You have to run \"php bin/console itsmng:"
 "security:change_key\" command to manually create this file."
 msgstr ""
-"Impossibile creare il security key file! Per crearlo manualmente, eseguire "
-"il comando  \"php bin/console itsmng:security:change_key\"."
 
 #: inc/devicebatterymodel.class.php:44
 msgid "Device battery model"
@@ -20971,9 +20808,8 @@ msgid "Error: the two passwords do not match"
 msgstr "Errore: le due password non sono uguali"
 
 #: inc/user.class.php:784
-#, fuzzy
 msgid "Moving temporary file failed."
-msgstr "Manca una cartella temporanea"
+msgstr ""
 
 #: inc/user.class.php:789
 msgid "The file is not an image file."
@@ -21052,23 +20888,20 @@ msgid "Last login on %s"
 msgstr "Ultimo accesso il %s"
 
 #: inc/user.class.php:2699
-#, fuzzy
 msgid "Use ITSM-NG in mode"
-msgstr "Utilizza GLPI in modalità"
+msgstr ""
 
 #: inc/user.class.php:2703
 msgid "Normal"
 msgstr "Normale"
 
 #: inc/user.class.php:2719
-#, fuzzy
 msgid "Reset personal token"
-msgstr "Token personale"
+msgstr ""
 
 #: inc/user.class.php:2734
-#, fuzzy
 msgid "Reset API token"
-msgstr "API token"
+msgstr ""
 
 #: inc/user.class.php:2777
 msgid "Unable to update login. A user already exists."
@@ -21173,10 +21006,8 @@ msgid "Your password reset request has expired or is invalid. Please renew it."
 msgstr "La tua richiesta di cambio password è scaduta o non è valida. Riprova."
 
 #: inc/user.class.php:4613
-#, fuzzy
 msgid "Please enter your new password."
 msgstr ""
-"Per favore conferma il tuo indirizzo e-mail ed inserisci la nuova password."
 
 #: inc/user.class.php:4657
 msgid ""
@@ -21187,10 +21018,8 @@ msgstr ""
 "per cambiare la password."
 
 #: inc/user.class.php:4698 inc/user.class.php:4712
-#, fuzzy
 msgid "Unable to reset password, please contact your administrator"
 msgstr ""
-"Prego controllare i log di GLPI o contattare il proprio amministratore."
 
 #: inc/user.class.php:4719
 msgid ""
@@ -21878,9 +21707,8 @@ msgid "Update to %s"
 msgstr "Aggiorna a %s"
 
 #: install/itsm_update_151_200.php:557
-#, fuzzy
 msgid "Update dashboard"
-msgstr "Cambiare la password"
+msgstr ""
 
 #: install/empty_data.php:2079 install/empty_data.php:2081
 #: install/update_0831_084.php:270 install/update_0831_084.php:271
@@ -21983,14 +21811,13 @@ msgid "Impossible to accomplish an update by this way!"
 msgstr "Impossibile completare l'aggiornamento in questa maniera!"
 
 #: install/update.php:583
-#, fuzzy
 msgid "Go back to ITSM-NG"
-msgstr "Ritorna a GLPI"
+msgstr ""
 
 #: install/update.php:588
-#, fuzzy, php-format
+#, php-format
 msgid "Caution! You will update the ITSM-NG database named: %s"
-msgstr "Attenzione! Aggiornerai il database di GLPI denominato: %s"
+msgstr ""
 
 #: install/update.php:594
 msgid "Continue"
@@ -22001,9 +21828,8 @@ msgid "Database connection successful"
 msgstr "Connessione al database riuscita"
 
 #: install/update.php:651 install/update_content.php:367
-#, fuzzy
 msgid "Use ITSM-NG"
-msgstr "Utilizza TLS"
+msgstr ""
 
 #: install/update.php:660
 msgid ""
@@ -22045,9 +21871,8 @@ msgstr ""
 "soluzioni."
 
 #: install/update_content.php:245
-#, fuzzy
 msgid "SQL error starting"
-msgstr "Errore SQL a partire da %s"
+msgstr ""
 
 #: install/update_content.php:358
 msgid "Automatic redirection, else click"
@@ -22267,19 +22092,16 @@ msgstr ""
 "occorrenza?"
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialization"
-msgstr "Virtualizzazione"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialized"
-msgstr "Virtualizzazione"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Languages"
-msgstr "Lingua"
+msgstr ""
 
 #: templates/menus/nav/menu.twig:23
 msgid ""
@@ -22293,39 +22115,32 @@ msgid "Menu"
 msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:5
-#, fuzzy
 msgid "Menu collapse"
-msgstr "Compatta"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:25
+msgid "Up"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:27
+msgid "bubble"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:8
-#, fuzzy
 msgid "Reset menu bubble position"
-msgstr "Posizione riservata?"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:14
-#, fuzzy
 msgid "Activate menu favorite"
-msgstr "Azione terminata"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:17
-#, fuzzy
 msgid "Activate favorite selection"
-msgstr "Azione terminata"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:22
-#, fuzzy
 msgid "Menu position"
-msgstr "Posizione del data center"
-
-#, fuzzy
-#~| msgid "Login"
-#~ msgid "SSO Login"
-#~ msgstr "Login"
-
-#, fuzzy
-#~| msgid "See configuration"
-#~ msgid "Open ID connect configuration"
-#~ msgstr "Visualizza la configurazione"
+msgstr ""
 
 #~ msgid "No room found or selected"
 #~ msgstr "Nessuna stanza trovata o selezionata"
