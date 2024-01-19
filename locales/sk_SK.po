@@ -22886,29 +22886,56 @@ msgid ""
 "instance ?"
 msgstr "Presúvaná udalosť je opakovaná. Chcete presunúť sériu alebo inštanciu?"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Initialization"
-#~ msgstr "Virtualizácia"
+msgid "Initialization"
+msgstr "Virtualizácia"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Languages"
-#~ msgstr "Jazyk"
+msgid "Initialized"
+msgstr "Virtualizácia"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Menu collapse"
-#~ msgstr "Rozbaliť/zbaliť"
+msgid "Languages"
+msgstr "Jazyk"
 
-#, fuzzy
-#~ msgid "Reset menu bubble position"
-#~ msgstr "Rezervovaná pozícia?"
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
 
-#, fuzzy
-#~ msgid "Activate menu favorite"
-#~ msgstr "Akcia zrušená"
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-#~ msgid "Menu position"
-#~ msgstr "Pozícia v dátovom centre"
+msgid "Menu collapse"
+msgstr "Rozbaliť/zbaliť"
+
+#: templates/menus/nav/nav-settings.twig:8
+#, fuzzy
+msgid "Reset menu bubble position"
+msgstr "Rezervovaná pozícia?"
+
+#: templates/menus/nav/nav-settings.twig:14
+#, fuzzy
+msgid "Activate menu favorite"
+msgstr "Akcia zrušená"
+
+#: templates/menus/nav/nav-settings.twig:17
+#, fuzzy
+msgid "Activate favorite selection"
+msgstr "Akcia zrušená"
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "Pozícia v dátovom centre"
 
 #, fuzzy
 #~| msgid "Login"

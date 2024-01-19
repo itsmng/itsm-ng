@@ -22968,29 +22968,56 @@ msgstr ""
 "Przeciągane zdarzenie jest zdarzeniem powtarzalnym. Chcesz przenieść serię "
 "czy tylko to wystąpienie?"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Initialization"
-#~ msgstr "Wirtualizacja"
+msgid "Initialization"
+msgstr "Wirtualizacja"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Languages"
-#~ msgstr "Język"
+msgid "Initialized"
+msgstr "Wirtualizacja"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Menu collapse"
-#~ msgstr "Włącz zwijanie"
+msgid "Languages"
+msgstr "Język"
 
-#, fuzzy
-#~ msgid "Reset menu bubble position"
-#~ msgstr "Pozycja zarezerwowana?"
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
 
-#, fuzzy
-#~ msgid "Activate menu favorite"
-#~ msgstr "Akcja przerwana"
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-#~ msgid "Menu position"
-#~ msgstr "Lokalizacja w centrum przetwarzania"
+msgid "Menu collapse"
+msgstr "Włącz zwijanie"
+
+#: templates/menus/nav/nav-settings.twig:8
+#, fuzzy
+msgid "Reset menu bubble position"
+msgstr "Pozycja zarezerwowana?"
+
+#: templates/menus/nav/nav-settings.twig:14
+#, fuzzy
+msgid "Activate menu favorite"
+msgstr "Akcja przerwana"
+
+#: templates/menus/nav/nav-settings.twig:17
+#, fuzzy
+msgid "Activate favorite selection"
+msgstr "Akcja przerwana"
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "Lokalizacja w centrum przetwarzania"
 
 #, fuzzy
 #~| msgid "Login"

@@ -22266,29 +22266,56 @@ msgstr ""
 "L'evento spostato è ricorrente. Vuoi spostare tutta la serie o solo questa "
 "occorrenza?"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Initialization"
-#~ msgstr "Virtualizzazione"
+msgid "Initialization"
+msgstr "Virtualizzazione"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Languages"
-#~ msgstr "Lingua"
+msgid "Initialized"
+msgstr "Virtualizzazione"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Menu collapse"
-#~ msgstr "Compatta"
+msgid "Languages"
+msgstr "Lingua"
 
-#, fuzzy
-#~ msgid "Reset menu bubble position"
-#~ msgstr "Posizione riservata?"
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
 
-#, fuzzy
-#~ msgid "Activate menu favorite"
-#~ msgstr "Azione terminata"
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-#~ msgid "Menu position"
-#~ msgstr "Posizione del data center"
+msgid "Menu collapse"
+msgstr "Compatta"
+
+#: templates/menus/nav/nav-settings.twig:8
+#, fuzzy
+msgid "Reset menu bubble position"
+msgstr "Posizione riservata?"
+
+#: templates/menus/nav/nav-settings.twig:14
+#, fuzzy
+msgid "Activate menu favorite"
+msgstr "Azione terminata"
+
+#: templates/menus/nav/nav-settings.twig:17
+#, fuzzy
+msgid "Activate favorite selection"
+msgstr "Azione terminata"
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "Posizione del data center"
 
 #, fuzzy
 #~| msgid "Login"

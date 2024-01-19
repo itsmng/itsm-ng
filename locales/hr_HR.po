@@ -22550,29 +22550,56 @@ msgstr ""
 "Povlačeni događaj je ponavljajući događaj. Želiš li promijeniti seriju ili "
 "slučaj?"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Initialization"
-#~ msgstr "Virtualizacija"
+msgid "Initialization"
+msgstr "Virtualizacija"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Languages"
-#~ msgstr "Jezik"
+msgid "Initialized"
+msgstr "Virtualizacija"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Menu collapse"
-#~ msgstr "Uklj/Isklj sklapanje"
+msgid "Languages"
+msgstr "Jezik"
 
-#, fuzzy
-#~ msgid "Reset menu bubble position"
-#~ msgstr "Rezervirani položaj?"
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
 
-#, fuzzy
-#~ msgid "Activate menu favorite"
-#~ msgstr "Radnja prekinuta"
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-#~ msgid "Menu position"
-#~ msgstr "Položaj centra podataka"
+msgid "Menu collapse"
+msgstr "Uklj/Isklj sklapanje"
+
+#: templates/menus/nav/nav-settings.twig:8
+#, fuzzy
+msgid "Reset menu bubble position"
+msgstr "Rezervirani položaj?"
+
+#: templates/menus/nav/nav-settings.twig:14
+#, fuzzy
+msgid "Activate menu favorite"
+msgstr "Radnja prekinuta"
+
+#: templates/menus/nav/nav-settings.twig:17
+#, fuzzy
+msgid "Activate favorite selection"
+msgstr "Radnja prekinuta"
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "Položaj centra podataka"
 
 #, fuzzy
 #~| msgid "Login"

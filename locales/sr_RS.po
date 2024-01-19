@@ -22343,17 +22343,53 @@ msgid ""
 "instance ?"
 msgstr ""
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Initialization"
-#~ msgstr "Personalizacija"
+msgid "Initialization"
+msgstr "Personalizacija"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Languages"
-#~ msgstr "Jezik"
+msgid "Initialized"
+msgstr "Personalizacija"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Menu position"
-#~ msgstr "Pozicija"
+msgid "Languages"
+msgstr "Jezik"
+
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:5
+msgid "Menu collapse"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:8
+#, fuzzy
+msgid "Reset menu bubble position"
+msgstr "Pozicija"
+
+#: templates/menus/nav/nav-settings.twig:14
+msgid "Activate menu favorite"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:17
+msgid "Activate favorite selection"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "Pozicija"
 
 #, fuzzy
 #~| msgid "Login"

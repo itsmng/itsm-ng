@@ -21997,25 +21997,55 @@ msgid ""
 "instance ?"
 msgstr ""
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Initialization"
-#~ msgstr "Virtualizáció"
+msgid "Initialization"
+msgstr "Virtualizáció"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Languages"
-#~ msgstr "Válassz nyelvet"
+msgid "Initialized"
+msgstr "Virtualizáció"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Reset menu bubble position"
-#~ msgstr "Adatközpont helyzete"
+msgid "Languages"
+msgstr "Válassz nyelvet"
 
-#, fuzzy
-#~ msgid "Activate menu favorite"
-#~ msgstr "Művelet megszakítva"
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:5
+msgid "Menu collapse"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:8
 #, fuzzy
-#~ msgid "Menu position"
-#~ msgstr "Adatközpont helyzete"
+msgid "Reset menu bubble position"
+msgstr "Adatközpont helyzete"
+
+#: templates/menus/nav/nav-settings.twig:14
+#, fuzzy
+msgid "Activate menu favorite"
+msgstr "Művelet megszakítva"
+
+#: templates/menus/nav/nav-settings.twig:17
+#, fuzzy
+msgid "Activate favorite selection"
+msgstr "Művelet megszakítva"
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "Adatközpont helyzete"
 
 #, fuzzy
 #~| msgid "Login"

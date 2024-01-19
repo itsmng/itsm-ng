@@ -22274,29 +22274,56 @@ msgstr ""
 "El evento arrastrado es un evento recurrente.\n"
 "¿Desea mover la serie o la instancia?"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Initialization"
-#~ msgstr "Virtualización"
+msgid "Initialization"
+msgstr "Virtualización"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Languages"
-#~ msgstr "Idioma"
+msgid "Initialized"
+msgstr "Virtualización"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Menu collapse"
-#~ msgstr "Alternar contraíble"
+msgid "Languages"
+msgstr "Idioma"
 
-#, fuzzy
-#~ msgid "Reset menu bubble position"
-#~ msgstr "¿Posición reservada?"
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
 
-#, fuzzy
-#~ msgid "Activate menu favorite"
-#~ msgstr "Operación abortada"
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-#~ msgid "Menu position"
-#~ msgstr "Posición del centro de datos"
+msgid "Menu collapse"
+msgstr "Alternar contraíble"
+
+#: templates/menus/nav/nav-settings.twig:8
+#, fuzzy
+msgid "Reset menu bubble position"
+msgstr "¿Posición reservada?"
+
+#: templates/menus/nav/nav-settings.twig:14
+#, fuzzy
+msgid "Activate menu favorite"
+msgstr "Operación abortada"
+
+#: templates/menus/nav/nav-settings.twig:17
+#, fuzzy
+msgid "Activate favorite selection"
+msgstr "Operación abortada"
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "Posición del centro de datos"
 
 #, fuzzy
 #~| msgid "Login"

@@ -21604,29 +21604,56 @@ msgid ""
 "instance ?"
 msgstr "拖动的事件是一个重复事件。是否要移动序列或实例？"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Initialization"
-#~ msgstr "虚拟化"
+msgid "Initialization"
+msgstr "虚拟化"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Languages"
-#~ msgstr "语言"
+msgid "Initialized"
+msgstr "虚拟化"
 
+#: templates/install/index.twig:31
 #, fuzzy
-#~ msgid "Menu collapse"
-#~ msgstr "切换至折叠"
+msgid "Languages"
+msgstr "语言"
 
-#, fuzzy
-#~ msgid "Reset menu bubble position"
-#~ msgstr " 保留位置？ "
+#: templates/menus/nav/menu.twig:23
+msgid ""
+"You can add your favorite section to this menu. To do this click on the "
+"cogwheel then click and the star next to the menu you wish to add as a "
+"favorite."
+msgstr ""
 
-#, fuzzy
-#~ msgid "Activate menu favorite"
-#~ msgstr "操作中止"
+#: templates/menus/nav/nav-settings.twig:4
+msgid "Menu"
+msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:5
 #, fuzzy
-#~ msgid "Menu position"
-#~ msgstr "数据中心位置"
+msgid "Menu collapse"
+msgstr "切换至折叠"
+
+#: templates/menus/nav/nav-settings.twig:8
+#, fuzzy
+msgid "Reset menu bubble position"
+msgstr " 保留位置？ "
+
+#: templates/menus/nav/nav-settings.twig:14
+#, fuzzy
+msgid "Activate menu favorite"
+msgstr "操作中止"
+
+#: templates/menus/nav/nav-settings.twig:17
+#, fuzzy
+msgid "Activate favorite selection"
+msgstr "操作中止"
+
+#: templates/menus/nav/nav-settings.twig:22
+#, fuzzy
+msgid "Menu position"
+msgstr "数据中心位置"
 
 #, fuzzy
 #~| msgid "Login"
