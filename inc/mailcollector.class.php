@@ -288,20 +288,32 @@ class MailCollector  extends CommonDBTM {
    }
 
 
-   function showGetMessageForm($ID) {
-
-      echo "<br><br><div class='center'>";
-      echo "<form name='form' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-      echo "<table class='tab_cadre'>";
-      echo "<tr class='tab_bg_2'><td class='center'>";
-      echo "<input type='submit' name='get_mails' value=\""._sx('button', 'Get email tickets now').
-             "\" class='submit'>";
-      echo "<input type='hidden' name='id' value='$ID'>";
-      echo "</td></tr>";
-      echo "</table>";
-      Html::closeForm();
-      echo "</div>";
-   }
+    function showGetMessageForm($ID) {
+        $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+                [
+                    'type' => 'submit',
+                    'name' => 'get_mails',
+                    'value' => _sx('button', 'Get email tickets now'),
+                    'class' => 'btn btn-secondary',
+                ]
+            ],
+            'content' => [
+                '' => [
+                    'visible' => true,
+                    'inputs' => [
+                        $this->isNewID($ID) ? [] : [
+                            'type' => 'hidden',
+                            'name' => 'id',
+                            'value' => $ID
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        renderTwigForm($form);
+    }
 
 
    function rawSearchOptions() {
