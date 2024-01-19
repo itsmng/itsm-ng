@@ -150,7 +150,7 @@
     }
     setTimeout(() => {
 		console.log({{tabs|length == 1 ? 1 : 0}})
-    	if ({{tabs|length == 1 ? 1 : 0}}) {
+    	if ({{(tabs|length == 1 or selectedTabs|length == 0) ? 1 : 0}}) {
 			updateWidgetWidth()
 			grid.setStatic(true);
 		}
