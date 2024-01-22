@@ -362,6 +362,20 @@
   </script>
 {% endmacro %}
 
+{% macro checklist(attributes) %}
+  <div style="height: 10rem;overflow-y: auto" class="container border border-secondary ps-3">
+    {% for name, option in attributes.options %}
+      <div class="row">
+        <input class="form-check-input col col-2" type="checkbox" value="{{name}}" id="{{attributes.id}}_{{loop.index}}" name="{{attributes.name}}[]"
+          {% if name in attributes.values %} checked {% endif %}>
+        <label class="form-check-label col col-10" for="{{attributes.id}}_{{loop.index}}">
+          {{option}}
+        </label>
+      </div>
+    {% endfor %}
+  </div>
+{% endmacro %}
+
 {% macro input(attributes, root_doc = '') %}
   {% if attributes.type == 'checkbox' %}
     <div class="form-switch">
@@ -382,6 +396,8 @@
     {{_self.ticketSelect(attributes, root_doc)}}
   {% elseif attributes.type == 'multiSelect' %}
     {{_self.multiSelect(attributes, root_doc)}}
+  {% elseif attributes.type == 'checklist' %}
+    {{_self.checklist(attributes)}}
   {% elseif attributes.type == 'twig' %}
     {% include attributes.template with attributes only %}
   {% elseif attributes.type == 'file' %}
