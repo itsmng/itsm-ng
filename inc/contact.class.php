@@ -222,12 +222,14 @@ class Contact extends CommonDBTM{
 							'type' => 'select',
 							'values' => getOptionForItems("contacttype"),
 							'value' => $this->fields['contacttypes_id'],
+                            'actions' => getItemActionButtons(['info', 'add'], "contacttype"),
 						],
                   __('Title') => [
 							'name' => 'usertitles_id',
 							'type' => 'select',
 							'values' => getOptionForItems("usertitle"),
 							'value' => $this->fields['usertitles_id'],
+                            'actions' => getItemActionButtons(['info', 'add'], "usertitle"),
 						],
 						__('Comments') => [
 							'name' => 'comment',

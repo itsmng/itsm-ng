@@ -18,10 +18,16 @@
 					<span class='sr-only'>{{"Home"|trans}}</span>
 				</a>
 			</div>
-			<div id="searchbar">
-				<input id="searchbar" type="search" placeholder="{{"Search"|trans}}...">
-				<i class="fa fa-search"></i>
-			</div>
+
+            <div id="searchbar">
+                <form role="search" method="get" action="/front/search.php">
+                    <input type="search" name="globalsearch" placeholder="{{"Search"|trans}}...">
+                    <button type="submit" class="btn-transparent">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
 			<ul class='d-flex justify-content-around m-0'>
 				<li id='language_link' class="p-2">
 					<a href="{{root_doc}}/front/preference.php?forcetab=User$1" title={{'Language'|trans}}>
