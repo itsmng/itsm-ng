@@ -513,75 +513,6 @@ class Config extends CommonDBTM {
 
       $rand = mt_rand();
       $canedit = Config::canUpdate();
-      if ($canedit) {
-         echo "<form name='form' action=\"".Toolbox::getItemTypeFormURL(__CLASS__)."\" method='post' data-track-changes='true'>";
-      }
-      echo "<div class='center' id='tabsbody'>";
-      echo "<table class='tab_cadre_fixe'>";
-
-      echo "<tr><th colspan='4'>" . __('Assets') . "</th></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td width='30%'><label for='dropdown_auto_create_infocoms$rand'>". __('Enable the financial and administrative information by default')."</label></td>";
-      echo "<td  width='20%'>";
-      Dropdown::ShowYesNo('auto_create_infocoms', $CFG_GLPI["auto_create_infocoms"], -1, ['rand' => $rand]);
-      echo "</td><td width='20%'><label for='dropdown_monitors_management_restrict$rand'>" . __('Restrict monitor management') . "</label></td>";
-      echo "<td width='30%'>";
-      $this->dropdownGlobalManagement ("monitors_management_restrict",
-                                       $CFG_GLPI["monitors_management_restrict"],
-                                       $rand);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'><td><label for='dropdown_softwarecategories_id_ondelete$rand'>" . __('Software category deleted by the dictionary rules') .
-           "</label></td><td>";
-      SoftwareCategory::dropdown(['value' => $CFG_GLPI["softwarecategories_id_ondelete"],
-                                  'name'  => "softwarecategories_id_ondelete",
-                                  'rand'  => $rand]);
-      echo "</td><td><label for='dropdown_peripherals_management_restrict$rand'>" . __('Restrict device management') . "</label></td><td>";
-      $this->dropdownGlobalManagement ("peripherals_management_restrict",
-                                       $CFG_GLPI["peripherals_management_restrict"],
-                                       $rand);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='showdate$rand'>" .__('End of fiscal year') . "</label></td><td>";
-      Html::showDateField("date_tax", ['value'      => $CFG_GLPI["date_tax"],
-                                       'maybeempty' => false,
-                                       'canedit'    => true,
-                                       'min'        => '',
-                                       'max'        => '',
-                                       'showyear'   => false,
-                                       'rand'       => $rand]);
-      echo "</td><td><label for='dropdown_phones_management_restrict$rand'>" . __('Restrict phone management') . "</label></td><td>";
-      $this->dropdownGlobalManagement ("phones_management_restrict",
-                                       $CFG_GLPI["phones_management_restrict"],
-                                       $rand);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='dropdown_use_autoname_by_entity$rand'>" . __('Automatic fields (marked by *)') . "</label></td><td>";
-      $tab = [0 => __('Global'),
-              1 => __('By entity')];
-      Dropdown::showFromArray('use_autoname_by_entity', $tab,
-                              ['value' => $CFG_GLPI["use_autoname_by_entity"], 'rand' => $rand]);
-      echo "</td><td><label for='dropdown_printers_management_restrict$rand'>" . __('Restrict printer management') . "</label></td><td>";
-      $this->dropdownGlobalManagement("printers_management_restrict",
-                                      $CFG_GLPI["printers_management_restrict"],
-                                      $rand);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='devices_in_menu$rand'>".__('Devices displayed in menu')."</label></td>";
-      echo "<td>";
-
-      $dd_params = [
-         'name'      => 'devices_in_menu',
-         'values'    => $CFG_GLPI['devices_in_menu'],
-         'display'   => true,
-         'rand'      => $rand,
-         'multiple'  => true,
-         'size'      => 3
-      ];
 
       $item_devices_types = [];
       foreach ($CFG_GLPI['itemdevices'] as $key => $itemtype) {
@@ -592,90 +523,204 @@ class Config extends CommonDBTM {
          }
       }
 
-      Dropdown::showFromArray($dd_params['name'], $item_devices_types, $dd_params);
-
-      echo "<input type='hidden' name='_update_devices_in_menu' value='1'>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "</table>";
-
-      if (Session::haveRightsOr("transfer", [CREATE, UPDATE])
-          && Session::isMultiEntitiesMode()) {
-         echo "<br><table class='tab_cadre_fixe'>";
-         echo "<tr><th colspan='2'>" . __('Automatic transfer of computers') . "</th></tr>";
-         echo "<tr class='tab_bg_2'>";
-         echo "<td><label for='dropdown_transfers_id_auto$rand'>" . __('Template for the automatic transfer of computers in another entity') .
-              "</label></td><td>";
-         Transfer::dropdown(['value'      => $CFG_GLPI["transfers_id_auto"],
-                             'name'       => "transfers_id_auto",
-                             'emptylabel' => __('No automatic transfer'),
-                             'rand'       => $rand]);
-         echo "</td></tr>";
-         echo "</table>";
-      }
-
-      echo "<br><table class='tab_cadre_fixe'>";
-      echo "<tr>";
-      echo "<th colspan='4'>".__('Automatically update of the elements related to the computers');
-      echo "</th><th colspan='2'>".__('Unit management')."</th></tr>";
-
-      echo "<tr><th>&nbsp;</th>";
-      echo "<th>" . __('Alternate username') . "</th>";
-      echo "<th>" . User::getTypeName(1) . "</th>";
-      echo "<th>" . Group::getTypeName(1) . "</th>";
-      echo "<th>" . Location::getTypeName(1) . "</th>";
-      echo "<th>" . __('Status') . "</th>";
-      echo "</tr>";
-
-      $fields = ["contact", "user", "group", "location"];
-      echo "<tr class='tab_bg_2'>";
-      echo "<td> " . __('When connecting or updating') . "</td>";
-      $values = [
-         __('Do not copy'),
-         __('Copy'),
+      $form = [
+         'action' => $canedit ? Toolbox::getItemTypeFormURL('config') : '',
+         'buttons' => [
+            $canedit ? [
+               'type' => 'submit',
+               'name' => 'update',
+               'value' => __('Update'),
+               'class' => 'btn btn-secondary'
+            ] : [],
+         ],
+         'content' => [
+            __('Assets') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Enable the financial and administrative information by default') => [
+                     'name' => 'auto_create_infocoms',
+                     'type' => 'checkbox',
+                     'value' => $CFG_GLPI["auto_create_infocoms"],
+                     'col_lg' => 6,
+                  ],
+                  __('Software category deleted by the dictionary rules') => [
+                     'name' => 'softwarecategories_id_ondelete',
+                     'type' => 'select',
+                     'values' => getOptionForItems('SoftwareCategory'),
+                     'value' => $CFG_GLPI["softwarecategories_id_ondelete"],
+                     'col_lg' => 6,
+                  ],
+                  __('Restrict monitor management') => [
+                     'name' => 'monitors_management_restrict',
+                     'type' => 'checkbox',
+                     'value' => $CFG_GLPI["monitors_management_restrict"],
+                     'col_lg' => 6,
+                  ],
+                  __('Restrict device management') => [
+                     'name' => 'peripherals_management_restrict',
+                     'type' => 'checkbox',
+                     'value' => $CFG_GLPI["peripherals_management_restrict"],
+                     'col_lg' => 6,
+                  ],
+                  __('Restrict phone management') => [
+                     'name' => 'phones_management_restrict',
+                     'type' => 'checkbox',
+                     'value' => $CFG_GLPI["phones_management_restrict"],
+                     'col_lg' => 6,
+                  ],
+                  __('Restrict printer management') => [
+                     'name' => 'printers_management_restrict',
+                     'type' => 'checkbox',
+                     'value' => $CFG_GLPI["printers_management_restrict"],
+                     'col_lg' => 6,
+                  ],
+                  __('End of fiscal year') => [
+                     'name' => 'date_tax',
+                     'type' => 'date',
+                     'value' => $CFG_GLPI["date_tax"],
+                     'rand' => $rand,
+                     'col_lg' => 6,
+                     'required' => true,
+                  ],
+                  __('Automatic fields (marked by *)') => [
+                     'name' => 'use_autoname_by_entity',
+                     'type' => 'select',
+                     'values' => [
+                        0 => __('Global'),
+                        1 => __('By entity')
+                     ],
+                     'value' => $CFG_GLPI["use_autoname_by_entity"],
+                     'rand' => $rand,
+                     'col_lg' => 6,
+                  ],
+                  __('Devices displayed in menu') => [
+                     'type' => 'checklist',
+                     'name' => 'devices_in_menu',
+                     'options' => $item_devices_types,
+                     'values' => $CFG_GLPI['devices_in_menu'],
+                  ],
+                  [
+                     'name' => 'update_devices_in_menu',
+                     'type' => 'hidden',
+                     'value' => 1,
+                  ],
+                  __('Automatic transfer of computers') => (Session::haveRightsOr("transfer", [CREATE, UPDATE])
+                     && Session::isMultiEntitiesMode()) ? [
+                     'name' => 'transfers_id_auto',
+                     'type' => 'select',
+                     'values' => array_merge([__('No automatic transfer')], getOptionForItems('Transfer')),
+                     'value' => $CFG_GLPI["transfers_id_auto"],
+                  ] : [],
+               ]
+            ],
+            __('Automatically update of the elements related to the computers') . ' : ' . __('Unit management') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Alternate username') . '(' . __('When connecting or updating') . ')' => [
+                     'name' => 'is_contact_autoupdate',
+                     'type' => 'select',
+                     'values' => [
+                        0 => __('Do not copy'),
+                        1 => __('Copy'),
+                     ],
+                     'value' => $CFG_GLPI["is_contact_autoupdate"],
+                     'col_lg' => 6,
+                  ],
+                  __('Alternate username') . '(' . __('When disconnecting') . ')' => [
+                     'name' => 'is_contact_autoclean',
+                     'type' => 'select',
+                     'values' => [
+                        0 => __('Do not delete'),
+                        1 => __('Clear'),
+                     ],
+                     'value' => $CFG_GLPI["is_contact_autoclean"],
+                     'col_lg' => 6,
+                  ],
+                  User::getTypeName(1) . '(' . __('When connecting or updating') . ')' => [
+                     'name' => 'is_user_autoupdate',
+                     'type' => 'select',
+                     'values' => [
+                        0 => __('Do not copy'),
+                        1 => __('Copy'),
+                     ],
+                     'value' => $CFG_GLPI["is_user_autoupdate"],
+                     'col_lg' => 6,
+                  ],
+                  User::getTypeName(1) . '(' . __('When disconnecting') . ')' => [
+                     'name' => 'is_user_autoclean',
+                     'type' => 'select',
+                     'values' => [
+                        0 => __('Do not delete'),
+                        1 => __('Clear'),
+                     ],
+                     'value' => $CFG_GLPI["is_user_autoclean"],
+                     'col_lg' => 6,
+                  ],
+                  Group::getTypeName(1) . '(' . __('When connecting or updating') . ')' => [
+                     'name' => 'is_group_autoupdate',
+                     'type' => 'select',
+                     'values' => [
+                        0 => __('Do not copy'),
+                        1 => __('Copy'),
+                     ],
+                     'value' => $CFG_GLPI["is_group_autoupdate"],
+                     'col_lg' => 6,
+                  ],
+                  Group::getTypeName(1) . '(' . __('When disconnecting') . ')' => [
+                     'name' => 'is_group_autoclean',
+                     'type' => 'select',
+                     'values' => [
+                        0 => __('Do not delete'),
+                        1 => __('Clear'),
+                     ],
+                     'value' => $CFG_GLPI["is_group_autoclean"],
+                     'col_lg' => 6,
+                  ],
+                  Location::getTypeName(1) . '(' . __('When connecting or updating') . ')' => [
+                     'name' => 'is_location_autoupdate',
+                     'type' => 'select',
+                     'values' => [
+                        0 => __('Do not copy'),
+                        1 => __('Copy'),
+                     ],
+                     'value' => $CFG_GLPI["is_location_autoupdate"],
+                     'col_lg' => 6,
+                  ],
+                  Location::getTypeName(1) . '(' . __('When disconnecting') . ')' => [
+                     'name' => 'is_location_autoclean',
+                     'type' => 'select',
+                     'values' => [
+                        0 => __('Do not delete'),
+                        1 => __('Clear'),
+                     ],
+                     'value' => $CFG_GLPI["is_location_autoclean"],
+                     'col_lg' => 6,
+                  ],
+                  __('Status') . '(' . __('When connecting or updating') . ')' => [
+                     'name' => 'state_autoupdate_mode',
+                     'type' => 'select',
+                     'values' => [
+                        0 => __('Do not copy'),
+                        1 => __('Copy computer status'),
+                     ],
+                     'value' => $CFG_GLPI["state_autoupdate_mode"],
+                     'col_lg' => 6,
+                  ],
+                  __('Status') . '(' . __('When disconnecting') . ')' => [
+                     'name' => 'state_autoclean_mode',
+                     'type' => 'select',
+                     'values' => [
+                        0 => __('Do not delete'),
+                        1 => __('Clear status'),
+                     ],
+                     'value' => $CFG_GLPI["state_autoclean_mode"],
+                     'col_lg' => 6,
+                  ],
+               ]
+            ]
+         ]
       ];
-
-      foreach ($fields as $field) {
-         echo "<td>";
-         $fieldname = "is_".$field."_autoupdate";
-         Dropdown::showFromArray($fieldname, $values, ['value' => $CFG_GLPI[$fieldname]]);
-         echo "</td>";
-      }
-
-      echo "<td>";
-      State::dropdownBehaviour("state_autoupdate_mode", __('Copy computer status'),
-                               $CFG_GLPI["state_autoupdate_mode"]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td> " . __('When disconnecting') . "</td>";
-      $values = [
-         __('Do not delete'),
-         __('Clear'),
-      ];
-
-      foreach ($fields as $field) {
-         echo "<td>";
-         $fieldname = "is_".$field."_autoclean";
-         Dropdown::showFromArray($fieldname, $values, ['value' => $CFG_GLPI[$fieldname]]);
-         echo "</td>";
-      }
-
-      echo "<td>";
-      State::dropdownBehaviour("state_autoclean_mode", __('Clear status'),
-                               $CFG_GLPI["state_autoclean_mode"]);
-      echo "</td></tr>";
-
-      if ($canedit) {
-         echo "<tr class='tab_bg_2'>";
-         echo "<td colspan='6' class='center'>";
-         echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
-         echo "</td></tr>";
-      }
-
-      echo "</table></div>";
-      Html::closeForm();
+      renderTwigForm($form);
    }
 
 
