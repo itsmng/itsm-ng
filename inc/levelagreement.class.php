@@ -162,74 +162,108 @@ abstract class LevelAgreement extends CommonDBChild {
          $this->check(-1, CREATE, $options);
       }
 
-      $this->showFormHeader($options);
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name", ['value' => $this->fields["name"]]);
-      echo "<td rowspan='".$rowspan."'>".__('Comments')."</td>";
-      echo "<td rowspan='".$rowspan."'>
-            <textarea cols='45' rows='8' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('SLM')."</td>";
-      echo "<td>";
-      echo $slm->getLink();
-      echo "<input type='hidden' name='slms_id' value='".$this->fields['slms_id']."'>";
-      echo "</td></tr>";
-
-      if ($ID > 0) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Last update')."</td>";
-         echo "<td>".($this->fields["date_mod"] ? Html::convDateTime($this->fields["date_mod"])
-                                                : __('Never'));
-         echo "</td></tr>";
-      }
-
-      echo "<tr class='tab_bg_1'><td>"._n('Type', 'Types', 1)."</td>";
-      echo "<td>";
-      self::getTypeDropdown(['value' => $this->fields["type"]]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'><td>".__('Maximum time')."</td>";
-      echo "<td>";
-      Dropdown::showNumber("number_time", ['value' => $this->fields["number_time"],
-                                           'min'   => 0]);
-      $possible_values = ['minute' => _n('Minute', 'Minutes', Session::getPluralNumber()),
-                          'hour'   => _n('Hour', 'Hours', Session::getPluralNumber()),
-                          'day'    => _n('Day', 'Days', Session::getPluralNumber())];
-      $rand = Dropdown::showFromArray('definition_time', $possible_values,
-                                      ['value'     => $this->fields["definition_time"],
-                                       'on_change' => 'appearhideendofworking()']);
-      echo "\n<script type='text/javascript' >\n";
-      echo "function appearhideendofworking() {\n";
-      echo "if ($('#dropdown_definition_time$rand option:selected').val() == 'day') {
-               $('#title_endworkingday').show();
-               $('#dropdown_endworkingday').show();
-            } else {
-               $('#title_endworkingday').hide();
-               $('#dropdown_endworkingday').hide();
-            }";
-      echo "}\n";
-      echo "appearhideendofworking();\n";
-      echo "</script>\n";
-
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><div id='title_endworkingday'>".__('End of working day')."</div></td>";
-      echo "<td><div id='dropdown_endworkingday'>";
-      Dropdown::showYesNo("end_of_working_day", $this->fields["end_of_working_day"]);
-      echo "</div></td>";
-
-      echo "<td colspan='2'>";
+      ob_start();
       $this->showFormWarning();
-      echo "</td>";
-      echo "</tr>";
+      $warnings = ob_get_clean();
+      
+      $form = [
+         'action' => $options['target'] ?? $this->getFormURL(),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => $this->isNewID($ID) ? 'add' : 'update',
+               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary'
+            ],
+            !$this->isNewID($ID) && $this->can($ID, PURGE) ? [
+               'type' => 'submit',
+               'name' => 'purge',
+               'value' => __('Delete permanently'),
+               'class' => 'btn btn-danger'
+            ] : null,
+            ],
+            'content' => [
+               '' => [
+                  'visible' => true,
+                  'inputs' => [
+                     $this->isNewID($ID) ? [] : [
+                        'type' => 'hidden',
+                        'name' => 'id',
+                        'value' => $ID
+                     ],
+                     __('Name') => [
+                        'type' => 'text',
+                        'name' => 'name',
+                        'value' => $this->fields['name'],
+                     ],
+                     __('SLM') => [
+                        'content' => $slm->getLink(),
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'slms_id',
+                        'value' => $this->fields['slms_id'],
+                     ],
+                     __('Last update') => $ID > 0 ? [
+                        'content' => $this->fields["date_mod"] ? Html::convDateTime($this->fields["date_mod"])
+                        : __('Never'),
+                     ] : [],
+                     _n('Type', 'Types', 1) => [
+                        'type' => 'select',
+                        'name' => 'type',
+                        'value' => $this->fields['type'],
+                        'values' => self::getTypes(),
+                     ],
 
-      $this->showFormButtons($options);
+                        __('Maximum time') => [
+                           'type' => 'number',
+                           'name' => 'number_time',
+                           'value' => $this->fields['number_time'],
+                        'min' => 0,
+                     ],
+                     '' => [
+                        'type' => 'select',
+                        'name' => 'definition_time',
+                        'id' => 'dropdown_definition_time',
+                        'value' => $this->fields['definition_time'],
+                        'values' => [
+                           'minute' => _n('Minute', 'Minutes', Session::getPluralNumber()),
+                           'hour' => _n('Hour', 'Hours', Session::getPluralNumber()),
+                           'day' => _n('Day', 'Days', Session::getPluralNumber()),
+                        ],
+                        'hooks' => [
+                           'change' => <<<JS
+                           if ($('#dropdown_definition_time').val() == 'day') {
+                              $('#end_of_working_day').removeAttr('disabled');
+                           } else {
+                              $('#end_of_working_day').attr('disabled', 'disabled');
+                           }
+                           JS,
+                        ]
+                     ],
+                     __('End of working day') => [
+                        'type' => 'checkbox',
+                        'id' => 'end_of_working_day',
+                        'name' => 'end_of_working_day',
+                        'value' => $this->fields['end_of_working_day'],
+                        $this->fields['calendars_id'] != 'day' ? 'disabled' : '' => true,
+                     ],
+                     __('Comments') => [
+                        'type' => 'textarea',
+                        'name' => 'comment',
+                        'value' => $this->fields['comment'],
+                        'rows' => 8,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                     ],
+                     ' ' => [
+                        'content' => $warnings,
+                     ]
+                  ]
+               ]
+            ]
+      ];
+      renderTwigForm($form);
 
       return true;
    }
