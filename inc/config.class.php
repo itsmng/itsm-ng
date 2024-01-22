@@ -1864,7 +1864,7 @@ class Config extends CommonDBTM {
             echo '<form method="POST" action="' . static::getFormURL() . '" style="display:inline;">';
             echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
             echo Html::hidden('reset_opcache', ['value' => 1]);
-            echo '<button type="submit" class="vsubmit">';
+            echo '<button type="submit" class="btn btn-secondary">';
             echo __('Reset');
             echo '</button>';
             echo '</form>';
@@ -1916,7 +1916,7 @@ class Config extends CommonDBTM {
          echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
          echo Html::hidden('reset_cache', ['value' => 1]);
          echo Html::hidden('optname', ['value' => 'cache_db']);
-         echo '<button type="submit" class="vsubmit">';
+         echo '<button type="submit" class="btn btn-secondary">';
          echo __('Reset');
          echo '</button>';
          echo '</form>';
@@ -1937,7 +1937,7 @@ class Config extends CommonDBTM {
          echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
          echo Html::hidden('reset_cache', ['value' => 1]);
          echo Html::hidden('optname', ['value' => 'cache_trans']);
-         echo '<button type="submit" class="vsubmit">';
+         echo '<button type="submit" class="btn btn-secondary">';
          echo __('Reset');
          echo '</button>';
          echo '</form>';
