@@ -675,8 +675,6 @@ class Config extends CommonDBTM {
          return;
       }
 
-      require_once GLPI_ROOT . '/src/twig/twig.utils.php';
-
       $form = [
          'action' => Toolbox::getItemTypeFormURL('config'),
 			'buttons' => [

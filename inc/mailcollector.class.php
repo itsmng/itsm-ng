@@ -219,144 +219,6 @@ class MailCollector  extends CommonDBTM {
    function showForm($ID) {
 
       return MailServer::showMailServerConfigForm('mailcollector', $this->fields, $this->isNewID($ID), $ID);
-
-    //   $this->initForm($ID, $options);
-    //   $options['colspan'] = 1;
-    //   $this->showFormHeader($options);
-
-    //   echo "<tr class='tab_bg_1'><td>";
-    //   echo __('Name');
-    //   echo '&nbsp;';
-    //   Html::showToolTip(__('If name is a valid email address, it will be automatically added to blacklisted senders.'));
-    //   echo "</td><td>";
-    //   Html::autocompletionTextField($this, "name");
-    //   echo "</td></tr>";
-
-    //   if ($this->fields['errors']) {
-    //      echo "<tr class='tab_bg_1_2'><td>".__('Connection errors')."</td>";
-    //      echo "<td>".$this->fields['errors']."</td>";
-    //      echo "</tr>";
-    //   }
-
-    //   echo "<tr class='tab_bg_1'><td>".__('Active')."</td><td>";
-    //   Dropdown::showYesNo("is_active", $this->fields["is_active"]);
-    //   echo "</td></tr>";
-
-    //   $type = Toolbox::showMailServerConfig($this->fields["host"]);
-
-    //   echo "<tr class='tab_bg_1'><td>".__('Login')."</td><td>";
-    //   Html::autocompletionTextField($this, "login");
-    //   echo "</td></tr>";
-
-    //   echo "<tr class='tab_bg_1'><td>".__('Password')."</td>";
-    //   echo "<td><input type='password' name='passwd' value='' size='20' autocomplete='new-password'>";
-    //   if ($ID > 0) {
-    //      echo "<input type='checkbox' name='_blank_passwd'>&nbsp;".__('Clear');
-    //   }
-    //   echo "</td></tr>";
-
-    //   if ($type != "pop") {
-    //      echo "<tr class='tab_bg_1'><td>" . __('Accepted mail archive folder (optional)') . "</td>";
-    //      echo "<td>";
-    //      echo "<input size='30' type='text' id='accepted_folder' name='accepted' value=\"".$this->fields['accepted']."\">";
-    //      echo "<i class='fa fa-list pointer get-imap-folder'></i>";
-    //      echo "</td></tr>\n";
-
-    //      echo "<tr class='tab_bg_1'><td>" . __('Refused mail archive folder (optional)') . "</td>";
-    //      echo "<td>";
-    //      echo "<input size='30' type='text' id='refused_folder' name='refused' value=\"".$this->fields['refused']."\">";
-    //      echo "<i class='fa fa-list pointer get-imap-folder'></i>";
-    //      echo "</td></tr>\n";
-    //   }
-
-    //   echo "<tr class='tab_bg_1'>";
-    //   echo "<td width='200px'> ". __('Maximum size of each file imported by the mails receiver').
-    //        "</td><td>";
-    //   self::showMaxFilesize('filesize_max', $this->fields["filesize_max"]);
-    //   echo "</td></tr>";
-
-    //   echo "<tr class='tab_bg_1'><td>" . __('Use mail date, instead of collect one') . "</td>";
-    //   echo "<td>";
-    //   Dropdown::showYesNo("use_mail_date", $this->fields["use_mail_date"]);
-    //   echo "</td></tr>\n";
-
-    //   echo "<tr class='tab_bg_1'><td>" . __('Use Reply-To as requester (when available)') . "</td>";
-    //   echo "<td>";
-    //   Dropdown::showFromArray("requester_field", [
-    //      self::REQUESTER_FIELD_FROM => __('No'),
-    //      self::REQUESTER_FIELD_REPLY_TO => __('Yes')
-    //   ], ["value" => $this->fields['requester_field']]);
-    //   echo "</td></tr>\n";
-
-    //   echo "<tr class='tab_bg_1'><td>" . __('Add CC users as observer') . "</td>";
-    //   echo "<td>";
-    //   Dropdown::showYesNo("add_cc_to_observer", $this->fields["add_cc_to_observer"]);
-    //   echo "</td></tr>\n";
-
-    //   echo "<tr class='tab_bg_1'><td>" . __('Collect only unread mail') . "</td>";
-    //   echo "<td>";
-    //   Dropdown::showYesNo("collect_only_unread", $this->fields["collect_only_unread"]);
-    //   echo "</td></tr>\n";
-
-    //   echo "<tr class='tab_bg_1'><td>".__('Comments')."</td>";
-    //   echo "<td><textarea cols='45' rows='5' name='comment' >".$this->fields["comment"]."</textarea>";
-
-    //   if ($ID > 0) {
-    //      echo "<br>";
-    //      //TRANS: %s is the datetime of update
-    //      printf(__('Last update on %s'), Html::convDateTime($this->fields["date_mod"]));
-    //   }
-    //   echo "</td></tr>";
-
-    //   $this->showFormButtons($options);
-
-    //   if ($type != 'pop') {
-    //      echo "<div id='imap-folder'></div>";
-    //      echo Html::scriptBlock("$(function() {
-    //         $('#imap-folder')
-    //            .dialog(options = {
-    //               autoOpen: false,
-    //               autoResize:true,
-    //               width: 'auto',
-    //               modal: true,
-    //            });
-
-    //         $(document).on('click', '.get-imap-folder', function() {
-    //            var input = $(this).prev('input');
-
-    //            var data = 'action=getFoldersList';
-    //            data += '&input_id=' + input.attr('id');
-    //            // Get form values without server_mailbox value to prevent filtering
-    //            data += '&' + $(this).closest('form').find(':not([name=\"server_mailbox\"])').serialize();
-    //            // Force empty value for server_mailbox
-    //            data += '&server_mailbox=';
-
-    //            $('#imap-folder')
-    //               .html('')
-    //               .load('".$CFG_GLPI['root_doc']."/ajax/mailcollector.php', data)
-    //               .dialog('open');
-    //         });
-
-    //         $(document).on('click', '.select_folder li', function(event) {
-    //            event.stopPropagation();
-
-    //            var li       = $(this);
-    //            var input_id = li.data('input-id');
-    //            var folder   = li.children('.folder-name').html();
-
-    //            var _label = '';
-    //            var _parents = li.parents('li').children('.folder-name');
-    //            for (i = _parents.length -1 ; i >= 0; i--) {
-    //               _label += $(_parents[i]).html() + '/';
-    //            }
-    //            _label += folder;
-
-    //            $('#'+input_id).val(_label);
-    //            $('#imap-folder').dialog('close');
-    //         })
-    //      });");
-    //   }
-      return true;
    }
 
    /**
@@ -426,20 +288,32 @@ class MailCollector  extends CommonDBTM {
    }
 
 
-   function showGetMessageForm($ID) {
-
-      echo "<br><br><div class='center'>";
-      echo "<form name='form' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-      echo "<table class='tab_cadre'>";
-      echo "<tr class='tab_bg_2'><td class='center'>";
-      echo "<input type='submit' name='get_mails' value=\""._sx('button', 'Get email tickets now').
-             "\" class='submit'>";
-      echo "<input type='hidden' name='id' value='$ID'>";
-      echo "</td></tr>";
-      echo "</table>";
-      Html::closeForm();
-      echo "</div>";
-   }
+    function showGetMessageForm($ID) {
+        $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+                [
+                    'type' => 'submit',
+                    'name' => 'get_mails',
+                    'value' => _sx('button', 'Get email tickets now'),
+                    'class' => 'btn btn-secondary',
+                ]
+            ],
+            'content' => [
+                '' => [
+                    'visible' => true,
+                    'inputs' => [
+                        $this->isNewID($ID) ? [] : [
+                            'type' => 'hidden',
+                            'name' => 'id',
+                            'value' => $ID
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        renderTwigForm($form);
+    }
 
 
    function rawSearchOptions() {
