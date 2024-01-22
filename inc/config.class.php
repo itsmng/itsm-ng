@@ -1091,17 +1091,25 @@ class Config extends CommonDBTM {
       $tz_warning = '';
 
       $form = [
-         'action' => $data["id"] === Session::getLoginUserID() ? $CFG_GLPI['root_doc']."/front/preference.php" : User::getFormURL(),
-         'method' => 'post',
+         'action' => isset($data['id'])
+            && $data["id"] === Session::getLoginUserID() ? $CFG_GLPI['root_doc']."/front/preference.php" : User::getFormURL(),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => 'update',
+               'value' => _sx('button', 'Save'),
+               'class' => 'btn btn-secondary',
+            ],
+         ],
          'content' => [
             __('Personalization') => [
                'visible' => true,
                'inputs' => [
-                  $userpref && 'id' => [
+                  ($userpref && isset($data['id'])) ? [
                      'type' => 'hidden',
                      'name' => 'id',
                      'value' => $data['id'],
-                  ],
+                  ] : [],
                   (Config::canUpdate() || !GLPI_DEMO_MODE) && $userpref?__('Language'):__('Default language') => [
                      'type' => 'select',
                      'name' => 'language',
