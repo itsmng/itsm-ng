@@ -428,7 +428,7 @@ abstract class LevelAgreement extends CommonDBChild {
          echo "}";
          echo "</script>";
          echo "<div class='center firstbloc'>".
-               "<a class='vsubmit' href='javascript:viewAddLa$instID$rand();'>";
+               "<a class='btn btn-secondary' href='javascript:viewAddLa$instID$rand();'>";
          echo __('Add a new item')."</a></div>\n";
       }
 
