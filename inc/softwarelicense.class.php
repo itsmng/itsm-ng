@@ -280,19 +280,29 @@ class SoftwareLicense extends CommonTreeDropdown {
       $form = [
          'action' => $this->getFormURL(),
          'buttons' => [
-            [
-               'type' => 'submit',
-               'name' => $ID && $ID != 0 ? 'update' : 'add',
-               'value' => "<i class='fas fa-save me-1'></i>" . ($ID && $ID != 0 ? __('Update') : __('Add')),
-               'class' => 'btn btn-primary'
-            ],
-            [
-               'type' => 'submit',
-               'name' => 'delete',
-               'value' => "<i class='fas fa-trash-alt me-1'></i>" .  __('Put in trashbin'),
-               'class' => 'btn btn-primary'
-            ]
-         ],
+            $this->fields["is_deleted"] == 1 && self::canDelete() ? [
+              'type' => 'submit',
+              'name' => 'restore',
+              'value' => __('Restore'),
+              'class' => 'btn btn-secondary'
+            ] : ($this->canUpdateItem() ? [
+              'type' => 'submit',
+              'name' => $this->isNewID($ID) ? 'add' : 'update',
+              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+              'class' => 'btn btn-secondary'
+            ] : []),
+            !$this->isNewID($ID) && !$this->isDeleted() && $this->canDeleteItem() ? [
+              'type' => 'submit',
+              'name' => 'delete',
+              'value' => __('Put in trashbin'),
+              'class' => 'btn btn-danger'
+            ] : (!$this->isNewID($ID) && self::canPurge() ? [
+              'type' => 'submit',
+              'name' => 'purge',
+              'value' => __('Delete permanently'),
+              'class' => 'btn btn-danger'
+            ] : []),
+          ],
          'content' => [
             __('New item').' - '.self::getTypeName(1) => [
                'visible' => true,
