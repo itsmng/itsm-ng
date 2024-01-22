@@ -950,148 +950,253 @@ class Config extends CommonDBTM {
          return;
       }
 
-      $rand = mt_rand();
       $canedit = Config::canUpdate();
-      if ($canedit) {
-         echo "<form name='form' action=\"".Toolbox::getItemTypeFormURL(__CLASS__)."\" method='post' data-track-changes='true'>";
+
+      for ($index=0; $index<=100; $index += 10) {
+         $sizes[$index*1048576] = sprintf(__('%s Mio'), $index);
       }
-      echo "<div class='center spaced' id='tabsbody'>";
-      echo "<table class='tab_cadre_fixe'>";
+      $sizes[0] = __('No import');
 
-      echo "<tr><th colspan='4'>" . __('Assistance') . "</th></tr>";
+      $urgencynames = [
+         1 => Ticket::getUrgencyName(1),
+         2 => Ticket::getUrgencyName(2),
+         3 => Ticket::getUrgencyName(3),
+         4 => Ticket::getUrgencyName(4),
+         5 => Ticket::getUrgencyName(5),
+      ];
 
-      echo "<tr class='tab_bg_2'>";
-      echo "<td width='30%'><label for='dropdown_time_step$rand'>" . __('Step for the hours (minutes)') . "</label></td>";
-      echo "<td width='20%'>";
-      Dropdown::showNumber('time_step', ['value' => $CFG_GLPI["time_step"],
-                                         'min'   => 30,
-                                         'max'   => 60,
-                                         'step'  => 30,
-                                         'toadd' => [1  => 1,
-                                                     5  => 5,
-                                                     10 => 10,
-                                                     15 => 15,
-                                                     20 => 20],
-                                         'rand'  => $rand]);
-      echo "</td>";
-      echo "<td width='30%'><label for='dropdown_planning_begin$rand'>" .__('Limit of the schedules for planning') . "</label></td>";
-      echo "<td width='20%'>";
-      Dropdown::showHours('planning_begin', ['value' => $CFG_GLPI["planning_begin"], 'rand' => $rand]);
-      echo "&nbsp;<label for='dropdown_planning_end$rand'>-></label>&nbsp;";
-      Dropdown::showHours('planning_end', ['value' => $CFG_GLPI["planning_end"], 'rand' => $rand]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='dropdown_default_mailcollector_filesize_max$rand'>".__('Default file size limit imported by the mails receiver')."</label></td><td>";
-      MailCollector::showMaxFilesize('default_mailcollector_filesize_max',
-                                     $CFG_GLPI["default_mailcollector_filesize_max"],
-                                     $rand);
-      echo "</td>";
-
-      echo "<td><label for='dropdown_documentcategories_id_forticket$rand'>" . __('Default heading when adding a document to a ticket') . "</label></td><td>";
-      DocumentCategory::dropdown(['value' => $CFG_GLPI["documentcategories_id_forticket"],
-                                  'name'  => "documentcategories_id_forticket",
-                                  'rand'  => $rand]);
-      echo "</td></tr>";
-      echo "<tr class='tab_bg_2'><td><label for='dropdown_default_software_helpdesk_visible$rand'>" . __('By default, a software may be linked to a ticket') . "</label></td><td>";
-      Dropdown::showYesNo("default_software_helpdesk_visible",
-                          $CFG_GLPI["default_software_helpdesk_visible"],
-                          -1,
-                          ['rand' => $rand]);
-      echo "</td>";
-
-      echo "<td><label for='dropdown_keep_tickets_on_delete$rand'>" . __('Keep tickets when purging hardware in the inventory') . "</label></td><td>";
-      Dropdown::showYesNo("keep_tickets_on_delete", $CFG_GLPI["keep_tickets_on_delete"], -1, ['rand' => $rand]);
-      echo "</td></tr><tr class='tab_bg_2'><td><label for='dropdown_use_check_pref$rand'>".__('Show personnal information in new ticket form (simplified interface)');
-      echo "</label></td>";
-      echo "<td>";
-      Dropdown::showYesNo('use_check_pref', $CFG_GLPI['use_check_pref'], -1, ['rand' => $rand]);
-      echo "</td>";
-
-      echo "<td><label for='dropdown_use_anonymous_helpdesk$rand'>" .__('Allow anonymous ticket creation (helpdesk.receiver)') . "</label></td><td>";
-      Dropdown::showYesNo("use_anonymous_helpdesk", $CFG_GLPI["use_anonymous_helpdesk"], -1, ['rand' => $rand]);
-      echo "</td></tr><tr class='tab_bg_2'><td><label for='dropdown_use_anonymous_followups$rand'>" . __('Allow anonymous followups (receiver)') . "</label></td><td>";
-      Dropdown::showYesNo("use_anonymous_followups", $CFG_GLPI["use_anonymous_followups"], -1, ['rand' => $rand]);
-      echo "</td><td colspan='2'></td></tr>";
-
-      echo "</table>";
-
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='7'>" . __('Matrix of calculus for priority');
-      echo "<input type='hidden' name='_matrix' value='1'></th></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='b right' colspan='2'>".__('Impact')."</td>";
-
-      $isimpact = [];
-      for ($impact=5; $impact>=1; $impact--) {
-         echo "<td class='center'>".Ticket::getImpactName($impact).'<br>';
-
-         if ($impact==3) {
-            $isimpact[3] = 1;
-            echo "<input type='hidden' name='_impact_3' value='1'>";
-
+      $headers = [];
+      $headers['title'] = __('Urgency') . ' / ' . __('Impact');
+      for ($i=5; $i>0; $i--) {
+         ob_start();
+         if ($i != 3) {
+            renderTwigTemplate('macros/input.twig', [
+               'name' => "_impact_{$i}",
+               'type' => 'checkbox',
+               'value' => ($CFG_GLPI['impact_mask'] & (1<<$i)) >0,
+            ]);
          } else {
-            $isimpact[$impact] = (($CFG_GLPI['impact_mask']&(1<<$impact)) >0);
-            Dropdown::showYesNo("_impact_{$impact}", $isimpact[$impact]);
+            echo "<input type='hidden' name='_impact_{$i}' value='1' />";
          }
-         echo "</td>";
-      }
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td class='b' colspan='2'>".__('Urgency')."</td>";
-
-      for ($impact=5; $impact>=1; $impact--) {
-         echo "<td>&nbsp;</td>";
-      }
-      echo "</tr>";
-
-      $isurgency = [];
-      for ($urgency=5; $urgency>=1; $urgency--) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".Ticket::getUrgencyName($urgency)."&nbsp;</td>";
-         echo "<td>";
-
-         if ($urgency==3) {
-            $isurgency[3] = 1;
-            echo "<input type='hidden' name='_urgency_3' value='1'>";
-
+         $headers['x'][$i] = Ticket::getImpactName($i) . ob_get_clean();
+         ob_start();
+         if ($i != 3) {
+            renderTwigTemplate('macros/input.twig', [
+               'name' => "_urgency_{$i}",
+               'type' => 'checkbox',
+               'value' => ($CFG_GLPI['urgency_mask'] & (1<<$i)) >0,
+            ]);
          } else {
-            $isurgency[$urgency] = (($CFG_GLPI['urgency_mask']&(1<<$urgency)) >0);
-            Dropdown::showYesNo("_urgency_{$urgency}", $isurgency[$urgency]);
+            echo "<input type='hidden' name='_urgency_{$i}' value='1' />";
          }
-         echo "</td>";
+         $headers['y'][$i] = Ticket::getUrgencyName($i) . ob_get_clean();
+      }
 
-         for ($impact=5; $impact>=1; $impact--) {
+      $matrix = [];
+      for ($urgency=1; $urgency<=5; $urgency++) {
+         for ($impact=5; $impact>0; $impact--) {
             $pri = round(($urgency+$impact)/2);
 
             if (isset($CFG_GLPI['priority_matrix'][$urgency][$impact])) {
                $pri = $CFG_GLPI['priority_matrix'][$urgency][$impact];
             }
-
-            if ($isurgency[$urgency] && $isimpact[$impact]) {
-               $bgcolor=$_SESSION["glpipriority_$pri"];
-               echo "<td class='center' bgcolor='$bgcolor'>";
-               Ticket::dropdownPriority(['value' => $pri,
-                                              'name'  => "_matrix_{$urgency}_{$impact}"]);
-               echo "</td>";
+            if (($CFG_GLPI['impact_mask'] & (1<<$impact)) != 0
+               && ($CFG_GLPI['urgency_mask'] & (1<<$urgency)) != 0) {
+               ob_start();
+               renderTwigTemplate('macros/input.twig', [
+                  'name' => "_matrix_{$urgency}_{$impact}",
+                  'type' => 'select',
+                  'values' => $urgencynames,
+                  'value' => $CFG_GLPI['priority_matrix'][$urgency][$impact]
+               ]);
+               $content = ob_get_clean();
+               $matrix[$urgency][$impact] = [
+                  'content' => $content,
+                  'style' => "background:" . $_SESSION['glpipriority_'.$pri],
+               ];
             } else {
-               echo "<td><input type='hidden' name='_matrix_{$urgency}_{$impact}' value='$pri'>
-                     </td>";
+               $matrix[$urgency][$impact] = [
+                  'content' => "<input
+                     type='hidden'
+                     name='_matrix_{$urgency}_{$impact}'
+                     value='{$CFG_GLPI['priority_matrix'][$urgency][$impact]}' />",
+               ];
             }
          }
-         echo "</tr>\n";
-      }
-      if ($canedit) {
-         echo "<tr class='tab_bg_2'>";
-         echo "<td colspan='7' class='center'>";
-         echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
-         echo "</td></tr>";
       }
 
-      echo "</table></div>";
-      Html::closeForm();
+      $form = [
+         'action' => $canedit ? Toolbox::getItemTypeFormURL('config') : '',
+         'buttons' => [
+            $canedit ? [
+               'type' => 'submit',
+               'name' => 'update',
+               'value' => __('Update'),
+               'class' => 'btn btn-secondary'
+            ] : [],
+         ],
+         'content' => [
+            __('Assistance') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Limit of the schedules for planning : From') => [
+                     'name' => 'planning_begin',
+                     'type' => 'time',
+                     'value' => $CFG_GLPI["planning_begin"],
+                     'col_lg' => 6,
+                  ],
+                  __('To') => [
+                     'name' => 'planning_end',
+                     'type' => 'time',
+                     'value' => $CFG_GLPI["planning_end"],
+                     'col_lg' => 6,
+                  ],
+                  __('Step for the hours (minutes)') => [
+                     'name' => 'time_step',
+                     'type' => 'number',
+                     'value' => $CFG_GLPI["time_step"],
+                     'min' => 1,
+                     'max' => 60,
+                     'step' => 1,
+                  ],
+                  __('Default file size limit imported by the mails receiver') => [
+                     'name' => 'default_mailcollector_filesize_max',
+                     'type' => 'select',
+                     'values' => $sizes,
+                     'value' => $CFG_GLPI["default_mailcollector_filesize_max"],
+                  ],
+                  __('Default heading when adding a document to a ticket') => [
+                     'name' => 'documentcategories_id_forticket',
+                     'type' => 'select',
+                     'values' => getOptionForItems('DocumentCategory'),
+                     'value' => $CFG_GLPI["documentcategories_id_forticket"],
+                     'actions' => getItemActionButtons(['info', 'add'], 'DocumentCategory'),
+                  ],
+                  __('By default, a software may be linked to a ticket') => [
+                     'name' => 'default_software_helpdesk_visible',
+                     'type' => 'checkbox',
+                     'value' => $CFG_GLPI["default_software_helpdesk_visible"],
+                  ],
+                  __('Keep tickets when purging hardware in the inventory') => [
+                     'name' => 'keep_tickets_on_delete',
+                     'type' => 'checkbox',
+                     'value' => $CFG_GLPI["keep_tickets_on_delete"],
+                  ],
+                  __('Show personnal information in new ticket form (simplified interface)') => [
+                     'name' => 'use_check_pref',
+                     'type' => 'checkbox',
+                     'value' => $CFG_GLPI["use_check_pref"],
+                  ],
+                  __('Allow anonymous ticket creation (helpdesk.receiver)') => [
+                     'name' => 'use_anonymous_helpdesk',
+                     'type' => 'checkbox',
+                     'value' => $CFG_GLPI["use_anonymous_helpdesk"],
+                  ],
+                  __('Allow anonymous followups (receiver)') => [
+                     'name' => 'use_anonymous_followups',
+                     'type' => 'checkbox',
+                     'value' => $CFG_GLPI["use_anonymous_followups"],
+                  ],
+                  [
+                     'type' => 'hidden',
+                     'name' => '_matrix',
+                     'value' => 1,
+                  ],
+                  __('Matrix of calculus for priority') => [
+                     'type' => 'twig',
+                     'template' => 'matrix.twig',
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                     'headers' => $headers,
+                     'matrix' => $matrix,
+                  ]
+               ]
+            ]
+         ]
+      ];
+      //debug matrix
+      renderTwigForm($form);
+      // if ($canedit) {
+      //    echo "<form name='form' action=\"".Toolbox::getItemTypeFormURL(__CLASS__)."\" method='post' data-track-changes='true'>";
+      // }
+      // echo "<div class='center spaced' id='tabsbody'>";
+
+      // echo "<table class='tab_cadre_fixe'>";
+      // echo "<tr><th colspan='7'>" . __('Matrix of calculus for priority');
+      // echo "<input type='hidden' name='_matrix' value='1'></th></tr>";
+
+      // echo "<tr class='tab_bg_2'>";
+      // echo "<td class='b right' colspan='2'>".__('Impact')."</td>";
+
+      // $isimpact = [];
+      // for ($impact=5; $impact>=1; $impact--) {
+      //    echo "<td class='center'>".Ticket::getImpactName($impact).'<br>';
+
+      //    if ($impact==3) {
+      //       $isimpact[3] = 1;
+      //       echo "<input type='hidden' name='_impact_3' value='1'>";
+
+      //    } else {
+      //       $isimpact[$impact] = (($CFG_GLPI['impact_mask']&(1<<$impact)) >0);
+      //       Dropdown::showYesNo("_impact_{$impact}", $isimpact[$impact]);
+      //    }
+      //    echo "</td>";
+      // }
+      // echo "</tr>";
+
+      // echo "<tr class='tab_bg_1'>";
+      // echo "<td class='b' colspan='2'>".__('Urgency')."</td>";
+
+      // for ($impact=5; $impact>=1; $impact--) {
+      //    echo "<td>&nbsp;</td>";
+      // }
+      // echo "</tr>";
+
+      // $isurgency = [];
+      // for ($urgency=5; $urgency>=1; $urgency--) {
+      //    echo "<tr class='tab_bg_1'>";
+      //    echo "<td>".Ticket::getUrgencyName($urgency)."&nbsp;</td>";
+      //    echo "<td>";
+
+      //    if ($urgency==3) {
+      //       $isurgency[3] = 1;
+      //       echo "<input type='hidden' name='_urgency_3' value='1'>";
+
+      //    } else {
+      //       $isurgency[$urgency] = (($CFG_GLPI['urgency_mask']&(1<<$urgency)) >0);
+      //       Dropdown::showYesNo("_urgency_{$urgency}", $isurgency[$urgency]);
+      //    }
+      //    echo "</td>";
+
+      //    for ($impact=5; $impact>=1; $impact--) {
+      //       $pri = round(($urgency+$impact)/2);
+
+      //       if (isset($CFG_GLPI['priority_matrix'][$urgency][$impact])) {
+      //          $pri = $CFG_GLPI['priority_matrix'][$urgency][$impact];
+      //       }
+
+      //       if ($isurgency[$urgency] && $isimpact[$impact]) {
+      //          $bgcolor=$_SESSION["glpipriority_$pri"];
+      //          echo "<td class='center' bgcolor='$bgcolor'>";
+      //          Ticket::dropdownPriority(['value' => $pri,
+      //                                         'name'  => "_matrix_{$urgency}_{$impact}"]);
+      //          echo "</td>";
+      //       } else {
+      //          echo "<td><input type='hidden' name='_matrix_{$urgency}_{$impact}' value='$pri'>
+      //                </td>";
+      //       }
+      //    }
+      //    echo "</tr>\n";
+      // }
+      // if ($canedit) {
+      //    echo "<tr class='tab_bg_2'>";
+      //    echo "<td colspan='7' class='center'>";
+      //    echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
+      //    echo "</td></tr>";
+      // }
+
+      // echo "</table></div>";
+      // Html::closeForm();
    }
 
 
@@ -3852,7 +3957,7 @@ class Config extends CommonDBTM {
       if ($glpi_key->isConfigSecured($context, $name)) {
          $newvalue = $oldvalue = '********';
       }
-      $oldvalue = $name . ($context !== 'core' ? ' (' . $context . ') ' : ' ') . $oldvalue;
+      $oldvalue = $name . ($context !== 'core' ? ' (' . $context . ') ' : ', ') . $oldvalue;
       Log::constructHistory($this, ['value' => $oldvalue], ['value' => $newvalue]);
    }
 
