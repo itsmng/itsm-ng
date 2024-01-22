@@ -1943,113 +1943,27 @@ class Config extends CommonDBTM {
          echo '</form>';
          echo "</td></tr>";
       }
-
+      
       echo "</table></div>\n";
    }
-
+   
    /**
     * Display a HTML report about systeme information / configuration
-   **/
-   function showSystemInformations() {
-      global $DB, $CFG_GLPI;
-
-      if (!Config::canUpdate()) {
-         return false;
-      }
-
-      $rand = mt_rand();
-
-      echo "<div class='center' id='tabsbody'>";
-      echo "<form name='form' action=\"".Toolbox::getItemTypeFormURL(__CLASS__)."\" method='post' data-track-changes='true'>";
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='4'>" . __('General setup') . "</th></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='dropdown_event_loglevel$rand'>" . __('Log Level') . "</label></td><td>";
-
-      $values = [
-         1 => __('1- Critical (login error only)'),
-         2 => __('2- Severe (not used)'),
-         3 => __('3- Important (successful logins)'),
-         4 => __('4- Notices (add, delete, tracking)'),
-         5 => __('5- Complete (all)'),
-      ];
-
-      Dropdown::showFromArray('event_loglevel', $values,
-                              ['value' => $CFG_GLPI["event_loglevel"], 'rand' => $rand]);
-      echo "</td><td><label for='dropdown_cron_limit$rand'>".__('Maximal number of automatic actions (run by CLI)')."</label></td><td>";
-      Dropdown::showNumber('cron_limit', ['value' => $CFG_GLPI["cron_limit"],
-                                          'min'   => 1,
-                                          'max'   => 30,
-                                          'rand'  => $rand]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='dropdown_use_log_in_files$rand'>" . __('Logs in files (SQL, email, automatic action...)') . "</label></td><td>";
-      Dropdown::showYesNo("use_log_in_files", $CFG_GLPI["use_log_in_files"], -1, ['rand' => $rand]);
-      echo "</td><td><label for='dropdown__dbslave_status$rand'>" . _n('SQL replica', 'SQL replicas', 1) . "</label></td><td>";
-      $active = DBConnection::isDBSlaveActive();
-      Dropdown::showYesNo("_dbslave_status", $active, -1, ['rand' => $rand]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td colspan='4' class='center b'>".__('Maintenance mode');
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='dropdown_maintenance_mode$rand'>" . __('Maintenance mode') . "</label></td>";
-      echo "<td>";
-      Dropdown::showYesNo("maintenance_mode", $CFG_GLPI["maintenance_mode"], -1, ['rand' => $rand]);
-      echo "</td>";
-      //TRANS: Proxy port
-      echo "<td><label for='maintenance_text'>" . __('Maintenance text') . "</label></td>";
-      echo "<td>";
-      echo "<textarea cols='70' rows='4' name='maintenance_text' id='maintenance_text'>".$CFG_GLPI["maintenance_text"];
-      echo "</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td colspan='4' class='center b'>".__('Proxy configuration for upgrade check');
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='proxy_name'>" . __('Server') . "</label></td>";
-      echo "<td><input type='text' name='proxy_name' id='proxy_name' value='".$CFG_GLPI["proxy_name"]."'></td>";
-      //TRANS: Proxy port
-      echo "<td><label for='proxy_port'>" . _n('Port', 'Ports', 1) . "</label></td>";
-      echo "<td><input type='text' name='proxy_port' id='proxy_port' value='".$CFG_GLPI["proxy_port"]."'></td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td><label for='proxy_user'>" . __('Login') . "</label></td>";
-      echo "<td><input type='text' name='proxy_user' id='proxy_user' value='".$CFG_GLPI["proxy_user"]."'></td>";
-      echo "<td><label for='proxy_passwd'>" . __('Password') . "</label></td>";
-      echo "<td><input type='password' name='proxy_passwd' id='proxy_passwd' value='' autocomplete='new-password'>";
-      echo "<br><input type='checkbox' name='_blank_proxy_passwd' id='_blank_proxy_passwd'><label for='_blank_proxy_passwd'>".__('Clear')."</label>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td colspan='4' class='center'>";
-      echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
-      echo "</td></tr>";
-
-      echo "</table>";
-      Html::closeForm();
-
+    **/
+    function showSystemInformations() {
+       global $DB, $CFG_GLPI;
+       
+       if (!Config::canUpdate()) {
+          return false;
+         }
+         
+      $clear = __('Clear');
+      $oldlang = $_SESSION['glpilanguage'];
+      $ver = ITSM_VERSION;
       $width = 128;
 
-      echo "<p>" . Telemetry::getViewLink() . "</p>";
-
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th>". __('Information about system installation and configuration')."</th></tr>";
-
-       $oldlang = $_SESSION['glpilanguage'];
-       // Keep this, for some function call which still use translation (ex showAllReplicateDelay)
-       Session::loadLanguage('en_GB');
-
-      // No need to translate, this part always display in english (for copy/paste to forum)
-
-      $ver = ITSM_VERSION;
+      ob_start();
+      echo "<table>";
       echo "<tr class='tab_bg_1'><td><pre>\n";
       echo "ITSM-NG $ver (" . $CFG_GLPI['root_doc']." => " . GLPI_ROOT . ")\n";
       echo "Installation mode: " . GLPI_INSTALL_MODE . "\n";
@@ -2146,7 +2060,120 @@ class Config extends CommonDBTM {
 
       echo "<tr class='tab_bg_2'><th>". __('To copy/paste in your support request')."</th></tr>\n";
 
-      echo "</table></div>\n";
+      echo "</table>";
+      $serverLogs = ob_get_clean();
+
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+         'buttons' => [
+            'submit' => [
+               'type' => 'submit',
+               'name' => 'update',
+               'value' => _sx('button', 'Save'),
+               'class' => 'btn btn-secondary',
+            ],
+         ],
+         'content' => [
+            __('General setup') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Log Level') => [
+                     'type' => 'select',
+                     'name' => 'event_loglevel',
+                     'values' => [
+                        1 => __('1- Critical (login error only)'),
+                        2 => __('2- Severe (not used)'),
+                        3 => __('3- Important (successful logins)'),
+                        4 => __('4- Notices (add, delete, tracking)'),
+                        5 => __('5- Complete (all)'),
+                     ],
+                     'value' => $CFG_GLPI["event_loglevel"],
+                  ],
+                  __('Maximal number of automatic actions (run by CLI)') => [
+                     'type' => 'number',
+                     'name' => 'cron_limit',
+                     'min' => 1,
+                     'max' => 30,
+                     'value' => $CFG_GLPI["cron_limit"],
+                     'col_lg' => 8,
+                     'col_md' => 12,
+                  ],
+                  __('Logs in files (SQL, email, automatic action...)') => [
+                     'type' => 'checkbox',
+                     'name' => 'use_log_in_files',
+                     'value' => $CFG_GLPI["use_log_in_files"],
+                     'col_lg' => 6,
+                  ],
+                  _n('SQL replica', 'SQL replicas', 1) => [
+                     'type' => 'checkbox',
+                     'name' => 'use_db_slave',
+                     'value' => DBConnection::isDBSlaveActive(),
+                     'col_lg' => 6,
+                  ],
+               ]
+            ],
+            __('Maintenance mode') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Maintenance mode') => [
+                  'type' => 'checkbox',
+                  'name' => 'maintenance_mode',
+                  'value' => $CFG_GLPI["maintenance_mode"],
+                  ],
+                  __('Maintenance text') => [
+                     'type' => 'textarea',
+                     'name' => 'maintenance_text',
+                     'value' => $CFG_GLPI["maintenance_text"],
+                     'col_lg' => 8,
+                     'col_md' => 12,
+                  ]
+               ]
+            ],
+            __('Proxy configuration for upgrade check') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Server') => [
+                     'type' => 'text',
+                     'name' => 'proxy_name',
+                     'value' => $CFG_GLPI["proxy_name"],
+                     'col_lg' => 6,
+                  ],
+                  __('Port') => [
+                     'type' => 'text',
+                     'name' => 'proxy_port',
+                     'value' => $CFG_GLPI["proxy_port"],
+                     'col_lg' => 6,
+                  ],
+                  __('Login') => [
+                     'type' => 'text',
+                     'name' => 'proxy_user',
+                     'value' => $CFG_GLPI["proxy_user"],
+                     'col_lg' => 6,
+                  ],
+                  __('Password') => [
+                     'type' => 'password',
+                     'name' => 'proxy_passwd',
+                     'value' => '',
+                     'autocomplete' => 'new-password',
+                     'col_lg' => 6,
+                     'after' => <<<HTML
+                        <input type='checkbox' name='_blank_proxy_passwd' id='_blank_proxy_passwd'/>
+                        <label for='_blank_proxy_passwd'>$clear</label>
+                     HTML,
+                  ],
+               ]
+            ],
+            Telemetry::getViewLink() => [
+               'visible' => true,
+               'inputs' => [
+                  __('Information about system installation and configuration') => [
+                     'content' => $serverLogs
+                  ]
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
    }
 
 
