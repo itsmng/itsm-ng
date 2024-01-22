@@ -155,7 +155,8 @@
   </script>
 {% endmacro %}
 {% macro select(attributes) %}
-  <select class='form-select' {% for name, value in attributes %} {% if name != 'values'%}{{name}}="{{value}}"{% endif %} {% endfor %}>
+  <select class='form-select {{attributes.class}}'
+    {% for name, value in attributes %} {% if name not in  ['values', 'class']%}{{name}}="{{value}}"{% endif %} {% endfor %}>
       {% for key, item in attributes.values %}
           <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
       {% endfor %}

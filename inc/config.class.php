@@ -3486,156 +3486,113 @@ class Config extends CommonDBTM {
          return false;
       }
 
-      echo "<form name='form' id='purgelogs_form' method='post' action='".$this->getFormURL()."' data-track-changes='true'>";
-      echo "<div class='center'>";
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr class='tab_bg_1'><th colspan='4'>".__("Logs purge configuration").
-           "</th></tr>";
-      echo "<tr class='tab_bg_1 center'><td colspan='4'><i>".__("Change all")."</i>";
-      echo Html::scriptBlock("function form_init_all(value) {
-         $('#purgelogs_form .purgelog_interval select').val(value).trigger('change');;
-      }");
-      self::showLogsInterval(
-         'init_all',
-         0,
-         [
-            'on_change' => "form_init_all(this.value);",
-            'class'     => ''
+      $values = [
+         self::DELETE_ALL => __("Delete all"),
+         self::KEEP_ALL   => __("Keep all"),
+      ];
+      for ($i = 1; $i < 121; $i++) {
+         $values[$i] = sprintf(
+            _n(
+               "Delete if older than %s month",
+               "Delete if older than %s months",
+               $i
+            ),
+            $i
+         );
+      }
+
+      $actions = [
+         __('General') => [
+            __("Add/update relation between items") => [ 'purge_addrelation', $CFG_GLPI["purge_addrelation"] ],
+            __("Delete relation between items") => [ 'purge_deleterelation', $CFG_GLPI["purge_deleterelation"] ],
+            __("Add the item") => [ 'purge_createitem', $CFG_GLPI["purge_createitem"] ],
+            __("Delete the item") => [ 'purge_deleteitem', $CFG_GLPI["purge_deleteitem"] ],
+            __("Restore the item") => [ 'purge_restoreitem', $CFG_GLPI["purge_restoreitem"] ],
+            __("Update the item") => [ 'purge_updateitem', $CFG_GLPI["purge_updateitem"] ],
+            __("Comments") => [ 'purge_comments', $CFG_GLPI["purge_comments"] ],
+            __("Last update") => [ 'purge_datemod', $CFG_GLPI["purge_datemod"] ],
+            __("Plugins") => [ 'purge_plugins', $CFG_GLPI["purge_plugins"] ],
+         ],
+         _n('Software', 'Software', Session::getPluralNumber()) => [
+            __("Installation/uninstallation of software on items") => [ 'purge_item_software_install', $CFG_GLPI["purge_item_software_install"] ],
+            __("Installation/uninstallation versions on softwares") => [ 'purge_software_version_install', $CFG_GLPI["purge_software_version_install"] ],
+            __("Add/Remove items from software versions") => [ 'purge_software_item_install', $CFG_GLPI["purge_software_item_install"] ],
+         ],
+         __('Financial and administrative information') => [
+            __("Add financial information to an item") => [ 'purge_infocom_creation', $CFG_GLPI["purge_infocom_creation"] ],
+         ],
+         User::getTypeName(Session::getPluralNumber()) => [
+            __("Add/remove profiles to users") => [ 'purge_profile_user', $CFG_GLPI["purge_profile_user"] ],
+            __("Add/remove groups to users") => [ 'purge_group_user', $CFG_GLPI["purge_group_user"] ],
+            __("User authentication method changes") => [ 'purge_user_auth_changes', $CFG_GLPI["purge_user_auth_changes"] ],
+            __("Deleted user in LDAP directory") => [ 'purge_userdeletedfromldap', $CFG_GLPI["purge_userdeletedfromldap"] ],
+         ],
+         _n('Component', 'Components', Session::getPluralNumber()) => [
+            __("Add component") => [ 'purge_adddevice', $CFG_GLPI["purge_adddevice"] ],
+            __("Update component") => [ 'purge_updatedevice', $CFG_GLPI["purge_updatedevice"] ],
+            __("Disconnect a component") => [ 'purge_disconnectdevice', $CFG_GLPI["purge_disconnectdevice"] ],
+            __("Connect a component") => [ 'purge_connectdevice', $CFG_GLPI["purge_connectdevice"] ],
+            __("Delete component") => [ 'purge_deletedevice', $CFG_GLPI["purge_deletedevice"] ],
+         ],
+         __("All sections") => [
+            __("Purge all log entries") => [ 'purge_all', $CFG_GLPI["purge_all"] ],
          ]
-      );
-      echo "</td></tr>";
-      echo "<input type='hidden' name='id' value='1'>";
+      ];
 
-      echo "<tr class='tab_bg_1'><th colspan='4'>".__("General")."</th></tr>";
-      echo "<tr class='tab_bg_1'><td class='center'>".__("Add/update relation between items").
-           "</td><td>";
-      self::showLogsInterval('purge_addrelation', $CFG_GLPI["purge_addrelation"]);
-      echo "</td>";
-      echo "<td>".__("Delete relation between items")."</td><td>";
-      self::showLogsInterval('purge_deleterelation', $CFG_GLPI["purge_deleterelation"]);
-      echo "</td>";
-      echo "</tr>";
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => 'update',
+               'value' => __('Save'),
+               'class' => 'btn btn-secondary'
+            ]
+         ],
+         'content' => [
+            __("Logs purge configuration") => [
+               'visible' => true,
+               'inputs' => [
+                  [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => '1',
+                  ],
+                  __("Change all") => [
+                     'name' => 'init_all',
+                     'type' => 'select',
+                     'id' => 'init_all_dropdown',
+                     'values' => $values,
+                     'hooks' => [
+                        'change' => <<<JS
+                           $('.purgelog_interval').val($(this).val()).trigger('change');
+                        JS
+                     ],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ]
+               ],
+            ],
+         ]
+      ];
 
-      echo "<tr class='tab_bg_1'><td class='center'>".__("Add the item")."</td><td>";
-      self::showLogsInterval('purge_createitem', $CFG_GLPI["purge_createitem"]);
-      echo "</td>";
-      echo "<td>".__("Delete the item")."</td><td>";
-      self::showLogsInterval('purge_deleteitem', $CFG_GLPI["purge_deleteitem"]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'><td class='center'>".__("Restore the item")."</td><td>";
-      self::showLogsInterval('purge_restoreitem', $CFG_GLPI["purge_restoreitem"]);
-      echo "</td>";
-
-      echo "<td>".__('Update the item')."</td><td>";
-      self::showLogsInterval('purge_updateitem', $CFG_GLPI["purge_updateitem"]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'><td class='center'>".__("Comments")."</td><td>";
-      self::showLogsInterval('purge_comments', $CFG_GLPI["purge_comments"]);
-      echo "</td>";
-      echo "<td>".__("Last update")."</td><td>";
-      self::showLogsInterval('purge_datemod', $CFG_GLPI["purge_datemod"]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'><td class='center'>".
-           __("Plugins")."</td><td>";
-      self::showLogsInterval('purge_plugins', $CFG_GLPI["purge_plugins"]);
-      echo "</td>";
-      echo "<td class='center'></td><td>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><th colspan='4'>"._n('Software', 'Software', Session::getPluralNumber())."</th></tr>";
-      echo "<tr class='tab_bg_1'><td class='center'>".
-           __("Installation/uninstallation of software on items")."</td><td>";
-      self::showLogsInterval('purge_item_software_install',
-                          $CFG_GLPI["purge_item_software_install"]);
-      echo "</td>";
-      echo "<td>".__("Installation/uninstallation versions on softwares")."</td><td>";
-      self::showLogsInterval('purge_software_version_install',
-                         $CFG_GLPI["purge_software_version_install"]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'><td class='center'>".
-           __("Add/Remove items from software versions")."</td><td>";
-      self::showLogsInterval('purge_software_item_install',
-                          $CFG_GLPI["purge_software_item_install"]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'><th colspan='4'>".__('Financial and administrative information').
-           "</th></tr>";
-      echo "<tr class='tab_bg_1'><td class='center'>".
-           __("Add financial information to an item")."</td><td>";
-      self::showLogsInterval('purge_infocom_creation', $CFG_GLPI["purge_infocom_creation"]);
-      echo "</td>";
-      echo "<td colspan='2'></td></tr>";
-
-      echo "<tr class='tab_bg_1'><th colspan='4'>".User::getTypeName(Session::getPluralNumber())."</th></tr>";
-
-      echo "<tr class='tab_bg_1'><td class='center'>".
-           __("Add/remove profiles to users")."</td><td>";
-      self::showLogsInterval('purge_profile_user', $CFG_GLPI["purge_profile_user"]);
-      echo "</td>";
-      echo "<td>".__("Add/remove groups to users")."</td><td>";
-      self::showLogsInterval('purge_group_user', $CFG_GLPI["purge_group_user"]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'><td class='center'>".
-           __("User authentication method changes")."</td><td>";
-      self::showLogsInterval('purge_user_auth_changes', $CFG_GLPI["purge_user_auth_changes"]);
-      echo "</td>";
-      echo "<td class='center'>".__("Deleted user in LDAP directory").
-           "</td><td>";
-      self::showLogsInterval('purge_userdeletedfromldap', $CFG_GLPI["purge_userdeletedfromldap"]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'><th colspan='4'>"._n('Component', 'Components', Session::getPluralNumber())."</th></tr>";
-
-      echo "<tr class='tab_bg_1'><td class='center'>".__("Add component")."</td><td>";
-      self::showLogsInterval('purge_adddevice', $CFG_GLPI["purge_adddevice"]);
-      echo "</td>";
-      echo "<td>".__("Update component")."</td><td>";
-      self::showLogsInterval('purge_updatedevice', $CFG_GLPI["purge_updatedevice"]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'><td class='center'>".__("Disconnect a component").
-           "</td><td>";
-      self::showLogsInterval('purge_disconnectdevice', $CFG_GLPI["purge_disconnectdevice"]);
-      echo "</td>";
-      echo "<td>".__("Connect a component")."</td><td>";
-      self::showLogsInterval('purge_connectdevice', $CFG_GLPI["purge_connectdevice"]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'><td class='center'>".__("Delete component").
-           "</td><td>";
-      self::showLogsInterval('purge_deletedevice', $CFG_GLPI["purge_deletedevice"]);
-      echo "</td>";
-      echo "<td colspan='2'></td></tr>";
-
-      echo "<tr class='tab_bg_1'><th colspan='4'>".__("All sections")."</th></tr>";
-
-      echo "<tr class='tab_bg_1'><td class='center'>".__("Purge all log entries")."</td><td>";
-      self::showLogsInterval('purge_all', $CFG_GLPI["purge_all"]);
-      echo "</td>";
-      echo "<td colspan='2'></td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td colspan='4' class='center'>";
-      echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit' >";
-      echo"</td>";
-      echo "</tr>";
-
-      echo "</table></div>";
-      Html::closeForm();
+      foreach($actions as $section => $action) {
+         $form['content'][$section] = [
+            'visible' => true,
+            'inputs' => []
+         ];
+         foreach($action as $name => $value) {
+            $form['content'][$section]['inputs'][$name] = [
+               'name' => $value[0],
+               'type' => 'select',
+               'class' => 'purgelog_interval',
+               'values' => $values,
+               'value' => $value[1],
+               'col_lg' => 6
+            ];
+         }
+      }
+      renderTwigForm($form);
    }
 
    /**
