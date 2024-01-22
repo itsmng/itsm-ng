@@ -533,9 +533,8 @@ msgid "Consider filling latitude and longitude on this location."
 msgstr "Mohon untuk mengisi koordinat longitude dan latitude pada lokasi ini"
 
 #: ajax/deleteItilActor.php:92
-#, fuzzy
 msgid "Actor deleted successfully"
-msgstr "Cache berhasil diatur ulang"
+msgstr ""
 
 #: ajax/deleteItilActor.php:98
 msgid "Error while deleting actor"
@@ -1747,9 +1746,8 @@ msgid "Impossible to use LDAP as external source of connection"
 msgstr "Tidak dapat untuk menggunakan LDAP sebagai sumber koneksi eksternal"
 
 #: front/setup.auth.php:58
-#, fuzzy
 msgid "Open ID connect authentication"
-msgstr "Direktori LDAP untuk otentikasi"
+msgstr ""
 
 #: front/setup.auth.php:61
 msgid "Others authentication methods"
@@ -2193,10 +2191,9 @@ msgstr ""
 #: inc/slalevel.class.php:226 inc/projecttask.class.php:679
 #: inc/projecttask.class.php:934 inc/transfer.class.php:86
 #: inc/transfer.class.php:3425 inc/group.class.php:216 inc/group.class.php:834
-#, fuzzy
 msgid "Name"
 msgid_plural "Names"
-msgstr[0] "Nama"
+msgstr[0] ""
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
@@ -3253,9 +3250,8 @@ msgid "Unable to stop impersonating user"
 msgstr "Tidak dapat berhenti meniru identitas pengguna"
 
 #: front/document.form.php:66
-#, fuzzy
 msgid "Could not add document"
-msgstr "Tambah Dokumen"
+msgstr ""
 
 #: inc/operatingsystemedition.class.php:42
 #: inc/item_operatingsystem.class.php:365
@@ -3448,9 +3444,8 @@ msgid_plural "Versions"
 msgstr[0] "Versi"
 
 #: inc/cluster.class.php:136
-#, fuzzy
 msgid "Auto update system"
-msgstr "1%s memperbarui item"
+msgstr ""
 
 #: inc/cluster.class.php:143 inc/cluster.class.php:223
 #: inc/printer.class.php:323 inc/printer.class.php:750
@@ -4659,9 +4654,8 @@ msgid "Display counters"
 msgstr ""
 
 #: inc/config.class.php:1151
-#, fuzzy
 msgid "Display the number of items in the menu"
-msgstr "Tampilan (jumlah item)"
+msgstr ""
 
 #: inc/config.class.php:1160
 msgid "Keep devices when purging an item"
@@ -4743,34 +4737,28 @@ msgid "Pre-select me as a requester when creating a ticket"
 msgstr ""
 
 #: inc/config.class.php:1288
-#, fuzzy
 msgid "Priority color 1"
-msgstr "Prioritas"
+msgstr ""
 
 #: inc/config.class.php:1295
-#, fuzzy
 msgid "Priority color 2"
-msgstr "Prioritas"
+msgstr ""
 
 #: inc/config.class.php:1302
-#, fuzzy
 msgid "Priority color 3"
-msgstr "Prioritas"
+msgstr ""
 
 #: inc/config.class.php:1309
-#, fuzzy
 msgid "Priority color 4"
-msgstr "Prioritas"
+msgstr ""
 
 #: inc/config.class.php:1316
-#, fuzzy
 msgid "Priority color 5"
-msgstr "Prioritas"
+msgstr ""
 
 #: inc/config.class.php:1323
-#, fuzzy
 msgid "Priority color 6"
-msgstr "Prioritas"
+msgstr ""
 
 #: inc/config.class.php:1332
 msgid "Due date progression"
@@ -5341,9 +5329,8 @@ msgstr[0] "Printer"
 #: inc/consumableitem.class.php:134 inc/software.class.php:231
 #: inc/peripheral.class.php:161 inc/phone.class.php:156
 #: inc/computer.class.php:309 inc/pdu.class.php:86 inc/ticket.class.php:4478
-#, fuzzy
 msgid "Restore"
-msgstr "Restore"
+msgstr ""
 
 #: inc/printer.class.php:302 inc/project.class.php:562
 #: inc/appliance.class.php:164 inc/supplier.class.php:187
@@ -5368,21 +5355,18 @@ msgstr ""
 
 #: inc/printer.class.php:378 inc/monitor.class.php:274
 #: inc/peripheral.class.php:266 inc/phone.class.php:262
-#, fuzzy
 msgid "Management Type"
-msgstr "Tipe manajemen"
+msgstr ""
 
 #: inc/printer.class.php:382 inc/monitor.class.php:278
 #: inc/peripheral.class.php:270 inc/phone.class.php:266
-#, fuzzy
 msgid "Unit Management"
-msgstr "Manajemen unit"
+msgstr ""
 
 #: inc/printer.class.php:383 inc/monitor.class.php:279
 #: inc/peripheral.class.php:271 inc/phone.class.php:267
-#, fuzzy
 msgid "Global Management"
-msgstr "Manajemen global"
+msgstr ""
 
 #: inc/printer.class.php:395 inc/printer.class.php:733
 #: inc/networkequipment.class.php:380 inc/networkequipment.class.php:598
@@ -6147,14 +6131,12 @@ msgid "Associated item ID"
 msgstr ""
 
 #: inc/queuedchat.class.php:260 inc/queuedchat.class.php:646
-#, fuzzy
 msgid "Entity name"
-msgstr "Entitas"
+msgstr ""
 
 #: inc/queuedchat.class.php:269 inc/queuedchat.class.php:641
-#, fuzzy
 msgid "Server name"
-msgstr "Server"
+msgstr ""
 
 #: inc/queuedchat.class.php:278
 msgid "URl Hook"
@@ -6171,9 +6153,8 @@ msgid "Mode"
 msgstr ""
 
 #: inc/queuedchat.class.php:382 inc/queuednotification.class.php:463
-#, fuzzy
 msgid "Send chat in queue"
-msgstr "Antrian notifikasi"
+msgstr ""
 
 #: inc/queuedchat.class.php:383 inc/queuednotification.class.php:464
 msgid "Maximum chat to send at once"
@@ -6188,9 +6169,8 @@ msgid "Days to keep sent chat"
 msgstr ""
 
 #: inc/queuedchat.class.php:615
-#, fuzzy
 msgid "Ticket ID"
-msgstr "Tiket"
+msgstr ""
 
 #: inc/queuedchat.class.php:651
 msgid "Rocket Hook Url"
@@ -6575,9 +6555,8 @@ msgid_plural "Manufacturers"
 msgstr[0] "Manufaktur"
 
 #: inc/monitor.class.php:245
-#, fuzzy
 msgid "Inventory/Asset number"
-msgstr "Nomor inventory"
+msgstr ""
 
 #: inc/monitor.class.php:268 inc/monitor.class.php:517
 #: inc/item_devicememory.class.php:54 inc/item_devicememory.class.php:56
@@ -7408,14 +7387,12 @@ msgid "Category name"
 msgstr "Nama kategori"
 
 #: inc/knowbaseitem.class.php:780
-#, fuzzy
 msgid "Created on:"
-msgstr "Buat"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:783
-#, fuzzy
 msgid "Last update on:"
-msgstr "Update terakhir pada %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:786
 msgid "Put this item in the FAQ"
@@ -7584,9 +7561,8 @@ msgid "Help"
 msgstr "Bantuan"
 
 #: inc/link.class.php:165
-#, fuzzy
 msgid "External links"
-msgstr "Survei eksternal"
+msgstr ""
 
 #: inc/link.class.php:173 inc/link.class.php:240
 msgid "Link or filename"
@@ -7675,14 +7651,12 @@ msgid "Special Status"
 msgstr ""
 
 #: inc/specialstatus.class.php:115
-#, fuzzy
 msgid "Status has been updated!"
-msgstr "Pencarian telah disimpan"
+msgstr ""
 
 #: inc/specialstatus.class.php:142
-#, fuzzy
 msgid "Status has been removed!"
-msgstr "Pencarian telah disimpan"
+msgstr ""
 
 #: inc/specialstatus.class.php:153 inc/specialstatus.class.php:246
 #: inc/commondcmodeldropdown.class.php:65
@@ -7720,9 +7694,8 @@ msgid "Cancel"
 msgstr "Batal"
 
 #: inc/specialstatus.class.php:234
-#, fuzzy
 msgid "Status has been added!"
-msgstr "Pencarian telah disimpan"
+msgstr ""
 
 #: inc/specialstatus.class.php:243
 msgid "New Status - Special status"
@@ -8212,9 +8185,8 @@ msgid "System lock"
 msgstr ""
 
 #: inc/crontask.class.php:643
-#, fuzzy
 msgid "Plugin lock"
-msgstr "Plugins"
+msgstr ""
 
 #: inc/crontask.class.php:644
 msgid "Disabled plugin"
@@ -8245,14 +8217,12 @@ msgid "Last run"
 msgstr ""
 
 #: inc/crontask.class.php:704
-#, fuzzy
 msgid "enabled"
-msgstr "Aktifkan"
+msgstr ""
 
 #: inc/crontask.class.php:706
-#, fuzzy
 msgid "disabled"
-msgstr "Tidak aktif"
+msgstr ""
 
 #: inc/crontask.class.php:812 inc/crontask.class.php:1370
 msgid "Running"
@@ -8608,15 +8578,11 @@ msgid "Upgrade"
 msgstr ""
 
 #: inc/config.php:239
-#, fuzzy
 msgid ""
 "You are trying to use ITSM-NG with outdated files compared to the version of "
 "the database. Please install the correct ITSM-NG files corresponding to the "
 "version of your database."
 msgstr ""
-"Anda mencoba untuk menggunakan GLPI dengan file usang dibandingkan dengan "
-"versi database. Silahkan install file GLPI benar sesuai dengan versi "
-"database Anda."
 
 #: inc/config.php:242
 msgid ""
@@ -9201,14 +9167,13 @@ msgid "Begin"
 msgstr ""
 
 #: inc/reminder.class.php:641
-#, fuzzy
 msgid "From"
-msgstr "Dari %s"
+msgstr ""
 
 #: inc/reminder.class.php:642
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s to %2$s"
-msgstr "%1$s - %2$s"
+msgstr ""
 
 #: inc/ticketvalidation.class.php:99
 msgid "Create for request"
@@ -9353,9 +9318,8 @@ msgid_plural "Enclosures"
 msgstr[0] ""
 
 #: inc/enclosure.class.php:122
-#, fuzzy
 msgid "Power supplies"
-msgstr "Catu Daya"
+msgstr ""
 
 #: inc/contract_supplier.class.php:136 inc/contract.class.php:204
 #: inc/contract_item.class.php:336
@@ -9442,42 +9406,36 @@ msgid "Support hours"
 msgstr "Dukungan jam"
 
 #: inc/contract.class.php:332
-#, fuzzy
 msgid "on week start"
-msgstr "dalam satu minggu"
+msgstr ""
 
 #: inc/contract.class.php:338
-#, fuzzy
 msgid "on week end"
-msgstr "dalam satu minggu"
+msgstr ""
 
 #: inc/contract.class.php:344
 msgid "on Saturday"
 msgstr "di hari Sabtu"
 
 #: inc/contract.class.php:349
-#, fuzzy
 msgid "on Saturday start"
-msgstr "di hari Sabtu"
+msgstr ""
 
 #: inc/contract.class.php:354
-#, fuzzy
 msgid "on Saturday end"
-msgstr "di hari Sabtu"
+msgstr ""
 
 #: inc/contract.class.php:359
 msgid "Sundays and holidays"
 msgstr "Hari minggu dan hari libur"
 
 #: inc/contract.class.php:364
-#, fuzzy
 msgid "on Sunday start"
-msgstr "di hari Sabtu"
+msgstr ""
 
 #: inc/contract.class.php:369
-#, fuzzy
 msgid "on Sunday end"
-msgstr "di hari Sabtu"
+msgstr ""
 
 #: inc/contract.class.php:415
 msgctxt "quantity"
@@ -10235,14 +10193,12 @@ msgid "Last update in the LDAP directory"
 msgstr ""
 
 #: inc/authldap.class.php:1560
-#, fuzzy
 msgid "Last update in ITSM-ng"
-msgstr "Update terakhir pada %s"
+msgstr ""
 
 #: inc/authldap.class.php:1609
-#, fuzzy
 msgid "Last update in ITSM-NG"
-msgstr "Update terakhir pada %s"
+msgstr ""
 
 #: inc/authldap.class.php:1621 inc/authldap.class.php:1626
 msgid "No user to be synchronized"
@@ -10274,9 +10230,8 @@ msgid "LDAP directory choice"
 msgstr "pilihan direktori LDAP"
 
 #: inc/authldap.class.php:2396
-#, fuzzy
 msgid "No LDAP directory defined in ITSM-ng"
-msgstr "Tak ada direktori LDAP di GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:2767
 msgid "User not found or several users found"
@@ -10659,9 +10614,8 @@ msgstr ""
 #: inc/profile.class.php:1790 inc/profile.class.php:1835
 #: inc/profile.class.php:3022 inc/accessibility.class.php:36
 #: inc/accessibility.class.php:58 inc/accessibility.class.php:63
-#, fuzzy
 msgid "Accessibility"
-msgstr "Ketersediaan"
+msgstr ""
 
 #: inc/profile.class.php:128 inc/profile.class.php:1197
 #: inc/profile.class.php:2435 inc/infocom.class.php:142
@@ -10880,9 +10834,8 @@ msgid "Life cycle of changes"
 msgstr ""
 
 #: inc/profile.class.php:1785 inc/profile.class.php:1830
-#, fuzzy
 msgid "Edit accessibility"
-msgstr "Kemampuan menulis"
+msgstr ""
 
 #: inc/profile.class.php:1922 inc/profile.class.php:2743
 #: inc/rulerightcollection.class.php:57 inc/ruleright.class.php:56
@@ -10983,14 +10936,12 @@ msgid "Managed domain records types"
 msgstr ""
 
 #: inc/profile.class.php:3032
-#, fuzzy
 msgid "Change font"
-msgstr "Tugas perubahan"
+msgstr ""
 
 #: inc/profile.class.php:3042
-#, fuzzy
 msgid "Change zoom"
-msgstr "Perubahan-perubahan"
+msgstr ""
 
 #: inc/profile.class.php:3053
 msgid "Use shortcuts"
@@ -11884,9 +11835,8 @@ msgid "Global View"
 msgstr "Tampilan Global"
 
 #: inc/central.class.php:118
-#, fuzzy
 msgid "No dashboard available"
-msgstr "Tidak ada kartu jaringan yang tersedia"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/central.class.php:154 inc/rack.class.php:65
@@ -12137,9 +12087,8 @@ msgid "Entity-ID"
 msgstr ""
 
 #: inc/domain.class.php:364 inc/certificate.class.php:544
-#, fuzzy
 msgid "Types"
-msgstr "Tipe"
+msgstr ""
 
 #: inc/domain.class.php:689
 msgid "Domains expired since more"
@@ -12292,9 +12241,8 @@ msgid "An appliance is required"
 msgstr ""
 
 #: inc/softwareversion.class.php:114
-#, fuzzy
 msgid "New element"
-msgstr "Masalah baru"
+msgstr ""
 
 #: inc/softwareversion.class.php:332
 msgctxt "button"
@@ -12760,9 +12708,8 @@ msgstr "Sedang proses (direncanakan)"
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541
-#, fuzzy
 msgid "Pending"
-msgstr "Tertunda"
+msgstr ""
 
 #: inc/problem.class.php:686
 msgctxt "status"
@@ -13976,9 +13923,8 @@ msgid "Connection string"
 msgstr ""
 
 #: inc/authmail.class.php:206 inc/notificationchatsetting.class.php:295
-#, fuzzy
 msgid "Test"
-msgstr "Tes"
+msgstr ""
 
 #: inc/authmail.class.php:211
 msgid "Test connection to email server"
@@ -15560,9 +15506,8 @@ msgid "Missing or wrong fields in open ID connect config"
 msgstr ""
 
 #: inc/oidc.class.php:301
-#, fuzzy
 msgid "Configuration"
-msgstr "Konfigurasi awal"
+msgstr ""
 
 #: inc/oidc.class.php:306 inc/auth.class.php:1830
 msgid "Mapping of fields according to provider"
@@ -15634,9 +15579,8 @@ msgid "Incorrect username or password"
 msgstr "Nama user atau password salah"
 
 #: inc/auth.class.php:284 inc/auth.class.php:975 inc/auth.class.php:1003
-#, fuzzy
 msgid "User not authorized to connect in ITSM-NG"
-msgstr "User tak berwenang menyambung ke GLPI"
+msgstr ""
 
 #: inc/auth.class.php:631
 msgid "Login with external token disabled"
@@ -15675,9 +15619,8 @@ msgid "Failed login for %1$s from IP %2$s"
 msgstr ""
 
 #: inc/auth.class.php:1107
-#, fuzzy
 msgid "Authentication on ITSM-NG database"
-msgstr "Otentifikasi basisdata GLPI"
+msgstr ""
 
 #: inc/auth.class.php:1119
 msgid "Authentication on a LDAP directory"
@@ -15708,9 +15651,8 @@ msgid "x509 certificate authentication"
 msgstr ""
 
 #: inc/auth.class.php:1234 inc/auth.class.php:1892
-#, fuzzy
 msgid "ITSM-NG internal database"
-msgstr "Database Internal GLPI"
+msgstr ""
 
 #: inc/auth.class.php:1240
 msgid "Not yet authenticated"
@@ -15825,9 +15767,8 @@ msgid "Proxy"
 msgstr ""
 
 #: inc/auth.class.php:1868
-#, fuzzy
 msgid "Certificate Path"
-msgstr "Sertifikat"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/datacenter.class.php:48 inc/datacenter.class.php:71
@@ -15950,21 +15891,18 @@ msgid "Unknown interface"
 msgstr "Interface tak diketahui"
 
 #: inc/notificationchatsetting.class.php:46
-#, fuzzy
 msgid "Chat followups configuration"
-msgstr "Konfigurasi menindaklanjuti melalui email"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:52
 #: inc/notificationsettingconfig.class.php:133
-#, fuzzy
 msgid "Enable followups via chat"
-msgstr "Membolehkan tindak lanjut"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:120
-#, fuzzy
 msgid "Chat notification"
 msgid_plural "Chat notifications"
-msgstr[0] "Pemberitahuan"
+msgstr[0] ""
 
 #: inc/notificationchatsetting.class.php:132
 msgid "Rocket chat"
@@ -17949,9 +17887,8 @@ msgid "Migration of column \"%s.%s\" failed with message \"(%s) %s\"."
 msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:192
-#, fuzzy
 msgid "Errors occured during migration."
-msgstr "Terjadi Kesalahan Saat Perbarui Password"
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:198
 #: inc/console/migration/buildmissingtimestampscommand.class.php:125
@@ -18712,14 +18649,12 @@ msgid "Database user"
 msgstr ""
 
 #: inc/console/database/updatecommand.class.php:130
-#, fuzzy
 msgid "ITSM version"
-msgstr "IP versi"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:131
-#, fuzzy
 msgid "ITSM database version"
-msgstr "Versi signature basis data"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:139
 #, php-format
@@ -19201,14 +19136,12 @@ msgid "Invalid link"
 msgstr ""
 
 #: inc/document.class.php:404
-#, fuzzy
 msgid "Added by"
-msgstr "Ditambahkan oleh %s"
+msgstr ""
 
 #: inc/document.class.php:407
-#, fuzzy
 msgid "Last update on"
-msgstr "Update terakhir pada %s"
+msgstr ""
 
 #: inc/document.class.php:415
 msgid "Current file"
@@ -19370,9 +19303,8 @@ msgid "Root CA"
 msgstr ""
 
 #: inc/certificate.class.php:634
-#, fuzzy
 msgid "Certificat"
-msgstr "Sertifikat"
+msgstr ""
 
 #: inc/certificate.class.php:662
 msgctxt "button"
@@ -20147,14 +20079,12 @@ msgid "Approve the solution"
 msgstr ""
 
 #: inc/itilfollowup.class.php:736
-#, fuzzy
 msgid "Approbation de la solution"
-msgstr "Persetujuan atas solusi"
+msgstr ""
 
 #: inc/itilfollowup.class.php:739
-#, fuzzy
 msgid "itemtype"
-msgstr "Tipe barang"
+msgstr ""
 
 #: inc/itilfollowup.class.php:744
 msgid "items_id"
@@ -20312,9 +20242,8 @@ msgid "Error: the two passwords do not match"
 msgstr "Kesalahan: dua password tidak cocok"
 
 #: inc/user.class.php:784
-#, fuzzy
 msgid "Moving temporary file failed."
-msgstr "Hilang folder sementara"
+msgstr ""
 
 #: inc/user.class.php:789
 msgid "The file is not an image file."
@@ -20393,18 +20322,16 @@ msgid "Last login on %s"
 msgstr "Login terakhir pada %s"
 
 #: inc/user.class.php:2699
-#, fuzzy
 msgid "Use ITSM-NG in mode"
-msgstr "Gunakan GLPI dalam mode"
+msgstr ""
 
 #: inc/user.class.php:2703
 msgid "Normal"
 msgstr ""
 
 #: inc/user.class.php:2719
-#, fuzzy
 msgid "Reset personal token"
-msgstr "Set pribadi"
+msgstr ""
 
 #: inc/user.class.php:2734
 msgid "Reset API token"
@@ -20513,9 +20440,8 @@ msgid "Your password reset request has expired or is invalid. Please renew it."
 msgstr ""
 
 #: inc/user.class.php:4613
-#, fuzzy
 msgid "Please enter your new password."
-msgstr "Harap konfirmasi alamat email anda dan masukan kata sandi baru"
+msgstr ""
 
 #: inc/user.class.php:4657
 msgid ""
@@ -21185,9 +21111,8 @@ msgid "Update to %s"
 msgstr "Perbarui ke %s"
 
 #: install/itsm_update_151_200.php:557
-#, fuzzy
 msgid "Update dashboard"
-msgstr "Perbarui Password"
+msgstr ""
 
 #: install/empty_data.php:2079 install/empty_data.php:2081
 #: install/update_0831_084.php:270 install/update_0831_084.php:271
@@ -21288,9 +21213,8 @@ msgid "Impossible to accomplish an update by this way!"
 msgstr "Mustahil untuk update dengan cara ini!!"
 
 #: install/update.php:583
-#, fuzzy
 msgid "Go back to ITSM-NG"
-msgstr "Kembali ke GLPI"
+msgstr ""
 
 #: install/update.php:588
 #, php-format
@@ -21345,9 +21269,8 @@ msgid "Fix URL of images in ITIL tasks, followups and solutions."
 msgstr ""
 
 #: install/update_content.php:245
-#, fuzzy
 msgid "SQL error starting"
-msgstr "Kesalahan SQL mulai dari 1%s"
+msgstr ""
 
 #: install/update_content.php:358
 msgid "Automatic redirection, else click"
@@ -21563,19 +21486,16 @@ msgid ""
 msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialization"
-msgstr "Inisialisasi database"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialized"
-msgstr "Inisialisasi database"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Languages"
-msgstr "Bahasa"
+msgstr ""
 
 #: templates/menus/nav/menu.twig:23
 msgid ""
@@ -21590,6 +21510,14 @@ msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:5
 msgid "Menu collapse"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:25
+msgid "Up"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:27
+msgid "bubble"
 msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:8
@@ -21607,16 +21535,6 @@ msgstr ""
 #: templates/menus/nav/nav-settings.twig:22
 msgid "Menu position"
 msgstr ""
-
-#, fuzzy
-#~| msgid "Login"
-#~ msgid "SSO Login"
-#~ msgstr "Login"
-
-#, fuzzy
-#~| msgid "Preconfiguration"
-#~ msgid "Open ID connect configuration"
-#~ msgstr "Konfigurasi awal"
 
 #~ msgid "No room found or selected"
 #~ msgstr "Tidak ada ruang yang ditemukan atau dipilih"

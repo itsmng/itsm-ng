@@ -534,14 +534,12 @@ msgid "Consider filling latitude and longitude on this location."
 msgstr "ลองกรอกละติจูดและลองจิจูดในตำแหน่งนี้."
 
 #: ajax/deleteItilActor.php:92
-#, fuzzy
 msgid "Actor deleted successfully"
-msgstr "รีเซ็ตแคชเรียบร้อย"
+msgstr ""
 
 #: ajax/deleteItilActor.php:98
-#, fuzzy
 msgid "Error while deleting actor"
-msgstr "ข้อผิดพลาดในการดำเนินการดำเนินการ"
+msgstr ""
 
 #: ajax/telemetry.php:46
 msgid ""
@@ -1746,9 +1744,8 @@ msgid "Impossible to use LDAP as external source of connection"
 msgstr "Impossible to use LDAP as external source of connection"
 
 #: front/setup.auth.php:58
-#, fuzzy
 msgid "Open ID connect authentication"
-msgstr "x509 certificate authentication"
+msgstr ""
 
 #: front/setup.auth.php:61
 msgid "Others authentication methods"
@@ -2191,10 +2188,9 @@ msgstr "id"
 #: inc/slalevel.class.php:226 inc/projecttask.class.php:679
 #: inc/projecttask.class.php:934 inc/transfer.class.php:86
 #: inc/transfer.class.php:3425 inc/group.class.php:216 inc/group.class.php:834
-#, fuzzy
 msgid "Name"
 msgid_plural "Names"
-msgstr[0] "ชื่อ"
+msgstr[0] ""
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
@@ -3252,9 +3248,8 @@ msgid "Unable to stop impersonating user"
 msgstr ""
 
 #: front/document.form.php:66
-#, fuzzy
 msgid "Could not add document"
-msgstr "เพิ่มเอกสาร"
+msgstr ""
 
 #: inc/operatingsystemedition.class.php:42
 #: inc/item_operatingsystem.class.php:365
@@ -3447,9 +3442,8 @@ msgid_plural "Versions"
 msgstr[0] "รุ่น"
 
 #: inc/cluster.class.php:136
-#, fuzzy
 msgid "Auto update system"
-msgstr "%s อัพเดทรายการ"
+msgstr ""
 
 #: inc/cluster.class.php:143 inc/cluster.class.php:223
 #: inc/printer.class.php:323 inc/printer.class.php:750
@@ -3951,9 +3945,9 @@ msgid "Allocated memory"
 msgstr "จัดสรรหน่วยความจำ"
 
 #: inc/system/requirement/memorylimit.class.php:75
-#, fuzzy, php-format
+#, php-format
 msgid "A minimum of %s is commonly required for ITSM-NG."
-msgstr "RAM อย่างน้อย 64 MB"
+msgstr ""
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -4472,9 +4466,8 @@ msgid "Action when a user is deleted from the LDAP directory"
 msgstr "ดำเนินการเมื่อผู้ใช้จะถูกลบจาก LDAP"
 
 #: inc/config.class.php:710
-#, fuzzy
 msgid "ITSM-NG server time zone"
-msgstr "เขตเวลาเซิร์ฟเวอร์ GLPI"
+msgstr ""
 
 #: inc/config.class.php:743 inc/config.class.php:1809 inc/config.class.php:2261
 #: inc/dbconnection.class.php:47
@@ -4659,9 +4652,8 @@ msgid "Display counters"
 msgstr ""
 
 #: inc/config.class.php:1151
-#, fuzzy
 msgid "Display the number of items in the menu"
-msgstr "แสดง (จำนวนรายการ)"
+msgstr ""
 
 #: inc/config.class.php:1160
 msgid "Keep devices when purging an item"
@@ -4743,34 +4735,28 @@ msgid "Pre-select me as a requester when creating a ticket"
 msgstr ""
 
 #: inc/config.class.php:1288
-#, fuzzy
 msgid "Priority color 1"
-msgstr "สีของความสำคัญ"
+msgstr ""
 
 #: inc/config.class.php:1295
-#, fuzzy
 msgid "Priority color 2"
-msgstr "สีของความสำคัญ"
+msgstr ""
 
 #: inc/config.class.php:1302
-#, fuzzy
 msgid "Priority color 3"
-msgstr "สีของความสำคัญ"
+msgstr ""
 
 #: inc/config.class.php:1309
-#, fuzzy
 msgid "Priority color 4"
-msgstr "สีของความสำคัญ"
+msgstr ""
 
 #: inc/config.class.php:1316
-#, fuzzy
 msgid "Priority color 5"
-msgstr "สีของความสำคัญ"
+msgstr ""
 
 #: inc/config.class.php:1323
-#, fuzzy
 msgid "Priority color 6"
-msgstr "สีของความสำคัญ"
+msgstr ""
 
 #: inc/config.class.php:1332
 msgid "Due date progression"
@@ -4793,9 +4779,8 @@ msgid "Warning state threshold"
 msgstr "เกณฑ์สถานะ Warning"
 
 #: inc/config.class.php:1366
-#, fuzzy
 msgid "Warning state unit"
-msgstr "สีของสถานะ Warning"
+msgstr ""
 
 #: inc/config.class.php:1372 inc/config.class.php:1394
 #: inc/reservation.class.php:1025 inc/levelagreement.class.php:202
@@ -4810,9 +4795,8 @@ msgid "Critical state threshold"
 msgstr "เกณฑ์สถานะ Critical"
 
 #: inc/config.class.php:1388
-#, fuzzy
 msgid "Critical state unit"
-msgstr "สีของสถานะ Critical"
+msgstr ""
 
 #: inc/config.class.php:1406
 msgid "Auto-lock Mode"
@@ -5343,9 +5327,8 @@ msgstr[0] "ปริ้นเตอร์"
 #: inc/consumableitem.class.php:134 inc/software.class.php:231
 #: inc/peripheral.class.php:161 inc/phone.class.php:156
 #: inc/computer.class.php:309 inc/pdu.class.php:86 inc/ticket.class.php:4478
-#, fuzzy
 msgid "Restore"
-msgstr "กู้คืน"
+msgstr ""
 
 #: inc/printer.class.php:302 inc/project.class.php:562
 #: inc/appliance.class.php:164 inc/supplier.class.php:187
@@ -5370,21 +5353,18 @@ msgstr "หมายเลขติดต่อผู้ใช้งาน"
 
 #: inc/printer.class.php:378 inc/monitor.class.php:274
 #: inc/peripheral.class.php:266 inc/phone.class.php:262
-#, fuzzy
 msgid "Management Type"
-msgstr "ประเภทการจัดการ"
+msgstr ""
 
 #: inc/printer.class.php:382 inc/monitor.class.php:278
 #: inc/peripheral.class.php:270 inc/phone.class.php:266
-#, fuzzy
 msgid "Unit Management"
-msgstr "Unit management"
+msgstr ""
 
 #: inc/printer.class.php:383 inc/monitor.class.php:279
 #: inc/peripheral.class.php:271 inc/phone.class.php:267
-#, fuzzy
 msgid "Global Management"
-msgstr "จัดการโกลบอล"
+msgstr ""
 
 #: inc/printer.class.php:395 inc/printer.class.php:733
 #: inc/networkequipment.class.php:380 inc/networkequipment.class.php:598
@@ -5396,9 +5376,8 @@ msgid_plural "Networks"
 msgstr[0] "เน็ตเวร์ค"
 
 #: inc/printer.class.php:404
-#, fuzzy
 msgid "Ports"
-msgstr "พอร์ต"
+msgstr ""
 
 #: inc/printer.class.php:407 inc/printer.class.php:622
 #: inc/appliance_item.class.php:186
@@ -5899,9 +5878,9 @@ msgid "Task completed."
 msgstr "งานสำเร็จ"
 
 #: inc/migration.class.php:792
-#, fuzzy, php-format
+#, php-format
 msgid "Automatically generated by ITSM-NG %s"
-msgstr "สร้างโดยอัตโนมัติโดย GLPI %s"
+msgstr ""
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -6150,14 +6129,12 @@ msgid "Associated item ID"
 msgstr "หมายเลขรายการที่เกี่ยวข้อง"
 
 #: inc/queuedchat.class.php:260 inc/queuedchat.class.php:646
-#, fuzzy
 msgid "Entity name"
-msgstr "เอ็นทิตี้"
+msgstr ""
 
 #: inc/queuedchat.class.php:269 inc/queuedchat.class.php:641
-#, fuzzy
 msgid "Server name"
-msgstr "ชื่ออุปกรณ์"
+msgstr ""
 
 #: inc/queuedchat.class.php:278
 msgid "URl Hook"
@@ -6178,23 +6155,20 @@ msgid "Send chat in queue"
 msgstr ""
 
 #: inc/queuedchat.class.php:383 inc/queuednotification.class.php:464
-#, fuzzy
 msgid "Maximum chat to send at once"
-msgstr "การแจ้งเตือนการหมดอายุสูงสุดที่จะส่งในครั้งเดียว"
+msgstr ""
 
 #: inc/queuedchat.class.php:388
 msgid "Clean chat queue"
 msgstr ""
 
 #: inc/queuedchat.class.php:389 inc/queuednotification.class.php:468
-#, fuzzy
 msgid "Days to keep sent chat"
-msgstr "จำนวนวันที่จะเก็บอีเมลที่ส่ง"
+msgstr ""
 
 #: inc/queuedchat.class.php:615
-#, fuzzy
 msgid "Ticket ID"
-msgstr "Tickets"
+msgstr ""
 
 #: inc/queuedchat.class.php:651
 msgid "Rocket Hook Url"
@@ -6576,9 +6550,8 @@ msgid_plural "Manufacturers"
 msgstr[0] "ผู้ผลิต"
 
 #: inc/monitor.class.php:245
-#, fuzzy
 msgid "Inventory/Asset number"
-msgstr "รหัสทรัพย์สิน"
+msgstr ""
 
 #: inc/monitor.class.php:268 inc/monitor.class.php:517
 #: inc/item_devicememory.class.php:54 inc/item_devicememory.class.php:56
@@ -6631,9 +6604,8 @@ msgid "Target entity for the computer"
 msgstr "Entity เป้าหมายสำหรับคอมพิวเตอร์"
 
 #: inc/ruleimportcomputer.class.php:81
-#, fuzzy
 msgid "Find computers in ITSM-NG having the status"
-msgstr "Find computers in GLPI having the status"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -6673,14 +6645,12 @@ msgid "Yes if empty"
 msgstr "ใช่ถ้าว่าง"
 
 #: inc/ruleimportcomputer.class.php:178
-#, fuzzy
 msgid "is already present in ITSM-NG"
-msgstr "ที่มีอยู่แล้วแสดงใน GLPI"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:179
-#, fuzzy
 msgid "is empty in ITSM-NG"
-msgstr "ไม่มีใน Entiry"
+msgstr ""
 
 #: inc/commonitilvalidation.class.php:91 inc/commonitilobject.class.php:6856
 #: inc/change.class.php:539 inc/change.class.php:1061
@@ -7412,14 +7382,12 @@ msgid "Category name"
 msgstr "ชื่อหมวดหมู่"
 
 #: inc/knowbaseitem.class.php:780
-#, fuzzy
 msgid "Created on:"
-msgstr "สร้างเมื่อ %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:783
-#, fuzzy
 msgid "Last update on:"
-msgstr "อัพเดทล่าสุด %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:786
 msgid "Put this item in the FAQ"
@@ -7436,9 +7404,8 @@ msgid "This item is not part of the FAQ"
 msgstr "รายการนี้ไม่ได้เป็นส่วนหนึ่งของคำถามที่พบบ่อย"
 
 #: inc/knowbaseitem.class.php:798
-#, fuzzy
 msgid "Views"
-msgstr "มุมมอง"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:799 inc/knowbaseitem.class.php:984
 #, php-format
@@ -7589,9 +7556,8 @@ msgid "Help"
 msgstr "ช่วยเหลือ"
 
 #: inc/link.class.php:165
-#, fuzzy
 msgid "External links"
-msgstr "ลิงก์ภายนอก"
+msgstr ""
 
 #: inc/link.class.php:173 inc/link.class.php:240
 msgid "Link or filename"
@@ -7676,19 +7642,16 @@ msgstr "จำนวนรายการ"
 
 #: inc/specialstatus.class.php:44 inc/specialstatus.class.php:150
 #: inc/profile.class.php:2082
-#, fuzzy
 msgid "Special Status"
-msgstr "ระบุวันที่"
+msgstr ""
 
 #: inc/specialstatus.class.php:115
-#, fuzzy
 msgid "Status has been updated!"
-msgstr "บันทึกการค้นหาแล้ว"
+msgstr ""
 
 #: inc/specialstatus.class.php:142
-#, fuzzy
 msgid "Status has been removed!"
-msgstr "บันทึกการค้นหาแล้ว"
+msgstr ""
 
 #: inc/specialstatus.class.php:153 inc/specialstatus.class.php:246
 #: inc/commondcmodeldropdown.class.php:65
@@ -7726,9 +7689,8 @@ msgid "Cancel"
 msgstr "ยกเลิก"
 
 #: inc/specialstatus.class.php:234
-#, fuzzy
 msgid "Status has been added!"
-msgstr "บันทึกการค้นหาแล้ว"
+msgstr ""
 
 #: inc/specialstatus.class.php:243
 msgid "New Status - Special status"
@@ -8218,9 +8180,8 @@ msgid "System lock"
 msgstr "ระบบล็อค"
 
 #: inc/crontask.class.php:643
-#, fuzzy
 msgid "Plugin lock"
-msgstr "ปลั๊กอิน"
+msgstr ""
 
 #: inc/crontask.class.php:644
 msgid "Disabled plugin"
@@ -8231,14 +8192,12 @@ msgid "Run mode"
 msgstr "เรียกใช้โหมด"
 
 #: inc/crontask.class.php:655
-#, fuzzy
 msgid "Min run period"
-msgstr "เรียกใช้ช่วงเวลา"
+msgstr ""
 
 #: inc/crontask.class.php:662
-#, fuzzy
 msgid "Max run period"
-msgstr "เรียกใช้ช่วงเวลา"
+msgstr ""
 
 #: inc/crontask.class.php:669 inc/crontask.class.php:1602
 msgid "Number of days this action logs are stored"
@@ -8253,14 +8212,12 @@ msgid "Last run"
 msgstr "Last run"
 
 #: inc/crontask.class.php:704
-#, fuzzy
 msgid "enabled"
-msgstr "เปิดการใช้งาน"
+msgstr ""
 
 #: inc/crontask.class.php:706
-#, fuzzy
 msgid "disabled"
-msgstr "ปิดการใช้งาน"
+msgstr ""
 
 #: inc/crontask.class.php:812 inc/crontask.class.php:1370
 msgid "Running"
@@ -8279,9 +8236,8 @@ msgid "Maintenance mode enabled, running tasks is disabled"
 msgstr ""
 
 #: inc/crontask.class.php:922
-#, fuzzy
 msgid "A minimum of 64 Mio is commonly required for ITSM-NG."
-msgstr "RAM อย่างน้อย 64 MB"
+msgstr ""
 
 #: inc/crontask.class.php:927
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -8614,14 +8570,11 @@ msgid "Upgrade"
 msgstr "อัพเกรด"
 
 #: inc/config.php:239
-#, fuzzy
 msgid ""
 "You are trying to use ITSM-NG with outdated files compared to the version of "
 "the database. Please install the correct ITSM-NG files corresponding to the "
 "version of your database."
 msgstr ""
-"คุณพยายามที่จะใช้ GLPI กับไฟล์เก่าเมื่อเทียบกับรุ่นของฐานข้อมูล กรุณาติดตั้งไฟล์ GLPI "
-"ที่ถูกต้องตรงกับรุ่นของฐานข้อมูลของคุณ."
 
 #: inc/config.php:242
 msgid ""
@@ -8848,10 +8801,9 @@ msgstr[0] "ประเภทคอมพิวเตอร์"
 
 #: inc/rulecollection.class.php:2050 inc/rule.class.php:371
 #: inc/monitortype.class.php:42
-#, fuzzy
 msgid "Monitor type"
 msgid_plural "Monitor types"
-msgstr[0] "ประเภทจอมอนิเตอร์"
+msgstr[0] ""
 
 #: inc/rulecollection.class.php:2053 inc/rule.class.php:383
 #: inc/printertype.class.php:42
@@ -9207,14 +9159,13 @@ msgid "Begin"
 msgstr "เริ่มต้น"
 
 #: inc/reminder.class.php:641
-#, fuzzy
 msgid "From"
-msgstr "จาก %s"
+msgstr ""
 
 #: inc/reminder.class.php:642
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s to %2$s"
-msgstr "%1$s บน %2$s"
+msgstr ""
 
 #: inc/ticketvalidation.class.php:99
 msgid "Create for request"
@@ -9359,9 +9310,8 @@ msgid_plural "Enclosures"
 msgstr[0] ""
 
 #: inc/enclosure.class.php:122
-#, fuzzy
 msgid "Power supplies"
-msgstr "พาวเวอร์ซัพพลาย"
+msgstr ""
 
 #: inc/contract_supplier.class.php:136 inc/contract.class.php:204
 #: inc/contract_item.class.php:336
@@ -9448,42 +9398,36 @@ msgid "Support hours"
 msgstr "ชั่วโมงช่วยเหลือ"
 
 #: inc/contract.class.php:332
-#, fuzzy
 msgid "on week start"
-msgstr "ในสัปดาห์"
+msgstr ""
 
 #: inc/contract.class.php:338
-#, fuzzy
 msgid "on week end"
-msgstr "ในสัปดาห์"
+msgstr ""
 
 #: inc/contract.class.php:344
 msgid "on Saturday"
 msgstr "ในวันเสาร์"
 
 #: inc/contract.class.php:349
-#, fuzzy
 msgid "on Saturday start"
-msgstr "ในวันเสาร์"
+msgstr ""
 
 #: inc/contract.class.php:354
-#, fuzzy
 msgid "on Saturday end"
-msgstr "ในวันเสาร์"
+msgstr ""
 
 #: inc/contract.class.php:359
 msgid "Sundays and holidays"
 msgstr "ในวันอาทิตย์และวันหยุด"
 
 #: inc/contract.class.php:364
-#, fuzzy
 msgid "on Sunday start"
-msgstr "ในวันเสาร์"
+msgstr ""
 
 #: inc/contract.class.php:369
-#, fuzzy
 msgid "on Sunday end"
-msgstr "ในวันเสาร์"
+msgstr ""
 
 #: inc/contract.class.php:415
 msgctxt "quantity"
@@ -10239,14 +10183,12 @@ msgid "Last update in the LDAP directory"
 msgstr "อัพเดทล่าสุดใน LDAP"
 
 #: inc/authldap.class.php:1560
-#, fuzzy
 msgid "Last update in ITSM-ng"
-msgstr "อัพเดทล่าสุดใน GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:1609
-#, fuzzy
 msgid "Last update in ITSM-NG"
-msgstr "อัพเดทล่าสุดใน GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:1621 inc/authldap.class.php:1626
 msgid "No user to be synchronized"
@@ -10278,9 +10220,8 @@ msgid "LDAP directory choice"
 msgstr "ตัวเลีอก LDAP directory "
 
 #: inc/authldap.class.php:2396
-#, fuzzy
 msgid "No LDAP directory defined in ITSM-ng"
-msgstr "LDAP ไม่มีกำหนดไว้ใน GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:2767
 msgid "User not found or several users found"
@@ -10454,9 +10395,8 @@ msgid_plural "Links Contract/Item"
 msgstr[0] "ลิงค์ สัญญา/รายการ"
 
 #: inc/contract_item.class.php:362
-#, fuzzy
 msgid "Delete permanently the relation with selected elements"
-msgstr "ลบอย่างถาวร แต่เก็บอุปกรณ์ไว้"
+msgstr ""
 
 #: inc/planningexternalevent.class.php:54
 msgid "External event"
@@ -10664,9 +10604,8 @@ msgstr "เครื่องมือ"
 #: inc/profile.class.php:1790 inc/profile.class.php:1835
 #: inc/profile.class.php:3022 inc/accessibility.class.php:36
 #: inc/accessibility.class.php:58 inc/accessibility.class.php:63
-#, fuzzy
 msgid "Accessibility"
-msgstr "ชัดเจน"
+msgstr ""
 
 #: inc/profile.class.php:128 inc/profile.class.php:1197
 #: inc/profile.class.php:2435 inc/infocom.class.php:142
@@ -10885,9 +10824,8 @@ msgid "Life cycle of changes"
 msgstr ""
 
 #: inc/profile.class.php:1785 inc/profile.class.php:1830
-#, fuzzy
 msgid "Edit accessibility"
-msgstr "ชัดเจน"
+msgstr ""
 
 #: inc/profile.class.php:1922 inc/profile.class.php:2743
 #: inc/rulerightcollection.class.php:57 inc/ruleright.class.php:56
@@ -10988,14 +10926,12 @@ msgid "Managed domain records types"
 msgstr ""
 
 #: inc/profile.class.php:3032
-#, fuzzy
 msgid "Change font"
-msgstr "เปลี่ยนงาน"
+msgstr ""
 
 #: inc/profile.class.php:3042
-#, fuzzy
 msgid "Change zoom"
-msgstr "เปลี่ยน"
+msgstr ""
 
 #: inc/profile.class.php:3053
 msgid "Use shortcuts"
@@ -11889,9 +11825,8 @@ msgid "Global View"
 msgstr "มุมมองทั้งหมด"
 
 #: inc/central.class.php:118
-#, fuzzy
 msgid "No dashboard available"
-msgstr "ตลับหมึกไม่มี"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/central.class.php:154 inc/rack.class.php:65
@@ -11900,9 +11835,8 @@ msgid_plural "Racks"
 msgstr[0] ""
 
 #: inc/central.class.php:173
-#, fuzzy
 msgid "Tickets by status"
-msgstr "Tickets เกี่ยวกับสถานะที่ค้างอยู่"
+msgstr ""
 
 #: inc/central.class.php:395
 #, php-format
@@ -12143,9 +12077,8 @@ msgid "Entity-ID"
 msgstr ""
 
 #: inc/domain.class.php:364 inc/certificate.class.php:544
-#, fuzzy
 msgid "Types"
-msgstr "ประเภท"
+msgstr ""
 
 #: inc/domain.class.php:689
 msgid "Domains expired since more"
@@ -12298,9 +12231,8 @@ msgid "An appliance is required"
 msgstr ""
 
 #: inc/softwareversion.class.php:114
-#, fuzzy
 msgid "New element"
-msgstr "ลบองค์ประกอบ"
+msgstr ""
 
 #: inc/softwareversion.class.php:332
 msgctxt "button"
@@ -12766,9 +12698,8 @@ msgstr "อยู่ระหว่างดำเนินการ (วาง�
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541
-#, fuzzy
 msgid "Pending"
-msgstr "รอดำเนินการ"
+msgstr ""
 
 #: inc/problem.class.php:686
 msgctxt "status"
@@ -13374,9 +13305,8 @@ msgstr "Replay dictionary rules for manufacturers (----- = All)"
 
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
-#, fuzzy
 msgid "Software deleted by ITSM-NG dictionary rules"
-msgstr "ซอฟแวร์ลบโดย GLPI กฎพจนานุกรม"
+msgstr ""
 
 #: inc/caldav/backend/calendar.class.php:89
 #: inc/caldav/backend/calendar.class.php:127
@@ -13983,9 +13913,8 @@ msgid "Connection string"
 msgstr "เริ่มการเชื่อมต่อ"
 
 #: inc/authmail.class.php:206 inc/notificationchatsetting.class.php:295
-#, fuzzy
 msgid "Test"
-msgstr "ทดสอบ"
+msgstr ""
 
 #: inc/authmail.class.php:211
 msgid "Test connection to email server"
@@ -14002,9 +13931,8 @@ msgid "You cannot use predefined description verbatim"
 msgstr "คุณไม่สามารถใช้คำอธิบายแบบคำต่อคำที่กำหนดไว้ล่วงหน้า"
 
 #: inc/commonitilobject.class.php:1772
-#, fuzzy
 msgid "Incorrect value for date field."
-msgstr "Ignored values for the unicity"
+msgstr ""
 
 #: inc/commonitilobject.class.php:2432
 msgctxt "priority"
@@ -15560,18 +15488,16 @@ msgstr "CSS"
 
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
-#, fuzzy
 msgid "Automatically generated by ITSM-NG"
-msgstr "สร้างโดยอัตโนมัติโดย GLPI %s"
+msgstr ""
 
 #: inc/oidc.class.php:80
 msgid "Missing or wrong fields in open ID connect config"
 msgstr ""
 
 #: inc/oidc.class.php:301
-#, fuzzy
 msgid "Configuration"
-msgstr "กำหนดค่าคอนฟิกล่วงหน้า"
+msgstr ""
 
 #: inc/oidc.class.php:306 inc/auth.class.php:1830
 msgid "Mapping of fields according to provider"
@@ -15643,9 +15569,8 @@ msgid "Incorrect username or password"
 msgstr "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
 
 #: inc/auth.class.php:284 inc/auth.class.php:975 inc/auth.class.php:1003
-#, fuzzy
 msgid "User not authorized to connect in ITSM-NG"
-msgstr "ผู้ใช้ไม่ได้รับอนุญาตในการเชื่อมต่อใน GLPI"
+msgstr ""
 
 #: inc/auth.class.php:631
 msgid "Login with external token disabled"
@@ -15684,9 +15609,8 @@ msgid "Failed login for %1$s from IP %2$s"
 msgstr "เข้าสู่ระบบไม่ผ่าน %1$s จาก IP %2$s"
 
 #: inc/auth.class.php:1107
-#, fuzzy
 msgid "Authentication on ITSM-NG database"
-msgstr "การตรวจสอบบนฐานข้อมูล GLPI "
+msgstr ""
 
 #: inc/auth.class.php:1119
 msgid "Authentication on a LDAP directory"
@@ -15717,9 +15641,8 @@ msgid "x509 certificate authentication"
 msgstr "x509 certificate authentication"
 
 #: inc/auth.class.php:1234 inc/auth.class.php:1892
-#, fuzzy
 msgid "ITSM-NG internal database"
-msgstr "ฐานข้อมูล GLPI "
+msgstr ""
 
 #: inc/auth.class.php:1240
 msgid "Not yet authenticated"
@@ -15958,26 +15881,22 @@ msgid "Unknown interface"
 msgstr "Unknown interface"
 
 #: inc/notificationchatsetting.class.php:46
-#, fuzzy
 msgid "Chat followups configuration"
-msgstr "ตั้งค่าการติดตามผ่านทางอีเมล์"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:52
 #: inc/notificationsettingconfig.class.php:133
-#, fuzzy
 msgid "Enable followups via chat"
-msgstr "ตั้งค่าการติดตามผ่านทางอีเมล์"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:120
-#, fuzzy
 msgid "Chat notification"
 msgid_plural "Chat notifications"
-msgstr[0] "ส่งการแจ้งเตือน"
+msgstr[0] ""
 
 #: inc/notificationchatsetting.class.php:132
-#, fuzzy
 msgid "Rocket chat"
-msgstr "ค่าใช้จ่าย Ticket"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:133
 msgid "Slack"
@@ -16047,9 +15966,8 @@ msgid "Don't forget to save"
 msgstr ""
 
 #: inc/accessibility.class.php:169
-#, fuzzy
 msgid "Toggle view"
-msgstr "สลับใช้โหมดกลางคืน"
+msgstr ""
 
 #: inc/accessibility.class.php:189
 msgid "shift+alt+"
@@ -16697,9 +16615,8 @@ msgid "Autofilled from template"
 msgstr ""
 
 #: inc/notificationchat.class.php:114
-#, fuzzy
 msgid "Error inserting chat to queue"
-msgstr "มีข้อผิดพลาดในการส่งเมล์"
+msgstr ""
 
 #: inc/notificationchat.class.php:118
 #, php-format
@@ -17082,9 +16999,8 @@ msgid "Amortization type"
 msgstr "ประเภทตัดบัญชี"
 
 #: inc/infocom.class.php:1191 inc/infocom.class.php:1202
-#, fuzzy
 msgid "years"
-msgstr "โดยปี"
+msgstr ""
 
 #: inc/infocom.class.php:1196 inc/infocom.class.php:1512
 #: inc/infocom.class.php:1743
@@ -17957,9 +17873,8 @@ msgid "Migration of column \"%s.%s\" failed with message \"(%s) %s\"."
 msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:192
-#, fuzzy
 msgid "Errors occured during migration."
-msgstr "ข้อผิดพลาดระหว่างอัพเดทรหัสผ่าน"
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:198
 #: inc/console/migration/buildmissingtimestampscommand.class.php:125
@@ -18622,9 +18537,8 @@ msgid "Number of softwares processed: %d."
 msgstr ""
 
 #: inc/console/database/installcommand.class.php:91
-#, fuzzy
 msgid "Default language of ITSM-NG"
-msgstr "ภาษาเริ่มต้นของระบบ"
+msgstr ""
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -18721,9 +18635,8 @@ msgid "Database user"
 msgstr "Database user"
 
 #: inc/console/database/updatecommand.class.php:130
-#, fuzzy
 msgid "ITSM version"
-msgstr "IP version"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:131
 msgid "ITSM database version"
@@ -19209,14 +19122,12 @@ msgid "Invalid link"
 msgstr ""
 
 #: inc/document.class.php:404
-#, fuzzy
 msgid "Added by"
-msgstr "เพิ่มโดย %s"
+msgstr ""
 
 #: inc/document.class.php:407
-#, fuzzy
 msgid "Last update on"
-msgstr "อัพเดทล่าสุด %s"
+msgstr ""
 
 #: inc/document.class.php:415
 msgid "Current file"
@@ -19378,9 +19289,8 @@ msgid "Root CA"
 msgstr ""
 
 #: inc/certificate.class.php:634
-#, fuzzy
 msgid "Certificat"
-msgstr "ประกาศ"
+msgstr ""
 
 #: inc/certificate.class.php:662
 msgctxt "button"
@@ -19973,9 +19883,8 @@ msgid "Purchase version"
 msgstr "รุ่นที่ซื้อ"
 
 #: inc/softwarelicense.class.php:415
-#, fuzzy
 msgid "Quota Status"
-msgstr "ไม่มีสถานะ"
+msgstr ""
 
 #: inc/softwarelicense.class.php:417
 msgctxt "adjective"
@@ -20156,14 +20065,12 @@ msgid "Approve the solution"
 msgstr "อนุมัติวิธีการแก้ปัญหา"
 
 #: inc/itilfollowup.class.php:736
-#, fuzzy
 msgid "Approbation de la solution"
-msgstr "อนุมัติโซลูชั่น"
+msgstr ""
 
 #: inc/itilfollowup.class.php:739
-#, fuzzy
 msgid "itemtype"
-msgstr "Itemtype"
+msgstr ""
 
 #: inc/itilfollowup.class.php:744
 msgid "items_id"
@@ -20321,9 +20228,8 @@ msgid "Error: the two passwords do not match"
 msgstr "ข้อผิดพลาด: รหัสผ่านไม่ตรงกัน"
 
 #: inc/user.class.php:784
-#, fuzzy
 msgid "Moving temporary file failed."
-msgstr "ไม่พบโฟลเดอร์ Temp"
+msgstr ""
 
 #: inc/user.class.php:789
 msgid "The file is not an image file."
@@ -20402,18 +20308,16 @@ msgid "Last login on %s"
 msgstr "เข้าสู่ระบบล่าสุดบน %s"
 
 #: inc/user.class.php:2699
-#, fuzzy
 msgid "Use ITSM-NG in mode"
-msgstr "ใช้ GLPI ในโหมด"
+msgstr ""
 
 #: inc/user.class.php:2703
 msgid "Normal"
 msgstr "ธรรมดา"
 
 #: inc/user.class.php:2719
-#, fuzzy
 msgid "Reset personal token"
-msgstr "ตั้งค่าส่วนตัว"
+msgstr ""
 
 #: inc/user.class.php:2734
 msgid "Reset API token"
@@ -20523,9 +20427,8 @@ msgstr ""
 "Your password reset request has expired or is invalid. Please renew it."
 
 #: inc/user.class.php:4613
-#, fuzzy
 msgid "Please enter your new password."
-msgstr "กรุณายืนยันอีเมล์และรหัสผ่านใหม่"
+msgstr ""
 
 #: inc/user.class.php:4657
 msgid ""
@@ -20534,9 +20437,8 @@ msgid ""
 msgstr "กรุณาใส่ที่อยู่อีเมลของคุณ อีเมล์จะถูกส่งให้คุณและคุณจะสามารถเลือกรหัสผ่านใหม่"
 
 #: inc/user.class.php:4698 inc/user.class.php:4712
-#, fuzzy
 msgid "Unable to reset password, please contact your administrator"
-msgstr "ไม่สามารถทดสอบส่งอีเมล์ผู้ดูแลระบบ"
+msgstr ""
 
 #: inc/user.class.php:4719
 msgid ""
@@ -21194,9 +21096,8 @@ msgid "Update to %s"
 msgstr "Update to %s"
 
 #: install/itsm_update_151_200.php:557
-#, fuzzy
 msgid "Update dashboard"
-msgstr "อัพเดทรหัสผ่าน"
+msgstr ""
 
 #: install/empty_data.php:2079 install/empty_data.php:2081
 #: install/update_0831_084.php:270 install/update_0831_084.php:271
@@ -21295,14 +21196,13 @@ msgid "Impossible to accomplish an update by this way!"
 msgstr "เป็นไปไม่ได้ที่จะบรรลุอัพเดตโดยวิธีการนี้!"
 
 #: install/update.php:583
-#, fuzzy
 msgid "Go back to ITSM-NG"
-msgstr "ย้อนกลับไป GLPI"
+msgstr ""
 
 #: install/update.php:588
-#, fuzzy, php-format
+#, php-format
 msgid "Caution! You will update the ITSM-NG database named: %s"
-msgstr "ข้อควรระวัง! คุณจะปรับปรุงฐานข้อมูล GLPI ชื่อ: %s"
+msgstr ""
 
 #: install/update.php:594
 msgid "Continue"
@@ -21313,9 +21213,8 @@ msgid "Database connection successful"
 msgstr "เชื่อมต่อฐานข้อมูลสำเร็จ"
 
 #: install/update.php:651 install/update_content.php:367
-#, fuzzy
 msgid "Use ITSM-NG"
-msgstr "ใช้ TLS"
+msgstr ""
 
 #: install/update.php:660
 msgid ""
@@ -21355,9 +21254,8 @@ msgid "Fix URL of images in ITIL tasks, followups and solutions."
 msgstr ""
 
 #: install/update_content.php:245
-#, fuzzy
 msgid "SQL error starting"
-msgstr "SQL error starting from %s"
+msgstr ""
 
 #: install/update_content.php:358
 msgid "Automatic redirection, else click"
@@ -21573,19 +21471,16 @@ msgid ""
 msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialization"
-msgstr "การติดตั้ง"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialized"
-msgstr "การติดตั้ง"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Languages"
-msgstr "ภาษา"
+msgstr ""
 
 #: templates/menus/nav/menu.twig:23
 msgid ""
@@ -21602,10 +21497,17 @@ msgstr ""
 msgid "Menu collapse"
 msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:25
+msgid "Up"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:27
+msgid "bubble"
+msgstr ""
+
 #: templates/menus/nav/nav-settings.twig:8
-#, fuzzy
 msgid "Reset menu bubble position"
-msgstr "ตำแหน่ง"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:14
 msgid "Activate menu favorite"
@@ -21616,19 +21518,8 @@ msgid "Activate favorite selection"
 msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:22
-#, fuzzy
 msgid "Menu position"
-msgstr "ตำแหน่ง"
-
-#, fuzzy
-#~| msgid "Login"
-#~ msgid "SSO Login"
-#~ msgstr "เข้าสู่ระบบ"
-
-#, fuzzy
-#~| msgid "Preconfiguration"
-#~ msgid "Open ID connect configuration"
-#~ msgstr "กำหนดค่าคอนฟิกล่วงหน้า"
+msgstr ""
 
 #~ msgid "No room found or selected"
 #~ msgstr "ไม่พบห้องที่ต้องการหรือที่เลือก"

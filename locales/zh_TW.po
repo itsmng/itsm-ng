@@ -534,14 +534,12 @@ msgid "Consider filling latitude and longitude on this location."
 msgstr ""
 
 #: ajax/deleteItilActor.php:92
-#, fuzzy
 msgid "Actor deleted successfully"
-msgstr "重置快取成功"
+msgstr ""
 
 #: ajax/deleteItilActor.php:98
-#, fuzzy
 msgid "Error while deleting actor"
-msgstr "執行中發生錯誤"
+msgstr ""
 
 #: ajax/telemetry.php:46
 msgid ""
@@ -1746,9 +1744,8 @@ msgid "Impossible to use LDAP as external source of connection"
 msgstr "不能用LDAP作為連接的外部來源"
 
 #: front/setup.auth.php:58
-#, fuzzy
 msgid "Open ID connect authentication"
-msgstr "x509 認證"
+msgstr ""
 
 #: front/setup.auth.php:61
 msgid "Others authentication methods"
@@ -2191,10 +2188,9 @@ msgstr ""
 #: inc/slalevel.class.php:226 inc/projecttask.class.php:679
 #: inc/projecttask.class.php:934 inc/transfer.class.php:86
 #: inc/transfer.class.php:3425 inc/group.class.php:216 inc/group.class.php:834
-#, fuzzy
 msgid "Name"
 msgid_plural "Names"
-msgstr[0] "名稱"
+msgstr[0] ""
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
@@ -3251,9 +3247,8 @@ msgid "Unable to stop impersonating user"
 msgstr ""
 
 #: front/document.form.php:66
-#, fuzzy
 msgid "Could not add document"
-msgstr "新增一個文件"
+msgstr ""
 
 #: inc/operatingsystemedition.class.php:42
 #: inc/item_operatingsystem.class.php:365
@@ -3446,9 +3441,8 @@ msgid_plural "Versions"
 msgstr[0] "版本"
 
 #: inc/cluster.class.php:136
-#, fuzzy
 msgid "Auto update system"
-msgstr "%s 更新項目"
+msgstr ""
 
 #: inc/cluster.class.php:143 inc/cluster.class.php:223
 #: inc/printer.class.php:323 inc/printer.class.php:750
@@ -3950,9 +3944,9 @@ msgid "Allocated memory"
 msgstr "已分配的內存"
 
 #: inc/system/requirement/memorylimit.class.php:75
-#, fuzzy, php-format
+#, php-format
 msgid "A minimum of %s is commonly required for ITSM-NG."
-msgstr "GLPI通常需要最低64 Mio"
+msgstr ""
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -4471,9 +4465,8 @@ msgid "Action when a user is deleted from the LDAP directory"
 msgstr "當使用者從 LDAP目錄中刪除後執行"
 
 #: inc/config.class.php:710
-#, fuzzy
 msgid "ITSM-NG server time zone"
-msgstr "GLPI 伺服器時區"
+msgstr ""
 
 #: inc/config.class.php:743 inc/config.class.php:1809 inc/config.class.php:2261
 #: inc/dbconnection.class.php:47
@@ -4526,9 +4519,8 @@ msgid "URL of the API"
 msgstr "API 的URL"
 
 #: inc/config.class.php:821
-#, fuzzy
 msgid "URL of the dashboard API"
-msgstr "API 的URL"
+msgstr ""
 
 #: inc/config.class.php:827
 msgid "Enable Rest API"
@@ -4659,9 +4651,8 @@ msgid "Display counters"
 msgstr ""
 
 #: inc/config.class.php:1151
-#, fuzzy
 msgid "Display the number of items in the menu"
-msgstr "顯示(項目數)"
+msgstr ""
 
 #: inc/config.class.php:1160
 msgid "Keep devices when purging an item"
@@ -4743,34 +4734,28 @@ msgid "Pre-select me as a requester when creating a ticket"
 msgstr ""
 
 #: inc/config.class.php:1288
-#, fuzzy
 msgid "Priority color 1"
-msgstr "優先顏色"
+msgstr ""
 
 #: inc/config.class.php:1295
-#, fuzzy
 msgid "Priority color 2"
-msgstr "優先顏色"
+msgstr ""
 
 #: inc/config.class.php:1302
-#, fuzzy
 msgid "Priority color 3"
-msgstr "優先顏色"
+msgstr ""
 
 #: inc/config.class.php:1309
-#, fuzzy
 msgid "Priority color 4"
-msgstr "優先顏色"
+msgstr ""
 
 #: inc/config.class.php:1316
-#, fuzzy
 msgid "Priority color 5"
-msgstr "優先顏色"
+msgstr ""
 
 #: inc/config.class.php:1323
-#, fuzzy
 msgid "Priority color 6"
-msgstr "優先顏色"
+msgstr ""
 
 #: inc/config.class.php:1332
 msgid "Due date progression"
@@ -4793,9 +4778,8 @@ msgid "Warning state threshold"
 msgstr "警告狀態界限值"
 
 #: inc/config.class.php:1366
-#, fuzzy
 msgid "Warning state unit"
-msgstr "警告狀態的顏色"
+msgstr ""
 
 #: inc/config.class.php:1372 inc/config.class.php:1394
 #: inc/reservation.class.php:1025 inc/levelagreement.class.php:202
@@ -4810,9 +4794,8 @@ msgid "Critical state threshold"
 msgstr "嚴重狀態界限值"
 
 #: inc/config.class.php:1388
-#, fuzzy
 msgid "Critical state unit"
-msgstr "嚴重狀態的顏色"
+msgstr ""
 
 #: inc/config.class.php:1406
 msgid "Auto-lock Mode"
@@ -5343,9 +5326,8 @@ msgstr[0] "印表機"
 #: inc/consumableitem.class.php:134 inc/software.class.php:231
 #: inc/peripheral.class.php:161 inc/phone.class.php:156
 #: inc/computer.class.php:309 inc/pdu.class.php:86 inc/ticket.class.php:4478
-#, fuzzy
 msgid "Restore"
-msgstr "恢復"
+msgstr ""
 
 #: inc/printer.class.php:302 inc/project.class.php:562
 #: inc/appliance.class.php:164 inc/supplier.class.php:187
@@ -5370,21 +5352,18 @@ msgstr "聯絡電話"
 
 #: inc/printer.class.php:378 inc/monitor.class.php:274
 #: inc/peripheral.class.php:266 inc/phone.class.php:262
-#, fuzzy
 msgid "Management Type"
-msgstr "管理類型"
+msgstr ""
 
 #: inc/printer.class.php:382 inc/monitor.class.php:278
 #: inc/peripheral.class.php:270 inc/phone.class.php:266
-#, fuzzy
 msgid "Unit Management"
-msgstr "實體管理"
+msgstr ""
 
 #: inc/printer.class.php:383 inc/monitor.class.php:279
 #: inc/peripheral.class.php:271 inc/phone.class.php:267
-#, fuzzy
 msgid "Global Management"
-msgstr "全部管理"
+msgstr ""
 
 #: inc/printer.class.php:395 inc/printer.class.php:733
 #: inc/networkequipment.class.php:380 inc/networkequipment.class.php:598
@@ -5396,9 +5375,8 @@ msgid_plural "Networks"
 msgstr[0] "網路設備"
 
 #: inc/printer.class.php:404
-#, fuzzy
 msgid "Ports"
-msgstr "連接埠"
+msgstr ""
 
 #: inc/printer.class.php:407 inc/printer.class.php:622
 #: inc/appliance_item.class.php:186
@@ -5899,9 +5877,9 @@ msgid "Task completed."
 msgstr "作業完成."
 
 #: inc/migration.class.php:792
-#, fuzzy, php-format
+#, php-format
 msgid "Automatically generated by ITSM-NG %s"
-msgstr "由GLPI自動生成 %s"
+msgstr ""
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -6150,14 +6128,12 @@ msgid "Associated item ID"
 msgstr "相關的項目 ID"
 
 #: inc/queuedchat.class.php:260 inc/queuedchat.class.php:646
-#, fuzzy
 msgid "Entity name"
-msgstr "實體"
+msgstr ""
 
 #: inc/queuedchat.class.php:269 inc/queuedchat.class.php:641
-#, fuzzy
 msgid "Server name"
-msgstr "發件人名字"
+msgstr ""
 
 #: inc/queuedchat.class.php:278
 msgid "URl Hook"
@@ -6174,29 +6150,24 @@ msgid "Mode"
 msgstr "模式"
 
 #: inc/queuedchat.class.php:382 inc/queuednotification.class.php:463
-#, fuzzy
 msgid "Send chat in queue"
-msgstr "發送佇列中的郵件"
+msgstr ""
 
 #: inc/queuedchat.class.php:383 inc/queuednotification.class.php:464
-#, fuzzy
 msgid "Maximum chat to send at once"
-msgstr "一次可發送郵件最大數量"
+msgstr ""
 
 #: inc/queuedchat.class.php:388
-#, fuzzy
 msgid "Clean chat queue"
-msgstr "清空通知排程"
+msgstr ""
 
 #: inc/queuedchat.class.php:389 inc/queuednotification.class.php:468
-#, fuzzy
 msgid "Days to keep sent chat"
-msgstr "已發送郵件保留天數"
+msgstr ""
 
 #: inc/queuedchat.class.php:615
-#, fuzzy
 msgid "Ticket ID"
-msgstr "待辦事項"
+msgstr ""
 
 #: inc/queuedchat.class.php:651
 msgid "Rocket Hook Url"
@@ -6578,9 +6549,8 @@ msgid_plural "Manufacturers"
 msgstr[0] "製造商"
 
 #: inc/monitor.class.php:245
-#, fuzzy
 msgid "Inventory/Asset number"
-msgstr "財產編號"
+msgstr ""
 
 #: inc/monitor.class.php:268 inc/monitor.class.php:517
 #: inc/item_devicememory.class.php:54 inc/item_devicememory.class.php:56
@@ -6633,9 +6603,8 @@ msgid "Target entity for the computer"
 msgstr "實體目標的電腦"
 
 #: inc/ruleimportcomputer.class.php:81
-#, fuzzy
 msgid "Find computers in ITSM-NG having the status"
-msgstr "搜尋有狀態的電腦"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -6675,14 +6644,12 @@ msgid "Yes if empty"
 msgstr "是的，如果為空"
 
 #: inc/ruleimportcomputer.class.php:178
-#, fuzzy
 msgid "is already present in ITSM-NG"
-msgstr "已存在於 GLPI"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:179
-#, fuzzy
 msgid "is empty in ITSM-NG"
-msgstr "在GLPI內是空的"
+msgstr ""
 
 #: inc/commonitilvalidation.class.php:91 inc/commonitilobject.class.php:6856
 #: inc/change.class.php:539 inc/change.class.php:1061
@@ -7415,14 +7382,12 @@ msgid "Category name"
 msgstr "類別名稱"
 
 #: inc/knowbaseitem.class.php:780
-#, fuzzy
 msgid "Created on:"
-msgstr "建立於 %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:783
-#, fuzzy
 msgid "Last update on:"
-msgstr "最後更新於 %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:786
 msgid "Put this item in the FAQ"
@@ -7439,9 +7404,8 @@ msgid "This item is not part of the FAQ"
 msgstr "這項目不作為公眾常見問答的部分"
 
 #: inc/knowbaseitem.class.php:798
-#, fuzzy
 msgid "Views"
-msgstr "查看"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:799 inc/knowbaseitem.class.php:984
 #, php-format
@@ -7592,9 +7556,8 @@ msgid "Help"
 msgstr "幫助"
 
 #: inc/link.class.php:165
-#, fuzzy
 msgid "External links"
-msgstr "外部連結"
+msgstr ""
 
 #: inc/link.class.php:173 inc/link.class.php:240
 msgid "Link or filename"
@@ -7679,19 +7642,16 @@ msgstr "項目數"
 
 #: inc/specialstatus.class.php:44 inc/specialstatus.class.php:150
 #: inc/profile.class.php:2082
-#, fuzzy
 msgid "Special Status"
-msgstr "指定日期"
+msgstr ""
 
 #: inc/specialstatus.class.php:115
-#, fuzzy
 msgid "Status has been updated!"
-msgstr "提醒已建立！"
+msgstr ""
 
 #: inc/specialstatus.class.php:142
-#, fuzzy
 msgid "Status has been removed!"
-msgstr "搜索已儲存"
+msgstr ""
 
 #: inc/specialstatus.class.php:153 inc/specialstatus.class.php:246
 #: inc/commondcmodeldropdown.class.php:65
@@ -7729,9 +7689,8 @@ msgid "Cancel"
 msgstr "取消"
 
 #: inc/specialstatus.class.php:234
-#, fuzzy
 msgid "Status has been added!"
-msgstr "搜索已儲存"
+msgstr ""
 
 #: inc/specialstatus.class.php:243
 msgid "New Status - Special status"
@@ -8221,9 +8180,8 @@ msgid "System lock"
 msgstr "系統鎖定"
 
 #: inc/crontask.class.php:643
-#, fuzzy
 msgid "Plugin lock"
-msgstr "外掛程式"
+msgstr ""
 
 #: inc/crontask.class.php:644
 msgid "Disabled plugin"
@@ -8234,14 +8192,12 @@ msgid "Run mode"
 msgstr "執行模式"
 
 #: inc/crontask.class.php:655
-#, fuzzy
 msgid "Min run period"
-msgstr "執行週期"
+msgstr ""
 
 #: inc/crontask.class.php:662
-#, fuzzy
 msgid "Max run period"
-msgstr "執行週期"
+msgstr ""
 
 #: inc/crontask.class.php:669 inc/crontask.class.php:1602
 msgid "Number of days this action logs are stored"
@@ -8256,14 +8212,12 @@ msgid "Last run"
 msgstr "最後執行"
 
 #: inc/crontask.class.php:704
-#, fuzzy
 msgid "enabled"
-msgstr "啟用"
+msgstr ""
 
 #: inc/crontask.class.php:706
-#, fuzzy
 msgid "disabled"
-msgstr "已停用"
+msgstr ""
 
 #: inc/crontask.class.php:812 inc/crontask.class.php:1370
 msgid "Running"
@@ -8282,9 +8236,8 @@ msgid "Maintenance mode enabled, running tasks is disabled"
 msgstr ""
 
 #: inc/crontask.class.php:922
-#, fuzzy
 msgid "A minimum of 64 Mio is commonly required for ITSM-NG."
-msgstr "GLPI通常需要最低64 Mio"
+msgstr ""
 
 #: inc/crontask.class.php:927
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -8617,14 +8570,11 @@ msgid "Upgrade"
 msgstr "升級"
 
 #: inc/config.php:239
-#, fuzzy
 msgid ""
 "You are trying to use ITSM-NG with outdated files compared to the version of "
 "the database. Please install the correct ITSM-NG files corresponding to the "
 "version of your database."
 msgstr ""
-"您嘗試使用舊版本的GLPI連接新版本的GLPI資料庫. 請安裝與目前資料庫版本相符的"
-"GLPI檔案."
 
 #: inc/config.php:242
 msgid ""
@@ -9209,14 +9159,13 @@ msgid "Begin"
 msgstr "開始"
 
 #: inc/reminder.class.php:641
-#, fuzzy
 msgid "From"
-msgstr "寄件者 %s"
+msgstr ""
 
 #: inc/reminder.class.php:642
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s to %2$s"
-msgstr "%1$s 在 %2$s"
+msgstr ""
 
 #: inc/ticketvalidation.class.php:99
 msgid "Create for request"
@@ -9361,9 +9310,8 @@ msgid_plural "Enclosures"
 msgstr[0] ""
 
 #: inc/enclosure.class.php:122
-#, fuzzy
 msgid "Power supplies"
-msgstr "電源供應器"
+msgstr ""
 
 #: inc/contract_supplier.class.php:136 inc/contract.class.php:204
 #: inc/contract_item.class.php:336
@@ -9450,42 +9398,36 @@ msgid "Support hours"
 msgstr "維護支援時間"
 
 #: inc/contract.class.php:332
-#, fuzzy
 msgid "on week start"
-msgstr "週一至週五"
+msgstr ""
 
 #: inc/contract.class.php:338
-#, fuzzy
 msgid "on week end"
-msgstr "週一至週五"
+msgstr ""
 
 #: inc/contract.class.php:344
 msgid "on Saturday"
 msgstr "星期六"
 
 #: inc/contract.class.php:349
-#, fuzzy
 msgid "on Saturday start"
-msgstr "星期六"
+msgstr ""
 
 #: inc/contract.class.php:354
-#, fuzzy
 msgid "on Saturday end"
-msgstr "星期六"
+msgstr ""
 
 #: inc/contract.class.php:359
 msgid "Sundays and holidays"
 msgstr "星期天和例假日"
 
 #: inc/contract.class.php:364
-#, fuzzy
 msgid "on Sunday start"
-msgstr "星期六"
+msgstr ""
 
 #: inc/contract.class.php:369
-#, fuzzy
 msgid "on Sunday end"
-msgstr "星期六"
+msgstr ""
 
 #: inc/contract.class.php:415
 msgctxt "quantity"
@@ -10241,14 +10183,12 @@ msgid "Last update in the LDAP directory"
 msgstr "最後更新於LDAP目錄"
 
 #: inc/authldap.class.php:1560
-#, fuzzy
 msgid "Last update in ITSM-ng"
-msgstr "最後更新於GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:1609
-#, fuzzy
 msgid "Last update in ITSM-NG"
-msgstr "最後更新於GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:1621 inc/authldap.class.php:1626
 msgid "No user to be synchronized"
@@ -10280,9 +10220,8 @@ msgid "LDAP directory choice"
 msgstr "選擇LDAP目錄"
 
 #: inc/authldap.class.php:2396
-#, fuzzy
 msgid "No LDAP directory defined in ITSM-ng"
-msgstr "沒有 LDAP 目錄設定於 GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:2767
 msgid "User not found or several users found"
@@ -10456,9 +10395,8 @@ msgid_plural "Links Contract/Item"
 msgstr[0] "連結合約/項目"
 
 #: inc/contract_item.class.php:362
-#, fuzzy
 msgid "Delete permanently the relation with selected elements"
-msgstr "永久刪除並移除裝置"
+msgstr ""
 
 #: inc/planningexternalevent.class.php:54
 msgid "External event"
@@ -10666,9 +10604,8 @@ msgstr "工具"
 #: inc/profile.class.php:1790 inc/profile.class.php:1835
 #: inc/profile.class.php:3022 inc/accessibility.class.php:36
 #: inc/accessibility.class.php:58 inc/accessibility.class.php:63
-#, fuzzy
 msgid "Accessibility"
-msgstr "可見"
+msgstr ""
 
 #: inc/profile.class.php:128 inc/profile.class.php:1197
 #: inc/profile.class.php:2435 inc/infocom.class.php:142
@@ -10887,9 +10824,8 @@ msgid "Life cycle of changes"
 msgstr "生命週期的變化"
 
 #: inc/profile.class.php:1785 inc/profile.class.php:1830
-#, fuzzy
 msgid "Edit accessibility"
-msgstr "可見"
+msgstr ""
 
 #: inc/profile.class.php:1922 inc/profile.class.php:2743
 #: inc/rulerightcollection.class.php:57 inc/ruleright.class.php:56
@@ -10990,19 +10926,16 @@ msgid "Managed domain records types"
 msgstr ""
 
 #: inc/profile.class.php:3032
-#, fuzzy
 msgid "Change font"
-msgstr "變更作業"
+msgstr ""
 
 #: inc/profile.class.php:3042
-#, fuzzy
 msgid "Change zoom"
-msgstr "變更"
+msgstr ""
 
 #: inc/profile.class.php:3053
-#, fuzzy
 msgid "Use shortcuts"
-msgstr "使用鎖定"
+msgstr ""
 
 #: inc/profile.class.php:3109 inc/auth.class.php:1224 inc/auth.class.php:1231
 #: install/update_0723_078.php:3667
@@ -11892,9 +11825,8 @@ msgid "Global View"
 msgstr "全部檢視"
 
 #: inc/central.class.php:118
-#, fuzzy
 msgid "No dashboard available"
-msgstr "沒有可用的動作"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/central.class.php:154 inc/rack.class.php:65
@@ -11903,9 +11835,8 @@ msgid_plural "Racks"
 msgstr[0] ""
 
 #: inc/central.class.php:173
-#, fuzzy
 msgid "Tickets by status"
-msgstr "擱置的待辦事項"
+msgstr ""
 
 #: inc/central.class.php:395
 #, php-format
@@ -12300,9 +12231,8 @@ msgid "An appliance is required"
 msgstr ""
 
 #: inc/softwareversion.class.php:114
-#, fuzzy
 msgid "New element"
-msgstr "新問題"
+msgstr ""
 
 #: inc/softwareversion.class.php:332
 msgctxt "button"
@@ -12768,9 +12698,8 @@ msgstr "處理中(已計劃)"
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541
-#, fuzzy
 msgid "Pending"
-msgstr "待決定"
+msgstr ""
 
 #: inc/problem.class.php:686
 msgctxt "status"
@@ -13302,9 +13231,8 @@ msgstr ""
 #: inc/knowbaseitem_revision.class.php:262
 #: inc/knowbaseitem_comment.class.php:177
 #: inc/knowbaseitem_comment.class.php:211 inc/objectlock.class.php:157
-#, fuzzy
 msgid "Contact your ITSM-NG admin!"
-msgstr "聯繫你的GLPI管理員"
+msgstr ""
 
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_comment.class.php:177
@@ -13377,9 +13305,8 @@ msgstr "依字典替換製造商 (----- = All)"
 
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
-#, fuzzy
 msgid "Software deleted by ITSM-NG dictionary rules"
-msgstr "已依 GLPI 字典規則刪除軟體"
+msgstr ""
 
 #: inc/caldav/backend/calendar.class.php:89
 #: inc/caldav/backend/calendar.class.php:127
@@ -13986,9 +13913,8 @@ msgid "Connection string"
 msgstr "結果的連接參量"
 
 #: inc/authmail.class.php:206 inc/notificationchatsetting.class.php:295
-#, fuzzy
 msgid "Test"
-msgstr "測試"
+msgstr ""
 
 #: inc/authmail.class.php:211
 msgid "Test connection to email server"
@@ -14005,9 +13931,8 @@ msgid "You cannot use predefined description verbatim"
 msgstr ""
 
 #: inc/commonitilobject.class.php:1772
-#, fuzzy
 msgid "Incorrect value for date field."
-msgstr "忽略值的唯一性"
+msgstr ""
 
 #: inc/commonitilobject.class.php:2432
 msgctxt "priority"
@@ -15055,9 +14980,8 @@ msgid "An error occured loading contents!"
 msgstr "載入內容時發生錯誤"
 
 #: inc/ajax.class.php:455
-#, fuzzy
 msgid "Please check ITSM-NG logs or contact your administrator."
-msgstr "請檢查 GLPI 記錄檔或連繫你的管理員"
+msgstr ""
 
 #: inc/ajax.class.php:456
 msgid "try to reload"
@@ -15562,18 +15486,16 @@ msgstr "CSS"
 
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
-#, fuzzy
 msgid "Automatically generated by ITSM-NG"
-msgstr "由GLPI自動生成 %s"
+msgstr ""
 
 #: inc/oidc.class.php:80
 msgid "Missing or wrong fields in open ID connect config"
 msgstr ""
 
 #: inc/oidc.class.php:301
-#, fuzzy
 msgid "Configuration"
-msgstr "預設"
+msgstr ""
 
 #: inc/oidc.class.php:306 inc/auth.class.php:1830
 msgid "Mapping of fields according to provider"
@@ -15645,9 +15567,8 @@ msgid "Incorrect username or password"
 msgstr "錯誤的帳號/密碼"
 
 #: inc/auth.class.php:284 inc/auth.class.php:975 inc/auth.class.php:1003
-#, fuzzy
 msgid "User not authorized to connect in ITSM-NG"
-msgstr "使用者無權連接GLPI"
+msgstr ""
 
 #: inc/auth.class.php:631
 msgid "Login with external token disabled"
@@ -15686,9 +15607,8 @@ msgid "Failed login for %1$s from IP %2$s"
 msgstr "從IP %2$s的%1$s 的登錄失敗"
 
 #: inc/auth.class.php:1107
-#, fuzzy
 msgid "Authentication on ITSM-NG database"
-msgstr "在 GLPI 資料庫認證"
+msgstr ""
 
 #: inc/auth.class.php:1119
 msgid "Authentication on a LDAP directory"
@@ -15719,9 +15639,8 @@ msgid "x509 certificate authentication"
 msgstr "x509 認證"
 
 #: inc/auth.class.php:1234 inc/auth.class.php:1892
-#, fuzzy
 msgid "ITSM-NG internal database"
-msgstr "基於GLPI本身"
+msgstr ""
 
 #: inc/auth.class.php:1240
 msgid "Not yet authenticated"
@@ -15836,9 +15755,8 @@ msgid "Proxy"
 msgstr ""
 
 #: inc/auth.class.php:1868
-#, fuzzy
 msgid "Certificate Path"
-msgstr "檢查憑證"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/datacenter.class.php:48 inc/datacenter.class.php:71
@@ -15961,26 +15879,22 @@ msgid "Unknown interface"
 msgstr "未知的介面"
 
 #: inc/notificationchatsetting.class.php:46
-#, fuzzy
 msgid "Chat followups configuration"
-msgstr "電子郵件追蹤設定"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:52
 #: inc/notificationsettingconfig.class.php:133
-#, fuzzy
 msgid "Enable followups via chat"
-msgstr "開啟追蹤"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:120
-#, fuzzy
 msgid "Chat notification"
 msgid_plural "Chat notifications"
-msgstr[0] "郵件通知"
+msgstr[0] ""
 
 #: inc/notificationchatsetting.class.php:132
-#, fuzzy
 msgid "Rocket chat"
-msgstr "待辦事項成本"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:133
 msgid "Slack"
@@ -16042,18 +15956,16 @@ msgid "UI Font"
 msgstr ""
 
 #: inc/accessibility.class.php:163
-#, fuzzy
 msgid "Enable shortcuts"
-msgstr "啟用高對比"
+msgstr ""
 
 #: inc/accessibility.class.php:169
 msgid "Don't forget to save"
 msgstr ""
 
 #: inc/accessibility.class.php:169
-#, fuzzy
 msgid "Toggle view"
-msgstr "篩選器 切換"
+msgstr ""
 
 #: inc/accessibility.class.php:189
 msgid "shift+alt+"
@@ -16701,19 +16613,18 @@ msgid "Autofilled from template"
 msgstr ""
 
 #: inc/notificationchat.class.php:114
-#, fuzzy
 msgid "Error inserting chat to queue"
-msgstr "於插入郵件到佇列時發生錯誤"
+msgstr ""
 
 #: inc/notificationchat.class.php:118
-#, fuzzy, php-format
+#, php-format
 msgid "Fatal-error: The chat %s was not added to queue "
-msgstr "一封發送給 %s 已被加入佇列"
+msgstr ""
 
 #: inc/notificationchat.class.php:129
-#, fuzzy, php-format
+#, php-format
 msgid "Rocket chat: The chat %s was added to queue "
-msgstr "一封發送給 %s 已被加入佇列"
+msgstr ""
 
 #: inc/rulecriteria.class.php:511
 msgid "does not contain"
@@ -17086,9 +16997,8 @@ msgid "Amortization type"
 msgstr "攤銷類型"
 
 #: inc/infocom.class.php:1191 inc/infocom.class.php:1202
-#, fuzzy
 msgid "years"
-msgstr "根據年"
+msgstr ""
 
 #: inc/infocom.class.php:1196 inc/infocom.class.php:1512
 #: inc/infocom.class.php:1743
@@ -17961,9 +17871,8 @@ msgid "Migration of column \"%s.%s\" failed with message \"(%s) %s\"."
 msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:192
-#, fuzzy
 msgid "Errors occured during migration."
-msgstr "密碼更新時發生錯誤"
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:198
 #: inc/console/migration/buildmissingtimestampscommand.class.php:125
@@ -18626,9 +18535,8 @@ msgid "Number of softwares processed: %d."
 msgstr ""
 
 #: inc/console/database/installcommand.class.php:91
-#, fuzzy
 msgid "Default language of ITSM-NG"
-msgstr "預設語言"
+msgstr ""
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -18725,9 +18633,8 @@ msgid "Database user"
 msgstr ""
 
 #: inc/console/database/updatecommand.class.php:130
-#, fuzzy
 msgid "ITSM version"
-msgstr "IP 版本"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:131
 msgid "ITSM database version"
@@ -19213,14 +19120,12 @@ msgid "Invalid link"
 msgstr ""
 
 #: inc/document.class.php:404
-#, fuzzy
 msgid "Added by"
-msgstr "新增由 %s"
+msgstr ""
 
 #: inc/document.class.php:407
-#, fuzzy
 msgid "Last update on"
-msgstr "最後更新於 %s"
+msgstr ""
 
 #: inc/document.class.php:415
 msgid "Current file"
@@ -19382,9 +19287,8 @@ msgid "Root CA"
 msgstr ""
 
 #: inc/certificate.class.php:634
-#, fuzzy
 msgid "Certificat"
-msgstr "檢查憑證"
+msgstr ""
 
 #: inc/certificate.class.php:662
 msgctxt "button"
@@ -19872,9 +19776,8 @@ msgid "New"
 msgstr "新的"
 
 #: inc/ticket.class.php:4566
-#, fuzzy
 msgid "Parameters"
-msgstr "讀取參數"
+msgstr ""
 
 #: inc/ticket.class.php:4576
 msgid "Close date"
@@ -19976,9 +19879,8 @@ msgid "Purchase version"
 msgstr "採購版本"
 
 #: inc/softwarelicense.class.php:415
-#, fuzzy
 msgid "Quota Status"
-msgstr "指定日期"
+msgstr ""
 
 #: inc/softwarelicense.class.php:417
 msgctxt "adjective"
@@ -20159,24 +20061,20 @@ msgid "Approve the solution"
 msgstr "核准的解決方案"
 
 #: inc/itilfollowup.class.php:736
-#, fuzzy
 msgid "Approbation de la solution"
-msgstr "核准該解決方案"
+msgstr ""
 
 #: inc/itilfollowup.class.php:739
-#, fuzzy
 msgid "itemtype"
-msgstr "項目類型"
+msgstr ""
 
 #: inc/itilfollowup.class.php:744
-#, fuzzy
 msgid "items_id"
-msgstr "states_id"
+msgstr ""
 
 #: inc/itilfollowup.class.php:749
-#, fuzzy
 msgid "requesttypes_id"
-msgstr "states_id"
+msgstr ""
 
 #: inc/itilfollowup.class.php:818
 msgid "If you want to reopen the ticket, you must specify a reason"
@@ -20326,9 +20224,8 @@ msgid "Error: the two passwords do not match"
 msgstr "錯誤：這兩個密碼不相同"
 
 #: inc/user.class.php:784
-#, fuzzy
 msgid "Moving temporary file failed."
-msgstr "遺失暫存目錄"
+msgstr ""
 
 #: inc/user.class.php:789
 msgid "The file is not an image file."
@@ -20407,23 +20304,20 @@ msgid "Last login on %s"
 msgstr "上次登入在%s"
 
 #: inc/user.class.php:2699
-#, fuzzy
 msgid "Use ITSM-NG in mode"
-msgstr "使用GLPI模式"
+msgstr ""
 
 #: inc/user.class.php:2703
 msgid "Normal"
 msgstr "正常"
 
 #: inc/user.class.php:2719
-#, fuzzy
 msgid "Reset personal token"
-msgstr "設定為私人"
+msgstr ""
 
 #: inc/user.class.php:2734
-#, fuzzy
 msgid "Reset API token"
-msgstr "API token"
+msgstr ""
 
 #: inc/user.class.php:2777
 msgid "Unable to update login. A user already exists."
@@ -20528,9 +20422,8 @@ msgid "Your password reset request has expired or is invalid. Please renew it."
 msgstr "您的密碼重置請求已過期或無效,請更新密碼."
 
 #: inc/user.class.php:4613
-#, fuzzy
 msgid "Please enter your new password."
-msgstr "請確認您的電子郵件地址和新輸入的密碼"
+msgstr ""
 
 #: inc/user.class.php:4657
 msgid ""
@@ -20540,9 +20433,8 @@ msgstr ""
 "請輸入您的電子郵件地址. 一封電子郵件將被發送給您, 您將能夠選擇一個新的密碼."
 
 #: inc/user.class.php:4698 inc/user.class.php:4712
-#, fuzzy
 msgid "Unable to reset password, please contact your administrator"
-msgstr "請檢查 GLPI 記錄檔或連繫你的管理員"
+msgstr ""
 
 #: inc/user.class.php:4719
 msgid ""
@@ -21200,9 +21092,8 @@ msgid "Update to %s"
 msgstr "更新至 %s"
 
 #: install/itsm_update_151_200.php:557
-#, fuzzy
 msgid "Update dashboard"
-msgstr "更新密碼"
+msgstr ""
 
 #: install/empty_data.php:2079 install/empty_data.php:2081
 #: install/update_0831_084.php:270 install/update_0831_084.php:271
@@ -21301,14 +21192,13 @@ msgid "Impossible to accomplish an update by this way!"
 msgstr "這樣無法完成更新!!"
 
 #: install/update.php:583
-#, fuzzy
 msgid "Go back to ITSM-NG"
-msgstr "返回到GLPI"
+msgstr ""
 
 #: install/update.php:588
-#, fuzzy, php-format
+#, php-format
 msgid "Caution! You will update the ITSM-NG database named: %s"
-msgstr "注意！您將更新GLPI的資料庫名為: %s"
+msgstr ""
 
 #: install/update.php:594
 msgid "Continue"
@@ -21319,9 +21209,8 @@ msgid "Database connection successful"
 msgstr "資料庫連接成功"
 
 #: install/update.php:651 install/update_content.php:367
-#, fuzzy
 msgid "Use ITSM-NG"
-msgstr "使用TLS"
+msgstr ""
 
 #: install/update.php:660
 msgid ""
@@ -21359,9 +21248,8 @@ msgid "Fix URL of images in ITIL tasks, followups and solutions."
 msgstr ""
 
 #: install/update_content.php:245
-#, fuzzy
 msgid "SQL error starting"
-msgstr "SQL 錯誤從 %s"
+msgstr ""
 
 #: install/update_content.php:358
 msgid "Automatic redirection, else click"
@@ -21577,19 +21465,16 @@ msgid ""
 msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialization"
-msgstr "安裝"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialized"
-msgstr "安裝"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Languages"
-msgstr "語系選擇"
+msgstr ""
 
 #: templates/menus/nav/menu.twig:23
 msgid ""
@@ -21606,10 +21491,17 @@ msgstr ""
 msgid "Menu collapse"
 msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:25
+msgid "Up"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:27
+msgid "bubble"
+msgstr ""
+
 #: templates/menus/nav/nav-settings.twig:8
-#, fuzzy
 msgid "Reset menu bubble position"
-msgstr "職位"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:14
 msgid "Activate menu favorite"
@@ -21620,19 +21512,8 @@ msgid "Activate favorite selection"
 msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:22
-#, fuzzy
 msgid "Menu position"
-msgstr "職位"
-
-#, fuzzy
-#~| msgid "Login"
-#~ msgid "SSO Login"
-#~ msgstr "登入"
-
-#, fuzzy
-#~| msgid "See configuration"
-#~ msgid "Open ID connect configuration"
-#~ msgstr "檢視配置"
+msgstr ""
 
 #, php-format
 #~ msgid "%1$s adds the item %2$s-%3$s:%4$s"

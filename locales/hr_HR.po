@@ -538,14 +538,12 @@ msgid "Consider filling latitude and longitude on this location."
 msgstr "Možeš upisati zemljopisnu širinu i visinu ove lokacije."
 
 #: ajax/deleteItilActor.php:92
-#, fuzzy
 msgid "Actor deleted successfully"
-msgstr "Poništavanje predmemorije uspješno"
+msgstr ""
 
 #: ajax/deleteItilActor.php:98
-#, fuzzy
 msgid "Error while deleting actor"
-msgstr "Greška pri izvršavanju radnje"
+msgstr ""
 
 #: ajax/telemetry.php:46
 msgid ""
@@ -1773,9 +1771,8 @@ msgid "Impossible to use LDAP as external source of connection"
 msgstr "Nemoguće koristiti LDAP kao vanjski izvor veze"
 
 #: front/setup.auth.php:58
-#, fuzzy
 msgid "Open ID connect authentication"
-msgstr "Autentifikacija x509 certifikatom"
+msgstr ""
 
 #: front/setup.auth.php:61
 msgid "Others authentication methods"
@@ -2220,12 +2217,11 @@ msgstr "Id"
 #: inc/slalevel.class.php:226 inc/projecttask.class.php:679
 #: inc/projecttask.class.php:934 inc/transfer.class.php:86
 #: inc/transfer.class.php:3425 inc/group.class.php:216 inc/group.class.php:834
-#, fuzzy
 msgid "Name"
 msgid_plural "Names"
-msgstr[0] "Ime"
-msgstr[1] "Ime"
-msgstr[2] "Ime"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
@@ -3302,9 +3298,8 @@ msgid "Unable to stop impersonating user"
 msgstr "Nije moguće zaustaviti personificiranje korisnika"
 
 #: front/document.form.php:66
-#, fuzzy
 msgid "Could not add document"
-msgstr "Dodaj dokument"
+msgstr ""
 
 #: inc/operatingsystemedition.class.php:42
 #: inc/item_operatingsystem.class.php:365
@@ -3505,9 +3500,8 @@ msgstr[1] "Verzije"
 msgstr[2] "Verzije"
 
 #: inc/cluster.class.php:136
-#, fuzzy
 msgid "Auto update system"
-msgstr "Predmet operacijskog sustava"
+msgstr ""
 
 #: inc/cluster.class.php:143 inc/cluster.class.php:223
 #: inc/printer.class.php:323 inc/printer.class.php:750
@@ -3852,9 +3846,8 @@ msgid "\"session.use_trans_sid\" must be set to off."
 msgstr "\"session.use_trans_sid\" mora biti postavljeno na isključeno."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
-#, fuzzy
 msgid "See .htaccess file in the ITSM-NG root for more information."
-msgstr "Pogledati datoteku .htaccess u GLPI-korijenu za daljnje informacije."
+msgstr ""
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -4025,9 +4018,9 @@ msgid "Allocated memory"
 msgstr "Dodijeljena memorija"
 
 #: inc/system/requirement/memorylimit.class.php:75
-#, fuzzy, php-format
+#, php-format
 msgid "A minimum of %s is commonly required for ITSM-NG."
-msgstr "Za GLPI je uobičajeno potrebno barem %s."
+msgstr ""
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -4557,9 +4550,8 @@ msgid "Action when a user is deleted from the LDAP directory"
 msgstr "Radnja, kad se korisnik briše iz LDAP mape"
 
 #: inc/config.class.php:710
-#, fuzzy
 msgid "ITSM-NG server time zone"
-msgstr "Vremenska zona GLPI poslužitelja"
+msgstr ""
 
 #: inc/config.class.php:743 inc/config.class.php:1809 inc/config.class.php:2261
 #: inc/dbconnection.class.php:47
@@ -4614,9 +4606,8 @@ msgid "URL of the API"
 msgstr "URL API-a"
 
 #: inc/config.class.php:821
-#, fuzzy
 msgid "URL of the dashboard API"
-msgstr "URL API-a"
+msgstr ""
 
 #: inc/config.class.php:827
 msgid "Enable Rest API"
@@ -4748,9 +4739,8 @@ msgid "Display counters"
 msgstr "Prikaži brojače"
 
 #: inc/config.class.php:1151
-#, fuzzy
 msgid "Display the number of items in the menu"
-msgstr "Prikaz (broj predmeta)"
+msgstr ""
 
 #: inc/config.class.php:1160
 msgid "Keep devices when purging an item"
@@ -4822,10 +4812,8 @@ msgid "Done"
 msgstr "Obavljeno"
 
 #: inc/config.class.php:1255
-#, fuzzy
 msgid "Automatically refresh data (tickets list, project kanban) in minutes"
 msgstr ""
-"Automatski aktualiziraj podatke (popis naloga, kanban projekta) u minutama."
 
 #: inc/config.class.php:1264
 msgid "Pre-select me as a technician when creating a ticket"
@@ -4836,34 +4824,28 @@ msgid "Pre-select me as a requester when creating a ticket"
 msgstr "Postavi mene kao podnositelja prilikom stvaranja naloga"
 
 #: inc/config.class.php:1288
-#, fuzzy
 msgid "Priority color 1"
-msgstr "Boje prioriteta"
+msgstr ""
 
 #: inc/config.class.php:1295
-#, fuzzy
 msgid "Priority color 2"
-msgstr "Boje prioriteta"
+msgstr ""
 
 #: inc/config.class.php:1302
-#, fuzzy
 msgid "Priority color 3"
-msgstr "Boje prioriteta"
+msgstr ""
 
 #: inc/config.class.php:1309
-#, fuzzy
 msgid "Priority color 4"
-msgstr "Boje prioriteta"
+msgstr ""
 
 #: inc/config.class.php:1316
-#, fuzzy
 msgid "Priority color 5"
-msgstr "Boje prioriteta"
+msgstr ""
 
 #: inc/config.class.php:1323
-#, fuzzy
 msgid "Priority color 6"
-msgstr "Boje prioriteta"
+msgstr ""
 
 #: inc/config.class.php:1332
 msgid "Due date progression"
@@ -4886,9 +4868,8 @@ msgid "Warning state threshold"
 msgstr "Prag za stanje upozoravanja"
 
 #: inc/config.class.php:1366
-#, fuzzy
 msgid "Warning state unit"
-msgstr "Boja za stanje upozoravanja"
+msgstr ""
 
 #: inc/config.class.php:1372 inc/config.class.php:1394
 #: inc/reservation.class.php:1025 inc/levelagreement.class.php:202
@@ -4905,9 +4886,8 @@ msgid "Critical state threshold"
 msgstr "Prag za kritično stanje"
 
 #: inc/config.class.php:1388
-#, fuzzy
 msgid "Critical state unit"
-msgstr "Boja za kritično stanje"
+msgstr ""
 
 #: inc/config.class.php:1406
 msgid "Auto-lock Mode"
@@ -5046,11 +5026,10 @@ msgid "Reset"
 msgstr "Resetiraj"
 
 #: inc/config.class.php:1694
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Installing and enabling the \"%s\" extension may improve ITSM-NG performance"
 msgstr ""
-"Instaliranje i aktiviranje proširenja „%s” može poboljšati GLPI učinkovitost"
 
 #: inc/config.class.php:1698
 msgid "User data cache"
@@ -5450,9 +5429,8 @@ msgstr[2] "Pisači"
 #: inc/consumableitem.class.php:134 inc/software.class.php:231
 #: inc/peripheral.class.php:161 inc/phone.class.php:156
 #: inc/computer.class.php:309 inc/pdu.class.php:86 inc/ticket.class.php:4478
-#, fuzzy
 msgid "Restore"
-msgstr "Obnovi"
+msgstr ""
 
 #: inc/printer.class.php:302 inc/project.class.php:562
 #: inc/appliance.class.php:164 inc/supplier.class.php:187
@@ -5477,21 +5455,18 @@ msgstr "Alternativni korisnički broj"
 
 #: inc/printer.class.php:378 inc/monitor.class.php:274
 #: inc/peripheral.class.php:266 inc/phone.class.php:262
-#, fuzzy
 msgid "Management Type"
-msgstr "Vrsta upravljanja"
+msgstr ""
 
 #: inc/printer.class.php:382 inc/monitor.class.php:278
 #: inc/peripheral.class.php:270 inc/phone.class.php:266
-#, fuzzy
 msgid "Unit Management"
-msgstr "Upravljanje jedinicama"
+msgstr ""
 
 #: inc/printer.class.php:383 inc/monitor.class.php:279
 #: inc/peripheral.class.php:271 inc/phone.class.php:267
-#, fuzzy
 msgid "Global Management"
-msgstr "Globalno upravljanje"
+msgstr ""
 
 #: inc/printer.class.php:395 inc/printer.class.php:733
 #: inc/networkequipment.class.php:380 inc/networkequipment.class.php:598
@@ -5505,9 +5480,8 @@ msgstr[1] "Mreže"
 msgstr[2] "Mreže"
 
 #: inc/printer.class.php:404
-#, fuzzy
 msgid "Ports"
-msgstr "Priključak"
+msgstr ""
 
 #: inc/printer.class.php:407 inc/printer.class.php:622
 #: inc/appliance_item.class.php:186
@@ -6026,9 +6000,9 @@ msgid "Task completed."
 msgstr "Zadatak završen."
 
 #: inc/migration.class.php:792
-#, fuzzy, php-format
+#, php-format
 msgid "Automatically generated by ITSM-NG %s"
-msgstr "Automatski stvoreno od GLPI-a %s"
+msgstr ""
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -6285,14 +6259,12 @@ msgid "Associated item ID"
 msgstr "ID povezanog predmeta"
 
 #: inc/queuedchat.class.php:260 inc/queuedchat.class.php:646
-#, fuzzy
 msgid "Entity name"
-msgstr "Entitet"
+msgstr ""
 
 #: inc/queuedchat.class.php:269 inc/queuedchat.class.php:641
-#, fuzzy
 msgid "Server name"
-msgstr "Ime pošiljatelja"
+msgstr ""
 
 #: inc/queuedchat.class.php:278
 msgid "URl Hook"
@@ -6309,29 +6281,24 @@ msgid "Mode"
 msgstr "Modus"
 
 #: inc/queuedchat.class.php:382 inc/queuednotification.class.php:463
-#, fuzzy
 msgid "Send chat in queue"
-msgstr "Pošalji e-mailove u redu čekanja"
+msgstr ""
 
 #: inc/queuedchat.class.php:383 inc/queuednotification.class.php:464
-#, fuzzy
 msgid "Maximum chat to send at once"
-msgstr "Najveći broj e-mailova koji se mogu istovremeno poslati"
+msgstr ""
 
 #: inc/queuedchat.class.php:388
-#, fuzzy
 msgid "Clean chat queue"
-msgstr "Izbriši obavijesti na čekanju"
+msgstr ""
 
 #: inc/queuedchat.class.php:389 inc/queuednotification.class.php:468
-#, fuzzy
 msgid "Days to keep sent chat"
-msgstr "Broj dana za čuvanje odlaznih e-maila"
+msgstr ""
 
 #: inc/queuedchat.class.php:615
-#, fuzzy
 msgid "Ticket ID"
-msgstr "Nalog"
+msgstr ""
 
 #: inc/queuedchat.class.php:651
 msgid "Rocket Hook Url"
@@ -6727,9 +6694,8 @@ msgstr[1] "Proizvođači"
 msgstr[2] "Proizvođači"
 
 #: inc/monitor.class.php:245
-#, fuzzy
 msgid "Inventory/Asset number"
-msgstr "Inventarni broj"
+msgstr ""
 
 #: inc/monitor.class.php:268 inc/monitor.class.php:517
 #: inc/item_devicememory.class.php:54 inc/item_devicememory.class.php:56
@@ -6782,9 +6748,8 @@ msgid "Target entity for the computer"
 msgstr "Ciljni entitet za računalo"
 
 #: inc/ruleimportcomputer.class.php:81
-#, fuzzy
 msgid "Find computers in ITSM-NG having the status"
-msgstr "Pronađi računala u GLPI-u koja imaju stanje"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -6826,14 +6791,12 @@ msgid "Yes if empty"
 msgstr "Da ukoliko prazno"
 
 #: inc/ruleimportcomputer.class.php:178
-#, fuzzy
 msgid "is already present in ITSM-NG"
-msgstr "se već nalaze u GLPI-u"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:179
-#, fuzzy
 msgid "is empty in ITSM-NG"
-msgstr "je prazan u GLPI-u"
+msgstr ""
 
 #: inc/commonitilvalidation.class.php:91 inc/commonitilobject.class.php:6856
 #: inc/change.class.php:539 inc/change.class.php:1061
@@ -7606,14 +7569,12 @@ msgid "Category name"
 msgstr "Ime kategorije"
 
 #: inc/knowbaseitem.class.php:780
-#, fuzzy
 msgid "Created on:"
-msgstr "Stvoreno %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:783
-#, fuzzy
 msgid "Last update on:"
-msgstr "Zadnje aktualiziranje %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:786
 msgid "Put this item in the FAQ"
@@ -7630,9 +7591,8 @@ msgid "This item is not part of the FAQ"
 msgstr "Ovaj predmet nije dio često postavljenih pitanja"
 
 #: inc/knowbaseitem.class.php:798
-#, fuzzy
 msgid "Views"
-msgstr "Pogled"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:799 inc/knowbaseitem.class.php:984
 #, php-format
@@ -7789,9 +7749,8 @@ msgid "Help"
 msgstr "Pomoć"
 
 #: inc/link.class.php:165
-#, fuzzy
 msgid "External links"
-msgstr "Vanjska poveznica"
+msgstr ""
 
 #: inc/link.class.php:173 inc/link.class.php:240
 msgid "Link or filename"
@@ -7876,19 +7835,16 @@ msgstr "Broj predmeta"
 
 #: inc/specialstatus.class.php:44 inc/specialstatus.class.php:150
 #: inc/profile.class.php:2082
-#, fuzzy
 msgid "Special Status"
-msgstr "Odredi datum"
+msgstr ""
 
 #: inc/specialstatus.class.php:115
-#, fuzzy
 msgid "Status has been updated!"
-msgstr "Obavijest je stvorena!"
+msgstr ""
 
 #: inc/specialstatus.class.php:142
-#, fuzzy
 msgid "Status has been removed!"
-msgstr "Pretraga je spremljena"
+msgstr ""
 
 #: inc/specialstatus.class.php:153 inc/specialstatus.class.php:246
 #: inc/commondcmodeldropdown.class.php:65
@@ -7911,9 +7867,8 @@ msgid "Tickets are still using this status, are you sure to remove the status?"
 msgstr ""
 
 #: inc/specialstatus.class.php:209
-#, fuzzy
 msgid "Are you sure to remove the status?"
-msgstr "Sigurno želiš izbrisati preglednu ploču „%s”?"
+msgstr ""
 
 #: inc/specialstatus.class.php:214 inc/commondropdown.class.php:495
 msgctxt "button"
@@ -7927,9 +7882,8 @@ msgid "Cancel"
 msgstr "Otkaži"
 
 #: inc/specialstatus.class.php:234
-#, fuzzy
 msgid "Status has been added!"
-msgstr "Pretraga je spremljena"
+msgstr ""
 
 #: inc/specialstatus.class.php:243
 msgid "New Status - Special status"
@@ -8458,9 +8412,8 @@ msgid "System lock"
 msgstr "Zaključavanje sustava"
 
 #: inc/crontask.class.php:643
-#, fuzzy
 msgid "Plugin lock"
-msgstr "Dodatak"
+msgstr ""
 
 #: inc/crontask.class.php:644
 msgid "Disabled plugin"
@@ -8471,14 +8424,12 @@ msgid "Run mode"
 msgstr "Modus pokretanja"
 
 #: inc/crontask.class.php:655
-#, fuzzy
 msgid "Min run period"
-msgstr "Razdoblje pokretanja"
+msgstr ""
 
 #: inc/crontask.class.php:662
-#, fuzzy
 msgid "Max run period"
-msgstr "Razdoblje pokretanja"
+msgstr ""
 
 #: inc/crontask.class.php:669 inc/crontask.class.php:1602
 msgid "Number of days this action logs are stored"
@@ -8493,14 +8444,12 @@ msgid "Last run"
 msgstr "Zadnje pokretanje"
 
 #: inc/crontask.class.php:704
-#, fuzzy
 msgid "enabled"
-msgstr "Aktiviran"
+msgstr ""
 
 #: inc/crontask.class.php:706
-#, fuzzy
 msgid "disabled"
-msgstr "Deaktivirano"
+msgstr ""
 
 #: inc/crontask.class.php:812 inc/crontask.class.php:1370
 msgid "Running"
@@ -8519,9 +8468,8 @@ msgid "Maintenance mode enabled, running tasks is disabled"
 msgstr "Modus održavanja aktiviran, izvođenje zadataka je deaktivirano"
 
 #: inc/crontask.class.php:922
-#, fuzzy
 msgid "A minimum of 64 Mio is commonly required for ITSM-NG."
-msgstr "Za GLPI je uobičajeno potrebno barem 64 MB."
+msgstr ""
 
 #: inc/crontask.class.php:927
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -8892,15 +8840,11 @@ msgid "Upgrade"
 msgstr "Nadogradi"
 
 #: inc/config.php:239
-#, fuzzy
 msgid ""
 "You are trying to use ITSM-NG with outdated files compared to the version of "
 "the database. Please install the correct ITSM-NG files corresponding to the "
 "version of your database."
 msgstr ""
-"Pokušavaš koristiti datoteke GLPI-a iz ranije verzije u usporedbi s verzijom "
-"baze podataka. Instaliraj ispravne datoteke GLPI-a koje odgovaraju verziji "
-"tvoje baze podataka."
 
 #: inc/config.php:242
 msgid ""
@@ -9147,12 +9091,11 @@ msgstr[2] "Vrste računala"
 
 #: inc/rulecollection.class.php:2050 inc/rule.class.php:371
 #: inc/monitortype.class.php:42
-#, fuzzy
 msgid "Monitor type"
 msgid_plural "Monitor types"
-msgstr[0] "Vrsta monitora"
-msgstr[1] "Vrste monitora"
-msgstr[2] "Vrste monitora"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: inc/rulecollection.class.php:2053 inc/rule.class.php:383
 #: inc/printertype.class.php:42
@@ -9551,14 +9494,13 @@ msgid "Begin"
 msgstr "Počni"
 
 #: inc/reminder.class.php:641
-#, fuzzy
 msgid "From"
-msgstr "Od %s"
+msgstr ""
 
 #: inc/reminder.class.php:642
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s to %2$s"
-msgstr "%1$s na %2$s"
+msgstr ""
 
 #: inc/ticketvalidation.class.php:99
 msgid "Create for request"
@@ -9716,9 +9658,8 @@ msgstr[1] "Kućišta"
 msgstr[2] "Kućišta"
 
 #: inc/enclosure.class.php:122
-#, fuzzy
 msgid "Power supplies"
-msgstr "Izvor napajanja"
+msgstr ""
 
 #: inc/contract_supplier.class.php:136 inc/contract.class.php:204
 #: inc/contract_item.class.php:336
@@ -9811,42 +9752,36 @@ msgid "Support hours"
 msgstr "Sati podrške"
 
 #: inc/contract.class.php:332
-#, fuzzy
 msgid "on week start"
-msgstr "tijekom tjedna"
+msgstr ""
 
 #: inc/contract.class.php:338
-#, fuzzy
 msgid "on week end"
-msgstr "tijekom tjedna"
+msgstr ""
 
 #: inc/contract.class.php:344
 msgid "on Saturday"
 msgstr "subotom"
 
 #: inc/contract.class.php:349
-#, fuzzy
 msgid "on Saturday start"
-msgstr "subotom"
+msgstr ""
 
 #: inc/contract.class.php:354
-#, fuzzy
 msgid "on Saturday end"
-msgstr "subotom"
+msgstr ""
 
 #: inc/contract.class.php:359
 msgid "Sundays and holidays"
 msgstr "Nedelje i praznici"
 
 #: inc/contract.class.php:364
-#, fuzzy
 msgid "on Sunday start"
-msgstr "subotom"
+msgstr ""
 
 #: inc/contract.class.php:369
-#, fuzzy
 msgid "on Sunday end"
-msgstr "subotom"
+msgstr ""
 
 #: inc/contract.class.php:415
 msgctxt "quantity"
@@ -10635,14 +10570,12 @@ msgid "Last update in the LDAP directory"
 msgstr "Zadnje aktualiziranje u LDAP mapi"
 
 #: inc/authldap.class.php:1560
-#, fuzzy
 msgid "Last update in ITSM-ng"
-msgstr "Zadnje aktualiziranje u GLPI-u"
+msgstr ""
 
 #: inc/authldap.class.php:1609
-#, fuzzy
 msgid "Last update in ITSM-NG"
-msgstr "Zadnje aktualiziranje u GLPI-u"
+msgstr ""
 
 #: inc/authldap.class.php:1621 inc/authldap.class.php:1626
 msgid "No user to be synchronized"
@@ -10674,9 +10607,8 @@ msgid "LDAP directory choice"
 msgstr "Izbor LDAP mape"
 
 #: inc/authldap.class.php:2396
-#, fuzzy
 msgid "No LDAP directory defined in ITSM-ng"
-msgstr "U GLPI-u nema definirane LDAP mape"
+msgstr ""
 
 #: inc/authldap.class.php:2767
 msgid "User not found or several users found"
@@ -10856,9 +10788,8 @@ msgstr[1] "Poveznice za ugovor/predmet"
 msgstr[2] "Poveznice za ugovor/predmet"
 
 #: inc/contract_item.class.php:362
-#, fuzzy
 msgid "Delete permanently the relation with selected elements"
-msgstr "Trajno izbriši odnos s odabranim elementima"
+msgstr ""
 
 #: inc/planningexternalevent.class.php:54
 msgid "External event"
@@ -11080,9 +11011,8 @@ msgstr "Alati"
 #: inc/profile.class.php:1790 inc/profile.class.php:1835
 #: inc/profile.class.php:3022 inc/accessibility.class.php:36
 #: inc/accessibility.class.php:58 inc/accessibility.class.php:63
-#, fuzzy
 msgid "Accessibility"
-msgstr "Vidljivost"
+msgstr ""
 
 #: inc/profile.class.php:128 inc/profile.class.php:1197
 #: inc/profile.class.php:2435 inc/infocom.class.php:142
@@ -11327,9 +11257,8 @@ msgid "Life cycle of changes"
 msgstr "Životni ciklus promjena"
 
 #: inc/profile.class.php:1785 inc/profile.class.php:1830
-#, fuzzy
 msgid "Edit accessibility"
-msgstr "Vidljivost"
+msgstr ""
 
 #: inc/profile.class.php:1922 inc/profile.class.php:2743
 #: inc/rulerightcollection.class.php:57 inc/ruleright.class.php:56
@@ -11444,19 +11373,16 @@ msgid "Managed domain records types"
 msgstr "Upravljene vrste zapisa domena"
 
 #: inc/profile.class.php:3032
-#, fuzzy
 msgid "Change font"
-msgstr "Zadatak promjene"
+msgstr ""
 
 #: inc/profile.class.php:3042
-#, fuzzy
 msgid "Change zoom"
-msgstr "Promijeni modus"
+msgstr ""
 
 #: inc/profile.class.php:3053
-#, fuzzy
 msgid "Use shortcuts"
-msgstr "Koristi lokote"
+msgstr ""
 
 #: inc/profile.class.php:3109 inc/auth.class.php:1224 inc/auth.class.php:1231
 #: install/update_0723_078.php:3667
@@ -12370,9 +12296,8 @@ msgid "Global View"
 msgstr "Globalni pogled"
 
 #: inc/central.class.php:118
-#, fuzzy
 msgid "No dashboard available"
-msgstr "Nijedna radnja nije dostupna"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/central.class.php:154 inc/rack.class.php:65
@@ -12383,9 +12308,8 @@ msgstr[1] "Ormari"
 msgstr[2] "Ormari"
 
 #: inc/central.class.php:173
-#, fuzzy
 msgid "Tickets by status"
-msgstr "Nalozi u stanju čekanja"
+msgstr ""
 
 #: inc/central.class.php:395
 #, php-format
@@ -12638,9 +12562,8 @@ msgid "Entity-ID"
 msgstr "ID entiteta"
 
 #: inc/domain.class.php:364 inc/certificate.class.php:544
-#, fuzzy
 msgid "Types"
-msgstr "Vrsta"
+msgstr ""
 
 #: inc/domain.class.php:689
 msgid "Domains expired since more"
@@ -12797,9 +12720,8 @@ msgid "An appliance is required"
 msgstr "Uređaj se mora navesti"
 
 #: inc/softwareversion.class.php:114
-#, fuzzy
 msgid "New element"
-msgstr "Novi odgovor"
+msgstr ""
 
 #: inc/softwareversion.class.php:332
 msgctxt "button"
@@ -13281,9 +13203,8 @@ msgstr "Obrada (planirano)"
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541
-#, fuzzy
 msgid "Pending"
-msgstr "Na čekanju"
+msgstr ""
 
 #: inc/problem.class.php:686
 msgctxt "status"
@@ -13835,9 +13756,8 @@ msgstr "Prikaži reviziju %rev"
 #: inc/knowbaseitem_revision.class.php:262
 #: inc/knowbaseitem_comment.class.php:177
 #: inc/knowbaseitem_comment.class.php:211 inc/objectlock.class.php:157
-#, fuzzy
 msgid "Contact your ITSM-NG admin!"
-msgstr "Obrati se svom GLPI administratoru!"
+msgstr ""
 
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_comment.class.php:177
@@ -13912,9 +13832,8 @@ msgstr "Ponovo primjeni pravila rječnika za proizvođače (----- = Sve)"
 
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
-#, fuzzy
 msgid "Software deleted by ITSM-NG dictionary rules"
-msgstr "Softver izbrisan prema GLPI pravilima rječnika"
+msgstr ""
 
 #: inc/caldav/backend/calendar.class.php:89
 #: inc/caldav/backend/calendar.class.php:127
@@ -14566,9 +14485,8 @@ msgid "Connection string"
 msgstr "Znakovni niz veze"
 
 #: inc/authmail.class.php:206 inc/notificationchatsetting.class.php:295
-#, fuzzy
 msgid "Test"
-msgstr "Testiraj"
+msgstr ""
 
 #: inc/authmail.class.php:211
 msgid "Test connection to email server"
@@ -14585,9 +14503,8 @@ msgid "You cannot use predefined description verbatim"
 msgstr "Ne možeš koristiti unaprijed definirani opis"
 
 #: inc/commonitilobject.class.php:1772
-#, fuzzy
 msgid "Incorrect value for date field."
-msgstr "Zanemarena vrijednost za jedinstvenost"
+msgstr ""
 
 #: inc/commonitilobject.class.php:2432
 msgctxt "priority"
@@ -15705,9 +15622,8 @@ msgid "An error occured loading contents!"
 msgstr "Pojavila se greška prilikom učitavanja sadržaja!"
 
 #: inc/ajax.class.php:455
-#, fuzzy
 msgid "Please check ITSM-NG logs or contact your administrator."
-msgstr "Provjeri log zapise GLPI-a ili kontaktiraj administratora."
+msgstr ""
 
 #: inc/ajax.class.php:456
 msgid "try to reload"
@@ -16230,18 +16146,16 @@ msgstr "CSS"
 
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
-#, fuzzy
 msgid "Automatically generated by ITSM-NG"
-msgstr "Automatski stvoreno GLPI-em"
+msgstr ""
 
 #: inc/oidc.class.php:80
 msgid "Missing or wrong fields in open ID connect config"
 msgstr ""
 
 #: inc/oidc.class.php:301
-#, fuzzy
 msgid "Configuration"
-msgstr "Pretkonfiguracija"
+msgstr ""
 
 #: inc/oidc.class.php:306 inc/auth.class.php:1830
 msgid "Mapping of fields according to provider"
@@ -16319,9 +16233,8 @@ msgid "Incorrect username or password"
 msgstr "Neispravno korisničko ime ili lozinka"
 
 #: inc/auth.class.php:284 inc/auth.class.php:975 inc/auth.class.php:1003
-#, fuzzy
 msgid "User not authorized to connect in ITSM-NG"
-msgstr "Korisnik nije ovlašten za pristup u GLPI"
+msgstr ""
 
 #: inc/auth.class.php:631
 msgid "Login with external token disabled"
@@ -16364,9 +16277,8 @@ msgid "Failed login for %1$s from IP %2$s"
 msgstr "Neusjela prijava za %1$s sa IP adrese %2$s"
 
 #: inc/auth.class.php:1107
-#, fuzzy
 msgid "Authentication on ITSM-NG database"
-msgstr "Autentifikacija na GLPI bazu podataka"
+msgstr ""
 
 #: inc/auth.class.php:1119
 msgid "Authentication on a LDAP directory"
@@ -16397,9 +16309,8 @@ msgid "x509 certificate authentication"
 msgstr "Autentifikacija x509 certifikatom"
 
 #: inc/auth.class.php:1234 inc/auth.class.php:1892
-#, fuzzy
 msgid "ITSM-NG internal database"
-msgstr "GLPI interna baza podataka"
+msgstr ""
 
 #: inc/auth.class.php:1240
 msgid "Not yet authenticated"
@@ -16451,13 +16362,10 @@ msgid "The CURL extension for your PHP parser isn't installed"
 msgstr "CURL proširenje za tvoj PHP parser nije instalirano"
 
 #: inc/auth.class.php:1621
-#, fuzzy
 msgid ""
 "The CAS lib isn't available, ITSM-NG doesn't package it anymore for license "
 "compatibility issue."
 msgstr ""
-"CAS biblioteka nije dostupna, GLPI je više ne pakira zbog problema "
-"kompatibilnosti s licencom."
 
 #: inc/auth.class.php:1624
 msgid "Impossible to use CAS as external source of connection"
@@ -16517,9 +16425,8 @@ msgid "Proxy"
 msgstr ""
 
 #: inc/auth.class.php:1868
-#, fuzzy
 msgid "Certificate Path"
-msgstr "Certifikat"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/datacenter.class.php:48 inc/datacenter.class.php:71
@@ -16644,28 +16551,24 @@ msgid "Unknown interface"
 msgstr "Nepoznato sučelje"
 
 #: inc/notificationchatsetting.class.php:46
-#, fuzzy
 msgid "Chat followups configuration"
-msgstr "Konfiguracija e-mail priopćenja"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:52
 #: inc/notificationsettingconfig.class.php:133
-#, fuzzy
 msgid "Enable followups via chat"
-msgstr "Aktiviraj priopćenja putem e-maila"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:120
-#, fuzzy
 msgid "Chat notification"
 msgid_plural "Chat notifications"
-msgstr[0] "E-mail obavijest"
-msgstr[1] "E-mail obavijesti"
-msgstr[2] "E-mail obavijesti"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: inc/notificationchatsetting.class.php:132
-#, fuzzy
 msgid "Rocket chat"
-msgstr "Trošak naloga"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:133
 msgid "Slack"
@@ -16717,9 +16620,8 @@ msgstr[1] "Vrste certifikata"
 msgstr[2] "Vrste certifikata"
 
 #: inc/accessibility.class.php:41
-#, fuzzy
 msgid "See this parameter in your settings"
-msgstr "parametar e-maila nedostaje"
+msgstr ""
 
 #: inc/accessibility.class.php:43
 msgid "Edit this parameter in your settings"
@@ -16734,18 +16636,16 @@ msgid "UI Font"
 msgstr ""
 
 #: inc/accessibility.class.php:163
-#, fuzzy
 msgid "Enable shortcuts"
-msgstr "Aktiviraj visoki kontrast"
+msgstr ""
 
 #: inc/accessibility.class.php:169
 msgid "Don't forget to save"
 msgstr ""
 
 #: inc/accessibility.class.php:169
-#, fuzzy
 msgid "Toggle view"
-msgstr "Uključi/Isključi filtre"
+msgstr ""
 
 #: inc/accessibility.class.php:189
 msgid "shift+alt+"
@@ -16972,9 +16872,8 @@ msgstr[1] "Razine usluge"
 msgstr[2] "Razine usluge"
 
 #: inc/slm.class.php:126
-#, fuzzy
 msgid "Niveau de services"
-msgstr "Pasivan uređaj"
+msgstr ""
 
 #: inc/cartridge.class.php:266
 msgid "Installing a cartridge"
@@ -17205,9 +17104,9 @@ msgid "This plugin requires PHP parameter %1$s"
 msgstr "Ovaj dodatak zahtijeva PHP parametar %1$s"
 
 #: inc/plugin.class.php:1706
-#, fuzzy, php-format
+#, php-format
 msgid "This plugin requires ITSM-NG parameter %1$s"
-msgstr "Ovaj dodatak zahtijeva GLPI parametar %1$s"
+msgstr ""
 
 #: inc/plugin.class.php:1982 inc/plugin.class.php:2421
 msgctxt "plugin"
@@ -17416,19 +17315,18 @@ msgid "Autofilled from template"
 msgstr "Samoispunjeno iz predloška"
 
 #: inc/notificationchat.class.php:114
-#, fuzzy
 msgid "Error inserting chat to queue"
-msgstr "Greška prilikom umetanja e-maila u red čekanja"
+msgstr ""
 
 #: inc/notificationchat.class.php:118
-#, fuzzy, php-format
+#, php-format
 msgid "Fatal-error: The chat %s was not added to queue "
-msgstr "E-mail za %s dodan je u red čekanja"
+msgstr ""
 
 #: inc/notificationchat.class.php:129
-#, fuzzy, php-format
+#, php-format
 msgid "Rocket chat: The chat %s was added to queue "
-msgstr "E-mail za %s dodan je u red čekanja"
+msgstr ""
 
 #: inc/rulecriteria.class.php:511
 msgid "does not contain"
@@ -17823,9 +17721,8 @@ msgid "Amortization type"
 msgstr "Vrsta amortizacije"
 
 #: inc/infocom.class.php:1191 inc/infocom.class.php:1202
-#, fuzzy
 msgid "years"
-msgstr "Po godini"
+msgstr ""
 
 #: inc/infocom.class.php:1196 inc/infocom.class.php:1512
 #: inc/infocom.class.php:1743
@@ -18614,12 +18511,9 @@ msgstr "Nedostaju neki opcionalni sustavski uvjeti."
 
 #: inc/console/abstractcommand.class.php:197
 #: inc/console/application.class.php:472
-#, fuzzy
 msgid ""
 "Run \"php bin/console itsmng:system:check_requirements\" for more details."
 msgstr ""
-"Pokreni „php bin/console itsmng:system:check_requirements” za daljnje "
-"detalje."
 
 #: inc/console/application.class.php:130
 msgid "The command to execute"
@@ -18662,19 +18556,14 @@ msgid "Configuration directory to use"
 msgstr "Korištena mapa konfiguracije"
 
 #: inc/console/application.class.php:185
-#, fuzzy
 msgid "Disable ITSM-NG plugins (unless commands forces plugins loading)"
 msgstr ""
-"Deaktiviraj GLPI-dodatke (osim ako naredbe prisiljavaju učitavanje dodataka)"
 
 #: inc/console/application.class.php:191
-#, fuzzy
 msgid ""
 "Output language (default value is existing ITSM-NG \"language\" "
 "configuration or \"en_GB\")"
 msgstr ""
-"Jezik rezultata (standardena vrijednost je postojeća GLPI konfiguracija "
-"„jezika” ili „en_GB”)"
 
 #: inc/console/application.class.php:212
 #, php-format
@@ -18739,19 +18628,18 @@ msgid ""
 msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:153
-#, fuzzy, php-format
+#, php-format
 msgid "Migrating column \"%s.%s\"..."
-msgstr "Migriranje tablice „%s” …"
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:172
-#, fuzzy, php-format
+#, php-format
 msgid "Migration of column \"%s.%s\" failed with message \"(%s) %s\"."
-msgstr "Migriranje tablice „%s” neuspjelo s porukom „(%s) %s”."
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:192
-#, fuzzy
 msgid "Errors occured during migration."
-msgstr "Došlo je do greške pri aktualiziranju lozinke"
+msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:198
 #: inc/console/migration/buildmissingtimestampscommand.class.php:125
@@ -18781,9 +18669,8 @@ msgid "Update of `%s`.`%s` failed with message \"(%s) %s\"."
 msgstr "Aktualiziranje za `%s`. `%s` neuspjelo s porukom „(%s) %s”."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
-#, fuzzy
 msgid "Migrate Racks plugin data into ITSM-ng core tables"
-msgstr "Migriraj podatke dodatka Ormari u osnovne GLPI-tablice"
+msgstr ""
 
 #: inc/console/migration/racksplugintocorecommand.class.php:168
 msgid "Ignore \"PluginRacksOther\" models and elements"
@@ -18815,11 +18702,10 @@ msgstr ""
 "dodataka kompatibilni s podržanom verzijom %s)"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:216
-#, fuzzy
 msgid ""
 "You are about to launch migration of Racks plugin data into ITSM-ng core "
 "tables."
-msgstr "Pokrenut ćeš migraciju podataka dodatka Ormari u osnovne GLPI-tablice."
+msgstr ""
 
 #: inc/console/migration/racksplugintocorecommand.class.php:217
 #: inc/console/migration/appliancesplugintocorecommand.class.php:162
@@ -18841,13 +18727,10 @@ msgid "Checking plugin version..."
 msgstr "Provjera verzije dodatka …"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:278
-#, fuzzy
 msgid ""
 "Racks plugin is not part of ITSM-ng plugin list. It has never been installed "
 "or has been cleaned."
 msgstr ""
-"Dodatak Ormari nije dio popisa GLPI-dodataka. Nikada nije ugrađen niti "
-"očišćen."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:281
 #: inc/console/migration/racksplugintocorecommand.class.php:296
@@ -18909,9 +18792,8 @@ msgid "Importing other models..."
 msgstr "Uvoz drugih modela …"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
-#, fuzzy
 msgid "Other items do not exist in ITSM-ng core."
-msgstr "U GLPI osnovi ne postoje drugi predmeti."
+msgstr ""
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
 #, php-format
@@ -19113,17 +18995,14 @@ msgid "Update of `%s` failed with message \"(%s) %s\"."
 msgstr "Aktualiziranje za `%s` neuspjelo s porukom „(%s) %s”."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:145
-#, fuzzy
 msgid "Migrate Appliances plugin data into ITSM-ng core tables"
-msgstr "Migriraj podatke dodatka Uređaji u osnovne GLPI-tablice"
+msgstr ""
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:160
-#, fuzzy
 msgid ""
 "You are about to launch migration of Appliances plugin data into ITSM-ng "
 "core tables."
 msgstr ""
-"Pokrenut ćeš migraciju podataka dodatka Uređaji u osnovne GLPI-tablice."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:161
 msgid "Any previous appliance created in core will be lost."
@@ -19149,9 +19028,8 @@ msgid "Unable to update \"%s\" in profiles."
 msgstr "Nije moguće aktualizirati „%s” u profilima."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:334
-#, fuzzy
 msgid "Updating ITSM-NG itemtypes..."
-msgstr "Aktualiziranje GLPI vrste predmeta …"
+msgstr ""
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:359
 #, php-format
@@ -19230,9 +19108,8 @@ msgid "Unable to create Appliance Item Relation %d."
 msgstr "Nije moguće stvoriti vezu predmeta uređaja %d."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:91
-#, fuzzy
 msgid "Migrate Domains plugin data into ITSM-NG core tables"
-msgstr "Migriraj podatke dodatka Domene u osnovne GLPI-tablice"
+msgstr ""
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:98
 #, php-format
@@ -19241,20 +19118,16 @@ msgstr ""
 "Pokreni aktualiziranje dodatka Domene (za to su potrebne datoteke verzije %s)"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:124
-#, fuzzy
 msgid ""
 "You are about to launch migration of Domains plugin data into ITSM-NG core "
 "tables."
-msgstr "Pokrenut ćeš migraciju podataka dodatka Domene u osnovne GLPI-tablice."
+msgstr ""
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:182
-#, fuzzy
 msgid ""
 "Domains plugin is not part of ITSM-NG plugin list. It has never been "
 "installed or has been cleaned."
 msgstr ""
-"Dodatak Domene nije dio popisa GLPI-dodataka. Nikada nije ugrađen niti "
-"očišćen."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:185
 #: inc/console/migration/domainsplugintocorecommand.class.php:200
@@ -19450,9 +19323,8 @@ msgid "Number of softwares processed: %d."
 msgstr "Broj obrađenih softvera: %d."
 
 #: inc/console/database/installcommand.class.php:91
-#, fuzzy
 msgid "Default language of ITSM-NG"
-msgstr "Standardni jezik za GLPI"
+msgstr ""
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -19527,13 +19399,10 @@ msgid "Allow update to an unstable version"
 msgstr "Dozvoli aktualiziranje na nestabilnu verziju"
 
 #: inc/console/database/updatecommand.class.php:87
-#, fuzzy
 msgid ""
 "Force execution of update from v-1 version of ITSM-ng even if schema did not "
 "changed"
 msgstr ""
-"Prisili izvršavanje aktualiziranja s verzijom v-1 GLPI-a čak i ako se shema "
-"nije promijenila"
 
 #: inc/console/database/updatecommand.class.php:126
 msgid "Current"
@@ -19558,14 +19427,12 @@ msgid "Database user"
 msgstr "Korisnik baze podataka"
 
 #: inc/console/database/updatecommand.class.php:130
-#, fuzzy
 msgid "ITSM version"
-msgstr "IP verzija"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:131
-#, fuzzy
 msgid "ITSM database version"
-msgstr "Verzija GLPI baze podataka"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:139
 #, php-format
@@ -20077,14 +19944,12 @@ msgid "Invalid link"
 msgstr "Nevažeći link"
 
 #: inc/document.class.php:404
-#, fuzzy
 msgid "Added by"
-msgstr "Dodano od %s"
+msgstr ""
 
 #: inc/document.class.php:407
-#, fuzzy
 msgid "Last update on"
-msgstr "Zadnje aktualiziranje %s"
+msgstr ""
 
 #: inc/document.class.php:415
 msgid "Current file"
@@ -20250,9 +20115,8 @@ msgid "Root CA"
 msgstr "Mjerodavno tijelo za certifikate glavne mape"
 
 #: inc/certificate.class.php:634
-#, fuzzy
 msgid "Certificat"
-msgstr "Certifikat"
+msgstr ""
 
 #: inc/certificate.class.php:662
 msgctxt "button"
@@ -20367,31 +20231,23 @@ msgid "Send \"usage statistics\""
 msgstr "Pošalji „statistiku korištenja”"
 
 #: inc/telemetry.class.php:417
-#, fuzzy
 msgid "We need your help to improve ITSM-NG and the plugins ecosystem!"
-msgstr "Trebamo tvoju pomoć za poboljšavanje GLPI-a i ekosustava dodataka!"
+msgstr ""
 
 #: inc/telemetry.class.php:418
-#, fuzzy
 msgid ""
 "Once sent, usage statistics are aggregated and made available to a broad "
 "range of ITSM-NG developers."
 msgstr ""
-"Nakon slanja, statistika korištenja se sabire i stavlja na raspolaganje "
-"širokom krugu GLPI programera."
 
 #: inc/telemetry.class.php:419
-#, fuzzy
 msgid ""
 "Let us know your usage to improve future versions of ITSM-NG and its plugins!"
 msgstr ""
-"Javi nam tvoje korištenje, kako bismo poboljšali buduće verzije GLPI-a i "
-"njegovih dodataka!"
 
 #: inc/telemetry.class.php:432
-#, fuzzy
 msgid "Reference your ITSM-NG"
-msgstr "Referenciraj svoj GLPI"
+msgstr ""
 
 #: inc/telemetry.class.php:434
 #, php-format
@@ -20773,9 +20629,8 @@ msgid "New"
 msgstr "Novi"
 
 #: inc/ticket.class.php:4566
-#, fuzzy
 msgid "Parameters"
-msgstr "Čitaj parametre"
+msgstr ""
 
 #: inc/ticket.class.php:4576
 msgid "Close date"
@@ -20881,9 +20736,8 @@ msgid "Purchase version"
 msgstr "Verzija kupnje"
 
 #: inc/softwarelicense.class.php:415
-#, fuzzy
 msgid "Quota Status"
-msgstr "Stanje"
+msgstr ""
 
 #: inc/softwarelicense.class.php:417
 msgctxt "adjective"
@@ -21066,24 +20920,20 @@ msgid "Approve the solution"
 msgstr "Odobri rješenje"
 
 #: inc/itilfollowup.class.php:736
-#, fuzzy
 msgid "Approbation de la solution"
-msgstr "Odobrenje rješenja"
+msgstr ""
 
 #: inc/itilfollowup.class.php:739
-#, fuzzy
 msgid "itemtype"
-msgstr "Vrsta predmeta"
+msgstr ""
 
 #: inc/itilfollowup.class.php:744
-#, fuzzy
 msgid "items_id"
-msgstr "states_id"
+msgstr ""
 
 #: inc/itilfollowup.class.php:749
-#, fuzzy
 msgid "requesttypes_id"
-msgstr "states_id"
+msgstr ""
 
 #: inc/itilfollowup.class.php:818
 msgid "If you want to reopen the ticket, you must specify a reason"
@@ -21127,14 +20977,10 @@ msgid "Unsupported version (%1$s)"
 msgstr "Nepodržana verzija (%1$s)"
 
 #: inc/update.class.php:595
-#, fuzzy
 msgid ""
 "Unable to create security key file! You have to run \"php bin/console itsmng:"
 "security:change_key\" command to manually create this file."
 msgstr ""
-"Nije moguće stvoriti datoteku sigurnosnog ključa! Za ručno stvaranje ove "
-"datoteke mora se pokrenuti naredba „php bin/console itsmng:security:"
-"change_key”."
 
 #: inc/devicebatterymodel.class.php:44
 msgid "Device battery model"
@@ -21239,9 +21085,8 @@ msgid "Error: the two passwords do not match"
 msgstr "Greška: dvije lozinke se ne poklapaju"
 
 #: inc/user.class.php:784
-#, fuzzy
 msgid "Moving temporary file failed."
-msgstr "Nedostaje privremena mapa"
+msgstr ""
 
 #: inc/user.class.php:789
 msgid "The file is not an image file."
@@ -21320,23 +21165,20 @@ msgid "Last login on %s"
 msgstr "Zadnja prijava %s"
 
 #: inc/user.class.php:2699
-#, fuzzy
 msgid "Use ITSM-NG in mode"
-msgstr "Koristi GLPI u modusu"
+msgstr ""
 
 #: inc/user.class.php:2703
 msgid "Normal"
 msgstr "Normalno"
 
 #: inc/user.class.php:2719
-#, fuzzy
 msgid "Reset personal token"
-msgstr "Osobni token"
+msgstr ""
 
 #: inc/user.class.php:2734
-#, fuzzy
 msgid "Reset API token"
-msgstr "API token"
+msgstr ""
 
 #: inc/user.class.php:2777
 msgid "Unable to update login. A user already exists."
@@ -21443,9 +21285,8 @@ msgstr ""
 "Tvoj zahtjev za resetiranjem lozinke je istekao ili ne valja. Obnovi ga."
 
 #: inc/user.class.php:4613
-#, fuzzy
 msgid "Please enter your new password."
-msgstr "Potvrdi svoju e-mail adresu i upiši lozinku."
+msgstr ""
 
 #: inc/user.class.php:4657
 msgid ""
@@ -21456,9 +21297,8 @@ msgstr ""
 "lozinku."
 
 #: inc/user.class.php:4698 inc/user.class.php:4712
-#, fuzzy
 msgid "Unable to reset password, please contact your administrator"
-msgstr "Provjeri log zapise GLPI-a ili kontaktiraj administratora."
+msgstr ""
 
 #: inc/user.class.php:4719
 msgid ""
@@ -22165,9 +22005,8 @@ msgid "Update to %s"
 msgstr "Aktualiziraj na %s"
 
 #: install/itsm_update_151_200.php:557
-#, fuzzy
 msgid "Update dashboard"
-msgstr "Aktualiziraj lozinku"
+msgstr ""
 
 #: install/empty_data.php:2079 install/empty_data.php:2081
 #: install/update_0831_084.php:270 install/update_0831_084.php:271
@@ -22269,14 +22108,13 @@ msgid "Impossible to accomplish an update by this way!"
 msgstr "Nemoguće dovršiti aktualiziranje na ovaj način!"
 
 #: install/update.php:583
-#, fuzzy
 msgid "Go back to ITSM-NG"
-msgstr "Idi natrag na GLPI"
+msgstr ""
 
 #: install/update.php:588
-#, fuzzy, php-format
+#, php-format
 msgid "Caution! You will update the ITSM-NG database named: %s"
-msgstr "Oprez! Aktualizirat ćeš GLPI bazu podataka: %s"
+msgstr ""
 
 #: install/update.php:594
 msgid "Continue"
@@ -22287,9 +22125,8 @@ msgid "Database connection successful"
 msgstr "Veza s bazom podataka uspjela"
 
 #: install/update.php:651 install/update_content.php:367
-#, fuzzy
 msgid "Use ITSM-NG"
-msgstr "Koristi TLS"
+msgstr ""
 
 #: install/update.php:660
 msgid ""
@@ -22329,9 +22166,8 @@ msgid "Fix URL of images in ITIL tasks, followups and solutions."
 msgstr "Ispravi URL slika u ITIL zadacima, priopćenjima i rješenjima."
 
 #: install/update_content.php:245
-#, fuzzy
 msgid "SQL error starting"
-msgstr "SQL greška počinje od %s"
+msgstr ""
 
 #: install/update_content.php:358
 msgid "Automatic redirection, else click"
@@ -22551,19 +22387,16 @@ msgstr ""
 "slučaj?"
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialization"
-msgstr "Virtualizacija"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialized"
-msgstr "Virtualizacija"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Languages"
-msgstr "Jezik"
+msgstr ""
 
 #: templates/menus/nav/menu.twig:23
 msgid ""
@@ -22577,39 +22410,32 @@ msgid "Menu"
 msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:5
-#, fuzzy
 msgid "Menu collapse"
-msgstr "Uklj/Isklj sklapanje"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:25
+msgid "Up"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:27
+msgid "bubble"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:8
-#, fuzzy
 msgid "Reset menu bubble position"
-msgstr "Rezervirani položaj?"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:14
-#, fuzzy
 msgid "Activate menu favorite"
-msgstr "Radnja prekinuta"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:17
-#, fuzzy
 msgid "Activate favorite selection"
-msgstr "Radnja prekinuta"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:22
-#, fuzzy
 msgid "Menu position"
-msgstr "Položaj centra podataka"
-
-#, fuzzy
-#~| msgid "Login"
-#~ msgid "SSO Login"
-#~ msgstr "Prijava"
-
-#, fuzzy
-#~| msgid "See configuration"
-#~ msgid "Open ID connect configuration"
-#~ msgstr "Pogledaj konfiguraciju"
+msgstr ""
 
 #~ msgid "No room found or selected"
 #~ msgstr "Nijedna soba nije pronađena niti odabrana"

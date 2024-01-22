@@ -529,14 +529,12 @@ msgid "Consider filling latitude and longitude on this location."
 msgstr ""
 
 #: ajax/deleteItilActor.php:92
-#, fuzzy
 msgid "Actor deleted successfully"
-msgstr "Đặt lại bộ nhớ đệm thành công"
+msgstr ""
 
 #: ajax/deleteItilActor.php:98
-#, fuzzy
 msgid "Error while deleting actor"
-msgstr "Lỗi khi thực thi hành động này"
+msgstr ""
 
 #: ajax/telemetry.php:46
 msgid ""
@@ -1743,9 +1741,8 @@ msgid "Impossible to use LDAP as external source of connection"
 msgstr "Không thể sử dụng LDAP như nguồn bên ngoài của kết nối"
 
 #: front/setup.auth.php:58
-#, fuzzy
 msgid "Open ID connect authentication"
-msgstr "x509 chứng nhận xác thực"
+msgstr ""
 
 #: front/setup.auth.php:61
 msgid "Others authentication methods"
@@ -2188,10 +2185,9 @@ msgstr ""
 #: inc/slalevel.class.php:226 inc/projecttask.class.php:679
 #: inc/projecttask.class.php:934 inc/transfer.class.php:86
 #: inc/transfer.class.php:3425 inc/group.class.php:216 inc/group.class.php:834
-#, fuzzy
 msgid "Name"
 msgid_plural "Names"
-msgstr[0] "Tên"
+msgstr[0] ""
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
@@ -3248,9 +3244,8 @@ msgid "Unable to stop impersonating user"
 msgstr ""
 
 #: front/document.form.php:66
-#, fuzzy
 msgid "Could not add document"
-msgstr "Thêm một tài liệu"
+msgstr ""
 
 #: inc/operatingsystemedition.class.php:42
 #: inc/item_operatingsystem.class.php:365
@@ -3443,9 +3438,8 @@ msgid_plural "Versions"
 msgstr[0] "Các phiên bản"
 
 #: inc/cluster.class.php:136
-#, fuzzy
 msgid "Auto update system"
-msgstr "%s cập nhật một mục"
+msgstr ""
 
 #: inc/cluster.class.php:143 inc/cluster.class.php:223
 #: inc/printer.class.php:323 inc/printer.class.php:750
@@ -3784,9 +3778,8 @@ msgid "\"session.use_trans_sid\" must be set to off."
 msgstr ""
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
-#, fuzzy
 msgid "See .htaccess file in the ITSM-NG root for more information."
-msgstr "Kiểm tra tập tin .htaccess và cấu hình máy chủ web."
+msgstr ""
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -3948,9 +3941,9 @@ msgid "Allocated memory"
 msgstr "Bộ nhớ được cấp phát"
 
 #: inc/system/requirement/memorylimit.class.php:75
-#, fuzzy, php-format
+#, php-format
 msgid "A minimum of %s is commonly required for ITSM-NG."
-msgstr "Tối thiểu 64 Mio thường được yêu cầu cho GLPI"
+msgstr ""
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -4470,9 +4463,8 @@ msgid "Action when a user is deleted from the LDAP directory"
 msgstr "Hành động khi người dùng bị xóa từ thư mục LDAP"
 
 #: inc/config.class.php:710
-#, fuzzy
 msgid "ITSM-NG server time zone"
-msgstr "GLPI vùng thời gian máy chủ"
+msgstr ""
 
 #: inc/config.class.php:743 inc/config.class.php:1809 inc/config.class.php:2261
 #: inc/dbconnection.class.php:47
@@ -4657,9 +4649,8 @@ msgid "Display counters"
 msgstr ""
 
 #: inc/config.class.php:1151
-#, fuzzy
 msgid "Display the number of items in the menu"
-msgstr "Hiển thị (số lượng các mục)"
+msgstr ""
 
 #: inc/config.class.php:1160
 msgid "Keep devices when purging an item"
@@ -4741,34 +4732,28 @@ msgid "Pre-select me as a requester when creating a ticket"
 msgstr "Chọn trước tôi là người yêu cầu khi tạp một thẻ"
 
 #: inc/config.class.php:1288
-#, fuzzy
 msgid "Priority color 1"
-msgstr "Các màu ưu tiên"
+msgstr ""
 
 #: inc/config.class.php:1295
-#, fuzzy
 msgid "Priority color 2"
-msgstr "Các màu ưu tiên"
+msgstr ""
 
 #: inc/config.class.php:1302
-#, fuzzy
 msgid "Priority color 3"
-msgstr "Các màu ưu tiên"
+msgstr ""
 
 #: inc/config.class.php:1309
-#, fuzzy
 msgid "Priority color 4"
-msgstr "Các màu ưu tiên"
+msgstr ""
 
 #: inc/config.class.php:1316
-#, fuzzy
 msgid "Priority color 5"
-msgstr "Các màu ưu tiên"
+msgstr ""
 
 #: inc/config.class.php:1323
-#, fuzzy
 msgid "Priority color 6"
-msgstr "Các màu ưu tiên"
+msgstr ""
 
 #: inc/config.class.php:1332
 msgid "Due date progression"
@@ -4791,9 +4776,8 @@ msgid "Warning state threshold"
 msgstr "Ngưỡng trạng thái Cảnh báo"
 
 #: inc/config.class.php:1366
-#, fuzzy
 msgid "Warning state unit"
-msgstr "Màu trạng thái Cảnh báo"
+msgstr ""
 
 #: inc/config.class.php:1372 inc/config.class.php:1394
 #: inc/reservation.class.php:1025 inc/levelagreement.class.php:202
@@ -4808,9 +4792,8 @@ msgid "Critical state threshold"
 msgstr "Ngưỡng trạng thái Nguy cấp"
 
 #: inc/config.class.php:1388
-#, fuzzy
 msgid "Critical state unit"
-msgstr "Màu trạng thái Nguy cấp"
+msgstr ""
 
 #: inc/config.class.php:1406
 msgid "Auto-lock Mode"
@@ -5341,9 +5324,8 @@ msgstr[0] "Máy in"
 #: inc/consumableitem.class.php:134 inc/software.class.php:231
 #: inc/peripheral.class.php:161 inc/phone.class.php:156
 #: inc/computer.class.php:309 inc/pdu.class.php:86 inc/ticket.class.php:4478
-#, fuzzy
 msgid "Restore"
-msgstr "Phục hồi"
+msgstr ""
 
 #: inc/printer.class.php:302 inc/project.class.php:562
 #: inc/appliance.class.php:164 inc/supplier.class.php:187
@@ -5368,21 +5350,18 @@ msgstr "Tên người dùng thay thế số"
 
 #: inc/printer.class.php:378 inc/monitor.class.php:274
 #: inc/peripheral.class.php:266 inc/phone.class.php:262
-#, fuzzy
 msgid "Management Type"
-msgstr "Kiểu quản lý"
+msgstr ""
 
 #: inc/printer.class.php:382 inc/monitor.class.php:278
 #: inc/peripheral.class.php:270 inc/phone.class.php:266
-#, fuzzy
 msgid "Unit Management"
-msgstr "Đơn vị quản lý"
+msgstr ""
 
 #: inc/printer.class.php:383 inc/monitor.class.php:279
 #: inc/peripheral.class.php:271 inc/phone.class.php:267
-#, fuzzy
 msgid "Global Management"
-msgstr "Quản lý toàn cục"
+msgstr ""
 
 #: inc/printer.class.php:395 inc/printer.class.php:733
 #: inc/networkequipment.class.php:380 inc/networkequipment.class.php:598
@@ -5394,9 +5373,8 @@ msgid_plural "Networks"
 msgstr[0] "Các mạng"
 
 #: inc/printer.class.php:404
-#, fuzzy
 msgid "Ports"
-msgstr "Các cổng"
+msgstr ""
 
 #: inc/printer.class.php:407 inc/printer.class.php:622
 #: inc/appliance_item.class.php:186
@@ -5898,9 +5876,9 @@ msgid "Task completed."
 msgstr "Nhiệm vụ đã hoàn thành."
 
 #: inc/migration.class.php:792
-#, fuzzy, php-format
+#, php-format
 msgid "Automatically generated by ITSM-NG %s"
-msgstr "Tự động tạo ra bởi GLPI %s"
+msgstr ""
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -6149,14 +6127,12 @@ msgid "Associated item ID"
 msgstr "ID mục được kết hợp"
 
 #: inc/queuedchat.class.php:260 inc/queuedchat.class.php:646
-#, fuzzy
 msgid "Entity name"
-msgstr "Các đối tượng"
+msgstr ""
 
 #: inc/queuedchat.class.php:269 inc/queuedchat.class.php:641
-#, fuzzy
 msgid "Server name"
-msgstr "Tên người gửi"
+msgstr ""
 
 #: inc/queuedchat.class.php:278
 msgid "URl Hook"
@@ -6173,28 +6149,24 @@ msgid "Mode"
 msgstr ""
 
 #: inc/queuedchat.class.php:382 inc/queuednotification.class.php:463
-#, fuzzy
 msgid "Send chat in queue"
-msgstr "Gửi các mail trong hàng đợi"
+msgstr ""
 
 #: inc/queuedchat.class.php:383 inc/queuednotification.class.php:464
-#, fuzzy
 msgid "Maximum chat to send at once"
-msgstr "Số lượng tối đa các email để gửi một lần"
+msgstr ""
 
 #: inc/queuedchat.class.php:388
 msgid "Clean chat queue"
 msgstr ""
 
 #: inc/queuedchat.class.php:389 inc/queuednotification.class.php:468
-#, fuzzy
 msgid "Days to keep sent chat"
-msgstr "Số ngày để giữ các email đã gửi"
+msgstr ""
 
 #: inc/queuedchat.class.php:615
-#, fuzzy
 msgid "Ticket ID"
-msgstr "Ticket"
+msgstr ""
 
 #: inc/queuedchat.class.php:651
 msgid "Rocket Hook Url"
@@ -6576,9 +6548,8 @@ msgid_plural "Manufacturers"
 msgstr[0] "Nhà sản xuất"
 
 #: inc/monitor.class.php:245
-#, fuzzy
 msgid "Inventory/Asset number"
-msgstr "Số hàng tồn kho"
+msgstr ""
 
 #: inc/monitor.class.php:268 inc/monitor.class.php:517
 #: inc/item_devicememory.class.php:54 inc/item_devicememory.class.php:56
@@ -6631,9 +6602,8 @@ msgid "Target entity for the computer"
 msgstr "Đối tượng mục tiêu cho máy tính này"
 
 #: inc/ruleimportcomputer.class.php:81
-#, fuzzy
 msgid "Find computers in ITSM-NG having the status"
-msgstr "Tìm các máy tính trong GLPI đang có trạng thái này"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -6673,14 +6643,12 @@ msgid "Yes if empty"
 msgstr "Chấp nhận nếu rỗng"
 
 #: inc/ruleimportcomputer.class.php:178
-#, fuzzy
 msgid "is already present in ITSM-NG"
-msgstr "đã được trình bày trong GLPI"
+msgstr ""
 
 #: inc/ruleimportcomputer.class.php:179
-#, fuzzy
 msgid "is empty in ITSM-NG"
-msgstr "là rỗng trong GLPI"
+msgstr ""
 
 #: inc/commonitilvalidation.class.php:91 inc/commonitilobject.class.php:6856
 #: inc/change.class.php:539 inc/change.class.php:1061
@@ -7417,14 +7385,12 @@ msgid "Category name"
 msgstr "Tên danh mục"
 
 #: inc/knowbaseitem.class.php:780
-#, fuzzy
 msgid "Created on:"
-msgstr "Đã tạo vào %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:783
-#, fuzzy
 msgid "Last update on:"
-msgstr "Cập nhật lần cuối vào %s"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:786
 msgid "Put this item in the FAQ"
@@ -7441,9 +7407,8 @@ msgid "This item is not part of the FAQ"
 msgstr "Mục này không là một phần của FAQ"
 
 #: inc/knowbaseitem.class.php:798
-#, fuzzy
 msgid "Views"
-msgstr "Xem"
+msgstr ""
 
 #: inc/knowbaseitem.class.php:799 inc/knowbaseitem.class.php:984
 #, php-format
@@ -7594,9 +7559,8 @@ msgid "Help"
 msgstr "Trợ giúp"
 
 #: inc/link.class.php:165
-#, fuzzy
 msgid "External links"
-msgstr "Các liên kết ngoài"
+msgstr ""
 
 #: inc/link.class.php:173 inc/link.class.php:240
 msgid "Link or filename"
@@ -7681,14 +7645,12 @@ msgstr "Số lượng các mục"
 
 #: inc/specialstatus.class.php:44 inc/specialstatus.class.php:150
 #: inc/profile.class.php:2082
-#, fuzzy
 msgid "Special Status"
-msgstr "Chỉ định một ngày"
+msgstr ""
 
 #: inc/specialstatus.class.php:115
-#, fuzzy
 msgid "Status has been updated!"
-msgstr "Giá trị trạng thái trong cơ sở dữ liệu"
+msgstr ""
 
 #: inc/specialstatus.class.php:142
 msgid "Status has been removed!"
@@ -8226,9 +8188,8 @@ msgid "System lock"
 msgstr "Hệ thống khóa"
 
 #: inc/crontask.class.php:643
-#, fuzzy
 msgid "Plugin lock"
-msgstr "Các tiện ích"
+msgstr ""
 
 #: inc/crontask.class.php:644
 msgid "Disabled plugin"
@@ -8239,14 +8200,12 @@ msgid "Run mode"
 msgstr "Chế độ hoạt động"
 
 #: inc/crontask.class.php:655
-#, fuzzy
 msgid "Min run period"
-msgstr "Chu kỳ hoạt động"
+msgstr ""
 
 #: inc/crontask.class.php:662
-#, fuzzy
 msgid "Max run period"
-msgstr "Chu kỳ hoạt động"
+msgstr ""
 
 #: inc/crontask.class.php:669 inc/crontask.class.php:1602
 msgid "Number of days this action logs are stored"
@@ -8261,14 +8220,12 @@ msgid "Last run"
 msgstr "lần chạy cuối"
 
 #: inc/crontask.class.php:704
-#, fuzzy
 msgid "enabled"
-msgstr "Cho phép"
+msgstr ""
 
 #: inc/crontask.class.php:706
-#, fuzzy
 msgid "disabled"
-msgstr "Ngưng"
+msgstr ""
 
 #: inc/crontask.class.php:812 inc/crontask.class.php:1370
 msgid "Running"
@@ -8287,9 +8244,8 @@ msgid "Maintenance mode enabled, running tasks is disabled"
 msgstr ""
 
 #: inc/crontask.class.php:922
-#, fuzzy
 msgid "A minimum of 64 Mio is commonly required for ITSM-NG."
-msgstr "Tối thiểu 64 Mio thường được yêu cầu cho GLPI"
+msgstr ""
 
 #: inc/crontask.class.php:927
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -8627,15 +8583,11 @@ msgid "Upgrade"
 msgstr "Nâng cấp"
 
 #: inc/config.php:239
-#, fuzzy
 msgid ""
 "You are trying to use ITSM-NG with outdated files compared to the version of "
 "the database. Please install the correct ITSM-NG files corresponding to the "
 "version of your database."
 msgstr ""
-"Bạn đang cố gắng sử dụng GLPI với các tập tin lỗi thời so với các phiên bản "
-"của cơ sở dữ liệu. Vui lòng cài đặt các tập tin GLPI đúng tương ứng với "
-"phiên bản của cơ sở dữ liệu của bạn."
 
 #: inc/config.php:242
 msgid ""
@@ -9222,14 +9174,13 @@ msgid "Begin"
 msgstr "Bắt đầu"
 
 #: inc/reminder.class.php:641
-#, fuzzy
 msgid "From"
-msgstr "Từ %s"
+msgstr ""
 
 #: inc/reminder.class.php:642
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s to %2$s"
-msgstr "%1$s trên %2$s"
+msgstr ""
 
 #: inc/ticketvalidation.class.php:99
 msgid "Create for request"
@@ -9374,9 +9325,8 @@ msgid_plural "Enclosures"
 msgstr[0] ""
 
 #: inc/enclosure.class.php:122
-#, fuzzy
 msgid "Power supplies"
-msgstr "Các bộ nguồn"
+msgstr ""
 
 #: inc/contract_supplier.class.php:136 inc/contract.class.php:204
 #: inc/contract_item.class.php:336
@@ -9463,42 +9413,36 @@ msgid "Support hours"
 msgstr "Các giờ hỗ trợ"
 
 #: inc/contract.class.php:332
-#, fuzzy
 msgid "on week start"
-msgstr "trong tuần"
+msgstr ""
 
 #: inc/contract.class.php:338
-#, fuzzy
 msgid "on week end"
-msgstr "trong tuần"
+msgstr ""
 
 #: inc/contract.class.php:344
 msgid "on Saturday"
 msgstr "vào thứ Bảy"
 
 #: inc/contract.class.php:349
-#, fuzzy
 msgid "on Saturday start"
-msgstr "vào thứ Bảy"
+msgstr ""
 
 #: inc/contract.class.php:354
-#, fuzzy
 msgid "on Saturday end"
-msgstr "vào thứ Bảy"
+msgstr ""
 
 #: inc/contract.class.php:359
 msgid "Sundays and holidays"
 msgstr "Chủ nhật và các ngày lễ"
 
 #: inc/contract.class.php:364
-#, fuzzy
 msgid "on Sunday start"
-msgstr "vào thứ Bảy"
+msgstr ""
 
 #: inc/contract.class.php:369
-#, fuzzy
 msgid "on Sunday end"
-msgstr "vào thứ Bảy"
+msgstr ""
 
 #: inc/contract.class.php:415
 msgctxt "quantity"
@@ -10259,14 +10203,12 @@ msgid "Last update in the LDAP directory"
 msgstr "Lần cập nhật cuối trong thư mục LDAP"
 
 #: inc/authldap.class.php:1560
-#, fuzzy
 msgid "Last update in ITSM-ng"
-msgstr "Lần cập nhật cuối trong GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:1609
-#, fuzzy
 msgid "Last update in ITSM-NG"
-msgstr "Lần cập nhật cuối trong GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:1621 inc/authldap.class.php:1626
 msgid "No user to be synchronized"
@@ -10298,9 +10240,8 @@ msgid "LDAP directory choice"
 msgstr "Lựa chọn đường dẫn LDAP"
 
 #: inc/authldap.class.php:2396
-#, fuzzy
 msgid "No LDAP directory defined in ITSM-ng"
-msgstr "Không có thư mục LDAP được định nghĩa trong GLPI"
+msgstr ""
 
 #: inc/authldap.class.php:2767
 msgid "User not found or several users found"
@@ -10475,9 +10416,8 @@ msgid_plural "Links Contract/Item"
 msgstr[0] "Các liên kết Hợp đồng / Mục"
 
 #: inc/contract_item.class.php:362
-#, fuzzy
 msgid "Delete permanently the relation with selected elements"
-msgstr "Xóa vĩnh viễn kể cả các mục đã liên kết"
+msgstr ""
 
 #: inc/planningexternalevent.class.php:54
 msgid "External event"
@@ -10685,9 +10625,8 @@ msgstr "Các công cụ"
 #: inc/profile.class.php:1790 inc/profile.class.php:1835
 #: inc/profile.class.php:3022 inc/accessibility.class.php:36
 #: inc/accessibility.class.php:58 inc/accessibility.class.php:63
-#, fuzzy
 msgid "Accessibility"
-msgstr "Dự tính"
+msgstr ""
 
 #: inc/profile.class.php:128 inc/profile.class.php:1197
 #: inc/profile.class.php:2435 inc/infocom.class.php:142
@@ -10906,9 +10845,8 @@ msgid "Life cycle of changes"
 msgstr "Vòng đời của những thay đổi"
 
 #: inc/profile.class.php:1785 inc/profile.class.php:1830
-#, fuzzy
 msgid "Edit accessibility"
-msgstr "Dự tính"
+msgstr ""
 
 #: inc/profile.class.php:1922 inc/profile.class.php:2743
 #: inc/rulerightcollection.class.php:57 inc/ruleright.class.php:56
@@ -11009,19 +10947,16 @@ msgid "Managed domain records types"
 msgstr ""
 
 #: inc/profile.class.php:3032
-#, fuzzy
 msgid "Change font"
-msgstr "Thay đổi các nhiệm vụ"
+msgstr ""
 
 #: inc/profile.class.php:3042
-#, fuzzy
 msgid "Change zoom"
-msgstr "Các thay đổi"
+msgstr ""
 
 #: inc/profile.class.php:3053
-#, fuzzy
 msgid "Use shortcuts"
-msgstr "Các khóa sử dụng"
+msgstr ""
 
 #: inc/profile.class.php:3109 inc/auth.class.php:1224 inc/auth.class.php:1231
 #: install/update_0723_078.php:3667
@@ -11914,9 +11849,8 @@ msgid "Global View"
 msgstr "Xem toàn cục"
 
 #: inc/central.class.php:118
-#, fuzzy
 msgid "No dashboard available"
-msgstr "Không có hành động có sẵn"
+msgstr ""
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/central.class.php:154 inc/rack.class.php:65
@@ -11925,9 +11859,8 @@ msgid_plural "Racks"
 msgstr[0] ""
 
 #: inc/central.class.php:173
-#, fuzzy
 msgid "Tickets by status"
-msgstr "Các thẻ đang chờ giải quyết"
+msgstr ""
 
 #: inc/central.class.php:395
 #, php-format
@@ -12322,9 +12255,8 @@ msgid "An appliance is required"
 msgstr ""
 
 #: inc/softwareversion.class.php:114
-#, fuzzy
 msgid "New element"
-msgstr "Vấn đề mới"
+msgstr ""
 
 #: inc/softwareversion.class.php:332
 msgctxt "button"
@@ -12790,9 +12722,8 @@ msgstr "Đang xử lý (lên kế hoạch)"
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541
-#, fuzzy
 msgid "Pending"
-msgstr "Đang chờ"
+msgstr ""
 
 #: inc/problem.class.php:686
 msgctxt "status"
@@ -13324,9 +13255,8 @@ msgstr ""
 #: inc/knowbaseitem_revision.class.php:262
 #: inc/knowbaseitem_comment.class.php:177
 #: inc/knowbaseitem_comment.class.php:211 inc/objectlock.class.php:157
-#, fuzzy
 msgid "Contact your ITSM-NG admin!"
-msgstr "Liên hệ quản trị GLPI của bạn!"
+msgstr ""
 
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_comment.class.php:177
@@ -13399,9 +13329,8 @@ msgstr "Chạy lại các quy định từ điển cho các nhà sản xuất (-
 
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
-#, fuzzy
 msgid "Software deleted by ITSM-NG dictionary rules"
-msgstr "Phần mềm được nhận ra bởi các quy định từ điển GLPI"
+msgstr ""
 
 #: inc/caldav/backend/calendar.class.php:89
 #: inc/caldav/backend/calendar.class.php:127
@@ -14009,9 +13938,8 @@ msgid "Connection string"
 msgstr "Chuỗi kết nối"
 
 #: inc/authmail.class.php:206 inc/notificationchatsetting.class.php:295
-#, fuzzy
 msgid "Test"
-msgstr "Kiểm tra"
+msgstr ""
 
 #: inc/authmail.class.php:211
 msgid "Test connection to email server"
@@ -14028,9 +13956,8 @@ msgid "You cannot use predefined description verbatim"
 msgstr ""
 
 #: inc/commonitilobject.class.php:1772
-#, fuzzy
 msgid "Incorrect value for date field."
-msgstr "Bỏ qua giá trị cho tính duy nhất"
+msgstr ""
 
 #: inc/commonitilobject.class.php:2432
 msgctxt "priority"
@@ -15600,18 +15527,16 @@ msgstr "CSS"
 
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
-#, fuzzy
 msgid "Automatically generated by ITSM-NG"
-msgstr "Tự động tạo ra bởi GLPI %s"
+msgstr ""
 
 #: inc/oidc.class.php:80
 msgid "Missing or wrong fields in open ID connect config"
 msgstr ""
 
 #: inc/oidc.class.php:301
-#, fuzzy
 msgid "Configuration"
-msgstr "Cấu hình sẵn"
+msgstr ""
 
 #: inc/oidc.class.php:306 inc/auth.class.php:1830
 msgid "Mapping of fields according to provider"
@@ -15683,9 +15608,8 @@ msgid "Incorrect username or password"
 msgstr "Tên người dùng hoặc mật khẩu không đúng"
 
 #: inc/auth.class.php:284 inc/auth.class.php:975 inc/auth.class.php:1003
-#, fuzzy
 msgid "User not authorized to connect in ITSM-NG"
-msgstr "Người dùng không được xác thực để kết nối trong GLPI"
+msgstr ""
 
 #: inc/auth.class.php:631
 msgid "Login with external token disabled"
@@ -15724,9 +15648,8 @@ msgid "Failed login for %1$s from IP %2$s"
 msgstr "Đăng nhập thất bại cho %1$s từ IP %2$s"
 
 #: inc/auth.class.php:1107
-#, fuzzy
 msgid "Authentication on ITSM-NG database"
-msgstr "Xác thực trên cơ sở dữ liệu GLPI"
+msgstr ""
 
 #: inc/auth.class.php:1119
 msgid "Authentication on a LDAP directory"
@@ -15757,9 +15680,8 @@ msgid "x509 certificate authentication"
 msgstr "x509 chứng nhận xác thực"
 
 #: inc/auth.class.php:1234 inc/auth.class.php:1892
-#, fuzzy
 msgid "ITSM-NG internal database"
-msgstr "GLPI cơ sở dữ liệu nội bộ"
+msgstr ""
 
 #: inc/auth.class.php:1240
 msgid "Not yet authenticated"
@@ -15999,26 +15921,22 @@ msgid "Unknown interface"
 msgstr "Giao diện chưa biết"
 
 #: inc/notificationchatsetting.class.php:46
-#, fuzzy
 msgid "Chat followups configuration"
-msgstr "Cấu hình email theo dõi"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:52
 #: inc/notificationsettingconfig.class.php:133
-#, fuzzy
 msgid "Enable followups via chat"
-msgstr "Cấu hình email theo dõi"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:120
-#, fuzzy
 msgid "Chat notification"
 msgid_plural "Chat notifications"
-msgstr[0] "Gửi một thông báo"
+msgstr[0] ""
 
 #: inc/notificationchatsetting.class.php:132
-#, fuzzy
 msgid "Rocket chat"
-msgstr "Các chi phí của thẻ"
+msgstr ""
 
 #: inc/notificationchatsetting.class.php:133
 msgid "Slack"
@@ -16080,18 +15998,16 @@ msgid "UI Font"
 msgstr ""
 
 #: inc/accessibility.class.php:163
-#, fuzzy
 msgid "Enable shortcuts"
-msgstr "Bật tương phản cao"
+msgstr ""
 
 #: inc/accessibility.class.php:169
 msgid "Don't forget to save"
 msgstr ""
 
 #: inc/accessibility.class.php:169
-#, fuzzy
 msgid "Toggle view"
-msgstr "Các bộ lọc chuyển đổi"
+msgstr ""
 
 #: inc/accessibility.class.php:189
 msgid "shift+alt+"
@@ -16740,19 +16656,18 @@ msgid "Autofilled from template"
 msgstr ""
 
 #: inc/notificationchat.class.php:114
-#, fuzzy
 msgid "Error inserting chat to queue"
-msgstr "Lỗi chèn email vào hàng đợi"
+msgstr ""
 
 #: inc/notificationchat.class.php:118
-#, fuzzy, php-format
+#, php-format
 msgid "Fatal-error: The chat %s was not added to queue "
-msgstr "Một email đến %s đã được thêm vào hàng đợi"
+msgstr ""
 
 #: inc/notificationchat.class.php:129
-#, fuzzy, php-format
+#, php-format
 msgid "Rocket chat: The chat %s was added to queue "
-msgstr "Một email đến %s đã được thêm vào hàng đợi"
+msgstr ""
 
 #: inc/rulecriteria.class.php:511
 msgid "does not contain"
@@ -17131,9 +17046,8 @@ msgid "Amortization type"
 msgstr "Kiểu khấu hao"
 
 #: inc/infocom.class.php:1191 inc/infocom.class.php:1202
-#, fuzzy
 msgid "years"
-msgstr "Theo năm"
+msgstr ""
 
 #: inc/infocom.class.php:1196 inc/infocom.class.php:1512
 #: inc/infocom.class.php:1743
@@ -18671,9 +18585,8 @@ msgid "Number of softwares processed: %d."
 msgstr ""
 
 #: inc/console/database/installcommand.class.php:91
-#, fuzzy
 msgid "Default language of ITSM-NG"
-msgstr "Ngôn ngữ mặc định"
+msgstr ""
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -18770,14 +18683,12 @@ msgid "Database user"
 msgstr ""
 
 #: inc/console/database/updatecommand.class.php:130
-#, fuzzy
 msgid "ITSM version"
-msgstr "Phiên bản IP"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:131
-#, fuzzy
 msgid "ITSM database version"
-msgstr "Phiên bản cơ sở dữ liệu chữ ký"
+msgstr ""
 
 #: inc/console/database/updatecommand.class.php:139
 #, php-format
@@ -19260,14 +19171,12 @@ msgid "Invalid link"
 msgstr ""
 
 #: inc/document.class.php:404
-#, fuzzy
 msgid "Added by"
-msgstr "Được thêm bởi %s"
+msgstr ""
 
 #: inc/document.class.php:407
-#, fuzzy
 msgid "Last update on"
-msgstr "Cập nhật lần cuối vào %s"
+msgstr ""
 
 #: inc/document.class.php:415
 msgid "Current file"
@@ -19431,9 +19340,8 @@ msgid "Root CA"
 msgstr ""
 
 #: inc/certificate.class.php:634
-#, fuzzy
 msgid "Certificat"
-msgstr "Các thông báo"
+msgstr ""
 
 #: inc/certificate.class.php:662
 msgctxt "button"
@@ -19923,9 +19831,8 @@ msgid "New"
 msgstr "Mới"
 
 #: inc/ticket.class.php:4566
-#, fuzzy
 msgid "Parameters"
-msgstr "Đọc các thông số"
+msgstr ""
 
 #: inc/ticket.class.php:4576
 msgid "Close date"
@@ -20027,9 +19934,8 @@ msgid "Purchase version"
 msgstr "Mua phiên bản"
 
 #: inc/softwarelicense.class.php:415
-#, fuzzy
 msgid "Quota Status"
-msgstr "Chỉ định một ngày"
+msgstr ""
 
 #: inc/softwarelicense.class.php:417
 msgctxt "adjective"
@@ -20210,14 +20116,12 @@ msgid "Approve the solution"
 msgstr "Phê chuẩn giải pháp này"
 
 #: inc/itilfollowup.class.php:736
-#, fuzzy
 msgid "Approbation de la solution"
-msgstr "Phê chuẩn của giải pháp này"
+msgstr ""
 
 #: inc/itilfollowup.class.php:739
-#, fuzzy
 msgid "itemtype"
-msgstr "Kiểu mục"
+msgstr ""
 
 #: inc/itilfollowup.class.php:744
 msgid "items_id"
@@ -20375,9 +20279,8 @@ msgid "Error: the two passwords do not match"
 msgstr "Lỗi: hai mật khẩu không khớp"
 
 #: inc/user.class.php:784
-#, fuzzy
 msgid "Moving temporary file failed."
-msgstr "Thiếu một thư mục tạm thời"
+msgstr ""
 
 #: inc/user.class.php:789
 msgid "The file is not an image file."
@@ -20456,18 +20359,16 @@ msgid "Last login on %s"
 msgstr "Đăng nhập lần cuối vào %s"
 
 #: inc/user.class.php:2699
-#, fuzzy
 msgid "Use ITSM-NG in mode"
-msgstr "Dùng GLPI trong chế độ"
+msgstr ""
 
 #: inc/user.class.php:2703
 msgid "Normal"
 msgstr "Thông thường"
 
 #: inc/user.class.php:2719
-#, fuzzy
 msgid "Reset personal token"
-msgstr "Đặt cá nhân"
+msgstr ""
 
 #: inc/user.class.php:2734
 msgid "Reset API token"
@@ -20578,9 +20479,8 @@ msgstr ""
 "cầu lại."
 
 #: inc/user.class.php:4613
-#, fuzzy
 msgid "Please enter your new password."
-msgstr "Vui lòng xác nhận địa chỉ email của bạn và nhập mật khẩu mới của bạn."
+msgstr ""
 
 #: inc/user.class.php:4657
 msgid ""
@@ -20591,9 +20491,8 @@ msgstr ""
 "thể chọn một mật khẩu mới."
 
 #: inc/user.class.php:4698 inc/user.class.php:4712
-#, fuzzy
 msgid "Unable to reset password, please contact your administrator"
-msgstr "Gửi email kiểm tra tới người quản trị thất bại"
+msgstr ""
 
 #: inc/user.class.php:4719
 msgid ""
@@ -21253,9 +21152,8 @@ msgid "Update to %s"
 msgstr "Cập nhật được %s"
 
 #: install/itsm_update_151_200.php:557
-#, fuzzy
 msgid "Update dashboard"
-msgstr "Cập nhật mật khẩu"
+msgstr ""
 
 #: install/empty_data.php:2079 install/empty_data.php:2081
 #: install/update_0831_084.php:270 install/update_0831_084.php:271
@@ -21356,14 +21254,13 @@ msgid "Impossible to accomplish an update by this way!"
 msgstr "Không thể cập nhật theo cách này!!"
 
 #: install/update.php:583
-#, fuzzy
 msgid "Go back to ITSM-NG"
-msgstr "Quay lại GLPI"
+msgstr ""
 
 #: install/update.php:588
-#, fuzzy, php-format
+#, php-format
 msgid "Caution! You will update the ITSM-NG database named: %s"
-msgstr "Chú ý! Bạn sẽ cập nhật cơ sở dữ liệu GLPI tên: %s"
+msgstr ""
 
 #: install/update.php:594
 msgid "Continue"
@@ -21374,9 +21271,8 @@ msgid "Database connection successful"
 msgstr "Kết nối đến CSDL thành công"
 
 #: install/update.php:651 install/update_content.php:367
-#, fuzzy
 msgid "Use ITSM-NG"
-msgstr "Dùng TLS"
+msgstr ""
 
 #: install/update.php:660
 msgid ""
@@ -21416,9 +21312,8 @@ msgid "Fix URL of images in ITIL tasks, followups and solutions."
 msgstr ""
 
 #: install/update_content.php:245
-#, fuzzy
 msgid "SQL error starting"
-msgstr "MySql lỗi bắt đầu từ %s"
+msgstr ""
 
 #: install/update_content.php:358
 msgid "Automatic redirection, else click"
@@ -21634,19 +21529,16 @@ msgid ""
 msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialization"
-msgstr "Các cài đặt"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Initialized"
-msgstr "Các cài đặt"
+msgstr ""
 
 #: templates/install/index.twig:31
-#, fuzzy
 msgid "Languages"
-msgstr "Ngôn ngữ"
+msgstr ""
 
 #: templates/menus/nav/menu.twig:23
 msgid ""
@@ -21663,10 +21555,17 @@ msgstr ""
 msgid "Menu collapse"
 msgstr ""
 
+#: templates/menus/nav/nav-settings.twig:25
+msgid "Up"
+msgstr ""
+
+#: templates/menus/nav/nav-settings.twig:27
+msgid "bubble"
+msgstr ""
+
 #: templates/menus/nav/nav-settings.twig:8
-#, fuzzy
 msgid "Reset menu bubble position"
-msgstr "Chức vụ"
+msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:14
 msgid "Activate menu favorite"
@@ -21677,19 +21576,8 @@ msgid "Activate favorite selection"
 msgstr ""
 
 #: templates/menus/nav/nav-settings.twig:22
-#, fuzzy
 msgid "Menu position"
-msgstr "Chức vụ"
-
-#, fuzzy
-#~| msgid "Login"
-#~ msgid "SSO Login"
-#~ msgstr "Đăng nhập"
-
-#, fuzzy
-#~| msgid "Preconfiguration"
-#~ msgid "Open ID connect configuration"
-#~ msgstr "Cấu hình sẵn"
+msgstr ""
 
 #~ msgid "See the catalog of plugins"
 #~ msgstr "Thấy danh mục các tiện ích"

@@ -307,24 +307,44 @@ class Notepad extends CommonDBChild {
 
       if ($canedit
           && !(!empty($withtemplate) && ($withtemplate == 2))) {
-         echo "<div class='boxnote center'>";
 
-         echo "<div class='boxnoteleft'></div>";
-         echo "<form name='addnote_form$rand' id='addnote_form$rand' ";
-         echo " method='post' action='".Toolbox::getItemTypeFormURL('Notepad')."'>";
-         echo Html::hidden('itemtype', ['value' => $item->getType()]);
-         echo Html::hidden('items_id', ['value' => $item->getID()]);
-
-         echo "<div class='boxnotecontent'>";
-         echo "<textarea name='content' rows=5 cols=100></textarea>";
-         echo "</div>"; // box notecontent
-
-         echo "<div class='boxnoteright'><br>";
-         echo Html::submit(_x('button', 'Add'), ['name' => 'add']);
-         echo "</div>";
-
-         Html::closeForm();
-         echo "</div>"; // boxnote
+         $form = [
+			'action' => Toolbox::getItemTypeFormURL('Notepad'),
+			'buttons' => [
+				[
+					'type' => 'submit',
+					'name' => 'add',
+					'value' => _x('button', 'Add'),
+					'class' => 'btn btn-secondary',
+				],
+			],
+			'content' => [
+				__('Comment') => [
+					'visible' => true,
+					'inputs' => [
+						'itemtype' => [
+							'type' => 'hidden',
+							'name' => 'itemtype',
+							'value' => $item->getType()
+						],
+                        'items_id' => [
+							'type' => 'hidden',
+							'name' => 'items_id',
+							'value' => $item->getID()
+						],
+						'' => [
+							'name' => 'content',
+							'type' => 'textarea',
+                            'col_lg' => 12,
+                            'col_md' => 12,
+                            'rows' => 3,
+							'value' => ''
+						],
+					]
+				]
+			]
+		];
+		renderTwigForm($form);
       }
 
       if (count($notes)) {
@@ -387,21 +407,39 @@ class Notepad extends CommonDBChild {
 
             if ($canedit) {
                 echo "<div class='boxnote starthidden' id='edit$id'>";
-                echo "<form name='update_form$id$rand' id='update_form$id$rand' ";
-                echo " method='post' action='".Toolbox::getItemTypeFormURL('Notepad')."'>";
-
-                echo "<div class='boxnoteleft'></div>";
-                echo "<div class='boxnotecontent'>";
-                echo Html::hidden('id', ['value' => $note['id']]);
-                echo "<textarea name='content' rows=5 cols=100>".$note['content']."</textarea>";
-                echo "</div>"; // boxnotecontent
-
-                echo "<div class='boxnoteright'><br>";
-                echo Html::submit(_x('button', 'Update'), ['name' => 'update']);
-                echo "</div>"; // boxnoteright
-
-                Html::closeForm();
-                echo "</div>"; // boxnote
+                $form = [
+                    'action' => Toolbox::getItemTypeFormURL('Notepad'),
+                    'buttons' => [
+                        [
+                            'type' => 'submit',
+                            'name' => 'update',
+                            'value' => _x('button', 'Update'),
+                            'class' => 'btn btn-secondary',
+                        ],
+                    ],
+                    'content' => [
+                        __('Comment') => [
+                            'visible' => true,
+                            'inputs' => [
+                                'id' => [
+                                    'type' => 'hidden',
+                                    'name' => 'id',
+                                    'value' => $note['id']
+                                ],
+                                '' => [
+                                    'name' => 'content',
+                                    'type' => 'textarea',
+                                    'col_lg' => 12,
+                                    'col_md' => 12,
+                                    'rows' => 3,
+                                    'value' => $note['content'] ?? '',
+                                ],
+                            ]
+                        ]
+                    ]
+                ];
+                renderTwigForm($form);
+                echo "</div>";
             }
          }
       }
