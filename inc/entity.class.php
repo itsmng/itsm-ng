@@ -2195,380 +2195,200 @@ class Entity extends CommonTreeDropdown {
       $canedit = (Session::haveRight(self::$rightname, self::UPDATEHELPDESK)
                   && Session::haveAccessToEntity($ID));
 
-      echo "<div class='spaced'>";
-      if ($canedit) {
-         echo "<form method='post' name=form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' data-track-changes='true'>";
-      }
-
-      echo "<table class='tab_cadre_fixe'>";
-
-      Plugin::doHook("pre_item_form", ['item' => $entity, 'options' => []]);
-
-      echo "<tr><th colspan='4'>".__('Templates configuration')."</th></tr>";
-
-      echo "<tr class='tab_bg_1'><td colspan='2'>"._n('Ticket template', 'Ticket templates', 1).
-           "</td>";
-      echo "<td colspan='2'>";
-      $toadd = [];
-      if ($ID != 0) {
-         $toadd = [self::CONFIG_PARENT => __('Inheritance of the parent entity')];
-      }
-
-      $options = ['value'  => $entity->fields["tickettemplates_id"],
-                       'entity' => $ID,
-                       'toadd'  => $toadd];
-
-      TicketTemplate::dropdown($options);
-
-      if (($entity->fields["tickettemplates_id"] == self::CONFIG_PARENT)
-          && ($ID != 0)) {
-         $tt  = new TicketTemplate();
-         $tid = self::getUsedConfig('tickettemplates_id', $ID, '', 0);
-         if (!$tid) {
-            self::inheritedValue(Dropdown::EMPTY_VALUE, true);
-         } else if ($tt->getFromDB($tid)) {
-            self::inheritedValue($tt->getLink(), true);
-         }
-      }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td colspan='2'>"._n('Change template', 'Change templates', 1).
-           "</td>";
-      echo "<td colspan='2'>";
-      $toadd = [];
-      if ($ID != 0) {
-         $toadd = [self::CONFIG_PARENT => __('Inheritance of the parent entity')];
-      }
-
-      $options = ['value'  => $entity->fields["changetemplates_id"],
-                       'entity' => $ID,
-                       'toadd'  => $toadd];
-
-      ChangeTemplate::dropdown($options);
-
-      if (($entity->fields["changetemplates_id"] == self::CONFIG_PARENT)
-          && ($ID != 0)) {
-
-         $tt  = new ChangeTemplate();
-         $tid = self::getUsedConfig('changetemplates_id', $ID, '', 0);
-         if (!$tid) {
-            self::inheritedValue(Dropdown::EMPTY_VALUE, true);
-         } else if ($tt->getFromDB($tid)) {
-            self::inheritedValue($tt->getLink(), true);
-         }
-      }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td colspan='2'>"._n('Problem template', 'Problem templates', 1).
-           "</td>";
-      echo "<td colspan='2'>";
-      $toadd = [];
-      if ($ID != 0) {
-         $toadd = [self::CONFIG_PARENT => __('Inheritance of the parent entity')];
-      }
-
-      $options = ['value'  => $entity->fields["problemtemplates_id"],
-                       'entity' => $ID,
-                       'toadd'  => $toadd];
-
-      ProblemTemplate::dropdown($options);
-
-      if (($entity->fields["problemtemplates_id"] == self::CONFIG_PARENT)
-          && ($ID != 0)) {
-
-         $tt  = new ProblemTemplate();
-         $tid = self::getUsedConfig('problemtemplates_id', $ID, '', 0);
-         if (!$tid) {
-            self::inheritedValue(Dropdown::EMPTY_VALUE, true);
-         } else if ($tt->getFromDB($tid)) {
-            self::inheritedValue($tt->getLink(), true);
-         }
-      }
-      echo "</td></tr>";
-
-      echo "<tr><th colspan='4'>".__('Tickets configuration')."</th></tr>";
-
-      echo "<tr class='tab_bg_1'><td colspan='2'>"._n('Calendar', 'Calendars', 1)."</td>";
-      echo "<td colspan='2'>";
-      $options = ['value'      => $entity->fields["calendars_id"],
-                       'emptylabel' => __('24/7')];
-
-      if ($ID != 0) {
-         $options['toadd'] = [self::CONFIG_PARENT => __('Inheritance of the parent entity')];
-      }
-      Calendar::dropdown($options);
-
-      if (($entity->fields["calendars_id"] == self::CONFIG_PARENT)
-          && ($ID != 0)) {
-         $calendar = new Calendar();
-         $cid = self::getUsedConfig('calendars_id', $ID, '', 0);
-         if (!$cid) {
-            self::inheritedValue(__('24/7'), true);
-         } else if ($calendar->getFromDB($cid)) {
-            self::inheritedValue($calendar->getLink(), true);
-         }
-      }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td colspan='2'>".__('Tickets default type')."</td>";
-      echo "<td colspan='2'>";
-      $toadd = [];
-      if ($ID != 0) {
-         $toadd = [self::CONFIG_PARENT => __('Inheritance of the parent entity')];
-      }
-      Ticket::dropdownType('tickettype', ['value' => $entity->fields["tickettype"],
-                                               'toadd' => $toadd]);
-
-      if (($entity->fields['tickettype'] == self::CONFIG_PARENT)
-          && ($ID != 0)) {
-            self::inheritedValue(Ticket::getTicketTypeName(self::getUsedConfig('tickettype', $ID, '',
-                                                                               Ticket::INCIDENT_TYPE)), true);
-      }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td  colspan='2'>".__('Automatic assignment of tickets')."</td>";
-      echo "<td colspan='2'>";
       $autoassign = self::getAutoAssignMode();
-
       if ($ID == 0) {
          unset($autoassign[self::CONFIG_PARENT]);
       }
 
-      Dropdown::showFromArray('auto_assign_mode', $autoassign,
-                              ['value' => $entity->fields["auto_assign_mode"]]);
-
-      if (($entity->fields['auto_assign_mode'] == self::CONFIG_PARENT)
-          && ($ID != 0)) {
-         $auto_assign_mode = self::getUsedConfig('auto_assign_mode', $entity->fields['entities_id']);
-         self::inheritedValue($autoassign[$auto_assign_mode], true);
-      }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td  colspan='2'>".__('Mark followup added by a supplier though an email collector as private')."</td>";
-      echo "<td colspan='2'>";
       $supplierValues = self::getSuppliersAsPrivateValues();
-      $currentSupplierValue = $entity->fields['suppliers_as_private'];
-
       if ($ID == 0) { // Remove parent option for root entity
          unset($supplierValues[self::CONFIG_PARENT]);
       }
-
-      Dropdown::showFromArray(
-         'suppliers_as_private',
-         $supplierValues,
-         ['value' => $currentSupplierValue]
-      );
-
-      // If the entity is using it's parent value, print it
-      if ($currentSupplierValue == self::CONFIG_PARENT && $ID != 0) {
-         $parentSupplierValue = self::getUsedConfig(
-            'suppliers_as_private',
-            $entity->fields['entities_id']
-         );
-         self::inheritedValue($supplierValues[$parentSupplierValue], true);
-      }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td  colspan='2'>".__('Anonymize support agents')."</td>";
-      echo "<td colspan='2'>";
       $anonymizeValues = self::getAnonymizeSupportAgentsValues();
-      $currentAnonymizeValue = $entity->fields['anonymize_support_agents'];
-
       if ($ID == 0) { // Remove parent option for root entity
          unset($anonymizeValues[self::CONFIG_PARENT]);
       }
-
-      Dropdown::showFromArray(
-         'anonymize_support_agents',
-         $anonymizeValues,
-         ['value' => $currentAnonymizeValue]
-      );
-
-      // If the entity is using it's parent value, print it
-      if ($currentAnonymizeValue == self::CONFIG_PARENT && $ID != 0) {
-         $parentHelpdeskValue = self::getUsedConfig(
-            'anonymize_support_agents',
-            $entity->fields['entities_id']
-         );
-         self::inheritedValue($anonymizeValues[$parentHelpdeskValue], true);
-      }
-      echo "</td></tr>";
-
-      echo "<tr><th colspan='4'>".__('Automatic closing configuration')."</th></tr>";
-
-      echo "<tr class='tab_bg_1'>".
-         "<td>".__('Automatic closing of solved tickets after');
-
-      //Check if crontask is disabled
-      $crontask = new CronTask();
-      $criteria = [
-         'itemtype'  => 'Ticket',
-         'name'      => 'closeticket',
-         'state'     => CronTask::STATE_DISABLE
+            
+      $form = [
+         'action' => $canedit ? Toolbox::getItemTypeFormURL(__CLASS__) : '',
+         'buttons' => [
+            [
+               'type'  => 'submit',
+               'name'  => 'update',
+               'value' => _sx('button', 'Save'),
+               'class' => 'btn btn-secondary'
+            ]
+         ],
+         'content' => [
+            __('Templates configuration') => [
+               'visible' => true,
+               'inputs' => [
+                  _n('Ticket template', 'Ticket templates', 1) => [
+                     'type'  => 'select',
+                     'name'  => 'tickettemplates_id',
+                     'value' => $entity->getField('tickettemplates_id'),
+                     'values' => array_merge(
+                        ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
+                        getOptionForItems(TicketTemplate::class)
+                     ),
+                     'actions' => getItemActionButtons(['info', 'add'], TicketTemplate::class),
+                  ],
+                  _n('Change template', 'Change templates', 1) => [
+                     'type'  => 'select',
+                     'name'  => 'changetemplates_id',
+                     'value' => $entity->getField('changetemplates_id'),
+                     'values' => array_merge(
+                        ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
+                        getOptionForItems(ChangeTemplate::class)
+                     ),
+                     'actions' => getItemActionButtons(['info', 'add'], ChangeTemplate::class),
+                  ],
+                  _n('Problem template', 'Problem templates', 1) => [
+                     'type'  => 'select',
+                     'name'  => 'problemtemplates_id',
+                     'value' => $entity->getField('problemtemplates_id'),
+                     'values' => array_merge(
+                        ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
+                        getOptionForItems(ProblemTemplate::class)
+                     ),
+                     'actions' => getItemActionButtons(['info', 'add'], ProblemTemplate::class),
+                  ],
+               ]
+            ],
+            __('Tickets configuration') => [
+               'visible' => true,
+               'inputs' => [
+                  _n('Calendar', 'Calendars', 1) => [
+                     'type'  => 'select',
+                     'name'  => 'calendars_id',
+                     'value' => $entity->getField('calendars_id'),
+                     'values' => array_merge(
+                        [__('24/7')],
+                        ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
+                        getOptionForItems(Calendar::class, [], false)
+                     ),
+                     'actions' => getItemActionButtons(['info', 'add'], Calendar::class),
+                     'col_lg' => 6,
+                  ],
+                  __('Tickets default type') => [
+                     'type'  => 'select',
+                     'name'  => 'tickettype',
+                     'value' => $entity->fields["tickettype"],
+                     'values' => (($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : []) + 
+                        Ticket::getTypes(),
+                     'col_lg' => 6,
+                  ],
+                  __('Automatic assignment of tickets') => [
+                     'type'  => 'select',
+                     'name'  => 'auto_assign_mode',
+                     'value' => $entity->fields["auto_assign_mode"],
+                     'values' => $autoassign,
+                     'col_lg' => 6,
+                  ],
+                  __('Mark followup added by a supplier though an email collector as private') => [
+                     'type'  => 'select',
+                     'name'  => 'suppliers_as_private',
+                     'value' => $entity->fields["suppliers_as_private"],
+                     'values' => $supplierValues,
+                     'col_lg' => 6,
+                  ],
+                  __('Anonymize support agents') => [
+                     'type'  => 'select',
+                     'name'  => 'anonymize_support_agents',
+                     'value' => $entity->fields["anonymize_support_agents"],
+                     'values' => $anonymizeValues,
+                     'col_lg' => 6,
+                  ],
+               ]
+            ],
+            __('Automatic closing configuration') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Automatic closing of solved tickets after') => [
+                     'type'  => 'select',
+                     'name'  => 'autoclose_delay',
+                     'value' => $entity->fields['autoclose_delay'],
+                     'values' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [] +
+                        [self::CONFIG_NEVER => __('Never')] +
+                        range(1, 99),
+                     'after' => __('days'),
+                     'col_lg' => 6,
+                  ],
+                  __('Automatic purge of closed tickets after') => [
+                     'type'  => 'select',
+                     'name'  => 'autopurge_delay',
+                     'value' => $entity->fields['autopurge_delay'],
+                     'values' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [] + 
+                        [self::CONFIG_NEVER => __('Never')] +
+                        range(1, 3650),
+                     'after' => __('days'),
+                     'col_lg' => 6,
+                  ],
+               ]
+            ],
+            __('Configuring the satisfaction survey') => [
+               'visible' => true,
+               'inputs' => [
+                  [
+                     'type'  => 'hidden',
+                     'name'  => 'id',
+                     'value' => $entity->fields["id"],
+                  ],
+                  __('Configuring the satisfaction survey') => [
+                     'type'  => 'select',
+                     'name'  => 'inquest_config',
+                     'value' => $entity->fields['inquest_config'],
+                     'values' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [] +
+                        [1 => __('Internal survey')] +
+                        [2 => __('External survey')],
+                     'col_lg' => 6,
+                  ],
+                  __('Create survey after') => [
+                     'type'  => 'select',
+                     'name'  => 'inquest_delay',
+                     'value' => $entity->getfield('inquest_delay'),
+                     'values' => array_merge(
+                        ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
+                        [self::CONFIG_NEVER => __('As soon as possible')],
+                        range(1, 99)
+                     ),
+                     'after' => __('days'),
+                     'col_lg' => 6,
+                  ],
+                  __('Rate to trigger survey') => [
+                     'type'  => 'number',
+                     'name'  => 'inquest_rate',
+                     'value' => $entity->getfield('inquest_rate'),
+                     'col_lg' => 6,
+                     'min'   => 0,
+                     'max'   => 100,
+                     'step'  => 1,
+                     'after' => '%',
+                  ],
+                  __('Duration of survey') => [
+                     'type'  => 'number',
+                     'name'  => 'inquest_duration',
+                     'value' => $entity->getfield('inquest_duration'),
+                     'col_lg' => 6,
+                     'min'   => 0,
+                     'max'   => 180,
+                     'step'  => 1,
+                     'after' => __('days'),
+                  ],
+                  __('For tickets closed after') => [
+                     'type'  => 'datetime-local',
+                     'name'  => 'max_closedate',
+                     'value' => $entity->getfield('max_closedate'),
+                     'col_lg' => 6,
+                  ],
+               ]
+            ]
+         ]
       ];
-      if ($crontask->getFromDBByCrit($criteria)) {
-         echo "<br/><strong>".__('Close ticket action is disabled.')."</strong>";
-      }
+      renderTwigForm($form);
 
-      echo "</td>";
-      echo "<td>";
-      $autoclose = [self::CONFIG_PARENT => __('Inheritance of the parent entity'),
-                         self::CONFIG_NEVER  => __('Never'),
-                         0                   => __('Immediatly')];
-      if ($ID == 0) {
-         unset($autoclose[self::CONFIG_PARENT]);
-      }
-
-      Dropdown::showNumber('autoclose_delay',
-                           ['value' => $entity->fields['autoclose_delay'],
-                                 'min'   => 1,
-                                 'max'   => 99,
-                                 'step'  => 1,
-                                 'toadd' => $autoclose,
-                                 'unit'  => 'day']);
-
-      if (($entity->fields['autoclose_delay'] == self::CONFIG_PARENT)
-          && ($ID != 0)) {
-         $autoclose_mode = self::getUsedConfig('autoclose_delay', $entity->fields['entities_id'],
-                                               '', self::CONFIG_NEVER);
-
-         if ($autoclose_mode >= 0) {
-            self::inheritedValue(sprintf(_n('%d day', '%d days', $autoclose_mode), $autoclose_mode), true);
-         } else {
-            self::inheritedValue($autoclose[$autoclose_mode], true);
-         }
-      }
-      echo "<td>".__('Automatic purge of closed tickets after');
-
-      //Check if crontask is disabled
-      $crontask = new CronTask();
-      $criteria = [
-         'itemtype'  => 'Ticket',
-         'name'      => 'purgeticket',
-         'state'     => CronTask::STATE_DISABLE
-      ];
-      if ($crontask->getFromDBByCrit($criteria)) {
-         echo "<br/><strong>".__('Purge ticket action is disabled.')."</strong>";
-      }
-      echo "</td>";
-      echo "<td>";
-      $autopurge = [
-         self::CONFIG_PARENT => __('Inheritance of the parent entity'),
-         self::CONFIG_NEVER  => __('Never')
-      ];
-      if ($ID == 0) {
-         unset($autopurge[self::CONFIG_PARENT]);
-      }
-
-      Dropdown::showNumber(
-         'autopurge_delay',
-         [
-            'value' => $entity->fields['autopurge_delay'],
-            'min'   => 1,
-            'max'   => 3650,
-            'step'  => 1,
-            'toadd' => $autopurge,
-            'unit'  => 'day']);
-
-      if (($entity->fields['autopurge_delay'] == self::CONFIG_PARENT)
-          && ($ID != 0)) {
-          $autopurge_mode = self::getUsedConfig(
-             'autopurge_delay',
-             $entity->fields['entities_id'],
-            '',
-            self::CONFIG_NEVER
-          );
-
-         if ($autopurge_mode >= 0) {
-            self::inheritedValue(sprintf(_n('%d day', '%d days', $autopurge_mode), $autopurge_mode), true);
-         } else {
-            self::inheritedValue($autopurge[$autopurge_mode], true);
-         }
-      }
-      echo "</td></tr>";
-
-      echo "<tr><th colspan='4'>".__('Configuring the satisfaction survey')."</th></tr>";
-
-      echo "<tr class='tab_bg_1'>".
-           "<td colspan='2'>".__('Configuring the satisfaction survey')."</td>";
-      echo "<td colspan='2'>";
-
-      /// no inquest case = rate 0
-      $typeinquest = [self::CONFIG_PARENT  => __('Inheritance of the parent entity'),
-                           1                    => __('Internal survey'),
-                           2                    => __('External survey')];
-
-      // No inherit from parent for root entity
-      if ($ID == 0) {
-         unset($typeinquest[self::CONFIG_PARENT]);
-         if ($entity->fields['inquest_config'] == self::CONFIG_PARENT) {
-            $entity->fields['inquest_config'] = 1;
-         }
-      }
-      $rand = Dropdown::showFromArray('inquest_config', $typeinquest,
-                                      $options = ['value' => $entity->fields['inquest_config']]);
-      echo "</td></tr>\n";
-
-      // Do not display for root entity in inherit case
-      if (($entity->fields['inquest_config'] == self::CONFIG_PARENT)
-          && ($ID !=0)) {
-         $inquestconfig = self::getUsedConfig('inquest_config', $entity->fields['entities_id']);
-         $inquestrate   = self::getUsedConfig('inquest_config', $entity->fields['entities_id'],
-                                              'inquest_rate');
-         echo "<tr class='tab_bg_1'><td colspan='4'>";
-
-         $inherit = "";
-         if ($inquestrate == 0) {
-            $inherit.= __('Disabled');
-         } else {
-            $inherit.= $typeinquest[$inquestconfig].'<br>';
-            $inqconf = self::getUsedConfig('inquest_config', $entity->fields['entities_id'],
-                                           'inquest_delay');
-
-            $inherit.= sprintf(_n('%d day', '%d days', $inqconf), $inqconf);
-            $inherit.= "<br>";
-            //TRANS: %d is the percentage. %% to display %
-            $inherit.= sprintf(__('%d%%'), $inquestrate);
-
-            if ($inquestconfig == 2) {
-               $inherit.= "<br>";
-               $inherit.= self::getUsedConfig('inquest_config', $entity->fields['entities_id'],
-                                        'inquest_URL');
-            }
-         }
-         self::inheritedValue($inherit, true);
-         echo "</td></tr>";
-      }
-
-      echo "<tr class='tab_bg_1'><td colspan='4'>";
-
-      $_POST  = ['inquest_config' => $entity->fields['inquest_config'],
-                      'entities_id'    => $ID];
-      $params = ['inquest_config' => '__VALUE__',
-                      'entities_id'    => $ID];
-      echo "<div id='inquestconfig'>";
-      include GLPI_ROOT.'/ajax/ticketsatisfaction.php';
-      echo "</div>\n";
-
-      echo "</td></tr>";
-
+      Plugin::doHook("pre_item_form", ['item' => $entity, 'options' => []]);
       Plugin::doHook("post_item_form", ['item' => $entity, 'options' => &$options]);
-
-      echo "</table>";
-
-      if ($canedit) {
-         echo "<div class='center'>";
-         echo "<input type='hidden' name='id' value='".$entity->fields["id"]."'>";
-         echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\"
-                  class='submit'>";
-         echo "</div>";
-         Html::closeForm();
-      }
-
-      echo "</div>";
-
-      Ajax::updateItemOnSelectEvent("dropdown_inquest_config$rand", "inquestconfig",
-                                    $CFG_GLPI["root_doc"]."/ajax/ticketsatisfaction.php", $params);
    }
 
 
