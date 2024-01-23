@@ -2268,7 +2268,7 @@ class Entity extends CommonTreeDropdown {
       if ($canedit) {
          echo "<div class='center'>";
          echo "<input type='hidden' name='id' value='".$entity->fields["id"]."'>";
-         echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit'>";
+         echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='btn btn-secondary'>";
          echo "</div>";
          Html::closeForm();
       }
