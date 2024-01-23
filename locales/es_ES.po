@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-18 14:42+0100\n"
-"PO-Revision-Date: 2024-01-17 07:54+0000\n"
+"PO-Revision-Date: 2024-01-21 14:01+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "es/>\n"
@@ -535,11 +535,11 @@ msgstr "Considere rellenar latitud y longitud en esta ubicación."
 
 #: ajax/deleteItilActor.php:92
 msgid "Actor deleted successfully"
-msgstr ""
+msgstr "Actor eliminado con éxito"
 
 #: ajax/deleteItilActor.php:98
 msgid "Error while deleting actor"
-msgstr ""
+msgstr "Error al borrar el actor"
 
 #: ajax/telemetry.php:46
 msgid ""
@@ -615,7 +615,7 @@ msgstr "Tasa para activar encuesta"
 #: inc/crontask.class.php:837 inc/entity.class.php:2734
 #: inc/apiclient.class.php:304 inc/notificationajaxsetting.class.php:82
 msgid "Disabled"
-msgstr "Desactivada"
+msgstr "Deshabilitado"
 
 #: ajax/ticketsatisfaction.php:80
 msgid "Duration of survey"
@@ -1590,14 +1590,14 @@ msgctxt "ticket"
 msgid "Opened"
 msgid_plural "Opened"
 msgstr[0] "Abierto"
-msgstr[1] "Abierto"
+msgstr[1] "Abiertos"
 
 #: front/stat.graph.php:341 front/stat.global.php:90 inc/stat.class.php:447
 msgctxt "ticket"
 msgid "Solved"
 msgid_plural "Solved"
 msgstr[0] "Resuelto"
-msgstr[1] "Resuelto"
+msgstr[1] "Resueltos"
 
 #: front/stat.graph.php:344 front/stat.global.php:93 inc/stat.class.php:449
 msgid "Late"
@@ -1660,8 +1660,8 @@ msgstr[1] "Abiertos"
 msgctxt "survey"
 msgid "Answered"
 msgid_plural "Answered"
-msgstr[0] "Contestado"
-msgstr[1] "Contestado"
+msgstr[0] "Respondido"
+msgstr[1] "Respondidos"
 
 #: front/stat.graph.php:447 front/stat.graph.php:450 front/stat.global.php:174
 #: front/stat.global.php:177 inc/stat.class.php:423
@@ -1760,7 +1760,7 @@ msgstr "Imposible utilizar LDAP como fuente de conexión externa"
 
 #: front/setup.auth.php:58
 msgid "Open ID connect authentication"
-msgstr ""
+msgstr "Autenticación Open ID Connect"
 
 #: front/setup.auth.php:61
 msgid "Others authentication methods"
@@ -1869,7 +1869,7 @@ msgstr "%1$s agrega el campo %2$s"
 
 #: front/ticket.php:59
 msgid "New tickets"
-msgstr ""
+msgstr "Nuevas entradas"
 
 #: front/ticket.php:65
 msgid "Pending tickets"
@@ -1984,7 +1984,7 @@ msgstr "%1$s añade el elemento %2$s (%3$d)"
 #: front/item_device.common.form.php:64
 #, php-format
 msgid "%1$s adds an item"
-msgstr "%1$s añade un elemento "
+msgstr "%1$s añade un elemento"
 
 #: front/helpdesk.php:91
 msgid "Helpdesk reporting form"
@@ -2206,8 +2206,8 @@ msgstr "Id"
 #: inc/transfer.class.php:3425 inc/group.class.php:216 inc/group.class.php:834
 msgid "Name"
 msgid_plural "Names"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Nombre"
+msgstr[1] "Nombres"
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
@@ -3279,7 +3279,7 @@ msgstr "No se puede dejar suplantar al usuario"
 
 #: front/document.form.php:66
 msgid "Could not add document"
-msgstr ""
+msgstr "No se pudo añadir el documento"
 
 #: inc/operatingsystemedition.class.php:42
 #: inc/item_operatingsystem.class.php:365
@@ -3477,7 +3477,7 @@ msgstr[1] "Versiones"
 
 #: inc/cluster.class.php:136
 msgid "Auto update system"
-msgstr ""
+msgstr "Sistema de actualización automática"
 
 #: inc/cluster.class.php:143 inc/cluster.class.php:223
 #: inc/printer.class.php:323 inc/printer.class.php:750
@@ -3821,6 +3821,8 @@ msgstr "\"session.use_trans_sid\" debe estar desactivado."
 #: inc/system/requirement/sessionsconfiguration.class.php:71
 msgid "See .htaccess file in the ITSM-NG root for more information."
 msgstr ""
+"Consulte el archivo .htaccess en la raíz de ITSM-NG para obtener más "
+"información."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -3993,7 +3995,7 @@ msgstr "Memoria asignada"
 #: inc/system/requirement/memorylimit.class.php:75
 #, php-format
 msgid "A minimum of %s is commonly required for ITSM-NG."
-msgstr ""
+msgstr "Normalmente se requiere un mínimo de %s para ITSM-NG."
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -4073,12 +4075,12 @@ msgstr "Comprobación de permisos de escritura para el directorio %s"
 #: inc/system/requirement/directorywriteaccess.class.php:113
 #, php-format
 msgid "Write access to %s has been validated."
-msgstr ""
+msgstr "Se ha validado el acceso a %s."
 
 #: inc/system/requirement/directorywriteaccess.class.php:117
 #, php-format
 msgid "The file was created in %s but can't be deleted."
-msgstr ""
+msgstr "El archivo fue creado en %s pero no puede ser borrado."
 
 #: inc/system/requirement/directorywriteaccess.class.php:120
 #, php-format
@@ -4088,12 +4090,12 @@ msgstr "El archivo no se pudo crear en %s."
 #: inc/system/requirement/directorywriteaccess.class.php:123
 #, php-format
 msgid "The directory was created in %s but could not be removed."
-msgstr ""
+msgstr "El directorio fue creado en %s pero no pudo ser eliminado."
 
 #: inc/system/requirement/directorywriteaccess.class.php:126
 #, php-format
 msgid "The directory could not be created in %s."
-msgstr ""
+msgstr "No se ha podido crear el directorio en %s."
 
 #: inc/fieldblacklist.class.php:50
 msgid "Ignored value for the unicity"
@@ -4527,7 +4529,7 @@ msgstr "Acción cuando se suprime un usuario de un directorio LDAP"
 
 #: inc/config.class.php:710
 msgid "ITSM-NG server time zone"
-msgstr ""
+msgstr "Zona horaria del servidor ITSM-NG"
 
 #: inc/config.class.php:743 inc/config.class.php:1809 inc/config.class.php:2261
 #: inc/dbconnection.class.php:47
@@ -4582,7 +4584,7 @@ msgstr "URL de la API"
 
 #: inc/config.class.php:821
 msgid "URL of the dashboard API"
-msgstr ""
+msgstr "URL de la API del cuadro de mandos"
 
 #: inc/config.class.php:827
 msgid "Enable Rest API"
@@ -4720,7 +4722,7 @@ msgstr "Mostrar contadores"
 
 #: inc/config.class.php:1151
 msgid "Display the number of items in the menu"
-msgstr ""
+msgstr "Mostrar el número de elementos del menú"
 
 #: inc/config.class.php:1160
 msgid "Keep devices when purging an item"
@@ -4776,7 +4778,7 @@ msgstr "Estado predeterminado de la tarea"
 msgid "Information"
 msgid_plural "Information"
 msgstr[0] "Información"
-msgstr[1] "Información"
+msgstr[1] "Informaciones"
 
 #: inc/config.class.php:1250 inc/reminder.class.php:608
 #: inc/commonitiltask.class.php:1318 inc/planning.class.php:228
@@ -4793,6 +4795,8 @@ msgstr "Hecho"
 #: inc/config.class.php:1255
 msgid "Automatically refresh data (tickets list, project kanban) in minutes"
 msgstr ""
+"Actualización automática de datos (lista de tickets, kanban de proyectos) en "
+"cuestión de minutos"
 
 #: inc/config.class.php:1264
 msgid "Pre-select me as a technician when creating a ticket"
@@ -4804,27 +4808,27 @@ msgstr "Preseleccionarme como solicitante cuando se cree una petición"
 
 #: inc/config.class.php:1288
 msgid "Priority color 1"
-msgstr ""
+msgstr "Color prioritario 1"
 
 #: inc/config.class.php:1295
 msgid "Priority color 2"
-msgstr ""
+msgstr "Color prioritario 2"
 
 #: inc/config.class.php:1302
 msgid "Priority color 3"
-msgstr ""
+msgstr "Color prioritario 3"
 
 #: inc/config.class.php:1309
 msgid "Priority color 4"
-msgstr ""
+msgstr "Color prioritario 4"
 
 #: inc/config.class.php:1316
 msgid "Priority color 5"
-msgstr ""
+msgstr "Color prioritario 5"
 
 #: inc/config.class.php:1323
 msgid "Priority color 6"
-msgstr ""
+msgstr "Color prioritario 6"
 
 #: inc/config.class.php:1332
 msgid "Due date progression"
@@ -4848,7 +4852,7 @@ msgstr "Umbral del estado de advertencia"
 
 #: inc/config.class.php:1366
 msgid "Warning state unit"
-msgstr ""
+msgstr "Unidad de estado de la alerta"
 
 #: inc/config.class.php:1372 inc/config.class.php:1394
 #: inc/reservation.class.php:1025 inc/levelagreement.class.php:202
@@ -4865,7 +4869,7 @@ msgstr "Umbral del estado crítico"
 
 #: inc/config.class.php:1388
 msgid "Critical state unit"
-msgstr ""
+msgstr "Unidad en estado crítico"
 
 #: inc/config.class.php:1406
 msgid "Auto-lock Mode"
@@ -5008,6 +5012,8 @@ msgstr "Reinicio"
 msgid ""
 "Installing and enabling the \"%s\" extension may improve ITSM-NG performance"
 msgstr ""
+"Instalar y habilitar la extensión \"%s\" puede mejorar el rendimiento de "
+"ITSM-NG"
 
 #: inc/config.class.php:1698
 msgid "User data cache"
@@ -5021,7 +5027,7 @@ msgstr "La extensión de caché \"%s\" está instalada"
 #: inc/config.class.php:1704 inc/config.class.php:1749
 #, php-format
 msgid "\"%s\" cache system is used"
-msgstr " \"%s\" sistema de caché es utiliza"
+msgstr "\"%s \" se utiliza para el caché del sistema"
 
 #: inc/config.class.php:1724
 #, php-format
@@ -5183,7 +5189,7 @@ msgstr "Se han podido crear y suprimir un archivo y una carpeta - ¡perfecto!"
 
 #: inc/config.class.php:2777 inc/config.class.php:2781
 msgid "Web access to the files directory should not be allowed"
-msgstr "No se debe permitir el acceso web al directorio de archivos."
+msgstr "No se debe permitir el acceso a Internet al directorio de archivos"
 
 #: inc/config.class.php:2778 inc/config.class.php:2782
 msgid "Check the .htaccess file and the web server configuration."
@@ -5404,7 +5410,7 @@ msgstr[1] "Impresoras"
 #: inc/peripheral.class.php:161 inc/phone.class.php:156
 #: inc/computer.class.php:309 inc/pdu.class.php:86 inc/ticket.class.php:4478
 msgid "Restore"
-msgstr ""
+msgstr "Restaurar"
 
 #: inc/printer.class.php:302 inc/project.class.php:562
 #: inc/appliance.class.php:164 inc/supplier.class.php:187
@@ -5430,17 +5436,17 @@ msgstr "Número de nombre de usuario alternativo"
 #: inc/printer.class.php:378 inc/monitor.class.php:274
 #: inc/peripheral.class.php:266 inc/phone.class.php:262
 msgid "Management Type"
-msgstr ""
+msgstr "Tipo de gestión"
 
 #: inc/printer.class.php:382 inc/monitor.class.php:278
 #: inc/peripheral.class.php:270 inc/phone.class.php:266
 msgid "Unit Management"
-msgstr ""
+msgstr "Gestión de unidades"
 
 #: inc/printer.class.php:383 inc/monitor.class.php:279
 #: inc/peripheral.class.php:271 inc/phone.class.php:267
 msgid "Global Management"
-msgstr ""
+msgstr "Gestión global"
 
 #: inc/printer.class.php:395 inc/printer.class.php:733
 #: inc/networkequipment.class.php:380 inc/networkequipment.class.php:598
@@ -5454,7 +5460,7 @@ msgstr[1] "Redes"
 
 #: inc/printer.class.php:404
 msgid "Ports"
-msgstr ""
+msgstr "Puertos"
 
 #: inc/printer.class.php:407 inc/printer.class.php:622
 #: inc/appliance_item.class.php:186
@@ -5968,7 +5974,7 @@ msgstr "Tarea terminada."
 #: inc/migration.class.php:792
 #, php-format
 msgid "Automatically generated by ITSM-NG %s"
-msgstr ""
+msgstr "Generado automáticamente por ITSM-NG %s"
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -6018,7 +6024,7 @@ msgstr "La tabla %1$s ya existe. Se ha hecho una copia de seguridad de %2$s"
 #: inc/migration.class.php:1032
 #, php-format
 msgid "Configuration values added for %1$s (%2$s)."
-msgstr ""
+msgstr "Valores de configuración añadidos para %1$s (%2$s)."
 
 #: inc/itilsolution.class.php:55 inc/commonitilobject.class.php:6649
 #: inc/commonitilobject.class.php:6868
@@ -6179,7 +6185,7 @@ msgstr "Coste total"
 
 #: inc/queuedchat.class.php:51 inc/profile.class.php:1907
 msgid "Chat queue"
-msgstr ""
+msgstr "Cola del chat"
 
 #: inc/queuedchat.class.php:85 inc/queuednotification.class.php:80
 msgctxt "button"
@@ -6224,11 +6230,11 @@ msgstr "ID del elemento asociado"
 
 #: inc/queuedchat.class.php:260 inc/queuedchat.class.php:646
 msgid "Entity name"
-msgstr ""
+msgstr "Nombre de la entidad"
 
 #: inc/queuedchat.class.php:269 inc/queuedchat.class.php:641
 msgid "Server name"
-msgstr ""
+msgstr "Nombre del servidor"
 
 #: inc/queuedchat.class.php:278
 msgid "URl Hook"
@@ -6246,27 +6252,27 @@ msgstr "Modo"
 
 #: inc/queuedchat.class.php:382 inc/queuednotification.class.php:463
 msgid "Send chat in queue"
-msgstr ""
+msgstr "Chat enviado en espera"
 
 #: inc/queuedchat.class.php:383 inc/queuednotification.class.php:464
 msgid "Maximum chat to send at once"
-msgstr ""
+msgstr "Máximo de chat para enviar a la vez"
 
 #: inc/queuedchat.class.php:388
 msgid "Clean chat queue"
-msgstr ""
+msgstr "Limpiar la cola del chat"
 
 #: inc/queuedchat.class.php:389 inc/queuednotification.class.php:468
 msgid "Days to keep sent chat"
-msgstr ""
+msgstr "Días para mantener el chat enviado"
 
 #: inc/queuedchat.class.php:615
 msgid "Ticket ID"
-msgstr ""
+msgstr "Identificación de la entrada"
 
 #: inc/queuedchat.class.php:651
 msgid "Rocket Hook Url"
-msgstr ""
+msgstr "Url de Rocket Hook"
 
 #: inc/search.class.php:163
 msgid "assets"
@@ -6395,7 +6401,7 @@ msgstr "Suprimir una regla global"
 #: inc/commonitilobject.class.php:7258 inc/commonitilobject.class.php:7423
 #: inc/commonitilobject.class.php:7451
 msgid "Helpdesk"
-msgstr "Soporte técnico "
+msgstr "Soporte técnico"
 
 #. TRANS: R for Recursive
 #: inc/search.class.php:5379 inc/search.class.php:5418 inc/rule.class.php:1875
@@ -6654,7 +6660,7 @@ msgstr[1] "Fabricantes"
 
 #: inc/monitor.class.php:245
 msgid "Inventory/Asset number"
-msgstr ""
+msgstr "Número de inventario/bienes"
 
 #: inc/monitor.class.php:268 inc/monitor.class.php:517
 #: inc/item_devicememory.class.php:54 inc/item_devicememory.class.php:56
@@ -6708,7 +6714,7 @@ msgstr "Entidad destino para el computador"
 
 #: inc/ruleimportcomputer.class.php:81
 msgid "Find computers in ITSM-NG having the status"
-msgstr ""
+msgstr "Buscar ordenadores en ITSM-NG que tengan el estado"
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -6750,11 +6756,11 @@ msgstr "Sí, si está vacío"
 
 #: inc/ruleimportcomputer.class.php:178
 msgid "is already present in ITSM-NG"
-msgstr ""
+msgstr "ya existe en ITSM-NG"
 
 #: inc/ruleimportcomputer.class.php:179
 msgid "is empty in ITSM-NG"
-msgstr ""
+msgstr "está vacío en ITSM-NG"
 
 #: inc/commonitilvalidation.class.php:91 inc/commonitilobject.class.php:6856
 #: inc/change.class.php:539 inc/change.class.php:1061
@@ -7036,7 +7042,7 @@ msgstr "Si no se establece, se usará el nombre del administrador principal."
 
 #: inc/notificationmailingsetting.class.php:119
 msgid "No-Reply address"
-msgstr ""
+msgstr "No responder a la dirección"
 
 #: inc/notificationmailingsetting.class.php:120
 msgid "Optionnal No-Reply address."
@@ -7144,8 +7150,8 @@ msgstr "Enviar un correo de prueba al administrador"
 #: inc/rulecollection.class.php:2077
 msgid "Service pack"
 msgid_plural "Service packs"
-msgstr[0] "Revisión"
-msgstr[1] "Revisiones"
+msgstr[0] "Service pack"
+msgstr[1] "Service packs"
 
 #: inc/item_devicebattery.class.php:55
 msgid "Manufacturing date"
@@ -7390,13 +7396,13 @@ msgstr[1] "Tipos de firmware"
 msgid "RSS feed"
 msgid_plural "RSS feed"
 msgstr[0] "Fuente RSS"
-msgstr[1] "Fuente RSS"
+msgstr[1] "Fuentes RSS"
 
 #: inc/rssfeed.class.php:66 inc/rssfeed.class.php:917
 msgid "Personal RSS feed"
 msgid_plural "Personal RSS feed"
 msgstr[0] "Canal RSS personal"
-msgstr[1] "Canal RSS personal"
+msgstr[1] "Canales RSS personales"
 
 #: inc/rssfeed.class.php:404 inc/projecttask.class.php:1022
 msgid "Creator"
@@ -9078,8 +9084,8 @@ msgstr[1] "Firmware"
 #: inc/computerantivirus.class.php:51 inc/computerantivirus.class.php:160
 msgid "Antivirus"
 msgid_plural "Antiviruses"
-msgstr[0] "Antivirus"
-msgstr[1] "Antivirus"
+msgstr[0] "El antivirus"
+msgstr[1] "Los antivirus"
 
 #: inc/computerantivirus.class.php:148 inc/computerantivirus.class.php:227
 #: inc/computerantivirus.class.php:342 inc/computerantivirus.class.php:418
@@ -9472,7 +9478,7 @@ msgstr "Seleccionar un par para %s:"
 
 #: inc/commondbconnexity.class.php:620
 msgid "Unable to reaffect given elements !"
-msgstr "¡No se pueden reasignar estos elementos! "
+msgstr "¡No se pueden reasignar estos elementos!"
 
 #: inc/itiltemplate.class.php:141
 #, php-format
@@ -9534,8 +9540,8 @@ msgstr "Se agregó una notificación de explorador a %s para la cola"
 #: inc/enclosure.class.php:57
 msgid "Enclosure"
 msgid_plural "Enclosures"
-msgstr[0] "Chasis"
-msgstr[1] "Chasis"
+msgstr[0] "Recinto"
+msgstr[1] "Recintos"
 
 #: inc/enclosure.class.php:122
 msgid "Power supplies"
@@ -9941,8 +9947,8 @@ msgstr "Bloquear usuario"
 #: inc/infocom.class.php:1567
 msgid "Business criticity"
 msgid_plural "Business criticities"
-msgstr[0] "Crítica de negocios"
-msgstr[1] "Crítica de negocios"
+msgstr[0] "Crítica comercial"
+msgstr[1] "Críticas comerciales"
 
 #: inc/projectteam.class.php:70
 msgid "Project team"
@@ -11025,7 +11031,7 @@ msgstr "Información financiera y administrativa"
 #: inc/certificate.class.php:65 inc/certificate.class.php:517
 msgid "Certificate"
 msgid_plural "Certificates"
-msgstr[0] "Certificados"
+msgstr[0] "Certificado"
 msgstr[1] "Certificados"
 
 #: inc/profile.class.php:1188 inc/domain.class.php:56 inc/domain.class.php:329
@@ -12141,7 +12147,7 @@ msgstr[1] "Bastidores"
 
 #: inc/central.class.php:173
 msgid "Tickets by status"
-msgstr ""
+msgstr "Entradas por estado"
 
 #: inc/central.class.php:395
 #, php-format
@@ -12268,7 +12274,7 @@ msgstr "OLA"
 
 #: inc/ruleticket.class.php:582
 msgid "Creation date is a working hour in calendar"
-msgstr "La fecha de creación es una hora de trabajo en el calendario."
+msgstr "La fecha de creación es una hora de trabajo en el calendario"
 
 #: inc/ruleticket.class.php:601
 msgid "Ticket category from code"
@@ -14631,7 +14637,7 @@ msgstr "Fuente de promoción de seguimiento"
 #: inc/commonitilobject.class.php:7664
 #, php-format
 msgid "# %s description"
-msgstr "# %s descripción "
+msgstr "# %s descripción"
 
 #. TRANS first parameter is the type name, second the entity name
 #: inc/commonitilobject.class.php:7753
@@ -16514,7 +16520,7 @@ msgstr "Mover debajo"
 #: inc/knowbaseitemtranslation.class.php:432
 #, php-format
 msgid "%1$s reverts item translation to revision %2$s"
-msgstr " %1$s revierte la traducción de elementos a revisión %2$s"
+msgstr "%1$s revierte la traducción del artículo a la revisión %2$s"
 
 #: inc/log.class.php:222
 #, php-format
@@ -16836,7 +16842,7 @@ msgstr "Este complemento requiere que %1$s >= %2$s."
 #: inc/plugin.class.php:1656
 #, php-format
 msgid "This plugin requires %1$s >= %2$s and < %3$s."
-msgstr "Este complemento requiere que %1$s >= %2$s y < %3$s"
+msgstr "Este plugin requiere %1$s >= %2$s y < %3$s."
 
 #: inc/plugin.class.php:1682
 #, php-format
@@ -17217,12 +17223,12 @@ msgstr "¡Elemento NO desbloqueado!"
 
 #: inc/objectlock.class.php:161
 msgid "Force unlock this item?"
-msgstr "Forzar el desbloqueo de este objeto"
+msgstr "¿Forzar el desbloqueo de este artículo?"
 
 #: inc/objectlock.class.php:185
 #, php-format
 msgid "Force unlock %1s #%2s"
-msgstr "Forzar desbloqueo  %1s#%2s"
+msgstr "Forzar el desbloqueo %1s #%2s"
 
 #: inc/objectlock.class.php:199
 msgid "Locked by you!"
@@ -18145,7 +18151,7 @@ msgstr "Procesando servidor LDAP \"%s\"..."
 #: inc/console/ldap/synchronizeuserscommand.class.php:285
 #, php-format
 msgid "LDAP server \"%s\" size limit exceeded."
-msgstr "Límite de tamaño excedido en el servidor LDAP server \"%s\""
+msgstr "Se ha superado el límite de tamaño del servidor LDAP \"%s\"."
 
 #: inc/console/ldap/synchronizeuserscommand.class.php:291
 #, php-format
@@ -18493,7 +18499,7 @@ msgstr "Migrando complemento a la versión %s ......"
 #: inc/console/migration/domainsplugintocorecommand.class.php:237
 #, php-format
 msgid "Plugin migration to %s version failed."
-msgstr "Falló la migración del complemento a la versión %s "
+msgstr "Error en la migración del plugin a la versión %s."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:344
 #, php-format
@@ -19321,7 +19327,7 @@ msgstr ""
 #: inc/console/plugin/activatecommand.class.php:91
 #, php-format
 msgid "Plugin \"%1$s\" has been activated."
-msgstr "¡El complemento %1$s se ha activado!"
+msgstr "El plugin \"%1$s\" ha sido activado."
 
 #: inc/console/plugin/activatecommand.class.php:114
 #: inc/console/plugin/deactivatecommand.class.php:114
@@ -19967,7 +19973,7 @@ msgstr "Información de telemetría"
 
 #: inc/telemetry.class.php:416
 msgid "Send \"usage statistics\""
-msgstr "Enviar estadísticas de uso."
+msgstr "Enviar \"estadísticas de uso\""
 
 #: inc/telemetry.class.php:417
 msgid "We need your help to improve ITSM-NG and the plugins ecosystem!"
@@ -20016,8 +20022,8 @@ msgstr[1] "Tipos de solución"
 #: inc/networkalias.class.php:54
 msgid "Network alias"
 msgid_plural "Network aliases"
-msgstr[0] "Alias de red"
-msgstr[1] "Alias de red"
+msgstr[0] "Alias de la red"
+msgstr[1] "Alias de las redes"
 
 #: inc/networkalias.class.php:279
 msgid "Add a network alias"
@@ -21994,7 +22000,7 @@ msgstr "Haga clic en un elemento para eliminarlo de la red"
 
 #: js/impact.js:2306
 msgid "Draw a square containing the assets you wish to group"
-msgstr " Dibuje un cuadrado que contenga los activos que desea agrupar"
+msgstr "Dibuje un cuadrado que contenga los activos que desea agrupar"
 
 #: js/impact.js:2438
 msgid "Requests"
@@ -22098,8 +22104,8 @@ msgid ""
 "The dragged event is a recurring event. Do you want to move the serie or "
 "instance ?"
 msgstr ""
-"El evento arrastrado es un evento recurrente.\n"
-"¿Desea mover la serie o la instancia?"
+"El evento arrastrado es un evento recurrente. ¿Desea desplazar la serie o la "
+"instancia?"
 
 #: templates/install/index.twig:31
 msgid "Initialization"
