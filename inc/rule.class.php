@@ -2760,28 +2760,65 @@ class Rule extends CommonDBTM {
     * @param $ID
    **/
    function showNewRuleForm($ID) {
-
-      echo "<form method='post' action='".Toolbox::getItemTypeFormURL('Entity')."'>";
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='7'>" . $this->getTitle() . "</th></tr>\n";
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name') . "</td><td>";
-      Html::autocompletionTextField($this, "name", ['value' => '',
-                                                         'size'  => 33]);
-      echo "</td><td>".__('Description') . "</td><td>";
-      Html::autocompletionTextField($this, "description", ['value' => '',
-                                                                'size'  => 33]);
-      echo "</td><td>".__('Logical operator') . "</td><td>";
-      $this->dropdownRulesMatch();
-      echo "</td><td class='tab_bg_2 center'>";
-      echo "<input type=hidden name='sub_type' value='".get_class($this)."'>";
-      echo "<input type=hidden name='entities_id' value='-1'>";
-      echo "<input type=hidden name='affectentity' value='$ID'>";
-      echo "<input type=hidden name='_method' value='AddRule'>";
-      echo "<input type='submit' name='execute' value=\""._sx('button', 'Add')."\" class='submit'>";
-      echo "</td></tr>\n";
-      echo "</table>";
-      Html::closeForm();
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL('Entity'),
+         'buttons' => [
+            [
+               'name'  => 'execute',
+               'value' => __('Add'),
+               'class' => 'btn btn-secondary',
+            ]
+         ],
+         'content' => [
+            $this->getTitle() => [
+               'visible' => true,
+               'inputs' => [
+                  __('Name') => [
+                     'type'  => 'text',
+                     'name'  => 'name',
+                     'value' => '',
+                     'size'  => 33
+                  ],
+                  __('Description') => [
+                     'type'  => 'text',
+                     'name'  => 'description',
+                     'value' => '',
+                     'size'  => 33
+                  ],
+                  __('Logical operator') => [
+                     'type'    => 'select',
+                     'name'    => 'match',
+                     'value'   => self::AND_MATCHING,
+                     'values' => [
+                        self::AND_MATCHING => __('and'),
+                        self::OR_MATCHING  => __('or')
+                     ]
+                  ],
+                  [  
+                     'type'  => 'hidden',
+                     'name'  => 'sub_type',
+                     'value' => get_class($this)
+                  ],
+                  [  
+                     'type'  => 'hidden',
+                     'name'  => 'entities_id',
+                     'value' => $ID
+                  ],
+                  [  
+                     'type'  => 'hidden',
+                     'name'  => 'affectentity',
+                     'value' => $ID
+                  ],
+                  [  
+                     'type'  => 'hidden',
+                     'name'  => '_method',
+                     'value' => 'AddRule'
+                  ]
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
    }
 
 
