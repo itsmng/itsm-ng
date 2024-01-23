@@ -1491,71 +1491,82 @@ class Entity extends CommonTreeDropdown {
       if ($canedit) {
          echo "<form method='post' name=form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' data-track-changes='true'>";
       }
-
-      echo "<table class='tab_cadre_fixe'>";
-
+      $form = [
+         'action' => $canedit ? Toolbox::getItemTypeFormURL(__CLASS__) : '',
+         'buttons' => [
+            [
+               'type'  => 'submit',
+               'name'  => 'update',
+               'value' => _sx('button', 'Save'),
+               'class' => 'btn btn-secondary'
+            ]
+         ],
+         'content' => [
+            __('Values for the generic rules for assignment to entities') => [
+               'visible' => true,
+               'inputs' => [
+                  [
+                     'type'  => 'hidden',
+                     'name'  => 'id',
+                     'value' => $entity->getField('id'),
+                  ],
+                  '' => [
+                     'content' => '<b>'.__('These parameters are used as actions in generic rules for assignment to entities').'</b>',
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  __('Information in inventory tool (TAG) representing the entity') => [
+                     'type'  => 'text',
+                     'name'  => 'tag',
+                     'value' => $entity->getField('tag'),
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  __('LDAP directory information attribute representing the entity') => (Toolbox::canUseLdap()) ? [
+                     'type'  => 'text',
+                     'name'  => 'ldap_dn',
+                     'value' => $entity->getField('ldap_dn'),
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ] : [],
+                  __('Mail domain surrogates entity') => [
+                     'type'  => 'text',
+                     'name'  => 'mail_domain',
+                     'value' => $entity->getField('mail_domain'),
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+               ]
+            ],
+            __('Values used in the interface to search users from a LDAP directory') => (Toolbox::canUseLdap()) ? [
+               'visible' => true,
+               'inputs' => [
+                  __('LDAP directory of an entity') => [
+                     'type'  => 'select',
+                     'name'  => 'authldaps_id',
+                     'value' => $entity->getField('authldaps_id'),
+                     'values' => array_merge([__('Default server')], getOptionForItems(AuthLDAP::class, ['is_active' => 1], false)),
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                     'actions' => getItemActionButtons(['info'], AuthLDAP::class),
+                  ],
+                  __('LDAP filter associated to the entity (if necessary)') => [
+                     'type'  => 'text',
+                     'name'  => 'entity_ldapfilter',
+                     'value' => $entity->getField('entity_ldapfilter'),
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+               ]
+            ] : [],
+         ]
+      ];
+      ob_start();
       Plugin::doHook("pre_item_form", ['item' => $entity, 'options' => []]);
-
-      echo "<tr><th colspan='2'>".__('Values for the generic rules for assignment to entities').
-           "</th></tr>";
-
-      echo "<tr class='tab_bg_1'><td colspan='2' class='center'>".
-             __('These parameters are used as actions in generic rules for assignment to entities').
-           "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Information in inventory tool (TAG) representing the entity')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($entity, "tag", ['size' => 100]);
-      echo "</td></tr>";
-
-      if (Toolbox::canUseLdap()) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('LDAP directory information attribute representing the entity')."</td>";
-         echo "<td>";
-         Html::autocompletionTextField($entity, "ldap_dn", ['size' => 100]);
-         echo "</td></tr>";
-      }
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Mail domain surrogates entity')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($entity, "mail_domain", ['size' => 100]);
-      echo "</td></tr>";
-
-      if (Toolbox::canUseLdap()) {
-         echo "<tr><th colspan='2'>".
-                __('Values used in the interface to search users from a LDAP directory').
-              "</th></tr>";
-
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('LDAP directory of an entity')."</td>";
-         echo "<td>";
-         AuthLDAP::dropdown([
-            'value'      => $entity->fields['authldaps_id'],
-            'emptylabel' => __('Default server'),
-            'condition'  => ['is_active' => 1]
-         ]);
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('LDAP filter associated to the entity (if necessary)')."</td>";
-         echo "<td>";
-         Html::autocompletionTextField($entity, 'entity_ldapfilter', ['size' => 100]);
-         echo "</td></tr>";
-      }
-
       Plugin::doHook("post_item_form", ['item' => $entity, 'options' => &$options]);
+      $additionnal = ob_get_clean();
+      renderTwigForm($form, $additionnal);
 
-      echo "</table>";
-
-      if ($canedit) {
-         echo "<div class='center'>";
-         echo "<input type='hidden' name='id' value='".$entity->fields["id"]."'>";
-         echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit'>";
-         echo "</div>";
-         Html::closeForm();
-      }
    }
 
 
