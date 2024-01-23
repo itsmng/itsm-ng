@@ -1386,105 +1386,90 @@ class Entity extends CommonTreeDropdown {
       // Entity right applied
       $canedit = $entity->can($ID, UPDATE);
 
-      echo "<div class='spaced'>";
-      if ($canedit) {
-         echo "<form method='post' name=form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' data-track-changes='true'>";
-      }
-
-      echo "<table class='tab_cadre_fixe'>";
-
+      $form = [
+         'action' => $canedit ? Toolbox::getItemTypeFormURL(__CLASS__) : '',
+         'buttons' => [
+            $canedit ? [
+               'type'  => 'submit',
+               'name'  => 'update',
+               'value' => _sx('button', 'Save'),
+               'class' => 'btn btn-secondary'
+            ] : []
+         ],
+         'content' => [
+            __('Address') => [
+               'visible' => true,
+               'inputs' => [
+                  [
+                     'type'  => 'hidden',
+                     'name'  => 'id',
+                     'value' => $entity->getField('id'),
+                  ],
+                  Phone::getTypeName(1) => [
+                     'type'  => 'text',
+                     'name'  => 'phonenumber',
+                     'value' => $entity->getField('phonenumber'),
+                  ],
+                  __('Fax') => [
+                     'type'  => 'text',
+                     'name'  => 'fax',
+                     'value' => $entity->getField('fax'),
+                  ],
+                  __('Website') => [
+                     'type'  => 'text',
+                     'name'  => 'website',
+                     'value' => $entity->getField('website'),
+                  ],
+                  __('Email') => [
+                     'type'  => 'text',
+                     'name'  => 'email',
+                     'value' => $entity->getField('email'),
+                  ],
+                  __('Postal code') => [
+                     'type'  => 'text',
+                     'name'  => 'postcode',
+                     'value' => $entity->getField('postcode'),
+                  ],
+                  __('City') => [
+                     'type'  => 'text',
+                     'name'  => 'town',
+                     'value' => $entity->getField('town'),
+                  ],
+                  __('State') => [
+                     'type'  => 'text',
+                     'name'  => 'state',
+                     'value' => $entity->getField('state'),
+                  ],
+                  __('Country') => [
+                     'type'  => 'text',
+                     'name'  => 'country',
+                     'value' => $entity->getField('country'),
+                  ],
+                  __('Longitude') => [
+                     'type'  => 'text',
+                     'name'  => 'longitude',
+                     'value' => $entity->getField('longitude'),
+                  ],
+                  __('Latitude') => [
+                     'type'  => 'text',
+                     'name'  => 'latitude',
+                     'value' => $entity->getField('latitude'),
+                  ],
+                  __('Altitude') => [
+                     'type'  => 'text',
+                     'name'  => 'altitude',
+                     'value' => $entity->getField('altitude'),
+                  ],
+               ]
+            ]
+         ]
+      ];
+      ob_start();
       Plugin::doHook("pre_item_form", ['item' => $entity, 'options' => []]);
 
-      echo "<tr><th colspan='4'>".__('Address')."</th></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>". Phone::getTypeName(1)."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($entity, "phonenumber");
-      echo "</td>";
-      echo "<td rowspan='7'>".__('Address')."</td>";
-      echo "<td rowspan='7'>";
-      echo "<textarea cols='45' rows='8' name='address'>". $entity->fields["address"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Fax')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($entity, "fax");
-      echo "</td></tr>";
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Website')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($entity, "website");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Email', 'Emails', 1)."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($entity, "email");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Postal code')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($entity, "postcode", ['size' => 7]);
-      echo "&nbsp;&nbsp;". __('City'). "&nbsp;";
-      Html::autocompletionTextField($entity, "town", ['size' => 27]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._x('location', 'State')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($entity, "state");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Country')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($entity, "country");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Location on map')."</td>";
-      echo "<td>";
-      $entity->displaySpecificTypeField($ID, [
-         'name'   => 'setlocation',
-         'type'   => 'setlocation',
-         'label'  => __('Location on map'),
-         'list'   => false
-      ]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._x('location', 'Longitude')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($entity, "longitude");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._x('location', 'Latitude')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($entity, "latitude");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._x('location', 'Altitude')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($entity, "altitude");
-      echo "</td></tr>";
-
       Plugin::doHook("post_item_form", ['item' => $entity, 'options' => []]);
-      echo "</table>";
-
-      if ($canedit) {
-         echo "<div class='center'>";
-         echo "<input type='hidden' name='id' value='".$entity->fields["id"]."'>";
-         echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit'>";
-         echo "</div>";
-         Html::closeForm();
-      }
-      echo "</div>";
-
+      $additionnal = ob_get_clean();
+      renderTwigForm($form, $additionnal);
    }
 
 
