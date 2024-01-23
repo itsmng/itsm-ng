@@ -1576,199 +1576,209 @@ class Auth extends CommonGLPI
       if (!Config::canUpdate()) {
          return false;
       }
-      echo "<form name=cas action='" . $CFG_GLPI['root_doc'] . "/front/auth.others.php' method='post'>";
-      echo "<div class='center'>";
-      echo "<table class='tab_cadre_fixe'>";
-
-      // CAS config
-      echo "<tr><th>" . __('CAS authentication') . '</th><th>';
-      if (!empty($CFG_GLPI["cas_host"])) {
-         echo _x('authentication', 'Enabled');
-      }
-      echo "</th></tr>\n";
-
-      if (
-         function_exists('curl_init')
-         && Toolbox::canUseCAS()
-      ) {
-
-         //TRANS: for CAS SSO system
-         echo "<tr class='tab_bg_2'><td class='center'>" . __('CAS Host') . "</td>";
-         echo "<td><input type='text' name='cas_host' value=\"" . $CFG_GLPI["cas_host"] . "\"></td></tr>\n";
-         //TRANS: for CAS SSO system
-         echo "<tr class='tab_bg_2'><td class='center'>" . __('CAS Version') . "</td>";
-         echo "<td>";
-         Auth::dropdownCasVersion($CFG_GLPI["cas_version"]);
-         echo "</td>";
-         echo "</tr>\n";
-         //TRANS: for CAS SSO system
-         echo "<tr class='tab_bg_2'><td class='center'>" . _n('Port', 'Ports', 1) . "</td>";
-         echo "<td><input type='text' name='cas_port' value=\"" . $CFG_GLPI["cas_port"] . "\"></td></tr>\n";
-         //TRANS: for CAS SSO system
-         echo "<tr class='tab_bg_2'><td class='center'>" . __('Root directory (optional)') . "</td>";
-         echo "<td><input type='text' name='cas_uri' value=\"" . $CFG_GLPI["cas_uri"] . "\"></td></tr>\n";
-         //TRANS: for CAS SSO system
-         echo "<tr class='tab_bg_2'><td class='center'>" . __('Log out fallback URL') . "</td>";
-         echo "<td><input type='text' name='cas_logout' value=\"" . $CFG_GLPI["cas_logout"] . "\"></td>" .
-            "</tr>\n";
-      } else {
-         echo "<tr class='tab_bg_2'><td class='center' colspan='2'>";
-         if (!function_exists('curl_init')) {
-            echo "<p class='red'>" . __("The CURL extension for your PHP parser isn't installed");
-            echo "</p>";
-         }
-         if (!Toolbox::canUseCAS()) {
-            echo "<p class='red'>" . __("The CAS lib isn't available, ITSM-NG doesn't package it anymore for license compatibility issue.");
-            echo "</p>";
-         }
-         echo "<p>" . __('Impossible to use CAS as external source of connection') . "</p>";
-
-         echo "</td></tr>\n";
-      }
-      // X509 config
-      echo "<tr><th>" . __('x509 certificate authentication') . "</th><th>";
-      if (!empty($CFG_GLPI["x509_email_field"])) {
-         echo _x('authentication', 'Enabled');
-      }
-      echo "</th></tr>\n";
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . __('Email attribute for x509 authentication') . "</td>";
-      echo "<td><input type='text' name='x509_email_field' value=\"" . $CFG_GLPI["x509_email_field"] . "\">";
-      echo "</td></tr>\n";
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . sprintf(__('Restrict %s field for x509 authentication (separator $)'), 'OU') . "</td>";
-      echo "<td><input type='text' name='x509_ou_restrict' value=\"" . $CFG_GLPI["x509_ou_restrict"] . "\">";
-      echo "</td></tr>\n";
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . sprintf(__('Restrict %s field for x509 authentication (separator $)'), 'CN') . "</td>";
-      echo "<td><input type='text' name='x509_cn_restrict' value=\"" . $CFG_GLPI["x509_cn_restrict"] . "\">";
-      echo "</td></tr>\n";
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . sprintf(__('Restrict %s field for x509 authentication (separator $)'), 'O') . "</td>";
-      echo "<td><input type='text' name='x509_o_restrict' value=\"" . $CFG_GLPI["x509_o_restrict"] . "\">";
-      echo "</td></tr>\n";
-
-      //Other configuration
-      echo "<tr><th>" . __('Other authentication sent in the HTTP request') . "</th><th>";
-      if (!empty($CFG_GLPI["ssovariables_id"])) {
-         echo _x('authentication', 'Enabled');
-      }
-      echo "</th></tr>\n";
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . SsoVariable::getTypeName(1) . "</td>";
-      echo "<td>";
-      SsoVariable::dropdown([
-         'name'  => 'ssovariables_id',
-         'value' => $CFG_GLPI["ssovariables_id"]
-      ]);
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . __('SSO logout url') . "</td>";
-      echo "<td><input type='text' name='ssologout_url' value='" .
-         $CFG_GLPI['ssologout_url'] . "'></td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . __('Remove the domain of logins like login@domain') . "</td><td>";
-      Dropdown::showYesNo(
-         'existing_auth_server_field_clean_domain',
-         $CFG_GLPI['existing_auth_server_field_clean_domain']
-      );
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . __('Surname') . "</td>";
-      echo "<td><input type='text' name='realname_ssofield' value='" .
-         $CFG_GLPI['realname_ssofield'] . "'></td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . __('First name') . "</td>";
-      echo "<td><input type='text' name='firstname_ssofield' value='" .
-         $CFG_GLPI['firstname_ssofield'] . "'></td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . __('Comments') . "</td>";
-      echo "<td><input type='text' name='comment_ssofield' value='" .
-         $CFG_GLPI['comment_ssofield'] . "'>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . __('Administrative number') . "</td>";
-      echo "<td><input type='text' name='registration_number_ssofield' value='" .
-         $CFG_GLPI['registration_number_ssofield'] . "'>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . _n('Email', 'Emails', 1) . "</td>";
-      echo "<td><input type='text' name='email1_ssofield' value='" . $CFG_GLPI['email1_ssofield'] . "'>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . sprintf(__('%1$s %2$s'), _n('Email', 'Emails', 1), '2') . "</td>";
-      echo "<td><input type='text' name='email2_ssofield' value='" . $CFG_GLPI['email2_ssofield'] . "'>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . sprintf(__('%1$s %2$s'), _n('Email', 'Emails', 1), '3') . "</td>";
-      echo "<td><input type='text' name='email3_ssofield' value='" . $CFG_GLPI['email3_ssofield'] . "'>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . sprintf(__('%1$s %2$s'), _n('Email', 'Emails', 1), '4') . "</td>";
-      echo "<td><input type='text' name='email4_ssofield' value='" . $CFG_GLPI['email4_ssofield'] . "'>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . Phone::getTypeName(1) . "</td>";
-      echo "<td><input type='text' name='phone_ssofield' value='" . $CFG_GLPI['phone_ssofield'] . "'>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" .  __('Phone 2') . "</td>";
-      echo "<td><input type='text' name='phone2_ssofield' value='" . $CFG_GLPI['phone2_ssofield'] . "'>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . __('Mobile phone') . "</td>";
-      echo "<td><input type='text' name='mobile_ssofield' value='" . $CFG_GLPI['mobile_ssofield'] . "'>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . _x('person', 'Title') . "</td>";
-      echo "<td><input type='text' name='title_ssofield' value='" . $CFG_GLPI['title_ssofield'] . "'>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . __('Category') . "</td>";
-      echo "<td><input type='text' name='category_ssofield' value='" .
-         $CFG_GLPI['category_ssofield'] . "'></td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center'>" . __('Language') . "</td>";
-      echo "<td><input type='text' name='language_ssofield' value='" .
-         $CFG_GLPI['language_ssofield'] . "'></td></tr>";
-
-      echo "<tr class='tab_bg_1'><td class='center' colspan='2'>";
-      echo "<input type='submit' name='update' class='submit' value=\"" . __s('Save') . "\" >";
-      echo "</td></tr>\n";
-
-      echo "</table></div>\n";
-      Html::closeForm();
+      $form = [
+         'action' => $CFG_GLPI['root_doc'] . '/front/auth.others.php',
+         'buttons' => [
+            [
+               'name' => 'update',
+               'type' => 'submit',
+               'value' => __('Save'),
+               'class' => 'btn btn-secondary'
+            ],
+         ],
+         'content' => [
+            __('CAS authentication') => [
+               'visible' => true,
+               'inputs' => [
+                  '' => (!empty($CFG_GLPI["cas_host"])) ? [
+                     'content' => _x('authentication', 'Enabled'),
+                  ] : [],
+                  __('CAS Host') => (function_exists('curl_init') && Toolbox::canUseCAS()) ? [
+                     'type' => 'text',
+                     'name' => 'cas_host',
+                     'value' => $CFG_GLPI["cas_host"],
+                  ] : [],
+                  __('CAS Version') => (function_exists('curl_init') && Toolbox::canUseCAS()) ? [
+                     'type' => 'dropdown',
+                     'name' => 'cas_version',
+                     'value' => $CFG_GLPI["cas_version"],
+                     'values' => [
+                        'CAS_VERSION_1_0' => __('Version 1'),
+                        'CAS_VERSION_2_0' => __('Version 2'),
+                        'CAS_VERSION_3_0' => __('Version 3+'),
+                     ],
+                  ] : [],
+                  _n('Port', 'Ports', 1) => (function_exists('curl_init') && Toolbox::canUseCAS()) ? [
+                     'type' => 'text',
+                     'name' => 'cas_port',
+                     'value' => $CFG_GLPI["cas_port"],
+                  ] : [],
+                  __('Root directory (optional)') => (function_exists('curl_init') && Toolbox::canUseCAS()) ? [
+                     'type' => 'text',
+                     'name' => 'cas_uri',
+                     'value' => $CFG_GLPI["cas_uri"],
+                  ] : [],
+                  __('Log out fallback URL') => (function_exists('curl_init') && Toolbox::canUseCAS()) ? [
+                     'type' => 'text',
+                     'name' => 'cas_logout',
+                     'value' => $CFG_GLPI["cas_logout"],
+                  ] : [],
+                  'curl_init ' . __('Status') => (!function_exists('curl_init')) ? [
+                     'content' => "<p class='red'>" . __("The CURL extension for your PHP parser isn't installed") . "</p>",
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ] : [],
+                  __('Can use CAS') => (!Toolbox::canUseCAS()) ? [
+                     'content' => "<p class='red'>" . __("The CAS lib isn't available, ITSM-NG doesn't package it anymore for license compatibility issue.") . "</p>",
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ] : [],
+               ]
+            ],
+            __('x509 certificate authentication') => [
+               'visible' => true,
+               'inputs' => [
+                  'x509 ' . __('Status') => (!empty($CFG_GLPI["x509_email_field"])) ? [
+                     'content' => _x('authentication', 'Enabled'),
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ] : [],
+                  __('Email attribute for x509 authentication') => [
+                     'type' => 'text',
+                     'name' => 'x509_email_field',
+                     'value' => $CFG_GLPI["x509_email_field"],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  sprintf(__('Restrict %s field for x509 authentication (separator $)'), 'OU') => [
+                     'type' => 'text',
+                     'name' => 'x509_ou_restrict',
+                     'value' => $CFG_GLPI["x509_ou_restrict"],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  sprintf(__('Restrict %s field for x509 authentication (separator $)'), 'CN') => [
+                     'type' => 'text',
+                     'name' => 'x509_cn_restrict',
+                     'value' => $CFG_GLPI["x509_cn_restrict"],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  sprintf(__('Restrict %s field for x509 authentication (separator $)'), 'O') => [
+                     'type' => 'text',
+                     'name' => 'x509_o_restrict',
+                     'value' => $CFG_GLPI["x509_o_restrict"],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+               ]
+               ],
+               __('Other authentication sent in the HTTP request') => [
+                  'visible' => true,
+                  'inputs' => [
+                     __("Status") => (!empty($CFG_GLPI["ssovariables_id"])) ? [
+                        'content' => _x('authentication', 'Enabled'),
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                     ] : [],
+                     SsoVariable::getTypeName(1) => [
+                        'type' => 'select',
+                        'name' => 'ssovariables_id',
+                        'value' => $CFG_GLPI["ssovariables_id"],
+                        'values' => getOptionForItems('SsoVariable'),
+                        'actions' => getItemActionButtons(['info', 'add'], 'SsoVariable'),
+                        'col_lg' => 6,
+                     ],
+                     __('SSO logout url') => [
+                        'type' => 'text',
+                        'name' => 'ssologout_url',
+                        'value' => $CFG_GLPI["ssologout_url"],
+                        'col_lg' => 6,
+                     ],
+                     __('Remove the domain of logins like login@domain') => [
+                        'type' => 'checkbox',
+                        'name' => 'existing_auth_server_field_clean_domain',
+                        'value' => $CFG_GLPI['existing_auth_server_field_clean_domain'],
+                        'col_lg' => 6,
+                     ],
+                     __('Surname') => [
+                        'type' => 'text',
+                        'name' => 'realname_ssofield',
+                        'value' => $CFG_GLPI['realname_ssofield'],
+                        'col_lg' => 6,
+                     ],
+                     __('First name') => [
+                        'type' => 'text',
+                        'name' => 'firstname_ssofield',
+                        'value' => $CFG_GLPI['firstname_ssofield'],
+                        'col_lg' => 6,
+                     ],
+                     __('Comments') => [
+                        'type' => 'text',
+                        'name' => 'comment_ssofield',
+                        'value' => $CFG_GLPI['comment_ssofield'],
+                        'col_lg' => 6,
+                     ],
+                     __('Administrative number') => [
+                        'type' => 'text',
+                        'name' => 'registration_number_ssofield',
+                        'value' => $CFG_GLPI['registration_number_ssofield'],
+                     ],
+                     _n('Email', 'Emails', 1) => [
+                        'type' => 'text',
+                        'name' => 'email1_ssofield',
+                        'value' => $CFG_GLPI['email1_ssofield'],
+                     ],
+                     sprintf(__('%1$s %2$s'), _n('Email', 'Emails', 1), '2') => [
+                        'type' => 'text',
+                        'name' => 'email2_ssofield',
+                        'value' => $CFG_GLPI['email2_ssofield'],
+                     ],
+                     sprintf(__('%1$s %2$s'), _n('Email', 'Emails', 1), '3') => [
+                        'type' => 'text',
+                        'name' => 'email3_ssofield',
+                        'value' => $CFG_GLPI['email3_ssofield'],
+                     ],
+                     sprintf(__('%1$s %2$s'), _n('Email', 'Emails', 1), '4') => [
+                        'type' => 'text',
+                        'name' => 'email4_ssofield',
+                        'value' => $CFG_GLPI['email4_ssofield'],
+                     ],
+                     __('Phone') => [
+                        'type' => 'text',
+                        'name' => 'phone_ssofield',
+                        'value' => $CFG_GLPI['phone_ssofield'],
+                     ],
+                     __('Phone 2') => [
+                        'type' => 'text',
+                        'name' => 'phone2_ssofield',
+                        'value' => $CFG_GLPI['phone2_ssofield'],
+                     ],
+                     __('Mobile phone') => [
+                        'type' => 'text',
+                        'name' => 'mobile_ssofield',
+                        'value' => $CFG_GLPI['mobile_ssofield'],
+                     ],
+                     _x('person', 'Title') => [
+                        'type' => 'text',
+                        'name' => 'title_ssofield',
+                        'value' => $CFG_GLPI['title_ssofield'],
+                     ],
+                     __('Category') => [
+                        'type' => 'text',
+                        'name' => 'category_ssofield',
+                        'value' => $CFG_GLPI['category_ssofield'],
+                     ],
+                     __('Language') => [
+                        'type' => 'text',
+                        'name' => 'language_ssofield',
+                        'value' => $CFG_GLPI['language_ssofield'],
+                     ],
+                  ]
+               ]
+         ],
+      ];
+      renderTwigForm($form);
    }
 
    /**
