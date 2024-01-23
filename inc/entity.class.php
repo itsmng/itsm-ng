@@ -1585,23 +1585,10 @@ class Entity extends CommonTreeDropdown {
       // Notification right applied
       $canedit = (Infocom::canUpdate() && Session::haveAccessToEntity($ID));
 
-      echo "<div class='spaced'>";
-      if ($canedit) {
-         echo "<form method='post' name=form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' data-track-changes='true'>";
-      }
-
-      echo "<table class='tab_cadre_fixe'>";
-
-      Plugin::doHook("pre_item_form", ['item' => $entity, 'options' => []]);
-
-      echo "<tr><th colspan='4'>".__('Autofill dates for financial and administrative information').
-           "</th></tr>";
-
       $options[0] = __('No autofill');
       if ($ID > 0) {
          $options[self::CONFIG_PARENT] = __('Inheritance of the parent entity');
       }
-
       $states = getAllDataFromTable('glpi_states');
       foreach ($states as $state) {
          $options[Infocom::ON_STATUS_CHANGE.'_'.$state['id']]
@@ -1610,144 +1597,90 @@ class Entity extends CommonTreeDropdown {
       }
 
       $options[Infocom::COPY_WARRANTY_DATE] = __('Copy the start date of warranty');
-      //Buy date
-      echo "<tr class='tab_bg_2'>";
-      echo "<td> " . __('Date of purchase') . "</td>";
-      echo "<td>";
-      Dropdown::showFromArray('autofill_buy_date', $options,
-                              ['value' => $entity->getField('autofill_buy_date')]);
-      if ($entity->fields['autofill_buy_date'] == self::CONFIG_PARENT) {
-         $inherited_value = self::getUsedConfig('autofill_buy_date', $entity->getField('entities_id'));
-         self::inheritedValue(self::getSpecificValueToDisplay('autofill_buy_date', $inherited_value));
-      }
-      echo "</td>";
 
-      //Order date
-      echo "<td> " . __('Order date') . "</td>";
-      echo "<td>";
-      $options[Infocom::COPY_BUY_DATE] = __('Copy the date of purchase');
-      Dropdown::showFromArray('autofill_order_date', $options,
-                              ['value' => $entity->getField('autofill_order_date')]);
-      if ($entity->fields['autofill_order_date'] == self::CONFIG_PARENT) {
-         $inherited_value = self::getUsedConfig('autofill_order_date', $entity->getField('entities_id'));
-         self::inheritedValue(self::getSpecificValueToDisplay('autofill_order_date', $inherited_value));
-      }
-      echo "</td></tr>";
-
-      //Delivery date
-      echo "<tr class='tab_bg_2'>";
-      echo "<td> " . __('Delivery date') . "</td>";
-      echo "<td>";
-      $options[Infocom::COPY_ORDER_DATE] = __('Copy the order date');
-      Dropdown::showFromArray('autofill_delivery_date', $options,
-                              ['value' => $entity->getField('autofill_delivery_date')]);
-      if ($entity->fields['autofill_delivery_date'] == self::CONFIG_PARENT) {
-         $inherited_value = self::getUsedConfig('autofill_delivery_date', $entity->getField('entities_id'));
-         self::inheritedValue(self::getSpecificValueToDisplay('autofill_delivery_date', $inherited_value));
-      }
-      echo "</td>";
-
-      //Use date
-      echo "<td> " . __('Startup date') . " </td>";
-      echo "<td>";
-      $options[Infocom::COPY_DELIVERY_DATE] = __('Copy the delivery date');
-      Dropdown::showFromArray('autofill_use_date', $options,
-                              ['value' => $entity->getField('autofill_use_date')]);
-      if ($entity->fields['autofill_use_date'] == self::CONFIG_PARENT) {
-         $inherited_value = self::getUsedConfig('autofill_use_date', $entity->getField('entities_id'));
-         self::inheritedValue(self::getSpecificValueToDisplay('autofill_use_date', $inherited_value));
-      }
-      echo "</td></tr>";
-
-      //Warranty date
-      echo "<tr class='tab_bg_2'>";
-      echo "<td> " . __('Start date of warranty') . "</td>";
-      echo "<td>";
-      $options = [0                           => __('No autofill'),
-                       Infocom::COPY_BUY_DATE      => __('Copy the date of purchase'),
-                       Infocom::COPY_ORDER_DATE    => __('Copy the order date'),
-                       Infocom::COPY_DELIVERY_DATE => __('Copy the delivery date')];
+      $entities = [self::CONFIG_NEVER => __('No change of entity')]; // Keep software in PC entity
       if ($ID > 0) {
-         $options[self::CONFIG_PARENT] = __('Inheritance of the parent entity');
+         $entities[self::CONFIG_PARENT] = __('Inheritance of the parent entity');
       }
-
-      Dropdown::showFromArray('autofill_warranty_date', $options,
-                              ['value' => $entity->getField('autofill_warranty_date')]);
-      if ($entity->fields['autofill_warranty_date'] == self::CONFIG_PARENT) {
-         $inherited_value = self::getUsedConfig('autofill_warranty_date', $entity->getField('entities_id'));
-         self::inheritedValue(self::getSpecificValueToDisplay('autofill_warranty_date', $inherited_value));
-      }
-      echo "</td>";
-
-      //Decommission date
-      echo "<td> " . __('Decommission date') . "</td>";
-      echo "<td>";
-
-      $options = [0                           => __('No autofill'),
-                       Infocom::COPY_BUY_DATE      => __('Copy the date of purchase'),
-                       Infocom::COPY_ORDER_DATE    => __('Copy the order date'),
-                       Infocom::COPY_DELIVERY_DATE => __('Copy the delivery date')];
-      if ($ID > 0) {
-         $options[self::CONFIG_PARENT] = __('Inheritance of the parent entity');
-      }
-
-      foreach ($states as $state) {
-         $options[Infocom::ON_STATUS_CHANGE.'_'.$state['id']]
-                     //TRANS: %s is the name of the state
-            = sprintf(__('Fill when shifting to state %s'), $state['name']);
-      }
-
-      Dropdown::showFromArray('autofill_decommission_date', $options,
-                              ['value' => $entity->getField('autofill_decommission_date')]);
-
-      if ($entity->fields['autofill_decommission_date'] == self::CONFIG_PARENT) {
-         $inherited_value = self::getUsedConfig('autofill_decommission_date', $entity->getField('entities_id'));
-         self::inheritedValue(self::getSpecificValueToDisplay('autofill_decommission_date', $inherited_value));
-      }
-      echo "</td></tr>";
-
-      echo "<tr><th colspan='4'>"._n('Software', 'Software', Session::getPluralNumber())."</th></tr>";
-      echo "<tr class='tab_bg_2'>";
-      echo "<td> " . __('Entity for software creation') . "</td>";
-      echo "<td>";
-
-      $toadd = [self::CONFIG_NEVER => __('No change of entity')]; // Keep software in PC entity
-      if ($ID > 0) {
-         $toadd[self::CONFIG_PARENT] = __('Inheritance of the parent entity');
-      }
-      $entities = [$entity->fields['entities_id']];
       foreach (getAncestorsOf('glpi_entities', $entity->fields['entities_id']) as $ent) {
          if (Session::haveAccessToEntity($ent)) {
             $entities[] = $ent;
          }
       }
 
-      self::dropdown(['name'     => 'entities_id_software',
-                           'value'    => $entity->getField('entities_id_software'),
-                           'toadd'    => $toadd,
-                           'entity'   => $entities,
-                           'comments' => false]);
-
-      if ($entity->fields['entities_id_software'] == self::CONFIG_PARENT) {
-         $inherited_value = self::getUsedConfig('entities_id_software', $entity->getField('entities_id'));
-         self::inheritedValue(self::getSpecificValueToDisplay('entities_id_software', $inherited_value));
-      }
-      echo "</td><td colspan='2'></td></tr>";
-
-      Plugin::doHook("post_item_form", ['item' => $entity, 'options' => &$options]);
-
-      echo "</table>";
-
-      if ($canedit) {
-         echo "<div class='center'>";
-         echo "<input type='hidden' name='id' value='".$entity->fields["id"]."'>";
-         echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit'>";
-         echo "</div>";
-         Html::closeForm();
-      }
-
-      echo "</div>";
-
+      $form = [
+         'action' => $canedit ? Toolbox::getItemTypeFormURL(__CLASS__) : '',
+         'buttons' => [
+            [
+               'type'  => 'submit',
+               'name'  => 'update',
+               'value' => _sx('button', 'Save'),
+               'class' => 'btn btn-secondary'
+            ]
+         ],
+         'content' => [
+            __('Autofill dates for financial and administrative information') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Date of purchase') => [
+                     'type' => 'select',
+                     'name' => 'autofill_buy_date',
+                     'values' => $options,
+                     'value' => $entity->getField('autofill_buy_date'),
+                     'col_lg' => 6,
+                  ],
+                  __('Order date') => [
+                     'type' => 'select',
+                     'name' => 'autofill_order_date',
+                     'values' => $options,
+                     'value' => $entity->getField('autofill_order_date'),
+                     'col_lg' => 6,
+                  ],
+                  __('Delivery date') => [
+                     'type' => 'select',
+                     'name' => 'autofill_delivery_date',
+                     'values' => $options,
+                     'value' => $entity->getField('autofill_delivery_date'),
+                     'col_lg' => 6,
+                  ],
+                  __('Startup date') => [
+                     'type' => 'select',
+                     'name' => 'autofill_use_date',
+                     'values' => $options,
+                     'value' => $entity->getField('autofill_use_date'),
+                     'col_lg' => 6,
+                  ],
+                  __('Start date of warranty') => [
+                     'type' => 'select',
+                     'name' => 'autofill_warranty_date',
+                     'values' => $options,
+                     'value' => $entity->getField('autofill_warranty_date'),
+                     'col_lg' => 6,
+                  ],
+                  __('Decommission date') => [
+                     'type' => 'select',
+                     'name' => 'autofill_decommission_date',
+                     'values' => $options,
+                     'value' => $entity->getField('autofill_decommission_date'),
+                     'col_lg' => 6,
+                  ],
+               ]
+               ],
+               _n('Software', 'Software', Session::getPluralNumber()) => [
+                  'visible' => true,
+                  'inputs' => [
+                     __('Entity for software creation') => [
+                        'type' => 'select',
+                        'name' => 'entities_id_software',
+                        'values' => $entities,
+                        'value' => $entity->getField('entities_id_software'),
+                        'col_lg' => 6,
+                     ],
+                  ]
+               ]
+         ]
+      ];
+      renderTwigForm($form);
    }
 
 
