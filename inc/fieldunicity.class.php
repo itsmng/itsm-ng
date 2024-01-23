@@ -72,21 +72,95 @@ class FieldUnicity extends CommonDropdown {
 
    function getAdditionalFields() {
 
-      return [['name'  => 'is_active',
-                         'label' => __('Active'),
-                         'type'  => 'bool'],
-                   ['name'  => 'itemtype',
-                         'label' => _n('Type', 'Types', 1),
-                         'type'  => 'unicity_itemtype'],
-                   ['name'  => 'fields',
-                         'label' => __('Unique fields'),
-                         'type'  => 'unicity_fields'],
-                   ['name'  => 'action_refuse',
-                         'label' => __('Record into the database denied'),
-                         'type'  => 'bool'],
-                   ['name'  => 'action_notify',
-                         'label' => __('Send a notification'),
-                         'type'  => 'bool']];
+      global $CFG_GLPI, $DB;
+      $options = [];
+      foreach ($CFG_GLPI['unicity_types'] as $itemtype) {
+         if ($item = getItemForItemtype($itemtype)) {
+            if ($item->canCreate()) {
+               $options[$itemtype] = $item->getTypeName(1);
+            }
+         }
+      }
+      $values = [];
+      if ($target = getItemForItemtype($this->fields['itemtype'])) {
+         //Do not check unicity on fields in DB with theses types
+         $blacklisted_types = ['longtext', 'text'];
+      
+         foreach ($DB->listFields(getTableForItemType($target::class)) as $field) {
+            $searchOption = $target->getSearchOptionByField('field', $field['Field']);
+            if (!empty($searchOption)
+                  && !in_array($field['Type'], $blacklisted_types)
+                  && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
+               $values[$field['Field']] = $searchOption['name'];
+            }
+         }
+      }
+
+      return [
+         [
+            'type' => 'hidden',
+            'name' => 'entities_id',
+            'value' => Session::getActiveEntity()
+         ],
+         __('Active') => [
+            'name'  => 'is_active',
+            'type'  => 'checkbox',
+            'value' => $this->fields['is_active']
+         ],
+         _n('Type', 'Types', 1) => [
+            'name'  => 'itemtype',
+            'type'  => 'select',
+            'id' => 'dropdown_itemtype',
+            'values' => array_merge([Dropdown::EMPTY_VALUE], $options),
+            'value' => $this->fields['itemtype'],
+            'hooks' => [
+               'change' => <<<JS
+               $.ajax({
+                  url: '{$CFG_GLPI["root_doc"]}/ajax/dropdownUnicityFields.php',
+                  type: 'POST',
+                  data: {
+                     itemtype: $(this).val(),
+                     id: ''
+                  },
+                  success: function(data) {
+                     const jsonData = JSON.parse(data);
+                     $('#span_fields').empty();
+                     for (const [key, value] of Object.entries(jsonData)) {
+                        console.log('appending ' + key + ' ' + value)
+                        $('#span_fields').append(`
+                           <div class='row'>
+                              <input class="form-check-input col col-2"
+                                 type="checkbox" value="` + key + `"
+                                 id="span_fields_` + key + `" name="_fields[]">
+                              <label class="form-check-label col col-10" for="span_fields_` + key + `">
+                                 ` + value + `
+                              </label>
+                           </div>
+                        `);
+                     }
+                  }
+               });
+               JS,
+            ]
+         ],
+         __('Unique fields') => [
+            'name'  => '_fields',
+            'id'    => 'span_fields',
+            'type'  => 'checklist',
+            'options' => $values,
+            'values' => explode(',', $this->fields['fields'])
+         ],
+         __('Record into the database denied') => [
+            'name'  => 'action_refuse',
+            'type'  => 'checkbox',
+            'value' => $this->fields['action_refuse']
+         ],
+         __('Send a notification') => [
+            'name'  => 'action_notify',
+            'type'  => 'checkbox',
+            'value' => $this->fields['action_notify']
+         ]
+      ];
    }
 
 
