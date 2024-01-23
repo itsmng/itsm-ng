@@ -492,102 +492,100 @@ abstract class CommonTreeDropdown extends CommonDropdown {
       // Minimal form for quick input.
       if (static::canCreate()) {
          $link = $this->getFormURL();
-         echo "<div class='firstbloc'>";
-         echo "<form action='".$link."' method='post'>";
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr><th colspan='3'>".__('New child heading')."</th></tr>";
-
-         echo "<tr class='tab_bg_1'><td>".__('Name')."</td><td>";
-         Html::autocompletionTextField($this, "name", ['value' => '']);
-
-         if ($entity_assign
-             && ($this->getForeignKeyField() != 'entities_id')) {
-            echo "<input type='hidden' name='entities_id' value='".$_SESSION['glpiactive_entity']."'>";
-         }
-
-         if ($entity_assign && $this->isRecursive()) {
-            echo "<input type='hidden' name='is_recursive' value='1'>";
-         }
-         echo "<input type='hidden' name='".$this->getForeignKeyField()."' value='$ID'></td>";
-         echo "<td><input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "</td></tr>\n";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>\n";
+         $form = [
+            'action' => $link,
+            'buttons' => [
+               [
+                  'name'   => 'add',
+                  'value'  => _sx('button', 'Add'),
+                  'class'  => 'btn btn-secondary',
+                  'type' => 'submit'
+               ]
+            ],
+            'content' => [
+               __('New child heading') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => $this->getForeignKeyField(),
+                        'value' => $ID,
+                     ],
+                     __('Name') => [
+                        'type' => 'text',
+                        'name' => 'name',
+                        'value' => '',
+                     ],
+                     ($entity_assign && ($this->getForeignKeyField() != 'entities_id')) ? [
+                        'type' => 'hidden',
+                        'name' => 'entities_id',
+                        'value' => $_SESSION['glpiactive_entity'],
+                     ] : [],
+                     ($entity_assign && $this->isRecursive()) ? [
+                        'type' => 'hidden',
+                        'name' => 'is_recursive',
+                        'value' => '1',
+                     ] : [],
+                  ]
+               ]
+            ],
+         ];
+         renderTwigForm($form);
       }
 
-      echo "<div class='spaced'>";
-      echo "<table class='tab_cadre_fixehov'>";
-      echo "<tr class='noHover'><th colspan='".($nb+3)."'>".sprintf(__('Sons of %s'),
-                                                                    $this->getTreeLink());
-      echo "</th></tr>";
-
-      $header = "<tr><th>".__('Name')."</th>";
+      $header_fields = [__('Name')];
       if ($entity_assign) {
-         $header .= "<th>".Entity::getTypeName(1)."</th>";
+         $header_fields[] = Entity::getTypeName(1);
       }
       foreach ($fields as $field) {
-         $header .= "<th>".$field['label']."</th>";
+         $header_fields[] = $field['label'];
       }
-      $header .= "<th>".__('Comments')."</th>";
-      $header .= "</tr>\n";
-      echo $header;
+      $header_fields[] = __('Comments');
 
       $fk   = $this->getForeignKeyField();
 
-      $result = $DB->request(
+      $result = iterator_to_array($DB->request(
          [
             'FROM'  => $this->getTable(),
             'WHERE' => [$fk => $ID],
             'ORDER' => 'name',
          ]
-      );
+      ));
 
-      $nb = 0;
+      $values = [];
       foreach ($result as $data) {
-         $nb++;
-         echo "<tr class='tab_bg_1'><td>";
-         if ((($fk == 'entities_id') && in_array($data['id'], $_SESSION['glpiactiveentities']))
-             || !$entity_assign
-             || (($fk != 'entities_id') && in_array($data['entities_id'], $_SESSION['glpiactiveentities']))) {
-            echo "<a href='".$this->getFormURL();
-            echo '?id='.$data['id']."'>".$data['name']."</a>";
-         } else {
-            echo $data['name'];
-         }
-         echo "</td>";
+         $newValue = ['<a href="'.$this->getFormURL().'?id='.$data['id'].'">'.$data['name'].'</a>'];
          if ($entity_assign) {
-            echo "<td>".Dropdown::getDropdownName("glpi_entities", $data["entities_id"])."</td>";
+            $newValue[] = Dropdown::getDropdownName("glpi_entities", $data["entities_id"]);
          }
-
          foreach ($fields as $field) {
-            echo "<td>";
             switch ($field['type']) {
                case 'UserDropdown' :
-                  echo getUserName($data[$field['name']]);
+                  $newValue[] = getUserName($data[$field['name']]);
                   break;
 
                case 'bool' :
-                  echo Dropdown::getYesNo($data[$field['name']]);
+                  $newValue[] = Dropdown::getYesNo($data[$field['name']]);
                   break;
 
                case 'dropdownValue' :
-                  echo Dropdown::getDropdownName(getTableNameForForeignKeyField($field['name']),
-                                                 $data[$field['name']]);
+                  $newValue[] = Dropdown::getDropdownName(getTableNameForForeignKeyField($field['name']),
+                                                            $data[$field['name']]);
                   break;
 
                default:
-                  echo $data[$field['name']];
+                  $newValue[] = $data[$field['name']];
             }
-            echo "</td>";
          }
-         echo "<td>".$data['comment']."</td>";
-         echo "</tr>\n";
+         $values[] = $newValue;
       }
-      if ($nb) {
-         echo $header;
-      }
-      echo "</table></div>\n";
+      $massivaActionValues = [];
+      renderTwigTemplate('table.twig', [
+         'id' => 'tab_children',
+         'fields' => $header_fields,
+         'values' => $values,
+         'massiveactions' => $massivaActionValues,
+      ]);
    }
 
 
