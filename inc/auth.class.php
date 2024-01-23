@@ -1778,7 +1778,7 @@ class Auth extends CommonGLPI
     */
    static function showAuthOIDCConfig()
    {
-      global $DB;
+      global $DB, $CFG_GLPI;
 
       //Set or update config with the db
       if (isset($_POST["mapping"])) {
@@ -1799,6 +1799,7 @@ class Auth extends CommonGLPI
       }
       $criteria = "SELECT * FROM glpi_oidc_config";
       $iterators = $DB->request($criteria);
+      $oidc_db = [];
       foreach ($iterators as $iterator) {
          $oidc_db['Provider'] = $iterator['Provider'];
          $oidc_db['ClientID'] = $iterator['ClientID'];
@@ -1811,7 +1812,7 @@ class Auth extends CommonGLPI
       }
 
       $form = [
-         'action' => '/front/auth.oidc.php',
+         'action' => $CFG_GLPI['root_doc'] . '/front/auth.oidc.php',
          'buttons' => [
             [
                'type' => 'submit',
@@ -1833,42 +1834,42 @@ class Auth extends CommonGLPI
                   __('Activate open ID connect') => [
                      'name' => 'useoidc',
                      'type' => 'checkbox',
-                     'value' => $oidc_db['is_activate'],
+                     'value' => $oidc_db['is_activate'] ?? 0,
                   ],
                   __('Forced connection with open ID connect') => [
                      'name' => 'forceoidc',
                      'type' => 'checkbox',
-                     'value' => $oidc_db['is_forced'],
+                     'value' => $oidc_db['is_forced'] ?? 0,
                   ],
                   __('Provider') => [
                      'name' => 'provider',
                      'type' => 'text',
-                     'value' => $oidc_db['Provider'],
+                     'value' => $oidc_db['Provider'] ?? '',
                   ],
                   __('Client ID') => [
                      'name' => 'clientID',
                      'type' => 'text',
-                     'value' => $oidc_db['ClientID'],
+                     'value' => $oidc_db['ClientID'] ?? '',
                   ],
                   __('Client Secret') => [
                      'name' => 'clientSecret',
                      'type' => 'text',
-                     'value' => $oidc_db['ClientSecret'],
+                     'value' => $oidc_db['ClientSecret'] ?? '',
                   ],
                   __('Scope') => [
                      'name' => 'scope',
                      'type' => 'text',
-                     'value' => $oidc_db['scope'],
+                     'value' => $oidc_db['scope'] ?? '',
                   ],
                   __('Proxy') => [
                      'name' => 'proxy',
                      'type' => 'text',
-                     'value' => $oidc_db['proxy'],
+                     'value' => $oidc_db['proxy'] ?? '',
                   ],
                   __('Certificate Path') => [
                      'name' => 'cert',
                      'type' => 'text',
-                     'value' => $oidc_db['cert'],
+                     'value' => $oidc_db['cert'] ?? '',
                   ],
                ]
             ]
