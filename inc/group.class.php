@@ -209,86 +209,113 @@ class Group extends CommonTreeDropdown {
    **/
    function showForm($ID, $options = []) {
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-      echo "<td rowspan='12' class='middle'>".__('Comments')."</td>";
-      echo "<td class='middle' rowspan='12'>";
-      echo "<textarea cols='45' rows='8' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('As child of')."</td><td>";
-      self::dropdown(['value'  => $this->fields['groups_id'],
-                           'name'   => 'groups_id',
-                           'entity' => $this->fields['entities_id'],
-                           'used'   => (($ID > 0) ? getSonsOf($this->getTable(), $ID) : [])]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td class='subheader' colspan='2'>".__('Visible in a ticket');
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Requester', 'Requesters', 1)."</td>";
-      echo "<td>";
-      Dropdown::showYesNo('is_requester', $this->fields['is_requester']);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Watcher', 'Watchers', 1)."</td>";
-      echo "<td>";
-      Dropdown::showYesNo('is_watcher', $this->fields['is_watcher']);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Assigned to')."</td><td>";
-      Dropdown::showYesNo('is_assign', $this->fields['is_assign']);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Task', 'Tasks', 1)."</td><td>";
-      Dropdown::showYesNo('is_task', $this->fields['is_task']);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Can be notified')."</td>";
-      echo "<td>";
-      Dropdown::showYesNo('is_notify', $this->fields['is_notify']);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td class='subheader' colspan='2'>".__('Visible in a project');
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Can be manager')."</td>";
-      echo "<td>";
-      Dropdown::showYesNo('is_manager', $this->fields['is_manager']);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td class='subheader' colspan='2'>".__('Can contain');
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Item', 'Items', Session::getPluralNumber())."</td>";
-      echo "<td>";
-      Dropdown::showYesNo('is_itemgroup', $this->fields['is_itemgroup']);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".User::getTypeName(Session::getPluralNumber())."</td><td>";
-      Dropdown::showYesNo('is_usergroup', $this->fields['is_usergroup']);
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
-
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            $this->canUpdateItem() ? [
+              'type' => 'submit',
+              'name' => $this->isNewID($ID) ? 'add' : 'update',
+              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+              'class' => 'btn btn-secondary'
+            ] : [],
+            !$this->isNewID($ID) && self::canPurge() ? [
+              'type' => 'submit',
+              'name' => 'purge',
+              'value' => __('Delete permanently'),
+              'class' => 'btn btn-danger'
+            ] : [],
+          ],
+          'content' => [
+            $this->getTypeName() => [
+               'visible' => true,
+               'inputs' => [
+                  __('Name') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields['name'],
+                     'col_lg' => 6,
+                  ],
+                  __('As child of') => [
+                     'type' => 'select',
+                     'name' => 'groups_id',
+                     'values' => getOptionForItems('Group', ['NOT' => ['id' => $ID]]),
+                     'value' => $this->fields['groups_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'Group'),
+                     'col_lg' => 6,
+                  ],
+                  __('Comment') => [
+                     'type' => 'textarea',
+                     'name' => 'comment',
+                     'value' => $this->fields['comment'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+               ]
+            ],
+            __('Visible in a ticket') => [
+               'visible' => true,
+               'inputs' => [
+                  [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ],
+                  __('Visible in a ticket') => [
+                     'type' => 'checkbox',
+                     'name' => 'is_requester',
+                     'value' => $this->fields['is_requester'],
+                  ],
+                  _n('Watcher', 'Watchers', 1) => [
+                     'type' => 'checkbox',
+                     'name' => 'is_watcher',
+                     'value' => $this->fields['is_watcher'],
+                  ],
+                  __('Assigned to') => [
+                     'type' => 'checkbox',
+                     'name' => 'is_assign',
+                     'value' => $this->fields['is_assign'],
+                  ],
+                  _n('Task', 'Tasks', 1) => [
+                     'type' => 'checkbox',
+                     'name' => 'is_task',
+                     'value' => $this->fields['is_task'],
+                  ],
+                  __('Can be notified') => [
+                     'type' => 'checkbox',
+                     'name' => 'is_notify',
+                     'value' => $this->fields['is_notify'],
+                  ],
+               ]
+            ],
+            __('Visible in a project') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Can be manager') => [
+                     'type' => 'checkbox',
+                     'name' => 'is_manager',
+                     'value' => $this->fields['is_manager'],
+                  ],
+               ]
+            ],
+            __('Can contain') => [
+               'visible' => true,
+               'inputs' => [
+                  _n('Item', 'Items', Session::getPluralNumber()) => [
+                     'type' => 'checkbox',
+                     'name' => 'is_itemgroup',
+                     'value' => $this->fields['is_itemgroup'],
+                  ],
+                  sprintf(__('%1$s %2$s'), __('Can contain'), User::getTypeName(Session::getPluralNumber())) => [
+                     'type' => 'checkbox',
+                     'name' => 'is_usergroup',
+                     'value' => $this->fields['is_usergroup'],
+                  ],
+               ]
+            ]
+         ]
+  
+      ];
+      renderTwigForm($form);
       return true;
    }
 
