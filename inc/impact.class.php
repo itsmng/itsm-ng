@@ -1776,44 +1776,39 @@ class Impact extends CommonGLPI {
 
       // Form head
       $action = Toolbox::getItemTypeFormURL(Config::getType());
-      echo "<form name='form' action='$action' method='post'>";
 
-      // Table head
-      echo '<table class="tab_cadre_fixe">';
-      echo '<tr><th colspan="2">' . __('Impact analysis configuration') . '</th></tr>';
-
-      // First row: enabled itemtypes
-      $input_name = self::CONF_ENABLED;
       $values = $CFG_GLPI["impact_asset_types"];
       foreach ($values as $itemtype => $icon) {
          $values[$itemtype]= $itemtype::getTypeName();
       }
-      echo '<tr class="tab_bg_2">';
 
-      echo '<td width="40%">';
-      echo "<label for='$input_name'>";
-      echo __('Enabled itemtypes');
-      echo '</label>';
-      echo '</td>';
-
-      $core_config = Config::getConfigurationValues("core");
-      $db_values = importArrayFromDB($core_config[self::CONF_ENABLED]);
-      echo '<td>';
-      Dropdown::showFromArray($input_name, $values, [
-         'multiple' => true,
-         'values'   => $db_values
-      ]);
-      echo "</td>";
-
-      echo "</tr>";
-
-      echo '</table>';
-
-      // Submit button
-      echo '<div style="text-align:center">';
-      echo Html::submit(__('Save'), ['name' => 'update']);
-      echo '</div>';
-
+      $form = [
+         'action' => $action,
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => 'update',
+               'value' => __('Save'),
+               'class' => 'btn btn-secondary',
+            ],
+         ],
+         'content' => [
+            __('Impact analysis configuration') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Enabled itemtypes') => [
+                     'type' => 'checklist',
+                     'name' => self::CONF_ENABLED,
+                     'options' => $values,
+                     'values' => self::getEnabledItemtypes(),
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+               ]
+            ],
+         ]
+      ];
+      renderTwigForm($form);
       Html::closeForm();
    }
 }

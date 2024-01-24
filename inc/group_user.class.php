@@ -182,118 +182,101 @@ class Group_User extends CommonDBRelation{
          $groups[] = $data;
       }
 
-      if ($canedit) {
-         echo "<div class='firstbloc'>";
-         echo "<form name='groupuser_form$rand' id='groupuser_form$rand' method='post'";
-         echo " action='".Toolbox::getItemTypeFormURL('User')."'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_1'><th colspan='6'>".__('Associate to a group')."</th></tr>";
-         echo "<tr class='tab_bg_2'><td class='center'>";
-         echo "<input type='hidden' name='users_id' value='$ID'>";
-
-         $params = [
-            'used'      => $used,
-            'condition' => [
-               'is_usergroup' => 1,
-            ] + getEntitiesRestrictCriteria(Group::getTable(), '', '', true)
-         ];
-         Group::dropdown($params);
-         echo "</td><td>".__('Manager')."</td><td>";
-         Dropdown::showYesNo('is_manager');
-
-         echo "</td><td>".__('Delegatee')."</td><td>";
-         Dropdown::showYesNo('is_userdelegate');
-
-         echo "</td><td class='tab_bg_2 center'>";
-         echo "<input type='submit' name='addgroup' value=\""._sx('button', 'Add')."\"
-                class='submit'>";
-
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+      $options = getOptionForItems('Group', [ 'is_usergroup' => 1, ]
+         + getEntitiesRestrictCriteria(Group::getTable(), '', '', true));
+      
+      foreach ($used as $id) {
+         unset($options[$id]);
       }
 
-      echo "<div class='spaced'>";
+      if ($canedit) {
+         $form = [
+            'action' => User::getFormURL(),
+            'buttons' => [
+               [
+                  'type'  => 'submit',
+                  'name'  => 'addgroup',
+                  'value' => _sx('button', 'Add'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               __('Associate to a group') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'users_id',
+                        'value' => $ID
+                     ],
+                     __('Group') => [
+                        'type' => 'select',
+                        'name' => 'groups_id',
+                        'values' => $options,
+                        'actions' => getItemActionButtons(['info', 'add'], 'Group')
+                     ],
+                     __('Manager') => [
+                        'type' => 'checkbox',
+                        'name' => 'is_manager',
+                        'value' => 1
+                     ],
+                     __('Delegatee') => [
+                        'type' => 'checkbox',
+                        'name' => 'is_userdelegate',
+                        'value' => 1
+                     ]
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
+      }
+
       if ($canedit && count($used)) {
-         $rand = mt_rand();
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         echo "<input type='hidden' name='users_id' value='".$user->fields['id']."'>";
-         $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], count($used)),
-                           'container'     => 'mass'.__CLASS__.$rand];
+         $massiveactionparams = [
+            'container'     => 'tab_group_user',
+            'display_arrow' => false
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
-      $header_begin  = "<tr>";
-      $header_top    = '';
-      $header_bottom = '';
-      $header_end    = '';
 
-      if ($canedit && count($used)) {
-         $header_begin  .= "<th width='10'>";
-         $header_top    .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_bottom .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_end    .= "</th>";
-      }
-      $header_end .= "<th>".Group::getTypeName(1)."</th>";
-      $header_end .= "<th>".__('Dynamic')."</th>";
-      $header_end .= "<th>".__('Manager')."</th>";
-      $header_end .= "<th>".__('Delegatee')."</th></tr>";
-      echo $header_begin.$header_top.$header_end;
+      $fields = [
+         Group::getTypeName(1),
+         __('Dynamic'),
+         __('Manager'),
+         __('Delegatee')
+      ];
+      $values = [];
+      $massiveactionparams = [];
 
       $group = new Group();
-      if (!empty($groups)) {
-         Session::initNavigateListItems('Group',
-                              //TRANS : %1$s is the itemtype name,
-                              //        %2$s is the name of the item (used for headings of a list)
-                                        sprintf(__('%1$s = %2$s'),
-                                                User::getTypeName(1), $user->getName()));
-
-         foreach ($groups as $data) {
-            if (!$group->getFromDB($data["id"])) {
-               continue;
-            }
-            Session::addToNavigateListItems('Group', $data["id"]);
-            echo "<tr class='tab_bg_1'>";
-
-            if ($canedit && count($used)) {
-               echo "<td width='10'>";
-               Html::showMassiveActionCheckBox(__CLASS__, $data["linkid"]);
-               echo "</td>";
-            }
-            echo "<td>".$group->getLink()."</td>";
-            echo "<td class='center'>";
-            if ($data['is_dynamic']) {
-               echo "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' width='14' height='14' alt=\"".
-                      __('Dynamic')."\">";
-            }
-            echo "<td class='center'>";
-            if ($data['is_manager']) {
-               echo "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' width='14' height='14' alt=\"".
-                      __('Manager')."\">";
-            }
-            echo "</td><td class='center'>";
-            if ($data['is_userdelegate']) {
-               echo "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' width='14' height='14' alt=\"".
-                      __('Delegatee')."\">";
-            }
-            echo "</td></tr>";
+      foreach ($groups as $data) {
+         if (!$group->getFromDB($data["id"])) {
+            continue;
          }
-         echo $header_begin.$header_bottom.$header_end;
-
-      } else {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td colspan='5' class='center'>".__('None')."</td></tr>";
+         $newValue = [$group->getLink()];
+         if ($data['is_dynamic']) {
+            $newValue[] = "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' width='14' height='14' alt=\"".
+            __('Dynamic')."\">";
+         }
+         if ($data['is_manager']) {
+            $newValue[] = "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' width='14' height='14' alt=\"".
+            __('Manager')."\">";
+         }
+         if ($data['is_userdelegate']) {
+            $newValue[] = "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' width='14' height='14' alt=\"".
+            __('Delegatee')."\">";
+         }
+         $values[] = $newValue;
+         $massiveactionparams[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
       }
-      echo "</table>";
 
-      if ($canedit && count($used)) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+         'id' => 'tab_group_user',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massiveactionparams
+      ]);
    }
 
 

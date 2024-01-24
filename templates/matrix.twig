@@ -1,0 +1,16 @@
+<table class="table table-bordered text-center">
+    <tr>
+        <th scope="col">{{headers.title|raw}}</th>
+        {% for header in headers.x %}
+            <th scope="col">{{ header|raw }}</th>
+        {% endfor %}
+    </tr>
+    {% for row in matrix %}
+        <tr>
+            <th scope="row">{{ headers.y[loop.index]|raw }}</th>
+            {% for cell in row %}
+                <td {% for name, value in cell|filter((v, k) => k != 'content') %} {{name}}={{value}} {% endfor %}>{{ cell.content|raw }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>

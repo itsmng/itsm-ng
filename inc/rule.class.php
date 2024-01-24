@@ -2760,28 +2760,65 @@ class Rule extends CommonDBTM {
     * @param $ID
    **/
    function showNewRuleForm($ID) {
-
-      echo "<form method='post' action='".Toolbox::getItemTypeFormURL('Entity')."'>";
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='7'>" . $this->getTitle() . "</th></tr>\n";
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name') . "</td><td>";
-      Html::autocompletionTextField($this, "name", ['value' => '',
-                                                         'size'  => 33]);
-      echo "</td><td>".__('Description') . "</td><td>";
-      Html::autocompletionTextField($this, "description", ['value' => '',
-                                                                'size'  => 33]);
-      echo "</td><td>".__('Logical operator') . "</td><td>";
-      $this->dropdownRulesMatch();
-      echo "</td><td class='tab_bg_2 center'>";
-      echo "<input type=hidden name='sub_type' value='".get_class($this)."'>";
-      echo "<input type=hidden name='entities_id' value='-1'>";
-      echo "<input type=hidden name='affectentity' value='$ID'>";
-      echo "<input type=hidden name='_method' value='AddRule'>";
-      echo "<input type='submit' name='execute' value=\""._sx('button', 'Add')."\" class='submit'>";
-      echo "</td></tr>\n";
-      echo "</table>";
-      Html::closeForm();
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL('Entity'),
+         'buttons' => [
+            [
+               'name'  => 'execute',
+               'value' => __('Add'),
+               'class' => 'btn btn-secondary',
+            ]
+         ],
+         'content' => [
+            $this->getTitle() => [
+               'visible' => true,
+               'inputs' => [
+                  __('Name') => [
+                     'type'  => 'text',
+                     'name'  => 'name',
+                     'value' => '',
+                     'size'  => 33
+                  ],
+                  __('Description') => [
+                     'type'  => 'text',
+                     'name'  => 'description',
+                     'value' => '',
+                     'size'  => 33
+                  ],
+                  __('Logical operator') => [
+                     'type'    => 'select',
+                     'name'    => 'match',
+                     'value'   => self::AND_MATCHING,
+                     'values' => [
+                        self::AND_MATCHING => __('and'),
+                        self::OR_MATCHING  => __('or')
+                     ]
+                  ],
+                  [  
+                     'type'  => 'hidden',
+                     'name'  => 'sub_type',
+                     'value' => get_class($this)
+                  ],
+                  [  
+                     'type'  => 'hidden',
+                     'name'  => 'entities_id',
+                     'value' => $ID
+                  ],
+                  [  
+                     'type'  => 'hidden',
+                     'name'  => 'affectentity',
+                     'value' => $ID
+                  ],
+                  [  
+                     'type'  => 'hidden',
+                     'name'  => '_method',
+                     'value' => 'AddRule'
+                  ]
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
    }
 
 
@@ -2790,7 +2827,6 @@ class Rule extends CommonDBTM {
    **/
    function showAndAddRuleForm($item) {
 
-      $rand    = mt_rand();
       $canedit = self::canUpdate();
 
       if ($canedit
@@ -2804,79 +2840,41 @@ class Rule extends CommonDBTM {
 
       $rules = $this->getRulesForCriteria($crit);
       $nb    = count($rules);
-      echo "<div class='spaced'>";
 
-      if (!$nb) {
-         echo "<table class='tab_cadre_fixehov'>";
-         echo "<tr><th>" . __('No item found') . "</th>";
-         echo "</tr>\n";
-         echo "</table>\n";
-
-      } else {
-         if ($canedit) {
-            Html::openMassiveActionsForm('mass'.get_called_class().$rand);
-            $massiveactionparams
-               = ['num_displayed'
-                           => min($_SESSION['glpilist_limit'], $nb),
-                       'specific_actions'
-                           => ['update' => _x('button', 'Update'),
-                                    'purge'  => _x('button', 'Delete permanently')]];
-                  //     'extraparams'
-                //           => array('rule_class_name' => $this->getRuleClassName()));
-            Html::showMassiveActions($massiveactionparams);
-         }
-         echo "<table class='tab_cadre_fixehov'>";
-         $header_begin  = "<tr>";
-         $header_top    = '';
-         $header_bottom = '';
-         $header_end    = '';
-         if ($canedit) {
-            $header_begin  .= "<th width='10'>";
-            $header_top    .= Html::getCheckAllAsCheckbox('mass'.get_called_class().$rand);
-            $header_bottom .= Html::getCheckAllAsCheckbox('mass'.get_called_class().$rand);
-            $header_end    .= "</th>";
-         }
-         $header_end .= "<th>" . $this->getTitle() . "</th>";
-         $header_end .= "<th>" . __('Description') . "</th>";
-         $header_end .= "<th>" . __('Active') . "</th>";
-         $header_end .= "</tr>\n";
-         echo $header_begin.$header_top.$header_end;
-
-         Session::initNavigateListItems(get_class($this),
-                              //TRANS: %1$s is the itemtype name,
-                              //       %2$s is the name of the item (used for headings of a list)
-                                        sprintf(__('%1$s = %2$s'),
-                                                $item->getTypeName(1), $item->getName()));
-
-         foreach ($rules as $rule) {
-            Session::addToNavigateListItems(get_class($this), $rule->fields["id"]);
-            echo "<tr class='tab_bg_1'>";
-
-            if ($canedit) {
-               echo "<td width='10'>";
-               Html::showMassiveActionCheckBox(__CLASS__, $rule->fields["id"]);
-               echo "</td>";
-               echo "<td><a href='".$this->getFormURLWithID($rule->fields["id"])
-                                   . "&amp;onglet=1'>" .$rule->fields["name"] ."</a></td>";
-
-            } else {
-               echo "<td>" . $rule->fields["name"] . "</td>";
-            }
-
-            echo "<td>" . $rule->fields["description"] . "</td>";
-            echo "<td>" . Dropdown::getYesNo($rule->fields["is_active"]) . "</td>";
-            echo "</tr>\n";
-         }
-         echo $header_begin.$header_bottom.$header_end;
-         echo "</table>\n";
-
-         if ($canedit) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-         }
+      if ($canedit) {
+         $massiveactionparams = [
+            'num_displayed' => min($_SESSION['glpilist_limit'], $nb),
+            'specific_actions' => [
+               'update' => _x('button', 'Update'),
+               'purge'  => _x('button', 'Delete permanently')
+            ],
+            'display_arrow' => false,
+            'container' => 'ruleTable'
+         ];
+         Html::showMassiveActions($massiveactionparams);
       }
-      echo "</div>";
+      $fields_header = [
+         $this->getTitle(),
+         __('Description'),
+         __('Active')
+      ];
+      $values = [];
+      $massive_action = [];
+      foreach ($rules as $rule) {
+         $values[] = [
+            '<a href="'.$this->getFormURLWithID($rule->fields['id']).'&amp;onglet=1">'
+               .$rule->fields['name'].'</a>',
+            $rule->fields['description'],
+            Dropdown::getYesNo($rule->fields['is_active'])
+         ];
+         $massive_action[] = sprintf('item[%s][%s]', $this::class, $rule->fields['id']);
+      }
+      renderTwigTemplate('table.twig', [
+         'id' => 'ruleTable',
+         'fields' => $fields_header,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 
 

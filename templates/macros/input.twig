@@ -63,7 +63,6 @@
   })
   </script>
 {% endmacro %}
-
 {% macro actorSelect(attributes, root_doc) %}
   {% set rand=random() %}
   <div {% if attributes.id %} id="{{attributes.id}}" {% endif %} class="w-100">
@@ -155,9 +154,9 @@
   $("#ActorTypeSelector_{{rand}}").on("change", setActorSelectValues{{rand}})
   </script>
 {% endmacro %}
-
 {% macro select(attributes) %}
-  <select class='form-select' {% for name, value in attributes %} {% if name != 'values'%}{{name}}="{{value}}"{% endif %} {% endfor %}>
+  <select class='form-select {{attributes.class}}'
+    {% for name, value in attributes %} {% if name not in  ['values', 'class']%}{{name}}="{{value}}"{% endif %} {% endfor %}>
       {% for key, item in attributes.values %}
           <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
       {% endfor %}
@@ -173,7 +172,6 @@
   </script>
   {% endif %}
 {% endmacro %}
-
 {% macro file(attributes, root_doc) %}
   {% set rand=random() %}
   <div>
@@ -229,7 +227,6 @@
   })
   </script>
 {% endmacro %}
-
 {% macro imageUpload(attributes, root_doc) %}
   {% set rand=random() %}
   <div class="input-group">
@@ -263,7 +260,6 @@
     })
   </script>
 {% endmacro %}
-
 {% macro richtextarea(attributes, root_doc) %}
   <link rel="stylesheet" href="{{root_doc}}/node_modules/trumbowyg/dist/ui/trumbowyg.min.css">
   <textarea {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default('')|raw}}</textarea>
@@ -284,7 +280,6 @@
   });
   </script>
 {% endmacro %}
-
 {% macro datetime(attributes) %}
   <input class='form-control' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
   <input type="hidden" name="{{attributes.name}}" value="{{attributes.value|default("")|raw}}" />
@@ -294,7 +289,6 @@
   })
   </script>
 {% endmacro %}
-
 {% macro multiselect(attributes) %}
   {% set rand=random() %}
   <div {% if attributes.id %} id="{{attributes.id}}" {% endif %} class="w-100 d-flex flex-column align-items-center">
@@ -361,7 +355,22 @@
   }
   </script>
 {% endmacro %}
-
+{% macro checklist(attributes) %}
+  {% if attributes.id is not defined %}
+    {% set rand=random() %}
+  {% endif %}
+  <div style="height: 10rem;overflow-y: auto" class="container border border-secondary ps-3" id="{{attributes.id|default(rand)}}">
+    {% for name, option in attributes.options %}
+      <div class="row">
+        <input class="form-check-input col col-2" type="checkbox" value="{{name}}" id="{{attributes.id|default(rand)}}_{{loop.index}}" name="{{attributes.name}}[]"
+          {% if name in attributes.values %} checked {% endif %}>
+        <label class="form-check-label col col-10" for="{{attributes.id|default(rand)}}_{{loop.index}}">
+          {{option}}
+        </label>
+      </div>
+    {% endfor %}
+  </div>
+{% endmacro %}
 {% macro input(attributes, root_doc = '') %}
   {% if attributes.type == 'checkbox' %}
     <div class="form-switch">
@@ -382,6 +391,8 @@
     {{_self.ticketSelect(attributes, root_doc)}}
   {% elseif attributes.type == 'multiSelect' %}
     {{_self.multiSelect(attributes, root_doc)}}
+  {% elseif attributes.type == 'checklist' %}
+    {{_self.checklist(attributes)}}
   {% elseif attributes.type == 'twig' %}
     {% include attributes.template with attributes only %}
   {% elseif attributes.type == 'file' %}
@@ -394,5 +405,4 @@
     <input class='form-control' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
   {% endif %}
 {% endmacro %}
-
 {{_self.input(_context)}}

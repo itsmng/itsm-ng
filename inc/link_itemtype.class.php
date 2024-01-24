@@ -85,69 +85,75 @@ class Link_Itemtype extends CommonDBChild {
       }
 
       if ($canedit) {
-         echo "<div class='firstbloc'>";
-         echo "<form name='changeticket_form$rand' id='changeticket_form$rand' method='post'
-                action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
+         $values = [];
+         if (count($CFG_GLPI["link_types"])) {
+            foreach ($CFG_GLPI["link_types"] as $type) {
+               if ($item = getItemForItemtype($type)) {
+                  $values[$type] = $item->getTypeName(1);
+               }
+            }
+         }
+         asort($values);
 
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th colspan='2'>".__('Add an item type')."</th></tr>";
-
-         echo "<tr class='tab_bg_2'><td class='right'>";
-         echo "<input type='hidden' name='links_id' value='$links_id'>";
-         Dropdown::showItemTypes('itemtype', $CFG_GLPI["link_types"], ['used' => $used]);
-         echo "</td><td class='center'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "</td></tr>";
-
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'type'  => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add'),
+                  'class' => 'btn btn-secondary',
+               ]
+            ],
+            'content' => [
+               '' => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'links_id',
+                        'value' => $links_id,
+                     ],
+                     __('Add an item type') => [
+                        'type' => 'select',
+                        'name' => 'itemtype',
+                        'values' => array_merge([Dropdown::EMPTY_VALUE], $values),
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                     ]
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
-      echo "<div class='spaced'>";
       if ($canedit && $numrows) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams = ['num_displayed'  => min($_SESSION['glpilist_limit'], $numrows),
-                                      'container'      => 'mass'.__CLASS__.$rand];
+         $massiveactionparams = [
+            'num_displayed'  => min($_SESSION['glpilist_limit'], $numrows),
+            'container'      => 'tab_associated_itemtypes',
+            'display_arrow'  => false,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixe'>";
-      $header_begin  = "<tr>";
-      $header_top    = '';
-      $header_bottom = '';
-      $header_end    = '';
-      if ($canedit && $numrows) {
-         $header_top    .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_top    .= "</th>";
-         $header_bottom .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_bottom .= "</th>";
-      }
-      $header_end .= "<th>"._n('Type', 'Types', 1)."</th>";
-      $header_end .= "</tr>";
-      echo $header_begin.$header_top.$header_end;
+      $fields = [_n('Type', 'Types', 1)];
+      $values = [];
+      $massiveactionparams = [];
 
       foreach ($types as $data) {
          $typename = NOT_AVAILABLE;
          if ($item = getItemForItemtype($data['itemtype'])) {
-            $typename = $item->getTypeName(1);
-            echo "<tr class='tab_bg_1'>";
-            if ($canedit) {
-               echo "<td>";
-               Html::showMassiveActionCheckBox(__CLASS__, $data["id"]);
-               echo "</td>";
-            }
-            echo "<td class='center'>$typename</td>";
-            echo "</tr>";
+            $values[] = [$item->getTypeName(1)];
+            $massiveactionparams[] = sprintf('item[%s][%s]', self::class, $data['id']);
          }
       }
-      echo $header_begin.$header_bottom.$header_end;
-      echo "</table>";
-      if ($canedit && $numrows) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+         'id' => 'tab_associated_itemtypes',
+         'fields' => $fields,
+         'values' => $values,
+         'itemtype' => self::class,
+         'massive_action' => $massiveactionparams,
+      ]);
    }
 
 
