@@ -147,6 +147,7 @@ if ($CFG_GLPI["use_public_faq"]) {
 
 $twig_vars["copyright_message"] = Html::getCopyrightMessage(false);
 
+$twig_vars["csrf_token"] = $_SESSION['_glpi_csrf_token'];
 
 // call cron
 if (!GLPI_DEMO_MODE) {

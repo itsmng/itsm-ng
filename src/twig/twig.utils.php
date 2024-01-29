@@ -93,7 +93,7 @@ function renderTwigForm($form, $additionnalHtml = '', $colAmount = 2)
             'col' => $colAmount,
             'additionnalHtml' => $additionnalHtml,
             'root_doc' => $CFG_GLPI['root_doc'],
-            'csrf_token' => $_SESSION['csrf_token'],
+            'csrf_token' => $_SESSION['_glpi_csrf_token'],
         ]);
     } catch (Exception $e) {
         echo $e->getMessage();

@@ -1222,26 +1222,7 @@ class Session {
     * @return string
    **/
    static public function getNewCSRFToken(bool $standalone = false) {
-      global $CURRENTCSRFTOKEN;
-
-      $token = $standalone ? '' : $CURRENTCSRFTOKEN;
-
-      if (empty($token)) {
-         do {
-            $token = bin2hex(random_bytes(32));
-         } while ($token == '');
-      }
-
-      if (!isset($_SESSION['glpicsrftokens'])) {
-         $_SESSION['glpicsrftokens'] = [];
-      }
-      $_SESSION['glpicsrftokens'][$token] = time() + GLPI_CSRF_EXPIRES;
-
-      if (!$standalone) {
-         $CURRENTCSRFTOKEN = $token;
-      }
-
-      return $token;
+      return $_SESSION['_glpi_csrf_token'];
    }
 
 

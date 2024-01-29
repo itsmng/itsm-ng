@@ -4682,7 +4682,7 @@ JAVASCRIPT
 
       $out = "\n";
       if (GLPI_USE_CSRF_CHECK) {
-         $out .= Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]) . "\n";
+         $out .= Html::hidden('_glpi_csrf_token', ['value' => $_SESSION['_glpi_csrf_token']]) . "\n";
       }
 
       if (isset($CFG_GLPI['checkbox-zero-on-empty']) && $CFG_GLPI['checkbox-zero-on-empty']) {

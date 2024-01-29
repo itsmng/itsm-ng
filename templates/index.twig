@@ -6,6 +6,7 @@
         <div id='text-login'>{{text_login}}</div>
     <div id='boxlogin'>
         <form action='{{root_doc}}/front/login.php' method='post'>
+            <input type='hidden' name='_glpi_csrf_token' value={{csrf_token}} />
             {% if noAUTO_set %}
             <input type='hidden' name='noAUTO' value='1' />
             {% elseif redirect_set %}
