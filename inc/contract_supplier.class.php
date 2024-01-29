@@ -120,105 +120,94 @@ class Contract_Supplier extends CommonDBRelation {
       $number = count($iterator);
 
       $contracts = [];
-      $used      = [];
+      $options = getOptionForItems('Contract', [
+         'entities_id' => $supplier->fields["entities_id"],
+         'is_recursive' => $supplier->fields["is_recursive"]
+      ]);
       while ($data = $iterator->next()) {
-         $contracts[$data['linkid']]   = $data;
-         $used[$data['id']]            = $data['id'];
-      }
+         unset($options[$data['id']]);
+         $contracts[$data['linkid']] = $data;
+      };
 
       if ($canedit) {
-         echo "<div class='firstbloc'>";
-         echo "<form name='contractsupplier_form$rand' id='contractsupplier_form$rand' method='post'
-                action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-         echo "<input type='hidden' name='suppliers_id' value='$ID'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th colspan='2'>".__('Add a contract')."</th></tr>";
-
-         echo "<tr class='tab_bg_1'><td class='right'>";
-         Contract::dropdown(['used'         => $used,
-                                  'entity'       => $supplier->fields["entities_id"],
-                                  'entity_sons'  => $supplier->fields["is_recursive"],
-                                  'nochecklimit' => true]);
-
-         echo "</td><td class='center'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               __('Add a contract') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'suppliers_id',
+                        'value' => $ID
+                     ],
+                     '' => [
+                        'type' => 'select',
+                        'name' => 'contracts_id',
+                        'values' => $options,
+                        'actions' => getItemActionButtons(['info'], 'Contract'),
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                     ]
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
-      echo "<div class='spaced'>";
       if ($canedit && $number) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams = ['container'     => 'mass'.__CLASS__.$rand,
-                                      'num_displayed' => min($_SESSION['glpilist_limit'], $number)];
+         $massiveactionparams = [
+            'container'     => 'tableForContractSupplier',
+            'num_displayed' => min($_SESSION['glpilist_limit'], $number),
+            'display_arrow' => false,
+            'is_deleted' => false,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixe'>";
-
-      $header_begin  = "<tr>";
-      $header_top    = '';
-      $header_bottom = '';
-      $header_end    = '';
-      if ($canedit && $number) {
-         $header_top    .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_top    .= "</th>";
-         $header_bottom .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_bottom .= "</th>";
-      }
-      $header_end .= "<th>".__('Name')."</th>";
-      $header_end .= "<th>".Entity::getTypeName(1)."</th>";
-      $header_end .= "<th>"._x('phone', 'Number')."</th>";
-      $header_end .= "<th>".ContractType::getTypeName(1)."</th>";
-      $header_end .= "<th>".__('Start date')."</th>";
-      $header_end .= "<th>".__('Initial contract period')."</th>";
-      $header_end .= "</tr>";
-      echo $header_begin.$header_top.$header_end;
-
+      $fields = [
+         'name' => __('Name'),
+         'entities_id' => Entity::getTypeName(1),
+         'num' => _x('phone', 'Number'),
+         'contracttypes_id' => ContractType::getTypeName(1),
+         'begin_date' => __('Start date'),
+         'duration' => __('Initial contract period')
+      ];
+      $values = [];
+      $massiveactionValues = [];
       foreach ($contracts as $data) {
          $cID        = $data["id"];
          $assocID    = $data["linkid"];
-
-         echo "<tr class='tab_bg_1".($data["is_deleted"]?"_2":"")."'>";
-         if ($canedit) {
-            echo "<td>";
-            Html::showMassiveActionCheckBox(__CLASS__, $assocID);
-            echo "</td>";
-         }
          $name = $data["name"];
          if ($_SESSION["glpiis_ids_visible"]
              || empty($data["name"])) {
             $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
          }
-         echo "<td class='center b'>
-               <a href='".Contract::getFormURLWithID($cID)."'>".$name."</a>";
-         echo "</td>";
-         echo "<td class='center'>".Dropdown::getDropdownName("glpi_entities", $data["entity"]);
-         echo "</td><td class='center'>".$data["num"]."</td>";
-         echo "<td class='center'>".
-                Dropdown::getDropdownName("glpi_contracttypes", $data["contracttypes_id"])."</td>";
-         echo "<td class='center'>".Html::convDate($data["begin_date"])."</td>";
-         echo "<td class='center'>";
-         sprintf(_n('%d month', '%d months', $data["duration"]), $data["duration"]);
-
-         if (($data["begin_date"] != '') && !empty($data["begin_date"])) {
-            echo " -> ".Infocom::getWarrantyExpir($data["begin_date"], $data["duration"], 0, true);
-         }
-         echo "</td>";
-         echo "</tr>";
+         $values[] = [
+            'checkbox' => $canedit ? Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand) : '',
+            'name' => "<a href='".Contract::getFormURLWithID($cID)."'>".$name."</a>",
+            'entities_id' => Dropdown::getDropdownName("glpi_entities", $data["entity"]),
+            'num' => $data["num"],
+            'contracttypes_id' => Dropdown::getDropdownName("glpi_contracttypes", $data["contracttypes_id"]),
+            'begin_date' => Html::convDate($data["begin_date"]),
+            'duration' => sprintf(_n('%d month', '%d months', $data["duration"]), $data["duration"])
+         ];
+         $massiveactionValues[] = sprintf('item[%s][%s]', __CLASS__, $assocID);
       }
-      if ($number) {
-         echo $header_begin.$header_bottom.$header_end;
-      }
-      echo "</table>";
-      if ($canedit && $number) {
-         $massiveactionparams['ontop'] =false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+         'id' => 'tableForContractSupplier',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massiveactionValues,
+      ]);
    }
 
 
