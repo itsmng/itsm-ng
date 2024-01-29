@@ -55,6 +55,7 @@
 {{additionnalHtml|raw}}
 </div>
 <div class="d-flex justify-content-around">
+<input type="hidden" name="csrf_token" value={{csrf_token}} />
 {% if not form.buttons %}
 <button type="submit" class='btn btn-primary'>{{"Submit"|trans}}</button>
 {% endif %}
