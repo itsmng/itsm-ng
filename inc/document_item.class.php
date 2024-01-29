@@ -431,8 +431,11 @@ class Document_Item extends CommonDBRelation{
 
       if ($canedit && $number) {
          $massiveactionparams = [
-            'container' => 'tableForDocumentItem',
-            'display_arrow' => false,
+            'container'        => 'tableForDocumentItem',
+            'specific_actions' => [
+               'purge' => _x('button', 'Delete permanently')
+            ],
+            'display_arrow' => false
          ];
          Html::showMassiveActions($massiveactionparams);
       }
@@ -444,6 +447,7 @@ class Document_Item extends CommonDBRelation{
          __('Inventory number')
       ];
       $values = [];
+      $massiveactionValues = [];
       while ($type_row = $types_iterator->next()) {
          $itemtype = $type_row['itemtype'];
          if (!($item = getItemForItemtype($itemtype))) {
@@ -512,14 +516,17 @@ class Document_Item extends CommonDBRelation{
                   isset($data["serial"])? "".$data["serial"]."" :"-",
                   isset($data["otherserial"])? "".$data["otherserial"]."" :"-",
                ];
+               $values[] = $newData;
+               $massiveactionValues[] = sprintf('item[%s][%s]', $itemtype, $data['id']);
             }
-            $values[] = $newData;
          }
       }
 
       renderTwigTemplate('table.twig', [
+         'id' => 'tableForDocumentItem',
          'fields' => $fields,
          'values' => $values,
+         'massive_action' => $massiveactionValues,
       ]);
    }
 
