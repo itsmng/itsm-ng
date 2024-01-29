@@ -31,7 +31,7 @@
 					<th data-field="state" data-checkbox="true"></th>
 				{% endif %}
 				{% for field in fields %}
-					<th data-sortable="true">{{ field }}</th>
+					<th data-sortable="true">{{ field|raw }}</th>
 				{% endfor %}
 			</tr>
 		</thead>
