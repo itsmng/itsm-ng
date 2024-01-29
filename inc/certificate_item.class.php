@@ -262,7 +262,10 @@ class Certificate_Item extends CommonDBRelation {
 
       if ($canedit && $number) {
          $massiveactionparams = [
-            'container' => 'tableForDocumentItem',
+            'container' => 'tableForCertificateItem',
+            'specific_actions' => [
+               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+            ],
             'display_arrow' => false,
          ];
          Html::showMassiveActions($massiveactionparams);
@@ -275,6 +278,7 @@ class Certificate_Item extends CommonDBRelation {
          __('Inventory number')
       ];
       $values = [];
+      $massiveactionValues = [];
       while ($type_row = $types_iterator->next()) {
          $itemtype = $type_row['itemtype'];
          if (!($item = getItemForItemtype($itemtype))) {
@@ -343,14 +347,17 @@ class Certificate_Item extends CommonDBRelation {
                   isset($data["serial"])? "".$data["serial"]."" :"-",
                   isset($data["otherserial"])? "".$data["otherserial"]."" :"-",
                ];
+               $values[] = $newData;
+               $massiveactionValues[] = sprintf('item[%s][%s]', $itemtype, $data['id']);
             }
-            $values[] = $newData;
          }
       }
 
       renderTwigTemplate('table.twig', [
+         'id' => 'tableForCertificateItem',
          'fields' => $fields,
          'values' => $values,
+         'massive_action' => $massiveactionValues,
       ]);
    }
 
