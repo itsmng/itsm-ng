@@ -497,7 +497,7 @@ class RuleCollection extends CommonDBTM {
          $newValue[] = $rule->getLink(['withtype' => true]);
          $newValue[] = $rule->fields['description'];
          if ($use_conditions) {
-            $newValue[] = $rule->getConditionName();
+            $newValue[] = $rule->getConditionName($rule->fields['condition']);
          }
          $newValue[] = $rule->fields['is_active'];
          if ($display_entities) {
