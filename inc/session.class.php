@@ -31,6 +31,7 @@
  */
 
 use Glpi\Event;
+use itsmng\Csrf;
 
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
@@ -1222,7 +1223,7 @@ class Session {
     * @return string
    **/
    static public function getNewCSRFToken(bool $standalone = false) {
-      return $_SESSION['_glpi_csrf_token'];
+      return $_SESSION['_glpi_csrf_token'] ?? Csrf::generate();
    }
 
 

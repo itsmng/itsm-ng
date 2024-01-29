@@ -159,7 +159,7 @@
   }
 
   // Dropdown menu item click handlers
-  $('.dropdown-menu a').on('click', function(event) {
+  $('.tab-selector a').on('click', function(event) {
     event.preventDefault();
     updateGridContent($(this));
     updateWidgetWidth();
@@ -167,7 +167,7 @@
 	  return false;
   });
 
-  $('.dropdown-menu input[type="checkbox"]').on('click', function(event) {
+  $('.tab-selector input[type="checkbox"]').on('click', function(event) {
     event.preventDefault();
     event.target.checked = !event.target.checked;
     updateGridContent($(this).parent());
