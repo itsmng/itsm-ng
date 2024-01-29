@@ -1217,6 +1217,7 @@ class Session {
     *    Generates a standalone token that will not be shared with other component of current request.
     *
     * @since 0.83.3
+    * @deprecated 2.0.0
     *
     * @return string
    **/
@@ -1248,6 +1249,7 @@ class Session {
     * Clean expired CSRF tokens
     *
     * @since 0.83.3
+    * @deprecated 2.0.0
     *
     * @return void
    **/
@@ -1277,6 +1279,7 @@ class Session {
     * it will be removed from the list of valid tokens.
     *
     * @since 0.83.3
+    * @deprecated 2.0.0
     *
     * @param array $data $_POST data
     *
@@ -1306,6 +1309,7 @@ class Session {
     * Check CSRF data
     *
     * @since 0.84.2
+    * @deprecated 2.0.0
     *
     * @param array $data $_POST data
     *
