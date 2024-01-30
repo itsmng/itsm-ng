@@ -179,133 +179,189 @@ class Certificate_Item extends CommonDBRelation {
     * @return void|boolean (display) Returns false if there is a rights error.
     **/
    public static function showForCertificate(Certificate $certificate) {
+      global $CFG_GLPI;
 
       $instID = $certificate->fields['id'];
       if (!$certificate->can($instID, READ)) {
          return false;
       }
       $canedit = $certificate->can($instID, UPDATE);
-      $rand    = mt_rand();
 
-      $types_iterator = self::getDistinctTypes($instID, ['itemtype' => Certificate::getTypes(true)]);
+      $types_iterator = self::getDistinctTypes($instID, ['itemtype' => Certificate::getTypes()]);
       $number = count($types_iterator);
 
-      if (Session::isMultiEntitiesMode()) {
-         $colsup = 1;
-      } else {
-         $colsup = 0;
-      }
-
       if ($canedit) {
-         echo "<div class='firstbloc'>";
-         echo "<form method='post' name='certificates_form$rand'
-                     id='certificates_form$rand'
-                     action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'>";
-         echo "<th colspan='" . ($canedit ? (5 + $colsup) : (4 + $colsup)) . "'>" .
-               __('Add an item') . "</th></tr>";
-
-         echo "<tr class='tab_bg_1'><td colspan='" . (3 + $colsup) . "' class='center'>";
-         Dropdown::showSelectItemFromItemtypes(
-               ['items_id_name'   => 'items_id',
-                'itemtypes'       => Certificate::getTypes(true),
-                'entity_restrict' => ($certificate->fields['is_recursive']
-                                      ? getSonsOf('glpi_entities',
-                                       $certificate->fields['entities_id'])
-                                       : $certificate->fields['entities_id']),
-                'checkright'      => true,
-               ]);
-         echo "</td><td colspan='2' class='center' class='tab_bg_1'>";
-         echo Html::hidden('certificates_id', ['value' => $instID]);
-         echo Html::submit(_x('button', 'Add'), ['name' => 'add']);
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $itemtypes = Certificate::getTypes(true);
+         $options = [];
+         foreach ($itemtypes as $itemtype) {
+            $options[$itemtype] = $itemtype::getTypeName(1);
+         };
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add an item'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               __('Add an item') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'certificates_id',
+                        'value' => $instID
+                     ],
+                     __('Type') => [
+                        'type' => 'select',
+                        'id' => 'dropdown_itemtype',
+                        'name' => 'itemtype',
+                        'values' => [Dropdown::EMPTY_VALUE] + array_unique($options),
+                        'col_lg' => 6,
+                        'hooks' => [
+                           'change' => <<<JS
+                              $.ajax({
+                                    method: "POST",
+                                    url: "$CFG_GLPI[root_doc]/ajax/getDropdownValue.php",
+                                    data: {
+                                       itemtype: this.value,
+                                       display_emptychoice: 1,
+                                    },
+                                    success: function(response) {
+                                       const data = response.results;
+                                       $('#dropdown_items_id').empty();
+                                       for (let i = 0; i < data.length; i++) {
+                                          if (data[i].children) {
+                                             const group = $('#dropdown_items_id')
+                                                .append("<optgroup label='" + data[i].text + "'></optgroup>");
+                                             for (let j = 0; j < data[i].children.length; j++) {
+                                                group.append("<option value='" + data[i].children[j].id + "'>" + data[i].children[j].text + "</option>");
+                                             }
+                                          } else {
+                                             $('#dropdown_items_id').append("<option value='" + data[i].id + "'>" + data[i].text + "</option>");
+                                          }
+                                       }
+                                    }
+                                 });
+                           JS,
+                        ]
+                     ],
+                     __('Item') => [
+                        'type' => 'select',
+                        'id' => 'dropdown_items_id',
+                        'name' => 'items_id',
+                        'values' => [],
+                        'col_lg' => 6,
+                     ],
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
-      echo "<div class='spaced'>";
       if ($canedit && $number) {
-         Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-         $massiveactionparams = [];
+         $massiveactionparams = [
+            'container' => 'tableForCertificateItem',
+            'specific_actions' => [
+               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+            ],
+            'display_arrow' => false,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr>";
-
-      if ($canedit && $number) {
-         echo "<th width='10'>" .
-            Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
-      }
-
-      echo "<th>" . _n('Type', 'Types', 1) . "</th>";
-      echo "<th>" . __('Name') . "</th>";
-      if (Session::isMultiEntitiesMode()) {
-         echo "<th>" . Entity::getTypeName(1) . "</th>";
-      }
-      echo "<th>" . __('Serial number') . "</th>";
-      echo "<th>" . __('Inventory number') . "</th>";
-      echo "</tr>";
-
+      $fields = [
+         _n('Type', 'Types', 1),
+         __('Name'),
+         Entity::getTypeName(1),
+         __('Serial number'),
+         __('Inventory number')
+      ];
+      $values = [];
+      $massiveactionValues = [];
       while ($type_row = $types_iterator->next()) {
          $itemtype = $type_row['itemtype'];
-
          if (!($item = getItemForItemtype($itemtype))) {
             continue;
          }
-
          if ($item->canView()) {
             $iterator = self::getTypeItems($instID, $itemtype);
 
-            if (count($iterator)) {
-               Session::initNavigateListItems($itemtype, Certificate::getTypeName(2) . " = " . $certificate->fields['name']);
-               while ($data = $iterator->next()) {
-                  $item->getFromDB($data["id"]);
-                  Session::addToNavigateListItems($itemtype, $data["id"]);
-                  $ID = "";
-                  if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
-                     $ID = " (" . $data["id"] . ")";
-                  }
+            if ($itemtype == 'SoftwareLicense') {
+               $soft = new Software();
+            }
 
-                  $link = $itemtype::getFormURLWithID($data["id"]);
-                  $name = "<a href=\"" . $link . "\">" . $data["name"] . "$ID</a>";
-
-                  echo "<tr class='tab_bg_1'>";
-
-                  if ($canedit) {
-                     echo "<td width='10'>";
-                     Html::showMassiveActionCheckBox(__CLASS__, $data["linkid"]);
-                     echo "</td>";
-                  }
-                  echo "<td class='center'>" . $item->getTypeName(1) . "</td>";
-                  echo "<td class='center' " . (isset($data['is_deleted']) && $data['is_deleted'] ? "class='tab_bg_2_2'" : "") .
-                     ">" . $name . "</td>";
-                  if (Session::isMultiEntitiesMode()) {
-                     $entity = ($item->isEntityAssign() ?
-                        Dropdown::getDropdownName("glpi_entities", $data['entity']) :
-                        '-');
-                     echo "<td class='center'>" . $entity . "</td>";
-                  }
-                  echo "<td class='center'>" . (isset($data["serial"]) ? "" . $data["serial"] . "" : "-") . "</td>";
-                  echo "<td class='center'>" . (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-") . "</td>";
-                  echo "</tr>";
+            while ($data = $iterator->next()) {
+               $linkname_extra = "";
+               if ($item instanceof ITILFollowup || $item instanceof ITILSolution) {
+                  $linkname_extra = "(" . $item::getTypeName(1) . ")";
+                  $itemtype = $data['itemtype'];
+                  $item = new $itemtype();
+                  $item->getFromDB($data['items_id']);
+                  $data['id'] = $item->fields['id'];
+                  $data['entity'] = $item->fields['entities_id'];
+               } else if ($item instanceof CommonITILTask) {
+                  $linkname_extra = "(" . CommonITILTask::getTypeName(1) . ")";
+                  $itemtype = $item->getItilObjectItemType();
+                  $item = new $itemtype();
+                  $item->getFromDB($data[$item->getForeignKeyField()]);
+                  $data['id'] = $item->fields['id'];
+                  $data['entity'] = $item->fields['entities_id'];
                }
+
+               if ($item instanceof CommonITILObject) {
+                  $data["name"] = sprintf(__('%1$s: %2$s'), $item->getTypeName(1), $data["id"]);
+               }
+
+               if ($itemtype == 'SoftwareLicense') {
+                  $soft->getFromDB($data['softwares_id']);
+                  $data["name"] = sprintf(__('%1$s - %2$s'), $data["name"],
+                                          $soft->fields['name']);
+               }
+               if ($item instanceof CommonDevice) {
+                  $linkname = $data["designation"];
+               } else if ($item instanceof Item_Devices) {
+                  $linkname = $data["itemtype"];
+               } else {
+                  $linkname = $data["name"];
+               }
+               if ($_SESSION["glpiis_ids_visible"]
+                     || empty($data["name"])) {
+                  $linkname = sprintf(__('%1$s (%2$s)'), $linkname, $data["id"]);
+               }
+               if ($item instanceof Item_Devices) {
+                  $tmpitem = new $item::$itemtype_2();
+                  if ($tmpitem->getFromDB($data[$item::$items_id_2])) {
+                     $linkname = $tmpitem->getLink();
+                  }
+               }
+
+               $link     = $itemtype::getFormURLWithID($data['id']);
+               $name = "<a href='$link'>$linkname $linkname_extra</a>";
+
+               $newData = [
+                  $item->getTypeName(1),
+                  $name,
+                  isset($data['entity']) ? Dropdown::getDropdownName("glpi_entities",
+                     $data['entity']) : "-",
+                  isset($data["serial"])? "".$data["serial"]."" :"-",
+                  isset($data["otherserial"])? "".$data["otherserial"]."" :"-",
+               ];
+               $values[] = $newData;
+               $massiveactionValues[] = sprintf('item[%s][%s]', $itemtype, $data['id']);
             }
          }
       }
-      echo "</table>";
 
-      if ($canedit && $number) {
-         $paramsma = [
-            'ontop' => false,
-         ];
-         Html::showMassiveActions($paramsma);
-         Html::closeForm();
-      }
-      echo "</div>";
-
+      renderTwigTemplate('table.twig', [
+         'id' => 'tableForCertificateItem',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massiveactionValues,
+      ]);
    }
 
    /**

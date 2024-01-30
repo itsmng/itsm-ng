@@ -529,82 +529,107 @@ class Item_SoftwareLicense extends CommonDBRelation {
       //SoftwareLicense ID
       $number = self::countForLicense($searchID);
 
-      echo "<div class='center'>";
-
-      //If the number of linked assets have reached the number defined in the license,
-      //and over-quota is not allowed, do not allow to add more assets
       if ($canedit
          && ($license->getField('number') == -1 || $number < $license->getField('number')
          || $license->getField('allow_overquota'))) {
-         echo "<form method='post' action='".Item_SoftwareLicense::getFormURL()."'>";
-         echo "<input type='hidden' name='softwarelicenses_id' value='$searchID'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2 center'>";
-         echo "<td>";
-
-         $rand = mt_rand();
-         Dropdown::showItemTypes('itemtype', $CFG_GLPI['software_types'], [
-            'value'                 => 'Computer',
-            'rand'                  => $rand,
-            'width'                 => 'unset',
-            'display_emptychoice'   => false
-         ]);
-
-         $p = ['idtable'            => '__VALUE__',
-            'rand'                  => $rand,
-            'name'                  => "items_id",
-            'width'                 => 'unset'
-         ];
-
-         Ajax::updateItemOnSelectEvent("dropdown_itemtype$rand", "results_itemtype$rand",
-            $CFG_GLPI["root_doc"]."/ajax/dropdownAllItems.php", $p);
-
-         // We have a preselected value, so we want to trigger the item list to show immediately
-         $js = <<<JAVASCRIPT
-$(document).ready(function() {
-   $("#dropdown_itemtype$rand").trigger({
-      type: 'change'
-   });
-});
-JAVASCRIPT;
-         echo Html::scriptBlock($js);
-
-         echo "<span id='results_itemtype$rand'>\n";
-         echo "</td>";
-         echo "<td><input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "</td></tr>";
-
-         echo "</table>";
-         Html::closeForm();
-         $ajax_url = $CFG_GLPI['root_doc'] . '/ajax/dropdownAllItems.php';
-         $js = <<<JAVASCRIPT
-function updateItemDropdown(itemtype_el) {
-   $.ajax({
-      method: "POST",
-      url: "$ajax_url",
-      data: {
-         name: 'items_id',
-         idtable: itemtype_el.value
-      },
-      success: function(data) {
-         $("[name='items_id']").select2('destroy').empty().replaceWith(data);
+            $values = [];
+            $types = $CFG_GLPI['software_types'];
+            if (count($types)) {
+               foreach ($types as $type) {
+                  if ($item = getItemForItemtype($type)) {
+                     $values[$type] = $item->getTypeName(1);
+                  }
+               }
+            }
+            asort($values);
+            $form = [
+               'action' => self::getFormURL(),
+               'buttons' => [
+                  [
+                     'type' => 'submit',
+                     'name' => 'add',
+                     'value' => _sx('button', 'Add'),
+                     'class' => 'btn btn-secondary'
+                  ]
+               ],
+               'content' => [
+                  '' => [
+                     'visible' => true,
+                     'inputs' => [
+                        [
+                           'type' => 'hidden',
+                           'name' => 'softwarelicenses_id',
+                           'value' => $searchID
+                        ],
+                        __('Item type') => [
+                           'type' => 'select',
+                           'name' => 'itemtype',
+                           'id' => 'dropdown_itemtype',
+                           'values' => $values,
+                           'value' => 'Computer',
+                           'col_lg' => 6,
+                           'hooks' => [
+                              'change' => <<<JS
+                                 $.ajax({
+                                    method: "POST",
+                                    url: "$CFG_GLPI[root_doc]/ajax/getDropdownValue.php",
+                                    data: {
+                                       itemtype: this.value,
+                                    },
+                                    success: function(response) {
+                                       const data = response.results;
+                                       $('#dropdown_items_id').empty();
+                                       $('#dropdown_items_id').append("<option value='" + data[0].id + "'>" + data[0].text + "</option>");
+                                       delete data[0];
+                                       for (let i = 0; i < data.length; i++) {
+                                          const group = $('#dropdown_items_id')
+                                             .append("<optgroup label='" + data[i].text + "'></optgroup>");
+                                          for (let j = 0; j < data[i].children.length; j++) {
+                                             group.append("<option value='" + data[i].children[j].id + "'>" + data[i].children[j].text + "</option>");
+                                          }
+                                       }
+                                    }
+                                 });
+                              JS,
+                           ]
+                        ],
+                        __('Item') => [
+                           'type' => 'select',
+                           'name' => 'items_id',
+                           'id' => 'dropdown_items_id',
+                           'values' => [],
+                           'value' => '',
+                           'col_lg' => 6,
+                           'init' => <<<JS
+                              $.ajax({
+                                 method: "POST",
+                                 url: "$CFG_GLPI[root_doc]/ajax/getDropdownValue.php",
+                                 data: {
+                                    itemtype: $('#dropdown_itemtype').val(),
+                                 },
+                                 success: function(response) {
+                                    const data = response.results;
+                                    console.log(data)
+                                    $('#dropdown_items_id').empty();
+                                    $('#dropdown_items_id').append("<option value='" + data[0].id + "'>" + data[0].text + "</option>");
+                                    delete data[0];
+                                    for (let i = 1; i < data.length; i++) {
+                                       const group = $('#dropdown_items_id')
+                                          .append("<optgroup label='" + data[i].text + "'></optgroup>");
+                                       for (let j = 0; j < data[i].children.length; j++) {
+                                          group.append("<option value='" + data[i].children[j].id + "'>" + data[i].children[j].text + "</option>");
+                                       }
+                                    }
+                                 }
+                              });
+                           JS,
+                        ]
+                     ]
+                  ]
+               ]
+            ];
+            renderTwigForm($form);
       }
-   });
-}
-JAVASCRIPT;
-         echo Html::scriptBlock($js);
-      }
-
-      if ($number < 1) {
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr><th>".__('No item found')."</th></tr>";
-         echo "</table></div>\n";
-         return;
-      }
-
-      // Display the pager
-      Html::printAjaxPager(__('Affected items'), $start, $number);
 
       $queries = [];
       foreach ($CFG_GLPI['software_types'] as $itemtype) {
@@ -746,14 +771,17 @@ JAVASCRIPT;
       ];
       $iterator = $DB->request($criteria);
 
-      $rand = mt_rand();
-
       if ($data = $iterator->next()) {
          if ($canedit) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-            $massiveactionparams = ['num_displayed'    => min($_SESSION['glpilist_limit'], count($iterator)),
-                                          'container'        => 'mass'.__CLASS__.$rand,
-                                          'specific_actions' => ['purge' => _x('button', 'Delete permanently')]];
+            $massiveactionparams = [
+               'num_displayed'    => min($_SESSION['glpilist_limit'], count($iterator)),
+               'container'        => 'tableForSoftwareLicenceItem',
+               'specific_actions' => [
+                  'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+               ],
+               'is_deleted' => false,
+               'display_arrow' => false
+            ];
 
             // show transfer only if multi licenses for this software
             if (self::countLicenses($data['softid']) > 1) {
@@ -776,96 +804,58 @@ JAVASCRIPT;
          $text = sprintf(__('%1$s = %2$s'), Software::getTypeName(1), $soft->fields["name"]);
          $text = sprintf(__('%1$s - %2$s'), $text, $data["license"]);
 
-         Session::initNavigateListItems($data['item_type'], $text);
-
-         echo "<table class='tab_cadre_fixehov'>";
-
-         $columns = ['item_type' => __('Item type'),
-                           'itemname'          => __('Name'),
-                           'entity'            => Entity::getTypeName(1),
-                           'serial'            => __('Serial number'),
-                           'otherserial'       => __('Inventory number'),
-                           'location,itemname' => Location::getTypeName(1),
-                           'state,itemname'    => __('Status'),
-                           'groupe,itemname'   => Group::getTypeName(1),
-                           'username,itemname' => User::getTypeName(1)];
-         if (!$showEntity) {
-            unset($columns['entity']);
+         $fields = [
+            __('Item type'),
+            __('Name'),
+         ];
+         if ($showEntity) {
+            $fields[] = Entity::getTypeName(1);
          }
-
-         $header_begin  = "<tr>";
-         $header_top    = '';
-         $header_bottom = '';
-         $header_end    = '';
-         if ($canedit) {
-            $header_begin  .= "<th width='10'>";
-            $header_top    .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header_bottom .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header_end    .= "</th>";
-         }
-
-         foreach ($columns as $key => $val) {
-            // Non order column
-            if ($key[0] == '_') {
-               $header_end .= "<th>$val</th>";
-            } else {
-               $header_end .= "<th".($sort == "`$key`" ? " class='order_$order'" : '').">".
-                              "<a href='javascript:reloadTab(\"sort=$key&amp;order=".
-                              (($order == "ASC") ?"DESC":"ASC")."&amp;start=0\");'>$val</a></th>";
-            }
-         }
-
-         $header_end .= "</tr>\n";
-         echo $header_begin.$header_top.$header_end;
-
+         $fields[] = __('Serial number');
+         $fields[] = __('Inventory number');
+         $fields[] = Location::getTypeName(1);
+         $fields[] = __('Status');
+         $fields[] = Group::getTypeName(1);
+         $fields[] = User::getTypeName();
+         $values = [];
+         $massiveactionValues = [];
          do {
-            Session::addToNavigateListItems($data['item_type'], $data["iID"]);
-
-            echo "<tr class='tab_bg_2'>";
-            if ($canedit) {
-               echo "<td>".Html::getMassiveActionCheckBox(__CLASS__, $data["id"])."</td>";
-            }
-
-            echo "<td>{$data['item_type']}</td>";
-            $itemname = $data['itemname'];
-            if (empty($itemname) || $_SESSION['glpiis_ids_visible']) {
-               $itemname = sprintf(__('%1$s (%2$s)'), $itemname, $data['iID']);
-            }
-
+            $newValue = [];
+            $newValue[] = $data['itemtype'];
             if ($canshowitems[$data['item_type']]) {
-               echo "<td><a href='".$data['item_type']::getFormURLWithID($data['iID'])."'>$itemname</a></td>";
+               $newValue[] = "<a href='".$data['item_type']::getFormURLWithID($data['iID'])."'>"
+                                       .$data['itemname']."</a>";
             } else {
-               echo "<td>".$itemname."</td>";
+               $newValue[] = $data['itemname'];
             }
 
             if ($showEntity) {
-               echo "<td>".$data['entity']."</td>";
+               $newValue[] = $data['entity'];
             }
-            echo "<td>".$data['serial']."</td>";
-            echo "<td>".$data['otherserial']."</td>";
-            echo "<td>".$data['location']."</td>";
-            echo "<td>".$data['state']."</td>";
-            echo "<td>".$data['groupe']."</td>";
-            echo "<td>".formatUserName($data['userid'], $data['username'], $data['userrealname'],
-                                       $data['userfirstname'], $linkUser)."</td>";
-            echo "</tr>\n";
+            $newValue = array_merge($newValue, [
+               $data['serial'],
+               $data['otherserial'],
+               $data['location'],
+               $data['state'],
+               $data['groupe'],
+               formatUserName($data['userid'], $data['username'],
+               $data['userrealname'], $data['userfirstname'],
+               $linkUser)
+            ]);
 
+            $values[] = $newValue;
+            $massiveactionValues[] = sprintf('item[%s][%s]', $data['itemtype'], $data['items_id']);
          } while ($data = $iterator->next());
-         echo $header_begin.$header_bottom.$header_end;
-         echo "</table>\n";
-         if ($canedit) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-         }
+         renderTwigTemplate('table.twig', [
+            'id' => 'tableForSoftwareLicenceItem',
+            'fields' => $fields,
+            'values' => $values,
+            'massive_action' => $massiveactionValues
+         ]);
 
       } else { // Not found
          echo __('No item found');
       }
-      Html::printAjaxPager(__('Affected items'), $start, $number);
-
-      echo "</div>\n";
-
    }
 
 

@@ -100,7 +100,7 @@ class Appliance_Item extends CommonDBRelation {
     * @return void|boolean (display) Returns false if there is a rights error.
    **/
    static function showItems(Appliance $appliance) {
-      global $DB;
+      global $DB, $CFG_GLPI;
 
       $ID = $appliance->fields['id'];
       $rand = mt_rand();
@@ -130,96 +130,120 @@ class Appliance_Item extends CommonDBRelation {
       );
 
       if ($appliance->canAddItem('itemtype')) {
-         echo "<div class='firstbloc'>";
-         echo "<form method='post' name='appliances_form$rand'
-                     id='appliances_form$rand'
-                     action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'>";
-         echo "<th colspan='2'>" .
-               __('Add an item') . "</th></tr>";
-
-         echo "<tr class='tab_bg_1'><td class='center'>";
-         Dropdown::showSelectItemFromItemtypes(
-               ['items_id_name'   => 'items_id',
-                'itemtypes'       => Appliance::getTypes(true),
-                'entity_restrict' => ($appliance->fields['is_recursive']
-                                      ? getSonsOf('glpi_entities',
-                                       $appliance->fields['entities_id'])
-                                       : $appliance->fields['entities_id']),
-                'checkright'      => true,
-               ]);
-         echo "</td><td class='center' class='tab_bg_1'>";
-         echo Html::hidden('appliances_id', ['value' => $ID]);
-         echo Html::submit(_x('button', 'Add'), ['name' => 'add']);
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $itemtypes = $CFG_GLPI['appliance_types'];
+         $options = [];
+         foreach ($itemtypes as $itemtype) {
+            $options[$itemtype] = $itemtype::getTypeName(1);
+         };
+   
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add an item'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               __('Add an item') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'appliances_id',
+                        'value' => $ID
+                     ],
+                     __('Type') => [
+                        'type' => 'select',
+                        'id' => 'dropdown_itemtype',
+                        'name' => 'itemtype',
+                        'values' => [Dropdown::EMPTY_VALUE] + array_unique($options),
+                        'col_lg' => 6,
+                        'hooks' => [
+                           'change' => <<<JS
+                              $.ajax({
+                                    method: "POST",
+                                    url: "$CFG_GLPI[root_doc]/ajax/getDropdownValue.php",
+                                    data: {
+                                       itemtype: this.value,
+                                       display_emptychoice: 1,
+                                    },
+                                    success: function(response) {
+                                       const data = response.results;
+                                       $('#dropdown_items_id').empty();
+                                       for (let i = 0; i < data.length; i++) {
+                                          if (data[i].children) {
+                                             const group = $('#dropdown_items_id')
+                                                .append("<optgroup label='" + data[i].text + "'></optgroup>");
+                                             for (let j = 0; j < data[i].children.length; j++) {
+                                                group.append("<option value='" + data[i].children[j].id + "'>" + data[i].children[j].text + "</option>");
+                                             }
+                                          } else {
+                                             $('#dropdown_items_id').append("<option value='" + data[i].id + "'>" + data[i].text + "</option>");
+                                          }
+                                       }
+                                    }
+                                 });
+                           JS,
+                        ]
+                     ],
+                     __('Item') => [
+                        'type' => 'select',
+                        'id' => 'dropdown_items_id',
+                        'name' => 'items_id',
+                        'values' => [],
+                        'col_lg' => 6,
+                     ],
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
       $items = iterator_to_array($items);
 
-      if (!count($items)) {
-         echo "<table class='tab_cadre_fixe'><tr><th>".__('No item found')."</th></tr>";
-         echo "</table>";
-      } else {
-         if ($canedit) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-            $massiveactionparams = [
-               'num_displayed'   => min($_SESSION['glpilist_limit'], count($items)),
-               'container'       => 'mass'.__CLASS__.$rand
-            ];
-            Html::showMassiveActions($massiveactionparams);
-         }
+      $fields = [
+         __('Itemtype'),
+         _n('Item', 'Items', 1),
+         __("Serial"),
+         __("Inventory number"),
+         Appliance_Item_Relation::getTypeName(Session::getPluralNumber()),
+      ];
 
-         echo "<table class='tab_cadre_fixehov'>";
-         $header = "<tr>";
-         if ($canedit) {
-            $header .= "<th width='10'>";
-            $header .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header .= "</th>";
-         }
-         $header .= "<th>".__('Itemtype')."</th>";
-         $header .= "<th>"._n('Item', 'Items', 1)."</th>";
-         $header .= "<th>".__("Serial")."</th>";
-         $header .= "<th>".__("Inventory number")."</th>";
-         $header .= "<th>".Appliance_Item_Relation::getTypeName(Session::getPluralNumber())."</th>";
-         $header .= "</tr>";
-         echo $header;
-
-         foreach ($items as $row) {
-            $item = new $row['itemtype'];
-            $item->getFromDB($row['items_id']);
-            echo "<tr lass='tab_bg_1'>";
-            if ($canedit) {
-               echo "<td>";
-               Html::showMassiveActionCheckBox(__CLASS__, $row["id"]);
-               echo "</td>";
-            }
-            echo "<td>" . $item->getTypeName(1) . "</td>";
-            echo "<td>" . $item->getLink() . "</td>";
-            echo "<td>" . ($item->fields['serial'] ?? "") . "</td>";
-            echo "<td>" . ($item->fields['otherserial'] ?? "") . "</td>";
-            echo "<td class='relations_list'>";
-            echo Appliance_Item_Relation::showListForApplianceItem($row["id"], $canedit);
-            echo "</td>";
-            echo "</tr>";
-         }
-         echo $header;
-         echo "</table>";
-
-         if ($canedit && count($items)) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-         }
-         if ($canedit) {
-            Html::closeForm();
-         }
-
-         echo Appliance_Item_Relation::getListJSForApplianceItem($appliance, $canedit);
+      if ($canedit) {
+         $massiveactionparams = [
+            'container'       => 'tableForApplianceItem',
+            'specific_actions' => [
+               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+            ],
+            'is_deleted' => 0,
+            'display_arrow' => false,
+         ];
+         Html::showMassiveActions($massiveactionparams);
       }
+
+      $values = [];
+      $massive_action = [];
+      foreach ($items as $row) {
+         $item = new $row['itemtype'];
+         $item->getFromDB($row['items_id']);
+         $values[] = [
+            $item->getTypeName(1),
+            $item->getLink(),
+            ($item->fields['serial'] ?? ""),
+            ($item->fields['otherserial'] ?? ""),
+         ];
+         $massive_action[] = sprintf('item[%s][%s]', self::class, $row['id']);
+      }
+      renderTwigTemplate('table.twig', [
+         'id' => 'tableForApplianceItem',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 
    /**

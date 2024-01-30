@@ -168,14 +168,6 @@ class Itil_Project extends CommonDBRelation {
             $used[$data['id']]  = $data['id'];
          }
          if ($canedit) {
-            echo '<div class="firstbloc">';
-            $formId = 'itilproject_' . strtolower($itemtype) . '_form' . $rand;
-            echo '<form name="' . $formId .'"
-                        id="' . $formId . '"
-                        method="post"
-                        action="' . Toolbox::getItemTypeFormURL(__CLASS__) . '">';
-            echo '<table class="tab_cadre_fixe">';
-
             $label = null;
             switch ($itemtype) {
                case Change::class :
@@ -188,56 +180,206 @@ class Itil_Project extends CommonDBRelation {
                   $label = __('Add a ticket');
                   break;
             }
-            echo '<tr class="tab_bg_2"><th colspan="2">' . $label . '</th></tr>';
-            echo '<tr class="tab_bg_2">';
-            echo '<td>';
-            echo '<input type="hidden" name="projects_id" value="' . $ID . '" />';
-            echo '<input type="hidden" name="itemtype" value="' . $itemtype . '" />';
-            $itemtype::dropdown(
-               [
-                  'entity'      => $project->getEntityID(),
-                  'entity_sons' => $project->isRecursive(),
-                  'name'        => 'items_id',
-                  'used'        => $used,
+            $values = getOptionForItems($itemtype::getType());
+            foreach ($used as $usedValue) {
+               unset($values[$usedValue]);
+            }
+
+            $form = [
+               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+               'buttons' => [
+                  [
+                     'name' => 'add',
+                     'value' => _x('button', 'Add'),
+                     'class' => 'btn btn-secondary',
+                  ]
+               ],
+               'content' => [
+                  $label => [
+                     'visible' => true,
+                     'inputs' => [
+                        [
+                           'type' => 'hidden',
+                           'name' => 'itemtype',
+                           'value' => $itemtype,
+                        ],
+                        [
+                           'type' => 'hidden',
+                           'name' => 'projects_id',
+                           'value' => $ID,
+                        ],
+                        '' => [
+                           'type' => 'select',
+                           'name' => 'items_id',
+                           'values' => $values,
+                           'col_lg' => 12,
+                           'col_md' => 12,
+                        ]
+                     ]
+                  ]
                ]
-            );
-            echo '</td>';
-            echo '<td class="center">';
-            echo '<input type="submit" name="add" value="' . _sx('button', 'Add') . '" class="submit" />';
-            echo '</td>';
-            echo '</tr>';
-            echo '</table>';
-            Html::closeForm();
-            echo '</div>';
+            ];
+            renderTwigForm($form);
          }
 
-         echo '<div class="spaced">';
-         $massContainerId = 'mass' . __CLASS__ . $rand;
+         $massContainerId = 'tableForitilProject' . $itemtype;
          if ($canedit && $numrows) {
-            Html::openMassiveActionsForm($massContainerId);
             $massiveactionparams = [
-               'num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
                'container'     => $massContainerId,
+               'specific_actions' => [
+                  'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+               ],   
+               'display_arrow' => false,
             ];
             Html::showMassiveActions($massiveactionparams);
          }
 
-         echo '<table class="tab_cadre_fixehov">';
-         echo '<tr class="noHover">';
-         echo '<th colspan="12">' . $itemtype::getTypeName($numrows) . '</th>';
-         echo '</tr>';
-         if ($numrows) {
-            $itemtype::commonListHeader(Search::HTML_OUTPUT, $massContainerId);
-            Session::initNavigateListItems(
-               $itemtype,
-               //TRANS : %1$s is the itemtype name,
-               //        %2$s is the name of the item (used for headings of a list)
-               sprintf(__('%1$s = %2$s'), Project::getTypeName(1), $project->fields['name'])
-            );
+         $fields = [
+            __('Status'),
+            _n('Date', 'Dates', 1),
+            __('Last update'),
+            __('Priority'),
+            _n('Requester', 'Requesters', 1),
+            __('Assigned'),
+            __('Category'),
+            __('Title'),
+            __('Planification'),
+         ];
+         if ($itemtype == 'Ticket') {
+            $fields[] = _n('Associated element', 'Associated elements', Session::getPluralNumber());
+         }
+         if (count($_SESSION["glpiactiveentities"]) > 1) {
+            $fields[] = Entity::getTypeName(Session::getPluralNumber());
+         }
 
+         $values = [];
+         $massive_action = [];
+         foreach ($items as $data) {
+            $item = new $itemtype();
+            $item->getFromDB($data['id']);
+            $newValue = [
+               CommonITILObject::getStatusIcon($data['status']),
+            ];
+            if ($data['status'] == CommonITILObject::CLOSED) {
+               $newValue[] = sprintf(__('Closed on %s'), Html::convDateTime($data['closedate']));
+            } else if ($data['status'] == CommonITILObject::SOLVED) {
+               $newValue[] = sprintf(__('Solved on %s'), Html::convDateTime($data['solvedate']));
+            } else if ($data['begin_waiting_date']) {
+               $newValue[] = sprintf(__('Put on hold on %s'), Html::convDateTime($data['begin_waiting_date']));
+            } else if ($data['time_to_resolve']) {
+               $newValue[] = sprintf(__('%1$s: %2$s'), __('Time to resolve'), Html::convDateTime($data['time_to_resolve']));
+            } else {
+               $newValue[] = sprintf(__('Opened on %s'), Html::convDateTime($data['date']));
+            }
+            $newValue[] = Html::convDateTime($data["date_mod"]);
+            $newValue[] = CommonITILObject::getPriorityName($data["priority"]);
+
+            $actors = '';
+            foreach ($item->getUsers(CommonITILActor::REQUESTER) as $d) {
+               $userdata    = getUserName($d["users_id"], 2);
+               $actors .= sprintf(__('%1$s %2$s'),
+                  "<span class='b'>".$userdata['name']."</span>",
+                  Html::showToolTip($userdata["comment"],
+                     ['link'    => $userdata["link"],
+                     'display' => false]));
+               $actors .= "<br>";
+            }
+            foreach ($item->getGroups(CommonITILActor::REQUESTER) as $d) {
+               $actors .= Dropdown::getDropdownName("glpi_groups", $d["groups_id"]);
+               $actors .= "<br>";
+            }
+            $newValue[] = $actors;
+   
+            $actors = '';
+            foreach ($item->getUsers(CommonITILActor::ASSIGN) as $d) {
+               if (Entity::getUsedConfig('anonymize_support_agents', Session::getActiveEntity())) {
+                  $actors .= __("Helpdesk");
+               } else {
+                  $userdata   = getUserName($d["users_id"], 2);
+                  $actors .= sprintf(__('%1$s %2$s'),
+                                       "<span class='b'>".$userdata['name']."</span>",
+                                       Html::showToolTip($userdata["comment"],
+                                                         ['link'    => $userdata["link"],
+                                                               'display' => false]));
+               }
+   
+               $actors .= "<br>";
+            }
+   
+            foreach ($item->getGroups(CommonITILActor::ASSIGN) as $d) {
+               if (Entity::getUsedConfig('anonymize_support_agents', Session::getActiveEntity())) {
+                  $actors .= __("Helpdesk group");
+               } else {
+                  $actors .= Dropdown::getDropdownName("glpi_groups", $d["groups_id"]);
+               }
+               $actors .= "<br>";
+            }
+   
+            foreach ($item->getSuppliers(CommonITILActor::ASSIGN) as $d) {
+               $actors .= Dropdown::getDropdownName("glpi_suppliers", $d["suppliers_id"]);
+               $actors .= "<br>";
+            }
+            $newValue[] = $actors;
+   
+            $newValue[] = Dropdown::getDropdownName('glpi_itilcategories', $data["itilcategories_id"]);
+            
+            $name = $item->getName();
+            if ($item->canViewItem()) {
+               $name = "<a id='".$item->getType().$item->fields["id"]."$rand' href=\"".$item->getLinkURL()
+                              ."\">$name</a>";
+            }
+            $newValue[] = $name;
+
+            $planned_infos = '';
+            $tasktype      = $item->getType()."Task";
+            $plan          = new $tasktype();
+            $items         = [];
+
+            $result = $DB->request(
+               [
+                  'FROM'  => $plan->getTable(),
+                  'WHERE' => [
+                     $item->getForeignKeyField() => $item->fields['id'],
+                  ],
+               ]
+            );
+            foreach ($result as $plan) {
+
+               if (isset($plan['begin']) && $plan['begin']) {
+                  $items[$plan['id']] = $plan['id'];
+                  $planned_infos .= sprintf(__('From %s').
+                                             ($p['output_type'] == Search::HTML_OUTPUT?'<br>':''),
+                                          Html::convDateTime($plan['begin']));
+                  $planned_infos .= sprintf(__('To %s').
+                                             ($p['output_type'] == Search::HTML_OUTPUT?'<br>':''),
+                                          Html::convDateTime($plan['end']));
+                  if ($plan['users_id_tech']) {
+                     $planned_infos .= sprintf(__('By %s').
+                                                ($p['output_type'] == Search::HTML_OUTPUT?'<br>':''),
+                                             getUserName($plan['users_id_tech']));
+                  }
+                  $planned_infos .= "<br>";
+               }
+
+            }
+
+            $newValue[] = $planned_infos;
+            $newValue[] = count($items);
+
+            $values[] = $newValue;
+            $massive_action[] = sprintf('item[%s][%s]', Itil_Project::class, $data['id']);
+         }
+         renderTwigTemplate('table.twig', [
+            'id' => $massContainerId,
+            'fields' => $fields,
+            'values' => $values,
+            'massive_action' => $massive_action,
+         ]);
+         echo '<div class="spaced">';
+         echo '<table class="tab_cadre_fixehov">';
+         if ($numrows) {
             $i = 0;
             foreach ($items as $data) {
-               Session::addToNavigateListItems($itemtype, $data['id']);
                $itemtype::showShort(
                   $data['id'],
                   [
@@ -248,7 +390,6 @@ class Itil_Project extends CommonDBRelation {
                );
                $i++;
             }
-            $itemtype::commonListHeader(Search::HTML_OUTPUT, $massContainerId);
          }
          echo '</table>';
 

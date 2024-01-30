@@ -115,7 +115,6 @@ class Rack extends CommonDBTM
       });
       JS;
 
-      $position = $this->fields['position'];
       $loadDcPositionHook = <<<JS
       function addPositionOpt(val, text) {
          var opt = document.createElement('option');
@@ -145,9 +144,9 @@ class Rack extends CommonDBTM
       JS;
       
       $room = new DCRoom();
-      $room->getFromDB($this->fields['dcrooms_id']);
+      $room->getFromDB($this->fields['dcrooms_id'] ?? '');
       $all_positions = isset($this->fields['vis_cols']) ? $room->getAllPositions() : [];
-      $positions = array_diff_key($all_positions, $room->getFilled($this->fields['position']));
+      $positions = array_diff_key($all_positions, $room->getFilled($this->fields['position'] ?? ''));
    
       $title = __('New element').' '.self::getTypeName(1);
       $form = [
@@ -338,7 +337,7 @@ class Rack extends CommonDBTM
       ]]);
       $additionnalHtml = ob_get_clean();
 
-      renderTwigForm($form, $additionnalHtml);
+      renderTwigForm($form, $additionnalHtml, $this->fields);
 
       return true;
    }

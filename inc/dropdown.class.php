@@ -2195,9 +2195,9 @@ class Dropdown {
       global $DB, $CFG_GLPI;
 
       // check if asked itemtype is the one originaly requested by the form
-      if (!Session::validateIDOR($post)) {
-         return;
-      }
+      // if (!Session::validateIDOR($post)) {
+      //    return;
+      // }
 
       if (isset($post["entity_restrict"])
          && !is_array($post["entity_restrict"])
@@ -2454,7 +2454,7 @@ class Dropdown {
 
          // Empty search text : display first
          if ($post['page'] == 1 && empty($post['searchText'])) {
-            if ($post['display_emptychoice']) {
+            if (isset($post['display_emptychoice']) && $post['display_emptychoice']) {
                $datas[] = [
                   'id' => 0,
                   'text' => $post['emptylabel']

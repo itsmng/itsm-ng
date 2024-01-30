@@ -464,95 +464,58 @@ class RuleCollection extends CommonDBTM {
       $p['limit'] = $_SESSION['glpilist_limit'];
       $this->getCollectionPart($p);
 
-      Html::printAjaxPager('', $p['start'], $nb);
-
-      Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-      echo "\n<div class='spaced'>";
-
       if ($canedit && $nb) {
-         $massiveactionparams = ['num_displayed' => min($p['limit'], $nb),
-                                      'container'     => 'mass'.__CLASS__.$rand,
-                                      'extraparams'   => ['entity' => $this->entity,
-                                                               'condition' => $p['condition'],
-                                                               'rule_class_name'
-                                                                 => $this->getRuleClassName()]];
+         $massiveactionparams = [
+            'container'     => 'ruleCollectionTable',
+            'extraparams'   => [
+               'entity' => $this->entity,
+               'condition' => $p['condition'],
+               'rule_class_name' => $this->getRuleClassName()
+            ],
+            'display_arrow' => false,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
 
-      echo "<table class='tab_cadre_fixehov'>";
-      $colspan = 6;
-
-      if ($display_entities) {
-         $colspan++;
-      }
+      $fields = [
+         __('Name'),
+         __('Description'),
+      ];
       if ($use_conditions) {
-         $colspan++;
+         $fields[] = __('Use rule for');
       }
-      echo "<tr><th colspan='$colspan'>" . $this->getTitle() ."</th></tr>\n";
-
-      echo "<tr>";
-      echo "<th>";
-      if ($canedit) {
-         echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-      }
-      echo "</th>";
-      echo "<th>".__('Name')."</th>";
-      echo "<th>".__('Description')."</th>";
-      if ($use_conditions) {
-         echo "<th>".__('Use rule for')."</th>";
-      }
-      echo "<th>".__('Active')."</th>";
-
+      $fields[] = __('Active');
       if ($display_entities) {
-         echo "<th>".Entity::getTypeName(1)."</th>\n";
-      }
-      if (!$display_entities) {
-         echo "<th colspan='2'>&nbsp;</th>";
-      }
-      echo "</tr>\n";
-
-      if (count($this->RuleList->list)) {
-         $ruletype = $this->RuleList->list[0]->getType();
-         Session::initNavigateListItems($ruletype);
+         $fields[] = Entity::getTypeName(1);
       }
 
-      for ($i=$p['start'],$j=0; isset($this->RuleList->list[$j]); $i++,$j++) {
-         $this->RuleList->list[$j]->showMinimalForm($target, $i==0, $i==$nb-1, $display_entities, $p['condition']);
-         Session::addToNavigateListItems($ruletype, $this->RuleList->list[$j]->fields['id']);
-      }
-      if ($nb) {
-         echo "<tr>";
-         echo "<th>";
-         if ($canedit) {
-            echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         }
-         echo "</th>";
-         echo "<th>".__('Name')."</th>";
-         echo "<th>".__('Description')."</th>";
+      $values = [];
+      $massiveActionValues = [];
+      foreach ($this->RuleList->list as $rule) {
+         $newValue = [];
+         $rule->getFromDB($rule->getID());
+         $newValue[] = $rule->getLink(['withtype' => true]);
+         $newValue[] = $rule->fields['description'];
          if ($use_conditions) {
-            echo "<th>".__('Use rule for')."</th>";
+            $newValue[] = $rule->getConditionName($rule->fields['condition']);
          }
-         echo "<th>".__('Active')."</th>";
-
+         $newValue[] = $rule->fields['is_active'];
          if ($display_entities) {
-            echo "<th>".Entity::getTypeName(1)."</th>\n";
+            $newValue[] = Dropdown::getDropdownName("glpi_entities",
+                                                    $rule->fields['entities_id']);
          }
-         if (!$display_entities) {
-            echo "<th colspan='2'>&nbsp;</th>";
-         }
-         echo "</tr>\n";
-      }
-      echo "</table>\n";
-
-      if ($canedit && $nb) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
+         $values[] = $newValue;
+         $massiveActionValues[] = sprintf('item[%s][%s]', $rule->getType(), $rule->getID());
       }
 
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+         'id' => 'ruleCollectionTable',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massiveActionValues,
+      ]);
+
       Html::closeForm();
-
-      Html::printAjaxPager('', $p['start'], $nb);
 
       echo "<div class='spaced center'>";
 
@@ -562,7 +525,7 @@ class RuleCollection extends CommonDBTM {
          $url = $CFG_GLPI["root_doc"];
       }
 
-      echo "<a class='vsubmit' href='#' onClick=\"".
+      echo "<a class='btn btn-secondary' href='#' onClick=\"".
                   Html::jsGetElementbyID('allruletest'.$rand).".dialog('open'); return false;\">".
                   __('Test rules engine')."</a>";
       Ajax::createIframeModalWindow('allruletest'.$rand,
@@ -849,10 +812,10 @@ class RuleCollection extends CommonDBTM {
       $buttons["{$CFG_GLPI["root_doc"]}/front/rule.backup.php?action=import"] = _x('button', 'Import');
       $buttons["{$CFG_GLPI["root_doc"]}/front/rule.backup.php?action=export"] = _x('button', 'Export');
 
-      echo "<div class='center'><table class='tab_glpi'><tr>";
+      echo "<div class='center mb-3'><table class='tab_glpi'><tr>";
       echo "<td><i class='far fa-save fa-3x'></i></td>";
       foreach ($buttons as $key => $val) {
-         echo "<td><a class='vsubmit' href='".$key."'>".$val."</a></td>";
+         echo "<td><a class='btn btn-secondary ' href='".$key."'>".$val."</a></td>";
       }
       echo "</tr></table></div>";
    }
@@ -1968,7 +1931,7 @@ class RuleCollection extends CommonDBTM {
          }
          $item->title();
          $item->showEngineSummary();
-         $item->showListRules(Toolbox::cleanTarget($_GET['_target']), $options);
+         $item->showListRules(Toolbox::cleanTarget($_GET['_target'] ?? ''), $options);
          return true;
       }
       return false;

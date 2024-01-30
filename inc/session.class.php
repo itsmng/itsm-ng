@@ -31,6 +31,7 @@
  */
 
 use Glpi\Event;
+use itsmng\Csrf;
 
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
@@ -1217,30 +1218,12 @@ class Session {
     *    Generates a standalone token that will not be shared with other component of current request.
     *
     * @since 0.83.3
+    * @deprecated 2.0.0
     *
     * @return string
    **/
    static public function getNewCSRFToken(bool $standalone = false) {
-      global $CURRENTCSRFTOKEN;
-
-      $token = $standalone ? '' : $CURRENTCSRFTOKEN;
-
-      if (empty($token)) {
-         do {
-            $token = bin2hex(random_bytes(32));
-         } while ($token == '');
-      }
-
-      if (!isset($_SESSION['glpicsrftokens'])) {
-         $_SESSION['glpicsrftokens'] = [];
-      }
-      $_SESSION['glpicsrftokens'][$token] = time() + GLPI_CSRF_EXPIRES;
-
-      if (!$standalone) {
-         $CURRENTCSRFTOKEN = $token;
-      }
-
-      return $token;
+      return $_SESSION['_glpi_csrf_token'] ?? Csrf::generate();
    }
 
 
@@ -1248,6 +1231,7 @@ class Session {
     * Clean expired CSRF tokens
     *
     * @since 0.83.3
+    * @deprecated 2.0.0
     *
     * @return void
    **/
@@ -1277,6 +1261,7 @@ class Session {
     * it will be removed from the list of valid tokens.
     *
     * @since 0.83.3
+    * @deprecated 2.0.0
     *
     * @param array $data $_POST data
     *
@@ -1306,6 +1291,7 @@ class Session {
     * Check CSRF data
     *
     * @since 0.84.2
+    * @deprecated 2.0.0
     *
     * @param array $data $_POST data
     *

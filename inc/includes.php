@@ -30,6 +30,8 @@
  * ---------------------------------------------------------------------
  */
 
+use itsmng\Csrf;
+
 if (!defined('GLPI_ROOT')) {
    define('GLPI_ROOT', dirname(__DIR__));
 }
@@ -146,20 +148,16 @@ if (!defined('DO_NOT_CHECK_HTTP_REFERER')
 
 // Security : check CSRF token
 if (GLPI_USE_CSRF_CHECK
-    && !isAPI()
-    && isset($_POST) && is_array($_POST) && count($_POST)) {
-   if (preg_match(':'.$CFG_GLPI['root_doc'].'(/(plugins)/[^/]*|)/ajax/:', $_SERVER['REQUEST_URI']) === 1) {
-      // Keep CSRF token as many AJAX requests may be made at the same time.
-      // This is due to the fact that read operations are often made using POST method (see #277).
-      define('GLPI_KEEP_CSRF_TOKEN', true);
-
-      // For AJAX requests, check CSRF token located into "X-Glpi-Csrf-Token" header.
-      //Session::checkCSRF(['_glpi_csrf_token' => $_SERVER['HTTP_X_GLPI_CSRF_TOKEN'] ?? '']);
-   } 
-   // else {
-   //    Session::checkCSRF($_POST); 
-   // }
-   // TODO : reactivate and fix CSRF in index.php, includes.php
+   && !isAPI()
+   && isset($_POST) && is_array($_POST) && count($_POST)
+   && preg_match(':'.$CFG_GLPI['root_doc'].'(/(plugins)/[^/]*|)/ajax/:', $_SERVER['REQUEST_URI']) === 0
+   && preg_match(':'.$CFG_GLPI['root_doc'].'/src/.*\.ajax\.php$:', $_SERVER['REQUEST_URI']) === 0) {
+      if (!Csrf::verify()) {
+         Session::addMessageAfterRedirect(__('CSRF token is invalid while loading: ' . $_SERVER['HTTP_REFERER']), false, ERROR);
+         Html::back();
+      }
+} else if (GLPI_USE_CSRF_CHECK && !isAPI()
+   && (!isset($_SESSION['csrf_token_time']) || time() > $_SESSION['csrf_token_time'])
+   && !isset($_POST['csrf_token'])) {
+   Csrf::generate();
 }
-// SET new global Token
-$CURRENTCSRFTOKEN = '';

@@ -320,6 +320,7 @@ class SoftwareLicense extends CommonTreeDropdown {
                      'name' => 'softwares_id',
                      'values' => getOptionForItems('Software', ['is_template' => 0, 'is_deleted' => 0]),
                      'value' => $this->fields["softwares_id"],
+                     'actions' => getItemActionButtons(['info'], 'Software')
                   ],
                   __('Name') => [
                      'type' => 'text',
@@ -338,35 +339,41 @@ class SoftwareLicense extends CommonTreeDropdown {
                      'values' => getOptionForItems('SoftwareLicense', [
                         'softwares_id' => $this->fields['softwares_id'],
                      ]),
+                     'actions' => getItemActionButtons(['info', 'add'], 'SoftwareLicense')
                   ],
                   Location::getTypeName(1) => [
                      'type' => 'select',
                      'name' => 'locations_id',
                      'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
+                     'actions' => getItemActionButtons(['info', 'add'], 'Location')
                   ],
                   _n('Type', 'Types', 1) => [
                      'type' => 'select',
                      'name' => 'softwarelicensetypes_id',
                      'values' => getOptionForItems('SoftwareLicenseType'),
                      'value' => $this->fields["softwarelicensetypes_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], 'SoftwareLicenseType')
                   ],
                   __('Technician in charge of the license') => [
                      'type' => 'select',
                      'name' => 'users_id_tech',
                      'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields["users_id_tech"],
+                     'actions' => getItemActionButtons(['info'], 'User')
                   ],
                   __('Publisher') => [
                      'type' => 'select',
                      'name' => 'manufacturers_id',
                      'values' => getOptionForItems('Manufacturer'),
                      'value' => $this->fields["manufacturers_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], 'Manufacturer')
                   ],
                   __('Group in charge of the license') => [
                      'type' => 'select',
                      'name' => 'groups_id_tech',
                      'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields["groups_id_tech"],
+                     'actions' => getItemActionButtons(['info', 'add'], 'Group')
                   ],
                   __('Serial number') => [
                      'type' => 'text',
@@ -378,6 +385,7 @@ class SoftwareLicense extends CommonTreeDropdown {
                      'name' => 'users_id',
                      'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields["users_id"],
+                     'actions' => getItemActionButtons(['info'], 'User')
                   ],
                   __('Inventory number') => [
                      'type' => 'text',
@@ -392,6 +400,7 @@ class SoftwareLicense extends CommonTreeDropdown {
                         'entities_id' => $this->fields['entities_id']
                      ]),
                      'value' => $this->fields["groups_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], 'Group')
                   ],
                   __('Comments') => [
                      'type' => 'textarea',

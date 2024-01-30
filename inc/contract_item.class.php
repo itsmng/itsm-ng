@@ -544,138 +544,139 @@ class Contract_Item extends CommonDBRelation{
           && (($contract->fields['max_links_allowed'] == 0)
               || ($contract->fields['max_links_allowed'] > $totalnb))
           && ($withtemplate != 2)) {
-         echo "<div class='firstbloc'>";
-         echo "<form name='contract_form$rand' id='contract_form$rand' method='post'
-                action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th colspan='2'>".__('Add an item')."</th></tr>";
-
-         echo "<tr class='tab_bg_1'><td class='right'>";
-         Dropdown::showSelectItemFromItemtypes(['itemtypes'
-                                                       => $CFG_GLPI["contract_types"],
-                                                     'entity_restrict'
-                                                       => ($contract->fields['is_recursive']
-                                                           ?getSonsOf('glpi_entities',
-                                                                      $contract->fields['entities_id'])
-                                                           :$contract->fields['entities_id']),
-                                                     'checkright'
-                                                       => true,
-                                                     'used'
-                                                       => $used]);
-         echo "</td><td class='center'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "<input type='hidden' name='contracts_id' value='$instID'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $itemtypes = $CFG_GLPI['contract_types'];
+         $options = [];
+         foreach ($itemtypes as $itemtype) {
+            $options[$itemtype] = $itemtype::getTypeName(1);
+         };
+   
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add an item'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               __('Add an item') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'contracts_id',
+                        'value' => $instID
+                     ],
+                     __('Type') => [
+                        'type' => 'select',
+                        'id' => 'dropdown_itemtype',
+                        'name' => 'itemtype',
+                        'values' => [Dropdown::EMPTY_VALUE] + array_unique($options),
+                        'col_lg' => 6,
+                        'hooks' => [
+                           'change' => <<<JS
+                              $.ajax({
+                                    method: "POST",
+                                    url: "$CFG_GLPI[root_doc]/ajax/getDropdownValue.php",
+                                    data: {
+                                       itemtype: this.value,
+                                       display_emptychoice: 1,
+                                    },
+                                    success: function(response) {
+                                       const data = response.results;
+                                       $('#dropdown_items_id').empty();
+                                       for (let i = 0; i < data.length; i++) {
+                                          if (data[i].children) {
+                                             const group = $('#dropdown_items_id')
+                                                .append("<optgroup label='" + data[i].text + "'></optgroup>");
+                                             for (let j = 0; j < data[i].children.length; j++) {
+                                                group.append("<option value='" + data[i].children[j].id + "'>" + data[i].children[j].text + "</option>");
+                                             }
+                                          } else {
+                                             $('#dropdown_items_id').append("<option value='" + data[i].id + "'>" + data[i].text + "</option>");
+                                          }
+                                       }
+                                    }
+                                 });
+                           JS,
+                        ]
+                     ],
+                     __('Item') => [
+                        'type' => 'select',
+                        'id' => 'dropdown_items_id',
+                        'name' => 'items_id',
+                        'values' => [],
+                        'col_lg' => 6,
+                     ],
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
-      echo "<div class='spaced'>";
       if ($canedit && $totalnb) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams = ['container' => 'mass'.__CLASS__.$rand];
+         $massiveactionparams = [
+            'container' => 'tableForContractItem',
+            'specific_actions' => [
+               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+            ],
+            'display_arrow' => false,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
-      $header_begin  = "<tr>";
-      $header_top    = '';
-      $header_bottom = '';
-      $header_end    = '';
 
-      if ($canedit && $totalnb) {
-         $header_top    .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_top    .= "</th>";
-         $header_bottom .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_bottom .= "</th>";
-      }
-      $header_end .= "<th>"._n('Type', 'Types', 1)."</th>";
-      $header_end .= "<th>".Entity::getTypeName(1)."</th>";
-      $header_end .= "<th>".__('Name')."</th>";
-      $header_end .= "<th>".__('Serial number')."</th>";
-      $header_end .= "<th>".__('Inventory number')."</th>";
-      $header_end .= "<th>".__('Status')."</th>";
-      $header_end .= "</tr>";
-      echo $header_begin.$header_top.$header_end;
-
-      $totalnb = 0;
+      $fields = [
+         _n('Type', 'Types', 1),
+         Entity::getTypeName(1),
+         __('Name'),
+         __('Serial number'),
+         __('Inventory number'),
+         __('Status')
+      ];
+      $values = [];
+      $massiveactionValues = [];
       foreach ($data as $itemtype => $datas) {
-
-         if (isset($datas['longlist'])) {
-            echo "<tr class='tab_bg_1'>";
-            if ($canedit) {
-               echo "<td>&nbsp;</td>";
+         $item = new $itemtype();
+         $typename = $item->getTypeName($nb);
+         foreach ($datas as $sub_item) {
+            if ($item instanceof Item_Devices) {
+               $name = $sub_item["name_device"];
+            } else {
+               $name = $sub_item["name"];
             }
-            echo "<td class='center'>".$datas['name']."</td>";
-            echo "<td class='center' colspan='2'>".$datas['link']."</td>";
-            echo "<td class='center'>-</td><td class='center'>-</td></tr>";
-
-         } else {
-            $prem = true;
-            $nb   = count($datas);
-            foreach ($datas as $objdata) {
-               $item = new $itemtype();
-               if ($item instanceof Item_Devices) {
-                  $name = $objdata["name_device"];
-               } else {
-                  $name = $objdata["name"];
-               }
-               if ($_SESSION["glpiis_ids_visible"]
-                   || empty($data["name"])) {
-                  $name = sprintf(__('%1$s (%2$s)'), $name, $objdata["id"]);
-               }
-
-               if ($item->can($objdata['id'], READ)) {
-                  $link     = $itemtype::getFormURLWithID($objdata['id']);
-                  $namelink = "<a href=\"".$link."\">".$name."</a>";
-               } else {
-                  $namelink = $name;
-               }
-
-               echo "<tr class='tab_bg_1'>";
-               if ($canedit) {
-                  echo "<td width='10'>";
-                  Html::showMassiveActionCheckBox(__CLASS__, $objdata["linkid"]);
-                  echo "</td>";
-               }
-               if ($prem) {
-                  $typename = $item->getTypeName($nb);
-                  echo "<td class='center top' rowspan='$nb'>".
-                         ($nb  >1 ? sprintf(__('%1$s: %2$s'), $typename, $nb): $typename)."</td>";
-                  $prem = false;
-               }
-               echo "<td class='center'>";
-               echo Dropdown::getDropdownName("glpi_entities", $objdata['entity'])."</td>";
-               echo "<td class='center".
-                      (isset($objdata['is_deleted']) && $objdata['is_deleted'] ? " tab_bg_2_2'" : "'");
-               echo ">".$namelink."</td>";
-               echo"<td class='center'>".
-                      (isset($objdata["serial"])? "".$objdata["serial"]."" :"-")."</td>";
-               echo "<td class='center'>".
-                      (isset($objdata["otherserial"])? "".$objdata["otherserial"]."" :"-")."</td>";
-               echo "<td class='center'>";
-               if (isset($objdata["states_id"])) {
-                  echo Dropdown::getDropdownName("glpi_states", $objdata['states_id']);
-               } else {
-                  echo '&nbsp;';
-               }
-               echo "</td></tr>";
-
+            if ($_SESSION["glpiis_ids_visible"]
+               || empty($data["name"])) {
+               $name = sprintf(__('%1$s (%2$s)'), $name, $sub_item["id"]);
             }
+   
+            if ($item->can($sub_item['id'], READ)) {
+               $link     = $itemtype::getFormURLWithID($sub_item['id']);
+               $namelink = "<a href=\"".$link."\">".$name."</a>";
+            } else {
+               $namelink = $name;
+            }
+   
+            $newValue = [
+               ($nb  >1 ? sprintf(__('%1$s: %2$s'), $typename, $nb): $typename),
+               Dropdown::getDropdownName("glpi_entities", $sub_item['entity']),
+               $namelink,
+               (isset($sub_item["serial"])? "".$sub_item["serial"]."" :"-"),
+               (isset($sub_item["otherserial"])? "".$sub_item["otherserial"]."" :"-"),
+               isset($sub_item["states_id"]) ? Dropdown::getDropdownName("glpi_states", $sub_item['states_id']) : ''
+            ];
+            $values[] = $newValue;
+            $massiveactionValues[] = sprintf('item[%s][%s]', $item::class, $sub_item['id']);
          }
       }
-      if ($number) {
-         echo $header_begin.$header_bottom.$header_end;
-      }
-
-      echo "</table>";
-      if ($canedit && $number) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+         'id' => 'tableForContractItem',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massiveactionValues,
+      ]);
    }
 
 

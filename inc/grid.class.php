@@ -94,7 +94,6 @@ class Grid extends CommonGLPI {
    public function show($content) {
       global $CFG_GLPI;
       Html::requireJs('charts');
-      $twig = Twig::load(GLPI_ROOT . "/templates", false);
       $content['data_types'] = $CFG_GLPI['globalsearch_types'];
       $content['dashboardId'] = $this->current;
       $content['addWidget_action'] = Dashboard::getFormURL();

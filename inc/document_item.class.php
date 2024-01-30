@@ -345,6 +345,8 @@ class Document_Item extends CommonDBRelation{
     * @return void
    **/
    static function showForDocument(Document $doc) {
+      global $CFG_GLPI;
+
       $instID = $doc->fields['id'];
       if (!$doc->can($instID, READ)) {
          return false;
@@ -358,66 +360,99 @@ class Document_Item extends CommonDBRelation{
 
       $rand   = mt_rand();
       if ($canedit) {
-         echo "<div class='firstbloc'>";
-         echo "<form name='documentitem_form$rand' id='documentitem_form$rand' method='post'
-               action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th colspan='2'>".__('Add an item')."</th></tr>";
-
-         echo "<tr class='tab_bg_1'><td class='right'>";
-         Dropdown::showSelectItemFromItemtypes(['itemtypes'
-                                                       => Document::getItemtypesThatCanHave(),
-                                                     'entity_restrict'
-                                                       => ($doc->fields['is_recursive']
-                                                           ?getSonsOf('glpi_entities',
-                                                                      $doc->fields['entities_id'])
-                                                           :$doc->fields['entities_id']),
-                                                     'checkright'
-                                                      => true]);
-         echo "</td><td class='center'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "<input type='hidden' name='documents_id' value='$instID'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $itemtypes = Document::getItemtypesThatCanHave();
+         $options = [];
+         foreach ($itemtypes as $itemtype) {
+            $options[$itemtype] = $itemtype::getTypeName(1);
+         };
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add an item'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               __('Add an item') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'documents_id',
+                        'value' => $instID
+                     ],
+                     __('Type') => [
+                        'type' => 'select',
+                        'id' => 'dropdown_itemtype',
+                        'name' => 'itemtype',
+                        'values' => [Dropdown::EMPTY_VALUE] + array_unique($options),
+                        'col_lg' => 6,
+                        'hooks' => [
+                           'change' => <<<JS
+                              $.ajax({
+                                    method: "POST",
+                                    url: "$CFG_GLPI[root_doc]/ajax/getDropdownValue.php",
+                                    data: {
+                                       itemtype: this.value,
+                                    },
+                                    success: function(response) {
+                                       const data = response.results;
+                                       $('#dropdown_items_id').empty();
+                                       $('#dropdown_items_id').append("<option value='" + data[0].id + "'>" + data[0].text + "</option>");
+                                       delete data[0];
+                                       for (let i = 1; i < data.length; i++) {
+                                          const group = $('#dropdown_items_id')
+                                             .append("<optgroup label='" + data[i].text + "'></optgroup>");
+                                          for (let j = 0; j < data[i].children.length; j++) {
+                                             group.append("<option value='" + data[i].children[j].id + "'>" + data[i].children[j].text + "</option>");
+                                          }
+                                       }
+                                    }
+                                 });
+                           JS,
+                        ]
+                     ],
+                     __('Item') => [
+                        'type' => 'select',
+                        'id' => 'dropdown_items_id',
+                        'name' => 'items_id',
+                        'values' => [],
+                        'col_lg' => 6,
+                     ],
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
-      echo "<div class='spaced'>";
       if ($canedit && $number) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams = ['container' => 'mass'.__CLASS__.$rand];
+         $massiveactionparams = [
+            'container'        => 'tableForDocumentItem',
+            'specific_actions' => [
+               'purge' => _x('button', 'Delete permanently')
+            ],
+            'display_arrow' => false
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
-
-      $header_begin  = "<tr>";
-      $header_top    = '';
-      $header_bottom = '';
-      $header_end    = '';
-
-      if ($canedit && $number) {
-         $header_top    .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_top    .= "</th>";
-         $header_bottom .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_bottom .= "</th>";
-      }
-
-      $header_end .= "<th>"._n('Type', 'Types', 1)."</th>";
-      $header_end .= "<th>".__('Name')."</th>";
-      $header_end .= "<th>".Entity::getTypeName(1)."</th>";
-      $header_end .= "<th>".__('Serial number')."</th>";
-      $header_end .= "<th>".__('Inventory number')."</th>";
-      $header_end .= "</tr>";
-      echo $header_begin.$header_top.$header_end;
-
+      $fields = [
+         _n('Type', 'Types', 1),
+         __('Name'),
+         Entity::getTypeName(1),
+         __('Serial number'),
+         __('Inventory number')
+      ];
+      $values = [];
+      $massiveactionValues = [];
       while ($type_row = $types_iterator->next()) {
          $itemtype = $type_row['itemtype'];
          if (!($item = getItemForItemtype($itemtype))) {
             continue;
          }
-
          if ($item->canView()) {
             $iterator = self::getTypeItems($instID, $itemtype);
 
@@ -473,41 +508,26 @@ class Document_Item extends CommonDBRelation{
                $link     = $itemtype::getFormURLWithID($data['id']);
                $name = "<a href='$link'>$linkname $linkname_extra</a>";
 
-               echo "<tr class='tab_bg_1'>";
-
-               if ($canedit) {
-                  echo "<td width='10'>";
-                  Html::showMassiveActionCheckBox(__CLASS__, $data["linkid"]);
-                  echo "</td>";
-               }
-               echo "<td class='center'>".$item->getTypeName(1)."</td>";
-               echo "<td ".
-                     (isset($data['is_deleted']) && $data['is_deleted']?"class='tab_bg_2_2'":"").
-                     ">".$name."</td>";
-               echo "<td class='center'>".
-                  (isset($data['entity']) ? Dropdown::getDropdownName("glpi_entities",
-                     $data['entity']) : "-");
-               echo "</td>";
-               echo "<td class='center'>".
-                        (isset($data["serial"])? "".$data["serial"]."" :"-")."</td>";
-               echo "<td class='center'>".
-                        (isset($data["otherserial"])? "".$data["otherserial"]."" :"-")."</td>";
-               echo "</tr>";
+               $newData = [
+                  $item->getTypeName(1),
+                  $name,
+                  isset($data['entity']) ? Dropdown::getDropdownName("glpi_entities",
+                     $data['entity']) : "-",
+                  isset($data["serial"])? "".$data["serial"]."" :"-",
+                  isset($data["otherserial"])? "".$data["otherserial"]."" :"-",
+               ];
+               $values[] = $newData;
+               $massiveactionValues[] = sprintf('item[%s][%s]', $itemtype, $data['id']);
             }
          }
       }
 
-      if ($number) {
-         echo $header_begin.$header_bottom.$header_end;
-      }
-      echo "</table>";
-      if ($canedit && $number) {
-         $massiveactionparams['ontop'] =false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
-
+      renderTwigTemplate('table.twig', [
+         'id' => 'tableForDocumentItem',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massiveactionValues,
+      ]);
    }
 
    /**
