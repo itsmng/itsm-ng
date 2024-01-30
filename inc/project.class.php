@@ -1652,96 +1652,122 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
     * Show team for a project
    **/
    function showTeam(Project $project) {
+      global $CFG_GLPI;
+
       $ID      = $project->fields['id'];
       $canedit = $project->can($ID, UPDATE);
 
-      echo "<div class='center'>";
-
-      $rand = mt_rand();
       $nb   = 0;
       $nb   = $project->getTeamCount();
 
       if ($canedit) {
-         echo "<div class='firstbloc'>";
-         echo "<form name='projectteam_form$rand' id='projectteam_form$rand' ";
-         echo " method='post' action='".Toolbox::getItemTypeFormURL('ProjectTeam')."'>";
-         echo "<input type='hidden' name='projects_id' value='$ID'>";
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_1'><th colspan='2'>".__('Add a team member')."</tr>";
-         echo "<tr class='tab_bg_2'><td>";
-
-         $params = ['itemtypes'       => ProjectTeam::$available_types,
-                         'entity_restrict' => ($project->fields['is_recursive']
-                                               ? getSonsOf('glpi_entities',
-                                                           $project->fields['entities_id'])
-                                               : $project->fields['entities_id']),
-                         ];
-         Dropdown::showSelectItemFromItemtypes($params);
-
-         echo "</td>";
-         echo "<td width='20%'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\"
-               class='submit'>";
-         echo "</td>";
-         echo "</tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $itemtypes = ProjectTeam::$available_types;
+         $options = [];
+         foreach ($itemtypes as $itemtype) {
+            $options[$itemtype] = $itemtype::getTypeName(1);
+         };
+   
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(ProjectTeam::class),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add an item'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               __('Add an item') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'projects_id',
+                        'value' => $ID
+                     ],
+                     __('Type') => [
+                        'type' => 'select',
+                        'id' => 'dropdown_itemtype',
+                        'name' => 'itemtype',
+                        'values' => [Dropdown::EMPTY_VALUE] + array_unique($options),
+                        'col_lg' => 6,
+                        'hooks' => [
+                           'change' => <<<JS
+                              $.ajax({
+                                    method: "POST",
+                                    url: "$CFG_GLPI[root_doc]/ajax/getDropdownValue.php",
+                                    data: {
+                                       itemtype: this.value,
+                                       display_emptychoice: 1,
+                                    },
+                                    success: function(response) {
+                                       const data = response.results;
+                                       $('#dropdown_items_id').empty();
+                                       for (let i = 0; i < data.length; i++) {
+                                          if (data[i].children) {
+                                             const group = $('#dropdown_items_id')
+                                                .append("<optgroup label='" + data[i].text + "'></optgroup>");
+                                             for (let j = 0; j < data[i].children.length; j++) {
+                                                group.append("<option value='" + data[i].children[j].id + "'>" + data[i].children[j].text + "</option>");
+                                             }
+                                          } else {
+                                             $('#dropdown_items_id').append("<option value='" + data[i].id + "'>" + data[i].text + "</option>");
+                                          }
+                                       }
+                                    }
+                                 });
+                           JS,
+                        ]
+                     ],
+                     __('Item') => [
+                        'type' => 'select',
+                        'id' => 'dropdown_items_id',
+                        'name' => 'items_id',
+                        'values' => [],
+                        'col_lg' => 6,
+                     ],
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
-      echo "<div class='spaced'>";
       if ($canedit && $nb) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $nb),
-                                      'container'     => 'mass'.__CLASS__.$rand];
+         $massiveactionparams = [
+            'container'     => 'tableForProjectTeams',
+            'display_arrow' => false,
+            'specific_actions' => [
+               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+            ],
+            'is_deleted' => 0,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
-      $header_begin  = "<tr>";
-      $header_top    = '';
-      $header_bottom = '';
-      $header_end    = '';
-      if ($canedit && $nb) {
-         $header_begin    .= "<th width='10'>";
-         $header_top    .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_bottom .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_end    .= "</th>";
-      }
-      $header_end .= "<th>"._n('Type', 'Types', 1)."</th>";
-      $header_end .= "<th>"._n('Member', 'Members', Session::getPluralNumber())."</th>";
-      $header_end .= "</tr>";
-      echo $header_begin.$header_top.$header_end;
-
+      $fields = [
+         _n('Type', 'Types', 1),
+         _n('Member', 'Members', Session::getPluralNumber()),
+      ];
+      $values = [];
+      $massive_action = [];
       foreach (ProjectTeam::$available_types as $type) {
-         if (isset($project->team[$type]) && count($project->team[$type])) {
-            if ($item = getItemForItemtype($type)) {
-               foreach ($project->team[$type] as $data) {
-                  $item->getFromDB($data['items_id']);
-                  echo "<tr class='tab_bg_2'>";
-                  if ($canedit) {
-                     echo "<td>";
-                     Html::showMassiveActionCheckBox('ProjectTeam', $data["id"]);
-                     echo "</td>";
-                  }
-                  echo "<td>".$item->getTypeName(1)."</td>";
-                  echo "<td>".$item->getLink()."</td>";
-                  echo "</tr>";
-               }
-            }
+         if (isset($project->team[$type]) && count($project->team[$type]) && $item = getItemForItemtype($type)) {
+            foreach ($project->team[$type] as $data) {
+               $item->getFromDB($data['items_id']);
+               $values[] = [
+                  $item->getTypeName(1),
+                  $item->getLink(),
+               ];
+               $massive_action[] = sprintf('item[%s][%s]', ProjectTeam::class, $data['id']);
+            };
          }
       }
-      if ($nb) {
-         echo $header_begin.$header_bottom.$header_end;
-      }
-
-      echo "</table>";
-      if ($canedit && $nb) {
-         $massiveactionparams['ontop'] =false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-
-      echo "</div></div>";
-      // Add items
+      renderTwigTemplate('table.twig', [
+         'id' => 'tableForProjectTeams',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
 
       return true;
    }

@@ -159,15 +159,10 @@ class Supplier extends CommonDBTM
                      'type' => 'text',
                      'value' => $this->fields['website'],
                   ],
-                  __('Name') => [
+                  __('Email') => [
                      'name' => 'email',
                      'type' => 'text',
                      'value' => $this->fields['email'],
-                  ],
-                  __('Email') => [
-                     'name' => 'name',
-                     'type' => 'text',
-                     'value' => $this->fields['name'],
                   ],
                   __('Address') => [
                      'name' => 'address',
