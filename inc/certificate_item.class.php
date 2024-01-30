@@ -191,7 +191,7 @@ class Certificate_Item extends CommonDBRelation {
       $number = count($types_iterator);
 
       if ($canedit) {
-         $itemtypes = Document::getItemtypesThatCanHave();
+         $itemtypes = Certificate::getTypes(true);
          $options = [];
          foreach ($itemtypes as $itemtype) {
             $options[$itemtype] = $itemtype::getTypeName(1);
