@@ -187,7 +187,7 @@ class Certificate_Item extends CommonDBRelation {
       }
       $canedit = $certificate->can($instID, UPDATE);
 
-      $types_iterator = self::getDistinctTypes($instID, ['itemtype' => Certificate::getTypes(true)]);
+      $types_iterator = self::getDistinctTypes($instID, ['itemtype' => Certificate::getTypes()]);
       $number = count($types_iterator);
 
       if ($canedit) {
@@ -228,17 +228,20 @@ class Certificate_Item extends CommonDBRelation {
                                     url: "$CFG_GLPI[root_doc]/ajax/getDropdownValue.php",
                                     data: {
                                        itemtype: this.value,
+                                       display_emptychoice: 1,
                                     },
                                     success: function(response) {
                                        const data = response.results;
                                        $('#dropdown_items_id').empty();
-                                       $('#dropdown_items_id').append("<option value='" + data[0].id + "'>" + data[0].text + "</option>");
-                                       delete data[0];
                                        for (let i = 1; i < data.length; i++) {
-                                          const group = $('#dropdown_items_id')
-                                             .append("<optgroup label='" + data[i].text + "'></optgroup>");
-                                          for (let j = 0; j < data[i].children.length; j++) {
-                                             group.append("<option value='" + data[i].children[j].id + "'>" + data[i].children[j].text + "</option>");
+                                          if (data[i].children) {
+                                             const group = $('#dropdown_items_id')
+                                                .append("<optgroup label='" + data[i].text + "'></optgroup>");
+                                             for (let j = 0; j < data[i].children.length; j++) {
+                                                group.append("<option value='" + data[i].children[j].id + "'>" + data[i].children[j].text + "</option>");
+                                             }
+                                          } else {
+                                             $('#dropdown_items_id').append("<option value='" + data[i].id + "'>" + data[i].text + "</option>");
                                           }
                                        }
                                     }

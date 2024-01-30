@@ -529,10 +529,6 @@ class Item_SoftwareLicense extends CommonDBRelation {
       //SoftwareLicense ID
       $number = self::countForLicense($searchID);
 
-      echo "<div class='center'>";
-
-      //If the number of linked assets have reached the number defined in the license,
-      //and over-quota is not allowed, do not allow to add more assets
       if ($canedit
          && ($license->getField('number') == -1 || $number < $license->getField('number')
          || $license->getField('allow_overquota'))) {
@@ -775,16 +771,15 @@ class Item_SoftwareLicense extends CommonDBRelation {
       ];
       $iterator = $DB->request($criteria);
 
-      $rand = mt_rand();
-
       if ($data = $iterator->next()) {
          if ($canedit) {
             $massiveactionparams = [
                'num_displayed'    => min($_SESSION['glpilist_limit'], count($iterator)),
-               'container'        => 'tableForSoftwareLicense_Items',
+               'container'        => 'tableForSoftwareLicenceItem',
                'specific_actions' => [
-                  'purge' => _x('button', 'Delete permanently')
+                  'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
                ],
+               'is_deleted' => false,
                'display_arrow' => false
             ];
 
@@ -810,51 +805,57 @@ class Item_SoftwareLicense extends CommonDBRelation {
          $text = sprintf(__('%1$s - %2$s'), $text, $data["license"]);
 
          $fields = [
-            'item_type'         => __('Item type'),
-            'itemname'          => __('Name'),
-            'entity'            => Entity::getTypeName(1),
-            'serial'            => __('Serial number'),
-            'otherserial'       => __('Inventory number'),
-            'location' => Location::getTypeName(1),
-            'state'    => __('Status'),
-            'groupe'   => Group::getTypeName(1),
-            'username' => User::getTypeName(1)
+            __('Item type'),
+            __('Name'),
          ];
+         if ($showEntity) {
+            $fields[] = Entity::getTypeName(1);
+         }
+         $fields[] = __('Serial number');
+         $fields[] = __('Inventory number');
+         $fields[] = Location::getTypeName(1);
+         $fields[] = __('Status');
+         $fields[] = Group::getTypeName(1);
+         $fields[] = User::getTypeName();
          $values = [];
+         $massiveactionValues = [];
          do {
             $newValue = [];
-
+            $newValue[] = $data['itemtype'];
             if ($canshowitems[$data['item_type']]) {
-               $newValue['itemname'] = "<a href='".$data['item_type']::getFormURLWithID($data['iID'])."'>"
+               $newValue[] = "<a href='".$data['item_type']::getFormURLWithID($data['iID'])."'>"
                                        .$data['itemname']."</a>";
             } else {
-               $newValue['itemname'] = $data['itemname'];
+               $newValue[] = $data['itemname'];
             }
 
             if ($showEntity) {
-               $newValue['entity'] = $data['entity'];
+               $newValue[] = $data['entity'];
             }
-            $newValue['serial'] = $data['serial'];
-            $newValue['otherserial'] = $data['otherserial'];
-            $newValue['location'] = $data['location'];
-            $newValue['state'] = $data['state'];
-            $newValue['groupe'] = $data['groupe'];
-            $newValue['username'] = formatUserName($data['userid'], $data['username'],
+            $newValue = array_merge($newValue, [
+               $data['serial'],
+               $data['otherserial'],
+               $data['location'],
+               $data['state'],
+               $data['groupe'],
+               formatUserName($data['userid'], $data['username'],
                $data['userrealname'], $data['userfirstname'],
-               $linkUser);
-                                 
+               $linkUser)
+            ]);
 
             $values[] = $newValue;
+            $massiveactionValues[] = sprintf('item[%s][%s]', $data['itemtype'], $data['items_id']);
          } while ($data = $iterator->next());
-         renderTwigTemplate('table.twig', ['fields' => $fields, 'values' => $values]);
+         renderTwigTemplate('table.twig', [
+            'id' => 'tableForSoftwareLicenceItem',
+            'fields' => $fields,
+            'values' => $values,
+            'massive_action' => $massiveactionValues
+         ]);
 
       } else { // Not found
          echo __('No item found');
       }
-      Html::printAjaxPager(__('Affected items'), $start, $number);
-
-      echo "</div>\n";
-
    }
 
 
