@@ -82,15 +82,28 @@ function renderTwigTemplate($path, $vars)
 /**
  * @return string
  */
-function renderTwigForm($form, $additionnalHtml = '', $colAmount = 2)
+function renderTwigForm($form, $additionnalHtml = '', $fields = [])
 {
     global $CFG_GLPI;
 
     $twig = Twig::load(GLPI_ROOT . '/templates', false);
+    if (isset($_GET['withtemplate']) && $_GET['withtemplate']) {
+        $form['content'][array_key_first($form['content'])]['inputs'] = array_merge([
+            [
+                'type' => 'hidden',
+                'name' => 'is_template',
+                'value' => 1,
+            ],
+            __('Template name') => [
+                'type' => 'text',
+                'name' => 'template_name',
+                'value' => $fields['template_name']
+            ]
+        ], $form['content'][array_key_first($form['content'])]['inputs']);
+    };
     try {
         echo $twig->render('form.twig', [
             'form' => $form,
-            'col' => $colAmount,
             'additionnalHtml' => $additionnalHtml,
             'root_doc' => $CFG_GLPI['root_doc'],
             'csrf_token' => $_SESSION['_glpi_csrf_token'],

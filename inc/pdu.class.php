@@ -193,7 +193,7 @@ class PDU extends CommonDBTM {
          ]]);
       $additionnalHtml = ob_get_clean();
          
-      renderTwigForm($form, $additionnalHtml);
+      renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }
 

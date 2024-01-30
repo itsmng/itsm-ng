@@ -155,7 +155,7 @@ class Peripheral extends CommonDBTM {
       $form = [
          'action' => $this->getFormURL(),
          'buttons' => [
-            $this->fields["is_deleted"] == 1 && self::canDelete() ? [
+            isset($this->fields["is_deleted"]) && $this->fields["is_deleted"] == 1 && self::canDelete() ? [
               'type' => 'submit',
               'name' => 'restore',
               'value' => __('Restore'),
@@ -308,7 +308,7 @@ class Peripheral extends CommonDBTM {
          ]]);
       $additionnalHtml = ob_get_clean();
          
-      renderTwigForm($form, $additionnalHtml);
+      renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }
 
