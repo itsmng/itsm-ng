@@ -54,7 +54,6 @@ class Knowbase extends CommonGLPI {
       $ong = [];
       $this->addStandardTab(__CLASS__, $ong, $options);
 
-      $ong['no_all_tab'] = true;
       return $ong;
    }
 
