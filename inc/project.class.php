@@ -1418,172 +1418,192 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
     *@return void
    **/
    function showForm($ID, $options = []) {
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Creation date')."</td>";
-      echo "<td>";
-
-      $date = $this->fields["date"];
-      if (!$ID) {
-         $date = $_SESSION['glpi_currenttime'];
-      }
-      Html::showDateTimeField("date", ['value'      => $date,
-                                            'maybeempty' => false]);
-      echo "</td>";
-      if ($ID) {
-         echo "<td>".__('Last update')."</td>";
-         echo "<td >". Html::convDateTime($this->fields["date_mod"])."</td>";
-      } else {
-         echo "<td colspan='2'>&nbsp;</td>";
-      }
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, 'name');
-      echo "</td>";
-      echo "<td>".__('Code')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, 'code');
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Priority')."</td>";
-      echo "<td>";
-      CommonITILObject::dropdownPriority(['value' => $this->fields['priority'],
-                                               'withmajor' => 1]);
-      echo "</td>";
-      echo "<td>".__('As child of')."</td>";
-      echo "<td>";
-      $this->dropdown(['entity'   => $this->fields['entities_id'],
-                            'value'    => $this->fields['projects_id'],
-                            'used'     => [$this->fields['id']]]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._x('item', 'State')."</td>";
-      echo "<td>";
-      ProjectState::dropdown(['value' => $this->fields["projectstates_id"]]);
-      echo "</td>";
-      echo "<td>".__('Percent done')."</td>";
-      echo "<td>";
-      $percent_done_params = [
-         'value' => $this->fields['percent_done'],
-         'min'   => 0,
-         'max'   => 100,
-         'step'  => 5,
-         'unit'  => '%'
+      $options = [
+         6 => CommonITILObject::getPriorityName(6),
+         5 => CommonITILObject::getPriorityName(5),
+         4 => CommonITILObject::getPriorityName(4),
+         3 => CommonITILObject::getPriorityName(3),
+         2 => CommonITILObject::getPriorityName(2),
+         1 => CommonITILObject::getPriorityName(1),
       ];
-      if ($this->fields['auto_percent_done']) {
-         $percent_done_params['specific_tags'] = ['disabled' => 'disabled'];
-      }
-      Dropdown::showNumber("percent_done", $percent_done_params);
-      $auto_percent_done_params = [
-         'type'      => 'checkbox',
-         'name'      => 'auto_percent_done',
-         'title'     => __('Automatically calculate'),
-         'onclick'   => "$(\"select[name='percent_done']\").prop('disabled', !$(\"input[name='auto_percent_done']\").prop('checked'));"
+
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            $this->fields["is_deleted"] == 1 && self::canDelete() ? [
+              'type' => 'submit',
+              'name' => 'restore',
+              'value' => __('Restore'),
+              'class' => 'btn btn-secondary'
+            ] : ($this->canUpdateItem() ? [
+              'type' => 'submit',
+              'name' => $this->isNewID($ID) ? 'add' : 'update',
+              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+              'class' => 'btn btn-secondary'
+            ] : []),
+            !$this->isNewID($ID) && !$this->isDeleted() && $this->canDeleteItem() ? [
+              'type' => 'submit',
+              'name' => 'delete',
+              'value' => __('Put in trashbin'),
+              'class' => 'btn btn-danger'
+            ] : (!$this->isNewID($ID) && self::canPurge() ? [
+              'type' => 'submit',
+              'name' => 'purge',
+              'value' => __('Delete permanently'),
+              'class' => 'btn btn-danger'
+            ] : []),
+          ],
+          'content' => [
+            $this->getTypeName() => [
+               'visible' => true,
+               'inputs' => [
+                  [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ],
+                  __('Creation date') => [
+                     'type' => 'datetime-local',
+                     'name' => 'date',
+                     'value' => $this->fields['date'],
+                  ],
+                  __('Last update') => $ID ? [
+                     'content' => Html::convDateTime($this->fields["date_mod"]),
+                  ] : [],
+                  __('Name') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields['name'],
+                  ],
+                  __('Code') => [
+                     'type' => 'text',
+                     'name' => 'code',
+                     'value' => $this->fields['code'],
+                  ],
+                  __('Priority') => [
+                     'type' => 'select',
+                     'name' => 'priority',
+                     'values' => $options,
+                     'value' => $this->fields['priority'],
+                  ],
+                  __('As child of') => [
+                     'type' => 'select',
+                     'name' => 'projects_id',
+                     'values' => getOptionForItems(Project::class, [
+                        'NOT' => ['id' => $this->fields['id']],
+                        'entities_id' => $this->fields['entities_id'],   
+                     ]),
+                     'value' => $this->fields['projects_id'],
+                     'actions' => getItemActionButtons(['info'], Project::class)
+                  ],
+                  _x('item', 'State') => [
+                     'type' => 'select',
+                     'name' => 'projectstates_id',
+                     'values' => getOptionForItems(ProjectState::class),
+                     'value' => $this->fields['projectstates_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], ProjectState::class)
+                  ],
+                  __('Percent done') => [
+                     'type' => 'number',
+                     'name' => 'percent_done',
+                     'min' => 0,
+                     'max' => 100,
+                     'step' => 5,
+                     'after' => '%',
+                     'value' => $this->fields['percent_done'],
+                     $this->fields['auto_percent_done'] ? 'disabled' : '' => ''
+                  ],
+                  _n('Type', 'Types', 1) => [
+                     'type' => 'select',
+                     'name' => 'projecttypes_id',
+                     'values' => getOptionForItems(ProjectType::class),
+                     'value' => $this->fields['projecttypes_id'],
+                  ],
+                  __('Show on global GANTT') => [
+                     'type' => 'checkbox',
+                     'name' => 'show_on_global_gantt',
+                     'value' => $this->fields['show_on_global_gantt'],
+                  ],
+                  __('Description') => [
+                     'type' => 'textarea',
+                     'name' => 'content',
+                     'value' => $this->fields['content'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  __('Comment') => [
+                     'type' => 'textarea',
+                     'name' => 'comment',
+                     'value' => $this->fields['comment'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+               ]
+            ],
+            __('Manager') => [
+               'visible' => true,
+               'inputs' => [
+                  User::getTypeName() => [
+                     'type' => 'select',
+                     'name' => 'users_id',
+                     'values' => getOptionsForUsers('see_project', ['entities_id' => $this->fields['entities_id']]),
+                     'value' => $ID ? $this->fields["users_id"] : Session::getLoginUserID(),
+                     'col_lg' => 6,
+                  ],
+                  Group::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'users_id',
+                     'values' => getOptionForItems(Group::class, [
+                        'entities_id' => $this->fields['entities_id'],
+                        'is_manager' => 1,
+                     ]),
+                     'value' => $this->fields['groups_id'],
+                     'col_lg' => 6,
+                  ]
+               ]
+            ],
+            __('Planning') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Planned start date') => [
+                     'type' => 'datetime-local',
+                     'name' => 'plan_start_date',
+                     'value' => $this->fields['plan_start_date'],
+                     'col_lg' => 6,
+                  ],
+                  __('Real start date') => [
+                     'type' => 'datetime-local',
+                     'name' => 'real_start_date',
+                     'value' => $this->fields['real_start_date'],
+                     'col_lg' => 6,
+                  ],
+                  __('Planned end date') => [
+                     'type' => 'datetime-local',
+                     'name' => 'plan_end_date',
+                     'value' => $this->fields['plan_end_date'],
+                     'col_lg' => 6,
+                  ],
+                  __('Real end date') => [
+                     'type' => 'datetime-local',
+                     'name' => 'real_end_date',
+                     'value' => $this->fields['real_end_date'],
+                     'col_lg' => 6,
+                  ],
+                  __('Planned duration') => [
+                     'content' => Html::timestampToString(ProjectTask::getTotalPlannedDurationForProject($this->fields['id']),
+                        false),
+                     'col_lg' => 6,
+                  ],
+                  __('Effective duration') => [
+                     'content' => Html::timestampToString(ProjectTask::getTotalEffectiveDurationForProject($this->fields['id']),
+                        false),
+                     'col_lg' => 6,
+                  ],
+               ]
+            ]
+          ]
       ];
-      if ($this->fields['auto_percent_done']) {
-         $auto_percent_done_params['checked'] = 'checked';
-      }
-      Html::showCheckbox($auto_percent_done_params);
-      echo "<span class='very_small_space'>";
-      Html::showToolTip(__('When automatic computation is active, percentage is computed based on the average of all child project and task percent done.'));
-      echo "</span></td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Type', 'Types', 1)."</td>";
-      echo "<td>";
-      ProjectType::dropdown(['value' => $this->fields["projecttypes_id"]]);
-      echo "</td>";
-      echo "<td>".__('Show on global GANTT')."</td>";
-      echo "<td>";
-      Dropdown::showYesNo("show_on_global_gantt", $this->fields["show_on_global_gantt"]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr><td colspan='4' class='subheader'>".__('Manager')."</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".User::getTypeName(1)."</td>";
-      echo "<td>";
-      User::dropdown(['name'   => 'users_id',
-                           'value'  => $ID ? $this->fields["users_id"] : Session::getLoginUserID(),
-                           'right'  => 'see_project',
-                           'entity' => $this->fields["entities_id"]]);
-      echo "</td>";
-      echo "<td>".Group::getTypeName(1)."</td>";
-      echo "<td>";
-      Group::dropdown([
-         'name'      => 'groups_id',
-         'value'     => $this->fields['groups_id'],
-         'entity'    => $this->fields['entities_id'],
-         'condition' => ['is_manager' => 1]
-      ]);
-      echo "</td></tr>\n";
-
-      echo "<tr><td colspan='4' class='subheader'>".__('Planning')."</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Planned start date')."</td>";
-      echo "<td>";
-      Html::showDateTimeField("plan_start_date", ['value' => $this->fields['plan_start_date']]);
-      echo "</td>";
-      echo "<td>".__('Real start date')."</td>";
-      echo "<td>";
-      Html::showDateTimeField("real_start_date", ['value' => $this->fields['real_start_date']]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Planned end date')."</td>";
-      echo "<td>";
-      Html::showDateTimeField("plan_end_date", ['value' => $this->fields['plan_end_date']]);
-      echo "</td>";
-      echo "<td>".__('Real end date')."</td>";
-      echo "<td>";
-      Html::showDateTimeField("real_end_date", ['value' => $this->fields['real_end_date']]);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Planned duration');
-      echo Html::showTooltip(__('Sum of planned durations of tasks'));
-      echo "</td>";
-      echo "<td>";
-      echo Html::timestampToString(ProjectTask::getTotalPlannedDurationForProject($this->fields['id']),
-                                   false);
-      echo "</td>";
-      echo "<td>".__('Effective duration');
-      echo Html::showTooltip(__('Sum of total effective durations of tasks'));
-      echo "</td>";
-      echo "<td>";
-      echo Html::timestampToString(ProjectTask::getTotalEffectiveDurationForProject($this->fields['id']),
-                                   false);
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Description')."</td>";
-      echo "<td colspan='3'>";
-      echo "<textarea id='content' name='content' cols='90' rows='6'>".$this->fields["content"].
-           "</textarea>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Comments')."</td>";
-      echo "<td colspan='3'>";
-      echo "<textarea id='comment' name='comment' cols='90' rows='6'>".$this->fields["comment"].
-           "</textarea>";
-      echo "</td>";
-      echo "</tr>\n";
-
-      $this->showFormButtons($options);
+      renderTwigForm($form);
 
       return true;
    }
