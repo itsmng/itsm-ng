@@ -725,56 +725,52 @@ abstract class CommonITILValidation  extends CommonDBChild {
       $canadd = $this->can(-1, CREATE, $tmp);
       $rand   = mt_rand();
 
-      if ($canadd) {
-         $itemtype = static::$itemtype;
-         echo "<form method='post' name=form action='".$itemtype::getFormURL()."'>";
-      }
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr>";
-      echo "<th colspan='3'>".self::getTypeName(Session::getPluralNumber())."</th>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Global approval status')."</td>";
-      echo "<td colspan='2'>";
-      if (Session::haveRightsOr(static::$rightname, TicketValidation::getValidateRights())) {
-         self::dropdownStatus("global_validation",
-                              ['value'    => $item->fields["global_validation"]]);
-      } else {
-         echo TicketValidation::getStatus($item->fields["global_validation"]);
-      }
-      echo "</td></tr>";
-
-      echo "<tr>";
-      echo "<th colspan='2'>"._x('item', 'State')."</th>";
-      echo "<th colspan='2'>";
-      echo self::getValidationStats($tID);
-      echo "</th>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Minimum validation required')."</td>";
-      if ($canadd) {
-         echo "<td>";
-         echo $item->getValueToSelect('validation_percent', 'validation_percent',
-                                      $item->fields["validation_percent"]);
-         echo "</td>";
-         echo "<td><input type='submit' name='update' class='submit' value='".
-                    _sx('button', 'Save')."'>";
-         if (!empty($tID)) {
-            echo "<input type='hidden' name='id' value='$tID'>";
-         }
-         echo "</td>";
-      } else {
-         echo "<td colspan='2'>";
-         echo Dropdown::getValueWithUnit($item->fields["validation_percent"], "%");
-         echo "</td>";
-      }
-      echo "</tr>";
-      echo "</table>";
-      if ($canadd) {
-         Html::closeForm();
-      }
+      $itemtype = static::$itemtype;
+      $form = [
+         'action' => $canadd ? $itemtype::getFormURL() : '',
+         'buttons' => [
+            [
+               'name' => 'update',
+               'value' => _x('button', 'update'),
+               'class' => 'btn btn-secondary mb-3'
+            ]
+         ],
+         'content' => [
+            self::getTypeName(Session::getPluralNumber()) => [
+               'visible' => 'true',
+               'inputs' => [
+                  __('Global approval status') => (Session::haveRightsOr(static::$rightname, TicketValidation::getValidateRights())) ? [
+                     'type' => 'select',
+                     'name' => 'global_validation',
+                     'values' => self::getAllStatusArray(),
+                     'value' => $item->fields['global_validation'],
+                  ] : [
+                     'content' => TicketValidation::getStatus($item->fields["global_validation"]),
+                  ],
+               ]
+            ],
+            _x('item', 'State') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Minimum validation required') => ($canadd) ? [
+                     'type' => 'number',
+                     'name' => 'validation_percent',
+                     'value' => $item->fields['validation_percent'],
+                     'min' => 0,
+                     'max' => 100,
+                     'step' => 50,
+                     'after' => '%',
+                  ] : [
+                     'content' => Dropdown::getValueWithUnit($item->fields["validation_percent"], "%"),
+                  ],
+                  '' => [
+                     'content' => self::getValidationStats($tID)
+                  ],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
 
       echo "<div id='viewvalidation" . $tID . "$rand'></div>\n";
 
@@ -811,7 +807,7 @@ abstract class CommonITILValidation  extends CommonDBChild {
          if (!in_array($item->fields['status'], array_merge($item->getSolvedStatusArray(),
             $item->getClosedStatusArray()))) {
                echo "<tr class='tab_bg_1 noHover'><td class='center' colspan='" . $nb_colonnes . "'>";
-               echo "<a class='vsubmit' href='javascript:viewAddValidation".$tID."$rand();'>";
+               echo "<a class='btn btn-secondary' href='javascript:viewAddValidation".$tID."$rand();'>";
                echo __('Send an approval request')."</a></td></tr>\n";
          }
       }
