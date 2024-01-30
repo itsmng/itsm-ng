@@ -581,7 +581,7 @@ class Item_SoftwareLicense extends CommonDBRelation {
                                        $('#dropdown_items_id').empty();
                                        $('#dropdown_items_id').append("<option value='" + data[0].id + "'>" + data[0].text + "</option>");
                                        delete data[0];
-                                       for (let i = 1; i < data.length; i++) {
+                                       for (let i = 0; i < data.length; i++) {
                                           const group = $('#dropdown_items_id')
                                              .append("<optgroup label='" + data[i].text + "'></optgroup>");
                                           for (let j = 0; j < data[i].children.length; j++) {

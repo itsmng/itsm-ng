@@ -233,7 +233,7 @@ class Certificate_Item extends CommonDBRelation {
                                     success: function(response) {
                                        const data = response.results;
                                        $('#dropdown_items_id').empty();
-                                       for (let i = 1; i < data.length; i++) {
+                                       for (let i = 0; i < data.length; i++) {
                                           if (data[i].children) {
                                              const group = $('#dropdown_items_id')
                                                 .append("<optgroup label='" + data[i].text + "'></optgroup>");
