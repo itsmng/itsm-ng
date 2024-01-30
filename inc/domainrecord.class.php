@@ -301,99 +301,94 @@ class DomainRecord extends CommonDBChild {
    }
 
    function showForm($ID, $options = []) {
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-
-      echo "<td>" . Domain::getTypeName(1) . "</td>";
-      echo "<td>";
-      Dropdown::show(
-         'Domain', [
-            'name'   => "domains_id",
-            'value'  => $this->fields["domains_id"],
-            'entity' => $this->fields["entities_id"]
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+           isset($this->fields["is_deleted"]) && $this->fields['is_deleted'] == 1 && self::canDelete() ? [
+             'type' => 'submit',
+             'name' => 'restore',
+             'value' => __('Restore'),
+             'class' => 'btn btn-secondary'
+           ] : [
+             'type' => 'submit',
+             'name' => $this->isNewID($ID) ? 'add' : 'update',
+             'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+             'class' => 'btn btn-secondary'
+           ],
+           !$this->isNewID($ID) && !$this->isDeleted() && $this->canDeleteItem() ? [
+             'type' => 'submit',
+             'name' => 'delete',
+             'value' => __('Put in trashbin'),
+             'class' => 'btn btn-danger'
+           ] : (!$this->isNewID($ID) && self::canPurge() ? [
+             'type' => 'submit',
+             'name' => 'purge',
+             'value' => __('Delete permanently'),
+             'class' => 'btn btn-danger'
+           ] : []),
+         ], 
+         'content' => [
+            '' => [
+               'visible' => true,
+               'inputs' => [
+                  Domain::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'domains_id',
+                     'values' => getOptionForItems(Domain::class),
+                     'value' => $this->fields['domains_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], Domain::class)
+                  ],
+                  __('Name') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields['name'] ?? '',
+                  ],
+                  DomainRecordType::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'domainrecordtypes_id',
+                     'values' => getOptionForItems(DomainRecordType::class),
+                     'value' => $this->fields['domainrecordtypes_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], DomainRecordType::class)
+                  ],
+                  __('Creation date') => [
+                     'type' => 'date',
+                     'name' => 'date_creation',
+                     'value' => $this->fields["date_creation"] ?? '',
+                  ],
+                  __('Data') => [
+                     'type' => 'text',
+                     'name' => 'data',
+                     'value' => $this->fields['data'] ?? '',
+                  ],
+                  __('Technician in charge') => [
+                     'type' => 'select',
+                     'name' => "users_id_tech",
+                     'values' => getOptionsForUsers('interface', ['entities_id' => Session::getActiveEntity()]),
+                     'value' => $this->fields["users_id_tech"] ?? '',
+                     'actions' => getItemActionButtons(['info'], User::class),
+                  ],
+                  __('Group in charge') => [
+                     'type' => 'select',
+                     'name' => "groups_id_tech",
+                     'values' => getOptionForItems(Group::class, ['entities_id' => Session::getActiveEntity()]),
+                     'value' => $this->fields["groups_id_tech"] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], Group::class),
+                  ],
+                  __('TTL') => [
+                     'type' => 'number',
+                     'name' => 'ttl',
+                     'value' => $this->fields['ttl'] ?? '',
+                  ],
+                  __('Comments') => [
+                     'type' => 'textarea',
+                     'name' => 'comment',
+                     'value' => $this->fields['comment'] ?? '',
+                  ]
+               ]
+            ]
          ]
-      );
-      echo "</td>";
-
-      echo "<td>" . __('Name') . "</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-
-      echo "</tr>";
-      echo "<tr class='tab_bg_1'>";
-
-      echo "<td>" . DomainRecordType::getTypeName(1) . "</td>";
-      echo "<td>";
-      $condition = null;
-      if ($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] != [-1]) {
-         if (count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'])) {
-            $condition = ['id' => $_SESSION['glpiactiveprofile']['managed_domainrecordtypes']];
-         } else {
-            $condition = ['id' => null];
-         }
-      }
-      Dropdown::show(
-         'DomainRecordType', [
-            'name'      => "domainrecordtypes_id",
-            'value'     => $this->fields["domainrecordtypes_id"],
-            'entity'    => $this->fields["entities_id"],
-            'condition' => $condition
-         ]
-      );
-      echo "</td>";
-      echo "<td>" . __('Creation date') . "</td>";
-      echo "<td>";
-      Html::showDateField("date_creation", ['value' => $this->fields["date_creation"]]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Data') . "</td>";
-      echo "<td colspan='3'>";
-      Html::autocompletionTextField($this, "data");
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Technician in charge') . "</td><td>";
-      User::dropdown(['name'   => "users_id_tech",
-                           'value'  => $this->fields["users_id_tech"],
-                           'entity' => $this->fields["entities_id"],
-                           'right'  => 'interface']);
-      echo "</td>";
-
-      echo "<td>" . __('Group in charge') . "</td>";
-      echo "<td>";
-      Dropdown::show('Group', ['name'      => "groups_id_tech",
-                                    'value'     => $this->fields["groups_id_tech"],
-                                    'entity'    => $this->fields["entities_id"],
-                                    'condition' => ['is_assign' => 1]]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('TTL') . "</td>";
-      echo "<td>";
-      echo "<input type='number' name='ttl' value='{$this->fields['ttl']}'/>";
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>";
-      echo __('Comments') . "</td>";
-      echo "<td colspan='3' class='center'>";
-      echo "<textarea cols='115' rows='5' name='comment' >" . $this->fields["comment"] . "</textarea>";
-      echo "</td>";
-
-      echo "</tr>";
-
-      if (isset($_REQUEST['_in_modal'])) {
-         echo "<input type='hidden' name='_in_modal' value='1'>";
-      }
-      $this->showFormButtons($options);
+      ];
+      renderTwigForm($form);
 
       return true;
    }
@@ -434,85 +429,56 @@ class DomainRecord extends CommonDBChild {
       $number = count($iterator);
 
       if ($canedit) {
-         echo "<div class='firstbloc'>";
-         echo "<form method='post' name='domain_form$rand'
-         id='domain_form$rand'  action='" . Toolbox::getItemTypeFormURL("Domain") . "'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th colspan='2'>" .
-              __('Link a record') . "</th></tr>";
-
-         echo "<tr class='tab_bg_1'><td class='center'>";
-         $used_iterator = $DB->request([
-            'SELECT' => 'id',
-            'FROM'   => self::getTable(),
-            'WHERE'  => [
-               'domains_id'   => ['>', 0],
-               'NOT'          => ['domains_id' => null]
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL("Domain"),
+            'buttons' => [
+               [
+                  'name' => 'addrecord',
+                  'value' => _x('button', 'Add'),
+                  'class' => 'btn btn-secondary',
+               ]
+            ],
+            'content' => [
+               __('Link a record') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'domains_id',
+                        'value' => $instID,
+                     ],
+                     '' => [
+                        'type' => 'select',
+                        'name' => 'domainrecords_id',
+                        'values' => getOptionForItems(DomainRecord::class, ['domains_id' => 0]),
+                        'actions' => getItemActionButtons(['info', 'add'], DomainRecord::class),
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                     ]
+                  ]
+               ]
             ]
-         ]);
 
-         $used = [];
-         while ($row = $used_iterator->next()) {
-            $used[$row['id']] = $row['id'];
-         }
-
-         Dropdown::show(
-            'DomainRecord', [
-               'name'   => "domainrecords_id",
-               'used'   => $used
-            ]
-         );
-
-         echo "<span class='fa fa-plus-circle pointer' title=\"".__s('Add')."\"
-                        onClick=\"".Html::jsGetElementbyID('add_dropdowndomainrecords_id').".dialog('open');\"
-                     ><span class='sr-only'>" . __s('Add') . "</span></span>";
-         echo Ajax::createIframeModalWindow(
-            'add_dropdowndomainrecords_id',
-            DomainRecord::getFormURL() . "?domains_id=$instID",
-            ['display' => false, 'reloadonclose' => true]
-         );
-
-         echo "</td><td class='center' class='tab_bg_1'>";
-         echo "<input type='hidden' name='domains_id' value='$instID'>";
-         echo "<input type='submit' name='addrecord' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         ];
+         renderTwigForm($form);
       }
 
-      echo "<div class='spaced'>";
       if ($canedit && $number) {
-         Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-         $massiveactionparams = [];
+         $massiveactionparams = [
+            'container' => 'tableForDomainRecordsDomain',
+            'display_arrow' => false,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      if ($number) {
-         Session::initNavigateListItems(
-            'DomainRecord',
-            //TRANS : %1$s is the itemtype name,
-            //        %2$s is the name of the item (used for headings of a list)
-            sprintf(__('%1$s = %2$s'),
-            Domain::getTypeName(1), $domain->getName()));
-      }
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr>";
-
-      if ($canedit && $number) {
-         echo "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
-      }
-
-      echo "<th>" . _n('Type', 'Types', 1) . "</th>";
-      echo "<th>" . __('Name') . "</th>";
-      echo "<th>" . __('TTL') . "</th>";
-      echo "<th>" . _n('Target', 'Targets', 1) . "</th>";
-      echo "</tr>";
-
+      $fields = [
+         _n('Type', 'Types', 1),
+         __('Name'),
+         __('TTL'),
+         _n('Target', 'Targets', 1),
+      ];
+      $values = [];
+      $massive_action = [];
       while ($data = $iterator->next()) {
-         Session::addToNavigateListItems('DomainRecord', $data['id']);
-         Session::addToNavigateListItems('Domain', $domain->fields['id']);
-
          $ID = "";
 
          if ($_SESSION["glpiis_ids_visible"] || empty(self::getDisplayName($domain, $data['name']))) {
@@ -522,29 +488,20 @@ class DomainRecord extends CommonDBChild {
          $link = Toolbox::getItemTypeFormURL('DomainRecord');
          $name = "<a href=\"" . $link . "?id=" . $data["id"] . "\">"
                   . self::getDisplayName($domain, $data['name']) . "$ID</a>";
-
-         echo "<tr class='tab_bg_1'>";
-
-         if ($canedit) {
-            echo "<td width='10'>";
-            Html::showMassiveActionCheckBox(__CLASS__, $data["id"]);
-            echo "</td>";
-         }
-         echo "<td>" . Dropdown::getDropdownName(DomainRecordType::getTable(), $data['domainrecordtypes_id']) . "</td>";
-         echo "<td " . (isset($data['is_deleted']) && $data['is_deleted'] ? "class='tab_bg_2_2'" : "") .
-               ">" . $name . "</td>";
-         echo "<td>" . $data['ttl'] . "</td>";
-         echo "<td>" . $data['data'] . "</td>";
-         echo "</tr>";
+         $values[] = [
+            Dropdown::getDropdownName(DomainRecordType::getTable(), $data['domainrecordtypes_id']),
+            $name,
+            $data['ttl'],
+            $data['data'],
+         ];
+         $massive_action[] = sprintf('item[%s][%s]', DomainRecord::class, $data['id']);
       }
-      echo "</table>";
-
-      if ($canedit && $number) {
-         $paramsma['ontop'] = false;
-         Html::showMassiveActions($paramsma);
-         Html::closeForm();
-      }
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+         'id' => 'tableForDomainRecordsDomain',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 
    public static function getDisplayName(Domain $domain, $name) {
