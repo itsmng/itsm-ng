@@ -620,6 +620,9 @@ class Contract_Item extends CommonDBRelation{
       if ($canedit && $totalnb) {
          $massiveactionparams = [
             'container' => 'tableForContractItem',
+            'specific_actions' => [
+               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+            ],
             'display_arrow' => false,
          ];
          Html::showMassiveActions($massiveactionparams);
