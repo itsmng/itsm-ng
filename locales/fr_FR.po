@@ -3894,8 +3894,8 @@ msgid ""
 "Make sure access to %s (%s) is forbidden; otherwise review .htaccess file "
 "and web server configuration."
 msgstr ""
-"Assurez-vous que l'accès à %s (%s) soit interdit ; sinon vérifiez le fichier "
-".htaccess et la configuration du serveur web."
+"Assurez-vous que l'accès à %s (%s) soit interdit ; sinon vérifiez le "
+"fichier .htaccess et la configuration du serveur web."
 
 #: inc/system/requirement/protectedwebaccess.class.php:116
 #: inc/config.class.php:2798
@@ -18872,7 +18872,8 @@ msgstr "Impossible de créer la relation d'asset %d."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:91
 msgid "Migrate Domains plugin data into ITSM-NG core tables"
-msgstr "Migrer les données du plugin Domaines dans les tables du cœur d'ITSM-NG"
+msgstr ""
+"Migrer les données du plugin Domaines dans les tables du cœur d'ITSM-NG"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:98
 #, php-format
@@ -20034,8 +20035,8 @@ msgstr ""
 msgid ""
 "Let us know your usage to improve future versions of ITSM-NG and its plugins!"
 msgstr ""
-"Faites-nous part de votre utilisation afin d'améliorer les futures versions d"
-"'ITSM-NG et de ses plugins !"
+"Faites-nous part de votre utilisation afin d'améliorer les futures versions "
+"d'ITSM-NG et de ses plugins !"
 
 #: inc/telemetry.class.php:432
 msgid "Reference your ITSM-NG"
@@ -22219,6 +22220,12 @@ msgstr "Activer la sélection des favoris"
 #: templates/menus/nav/nav-settings.twig:22
 msgid "Menu position"
 msgstr "Position du menu"
+
+#: inc/includes.php:155
+#, fuzzy
+#| msgid "session_token seems invalid"
+msgid "CSRF token is invalid"
+msgstr "session_token semble incorrect"
 
 #~ msgid "SSO Login"
 #~ msgstr "Connection en SSO"

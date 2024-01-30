@@ -22158,6 +22158,12 @@ msgstr ""
 msgid "Menu position"
 msgstr ""
 
+#: inc/includes.php:155
+#, fuzzy
+#| msgid "session_token seems invalid"
+msgid "CSRF token is invalid"
+msgstr "session_token parece incorrecto"
+
 #~ msgid "No room found or selected"
 #~ msgstr "No se encontró o seleccionó sala"
 

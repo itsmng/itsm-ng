@@ -22060,3 +22060,9 @@ msgstr "Activate favorite selection"
 #: templates/menus/nav/nav-settings.twig:22
 msgid "Menu position"
 msgstr "Menu position"
+
+#: inc/includes.php:155
+#, fuzzy
+#| msgid "session_token seems invalid"
+msgid "CSRF token is invalid"
+msgstr "session_token seems invalid"
