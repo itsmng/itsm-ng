@@ -1417,11 +1417,11 @@ class Problem extends CommonITILObject {
             $this->getTypeName() => [
                'visible' => 'true',
                'inputs' => [
-                  [
+                  $this->isNewID($ID) ? [
                      'type' => 'hidden',
                      'name' => 'id',
                      'value' => $ID,
-                  ],
+                  ] : [],
                   __('Child entities') => [
                      'type' => 'checkbox',
                      'name' => 'is_recursive',
