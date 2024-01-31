@@ -600,7 +600,7 @@ class Config extends CommonDBTM {
                      'values' => $CFG_GLPI['devices_in_menu'],
                   ],
                   [
-                     'name' => 'update_devices_in_menu',
+                     'name' => '_update_devices_in_menu',
                      'type' => 'hidden',
                      'value' => 1,
                   ],

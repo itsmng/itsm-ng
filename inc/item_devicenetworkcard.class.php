@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -40,8 +41,9 @@ if (!defined('GLPI_ROOT')) {
 
 /**
  * Relation between item and devices
-**/
-class Item_DeviceNetworkCard extends Item_Devices {
+ **/
+class Item_DeviceNetworkCard extends Item_Devices
+{
 
    static public $itemtype_2 = 'DeviceNetworkCard';
    static public $items_id_2 = 'devicenetworkcards_id';
@@ -49,18 +51,26 @@ class Item_DeviceNetworkCard extends Item_Devices {
    static protected $notable = false;
 
 
-   static function getSpecificities($specif = '') {
+   static function getSpecificities($specif = '')
+   {
 
-      return ['mac'    => ['long name'  => __('MAC address'),
-                                     'short name' => __('MAC address'),
-                                     'size'       => 18,
-                                     'id'         => 20,
-                                     'datatype'   => 'mac',
-                                     'autocomplete' => true,],
-                   'serial' => parent::getSpecificities('serial'),
-                   'otherserial' => parent::getSpecificities('otherserial'),
-                   'locations_id' => parent::getSpecificities('locations_id'),
-                   'states_id' => parent::getSpecificities('states_id'),
-                   'busID'  => parent::getSpecificities('busID')];
+      return [
+         'mac'    => [
+            'long name'  => __('MAC address'),
+            'short name' => __('MAC address'),
+            'size'       => 18,
+            'id'         => 20,
+            'datatype'   => 'mac',
+            'autocomplete' => true,
+            'formContent' => [
+               'type' => 'text',
+            ]
+         ],
+         'serial' => parent::getSpecificities('serial'),
+         'otherserial' => parent::getSpecificities('otherserial'),
+         'locations_id' => parent::getSpecificities('locations_id'),
+         'states_id' => parent::getSpecificities('states_id'),
+         'busID'  => parent::getSpecificities('busID')
+      ];
    }
 }
