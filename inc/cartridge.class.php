@@ -827,21 +827,36 @@ class Cartridge extends CommonDBChild {
          return false;
       }
       if ($ID > 0) {
-         echo "<div class='firstbloc'>";
-         echo "<form method='post' action=\"".static::getFormURL()."\">";
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr><td class='center tab_bg_2' width='20%'>";
-         echo "<input type='hidden' name='cartridgeitems_id' value='$ID'>\n";
-         Dropdown::showNumber('to_add', ['value' => 1,
-                                              'min'   => 1,
-                                              'max'   => 100]);
-         echo "</td><td>";
-         echo " <input type='submit' name='add' value=\"".__s('Add cartridges')."\"
-                class='submit'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $form = [
+            'action' => static::getFormURL(),
+            'buttons' => [
+               [
+                  'value' => __s('Add cartridges'),
+                  'name' => 'add',
+                  'class' => 'btn btn-secondary',
+               ]
+            ],
+            'content' => [
+               '' => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'cartridgeitems_id',
+                        'value' => $ID,
+                     ],
+                     __('Number') => [
+                        'type' => 'number',
+                        'name' => 'to_add',
+                        'value' => 1,
+                        'min' => 1,
+                        'max' => 100, 
+                     ]
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
    }
 

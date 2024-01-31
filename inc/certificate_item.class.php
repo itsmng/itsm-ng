@@ -482,7 +482,6 @@ class Certificate_Item extends CommonDBRelation {
          $massformContainerId = 'tableForCertificateItem';
          $massiveactionparams = [
             'container' => $massformContainerId,
-            'num_displayed' => $number,
             'display_arrow' => false,
             'specific_actions' => [
                'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
