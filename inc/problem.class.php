@@ -1624,7 +1624,7 @@ class Problem extends CommonITILObject {
                      'col_md' => 12,
                   ]
                ]
-            ]
+            ],
          ]
        ];
        renderTwigForm($form);
