@@ -1256,85 +1256,46 @@ class Change extends CommonITILObject {
       $this->check($this->getField('id'), READ);
       $canedit            = $this->canEdit($this->getField('id'));
 
-      if ($ID) {
-         $options            = [];
-         $options['canedit'] = false;
-         CommonDBTM::showFormHeader($options);
-      }
-
-      if ($tt == null) {
-         if (!isset($options['template_preview'])) {
-            $options['template_preview'] = 0;
-         }
-
-         $tt = $this->getITILTemplateToUse(
-            $options['template_preview'],
-            $this->getType(),
-            ($ID ? $this->fields['itilcategories_id'] : $options['itilcategories_id']),
-            ($ID ? $this->fields['entities_id'] : $options['entities_id'])
-         );
-      }
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<th>".$tt->getBeginHiddenFieldText('rolloutplancontent');
-      printf(__('%1$s%2$s'), __('Deployment plan'), $tt->getMandatoryMark('rolloutplancontent'));
-      echo $tt->getEndHiddenFieldText('rolloutplancontent')."</th>";
-      echo "<td colspan='3'>";
-      echo $tt->getBeginHiddenFieldValue('rolloutplancontent');
-      if ($canedit) {
-         echo "<textarea ". ($tt->isMandatoryField('rolloutplancontent') ? " required='required'" : '') .
-         " id='rolloutplancontent' name='rolloutplancontent' rows='6' cols='110'>";
-         echo $this->getField('rolloutplancontent');
-         echo "</textarea>";
-      } else {
-         echo $this->getField('rolloutplancontent');
-      }
-      echo $tt->getEndHiddenFieldValue('rolloutplancontent', $this);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<th>".$tt->getBeginHiddenFieldText('backoutplancontent');
-      printf(__('%1$s%2$s'), __('Backup plan'), $tt->getMandatoryMark('backoutplancontent'));
-      echo $tt->getEndHiddenFieldText('backoutplancontent')."</th>";
-      echo "<td colspan='3'>";
-      echo $tt->getBeginHiddenFieldValue('backoutplancontent');
-      if ($canedit) {
-         echo "<textarea ". ($tt->isMandatoryField('backoutplancontent') ? " required='required'" : '') .
-         " id='backoutplancontent' name='backoutplancontent' rows='6' cols='110'>";
-         echo $this->getField('backoutplancontent');
-         echo "</textarea>";
-      } else {
-         echo $this->getField('backoutplancontent');
-      }
-      echo $tt->getEndHiddenFieldValue('backoutplancontent', $this);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<th>".$tt->getBeginHiddenFieldText('checklistcontent');
-      printf(__('%1$s%2$s'), __('Checklist'), $tt->getMandatoryMark('checklistcontent'));
-      echo $tt->getEndHiddenFieldText('checklistcontent')."</th>";
-      echo "<td colspan='3'>";
-      echo $tt->getBeginHiddenFieldValue('checklistcontent');
-      if ($canedit) {
-         echo "<textarea ". ($tt->isMandatoryField('checklistcontent') ? " required='required'" : '') .
-         " id='checklistcontent' name='checklistcontent' rows='6' cols='110'>";
-         echo $this->getField('checklistcontent');
-         echo "</textarea>";
-      } else {
-         echo $this->getField('checklistcontent');
-      }
-      echo $tt->getEndHiddenFieldValue('checklistcontent', $this);
-      echo "</td>";
-      echo "</tr>";
-
-      if ($ID) {
-         $options['candel']  = false;
-         $options['canedit'] = $canedit;
-         $this->showFormButtons($options);
-      }
-
+      $form = [
+         'actions' => $this->getFormURL(),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => 'update',
+               'value' => _x('button', 'Save'),
+               'class' => 'btn btn-secondary'
+            ],
+         ],
+         'content' => [
+            $this->getTypeName() => [
+               'visible' => true,
+               'inputs' => [
+                  __('Deployment plan') => [
+                     'type' => 'textarea',
+                     'name' => 'rolloutplancontent',
+                     'value' => $this->fields['rolloutplancontent'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  __('Backup plan') => [
+                     'type' => 'textarea',
+                     'name' => 'backoutplancontent',
+                     'value' => $this->fields['backoutplancontent'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  __('Checklist') => [
+                     'type' => 'textarea',
+                     'name' => 'checklistcontent',
+                     'value' => $this->fields['checklistcontent'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
    }
 
 
