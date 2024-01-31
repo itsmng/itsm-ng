@@ -1197,6 +1197,11 @@ class Change extends CommonITILObject {
             $this->getTypeName() => [
                'visible' => true,
                'inputs' => [
+                  [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ],
                   __('Impacts') => [
                      'type' => 'textarea',
                      'name' => 'impactcontent',
@@ -1240,6 +1245,11 @@ class Change extends CommonITILObject {
             $this->getTypeName() => [
                'visible' => true,
                'inputs' => [
+                  [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ],
                   __('Deployment plan') => [
                      'type' => 'textarea',
                      'name' => 'rolloutplancontent',

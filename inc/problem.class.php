@@ -1643,47 +1643,51 @@ class Problem extends CommonITILObject {
       $this->check($this->getField('id'), READ);
       $canedit = $this->canEdit($this->getField('id'));
 
-      $options            = [];
-      $options['canedit'] = false;
-      CommonDBTM::showFormHeader($options);
+      $form = [
+         'action' => $canedit ? $this->getFormURL() : '',
+         'buttons' => [
+            [
+               'name' => 'update',
+               'class' => 'btn btn-secondary',
+               'value' => _x('button', 'Save'),
+            ],
+         ],
+         'content' => [
+            $this->getTypeName() => [
+               'visible' => true,
+               'inputs' => [
+                  [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $this->fields['id'],
+                  ],
+                  __('Impacts') => [
+                     'type' => 'textarea',
+                     'name' => 'impactcontent',
+                     'value' => $this->fields['impactcontent'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  __('Causes') => [
+                     'type' => 'textarea',
+                     'name' => 'causecontent',
+                     'value' => $this->fields['causecontent'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  __('Symptoms') => [
+                     'type' => 'textarea',
+                     'name' => 'symptomcontent',
+                     'value' => $this->fields['symptomcontent'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ]
 
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Impacts')."</td><td colspan='3'>";
-      if ($canedit) {
-         echo "<textarea id='impactcontent' name='impactcontent' rows='6' cols='80'>";
-         echo $this->getField('impactcontent');
-         echo "</textarea>";
-      } else {
-         echo $this->getField('impactcontent');
-      }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Causes')."</td><td colspan='3'>";
-      if ($canedit) {
-         echo "<textarea id='causecontent' name='causecontent' rows='6' cols='80'>";
-         echo $this->getField('causecontent');
-         echo "</textarea>";
-      } else {
-         echo $this->getField('causecontent');
-      }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Symptoms')."</td><td colspan='3'>";
-      if ($canedit) {
-         echo "<textarea id='symptomcontent' name='symptomcontent' rows='6' cols='80'>";
-         echo $this->getField('symptomcontent');
-         echo "</textarea>";
-      } else {
-         echo $this->getField('symptomcontent');
-      }
-      echo "</td></tr>";
-
-      $options['candel']  = false;
-      $options['canedit'] = $canedit;
-      $this->showFormButtons($options);
-
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
    }
 
 
