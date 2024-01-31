@@ -1183,69 +1183,39 @@ class Change extends CommonITILObject {
       $this->check($this->getField('id'), READ);
       $canedit = $this->canEdit($this->getField('id'));
 
-      if ($tt == null) {
-         if (!isset($options['template_preview'])) {
-            $options['template_preview'] = 0;
-         }
-
-         $tt = $this->getITILTemplateToUse(
-            $options['template_preview'],
-            $this->getType(),
-            ($ID ? $this->fields['itilcategories_id'] : $options['itilcategories_id']),
-            ($ID ? $this->fields['entities_id'] : $options['entities_id'])
-         );
-      }
-
-      if ($ID) {
-         $options            = [];
-         $options['canedit'] = false;
-         CommonDBTM::showFormHeader($options);
-      }
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<th>".$tt->getBeginHiddenFieldText('impactcontent');
-      printf(__('%1$s%2$s'), __('Impacts'), $tt->getMandatoryMark('impactcontent'));
-      echo $tt->getEndHiddenFieldText('impactcontent')."</th>";
-      echo "<td colspan='3'>";
-      echo $tt->getBeginHiddenFieldValue('impactcontent');
-      if ($canedit) {
-         echo "<textarea ". ($tt->isMandatoryField('impactcontent') ? " required='required'" : '') .
-         " id='impactcontent' name='impactcontent' rows='6' cols='110'>";
-         echo $this->getField('impactcontent');
-         echo "</textarea>";
-      } else {
-         echo $this->getField('impactcontent');
-      }
-      echo $tt->getEndHiddenFieldValue('impactcontent', $this);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<th>".$tt->getBeginHiddenFieldText('controlistcontent');
-      printf(__('%1$s%2$s'), __('Control list'), $tt->getMandatoryMark('controlistcontent'));
-      echo $tt->getEndHiddenFieldText('controlistcontent')."</th>";
-      echo "<td colspan='3'>";
-      echo $tt->getBeginHiddenFieldValue('controlistcontent');
-      if ($canedit) {
-         echo "<textarea ". ($tt->isMandatoryField('controlistcontent') ? " required='required'" : '') .
-         " id='controlistcontent' name='controlistcontent' rows='6' cols='110'>";
-         echo $this->getField('controlistcontent');
-         echo "</textarea>";
-      } else {
-         echo $this->getField('controlistcontent');
-      }
-      echo $tt->getEndHiddenFieldValue('controlistcontent', $this);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "</td></tr>";
-
-      if ($ID) {
-         $options['candel']  = false;
-         $options['canedit'] = $canedit;
-         $this->showFormButtons($options);
-      }
-
+      $form = [
+         'actions' => $canedit ? $this->getFormURL() : '',
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => 'update',
+               'value' => _x('button', 'Save'),
+               'class' => 'btn btn-secondary'
+            ],
+         ],
+         'content' => [
+            $this->getTypeName() => [
+               'visible' => true,
+               'inputs' => [
+                  __('Impacts') => [
+                     'type' => 'textarea',
+                     'name' => 'impactcontent',
+                     'value' => $this->fields['impactcontent'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  __('Control list') => [
+                     'type' => 'textarea',
+                     'name' => 'controlistcontent',
+                     'value' => $this->fields['controlistcontent'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
    }
 
    /**
@@ -1257,7 +1227,7 @@ class Change extends CommonITILObject {
       $canedit            = $this->canEdit($this->getField('id'));
 
       $form = [
-         'actions' => $this->getFormURL(),
+         'actions' => $canedit ? $this->getFormURL() : '',
          'buttons' => [
             [
                'type' => 'submit',
