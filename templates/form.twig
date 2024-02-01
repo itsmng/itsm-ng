@@ -66,20 +66,23 @@
 {% endif %}{% endfor %}
 </div>
 </form>
+<script src="{{root_doc}}/node_modules/trumbowyg/dist/trumbowyg.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
 {% for bloc in form.content %}
     {% for input in bloc.inputs %}
-    {% if input.init %}
-    {{input.init|raw}}
-    {% endif %}
-    {% if input.hooks %}
-    {% for hook, script in input.hooks %}
-$("#{{input.id}}").on("{{hook}}", function() {
-    {{script|raw}}
-})
-    {% endfor %}
-    {% endif %}
+        {% if input.init %}
+            {{input.init|raw}}
+        {% endif %}
+        {% if input.hooks %}
+            $(document).ready(() => {
+            {% for hook, script in input.hooks %}
+                $("#{{input.id}}").on("{{hook}}", function() {
+                    {{script|raw}}
+                });
+            {% endfor %}
+            });
+        {% endif %}
     {% endfor %}
 {% endfor %}
 </script>

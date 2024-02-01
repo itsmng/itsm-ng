@@ -261,23 +261,28 @@
   </script>
 {% endmacro %}
 {% macro richtextarea(attributes, root_doc) %}
+  {% set rand=random() %}
   <link rel="stylesheet" href="{{root_doc}}/node_modules/trumbowyg/dist/ui/trumbowyg.min.css">
-  <textarea {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default('')|raw}}</textarea>
+  <textarea id="{{attributes.id|default(rand)}}"
+    {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %}>
+    {{attributes.value|default('')|raw}}</textarea>
   <script src="{{root_doc}}/node_modules/trumbowyg/dist/trumbowyg.min.js"></script>
   <script>
-  $('textarea[name="{{attributes.name}}"]').trumbowyg({
-    btns: [
-      ['viewHTML'],
-      ['undo', 'redo'],
-      ['formatting'],
-      ['strong', 'em'],
-      ['link'],
-      ['insertImage'],
-      ['unorderedList', 'orderedList'],
-      ['horizontalRule'],
-      ['removeformat'],
-    ]
-  });
+  $(document).ready(() => {
+    $('#{{attributes.id|default(rand)}}').trumbowyg({
+      btns: [
+        ['viewHTML'],
+        ['undo', 'redo'],
+        ['formatting'],
+        ['strong', 'em'],
+        ['link'],
+        ['insertImage'],
+        ['unorderedList', 'orderedList'],
+        ['horizontalRule'],
+        ['removeformat'],
+      ]
+    });
+  })
   </script>
 {% endmacro %}
 {% macro datetime(attributes) %}
