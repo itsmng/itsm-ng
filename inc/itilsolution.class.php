@@ -173,6 +173,11 @@ class ITILSolution extends CommonDBChild {
             $this->getTypeName() => [
                'visible' => true,
                'inputs' => [
+                  $ID > 0 ? [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ] : [],
                   _n('Solution template', 'Solution templates', 1) => ($show_template) ? [
                      'type' => 'select',
                      'name' => 'solutiontemplates_id',
@@ -221,6 +226,7 @@ class ITILSolution extends CommonDBChild {
                      'name' => 'solutiontypes_id',
                      'id' => 'DropdownForSolutionTypeId',
                      'values' => getOptionForItems(SolutionType::class),
+                     'value' => $this->fields['solutiontypes_id'],
                      'actions' => getItemActionButtons(['info', 'add'], SolutionType::class),
                   ] : [
                      'content' => Dropdown::getDropdownName('glpi_solutiontypes',
