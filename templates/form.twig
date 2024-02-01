@@ -38,7 +38,7 @@
                 {{ input.content|raw }}
                 {% endif %}
                 {% if input.after %}
-                <div class="form-text mx-2">{{input.after|raw}}</div>
+                {{input.after|raw}}
                 {% endif %}
                 {% for action in input.actions %}
                     <button type="button" class="btn border" onClick="{{action.onClick}}"><a class="{{action.icon}}"></a></button>
