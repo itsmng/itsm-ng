@@ -901,7 +901,7 @@ abstract class CommonITILValidation  extends CommonDBChild {
       $form = [
          'action' => $this->getFormURL(),
          'buttons' => [
-             [
+            [
                'name' => $ID > 0 ? 'update' : 'add',
                'value' => $ID > 0 ? _x('button', 'Save') : _x('button', 'Add'),
                'class' => 'btn btn-secondary',
