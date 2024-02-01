@@ -47,39 +47,14 @@ if (isset($_POST["validatortype"])) {
             $_POST['users_id_validate'] = [];
          }
          $value = (isset($_POST['users_id_validate'][0]) ? $_POST['users_id_validate'][0] : 0);
-         User::dropdown(['name'   => !empty($_POST['name']) ? $_POST['name'].'[]'
-                                                                 :'users_id_validate[]',
-                              'entity' => $_POST['entity'],
-                              'value'  => $value,
-                              'right'  => $_POST['right']]);
+         echo json_encode(getOptionsForUsers($_POST['right'], $_POST['entity'] ? ['entities_id' => $_POST['entity']] : []));
          break;
 
       case 'group' :
          $name = !empty($_POST['name']) ? $_POST['name'].'[groups_id]':'groups_id';
          $value = (isset($_POST['users_id_validate']['groups_id']) ? $_POST['users_id_validate']['groups_id'] : $_POST['groups_id']);
 
-         $rand = Group::dropdown(['name'      => $name,
-                                       'value'     => $value,
-                                       'entity'    => $_POST["entity"]]);
-
-         $param                        = ['validatortype' => 'list_users'];
-         $param['name']                = !empty($_POST['name']) ? $_POST['name'] : '';
-         $param['users_id_validate']   = isset($_POST['users_id_validate'])
-                                             ? $_POST['users_id_validate'] : '';
-         $param['right']               = $_POST['right'];
-         $param['entity']              = $_POST["entity"];
-         $param['groups_id']           = '__VALUE__';
-         Ajax::updateItemOnSelectEvent("dropdown_$name$rand", "show_list_users",
-                                       $CFG_GLPI["root_doc"]."/ajax/dropdownValidator.php",
-                                       $param);
-         if ($value) {
-            $param['validatortype'] = 'list_users';
-            $param['groups_id']     = $value;
-            unset($param['users_id_validate']['groups_id']);
-            Ajax::updateItem('show_list_users', $CFG_GLPI["root_doc"]."/ajax/dropdownValidator.php",
-            $param);
-         }
-         echo "<br><span id='show_list_users'>&nbsp;</span>\n";
+         echo json_encode(getOptionForItems(Group::class, $_POST['entity'] ? ['entities_id' => $_POST['entity']] : []));
          break;
 
       case 'list_users' :
