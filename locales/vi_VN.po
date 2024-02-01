@@ -21579,6 +21579,10 @@ msgstr ""
 msgid "Menu position"
 msgstr ""
 
+#: inc/includes.php:155
+msgid "CSRF token is invalid"
+msgstr ""
+
 #~ msgid "See the catalog of plugins"
 #~ msgstr "Thấy danh mục các tiện ích"
 
