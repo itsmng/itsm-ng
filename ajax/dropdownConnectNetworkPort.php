@@ -114,8 +114,6 @@ if (class_exists($_POST["itemtype"])
    ];
    $iterator = $DB->request($criteria);
 
-   echo "<br>";
-
    $values = [];
    while ($data = $iterator->next()) {
       // Device name + port name
@@ -141,5 +139,5 @@ if (class_exists($_POST["itemtype"])
       }
       $values[$ID] = $output_long;
    }
-   Dropdown::showFromArray($_POST['myname'], $values, ['display_emptychoice' => true]);
+   echo json_encode($values);
 }

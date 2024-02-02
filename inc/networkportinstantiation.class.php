@@ -81,8 +81,16 @@ class NetworkPortInstantiation extends CommonDBChild {
    **/
    function showInstantiationForm(NetworkPort $netport, $options, $recursiveItems) {
 
-      echo "<tr><td colspan='4' class='center'>".__('No options available for this port type.').
-           "</td></tr>";
+      return [
+         '' => [
+            'visible' => true,
+            'inputs' => [
+               '' => [
+                  'content' => __('No options available for this port type.')
+               ]
+            ]
+         ]
+      ];
    }
 
 

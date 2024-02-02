@@ -43,22 +43,8 @@ Session::checkRight("networking", UPDATE);
 
 // Make a select box
 if (class_exists($_POST["itemtype"])) {
-   $rand     = mt_rand();
 
-   $toupdate = [
-      'value_fieldname' => 'item',
-      'to_update'       => "results_item_$rand",
-      'url'             => $CFG_GLPI["root_doc"]."/ajax/dropdownConnectNetworkPort.php",
-      'moreparams'      => [
-         'networkports_id'    => $_POST['networkports_id'],
-         'itemtype'           => $_POST['itemtype'],
-         'myname'             => $_POST['myname'],
-         'instantiation_type' => $_POST['instantiation_type']
-      ]
-   ];
    $params   = [
-      'rand'      => $rand,
-      'name'      => "items",
       'entity'    => $_POST["entity_restrict"],
       'condition' => [
          'id' => new \QuerySubQuery([
@@ -70,12 +56,9 @@ if (class_exists($_POST["itemtype"])) {
             ]
          ])
       ],
-      'toupdate'  => $toupdate
    ];
 
-   Dropdown::show($_POST['itemtype'], $params);
+   echo json_encode(getOptionForItems($_POST["itemtype"], ['entities_id' => $_POST["entity_restrict"] ?? Session::getActiveEntity()]));
 
-   echo "<span id='results_item_$rand'>";
-   echo "</span>\n";
-
+   // Dropdown::show($_POST['itemtype'], $params);
 }
