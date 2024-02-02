@@ -22012,6 +22012,12 @@ msgstr ""
 msgid "Menu position"
 msgstr ""
 
+#: inc/includes.php:155
+#, fuzzy
+#| msgid "session_token seems invalid"
+msgid "CSRF token is invalid"
+msgstr "session_token näib olevat vigane"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Ruum pole valitud"
 
