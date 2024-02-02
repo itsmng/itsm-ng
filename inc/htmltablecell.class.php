@@ -49,6 +49,8 @@ class HTMLTableCell extends HTMLTableEntity {
    private $father;
    private $sons = [];
    private $item;
+   private $numberOfLines;
+   private $start;
 
    // List of rows that have specific attributs
    private  $attributForTheRow = false;
