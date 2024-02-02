@@ -81,6 +81,30 @@ class NetworkPortEthernet extends NetworkPortInstantiation {
    function showInstantiationForm(NetworkPort $netport, $options, $recursiveItems) {
       global $CFG_GLPI;
 
+      $returnValue = [ 
+            $this->getTypeName() => [
+               'visible' => true,
+               'inputs' => [],
+            ],
+      ];
+      if (!$options['several']) {
+         $returnValue[$this->getTypeName()]['inputs'] = [
+            _n('Network outlet', 'Network outlets', 1) => !$options['several'] ? [
+               'type' => 'select',
+               'name' => 'netpoints_id',
+               'values' => getOptionForItems(Netpoint::class),
+               'value' => $this->fields['netpoints_id'],
+               'actions' => getItemActionButtons(['info', 'add'], Netpoint::class),
+            ] : [],
+            DeviceNetworkCard::getTypeName(1) => !$options['several'] ? [
+               'type' => 'select',
+               'name' => 'items_devicenetworkcards_id',
+               'values' => getOptionForItems(DeviceNetworkCard::class, [], true, true),
+               'value' => $this->fields['items_devicenetworkcards_id'],
+               'actions' => getItemActionButtons(['info', 'add'], DeviceNetworkCard::class),
+            ] : [],
+         ];
+      }
       $oppositePort = NetworkPort_NetworkPort::getOpposite($netport, $relations_id);
       $types = $CFG_GLPI["networkport_types"];
       $values = [];
@@ -94,116 +118,98 @@ class NetworkPortEthernet extends NetworkPortInstantiation {
       asort($values);
       $entity_restrict = $options['entity_restrict'] ?? 0;
 
-      return [
-         $this->getTypeName() => [
-            'visible' => true,
-            'inputs' => [
-               _n('Network outlet', 'Network outlets', 1) => !$options['several'] ? [
-                  'type' => 'select',
-                  'name' => 'netpoints_id',
-                  'values' => getOptionForItems(Netpoint::class),
-                  'value' => $this->fields['netpoints_id'],
-                  'actions' => getItemActionButtons(['info', 'add'], Netpoint::class),
-               ] : [],
-               DeviceNetworkCard::getTypeName(1) => !$options['several'] ? [
-                  'type' => 'select',
-                  'name' => 'items_devicenetworkcards_id',
-                  'values' => getOptionForItems(DeviceNetworkCard::class, [], true, true),
-                  'value' => $this->fields['items_devicenetworkcards_id'],
-                  'actions' => getItemActionButtons(['info', 'add'], DeviceNetworkCard::class),
-               ] : [],
-               __('Ethernet port type') => [
-                  'type' => 'select',
-                  'name' => 'type',
-                  'values' => self::getPortTypeName(),
-                  'value' => $this->fields['type'],
-               ],
-               __('Ethernet port speed') => [
-                  'type' => 'select',
-                  'name' => 'speed',
-                  'values' => array_merge(self::getPortSpeed(),
-                     (!isset($standard_speeds[$this->fields['speed']]) && !empty($this->fields['speed'])) ? 
-                        ['speed_other_value' => self::transformPortSpeed($this->fields['speed'], true)] :
-                           ['speed_other_value' => __('Other')]),
-                  'value' => $this->fields['speed'],
-               ],
-               __('MAC') => [
-                  'type' => 'text',
-                  'name' => 'mac',
-                  'value' => $netport->fields['mac'],
-               ],
-               !$oppositePort ? [
-                  'type' => 'hidden',
-                  'name' => 'NetworkPortConnect_networkports_id_1',
-                  'values' => $netport->getID(),
-               ] : [],
-               __('Connected to') => !$oppositePort ? [
-                  'type' => 'select',
-                  'id' => 'NetworkPortConnect_itemtype',
-                  'name' => 'NetworkPortConnect_itemtype',
-                  'values' => [Dropdown::EMPTY_VALUE] + $values,
-                  'hooks' => [
-                     'change' => <<<JS
-                        $.ajax({
-                           url: '{$CFG_GLPI['root_doc']}/ajax/dropdownConnectNetworkPortDeviceType.php',
-                           type: 'POST',
-                           data: {
-                              itemtype: $(this).val(),
-                              entity_restrict: $entity_restrict,
-                              networkports_id: '{$netport->getID()}',
-                              instantiation_type: '{$this->getType()}',
-                              with_empty: true
-                           },
-                           success: function(data) {
-                              const jsonData = JSON.parse(data);
-                              
-                              $('#NetworkPortConnect_items_id').empty();
-                              for (const key in jsonData) {
-                                 $('#NetworkPortConnect_items_id').append('<option value="' + key + '">' + jsonData[key] + '</option>');
-                              }
-                           }
-                        });
-                     JS,
-                  ]
-               ] : [],
-               __('Itemtype') => !$oppositePort ? [
-                  'type' => 'select',
-                  'id' => 'NetworkPortConnect_items_id',
-                  'name' => 'items',
-                  'hooks' => [
-                     'change' => <<<JS
-                        $.ajax({
-                           url: '{$CFG_GLPI['root_doc']}/ajax/dropdownConnectNetworkPort.php',
-                           type: 'POST',
-                           data: {
-                              item: $(this).val(),
-                              networkports_id: '{$netport->getID()}',
-                              itemtype: $('#NetworkPortConnect_itemtype').val(),
-                              instantiation_type: '{$this->getType()}',
-                           },
-                           success: function(data) {
-                              const jsonData = JSON.parse(data);
-                              
-                              $('#NetworkPortConnect_networkports_id_2').empty();
-                              for (const key in jsonData) {
-                                 $('#NetworkPortConnect_networkports_id_2').append('<option value="' + key + '">' + jsonData[key] + '</option>');
-                              }
-                           }
-                        });
-                     JS,
-                  ]
-               ] : [],
-               __('Network port') => !$oppositePort ? [
-                  'type' => 'select',
-                  'name' => 'NetworkPortConnect_networkports_id_2',
-               ] : [],
-               __('Action') => $oppositePort ? [
-                  'content' => Html::showSimpleForm($oppositePort->getFormURL(), 'disconnect', _x('button', 'Disconnect'),
-                     ['id' => $relations_id])
-               ] : [],
+      $returnValue[$this->getTypeName()]['inputs'] += [
+         __('Ethernet port type') => [
+            'type' => 'select',
+            'name' => 'type',
+            'values' => self::getPortTypeName(),
+            'value' => $this->fields['type'],
+         ],
+         __('Ethernet port speed') => [
+            'type' => 'select',
+            'name' => 'speed',
+            'values' => array_merge(self::getPortSpeed(),
+               (!isset($standard_speeds[$this->fields['speed']]) && !empty($this->fields['speed'])) ? 
+                  ['speed_other_value' => self::transformPortSpeed($this->fields['speed'], true)] :
+                     ['speed_other_value' => __('Other')]),
+            'value' => $this->fields['speed'],
+         ],
+         __('MAC') => [
+            'type' => 'text',
+            'name' => 'mac',
+            'value' => $netport->fields['mac'],
+         ],
+         !$oppositePort ? [
+            'type' => 'hidden',
+            'name' => 'NetworkPortConnect_networkports_id_1',
+            'values' => $netport->getID(),
+         ] : [],
+         __('Connected to') => !$oppositePort ? [
+            'type' => 'select',
+            'id' => 'NetworkPortConnect_itemtype',
+            'name' => 'NetworkPortConnect_itemtype',
+            'values' => [Dropdown::EMPTY_VALUE] + $values,
+            'hooks' => [
+               'change' => <<<JS
+                  $.ajax({
+                     url: '{$CFG_GLPI['root_doc']}/ajax/dropdownConnectNetworkPortDeviceType.php',
+                     type: 'POST',
+                     data: {
+                        itemtype: $(this).val(),
+                        entity_restrict: $entity_restrict,
+                        networkports_id: '{$netport->getID()}',
+                        instantiation_type: '{$this->getType()}',
+                        with_empty: true
+                     },
+                     success: function(data) {
+                        const jsonData = JSON.parse(data);
+                        
+                        $('#NetworkPortConnect_items_id').empty();
+                        for (const key in jsonData) {
+                           $('#NetworkPortConnect_items_id').append('<option value="' + key + '">' + jsonData[key] + '</option>');
+                        }
+                     }
+                  });
+               JS,
             ]
-         ]
+         ] : [],
+         __('Itemtype') => !$oppositePort ? [
+            'type' => 'select',
+            'id' => 'NetworkPortConnect_items_id',
+            'name' => 'items',
+            'hooks' => [
+               'change' => <<<JS
+                  $.ajax({
+                     url: '{$CFG_GLPI['root_doc']}/ajax/dropdownConnectNetworkPort.php',
+                     type: 'POST',
+                     data: {
+                        item: $(this).val(),
+                        networkports_id: '{$netport->getID()}',
+                        itemtype: $('#NetworkPortConnect_itemtype').val(),
+                        instantiation_type: '{$this->getType()}',
+                     },
+                     success: function(data) {
+                        const jsonData = JSON.parse(data);
+                        
+                        $('#NetworkPortConnect_networkports_id_2').empty();
+                        for (const key in jsonData) {
+                           $('#NetworkPortConnect_networkports_id_2').append('<option value="' + key + '">' + jsonData[key] + '</option>');
+                        }
+                     }
+                  });
+               JS,
+            ]
+         ] : [],
+         __('Network port') => !$oppositePort ? [
+            'type' => 'select',
+            'name' => 'NetworkPortConnect_networkports_id_2',
+         ] : [],
+         __('Action') => $oppositePort ? [
+            'content' => Html::showSimpleForm($oppositePort->getFormURL(), 'disconnect', _x('button', 'Disconnect'),
+               ['id' => $relations_id])
+         ] : [],
       ];
+      return $returnValue;
    }
 
 
