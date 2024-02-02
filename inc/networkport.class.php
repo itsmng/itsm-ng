@@ -526,31 +526,54 @@ class NetworkPort extends CommonDBChild {
       if ($canedit
           && (empty($withtemplate) || ($withtemplate != 2))) {
 
-         echo "\n<form method='get' action='" . $netport->getFormURL() ."'>\n";
-         echo "<input type='hidden' name='items_id' value='".$item->getID()."'>\n";
-         echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>\n";
-         echo "<div class='firstbloc'><table class='tab_cadre_fixe'>\n";
-         echo "<tr class='tab_bg_2'><td class='center'>\n";
-         echo __('Network port type to be added');
-         echo "&nbsp;";
-
          $instantiations = [];
          foreach (self::getNetworkPortInstantiations() as $inst_type) {
             if (call_user_func([$inst_type, 'canCreate'])) {
                $instantiations[$inst_type] = call_user_func([$inst_type, 'getTypeName']);
             }
          }
-         Dropdown::showFromArray('instantiation_type', $instantiations,
-                                 ['value' => 'NetworkPortEthernet']);
 
-         echo "</td>\n";
-         echo "<td class='tab_bg_2 center' width='50%'>";
-         echo __('Add several ports');
-         echo "&nbsp;<input type='checkbox' name='several' value='1'></td>\n";
-         echo "<td>\n";
-         echo "<input type='submit' name='create' value=\""._sx('button', 'Add')."\" class='submit'>\n";
-         echo "</td></tr></table></div>\n";
-         Html::closeForm();
+         $form = [
+            'action' => $netport->getFormURL(),
+            'method' => 'get',
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               '' => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'items_id',
+                        'value' => $item->getID()
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'itemtype',
+                        'value' => $item->getType()
+                     ],
+                     __('Network port type to be added') => [
+                        'type' => 'select',
+                        'name' => 'instantiation_type',
+                        'values' => $instantiations,
+                        'value' => 'NetworkPortEthernet',
+                     ],
+                     __('Add several ports') => [
+                        'type' => 'checkbox',
+                        'name' => 'several',
+                        'value' => 1
+                     ]
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
       if ($showmassiveactions) {
@@ -783,16 +806,18 @@ class NetworkPort extends CommonDBChild {
          }
          echo "</div>";
       }
+      $massiveActionId = 'TableForNetworkPort'.$rand;
       if ($is_active_network_port
           && $showmassiveactions) {
-         $massiveactionparams = ['num_displayed'  => min($_SESSION['glpilist_limit'], $number_port),
-                                      'check_itemtype' => $itemtype,
-                                      'container'      => 'mass'.__CLASS__.$rand,
-                                      'check_items_id' => $items_id];
+         $massiveactionparams = [
+            'check_itemtype' => $itemtype,
+            'container'      => $massiveActionId,
+            'check_items_id' => $items_id,
+            'display_arrow' => false,
+         ];
 
          Html::showMassiveActions($massiveactionparams);
       }
-
       $table->display(['display_thead'                         => false,
                             'display_tfoot'                         => false,
                             'display_header_on_foot_for_each_group' => true]);
