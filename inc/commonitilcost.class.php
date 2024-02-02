@@ -30,6 +30,8 @@
  * ---------------------------------------------------------------------
  */
 
+use itsmng\Timezone;
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
@@ -405,65 +407,85 @@ abstract class CommonITILCost extends CommonDBChild {
          return false;
       }
 
-      $this->showFormHeader($options);
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      echo "<input type='hidden' name='".static::$items_id."' value='".$item->fields['id']."'>";
-
-      Html::autocompletionTextField($this, 'name');
-      echo "</td>";
-      echo "<td>".__('Begin date')."</td>";
-      echo "<td>";
-      Html::showDateField("begin_date", ['value' => $this->fields['begin_date']]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Duration')."</td>";
-      echo "<td>";
-      Dropdown::showTimeStamp('actiontime', ['value'           => $this->fields['actiontime'],
-                                                  'addfirstminutes' => true]);
-      echo "</td>";
-      echo "<td>".__('End date')."</td>";
-      echo "<td>";
-      Html::showDateField("end_date", ['value' => $this->fields['end_date']]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Time cost')."</td><td>";
-      echo "<input type='text' size='15' name='cost_time' value='".
-             Html::formatNumber($this->fields["cost_time"], true)."'>";
-      echo "</td>";
-      $rowspan = 4;
-      echo "<td rowspan='$rowspan'>".__('Comments')."</td>";
-      echo "<td rowspan='$rowspan' class='middle'>";
-      echo "<textarea cols='45' rows='".($rowspan+3)."' name='comment' >".$this->fields["comment"].
-           "</textarea>";
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Fixed cost')."</td><td>";
-      echo "<input type='text' size='15' name='cost_fixed' value='".
-             Html::formatNumber($this->fields["cost_fixed"], true)."'>";
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Material cost')."</td><td>";
-      echo "<input type='text' size='15' name='cost_material' value='".
-             Html::formatNumber($this->fields["cost_material"], true)."'>";
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'><td>".Budget::getTypeName(1)."</td>";
-      echo "<td>";
-      Budget::dropdown(['value'  => $this->fields["budgets_id"],
-                             'entity' => $this->fields["entities_id"]]);
-      echo "</td></tr>";
-
-      $this->showFormButtons($options);
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            [
+               'name'  => $ID > 0 ?  'update' : 'add',
+               'type'  => 'submit',
+               'value' => $ID > 0 ? __('Update') : __('Add'),
+               'class' => 'btn btn-secondary',
+            ],
+         ],
+         'content' => [
+            $this->getTypeName() => [
+               'visible' => true,
+               'inputs' => [
+                  $ID > 0 ?
+                  [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID
+                  ] : [],
+                  [
+                     'type' => 'hidden',
+                     'name' => static::$items_id,
+                     'value' => $item->fields['id']
+                  ],
+                  __('Name') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields['name'],
+                  ],
+                  __('Begin date') => [
+                     'type' => 'date',
+                     'name' => 'begin_date',
+                     'value' => $this->fields['begin_date'],
+                  ],
+                  __('End date') => [
+                     'type' => 'date',
+                     'name' => 'end_date',
+                     'value' => $this->fields['end_date'],
+                  ],
+                  __('Duration') => [
+                     'type' => 'select',
+                     'name' => 'actiontime',
+                     'values' => Timezone::GetTimeStamp(['addfirstminutes' => true]),
+                  ],
+                  __('Time cost') => [
+                     'type' => 'number',
+                     'name' => 'cost_time',
+                     'step' => '0.01',
+                     'value' => Html::formatNumber($this->fields["cost_time"], true),
+                  ],
+                  __('Fixed cost') => [
+                     'type' => 'number',
+                     'name' => 'cost_fixed',
+                     'step' => '0.01',
+                     'value' => Html::formatNumber($this->fields["cost_fixed"], true),
+                  ],
+                  __('Material cost') => [
+                     'type' => 'number',
+                     'name' => 'cost_material',
+                     'step' => '0.01',
+                     'value' => Html::formatNumber($this->fields["cost_material"], true),
+                  ],
+                  Budget::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'budgets_id',
+                     'value' => $this->fields["budgets_id"],
+                     'values' => getOptionForItems(Budget::class, ['entities_id' => $item->fields['entities_id']]),
+                  ],
+                  __('Comments') => [
+                     'type' => 'textarea',
+                     'name' => 'comment',
+                     'value' => $this->fields["comment"],
+                  ],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
 
       return true;
    }
@@ -497,8 +519,6 @@ abstract class CommonITILCost extends CommonDBChild {
          $canedit = $item->canAddItem(__CLASS__);
       }
 
-      echo "<div class='center'>";
-
       $items_ids = $ID;
       if ($forproject) {
          $alltickets = ProjectTask::getAllTicketsForProject($ID);
@@ -530,7 +550,7 @@ abstract class CommonITILCost extends CommonDBChild {
          echo "</script>\n";
          if (static::canCreate()) {
             echo "<div class='center firstbloc'>".
-                   "<a class='vsubmit' href='javascript:viewAddCost".$ID."_$rand();'>";
+                   "<a class='btn btn-secondary' href='javascript:viewAddCost".$ID."_$rand();'>";
             echo __('Add a new cost')."</a></div>\n";
          }
       }
@@ -541,102 +561,109 @@ abstract class CommonITILCost extends CommonDBChild {
       $total_fixed    = 0;
       $total_material = 0;
 
-      echo "<table class='tab_cadre_fixehov'>";
-      echo "<tr class='noHover'>";
+      $fields = [];
       if ($forproject) {
-         echo "<th colspan='10'>"._n('Ticket cost', 'Ticket costs', count($iterator))."</th>";
+         $fields += [
+            Ticket::getTypeName(1),
+         ];
       } else {
-         echo "<th colspan='7'>".self::getTypeName(count($iterator))."</th>";
-         echo "<th>".__('Item duration')."</th>";
-         echo "<th>".CommonITILObject::getActionTime($item->fields['actiontime'])."</th>";
+         $fields += [
+            __('Item duration'),
+         ];
       }
-      echo "</tr>";
-
-      if (count($iterator)) {
-         echo "<tr>";
-         if ($forproject) {
-            echo "<th>".Ticket::getTypeName(1)."</th>";
-            $ticket = new Ticket();
-         }
-         echo "<th>".__('Name')."</th>";
-         echo "<th>".__('Begin date')."</th>";
-         echo "<th>".__('End date')."</th>";
-         echo "<th>".Budget::getTypeName(1)."</th>";
-         echo "<th>".__('Duration')."</th>";
-         echo "<th>".__('Time cost')."</th>";
-         echo "<th>".__('Fixed cost')."</th>";
-         echo "<th>".__('Material cost')."</th>";
-         echo "<th>".__('Total cost')."</th>";
-         echo "</tr>";
-
-         Session::initNavigateListItems(static::getType(),
-                           //TRANS : %1$s is the itemtype name,
-                           //        %2$s is the name of the item (used for headings of a list)
-                                          sprintf(__('%1$s = %2$s'),
-                                                $item->getTypeName(1), $item->getName()));
-
-         while ($data = $iterator->next()) {
-            echo "<tr class='tab_bg_2' ".
-                     ($canedit
-                     ? "style='cursor:pointer' onClick=\"viewEditCost".$data[static::$items_id]."_".
-                        $data['id']."_$rand();\"": '') .">";
-            $name = (empty($data['name'])? sprintf(__('%1$s (%2$s)'),
-                                                   $data['name'], $data['id'])
-                                          : $data['name']);
-
-            if ($forproject) {
-               $ticket->getFromDB($data['tickets_id']);
-               echo "<td>".$ticket->getLink()."</td>";
-            }
-            echo "<td>";
-            printf(__('%1$s %2$s'), $name,
-                     Html::showToolTip($data['comment'], ['display' => false]));
-            if ($canedit) {
-               echo "\n<script type='text/javascript' >\n";
-               echo "function viewEditCost" .$data[static::$items_id]."_". $data["id"]. "_$rand() {\n";
-               $params = ['type'            => static::getType(),
-                              'parenttype'       => static::$itemtype,
-                              static::$items_id  => $data[static::$items_id],
-                              'id'               => $data["id"]];
-               Ajax::updateItemJsCode("viewcost".$ID."_$rand",
-                                       $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php", $params);
-               echo "};";
-               echo "</script>\n";
-            }
-            echo "</td>";
-            echo "<td>".Html::convDate($data['begin_date'])."</td>";
-            echo "<td>".Html::convDate($data['end_date'])."</td>";
-            echo "<td>".Dropdown::getDropdownName('glpi_budgets', $data['budgets_id'])."</td>";
-            echo "<td>".CommonITILObject::getActionTime($data['actiontime'])."</td>";
-            $total_time += $data['actiontime'];
-            echo "<td class='numeric'>".Html::formatNumber($data['cost_time'])."</td>";
-            $total_costtime += ($data['actiontime']*$data['cost_time']/HOUR_TIMESTAMP);
-            echo "<td class='numeric'>".Html::formatNumber($data['cost_fixed'])."</td>";
-            $total_fixed += $data['cost_fixed'];
-            echo "<td class='numeric'>".Html::formatNumber($data['cost_material'])."</td>";
-            $total_material += $data['cost_material'];
-            $cost            = self::computeTotalCost($data['actiontime'], $data['cost_time'],
-                                                      $data['cost_fixed'], $data['cost_material']);
-            echo "<td class='numeric'>".Html::formatNumber($cost)."</td>";
-            $total += $cost;
-            echo "</tr>";
-            Session::addToNavigateListItems(static::getType(), $data['id']);
-         }
-         $colspan = 4;
-         if ($forproject) {
-            $colspan++;
-         }
-         echo "<tr class='b noHover'><td colspan='$colspan' class='right'>".__('Total').'</td>';
-         echo "<td>".CommonITILObject::getActionTime($total_time)."</td>";
-         echo "<td class='numeric'>".Html::formatNumber($total_costtime)."</td>";
-         echo "<td class='numeric'>".Html::formatNumber($total_fixed).'</td>';
-         echo "<td class='numeric'>".Html::formatNumber($total_material).'</td>';
-         echo "<td class='numeric'>".Html::formatNumber($total).'</td></tr>';
-      } else {
-         echo "<tr><th colspan='9'>".__('No item found')."</th></tr>";
+      
+      $fields = [];
+      if ($forproject) {
+         $fields += [
+            Ticket::getTypeName(1),
+         ];
       }
-      echo "</table>";
-      echo "</div><br>";
+      $fields += [
+         __('Name'),
+         __('Begin date'),
+         __('End date'),
+         Budget::getTypeName(1),
+         __('Duration'),
+         __('Time cost'),
+         __('Fixed cost'),
+         __('Material cost'),
+         __('Total cost'),
+         __('Edit'),
+      ];
+      $values = [];
+      $massive_action = [];
+      while ($data = $iterator->next()) {
+         $newValue = [];
+         $name = (empty($data['name'])? sprintf(__('%1$s (%2$s)'),
+                                                $data['name'], $data['id'])
+                                       : $data['name']);
+                                       $ticket = new Ticket();
+         if ($forproject) {
+            $newValue[] = $ticket->getLink();
+         }
+         $newValue += [
+            $name,
+            Html::convDate($data['begin_date']),
+            Html::convDate($data['end_date']),
+            Dropdown::getDropdownName('glpi_budgets', $data['budgets_id']),
+            CommonITILObject::getActionTime($data['actiontime']),
+            Html::formatNumber($data['cost_time']),
+            Html::formatNumber($data['cost_fixed']),
+            Html::formatNumber($data['cost_material']),
+            self::computeTotalCost($data['actiontime'], $data['cost_time'],
+                                  $data['cost_fixed'], $data['cost_material']),
+            '<a><i class="fas fa-pencil-alt" onclick="viewEditCost' .$data[static::$items_id]."_". $data["id"]. "_$rand()\"></i></a>"
+         ];
+         $total_time += $data['actiontime'];
+         $total_costtime += ($data['actiontime']*$data['cost_time']/HOUR_TIMESTAMP);
+         $total_fixed += $data['cost_fixed'];
+         $total_material += $data['cost_material'];
+         $total += self::computeTotalCost($data['actiontime'], $data['cost_time'],
+                                       $data['cost_fixed'], $data['cost_material']);
+         
+         if ($canedit) {
+            echo "\n<script type='text/javascript' >\n";
+            echo "function viewEditCost" .$data[static::$items_id]."_". $data["id"]. "_$rand() {\n";
+            $params = ['type'            => static::getType(),
+                           'parenttype'       => static::$itemtype,
+                           static::$items_id  => $data[static::$items_id],
+                           'id'               => $data["id"]];
+            Ajax::updateItemJsCode("viewcost".$ID."_$rand",
+                                    $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php", $params);
+            echo "};";
+            echo "</script>\n";
+         }
+         $values[] = $newValue;
+      }
+
+      renderTwigTemplate('table.twig', [
+         'fields'        => $fields,
+         'values'        => $values,
+         'massiveaction' => $massive_action,
+      ]);
+
+      $fields = [
+         __('Item duration'),
+         __('Total'),
+         __('Time cost'),
+         __('Fixed cost'),
+         __('Material cost'),
+         __('Total cost')
+      ];
+      $values = [[
+         CommonITILObject::getActionTime($item->fields['actiontime']),
+         CommonITILObject::getActionTime($total_time),
+         Html::formatNumber($total_costtime),
+         Html::formatNumber($total_fixed),
+         Html::formatNumber($total_material),
+         Html::formatNumber($total),
+      ]];
+      renderTwigTemplate('table.twig', [
+         'minimal' => true,
+         'fields' => $fields,
+         'values' => $values,
+      ]);
+
       return $total;
    }
 
