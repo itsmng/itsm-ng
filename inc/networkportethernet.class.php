@@ -126,13 +126,11 @@ class NetworkPortEthernet extends NetworkPortInstantiation {
                         ['speed_other_value' => self::transformPortSpeed($this->fields['speed'], true)] :
                            ['speed_other_value' => __('Other')]),
                   'value' => $this->fields['speed'],
-                  'col_lg' => 6,
                ],
                __('MAC') => [
                   'type' => 'text',
                   'name' => 'mac',
                   'value' => $netport->fields['mac'],
-                  'col_lg' => 6,
                ],
                !$oppositePort ? [
                   'type' => 'hidden',
