@@ -335,11 +335,7 @@ class Consumable extends CommonDBChild {
             $out = "<div $highlight>".$tmptxt."</div>";
          }
       } else {
-         if ($nohtml) {
-            $out = __('No consumable');
-         } else {
-            $out = "<div class='tab_bg_1_2'><i>".__('No consumable')."</i></div>";
-         }
+         $out = '';
       }
       return $out;
    }
@@ -423,20 +419,39 @@ class Consumable extends CommonDBChild {
       }
 
       if ($ID > 0) {
-         echo "<div class='firstbloc'>";
-         echo "<form method='post' action=\"".static::getFormURL()."\">";
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr><td class='tab_bg_2 center'>";
-         echo "<input type='hidden' name='consumableitems_id' value='$ID'>\n";
-         Dropdown::showNumber('to_add', ['value' => 1,
-                                              'min'   => 1,
-                                              'max'   => 100]);
-         echo " <input type='submit' name='add_several' value=\""._sx('button', 'Add consumables')."\"
-                class='submit'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $form = [
+            'action' => static::getFormURL(),
+            'buttons' => [
+               [
+                  'name' => 'add_several',
+                  'value' => _x('button', 'Add consumables'),
+                  'class' => 'btn btn-secondary',
+               ]
+            ],
+            'content' => [
+               '' => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'consumableitems_id',
+                        'value' => $ID,
+                     ],
+                     '' => [
+                        'type' => 'number',
+                        'name' => 'to_add',
+                        'min' => 1,
+                        'max' => 100,
+                        'step' => 1,
+                        'value' => 1,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                     ]
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
    }
 
@@ -484,13 +499,7 @@ class Consumable extends CommonDBChild {
          'LIMIT'  => (int)$_SESSION['glpilist_limit']
       ]);
 
-      echo "<div class='spaced'>";
-
-      // Display the pager
-      Html::printAjaxPager(Consumable::getTypeName(Session::getPluralNumber()), $start, $number);
-
       if ($canedit && $number) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
          $actions = [];
          if ($consitem->can($tID, PURGE)) {
             $actions['delete'] = _x('button', 'Delete permanently');
@@ -508,83 +517,65 @@ class Consumable extends CommonDBChild {
          if ($consitem->isRecursive()) {
             $entparam = ['entities_id' => getSonsOf('glpi_entities', $consitem->getEntityID())];
          }
-         $massiveactionparams = ['num_displayed'    => min($_SESSION['glpilist_limit'], $number),
-                           'specific_actions' => $actions,
-                           'container'        => 'mass'.__CLASS__.$rand,
-                           'extraparams'      => $entparam];
+         $massFormContainerId = 'tableForConsumable'.rand();
+         $massiveactionparams = [
+            'specific_actions' => $actions,
+            'container'        => $massFormContainerId,
+            'extraparams'      => $entparam,
+            'display_arrow' => false,
+         ];
          Html::showMassiveActions($massiveactionparams);
-         echo "<input type='hidden' name='consumableitems_id' value='$tID'>\n";
       }
 
-      echo "<table class='tab_cadre_fixehov'>";
-      if (!$show_old) {
-         echo "<tr><th colspan=".($canedit?'5':'4').">";
-         echo self::getCount($tID, -1);
-         echo "</th></tr>";
-      } else { // Old
-         echo "<tr><th colspan='".($canedit?'7':'6')."'>".__('Used consumables')."</th></tr>";
+      $fields = [
+         __('ID'),
+         _x('item', 'State'),
+         __('Add date'),
+      ];
+      if ($show_old) {
+         $fields[] = __('Use date');
+         $fields[] = __('Given to');
       }
+      $fields[] = __('Financial and administrative information');
 
+      $values = [];
+      $massive_action = [];
       if ($number) {
-         $header_begin  = "<tr>";
-         $header_top    = '';
-         $header_bottom = '';
-         $header_end    = '';
-         if ($canedit) {
-            $header_begin  .= "<th width='10'>";
-            $header_top    .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header_bottom .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header_end    .= "</th>";
-         }
-         $header_end .= "<th>".__('ID')."</th>";
-         $header_end .= "<th>"._x('item', 'State')."</th>";
-         $header_end .= "<th>".__('Add date')."</th>";
-         if ($show_old) {
-            $header_end .= "<th>".__('Use date')."</th>";
-            $header_end .= "<th>".__('Given to')."</th>";
-         }
-         $header_end .= "<th width='200px'>".__('Financial and administrative information')."</th>";
-         $header_end .= "</tr>";
-         echo $header_begin.$header_top.$header_end;
-
          while ($data = $iterator->next()) {
+            $newValue = [];
             $date_in  = Html::convDate($data["date_in"]);
             $date_out = Html::convDate($data["date_out"]);
 
-            echo "<tr class='tab_bg_1'>";
-            if ($canedit) {
-               echo "<td width='10'>";
-               Html::showMassiveActionCheckBox(__CLASS__, $data["id"]);
-               echo "</td>";
-            }
-            echo "<td class='center'>".$data["id"]."</td>";
-            echo "<td class='center'>".self::getStatus($data["id"])."</td>";
-            echo "<td class='center'>".$date_in."</td>";
+            $newValue[] = $data['id'];
+            $newValue[] = self::getStatus($data["id"]);
+            $newValue[] = $date_in;
             if ($show_old) {
-               echo "<td class='center'>".$date_out."</td>";
-               echo "<td class='center'>";
+               $newValue[] = $date_out;
                if ($item = getItemForItemtype($data['itemtype'])) {
                   if ($item->getFromDB($data['items_id'])) {
-                     echo $item->getLink();
+                     $newValue[] = $item->getLink();
                   }
                }
-               echo "</td>";
             }
-            echo "<td class='center'>";
+            ob_start();
             Infocom::showDisplayLink('Consumable', $data["id"]);
-            echo "</td>";
-            echo "</tr>";
+            $newValue[] = ob_get_clean();
+            $values[] = $newValue;
+            $massive_action[] = sprintf('item[%s][%s]', self::class, $data['id']);
          }
-         echo $header_begin.$header_bottom.$header_end;
-      }
-      echo "</table>";
-      if ($canedit && $number) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
       }
 
-      echo "</div>";
+      if (!$show_old) {
+         echo self::getCount($tID, -1);
+      } else { // Old
+         echo __('Used consumables');
+      }
+      renderTwigTemplate('table.twig', [
+         'id' => $massFormContainerId ?? '',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 
 

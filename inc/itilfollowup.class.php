@@ -30,6 +30,8 @@
  * ---------------------------------------------------------------------
  */
 
+use function PHPSTORM_META\map;
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
@@ -829,110 +831,106 @@ class ITILFollowup  extends CommonDBChild {
       $rows    = 10;
 
       if ($tech) {
-         $this->showFormHeader($options);
+         $form = [
+            'action' => $this->getFormURL(),
+            'buttons' => [
+               [
+                  'name' => 'add',
+                  'value' => _x('button', 'Add'),
+                  'class' => 'btn btn-secondary mb-3',
+               ]
+            ],
+            'content' => [
+               $this->getTypeName() => [
+                  'visible' => true,
+                  'inputs' => [
+                     $this->isNewID($ID) ? [
+                        'type' => 'hidden',
+                        'name' => 'id',
+                        'value' => $ID,
+                     ] : [],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'itemtype',
+                        'value' => $item->getType(),
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'items_id',
+                        'value' => $item->getID(),
+                     ],
+                     $reopen_case ? [
+                        'type' => 'hidden',
+                        'name' => 'add_reopen',
+                        'value' => 1,
+                     ] : [],
+                     '' => [
+                        'type' => 'richtextarea',
+                        'name' => 'content',
+                        'id' => 'TextareaForContentFolloupPopup',
+                        'value' => $this->fields["content"],
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                     ],
+                     _n('Date', 'Dates', 1) => ($this->fields["date"]) ? [
+                        'content' => Html::convDateTime($this->fields["date"]),
+                     ] : [],
+                     ITILFollowupTemplate::getTypeName() => [
+                        'type' => 'select',
+                        'name' => 'itilfollowuptemplates_id',
+                        'id' => 'ITILFollowupTemplateDropdown',
+                        'values' => getOptionForItems(ITILFollowupTemplate::class),
+                        'actions' => getItemActionButtons(['info', 'add'], ITILFollowupTemplate::class),
+                        'hooks' => [
+                           'change' => <<<JS
+                                 $.ajax({
+                                    url: "{$CFG_GLPI["root_doc"]}/ajax/itilfollowup.php",
+                                    type: 'POST',
+                                    data: {
+                                       itilfollowuptemplates_id: $(this).val()
+                                    }
+                                 }).done(function(data) {
+                                    var requesttypes_id = isNaN(parseInt(data.requesttypes_id))
+                                       ? 0
+                                       : parseInt(data.requesttypes_id);
 
-         $rand       = mt_rand();
-         $content_id = "content$rand";
-
-         echo "<tr class='tab_bg_1'>";
-         echo "<td rowspan='3'>";
-
-         Html::textarea(['name'              => 'content',
-                         'value'             => $this->fields["content"],
-                         'rand'              => $rand,
-                         'editor_id'         => $content_id,
-                         'enable_fileupload' => true,
-                         'enable_richtext'   => true,
-                         'cols'              => $cols,
-                         'rows'              => $rows]);
-
-         if ($this->fields["date"]) {
-            echo "</td><td>"._n('Date', 'Dates', 1)."</td>";
-            echo "<td>".Html::convDateTime($this->fields["date"]);
-         } else {
-
-            echo "</td><td colspan='2'>&nbsp;";
-         }
-         echo Html::hidden('itemtype', ['value' => $item->getType()]);
-         echo Html::hidden('items_id', ['value' => $item->getID()]);
-         // Reopen case
-         if ($reopen_case) {
-            echo "<input type='hidden' name='add_reopen' value='1'>";
-         }
-
-         echo "</td></tr>\n";
-
-         echo "<tr class='tab_bg_1'></tr>";
-         echo "<tr class='tab_bg_1' style='vertical-align: top'>";
-         echo "<td colspan='4'>";
-         echo "<div class='fa-label'>
-            <i class='fas fa-reply fa-fw'
-               title='"._n('Followup template', 'Followup templates', Session::getPluralNumber())."'></i>";
-         $this->fields['itilfollowuptemplates_id'] = 0;
-         ITILFollowupTemplate::dropdown([
-            'value'     => $this->fields['itilfollowuptemplates_id'],
-            'entity'    => $this->getEntityID(),
-            'on_change' => "itilfollowuptemplate_update$rand(this.value)"
-         ]);
-         echo "</div>";
-
-         $ajax_url = $CFG_GLPI["root_doc"]."/ajax/itilfollowup.php";
-         $JS = <<<JAVASCRIPT
-            function itilfollowuptemplate_update{$rand}(value) {
-               $.ajax({
-                  url: '{$ajax_url}',
-                  type: 'POST',
-                  data: {
-                     itilfollowuptemplates_id: value
-                  }
-               }).done(function(data) {
-                  var requesttypes_id = isNaN(parseInt(data.requesttypes_id))
-                     ? 0
-                     : parseInt(data.requesttypes_id);
-
-                  // set textarea content
-                  if (tasktinymce = tinymce.get("{$content_id}")) {
-                     tasktinymce.setContent(data.content);
-                  }
-                  // set category
-                  $("#dropdown_requesttypes_id{$rand}").trigger("setValue", requesttypes_id);
-                  // set is_private
-                  $("#is_privateswitch{$rand}")
-                     .prop("checked", data.is_private == "0"
-                        ? false
-                        : true);
-               });
-            }
-JAVASCRIPT;
-         echo Html::scriptBlock($JS);
-
-         echo "<div class='fa-label'>
-            <i class='fas fa-inbox fa-fw'
-               title='".__('Source of followup')."'></i>";
-         RequestType::dropdown([
-            'value'     => $this->fields["requesttypes_id"],
-            'condition' => ['is_active' => 1, 'is_itilfollowup' => 1],
-            'rand'      => $rand,
-         ]);
-         echo "</div>";
-
-         echo "<div class='fa-label'>
-            <i class='fas fa-lock fa-fw' title='".__('Private')."'></i>";
-         echo "<span class='switch pager_controls'>
-            <label for='is_privateswitch$rand' title='".__('Private')."'>
-               <input type='hidden' name='is_private' value='0'>
-               <input type='checkbox' id='is_privateswitch$rand' name='is_private' value='1'".
-                     ($this->fields["is_private"]
-                        ? "checked='checked'"
-                        : "")."
-               >
-               <span class='lever'></span>
-            </label>
-         </span>";
-         echo "</div></td></tr>";
-
-         $this->showFormButtons($options);
-
+                                    $('#TextareaForContentFolloupPopup').parent().find('.trumbowyg-editor').html(data.content)
+                                    $("#dropdownForRequestType").val(requesttypes_id);
+                                    $("#is_privateswitch")
+                                       .prop("checked", data.is_private == "0" ? false : true);
+                                 });
+                           JS,
+                        ],
+                     ],
+                     __('Source of followup') => [
+                        'type' => 'select',
+                        'id' => 'dropdownForRequestType',
+                        'name' => 'requesttypes_id',
+                        'value' => $this->fields["requesttypes_id"],
+                        'values' => getOptionForItems(RequestType::class, ['is_active' => 1, 'is_itilfollowup' => 1]),
+                        'actions' => getItemActionButtons(['info', 'add'], RequestType::class),
+                     ],
+                     __('Private') => [
+                        'type' => 'checkbox',
+                        'id' => 'is_privateswitch',
+                        'name' => 'is_private',
+                        'value' => $this->fields["is_private"]
+                     ],
+                     sprintf(__('%1$s (%2$s)'), __('File'), Document::getMaxUploadSize()) => [
+                        'type' => 'file',
+                        'name' => 'files',
+                        'id' => 'fileSelectorForDocument',
+                        'multiple' => true,
+                        'values' => getLinkedDocumentsForItem('Ticket', $ID),
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                     ],
+       
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       } else {
          $options['colspan'] = 1;
 
@@ -1138,7 +1136,7 @@ JAVASCRIPT;
       echo "<tr class='tab_bg_2'>";
       echo "<td class='center' colspan='2'>";
       echo "<input type='hidden' name='is_private' value='".$_SESSION['glpifollowup_private']."'>";
-      echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
+      echo "<input type='btn' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
       echo "</td>";
       echo "</tr>";
 

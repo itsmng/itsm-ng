@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -36,8 +37,9 @@ if (!defined('GLPI_ROOT')) {
 
 /**
  * Relation between item and devices
-**/
-class Item_DeviceProcessor extends Item_Devices {
+ **/
+class Item_DeviceProcessor extends Item_Devices
+{
 
    static public $itemtype_2 = 'DeviceProcessor';
    static public $items_id_2 = 'deviceprocessors_id';
@@ -45,29 +47,52 @@ class Item_DeviceProcessor extends Item_Devices {
    static protected $notable = false;
 
 
-   static function getSpecificities($specif = '') {
+   static function getSpecificities($specif = '')
+   {
 
-      return ['frequency' => ['long name'  => sprintf(__('%1$s (%2$s)'), __('Frequency'),
-                                                                __('MHz')),
-                                        'short name' => __('Frequency'),
-                                        'size'       => 10,
-                                        'id'         => 20,
-                                        'autocomplete' => true,],
-                   'serial'    => parent::getSpecificities('serial'),
-                   'otherserial' => parent::getSpecificities('otherserial'),
-                   'locations_id' => parent::getSpecificities('locations_id'),
-                   'states_id' => parent::getSpecificities('states_id'),
-                   'nbcores'   => ['long name'  => __('Number of cores'),
-                                        'short name' => __('Cores'),
-                                        'size'       => 2,
-                                        'id'         => 21,
-                                        'autocomplete' => true,],
-                   'nbthreads' => ['long name' => __('Number of threads'),
-                                        'short name' => __('Threads'),
-                                        'size'       => 2,
-                                        'id'         => 22,
-                                        'autocomplete' => true,],
-                   'busID'     => parent::getSpecificities('busID')];
+      return [
+         'frequency' => [
+            'long name'  => sprintf(
+               __('%1$s (%2$s)'),
+               __('Frequency'),
+               __('MHz')
+            ),
+            'short name' => __('Frequency'),
+            'size'       => 10,
+            'id'         => 20,
+            'autocomplete' => true,
+            'formContent' => [
+               'type' => 'number',
+               'min' => 0,
+            ]
+         ],
+         'serial'    => parent::getSpecificities('serial'),
+         'otherserial' => parent::getSpecificities('otherserial'),
+         'locations_id' => parent::getSpecificities('locations_id'),
+         'states_id' => parent::getSpecificities('states_id'),
+         'nbcores'   => [
+            'long name'  => __('Number of cores'),
+            'short name' => __('Cores'),
+            'size'       => 2,
+            'id'         => 21,
+            'autocomplete' => true,
+            'formContent' => [
+               'type' => 'number',
+               'min' => 0,
+            ]
+         ],
+         'nbthreads' => [
+            'long name' => __('Number of threads'),
+            'short name' => __('Threads'),
+            'size'       => 2,
+            'id'         => 22,
+            'autocomplete' => true,
+            'formContent' => [
+               'type' => 'number',
+               'min' => 0,
+            ]
+         ],
+         'busID'     => parent::getSpecificities('busID')
+      ];
    }
-
 }

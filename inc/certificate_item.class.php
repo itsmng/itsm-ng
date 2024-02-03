@@ -423,132 +423,129 @@ class Certificate_Item extends CommonDBRelation {
                                      'is_deleted'  => 0
                                     ] + $entity_restrict);
 
-         echo "<div class='firstbloc'>";
-
          if (Certificate::canView() && (!$nb || ($nb > count($used)))) {
-            echo "<form name='certificate_form$rand'
-                        id='certificate_form$rand'
-                        method='post'
-                        action='" . Toolbox::getItemTypeFormURL('Certificate_Item')
-              . "'>";
-            echo "<table class='tab_cadre_fixe'>";
-            echo "<tr class='tab_bg_1'>";
-            echo "<td colspan='4' class='center'>";
-            echo Html::hidden('entities_id',
-                              ['value' => $item->fields['entities_id']]);
-            echo Html::hidden('is_recursive',
-                              ['value' => $is_recursive]);
-            echo Html::hidden('itemtype',
-                              ['value' => $item->getType()]);
-            echo Html::hidden('items_id',
-                              ['value' => $ID]);
-            if ($item->getType() == 'Ticket') {
-               echo Html::hidden('tickets_id', ['value' => $ID]);
-            }
-            Dropdown::show('Certificate', ['entity' => $item->fields['entities_id'],
-                               'is_recursive'       => $is_recursive,
-                               'used'               => $used
-                            ]);
-
-            echo "</td><td class='center' width='20%'>";
-            echo Html::submit(_sx('button', 'Associate'), ['name' => 'add']);
-            echo "</td>";
-            echo "</tr>";
-            echo "</table>";
-            Html::closeForm();
+            $form = [
+               'action' => Toolbox::getItemTypeFormURL('Certificate_Item'),
+               'buttons' => [
+                  [
+                     'name' => 'add',
+                     'value' => _x('button', 'Associate'),
+                     'class' => 'btn btn-secondary',
+                  ]
+               ],
+               'content' => [
+                  '' => [
+                     'visible' => true,
+                     'inputs' => [
+                        [
+                           'type' => 'hidden',
+                           'name' => 'entities_id',
+                           'value' => $item->fields['entities_id']
+                        ],
+                        [
+                           'type' => 'hidden',
+                           'name' => 'is_recursive',
+                           'value' => $item->fields['is_recursive']
+                        ],
+                        [
+                           'type' => 'hidden',
+                           'name' => 'itemtype',
+                           'value' => $item->getType(),
+                        ],
+                        [
+                           'type' => 'hidden',
+                           'name' => 'items_id',
+                           'value' => $item->fields['id']
+                        ],
+                        ($item->getType() == 'Ticket') ? [
+                           'type' => 'hidden',
+                           'name' => 'tickets_id',
+                           'value' => $ID
+                        ] : [],
+                        '' => [
+                           'type' => 'select',
+                           'name' => 'certificates_id',
+                           'values' => getOptionForItems(Certificate::class),
+                           'actions' => getItemActionButtons(['info'] , Certificate::class),
+                           'col_lg' => 12,
+                           'col_md' => 12,
+                        ]
+                     ]
+                  ]
+               ]
+            ];
+            renderTwigForm($form);
          }
-
-         echo "</div>";
       }
 
-      echo "<div class='spaced'>";
       if ($canedit && $number && ($withtemplate < 2)) {
-         $massiveactionparams = ['num_displayed' => $number];
-         Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
+         $massformContainerId = 'tableForCertificateItem';
+         $massiveactionparams = [
+            'container' => $massformContainerId,
+            'display_arrow' => false,
+            'specific_actions' => [
+               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+            ],
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixe'>";
-
-      echo "<tr>";
-      if ($canedit && $number && ($withtemplate < 2)) {
-         echo "<th width='10'>";
-         echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-         echo "</th>";
-      }
-      echo "<th>" . __('Name') . "</th>";
+      $fields = [
+         __('Name'),
+         _n('Type', 'Types', 1),
+         __('DNS name'),
+         __('DNS suffix'),
+         __('Creation date'),
+         __('Expiration date'),
+         __('Status')
+      ];
       if (Session::isMultiEntitiesMode()) {
-         echo "<th>" . Entity::getTypeName(1) . "</th>";
+         $fields[] = Entity::getTypeName(1);
       }
-      echo "<th>" . _n('Type', 'Types', 1) . "</th>";
-      echo "<th>" . __('DNS name') . "</th>";
-      echo "<th>" . __('DNS suffix') . "</th>";
-      echo "<th>" . __('Creation date') . "</th>";
-      echo "<th>" . __('Expiration date') . "</th>";
-      echo "<th>" . __('Status') . "</th>";
-      echo "</tr>";
+      $values = [];
+      $massive_action = [];
+      foreach ($certificates as $data) {
+         $newValue = [];
+         $certificateID = $data["id"];
+         $link = NOT_AVAILABLE;
 
-      $used = [];
-
-      if ($number) {
-         Session::initNavigateListItems('Certificate',
-                                        sprintf(__('%1$s = %2$s'),
-                                        $item->getTypeName(1), $item->getName()));
-
-         foreach ($certificates as $data) {
-            $certificateID = $data["id"];
-            $link = NOT_AVAILABLE;
-
-            if ($certificate->getFromDB($certificateID)) {
-               $link = $certificate->getLink();
-            }
-
-            Session::addToNavigateListItems('Certificate', $certificateID);
-
-            $used[$certificateID] = $certificateID;
-
-            echo "<tr class='tab_bg_1" . ($data["is_deleted"] ? "_2" : "") . "'>";
-            if ($canedit && ($withtemplate < 2)) {
-               echo "<td width='10'>";
-               Html::showMassiveActionCheckBox(__CLASS__, $data["linkid"]);
-               echo "</td>";
-            }
-            echo "<td class='center'>$link</td>";
-            if (Session::isMultiEntitiesMode()) {
-               echo "<td class='center'>" . Dropdown::getDropdownName("glpi_entities", $data['entities_id']) .
-                  "</td>";
-            }
-            echo "<td class='center'>";
-            echo Dropdown::getDropdownName("glpi_certificatetypes",
-               $data["certificatetypes_id"]);
-            echo "</td>";
-            echo "<td class='center'>" . $data["dns_name"] . "</td>";
-            echo "<td class='center'>" . $data["dns_suffix"] . "</td>";
-            echo "<td class='center'>" . Html::convDate($data["date_creation"]) . "</td>";
-            if ($data["date_expiration"] <= date('Y-m-d')
-               && !empty($data["date_expiration"])
-            ) {
-               echo "<td class='center'>";
-               echo "<div class='deleted'>" . Html::convDate($data["date_expiration"]) . "</div>";
-               echo "</td>";
-            } else if (empty($data["date_expiration"])) {
-               echo "<td class='center'>" . __('Does not expire') . "</td>";
-            } else {
-               echo "<td class='center'>" . Html::convDate($data["date_expiration"]) . "</td>";
-            }
-            echo "<td class='center'>";
-            echo Dropdown::getDropdownName("glpi_states", $data["states_id"]);
-            echo "</td>";
-            echo "</tr>";
-            $i++;
+         if ($certificate->getFromDB($certificateID)) {
+            $link = $certificate->getLink();
          }
+         $used[$certificateID] = $certificateID;
+         $newValue = [
+            $link,
+            Dropdown::getDropdownName("glpi_certificatetypes", $data["certificatetypes_id"]),
+            $data["dns_name"],
+            $data["dns_suffix"],
+            Html::convDate($data["date_creation"]),
+
+         ];
+
+         if ($data["date_expiration"] <= date('Y-m-d')
+            && !empty($data["date_expiration"])
+         ) {
+            $newValue[] = Html::convDate($data["date_expiration"]);
+         } else if (empty($data["date_expiration"])) {
+            $newValue[] = __('Does not expire');
+         } else {
+            $newValue[] = Html::convDate($data["date_expiration"]);
+         }
+         $newValue[] = Dropdown::getDropdownName("glpi_states", $data["states_id"]);
+         if (Session::isMultiEntitiesMode()) {
+            $newValue[] = Dropdown::getDropdownName("glpi_entities", $data['entities_id']);
+         }
+
+         $i++;
+
+         $values[] = $newValue;
+         $massive_action[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
       }
 
-      echo "</table>";
-      if ($canedit && $number && ($withtemplate < 2)) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+         'id' => $massformContainerId ?? '',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 }

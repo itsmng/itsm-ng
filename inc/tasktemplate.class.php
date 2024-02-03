@@ -85,27 +85,28 @@ class TaskTemplate extends CommonDropdown {
          __('Duration') => [
             'name'  => 'actiontime',
             'type'  => 'select',
-            // 'values' => Timezone::GetTimeStamp([
-            //    'min'             => 1,
-            //    'max'             => 100*HOUR_TIMESTAMP,
-            //    'value'           => $this->fields["actiontime"],
-            //    'addfirstminutes' => true,
-            //    'inhours'         => true
-            // ])
-            'values' => []
+            'values' => [Dropdown::EMPTY_VALUE] + Timezone::GetTimeStamp([
+               'min'             => 0,
+               'max'             => 100*HOUR_TIMESTAMP,
+               'step'            => 15 * MINUTE_TIMESTAMP,
+               'addfirstminutes' => true,
+            ]),
+            'value' => $this->fields['actiontime'],
 
          ],
          __('By') => [
             'name'  => 'users_id_tech',
             'type'  => 'select',
             'values' => getOptionsForUsers('own_ticket'),
-            'value' => $this->fields['users_id_tech']
+            'value' => $this->fields['users_id_tech'],
+            'actions' => getItemActionButtons(['info'], User::class),
          ],
          Group::getTypeName(1) => [
             'name'  => 'groups_id_tech',
             'type'  => 'select',
             'values' => getOptionForItems('Group', ['is_task' => 1]),
-            'value' => $this->fields['groups_id_tech']
+            'value' => $this->fields['groups_id_tech'],
+            'actions' => getItemActionButtons(['info', 'add'], Group::class),
          ],
       ];
    }

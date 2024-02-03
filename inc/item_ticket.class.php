@@ -368,6 +368,8 @@ class Item_Ticket extends CommonItilObject_Item {
     * @return void
    **/
    static function showForTicket(Ticket $ticket) {
+      global $CFG_GLPI, $DB;
+      
       $instID = $ticket->fields['id'];
 
       if (!$ticket->can($instID, READ)) {
@@ -383,14 +385,6 @@ class Item_Ticket extends CommonItilObject_Item {
       if ($canedit
           && !in_array($ticket->fields['status'], array_merge($ticket->getClosedStatusArray(),
                                                               $ticket->getSolvedStatusArray()))) {
-         echo "<div class='firstbloc'>";
-         echo "<form name='ticketitem_form$rand' id='ticketitem_form$rand' method='post'
-                action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th colspan='2'>".__('Add an item')."</th></tr>";
-
-         echo "<tr class='tab_bg_1'><td>";
          // Select hardware on creation or if have update right
          $class        = new $ticket->userlinkclass();
          $tickets_user = $class->getActors($instID);
@@ -402,47 +396,417 @@ class Item_Ticket extends CommonItilObject_Item {
             }
          }
 
-         if ($dev_user_id > 0) {
-            self::dropdownMyDevices($dev_user_id, $ticket->fields["entities_id"], null, 0, ['tickets_id' => $instID]);
+         $my_devices = ['' => Dropdown::EMPTY_VALUE];
+         $devices    = [];
+
+         // My items
+         foreach ($CFG_GLPI["linkuser_types"] as $itemtype) {
+            if (($item = getItemForItemtype($itemtype))
+                && Ticket::isPossibleToAssignType($itemtype)) {
+               $itemtable = getTableForItemType($itemtype);
+
+               $criteria = [
+                  'FROM'   => $itemtable,
+                  'WHERE'  => [
+                     'users_id' => Session::getLoginUserID()
+                  ] + getEntitiesRestrictCriteria($itemtable, '', Session::getActiveEntity(), $item->maybeRecursive()),
+                  'ORDER'  => $item->getNameField()
+               ];
+
+               if ($item->maybeDeleted()) {
+                  $criteria['WHERE']['is_deleted'] = 0;
+               }
+               if ($item->maybeTemplate()) {
+                  $criteria['WHERE']['is_template'] = 0;
+               }
+               if (in_array($itemtype, $CFG_GLPI["helpdesk_visible_types"])) {
+                  $criteria['WHERE']['is_helpdesk_visible'] = 1;
+               }
+
+               $iterator = $DB->request($criteria);
+               $nb = count($iterator);
+               if ($nb > 0) {
+                  $type_name = $item->getTypeName($nb);
+
+                  while ($data = $iterator->next()) {
+                     if (!isset($already_add[$itemtype]) || !in_array($data["id"], $already_add[$itemtype])) {
+                        $output = $data[$item->getNameField()];
+                        if (empty($output) || $_SESSION["glpiis_ids_visible"]) {
+                           $output = sprintf(__('%1$s (%2$s)'), $output, $data['id']);
+                        }
+                        $output = sprintf(__('%1$s - %2$s'), $type_name, $output);
+                        if ($itemtype != 'Software') {
+                           if (!empty($data['serial'])) {
+                              $output = sprintf(__('%1$s - %2$s'), $output, $data['serial']);
+                           }
+                           if (!empty($data['otherserial'])) {
+                              $output = sprintf(__('%1$s - %2$s'), $output, $data['otherserial']);
+                           }
+                        }
+                        $devices[$itemtype."_".$data["id"]] = $output;
+
+                        $already_add[$itemtype][] = $data["id"];
+                     }
+                  }
+               }
+            }
          }
 
-         $used = self::getUsedItems($instID);
-         self::dropdownAllDevices("itemtype", null, 0, 1, $dev_user_id, $ticket->fields["entities_id"], ['tickets_id' => $instID, 'used' => $used, 'rand' => $rand]);
-         echo "<span id='item_ticket_selection_information$rand'></span>";
-         echo "</td><td class='center' width='30%'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "<input type='hidden' name='tickets_id' value='$instID'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         if (count($devices)) {
+            $my_devices[__('My devices')] = $devices;
+         }
+         // My group items
+         if (Session::haveRight("show_group_hardware", "1")) {
+            $iterator = $DB->request([
+               'SELECT'    => [
+                  'glpi_groups_users.groups_id',
+                  'glpi_groups.name'
+               ],
+               'FROM'      => 'glpi_groups_users',
+               'LEFT JOIN' => [
+                  'glpi_groups'  => [
+                     'ON' => [
+                        'glpi_groups_users'  => 'groups_id',
+                        'glpi_groups'        => 'id'
+                     ]
+                  ]
+               ],
+               'WHERE'     => [
+                  'glpi_groups_users.users_id'  => Session::getLoginUserID()
+               ] + getEntitiesRestrictCriteria('glpi_groups', '', Session::getActiveEntity(), true)
+            ]);
+
+            $devices = [];
+            $groups  = [];
+            if (count($iterator)) {
+               while ($data = $iterator->next()) {
+                  $a_groups                     = getAncestorsOf("glpi_groups", $data["groups_id"]);
+                  $a_groups[$data["groups_id"]] = $data["groups_id"];
+                  $groups = array_merge($groups, $a_groups);
+               }
+
+               foreach ($CFG_GLPI["linkgroup_types"] as $itemtype) {
+                  if (($item = getItemForItemtype($itemtype))
+                      && Ticket::isPossibleToAssignType($itemtype)) {
+                     $itemtable  = getTableForItemType($itemtype);
+                     $criteria = [
+                        'FROM'   => $itemtable,
+                        'WHERE'  => [
+                           'groups_id' => $groups
+                        ] + getEntitiesRestrictCriteria($itemtable, '', Session::getActiveEntity(), $item->maybeRecursive()),
+                        'ORDER'  => $item->getNameField()
+                     ];
+
+                     if ($item->maybeDeleted()) {
+                        $criteria['WHERE']['is_deleted'] = 0;
+                     }
+                     if ($item->maybeTemplate()) {
+                        $criteria['WHERE']['is_template'] = 0;
+                     }
+
+                     $iterator = $DB->request($criteria);
+                     if (count($iterator)) {
+                        $type_name = $item->getTypeName();
+                        if (!isset($already_add[$itemtype])) {
+                           $already_add[$itemtype] = [];
+                        }
+                        while ($data = $iterator->next()) {
+                           if (!in_array($data["id"], $already_add[$itemtype])) {
+                              $output = '';
+                              if (isset($data["name"])) {
+                                 $output = $data["name"];
+                              }
+                              if (empty($output) || $_SESSION["glpiis_ids_visible"]) {
+                                 $output = sprintf(__('%1$s (%2$s)'), $output, $data['id']);
+                              }
+                              $output = sprintf(__('%1$s - %2$s'), $type_name, $output);
+                              if (isset($data['serial'])) {
+                                 $output = sprintf(__('%1$s - %2$s'), $output, $data['serial']);
+                              }
+                              if (isset($data['otherserial'])) {
+                                 $output = sprintf(__('%1$s - %2$s'), $output, $data['otherserial']);
+                              }
+                              $devices[$itemtype."_".$data["id"]] = $output;
+
+                              $already_add[$itemtype][] = $data["id"];
+                           }
+                        }
+                     }
+                  }
+               }
+               if (count($devices)) {
+                  $my_devices[__('Devices own by my groups')] = $devices;
+               }
+            }
+         }
+         // Get software linked to all owned items
+         if (in_array('Software', $_SESSION["glpiactiveprofile"]["helpdesk_item_type"])) {
+            $software_helpdesk_types = array_intersect($CFG_GLPI['software_types'], $_SESSION["glpiactiveprofile"]["helpdesk_item_type"]);
+            foreach ($software_helpdesk_types as $itemtype) {
+               if (isset($already_add[$itemtype]) && count($already_add[$itemtype])) {
+                  $iterator = $DB->request([
+                     'SELECT'          => [
+                        'glpi_softwareversions.name AS version',
+                        'glpi_softwares.name AS name',
+                        'glpi_softwares.id'
+                     ],
+                     'DISTINCT'        => true,
+                     'FROM'            => 'glpi_items_softwareversions',
+                     'LEFT JOIN'       => [
+                        'glpi_softwareversions'  => [
+                           'ON' => [
+                              'glpi_items_softwareversions' => 'softwareversions_id',
+                              'glpi_softwareversions'       => 'id'
+                           ]
+                        ],
+                        'glpi_softwares'        => [
+                           'ON' => [
+                              'glpi_softwareversions' => 'softwares_id',
+                              'glpi_softwares'        => 'id'
+                           ]
+                        ]
+                     ],
+                     'WHERE'        => [
+                           'glpi_items_softwareversions.items_id' => $already_add[$itemtype],
+                           'glpi_items_softwareversions.itemtype' => $itemtype,
+                           'glpi_softwares.is_helpdesk_visible'   => 1
+                        ] + getEntitiesRestrictCriteria('glpi_softwares', '', Session::getActiveEntity()),
+                     'ORDERBY'      => 'glpi_softwares.name'
+                  ]);
+
+                  $devices = [];
+                  if (count($iterator)) {
+                     $item       = new Software();
+                     $type_name  = $item->getTypeName();
+                     if (!isset($already_add['Software'])) {
+                        $already_add['Software'] = [];
+                     }
+                     while ($data = $iterator->next()) {
+                        if (!in_array($data["id"], $already_add['Software'])) {
+                           $output = sprintf(__('%1$s - %2$s'), $type_name, $data["name"]);
+                           $output = sprintf(__('%1$s (%2$s)'), $output,
+                              sprintf(__('%1$s: %2$s'), __('version'),
+                                 $data["version"]));
+                           if ($_SESSION["glpiis_ids_visible"]) {
+                              $output = sprintf(__('%1$s (%2$s)'), $output, $data["id"]);
+                           }
+                           $devices["Software_".$data["id"]] = $output;
+
+                           $already_add['Software'][] = $data["id"];
+                        }
+                     }
+                     if (count($devices)) {
+                        $my_devices[__('Installed software')] = $devices;
+                     }
+                  }
+               }
+            }
+         }
+         // Get linked items to computers
+         if (isset($already_add['Computer']) && count($already_add['Computer'])) {
+            $devices = [];
+
+            // Direct Connection
+            $types = ['Monitor', 'Peripheral', 'Phone', 'Printer'];
+            foreach ($types as $itemtype) {
+               if (in_array($itemtype, $_SESSION["glpiactiveprofile"]["helpdesk_item_type"])
+                   && ($item = getItemForItemtype($itemtype))) {
+                  $itemtable = getTableForItemType($itemtype);
+                  if (!isset($already_add[$itemtype])) {
+                     $already_add[$itemtype] = [];
+                  }
+                  $criteria = [
+                     'SELECT'          => "$itemtable.*",
+                     'DISTINCT'        => true,
+                     'FROM'            => 'glpi_computers_items',
+                     'LEFT JOIN'       => [
+                        $itemtable  => [
+                           'ON' => [
+                              'glpi_computers_items'  => 'items_id',
+                              $itemtable              => 'id'
+                           ]
+                        ]
+                     ],
+                     'WHERE'           => [
+                        'glpi_computers_items.itemtype'     => $itemtype,
+                        'glpi_computers_items.computers_id' => $already_add['Computer']
+                     ] + getEntitiesRestrictCriteria($itemtable, '', Session::getActiveEntity()),
+                     'ORDERBY'         => "$itemtable.name"
+                  ];
+
+                  if ($item->maybeDeleted()) {
+                     $criteria['WHERE']["$itemtable.is_deleted"] = 0;
+                  }
+                  if ($item->maybeTemplate()) {
+                     $criteria['WHERE']["$itemtable.is_template"] = 0;
+                  }
+
+                  $iterator = $DB->request($criteria);
+                  if (count($iterator)) {
+                     $type_name = $item->getTypeName();
+                     while ($data = $iterator->next()) {
+                        if (!in_array($data["id"], $already_add[$itemtype])) {
+                           $output = $data["name"];
+                           if (empty($output) || $_SESSION["glpiis_ids_visible"]) {
+                              $output = sprintf(__('%1$s (%2$s)'), $output, $data['id']);
+                           }
+                           $output = sprintf(__('%1$s - %2$s'), $type_name, $output);
+                           if ($itemtype != 'Software') {
+                              $output = sprintf(__('%1$s - %2$s'), $output, $data['otherserial']);
+                           }
+                           $devices[$itemtype."_".$data["id"]] = $output;
+
+                           $already_add[$itemtype][] = $data["id"];
+                        }
+                     }
+                  }
+               }
+            }
+            if (count($devices)) {
+               $my_devices[__('Connected devices')] = $devices;
+            }
+         }
+
+         $itemtypes = $CFG_GLPI['ticket_types'];
+         $options = [];
+         foreach ($itemtypes as $itemtype) {
+            $options[$itemtype] = $itemtype::getTypeName(1);
+         };
+
+         $isAdmin = Session::haveRight('config', UPDATE) > 0 ? 1 : 0;
+         $used = json_encode(self::getUsedItems($instID));
+         $updateDevices = <<<JS
+            $.ajax({
+               url: '{$CFG_GLPI['root_doc']}/ajax/dropdownTrackingDeviceType.php',
+               method: 'POST',
+               dataType: 'html',
+               data: {
+                  'action'     : 'getItemsForType',
+                  'itemtype'   : $(this).val(),
+                  'tickets_id' : $instID,
+                  'used'       : $used,
+                  'admin'      : '$isAdmin',
+                  'entity_restrict' : '{$ticket->fields["entities_id"]}'
+               },
+               success: function(response) {
+                  const jsonResp = JSON.parse(response);
+                  $('#itemIdDropdownForItemTicket').empty();
+                  for (const value of jsonResp.results) {
+                     console.log(value);
+                     $('#itemIdDropdownForItemTicket').append($('<option value="' + value.id + '">' + value.text + '</option>'));
+                  }
+               }
+            });
+         JS;
+
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               'add' => [
+                  'name'  => 'add',
+                  'value' => _sx('button', 'Add'),
+                  'class' => 'btn btn-secondary',
+               ]
+            ],
+            'content' => [
+               __('Add an item') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'tickets_id',
+                        'value' => $instID,
+                     ],
+                     __('My devices') => ($dev_user_id > 0) ? [
+                        'type' => 'select',
+                        'name' => 'my_items',
+                        'values' => $my_devices,
+                     ] : [],
+                     __('Itemtype') => [
+                        'type' => 'select',
+                        'name' => 'itemtype',
+                        'id' => 'DropdownItemTypeForItemTicket',
+                        'values' => [Dropdown::EMPTY_VALUE] + $options,
+                        'hooks' => [
+                           'change' => $updateDevices
+                        ]
+                     ],
+                     __('Item') => [
+                        'type' => 'select',
+                        'id' => 'itemIdDropdownForItemTicket',
+                        'name' => 'items_id',
+                        'values' => [],
+                     ],
+                  ],
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
       echo "<div class='spaced'>";
       if ($canedit && $number) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams = ['container' => 'mass'.__CLASS__.$rand];
+         $massiveactionparams = [
+            'container' => 'TableForItemTicket',
+            'display_arrow' => false,
+            'specific_actions' => [
+               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+            ],
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
-      $header_begin  = "<tr>";
-      $header_top    = '';
-      $header_bottom = '';
-      $header_end    = '';
-      if ($canedit && $number) {
-         $header_top    .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_top    .= "</th>";
-         $header_bottom .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_bottom .= "</th>";
-      }
-      $header_end .= "<th>"._n('Type', 'Types', 1)."</th>";
-      $header_end .= "<th>".Entity::getTypeName(1)."</th>";
-      $header_end .= "<th>".__('Name')."</th>";
-      $header_end .= "<th>".__('Serial number')."</th>";
-      $header_end .= "<th>".__('Inventory number')."</th>";
-      echo "<tr>";
-      echo $header_begin.$header_top.$header_end;
+      $fields = [
+         _n('Type', 'Types', 1),
+         Entity::getTypeName(1),
+         __('Name'),
+         __('Serial number'),
+         __('Inventory number'),
+      ];
+      $values = [];
+      $massive_action = [];
+      while ($row = $types_iterator->next()) {
+         $itemtype = $row['itemtype'];
+         if (!($item = getItemForItemtype($itemtype))) {
+            continue;
+         }
 
+         if (in_array($itemtype, $_SESSION["glpiactiveprofile"]["helpdesk_item_type"])) {
+            $iterator = self::getTypeItems($instID, $itemtype);
+            $nb = count($iterator);
+
+            $prem = true;
+            while ($data = $iterator->next()) {
+               $name = $data["name"];
+               if ($_SESSION["glpiis_ids_visible"]
+                   || empty($data["name"])) {
+                  $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
+               }
+               if ((Session::getCurrentInterface() != 'helpdesk') && $item::canView()) {
+                  $link     = $itemtype::getFormURLWithID($data['id']);
+                  $namelink = "<a href=\"".$link."\">".$name."</a>";
+               } else {
+                  $namelink = $name;
+               }
+
+               $values[] = [
+                  $itemtype::getTypeName(),
+                  Dropdown::getDropdownName("glpi_entities", $data['entity']),
+                  $namelink,
+                  (isset($data["serial"])? "".$data["serial"]."" :"-"),
+                  (isset($data["otherserial"])? "".$data["otherserial"]."" :"-"),
+               ];
+               $massive_action[] = sprintf('item[%s][%s]', self::class, $data["linkid"]);
+            }
+         }
+      }
+
+      renderTwigTemplate('table.twig', [
+         'id' => 'TableForItemTicket',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
+      echo "<table class='tab_cadre_fixehov'>";
       $totalnb = 0;
       while ($row = $types_iterator->next()) {
          $itemtype = $row['itemtype'];
@@ -493,10 +857,6 @@ class Item_Ticket extends CommonItilObject_Item {
             }
             $totalnb += $nb;
          }
-      }
-
-      if ($number) {
-         echo $header_begin.$header_bottom.$header_end;
       }
 
       echo "</table>";

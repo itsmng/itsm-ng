@@ -123,49 +123,68 @@ class SavedSearch_Alert extends CommonDBChild {
          Toolbox::logError($e);
       }
 
-      $this->showFormHeader($options);
-
-      if ($this->isNewID($ID)) {
-         echo Html::hidden('savedsearches_id', ['value' => $options['savedsearches_id']]);
-      }
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . SavedSearch::getTypeName(1) ."</td>";
-      echo "<td>";
-      echo $search->getLink();
-      if ($count !== null) {
-         echo "<span class='primary-bg primary-fg count nofloat'>$count</span></a>";
-      }
-      echo "</td>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>";
-      echo __('Operator');
-      echo Html::showToolTip(__('Compare number of results the search returns against the specified value with selected operator'));
-      echo "</td>";
-      echo "<td>";
-      Dropdown::showFromArray(
-         'operator',
-         $this->getOperators(),
-         ['value' => $this->getField('operator')]
-      );
-      echo "</td><td>".__('Value')."</td>";
-      echo "<td>";
-      echo "<input type='number' min='0' name='value' value='" .$this->getField('value') . "' required='required'/>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Active') . "</td>";
-      echo "<td>";
-      Dropdown::showYesNo('is_active', $this->getField('is_active'));
-      echo "</td>";
-      echo "<td colspan='2'></td>";
-      echo "</tr>";
-      $this->showFormButtons($options);
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            $this->canUpdateItem() ? [
+              'type' => 'submit',
+              'name' => $this->isNewID($ID) ? 'add' : 'update',
+              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+              'class' => 'btn btn-secondary'
+            ] : [],
+            !$this->isNewID($ID) && self::canPurge() ? [
+              'type' => 'submit',
+              'name' => 'purge',
+              'value' => __('Delete permanently'),
+              'class' => 'btn btn-danger'
+            ] : [],
+         ],
+         'content' => [
+            self::getTypeName(1) => [
+               'visible' => 'true',
+               'inputs' => [
+                  [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ],
+                  ($this->isNewID($ID)) ? [
+                     'type' => 'hidden',
+                     'name' => 'savedsearches_id',
+                     'value' => $options['savedsearches_id'],
+                  ] : [],
+                  SavedSearch::getTypeName(1) => [
+                     'content' => $search->getLink() . $count ?? '',
+                  ],
+                  __('Name') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields['name'],
+                  ],
+                  __('Operator') => [
+                     'type' => 'select',
+                     'name' => 'operator',
+                     'values' => $this->getOperators(),
+                     'value' => $this->getField('operator'),
+                     'title' => __('Compare number of results the search returns against the specified value with selected operator')
+                  ],
+                  __('Value') => [
+                     'type' => 'number',
+                     'name' => 'value',
+                     'value' => $this->getField('value'),
+                     'min' => 0,
+                     'required' => ''
+                  ],
+                  __('Active') => [
+                     'type' => 'checkbox',
+                     'name' => 'is_active',
+                     'value' => $this->getField('is_active'),
+                  ],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
 
       return true;
    }
@@ -230,7 +249,7 @@ class SavedSearch_Alert extends CommonDBChild {
       if ($canedit
           && !(!empty($withtemplate) && ($withtemplate == 2))) {
          echo "<div class='firstbloc'>".
-               "<a class='vsubmit' href='" . self::getFormURL() . "?savedsearches_id=$ID&amp;withtemplate=".
+               "<a class='btn btn-secondary' href='" . self::getFormURL() . "?savedsearches_id=$ID&amp;withtemplate=".
                   $withtemplate."'>";
          echo __('Add an alert');
          echo "</a></div>\n";

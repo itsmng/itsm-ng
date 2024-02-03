@@ -261,23 +261,28 @@
   </script>
 {% endmacro %}
 {% macro richtextarea(attributes, root_doc) %}
+  {% set rand=random() %}
   <link rel="stylesheet" href="{{root_doc}}/node_modules/trumbowyg/dist/ui/trumbowyg.min.css">
-  <textarea {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default('')|raw}}</textarea>
+  <textarea id="{{attributes.id|default(rand)}}"
+    {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %}>
+    {{attributes.value|default('')|raw}}</textarea>
   <script src="{{root_doc}}/node_modules/trumbowyg/dist/trumbowyg.min.js"></script>
   <script>
-  $('textarea[name="{{attributes.name}}"]').trumbowyg({
-    btns: [
-      ['viewHTML'],
-      ['undo', 'redo'],
-      ['formatting'],
-      ['strong', 'em'],
-      ['link'],
-      ['insertImage'],
-      ['unorderedList', 'orderedList'],
-      ['horizontalRule'],
-      ['removeformat'],
-    ]
-  });
+  $(document).ready(() => {
+    $('#{{attributes.id|default(rand)}}').trumbowyg({
+      btns: [
+        ['viewHTML'],
+        ['undo', 'redo'],
+        ['formatting'],
+        ['strong', 'em'],
+        ['link'],
+        ['insertImage'],
+        ['unorderedList', 'orderedList'],
+        ['horizontalRule'],
+        ['removeformat'],
+      ]
+    });
+  })
   </script>
 {% endmacro %}
 {% macro datetime(attributes) %}
@@ -374,6 +379,24 @@
     {% endfor %}
   </div>
 {% endmacro %}
+{% macro password(attributes) %}
+    {% set rand=random() %}
+    <input class='form-control' id="{{attributes.id|default(rand)}}"
+      {% for name, value in attributes|filter((v,k)=>k != 'canSee') %} {{name}}="{{value}}" {% endfor %}/>
+    {% if attributes.canSee|default(false)%}
+      <button type='button' class="btn border" onclick="checkPassword({{attributes.id|default(rand)}})"><i class='fas fa-eye'></i></button>
+      <script>
+      function checkPassword(id) {
+        const type = $(`#${id}`).attr('type');
+        if (type == 'text') {
+          $(`#${id}`).attr('type', 'password')
+        } else {
+          $(`#${id}`).attr('type', 'text')
+        }
+      }
+      </script>
+    {% endif %}
+{% endmacro %}
 {% macro input(attributes, root_doc = '') %}
   {% if attributes.type == 'checkbox' %}
     <div class="form-switch">
@@ -404,6 +427,8 @@
     {{_self.imageUpload(attributes, root_doc)}}
   {% elseif attributes.type == 'datetime-local' %}
     {{_self.datetime(attributes)}}
+  {% elseif attributes.type == 'password' %}
+    {{_self.password(attributes)}}
   {% else %}
     <input class='form-control' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
   {% endif %}

@@ -38,23 +38,15 @@ Html::header_nocache();
 
 Session::checkLoginUser();
 
-$rand = mt_rand();
-
-Html::initEditorSystem("content$rand");
-
 if (isset($_POST['value']) && ($_POST['value'] > 0)) {
    $template = new SolutionTemplate();
 
    if ($template->getFromDB($_POST['value'])) {
-      echo "<textarea id='content$rand' name='content' rows='12' cols='80'>";
-      echo $template->getField('content');
-      echo "</textarea>\n";
-      echo "<script type='text/javascript'>".
-               Html::jsSetDropdownValue($_POST["type_id"],
-                                        $template->getField('solutiontypes_id')).
-           "</script>";
+      $fields = $template->fields;
+      $fields['content'] = htmlspecialchars_decode($fields['content']);
+      echo json_encode($fields);
    }
 
 } else {
-      echo "<textarea id='content$rand' name='content' rows='12' cols='80'></textarea>";
+      echo json_encode([]);
 }

@@ -43,7 +43,7 @@ $itemtype = $_POST["itemtype"] ?? '';
 // Check for required params
 if (empty($itemtype)) {
    http_response_code(400);
-   Toolbox::logWarning("Bad request: itemtype cannot be empty");
+   Toolbox::logWarning("Bad request: itemtype cannot be empty, received: $itemtype");
    die;
 }
 
@@ -64,18 +64,10 @@ if ($isValidItemtype) {
    }
 
    // Message for post-only
-   if (!isset($_POST["admin"]) || ($_POST["admin"] == 0)) {
-      echo "<br>".__('Enter the first letters (user, item name, serial or asset number)');
-   }
-   echo "<br>";
-   $field_id = Html::cleanId("dropdown_".$_POST['myname'].$rand);
    $p = [
       'itemtype'            => $itemtype,
       'entity_restrict'     => $_POST['entity_restrict'],
       'table'               => $table,
-      'multiple'            => $_POST["multiple"],
-      'myname'              => $_POST["myname"],
-      'rand'                => $_POST["rand"],
       '_idor_token'         => Session::getNewIDORToken($itemtype, [
          'entity_restrict' => $_POST['entity_restrict'],
       ]),
@@ -91,15 +83,7 @@ if ($isValidItemtype) {
    if (!empty($context)) {
       $p["context"] = $context;
    }
+   $p['table'] = $table;
 
-   echo Html::jsAjaxDropdown($_POST['myname'], $field_id,
-                             $CFG_GLPI['root_doc']."/ajax/getDropdownFindNum.php",
-                             $p);
-
-   // Auto update summary of active or just solved tickets
-   $params = ['items_id' => '__VALUE__',
-                   'itemtype' => $_POST['itemtype']];
-   Ajax::updateItemOnSelectEvent($field_id, "item_ticket_selection_information$rand",
-                                 $CFG_GLPI["root_doc"]."/ajax/ticketiteminformation.php",
-                                 $params);
+   echo Dropdown::getDropdownFindNum($p);
 }
