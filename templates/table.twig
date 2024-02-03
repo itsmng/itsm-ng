@@ -1,5 +1,6 @@
 <div class="table-container">
 	{% set rand=random() %}
+	{% if not minimal %}
 	<div
 		id="toolbar{{rand}}">
 		{% if massive_action is defined %}
@@ -8,21 +9,24 @@
 		</button>
 		{% endif %}
 	</div>
+	{% endif %}
 	<table
 		id="{{id}}"
 		class="table table-striped table-bordered table-hover"
-		data-toolbar="#toolbar{{rand}}"
 		data-virtual-scroll="true"
-		data-toggle="table"
-		data-show-columns-toggle-all="true"
-		data-click-to-select="true"
-		data-pagination="true"
-		show-extended-pagination="true"
-		data-search="true"
-		data-sortable="true"
-		data-show-export="true"
-		data-show-columns="true"
-		data-icons="icons"
+		{% if not minimal %}
+			data-toolbar="#toolbar{{rand}}"
+			data-toggle="table"
+			data-show-columns-toggle-all="true"
+			data-click-to-select="true"
+			data-pagination="true"
+			show-extended-pagination="true"
+			data-search="true"
+			data-sortable="true"
+			data-show-export="true"
+			data-show-columns="true"
+			data-icons="icons"
+		{% endif %}
 		{% if is_trash is defined %} data-buttons="buttons{{rand}}" {% endif %}
 		>
 		<thead class="table-light">
@@ -53,6 +57,7 @@
 	</table>
 </div>
 
+{% if not minimal %}
 <script>
 	window.icons = {
 		columns: 'fas fa-columns',
@@ -84,3 +89,4 @@
 		}
 	{% endif %}
 </script>
+{% endif %}

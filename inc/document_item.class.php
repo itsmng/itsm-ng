@@ -687,7 +687,7 @@ class Document_Item extends CommonDBRelation{
                      ],
                      __('File') => [
                         'type' => 'file',
-                        'name' => 'filenames',
+                        'name' => 'files',
                         'id' => 'fileSelectorForDocument',
                         'multiple' => 'multiple',
                         'col_lg' => 6,
@@ -717,12 +717,6 @@ class Document_Item extends CommonDBRelation{
                         'name' => 'tickets_id',
                         'value' => $item->getID()
                      ] : [],
-                     [
-                        'type' => 'hidden',
-                        'name' => 'files',
-                        'id' => "hiddenInputForFiles",
-                        'value' => '[]'
-                     ],
                   ]
                ] 
             ]

@@ -74,10 +74,64 @@ class NetworkPortAlias extends NetworkPortInstantiation {
 
    function showInstantiationForm(NetworkPort $netport, $options, $recursiveItems) {
 
-      echo "<tr class='tab_bg_1'>";
-      $this->showMacField($netport, $options);
-      $this->showNetworkPortSelector($recursiveItems, $this->getType());
-      echo "</tr>";
+      global $DB;
+
+      $lastItem = $recursiveItems[count($recursiveItems) - 1];
+      $netport_types = ['NetworkPortEthernet', 'NetworkPortWifi'];
+      foreach ($netport_types as $netport_type) {
+         $iterator = $DB->request([
+            'SELECT' => [
+               'port.id',
+               'port.name',
+               'port.mac'
+            ],
+            'FROM'   => 'glpi_networkports AS port',
+            'WHERE'  => [
+               'items_id'           => $lastItem->getID(),
+               'itemtype'           => $lastItem->getType(),
+               'instantiation_type' => $netport_type
+            ],
+            'ORDER'  => ['logical_number', 'name']
+         ]);
+
+         if (count($iterator)) {
+            $array_element_name = call_user_func([$netport_type, 'getTypeName'],
+                                                 count($iterator));
+            $possible_ports[$array_element_name] = [];
+
+            while ($portEntry = $iterator->next()) {
+               $macAddresses[$portEntry['id']] = $portEntry['mac'];
+               if (!empty($portEntry['mac'])) {
+                  $portEntry['name'] = sprintf(__('%1$s - %2$s'), $portEntry['name'],
+                                               $portEntry['mac']);
+               }
+               $possible_ports[$array_element_name][$portEntry['id']] = $portEntry['name'];
+            }
+         }
+      }
+      $checklistOptions = [];
+      foreach ($possible_ports as $key => $value) {
+         $checklistOptions = array_merge($checklistOptions, $value);
+      }
+
+      return [
+         $this->getTypeName() => [
+            'visible' => true,
+            'inputs' => [
+               __('MAC') => [
+                  'type' => 'text',
+                  'name' => 'mac',
+                  'value' => $netport->fields['mac'],
+               ],
+               __('Origin port') => [
+                  'type' => 'select',
+                  'name' => 'networkports_id_alias',
+                  'values' => $checklistOptions,
+                  'value' => $this->fields['networkports_id_alias'],
+               ]
+            ]
+         ]
+      ];
    }
 
 

@@ -53,33 +53,48 @@ class NetworkPortWifi extends NetworkPortInstantiation {
    function showInstantiationForm(NetworkPort $netport, $options, $recursiveItems) {
 
       if (!$options['several']) {
-         echo "<tr class='tab_bg_1'>\n";
-         $this->showNetworkCardField($netport, $options, $recursiveItems);
-         echo "<td>" . WifiNetwork::getTypeName(1) . "</td><td>";
-         WifiNetwork::dropdown(['value'  => $this->fields["wifinetworks_id"]]);
-         echo "</td>";
-         echo "</tr>\n";
-
-         echo "<tr class='tab_bg_1'>\n";
-         echo "<td>" . __('Wifi mode') . "</td>";
-         echo "<td>";
-
-         Dropdown::showFromArray('mode', WifiNetwork::getWifiCardModes(),
-                                 ['value' => $this->fields['mode']]);
-
-         echo "</td>\n";
-         echo "<td>" . __('Wifi protocol version') . "</td><td>";
-
-         Dropdown::showFromArray('version', WifiNetwork::getWifiCardVersion(),
-                                 ['value' => $this->fields['version']]);
-
-         echo "</td>\n";
-         echo "</tr>\n";
-
+         return [
+            $this->getTypeName() => [
+               'visible' => true,
+               'inputs' => [
+                  DeviceNetworkCard::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'items_devicenetworkcards_id',
+                     'values' => getOptionForItems(DeviceNetworkCard::class, [], true, true),
+                     'value' => $this->fields['items_devicenetworkcards_id']
+                  ],
+                  WifiNetwork::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'wifinetworks_id',
+                     'values' => getOptionForItems(WifiNetwork::class),
+                     'value' => $this->fields["wifinetworks_id"],
+                     'actions' => getItemActionButtons(['info', 'add'], WifiNetwork::class)
+                  ],
+                  __('Wifi mode') => [
+                     'type' => 'select',
+                     'name' => 'mode',
+                     'values' => WifiNetwork::getWifiCardModes(),
+                     'value' => $this->fields['mode']
+                  ],
+                  __('Wifi protocol version') => [
+                     'type' => 'select',
+                     'name' => 'version',
+                     'values' => WifiNetwork::getWifiCardVersion(),
+                     'value' => $this->fields['version']
+                  ],
+                  __('MAC') => [
+                     'type' => 'text',
+                     'name' => 'mac',
+                     'value' => $netport->fields['mac'],
+                  ],   
+               ]
+            ]
+         ];
          echo "<tr class='tab_bg_1'>\n";
          $this->showMacField($netport, $options);
          echo "</tr>\n";
       }
+      return [];
    }
 
 

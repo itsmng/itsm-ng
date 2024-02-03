@@ -159,102 +159,107 @@ class ITILSolution extends CommonDBChild {
       if (!isset($options['noform'])) {
          $this->showFormHeader($options);
       }
-
       $show_template = $canedit;
-      $rand_template = mt_rand();
-      $rand_text     = $rand_type = 0;
-      if ($canedit) {
-         $rand_text = mt_rand();
-         $rand_type = mt_rand();
-      }
-      if ($show_template) {
-         echo "<tr class='tab_bg_2'>";
-         echo "<td>"._n('Solution template', 'Solution templates', 1)."</td><td>";
+      $form = [
+         'action' =>  !isset($options['noform']) && $canedit ? $this->getFormURL() : '',
+         'buttons' => !isset($options['noform']) && $canedit ? [
+            [
+               'name' => $ID > 0 ? 'update' : 'add',
+               'value' => $ID > 0 ? _x('button', 'Save') : _x('button', 'Add'),
+               'class' => 'btn btn-secondary',
+            ]
+         ] : [],
+         'content' => [
+            $this->getTypeName() => [
+               'visible' => true,
+               'inputs' => [
+                  $ID > 0 ? [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ] : [],
+                  _n('Solution template', 'Solution templates', 1) => ($show_template) ? [
+                     'type' => 'select',
+                     'name' => 'solutiontemplates_id',
+                     'id' => 'DropdownForSolutionTemplate',
+                     'values' => getOptionForItems(SolutionTemplate::class),
+                     'actions' => getItemActionButtons(['info', 'add'], SolutionTemplate::class),
+                     'hooks' => [
+                        'change' => <<<JS
+                           $.ajax({
+                              url: "{$CFG_GLPI["root_doc"]}/ajax/solution.php",
+                              type: "POST",
+                              data: {
+                                 value: $(this).val()
+                              }
+                           }).done(function(data) {
+                              const jsonData = JSON.parse(data);
+                              $('#TextAreaForSolutionContent').parent().find('.trumbowyg-editor').html(jsonData.content)
+                              $('#DropdownForSolutionTypeId').val(jsonData.solutiontypes_id)
+                           });
+                        JS,
+                     ]
+                  ] : [],
+                  '' => ($show_template) && (Session::haveRightsOr('knowbase', [READ, KnowbaseItem::READFAQ])) ? [
+                     'content' => "<a class='btn btn-secondary' title=\"".__('Search a solution')."\"
+                        href='".$CFG_GLPI['root_doc']."/front/knowbaseitem.php?item_itemtype=".
+                        $item->getType()."&amp;item_items_id=".$item->getID().
+                        "&amp;forcetab=Knowbase$1'>".__('Search a solution')."</a>",
+                  ] : [],
+                  [
+                     'type' => 'hidden',
+                     'name' => 'itemtype',
+                     'value' => $item->getType(),
+                  ],
+                  [
+                     'type' => 'hidden',
+                     'name' => 'items_id',
+                     'value' => $item->getID(),
+                  ],
+                  [
+                     'type' => 'hidden',
+                     'name' => '_no_message_link',
+                     'value' => 1,
+                  ],
+                  SolutionType::getTypeName(1) =>  $canedit ? [
+                     'type' => 'select',
+                     'name' => 'solutiontypes_id',
+                     'id' => 'DropdownForSolutionTypeId',
+                     'values' => getOptionForItems(SolutionType::class),
+                     'value' => $this->fields['solutiontypes_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], SolutionType::class),
+                  ] : [
+                     'content' => Dropdown::getDropdownName('glpi_solutiontypes',
+                        $this->getField('solutiontypes_id')),
+                  ],
+                  str_replace('%id', isset($kb) ? $kb->getID() : '', __('Link to knowledge base entry #%id')) => 
+                  (Session::haveRightsOr('knowbase', [READ, KnowbaseItem::READFAQ]) && isset($options['kb_id_toload']) && $options['kb_id_toload'] != 0) ? [
+                     'type' => 'checkbox',
+                     'name' => 'kb_linked_id',
+                     'value' => $kb->getID(),
+                     'checked' => '',
+                  ] : [],
+                  __('Save and add to the knowledge base') => ($canedit && Session::haveRight('knowbase', UPDATE) && !isset($options['nokb'])) ? [
+                     'type' => 'checkbox',
+                     'name' => '_sol_to_kb',
+                  ] : [],
+                  __('Description') => ($canedit) ? [
+                     'type' => 'richtextarea',
+                     'name' => 'content',
+                     'id' => 'TextAreaForSolutionContent',
+                     'value' => $this->fields['content'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
 
-         SolutionTemplate::dropdown([
-            'value'    => 0,
-            'entity'   => $entities_id,
-            'rand'     => $rand_template,
-            // Load type and solution from bookmark
-            'toupdate' => [
-               'value_fieldname' => 'value',
-               'to_update'       => 'solution'.$rand_text,
-               'url'             => $CFG_GLPI["root_doc"]. "/ajax/solution.php",
-               'moreparams' => [
-                  'type_id' => 'dropdown_solutiontypes_id'.$rand_type
+                  ] : [
+                     Toolbox::unclean_cross_side_scripting_deep($this->getField('content'))
+                  ],
                ]
             ]
-         ]);
+         ]
+      ];
 
-         echo "</td><td colspan='2'>";
-         if (Session::haveRightsOr('knowbase', [READ, KnowbaseItem::READFAQ])) {
-            echo "<a class='vsubmit' title=\"".__s('Search a solution')."\"
-                   href='".$CFG_GLPI['root_doc']."/front/knowbaseitem.php?item_itemtype=".
-                   $item->getType()."&amp;item_items_id=".$item->getID().
-                   "&amp;forcetab=Knowbase$1'>".__('Search a solution')."</a>";
-         }
-         echo "</td></tr>";
-      }
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".SolutionType::getTypeName(1)."</td><td>";
-
-      echo Html::hidden('itemtype', ['value' => $item->getType()]);
-      echo Html::hidden('items_id', ['value' => $item->getID()]);
-      echo Html::hidden('_no_message_link', ['value' => 1]);
-
-      // Settings a solution will set status to solved
-      if ($canedit) {
-         SolutionType::dropdown(['value'  => $this->getField('solutiontypes_id'),
-                                 'rand'   => $rand_type,
-                                 'entity' => $entities_id]);
-      } else {
-         echo Dropdown::getDropdownName('glpi_solutiontypes',
-                                        $this->getField('solutiontypes_id'));
-      }
-      echo "</td><td colspan='2'>";
-
-      if (Session::haveRightsOr('knowbase', [READ, KnowbaseItem::READFAQ]) && isset($options['kb_id_toload']) && $options['kb_id_toload'] != 0) {
-         echo '<br/><input type="checkbox" name="kb_linked_id" id="kb_linked_id" value="' . $kb->getID() . '" checked="checked">';
-         echo ' <label for="kb_linked_id">' . str_replace('%id', $kb->getID(), __('Link to knowledge base entry #%id')) . '</label>';
-      } else {
-         echo '&nbsp;';
-      }
-      echo "</td></tr>";
-      if ($canedit && Session::haveRight('knowbase', UPDATE) && !isset($options['nokb'])) {
-         echo "<tr class='tab_bg_2'><td>".__('Save and add to the knowledge base')."</td><td>";
-         Dropdown::showYesNo('_sol_to_kb', false);
-         echo "</td><td colspan='2'>&nbsp;</td></tr>";
-      }
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Description')."</td><td colspan='3'>";
-
-      if ($canedit) {
-         $rand = mt_rand();
-         Html::initEditorSystem("content$rand");
-
-         echo "<div id='solution$rand_text'>";
-         echo "<textarea id='content$rand' name='content' rows='12' cols='80'>".
-                $this->getField('content')."</textarea></div>";
-
-         // Hide file input to handle only images pasted in text editor
-         echo '<div style="display:none;">';
-         Html::file(['editor_id' => "content$rand",
-                     'filecontainer' => "filecontainer$rand",
-                     'onlyimages' => true,
-                     'showtitle' => false,
-                     'multiple' => true]);
-         echo '</div>';
-      } else {
-         echo Toolbox::unclean_cross_side_scripting_deep($this->getField('content'));
-      }
-      echo "</td></tr>";
-
-      if (!isset($options['noform'])) {
-         $options['candel']   = false;
-         $options['canedit']  = $canedit;
-         $this->showFormButtons($options);
-      }
+      renderTwigForm($form);
    }
 
 

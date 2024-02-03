@@ -312,7 +312,7 @@ class Config extends CommonDBTM {
                      'col_lg' => 12,
                      'col_md' => 12,
                   ],
-                  __('Text in the login box (HTML tags supported)') => [
+                  __('Text in the login box') => [
                      'name' => 'text_login',
                      'type' => 'textarea',
                      'value' => $CFG_GLPI["text_login"],
@@ -600,7 +600,7 @@ class Config extends CommonDBTM {
                      'values' => $CFG_GLPI['devices_in_menu'],
                   ],
                   [
-                     'name' => 'update_devices_in_menu',
+                     'name' => '_update_devices_in_menu',
                      'type' => 'hidden',
                      'value' => 1,
                   ],

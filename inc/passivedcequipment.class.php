@@ -64,6 +64,7 @@ class PassiveDCEquipment extends CommonDBTM {
 
    function showForm($ID, $options = []) {
       $title = __('New item').' - '.self::getTypeName(1);
+      $isNew = $this->isNewID($ID) || (isset($options['withtemplate']) && $options['withtemplate'] == 2);
       $form = [
          'action' => $this->getFormURL(),
          'buttons' => [
@@ -74,16 +75,16 @@ class PassiveDCEquipment extends CommonDBTM {
               'class' => 'btn btn-secondary'
             ] : ($this->canUpdateItem() ? [
               'type' => 'submit',
-              'name' => $this->isNewID($ID) ? 'add' : 'update',
-              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+              'name' => $isNew ? 'add' : 'update',
+              'value' => $isNew ? __('Add') : __('Update'),
               'class' => 'btn btn-secondary'
             ] : []),
-            !$this->isNewID($ID) && !$this->isDeleted() && $this->canDeleteItem() ? [
+            !$isNew && !$this->isDeleted() && $this->canDeleteItem() ? [
               'type' => 'submit',
               'name' => 'delete',
               'value' => __('Put in trashbin'),
               'class' => 'btn btn-danger'
-            ] : (!$this->isNewID($ID) && self::canPurge() ? [
+            ] : (!$isNew && self::canPurge() ? [
               'type' => 'submit',
               'name' => 'purge',
               'value' => __('Delete permanently'),

@@ -87,7 +87,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     global $CFG_GLPI;
 
     $twig = Twig::load(GLPI_ROOT . '/templates', false);
-    if (isset($_GET['withtemplate']) && $_GET['withtemplate']) {
+    if (isset($_GET['withtemplate']) && $_GET['withtemplate'] == 1) {
         $form['content'][array_key_first($form['content'])]['inputs'] = array_merge([
             [
                 'type' => 'hidden',

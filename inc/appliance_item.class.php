@@ -279,99 +279,87 @@ class Appliance_Item extends CommonDBRelation {
          $used[$data['id']]      = $data['id'];
       }
       if ($canedit && ($withtemplate != 2)) {
-         echo "<div class='firstbloc'>";
-         echo "<form name='applianceitem_form$rand' id='applianceitem_form$rand' method='post'
-                action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-         echo "<input type='hidden' name='items_id' value='$ID'>";
-         echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th colspan='2'>".__('Add to an appliance')."</th></tr>";
-
-         echo "<tr class='tab_bg_1'><td>";
-         Appliance::dropdown([
-            'entity'  => $item->getEntityID(),
-            'used'    => $used
-         ]);
-
-         echo "</td><td class='center'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'name' => 'add',
+                  'value' => _x('button', 'Associate'),
+                  'class' => 'btn btn-secondary',
+               ]
+            ],
+            'content' => [
+               '' => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'items_id',
+                        'value' => $ID,
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'itemtype',
+                        'value' => $itemtype,
+                     ],
+                     __('Add to an appliance') => [
+                        'type' => 'select',
+                        'name' => 'appliances_id',
+                        'values' => getOptionForItems(Appliance::class),
+                        'actions' => getItemActionButtons(['info'] , Appliance::class),
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                     ]
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
-      echo "<div class='spaced'>";
       if ($withtemplate != 2) {
          if ($canedit && $number) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-            $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $number),
-                                         'container'     => 'mass'.__CLASS__.$rand];
+            $massiveactionparams = [
+               'container'     => 'tableForApplianceItem',
+               'display_arrow' => false,
+               'specific_actions' => [
+                  'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+               ],   
+            ];
             Html::showMassiveActions($massiveactionparams);
          }
       }
-      echo "<table class='tab_cadre_fixehov'>";
 
-      $header = "<tr>";
-      if ($canedit && $number && ($withtemplate != 2)) {
-         $header    .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header    .= "</th>";
-      }
-
-      $header .= "<th>".__('Name')."</th>";
-      $header .= "<th>".Appliance_Item_Relation::getTypeName(Session::getPluralNumber())."</th>";
-      $header .= "</tr>";
-
-      if ($number > 0) {
-         echo $header;
-         Session::initNavigateListItems(__CLASS__,
-                              //TRANS : %1$s is the itemtype name,
-                              //         %2$s is the name of the item (used for headings of a list)
-                                        sprintf(__('%1$s = %2$s'),
-                                                $item->getTypeName(1), $item->getName()));
-         foreach ($appliances as $data) {
-            $cID         = $data["id"];
-            Session::addToNavigateListItems(__CLASS__, $cID);
-            $assocID     = $data["linkid"];
-            $app         = new Appliance();
-            $app->getFromResultSet($data);
-            echo "<tr class='tab_bg_1".($app->fields["is_deleted"]?"_2":"")."'>";
-            if ($canedit && ($withtemplate != 2)) {
-               echo "<td width='10'>";
-               Html::showMassiveActionCheckBox(__CLASS__, $assocID);
-               echo "</td>";
-            }
-            echo "<td class='b'>";
-            $name = $app->fields["name"];
-            if ($_SESSION["glpiis_ids_visible"]
-                || empty($app->fields["name"])) {
-               $name = sprintf(__('%1$s (%2$s)'), $name, $app->fields["id"]);
-            }
-            echo "<a href='".Appliance::getFormURLWithID($cID)."'>".$name."</a>";
-            echo "</td>";
-            echo "<td class='relations_list'>";
-            echo Appliance_Item_Relation::showListForApplianceItem($assocID, $canedit);
-            echo "</td>";
-
-            echo "</tr>";
+      $fields = [
+         __('Name'),
+         Appliance_Item_Relation::getTypeName(Session::getPluralNumber()),
+      ];
+      $values = [];
+      $massive_action = [];
+      foreach ($appliances as $data) {
+         $cID         = $data["id"];
+         Session::addToNavigateListItems(__CLASS__, $cID);
+         $assocID     = $data["linkid"];
+         $app         = new Appliance();
+         $app->getFromResultSet($data);
+         $name = $app->fields["name"];
+         if ($_SESSION["glpiis_ids_visible"]
+             || empty($app->fields["name"])) {
+            $name = sprintf(__('%1$s (%2$s)'), $name, $app->fields["id"]);
          }
-         echo $header;
-         echo "</table>";
-      } else {
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr><th>".__('No item found')."</th></tr></table>";
+         $values[] = [
+            $name,
+            Appliance_Item_Relation::showListForApplianceItem($assocID, $canedit),
+         ];
+         $massive_action[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
       }
 
-      echo "</table>";
-      if ($canedit && $number && ($withtemplate != 2)) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
-
-      echo Appliance_Item_Relation::getListJSForApplianceItem($item, $canedit);
+      renderTwigTemplate('table.twig', [
+         'id' => 'tableForApplianceItem',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 
 
