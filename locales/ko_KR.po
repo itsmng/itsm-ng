@@ -4147,7 +4147,9 @@ msgid "URL of the application"
 msgstr "응용프로그램 URL"
 
 #: inc/config.class.php:307
-msgid "Text in the login box (HTML tags supported)"
+#, fuzzy
+#| msgid "Text in the login box (HTML tags supported)"
+msgid "Text in the login box"
 msgstr "로그인 박스 내의 문구 (HTML 태그 지원됨)"
 
 #: inc/config.class.php:313

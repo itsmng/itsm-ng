@@ -4150,7 +4150,9 @@ msgid "URL of the application"
 msgstr "应用程序的URL地址"
 
 #: inc/config.class.php:307
-msgid "Text in the login box (HTML tags supported)"
+#, fuzzy
+#| msgid "Text in the login box (HTML tags supported)"
+msgid "Text in the login box"
 msgstr "登录界面中的文本框（支持HTML标记）"
 
 #: inc/config.class.php:313

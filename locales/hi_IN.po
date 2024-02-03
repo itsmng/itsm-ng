@@ -4176,7 +4176,9 @@ msgid "URL of the application"
 msgstr "आवेदन का यूआरएल"
 
 #: inc/config.class.php:307
-msgid "Text in the login box (HTML tags supported)"
+#, fuzzy
+#| msgid "Text in the login box (HTML tags supported)"
+msgid "Text in the login box"
 msgstr "लॉगिन बॉक्स में टेक्स्ट (एचटीएमएल टैग समर्थित)"
 
 #: inc/config.class.php:313
