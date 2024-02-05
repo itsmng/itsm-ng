@@ -547,10 +547,19 @@ class Appliance extends CommonDBTM
 
       switch ($ma->getAction()) {
          case 'add_item':
-            Appliance::dropdown([
-               'entity'  => $_POST['entity_restrict']
+            renderTwigTemplate('macros/wrappedInput.twig', [
+               'title' => Appliance::getTypeName(),
+               'input' => [
+                  'name' => 'appliances_id',
+                  'type' => 'select',
+                  'values' => getOptionForItems(Appliance::class, isset($_POST['entity_restrict']) ? ['entities_id' => $_POST['entity_restrict']] : []),
+                  'value' => $_POST['appliances_id'] ?? '',
+                  'col_lg' => 12,
+                  'col_md' => 12,
+                  'actions' => getItemActionButtons(['info', 'add'], Appliance::class)
+               ]
             ]);
-            echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
+            echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction', "class" => "btn btn-secondary mt-3"]);
             return true;
             break;
       }

@@ -180,7 +180,7 @@ class KnowbaseItem_Item extends CommonDBRelation {
                      ] : [
                         'type' => 'select',
                         'name' => 'knowbaseitems_id',
-                        'values' => getOptionForItems('KnowbaseItem',
+                        'values' => getOptionForItems(KnowbaseItem::class,
                            (isset(KnowbaseItem::getVisibilityCriteria()['WHERE'])
                               && count(KnowbaseItem::getVisibilityCriteria()['WHERE'])) 
                                  ? KnowbaseItem::getVisibilityCriteria()['WHERE'] : [],

@@ -682,7 +682,7 @@ class MassiveAction {
     * @return void
    **/
    function showDefaultSubForm() {
-      echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
+      echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
    }
 
 
