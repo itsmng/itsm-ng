@@ -766,6 +766,12 @@ class Change extends CommonITILObject {
          $options['_predefined_fields'] = [];
       }
 
+      if (isset($options['tickets_id'])) {
+         $ticket = new Ticket();
+         $ticket->getFromDB($options['tickets_id']);
+         $this->fields = array_merge($this->fields, $ticket->fields);
+      }
+
       // Store predefined fields to be able not to take into account on change template
       // Only manage predefined values on ticket creation
       $predefined_fields = [];

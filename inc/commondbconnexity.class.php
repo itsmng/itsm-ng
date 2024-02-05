@@ -632,7 +632,6 @@ abstract class CommonDBConnexity extends CommonDBTM {
                $options['itemtype_name'] = 'peertype';
                $options['items_id_name'] = 'peers_id';
                $options['itemtypes']     = $peertypes;
-               Dropdown::showSelectItemFromItemtypes($options);
             }
 
             echo "<br><br>".Html::submit(_x('button', 'Associate'), ['name' => 'massiveaction']);

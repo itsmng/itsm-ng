@@ -39,61 +39,28 @@ Session::checkCentralAccess();
 
 // Make a select box
 if ($_POST["idtable"] && class_exists($_POST["idtable"])) {
-   // Link to user for search only > normal users
-   $link = "getDropdownValue.php";
-
-   if ($_POST["idtable"] == 'User') {
-      $link = "getDropdownUsers.php";
-   }
-
-   $rand     = mt_rand();
-   if (isset($_POST['rand'])) {
-      $rand = $_POST['rand'];
-   }
-
-   $field_id = Html::cleanId("dropdown_".$_POST["name"].$rand);
-
-   $p        = [
-      'value'               => 0,
-      'valuename'           => Dropdown::EMPTY_VALUE,
-      'itemtype'            => $_POST["idtable"],
-      'display_emptychoice' => true,
-      'displaywith'         => ['otherserial', 'serial'],
-      '_idor_token'         => Session::getNewIDORToken($_POST["idtable"]),
-   ];
-   if (isset($_POST['value'])) {
-      $p['value'] = $_POST['value'];
-   }
    if (isset($_POST['entity_restrict'])) {
-      $p['entity_restrict'] = $_POST['entity_restrict'];
+      $entity_restrict = $_POST['entity_restrict'];
    }
    if (isset($_POST['condition'])) {
-      $p['condition'] = $_POST['condition'];
+      $condition = $_POST['condition'];
    }
+   $values = getOptionForItems($_POST['idtable'], $condition ?? [] + (isset($entity_restrict)
+      ? ['entities_id' => $p['entity_restrict']] : []));
+   
    if (isset($_POST['used'])) {
       $_POST['used'] = Toolbox::jsonDecode($_POST['used'], true);
    }
    if (isset($_POST['used'][$_POST['idtable']])) {
-      $p['used'] = $_POST['used'][$_POST['idtable']];
-   }
-   if (isset($_POST['width'])) {
-      $p['width'] = $_POST['width'];
-   }
-
-   echo  Html::jsAjaxDropdown($_POST["name"], $field_id,
-                              $CFG_GLPI['root_doc']."/ajax/".$link,
-                              $p);
-
-   if (!empty($_POST['showItemSpecificity'])) {
-      $params = ['items_id' => '__VALUE__',
-                      'itemtype' => $_POST["idtable"]];
-      if (isset($_POST['entity_restrict'])) {
-         $params['entity_restrict'] = $_POST['entity_restrict'];
+      $used = $_POST['used'][$_POST['idtable']];
+      if (isset($used)) {
+         foreach($used as $usedId) {
+            if (isset($values[$usedId])) {
+               unset($values[$usedId]);
+            }
+         }
       }
-
-      Ajax::updateItemOnSelectEvent($field_id, "showItemSpecificity_".$_POST["name"]."$rand",
-                                    $_POST['showItemSpecificity'], $params);
-
-      echo "<br><span id='showItemSpecificity_".$_POST["name"]."$rand'>&nbsp;</span>\n";
    }
+
+   echo json_encode($values);
 }

@@ -117,8 +117,9 @@ class Change_Ticket extends CommonDBRelation{
             $change = new Change();
             $input = $ma->getInput();
             if (isset($input['changes_id']) && $change->getFromDB($input['changes_id'])) {
+               $change->showMassiveSolutionForm($change);
                echo "<br>";
-               echo Html::submit(_x('button', 'hihi'), ['name' => 'massiveaction']);
+               echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
                return true;
             }
             return false;

@@ -31,5 +31,18 @@
 			</div>
 		</div>
 	{% endif %}
+	{% if input.hooks %}
+		<script>
+			{% set rand=random() %}
+			$(document).ready(() => {
+			{% for hook, script in input.hooks %}
+				$("#{{input.id|default(random)}}").on("{{hook}}", function() {
+					{{script|raw}}
+				});
+			{% endfor %}
+			});
+		</script>
+	{% endif %}
+
 {% endmacro %}
 {{_self.wrappedInput(title, input)}}

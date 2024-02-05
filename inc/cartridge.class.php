@@ -70,12 +70,21 @@ class Cartridge extends CommonDBChild {
 
       switch ($ma->getAction()) {
          case 'updatepages' :
-            $input = $ma->getInput();
             if (!isset($input['maxpages'])) {
                $input['maxpages'] = '';
             }
-            echo "<input type='text' name='pages' value=\"".$input['maxpages']."\" size='6'>";
-            echo "<br><br>".Html::submit(_x('button', 'Update'), ['name' => 'massiveaction']);
+            $input = $ma->getInput();
+            renderTwigTemplate('macros/wrappedInput.twig', [
+               'title' => __('Pages'),
+               'input' => [
+                  'type'  => 'number',
+                  'name'  => 'pages',
+                  'value' => $input['maxpages'],
+                  'col_lg' => 12,
+                  'col_md' => 12,
+               ],
+            ]);
+            echo Html::submit(_x('button', 'Update'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary mt-3']);
             return true;
       }
       return parent::showMassiveActionsSubForm($ma);
