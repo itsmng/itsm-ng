@@ -3186,6 +3186,7 @@ abstract class CommonITILObject extends CommonDBTM {
    static function showMassiveActionsSubForm(MassiveAction $ma) {
       global $CFG_GLPI;
 
+      $entity = Session::getActiveEntity();
       switch ($ma->getAction()) {
          case 'add_task' :
             $itemtype = $ma->getItemtype(true);
@@ -3197,25 +3198,117 @@ abstract class CommonITILObject extends CommonDBTM {
             return false;
 
          case 'add_actor' :
-            $types            = [0                          => Dropdown::EMPTY_VALUE,
-                                      CommonITILActor::REQUESTER => _n('Requester', 'Requesters', 1),
-                                      CommonITILActor::OBSERVER  => _n('Watcher', 'Watchers', 1),
-                                      CommonITILActor::ASSIGN    => __('Assigned to')];
-            $rand             = Dropdown::showFromArray('actortype', $types);
+            $types            = [
+               0 => Dropdown::EMPTY_VALUE,
+               CommonITILActor::REQUESTER => _n('Requester', 'Requesters', 1),
+               CommonITILActor::OBSERVER  => _n('Watcher', 'Watchers', 1),
+               CommonITILActor::ASSIGN    => __('Assigned to'),
+            ];
+            $inputs = [
+               __('Actor type') => [
+                  'type' => 'select',
+                  'name' => 'actortype',
+                  'id' => 'DropdownActorsTypeMassiveAction',
+                  'values' => [Dropdown::EMPTY_VALUE] + $types,
+                  'col_lg' => 12,
+                  'col_md' => 12,
+                  'hooks' => [
+                     'change' => <<<JS
+                        const val = parseInt($(this).val());
+                        const values = [
+                           '',
+                           'requester',
+                           'assign',
+                           'observer',
+                        ];
+                        $('#DropdownTypeActorsMassiveAction').prop('disabled', val === 0);
+                        $('#DropdownActorsMassiveAction').prop('disabled', val === 0 || $('#DropdownTypeActorsMassiveAction').val() === '0');
+                        $('#DropdownTypeActorsMassiveAction').val(0);
+                        $('#DropdownTypeActorsMassiveAction').attr('name', '_itil_' + values[val] + '[_type]');
+                     JS
+                  ]
+               ],
+               __('Type') => [
+                  'type' => 'select',
+                  'id' => 'DropdownTypeActorsMassiveAction',
+                  'values' => [
+                     Dropdown::EMPTY_VALUE,
+                     'user' => __('User'),
+                     'group' => __('Group'),
+                  ],
+                  'col_lg' => 12,
+                  'col_md' => 12,
+                  'disabled' => '',
+                  'hooks' => [
+                     'change' => <<<JS
+                        const val = $(this).val();
+                        const values = [
+                           '',
+                           'requester',
+                           'assign',
+                           'observer',
+                        ];
+                        const actorType = values[$('#DropdownActorsTypeMassiveAction').val()];
+                        $.ajax({
+                           url: '{$CFG_GLPI['root_doc']}/ajax/dropdownItilActors.php',
+                           method: 'POST',
+                           data: {
+                              type: val,
+                              actorType: actorType,
+                              itemtype: 'Ticket',
+                              allow_email: false,
+                              entity_restrict: $entity,
+                              use_notif: 1,
+                           },
+                           success: function(data) {
+                              const jsonData = JSON.parse(data);
+                              $('#DropdownActorsMassiveAction').empty();
+                              for (const key in jsonData) {
+                                 if (jsonData.hasOwnProperty(key)) {
+                                    $('#DropdownActorsMassiveAction').append($('<option>', {
+                                       value: key,
+                                       text: jsonData[key]
+                                    }));
+                                 }
+                              }
+                              const ITIL_type = parseInt($('#DropdownActorsTypeMassiveAction').val());
+                              $('#DropdownActorsMassiveAction').prop('disabled', val === '0');
+                              $('#DropdownActorsMassiveAction').val(0);
+                              $('#DropdownActorsMassiveAction').attr('name', '_itil_' + values[ITIL_type] + '[' + val + 's_id]');
+                           }
+                        });
+                     JS,
+                  ]
+               ],
+               __('Actor') => [
+                  'type' => 'select',
+                  'id' => 'DropdownActorsMassiveAction',
+                  'name' => 'actor',
+                  'col_lg' => 12,
+                  'col_md' => 12,
+                  'disabled' => '',
+               ],
 
-            $paramsmassaction = ['actortype' => '__VALUE__'];
-
-            Ajax::updateItemOnSelectEvent("dropdown_actortype$rand", "show_massiveaction_field",
-                                          $CFG_GLPI["root_doc"].
-                                             "/ajax/dropdownMassiveActionAddActor.php",
-                                          $paramsmassaction);
-            echo "<span id='show_massiveaction_field'>&nbsp;</span>\n";
+            ];
+            foreach ($inputs as $title => $input) {
+               renderTwigTemplate('macros/wrappedInput.twig', [
+                  'title' => $title,
+                  'input' => $input,
+               ]);
+            }
+            echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
             return true;
          case 'update_notif' :
 
-            Dropdown::showYesNo('use_notification');
-            echo "<br><br>";
-            echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
+            renderTwigTemplate('macros/wrappedInput.twig', [
+               'title' => __('Notifications'),
+               'input' => [
+                  'type' => 'checkbox',
+                  'name' => 'use_notification',
+               ],
+            ]);
+
+            echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
             return true;
             return true;
       }

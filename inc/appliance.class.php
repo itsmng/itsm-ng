@@ -557,7 +557,7 @@ class Appliance extends CommonDBTM
                   'col_lg' => 12,
                   'col_md' => 12,
                   'actions' => getItemActionButtons(['info', 'add'], Appliance::class)
-               ]
+               ],
             ]);
             echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction', "class" => "btn btn-secondary mt-3"]);
             return true;
