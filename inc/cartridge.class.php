@@ -660,6 +660,7 @@ class Cartridge extends CommonDBChild {
 
       $number = count($iterator);
 
+      $massiveActionId = 'tableForCartridgeCartridges'.rand();
       if ($canedit && $number) {
          $actions = [
             'purge' => _x('button', 'Delete permanently'),
@@ -672,7 +673,8 @@ class Cartridge extends CommonDBChild {
          }
          $massiveactionparams = [
             'specific_actions' => $actions,
-            'container'        => 'tableForCartridgeCartridges',
+            'container'        => $massiveActionId,
+            'display_arrow' => false,
          ];
          Html::showMassiveActions($massiveactionparams);
       }
@@ -759,7 +761,7 @@ class Cartridge extends CommonDBChild {
       }
 
       renderTwigTemplate('table.twig', [
-         'id' => 'tableForCartridgeCartridges',
+         'id' => $massiveActionId,
          'fields' => $fields,
          'values' => $values,
          'massive_action' => $massive_action,
@@ -880,84 +882,88 @@ class Cartridge extends CommonDBChild {
       $number = count($iterator);
 
       if ($canedit && !$old) {
-         echo "<div class='firstbloc'>";
-         echo "<form method='post' action=\"".static::getFormURL()."\">";
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr><td class='center tab_bg_2' width='50%'>";
-         echo "<input type='hidden' name='printers_id' value='$instID'>\n";
-         if (CartridgeItem::dropdownForPrinter($printer)) {
-            //TRANS : multiplier
-            echo "</td><td>".__('x')."&nbsp;";
-            Dropdown::showNumber("nbcart", ['value' => 1,
-                                                 'min'   => 1,
-                                                 'max'   => 5]);
-            echo "</td><td><input type='submit' name='install' value=\""._sx('button', 'Install')."\"
-                                  class='submit'>";
-
-         } else {
-            echo __('No cartridge available');
-         }
-
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $options = CartridgeItem::dropdownForPrinter($printer);
+         $form = [
+            'action' => static::getFormURL(),
+            'buttons' => [
+               $options ? [
+                  'value' => _sx('button', 'Install'),
+                  'name' => 'install',
+                  'class' => 'btn btn-secondary',
+               ] : []
+            ],
+            'content' => [
+               '' => [
+                  'visible' => true,
+                  'inputs' => $options ? [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'printers_id',
+                        'value' => $instID,
+                     ],
+                     CartridgeItem::getTypeName() => [
+                        'type' => 'select',
+                        'name' => 'cartridgeitems_id',
+                        'values' => $options
+                     ],
+                     __('Number') => [
+                        'type' => 'number',
+                        'name' => 'nbcart',
+                        'value' => 1,
+                        'min' => 1,
+                        'max' => 5,
+                     ]
+                  ] : [
+                     '' => [
+                        'content' => __('No cartridge available'),
+                     ]
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
-      echo "<div id='viewcartridge$rand'></div>";
-
+      
       $pages = $printer->fields['init_pages_counter'];
-      echo "<div class='spaced'>";
+      $massiveActionContainerId = 'tableForPrinterCartridges'.rand();
       if ($canedit && $number) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
          if (!$old) {
             $actions = [__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'uninstall'
-                                       => __('End of life'),
-                             __CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'backtostock'
-                                       => __('Back to stock')
-                            ];
+            => __('End of life'),
+            __CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'backtostock'
+            => __('Back to stock')
+         ];
          } else {
             $actions = [__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'updatepages'
-                                      => __('Update printer counter'),
-                             'purge' => _x('button', 'Delete permanently')];
+            => __('Update printer counter'),
+            'purge' => _x('button', 'Delete permanently')];
          }
-         $massiveactionparams = ['num_displayed'    => min($_SESSION['glpilist_limit'], $number),
-                           'specific_actions' => $actions,
-                           'container'        => 'mass'.__CLASS__.$rand,
-                           'rand'             => $rand,
-                           'extraparams'      => ['maxpages'
-                                                       => $printer->fields['last_pages_counter']]];
+         $massiveactionparams = [
+            'specific_actions' => $actions,
+            'container'        => $massiveActionContainerId,
+            'extraparams'      => [
+               'maxpages' => $printer->fields['last_pages_counter']
+            ],
+            'display_arrow' => false,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
-      echo "<tr class='noHover'>";
-      if ($old == 0) {
-         echo "<th colspan='".($canedit?'6':'5')."'>".__('Used cartridges')."</th>";
-      } else {
-         echo "<th colspan='".($canedit?'9':'8')."'>".__('Worn cartridges')."</th>";
-      }
-      echo "</tr>";
-
-      $header_begin  = "<tr>";
-      $header_top    = '';
-      $header_end    = '';
-
-      if ($canedit) {
-         $header_begin  .= "<th width='10'>";
-         $header_top    .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_end    .= "</th>";
-      }
-      $header_end .= "<th>".__('ID')."</th><th>"._n('Cartridge model', 'Cartridge models', 1)."</th>";
-      $header_end .= "<th>"._n('Cartridge type', 'Cartridge types', 1)."</th>";
-      $header_end .= "<th>".__('Add date')."</th>";
-      $header_end .= "<th>".__('Use date')."</th>";
+      
+      $fields = [
+         __('ID'),
+         _n('Cartridge model', 'Cartridge models', 1),
+         _n('Cartridge type', 'Cartridge types', 1),
+         __('Add date'),
+         __('Use date'),
+      ];
       if ($old != 0) {
-         $header_end .= "<th>".__('End date')."</th>";
-         $header_end .= "<th>".__('Printer counter')."</th>";
-         $header_end .= "<th>".__('Printed pages')."</th>";
+         $fields[] = __('End date');
+         $fields[] = __('Printer counter');
+         $fields[] = __('Printed pages');
       }
-      $header_end .= "</tr>";
-      echo $header_begin.$header_top.$header_end;
+      $values = [];
+      $massive_action = [];
 
       $stock_time       = 0;
       $use_time         = 0;
@@ -972,92 +978,65 @@ class Cartridge extends CommonDBChild {
          $date_out   = Html::convDate($data["date_out"]);
          $viewitemjs = ($canedit ? "style='cursor:pointer' onClick=\"viewEditCartridge".$cart_id.
                         "$rand();\"" : '');
-         echo "<tr class='tab_bg_1".($data["is_deleted"]?"_2":"")."'>";
-         if ($canedit) {
-            echo "<td width='10'>";
-            Html::showMassiveActionCheckBox(__CLASS__, $cart_id);
-            echo "</td>";
-         }
-         echo "<td class='center' $viewitemjs>";
-         if ($canedit) {
-            echo "\n<script type='text/javascript' >\n";
-            echo "function viewEditCartridge". $cart_id."$rand() {\n";
-            $params = ['type'        => __CLASS__,
-                            'parenttype'  => 'Printer',
-                            'printers_id' => $printer->fields["id"],
-                            'id'          => $cart_id];
-            Ajax::updateItemJsCode("viewcartridge$rand",
-                                   $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php", $params);
-            echo "};";
-            echo "</script>\n";
-         }
-         echo $data["id"]."</td>";
-         echo "<td class='center' $viewitemjs>";
-         echo "<a href=\"".CartridgeItem::getFormURLWithID($data["tID"])."\">";
-         printf(__('%1$s - %2$s'), $data["type"], $data["ref"]);
-         echo "</a></td>";
-         echo "<td class='center' $viewitemjs>".$typename."</td>";
-         echo "<td class='center' $viewitemjs>".$date_in."</td>";
-         echo "<td class='center' $viewitemjs>".$date_use."</td>";
-
+         $newValue = [
+            $data['id'],
+            "<a href=\"".CartridgeItem::getFormURLWithID($data["tID"])."\">".
+            sprintf(__('%1$s - %2$s'), $data["type"], $data["ref"])."</a>",
+            $typename,
+            $date_in,
+            $date_use,
+         ];
          $tmp_dbeg       = explode("-", $data["date_in"]);
          $tmp_dend       = explode("-", $data["date_use"]);
 
          $stock_time_tmp = mktime(0, 0, 0, $tmp_dend[1], $tmp_dend[2], $tmp_dend[0])
                            - mktime(0, 0, 0, $tmp_dbeg[1], $tmp_dbeg[2], $tmp_dbeg[0]);
-         $stock_time    += $stock_time_tmp;
+                           $stock_time    += $stock_time_tmp;
          if ($old != 0) {
-            echo "<td class='center' $viewitemjs>".$date_out;
+            $newValue[] = $date_out;
 
             $tmp_dbeg      = explode("-", $data["date_use"]);
             $tmp_dend      = explode("-", $data["date_out"]);
-
+            
             $use_time_tmp  = mktime(0, 0, 0, $tmp_dend[1], $tmp_dend[2], $tmp_dend[0])
-                              - mktime(0, 0, 0, $tmp_dbeg[1], $tmp_dbeg[2], $tmp_dbeg[0]);
+            - mktime(0, 0, 0, $tmp_dbeg[1], $tmp_dbeg[2], $tmp_dbeg[0]);
             $use_time     += $use_time_tmp;
-
-            echo "</td><td class='numeric' $viewitemjs>".$data['pages']."</td>";
-            echo "<td class='numeric' $viewitemjs>";
-
-            if ($pages < $data['pages']) {
-               $pages_printed   += $data['pages']-$pages;
-               $nb_pages_printed++;
-               $pp               = $data['pages']-$pages;
-               echo $pp;
-               $pages            = $data['pages'];
-            } else {
-               echo "&nbsp;";
-            }
-            echo "</td>";
+            
+            $newValue[] = $data['pages'];
+            $newValue[] = ($pages < $data['pages']) ? $data['pages']-$pages : '';
          }
-         echo "</tr>";
+         $values[] = $newValue;
+         $massive_action[] = sprintf('item[%s][%s]', self::class, $data['id']);
       }
+      echo "<p>".(($old == 0)
+         ? __('Used cartridges')
+         : __('Worn cartridges'))."</p>";
+      renderTwigTemplate('table.twig', [
+         'id' => $massiveActionContainerId,
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
 
       if ($old) { // Print average
-         if ($number > 0) {
-            if ($nb_pages_printed == 0) {
-               $nb_pages_printed = 1;
-            }
-            echo "<tr class='tab_bg_2'><td colspan='".($canedit?"4":'3')."'>&nbsp;</td>";
-            echo "<td class='center b'>".__('Average time in stock')."<br>";
-            $time_stock = round($stock_time/$number/60/60/24/30.5, 1);
-            echo sprintf(_n('%d month', '%d months', $time_stock), $time_stock)."</td>";
-            echo "<td class='center b'>".__('Average time in use')."<br>";
-            $time_use = round($use_time/$number/60/60/24/30.5, 1);
-            echo sprintf(_n('%d month', '%d months', $time_use), $time_use)."</td>";
-            echo "<td class='center b' colspan='2'>".__('Average number of printed pages')."<br>";
-            echo round($pages_printed/$nb_pages_printed)."</td>";
-            echo "</tr>";
-         }
+         $fields = [
+            __('Average time in stock'),
+            __('Average time in use'),
+            __('Average number of printed pages'),
+         ];
+         $values = [
+            ($number > 0) ? [
+               round($stock_time/$number/60/60/24/30.5, 1),
+               round($use_time/$number/60/60/24/30.5, 1),
+               round($pages_printed/($nb_pages_printed ? $nb_pages_printed : 1)),
+            ] : [],
+         ];
+         renderTwigTemplate('table.twig', [
+            'fields' => $fields,
+            'values' => $values,
+            'minimal' => true,
+         ]);
       }
-
-      echo "</table>";
-      if ($canedit && $number) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>\n\n";
    }
 
 
