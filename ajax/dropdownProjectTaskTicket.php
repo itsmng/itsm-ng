@@ -47,18 +47,15 @@ if (isset($_POST["projects_id"])) {
       $condition['glpi_projecttasks.projects_id'] = $_POST['projects_id'];
    }
 
-   $p = ['itemtype'     => ProjectTask::getType(),
-         'entity_restrict' => $_POST['entity_restrict'],
-         'myname'          => $_POST["myname"],
-         'condition'       => $condition,
-         'rand'            => $_POST["rand"]];
-
+   $values = getOptionForItems(ProjectTask::class, $condition);
    if (isset($_POST["used"]) && !empty($_POST["used"])) {
-      if (isset($_POST["used"])) {
-         $p["used"] = $_POST["used"];
+      $used = json_decode($_POST["used"], true);
+      foreach ($used as $key => $value) {
+         if (isset($values[$key])) {
+            unset($values[$key]);
+         }
       }
    }
 
-   ProjectTask::dropdown($p);
-
+   echo json_encode($values);
 }
