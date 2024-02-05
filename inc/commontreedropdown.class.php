@@ -609,12 +609,15 @@ abstract class CommonTreeDropdown extends CommonDropdown {
       switch ($ma->getAction()) {
          case 'move_under' :
             $itemtype = $ma->getItemType(true);
-            echo __('As child of');
-            Dropdown::show($itemtype, ['name'     => 'parent',
-                                            'comments' => 0,
-                                            'entity'   => $_SESSION['glpiactive_entity'],
-                                            'entity_sons' => $_SESSION['glpiactive_entity_recursive']]);
-            echo "<br><br><input type='submit' name='massiveaction' class='submit' value='".
+            renderTwigTemplate('macros/wrappedInput.twig', [
+               'title' => __('As child of'),
+               'input' => [
+                  'type' => 'select',
+                  'name' => 'parent',
+                  'values' => getOptionForItems($itemtype, ['entities_id' => $_SESSION['glpiactive_entity'],]),
+               ]
+            ]);
+            echo "<br><br><input type='submit' name='massiveaction' class='btn btn-secondary' value='".
                            _sx('button', 'Move')."'>\n";
             return true;
 

@@ -3310,7 +3310,6 @@ abstract class CommonITILObject extends CommonDBTM {
 
             echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
             return true;
-            return true;
       }
       return parent::showMassiveActionsSubForm($ma);
    }
