@@ -3,7 +3,7 @@
 /**
  * @param $form
  */
-function getOptionForItems($item, $conditions = [], $display_emptychoice = true, $isDevice = false)
+function getOptionForItems($item, $conditions = [], $display_emptychoice = true, $isDevice = false, $used = [])
 {
     global $DB;
 
@@ -21,6 +21,9 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true,
     }
     while ($val = $iterator->next()) {
         $options[$val['id']] = $val[$name] == '' ? '(' . $val['id'] . ')' : $val[$name];
+    }
+    foreach ($used as $id) {
+        unset($options[$id]);
     }
 
     return $options;
