@@ -45,8 +45,10 @@ if ($_POST["idtable"] && class_exists($_POST["idtable"])) {
    if (isset($_POST['condition'])) {
       $condition = $_POST['condition'];
    }
+
+   $isDevice  = strpos($_POST["idtable"], "Device") === 0;
    $values = getOptionForItems($_POST['idtable'], $condition ?? [] + (isset($entity_restrict)
-      ? ['entities_id' => $p['entity_restrict']] : []));
+      ? ['entities_id' => $_POST['entity_restrict']] : []), true, true);
    
    if (isset($_POST['used'])) {
       $_POST['used'] = Toolbox::jsonDecode($_POST['used'], true);

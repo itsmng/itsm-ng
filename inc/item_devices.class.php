@@ -668,12 +668,6 @@ class Item_Devices extends CommonDBRelation
          && Session::haveRightsOr('device', [UPDATE, PURGE]));
       echo "<div class='spaced'>";
       $rand = mt_rand();
-      if ($canedit) {
-         echo "\n<form id='form_device_add$rand' name='form_device_add$rand'
-                  action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "' method='post'>\n";
-         echo "\t<input type='hidden' name='items_id' value='$ID'>\n";
-         echo "\t<input type='hidden' name='itemtype' value='" . $item->getType() . "'>\n";
-      }
 
       $table = new HTMLTableMain();
 
@@ -774,29 +768,145 @@ class Item_Devices extends CommonDBRelation
          }
       }
 
+      $entity = isset($item->fields) ? $item->fields['entities_id'] : 0;
       if ($canedit) {
-         echo "<table class='tab_cadre_fixe'><tr class='tab_bg_1'><td>";
-         echo __('Add a new component') . "</td><td class=left width='70%'>";
-         if ($is_device) {
-            Dropdown::showNumber('number_devices_to_add', [
-               'value' => 0,
-               'min'   => 0,
-               'max'   => 10
-            ]);
-         } else {
-            Dropdown::showSelectItemFromItemtypes([
-               'itemtype_name'       => 'devicetype',
-               'items_id_name'       => 'devices_id',
-               'itemtypes'           => $devtypes,
-               'entity_restrict'     => $item->getEntityID(),
-               'showItemSpecificity' => $CFG_GLPI['root_doc']
-                  . '/ajax/selectUnaffectedOrNewItem_Device.php'
-            ]);
+         $dropdownValues = [Dropdown::EMPTY_VALUE];
+         foreach ($devtypes ?? [] as $devtype) {
+            $dropdownValues[$devtype] = $devtype::getTypeName(1);
          }
-         echo "</td><td>";
-         echo "<input type='submit' class='submit' name='add' value='" . _sx('button', 'Add') . "'>";
-         echo "</td></tr></table>";
-         Html::closeForm();
+         asort($dropdownValues);
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'type'  => 'submit',
+                  'value' => _sx('button', 'Add'),
+                  'name'  => 'add',
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               __('Add a new component') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type'  => 'hidden',
+                        'name'  => 'items_id',
+                        'value' => $ID
+                     ],
+                     [
+                        'type'  => 'hidden',
+                        'name'  => 'itemtype',
+                        'value' => $item->getType()
+                     ],
+                     __('Number of components') => ($is_device) ? [
+                        'type'  => 'number',
+                        'name'  => 'number_devices_to_add',
+                        'value' => 0,
+                        'min'   => 0,
+                        'max'   => 10
+                     ] : [],
+                     __('Itemtype') => (!$is_device) ? [
+                        'type' => 'select',
+                        'id' => 'selectForDeviceIdItemDevices',
+                        'name' => 'devicetype',
+                        'values' => $dropdownValues,
+                        'col_lg' => 6,
+                        'hooks' => [
+                           'change' => <<<JS
+                              const val = this.value;
+                              $('select[name="devices_id"]').empty();
+                              if (val != 0) {
+                                 $.ajax({
+                                    url: '{$CFG_GLPI['root_doc']}/ajax/dropdownAllItems.php',
+                                    data: {
+                                       itemtype_name: 'devicetype',
+                                       items_id_name: 'devices_id',
+                                       idtable: val,
+                                       entity_restrict: $entity,
+                                    },
+                                    type: 'POST',
+                                    success: function(data) {
+                                       const jsonDatas = JSON.parse(data);
+                                       for (const key in jsonDatas) {
+                                          $('select[name="devices_id"]').append('<option value="' + key + '">' + jsonDatas[key] + '</option>');
+                                       }
+                                    }
+                                 });
+                              }
+                              if (val == 0) {
+                                 $('input[name="new_devices"]').prop('disabled', true);
+                                 $('select[name="devices_id"]').prop('disabled', true);
+                                 $('select[name="devices_id"]').empty();
+                                 $('#checklistForDeviceIdItemDevices').empty();
+                              } else {
+                                 $('select[name="devices_id"]').prop('disabled', false);
+                              }
+                           JS,
+                        ]
+                     ] : [],
+                     __('Component') => (!$is_device) ? [
+                        'type' => 'select',
+                        'name' => 'devices_id',
+                        'id' => 'DropdownForDeviceIdItemDevices',
+                        'values' => [],
+                        'col_lg' => 6,
+                        'disabled' => '',
+                        'hooks' => [
+                           'change' => <<<JS
+                              const val = this.value;
+                              $('#checklistForDeviceIdItemDevices').empty();
+                              if (val != 0) {
+                                 $('input[name="new_devices"]').prop('disabled', false);
+                                 $.ajax({
+                                    url: '{$CFG_GLPI['root_doc']}/ajax/selectUnaffectedOrNewItem_Device.php',
+                                    data: {
+                                       itemtype: $('#selectForDeviceIdItemDevices').val(),
+                                       items_id: val,
+                                    },
+                                    type: 'POST',
+                                    success: function(data) {
+                                       const jsonDatas = JSON.parse(data);
+                                       for (const key in jsonDatas.options) {
+                                          $('#checklistForDeviceIdItemDevices').append(`
+                                             <div class="row">
+                                                <input class="form-check-input
+                                                   col col-2" type="checkbox" value="` + key + `"
+                                                      id="` + jsonDatas.name + `_` + key + `" name="items_` + jsonDatas.name + `[]">
+                                                <label class="form-check
+                                                   col col-10" for="` + jsonDatas.name + `_` + key + `">
+                                                   ` + jsonDatas.options[key] + `
+                                                </label>
+                                             </div>
+                                          `);
+                                       }
+                                    }
+                                 });
+                              } else {
+                                 $('input[name="new_devices"]').prop('disabled', true);
+                              }
+                           JS,
+                        ]
+                     ] : [],
+                     __('Choose an existing device') => (!$is_device) ? [
+                        'type' => 'checklist',
+                        'id' => 'checklistForDeviceIdItemDevices',
+                        'col_lg' => 6,
+                     ] : [],
+                     __('Add new devices') => (!$is_device) ? [
+                        'type' => 'number',
+                        'name' => 'new_devices',
+                        'min' => 0,
+                        'max' => 10,
+                        'step' => 1,
+                        'col_lg' => 6,
+                        'disabled' => '',
+                     ] : [],
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
       if ($canedit) {

@@ -67,25 +67,14 @@ if ($_POST['items_id']
          ]
       ]
    );
-   echo "<table width='100%'><tr><td>" . __('Choose an existing device') . "</td><td rowspan='2'>" .
-        __('and/or') . "</td><td>" . __('Add new devices') . '</td></tr>';
-   echo "<tr><td>";
-   if ($result->count() == 0) {
-      echo __('No unaffected device !');
-   } else {
-      $devices = [];
-      foreach ($result as $row) {
-         $name = $row['name'];
-         if (empty($name)) {
-            $name = $row['id'];
-         }
-         $devices[$row['id']] = $name;
-
+   $devices = [];
+   foreach ($result as $row) {
+      $name = $row['name'];
+      if (empty($name)) {
+         $name = $row['id'];
       }
-      Dropdown::showFromArray($linktype::getForeignKeyField(), $devices, ['multiple' => true]);
-   }
-   echo "</td><td>";
-   Dropdown::showNumber('new_devices', ['min'   => 0, 'max'   => 10]);
-   echo "</td></tr></table>";
+      $devices[$row['id']] = $name;
 
+   }
+   echo json_encode(['name' => $devicetype::getForeignKeyField(), 'options' => $devices]);
 }
