@@ -2825,10 +2825,11 @@ JAVASCRIPT;
             if (!empty($p['tag_to_send'])) {
                $container = $p['container'];
                $js_modal_fields = <<<JS
-                  var items = $("#$container").bootstrapTable('getData');
-                  for (item of items) {
-                     fields[item._data.value] = item.state ? 1 : 0;
-                  };
+                  let rows = $("#$container tbody tr");
+                  for (let i = 0; i < rows.length; i++) {
+                     // if class contains "selected"
+                     fields[$(rows[i]).attr('data-value')] = $(rows[i]).hasClass('selected') ? 1 : 0;
+                  }
                   $('table[id="$container"] [data-glpicore-ma-tags~={$p['tag_to_send']}]').each(function( index ) {
                      fields[$(this).attr('name')] = $(this).attr('value');
                      if (($(this).attr('type') == 'checkbox') && (!$(this).is(':checked'))) {
@@ -2839,7 +2840,6 @@ JAVASCRIPT;
             } else {
                $js_modal_fields = "";
             }
-
             $out .= Ajax::createModalWindow(
                'massiveaction_window' . $identifier,
                $url,

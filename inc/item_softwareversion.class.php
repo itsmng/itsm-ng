@@ -1046,30 +1046,6 @@ class Item_SoftwareVersion extends CommonDBRelation {
          ];
          renderTwigForm($form);
       }
-      ob_start();
-      renderTwigTemplate('macros/input.twig', [
-         'type' => 'select',
-         'name' => 'criterion',
-         'id' => 'dropdownForSoftwareCategory',
-         'values' => [ -1 => __('All categories') ] + getOptionForItems('SoftwareCategory'),
-         'class' => 'form-control',
-         'on_change' => 'reloadTab("start=0&criterion="+this.value)'
-      ]);
-      $categoryDropdown = ob_get_clean();
-      $dropdownLabel = __('Category');
-      echo <<<HTML
-         <div class="container w-75 text-start">
-            <label for="dropdownForSoftwareCategory" class="me-2">
-               {$dropdownLabel}
-            </label>
-            {$categoryDropdown}
-         </div>
-         <script>
-            $('#dropdownForSoftwareCategory').on('change', function() {
-               reloadTab("start=0&criterion="+this.value);
-            })
-         </script>
-      HTML;
       $number = count($iterator);
       $start  = (isset($_REQUEST['start']) ? intval($_REQUEST['start']) : 0);
       if ($start >= $number) {
@@ -1079,44 +1055,72 @@ class Item_SoftwareVersion extends CommonDBRelation {
       $installed = [];
 
       if ($number) {
-         echo "<div class='spaced'>";
-         Html::printAjaxPager('', $start, $number);
-
+         $massActionContainer = 'mass'.__CLASS__.$rand;
          if ($canedit) {
-            $rand = mt_rand();
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-            $massiveactionparams
-               = ['num_displayed'
-                         => min($_SESSION['glpilist_limit'], $number),
-                       'container'
-                         => 'mass'.__CLASS__.$rand,
-                       'specific_actions'
-                         => ['purge' => _x('button', 'Delete permanently')]];
+            $massiveactionparams = [
+               'container' => $massActionContainer,
+               'specific_actions' => [
+                  'purge' => _x('button', 'Delete permanently')
+               ],
+               'display_arrow' => false,
+            ];
 
             Html::showMassiveActions($massiveactionparams);
          }
-         echo "<table class='tab_cadre_fixehov'>";
-
-         $header_begin  = "<tr>";
-         $header_top    = '';
-         $header_bottom = '';
-         $header_end    = '';
-         if ($canedit) {
-            $header_begin  .= "<th width='10'>";
-            $header_top    .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header_bottom .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header_end    .= "</th>";
-         }
-         $header_end .= "<th>" . __('Name') . "</th><th>" . __('Status') . "</th>";
-         $header_end .= "<th>" ._n('Version', 'Versions', 1)."</th><th>" . SoftwareLicense::getTypeName(1) . "</th>";
-         $header_end .="<th>" . __('Installation date') . "</th>";
+         $fields = [
+            __('Name'),
+            __('Status'),
+            _n('Version', 'Versions', 1),
+            SoftwareLicense::getTypeName(1),
+            __('Installation date')
+         ];
          if (Plugin::haveImport()) {
-            $header_end .= "<th>".__('Automatic inventory')."</th>";
+            $fields[] = __('Automatic inventory');
          }
-         $header_end .= "<th>".SoftwareCategory::getTypeName(1)."</th>";
-         $header_end .= "<th>".__('Valid license')."</th>";
-         $header_end .= "</tr>\n";
-         echo $header_begin.$header_top.$header_end;
+         $fields[] = SoftwareCategory::getTypeName(1);
+         $fields[] = __('Valid license');
+
+         $values = [];
+         $massive_action = [];
+         $datas = iterator_to_array($iterator);
+         foreach ($datas as $data) {
+            $licids = self::softwareByCategory($data, $itemtype, $items_id, $withtemplate,
+                                             $canedit, false);
+
+            $category = new SoftwareCategory();
+            $category->getFromDB($data['softwarecategories_id']);
+            $soft = new Software();
+            $soft->getFromDB($data['id']);
+            $version = new SoftwareVersion();
+            $version->getFromDB($data['verid']);
+            $newValue = [
+               $soft->getLink(),
+               $data['state'],
+               $version->getLink(),
+               implode('<br>', $licids),
+               Html::convDate($data['dateinstall']),
+            ];
+            if (Plugin::haveImport()) {
+               $newValue[] = $data['is_dynamic'] ? __('Yes') : __('No');
+            }
+            $newValue[] = $category->getLink();
+            $newValue[] = $data['softvalid'] ? __('Yes') : __('No');
+            $values[] = $newValue;
+            foreach ($licids as $licid) {
+               Session::addToNavigateListItems('SoftwareLicense', $licid);
+               $installed[] = $licid;
+            }
+            $massive_action[] = sprintf('item[%s][%s]', self::class, $data['id']);
+         }
+         renderTwigTemplate('table.twig', [
+            'id' => $massActionContainer,
+            'fields' => $fields,
+            'values' => $values,
+            'massive_action' => $massive_action,
+         ]);
+         
+         echo "<div class='spaced'>";
+         echo "<table class='tab_cadre_fixehov'>";
 
          for ($row=0; $data = $iterator->next(); $row++) {
 
@@ -1135,7 +1139,6 @@ class Item_SoftwareVersion extends CommonDBRelation {
             }
          }
 
-         echo $header_begin.$header_bottom.$header_end;
          echo "</table>";
          if ($canedit) {
             $massiveactionparams['ontop'] =false;
