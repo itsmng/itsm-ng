@@ -902,16 +902,11 @@ class CommonGLPI {
                   $shortcut = false;
                }
             }
-            ob_start();
-            CommonGLPI::displayStandardTab($this, $key, $withtemplate, $options);
-            $content = ob_get_clean();
             $tabs[$key] = [
                   'title'    => $val,
                   'shortcut' => $shortcut,
                   'url'      => $tabpage,
-                  'params'   => "_target=$target&amp;_itemtype=".$this->getType().
-                              "&amp;_glpi_tab=$key&amp;id=$ID$extraparamhtml",
-                  'content'  => $content,
+                  'params'   => "_target=$target&_itemtype=".$this->getType()."&_glpi_tab=$key&id=$ID$extraparamhtml",
             ];
          }
       }

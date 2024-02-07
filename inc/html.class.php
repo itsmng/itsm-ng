@@ -1940,10 +1940,6 @@ JAVASCRIPT;
       echo Html::script("vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js");
       echo Html::script("node_modules/@jarstone/dselect/dist/js/dselect.min.js");
       echo Html::script("src/ngFunctions.js");
-      echo Html::script("node_modules/chartist/dist/index.js");
-
-      echo Html::script("node_modules/gridstack/dist/gridstack-all.js");
-      echo Html::css("node_modules/gridstack/dist/gridstack-extra.css");
 
       echo Html::script("node_modules/trumbowyg/dist/trumbowyg.min.js");
       echo Html::css("node_modules/trumbowyg/dist/ui/trumbowyg.min.css");
