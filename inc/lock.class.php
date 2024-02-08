@@ -622,15 +622,17 @@ class Lock extends CommonGLPI {
                            'Device'                 => _n('Component', 'Components', Session::getPluralNumber()),
                            'ComputerVirtualMachine' => ComputerVirtualMachine::getTypeName(Session::getPluralNumber())];
 
-            echo __('Select the type of the item that must be unlock');
-            echo "<br><br>\n";
-
-            Dropdown::showFromArray('attached_item', $types,
-                                    ['multiple' => true,
-                                          'size'     => 5,
-                                          'values'   => array_keys($types)]);
-
-            echo "<br><br>".Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
+            renderTwigTemplate('macros/wrappedInput.twig', [
+               'title' => __('Select the type of the item that must be unlock'),
+               'input' => [
+                  'type' => 'checklist',
+                  'name' => 'attached_item',
+                  'options' => $types,
+                  'col_lg' => 12,
+                  'col_md' => 12,
+               ]
+            ]);
+            echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
             return true;
       }
       return false;
