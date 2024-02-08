@@ -42,8 +42,8 @@ function update151to200() : bool {
     $current_config   = Config::getConfigurationValues('core');
     $updateresult     = true;
 
-    $migration->displayTitle(sprintf(__('Update to %s'), '2.0.0_beta2'));
-    $migration->setVersion('2.0.0_beta2');
+    $migration->displayTitle(sprintf(__('Update to %s'), '2.0.0_beta3'));
+    $migration->setVersion('2.0.0_beta3');
 
     if(!$DB->fieldExists('glpi_users', 'menu_favorite')) {
         $query = "alter table glpi_users add column menu_favorite longtext default '{}';";

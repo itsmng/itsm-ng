@@ -111,56 +111,60 @@ class CartridgeItem_PrinterModel extends CommonDBRelation {
       }
 
       if ($canedit) {
-         echo "<div class='firstbloc'>";
-         echo "<form name='printermodel_form$rand' id='printermodel_form$rand' method='post'";
-         echo " action='".static::getFormURL()."'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_1'>";
-         echo "<th colspan='6'>".__('Add a compatible printer model')."</th></tr>";
-
-         echo "<tr><td class='tab_bg_2 center'>";
-         echo "<input type='hidden' name='cartridgeitems_id' value='$instID'>";
-         PrinterModel::dropdown(['used' => $used]);
-         echo "</td><td class='tab_bg_2 center'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $options = getOptionForItems(PrinterModel::class);
+         foreach ($used as $cartridge) {
+            unset($options[$cartridge]);
+         };
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add an item'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               __('Add a compatible printer model') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'cartridgeitems_id',
+                        'value' => $instID
+                     ],
+                     '' => [
+                        'type' => 'select',
+                        'name' => 'printermodels_id',
+                        'values' => $options,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                        'actions' => getItemActionButtons(['info', 'add'], PrinterModel::class)
+                     ],
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
       if ($number) {
-         echo "<div class='spaced'>";
          if ($canedit) {
-            $rand     = mt_rand();
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-            $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], count($used)),
-                              'container'     => 'mass'.__CLASS__.$rand];
+            $massiveactionparams = [
+               'num_displayed' => min($_SESSION['glpilist_limit'], count($used)),
+               'container'     => 'tableForCartidgeItemPrinterModel',
+               'display_arrow' => false,
+               'specific_actions' => [
+                  'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+               ],   
+            ];
             Html::showMassiveActions($massiveactionparams);
          }
-
-         echo "<table class='tab_cadre_fixehov'>";
-         $header_begin  = "<tr>";
-         $header_top    = '';
-         $header_bottom = '';
-         $header_end    = '';
-         if ($canedit) {
-            $header_begin  .= "<th width='10'>";
-            $header_top    .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header_bottom .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header_end    .= "</th>";
-         }
-         $header_end .= "<th>"._n('Model', 'Models', 1)."</th></tr>";
-         echo $header_begin.$header_top.$header_end;
-
+         $fields = [_n('Model', 'Models', 1)];
+         $values = [];
+         $massive_action = [];
          foreach ($datas as $data) {
-            echo "<tr class='tab_bg_1'>";
-            if ($canedit) {
-               echo "<td width='10'>";
-               Html::showMassiveActionCheckBox(__CLASS__, $data["linkid"]);
-               echo "</td>";
-            }
             $opt = [
                'is_deleted' => 0,
                'criteria'   => [
@@ -172,20 +176,15 @@ class CartridgeItem_PrinterModel extends CommonDBRelation {
                ]
             ];
             $url = Printer::getSearchURL()."?".Toolbox::append_params($opt, '&amp;');
-            echo "<td class='center'><a href='".$url."'>".$data["name"]."</a></td>";
-            echo "</tr>";
+            $values[] = ["<a href='".$url."'>".$data["name"]];
+            $massive_action[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
          }
-         echo $header_begin.$header_bottom.$header_end;
-         echo "</table>";
-         if ($canedit) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-         }
-         echo "</div>";
-      } else {
-         echo "<p class='center b'>".__('No item found')."</p>";
+         renderTwigTemplate('table.twig', [
+            'id' => 'tableForCartidgeItemPrinterModel',
+            'fields' => $fields,
+            'values' => $values,
+            'massive_action' => $massive_action,
+         ]);
       }
    }
-
 }

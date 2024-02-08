@@ -426,10 +426,9 @@ class NetworkName extends FQDNLabel {
     * @param $networkPortID
    **/
    static function showFormForNetworkPort($networkPortID) {
-      global $DB, $CFG_GLPI;
+      global $DB;
 
       $name         = new self();
-      $number_names = 0;
 
       if ($networkPortID > 0) {
          $iterator = $DB->request([
@@ -444,10 +443,10 @@ class NetworkName extends FQDNLabel {
          $numrows = count($iterator);
 
          if ($numrows > 1) {
-            echo "<tr class='tab_bg_1'><th colspan='4'>" .
-               __("Several network names available! Go to the tab 'Network Name' to manage them.") .
-               "</th></tr>\n";
-               return;
+            // echo "<tr class='tab_bg_1'><th colspan='4'>" .
+            //    __("Several network names available! Go to the tab 'Network Name' to manage them.") .
+            //    "</th></tr>\n";
+            //    return;
          }
 
          switch ($numrows) {
@@ -464,53 +463,62 @@ class NetworkName extends FQDNLabel {
       } else {
          $name->getEmpty();
       }
-
-      echo "<tr class='tab_bg_1'><th colspan='4'>";
-       // If the networkname is defined, we must be able to edit it. So we make a link
-      if ($name->getID() > 0) {
-         echo "<a href='".$name->getLinkURL()."'>".self::getTypeName(1)."</a>";
-         echo "<input type='hidden' name='NetworkName_id' value='".$name->getID()."'>&nbsp;\n";
-         Html::showSimpleForm($name->getFormURL(), 'unaffect', _sx('button', 'Dissociate'),
-                              ['id' => $name->getID()],
-                              $CFG_GLPI["root_doc"].'/pics/sub_dropdown.png');
-      } else {
-         echo self::getTypeName(1);
-      }
-      echo "</th>\n";
-
-      echo "</tr><tr class='tab_bg_1'>";
-
-      echo "<td>" . self::getTypeName(1) . "</td><td>\n";
-      Html::autocompletionTextField($name, "name", ['name' => 'NetworkName_name']);
-      echo "</td>\n";
-
-      echo "<td>".FQDN::getTypeName(1)."</td><td>";
-      Dropdown::show(getItemTypeForTable(getTableNameForForeignKeyField("fqdns_id")),
-                     ['value'       => $name->fields["fqdns_id"],
-                           'name'        => 'NetworkName_fqdns_id',
-                           'entity'      => $name->getEntityID(),
-                           'displaywith' => ['view']]);
-      echo "</td>\n";
-
-      echo "</tr><tr class='tab_bg_1'>\n";
-
-      echo "<td>".IPAddress::getTypeName(Session::getPluralNumber());
-      IPAddress::showAddChildButtonForItemForm($name, 'NetworkName__ipaddresses');
-      echo "</td>";
-      echo "<td>";
-      IPAddress::showChildsForItemForm($name, 'NetworkName__ipaddresses');
-      echo "</td>";
-
-      // MoYo : really need to display it here ?
-      // make confure because not updatable
-      // echo "<td>".IPNetwork::getTypeName(Session::getPluralNumber())."&nbsp;";
-      // Html::showToolTip(__('IP network is not included in the database. However, you can see current available networks.'));
-      // echo "</td><td>";
-      // IPNetwork::showIPNetworkProperties($name->getEntityID());
-      // echo "</td>\n";
-      echo "<td colspan='2'>&nbsp;</td>";
-
-      echo "</tr>\n";
+      
+      return [
+         self::getTypeName() => [
+            'visible' => true,
+            'inputs' => [
+               ($name->getID() > 0) ? [
+                  'name' => 'NetworkName_id',
+                  'type' => 'hidden',
+                  'value' => $name->getID()
+               ] : [],
+               ($name->getID() > 0) ? "<a href='".$name->getLinkURL()."'>".self::getTypeName(1)."</a>" : self::getTypeName(1) => [
+                  'name' => 'NetworkName_name',
+                  'type' => 'text',
+                  'value' => $name->fields['name'] ?? '',
+               ],
+               // '' => ($name->getID() > 0) ? [
+               //    'content' => Html::showSimpleForm($name->getFormURL(), 'unaffect', _sx('button', 'Dissociate'),
+               //       ['id' => $name->getID()],
+               //       $CFG_GLPI["root_doc"].'/pics/sub_dropdown.png'),
+               // ] : [],
+               FQDN::getTypeName(1) => [
+                  'name' => 'NetworkName_fqdns_id',
+                  'type' => 'select',
+                  'values' => getOptionForItems(FQDN::class),
+                  'value' => $name->fields['fqdns_id'] ?? '',
+                  'actions' => getItemActionButtons(['info', 'add'], 'FQDN'),
+               ],
+               IPAddress::getTypeName(Session::getPluralNumber()) => [
+                  'type' => 'multiSelect',
+                  'inputs' => [
+                     [
+                        'name' => 'current_ipaddress',
+                        'type' => 'text',
+                        'size' => 30,
+                     ],
+                  ],
+                  'getInputAdd' => <<<JS
+                     function () {
+                        if (!$('input[name="current_ipaddress"]').val()) {
+                           return;
+                        }
+                        var values = {
+                           NetworkName__ipaddresses: $('input[name="current_ipaddress"]').val()
+                        };
+                        var title = $('input[name="current_ipaddress"]').val();
+                        return {values, title};
+                     }
+                  JS,
+                  'values' => getOptionsWithNameForItem('IpAddress',
+                     ['itemtype' => self::class, 'items_id' => $name->getID()],
+                     ['NetworkName__ipaddresses' => 'name']
+                  ),
+               ],
+         ],
+         ]
+      ];
    }
 
 

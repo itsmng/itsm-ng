@@ -1,0 +1,52 @@
+{% from 'macros/input.twig' import input %}
+
+{% macro wrappedInput(title, input, root_doc) %}
+	{% set options = ['actions', 'after', 'before', 'hooks', 'init', 'col', 'col_md', 'col_lg'] %}
+	{% if input.hooks and not input.id %}
+		{% set input  = input|merge({'id': random()}) %}
+	{% endif %}
+	{% if input.type != 'hidden' and input|length > 0 %}
+		<div class="
+            col{{ input.col ? '-' ~ input.col : '-12' }}
+            col-md{{ input.col_md ? '-' ~ input.col_md : '-6' }}
+            col-lg{{ input.col_lg ? '-' ~ input.col_lg : '-4' }}
+            text-start">
+			<label for="{{input.name}}">{{title|raw}}</label>
+			<div class="d-flex justify-content-between align-items-center input-group my-1">
+			{% endif %}
+			{% if input.before %}
+				<div class="form-text mx-2">{{input.before | raw}}</div>
+			{% endif %}
+			{% set attributes = input | filter((v, k) => k not in options) %}
+			{% if input.type %}
+				{{input(attributes, root_doc)}}
+			{% else %}
+				{{ input.content|raw }}
+			{% endif %}
+			{% if input.after %}
+				{{input.after|raw}}
+			{% endif %}
+			{% for action in input.actions %}
+				<button type="button" class="btn border" onclick="{{action.onClick}}">
+					<a class="{{action.icon}}"></a>
+				</button>
+			{% endfor %}
+			{% if input.type != 'hidden' and input|length > 0 %}
+			</div>
+		</div>
+	{% endif %}
+	{% if input.hooks %}
+		<script>
+			{% set rand=random() %}
+			$(document).ready(() => {
+			{% for hook, script in input.hooks %}
+				$("#{{input.id}}").on("{{hook}}", function() {
+					{{script|raw}}
+				});
+			{% endfor %}
+			});
+		</script>
+	{% endif %}
+
+{% endmacro %}
+{{_self.wrappedInput(title, input)}}

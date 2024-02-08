@@ -25,7 +25,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-18 14:42+0100\n"
-"PO-Revision-Date: 2024-01-19 15:43+0000\n"
+"PO-Revision-Date: 2024-02-02 21:01+0000\n"
 "Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "fr/>\n"
@@ -4831,7 +4831,7 @@ msgstr ""
 
 #: inc/config.class.php:1332
 msgid "Due date progression"
-msgstr "Progression: Date d'échéance"
+msgstr "Progression de la date d'échéance"
 
 #: inc/config.class.php:1335
 msgid "OK state color"
@@ -7789,7 +7789,7 @@ msgstr "Les statuts ont été mis à jour !"
 
 #: inc/specialstatus.class.php:142
 msgid "Status has been removed!"
-msgstr "Le statut a été supprimer"
+msgstr "Le statut a été supprimé"
 
 #: inc/specialstatus.class.php:153 inc/specialstatus.class.php:246
 #: inc/commondcmodeldropdown.class.php:65
@@ -8503,7 +8503,7 @@ msgstr "Nombre minimum"
 #, php-format
 msgid "%s item"
 msgid_plural "%s items"
-msgstr[0] "%s éléments"
+msgstr[0] "%s élément"
 msgstr[1] "%s éléments"
 
 #: inc/crontask.class.php:1197
@@ -9072,7 +9072,7 @@ msgstr[1] "Groupes"
 #: inc/computervirtualmachine.class.php:351
 msgid "Comment"
 msgid_plural "Comments"
-msgstr[0] "Commentaires"
+msgstr[0] "Commentaire"
 msgstr[1] "Commentaires"
 
 #: inc/networkequipment.class.php:569 inc/phone.class.php:532
@@ -15145,7 +15145,7 @@ msgstr "Exceptions"
 #: inc/features/planningevent.class.php:821
 #, php-format
 msgid "%1$s: from %2$s to %3$s:"
-msgstr "%1$s : du %2$s au %3$s"
+msgstr "%1$s: du %2$s au %3$s:"
 
 #: inc/features/dcbreadcrumb.class.php:119 inc/datacenter.class.php:175
 msgid "Data center position"
@@ -15951,7 +15951,7 @@ msgstr[1] "Téléphones"
 
 #: inc/oidc.class.php:334
 msgid "Locale"
-msgstr ""
+msgstr "Locale"
 
 #: inc/cartridgeitem_printermodel.class.php:120
 msgid "Add a compatible printer model"
@@ -18219,7 +18219,7 @@ msgstr ""
 #, php-format
 msgid "--ldap-server-id value \"%s\" is not a valid LDAP server id."
 msgstr ""
-"La valeur \"%s\" de --ldap-server-id n'est pas pas un identifiant valide de "
+"La valeur \"%s\" de --ldap-server-id n'est pas un identifiant valide de "
 "serveur LDAP."
 
 #: inc/console/ldap/synchronizeuserscommand.class.php:451
@@ -19130,7 +19130,7 @@ msgstr "Installation interrompue."
 
 #: inc/console/database/installcommand.class.php:207
 msgid "Security key cannot be generated!"
-msgstr "La clef de sécurité ne peux être générée"
+msgstr "La clef de sécurité ne peut être générée!"
 
 #: inc/console/database/installcommand.class.php:223
 #: inc/console/database/abstractconfigurecommand.class.php:230
@@ -22188,6 +22188,9 @@ msgid ""
 "cogwheel then click and the star next to the menu you wish to add as a "
 "favorite."
 msgstr ""
+"Vous pouvez ajouter votre section favorite à ce menu. Pour ce faire, cliquez "
+"sur la roue dentée, puis sur l'étoile située à côté du menu que vous "
+"souhaitez ajouter en tant que favori."
 
 #: templates/menus/nav/nav-settings.twig:4
 msgid "Menu"
@@ -22222,10 +22225,8 @@ msgid "Menu position"
 msgstr "Position du menu"
 
 #: inc/includes.php:155
-#, fuzzy
-#| msgid "session_token seems invalid"
 msgid "CSRF token is invalid"
-msgstr "session_token semble incorrect"
+msgstr "Le CSRF est invalide"
 
 #~ msgid "SSO Login"
 #~ msgstr "Connection en SSO"

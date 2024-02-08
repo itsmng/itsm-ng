@@ -30,6 +30,8 @@
  * ---------------------------------------------------------------------
  */
 
+use itsmng\Timezone;
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
@@ -1180,20 +1182,56 @@ class Problem extends CommonITILObject {
       }
    }
 
+   private function getActorsForAction($action) {
+      $actors = [];
+  
+      $userActors = $this->getUsers($action);
+      foreach ($userActors as $userActor) {
+        $actors[] = [
+          'name' => getUserName($userActor['users_id']),
+          'id' => $userActor['users_id'],
+          'type' => 'user',
+          'icon' => User::getIcon($userActor['users_id']),
+        ];
+      }
+  
+      $groupActors = $this->getGroups($action);
+      foreach ($groupActors as $groupActor) {
+        $group = new Group();
+        $group->getFromDB($groupActor['groups_id']);
+        $actors[] = [
+          'name' => $group->getName(),
+          'id' => $groupActor['groups_id'],
+          'type' => 'group',
+          'icon' => Group::getIcon(),
+        ];
+      }
+  
+      if ($action == CommonITILActor::ASSIGN) {
+        $supplierActors = $this->getSuppliers($action);
+        foreach ($supplierActors as $supplierActor) {
+          $supplier = new Supplier();
+          $supplier->getFromDB($supplierActor['suppliers_id']);
+          $actors[] = [
+            'name' => $supplier->getName(),
+            'id' => $supplierActor['suppliers_id'],
+            'type' => 'supplier',
+            'icon' => Supplier::getIcon(),
+          ];
+        }
+      }
+      return $actors;
+   }
+
+    
    /**
     * @param $ID
     * @param $options   array
    **/
    function showForm($ID, $options = []) {
-      global $CFG_GLPI;
-
       if (!static::canView()) {
          return false;
       }
-
-      // In percent
-      $colsize1 = '13';
-      $colsize2 = '37';
 
       $default_values = self::getDefaultValues();
 
@@ -1215,26 +1253,7 @@ class Problem extends CommonITILObject {
             }
          }
 
-         if (isset($options['tickets_id']) || isset($options['_tickets_id'])) {
-            $tickets_id = $options['tickets_id'] ?? $options['_tickets_id'];
-            $ticket = new Ticket();
-            if ($ticket->getFromDB($tickets_id)) {
-               $options['content']             = $ticket->getField('content');
-               $options['name']                = $ticket->getField('name');
-               $options['impact']              = $ticket->getField('impact');
-               $options['urgency']             = $ticket->getField('urgency');
-               $options['priority']            = $ticket->getField('priority');
-               if (isset($options['tickets_id'])) {
-                  //page is reloaded on category change, we only want category on the very first load
-                  $options['itilcategories_id']   = $ticket->getField('itilcategories_id');
-               }
-               $options['time_to_resolve']     = $ticket->getField('time_to_resolve');
-               $options['entities_id']         = $ticket->getField('entities_id');
-            }
-         }
       }
-
-      $this->initForm($ID, $options);
 
       $canupdate = !$ID || (Session::getCurrentInterface() == "central" && $this->canUpdateItem());
 
@@ -1330,6 +1349,24 @@ class Problem extends CommonITILObject {
             }
          }
       }
+            
+      if (isset($options['tickets_id']) || isset($options['_tickets_id'])) {
+         $tickets_id = $options['tickets_id'] ?? $options['_tickets_id'];
+         $ticket = new Ticket();
+         if ($ticket->getFromDB($tickets_id)) {
+            $this->fields['content']             = $ticket->getField('content');
+            $this->fields['name']                = $ticket->getField('name');
+            $this->fields['impact']              = $ticket->getField('impact');
+            $this->fields['urgency']             = $ticket->getField('urgency');
+            $this->fields['priority']            = $ticket->getField('priority');
+            if (isset($options['tickets_id'])) {
+               //page is reloaded on category change, we only want category on the very first load
+               $this->fields['itilcategories_id']   = $ticket->getField('itilcategories_id');
+            }
+            $this->fields['time_to_resolve']     = $ticket->getField('time_to_resolve');
+            $this->fields['entities_id']         = $ticket->getField('entities_id');
+         }
+      }
 
       // Put ticket template on $options for actors
       $options[str_replace('s_id', '', $tpl_key)] = $tt;
@@ -1343,340 +1380,248 @@ class Problem extends CommonITILObject {
          }
       }
 
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<th class='left' width='$colsize1%'>";
-      echo $tt->getBeginHiddenFieldText('date');
-      if (!$ID) {
-         printf(__('%1$s%2$s'), __('Opening date'), $tt->getMandatoryMark('date'));
-      } else {
-         echo __('Opening date');
-      }
-      echo $tt->getEndHiddenFieldText('date');
-      echo "</th>";
-      echo "<td class='left' width='$colsize2%'>";
-
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+           $this->fields["is_deleted"] == 1 && self::canDelete() ? [
+             'type' => 'submit',
+             'name' => 'restore',
+             'value' => __('Restore'),
+             'class' => 'btn btn-secondary'
+           ] : ($this->canUpdateItem() ? [
+             'type' => 'submit',
+             'name' => $this->isNewID($ID) ? 'add' : 'update',
+             'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+             'class' => 'btn btn-secondary'
+           ] : []),
+           !$this->isNewID($ID) && !$this->isDeleted() && $this->canDeleteItem() ? [
+             'type' => 'submit',
+             'name' => 'delete',
+             'value' => __('Put in trashbin'),
+             'class' => 'btn btn-danger'
+           ] : (!$this->isNewID($ID) && self::canPurge() ? [
+             'type' => 'submit',
+             'name' => 'purge',
+             'value' => __('Delete permanently'),
+             'class' => 'btn btn-danger'
+           ] : []),
+         ],
+         'content' => [
+            $this->getTypeName() => [
+               'visible' => 'true',
+               'inputs' => [
+                  $this->isNewID($ID) ? [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ] : [],
+                  __('Child entities') => [
+                     'type' => 'checkbox',
+                     'name' => 'is_recursive',
+                     'value' => $this->fields["is_recursive"],
+                  ],
+                  isset($tickets_id) ? [
+                     'type' => 'hidden',
+                     'name' => '_tickets_id',
+                     'value' => $tickets_id,
+                  ] : [],
+                  (isset($options['_add_fromitem'])
+                  && isset($options['_from_items_id'])
+                  && isset($options['_from_itemtype'])) ? [
+                     'type' => 'hidden',
+                     'name' => '_from_items_id',
+                     'value' => $options['_from_items_id'],
+                  ] : [],
+                  (isset($options['_add_fromitem'])
+                  && isset($options['_from_items_id'])
+                  && isset($options['_from_itemtype'])) ? [
+                     'type' => 'hidden',
+                     'name' => '_from_itemtype',
+                     'value' => $options['_from_itemtype'],
+                  ] : [],
+                  __('Opening date') => [
+                     'type' => 'datetime-local',
+                     'name' => 'date',
+                     'value' => !$ID ? date("Y-m-d H:i:s") : $this->fields["date"]
+                  ],
+                  __('Time to resolve') => [
+                     'type' => 'datetime-local',
+                     'name' => 'time_to_resolve',
+                     'value' => $this->fields["time_to_resolve"]
+                  ],
+                  __('By') => $ID ? [
+                     'type' => 'select',
+                     'name' => 'users_id_recipient',
+                     'value' => $this->fields["users_id_recipient"],
+                     'values' => getOptionsForUsers('all', ['entities_id' => $this->fields["entities_id"]]),
+                     'actions' => getItemActionButtons(['info'], User::class),
+                  ] : [],
+                  __('Last update') => $ID ? [
+                     'content' => Html::convDateTime($this->fields["date_mod"])
+                        . (($this->fields['users_id_lastupdater'] > 0) ? sprintf(__('%1$s: %2$s'), __('By'),
+                           getUserName($this->fields["users_id_lastupdater"], $showuserlink)) : ''),
+                  ] : [],
+                  __('Date of solving') => ($ID
+                     && (in_array($this->fields["status"], $this->getSolvedStatusArray())
+                     || in_array($this->fields["status"], $this->getClosedStatusArray()))) ? [
+                        'type' => 'datetime-local',
+                        'name' => 'solvedate',
+                        'value' => $this->fields["solvedate"],
+                  ] : [],
+                  __('Closing date') => ($ID
+                     && (in_array($this->fields["status"], $this->getSolvedStatusArray())
+                        || in_array($this->fields["status"], $this->getClosedStatusArray()))
+                     && in_array($this->fields["status"], $this->getClosedStatusArray())) ? [
+                     'type' => 'datetime-local',
+                     'name' => 'closedate',
+                     'value' => $this->fields["solvedate"],
+                  ] : []
+               ]
+            ],
+            __('Parameters') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Status') => $canupdate ? [
+                     'type' => 'select',
+                     'name' => 'status',
+                     'values' => static::getAllowedStatusArray($this->fields["status"]),
+                     'value' => $this->fields["status"],
+                     'col_lg' => 6,
+                  ] : [
+                     'content' => "&nbsp;<a class='vsubmit' href='"
+                        .$this->getLinkURL(). "&amp;_openfollowup=1&amp;forcetab=" . "Change$1'>".__('Reopen')."</a>",
+                     'col_lg' => 6,
+                  ],
+                  __('Category') => [
+                     'type'  => 'select',
+                     'name' => 'itilcategories_id',
+                     'values' => getOptionForItems(ITILCategory::class),
+                     'value' => $this->fields['itilcategories_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], ITILCategory::class),
+                     $canupdate ? '' : 'disabled' => '',
+                     'col_lg' => 6,
+                  ],
+                  __('Urgency') => [
+                     'type' => 'select',
+                     'name' => 'urgency',
+                     'values' => [
+                        5 => CommonITILObject::getUrgencyName(5),
+                        4 => CommonITILObject::getUrgencyName(4),
+                        3 => CommonITILObject::getUrgencyName(3),
+                        2 => CommonITILObject::getUrgencyName(2),
+                        1 => CommonITILObject::getUrgencyName(1),
+                     ],
+                     'value' => $this->fields["urgency"],
+                     $canupdate ? '' : 'disabled' => '',
+                  ],
+                  __('Impact') => [
+                     'type' => 'select',
+                     'name' => 'impact',
+                     'values' => [
+                        5 => CommonITILObject::getImpactName(5),
+                        4 => CommonITILObject::getImpactName(4),
+                        3 => CommonITILObject::getImpactName(3),
+                        2 => CommonITILObject::getImpactName(2),
+                        1 => CommonITILObject::getImpactName(1),
+                     ],
+                     'value' => $this->fields["impact"],
+                     $canupdate ? '' : 'disabled' => '',
+                  ],
+                  __('Priority') => [
+                     'type' => 'select',
+                     'name' => 'priority',
+                     'values' => [
+                        6 => CommonITILObject::getPriorityName(6),
+                        5 => CommonITILObject::getPriorityName(5),
+                        4 => CommonITILObject::getPriorityName(4),
+                        3 => CommonITILObject::getPriorityName(3),
+                        2 => CommonITILObject::getPriorityName(2),
+                        1 => CommonITILObject::getPriorityName(1),
+                     ],
+                     'value' => $this->fields["priority"],
+                     $canupdate ? '' : 'disabled' => '',
+                  ],
+                  __('Total duration') => [
+                     'type' => 'select',
+                     'name' => 'actiontime',
+                     'values' => [Dropdown::EMPTY_VALUE] + Timezone::GetTimeStamp([
+                        'min' => MINUTE_TIMESTAMP,
+                        'max' => DAY_TIMESTAMP,
+                     ])
+                  ]
+               ]
+            ],
+            __('Actor') => [
+               'visible' => true,
+               'inputs' => [
+                 __('Requester') => [
+                   'type' => 'actorSelect',
+                   'name' => '_users_id_requester',
+                   'actorTypes' => [
+                     Dropdown::EMPTY_VALUE => 0,
+                     User::getTypeName() => 'user',
+                     Group::getTypeName() => 'group',
+                   ],
+                   'values' => $this->getActorsForAction(CommonITILActor::REQUESTER),
+                   'actorTypeId' => CommonITILActor::REQUESTER,
+                   'itemType' => 'Ticket',
+                   'actorType' => 'requester',
+                   'ticketId' => $this->isNewID($ID) ? 0 : $ID,
+                 ],
+                 __('Watcher') => [
+                   'type' => 'actorSelect',
+                   'name' => '_users_id_observer',
+                   'actorTypes' => [
+                     Dropdown::EMPTY_VALUE => 0,
+                     User::getTypeName() => 'user',
+                     Group::getTypeName() => 'group',
+                   ],
+                   'values' => $this->getActorsForAction(CommonITILActor::OBSERVER),
+                   'actorTypeId' => CommonITILActor::OBSERVER,
+                   'itemType' => 'Ticket',
+                   'actorType' => 'observer',
+                   'ticketId' => $this->isNewID($ID) ? 0 : $ID,
+                 ],
+                 __('Assigned to') => [
+                   'type' => 'actorSelect',
+                   'name' => '_users_id_assign',
+                   'actorTypes' => [
+                     Dropdown::EMPTY_VALUE => 0,
+                     User::getTypeName() => 'user',
+                     Group::getTypeName() => 'group',
+                     Supplier::getTypeName() => 'supplier',
+                   ],
+                   'values' => $this->getActorsForAction(CommonITILActor::ASSIGN),
+                   'actorTypeId' => CommonITILActor::ASSIGN,
+                   'itemType' => 'Ticket',
+                   'actorType' => 'assign',
+                   'ticketId' => $this->isNewID($ID) ? 0 : $ID,
+                 ],
+               ]
+            ],
+            __('Content') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Title') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields['name'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  __('Description') => [
+                     'type' => 'richtextarea',
+                     'name' => 'content',
+                     'value' => $this->fields['content'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ]
+               ]
+            ],
+         ]
+       ];
+       renderTwigForm($form);
       $this->displayHiddenItemsIdInput($options);
-
-      if (isset($tickets_id)) {
-         echo "<input type='hidden' name='_tickets_id' value='".$tickets_id."'>";
-      }
-
-      if (isset($options['_add_fromitem'])
-          && isset($options['_from_items_id'])
-          && isset($options['_from_itemtype'])) {
-         echo Html::hidden('_from_items_id', ['value' => $options['_from_items_id']]);
-         echo Html::hidden('_from_itemtype', ['value' => $options['_from_itemtype']]);
-      }
-
-      echo $tt->getBeginHiddenFieldValue('date');
-      $date = $this->fields["date"];
-      if (!$ID) {
-         $date = date("Y-m-d H:i:s");
-      }
-      Html::showDateTimeField(
-         "date", [
-            'value'      => $date,
-            'maybeempty' => false,
-            'required'   => ($tt->isMandatoryField('date') && !$ID)
-         ]
-      );
-      echo $tt->getEndHiddenFieldValue('date', $this);
-      echo "</td>";
-
-      echo "<th>".$tt->getBeginHiddenFieldText('time_to_resolve');
-      if (!$ID) {
-         printf(__('%1$s%2$s'), __('Time to resolve'), $tt->getMandatoryMark('time_to_resolve'));
-      } else {
-         echo __('Time to resolve');
-      }
-      echo $tt->getEndHiddenFieldText('time_to_resolve');
-      echo "</th>";
-      echo "<td width='$colsize2%' class='left'>";
-      echo $tt->getBeginHiddenFieldValue('time_to_resolve');
-      if ($this->fields["time_to_resolve"] == 'NULL') {
-         $this->fields["time_to_resolve"] = '';
-      }
-      Html::showDateTimeField(
-         "time_to_resolve", [
-            'value'    => $this->fields["time_to_resolve"],
-            'required'   => ($tt->isMandatoryField('time_to_resolve') && !$ID)
-         ]
-      );
-      echo $tt->getEndHiddenFieldValue('time_to_resolve', $this);
-
-      echo "</td></tr>";
-
-      if ($ID) {
-         echo "<tr class='tab_bg_1'><th>".__('By')."</th><td>";
-         User::dropdown(['name'   => 'users_id_recipient',
-                              'value'  => $this->fields["users_id_recipient"],
-                              'entity' => $this->fields["entities_id"],
-                              'right'  => 'all']);
-         echo "</td>";
-         echo "<th>".__('Last update')."</th>";
-         echo "<td>".Html::convDateTime($this->fields["date_mod"])."\n";
-         if ($this->fields['users_id_lastupdater'] > 0) {
-            printf(__('%1$s: %2$s'), __('By'),
-                   getUserName($this->fields["users_id_lastupdater"], $showuserlink));
-         }
-         echo "</td></tr>";
-      }
-
-      if ($ID
-          && (in_array($this->fields["status"], $this->getSolvedStatusArray())
-              || in_array($this->fields["status"], $this->getClosedStatusArray()))) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<th>".__('Date of solving')."</th>";
-         echo "<td>";
-         Html::showDateTimeField("solvedate", ['value'      => $this->fields["solvedate"],
-                                                    'maybeempty' => false]);
-         echo "</td>";
-         if (in_array($this->fields["status"], $this->getClosedStatusArray())) {
-            echo "<th>".__('Closing date')."</th>";
-            echo "<td>";
-            Html::showDateTimeField("closedate", ['value'      => $this->fields["closedate"],
-                                                       'maybeempty' => false]);
-            echo "</td>";
-         } else {
-            echo "<td colspan='2'>&nbsp;</td>";
-         }
-         echo "</tr>";
-      }
-      echo "</table>";
-
-      echo "<table class='tab_cadre_fixe' id='mainformtable2'>";
-      echo "<tr class='tab_bg_1'>";
-
-      echo "<th width='$colsize1%'>".$tt->getBeginHiddenFieldText('status');
-      printf(__('%1$s%2$s'), __('Status'), $tt->getMandatoryMark('status'));
-      echo $tt->getEndHiddenFieldText('status')."</th>";
-      echo "<td width='$colsize2%'>";
-      echo $tt->getBeginHiddenFieldValue('status');
-      if ($canupdate) {
-         self::dropdownStatus([
-            'value'     => $this->fields["status"],
-            'showtype'  => 'allowed',
-            'required'  => ($tt->isMandatoryField('status') && !$ID)
-         ]);
-         ChangeValidation::alertValidation($this, 'status');
-      } else {
-         echo self::getStatus($this->fields["status"]);
-         if ($this->canReopen()) {
-            $link = $this->getLinkURL(). "&amp;_openfollowup=1&amp;forcetab=";
-            $link .= "Change$1";
-            echo "&nbsp;<a class='vsubmit' href='$link'>". __('Reopen')."</a>";
-         }
-      }
-      echo $tt->getEndHiddenFieldValue('status', $this);
-
-      echo "</td>";
-      // Only change during creation OR when allowed to change priority OR when user is the creator
-
-      echo "<th>".$tt->getBeginHiddenFieldText('urgency');
-      printf(__('%1$s%2$s'), __('Urgency'), $tt->getMandatoryMark('urgency'));
-      echo $tt->getEndHiddenFieldText('urgency')."</th>";
-      echo "<td>";
-
-      if ($canupdate) {
-         echo $tt->getBeginHiddenFieldValue('urgency');
-         $idurgency = self::dropdownUrgency(['value' => $this->fields["urgency"]]);
-         echo $tt->getEndHiddenFieldValue('urgency', $this);
-
-      } else {
-         $idurgency = "value_urgency".mt_rand();
-         echo "<input id='$idurgency' type='hidden' name='urgency' value='".
-                $this->fields["urgency"]."'>";
-         echo $tt->getBeginHiddenFieldValue('urgency');
-         echo self::getUrgencyName($this->fields["urgency"]);
-         echo $tt->getEndHiddenFieldValue('urgency', $this);
-      }
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<th>".sprintf(__('%1$s%2$s'), __('Category'),
-                                             $tt->getMandatoryMark('itilcategories_id'))."</th>";
-      echo "<td >";
-
-      // Permit to set category when creating ticket without update right
-      if ($canupdate) {
-         $conditions = ['is_problem' => 1];
-
-         $opt = ['value'  => $this->fields["itilcategories_id"],
-                      'entity' => $this->fields["entities_id"]];
-         /// Auto submit to load template
-         if (!$ID) {
-            $opt['on_change'] = 'this.form.submit()';
-         }
-         /// if category mandatory, no empty choice
-         /// no empty choice is default value set on ticket creation, else yes
-         if (($ID || $options['itilcategories_id'])
-             && $tt->isMandatoryField("itilcategories_id")
-             && ($this->fields["itilcategories_id"] > 0)) {
-            $opt['display_emptychoice'] = false;
-         }
-
-         echo "<span id='show_category_by_type'>";
-         $opt['condition'] = $conditions;
-         ITILCategory::dropdown($opt);
-         echo "</span>";
-      } else {
-         echo Dropdown::getDropdownName("glpi_itilcategories", $this->fields["itilcategories_id"]);
-      }
-      echo "</td>";
-      echo "<th>".$tt->getBeginHiddenFieldText('impact');
-      printf(__('%1$s%2$s'), __('Impact'), $tt->getMandatoryMark('impact'));
-      echo $tt->getEndHiddenFieldText('impact')."</th>";
-      echo "</th>";
-      echo "<td>";
-      echo $tt->getBeginHiddenFieldValue('impact');
-      if ($canupdate) {
-         $idimpact = self::dropdownImpact(['value' => $this->fields["impact"], 'required' => ($tt->isMandatoryField('date') && !$ID)]);
-      } else {
-         $idimpact = "value_impact".mt_rand();
-         echo "<input id='$idimpact' type='hidden' name='impact' value='".$this->fields["impact"]."'>";
-         echo self::getImpactName($this->fields["impact"]);
-      }
-      echo $tt->getEndHiddenFieldValue('impact', $this);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<th>".$tt->getBeginHiddenFieldText('actiontime');
-      printf(__('%1$s%2$s'), __('Total duration'), $tt->getMandatoryMark('actiontime'));
-      echo $tt->getEndHiddenFieldText('actiontime')."</th>";
-      echo "<td>";
-      echo $tt->getBeginHiddenFieldValue('actiontime');
-      Dropdown::showTimeStamp(
-         'actiontime', [
-            'value'           => $options['actiontime'],
-            'addfirstminutes' => true
-         ]
-      );
-      echo $tt->getEndHiddenFieldValue('actiontime', $this);
-      echo "</td>";
-      echo "<th>".$tt->getBeginHiddenFieldText('priority');
-      printf(__('%1$s%2$s'), __('Priority'), $tt->getMandatoryMark('priority'));
-      echo $tt->getEndHiddenFieldText('priority')."</th>";
-      echo "<td>";
-      $idajax = 'change_priority_' . mt_rand();
-
-      if (!$tt->isHiddenField('priority')) {
-         $idpriority = self::dropdownPriority([
-            'value'     => $this->fields["priority"],
-            'withmajor' => true
-         ]);
-         $idpriority = 'dropdown_priority'.$idpriority;
-         echo "&nbsp;<span id='$idajax' style='display:none'></span>";
-      } else {
-         $idpriority = 0;
-         echo $tt->getBeginHiddenFieldValue('priority');
-         echo "<span id='$idajax'>".self::getPriorityName($this->fields["priority"])."</span>";
-         echo "<input id='$idajax' type='hidden' name='priority' value='".$this->fields["priority"]."'>";
-         echo $tt->getEndHiddenFieldValue('priority', $this);
-      }
-
-      $idajax     = 'change_priority_' . mt_rand();
-      echo "&nbsp;<span id='$idajax' style='display:none'></span>";
-      $params = [
-         'urgency'  => '__VALUE0__',
-         'impact'   => '__VALUE1__',
-         'priority' => 'dropdown_priority'.$idpriority
-      ];
-      Ajax::updateItemOnSelectEvent([
-         'dropdown_urgency'.$idurgency,
-         'dropdown_impact'.$idimpact],
-         $idajax,
-         $CFG_GLPI["root_doc"]."/ajax/priority.php",
-         $params
-      );
-      echo "</td>";
-      echo "</tr>";
-      echo "</table>";
-
-      $this->showActorsPartForm($ID, $options);
-
-      echo "<table class='tab_cadre_fixe' id='mainformtable3'>";
-      echo "<tr class='tab_bg_1'>";
-      echo "<th style='width:$colsize1%'>".$tt->getBeginHiddenFieldText('name');
-      printf(__('%1$s%2$s'), __('Title'), $tt->getMandatoryMark('name'));
-      echo $tt->getEndHiddenFieldText('name')."</th>";
-      echo "<td colspan='3'>";
-      echo $tt->getBeginHiddenFieldValue('name');
-      echo "<input type='text' style='width:98%' maxlength=250 name='name' ".
-               ($tt->isMandatoryField('name') ? " required='required'" : '') .
-               " value=\"".Html::cleanInputText($this->fields["name"])."\">";
-      echo $tt->getEndHiddenFieldValue('name', $this);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<th style='width:$colsize1%'>".$tt->getBeginHiddenFieldText('content');
-      printf(__('%1$s%2$s'), __('Description'), $tt->getMandatoryMark('content'));
-      echo $tt->getEndHiddenFieldText('content')."</th>";
-      echo "<td colspan='3'>";
-
-      echo $tt->getBeginHiddenFieldValue('content');
-      $rand       = mt_rand();
-      $rand_text  = mt_rand();
-      $rows       = 10;
-      $content_id = "content$rand";
-
-      $content = $this->fields['content'];
-      if (!isset($options['template_preview'])) {
-         $content = Html::cleanPostForTextArea($content);
-      }
-
-      $content = Html::setRichTextContent(
-         $content_id,
-         $content,
-         $rand,
-         !$canupdate
-      );
-
-      echo "<div id='content$rand_text'>";
-      if ($canupdate) {
-         $uploads = [];
-         if (isset($this->input['_content'])) {
-            $uploads['_content'] = $this->input['_content'];
-            $uploads['_tag_content'] = $this->input['_tag_content'];
-         }
-         Html::textarea([
-            'name'            => 'content',
-            'filecontainer'   => 'content_info',
-            'editor_id'       => $content_id,
-            'required'        => $tt->isMandatoryField('content'),
-            'rows'            => $rows,
-            'enable_richtext' => true,
-            'value'           => $content,
-            'uploads'         => $uploads,
-         ]);
-      } else {
-         echo Toolbox::getHtmlToDisplay($content);
-      }
-      echo "</div>";
-
-      echo $tt->getEndHiddenFieldValue('content', $this);
-
-      $this->handleFileUploadField($tt, [
-         'colwidth' => $colsize1
-      ]);
-
-      $options['colspan'] = 2;
-      if (!$options['template_preview']) {
-         if ($tt->isField('id') && ($tt->fields['id'] > 0)) {
-            echo "<input type='hidden' name='$tpl_key' value='".$tt->fields['id']."'>";
-            echo "<input type='hidden' name='_predefined_fields'
-                     value=\"".Toolbox::prepareArrayForInput($predefined_fields)."\">";
-         }
-
-         $this->showFormButtons($options);
-      } else {
-         echo "</table>";
-         echo "</div>";
-      }
 
       return true;
 
@@ -1691,47 +1636,51 @@ class Problem extends CommonITILObject {
       $this->check($this->getField('id'), READ);
       $canedit = $this->canEdit($this->getField('id'));
 
-      $options            = [];
-      $options['canedit'] = false;
-      CommonDBTM::showFormHeader($options);
+      $form = [
+         'action' => $canedit ? $this->getFormURL() : '',
+         'buttons' => [
+            [
+               'name' => 'update',
+               'class' => 'btn btn-secondary',
+               'value' => _x('button', 'Save'),
+            ],
+         ],
+         'content' => [
+            $this->getTypeName() => [
+               'visible' => true,
+               'inputs' => [
+                  [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $this->fields['id'],
+                  ],
+                  __('Impacts') => [
+                     'type' => 'textarea',
+                     'name' => 'impactcontent',
+                     'value' => $this->fields['impactcontent'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  __('Causes') => [
+                     'type' => 'textarea',
+                     'name' => 'causecontent',
+                     'value' => $this->fields['causecontent'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  __('Symptoms') => [
+                     'type' => 'textarea',
+                     'name' => 'symptomcontent',
+                     'value' => $this->fields['symptomcontent'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ]
 
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Impacts')."</td><td colspan='3'>";
-      if ($canedit) {
-         echo "<textarea id='impactcontent' name='impactcontent' rows='6' cols='80'>";
-         echo $this->getField('impactcontent');
-         echo "</textarea>";
-      } else {
-         echo $this->getField('impactcontent');
-      }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Causes')."</td><td colspan='3'>";
-      if ($canedit) {
-         echo "<textarea id='causecontent' name='causecontent' rows='6' cols='80'>";
-         echo $this->getField('causecontent');
-         echo "</textarea>";
-      } else {
-         echo $this->getField('causecontent');
-      }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Symptoms')."</td><td colspan='3'>";
-      if ($canedit) {
-         echo "<textarea id='symptomcontent' name='symptomcontent' rows='6' cols='80'>";
-         echo $this->getField('symptomcontent');
-         echo "</textarea>";
-      } else {
-         echo $this->getField('symptomcontent');
-      }
-      echo "</td></tr>";
-
-      $options['candel']  = false;
-      $options['canedit'] = $canedit;
-      $this->showFormButtons($options);
-
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
    }
 
 

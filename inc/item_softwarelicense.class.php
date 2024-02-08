@@ -115,6 +115,7 @@ class Item_SoftwareLicense extends CommonDBRelation {
 
    static function showMassiveActionsSubForm(MassiveAction $ma) {
 
+      global $CFG_GLPI;
       $input = $ma->getInput();
       switch ($ma->getAction()) {
          case 'move_license' :
@@ -133,11 +134,67 @@ class Item_SoftwareLicense extends CommonDBRelation {
             return false;
 
          case 'add' :
-            Software::dropdownLicenseToInstall('peer_softwarelicenses_id',
-                                                $_SESSION["glpiactive_entity"]);
-            echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction'])."</span>";
+            $inputs = [
+               Software::getTypeName() => [
+                  'type' => 'select',
+                  'name' => Software::getForeignKeyField(),
+                  'values' => getOptionForItems(
+                     Software::class,
+                     [
+                        'is_deleted' => 0,
+                        'entities_id' => $_SESSION["glpiactive_entity"],
+                        'is_template' => 0
+                     ]
+                  ),
+                  'actions' => getItemActionButtons(['info'], Software::class),
+                  'col_lg' => 12,
+                  'col_md' => 12,
+                  'hooks' => [
+                     'change' => <<<JS
+                     const val = this.value;
+                     const select = document.querySelector('select[name="peer_softwarelicenses_id"]');
+                     select.disabled = !val;
+                     select.innerHTML = '';
+                     if (val != 0) {
+                        $.ajax({
+                           url: "{$CFG_GLPI['root_doc']}/ajax/dropdownSoftwareLicense.php",
+                           method: 'POST',
+                           data: {
+                              softwares_id: val,
+                              entity_restrict: {$_SESSION["glpiactive_entity"]}
+                           },
+                           success: function(data) {
+                              const jsonData = JSON.parse(data);
+                              jsonData[0] = '-----';
+                              for (const key in jsonData) {
+                                 const option = document.createElement('option');
+                                 option.value = key;
+                                 option.text = jsonData[key];
+                                 select.appendChild(option);
+                              }
+                           }
+                        });
+                     };
+                     JS,
+                  ],
+               ],
+               SoftwareVersion::getTypeName() => [
+                  'type' => 'select',
+                  'name' => 'peer_softwarelicenses_id',
+                  'values' => [],
+                  'disabled' => '',
+                  'col_lg' => 12,
+                  'col_md' => 12,
+               ]
+            ];
+            foreach ($inputs as $title => $input) {
+               renderTwigTemplate('macros/wrappedInput.twig', [
+                  'title' => $title,
+                  'input' => $input,
+               ]);
+            };
+            echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
             return true;
-
          case 'add_item' :
             global $CFG_GLPI;
             echo "<table class='tab_cadre_fixe'>";

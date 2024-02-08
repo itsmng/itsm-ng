@@ -61,18 +61,21 @@ class ProjectTaskTemplate extends CommonDropdown {
             'type'  => 'select',
             'values' => getOptionForItems('ProjectState'),
             'value' => $this->fields['projectstates_id'],
+            'actions' => getItemActionButtons(['info', 'add'], 'ProjectState')
          ],
          _n('Type', 'Types', 1) => [
             'name'  => 'projecttasktypes_id',
             'type'  => 'select',
             'values' => getOptionForItems('ProjectTaskType'),
             'value' => $this->fields['projecttasktypes_id'],
+            'actions' => getItemActionButtons(['info', 'add'], 'ProjectTaskType')
          ],
          __('As child of') => [
             'name'  => 'projecttasks_id',
             'type'  => 'select',
             'values' => getOptionForItems('ProjectTask', ['NOT' => ['id' => $this->getID()]]),
             'value' => $this->fields['projecttasks_id'],
+            'actions' => getItemActionButtons(['info', 'add'], 'ProjectTask')
          ],
          __('Percent done') => [
             'name'  => 'percent_done',
@@ -115,15 +118,13 @@ class ProjectTaskTemplate extends CommonDropdown {
          __('Planned duration') => [
             'name'  => 'planned_duration',
             'type'  => 'select',
-            // 'values' => '' ?? Timezone::GetTimeStamp([
-            //    'value' => $this->fields['planned_duration'],
-            //    'min'   => 0,
-            //    'max'   => 100 * HOUR_TIMESTAMP,
-            //    'step'  => HOUR_TIMESTAMP,
-            //    'addfirstminutes' => true,
-            //    'inhours'         => true
-            // ]),
-            'values' => [],
+            'values' => [Dropdown::EMPTY_VALUE] + Timezone::GetTimeStamp([
+               'min'   => 0,
+               'max'   => 100 * HOUR_TIMESTAMP,
+               'step'  => HOUR_TIMESTAMP,
+               'addfirstminutes' => true,
+               'inhours'         => true
+            ]),
             'value' => $this->fields['planned_duration'],
             'col_lg' => 6
          ],
@@ -131,14 +132,13 @@ class ProjectTaskTemplate extends CommonDropdown {
             'name'  => 'effective_duration',
             'type'  => 'select',
             'values' => [],
-            // 'values' => Timezone::GetTimeStamp([
-            //    'value' => $this->fields['effective_duration'],
-            //    'min'   => 0,
-            //    'max'   => 100 * HOUR_TIMESTAMP,
-            //    'step'  => HOUR_TIMESTAMP,
-            //    'addfirstminutes' => true,
-            //    'inhours'         => true
-            // ]),
+            'values' => [Dropdown::EMPTY_VALUE] + Timezone::GetTimeStamp([
+               'min'   => 0,
+               'max'   => 100 * HOUR_TIMESTAMP,
+               'step'  => HOUR_TIMESTAMP,
+               'addfirstminutes' => true,
+               'inhours'         => true
+            ]),
             'value' => $this->fields['effective_duration'],
             'col_lg' => 6
          ],

@@ -38,7 +38,7 @@
                 {{ input.content|raw }}
                 {% endif %}
                 {% if input.after %}
-                <div class="form-text mx-2">{{input.after|raw}}</div>
+                {{input.after|raw}}
                 {% endif %}
                 {% for action in input.actions %}
                     <button type="button" class="btn border" onClick="{{action.onClick}}"><a class="{{action.icon}}"></a></button>
@@ -66,20 +66,22 @@
 {% endif %}{% endfor %}
 </div>
 </form>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="{{root_doc}}/node_modules/jquery/dist/jquery.min.js"></script>
 <script>
 {% for bloc in form.content %}
     {% for input in bloc.inputs %}
-    {% if input.init %}
-    {{input.init|raw}}
-    {% endif %}
-    {% if input.hooks %}
-    {% for hook, script in input.hooks %}
-$("#{{input.id}}").on("{{hook}}", function() {
-    {{script|raw}}
-})
-    {% endfor %}
-    {% endif %}
+        {% if input.init %}
+            {{input.init|raw}}
+        {% endif %}
+        {% if input.hooks %}
+            $(document).ready(() => {
+            {% for hook, script in input.hooks %}
+                $("#{{input.id}}").on("{{hook}}", function() {
+                    {{script|raw}}
+                });
+            {% endfor %}
+            });
+        {% endif %}
     {% endfor %}
 {% endfor %}
 </script>

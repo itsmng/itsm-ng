@@ -20,7 +20,7 @@
 			</div>
 
             <div id="searchbar">
-                <form role="search" method="get" action="/front/search.php">
+                <form role="search" method="get" action="{{root_doc}}/front/search.php">
                     <input type="search" name="globalsearch" placeholder="{{"Search"|trans}}...">
                     <button type="submit" class="btn-transparent">
                         <i class="fa fa-search"></i>
@@ -92,7 +92,9 @@
 			<div class="main-container">
 				<div id="subheader" class="d-flex justify-content-between p-2">
 					{% include "menus/headers/utils/breadcrumb.twig" with { 'items': breadcrumb_items } %}
-					{{profileSelect|raw}}
+					<div class="d-flex flex-row-reverse align-items-center justify-content-evenly">
+						{{profileSelect|raw}}
+					</div>
 					{% include "menus/headers/utils/actions.twig" with {'links': links, 'root_doc':root_doc} %}
 				</div>
 				<main role='main' id='page'>

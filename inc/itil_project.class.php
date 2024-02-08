@@ -455,83 +455,93 @@ class Itil_Project extends CommonDBRelation {
       }
 
       if ($canedit
-          && !in_array($itil->fields['status'], array_merge($itil->getClosedStatusArray(),
-                                                               $itil->getSolvedStatusArray()))) {
-         echo '<div class="firstbloc">';
-         $formId = 'itilproject_form' . $rand;
-         echo '<form name="' . $formId .'"
-                     id="' . $formId . '"
-                     method="post"
-                     action="' . Toolbox::getItemTypeFormURL(__CLASS__) . '">';
-         echo '<table class="tab_cadre_fixe">';
-         echo '<tr class="tab_bg_2"><th colspan="2">' . __('Add a project') . '</th></tr>';
-         echo '<tr class="tab_bg_2">';
-         echo '<td>';
-         echo '<input type="hidden" name="itemtype" value="' . $itil->getType() . '" />';
-         echo '<input type="hidden" name="items_id" value="' . $ID . '" />';
-         Project::dropdown(
-            [
-               'used'   => $used,
-               'entity' => $itil->getEntityID()
+         && !in_array($itil->fields['status'], array_merge($itil->getClosedStatusArray(),
+            $itil->getSolvedStatusArray()))) {
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'name' => 'add',
+                  'value' => _x('button', 'Add'),
+                  'class' => 'btn btn-secondary',
+               ]
+            ],
+            'content' => [
+               __('Add a project') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'itemtype',
+                        'value' => $itil->getType(),
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'items_id',
+                        'value' => $ID,
+                     ],
+                     '' => [
+                        'type' => 'select',
+                        'name' => 'projects_id',
+                        'values' => getOptionForItems(Project::class, [], true, false, $used),
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                     ]
+                  ]
+               ]
             ]
-         );
-         echo '</td>';
-         echo '<td class="center">';
-         echo '<input type="submit" name="add" value=" ' . _sx('button', 'Add') . '" class="submit" />';
-         echo '</td>';
-         echo '</tr>';
-         echo '</table>';
-         Html::closeForm();
-         echo '</div>';
+         ];
+         renderTwigForm($form);                                              
       }
 
-      echo '<div class="spaced">';
-      $massContainerId = 'mass' . __CLASS__ . $rand;
+      $massContainerId = 'TableForProject' . $itil->getType();
       if ($canedit && $numrows) {
-         Html::openMassiveActionsForm($massContainerId);
          $massiveactionparams = [
-            'num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
             'container'     => $massContainerId,
+            'specific_actions' => [
+               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+            ],
+            'display_arrow' => false,
+            'is_deleted' => false,
          ];
          Html::showMassiveActions($massiveactionparams);
       }
-
-      echo '<table class="tab_cadre_fixehov">';
-      echo '<tr class="noHover">';
-      echo '<th colspan="12">' . Project::getTypeName($numrows) . '</th>';
-      echo '</tr>';
-      if ($numrows) {
-         Project::commonListHeader(Search::HTML_OUTPUT, $massContainerId);
-         Session::initNavigateListItems(
-            Project::class,
-            //TRANS : %1$s is the itemtype name,
-            //        %2$s is the name of the item (used for headings of a list)
-            sprintf(__('%1$s = %2$s'), $itil::getTypeName(1), $itil->fields['name'])
-         );
-
-         $i = 0;
-         foreach ($projects as $data) {
-            Session::addToNavigateListItems(Project::class, $data['id']);
-            Project::showShort(
-               $data['id'],
-               [
-                  'row_num'               => $i,
-                  'type_for_massiveaction' => __CLASS__,
-                  'id_for_massiveaction'   => $data['linkid']
-               ]
-            );
-            $i++;
-         }
-         Project::commonListHeader(Search::HTML_OUTPUT, $massContainerId);
+      $fields = [
+         __('ID'),
+         __('Status'),
+         __('Date'),
+         __('Last update'),
+         __('Entity'),
+         __('Priority'),
+         __('Manager'),
+         __('Manager Group'),
+         __('Name'),
+      ];
+      $values = [];
+      $massive_action = [];
+      foreach ($projects as $data) {
+         $project = new Project();
+         $project->getFromDB($data['id']);
+         $newValue = [
+            $data['id'],
+            Dropdown::getDropdownName('glpi_projectstates', $data["projectstates_id"]),
+            Html::convDateTime($data['date']),
+            Html::convDateTime($data['date_mod']),
+            Dropdown::getDropdownName('glpi_entities', $data['entities_id']),
+            $data['priority'],
+            Dropdown::getDropdownName('glpi_users', $data['users_id']),
+            Dropdown::getDropdownName('glpi_groups', $data['groups_id']),
+            $project->getLink(),
+         ];
+         $values[] = $newValue;
+         $massive_action[] = sprintf('item[%s][%s]', Itil_Project::class, $data['linkid']);
       }
-      echo '</table>';
-
-      if ($canedit && $numrows) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo '</div>';
+      renderTwigTemplate('table.twig', [
+         'id' => $massContainerId,
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 
    /**

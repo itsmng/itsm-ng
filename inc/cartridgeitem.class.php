@@ -643,7 +643,7 @@ class CartridgeItem extends CommonDBTM {
          $results[$data["tID"]] = $text;
       }
       if (count($results)) {
-         return Dropdown::showFromArray('cartridgeitems_id', $results);
+         return $results;
       }
       return false;
    }

@@ -36,6 +36,7 @@ if (!defined('GLPI_ROOT')) {
 
 use Glpi\CalDAV\Contracts\CalDAVCompatibleItemInterface;
 use Glpi\CalDAV\Traits\VobjectConverterTrait;
+use itsmng\Timezone;
 use Sabre\VObject\Component\VCalendar;
 
 /// TODO extends it from CommonDBChild
@@ -1429,14 +1430,6 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
    function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
-      $rand_template   = mt_rand();
-      $rand_text       = mt_rand();
-      $rand_type       = mt_rand();
-      $rand_time       = mt_rand();
-      $rand_user       = mt_rand();
-      $rand_is_private = mt_rand();
-      $rand_group      = mt_rand();
-      $rand_state      = mt_rand();
 
       if (isset($options['parent']) && !empty($options['parent'])) {
          $item = $options['parent'];
@@ -1445,6 +1438,12 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
 
       $fkfield = $item->getForeignKeyField();
 
+
+      //prevent null fields due to getFromDB
+      if (is_null($this->fields['begin'])) {
+         $this->fields['begin'] = "";
+      }
+
       if ($ID > 0) {
          $this->check($ID, READ);
       } else {
@@ -1452,296 +1451,176 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
          $options[$fkfield] = $item->getField('id');
          $this->check(-1, CREATE, $options);
       }
+      
+      // $canplan = (!$item->isStatusExists(CommonITILObject::PLANNED)
+      // || $item->isAllowedStatus($item->fields['status'], CommonITILObject::PLANNED));
 
-      //prevent null fields due to getFromDB
-      if (is_null($this->fields['begin'])) {
-         $this->fields['begin'] = "";
-      }
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            [
+               'name' => 'add',
+               'value' => _x('button', 'Add'),
+               'class' => 'btn btn-secondary',
+            ]
+         ],
+         'content' => [
+            $this->getTypeName() => [
+               'visible' => true,
+               'inputs' => [
+                  ($ID > 0) ? [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ] : [],
+                  [
+                     'type' => 'hidden',
+                     'name' => 'itemtype',
+                     'value' => $item->getType(),
+                  ],
+                  [
+                     'type' => 'hidden',
+                     'name' => 'items_id',
+                     'value' => $item->getID(),
+                  ],
+                  [
+                     'type' => 'hidden',
+                     'name' => $fkfield,
+                     'value' => $this->fields[$fkfield],
+                  ],
+                  '' => [
+                     'type' => 'richtextarea',
+                     'name' => 'content',
+                     'id' => 'TextAreaForTaskContent',
+                     'value' => $this->fields['content'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  TaskTemplate::getTypeName(Session::getPluralNumber()) => [
+                     'type' => 'select',
+                     'name' => 'tasktemplates_id',
+                     'id' => 'TaskTemplateDropdown',
+                     'values' => getOptionForItems(TaskTemplate::class),
+                     'actions' => getItemActionButtons(['info', 'add'], TaskTemplate::class),
+                     'hooks' => [
+                        'change' => <<<JS
+                           $.ajax({
+                              url: "{$CFG_GLPI["root_doc"]}/ajax/task.php",
+                              type: "POST",
+                              data: {
+                                 tasktemplates_id: $(this).val()
+                              }
+                           }).done(function(data) {
+                              var taskcategories_id = isNaN(parseInt(data.taskcategories_id))
+                                 ? 0
+                                 : parseInt(data.taskcategories_id);
+                              var actiontime = isNaN(parseInt(data.actiontime))
+                                 ? 0
+                                 : parseInt(data.actiontime);
+                              var user_tech = isNaN(parseInt(data.users_id_tech))
+                                 ? 0
+                                 : parseInt(data.users_id_tech);
+                              var group_tech = isNaN(parseInt(data.groups_id_tech))
+                                 ? 0
+                                 : parseInt(data.groups_id_tech);
 
-      $rand = mt_rand();
-      $this->showFormHeader($options);
-
-      $canplan = (!$item->isStatusExists(CommonITILObject::PLANNED)
-                  || $item->isAllowedStatus($item->fields['status'], CommonITILObject::PLANNED));
-
-      $rowspan = 5;
-      if ($this->maybePrivate()) {
-         $rowspan++;
-      }
-      if (isset($this->fields["state"])) {
-         $rowspan++;
-      }
-      echo "<tr class='tab_bg_1'>";
-      echo "<td colspan='3' id='content$rand_text'>";
-
-      $rand_text  = mt_rand();
-      $content_id = "content$rand_text";
-      $cols       = 100;
-      $rows       = 10;
-
-      Html::textarea(['name'              => 'content',
-                      'value'             => $this->fields["content"],
-                      'rand'              => $rand_text,
-                      'editor_id'         => $content_id,
-                      'enable_fileupload' => true,
-                      'enable_richtext'   => true,
-                      'cols'              => $cols,
-                      'rows'              => $rows]);
-
-      echo "<input type='hidden' name='$fkfield' value='".$this->fields[$fkfield]."'>";
-      echo "</td>";
-
-      echo "<td style='vertical-align: middle'>";
-      echo "<div class='fa-label'>
-            <i class='fas fa-reply fa-fw'
-               title='".TaskTemplate::getTypeName(Session::getPluralNumber())."'></i>";
-      TaskTemplate::dropdown(['value'     => $this->fields['tasktemplates_id'],
-                                   'entity'    => $this->getEntityID(),
-                                   'rand'      => $rand_template,
-                                   'on_change' => 'tasktemplate_update(this.value)']);
-      echo "</div>";
-      echo Html::scriptBlock('
-         function tasktemplate_update(value) {
-            $.ajax({
-               url: "' . $CFG_GLPI["root_doc"] . '/ajax/task.php",
-               type: "POST",
-               data: {
-                  tasktemplates_id: value
-               }
-            }).done(function(data) {
-               var taskcategories_id = isNaN(parseInt(data.taskcategories_id))
-                  ? 0
-                  : parseInt(data.taskcategories_id);
-               var actiontime = isNaN(parseInt(data.actiontime))
-                  ? 0
-                  : parseInt(data.actiontime);
-               var user_tech = isNaN(parseInt(data.users_id_tech))
-                  ? 0
-                  : parseInt(data.users_id_tech);
-               var group_tech = isNaN(parseInt(data.groups_id_tech))
-                  ? 0
-                  : parseInt(data.groups_id_tech);
-
-               // set textarea content
-               if (tasktinymce = tinymce.get("content'.$rand_text.'")) {
-                  tasktinymce.setContent(data.content);
-               }
-               // set category
-               $("#dropdown_taskcategories_id'.$rand_type.'").trigger("setValue", taskcategories_id);
-               // set action time
-               $("#dropdown_actiontime'.$rand_time.'").trigger("setValue", actiontime);
-               // set is_private
-               $("#is_privateswitch'.$rand_is_private.'")
-                  .prop("checked", data.is_private == "0"
-                     ? false
-                     : true);
-               // set users_tech
-               $("#dropdown_users_id_tech'.$rand_user.'").trigger("setValue", user_tech);
-               // set group_tech
-               $("#dropdown_groups_id_tech'.$rand_group.'").trigger("setValue", group_tech);
-               // set state
-               $("#dropdown_state'.$rand_state.'").trigger("setValue", data.state);
-            });
-         }
-      ');
-
-      if ($ID > 0) {
-         echo "<div class='fa-label'>
-         <i class='far fa-calendar fa-fw'
-            title='"._n('Date', 'Dates', 1)."'></i>";
-         Html::showDateTimeField("date", [
-            'value'      => $this->fields["date"],
-            'maybeempty' => false
-         ]);
-         echo "</div>";
-      }
-
-      echo "<div class='fa-label'>
-         <i class='fas fa-tag fa-fw'
-            title='".__('Category')."'></i>";
-      TaskCategory::dropdown([
-         'value'     => $this->fields["taskcategories_id"],
-         'rand'      => $rand_type,
-         'entity'    => $item->fields["entities_id"],
-         'condition' => ['is_active' => 1]
-      ]);
-      echo "</div>";
-
-      if (isset($this->fields["state"])) {
-         echo "<div class='fa-label'>
-            <i class='fas fa-tasks fa-fw'
-               title='".__('Status')."'></i>";
-         Planning::dropdownState("state", $this->fields["state"], true, ['rand' => $rand_state]);
-         echo "</div>";
-      }
-
-      if ($this->maybePrivate()) {
-         echo "<div class='fa-label'>
-            <i class='fas fa-lock fa-fw' title='".__('Private')."'></i>
-            <span class='switch pager_controls'>
-               <label for='is_privateswitch$rand_is_private' title='".__('Private')."'>
-                  <input type='hidden' name='is_private' value='0'>
-                  <input type='checkbox' id='is_privateswitch$rand_is_private' name='is_private' value='1'".
-                        ($this->fields["is_private"]
-                           ? "checked='checked'"
-                           : "")."
-                  >
-                  <span class='lever'></span>
-               </label>
-            </span>
-         </div>";
-      }
-
-      echo "<div class='fa-label'>
-         <i class='fas fa-stopwatch fa-fw'
-            title='".__('Duration')."'></i>";
-
-      $toadd = [];
-      for ($i=9; $i<=100; $i++) {
-         $toadd[] = $i*HOUR_TIMESTAMP;
-      }
-
-      Dropdown::showTimeStamp("actiontime", ['min'             => 0,
-                                                  'max'             => 8*HOUR_TIMESTAMP,
-                                                  'value'           => $this->fields["actiontime"],
-                                                  'rand'            => $rand_time,
-                                                  'addfirstminutes' => true,
-                                                  'inhours'         => true,
-                                                  'toadd'           => $toadd,
-                                                  'width'  => '']);
-
-      echo "</div>";
-
-      echo "<div class='fa-label'>";
-      echo "<i class='fas fa-user fa-fw' title='".User::getTypeName(1)."'></i>";
-      $params             = ['name'   => "users_id_tech",
-                                  'value'  => (($ID > -1)
-                                                ?$this->fields["users_id_tech"]
-                                                :Session::getLoginUserID()),
-                                  'right'  => "own_ticket",
-                                  'rand'   => $rand_user,
-                                  'entity' => $item->fields["entities_id"],
-                                  'width'  => ''];
-
-      $params['toupdate'] = ['value_fieldname'
-                                              => 'users_id',
-                                  'to_update' => "user_available$rand_user",
-                                  'url'       => $CFG_GLPI["root_doc"]."/ajax/planningcheck.php"];
-      User::dropdown($params);
-
-      echo " <a href='#' title=\"".__s('Availability')."\" onClick=\"".Html::jsGetElementbyID('planningcheck'.$rand).".dialog('open'); return false;\">";
-      echo "<i class='far fa-calendar-alt'></i>";
-      echo "<span class='sr-only'>".__('Availability')."</span>";
-      echo "</a>";
-      Ajax::createIframeModalWindow('planningcheck'.$rand,
-                                    $CFG_GLPI["root_doc"].
-                                          "/front/planning.php?checkavailability=checkavailability".
-                                          "&itemtype=".$item->getType()."&$fkfield=".$item->getID(),
-                                    ['title'  => __('Availability')]);
-      echo "</div>";
-
-      echo "<div class='fa-label'>";
-      echo "<i class='fas fa-users fa-fw' title='".Group::getTypeName(1)."'></i>";
-      $params     = [
-         'name'      => "groups_id_tech",
-         'value'     => (($ID > -1)
-                        ?$this->fields["groups_id_tech"]
-                        :Dropdown::EMPTY_VALUE),
-         'condition' => ['is_task' => 1],
-         'rand'      => $rand_group,
-         'entity'    => $item->fields["entities_id"]
+                              // set textarea content
+                              $('#TextAreaForTaskContent').parent().find('.trumbowyg-editor').html(data.content)
+                              // set category
+                              $("#DropdownForTaskCategory").val(taskcategories_id);
+                              // set action time
+                              $("#DropdownForActionTime").val(actiontime);
+                              // set is_private
+                              $("#checkboxForIsPrivate")
+                                 .prop("checked", data.is_private == "0"
+                                    ? false
+                                    : true);
+                              // set users_tech
+                              $("#DropdownForUserTechTask").val(user_tech);
+                              // set group_tech
+                              $("#DropdownForGroupTechTask").val(group_tech);
+                              // set state
+                              $("#DropdownStateTask").val(data.state);
+                           });
+                        JS,
+                     ]
+                  ],
+                  _n('Date', 'Dates', 1) => ($ID > 0) ? [
+                     'type' => 'datetime-local',
+                     'name' => 'date',
+                     'value' => $this->fields['date'],
+                  ] : [],
+                  __('Category') => [
+                     'type' => 'select',
+                     'name' => 'taskcategories_id',
+                     'id' => 'DropdownForTaskCategory',
+                     'values' => getOptionForItems(TaskCategory::class),
+                     'value' => $this->fields['taskcategories_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], TaskCategory::class),
+                  ],
+                  __('Status') => (isset($this->fields["state"])) ? [
+                     'type' => 'select',
+                     'name' => 'state',
+                     'id' => 'DropdownStateTask',
+                     'values' => [
+                        Planning::INFO => _n('Information', 'Information', 1),
+                        Planning::TODO => __('To do'),
+                        Planning::DONE => __('Done')
+                     ]
+                  ] : [],
+                  __('Private') => ($this->maybePrivate()) ? [
+                     'type' => 'checkbox',
+                     'id' => 'checkboxForIsPrivate',
+                     'name' => 'is_private',
+                     'value' => $this->fields['is_private']
+                  ] : [],
+                  __('Duration') => [
+                     'type' => 'select',
+                     'id' => 'DropdownForActionTime',
+                     'name' => 'actiontime',
+                     'values' => [Dropdown::EMPTY_VALUE] + Timezone::GetTimeStamp([
+                        'min'             => 0,
+                        'max'             => 100*HOUR_TIMESTAMP,
+                        'step'            => 15 * MINUTE_TIMESTAMP,
+                        'addfirstminutes' => true,
+                     ])
+                  ],
+                  User::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'users_id_tech',
+                     'id' => 'DropdownForUserTechTask',
+                     'values' => getOptionsForUsers('own_ticket', ["entities_id" => $item->fields["entities_id"]]),
+                     'value' => (($ID > -1) ? $this->fields["users_id_tech"] : Session::getLoginUserID()),
+                     'actions' => getItemActionButtons(['info'], User::class),
+                     'after' => <<<HTML
+                        <a class="btn border"
+                           href="{$CFG_GLPI['root_doc']}/front/planning.php?checkavailability=checkavailability&itemtype={$item->getType()}&{$fkfield}={$item->getID()}">
+                           <i class='far fa-calendar-alt'></i>
+                        </a>
+                     HTML,
+                  ],
+                  Group::getTypeName(1) => [
+                     'type' => 'select',
+                     'name' => 'groups_id_tech',
+                     'id' => 'DropdownForGroupTechTask',
+                     'values' => getOptionForItems(Group::class),
+                     'value' => ($ID > -1) ? $this->fields["groups_id_tech"] : Dropdown::EMPTY_VALUE,
+                     'actions' => getItemActionButtons(['info', 'add'], Group::class),
+                  ],
+                  sprintf(__('%1$s (%2$s)'), __('File'), Document::getMaxUploadSize()) => [
+                     'type' => 'file',
+                     'name' => 'files',
+                     'id' => 'fileSelectorForDocument',
+                     'multiple' => true,
+                     'values' => getLinkedDocumentsForItem('Ticket', $ID),
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+               ]
+            ]
+         ]
       ];
-
-      $params['toupdate'] = ['value_fieldname' => 'users_id',
-                                  'to_update' => "group_available$rand_group",
-                                  'url'       => $CFG_GLPI["root_doc"]."/ajax/planningcheck.php"];
-      Group::dropdown($params);
-      echo "</div>";
-
-      if (!empty($this->fields["begin"])) {
-
-         if (Session::haveRight('planning', Planning::READMY)) {
-            echo "<script type='text/javascript' >\n";
-            echo "function showPlan".$ID.$rand_text."() {\n";
-            echo Html::jsHide("plan$rand_text");
-            $params = ['action'    => 'add_event_classic_form',
-                            'form'      => 'followups',
-                            'users_id'  => $this->fields["users_id_tech"],
-                            'groups_id' => $this->fields["groups_id_tech"],
-                            'id'        => $this->fields["id"],
-                            'begin'     => $this->fields["begin"],
-                            'end'       => $this->fields["end"],
-                            'rand_user' => $rand_user,
-                            'rand_group' => $rand_group,
-                            'entity'    => $item->fields["entities_id"],
-                            'itemtype'  => $this->getType(),
-                            'items_id'  => $this->getID()];
-            Ajax::updateItemJsCode("viewplan$rand_text", $CFG_GLPI["root_doc"] . "/ajax/planning.php",
-                                   $params);
-            echo "}";
-            echo "</script>\n";
-            echo "<div id='plan$rand_text' onClick='showPlan".$ID.$rand_text."()'>\n";
-            echo "<span class='showplan'>";
-         }
-
-         if (isset($this->fields["state"])) {
-            echo Planning::getState($this->fields["state"])."<br>";
-         }
-         printf(__('From %1$s to %2$s'), Html::convDateTime($this->fields["begin"]),
-                Html::convDateTime($this->fields["end"]));
-         if (isset($this->fields["users_id_tech"]) && ($this->fields["users_id_tech"] > 0)) {
-            echo "<br>".getUserName($this->fields["users_id_tech"]);
-         }
-         if (isset($this->fields["groups_id_tech"]) && ($this->fields["groups_id_tech"] > 0)) {
-            echo "<br>".Dropdown::getDropdownName('glpi_groups', $this->fields["groups_id_tech"]);
-         }
-         if (Session::haveRight('planning', Planning::READMY)) {
-            echo "</span>";
-            echo "</div>\n";
-            echo "<div id='viewplan$rand_text'></div>\n";
-         }
-
-      } else {
-         if ($canplan) {
-            echo "<script type='text/javascript' >\n";
-            echo "function showPlanUpdate$rand_text() {\n";
-            echo Html::jsHide("plan$rand_text");
-            $params = ['action'    => 'add_event_classic_form',
-                            'form'      => 'followups',
-                            'entity'    => $item->fields['entities_id'],
-                            'rand_user' => $rand_user,
-                            'rand_group' => $rand_group,
-                            'itemtype'  => $this->getType(),
-                            'items_id'  => $this->getID()];
-            Ajax::updateItemJsCode("viewplan$rand_text", $CFG_GLPI["root_doc"]."/ajax/planning.php",
-                                   $params);
-            echo "};";
-            echo "</script>";
-
-            if ($canplan) {
-               echo "<div id='plan$rand_text'  onClick='showPlanUpdate$rand_text()'>\n";
-               echo "<span class='vsubmit'>".__('Plan this task')."</span>";
-               echo "</div>\n";
-               echo "<div id='viewplan$rand_text'></div>\n";
-            }
-         } else {
-            echo __('None');
-         }
-      }
-
-      echo "</td></tr>";
-
-      if (!empty($this->fields["begin"])
-          && PlanningRecall::isAvailable()) {
-
-         echo "<tr class='tab_bg_1'><td>"._x('Planning', 'Reminder')."</td><td class='center'>";
-         PlanningRecall::dropdown(['itemtype' => $this->getType(),
-                                        'items_id' => $this->getID()]);
-         echo "</td><td colspan='2'></td></tr>";
-      }
-
-      $this->showFormButtons($options);
-
+      renderTwigForm($form);
       return true;
    }
 
@@ -1750,53 +1629,59 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
     * Form for Ticket or Problem Task on Massive action
     */
    function showMassiveActionAddTaskForm() {
-      echo "<table class='tab_cadre_fixe'>";
-      echo '<tr><th colspan=4>'.__('Add a new task').'</th></tr>';
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Category')."</td>";
-      echo "<td>";
-      TaskCategory::dropdown(['condition' => ['is_active' => 1]]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Description')."</td>";
-      echo "<td><textarea name='content' cols='50' rows='6'></textarea></td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Duration')."</td>";
-      echo "<td>";
-      $toadd = [];
-      for ($i=9; $i<=100; $i++) {
-         $toadd[] = $i*HOUR_TIMESTAMP;
-      }
-      Dropdown::showTimeStamp("actiontime", ['min'             => 0,
-                                             'max'             => 8*HOUR_TIMESTAMP,
-                                             'addfirstminutes' => true,
-                                             'inhours'         => true,
-                                             'toadd'           => $toadd]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Status')."</td>";
-      echo "<td>";
-      Planning::dropdownState("state", $_SESSION['glpitask_state']);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center' colspan='2'>";
-      if ($this->maybePrivate()) {
-         echo "<input type='hidden' name='is_private' value='".$_SESSION['glpitask_private']."'>";
-      }
-      echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-      echo "</td>";
-      echo "</tr>";
-
-      echo "</table>";
+      $inputs = [
+         __('Category') => [
+            'name' => 'taskcategories_id',
+            'type' => 'select',
+            'values' => getOptionForItems(TaskCategory::class, ['is_active' => 1]),
+            'actions' => getItemActionButtons(['info', 'add'], TaskCategory::class),
+            'col_lg' => 12,
+            'col_md' => 12,
+         ],
+         __('Description') => [
+            'name' => 'content',
+            'type' => 'textarea',
+            'cols' => 50,
+            'rows' => 6,
+            'col_lg' => 12,
+            'col_md' => 12,
+         ],
+         __('Duration') => [
+            'name' => 'actiontime',
+            'type' => 'select',
+            'values' => [Dropdown::EMPTY_VALUE] + Timezone::GetTimeStamp([
+               'min'             => 0,
+               'max'             => 100*HOUR_TIMESTAMP,
+               'step'            => 15 * MINUTE_TIMESTAMP,
+               'addfirstminutes' => true,
+            ]),
+            'col_lg' => 12,
+            'col_md' => 12,
+         ],
+         __('Status') => [
+            'name' => 'state',
+            'type' => 'select',
+            'values' => [
+               Planning::INFO => _n('Information', 'Information', 1),
+               Planning::TODO => __('To do'),
+               Planning::DONE => __('Done')
+            ],
+            'col_lg' => 12,
+            'col_md' => 12,
+         ],
+         ($this->maybePrivate()) ? [
+            'type' => 'hidden',
+            'name' => 'is_private',
+            'value' => $_SESSION['glpitask_private']
+         ] : [],
+      ];
+      foreach ($inputs as $title => $input) {
+         renderTwigTemplate('macros/wrappedInput.twig', [
+            'title' => $title,
+            'input' => $input,
+         ]);
+      };
+      echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='btn btn-secondary'>";
    }
 
    /**

@@ -695,8 +695,8 @@ abstract class CommonDropdown extends CommonDBTM {
 
       switch ($ma->getAction()) {
          case 'merge' :
-            echo "&nbsp;".$_SESSION['glpiactive_entity_shortname'];
-            echo "<br><br>".Html::submit(_x('button', 'Merge'), ['name' => 'massiveaction']);
+            echo $_SESSION['glpiactive_entity_shortname'].'<br>';
+            echo Html::submit(_x('button', 'Merge'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
             return true;
       }
 

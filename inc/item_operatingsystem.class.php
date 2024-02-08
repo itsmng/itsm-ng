@@ -335,38 +335,44 @@ class Item_OperatingSystem extends CommonDBRelation {
                   __("Name") => [
                      'type' => 'select',
                      'name' => 'operatingsystems_id',
-                     'values' => getOptionForItems('OperatingSystem'),
+                     'values' => getOptionForItems(OperatingSystem::class),
                      'value' => $this->fields['operatingsystems_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], OperatingSystem::class)
                   ],
                   _n('Version', 'Versions', 1) => [
                      'type' => 'select',
                      'name' => 'operatingsystemversions_id',
-                     'values' => getOptionForItems('OperatingSystemVersion'),
+                     'values' => getOptionForItems(OperatingSystemVersion::class),
                      'value' => $this->fields['operatingsystemversions_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], OperatingSystemVersion::class)
                   ],
                   _n('Architecture', 'Architectures', 1) => [
                      'type' => 'select',
                      'name' => 'operatingsystemarchitectures_id',
-                     'values' => getOptionForItems('OperatingSystemArchitecture'),
+                     'values' => getOptionForItems(OperatingSystemArchitecture::class),
                      'value' => $this->fields['operatingsystemarchitectures_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], OperatingSystemArchitecture::class)
                   ],
                   OperatingSystemServicePack::getTypeName(1) => [
                      'type' => 'select',
                      'name' => 'operatingsystemservicepacks_id',
-                     'values' => getOptionForItems('OperatingSystemServicePack'),
+                     'values' => getOptionForItems(OperatingSystemServicePack::class),
                      'value' => $this->fields['operatingsystemservicepacks_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], OperatingSystemServicePack::class)
                   ],
                   _n('Kernel', 'Kernels', 1) => [
                      'type' => 'select',
                      'name' => 'operatingsystemkernelversions_id',
-                     'values' => getOptionForItems('OperatingSystemKernelVersion'),
+                     'values' => getOptionForItems(OperatingSystemKernelVersion::class),
                      'value' => $this->fields['operatingsystemkernelversions_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], OperatingSystemKernelVersion::class)
                   ],
                   _n('Edition', 'Editions', 1) => [
                      'type' => 'select',
                      'name' => 'operatingsystemeditions_id',
-                     'values' => getOptionForItems('OperatingSystemEdition'),
+                     'values' => getOptionForItems(OperatingSystemEdition::class),
                      'value' => $this->fields['operatingsystemeditions_id'] ?? '',
+                     'actions' => getItemActionButtons(['info', 'add'], OperatingSystemEdition::class)
                   ],
                   __('Product ID') => [
                      'type' => 'text',
@@ -667,32 +673,65 @@ class Item_OperatingSystem extends CommonDBRelation {
    static function showFormMassiveUpdate($ma) {
       global $CFG_GLPI;
 
-      $rand = mt_rand();
-      Dropdown::showFromArray(
-         'os_field', [
-            'OperatingSystem'             => __('Name'),
-            'OperatingSystemVersion'      => _n('Version', 'Versions', 1),
-            'OperatingSystemArchitecture' => _n('Architecture', 'Architectures', 1),
-            'OperatingSystemKernel'       => OperatingSystemKernel::getTypeName(1),
-            'OperatingSystemKernelVersion'=> OperatingSystemKernelVersion::getTypeName(1),
-            'OperatingSystemEdition'      => _n('Edition', 'Editions', 1)
-         ], [
-            'display_emptychoice'   => true,
-            'rand'                  => $rand
+      $inputs = [
+         OperatingSystem::getTypeName() => [
+            'type' => 'select',
+            'name' => 'os_field',
+            'id'   => 'DropdownForOsTypeMassiveUpdate',
+            'values' => [
+               Dropdown::EMPTY_VALUE,
+               'OperatingSystem'             => __('Name'),
+               'OperatingSystemVersion'      => _n('Version', 'Versions', 1),
+               'OperatingSystemArchitecture' => _n('Architecture', 'Architectures', 1),
+               'OperatingSystemKernel'       => OperatingSystemKernel::getTypeName(1),
+               'OperatingSystemKernelVersion'=> OperatingSystemKernelVersion::getTypeName(1),
+               'OperatingSystemEdition'      => _n('Edition', 'Editions', 1)
+            ],
+            'col_lg' => 12,
+            'col_md' => 12,
+            'hooks' => [
+               'change' => <<<JS
+                  var value = $('#DropdownForOsTypeMassiveUpdate').val();
+                  $('#DropdownForOsFieldMassiveUpdate').empty();
+                  if (value == 0) {
+                     $('#DropdownForOsFieldMassiveUpdate').prop('disabled', true);
+                     return
+                  }
+                  $('#DropdownForOsFieldMassiveUpdate').prop('disabled', false);
+                  $.ajax({
+                     url: '{$CFG_GLPI["root_doc"]}/ajax/dropdownMassiveActionOs.php',
+                     type: 'POST',
+                     data: {
+                        itemtype: value
+                     },
+                     success: function(data) {
+                        const jsonData = JSON.parse(data);
+                        const options = jsonData.options;
+                        $('#DropdownForOsFieldMassiveUpdate').attr('name', jsonData.name);
+                        for (var key in options) {
+                           $('#DropdownForOsFieldMassiveUpdate').append('<option value="' + key + '">' + options[key] + '</option>');
+                        }
+                     }
+                  });
+               JS,
+            ]
+         ],
+         '' => [
+            'type' => 'select',
+            'id'   => 'DropdownForOsFieldMassiveUpdate',
+            'disabled' => '',
+            'col_lg' => 12,
+            'col_md' => 12,
          ]
-      );
-
-      Ajax::updateItemOnSelectEvent(
-         "dropdown_os_field$rand",
-         "results_os_field$rand",
-         $CFG_GLPI["root_doc"].
-         "/ajax/dropdownMassiveActionOs.php",
-         [
-            'itemtype'  => '__VALUE__',
-            'rand'      => $rand
-         ]
-      );
-      echo "<span id='results_os_field$rand'></span> \n";
+      ];
+      foreach ($inputs as $title => $input) {
+         renderTwigTemplate('macros/wrappedInput.twig', [
+            'title' => $title,
+            'input' => $input
+         ]);
+      };
+      echo Html::submit(__('Update'), ['class' => 'btn btn-secondary', 'name' => 'update']);
+      echo Html::submit(__('Clone'), ['class' => 'btn btn-secondary', 'name' => 'clone']);
    }
 
    static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item,

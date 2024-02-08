@@ -1451,32 +1451,56 @@ class Document extends CommonDBTM {
       while ($data = $iterator->next()) {
          $values[$data['id']] = $data['name'];
       }
-      $rand = mt_rand();
-      $out  = Dropdown::showFromArray('_rubdoc', $values, ['width'               => '30%',
-                                                                'rand'                => $rand,
-                                                                'display'             => false,
-                                                                'display_emptychoice' => true]);
-      $field_id = Html::cleanId("dropdown__rubdoc$rand");
-
-      $params   = ['rubdoc' => '__VALUE__',
-                        'entity' => $p['entity'],
-                        'rand'   => $rand,
-                        'myname' => $p['name'],
-                        'used'   => $p['used']];
-
-      $out .= Ajax::updateItemOnSelectEvent($field_id, "show_".$p['name'].$rand,
-                                            $CFG_GLPI["root_doc"]."/ajax/dropdownRubDocument.php",
-                                            $params, false);
-      $out .= "<span id='show_".$p['name']."$rand'>";
-      $out .= "</span>\n";
-
-      $params['rubdoc'] = 0;
-      $out .= Ajax::updateItem("show_".$p['name'].$rand,
-                               $CFG_GLPI["root_doc"]. "/ajax/dropdownRubDocument.php",
-                               $params, false);
+      $entity = Session::getActiveEntity();
+      $inputs = [
+         __('Heading') => [
+            'type' => 'select',
+            'id' => 'selectForMaRubDocId',
+            'name' => '_rubdoc',
+            'values' => [Dropdown::EMPTY_VALUE] + $values,
+            'col_lg' => 12,
+            'col_md' => 12,
+            'hooks' => [
+               'change' => <<<JS
+               var rubdoc = $('#selectForMaRubDocId').val();
+               var entity = $entity;
+               $.ajax({
+                  url: "{$CFG_GLPI['root_doc']}/ajax/dropdownRubDocument.php",
+                  method: "POST",
+                  data: {rubdoc: rubdoc, entity: entity},
+                  success: function(data) {
+                     const jsonData = JSON.parse(data);
+                     $('#selectForMaDocumentId').empty();
+                     for (const i in jsonData) {
+                        $('#selectForMaDocumentId').append('<option value="' + i + '">' + jsonData[i] + '</option>');
+                     } 
+                  }
+               });
+               JS,
+            ]
+         ],
+         Document::getTypeName() => [
+            'type' => 'select',
+            'id' => 'selectForMaDocumentId',
+            'name' => 'peer_documents_id',
+            'values' => getOptionForItems(Document::class),
+            'col_lg' => 12,
+            'col_md' => 12,
+            'actions' => getItemActionButtons(['info'], Document::class)
+         ]
+      ];
+      $out = '';
+      foreach ($inputs as $title => $input) {
+         ob_start();
+         renderTwigTemplate('macros/wrappedInput.twig', [
+            'title' => $title,
+            'input' => $input,
+         ]);
+         $out .= ob_get_clean();
+      }
       if ($p['display']) {
          echo $out;
-         return $rand;
+         return '';
       }
       return $out;
    }

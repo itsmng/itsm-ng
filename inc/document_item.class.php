@@ -687,7 +687,7 @@ class Document_Item extends CommonDBRelation{
                      ],
                      __('File') => [
                         'type' => 'file',
-                        'name' => 'filenames',
+                        'name' => 'files',
                         'id' => 'fileSelectorForDocument',
                         'multiple' => 'multiple',
                         'col_lg' => 6,
@@ -717,12 +717,6 @@ class Document_Item extends CommonDBRelation{
                         'name' => 'tickets_id',
                         'value' => $item->getID()
                      ] : [],
-                     [
-                        'type' => 'hidden',
-                        'name' => 'files',
-                        'id' => "hiddenInputForFiles",
-                        'value' => '[]'
-                     ],
                   ]
                ] 
             ]
@@ -731,28 +725,103 @@ class Document_Item extends CommonDBRelation{
 
          if (Document::canView()
              && ($nb > count($used))) {
-            echo "<form name='document_form".$params['rand']."' id='document_form".$params['rand'].
-                  "' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-            echo "<table class='tab_cadre_fixe'>";
-            echo "<tr class='tab_bg_1'>";
-            echo "<td colspan='4' class='center'>";
-            echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
-            echo "<input type='hidden' name='items_id' value='".$item->getID()."'>";
-            if ($item->getType() == 'Ticket') {
-               echo "<input type='hidden' name='tickets_id' value='".$item->getID()."'>";
-               echo "<input type='hidden' name='documentcategories_id' value='".
-                      $CFG_GLPI["documentcategories_id_forticket"]."'>";
+            $values = getOptionForItems(Document::class, [
+               'entities_id' => $entities,
+            ]);
+            $criteria = [
+               'FROM'   => 'glpi_documentcategories',
+               'WHERE'  => [
+                  'id' => new QuerySubQuery([
+                     'SELECT'          => 'documentcategories_id',
+                     'DISTINCT'        => true,
+                     'FROM'            => 'glpi_documents',
+                  ])
+               ],
+               'ORDER'  => 'name'
+            ];
+            $iterator = $DB->request($criteria);
+      
+            $headings = [];
+            while ($data = $iterator->next()) {
+               $headings[$data['id']] = $data['name'];
             }
-
-            Document::dropdown(['entity' => $entities ,
-                                     'used'   => $used]);
-            echo "</td><td class='center' width='20%'>";
-            echo "<input type='submit' name='add' value=\"".
-                     _sx('button', 'Associate an existing document')."\" class='submit'>";
-            echo "</td>";
-            echo "</tr>";
-            echo "</table>";
-            Html::closeForm();
+      
+            foreach ($used as $id) {
+               unset($values[$id]);
+            }
+            $form = [
+               'method' => 'post',
+               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+               'buttons' => [
+                  [
+                     'type' => 'submit',
+                     'name' => 'add',
+                     'value' => _sx('button', 'Associate an existing document'),
+                     'class' => 'btn btn-secondary'
+                  ]
+               ],
+               'content' => [
+                  __('Associate an existing document') => [
+                     'visible' => true,
+                     'inputs' => [
+                        __('Heading') => [
+                           'type' => 'select',
+                           'id' => 'selectForRubDocId',
+                           'name' => '_rubdoc',
+                           'values' => [Dropdown::EMPTY_VALUE] + $headings,
+                           'col_lg' => 6,
+                           'hooks' => [
+                              'change' => <<<JS
+                              var rubdoc = $('#selectForRubDocId').val();
+                              var entity = $entity;
+                              $.ajax({
+                                 url: "{$CFG_GLPI['root_doc']}/ajax/dropdownRubDocument.php",
+                                 method: "POST",
+                                 data: {rubdoc: rubdoc, entity: entity},
+                                 success: function(data) {
+                                    const jsonData = JSON.parse(data);
+                                    $('#selectForDocumentId').empty();
+                                    for (const i in jsonData) {
+                                       $('#selectForDocumentId').append('<option value="' + i + '">' + jsonData[i] + '</option>');
+                                    } 
+                                 }
+                              });
+                              JS,
+                           ]
+                        ],
+                        Document::getTypeName() => [
+                           'type' => 'select',
+                           'id' => 'selectForDocumentId',
+                           'name' => 'documents_id',
+                           'values' => getOptionForItems(Document::class),
+                           'col_lg' => 6,
+                           'actions' => getItemActionButtons(['info'], Document::class)
+                        ],               
+                        [
+                           'type' => 'hidden',
+                           'name' => 'itemtype',
+                           'value' => $item->getType()
+                        ],
+                        [
+                           'type' => 'hidden',
+                           'name' => 'items_id',
+                           'value' => $item->getID()
+                        ],
+                        $item->getType() == 'Ticket' ? [
+                           'type' => 'hidden',
+                           'name' => 'tickets_id',
+                           'value' => $item->getID()
+                        ] : [],
+                        $item->getType() == 'Ticket' ? [
+                           'type' => 'hidden',
+                           'name' => 'documentcategories_id',
+                           'value' => $CFG_GLPI["documentcategories_id_forticket"]
+                        ] : [],
+                     ]
+                  ]
+               ]
+            ];
+            renderTwigForm($form);
          }
       }
    }
@@ -883,109 +952,64 @@ class Document_Item extends CommonDBRelation{
          $used[$data['id']]           = $data['id'];
       }
 
-      echo "<div class='spaced'>";
+      $massiveActionContainerId = 'mass'.__CLASS__.$params['rand'];
       if ($canedit
-          && $number
-          && ($withtemplate < 2)) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$params['rand']);
-         $massiveactionparams = ['num_displayed'  => min($_SESSION['glpilist_limit'], $number),
-                                      'container'      => 'mass'.__CLASS__.$params['rand']];
+      && $number
+      && ($withtemplate < 2)) {
+         $massiveactionparams = [
+            'container'      => $massiveActionContainerId,
+            'display_arrow' => false,
+            'is_deleted' => 0,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
+      $fields = [
+         __('Name'),
+         Entity::getTypeName(1),
+         __('File'),
+         __('Web link'),
+         __('Heading'),
+         __('MIME type'),
+         __('Tag'),
+         _n('Date', 'Dates', 1)
+      ];
+      $values = [];
+      $massive_action = [];
+      $document = new Document();
+      foreach ($documents as $data) {
+         $docID        = $data["id"];
+         $link         = NOT_AVAILABLE;
+         $downloadlink = NOT_AVAILABLE;
 
-      echo "<table class='tab_cadre_fixehov'>";
+         if ($document->getFromDB($docID)) {
+            $link         = $document->getLink();
+            $downloadlink = $document->getDownloadLink($linkparam);
+         }
 
-      $header_begin  = "<tr>";
-      $header_top    = '';
-      $header_bottom = '';
-      $header_end    = '';
-      if ($canedit
-          && $number
-          && ($withtemplate < 2)) {
-         $header_top    .= "<th width='11'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$params['rand']);
-         $header_top    .= "</th>";
-         $header_bottom .= "<th width='11'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$params['rand']);
-         $header_bottom .= "</th>";
-      }
-
-      foreach ($columns as $key => $val) {
-         $header_end .= "<th".($sort == "$key" ? " class='order_$order'" : '').">".
-                        "<a href='javascript:reloadTab(\"sort=$key&amp;order=".
-                          (($order == "ASC") ?"DESC":"ASC")."&amp;start=0\");'>$val</a></th>";
-      }
-
-      $header_end .= "</tr>";
-      echo $header_begin.$header_top.$header_end;
-
-      $used = [];
-
-      if ($number) {
-         // Don't use this for document associated to document
-         // To not loose navigation list for current document
          if ($item->getType() != 'Document') {
-            Session::initNavigateListItems('Document',
-                              //TRANS : %1$s is the itemtype name,
-                              //        %2$s is the name of the item (used for headings of a list)
-                                           sprintf(__('%1$s = %2$s'),
-                                                   $item->getTypeName(1), $item->getName()));
+            Session::addToNavigateListItems('Document', $docID);
          }
-
-         $document = new Document();
-         foreach ($documents as $data) {
-            $docID        = $data["id"];
-            $link         = NOT_AVAILABLE;
-            $downloadlink = NOT_AVAILABLE;
-
-            if ($document->getFromDB($docID)) {
-               $link         = $document->getLink();
-               $downloadlink = $document->getDownloadLink($linkparam);
-            }
-
-            if ($item->getType() != 'Document') {
-               Session::addToNavigateListItems('Document', $docID);
-            }
-            $used[$docID] = $docID;
-            $assocID      = $data["assocID"];
-
-            echo "<tr class='tab_bg_1".($data["is_deleted"]?"_2":"")."'>";
-            if ($canedit
-                && ($withtemplate < 2)) {
-               echo "<td width='10'>";
-               Html::showMassiveActionCheckBox(__CLASS__, $data["assocID"]);
-               echo "</td>";
-            }
-            echo "<td class='center'>$link</td>";
-            echo "<td class='center'>".$data['entity']."</td>";
-            echo "<td class='center'>$downloadlink</td>";
-            echo "<td class='center'>";
-            if (!empty($data["link"])) {
-               echo "<a target=_blank href='".Toolbox::formatOutputWebLink($data["link"])."'>".$data["link"];
-               echo "</a>";
-            } else {
-               echo "&nbsp;";
-            }
-            echo "</td>";
-            echo "<td class='center'>".Dropdown::getDropdownName("glpi_documentcategories",
-                                                                 $data["documentcategories_id"]);
-            echo "</td>";
-            echo "<td class='center'>".$data["mime"]."</td>";
-            echo "<td class='center'>";
-            echo !empty($data["tag"]) ? Document::getImageTag($data["tag"]) : '';
-            echo "</td>";
-            echo "<td class='center'>".Html::convDateTime($data["assocdate"])."</td>";
-            echo "</tr>";
-            $i++;
-         }
-         echo $header_begin.$header_bottom.$header_end;
+         $used[$docID] = $docID;
+         $assocID      = $data["assocID"];
+         
+         $values[] = [
+            $link,
+            $data['entity'],
+            $downloadlink,
+            !empty($data['link']) ? $data['link'] : NOT_AVAILABLE,
+            $data['headings'],
+            $data['mime'],
+            !empty($data['tag']) ? Document::getImageTag($data['tag']) : '',
+            Html::convDateTime($data['assocdate'])
+         ];
+         $massive_action[] = sprintf('item[%s][%s]', __CLASS__, $assocID);
       }
-
-      echo "</table>";
-      if ($canedit && $number && ($withtemplate < 2)) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+         'id' => $massiveActionContainerId,
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 
 

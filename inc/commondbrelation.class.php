@@ -1163,6 +1163,8 @@ abstract class CommonDBRelation extends CommonDBConnexity {
 
    static function showMassiveActionsSubForm(MassiveAction $ma) {
 
+      global $CFG_GLPI;
+
       $specificities = static::getRelationMassiveActionsSpecificities();
       $action        = $ma->getAction();
 
@@ -1215,7 +1217,57 @@ abstract class CommonDBRelation extends CommonDBConnexity {
                      if (!isset($options['checkright'])) {
                         $options['checkright']    = true;
                      }
-                     Dropdown::showSelectItemFromItemtypes($options);
+                     $values = [];
+                     foreach ($specificities['itemtypes'] as $itemtype) {
+                        $values[$itemtype] = $itemtype::getTypeName();
+                     }
+                     asort($values);
+
+                     $inputs = [
+                        __('Item type') => [
+                           'type'  => 'select',
+                           'id' => 'select_peer_'.$peertype,
+                           'name'  => 'peer_'.$peertype,
+                           'value' => isset($_POST['peer_'.$peertype]) ? $_POST['peer_'.$peertype] : '',
+                           'values' => [Dropdown::EMPTY_VALUE] + $values,
+                           'col_lg' => 12,
+                           'col_md' => 12,
+                           'hooks' => [
+                              'change' => <<<JS
+                                 var itemtype = $(this).val();
+                                 $.ajax({
+                                    url: "{$CFG_GLPI['root_doc']}/ajax/dropdownAllItems.php",
+                                    method: 'POST',
+                                    data: {idtable: itemtype},
+                                    success: function(data) {
+                                       const jsonData = JSON.parse(data);
+                                       $('#select_peer_{$peers_id}').empty();
+                                       for (const [key, value] of Object.entries(jsonData)) {
+                                          $('#select_peer_{$peers_id}').append('<option value="' + key + '">' + value + '</option>');
+                                       }
+                                    }
+                                 });
+                              JS,
+                           ]
+                        ],
+
+                        __('Item') => [
+                           'type'  => 'select',
+                           'id' => 'select_peer_'.$peers_id,
+                           'name'  => 'peer_'.$peers_id,
+                           'value' => isset($_POST['peer_'.$peers_id]) ? $_POST['peer_'.$peers_id] : '',
+                           'values' => [],
+                           'col_lg' => 12,
+                           'col_md' => 12,
+                        ],
+                     ];
+
+                     foreach ($inputs as $title => $input) {
+                        renderTwigTemplate('macros/wrappedInput.twig', [
+                           'title' => $title,
+                           'input' => $input,
+                        ]);
+                     }
                   }
                } else {
                   $options['name'] = 'peer_'.$peers_id;
@@ -1231,8 +1283,8 @@ abstract class CommonDBRelation extends CommonDBConnexity {
             }
             // Allow any relation to display its own fields (NetworkPort_Vlan for tagged ...)
             static::showRelationMassiveActionsSubForm($ma, $peer_number);
-            echo "<br><br>".Html::submit($specificities['button_labels'][$action],
-                                         ['name' => 'massiveaction']);
+            echo Html::submit($specificities['button_labels'][$action],
+                                         ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
             return true;
       }
       return parent::showMassiveActionsSubForm($ma);

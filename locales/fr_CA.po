@@ -7,21 +7,21 @@
 # alexandre delaunay <delaunay.alexandre@gmail.com>, 2021
 # Tiago Graça, 2021
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-18 14:42+0100\n"
-"PO-Revision-Date: 2019-04-24 11:58+0000\n"
-"Last-Translator: Tiago Graça, 2021\n"
-"Language-Team: French (Canada) (https://www.transifex.com/glpi/teams/1637/"
-"fr_CA/)\n"
+"PO-Revision-Date: 2024-02-02 21:01+0000\n"
+"Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
+"Language-Team: French (Canada) <https://hosted.weblate.org/projects/itsm-ng/"
+"itsm-ng/fr_CA/>\n"
 "Language: fr_CA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -510,7 +510,7 @@ msgstr "Ajouter de nouveaux dispositifs"
 
 #: ajax/selectUnaffectedOrNewItem_Device.php:74
 msgid "No unaffected device !"
-msgstr "Aucun dispositif affecté"
+msgstr "Aucun dispositif affecté!"
 
 #: ajax/getMapPoint.php:43 ajax/map.php:44
 msgid "Required argument missing!"
@@ -526,7 +526,7 @@ msgstr "Le lieu n'est pas géolocalisé!"
 
 #: ajax/getMapPoint.php:76
 msgid "Consider filling latitude and longitude on this location."
-msgstr "Veuillez compléter la latitude et la longitude de ce lieu"
+msgstr "Veuillez compléter la latitude et la longitude de ce lieu."
 
 #: ajax/deleteItilActor.php:92
 msgid "Actor deleted successfully"
@@ -1969,7 +1969,7 @@ msgstr "Tâche %s exécutée"
 #: front/lostpassword.php:44 inc/notificationtargetuser.class.php:44
 #: inc/user.class.php:4610 inc/user.class.php:4654
 msgid "Forgotten password?"
-msgstr "Mot de passe oublié"
+msgstr "Mot de passe oublié?"
 
 #: front/reservationitem.form.php:49
 #, php-format
@@ -2715,7 +2715,7 @@ msgstr "%1$s supprime la licence %2$s"
 #: front/softwarelicense.form.php:84
 #, php-format
 msgid "%1$s purges the license %2$s"
-msgstr "%1$s purge la licence %2$s "
+msgstr "%1$s purge la licence %2$s"
 
 #. TRANS: %s is the user login, %2$s is the license id
 #: front/softwarelicense.form.php:93
@@ -2768,7 +2768,7 @@ msgstr "%1$s ajoute la version %2$s"
 #: front/softwareversion.form.php:64
 #, php-format
 msgid "%1$s purges the version %2$s"
-msgstr "%1$s purge la version %2$s "
+msgstr "%1$s purge la version %2$s"
 
 #. TRANS: %s is the user login, %2$s is the version id
 #: front/softwareversion.form.php:73
@@ -3188,7 +3188,7 @@ msgstr "Mise à jour du mot de passe"
 
 #: front/updatepassword.php:86
 msgid "Your password has been successfully updated."
-msgstr "Votre mot de passe a été mis à jour"
+msgstr "Votre mot de passe a été mis à jour."
 
 #: front/updatepassword.php:88
 msgid "Log in"
@@ -3881,8 +3881,8 @@ msgid ""
 "Make sure access to %s (%s) is forbidden; otherwise review .htaccess file "
 "and web server configuration."
 msgstr ""
-"Assurez-vous que l'accès à  %s (%s) soit interdit ; sinon vérifiez le "
-"fichier .htaccess et la configuration du serveur web."
+"Assurez-vous que l'accès à %s (%s) soit interdit ; sinon vérifiez le fichier "
+".htaccess et la configuration du serveur web."
 
 #: inc/system/requirement/protectedwebaccess.class.php:116
 #: inc/config.class.php:2798
@@ -5181,7 +5181,7 @@ msgstr "L'accès web au dossier \"files\" ne devrait pas être autorisé"
 
 #: inc/config.class.php:2778 inc/config.class.php:2782
 msgid "Check the .htaccess file and the web server configuration."
-msgstr "Vérifier le fichier .htaccess et la configuration du serveur web"
+msgstr "Vérifier le fichier .htaccess et la configuration du serveur web."
 
 #: inc/config.class.php:3087
 msgid "You are using a development version, be careful!"
@@ -5864,7 +5864,7 @@ msgstr "Règles rejouées sur base de données existante le %s"
 #, php-format
 msgid "%1$s - replay rules on existing database: %2$s/%3$s (%4$s Mio)"
 msgstr ""
-" %1$s - Règles rejouées sur base de données existante : %2$s/%3$s (%4$s Mio)"
+"%1$s - Règles rejouées sur base de données existante : %2$s/%3$s (%4$s Mio)"
 
 #. TRANS: %1$s is a row, %2$s is total rows
 #: inc/ruledictionnaryprintercollection.class.php:170
@@ -6284,7 +6284,7 @@ msgid ""
 msgstr ""
 "Le critère \"tous\" ne peut être utilisé avec cette liste d'objets, la "
 "requête SQL échoue (trop de tables). Veuillez utiliser le critère \"Éléments "
-"visualisés\" à la place."
+"visualisés\" à la place"
 
 #: inc/search.class.php:1510 inc/displaypreference.class.php:314
 #: inc/displaypreference.class.php:468
@@ -6549,7 +6549,7 @@ msgstr "Comme enfant de"
 #: inc/itilcategory.class.php:74 inc/itilcategory.class.php:288
 #: inc/ruleticket.class.php:415
 msgid "Code representing the ticket category"
-msgstr "Code représentant la catégorie de ticket."
+msgstr "Code représentant la catégorie de ticket"
 
 #: inc/itilcategory.class.php:79 inc/itilcategory.class.php:233
 msgid "Visible in the simplified interface"
@@ -7033,7 +7033,7 @@ msgstr "Adresse de non réponse"
 
 #: inc/notificationmailingsetting.class.php:120
 msgid "Optionnal No-Reply address."
-msgstr "Adresse optionnelle de non réponse"
+msgstr "Adresse optionnelle de non-réponse."
 
 #: inc/notificationmailingsetting.class.php:120
 msgid "If set, it will be used for notifications that doesn't expect a reply."
@@ -7047,11 +7047,11 @@ msgstr "Nom de non réponse"
 
 #: inc/notificationmailingsetting.class.php:129
 msgid "Optionnal No-Reply name."
-msgstr "Nom optionnel de non réponse"
+msgstr "Nom optionnel de non-réponse."
 
 #: inc/notificationmailingsetting.class.php:138
 msgid "Add documents into ticket notifications"
-msgstr "Ajouter des documents dans les notifications de ticket "
+msgstr "Ajouter des documents dans les notifications de ticket"
 
 #: inc/notificationmailingsetting.class.php:149 inc/entity.class.php:803
 #: inc/entity.class.php:1863
@@ -7088,7 +7088,7 @@ msgstr "L'utilisation d'un serveur SMTP est indispensable."
 
 #: inc/notificationmailingsetting.class.php:191
 msgid "Max. delivery retries"
-msgstr "Tentatives d'envoi max."
+msgstr "Tentatives d'envoi max"
 
 #: inc/notificationmailingsetting.class.php:197
 msgid "Try to deliver again in (minutes)"
@@ -7795,10 +7795,13 @@ msgstr "Couleur"
 #: inc/specialstatus.class.php:205
 msgid "Ticket is still using this status, are you sure to remove the status?"
 msgstr ""
+"Le ticket utilise toujours ce statut, êtes-vous sûr de pouvoir le supprimer ?"
 
 #: inc/specialstatus.class.php:207
 msgid "Tickets are still using this status, are you sure to remove the status?"
 msgstr ""
+"Les tickets utilisent encore ce statut, êtes-vous sûr de pouvoir le "
+"supprimer ?"
 
 #: inc/specialstatus.class.php:209
 msgid "Are you sure to remove the status?"
@@ -8120,7 +8123,7 @@ msgstr "Courriel de suivi"
 
 #: inc/item_enclosure.class.php:104
 msgid "Add new item to this enclosure..."
-msgstr "Ajouter un nouvel élément à ce châssis"
+msgstr "Ajouter un nouvel élément à ce châssis..."
 
 #: inc/item_enclosure.class.php:136 inc/item_enclosure.class.php:263
 #: inc/pdu_rack.class.php:263 inc/pdu_rack.class.php:331
@@ -8378,7 +8381,7 @@ msgstr "En cours d'exécution"
 
 #: inc/crontask.class.php:855 inc/plugin.class.php:1640
 msgid "ITSM-NG"
-msgstr ""
+msgstr "ITSM-NG"
 
 #: inc/crontask.class.php:858
 msgid "CLI"
@@ -8459,7 +8462,7 @@ msgstr[1] "%s arrêts"
 msgid "%s error"
 msgid_plural "%s errors"
 msgstr[0] "%s erreur"
-msgstr[1] "%s  erreurs"
+msgstr[1] "%s erreurs"
 
 #: inc/crontask.class.php:1172
 msgid "Minimal time"
@@ -8913,7 +8916,7 @@ msgstr "Résultat de la règle"
 msgid "Validation"
 msgid_plural "Validations"
 msgstr[0] "Validation"
-msgstr[1] " Validations"
+msgstr[1] "Validations"
 
 #. TRANS: %s is the entity name
 #: inc/rulecollection.class.php:1927
@@ -9151,7 +9154,7 @@ msgstr ""
 
 #: inc/reservation.class.php:289
 msgid "The required item is already reserved for this timeframe"
-msgstr "Le matériel demandé est déjà réservé pour cette plage."
+msgstr "Le matériel demandé est déjà réservé pour cette plage"
 
 #: inc/reservation.class.php:293
 msgid "Unknown error"
@@ -9454,11 +9457,11 @@ msgstr "Associer"
 
 #: inc/commondbconnexity.class.php:572
 msgid "First Item"
-msgstr "Premier élément "
+msgstr "Premier élément"
 
 #: inc/commondbconnexity.class.php:579
 msgid "Second Item"
-msgstr "Second élément "
+msgstr "Second élément"
 
 #: inc/commondbconnexity.class.php:584
 #, php-format
@@ -10077,7 +10080,7 @@ msgstr "Photo vue de dos"
 
 #: inc/commondcmodeldropdown.class.php:319 inc/dcroom.class.php:213
 msgid "Unable to save picture file."
-msgstr "Impossible d'enregistrer l'image"
+msgstr "Impossible d'enregistrer l'image."
 
 #: inc/rule.class.php:257
 msgid "Dictionary"
@@ -10585,7 +10588,7 @@ msgstr "D=Dynamique"
 
 #: inc/blacklistedmailcontent.class.php:53
 msgid "Blacklisted mail content"
-msgstr "Contenu de courriel interdit "
+msgstr "Contenu de courriel interdit"
 
 #: inc/item_ticket.class.php:300
 #, php-format
@@ -11730,7 +11733,7 @@ msgstr "Configuration de la clôture automatique"
 
 #: inc/entity.class.php:2622
 msgid "Close ticket action is disabled."
-msgstr "L'action Fermer un ticket est désactivée"
+msgstr "L'action Fermer un ticket est désactivée."
 
 #: inc/entity.class.php:2663
 msgid "Purge ticket action is disabled."
@@ -13267,7 +13270,7 @@ msgstr "Élément introuvable"
 
 #: inc/api/api.class.php:2161
 msgid "Email notifications are disabled"
-msgstr "Les notifications par courriel sont désactivées."
+msgstr "Les notifications par courriel sont désactivées"
 
 #: inc/api/api.class.php:2165
 msgid "email parameter missing"
@@ -13931,7 +13934,7 @@ msgstr "Éléments incompatibles"
 
 #: inc/commonglpi.class.php:1534
 msgid "Error on executing the action"
-msgstr "Erreur en exécutant l'action "
+msgstr "Erreur en exécutant l'action"
 
 #: inc/commonglpi.class.php:1537
 msgid "Item already defined"
@@ -14571,7 +14574,7 @@ msgstr "Tâches à réaliser : %s%%"
 #: inc/commonitilobject.class.php:6925
 #, php-format
 msgid "Done tasks: %s %% "
-msgstr "Tâches complétées : %s%%"
+msgstr "Tâches complétées : %s%% "
 
 #: inc/commonitilobject.class.php:7327
 msgid "Followup was already promoted"
@@ -15140,7 +15143,7 @@ msgstr "Exceptions"
 #: inc/features/planningevent.class.php:821
 #, php-format
 msgid "%1$s: from %2$s to %3$s:"
-msgstr "%1$s : du %2$s au %3$s"
+msgstr "%1$s : du %2$s au %3$s:"
 
 #: inc/features/dcbreadcrumb.class.php:119 inc/datacenter.class.php:175
 msgid "Data center position"
@@ -15372,7 +15375,7 @@ msgstr[1] "+ %d ans"
 #: inc/alert.class.php:265
 #, php-format
 msgid "Alert sent on %s"
-msgstr "Alerte envoyée le  %s"
+msgstr "Alerte envoyée le %s"
 
 #: inc/projecttasktemplate.class.php:52 inc/projecttask.class.php:584
 msgid "Project task template"
@@ -15439,11 +15442,11 @@ msgstr "Ajouter des actifs"
 
 #: inc/impact.class.php:998
 msgid "Filter itemtypes..."
-msgstr "Filtrer les types d'élément"
+msgstr "Filtrer les types d'élément..."
 
 #: inc/impact.class.php:1032
 msgid "Filter assets..."
-msgstr "Filtrer les actifs"
+msgstr "Filtrer les actifs..."
 
 #: inc/impact.class.php:1039
 msgid "More..."
@@ -15698,7 +15701,7 @@ msgstr "Interface navigateur CalDAV"
 #: inc/planning.class.php:304
 #, php-format
 msgid "The user %1$s is busy at the selected timeframe."
-msgstr "L'utilisateur %1$s est occupé sur la plage de temps sélectionnée"
+msgstr "L'utilisateur %1$s est occupé sur la plage de temps sélectionnée."
 
 #: inc/planning.class.php:580
 msgid "Available"
@@ -15912,7 +15915,7 @@ msgstr "L'ID du dispositif est obligatoire"
 
 #: inc/item_devices.class.php:1503
 msgid "Update of "
-msgstr "Mise à jour de"
+msgstr "Mise à jour de "
 
 #: inc/notificationtemplate.class.php:136
 msgid "CSS"
@@ -15925,7 +15928,7 @@ msgstr ""
 
 #: inc/oidc.class.php:80
 msgid "Missing or wrong fields in open ID connect config"
-msgstr ""
+msgstr "Champs manquants ou erronés dans open ID connect config"
 
 #: inc/oidc.class.php:301
 msgid "Configuration"
@@ -15933,7 +15936,7 @@ msgstr ""
 
 #: inc/oidc.class.php:306 inc/auth.class.php:1830
 msgid "Mapping of fields according to provider"
-msgstr ""
+msgstr "Mappage des champs en fonction du fournisseur"
 
 #. TRANS: Test of comment for translation (mark : //TRANS)
 #: inc/oidc.class.php:329 inc/phone.class.php:68 inc/supplier.class.php:147
@@ -16166,15 +16169,15 @@ msgstr "Supprimer le domaine des identifiants de la forme identifiant@domaine"
 
 #: inc/auth.class.php:1825
 msgid "Mapping"
-msgstr ""
+msgstr "Mappage"
 
 #: inc/auth.class.php:1833
 msgid "Activate open ID connect"
-msgstr ""
+msgstr "Activer open ID connect"
 
 #: inc/auth.class.php:1838
 msgid "Forced connection with open ID connect"
-msgstr ""
+msgstr "Connexion forcée avec open ID connect"
 
 #: inc/auth.class.php:1843
 msgid "Provider"
@@ -16440,7 +16443,7 @@ msgstr[1] "Types de budgets"
 #: inc/notificationevent.class.php:198
 #, php-format
 msgid "Unable to send notification using %1$s"
-msgstr "Impossible d'envoyer la notification en utilisant  %1$s"
+msgstr "Impossible d'envoyer la notification en utilisant %1$s"
 
 #: inc/ruleasset.class.php:149
 msgid "User based contact information"
@@ -17013,7 +17016,7 @@ msgstr "Au moins un champ a une valeur incorrecte"
 #: inc/commondbtm.class.php:4307
 #, php-format
 msgid "Impossible record for %s"
-msgstr "Enregistrement impossible pour  %s"
+msgstr "Enregistrement impossible pour %s"
 
 #: inc/commondbtm.class.php:4310
 #, php-format
@@ -17252,7 +17255,7 @@ msgstr "Verrouillé par %s"
 
 #: inc/objectlock.class.php:283
 msgid "Ask for unlock"
-msgstr "Demande de déverrouillage "
+msgstr "Demande de déverrouillage"
 
 #: inc/objectlock.class.php:285
 msgid "Alert me when unlocked"
@@ -17732,7 +17735,7 @@ msgstr "Alerte enregistrement en doublon"
 
 #: inc/notificationtargetfieldunicity.class.php:66
 msgid "Item successfully added but duplicate record on"
-msgstr "Enregistrement effectué mais doublon sur "
+msgstr "Enregistrement effectué, mais doublon sur"
 
 #: inc/notificationtargetfieldunicity.class.php:79
 #: inc/notificationtargetsavedsearch_alert.class.php:102
@@ -17996,7 +17999,7 @@ msgstr "L'ordre des recherches sauvegardées ne peut être enregistré !"
 #: inc/savedsearch.class.php:1050
 #, php-format
 msgid "You have not recorded any %1$s yet"
-msgstr "Vous n'avez pas encore enregistré de %1$s."
+msgstr "Vous n'avez pas encore enregistré de %1$s"
 
 #: inc/savedsearch.class.php:1088 inc/savedsearch.class.php:1089
 #: inc/savedsearch.class.php:1096
@@ -18213,7 +18216,7 @@ msgstr ""
 #, php-format
 msgid "--ldap-server-id value \"%s\" is not a valid LDAP server id."
 msgstr ""
-"La valeur \"%s\" de --ldap-server-id n'est pas pas un identifiant valide de "
+"La valeur \"%s\" de --ldap-server-id n'est pas un identifiant valide de "
 "serveur LDAP."
 
 #: inc/console/ldap/synchronizeuserscommand.class.php:451
@@ -18233,7 +18236,7 @@ msgstr ""
 msgid "Option --begin-date value has to be lower than option --end-date value."
 msgstr ""
 "La valeur de l'option --begin-date doit être plus petite que la valeur de "
-"l'option --end-date"
+"l'option --end-date."
 
 #: inc/console/ldap/synchronizeuserscommand.class.php:477
 #, php-format
@@ -18255,7 +18258,7 @@ msgstr "Contexte \"%s\" invalide."
 
 #: inc/console/abstractcommand.class.php:100
 msgid "Unable to connect to database."
-msgstr "Impossible de se connecter à la base de données"
+msgstr "Impossible de se connecter à la base de données."
 
 #: inc/console/abstractcommand.class.php:195
 msgid "Some optional system requirements are missing."
@@ -18418,7 +18421,7 @@ msgstr "Remplissage de `%s`.`%s` ..."
 #: inc/console/migration/buildmissingtimestampscommand.class.php:112
 #, php-format
 msgid "Update of `%s`.`%s` failed with message \"(%s) %s\"."
-msgstr "Mise à jour de  `%s`.`%s` a échouée avec le message \"(%s) %s\"."
+msgstr "Mise à jour de `%s`.`%s` a échouée avec le message \"(%s) %s\"."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
 msgid "Migrate Racks plugin data into ITSM-ng core tables"
@@ -18431,7 +18434,7 @@ msgstr "Ignorer les modèles et les éléments \"PluginRacksOther\""
 #: inc/console/migration/racksplugintocorecommand.class.php:175
 #: inc/console/migration/appliancesplugintocorecommand.class.php:151
 msgid "Do not exit on import errors"
-msgstr "Ne pas arrêter sur les erreurs d'importation."
+msgstr "Ne pas arrêter sur les erreurs d'importation"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:182
 msgid "Remove existing core data"
@@ -18540,7 +18543,7 @@ msgstr "Création des centres de données ..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:493
 msgid "Unable to create datacenter."
-msgstr "Impossible de créer le centre de données"
+msgstr "Impossible de créer le centre de données."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:514
 msgid "Importing other models..."
@@ -18790,12 +18793,11 @@ msgstr ""
 #: inc/console/migration/appliancesplugintocorecommand.class.php:359
 #, php-format
 msgid "Migration of table \"%s\" failed with message \"(%s) %s\"."
-msgstr ""
-"La migration de la table \"%s\" a échouée avec le message  \"(%s) %s\"."
+msgstr "La migration de la table \"%s\" a échouée avec le message \"(%s) %s\"."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:381
 msgid "Creating Appliance Items..."
-msgstr "Création des objets associés aux applicatifs"
+msgstr "Création des objets associés aux applicatifs..."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:398
 #, php-format
@@ -18938,7 +18940,7 @@ msgstr "Impossible de mettre à jour le type de domaine %s."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:406
 msgid "No domains types found."
-msgstr "Aucun type de domaine trouvé"
+msgstr "Aucun type de domaine trouvé."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:425
 msgid "Importing domains..."
@@ -19120,7 +19122,7 @@ msgstr "Installation interrompue."
 
 #: inc/console/database/installcommand.class.php:207
 msgid "Security key cannot be generated!"
-msgstr "La clé de sécurité ne peux être générée"
+msgstr "La clé de sécurité ne peut être générée!"
 
 #: inc/console/database/installcommand.class.php:223
 #: inc/console/database/abstractconfigurecommand.class.php:230
@@ -19298,11 +19300,11 @@ msgstr "Le nom de la base de données défini par --db-name ne peut être vide"
 #: inc/console/database/abstractconfigurecommand.class.php:304
 msgid "Database user defined by --db-user option cannot be empty."
 msgstr ""
-"L'utilisateur de la base de données défini par --db-user ne peut être vide"
+"L'utilisateur de la base de données défini par --db-user ne peut être vide."
 
 #: inc/console/database/abstractconfigurecommand.class.php:311
 msgid "--db-password option value cannot be null."
-msgstr "La valeur de l'option --db-password  ne peut être nulle"
+msgstr "La valeur de l'option --db-password ne peut être nulle"
 
 #: inc/console/maintenance/disablemaintenancemodecommand.class.php:58
 msgid "Disable maintenance mode"
@@ -19529,7 +19531,7 @@ msgstr ""
 #: inc/console/task/unlockcommand.class.php:85
 msgid "Itemtype::name of task to unlock (e.g: \"MailCollector::mailgate\")"
 msgstr ""
-"Itemtype::name de la tâche à débloquer (ex :  \"MailCollector::mailgate\")"
+"Itemtype::name de la tâche à débloquer (ex : \"MailCollector::mailgate\")"
 
 #: inc/console/task/unlockcommand.class.php:131
 #, php-format
@@ -19555,19 +19557,19 @@ msgstr "Nombre de tâches débloquées : %d."
 
 #: inc/console/task/unlockcommand.class.php:181
 msgid "Option --cycle is not compatible with option --delay."
-msgstr "L'option --cycle n'est pas compatible avec l'option --delay"
+msgstr "L'option --cycle n'est pas compatible avec l'option --delay."
 
 #: inc/console/task/unlockcommand.class.php:187
 msgid "Option --cycle has to be an integer."
-msgstr "L'option --cycle doit être un entier"
+msgstr "L'option --cycle doit être un entier."
 
 #: inc/console/task/unlockcommand.class.php:193
 msgid "Option --delay has to be an integer."
-msgstr "L'option --delay doit être un entier"
+msgstr "L'option --delay doit être un entier."
 
 #: inc/console/task/unlockcommand.class.php:203
 msgid "Option --all is not compatible with option --task."
-msgstr "L'option --all n'est pas compatible avec l'option --task"
+msgstr "L'option --all n'est pas compatible avec l'option --task."
 
 #: inc/console/task/unlockcommand.class.php:209
 msgid ""
@@ -19788,7 +19790,7 @@ msgstr "Document copié avec succès."
 
 #: inc/document.class.php:1101 inc/document.class.php:1187
 msgid "File move failed"
-msgstr "Échec du déplacement de fichier."
+msgstr "Échec du déplacement de fichier"
 
 #: inc/document.class.php:1132
 msgid "Temporary directory doesn't exist"
@@ -19995,7 +19997,7 @@ msgstr "Envoyer les informations de télémétrie"
 
 #: inc/telemetry.class.php:335
 msgid "See what would be sent..."
-msgstr "Aperçu de ce qui serait envoyé"
+msgstr "Aperçu de ce qui serait envoyé..."
 
 #: inc/telemetry.class.php:348
 msgid "Telemetry data"
@@ -20171,7 +20173,7 @@ msgstr[1] "Derniers %d changements"
 
 #: inc/change.class.php:1561 inc/change.class.php:1608
 msgid "No change found."
-msgstr "Pas de changement trouvé"
+msgstr "Pas de changement trouvé."
 
 #: inc/change.class.php:1596
 msgid "Changes on linked items"
@@ -20279,7 +20281,7 @@ msgstr "Type de lien"
 
 #: inc/ticket.class.php:2606
 msgid "Confirm the merge? This ticket will be deleted!"
-msgstr "Ce ticket sera effacé après la fusion. Poursuivre la fusion?"
+msgstr "Ce ticket sera effacé après la fusion. Poursuivre la fusion ?"
 
 #: inc/ticket.class.php:2684
 msgid "Time to own + Progress"
@@ -20859,7 +20861,7 @@ msgstr ""
 
 #: inc/user.class.php:789
 msgid "The file is not an image file."
-msgstr "Le fichier n'est pas un fichier d'image"
+msgstr "Le fichier n'est pas un fichier d'image."
 
 #: inc/user.class.php:2042
 msgid "Add user..."
@@ -22019,7 +22021,7 @@ msgstr "Retirer cet actif du groupe"
 
 #: js/impact.js:1358
 msgid "This asset already exists."
-msgstr "Cet actif existe déjà"
+msgstr "Cet actif existe déjà."
 
 #: js/impact.js:1377
 msgid "Unexpected error."

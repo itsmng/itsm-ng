@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -36,8 +37,9 @@ if (!defined('GLPI_ROOT')) {
 
 /**
  * Relation between item and devices
-**/
-class Item_DeviceBattery extends Item_Devices {
+ **/
+class Item_DeviceBattery extends Item_Devices
+{
 
    static public $itemtype_2 = 'DeviceBattery';
    static public $items_id_2 = 'devicebatteries_id';
@@ -45,7 +47,8 @@ class Item_DeviceBattery extends Item_Devices {
    static protected $notable = false;
 
 
-   static function getSpecificities($specif = '') {
+   static function getSpecificities($specif = '')
+   {
       return [
          'serial'             => parent::getSpecificities('serial'),
          'otherserial'        => parent::getSpecificities('otherserial'),
@@ -58,6 +61,9 @@ class Item_DeviceBattery extends Item_Devices {
             'datatype'   => 'date',
             'id'         => 20,
             'autocomplete' => true,
+            'formContent' => [
+               'type' => 'date'
+            ]
          ]
       ];
    }

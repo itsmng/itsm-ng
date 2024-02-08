@@ -360,109 +360,96 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria {
 
       $ID = $this->getID();
 
-      $this->initForm($ID, $options);
-      $options['formtitle'] = false;
-      $this->showFormHeader($options);
-
-      if (isset($options['itemtype'])) {
-         echo Html::hidden('itemtype', ['value' => $options['itemtype']]);
-      }
-
-      if (isset($options['type']) && ($options['type'] != 0)) {
-         echo Html::hidden('type', ['value' => $options['type']]);
-      }
-
-      if (isset($options['url'])) {
-         echo Html::hidden('url', ['value' => $options['url']]);
-      }
-
-      echo "<tr><th colspan='4'>";
-      if (!isset($options['ajax'])) {
-         if ($ID > 0) {
-            //TRANS: %1$s is the Itemtype name and $2$d the ID of the item
-            printf(__('%1$s - ID %2$d'), $this->getTypeName(1), $ID);
-         } else {
-            echo __('New item');
-         }
-      } else {
-         echo __('New saved search');
-      }
-      echo "</th></tr>";
-
-      echo "<tr><td class='tab_bg_1'>".__('Name')."</td>";
-      echo "<td class='tab_bg_1'>";
-      Html::autocompletionTextField($this, "name", ['user' => $this->fields["users_id"]]);
-      echo "</td>";
-      if (Session::haveRight("config", UPDATE)) {
-         echo "<td class='tab_bg_1'>".__('Do count')."</td>".
-              "<td class='tab_bg_1'>";
-         $values = [self::COUNT_AUTO  => __('Auto'),
-                    self::COUNT_YES   => __('Yes'),
-                    self::COUNT_NO    => __('No')];
-         Dropdown::showFromArray('do_count', $values, ['value' => $this->getField('do_count')]);
-      } else {
-         echo "<td colspan='2'>";
-      }
-      echo "</td></tr>";
-
-      $rand = mt_rand();
-      echo "<tr class='tab_bg_2'><td><label for='dropdown_is_private$rand'>".__('Visibility') . "</label></td>";
-      if ($this->canCreate()) {
-         echo "<td colspan='3'>";
-         Dropdown::showFromArray(
-            'is_private', [
-               1  => __('Private'),
-               0  => __('Public')
-            ], [
-               'value'  => $this->fields['is_private'],
-               'rand'   => $rand
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            $this->canUpdateItem() ? [
+              'type' => 'submit',
+              'name' => $this->isNewID($ID) ? 'add' : 'update',
+              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+              'class' => 'btn btn-secondary'
+            ] : [],
+            !$this->isNewID($ID) && self::canPurge() ? [
+              'type' => 'submit',
+              'name' => 'purge',
+              'value' => __('Delete permanently'),
+              'class' => 'btn btn-danger'
+            ] : [],
+         ],
+         'content' => [
+            '' => [
+               'visible' => true,
+               'inputs' => [
+                  isset($options['itemtype']) ? [
+                     'type' => 'hidden',
+                     'name' => 'itemtype',
+                     'value' => $options['itemtype'],
+                  ] : [],
+                  isset($options['type']) ? [
+                     'type' => 'hidden',
+                     'name' => 'type',
+                     'value' => $options['type'],
+                  ] : [],
+                  isset($options['url']) ? [
+                     'type' => 'hidden',
+                     'name' => 'url',
+                     'value' => $options['url'],
+                  ] : [],
+                  [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ],
+                  __('Name') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields['name'],
+                  ],
+                  __('Do count') => (Session::haveRight("config", UPDATE)) ? [
+                     'type' => 'select',
+                     'name' => 'do_count',
+                     'values' => [
+                        self::COUNT_AUTO  => __('Auto'),
+                        self::COUNT_YES   => __('Yes'),
+                        self::COUNT_NO    => __('No')
+                     ],
+                     'value' => $this->fields['do_count']
+                  ] : [],
+                  __('Visibility') => $this->canCreate() ? [
+                     'type' => 'select',
+                     'name' => 'is_private',
+                     'values' => [__('Public'), __('Private')],
+                     'value' => $this->fields['is_private'],
+                  ] : [
+                     'content' => $this->fields['is_private'] ? __('Private') : __('Public')
+                  ],
+                  Entity::getTypeName(1) => $this->canCreate() ? [
+                     'type' => 'select',
+                     'name' => 'entities_id',
+                     'values' => getOptionForItems(Entity::class),
+                     'value' => $this->fields['entities_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], Entity::class),
+                     ] : [],
+                  __('Child entities') => [
+                     'type' => 'checkbox',
+                     'name' => 'is_recursive',
+                     'value' => $this->fields['is_recursive'],
+                  ],
+                  ($ID > 0) ? [] : [
+                     'type' => 'hidden',
+                     'name' => 'users_id',
+                     'value' => $this->fields['users_id'],
+                  ],
+                  ($ID <= 0 && !self::canCreate()) ? [
+                     'type' => 'hidden',
+                     'name' => 'is_private',
+                     'value' => 1,
+                  ] : []
+               ]
             ]
-         );
-         echo "</td></tr>";
-         echo "<tr class='tab_bg_2'><td>".Entity::getTypeName(1)."</td>";
-         echo "</td><td>";
-         Entity::dropdown(['value' => $this->fields["entities_id"]]);
-         echo "</td><td>". __('Child entities')."</td><td>";
-         Dropdown::showYesNo('is_recursive', $this->fields["is_recursive"]);
-      } else {
-         echo "<td colspan='3'>";
-         if ($this->fields["is_private"]) {
-            echo __('Private');
-         } else {
-            echo __('Public');
-         }
-      }
-      if ($ID <= 0) { // add
-         echo Html::hidden('users_id', ['value' => $this->fields['users_id']]);
-         if (!self::canCreate()) {
-            echo Html::hidden('is_private', ['value' => 1]);
-         }
-      } else {
-         echo Html::hidden('id', ['value' => $ID]);
-      }
-      echo "</td></tr>";
-
-      if (isset($options['ajax'])) {
-         $js = "$(function() {
-            $('form[name=form_save_query]').submit(function (e) {
-               e.preventDefault();
-               var _this = $(this);
-               $.ajax({
-                  url: _this.attr('action').replace(/\/front\//, '/ajax/').replace(/\.form/, ''),
-                  method: 'POST',
-                  data: _this.serialize(),
-                  success: function(res) {
-                     if (res.success == true) {
-                        savesearch.dialog('close');
-                     }
-                     displayAjaxMessageAfterRedirect();
-                  }
-               });
-            });
-         });";
-         echo Html::scriptBlock($js);
-      }
-      $this->showFormButtons($options);
+         ]
+      ];
+      renderTwigForm($form);
    }
 
 

@@ -725,56 +725,52 @@ abstract class CommonITILValidation  extends CommonDBChild {
       $canadd = $this->can(-1, CREATE, $tmp);
       $rand   = mt_rand();
 
-      if ($canadd) {
-         $itemtype = static::$itemtype;
-         echo "<form method='post' name=form action='".$itemtype::getFormURL()."'>";
-      }
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr>";
-      echo "<th colspan='3'>".self::getTypeName(Session::getPluralNumber())."</th>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Global approval status')."</td>";
-      echo "<td colspan='2'>";
-      if (Session::haveRightsOr(static::$rightname, TicketValidation::getValidateRights())) {
-         self::dropdownStatus("global_validation",
-                              ['value'    => $item->fields["global_validation"]]);
-      } else {
-         echo TicketValidation::getStatus($item->fields["global_validation"]);
-      }
-      echo "</td></tr>";
-
-      echo "<tr>";
-      echo "<th colspan='2'>"._x('item', 'State')."</th>";
-      echo "<th colspan='2'>";
-      echo self::getValidationStats($tID);
-      echo "</th>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Minimum validation required')."</td>";
-      if ($canadd) {
-         echo "<td>";
-         echo $item->getValueToSelect('validation_percent', 'validation_percent',
-                                      $item->fields["validation_percent"]);
-         echo "</td>";
-         echo "<td><input type='submit' name='update' class='submit' value='".
-                    _sx('button', 'Save')."'>";
-         if (!empty($tID)) {
-            echo "<input type='hidden' name='id' value='$tID'>";
-         }
-         echo "</td>";
-      } else {
-         echo "<td colspan='2'>";
-         echo Dropdown::getValueWithUnit($item->fields["validation_percent"], "%");
-         echo "</td>";
-      }
-      echo "</tr>";
-      echo "</table>";
-      if ($canadd) {
-         Html::closeForm();
-      }
+      $itemtype = static::$itemtype;
+      $form = [
+         'action' => $canadd ? $itemtype::getFormURL() : '',
+         'buttons' => [
+            [
+               'name' => 'update',
+               'value' => _x('button', 'update'),
+               'class' => 'btn btn-secondary mb-3'
+            ]
+         ],
+         'content' => [
+            self::getTypeName(Session::getPluralNumber()) => [
+               'visible' => 'true',
+               'inputs' => [
+                  __('Global approval status') => (Session::haveRightsOr(static::$rightname, TicketValidation::getValidateRights())) ? [
+                     'type' => 'select',
+                     'name' => 'global_validation',
+                     'values' => self::getAllStatusArray(),
+                     'value' => $item->fields['global_validation'],
+                  ] : [
+                     'content' => TicketValidation::getStatus($item->fields["global_validation"]),
+                  ],
+               ]
+            ],
+            _x('item', 'State') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Minimum validation required') => ($canadd) ? [
+                     'type' => 'number',
+                     'name' => 'validation_percent',
+                     'value' => $item->fields['validation_percent'],
+                     'min' => 0,
+                     'max' => 100,
+                     'step' => 50,
+                     'after' => '%',
+                  ] : [
+                     'content' => Dropdown::getValueWithUnit($item->fields["validation_percent"], "%"),
+                  ],
+                  '' => [
+                     'content' => self::getValidationStats($tID)
+                  ],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
 
       echo "<div id='viewvalidation" . $tID . "$rand'></div>\n";
 
@@ -811,7 +807,7 @@ abstract class CommonITILValidation  extends CommonDBChild {
          if (!in_array($item->fields['status'], array_merge($item->getSolvedStatusArray(),
             $item->getClosedStatusArray()))) {
                echo "<tr class='tab_bg_1 noHover'><td class='center' colspan='" . $nb_colonnes . "'>";
-               echo "<a class='vsubmit' href='javascript:viewAddValidation".$tID."$rand();'>";
+               echo "<a class='btn btn-secondary' href='javascript:viewAddValidation".$tID."$rand();'>";
                echo __('Send an approval request')."</a></td></tr>\n";
          }
       }
@@ -882,6 +878,8 @@ abstract class CommonITILValidation  extends CommonDBChild {
     **/
    function showForm($ID, $options = []) {
 
+      global $CFG_GLPI;
+
       if ($ID > 0) {
          $this->canEdit($ID);
       } else {
@@ -898,100 +896,86 @@ abstract class CommonITILValidation  extends CommonDBChild {
 
       $options['colspan'] = 1;
 
-      $this->showFormHeader($options);
+      $entity = Session::getActiveEntity();
 
-      if ($validation_admin) {
-         if ($this->getType() == 'ChangeValidation') {
-            $validation_right = 'validate';
-         } else if ($this->getType() == 'TicketValidation') {
-            $ticket = new Ticket();
-            $ticket->getFromDB($this->fields[static::$items_id]);
-
-            $validation_right = 'validate_incident';
-            if ($ticket->fields['type'] == Ticket::DEMAND_TYPE) {
-               $validation_right = 'validate_request';
-            }
-         }
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Approval requester')."</td>";
-         echo "<td>";
-         echo "<input type='hidden' name='".static::$items_id."' value='".
-                $this->fields[static::$items_id]."'>";
-         echo getUserName($this->fields["users_id"]);
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_1'><td>".__('Approver')."</td>";
-         echo "<td>";
-
-         if ($ID > 0) {
-            echo getUserName($this->fields["users_id_validate"]);
-            echo "<input type='hidden' name='users_id_validate' value='".
-                   $this->fields['users_id_validate']."'>";
-         } else {
-            $params             = ['id'                 => $this->fields["id"],
-                                        'entity'             => $this->getEntityID(),
-                                        'right'              => $validation_right];
-            if (!is_null($this->fields['users_id_validate'])) {
-               $params['users_id_validate'] = $this->fields['users_id_validate'];
-            }
-            self::dropdownValidator($params);
-         }
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Comments')."</td>";
-         echo "<td><textarea cols='60' rows='3' name='comment_submission'>".
-               $this->fields["comment_submission"]."</textarea></td></tr>";
-
-      } else {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Approval requester')."</td>";
-         echo "<td>".getUserName($this->fields["users_id"])."</td></tr>";
-
-         echo "<tr class='tab_bg_1'><td>".__('Approver')."</td>";
-         echo "<td>".getUserName($this->fields["users_id_validate"])."</td></tr>";
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Comments')."</td>";
-         echo "<td>";
-         echo $this->fields["comment_submission"];
-         echo "</td></tr>";
-      }
-
-      if ($ID > 0) {
-         echo "<tr class='tab_bg_2'><td colspan='2'>&nbsp;</td></tr>";
-
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Status of the approval request')."</td>";
-         $bgcolor = self::getStatusColor($this->fields['status']);
-         echo "<td><span style='background-color:".$bgcolor.";'>".
-               self::getStatus($this->fields["status"])."</span></td></tr>";
-
-         if ($validator) {
-            echo "<tr class='tab_bg_1'>";
-            echo "<td>".__('Status of my validation')."</td>";
-            echo "<td>";
-            self::dropdownStatus("status", ['value' => $this->fields["status"]]);
-            echo "</td></tr>";
-
-            echo "<tr class='tab_bg_1'>";
-            echo "<td>".__('Approval comments')."<br>(".__('Optional when approved').")</td>";
-            echo "<td><textarea cols='60' rows='3' name='comment_validation'>".
-                       $this->fields["comment_validation"]."</textarea>";
-            echo "</td></tr>";
-
-         } else {
-            $status = [self::REFUSED,self::ACCEPTED];
-            if (in_array($this->fields["status"], $status)) {
-               echo "<tr class='tab_bg_1'>";
-               echo "<td>".__('Approval comments')."</td>";
-               echo "<td>".$this->fields["comment_validation"]."</td></tr>";
-            }
-         }
-      }
-
-      $this->showFormButtons($options);
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            [
+               'name' => $ID > 0 ? 'update' : 'add',
+               'value' => $ID > 0 ? _x('button', 'Save') : _x('button', 'Add'),
+               'class' => 'btn btn-secondary',
+            ]
+         ],
+         'content' => [
+            $this->getTypeName() => [
+               'visible' => true,
+               'inputs' => [
+                  $ID > 0 ? [
+                     'type' => 'hidden',
+                     'name' => 'id',
+                     'value' => $ID,
+                  ] : [],
+                  ($validation_admin) ? [
+                     'type' => 'hidden',
+                     'name' => static::$items_id,
+                     'value' => $this->fields[static::$items_id],
+                  ] : [],
+                  ($validation_admin) && ($ID > 0) ? [
+                     'type' => 'hidden',
+                     'name' => 'users_id_validate',
+                     'value' => $this->fields["users_id_validate"],
+                  ] : [],
+                  __('Approval requester') => [
+                     'content' => getUserName($this->fields["users_id"]),
+                  ],
+                  [
+                     'type' => 'hidden',
+                     'name' => 'validatortype',
+                     'value' => 'user',
+                  ],
+                  __('Approver') => ($validation_admin) ? ($ID > 0 ? [
+                     getUserName($this->fields["users_id_validate"])
+                  ] : [
+                     'type' => 'select',
+                     'name' => 'users_id_validate[]',
+                     'values' => getOptionsForUsers('validate_incident', ['entitites_id' => $entity]),
+                  ]) : [
+                     'content' => getUserName($this->fields["users_id_validate"]),
+                  ],
+                  __('Comments') => ($validation_admin) ? [
+                     'type' => 'textarea',
+                     'name' => "comment_submission",
+                     'value' => $this->fields["comment_submission"],
+                  ] : [
+                     'content' => $this->fields["comment_submission"],
+                  ],
+               ],
+            ],
+            __('Status') => ($ID > 0) ? [
+               'visible' => true,
+               'inputs' => [
+                  __('Status of the approval request') => [
+                     'content' => self::getStatus($this->fields["status"])
+                  ],
+                  __('Status of my validation') => ($validator) ? [
+                     'type' => 'select',
+                     'name' => 'status',
+                     'values' => self::getAllStatusArray(),
+                     'value' => $this->fields["status"],
+                  ] : [],
+                  __('Approval comments')." (".__('Optional when approved').")" => ($validator) ? [
+                     'type' => 'textarea',
+                     'name' => 'comment_validation',
+                     'value' => $this->fields["comment_validation"],
+                  ] : [
+                     'content' => $this->fields["comment_validation"],
+                  ]
+               ]
+            ] : [],
+         ]
+      ];
+      renderTwigForm($form);
 
       return true;
    }

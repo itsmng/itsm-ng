@@ -3,7 +3,7 @@
 <body>
     <div id='firstboxlogin'>
         <h1 id='logo_login'></h1>
-        <div id='text-login'>{{text_login}}</div>
+        <div id='text-login'>{{text_login|raw}}</div>
     <div id='boxlogin'>
         <form action='{{root_doc}}/front/login.php' method='post'>
             <input type='hidden' name='_glpi_csrf_token' value={{csrf_token}} />

@@ -57,6 +57,21 @@ if (isset($_POST["add"])) {
    $task->check(-1, CREATE, $_POST);
    $task->add($_POST);
 
+   if (isset($_POST['files'])) {
+      $files = json_decode(stripslashes($_POST['files']), true);
+      foreach ($files as $file) {
+         $doc = ItsmngUploadHandler::addFileToDb($file);
+         ItsmngUploadHandler::linkDocToItem(
+            $doc->getID(),
+            Session::getActiveEntity(),
+            Session::getIsActiveEntityRecursive(),
+            $_POST['itemtype'],
+            $_POST['items_id'],
+            Session::getLoginUserID()
+         );
+      }
+   }
+
    Event::log($task->getField($fk), strtolower($itemtype), 4, "tracking",
               //TRANS: %s is the user login
               sprintf(__('%s adds a task'), $_SESSION["glpiname"]));

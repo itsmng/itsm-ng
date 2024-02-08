@@ -111,81 +111,75 @@ class Pdu_Plug extends CommonDBRelation {
       $items = iterator_to_array($items);
 
       if ($canedit) {
-         $rand = mt_rand();
-         echo "\n<form id='form_device_add$rand' name='form_device_add$rand'
-               action='".Toolbox::getItemTypeFormURL(__CLASS__)."' method='post'>\n";
-         echo "\t<input type='hidden' name='pdus_id' value='$ID'>\n";
-         //echo "\t<input type='hidden' name='itemtype' value='".$item->getType()."'>\n";
-         echo "<table class='tab_cadre_fixe'><tr class='tab_bg_1'><td>";
-         echo "<label for='dropdown_plugs_id$rand'>" .__('Add a new plug')."</label></td><td>";
-         Plug::dropdown([
-            'name'   => "plugs_id",
-            'rand'   => $rand
-         ]);
-         echo "</td><td>";
-         echo "<label for='number_plugs'>" . __('Number');
-         echo "</td><td>";
-         echo Html::input(
-            'number_plugs', [
-               'id'     => 'number_plugs',
-               'type'   => 'number',
-               'min'    => 1
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add an item'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               __('Add an item') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'pdus_id',
+                        'value' => $ID
+                     ],
+                     __('Add a new plug') => [
+                        'type' => 'select',
+                        'name' => 'plugs_id',
+                        'values' => getOptionForItems(Plug::class),
+                        'actions' => getItemActionButtons(['info', 'add'], Plug::class),
+                     ],
+                     __('Number') => [
+                        'type' => 'number',
+                        'name' => 'number_plugs',
+                        'col_lg' => 6,
+                     ],
+                  ]
+               ]
             ]
-         );
-         echo "</td><td>";
-         echo "<input type='submit' class='submit' name='add' value='"._sx('button', 'Add')."'>";
-         echo "</td></tr></table>";
-         Html::closeForm();
+         ];
+         renderTwigForm($form);
       }
 
-      if (!count($items)) {
-         echo "<table class='tab_cadre_fixe'><tr><th>".__('No plug found')."</th></tr>";
-         echo "</table>";
-      } else {
-         if ($canedit) {
-            $massiveactionparams = [
-               'num_displayed'   => min($_SESSION['glpilist_limit'], count($items)),
-               'container'       => 'mass'.__CLASS__.$rand
-            ];
-            Html::showMassiveActions($massiveactionparams);
-         }
-
-         echo "<table class='tab_cadre_fixehov' id='mass".__CLASS__.$rand."'>";
-         $header = "<tr>";
-         if ($canedit) {
-            $header .= "<th width='10'>";
-            $header .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header .= "</th>";
-         }
-         $header .= "<th>".__('Name')."</th>";
-         $header .= "<th>".__('Number')."</th>";
-         $header .= "</tr>";
-
-         echo $header;
-         foreach ($items as $row) {
-            $item = new Plug;
-            $item->getFromDB($row['plugs_id']);
-            echo "<tr lass='tab_bg_1'>";
-            if ($canedit) {
-               echo "<td>";
-               Html::showMassiveActionCheckBox(__CLASS__, $row["id"]);
-               echo "</td>";
-            }
-            echo "<td>" . $item->getLink() . "</td>";
-            echo "<td>{$row['number_plugs']}</td>";
-            echo "</tr>";
-         }
-         echo $header;
-         echo "</table>";
-
-         if ($canedit && count($items)) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-         }
-         if ($canedit) {
-            Html::closeForm();
-         }
+      if ($canedit) {
+         $massiveactionparams = [
+            'container'       => 'tableForPDUPlug',
+            'display_arrow' => false,
+            'specific_actions' => [
+               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+            ],
+         ];
+         Html::showMassiveActions($massiveactionparams);
       }
+
+      $fields = [
+         __('Name'),
+         __('Number')
+      ];
+      $values = [];
+      $massive_action = [];
+      foreach ($items as $row) {
+         $item = new Plug;
+         $item->getFromDB($row['plugs_id']);
+         $values[] = [
+            $item->getLink(),
+            $row['number_plugs']
+         ];
+         $massive_action[] = sprintf('item[%s][%s]', self::class, $row['id']);
+      }
+      renderTwigTemplate('table.twig', [
+         'id' => 'tableForPDUPlug',
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 
    function getForbiddenStandardMassiveAction() {
