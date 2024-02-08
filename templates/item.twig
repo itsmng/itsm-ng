@@ -41,7 +41,6 @@
 	for (i in save) {
 		for (j in items) {
 			if ($(items[j]).children('div').html() === save[i].content) {
-        console.log($(items[j]).attr('id').replace('ContentFor', ''));
 				save[i].name = $(items[j]).attr('id').replace('ContentFor', '');
 			}
 		};
@@ -58,30 +57,30 @@
   }
 
   // Update grid content based on the user's interaction with the dropdown menu
-  function updateGridContent(target) {
+  async function updateGridContent(target) {
     const val = target.attr('data-value');
     const inp = target.children('input');
     inp.prop('checked', !inp.prop('checked'));
     
     if (val === 'all') {
-      $('.dropdown-menu a').each((i, e) => {
-		let otherInp = $(e).children('input');
-		if ($(e).attr('data-value') !== 'all') {
-			otherInp.prop('checked', inp.prop('checked'));
-			handleDropdownOption($(e), inp.prop('checked'))
-		}
-	  });
+      await $('.dropdown-menu a').each(async (i, e) => {
+        let otherInp = $(e).children('input');
+        if ($(e).attr('data-value') !== 'all') {
+          otherInp.prop('checked', inp.prop('checked'));
+          await handleDropdownOption($(e), inp.prop('checked'));
+        }
+      });
       return;
     }
-    handleDropdownOption(target, inp.prop('checked'));
+    await handleDropdownOption(target, inp.prop('checked'));
   }
 
   // Handles individual dropdown options
-  function handleDropdownOption(option, isChecked) {
+  async function handleDropdownOption(option, isChecked) {
     const val = option.attr('data-value');
     if (isChecked && !options.includes(val)) {
       options.push(val);
-      moveAndMakeWidget(val);
+      await moveAndMakeWidget(val);
     } else if (!isChecked && options.includes(val)) {
       options.splice(options.indexOf(val), 1);
       moveAndRemoveWidget(val);
@@ -99,24 +98,21 @@
   }
 
   // Moves the widget to hidden area and removes it from the grid
-  function moveAndMakeWidget(val) {
+  async function moveAndMakeWidget(val) {
 	  const element = $(`#ContentFor${val}`);
     const body = $(`#ContentFor${val} .card-body`);
     if (body.html() === '') {
       body.html('<div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>');
-      $.ajax({
+      await $.ajax({
         url: '{{glpiroot}}/ajax/common.tabs.php?' + body.attr('data-params'),
         type: 'GET',
         success: (data) => {
           body.html(data);
-          element.detach().appendTo('#ContentForTabs');
-          grid.makeWidget(element[0]);
         },
       });
-    } else {
-      element.detach().appendTo('#ContentForTabs');
-      grid.makeWidget(element[0]);
     }
+    element.detach().appendTo('#ContentForTabs');
+    grid.makeWidget(element[0]);
   }
 
 
@@ -147,24 +143,27 @@
   // Document ready function
   $(document).ready(() => {
     // Handle widgets based on whether there's only one tab or more
-    function handleInitialWidgets() {
+    async function handleInitialWidgets() {
       const savedLayout = {{selectedTabs|json_encode|raw}} ?? [];
 
-        if ({{tabs | length == 1 ? 1 : 0}}) {
-          moveAndMakeWidget($('#hidden_gridStack_items > div').first().attr('id').replace('ContentFor', ''));
-        } else {
-          $('.dropdown-menu a').each((i, e) => {
-            if ($(e).children('input').prop('checked')) {
-              moveAndMakeWidget($(e).attr('data-value'));
-            }
-          });
-        }
-        if ({{(tabs|length == 1 or selectedTabs|length == 0) ? 1 : 0}}) {
-          updateWidgetWidth()
-          grid.setStatic(true);
-        }
+      let widgetName = '';
+      if ({{tabs | length == 1 ? 1 : 0}}) {
+        widgetName = $('#hidden_gridStack_items > div').first().attr('id').replace('ContentFor', '');
+        moveAndMakeWidget(widgetName).then(() => {
+          if ({{(tabs|length == 1 or selectedTabs|length == 0) ? 1 : 0}}) {
+            updateWidgetWidth()
+            grid.setStatic(true);
+          }
+        });
+      } else {
+        $('.dropdown-menu a').each(async (i, e) => {
+          if ($(e).children('input').prop('checked')) {
+            widgetName = $(e).attr('data-value');
+            await moveAndMakeWidget(widgetName)
+          }
+        });
+      }
     }
-
     initCheckbox();
     handleInitialWidgets();
   });
@@ -172,18 +171,20 @@
   // Dropdown menu item click handlers
   $('.tab-selector a').on('click', function(event) {
     event.preventDefault();
-    updateGridContent($(this));
-    updateWidgetWidth();
-  	saveGrid();
-	  return false;
+    updateGridContent($(this)).then(() => {
+      updateWidgetWidth();
+      saveGrid();
+    });
+    return false;
   });
 
   $('.tab-selector input[type="checkbox"]').on('click', function(event) {
     event.preventDefault();
     event.target.checked = !event.target.checked;
-    updateGridContent($(this).parent());
-    updateWidgetWidth();
-  	saveGrid();
+    updateGridContent($(this).parent()).then(() => {
+      updateWidgetWidth();
+      saveGrid();
+    });
   });
 
   grid.on('resizestop', (event, element) => {
