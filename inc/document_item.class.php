@@ -725,28 +725,103 @@ class Document_Item extends CommonDBRelation{
 
          if (Document::canView()
              && ($nb > count($used))) {
-            echo "<form name='document_form".$params['rand']."' id='document_form".$params['rand'].
-                  "' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-            echo "<table class='tab_cadre_fixe'>";
-            echo "<tr class='tab_bg_1'>";
-            echo "<td colspan='4' class='center'>";
-            echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
-            echo "<input type='hidden' name='items_id' value='".$item->getID()."'>";
-            if ($item->getType() == 'Ticket') {
-               echo "<input type='hidden' name='tickets_id' value='".$item->getID()."'>";
-               echo "<input type='hidden' name='documentcategories_id' value='".
-                      $CFG_GLPI["documentcategories_id_forticket"]."'>";
+            $values = getOptionForItems(Document::class, [
+               'entities_id' => $entities,
+            ]);
+            $criteria = [
+               'FROM'   => 'glpi_documentcategories',
+               'WHERE'  => [
+                  'id' => new QuerySubQuery([
+                     'SELECT'          => 'documentcategories_id',
+                     'DISTINCT'        => true,
+                     'FROM'            => 'glpi_documents',
+                  ])
+               ],
+               'ORDER'  => 'name'
+            ];
+            $iterator = $DB->request($criteria);
+      
+            $headings = [];
+            while ($data = $iterator->next()) {
+               $headings[$data['id']] = $data['name'];
             }
-
-            Document::dropdown(['entity' => $entities ,
-                                     'used'   => $used]);
-            echo "</td><td class='center' width='20%'>";
-            echo "<input type='submit' name='add' value=\"".
-                     _sx('button', 'Associate an existing document')."\" class='submit'>";
-            echo "</td>";
-            echo "</tr>";
-            echo "</table>";
-            Html::closeForm();
+      
+            foreach ($used as $id) {
+               unset($values[$id]);
+            }
+            $form = [
+               'method' => 'post',
+               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+               'buttons' => [
+                  [
+                     'type' => 'submit',
+                     'name' => 'add',
+                     'value' => _sx('button', 'Associate an existing document'),
+                     'class' => 'btn btn-secondary'
+                  ]
+               ],
+               'content' => [
+                  __('Associate an existing document') => [
+                     'visible' => true,
+                     'inputs' => [
+                        __('Heading') => [
+                           'type' => 'select',
+                           'id' => 'selectForRubDocId',
+                           'name' => '_rubdoc',
+                           'values' => [Dropdown::EMPTY_VALUE] + $headings,
+                           'col_lg' => 6,
+                           'hooks' => [
+                              'change' => <<<JS
+                              var rubdoc = $('#selectForRubDocId').val();
+                              var entity = $entity;
+                              $.ajax({
+                                 url: "{$CFG_GLPI['root_doc']}/ajax/dropdownRubDocument.php",
+                                 method: "POST",
+                                 data: {rubdoc: rubdoc, entity: entity},
+                                 success: function(data) {
+                                    const jsonData = JSON.parse(data);
+                                    $('#selectForDocumentId').empty();
+                                    for (const i in jsonData) {
+                                       $('#selectForDocumentId').append('<option value="' + i + '">' + jsonData[i] + '</option>');
+                                    } 
+                                 }
+                              });
+                              JS,
+                           ]
+                        ],
+                        Document::getTypeName() => [
+                           'type' => 'select',
+                           'id' => 'selectForDocumentId',
+                           'name' => 'documents_id',
+                           'values' => getOptionForItems(Document::class),
+                           'col_lg' => 6,
+                           'actions' => getItemActionButtons(['info'], Document::class)
+                        ],               
+                        [
+                           'type' => 'hidden',
+                           'name' => 'itemtype',
+                           'value' => $item->getType()
+                        ],
+                        [
+                           'type' => 'hidden',
+                           'name' => 'items_id',
+                           'value' => $item->getID()
+                        ],
+                        $item->getType() == 'Ticket' ? [
+                           'type' => 'hidden',
+                           'name' => 'tickets_id',
+                           'value' => $item->getID()
+                        ] : [],
+                        $item->getType() == 'Ticket' ? [
+                           'type' => 'hidden',
+                           'name' => 'documentcategories_id',
+                           'value' => $CFG_GLPI["documentcategories_id_forticket"]
+                        ] : [],
+                     ]
+                  ]
+               ]
+            ];
+            renderTwigForm($form);
          }
       }
    }
