@@ -987,28 +987,26 @@ class MassiveAction {
                   'col_md' => 12,
                ]
             ]);
-
-            echo __("Amendment to insert");
-            echo ("<br><br>");
-            Html::textarea([
-               'name' => 'amendment'
-            ]);
-            echo ("<br><br>");
             echo Html::submit(__('Update'), [
-               'name' => 'massiveaction'
+               'name' => 'massiveaction',
+               'class' => 'btn btn-secondary'
             ]);
 
             return true;
 
          case 'add_note':
-            echo __("New Note");
-            echo ("<br><br>");
-            Html::textarea([
-               'name' => 'add_note'
+            renderTwigTemplate('macros/wrappedInput.twig', [
+               'title' => __("New Note"),
+               'input' => [
+                  'type' => 'textarea',
+                  'name' => 'add_note',
+                  'col_lg' => 12,
+                  'col_md' => 12,
+               ]
             ]);
-            echo ("<br><br>");
             echo Html::submit(_sx('button', 'Add'), [
-               'name' => 'massiveaction'
+               'name' => 'massiveaction',
+               'class' => 'btn btn-secondary'
             ]);
 
             return true;
