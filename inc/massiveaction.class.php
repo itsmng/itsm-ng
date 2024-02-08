@@ -942,7 +942,7 @@ class MassiveAction {
             if (isset($ma->POST['submitname']) && $ma->POST['submitname']) {
                $submitname= stripslashes($ma->POST['submitname']);
             }
-            echo Html::submit($submitname, ['name' => 'massiveaction']);
+            echo Html::submit($submitname, ['name' => 'massiveaction', "class" => "btn btn-secondary"]);
 
             return true;
 
