@@ -1116,8 +1116,10 @@ class CommonGLPI {
             //restore
             unset($CFG_GLPI['checkbox-zero-on-empty']);
 
-            echo Html::scriptBlock( "$(function() {
-               var ma = ".json_encode($input).";
+            $encoded_input = json_encode($input);
+            echo Html::scriptBlock( <<<JS
+            (function($) {
+               var ma = $encoded_input;
 
                $(document).on('click', '.moreactions', function() {
                   $('.moreactions + .dropdown-menu').toggle();
@@ -1146,15 +1148,15 @@ class CommonGLPI {
                      appendTo: '#dialog_container_$rand',
                      close: function() { $(this).remove(); },
                   }).load(
-                     '".$CFG_GLPI['root_doc']. "/ajax/dropdownMassiveAction.php',
+                     '{$CFG_GLPI['root_doc']}/ajax/dropdownMassiveAction.php',
                      Object.assign(
                         {action: current_action},
                         ma
                      )
                   );
                });
-            });");
-            
+            })(jQuery);
+            JS); 
          }
 
          if ($current !== false) {
