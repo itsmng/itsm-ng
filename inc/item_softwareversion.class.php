@@ -1111,7 +1111,7 @@ class Item_SoftwareVersion extends CommonDBRelation
                         'type' => 'select',
                         'id' => 'dropdownForSoftware',
                         'name' => 'softwareversions_id',
-                        'values' => getOptionForItems('Software', ['entities_id' => $entities_id]),
+                        'values' => getOptionForItems('Software', ['entities_id' => $entities_id, 'is_template' => 0]),
                         'col_lg' => 6,
                         'hooks' => [
                            'change' => <<<JS
@@ -1128,7 +1128,6 @@ class Item_SoftwareVersion extends CommonDBRelation
                                  type: 'POST',
                                  data: {
                                     softwares_id: softwareversions_id,
-                                    myname: 'softwareversions_id',
                                  },
                                  dataType: 'json',
                                  success: function(data) {
@@ -1166,124 +1165,89 @@ class Item_SoftwareVersion extends CommonDBRelation
       }
 
       $installed = [];
+      $installedSoftware = [];
 
-      if ($number) {
-         $massActionContainer = 'mass' . __CLASS__ . $rand;
-         if ($canedit) {
-            $massiveactionparams = [
-               'container' => $massActionContainer,
-               'specific_actions' => [
-                  'purge' => _x('button', 'Delete permanently')
-               ],
-               'display_arrow' => false,
-            ];
+      $massActionContainerSoftware = 'mass' . __CLASS__ . $rand;
+      if ($canedit) {
+         $massiveactionparams = [
+            'container' => $massActionContainerSoftware,
+            'specific_actions' => [
+               'purge' => _x('button', 'Delete permanently')
+            ],
+            'display_arrow' => false,
+         ];
 
-            Html::showMassiveActions($massiveactionparams);
-         }
-         $fields = [
-            __('Name'),
-            __('Status'),
-            _n('Version', 'Versions', 1),
-            SoftwareLicense::getTypeName(1),
-            __('Installation date')
+         Html::showMassiveActions($massiveactionparams);
+      }
+      $fields = [
+         __('Name'),
+         __('Status'),
+         _n('Version', 'Versions', 1),
+         SoftwareLicense::getTypeName(1),
+         __('Installation date')
+      ];
+      if (Plugin::haveImport()) {
+         $fields[] = __('Automatic inventory');
+      }
+      $fields[] = SoftwareCategory::getTypeName(1);
+      $fields[] = __('Valid license');
+
+      $values = [];
+      $massive_action = [];
+      $datas = iterator_to_array($iterator);
+      foreach ($datas as $data) {
+         $licids = self::softwareByCategory(
+            $data,
+            $itemtype,
+            $items_id,
+            $withtemplate,
+            $canedit,
+            false
+         );
+
+         $category = new SoftwareCategory();
+         $category->getFromDB($data['softwarecategories_id']);
+         $soft = new Software();
+         $soft->getFromDB($data['softwares_id']);
+         $version = new SoftwareVersion();
+         $version->getFromDB($data['verid']);
+         $newValue = [
+            $soft->getLink(),
+            $data['state'],
+            $version->getLink(),
+            implode('<br>', $licids),
+            Html::convDate($data['dateinstall']),
          ];
          if (Plugin::haveImport()) {
-            $fields[] = __('Automatic inventory');
+            $newValue[] = $data['is_dynamic'] ? __('Yes') : __('No');
          }
-         $fields[] = SoftwareCategory::getTypeName(1);
-         $fields[] = __('Valid license');
-
-         $values = [];
-         $massive_action = [];
-         $datas = iterator_to_array($iterator);
-         foreach ($datas as $data) {
-            $licids = self::softwareByCategory(
-               $data,
-               $itemtype,
-               $items_id,
-               $withtemplate,
-               $canedit,
-               false
-            );
-
-            $category = new SoftwareCategory();
-            $category->getFromDB($data['softwarecategories_id']);
-            $soft = new Software();
-            $soft->getFromDB($data['softwares_id']);
-            $version = new SoftwareVersion();
-            $version->getFromDB($data['verid']);
-            $newValue = [
-               $soft->getLink(),
-               $data['state'],
-               $version->getLink(),
-               implode('<br>', $licids),
-               Html::convDate($data['dateinstall']),
-            ];
-            if (Plugin::haveImport()) {
-               $newValue[] = $data['is_dynamic'] ? __('Yes') : __('No');
-            }
-            $newValue[] = $category->getLink();
-            $newValue[] = $data['softvalid'] ? __('Yes') : __('No');
-            $values[] = $newValue;
-            foreach ($licids as $licid) {
-               Session::addToNavigateListItems('SoftwareLicense', $licid);
-               $installed[] = $licid;
-            }
-            $massive_action[] = sprintf('item[%s][%s]', self::class, $data['id']);
+         $newValue[] = $category->getLink();
+         $newValue[] = $data['softvalid'] ? __('Yes') : __('No');
+         $values[] = $newValue;
+         $installedSoftware[] = $data['softwares_id'];
+         foreach ($licids as $licid) {
+            Session::addToNavigateListItems('SoftwareLicense', $licid);
+            $installed[] = $licid;
          }
-         renderTwigTemplate('table.twig', [
-            'id' => $massActionContainer,
-            'fields' => $fields,
-            'values' => $values,
-            'massive_action' => $massive_action,
-         ]);
-
-         echo "<div class='spaced'>";
-         echo "<table class='tab_cadre_fixehov'>";
-
-         for ($row = 0; $data = $iterator->next(); $row++) {
-
-            if (($row >= $start) && ($row < ($start + $_SESSION['glpilist_limit']))) {
-               $licids = self::softwareByCategory(
-                  $data,
-                  $itemtype,
-                  $items_id,
-                  $withtemplate,
-                  $canedit,
-                  true
-               );
-            } else {
-               $licids = self::softwareByCategory(
-                  $data,
-                  $itemtype,
-                  $items_id,
-                  $withtemplate,
-                  $canedit,
-                  false
-               );
-            }
-            Session::addToNavigateListItems('Software', $data["softwares_id"]);
-
-            foreach ($licids as $licid) {
-               Session::addToNavigateListItems('SoftwareLicense', $licid);
-               $installed[] = $licid;
-            }
-         }
-
-         echo "</table>";
-         if ($canedit) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-         }
-      } else {
-         echo "<p class='center b'>" . __('No item found') . "</p>";
+         $massive_action[] = sprintf('item[%s][%s]', self::class, $data['id']);
       }
+      renderTwigTemplate('table.twig', [
+         'id' => $massActionContainerSoftware,
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
+
       if ((empty($withtemplate) || ($withtemplate != 2))
          && $canedit
       ) {
+         $allOptions = getOptionForItems(Software::class, ['entities_id' => $entities_id, 'is_template' => 0]);
+         $options = [];
+         foreach($installedSoftware as $id) {
+            $options[$id] = $allOptions[$id];
+         }
          $form = [
-            'action' => Item_SoftwareVersion::getFormURL(),
+            'action' => Item_SoftwareLicense::getFormURL(),
             'buttons' => [
                'Install' => [
                   'type' => 'submit',
@@ -1296,11 +1260,12 @@ class Item_SoftwareVersion extends CommonDBRelation
                SoftwareLicense::getTypeName(Session::getPluralNumber()) => [
                   'visible' => 'true',
                   'inputs' => [
+                     // only software installed on item
                      Software::getTypeName(Session::getPluralNumber()) => [
                         'type' => 'select',
                         'id' => 'softwareDropdownForLicence',
                         'name' => 'softwares_id',
-                        'values' => getOptionForItems('Software', ['entities_id' => $entities_id]),
+                        'values' => [Dropdown::EMPTY_VALUE] + $options,
                         'col_lg' => 6,
                         'hooks' => [
                            'change' => <<<JS
@@ -1317,7 +1282,6 @@ class Item_SoftwareVersion extends CommonDBRelation
                                  type: 'POST',
                                  data: {
                                     softwares_id: softwareversions_id,
-                                    myname: 'softwares_id',
                                     entity_restrict: 0,
                                  },
                                  dataType: 'json',
@@ -1359,8 +1323,6 @@ class Item_SoftwareVersion extends CommonDBRelation
          ];
          renderTwigForm($form);
       }
-      echo "<div class='spaced'>";
-      // Affected licenses NOT installed
       $lic_where = [];
       if (count($installed)) {
          $lic_where['NOT'] = ['glpi_softwarelicenses.id' => $installed];
@@ -1420,61 +1382,50 @@ class Item_SoftwareVersion extends CommonDBRelation
       }
       $lic_iterator = $DB->request($lic_request);
 
-      if ($number = $lic_iterator->count()) {
-         if ($canedit) {
-            $rand = mt_rand();
-            Html::openMassiveActionsForm('massSoftwareLicense' . $rand);
-
-            $actions = ['Item_SoftwareLicense' . MassiveAction::CLASS_ACTION_SEPARATOR .
-               'install' => _x('button', 'Install')];
-            if (SoftwareLicense::canUpdate()) {
-               $actions['purge'] = _x('button', 'Delete permanently');
-            }
-
-            $massiveactionparams = [
-               'num_displayed'    => min($_SESSION['glpilist_limit'], $number),
-               'container'        => 'massSoftwareLicense' . $rand,
-               'specific_actions' => $actions
-            ];
-
-            Html::showMassiveActions($massiveactionparams);
-         }
-         echo "<table class='tab_cadre_fixehov'>";
-
-         $header_begin  = "<tr>";
-         $header_top    = '';
-         $header_bottom = '';
-         $header_end    = '';
-         if ($canedit) {
-            $header_begin  .= "<th width='10'>";
-            $header_top    .= Html::getCheckAllAsCheckbox('massSoftwareLicense' . $rand);
-            $header_bottom .= Html::getCheckAllAsCheckbox('massSoftwareLicense' . $rand);
-            $header_end    .= "</th>";
-         }
-         $header_end .= "<th>" . __('Name') . "</th><th>" . __('Status') . "</th>";
-         $header_end .= "<th>" . _n('Version', 'Versions', 1) . "</th><th>" . SoftwareLicense::getTypeName(1) . "</th>";
-         $header_end .= "<th>" . __('Installation date') . "</th>";
-         $header_end .= "</tr>\n";
-         echo $header_begin . $header_top . $header_end;
-
-         foreach ($lic_iterator as $data) {
-            self::displaySoftwareByLicense($data, $withtemplate, $canedit);
-            Session::addToNavigateListItems('SoftwareLicense', $data["id"]);
+      $massActionContainerSoftwareLicense = 'massSoftwareLicense' . $rand;
+      if ($canedit) {
+         $actions = [
+            'Item_SoftwareLicense' . MassiveAction::CLASS_ACTION_SEPARATOR .
+            'install' => _x('button', 'Install')
+         ];
+         if (SoftwareLicense::canUpdate()) {
+            $actions['purge'] = _x('button', 'Delete permanently');
          }
 
-         echo $header_begin . $header_bottom . $header_end;
+         $massiveactionparams = [
+            'display_arrow' => false,
+            'container'        => $massActionContainerSoftwareLicense,
+            'specific_actions' => $actions,
+            'is_deleted' => 0,
+         ];
 
-         echo "</table>";
-         if ($canedit) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-         }
-      } else {
-         echo "<p class='center b'>" . __('No item found') . "</p>";
+         Html::showMassiveActions($massiveactionparams);
       }
-
-      echo "</div>\n";
+      $fields = [
+         __('Name'),
+         __('Status'),
+         _n('Version', 'Versions', 1),
+         SoftwareLicense::getTypeName(1),
+      ];
+      $values = [];
+      $massive_action = [];
+      $datas = iterator_to_array($lic_iterator);
+      foreach ($datas as $data) {
+         $newValue = [
+            $data['softname'],
+            $data['state'],
+            $data['version'],
+            $data['name'],
+         ];
+         $values[] = $newValue;
+         $massive_action[] = sprintf('item[%s][%s]', Item_SoftwareLicense::class, $data['linkid']);
+      }
+      renderTwigTemplate('table.twig', [
+         'id' => $massActionContainerSoftwareLicense,
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 
 
