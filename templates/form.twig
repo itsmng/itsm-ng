@@ -66,7 +66,7 @@
 {% endif %}{% endfor %}
 </div>
 </form>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="{{root_doc}}/node_modules/jquery/dist/jquery.min.js"></script>
 <script>
 {% for bloc in form.content %}
     {% for input in bloc.inputs %}

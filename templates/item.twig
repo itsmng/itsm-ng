@@ -41,6 +41,7 @@
 	for (i in save) {
 		for (j in items) {
 			if ($(items[j]).children('div').html() === save[i].content) {
+        console.log($(items[j]).attr('id').replace('ContentFor', ''));
 				save[i].name = $(items[j]).attr('id').replace('ContentFor', '');
 			}
 		};

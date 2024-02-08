@@ -58,6 +58,7 @@ class Ajax {
     * @return void|string (see $options['display'])
     */
    static function createModalWindow($name, $url, $options = []) {
+      global $CFG_GLPI;
 
       $param = ['width'           => 800,
                      'height'          => 400,
@@ -76,36 +77,49 @@ class Ajax {
          }
       }
 
-      $out  = "<script type='text/javascript'>\n";
-      $out .= "var $name;";
-      $out .= "$(function() {";
-      $out .= "$name=";
+      $out  = "<script src='{$CFG_GLPI['root_doc']}/node_modules/jquery/dist/jquery.min.js'></script>";
+      $out  .= "<script src='{$CFG_GLPI['root_doc']}/node_modules/jquery-ui/dist/jquery-ui.min.js'></script>";
+      $out  .= "<script type='text/javascript'>\n";
+      $container = '';
       if (!empty($param['container'])) {
-         $out .= Html::jsGetElementbyID(Html::cleanId($param['container']));
+         $container = Html::jsGetElementbyID(Html::cleanId($param['container']));
       } else {
-         $out .= "$('<div></div>')";
+         $container = "$('<div></div>')";
       }
-      $out .= ".dialog({\n
-         width:".$param['width'].",\n
-         autoOpen: false,\n
-         height:".$param['height'].",\n
-         modal: ".($param['modal']?'true':'false').",\n
-         title: \"".addslashes($param['title'])."\",\n
-         open: function (){
-            var fields = ";
+
+      $extraparams = '';
       if (is_array($param['extraparams']) && count($param['extraparams'])) {
-         $out .= json_encode($param['extraparams'], JSON_FORCE_OBJECT);
+         $extraparams = json_encode($param['extraparams'], JSON_FORCE_OBJECT);
       } else {
-         $out .= '{}';
+         $extraparams = '{}';
       }
-      $out .= ";\n";
+
+      $jsModalFields = '';
       if (!empty($param['js_modal_fields'])) {
-         $out .= $param['js_modal_fields']."\n";
+         $jsModalFields = $param['js_modal_fields'];
       }
-      $out .= "            $(this).load('$url', fields);
-         }
-      });\n";
-      $out .= "});";
+
+      $out .= <<<JS
+      var $name;
+      (function($) {
+         $name = $container.dialog({
+            width: {$param['width']},
+            autoOpen: false,
+            height: {$param['height']},
+            modal: {$param['modal']},
+            title: "{$param['title']}",
+            open: function () {
+               var fields = $extraparams;
+               $jsModalFields
+               if (Object.keys(fields).length > 0) {
+                  $(this).load('$url', fields);
+               } else {
+                  $(this).load('$url');
+               }
+            }
+         });
+      })(jQuery);
+      JS;
       $out .= "</script>\n";
 
       if ($param['display']) {

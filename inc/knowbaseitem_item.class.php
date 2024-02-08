@@ -207,42 +207,29 @@ class KnowbaseItem_Item extends CommonDBRelation {
          return;
       }
 
-      // Display the pager
-      $type_name = null;
-      if ($item->getType() == KnowbaseItem::getType()) {
-         $type_name = _n('Linked item', 'Linked items', 1);
-      } else {
-         $type_name = self::getTypeName(1);
-      }
-      Html::printAjaxPager($type_name, $start, $number);
-
       // Output events
-      echo "<div class='center'>";
-
+      $rand = 'ROMORMROM';
+      echo $rand;
+      $massiveActionContainerId = 'mass'.__CLASS__.$item->getID();
       if ($canedit) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams
-            = ['num_displayed'
-                        => min($_SESSION['glpilist_limit'], $number),
-                    'container'
-                        => 'mass'.__CLASS__.$rand];
+         $massiveactionparams = [
+            'num_displayed' => min($_SESSION['glpilist_limit'], $number),
+            'container' => $massiveActionContainerId,
+            'specific_actions' => [
+               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+            ],
+            'display_arrow' => false,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
-
-      $header = '<tr>';
-
-      if ($canedit) {
-         $header    .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand) . "</th>";
-      }
-
-      $header .= "<th>" . _n('Type', 'Types', 1) . "</th>";
-      $header .= "<th>"._n('Item', 'Items', 1)."</th>";
-      $header .= "<th>".__('Creation date')."</th>";
-      $header .= "<th>".__('Update date')."</th>";
-      $header .= "</tr>";
-      echo $header;
-
+      $fields = [
+         _n('Type', 'Types', 1),
+         _n('Item', 'Items', 1),
+         __('Creation date'),
+         __('Update date')
+      ];
+      $values = [];
+      $massive_action = [];
       foreach (self::getItems($item, $start, $_SESSION['glpilist_limit']) as $data) {
          $linked_item = null;
          if ($item->getType() == KnowbaseItem::getType()) {
@@ -262,34 +249,25 @@ class KnowbaseItem_Item extends CommonDBRelation {
          $link = $linked_item::getFormURLWithID($linked_item->getID());
 
          $createdate = $item::getType() == KnowbaseItem::getType() ? 'date_creation' : 'date';
-         // show line
-         echo "<tr class='tab_bg_2'>";
-
-         if ($canedit) {
-            echo "<td width='10'>";
-            Html::showMassiveActionCheckBox(__CLASS__, $data['id']);
-            echo "</td>";
-         }
-
          $type = $linked_item->getTypeName(1);
          if (isset($linked_item->fields['is_template']) && $linked_item->fields['is_template'] == 1) {
              $type .= ' (' . __('template') . ')';
          }
 
-         echo "<td>" . $type . "</td>" .
-                 "<td><a href=\"" . $link . "\">" . $name . "</a></td>".
-                 "<td class='tab_date'>".Html::convDateTime($linked_item->fields[$createdate])."</td>".
-                 "<td class='tab_date'>".Html::convDateTime($linked_item->fields['date_mod'])."</td>";
-         echo "</tr>";
+         $values[] = [
+            $type,
+            "<a href=\"$link\">$name</a>",
+            Html::convDateTime($linked_item->fields[$createdate]),
+            Html::convDateTime($linked_item->fields['date_mod'])
+         ];
+         $massive_action[] = sprintf("item[%s][%s]", self::class, $data['id']);
       }
-      echo $header;
-      echo "</table>";
-
-      $massiveactionparams['ontop'] = false;
-      Html::showMassiveActions($massiveactionparams);
-
-      echo "</div>";
-      Html::printAjaxPager($type_name, $start, $number);
+      renderTwigTemplate('table.twig', [
+         'id' => $massiveActionContainerId,
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 
    /**

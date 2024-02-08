@@ -38,11 +38,10 @@ global $DB;
 
 if (
     isset($_POST['itemName'])
-    && isset($_POST['content'])
 ) {
     $userId = Session::getLoginUserID();
     $itemName = $_POST['itemName'];
-    $content = json_encode($_POST['content']);
+    $content = json_encode($_POST['content'] ?? '');
     $DB->query(<<<SQL
         INSERT INTO `glpi_user_menu` (name, user_id, content)
             VALUES ('$itemName', $userId, '$content')
