@@ -359,7 +359,7 @@ class Cartridge extends CommonDBChild {
                _nx('cartridge', 'Worn', 'Worn', $old),
             ];
             $values = [ [$total, $unused, $used, $old], ];
-            renderTwigTemplate('table.twig', [ 'fields' => $fields, 'values' => $values, ]);
+            renderTwigTemplate('table.twig', [ 'fields' => $fields, 'values' => $values, 'minimal' => true]);
          } else {
             //TRANS : for display cartridges count : %1$d is the total number,
             //        %2$d the new one, %3$d the used one, %4$d worn one
