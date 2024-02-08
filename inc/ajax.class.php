@@ -797,17 +797,17 @@ class Ajax {
          
       }
       $out.= ")\n";
-      $out .= <<<JS
-         if (grid) {
-            setTimeout(function () {
-               $('#ContentForTabs > div').each(function () {
-                  if ($(this).css('display') != 'none') {
-                     grid.resizeToContent($(this)[0]);
-                  }
-               });
-            }, 100);
-         }
-      JS;
+      // $out .= <<<JS
+      //    if (grid) {
+      //       setTimeout(function () {
+      //          $('#ContentForTabs > div').each(function () {
+      //             if ($(this).css('display') != 'none') {
+      //                grid.resizeToContent($(this)[0]);
+      //             }
+      //          });
+      //       }, 100);
+      //    }
+      // JS;
       if ($display) {
          echo $out;
       } else {
