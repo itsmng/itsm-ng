@@ -877,109 +877,64 @@ class Document_Item extends CommonDBRelation{
          $used[$data['id']]           = $data['id'];
       }
 
-      echo "<div class='spaced'>";
+      $massiveActionContainerId = 'mass'.__CLASS__.$params['rand'];
       if ($canedit
-          && $number
-          && ($withtemplate < 2)) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$params['rand']);
-         $massiveactionparams = ['num_displayed'  => min($_SESSION['glpilist_limit'], $number),
-                                      'container'      => 'mass'.__CLASS__.$params['rand']];
+      && $number
+      && ($withtemplate < 2)) {
+         $massiveactionparams = [
+            'container'      => $massiveActionContainerId,
+            'display_arrow' => false,
+            'is_deleted' => 0,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
+      $fields = [
+         __('Name'),
+         Entity::getTypeName(1),
+         __('File'),
+         __('Web link'),
+         __('Heading'),
+         __('MIME type'),
+         __('Tag'),
+         _n('Date', 'Dates', 1)
+      ];
+      $values = [];
+      $massive_action = [];
+      $document = new Document();
+      foreach ($documents as $data) {
+         $docID        = $data["id"];
+         $link         = NOT_AVAILABLE;
+         $downloadlink = NOT_AVAILABLE;
 
-      echo "<table class='tab_cadre_fixehov'>";
+         if ($document->getFromDB($docID)) {
+            $link         = $document->getLink();
+            $downloadlink = $document->getDownloadLink($linkparam);
+         }
 
-      $header_begin  = "<tr>";
-      $header_top    = '';
-      $header_bottom = '';
-      $header_end    = '';
-      if ($canedit
-          && $number
-          && ($withtemplate < 2)) {
-         $header_top    .= "<th width='11'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$params['rand']);
-         $header_top    .= "</th>";
-         $header_bottom .= "<th width='11'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$params['rand']);
-         $header_bottom .= "</th>";
-      }
-
-      foreach ($columns as $key => $val) {
-         $header_end .= "<th".($sort == "$key" ? " class='order_$order'" : '').">".
-                        "<a href='javascript:reloadTab(\"sort=$key&amp;order=".
-                          (($order == "ASC") ?"DESC":"ASC")."&amp;start=0\");'>$val</a></th>";
-      }
-
-      $header_end .= "</tr>";
-      echo $header_begin.$header_top.$header_end;
-
-      $used = [];
-
-      if ($number) {
-         // Don't use this for document associated to document
-         // To not loose navigation list for current document
          if ($item->getType() != 'Document') {
-            Session::initNavigateListItems('Document',
-                              //TRANS : %1$s is the itemtype name,
-                              //        %2$s is the name of the item (used for headings of a list)
-                                           sprintf(__('%1$s = %2$s'),
-                                                   $item->getTypeName(1), $item->getName()));
+            Session::addToNavigateListItems('Document', $docID);
          }
-
-         $document = new Document();
-         foreach ($documents as $data) {
-            $docID        = $data["id"];
-            $link         = NOT_AVAILABLE;
-            $downloadlink = NOT_AVAILABLE;
-
-            if ($document->getFromDB($docID)) {
-               $link         = $document->getLink();
-               $downloadlink = $document->getDownloadLink($linkparam);
-            }
-
-            if ($item->getType() != 'Document') {
-               Session::addToNavigateListItems('Document', $docID);
-            }
-            $used[$docID] = $docID;
-            $assocID      = $data["assocID"];
-
-            echo "<tr class='tab_bg_1".($data["is_deleted"]?"_2":"")."'>";
-            if ($canedit
-                && ($withtemplate < 2)) {
-               echo "<td width='10'>";
-               Html::showMassiveActionCheckBox(__CLASS__, $data["assocID"]);
-               echo "</td>";
-            }
-            echo "<td class='center'>$link</td>";
-            echo "<td class='center'>".$data['entity']."</td>";
-            echo "<td class='center'>$downloadlink</td>";
-            echo "<td class='center'>";
-            if (!empty($data["link"])) {
-               echo "<a target=_blank href='".Toolbox::formatOutputWebLink($data["link"])."'>".$data["link"];
-               echo "</a>";
-            } else {
-               echo "&nbsp;";
-            }
-            echo "</td>";
-            echo "<td class='center'>".Dropdown::getDropdownName("glpi_documentcategories",
-                                                                 $data["documentcategories_id"]);
-            echo "</td>";
-            echo "<td class='center'>".$data["mime"]."</td>";
-            echo "<td class='center'>";
-            echo !empty($data["tag"]) ? Document::getImageTag($data["tag"]) : '';
-            echo "</td>";
-            echo "<td class='center'>".Html::convDateTime($data["assocdate"])."</td>";
-            echo "</tr>";
-            $i++;
-         }
-         echo $header_begin.$header_bottom.$header_end;
+         $used[$docID] = $docID;
+         $assocID      = $data["assocID"];
+         
+         $values[] = [
+            $link,
+            $data['entity'],
+            $downloadlink,
+            !empty($data['link']) ? $data['link'] : NOT_AVAILABLE,
+            $data['headings'],
+            $data['mime'],
+            !empty($data['tag']) ? Document::getImageTag($data['tag']) : '',
+            Html::convDateTime($data['assocdate'])
+         ];
+         $massive_action[] = sprintf('item[%s][%s]', __CLASS__, $assocID);
       }
-
-      echo "</table>";
-      if ($canedit && $number && ($withtemplate < 2)) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+         'id' => $massiveActionContainerId,
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 
 
