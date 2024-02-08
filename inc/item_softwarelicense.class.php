@@ -192,7 +192,8 @@ class Item_SoftwareLicense extends CommonDBRelation {
                   'title' => $title,
                   'input' => $input,
                ]);
-            }
+            };
+            echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
             return true;
          case 'add_item' :
             global $CFG_GLPI;
