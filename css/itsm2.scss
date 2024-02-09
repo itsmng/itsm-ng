@@ -1234,3 +1234,29 @@ div.chip>p {
     border: 0;
     border-radius: .5rem;
 }
+
+#logo_bloc {
+    background: $logo-file;
+    filter: invert(100%);
+    margin: 1rem auto;
+    background-repeat: no-repeat;
+    background-size: auto 50px;
+    object-fit: contain;
+    background-size: contain;
+    background-position: center;
+    height: 7rem;
+}
+
+.tab_check_wrapper {
+    width: 80%;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid #aaaaaa;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    thead {
+        background: $header-background-color;
+        color: $header-text-color;
+    }
+}

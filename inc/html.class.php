@@ -2117,7 +2117,6 @@ JAVASCRIPT;
       // Body with configured stuff
       echo "<body>";
       echo "<main role='main' id='page'>";
-      echo "<br><br>";
       echo "<div id='bloc'>";
       echo "<div id='logo_bloc'></div>";
    }

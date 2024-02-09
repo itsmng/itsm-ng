@@ -27,11 +27,14 @@
 
    --progress-background-color: var(--primary-color);
    --progress-color:            var(--secondary-color);
+
+   --font-family-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 body {
    background: var(--primary-color);
    color: var(--primary-text-color);
+   font-family: var(--font-family-sans-serif);
 }
 
 header, main {
@@ -144,4 +147,16 @@ ul {
 .hidden{
    background: var(--primary-color);
    pointer-events: none;
+}
+
+#logo_bloc {
+   background: url("../pics/fd_logo.png");
+   filter: invert(100%);
+   margin: 1rem auto;
+   background-repeat: no-repeat;
+   background-size: auto 50px;
+   object-fit: contain;
+   background-size: contain;
+   background-position: center;
+   height: 7rem;
 }
