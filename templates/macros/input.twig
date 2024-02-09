@@ -267,11 +267,14 @@
     {{attributes.value|default('')|raw}}</textarea>
   <script src="{{root_doc}}/node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
   <script>
+  var {{attributes.id|default(rand)}};
   $(document).ready(() => {
     ClassicEditor
       .create(document.getElementById('{{attributes.id|default(rand)}}', {
         width: '100%',
-      }))
+      })).then(editor => {
+        {{attributes.id|default(rand)}} = editor
+      })
       .catch(error => {
         console.error(error);
       });

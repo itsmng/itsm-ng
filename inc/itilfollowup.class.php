@@ -894,7 +894,7 @@ class ITILFollowup  extends CommonDBChild {
                                        ? 0
                                        : parseInt(data.requesttypes_id);
 
-                                    $('#TextareaForContentFolloupPopup').parent().find('.trumbowyg-editor').html(data.content)
+                                    TextareaForContentFolloupPopup.setData(data.content)
                                     $("#dropdownForRequestType").val(requesttypes_id);
                                     $("#is_privateswitch")
                                        .prop("checked", data.is_private == "0" ? false : true);
