@@ -20,17 +20,22 @@
 		id="{{id}}"
 		class="table table-striped table-bordered table-hover"
 		data-virtual-scroll="true"
+		{% if height %}
+		data-height="{{height}}"
+		{% endif %}
 		{% if not minimal %}
-			data-toolbar="#toolbar{{rand}}"
-			data-show-columns-toggle-all="true"
-			data-click-to-select="true"
-			data-pagination="true"
-			show-extended-pagination="true"
-			data-search="true"
-			data-sortable="true"
-			data-show-export="true"
-			data-show-columns="true"
-			data-icons="icons"
+		data-toolbar="#toolbar{{rand}}"
+		data-show-columns-toggle-all="true"
+		data-click-to-select="true"
+		{% if not height %}
+		data-pagination="true"
+		show-extended-pagination="true"
+		{% endif %}
+		data-search="true"
+		data-sortable="true"
+		data-show-export="true"
+		data-show-columns="true"
+		data-icons="icons"
 		{% endif %}
 		{% if is_trash is defined %} data-buttons="buttons{{rand}}" {% endif %}
 		>
