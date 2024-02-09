@@ -4809,23 +4809,23 @@ class Ticket extends CommonITILObject {
       Plugin::doHook("post_item_form", ['item' => $this, 'options' => &$options]);
       $additionnalHtml = ob_get_clean();
       renderTwigForm($form, $additionnalHtml);
-      if (!$ID) {
-         echo "<th rowspan='2'>".$tt->getBeginHiddenFieldText('items_id');
-         printf(__('%1$s%2$s'), _n('Associated element', 'Associated elements', Session::getPluralNumber()), $tt->getMandatoryMark('items_id'));
-         echo $tt->getEndHiddenFieldText('items_id');
-         echo "</th>";
-         echo "<td rowspan='2'>";
-         echo $tt->getBeginHiddenFieldValue('items_id');
-         $options['_canupdate'] = Session::haveRight('ticket', CREATE);
-         if ($options['_canupdate']) {
-            Item_Ticket::itemAddForm($this, $options);
-         }
-         echo $tt->getEndHiddenFieldValue('items_id', $this);
-         echo "</td>";
-      } else {
-         echo "<th></th>";
-         echo "<td></td>";
-      }
+      // if (!$ID) {
+      //    echo "<th rowspan='2'>".$tt->getBeginHiddenFieldText('items_id');
+      //    printf(__('%1$s%2$s'), _n('Associated element', 'Associated elements', Session::getPluralNumber()), $tt->getMandatoryMark('items_id'));
+      //    echo $tt->getEndHiddenFieldText('items_id');
+      //    echo "</th>";
+      //    echo "<td rowspan='2'>";
+      //    echo $tt->getBeginHiddenFieldValue('items_id');
+      //    $options['_canupdate'] = Session::haveRight('ticket', CREATE);
+      //    if ($options['_canupdate']) {
+      //       Item_Ticket::itemAddForm($this, $options);
+      //    }
+      //    echo $tt->getEndHiddenFieldValue('items_id', $this);
+      //    echo "</td>";
+      // } else {
+      //    echo "<th></th>";
+      //    echo "<td></td>";
+      // }
       return true;
    }
 

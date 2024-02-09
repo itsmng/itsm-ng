@@ -125,7 +125,7 @@ class Calendar_Holiday extends CommonDBRelation {
                         'name' => 'calendars_id',
                         'value' => $ID
                      ],
-                     'holidays_id' => [
+                     Holiday::getTypeName() => [
                         'type' => 'select',
                         'name' => 'holidays_id',
                         'values' => getOptionForItems(Holiday::class, [

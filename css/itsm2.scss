@@ -1260,3 +1260,11 @@ div.chip>p {
         color: $header-text-color;
     }
 }
+
+.ck-editor {
+    width: 100% !important;
+
+    .ck-editor__editable[role="textbox"] {
+        min-height: 10rem;
+    }
+}

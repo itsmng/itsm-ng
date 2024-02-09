@@ -831,20 +831,80 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
                      'rows' => 1,
                   ],
                   __('Content') => [
-                     'type' => 'textarea',
+                     'type' => 'richtextarea',
                      'name' => 'answer',
                      'value' => $this->fields["answer"],
-                     'enable_fileupload' => true,
-                     'enable_richtext' => true,
                      'rows' => 10,
                      'col_lg' => 12,
                      'col_md' => 12,
                   ],
-                  _n('Target', 'Targets', 1) => $this->isNewID($ID) ? [
+                  __('Type') => self::isNewID($ID) ? [
                      'type' => 'select',
                      'name' => '_visibility[_type]',
-                     'values' => [Dropdown::EMPTY_VALUE, 'Entity', 'Group', 'Profile', 'User'],
-                     'value' => '',
+                     'id' => 'selectForType',
+                     'values' => [ Dropdown::EMPTY_VALUE,
+                        'Entity' => 'Entity',
+                        'Group' => 'Group',
+                        'Profile' => 'Profile',
+                        'User' => 'User'
+                     ],
+                     'col_lg' => 6,
+                     'hooks' => [
+                        'change' => <<<JS
+                        var type = jQuery(this).val();
+                        // empty value -> disable all
+                        // entity -> enable entity and checkbox, disable others
+                        // * -> enable all
+                        $("#selectForEntity").prop("disabled", type == 0);
+                        $("#checkboxForChildEntities").prop("disabled", type == 0);
+                        $("#selectForTarget").prop("disabled", type == 0 || type == "Entity");
+                        if (type == 0 || type == "Entity") {
+                           return;
+                        }
+                        $.ajax({
+                           url: "{$CFG_GLPI['root_doc']}/ajax/visibility.php",
+                           method: "POST",
+                           data: {
+                              type: type,
+                              right: "knowbase"
+                           },
+                           success: function(data) {
+                              const jsonData = JSON.parse(data);
+                              $("#selectForTarget").empty();
+                              $("#selectForTarget").attr("name", '_visibility[' + type.toLowerCase() + "s_id]");
+                              for (const [key, value] of Object.entries(jsonData)) {
+                                 $("#selectForTarget").append(
+                                    $("<option></option>")
+                                       .attr("value", key)
+                                       .text(value)
+                                 );
+                              }
+                           }
+                        });
+                        JS,
+                     ]
+                  ] : [],
+                  __('Target') => self::isNewID($ID) ? [
+                     'type' => 'select',
+                     'id' => "selectForTarget",
+                     'col_lg' => 6,
+                     'disabled' => '',
+                  ] : [],
+                  __('Entity') => self::isNewID($ID) ? [
+                     'type' => 'select',
+                     'id' => "selectForEntity",
+                     'name' => '_visibility[entities_id]',
+                     'values' => getOptionForItems(Entity::class),
+                     'value' => Session::getActiveEntity(),
+                     'disabled' => '',
+                     'col_lg' => 6,
+                  ] : [],
+                  __('Child entities') => self::isNewID($ID) ? [
+                     'type' => 'checkbox',
+                     'name' => '_visibility[is_recursive]',
+                     'id' => "checkboxForChildEntities",
+                     'disabled' => '',
+                     'col_lg' => 6,
                   ] : [],
                ]
             ]
