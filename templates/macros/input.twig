@@ -262,18 +262,17 @@
 {% endmacro %}
 {% macro richtextarea(attributes, root_doc) %}
   {% set rand=random() %}
-  <textarea id="{{attributes.id|default(rand)}}"
+  <textarea id="{{attributes.id|default("ckEditorInstance" ~ rand)}}"
     {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %}>
     {{attributes.value|default('')|raw}}</textarea>
   <script src="{{root_doc}}/node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
   <script>
-  var {{attributes.id|default(rand)}};
+  var {{attributes.id|default('ckEditorInstance')}};
   $(document).ready(() => {
     ClassicEditor
-      .create(document.getElementById('{{attributes.id|default(rand)}}', {
-        width: '100%',
+      .create(document.getElementById('{{attributes.id|default("ckEditorInstance" ~ rand)}}', {
       })).then(editor => {
-        {{attributes.id|default(rand)}} = editor
+        {{attributes.id|default("ckEditorInstance" ~ rand)}} = editor
       })
       .catch(error => {
         console.error(error);
