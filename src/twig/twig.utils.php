@@ -16,11 +16,16 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true,
     ]);
 
     $options = [];
-    if ($display_emptychoice) {
-        $options[0] = Dropdown::EMPTY_VALUE;
-    }
+    
     while ($val = $iterator->next()) {
         $options[$val['id']] = $val[$name] == '' ? '(' . $val['id'] . ')' : $val[$name];
+    }
+    if ($display_emptychoice) {
+        if (!isset($options[0])) {
+            $options = [0 => Dropdown::EMPTY_VALUE] + $options;
+        } else {
+            $options = [-1 => Dropdown::EMPTY_VALUE] + $options;
+        }
     }
     foreach ($used as $id) {
         unset($options[$id]);
