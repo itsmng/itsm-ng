@@ -1229,15 +1229,9 @@ class Problem extends CommonITILObject {
     * @param $options   array
    **/
    function showForm($ID, $options = []) {
-      global $CFG_GLPI;
-
       if (!static::canView()) {
          return false;
       }
-
-      // In percent
-      $colsize1 = '13';
-      $colsize2 = '37';
 
       $default_values = self::getDefaultValues();
 
@@ -1259,26 +1253,7 @@ class Problem extends CommonITILObject {
             }
          }
 
-         if (isset($options['tickets_id']) || isset($options['_tickets_id'])) {
-            $tickets_id = $options['tickets_id'] ?? $options['_tickets_id'];
-            $ticket = new Ticket();
-            if ($ticket->getFromDB($tickets_id)) {
-               $options['content']             = $ticket->getField('content');
-               $options['name']                = $ticket->getField('name');
-               $options['impact']              = $ticket->getField('impact');
-               $options['urgency']             = $ticket->getField('urgency');
-               $options['priority']            = $ticket->getField('priority');
-               if (isset($options['tickets_id'])) {
-                  //page is reloaded on category change, we only want category on the very first load
-                  $options['itilcategories_id']   = $ticket->getField('itilcategories_id');
-               }
-               $options['time_to_resolve']     = $ticket->getField('time_to_resolve');
-               $options['entities_id']         = $ticket->getField('entities_id');
-            }
-         }
       }
-
-      $this->initForm($ID, $options);
 
       $canupdate = !$ID || (Session::getCurrentInterface() == "central" && $this->canUpdateItem());
 
@@ -1372,6 +1347,24 @@ class Problem extends CommonITILObject {
             } else {
                $options[$name] = $value;
             }
+         }
+      }
+            
+      if (isset($options['tickets_id']) || isset($options['_tickets_id'])) {
+         $tickets_id = $options['tickets_id'] ?? $options['_tickets_id'];
+         $ticket = new Ticket();
+         if ($ticket->getFromDB($tickets_id)) {
+            $this->fields['content']             = $ticket->getField('content');
+            $this->fields['name']                = $ticket->getField('name');
+            $this->fields['impact']              = $ticket->getField('impact');
+            $this->fields['urgency']             = $ticket->getField('urgency');
+            $this->fields['priority']            = $ticket->getField('priority');
+            if (isset($options['tickets_id'])) {
+               //page is reloaded on category change, we only want category on the very first load
+               $this->fields['itilcategories_id']   = $ticket->getField('itilcategories_id');
+            }
+            $this->fields['time_to_resolve']     = $ticket->getField('time_to_resolve');
+            $this->fields['entities_id']         = $ticket->getField('entities_id');
          }
       }
 

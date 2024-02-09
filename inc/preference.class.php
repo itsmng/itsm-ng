@@ -51,9 +51,9 @@ class Preference extends CommonGLPI {
       if (Session::haveRightsOr('personalization', [READ, UPDATE])) {
          $this->addStandardTab('Config', $ong, $options);
       }
-      if (Session::haveRightsOr('accessibility', [READ, UPDATE])) {
-         $this->addStandardTab('Accessibility', $ong, $options);
-      }
+      // if (Session::haveRightsOr('accessibility', [READ, UPDATE])) {
+      //    $this->addStandardTab('Accessibility', $ong, $options);
+      // }
       $this->addStandardTab('DisplayPreference', $ong, $options);
 
       return $ong;

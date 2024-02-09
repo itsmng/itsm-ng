@@ -1,4 +1,10 @@
+<script src="{{root_doc}}/vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"></script>
+<script src="{{root_doc}}/vendor/wenzhixin/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<link rel="stylesheet" href="{{root_doc}}/vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css">
 <div class="table-container">
+	{% if not id %}
+		{% set id = 'table' ~ random() %}
+	{% endif %}
 	{% set rand=random() %}
 	{% if not minimal %}
 	<div
@@ -16,7 +22,6 @@
 		data-virtual-scroll="true"
 		{% if not minimal %}
 			data-toolbar="#toolbar{{rand}}"
-			data-toggle="table"
 			data-show-columns-toggle-all="true"
 			data-click-to-select="true"
 			data-pagination="true"
@@ -57,36 +62,38 @@
 	</table>
 </div>
 
-{% if not minimal %}
 <script>
 	window.icons = {
 		columns: 'fas fa-columns',
 		export: 'fas fa-file-export',
 	}
 
-	function populateModal{{rand}}() {
-    	massiveaction_window{{id}}.dialog('open');
-	}
+	$('#{{id}}').bootstrapTable();
+
+	{% if not minimal %}
+		function populateModal{{rand}}() {
+			massiveaction_window{{id}}.dialog('open');
+		}
 
 
-	{% if is_trash is defined %}
-		function buttons{{rand}}() {
-			buttons = {
-				btnshowTrash: {
-					text: 'Show trash',
-					icon: 'fas fa-trash-alt',
-					event: function () {
-						toogle('is_deleted', '', '', '');
-						document.forms['searchform{{ itemtype }}'].submit();
-					},
-					attributes: {
-						title: {{ 'Show trash content'|trans|json_encode|raw }},
-						style: {{ (is_trash == 1) ? 'background : #7b081d'|json_encode|raw : ''|json_encode|raw }}
+		{% if is_trash is defined %}
+			function buttons{{rand}}() {
+				buttons = {
+					btnshowTrash: {
+						text: 'Show trash',
+						icon: 'fas fa-trash-alt',
+						event: function () {
+							toogle('is_deleted', '', '', '');
+							document.forms['searchform{{ itemtype }}'].submit();
+						},
+						attributes: {
+							title: {{ 'Show trash content'|trans|json_encode|raw }},
+							style: {{ (is_trash == 1) ? 'background : #7b081d'|json_encode|raw : ''|json_encode|raw }}
+						}
 					}
 				}
+				return buttons;
 			}
-			return buttons;
-		}
+		{% endif %}
 	{% endif %}
 </script>
-{% endif %}

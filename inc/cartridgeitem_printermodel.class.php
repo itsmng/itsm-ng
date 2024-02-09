@@ -151,7 +151,6 @@ class CartridgeItem_PrinterModel extends CommonDBRelation {
 
       if ($number) {
          if ($canedit) {
-            $rand     = mt_rand();
             $massiveactionparams = [
                'num_displayed' => min($_SESSION['glpilist_limit'], count($used)),
                'container'     => 'tableForCartidgeItemPrinterModel',

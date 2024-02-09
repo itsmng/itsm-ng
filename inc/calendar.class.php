@@ -100,15 +100,33 @@ class Calendar extends CommonDropdown {
 
       switch ($ma->getAction()) {
          case 'duplicate' :
-            Entity::dropdown();
-            echo "<br><br>";
-            echo Html::submit(_x('button', 'Duplicate'), ['name' => 'massiveaction'])."</span>";
+            renderTwigTemplate('macros/wrappedInput.twig', [
+               'title' => Entity::getTypeName(),
+               'input' => [
+                  'type'  => 'select',
+                  'name'  => 'entities_id',
+                  'values' => getOptionForItems(Entity::class),
+                  'col_lg' => 12,
+                  'col_md' => 12,
+                  'actions' => getItemActionButtons(['info', 'add'], Appliance::class)
+               ]
+            ]);
+            echo Html::submit(_x('button', 'Duplicate'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary mt-3']);
             return true;
 
          case 'addholiday' :
-            Holiday::dropdown();
-            echo "<br><br>";
-            echo Html::submit(_x('button', 'Add'), ['name' => 'massiveaction'])."</span>";
+            renderTwigTemplate('macros/wrappedInput.twig', [
+               'title' => Holiday::getTypeName(),
+               'input' => [
+                  'type'  => 'select',
+                  'name'  => 'holidays_id',
+                  'values' => getOptionForItems(Holiday::class),
+                  'col_lg' => 12,
+                  'col_md' => 12,
+                  'actions' => getItemActionButtons(['info', 'add'], Holiday::class)
+               ]
+            ]);
+            echo Html::submit(_x('button', 'Add'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary mt-3']);
             return true;
       }
 

@@ -682,7 +682,7 @@ class MassiveAction {
     * @return void
    **/
    function showDefaultSubForm() {
-      echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
+      echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
    }
 
 
@@ -942,33 +942,29 @@ class MassiveAction {
             if (isset($ma->POST['submitname']) && $ma->POST['submitname']) {
                $submitname= stripslashes($ma->POST['submitname']);
             }
-            echo Html::submit($submitname, ['name' => 'massiveaction']);
+            echo Html::submit($submitname, ['name' => 'massiveaction', "class" => "btn btn-secondary"]);
 
             return true;
 
          case 'clone':
-            $rand = mt_rand();
-
-            echo "<table width='100%'><tr>";
-            echo "<td>";
-            echo __('How many copies do you want to create ?');
-            echo "</td><tr>";
-            echo "<td>".Html::input("nb_copy", [
-               'id'     => "nb_copy$rand",
-               'value'  => 1,
-               'type'   => 'number',
-               'min'    => 1
+            renderTwigTemplate('macros/wrappedInput.twig', [
+               'title' => __('How many copies do you want to create ?'),
+               'input' => [
+                  'type' => 'number',
+                  'name' => 'nb_copy',
+                  'value' => 1,
+                  'min' => 1,
+                  'col_lg' => 12,
+                  'col_md' => 12,
+               ]
             ]);
-            echo "</td>";
-            echo "</tr></table>";
-
             echo "<br>\n";
 
             $submitname = _sx('button', 'Post');
             if (isset($ma->POST['submitname']) && $ma->POST['submitname']) {
                $submitname= stripslashes($ma->POST['submitname']);
             }
-            echo Html::submit($submitname, ['name' => 'massiveaction']);
+            echo Html::submit($submitname, ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
 
             return true;
 
@@ -977,32 +973,40 @@ class MassiveAction {
                     "Are you sure you want to add these items to transfer list?",
                     count($ma->items, COUNT_RECURSIVE) - count($ma->items));
             echo "<br><br>";
-            echo Html::submit(_x('button', 'Add'), ['name' => 'massiveaction']);
+            echo Html::submit(_x('button', 'Add'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
 
             return true;
 
          case 'amend_comment':
-            echo __("Amendment to insert");
-            echo ("<br><br>");
-            Html::textarea([
-               'name' => 'amendment'
+            renderTwigTemplate('macros/wrappedInput.twig', [
+               'title' => __("Amendment to insert"),
+               'input' => [
+                  'type' => 'textarea',
+                  'name' => 'amendment',
+                  'col_lg' => 12,
+                  'col_md' => 12,
+               ]
             ]);
-            echo ("<br><br>");
             echo Html::submit(__('Update'), [
-               'name' => 'massiveaction'
+               'name' => 'massiveaction',
+               'class' => 'btn btn-secondary'
             ]);
 
             return true;
 
          case 'add_note':
-            echo __("New Note");
-            echo ("<br><br>");
-            Html::textarea([
-               'name' => 'add_note'
+            renderTwigTemplate('macros/wrappedInput.twig', [
+               'title' => __("New Note"),
+               'input' => [
+                  'type' => 'textarea',
+                  'name' => 'add_note',
+                  'col_lg' => 12,
+                  'col_md' => 12,
+               ]
             ]);
-            echo ("<br><br>");
             echo Html::submit(_sx('button', 'Add'), [
-               'name' => 'massiveaction'
+               'name' => 'massiveaction',
+               'class' => 'btn btn-secondary'
             ]);
 
             return true;
