@@ -742,7 +742,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
             [
                'visible' => false,
                'inputs' => [
-                  !self::isNewID($ID) ? [
+                  !self::isNewID($ID) && $ID > 0 ? [
                      'type' => 'hidden',
                      'name' => 'id',
                      'value' => $ID,
