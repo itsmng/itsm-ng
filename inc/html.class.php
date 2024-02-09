@@ -316,7 +316,10 @@ class Html
    {
 
       if (is_array($value)) {
-         return array_map([__CLASS__, __METHOD__], $value);
+         $methodName = __METHOD__;
+         return array_map(function($item) use ($methodName) {
+            return $methodName($item);
+         }, $value);
       }
       $order   = [
          '\r\n',
@@ -1932,15 +1935,11 @@ JAVASCRIPT;
       self::loadJavascript();
       echo Html::script("node_modules/jquery-ui-dist/jquery-ui.min.js");
       echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
-      echo Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js");
       echo Html::script("node_modules/tableexport.jquery.plugin/tableExport.min.js");
+      echo Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js");
       echo Html::script("vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js");
       echo Html::script("node_modules/@jarstone/dselect/dist/js/dselect.min.js");
       echo Html::script("src/ngFunctions.js");
-      echo Html::script("node_modules/chartist/dist/index.js");
-
-      echo Html::script("node_modules/gridstack/dist/gridstack-all.js");
-      echo Html::css("node_modules/gridstack/dist/gridstack-extra.css");
 
       echo Html::script("node_modules/trumbowyg/dist/trumbowyg.min.js");
       echo Html::css("node_modules/trumbowyg/dist/ui/trumbowyg.min.css");
@@ -2826,10 +2825,11 @@ JAVASCRIPT;
             if (!empty($p['tag_to_send'])) {
                $container = $p['container'];
                $js_modal_fields = <<<JS
-                  var items = $("#$container").bootstrapTable('getData');
-                  for (item of items) {
-                     fields[item._data.value] = item.state ? 1 : 0;
-                  };
+                  let rows = $("#$container tbody tr");
+                  for (let i = 0; i < rows.length; i++) {
+                     // if class contains "selected"
+                     fields[$(rows[i]).attr('data-value')] = $(rows[i]).hasClass('selected') ? 1 : 0;
+                  }
                   $('table[id="$container"] [data-glpicore-ma-tags~={$p['tag_to_send']}]').each(function( index ) {
                      fields[$(this).attr('name')] = $(this).attr('value');
                      if (($(this).attr('type') == 'checkbox') && (!$(this).is(':checked'))) {
@@ -2840,7 +2840,6 @@ JAVASCRIPT;
             } else {
                $js_modal_fields = "";
             }
-
             $out .= Ajax::createModalWindow(
                'massiveaction_window' . $identifier,
                $url,

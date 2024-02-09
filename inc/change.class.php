@@ -766,6 +766,24 @@ class Change extends CommonITILObject {
          $options['_predefined_fields'] = [];
       }
 
+      if (isset($options['tickets_id']) || isset($options['_tickets_id'])) {
+         $tickets_id = $options['tickets_id'] ?? $options['_tickets_id'];
+         $ticket = new Ticket();
+         if ($ticket->getFromDB($tickets_id)) {
+            $options['content']             = $ticket->getField('content');
+            $options['name']                = $ticket->getField('name');
+            $options['impact']              = $ticket->getField('impact');
+            $options['urgency']             = $ticket->getField('urgency');
+            $options['priority']            = $ticket->getField('priority');
+            if (isset($options['tickets_id'])) {
+               //page is reloaded on category change, we only want category on the very first load
+               $options['itilcategories_id']   = $ticket->getField('itilcategories_id');
+            }
+            $options['time_to_resolve']     = $ticket->getField('time_to_resolve');
+            $options['entities_id']         = $ticket->getField('entities_id');
+         }
+      }
+
       // Store predefined fields to be able not to take into account on change template
       // Only manage predefined values on ticket creation
       $predefined_fields = [];

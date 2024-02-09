@@ -59,22 +59,16 @@ if (isset($_POST["rubdoc"])) {
       }
    }
 
-   if (preg_match('/[^a-z_\-0-9]/i', $_POST['myname'])) {
-      throw new \RuntimeException('Invalid name provided!');
-   }
-
    if (!isset($_POST['entity']) || $_POST['entity'] === '') {
       $_POST['entity'] = $_SESSION['glpiactive_entity'];
    }
+   $values = getOptionForItems(Document::class, [
+      'entities_id' => intval($_POST['entity']),
+      'glpi_documents.documentcategories_id' => (int)$_POST["rubdoc"]
+   ]);
+   foreach ($used as $id) {
+      unset($values[$id]);
+   }
 
-   Dropdown::show(
-      'Document', [
-         'name'      => $_POST['myname'],
-         'used'      => $used,
-         'width'     => '50%',
-         'entity'    => intval($_POST['entity']),
-         'rand'      => intval($_POST['rand']),
-         'condition' => ['glpi_documents.documentcategories_id' => (int)$_POST["rubdoc"]]
-      ]
-   );
+   echo json_encode($values);
 }

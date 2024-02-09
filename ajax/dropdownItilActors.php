@@ -45,7 +45,9 @@ if (isset($_POST["type"])
    $withemail = isset($_POST['allow_email']) && filter_var($_POST['allow_email'], FILTER_VALIDATE_BOOLEAN);
 
    $ticket = new Ticket();
-   $ticket->getFromDB($_POST['ticketId']);
+   if (isset($_POST['ticketId']) && $_POST['ticketId'] > 0) {
+      $ticket->getFromDB($_POST['ticketId']);
+   }
    if ($item = getItemForItemtype($_POST["itemtype"])) {
       switch ($_POST["type"]) {
          case "user" :
@@ -58,12 +60,15 @@ if (isset($_POST["type"])
                }
             }
             
-            $forbiddenActors = $ticket->getUsers($_POST['actorTypeId']);
-            $forbiddenActors = array_filter($forbiddenActors, function($actor) {
-               return isset($actor['users_id']);
-            });
-            $options = getOptionsForUsers($right);
+            $forbiddenActors = [];
+            if (isset($_POST['actorTypeId'])) {
+               $forbiddenActors = $ticket->getUsers($_POST['actorTypeId']);
+               $forbiddenActors = array_filter($forbiddenActors, function($actor) {
+                  return isset($actor['users_id']);
+               });
+            }
             $forbiddenActors = array_column($forbiddenActors, 'users_id');
+            $options = getOptionsForUsers($right);
             $options = array_diff_key($options, array_combine($forbiddenActors, $forbiddenActors));
             echo json_encode($options);
 
@@ -82,12 +87,15 @@ if (isset($_POST["type"])
               $cond['entities_id'] = $_POST['entity_restrict'];
             }
 
-            $forbiddenActors = $ticket->getGroups($_POST['actorTypeId']);
-            $forbiddenActors = array_filter($forbiddenActors, function($actor) {
-               return isset($actor['groups_id']);
-            });
-            $options = getOptionForItems('Group');
+            $forbiddenActors = [];
+            if (isset($_POST['actorTypeId'])) {
+               $forbiddenActors = $ticket->getUsers($_POST['actorTypeId']);
+               $forbiddenActors = array_filter($forbiddenActors, function($actor) {
+                  return isset($actor['users_id']);
+               });
+            }
             $forbiddenActors = array_column($forbiddenActors, 'groups_id');
+            $options = getOptionForItems('Group');
             $options = array_diff_key($options, array_combine($forbiddenActors, $forbiddenActors));
             echo json_encode($options);
             break;

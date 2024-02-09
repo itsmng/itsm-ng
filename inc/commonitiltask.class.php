@@ -1629,53 +1629,59 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
     * Form for Ticket or Problem Task on Massive action
     */
    function showMassiveActionAddTaskForm() {
-      echo "<table class='tab_cadre_fixe'>";
-      echo '<tr><th colspan=4>'.__('Add a new task').'</th></tr>';
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Category')."</td>";
-      echo "<td>";
-      TaskCategory::dropdown(['condition' => ['is_active' => 1]]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Description')."</td>";
-      echo "<td><textarea name='content' cols='50' rows='6'></textarea></td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Duration')."</td>";
-      echo "<td>";
-      $toadd = [];
-      for ($i=9; $i<=100; $i++) {
-         $toadd[] = $i*HOUR_TIMESTAMP;
-      }
-      Dropdown::showTimeStamp("actiontime", ['min'             => 0,
-                                             'max'             => 8*HOUR_TIMESTAMP,
-                                             'addfirstminutes' => true,
-                                             'inhours'         => true,
-                                             'toadd'           => $toadd]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Status')."</td>";
-      echo "<td>";
-      Planning::dropdownState("state", $_SESSION['glpitask_state']);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center' colspan='2'>";
-      if ($this->maybePrivate()) {
-         echo "<input type='hidden' name='is_private' value='".$_SESSION['glpitask_private']."'>";
-      }
-      echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-      echo "</td>";
-      echo "</tr>";
-
-      echo "</table>";
+      $inputs = [
+         __('Category') => [
+            'name' => 'taskcategories_id',
+            'type' => 'select',
+            'values' => getOptionForItems(TaskCategory::class, ['is_active' => 1]),
+            'actions' => getItemActionButtons(['info', 'add'], TaskCategory::class),
+            'col_lg' => 12,
+            'col_md' => 12,
+         ],
+         __('Description') => [
+            'name' => 'content',
+            'type' => 'textarea',
+            'cols' => 50,
+            'rows' => 6,
+            'col_lg' => 12,
+            'col_md' => 12,
+         ],
+         __('Duration') => [
+            'name' => 'actiontime',
+            'type' => 'select',
+            'values' => [Dropdown::EMPTY_VALUE] + Timezone::GetTimeStamp([
+               'min'             => 0,
+               'max'             => 100*HOUR_TIMESTAMP,
+               'step'            => 15 * MINUTE_TIMESTAMP,
+               'addfirstminutes' => true,
+            ]),
+            'col_lg' => 12,
+            'col_md' => 12,
+         ],
+         __('Status') => [
+            'name' => 'state',
+            'type' => 'select',
+            'values' => [
+               Planning::INFO => _n('Information', 'Information', 1),
+               Planning::TODO => __('To do'),
+               Planning::DONE => __('Done')
+            ],
+            'col_lg' => 12,
+            'col_md' => 12,
+         ],
+         ($this->maybePrivate()) ? [
+            'type' => 'hidden',
+            'name' => 'is_private',
+            'value' => $_SESSION['glpitask_private']
+         ] : [],
+      ];
+      foreach ($inputs as $title => $input) {
+         renderTwigTemplate('macros/wrappedInput.twig', [
+            'title' => $title,
+            'input' => $input,
+         ]);
+      };
+      echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='btn btn-secondary'>";
    }
 
    /**

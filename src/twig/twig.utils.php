@@ -3,7 +3,7 @@
 /**
  * @param $form
  */
-function getOptionForItems($item, $conditions = [], $display_emptychoice = true, $isDevice = false)
+function getOptionForItems($item, $conditions = [], $display_emptychoice = true, $isDevice = false, $used = [])
 {
     global $DB;
 
@@ -21,6 +21,9 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true,
     }
     while ($val = $iterator->next()) {
         $options[$val['id']] = $val[$name] == '' ? '(' . $val['id'] . ')' : $val[$name];
+    }
+    foreach ($used as $id) {
+        unset($options[$id]);
     }
 
     return $options;
@@ -70,8 +73,12 @@ function getOptionsForUsers($right, $conditions = [], $display_emptychoice = tru
 
 function renderTwigTemplate($path, $vars)
 {
+    global $CFG_GLPI;
     require_once GLPI_ROOT . '/src/twig/twig.class.php';
     $twig = Twig::load(GLPI_ROOT . '/templates', false);
+    if (!isset($vars['root_doc'])) {
+        $vars['root_doc'] = $CFG_GLPI['root_doc'];
+    }
     try {
         echo $twig->render($path, $vars);
     } catch (Exception $e) {
