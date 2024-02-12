@@ -653,11 +653,16 @@ class Item_Devices extends CommonDBRelation
 
    static function showForItem(CommonGLPI $item, $withtemplate = 0)
    {
-      global $CFG_GLPI;
+      global $CFG_GLPI, $DB;
 
       $is_device = ($item instanceof CommonDevice);
 
       $ID = $item->getField('id');
+      
+      $devtypes = [];
+      foreach (self::getItemAffinities($item->getType()) as $link_type) {
+         $devtypes[] = $link_type::getDeviceType();
+      }
 
       if (!$item->can($ID, READ)) {
          return false;
@@ -666,107 +671,6 @@ class Item_Devices extends CommonDBRelation
       $canedit = (($withtemplate != 2)
          && $item->canEdit($ID)
          && Session::haveRightsOr('device', [UPDATE, PURGE]));
-      echo "<div class='spaced'>";
-      $rand = mt_rand();
-
-      $table = new HTMLTableMain();
-
-      $table->setTitle(_n('Component', 'Components', Session::getPluralNumber()));
-      if ($canedit) {
-         $delete_all_column = $table->addHeader(
-            'delete all',
-            Html::getCheckAllAsCheckbox(
-               "form_device_action$rand",
-               '__RAND__'
-            )
-         );
-         $delete_all_column->setHTMLClass('center');
-      } else {
-         $delete_all_column = null;
-      }
-
-      $column_label    = ($is_device ? _n('Item', 'Items', Session::getPluralNumber()) : __('Type of component'));
-      $common_column   = $table->addHeader('common', $column_label);
-      $specific_column = $table->addHeader('specificities', __('Specificities'));
-      $specific_column->setHTMLClass('center');
-
-      $dynamic_column = '';
-      if ($item->isDynamic()) {
-         $dynamic_column = $table->addHeader('is_dynamic', __('Automatic inventory'));
-         $dynamic_column->setHTMLClass('center');
-      }
-
-      if ($canedit) {
-         $massiveactionparams = [
-            'container'     => "form_device_action$rand",
-            'fixed'         => false,
-            'display_arrow' => false
-         ];
-         $content = [[
-            'function'   => 'Html::showMassiveActions',
-            'parameters' => [$massiveactionparams]
-         ]];
-         $delete_column = $table->addHeader('delete one', $content);
-         $delete_column->setHTMLClass('center');
-      } else {
-         $delete_column = null;
-      }
-
-      $table_options = [
-         'canedit' => $canedit,
-         'rand'    => $rand
-      ];
-
-      if ($is_device) {
-         Session::initNavigateListItems(
-            static::getType(),
-            sprintf(
-               __('%1$s = %2$s'),
-               $item->getTypeName(1),
-               $item->getName()
-            )
-         );
-         foreach (array_merge([''], self::getConcernedItems()) as $itemtype) {
-            $table_options['itemtype'] = $itemtype;
-            $link                      = getItemForItemtype(static::getType());
-
-            $link->getTableGroup(
-               $item,
-               $table,
-               $table_options,
-               $delete_all_column,
-               $common_column,
-               $specific_column,
-               $delete_column,
-               $dynamic_column
-            );
-         }
-      } else {
-         $devtypes = [];
-         foreach (self::getItemAffinities($item->getType()) as $link_type) {
-            $devtypes[] = $link_type::getDeviceType();
-            $link        = getItemForItemtype($link_type);
-
-            Session::initNavigateListItems(
-               $link_type,
-               sprintf(
-                  __('%1$s = %2$s'),
-                  $item->getTypeName(1),
-                  $item->getName()
-               )
-            );
-            $link->getTableGroup(
-               $item,
-               $table,
-               $table_options,
-               $delete_all_column,
-               $common_column,
-               $specific_column,
-               $delete_column,
-               $dynamic_column
-            );
-         }
-      }
 
       $entity = isset($item->fields) ? $item->fields['entities_id'] : 0;
       if ($canedit) {
@@ -909,26 +813,93 @@ class Item_Devices extends CommonDBRelation
          renderTwigForm($form);
       }
 
-      if ($canedit) {
-         echo "\n<form id='form_device_action$rand' name='form_device_action$rand'
-                  action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "' method='post'>\n";
-         echo "\t<input type='hidden' name='items_id' value='$ID'>\n";
-         echo "\t<input type='hidden' name='itemtype' value='" . $item->getType() . "'>\n";
+      foreach (self::getItemAffinities($item->getType()) as $link_type) {
+         $link = getItemForItemtype($link_type);
+         $table = $link->getTable();
+         $criteria = [
+            'SELECT' => "$table.*",
+            'FROM'   => $table
+         ];
+         if ($is_device) {
+            $fk = 'items_id';
+   
+            // Entity restrict
+            $criteria['WHERE'] = [
+               $link->getDeviceForeignKey()  => $item->getID(),
+               "$table.itemtype"            => $peer_type,
+               "$table.is_deleted"          => 0
+            ];
+            $criteria['ORDERBY'] = [
+               "$table.itemtype",
+               "$table.$fk"
+            ];
+            if (!empty($peer_type)) {
+               $criteria['LEFT JOIN'] = [
+                  getTableForItemType($peer_type) => [
+                     'ON' => [
+                        $table                          => 'items_id',
+                        getTableForItemType($peer_type)  => 'id', [
+                           'AND' => [
+                              "$table.itemtype"   => $peer_type
+                           ]
+                        ]
+                     ]
+                  ]
+               ];
+               $criteria['WHERE'] = $criteria['WHERE'] + getEntitiesRestrictCriteria(getTableForItemType($peer_type));
+            }
+         } else {
+            $fk = $link->getDeviceForeignKey();
+   
+            $criteria['WHERE'] = [
+               'itemtype'     => $item->getType(),
+               'items_id'     => $item->getID(),
+               'is_deleted'   => 0
+            ];
+            $criteria['ORDERBY'] = $fk;
+         }
+         $datas = iterator_to_array($DB->request($criteria));
+         if (count($datas)) {
+            $massiveActionContainerId = 'mass'.__CLASS__.rand();
+            if ($canedit) {
+               $params = [
+                  'container' => $massiveActionContainerId,
+                  'is_deleted' => 0,
+                  'display_arrow' => false,
+               ];
+               Html::showMassiveActions($params);
+            }
+            $columns = $link->getSpecificities();
+            $fields = [];
+            foreach($columns as $name => $column) {
+               if ((!isset($column['nodisplay']) || $column['nodisplay'] == false) && !isset($column['datatype'])) {
+                  $fields[$name] = $column['long name'];
+               }
+            }
+            if ($canedit) {
+               $fields[] = __('Update');
+            }
+            $values = [];
+            $massive_action = [];
+            foreach($datas as $data) {
+               $newValue = [];
+               foreach(array_keys($columns) as $column) {
+                  $newValue[$column] = $data[$column];
+               }
+               if ($canedit) {
+                  $newValue[] = '<a href=' . $link->getFormURL().'?id='.$data['id'] . '>' . __('Update') . "</a>";
+               }   
+               $values[] = $newValue;
+               $massive_action[] = sprintf('item[%s][%s]', $link::class, $data['id']);
+            }
+            renderTwigTemplate('table.twig', [
+               'id' => $massiveActionContainerId,
+               'fields' => $fields,
+               'values' => $values,
+               'massive_action' => $massive_action
+            ]);
+         }
       }
-
-      $table->display([
-         'display_super_for_each_group' => false,
-         'display_title_for_each_group' => false
-      ]);
-
-      if ($canedit) {
-         echo "<input type='submit' class='submit' name='updateall' value='" .
-            _sx('button', 'Save') . "'>";
-
-         Html::closeForm();
-      }
-
-      echo "</div>";
       // Force disable selected items
       $_SESSION['glpimassiveactionselected'] = [];
    }
