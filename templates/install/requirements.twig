@@ -2,53 +2,20 @@
 
 
 <h3>{{'Checking of the compatibility of your environment with the execution of GLPI'|trans}}</h3>
-<div class="table-container">
-    <table
-    data-toggle="table"
-    data-search="true"
-    data-height="460"
-    data-show-export="true"
-    data-icons-prefix="fas"
-    data-sort-name="result"
-    data-sort-order="asc"
-    data-virtual-scroll="true">
-        <thead>
-            <th data-sortable="true">{{'Test done'|trans}}</th>
-            <th data-sortable="true" data-field="result" class="check-result">{{'Results'|trans}}</th>
-        </thead>
-        <tbody>
-            {% for requirement in requirements %}
-                <tr>
-                    <td>
-                        <div class="check-row">
-                            {{requirement.title|trans}}
-                        </div>
-                        {% if not requirement.validated %}
-                                <p class="required-message">{{requirement.message|trans|raw}}</p>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if requirement.validated %}
-                            <div class="check-row">
-                                <div class="chip validated"><i class="fas fa-check"></i><p>Checked</p></div>
-                            </div>
-                        {% else %}
-                            <div class="check-row">
-                                {% if requirement.optional %}
-                                    <div class="chip optional"><i class="fas fa-exclamation-triangle"></i><p>Recommended</p></div>
-                                {% elseif requirement.required %}
-                                    <div class="chip required"><i class="fas fa-times"></i><p>Required</p></div>
-                                {% endif %}
-                            </div>
-                            <p class="required-message transparent">{{requirement.message|trans|raw}}</p>
-                        {% endif %}
-                    </td>
-                </tr>
-
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+{% set values = [] %}
+{% for requirement in requirements %}
+    {% set values = values|merge([[requirement.title|trans, requirement.validated
+        ? '<i class="fas fa-check"></i>' ~ '<p>' ~ 'Checked'|trans ~ '</p>'
+        : '<div class="chip required">' 
+            ~ (requirement.required ? '<i class="fas fa-times"></i><p>' ~ 'Required'|trans ~ '</p>' : '' )
+            ~ '</div><p>'  ~ requirement.message|trans|raw ~ '</p>'
+    ]]) %}
+{% endfor %}
+{% include 'table.twig' with {
+    fields: ['Test done'|trans, 'Results'|trans],
+    values: values,
+    height: 460,
+} %}
 <h3>{{'Do you want to continue?'|trans}}</h3>
 
 {% if (missing_requirements  == "none") %}

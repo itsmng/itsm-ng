@@ -42,18 +42,30 @@ if (!isset($_GET["id"])) {
 
 Report::title();
 
-echo "<form method='get' name='form' action='report.reservation.php'>";
-echo "<table class='tab_cadre' width='500'><tr class='tab_bg_2'>";
-echo "<td class='center' width='300'>";
-User::dropdown(['name'   => 'id',
-                     'value'  => $_GET["id"],
-                     'right'  => 'reservation']);
-
-echo "</td>";
-echo "<td class='center'><input type='submit' class='submit' name='submit' value='".
-      __s('Display report')."'></td></tr>";
-echo "</table>";
-Html::closeForm();
+$form = [
+   'action' => $_SERVER['PHP_SELF'],
+   'buttons' => [
+      [
+         'value' => __s('Display report'),
+         'class' => 'btn btn-secondary',
+      ]
+   ],
+   'content' => [
+      '' => [
+         'visible' => true,
+         'inputs' => [
+            '' => [
+               'type' => 'select',
+               'name' => 'id',
+               'values' => getOptionsForUsers('reservation'),
+               'col_lg' => 12,
+               'col_md' => 12,
+            ]
+         ]
+      ]
+   ]
+];
+renderTwigForm($form);
 
 if ($_GET["id"] > 0) {
    Reservation::showForUser($_GET["id"]);

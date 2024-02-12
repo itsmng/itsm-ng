@@ -64,6 +64,7 @@ class SolutionTemplate extends CommonDropdown {
          ],
          __('Content') => [
             'name'  => 'content',
+            'id'    => 'TextAreaForSolutionContent',
             'type'  => 'richtextarea',
             'value' => $this->fields['content'],
             'col_lg' => 12,

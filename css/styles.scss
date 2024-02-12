@@ -410,7 +410,6 @@ hr {
 #page {
    padding: 8px 8px 20px 8px;
    min-height: 80%;
-   margin: 15px auto;
 
    .form #page {
       max-width: 1400px;
@@ -1114,20 +1113,15 @@ table {
    border: 0;
 }
 
-th, td {}
-
 .tab_glpi {
    margin: 0 auto;
 }
 
 .tab_cadre {
-   margin: 0 auto;
+   width: 100%;
    z-index: 1;
    text-align: left;
    font-size: 11px;
-   background-color: #ffffff;
-   border-spacing: 0;
-   box-shadow: 0px 1px 2px 1px #999;
 }
 
 .tab_cadre_central {

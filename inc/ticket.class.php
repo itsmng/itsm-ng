@@ -2558,54 +2558,67 @@ class Ticket extends CommonITILObject {
    static function showMassiveActionsSubForm(MassiveAction $ma) {
       switch ($ma->getAction()) {
          case 'merge_as_followup' :
-            $rand = mt_rand();
-            $mergeparam = [
-               'name'         => "_mergeticket",
-               'used'         => $ma->items['Ticket'],
-               'displaywith'  => ['id'],
-               'rand'         => $rand
+            $inputs = [
+               Ticket::getTypeName() => [
+                  'type' => 'select',
+                  'name' => '_mergeticket',
+                  'values' => getOptionForItems(Ticket::class, [], true, false, $ma->items['Ticket']),
+                  'col_lg' => 12,
+                  'col_md' => 12,
+                  'actions' => getItemActionButtons(['info'], Ticket::class),
+               ],
+               __('Merge followups') => [
+                  'type' => 'checkbox',
+                  'name' => 'with_followups',
+                  'value' => true,
+                  'col_lg' => 3,
+               ],
+               __('Merge documents') => [
+                  'type' => 'checkbox',
+                  'name' => 'with_documents',
+                  'value' => true,
+                  'col_lg' => 3,
+               ],
+               __('Merge tasks') => [
+                  'type' => 'checkbox',
+                  'name' => 'with_tasks',
+                  'value' => true,
+                  'col_lg' => 3,
+               ],
+               __('Merge actors') => [
+                  'type' => 'checkbox',
+                  'name' => 'with_actors',
+                  'value' => true,
+                  'col_lg' => 3,
+               ],
+               __('Link type') => [
+                  'type' => 'select',
+                  'name' => 'link_type',
+                  'values' => [
+                     0                             => __('None'),
+                     Ticket_Ticket::LINK_TO        => __('Linked to'),
+                     Ticket_Ticket::DUPLICATE_WITH => __('Duplicates'),
+                     Ticket_Ticket::SON_OF         => __('Son of'),
+                     Ticket_Ticket::PARENT_OF      => __('Parent of')      
+                  ],
+                  'value' => Ticket_Ticket::SON_OF,
+                  'col_lg' => 12,
+                  'col_md' => 12,
+               ]
             ];
-            echo "<table class='center-h'><tr>";
-            echo "<td><label for='dropdown__mergeticket$rand'>".Ticket::getTypeName(1)."</label></td><td colspan='3'>";
-            Ticket::dropdown($mergeparam);
-            echo "</td></tr><tr><td><label for='with_followups'>".__('Merge followups')."</label></td><td>";
-            Html::showCheckbox([
-               'name'    => 'with_followups',
-               'id'      => 'with_followups',
-               'checked' => true
-            ]);
-            echo "</td><td><label for='with_documents'>".__('Merge documents')."</label></td><td>";
-            Html::showCheckbox([
-               'name'    => 'with_documents',
-               'id'      => 'with_documents',
-               'checked' => true
-            ]);
-            echo "</td></tr><tr><td><label for='with_tasks'>".__('Merge tasks')."<label></td><td>";
-            Html::showCheckbox([
-               'name'    => 'with_tasks',
-               'id'      => 'with_tasks',
-               'checked' => true
-            ]);
-            echo "</td><td><label for='with_actors'>".__('Merge actors')."</label></td><td>";
-            Html::showCheckbox([
-               'name'    => 'with_actors',
-               'id'      => 'with_actors',
-               'checked' => true
-            ]);
-            echo "</td></tr><tr><td><label for='dropdown_link_type$rand'>".__('Link type')."</label></td><td colspan='3'>";
-            Dropdown::showFromArray('link_type', [
-               0                             => __('None'),
-               Ticket_Ticket::LINK_TO        => __('Linked to'),
-               Ticket_Ticket::DUPLICATE_WITH => __('Duplicates'),
-               Ticket_Ticket::SON_OF         => __('Son of'),
-               Ticket_Ticket::PARENT_OF      => __('Parent of')
-            ], ['value' => Ticket_Ticket::SON_OF, 'rand' => $rand]);
-            echo "</td></tr><tr><tr><td colspan='4'>";
+            echo "<div class='center row'>";
+            foreach ($inputs as $title => $input) {
+               renderTwigTemplate('macros/wrappedInput.twig', [
+                  'title' => $title,
+                  'input' => $input,
+               ]);
+            };
+            echo "</div>";
             echo Html::submit(_x('button', 'Merge'), [
                'name'      => 'merge',
-               'confirm'   => __('Confirm the merge? This ticket will be deleted!')
+               // 'confirm'   => __('Confirm the merge? This ticket will be deleted!'),
+               'class'     => 'btn btn-secondary'
             ]);
-            echo "</td></tr></table>";
             return true;
       }
       return parent::showMassiveActionsSubForm($ma);
@@ -4809,23 +4822,23 @@ class Ticket extends CommonITILObject {
       Plugin::doHook("post_item_form", ['item' => $this, 'options' => &$options]);
       $additionnalHtml = ob_get_clean();
       renderTwigForm($form, $additionnalHtml);
-      if (!$ID) {
-         echo "<th rowspan='2'>".$tt->getBeginHiddenFieldText('items_id');
-         printf(__('%1$s%2$s'), _n('Associated element', 'Associated elements', Session::getPluralNumber()), $tt->getMandatoryMark('items_id'));
-         echo $tt->getEndHiddenFieldText('items_id');
-         echo "</th>";
-         echo "<td rowspan='2'>";
-         echo $tt->getBeginHiddenFieldValue('items_id');
-         $options['_canupdate'] = Session::haveRight('ticket', CREATE);
-         if ($options['_canupdate']) {
-            Item_Ticket::itemAddForm($this, $options);
-         }
-         echo $tt->getEndHiddenFieldValue('items_id', $this);
-         echo "</td>";
-      } else {
-         echo "<th></th>";
-         echo "<td></td>";
-      }
+      // if (!$ID) {
+      //    echo "<th rowspan='2'>".$tt->getBeginHiddenFieldText('items_id');
+      //    printf(__('%1$s%2$s'), _n('Associated element', 'Associated elements', Session::getPluralNumber()), $tt->getMandatoryMark('items_id'));
+      //    echo $tt->getEndHiddenFieldText('items_id');
+      //    echo "</th>";
+      //    echo "<td rowspan='2'>";
+      //    echo $tt->getBeginHiddenFieldValue('items_id');
+      //    $options['_canupdate'] = Session::haveRight('ticket', CREATE);
+      //    if ($options['_canupdate']) {
+      //       Item_Ticket::itemAddForm($this, $options);
+      //    }
+      //    echo $tt->getEndHiddenFieldValue('items_id', $this);
+      //    echo "</td>";
+      // } else {
+      //    echo "<th></th>";
+      //    echo "<td></td>";
+      // }
       return true;
    }
 
@@ -5100,9 +5113,6 @@ class Ticket extends CommonITILObject {
          : $total_row_count;
 
       if ($displayed_row_count > 0) {
-         echo "<table class='tab_cadrehov'>";
-         echo "<tr class='noHover'><th colspan='4'>";
-
          $options  = [
             'criteria' => [],
             'reset'    => 'reset',
@@ -5122,9 +5132,9 @@ class Ticket extends CommonITILObject {
                   $options['criteria'][1]['link']       = 'AND';
                   $forcetab                 = 'Ticket$2';
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
                          Toolbox::append_params($options, '&amp;')."\">".
-                         Html::makeTitle(__('Your tickets to close'), $displayed_row_count, $total_row_count)."</a>";
+                         Html::makeTitle(__('Tickets to approve'), $displayed_row_count, $total_row_count)."</a>";
                   break;
 
                case "waiting" :
@@ -5138,7 +5148,7 @@ class Ticket extends CommonITILObject {
                   $options['criteria'][1]['value']      = 'mygroups';
                   $options['criteria'][1]['link']       = 'AND';
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
                          Toolbox::append_params($options, '&amp;')."\">".
                          Html::makeTitle(__('Tickets on pending status'), $displayed_row_count, $total_row_count)."</a>";
                   break;
@@ -5171,7 +5181,7 @@ class Ticket extends CommonITILObject {
                      ]
                   ];
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
                          Toolbox::append_params($options, '&amp;')."\">".
                          Html::makeTitle(__('Tickets to be processed'), $displayed_row_count, $total_row_count)."</a>";
                   break;
@@ -5187,7 +5197,7 @@ class Ticket extends CommonITILObject {
                   $options['criteria'][1]['value']      = 'mygroups';
                   $options['criteria'][1]['link']       = 'AND';
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
                          Toolbox::append_params($options, '&amp;')."\">".
                          Html::makeTitle(__('Your observed tickets'), $displayed_row_count, $total_row_count)."</a>";
                   break;
@@ -5204,7 +5214,7 @@ class Ticket extends CommonITILObject {
                   $options['criteria'][1]['value']      = 'mygroups';
                   $options['criteria'][1]['link']       = 'AND';
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
                          Toolbox::append_params($options, '&amp;')."\">".
                          Html::makeTitle(__('Your tickets in progress'), $displayed_row_count, $total_row_count)."</a>";
             }
@@ -5222,9 +5232,9 @@ class Ticket extends CommonITILObject {
                   $options['criteria'][1]['value']      = Session::getLoginUserID();
                   $options['criteria'][1]['link']       = 'AND';
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
                          Toolbox::append_params($options, '&amp;')."\">".
-                         Html::makeTitle(__('Tickets on pending status'), $displayed_row_count, $total_row_count)."</a>";
+                         __('Tickets on pending status');
                   break;
 
                case "process" :
@@ -5238,9 +5248,9 @@ class Ticket extends CommonITILObject {
                   $options['criteria'][1]['value']      = 'process';
                   $options['criteria'][1]['link']       = 'AND';
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
                          Toolbox::append_params($options, '&amp;')."\">".
-                         Html::makeTitle(__('Tickets to be processed'), $displayed_row_count, $total_row_count)."</a>";
+                         __('Tickets to be processed');
                   break;
 
                case "tovalidate" :
@@ -5265,10 +5275,9 @@ class Ticket extends CommonITILObject {
                   $options['criteria'][3]['link']       = 'AND';
                   $forcetab                         = 'TicketValidation$1';
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
-                        Toolbox::append_params($options, '&amp;')."\">".
-                        Html::makeTitle(__('Your tickets to validate'), $displayed_row_count, $total_row_count)."</a>";
-
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
+                         Toolbox::append_params($options, '&amp;')."\">".
+                         __('Tickets to validate');
                   break;
 
                case "validation.rejected" :
@@ -5283,10 +5292,9 @@ class Ticket extends CommonITILObject {
                   $options['criteria'][1]['value']      = Session::getLoginUserID();
                   $options['criteria'][1]['link']       = 'AND';
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
-                        Toolbox::append_params($options, '&amp;')."\">".
-                        Html::makeTitle(__('Your tickets having rejected approval status'), $displayed_row_count, $total_row_count)."</a>";
-
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
+                         Toolbox::append_params($options, '&amp;')."\">".
+                         __('Your tickets having rejected approval status');
                   break;
 
                case "solution.rejected" :
@@ -5300,10 +5308,9 @@ class Ticket extends CommonITILObject {
                   $options['criteria'][1]['value']      = Session::getLoginUserID();
                   $options['criteria'][1]['link']       = 'AND';
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
-                        Toolbox::append_params($options, '&amp;')."\">".
-                        Html::makeTitle(__('Your tickets having rejected solution'), $displayed_row_count, $total_row_count)."</a>";
-
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
+                         Toolbox::append_params($options, '&amp;')."\">".
+                         __('Your tickets having rejected solution');
                   break;
 
                case "toapprove" :
@@ -5329,9 +5336,9 @@ class Ticket extends CommonITILObject {
 
                   $forcetab                 = 'Ticket$2';
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
-                        Toolbox::append_params($options, '&amp;')."\">".
-                        Html::makeTitle(__('Your tickets to close'), $displayed_row_count, $total_row_count)."</a>";
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
+                         Toolbox::append_params($options, '&amp;')."\">".
+                         __('Your tickets to close');
                   break;
 
                case "observed" :
@@ -5345,9 +5352,9 @@ class Ticket extends CommonITILObject {
                   $options['criteria'][1]['value']      = 'notold';
                   $options['criteria'][1]['link']       = 'AND';
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
-                        Toolbox::append_params($options, '&amp;')."\">".
-                        Html::makeTitle(__('Your observed tickets'), $displayed_row_count, $total_row_count)."</a>";
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
+                         Toolbox::append_params($options, '&amp;')."\">".
+                         __('Your observed tickets');
                   break;
 
                case "survey" :
@@ -5379,9 +5386,9 @@ class Ticket extends CommonITILObject {
                   }
                   $forcetab                 = 'Ticket$3';
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
                          Toolbox::append_params($options, '&amp;')."\">".
-                         Html::makeTitle(__('Satisfaction survey'), $displayed_row_count, $total_row_count)."</a>";
+                         __('Satisfaction survey');
                   break;
 
                case "requestbyself" :
@@ -5396,24 +5403,97 @@ class Ticket extends CommonITILObject {
                   $options['criteria'][1]['value']      = 'notold';
                   $options['criteria'][1]['link']       = 'AND';
 
-                  echo "<a href=\"".Ticket::getSearchURL()."?".
-                        Toolbox::append_params($options, '&amp;')."\">".
-                        Html::makeTitle(__('Your tickets in progress'), $displayed_row_count, $total_row_count)."</a>";
+                  $title = "<a href=\"".Ticket::getSearchURL()."?".
+                         Toolbox::append_params($options, '&amp;')."\">".
+                         __('Your tickets in progress');
             }
          }
 
-         echo "</th></tr>";
-         echo "<tr><th style='width: 75px;'>".__('ID')."</th>";
-         echo "<th style='width: 20%;'>"._n('Requester', 'Requesters', 1)."</th>";
-         echo "<th style='width: 20%;'>"._n('Associated element', 'Associated elements', Session::getPluralNumber())."</th>";
-         echo "<th>".__('Description')."</th></tr>";
-         $i = 0;
-         while ($i < $displayed_row_count && ($data = $iterator->next())) {
-            self::showVeryShort($data['id'], $forcetab);
-            $i++;
+         $fields = [
+            __('ID'),
+            _n('Requester', 'Requesters', 1),
+            _n('Associated element', 'Associated elements', Session::getPluralNumber()),
+            __('Description')
+         ];
+         $values = [];
+         $job = new Ticket();
+         $showprivate = false;
+         if (Session::haveRight('followup', ITILFollowup::SEEPRIVATE)) {
+            $showprivate = true;
          }
-         echo "</table>";
+         while ($data = $iterator->next()) {
+            $newValue = [];
+            $rand = mt_rand();
+            if ($job->getFromDBwithData($data['id'], 0)) {
+               $bgcolor = $_SESSION["glpipriority_".$job->fields["priority"]];
+               $name    = sprintf(__('%1$s: %2$s'), __('ID'), $job->fields["id"]);
+               $newValue[] = "<div class='priority_block' style='border-color: $bgcolor'>
+                                 <span style='background: $bgcolor'></span>&nbsp;$name
+                              </div>";
 
+               if (isset($job->users[CommonITILActor::REQUESTER])
+                  && count($job->users[CommonITILActor::REQUESTER])) {
+                  foreach ($job->users[CommonITILActor::REQUESTER] as $d) {
+                     if ($d["users_id"] > 0) {
+                        $userdata = getUserName($d["users_id"], 2);
+                        $name     = "<span class='b'>".$userdata['name']."</span>";
+                        $name     = sprintf(__('%1$s %2$s'), $name,
+                                          Html::showToolTip($userdata["comment"],
+                                                            ['link'    => $userdata["link"],
+                                                                  'display' => false]));
+                        $newValue[] = $name;
+                     } else {
+                        $newValue[] = $d['alternative_email'];
+                     }
+                  }
+               }
+
+               if (isset($job->groups[CommonITILActor::REQUESTER])
+                  && count($job->groups[CommonITILActor::REQUESTER])) {
+                  foreach ($job->groups[CommonITILActor::REQUESTER] as $d) {
+                     $newValue[] = Dropdown::getDropdownName("glpi_groups", $d["groups_id"]);
+                  }
+               }
+
+               if (!empty($job->hardwaredatas)) {
+                  foreach ($job->hardwaredatas as $hardwaredatas) {
+                     if ($hardwaredatas->canView()) {
+                        $newValue[] = $hardwaredatas->getTypeName()." - ".
+                                       "<span class='b'>".$hardwaredatas->getLink()."</span>";
+                     } else if ($hardwaredatas) {
+                        $newValue[] = $hardwaredatas->getTypeName()." - ".
+                                       "<span class='b'>".$hardwaredatas->getNameID()."</span>";
+                     }
+                  }
+                  } else {
+                     $newValue[] = __('General');
+                  }
+
+                  $link = "<a id='ticket".$job->fields["id"].$rand."' href='".Ticket::getFormURLWithID($job->fields["id"]);
+                  if ($forcetab != '') {
+                     $link .= "&amp;forcetab=".$forcetab;
+                  }
+                  $link   .= "'>";
+                  $link   .= "<span class='b'>".$job->getNameID()."</span></a>";
+                  $link    = sprintf(__('%1$s (%2$s)'), $link,
+                                    sprintf(__('%1$s - %2$s'), $job->numberOfFollowups($showprivate),
+                                             $job->numberOfTasks($showprivate)));
+                  $content = Toolbox::unclean_cross_side_scripting_deep(html_entity_decode($job->fields['content'],
+                                                                                          ENT_QUOTES,
+                                                                                          "UTF-8"));
+                  $newValue[]    = sprintf(__('%1$s %2$s'), $link,
+                                    Html::showToolTip(nl2br(Html::Clean($content)),
+                                                      ['applyto' => 'ticket'.$job->fields["id"].$rand,
+                                                            'display' => false]));
+               }
+               $values[] = $newValue;
+         }
+         echo "<p>" . $title . "</p>";
+         renderTwigTemplate('table.twig', [
+            'minimal' => true,
+            'fields'  => $fields,
+            'values'  => $values
+         ]);
       }
    }
 
@@ -7002,7 +7082,7 @@ class Ticket extends CommonITILObject {
                   }
                }
                if (isset($p['append_actors'])) {
-                  $tu = new User_ticket();
+                  $tu = new Ticket_User();
                   $existing_users = $tu->find(['tickets_id' => $merge_target_id]);
                   $gt = new Group_Ticket();
                   $existing_groups = $gt->find(['tickets_id' => $merge_target_id]);

@@ -1525,7 +1525,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                                  : parseInt(data.groups_id_tech);
 
                               // set textarea content
-                              $('#TextAreaForTaskContent').parent().find('.trumbowyg-editor').html(data.content)
+                              TextAreaForTaskContent.setData(data.content);
                               // set category
                               $("#DropdownForTaskCategory").val(taskcategories_id);
                               // set action time

@@ -103,6 +103,8 @@ class KnowbaseItem_Item extends CommonDBRelation {
 
    **/
    static function showForItem(CommonDBTM $item, $withtemplate = 0) {
+      global $CFG_GLPI;
+      
       $item_id = $item->getID();
       $item_type = $item::getType();
 
@@ -139,6 +141,17 @@ class KnowbaseItem_Item extends CommonDBRelation {
       }
 
       if ($canedit && $ok_state) {
+         $options = [];
+
+         foreach ($CFG_GLPI["state_types"] as $type) {
+            if ($item = getItemForItemtype($type)) {
+               if (!$item->canView()) {
+                  continue;
+               }
+               $options[$type] = $item->getTypeName(1);
+            }
+         }
+         asort($options);
          $form = [
             'action' => Toolbox::getItemTypeFormURL(__CLASS__),
             'buttons' => [
@@ -156,17 +169,17 @@ class KnowbaseItem_Item extends CommonDBRelation {
                      $item_type == KnowbaseItem::getType() ? [
                         'type' => 'hidden',
                         'name' => 'knowbaseitems_id',
-                        'value' => $item->getID(),
+                        'value' => $item_id,
                      ] :
                      [
                         'type' => 'hidden',
                         'name' => 'itemtype',
-                        'value' => $item->getType(),
+                        'value' => $item_type,
                      ],
                      $item_type != KnowbaseItem::getType() ? [
                         'type' => 'hidden',
                         'name' => 'items_id',
-                        'value' => $item->getID(),
+                        'value' => $item_id,
                      ] : [
                      ]
 
@@ -176,7 +189,36 @@ class KnowbaseItem_Item extends CommonDBRelation {
                   'visible' => true,
                   'inputs' => [
                      __('Link') => ($item_type == KnowbaseItem::getType()) ? [
-                        'content' => '<h1>TODO</h1>'
+                        'type' => 'select',
+                        'id' => 'selectForItemTypeKnowbaseItem',
+                        'name' => 'itemtype',
+                        'values' => [Dropdown::EMPTY_VALUE] + $options,
+                        'col_lg' => 6,
+                        'hooks' => [
+                           'change' => <<<JS
+                           var itemtype = $(this).val();
+                           if (itemtype == 0) {
+                              $('#selectForItemKnowbaseItem').prop('disabled', true);
+                              return;
+                           }
+                           $('#selectForItemKnowbaseItem').prop('disabled', false);
+                           var url = "{$CFG_GLPI['root_doc']}/ajax/dropdownAllItems.php";
+                           var data = {
+                              idtable: itemtype,
+                              name: 'items_id'
+                           };
+                           $.post(url, data, function(response) {
+                              const jsonResponse = JSON.parse(response);
+                              for (const key in jsonResponse) {
+                                 if (jsonResponse.hasOwnProperty(key)) {
+                                    $('#selectForItemKnowbaseItem').append(
+                                       $('<option></option>').val(key).html(jsonResponse[key])
+                                    );
+                                 }
+                              }
+                           });
+                           JS,
+                        ]
                      ] : [
                         'type' => 'select',
                         'name' => 'knowbaseitems_id',
@@ -186,7 +228,14 @@ class KnowbaseItem_Item extends CommonDBRelation {
                                  ? KnowbaseItem::getVisibilityCriteria()['WHERE'] : [],
                         ),
                         'value' => '',
-                     ]
+                     ],
+                     '' => ($item_type == KnowbaseItem::getType()) ? [
+                        'type' => 'select',
+                        'id' => 'selectForItemKnowbaseItem',
+                        'disabled' => '',
+                        'name' => 'items_id',
+                        'col_lg' => 6,
+                     ] : [],
                   ]
                ]
             ]
@@ -208,9 +257,8 @@ class KnowbaseItem_Item extends CommonDBRelation {
       }
 
       // Output events
-      $rand = 'ROMORMROM';
-      echo $rand;
-      $massiveActionContainerId = 'mass'.__CLASS__.$item->getID();
+      $rand = rand();
+      $massiveActionContainerId = 'tableForKnowbaseItem_Item'.$rand;
       if ($canedit) {
          $massiveactionparams = [
             'num_displayed' => min($_SESSION['glpilist_limit'], $number),
@@ -230,7 +278,9 @@ class KnowbaseItem_Item extends CommonDBRelation {
       ];
       $values = [];
       $massive_action = [];
-      foreach (self::getItems($item, $start, $_SESSION['glpilist_limit']) as $data) {
+      $item = new KnowbaseItem();
+      $item->getFromDB($item_id);
+      foreach (self::getItems($item, $start) as $data) {
          $linked_item = null;
          if ($item->getType() == KnowbaseItem::getType()) {
             $linked_item = getItemForItemtype($data['itemtype']);
