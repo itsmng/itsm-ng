@@ -61,13 +61,38 @@ class Ticket_Ticket extends CommonDBRelation {
    static function showMassiveActionsSubForm(MassiveAction $ma) {
 
       switch ($ma->getAction()) {
+
          case 'add' :
-            $rand = Ticket_Ticket::dropdownLinks('link');
-            printf(__('%1$s: %2$s'), Ticket::getTypeName(1), __('ID'));
-            echo "&nbsp;<input type='text' name='tickets_id_1' value='' size='10'>\n";
-            echo "<br><br>";
-            echo "<br><br><input type='submit' name='massiveaction' class='submit' value='".
-                           _sx('button', 'Post')."'>";
+            $options = [
+               self::LINK_TO => __('Linked to'),
+               self::DUPLICATE_WITH => __('Duplicates'),
+               self::SON_OF => __('Son of'),
+               self::PARENT_OF => __('Parent of'),
+            ];
+
+            $inputs = [
+               __('Link') => [
+                  'type' => 'select',
+                  'name' => 'link',
+                  'values' => [Dropdown::EMPTY_VALUE] + $options,
+                  'col_lg' => 6,
+               ],
+               sprintf(__('%1$s: %2$s'), Ticket::getTypeName(1), __('ID')) => [
+                  'type' => 'text',
+                  'name' => 'tickets_id_1',
+                  'size' => 10,
+                  'col_lg' => 6,
+               ]
+            ];
+            echo "<div class='center row'>";
+            foreach ($inputs as $title => $input) {
+               renderTwigTemplate('macros/wrappedInput.twig', [
+                  'title' => $title,
+                  'input' => $input,
+               ]);
+            };
+            echo "</div>";
+            echo "<input type='submit' name='massiveaction' class='btn btn-secondary mt-3' value='"._sx('button', 'Post')."'>";
             return true;
       }
       return parent::showMassiveActionsSubForm($ma);

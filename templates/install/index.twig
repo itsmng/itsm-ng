@@ -19,13 +19,13 @@
         <header>
             <img id='logo' src='../pics/fd_logo.png' alt='ITSM-NG logo' />
             <div class="progress">
-                <div class="line" style={{'--step:' ~ step['number'] ~ ';--maxstep:' ~ header_data["steps_name"][:-1]|length ~ ';'}}></div>
+                <div class="line" style='{{'--step:' ~ step['number'] ~ ';--maxstep:' ~ header_data["steps_name"][:-1]|length ~ ';'}}'></div>
             {% for i in header_data["steps_name"][:-1] %}
                 <div class="step">
                     <a  href={{"install.php?step="~loop.index0}}
                         title={{header_data["steps_name"][loop.index0]|capitalize}}
                         class="{% if loop.index0 <= step['number'] %}circle{% else %}circle hidden{% endif %}"
-                        style={{'--step:' ~ loop.index0 ~ ';--maxstep:' ~ maxstep ~ ';'}}>
+                    style={{'--step:' ~ loop.index0 ~ ';--maxstep:' ~ header_data["steps_name"][:-1]|length ~ ';'}}>
                     {{loop.index0}}
                     </a>
                     <p>{{header_data["steps_name"][loop.index0]|capitalize|trans}}</p>

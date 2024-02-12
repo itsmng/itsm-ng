@@ -1331,7 +1331,7 @@ class Item_Ticket extends CommonItilObject_Item {
                                                    'checkright'      => true,
                                                    'entity_restrict' => $_SESSION['glpiactive_entity']
                                                   ]);
-            echo "<br><input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
+            echo "<br><input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='btn btn-secondary'>";
             break;
 
          case 'delete_item' :
@@ -1342,7 +1342,7 @@ class Item_Ticket extends CommonItilObject_Item {
                                                    'entity_restrict' => $_SESSION['glpiactive_entity']
                                                   ]);
 
-            echo "<br><input type='submit' name='delete' value=\"".__('Delete permanently')."\" class='submit'>";
+            echo "<br><input type='submit' name='delete' value=\"".__('Delete permanently')."\" class='btn btn-secondary'>";
             break;
       }
 

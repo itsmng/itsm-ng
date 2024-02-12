@@ -16,6 +16,8 @@
 
 
 :root {
+   --circle-size: 35px;
+
    --primary-color:             #0b0624;
    --secondary-color:           #0e2045;
    
@@ -27,11 +29,14 @@
 
    --progress-background-color: var(--primary-color);
    --progress-color:            var(--secondary-color);
+
+   --font-family-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 body {
    background: var(--primary-color);
    color: var(--primary-text-color);
+   font-family: var(--font-family-sans-serif);
 }
 
 header, main {
@@ -94,8 +99,7 @@ ul {
    --grey: rgb(219, 212, 212);
 }
 .line{
-   margin-left: 2.5%;
-   width: 95%;
+   width: 100%;
    height: 10px;
    background: var(--primary-color);
    position: absolute;
@@ -105,13 +109,14 @@ ul {
    content: "";
    position: absolute;
    z-index: 2;
-   width: calc(var(--step) / (var(--maxstep))* 100% + calc(var(--step) * 35px / 2));
+   width: calc(((var(--step)) / (var(--maxstep) - 1)) * 100%);
    height: 10px;
    background-color: #007ACC;
    border-radius: 5px;
    left: 0;
    top: 0;
 }
+
 .step{
    display: flex;
    justify-content: center;
@@ -125,15 +130,12 @@ ul {
 }
 .circle{
    z-index: 2;
-   /* --step: 0;           <
-   --maxstep: 10;          <-défini dans twig*/
-   --size: 35px;
-   width: var(--size);
-   height: var(--size);
+   width: var(--circle-size);
+   height: var(--circle-size);
    background: #007ACC;
    background-size: 10000%;
    border-radius: 50%;
-   background-position: calc(100%/(var(--maxstep) - 1) * var(--step));
+   background-position: calc(var(--step) / (var(--maxstep)) * 100% + calc(var(--step) * var(--circle-size) / 2));
    cursor: pointer;
    text-decoration: none;
    font-size: 2em;
@@ -144,4 +146,16 @@ ul {
 .hidden{
    background: var(--primary-color);
    pointer-events: none;
+}
+
+#logo_bloc {
+   background: url("../pics/fd_logo.png");
+   filter: invert(100%);
+   margin: 1rem auto;
+   background-repeat: no-repeat;
+   background-size: auto 50px;
+   object-fit: contain;
+   background-size: contain;
+   background-position: center;
+   height: 7rem;
 }

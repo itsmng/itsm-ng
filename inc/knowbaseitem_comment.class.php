@@ -340,8 +340,6 @@ class KnowbaseItem_Comment extends CommonDBTM {
     * @return string
     */
    static public function getCommentForm($kbitem_id, $lang = null, $edit = false, $answer = false) {
-      $rand   = mt_rand();
-
       $content = '';
       if ($edit !== false) {
          $comment = new KnowbaseItem_Comment();
@@ -349,47 +347,65 @@ class KnowbaseItem_Comment extends CommonDBTM {
          $content = $comment->fields['comment'];
       }
 
-      $html = '';
-      $html .= "<form name='kbcomment_form$rand' id='kbcomment_form$rand'
-                      class='comment_form' method='post'
-            action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-
-      $html .= "<table class='tab_cadre_fixe'>";
-
-      $form_title = ($edit === false ? __('New comment') : __('Edit comment'));
-      $html .= "<tr class='tab_bg_2'><th colspan='3'>$form_title</th></tr>";
-
-      $html .= "<tr class='tab_bg_1'><td><label for='comment'>" . _n('Comment', 'Comments', 1) . "</label>
-         &nbsp;<span class='red'>*</span></td><td>";
-      $html .= "<textarea name='comment' id='comment' required='required'>{$content}</textarea>";
-      $html .= "</td><td class='center'>";
-
-      $btn_text = _sx('button', 'Add');
-      $btn_name = 'add';
-
-      if ($edit !== false) {
-         $btn_text = _sx('button', 'Edit');
-         $btn_name = 'edit';
-      }
-      $html .= "<input type='submit' name='$btn_name' value='{$btn_text}' class='submit'>";
-      if ($edit !== false || $answer !== false) {
-         $html .= "<input type='reset' name='cancel' value='" . __('Cancel') . "' class='submit'>";
-      }
-
-      $html .= "<input type='hidden' name='knowbaseitems_id' value='$kbitem_id'>";
-      if ($lang !== null) {
-         $html .= "<input type='hidden' name='language' value='$lang'>";
-      }
-      if ($answer !== false) {
-         $html .= "<input type='hidden' name='parent_comment_id' value='{$answer}'/>";
-      }
-      if ($edit !== false) {
-         $html .= "<input type='hidden' name='id' value='{$edit}'/>";
-      }
-      $html .= "</td></tr>";
-      $html .= "</table>";
-      $html .= Html::closeForm(false);
-      return $html;
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+         'buttons' => [
+            [
+               'type'  => 'submit',
+               'name'  => 'add',
+               'value' => _sx('button', 'Add'),
+               'class' => 'btn btn-secondary',
+            ],
+            ($edit !== false || $answer !== false) ? [
+               'type'  => 'reset',
+               'name'  => 'cancel',
+               'value' => __('Cancel'),
+               'class' => 'btn btn-secondary',
+            ] : [],
+            ($edit !== false) ? [
+               'type'  => 'submit',
+               'name'  => 'edit',
+               'value' => _sx('button', 'Edit'),
+               'class' => 'btn btn-secondary',
+            ] : [],
+         ],
+         'content' => [
+            ($edit === false ? __('New comment') : __('Edit comment')) => [
+               'visible' => true,
+               'inputs' => [
+                  [
+                     'type'  => 'hidden',
+                     'name'  => 'knowbaseitems_id',
+                     'value' => $kbitem_id,
+                  ],
+                  ($lang !== null) ? [
+                     'type'  => 'hidden',
+                     'name'  => 'language',
+                     'value' => $lang,
+                  ] : [],
+                  ($answer !== false) ? [
+                     'type'  => 'hidden',
+                     'name'  => 'parent_comment_id',
+                     'value' => $answer,
+                  ] : [],
+                  ($edit !== false) ? [
+                     'type'  => 'hidden',
+                     'name'  => 'id',
+                     'value' => $edit,
+                  ] : [],
+                  _n('Comment', 'Comments', 1) => [
+                     'type'  => 'textarea',
+                     'name'  => 'comment',
+                     'value' => $content,
+                     'required' => true,
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
    }
 
    function prepareInputForAdd($input) {

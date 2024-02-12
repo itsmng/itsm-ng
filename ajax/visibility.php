@@ -40,99 +40,41 @@ if (strpos($_SERVER['PHP_SELF'], "visibility.php")) {
 
 Session::checkLoginUser();
 
-if (isset($_POST['type']) && !empty($_POST['type'])
-    && isset($_POST['right'])) {
-   $display = false;
-   $rand    = mt_rand();
-   $prefix = '';
-   $suffix = '';
-   if (isset($_POST['prefix']) && !empty($_POST['prefix'])) {
-      $prefix = $_POST['prefix'].'[';
-      $suffix = ']';
-   } else {
-      $_POST['prefix'] = '';
-   }
+if (!isset($_POST['type']) || empty($_POST['type']) || !isset($_POST['right']))
+   return;
 
-   echo "<table class='tab_format'><tr>";
-   switch ($_POST['type']) {
-      case 'User' :
-         echo "<td>";
-         User::dropdown(['right' => $_POST['right'],
-                              'name'  => $prefix.'users_id'.$suffix]);
-         echo "</td>";
-         $display = true;
-         break;
+switch ($_POST['type']) {
+   case 'User' :
+      echo json_encode(getOptionsForUsers($_POST['right']));
+      break;
+   case 'Group' :
+      echo json_encode(getOptionForItems(Group::class));
+      break;
+   case 'Profile' :
+      global $DB;
 
-      case 'Group' :
-         echo "<td>";
-         $params             = ['rand' => $rand,
-                                     'name' => $prefix.'groups_id'.$suffix];
-         $params['toupdate'] = ['value_fieldname'
-                                                  => 'value',
-                                     'to_update'  => "subvisibility$rand",
-                                     'url'        => $CFG_GLPI["root_doc"]."/ajax/subvisibility.php",
-                                     'moreparams' => ['items_id' => '__VALUE__',
-                                                           'type'     => $_POST['type'],
-                                                           'prefix'   => $_POST['prefix']]];
+      $checkright   = (READ | CREATE | UPDATE | PURGE);
+      $righttocheck = $_POST['right'];
+      if ($_POST['right'] == 'faq') {
+         $righttocheck = 'knowbase';
+         $checkright   = KnowbaseItem::READFAQ;
+      }
 
-         Group::dropdown($params);
-         echo "</td><td>";
-         echo "<span id='subvisibility$rand'></span>";
-         echo "</td>";
-         $display = true;
-         break;
-
-      case 'Entity' :
-         echo "<td>";
-         Entity::dropdown(['entity' => $_SESSION['glpiactiveentities'],
-                                'value'  => $_SESSION['glpiactive_entity'],
-                                'name'   => $prefix.'entities_id'.$suffix]);
-         echo "</td><td>";
-         echo __('Child entities');
-         echo "</td><td>";
-         Dropdown::showYesNo($prefix.'is_recursive'.$suffix);
-         echo "</td>";
-         $display = true;
-         break;
-
-      case 'Profile' :
-         echo "<td>";
-         $checkright   = (READ | CREATE | UPDATE | PURGE);
-         $righttocheck = $_POST['right'];
-         if ($_POST['right'] == 'faq') {
-            $righttocheck = 'knowbase';
-            $checkright   = KnowbaseItem::READFAQ;
+      $result = $DB->request([
+         'SELECT' => ['profiles_id', 'name'],
+         'FROM'   => ProfileRight::getTable(),
+         'WHERE'  => [
+            'name'   => $righttocheck,
+            'rights' => ['&', $checkright]
+         ]
+      ]);
+      $profileWithRight = array_column(iterator_to_array($result), 'profiles_id', 'profiles_id');
+      $options = getOptionForItems(Profile::class);
+      foreach ($options as $id => $name) {
+         if (!isset($profileWithRight[$id])) {
+            unset($options[$id]);
          }
-         $params             = [
-            'rand'      => $rand,
-            'name'      => $prefix.'profiles_id'.$suffix,
-            'condition' => [
-               'glpi_profilerights.name'     => $righttocheck,
-               'glpi_profilerights.rights'   => ['&', $checkright]
-            ]
-         ];
-         $params['toupdate'] = ['value_fieldname'
-                                                  => 'value',
-                                     'to_update'  => "subvisibility$rand",
-                                     'url'        => $CFG_GLPI["root_doc"]."/ajax/subvisibility.php",
-                                     'moreparams' => ['items_id' => '__VALUE__',
-                                                           'type'     => $_POST['type'],
-                                                           'prefix'   => $_POST['prefix']]];
-
-         Profile::dropdown($params);
-         echo "</td><td>";
-         echo "<span id='subvisibility$rand'></span>";
-         echo "</td>";
-         $display = true;
-         break;
-   }
-
-   if ($display && (!isset($_POST['nobutton']) || !$_POST['nobutton'])) {
-      echo "<td><input type='submit' name='addvisibility' value=\""._sx('button', 'Add')."\"
-                   class='submit'></td>";
-   } else {
-      // For table w3c
-      echo "<td>&nbsp;</td>";
-   }
-   echo "</tr></table>";
+      }
+      echo json_encode($options);
+      break;
 }

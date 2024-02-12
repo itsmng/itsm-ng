@@ -107,78 +107,78 @@ class Calendar_Holiday extends CommonDBRelation {
       }
 
       if ($canedit) {
-         echo "<div class='firstbloc'>";
-         echo "<form name='calendarsegment_form$rand' id='calendarsegment_form$rand' method='post'
-                action='";
-         echo Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_1'><th colspan='7'>".__('Add a close time')."</tr>";
-         echo "<tr class='tab_bg_2'><td class='right'  colspan='4'>";
-         echo "<input type='hidden' name='calendars_id' value='$ID'>";
-         Holiday::dropdown(['used'   => $used,
-                                 'entity' => $calendar->fields["entities_id"]]);
-         echo "</td><td class='center'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add'),
+                  'class' => 'btn btn-secondary'
+               ]
+            ],
+            'content' => [
+               __('Add a close time') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'calendars_id',
+                        'value' => $ID
+                     ],
+                     Holiday::getTypeName() => [
+                        'type' => 'select',
+                        'name' => 'holidays_id',
+                        'values' => getOptionForItems(Holiday::class, [
+                           'entities_id' => $calendar->fields['entities_id'],
+                        ],
+                        true, false, $used),
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                     ]
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
       }
 
-      echo "<div class='spaced'>";
 
+      $massActionContainerId = 'mass'.__CLASS__.$rand;
       if ($canedit && $numrows) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
-                           'container'     => 'mass'.__CLASS__.$rand];
+         $massiveactionparams = [
+            'num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
+            'container'     => $massActionContainerId,
+            'specific_actions' => [
+               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+            ],
+            'display_arrow' => false,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
-      echo "<tr>";
-      if ($canedit && $numrows) {
-         echo "<th width='10'>";
-         echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         echo "</th>";
+      $fields = [
+         __('Name'),
+         __('Start'),
+         __('End'),
+         __('Recurrent'),
+      ];
+      $values = [];
+      $massive_action = [];
+      foreach ($holidays as $data) {
+         $values[] = [
+            '<a href="'.Toolbox::getItemTypeFormURL('Holiday')."?id=".$data['id'].'">'.$data["name"].'</a>',
+            Html::convDate($data["begin_date"]),
+            Html::convDate($data["end_date"]),
+            Dropdown::getYesNo($data["is_perpetual"]),
+         ];
+         $massive_action[] = sprintf('item[%s][%s]', __CLASS__, $data['linkid']);
       }
-      echo "<th>".__('Name')."</th>";
-      echo "<th>".__('Start')."</th>";
-      echo "<th>".__('End')."</th>";
-      echo "<th>".__('Recurrent')."</th>";
-      echo "</tr>";
 
-      $used = [];
-
-      if ($numrows) {
-
-         Session::initNavigateListItems('Holiday',
-         //TRANS : %1$s is the itemtype name, %2$s is the name of the item (used for headings of a list)
-                                        sprintf(__('%1$s = %2$s'), Calendar::getTypeName(1),
-                                                $calendar->fields["name"]));
-
-         foreach ($holidays as $data) {
-            Session::addToNavigateListItems('Holiday', $data["id"]);
-            echo "<tr class='tab_bg_1'>";
-            if ($canedit) {
-               echo "<td>";
-               Html::showMassiveActionCheckBox(__CLASS__, $data["linkid"]);
-               echo "</td>";
-            }
-            echo "<td><a href='".Toolbox::getItemTypeFormURL('Holiday')."?id=".$data['id']."'>".
-                       $data["name"]."</a></td>";
-            echo "<td>".Html::convDate($data["begin_date"])."</td>";
-            echo "<td>".Html::convDate($data["end_date"])."</td>";
-            echo "<td>".Dropdown::getYesNo($data["is_perpetual"])."</td>";
-            echo "</tr>";
-         }
-      }
-      echo "</table>";
-
-      if ($canedit && $numrows) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+         'id' => $massActionContainerId,
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 
    /**

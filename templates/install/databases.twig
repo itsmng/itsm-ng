@@ -40,17 +40,11 @@
         
         {% endif %}
     
-    {{table(
-        { "post_name": "database"}, 
-        {   
-            args: [{sortable: "true"}, {sortable: "true"}, {sortable: "true"}, {sortable: "true"}, {type: "radio"}],
-            titles: ['name', 'table count', 'creation date', 'last update', 'select']
-        },
-        {
-            args: [],
-            rows: databases
-        }
-        )}}
+    {% include 'table.twig' with {
+        fields: ['name', 'table count', 'creation date', 'last update'],
+        values: databases,
+        radio: 'database',
+    } %}
     <div class="buttons">
         {{button('submit', 'Continue'|trans)}}
     </div>

@@ -5,6 +5,7 @@
     "description": "ITSM-ng dependencies",
     "license": "GPL-2.0",
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^41.1.0",
         "@fortawesome/fontawesome-free": "^5.15.4",
         "@fullcalendar/core": "^4.4.2",
         "@fullcalendar/daygrid": "^4.4.2",
@@ -53,7 +54,6 @@
         "tableexport.jquery.plugin": "^1.28.0",
         "tinymce": "^6.7.1",
         "tinymce-i18n": "^23.6.19",
-        "trumbowyg": "^2.27.3",
         "unorm": "^1.6.0",
         "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.1/xlsx-0.20.1.tgz"
     },

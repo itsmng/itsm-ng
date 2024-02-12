@@ -552,22 +552,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
    function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
-      $rand_template           = mt_rand();
-      $rand_name               = mt_rand();
-      $rand_description        = mt_rand();
-      $rand_comment            = mt_rand();
-      $rand_project            = mt_rand();
-      $rand_state              = mt_rand();
-      $rand_type               = mt_rand();
-      $rand_percent            = mt_rand();
-      $rand_milestone          = mt_rand();
-      $rand_plan_start_date    = mt_rand();
-      $rand_plan_end_date      = mt_rand();
-      $rand_real_start_date    = mt_rand();
-      $rand_real_end_date      = mt_rand();
-      $rand_effective_duration = mt_rand();
-      $rand_planned_duration   = mt_rand();
-
       if ($ID > 0) {
          $this->check($ID, READ);
          $projects_id     = $this->fields['projects_id'];
@@ -712,7 +696,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                      'name' => 'is_milestone',
                      'id' => 'is_milestone_checkbox',
                      'value' => $this->fields["is_milestone"],
-                     'rand' => $rand_milestone,
                      'hooks' => [
                         'change' => <<<JS
                            $('select[name="planned_duration"]').prop('disabled', $(this).prop('checked'));
@@ -751,7 +734,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                      'values' => [Dropdown::EMPTY_VALUE] + Timezone::GetTimeStamp([
                         'min' => 0,
                         'max' => 100*HOUR_TIMESTAMP,
-                        'rand' => $rand_planned_duration,
                         'value' => $this->fields["planned_duration"],
                         'addfirstminutes' => true,
                         'inhours' => true,
@@ -763,7 +745,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                      'values' => [Dropdown::EMPTY_VALUE] + Timezone::GetTimeStamp([
                         'min' => 0,
                         'max' => 100*HOUR_TIMESTAMP,
-                        'rand' => $rand_effective_duration,
                         'value' => $this->fields["effective_duration"],
                         'addfirstminutes' => true,
                         'inhours' => true,

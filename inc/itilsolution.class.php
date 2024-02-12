@@ -194,7 +194,7 @@ class ITILSolution extends CommonDBChild {
                               }
                            }).done(function(data) {
                               const jsonData = JSON.parse(data);
-                              $('#TextAreaForSolutionContent').parent().find('.trumbowyg-editor').html(jsonData.content)
+                              TextAreaForSolutionContent.setData(jsonData.content)
                               $('#DropdownForSolutionTypeId').val(jsonData.solutiontypes_id)
                            });
                         JS,

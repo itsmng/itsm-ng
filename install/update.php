@@ -564,13 +564,14 @@ echo Html::script("public/lib/base.js");
 // CSS
 echo Html::css('public/lib/base.css');
 echo Html::css('css/style_install.css');
+echo Html::css('vendor/twbs/bootstrap/dist/css/bootstrap.min.css');
+echo Html::scss('css/color.scss');
 echo "</head>";
 echo "<body>";
-echo "<div id='principal'>";
-echo "<div id='bloc'>";
+echo "<div class='container'>";
 echo "<div id='logo_bloc'></div>";
-echo "<h2>ITSM-NG SETUP</h2>";
-echo "<br><h3>".__('Upgrade')."</h3>";
+echo "<h2 class='alert alert-primary text-center'>ITSM-NG SETUP</h2>";
+echo "<h3>".__('Upgrade')."</h3>";
 
 // step 1    avec bouton de confirmation
 
@@ -580,7 +581,7 @@ if (empty($_POST["continuer"]) && empty($_POST["from_update"])) {
       echo "<div class='center'>";
       echo "<h3><span class='migred'>".__('Impossible to accomplish an update by this way!')."</span>";
       echo "<p>";
-      echo "<a class='vsubmit' href='../index.php'>".__('Go back to ITSM-NG')."</a></p>";
+      echo "<a class='btn btn-primary' href='../index.php'>".__('Go back to ITSM-NG')."</a></p>";
       echo "</div>";
 
    } else {
@@ -591,7 +592,7 @@ if (empty($_POST["continuer"]) && empty($_POST["from_update"])) {
       if (strlen(ITSM_SCHEMA_VERSION) > 40) {
          echo Config::agreeDevMessage();
       }
-      echo "<input type='submit' class='submit' name='continuer' value=\"".__('Continue')."\">";
+      echo "<input type='submit' class='btn btn-primary' name='continuer' value=\"".__('Continue')."\">";
       Html::closeForm();
       echo "</div>";
    }
@@ -647,7 +648,7 @@ if (empty($_POST["continuer"]) && empty($_POST["from_update"])) {
                   echo "<form action='".$CFG_GLPI["root_doc"]."/install/update.php' method='post'>";
                   echo "<input type='hidden' name='update_end' value='1'/>";
 
-                  echo "<p class='submit'><input type='submit' name='submit' class='submit' value='".
+                  echo "<p class='w-100 text-center'><input type='submit' name='submit' class='btn btn-primary' value='".
                            __('Use ITSM-NG')."'></p>";
                   Html::closeForm();
             }

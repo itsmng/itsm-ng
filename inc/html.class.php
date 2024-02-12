@@ -1940,10 +1940,6 @@ JAVASCRIPT;
       echo Html::script("vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js");
       echo Html::script("node_modules/@jarstone/dselect/dist/js/dselect.min.js");
       echo Html::script("src/ngFunctions.js");
-
-      echo Html::script("node_modules/trumbowyg/dist/trumbowyg.min.js");
-      echo Html::css("node_modules/trumbowyg/dist/ui/trumbowyg.min.css");
-
       echo "</body></html>";
 
       if (!$keepDB) {
@@ -2117,7 +2113,6 @@ JAVASCRIPT;
       // Body with configured stuff
       echo "<body>";
       echo "<main role='main' id='page'>";
-      echo "<br><br>";
       echo "<div id='bloc'>";
       echo "<div id='logo_bloc'></div>";
    }
@@ -2859,7 +2854,7 @@ JAVASCRIPT;
             $out .= "<td width='30px'><img src='" . $CFG_GLPI["root_doc"] . "/pics/arrow-left" .
                ($p['ontop'] ? '-top' : '') . ".png' alt=''></td>";
                $out .= "<td width='100%' class='left'>";
-               $out .= "<a class='vsubmit' ";
+               $out .= "<a class='btn btn-secondary' ";
                if (is_array($p['confirm'] || strlen($p['confirm']))) {
                   $out .= self::addConfirmationOnAction($p['confirm'], "massiveaction_window$identifier.dialog(\"open\");");
                } else {

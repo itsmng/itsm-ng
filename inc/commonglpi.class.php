@@ -868,7 +868,7 @@ class CommonGLPI {
          // prevent double sanitize, because the includes.php sanitize all data
          $cleaned_options = Toolbox::stripslashes_deep($cleaned_options);
 
-         $extraparamhtml = "&amp;".Toolbox::append_params($cleaned_options, '&amp;');
+         $extraparamhtml = "&".Toolbox::append_params($cleaned_options, '&');
       }
       $onglets     = $this->defineAllTabs($options);
       $display_all = true;
@@ -958,7 +958,7 @@ class CommonGLPI {
                unset($cleanoptions[$key]);
             }
          }
-         $extraparamhtml = "&amp;".Toolbox::append_params($cleanoptions, '&amp;');
+         $extraparamhtml = "&".Toolbox::append_params($cleanoptions, '&');
       }
 
       $tabs = $this->defineAllTabs($options);

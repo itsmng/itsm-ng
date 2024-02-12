@@ -1355,75 +1355,73 @@ class Dropdown {
          }
       }
 
-      $select = self::showItemType($params['itemtypes'], [
-         'checkright' => $params['checkright'],
-         'name'       => $params['itemtype_name'],
-         'emptylabel' => $params['emptylabel'],
-         'display'    => $params['display'],
-         'rand'       => $params['rand'],
-      ]);
-
-      $p_ajax = [
-         'idtable'             => '__VALUE__',
-         'name'                => $params['items_id_name'],
-         'entity_restrict'     => $params['entity_restrict'],
-         'showItemSpecificity' => $params['showItemSpecificity'],
-         'rand'                => $params['rand']
+      
+      $dropdownValues = [Dropdown::EMPTY_VALUE];
+      foreach ($CFG_GLPI["ticket_types"] as $itemtype) {
+         $dropdownValues[$itemtype] = $itemtype::getTypeName(1);
+      }
+      asort($dropdownValues);
+      $entity = Session::getActiveEntity();
+      $inputs = [
+         __('Itemtype') => [
+            'type' => 'select',
+            'id' => 'selectItemTypeForTicketMassiveAction',
+            'name' => $params['itemtype_name'],
+            'values' => $dropdownValues,
+            'col_lg' => 6,
+            'hooks' => [
+               'change' => <<<JS
+                  const val = this.value;
+                  $('#selectItemForTicketMassiveAction').empty();
+                  if (val != 0) {
+                     $.ajax({
+                        url: '{$CFG_GLPI['root_doc']}/ajax/dropdownAllItems.php',
+                        data: {
+                           itemtype_name: 'devicetype',
+                           items_id_name: 'devices_id',
+                           idtable: val,
+                           entity_restrict: $entity,
+                        },
+                        type: 'POST',
+                        success: function(data) {
+                           const jsonDatas = JSON.parse(data);
+                           for (const key in jsonDatas) {
+                              $('#selectItemForTicketMassiveAction').append('<option value="' + key + '">' + jsonDatas[key] + '</option>');
+                           }
+                        }
+                     });
+                  }
+                  if (val == 0) {
+                     $('#selectItemForTicketMassiveAction').prop('disabled', true);
+                     $('#selectItemForTicketMassiveAction').empty();
+                  } else {
+                     $('#selectItemForTicketMassiveAction').prop('disabled', false);
+                  }
+               JS,
+            ]
+         ],
+         __('Component') => [
+            'type' => 'select',
+            'name' => 'items_id',
+            'id' => 'selectItemForTicketMassiveAction',
+            'values' => [],
+            'col_lg' => 6,
+            'disabled' => '',
+         ],
       ];
-
-      // manage condition
-      if ($params['onlyglobal']) {
-         $p_ajax['condition'] = static::addNewCondition(['is_global' => 1]);
+      ob_start();
+      echo "<div class='center row'>";
+      foreach ($inputs as $title => $input) {
+         renderTwigTemplate('macros/wrappedInput.twig', [
+            'title' => $title,
+            'input' => $input,
+         ]);
       }
-      if ($params['used']) {
-         $p_ajax['used'] = $params['used'];
-      }
+      echo "</div>";
+      $out = ob_get_clean();
 
-      $field_id = Html::cleanId("dropdown_".$params['itemtype_name'].$params['rand']);
-      $show_id  = Html::cleanId("show_".$params['items_id_name'].$params['rand']);
-
-      $ajax = Ajax::updateItemOnSelectEvent(
-         $field_id,
-         $show_id,
-         $CFG_GLPI["root_doc"]."/ajax/dropdownAllItems.php",
-         $p_ajax,
-         $params['display']
-      );
-
-      $out = "";
-      if (!$params['display']) {
-         $out.= $select.$ajax;
-      }
-
-      $out.= "<br><span id='$show_id'>&nbsp;</span>\n";
-
-      // We check $options as the caller will set $options['default_itemtype'] only if it needs a
-      // default itemtype and the default value can be '' thus empty won't be valid !
-      if (array_key_exists ('default_itemtype', $options)) {
-         $out.= "<script type='text/javascript' >\n";
-         $out.= "$(function() {";
-         $out.= Html::jsSetDropdownValue($field_id, $params['default_itemtype']);
-         $out.= "});</script>\n";
-
-         $p_ajax["idtable"] = $params['default_itemtype'];
-         $ajax2 = Ajax::updateItem(
-            $show_id,
-            $CFG_GLPI["root_doc"]. "/ajax/dropdownAllItems.php",
-            $p_ajax,
-            "",
-            $params['display']
-         );
-
-         if (!$params['display']) {
-            $out.= $ajax2;
-         }
-      }
-
-      if ($params['display']) {
+      if ($params['display'])
          echo $out;
-         return $params['rand'];
-      }
-
       return $out;
    }
 

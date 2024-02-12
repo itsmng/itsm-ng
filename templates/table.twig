@@ -20,27 +20,34 @@
 		id="{{id}}"
 		class="table table-striped table-bordered table-hover"
 		data-virtual-scroll="true"
+		{% if height %}
+		data-height="{{height}}"
+		{% endif %}
 		{% if not minimal %}
-			data-toolbar="#toolbar{{rand}}"
-			data-show-columns-toggle-all="true"
-			data-click-to-select="true"
-			data-pagination="true"
-			show-extended-pagination="true"
-			data-search="true"
-			data-sortable="true"
-			data-show-export="true"
-			data-show-columns="true"
-			data-icons="icons"
+		data-toolbar="#toolbar{{rand}}"
+		data-show-columns-toggle-all="true"
+		data-click-to-select="true"
+		{% if not height %}
+		data-pagination="true"
+		show-extended-pagination="true"
+		{% endif %}
+		data-search="true"
+		data-sortable="true"
+		data-show-export="true"
+		data-show-columns="true"
+		data-icons="icons"
 		{% endif %}
 		{% if is_trash is defined %} data-buttons="buttons{{rand}}" {% endif %}
 		>
-		<thead class="table-light">
+		<thead>
 			<tr>
 				{% if massive_action is defined %}
 					<th data-field="state" data-checkbox="true"></th>
+				{% elseif radio %}
+					<th data-radio="true" data-field="select"></th>
 				{% endif %}
 				{% for field in fields %}
-					<th data-sortable="true">{{ field|raw }}</th>
+					<th data-sortable="true" {% if radio %} data-field='{{field|replace({' ': '_'})}}' {% endif %} >{{ field|raw }}</th>
 				{% endfor %}
 			</tr>
 		</thead>
@@ -50,7 +57,7 @@
 				{% if massive_action is defined %}
 					data-id="{{key}}" data-value='{{massive_action[key]}}'
 				{% endif %}>
-					{% if massive_action is defined %}
+					{% if massive_action is defined or radio is defined %}
 						<td></td>
 					{% endif %}
 					{% for col in fields|keys %}
@@ -60,6 +67,9 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	{% if radio is defined %}
+    <input id="table_input{{id}}" type="hidden" name="{{radio}}" value=''>
+	{% endif %}
 </div>
 
 <script>
@@ -69,6 +79,20 @@
 	}
 
 	$('#{{id}}').bootstrapTable();
+
+	{% if radio is defined %}
+	$('form').on("submit", function() {
+		selection = $('#{{id}}').bootstrapTable('getSelections');
+		selection.forEach(array => {
+			Object.keys(array).forEach(key => {
+				if (key.includes("_data")) {
+					delete array[key];
+				}
+			})
+		});
+		$('#table_input{{id}}').val(JSON.stringify(selection));
+	});
+	{% endif %}
 
 	{% if not minimal %}
 		function populateModal{{rand}}() {

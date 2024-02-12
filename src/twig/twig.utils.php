@@ -16,11 +16,16 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true,
     ]);
 
     $options = [];
-    if ($display_emptychoice) {
-        $options[0] = Dropdown::EMPTY_VALUE;
-    }
+    
     while ($val = $iterator->next()) {
         $options[$val['id']] = $val[$name] == '' ? '(' . $val['id'] . ')' : $val[$name];
+    }
+    if ($display_emptychoice) {
+        if (!isset($options[0])) {
+            $options = [0 => Dropdown::EMPTY_VALUE] + $options;
+        } else {
+            $options = [-1 => Dropdown::EMPTY_VALUE] + $options;
+        }
     }
     foreach ($used as $id) {
         unset($options[$id]);
@@ -55,10 +60,17 @@ function getLinkedDocumentsForItem($itemType, $items_id) {
 function getOptionsForUsers($right, $conditions = [], $display_emptychoice = true)
 {
 
-    if (isset($conditions['entities_id'])) {
-      $users = iterator_to_array(User::getSqlSearchResult(false, $right, $conditions['entities_id']));
-    } else {
-      $users = iterator_to_array(User::getSqlSearchResult(false, $right));
+    $rights = $right;
+    if (gettype($right) != 'array') {
+        $rights = [$right];
+    }
+    $users = [];
+    foreach ($rights as $right) {
+        if (isset($conditions['entities_id'])) {
+          $users += iterator_to_array(User::getSqlSearchResult(false, $right, $conditions['entities_id']));
+        } else {
+          $users += iterator_to_array(User::getSqlSearchResult(false, $right));
+        }
     }
     $options = [];
     if ($display_emptychoice) {

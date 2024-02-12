@@ -617,23 +617,33 @@ abstract class CommonITILValidation  extends CommonDBChild {
 
       global $CFG_GLPI;
 
-      $types            = ['user'  => User::getTypeName(1),
-                                'group' => Group::getTypeName(1)];
+      $types            = [ 'user'  => User::getTypeName(1), 'group' => Group::getTypeName(1) ];
 
-      $rand             = Dropdown::showFromArray("validatortype", $types,
-                                                  ['display_emptychoice' => true]);
-
-      $paramsmassaction = ['validatortype' => '__VALUE__',
-                                'entity'        => $_SESSION['glpiactive_entity'],
-                                'right'         => ['validate_request', 'validate_incident']];
-
-      Ajax::updateItemOnSelectEvent("dropdown_validatortype$rand", "show_massiveaction_field",
-                                    $CFG_GLPI["root_doc"].
-                                       "/ajax/dropdownMassiveActionAddValidator.php",
-                                    $paramsmassaction);
-
-      echo "<br><span id='show_massiveaction_field'>&nbsp;</span>\n";
-
+      $inputs = [
+         User::getTypeName() => [
+            'type' => 'select',
+            'name' => 'users_id_validate',
+            'values' => getOptionsForUsers(['validate_request', 'validate_incident']),
+            'col_lg' => '12',
+            'col_md' => '12',
+         ],
+         __('Comments') => [
+            'type' => 'textarea',
+            'name' => 'comment_submission',
+            'rows' => 6,
+            'col_lg' => '12',
+            'col_md' => '12',
+         ],
+      ];
+      echo "<div class='center row'>";
+      foreach ($inputs as $title => $input) {
+         renderTwigTemplate('macros/wrappedInput.twig', [
+            'title' => $title,
+            'input' => $input,
+         ]);
+      };
+      echo "</div>";
+      echo '<input type="submit" name="add" value="Ajouter" class="btn btn-secondary">';
    }
 
 
