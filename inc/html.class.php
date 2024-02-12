@@ -1625,8 +1625,7 @@ JAVASCRIPT;
          $force
          || !isset($_SESSION['glpimenu'])
          || !is_array($_SESSION['glpimenu'])
-         || (count($_SESSION['glpimenu']) == 0
-         || true)
+         || (count($_SESSION['glpimenu']) == 0)
       ) {
 
          $menu = self::getMenuInfos();
