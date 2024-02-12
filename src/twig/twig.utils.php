@@ -60,10 +60,17 @@ function getLinkedDocumentsForItem($itemType, $items_id) {
 function getOptionsForUsers($right, $conditions = [], $display_emptychoice = true)
 {
 
-    if (isset($conditions['entities_id'])) {
-      $users = iterator_to_array(User::getSqlSearchResult(false, $right, $conditions['entities_id']));
-    } else {
-      $users = iterator_to_array(User::getSqlSearchResult(false, $right));
+    $rights = $right;
+    if (gettype($right) != 'array') {
+        $rights = [$right];
+    }
+    $users = [];
+    foreach ($rights as $right) {
+        if (isset($conditions['entities_id'])) {
+          $users += iterator_to_array(User::getSqlSearchResult(false, $right, $conditions['entities_id']));
+        } else {
+          $users += iterator_to_array(User::getSqlSearchResult(false, $right));
+        }
     }
     $options = [];
     if ($display_emptychoice) {
