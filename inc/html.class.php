@@ -2854,7 +2854,7 @@ JAVASCRIPT;
             $out .= "<td width='30px'><img src='" . $CFG_GLPI["root_doc"] . "/pics/arrow-left" .
                ($p['ontop'] ? '-top' : '') . ".png' alt=''></td>";
                $out .= "<td width='100%' class='left'>";
-               $out .= "<a class='vsubmit' ";
+               $out .= "<a class='btn btn-secondary' ";
                if (is_array($p['confirm'] || strlen($p['confirm']))) {
                   $out .= self::addConfirmationOnAction($p['confirm'], "massiveaction_window$identifier.dialog(\"open\");");
                } else {

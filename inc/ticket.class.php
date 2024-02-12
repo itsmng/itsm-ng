@@ -2558,54 +2558,67 @@ class Ticket extends CommonITILObject {
    static function showMassiveActionsSubForm(MassiveAction $ma) {
       switch ($ma->getAction()) {
          case 'merge_as_followup' :
-            $rand = mt_rand();
-            $mergeparam = [
-               'name'         => "_mergeticket",
-               'used'         => $ma->items['Ticket'],
-               'displaywith'  => ['id'],
-               'rand'         => $rand
+            $inputs = [
+               Ticket::getTypeName() => [
+                  'type' => 'select',
+                  'name' => '_mergeticket',
+                  'values' => getOptionForItems(Ticket::class, [], true, false, $ma->items['Ticket']),
+                  'col_lg' => 12,
+                  'col_md' => 12,
+                  'actions' => getItemActionButtons(['info'], Ticket::class),
+               ],
+               __('Merge followups') => [
+                  'type' => 'checkbox',
+                  'name' => 'with_followups',
+                  'value' => true,
+                  'col_lg' => 3,
+               ],
+               __('Merge documents') => [
+                  'type' => 'checkbox',
+                  'name' => 'with_documents',
+                  'value' => true,
+                  'col_lg' => 3,
+               ],
+               __('Merge tasks') => [
+                  'type' => 'checkbox',
+                  'name' => 'with_tasks',
+                  'value' => true,
+                  'col_lg' => 3,
+               ],
+               __('Merge actors') => [
+                  'type' => 'checkbox',
+                  'name' => 'with_actors',
+                  'value' => true,
+                  'col_lg' => 3,
+               ],
+               __('Link type') => [
+                  'type' => 'select',
+                  'name' => 'link_type',
+                  'values' => [
+                     0                             => __('None'),
+                     Ticket_Ticket::LINK_TO        => __('Linked to'),
+                     Ticket_Ticket::DUPLICATE_WITH => __('Duplicates'),
+                     Ticket_Ticket::SON_OF         => __('Son of'),
+                     Ticket_Ticket::PARENT_OF      => __('Parent of')      
+                  ],
+                  'value' => Ticket_Ticket::SON_OF,
+                  'col_lg' => 12,
+                  'col_md' => 12,
+               ]
             ];
-            echo "<table class='center-h'><tr>";
-            echo "<td><label for='dropdown__mergeticket$rand'>".Ticket::getTypeName(1)."</label></td><td colspan='3'>";
-            Ticket::dropdown($mergeparam);
-            echo "</td></tr><tr><td><label for='with_followups'>".__('Merge followups')."</label></td><td>";
-            Html::showCheckbox([
-               'name'    => 'with_followups',
-               'id'      => 'with_followups',
-               'checked' => true
-            ]);
-            echo "</td><td><label for='with_documents'>".__('Merge documents')."</label></td><td>";
-            Html::showCheckbox([
-               'name'    => 'with_documents',
-               'id'      => 'with_documents',
-               'checked' => true
-            ]);
-            echo "</td></tr><tr><td><label for='with_tasks'>".__('Merge tasks')."<label></td><td>";
-            Html::showCheckbox([
-               'name'    => 'with_tasks',
-               'id'      => 'with_tasks',
-               'checked' => true
-            ]);
-            echo "</td><td><label for='with_actors'>".__('Merge actors')."</label></td><td>";
-            Html::showCheckbox([
-               'name'    => 'with_actors',
-               'id'      => 'with_actors',
-               'checked' => true
-            ]);
-            echo "</td></tr><tr><td><label for='dropdown_link_type$rand'>".__('Link type')."</label></td><td colspan='3'>";
-            Dropdown::showFromArray('link_type', [
-               0                             => __('None'),
-               Ticket_Ticket::LINK_TO        => __('Linked to'),
-               Ticket_Ticket::DUPLICATE_WITH => __('Duplicates'),
-               Ticket_Ticket::SON_OF         => __('Son of'),
-               Ticket_Ticket::PARENT_OF      => __('Parent of')
-            ], ['value' => Ticket_Ticket::SON_OF, 'rand' => $rand]);
-            echo "</td></tr><tr><tr><td colspan='4'>";
+            echo "<div class='center row'>";
+            foreach ($inputs as $title => $input) {
+               renderTwigTemplate('macros/wrappedInput.twig', [
+                  'title' => $title,
+                  'input' => $input,
+               ]);
+            };
+            echo "</div>";
             echo Html::submit(_x('button', 'Merge'), [
                'name'      => 'merge',
-               'confirm'   => __('Confirm the merge? This ticket will be deleted!')
+               // 'confirm'   => __('Confirm the merge? This ticket will be deleted!'),
+               'class'     => 'btn btn-secondary'
             ]);
-            echo "</td></tr></table>";
             return true;
       }
       return parent::showMassiveActionsSubForm($ma);
@@ -7069,7 +7082,7 @@ class Ticket extends CommonITILObject {
                   }
                }
                if (isset($p['append_actors'])) {
-                  $tu = new User_ticket();
+                  $tu = new Ticket_User();
                   $existing_users = $tu->find(['tickets_id' => $merge_target_id]);
                   $gt = new Group_Ticket();
                   $existing_groups = $gt->find(['tickets_id' => $merge_target_id]);

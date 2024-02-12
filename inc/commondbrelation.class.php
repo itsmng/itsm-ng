@@ -1284,7 +1284,7 @@ abstract class CommonDBRelation extends CommonDBConnexity {
             // Allow any relation to display its own fields (NetworkPort_Vlan for tagged ...)
             static::showRelationMassiveActionsSubForm($ma, $peer_number);
             echo Html::submit($specificities['button_labels'][$action],
-                                         ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
+                                         ['name' => 'massiveaction', 'class' => 'btn btn-secondary mt-3']);
             return true;
       }
       return parent::showMassiveActionsSubForm($ma);

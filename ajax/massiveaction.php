@@ -53,7 +53,7 @@ try {
 
 }
 
-echo "<div class='center massiveactions'>";
+echo "<div class='center massiveactions w-100'>";
 Html::openMassiveActionsForm();
 $params = ['action' => '__VALUE__'];
 $input  = $ma->getInput();
