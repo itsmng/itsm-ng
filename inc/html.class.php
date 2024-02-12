@@ -1865,6 +1865,7 @@ JAVASCRIPT;
       $twig_vars['accessibilityMenu'] = Session::haveRight("accessibility", READ);
 
       $twig_vars['username'] = getUserName(Session::getLoginUserID());
+      $twig_vars['main_menu']['args']['access'] = Session::getCurrentInterface();
       renderTwigTemplate('menus/headers/header.twig', $twig_vars);
       // call static function callcron() every 5min
       CronTask::callCron();

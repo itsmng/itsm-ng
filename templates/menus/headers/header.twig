@@ -19,6 +19,7 @@
 				</a>
 			</div>
 
+			{% if main_menu.args.access == 'central' %}
             <div id="searchbar">
                 <form role="search" method="get" action="{{root_doc}}/front/search.php">
                     <input type="search" name="globalsearch" placeholder="{{"Search"|trans}}...">
@@ -27,6 +28,7 @@
                     </button>
                 </form>
             </div>
+			{% endif %}
 
 			<ul class='d-flex justify-content-around m-0'>
 				<li id='language_link' class="p-2">
