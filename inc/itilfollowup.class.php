@@ -1113,34 +1113,36 @@ class ITILFollowup  extends CommonDBChild {
    }
 
    static function showMassiveActionAddFollowupForm() {
-      echo "<table class='tab_cadre_fixe'>";
-      echo '<tr><th colspan=4>'.__('Add a new followup').'</th></tr>';
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Source of followup')."</td>";
-      echo "<td>";
-      RequestType::dropdown(
+      $inputs = [
+         __('Source of followup') => [
+            'type' => 'select',
+            'name' => 'requesttypes_id',
+            'values' => getOptionForItems(RequestType::class, ['is_active' => 1, 'is_itilfollowup' => 1]),
+            'col_lg' => 12,
+            'col_md' => 12,
+         ],
+         __('Description') => [
+            'type' => 'textarea',
+            'name' => 'content',
+            'rows' => 6,
+            'col_lg' => 12,
+            'col_md' => 12,
+         ],
          [
-            'value' => RequestType::getDefault('followup'),
-            'condition' => ['is_active' => 1, 'is_itilfollowup' => 1]
+            'type' => 'hidden',
+            'name' => 'is_private',
+            'value' => $_SESSION['glpifollowup_private']
          ]
-      );
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Description')."</td>";
-      echo "<td><textarea name='content' cols='50' rows='6'></textarea></td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center' colspan='2'>";
-      echo "<input type='hidden' name='is_private' value='".$_SESSION['glpifollowup_private']."'>";
-      echo "<input type='btn' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-      echo "</td>";
-      echo "</tr>";
-
-      echo "</table>";
+      ];
+      echo "<div class='center row'>";
+      foreach ($inputs as $title => $input) {
+         renderTwigTemplate('macros/wrappedInput.twig', [
+            'title' => $title,
+            'input' => $input,
+         ]);
+      };
+      echo '</div>';
+      echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='btn btn-secondary mt-3'>";
    }
 
    static function showMassiveActionsSubForm(MassiveAction $ma) {
