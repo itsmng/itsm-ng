@@ -49,28 +49,55 @@ echo "<tr><th colspan='3'>&nbsp;".__('Network report')."</th></tr>";
 echo "</table><br>";
 
 // 3. Selection d'affichage pour generer la liste
+$form = [
+   'action' => $_SERVER['PHP_SELF'],
+   'buttons' => [
+      [
+         'value' => __s('Display report'),
+         'class' => 'btn btn-secondary',
+      ]
+   ],
+   'content' => [
+      '' => [
+         'visible' => true,
+         'inputs' => [
+            __('By location') => [
+               'type' => 'select',
+               'name' => 'locations_id',
+               'values' => getOptionForItems(Location::class, ['entities_id' => $_SESSION["glpiactive_entity"]]),
+               'col_lg' => 12,
+               'col_md' => 12,
+            ]
+         ]
+      ]
+   ]
+];
+renderTwigForm($form);
 
-echo "<form name='form' method='post' action='report.location.list.php'>";
-echo "<table class='tab_cadre' width='500'>";
-echo "<tr class='tab_bg_1'><td width='120'>".__('By location')."</td>";
-echo "<td>";
-Location::dropdown(['entity' => $_SESSION["glpiactive_entity"]]);
-echo "</td><td class='center' width='120'>";
-echo "<input type='submit' value=\"".__s('Display report')."\" class='submit'>";
-echo "</td></tr>";
-echo "</table>";
-Html::closeForm();
-
-echo "<form name='form2' method='post' action='report.switch.list.php'>";
-echo "<table class='tab_cadre' width='500'>";
-echo "<tr class='tab_bg_1'><td width='120'>".__('By hardware')."</td>";
-echo "<td>";
-NetworkEquipment::dropdown(['name' => 'switch']);
-echo "</td><td class='center' width='120'>";
-echo "<input type='submit' value=\"".__s('Display report')."\" class='submit'>";
-echo "</td></tr>";
-echo "</table>";
-Html::closeForm();
+$form = [
+   'action' => $_SERVER['PHP_SELF'],
+   'buttons' => [
+      [
+         'value' => __s('Display report'),
+         'class' => 'btn btn-secondary',
+      ]
+   ],
+   'content' => [
+      '' => [
+         'visible' => true,
+         'inputs' => [
+            __('By hardware') => [
+               'type' => 'select',
+               'name' => 'switch',
+               'values' => getOptionForItems(NetworkEquipment::class),
+               'col_lg' => 12,
+               'col_md' => 12,
+            ]
+         ]
+      ]
+   ]
+];
+renderTwigForm($form);
 
 if (countElementsInTableForMyEntities("glpi_netpoints") > 0) {
    echo "<form name='form3' method='post' action='report.netpoint.list.php'>";
