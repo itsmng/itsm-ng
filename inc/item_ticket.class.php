@@ -256,8 +256,7 @@ class Item_Ticket extends CommonItilObject_Item {
          echo "<span id='item_ticket_selection_information$rand'></span>";
          echo "</div>";
 
-         // Add button
-         echo "<a href='javascript:itemAction$rand(\"add\");' class='vsubmit' style='float:left'>"._sx('button', 'Add')."</a>";
+         echo "<a href='javascript:itemAction$rand(\"add\");' class='btn btn-secondary' style='float:left'>"._sx('button', 'Add')."</a>";
       }
 
       // Display list
@@ -1209,6 +1208,16 @@ class Item_Ticket extends CommonItilObject_Item {
             }
          }
          echo "<div id='tracking_my_devices'>";
+         renderTwigTemplate('macros/wrappedInput.twig', [
+            'title' => __('My devices'),
+            'input' => [
+               'type' => 'select',
+               'name' => 'my_items',
+               'values' => $my_devices,
+               'col_lg' => 12,
+               'col_md' => 12,
+            ]
+         ]);
          echo __('My devices')."&nbsp;";
          Dropdown::showFromArray('my_items', $my_devices, ['rand' => $rand]);
          echo "</div>";
