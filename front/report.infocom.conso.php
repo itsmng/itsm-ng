@@ -60,18 +60,35 @@ $chart_opts =  [
 
 Report::title();
 
-echo "\n<form method='post' name='form' action='".$_SERVER['PHP_SELF']."'>";
-echo "<table class='tab_cadre'><tr class='tab_bg_2'>";
-echo "<td class='right'>".__('Start date')."</td><td>";
-Html::showDateField("date1", ['value' => $_POST["date1"]]);
-echo "</td><td rowspan='2' class='center'>";
-echo "<input type='submit' class='submit' name='submit' value=\"".__s('Display report')."\"></td>".
-     "</tr>\n";
-echo "<tr class='tab_bg_2'><td class='right'>".__('End date')."</td><td>";
-Html::showDateField("date2", ['value' => $_POST["date2"]]);
-echo "</td></tr>";
-echo "</table>\n";
-Html::closeForm();
+$form = [
+   'action' => $_SERVER['PHP_SELF'],
+   'buttons' => [
+      [
+         'value' => __s('Display report'),
+         'class' => 'btn btn-secondary',
+      ]
+   ],
+   'content' => [
+      '' => [
+         'visible' => true,
+         'inputs' => [
+            __('Start date') => [
+               'type' => 'date',
+               'name' => 'date1',
+               'value' => $_POST["date1"],
+               'col_lg' => 6,
+            ],
+            __('End date') => [
+               'type' => 'date',
+               'name' => 'date2',
+               'value' => $_POST["date2"],
+               'col_lg' => 6,
+            ]
+         ]
+      ]
+   ]
+];
+renderTwigForm($form);
 
 $valeurtot           = 0;
 $valeurnettetot      = 0;
