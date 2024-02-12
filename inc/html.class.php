@@ -1625,7 +1625,8 @@ JAVASCRIPT;
          $force
          || !isset($_SESSION['glpimenu'])
          || !is_array($_SESSION['glpimenu'])
-         || (count($_SESSION['glpimenu']) == 0)
+         || (count($_SESSION['glpimenu']) == 0
+         || true)
       ) {
 
          $menu = self::getMenuInfos();
@@ -7109,8 +7110,9 @@ JAVASCRIPT;
                // list menu item
                foreach ($data['content'] as $key => $val) {
                   // some menu arent arrays and should'nt be showed
-                  if (!is_array($val))
-                  continue;
+                  if (!is_array($val)) {
+                     continue;
+                  }
                   $menu[$part]['content'][$key]['is_favorite'] = isset($menu_favorites[$part]) && in_array($key, $menu_favorites[$part]);
                   $menu[$part]['content'][$key]['part'] = $part;
                   $menu[$part]['content'][$key]['sub_menu_class'] = "";
