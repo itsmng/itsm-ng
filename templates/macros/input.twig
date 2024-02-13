@@ -158,7 +158,15 @@
   <select class='form-select {{attributes.class}}'
     {% for name, value in attributes %} {% if name not in  ['values', 'class']%}{{name}}="{{value}}"{% endif %} {% endfor %}>
       {% for key, item in attributes.values %}
-          <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
+        {% if item is iterable %}
+          <optgroup label="{{key}}">
+            {% for key, item in item %}
+              <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
+            {% endfor %}
+          </optgroup>
+        {% else %}
+            <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
+        {% endif %}
       {% endfor %}
   </select>
   {% if attributes.searchable %}

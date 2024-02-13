@@ -8,7 +8,7 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true,
     global $DB;
 
     $table = getTableForItemType($item);
-    $name = $isDevice ? 'designation' : 'name';
+$name = $isDevice ? 'designation' : 'name';
     $iterator = $DB->request([
         'SELECT' => ['id', $name ],
         'FROM' => $table,
@@ -18,16 +18,16 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true,
     $options = [];
     
     while ($val = $iterator->next()) {
-        $options[$val['id']] = $val[$name] == '' ? '(' . $val['id'] . ')' : $val[$name];
-    }
-    if ($display_emptychoice) {
+                $options[$val['id']] = $val[$name] == '' ? '(' . $val['id'] . ')' : $val[$name];
+            }
+        if ($display_emptychoice) {
         if (!isset($options[0])) {
             $options = [0 => Dropdown::EMPTY_VALUE] + $options;
-        } else {
-            $options = [-1 => Dropdown::EMPTY_VALUE] + $options;
+    } else {
+        $options = [-1 => Dropdown::EMPTY_VALUE] + $options;
         }
     }
-    foreach ($used as $id) {
+foreach ($used as $id) {
         unset($options[$id]);
     }
 
@@ -106,6 +106,15 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     global $CFG_GLPI;
 
     $twig = Twig::load(GLPI_ROOT . '/templates', false);
+    if (isset($fields['id']) && $fields['id'] > 0) {
+        $form['content'][array_key_first($form['content'])]['inputs'] = array_merge([
+            [
+                'type' => 'hidden',
+                'name' => 'id',
+                'value' => $fields['id'],
+            ],
+        ], $form['content'][array_key_first($form['content'])]['inputs']);
+    }
     if (isset($_GET['withtemplate']) && $_GET['withtemplate'] == 1) {
         $form['content'][array_key_first($form['content'])]['inputs'] = array_merge([
             [
@@ -120,6 +129,40 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
             ]
         ], $form['content'][array_key_first($form['content'])]['inputs']);
     };
+    if (count($_SESSION['glpiactiveentities']) > 1) {
+        $form['content'] = [Entity::getTypeName() => [
+            'visible' => true,
+            'inputs' => [
+                __('Entity') => [
+                    'type' => 'select',
+                    'name' => 'entities_id',
+                    'values' => getOptionForItems(Entity::class),
+                    'value' => $fields['entities_id'] ?? Session::getActiveEntity(),
+                    'col_lg' => 8,
+                    'col_md' => 8,
+                ],
+                __('Recursive') => [
+                    'type' => 'checkbox',
+                    'name' => 'is_recursive',
+                    'value' => $fields['is_recursive'] ?? Session::getIsActiveEntityRecursive(),
+                ],
+            ],
+        ]] + $form['content'];
+    } else {
+        $form['content'][array_key_first($form['content'])]['inputs'] = array_merge([
+            [
+                'type' => 'hidden',
+                'name' => 'entities_id',
+                'value' => Session::getActiveEntity(),
+            ],
+            [
+                'type' => 'hidden',
+                'name' => 'is_recursive',
+                'value' => Session::getIsActiveEntityRecursive(),
+            ],
+        ], $form['content'][array_key_first($form['content'])]['inputs']);
+
+    }
     try {
         echo $twig->render('form.twig', [
             'form' => $form,
@@ -130,42 +173,6 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     } catch (Exception $e) {
         echo $e->getMessage();
     }
-}
-
-function getHiddenInputsForItemForm($item, $options)
-{
-    return [
-        $options['id'] != '' ? [
-            'type' => 'hidden',
-            'name' => 'entities_id',
-            'value' => $item->fields['entities_id'],
-        ] : [],
-        $options['id'] != '' ? [
-            'type' => 'hidden',
-            'name' => 'is_recursive',
-            'value' => $item->fields['is_recursive'],
-        ] : [],
-        [
-            'type' => 'hidden',
-            'name' => isset($options['id']) && $options['id'] != '' ? 'update' : 'add',
-            'value' => '',
-        ],
-        [
-            'type' => 'hidden',
-            'name' => 'id',
-            'value' => isset($options['id']) ? $options['id'] : 0,
-        ],
-        [
-            'type' => 'hidden',
-            'name' => '_glpi_csrf_token',
-            'value' => Session::getNewCSRFToken(),
-        ],
-        [
-            'type' => 'hidden',
-            'name' => '_read_date_mod',
-            'value' => (new DateTime)->format('Y-m-d H:i:s'),
-        ],
-    ];
 }
 
 function getItemActionButtons(array $actions, string $itemType): array

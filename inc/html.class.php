@@ -1768,8 +1768,9 @@ JAVASCRIPT;
       }
 
       //Main menu
-      $twig_vars += ["main_menu" => self::getMainMenu($sector, $item, $option)];
-      $twig_vars += self::getMainMenu($sector, $item, $option)['args']; //TODO : change to only add breadcrumb var.
+      $mainMenu = self::getMainMenu($sector, $item, $option);
+      $twig_vars += ["main_menu" => $mainMenu];
+      $twig_vars += $mainMenu['args']; //TODO : change to only add breadcrumb var.
       // TODO : separate menu from header
       // Preferences and logout link
       $twig_vars += ["top_menu" => self::getBottomMenu(true)];
@@ -1863,13 +1864,8 @@ JAVASCRIPT;
       $twig_vars['accessibilityMenu'] = Session::haveRight("accessibility", READ);
 
       $twig_vars['username'] = getUserName(Session::getLoginUserID());
-      require_once GLPI_ROOT . "/src/twig/twig.class.php";
-      $twig = Twig::load(GLPI_ROOT . "/templates", false, true);
-      try {
-         echo $twig->render('menus/headers/header.twig',  $twig_vars );
-      } catch (\Exception $e) {
-         echo $e->getMessage();
-      }
+      $twig_vars['main_menu']['args']['access'] = Session::getCurrentInterface();
+      renderTwigTemplate('menus/headers/header.twig', $twig_vars);
       // call static function callcron() every 5min
       CronTask::callCron();
       self::displayMessageAfterRedirect();
@@ -7114,8 +7110,9 @@ JAVASCRIPT;
                // list menu item
                foreach ($data['content'] as $key => $val) {
                   // some menu arent arrays and should'nt be showed
-                  if (!is_array($val))
-                  continue;
+                  if (!is_array($val)) {
+                     continue;
+                  }
                   $menu[$part]['content'][$key]['is_favorite'] = isset($menu_favorites[$part]) && in_array($key, $menu_favorites[$part]);
                   $menu[$part]['content'][$key]['part'] = $part;
                   $menu[$part]['content'][$key]['sub_menu_class'] = "";

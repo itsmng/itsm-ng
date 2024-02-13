@@ -307,7 +307,7 @@ class Contract_Item extends CommonDBRelation{
          if (!count($used)) {
             $usedCondition = [];
          } else {
-            $usedCondition = ['NOT' => ['id' => $used]];
+            $usedCondition = ['NOT' => [Contract::getTable() . '.id' => $used]];
          };
          $form = [
             'action' => Toolbox::getItemTypeFormURL(__CLASS__),
