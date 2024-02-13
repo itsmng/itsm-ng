@@ -892,6 +892,8 @@ class Item_Devices extends CommonDBRelation
                $values[] = $newValue;
                $massive_action[] = sprintf('item[%s][%s]', $link::class, $data['id']);
             }
+            echo "<hr>";
+            echo "<h2>".$link::getTypeName()."</h2>";
             renderTwigTemplate('table.twig', [
                'id' => $massiveActionContainerId,
                'fields' => $fields,
