@@ -1248,7 +1248,6 @@ class CommonGLPI {
          if (isset($_GET["id"]) && $_GET["id"] && !$this->can($_GET["id"], READ)) {
             // This triggers from a profile switch.
             // If we don't have right, redirect instead to central page
-            die(dump($this->fields));
             if (isset($_SESSION['_redirected_from_profile_selector'])
                 && $_SESSION['_redirected_from_profile_selector']) {
                unset($_SESSION['_redirected_from_profile_selector']);

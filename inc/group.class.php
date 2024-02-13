@@ -239,7 +239,7 @@ class Group extends CommonTreeDropdown {
                   __('As child of') => [
                      'type' => 'select',
                      'name' => 'groups_id',
-                     'values' => getOptionForItems('Group', ['NOT' => ['id' => $ID]]),
+                     'values' => getOptionForItems('Group', ['NOT' => [Group::getTable() . '.id' => $ID]]),
                      'value' => $this->fields['groups_id'],
                      'actions' => getItemActionButtons(['info', 'add'], 'Group'),
                      'col_lg' => 6,
@@ -316,7 +316,7 @@ class Group extends CommonTreeDropdown {
          ]
   
       ];
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
       return true;
    }
 

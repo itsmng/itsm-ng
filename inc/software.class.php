@@ -332,15 +332,13 @@ class Software extends CommonDBTM {
                      'name' => 'softwares_id',
                      'type' => 'select',
                      'value' => $this->fields['softwares_id'],
-                     'values' => getOptionForItems("Software", ['entities_id' => $this->fields['entities_id']]),
+                     'values' => getOptionForItems("Software"),
                   ],
                ]
             ]
          ]
       ];
 
-      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $this->fields)];
-      
       ob_start();
       Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
          'colspan'      => 2,
