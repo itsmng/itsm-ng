@@ -273,8 +273,6 @@ class CartridgeItem extends CommonDBTM {
          ]
       ];
 
-      $form['content']['form_inputs_config'] = ['inputs' =>  getHiddenInputsForItemForm($this, $this->fields)];
-      
       ob_start();
       Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
          'colspan'      => 2,
@@ -286,7 +284,7 @@ class CartridgeItem extends CommonDBTM {
          ]]);
       $additionnalHtml = ob_get_clean();
          
-      renderTwigForm($form, $additionnalHtml);
+      renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }
 

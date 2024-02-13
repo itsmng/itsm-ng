@@ -895,7 +895,7 @@ class Reminder extends CommonDBVisible implements
             printf(__('%1$s %2$s'), $link, $tooltip);
 
             if ($data["is_planned"]) {
-               $tab      = explode(" ", $data["begin"]);
+               $tab      = explode(" ", $data["begin"] ?? '');
                $date_url = $tab[0];
                echo "<a href='".$CFG_GLPI["root_doc"]."/front/planning.php?date=".$date_url.
                      "&amp;type=day' class='pointer floatright' title=\"".sprintf(__s('From %1$s to %2$s'),
