@@ -124,7 +124,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
             ]
         ], $form['content'][array_key_first($form['content'])]['inputs']);
     };
-    if (count($_SESSION['glpiactiveentities']) > 1) {
+    if (count($_SESSION['glpiactiveentities']) > 1 && isset($fields['entities_id'])) {
         $form['content'] = [Entity::getTypeName() => [
             'visible' => true,
             'inputs' => [
