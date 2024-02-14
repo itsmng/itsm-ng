@@ -37,8 +37,9 @@ class RoboFile extends \Robo\Tasks
     * @return void
     */
    public function minify() {
-      $this->minifyCSS()
-         ->minifyJS();
+      $this
+      // ->minifyCSS()
+      ->minifyJS();
    }
 
    /**
