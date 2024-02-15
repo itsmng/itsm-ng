@@ -1490,7 +1490,11 @@ class Search {
          $col_num = 0;
          $value[$row_num] = [];
 
-         $massiveActionValues[$row_num] = 'item['.$data['itemtype'].']['.$row['id'].']';
+         if (in_array($row['entities_id'], $_SESSION['glpiactiveentities'])) {
+            $massiveActionValues[$row_num] = 'item['.$data['itemtype'].']['.$row['id'].']';
+         } else {
+            $massiveActionValues[$row_num] = null;
+         }
 
          foreach ($data['data']['cols'] as $col) {
             $colkey = "{$col['itemtype']}_{$col['id']}";
@@ -1512,11 +1516,6 @@ class Search {
             'display'       => false
          ]
       );
-
-      $searchconfigRights = Session::haveRightsOr('search_config', [
-         DisplayPreference::PERSONAL,
-         DisplayPreference::GENERAL
-      ]);
 
       $massiveactionparams                   = $data['search']['massiveactionparams'];
       $massiveactionparams['container']      = 'SearchTableFor'.$data['itemtype'];
