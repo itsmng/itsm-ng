@@ -1490,7 +1490,8 @@ class Search {
          $col_num = 0;
          $value[$row_num] = [];
 
-         if (in_array($row['entities_id'], $_SESSION['glpiactiveentities'])) {
+         if (!isset($row['entities_id'])
+            || in_array($row['entities_id'], $_SESSION['glpiactiveentities'])) {
             $massiveActionValues[$row_num] = 'item['.$data['itemtype'].']['.$row['id'].']';
          } else {
             $massiveActionValues[$row_num] = null;
