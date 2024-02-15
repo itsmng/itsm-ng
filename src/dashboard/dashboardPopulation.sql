@@ -98,6 +98,7 @@ INSERT INTO Dashboard_Priority (id, name) VALUES
     (5, 'Very Low');
 
 TRUNCATE TABLE `Dashboard_ITILCategory`;
+INSERT INTO `Dashboard_ITILCategory` (id, name) VALUES (0, 'null');
 INSERT INTO `Dashboard_ITILCategory` (id, name)
 SELECT id, name
 FROM glpi_itilcategories;
