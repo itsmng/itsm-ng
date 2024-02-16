@@ -42,7 +42,7 @@ class HTMLTableRow extends HTMLTableEntity {
 
    private $group;
    private $empty              = true;
-   private $cells              = [];
+   public $cells              = [];
    private $numberOfSubRows    = 1;
    private $linesWithAttributs = [];
 

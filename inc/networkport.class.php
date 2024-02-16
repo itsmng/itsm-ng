@@ -576,18 +576,6 @@ class NetworkPort extends CommonDBChild {
          renderTwigForm($form);
       }
 
-      if ($showmassiveactions) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-      }
-
-      $is_active_network_port = false;
-
-      Session::initNavigateListItems('NetworkPort',
-                                     //TRANS : %1$s is the itemtype name,
-                                     //        %2$s is the name of the item (used for headings of a list)
-                                     sprintf(__('%1$s = %2$s'),
-                                             $item->getTypeName(1), $item->getName()));
-
       if ($itemtype == 'NetworkPort') {
          $porttypes = ['NetworkPortAlias', 'NetworkPortAggregate'];
       } else {
@@ -608,8 +596,6 @@ class NetworkPort extends CommonDBChild {
       $table_namelink = self::getDisplayOptionsLink($itemtype);
 
       $table_name = sprintf(__('%1$s - %2$s'), $table_name, $table_namelink);
-
-      $table->setTitle($table_name);
 
       $c_main = $table->addHeader('main', self::getTypeName(Session::getPluralNumber()));
 
@@ -656,15 +642,6 @@ class NetworkPort extends CommonDBChild {
          }
 
          $t_group = $table->createGroup($group_name, $group_title);
-
-         if (($withtemplate != 2)
-             && $canedit) {
-            $c_checkbox = $t_group->addHeader('checkbox',
-                                              Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand,
-                                                                          '__RAND__'), $c_main);
-         } else {
-            $c_checkbox = null;
-         }
 
          $c_number  = $t_group->addHeader('NetworkPort', "#", $c_main);
          $c_name    = $t_group->addHeader("Name", __('Name'), $c_main);
@@ -725,8 +702,6 @@ class NetworkPort extends CommonDBChild {
             ];
          }
 
-         echo "<div class='spaced'>";
-
          $iterator = $DB->request($criteria);
          $number_port = count($iterator);
 
@@ -734,7 +709,7 @@ class NetworkPort extends CommonDBChild {
             $is_active_network_port = true;
 
             $save_canedit = $canedit;
-
+            
             if (!empty($portType)) {
                $name = sprintf(__('%1$s (%2$s)'), self::getTypeName($number_port),
                                  call_user_func([$portType, 'getTypeName']));
@@ -744,20 +719,14 @@ class NetworkPort extends CommonDBChild {
                $canedit = false;
             }
 
+            $values = [];
+            $massive_actions = [];
             while ($devid = $iterator->next()) {
                $t_row = $t_group->createRow();
 
                $netport->getFromDB(current($devid));
 
                // No massive action for migration ports
-               if (($withtemplate != 2)
-                     && $canedit
-                     && !empty($portType)) {
-                  $t_row->addCell(
-                     $c_checkbox,
-                     Html::getMassiveActionCheckBox(__CLASS__, $netport->fields["id"])
-                  );
-               }
                $content = "<span class='b'>";
                // Display link based on default rights
                if ($save_canedit
@@ -788,7 +757,6 @@ class NetworkPort extends CommonDBChild {
                   $t_row->addCell($c_dynamic,
                                     Dropdown::getYesNo($netport->fields['is_dynamic']));
                }
-
                if ($display_options['characteristics']) {
                   $instantiation = $netport->getInstantiation();
                   if ($instantiation !== false) {
@@ -799,44 +767,58 @@ class NetworkPort extends CommonDBChild {
                } else if ($display_options['internet']) {
                   NetworkName::getHTMLTableCellsForItem($t_row, $netport, null, $table_options);
                }
-
+               $headers = $t_row->getGroup()->headers;
+               if (!isset($categories)) {
+                  $categories = [];
+                  foreach ($headers as $header) {
+                     foreach ($header as $key => $value) {
+                        ob_start();
+                        $value->displayContent();
+                        $categories[$key] = ob_get_clean();
+                     }
+                  }
+               }
+               $newValue = [];
+               foreach($t_row->cells as $name => $cell) {
+                  foreach($cell as $key => $value) {
+                     $content = $value->content;
+                     if (gettype($content) == 'array') {
+                        $classtype = $content[0]['function'][0];
+                        $funcname = $content[0]['function'][1];
+                        ob_start();
+                        $classtype::$funcname($netport);
+                        $content = ob_get_clean();
+                     }
+                     $headerName = explode(':', $name)[1];
+                     $newValue[$headerName] = $content;
+                  }
+               }
+               $values[] = $newValue;
+               $massive_actions[] = sprintf('item[%s][%s]', $netport->getType(), $netport->getID());
             }
-
             $canedit = $save_canedit;
+            echo '<hr><h2>'. $group_title .'</h2>';
+            $fields = $categories;
+            $rand = mt_rand();
+            $massiveContainerId = 'mass'.$netport->getType().$rand;
+            if ($canedit) {
+               Html::showMassiveActions([
+                  'display_arrow' => false,
+                  'container' => $massiveContainerId,
+                  'is_deleted' => 0,
+                  'check_itemtype' => $item->getType(),
+                  'check_items_id' => $item->getID(),
+                  'itemtype' => $netport->getType(),
+               ]);
+            }
+            renderTwigTemplate('table.twig',[
+               'id' => $massiveContainerId,
+               'fields' => $fields,
+               'values' => $values,
+               'massive_action' => $massive_actions,
+            ]);
          }
-         echo "</div>";
       }
-      $massiveActionId = 'TableForNetworkPort'.$rand;
-      if ($is_active_network_port
-          && $showmassiveactions) {
-         $massiveactionparams = [
-            'check_itemtype' => $itemtype,
-            'container'      => $massiveActionId,
-            'check_items_id' => $items_id,
-            'display_arrow' => false,
-         ];
-
-         Html::showMassiveActions($massiveactionparams);
-      }
-      $table->display(['display_thead'                         => false,
-                            'display_tfoot'                         => false,
-                            'display_header_on_foot_for_each_group' => true]);
-      unset($table);
-
-      if (!$is_active_network_port) {
-         echo "<table class='tab_cadre_fixe'><tr><th>".__('No network port found')."</th></tr>";
-         echo "</table>";
-      }
-
-      if ($is_active_network_port
-          && $showmassiveactions) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-      }
-      if ($showmassiveactions) {
-         Html::closeForm();
-      }
-
    }
 
 
