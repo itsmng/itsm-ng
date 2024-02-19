@@ -1894,6 +1894,12 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                         'searchtype' => 'equals',
                         'value'      => 'notold',
                         'link'       => 'AND',
+                     ],
+                     [
+                        'field'      => 12, // status
+                        'searchtype' => 'equals',
+                        'value'      => 'notclosed',
+                        'link'       => 'AND',
                      ]
                   ],
                ];
