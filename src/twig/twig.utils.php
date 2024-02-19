@@ -5,32 +5,27 @@
  */
 function getOptionForItems($item, $conditions = [], $display_emptychoice = true, $isDevice = false, $used = [])
 {
-    global $DB;
-
-    $table = getTableForItemType($item);
-$name = $isDevice ? 'designation' : 'name';
-    $iterator = $DB->request([
-        'SELECT' => ['id', $name ],
-        'FROM' => $table,
-        'WHERE' => $conditions,
-    ]);
+    $values = Dropdown::getDropdownValue([
+        'itemtype' => $item,
+        'entity_restrict' => $conditions['entities_id'] ?? Session::getActiveEntity(),
+        'used' => $used,
+        'display_emptychoice' => $display_emptychoice,
+    ], false);
 
     $options = [];
-    
-    while ($val = $iterator->next()) {
-                $options[$val['id']] = $val[$name] == '' ? '(' . $val['id'] . ')' : $val[$name];
+    foreach ($values['results'] as $key => $value) {
+        if (!$value || !count($value))
+            continue;
+
+        if (isset($value['children'])) {
+            $options[$value['text']] = [];
+            foreach ($value['children'] as $childValue) {
+                $options[$value['text']][$childValue['id']] = $childValue['text'];
             }
-        if ($display_emptychoice) {
-        if (!isset($options[0])) {
-            $options = [0 => Dropdown::EMPTY_VALUE] + $options;
-    } else {
-        $options = [-1 => Dropdown::EMPTY_VALUE] + $options;
+        } else {
+            $options[$value['id']] = $value['text'];
         }
     }
-foreach ($used as $id) {
-        unset($options[$id]);
-    }
-
     return $options;
 }
 
@@ -129,7 +124,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
             ]
         ], $form['content'][array_key_first($form['content'])]['inputs']);
     };
-    if (count($_SESSION['glpiactiveentities']) > 1) {
+    if (count($_SESSION['glpiactiveentities']) > 1 && isset($fields['entities_id'])) {
         $form['content'] = [Entity::getTypeName() => [
             'visible' => true,
             'inputs' => [

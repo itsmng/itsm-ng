@@ -48,7 +48,7 @@ abstract class HTMLTableEntity {
    private $html_style = [];
    private $html_class = [];
 
-   private $content;
+   public $content;
 
 
    /**

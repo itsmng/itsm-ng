@@ -42,7 +42,7 @@
 		<thead>
 			<tr>
 				{% if massive_action is defined %}
-					<th data-field="state" data-checkbox="true"></th>
+					<th data-field="state" data-checkbox="true" data-formatter="VerifyMassiveACtion{{rand}}"></th>
 				{% elseif radio %}
 					<th data-radio="true" data-field="select"></th>
 				{% endif %}
@@ -53,11 +53,12 @@
 		</thead>
 		<tbody class="table-{{ (is_trash == 1) ? 'primary' : 'light' }}">
 			{% for key, value in values %}
-				<tr 
+				<tr
 				{% if massive_action is defined %}
 					data-id="{{key}}" data-value='{{massive_action[key]}}'
-				{% endif %}>
-					{% if massive_action is defined or radio is defined %}
+				{% endif %}
+				>
+					{% if (massive_action is defined or radio is defined) %}
 						<td></td>
 					{% endif %}
 					{% for col in fields|keys %}
@@ -119,5 +120,15 @@
 				return buttons;
 			}
 		{% endif %}
+	{% endif %}
+
+	{% if massive_action is defined %}
+	function VerifyMassiveACtion{{rand}}(value, row, index) {
+		if (!row._data.value.length) {
+			return {
+				disabled: true
+			}
+		};
+	}
 	{% endif %}
 </script>

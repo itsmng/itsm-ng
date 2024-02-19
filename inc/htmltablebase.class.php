@@ -43,10 +43,10 @@ class HTMLTableUnknownHeadersOrder extends Exception {}
 **/
 abstract class HTMLTableBase  {
 
-   private $headers = [];
-   private $headers_order = [];
-   private $headers_sub_order = [];
-   private $super;
+   public   $headers = [];
+   private  $headers_order = [];
+   private  $headers_sub_order = [];
+   private  $super;
 
 
    /**
