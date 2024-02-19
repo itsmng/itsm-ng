@@ -720,22 +720,13 @@ class AuthLDAP extends CommonDBTM {
         $ID = $this->getField('id');
 
         if ($ID > 0) {
-
-            echo "<div class='center'>";
-
-            if (isset($_SESSION["LDAP_TEST_MESSAGE"])) {
-                echo $_SESSION["LDAP_TEST_MESSAGE"];
-                unset($_SESSION["LDAP_TEST_MESSAGE"]);
-            }
-            echo "</div>";
-
             $form = [
                 'action' => Toolbox::getItemTypeFormURL('authldap'),
                 'buttons' => [
                     [
                         'type' => 'submit',
                         'name' => 'test_ldap',
-                        'value' => __('Test'),
+                        'value' => _sx('button' ,'Test'),
                         'class' => 'btn btn-secondary',
                     ],
                 ],
@@ -748,11 +739,15 @@ class AuthLDAP extends CommonDBTM {
                                 'name' => 'id',
                                 'value' => $ID
                             ],
+                            __('') => [
+                                'content' => $_SESSION["LDAP_TEST_MESSAGE"] ?? '',
+                            ],
                         ]
                     ]
                 ]
             ];
 
+            unset($_SESSION["LDAP_TEST_MESSAGE"]);
             renderTwigForm($form);
         }
     }
