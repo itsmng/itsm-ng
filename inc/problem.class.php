@@ -643,63 +643,6 @@ class Problem extends CommonITILObject {
       return parent::getSpecificValueToDisplay($field, $values, $options);
    }
 
-
-   /**
-    * @since 0.84
-    *
-    * @param $field
-    * @param $name            (default '')
-    * @param $values          (default '')
-    * @param $options   array
-    *
-    * @return string
-   **/
-   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
-
-      if (!is_array($values)) {
-         $values = [$field => $values];
-      }
-      $options['display'] = false;
-
-      switch ($field) {
-         case 'status':
-            return Problem::dropdownStatus(['name' => $name,
-                                             'value' => $values[$field],
-                                             'display' => false]);
-      }
-      return parent::getSpecificValueToSelect($field, $name, $values, $options);
-   }
-
-   /**
-    * get the problem status list
-    *
-    * @param $withmetaforsearch  boolean  (false by default)
-    *
-    * @return array
-   **/
-   static function getAllStatusArray($withmetaforsearch = false) {
-
-      // To be overridden by class
-      $tab = [self::INCOMING => _x('status', 'New'),
-                   self::ACCEPTED => _x('status', 'Accepted'),
-                   self::ASSIGNED => _x('status', 'Processing (assigned)'),
-                   self::PLANNED  => _x('status', 'Processing (planned)'),
-                   self::WAITING  => __('Pending'),
-                   self::SOLVED   => _x('status', 'Solved'),
-                   self::OBSERVED => __('Under observation'),
-                   self::CLOSED   => _x('status', 'Closed')];
-
-      if ($withmetaforsearch) {
-         $tab['notold']    = _x('status', 'Not solved');
-         $tab['notclosed'] = _x('status', 'Not closed');
-         $tab['process']   = __('Processing');
-         $tab['old']       = _x('status', 'Solved + Closed');
-         $tab['all']       = __('All');
-      }
-      return $tab;
-   }
-
-
    /**
     * Get the ITIL object closed status list
     *
@@ -713,7 +656,6 @@ class Problem extends CommonITILObject {
       $tab = [self::CLOSED];
       return $tab;
    }
-
 
    /**
     * Get the ITIL object solved or observe status list
@@ -737,6 +679,35 @@ class Problem extends CommonITILObject {
    **/
    static function getNewStatusArray() {
       return [self::INCOMING, self::ACCEPTED];
+   }
+
+      /**
+    * get the problem status list
+    *
+    * @param $withmetaforsearch  boolean  (false by default)
+    *
+    * @return array
+   **/
+  static function getAllStatusArray($withmetaforsearch = false) {
+
+      // To be overridden by class
+      $tab = [self::INCOMING => _x('status', 'New'),
+                  self::ACCEPTED => _x('status', 'Accepted'),
+                  self::ASSIGNED => _x('status', 'Processing (assigned)'),
+                  self::PLANNED  => _x('status', 'Processing (planned)'),
+                  self::WAITING  => __('Pending'),
+                  self::SOLVED   => _x('status', 'Solved'),
+                  self::OBSERVED => __('Under observation'),
+                  self::CLOSED   => _x('status', 'Closed')];
+
+      if ($withmetaforsearch) {
+         $tab['notold']    = _x('status', 'Not solved');
+         $tab['notclosed'] = _x('status', 'Not closed');
+         $tab['process']   = __('Processing');
+         $tab['old']       = _x('status', 'Solved + Closed');
+         $tab['all']       = __('All');
+      }
+      return $tab;
    }
 
    /**

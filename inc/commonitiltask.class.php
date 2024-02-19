@@ -1458,11 +1458,19 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
       $form = [
          'action' => $this->getFormURL(),
          'buttons' => [
-            [
-               'name' => 'add',
-               'value' => _x('button', 'Add'),
-               'class' => 'btn btn-secondary',
-            ]
+            $this->canUpdateItem() ? [
+               'type' => 'submit',
+               'name' => $this->isNewID($ID) ? 'add' : 'update',
+               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary'
+            ] : [],
+            !$this->isNewID($ID) && self::canPurge() ? [
+               'type' => 'submit',
+               'name' => 'purge',
+               'value' => __('Delete permanently'),
+               'class' => 'btn btn-danger'
+            ] : [],
+
          ],
          'content' => [
             $this->getTypeName() => [
@@ -1716,6 +1724,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             break;
 
       }
+
       if ($showgrouptickets) {
          if (isset($_SESSION['glpigroups']) && count($_SESSION['glpigroups'])) {
             $prep_req['WHERE'][self::getTable() . '.groups_id_tech'] = $_SESSION['glpigroups'];
@@ -1779,7 +1788,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                         'searchtype' => 'equals',
                         'value'      => 'notold',
                         'link'       => 'AND',
-                     ]
+                     ],
                   ],
                ];
                if ($showgrouptickets) {
@@ -1806,10 +1815,12 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
 
                if ($itemtype == "TicketTask") {
                   $title = __("Ticket tasks to do");
+                  $action = 'ticket.php';
                } else if ($itemtype == "ProblemTask") {
                   $title = __("Problem tasks to do");
+                  $action = 'problem.php';
                }
-               echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/ticket.php?".
+               echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/$action?".
                       Toolbox::append_params($options, '&amp;')."\">".
                       Html::makeTitle($title, $displayed_row_count, $total_row_count)."</a>";
                break;
