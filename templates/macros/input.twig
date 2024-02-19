@@ -277,8 +277,12 @@
   var {{attributes.id|default('ckEditorInstance')}};
   $(document).ready(() => {
     ClassicEditor
-      .create(document.getElementById('{{attributes.id|default("ckEditorInstance" ~ rand)}}', {
-      })).then(editor => {
+      .create(document.querySelector('#{{attributes.id|default("ckEditorInstance" ~ rand)}}'), {
+        toolbar: ['heading',
+          '|', 'bold', 'italic', 'blockQuote', 'link',
+          '|', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable']
+      })
+      .then(editor => {
         {{attributes.id|default("ckEditorInstance" ~ rand)}} = editor
       })
       .catch(error => {
