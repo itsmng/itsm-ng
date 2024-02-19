@@ -1921,10 +1921,12 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
 
                if ($itemtype == "TicketTask") {
                   $title = __("Ticket tasks to do");
+                  $action = 'ticket.php';
                } else if ($itemtype == "ProblemTask") {
                   $title = __("Problem tasks to do");
+                  $action = 'problem.php';
                }
-               echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/ticket.php?".
+               echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/$action?".
                       Toolbox::append_params($options, '&amp;')."\">".
                       Html::makeTitle($title, $displayed_row_count, $total_row_count)."</a>";
                break;
