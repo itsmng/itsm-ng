@@ -2751,7 +2751,7 @@ JAVASCRIPT;
                }
 
                $out = $item->getValueToSelect($searchopt, $inputname, $request['value'], $options2);
-               if (strlen($out)) {
+               if (strlen($out ?? '')) {
                   echo $out;
                   $display = true;
                }
