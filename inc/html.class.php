@@ -757,7 +757,7 @@ class Html
       }
 
       if ($ref_title != "") {
-         echo "<td><span class='btn btn-secondary'>&nbsp;" . $ref_title . "&nbsp;</span></td>";
+         echo "<td><span class='alert alert-secondary'>&nbsp;" . $ref_title . "&nbsp;</span></td>";
       }
 
       if (is_array($ref_btts) && count($ref_btts)) {
@@ -3567,7 +3567,7 @@ JS;
       }
 
       // Search on begin of month / year
-      if (strstr($val, 'BEGIN')) {
+      if (strstr($val ?? '', 'BEGIN')) {
          $hour   = 0;
          $minute = 0;
          $second = 0;
@@ -3588,7 +3588,7 @@ JS;
       }
 
       // Search on Last monday, sunday...
-      if (strstr($val, 'LAST')) {
+      if (strstr($val ?? '', 'LAST')) {
          $lastday = str_replace("LAST", "LAST ", $val);
          $hour   = 0;
          $minute = 0;
@@ -3601,7 +3601,7 @@ JS;
       }
 
       // Search on +- x days, hours...
-      if (preg_match("/^(-?)(\d+)(\w+)$/", $val, $matches)) {
+      if (preg_match("/^(-?)(\d+)(\w+)$/", $val ?? '', $matches)) {
          if (in_array($matches[3], ['YEAR', 'MONTH', 'WEEK', 'DAY', 'HOUR', 'MINUTE'])) {
             $nb = intval($matches[2]);
             if ($matches[1] == '-') {
