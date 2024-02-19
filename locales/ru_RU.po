@@ -4289,7 +4289,9 @@ msgid "URL of the application"
 msgstr "URL приложения"
 
 #: inc/config.class.php:307
-msgid "Text in the login box (HTML tags supported)"
+#, fuzzy
+#| msgid "Text in the login box (HTML tags supported)"
+msgid "Text in the login box"
 msgstr "Текст в поле входа (поддерживаются HTML-теги)"
 
 #: inc/config.class.php:313

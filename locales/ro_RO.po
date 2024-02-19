@@ -4221,7 +4221,7 @@ msgid "URL of the application"
 msgstr "URL-ul aplicaţiei"
 
 #: inc/config.class.php:307
-msgid "Text in the login box (HTML tags supported)"
+msgid "Text in the login box"
 msgstr ""
 
 #: inc/config.class.php:313

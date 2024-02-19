@@ -4186,7 +4186,9 @@ msgid "URL of the application"
 msgstr "Applikasjonens URL"
 
 #: inc/config.class.php:307
-msgid "Text in the login box (HTML tags supported)"
+#, fuzzy
+#| msgid "Text in the login box (HTML tags supported)"
+msgid "Text in the login box"
 msgstr "Tekst i logginn-ruten (HTML-tagger er støttet)"
 
 #: inc/config.class.php:313

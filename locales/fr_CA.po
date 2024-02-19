@@ -3881,8 +3881,8 @@ msgid ""
 "Make sure access to %s (%s) is forbidden; otherwise review .htaccess file "
 "and web server configuration."
 msgstr ""
-"Assurez-vous que l'accès à %s (%s) soit interdit ; sinon vérifiez le fichier "
-".htaccess et la configuration du serveur web."
+"Assurez-vous que l'accès à %s (%s) soit interdit ; sinon vérifiez le "
+"fichier .htaccess et la configuration du serveur web."
 
 #: inc/system/requirement/protectedwebaccess.class.php:116
 #: inc/config.class.php:2798
@@ -4196,7 +4196,9 @@ msgid "URL of the application"
 msgstr "URL de l'application"
 
 #: inc/config.class.php:307
-msgid "Text in the login box (HTML tags supported)"
+#, fuzzy
+#| msgid "Text in the login box (HTML tags supported)"
+msgid "Text in the login box"
 msgstr "Texte sur la page de connexion (balises HTML supportées)"
 
 #: inc/config.class.php:313

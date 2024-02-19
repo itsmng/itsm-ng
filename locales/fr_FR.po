@@ -25,7 +25,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-18 14:42+0100\n"
-"PO-Revision-Date: 2024-02-02 21:01+0000\n"
+"PO-Revision-Date: 2024-02-19 08:02+0000\n"
 "Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "fr/>\n"
@@ -34,7 +34,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.4-dev\n"
+"X-Generator: Weblate 5.4\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -543,7 +543,7 @@ msgstr "Veuillez renseigner les latitude et longitude sur cette localisation."
 
 #: ajax/deleteItilActor.php:92
 msgid "Actor deleted successfully"
-msgstr ""
+msgstr "Acteur supprimé avec succès"
 
 #: ajax/deleteItilActor.php:98
 msgid "Error while deleting actor"
@@ -4208,7 +4208,9 @@ msgid "URL of the application"
 msgstr "URL de l'application"
 
 #: inc/config.class.php:307
-msgid "Text in the login box (HTML tags supported)"
+#, fuzzy
+#| msgid "Text in the login box (HTML tags supported)"
+msgid "Text in the login box"
 msgstr "Texte sur la page de connexion (balises HTML supportées)"
 
 #: inc/config.class.php:313
