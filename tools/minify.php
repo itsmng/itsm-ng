@@ -4,15 +4,20 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use MatthiasMullie\Minify;
 
+// Minify css and js files
 new Itsm_minify();
 
 
-class Itsm_minify {
+class Itsm_minify
+{
 
+    /**
+     * Constructor to minify css and js files
+     */
     function __construct()
     {
 
-        $dirs= [
+        $dirs = [
             'css' => [
                 __DIR__ . '/../css',
                 __DIR__ . '/../lib',
@@ -30,7 +35,14 @@ class Itsm_minify {
         $this->minify_js($dirs['js']);
     }
 
-    private function minify_css($css) : void {
+    /**
+     * Minify css files
+     *
+     * @param [type] $css : array of css directories
+     * @return void
+     */
+    private function minify_css($css): void
+    {
         foreach ($css as $css_dir) {
             if (!is_dir($css_dir)) {
                 continue;
@@ -54,7 +66,14 @@ class Itsm_minify {
         }
     }
 
-    private function minify_js($js) : void {
+    /**
+     * Minify js files
+     *
+     * @param [type] $js : array of js directories
+     * @return void
+     */
+    private function minify_js($js): void
+    {
         foreach ($js as $js_dir) {
             if (!is_dir($js_dir)) {
                 continue;
