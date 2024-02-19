@@ -710,38 +710,47 @@ class AuthLDAP extends CommonDBTM {
       echo "</div>";
    }
 
-   /**
-    * Show ldap test form
-    *
-    * @return void
-    */
-   function showFormTestLDAP () {
+    /**
+     * Show ldap test form
+     *
+     * @return void
+    **/
+    function showFormTestLDAP () {
 
-      $ID = $this->getField('id');
+        $ID = $this->getField('id');
 
-      if ($ID > 0) {
-         echo "<div class='center'>";
-         echo "<form method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-         echo "<input type='hidden' name='id' value='$ID'>";
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr><th colspan='4'>" . __('Test of connection to LDAP directory') . "</th></tr>";
+        if ($ID > 0) {
+            $form = [
+                'action' => Toolbox::getItemTypeFormURL('authldap'),
+                'buttons' => [
+                    [
+                        'type' => 'submit',
+                        'name' => 'test_ldap',
+                        'value' => _sx('button' ,'Test'),
+                        'class' => 'btn btn-secondary',
+                    ],
+                ],
+                'content' => [
+                    __('') => [
+                        'visible' => true,
+                        'inputs' => [
+                            $this->isNewID($ID) ? [] : [
+                                'type' => 'hidden',
+                                'name' => 'id',
+                                'value' => $ID
+                            ],
+                            __('') => [
+                                'content' => $_SESSION["LDAP_TEST_MESSAGE"] ?? '',
+                            ],
+                        ]
+                    ]
+                ]
+            ];
 
-         if (isset($_SESSION["LDAP_TEST_MESSAGE"])) {
-            echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
-            echo $_SESSION["LDAP_TEST_MESSAGE"];
-            echo"</td></tr>";
             unset($_SESSION["LDAP_TEST_MESSAGE"]);
-         }
-
-         echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
-         echo "<input type='submit' name='test_ldap' class='submit' value=\"".
-                _sx('button', 'Test')."\">";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
-      }
-   }
+            renderTwigForm($form);
+        }
+    }
 
    /**
     * Show user config form
