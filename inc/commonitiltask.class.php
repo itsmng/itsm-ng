@@ -1764,7 +1764,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
     * @return void
     */
    static function showCentralList($start, $status = 'todo', $showgrouptickets = true) {
-      global $CFG_GLPI;
+      global $CFG_GLPI, $DB;
 
       $iterator = self::getTaskList($status, $showgrouptickets);
 
@@ -1774,9 +1774,6 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
          : $total_row_count;
 
       if ($displayed_row_count > 0) {
-         echo "<table class='tab_cadrehov'>";
-         echo "<tr class='noHover'><th colspan='4'>";
-
          $itemtype = get_called_class();
          switch ($status) {
             case "todo" :
@@ -1825,25 +1822,55 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                       Html::makeTitle($title, $displayed_row_count, $total_row_count)."</a>";
                break;
          }
-
-         echo "</th></tr>";
-         echo "<tr>";
-         echo "<th style='width: 75px;'>".__('ID')." </th>";
          $type = "";
          if ($itemtype == "TicketTask") {
             $type = Ticket::getTypeName();
          } else if ($itemtype == "ProblemTask") {
             $type = Problem::getTypeName();
          }
-         echo "<th style='width: 20%;'>".__('Title')." (".strtolower($type).")</th>";
-         echo "<th>".__('Description')."</th>";
-         echo "</tr>";
+         $fields = [
+            __('ID'),
+            __('Title') . " (" . strtolower($type) . ")",
+            __('Description'),
+         ];
+         $values = [];
          $i = 0;
          while ($i < $displayed_row_count && ($data = $iterator->next())) {
-            self::showVeryShort($data['id'], $itemtype);
-            $i++;
+            $job  = new $itemtype();
+            $newValue = [];
+            if ($job->getFromDB($data['id'])) {
+               if ($DB->fieldExists($job->getTable(), 'tickets_id')) {
+                  $item_link = new Ticket();
+                  $item_link->getFromDB($job->fields['tickets_id']);
+                  $tab_name = "Ticket";
+               } else if ($DB->fieldExists($job->getTable(), 'problems_id')) {
+                  $item_link = new Problem();
+                  $item_link->getFromDB($job->fields['problems_id']);
+                  $tab_name = "ProblemTask";
+               }
+      
+               $bgcolor = $_SESSION["glpipriority_".$item_link->fields["priority"]];
+               $name    = sprintf(__('%1$s: %2$s'), __('ID'), $job->fields["id"]);
+               $newValue[] = "<div class='priority_block' style='border-color: $bgcolor'>
+                  <span style='background: $bgcolor'></span>&nbsp;$name</div>";
+               $newValue[] = $item_link->fields['name'];
+      
+               $link = "<a href='".$item_link->getFormURLWithID($item_link->fields["id"]);
+               $link .= "&amp;forcetab=".$tab_name."$1";
+               $link   .= "'>";
+               $link    = sprintf(__('%1$s'), $link);
+               $content = Toolbox::unclean_cross_side_scripting_deep(html_entity_decode($job->fields['content'],
+                  ENT_QUOTES,
+                  "UTF-8"));
+               $newValue[] = sprintf(__('%1$s %2$s'), $link, Html::resume_text(Html::Clean($content), 50));
+               $values[] = $newValue;
+            }
          }
-         echo "</table>";
+         renderTwigTemplate('table.twig', [
+            'fields' => $fields,
+            'values' => $values,
+            'minimal' => true,
+         ]);
       }
    }
 
