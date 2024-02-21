@@ -121,49 +121,64 @@ abstract class CommonItilObject_Item extends CommonDBRelation
             }
 
             $types = static::$itemtype_1::getAllTypesForHelpdesk();
-            $emptylabel = __('General');
-            if ($params[static::$items_id_1] > 0) {
-               $emptylabel = Dropdown::EMPTY_VALUE;
-            }
-            Dropdown::showItemTypes($myname, array_keys($types),
-                                    ['emptylabel' => $emptylabel,
-                                          'value'      => $itemtype,
-                                          'rand'       => $rand, 'display_emptychoice' => true]);
-            $found_type = isset($types[$itemtype]);
-
-            $p = ['itemtype'        => '__VALUE__',
-                       'entity_restrict' => $entity_restrict,
-                       'admin'           => $admin,
-                       'used'            => $params['used'],
-                       'multiple'        => $params['multiple'],
-                       'rand'            => $rand,
-                       'myname'          => "add_items_id"];
-
-            Ajax::updateItemOnSelectEvent("dropdown_$myname$rand", "results_$myname$rand",
-                                          $CFG_GLPI["root_doc"].
-                                             "/ajax/dropdownTrackingDeviceType.php",
-                                          $p);
-            echo "<span id='results_$myname$rand'>\n";
-
-            // Display default value if itemtype is displayed
-            if ($found_type
-                && $itemtype) {
-               if (($item = getItemForItemtype($itemtype))
-                    && $items_id) {
-                  if ($item->getFromDB($items_id)) {
-                     Dropdown::showFromArray('items_id', [$items_id => $item->getName()],
-                                             ['value' => $items_id]);
-                  }
-               } else {
-                  $p['itemtype'] = $itemtype;
-                  echo "<script type='text/javascript' >\n";
-                  echo "$(function() {";
-                  Ajax::updateItemJsCode("results_$myname$rand",
-                                         $CFG_GLPI["root_doc"].
-                                            "/ajax/dropdownTrackingDeviceType.php",
-                                         $p);
-                  echo '});</script>';
-               }
+            $used = json_encode($params['used']);
+            $inputs = [
+               [
+                  'type' => 'select',
+                  'id' => "dropdown_itemtype$rand",
+                  'name' => 'itemtype',
+                  'values' => [($params[static::$items_id_1] > 0) ? Dropdown::EMPTY_VALUE : __('General')] + $types,
+                  'col_lg' => 12,
+                  'col_md' => 12,
+                  'hooks' => [
+                     'change' => <<<JS
+                     const val = this.value;
+                     $.ajax({
+                        url: "{$CFG_GLPI['root_doc']}/ajax/dropdownTrackingDeviceType.php",
+                        type: "POST",
+                        data: {
+                           itemtype: val,
+                           entity_restrict: $entity_restrict,
+                           admin: $admin,
+                           used: {$used},
+                           multiple: {$params['multiple']},
+                        },
+                        success: function(data) {
+                           const jsonData = JSON.parse(data);
+                           for (const key in jsonData.results) {
+                              if (jsonData.results[key].children) {
+                                 // add optgroup with options
+                                 const optgroup = document.createElement('optgroup');
+                                 optgroup.label = jsonData.results[key].label;
+                                 document.getElementById(`dropdown_add_items_id$rand`).appendChild(optgroup);
+                                 for (const child of jsonData.results[key].children) {
+                                    const option = document.createElement('option');
+                                    option.value = child.id;
+                                    option.text = child.text;
+                                    optgroup.appendChild(option);
+                                 }                                 
+                              } else {
+                                 const option = document.createElement('option');
+                                 option.value = jsonData.results[key].id;
+                                 option.text = jsonData.results[key].text;
+                                 document.getElementById(`dropdown_add_items_id$rand`).appendChild(option);
+                              }
+                           }
+                        }
+                     });
+                     JS,
+                  ]
+               ],
+               [
+                  'type' => 'select',
+                  'id' => "dropdown_add_items_id$rand",
+                  'name' => 'items_id',
+                  'col_lg' => 12,
+                  'col_md' => 12,
+               ]
+            ];
+            foreach ($inputs as $input) {
+               renderTwigTemplate('macros/wrappedInput.twig', ['title' => '', 'input' => $input]);
             }
             echo "</span>\n";
          }
