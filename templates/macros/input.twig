@@ -277,8 +277,12 @@
   var {{attributes.id|default('ckEditorInstance')}};
   $(document).ready(() => {
     ClassicEditor
-      .create(document.getElementById('{{attributes.id|default("ckEditorInstance" ~ rand)}}', {
-      })).then(editor => {
+      .create(document.querySelector('#{{attributes.id|default("ckEditorInstance" ~ rand)}}'), {
+        toolbar: ['heading',
+          '|', 'bold', 'italic', 'blockQuote', 'link',
+          '|', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable']
+      })
+      .then(editor => {
         {{attributes.id|default("ckEditorInstance" ~ rand)}} = editor
       })
       .catch(error => {
@@ -301,7 +305,10 @@
 {% endmacro %}
 {% macro multiselect(attributes) %}
   {% set rand=random() %}
-  <div {% if attributes.id %} id="{{attributes.id}}" {% endif %} class="w-100 d-flex flex-column align-items-center">
+  <div
+    {% if attributes.id %} id="{{attributes.id}}" {% endif %}
+    {% if attributes.style %} style="{{attributes.style}}" {% endif %}
+    class="w-100 d-flex flex-column align-items-center">
     <div class="input-group m-0">
       {% for input in attributes.inputs %}
         {{_self.input(input)}}
@@ -315,17 +322,25 @@
     <table id="OptionTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
       <tbody>
         {% for inputs in attributes.values %}
-            <tr data-value="{{loop.index}}" style="display: flex">
+            <tr data-value="{{loop.index}}" style="display: flex" id="{{rand}}{{loop.index}}">
               <td class="d-flex align-items-center w-100">
                 {% for name, value in inputs|filter((v, k) => k != 'id') %}
-                  {% if k %}
+                  {% if name and value.value is not defined %}
                     <input type="hidden" name="{{name}}[{{inputs.id}}]" value="{{value}}"/>
+                  {% elseif name %}
+                    <input type="hidden" name="{{name}}[{{inputs.id}}]" value="{{value.value}}"/>
                   {% endif %}
                 {% endfor %}
-                {{inputs|filter((v, k) => k != 'id')|join(' ')|raw}}
+                {% for name, value in inputs|filter((v, k) => k != 'id') %}
+                  {% if name and value.title is not defined %}
+                    {{value}} 
+                  {% elseif name %}
+                    {{value.title}} 
+                  {% endif %}
+                {% endfor %}
               </td>
               <td class="d-flex">
-                <button type="button" class="btn btn-sm btn-outline-danger" on-click="removeOption{{rand}}('{{loop.index}}')"><i class="fas fa-times"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeOption{{rand}}('{{loop.index}}')"><i class="fas fa-times"></i></button>
               </td>
             </tr>
         {% endfor %}
@@ -335,19 +350,24 @@
   <script>
   let current{{rand}} = -2;
   function removeOption{{rand}}(value) {
-    $(`#OptionTable_{{rand}} tr[data-value='${value}'] input[type='hidden']`).val('0');
-    $(`#OptionTable_{{rand}} tr[data-value='${value}']`).hide();
+    {% if attributes.isList %}
+      $(`#{{rand}}${value}`).remove();
+    {% else %}
+      $(`#{{rand}}${value} input[type='hidden']`).val('0');
+      $(`#{{rand}}${value}`).hide();
+    {% endif %}
   }
 
   function addOption{{rand}}(content) {
     if (!content) {
       return;
     }
-    let row = $('<tr>', {'data-value': current{{rand}}, style: "display: flex"})
+    const test = {{attributes.isList}};
+    let row = $('<tr>', {'data-value': current{{rand}}, style: "display: flex", id: `{{rand}}${current{{rand}}}`})
       .append($('<td>',  {class: 'd-flex align-items-center w-100'}));
     const inputCell = row.find('td');
     for (const [name, value] of Object.entries(content.values)) {
-      inputCell.append($('<input>', {type: 'hidden', name: name + '[' + current{{rand}} + ']', value}));
+      inputCell.append($('<input>', {type: 'hidden', name: name + '[' {% if attributes.isList is not defined %} + current{{rand}} {% endif %} + ']', value}));
     }
     inputCell.append(content.title);
     row.append($('<td>', {class: 'd-flex align-items-center'})

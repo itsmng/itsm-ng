@@ -2578,13 +2578,13 @@ class CommonDBTM extends CommonGLPI {
          if (($ID <= 0) || ($params['withtemplate'] == 2)) {
             echo Html::submit(
                "<i class='fas fa-plus'></i>&nbsp;"._x('button', 'Add'),
-               ['name' => 'add']
+               ['name' => 'add', 'class' => 'btn btn-secondary']
             );
          } else {
             //TRANS : means update / actualize
             echo Html::submit(
                "<i class='fas fa-save'></i>&nbsp;"._x('button', 'Save'),
-               ['name' => 'update']
+               ['name' => 'update', 'class' => 'btn btn-secondary']
             );
          }
 
@@ -2599,7 +2599,7 @@ class CommonDBTM extends CommonGLPI {
             echo "<td class='center' colspan='".($params['colspan']*2)."'>\n";
             echo Html::submit(
                "<i class='fas fa-save'></i>&nbsp;"._x('button', 'Save'),
-               ['name' => 'update']
+               ['name' => 'update', 'class' => 'btn btn-secondary']
             );
          }
 
@@ -2612,7 +2612,7 @@ class CommonDBTM extends CommonGLPI {
                   echo "<td class='right' colspan='".($params['colspan']*2)."' >\n";
                   echo Html::submit(
                      "<i class='fas fa-trash-restore'></i>&nbsp;"._x('button', 'Restore'),
-                     ['name' => 'restore']
+                     ['name' => 'restore', 'class' => 'btn btn-secondary']
                   );
                }
 
@@ -2629,7 +2629,7 @@ class CommonDBTM extends CommonGLPI {
                   }
                   echo Html::submit(
                      "<i class='fas fa-trash-alt'></i>&nbsp;"._x('button', 'Delete permanently'),
-                     ['name' => 'purge']
+                     ['name' => 'purge', 'class' => 'btn btn-secondary']
                   );
                   echo "</span>";
                }
@@ -2652,7 +2652,7 @@ class CommonDBTM extends CommonGLPI {
                           && $this->can($ID, DELETE)) {
                   echo Html::submit(
                      "<i class='fas fa-trash-alt'></i>&nbsp;"._x('button', 'Put in trashbin'),
-                     ['name' => 'delete']
+                     ['name' => 'delete', 'class' => 'btn btn-secondary']
                   );
                }
             }
@@ -2674,7 +2674,7 @@ class CommonDBTM extends CommonGLPI {
          echo "<tr class='tab_bg_2'>";
          echo "<td class='right' colspan='".($params['colspan']*2)."'>";
          foreach ($params['addbuttons'] as $key => $val) {
-            echo "<button type='submit' class='vsubmit' name='$key' value='1'>
+            echo "<button type='submit' class='btn btn-secondary' name='$key' value='1'>
                   $val
                </button>&nbsp;";
          }
