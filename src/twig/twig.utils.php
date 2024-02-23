@@ -78,11 +78,11 @@ function getOptionsForUsers($right, $conditions = [], $display_emptychoice = tru
     return $options;
 }
 
-function renderTwigTemplate($path, $vars)
+function renderTwigTemplate($path, $vars, $root='/templates')
 {
     global $CFG_GLPI;
     require_once GLPI_ROOT . '/src/twig/twig.class.php';
-    $twig = Twig::load(GLPI_ROOT . '/templates', false);
+    $twig = Twig::load(GLPI_ROOT . $root, false);
     if (!isset($vars['root_doc'])) {
         $vars['root_doc'] = $CFG_GLPI['root_doc'];
     }

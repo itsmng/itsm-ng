@@ -27,5 +27,8 @@ class Twig
     public static function load_filters($twig)
     {
         $twig->addFilter(new TwigFilter('trans', '__'));
+        $twig->addFilter(new TwigFilter('transd', function ($string, $domain) {
+            return __($string, $domain);
+        }));
     }
 }
