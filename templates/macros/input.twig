@@ -422,9 +422,10 @@
 {% macro input(attributes, root_doc = '') %}
   {% if attributes.type == 'checkbox' %}
     <div class="form-switch">
-      <input type="hidden" name="{{attributes.name}}" value="0">
-      <input class='form-check-input' role="switch"
-        {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %} value="1"
+      <input type="hidden" name="{{attributes.name}}" value="0" {% if attributes.class %} class="{{attributes.class}}" {% endif %}>
+      <input role="switch" class='form-check-input {% if attributes.class %} {{attributes.class}} {% endif %}'  
+        {% for name, value in attributes|filter((v, k) => k != 'value')  %}
+        {{name}}="{{value}}" {% endfor %} value="1"
         {% if attributes.value == 1 %} checked {% endif %}/>
     </div>
   {% elseif attributes.type == 'textarea' %}
