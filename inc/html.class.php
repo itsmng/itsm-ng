@@ -1552,7 +1552,6 @@ JAVASCRIPT;
                'CartridgeItem', 'ConsumableItem', 'Phone',
                'Rack', 'Enclosure', 'PDU', 'PassiveDCEquipment'
             ], $CFG_GLPI['devices_in_menu']),
-            'default' => '/front/dashboard_assets.php'
          ],
          'helpdesk' => [
             'title' => __('Assistance'),
@@ -1560,7 +1559,6 @@ JAVASCRIPT;
                'Ticket', 'Problem', 'Change',
                'Planning', 'Stat', 'TicketRecurrent'
             ],
-            'default' => '/front/dashboard_helpdesk.php'
          ],
          'management' => [
             'title' => __('Management'),
