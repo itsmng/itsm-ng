@@ -142,7 +142,7 @@ switch ($step) {
                 $ver_too_old = false;
                 $databases_info = [];
                 $db_info = [];
-                if ($DB_list = $link->query(   
+                if ($DB_list = $link->query(
                    "SELECT S.schema_name AS 'name', COUNT(T.table_name) AS 'table_count', DATE(MIN(T.create_time)) AS 'table_create', DATE(MAX(T.update_time)) AS 'table_update'
                     FROM information_schema.tables AS T 
                     RIGHT JOIN information_schema.schemata AS S 
@@ -150,7 +150,7 @@ switch ($step) {
                     GROUP BY S.schema_name;")){
                     while ($row = $DB_list->fetch_array(MYSQLI_NUM)) {
                         if (!in_array($row[0],["information_schema","mysql","performance_schema","sys"])){
-                            $databases_info[] = $row;
+                            $databases_info[] = array_combine(["name", "table_count", "creation_date", "last_update"], $row);
                         }
                     }
                 }

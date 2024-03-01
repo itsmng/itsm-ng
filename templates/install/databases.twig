@@ -41,7 +41,7 @@
         {% endif %}
     
     {% include 'table.twig' with {
-        fields: ['name', 'table count', 'creation date', 'last update'],
+        fields: {'name': 'name', 'table_count': 'table count', 'creation_date': 'creation date', 'last_update': 'last update'},
         values: databases,
         radio: 'database',
     } %}

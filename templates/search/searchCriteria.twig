@@ -1,0 +1,13 @@
+{% from "macros/input.twig" import input as inputMacro %}
+
+<div class="normalcriteria {{addclass}}">
+        <input id="is_deleted" type="hidden" name="is_deleted" value="{{is_deleted}}">
+        <input id="as_map" type="hidden" name="as_map" value="{{as_map}}">
+        <div class="input-group">
+            <i class="far fa-minus-square remove-search-criteria input-group-text" data-rowid='{{rowid}}' alt="-" title="{{"Delete a rule"|trans}}"></i>
+            {% for input in inputs %}
+                {{ inputMacro(input) }}
+            {% endfor %}
+        </div>
+        <span id="{{spanid}}"></span>
+</div>

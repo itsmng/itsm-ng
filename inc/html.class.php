@@ -608,7 +608,7 @@ class Html
       }
 
       if (!empty($params)) {
-         $dest .= '&' . $params;
+         $dest .= ((!isset($AJAX_INCLUDE)) ? '&' : '?') . $params;
       }
 
       self::redirect($dest);
@@ -2814,10 +2814,9 @@ JAVASCRIPT;
             if (!empty($p['tag_to_send'])) {
                $container = $p['container'];
                $js_modal_fields = <<<JS
-                  let rows = $("#$container tbody tr");
+                  let rows = $("#$identifier").bootstrapTable('getSelections');
                   for (let i = 0; i < rows.length; i++) {
-                     // if class contains "selected"
-                     fields[$(rows[i]).attr('data-value')] = $(rows[i]).hasClass('selected') ? 1 : 0;
+                     fields[rows[i].value] = 1;
                   }
                   $('table[id="$container"] [data-glpicore-ma-tags~={$p['tag_to_send']}]').each(function( index ) {
                      fields[$(this).attr('name')] = $(this).attr('value');
