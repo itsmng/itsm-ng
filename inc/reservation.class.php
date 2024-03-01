@@ -382,14 +382,16 @@ class Reservation extends CommonDBChild {
          return false;
       }
 
+      $datetime = new Datetime();
+
       if (!isset($_GET["mois_courant"])) {
-         $mois_courant = intval(strftime("%m"));
+         $mois_courant = intval($datetime->format("m"));
       } else {
          $mois_courant = $_GET["mois_courant"];
       }
 
       if (!isset($_GET["annee_courante"])) {
-         $annee_courante = strftime("%Y");
+         $annee_courante = $datetime->format("Y");
       } else {
          $annee_courante = $_GET["annee_courante"];
       }
@@ -467,11 +469,11 @@ class Reservation extends CommonDBChild {
       $nb_jour = [31, $fev, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
       // Datas used to put right information in columns
-      $jour_debut_mois = strftime("%w", mktime(0, 0, 0, $mois_courant, 1, $annee_courante));
+      $jour_debut_mois = $datetime->format("w", mktime(0, 0, 0, $mois_courant, 1, $annee_courante));
       if ($jour_debut_mois == 0) {
          $jour_debut_mois = 7;
       }
-      $jour_fin_mois = strftime("%w", mktime(0, 0, 0, $mois_courant, $nb_jour[$mois_courant-1],
+      $jour_fin_mois = $datetime->format("w", mktime(0, 0, 0, $mois_courant, $nb_jour[$mois_courant-1],
                                              $annee_courante));
 
       echo "<div class='center'>";
