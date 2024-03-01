@@ -1651,114 +1651,106 @@ class AuthLDAP extends CommonDBTM {
     *
     * @return boolean
     */
-   static function searchForUsers($ds, $values, $filter, $attrs, &$limitexceeded, &$user_infos,
+    static function searchForUsers($ds, $values, $filter, $attrs, &$limitexceeded, &$user_infos,
                                   &$ldap_users, $config_ldap) {
 
-      //If paged results cannot be used (PHP < 5.4)
-      $cookie   = ''; //Cookie used to perform query using pages
-      $count    = 0;  //Store the number of results ldap_search
+        //If paged results cannot be used (PHP < 5.4)
+        $cookie   = ''; //Cookie used to perform query using pages
+        $count    = 0;  //Store the number of results ldap_search
 
-      do {
-         $filter = Toolbox::unclean_cross_side_scripting_deep(Toolbox::stripslashes_deep($filter));
-         if (self::isLdapPageSizeAvailable($config_ldap)) {
-            if (version_compare(PHP_VERSION, '7.3') < 0) {
-               //prior to PHP 7.3, use ldap_control_paged_result
-               // phpcs:ignore Generic.PHP.DeprecatedFunctions
-               ldap_control_paged_result($ds, $config_ldap->fields['pagesize'], true, $cookie);
-               $sr = @ldap_search($ds, $values['basedn'], $filter, $attrs);
-            } else {
-               //since PHP 7.3, send serverctrls to ldap_search
-               $controls = [
-                  [
-                     'oid'       =>LDAP_CONTROL_PAGEDRESULTS,
-                     'iscritical' => true,
-                     'value'     => [
+        do {
+            $filter = Toolbox::unclean_cross_side_scripting_deep(Toolbox::stripslashes_deep($filter));
+            if (self::isLdapPageSizeAvailable($config_ldap)) {
+                $controls = [
+                    [
+                        'oid'       =>LDAP_CONTROL_PAGEDRESULTS,
+                        'iscritical' => true,
+                        'value'     => [
                         'size'   => $config_ldap->fields['pagesize'],
                         'cookie' => $cookie
-                     ]
-                  ]
-               ];
-               $sr = @ldap_search($ds, $values['basedn'], $filter, $attrs, 0, -1, -1, LDAP_DEREF_NEVER, $controls);
-               ldap_parse_result($ds, $sr, $errcode, $matcheddn, $errmsg, $referrals, $controls);
-               if (isset($controls[LDAP_CONTROL_PAGEDRESULTS]['value']['cookie'])) {
-                  $cookie = $controls[LDAP_CONTROL_PAGEDRESULTS]['value']['cookie'];
-               } else {
-                  $cookie = '';
-               }
-            }
-         } else {
-            $sr = @ldap_search($ds, $values['basedn'], $filter, $attrs);
-         }
-
-         if ($sr) {
-            if (in_array(ldap_errno($ds), [4,11])) {
-               // openldap return 4 for Size limit exceeded
-               $limitexceeded = true;
+                        ]
+                    ]
+                ];
+                $sr = @ldap_search($ds, $values['basedn'], $filter, $attrs, 0, -1, -1, LDAP_DEREF_NEVER, $controls);
+                ldap_parse_result($ds, $sr, $errcode, $matcheddn, $errmsg, $referrals, $controls);
+                if (isset($controls[LDAP_CONTROL_PAGEDRESULTS]['value']['cookie'])) {
+                    $cookie = $controls[LDAP_CONTROL_PAGEDRESULTS]['value']['cookie'];
+                } else {
+                    $cookie = '';
+                }
+            } else {
+                $sr = @ldap_search($ds, $values['basedn'], $filter, $attrs);
             }
 
-            $info = self::get_entries_clean($ds, $sr);
-            if (in_array(ldap_errno($ds), [4,11])) {
-               // openldap return 4 for Size limit exceeded
-               $limitexceeded = true;
-            }
+            if ($sr) {
+                if (in_array(ldap_errno($ds), [4,11])) {
+                // openldap return 4 for Size limit exceeded
+                $limitexceeded = true;
+                }
 
-            $count += $info['count'];
-            //If page results are enabled and the number of results is greater than the maximum allowed
-            //warn user that limit is exceeded and stop search
-            if (self::isLdapPageSizeAvailable($config_ldap)
-                && $config_ldap->fields['ldap_maxlimit']
-                && ($count > $config_ldap->fields['ldap_maxlimit'])) {
-               $limitexceeded = true;
-               break;
-            }
+                $info = self::get_entries_clean($ds, $sr);
+                if (in_array(ldap_errno($ds), [4,11])) {
+                // openldap return 4 for Size limit exceeded
+                $limitexceeded = true;
+                }
 
-            $field_for_sync = $config_ldap->getLdapIdentifierToUse();
-            $login_field = $config_ldap->fields['login_field'];
+                $count += $info['count'];
+                //If page results are enabled and the number of results is greater than the maximum allowed
+                //warn user that limit is exceeded and stop search
+                if (self::isLdapPageSizeAvailable($config_ldap)
+                    && $config_ldap->fields['ldap_maxlimit']
+                    && ($count > $config_ldap->fields['ldap_maxlimit'])) {
+                $limitexceeded = true;
+                break;
+                }
 
-            for ($ligne = 0; $ligne < $info["count"]; $ligne++) {
-               if (in_array($field_for_sync, $info[$ligne])) {
-                  $uid = self::getFieldValue($info[$ligne], $field_for_sync);
+                $field_for_sync = $config_ldap->getLdapIdentifierToUse();
+                $login_field = $config_ldap->fields['login_field'];
 
-                  if ($login_field != $field_for_sync && !isset($info[$ligne][$login_field])) {
-                     Toolbox::logWarning("Missing field $login_field for LDAP entry $field_for_sync $uid");
-                     //Login field may be missing... Skip the user
-                     continue;
-                  }
+                for ($ligne = 0; $ligne < $info["count"]; $ligne++) {
+                if (in_array($field_for_sync, $info[$ligne])) {
+                    $uid = self::getFieldValue($info[$ligne], $field_for_sync);
 
-                  $user_infos[$uid]["timestamp"] = self::ldapStamp2UnixStamp(
-                     $info[$ligne]['modifytimestamp'][0],
-                     $config_ldap->fields['time_offset']
-                  );
-                  $user_infos[$uid]["user_dn"] = $info[$ligne]['dn'];
-                  $user_infos[$uid][$field_for_sync] = $uid;
-                  if ($config_ldap->isSyncFieldEnabled()) {
-                     $user_infos[$uid][$login_field] = $info[$ligne][$login_field][0];
-                  }
+                    if ($login_field != $field_for_sync && !isset($info[$ligne][$login_field])) {
+                        Toolbox::logWarning("Missing field $login_field for LDAP entry $field_for_sync $uid");
+                        //Login field may be missing... Skip the user
+                        continue;
+                    }
 
-                  if ($values['mode'] == self::ACTION_IMPORT) {
-                     //If ldap add
-                     $ldap_users[$uid] = $uid;
-                  } else {
-                     //If ldap synchronisation
-                     $ldap_users[$uid] = self::ldapStamp2UnixStamp(
+                    $user_infos[$uid]["timestamp"] = self::ldapStamp2UnixStamp(
                         $info[$ligne]['modifytimestamp'][0],
                         $config_ldap->fields['time_offset']
-                     );
-                     $user_infos[$uid]["name"] = $info[$ligne][$login_field][0];
-                  }
-               }
-            }
-         } else {
-            return false;
-         }
-         if (self::isLdapPageSizeAvailable($config_ldap) && version_compare(PHP_VERSION, '7.3') < 0) {
-            // phpcs:ignore Generic.PHP.DeprecatedFunctions
-            ldap_control_paged_result_response($ds, $sr, $cookie);
-         }
+                    );
+                    $user_infos[$uid]["user_dn"] = $info[$ligne]['dn'];
+                    $user_infos[$uid][$field_for_sync] = $uid;
+                    if ($config_ldap->isSyncFieldEnabled()) {
+                        $user_infos[$uid][$login_field] = $info[$ligne][$login_field][0];
+                    }
 
-      } while (($cookie !== null) && ($cookie != ''));
-      return true;
-   }
+                    if ($values['mode'] == self::ACTION_IMPORT) {
+                        //If ldap add
+                        $ldap_users[$uid] = $uid;
+                    } else {
+                        //If ldap synchronisation
+                        $ldap_users[$uid] = self::ldapStamp2UnixStamp(
+                            $info[$ligne]['modifytimestamp'][0],
+                            $config_ldap->fields['time_offset']
+                        );
+                        $user_infos[$uid]["name"] = $info[$ligne][$login_field][0];
+                    }
+                }
+                }
+            } else {
+                return false;
+            }
+            if (self::isLdapPageSizeAvailable($config_ldap) && version_compare(PHP_VERSION, '7.3') < 0) {
+                // phpcs:ignore Generic.PHP.DeprecatedFunctions
+                ldap_control_paged_result_response($ds, $sr, $cookie);
+            }
+
+        } while (($cookie !== null) && ($cookie != ''));
+        return true;
+    }
 
 
    /**
