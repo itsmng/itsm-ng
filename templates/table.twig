@@ -19,38 +19,42 @@
 	<table
 		id="{{id}}"
 		class="table table-striped table-bordered table-hover"
-		data-virtual-scroll="true"
 		{% if height %}
 		data-height="{{height}}"
 		{% endif %}
 		{% if not minimal %}
-		data-toolbar="#toolbar{{rand}}"
-		data-show-columns-toggle-all="true"
-		data-click-to-select="true"
-		{% if not height %}
-		data-pagination="true"
-		show-extended-pagination="true"
+			data-toolbar="#toolbar{{rand}}"
+			data-show-columns-toggle-all="true"
+			data-click-to-select="true"
+			{% if not height %}
+				data-pagination="true"
+				show-extended-pagination="true"
+			{% endif %}
+			data-search="true"
+			data-sortable="true"
+			data-show-export="true"
+			data-show-columns="true"
+			data-icons="icons"
 		{% endif %}
-		data-search="true"
-		data-sortable="true"
-		data-show-export="true"
-		data-show-columns="true"
-		data-icons="icons"
+		{% if url is defined %}
+			data-url="{{url}}"
+			data-side-pagination="server"
 		{% endif %}
 		{% if is_trash is defined %} data-buttons="buttons{{rand}}" {% endif %}
 		>
 		<thead>
 			<tr>
 				{% if massive_action is defined %}
-					<th data-field="state" data-checkbox="true" data-formatter="VerifyMassiveACtion{{rand}}"></th>
+					<th data-field="state" data-checkbox="true" data-formatter="VerifyMassiveAction{{rand}}"></th>
 				{% elseif radio %}
 					<th data-radio="true" data-field="select"></th>
 				{% endif %}
-				{% for field in fields %}
-					<th data-sortable="true" {% if radio %} data-field='{{field|replace({' ': '_'})}}' {% endif %} >{{ field|raw }}</th>
+				{% for state, field in fields %}
+					<th data-sortable="true" data-field='{{state}}' >{{ field|raw }}</th>
 				{% endfor %}
 			</tr>
 		</thead>
+		{% if url is not defined %}
 		<tbody class="table-{{ (is_trash == 1) ? 'primary' : 'light' }}">
 			{% for key, value in values %}
 				<tr
@@ -67,6 +71,7 @@
 				</tr>
 			{% endfor %}
 		</tbody>
+		{% endif %}
 	</table>
 	{% if radio is defined %}
     <input id="table_input{{id}}" type="hidden" name="{{radio}}" value=''>
@@ -123,8 +128,8 @@
 	{% endif %}
 
 	{% if massive_action is defined %}
-	function VerifyMassiveACtion{{rand}}(value, row, index) {
-		if (!row._data.value.length) {
+	function VerifyMassiveAction{{rand}}(value, row, index) {
+		if (!row.value) {
 			return {
 				disabled: true
 			}

@@ -1,9 +1,9 @@
 {% from 'macros/input.twig' import input %}
 
-{% set options = ['actions', 'after', 'before', 'hooks', 'init', 'init', 'col', 'col_md', 'col_lg'] %}
+{% set inputOptions = ['actions', 'after', 'before', 'hooks', 'init', 'init', 'col', 'col_md', 'col_lg', 'notitle'] %}
 
 <form
-    name="form"
+    {% if form.attributes.name is not defined %}name="form"{% endif %}
     action="{{form.action}}"
     enctype="multipart/form-data"
     method={{form.method|default('post')}}
@@ -13,7 +13,11 @@
     {% endfor %}
 >
 {% for key, bloc in form.content  %}
-<div class="container mb-3">
+<div class="container mb-3"
+    {% for name, value in bloc.attributes %}
+        {{name}}="{{value}}"
+    {% endfor %}
+>
     {% if bloc.visible %}
         <h2 class="text-start">{{key|raw}}</h2>
     {% endif %}
@@ -25,13 +29,13 @@
             col-md{{ input.col_md ? '-' ~ input.col_md : '-6' }}
             col-lg{{ input.col_lg ? '-' ~ input.col_lg : '-4' }}
             text-start">
-            <label for="{{input.name}}">{{title|raw}}</label>
+            {% if not input.notitle %} <label for="{{input.name}}" class="fw-bold">{{title|raw}}</label> {% endif %}
             <div class="d-flex justify-content-between align-items-center input-group my-1">
         {% endif %}
                 {% if input.before|raw %}
                 <div class="form-text mx-2">{{input.before | raw}}</div>
                 {% endif %}
-                {% set attributes = input | filter((v, k) => k not in options) %}
+                {% set attributes = input | filter((v, k) => k not in inputOptions) %}
                 {% if input.type %}
                 {{input(attributes, root_doc)}}
                 {% else %}

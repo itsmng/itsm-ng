@@ -182,7 +182,11 @@
 {% macro file(attributes, root_doc) %}
   {% set rand=random() %}
   <div>
-    <input class='form-control h-100' {% for name, value in attributes|filter((v, k) => k != 'values') %} {{name}}="{{value}}" {% endfor %}/>
+    <input class='form-control h-100' {% for name, value in attributes|filter((v, k) => k != 'values') %} {{name}}="{{value}}" {% endfor %}
+    {% if attributes.id is not defined %}
+      id={{rand}}
+    {% endif %}
+    />
     <table class="w-100 fs-6 table table-sm table-hover align-middle text-center">
       <tbody>
         {% for documentId, title in attributes.values %}
@@ -210,12 +214,12 @@
     $(`#ObjectTable_{{rand}} tr[data-id='${id}'][data-type='${type}']`).remove();
   }
 
-  $('#{{attributes.id}}').on('change', function() {
+  $('#{{attributes.id|default(rand)}}').on('change', function() {
       let formData = new FormData();
       formData.append('name', 'filename');
-      formData.append('showFileSize', $('#{{attributes.id}}').prop('files').length);
-      for (let i = 0; i < $('#{{attributes.id}}').prop('files').length; i++) {
-          formData.append(i, $('#{{attributes.id}}').prop('files')[i]);
+      formData.append('showFileSize', $('#{{attributes.id|default(rand)}}').prop('files').length);
+      for (let i = 0; i < $('#{{attributes.id|default(rand)}}').prop('files').length; i++) {
+          formData.append(i, $('#{{attributes.id|default(rand)}}').prop('files')[i]);
       }
       $.ajax({
       url: '{{root_doc}}' + '/ajax/fileupload.php',
@@ -226,7 +230,7 @@
           success: function(data) {
           // add an hidden input containing the data for all files
               if ($('#hiddenInputForFiles').length == 0) {
-                  $('#{{attributes.id}}').after('<input type="hidden" id="hiddenInputForFiles{{rand}}" name="{{attributes.name}}" value="">');
+                  $('#{{attributes.id|default(rand)}}').after('<input type="hidden" id="hiddenInputForFiles{{rand}}" name="{{attributes.name}}" value="">');
               }
               $('#hiddenInputForFiles{{rand}}').val(data);
           }
@@ -422,12 +426,16 @@
 {% macro input(attributes, root_doc = '') %}
   {% if attributes.type == 'checkbox' %}
     <div class="form-switch">
+      {% if not attributes.no_zero %}
       <input type="hidden" name="{{attributes.name}}" value="0" {% if attributes.class %} class="{{attributes.class}}" {% endif %}>
+      {% endif %}
       <input role="switch" class='form-check-input {% if attributes.class %} {{attributes.class}} {% endif %}'  
         {% for name, value in attributes|filter((v, k) => k != 'value')  %}
-        {{name}}="{{value}}" {% endfor %} value="1"
+        {{name}}="{{value}}" {% endfor %} value={{attributes.content|default(1)}}
         {% if attributes.value == 1 %} checked {% endif %}/>
     </div>
+  {% elseif attributes.type == 'radio' %}
+    <input class='form-check' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
   {% elseif attributes.type == 'textarea' %}
     <textarea class='form-control' {% for name, value in attributes|filter(k,v => k != 'value') %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default("")|raw}}</textarea>
   {% elseif attributes.type == 'richtextarea' %}

@@ -916,8 +916,8 @@ class Search {
                   $WHERE.
                   $GROUPBY.
                   $HAVING.
-                  $ORDER;/*.
-                  $LIMIT;*/
+                  $ORDER.
+                  $LIMIT;
       }
       $data['sql']['search'] = $QUERY;
    }
@@ -1254,7 +1254,7 @@ class Search {
          // Search case
          $data['data']['begin'] = $data['search']['start'];
          $data['data']['end']   = min($data['data']['totalcount'],
-                                      $data['search']['start']+$data['search']['list_limit'])-1;
+                                      $data['search']['start']+$data['search']['list_limit']);
          //map case
          if (isset($data['search']['as_map'])  && $data['search']['as_map'] == 1) {
             $data['data']['end'] = $data['data']['totalcount']-1;
@@ -1264,12 +1264,12 @@ class Search {
          if ($data['search']['no_search']) {
             $data['data']['begin'] = 0;
             $data['data']['end']   = min($data['data']['totalcount']-$data['search']['start'],
-                                         $data['search']['list_limit'])-1;
+                                         $data['search']['list_limit']);
          }
          // Export All case
          if ($data['search']['export_all']) {
             $data['data']['begin'] = 0;
-            $data['data']['end']   = $data['data']['totalcount']-1;
+            $data['data']['end']   = $data['data']['totalcount'];
          }
 
          // Get columns
@@ -1366,7 +1366,7 @@ class Search {
 
          self::$output_type = $data['display_type'];
 
-         while (($i < $data['data']['totalcount'])) {
+         while (($i < $data['data']['end'])) {
             $row = $DBread->fetchAssoc($result);
             $newrow        = [];
             $newrow['raw'] = $row;
@@ -1479,7 +1479,10 @@ class Search {
          Session::initNavigateListItems($data['itemtype']);
       }
 
-      $fields = array_column($data['data']['cols'], 'name');
+      $fields = array_combine(
+         array_column($data['data']['cols'], 'id'),
+         array_column($data['data']['cols'], 'name')
+      );
       $values = [];
       $row_num = 0;
       $massiveActionValues = [];
@@ -1518,21 +1521,25 @@ class Search {
          ]
       );
 
-      $massiveactionparams                   = $data['search']['massiveactionparams'];
-      $massiveactionparams['container']      = 'SearchTableFor'.$data['itemtype'];
-      $massiveactionparams['display_arrow']  = false;
-      $massiveactionparams['is_deleted']  = $data['search']['is_deleted'];
-      // $massiveactionparams['itemtype']       = $data['itemtype'];
+      $massiveactionparams = $data['search']['massiveactionparams'] + [
+         'container'      => 'SearchTableFor'.$data['itemtype'],
+         'display_arrow'  => false,
+         'is_deleted'     => $data['search']['is_deleted'],
+         'itemtype'       => $data['itemtype']
+      ];
 
+      $url = $CFG_GLPI['root_doc'] . "/src/search/search.ajax.php?itemtype={$data['itemtype']}&deleted={$data['search']['is_deleted']}";
+      if ($data['search']['criteria']) {
+         // $url .= "&criteria=".urlencode(json_encode($data['search']['criteria']));
+      }
       Html::showMassiveActions($massiveactionparams);
-
       renderTwigTemplate('table.twig', [
          'id' => 'SearchTableFor'.$data['itemtype'],
          'fields' => $fields,
-         'values' => $values,
+         'url' => $url,
          'is_trash' => $data['search']['is_deleted'],
-         'itemtype' => $data['itemtype'],
          'massive_action' => $massiveActionValues,
+         'itemtype' => $data['itemtype'],
       ]);
    }
 
@@ -2220,46 +2227,6 @@ JAVASCRIPT;
          return self::displayCriteriaGroup($request);
       }
 
-      echo "<li class='normalcriteria$addclass' id='$rowid'>";
-
-      if (!$from_meta) {
-         // First line display add / delete images for normal and meta search items
-         if ($num == 0
-             && isset($p['mainform'])
-             && $p['mainform']) {
-            // Instanciate an object to access method
-            $item = null;
-            if ($request["itemtype"] != 'AllAssets') {
-               $item = getItemForItemtype($request["itemtype"]);
-            }
-            if ($item && $item->maybeDeleted()) {
-               echo Html::hidden('is_deleted', [
-                  'value' => $p['is_deleted'],
-                  'id'    => 'is_deleted'
-               ]);
-            }
-            echo Html::hidden('as_map', [
-               'value' => $p['as_map'],
-               'id'    => 'as_map'
-            ]);
-         }
-         echo "<i class='far fa-minus-square remove-search-criteria' alt='-' title=\"".
-                  __s('Delete a rule')."\" data-rowid='$rowid'></i>&nbsp;";
-
-      }
-
-      // Display link item
-      $value = '';
-      if (!$from_meta) {
-         if (isset($criteria["link"])) {
-            $value = $criteria["link"];
-         }
-         $operators = Search::getLogicalOperators(($num == 0));
-         Dropdown::showFromArray("criteria{$prefix}[$num][link]", $operators, [
-            'value' => $value,
-            'width' => '80px'
-         ]);
-      }
 
       $values   = [];
       // display select box to define search item
@@ -2295,13 +2262,57 @@ JAVASCRIPT;
          $value = $criteria['field'];
       }
 
-      $rand = Dropdown::showFromArray("criteria{$prefix}[$num][field]", $values, [
-         'value' => $value,
-         'width' => '170px'
-      ]);
-      $field_id = Html::cleanId("dropdown_criteria{$prefix}[$num][field]$rand");
+      $field_id = Html::cleanId("dropdown_criteria{$prefix}[$num][field]$randrow");
       $spanid   = Html::cleanId('SearchSpan'.$request["itemtype"].$prefix.$num);
-      echo "<span id='$spanid'>";
+      $json_p   = json_encode($p);
+
+      if (!$from_meta) {
+         renderTwigTemplate('search/searchCriteria.twig', [
+            'is_deleted' => $p['is_deleted'],
+            'as_map' => $p['as_map'],
+            'rowid' => $rowid,
+            'addclass' => $addclass,
+            'spanid' => $spanid,
+            'inputs' => [
+               [
+                  'type' => 'select',
+                  'name' => "criteria{$prefix}[$num][link]",
+                  'values' => Search::getLogicalOperators(($num == 0)),
+                  'value' => isset($criteria["link"]) ? $criteria["link"] : '',
+               ],
+               [
+                  'type' => 'select',
+                  'id' => "dropdown_criteria{$prefix}[$num][field]$randrow",
+                  'name' => "criteria{$prefix}[$num][field]",
+                  'values' => $values,
+                  'value' => $value,
+                  'hooks' => [
+                     'change' => <<<JS
+                        console.log('gleugleu')
+                        $.ajax({
+                           url: '{$CFG_GLPI['root_doc']}/ajax/search.php',
+                           type: 'POST',
+                           data: {
+                              action: 'display_searchoption',
+                              field: $(this).val(),
+                              itemtype: '{$request['itemtype']}',
+                              num: $num,
+                              p: {$json_p},
+                           },
+                           success: function(data) {
+                              $('#$spanid').html(data);
+                           }
+                        });
+                     JS,
+                  ]
+               ]
+            ]
+         ]);
+      }
+      echo "<li class='normalcriteria$addclass' id='$rowid'>";
+
+
+      // echo "<span id='$spanid'>";
 
       $used_itemtype = $request["itemtype"];
       // Force Computer itemtype for AllAssets to permit to show specific items
@@ -2325,9 +2336,10 @@ JAVASCRIPT;
          'num'         => $num,
          'p'           => $p,
       ];
-      Search::displaySearchoption($params);
-      echo "</span>";
+      // Search::displaySearchoption($params);
+      // echo "</span>";
 
+      dump($field_id);
       Ajax::updateItemOnSelectEvent(
          $field_id,
          $spanid,

@@ -608,7 +608,7 @@ class Html
       }
 
       if (!empty($params)) {
-         $dest .= '&' . $params;
+         $dest .= ((!isset($AJAX_INCLUDE)) ? '&' : '?') . $params;
       }
 
       self::redirect($dest);
@@ -1552,7 +1552,6 @@ JAVASCRIPT;
                'CartridgeItem', 'ConsumableItem', 'Phone',
                'Rack', 'Enclosure', 'PDU', 'PassiveDCEquipment'
             ], $CFG_GLPI['devices_in_menu']),
-            'default' => '/front/dashboard_assets.php'
          ],
          'helpdesk' => [
             'title' => __('Assistance'),
@@ -1560,7 +1559,6 @@ JAVASCRIPT;
                'Ticket', 'Problem', 'Change',
                'Planning', 'Stat', 'TicketRecurrent'
             ],
-            'default' => '/front/dashboard_helpdesk.php'
          ],
          'management' => [
             'title' => __('Management'),
@@ -2816,10 +2814,9 @@ JAVASCRIPT;
             if (!empty($p['tag_to_send'])) {
                $container = $p['container'];
                $js_modal_fields = <<<JS
-                  let rows = $("#$container tbody tr");
+                  let rows = $("#$identifier").bootstrapTable('getSelections');
                   for (let i = 0; i < rows.length; i++) {
-                     // if class contains "selected"
-                     fields[$(rows[i]).attr('data-value')] = $(rows[i]).hasClass('selected') ? 1 : 0;
+                     fields[rows[i].value] = 1;
                   }
                   $('table[id="$container"] [data-glpicore-ma-tags~={$p['tag_to_send']}]').each(function( index ) {
                      fields[$(this).attr('name')] = $(this).attr('value');
