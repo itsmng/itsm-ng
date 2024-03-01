@@ -131,7 +131,7 @@ class Supplier extends CommonDBTM
             ]
          ],
          'content' => [
-            __('Line') => [
+            __('Supplier') => [
                'visible' => true,
                'inputs' => [
                   $this->isNewID($ID) ? [] : [
