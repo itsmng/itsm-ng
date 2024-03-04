@@ -1,91 +1,36 @@
-{% from 'macros/input.twig' import input %}
+{% from 'macros/wrappedInput.twig' import wrappedInput %}
 
-{% set inputOptions = ['actions', 'after', 'before', 'hooks', 'init', 'init', 'col', 'col_md', 'col_lg', 'notitle'] %}
-
-<form
-    {% if form.attributes.name is not defined %}name="form"{% endif %}
-    action="{{form.action}}"
-    enctype="multipart/form-data"
-    method={{form.method|default('post')}}
-    class="container"
-    {% for name, value in form.attributes %}
-    {{name}}="{{value}}"
-    {% endfor %}
->
-{% for key, bloc in form.content  %}
-<div class="container mb-3"
-    {% for name, value in bloc.attributes %}
-        {{name}}="{{value}}"
-    {% endfor %}
->
-    {% if bloc.visible %}
-        <h2 class="text-start">{{key|raw}}</h2>
-    {% endif %}
-    <div class="row row-cols-{{col}}">
-    {% for title, input in bloc.inputs %}
-        {% if input.type != 'hidden' and input|length > 0 %}
-        <div class="
-            col{{ input.col ? '-' ~ input.col : '-12' }}
-            col-md{{ input.col_md ? '-' ~ input.col_md : '-6' }}
-            col-lg{{ input.col_lg ? '-' ~ input.col_lg : '-4' }}
-            text-start">
-            {% if not input.notitle %} <label for="{{input.name}}" class="fw-bold">{{title|raw}}</label> {% endif %}
-            <div class="d-flex justify-content-between align-items-center input-group my-1">
-        {% endif %}
-                {% if input.before|raw %}
-                <div class="form-text mx-2">{{input.before | raw}}</div>
-                {% endif %}
-                {% set attributes = input | filter((v, k) => k not in inputOptions) %}
-                {% if input.type %}
-                {{input(attributes, root_doc)}}
-                {% else %}
-                {{ input.content|raw }}
-                {% endif %}
-                {% if input.after %}
-                {{input.after|raw}}
-                {% endif %}
-                {% for action in input.actions %}
-                    <button type="button" class="btn border" onClick="{{action.onClick}}"><a class="{{action.icon}}"></a></button>
-                {% endfor %}
-        {% if input.type != 'hidden' and input|length > 0 %}
-            </div>
-        </div>
-        {% endif %}
-    {% endfor %}
-    </div>
-</div>
-{% endfor %}
-<div>
-{{additionnalHtml|raw}}
-</div>
-<div class="d-flex justify-content-around">
-<input type="hidden" name="_glpi_csrf_token" value={{csrf_token}} />
-{% if not form.buttons %}
-<button type="submit" class='btn btn-primary'>{{"Submit"|trans}}</button>
-{% endif %}
-{% for button in form.buttons %}{% if button|length > 0 %}
-<button {% for attr, val in button %} {{attr}}='{{val}}' {% endfor %}>
-    {% if button.icon %}<i class='{{button.icon}} mx-2'></i>{% endif %}{{button.value|raw}}
-</button>
-{% endif %}{% endfor %}
-</div>
+<form {% if form.attributes.name is not defined %} name="form" {% endif %} action="{{form.action}}" enctype="multipart/form-data" method={{form.method|default('post')}} class="container" {% for name, value in form.attributes %} {{name}}="{{value}}" {% endfor %}>
+	{% for key, bloc in form.content  %}
+		<div class="container mb-3" {% for name, value in bloc.attributes %} {{name}}="{{value}}" {% endfor %}>
+			{% if bloc.visible %}
+				<h2 class="text-start">{{key|raw}}</h2>
+			{% endif %}
+			<div class="row row-cols-{{col}}">
+				{% for title, input in bloc.inputs %}
+					{{ wrappedInput(title, input, root_doc) }}
+				{% endfor %}
+			</div>
+		</div>
+	{% endfor %}
+	<div>
+		{{additionnalHtml|raw}}
+	</div>
+	<div class="d-flex justify-content-around">
+		<input type="hidden" name="_glpi_csrf_token" value={{csrf_token}}/>
+		{% if not form.buttons %}
+			<button type="submit" class='btn btn-primary'>{{"Submit"|trans}}</button>
+		{% endif %}
+		{% for button in form.buttons %}
+			{% if button|length > 0 %}
+				<button {% for attr, val in button %} {{attr}}='{{val}}' {% endfor %}>
+					{% if button.icon %}
+						<i class='{{button.icon}} mx-2'></i>
+					{% endif %}
+					{{button.value|raw}}
+				</button>
+			{% endif %}
+		{% endfor %}
+	</div>
 </form>
 <script src="{{root_doc}}/node_modules/jquery/dist/jquery.min.js"></script>
-<script>
-{% for bloc in form.content %}
-    {% for input in bloc.inputs %}
-        {% if input.init %}
-            {{input.init|raw}}
-        {% endif %}
-        {% if input.hooks %}
-            $(document).ready(() => {
-            {% for hook, script in input.hooks %}
-                $("#{{input.id}}").on("{{hook}}", function() {
-                    {{script|raw}}
-                });
-            {% endfor %}
-            });
-        {% endif %}
-    {% endfor %}
-{% endfor %}
-</script>
