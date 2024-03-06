@@ -388,7 +388,16 @@ class Computer_Item extends CommonDBRelation{
                                     dataType: 'json',
                                     success: function(data) {
                                        $.each(data, function(key, value) {
-                                          $('#ItemConnectDropdown').append('<option value="' + key + '">' + value + '</option>');
+                                          if (typeof value === 'object') {
+                                             const group = $('#ItemConnectDropdown')
+                                                .append("<optgroup label='" + key + "'></optgroup>");
+                                             for (const j in value) {
+                                                group.append("<option value='" + j + "'>" + value[j] + "</option>");
+                                             }
+                                          } else {
+                                             $('#ItemConnectDropdown').append("<option value='" + key + "'>" + value + "</option>");
+                                          }
+
                                        });
                                     }
                                  });

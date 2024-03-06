@@ -2431,7 +2431,7 @@ JAVASCRIPT;
             [
                'type' => 'select',
                'id' => "dropdown_criteria{$prefix}_{$num}_field_{$randrow}",
-               'name' => "criteria{$prefix}[$num][field]",
+               'name' => "criteria{$prefix}[$num][itemtype]",
                'values' => $values,
                'value' => $value,
                'hooks' => [
