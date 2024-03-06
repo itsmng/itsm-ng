@@ -428,7 +428,6 @@
     {% set input  = input|merge({'id': random()}) %}
 	{% endif %}
   {% set attributes = input|filter((v, k) => k not in ['hooks', 'init']) %}
-  <div class="w-100">
   {% if attributes.type == 'checkbox' %}
     <div class="form-switch">
       {% if not attributes.no_zero %}
@@ -482,6 +481,5 @@
       });
     </script>
   {% endif %}
-  </div>
 {% endmacro %}
-{{_self.inputMacro(_context)}}
+{{_self.input(_context)}}

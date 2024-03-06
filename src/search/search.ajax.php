@@ -62,8 +62,17 @@ if (isset($_GET['search'])) {
         ]
     ];
 }
-
+if(isset($_GET['criteria'])) {
+    $criterias = json_decode(stripslashes($_GET['criteria']), true);
+    if ($params['criteria'] == null) {
+        $params['criteria'] = $criterias;
+    } else {
+        $params['criteria'] = array_merge($params['criteria'], $criterias);
+    }
+}
 $formattedDatas = [];
+$params['as_map'] = '0';
+
 $datas = Search::getDatas($itemtype, $params);
 
 foreach ($datas['data']['rows'] as $row) {

@@ -1530,7 +1530,7 @@ class Search {
 
       $url = $CFG_GLPI['root_doc'] . "/src/search/search.ajax.php?itemtype={$data['itemtype']}&deleted={$data['search']['is_deleted']}";
       if ($data['search']['criteria']) {
-         // $url .= "&criteria=".urlencode(json_encode($data['search']['criteria']));
+         $url .= "&criteria=".urlencode(json_encode($data['search']['criteria']));
       }
       Html::showMassiveActions($massiveactionparams);
       renderTwigTemplate('table.twig', [
@@ -2149,6 +2149,7 @@ JAVASCRIPT;
 
          $(document).on("click", ".remove-search-criteria", function() {
             var rowID = $(this).data('rowid');
+            console.log(rowID)
             $('#' + rowID).remove();
             $('#searchcriteria ul li:first-child').addClass('headerRow').show();
          });
@@ -2261,96 +2262,77 @@ JAVASCRIPT;
       if (isset($criteria['field'])) {
          $value = $criteria['field'];
       }
+      
+      $subValue = $criteria['value'] ?? '';
 
-      $field_id = Html::cleanId("dropdown_criteria{$prefix}[$num][field]$randrow");
       $spanid   = Html::cleanId('SearchSpan'.$request["itemtype"].$prefix.$num);
       $json_p   = json_encode($p);
+      $idor_display_criteria = Session::getNewIDORToken($request["itemtype"]);
+      $searchtype = isset($criteria['searchtype']) ? $criteria['searchtype'] : '';
 
-      if (!$from_meta) {
-         renderTwigTemplate('search/searchCriteria.twig', [
-            'is_deleted' => $p['is_deleted'],
-            'as_map' => $p['as_map'],
-            'rowid' => $rowid,
-            'addclass' => $addclass,
-            'spanid' => $spanid,
-            'inputs' => [
-               [
-                  'type' => 'select',
-                  'name' => "criteria{$prefix}[$num][link]",
-                  'values' => Search::getLogicalOperators(($num == 0)),
-                  'value' => isset($criteria["link"]) ? $criteria["link"] : '',
+      renderTwigTemplate('search/searchCriteria.twig', [
+         'is_deleted' => $p['is_deleted'],
+         'as_map' => $p['as_map'],
+         'rowid' => $rowid,
+         'addclass' => $addclass,
+         'spanid' => $spanid,
+         'from_meta' => $from_meta,
+         'inputs' => [
+            $from_meta ? [] : [
+               'type' => 'select',
+               'name' => "criteria{$prefix}[$num][link]",
+               'values' => Search::getLogicalOperators(($num == 0)),
+               'value' => isset($criteria["link"]) ? $criteria["link"] : '',
+            ],
+            [
+               'type' => 'select',
+               'id' => "dropdown_criteria{$prefix}_{$num}_field_{$randrow}",
+               'name' => "criteria{$prefix}[$num][field]",
+               'values' => $values,
+               'value' => $value,
+               'hooks' => [
+                  'change' => <<<JS
+                     $.ajax({
+                        url: '{$CFG_GLPI['root_doc']}/ajax/search.php',
+                        type: 'POST',
+                        data: {
+                           action: 'display_searchoption',
+                           field: $(this).val(),
+                           itemtype: '{$request['itemtype']}',
+                           num: $num,
+                           p: {$json_p},
+                           _idor_token: '{$idor_display_criteria}',
+                           value: '',
+                           searchtype: ''
+                        },
+                        success: function(data) {
+                           $('#$spanid').html(data);
+                        }
+                     });
+                  JS,
                ],
-               [
-                  'type' => 'select',
-                  'id' => "dropdown_criteria{$prefix}[$num][field]$randrow",
-                  'name' => "criteria{$prefix}[$num][field]",
-                  'values' => $values,
-                  'value' => $value,
-                  'hooks' => [
-                     'change' => <<<JS
-                        console.log('gleugleu')
-                        $.ajax({
-                           url: '{$CFG_GLPI['root_doc']}/ajax/search.php',
-                           type: 'POST',
-                           data: {
-                              action: 'display_searchoption',
-                              field: $(this).val(),
-                              itemtype: '{$request['itemtype']}',
-                              num: $num,
-                              p: {$json_p},
-                           },
-                           success: function(data) {
-                              $('#$spanid').html(data);
-                           }
-                        });
-                     JS,
-                  ]
-               ]
+               'init' => <<<JS
+                  $.ajax({
+                     url: '{$CFG_GLPI['root_doc']}/ajax/search.php',
+                     type: 'POST',
+                     data: {
+                        action: 'display_searchoption',
+                        field: $('#dropdown_criteria{$prefix}_{$num}_field_{$randrow}').val(),
+                        itemtype: '{$request['itemtype']}',
+                        num: $num,
+                        p: {$json_p},
+                        _idor_token: '{$idor_display_criteria}',
+                        value: '{$subValue}',
+                        searchtype: '{$searchtype}'
+                     },
+                     success: function(data) {
+                        $('#$spanid').html(data);
+                     }
+                  });
+               JS,
             ]
-         ]);
-      }
-      echo "<li class='normalcriteria$addclass' id='$rowid'>";
-
-
-      // echo "<span id='$spanid'>";
-
-      $used_itemtype = $request["itemtype"];
-      // Force Computer itemtype for AllAssets to permit to show specific items
-      if ($request["itemtype"] == 'AllAssets') {
-         $used_itemtype = 'Computer';
-      }
-
-      $searchtype = isset($criteria['searchtype'])
-                     ? $criteria['searchtype']
-                     : "";
-      $p_value    = isset($criteria['value'])
-                     ? stripslashes($criteria['value'])
-                     : "";
-
-      $params = [
-         'itemtype'    => $used_itemtype,
-         '_idor_token' => Session::getNewIDORToken($used_itemtype),
-         'field'       => $value,
-         'searchtype'  => $searchtype,
-         'value'       => $p_value,
-         'num'         => $num,
-         'p'           => $p,
-      ];
-      // Search::displaySearchoption($params);
-      // echo "</span>";
-
-      dump($field_id);
-      Ajax::updateItemOnSelectEvent(
-         $field_id,
-         $spanid,
-         $CFG_GLPI["root_doc"]."/ajax/search.php",
-         [
-            'action'     => 'display_searchoption',
-            'field'      => '__VALUE__',
-         ] + $params
-      );
-
-      echo "</li>";
+         ]
+      ]);
    }
 
    /**
@@ -2393,66 +2375,106 @@ JAVASCRIPT;
       $linked =  Search::getMetaItemtypeAvailable($itemtype);
       $rand   = mt_rand();
 
-      $rowid  = 'metasearchrow'.$request['itemtype'].$rand;
-
-      echo "<li class='metacriteria' id='$rowid'>";
-      echo "<i class='far fa-minus-square remove-search-criteria' alt='-' title=\"".
-               __s('Delete a global rule')."\" data-rowid='$rowid'></i>&nbsp;";
-
-      // Display link item (not for the first item)
-      Dropdown::showFromArray(
-         "criteria{$prefix}[$num][link]",
-         Search::getLogicalOperators(),
-         [
-            'value' => isset($metacriteria["link"])
-               ? $metacriteria["link"]
-               : "",
-            'width' => '80px'
-         ]
-      );
-
-      // Display select of the linked item type available
-      $rand = Dropdown::showItemTypes("criteria{$prefix}[$num][itemtype]", $linked, [
-         'value' => isset($metacriteria['itemtype'])
-                    && !empty($metacriteria['itemtype'])
-                     ? $metacriteria['itemtype']
-                     : "",
-         'width' => '170px'
-      ]);
-      echo Html::hidden("criteria{$prefix}[$num][meta]", [
-         'value' => true
-      ]);
-      $field_id = Html::cleanId("dropdown_criteria{$prefix}[$num][itemtype]$rand");
-      $spanid   = Html::cleanId("show_".$request["itemtype"]."_".$prefix.$num."_$rand");
-      // Ajax script for display search met& item
-      echo "<blockquote>";
-
-      $params = [
-         'action'          => 'display_criteria',
-         'itemtype'        => '__VALUE__',
-         'parent_itemtype' => $request['itemtype'],
-         'from_meta'       => true,
-         'num'             => $num,
-         'p'               => $request["p"],
-         '_idor_token'     => Session::getNewIDORToken("", [
-            'parent_itemtype' => $request['itemtype']
-         ])
-      ];
-      Ajax::updateItemOnSelectEvent(
-         $field_id,
-         $spanid,
-         $CFG_GLPI["root_doc"]."/ajax/search.php",
-         $params
-      );
-
-      echo "<span id='$spanid'>";
-      if (isset($metacriteria['itemtype'])
-          && !empty($metacriteria['itemtype'])) {
-         $params['itemtype'] = $metacriteria['itemtype'];
-         self::displayCriteria($params);
+      $values = [];
+      if (count($linked)) {
+         foreach ($linked as $type) {
+            if ($item = getItemForItemtype($type)) {
+               $values[$type] = $item->getTypeName(1);
+            }
+         }
       }
-      echo "</span>";
-      echo "</blockquote>";
+      asort($values);
+      $value    = isset($metacriteria['itemtype']) ? $metacriteria['itemtype'] : '';
+
+      $randrow  = mt_rand();
+
+      $spanid   = Html::cleanId("show_".$request["itemtype"]."_".$prefix.$num."_$rand");
+      $rowid  = 'metasearchrow'.$request['itemtype'].$rand;
+      $json_p = json_encode($request["p"]);
+
+      $used_itemtype = $request["itemtype"];
+      // Force Computer itemtype for AllAssets to permit to show specific items
+      if ($request["itemtype"] == 'AllAssets') {
+         $used_itemtype = 'Computer';
+      }
+
+      $idor_display_criteria = Session::getNewIDORToken("", [ 'parent_itemtype' => $request['itemtype'] ]);
+      // $params = [
+      //    'action'          => 'display_criteria',
+      //    'itemtype'        => '__VALUE__',
+      //    'parent_itemtype' => $request['itemtype'],
+      //    'from_meta'       => true,
+      //    'num'             => $num,
+      //    'p'               => $request["p"],
+      //    '_idor_token'     => Session::getNewIDORToken("", [
+      //       'parent_itemtype' => $request['itemtype']
+      //    ])
+      // ];
+      renderTwigTemplate('search/searchCriteria.twig', [
+         'is_deleted' => $p['is_deleted'],
+         'as_map' => $p['as_map'],
+         'rowid' => $rowid,
+         'spanid' => $spanid,
+         'meta' => true,
+         'inputs' => [
+            [
+               'type' => 'hidden',
+               'name' => "criteria{$prefix}[$num][meta]",
+               'value' => true
+            ],
+            [
+               'type' => 'select',
+               'name' => "criteria{$prefix}[$num][link]",
+               'values' => Search::getLogicalOperators(($num == 0)),
+               'value' => isset($criteria["link"]) ? $criteria["link"] : '',
+            ],
+            [
+               'type' => 'select',
+               'id' => "dropdown_criteria{$prefix}_{$num}_field_{$randrow}",
+               'name' => "criteria{$prefix}[$num][field]",
+               'values' => $values,
+               'value' => $value,
+               'hooks' => [
+                  'change' => <<<JS
+                     $.ajax({
+                        url: '{$CFG_GLPI['root_doc']}/ajax/search.php',
+                        type: 'POST',
+                        data: {
+                           action: 'display_criteria',
+                           itemtype: $(this).val(),
+                           parent_itemtype: '$used_itemtype',
+                           from_meta: true,
+                           num: $num,
+                           p: {$json_p},
+                           _idor_token: '{$idor_display_criteria}',
+                        },
+                        success: function(data) {
+                           $('#$spanid').html(data);
+                        }
+                     });
+                  JS,
+               ],
+               'init' => <<<JS
+                  $.ajax({
+                     url: '{$CFG_GLPI['root_doc']}/ajax/search.php',
+                     type: 'POST',
+                     data: {
+                        action: 'display_criteria',
+                        itemtype: $('#dropdown_criteria{$prefix}_{$num}_field_{$randrow}').val(),
+                        parent_itemtype: '$used_itemtype',
+                        from_meta: true,
+                        num: $num,
+                        p: {$json_p},
+                        _idor_token: '{$idor_display_criteria}',
+                     },
+                     success: function(data) {
+                        $('#$spanid').html(data);
+                     }
+                  });
+               JS,
+            ]
+         ]
+      ]);
       echo "</li>";
    }
 
@@ -2784,13 +2806,13 @@ JAVASCRIPT;
                }
 
             }
-           break;
-      }
-
-      // Default case : text field
-      if (!$display) {
-           echo "<input type='text' size='13' name='$inputname' value=\"".
-                  Html::cleanInputText($request['value'])."\">";
+            break;
+         default:
+            if (!$display) {
+               echo "<input type='text' size='13' name='$inputname' class='form-control' value=\"".
+                        Html::cleanInputText($request['value'])."\">";
+            }
+            break;
       }
    }
 
