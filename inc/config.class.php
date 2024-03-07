@@ -1943,20 +1943,20 @@ class Config extends CommonDBTM {
          echo '</form>';
          echo "</td></tr>";
       }
-      
+
       echo "</table></div>\n";
    }
-   
+
    /**
     * Display a HTML report about systeme information / configuration
     **/
     function showSystemInformations() {
        global $DB, $CFG_GLPI;
-       
+
        if (!Config::canUpdate()) {
           return false;
          }
-         
+
       $clear = __('Clear');
       $oldlang = $_SESSION['glpilanguage'];
       $ver = ITSM_VERSION;
@@ -3358,11 +3358,12 @@ class Config extends CommonDBTM {
          $opt['options']['namespace'] = $namespace;
       }
       if (!isset($opt['adapter'])) {
-         if (function_exists('apcu_fetch')) {
-            $opt['adapter'] = 'apcu';
-         } else {
+        //  if (function_exists('apcu_fetch')) {
+
+        //     $opt['adapter'] = 'apcu';
+        //  } else {
             $opt['adapter'] = 'filesystem';
-         }
+        //  }
 
          // Cannot skip integrity checks if 'adapter' was computed,
          // as computation result may differ for a different context (CLI VS web server).
