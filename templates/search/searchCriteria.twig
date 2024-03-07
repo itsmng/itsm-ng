@@ -1,13 +1,20 @@
-{% from "macros/input.twig" import input as inputMacro %}
+{% from "macros/input.twig" import input %}
 
-<div class="normalcriteria {{addclass}}">
+<li class="{{meta is defined ? 'metacriteria' : 'normalcriteria' }} {{addclass}} mb-3 w-100" id="{{rowid}}">
         <input id="is_deleted" type="hidden" name="is_deleted" value="{{is_deleted}}">
         <input id="as_map" type="hidden" name="as_map" value="{{as_map}}">
         <div class="input-group">
-            <i class="far fa-minus-square remove-search-criteria input-group-text" data-rowid='{{rowid}}' alt="-" title="{{"Delete a rule"|trans}}"></i>
-            {% for input in inputs %}
-                {{ inputMacro(input) }}
+            {% if not from_meta %}
+                <i class="far fa-minus-square remove-search-criteria input-group-text"
+                    role="button"
+                    data-rowid='{{rowid}}'
+                    alt="-" title="{{"Delete a rule"|trans}}"></i>
+            {% endif %}
+            {% for attributes in inputs %}
+                {% if attributes|length > 0 %}
+                    {{ input(attributes) }}
+                {% endif %}
             {% endfor %}
         </div>
-        <span id="{{spanid}}"></span>
-</div>
+        <span id="{{spanid}}"  class='d-flex'></span>
+</li>

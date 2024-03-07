@@ -156,17 +156,17 @@
 {% macro select(attributes) %}
   <select class='form-select {{attributes.class}}'
     {% for name, value in attributes %} {% if name not in  ['values', 'class']%}{{name}}="{{value}}"{% endif %} {% endfor %}>
-      {% for key, item in attributes.values %}
-        {% if item is iterable %}
-          <optgroup label="{{key}}">
-            {% for key, item in item %}
-              <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
-            {% endfor %}
-          </optgroup>
-        {% else %}
+    {% for key, item in attributes.values %}
+      {% if item is iterable %}
+        <optgroup label="{{key}}">
+          {% for key, item in item %}
             <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
-        {% endif %}
-      {% endfor %}
+          {% endfor %}
+        </optgroup>
+      {% else %}
+          <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
+      {% endif %}
+    {% endfor %}
   </select>
   {% if attributes.searchable %}
   <script>
@@ -423,7 +423,11 @@
       </script>
     {% endif %}
 {% endmacro %}
-{% macro input(attributes, root_doc = '') %}
+{% macro input(input, root_doc = '') %}
+  {% if input.hooks and not input.id %}
+    {% set input  = input|merge({'id': random()}) %}
+	{% endif %}
+  {% set attributes = input|filter((v, k) => k not in ['hooks', 'init']) %}
   {% if attributes.type == 'checkbox' %}
     <div class="form-switch">
       {% if not attributes.no_zero %}
@@ -462,6 +466,20 @@
     {{_self.password(attributes)}}
   {% else %}
     <input class='form-control' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+  {% endif %}
+  {% if input.hooks is defined and input.hooks is not empty %}
+    <script>
+      {% if input.init %}
+          {{input.init|raw}}
+      {% endif %}
+      $(document).ready(() => {
+      {% for hook, script in input.hooks %}
+        $("#{{input.id}}").on("{{hook}}", function() {
+          {{script|raw}}
+        });
+      {% endfor %}
+      });
+    </script>
   {% endif %}
 {% endmacro %}
 {{_self.input(_context)}}

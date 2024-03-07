@@ -166,7 +166,13 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
             'csrf_token' => $_SESSION['_glpi_csrf_token'],
         ]);
     } catch (Exception $e) {
+        echo "<div class='text-start'>";
         echo $e->getMessage();
+        echo "<pre>";
+        echo $e->getTraceAsString();
+        echo "</pre>";
+        echo $e->getFile() . ':' . $e->getLine();
+        echo "</div>";
     }
 }
 
