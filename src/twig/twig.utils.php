@@ -89,7 +89,14 @@ function renderTwigTemplate($path, $vars, $root='/templates')
     try {
         echo $twig->render($path, $vars);
     } catch (Exception $e) {
+        echo "<div class='text-start'>";
         echo $e->getMessage();
+        echo "<pre>";
+        echo $e->getTraceAsString();
+        echo "</pre>";
+        echo $e->getFile() . ':' . $e->getLine();
+        echo "</div>";
+
     }
 }
 

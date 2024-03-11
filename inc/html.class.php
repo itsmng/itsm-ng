@@ -3741,7 +3741,7 @@ JS;
                'value'     => $_SESSION["glpiactiveprofile"]["id"],
                'width'     => '150px',
                'on_change' => 'submit()',
-               'class' => 'form-select ms-3'
+               'class' => 'form-select form-select-sm ms-3'
             ]
          );
          Html::closeForm();
