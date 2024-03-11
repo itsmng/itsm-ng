@@ -8,6 +8,7 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true,
     $values = Dropdown::getDropdownValue([
         'itemtype' => $item,
         'entity_restrict' => $conditions['entities_id'] ?? Session::getActiveEntity(),
+        'condition' => $conditions,
         'used' => $used,
         'display_emptychoice' => $display_emptychoice,
     ], false);
