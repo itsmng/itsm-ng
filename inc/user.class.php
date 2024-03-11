@@ -2118,7 +2118,7 @@ class User extends CommonDBTM {
       $defaultEmailTitle = __('Default email');
       foreach($emails as $email) {
          $emailsValues[] = [
-            "<input type='radio' class='form-check-input mx-1' title='{$defaultEmailTitle}' name='_default_email' value='".$email['id']."' ".($email['is_default'] ? 'checked' : '').">",
+            "<input type='radio' class='form-check mx-1' title='{$defaultEmailTitle}' name='_default_email' value='".$email['id']."' ".($email['is_default'] ? 'checked' : '').">",
             "<input type='email' class='form-control' name='_useremails[{$email['id']}]' value='".$email['email']."'>",
          ];
       }
