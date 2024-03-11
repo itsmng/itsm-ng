@@ -374,7 +374,7 @@ class User extends CommonDBTM {
          $dp->deleteByCriteria(['users_id' => $this->fields['id']]);
       }
 
-      $this->dropPictureFiles($this->fields['picture']);
+      unlink($this->fields['picture']);
 
       // Ticket rules use various _users_id_*
       Rule::cleanForItemAction($this, '_users_id%');
@@ -5120,6 +5120,7 @@ class User extends CommonDBTM {
     * Drop existing files for user picture.
     *
     * @since 0.85
+    * @deprecated 2.0.0
     *
     * @param string $picture Picture field value
     *
