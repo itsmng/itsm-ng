@@ -2,7 +2,7 @@
 
 /**
  * ---------------------------------------------------------------------
- * ITSM-NG 
+ * ITSM-NG
  * Copyright (C) 2022 ITSM-NG and contributors.
  *
  * https://www.itsm-ng.org/
@@ -33,7 +33,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 
@@ -43,327 +43,336 @@ if (!defined('GLPI_ROOT')) {
 class Oidc extends CommonDBTM
 {
 
-   static $_user_data;
+    static $_user_data;
 
-   static function auth()
-   {
+    static function auth()
+    {
 
-      global $DB, $CFG_GLPI;
+        global $DB, $CFG_GLPI;
 
-      //Get config from DB and use it to setup oidc
-      $criteria = "SELECT * FROM glpi_oidc_config";
-      $iterators = $DB->request($criteria);
-      foreach ($iterators as $iterator) {
-         $oidc_db['Provider'] = $iterator['Provider'];
-         $oidc_db['ClientID'] = $iterator['ClientID'];
-         $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
-         $oidc_db['scope'] = explode(',', addslashes(str_replace(' ', '', $iterator['scope'])));
-         $oidc_db['proxy'] = $iterator['proxy'];
-         $oidc_db['cert'] = $iterator['cert'];
-      }
+        //Get config from DB and use it to setup oidc
+        $criteria = "SELECT * FROM glpi_oidc_config";
+        $iterators = $DB->request($criteria);
+        foreach ($iterators as $iterator) {
+            $oidc_db['Provider'] = $iterator['Provider'];
+            $oidc_db['ClientID'] = $iterator['ClientID'];
+            $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
+            $oidc_db['scope'] = explode(',', addslashes(str_replace(' ', '', $iterator['scope'])));
+            $oidc_db['proxy'] = $iterator['proxy'];
+            $oidc_db['cert'] = $iterator['cert'];
+        }
 
-      $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
-      if (is_array($oidc_db['scope'])) {
-         $oidc->addScope($oidc_db['scope']);
-      }
-      if (isset($oidc_db['proxy']) && $oidc_db['proxy'] != '') {
-         $oidc->setHttpProxy($oidc_db['proxy']);
-      }
-      if (isset($oidc_db['cert']) && $oidc_db['proxy'] != '' && file_exists($oidc_db['cert'])) {
-         $oidc->setCertPath($oidc_db['cert']);
-      }
-      $oidc->setHttpUpgradeInsecureRequests(false);
-      try {
-         $oidc->authenticate();
-      } catch (Exception $e) {
-         //If something go wrong 
-         Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
-         echo '<div class="center b">';
-         echo __('Missing or wrong fields in open ID connect config');
-         echo '<p><a href="' . $CFG_GLPI['root_doc'] . "/index.php" . '">' . __('Log in again') . '</a></p>';
-         echo '</div>';
-         Html::nullFooter();
-         die;
-      }
+        $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
+        if (is_array($oidc_db['scope'])) {
+            $oidc->addScope($oidc_db['scope']);
+        }
+        if (isset($oidc_db['proxy']) && $oidc_db['proxy'] != '') {
+            $oidc->setHttpProxy($oidc_db['proxy']);
+        }
+        if (isset($oidc_db['cert']) && $oidc_db['proxy'] != '' && file_exists($oidc_db['cert'])) {
+            $oidc->setCertPath($oidc_db['cert']);
+        }
+        $oidc->setHttpUpgradeInsecureRequests(false);
+        try {
+            $oidc->authenticate();
+        } catch (Exception $e) {
+            //If something go wrong
+            Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
+            echo '<div class="center b">';
+            echo __('Missing or wrong fields in open ID connect config');
+            echo '<p><a href="' . $CFG_GLPI['root_doc'] . "/index.php" . '">' . __('Log in again') . '</a></p>';
+            echo '</div>';
+            Html::nullFooter();
+            die;
+        }
 
-      $result = $oidc->requestUserInfo();
-      //Tranform result to an array
-      $user_array = json_encode($result);
-      $user_array = json_decode($user_array, true);
-      self::$_user_data = $user_array;
-      //var_dump(self::$_user_data);
-      //die;
-      //Create and/or authenticated a user
-      $criteria = "SELECT * FROM glpi_users";
-      $iterators = $DB->request($criteria);
-      $newUser = true;
+        $result = $oidc->requestUserInfo();
+        //Tranform result to an array
+        $user_array = json_encode($result);
+        $user_array = json_decode($user_array, true);
+        self::$_user_data = $user_array;
+        //var_dump(self::$_user_data);
+        //die;
+        //Create and/or authenticated a user
+        $criteria = "SELECT * FROM glpi_users";
+        $iterators = $DB->request($criteria);
+        $newUser = true;
 
-      if (isset($user_array["name"])) {
-         foreach ($iterators as $iterator)
-            if ($user_array['name'] == $iterator['name']) {
-               $ID = $iterator['id'];
-               $newUser = false;
+        if (isset($user_array["name"])) {
+            foreach ($iterators as $iterator)
+                if ($user_array['name'] == $iterator['name']) {
+                    $ID = $iterator['id'];
+                    $newUser = false;
+                }
+
+            $user = new User();
+            if ($newUser) {
+                $input = [
+                    'name'     => $user_array['name'],
+                    '_extauth' => 1,
+                    'add'      => 1
+                ];
+                $ID = $user->add($input);
+            }
+        } else {
+            foreach ($iterators as $iterator)
+                if ($user_array['sub'] == $iterator['name']) {
+                    $ID = $iterator['id'];
+                    $newUser = false;
+                }
+
+            $user = new User();
+            if ($newUser) {
+                $input = [
+                    'name'     => $user_array['sub'],
+                    '_extauth' => 1,
+                    'add'      => 1
+                ];
+                $ID = $user->add($input);
+            }
+        }
+
+        if (!$user->getFromDB($ID))
+            die;
+
+        $request = $DB->request('glpi_oidc_mapping');
+        while ($data = $request->next()) {
+            $mapping_date_mod = $data["date_mod"];
+        }
+        $request = $DB->request('glpi_users', ["id" => $ID]);
+        while ($data = $request->next()) {
+            $user_date_mod = $data["date_mod"];
+        }
+
+        //if ($mapping_date_mod > $user_date_mod)
+        self::addUserData($user_array, $ID);
+
+        $auth = new Auth();
+        $auth->auth_succeded = true;
+        $auth->user = $user;
+        //Setup a new session and redirect to the main menu
+        Session::init($auth);
+        $_SESSION['itsm_is_oidc'] = 1;
+        $_SESSION['itsm_oidc_idtoken'] = $oidc->getIdToken();
+        Auth::redirectIfAuthenticated();
+    }
+
+    /**
+     * Add oidc data to user's db via a mapping
+     *
+     * @return void
+     */
+    static function addUserData($user_array, $id)
+    {
+        global $DB;
+
+        $criteria = "SELECT * FROM glpi_oidc_mapping";
+        $iterators = $DB->request($criteria);
+
+        while ($data = $iterators->next())
+            $result[] = $data;
+
+        if (isset($result)) {
+            if (isset($user_array[$result[0]["name"]]))
+                $DB->updateOrInsert("glpi_users", ['name' => $DB->escape($user_array[$result[0]["name"]])], ['id' => $id]);
+
+            if (isset($user_array[$result[0]["given_name"]]))
+                $DB->updateOrInsert("glpi_users", ['firstname' => $DB->escape($user_array[$result[0]["given_name"]])], ['id' => $id]);
+
+            if (isset($user_array[$result[0]["family_name"]]))
+                $DB->updateOrInsert("glpi_users", ['realname' => $DB->escape($user_array[$result[0]["family_name"]])], ['id' => $id]);
+
+            if (isset($user_array[$result[0]["picture"]]))
+                $DB->updateOrInsert("glpi_users", ['picture' => $DB->escape($user_array[$result[0]["picture"]])], ['id' => $id]);
+
+            if (isset($user_array[$result[0]["email"]])) {
+                $querry = "INSERT IGNORE INTO `glpi_useremails` (`id`, `users_id`, `is_default`, `is_dynamic`, `email`) VALUES ('0', '$id', '0', '0', '" . $user_array[$result[0]["email"]] . "');";
+                $DB->queryOrDie($querry);
             }
 
-         $user = new User();
-         if ($newUser) {
-            $input = [
-               'name'     => $user_array['name'],
-               '_extauth' => 1,
-               'add'      => 1
+            if (isset($user_array[$result[0]["locale"]]))
+                $DB->updateOrInsert("glpi_users", ['language' => $DB->escape($user_array[$result[0]["locale"]])], ['id' => $id]);
+
+            if (isset($user_array[$result[0]["phone_number"]]))
+                $DB->updateOrInsert("glpi_users", ['phone' => $DB->escape($user_array[$result[0]["phone_number"]])], ['id' => $id]);
+
+            $DB->updateOrInsert("glpi_users", ['date_mod' => $_SESSION["glpi_currenttime"]], ['id' => $id]);
+
+
+            if (isset($user_array[$result[0]["group"]])) {
+                foreach ($data = $user_array[$result[0]["group"]] as $value) {
+                    $id_group_create = 0;
+                    $request = $DB->request('glpi_groups');
+
+                    while ($data = $request->next()) {
+                        if ($data['name'] == $value) {
+                            $id_group_create = $data['id'];
+                            break;
+                        }
+                    }
+
+                    $querry = "INSERT IGNORE INTO `glpi_groups` (`id`, `name`, `completename`) VALUES ($id_group_create, '$value', '$value');";
+                    $DB->queryOrDie($querry);
+                    $request = $DB->request('glpi_groups');
+
+                    while ($data = $request->next()) {
+                        $id_group = $data['id'];
+                        if ($data['name'] == $value) {
+                            break;
+                        }
+                    }
+
+                    $querry = "INSERT IGNORE INTO `glpi_groups_users` (`id`, `users_id`, `groups_id`) VALUES ('0', '$id', '$id_group');";
+                    $DB->queryOrDie($querry);
+                }
+            }
+        }
+
+        $request = $DB->request('glpi_oidc_users');
+
+        while ($data = $request->next()) {
+            $user_id = $data['id'];
+
+            if ($data['user_id'] == $id) $find = true;
+        }
+
+        if (!isset($find)) {
+            $DB->updateOrInsert("glpi_oidc_users", ['user_id' => $id, 'update' => 1], ['id' => 0]);
+        } else {
+            $DB->updateOrInsert("glpi_oidc_users", ['user_id' => $id, 'update' => 1], ['id' => $user_id]);
+        }
+    }
+
+    /**
+     * Show user config form
+     *
+     * @return void
+     */
+    static function showFormUserConfig()
+    {
+        global $DB;
+
+        if (isset($_POST["config"])) {
+            Html::redirect("auth.oidc.php");
+        }
+
+        if (isset($_POST["update"])) {
+            $oidc_result = [
+                'name' => $_POST["name"],
+                'given_name'  => $_POST["given_name"],
+                'family_name'  => $_POST["family_name"],
+                'picture'  => $_POST["picture"],
+                'email'  => $_POST["email"],
+                'locale'  => $_POST["locale"],
+                'phone_number'  => $_POST["phone_number"],
+                'group'  => $_POST["group"],
+                'date_mod' => $_SESSION["glpi_currenttime"],
             ];
-            $ID = $user->add($input);
-         }
-      } else {
-         foreach ($iterators as $iterator)
-            if ($user_array['sub'] == $iterator['name']) {
-               $ID = $iterator['id'];
-               $newUser = false;
-            }
+            $DB->updateOrInsert("glpi_oidc_mapping", $oidc_result, ['id'   => 0]);
+        }
 
-         $user = new User();
-         if ($newUser) {
-            $input = [
-               'name'     => $user_array['sub'],
-               '_extauth' => 1,
-               'add'      => 1
-            ];
-            $ID = $user->add($input);
-         }
-      }
+        $criteria = "SELECT * FROM glpi_oidc_mapping";
+        $iterators = $DB->request($criteria);
+        $oidc_db = [
+            'name' => null,
+            'given_name'  => null,
+            'family_name'  => null,
+            'picture'  => null,
+            'email'  => null,
+            'locale'  => null,
+            'phone_number'  => null,
+            'group'  => null,
+            'date_mod' => null,
+        ];
 
-      if (!$user->getFromDB($ID))
-         die;
+        foreach ($iterators as $iterator) {
+            $oidc_db['name'] = $iterator["name"];
+            $oidc_db['given_name']  = $iterator["given_name"];
+            $oidc_db['family_name']  = $iterator["family_name"];
+            $oidc_db['picture']  = $iterator["picture"];
+            $oidc_db['email']  = $iterator["email"];
+            $oidc_db['locale']  = $iterator["locale"];
+            $oidc_db['phone_number']  = $iterator["phone_number"];
+            $oidc_db['group']  = $iterator["group"];
+            $oidc_db['date_mod']  = $iterator["date_mod"];
+        }
 
-      $request = $DB->request('glpi_oidc_mapping');
-      while ($data = $request->next()) {
-         $mapping_date_mod = $data["date_mod"];
-      }
-      $request = $DB->request('glpi_users', ["id" => $ID]);
-      while ($data = $request->next()) {
-         $user_date_mod = $data["date_mod"];
-      }
-
-      //if ($mapping_date_mod > $user_date_mod)
-      self::addUserData($user_array, $ID);
-
-      $auth = new Auth();
-      $auth->auth_succeded = true;
-      $auth->user = $user;
-      //Setup a new session and redirect to the main menu
-      Session::init($auth);
-      $_SESSION['itsm_is_oidc'] = 1;
-      $_SESSION['itsm_oidc_idtoken'] = $oidc->getIdToken();
-      Auth::redirectIfAuthenticated();
-   }
-
-   /**
-    * Add oidc data to user's db via a mapping
-    *
-    * @return void
-    */
-   static function addUserData($user_array, $id)
-   {
-      global $DB;
-
-      $criteria = "SELECT * FROM glpi_oidc_mapping";
-      $iterators = $DB->request($criteria);
-
-      while ($data = $iterators->next())
-         $result[] = $data;
-
-      if (isset($result)) {
-         if (isset($user_array[$result[0]["name"]]))
-            $DB->updateOrInsert("glpi_users", ['name' => $DB->escape($user_array[$result[0]["name"]])], ['id' => $id]);
-
-         if (isset($user_array[$result[0]["given_name"]]))
-            $DB->updateOrInsert("glpi_users", ['firstname' => $DB->escape($user_array[$result[0]["given_name"]])], ['id' => $id]);
-
-         if (isset($user_array[$result[0]["family_name"]]))
-            $DB->updateOrInsert("glpi_users", ['realname' => $DB->escape($user_array[$result[0]["family_name"]])], ['id' => $id]);
-
-         if (isset($user_array[$result[0]["picture"]]))
-            $DB->updateOrInsert("glpi_users", ['picture' => $DB->escape($user_array[$result[0]["picture"]])], ['id' => $id]);
-
-         if (isset($user_array[$result[0]["email"]])) {
-            $querry = "INSERT IGNORE INTO `glpi_useremails` (`id`, `users_id`, `is_default`, `is_dynamic`, `email`) VALUES ('0', '$id', '0', '0', '" . $user_array[$result[0]["email"]] . "');";
-            $DB->queryOrDie($querry);
-         }
-
-         if (isset($user_array[$result[0]["locale"]]))
-            $DB->updateOrInsert("glpi_users", ['language' => $DB->escape($user_array[$result[0]["locale"]])], ['id' => $id]);
-
-         if (isset($user_array[$result[0]["phone_number"]]))
-            $DB->updateOrInsert("glpi_users", ['phone' => $DB->escape($user_array[$result[0]["phone_number"]])], ['id' => $id]);
-
-         $DB->updateOrInsert("glpi_users", ['date_mod' => $_SESSION["glpi_currenttime"]], ['id' => $id]);
-
-
-         if (isset($user_array[$result[0]["group"]])) {
-            foreach ($data = $user_array[$result[0]["group"]] as $value) {
-               $id_group_create = 0;
-               $request = $DB->request('glpi_groups');
-
-               while ($data = $request->next()) {
-                  if ($data['name'] == $value) {
-                     $id_group_create = $data['id'];
-                     break;
-                  }
-               }
-
-               $querry = "INSERT IGNORE INTO `glpi_groups` (`id`, `name`, `completename`) VALUES ($id_group_create, '$value', '$value');";
-               $DB->queryOrDie($querry);
-               $request = $DB->request('glpi_groups');
-
-               while ($data = $request->next()) {
-                  $id_group = $data['id'];
-                  if ($data['name'] == $value) {
-                     break;
-                  }
-               }
-
-               $querry = "INSERT IGNORE INTO `glpi_groups_users` (`id`, `users_id`, `groups_id`) VALUES ('0', '$id', '$id_group');";
-               $DB->queryOrDie($querry);
-            }
-         }
-      }
-
-      $request = $DB->request('glpi_oidc_users');
-
-      while ($data = $request->next()) {
-         $user_id = $data['id'];
-
-         if ($data['user_id'] == $id) $find = true;
-      }
-
-      if (!isset($find)) {
-         $DB->updateOrInsert("glpi_oidc_users", ['user_id' => $id, 'update' => 1], ['id' => 0]);
-      } else {
-         $DB->updateOrInsert("glpi_oidc_users", ['user_id' => $id, 'update' => 1], ['id' => $user_id]);
-      }
-   }
-
-   /**
-    * Show user config form
-    *
-    * @return void
-    */
-   static function showFormUserConfig()
-   {
-      global $DB;
-
-      if (isset($_POST["config"])) {
-         Html::redirect("auth.oidc.php");
-      }
-
-      if (isset($_POST["update"])) {
-         $oidc_result = [
-            'given_name'  => $_POST["given_name"],
-            'family_name'  => $_POST["family_name"],
-            'picture'  => $_POST["picture"],
-            'email'  => $_POST["email"],
-            'locale'  => $_POST["locale"],
-            'phone_number'  => $_POST["phone_number"],
-            'group'  => $_POST["group"],
-            'date_mod' => $_SESSION["glpi_currenttime"],
-         ];
-         $DB->updateOrInsert("glpi_oidc_mapping", $oidc_result, ['id'   => 0]);
-      }
-
-      $criteria = "SELECT * FROM glpi_oidc_mapping";
-      $iterators = $DB->request($criteria);
-      $oidc_db = [
-         'given_name'  => null,
-         'family_name'  => null,
-         'picture'  => null,
-         'email'  => null,
-         'locale'  => null,
-         'phone_number'  => null,
-         'group'  => null,
-         'date_mod' => null,
-      ];
-
-      foreach ($iterators as $iterator) {
-         $oidc_db['given_name']  = $iterator["given_name"];
-         $oidc_db['family_name']  = $iterator["family_name"];
-         $oidc_db['picture']  = $iterator["picture"];
-         $oidc_db['email']  = $iterator["email"];
-         $oidc_db['locale']  = $iterator["locale"];
-         $oidc_db['phone_number']  = $iterator["phone_number"];
-         $oidc_db['group']  = $iterator["group"];
-         $oidc_db['date_mod']  = $iterator["date_mod"];
-      }
-
-      $form = [
-         'action' => '/front/auth.oidc_profile.php',
-         'buttons' => [
-            [
-               'type' => 'submit',
-               'name' => 'update',
-               'value' => __s('Save'),
-               'class' => 'btn btn-secondary',
+        $form = [
+            'action' => '/front/auth.oidc_profile.php',
+            'buttons' => [
+                [
+                    'type' => 'submit',
+                    'name' => 'update',
+                    'value' => __s('Save'),
+                    'class' => 'btn btn-secondary',
+                ],
+                [
+                    'type' => 'submit',
+                    'name' => 'config',
+                    'value' => __s('Configuration'),
+                    'class' => 'btn btn-secondary'
+                ]
             ],
-            [
-               'type' => 'submit',
-               'name' => 'config',
-               'value' => __s('Configuration'),
-               'class' => 'btn btn-secondary'
+            'content' => [
+                __('Mapping of fields according to provider') => [
+                    'visible' => true,
+                    'inputs' => [
+                        ('') => [
+                            'name' => 'id',
+                            'type' => 'hidden',
+                            'value' => '',
+                        ],
+                        __('Name') => [
+                            'name' => 'name',
+                            'type' => 'text',
+                            'value' => $oidc_db['name'],
+                        ],
+                        __('Surname') => [
+                            'name' => 'family_name',
+                            'type' => 'text',
+                            'value' => $oidc_db['family_name'],
+                        ],
+                        __('First name') => [
+                            'name' => 'given_name',
+                            'type' => 'text',
+                            'value' => $oidc_db['given_name'],
+                        ],
+                        __('Email') => [
+                            'name' => 'email',
+                            'type' => 'text',
+                            'value' => $oidc_db['email'],
+                        ],
+                        __('Phone') => [
+                            'name' => 'phone_number',
+                            'type' => 'text',
+                            'value' => $oidc_db['phone_number'],
+                        ],
+                        __('Locale') => [
+                            'name' => 'locale',
+                            'type' => 'text',
+                            'value' => $oidc_db['locale'],
+                        ],
+                        __('Picture') => [
+                            'name' => 'picture',
+                            'type' => 'text',
+                            'value' => $oidc_db['picture'],
+                        ],
+                        __('Group') => [
+                            'name' => 'group',
+                            'type' => 'text',
+                            'value' => $oidc_db['group'],
+                        ],
+                        __('Last update') => [
+                            'name' => 'date_mod',
+                            'type' => 'text',
+                            'disabled' => '',
+                            'value' => $oidc_db['date_mod'],
+                        ]
+                    ]
+                ]
             ]
-         ],
-         'content' => [
-            __('Mapping of fields according to provider') => [
-               'visible' => true,
-               'inputs' => [
-                  ('') => [
-                     'name' => 'id',
-                     'type' => 'hidden',
-                     'value' => '',
-                  ],
-                  __('Surname') => [
-                     'name' => 'family_name',
-                     'type' => 'text',
-                     'value' => $oidc_db['family_name'],
-                  ],
-                  __('First name') => [
-                     'name' => 'given_name',
-                     'type' => 'text',
-                     'value' => $oidc_db['given_name'],
-                  ],
-                  __('Email') => [
-                     'name' => 'email',
-                     'type' => 'text',
-                     'value' => $oidc_db['email'],
-                  ],
-                  __('Phone') => [
-                     'name' => 'phone_number',
-                     'type' => 'text',
-                     'value' => $oidc_db['phone_number'],
-                  ],
-                  __('Locale') => [
-                     'name' => 'locale',
-                     'type' => 'text',
-                     'value' => $oidc_db['locale'],
-                  ],
-                  __('Picture') => [
-                     'name' => 'picture',
-                     'type' => 'text',
-                     'value' => $oidc_db['picture'],
-                  ],
-                  __('Group') => [
-                     'name' => 'group',
-                     'type' => 'text',
-                     'value' => $oidc_db['group'],
-                  ],
-                  __('Last update') => [
-                     'name' => 'date_mod',
-                     'type' => 'text',
-                     'value' => $oidc_db['date_mod'],
-                  ]
-               ]
-            ]
-         ]
-      ];
+        ];
 
-      renderTwigForm($form);
-   }
+        renderTwigForm($form);
+    }
 }
