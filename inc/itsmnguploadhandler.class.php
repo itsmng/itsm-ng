@@ -125,4 +125,10 @@ class ItsmngUploadHandler {
          'users_id'     => $userId,
       ]);
    }
+
+   static function removeTmpFiles($files) {
+      foreach ($files as $file) {
+         unlink($file['path']);
+      }
+   }
 }

@@ -245,7 +245,9 @@
     <input type="checkbox" class="btn-check" name="_blank_{{attributes.name}}" value="1" id="clearPictureFor{{attributes.name}}"/>
     <label class="btn btn-outline-danger" for="clearPictureFor{{attributes.name}}">{{"Clear"|trans}}</label>
   </div>
-  {% if attributes.value %}<img class="w-100" src="{{root_doc}}/front/document.send.php?file={{attributes.value}}" alt="Preview of {{attributes.name}}"></img>{% endif %}
+  {% if attributes.value %}
+    <img class="img-thumbnail" src="{{root_doc}}/front/document.send.php?file={{attributes.value}}" alt="Preview of {{attributes.name}}"></img>
+  {% endif %}
   <script>
     $('#{{attributes.id}}').on('change', function() {
       let formData = new FormData();
@@ -366,7 +368,6 @@
     if (!content) {
       return;
     }
-    const test = {{attributes.isList}};
     let row = $('<tr>', {'data-value': current{{rand}}, style: "display: flex", id: `{{rand}}${current{{rand}}}`})
       .append($('<td>',  {class: 'd-flex align-items-center w-100'}));
     const inputCell = row.find('td');
