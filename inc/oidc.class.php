@@ -176,16 +176,16 @@ class Oidc extends CommonDBTM
 
       if (isset($result)) {
          if (isset($user_array[$result[0]["name"]]))
-            $DB->updateOrInsert("glpi_users", ['name' => $user_array[$result[0]["name"]]], ['id' => $id]);
+            $DB->updateOrInsert("glpi_users", ['name' => $DB->escape($user_array[$result[0]["name"]])], ['id' => $id]);
 
          if (isset($user_array[$result[0]["given_name"]]))
-            $DB->updateOrInsert("glpi_users", ['firstname' => $user_array[$result[0]["given_name"]]], ['id' => $id]);
+            $DB->updateOrInsert("glpi_users", ['firstname' => $DB->escape($user_array[$result[0]["given_name"]])], ['id' => $id]);
 
          if (isset($user_array[$result[0]["family_name"]]))
-            $DB->updateOrInsert("glpi_users", ['realname' => $user_array[$result[0]["family_name"]]], ['id' => $id]);
+            $DB->updateOrInsert("glpi_users", ['realname' => $DB->escape($user_array[$result[0]["family_name"]])], ['id' => $id]);
 
          if (isset($user_array[$result[0]["picture"]]))
-            $DB->updateOrInsert("glpi_users", ['picture' => $user_array[$result[0]["picture"]]], ['id' => $id]);
+            $DB->updateOrInsert("glpi_users", ['picture' => $DB->escape($user_array[$result[0]["picture"]])], ['id' => $id]);
 
          if (isset($user_array[$result[0]["email"]])) {
             $querry = "INSERT IGNORE INTO `glpi_useremails` (`id`, `users_id`, `is_default`, `is_dynamic`, `email`) VALUES ('0', '$id', '0', '0', '" . $user_array[$result[0]["email"]] . "');";
@@ -193,10 +193,10 @@ class Oidc extends CommonDBTM
          }
 
          if (isset($user_array[$result[0]["locale"]]))
-            $DB->updateOrInsert("glpi_users", ['language' => $user_array[$result[0]["locale"]]], ['id' => $id]);
+            $DB->updateOrInsert("glpi_users", ['language' => $DB->escape($user_array[$result[0]["locale"]])], ['id' => $id]);
 
          if (isset($user_array[$result[0]["phone_number"]]))
-            $DB->updateOrInsert("glpi_users", ['phone' => $user_array[$result[0]["phone_number"]]], ['id' => $id]);
+            $DB->updateOrInsert("glpi_users", ['phone' => $DB->escape($user_array[$result[0]["phone_number"]])], ['id' => $id]);
 
          $DB->updateOrInsert("glpi_users", ['date_mod' => $_SESSION["glpi_currenttime"]], ['id' => $id]);
 

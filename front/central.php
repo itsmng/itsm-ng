@@ -71,8 +71,7 @@ if (isset($_GET["active_entity"])) {
       $_GET["is_recursive"] = 0;
    }
    if (Session::changeActiveEntities($_GET["active_entity"], $_GET["is_recursive"])) {
-      if (($_GET["active_entity"] == $_SESSION["glpiactive_entity"])
-          && isset($_SERVER['HTTP_REFERER'])) {
+      if (isset($_SERVER['HTTP_REFERER'])) {
          Html::redirect(preg_replace("/(\?|&|".urlencode('?')."|".urlencode('&').")?(entities_id|active_entity).*/", "", $_SERVER['HTTP_REFERER']));
       }
    }
