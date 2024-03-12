@@ -15,7 +15,9 @@
 			<div class="d-flex justify-content-between align-items-center input-group my-1">
 			{% endif %}
 			{% if input.before %}
-				<div class="form-text mx-2">{{input.before | raw}}</div>
+				<div class="input-group-text">
+					{{input.before|raw}}
+				</div>
 			{% endif %}
 			{% if input.type %}
 				{{ inputMacro.input(attributes, root_doc) }}
@@ -23,7 +25,9 @@
 				{{ input.content|raw }}
 			{% endif %}
 			{% if input.after %}
-				{{input.after|raw}}
+				<div class="input-group-text">
+					{{input.after|raw}}
+				</div>
 			{% endif %}
 			{% for action in input.actions %}
 				<button type="button" class="btn border" onclick="{{action.onClick}}">
