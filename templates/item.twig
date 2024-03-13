@@ -1,7 +1,7 @@
 <div class="grid-stack border" id="ContentForTabs"></div>
 <div class='d-none' id="hidden_gridStack_items">
   {% for key, tab in tabs %}
-  <div class="grid-stack-item" id="ContentFor{{key|slug}}" gs-h='6' gs-min-w='6' data-gs-value="test">
+  <div class="grid-stack-item" id="ContentFor{{key|slug}}" gs-min-w='6' data-gs-value="test">
     <div class="card grid-stack-item-content">
       <div>
         <div class="card-header position-sticky">{{tab['title']|raw}}</div>
@@ -31,8 +31,9 @@
   // Update the width of widgets based on the number of widgets present
   function updateWidgetWidth() {
     const columnWidgets = grid.getGridItems();
-    const targetWidth = columnWidgets.length === 1 ? 12 : 6; // Full width for single widget, else half
-    grid.update(columnWidgets[0], { w: targetWidth });
+    if (columnWidgets.length === 1) {
+      grid.update(columnWidgets[0], { w: 12 });
+    }
 	  grid.compact();
   }
 
@@ -94,7 +95,7 @@
     grid.removeWidget(element[0], false);
     element.detach().prependTo('#hidden_gridStack_items');
     setTimeout(() => {
-        element.removeAttr('gs-x gs-y').attr({'gs-w': 6, 'gs-min-w': 6});
+        element.removeAttr('gs-x gs-y');
     }, 300);
   }
 
@@ -141,32 +142,17 @@
     }
   }
 
+  async function initTable() {
+    initCheckbox();
+    for (option of options) {
+      await moveAndMakeWidget(option);
+    }
+    updateWidgetWidth();
+  }
+
   // Document ready function
   $(document).ready(() => {
-    // Handle widgets based on whether there's only one tab or more
-    async function handleInitialWidgets() {
-      const savedLayout = {{selectedTabs|json_encode|raw}} ?? [];
-
-      let widgetName = '';
-      if ({{tabs | length == 1 ? 1 : 0}}) {
-        widgetName = $('#hidden_gridStack_items > div').first().attr('id').replace('ContentFor', '');
-        moveAndMakeWidget(widgetName).then(() => {
-          if ({{(tabs|length == 1 or selectedTabs|length == 0) ? 1 : 0}}) {
-            updateWidgetWidth()
-            grid.setStatic(true);
-          }
-        });
-      } else {
-        $('.dropdown-menu a').each(async (i, e) => {
-          if ($(e).children('input').prop('checked')) {
-            widgetName = $(e).attr('data-value');
-            await moveAndMakeWidget(widgetName)
-          }
-        });
-      }
-    }
-    initCheckbox();
-    handleInitialWidgets();
+    initTable();
   });
 
   // Dropdown menu item click handlers

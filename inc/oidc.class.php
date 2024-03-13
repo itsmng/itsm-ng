@@ -250,7 +250,7 @@ class Oidc extends CommonDBTM
      */
     static function showFormUserConfig()
     {
-        global $DB;
+        global $DB, $CFG_GLPI;
 
         if (isset($_POST["config"])) {
             Html::redirect("auth.oidc.php");
@@ -298,7 +298,7 @@ class Oidc extends CommonDBTM
         }
 
         $form = [
-            'action' => '/front/auth.oidc_profile.php',
+            'action' => $CFG_GLPI['root_doc'] . '/front/auth.oidc_profile.php',
             'buttons' => [
                 [
                     'type' => 'submit',

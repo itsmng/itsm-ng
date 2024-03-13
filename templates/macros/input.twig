@@ -338,10 +338,10 @@
                   {% endif %}
                 {% endfor %}
                 {% for name, value in inputs|filter((v, k) => k != 'id') %}
-                  {% if name and value.title is not defined %}
-                    {{value}} 
+                  {% if value.title is not defined %}
+                    {{value|raw}} 
                   {% elseif name %}
-                    {{value.title}} 
+                    {{value.title|raw}} 
                   {% endif %}
                 {% endfor %}
               </td>
