@@ -18,7 +18,7 @@
 {% set rand = random() %}
 	<div class="fw-bold fs-6 {{color ? "text-" ~ color : ''}}">{{title}}</div>
 	<div class="ct-chart ct-golden-section w-100" style="max-height: 20rem" id="widgetFor{{title|slug}}_{{rand}}"></div>
-	<link rel="stylesheet" href="/~antoine/itsm-ng2.0/node_modules/chartist/dist/index.css">
+	<link rel="stylesheet" href="{{root_doc}}/node_modules/chartist/dist/index.css">
 	<script>
 	$(document).ready(function() {
 		var chart = new Chartist.{{type|capitalize ~ 'Chart'}}("#widgetFor{{title|slug}}_{{rand}}",
