@@ -6709,7 +6709,7 @@ abstract class CommonITILObject extends CommonDBTM {
       $canadd_task = $task->can(-1, CREATE, $tmp) && !in_array($this->fields["status"],
                          array_merge($this->getSolvedStatusArray(), $this->getClosedStatusArray()));
       $canadd_document = $canadd_fup || $this->canAddItem('Document') && !in_array($this->fields["status"],
-                         array_merge($this->getSolvedStatusArray(), $this->getClosedStatusArray()));
+                         array_merge($this->getSolvedStatusArray(), $this->getClosedStatusArray())) && Document::canCreate();
       $canadd_solution = $objType::canUpdate() && $this->canSolve() && !in_array($this->fields["status"], $this->getSolvedStatusArray());
 
       $validation_class = $objType.'Validation';
@@ -7024,26 +7024,28 @@ abstract class CommonITILObject extends CommonDBTM {
 
       //add documents to timeline
       $document_obj   = new Document();
-      $document_items = $document_item_obj->find([
-         $this->getAssociatedDocumentsCriteria(),
-         'timeline_position'  => ['>', self::NO_TIMELINE]
-      ]);
-      foreach ($document_items as $document_item) {
-         $document_obj->getFromDB($document_item['documents_id']);
-
-         $date = $document_item['date'] ?? $document_item['date_creation'];
-
-         $item = $document_obj->fields;
-         $item['date'] = $date;
-         // #1476 - set date_mod and owner to attachment ones
-         $item['date_mod'] = $document_item['date_mod'];
-         $item['users_id'] = $document_item['users_id'];
-         $item['documents_item_id'] = $document_item['id'];
-
-         $item['timeline_position'] = $document_item['timeline_position'];
-
-         $timeline[$date."_document_".$document_item['documents_id']]
-            = ['type' => 'Document_Item', 'item' => $item];
+      if ($document_item_obj->canView()) {
+         $document_items = $document_item_obj->find([
+            $this->getAssociatedDocumentsCriteria(),
+            'timeline_position'  => ['>', self::NO_TIMELINE]
+         ]);
+         foreach ($document_items as $document_item) {
+            $document_obj->getFromDB($document_item['documents_id']);
+   
+            $date = $document_item['date'] ?? $document_item['date_creation'];
+   
+            $item = $document_obj->fields;
+            $item['date'] = $date;
+            // #1476 - set date_mod and owner to attachment ones
+            $item['date_mod'] = $document_item['date_mod'];
+            $item['users_id'] = $document_item['users_id'];
+            $item['documents_item_id'] = $document_item['id'];
+   
+            $item['timeline_position'] = $document_item['timeline_position'];
+   
+            $timeline[$date."_document_".$document_item['documents_id']]
+               = ['type' => 'Document_Item', 'item' => $item];
+         }
       }
 
       $solution_obj = new ITILSolution();
