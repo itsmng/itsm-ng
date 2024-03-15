@@ -8,10 +8,17 @@
 	{% set rand=random() %}
 	{% if not minimal %}
 	<div
-		id="toolbar{{rand}}">
+		id="toolbar{{rand}}"
+		class="btn-group"
+		>
 		{% if massive_action is defined %}
 		<button type="button" class="btn btn-secondary" onclick="populateModal{{rand}}()">
-			<i class="fas fa-hammer text-white"></i>
+			<i class="fas fa-hammer"></i>
+		</button>
+		{% endif %}
+		{% if column_edit is defined %}
+		<button type="button" class="btn btn-secondary" onclick="$('#search-config-{{itemtype}}').dialog('open')">
+			<i class="fas fa-wrench"></i>
 		</button>
 		{% endif %}
 	</div>
@@ -50,7 +57,8 @@
 					<th data-radio="true" data-field="select"></th>
 				{% endif %}
 				{% for state, field in fields %}
-					<th data-sortable="true" data-field='{{state}}' >{{ field|raw }}</th>
+					<th {% if not minimal %} data-sortable="true" {% endif  %}
+						data-field='{{state}}' >{{ field|raw }}</th>
 				{% endfor %}
 			</tr>
 		</thead>

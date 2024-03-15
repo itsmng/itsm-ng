@@ -42,8 +42,6 @@ Session::checkRightsOr('search_config', [DisplayPreference::PERSONAL,
 
 $setupdisplay = new DisplayPreference();
 
-
-
 if (isset($_POST["activate"])) {
    $setupdisplay->activatePerso($_POST);
 
@@ -67,7 +65,7 @@ if (isset($_POST["activate"])) {
 
 // Datas may come from GET or POST : use REQUEST
 if (isset($_REQUEST["itemtype"])) {
-   $setupdisplay->display(['displaytype' => $_REQUEST['itemtype']]);
+   $setupdisplay->showFormGlobal(Toolbox::cleanTarget($setupdisplay->getFormURL()), $_REQUEST['itemtype']);
 }
 
 Html::popFooter();

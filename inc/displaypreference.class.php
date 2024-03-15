@@ -452,7 +452,6 @@ class DisplayPreference extends CommonDBTM {
 
       $global_write = Session::haveRight(self::$rightname, self::GENERAL);
 
-      echo "<div class='center' id='tabsbody' >";
       // Defined items
       $iterator = $DB->request([
          'FROM'   => $this->getTable(),
@@ -464,15 +463,10 @@ class DisplayPreference extends CommonDBTM {
       ]);
       $numrows = count($iterator);
 
-      echo "<table class='tab_cadre_fixehov'><tr><th colspan='4'>";
-      echo __('Select default items to show')."</th></tr>\n";
+      echo '<h2>' . __('Select default items to show') . '</h2>';
 
       if ($global_write) {
          $already_added = self::getForTypeUser($itemtype, $IDuser);
-         echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
-         echo "<form method='post' action='$target'>";
-         echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-         echo "<input type='hidden' name='users_id' value='$IDuser'>";
          $group  = '';
          $values = [];
          foreach ($searchopt as $key => $val) {
@@ -486,38 +480,117 @@ class DisplayPreference extends CommonDBTM {
                $values[$group][$key] = $val["name"];
             }
          }
-         if ($values) {
-            Dropdown::showFromArray('num', $values);
-            echo "<span class='small_space'>";
-            echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-            echo "</span>";
-         }
-         Html::closeForm();
-         echo "</td></tr>";
+         $buttonLabel = _sx('button', 'Add');
+
+         $form = [
+            'action' => $target,
+            'buttons' => [[]],
+            'content' => [
+               '' => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'itemtype',
+                        'value' => $itemtype
+                     ],
+                     [
+                        'type' => 'hidden',
+                        'name' => 'users_id',
+                        'value' => $IDuser
+                     ],
+                     '' => $values ? [
+                        'type' => 'select',
+                        'name' => 'num',
+                        'values' => $values,
+                        'after' => <<<HTML
+                           <input type="submit" name="add" value="$buttonLabel" class="btn btn-sm btn-secondary">
+                        HTML,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                     ] : [],
+                  ]
+               ]
+            ]
+         ];
+         renderTwigForm($form);
+      };
+
+      $fields = [
+         'name' => __('Name'),
+         'up' => '<i class="fa fa-arrow-up"></i>',
+         'down' => '<i class="fa fa-arrow-down"></i>',
+         'close' => '<i class="fa fa-times"></i>'
+      ];
+      $values = [
+         ['name' => $searchopt[1]["name"],]
+      ];
+      if (Session::isMultiEntitiesMode()) {
+         $values[] = ['name' => $searchopt[80]["name"]];
       }
+      $i = 0;
+      while ($data = $iterator->next()) {
+         $newValue = [];
+         if (($data["num"] != 1)
+             && isset($searchopt[$data["num"]])) {
+               $newValue['name'] = $searchopt[$data["num"]]["name"];
+
+               if ($global_write) {
+                  if ($i != 0) {
+                     $newValue['up'] = <<<HTML
+                        <form method="post" action="$target">
+                           <input type="hidden" name="id" value="{$data['id']}">
+                           <input type="hidden" name="users_id" value="$IDuser">
+                           <input type="hidden" name="itemtype" value="$itemtype">
+                           <button type="submit" name="up" title="Bring up" class="btn btn-sm text-sm fs-6">
+                              <i class="fa fa-arrow-up"></i>
+                           </button>
+                           <input type="hidden" name="_glpi_csrf_token" value="$_SESSION[_glpi_csrf_token]">
+                        </form>
+                     HTML;
+                  }
+
+                  if ($i != ($numrows-1)) {
+                     $newValue['down'] = <<<HTML
+                        <form method="post" action="$target">
+                           <input type="hidden" name="id" value="{$data['id']}">
+                           <input type="hidden" name="users_id" value="$IDuser">
+                           <input type="hidden" name="itemtype" value="$itemtype">
+                           <button type="submit" name="down" title="Bring down" class="btn btn-sm fs-6">
+                              <i class="fa fa-arrow-down"></i>
+                           </button>
+                           <input type="hidden" name="_glpi_csrf_token" value="$_SESSION[_glpi_csrf_token]">
+                        </form>
+                     HTML;
+                  }
+
+                  if (!isset($searchopt[$data["num"]]["noremove"]) || $searchopt[$data["num"]]["noremove"] !== true) {
+                     $newValue['close'] = <<<HTML
+                        <form method="post" action="$target">
+                           <input type="hidden" name="id" value="{$data['id']}">
+                           <input type="hidden" name="users_id" value="$IDuser">
+                           <input type="hidden" name="itemtype" value="$itemtype">
+                           <button type="submit" name="purge" title="Delete permanently" class="btn btn-xs fs-6">
+                              <i class="fa fa-times-circle"></i>
+                           </button>
+                           <input type="hidden" name="_glpi_csrf_token" value="$_SESSION[_glpi_csrf_token]">
+                        </form>
+                     HTML;
+                  }
+               }
+         }
+         $values[] = $newValue;
+         $i++;
+      }
+      renderTwigTemplate('table.twig', [
+         'fields' => $fields,
+         'values' => $values,
+         'minimal' => true,
+      ]);
+
+      echo "<table class='w-100'>";
 
       // print first element
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center' width='50%'>".$searchopt[1]["name"];
-
-      if ($global_write) {
-         echo "</td><td colspan='3'>&nbsp;";
-      }
-      echo "</td></tr>";
-
-      // print entity
-      if (Session::isMultiEntitiesMode()
-          && (isset($CFG_GLPI["union_search_type"][$itemtype])
-              || ($item && $item->maybeRecursive())
-              || (count($_SESSION["glpiactiveentities"]) > 1))
-          && isset($searchopt[80])) {
-
-         echo "<tr class='tab_bg_2'>";
-         echo "<td class='center' width='50%'>".$searchopt[80]["name"]."</td>";
-         echo "<td colspan='3'>&nbsp;</td>";
-         echo "</tr>";
-      }
-
       $i = 0;
 
       if ($numrows) {
@@ -585,7 +658,6 @@ class DisplayPreference extends CommonDBTM {
          }
       }
       echo "</table>";
-      echo "</div>";
    }
 
 
@@ -678,12 +750,6 @@ class DisplayPreference extends CommonDBTM {
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
       switch ($item->getType()) {
-         case 'Preference' :
-            if (Session::haveRight(self::$rightname, self::PERSONAL)) {
-               return __('Personal View');
-            }
-            break;
-
          case __CLASS__:
             $ong = [];
             $ong[1] = __('Global View');

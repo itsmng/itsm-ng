@@ -1512,7 +1512,7 @@ class Search {
       $pref_url = $CFG_GLPI["root_doc"]."/front/displaypreference.form.php?itemtype=".$data['itemtype'];
 
       echo Ajax::createIframeModalWindow(
-         'search-config',
+         'search-config-' . $data['itemtype'],
          $pref_url,
          [
             'title'         => __('Select default items to show'),
@@ -1540,6 +1540,7 @@ class Search {
          'is_trash' => $data['search']['is_deleted'],
          'massive_action' => $massiveActionValues,
          'itemtype' => $data['itemtype'],
+         'column_edit' => true,
       ]);
    }
 
