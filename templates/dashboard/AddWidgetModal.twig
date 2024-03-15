@@ -3,7 +3,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
 		<form action="{{addWidget_action}}" method="get" class="text-center">
-			<div class="modal-header">
+			<div class="modal-header d-flex justify-content-between">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">{{"New widget"|trans}}</h1>
                 <div>
                     <button type="button" class="btn btn-primary" onclick="addWidget()">{{"Add widget"|trans}}</button>
@@ -187,10 +187,10 @@
 				coords, statType, statSelection, title, format, options
 			},
 			success: function(data) {
-				{# location.reload(); #}
+				location.reload();
 			},
 			error: function(data) {
-				console.log(data);
+				console.error(data);
 			}
 		});
 	

@@ -1,7 +1,7 @@
 {% if widget.type == 'count' %}
     {{ _self.number(widget.title, widget.value, widget.icon, widget.color) }}
 {% else %}
-    {{ _self.chart(widget.type, widget.title, widget.value[0], widget.value[1], widget.options, widget.color) }}
+    {{ _self.chart(widget.type, widget.title, widget.value[0], widget.value[1], widget.options, widget.color, root_doc) }}
 {% endif %}
 
 {% macro number(title = '', value = 0, icon = '', color = "black") %}
@@ -14,8 +14,8 @@
 	</div>
 {% endmacro %}
 
-{% macro chart(type = 'LineChart', title = '', labels = [], series = [], options = [], color = "black") %}
-{% set rand = random() %}
+{% macro chart(type = 'LineChart', title = '', labels = [], series = [], options = [], color = "black", root_doc) %}
+	{% set rand = random() %}
 	<div class="fw-bold fs-6 {{color ? "text-" ~ color : ''}}">{{title}}</div>
 	<div class="ct-chart ct-golden-section w-100" style="max-height: 20rem" id="widgetFor{{title|slug}}_{{rand}}"></div>
 	<link rel="stylesheet" href="{{root_doc}}/node_modules/chartist/dist/index.css">

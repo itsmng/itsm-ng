@@ -54,7 +54,7 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
          'options' => $options,
       ];
       
-      renderTwigTemplate('dashboard/widget.twig', [ 'widget' => $widget ]);
+      renderTwigTemplate('dashboard/widget.twig', [ 'widget' => $widget, 'root_doc' => $CFG_GLPI['root_doc'] ]);
    } catch (Exception $e) {
       echo $e->getMessage();
    }
