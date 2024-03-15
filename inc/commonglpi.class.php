@@ -335,8 +335,7 @@ class CommonGLPI {
       if (!is_integer($itemtype)
             && ($obj = getItemForItemtype($itemtype))) {
          $titles = $obj->getTabNameForItem($this, $withtemplate);
-         dump($titles);
-         if (!is_array($titles)) {
+                  if (!is_array($titles)) {
             $titles = [1 => $titles];
          }
 
