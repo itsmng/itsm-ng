@@ -8,10 +8,17 @@
 	{% set rand=random() %}
 	{% if not minimal %}
 	<div
-		id="toolbar{{rand}}">
+		id="toolbar{{rand}}"
+		class="btn-group"
+		>
 		{% if massive_action is defined %}
 		<button type="button" class="btn btn-secondary" onclick="populateModal{{rand}}()">
-			<i class="fas fa-hammer text-white"></i>
+			<i class="fas fa-hammer"></i>
+		</button>
+		{% endif %}
+		{% if column_edit is defined %}
+		<button type="button" class="btn btn-secondary" onclick="$('#search-config-{{itemtype}}').dialog('open')">
+			<i class="fas fa-wrench"></i>
 		</button>
 		{% endif %}
 	</div>
@@ -50,7 +57,8 @@
 					<th data-radio="true" data-field="select"></th>
 				{% endif %}
 				{% for state, field in fields %}
-					<th data-sortable="true" data-field='{{state}}' >{{ field|raw }}</th>
+					<th {% if not minimal %} data-sortable="true" {% endif  %}
+						data-field='{{state}}' >{{ field|raw }}</th>
 				{% endfor %}
 			</tr>
 		</thead>
@@ -105,6 +113,45 @@
 			massiveaction_window{{id}}.dialog('open');
 		}
 
+		$(document).ready(function() {
+			const toggles = sessionStorage.getItem('{{itemtype}}-toggles');
+			var togglesArray = new Set();
+			var init = false;
+			const table = $('#{{id}}');
+
+			if (toggles) {
+				togglesArray = new Set(JSON.parse(toggles));
+			} else {
+				init = true;
+			}
+			table.bootstrapTable('hideAllColumns');
+			const columns = table.bootstrapTable('getHiddenColumns');
+			for (column of columns) {
+				if (init || togglesArray.has(parseInt(column.field))) {
+					table.bootstrapTable('showColumn', column.field);
+					if (init) {
+						togglesArray.add(parseInt(column.field));
+					}
+				}
+			}
+			if (init) {
+				sessionStorage.setItem('{{itemtype}}-toggles', JSON.stringify(Array.from(togglesArray)));
+			}
+		});
+
+		$('#{{id}}').on('column-switch.bs.table', function (e, field, checked) {
+			const toggles = sessionStorage.getItem('{{itemtype}}-toggles');
+			var togglesArray = new Set();
+			if (toggles) {
+				const test = JSON.parse(toggles);
+				togglesArray = new Set(test);
+			}
+			togglesArray.delete(field);
+			if (checked) {
+				togglesArray.add(field);
+			}
+			sessionStorage.setItem('{{itemtype}}-toggles', JSON.stringify(Array.from(togglesArray)));
+		});
 
 		{% if is_trash is defined %}
 			function buttons{{rand}}() {

@@ -1,0 +1,16 @@
+{# arguments:
+    - main_menu : the main menu
+    - menu_small : the menu size
+    - menu_position : the menu position
+#}
+<nav id="menu" class="{{menu_small ? 'menu-close' : 'menu-open'}}">
+    <div id="bubble">
+        <i id="compass-menu" class="fas fa-compass"></i>
+        <i id="star-menu" class="fas fa-star"></i>
+    </div>
+    <div id="menu-border" onmousedown="resizeMenu()"></div>
+    {% include main_menu.path with main_menu.args %}
+    <div class="menu-bottom">
+        <a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors"></a>
+    </div>
+</nav>

@@ -45,7 +45,57 @@ if (!defined('GLPI_ROOT')) {
  **/
 class Html
 {
+   static private $css = [
+      'vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css',
+      'css/bootstrap-select.min.css',
+      'node_modules/@jarstone/dselect/dist/css/dselect.min.css',
+      "node_modules/jquery-ui-dist/jquery-ui.min.css",
+      'node_modules/@fortawesome/fontawesome-free/css/all.css',
+      'css/jstree-glpi.css',
+   ];
 
+   static private $scss = [
+      'css/styles',
+      'css/itsm2.scss',
+   ];
+
+   static private $js = [
+      "node_modules/jquery-ui-dist/jquery-ui.min.js",
+      "vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js",
+      "node_modules/tableexport.jquery.plugin/tableExport.min.js",
+      "vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js",
+      "vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js",
+      "node_modules/@jarstone/dselect/dist/js/dselect.min.js",
+      "src/ngFunctions.js",
+
+   ];
+
+   static private function getFilePath($file, $isScss = false)
+   {
+      global $CFG_GLPI;
+      return $CFG_GLPI['root_doc'] . ($isScss ? '/front/css.php?file=' : '/') . $file;
+   }
+
+   static public function getCss()
+   {
+      $allCss = [];
+      foreach (self::$css as $file) {
+         $allCss[] = self::getFilePath($file);
+      }
+      foreach (self::$scss as $file) {
+         $allCss[] = self::getFilePath($file, true);
+      }
+      return $allCss;
+   }
+
+   static public function getJs()
+   {
+      $allJs = [];
+      foreach (self::$js as $file) {
+         $allJs[] = self::getFilePath($file);
+      }
+      return $allJs;
+   }
 
    /**
     * Clean display value deleting html tags
@@ -1863,7 +1913,7 @@ JAVASCRIPT;
 
       $twig_vars['username'] = getUserName(Session::getLoginUserID());
       $twig_vars['main_menu']['args']['access'] = Session::getCurrentInterface();
-      renderTwigTemplate('menus/headers/header.twig', $twig_vars);
+      renderTwigTemplate('headers/header.twig', $twig_vars);
       // call static function callcron() every 5min
       CronTask::callCron();
       self::displayMessageAfterRedirect();
@@ -1962,7 +2012,6 @@ JAVASCRIPT;
          }
          echo "</div>";
          echo "<div id='see_ajaxdebug$rand' name='see_ajaxdebug$rand' style=\"display:none;\">";
-         self::displayDebugInfos(false, true);
          echo "</div></div>";
       }
    }
@@ -7040,7 +7089,7 @@ JAVASCRIPT;
     * @since 2.0.0
     * @return array
     */
-   private static function getMainMenu($sector, $item, $option) : array
+   static function getMainMenu($sector, $item, $option) : array
    {
       global $CFG_GLPI, $DB;
 
@@ -7196,7 +7245,7 @@ JAVASCRIPT;
          $twig_vars['url_validate'] = $CFG_GLPI["root_doc"] . "/front/ticket.php?" . Toolbox::append_params($opt, '&amp;');
          $twig_vars['opt'] = $opt;
       }
-      $template_path = 'menus/nav/menu.twig';
+      $template_path = 'nav/menu.twig';
       $twig_vars += [ "root_doc" => $CFG_GLPI['root_doc'], "menu" => $menu,
       "mainurl" => $mainurl, "show_page" => $show_page,
       "link" => $link, "item" => $item,
@@ -7475,8 +7524,8 @@ JAVASCRIPT;
       }
       $user_form_url = User::getFormURL();
       $impersonate_name = $_SESSION['glpiname'];
-      $csrf_token =  Session::getNewCSRFToken();
-      $template_path = 'menus/headers/utils/impersonate_banner.twig';
+      $csrf_token =  $_SESSION['_glpi_csrf_token'];
+      $template_path = 'headers/utils/impersonate_banner.twig';
       $twig_vars = [
          "root_doc" => $CFG_GLPI['root_doc'],
          "user_form_url" => $user_form_url,

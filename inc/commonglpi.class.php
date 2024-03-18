@@ -332,22 +332,18 @@ class CommonGLPI {
          $withtemplate = $options['withtemplate'];
       }
 
-      switch ($itemtype) {
-         default :
-            if (!is_integer($itemtype)
-                && ($obj = getItemForItemtype($itemtype))) {
-               $titles = $obj->getTabNameForItem($this, $withtemplate);
-               if (!is_array($titles)) {
-                  $titles = [1 => $titles];
-               }
+      if (!is_integer($itemtype)
+            && ($obj = getItemForItemtype($itemtype))) {
+         $titles = $obj->getTabNameForItem($this, $withtemplate);
+                  if (!is_array($titles)) {
+            $titles = [1 => $titles];
+         }
 
-               foreach ($titles as $key => $val) {
-                  if (!empty($val)) {
-                     $ong[$itemtype.'$'.$key] = $val;
-                  }
-               }
+         foreach ($titles as $key => $val) {
+            if (!empty($val)) {
+               $ong[$itemtype.'$'.$key] = $val;
             }
-            break;
+         }
       }
       return $this;
    }

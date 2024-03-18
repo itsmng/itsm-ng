@@ -12,6 +12,8 @@ class Twig
 {
     public static function load($path = '../templates/', $cache = true, $debug = false)
     {
+        global $CFG_GLPI;
+        
         $loader = new FilesystemLoader($path);
         $twig = new Environment($loader, [
             'cache' => $cache ? './cache' : false,
@@ -20,6 +22,8 @@ class Twig
         self::load_filters($twig);
         $twig->addExtension(new DebugExtension);
         $twig->addExtension(new StringExtension);
+        
+        $twig->addGlobal('root_doc', $CFG_GLPI['root_doc']);
 
         return $twig;
     }

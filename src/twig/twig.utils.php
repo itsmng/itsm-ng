@@ -184,6 +184,57 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     }
 }
 
+function renderTwigPage($title, $content, $sector = 'none', $item = 'none', $option = '')
+{
+    global $CFG_GLPI;
+
+    $mainMenu = Html::getMainMenu($sector, $item, $option);
+    $menu = $mainMenu['args']['menu'];
+    $breadcrumb_items = [
+        [
+            'title' => __('Home'),
+            'href'  => $CFG_GLPI['root_doc'] . '/front/central.php'
+        ],
+    ];
+    if (isset($sector) && isset($menu[$sector])) {
+        $breadcrumb_items[] = [
+            'title' => $menu[$sector]['title'],
+            'href'  => $CFG_GLPI['root_doc'] . $menu[$sector]['default']
+        ];
+    };
+    if (isset($sector) && isset($menu[$sector]) && isset($menu[$sector]['content'][$item])) {
+        $breadcrumb_items[] = [
+            'title' => $menu[$sector]['content'][$item]['title'],
+            'href'  => $CFG_GLPI['root_doc'] . $menu[$sector]['content'][$item]['page'],
+        ];
+    };
+
+    ob_start();
+    Html::showProfileSelecter($CFG_GLPI["root_doc"] . "/front/"
+        . (Session::getCurrentInterface() == 'central' ? 'central' : 'helpdesk.public') . ".php");
+    $profileSelect = ob_get_clean();
+
+    $impersonate_banner = Html::getImpersonateBanner();
+
+    $twig_vars = [
+        'title' => $title,
+        'mainContent' => $content,
+        'main_menu' => Html::getMainMenu($sector, $item, $option),
+        'css' => Html::getCss(),
+        'js' => Html::getJs(),
+        'breadcrumb_items' => $breadcrumb_items,
+        'profileSelect' => $profileSelect,
+        'is_debug_active' => $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE,
+        'can_update' => Config::canUpdate(),
+        'username' => getUserName(Session::getLoginUserID()),
+    ];
+    if ($impersonate_banner) {
+        $twig_vars['impersonate_banner'] = $impersonate_banner;
+    }
+
+    renderTwigTemplate('base/base.twig', $twig_vars);
+}
+
 function getItemActionButtons(array $actions, string $itemType): array
 {
     $buttons = [];
