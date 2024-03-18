@@ -28,13 +28,13 @@
 
 	{% block main %}
         <main class="p-3">
-            <div id="subheader" class="d-flex justify-content-between p-2">
-                {% include 'headers/utils/breadcrumb.twig' with { 'items': breadcrumb_items } %}
-                <div class="d-flex flex-row-reverse align-items-center justify-content-evenly">
-                    {{profileSelect|raw}}
-                </div>
-                {% include 'headers/utils/actions.twig' with {'links': links, 'root_doc':root_doc} %}
-            </div>
+			<div id="subheader" class="d-flex justify-content-between p-2">
+				{% include 'headers/utils/breadcrumb.twig' with { 'items': breadcrumb_items } %}
+				<div class="d-flex flex-row-reverse align-items-center justify-content-evenly">
+					{{profileSelect|raw}}
+				</div>
+				{% include 'headers/utils/actions.twig' with {'links': links, 'root_doc':root_doc} %}
+			</div>
 		    {{mainContent|raw}}
         </main>
 	{% endblock %}
