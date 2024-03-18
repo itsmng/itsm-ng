@@ -38,24 +38,24 @@
   }
 
   function saveGrid() {
-	let save = grid.save();
-	items = grid.getGridItems();
-	for (i in save) {
-		for (j in items) {
-			if ($(items[j]).children('div').html() === save[i].content) {
-				save[i].name = $(items[j]).attr('id').replace('ContentFor', '');
-			}
-		};
-		delete save[i].content;
-	}
-	$.ajax({
-		url: '{{glpiroot}}/ajax/updateUserMenu.php',
-		type: 'POST',
-		data: {
-			'itemName': '{{itemName}}',
-			'content': save,
-		},
-	});
+    let save = grid.save();
+    items = grid.getGridItems();
+    for (i in save) {
+      for (j in items) {
+        if ($(items[j]).children('div').html() === save[i].content) {
+          save[i].name = $(items[j]).attr('id').replace('ContentFor', '');
+        }
+      };
+      delete save[i].content;
+    }
+    $.ajax({
+      url: '{{glpiroot}}/ajax/updateUserMenu.php',
+      type: 'POST',
+      data: {
+        'itemName': '{{itemName}}',
+        'content': save,
+      },
+    });
   }
 
   // Update grid content based on the user's interaction with the dropdown menu
@@ -65,7 +65,7 @@
     inp.prop('checked', !inp.prop('checked'));
     
     if (val === 'all') {
-      await $('.dropdown-menu a').each(async (i, e) => {
+      await $('.dropdown-menu a:not(:checked)').each(async (i, e) => {
         let otherInp = $(e).children('input');
         if ($(e).attr('data-value') !== 'all') {
           otherInp.prop('checked', inp.prop('checked'));
@@ -122,23 +122,24 @@
   function initCheckbox() {
     const savedLayout = {{selectedTabs|json_encode|raw}} ?? [];
     if (savedLayout.length === 0) {
-      $first = $('.dropdown-menu a.isTabButton').first();
-      $first.children('input').prop('checked', true);
-      options.push($first.attr('data-value'));
+      first = $('.dropdown-menu a.isTabButton').first();
+      first.children('input').prop('checked', true);
+      options.push(first.attr('data-value'));
       return;
-    }
-    for (widget of savedLayout) {
-      const name = widget.name;
-      const element = $(`#ContentFor${name}`);
-      delete widget.name;
+    } else {
+      for (widget of savedLayout) {
+        const name = widget.name;
+        const element = $(`#ContentFor${name}`);
+        delete widget.name;
 
-      for (param of Object.entries(widget)) {
-        element.attr('gs-'
-          + param[0].replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? "-" : "") + $.toLowerCase()),
-          param[1]);
+        for (param of Object.entries(widget)) {
+          element.attr('gs-'
+            + param[0].replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? "-" : "") + $.toLowerCase()),
+            param[1]);
+        }
+        $('.dropdown-menu a[data-value="' + name + '"] input').prop('checked', true);
+        options.push(name);
       }
-      $('.dropdown-menu a[data-value="' + name + '"] input').prop('checked', true);
-      options.push(name);
     }
   }
 
