@@ -7525,7 +7525,7 @@ JAVASCRIPT;
       }
       $user_form_url = User::getFormURL();
       $impersonate_name = $_SESSION['glpiname'];
-      $csrf_token =  Session::getNewCSRFToken();
+      $csrf_token =  $_SESSION['_glpi_csrf_token'];
       $template_path = 'headers/utils/impersonate_banner.twig';
       $twig_vars = [
          "root_doc" => $CFG_GLPI['root_doc'],

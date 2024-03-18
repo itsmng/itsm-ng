@@ -4,7 +4,7 @@
 // RUNTIME VARIABLES
 :root {
     --header-height: 3.5rem;
-    --subheader-height: 2.5rem;
+    --subheader-height: 4rem;
     --nav-open-width: 11rem;
     --nav-close-width: 5em;
     --nav-transition-time: 0s;
@@ -13,15 +13,10 @@
     --bubble_pos_y: 50%;
     --table-border-radius: 0;
     --nav-size: 1rem;
-    --nav-top-height: 0;
 }
 
 body {
-    overflow-x: hidden;
-}
-
-.main-container a {
-    box-sizing: content-box;
+    overflow: hidden;
 }
 
 p {
@@ -66,9 +61,6 @@ div#searchbar {
 }
 
 header {
-    position: fixed;
-    left: 0;
-    right: 0;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -90,9 +82,12 @@ header {
 
 }
 
+main {
+    top: var(--header-height) + var(--subheader-height);
+}
+
 #subheader {
     height: var(--subheader-height);
-    margin-top: var(--nav-top-height);
     a {
         font-size: var(--nav-size);
     }
@@ -132,7 +127,6 @@ header {
 
 #main-test {
     position: relative;
-    top: var(--header-height);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -148,10 +142,8 @@ header {
 }
 .main-container {
     height: calc(100vh - var(--header-height));
-    overflow-y: scroll;
+    overflow-y: auto;
     width: calc(100% - var(--nav-open-width));
-    margin-top: var();
-    margin-left: var(--nav-open-width);
     transition: margin var(--nav-transition-time) ease;
 
     .menu-right & {
@@ -174,10 +166,6 @@ header {
     }
 }
  
-.rightz {
-    position: absolute;
-    right: 5px;
-}
 #menu-border{
     position: absolute;
     z-index: 10;
@@ -485,8 +473,7 @@ header {
             // }
 }
 #menu {
-    position: fixed;
-    height: calc(100vh - var(--header-height));
+    position: relative;
     background-color: $nav-background-color;
     width: var(--nav-open-width);
     transition: width var(--nav-transition-time) ease; // in js resizeWidth
