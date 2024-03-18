@@ -1337,6 +1337,8 @@ class Html
       echo Html::css('public/lib/leaflet.css');
       Html::requireJs('leaflet');
 
+      echo Html::css('node_modules/gridstack/dist/gridstack.min.css');
+
       echo Html::css('public/lib/flatpickr.css');
       if ($theme != "darker") {
          echo Html::css('public/lib/flatpickr/themes/light.css');
@@ -1984,8 +1986,9 @@ JAVASCRIPT;
       echo Html::script("vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js");
       echo Html::script("node_modules/@jarstone/dselect/dist/js/dselect.min.js");
       echo Html::script("src/ngFunctions.js");
+      echo Html::script("node_modules/gridstack/dist/gridstack-all.js");
+      echo Html::script("node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js");
       echo "</body></html>";
-
       if (!$keepDB) {
          closeDBConnections();
       }
