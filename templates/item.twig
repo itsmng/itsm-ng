@@ -65,7 +65,8 @@
     inp.prop('checked', !inp.prop('checked'));
     
     if (val === 'all') {
-      await $('.dropdown-menu a:not(:checked)').each(async (i, e) => {
+      const selector = inp.prop('checked') ? '.dropdown-menu a:has(input:not(:checked))' : '.dropdown-menu a:has(input:checked)';
+      await $(selector).each(async (i, e) => {
         let otherInp = $(e).children('input');
         if ($(e).attr('data-value') !== 'all') {
           otherInp.prop('checked', inp.prop('checked'));
