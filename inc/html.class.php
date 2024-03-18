@@ -2012,7 +2012,6 @@ JAVASCRIPT;
          }
          echo "</div>";
          echo "<div id='see_ajaxdebug$rand' name='see_ajaxdebug$rand' style=\"display:none;\">";
-         self::displayDebugInfos(false, true);
          echo "</div></div>";
       }
    }
