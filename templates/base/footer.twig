@@ -1,0 +1,28 @@
+{# arguments:
+    - timedebug : the time debug
+    - mode_debug : the debug mode
+    - new_version : the new version
+    - latest_version : the latest version
+    - maintenance_mode : the maintenance mode
+#}
+<footer role='contentinfo' id='footer' class='bg-transparent'>
+	{% if mode_debug %}
+		<span class='copyright'>
+			{{timedebug}}
+		</span>
+	{% endif %}
+	{% if new_version %}
+		<p class='copyright'>
+			{{'A new version is available: %s.'|trans|format(latest_version)|escape('html')}}
+		</p>
+	{% endif %}
+	{% for file in js %}
+		<script src="{{ file }}"></script>
+	{% endfor %}
+</footer>
+
+{% if maintenance_mode %}
+	<div id='maintenance-float'>
+		<a href='#see_maintenance'>GLPI MAINTENANCE MODE</a>
+	</div>
+{% endif %}

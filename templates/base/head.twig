@@ -1,0 +1,15 @@
+{# arguments: title, css #}
+<head>
+    <title>ITSM-NG - {{ title }} </title>
+    <meta charset="utf-8">
+    {# prevent IE to turn into compatible mode #}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {# auto desktop / mobile viewport #}
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    {% for file in css %}
+        {% if file|length %}
+            <link rel="stylesheet" href="{{ file }}">
+        {% endif %}
+    {% endfor %}
+</head>

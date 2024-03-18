@@ -1,0 +1,46 @@
+{# arguments :
+    - mainContent : the main content of the page
+    - breadcrumb_items : the items of the breadcrumb
+    - links : the links to display in the header
+    - profileSelect : the profile select
+    - impersonate_banner : the impersonate banner
+    - accessibilityMenu : the accessibility menu
+#}
+</html>
+{% block head %}
+	{% include 'base/head.twig' %}
+{% endblock %}
+
+{% block body %}
+	{% block header %}
+		{% if impersonate_banner is defined %}
+			{% include impersonate_banner.path with impersonate_banner.args%}
+		{% endif %}
+		{% include 'base/header.twig' %}
+		{% if accessibilityMenu %}
+			{% include 'accessibilityMenu.twig' %}
+		{% endif %}
+	{% endblock %}
+
+	{% block nav %}
+		{% include 'base/nav.twig' %}
+	{% endblock %}
+
+	{% block main %}
+        <main class="p-3">
+            <div id="subheader" class="d-flex justify-content-between p-2">
+                {% include 'headers/utils/breadcrumb.twig' with { 'items': breadcrumb_items } %}
+                <div class="d-flex flex-row-reverse align-items-center justify-content-evenly">
+                    {{profileSelect|raw}}
+                </div>
+                {% include 'headers/utils/actions.twig' with {'links': links, 'root_doc':root_doc} %}
+            </div>
+		    {{mainContent|raw}}
+        </main>
+	{% endblock %}
+
+	{% block footer %}
+		{% include 'base/footer.twig' %}
+	{% endblock %}
+{% endblock %}
+</html>
