@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * ITSM-NG
@@ -31,7 +32,8 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class Dashboard extends \CommonDBTM {
+class Dashboard extends \CommonDBTM
+{
    static $rightname = 'dashboard';
 
    /**
@@ -39,19 +41,23 @@ class Dashboard extends \CommonDBTM {
     *
     * @return string
     */
-   function getTitle(): string {
+   function getTitle(): string
+   {
       return $this->fields['name'] ?? "";
    }
 
-   static function getMenuName() {
+   static function getMenuName()
+   {
       return __('Dashboard');
    }
 
-   static function getIcon() {
+   static function getIcon()
+   {
       return 'fas fa-tachometer-alt';
    }
 
-   static function getMenuContent() {
+   static function getMenuContent()
+   {
       $menu = [];
 
       if (static::canView()) {
@@ -69,7 +75,8 @@ class Dashboard extends \CommonDBTM {
       return false;
    }
 
-   static function getFormUrl($full = true) {
+   static function getFormUrl($full = true)
+   {
       global $CFG_GLPI;
       if ($full) {
          return $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.form.php";
@@ -79,8 +86,9 @@ class Dashboard extends \CommonDBTM {
 
    /**
     * @param $name
-   **/
-   static function cronInfo() {
+    **/
+   static function cronInfo()
+   {
       return ['description' => __('Update the dashboard tables')];
    }
 
@@ -90,8 +98,9 @@ class Dashboard extends \CommonDBTM {
     * @param CronTask $task CronTask for log, display information if NULL? (default NULL)
     *
     * @return void
-   **/
-   static function crondashboard($task = null) {
+    **/
+   static function crondashboard($task = null)
+   {
       global $DB;
 
       $scriptPath = GLPI_ROOT . '/src/dashboard/dashboardPopulation.sql';
@@ -110,7 +119,8 @@ class Dashboard extends \CommonDBTM {
     *
     * @return void
     */
-   function showForm($ID) {
+   function showForm($ID)
+   {
       if ($ID) {
          $this->getFromDB($ID);
       }
@@ -165,7 +175,7 @@ class Dashboard extends \CommonDBTM {
                      'type' => 'hidden',
                      'name' => '_glpi_csrf_token',
                      'value' => Session::getNewCSRFToken()
-                 ],
+                  ],
                ]
             ]
          ]
@@ -176,86 +186,52 @@ class Dashboard extends \CommonDBTM {
       }
    }
 
-   static public function getDashboardData($uri) {
-      global $CFG_GLPI;
-
-      $opts = [
-         'http' => [
-            'method' => 'GET',
-            'header' => 
-               "Accept: application/json\r\n".
-               "api-key: ". $CFG_GLPI["dashboard_api_token"] ."\r\n"
-         ]
-      ];
-      $context = stream_context_create($opts);
-      try {
-         if ($CFG_GLPI['url_dashboard_api'] == '') {
-            throw new Exception(__("Dashboard API URL is not set"));
-         }
-         $encoded_data = @file_get_contents($CFG_GLPI['url_dashboard_api'] . $uri, false, $context);
-         if ($encoded_data === FALSE) {
-            throw new Exception(__("Could not fetch data from dashboard API"));
-         }
-         return json_decode($encoded_data, true);
-      } catch (Exception $e) {
-         throw new Exception($e->getMessage());
-      }
+   static public function getDashboardData($uri)
+   {
    }
 
-  private function generateListFromColumns($columns, $assetType = null) {
-    global $DB;
-    $output = [];
-    foreach ($columns as $column) {
-      if ($column['name'] == 'assetType') continue;
-      $query = "SELECT name FROM `{$column['type']}`";
-      $columnExists = count(iterator_to_array($DB->query("SHOW COLUMNS FROM `{$column['type']}` LIKE 'assetTypeId'"))) > 0;
-      if ($columnExists && $assetType) {
-        $query .= " WHERE assetTypeId = $assetType";
-      }
-      $values = array_column(iterator_to_array($DB->query($query)), 'name');
-      $mappedValues = array_combine($values, array_map(function($value) {
-         return ['name' => $value, 'value' => $value];
-      }, $values));
-      $output[$column['name']] = [
-         'value' => $column['name'],
-         'content' => $mappedValues,
-      ];
-    }
-    return $output;
-  }
-
-   private function getCategories() {
+   private function generateListFromColumns($columns, $assetType = null)
+   {
       global $DB;
-      $dashboard_assetTypes = iterator_to_array($DB->query("SELECT DISTINCT id, name FROM `Dashboard_AssetType`"));
-      $assetTypes = [];
-      $comparisons = self::getDashboardData("/dashboard/comparisons/Asset");
-      foreach ($dashboard_assetTypes as $value) {
-         $assetTypes[$value['name']] = [
-            'value' => $value['name'],
-            'content' => $this->generateListFromColumns($comparisons, $value['id']),
+      $output = [];
+      foreach ($columns as $column) {
+         if ($column['name'] == 'assetType') continue;
+         $query = "SELECT name FROM `{$column['type']}`";
+         $columnExists = count(iterator_to_array($DB->query("SHOW COLUMNS FROM `{$column['type']}` LIKE 'assetTypeId'"))) > 0;
+         if ($columnExists && $assetType) {
+            $query .= " WHERE assetTypeId = $assetType";
+         }
+         $values = array_column(iterator_to_array($DB->query($query)), 'name');
+         $mappedValues = array_combine($values, array_map(function ($value) {
+            return ['name' => $value, 'value' => $value];
+         }, $values));
+         $output[$column['name']] = [
+            'value' => $column['name'],
+            'content' => $mappedValues,
          ];
       }
-      return [
-         'Asset' => $assetTypes,
-         'Ticket' => $this->generateListFromColumns(self::getDashboardData("/dashboard/comparisons/Ticket")),
-         'Entity' => [],
-         'Group' => [],
-         'User' => [],
-      ];
+      return $output;
    }
 
-   function getForUser() {
+   private function getCategories()
+   {
+      global $DB;
+      return [];
+   }
+
+   function getForUser()
+   {
       global $DB;
 
       $profileId = $_SESSION['glpiactiveprofile']['id'];
       $userId = Session::getLoginUserID();
 
       $dashboardId = iterator_to_array(
-         $DB->query("SELECT id FROM `".self::getTable()."` WHERE profileId = $profileId AND userId = $userId")
+         $DB->query("SELECT id FROM `" . self::getTable() . "` WHERE profileId = $profileId AND userId = $userId")
       );
       if (!$dashboardId) {
          $dashboardId = iterator_to_array(
-            $DB->query("SELECT id FROM `".self::getTable()."` WHERE profileId = $profileId AND userId = 0")
+            $DB->query("SELECT id FROM `" . self::getTable() . "` WHERE profileId = $profileId AND userId = 0")
          );
       }
       if (!$dashboardId)
@@ -264,7 +240,8 @@ class Dashboard extends \CommonDBTM {
       return true;
    }
 
-   static function parseOptions($format, $options, $data) {
+   static function parseOptions($format, $options, $data)
+   {
       if (isset($options['total']) && $format == 'pie') {
          $options['total'] = array_sum($data['1']) * 2;
          $options['startAngle'] = intval($options['startAngle']);
@@ -272,7 +249,8 @@ class Dashboard extends \CommonDBTM {
       return $options;
    }
 
-   function getGridContent($content) {
+   function getGridContent($content)
+   {
       foreach ($content as $rowIdx => $row) {
          foreach ($row as $colIdx => $widget) {
             $content[$rowIdx][$colIdx] = array_merge(
@@ -280,25 +258,63 @@ class Dashboard extends \CommonDBTM {
                ['value' => self::getDashboardData($widget['url'])],
             );
             $content[$rowIdx][$colIdx]['options'] = $this::parseOptions(
-               $content[$rowIdx][$colIdx]['type'] ,
+               $content[$rowIdx][$colIdx]['type'],
                $widget['options'] ?? [],
-               $content[$rowIdx][$colIdx]['value']);
-            unset ($content[$rowIdx][$colIdx]['url']);
+               $content[$rowIdx][$colIdx]['value']
+            );
+            unset($content[$rowIdx][$colIdx]['url']);
          }
       }
       return $content;
    }
 
-   function show($ID = null, $edit = false) {
+   function show($ID = null, $edit = false)
+   {
       global $CFG_GLPI;
 
       Html::requireJs('charts');
       $twig_vars = [];
-      
+
       try {
          if ($edit) {
-            $twig_vars['dataSet'] = [];
-            $twig_vars['dataGroups'] = $this->getCategories();
+            $objects = $CFG_GLPI['globalsearch_types'];
+            asort($objects);
+            $values = [];
+            foreach ($objects as $object) {
+               $values[$object] = ((string) $object)::getTypeName();
+            }
+            $ajaxUrl = $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.ajax.php";
+            $jsUpdate = <<<JS
+               $.ajax({
+                  url: "$ajaxUrl",
+                  data: {
+                     action: "getSearch",
+                     itemtype: $('#ItemTypeDropdownForDashboard').val(),
+                  },
+                  success: function(data) {
+                     $('#data-selection-search-content').html(data);
+                     $('#data-selection-search-content form').attr('action', "#");
+                     updatePreview();
+                  }
+               });
+            JS;
+            ob_start();
+            renderTwigTemplate('macros/wrappedInput.twig', [
+               'title' => __('Itemtype'),
+               'input' => [
+                  'type' => 'select',
+                  'id' => 'ItemTypeDropdownForDashboard',
+                  'values' => $values,
+                  'value' => array_key_first($values),
+                  'col_lg' => 12,
+                  'col_md' => 12,
+                  'init' => $jsUpdate,
+                  'hooks' => [
+                     'change' => $jsUpdate,
+                  ]
+               ]
+            ]);
+            $twig_vars['dataSelection'] = ob_get_clean();
          };
          $twig_vars['dashboardApiUrl'] = $CFG_GLPI["url_dashboard_api"] . "/dashboard";
          $twig_vars['ajaxUrl'] = $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.ajax.php";
@@ -316,7 +332,8 @@ class Dashboard extends \CommonDBTM {
       }
    }
 
-   private function placeWidgetAtCoord(&$content, $widget, $coords) {
+   private function placeWidgetAtCoord(&$content, $widget, $coords)
+   {
       [$x, $y] = $coords;
       if ($x == -1) {
          array_unshift($content, [$widget]);
@@ -332,8 +349,9 @@ class Dashboard extends \CommonDBTM {
          }
       }
    }
-   
-   static function getWidgetUrl($type, $statType, $statSelection, $options = []) {
+
+   static function getWidgetUrl($type, $statType, $statSelection, $options = [])
+   {
       $encodedSelection = urlencode($statSelection);
       $url = "/dashboard/$type?statType=$statType&statSelection=$encodedSelection";
       if ($type != 'count') {
@@ -343,7 +361,8 @@ class Dashboard extends \CommonDBTM {
       return $url;
    }
 
-   function addWidget($format = 'count', $coords = [0, 0], $title = '', $statType = '', $statSelection = '', $options = []) {
+   function addWidget($format = 'count', $coords = [0, 0], $title = '', $statType = '', $statSelection = '', $options = [])
+   {
       $dashboard = json_decode($this->fields['content'], true) ?? [];
       $urlStatSelection = stripslashes($statSelection);
       $widget = [
@@ -355,7 +374,7 @@ class Dashboard extends \CommonDBTM {
       ];
 
       $this->placeWidgetAtCoord($dashboard, $widget, $coords);
-      
+
       $content = str_replace("\\", "\\\\", json_encode($dashboard, JSON_UNESCAPED_UNICODE));
       if ($widget && $this->update(['id' => $this->fields['id'], 'content' => $content]))
          Session::addMessageAfterRedirect(__("Widget added successfuly"));
@@ -364,7 +383,8 @@ class Dashboard extends \CommonDBTM {
       Html::back();
    }
 
-   function deleteWidget($coords) {
+   function deleteWidget($coords)
+   {
       [$x, $y] = $coords;
       $dashboard = json_decode($this->fields['content'], true);
       array_splice($dashboard[$x], $y, 1);
@@ -372,7 +392,7 @@ class Dashboard extends \CommonDBTM {
          array_splice($dashboard, $x, 1);
       }
       $content = str_replace("\\", "\\\\", json_encode($dashboard, JSON_UNESCAPED_UNICODE));
-      
+
       return ($this->update(['id' => $this->fields['id'], 'content' => $content]));
    }
 }

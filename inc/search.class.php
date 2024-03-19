@@ -2367,7 +2367,9 @@ JAVASCRIPT;
 
          foreach ($options as $key => $val) {
             if (is_array($val) && isset($val['table'])) {
-               $metacriteria['field'] = $key;
+               if ($metacriteria) {
+                  $metacriteria['field'] = $key;
+               }
                break;
             }
          }
