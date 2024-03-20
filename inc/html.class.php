@@ -1315,7 +1315,7 @@ class Html
       // CSRF token used for AJAX calls
       // Ensure this token is not shared with the page, as result would be that some AJAX request will consume
       // the token that would have been used by a form submitted from the same page.
-      echo '<meta property="glpi:csrf_token" content="' . Session::getNewCSRFToken(true) . '" />';
+      echo '<meta property="glpi:csrf_token" content="' . $_SESSION['_glpi_csrf_token'] . '" />';
 
       //detect theme
       $theme = isset($_SESSION['glpipalette']) ? $_SESSION['glpipalette'] : 'itsmng';
@@ -1338,6 +1338,8 @@ class Html
       Html::requireJs('leaflet');
 
       echo Html::css('node_modules/gridstack/dist/gridstack.min.css');
+
+      echo Html::css('node_modules/chartist/dist/index.css');
 
       echo Html::css('public/lib/flatpickr.css');
       if ($theme != "darker") {

@@ -171,11 +171,6 @@ class Dashboard extends \CommonDBTM
                      'name' => 'id',
                      'value' => $ID,
                   ],
-                  [
-                     'type' => 'hidden',
-                     'name' => '_glpi_csrf_token',
-                     'value' => Session::getNewCSRFToken()
-                  ],
                ]
             ]
          ]
@@ -184,39 +179,6 @@ class Dashboard extends \CommonDBTM
       if ($ID) {
          $this->show($ID, true);
       }
-   }
-
-   static public function getDashboardData($uri)
-   {
-   }
-
-   private function generateListFromColumns($columns, $assetType = null)
-   {
-      global $DB;
-      $output = [];
-      foreach ($columns as $column) {
-         if ($column['name'] == 'assetType') continue;
-         $query = "SELECT name FROM `{$column['type']}`";
-         $columnExists = count(iterator_to_array($DB->query("SHOW COLUMNS FROM `{$column['type']}` LIKE 'assetTypeId'"))) > 0;
-         if ($columnExists && $assetType) {
-            $query .= " WHERE assetTypeId = $assetType";
-         }
-         $values = array_column(iterator_to_array($DB->query($query)), 'name');
-         $mappedValues = array_combine($values, array_map(function ($value) {
-            return ['name' => $value, 'value' => $value];
-         }, $values));
-         $output[$column['name']] = [
-            'value' => $column['name'],
-            'content' => $mappedValues,
-         ];
-      }
-      return $output;
-   }
-
-   private function getCategories()
-   {
-      global $DB;
-      return [];
    }
 
    function getForUser()
@@ -283,10 +245,9 @@ class Dashboard extends \CommonDBTM
             foreach ($objects as $object) {
                $values[$object] = ((string) $object)::getTypeName();
             }
-            $ajaxUrl = $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.ajax.php";
             $jsUpdate = <<<JS
                $.ajax({
-                  url: "$ajaxUrl",
+                  url: "{$CFG_GLPI['root_doc']}/src/dashboard/dashboard.ajax.php",
                   data: {
                      action: "getSearch",
                      itemtype: $('#ItemTypeDropdownForDashboard').val(),
@@ -294,7 +255,7 @@ class Dashboard extends \CommonDBTM
                   success: function(data) {
                      $('#data-selection-search-content').html(data);
                      $('#data-selection-search-content form').attr('action', "#");
-                     updatePreview();
+                     fetchPreview("{$CFG_GLPI['root_doc']}/src/dashboard/dashboard.ajax.php");
                   }
                });
             JS;

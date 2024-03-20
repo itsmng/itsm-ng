@@ -1,7 +1,7 @@
 {% from 'macros/collapseChecklist.twig' import collapseChecklist %}
 <div class="modal modal-lg fade" id="widgetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content" id="dashboard-edit-modal">
 		<form action="{{addWidget_action}}" method="get" class="text-center">
 			<div class="modal-header d-flex justify-content-between">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">{{"New widget"|trans}}</h1>
@@ -16,7 +16,7 @@
 					<div id="data-selection-search-content"></div>
                 </div>
 
-                <div class="col-12 col-lg-6 d-flex flex-column p-0">
+                <div class="col-12 col-lg-6 d-flex flex-column p-0" id="modal-preview-window">
                     {% include "dashboard/dashboardParams.twig" %}
                     <div id="preview-graph-widget-modal" style="height: 25rem">
                     </div>
@@ -29,105 +29,4 @@
     </div>
   </div>
 </div>
-<script>
-	$(document).ready(function() {
-		$('#widgetModal').insertAfter($('body'));
-		$('#data-selection-widget-modal #data-selection-search-content form').attr('action', "#");
-	});
-
-	function updatePreview() {
-		if (!$('#data-selection-search-content form').length) {
-			return;
-		}
-		const formData = new FormData($('#data-selection-search-content form')[0]);
-
-		$.ajax({
-			url: "{{ajaxUrl}}",
-			type: "POST",
-			data: {
-				'action': 'preview',
-				'dataFilters': JSON.stringify(Object.fromEntries(formData))
-			},
-			success: function(data) {
-				console.log(JSON.parse(data));
-			},
-			error: function(data) {
-				console.log(data);
-			}
-		});
-	}
-
-	$("#data-selection-search-content").on('change', function() {
-		updatePreview();
-	});
-
-
-	function openWidgetModal(coords) {
-		$('#widgetModal input[name="coords"]').val(JSON.stringify(coords));
-		$("#widgetModal").modal("show");
-	}
-
-	function toggleEdit() {
-		// toggle display of all edit button
-		var editButtons = document.getElementsByClassName("editButton");
-		for (var i = 0; i < editButtons.length; i++) {
-			editButtons[i].style.display = editButtons[i].style.display == "none" ? "block" : "none";
-		}
-	}
-
-	function selectStatType(statType) {
-		$('#widgetModal input[name="statType"]').val(statType);
-	}
-
-	function removeWidget(x, y) {
-		$.ajax({
-			url: "{{ajaxUrl}}",
-			type: "POST",
-			data: {
-				id: "{{dashboardId}}",
-				action: "delete",
-				coords: JSON.stringify([x, y]),
-			},
-			success: function(data) {
-				location.reload();
-			},
-			error: function(data) {
-				console.log(data);
-			}
-		});
-	}
-
-	function getChartParams() {
-		const statType = $('#widgetModal input[name="statType"]').val();
-		const title = $('#title-widget-modal').val();
-		const icon = $('#icon-widget-modal').val();
-		const format = $('input[name="format"]:checked').val();
-		const comparison = $('#parameter-selection-widget-modal-select').val();
-
-		const direction = $('#direction-selection-widget-modal-select').val();
-		const pieFormat = $('#pie-format-selection-widget-modal-select').val();
-
-		const options = {
-			comparison, icon
-		}
-		if (direction == 'horizontal') {
-			options['horizontalBars'] = true;
-		}
-
-		if (pieFormat == 'half') {
-			options['total'] = 'half';
-			options['startAngle'] = 270;
-		} else if (pieFormat == 'donut') {
-			options['donut'] = true;
-		}
-
-		return {
-			statType, statSelection, title, format, options
-		}
-	
-	}
-
-	function addWidget() {
-		const coords = JSON.parse($('#widgetModal input[name="coords"]').val());
-	}
-</script>
+<script type="text/javascript" src="{{root_doc}}/src/dashboard/dashboard.js"></script>
