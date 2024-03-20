@@ -1,9 +1,5 @@
 var dataPreview = [];
-
-$(function() {
-    $('#widgetModal').insertAfter($('body'));
-    $('#data-selection-widget-modal #data-selection-search-content form').attr('action', "#");
-});
+var filters = {};
 
 function fetchPreview() {
     if (!$('#data-selection-search-content form').length) {
@@ -29,7 +25,6 @@ function fetchPreview() {
             formContent[key] = value;
         }
     }
-    console.log(formContent);
     const jsonData = JSON.stringify(formContent);
         
     $.ajax({
@@ -41,7 +36,6 @@ function fetchPreview() {
         },
         success: function(data) {
             const dataToPreview = JSON.parse(data);
-            console.log(dataToPreview);
             const cols = dataToPreview.data.cols;
             
             const orderBySelect = document.getElementById('parameter-selection-widget-modal-select');
@@ -52,6 +46,7 @@ function fetchPreview() {
                 orderBySelect.appendChild(option);
             }
             dataPreview = dataToPreview.data.rows;
+            filters = formContent;
             updatePreview();
         },
         error: function(data) {
@@ -60,8 +55,50 @@ function fetchPreview() {
     });
 }
 
+function makeCount() {
+    const icon = $('#icon-widget-modal').val();
+    const title = $('#title-widget-modal').val();
+    const value = dataPreview.length;
+
+    $('#preview-graph-widget-modal').html(`
+        <div class="d-flex justify-content-center align-items-center">
+            <i class="${icon} fs-1 text-{{color}}"></i>
+            <div class="ms-3">
+                <div class="fw-bold text-wrap">${title}</div>
+                <div class="fs-3">${value}</div>
+            </div>
+        </div>
+    `);
+}
+
+function makeChart(type, data, params) {
+    const title = $('#title-widget-modal').val();
+    $('#preview-graph-widget-modal').html(`
+        <div class="fw-bold fs-6">${title}</div>
+        <div class="ct-chart ct-golden-section w-100" style="max-height: 20rem" id="current-previewed-chart"></div>
+    `);
+    switch (type) {
+        case 'bar':
+            params.horizontalBars = $('#direction-selection-widget-modal-select').val() == 'horizontal';
+            new Chartist.BarChart('#current-previewed-chart', data, params);
+            break;
+        case 'line':
+            new Chartist.LineChart('#current-previewed-chart', data, params);
+            break;
+        case 'pie':
+            data.series = data.series[0];
+            params.donut = $('#pie-format-selection-widget-modal-select').val() == 'donut'
+                || $('#pie-format-selection-widget-modal-select').val() == "half";
+            if ($('#pie-format-selection-widget-modal-select').val() == "half") {
+                params.startAngle = 270;
+                params.total = data.series.reduce((a, b) => a + b, 0) * 2;
+            }
+            new Chartist.PieChart('#current-previewed-chart', data, params);
+            break;
+    }
+}
+
 function updatePreview() {
-    
     const labels = dataPreview.map(row => {
         return row[$('#ItemTypeDropdownForDashboard').val() + '_' + $('#parameter-selection-widget-modal-select').val()][0].name;
     });
@@ -86,36 +123,12 @@ function updatePreview() {
             onlyInteger: true,
         },
     }
-    $('#preview-graph-widget-modal').html('');
-    switch (format) {
-        case 'bar':
-            params.horizontalBars = $('#direction-selection-widget-modal-select').val() == 'horizontal';
-            new Chartist.BarChart('#preview-graph-widget-modal', data, params);
-            break;
-        case 'line':
-            new Chartist.LineChart('#preview-graph-widget-modal', data, params);
-            break;
-        case 'pie':
-            data.series = seriesCounts;
-            params.donutWidth = 120;
-            params.donut = $('#pie-format-selection-widget-modal-select').val() == 'donut'
-                || $('#pie-format-selection-widget-modal-select').val() == "half";
-                if ($('#pie-format-selection-widget-modal-select').val() == "half") {
-                    params.startAngle = 270;
-                    params.total = seriesCounts.reduce((a, b) => a + b, 0) * 2;
-            }
-
-            new Chartist.PieChart('#preview-graph-widget-modal', data, params);
-            break;
-        case 'count':
-            $('#preview-graph-widget-modal').html(dataPreview.length);
+    if (format == 'count') {
+        makeCount();
+    } else {
+        makeChart(format, data, params);
     }
 }
-
-$("#data-selection-search-content").on('change', fetchPreview);
-$("#parameter-selection-widget-modal-select").on('change', updatePreview);
-$('#direction-selection-widget-modal-select').on('change', updatePreview);
-$('#pie-format-selection-widget-modal-select').on('change', updatePreview);
 
 function openWidgetModal(coords) {
     $('#widgetModal input[name="coords"]').val(JSON.stringify(coords));
@@ -132,10 +145,10 @@ function toggleEdit() {
 
 function removeWidget(x, y) {
     $.ajax({
-        url: "{{ajaxUrl}}",
+        url: "./dashboard.ajax.php",
         type: "POST",
         data: {
-            id: "{{dashboardId}}",
+            id: $("input[name='dashboardId']").val(),
             action: "delete",
             coords: JSON.stringify([x, y]),
         },
@@ -150,6 +163,33 @@ function removeWidget(x, y) {
 
 function addWidget() {
     const coords = JSON.parse($('#widgetModal input[name="coords"]').val());
+    const title = $('#title-widget-modal').val();
+    const format = $('input[name="format"]:checked').val();
+
+    const options = {
+        icon: $('#icon-widget-modal').val(),
+        direction: $('#direction-selection-widget-modal-select').val(),
+        pieFormat: $('#pie-format-selection-widget-modal-select').val(),
+    }
+
+    const widget = { format, coords, title, filters, options };
+
+    widget.options.comparison = $('#parameter-selection-widget-modal-select').val();
+    $.ajax({
+        url: "./dashboard.ajax.php",
+        type: "POST",
+        data: {
+            id: $("input[name='dashboardId']").val(),
+            action: "add",
+            widget: JSON.stringify(widget),
+        },
+        success: function(data) {
+            location.reload();
+        },
+        error: function(data) {
+            console.error(data);
+        }
+    });
 }
 
 function changeType() {

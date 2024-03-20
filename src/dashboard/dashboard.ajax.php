@@ -49,19 +49,20 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['dataFilters'])) {
       echo json_encode(["status" => "error"]);
    }
    exit;
-} else if (($_REQUEST['action'] == 'add') && isset($_REQUEST['coords']) && isset($_REQUEST['id'])) {
+} else if (($_REQUEST['action'] == 'add') && isset($_REQUEST['widget']) && isset($_REQUEST['id'])) {
    Session::checkRight("dashboard", UPDATE);
    
    $dashboard = new Dashboard();
    $dashboard->getFromDB($_REQUEST['id']);
-   
-   $format = $_REQUEST['format'] ?? 'count';
-   $coords = $_REQUEST['coords'];
-   $title = $_REQUEST['title'] ?? $_REQUEST['statType'];
-   $statType = $_REQUEST['statType'];
-   $statSelection = stripslashes($_REQUEST['statSelection']);
+   $widget = json_decode(stripslashes($_REQUEST['widget']), true);
    $options = $_REQUEST['options'] ?? [];
-   if ($dashboard->addWidget($format, $coords, $title, $statType, $statSelection, $options)) {
+
+   $format = $widget['format'];
+   $coords = $widget['coords'];
+   $title = $widget['title'];
+   $filters = $widget['filters'];
+   $options = $widget['options'];
+   if ($dashboard->addWidget($format, $coords, $title, $filters, $options)) {
       echo json_encode(["status" => "success"]);
    } else {
       echo json_encode(["status" => "error"]);

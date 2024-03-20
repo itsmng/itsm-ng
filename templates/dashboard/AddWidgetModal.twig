@@ -22,7 +22,7 @@
                     </div>
                 </div>
 			</div>
-            <input type="hidden" name="id" value="{{dashboardId}}"/>
+            <input type="hidden" name="dashboardId" value="{{dashboardId}}"/>
             <input type="hidden" name="coords" value="[-1, -1]"/>
             <input type="hidden" name="update" value="update"/>
 		</form>
@@ -30,3 +30,16 @@
   </div>
 </div>
 <script type="text/javascript" src="{{root_doc}}/src/dashboard/dashboard.js"></script>
+<script>
+$(function() {
+    $('#widgetModal').insertAfter($('body'));
+    $('#data-selection-widget-modal #data-selection-search-content form').attr('action', "#");
+});
+
+$("#data-selection-search-content").on('change', fetchPreview);
+$("#parameter-selection-widget-modal-select").on('change', updatePreview);
+$('#direction-selection-widget-modal-select').on('change', updatePreview);
+$('#pie-format-selection-widget-modal-select').on('change', updatePreview);
+$('#title-widget-modal').on('change', updatePreview);
+$('#icon-widget-modal').on('change', updatePreview);
+</script>

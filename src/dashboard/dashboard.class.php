@@ -211,25 +211,6 @@ class Dashboard extends \CommonDBTM
       return $options;
    }
 
-   function getGridContent($content)
-   {
-      foreach ($content as $rowIdx => $row) {
-         foreach ($row as $colIdx => $widget) {
-            $content[$rowIdx][$colIdx] = array_merge(
-               $content[$rowIdx][$colIdx],
-               ['value' => self::getDashboardData($widget['url'])],
-            );
-            $content[$rowIdx][$colIdx]['options'] = $this::parseOptions(
-               $content[$rowIdx][$colIdx]['type'],
-               $widget['options'] ?? [],
-               $content[$rowIdx][$colIdx]['value']
-            );
-            unset($content[$rowIdx][$colIdx]['url']);
-         }
-      }
-      return $content;
-   }
-
    function show($ID = null, $edit = false)
    {
       global $CFG_GLPI;
@@ -281,7 +262,7 @@ class Dashboard extends \CommonDBTM
          $twig_vars['ajaxUrl'] = $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.ajax.php";
          $twig_vars['edit'] = $edit;
          $twig_vars['dashboardId'] = $ID ?? $this->fields['id'];
-         $twig_vars['widgetGrid'] = $this->getGridContent(json_decode($this->fields['content'] ?? '[]', true) ?? []);
+         $twig_vars['widgetGrid'] = self::expandContent(json_decode($this->fields['content'] ?? '[]', true) ?? []);
          $twig_vars['base'] = $CFG_GLPI['root_doc'];
          renderTwigTemplate('dashboard/dashboard.twig', $twig_vars);
       } catch (Exception $e) {
@@ -291,6 +272,45 @@ class Dashboard extends \CommonDBTM
          </div>
          HTML;
       }
+   }
+
+   static private function expandContent($content) {
+      // make series and labels from content
+      foreach ($content as $rowKey => $row) {
+         foreach ($row as $cellKey => $widget) {
+            $res = Search::getDatas($widget['filters']['itemtype'], $widget['filters']);
+            if ($widget['type'] == 'count') {
+               $content[$rowKey][$cellKey]['value'] = $res['data']['totalcount'];
+               continue;
+            }
+            $labels = array_map(function($row) use ($widget) {
+               $name = $widget['filters']['itemtype'] . '_' . $widget['options']['comparison'];
+               return $row[$name][0]['name'];
+            }, $res['data']['rows']);
+            $series = [];
+            foreach ($labels as $label) {
+               if (isset($series[$label])) {
+                  $series[$label]++;
+               } else {
+                  $series[$label] = 1;
+               }
+            }
+            $uniqueLabels = array_values(array_unique($labels));
+            $seriesCounts = array_values($series);
+            switch ($widget['type']) {
+               case 'pie':
+                  $content[$rowKey][$cellKey]['labels'] = $uniqueLabels;
+                  $content[$rowKey][$cellKey]['series'] = $seriesCounts;
+                  break;
+               case 'bar':
+               case 'line':
+                  $content[$rowKey][$cellKey]['labels'] = $uniqueLabels;
+                  $content[$rowKey][$cellKey]['series'] = [$seriesCounts];
+                  break;
+            }
+         }
+      }
+      return $content;
    }
 
    private function placeWidgetAtCoord(&$content, $widget, $coords)
@@ -305,7 +325,7 @@ class Dashboard extends \CommonDBTM
             array_unshift($content[$x], $widget);
          } else if ($y > count($content[$x])) {
             array_push($content[$x], $widget);
-         } else { // add the widget in between
+         } else {
             array_splice($content[$x], $y, 0, [$widget]);
          }
       }
@@ -322,15 +342,13 @@ class Dashboard extends \CommonDBTM
       return $url;
    }
 
-   function addWidget($format = 'count', $coords = [0, 0], $title = '', $statType = '', $statSelection = '', $options = [])
+   function addWidget(string $format = 'count', array $coords = [0, 0], string $title = '', array $filters = [], array $options = [])
    {
       $dashboard = json_decode($this->fields['content'], true) ?? [];
-      $urlStatSelection = stripslashes($statSelection);
       $widget = [
          'type' => $format,
-         'title' => $title ?? $statType,
-         'icon' => $options['icon'] ?? '',
-         'url' => Dashboard::getWidgetUrl($format, $statType, $urlStatSelection, $options),
+         'title' => $title,
+         'filters' => $filters,
          'options' => $options,
       ];
 
