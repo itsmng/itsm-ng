@@ -1315,7 +1315,7 @@ class Html
       // CSRF token used for AJAX calls
       // Ensure this token is not shared with the page, as result would be that some AJAX request will consume
       // the token that would have been used by a form submitted from the same page.
-      echo '<meta property="glpi:csrf_token" content="' . $_SESSION['_glpi_csrf_token'] . '" />';
+      echo '<meta property="glpi:csrf_token" content="' . Session::getNewCSRFToken(true) . '" />';
 
       //detect theme
       $theme = isset($_SESSION['glpipalette']) ? $_SESSION['glpipalette'] : 'itsmng';

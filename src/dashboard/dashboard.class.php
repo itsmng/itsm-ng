@@ -166,7 +166,7 @@ class Dashboard extends \CommonDBTM
                      'name' => isset($ID) ? 'update' : 'add',
                      'value' => 'true',
                   ],
-                  [
+                  $this->isNewID($ID) ? [] : [
                      'type' => 'hidden',
                      'name' => 'id',
                      'value' => $ID,
