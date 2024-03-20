@@ -92,6 +92,20 @@ function update151to200() : bool {
         $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_user_menu".$DB->error());
     }
 
+    if (!$DB->tableExists('glpi_dashboards')) {
+        $query = "
+        CREATE TABLE `glpi_dashboards` (
+            `id` int(11) NOT NULL UNIQUE AUTO_INCREMENT,
+            `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+            `content` LONGTEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+            `profileId` int(11) NOT NULL DEFAULT 0,
+            `userId` int(11) NOT NULL DEFAULT 0,
+            PRIMARY KEY (`profileId`, `userId`)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+        ";
+        $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_dashboards".$DB->error());
+      }
+
     // ************ Keep it at the end **************
     $migration->executeMigration();
     return $updateresult;
