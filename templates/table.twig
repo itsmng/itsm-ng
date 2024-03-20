@@ -1,6 +1,3 @@
-<script src="{{root_doc}}/vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"></script>
-<script src="{{root_doc}}/vendor/wenzhixin/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js"></script>
-<link rel="stylesheet" href="{{root_doc}}/vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css">
 <div class="table-container">
 	{% if not id %}
 		{% set id = 'table' ~ random() %}
@@ -12,7 +9,7 @@
 		class="btn-group"
 		>
 		{% if massive_action is defined %}
-		<button type="button" class="btn btn-secondary" onclick="populateModal{{rand}}()">
+		<button type="button" class="btn btn-secondary" onclick="massiveaction_window{{id}}.dialog('open')">
 			<i class="fas fa-hammer"></i>
 		</button>
 		{% endif %}
@@ -92,28 +89,10 @@
 		export: 'fas fa-file-export',
 	}
 
-	$('#{{id}}').bootstrapTable();
-
-	{% if radio is defined %}
-	$('form').on("submit", function() {
-		selection = $('#{{id}}').bootstrapTable('getSelections');
-		selection.forEach(array => {
-			Object.keys(array).forEach(key => {
-				if (key.includes("_data")) {
-					delete array[key];
-				}
-			})
-		});
-		$('#table_input{{id}}').val(JSON.stringify(selection));
-	});
-	{% endif %}
-
-	{% if not minimal %}
-		function populateModal{{rand}}() {
-			massiveaction_window{{id}}.dialog('open');
-		}
-
-		$(document).ready(function() {
+	$(document).ready(function() {
+		$('#{{id}}').bootstrapTable();
+		
+		{% if not minimal %}
 			const toggles = sessionStorage.getItem('{{itemtype}}-toggles');
 			var togglesArray = new Set();
 			var init = false;
@@ -137,8 +116,24 @@
 			if (init) {
 				sessionStorage.setItem('{{itemtype}}-toggles', JSON.stringify(Array.from(togglesArray)));
 			}
-		});
+		{% endif %}
+	});
 
+	{% if radio is defined %}
+	$('form').on("submit", function() {
+		selection = $('#{{id}}').bootstrapTable('getSelections');
+		selection.forEach(array => {
+			Object.keys(array).forEach(key => {
+				if (key.includes("_data")) {
+					delete array[key];
+				}
+			})
+		});
+		$('#table_input{{id}}').val(JSON.stringify(selection));
+	});
+	{% endif %}
+
+	{% if not minimal %}
 		$('#{{id}}').on('column-switch.bs.table', function (e, field, checked) {
 			const toggles = sessionStorage.getItem('{{itemtype}}-toggles');
 			var togglesArray = new Set();

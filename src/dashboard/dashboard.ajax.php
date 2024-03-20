@@ -35,29 +35,10 @@ if (!isset($_REQUEST["action"])) {
 
 global $CFG_GLPI;
 
-if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_REQUEST['statSelection'])) {
+if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['dataFilters'])) {
    Session::checkRight("dashboard", READ);
-   try {
-      $statType = $_REQUEST['statType'];
-      $statSelection = stripslashes($_REQUEST['statSelection']);
-      
-      $format = $_REQUEST['format'] ?? 'count';
-      $data = Dashboard::getDashboardData(Dashboard::getWidgetUrl($format, $statType, $statSelection, $_REQUEST['options']));
-
-      $options = Dashboard::parseOptions($format, $_REQUEST['options'] ?? [], $data);
-      
-      $widget = [
-         'type' => $format,
-         'value' => $data,
-         'title' => $_REQUEST['title'] ?? $_REQUEST['statType'],
-         'icon' => $options['icon'] ?? '',
-         'options' => $options,
-      ];
-      
-      renderTwigTemplate('dashboard/widget.twig', [ 'widget' => $widget, 'root_doc' => $CFG_GLPI['root_doc'] ]);
-   } catch (Exception $e) {
-      echo $e->getMessage();
-   }
+   $dataFilters = json_decode(stripslashes($_REQUEST['dataFilters'] ?? '[]'), true);
+   echo json_encode(Search::getDatas($dataFilters['itemtype'], $dataFilters));
 } else if (($_REQUEST['action'] == 'delete') && isset($_REQUEST['coords']) && isset($_REQUEST['id'])) {
    Session::checkRight("dashboard", UPDATE);
    $dashboard = new Dashboard();
@@ -68,28 +49,27 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['statType']) && isset($_
       echo json_encode(["status" => "error"]);
    }
    exit;
-} else if (($_REQUEST['action'] == 'add') && isset($_REQUEST['coords']) && isset($_REQUEST['id'])) {
+} else if (($_REQUEST['action'] == 'add') && isset($_REQUEST['widget']) && isset($_REQUEST['id'])) {
    Session::checkRight("dashboard", UPDATE);
    
    $dashboard = new Dashboard();
    $dashboard->getFromDB($_REQUEST['id']);
-   
-   $format = $_REQUEST['format'] ?? 'count';
-   $coords = $_REQUEST['coords'];
-   $title = $_REQUEST['title'] ?? $_REQUEST['statType'];
-   $statType = $_REQUEST['statType'];
-   $statSelection = stripslashes($_REQUEST['statSelection']);
+   $widget = json_decode(stripslashes($_REQUEST['widget']), true);
    $options = $_REQUEST['options'] ?? [];
-   if ($dashboard->addWidget($format, $coords, $title, $statType, $statSelection, $options)) {
+
+   $format = $widget['format'];
+   $coords = $widget['coords'];
+   $title = $widget['title'];
+   $filters = $widget['filters'];
+   $options = $widget['options'];
+   if ($dashboard->addWidget($format, $coords, $title, $filters, $options)) {
       echo json_encode(["status" => "success"]);
    } else {
       echo json_encode(["status" => "error"]);
    }
    exit;
-} else if (($_REQUEST['action'] == 'getColumns')  && isset($_REQUEST['statType'])) {
+} else if (($_REQUEST['action'] == 'getSearch')  && isset($_REQUEST['itemtype'])) {
    Session::checkRight("dashboard", READ);
-   $statType = $_REQUEST['statType'];
-   $data = Dashboard::getDashboardData("/dashboard/comparisons/" . $statType);
-   echo json_encode($data);
+   Search::showGenericSearch($_REQUEST['itemtype'], ['hide' => false]);
    exit;
 }

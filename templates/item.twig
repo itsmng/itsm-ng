@@ -12,21 +12,29 @@
   {% endfor %}
 </div>
 
-<link href="{{ glpiroot }}/node_modules/gridstack/dist/gridstack.min.css" rel="stylesheet"/>
-<script src="{{ glpiroot }}/node_modules/gridstack/dist/gridstack-all.js"></script>
-
 <script>
-  // Initialize grid
-  const grid = GridStack.init({
-    cellHeight: 'auto',
-    cellWidth: '1rem',
-    handle: '.card-header',
-    sizeToContent: true,
-  });
-  grid.setAnimation(false);
-
-  // Variables
   const options = [];
+  var grid = null;
+
+  $(document).ready(() => {
+    grid = GridStack.init({
+      cellHeight: 'auto',
+      cellWidth: '1rem',
+      handle: '.card-header',
+      sizeToContent: true,
+    });
+    grid.setAnimation(false);
+    initTable();
+
+    grid.on('resizestop', (event, element) => {
+      saveGrid();
+    });
+
+    grid.on('dragstop', (event, element) => {
+      saveGrid();
+    });
+
+  });
 
   // Update the width of widgets based on the number of widgets present
   function updateWidgetWidth() {
@@ -152,11 +160,6 @@
     updateWidgetWidth();
   }
 
-  // Document ready function
-  $(document).ready(() => {
-    initTable();
-  });
-
   // Dropdown menu item click handlers
   $('.tab-selector a').on('click', function(event) {
     event.preventDefault();
@@ -174,14 +177,6 @@
       updateWidgetWidth();
       saveGrid();
     });
-  });
-
-  grid.on('resizestop', (event, element) => {
-	  saveGrid();
-  });
-
-  grid.on('dragstop', (event, element) => {
-	  saveGrid();
   });
 
 </script>

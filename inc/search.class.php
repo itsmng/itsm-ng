@@ -1975,6 +1975,7 @@ class Search {
       $p['as_map']       = 0;
       $p['criteria']     = [];
       $p['metacriteria'] = [];
+      $p['hide'] = true;
       if (class_exists($itemtype)) {
          $p['target']       = $itemtype::getSearchURL();
       } else {
@@ -1999,7 +2000,7 @@ class Search {
       } else {
          $main_block_class = "sub_criteria";
       }
-      echo "<div id='searchcriteria' class='$main_block_class'>";
+      echo "<div id='searchcriteria' class='$main_block_class'" . ($p['hide'] ? " style='display: none;'" : "") . ">";
       $nbsearchcountvar      = 'nbcriteria'.strtolower($itemtype).mt_rand();
       $searchcriteriatableid = 'criteriatable'.strtolower($itemtype).mt_rand();
       // init criteria count
@@ -2367,7 +2368,9 @@ JAVASCRIPT;
 
          foreach ($options as $key => $val) {
             if (is_array($val) && isset($val['table'])) {
-               $metacriteria['field'] = $key;
+               if ($metacriteria) {
+                  $metacriteria['field'] = $key;
+               }
                break;
             }
          }

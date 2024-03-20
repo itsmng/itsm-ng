@@ -1128,10 +1128,13 @@ div.chip>p {
 }
 
 #searchcriteria {
-    width: max-content;
+    width: 100%;
     text-align: center;
     margin: 0 auto;
-    display: none;
+
+    ul {
+        padding-left: 0;
+    }
 
     .search_actions {
         span {
@@ -1254,4 +1257,8 @@ div.chip>p {
     .ck-editor__editable[role="textbox"] {
         min-height: 10rem;
     }
+}
+
+#data-selection-widget-modal input[name="search"] {
+    display: none;
 }
