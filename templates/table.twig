@@ -83,14 +83,17 @@
 	{% endif %}
 </div>
 
+<script src="{{root_doc}}/vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"></script>
 <script>
 	window.icons = {
 		columns: 'fas fa-columns',
 		export: 'fas fa-file-export',
 	}
 
-	$(document).ready(function() {
-		$('#{{id}}').bootstrapTable();
+	$(function() {
+		setTimeout(function() {
+			$('#{{id}}').bootstrapTable();
+		}, 200);
 		
 		{% if not minimal %}
 			const toggles = sessionStorage.getItem('{{itemtype}}-toggles');
