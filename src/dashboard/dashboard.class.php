@@ -230,7 +230,6 @@ class Dashboard extends \CommonDBTM
             ]);
             $twig_vars['dataSelection'] = ob_get_clean();
          };
-         $twig_vars['dashboardApiUrl'] = $CFG_GLPI["url_dashboard_api"] . "/dashboard";
          $twig_vars['ajaxUrl'] = $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.ajax.php";
          $twig_vars['edit'] = $edit;
          $twig_vars['dashboardId'] = $ID ?? $this->fields['id'];

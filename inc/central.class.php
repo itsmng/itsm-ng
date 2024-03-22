@@ -166,7 +166,7 @@ class Central extends CommonGLPI {
                      'type' => 'bar',
                      'title' => __('Tickets by status'),
                      'labels' => array_values(Ticket::getAllStatusArray()),
-                     'series' => array_column($finalResult, 'ticket_count'),
+                     'series' => [array_column($finalResult, 'ticket_count')],
                   ],
                ], [
                   [
