@@ -1803,7 +1803,8 @@ class Auth extends CommonGLPI
             'is_forced'  => $_POST["forceoidc"],
             'scope'  => $_POST["scope"],
             'proxy'  => $_POST["proxy"],
-            'cert'  => $_POST["cert"]
+            'cert'  => $_POST["cert"],
+            'logout'  => $_POST["logout"]
          ];
          $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
       }
@@ -1819,6 +1820,7 @@ class Auth extends CommonGLPI
          $oidc_db['scope'] = $iterator['scope'];
          $oidc_db['proxy'] = $iterator['proxy'];
          $oidc_db['cert'] = $iterator['cert'];
+         $oidc_db['logout'] = $iterator['logout'];
       }
 
       $form = [
@@ -1880,6 +1882,11 @@ class Auth extends CommonGLPI
                      'name' => 'cert',
                      'type' => 'text',
                      'value' => $oidc_db['cert'] ?? '',
+                  ],
+                  __('Logout URL') => [
+                     'name' => 'logout',
+                     'type' => 'text',
+                     'value' => $oidc_db['logout'] ?? '',
                   ],
                ]
             ]

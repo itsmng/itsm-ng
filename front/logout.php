@@ -83,6 +83,7 @@ if (isset($_SESSION["itsm_is_oidc"]) && $_SESSION["itsm_is_oidc"] == 1) {
       $oidc_db['ClientID'] = $iterator['ClientID'];
       $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
       $oidc_db['scope'] = explode(',', addslashes($iterator['scope']));
+      $oidc_db['logout'] = empty($iterator['logout']) ? null : $iterator['logout'];
    }
 
    if (isset($oidc_db)) {
@@ -92,7 +93,7 @@ if (isset($_SESSION["itsm_is_oidc"]) && $_SESSION["itsm_is_oidc"] == 1) {
       Session::destroy();
       Auth::setRememberMeCookie('');
 
-      $oidc->signOut($sid, $CFG_GLPI["url_base"]."/index.php".$toADD);
+      $oidc->signOut($sid, $oidc_db['logout'] ?? $CFG_GLPI["url_base"]."/index.php".$toADD);
    }
 }
 
