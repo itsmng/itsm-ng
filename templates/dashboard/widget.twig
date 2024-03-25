@@ -28,7 +28,7 @@
 					startAngle: 270,
 					total: {{series | json_encode | raw}}.reduce((a, b) => a + b, 0) * 2,
 				{% endif %}
-			{% elseif options.horizontalBars == true %}
+			{% elseif options.direction == 'horizontal' %}
 				horizontalBars: true,
 			{% endif %}
 		}
