@@ -174,7 +174,7 @@
 
 	{% if massive_action is defined %}
 	function VerifyMassiveAction{{rand}}(value, row, index) {
-		if (row._data.value) {
+		if (!row.value && row._data.value) {
 			row.value = row._data.value;
 		}
 		if (!row.value) {
