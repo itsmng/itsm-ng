@@ -43,7 +43,11 @@ function fetchPreview() {
             for (const col of cols) {
                 const option = document.createElement('option');
                 option.value = col.id;
-                option.innerHTML = col.name;
+                var name = col.name;
+                if (col.groupname) {
+                    name += ' (' + col.groupname.name + ')';
+                }
+                option.innerHTML = name;
                 orderBySelect.appendChild(option);
             }
             dataPreview = dataToPreview.data.rows;
