@@ -38,7 +38,7 @@ global $CFG_GLPI;
 if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['dataFilters'])) {
    Session::checkRight("dashboard", READ);
    $dataFilters = json_decode(stripslashes($_REQUEST['dataFilters'] ?? '[]'), true);
-   echo json_encode(Search::getDatas($dataFilters['itemtype'], $dataFilters));
+   echo json_encode(Search::getDatas($dataFilters['itemtype'], $dataFilters + ['list_limit' => 9999999])); // TODO make this limit dynamic
 } else if (($_REQUEST['action'] == 'delete') && isset($_REQUEST['coords']) && isset($_REQUEST['id'])) {
    Session::checkRight("dashboard", UPDATE);
    $dashboard = new Dashboard();

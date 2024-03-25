@@ -54,6 +54,7 @@
             <form method='post' action='./index.php'>
                 <p class="login_input">
                     <button type='submit' name='login_oidc' class='btn btn-info w-100 h-auto'>{{"SSO Login"|trans}}</button>
+                    <input type='hidden' name='redirect' value='{{redirect}}' />
                     <input type="hidden" name="_glpi_csrf_token" value="{{csrf_token}}">
                 </p>
             </form>

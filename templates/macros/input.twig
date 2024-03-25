@@ -303,7 +303,6 @@
   <input type="hidden" name="{{attributes.name}}" value="{{attributes.value|default("")|raw}}" />
   <script>
   $('#{{attributes.id|default(rand)}}').on('change', function() {
-      console.log($('#{{attributes.id|default(rand)}}').val());
       $('input[name="{{attributes.name}}"]').last().val($('#{{attributes.id|default(rand)}}').val().replace('T', ' '))
   })
   </script>

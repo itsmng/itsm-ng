@@ -114,16 +114,11 @@
     const body = $(`#ContentFor${val} .card-body`);
     if (body.html() === '') {
       body.html('<div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>');
-      await $.ajax({
-        url: '{{glpiroot}}/ajax/common.tabs.php?' + body.attr('data-params'),
-        type: 'GET',
-        success: (data) => {
-          body.html(data);
-        },
+      $(body).load('{{glpiroot}}/ajax/common.tabs.php?' + body.attr('data-params'), () => {
+        element.detach().appendTo('#ContentForTabs');
+        grid.makeWidget(element[0]);
       });
     }
-    element.detach().appendTo('#ContentForTabs');
-    grid.makeWidget(element[0]);
   }
 
 

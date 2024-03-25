@@ -4208,10 +4208,8 @@ msgid "URL of the application"
 msgstr "URL de l'application"
 
 #: inc/config.class.php:307
-#, fuzzy
-#| msgid "Text in the login box (HTML tags supported)"
 msgid "Text in the login box"
-msgstr "Texte sur la page de connexion (balises HTML supportées)"
+msgstr ""
 
 #: inc/config.class.php:313
 msgid "Allow FAQ anonymous access"
@@ -22229,6 +22227,9 @@ msgstr "Position du menu"
 #: inc/includes.php:155
 msgid "CSRF token is invalid"
 msgstr "Le CSRF est invalide"
+
+msgid "Favorite"
+msgstr "Favoris"
 
 #~ msgid "SSO Login"
 #~ msgstr "Connection en SSO"

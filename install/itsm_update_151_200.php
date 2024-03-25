@@ -104,7 +104,11 @@ function update151to200() : bool {
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
         ";
         $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_dashboards".$DB->error());
-      }
+    }
+
+    if (!$DB->fieldExists('glpi_oidc_config', 'logout')) {
+        $migration->addField('glpi_oidc_config', 'logout', 'VARCHAR(255) NULL');
+    }
 
     // ************ Keep it at the end **************
     $migration->executeMigration();
