@@ -6691,8 +6691,8 @@ JAVASCRIPT;
             $_SESSION['glpi_js_toload']['notifications_ajax'][] = 'js/notifications_ajax.js';
             break;
          case 'fuzzy':
-            $_SESSION['glpi_js_toload'][$name][] = 'public/lib/fuzzy.js';
-            $_SESSION['glpi_js_toload'][$name][] = 'js/fuzzysearch.js';
+            // $_SESSION['glpi_js_toload'][$name][] = 'public/lib/fuzzy.js';
+            // $_SESSION['glpi_js_toload'][$name][] = 'js/fuzzysearch.js';
             break;
          case 'sortable':
             $_SESSION['glpi_js_toload'][$name][] = 'public/lib/sortable.js';
@@ -7134,7 +7134,7 @@ JAVASCRIPT;
       ];
       $favorite =
       ['favorite' => [
-         'title' => 'Favorite',
+         'title' => __('Favorite'),
          'types' => [],
          'default' => 'none',
          'content' => [],
