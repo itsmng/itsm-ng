@@ -523,7 +523,7 @@ main {
 }
  
 .nav-side-menu {
-    height: calc(100% - 90px);
+    height: calc(100vh - 3rem - var(--header-height));
     position: relative;
     color: $nav-text-color;
     display: flex;
@@ -606,7 +606,7 @@ main {
 
     .menu-list {
         overflow-x: scroll;
-        scrollbar-width: none; /* Firefox */
+                scrollbar-width: none; /* Firefox */
         -ms-overflow-style: none;  /* IE 10+ */
         width: 100%;
         &::-webkit-scrollbar {
@@ -622,7 +622,7 @@ main {
 
     .menu-content {
         padding: 0 7px;
-        display: flex;
+                display: flex;
         flex-direction: column;
         align-items: normal;
         user-select: none;
