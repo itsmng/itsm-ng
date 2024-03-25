@@ -39,6 +39,7 @@ function fetchPreview() {
             const cols = dataToPreview.data.cols;
             
             const orderBySelect = document.getElementById('parameter-selection-widget-modal-select');
+            orderBySelect.innerHTML = '';
             for (const col of cols) {
                 const option = document.createElement('option');
                 option.value = col.id;
