@@ -723,6 +723,9 @@ class Search {
       $numrows = 0;
       //No search : count number of items using a simple count(ID) request and LIMIT search
       if ($data['search']['no_search']) {
+         if ($data['search']['list_limit'] == 0) {
+            $data['search']['list_limit'] = '18446744073709551615';
+         }
          $LIMIT = " LIMIT ".(int)$data['search']['start'].", ".(int)$data['search']['list_limit'];
 
          $count = "count(DISTINCT `$itemtable`.`id`)";
