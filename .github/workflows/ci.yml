@@ -6,6 +6,10 @@ jobs:
   tests:
     name: Run tests
     runs-on: ubuntu-latest
+    env:
+      DB_DATABASE: test_db
+      DB_USER: test
+      DB_PASSWORD: test
     strategy:
       matrix:
         php-versions: ['8.2', '8.3']
@@ -27,5 +31,18 @@ jobs:
       - name: Run composer install
         run: export NODE_OPTIONS=--openssl-legacy-provider && php bin/console dependencies install
 
+      - name: Start MySQL
+        run: |
+          sudo apt autoremove --purge mysql*
+          sudo apt install mariadb-server
+          sudo mysql -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;"
+          sudo mysql -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASSWORD';"
+          sudo mysql -e "GRANT ALL PRIVILEGES ON $DB_DATABASE.* TO '$DB_USER'@'localhost';"
+          sudo mysql -e "FLUSH PRIVILEGES;"
+             
+      - name: Install ITSM-ng
+        run: php bin/console itsmng:database:install -H localhost -u $DB_USER -p $DB_PASSWORD -d $DB_DATABASE -n
+
       - name: Run Pest
         run: vendor/bin/pest
+        
