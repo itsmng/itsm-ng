@@ -52,7 +52,7 @@
         "select2": "^4.0.13",
         "spin.js": "^4.1.0",
         "tableexport.jquery.plugin": "^1.28.0",
-        "tinymce": "^6.7.1",
+        "tinymce": "^7.0.0",
         "tinymce-i18n": "^23.6.19",
         "unorm": "^1.6.0",
         "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.1/xlsx-0.20.1.tgz"
