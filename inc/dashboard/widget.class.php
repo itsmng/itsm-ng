@@ -1527,12 +1527,13 @@ JAVASCRIPT;
       $md->code_span_content_func  = function ($code) { return $code; };
       $md->code_block_content_func = function ($code) { return $code; };
 
+      $content = Html::clean($md->transform($p['markdown_content'], false));
       $html = <<<HTML
       <div
          class="card markdown"
          style="background-color: {$p['color']}; color: {$fg_color}; border-color: {$border_color}">
 
-         <div class="html_content">{$md->transform($p['markdown_content'])}</div>
+         <div class="html_content">{$content}</div>
          <textarea
             class="markdown_content"
             placeholder="{$ph}">{$p['markdown_content']}</textarea>
