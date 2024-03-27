@@ -63,7 +63,7 @@ if ($_POST["idtable"] && class_exists($_POST["idtable"])) {
    ];
    $idor_params = [
       'displaywith' => $displaywith,
-   ]
+   ];
    if (isset($_POST['value'])) {
       $p['value'] = $_POST['value'];
    }
