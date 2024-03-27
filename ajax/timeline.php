@@ -118,7 +118,7 @@ if (($_POST['action'] ?? null) === 'change_task_state') {
       $fup->showForm($id, $fup_params);
    } else if (substr_compare($_REQUEST['type'], 'Validation', -10) === 0) {
       $parent->getFromDB($_REQUEST[$parent->getForeignKeyField()]);
-      $validation = new $_REQUEST['type']();
+      $validation = getItemForItemtype($_REQUEST['type']);
       $id = isset($_REQUEST['id']) && (int)$_REQUEST['id'] > 0 ? $_REQUEST['id'] : null;
       if ($id) {
          $validation->getFromDB($id);

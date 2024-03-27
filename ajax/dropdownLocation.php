@@ -40,7 +40,7 @@ if (!isset($_REQUEST['itemtype'])
    throw new \RuntimeException('Required argument missing or incorrect!');
 }
 
-$item = new $_REQUEST['itemtype'];
+$item = getItemForItemtype($_REQUEST['itemtype']);
 $item->getFromDB((int) $_REQUEST['items_id']);
 
 $locations_id = 0;
