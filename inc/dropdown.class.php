@@ -178,6 +178,8 @@ class Dropdown {
             'specific_tags'        => $params['specific_tags'],
             '_idor_token'          => Session::getNewIDORToken($itemtype, [
                'entity_restrict' => $entity_restrict,
+               'displaywith'     => $params['displaywith'],
+               'condition'       => $params['condition']
             ]),
       ];
 
@@ -2178,6 +2180,24 @@ class Dropdown {
                                        'display'   => $display]);
    }
 
+   private static function filterDisplayWith(CommonDBTM $item, array $fields): array
+   {
+       global $DB;
+
+       $table = $item->getTable();
+       foreach ($fields as $key => $value) {
+           if (!$DB->fieldExists($table, $value)) {
+               unset($fields[$key]);
+           }
+       }
+
+       $key_value_fields = array_fill_keys($fields, 0);
+       $item::unsetUndisclosedFields($key_value_fields);
+       $fields = array_keys($key_value_fields);
+
+       return $fields;
+   }
+
    /**
     * Get dropdown value
     *
@@ -2222,12 +2242,7 @@ class Dropdown {
       $displaywith = false;
       if (isset($post['displaywith'])) {
          if (is_array($post['displaywith']) && count($post['displaywith'])) {
-            $table = getTableForItemType($post['itemtype']);
-            foreach ($post['displaywith'] as $key => $value) {
-               if (!$DB->fieldExists($table, $value)) {
-                  unset($post['displaywith'][$key]);
-               }
-            }
+            $post['displaywith'] = self::filterDisplayWith($item, $post['displaywith']);
             if (count($post['displaywith'])) {
                $displaywith = true;
             }

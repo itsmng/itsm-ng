@@ -1330,7 +1330,7 @@ class Session {
     * Get new IDOR token
     * This token validates the itemtype used by an ajax request is the one asked by a dropdown.
     * So, we avoid IDOR request where an attacker asks for an another itemtype
-    * than the originaly indtended
+    * than the originaly intended
     *
     * @since 9.5.3
     *
@@ -1340,6 +1340,11 @@ class Session {
     * @return string
    **/
    static public function getNewIDORToken(string $itemtype = "", array $add_params = []): string {
+      if ($itemtype === '' && count($add_params) === 0) {
+         trigger_error('IDOR token cannot be generated with empty criteria.', E_USER_WARNING);
+         return '';
+      }
+
       $token = "";
       do {
          $token = bin2hex(random_bytes(32));
@@ -1384,8 +1389,21 @@ class Session {
          $idor_data =  $_SESSION['glpiidortokens'][$token];
          unset($idor_data['expires']);
 
-         // check all stored data for the idor token are present (and identifical) in the posted data
-         $match_expected = function ($expected, $given) use (&$match_expected) {
+            // Ensure that `displaywith` and `condition` is checked if passed in data
+            $mandatory_properties = [
+               'displaywith' => [],
+               'condition'   => [],
+           ];
+           foreach ($mandatory_properties as $property_name => $default_value) {
+               if (!array_key_exists($property_name, $data)) {
+                   $data[$property_name] = $default_value;
+               }
+               if (!array_key_exists($property_name, $idor_data)) {
+                   $idor_data[$property_name] = $default_value;
+               }
+           }
+
+          // check all stored data for the idor token are present (and identical) in the posted data         $match_expected = function ($expected, $given) use (&$match_expected) {
             if (is_array($expected)) {
                if (!is_array($given)) {
                   return false;
