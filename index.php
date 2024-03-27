@@ -125,10 +125,13 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
       if ($is_forced && !isset($_GET["noAUTO"]))
          Html::redirect("front/oidc.php");
       echo "<form method='post' action='./index.php'>";
+      if (isset($_GET['redirect'])) {
+         echo "<input type='hidden' name='redirect' value='".Html::entities_deep($_GET['redirect'])."'/>";
+      }
       echo "<p class='login_input'><input type='submit' name='login_oidc' value='".__('SSO Login')."' class='submit'></p>";
       echo "<p class='login_input'><hr style='width:30%'></p>";
       if (isset($_POST["login_oidc"])) {
-         Html::redirect("front/oidc.php");
+         Html::redirect("front/oidc.php" . (isset($_POST['redirect']) ? "?redirect=".Html::entities_deep($_POST['redirect']) : ""));
       }
       Html::closeForm();
    }

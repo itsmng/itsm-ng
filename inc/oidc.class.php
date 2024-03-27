@@ -71,6 +71,16 @@ class Oidc extends CommonDBTM
       if (isset($oidc_db['cert']) && $oidc_db['proxy'] != '' && file_exists($oidc_db['cert'])) {
          $oidc->setCertPath($oidc_db['cert']);
       }
+      if (isset($_REQUEST['redirect'])) {
+         if (isset($_SERVER['HTTPS'])) {
+            $redirect = 'https://';
+         } else {
+            $redirect = 'http://';
+         }
+         $redirect .= $_SERVER['SERVER_NAME'] 
+            . $CFG_GLPI['root_doc'] . '/front/oidc.php?redirect=' . $_REQUEST['redirect'];
+         $oidc->setRedirectURL($redirect);
+      }
       $oidc->setHttpUpgradeInsecureRequests(false);
       try {
          $oidc->authenticate();
@@ -156,7 +166,7 @@ class Oidc extends CommonDBTM
       Session::init($auth);
       $_SESSION['itsm_is_oidc'] = 1;
       $_SESSION['itsm_oidc_idtoken'] = $oidc->getIdToken();
-      Auth::redirectIfAuthenticated();
+      Auth::redirectIfAuthenticated($_REQUEST['redirect']);
    }
 
    /**
