@@ -1389,21 +1389,22 @@ class Session {
          $idor_data =  $_SESSION['glpiidortokens'][$token];
          unset($idor_data['expires']);
 
-            // Ensure that `displaywith` and `condition` is checked if passed in data
-            $mandatory_properties = [
-               'displaywith' => [],
-               'condition'   => [],
-           ];
-           foreach ($mandatory_properties as $property_name => $default_value) {
-               if (!array_key_exists($property_name, $data)) {
-                   $data[$property_name] = $default_value;
-               }
-               if (!array_key_exists($property_name, $idor_data)) {
-                   $idor_data[$property_name] = $default_value;
-               }
-           }
+         // Ensure that `displaywith` and `condition` is checked if passed in data
+         $mandatory_properties = [
+            'displaywith' => [],
+            'condition'   => [],
+         ];
+         foreach ($mandatory_properties as $property_name => $default_value) {
+            if (!array_key_exists($property_name, $data)) {
+               $data[$property_name] = $default_value;
+            }
+            if (!array_key_exists($property_name, $idor_data)) {
+               $idor_data[$property_name] = $default_value;
+            }
+         }
 
-          // check all stored data for the idor token are present (and identical) in the posted data         $match_expected = function ($expected, $given) use (&$match_expected) {
+          // check all stored data for the idor token are present (and identical) in the posted data
+         $match_expected = function ($expected, $given) use (&$match_expected) {
             if (is_array($expected)) {
                if (!is_array($given)) {
                   return false;
