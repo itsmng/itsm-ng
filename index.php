@@ -122,8 +122,9 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
    }
 
    if (isset($is_activate) && $is_activate) {
-      if ($is_forced && !isset($_GET["noAUTO"]))
-         Html::redirect("front/oidc.php");
+      if ($is_forced && !isset($_GET["noAUTO"])) {
+         Html::redirect("front/oidc.php" . (isset($_GET['redirect']) ? "?redirect=".Html::entities_deep($_GET['redirect']) : ""));
+      }
       echo "<form method='post' action='./index.php'>";
       if (isset($_GET['redirect'])) {
          echo "<input type='hidden' name='redirect' value='".Html::entities_deep($_GET['redirect'])."'/>";
