@@ -1671,21 +1671,23 @@ class Auth extends CommonGLPI {
             'is_forced'  => $_POST["forceoidc"],
             'scope'  => $_POST["scope"],
             'proxy'  => $_POST["proxy"],
-            'cert'  => $_POST["cert"]
+            'cert'  => $_POST["cert"],
+            'logout'  => $_POST["logout"],
          ];
         $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
       }
       $criteria = "SELECT * FROM glpi_oidc_config";
       $iterators = $DB->request($criteria);
       foreach($iterators as $iterator) {
-          $oidc_db['Provider'] = $iterator['Provider'];
-          $oidc_db['ClientID'] = $iterator['ClientID'];
-          $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
-          $oidc_db['is_activate'] = $iterator['is_activate'];
-          $oidc_db['is_forced'] = $iterator['is_forced'];
-          $oidc_db['scope'] = $iterator['scope'];
-          $oidc_db['proxy'] = $iterator['proxy'];
-          $oidc_db['cert'] = $iterator['cert'];
+         $oidc_db['Provider'] = $iterator['Provider'];
+         $oidc_db['ClientID'] = $iterator['ClientID'];
+         $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
+         $oidc_db['is_activate'] = $iterator['is_activate'];
+         $oidc_db['is_forced'] = $iterator['is_forced'];
+         $oidc_db['scope'] = $iterator['scope'];
+         $oidc_db['proxy'] = $iterator['proxy'];
+         $oidc_db['cert'] = $iterator['cert'];
+         $oidc_db['logout'] = $iterator['logout'];
       }
       
 
@@ -1769,6 +1771,15 @@ class Auth extends CommonGLPI {
        echo "<input type='text' id='cert' name='cert' placeholder='/path/to/my.cert'>";
    }
       echo "</td></tr>";
+
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __('Logout URL') . "</td>";
+      echo "<td>";
+   if (isset($oidc_db['logout'])) {
+       echo "<input type='text' id='logout' name='logout'value=". str_replace(' ', '', $oidc_db['logout']) .">";
+   } else {
+       echo "<input type='text' id='logout' name='logout' placeholder='https://logout.url'>";
+   }
       
       echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
       echo "<input type='submit' name='update' class='submit' value=\"".__s('Save')."\">" . '&nbsp;';
