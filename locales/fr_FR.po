@@ -23555,3 +23555,11 @@ msgstr "Changer le zoom"
 #: inc/profile.class.php:1771
 msgid "Use shortcuts"
 msgstr "Utiliser les raccourcis"
+
+#: inc/auth.class.php:1776
+msgid "Logout URL"
+msgstr "URL de déconnexion"
+
+#: inc/oidc.class.php:149
+msgid "Could not access user from mappings"
+msgstr "Impossible d'accéder à l'utilisateur depuis les mappages"
