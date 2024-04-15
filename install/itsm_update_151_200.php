@@ -45,39 +45,24 @@ function update151to200() : bool {
     $migration->displayTitle(sprintf(__('Update to %s'), '2.0.0_rc3'));
     $migration->setVersion('2.0.0_rc3');
 
-    if(!$DB->fieldExists('glpi_users', 'menu_favorite')) {
-        $query = "alter table glpi_users add column menu_favorite longtext default '{}';";
-        $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
+    $userModifications = [
+        'menu_favorite' => "longtext default '{}'",
+        'menu_favorite_on' => "text default '1'",
+        'menu_position' => "text default 'menu-left'",
+        'menu_small' => "text default 'false'",
+        'menu_width' => "text default 'null'",
+        'menu_open' => "longtext default '[]'",
+        'bubble_pos' => "text default 'null'",
+        'accessibility_menu' => "tinyint(1) default '0'",
+    ];
+    foreach ($userModifications as $field => $definition) {
+        if (!$DB->fieldExists('glpi_users', $field)) {
+            $migration->addField('glpi_users', $field, $definition);
+        }
     }
 
-    if(!$DB->fieldExists('glpi_users', 'menu_favorite_on')) {
-        $query = "alter table glpi_users add column menu_favorite_on text default '1';";
-        $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
-    }
-
-    if(!$DB->fieldExists('glpi_users', 'menu_position')) {
-        $query = "alter table glpi_users add column menu_position text default 'menu-left';";
-        $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
-    }
-
-    if(!$DB->fieldExists('glpi_users', 'menu_small')) {
-        $query = "alter table glpi_users add column menu_small text default 'false';";
-        $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
-    }
-
-    if(!$DB->fieldExists('glpi_users', 'menu_width')) {
-        $query = "alter table glpi_users add column menu_width text default 'null';";
-        $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
-    }
-
-    if(!$DB->fieldExists('glpi_users', 'menu_open')) {
-        $query = "alter table glpi_users add column menu_open longtext default '[]';";
-        $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
-    }
-
-    if(!$DB->fieldExists('glpi_users', 'bubble_pos')) {
-        $query = "alter table glpi_users add column bubble_pos text default NULL;";
-        $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
+    if (!$DB->fieldExists('glpi_oidc_config', $field)) {
+        $migration->addField('glpi_oidc_config', 'logout', 'VARCHAR(255) NULL');
     }
 
     if (!$DB->tableExists('glpi_user_menu')) {
@@ -104,10 +89,6 @@ function update151to200() : bool {
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
         ";
         $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_dashboards".$DB->error());
-    }
-
-    if (!$DB->fieldExists('glpi_oidc_config', 'logout')) {
-        $migration->addField('glpi_oidc_config', 'logout', 'VARCHAR(255) NULL');
     }
 
     // ************ Keep it at the end **************

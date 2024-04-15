@@ -36,7 +36,7 @@ use Glpi\Toolbox\URL;
 use ScssPhp\ScssPhp\Compiler;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -45,54 +45,54 @@ if (!defined('GLPI_ROOT')) {
  **/
 class Html
 {
-   static private $css = [
-      'vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css',
-      'css/bootstrap-select.min.css',
-      'node_modules/@jarstone/dselect/dist/css/dselect.min.css',
-      "node_modules/jquery-ui-dist/jquery-ui.min.css",
-      'node_modules/@fortawesome/fontawesome-free/css/all.css',
-      'css/jstree-glpi.css',
+    static private $css = [
+        'vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css',
+        'css/bootstrap-select.min.css',
+        'node_modules/@jarstone/dselect/dist/css/dselect.min.css',
+        "node_modules/jquery-ui-dist/jquery-ui.min.css",
+        'node_modules/@fortawesome/fontawesome-free/css/all.css',
+        'css/jstree-glpi.css',
    ];
 
-   static private $scss = [
-      'css/styles',
-      'css/itsm2.scss',
+    static private $scss = [
+        'css/styles',
+        'css/itsm2.scss',
    ];
 
-   static private $js = [
-      "node_modules/jquery-ui-dist/jquery-ui.min.js",
-      "vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js",
-      "node_modules/tableexport.jquery.plugin/tableExport.min.js",
-      "vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js",
-      "vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js",
-      "node_modules/@jarstone/dselect/dist/js/dselect.min.js",
-      "src/ngFunctions.js",
+    static private $js = [
+        "node_modules/jquery-ui-dist/jquery-ui.min.js",
+        "vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js",
+        "node_modules/tableexport.jquery.plugin/tableExport.min.js",
+        "vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js",
+        "vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js",
+        "node_modules/@jarstone/dselect/dist/js/dselect.min.js",
+        "src/ngFunctions.js",
 
    ];
 
-   static private function getFilePath($file, $isScss = false)
-   {
-      global $CFG_GLPI;
-      return $CFG_GLPI['root_doc'] . ($isScss ? '/front/css.php?file=' : '/') . $file;
+    static private function getFilePath($file, $isScss = false)
+    {
+        global $CFG_GLPI;
+        return $CFG_GLPI['root_doc'] . ($isScss ? '/front/css.php?file=' : '/') . $file;
    }
 
    static public function getCss()
    {
-      $allCss = [];
-      foreach (self::$css as $file) {
-         $allCss[] = self::getFilePath($file);
+       $allCss = [];
+       foreach (self::$css as $file) {
+           $allCss[] = self::getFilePath($file);
       }
       foreach (self::$scss as $file) {
-         $allCss[] = self::getFilePath($file, true);
+          $allCss[] = self::getFilePath($file, true);
       }
       return $allCss;
    }
 
    static public function getJs()
    {
-      $allJs = [];
-      foreach (self::$js as $file) {
-         $allJs[] = self::getFilePath($file);
+       $allJs = [];
+       foreach (self::$js as $file) {
+           $allJs[] = self::getFilePath($file);
       }
       return $allJs;
    }
@@ -109,39 +109,39 @@ class Html
     **/
    static function clean($value, $striptags = true, $keep_bad = 2)
    {
-      $value = Html::entity_decode_deep($value);
+       $value = Html::entity_decode_deep($value);
 
-      // Change <email@domain> to email@domain so it is not removed by htmLawed
-      // Search for strings that is an email surrounded by `<` and `>` but that cannot be an HTML tag:
-      // - absence of quotes indicate that values is not part of an HTML attribute,
-      // - absence of > ensure that ending `>` has not been reached.
-      $regex = "/(<[^\"'>]+?@[^>\"']+?>)/";
-      $value = preg_replace_callback($regex, function ($matches) {
-         return substr($matches[1], 1, (strlen($matches[1]) - 2));
+       // Change <email@domain> to email@domain so it is not removed by htmLawed
+       // Search for strings that is an email surrounded by `<` and `>` but that cannot be an HTML tag:
+       // - absence of quotes indicate that values is not part of an HTML attribute,
+       // - absence of > ensure that ending `>` has not been reached.
+       $regex = "/(<[^\"'>]+?@[^>\"']+?>)/";
+       $value = preg_replace_callback($regex, function ($matches) {
+           return substr($matches[1], 1, (strlen($matches[1]) - 2));
       }, $value);
 
       // Clean MS office tags
       $value = str_replace(["<![if !supportLists]>", "<![endif]>"], '', $value);
 
       if ($striptags) {
-         // Strip ToolTips
-         $specialfilter = [
-            '@<div[^>]*?tooltip_picture[^>]*?>.*?</div[^>]*?>@si',
-            '@<div[^>]*?tooltip_text[^>]*?>.*?</div[^>]*?>@si',
-            '@<div[^>]*?tooltip_picture_border[^>]*?>.*?</div[^>]*?>@si',
-            '@<div[^>]*?invisible[^>]*?>.*?</div[^>]*?>@si'
+          // Strip ToolTips
+          $specialfilter = [
+              '@<div[^>]*?tooltip_picture[^>]*?>.*?</div[^>]*?>@si',
+              '@<div[^>]*?tooltip_text[^>]*?>.*?</div[^>]*?>@si',
+              '@<div[^>]*?tooltip_picture_border[^>]*?>.*?</div[^>]*?>@si',
+              '@<div[^>]*?invisible[^>]*?>.*?</div[^>]*?>@si'
          ];
-         $value         = preg_replace($specialfilter, '', $value);
+          $value         = preg_replace($specialfilter, '', $value);
 
-         $value = preg_replace("/<(p|br|div)( [^>]*)?" . ">/i", "\n", $value);
-         $value = preg_replace("/(&nbsp;| |\xC2\xA0)+/", " ", $value);
+          $value = preg_replace("/<(p|br|div)( [^>]*)?" . ">/i", "\n", $value);
+          $value = preg_replace("/(&nbsp;| |\xC2\xA0)+/", " ", $value);
       }
 
       $search = [
-         '@<script[^>]*?>.*?</script[^>]*?>@si', // Strip out javascript
-         '@<style[^>]*?>.*?</style[^>]*?>@si', // Strip out style
-         '@<title[^>]*?>.*?</title[^>]*?>@si', // Strip out title
-         '@<!DOCTYPE[^>]*?>@si', // Strip out !DOCTYPE
+          '@<script[^>]*?>.*?</script[^>]*?>@si', // Strip out javascript
+          '@<style[^>]*?>.*?</style[^>]*?>@si', // Strip out style
+          '@<title[^>]*?>.*?</title[^>]*?>@si', // Strip out title
+          '@<!DOCTYPE[^>]*?>@si', // Strip out !DOCTYPE
       ];
       $value = preg_replace($search, '', $value);
 
@@ -151,7 +151,7 @@ class Html
       $config = Toolbox::getHtmLawedSafeConfig();
       $config['keep_bad'] = $keep_bad; // 1: neutralize tag and content, 2 : remove tag and neutralize content
       if ($striptags) {
-         $config['elements'] = 'none';
+          $config['elements'] = 'none';
       }
 
       $value = htmLawed($value, $config);
@@ -159,10 +159,10 @@ class Html
       // Special case : remove the 'denied:' for base64 img in case the base64 have characters
       // combinaison introduce false positive
       foreach (['png', 'gif', 'jpg', 'jpeg'] as $imgtype) {
-         $value = str_replace(
-            'src="denied:data:image/' . $imgtype . ';base64,',
-            'src="data:image/' . $imgtype . ';base64,',
-            $value
+          $value = str_replace(
+              'src="denied:data:image/' . $imgtype . ';base64,',
+              'src="data:image/' . $imgtype . ';base64,',
+              $value
          );
       }
 
@@ -183,8 +183,8 @@ class Html
    static function entity_decode_deep($value)
    {
 
-      return (is_array($value) ? array_map([__CLASS__, 'entity_decode_deep'], $value)
-         : html_entity_decode($value, ENT_QUOTES, "UTF-8"));
+       return (is_array($value) ? array_map([__CLASS__, 'entity_decode_deep'], $value)
+           : html_entity_decode($value, ENT_QUOTES, "UTF-8"));
    }
 
 
@@ -198,8 +198,8 @@ class Html
    static function entities_deep($value)
    {
 
-      return (is_array($value) ? array_map([__CLASS__, 'entities_deep'], $value)
-         : htmlentities($value, ENT_QUOTES, "UTF-8"));
+       return (is_array($value) ? array_map([__CLASS__, 'entities_deep'], $value)
+           : htmlentities($value, ENT_QUOTES, "UTF-8"));
    }
 
 
@@ -216,39 +216,39 @@ class Html
    static function convDate($time, $format = null)
    {
 
-      if (is_null($time) || trim($time) == '' || in_array($time, ['NULL', '0000-00-00', '0000-00-00 00:00:00'])) {
-         return null;
+       if (is_null($time) || trim($time) == '' || in_array($time, ['NULL', '0000-00-00', '0000-00-00 00:00:00'])) {
+           return null;
       }
 
       if (!isset($_SESSION["glpidate_format"])) {
-         $_SESSION["glpidate_format"] = 0;
+          $_SESSION["glpidate_format"] = 0;
       }
       if (!$format) {
-         $format = $_SESSION["glpidate_format"];
+          $format = $_SESSION["glpidate_format"];
       }
 
       try {
-         $date = new \DateTime($time);
+          $date = new \DateTime($time);
       } catch (\Exception $e) {
-         Toolbox::logWarning("Invalid date $time!");
-         Session::addMessageAfterRedirect(
-            sprintf(
-               __('%1$s %2$s'),
-               $time,
-               _x('adjective', 'Invalid')
+          Toolbox::logWarning("Invalid date $time!");
+          Session::addMessageAfterRedirect(
+              sprintf(
+                  __('%1$s %2$s'),
+                  $time,
+                  _x('adjective', 'Invalid')
             )
          );
-         return $time;
+          return $time;
       }
       $mask = 'Y-m-d';
 
       switch ($format) {
-         case 1: // DD-MM-YYYY
-            $mask = 'd-m-Y';
-            break;
-         case 2: // MM-DD-YYYY
-            $mask = 'm-d-Y';
-            break;
+      case 1: // DD-MM-YYYY
+          $mask = 'd-m-Y';
+          break;
+      case 2: // MM-DD-YYYY
+          $mask = 'm-d-Y';
+          break;
       }
 
       return $date->format($mask);
@@ -266,8 +266,8 @@ class Html
    static function convDateTime($time, $format = null)
    {
 
-      if (is_null($time) || ($time == 'NULL')) {
-         return null;
+       if (is_null($time) || ($time == 'NULL')) {
+           return null;
       }
 
       return self::convDate($time, $format) . ' ' . substr($time, 11, 5);
@@ -283,7 +283,7 @@ class Html
     **/
    static function cleanInputText($string)
    {
-      return preg_replace('/\'/', '&apos;', preg_replace('/\"/', '&quot;', $string ?? ''));
+       return preg_replace('/\'/', '&apos;', preg_replace('/\"/', '&quot;', $string ?? ''));
    }
 
 
@@ -297,8 +297,8 @@ class Html
    static function cleanParametersURL($url)
    {
 
-      $url = preg_replace("/(\/[0-9a-zA-Z\.\-\_]+\.php).*/", "$1", $url);
-      return preg_replace("/\?.*/", "", $url);
+       $url = preg_replace("/(\/[0-9a-zA-Z\.\-\_]+\.php).*/", "$1", $url);
+       return preg_replace("/\?.*/", "", $url);
    }
 
 
@@ -312,8 +312,8 @@ class Html
    static function nl2br_deep($value)
    {
 
-      return (is_array($value) ? array_map([__CLASS__, 'nl2br_deep'], $value)
-         : nl2br($value));
+       return (is_array($value) ? array_map([__CLASS__, 'nl2br_deep'], $value)
+           : nl2br($value));
    }
 
 
@@ -328,8 +328,8 @@ class Html
    static function resume_text($string, $length = 255)
    {
 
-      if (Toolbox::strlen($string) > $length) {
-         $string = Toolbox::substr($string, 0, $length) . "&nbsp;(...)";
+       if (Toolbox::strlen($string) > $length) {
+           $string = Toolbox::substr($string, 0, $length) . "&nbsp;(...)";
       }
 
       return $string;
@@ -347,8 +347,8 @@ class Html
    static function resume_name($string, $length = 255)
    {
 
-      if (strlen($string) > $length) {
-         $string = Toolbox::substr($string, 0, $length) . "...";
+       if (strlen($string) > $length) {
+           $string = Toolbox::substr($string, 0, $length) . "...";
       }
 
       return $string;
@@ -365,25 +365,25 @@ class Html
    static function cleanPostForTextArea($value)
    {
 
-      if (is_array($value)) {
-         $methodName = __METHOD__;
-         return array_map(function($item) use ($methodName) {
-            return $methodName($item);
+       if (is_array($value)) {
+           $methodName = __METHOD__;
+           return array_map(function($item) use ($methodName) {
+               return $methodName($item);
          }, $value);
       }
       $order   = [
-         '\r\n',
-         '\n',
-         "\\'",
-         '\"',
-         '\\\\'
+          '\r\n',
+          '\n',
+          "\\'",
+          '\"',
+          '\\\\'
       ];
       $replace = [
-         "\n",
-         "\n",
-         "'",
-         '"',
-         "\\"
+          "\n",
+          "\n",
+          "'",
+          '"',
+          "\\"
       ];
       return str_replace($order, $replace, $value);
    }
@@ -400,42 +400,42 @@ class Html
     **/
    static function formatNumber($number, $edit = false, $forcedecimal = -1)
    {
-      global $CFG_GLPI;
+       global $CFG_GLPI;
 
-      // Php 5.3 : number_format() expects parameter 1 to be double,
-      if ($number == "") {
-         $number = 0;
+       // Php 5.3 : number_format() expects parameter 1 to be double,
+       if ($number == "") {
+           $number = 0;
       } else if ($number == "-") { // used for not defines value (from Infocom::Amort, p.e.)
-         return "-";
+          return "-";
       }
 
       $number  = doubleval($number);
       $decimal = $CFG_GLPI["decimal_number"];
       if ($forcedecimal >= 0) {
-         $decimal = $forcedecimal;
+          $decimal = $forcedecimal;
       }
 
       // Edit : clean display for mysql
       if ($edit) {
-         return number_format($number, $decimal, '.', '');
+          return number_format($number, $decimal, '.', '');
       }
 
       // Display : clean display
       switch ($_SESSION['glpinumber_format']) {
-         case 0: // French
-            return str_replace(' ', '&nbsp;', number_format($number, $decimal, '.', ' '));
+      case 0: // French
+          return str_replace(' ', '&nbsp;', number_format($number, $decimal, '.', ' '));
 
-         case 2: // Other French
-            return str_replace(' ', '&nbsp;', number_format($number, $decimal, ',', ' '));
+      case 2: // Other French
+          return str_replace(' ', '&nbsp;', number_format($number, $decimal, ',', ' '));
 
-         case 3: // No space with dot
-            return number_format($number, $decimal, '.', '');
+      case 3: // No space with dot
+          return number_format($number, $decimal, '.', '');
 
-         case 4: // No space with comma
-            return number_format($number, $decimal, ',', '');
+      case 4: // No space with comma
+          return number_format($number, $decimal, ',', '');
 
-         default: // English
-            return number_format($number, $decimal, '.', ',');
+      default: // English
+          return number_format($number, $decimal, '.', ',');
       }
    }
 
@@ -452,61 +452,61 @@ class Html
    static function timestampToString($time, $display_sec = true, $use_days = true)
    {
 
-      $time = (float)$time;
+       $time = (float)$time;
 
-      $sign = '';
-      if ($time < 0) {
-         $sign = '- ';
-         $time = abs($time);
+       $sign = '';
+       if ($time < 0) {
+           $sign = '- ';
+           $time = abs($time);
       }
       $time = floor($time);
 
       // Force display seconds if time is null
       if ($time < MINUTE_TIMESTAMP) {
-         $display_sec = true;
+          $display_sec = true;
       }
 
       $units = Toolbox::getTimestampTimeUnits($time);
       if ($use_days) {
-         if ($units['day'] > 0) {
-            if ($display_sec) {
-               //TRANS: %1$s is the sign (-or empty), %2$d number of days, %3$d number of hours,
-               //       %4$d number of minutes, %5$d number of seconds
-               return sprintf(
-                  __('%1$s%2$d days %3$d hours %4$d minutes %5$d seconds'),
-                  $sign,
-                  $units['day'],
-                  $units['hour'],
-                  $units['minute'],
-                  $units['second']
+          if ($units['day'] > 0) {
+              if ($display_sec) {
+                  //TRANS: %1$s is the sign (-or empty), %2$d number of days, %3$d number of hours,
+                  //       %4$d number of minutes, %5$d number of seconds
+                  return sprintf(
+                      __('%1$s%2$d days %3$d hours %4$d minutes %5$d seconds'),
+                      $sign,
+                      $units['day'],
+                      $units['hour'],
+                      $units['minute'],
+                      $units['second']
                );
             }
             //TRANS:  %1$s is the sign (-or empty), %2$d number of days, %3$d number of hours,
             //        %4$d number of minutes
             return sprintf(
-               __('%1$s%2$d days %3$d hours %4$d minutes'),
-               $sign,
-               $units['day'],
-               $units['hour'],
-               $units['minute']
+                __('%1$s%2$d days %3$d hours %4$d minutes'),
+                $sign,
+                $units['day'],
+                $units['hour'],
+                $units['minute']
             );
          }
       } else {
-         if ($units['day'] > 0) {
-            $units['hour'] += 24 * $units['day'];
+          if ($units['day'] > 0) {
+              $units['hour'] += 24 * $units['day'];
          }
       }
 
       if ($units['hour'] > 0) {
-         if ($display_sec) {
-            //TRANS:  %1$s is the sign (-or empty), %2$d number of hours, %3$d number of minutes,
-            //        %4$d number of seconds
-            return sprintf(
-               __('%1$s%2$d hours %3$d minutes %4$d seconds'),
-               $sign,
-               $units['hour'],
-               $units['minute'],
-               $units['second']
+          if ($display_sec) {
+              //TRANS:  %1$s is the sign (-or empty), %2$d number of hours, %3$d number of minutes,
+              //        %4$d number of seconds
+              return sprintf(
+                  __('%1$s%2$d hours %3$d minutes %4$d seconds'),
+                  $sign,
+                  $units['hour'],
+                  $units['minute'],
+                  $units['second']
             );
          }
          //TRANS: %1$s is the sign (-or empty), %2$d number of hours, %3$d number of minutes
@@ -514,29 +514,29 @@ class Html
       }
 
       if ($units['minute'] > 0) {
-         if ($display_sec) {
-            //TRANS:  %1$s is the sign (-or empty), %2$d number of minutes,  %3$d number of seconds
-            return sprintf(
-               __('%1$s%2$d minutes %3$d seconds'),
-               $sign,
-               $units['minute'],
-               $units['second']
+          if ($display_sec) {
+              //TRANS:  %1$s is the sign (-or empty), %2$d number of minutes,  %3$d number of seconds
+              return sprintf(
+                  __('%1$s%2$d minutes %3$d seconds'),
+                  $sign,
+                  $units['minute'],
+                  $units['second']
             );
          }
          //TRANS: %1$s is the sign (-or empty), %2$d number of minutes
          return sprintf(
-            _n('%1$s%2$d minute', '%1$s%2$d minutes', $units['minute']),
-            $sign,
-            $units['minute']
+             _n('%1$s%2$d minute', '%1$s%2$d minutes', $units['minute']),
+             $sign,
+             $units['minute']
          );
       }
 
       if ($display_sec) {
-         //TRANS:  %1$s is the sign (-or empty), %2$d number of seconds
-         return sprintf(
-            _n('%1$s%2$s second', '%1$s%2$s seconds', $units['second']),
-            $sign,
-            $units['second']
+          //TRANS:  %1$s is the sign (-or empty), %2$d number of seconds
+          return sprintf(
+              _n('%1$s%2$s second', '%1$s%2$s seconds', $units['second']),
+              $sign,
+              $units['second']
          );
       }
       return '';
@@ -553,22 +553,22 @@ class Html
    static function timestampToCsvString($time)
    {
 
-      if ($time < 0) {
-         $time = abs($time);
+       if ($time < 0) {
+           $time = abs($time);
       }
       $time = floor($time);
 
       $units = Toolbox::getTimestampTimeUnits($time);
 
       if ($units['day'] > 0) {
-         $units['hour'] += 24 * $units['day'];
+          $units['hour'] += 24 * $units['day'];
       }
 
       return str_pad($units['hour'], 2, '0', STR_PAD_LEFT)
-         . ':'
-         . str_pad($units['minute'], 2, '0', STR_PAD_LEFT)
-         . ':'
-         . str_pad($units['second'], 2, '0', STR_PAD_LEFT);
+          . ':'
+          . str_pad($units['minute'], 2, '0', STR_PAD_LEFT)
+          . ':'
+          . str_pad($units['second'], 2, '0', STR_PAD_LEFT);
    }
 
 
@@ -582,8 +582,8 @@ class Html
    static function weblink_extract($value)
    {
 
-      $value = preg_replace('/<a\s+href\="([^"]+)"[^>]*>[^<]*<\/a>/i', "$1", $value);
-      return $value;
+       $value = preg_replace('/<a\s+href\="([^"]+)"[^>]*>[^<]*<\/a>/i', "$1", $value);
+       return $value;
    }
 
 
@@ -594,7 +594,7 @@ class Html
     **/
    static function back()
    {
-      self::redirect(self::getBackUrl());
+       self::redirect(self::getBackUrl());
    }
 
 
@@ -609,26 +609,26 @@ class Html
    static function redirect($dest, $http_response_code = 302)
    {
 
-      $toadd = '';
-      $dest = addslashes($dest);
+       $toadd = '';
+       $dest = addslashes($dest);
 
-      if (!headers_sent() && !Toolbox::isAjax()) {
-         header("Location: $dest", true, $http_response_code);
-         exit();
+       if (!headers_sent() && !Toolbox::isAjax()) {
+           header("Location: $dest", true, $http_response_code);
+           exit();
       }
 
       if (strpos($dest, "?") !== false) {
-         $toadd = '&tokonq=' . Toolbox::getRandomString(5);
+          $toadd = '&tokonq=' . Toolbox::getRandomString(5);
       } else {
-         $toadd = '?tokonq=' . Toolbox::getRandomString(5);
+          $toadd = '?tokonq=' . Toolbox::getRandomString(5);
       }
 
       echo "<script type='text/javascript'>
-            NomNav = navigator.appName;
-            if (NomNav=='Konqueror') {
-               window.location='" . $dest . $toadd . "';
+          NomNav = navigator.appName;
+      if (NomNav=='Konqueror') {
+          window.location='" . $dest . $toadd . "';
             } else {
-               window.location='" . $dest . "';
+                window.location='" . $dest . "';
             }
          </script>";
       exit();
@@ -1913,7 +1913,10 @@ JAVASCRIPT;
             . "/front/"
             . (Session::getCurrentInterface() == 'central' ? 'central' : 'helpdesk.public') . ".php");
       $twig_vars['profileSelect'] = ob_get_clean();
-      $twig_vars['accessibilityMenu'] = Session::haveRight("accessibility", READ);
+
+      $user = new User();
+      $user->getFromDB(Session::getLoginUserID());
+      $twig_vars['accessibilityMenu'] = $user->fields['accessibility_menu'];
 
       $twig_vars['username'] = getUserName(Session::getLoginUserID());
       $twig_vars['main_menu']['args']['access'] = Session::getCurrentInterface();
@@ -7000,12 +7003,12 @@ JAVASCRIPT;
    }
 
    /**
-	* Manage the shortcut js/hotkeys.js
-	*
-	*
-	*/
+    * Manage the shortcut js/hotkeys.js
+    *
+    *
+    */
 
-	static function hotkeys(){
+    static function hotkeys(){
       global $CFG_GLPI;
 
       $user = new User();
@@ -7025,7 +7028,7 @@ JAVASCRIPT;
          }
       }
 
-	}
+    }
 
    /**
     * Return Twig ITSM "bottom" (help, parameters, logout) menu
