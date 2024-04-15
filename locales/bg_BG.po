@@ -21997,6 +21997,10 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr "session_token изглежда невалиден"
 
+#: inc/config.class.php:1252
+msgid "Acessibility menu"
+msgstr ""
+
 #~ msgid "No room found or selected"
 #~ msgstr "Няма намерени или маркирани стаи"
 

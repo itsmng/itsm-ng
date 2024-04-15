@@ -22228,8 +22228,14 @@ msgstr "Position du menu"
 msgid "CSRF token is invalid"
 msgstr "Le CSRF est invalide"
 
-msgid "Favorite"
-msgstr "Favoris"
+#: inc/config.class.php:1252
+#, fuzzy
+#| msgid "Accessibility"
+msgid "Acessibility menu"
+msgstr "Accessibilité"
+
+#~ msgid "Favorite"
+#~ msgstr "Favoris"
 
 #~ msgid "SSO Login"
 #~ msgstr "Connection en SSO"

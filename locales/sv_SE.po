@@ -21904,6 +21904,10 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr ""
 
+#: inc/config.class.php:1252
+msgid "Acessibility menu"
+msgstr ""
+
 #~ msgid "See the catalog of plugins"
 #~ msgstr "Se plugin-katalogen"
 

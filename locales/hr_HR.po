@@ -22445,6 +22445,12 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr "čini se da je parametar session_token nevaljan"
 
+#: inc/config.class.php:1252
+#, fuzzy
+#| msgid "Visibility end date"
+msgid "Acessibility menu"
+msgstr "Završni datum vidljivosti"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Nijedna soba nije pronađena niti odabrana"
 

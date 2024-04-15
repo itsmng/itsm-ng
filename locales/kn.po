@@ -21911,6 +21911,10 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr "ಅಧಿವೇಶನ_ಟೋಕೆನ್ ಅಮಾನ್ಯವಾಗಿದೆ"
 
+#: inc/config.class.php:1252
+msgid "Acessibility menu"
+msgstr ""
+
 #~ msgid "No room found or selected"
 #~ msgstr "ಯಾವುದೇ ಕೊಠಡಿ ಕಂಡುಬಂದಿಲ್ಲ ಅಥವಾ ಆಯ್ಕೆ ಮಾಡಿಲ್ಲ"
 

@@ -22811,6 +22811,12 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr "session_token se nezdá být platný"
 
+#: inc/config.class.php:1252
+#, fuzzy
+#| msgid "Visibility end date"
+msgid "Acessibility menu"
+msgstr "Datum konce viditelnosti"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Nebyly nalezeny nebo označeny žádné místnosti"
 

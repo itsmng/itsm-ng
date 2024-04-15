@@ -21940,6 +21940,12 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr "session_token virker ugyldig"
 
+#: inc/config.class.php:1252
+#, fuzzy
+#| msgid "Visibility end date"
+msgid "Acessibility menu"
+msgstr "Synligheds slutdato"
+
 #~ msgid "See the catalog of plugins"
 #~ msgstr "Se oversigten over udvidelser"
 

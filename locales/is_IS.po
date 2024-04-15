@@ -21869,6 +21869,10 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr ""
 
+#: inc/config.class.php:1252
+msgid "Acessibility menu"
+msgstr ""
+
 #~ msgid "RSS feeds found"
 #~ msgstr "RSS straumur fannst"
 

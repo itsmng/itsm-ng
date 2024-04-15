@@ -21925,6 +21925,12 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr "session_token अमान्य दिखता है"
 
+#: inc/config.class.php:1252
+#, fuzzy
+#| msgid "Visibility end date"
+msgid "Acessibility menu"
+msgstr "दृश्यता समाप्ति तिथि"
+
 #~ msgid "No room found or selected"
 #~ msgstr "कोई कमरा नहीं मिला या चुना गया"
 

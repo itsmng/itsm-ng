@@ -21519,6 +21519,12 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr ""
 
+#: inc/config.class.php:1252
+#, fuzzy
+#| msgid "Visibility end date"
+msgid "Acessibility menu"
+msgstr "可見結束日期"
+
 #, php-format
 #~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
 #~ msgstr "%1$s增加项目%2$s-%3$s：%4$s"
