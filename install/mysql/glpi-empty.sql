@@ -8222,6 +8222,7 @@ CREATE TABLE IF NOT EXISTS `glpi_oidc_config` (
         `ClientSecret` varchar(255) DEFAULT NULL,
         `proxy` varchar(255) DEFAULT NULL,
         `cert` varchar(255) DEFAULT NULL,
+        `logout` varchar(255) DEFAULT NULL,
         `is_activate`   TINYINT(1) NOT NULL DEFAULT 0,
         `is_forced`   TINYINT(1) NOT NULL DEFAULT 0,
         `scope` varchar(255) DEFAULT NULL,

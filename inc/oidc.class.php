@@ -144,6 +144,12 @@ class Oidc extends CommonDBTM
       }
 
       if (!$user->getFromDB($ID)) {
+         Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
+         echo '<div class="center b">';
+         echo __('Could not access user from mappings');
+         echo '<p><a href="' . $CFG_GLPI['root_doc'] . "/index.php" . '">' . __('Log in again') . '</a></p>';
+         echo '</div>';
+         Html::nullFooter();
          die;
       }
 

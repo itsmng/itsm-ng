@@ -22956,3 +22956,15 @@ msgstr ""
 #: inc/auth.class.php:1732
 msgid "Mapping"
 msgstr ""
+
+#: inc/auth.class.php:1732
+msgid "Mapping"
+msgstr ""
+
+#: inc/auth.class.php:1776
+msgid "Logout URL"
+msgstr ""
+
+#: inc/oidc.class.php:149
+msgid "Could not access user from mappings"
+msgstr ""
