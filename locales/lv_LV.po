@@ -22338,6 +22338,12 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr "session_token šķiet nederīga"
 
+#: inc/config.class.php:1252
+#, fuzzy
+#| msgid "Visibility end date"
+msgid "Acessibility menu"
+msgstr "Beigu datums redzams"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Nav atrasta vai izvēlēta istaba"
 

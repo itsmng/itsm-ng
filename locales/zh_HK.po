@@ -21502,3 +21502,7 @@ msgstr ""
 #: inc/includes.php:155
 msgid "CSRF token is invalid"
 msgstr ""
+
+#: inc/config.class.php:1252
+msgid "Acessibility menu"
+msgstr ""

@@ -22068,3 +22068,9 @@ msgstr "Menu position"
 #| msgid "session_token seems invalid"
 msgid "CSRF token is invalid"
 msgstr "session_token seems invalid"
+
+#: inc/config.class.php:1252
+#, fuzzy
+#| msgid "Accessibility"
+msgid "Acessibility menu"
+msgstr "Accessibility"

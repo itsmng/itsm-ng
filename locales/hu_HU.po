@@ -21937,6 +21937,12 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr "session_token érvénytelennek tűnik"
 
+#: inc/config.class.php:1252
+#, fuzzy
+#| msgid "Visibility end date"
+msgid "Acessibility menu"
+msgstr "Láthatóság vége"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Nincs megadott szoba vagy nem található"
 

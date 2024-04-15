@@ -21542,6 +21542,10 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr "Token sesi sepertinya tidak valid"
 
+#: inc/config.class.php:1252
+msgid "Acessibility menu"
+msgstr ""
+
 #~ msgid "No room found or selected"
 #~ msgstr "Tidak ada ruang yang ditemukan atau dipilih"
 

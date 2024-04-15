@@ -21583,6 +21583,12 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr ""
 
+#: inc/config.class.php:1252
+#, fuzzy
+#| msgid "Visibility end date"
+msgid "Acessibility menu"
+msgstr "Dự tính ngày kết thúc"
+
 #~ msgid "See the catalog of plugins"
 #~ msgstr "Thấy danh mục các tiện ích"
 

@@ -21525,6 +21525,12 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr ""
 
+#: inc/config.class.php:1252
+#, fuzzy
+#| msgid "Visibility end date"
+msgid "Acessibility menu"
+msgstr "วันที่สิ้นสุดการแสดงผล"
+
 #~ msgid "No room found or selected"
 #~ msgstr "ไม่พบห้องที่ต้องการหรือที่เลือก"
 

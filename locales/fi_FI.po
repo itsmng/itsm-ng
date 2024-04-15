@@ -21964,6 +21964,12 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr "Istuntotunniste näyttää virheelliseltä"
 
+#: inc/config.class.php:1252
+#, fuzzy
+#| msgid "Visibility end date"
+msgid "Acessibility menu"
+msgstr "Näkyvyyden päättymispäivä"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Tilaa ei löytynyt tai ei valittu"
 

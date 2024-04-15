@@ -22151,6 +22151,12 @@ msgstr ""
 msgid "CSRF token is invalid"
 msgstr "Der Parameter session_token scheint ungültig zu sein"
 
+#: inc/config.class.php:1252
+#, fuzzy
+#| msgid "Visibility end date"
+msgid "Acessibility menu"
+msgstr "Unsichtbar nach"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Keinen Raum gefunden oder ausgewählt"
 
