@@ -1,12 +1,12 @@
 {% from 'macros.twig' import button %}
 
 
-<h3>{{'Checking of the compatibility of your environment with the execution of GLPI'|trans}}</h3>
+<h3>{{"Checking for environment's requirements with the execution of ITSM-NG"|trans}}</h3>
 {% set values = [] %}
 {% for requirement in requirements %}
     {% set values = values|merge([[requirement.title|trans, requirement.validated
         ? '<i class="fas fa-check"></i>' ~ '<p>' ~ 'Checked'|trans ~ '</p>'
-        : '<div class="chip required">' 
+        : '<div class="chip required">'
             ~ (requirement.required ? '<i class="fas fa-times"></i><p>' ~ 'Required'|trans ~ '</p>' : '' )
             ~ '</div><p>'  ~ requirement.message|trans|raw ~ '</p>'
     ]]) %}

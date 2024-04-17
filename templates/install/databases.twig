@@ -1,7 +1,7 @@
 {% from 'macros.twig' import button, table %}
 
 
-<h3>{{'Test of the connection at the database'|trans}}</h3>
+<h3>{{'Testing database connection'|trans}}</h3>
 
 {% if connect_error %}
 
@@ -25,21 +25,21 @@
 
     {% else %}
 
-<p>{{"Database version seems correct (%s) - Perfect!"|trans|format(version)}}</p> 
+<p>{{"Database version seems correct (%s) - Perfect!"|trans|format(version)}}</p>
 <form action='install.php?step=6' method='post'>
 
         {% if action == 'install' %}
-        
+
     <p>{{"Create a new database or use an existing one:"|trans}}</p>
     <input type="text" name="newdatabasename" autocomplete="off">
     <p>{{"Please select a database:"|trans}}</p>
-        
+
         {% elseif action == 'update' %}
-        
+
     <p>{{"Please select the database to update:"|trans}}</p>
-        
+
         {% endif %}
-    
+
     {% include 'table.twig' with {
         fields: {'name': 'name', 'table_count': 'table count', 'creation_date': 'creation date', 'last_update': 'last update'},
         values: databases,
