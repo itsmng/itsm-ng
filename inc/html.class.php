@@ -1453,6 +1453,7 @@ class Html
 
       //  CSS link
       echo Html::scss('css/styles');
+      echo Html::scss('css/itsm2');
       if (isset($_SESSION['glpihighcontrast_css']) && $_SESSION['glpihighcontrast_css']) {
          echo Html::scss('css/highcontrast');
       }
@@ -1554,7 +1555,6 @@ JAVASCRIPT;
       ) {
          echo Html::script('public/lib/scrollable-tabs.js');
       }
-      echo Html::scss('css/itsm2.scss');
       // End of Head
       echo "</head>\n";
       self::glpi_flush();
