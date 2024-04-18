@@ -21858,3 +21858,11 @@ msgstr ""
 #: inc/config.class.php:1252
 msgid "Acessibility menu"
 msgstr ""
+
+#: templates/install/requirements.twig:4
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr ""
+
+#: templates/install/databases.twig: 4
+msgid "Testing database connection"
+msgstr ""

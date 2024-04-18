@@ -1,7 +1,5 @@
-@import 'color';
-
-
 // RUNTIME VARIABLES
+@import "../vendor/twbs/bootstrap/scss/bootstrap.scss";
 :root {
     --header-height: 3.5rem;
     --subheader-height: 4rem;
@@ -13,6 +11,32 @@
     --bubble_pos_y: 50%;
     --table-border-radius: 0;
     --nav-size: 1rem;
+
+    --bs-primary: #0b0624;
+    --bs-secondary: #0e2045;
+
+    --bs-primary-text: #ffffff;
+    --bs-secondary-text: black;
+
+    --bs-header: var(--bs-primary);
+    --bs-header-text: var(--bs-primary-text);
+
+    --bs-nav: var(--bs-secondary);
+    --bs-nav-text: var(--bs-primary-text);
+    --bs-nav-submenu: var(--bs-primary);
+    --bs-nav-hover: var(--bs-secondary);
+
+    --bs-favorite: #ffff00;
+
+    --bs-danger:    #ff5454;
+    --bs-warning:   #ffd34e;
+    --bs-info:      #5998ff;
+
+    --bs-light:    #f8f9fa;
+    --bs-dark:     #343a40;
+
+    --logo-file: url("../pics/fd_logo.png");
+    --logo-file-dark: url("../pics/fd_logo_dark.png");
 }
 
 body {
@@ -25,7 +49,7 @@ p {
 
 a {
     text-decoration: none;
-    color: $primary-color;
+    color: var(--bs-primary);
 }
 
 div#searchbar {
@@ -46,7 +70,7 @@ div#searchbar {
 
     .fa-search {
     background-color: transparent;
-    color: $primary-color;
+    color: var(--bs-primary);
     padding: 10px;
     border-radius: 50%;
     transition: color 0.3s ease;
@@ -55,8 +79,8 @@ div#searchbar {
     }
 
     &:hover .fa-search {
-    background-color: $primary-color;
-    color: $primary-text-color;
+    background-color: var(--bs-primary);
+    color: var(--bs-primary-text);
     }
 }
 
@@ -66,7 +90,7 @@ header {
     justify-content: center;
     align-items: center;
     height: var(--header-height);
-    background-color: $header-background-color;
+    background-color: var(--bs-header);
     z-index: 50;
     font-size: var(--nav-size);
 
@@ -76,8 +100,8 @@ header {
         align-items: center;
     }
 
-    i, li > a span {
-        color: $header-text-color !important;
+    li > a > i, li > a span {
+        color: var(--bs-header-text) !important;
     }
 
 }
@@ -88,6 +112,7 @@ main {
 
 #subheader {
     height: var(--subheader-height);
+    color: var(--bs-primary);
     a {
         font-size: var(--nav-size);
     }
@@ -100,7 +125,7 @@ main {
 #c_logo {
     width: 200px;
     height: 50px;
-    background: $logo-file;
+    background: var(--logo-file);
     background-repeat: no-repeat;
     background-size: auto 50px;
     transition: width var(--nav-transition-time) ease;
@@ -118,7 +143,7 @@ main {
 }
 
 #logo_login {
-    background: $logo-file;
+    background: var(--logo-file);
     background-repeat: no-repeat;
     background-position: center;
     background-size: auto 10rem;
@@ -257,7 +282,7 @@ main {
         position: relative !important;
     }
     .menu-positions {
-        background-color: $nav-background-color;
+        background-color: var(--bs-nav);
         padding: 7px 0;
         padding-right: 0;
         border-radius: 0 30px 30px 0;
@@ -324,7 +349,7 @@ main {
     position: absolute;
     right: -1.2rem;
     cursor: pointer;
-    background: linear-gradient(90deg, transparent 50%, $nav-background-color 50%);
+    background: linear-gradient(90deg, transparent 50%, var(--bs-nav) 50%);
     --_size: 1em;
     height: var(--_size);
     width:  var(--_size);
@@ -333,7 +358,7 @@ main {
     .menu-right & {
         right: auto;
         left: -1.2rem;
-        background: linear-gradient(90deg, $nav-background-color 50%, transparent 50%);
+        background: linear-gradient(90deg, var(--bs-nav) 50%, transparent 50%);
     }
 
     .menu-top & {
@@ -371,7 +396,7 @@ main {
         display: none;
     }
     i {
-        color: $favorite-color;
+        color: var(--bs-favorite);
     }
 
 }
@@ -390,7 +415,7 @@ main {
     --_color: white!important;
     --_border-radius: 50%;
     --_close: -38%;
-    --_background-color: #{$primary-color};
+    --_background-color: #{var(--bs-primary)};
     --_uncenter: 3px;
     >i:first-child {
         right: var(--_close);
@@ -474,7 +499,7 @@ main {
 }
 #menu {
     position: relative;
-    background-color: $nav-background-color;
+    background-color: var(--bs-nav);
     width: var(--nav-open-width);
     transition: width var(--nav-transition-time) ease; // in js resizeWidth
     overflow: visible;
@@ -529,7 +554,7 @@ main {
 .nav-side-menu {
     height: calc(100vh - 3rem - var(--header-height));
     position: relative;
-    color: $nav-text-color;
+    color: var(--bs-nav-text);
     display: flex;
     flex-direction: row;
     justify-content: start;
@@ -560,7 +585,7 @@ main {
         }
 
         &.active, &:hover{
-            background-color: rgba($nav-hover-color, 0.2);
+            background-color: var(--bs-nav-hover);
         }
 
         .menu-close & {
@@ -575,7 +600,7 @@ main {
             height: var(--_size);
             margin-right: 5px;
             // line-height: 1;
-            color: $nav-text-color;
+            color: var(--bs-nav-text);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -685,7 +710,7 @@ main {
                 border-radius: 5px;
 
                 &.active, &:hover{
-                    background-color: $nav-hover-color;
+                    background-color: var(--bs-nav-hover);
                 }
             }
 
@@ -710,14 +735,14 @@ main {
             border-radius: 5px;
             font-size: 0.7em;
             box-sizing: border-box;
-            background-color: rgba($nav-submenu-color, 0.3);
+            background-color: var(--bs-nav-submenu);
 
             .menu-top &{
                 margin: 0;
                 padding: 5px 2px;
                 top: 2.5em;
                 position: absolute;
-                background-color: color-mix(in srgb, rgb(0, 0, 0) 30%, $nav-background-color 70%);
+                background-color: color-mix(in srgb, rgb(0, 0, 0) 30%, var(--bs-nav) 70%);
             }
 
             .menu-close & {
@@ -747,7 +772,7 @@ main {
                     margin-bottom: 5px;
                 }
                 &.active, &:hover{
-                    background-color: $nav-hover-color;
+                    background-color: var(--bs-nav-hover);
                 }
 
                 .menu-top &{
@@ -765,7 +790,7 @@ main {
                     }
                     i {
                         margin-right: 3px;
-                        color: $nav-text-color;
+                        color: var(--bs-nav-text);
 
                         .menu-close & {
                             margin-right: 0px;
@@ -792,7 +817,7 @@ main {
         flex-shrink: 0;
         cursor: url("../src/pics/star.png"), auto;
         &::before {
-            color: $favorite-color;
+            color: var(--bs-favorite);
             display: none;
             font-style: normal;
             font-variant: normal;
@@ -1112,23 +1137,23 @@ div.chip>p {
 
         input {
             height: 100%;
-            border: 1px solid $primary-color !important;
+            border: 1px solid var(--bs-primary) !important;
             border-radius: 3px !important;
         }
     }
 }
 
 #firstboxlogin {
-    background-color: $header-background-color;
+    background-color: var(--bs-header);
 }
 
 
 #text-login, #logo_login {
-    background-color: $nav-background-color;
+    background-color: var(--bs-nav);
 }
 
 .login_input i {
-    color: $primary-text-color;
+    color: var(--bs-primary-text);
 }
 
 #searchcriteria {
@@ -1142,12 +1167,12 @@ div.chip>p {
 
     .search_actions {
         span {
-            background: $secondary-color;
-            color: $primary-text-color;
+            background: var(--bs-secondary);
+            color: var(--bs-primary-text);
         }
         input[type="submit"] {
-            background: $primary-color;
-            color: $primary-text-color;
+            background: var(--bs-primary);
+            color: var(--bs-primary-text);
         }
     }
 }
@@ -1216,8 +1241,8 @@ div.chip>p {
     padding: 0;
 
     .ui-dialog-titlebar {
-        background-color: $header-background-color;
-        color: $header-text-color;
+        background-color: var(--bs-header);
+        color: var(--bs-header-text);
         border: 0;
         border-radius: .5rem .5rem 0 0;
         width: 100%;
@@ -1230,7 +1255,7 @@ div.chip>p {
 }
 
 #logo_bloc {
-    background: $logo-file;
+    background: var(--logo-file);
     filter: invert(100%);
     margin: 1rem auto;
     background-repeat: no-repeat;
@@ -1250,8 +1275,8 @@ div.chip>p {
     overflow: hidden;
     margin-bottom: 1rem;
     thead {
-        background: $header-background-color;
-        color: $header-text-color;
+        background: var(--bs-header);
+        color: var(--bs-header-text);
     }
 }
 
