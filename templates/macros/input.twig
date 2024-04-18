@@ -133,12 +133,28 @@
         jsonData = JSON.parse(data);
         $("#ActorSelector_{{rand}}").empty();
         for (const key in jsonData) {
-          $("#ActorSelector_{{rand}}").append(
-            $("<option>", {
-              value: key,
-              text: jsonData[key],
-            })
-          );
+          if (typeof jsonData[key] === "object") {
+              let optgroup = $("#ActorSelector_{{rand}}").append(
+                $("<optgroup>", {
+                  label: key,
+                })
+              );
+              for (const subkey in jsonData[key]) {
+                optgroup.append(
+                  $("<option>", {
+                    value: subkey,
+                    text: jsonData[key][subkey],
+                  })
+                );
+              }
+          } else {
+              $("#ActorSelector_{{rand}}").append(
+                $("<option>", {
+                  value: key,
+                  text: jsonData[key],
+                })
+              );
+          }
         }
       },
     });
@@ -234,7 +250,7 @@
               }
               $('#hiddenInputForFiles{{rand}}').val(data);
           }
-      });    
+      });
   })
   </script>
 {% endmacro %}
@@ -269,7 +285,7 @@
             }
             $('#hiddenInputForFiles{{rand}}').val(data);
         }
-      });    
+      });
     })
   </script>
 {% endmacro %}
@@ -298,7 +314,7 @@
 {% endmacro %}
 {% macro datetime(attributes) %}
   {% set rand=random() %}
-  <input class='form-control' step="1" {% if not attributes.id %} id={{rand}} {% endif %} 
+  <input class='form-control' step="1" {% if not attributes.id %} id={{rand}} {% endif %}
     {% for name, value in attributes %} {{name}}="{{value|replace({' ': 'T'})}}" {% endfor %}/>
   <input type="hidden" name="{{attributes.name}}" value="{{attributes.value|default("")|raw}}" />
   <script>
@@ -337,9 +353,9 @@
                 {% endfor %}
                 {% for name, value in inputs|filter((v, k) => k != 'id') %}
                   {% if value.title is not defined %}
-                    {{value|raw}} 
+                    {{value|raw}}
                   {% elseif name %}
-                    {{value.title|raw}} 
+                    {{value.title|raw}}
                   {% endif %}
                 {% endfor %}
               </td>
@@ -432,7 +448,7 @@
       {% if not attributes.no_zero %}
       <input type="hidden" name="{{attributes.name}}" value="0" {% if attributes.class %} class="{{attributes.class}}" {% endif %}>
       {% endif %}
-      <input role="switch" class='form-check-input {% if attributes.class %} {{attributes.class}} {% endif %}'  
+      <input role="switch" class='form-check-input {% if attributes.class %} {{attributes.class}} {% endif %}'
         {% for name, value in attributes|filter((v, k) => k != 'value')  %}
         {{name}}="{{value}}" {% endfor %} value={{attributes.content|default(1)}}
         {% if attributes.value == 1 %} checked {% endif %}/>
