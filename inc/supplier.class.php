@@ -192,7 +192,7 @@ class Supplier extends CommonDBTM
                   __('Third party type') => [
                      'name' => 'suppliertypes_id',
                      'type' => 'select',
-                     'values' => getOptionForItems("suppliertypes"),
+                     'values' => getOptionForItems(SupplierType::class),
                      'actions' => getItemActionButtons(['info', 'add'], "SupplierType"),
                      'value' => $this->fields['suppliertypes_id']
                   ],
