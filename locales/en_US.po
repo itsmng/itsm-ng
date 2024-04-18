@@ -22046,6 +22046,21 @@ msgstr "session_token seems invalid"
 msgid "Acessibility menu"
 msgstr "Visibility End Date"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr ""
+"Checking of the compatibility of your environment with the execution of GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Database connection setup"
+
 #~ msgid "No room found or selected"
 #~ msgstr "No room found or selected"
 
@@ -23072,18 +23087,8 @@ msgstr "Visibility End Date"
 #~ msgstr ""
 #~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Do you want to continue?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Database connection setup"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Database connection parameters"

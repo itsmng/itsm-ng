@@ -22001,6 +22001,20 @@ msgstr "session_token изглежда невалиден"
 msgid "Acessibility menu"
 msgstr ""
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Проверка на обкръжението за съвместимост с GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Настройка на връзката с базата данни"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Няма намерени или маркирани стаи"
 
@@ -22771,16 +22785,8 @@ msgstr ""
 #~ msgid "Choose 'Install' for a completely new installation of GLPI."
 #~ msgstr "Изберете 'Install' за изцяло нова инсталация на GLPI."
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Проверка на обкръжението за съвместимост с GLPI"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Желаете ли да продължите?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Настройка на връзката с базата данни"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Параметри на връзката с базата данни"

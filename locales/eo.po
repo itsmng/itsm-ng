@@ -21961,6 +21961,20 @@ msgstr "session_token возможно недействительный"
 msgid "Acessibility menu"
 msgstr "Видимость конечной даты"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Проверка окружения на совместимость с GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Установка соединения с базой данных"
+
 #~ msgid "See the catalog of plugins"
 #~ msgstr "Посмотреть каталог дополнений"
 
@@ -22309,16 +22323,8 @@ msgstr "Видимость конечной даты"
 #~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
 #~ msgstr "Выберите 'Обновление' для обновления старой версии GLPI"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Проверка окружения на совместимость с GLPI"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Желаете продолжить?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Установка соединения с базой данных"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Параметры соединения с базой данных"

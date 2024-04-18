@@ -22817,6 +22817,20 @@ msgstr "session_token se nezdá být platný"
 msgid "Acessibility menu"
 msgstr "Datum konce viditelnosti"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Kontrola kompatibility vašeho prostředí pro provoz GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Nastavení připojení k databázi"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Nebyly nalezeny nebo označeny žádné místnosti"
 
@@ -23751,16 +23765,8 @@ msgstr "Datum konce viditelnosti"
 #~ msgstr ""
 #~ "Pro aktualizaci z dřívější verze GLPI zvolte „Přejít na novější verzi“"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Kontrola kompatibility vašeho prostředí pro provoz GLPI"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Přejete si pokračovat?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Nastavení připojení k databázi"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Parametry připojení k databázi"

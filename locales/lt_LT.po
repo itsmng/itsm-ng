@@ -22638,6 +22638,20 @@ msgstr ""
 msgid "Acessibility menu"
 msgstr ""
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Tikrinama sąlygos GLPI funkcionavimui"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Prisijungimo prie duomenų bazės sąranka"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Kambarių nerasta arba pasirinkta"
 
@@ -22883,14 +22897,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Pasirinkite 'Įdiegimas' naujam GLPI įdiegimui (duomenų bazė bus "
 #~ "uždpildyta numatytosiomis reikšmėmis)"
-
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Tikrinama sąlygos GLPI funkcionavimui"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Prisijungimo prie duomenų bazės sąranka"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Duomenų bazės prisijungimo parametrai"

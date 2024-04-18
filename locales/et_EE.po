@@ -22026,6 +22026,20 @@ msgstr "session_token näib olevat vigane"
 msgid "Acessibility menu"
 msgstr "Nähtav kuni"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Keskkonna kontroll GLPI tarkvara käivitamiseks"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Andmebaasi ühenduse seadistamine"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Ruum pole valitud"
 
@@ -23054,16 +23068,8 @@ msgstr "Nähtav kuni"
 #~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
 #~ msgstr "Vali 'Uuenda', et uuendada sinu praegune GLPI paigaldus"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Keskkonna kontroll GLPI tarkvara käivitamiseks"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Kas soovid jätkata?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Andmebaasi ühenduse seadistamine"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Ühenduse parameetrid"

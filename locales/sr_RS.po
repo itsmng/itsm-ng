@@ -22302,6 +22302,20 @@ msgstr "session_token je izgleda nevažeći"
 msgid "Acessibility menu"
 msgstr "Krajnji datum vidljivosti"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Provera kompatibilnosti vašeg okruženja za korišćenje GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Podešavanje povezivanja sa bazom podataka"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Soba nije pronadjena ili selektovana"
 
@@ -22651,16 +22665,8 @@ msgstr "Krajnji datum vidljivosti"
 #~ msgstr ""
 #~ "Odaberi 'Nadogradnja' za ažuriranje vaše GLPI verzije sa ranije verzije"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Provera kompatibilnosti vašeg okruženja za korišćenje GLPI"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Da li želite da nastavite?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Podešavanje povezivanja sa bazom podataka"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Parametri povezivanja sa bazom podataka"

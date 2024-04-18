@@ -22074,3 +22074,13 @@ msgstr "session_token seems invalid"
 #| msgid "Accessibility"
 msgid "Acessibility menu"
 msgstr "Accessibility"
+
+#: templates/install/requirements.twig:4
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr ""
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection successful"
+msgid "Testing database connection"
+msgstr "Database connection successful"

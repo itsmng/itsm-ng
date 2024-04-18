@@ -21999,6 +21999,21 @@ msgstr "session_token oker dagoela dirudi"
 msgid "Acessibility menu"
 msgstr "Ikusgarritasun amaiera data"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr ""
+"Zure ingurunearen eta GLPIren beharren arteko bateragarritasuna egiaztatzen"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Datu-basearen konexio-ezarpenak"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Ez da gelarik aurkitu edo aukeratu"
 
@@ -22414,18 +22429,8 @@ msgstr "Ikusgarritasun amaiera data"
 #~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
 #~ msgstr "Aukeratu ‘Eguneratu’ GLPI bertsioa zaharrago batetik eguneratzeko"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr ""
-#~ "Zure ingurunearen eta GLPIren beharren arteko bateragarritasuna "
-#~ "egiaztatzen"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Jarraitu nahi duzu?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Datu-basearen konexio-ezarpenak"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Datu-basearen konexio-parametroak"

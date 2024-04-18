@@ -22093,6 +22093,20 @@ msgstr "session_token parametresi geçersiz görünüyor"
 msgid "Acessibility menu"
 msgstr "Görünürlük bitiş tarihi"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Platformunuzun, GLPI çalıştırma uyumluluğu sınanıyor"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Veritabanı bağlantısı yapılandırması"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Herhangi bir oda bulunamadı ya da seçilmemiş"
 
@@ -23146,16 +23160,8 @@ msgstr "Görünürlük bitiş tarihi"
 #~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
 #~ msgstr "Eski bir GLPI sürümünü güncellemek için 'Güncelleme' seçin"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Platformunuzun, GLPI çalıştırma uyumluluğu sınanıyor"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Devam etmek ister misiniz?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Veritabanı bağlantısı yapılandırması"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Veritabanı bağlantısı ayarları"

@@ -21695,6 +21695,20 @@ msgstr "session_token が無効なようです"
 msgid "Acessibility menu"
 msgstr "表示終了日"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "GLPI実行環境の検証"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "データベース接続設定"
+
 #~ msgid "No room found or selected"
 #~ msgstr "スペースがないか、選択されていません"
 
@@ -22741,16 +22755,8 @@ msgstr "表示終了日"
 #~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
 #~ msgstr "「アップグレード」は以前のバージョンのGLPIを更新します"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "GLPI実行環境の検証"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "処理を続けますか?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "データベース接続設定"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "データベース接続パラメータ"

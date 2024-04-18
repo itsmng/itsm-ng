@@ -22451,6 +22451,20 @@ msgstr "čini se da je parametar session_token nevaljan"
 msgid "Acessibility menu"
 msgstr "Završni datum vidljivosti"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Provjera kompatibilnosti tvog okruženja s izvršavanjem GLPI-a"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Postavljanje veze s bazom podataka"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Nijedna soba nije pronađena niti odabrana"
 
@@ -23482,16 +23496,8 @@ msgstr "Završni datum vidljivosti"
 #~ "Odaberi „Nadogradi” za aktualiziranje verzije GLPI-a iz jedne ranije "
 #~ "verzije"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Provjera kompatibilnosti tvog okruženja s izvršavanjem GLPI-a"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Želiš nastaviti?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Postavljanje veze s bazom podataka"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Parametri veze s bazom podataka"

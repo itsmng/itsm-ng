@@ -21999,6 +21999,20 @@ msgstr ""
 msgid "Acessibility menu"
 msgstr "Ημερομηνία λήξης ορατότητας"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Έλεγχος συμβατότητας του περιβάλλοντός σας για την εκτέλεση του GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Εγκατάσταση σύνδεσης με τη βάση δεδομένων"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Δεν βρέθηκε ή επιλέχθηκε δωμάτιο"
 
@@ -22297,17 +22311,8 @@ msgstr "Ημερομηνία λήξης ορατότητας"
 #~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
 #~ msgstr "Επιλέξτε 'Αναβάθμιση' για αναβάθμιση προηγούμενης έκδοσης του GLPI"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr ""
-#~ "Έλεγχος συμβατότητας του περιβάλλοντός σας για την εκτέλεση του GLPI"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Θέλετε να συνεχίσετε;"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Εγκατάσταση σύνδεσης με τη βάση δεδομένων"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Παράμετροι σύνδεσης βάσης δεδομένων"

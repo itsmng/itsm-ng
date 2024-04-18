@@ -22800,6 +22800,20 @@ msgstr "session_token виглядає неправильно"
 msgid "Acessibility menu"
 msgstr "Дата закінчення видимості"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Перевірка вашого оточення на сумісність з GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Встановлення з’єднання з базою даних"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Приміщення відсутнє або не обране"
 
@@ -23849,16 +23863,8 @@ msgstr "Дата закінчення видимості"
 #~ msgstr ""
 #~ "Оберіть 'Оновити', щоб оновити Вашу версію GLPI з попередньої версії"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Перевірка вашого оточення на сумісність з GLPI"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Продовжувати?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Встановлення з’єднання з базою даних"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Параметри з’єднання з базою даних"
