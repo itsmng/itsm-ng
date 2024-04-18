@@ -21943,6 +21943,20 @@ msgstr "session_token érvénytelennek tűnik"
 msgid "Acessibility menu"
 msgstr "Láthatóság vége"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Ellenőrzöm, hogy a GLPI kompatibilis-e a környezettel"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Adatbázis kapcsolat beállítása"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Nincs megadott szoba vagy nem található"
 
@@ -22380,16 +22394,8 @@ msgstr "Láthatóság vége"
 #~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
 #~ msgstr "Válaszd a frissítést korábbi verzió megújításához"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Ellenőrzöm, hogy a GLPI kompatibilis-e a környezettel"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Biztosan folytatod ?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Adatbázis kapcsolat beállítása"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Adatbázis kapcsolódás paraméterei"

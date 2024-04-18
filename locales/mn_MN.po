@@ -22119,6 +22119,22 @@ msgstr "session_token буруу байна"
 msgid "Acessibility menu"
 msgstr "Харагдаж дуусах өдөр"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr ""
+"Таны эргэн тойрныг GLPI программын гүйцэтгэлтэй нийцэж байгаа эсэхийг шалгаж "
+"байна"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Өгөгдлийн сангийн холболтын тохиргоо"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Өрөө олдоогүй эсвэл сонгогдоогүй"
 
@@ -23186,18 +23202,8 @@ msgstr "Харагдаж дуусах өдөр"
 #~ "GLPI-ийн хувилбарыг өмнөх хувилбараас нь шинэчлэхийн тулд 'Шинэчлэх' "
 #~ "гэснийг сонгоно уу"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr ""
-#~ "Таны эргэн тойрныг GLPI программын гүйцэтгэлтэй нийцэж байгаа эсэхийг "
-#~ "шалгаж байна"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Үргэлжлүүлэхийг хүсч байна уу"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Өгөгдлийн сангийн холболтын тохиргоо"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Өгөгдлийн сангийн холболтын параметрүүд"

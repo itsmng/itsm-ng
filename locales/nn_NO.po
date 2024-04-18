@@ -21877,6 +21877,20 @@ msgstr ""
 msgid "Acessibility menu"
 msgstr ""
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Kontroll av kompatibiliteten til miljøet med kjøring av GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Database forbindelse oppsett"
+
 #~ msgid "Active Directory"
 #~ msgstr "Active Directory"
 
@@ -21951,14 +21965,6 @@ msgstr ""
 
 #~ msgid "Installation or update of GLPI"
 #~ msgstr "Installasjon eller oppdatering av GLPI"
-
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Kontroll av kompatibiliteten til miljøet med kjøring av GLPI"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Database forbindelse oppsett"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Database forbindelse parametere"

@@ -21525,6 +21525,20 @@ msgstr ""
 msgid "Acessibility menu"
 msgstr "可見結束日期"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "檢查您執行GPLI環境的相容性"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "資料庫連接設定"
+
 #, php-format
 #~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
 #~ msgstr "%1$s增加项目%2$s-%3$s：%4$s"
@@ -21847,16 +21861,8 @@ msgstr "可見結束日期"
 #~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
 #~ msgstr "選擇從較早版本的 升級 GLPI"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "檢查您執行GPLI環境的相容性"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "您要繼續嗎?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "資料庫連接設定"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "資料庫連接參數"

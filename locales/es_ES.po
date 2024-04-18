@@ -22172,6 +22172,20 @@ msgstr "session_token parece incorrecto"
 msgid "Acessibility menu"
 msgstr "Visibilidad, fecha de fin"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Verificar la compatibilidad de su entorno con la ejecución de ITSM-NG"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Configuración de la conexión a la base de datos"
+
 #~ msgid "No room found or selected"
 #~ msgstr "No se encontró o seleccionó sala"
 
@@ -23021,17 +23035,8 @@ msgstr "Visibilidad, fecha de fin"
 #~ "Seleccione 'Actualizar' para actualizar su versión de ITSM-NG desde una "
 #~ "versión anterior."
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr ""
-#~ "Verificar la compatibilidad de su entorno con la ejecución de ITSM-NG"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "¿Quiere continuar?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Configuración de la conexión a la base de datos"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Parámetros de conexión a la base de datos"

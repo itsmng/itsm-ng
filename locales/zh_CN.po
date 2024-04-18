@@ -21544,6 +21544,23 @@ msgstr "session_token 无效"
 msgid "Acessibility menu"
 msgstr "可见结束日期"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr ""
+"以下将逐条检查您的服务器环境是否符合GLPI的运行要求，如遇到依赖环境缺失可尝试"
+"登入服务器在命令行下运行composer install --no-dev自动补全，或加扣群1097440406"
+"寻求热心爱好者的帮助。"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "数据库连接设定"
+
 #~ msgid "No room found or selected"
 #~ msgstr "未选择或未找到房间"
 
@@ -22307,19 +22324,8 @@ msgstr "可见结束日期"
 #~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
 #~ msgstr "选择“升级”可以将您早期版本的GLPI更新。"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr ""
-#~ "以下将逐条检查您的服务器环境是否符合GLPI的运行要求，如遇到依赖环境缺失可尝"
-#~ "试登入服务器在命令行下运行composer install --no-dev自动补全，或加扣群"
-#~ "1097440406寻求热心爱好者的帮助。"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "您想要继续么？"
-
-#~ msgid "Database connection setup"
-#~ msgstr "数据库连接设定"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "数据库连接参数"

@@ -22157,6 +22157,22 @@ msgstr "Der Parameter session_token scheint ungültig zu sein"
 msgid "Acessibility menu"
 msgstr "Unsichtbar nach"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr ""
+"Die Kompatibilität von ITSM-NG mit der vorhandenen Konfiguration wird "
+"überprüft"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Setup der Datenbankverbindung"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Keinen Raum gefunden oder ausgewählt"
 
@@ -23003,18 +23019,8 @@ msgstr "Unsichtbar nach"
 #~ "'Update' auswählen, um von einer installierten früheren Version auf die "
 #~ "aktuelle Version umzusteigen"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr ""
-#~ "Die Kompatibilität von ITSM-NG mit der vorhandenen Konfiguration wird "
-#~ "überprüft"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Möchten Sie fortfahren?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Setup der Datenbankverbindung"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Verbindungsparameter der Datenbank"

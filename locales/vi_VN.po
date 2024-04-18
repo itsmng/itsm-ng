@@ -21589,6 +21589,21 @@ msgstr ""
 msgid "Acessibility menu"
 msgstr "Dự tính ngày kết thúc"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr ""
+"Kiểm tra tính tương thích của môi trường của bạn với sự thực thi của GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Thiết lập kết nối cơ sở dữ liệu"
+
 #~ msgid "See the catalog of plugins"
 #~ msgstr "Thấy danh mục các tiện ích"
 
@@ -21956,17 +21971,8 @@ msgstr "Dự tính ngày kết thúc"
 #~ "Chọn \"Nâng cấp\" để nâng cấp phiên bản GLPI của bạn từ một phiên bản "
 #~ "trước"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr ""
-#~ "Kiểm tra tính tương thích của môi trường của bạn với sự thực thi của GLPI"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Bạn có muốn tiếp tục?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Thiết lập kết nối cơ sở dữ liệu"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Các thông số kết nối cơ sở dữ liệu"

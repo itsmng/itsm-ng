@@ -21915,6 +21915,20 @@ msgstr "ಅಧಿವೇಶನ_ಟೋಕೆನ್ ಅಮಾನ್ಯವಾಗಿ�
 msgid "Acessibility menu"
 msgstr ""
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "GLPI ನ ಮರಣದಂಡನೆಯೊಂದಿಗೆ ನಿಮ್ಮ ಪರಿಸರದ ಹೊಂದಾಣಿಕೆಯನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "ಡೇಟಾಬೇಸ್ ಸಂಪರ್ಕ ಸೆಟಪ್"
+
 #~ msgid "No room found or selected"
 #~ msgstr "ಯಾವುದೇ ಕೊಠಡಿ ಕಂಡುಬಂದಿಲ್ಲ ಅಥವಾ ಆಯ್ಕೆ ಮಾಡಿಲ್ಲ"
 
@@ -22185,16 +22199,8 @@ msgstr ""
 #~ msgstr ""
 #~ "ಹಿಂದಿನ ಆವೃತ್ತಿಯಿಂದ ನಿಮ್ಮ ಆವೃತ್ತಿಯ GLPI ಅನ್ನು ನವೀಕರಿಸಲು 'ಅಪ್ಗ್ರೇಡ್' ಆಯ್ಕೆಮಾಡಿ"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "GLPI ನ ಮರಣದಂಡನೆಯೊಂದಿಗೆ ನಿಮ್ಮ ಪರಿಸರದ ಹೊಂದಾಣಿಕೆಯನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "ನೀವು ಮುಂದುವರಿಸಲು ಬಯಸುತ್ತೀರಾ?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "ಡೇಟಾಬೇಸ್ ಸಂಪರ್ಕ ಸೆಟಪ್"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "ಡೇಟಾಬೇಸ್ ಸಂಪರ್ಕ ನಿಯತಾಂಕಗಳು"

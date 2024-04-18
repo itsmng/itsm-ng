@@ -22234,6 +22234,22 @@ msgstr "Le CSRF est invalide"
 msgid "Acessibility menu"
 msgstr "Accessibilité"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr ""
+"Vérification de la compatibilité de votre environnement avec l'exécution de "
+"ITSM-NG"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Configuration de la connexion à la base de données"
+
 #~ msgid "Favorite"
 #~ msgstr "Favoris"
 
@@ -23314,18 +23330,8 @@ msgstr "Accessibilité"
 #~ "Choisissez 'Mise à jour' pour lancer la mise à jour de votre version de "
 #~ "ITSM-NG à partir d'une version antérieure ou d'une version de GLPI.."
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr ""
-#~ "Vérification de la compatibilité de votre environnement avec l'exécution "
-#~ "de ITSM-NG"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Voulez-vous continuer ?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Configuration de la connexion à la base de données"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Paramètres de connexion à la base de données"
