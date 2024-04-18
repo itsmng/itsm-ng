@@ -150,7 +150,7 @@ class Line extends CommonDBTM
 						__('Line operator') => [
 							'name' => 'lineoperators_id',
 							'type' => 'select',
-							'values' => getOptionForItems("LineOperators"),
+							'values' => getOptionForItems(LineOperator::class),
 							'value' => $this->fields['lineoperators_id'] ?? '',
 							'actions' => getItemActionButtons(['info', 'add'], "LineOperator"),
 						],
@@ -164,7 +164,7 @@ class Line extends CommonDBTM
 						__('Line type') => [
 							'name' => 'linetypes_id',
 							'type' => 'select',
-							'values' => getOptionForItems("LineTypes"),
+							'values' => getOptionForItems(LineType::class),
 							'value' => $this->fields['linetypes_id'] ?? '',
 							'actions' => getItemActionButtons(['info', 'add'], "LineType"),
 						],
