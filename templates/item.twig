@@ -34,15 +34,24 @@
       saveGrid();
     });
 
+    grid.on('added', (event, items) => {
+      updateWidgetSizes();
+      saveGrid();
+    });
+
+    grid.on('removed', (event, items) => {
+      updateWidgetSizes();
+      saveGrid();
+    });
   });
 
   // Update the width of widgets based on the number of widgets present
-  function updateWidgetWidth() {
+  function updateWidgetSizes() {
     const columnWidgets = grid.getGridItems();
     if (columnWidgets.length === 1) {
       grid.update(columnWidgets[0], { w: 12 });
     }
-	  grid.compact();
+    grid.compact();
   }
 
   function saveGrid() {
@@ -71,7 +80,7 @@
     const val = target.attr('data-value');
     const inp = target.children('input');
     inp.prop('checked', !inp.prop('checked'));
-    
+
     if (val === 'all') {
       const selector = inp.prop('checked') ? '.dropdown-menu a:has(input:not(:checked))' : '.dropdown-menu a:has(input:checked)';
       await $(selector).each(async (i, e) => {
@@ -108,16 +117,17 @@
     }, 300);
   }
 
-  // Moves the widget to hidden area and removes it from the grid
   async function moveAndMakeWidget(val) {
-	  const element = $(`#ContentFor${val}`);
+    const element = $(`#ContentFor${val}`);
     const body = $(`#ContentFor${val} .card-body`);
     if (body.html() === '') {
       body.html('<div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>');
-      $(body).load('{{glpiroot}}/ajax/common.tabs.php?' + body.attr('data-params'), () => {
+      await $(body).load('{{glpiroot}}/ajax/common.tabs.php?' + body.attr('data-params'))
+      element.detach().appendTo('#ContentForTabs');
+      grid.makeWidget(element[0]);
+    } else {
         element.detach().appendTo('#ContentForTabs');
         grid.makeWidget(element[0]);
-      });
     }
   }
 
@@ -152,26 +162,19 @@
     for (option of options) {
       await moveAndMakeWidget(option);
     }
-    updateWidgetWidth();
   }
 
   // Dropdown menu item click handlers
   $('.tab-selector a').on('click', function(event) {
     event.preventDefault();
-    updateGridContent($(this)).then(() => {
-      updateWidgetWidth();
-      saveGrid();
-    });
+    updateGridContent($(this));
     return false;
   });
 
   $('.tab-selector input[type="checkbox"]').on('click', function(event) {
     event.preventDefault();
     event.target.checked = !event.target.checked;
-    updateGridContent($(this).parent()).then(() => {
-      updateWidgetWidth();
-      saveGrid();
-    });
+    updateGridContent($(this).parent())
   });
 
 </script>
