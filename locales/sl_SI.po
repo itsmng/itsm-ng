@@ -22596,6 +22596,20 @@ msgstr ""
 msgid "Acessibility menu"
 msgstr ""
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Preverjanje združljivosti vašega okolja z izvajanjem GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Nastavitev povezave z bazo"
+
 #~ msgid "See the catalog of plugins"
 #~ msgstr "Poglej katalog vtičnikov"
 
@@ -22771,16 +22785,8 @@ msgstr ""
 #~ "Izberite 'Nadgradi' za nadgraditev svojo različico GLPI iz prejšnje "
 #~ "različice"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Preverjanje združljivosti vašega okolja z izvajanjem GLPI"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Ali želite nadaljevati?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Nastavitev povezave z bazo"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Bazno povezovalni parametri"

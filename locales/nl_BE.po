@@ -22052,6 +22052,20 @@ msgstr "sessie_token lijkt onjuist"
 msgid "Acessibility menu"
 msgstr "Zichtbaarheid eind datum"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Compatibiliteitscontrole van het systeem waar GLPI draait"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Setup van de databankverbinding"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Geen kamer gevonden of geselecteerd"
 
@@ -22631,16 +22645,8 @@ msgstr "Zichtbaarheid eind datum"
 #~ "Selecteer \"Opwaarderen\" om uw GLPI versie naar de meest recente versie "
 #~ "op te waarderen."
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Compatibiliteitscontrole van het systeem waar GLPI draait"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Doorgaan?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Setup van de databankverbinding"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Parameters voor de databankverbinding"

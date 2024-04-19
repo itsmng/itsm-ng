@@ -21891,6 +21891,20 @@ msgstr ""
 msgid "Acessibility menu"
 msgstr ""
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "بررسی سازگاری محیط شما با اجرای GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "برپایی ارتباط پایگاه داده"
+
 #~ msgid "See the catalog of plugins"
 #~ msgstr "رده افزوده را ببینید"
 
@@ -22031,14 +22045,6 @@ msgstr ""
 
 #~ msgid "Choose 'Install' for a completely new installation of GLPI."
 #~ msgstr "برای نصب کاملا جدید از GLPI 'نصب' را انتخاب کنید."
-
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "بررسی سازگاری محیط شما با اجرای GLPI"
-
-#~ msgid "Database connection setup"
-#~ msgstr "برپایی ارتباط پایگاه داده"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "پارامترهای ارتباط پایگاه داده"

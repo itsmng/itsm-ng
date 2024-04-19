@@ -21946,6 +21946,20 @@ msgstr "session_token virker ugyldig"
 msgid "Acessibility menu"
 msgstr "Synligheds slutdato"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Checker kombatibiliteten af dit miljø med kørslen af GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Databaseforbindelse opsætning"
+
 #~ msgid "See the catalog of plugins"
 #~ msgstr "Se oversigten over udvidelser"
 
@@ -22289,16 +22303,8 @@ msgstr "Synligheds slutdato"
 #~ "Vælg 'Opgrader' for at opgradere din version af GLPI fra en tidligere "
 #~ "version"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Checker kombatibiliteten af dit miljø med kørslen af GLPI"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Vil du fortsætte?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Databaseforbindelse opsætning"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Database forbindelses parametre"

@@ -21933,6 +21933,20 @@ msgstr "Sesjon_token er ikke gyldig"
 msgid "Acessibility menu"
 msgstr "Sluttdato for synlighet"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Kontroll av kompatibiliteten til miljøet med kjøring av GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Database forbindelse oppsett"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Ingen rom funnet eller valgt"
 
@@ -22301,16 +22315,8 @@ msgstr "Sluttdato for synlighet"
 #~ "Velg \"Oppgrader\" for å oppgradere din versjon av GLPI fra en tidligere "
 #~ "utgave"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Kontroll av kompatibiliteten til miljøet med kjøring av GLPI"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Vil du fortsette?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Database forbindelse oppsett"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Database forbindelse parametere"

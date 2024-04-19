@@ -22344,6 +22344,20 @@ msgstr "session_token šķiet nederīga"
 msgid "Acessibility menu"
 msgstr "Beigu datums redzams"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Notiek servera darba vides un GLPI saderības pārbaude"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Datubāzes savienojuma iestatīšana"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Nav atrasta vai izvēlēta istaba"
 
@@ -23140,16 +23154,8 @@ msgstr "Beigu datums redzams"
 #~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
 #~ msgstr "Izvēlieties 'Atjaunināt', lai atjauninātu veco GLPI versiju"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "Notiek servera darba vides un GLPI saderības pārbaude"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Vai vēlaties turpināt?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Datubāzes savienojuma iestatīšana"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Datubāzes pieslēgšanās parametri"

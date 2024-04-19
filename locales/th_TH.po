@@ -21531,6 +21531,20 @@ msgstr ""
 msgid "Acessibility menu"
 msgstr "วันที่สิ้นสุดการแสดงผล"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "การตรวจสอบความเข้ากันได้ของสภาพแวดล้อมของคุณที่มีการดำเนินการของ GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "ตั้งค่าเชื่อมต่อฐานข้อมูล"
+
 #~ msgid "No room found or selected"
 #~ msgstr "ไม่พบห้องที่ต้องการหรือที่เลือก"
 
@@ -21869,16 +21883,8 @@ msgstr "วันที่สิ้นสุดการแสดงผล"
 #~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
 #~ msgstr "เลือก \"อัพเกรด\" สำหรับการอัพเดท GLPI"
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr "การตรวจสอบความเข้ากันได้ของสภาพแวดล้อมของคุณที่มีการดำเนินการของ GLPI"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "คุณต้องการที่จะดำเนินการต่อหรือไม่"
-
-#~ msgid "Database connection setup"
-#~ msgstr "ตั้งค่าเชื่อมต่อฐานข้อมูล"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "พารามิเตอร์การเชื่อมต่อฐานข้อมูล"

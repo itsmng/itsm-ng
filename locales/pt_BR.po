@@ -22166,6 +22166,20 @@ msgstr "session_token parece ser inválido"
 msgid "Acessibility menu"
 msgstr "Data final de visibilidade"
 
+#: templates/install/requirements.twig:4
+#, fuzzy
+#| msgid ""
+#| "Checking of the compatibility of your environment with the execution of "
+#| "GLPI"
+msgid "Checking for environment's requirements with the execution of ITSM-NG"
+msgstr "Verificando a compatibilidade do seu ambiente para a execução do GLPI"
+
+#: templates/install/databases.twig:4
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Testing database connection"
+msgstr "Instalação da conexão com o banco de dados"
+
 #~ msgid "No room found or selected"
 #~ msgstr "Nenhuma sala encontrada ou selecionada"
 
@@ -23222,17 +23236,8 @@ msgstr "Data final de visibilidade"
 #~ "Selecione \"Atualizar\" para atualizar sua versão do GLPI a partir de uma "
 #~ "versão anterior."
 
-#~ msgid ""
-#~ "Checking of the compatibility of your environment with the execution of "
-#~ "GLPI"
-#~ msgstr ""
-#~ "Verificando a compatibilidade do seu ambiente para a execução do GLPI"
-
 #~ msgid "Do you want to continue?"
 #~ msgstr "Deseja continuar?"
-
-#~ msgid "Database connection setup"
-#~ msgstr "Instalação da conexão com o banco de dados"
 
 #~ msgid "Database connection parameters"
 #~ msgstr "Parâmetros da conexão com o banco de dados"
