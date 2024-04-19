@@ -214,10 +214,10 @@ class DCRoom extends CommonDBTM {
       if (isset($input["blueprint"])) {
          $file = json_decode(stripslashes($input["blueprint"]), true)[0];
 
-         $path = ItsmngUploadHandler::uploadFiles(
+         $path = ItsmngUploadHandler::uploadFile(
             $file['path'],
-            $file['format'],
-            $file['name']
+            $file['name'],
+            ItsmngUploadHandler::UPLOAD
          );
          if (!$path) {
             Session::addMessageAfterRedirect(__('Unable to save picture file.'), true, ERROR);

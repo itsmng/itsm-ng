@@ -749,8 +749,8 @@ class User extends CommonDBTM {
       } else {
          if (isset($picture) && !empty($picture) && $picture['path'] != $this->fields['picture']) {
             if (Document::isImage($picture['path'])) {
-               unlink($this->fields['picture']);
-               $uploadedPath = ItsmngUploadHandler::uploadFiles($picture['path'], $picture['format'], $picture['name']);
+               unlink(GLPI_DOC_DIR . '/' . $this->fields['picture']);
+               $uploadedPath = ItsmngUploadHandler::uploadFile($picture['path'], $picture['name'], ItsmngUploadHandler::PICTURE);
                $input['picture'] = $uploadedPath;
             } else {
                Session::addMessageAfterRedirect(__('The file is not an image file.'),
@@ -2426,30 +2426,6 @@ class User extends CommonDBTM {
           ]
       ];
       renderTwigForm($form);
-
-      // if (!empty($this->fields["name"])) {
-      //    echo "<td rowspan='7'>" . __('Picture') . "</td>";
-      //    echo "<td rowspan='7'>";
-      //    echo "<div class='user_picture_border_small' id='picture$rand'>";
-      //    echo "<img class='user_picture_small' alt=\"".__s('Picture')."\" src='".
-      //           User::getThumbnailURLForPicture($this->fields['picture'])."'>";
-      //    // echo "<img src='".self::getURLForPicture($this->fields["picture"])."' class='user_picture'/>";
-      //    echo "</div>";
-      //    $full_picture = "<div class='user_picture_border'>";
-      //    $full_picture .= "<img class='user_picture' alt=\"".__s('Picture')."\" src='".
-      //                       User::getURLForPicture($this->fields['picture'])."'>";
-      //    $full_picture .= "</div>";
-
-      //    Html::showTooltip($full_picture, ['applyto' => "picture$rand"]);
-      //    echo Html::file(['name' => 'picture', 'display' => false, 'onlyimages' => true]);
-      //    echo "<input type='checkbox' name='_blank_picture'>&nbsp;".__('Clear');
-      //    echo "</td>";
-      // } else {
-      //    echo "<td rowspan='7'></td>";
-      //    echo "<td rowspan='7'></td>";
-      // }
-      // echo "</tr>";
-
       return true;
    }
 
@@ -5108,7 +5084,7 @@ class User extends CommonDBTM {
       if (!empty($picture)) {
          $tmp = explode(".", $picture);
          if (count($tmp) ==2) {
-            return $CFG_GLPI["root_doc"]."/front/document.send.php?file=_pictures/".$tmp[0].
+            return $CFG_GLPI["root_doc"]."/front/document.send.php?file=".$tmp[0].
                    "_min.".$tmp[1];
          }
          return $CFG_GLPI["root_doc"]."/pics/picture_min.png";

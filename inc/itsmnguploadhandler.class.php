@@ -30,104 +30,136 @@
  * ---------------------------------------------------------------------
  */
 
-use phpDocumentor\Reflection\PseudoTypes\True_;
-
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /** GLPIUploadHandler class
  *
  * @since 9.2
-**/
+ **/
 class ItsmngUploadHandler {
 
-   static function get_upload_path($path) {
-      $upload_path = "/_uploads/$path";
-      if (!file_exists(GLPI_DOC_DIR . $upload_path)) {
-         mkdir(GLPI_DOC_DIR . $upload_path, 0777, true);
-      }
-      return $upload_path;
+    const UPLOAD = '_upload';
+    const TMP = '_tmp';
+    const PICTURE = '_picture';
+    const PLUGIN = '_plugin';
+    const DUMP = '_dump';
+
+    static function getUploadPath($type, $filename, $withDir = true) {
+        $extension = strtoupper(pathinfo($filename, PATHINFO_EXTENSION));
+        switch ($type) {
+            case self::TMP:
+                $upload_path = '_tmp';
+                break;
+            case self::PICTURE:
+                $upload_path = '_pictures';
+                break;
+            case self::PLUGIN:
+                $upload_path = '_plugins';
+                break;
+            case self::DUMP:
+                $upload_path = '_dumps';
+                break;
+            default:
+                $upload_path = '_uploads';
+                break;
+        }
+        if (!file_exists(GLPI_DOC_DIR . $upload_path . '/' . $extension)) {
+            if (!mkdir(GLPI_DOC_DIR . $upload_path . '/' . $extension, 0777, true)) {
+                return false;
+            }
+        }
+        if ($withDir) {
+            return $upload_path . '/' . $extension;
+        }
+        return $extension;
+
+    }
+
+    static function generateBaseDocumentFromPost($POST) {
+        $baseDoc = [
+            'entities_id'           => $POST['entities_id'] ?? 0,
+            'is_recursive'          => $POST['is_recursive'] ?? 0,
+            'documentcategories_id' => $POST['documentcategories_id'] ?? 0,
+            'name'                  => $POST['name'] ?? '',
+            'comment'               => $POST['comment'] ?? '',
+            'users_id'              => Session::getLoginUserID() ?? 0,
+            'is_deleted'            => $POST['is_deleted'] ?? 0,
+            'tickets_id'            => $POST['tickets_id'] ?? 0,
+      ];
+        return $baseDoc;
    }
 
-   static function generateBaseDocumentFromPost($POST) {
-      $baseDoc = [
-         'entities_id'           => $POST['entities_id'] ?? 0,
-         'is_recursive'          => $POST['is_recursive'] ?? 0,
-         'documentcategories_id' => $POST['documentcategories_id'] ?? 0,
-         'name'                  => $POST['name'] ?? '',
-         'comment'               => $POST['comment'] ?? '',
-         'users_id'              => Session::getLoginUserID() ?? 0,
-         'is_deleted'            => $POST['is_deleted'] ?? 0,
-         'tickets_id'            => $POST['tickets_id'] ?? 0,
-      ];
-      return $baseDoc;
+   static function uploadFile($filepath, $filename, $type = self::UPLOAD) {
+       $uploadPath = self::getUploadPath($type, $filename);
+       $uniqid = uniqid();
+       $filename = $uniqid . '.' . pathinfo($filename, PATHINFO_EXTENSION);
+       $uploadfile = $uploadPath . '/' . $filename;
+       if (!file_exists(GLPI_DOC_DIR . '/' . $uploadPath)) {
+           if (!mkdir(GLPI_DOC_DIR . '/' . $uploadPath, 0777, true)) {
+               return false;
+         }
+      }
+      if (!rename($filepath, GLPI_DOC_DIR . '/' . $uploadfile)) {
+          return false;
+      }
+      if ($type == self::PICTURE) {
+          $thumb = GLPI_DOC_DIR . '/'. $uploadPath . '/' .
+            $uniqid . '_min' . '.' . pathinfo($filename, PATHINFO_EXTENSION);
+          Toolbox::resizePicture(GLPI_DOC_DIR . '/' . $uploadfile, $thumb);
+      }
+      return $uploadfile;
    }
 
    static function storeTmpFiles($files) {
-      $path = GLPI_DOC_DIR . "/_tmp/";
-      if (!file_exists($path)) {
-         mkdir($path, 0777, true);
-      }
       $tmpFiles = [];
       foreach ($files as $file) {
-         $filename = uniqid() . '_' . $file['name'];
-         $filepath = $path . $filename;
-         if (!move_uploaded_file($file['tmp_name'], $filepath)) {
-            throw new Exception("Failed to move uploaded file.");
-         }
-         $tmpFiles[] = ['format' => $file['type'], 'name' => $file['name'], 'path' => $filepath];
+        $uploadPath = GLPI_DOC_DIR . self::getUploadPath(self::TMP, $file['name']);
+        $filename = uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+        $uploadfile = $uploadPath . '/' . $filename;
+        if (!move_uploaded_file($file['tmp_name'], $uploadfile)) {
+            return false;
+        }
+        $tmpFiles[] = [
+            'path'   => $uploadfile,
+            'name'   => $file['name'],
+            'format' => $file['type'],
+        ];
       }
       return $tmpFiles;
    }
 
-   static function uploadFiles($filepath, $format, $filename) {
-      $upload_path = self::get_upload_path($format);
-      $uploadfile = $upload_path . '/' . $filename;
-      if (file_exists($uploadfile)) {
-         $filename = uniqid() . '.' . pathinfo($filename, PATHINFO_EXTENSION);
-         $uploadfile = $upload_path . '/' . $filename;
-      }
-      if (!file_exists(GLPI_DOC_DIR . $upload_path)) {
-         if (!mkdir(GLPI_DOC_DIR . $upload_path, 0777, true)) {
-            return false;
-         }
-      }
-      if (!rename($filepath, GLPI_DOC_DIR . $uploadfile)) {
-         return false;
-      }
-      return self::get_upload_path($format, false) . '/' . $filename;
-   }
 
    static function addFileToDb($file) {
-      $doc = new Document();
-      $newDoc = ItsmngUploadHandler::generateBaseDocumentFromPost($_POST);
-      $newDoc['filename'] = $file['name'];
-      $newDoc['filepath'] = ItsmngUploadHandler::uploadFiles(
-         $file['path'],
-         $file['format'],
-         $file['name']
+       $doc = new Document();
+       $newDoc = ItsmngUploadHandler::generateBaseDocumentFromPost($_POST);
+       $newDoc['filename'] = $file['name'];
+       $newDoc['filepath'] = ItsmngUploadHandler::uploadFile(
+           $file['path'],
+           $file['name'],
+           ItsmngUploadHandler::UPLOAD
       );
-      $newDoc['mime'] = $file['format'];
-      $doc->add($newDoc);
-      return $doc;
+       $newDoc['mime'] = $file['format'];
+       $doc->add($newDoc);
+       return $doc;
    }
 
    static function linkDocToItem($id, $entity, $isRecursive, $itemType, $itemId, $userId) {
-      $docItem = new Document_Item();
-      $docItem->add([
-         'documents_id' => $id,
-         'entities_id'  => $entity,
-         'is_recursive' => $isRecursive,
-         'itemtype'     => $itemType,
-         'items_id'     => $itemId,
-         'users_id'     => $userId,
+       $docItem = new Document_Item();
+       $docItem->add([
+           'documents_id' => $id,
+           'entities_id'  => $entity,
+           'is_recursive' => $isRecursive,
+           'itemtype'     => $itemType,
+           'items_id'     => $itemId,
+           'users_id'     => $userId,
       ]);
    }
 
-   static function removeTmpFiles($files) {
-      foreach ($files as $file) {
-         unlink($file['path']);
+   static function removeFiles($files) {
+       foreach ($files as $file) {
+           unlink($file['path']);
       }
    }
 }

@@ -121,19 +121,19 @@ if (isset($_POST["add"])) {
    $POST = $_POST;
    if (isset($_POST['picture_front'])) {
       $file = json_decode(stripslashes($_POST['picture_front']), true)[0];
-      $path = ItsmngUploadHandler::uploadFiles(
+      $path = ItsmngUploadHandler::uploadFile(
          $file['path'],
-         $file['format'],
-         $file['name']
+         $file['name'],
+         ItsmngUploadHandler::UPLOAD
       );
       $POST['picture_front'] = $path;
    }
    if (isset($_POST['picture_rear'])) {
       $file = json_decode(stripslashes($_POST['picture_rear']), true)[0];
-      $path = ItsmngUploadHandler::uploadFiles(
+      $path = ItsmngUploadHandler::uploadFile(
          $file['path'],
-         $file['format'],
-         $file['name']
+         $file['name'],
+         ItsmngUploadHandler::UPLOAD
       );
       $POST['picture_rear'] = $path;
    }

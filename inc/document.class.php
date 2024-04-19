@@ -514,7 +514,7 @@ class Document extends CommonDBTM {
     * @param string $context Context to resize image, if any
    **/
    function send($context = null) {
-      $file = GLPI_DOC_DIR . $this->fields['filepath'];
+      $file = GLPI_DOC_DIR . '/' . $this->fields['filepath'];
       if ($context !== null) {
          $file = self::getImage($file, $context);
       }
