@@ -1249,11 +1249,6 @@ class Config extends CommonDBTM {
                      'values' => Dropdown::getLanguages(),
                      'value' => $data["language"],
                   ],
-                  __('Accessibility menu') => [
-                     'type' => 'checkbox',
-                     'name' => 'accessibility_menu',
-                     'value' => $data["accessibility_menu"],
-                  ],
                   __('Date format') => [
                      'type' => 'select',
                      'name' => 'date_format',
@@ -1370,7 +1365,7 @@ class Config extends CommonDBTM {
                      'type' => 'select',
                      'name' => 'timezone',
                      'values' => array_merge([0 => __('Use server configuration')], $DB->getTimezones()),
-                     'value' => $data["timezone"],
+                     'value' => $data["timezone"] ?? 0,
                   ] : [],
                ],
             ],
