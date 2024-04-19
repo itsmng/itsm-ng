@@ -25,7 +25,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-18 14:42+0100\n"
-"PO-Revision-Date: 2024-02-19 08:02+0000\n"
+"PO-Revision-Date: 2024-04-19 10:03+0000\n"
 "Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "fr/>\n"
@@ -34,7 +34,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.5-dev\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -547,7 +547,7 @@ msgstr "Acteur supprimé avec succès"
 
 #: ajax/deleteItilActor.php:98
 msgid "Error while deleting actor"
-msgstr ""
+msgstr "Erreur lors de la suppression d'un acteur"
 
 #: ajax/telemetry.php:46
 msgid ""
@@ -7789,7 +7789,7 @@ msgstr "Les statuts ont été mis à jour !"
 
 #: inc/specialstatus.class.php:142
 msgid "Status has been removed!"
-msgstr "Le statut a été supprimé"
+msgstr "Le statut a été supprimé!"
 
 #: inc/specialstatus.class.php:153 inc/specialstatus.class.php:246
 #: inc/commondcmodeldropdown.class.php:65
@@ -8774,7 +8774,7 @@ msgstr ""
 
 #: inc/config.php:245
 msgid "Upgrade from GLPI 10 is not supported."
-msgstr ""
+msgstr "La mise à jour à partir de GLPI 10 n'est pas prise en charge."
 
 #: inc/rulecollection.class.php:328
 msgid "Rules list"
