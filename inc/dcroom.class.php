@@ -68,7 +68,7 @@ class DCRoom extends CommonDBTM {
    }
 
    function showForm($ID, $options = []) {
-      global $DB, $CFG_GLPI;
+      global $CFG_GLPI;
       $form = [
          'action' => self::getFormURL(),
          'buttons' => [
@@ -217,7 +217,7 @@ class DCRoom extends CommonDBTM {
          $path = ItsmngUploadHandler::uploadFile(
             $file['path'],
             $file['name'],
-            ItsmngUploadHandler::UPLOAD
+            ItsmngUploadHandler::PICTURE
          );
          if (!$path) {
             Session::addMessageAfterRedirect(__('Unable to save picture file.'), true, ERROR);
