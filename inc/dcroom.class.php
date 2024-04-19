@@ -69,111 +69,118 @@ class DCRoom extends CommonDBTM {
 
    function showForm($ID, $options = []) {
       global $DB, $CFG_GLPI;
-      $rand = mt_rand();
+      $form = [
+         'action' => self::getFormURL(),
+         'buttons' => [
+            $this->fields["is_deleted"] == 1 && self::canDelete() ? [
+               'type' => 'submit',
+               'name' => 'restore',
+               'value' => __('Restore'),
+               'class' => 'btn btn-secondary'
+            ] : ($this->canUpdateItem() ? [
+               'type' => 'submit',
+               'name' => $this->isNewID($ID) ? 'add' : 'update',
+               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary'
+            ] : []),
+            !$this->isNewID($ID) && !$this->isDeleted() && $this->canDeleteItem() ? [
+               'type' => 'submit',
+               'name' => 'delete',
+               'value' => __('Put in trashbin'),
+               'class' => 'btn btn-danger'
+            ] : (!$this->isNewID($ID) && self::canPurge() ? [
+               'type' => 'submit',
+               'name' => 'purge',
+               'value' => __('Delete permanently'),
+               'class' => 'btn btn-danger'
+            ] : []),
+         ],
+         'content' => [
+            $this->getTypeName() => [
+                'visible' => true,
+                'inputs' => [
+                    $this->isNewID($ID) ? [] : [
+                        'type' => 'hidden',
+                        'name' => 'id',
+                        'value' => $ID
+                    ],
+                    __('Name') => [
+                        'type' => 'text',
+                        'name' => 'name',
+                        'value' => $this->fields["name"],
+                        'size' => 50,
+                        'max' => 255,
+                        'comment' => false
+                    ],
+                    Location::getTypeName(1) => [
+                        'type' => 'select',
+                        'id' => 'dropdown_locations_id',
+                        'name' => 'locations_id',
+                        'value' => $this->fields["locations_id"],
+                        'values' => getOptionForItems(Location::class),
+                    ],
+                    Datacenter::getTypeName(1) => [
+                        'type' => 'select',
+                        'id' => 'dropdown_datacenters_id',
+                        'name' => 'datacenters_id',
+                        'value' => $this->fields["datacenters_id"],
+                        'values' => getOptionForItems(Datacenter::class),
+                        'hooks' => [
+                            'change' => <<<JS
+                            var datacenter = $(this).val();
+                            $.ajax({
+                                url: "{$CFG_GLPI['root_doc']}/ajax/dropdownLocation.php",
+                                data: {
+                                    items_id: datacenter,
+                                    itemtype: 'Datacenter'
+                                },
+                                success: function(data) {
+                                    let jsonData = JSON.parse(data);
+                                    for (let i = 0; i < jsonData.length; i++) {
+                                        let option = new Option(jsonData[i].name, jsonData[i].id);
+                                        $('#dropdown_locations_id').append(option);
+                                    }
+                                    if (jsonData.selected != undefined) {
+                                        $('#dropdown_locations_id').val(jsonData.selected);
+                                    }
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='textfield_name$rand'>".__('Name')."</label></td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name", ['rand' => $rand]);
-      echo "</td>";
-
-      echo "<td><label for='dropdown_locations_id$rand'>".Location::getTypeName(1)."</label></td>";
-      echo "<td>";
-      Location::dropdown([
-         'value'  => $this->fields["locations_id"],
-         'entity' => $this->fields["entities_id"],
-         'rand'   => $rand
-      ]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_datacenters_id$rand'>".Datacenter::getTypeName(1)."</label></td>";
-
-      echo "<td>";
-      $datacenters = $DB->request([
-         'SELECT' => ['id', 'name'],
-         'FROM'   => Datacenter::getTable()
-      ]);
-      $datacenters_list = [];
-      while ($row = $datacenters->next()) {
-         $datacenters_list[$row['id']] = $row['name'];
-      }
-      Dropdown::showFromArray(
-         "datacenters_id",
-         $datacenters_list, [
-            'value'                 => $this->fields["datacenters_id"],
-            'rand'                  => $rand,
-            'display_emptychoice'   => true
+                                }
+                            });
+                            JS
+                        ]
+                    ],
+                    __('Number of columns') => [
+                        'type' => 'number',
+                        'name' => 'vis_cols',
+                        'value' => $this->fields["vis_cols"],
+                        'min' => 1,
+                        'max' => 100,
+                        'step' => 1,
+                        'col_lg' => 6,
+                    ],
+                    __('Number of rows') => [
+                        'type' => 'number',
+                        'name' => 'vis_rows',
+                        'value' => $this->fields["vis_rows"],
+                        'min' => 1,
+                        'max' => 100,
+                        'step' => 1,
+                        'col_lg' => 6,
+                    ],
+                    __('Background picture (blueprint)') => [
+                        'type' => 'imageUpload',
+                        'id' => 'blueprintImagePick',
+                        'name' => 'blueprint',
+                        'accept' => 'image/*',
+                        'value' => $this->fields["blueprint"],
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ]
+                ]
+            ]
          ]
-      );
-      Ajax::updateItemOnSelectEvent(
-         "dropdown_datacenters_id$rand",
-         "dropdown_locations_id$rand",
-         $CFG_GLPI["root_doc"]."/ajax/dropdownLocation.php", [
-            'items_id' => '__VALUE__',
-            'itemtype' => 'Datacenter'
-         ]
-      );
-      echo "</td>";
-      echo "<td colspan='2'></td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_vis_cols$rand'>" . __('Number of columns') . "</label></td><td>";
-      Dropdown::showNumber(
-         "vis_cols", [
-            'value'  => $this->fields["vis_cols"],
-            'min'    => 1,
-            'max'    => 100,
-            'step'   => 1,
-            'rand'   => $rand
-         ]
-      );
-      echo "</td>";
-      echo "<td><label for='dropdown_vis_rows$rand'>" . __('Number of rows') . "</label></td><td>";
-      Dropdown::showNumber(
-         "vis_rows", [
-            'value'  => $this->fields["vis_rows"],
-            'min'    => 1,
-            'max'    => 100,
-            'step'   => 1,
-            'rand'   => $rand
-         ]
-      );
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for=''>" . __('Background picture (blueprint)') . "</label></td><td>";
-
-      if (!empty($this->fields['blueprint'])) {
-         echo Html::image(Toolbox::getPictureUrl($this->fields['blueprint']), [
-            'style' => 'max-width: 100px; max-height: 50px;',
-            'class' => 'picture_square'
-         ]);
-         echo "&nbsp;";
-         echo Html::getCheckbox([
-            'title' => __('Clear'),
-            'name'  => '_blank_blueprint'
-         ]);
-         echo "&nbsp;".__('Clear');
-
-      } else {
-         echo Html::file([
-            'name'       => 'blueprint',
-            'onlyimages' => true,
-         ]);
-      }
-
-      echo "</td>";
-      echo "<td colspan = '2'></td>";
-      echo "</tr>";
-
-      $this->showFormButtons($options);
+      ];
+      renderTwigForm($form);
       return true;
    }
 
@@ -195,26 +202,31 @@ class DCRoom extends CommonDBTM {
     * @return array        the altered input
     */
    function manageBlueprint($input) {
-      if (isset($input["_blank_blueprint"])
-          && $input["_blank_blueprint"]) {
+      if (isset($input["clearPictureForblueprint"])
+          && $input["clearPictureForblueprint"]) {
          $input['blueprint'] = '';
 
          if (array_key_exists('blueprint', $this->fields)) {
-            Toolbox::deletePicture($this->fields['blueprint']);
+            unlink($this->fields['blueprint']);
          }
       }
 
-      if (isset($input["_blueprint"])) {
-         $blueprint = array_shift($input["_blueprint"]);
+      if (isset($input["blueprint"])) {
+         $file = json_decode(stripslashes($input["blueprint"]), true)[0];
 
-         if ($dest = Toolbox::savePicture(GLPI_TMP_DIR . '/' . $blueprint)) {
-            $input['blueprint'] = $dest;
-         } else {
+         $path = ItsmngUploadHandler::uploadFiles(
+            $file['path'],
+            $file['format'],
+            $file['name']
+         );
+         if (!$path) {
             Session::addMessageAfterRedirect(__('Unable to save picture file.'), true, ERROR);
+            return $input;
          }
+         $input['blueprint'] = $path;
 
          if (array_key_exists('blueprint', $this->fields)) {
-            Toolbox::deletePicture($this->fields['blueprint']);
+            unlink($this->fields['blueprint']);
          }
       }
 

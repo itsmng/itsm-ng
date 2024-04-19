@@ -83,7 +83,6 @@ class ItsmngUploadHandler {
 
    static function uploadFiles($filepath, $format, $filename) {
       $upload_path = self::get_upload_path($format);
-      // die(var_dump($upload_path));
       $uploadfile = $upload_path . '/' . $filename;
       if (file_exists($uploadfile)) {
          $filename = uniqid() . '.' . pathinfo($filename, PATHINFO_EXTENSION);
@@ -91,11 +90,11 @@ class ItsmngUploadHandler {
       }
       if (!file_exists(GLPI_DOC_DIR . $upload_path)) {
          if (!mkdir(GLPI_DOC_DIR . $upload_path, 0777, true)) {
-            throw new Exception("Failed to create upload directory.");
+            return false;
          }
       }
       if (!rename($filepath, GLPI_DOC_DIR . $uploadfile)) {
-         throw new Exception("Failed to move uploaded file.");
+         return false;
       }
       return self::get_upload_path($format, false) . '/' . $filename;
    }
