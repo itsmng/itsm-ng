@@ -1,182 +1,93 @@
-<div class="grid-stack border" id="ContentForTabs"></div>
-<div class='d-none' id="hidden_gridStack_items">
-  {% for key, tab in tabs %}
-  <div class="grid-stack-item" id="ContentFor{{key|slug}}" gs-min-w='6' data-gs-value="test">
-    <div class="card grid-stack-item-content">
-      <div>
-        <div class="card-header position-sticky">{{tab['title']|raw}}</div>
-        <div class="card-body" data-params="{{tab.params}}" style="cursor: default"></div>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
+<div class="row px-3">
+    <div id="main-accordion-view" class="col col-7"></div>
+    <ul class="accordion col col-5" id="options-for-{{itemName|slug}}">
+        {% for key, tab in tabs %}
+        <li class="accordion-item">
+            <h2 class="accordion-header d-flex">
+                <button
+                    class="btn btn-sm btn-link m-2 me-0 moveToMainButton"
+                    title="{{"Move to main view"|trans}}">
+                    <i class="fas fa-share-square fa-rotate-180"></i>
+                </button>
+                <button class="accordion-button collapsed ms-0"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#tab-{{key|slug}}"
+                    aria-expanded="true"
+                    aria-controls="tab-{{key|slug}}">
+                    {{tab['title']|raw}}
+                </button>
+            </h2>
+            <div class="accordion-collapse collapse" id="tab-{{key|slug}}"
+                data-url="{{tab['url']}}"
+                data-params="{{tab['params']}}"
+                data-bs-parent="#options-for-{{itemName|slug}}">
+                <div class="accordion-body container"></div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
 </div>
 
 <script>
-  const options = [];
-  var grid = null;
+let selectedTab = null;
 
-  $(document).ready(() => {
-    grid = GridStack.init({
-      cellHeight: 'auto',
-      cellWidth: '1rem',
-      handle: '.card-header',
-      sizeToContent: true,
-    });
-    grid.setAnimation(false);
-    initTable();
+async function loadOptionBody(collapse) {
+  const body = collapse.find('.accordion-body');
+  const url = collapse.data('url');
+  const params = collapse.data('params');
 
-    grid.on('resizestop', (event, element) => {
-      saveGrid();
-    });
-
-    grid.on('dragstop', (event, element) => {
-      saveGrid();
-    });
-
-    grid.on('added', (event, items) => {
-      updateWidgetSizes();
-      saveGrid();
-    });
-
-    grid.on('removed', (event, items) => {
-      updateWidgetSizes();
-      saveGrid();
-    });
-  });
-
-  // Update the width of widgets based on the number of widgets present
-  function updateWidgetSizes() {
-    const columnWidgets = grid.getGridItems();
-    if (columnWidgets.length === 1) {
-      grid.update(columnWidgets[0], { w: 12 });
-    }
-    grid.compact();
-  }
-
-  function saveGrid() {
-    let save = grid.save();
-    items = grid.getGridItems();
-    for (i in save) {
-      for (j in items) {
-        if ($(items[j]).children('div').html() === save[i].content) {
-          save[i].name = $(items[j]).attr('id').replace('ContentFor', '');
-        }
-      };
-      delete save[i].content;
-    }
-    $.ajax({
-      url: '{{glpiroot}}/ajax/updateUserMenu.php',
-      type: 'POST',
-      data: {
-        'itemName': '{{itemName}}',
-        'content': save,
-      },
-    });
-  }
-
-  // Update grid content based on the user's interaction with the dropdown menu
-  async function updateGridContent(target) {
-    const val = target.attr('data-value');
-    const inp = target.children('input');
-    inp.prop('checked', !inp.prop('checked'));
-
-    if (val === 'all') {
-      const selector = inp.prop('checked') ? '.dropdown-menu a:has(input:not(:checked))' : '.dropdown-menu a:has(input:checked)';
-      await $(selector).each(async (i, e) => {
-        let otherInp = $(e).children('input');
-        if ($(e).attr('data-value') !== 'all') {
-          otherInp.prop('checked', inp.prop('checked'));
-          await handleDropdownOption($(e), inp.prop('checked'));
-        }
+  if (!body.html().length) {
+      await $.get(url, params, function(data) {
+          body.html(data);
       });
-      return;
+  }
+}
+
+function disableButtons(header) {
+    header.find('button').attr('disabled', 'disabled');
+    header.find('button').addClass('bg-light');
+}
+
+function enableButtons(header) {
+    header.find('button').removeAttr('disabled');
+    header.find('button').removeClass('bg-light');
+}
+
+function switchBody(body1, body2) {
+    const temp = body1.html();
+    body1.html(body2.html());
+    body2.html(temp);
+}
+
+async function moveBodyToMain(collapse) {
+    const main = $('#main-accordion-view');
+    if (selectedTab) {
+        const prev = $('#' + selectedTab);
+        switchBody(main, prev.find('.accordion-body'));
+        enableButtons(prev.parent());
     }
-    await handleDropdownOption(target, inp.prop('checked'));
-  }
+    await loadOptionBody(collapse);
+    switchBody(main, collapse.find('.accordion-body'));
+    disableButtons(collapse.parent());
+    collapse.collapse('hide');
+    selectedTab = collapse.attr('id');
+}
 
-  // Handles individual dropdown options
-  async function handleDropdownOption(option, isChecked) {
-    const val = option.attr('data-value');
-    if (isChecked && !options.includes(val)) {
-      options.push(val);
-      await moveAndMakeWidget(val);
-    } else if (!isChecked && options.includes(val)) {
-      options.splice(options.indexOf(val), 1);
-      moveAndRemoveWidget(val);
+
+$(".accordion-collapse").on('show.bs.collapse', function(e) {
+    loadOptionBody($(e.target));
+});
+
+$(".moveToMainButton").on('click', function(e) {
+    const collapse = $(e.target).parent().parent().parent().find('.accordion-collapse');
+    if (collapse.attr('id') !== selectedTab) {
+        moveBodyToMain(collapse);
     }
-  }
+});
 
-  // Moves the widget to the grid and makes it a grid widget
-  function moveAndRemoveWidget(val) {
-    const element = $(`#ContentFor${val}`);
-    grid.removeWidget(element[0], false);
-    element.detach().prependTo('#hidden_gridStack_items');
-    setTimeout(() => {
-        element.removeAttr('gs-x gs-y');
-    }, 300);
-  }
-
-  async function moveAndMakeWidget(val) {
-    const element = $(`#ContentFor${val}`);
-    const body = $(`#ContentFor${val} .card-body`);
-    if (body.html() === '') {
-      body.html('<div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>');
-      $(body).load('{{glpiroot}}/ajax/common.tabs.php?' + body.attr('data-params'), () => {
-        element.detach().appendTo('#ContentForTabs');
-        grid.makeWidget(element[0]);
-        grid.update(element[0], { sizeToContent: true});
-      });
-    } else {
-        element.detach().appendTo('#ContentForTabs');
-        grid.makeWidget(element[0]);
-    }
-  }
-
-
-  // Initialize checkboxes based on selectedTabs
-  function initCheckbox() {
-    const savedLayout = {{selectedTabs|json_encode|raw}} ?? [];
-    if (savedLayout.length === 0) {
-      first = $('.dropdown-menu a.isTabButton').first();
-      first.children('input').prop('checked', true);
-      options.push(first.attr('data-value'));
-      return;
-    } else {
-      for (widget of savedLayout) {
-        const name = widget.name;
-        const element = $(`#ContentFor${name}`);
-        delete widget.name;
-
-        for (param of Object.entries(widget)) {
-          element.attr('gs-'
-            + param[0].replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? "-" : "") + $.toLowerCase()),
-            param[1]);
-        }
-        $('.dropdown-menu a[data-value="' + name + '"] input').prop('checked', true);
-        options.push(name);
-      }
-    }
-  }
-
-  async function initTable() {
-    initCheckbox();
-    for (option of options) {
-      await moveAndMakeWidget(option);
-    }
-  }
-
-  // Dropdown menu item click handlers
-  $('.tab-selector a').on('click', function(event) {
-    event.preventDefault();
-    updateGridContent($(this));
-    return false;
-  });
-
-  $('.tab-selector input[type="checkbox"]').on('click', function(event) {
-    event.preventDefault();
-    event.target.checked = !event.target.checked;
-    updateGridContent($(this).parent())
-  });
-
+$(document).ready(function() {
+    const first = $('#options-for-{{itemName|slug}} .accordion-item:first-child .accordion-collapse');
+    moveBodyToMain(first);
+});
 </script>
