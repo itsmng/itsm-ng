@@ -1,28 +1,31 @@
-<div class="row px-3">
-    <div id="main-accordion-view" class="col col-7"></div>
-    <ul class="accordion col col-5" id="options-for-{{itemName|slug}}">
+<div class="row px-3 w-100">
+    <div id="main-accordion-view" class="col col-{{(tabs|length == 1) ? 12 : 7}}"></div>
+    <ul class="col col-5 p-0 {% if tabs|length == 1 %}d-none{% endif %}"
+        id="options-for-{{itemName|slug}}">
         {% for key, tab in tabs %}
-        <li class="accordion-item">
-            <h2 class="accordion-header d-flex">
+        <li>
+            <h2 class="d-flex bg-light border w-100 m-0">
                 <button
-                    class="btn btn-sm btn-link m-2 me-0 moveToMainButton"
+                    class="btn btn-sm btn-light m-2 me-0 moveToMainButton"
                     title="{{"Move to main view"|trans}}">
                     <i class="fas fa-share-square fa-rotate-180"></i>
                 </button>
-                <button class="accordion-button collapsed ms-0"
+                <button
+                    class="btn btn-light w-100 d-flex justify-content-between align-items-center collapse-button"
                     type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#tab-{{key|slug}}"
                     aria-expanded="true"
                     aria-controls="tab-{{key|slug}}">
                     {{tab['title']|raw}}
+                    <i class="fas fa-plus fa-xs"></i>
                 </button>
             </h2>
-            <div class="accordion-collapse collapse" id="tab-{{key|slug}}"
+            <div class="border border-top-0 overflow-auto"
+                id="tab-{{key|slug}}"
                 data-url="{{tab['url']}}"
                 data-params="{{tab['params']}}"
-                data-bs-parent="#options-for-{{itemName|slug}}">
-                <div class="accordion-body container"></div>
+                style="display:none;"
+                >
+                <div class="container"></div>
             </div>
         </li>
         {% endfor %}
@@ -31,63 +34,100 @@
 
 <script>
 let selectedTab = null;
+let mainTab = null;
 
-async function loadOptionBody(collapse) {
-  const body = collapse.find('.accordion-body');
-  const url = collapse.data('url');
-  const params = collapse.data('params');
-
-  if (!body.html().length) {
-      await $.get(url, params, function(data) {
-          body.html(data);
-      });
-  }
-}
-
-function disableButtons(header) {
-    header.find('button').attr('disabled', 'disabled');
-    header.find('button').addClass('bg-light');
-}
-
-function enableButtons(header) {
-    header.find('button').removeAttr('disabled');
-    header.find('button').removeClass('bg-light');
-}
-
-function switchBody(body1, body2) {
-    const temp = body1.html();
-    body1.html(body2.html());
-    body2.html(temp);
-}
-
-async function moveBodyToMain(collapse) {
-    const main = $('#main-accordion-view');
-    if (selectedTab) {
-        const prev = $('#' + selectedTab);
-        switchBody(main, prev.find('.accordion-body'));
-        enableButtons(prev.parent());
+async function loadBody(id) {
+    const collapse = $('#' + id);
+    const body = collapse.find('.container');
+    if (body.html().trim() === '') {
+        await $.ajax({
+            url: collapse.data('url'),
+            data: collapse.data('params'),
+            success: function(data) {
+                body.html(data);
+            }
+        });
     }
-    await loadOptionBody(collapse);
-    switchBody(main, collapse.find('.accordion-body'));
-    disableButtons(collapse.parent());
-    collapse.collapse('hide');
-    selectedTab = collapse.attr('id');
 }
 
+function openCollapse() {
+    if (selectedTab === null) {
+        return;
+    }
+    const collapse = $('#' + selectedTab);
+    const body = collapse.find('.container');
+    const icon = $('button[aria-controls="' + selectedTab + '"] i');
+    icon.removeClass('fa-plus').addClass('fa-minus');
+    loadBody(selectedTab).then(() => {
+        collapse.show();
+    })
+}
 
-$(".accordion-collapse").on('show.bs.collapse', function(e) {
-    loadOptionBody($(e.target));
+function closeCollapse() {
+    if (selectedTab === null) {
+        return;
+    }
+    const collapse = $('#' + selectedTab);
+    const icon = $('button[aria-controls="' + selectedTab + '"] i');
+    icon.removeClass('fa-minus').addClass('fa-plus');
+    collapse.hide();
+    selectedTab = null;
+}
+
+function toggleCollapse(target) {
+    const collapsed =
+        (selectedTab === target.attributes['aria-controls'].value)
+    const icon = $(target).find('i');
+    const collapse = $('#' + target.attributes['aria-controls'].value);
+
+    if (collapsed) {
+        closeCollapse();
+        selectedTab = null;
+        return;
+    }
+    closeCollapse();
+    selectedTab = collapse.attr('id');
+    openCollapse();
+}
+
+function toggleHeader(header) {
+    const buttons = header.find('button');
+    buttons.prop('disabled', !buttons.prop('disabled'));
+}
+
+async function moveBodyToMainView(target) {
+    const mainAccordion = $('#main-accordion-view');
+    const collapse = target.parent().next();
+    const body = collapse.find('.container');
+
+    if (mainTab !== null) {
+        toggleHeader($('#' + mainTab).prev());
+    }
+
+    toggleHeader(target.parent().first('h2'));
+    mainTab = collapse.attr('id');
+
+    loadBody(collapse.attr('id')).then(() => {
+        mainAccordion.html(body.html());
+        body.html('');
+        if (selectedTab === collapse.attr('id')) {
+            closeCollapse();
+        }
+    });
+}
+
+$("button.collapse-button").on('click', function(e) {
+    toggleCollapse(e.currentTarget);
 });
 
-$(".moveToMainButton").on('click', function(e) {
-    const collapse = $(e.target).parent().parent().parent().find('.accordion-collapse');
-    if (collapse.attr('id') !== selectedTab) {
-        moveBodyToMain(collapse);
-    }
+$('button.moveToMainButton').on('click', function(e) {
+    moveBodyToMainView($(e.currentTarget));
 });
 
 $(document).ready(function() {
-    const first = $('#options-for-{{itemName|slug}} .accordion-item:first-child .accordion-collapse');
-    moveBodyToMain(first);
+    const firstTab = $('button.collapse-button').first();
+    selectedTab = firstTab.attr('aria-controls');
+    moveBodyToMainView(firstTab);
 });
+
 </script>
