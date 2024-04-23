@@ -24,7 +24,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
 */
@@ -2975,6 +2975,11 @@ a.icon_nav_move {
    height: 30px;
    text-align: center;
    padding-left: 95px;
+   background-color: var(--bs-secondary);
+
+   span {
+       color: var(--bs-secondary-text);
+   }
 
    ul#menu {
       height: 30px;
@@ -3656,7 +3661,7 @@ a.copyright {
       }
 
       .tooltip_picture_border {
-         padding: 2px;
+         padding: 3px;
          border-radius: 50%;
          border: 3px inset #E7E7E7;
          _border: 3px solid #E7E7E7;
@@ -3667,8 +3672,8 @@ a.copyright {
       }
 
       .user_picture {
-         width: 51px;
-         height: 51px;
+         width: 40px;
+         height: 40px;
          border-radius: 50%;
       }
    }

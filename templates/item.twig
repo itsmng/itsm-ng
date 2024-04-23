@@ -1,182 +1,133 @@
-<div class="grid-stack border" id="ContentForTabs"></div>
-<div class='d-none' id="hidden_gridStack_items">
-  {% for key, tab in tabs %}
-  <div class="grid-stack-item" id="ContentFor{{key|slug}}" gs-min-w='6' data-gs-value="test">
-    <div class="card grid-stack-item-content">
-      <div>
-        <div class="card-header position-sticky">{{tab['title']|raw}}</div>
-        <div class="card-body" data-params="{{tab.params}}" style="cursor: default"></div>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
+<div class="row px-3 w-100">
+    <div id="main-accordion-view" class="col col-{{(tabs|length == 1) ? 12 : 7}}"></div>
+    <ul class="col col-5 p-0 {% if tabs|length == 1 %}d-none{% endif %}"
+        id="options-for-{{itemName|slug}}">
+        {% for key, tab in tabs %}
+        <li>
+            <h2 class="d-flex bg-light border w-100 m-0">
+                <button
+                    class="btn btn-sm btn-light m-2 me-0 moveToMainButton"
+                    title="{{"Move to main view"|trans}}">
+                    <i class="fas fa-share-square fa-rotate-180"></i>
+                </button>
+                <button
+                    class="btn btn-light w-100 d-flex justify-content-between align-items-center collapse-button"
+                    type="button"
+                    aria-expanded="true"
+                    aria-controls="tab-{{key|slug}}">
+                    {{tab['title']|raw}}
+                    <i class="fas fa-plus fa-xs"></i>
+                </button>
+            </h2>
+            <div class="border border-top-0 overflow-auto"
+                id="tab-{{key|slug}}"
+                data-url="{{tab['url']}}"
+                data-params="{{tab['params']}}"
+                style="display:none;"
+                >
+                <div class="container"></div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
 </div>
 
 <script>
-  const options = [];
-  var grid = null;
+let selectedTab = null;
+let mainTab = null;
 
-  $(document).ready(() => {
-    grid = GridStack.init({
-      cellHeight: 'auto',
-      cellWidth: '1rem',
-      handle: '.card-header',
-      sizeToContent: true,
-    });
-    grid.setAnimation(false);
-    initTable();
-
-    grid.on('resizestop', (event, element) => {
-      saveGrid();
-    });
-
-    grid.on('dragstop', (event, element) => {
-      saveGrid();
-    });
-
-    grid.on('added', (event, items) => {
-      updateWidgetSizes();
-      saveGrid();
-    });
-
-    grid.on('removed', (event, items) => {
-      updateWidgetSizes();
-      saveGrid();
-    });
-  });
-
-  // Update the width of widgets based on the number of widgets present
-  function updateWidgetSizes() {
-    const columnWidgets = grid.getGridItems();
-    if (columnWidgets.length === 1) {
-      grid.update(columnWidgets[0], { w: 12 });
+async function loadBody(id) {
+    const collapse = $('#' + id);
+    const body = collapse.find('.container');
+    if (body.html().trim() === '') {
+        await $.ajax({
+            url: collapse.data('url'),
+            data: collapse.data('params'),
+            success: function(data) {
+                body.html(data);
+            }
+        });
     }
-    grid.compact();
-  }
+}
 
-  function saveGrid() {
-    let save = grid.save();
-    items = grid.getGridItems();
-    for (i in save) {
-      for (j in items) {
-        if ($(items[j]).children('div').html() === save[i].content) {
-          save[i].name = $(items[j]).attr('id').replace('ContentFor', '');
+function openCollapse() {
+    if (selectedTab === null) {
+        return;
+    }
+    const collapse = $('#' + selectedTab);
+    const body = collapse.find('.container');
+    const icon = $('button[aria-controls="' + selectedTab + '"] i');
+    icon.removeClass('fa-plus').addClass('fa-minus');
+    loadBody(selectedTab).then(() => {
+        collapse.show();
+    })
+}
+
+function closeCollapse() {
+    if (selectedTab === null) {
+        return;
+    }
+    const collapse = $('#' + selectedTab);
+    const icon = $('button[aria-controls="' + selectedTab + '"] i');
+    icon.removeClass('fa-minus').addClass('fa-plus');
+    collapse.hide();
+    selectedTab = null;
+}
+
+function toggleCollapse(target) {
+    const collapsed =
+        (selectedTab === target.attributes['aria-controls'].value)
+    const icon = $(target).find('i');
+    const collapse = $('#' + target.attributes['aria-controls'].value);
+
+    if (collapsed) {
+        closeCollapse();
+        selectedTab = null;
+        return;
+    }
+    closeCollapse();
+    selectedTab = collapse.attr('id');
+    openCollapse();
+}
+
+function toggleHeader(header) {
+    const buttons = header.find('button');
+    buttons.prop('disabled', !buttons.prop('disabled'));
+}
+
+async function moveBodyToMainView(target) {
+    const mainAccordion = $('#main-accordion-view');
+    const collapse = target.parent().next();
+    const body = collapse.find('.container');
+
+    if (mainTab !== null) {
+        toggleHeader($('#' + mainTab).prev());
+    }
+
+    toggleHeader(target.parent().first('h2'));
+    mainTab = collapse.attr('id');
+
+    loadBody(collapse.attr('id')).then(() => {
+        mainAccordion.html(body.html());
+        body.html('');
+        if (selectedTab === collapse.attr('id')) {
+            closeCollapse();
         }
-      };
-      delete save[i].content;
-    }
-    $.ajax({
-      url: '{{glpiroot}}/ajax/updateUserMenu.php',
-      type: 'POST',
-      data: {
-        'itemName': '{{itemName}}',
-        'content': save,
-      },
     });
-  }
+}
 
-  // Update grid content based on the user's interaction with the dropdown menu
-  async function updateGridContent(target) {
-    const val = target.attr('data-value');
-    const inp = target.children('input');
-    inp.prop('checked', !inp.prop('checked'));
+$("button.collapse-button").on('click', function(e) {
+    toggleCollapse(e.currentTarget);
+});
 
-    if (val === 'all') {
-      const selector = inp.prop('checked') ? '.dropdown-menu a:has(input:not(:checked))' : '.dropdown-menu a:has(input:checked)';
-      await $(selector).each(async (i, e) => {
-        let otherInp = $(e).children('input');
-        if ($(e).attr('data-value') !== 'all') {
-          otherInp.prop('checked', inp.prop('checked'));
-          await handleDropdownOption($(e), inp.prop('checked'));
-        }
-      });
-      return;
-    }
-    await handleDropdownOption(target, inp.prop('checked'));
-  }
+$('button.moveToMainButton').on('click', function(e) {
+    moveBodyToMainView($(e.currentTarget));
+});
 
-  // Handles individual dropdown options
-  async function handleDropdownOption(option, isChecked) {
-    const val = option.attr('data-value');
-    if (isChecked && !options.includes(val)) {
-      options.push(val);
-      await moveAndMakeWidget(val);
-    } else if (!isChecked && options.includes(val)) {
-      options.splice(options.indexOf(val), 1);
-      moveAndRemoveWidget(val);
-    }
-  }
-
-  // Moves the widget to the grid and makes it a grid widget
-  function moveAndRemoveWidget(val) {
-    const element = $(`#ContentFor${val}`);
-    grid.removeWidget(element[0], false);
-    element.detach().prependTo('#hidden_gridStack_items');
-    setTimeout(() => {
-        element.removeAttr('gs-x gs-y');
-    }, 300);
-  }
-
-  async function moveAndMakeWidget(val) {
-    const element = $(`#ContentFor${val}`);
-    const body = $(`#ContentFor${val} .card-body`);
-    if (body.html() === '') {
-      body.html('<div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>');
-      $(body).load('{{glpiroot}}/ajax/common.tabs.php?' + body.attr('data-params'), () => {
-        element.detach().appendTo('#ContentForTabs');
-        grid.makeWidget(element[0]);
-        grid.update(element[0], { sizeToContent: true});
-      });
-    } else {
-        element.detach().appendTo('#ContentForTabs');
-        grid.makeWidget(element[0]);
-    }
-  }
-
-
-  // Initialize checkboxes based on selectedTabs
-  function initCheckbox() {
-    const savedLayout = {{selectedTabs|json_encode|raw}} ?? [];
-    if (savedLayout.length === 0) {
-      first = $('.dropdown-menu a.isTabButton').first();
-      first.children('input').prop('checked', true);
-      options.push(first.attr('data-value'));
-      return;
-    } else {
-      for (widget of savedLayout) {
-        const name = widget.name;
-        const element = $(`#ContentFor${name}`);
-        delete widget.name;
-
-        for (param of Object.entries(widget)) {
-          element.attr('gs-'
-            + param[0].replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? "-" : "") + $.toLowerCase()),
-            param[1]);
-        }
-        $('.dropdown-menu a[data-value="' + name + '"] input').prop('checked', true);
-        options.push(name);
-      }
-    }
-  }
-
-  async function initTable() {
-    initCheckbox();
-    for (option of options) {
-      await moveAndMakeWidget(option);
-    }
-  }
-
-  // Dropdown menu item click handlers
-  $('.tab-selector a').on('click', function(event) {
-    event.preventDefault();
-    updateGridContent($(this));
-    return false;
-  });
-
-  $('.tab-selector input[type="checkbox"]').on('click', function(event) {
-    event.preventDefault();
-    event.target.checked = !event.target.checked;
-    updateGridContent($(this).parent())
-  });
+$(document).ready(function() {
+    const firstTab = $('button.collapse-button').first();
+    selectedTab = firstTab.attr('aria-controls');
+    moveBodyToMainView(firstTab);
+});
 
 </script>

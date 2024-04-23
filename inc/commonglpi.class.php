@@ -957,7 +957,6 @@ class CommonGLPI {
          $extraparamhtml = "&".Toolbox::append_params($cleanoptions, '&');
       }
 
-      $tabs = $this->defineAllTabs($options);
       if (empty($withtemplate)
           && !$this->isNewID($ID)
           && $this->getType()
@@ -1032,14 +1031,6 @@ class CommonGLPI {
                   class='navicon left'>
                   <i class='far fa-list-alt pointer'></i>
                </a>";
-
-         try {
-            renderTwigTemplate('tabSelection.twig', [
-                  'tabs' => $tabs,
-            ]);
-         } catch (Exception $e) {
-            echo $e->getMessage();
-         }
 
          $name = '';
          if (isset($this->fields['id']) && ($this instanceof CommonDBTM)) {
@@ -1152,7 +1143,7 @@ class CommonGLPI {
                   );
                });
             })(jQuery);
-            JS); 
+            JS);
          }
 
          if ($current !== false) {
@@ -1182,17 +1173,8 @@ class CommonGLPI {
          }
 
          echo "</div>"; // .navigationheader
-         
-      } else {
-         try {
-            renderTwigTemplate('tabSelection.twig', [
-                  'tabs' => $tabs,
-            ]);
-         } catch (Exception $e) {
-            echo $e->getMessage();
-         }
-      }
 
+      }
    }
 
 

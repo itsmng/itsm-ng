@@ -1,5 +1,7 @@
 // RUNTIME VARIABLES
 @import "../vendor/twbs/bootstrap/scss/bootstrap.scss";
+@import "./colors.scss";
+
 :root {
     --header-height: 3.5rem;
     --subheader-height: 4rem;
@@ -11,32 +13,6 @@
     --bubble_pos_y: 50%;
     --table-border-radius: 0;
     --nav-size: 1rem;
-
-    --bs-primary: #0b0624;
-    --bs-secondary: #0e2045;
-
-    --bs-primary-text: #ffffff;
-    --bs-secondary-text: black;
-
-    --bs-header: var(--bs-primary);
-    --bs-header-text: var(--bs-primary-text);
-
-    --bs-nav: var(--bs-secondary);
-    --bs-nav-text: var(--bs-primary-text);
-    --bs-nav-submenu: var(--bs-primary);
-    --bs-nav-hover: var(--bs-secondary);
-
-    --bs-favorite: #ffff00;
-
-    --bs-danger:    #ff5454;
-    --bs-warning:   #ffd34e;
-    --bs-info:      #5998ff;
-
-    --bs-light:    #f8f9fa;
-    --bs-dark:     #343a40;
-
-    --logo-file: url("../pics/fd_logo.png");
-    --logo-file-dark: url("../pics/fd_logo_dark.png");
 }
 
 body {
