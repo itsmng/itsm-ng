@@ -2975,6 +2975,11 @@ a.icon_nav_move {
    height: 30px;
    text-align: center;
    padding-left: 95px;
+   background-color: var(--bs-secondary);
+
+   span {
+       color: var(--bs-secondary-text);
+   }
 
    ul#menu {
       height: 30px;
