@@ -106,6 +106,6 @@ dev_nodes=(
 )
 for node in "${dev_nodes[@]}"
 do
-    rm -rf $WORKING_DIR/$node
+    rm -rf $node
 done
 find $WORKING_DIR/pics/ -depth -type f -iname "*.eps" -exec rm -rf {} \;
