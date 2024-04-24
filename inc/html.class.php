@@ -1280,6 +1280,45 @@ class Html
       }
    }
 
+   /* Returns a list of CSS files to include for plugins
+    *
+    * @return array
+    */
+   static function getPluginsCss() {
+     global $PLUGIN_HOOKS;
+     $css = [];
+      if (isset($PLUGIN_HOOKS['add_css']) && count($PLUGIN_HOOKS['add_css'])) {
+         foreach ($PLUGIN_HOOKS["add_css"] as $plugin => $files) {
+            if (!Plugin::isPluginActive($plugin)) {
+               continue;
+            }
+
+            $plugin_root_dir = Plugin::getPhpDir($plugin, true);
+            $plugin_web_dir  = Plugin::getWebDir($plugin, false);
+            $version         = Plugin::getInfo($plugin, 'version');
+
+            if (!is_array($files)) {
+               $files = [$files];
+            }
+
+            foreach ($files as $file) {
+               $filename = "$plugin_root_dir/$file";
+
+               if (!file_exists($filename)) {
+                  continue;
+               }
+
+               if ('scss' === substr(strrchr($filename, '.'), 1)) {
+                  $css[] = Html::scss("$plugin_web_dir/$file", ['version' => $version]);
+               } else {
+                  $css[] = Html::css("$plugin_web_dir/$file", ['version' => $version]);
+               }
+            }
+         }
+      }
+      return $css;
+   }
+
 
    /**
     * Include common HTML headers
@@ -1453,6 +1492,7 @@ class Html
 
       //  CSS link
       echo Html::scss('css/styles');
+      echo Html::scss('css/colors');
       echo Html::scss('css/itsm2');
       if (isset($_SESSION['glpihighcontrast_css']) && $_SESSION['glpihighcontrast_css']) {
          echo Html::scss('css/highcontrast');
@@ -1462,39 +1502,10 @@ class Html
       echo "<link rel='shortcut icon' type='images/x-icon' href='" .
          $CFG_GLPI["root_doc"] . "/pics/favicon.ico' >\n";
 
-      // Add specific css for plugins
-      if (isset($PLUGIN_HOOKS['add_css']) && count($PLUGIN_HOOKS['add_css'])) {
-
-         foreach ($PLUGIN_HOOKS["add_css"] as $plugin => $files) {
-            if (!Plugin::isPluginActive($plugin)) {
-               continue;
-            }
-
-            $plugin_root_dir = Plugin::getPhpDir($plugin, true);
-            $plugin_web_dir  = Plugin::getWebDir($plugin, false);
-            $version         = Plugin::getInfo($plugin, 'version');
-
-            if (!is_array($files)) {
-               $files = [$files];
-            }
-
-            foreach ($files as $file) {
-               $filename = "$plugin_root_dir/$file";
-
-               if (!file_exists($filename)) {
-                  continue;
-               }
-
-               if ('scss' === substr(strrchr($filename, '.'), 1)) {
-                  echo Html::scss("$plugin_web_dir/$file", ['version' => $version]);
-               } else {
-                  echo Html::css("$plugin_web_dir/$file", ['version' => $version]);
-               }
-            }
-         }
+      $pluginCss = self::getPluginsCss();
+      foreach ($pluginCss as $css) {
+         echo $css;
       }
-
-      echo Html::scss('css/palettes/' . $theme);
 
       // Custom CSS for active entity
       if ($DB instanceof DBmysql && $DB->connected) {
