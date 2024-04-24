@@ -155,9 +155,7 @@ if (!GLPI_DEMO_MODE) {
  CronTask::callCronForce();
 }
 
-
-try {
-    renderTwigTemplate('index.twig', ["root_doc" => $CFG_GLPI['root_doc'], 'header_data' => $header_data] + $twig_vars);
-} catch (\Exception $e) {
-    echo $e->getMessage();
-}
+renderTwigTemplate('index.twig', [
+    "root_doc" => $CFG_GLPI['root_doc'],
+    'header_data' => $header_data
+] + $twig_vars);

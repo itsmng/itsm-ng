@@ -49,6 +49,9 @@ class ItsmngUploadHandler {
     static function getUploadPath($type, $filename, $withDir = true) {
         $extension = strtoupper(pathinfo($filename, PATHINFO_EXTENSION));
         switch ($type) {
+            case self::UPLOAD:
+                $upload_path = '_uploads';
+                break;
             case self::TMP:
                 $upload_path = '_tmp';
                 break;
@@ -62,7 +65,7 @@ class ItsmngUploadHandler {
                 $upload_path = '_dumps';
                 break;
             default:
-                $upload_path = '_uploads';
+                $upload_path = $type;
                 break;
         }
         if (!file_exists(GLPI_DOC_DIR . $upload_path . '/' . $extension)) {
