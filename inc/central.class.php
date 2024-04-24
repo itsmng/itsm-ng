@@ -141,25 +141,33 @@ class Central extends CommonGLPI {
                      'type' => 'count',
                      'title' => __('Computer'),
                      'value' => countElementsInTable('glpi_computers', ['entities_id' => $_SESSION['glpiactive_entity']]),
-                     'icon' => 'fas fa-laptop',
+                     'options' => [
+                        'icon' => 'fas fa-laptop',
+                     ],
                   ],
                   [
                      'type' => 'count',
                      'title' => __('Rack'),
                      'value' => countElementsInTable('glpi_racks', ['entities_id' => $_SESSION['glpiactive_entity']]),
-                     'icon' => 'fas fa-server',
+                     'options' => [
+                        'icon' => 'fas fa-server',
+                     ],
                   ],
                   [
                      'type' => 'count',
                      'title' => __('Network device'),
                      'value' => countElementsInTable('glpi_networkequipments', ['entities_id' => $_SESSION['glpiactive_entity']]),
-                     'icon' => 'fas fa-network-wired',
+                     'options' => [
+                        'icon' => 'fas fa-network-wired',
+                     ],
                   ],
                   [
                      'type' => 'count',
                      'title' => __('Software'),
                      'value' => countElementsInTable('glpi_softwares', ['entities_id' => $_SESSION['glpiactive_entity']]),
-                     'icon' => 'fas fa-cube',
+                     'options' => [
+                        'icon' => 'fas fa-cube',
+                     ],
                   ],
                ], [
                   [
@@ -173,19 +181,25 @@ class Central extends CommonGLPI {
                      'type' => 'count',
                      'title' => __('Ticket'),
                      'value' => countElementsInTable('glpi_tickets', ['entities_id' => $_SESSION['glpiactive_entity']]),
-                     'icon' => 'fas fa-ticket-alt',
+                     'options' => [
+                        'icon' => 'fas fa-ticket-alt',
+                     ],
                   ],
                   [
                      'type' => 'count',
                      'title' => __('User'),
                      'value' => countElementsInTable('glpi_users', ['entities_id' => $_SESSION['glpiactive_entity']]),
-                     'icon' => 'fas fa-user',
+                     'options' => [
+                        'icon' => 'fas fa-user',
+                     ],
                   ],
                   [
                      'type' => 'count',
                      'title' => __('Entity'),
                      'value' => countElementsInTable('glpi_entities', ['entities_id' => $_SESSION['glpiactive_entity']]),
-                     'icon' => 'fas fa-sitemap',
+                     'options' => [
+                        'icon' => 'fas fa-sitemap',
+                     ],
                   ],
                ]
             ]
