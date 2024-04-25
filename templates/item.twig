@@ -1,8 +1,8 @@
 <div class="row px-3 w-100">
-    <div id="main-accordion-view" class="col col-{{(tabs|length == 1) ? 12 : 7}}"></div>
-    <ul class="col col-{{listSize|default(5)}} p-0 {% if tabs|length == 1 %}d-none{% endif %}"
+    <div id="main-accordion-view" class="col col-sm-12 col-md-{{(tabs|length == 1) ? 12 : 7}} p-3"></div>
+    <ul class="col col-sm-12 col-md-{{listSize|default(5)}} p-0 {% if tabs|length == 1 %}d-none{% endif %}"
         id="options-for-{{itemName|slug}}" data-size="{{listSize|default(5)}}">
-        <li class="btn-group mb-2">
+        <li class="d-none d-md-block btn-group mb-2">
             <button class="btn btn-outline-secondary" onclick="changeListSize(1)" id="increase-list-size">
                 <i class="fas fa-arrow-left"></i>
                 <span class="visually-hidden">{{"Increase list width"|trans}}</span>
@@ -144,11 +144,11 @@ function changeListSize(delta) {
     increase.prop('disabled', size === max);
     list.data('size', size);
     for (let i = min; i <= max; i++) {
-        list.removeClass('col-' + i);
-        main.removeClass('col-' + i);
+        list.removeClass('col-md-' + i);
+        main.removeClass('col-md-' + i);
     }
-    main.addClass('col-' + (12 - size));
-    list.addClass('col-' + size);
+    main.addClass('col-md-' + (12 - size));
+    list.addClass('col-md-' + size);
 }
 
 $("button.collapse-button").on('click', function(e) {
