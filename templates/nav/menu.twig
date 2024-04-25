@@ -4,53 +4,65 @@
 
         <ul id="menu-content" class="menu-content collapse out">
 
-{% for menu_name, data in menu|filter(data => data['show_menu']) %}
-
-            <li title="{{data['title']}}" id='menu-{{menu_name}}' class='menu {{data['class']}} {{menu_favorite_on ? '' : 'hidden'}}' > {# loop.index starts at 1 mettre active bone page #}
-                <a class="{{menu[menu_name]['is_open'] ?: 'collapsed'}} " onclick="openMenu(this, '{{menu_name}}')" data-bs-toggle="collapse" data-bs-target="#submenu-{{menu_name}}">
-                    <i class="bubble-icon fas {{menu[menu_name]['icon']}}"></i>
-                    <span>{{data['title']}}</span>
-                </a>
-
-
-
-    {% if data['show_sub_menu'] %}
-
-            <ul class="sub-menu ssmenu collapse {{menu[menu_name]['is_open'] ? 'show'}}" id='submenu-{{menu_name}}'>
-
-        {% if menu_name == 'favorite' %}
-
-                <p>{{'You can add your favorite section to this menu. To do this click on the cogwheel then click and the star next to the menu you wish to add as a favorite.'|trans}}</p>
-            {# double loop inneficient, just add submenu favorite in php #}
-                {% for menu_name, data in menu|filter(data => data['show_menu']) %}
-                {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
-                    {% if val['is_favorite'] %}
-
-                    <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
-                        <i class='submenu-icon fa-fw {{val['icon']}}'></i>
-                        <span>{{val['title']}}</span>
-                        <i class="star-icon" ></i>
+            {% for menu_name, data in menu|filter(data => data['show_menu']) %}
+                <li title="{{data['title']}}" id='menu-{{menu_name}}' class='menu {{data['class']}} {{menu_favorite_on ? '' : 'hidden'}}'>
+                    <a class="{{menu[menu_name]['is_open'] ?: 'collapsed'}} test" data-bs-toggle="collapse" data-bs-target="#submenu-{{menu_name}}">
+                        <i class="bubble-icon fas {{menu[menu_name]['icon']}}"></i>
+                        <span>{{data['title']}}</span>
                     </a>
 
+                    {% if data['show_sub_menu'] %}
+                        <ul class="sub-menu ssmenu collapse {{menu[menu_name]['is_open'] ? 'show' : ''}}" id='submenu-{{menu_name}}'>
+
+                            {% if menu_name == 'favorite' %}
+                                <p>{{'You can add your favorite section to this menu. To do this click on the cogwheel then click and the star next to the menu you wish to add as a favorite.'|trans}}</p>
+                                
+                                {% for menu_name, data in menu|filter(data => data['show_menu']) %}
+                                    {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
+                                        {% if val['is_favorite'] %}
+                                            <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                                                <i class='submenu-icon fa-fw {{val['icon']}}'></i>
+                                                <span>{{val['title']}}</span>
+                                                <i class="star-icon"></i>
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                            {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
+                                {% if val.title and (access == 'central' or (val.page != '/front/reminder.php' and val.page != '/front/rssfeed.php')) %}
+                                    <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show' : ''}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                                        <i class='submenu-icon fa-fw {{val['icon']}}'></i>
+                                        <span>{{val['title']}}</span>
+                                        <i class="star-icon"></i>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
                     {% endif %}
-                {% endfor %}
+                </li>
             {% endfor %}
-        {% endif %}
-        {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
-            {% if val.title and (access == 'central' or (val.page != '/front/reminder.php' and val.page != '/front/rssfeed.php')) %}
-                    <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show'}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
-                        <i class='submenu-icon fa-fw {{val['icon']}}'></i>
-                        <span>{{val['title']}}</span>
-                        <i class="star-icon" ></i>
-                    </a>
-            {% endif %}
-        {% endfor %}
-
-            </ul>
-        </li>
-    {% endif %}
-{% endfor %}
-
         </ul>
     </div>
 </nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {     
+        const menuItems = document.querySelectorAll('.menu');
+
+        menuItems.forEach(function(item) {
+         
+            item.addEventListener('show.bs.collapse', function() {
+                menuItems.forEach(function(otherItem) {
+                    if (otherItem !== item) {
+                        const submenu = otherItem.querySelector('.sub-menu');
+                        if (submenu.classList.contains('show')) {
+                            submenu.classList.remove('show');
+                        }
+                    }
+                });
+            });
+        });
+    });
+</script>
+
