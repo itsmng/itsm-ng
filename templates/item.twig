@@ -1,7 +1,17 @@
 <div class="row px-3 w-100">
     <div id="main-accordion-view" class="col col-{{(tabs|length == 1) ? 12 : 7}}"></div>
-    <ul class="col col-5 p-0 {% if tabs|length == 1 %}d-none{% endif %}"
-        id="options-for-{{itemName|slug}}">
+    <ul class="col col-{{listSize|default(5)}} p-0 {% if tabs|length == 1 %}d-none{% endif %}"
+        id="options-for-{{itemName|slug}}" data-size="{{listSize|default(5)}}">
+        <li class="btn-group mb-2">
+            <button class="btn btn-outline-secondary" onclick="changeListSize(1)" id="increase-list-size">
+                <i class="fas fa-arrow-left"></i>
+                <span class="visually-hidden">{{"Increase list width"|trans}}</span>
+            </button>
+            <button class="btn btn-outline-secondary" onclick="changeListSize(-1)" id="decrease-list-size">
+                <i class="fas fa-arrow-right"></i>
+                <span class="visually-hidden">{{"Decrease list width"|trans}}</span>
+            </button>
+        </li>
         {% for key, tab in tabs %}
         <li>
             <h2 class="d-flex bg-light border w-100 m-0">
@@ -9,11 +19,12 @@
                     class="btn btn-sm btn-light m-2 me-0 moveToMainButton"
                     title="{{"Move to main view"|trans}}">
                     <i class="fas fa-share-square fa-rotate-180"></i>
+                    <span class="visually-hidden">{{"Move to main view"|trans}}</span>
                 </button>
                 <button
                     class="btn btn-light w-100 d-flex justify-content-between align-items-center collapse-button"
                     type="button"
-                    aria-expanded="true"
+                    aria-expanded="false"
                     aria-controls="tab-{{key|slug}}">
                     {{tab['title']|raw}}
                     <i class="fas fa-plus fa-xs"></i>
@@ -55,12 +66,14 @@ function openCollapse() {
         return;
     }
     const collapse = $('#' + selectedTab);
+    const button = collapse.prev().find('button.collapse-button');
     const body = collapse.find('.container');
     const icon = $('button[aria-controls="' + selectedTab + '"] i');
     icon.removeClass('fa-plus').addClass('fa-minus');
     loadBody(selectedTab).then(() => {
         collapse.show();
     })
+    button.attr('aria-expanded', 'true');
 }
 
 function closeCollapse() {
@@ -68,10 +81,12 @@ function closeCollapse() {
         return;
     }
     const collapse = $('#' + selectedTab);
+    const button = collapse.prev().find('button.collapse-button');
     const icon = $('button[aria-controls="' + selectedTab + '"] i');
     icon.removeClass('fa-minus').addClass('fa-plus');
     collapse.hide();
     selectedTab = null;
+    button.attr('aria-expanded', 'false');
 }
 
 function toggleCollapse(target) {
@@ -114,6 +129,26 @@ async function moveBodyToMainView(target) {
             closeCollapse();
         }
     });
+}
+
+function changeListSize(delta) {
+    const list = $('#options-for-{{itemName|slug}}');
+    const main = $('#main-accordion-view');
+    const size = list.data('size') + delta;
+    const increase = $('#increase-list-size');
+    const decrease = $('#decrease-list-size');
+    const min = 3;
+    const max = 9;
+
+    decrease.prop('disabled', size === min);
+    increase.prop('disabled', size === max);
+    list.data('size', size);
+    for (let i = min; i <= max; i++) {
+        list.removeClass('col-' + i);
+        main.removeClass('col-' + i);
+    }
+    main.addClass('col-' + (12 - size));
+    list.addClass('col-' + size);
 }
 
 $("button.collapse-button").on('click', function(e) {
