@@ -115,29 +115,78 @@ class NotificationTemplate extends CommonDBTM {
          }
       }
 
-      $this->showFormHeader($options);
+      $types = $CFG_GLPI['notificationtemplates_types'];
+      $typeValues = [];
+      foreach ($types as $type) {
+         if ($item = getItemForItemtype($type)) {
+            $typeValues[$type] = $item->getTypeName(1);
+         }
+      }
 
-      echo "<tr class='tab_bg_1'><td>" . __('Name') . "</td>";
-      echo "<td colspan='3'>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td></tr>";
+      $form = [
+        'action' => $this->getFormURL(),
+         'buttons' => [
+            ($this->canUpdateItem() ? [
+               'type' => 'submit',
+               'name' => $this->isNewID($ID) ? 'add' : 'update',
+               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+               'class' => 'btn btn-secondary'
+            ] : []),
+            (!$this->isNewID($ID) && self::canPurge() ? [
+               'type' => 'submit',
+               'name' => 'purge',
+               'value' => __('Delete permanently'),
+               'class' => 'btn btn-danger'
+            ] : []),
+         ],
+         'content' => [
+            $this->getTypeName() => [
+                'visible' => true,
+                'inputs' => [
+                    $this->isNewID($ID) ? [] : [
+                        'type' => 'hidden',
+                        'name' => 'id',
+                        'value' => $ID
+                    ],
+                    __('Name') => [
+                        'type' => 'text',
+                        'name' => 'name',
+                        'value' => $this->fields['name'],
+                        'comment' => 1,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                    __('Type', 'Types', 1) => [
+                        'type' => 'select',
+                        'name' => 'itemtype',
+                        'value' => ($this->fields['itemtype'] ? $this->fields['itemtype'] : 'Ticket'),
+                        'values' => $typeValues,
+                        'comment' => 1,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                    __('Comments') => [
+                        'type' => 'textarea',
+                        'name' => 'comment',
+                        'value' => $this->fields['comment'],
+                        'comment' => 1,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                    __('CSS') => [
+                        'type' => 'textarea',
+                        'name' => 'css',
+                        'value' => $this->fields['css'],
+                        'comment' => 1,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
 
-      echo "<tr class='tab_bg_1'><td>" . _n('Type', 'Types', 1) . "</td><td colspan='3'>";
-      Dropdown::showItemTypes('itemtype', $CFG_GLPI["notificationtemplates_types"],
-                              ['value' => ($this->fields['itemtype']
-                                                ?$this->fields['itemtype'] :'Ticket')]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>".__('Comments')."</td>";
-      echo "<td colspan='3'>";
-      echo "<textarea cols='60' rows='5' name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>".__('CSS')."</td>";
-      echo "<td colspan='3'>";
-      echo "<textarea cols='60' rows='5' name='css' >".$this->fields["css"]."</textarea></td></tr>";
-
-      $this->showFormButtons($options);
       return true;
    }
 
