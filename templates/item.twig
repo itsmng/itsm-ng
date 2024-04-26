@@ -171,16 +171,15 @@ $('button.moveToMainButton').on('click', function(e) {
 
 $(document).ready(function() {
     const sessionValues = JSON.parse(sessionStorage.getItem('{{itemName|slug}}')) ?? {};
-    if (sessionValues['size']) {
-        changeListSize(sessionValues['size'] - 5);
+    if (sessionValues.size) {
+        changeListSize(sessionValues.size - 5);
     }
-    if (sessionValues['selected']) {
-        selectedTab = sessionValues['selected'];
+    if (sessionValues.selected) {
+        selectedTab = sessionValues.selected;
         openCollapse();
     }
     if (sessionValues['main']) {
-        mainTab = sessionValues['main'];
-        moveBodyToMainView($('#' + mainTab).prev().find('button.moveToMainButton'));
+        moveBodyToMainView($('#' + sessionValues.main).prev().find('button.moveToMainButton'));
     } else {
         moveBodyToMainView($('button.moveToMainButton').first());
     }
