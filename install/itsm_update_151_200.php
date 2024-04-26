@@ -65,18 +65,6 @@ function update151to200() : bool {
         $migration->addField('glpi_oidc_config', 'logout', 'VARCHAR(255) NULL');
     }
 
-    if (!$DB->tableExists('glpi_user_menu')) {
-        $query = "
-        CREATE TABLE IF NOT EXISTS `glpi_user_menu` (
-            `name` VARCHAR(255) NOT NULL,
-            `user_id` int(11) NOT NULL,
-            `content` text COLLATE utf8_unicode_ci,
-            PRIMARY KEY (`name`, `user_id`)
-          ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-        ";
-        $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_user_menu".$DB->error());
-    }
-
     if (!$DB->tableExists('glpi_dashboards')) {
         $query = "
         CREATE TABLE `glpi_dashboards` (
