@@ -106,58 +106,80 @@ class NotificationTemplateTranslation extends CommonDBChild {
 
       Html::initEditorSystem('content_html');
 
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".NotificationTemplate::getTypeName()."</td>";
-      echo "<td colspan='2'><a href='".Toolbox::getItemTypeFormURL('NotificationTemplate').
-                           "?id=".$notificationtemplates_id."'>".$template->getField('name')."</a>";
-      echo "</td><td>";
       $rand = mt_rand();
       Ajax::createIframeModalWindow("tags".$rand,
                                     $CFG_GLPI['root_doc']."/front/notification.tags.php?sub_type=".
                                        addslashes($template->getField('itemtype')));
-      echo "<a class='vsubmit' href='#' onClick=\"".Html::jsGetElementbyID("tags".$rand).".dialog('open'); return false;\">".__('Show list of available tags')."</a>";
-      echo "</td></tr>";
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Language') . "</td><td colspan='3'>";
+      $form = [
+        'action' => $this->getFormURL(),
+        'buttons' => [
+            [
+                'type'  => 'submit',
+                'name' => $this->isNewID($ID) ? 'add' : 'update',
+                'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+                'class' => 'btn btn-secondary'
+            ]
+        ],
+        'content' => [
+            $this->getTypeName() => [
+                'visible' => true,
+                'inputs' => [
+                    $this->isNewID($ID) ? [] : [
+                        'type' => 'hidden',
+                        'name' => 'id',
+                        'value' => $ID
+                    ],
+                    [
+                        'type' => 'hidden',
+                        'name' => 'notificationtemplates_id',
+                        'value' => $notificationtemplates_id
+                    ],
+                    NotificationTemplate::getTypeName() => [
+                        'content' => "<a href='".Toolbox::getItemTypeFormURL('NotificationTemplate').
+                                      "?id=".$notificationtemplates_id."'>".$template->getField('name')."</a>".
+                                      "<a class='btn btn-sm btn-outline-info' href='#' onClick=\"".
+                                      Html::jsGetElementbyID("tags".$rand).".dialog('open'); return false;\">".
+                                      __('Show list of available tags')."</a>",
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                    __('Language') => [
+                        'type' => 'select',
+                        'name' => 'language',
+                        'value' => $this->fields['language'],
+                        'values' => [__('Default translation')] + Language::getLanguages(),
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                    __('Subject') => [
+                        'type' => 'text',
+                        'name' => 'subject',
+                        'value' => $this->fields['subject'],
+                        'size' => 100,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                    __('Email text body') => [
+                        'type' => 'textarea',
+                        'name' => 'content_text',
+                        'value' => $this->fields['content_text'],
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                    __('Email HTML body') => [
+                        'type' => 'textarea',
+                        'name' => 'content_html',
+                        'value' => $this->fields['content_html'],
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                ]
+            ]
+        ]
+      ];
+      renderTwigForm($form);
 
-      //Get all used languages
-      $used = self::getAllUsedLanguages($notificationtemplates_id);
-      if ($ID > 0) {
-         if (isset($used[$this->getField('language')])) {
-            unset($used[$this->getField('language')]);
-         }
-      }
-      Dropdown::showLanguages("language", ['display_emptychoice'  => true,
-                                             'value'              => $this->fields['language'],
-                                             'emptylabel'         => __('Default translation'),
-                                          ]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>" . __('Subject') . "</td>";
-      echo "<td colspan='3'>";
-      Html::autocompletionTextField($this, 'subject', ['size' => 100]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>";
-      echo __('Email text body');
-      echo "<br>".__('(leave the field empty for a generation from HTML)');
-      echo "</td><td colspan='3'>";
-      echo "<textarea cols='100' rows='15' name='content_text' >".$this->fields["content_text"];
-      echo "</textarea></td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>";
-      echo __('Email HTML body');
-      echo "</td><td colspan='3'>";
-      echo "<textarea cols='100' rows='15' name='content_html'>".$this->fields["content_html"];
-      echo "</textarea>";
-      echo "<input type='hidden' name='notificationtemplates_id' value='".
-             $template->getField('id')."'>";
-      echo "</td></tr>";
-      $this->showFormButtons($options);
       return true;
    }
 
@@ -172,69 +194,58 @@ class NotificationTemplateTranslation extends CommonDBChild {
       $nID     = $template->getField('id');
       $canedit = Config::canUpdate();
 
+      $massiveActionId = 'TableFor'.self::class;
       if ($canedit) {
-         echo "<div class='center'>".
-              "<a class='vsubmit' href='".Toolbox::getItemTypeFormURL('NotificationTemplateTranslation').
-                "?notificationtemplates_id=".$nID."'>". __('Add a new translation')."</a></div><br>";
+        $url = Toolbox::getItemTypeFormURL('NotificationTemplateTranslation').
+                "?notificationtemplates_id=".$nID;
+        $title = __('Add a new translation');
+        echo <<<HTML
+            <div class='center'>
+                <a class='btn btn-secondary' href='$url'>$title</a>
+            </div>
+        HTML;
+        $massiveactionparams = [
+           'container'      => $massiveActionId,
+           'display_arrow'  => false,
+           'is_deleted'     => false,
+        ];
+
+        Html::showMassiveActions($massiveactionparams);
       }
 
-      echo "<div class='center' id='tabsbody'>";
-
-      Session::initNavigateListItems('NotificationTemplateTranslation',
-            //TRANS : %1$s is the itemtype name, %2$s is the name of the item (used for headings of a list)
-                                     sprintf(__('%1$s = %2$s'),
-                                             NotificationTemplate::getTypeName(1),
-                                             $template->getName()));
-
-      if ($canedit) {
-         $rand = mt_rand();
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams = ['container' => 'mass'.__CLASS__.$rand];
-         Html::showMassiveActions($massiveactionparams);
-      }
-
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr class='tab_bg_1'>";
-      if ($canedit) {
-         echo "<th width='10'>";
-         echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         echo "</th>";
-      }
-      echo "<th>".__('Language')."</th></tr>";
+      $fields = [ 'language' => __('Language') ];
+      $values = [];
+      $massiveActionValues = [];
 
       foreach ($DB->request('glpi_notificationtemplatetranslations',
                             ['notificationtemplates_id' => $nID]) as $data) {
 
+        $link = '';
          if ($this->getFromDB($data['id'])) {
             Session::addToNavigateListItems('NotificationTemplateTranslation', $data['id']);
-            echo "<tr class='tab_bg_1'>";
-            if ($canedit) {
-               echo "<td class='center'>";
-               Html::showMassiveActionCheckBox(__CLASS__, $data["id"]);
-               echo "</td>";
-            }
-            echo "<td class='center'>";
-            echo "<a href='".Toolbox::getItemTypeFormURL('NotificationTemplateTranslation').
+            $link .= "<a href='".Toolbox::getItemTypeFormURL('NotificationTemplateTranslation').
                   "?id=".$data['id']."&amp;notificationtemplates_id=".$nID."'>";
 
             if ($data['language'] != '') {
-               echo $CFG_GLPI['languages'][$data['language']][0];
+               $link .= $CFG_GLPI['languages'][$data['language']][0];
 
             } else {
-               echo __('Default translation');
+               $link .= __('Default translation');
             }
 
-            echo "</a></td></tr>";
+            $link .= "</a>";
          }
+        $values[] = ['language' => $link];
+        if ($canedit) {
+           $massiveActionValues[] = sprintf('item[%s][%s]', $this::class, $data['id']);
+        }
       }
-      echo "</table>";
-
-      if ($canedit) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+        'id' => $massiveActionId,
+        'fields' => $fields,
+        'values' => $values,
+        'massive_action' => $massiveActionValues,
+      ]);
    }
 
 
