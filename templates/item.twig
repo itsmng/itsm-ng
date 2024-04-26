@@ -47,6 +47,12 @@
 let selectedTab = null;
 let mainTab = null;
 
+function updateSession(key, value) {
+    let sessionValues = JSON.parse(sessionStorage.getItem('{{itemName|slug}}')) ?? {};
+    sessionValues[key] = value;
+    sessionStorage.setItem('{{itemName|slug}}', JSON.stringify(sessionValues));
+}
+
 async function loadBody(id) {
     const collapse = $('#' + id);
     const body = collapse.find('.container');
@@ -74,6 +80,7 @@ function openCollapse() {
         collapse.show();
     })
     button.attr('aria-expanded', 'true');
+    updateSession('selected', selectedTab);
 }
 
 function closeCollapse() {
@@ -87,6 +94,7 @@ function closeCollapse() {
     collapse.hide();
     selectedTab = null;
     button.attr('aria-expanded', 'false');
+    updateSession('selected', null);
 }
 
 function toggleCollapse(target) {
@@ -129,6 +137,7 @@ async function moveBodyToMainView(target) {
             closeCollapse();
         }
     });
+    updateSession('main', mainTab);
 }
 
 function changeListSize(delta) {
@@ -149,6 +158,7 @@ function changeListSize(delta) {
     }
     main.addClass('col-md-' + (12 - size));
     list.addClass('col-md-' + size);
+    updateSession('size', size);
 }
 
 $("button.collapse-button").on('click', function(e) {
@@ -160,9 +170,20 @@ $('button.moveToMainButton').on('click', function(e) {
 });
 
 $(document).ready(function() {
-    const firstTab = $('button.collapse-button').first();
-    selectedTab = firstTab.attr('aria-controls');
-    moveBodyToMainView(firstTab);
+    const sessionValues = JSON.parse(sessionStorage.getItem('{{itemName|slug}}')) ?? {};
+    if (sessionValues['size']) {
+        changeListSize(sessionValues['size'] - 5);
+    }
+    if (sessionValues['selected']) {
+        selectedTab = sessionValues['selected'];
+        openCollapse();
+    }
+    if (sessionValues['main']) {
+        mainTab = sessionValues['main'];
+        moveBodyToMainView($('#' + mainTab).prev().find('button.moveToMainButton'));
+    } else {
+        moveBodyToMainView($('button.moveToMainButton').first());
+    }
 });
 
 </script>
