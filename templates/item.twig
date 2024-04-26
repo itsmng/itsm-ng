@@ -1,7 +1,17 @@
 <div class="row px-3 w-100">
-    <div id="main-accordion-view" class="col col-{{(tabs|length == 1) ? 12 : 7}}"></div>
-    <ul class="col col-5 p-0 {% if tabs|length == 1 %}d-none{% endif %}"
-        id="options-for-{{itemName|slug}}">
+    <div id="main-accordion-view" class="col col-sm-12 col-md-{{(tabs|length == 1) ? 12 : 7}} p-3"></div>
+    <ul class="col col-sm-12 col-md-{{listSize|default(5)}} p-0 {% if tabs|length == 1 %}d-none{% endif %}"
+        id="options-for-{{itemName|slug}}" data-size="{{listSize|default(5)}}">
+        <li class="d-none d-md-table btn-group mb-2 text-right ms-auto">
+            <button class="btn btn-outline-secondary" onclick="changeListSize(1)" id="increase-list-size">
+                <i class="fas fa-arrow-left"></i>
+                <span class="visually-hidden">{{"Increase list width"|trans}}</span>
+            </button>
+            <button class="btn btn-outline-secondary" onclick="changeListSize(-1)" id="decrease-list-size">
+                <i class="fas fa-arrow-right"></i>
+                <span class="visually-hidden">{{"Decrease list width"|trans}}</span>
+            </button>
+        </li>
         {% for key, tab in tabs %}
         <li>
             <h2 class="d-flex bg-light border w-100 m-0">
@@ -9,11 +19,12 @@
                     class="btn btn-sm btn-light m-2 me-0 moveToMainButton"
                     title="{{"Move to main view"|trans}}">
                     <i class="fas fa-share-square fa-rotate-180"></i>
+                    <span class="visually-hidden">{{"Move to main view"|trans}}</span>
                 </button>
                 <button
                     class="btn btn-light w-100 d-flex justify-content-between align-items-center collapse-button"
                     type="button"
-                    aria-expanded="true"
+                    aria-expanded="false"
                     aria-controls="tab-{{key|slug}}">
                     {{tab['title']|raw}}
                     <i class="fas fa-plus fa-xs"></i>
@@ -36,6 +47,12 @@
 let selectedTab = null;
 let mainTab = null;
 
+function updateSession(key, value) {
+    let sessionValues = JSON.parse(sessionStorage.getItem('{{itemName|slug}}')) ?? {};
+    sessionValues[key] = value;
+    sessionStorage.setItem('{{itemName|slug}}', JSON.stringify(sessionValues));
+}
+
 async function loadBody(id) {
     const collapse = $('#' + id);
     const body = collapse.find('.container');
@@ -55,12 +72,15 @@ function openCollapse() {
         return;
     }
     const collapse = $('#' + selectedTab);
+    const button = collapse.prev().find('button.collapse-button');
     const body = collapse.find('.container');
     const icon = $('button[aria-controls="' + selectedTab + '"] i');
     icon.removeClass('fa-plus').addClass('fa-minus');
     loadBody(selectedTab).then(() => {
         collapse.show();
     })
+    button.attr('aria-expanded', 'true');
+    updateSession('selected', selectedTab);
 }
 
 function closeCollapse() {
@@ -68,10 +88,13 @@ function closeCollapse() {
         return;
     }
     const collapse = $('#' + selectedTab);
+    const button = collapse.prev().find('button.collapse-button');
     const icon = $('button[aria-controls="' + selectedTab + '"] i');
     icon.removeClass('fa-minus').addClass('fa-plus');
     collapse.hide();
     selectedTab = null;
+    button.attr('aria-expanded', 'false');
+    updateSession('selected', null);
 }
 
 function toggleCollapse(target) {
@@ -114,6 +137,28 @@ async function moveBodyToMainView(target) {
             closeCollapse();
         }
     });
+    updateSession('main', mainTab);
+}
+
+function changeListSize(delta) {
+    const list = $('#options-for-{{itemName|slug}}');
+    const main = $('#main-accordion-view');
+    const size = list.data('size') + delta;
+    const increase = $('#increase-list-size');
+    const decrease = $('#decrease-list-size');
+    const min = 3;
+    const max = 9;
+
+    decrease.prop('disabled', size === min);
+    increase.prop('disabled', size === max);
+    list.data('size', size);
+    for (let i = min; i <= max; i++) {
+        list.removeClass('col-md-' + i);
+        main.removeClass('col-md-' + i);
+    }
+    main.addClass('col-md-' + (12 - size));
+    list.addClass('col-md-' + size);
+    updateSession('size', size);
 }
 
 $("button.collapse-button").on('click', function(e) {
@@ -125,9 +170,19 @@ $('button.moveToMainButton').on('click', function(e) {
 });
 
 $(document).ready(function() {
-    const firstTab = $('button.collapse-button').first();
-    selectedTab = firstTab.attr('aria-controls');
-    moveBodyToMainView(firstTab);
+    const sessionValues = JSON.parse(sessionStorage.getItem('{{itemName|slug}}')) ?? {};
+    if (sessionValues.size) {
+        changeListSize(sessionValues.size - 5);
+    }
+    if (sessionValues.selected) {
+        selectedTab = sessionValues.selected;
+        openCollapse();
+    }
+    if (sessionValues['main']) {
+        moveBodyToMainView($('#' + sessionValues.main).prev().find('button.moveToMainButton'));
+    } else {
+        moveBodyToMainView($('button.moveToMainButton').first());
+    }
 });
 
 </script>

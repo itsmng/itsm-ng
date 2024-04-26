@@ -50,22 +50,22 @@ class ItsmngUploadHandler {
         $extension = strtoupper(pathinfo($filename, PATHINFO_EXTENSION));
         switch ($type) {
             case self::UPLOAD:
-                $upload_path = '_uploads';
+                $upload_path = '/_uploads';
                 break;
             case self::TMP:
-                $upload_path = '_tmp';
+                $upload_path = '/_tmp';
                 break;
             case self::PICTURE:
-                $upload_path = '_pictures';
+                $upload_path = '/_pictures';
                 break;
             case self::PLUGIN:
-                $upload_path = '_plugins';
+                $upload_path = '/_plugins';
                 break;
             case self::DUMP:
-                $upload_path = '_dumps';
+                $upload_path = '/_dumps';
                 break;
             default:
-                $upload_path = $type;
+                return $type;
                 break;
         }
         if (!file_exists(GLPI_DOC_DIR . $upload_path . '/' . $extension)) {
@@ -74,7 +74,7 @@ class ItsmngUploadHandler {
             }
         }
         if ($withDir) {
-            return $upload_path . '/' . $extension;
+            return GLPI_DOC_DIR . $upload_path . '/' . $extension;
         }
         return $extension;
 
@@ -94,23 +94,18 @@ class ItsmngUploadHandler {
         return $baseDoc;
    }
 
-   static function uploadFile($filepath, $filename, $type = self::UPLOAD) {
-       $uploadPath = self::getUploadPath($type, $filename);
-       $uniqid = uniqid();
-       $filename = $uniqid . '.' . pathinfo($filename, PATHINFO_EXTENSION);
-       $uploadfile = $uploadPath . '/' . $filename;
-       if (!file_exists(GLPI_DOC_DIR . '/' . $uploadPath)) {
-           if (!mkdir(GLPI_DOC_DIR . '/' . $uploadPath, 0777, true)) {
-               return false;
-         }
-      }
-      if (!rename($filepath, GLPI_DOC_DIR . '/' . $uploadfile)) {
+   static function uploadFile($filepath, $filename, $type = self::UPLOAD, $name = null) {
+      $uploadPath = self::getUploadPath($type, $filename);
+      $uniqid = $name ?? uniqid();
+      $filename = $uniqid . '.' . pathinfo($filename, PATHINFO_EXTENSION);
+      $uploadfile = $uploadPath . '/' . $filename;
+      if (!rename($filepath, $uploadfile)) {
           return false;
       }
       if ($type == self::PICTURE) {
-          $thumb = GLPI_DOC_DIR . '/'. $uploadPath . '/' .
+          $thumb = $uploadPath . '/' .
             $uniqid . '_min' . '.' . pathinfo($filename, PATHINFO_EXTENSION);
-          Toolbox::resizePicture(GLPI_DOC_DIR . '/' . $uploadfile, $thumb);
+          Toolbox::resizePicture($uploadfile, $thumb);
       }
       return $uploadfile;
    }
@@ -118,7 +113,7 @@ class ItsmngUploadHandler {
    static function storeTmpFiles($files) {
       $tmpFiles = [];
       foreach ($files as $file) {
-        $uploadPath = GLPI_DOC_DIR . self::getUploadPath(self::TMP, $file['name']);
+        $uploadPath = self::getUploadPath(self::TMP, $file['name']);
         $filename = uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
         $uploadfile = $uploadPath . '/' . $filename;
         if (!move_uploaded_file($file['tmp_name'], $uploadfile)) {

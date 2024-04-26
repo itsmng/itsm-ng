@@ -262,7 +262,7 @@
     <label class="btn btn-outline-danger" for="clearPictureFor{{attributes.name}}">{{"Clear"|trans}}</label>
   </div>
   {% if attributes.value %}
-    <img class="img-thumbnail" src="{{root_doc}}/front/document.send.php?file={{attributes.value}}" alt="Preview of {{attributes.name}}"></img>
+    <img class="img-thumbnail" src="{{root_doc}}{{ attributes.external ? '' : '/front/document.send.php?file=' }}{{attributes.value}}" alt="Preview of {{attributes.name}}"></img>
   {% endif %}
   <script>
     $('#{{attributes.id}}').on('change', function() {
@@ -297,6 +297,9 @@
   <script>
   var {{attributes.id|default('ckEditorInstance')}};
   $(document).ready(() => {
+    if ({{attributes.id|default("ckEditorInstance" ~ rand)}}.config) {
+        return;
+    }
     ClassicEditor
       .create(document.querySelector('#{{attributes.id|default("ckEditorInstance" ~ rand)}}'), {
         toolbar: ['heading',

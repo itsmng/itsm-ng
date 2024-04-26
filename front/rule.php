@@ -38,9 +38,7 @@ Html::header(Rule::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF']
 
 RuleCollection::titleBackup();
 
-echo "<table class='tab_cadre'>";
-echo "<tr><th>" . __('Rule type') . "</th></tr>";
-
+$links = [];
 foreach ($CFG_GLPI["rulecollections_types"] as $rulecollectionclass) {
    $rulecollection = new $rulecollectionclass();
    if ($rulecollection->canList()) {
@@ -50,27 +48,35 @@ foreach ($CFG_GLPI["rulecollections_types"] as $rulecollectionclass) {
       } else {
          $title = $rulecollection->getTitle();
       }
-      echo "<tr class='tab_bg_1'><td class='center b'>";
       $ruleClassName = $rulecollection->getRuleClassName();
-      echo "<a href='".$ruleClassName::getSearchURL()."'>";
-      echo $title."</a></td></tr>";
+      $links[] = ['url'   => $ruleClassName::getSearchURL(),
+                  'title' => $title];
    }
 }
 
 if (Session::haveRight("transfer", READ)
     && Session::isMultiEntitiesMode()) {
-   echo "<tr class='tab_bg_1'><td class='center b'>";
-   echo "<a href='".$CFG_GLPI['root_doc']."/front/transfer.php'>".__('Transfer')."</a>";
-   echo "</td></tr>";
+    $links[] = ['url'   => $CFG_GLPI['root_doc']."/front/transfer.php",
+                'title' => __('Transfer')];
 }
 
 if (Session::haveRight("config", READ)) {
-   echo "<tr class='tab_bg_1'><td class='center b'>";
-   echo "<a href='".$CFG_GLPI['root_doc']."/front/blacklist.php'>".
-        _n('Blacklist', 'Blacklists', Session::getPluralNumber())."</a>";
-   echo "</td></tr>";
+   $links[] = ['url'   => $CFG_GLPI['root_doc']."/front/blacklist.php",
+               'title' => _n('Blacklist', 'Blacklists', Session::getPluralNumber())];
 }
 
-echo "</table>";
+?>
+<div class="container center">
+    <h2><?php echo __('Rule type') ?></h2>
+    <div class="w-50 mx-auto border rounded p-3">
+    <?php foreach ($links as $link) { ?>
+        <a class="d-block text-start btn btn-outline-secondary" href="<?php echo $link['url']; ?>">
+            <?php echo $link['title']; ?>
+        </a><br>
+    <?php } ?>
+    </div>
+</div>
+<?php
+
 
 Html::footer();
