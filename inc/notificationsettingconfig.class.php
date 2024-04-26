@@ -164,37 +164,48 @@ class NotificationSettingConfig extends CommonDBTM {
       }
 
       if ($notifs_on) {
-
-         $out .= "<table class='tab_cadre'>";
-         $out .= "<tr><th>" . _n('Notification', 'Notifications', Session::getPluralNumber())."</th></tr>";
+        $notificationLabel = _n('Notification', 'Notifications', Session::getPluralNumber());
+        $links = [];
 
          /* Glocal parameters */
          if (Session::haveRight("config", READ)) {
-            $out .= "<tr class='tab_bg_1'><td class='center'><a href='notificationtemplate.php'>" .
-                  _n('Notification template', 'Notification templates', Session::getPluralNumber()) ."</a></td> </tr>";
+            $links[] = ['url'   => $CFG_GLPI['root_doc']."/front/notificationtemplate.php",
+                        'title' => _n('Notification template', 'Notification templates', Session::getPluralNumber())];
          }
 
          if (Session::haveRight("notification", READ) && $notifs_on) {
-            $out .= "<tr class='tab_bg_1'><td class='center'>".
-                  "<a href='notification.php'>". _n('Notification', 'Notifications', Session::getPluralNumber())."</a></td></tr>";
+            $links[] = ['url'   => $CFG_GLPI['root_doc']."/front/notification.php",
+                        'title' => _n('Notification', 'Notifications', Session::getPluralNumber())];
          } else {
-            $out .= "<tr class='tab_bg_1'><td class='center'>" .
-               __('Unable to configure notifications: please configure at least one followup type using the above configuration.') .
-                     "</td></tr>";
+            $links[] = ['url' => '#',
+                        'title' => __('Unable to configure notifications: please configure at least one followup type using the above configuration.')];
          }
 
          /* Per notification parameters */
          foreach (array_keys($modes) as $mode) {
             if (Session::haveRight("config", UPDATE) && $CFG_GLPI['notifications_' . $mode]) {
                $settings = $modes_settings[$mode];
-               $out .= "<tr class='tab_bg_1'><td class='center'>".
-                  "<a href='" . $settings->getFormURL() ."'>". $settings->getTypeName() .
-                  "</a></td></tr>";
+                $links[] = ['url'   => $settings->getFormURL(),
+                            'title' => $settings->getTypeName()];
             }
          }
 
-         $out .= "</table>";
-         $out .= "</div>";
+         $out.= <<<HTML
+             <div class="container center mt-3">
+                 <h2>$notificationLabel</h2>
+                 <div class="w-50 mx-auto border rounded p-3">
+         HTML;
+         foreach ($links as $link) {
+            $out.= <<<HTML
+                     <a class="d-block text-start btn btn-outline-secondary" href="{$link['url']}">
+                         {$link['title']}
+                     </a><br>
+            HTML;
+         }
+         $out.= <<<HTML
+                 </div>
+             </div>
+         HTML;
       }
 
       if ($options['display']) {
