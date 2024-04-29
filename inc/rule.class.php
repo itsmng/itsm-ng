@@ -2306,75 +2306,136 @@ class Rule extends CommonDBTM {
          $tested = true;
          switch ($crit['type']) {
             case "yesonly" :
-               Dropdown::showYesNo($name, $crit['table'], 0);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'checkbox',
+                'name' => $name,
+                'value' => 1,
+                'readonly' => true,
+               ]);
                $display = true;
                break;
 
             case "yesno" :
-               Dropdown::showYesNo($name, $value);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'checkbox',
+                'name' => $name,
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown" :
-               $param = ['name'  => $name,
-                              'value' => $value];
-               if (isset($crit['condition'])) {
-                  $param['condition'] = $crit['condition'];
-               }
-               Dropdown::show(getItemTypeForTable($crit['table']), $param);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => getOptionForItems(getItemTypeForTable($crit['table']), $crit['condition'] ?? []),
+                'value' => $value,
+               ]);
 
                $display = true;
                break;
 
             case "dropdown_users" :
-               User::dropdown(['value'  => $value,
-                                    'name'   => $name,
-                                    'right'  => 'all']);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => getOptionsForUsers('all'),
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_tracking_itemtype" :
-               Dropdown::showItemTypes($name, array_keys(Ticket::getAllTypesForHelpdesk()));
+               $values = [];
+               if (count(Ticket::getAllTypesForHelpdesk())) {
+                  foreach (Ticket::getAllTypesForHelpdesk() as $type) {
+                     if ($item = getItemForItemtype($type)) {
+                        $values[$type] = $item->getTypeName(1);
+                     }
+                  }
+               }
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => $values,
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_assets_itemtype" :
                Dropdown::showItemTypes($name, $CFG_GLPI['asset_types'], ['value' => $value]);
-               $display = true;
-               break;
-
-            case "dropdown_import_type" :
-               RuleAsset::dropdownImportType($name, $value);
+               $values = [];
+               if (count($CFG_GLPI['asset_types'])) {
+                  foreach ($CFG_GLPI['asset_types'] as $type) {
+                     if ($item = getItemForItemtype($type)) {
+                        $values[$type] = $item->getTypeName(1);
+                     }
+                  }
+               }
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => $values,
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_urgency" :
-               Ticket::dropdownUrgency(['name'  => $name,
-                                             'value' => $value]);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => [ 3 => Ticket::getUrgencyName(3) ],
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_impact" :
-               Ticket::dropdownImpact(['name'  => $name,
-                                            'value' => $value]);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => [ 3 => Ticket::getImpactName(3) ],
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_priority" :
-               Ticket::dropdownPriority(['name'  => $name,
-                                              'value' => $value,
-                                              'withmajor' => true]);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => [
+                    6 => Ticket::getPriorityName(6),
+                    5 => Ticket::getPriorityName(5),
+                    4 => Ticket::getPriorityName(4),
+                    3 => Ticket::getPriorityName(3),
+                    2 => Ticket::getPriorityName(2),
+                    1 => Ticket::getPriorityName(1),
+                ],
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_status" :
-               Ticket::dropdownStatus(['name'  => $name,
-                                            'value' => $value]);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => Ticket::getAllStatusArray(),
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_tickettype" :
-               Ticket::dropdownType($name, ['value' => $value]);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => Ticket::getTypes(),
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
@@ -2396,9 +2457,12 @@ class Rule extends CommonDBTM {
 
       if (!$display
           && ($rc = getItemForItemtype($this->rulecriteriaclass))) {
-         Html::autocompletionTextField($rc, "pattern", ['name'  => $name,
-                                                             'value' => $value,
-                                                             'size'  => 70]);
+          renderTwigTemplate('macros/input.twig', [
+            'type' => 'text',
+            'name' => $name,
+            'value' => $value,
+            'size' => 70,
+          ]);
       }
    }
 

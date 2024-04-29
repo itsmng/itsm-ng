@@ -95,22 +95,22 @@ class RuleRight extends Rule {
                      'name'  => 'is_recursive',
                      'value' => 0
                   ],
-                  [  
+                  [
                      'type'  => 'hidden',
                      'name'  => 'sub_type',
                      'value' => get_class($this)
                   ],
-                  [  
+                  [
                      'type'  => 'hidden',
                      'name'  => 'entities_id',
                      'value' => '-1'
                   ],
-                  [  
+                  [
                      'type'  => 'hidden',
                      'name'  => 'affectentity',
                      'value' => $ID
                   ],
-                  [  
+                  [
                      'type'  => 'hidden',
                      'name'  => '_method',
                      'value' => 'AddRule'
@@ -325,9 +325,40 @@ class RuleRight extends Rule {
 
 
    function displayAdditionalRuleCondition($condition, $criteria, $name, $value, $test = false) {
+      global $DB;
       if ($criteria['field'] == 'type') {
-         \Auth::dropdown([
-            'name'  => $name,
+          $methods = [
+             \Auth::DB_GLPI => __('Authentication on ITSM-NG database'),
+          ];
+
+          $result = $DB->request([
+             'FROM'   => 'glpi_authldaps',
+             'COUNT'  => 'cpt',
+             'WHERE'  => [
+                'is_active' => 1
+             ]
+          ])->next();
+
+          if ($result['cpt'] > 0) {
+             $methods[\Auth::LDAP]     = __('Authentication on a LDAP directory');
+             $methods[\Auth::EXTERNAL] = __('External authentications');
+          }
+
+          $result = $DB->request([
+             'FROM'   => 'glpi_authmails',
+             'COUNT'  => 'cpt',
+             'WHERE'  => [
+                'is_active' => 1
+             ]
+          ])->next();
+
+          if ($result['cpt'] > 0) {
+             $methods[\Auth::MAIL] = __('Authentication on mail server');
+          }
+         renderTwigTemplate('macros/input.twig', [
+            'name' => $name,
+            'type' => 'select',
+            'values' => $methods,
             'value' => $value,
          ]);
          return true;

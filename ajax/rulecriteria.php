@@ -61,27 +61,37 @@ if (isset($_POST["sub_type"]) && ($rule = getItemForItemtype($_POST["sub_type"])
       if (isset($_POST['condition'])) {
          $condparam['value'] = $_POST['condition'];
       }
-      echo "<table width='100%'><tr><td width='30%'>";
-      $randcrit = RuleCriteria::dropdownConditions($_POST["sub_type"], $condparam);
-      echo "</td><td>";
-      echo "<span id='condition_span$randcrit'>\n";
-      echo "</span>\n";
 
-      $paramscriteria = ['condition' => '__VALUE__',
-                              'criteria'  => $_POST["criteria"],
-                              'sub_type'  => $_POST["sub_type"]];
-
-      Ajax::updateItemOnSelectEvent("dropdown_condition$randcrit", "condition_span$randcrit",
-                                    $CFG_GLPI["root_doc"]."/ajax/rulecriteriavalue.php",
-                                    $paramscriteria);
-
-      if (isset($_POST['pattern'])) {
-         $paramscriteria['value'] = stripslashes($_POST['pattern']);
+      $elements = [];
+      foreach (RuleCriteria::getConditions($_POST['sub_type'], '') as $pattern => $label) {
+         if (empty($p['allow_conditions'])
+             || (!empty($p['allow_conditions']) && in_array($pattern, $p['allow_conditions']))) {
+            $elements[$pattern] = $label;
+         }
       }
 
-      Ajax::updateItem("condition_span$randcrit",
-                       $CFG_GLPI["root_doc"]."/ajax/rulecriteriavalue.php", $paramscriteria,
-                       "dropdown_condition$randcrit");
-      echo "</td></tr></table>";
+      $updateScript = <<<JS
+          var condition = $('#DropdownForConditionCriterias').val();
+          var condition_span = $('#condition_span');
+          var url = "{$CFG_GLPI['root_doc']}/ajax/rulecriteriavalue.php";
+
+          condition_span.load(url, {
+              condition: condition,
+              criteria: "{$_POST['criteria']}",
+              sub_type: "{$_POST['sub_type']}"
+          });
+      JS;
+
+      renderTwigTemplate('macros/input.twig', [
+          'name' => 'condition',
+          'id' => 'DropdownForConditionCriterias',
+          'type' => 'select',
+          'values' => $elements,
+          'hooks' => [
+              'change' => $updateScript
+          ],
+          'init' => $updateScript
+      ]);
+      echo "<span id='condition_span'></span>\n";
    }
 }

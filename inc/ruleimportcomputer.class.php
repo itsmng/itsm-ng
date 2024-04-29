@@ -204,7 +204,13 @@ class RuleImportComputer extends Rule {
       switch ($condition) {
          case Rule::PATTERN_FIND :
          case Rule::PATTERN_IS_EMPTY :
-            Dropdown::showYesNo($name, 0, 0);
+            renderTwigTemplate('macros/input.twig', [
+               'name' => $name,
+               'type' => 'checkbox',
+               'value' => 0,
+               'test' => $test,
+               'readonly' => true,
+            ]);
             return true;
       }
 
