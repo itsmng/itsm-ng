@@ -415,7 +415,7 @@
     {% for name, option in attributes.options %}
       <div class="row">
         <input class="form-check-input col col-2" type="checkbox" value="{{name}}" id="{{attributes.id|default(rand)}}_{{loop.index}}" name="{{attributes.name}}[]"
-          {% if name in attributes.values %} checked {% endif %}>
+          {% if name in attributes.values %} checked {% endif %} {% if attributes.disabled %} disabled {% endif %}>
         <label class="form-check-label col col-10" for="{{attributes.id|default(rand)}}_{{loop.index}}">
           {{option}}
         </label>
