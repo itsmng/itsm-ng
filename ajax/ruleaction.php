@@ -64,35 +64,53 @@ if (isset($_POST["sub_type"]) && class_exists($_POST["sub_type"])) {
    }
 
    echo "<table width='100%'><tr><td width='30%'>";
-
+   $rule = getItemForItemtype($_POST["sub_type"]);
+   $actions_options = $rule->getAllActions();
    $action_type = '';
    if (isset($_POST["action_type"])) {
       $action_type = $_POST["action_type"];
    }
 
-   $randaction = RuleAction::dropdownActions(['subtype'     => $_POST["sub_type"],
-                                                   'name'        => "action_type",
-                                                   'field'       => $_POST["field"],
-                                                   'value'       => $action_type,
-                                                   'alreadyused' => $already_used]);
+   $actions         = ["assign"];
+   $field = $_POST["field"];
+   if ($already_used) {
+      if (!isset($actions_options[$field]['permitseveral'])) {
+         return false;
+      }
+      $actions = $actions_options[$field]['permitseveral'];
 
-   echo "</td><td>";
-   echo "<span id='action_type_span$randaction'>\n";
-   echo "</span>\n";
-
-   $paramsaction = ['action_type'                   => '__VALUE__',
-                         'field'                         => $_POST["field"],
-                         'sub_type'                      => $_POST["sub_type"],
-                         $item->getForeignKeyField()     => $_POST[$item->getForeignKeyField()]];
-
-   Ajax::updateItemOnSelectEvent("dropdown_action_type$randaction", "action_type_span$randaction",
-                                 $CFG_GLPI["root_doc"]."/ajax/ruleactionvalue.php", $paramsaction);
-
-   if (isset($_POST['value'])) {
-      $paramsaction['value'] = stripslashes($_POST['value']);
+   } else {
+      if (isset($actions_options[$field]['force_actions'])) {
+         $actions = $actions_options[$field]['force_actions'];
+      }
    }
 
-   Ajax::updateItem("action_type_span$randaction", $CFG_GLPI["root_doc"]."/ajax/ruleactionvalue.php",
-                    $paramsaction, "dropdown_action_type$randaction");
-   echo "</td></tr></table>";
+   $elements = [];
+   foreach ($actions as $action) {
+      $elements[$action] = RuleAction::getActionByID($action);
+   }
+   $updateScript = <<<JS
+       var condition = $('#DropdownForConditionAction').val();
+       var condition_span = $('#action_type_span');
+       var url = "{$CFG_GLPI['root_doc']}/ajax/ruleactionvalue.php";
+
+       condition_span.load(url, {
+           action_type: condition,
+           field: "{$_POST['field']}",
+           sub_type: "{$_POST['sub_type']}",
+           {$item->getForeignKeyField()}: "{$_POST[$item->getForeignKeyField()]}"
+       });
+   JS;
+   renderTwigTemplate('macros/input.twig', [
+        'type'  => 'select',
+        'id' => 'DropdownForConditionAction',
+        'name'  => 'action_type',
+        'value' => $action_type,
+        'values' => $elements,
+        'hooks' => [
+            'change' => $updateScript
+        ],
+        'init' => $updateScript
+   ]);
+   echo "<span id='action_type_span'></span>\n";
 }

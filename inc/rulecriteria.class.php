@@ -43,8 +43,6 @@ class RuleCriteria extends CommonDBChild {
    public $dohistory              = true;
    public $auto_message_on_action = false;
 
-
-
    /**
     * @since 0.84
    **/

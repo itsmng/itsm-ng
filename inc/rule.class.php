@@ -1089,7 +1089,7 @@ class Rule extends CommonDBTM {
          echo "};";
          echo "</script>\n";
          echo "<div class='center firstbloc'>".
-               "<a class='vsubmit' href='javascript:viewAddAction".$rules_id."$rand();'>";
+               "<a class='btn btn-secondary mb-3' href='javascript:viewAddAction".$rules_id."$rand();'>";
          echo __('Add a new action')."</a></div>\n";
       }
 
@@ -1191,7 +1191,7 @@ class Rule extends CommonDBTM {
          echo "};";
          echo "</script>\n";
          echo "<div class='center firstbloc'>".
-               "<a class='vsubmit' href='javascript:viewAddCriteria".$rules_id."$rand();'>";
+               "<a class='btn btn-secondary' href='javascript:viewAddCriteria".$rules_id."$rand();'>";
          echo __('Add a new criterion')."</a></div>\n";
       }
 

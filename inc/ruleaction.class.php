@@ -487,13 +487,21 @@ class RuleAction extends CommonDBChild {
          //If a regex value is used, then always display an autocompletiontextfield
          case "regex_result" :
          case "append_regex_result" :
-            Html::autocompletionTextField($this, "value", $param);
+            renderTwigTemplate('macros/input.twig', [
+                'type' => 'text',
+                'name' => 'value',
+                'value' => $param['value'],
+            ]);
             break;
 
          case 'fromuser' :
          case 'defaultfromuser' :
          case 'fromitem' :
-            Dropdown::showYesNo("value", $param['value'], 0);
+            renderTwigTemplate('macros/input.twig', [
+                'type' => 'checkbox',
+                'name' => 'value',
+                'value' => $param['value'],
+            ]);
             $display = true;
             break;
 
@@ -508,62 +516,109 @@ class RuleAction extends CommonDBChild {
                      if (isset($actions[$options["field"]]['condition'])) {
                         $param['condition'] = $actions[$options["field"]]['condition'];
                      }
-                     Dropdown::show(getItemTypeForTable($table), $param);
+                     renderTwigTemplate('macros/input.twig', [
+                         'type' => 'select',
+                         'name' => 'value',
+                         'value' => $param['value'],
+                         'values' => getOptionForItems(getItemTypeForTable($table), $param['condition'] ?? []),
+                     ]);
                      $display = true;
                      break;
 
                   case "dropdown_tickettype" :
-                     Ticket::dropdownType('value', $param);
+                     renderTwigTemplate('macros/input.twig', [
+                         'type' => 'select',
+                         'name' => 'value',
+                         'value' => $param['value'],
+                         'values' => Ticket::getTypes(),
+                     ]);
                      $display = true;
                      break;
 
                   case "dropdown_assign" :
                      $param['name']  = 'value';
                      $param['right'] = 'own_ticket';
-                     User::dropdown($param);
+                     renderTwigTemplate('macros/input.twig', [
+                         'type' => 'select',
+                         'name' => 'value',
+                         'value' => $param['value'],
+                         'values' => getOptionsForUsers('own_ticket'),
+                     ]);
                      $display = true;
                      break;
 
                   case "dropdown_users" :
                      $param['name']  = 'value';
                      $param['right'] = 'all';
-                     User::dropdown($param);
+                     renderTwigTemplate('macros/input.twig', [
+                         'type' => 'select',
+                         'name' => 'value',
+                         'value' => $param['value'],
+                         'values' => getOptionsForUsers('all'),
+                     ]);
                      $display = true;
                      break;
 
                   case "dropdown_urgency" :
                      $param['name']  = 'value';
-                     Ticket::dropdownUrgency($param);
+                   renderTwigTemplate('macros/input.twig', [
+                    'type' => 'select',
+                    'name' => 'value',
+                    'values' => [ 3 => Ticket::getUrgencyName(3) ],
+                    'value' => $param['value'],
+                   ]);
                      $display = true;
                      break;
 
                   case "dropdown_impact" :
                      $param['name']  = 'value';
-                     Ticket::dropdownImpact($param);
+                   renderTwigTemplate('macros/input.twig', [
+                    'type' => 'select',
+                    'name' => 'value',
+                    'values' => [ 3 => Ticket::getImpactName(3) ],
+                    'value' => $param['value'],
+                   ]);
                      $display = true;
                      break;
 
                   case "dropdown_priority" :
                      if ($_POST["action_type"] != 'compute') {
                         $param['name']  = 'value';
-                        Ticket::dropdownPriority($param);
+                       renderTwigTemplate('macros/input.twig', [
+                        'type' => 'select',
+                        'name' => 'value',
+                        'values' => [
+                            6 => Ticket::getPriorityName(6),
+                            5 => Ticket::getPriorityName(5),
+                            4 => Ticket::getPriorityName(4),
+                            3 => Ticket::getPriorityName(3),
+                            2 => Ticket::getPriorityName(2),
+                            1 => Ticket::getPriorityName(1),
+                        ],
+                        'value' => $param['value'],
+                       ]);
                      }
                      $display = true;
                      break;
 
                   case "dropdown_status" :
                      $param['name']  = 'value';
-                     Ticket::dropdownStatus($param);
+                   renderTwigTemplate('macros/input.twig', [
+                    'type' => 'select',
+                    'name' => 'value',
+                    'values' => Ticket::getAllStatusArray(),
+                    'value' => $param['value'],
+                   ]);
                      $display = true;
                      break;
 
                   case "yesonly" :
-                     Dropdown::showYesNo("value", $param['value'], 0);
-                     $display = true;
-                     break;
-
                   case "yesno" :
-                     Dropdown::showYesNo("value", $param['value']);
+                   renderTwigTemplate('macros/input.twig', [
+                    'type' => 'checkbox',
+                    'name' => 'value',
+                    'value' => $param['value'],
+                   ]);
                      $display = true;
                      break;
 
@@ -590,10 +645,16 @@ class RuleAction extends CommonDBChild {
                            $used[] = $data['value'];
                         }
                      }
-                     $param['name']  = 'value';
-                     $param['right'] = ['validate_incident', 'validate_request'];
-                     $param['used']  = $used;
-                     User::dropdown($param);
+                     $options = getOptionsForUsers(['validate_incident','validate_request']);
+                     foreach ($used as $key => $value) {
+                        unset($options[$value]);
+                     }
+                     renderTwigTemplate('macros/input.twig', [
+                         'type' => 'select',
+                         'name' => 'value',
+                         'values' => $options,
+                         'value' => $param['value'],
+                     ]);
                      $display        = true;
                      break;
 
@@ -620,7 +681,12 @@ class RuleAction extends CommonDBChild {
                      ])];
                      $param['right']     = ['validate_incident', 'validate_request'];
                      $param['used']      = $used;
-                     Group::dropdown($param);
+                     renderTwigTemplate('macros/input.twig', [
+                         'type' => 'select',
+                         'name' => 'value',
+                         'values' => getOptionForItems('Group', $param['condition'] ?? []),
+                         'value' => $param['value'],
+                     ]);
                      $display            = true;
                      break;
 
@@ -639,7 +705,11 @@ class RuleAction extends CommonDBChild {
             }
 
             if (!$display) {
-               Html::autocompletionTextField($this, "value", $param);
+               renderTwigTemplate('macros/input.twig', [
+                   'type' => 'text',
+                   'name' => 'value',
+                   'value' => $param['value'],
+               ]);
             }
       }
    }
