@@ -3404,218 +3404,254 @@ class Transfer extends CommonDBTM {
          $params['readonly'] = true;
       }
 
-      if ($edit_form) {
-         $this->showFormHeader($options);
-
-      } else {
-         echo "<form method='post' name=form action='".$options['target']."'>";
-         echo "<div class='center' id='tabsbody' >";
-         echo "<table class='tab_cadre_fixe'>";
-
-         echo "<tr><td class='tab_bg_2 top' colspan='4'>";
-         echo "<div class='center'>";
-         Entity::dropdown(['name' => 'to_entity']);
-         echo "&nbsp;<input type='submit' name='transfer' value=\"".__s('Execute')."\"
-                      class='submit'></div>";
-         echo "</td></tr>";
-      }
-
-      if ($edit_form) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Name')."</td><td>";
-         Html::autocompletionTextField($this, "name");
-         echo "</td>";
-         echo "<td rowspan='3' class='middle right'>".__('Comments')."</td>";
-         echo "<td class='center middle' rowspan='3'>
-               <textarea cols='45' rows='3' name='comment' >".$this->fields["comment"]."</textarea>";
-         echo "</td></tr>";
-
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Last update')."</td>";
-         echo "<td>".($this->fields["date_mod"] ? Html::convDateTime($this->fields["date_mod"])
-                                                : __('Never'));
-         echo "</td></tr>";
-      }
-
+      $options = [0 => _x('button', 'Delete permanently'),
+                       1 => _x('button', 'Disconnect') ,
+                       2 => __('Keep') ];
       $keep  = [0 => _x('button', 'Delete permanently'),
                      1 => __('Preserve')];
 
       $clean = [0 => __('Preserve'),
                      1 => _x('button', 'Put in trashbin'),
                      2 => _x('button', 'Delete permanently')];
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Historical')."</td><td>";
-      $params['value'] = $this->fields['keep_history'];
-      Dropdown::showFromArray('keep_history', $keep, $params);
-      echo "</td>";
-      if (!$edit_form) {
-         echo "<td colspan='2'>&nbsp;</td>";
-      }
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td colspan='4' class='center b'>".__('Assets')."</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Network port', 'Network ports', Session::getPluralNumber())."</td><td>";
-      $options = [0 => _x('button', 'Delete permanently'),
-                       1 => _x('button', 'Disconnect') ,
-                       2 => __('Keep') ];
-      $params['value'] = $this->fields['keep_networklink'];
-      Dropdown::showFromArray('keep_networklink', $options, $params);
-      echo "</td>";
-      echo "<td>"._n('Ticket', 'Tickets', Session::getPluralNumber())."</td><td>";
-      $options = [0 => _x('button', 'Delete permanently'),
-                       1 => _x('button', 'Disconnect') ,
-                       2 => __('Keep') ];
-      $params['value'] = $this->fields['keep_ticket'];
-      Dropdown::showFromArray('keep_ticket', $options, $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Software of items')."</td><td>";
-      $params['value'] = $this->fields['keep_software'];
-      Dropdown::showFromArray('keep_software', $keep, $params);
-      echo "</td>";
-      echo "<td>".__('If software are no longer used')."</td><td>";
-      $params['value'] = $this->fields['clean_software'];
-      Dropdown::showFromArray('clean_software', $clean, $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Reservation', 'Reservations', Session::getPluralNumber())."</td><td>";
-      $params['value'] = $this->fields['keep_reservation'];
-      Dropdown::showFromArray('keep_reservation', $keep, $params);
-      echo "</td>";
-      echo "<td>"._n('Component', 'Components', Session::getPluralNumber())."</td><td>";
-      $params['value'] = $this->fields['keep_device'];
-      Dropdown::showFromArray('keep_device', $keep, $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Links between printers and cartridge types and cartridges');
-      echo "</td><td>";
-      $params['value'] = $this->fields['keep_cartridgeitem'];
-      Dropdown::showFromArray('keep_cartridgeitem', $keep, $params);
-      echo "</td>";
-      echo "<td>".__('If the cartridge types are no longer used')."</td><td>";
-      $params['value'] = $this->fields['clean_cartridgeitem'];
-      Dropdown::showFromArray('clean_cartridgeitem', $clean, $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Links between cartridge types and cartridges')."</td><td>";
-      $params['value'] = $this->fields['keep_cartridge'];
-      Dropdown::showFromArray('keep_cartridge', $keep, $params);
-      echo "</td>";
-      echo "<td>".__('Financial and administrative information')."</td><td>";
-      $params['value'] = $this->fields['keep_infocom'];
-      Dropdown::showFromArray('keep_infocom', $keep, $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Links between consumable types and consumables')."</td><td>";
-      $params['value'] = $this->fields['keep_consumable'];
-      Dropdown::showFromArray('keep_consumable', $keep, $params);
-      echo "</td>";
-      echo "<td>".__('Links between computers and volumes')."</td><td>";
-      $params['value'] = $this->fields['keep_disk'];
-      Dropdown::showFromArray('keep_disk', $keep, $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td colspan='4' class='center b'>".__('Direct connections')."</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Monitor', 'Monitors', Session::getPluralNumber())."</td><td>";
-      $params['value'] = $this->fields['keep_dc_monitor'];
-      Dropdown::showFromArray('keep_dc_monitor', $keep, $params);
-      echo "</td>";
-      echo "<td>".__('If monitors are no longer used')."</td><td>";
-      $params['value'] = $this->fields['clean_dc_monitor'];
-      Dropdown::showFromArray('clean_dc_monitor', $clean, $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Printer', 'Printers', Session::getPluralNumber())."</td><td>";
-      $params['value'] = $this->fields['keep_dc_printer'];
-      Dropdown::showFromArray('keep_dc_printer', $keep, $params);
-      echo "</td>";
-      echo "<td>".__('If printers are no longer used')."</td><td>";
-      $params['value'] = $this->fields['clean_dc_printer'];
-      Dropdown::showFromArray('clean_dc_printer', $clean, $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Peripheral::getTypeName(Session::getPluralNumber())."</td><td>";
-      $params['value'] = $this->fields['keep_dc_peripheral'];
-      Dropdown::showFromArray('keep_dc_peripheral', $keep, $params);
-      echo "</td>";
-      echo "<td>".__('If devices are no longer used')."</td><td>";
-      $params['value'] = $this->fields['clean_dc_peripheral'];
-      Dropdown::showFromArray('clean_dc_peripheral', $clean, $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Phone', 'Phones', Session::getPluralNumber())."</td><td>";
-      $params['value'] = $this->fields['keep_dc_phone'];
-      Dropdown::showFromArray('keep_dc_phone', $keep, $params);
-      echo "</td>";
-      echo "<td>".__('If phones are no longer used')."</td><td>";
-      $params['value'] = $this->fields['clean_dc_phone'];
-      Dropdown::showFromArray('clean_dc_phone', $clean, $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td colspan='4' class='center b'>".__('Management')."</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Supplier', 'Suppliers', Session::getPluralNumber())."</td><td>";
-      $params['value'] = $this->fields['keep_supplier'];
-      Dropdown::showFromArray('keep_supplier', $keep, $params);
-      echo "</td>";
-      echo "<td>".__('If suppliers are no longer used')."</td><td>";
-      $params['value'] = $this->fields['clean_supplier'];
-      Dropdown::showFromArray('clean_supplier', $clean, $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Links between suppliers and contacts')."&nbsp;:</td><td>";
-      $params['value'] = $this->fields['keep_contact'];
-      Dropdown::showFromArray('keep_contact', $keep, $params);
-      echo "</td>";
-      echo "<td>".__('If contacts are no longer used')."</td><td>";
-      $params['value'] = $this->fields['clean_contact'];
-      Dropdown::showFromArray('clean_contact', $clean, $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".Document::getTypeName(Session::getPluralNumber())."</td><td>";
-      $params['value'] = $this->fields['keep_document'];
-      Dropdown::showFromArray('keep_document', $keep, $params);
-      echo "</td>";
-      echo "<td>".__('If documents are no longer used')."</td><td>";
-      $params['value'] = $this->fields['clean_document'];
-      Dropdown::showFromArray('clean_document', $clean, $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"._n('Contract', 'Contracts', Session::getPluralNumber())."</td><td>";
-      $params['value'] = $this->fields['keep_contract'];
-      Dropdown::showFromArray('keep_contract', $keep, $params);
-      echo "</td>";
-      echo "<td>".__('If contracts are no longer used')."</td><td>";
-      $params['value'] = $this->fields['clean_contract'];
-      Dropdown::showFromArray('clean_contract', $clean, $params);
-      echo "</td></tr>";
-
-      if ($edit_form) {
-         $this->showFormButtons($options);
-      } else {
-         echo "</table></div>";
-         Html::closeForm();
-      }
+      $form = [
+        'action' => $edit_form ? $this->getFormURL() : $options['target'],
+        'buttons' => [
+            [
+                'name' => $this->isNewID($ID) ? 'add' : 'update',
+                'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+                'class' => 'btn btn-secondary'
+            ],
+        ],
+        'content' => [
+            __('General') => [
+                'visible' => true,
+                'inputs' => [
+                    $this->isNewID($ID)  => [
+                        'type' => 'hidden',
+                        'name' => 'id',
+                        'value' => $ID
+                    ],
+                    Entity::getTypeName() => $edit_form ? [] : [
+                        'type' => 'select',
+                        'name' => 'to_entity',
+                        'values' => getOptionForItems(Entity::class),
+                        'value' => $this->to,
+                    ],
+                    '' => $edit_form ? [] : [
+                        'content' => "<input type='submit' name='transfer' value=\"".__s('Execute')."\"
+                            class='btn btn-sm btn-warning'>",
+                    ],
+                    __('Name') => !$edit_form ? [] : [
+                        'type' => 'text',
+                        'name' => 'name',
+                        'value' => $this->fields['name'],
+                    ],
+                    __('Last update') => !$edit_form ? [] : [
+                        'content' => ($this->fields["date_mod"] ?
+                            Html::convDateTime($this->fields["date_mod"]) :
+                            __('Never')),
+                    ],
+                    __('Comments') => !$edit_form ? [] : [
+                        'type' => 'textarea',
+                        'name' => 'comments',
+                        'value' => $this->fields['comment'],
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                    __('Historical') => [
+                        'type' => 'select',
+                        'name' => 'keep_history',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_history'],
+                    ],
+                ],
+            ],
+            __('Assets') => [
+                'visible' => true,
+                'inputs' => [
+                    _n('Network port', 'Network ports', Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'name' => 'keep_networklink',
+                        'values' => $options,
+                        'value' => $this->fields['keep_networklink'],
+                    ],
+                    _n('Ticket', 'Tickets', Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'name' => 'keep_ticket',
+                        'values' => $options,
+                        'value' => $this->fields['keep_ticket'],
+                    ],
+                    __('Software of items') => [
+                        'type' => 'select',
+                        'name' => 'keep_software',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_software'],
+                    ],
+                    __('If software are no longer used') => [
+                        'type' => 'select',
+                        'name' => 'clean_software',
+                        'values' => $clean,
+                        'value' => $this->fields['clean_software'],
+                    ],
+                    _n('Reservation', 'Reservations', Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'name' => 'keep_reservation',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_reservation'],
+                    ],
+                    _n('Component', 'Components', Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'name' => 'keep_device',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_device'],
+                    ],
+                    __('Links between printers and cartridge types and cartridges') => [
+                        'type' => 'select',
+                        'name' => 'keep_cartridgeitem',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_cartridgeitem'],
+                    ],
+                    __('If the cartridge types are no longer used') => [
+                        'type' => 'select',
+                        'name' => 'clean_cartridgeitem',
+                        'values' => $clean,
+                        'value' => $this->fields['clean_cartridgeitem'],
+                    ],
+                    __('Links between cartridge types and cartridges') => [
+                        'type' => 'select',
+                        'name' => 'keep_cartridge',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_cartridge'],
+                    ],
+                    __('Financial and administrative information') => [
+                        'type' => 'select',
+                        'name' => 'keep_infocom',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_infocom'],
+                    ],
+                    __('Links between consumable types and consumables') => [
+                        'type' => 'select',
+                        'name' => 'keep_consumable',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_consumable'],
+                    ],
+                    __('Links between computers and volumes') => [
+                        'type' => 'select',
+                        'name' => 'keep_disk',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_disk'],
+                    ],
+                ],
+            ],
+            __('Direct connections') => [
+                'visible' => true,
+                'inputs' => [
+                    _n('Monitor', 'Monitors', Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'name' => 'keep_dc_monitor',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_dc_monitor'],
+                    ],
+                    __('If monitors are no longer used') => [
+                        'type' => 'select',
+                        'name' => 'clean_dc_monitor',
+                        'values' => $clean,
+                        'value' => $this->fields['clean_dc_monitor'],
+                    ],
+                    _n('Printer', 'Printers', Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'name' => 'keep_dc_printer',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_dc_printer'],
+                    ],
+                    __('If printers are no longer used') => [
+                        'type' => 'select',
+                        'name' => 'clean_dc_printer',
+                        'values' => $clean,
+                        'value' => $this->fields['clean_dc_printer'],
+                    ],
+                    Peripheral::getTypeName(Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'name' => 'keep_dc_peripheral',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_dc_peripheral'],
+                    ],
+                    __('If devices are no longer used') => [
+                        'type' => 'select',
+                        'name' => 'clean_dc_peripheral',
+                        'values' => $clean,
+                        'value' => $this->fields['clean_dc_peripheral'],
+                    ],
+                    _n('Phone', 'Phones', Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'name' => 'keep_dc_phone',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_dc_phone'],
+                    ],
+                    __('If phones are no longer used') => [
+                        'type' => 'select',
+                        'name' => 'clean_dc_phone',
+                        'values' => $clean,
+                        'value' => $this->fields['clean_dc_phone'],
+                    ],
+                ],
+            ],
+            __('Management') => [
+                'visible' => true,
+                'inputs' => [
+                    _n('Supplier', 'Suppliers', Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'name' => 'keep_supplier',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_supplier'],
+                    ],
+                    __('If suppliers are no longer used') => [
+                        'type' => 'select',
+                        'name' => 'clean_supplier',
+                        'values' => $clean,
+                        'value' => $this->fields['clean_supplier'],
+                    ],
+                    __('Links between suppliers and contacts') => [
+                        'type' => 'select',
+                        'name' => 'keep_contact',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_contact'],
+                    ],
+                    __('If contacts are no longer used') => [
+                        'type' => 'select',
+                        'name' => 'clean_contact',
+                        'values' => $clean,
+                        'value' => $this->fields['clean_contact'],
+                    ],
+                    Document::getTypeName(Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'name' => 'keep_document',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_document'],
+                    ],
+                    __('If documents are no longer used') => [
+                        'type' => 'select',
+                        'name' => 'clean_document',
+                        'values' => $clean,
+                        'value' => $this->fields['clean_document'],
+                    ],
+                    _n('Contract', 'Contracts', Session::getPluralNumber()) => [
+                        'type' => 'select',
+                        'name' => 'keep_contract',
+                        'values' => $keep,
+                        'value' => $this->fields['keep_contract'],
+                    ],
+                    __('If contracts are no longer used') => [
+                        'type' => 'select',
+                        'name' => 'clean_contract',
+                        'values' => $clean,
+                        'value' => $this->fields['clean_contract'],
+                    ],
+                ],
+            ],
+        ],
+      ];
+      renderTwigForm($form);
    }
 
 
