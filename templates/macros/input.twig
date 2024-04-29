@@ -487,10 +487,10 @@
   {% endif %}
   {% if input.hooks is defined and input.hooks is not empty %}
     <script>
+      $(document).ready(() => {
       {% if input.init %}
           {{input.init|raw}}
       {% endif %}
-      $(document).ready(() => {
       {% for hook, script in input.hooks %}
         $("#{{input.id}}").on("{{hook}}", function() {
           {{script|raw}}

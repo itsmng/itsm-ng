@@ -840,78 +840,109 @@ class Rule extends CommonDBTM {
       }
 
       $canedit = $this->canEdit(static::$rightname);
+
       $rand = mt_rand();
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-      echo "<td>".__('Description')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "description");
-      echo "</td></tr>\n";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Logical operator')."</td>";
-      echo "<td>";
-      $this->dropdownRulesMatch(['value' => $this->fields["match"]]);
-      echo "</td>";
-      echo "<td>".__('Active')."</td>";
-      echo "<td>";
-      Dropdown::showYesNo("is_active", $this->fields["is_active"]);
-      echo "</td></tr>\n";
-
-      if ($this->useConditions()) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Use rule for')."</td>";
-         echo "<td>";
-         $this->dropdownConditions(['value' => $this->fields["condition"]]);
-         echo "</td>";
-         echo "<td colspan='2'>";
-         echo "</td></tr>\n";
+      if ($canedit && $ID > 0) {
+        if ($plugin = isPluginItemType($this->getType())) {
+           $url = $CFG_GLPI["root_doc"]."/plugins/".strtolower($plugin['plugin']);
+        } else {
+           $url = $CFG_GLPI["root_doc"];
+        }
+        Ajax::createIframeModalWindow('ruletest'.$rand,
+                                      $url."/front/rule.test.php?". "sub_type=".$this->getType().
+                                         "&rules_id=".$this->fields["id"],
+                                      ['title' => _x('button', 'Test')]);
       }
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Comments')."</td>";
-      echo "<td class='middle' colspan='3'>";
-      echo "<textarea cols='110' rows='3' name='comment' >".$this->fields["comment"]."</textarea>";
-
-      if (!$this->isNewID($ID)) {
-         if ($this->fields["date_mod"]) {
-            echo "<br>";
-            printf(__('Last update on %s'), Html::convDateTime($this->fields["date_mod"]));
-         }
-      }
-      if ($canedit) {
-         if (!$this->isNewID($ID)) {
-            echo "<input type='hidden' name='ranking' value='".$this->fields["ranking"]."'>";
-         }
-         echo "<input type='hidden' name='sub_type' value='".get_class($this)."'>";
-      }
-      echo "</td></tr>\n";
-
-      if ($canedit) {
-         if ($ID > 0) {
-            if ($plugin = isPluginItemType($this->getType())) {
-               $url = $CFG_GLPI["root_doc"]."/plugins/".strtolower($plugin['plugin']);
-            } else {
-               $url = $CFG_GLPI["root_doc"];
-            }
-            echo "<tr><td class='tab_bg_2 center' colspan='4'>";
-            echo "<a class='vsubmit' href='#' onClick=\"".
-                  Html::jsGetElementbyID('ruletest'.$rand).".dialog('open'); return false;\">".
-                  _x('button', 'Test')."</a>";
-            Ajax::createIframeModalWindow('ruletest'.$rand,
-                                          $url."/front/rule.test.php?". "sub_type=".$this->getType().
-                                             "&rules_id=".$this->fields["id"],
-                                          ['title' => _x('button', 'Test')]);
-            echo "</td></tr>\n";
-         }
-      }
-
-      $this->showFormButtons($options);
+      $form = [
+        'action' => $this->getFormURL(),
+        'buttons' => [
+            [
+                'name'  => $this->isNewID($ID) ? 'add' : 'update',
+                'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+                'type'  => 'submit',
+                'class' => 'btn btn-secondary',
+            ],
+            $canedit && $ID > 0 ? [
+                'type'  => 'button',
+                'class' => 'btn btn-warning',
+                'onclick' => Html::jsGetElementbyID('ruletest'.$rand).".dialog('open'); return false;",
+                'value' => _x('button', 'Test'),
+            ] : [],
+        ],
+        'content' => [
+            $this->getTypeName() => [
+                'visible' => true,
+                'inputs' => [
+                    __('Name') => [
+                        'name' => 'name',
+                        'value' => $this->fields["name"],
+                        'type' => 'text',
+                        'size' => 50,
+                        'col_lg' => 6,
+                    ],
+                    __('Description') => [
+                        'name' => 'description',
+                        'value' => $this->fields["description"],
+                        'type' => 'text',
+                        'size' => 50,
+                        'col_lg' => 6,
+                    ],
+                    __('Logical operator') => [
+                        'name' => 'match',
+                        'value' => $this->fields["match"],
+                        'type' => 'select',
+                        'values' => [
+                            self::AND_MATCHING => __('and'),
+                            self::OR_MATCHING => __('or'),
+                        ],
+                        'col_lg' => 6,
+                    ],
+                    __('Active') => [
+                        'name' => 'is_active',
+                        'value' => $this->fields["is_active"],
+                        'type' => 'checkbox',
+                        'col_lg' => 6,
+                    ],
+                    __('Use rule for') => !$this->useConditions() ? [] : [
+                        'name' => 'condition',
+                        'value' => $this->fields["condition"],
+                        'type' => 'select',
+                        'values' => $this->getConditionsArray(),
+                        'col_lg' => 6,
+                    ],
+                    __('Comments') => [
+                        'name' => 'comment',
+                        'value' => $this->fields["comment"],
+                        'type' => 'textarea',
+                        'rows' => 3,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                    __('Last update') => !$this->fields["date_mod"] ? [] : [
+                        'content' => Html::convDateTime($this->fields["date_mod"]),
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                    $canedit && $this->isNewID($ID) ? [] : [
+                        'type' => 'hidden',
+                        'name' => 'ranking',
+                        'value' => $this->fields["ranking"],
+                    ],
+                    $canedit && $this->isNewID($ID) ? [] : [
+                        'type' => 'hidden',
+                        'name' => 'sub_type',
+                        'value' => get_class($this),
+                    ],
+                    $this->isNewID($ID) ? [] : [
+                        'type' => 'hidden',
+                        'name' => 'id',
+                        'value' => $ID,
+                    ],
+                ],
+            ]
+        ]
+      ];
+      renderTwigForm($form);
 
       return true;
    }
@@ -1058,7 +1089,7 @@ class Rule extends CommonDBTM {
          echo "};";
          echo "</script>\n";
          echo "<div class='center firstbloc'>".
-               "<a class='vsubmit' href='javascript:viewAddAction".$rules_id."$rand();'>";
+               "<a class='btn btn-secondary mb-3' href='javascript:viewAddAction".$rules_id."$rand();'>";
          echo __('Add a new action')."</a></div>\n";
       }
 
@@ -1160,7 +1191,7 @@ class Rule extends CommonDBTM {
          echo "};";
          echo "</script>\n";
          echo "<div class='center firstbloc'>".
-               "<a class='vsubmit' href='javascript:viewAddCriteria".$rules_id."$rand();'>";
+               "<a class='btn btn-secondary' href='javascript:viewAddCriteria".$rules_id."$rand();'>";
          echo __('Add a new criterion')."</a></div>\n";
       }
 
@@ -2275,75 +2306,136 @@ class Rule extends CommonDBTM {
          $tested = true;
          switch ($crit['type']) {
             case "yesonly" :
-               Dropdown::showYesNo($name, $crit['table'], 0);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'checkbox',
+                'name' => $name,
+                'value' => 1,
+                'readonly' => true,
+               ]);
                $display = true;
                break;
 
             case "yesno" :
-               Dropdown::showYesNo($name, $value);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'checkbox',
+                'name' => $name,
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown" :
-               $param = ['name'  => $name,
-                              'value' => $value];
-               if (isset($crit['condition'])) {
-                  $param['condition'] = $crit['condition'];
-               }
-               Dropdown::show(getItemTypeForTable($crit['table']), $param);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => getOptionForItems(getItemTypeForTable($crit['table']), $crit['condition'] ?? []),
+                'value' => $value,
+               ]);
 
                $display = true;
                break;
 
             case "dropdown_users" :
-               User::dropdown(['value'  => $value,
-                                    'name'   => $name,
-                                    'right'  => 'all']);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => getOptionsForUsers('all'),
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_tracking_itemtype" :
-               Dropdown::showItemTypes($name, array_keys(Ticket::getAllTypesForHelpdesk()));
+               $values = [];
+               if (count(Ticket::getAllTypesForHelpdesk())) {
+                  foreach (Ticket::getAllTypesForHelpdesk() as $type) {
+                     if ($item = getItemForItemtype($type)) {
+                        $values[$type] = $item->getTypeName(1);
+                     }
+                  }
+               }
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => $values,
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_assets_itemtype" :
                Dropdown::showItemTypes($name, $CFG_GLPI['asset_types'], ['value' => $value]);
-               $display = true;
-               break;
-
-            case "dropdown_import_type" :
-               RuleAsset::dropdownImportType($name, $value);
+               $values = [];
+               if (count($CFG_GLPI['asset_types'])) {
+                  foreach ($CFG_GLPI['asset_types'] as $type) {
+                     if ($item = getItemForItemtype($type)) {
+                        $values[$type] = $item->getTypeName(1);
+                     }
+                  }
+               }
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => $values,
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_urgency" :
-               Ticket::dropdownUrgency(['name'  => $name,
-                                             'value' => $value]);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => [ 3 => Ticket::getUrgencyName(3) ],
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_impact" :
-               Ticket::dropdownImpact(['name'  => $name,
-                                            'value' => $value]);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => [ 3 => Ticket::getImpactName(3) ],
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_priority" :
-               Ticket::dropdownPriority(['name'  => $name,
-                                              'value' => $value,
-                                              'withmajor' => true]);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => [
+                    6 => Ticket::getPriorityName(6),
+                    5 => Ticket::getPriorityName(5),
+                    4 => Ticket::getPriorityName(4),
+                    3 => Ticket::getPriorityName(3),
+                    2 => Ticket::getPriorityName(2),
+                    1 => Ticket::getPriorityName(1),
+                ],
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_status" :
-               Ticket::dropdownStatus(['name'  => $name,
-                                            'value' => $value]);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => Ticket::getAllStatusArray(),
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
             case "dropdown_tickettype" :
-               Ticket::dropdownType($name, ['value' => $value]);
+               renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'values' => Ticket::getTypes(),
+                'value' => $value,
+               ]);
                $display = true;
                break;
 
@@ -2365,9 +2457,12 @@ class Rule extends CommonDBTM {
 
       if (!$display
           && ($rc = getItemForItemtype($this->rulecriteriaclass))) {
-         Html::autocompletionTextField($rc, "pattern", ['name'  => $name,
-                                                             'value' => $value,
-                                                             'size'  => 70]);
+          renderTwigTemplate('macros/input.twig', [
+            'type' => 'text',
+            'name' => $name,
+            'value' => $value,
+            'size' => 70,
+          ]);
       }
    }
 
@@ -2794,22 +2889,22 @@ class Rule extends CommonDBTM {
                         self::OR_MATCHING  => __('or')
                      ]
                   ],
-                  [  
+                  [
                      'type'  => 'hidden',
                      'name'  => 'sub_type',
                      'value' => get_class($this)
                   ],
-                  [  
+                  [
                      'type'  => 'hidden',
                      'name'  => 'entities_id',
                      'value' => $ID
                   ],
-                  [  
+                  [
                      'type'  => 'hidden',
                      'name'  => 'affectentity',
                      'value' => $ID
                   ],
-                  [  
+                  [
                      'type'  => 'hidden',
                      'name'  => '_method',
                      'value' => 'AddRule'
