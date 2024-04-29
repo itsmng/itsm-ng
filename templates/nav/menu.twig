@@ -6,7 +6,7 @@
 
             {% for menu_name, data in menu|filter(data => data['show_menu']) %}
                 <li title="{{data['title']}}" id='menu-{{menu_name}}' class='menu {{data['class']}} {{menu_favorite_on ? '' : 'hidden'}}'>
-                    <a class="{{menu[menu_name]['is_open'] ?: 'collapsed'}} test" data-bs-toggle="collapse" data-bs-target="#submenu-{{menu_name}}">
+                    <a class="{{menu[menu_name]['is_open'] ?: 'collapsed'}}" onclick="openMenu(this, '{{menu_name}}')" data-bs-toggle="collapse" data-bs-target="#submenu-{{menu_name}}">
                         <i class="bubble-icon fas {{menu[menu_name]['icon']}}"></i>
                         <span>{{data['title']}}</span>
                     </a>
