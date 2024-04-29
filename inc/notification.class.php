@@ -195,61 +195,101 @@ class Notification extends CommonDBTM {
    function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'><td>" . __('Name') . "</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-
-      echo "<td rowspan='4' class='middle right'>".__('Comments')."</td>";
-      echo "<td class='center middle' rowspan='4'><textarea cols='45' rows='9' name='comment' >".
-             $this->fields["comment"]."</textarea></td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>" . __('Active') . "</td>";
-      echo "<td>";
-      Dropdown::showYesNo('is_active', $this->fields['is_active']);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>" . __('Allow response') . "</td>";
-      echo "<td>";
-      Dropdown::showYesNo('allow_response', $this->allowResponse());
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>" . _n('Type', 'Types', 1) . "</td>";
-      echo "<td>";
-      if (!Session::haveRight(static::$rightname, UPDATE)) {
-         $itemtype = $this->fields['itemtype'];
-         echo $itemtype::getTypeName(1);
-         $rand ='';
-      } else if (Config::canUpdate()
-          && ($this->getEntityID() == 0)) {
-         $rand = Dropdown::showItemTypes('itemtype', $CFG_GLPI["notificationtemplates_types"],
-                                          ['value' => $this->fields['itemtype']]);
-      } else {
-         $rand = Dropdown::showItemTypes('itemtype',
-                                         array_diff($CFG_GLPI["notificationtemplates_types"],
-                                                    ['CronTask', 'DBConnection', 'User']),
-                                         ['value' => $this->fields['itemtype']]);
+      $types = (Config::canUpdate() && ($this->getEntityID() == 0)) ?
+        $CFG_GLPI['notificationtemplates_types'] :
+        array_diff($CFG_GLPI["notificationtemplates_types"],
+            ['CronTask', 'DBConnection', 'User']);
+      $typeValues = [];
+      foreach ($types as $type) {
+         if ($item = getItemForItemtype($type)) {
+            $typeValues[$type] = $item->getTypeName(1);
+         }
       }
 
-      $params = ['itemtype' => '__VALUE__'];
-      Ajax::updateItemOnSelectEvent("dropdown_itemtype$rand", "show_events",
-                                    $CFG_GLPI["root_doc"]."/ajax/dropdownNotificationEvent.php",
-                                    $params);
-      Ajax::updateItemOnSelectEvent("dropdown_itemtype$rand", "show_templates",
-                                    $CFG_GLPI["root_doc"]."/ajax/dropdownNotificationTemplate.php",
-                                    $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>" . NotificationEvent::getTypeName(1) . "</td>";
-      echo "<td><span id='show_events'>";
-      NotificationEvent::dropdownEvents($this->fields['itemtype'],
-                                        ['value'=>$this->fields['event']]);
-      echo "</span></td></tr>";
-
-      $this->showFormButtons($options);
+      $events = [];
+      $target = NotificationTarget::getInstanceByType($this->fields['itemtype']);
+      if ($target) {
+         $events = $target->getAllEvents();
+      }
+      $form = [
+        'action' => $this->getFormURL(),
+        'buttons' => [
+           ($this->canUpdateItem() ? [
+              'type' => 'submit',
+              'name' => $this->isNewID($ID) ? 'add' : 'update',
+              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+              'class' => 'btn btn-secondary'
+           ] : []),
+           (!$this->isNewID($ID) && self::canPurge() ? [
+              'type' => 'submit',
+              'name' => 'purge',
+              'value' => __('Delete permanently'),
+              'class' => 'btn btn-danger'
+           ] : []),
+        ],
+        'content' => [
+            $this->getTypeName() => [
+                'visible' => true,
+                'inputs' => [
+                    $this->isNewID($ID) ? [] : [
+                        'type' => 'hidden',
+                        'name' => 'id',
+                        'value' => $ID,
+                    ],
+                    __('Name') => [
+                        'type' => 'text',
+                        'name' => 'name',
+                        'value' => $this->fields['name'],
+                        'size' => 50,
+                        'max' => 255,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                    __('Active') => [
+                        'type' => 'checkbox',
+                        'name' => 'is_active',
+                        'value' => $this->fields['is_active'],
+                        'title' => __('If not active, the notification will not be sent'),
+                        'col_lg' => 6,
+                    ],
+                    __('Allow response') => [
+                        'type' => 'checkbox',
+                        'name' => 'allow_response',
+                        'value' => $this->fields['allow_response'],
+                        'title' => __('If checked, the user can respond to the notification'),
+                        'col_lg' => 6,
+                    ],
+                    _n('Type', 'Types', 1) => [
+                        'type' => 'select',
+                        'name' => 'itemtype',
+                        'value' => $this->fields['itemtype'],
+                        'values' => $typeValues,
+                        'comment' => __('Type of the item to which the notification is attached'),
+                        'col_lg' => 6,
+                    ],
+                    NotificationEvent::getTypeName(1) => [
+                        'type' => 'select',
+                        'name' => 'event',
+                        'value' => $this->fields['event'],
+                        'values' => $events,
+                        'comment' => __('Event that triggers the notification'),
+                        'col_lg' => 6,
+                    ],
+                    __('Comments') => [
+                        'type' => 'textarea',
+                        'name' => 'comment',
+                        'value' => $this->fields['comment'],
+                        'comment' => __('Comments'),
+                        'rows' => 9,
+                        'cols' => 45,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                ],
+            ]
+        ]
+      ];
+      renderTwigForm($form);
       return true;
    }
 

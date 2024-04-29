@@ -102,19 +102,6 @@ class NotificationTemplate extends CommonDBTM {
          return false;
       }
 
-      $spotted = false;
-
-      if (empty($ID)) {
-         if ($this->getEmpty()) {
-            $spotted = true;
-         }
-
-      } else {
-         if ($this->getFromDB($ID)) {
-            $spotted = true;
-         }
-      }
-
       $types = $CFG_GLPI['notificationtemplates_types'];
       $typeValues = [];
       foreach ($types as $type) {

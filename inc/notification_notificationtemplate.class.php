@@ -137,44 +137,32 @@ class Notification_NotificationTemplate extends CommonDBRelation
          $canedit
          && !(!empty($withtemplate) && ($withtemplate == 2))
       ) {
-         echo "<div class='center firstbloc'>" .
-            "<a class='vsubmit' href='" . self::getFormURL() . "?notifications_id=$ID&amp;withtemplate=" .
-            $withtemplate . "'>";
-         echo __('Add a template');
-         echo "</a></div>\n";
+        $button = [
+            'url'   => self::getFormURL(),
+            'title' => __('Add a template'),
+        ];
+        echo <<<HTML
+            <div class='center mb-3'>
+                <a class='btn btn-secondary' href='{$button['url']}?notifications_id=$ID&amp;withtemplate=$withtemplate'>
+                    {$button['title']}
+                </a>
+            </div>
+        HTML;
       }
 
-      echo "<div class='center'>";
+      $fields = [
+        'id' => __('ID'),
+        'name' => static::getTypeName(1),
+        'mode' => __('Mode'),
+      ];
+      $values = [];
 
       $iterator = $DB->request([
-         'FROM'   => self::getTable(),
+         'FROM'   => self::gettable(),
          'WHERE'  => ['notifications_id' => $ID]
       ]);
-
-      echo "<table class='tab_cadre_fixehov'>";
-      $colspan = 2;
-
-      if ($iterator->numrows()) {
-         $header = "<tr>";
-         $header .= "<th>" . __('ID') . "</th>";
-         $header .= "<th>" . static::getTypeName(1) . "</th>";
-         $header .= "<th>" . __('Mode') . "</th>";
-         $header .= "</tr>";
-         echo $header;
-
-         Session::initNavigateListItems(
-            __CLASS__,
-            //TRANS : %1$s is the itemtype name,
-            //        %2$s is the name of the item (used for headings of a list)
-            sprintf(
-               __('%1$s = %2$s'),
-               Notification::getTypeName(1),
-               $notif->getName()
-            )
-         );
-
-         $notiftpl = new self();
-         while ($data = $iterator->next()) {
+      $notiftpl = new self();
+      while ($data = $iterator->next()) {
             $notiftpl->getFromDB($data['id']);
             $tpl = new NotificationTemplate();
             $tpl->getFromDB($data['notificationtemplates_id']);
@@ -186,27 +174,21 @@ class Notification_NotificationTemplate extends CommonDBRelation
                   __("No template selected") .
                   "</a>";
             }
-
-            echo "<tr class='tab_bg_2'>";
-            echo "<td>" . $notiftpl->getLink() . "</td>";
-            echo "<td>$tpl_link</td>";
             $mode = self::getMode($data['mode']);
-            if ($mode === NOT_AVAILABLE) {
-               $mode = "{$data['mode']} ($mode)";
-            } else {
-               $mode = $mode['label'];
-            }
-            echo "<td>$mode</td>";
-            echo "</tr>";
-            Session::addToNavigateListItems(__CLASS__, $data['id']);
-         }
-         echo $header;
-      } else {
-         echo "<tr class='tab_bg_2'><th colspan='$colspan'>" . __('No item found') . "</th></tr>";
-      }
+            $mode = $mode === NOT_AVAILABLE ?
+                "{$data['mode']} ($mode)" :
+                $mode['label'];
+            $values[] = [
+                'id' => $notiftpl->getID(),
+                'name' => $tpl_link,
+                'mode' => $mode,
+            ];
 
-      echo "</table>";
-      echo "</div>";
+      }
+      renderTwigTemplate('table.twig', [
+         'fields' => $fields,
+         'values' => $values,
+      ]);
    }
 
 

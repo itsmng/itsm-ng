@@ -349,18 +349,6 @@ class NotificationTarget extends CommonDBChild {
          $notifications_id = $notification->fields['id'];
          $canedit = $notification->can($notifications_id, UPDATE);
 
-         if ($canedit) {
-            echo "<form name='notificationtargets_form' id='notificationtargets_form'
-                  method='post' action=' ";
-            echo Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-            echo "<input type='hidden' name='notifications_id' value='".$notification->getField('id')."'>";
-            echo "<input type='hidden' name='itemtype' value='".$notification->getField('itemtype')."'>";
-
-         }
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr><th colspan='4'>" . _n('Recipient', 'Recipients', Session::getPluralNumber()) . "</th></tr>";
-         echo "<tr class='tab_bg_2'>";
-
          $values = [];
          foreach ($this->notification_targets as $key => $val) {
             list($type,$id) = explode('_', $key);
@@ -377,25 +365,47 @@ class NotificationTarget extends CommonDBChild {
                $actives[$data['type'].'_'.$data['items_id']] = $data['type'].'_'.$data['items_id'];
             }
          }
+         $form = [
+            'action' => $canedit ? Toolbox::getItemTypeFormURL(__CLASS__) : '',
+            'buttons' => [
+                [
+                    'name' => 'update',
+                    'type' => 'submit',
+                    'value' => _x('button', 'Update'),
+                    'class' => 'btn btn-secondary'
+                ]
+            ],
+            'content' => [
+                '' => [
+                    'visible' => true,
+                    'inputs' => [
+                        [
+                            'type' => 'hidden',
+                            'name' => 'notifications_id',
+                            'value' => $notifications_id,
+                        ],
+                        [
+                            'type' => 'hidden',
+                            'name' => 'itemtype',
+                            'value' => $notification->getField('itemtype'),
+                        ],
+                        _n('Recipient', 'Recipients', Session::getPluralNumber()) => [
+                            'type' => 'checklist',
+                            'name' => '_targets',
+                            'options' => $values,
+                            'values' => $actives,
+                            'col_lg' => 12,
+                            'col_md' => 12,
+                            $canedit ? '' : 'disabled' => true
+                        ]
+                    ]
+                ]
+            ]
+         ];
+         renderTwigForm($form);
 
-         echo "<td>";
-         Dropdown::showFromArray('_targets', $values, ['values'   => $actives,
-                                                            'multiple' => true,
-                                                            'readonly' => !$canedit]);
-         echo "</td>";
-         if ($canedit) {
-            echo "<td width='20%'>";
-            echo "<input type='submit' class='submit' name='update' value=\""._x('button', 'Update')."\">";
-            echo "</td>";
-
-         }
-         echo "</tr>";
-         echo "</table>";
       }
 
-      if ($canedit) {
-         Html::closeForm();
-      }
    }
 
 
