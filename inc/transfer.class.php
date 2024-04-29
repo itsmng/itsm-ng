@@ -3404,7 +3404,7 @@ class Transfer extends CommonDBTM {
          $params['readonly'] = true;
       }
 
-      $options = [0 => _x('button', 'Delete permanently'),
+      $general = [0 => _x('button', 'Delete permanently'),
                        1 => _x('button', 'Disconnect') ,
                        2 => __('Keep') ];
       $keep  = [0 => _x('button', 'Delete permanently'),
@@ -3436,6 +3436,7 @@ class Transfer extends CommonDBTM {
                         'name' => 'to_entity',
                         'values' => getOptionForItems(Entity::class),
                         'value' => $this->to,
+                        'col_lg' => 8,
                     ],
                     '' => $edit_form ? [] : [
                         'content' => "<input type='submit' name='transfer' value=\"".__s('Execute')."\"
@@ -3472,13 +3473,13 @@ class Transfer extends CommonDBTM {
                     _n('Network port', 'Network ports', Session::getPluralNumber()) => [
                         'type' => 'select',
                         'name' => 'keep_networklink',
-                        'values' => $options,
+                        'values' => $general,
                         'value' => $this->fields['keep_networklink'],
                     ],
                     _n('Ticket', 'Tickets', Session::getPluralNumber()) => [
                         'type' => 'select',
                         'name' => 'keep_ticket',
-                        'values' => $options,
+                        'values' => $general,
                         'value' => $this->fields['keep_ticket'],
                     ],
                     __('Software of items') => [
@@ -3665,13 +3666,19 @@ class Transfer extends CommonDBTM {
          echo "<br>".__('Think of making a backup before transferring items.')."</div>";
          echo "<table class='tab_cadre_fixe' >";
          echo '<tr><th>'.__('Items to transfer').'</th><th>'.__('Transfer mode')."&nbsp;";
-         $rand = Transfer::dropdown(['name'     => 'id',
-                                          'comments' => false,
-                                          'toupdate' => ['value_fieldname'
-                                                                           => 'id',
-                                                              'to_update'  => "transfer_form",
-                                                              'url'        => $CFG_GLPI["root_doc"].
-                                                                              "/ajax/transfers.php"]]);
+         $rand = mt_rand();
+         renderTwigTemplate('macros/input.twig', [
+            'type' => 'select',
+            'id' => 'dropdown_id'.$rand,
+            'name' => 'id',
+            'values' => getOptionForItems(Transfer::class),
+            'hooks' => [
+                'change' => <<<JS
+                    var value = document.getElementById('dropdown_id$rand').value;
+                    $('#transfer_form').load('$CFG_GLPI[root_doc]/ajax/transfers.php?action=showform&id='+value);
+                JS,
+            ]
+         ]);
          echo '</th></tr>';
 
          echo "<tr><td class='tab_bg_1 top'>";

@@ -5,9 +5,10 @@
  */
 function getOptionForItems($item, $conditions = [], $display_emptychoice = true, $isDevice = false, $used = [])
 {
+
     $values = Dropdown::getDropdownValue([
         'itemtype' => $item,
-        'entity_restrict' => $conditions['entities_id'] ?? Session::getActiveEntity(),
+        $item == Entity::class ? '' : 'entity_restrict' => $conditions['entities_id'] ?? Session::getActiveEntity(),
         'condition' => $conditions,
         'used' => $used,
         'display_emptychoice' => $display_emptychoice,
