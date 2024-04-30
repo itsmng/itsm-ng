@@ -1167,10 +1167,11 @@ table {
    z-index: 1;
    text-align: left;
    font-size: 11px;
-   max-width: 950px;
-   width: 100%;
    border-spacing: 0;
    box-shadow: 0px 1px 2px 1px #999;
+   width: 100%;
+   display: block;
+   overflow-x: auto;
 }
 
 .ui-tabs .tab_cadre_fixehov {
