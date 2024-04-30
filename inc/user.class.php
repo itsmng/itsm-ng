@@ -2615,6 +2615,11 @@ class User extends CommonDBTM {
                         'name' => 'password2',
                         'type' => 'password',
                      ] : [],
+                     __('Accessibility menu') => [
+                        'type' => 'checkbox',
+                        'name' => 'accessibility_menu',
+                        'value' => $this->fields["accessibility_menu"],
+                     ],
                      __('Time zone') => ($tz_available || Session::haveRight("config", READ)) ? ( $tz_available ? [
                         'type' => 'select',
                         'name' => 'timezone',
