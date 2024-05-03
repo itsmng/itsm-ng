@@ -886,10 +886,20 @@ main {
 .menu-bottom {
     position: absolute;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: space-around;
     bottom: 0;
     width: 100%;
+}
+
+.icons_nav {
+    color: rgb(255, 255, 255);
+    font-size: 22px;
+}
+
+.icons_nav:hover {
+    color: rgb(255, 255, 255);
+    cursor: pointer;
 }
 
 #c_preference {
@@ -1285,4 +1295,16 @@ div.chip > p {
 
 #data-selection-widget-modal input[name="search"] {
     display: none;
+}
+
+#language_link a i {
+    font-size: 26px;
+}
+
+#menu-options a i {
+    font-size: 21px;
+}
+
+#dropdownMenuButton {
+    font-size: 21px;
 }
