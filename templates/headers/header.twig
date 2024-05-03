@@ -30,49 +30,55 @@
             </div>
 			{% endif %}
 
-			<ul class='d-flex justify-content-around m-0'>
-				<li id='language_link' class="p-2">
-					<a href="{{root_doc}}/front/preference.php?forcetab=User$1" title={{'Language'|trans}}>
-						<i class='fa fa-globe '></i>
-					</a>
-				</li>
-
-				{% if can_update %}
-					<li id='debug_mode' class='p-2'>
-						<a href='{{root_doc}}/ajax/switchdebug.php' class="debug{{is_debug_active ? 'on' : 'off'}}" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
-						    <i class='fa fa-bug'></i>
-							<span class='sr-only'>{{'Change mode'|trans}}</span>
+			<div class="d-flex justify-content-start align-items-center">
+				<ul class="list-unstyled d-flex justify-content-around m-0">
+					<li id="language_link" class="p-2">
+						<a href="{{root_doc}}/front/preference.php?forcetab=User$1" title={{'Language'|trans}}>
+							<i class="fas fa-language"></i>
 						</a>
 					</li>
-				{% endif %}
-				<li id='menu-options' class="dropdown p-2">
-					<a title={{'Options'|trans}} data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="fas fa-sort-amount-down"></i>
-					</a>
-                    {% include "nav/nav-settings.twig" %}
-				</li>
-				<li id='menu-options' class="dropdown p-2">
-					<a title={{'Help'|trans}} href="https://www.itsm-ng.org">
-						<i class="fas fa-question"></i>
-					</a>
-				</li>
-				<li id='preferences_link' class='p-2'>
-					<a href='{{root_doc}}/front/preference.php' title="{{'My settings'|trans}} - {{username}}">
-						<i class='fa fa-cog'></i>
-                        <span class='sr-only'>{{'My settings'|trans}}</span>
-						{% if username %}
-							<span id='myname test-info'>{{username}}</span>
+					<li id="menu-options" class="p-2">
+						<a href="#" title={{'Navbar'|trans}} data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="far fa-window-maximize"></i>
+						</a>
+						{% include "nav/nav-settings.twig" %}
+					</li>
+				</ul>
+			
+				<div class="dropdown">
+					<button class="btn btn-outline-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="fas fa-bars"></i>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						{% if can_update %}
+						<li id="debug_mode" class="dropdown-item">
+							<a href="{{root_doc}}/ajax/switchdebug.php" class="debug{{is_debug_active ? 'on' : 'off'}}" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
+								Debug mode
+							</a>
+						</li>
 						{% endif %}
-					</a>
-				</li>
-
-				<li id='deconnexion' class='p-2'>
-					<a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}}>
-						<i class='fa fa-sign-out-alt'></i>
-						<span class='sr-only'>{{'Logout'|trans}}></span>
-					</a>
-				</li>
-			</ul>
+						<li id="menu-help" class="dropdown-item">
+							<a href="https://www.itsm-ng.org" title={{'Help'|trans}}>
+								Help
+							</a>
+						</li>
+						<li id="preferences_link" class="dropdown-item">
+							<a href="{{root_doc}}/front/preference.php" title="{{'My settings'|trans}} - {{username}}">
+								Profile
+								{% if username %}
+									<span id="myname test-info">{{username}}</span>
+								{% endif %}
+							</a>
+						</li>
+						<li id="deconnexion" class="dropdown-item">
+							<a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}}>
+								Logout
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
 		</header>
 
 		{% if accessibilityMenu %}
@@ -88,7 +94,12 @@
 				<div id="menu-border" onmousedown="resizeMenu()"></div>
 				{% include main_menu.path with main_menu.args %}
 				<div class="menu-bottom">
-					<a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors"></a>
+					<a class="icons_nav" href="https://github.com/itsmng" target="_blank">
+						<i class="fab fa-github"></i>
+					</a>
+					<a class ="icons_nav" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors">
+						<i class="fas fa-globe"></i>
+					</a>
 				</div>
 			</nav>
 			<div class="main-container">
@@ -100,3 +111,5 @@
 					{% include "headers/utils/actions.twig" with {'links': links, 'root_doc':root_doc} %}
 				</div>
 				<main role='main' id='page'>
+
+					

@@ -5,10 +5,6 @@
 	<span class="dropdown-item" href="#">{{'Menu collapse'|trans}}
 		:
 		{{input("", "", "checkbox", "form-check-input", "menu-collapse-toggle" ,"", "", "", menu_small ? 'true')}}</span>
-	<span class="dropdown-item" href="#">{{'Reset menu bubble position'|trans}}
-		:
-		<button id"reset-bubble-button" type="button" class="btn btn-primary btn-sm">Reset</button>
-	</span>
 	<hr>
 	<h6 class="dropdown-header">{{'Menu favorite'|trans}}</h6>
 	<span class="dropdown-item" href="#">{{'Activate menu favorite'|trans}}
@@ -24,7 +20,6 @@
 			<option value="menu-left" {{menu_position == 'menu-left' ? 'selected'}}>{{'Left'|trans}}</option>
 			<option value="menu-top" {{menu_position == 'menu-top' ? 'selected'}}>{{'Up'|trans}}</option>
 			<option value="menu-right" {{menu_position == 'menu-right' ? 'selected'}}>{{'Right'|trans}}</option>
-			<option value="menu-bubble" {{menu_position == 'menu-bubble' ? 'selected'}}>{{'Bubble'|trans}}</option>
 		</select>
 	</div>
 </ul>
