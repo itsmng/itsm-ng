@@ -877,20 +877,6 @@ class CommonGLPI {
          $tabpage = $this->getTabsURL();
          $tabs    = [];
 
-         $selected_tabs = iterator_to_array($DB->request([
-            'SELECT' => 'content',
-            'FROM'   => 'glpi_user_menu',
-            'WHERE' => [
-               'user_id' => Session::getLoginUserID(),
-               'name' => $this::class,
-            ],
-         ]));
-         if (!count($selected_tabs)) {
-            $selected_tabs = [];
-         } else {
-            $selected_tabs = json_decode($selected_tabs[0]['content'], true);
-         }
-
          foreach ($onglets as $key => $val) {
             if($item = getItemForItemtype(explode("$", $key)[0])) {
                $shortcut = $item->getShortcutsForItem();
@@ -911,7 +897,6 @@ class CommonGLPI {
          'layoutFor' => $target,
          'itemName' => $this::class,
          'formName' => $this->getTypeName(),
-         'selectedTabs' => $selected_tabs,
          'glpiroot' => $CFG_GLPI['root_doc'],
       ]);
    }
