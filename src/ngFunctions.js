@@ -34,9 +34,6 @@ function showMenuOptions() {
   $("#menu-options").toggleClass("show");
 }
 
-let hide_icons = (e) => {
-  $(".bubble-icon").css("display", "none");
-};
 let hide_sub_icons = (e) => {
   $(".submenu-icon").css("display", "none");
 };
@@ -107,6 +104,7 @@ function resetMenuBubblePos() {
     },
   });
 }
+
 let icon_hover = null;
 //caclulate menu position based on mouse position each move event, use radians and trigonometry to calculate position
 function menuMove(event, element, Y = null, X = null) {

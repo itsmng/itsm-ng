@@ -76,10 +76,14 @@ header {
         align-items: center;
     }
 
-    li > a > i,
     li > a span {
         color: var(--bs-header-text) !important;
     }
+}
+
+#language_link a i,
+#menu-options a i {
+    color: var(--bs-header-text) !important;
 }
 
 main {
@@ -814,7 +818,6 @@ main {
         justify-content: center;
         align-items: center;
         flex-shrink: 0;
-        cursor: url("../src/pics/star.png"), auto;
         &::before {
             color: var(--bs-favorite);
             display: none;
@@ -1307,4 +1310,8 @@ div.chip > p {
 
 #dropdownMenuButton {
     font-size: 21px;
+}
+
+.dropdown-menu li a i {
+    color: black;
 }
