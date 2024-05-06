@@ -46,6 +46,7 @@ class HTMLTableGroup extends HTMLTableBase {
    private $table;
    private $rows = [];
 
+   private $ordered_headers;
 
    /**
     * @param $table     HTMLTableMain object

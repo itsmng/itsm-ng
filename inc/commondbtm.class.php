@@ -41,6 +41,9 @@ if (!defined('GLPI_ROOT')) {
 **/
 class CommonDBTM extends CommonGLPI {
 
+   private $right = null;
+   private $input = [];
+
    /**
     * Data fields of the Item.
     *

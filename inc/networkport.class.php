@@ -59,6 +59,8 @@ class NetworkPort extends CommonDBChild {
 
    static $rightname                   = 'networking';
 
+   private $item;
+
 
    function getForbiddenStandardMassiveAction() {
 

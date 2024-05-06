@@ -1259,7 +1259,7 @@ class Config extends CommonDBTM {
          Dropdown::showFromArray(
             'timezone',
             $timezones, [
-               'value'                 => $data["timezone"],
+               'value'                 => isset($data["timezone"]) ? $data["timezone"] : null,
                'display_emptychoice'   => true,
                'emptylabel'            => __('Use server configuration')
             ]
