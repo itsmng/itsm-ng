@@ -50,9 +50,7 @@ function update151to200() : bool {
         'menu_favorite_on' => "text default '1'",
         'menu_position' => "text default 'menu-left'",
         'menu_small' => "text default 'false'",
-        'menu_width' => "text default 'null'",
         'menu_open' => "longtext default '[]'",
-        'bubble_pos' => "text default 'null'",
         'accessibility_menu' => "tinyint(1) default '0'",
     ];
     foreach ($userModifications as $field => $definition) {
