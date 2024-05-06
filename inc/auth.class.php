@@ -918,6 +918,12 @@ class Auth extends CommonGLPI {
                    $this->user->fields['_useremails'] = $email;
                }
                $this->user->update($input);
+            } else if ($this->user->getFromDBByCrit(['name' => $login_name])) {
+                // First stripslashes to avoid double slashes
+                $input = Toolbox::stripslashes_deep($this->user->fields);
+                // Then ensure addslashes
+                $input = Toolbox::addslashes_deep($input);
+                $this->user->update($input);
             } else if ($CFG_GLPI["is_users_auto_add"]) {
                // Auto add user
                // First stripslashes to avoid double slashes
