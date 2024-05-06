@@ -1414,7 +1414,7 @@ class RuleCollection extends CommonDBTM {
     *                            - condition : specific condition to limit rule list
     *                            - only_criteria : only react on specific criteria
     *
-    * @return the output array updated by actions (addslashes datas)
+    * @return array the output array updated by actions (addslashes datas)
    **/
    function processAllRules($input = [], $output = [], $params = [], $options = []) {
 
