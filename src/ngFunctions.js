@@ -325,8 +325,8 @@ function addFavorite() {
     } else {
       $(ul)
         .children("#favorite-" + li.id)
-        .remove();
-      li.remove();
+        .toggleClass("section-favorite", false);
+      $("#favorite-" + li.id).remove();
     }
   } else {
     //adding favorite
