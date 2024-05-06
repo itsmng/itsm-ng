@@ -37,3 +37,4 @@
 megalinter-reports/
 .gitignore
 composer.lock
+package-lock.json
