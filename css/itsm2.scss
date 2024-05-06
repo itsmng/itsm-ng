@@ -77,13 +77,17 @@ header {
     }
 
     li > a span {
-        color: var(--bs-header-text) !important;
+        color: var(--bs-header-text);
     }
 }
 
 #language_link a i,
 #menu-options a i {
     color: var(--bs-header-text) !important;
+}
+
+#preferences_link a span {
+    color: black;
 }
 
 main {
@@ -1314,4 +1318,10 @@ div.chip > p {
 
 .dropdown-menu li a i {
     color: black;
+}
+
+.dropdown-item a {
+    display: block;
+    width: 100%;
+    height: 100%;
 }

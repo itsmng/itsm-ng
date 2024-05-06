@@ -58,17 +58,21 @@
 							</a>
 						</li>
 						{% endif %}
+						<li id="preferences_link" class="dropdown-item">
+							<a href="{{root_doc}}/front/preference.php" title="{{'My settings'|trans}} - {{username}}">
+								<i class="fas fa-user"></i>
+								{% if username %}
+									<span id="myname test-info">{{username}}</span>
+								{% else %}
+									Profile
+								{% endif %}
+							</a>
+						</li>
 						<li id="menu-help" class="dropdown-item">
 							
 							<a href="https://www.itsm-ng.org" title={{'Help'|trans}}>
 								<i class="fas fa-question"></i>
 								Help
-							</a>
-						</li>
-						<li id="preferences_link" class="dropdown-item">
-							<a href="{{root_doc}}/front/preference.php" title="{{'My settings'|trans}} - {{username}}">
-								<i class="fas fa-user"></i>
-								Profile
 							</a>
 						</li>
 						<li id="deconnexion" class="dropdown-item">
@@ -96,12 +100,7 @@
 				<div id="menu-border" onmousedown="resizeMenu()"></div>
 				{% include main_menu.path with main_menu.args %}
 				<div class="menu-bottom">
-					<a class="icons_nav" href="https://github.com/itsmng" target="_blank">
-						<i class="fab fa-github"></i>
-					</a>
-					<a class ="icons_nav" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors">
-						<i class="fas fa-globe"></i>
-					</a>
+					<a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors"></a>
 				</div>
 			</nav>
 			<div class="main-container">
