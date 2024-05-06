@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2024-01-21 14:01+0000\n"
+"PO-Revision-Date: 2024-05-06 12:10+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "es/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4-dev\n"
+"X-Generator: Weblate 5.5.3\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -23798,10 +23798,8 @@ msgid "RSH"
 msgstr "NORSH"
 
 #: src/MailServer.php:376
-#, fuzzy
-#| msgid "Security"
 msgid "Secure"
-msgstr "Seguridad"
+msgstr "Seguro"
 
 #: src/MailServer.php:430
 msgid "Use mail date, instead of collect one"
@@ -23820,10 +23818,8 @@ msgid "Collect only unread mail"
 msgstr "Recopilar solo correo no leído"
 
 #: src/dashboard/dashboard.form.php:50
-#, fuzzy
-#| msgid "Clone this dashboard"
 msgid "Could not create dashboard"
-msgstr "Clonar este panel"
+msgstr "No se pudo crear el panel"
 
 #~ msgid "No room found or selected"
 #~ msgstr "No se encontró o seleccionó sala"
