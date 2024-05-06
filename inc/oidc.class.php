@@ -117,11 +117,20 @@ class Oidc extends CommonDBTM
             }
             $user = new User();
             if ($newUser) {
-               $input = [
-                  'name' => $user_array[$config['name']],
+             $rule = new RuleRightCollection();
+             $input = [
+                  'authtype' => Auth::EXTERNAL,
+                  'name' => $user_array['sub'],
                   '_extauth' => 1,
                   'add' => 1
                ];
+             $input = $rule->processAllRules([], Toolbox::stripslashes_deep($input), [
+                'type'   => Auth::EXTERNAL,
+                'email'  => $input["_emails"],
+                'login'  => $input["name"]
+             ]);
+             $input['_ruleright_process'] = true;
+
                $ID = $user->add($input);
             }
          } else {
@@ -133,11 +142,19 @@ class Oidc extends CommonDBTM
             }
             $user = new User();
             if ($newUser) {
+             $rule = new RuleRightCollection();
                $input = [
+                  'authtype' => Auth::EXTERNAL,
                   'name' => $user_array['sub'],
                   '_extauth' => 1,
                   'add' => 1
                ];
+             $input = $rule->processAllRules([], Toolbox::stripslashes_deep($input), [
+                'type'   => Auth::EXTERNAL,
+                'email'  => $input["_emails"],
+                'login'  => $input["name"]
+             ]);
+             $input['_ruleright_process'] = true;
                $ID = $user->add($input);
             }
          }
