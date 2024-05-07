@@ -84,6 +84,8 @@ class Ticket extends CommonITILObject {
    const CHANGEPRIORITY   =  65536;
    const SURVEY           = 131072;
 
+   private $userentities;
+   private $countentitiesforuser;
 
    function getForbiddenStandardMassiveAction() {
 
