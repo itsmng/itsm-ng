@@ -70,7 +70,7 @@ class DBmysqlIterator implements Iterator, Countable {
       '|'
    ];
 
-   private $parameters = [];
+   public $parameters = [];
 
    /**
     * Constructor

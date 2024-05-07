@@ -64,7 +64,8 @@ if (!defined('GLPI_ROOT')) {
 class HTMLTableMain extends HTMLTableBase {
 
 
-   private $title     = '';
+   public $title     = '';
+
    private $groups    = [];
    private $itemtypes = [];
 

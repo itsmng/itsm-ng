@@ -50,10 +50,10 @@ class MassiveAction {
    const ACTION_KO               = 2;
    const ACTION_NORIGHT          = 3;
 
-   private $POST;
-   private $items;
-   private $check_item;
-   private $nb_items;
+   public $POST;
+   public $items;
+   public $check_item;
+   public $nb_items;
 
 
    /**

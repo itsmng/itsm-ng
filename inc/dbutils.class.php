@@ -1427,7 +1427,7 @@ final class DbUtils {
       if (strlen($realname ?? '') > 0) {
          $formatted = $realname;
 
-         if (strlen($firstname) > 0) {
+         if (strlen($firstname ?? '') > 0) {
             if ($order == User::FIRSTNAME_BEFORE) {
                $formatted = $firstname." ".$formatted;
             } else {
