@@ -39,7 +39,6 @@ echo "<div class='center'>";
 
 $optgroup = Dropdown::getDeviceItemTypes();
 Dropdown::showItemTypeMenu(_n('Component', 'Components', Session::getPluralNumber()), $optgroup);
-Dropdown::showItemTypeList($optgroup);
 
 echo "</div>";
 Html::footer();
