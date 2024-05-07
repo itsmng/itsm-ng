@@ -56,7 +56,7 @@ echo "</td> </tr>";
 // oidc setup
 echo "<tr class='tab_bg_1'><td class='center'>".
      "<a href='auth.oidc.php'>" . __('Open ID connect authentication') ."</a></td></tr>";
-
+     
 echo "<tr class='tab_bg_1'><td class='center'>".
      "<a href='auth.others.php'>" . __('Others authentication methods') ."</a></td></tr>";
 echo "</table>";
