@@ -121,22 +121,23 @@ function toggleHeader(header) {
 async function moveBodyToMainView(target) {
     const mainAccordion = $('#main-accordion-view');
     const collapse = target.parent().next();
-    const body = collapse.find('.container');
+    const body = collapse.children('.container');
 
     if (mainTab !== null) {
+        mainAccordion.children('.container').detach().appendTo($('#' + mainTab));
         toggleHeader($('#' + mainTab).prev());
     }
 
     toggleHeader(target.parent().first('h2'));
     mainTab = collapse.attr('id');
 
-    loadBody(collapse.attr('id')).then(() => {
-        mainAccordion.html(body.html());
-        body.html('');
-        if (selectedTab === collapse.attr('id')) {
-            closeCollapse();
-        }
-    });
+    if (body.html().trim() === '') {
+        await loadBody(collapse.attr('id'));
+    }
+    body.detach().appendTo(mainAccordion);
+    if (selectedTab === collapse.attr('id')) {
+        closeCollapse();
+    }
     updateSession('main', mainTab);
 }
 

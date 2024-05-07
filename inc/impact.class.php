@@ -990,7 +990,7 @@ class Impact extends CommonGLPI {
       echo '<div class="impact-side-panel">';
 
       echo '<div class="impact-side-add-node">';
-      echo '<h3>' . __('Add assets') . '</h3>';
+      echo '<h3 class="fs-5">' . __('Add assets') . '</h3>';
       echo '<div class="impact-side-select-itemtype">';
 
       echo Html::input("impact-side-filter-itemtypes", [
@@ -1018,7 +1018,7 @@ class Impact extends CommonGLPI {
          $icon = self::checkIcon($icon);
 
          echo '<div class="impact-side-filter-itemtypes-item">';
-         echo '<h4><img class="impact-side-icon" src="' . $CFG_GLPI['root_doc'] . '/' . $icon . '" title="' . $itemtype::getTypeName() . '" data-itemtype="' . $itemtype . '">';
+         echo '<h4 class="fs-6"><img class="impact-side-icon" src="' . $CFG_GLPI['root_doc'] . '/' . $icon . '" title="' . $itemtype::getTypeName() . '" data-itemtype="' . $itemtype . '">';
          echo "<span>" . $itemtype::getTypeName() . "</span></h4>";
          echo '</div>'; // impact-side-filter-itemtypes-item
       }
