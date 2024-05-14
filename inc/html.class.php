@@ -1864,18 +1864,6 @@ JAVASCRIPT;
          )->next()['menu_favorite_on'];
       $twig_vars['menu_favorite_on'] = filter_var($twig_vars['menu_favorite_on'], FILTER_VALIDATE_BOOLEAN);
 
-      $bubble_pos = $DB->request(
-         [
-            'SELECT' => 'bubble_pos',
-            'FROM'   => 'glpi_users',
-            'WHERE'  => ['id' => $_SESSION["glpiID"]]
-         ]
-      );
-      if ($bubble_pos->numrows() == null) {
-         $bubble_pos = json_decode($bubble_pos->next()['bubble_pos'], true);
-         $twig_vars['bubble_pos'] = $bubble_pos;
-      }
-
       $twig_vars['menu_small'] = $DB->request(
                [
                   'SELECT' => 'menu_small',

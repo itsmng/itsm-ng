@@ -89,21 +89,6 @@ function clearMenuOpen() {
   });
 }
 
-function changeMenuWidth(event) {
-  //TODO: remove resizing on menu collapsed
-  menu_is_right = $("#main-test").hasClass("menu-right");
-  min = 0;
-  max = window.innerWidth;
-  if (event.clientX < min || event.clientX > max) {
-    return;
-  }
-  if (menu_is_right) {
-    $("body").css(width_var, window.innerWidth - event.clientX + "px");
-  } else {
-    $("body").css(width_var, event.clientX + "px");
-  }
-}
-
 function changeMenuState(is_menu_close = null) {
   //whether menu is open or collapsed
   if (is_menu_close == null) {
