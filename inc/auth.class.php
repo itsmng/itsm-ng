@@ -1599,7 +1599,7 @@ class Auth extends CommonGLPI
                      'value' => $CFG_GLPI["cas_host"],
                   ] : [],
                   __('CAS Version') => (function_exists('curl_init') && Toolbox::canUseCAS()) ? [
-                     'type' => 'dropdown',
+                     'type' => 'select',
                      'name' => 'cas_version',
                      'value' => $CFG_GLPI["cas_version"],
                      'values' => [
