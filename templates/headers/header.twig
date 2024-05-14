@@ -53,14 +53,14 @@
 						{% if can_update %}
 						<li id="debug_mode" class="dropdown-item">
 							<a href="{{root_doc}}/ajax/switchdebug.php" class="debug{{is_debug_active ? 'on' : 'off'}}" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
-								<i class="fas fa-bug"></i>
+								<i class="fas fa-bug" aria-hidden="true"></i>
 								Debug mode
 							</a>
 						</li>
 						{% endif %}
 						<li id="preferences_link" class="dropdown-item">
 							<a href="{{root_doc}}/front/preference.php" title="{{'My settings'|trans}} - {{username}}">
-								<i class="fas fa-user"></i>
+								<i class="fas fa-user" aria-hidden="true"></i>
 								{% if username %}
 									<span id="myname test-info">{{username}}</span>
 								{% else %}
@@ -71,13 +71,13 @@
 						<li id="menu-help" class="dropdown-item">
 							
 							<a href="https://www.itsm-ng.org" title={{'Help'|trans}}>
-								<i class="fas fa-question"></i>
+								<i class="fas fa-question" aria-hidden="true"></i>
 								Help
 							</a>
 						</li>
 						<li id="deconnexion" class="dropdown-item">
 							<a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}}>
-								<i class="fas fa-sign-out-alt"></i>
+								<i class="fas fa-sign-out-alt" aria-hidden="true"></i>
 								Logout
 							</a>
 						</li>

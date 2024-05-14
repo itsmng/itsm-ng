@@ -7,7 +7,7 @@
             {% for menu_name, data in menu|filter(data => data['show_menu']) %}
                 <li title="{{data['title']}}" id='menu-{{menu_name}}' class='menu {{data['class']}} {{menu_favorite_on ? '' : 'hidden'}}' tabindex="0">
                     <a href="#" class="nav-link {{menu[menu_name]['is_open'] ?: 'collapsed'}}" onclick="openMenu(this, '{{menu_name}}')" data-bs-toggle="collapse" data-bs-target="#submenu-{{menu_name}}" aria-expanded="false">
-                        <i class="bubble-icon fas {{menu[menu_name]['icon']}}"></i>
+                        <i class="bubble-icon fas {{menu[menu_name]['icon']}}" aria-hidden="true"></i>
                         <span>{{data['title']}}</span>
                     </a>
 
@@ -21,7 +21,7 @@
                                     {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
                                         {% if val['is_favorite'] %}
                                             <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
-                                                <i class='submenu-icon fa-fw {{val['icon']}}'></i>
+                                                <i class='submenu-icon fa-fw {{val['icon']}}' aria-hidden="true"></i>
                                                 <span>{{val['title']}}</span>
                                                 <i class="star-icon"></i>
                                             </a>
@@ -32,7 +32,7 @@
                             {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
                                 {% if val.title and (access == 'central' or (val.page != '/front/reminder.php' and val.page != '/front/rssfeed.php')) %}
                                     <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show' : ''}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
-                                        <i class='submenu-icon fa-fw {{val['icon']}}'></i>
+                                        <i class='submenu-icon fa-fw {{val['icon']}}' aria-hidden="true"></i>
                                         <span>{{val['title']}}</span>
                                         <i class="star-icon"></i>
                                     </a>
