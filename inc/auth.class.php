@@ -510,11 +510,16 @@ class Auth extends CommonGLPI
                   false
                );
             } else {
+               $url_base = parse_url($CFG_GLPI["url_base"]);
+               $service_base_url = $url_base["scheme"] . "://" .
+                   $url_base["host"] . (isset($url_base["port"]) ? ":" .
+                   $url_base["port"] : "");
                phpCAS::client(
                   constant($CFG_GLPI["cas_version"]),
                   $CFG_GLPI["cas_host"],
                   intval($CFG_GLPI["cas_port"]),
                   $CFG_GLPI["cas_uri"],
+                  $service_base_url,
                   false
                );
             }

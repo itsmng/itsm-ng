@@ -104,9 +104,6 @@ class Central extends CommonGLPI {
    }
 
    public function showGlobalDashboard() {
-      echo "<table class='tab_cadre_central'>";
-      Plugin::doHook('display_central');
-      echo "</table>";
 
       $dashboard = new Dashboard();
       if ($dashboard->getForUser()) {
@@ -263,8 +260,6 @@ class Central extends CommonGLPI {
 
       echo "<table class='tab_cadre_central'>";
 
-      Plugin::doHook('display_central');
-
       echo "<tr><th colspan='2'>";
       echo "</th></tr>";
 
@@ -377,6 +372,7 @@ class Central extends CommonGLPI {
 
       $warnings = [];
 
+      Plugin::doHook('display_central');
       $user = new User();
       $user->getFromDB(Session::getLoginUserID());
       if ($user->fields['authtype'] == Auth::DB_GLPI && $user->shouldChangePassword()) {
