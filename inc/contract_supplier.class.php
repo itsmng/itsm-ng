@@ -242,53 +242,54 @@ class Contract_Supplier extends CommonDBRelation {
       }
 
       if ($canedit) {
-         echo "<div class='firstbloc'>";
-         echo "<form name='contractsupplier_form$rand' id='contractsupplier_form$rand' method='post'
-                action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-         echo "<input type='hidden' name='contracts_id' value='$instID'>";
-
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th colspan='2'>".__('Add a supplier')."</th></tr>";
-
-         echo "<tr class='tab_bg_1'><td class='right'>";
-
-         Supplier::dropdown(['used'         => $used,
-                                  'entity'       => $contract->fields["entities_id"],
-                                  'entity_sons'  => $contract->fields["is_recursive"]]);
-         echo "</td><td class='center'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+        $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+                [
+                    'type' => 'submit',
+                    'name' => 'add',
+                    'value' => _sx('button', 'Add'),
+                    'class' => 'btn btn-secondary'
+                ]
+            ],
+            'content' => [
+                '' => [
+                    'visible' => true,
+                    'inputs' => [
+                        [
+                            'type' => 'hidden',
+                            'name' => 'contracts_id',
+                            'value' => $instID
+                        ],
+                        __('Add a supplier') => [
+                            'type' => 'select',
+                            'name' => 'suppliers_id',
+                            'values' => getOptionForItems('Supplier', [], true, false, $used),
+                            'actions' => getItemActionButtons(['info'], 'Supplier'),
+                            'col_lg' => 12,
+                            'col_md' => 12,
+                        ],
+                    ]
+                ]
+            ]
+        ];
+        renderTwigForm($form);
       }
 
-      echo "<div class='spaced'>";
-      if ($canedit && $number) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $number),
-                                      'container'     => 'mass'.__CLASS__.$rand];
-         Html::showMassiveActions($massiveactionparams);
-      }
-      echo "<table class='tab_cadre_fixe'>";
-      $header_begin  = "<tr>";
-      $header_top    = '';
-      $header_bottom = '';
-      $header_end    = '';
-      if ($canedit && $number) {
-         $header_top    .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_top    .= "</th>";
-         $header_bottom .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-         $header_bottom .= "</th>";
-      }
-      $header_end .= "<th>".Supplier::getTypeName(1)."</th>";
-      $header_end .= "<th>".Entity::getTypeName(1)."</th>";
-      $header_end .= "<th>".SupplierType::getTypeName(1)."</th>";
-      $header_end .= "<th>".Phone::getTypeName(1)."</th>";
-      $header_end .= "<th>".__('Website')."</th>";
-      $header_end .= "</tr>";
-      echo $header_begin.$header_top.$header_end;
-
+      $headers = [
+        'supplier' => Supplier::getTypeName(1),
+        'entity' => Entity::getTypeName(1),
+        'suppliertypes_id' => SupplierType::getTypeName(1),
+        'phonenumber' => _x('phone', 'Number'),
+        'website' => __('Website')
+      ];
+      $values = [];
+      $massiveactionValues = [];
+      Html::showMassiveActions([
+        'container'     => 'tableForContractSupplier',
+        'display_arrow' => false,
+        'is_deleted' => false,
+      ]);
       foreach ($suppliers as $data) {
          $assocID = $data['linkid'];
          $website = $data['website'];
@@ -301,35 +302,24 @@ class Contract_Supplier extends CommonDBRelation {
          $entID         = $data['id'];
          $entity        = $data['entity'];
          $entname       = Dropdown::getDropdownName("glpi_suppliers", $entID);
-         echo "<tr class='tab_bg_1'>";
-         if ($canedit) {
-            echo "<td>";
-            Html::showMassiveActionCheckBox(__CLASS__, $assocID);
-            echo "</td>";
-         }
-         echo "<td class='center'>";
          if ($_SESSION["glpiis_ids_visible"]
              || empty($entname)) {
             $entname = sprintf(__('%1$s (%2$s)'), $entname, $entID);
          }
-         echo "<a href='".Supplier::getFormURLWithID($entID)."'>".$entname;
-         echo "</a></td>";
-         echo "<td class='center'>".Dropdown::getDropdownName("glpi_entities", $entity)."</td>";
-         echo "<td class='center'>";
-         echo Dropdown::getDropdownName("glpi_suppliertypes", $data['suppliertypes_id'])."</td>";
-         echo "<td class='center'>".$data['phonenumber']."</td>";
-         echo "<td class='center'>".$website."</td>";
-         echo "</tr>";
+         $values[] = [
+            'supplier' => "<a href='".Supplier::getFormURLWithID($entID)."'>".$entname."</a>",
+            'entity' => Dropdown::getDropdownName("glpi_entities", $entity),
+            'suppliertypes_id' => Dropdown::getDropdownName("glpi_suppliertypes", $data['suppliertypes_id']),
+            'phonenumber' => $data['phonenumber'],
+            'website' => $website
+         ];
+         $massiveactionValues[] = sprintf('item[%s][%s]', __CLASS__, $assocID);
       }
-      if ($number) {
-         echo $header_begin.$header_bottom.$header_end;
-      }
-      echo "</table>";
-      if ($canedit && $number) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+         'id' => 'tableForContractSupplier',
+         'fields' => $headers,
+         'values' => $values,
+         'massive_action' => $massiveactionValues,
+      ]);
    }
 }
