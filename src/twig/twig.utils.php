@@ -152,7 +152,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
                 ],
             ],
         ]] + $form['content'];
-    } else {
+    } else if (isset($fields['entities_id'])) {
         $form['content'][array_key_first($form['content'])]['inputs'] = array_merge([
             [
                 'type' => 'hidden',
