@@ -276,7 +276,7 @@ class Impact extends CommonGLPI {
          echo '<thead>';
          echo '<tr class="noHover">';
          echo '<th class="impact-list-header" colspan="6" width="90%"><h3>' . $label . '';
-         echo '<i class="fas fa-2x fa-caret-down impact-toggle-subitems-master impact-pointer"></i></h3></th>';
+         echo '<i class="fas fa-2x fa-caret-down impact-toggle-subitems-master impact-pointer" aria-hidden="true"></i></h3></th>';
          echo '</tr>';
          echo '<tr class="noHover">';
          echo '<th>'._n('Item', 'Items', 1).'</th>';
@@ -296,7 +296,7 @@ class Impact extends CommonGLPI {
             echo '<td class="left subheader impact-left" colspan="6">';
             $total = count($items);
             echo '<a>' . $itemtype::getTypeName() . '</a>' . ' (' . $total . ')';
-            echo '<i class="fas fa-2x fa-caret-down impact-toggle-subitems impact-pointer"></i>';
+            echo '<i class="fas fa-2x fa-caret-down impact-toggle-subitems impact-pointer" aria-hidden="true"></i>';
             echo '</td>';
             echo '</tr>';
 
@@ -318,7 +318,7 @@ class Impact extends CommonGLPI {
                      $path[] = $node['label'];
                   }
                }
-               $separator = '<i class="fas fa-angle-right"></i>';
+               $separator = '<i class="fas fa-angle-right" title="supérieur à"></i>';
                echo implode(" $separator ", $path);
 
                echo '</div></td>';
@@ -1026,7 +1026,7 @@ class Impact extends CommonGLPI {
       echo '</div>'; // <div class="impact-side-select-itemtype">
 
       echo '<div class="impact-side-search">';
-      echo '<h4><i class="fas fa-chevron-left"></i><img><span></span></h4>';
+      echo '<h4><i class="fas fa-chevron-left" aria-hidden="true"></i><img><span></span></h4>';
       echo Html::input("impact-side-filter-assets", [
          'id' => 'impact-side-filter-assets',
          'placeholder' => __('Filter assets...'),
@@ -1036,7 +1036,7 @@ class Impact extends CommonGLPI {
       echo '<div class="impact-side-search-results"></div>';
 
       echo '<div class="impact-side-search-more">';
-      echo '<h4><i class="fas fa-chevron-down"></i>' . __("More...") . '</h4>';
+      echo '<h4><i class="fas fa-chevron-down" aria-hidden="true"></i>' . __("More...") . '</h4>';
       echo '</div>'; // <div class="impact-side-search-more">
 
       echo '<div class="impact-side-search-no-results">';
@@ -1044,7 +1044,7 @@ class Impact extends CommonGLPI {
       echo '</div>'; // <div class="impact-side-search-no-results">
 
       echo '<div class="impact-side-search-spinner">';
-      echo '<i class="fas fa-spinner fa-2x fa-spin"></i>';
+      echo '<i class="fas fa-spinner fa-2x fa-spin" aria-hidden="true"></i>';
       echo '</div>'; // <div class="impact-side-search-spinner">
 
       echo '</div>'; // <div class="impact-side-search-panel">
@@ -1115,7 +1115,7 @@ class Impact extends CommonGLPI {
       echo '<li id="toggle_fullscreen" title="' . __("Fullscreen") .'"><i class="fas fa-fw fa-expand"></i></li>';
       echo '<li id="impact_settings" title="' . __("Settings") .'"><i class="fas fa-fw fa-cog"></i></li>';
       echo '</ul>';
-      echo '<span class="impact-side-toggle"><i class="fas fa-2x fa-chevron-left"></i></span>';
+      echo '<span class="impact-side-toggle"><i class="fas fa-2x fa-chevron-left" aria-hidden="true"></i></span>';
       echo '</div>'; // <div class="impact-side impact-side-expanded">
       echo "</td></tr>";
       echo "</table>";

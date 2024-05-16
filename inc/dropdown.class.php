@@ -2128,7 +2128,7 @@ class Dropdown {
       Dropdown::showFromArray('display_type', $values);
       echo "<button type='submit' name='export' class='unstyled pointer' ".
              " title=\"" . _sx('button', 'Export') . "\">" .
-             "<i class='far fa-save'></i><span class='sr-only'>"._sx('button', 'Export')."<span>";
+             "<i class='far fa-save' aria-hidden='true'></i><span class='sr-only'>"._sx('button', 'Export')."<span>";
    }
 
 

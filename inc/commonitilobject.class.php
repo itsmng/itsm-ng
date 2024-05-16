@@ -6907,7 +6907,7 @@ abstract class CommonITILObject extends CommonDBTM {
       if ($canadd_fup) {
          echo "<li class='followup' style='font-family: $font;' onclick='".
               "javascript:viewAddSubitem".$this->fields['id']."$rand(\"ITILFollowup\");'>"
-              . "<i class='far fa-comment'></i>"._n('Followup', 'Followups', 1);
+              . "<i class='far fa-comment' aria-hidden='true'></i>"._n('Followup', 'Followups', 1);
          echo "</li>";
          if ($canuse_shortcuts) {
             echo "<script>
@@ -6921,7 +6921,7 @@ abstract class CommonITILObject extends CommonDBTM {
       if ($canadd_task) {
          echo "<li class='task' style='font-family: $font;' onclick='".
               "javascript:viewAddSubitem".$this->fields['id']."$rand(\"$taskClass\");'>"
-              ."<i class='far fa-check-square'></i>"._n('Task', 'Tasks', 1)."</li>";
+              ."<i class='far fa-check-square' aria-hidden='true'></i>"._n('Task', 'Tasks', 1)."</li>";
          if ($canuse_shortcuts) {
             echo "<script>
             hotkeys('shift+t', function(e, h) {
@@ -6933,7 +6933,7 @@ abstract class CommonITILObject extends CommonDBTM {
       if ($canadd_document) {
          echo "<li class='document' style='font-family: $font;' onclick='".
               "javascript:viewAddSubitem".$this->fields['id']."$rand(\"Document_Item\");'>"
-              ."<i class='fa fa-paperclip'></i>".Document::getTypeName(1)."</li>";
+              ."<i class='fa fa-paperclip' aria-hidden='true'></i>".Document::getTypeName(1)."</li>";
          if ($canuse_shortcuts) {
             echo "<script>
             hotkeys('shift+d', function(e, h) {
@@ -6945,7 +6945,7 @@ abstract class CommonITILObject extends CommonDBTM {
       if ($canadd_validation) {
          echo "<li class='validation' style='font-family: $font;' onclick='".
             "javascript:viewAddSubitem".$this->fields['id']."$rand(\"$validation_class\");'>"
-            ."<i class='far fa-thumbs-up'></i>"._n('Approval', 'Approvals', 1)."</li>";
+            ."<i class='far fa-thumbs-up' aria-hidden='true'></i>"._n('Approval', 'Approvals', 1)."</li>";
          if ($canuse_shortcuts) {
             echo "<script>
             hotkeys('shift+a', function(e, h) {
@@ -6957,7 +6957,7 @@ abstract class CommonITILObject extends CommonDBTM {
       if ($canadd_solution) {
          echo "<li class='solution' style='font-family: $font;' onclick='".
               "javascript:viewAddSubitem".$this->fields['id']."$rand(\"Solution\");'>"
-              ."<i class='fa fa-check'></i>"._n('Solution', 'Solutions', 1)."</li>";
+              ."<i class='fa fa-check' aria-hidden='true'></i>"._n('Solution', 'Solutions', 1)."</li>";
             if ($canuse_shortcuts) {
             echo "<script>
             hotkeys('shift+s', function(e, h) {
@@ -7320,7 +7320,7 @@ abstract class CommonITILObject extends CommonDBTM {
 
          echo "<div class='h_info'>";
 
-         echo "<div class='h_date'><i class='far fa-clock'></i>".Html::convDateTime($date)."</div>";
+         echo "<div class='h_date'><i class='far fa-clock' aria-hidden='true'></i>".Html::convDateTime($date)."</div>";
          if ($item_i['users_id'] !== false) {
             echo "<div class='h_user'>";
             if (isset($item_i['users_id']) && ($item_i['users_id'] != 0)) {
@@ -7399,7 +7399,7 @@ abstract class CommonITILObject extends CommonDBTM {
 
          echo "<div class='$class' id='$domid' data-uid='$randdomid'>";
          if ($fa !== null) {
-            echo "<i class='solimg fa fa-$fa fa-5x'></i>";
+            echo "<i class='solimg fa fa-$fa fa-5x' aria-hidden='true'></i>";
          }
          if (isset($item_i['can_edit']) && $item_i['can_edit']) {
             echo "<div class='edit_item_content'></div>";
@@ -7514,7 +7514,7 @@ abstract class CommonITILObject extends CommonDBTM {
             ) {
                echo __("Helpdesk");
             } else {
-               echo "<i class='fas fa-user'></i> ";
+               echo "<i class='fas fa-user' aria-hidden='true'></i> ";
                $userdata = getUserName($item_i['users_id_tech'], 2);
                echo $user->getLink()."&nbsp;";
                echo Html::showToolTip(
@@ -7583,10 +7583,10 @@ abstract class CommonITILObject extends CommonDBTM {
                'rows'   => 5
             ]);
             echo "<button type='submit' class='submit approve' name='approval_action' value='approve'>";
-            echo "<i class='far fa-thumbs-up'></i>&nbsp;&nbsp;".__('Approve')."</button>";
+            echo "<i class='far fa-thumbs-up' aria-hidden='true'></i>&nbsp;&nbsp;".__('Approve')."</button>";
 
             echo "<button type='submit' class='submit refuse very_small_space' name='approval_action' value='refuse'>";
-            echo "<i class='far fa-thumbs-down'></i>&nbsp;&nbsp;".__('Refuse')."</button>";
+            echo "<i class='far fa-thumbs-down' aria-hidden='true'></i>&nbsp;&nbsp;".__('Refuse')."</button>";
             Html::closeForm();
          }
          if ($item['type'] == 'Solution' && $item_i['status'] != CommonITILValidation::WAITING && $item_i['status'] != CommonITILValidation::NONE) {
@@ -7642,7 +7642,7 @@ abstract class CommonITILObject extends CommonDBTM {
                }
             }
             if ($item_i['link']) {
-               echo "<a href='{$item_i['link']}' target='_blank'><i class='fa fa-external-link'></i>{$item_i['name']}</a>";
+               echo "<a href='{$item_i['link']}' target='_blank'><i class='fa fa-external-link' title='externalLink'></i>{$item_i['name']}</a>";
             }
             if (!empty($item_i['mime'])) {
                echo "&nbsp;";
@@ -7692,7 +7692,7 @@ abstract class CommonITILObject extends CommonDBTM {
       echo "<div style='font-family: $font;' class='h_item middle'>";
 
       echo "<div class='h_info'>";
-      echo "<div class='h_date'><i class='far fa-clock'></i>".Html::convDateTime($this->fields['date'])."</div>";
+      echo "<div class='h_date'><i class='far fa-clock' aria-hidden='true'></i>".Html::convDateTime($this->fields['date'])."</div>";
       echo "<div class='h_user'>";
 
       $user = new User();

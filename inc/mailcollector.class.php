@@ -276,7 +276,7 @@ class MailCollector  extends CommonDBTM {
       echo "<ul>";
       $fname = mb_convert_encoding($folder->getLocalName(), "UTF-8", "UTF7-IMAP");
       echo "<li class='pointer' data-input-id='$input_id'>
-               <i class='fa fa-folder'></i>&nbsp;
+               <i class='fa fa-folder' aria-hidden='true'></i>&nbsp;
                <span class='folder-name'>".$fname."</span>";
 
       foreach ($folder as $sfolder) {

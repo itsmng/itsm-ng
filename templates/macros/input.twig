@@ -24,7 +24,7 @@
               <td> {{object.url|raw}} </td>
               <td class="d-flex flex-row-reverse">
                 <button type="button" class="btn btn-sm btn-outline-danger" onClick="removeObject{{rand}}('{{object.link}}', '{{object.tickets_id}}')">
-                  <i class="fas fa-times"></i>
+                  <i class="fas fa-times" title="remove object"></i>
                 </button>
               </td>
             </tr>
@@ -81,11 +81,11 @@
         {% for actor in attributes.values %}
             <tr data-id="{{actor.id}}" data-type="{{actor.type}}">
               <td>
-                <i class="{{ actor.icon|raw }}"></i>
+                <i class="{{ actor.icon|raw }}" aria-hidden="true"></i>
               </td>
               <td> {{actor.name|raw}} </td>
               <td class="d-flex flex-row-reverse">
-                <button type="button" class="btn btn-sm btn-outline-danger" onClick="removeActor{{rand}}('{{actor.type}}', '{{actor.id}}')"><i class="fas fa-times"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger" onClick="removeActor{{rand}}('{{actor.type}}', '{{actor.id}}')"><i class="fas fa-times" title="remove actor"></i></button>
               </td>
             </tr>
         {% endfor %}
@@ -211,7 +211,7 @@
                 {{title|raw}}
               </td>
               <td class="d-flex flex-row-reverse">
-                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFileLink({{documentId}})"><i class="fas fa-times"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFileLink({{documentId}})"><i class="fas fa-times" title="remove file"></i></button>
               </td>
             </tr>
         {% endfor %}
@@ -339,7 +339,7 @@
       <button type="button"
         class="btn btn-sm btn-outline-success"
         onClick="addOption{{rand}}({{attributes.getInputAdd}}())">
-          <i class="fas fa-plus"></i>
+          <i class="fas fa-plus" title="add options"></i>
       </button>
     </div>
     <table id="OptionTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
@@ -363,7 +363,7 @@
                 {% endfor %}
               </td>
               <td class="d-flex">
-                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeOption{{rand}}('{{loop.index}}')"><i class="fas fa-times"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeOption{{rand}}('{{loop.index}}')"><i class="fas fa-times" title="remove option"></i></button>
               </td>
             </tr>
         {% endfor %}
@@ -428,7 +428,7 @@
     <input class='form-control' id="{{attributes.id|default(rand)}}"
       {% for name, value in attributes|filter((v,k)=>k != 'canSee') %} {{name}}="{{value}}" {% endfor %}/>
     {% if attributes.canSee|default(false)%}
-      <button type='button' class="btn border" onclick="checkPassword({{attributes.id|default(rand)}})"><i class='fas fa-eye'></i></button>
+      <button type='button' class="btn border" onclick="checkPassword({{attributes.id|default(rand)}})"><i class='fas fa-eye' title="check password"></i></button>
       <script>
       function checkPassword(id) {
         const type = $(`#${id}`).attr('type');

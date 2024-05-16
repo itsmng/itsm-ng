@@ -479,7 +479,7 @@ class MassiveAction {
       if (Session::haveRight('transfer', READ)
           && Session::isMultiEntitiesMode()) {
          $actions[__CLASS__.self::CLASS_ACTION_SEPARATOR.'add_transfer_list']
-                  = "<i class='ma-icon fas fa-level-up-alt'></i>".
+                  = "<i class='ma-icon fas fa-level-up-alt' aria-hidden='true'></i>".
                     _x('button', 'Add to transfer list');
       }
 

@@ -595,7 +595,7 @@ class Profile_User extends CommonDBRelation {
                echo "<td>";
                echo "<a href=\"javascript:showHideDiv('entity$temp$rand','imgcat$temp', '".
                         "fa-folder','fa-folder-open');\">";
-               echo "<i id='imgcat$temp' class='fa fa-folder'></i>&nbsp;";
+               echo "<i id='imgcat$temp' class='fa fa-folder' aria-hidden='true'></i>&nbsp;";
                echo "<span class='b'>".Dropdown::getDropdownName('glpi_entities', $data["entity"]).
                      "</span>";
                echo "</a>";

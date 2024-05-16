@@ -380,7 +380,7 @@ class Monitor extends CommonDBTM {
          Computer_Item::getMassiveActionsForItemtype($actions, __CLASS__, 0, $checkitem);
          $actions += [
             'Item_SoftwareLicense'.MassiveAction::CLASS_ACTION_SEPARATOR.'add'
-               => "<i class='ma-icon fas fa-key'></i>".
+               => "<i class='ma-icon fas fa-key' aria-hidden='true'></i>".
                   _x('button', 'Add a license')
          ];
          KnowbaseItem_Item::getMassiveActionsForItemtype($actions, __CLASS__, 0, $checkitem);

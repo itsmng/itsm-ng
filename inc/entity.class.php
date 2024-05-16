@@ -2970,7 +2970,7 @@ class Entity extends CommonTreeDropdown {
 
       $out = "<div class='inherited ".($inline ? "inline" : "")."'
                    title='".__("Value inherited from a parent entity")."'>
-         <i class='fas fa-level-down-alt'></i>
+         <i class='fas fa-level-down-alt' aria-hidden='true'></i>
          $value
       </div>";
 

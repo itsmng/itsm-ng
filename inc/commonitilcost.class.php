@@ -612,7 +612,7 @@ abstract class CommonITILCost extends CommonDBChild {
             Html::formatNumber($data['cost_material']),
             self::computeTotalCost($data['actiontime'], $data['cost_time'],
                                   $data['cost_fixed'], $data['cost_material']),
-            '<a><i class="fas fa-pencil-alt" onclick="viewEditCost' .$data[static::$items_id]."_". $data["id"]. "_$rand()\"></i></a>"
+            '<a><i class="fas fa-pencil-alt" onclick="viewEditCost' .$data[static::$items_id]."_". $data["id"]. "_$rand()\" title='viewEditCost'></i></a>"
          ];
          $total_time += $data['actiontime'];
          $total_costtime += ($data['actiontime']*$data['cost_time']/HOUR_TIMESTAMP);

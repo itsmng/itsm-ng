@@ -2577,13 +2577,13 @@ class CommonDBTM extends CommonGLPI {
 
          if (($ID <= 0) || ($params['withtemplate'] == 2)) {
             echo Html::submit(
-               "<i class='fas fa-plus'></i>&nbsp;"._x('button', 'Add'),
+               "<i class='fas fa-plus' aria-hidden='true'></i>&nbsp;"._x('button', 'Add'),
                ['name' => 'add', 'class' => 'btn btn-secondary']
             );
          } else {
             //TRANS : means update / actualize
             echo Html::submit(
-               "<i class='fas fa-save'></i>&nbsp;"._x('button', 'Save'),
+               "<i class='fas fa-save' aria-hidden='true'></i>&nbsp;"._x('button', 'Save'),
                ['name' => 'update', 'class' => 'btn btn-secondary']
             );
          }
@@ -2598,7 +2598,7 @@ class CommonDBTM extends CommonGLPI {
          if ($params['canedit'] && $this->can($ID, UPDATE)) {
             echo "<td class='center' colspan='".($params['colspan']*2)."'>\n";
             echo Html::submit(
-               "<i class='fas fa-save'></i>&nbsp;"._x('button', 'Save'),
+               "<i class='fas fa-save' aria-hidden='true'></i>&nbsp;"._x('button', 'Save'),
                ['name' => 'update', 'class' => 'btn btn-secondary']
             );
          }
@@ -2611,7 +2611,7 @@ class CommonDBTM extends CommonGLPI {
                if ($this->can($ID, DELETE)) {
                   echo "<td class='right' colspan='".($params['colspan']*2)."' >\n";
                   echo Html::submit(
-                     "<i class='fas fa-trash-restore'></i>&nbsp;"._x('button', 'Restore'),
+                     "<i class='fas fa-trash-restore' aria-hidden='true'></i>&nbsp;"._x('button', 'Restore'),
                      ['name' => 'restore', 'class' => 'btn btn-secondary']
                   );
                }
@@ -2628,7 +2628,7 @@ class CommonDBTM extends CommonGLPI {
                      echo ">&nbsp;";
                   }
                   echo Html::submit(
-                     "<i class='fas fa-trash-alt'></i>&nbsp;"._x('button', 'Delete permanently'),
+                     "<i class='fas fa-trash-alt' aria-hidden='true'></i>&nbsp;"._x('button', 'Delete permanently'),
                      ['name' => 'purge', 'class' => 'btn btn-secondary']
                   );
                   echo "</span>";
@@ -2641,7 +2641,7 @@ class CommonDBTM extends CommonGLPI {
                    || $this->useDeletedToLockIfDynamic()) {
                   if ($this->can($ID, PURGE)) {
                      echo Html::submit(
-                        "<i class='fas fa-trash-alt'></i>&nbsp;"._x('button', 'Delete permanently'),
+                        "<i class='fas fa-trash-alt' aria-hidden='true'></i>&nbsp;"._x('button', 'Delete permanently'),
                         [
                            'name'    => 'purge',
                            'confirm' => __('Confirm the final deletion?')
@@ -2651,7 +2651,7 @@ class CommonDBTM extends CommonGLPI {
                } else if (!$this->isDeleted()
                           && $this->can($ID, DELETE)) {
                   echo Html::submit(
-                     "<i class='fas fa-trash-alt'></i>&nbsp;"._x('button', 'Put in trashbin'),
+                     "<i class='fas fa-trash-alt' aria-hidden='true'></i>&nbsp;"._x('button', 'Put in trashbin'),
                      ['name' => 'delete', 'class' => 'btn btn-secondary']
                   );
                }

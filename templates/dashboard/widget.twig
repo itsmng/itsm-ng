@@ -6,7 +6,7 @@
 
 {% macro number(title = '', value = 0, icon = '', color = "black") %}
 	<div class="d-flex justify-content-center align-items-center">
-		<i class="{{icon}} fs-1 text-{{color}}"></i>
+		<i class="{{icon}} fs-1 text-{{color}}" aria-hidden="true"></i>
 		<div class="ms-3">
 			<div class="fw-bold text-{{color}} text-wrap">{{title|raw}}</div>
 			<div class="fs-3 text-${color}">{{value}}</div>

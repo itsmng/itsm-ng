@@ -1129,7 +1129,7 @@ class Reservation extends CommonDBChild {
                   echo "<a href='".$CFG_GLPI["root_doc"]."/front/reservation.php?reservationitems_id=".
                         $ri->fields['id']."&amp;mois_courant=$mois&amp;annee_courante=$annee' title=\"".
                         __s('See planning')."\">";
-                  echo "<i class='far fa-calendar-alt'></i>";
+                  echo "<i class='far fa-calendar-alt' aria-hidden='true'></i>";
                   echo "<span class='sr-only'>".__('See planning')."</span></a>";
                } else {
                   echo "&nbsp;";
@@ -1188,7 +1188,7 @@ class Reservation extends CommonDBChild {
                   echo "<a href='".$CFG_GLPI["root_doc"]."/front/reservation.php?reservationitems_id=".
                         $ri->fields['id']."&amp;mois_courant=$mois&amp;annee_courante=$annee' title=\"".
                         __s('See planning')."\">";
-                  echo "<i class='far fa-calendar-alt'></i>";
+                  echo "<i class='far fa-calendar-alt' aria-hidden='true'></i>";
                   echo "<span class='sr-only'>".__('See planning')."</span>";
                   echo "</a>";
                } else {
@@ -1297,7 +1297,7 @@ class Reservation extends CommonDBChild {
             echo "<a href='".$CFG_GLPI["root_doc"]."/front/reservation.php?reservationitems_id=".
                   $data["reservationitems_id"]."&amp;mois_courant=$mois&amp;".
                   "annee_courante=$annee' title=\"".__s('See planning')."\">";
-            echo "<i class='far fa-calendar-alt'></i>";
+            echo "<i class='far fa-calendar-alt' aria-hidden='true'></i>";
             echo "<span class='sr-only'>".__('See planning')."</span>";
             echo "</a></td></tr>\n";
          }
@@ -1381,7 +1381,7 @@ class Reservation extends CommonDBChild {
             echo "<a href='".$CFG_GLPI["root_doc"]."/front/reservation.php?reservationitems_id=".
                   $data["reservationitems_id"]."&amp;mois_courant=$mois&amp;annee_courante=$annee' ".
                   "title=\"".__s('See planning')."\">";
-            echo "<i class='far fa-calendar-alt'></i>";
+            echo "<i class='far fa-calendar-alt' aria-hidden='true'></i>";
             echo "<span class='sr-only'>".__('See planning')."</span>";
             echo "</td></tr>\n";
          }
