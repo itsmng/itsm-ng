@@ -2,12 +2,12 @@
     <span>
 {% if links['add'] is defined %}
         <a href='{{root_doc}}{{links['add']}}' class='pointer' title={{'Add'|trans}}>
-            <i class='fa fa-plus'></i>
+            <i class='fa fa-plus' aria-hidden="true"></i>
             <span class='sr-only'>{{'Add'|trans}}</span>
         </a>
 {% else %}
         <a href='#' class='pointer disabled' title={{'Add is disabled'|trans}}>
-            <i class='fa fa-plus'></i>
+            <i class='fa fa-plus' aria-hidden="true"></i>
             <span class='sr-only'>{{'Add is disabled'|trans}}</span>
         </a>
 {% endif %} 
@@ -20,7 +20,7 @@
         </a>
 {% else %}
         <a href='#' class='pointer disabled' title='{{"Search is disabled"|trans}}'>
-            <i class='fa fa-search'></i>
+            <i class='fa fa-search' aria-hidden="true"></i>
             <span class='sr-only'>{{'Search is disabled'|trans}}</span>
         </a>
 {% endif %}
@@ -30,7 +30,7 @@
     {% if key  == "template" %}
     <span>
         <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Manage templates...'|trans}}">
-            <i class="pointer fa fa-layer-group"></i>
+            <i class="pointer fa fa-layer-group" aria-hidden="true"></i>
         </a>
     </span>
     {% elseif key == "showall" %}
@@ -40,13 +40,13 @@
     {% elseif key == "summary" %}
     <span>
         <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Summary'|trans}}">
-            <i class="pointer fas fa-stream"></i>
+            <i class="pointer fas fa-stream" aria-hidden="true"></i>
         </a>
     </span>
     {% elseif key == "summary_kanban" %}
     <span>
         <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Global Kanban'|trans}}">
-            <i class="pointer fas fa-columns"></i>
+            <i class="pointer fas fa-columns" aria-hidden="true"></i>
         </a>
     </span>
     {% elseif key == "config" %}
@@ -64,7 +64,7 @@
 {% if show_ticket %}
 <span>
     <a class='pointer' href='{{root_doc}}/front/helpdesk.public.php?create_ticket=1' title={{'Add'|trans}}>
-        <i class='fa fa-plus'></i>
+        <i class='fa fa-plus' aria-hidden="true"></i>
         <span class='sr-only'>{{'Add'|trans}}</span>
     </a>
 </span>

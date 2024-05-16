@@ -174,7 +174,7 @@ class Item_Disk extends CommonDBChild {
             [
                'type' => 'submit',
                'name' => 'add',
-               'value' => '<i class="fas fa-plus"></i>' . __('Add'),
+               'value' => '<i class="fas fa-plus" aria-hidden="true"></i>' . __('Add'),
                'class' => 'btn btn-secondary'
             ]
          ],

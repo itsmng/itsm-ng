@@ -2245,7 +2245,7 @@ class Plugin extends CommonDBTM {
                $plugin_dir = self::getWebDir($directory, true);
                $config_url = "$plugin_dir/".$PLUGIN_HOOKS['config_page'][$directory];
                $output .= '<a href="' . $config_url . '" title="' . __s('Configure') . '">'
-                  . '<i class="fas fa-wrench fa-2x"></i>'
+                  . '<i class="fas fa-wrench fa-2x" aria-hidden="true"></i>'
                   . '<span class="sr-only">' . __s('Configure') . '</span>'
                   . '</a>'
                   . '&nbsp;';
@@ -2375,7 +2375,7 @@ class Plugin extends CommonDBTM {
             $value = Html::entities_deep(Toolbox::formatOutputWebLink($values[$field]));
             if (!empty($value)) {
                return "<a href=\"".$value."\" target='_blank'>
-                     <i class='fas fa-external-link-alt fa-2x'></i><span class='sr-only'>$value</span>
+                     <i class='fas fa-external-link-alt fa-2x' aria-hidden='true'></i><span class='sr-only'>$value</span>
                   </a>";
             }
             return "&nbsp;";

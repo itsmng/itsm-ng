@@ -297,7 +297,7 @@ abstract class LevelAgreement extends CommonDBChild {
             echo "</td>";
             echo "<td>";
             echo $tt->getBeginHiddenFieldText($laField);
-            echo "<i class='fas fa-stopwatch slt'></i>";
+            echo "<i class='fas fa-stopwatch slt' aria-hidden='true'></i>";
             echo Dropdown::getDropdownName(static::getTable(),
                                            $ticket->fields[$laField])."&nbsp;";
             echo Html::hidden($laField, ['value' => $ticket->fields[$laField]]);
@@ -375,10 +375,10 @@ abstract class LevelAgreement extends CommonDBChild {
                echo "<a ".Html::addConfirmationOnAction($this->getAddConfirmation(),
                         "cleanhide('la_action$type$rand');cleandisplay('la_choice$type$rand');").
                     " class='pointer' title='".static::getTypeName()."'>
-                    <i class='fas fa-stopwatch slt'></i></a>";
+                    <i class='fas fa-stopwatch slt' aria-hidden='true'></i></a>";
                echo "</span>";
                echo "<span id='la_choice$type$rand' style='display:none' class='assign_la'>";
-               echo "<i class='fas fa-stopwatch slt'></i>";
+               echo "<i class='fas fa-stopwatch slt' aria-hidden='true'></i>";
                echo "<span class='b'>".static::getTypeName()."</span>&nbsp;";
                static::dropdown([
                   'name'      => $laField,

@@ -379,7 +379,7 @@ class DisplayPreference extends CommonDBTM {
                      echo "<input type='hidden' name='itemtype' value='$itemtype'>";
                      echo "<button type='submit' name='up'".
                          " title=\"".__s('Bring up')."\"".
-                         " class='unstyled pointer'><i class='fa fa-arrow-up'></i></button>";
+                         " class='unstyled pointer'><i class='fa fa-arrow-up' aria-hidden='true'></i></button>";
                      Html::closeForm();
                      echo "</td>\n";
 
@@ -395,7 +395,7 @@ class DisplayPreference extends CommonDBTM {
                      echo "<input type='hidden' name='itemtype' value='$itemtype'>";
                      echo "<button type='submit' name='down'".
                          " title=\"".__s('Bring down')."\"".
-                         " class='unstyled pointer'><i class='fa fa-arrow-down'></i></button>";
+                         " class='unstyled pointer'><i class='fa fa-arrow-down' aria-hidden='true'></i></button>";
                      Html::closeForm();
                      echo "</td>\n";
 
@@ -411,7 +411,7 @@ class DisplayPreference extends CommonDBTM {
                      echo "<input type='hidden' name='itemtype' value='$itemtype'>";
                      echo "<button type='submit' name='purge'".
                            " title=\""._sx('button', 'Delete permanently')."\"".
-                           " class='unstyled pointer'><i class='fa fa-times-circle'></i></button>";
+                           " class='unstyled pointer'><i class='fa fa-times-circle' aria-hidden='true'></i></button>";
                      Html::closeForm();
                      echo "</td>\n";
                   } else {
@@ -518,9 +518,9 @@ class DisplayPreference extends CommonDBTM {
 
       $fields = [
          'name' => __('Name'),
-         'up' => '<i class="fa fa-arrow-up"></i>',
-         'down' => '<i class="fa fa-arrow-down"></i>',
-         'close' => '<i class="fa fa-times"></i>'
+         'up' => '<i class="fa fa-arrow-up" aria-hidden="true"></i>',
+         'down' => '<i class="fa fa-arrow-down" aria-hidden="true"></i>',
+         'close' => '<i class="fa fa-times" aria-hidden="true"></i>'
       ];
       $values = [
          ['name' => $searchopt[1]["name"],]
@@ -557,7 +557,7 @@ class DisplayPreference extends CommonDBTM {
                            <input type="hidden" name="users_id" value="$IDuser">
                            <input type="hidden" name="itemtype" value="$itemtype">
                            <button type="submit" name="down" title="Bring down" class="btn btn-sm fs-6">
-                              <i class="fa fa-arrow-down"></i>
+                              <i class="fa fa-arrow-down" aria-hidden='true'></i>
                            </button>
                            <input type="hidden" name="_glpi_csrf_token" value="$_SESSION[_glpi_csrf_token]">
                         </form>
@@ -571,7 +571,7 @@ class DisplayPreference extends CommonDBTM {
                            <input type="hidden" name="users_id" value="$IDuser">
                            <input type="hidden" name="itemtype" value="$itemtype">
                            <button type="submit" name="purge" title="Delete permanently" class="btn btn-xs fs-6">
-                              <i class="fa fa-times-circle"></i>
+                              <i class="fa fa-times-circle" aria-hidden='true'></i>
                            </button>
                            <input type="hidden" name="_glpi_csrf_token" value="$_SESSION[_glpi_csrf_token]">
                         </form>
@@ -612,7 +612,7 @@ class DisplayPreference extends CommonDBTM {
                      echo "<input type='hidden' name='itemtype' value='$itemtype'>";
                      echo "<button type='submit' name='up'".
                          " title=\"".__s('Bring up')."\"".
-                         " class='unstyled pointer'><i class='fa fa-arrow-up'></i></button>";
+                         " class='unstyled pointer'><i class='fa fa-arrow-up' aria-hidden='true'></i></button>";
                      Html::closeForm();
                      echo "</td>";
 
@@ -628,7 +628,7 @@ class DisplayPreference extends CommonDBTM {
                      echo "<input type='hidden' name='itemtype' value='$itemtype'>";
                      echo "<button type='submit' name='down'".
                          " title=\"".__s('Bring down')."\"".
-                         " class='unstyled pointer'><i class='fa fa-arrow-down'></i></button>";
+                         " class='unstyled pointer'><i class='fa fa-arrow-down' aria-hidden='true'></i></button>";
                      Html::closeForm();
                      echo "</td>";
 
@@ -644,7 +644,7 @@ class DisplayPreference extends CommonDBTM {
                      echo "<input type='hidden' name='itemtype' value='$itemtype'>";
                      echo "<button type='submit' name='purge'".
                            " title=\""._sx('button', 'Delete permanently')."\"".
-                           " class='unstyled pointer'><i class='fa fa-times-circle'></i></button>";
+                           " class='unstyled pointer'><i class='fa fa-times-circle' aria-hidden='true'></i></button>";
                      Html::closeForm();
                      echo "</td>\n";
                   } else {

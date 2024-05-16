@@ -928,7 +928,7 @@ class Planning extends CommonGLPI {
          if ($exploded[0] === 'group') {
             $icon = "users";
          }
-         echo "<i class='actor_icon fa fa-fw fa-$icon'></i>";
+         echo "<i class='actor_icon fa fa-fw fa-$icon' aria-hidden='true'></i>";
       }
 
       echo "<label for='$filter_key'>$title</label>";

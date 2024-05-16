@@ -106,7 +106,7 @@ if (isset($_GET['create_ticket'])) {
       echo '<tr>';
       echo '<th colspan="2">';
       echo '<div class="warning">';
-      echo '<i class="fa fa-exclamation-triangle fa-5x"></i>';
+      echo '<i class="fa fa-exclamation-triangle fa-5x" aria-hidden="true"></i>';
       echo '<ul>';
       echo '<li>';
       echo $expiration_msg . ' ';

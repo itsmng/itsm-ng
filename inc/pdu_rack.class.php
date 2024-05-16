@@ -448,7 +448,7 @@ class PDU_Rack extends CommonDBRelation {
 
                echo "<td>";
                if ($pdu_m->getFromDB($pdu->fields['pdumodels_id'])) {
-                  echo "<i class='fa fa-bolt'></i>";
+                  echo "<i class='fa fa-bolt' aria-hidden='true'></i>";
                   echo $pdu_m->fields['max_power']."W";
                }
                echo "</td>";
@@ -458,7 +458,7 @@ class PDU_Rack extends CommonDBRelation {
          echo "</table>";
       }
       echo "<a id='add_pdu' class='sub_action'>";
-      echo "<i class='fa fa-plus'></i>";
+      echo "<i class='fa fa-plus' aria-hidden='true'></i>";
       echo _sx('button', "Add");
       echo "</a>";
       echo "</div>";
@@ -628,7 +628,7 @@ JAVASCRIPT;
                        gs-x='0' gs-y='$y'
                        style='background-color: $bg_color; color: $fg_color;'>
                   <div class='grid-stack-item-content' style='$fg_color_s'>
-                     <i class='item_rack_icon fa fa-plug fa-rotate-270'></i>
+                     <i class='item_rack_icon fa fa-plug fa-rotate-270' aria-hidden='true'></i>
                      <span class='rotated_text'>
                         <a href='".$pdu->getLinkURL()."'
                            class='itemrack_name'

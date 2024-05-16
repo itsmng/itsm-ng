@@ -913,7 +913,7 @@ JAVASCRIPT;
       }
 
       if (!empty($icon)) {
-         $icon = "<i class='item_rack_icon $icon'></i>";
+         $icon = "<i class='item_rack_icon $icon' aria-hidden='true'></i>";
       }
 
       return $icon;

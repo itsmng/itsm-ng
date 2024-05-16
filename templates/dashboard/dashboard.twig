@@ -1,8 +1,8 @@
 <div class="ms-auto text-end">
 {% if edit %}
-	<button type="button" onClick="toggleEdit()" class="btn btn-link btn-sm text-end"><i class='fas fa-edit'></i></button>
+	<button type="button" onClick="toggleEdit()" class="btn btn-link btn-sm text-end"><i class='fas fa-edit' title="edit"></i></button>
 {% endif %}
-	<button type="button" onClick="fullscreen()" class="btn btn-link btn-sm text-end"><i class='fas fa-expand'></i></button>
+	<button type="button" onClick="fullscreen()" class="btn btn-link btn-sm text-end"><i class='fas fa-expand' title="edit"></i></button>
 </div>
 <div id="main-dashboard" class='container bg-white'>
 {% if edit %}
@@ -20,7 +20,7 @@
 					{% include 'dashboard/widget.twig' with widget %}
 					{% if edit %}
 						<button type="button" class="ms-auto btn btn-link editButton" onClick="removeWidget({{rowIndex}},{{colIndex}})">
-							<i class="fas fa-trash-alt"></i>
+							<i class="fas fa-trash-alt" title="delete"></i>
 						</button>
 					{% endif %}
 				</div>
@@ -83,6 +83,6 @@
 	{% set class = "row w-100 mx-auto"%}
 {% endif %}
 <button type="button" class="{{class}} editButton btn btn-light border p-1" style="{{style}}" onClick="openWidgetModal({{coords|json_encode}})">
-	<i class="fas fa-plus mx-auto"></i>
+	<i class="fas fa-plus mx-auto" title="edit"></i>
 </button>
 {% endmacro %}

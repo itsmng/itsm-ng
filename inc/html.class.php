@@ -865,7 +865,7 @@ class Html
          if (!$ajax) {
             echo <<<HTML
             <span class='fa-stack fa-lg' id='see_debug'>
-               <i class='fa fa-circle fa-stack-2x text-primary'></i>
+               <i class='fa fa-circle fa-stack-2x text-primary' aria-hidden="true"></i>
                <a href='#' class='fa fa-bug fa-stack-1x text-white' title='" . __s('Display GLPI debug information')  . "'>
                   <span class='sr-only'>See GLPI DEBUG</span>
                </a>
@@ -2302,7 +2302,7 @@ JAVASCRIPT;
                   }
                   echo ">";
 
-                  echo "<i class='fa-fw " . ($val['icon'] ?? "") . "'></i>&nbsp;";
+                  echo "<i class='fa-fw " . ($val['icon'] ?? "") . "' aria-hidden='true'></i>&nbsp;";
                   echo $val['title'];
                   echo "</a>";
                   echo "</dd>";
@@ -2331,7 +2331,7 @@ JAVASCRIPT;
 
       /// Button to toggle responsive menu
       echo "<a href='#' onClick=\"" . self::jsGetElementbyID('show_all_menu') . ".dialog('open'); return false;\"
-            id='menu_all_button'><i class='fa fa-bars'></i>";
+            id='menu_all_button'><i class='fa fa-bars' aria-hidden='true'></i>";
       echo "</a>";
 
       echo "</div>";
@@ -3000,12 +3000,12 @@ JAVASCRIPT;
 
       $calendar_btn = $p['calendar_btn']
          ? "<a class='input-button' data-toggle>
-               <i class='far fa-calendar-alt fa-lg pointer'></i>
+               <i class='far fa-calendar-alt fa-lg pointer' title='calendar'></i>
             </a>"
          : "";
       $clear_btn = $p['clear_btn'] && $p['maybeempty'] && $p['canedit']
          ? "<a data-clear  title='" . __s('Clear') . "'>
-               <i class='fa fa-times-circle pointer'></i>
+               <i class='fa fa-times-circle pointer' title='clearBTN'></i>
             </a>"
          : "";
 
@@ -3205,7 +3205,7 @@ JS;
             <input type="text" name="{$name}" value="{$p['value']}"
                    {$required} {$disabled} data-input>
             <a class="input-button" data-toggle>
-               <i class="far fa-calendar-alt fa-lg pointer"></i>
+               <i class="far fa-calendar-alt fa-lg pointer" title="Select Date"></i>
             </a>
             $clear
          </div>
@@ -3328,7 +3328,7 @@ JS;
          : "";
       $clear    = $p['maybeempty'] && $p['canedit']
          ? "<a data-clear  title='" . __s('Clear') . "'>
-               <i class='fa fa-times-circle pointer'></i>
+               <i class='fa fa-times-circle pointer' aria-hidden=''true'></i>
             </a>"
          : "";
 
@@ -3337,7 +3337,7 @@ JS;
             <input type="text" name="{$name}" value="{$p['value']}"
                    {$required} {$disabled} data-input>
             <a class="input-button" data-toggle>
-               <i class="far fa-clock fa-lg pointer"></i>
+               <i class="far fa-clock fa-lg pointer" title="Select Time"></i>
             </a>
             $clear
          </div>
@@ -6950,7 +6950,7 @@ JAVASCRIPT;
             return "<div id='fuzzysearch'>
                     <input type='text' placeholder='" . __("Start typing to find a menu") . "'>
                     <ul class='results'></ul>
-                    <i class='fa fa-2x fa-times'></i>
+                    <i class='fa fa-2x fa-times' aria-hidden='true'></i>
                     </div>
                     <div class='ui-widget-overlay ui-front fuzzymodal' style='z-index: 100;'>
                     </div>";

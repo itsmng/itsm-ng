@@ -4,11 +4,11 @@
         id="options-for-{{itemName|slug}}" data-size="{{listSize|default(5)}}">
         <li class="d-none d-md-table btn-group mb-2 text-right ms-auto">
             <button class="btn btn-outline-secondary" onclick="changeListSize(1)" id="increase-list-size">
-                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
                 <span class="visually-hidden">{{"Increase list width"|trans}}</span>
             </button>
             <button class="btn btn-outline-secondary" onclick="changeListSize(-1)" id="decrease-list-size">
-                <i class="fas fa-arrow-right"></i>
+                <i class="fas fa-arrow-right" aria-hidden="true"></i>
                 <span class="visually-hidden">{{"Decrease list width"|trans}}</span>
             </button>
         </li>
@@ -18,7 +18,7 @@
                 <button
                     class="btn btn-sm btn-light m-2 me-0 moveToMainButton"
                     title="{{"Move to main view"|trans}}">
-                    <i class="fas fa-share-square fa-rotate-180"></i>
+                    <i class="fas fa-share-square fa-rotate-180" aria-hidden="true"></i>
                     <span class="visually-hidden">{{"Move to main view"|trans}}</span>
                 </button>
                 <button
@@ -27,7 +27,7 @@
                     aria-expanded="false"
                     aria-controls="tab-{{key|slug}}">
                     {{tab['title']|raw}}
-                    <i class="fas fa-plus fa-xs"></i>
+                    <i class="fas fa-plus fa-xs" aria-hidden="true"></i>
                 </button>
             </h2>
             <div class="border border-top-0 overflow-auto"

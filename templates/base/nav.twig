@@ -5,8 +5,8 @@
 #}
 <nav id="menu" class="{{menu_small ? 'menu-close' : 'menu-open'}}">
     <div id="bubble">
-        <i id="compass-menu" class="fas fa-compass"></i>
-        <i id="star-menu" class="fas fa-star"></i>
+        <i id="compass-menu" class="fas fa-compass" aria-hidden="true"></i>
+        <i id="star-menu" class="fas fa-star" aria-hidden="true"></i>
     </div>
     {% include main_menu.path with main_menu.args %}
     <div class="menu-bottom">

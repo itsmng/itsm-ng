@@ -596,7 +596,7 @@ abstract class CommonTreeDropdown extends CommonDropdown {
 
       if ($isadmin) {
          $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'move_under']
-                  = "<i class='ma-icon fas fa-sitemap'></i>".
+                  = "<i class='ma-icon fas fa-sitemap' aria-hidden='true'></i>".
                     _x('button', 'Move under');
       }
 

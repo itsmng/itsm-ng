@@ -901,8 +901,8 @@ class Reminder extends CommonDBVisible implements
                      "&amp;type=day' class='pointer floatright' title=\"".sprintf(__s('From %1$s to %2$s'),
                                            Html::convDateTime($data["begin"]),
                                            Html::convDateTime($data["end"]))."\">";
-               echo "<i class='fa fa-bell'></i>";
-               echo "<pan class='sr-only'>" . __s('Planning') . "</span>";
+               echo "<i class='fa fa-bell' aria-hidden='true'></i>";
+               echo "<span class='sr-only'>" . __s('Planning') . "</span>";
                echo "</a>";
             }
 

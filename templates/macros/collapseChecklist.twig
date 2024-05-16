@@ -10,7 +10,7 @@
 			<li class="d-flex flex-column justify-content-start">
 				<div class="d-flex align-items-center input-group">
 					<button type="button" class="btn btn-link dropdown-checkbox-toggle" data-bs-toggle="collapse" href="#list-for-{{title|slug}}-{{rand}}" aria-expanded="false">
-						<i class="fas fa-caret-right" style="{% if content.content|length == 0 %} opacity: .2 {% endif %}"></i>
+						<i class="fas fa-caret-right" title="dropdownup"style="{% if content.content|length == 0 %} opacity: .2 {% endif %}"></i>
 					</button>
 					{% if content.value %}
 						<input type="checkbox" id="{{title}}_{{content.value}}" name="{{parent_name}}" value="{{current_name}}{{content.value}}" onchange="checkChildren(this);checkParents(this)"/>

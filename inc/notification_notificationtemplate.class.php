@@ -169,7 +169,7 @@ class Notification_NotificationTemplate extends CommonDBRelation
 
             $tpl_link = $tpl->getLink();
             if (empty($tpl_link)) {
-               $tpl_link = "<i class='fa fa-exclamation-triangle red'></i>&nbsp;
+               $tpl_link = "<i class='fa fa-exclamation-triangle red' aria-hidden='true'></i>&nbsp;
                             <a href='" . $notiftpl->getLinkUrl() . "'>" .
                   __("No template selected") .
                   "</a>";

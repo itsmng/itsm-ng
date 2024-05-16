@@ -2826,25 +2826,25 @@ class User extends CommonDBTM {
       $actions = parent::getSpecificMassiveActions($checkitem);
       if ($isadmin) {
          $actions['Group_User'.MassiveAction::CLASS_ACTION_SEPARATOR.'add']
-                                                         = "<i class='ma-icon fas fa-users'></i>".
+                                                         = "<i class='ma-icon fas fa-users' aria-hidden='true'></i>".
                                                            __('Associate to a group');
          $actions['Group_User'.MassiveAction::CLASS_ACTION_SEPARATOR.'remove']
                                                          = __('Dissociate from a group');
          $actions['Profile_User'.MassiveAction::CLASS_ACTION_SEPARATOR.'add']
-                                                         = "<i class='ma-icon fas fa-user-shield'></i>".
+                                                         = "<i class='ma-icon fas fa-user-shield' aria-hidden='true'></i>".
                                                            __('Associate to a profile');
          $actions['Profile_User'.MassiveAction::CLASS_ACTION_SEPARATOR.'remove']
                                                          = __('Dissociate from a profile');
          $actions['Group_User'.MassiveAction::CLASS_ACTION_SEPARATOR.'change_group_user']
-                                                         = "<i class='ma-icon fas fa-users-cog'></i>".
+                                                         = "<i class='ma-icon fas fa-users-cog' aria-hidden='true'></i>".
                                                            __("Move to group");
       }
 
       if (Session::haveRight(self::$rightname, self::UPDATEAUTHENT)) {
          $prefix                                    = __CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR;
-         $actions[$prefix.'change_authtype']        = "<i class='ma-icon fas fa-user-cog'></i>".
+         $actions[$prefix.'change_authtype']        = "<i class='ma-icon fas fa-user-cog' aria-hidden='true'></i>".
                                                       _x('button', 'Change the authentication method');
-         $actions[$prefix.'force_user_ldap_update'] = "<i class='ma-icon fas fa-sync'></i>".
+         $actions[$prefix.'force_user_ldap_update'] = "<i class='ma-icon fas fa-sync' aria-hidden='true'></i>".
                                                       __('Force synchronization');
       }
       return $actions;

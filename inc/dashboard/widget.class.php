@@ -292,7 +292,7 @@ class Widget extends CommonGLPI {
          title="{$p['alt']}">
          <span class="content">$formatted_number</span>
          <div class="label" title="{$label}">{$label}</div>
-         <i class="main-icon {$p['icon']}" style="color: {$fg_color}"></i>
+         <i class="main-icon {$p['icon']}" style="color: {$fg_color}" aria-hidden='true'></i>
       </a>
 HTML;
 
@@ -381,7 +381,7 @@ HTML;
          $numbers_html.= <<<HTML
             <a {$href} class="line line-{$alphabet[$i]}">
                <span class="content" {$color}>$formatted_number</span>
-               <i class="icon {$entry['icon']}" {$color2}></i>
+               <i class="icon {$entry['icon']}" {$color2} aria-label="{$entry['label']}"></i>
                <span class="label" {$color2}>{$entry['label']}</span>
             </a>
 HTML;
@@ -392,7 +392,7 @@ HTML;
       if ($nodata) {
          $numbers_html = "<span class='line empty-card no-data'>
                <span class='content'>
-                  <i class='icon fas fa-exclamation-triangle'></i>
+                  <i class='icon fas fa-exclamation-triangle' aria-hidden='true'></i>
                </span>
                <span class='label'>".__('No data found')."</span>
             <span>";
@@ -435,7 +435,7 @@ HTML;
             </div>
          </div>
          <span class="main-label">{$p['label']}</span>
-         <i class="main-icon {$p['icon']}" style="color: {$fg_color}"></i>
+         <i class="main-icon {$p['icon']}" style="color: {$fg_color}" aria-label="{$p['label']}"></i>
       </div>
 HTML;
 
@@ -529,7 +529,7 @@ HTML;
            style="background-color: {$p['color']}; color: {$fg_color}">
          <div class="chart ct-chart">{$no_data_html}</div>
          <span class="main-label">{$p['label']}</span>
-         <i class="main-icon {$p['icon']}"></i>
+         <i class="main-icon {$p['icon']}" aria-label="{$p['label']}"></i>
       </div>
 HTML;
 
@@ -973,7 +973,7 @@ JAVASCRIPT;
             style="background-color: {$p['color']}; color: {$fg_color}">
          <div class="chart ct-chart">$no_data_html</div>
          <span class="main-label">{$p['label']}</span>
-         <i class="main-icon {$p['icon']}"></i>
+         <i class="main-icon {$p['icon']}" aria-label="{$p['label']}"></i>
       </div>
 HTML;
 
@@ -1393,7 +1393,7 @@ JAVASCRIPT;
            style="background-color: {$p['color']}; color: {$fg_color}">
          <div class="chart ct-chart"></div>
          <span class="main-label">{$p['label']}</span>
-         <i class="main-icon {$p['icon']}"></i>
+         <i class="main-icon {$p['icon']}" aria-label="{$p['label']}"></i>
       </div>
 HTML;
 
@@ -1625,7 +1625,7 @@ HTML;
          <span class="main-label">
             <a {$href}>{$p['label']}</a>
          </span>
-         <i class="main-icon {$p['icon']}"></i>
+         <i class="main-icon {$p['icon']}" aria-label="{$p['label']}"></i>
       </div>
 HTML;
 
@@ -1676,7 +1676,7 @@ HTML;
             : "";
 
          $author = strlen($entry['author'])
-            ? "<i class='fas fa-user'></i>&nbsp;{$entry['author']}"
+            ? "<i class='fas fa-user' aria-hidden='true'></i>&nbsp;{$entry['author']}"
             : "";
 
          $content_size = strlen($entry['content']);
@@ -1703,7 +1703,7 @@ HTML;
       if ($nodata) {
          $list_html = "<span class='line empty-card no-data'>
             <span class='content'>
-               <i class='icon fas fa-exclamation-triangle'></i>
+               <i class='icon fas fa-exclamation-triangle' aria-hidden='true'></i>
             </span>
             <span class='label'>".__('No data found')."</span>
          <span>";
@@ -1737,7 +1737,7 @@ HTML;
             {$p['label']}
             $view_all
          </span>
-         <i class="main-icon {$p['icon']}" style="color: {$fg_color}"></i>
+         <i class="main-icon {$p['icon']}" style="color: {$fg_color}" aria-label="{$p['label']}"></i>
       </div>
 HTML;
 
