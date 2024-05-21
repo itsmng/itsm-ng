@@ -1,0 +1,27 @@
+{% macro select(attributes) %}
+  <select class='form-select {{attributes.class}}'
+    {% for name, value in attributes %} {% if name not in  ['values', 'class']%}{{name}}="{{value}}"{% endif %} {% endfor %}>
+    {% for key, item in attributes.values %}
+      {% if item is iterable %}
+        <optgroup label="{{key}}">
+          {% for key, item in item %}
+            <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
+          {% endfor %}
+        </optgroup>
+      {% else %}
+          <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
+      {% endif %}
+    {% endfor %}
+  </select>
+  {% if attributes.searchable %}
+  <script>
+      $(document).ready(function() {
+          var select_box_element = document.querySelector('#{{attributes.id}}');
+          dselect(select_box_element, {
+            search: true
+          });
+      });
+  </script>
+  {% endif %}
+{% endmacro %}
+{{ _self.select(attributes) }}

@@ -1,0 +1,17 @@
+{% macro checklist(attributes) %}
+  {% if attributes.id is not defined %}
+    {% set rand=random() %}
+  {% endif %}
+  <div style="height: 10rem;overflow-y: auto" class="container border border-secondary ps-3" id="{{attributes.id|default(rand)}}">
+    {% for name, option in attributes.options %}
+      <div class="row">
+        <input class="form-check-input col col-2" type="checkbox" value="{{name}}" id="{{attributes.id|default(rand)}}_{{loop.index}}" name="{{attributes.name}}[]"
+          {% if name in attributes.values %} checked {% endif %} {% if attributes.disabled %} disabled {% endif %}>
+        <label class="form-check-label col col-10" for="{{attributes.id|default(rand)}}_{{loop.index}}">
+          {{option}}
+        </label>
+      </div>
+    {% endfor %}
+  </div>
+{% endmacro %}
+{{ _self.checklist(attributes) }}
