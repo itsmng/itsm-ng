@@ -6,9 +6,15 @@
 function getOptionForItems($item, $conditions = [], $display_emptychoice = true, $isDevice = false, $used = [])
 {
 
+    $entity_restrict = false;
+    if (isset($conditions['entities_id']) && isset($conditions['is_recursive'])) {
+        $entity_restrict = '[' .
+            '"entities_id": ' . $conditions['entities_id'] . ',' .
+            '"is_recursive": ' . $conditions['is_recursive'] . ']';
+    }
     $values = Dropdown::getDropdownValue([
         'itemtype' => $item,
-        $item == Entity::class ? '' : 'entity_restrict' => $conditions['entities_id'] ?? Session::getActiveEntity(),
+        'entity_restrict' => $entity_restrict ?? -1,
         'condition' => $conditions,
         'used' => $used,
         'display_emptychoice' => $display_emptychoice,
