@@ -23996,898 +23996,1242 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "No room found or selected"
-#~ msgstr "Nav atrasta vai izvēlēta istaba"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Rakstīt"
 
-#~ msgid "Marketplace"
-#~ msgstr "Veikals"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Lietotājs"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr " %1$s pievieno objektu %2$s-%3$s:%4$s"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Skatīt konfigurāciju"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Skatīt spraudņu katalogu internetā"
+msgid "No room found or selected"
+msgstr "Nav atrasta vai izvēlēta istaba"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Atstājiet tukšu"
+msgid "Marketplace"
+msgstr "Veikals"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS barotnes atrastas"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr " %1$s pievieno objektu %2$s-%3$s:%4$s"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+msgid "See the catalog of plugins"
+msgstr "Skatīt spraudņu katalogu internetā"
 
-#~ msgid "GLPI version"
-#~ msgstr "GLPI versija"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "Vai apstiprināt paaugstināšanu?"
+msgid "Empty for infinite"
+msgstr "Atstājiet tukšu"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Jūsu pieteikumi, kas jāaizver"
+msgid "RSS feeds found"
+msgstr "RSS barotnes atrastas"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Pieteikumi, kas gaida izskatīšanu"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Izpildāmie pieteikumi"
+msgid "GLPI version"
+msgstr "GLPI versija"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Jūsu novērotie pieteikumi"
+msgid "Confirm the promotion?"
+msgstr "Vai apstiprināt paaugstināšanu?"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Tavi pieteikumi apstrādē"
+msgid "Your tickets to close"
+msgstr "Jūsu pieteikumi, kas jāaizver"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Jūsu pieteikumi, kas jāapstiprina"
+msgid "Tickets on pending status"
+msgstr "Pieteikumi, kas gaida izskatīšanu"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "Jūsu pieteikumiem ir noraidīts apstiprinājuma statuss"
+msgid "Tickets to be processed"
+msgstr "Izpildāmie pieteikumi"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "Jūsu pieteikumiem ir noraidīts risinājums"
+msgid "Your observed tickets"
+msgstr "Jūsu novērotie pieteikumi"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Pieteikuma sekojums"
+msgid "Your tickets in progress"
+msgstr "Tavi pieteikumi apstrādē"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d jauni pieteikumi"
-#~ msgstr[1] "%d jauns pieteikums"
-#~ msgstr[2] "%d jauni pieteikumi"
+msgid "Your tickets to validate"
+msgstr "Jūsu pieteikumi, kas jāapstiprina"
 
-#~ msgid "No ticket found."
-#~ msgstr "Pieteikumi nav atrasti."
+msgid "Your tickets having rejected approval status"
+msgstr "Jūsu pieteikumiem ir noraidīts apstiprinājuma statuss"
 
-#~ msgid "Last tickets"
-#~ msgstr "Pēdējie pieteikumi"
+msgid "Your tickets having rejected solution"
+msgstr "Jūsu pieteikumiem ir noraidīts risinājums"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Jauns pieteikums šim ierakstam..."
+msgid "Ticket followup"
+msgstr "Pieteikuma sekojums"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Pēdējie %d pieteikumi"
-#~ msgstr[1] "Pēdējais %d pieteikums"
-#~ msgstr[2] "Pēdējie %d pieteikumi"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d jauni pieteikumi"
+msgstr[1] "%d jauns pieteikums"
+msgstr[2] "%d jauni pieteikumi"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Jums nav tiesību redzēt visus pieteikumus"
+msgid "No ticket found."
+msgstr "Pieteikumi nav atrasti."
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Pieteikumi ar saistīto vienību"
-#~ msgstr[1] "Pieteikumi ar saistīto vienību"
-#~ msgstr[2] "Pieteikumi ar saistītam vienībām"
+msgid "Last tickets"
+msgstr "Pēdējie pieteikumi"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Neviens pieteikums nav apstrādē."
+msgid "New ticket for this item..."
+msgstr "Jauns pieteikums šim ierakstam..."
 
-#~ msgid "Assign equipment"
-#~ msgstr "Piesaistīt iekārtu"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Pēdējie %d pieteikumi"
+msgstr[1] "Pēdējais %d pieteikums"
+msgstr[2] "Pēdējie %d pieteikumi"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Automātiska pieteikumu aizvēršana"
+msgid "You don't have right to see all tickets"
+msgstr "Jums nav tiesību redzēt visus pieteikumus"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Apmierinātības apsekojumu ģenerēšana"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Pieteikumi ar saistīto vienību"
+msgstr[1] "Pieteikumi ar saistīto vienību"
+msgstr[2] "Pieteikumi ar saistītam vienībām"
 
-#~ msgid "Automatic closed tickets purge"
-#~ msgstr "Automātiska aizvērto pieteikumu tīrīšana"
+msgid "No ticket in progress."
+msgstr "Neviens pieteikums nav apstrādē."
 
-#~ msgid "See my ticket"
-#~ msgstr "Skatīt manus pieteikumus"
+msgid "Assign equipment"
+msgstr "Piesaistīt iekārtu"
 
-#~ msgid "See group ticket"
-#~ msgstr "Skatīt grupas pieteikumus"
+msgid "Automatic tickets closing"
+msgstr "Automātiska pieteikumu aizvēršana"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Aplūkot manu grupu izveidotos pieteikumus"
+msgid "Generation of satisfaction surveys"
+msgstr "Apmierinātības apsekojumu ģenerēšana"
 
-#~ msgid "See all tickets"
-#~ msgstr "Skatīt visus pieteikumus"
+msgid "Automatic closed tickets purge"
+msgstr "Automātiska aizvērto pieteikumu tīrīšana"
 
-#~ msgid "See assigned"
-#~ msgstr "Skatīt piesaistītos"
+msgid "See my ticket"
+msgstr "Skatīt manus pieteikumus"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Skatīt piesaistītos pieteikumus"
+msgid "See group ticket"
+msgstr "Skatīt grupas pieteikumus"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Piešķirt pieteikumu izpildei"
+msgid "See tickets created by my groups"
+msgstr "Aplūkot manu grupu izveidotos pieteikumus"
 
-#~ msgid "Steal"
-#~ msgstr "Nozagts"
+msgid "See all tickets"
+msgstr "Skatīt visus pieteikumus"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Pārņemt pieteikumu"
+msgid "See assigned"
+msgstr "Skatīt piesaistītos"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Atbildīgs"
+msgid "See assigned tickets"
+msgstr "Skatīt piesaistītos pieteikumus"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Būt atbildīgajam par pieteikumu"
+msgid "Assign a ticket"
+msgstr "Piešķirt pieteikumu izpildei"
 
-#~ msgid "Change the priority"
-#~ msgstr "Mainīt prioritāti"
+msgid "Steal"
+msgstr "Nozagts"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Apstiprināt risinājumu/Atbildēt uz aptauju (mans pieteikums)"
+msgid "Steal a ticket"
+msgstr "Pārņemt pieteikumu"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "Apstiprināt risinājumu un atbildēt uz aptauju manam pieteikumam"
+msgid "Beeing in charge"
+msgstr "Atbildīgs"
 
-#, php-format
-#~ msgid "Not enough rights to merge tickets %d and %d"
-#~ msgstr "Nav pietiekamu tiesību sapludināt pieteikumus %d un %d"
+msgid "To be in charge of a ticket"
+msgstr "Būt atbildīgajam par pieteikumu"
 
-#, php-format
-#~ msgid "Failed to load ticket %d"
-#~ msgstr "Neizdevās ielādēt pieteikumu %d"
+msgid "Change the priority"
+msgstr "Mainīt prioritāti"
 
-#, php-format
-#~ msgid "Failed to add followup to ticket %d"
-#~ msgstr "Neizdevās pievienot sekojumu pieteikumam %d"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Apstiprināt risinājumu/Atbildēt uz aptauju (mans pieteikums)"
 
-#, php-format
-#~ msgid "Failed to add task to ticket %d"
-#~ msgstr "Neizdevās pievienot uzdevumu pieteikumam %d"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "Apstiprināt risinājumu un atbildēt uz aptauju manam pieteikumam"
 
-#, php-format
-#~ msgid "Failed to add document to ticket %d"
-#~ msgstr "Neizdevās pievienot dokumentu pieteikumam %d"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "Nav pietiekamu tiesību sapludināt pieteikumus %d un %d"
 
-#, php-format
-#~ msgid "Failed to link tickets %d and %d"
-#~ msgstr "Neizdevās savienot pieteikumus %d un %d"
+msgid "Failed to load ticket %d"
+msgstr "Neizdevās ielādēt pieteikumu %d"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "Neizdevās dzēst pieteikumu %d"
+msgid "Failed to add followup to ticket %d"
+msgstr "Neizdevās pievienot sekojumu pieteikumam %d"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%s apvieno pieteikumu %s iekš %s"
+msgid "Failed to add task to ticket %d"
+msgstr "Neizdevās pievienot uzdevumu pieteikumam %d"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Pārrēķināt kategoriju"
+msgid "Failed to add document to ticket %d"
+msgstr "Neizdevās pievienot dokumentu pieteikumam %d"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Derīgas licences"
+msgid "Failed to link tickets %d and %d"
+msgstr "Neizdevās savienot pieteikumus %d un %d"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Instalācijas skaits"
+msgid "Failed to delete ticket %d"
+msgstr "Neizdevās dzēst pieteikumu %d"
 
-#~ msgid "Merge"
-#~ msgstr "Apvienot"
+msgid "%s merges ticket %s into %s"
+msgstr "%s apvieno pieteikumu %s iekš %s"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Pēc apvienošanas dzēstā programmatūra"
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Pārbaudu rakstīšanas tiesības spraudņa dokumenta datnēm"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "Jums ir jāiespējo vismaz viens paziņojumu režīms."
+msgid "Recalculate the category"
+msgstr "Pārrēķināt kategoriju"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Valid licenses"
+msgstr "Derīgas licences"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Savienot ar datoru"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Instalācijas skaits"
 
-#~ msgid "Not connected"
-#~ msgstr "Nav savienots"
+msgid "Merge"
+msgstr "Apvienot"
 
-#~ msgid "Show as map"
-#~ msgstr "Rādīt kartē"
+msgid "Software deleted after merging"
+msgstr "Pēc apvienošanas dzēstā programmatūra"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Derīgs līdz %s"
+msgid "You must enable at least one notification mode."
+msgstr "Jums ir jāiespējo vismaz viens paziņojumu režīms."
 
-#~ msgid "Late tickets"
-#~ msgstr "Kavētie pieteikumi"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid "Incoming tickets"
-#~ msgstr "Ienākošie pieteikumi"
+msgid "Connect a computer"
+msgstr "Savienot ar datoru"
 
-#~ msgid "Solved tickets"
-#~ msgstr "Atrisinātie pieteikumi"
+msgid "Not connected"
+msgstr "Nav savienots"
 
-#~ msgid "Closed tickets"
-#~ msgstr "Aizvērtie pieteikumi"
+msgid "Show as map"
+msgstr "Rādīt kartē"
 
-#~ msgid "Time to close"
-#~ msgstr "Aizvēršanas laiks"
+msgid "Valid to %s"
+msgstr "Derīgs līdz %s"
 
-#~ msgid "Solved"
-#~ msgstr "Atrisināts"
+msgid "Late tickets"
+msgstr "Kavētie pieteikumi"
 
-#~ msgid "Toggle auto-refresh"
-#~ msgstr "Automātiska atjaunošana"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Pieteikums gaida apstiprinājumu"
 
-#~ msgid "Toggle edit mode"
-#~ msgstr "Rediģēšanas režīms"
+msgid "Incoming tickets"
+msgstr "Ienākošie pieteikumi"
 
-#~ msgid "others"
-#~ msgstr "Citi"
+msgid "Solved tickets"
+msgstr "Atrisinātie pieteikumi"
 
-#~ msgid "Widget"
-#~ msgstr "Rīks"
+msgid "Closed tickets"
+msgstr "Aizvērtie pieteikumi"
 
-#, php-format
-#~ msgid "List of %s"
-#~ msgstr "Vērtību saraksts %s"
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Bez nosaukuma"
 
-#~ msgid "Number of tickets by month"
-#~ msgstr "Pieteikumu skaits mēnesī"
+msgid "Time to close"
+msgstr "Aizvēršanas laiks"
 
-#~ msgid "Evolution of ticket in the past year"
-#~ msgstr "Pieteikumu pieaugums iepriekšējā gada laikā"
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "Apstiprināt"
 
-#~ msgid "Top ticket's categories"
-#~ msgstr "Populārākās pieteikumu kategorijas"
+msgid "Solved"
+msgstr "Atrisināts"
 
-#~ msgid "Top ticket's observers"
-#~ msgstr "Populārākie pieteikumu novērotāji"
+msgid "Share or embed this dashboard"
+msgstr ""
 
-#~ msgid "Toggle edit mode to edit content"
-#~ msgstr "Satura rediģēšanas režīms"
+#, fuzzy
+#| msgid "Helpdesk Dashboard"
+msgid "Delete this dashboard"
+msgstr "Palīdzības dienesta panelis "
 
-#~ msgid "field name in DB"
-#~ msgstr "DB lauku vārds"
+msgid "Toggle auto-refresh"
+msgstr "Automātiska atjaunošana"
 
-#~ msgid "Example:"
-#~ msgstr "Piemērs:"
+#, fuzzy
+#| msgid "Toggle edit mode"
+msgid "Toggle night mode"
+msgstr "Rediģēšanas režīms"
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "Kopš GLPI 9.2 mēs esam ieviesuši jaunu statistikas funkciju ar nosaukumu "
-#~ "\"Telemetrija\", kas anonīmi ar jūsu atļauju, nosūta datus mūsu "
-#~ "telemetrijas vietnei."
+#, fuzzy
+#| msgid "Fullscreen"
+msgid "Toggle fullscreen"
+msgstr "Pilnekrāna skats"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP tīkls nav iekļauts datu bāzē. Tomēr jūs varat redzēt pašreizējos "
-#~ "pieejamos tīklus."
+#, fuzzy
+#| msgid "Assets Dashboard"
+msgid "Clone this dashboard"
+msgstr "Pamatlīdzekļu panelis"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Ir pieejami vairāki tīkla nosaukumi! Atveriet cilni \"Tīkla nosaukums\", "
-#~ "lai tos pārvaldītu."
+msgid "Toggle edit mode"
+msgstr "Rediģēšanas režīms"
 
-#~ msgid "Add a network name"
-#~ msgstr "Pievienot datortīkla vārdu"
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add filter"
+msgstr "Pievienot ierakstu"
 
-#~ msgid "Not associated"
-#~ msgstr "Nav piesaistīts"
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "Pievienot jaunu uzdevumu"
 
-#~ msgid "Create a new network name"
-#~ msgstr "Izveidojiet jaunu tīkla nosaukumu"
+msgid "others"
+msgstr "Citi"
 
-#~ msgid "No network name found"
-#~ msgstr "nav atrasts datortīkla vārds"
+msgid "Widget"
+msgstr "Rīks"
 
-#~ msgid "Unable to download plugin archive."
-#~ msgstr "Nav iespējams lejuplādēt spraudņa arhīvu"
+msgid "Use gradient palette"
+msgstr ""
 
-#, php-format
-#~ msgid "Plugin archive format is not supported by your system : %s."
-#~ msgstr "Spraudņa arhīvs netiek atbalstīts Jūsu sistēmā: %s"
+msgid "Display value labels on points/bars"
+msgstr ""
 
-#~ msgid "Unable to extract plugin archive."
-#~ msgstr "Neizdevās izvilkt spraudņa arhīvu"
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "Uzdevuma numurs"
 
-#~ msgid "Check all plugin updates"
-#~ msgstr "Pārbaudīt visus spraudņu jauninājumus"
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filters"
+msgstr "Filtru saraksts"
 
-#, php-format
-#~ msgid "New version for plugin %s: %s"
-#~ msgstr "Jauna versija spraudņiem %s: %s"
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "Lietotnes URL"
 
-#~ msgid "Installed"
-#~ msgstr "Uzstādīts"
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP direktorijas saite"
 
-#~ msgid "Discover"
-#~ msgstr "Atklāt"
+msgid "Iframe"
+msgstr ""
 
-#~ msgid "Maybe you could setup a proxy"
-#~ msgstr "Varbūt Jūs varētu uzstādīt starpniekserveri"
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
 
-#~ msgid "or please check later"
-#~ msgstr "vai, lūdzu, pārbaudiet vēlāk"
+#, fuzzy
+#| msgid "Empty array"
+msgid "empty card !"
+msgstr "Masīvs ir tukšs"
 
-#~ msgid "fill your registration key in setup."
-#~ msgstr "ievadiet Jūsu reģistrācijas atslēgu."
+#, fuzzy
+#| msgid "Number of rows"
+msgid "Number of %s"
+msgstr "Rindu skaits"
 
-#~ msgid ""
-#~ "If you want to ease the plugins download, please check permissions and "
-#~ "ownership of this directory."
-#~ msgstr ""
-#~ "Ja jūs vēlaties atvieglot spraudņu lejupielādi, lūdzu, pārbaudiet "
-#~ "piekļuves tiesības šai mapei."
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s no %2$s"
 
-#~ msgid ""
-#~ "Otherwise, you will need to download and unzip the plugins archives "
-#~ "manually."
-#~ msgstr "Citādi nepieciešams lejuplādēt un izvilkt spraudņu arhīvus manuāli."
+msgid "List of %s"
+msgstr "Vērtību saraksts %s"
 
-#~ msgid "Most popular"
-#~ msgstr "Vispopulārākie"
+msgid "Number of tickets by month"
+msgstr "Pieteikumu skaits mēnesī"
 
-#~ msgid "Last updated"
-#~ msgstr "Nesen atjauninātie"
+msgid "Evolution of ticket in the past year"
+msgstr "Pieteikumu pieaugums iepriekšējā gada laikā"
 
-#~ msgid "Most recent"
-#~ msgstr "Visbiežāk izmantotie"
+#, fuzzy
+#| msgid "Ticket tasks to do"
+msgid "Tickets status by month"
+msgstr "Pieteikuma uzdevumi, kas jādara"
 
-#~ msgid "Your plugin here ? Contact us."
-#~ msgstr "Jūsu spraudnis šeit ? Sazinieties ar mums."
+msgid "Tickets times (in hours)"
+msgstr ""
 
-#~ msgid "Refresh plugin list"
-#~ msgstr "Atjaunot spraudņu sarakstu"
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "Pieteikumu kategorijas"
 
-#~ msgid "Filter plugin list"
-#~ msgstr "Filtrēt spraudņu sarakstu"
+msgid "Top ticket's categories"
+msgstr "Populārākās pieteikumu kategorijas"
 
-#~ msgid "Homepage"
-#~ msgstr "Mājaslapa"
+#, fuzzy
+#| msgid "Top ticket's categories"
+msgid "Top ticket's entities"
+msgstr "Populārākās pieteikumu kategorijas"
 
-#~ msgid "Get help"
-#~ msgstr "Saņemt palīdzību"
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "Pieteikumu noklusētais tips"
 
-#~ msgid "Readme"
-#~ msgstr "Lasi mani"
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "Pieteikuma atrašanās vieta"
 
-#~ msgid "Clean"
-#~ msgstr "Iztīrīt"
+#, fuzzy
+#| msgid "Top ticket's observers"
+msgid "Top ticket's requesters"
+msgstr "Populārākie pieteikumu novērotāji"
 
-#~ msgid ""
-#~ "The plugin has an available update but its directory is not writable."
-#~ msgstr ""
-#~ "Spraudnim ir pieejams atjauninājums, taču tā atrašanās vietai nav "
-#~ "piešķirtas rakstīšanas tiesības."
+#, fuzzy
+#| msgid "Top ticket's observers"
+msgid "Top ticket's requester groups"
+msgstr "Populārākie pieteikumu novērotāji"
 
-#, php-format
-#~ msgid "A new version (%s) is available, update ?"
-#~ msgstr "Jauna versija (%s) ir pieejama, jaunināt?"
+msgid "Top ticket's observers"
+msgstr "Populārākie pieteikumu novērotāji"
 
-#~ msgid "Install"
-#~ msgstr "Instalēt"
+#, fuzzy
+#| msgid "Top ticket's observers"
+msgid "Top ticket's observer groups"
+msgstr "Populārākie pieteikumu novērotāji"
 
-#~ msgid "Enable"
-#~ msgstr "Aktivizēt"
+#, fuzzy
+#| msgid "Top ticket's observers"
+msgid "Top ticket's assignees"
+msgstr "Populārākie pieteikumu novērotāji"
 
-#~ msgid "Uninstall"
-#~ msgstr "Atinstalēt"
+#, fuzzy
+#| msgid "Top ticket's observers"
+msgid "Top ticket's assignee groups"
+msgstr "Populārākie pieteikumu novērotāji"
 
-#, php-format
-#~ msgid "You need at least the %s subscription level to get this plugin"
-#~ msgstr ""
-#~ "Jums nepieciešams vismaz %s abonēšanas līmenis, lai iegūtu šo spraudni"
+#, fuzzy
+#| msgid "List of %s"
+msgid "List of reminders"
+msgstr "Vērtību saraksts %s"
 
-#~ msgid "Later"
-#~ msgstr "Vēlāk"
+msgid "Editable markdown card"
+msgstr ""
 
-#~ msgid "Some updates are available for your installed plugins!"
-#~ msgstr "Dažiem no jūsu uzstādītajiem spraudņiem ir pieejami jauninājumi!"
+msgid "Toggle edit mode to edit content"
+msgstr "Satura rediģēšanas režīms"
 
-#~ msgid "Plugin name"
-#~ msgstr "Spraudņa nosaukums"
+msgid "field name in DB"
+msgstr "DB lauku vārds"
 
-#~ msgid "Plugin new version number"
-#~ msgstr "Spraudņa jaunās versijas numurs"
+msgid "Example:"
+msgstr "Piemērs:"
 
-#~ msgid "Plugin old version number"
-#~ msgstr "Spraudņa vecās versijas numurs"
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"Kopš GLPI 9.2 mēs esam ieviesuši jaunu statistikas funkciju ar nosaukumu "
+"\"Telemetrija\", kas anonīmi ar jūsu atļauju, nosūta datus mūsu telemetrijas "
+"vietnei."
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "Meklētājprogrammā izmantojiet terminu \"Derīguma termiņš ir NULL\", lai "
-#~ "meklētu licences bez derīguma termiņa beigām"
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP tīkls nav iekļauts datu bāzē. Tomēr jūs varat redzēt pašreizējos "
+"pieejamos tīklus."
 
-#~ msgid "Registration"
-#~ msgstr "Reģistrācija"
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Ir pieejami vairāki tīkla nosaukumi! Atveriet cilni \"Tīkla nosaukums\", lai "
+"tos pārvaldītu."
 
-#~ msgid "And retrieve your key to paste it below"
-#~ msgstr "Un saņemiet savu atslēgu, lai iekopētu to zemāk"
+msgid "Add a network name"
+msgstr "Pievienot datortīkla vārdu"
 
-#, php-format
-#~ msgid "Error was: %s"
-#~ msgstr "Kļūda bija: %s"
+msgid "Not associated"
+msgstr "Nav piesaistīts"
 
-#~ msgid "Registration key"
-#~ msgstr "Reģistrācijas atslēga"
+msgid "Create a new network name"
+msgstr "Izveidojiet jaunu tīkla nosaukumu"
 
-#~ msgid "Subscription"
-#~ msgstr "Abonēšana"
+msgid "No network name found"
+msgstr "nav atrasts datortīkla vārds"
 
-#~ msgid "The registration key is invalid."
-#~ msgstr "Reģistrācijas atslēga ir nederīga."
+msgid "Unable to download plugin archive."
+msgstr "Nav iespējams lejuplādēt spraudņa arhīvu"
 
-#~ msgid "The registration key is valid."
-#~ msgstr "Reģistrācijas atslēga ir derīga."
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr "Spraudņa arhīvs netiek atbalstīts Jūsu sistēmā: %s"
 
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "Jums nepieciešama palīdzība, lai integrētu GLPI jūsu IT, salabotu kļūdu "
-#~ "vai gūt labumu no konfigurētiem noteikumiem vai tulkojumiem? \n"
-#~ "\n"
-#~ "Mēs jums nodrošinām %s vietu.\n"
-#~ "GLPI-Tīmeklis ir komerciāls produkts, kas ietver abonementu 3. līmeņa "
-#~ "atbalstam, nodrošinot kļūdu labošanu līgumsaistību laikā. \n"
-#~ "\n"
-#~ "Šajā pašā vietā jūs būsiet spējīgi kontaktēties ar oficiālu partneri, kas "
-#~ "palīdzēs jums ar GLPI integrēšanu. \n"
-#~ "\n"
-#~ "Kā arī jūs varat atbalstīt GLPI attīstības pūles, ziedojot."
+msgid "Unable to extract plugin archive."
+msgstr "Neizdevās izvilkt spraudņa arhīvu"
 
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "Grūtības, uzstādot uzlaboto GLPI moduli?\n"
-#~ "Mēs varam palīdzēt tās atrisināt. Reģistrējies atbalstam %s."
+msgid "Check all plugin updates"
+msgstr "Pārbaudīt visus spraudņu jauninājumus"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "Atbilde tika nosūtīta uz jūsu e-pasta adresi. E-pasts saturēs "
-#~ "informāciju, kā atiestatīt savu paroli."
+msgid "New version for plugin %s: %s"
+msgstr "Jauna versija spraudņiem %s: %s"
 
-#~ msgid "Email address not found."
-#~ msgstr "Nav e-pasta adreses."
+msgid "Installed"
+msgstr "Uzstādīts"
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr "Iekārtas MAC adrese un IP ir iekļauti apkopotā tīkla portā"
+msgid "Discover"
+msgstr "Atklāt"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "Augšupielādētā datne pārsniedz upload_max_filesize parametru php.ini datnē"
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "Augšupielādētā datne pārsniedz MAX_FILE_SIZE parametru noradīto HTML formā"
+msgid "Maybe you could setup a proxy"
+msgstr "Varbūt Jūs varētu uzstādīt starpniekserveri"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Augšupielādētā datne tika augšupielādēta tikai daļēji"
+msgid "or please check later"
+msgstr "vai, lūdzu, pārbaudiet vēlāk"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Kļūda rakstot datni uz disku"
+#, fuzzy
+#| msgid "The registration key is invalid."
+msgid "Your %1$s registration is not valid."
+msgstr "Reģistrācijas atslēga ir nederīga."
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr " PHP paplašinājums pārtrauca datnes augšupielādi"
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr ""
-#~ "Augšupielādētā datne pārsniedz post_max_size parametru php.ini datnē"
+#, fuzzy
+#| msgid "Registration"
+msgid "Register on %1$s"
+msgstr "Reģistrācija"
 
-#~ msgid "File is too big"
-#~ msgstr "Datnes izmērs ir pārāk liels"
+msgid "fill your registration key in setup."
+msgstr "ievadiet Jūsu reģistrācijas atslēgu."
 
-#~ msgid "File is too small"
-#~ msgstr "Datnes izmērs ir pārāk mazs"
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Jūsu komentārs ir rediģēts"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Pārsniegts maksimālais datņu skaits"
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "Ģenerēta %s"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Attēls pārsniedz maksimālo platumu"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Attēlam nepieciešams minimālais platums"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+"Ja jūs vēlaties atvieglot spraudņu lejupielādi, lūdzu, pārbaudiet piekļuves "
+"tiesības šai mapei."
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Attēls pārsniedz maksimālo augstumu"
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr "Citādi nepieciešams lejuplādēt un izvilkt spraudņu arhīvus manuāli."
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Attēlam nepieciešams minimālais augstums"
+msgid "Alpha ASC"
+msgstr ""
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Datnes tips nav atļauts"
+msgid "Alpha DESC"
+msgstr ""
 
-#~ msgid "File upload aborted"
-#~ msgstr "Datnes augšupielāde pārtraukta"
+msgid "Most popular"
+msgstr "Vispopulārākie"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "Neizdevās mainīt attēla izmēru"
+msgid "Last updated"
+msgstr "Nesen atjauninātie"
 
-#~ msgid "Progress"
-#~ msgstr "Progress"
+msgid "Most recent"
+msgstr "Visbiežāk izmantotie"
 
-#~ msgid "My settings"
-#~ msgstr "Mani uzstādījumi"
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "Lasīt piezīmes"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "Atpakaļ uz lapas augšdaļu"
+msgid "Your plugin here ? Contact us."
+msgstr "Jūsu spraudnis šeit ? Sazinieties ar mums."
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr ""
-#~ "Tas ir pieejams GLPI weblapā: <a href='http://glpi-project' "
-#~ "target='_blank'>http://glpi-project.org</a>."
+msgid "Refresh plugin list"
+msgstr "Atjaunot spraudņu sarakstu"
 
-#~ msgid "Check all"
-#~ msgstr "Iezīmēt visu"
+msgid "Filter plugin list"
+msgstr "Filtrēt spraudņu sarakstu"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Neiezīmēt visu"
+msgid "Homepage"
+msgstr "Mājaslapa"
 
-#~ msgid "Check all as"
-#~ msgstr "Iezīmēt visus kā"
+msgid "Get help"
+msgstr "Saņemt palīdzību"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Izvēle pārlieku apjomīga, masveida darbības atspējotas."
+msgid "Readme"
+msgstr "Lasi mani"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Lai palielinātu limitu, mainiet PHP konfigurācijas max_input_vars vai "
-#~ "suhosin.post.max_vars parametrus."
+msgid "Clean"
+msgstr "Iztīrīt"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "Apraksta lauks ir obligāts"
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "Pieteikšanās nav derīga. Nevar pievienot lietotāju."
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "No %1$d līdz%2$d no %3$d"
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+"Spraudnim ir pieejams atjauninājums, taču tā atrašanās vietai nav piešķirtas "
+"rakstīšanas tiesības."
 
-#~ msgid "Empty array"
-#~ msgstr "Masīvs ir tukšs"
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d uz %2$d"
+msgid "A new version (%s) is available, update ?"
+msgstr "Jauna versija (%s) ir pieejama, jaunināt?"
 
-#~ msgid "Close (Esc)"
-#~ msgstr "Aizvērt"
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
 
-#~ msgid "Share"
-#~ msgstr "Dalīties"
+msgid "Install"
+msgstr "Instalēt"
 
-#~ msgid "Previous (arrow left)"
-#~ msgstr "Iepriekšējais"
+msgid "Enable"
+msgstr "Aktivizēt"
 
-#~ msgid "Next (arrow right)"
-#~ msgstr "Nākamais"
+msgid "Uninstall"
+msgstr "Atinstalēt"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr ""
-#~ "Pievienojot failu izmantojiet drag & drop vai kopējiet un ielīmējiet "
-#~ "redaktorā"
+#, fuzzy
+#| msgid "You need at least the %s subscription level to get this plugin"
+msgid "You must have a %s subscription to get this plugin"
+msgstr "Jums nepieciešams vismaz %s abonēšanas līmenis, lai iegūtu šo spraudni"
 
-#~ msgid "selecting them"
-#~ msgstr "atlasīt tos"
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr "Jums nepieciešams vismaz %s abonēšanas līmenis, lai iegūtu šo spraudni"
 
-#~ msgid "File(s)"
-#~ msgstr "Datne(s)"
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Izslēgts spraudnis"
+msgstr[1] "Izslēgts spraudnis"
+msgstr[2] "Izslēgts spraudnis"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Velciet un nometiet datni šeit, vai"
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
 
-#~ msgid "Upload successful"
-#~ msgstr "Veiksmīga augšupielāde"
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Iezīmēt/noņemt visu"
+msgid "Later"
+msgstr "Vēlāk"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Sāciet rakstīt, lai atrastu izvēlni"
+#, fuzzy
+#| msgid "Marketplace"
+msgid "Switch to marketplace"
+msgstr "Veikals"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "Atkļūdošanas režīms ieslēgts"
+msgid "Some updates are available for your installed plugins!"
+msgstr "Dažiem no jūsu uzstādītajiem spraudņiem ir pieejami jauninājumi!"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "Atkļūdošanas režīms izslēgts"
+msgid "Plugin name"
+msgstr "Spraudņa nosaukums"
 
-#~ msgid "Saved searches"
-#~ msgstr "Saglabātie meklējumi"
+msgid "Plugin new version number"
+msgstr "Spraudņa jaunās versijas numurs"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Pārvaldīt saglabātās meklēšanas"
+msgid "Plugin old version number"
+msgstr "Spraudņa vecās versijas numurs"
 
-#~ msgid "Add is disabled"
-#~ msgstr "Pievienošana ir atspējota"
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"Meklētājprogrammā izmantojiet terminu \"Derīguma termiņš ir NULL\", lai "
+"meklētu licences bez derīguma termiņa beigām"
 
-#~ msgid "Search is disabled"
-#~ msgstr "Meklēšana ir atspējota"
+msgid "Registration"
+msgstr "Reģistrācija"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr ""
-#~ "Iespējot pieteikties pie API un saņemt sesijas pilnvaru ar lietotāja "
-#~ "akreditācijas datiem"
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "Ļaujiet pieteikties API un saņemt sesijas pilnvaru ar lietotāja ārējo "
-#~ "marķieri. Skatiet Attālās piekļuves atslēgu cilnē Lietotāja iestatījumi"
+#, fuzzy
+#| msgid "Registration"
+msgid "Register on %1$s!"
+msgstr "Reģistrācija"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Rādīt GLPI ID"
+msgid "And retrieve your key to paste it below"
+msgstr "Un saņemiet savu atslēgu, lai iekopētu to zemāk"
 
-#~ msgid "Color palette"
-#~ msgstr "Krāsu palete"
+msgid "Error was: %s"
+msgstr "Kļūda bija: %s"
 
-#~ msgid "Layout"
-#~ msgstr "Izkārtojums"
+msgid "Registration key"
+msgstr "Reģistrācijas atslēga"
 
-#~ msgid "Tabs on left"
-#~ msgstr "Cilnes kreisajā pusē"
+msgid "Subscription"
+msgstr "Abonēšana"
 
-#~ msgid "Classic view"
-#~ msgstr "Klasisks skats"
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "Nezināma datne"
 
-#~ msgid "Vertical split"
-#~ msgstr "Vertikālais dalījums"
+#, fuzzy
+#| msgid "Registration key"
+msgid "Registered by"
+msgstr "Reģistrācijas atslēga"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Pārbaudīt, vai ir pieejama jauna versija"
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "Aktivizēt finansiālo un administratīvo informāciju"
 
-#~ msgid "Show filters"
-#~ msgstr "Rādīt filtrus"
+msgid "The registration key is invalid."
+msgstr "Reģistrācijas atslēga ir nederīga."
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "Nav vēsturisku atbilstību jūsu filtriem"
+#, fuzzy
+#| msgid "The registration key is invalid."
+msgid "The registration key refers to a terminated subscription."
+msgstr "Reģistrācijas atslēga ir nederīga."
 
-#~ msgid "Add to schedule"
-#~ msgstr "Pievienot plānojumam"
+msgid "The registration key is valid."
+msgstr "Reģistrācijas atslēga ir derīga."
 
-#~ msgid "Position in room"
-#~ msgstr "Atrašanās vieta telpā"
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"Jums nepieciešama palīdzība, lai integrētu GLPI jūsu IT, salabotu kļūdu vai "
+"gūt labumu no konfigurētiem noteikumiem vai tulkojumiem? \n"
+"\n"
+"Mēs jums nodrošinām %s vietu.\n"
+"GLPI-Tīmeklis ir komerciāls produkts, kas ietver abonementu 3. līmeņa "
+"atbalstam, nodrošinot kļūdu labošanu līgumsaistību laikā. \n"
+"\n"
+"Šajā pašā vietā jūs būsiet spējīgi kontaktēties ar oficiālu partneri, kas "
+"palīdzēs jums ar GLPI integrēšanu. \n"
+"\n"
+"Kā arī jūs varat atbalstīt GLPI attīstības pūles, ziedojot."
 
-#~ msgid "Door orientation in room"
-#~ msgstr "Durvju orientācija telpā"
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"Grūtības, uzstādot uzlaboto GLPI moduli?\n"
+"Mēs varam palīdzēt tās atrisināt. Reģistrējies atbalstam %s."
 
-#~ msgid "North"
-#~ msgstr "Ziemeļi"
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"Atbilde tika nosūtīta uz jūsu e-pasta adresi. E-pasts saturēs informāciju, "
+"kā atiestatīt savu paroli."
 
-#~ msgid "East"
-#~ msgstr "Austrumi"
+msgid "Email address not found."
+msgstr "Nav e-pasta adreses."
 
-#~ msgid "South"
-#~ msgstr "Dienvidi"
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr "Iekārtas MAC adrese un IP ir iekļauti apkopotā tīkla portā"
 
-#~ msgid "West"
-#~ msgstr "Rietumi"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"Augšupielādētā datne pārsniedz upload_max_filesize parametru php.ini datnē"
 
-#~ msgid "Number of units"
-#~ msgstr "Vienību skaits"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Augšupielādētā datne pārsniedz MAX_FILE_SIZE parametru noradīto HTML formā"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "The uploaded file was only partially uploaded"
+msgstr "Augšupielādētā datne tika augšupielādēta tikai daļēji"
 
-#~ msgid "Width"
-#~ msgstr "Platums"
+msgid "Failed to write file to disk"
+msgstr "Kļūda rakstot datni uz disku"
 
-#~ msgid "Height"
-#~ msgstr "Augstums"
+msgid "A PHP extension stopped the file upload"
+msgstr " PHP paplašinājums pārtrauca datnes augšupielādi"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "Izmērītā jauda (vatos)"
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "Augšupielādētā datne pārsniedz post_max_size parametru php.ini datnē"
 
-#~ msgid "Max. weight"
-#~ msgstr "Maksimālais svars"
+msgid "File is too big"
+msgstr "Datnes izmērs ir pārāk liels"
 
-#~ msgid "No rack found"
-#~ msgstr "Nav atrastas statnes"
+msgid "File is too small"
+msgstr "Datnes izmērs ir pārāk mazs"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "Tālāk minētie elementi atrodas ārpus telpas robežām"
+msgid "Maximum number of files exceeded"
+msgstr "Pārsniegts maksimālais datņu skaits"
 
-#~ msgid "Blueprint"
-#~ msgstr "Blueprint"
+msgid "Image exceeds maximum width"
+msgstr "Attēls pārsniedz maksimālo platumu"
 
-#~ msgid "Grid"
-#~ msgstr "Režģis"
+msgid "Image requires a minimum width"
+msgstr "Attēlam nepieciešams minimālais platums"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "Ievietot statni šeit"
+msgid "Image exceeds maximum height"
+msgstr "Attēls pārsniedz maksimālo augstumu"
 
-#~ msgid "Position must be set"
-#~ msgstr "Pozīcijai jābūt iestatītai"
+msgid "Image requires a minimum height"
+msgstr "Attēlam nepieciešams minimālais augstums"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s pozīcija nav pieejama"
+msgid "Filetype not allowed"
+msgstr "Datnes tips nav atļauts"
 
-#~ msgid "All categories"
-#~ msgstr "Visas kategorijas"
+msgid "File upload aborted"
+msgstr "Datnes augšupielāde pārtraukta"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Programmatūra bez kategorijas"
+msgid "Failed to resize image"
+msgstr "Neizdevās mainīt attēla izmēru"
 
-#~ msgid "Valid license"
-#~ msgstr "Derīga licence"
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "Lietotāja informācija"
 
-#~ msgid "Other component"
-#~ msgstr "Cita komponente"
+msgid "Progress"
+msgstr "Progress"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "Viena pēdējā lieta pirms starta"
+msgid "My settings"
+msgstr "Mani uzstādījumi"
 
-#~ msgid "Donate"
-#~ msgstr "Ziedot"
+msgid "Back to top of the page"
+msgstr "Atpakaļ uz lapas augšdaļu"
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr ""
+"Tas ir pieejams GLPI weblapā: <a href='http://glpi-project' "
+"target='_blank'>http://glpi-project.org</a>."
+
+msgid "Check all"
+msgstr "Iezīmēt visu"
+
+msgid "Uncheck all"
+msgstr "Neiezīmēt visu"
+
+msgid "Check all as"
+msgstr "Iezīmēt visus kā"
+
+msgid "Selection too large, massive action disabled."
+msgstr "Izvēle pārlieku apjomīga, masveida darbības atspējotas."
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Lai palielinātu limitu, mainiet PHP konfigurācijas max_input_vars vai "
+"suhosin.post.max_vars parametrus."
+
+msgid "The description field is mandatory"
+msgstr "Apraksta lauks ir obligāts"
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr "No %1$d līdz%2$d no %3$d"
+
+msgid "Empty array"
+msgstr "Masīvs ir tukšs"
+
+msgid "%1$d on %2$d"
+msgstr "%1$d uz %2$d"
+
+msgid "Close (Esc)"
+msgstr "Aizvērt"
+
+msgid "Share"
+msgstr "Dalīties"
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr "Iepriekšējais"
+
+msgid "Next (arrow right)"
+msgstr "Nākamais"
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+"Pievienojot failu izmantojiet drag & drop vai kopējiet un ielīmējiet "
+"redaktorā"
+
+msgid "selecting them"
+msgstr "atlasīt tos"
+
+msgid "File(s)"
+msgstr "Datne(s)"
+
+msgid "Drag and drop your file here, or"
+msgstr "Velciet un nometiet datni šeit, vai"
+
+msgid "Upload successful"
+msgstr "Veiksmīga augšupielāde"
+
+msgid "Check/uncheck all"
+msgstr "Iezīmēt/noņemt visu"
+
+msgid "Start typing to find a menu"
+msgstr "Sāciet rakstīt, lai atrastu izvēlni"
+
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Izmainīts"
+
+msgid "Debug mode enabled"
+msgstr "Atkļūdošanas režīms ieslēgts"
+
+msgid "Debug mode disabled"
+msgstr "Atkļūdošanas režīms izslēgts"
+
+msgid "Saved searches"
+msgstr "Saglabātie meklējumi"
+
+msgid "Manage saved searches"
+msgstr "Pārvaldīt saglabātās meklēšanas"
+
+msgid "Add is disabled"
+msgstr "Pievienošana ir atspējota"
+
+msgid "Search is disabled"
+msgstr "Meklēšana ir atspējota"
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "Centralizēta pārvaldība"
+
+#, fuzzy
+#| msgid "Unable to stop impersonating user"
+msgid "You are impersonating %s."
+msgstr "Neizdevās pārtraukt lietotāja personificēšanu"
+
+#, fuzzy
+#| msgid "Unable to stop impersonating user"
+msgid "Stop impersonating"
+msgstr "Neizdevās pārtraukt lietotāja personificēšanu"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+"Iespējot pieteikties pie API un saņemt sesijas pilnvaru ar lietotāja "
+"akreditācijas datiem"
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"Ļaujiet pieteikties API un saņemt sesijas pilnvaru ar lietotāja ārējo "
+"marķieri. Skatiet Attālās piekļuves atslēgu cilnē Lietotāja iestatījumi"
+
+msgid "Show GLPI ID"
+msgstr "Rādīt GLPI ID"
+
+msgid "Color palette"
+msgstr "Krāsu palete"
+
+msgid "Layout"
+msgstr "Izkārtojums"
+
+msgid "Tabs on left"
+msgstr "Cilnes kreisajā pusē"
+
+msgid "Classic view"
+msgstr "Klasisks skats"
+
+msgid "Vertical split"
+msgstr "Vertikālais dalījums"
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Līguma beigu termiņš"
+
+#, fuzzy
+#| msgid "Assets Dashboard"
+msgid "Dashboards"
+msgstr "Pamatlīdzekļu panelis"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "Noklusētais priekš pieteikumiem"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "Noklusētais priekš pieteikumiem"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "Noklusētais priekš pieteikumiem"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Noklusētais priekš pieteikumiem"
+
+msgid "Check if a new version is available"
+msgstr "Pārbaudīt, vai ir pieejama jauna versija"
+
+msgid "Show filters"
+msgstr "Rādīt filtrus"
+
+msgid "No historical matching your filters"
+msgstr "Nav vēsturisku atbilstību jūsu filtriem"
+
+msgid "Add to schedule"
+msgstr "Pievienot plānojumam"
+
+msgid "Position in room"
+msgstr "Atrašanās vieta telpā"
+
+msgid "Door orientation in room"
+msgstr "Durvju orientācija telpā"
+
+msgid "North"
+msgstr "Ziemeļi"
+
+msgid "East"
+msgstr "Austrumi"
+
+msgid "South"
+msgstr "Dienvidi"
+
+msgid "West"
+msgstr "Rietumi"
+
+msgid "Number of units"
+msgstr "Vienību skaits"
+
+msgid "U"
+msgstr "U"
+
+msgid "Width"
+msgstr "Platums"
+
+msgid "Height"
+msgstr "Augstums"
+
+msgid "Measured power (in watts)"
+msgstr "Izmērītā jauda (vatos)"
+
+msgid "Max. weight"
+msgstr "Maksimālais svars"
+
+msgid "No rack found"
+msgstr "Nav atrastas statnes"
+
+msgid "Following elements are out of room bounds"
+msgstr "Tālāk minētie elementi atrodas ārpus telpas robežām"
+
+msgid "Blueprint"
+msgstr "Blueprint"
+
+msgid "Grid"
+msgstr "Režģis"
+
+msgid "Insert a rack here"
+msgstr "Ievietot statni šeit"
+
+msgid "Position must be set"
+msgstr "Pozīcijai jābūt iestatītai"
+
+msgid "%1$s position is not available"
+msgstr "%1$s pozīcija nav pieejama"
+
+msgid "All categories"
+msgstr "Visas kategorijas"
+
+msgid "Uncategorized software"
+msgstr "Programmatūra bez kategorijas"
+
+msgid "Valid license"
+msgstr "Derīga licence"
+
+msgid "Other component"
+msgstr "Cita komponente"
+
+msgid "One last thing before starting"
+msgstr "Viena pēdējā lieta pirms starta"
+
+msgid "Donate"
+msgstr "Ziedot"
+
+msgid "Unofficial translations are also available"
+msgstr "Neoficiālie tulkojumi arī ir pieejami"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Es izlasīju augstāk minēto licenci un piekrītu tai."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Es izlasīju augstāk minēto licenci un nepiekrītu tai."
+
+msgid "Installation or update of GLPI"
+msgstr "GLPI instalācija vai atjaunināšana"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Izvēlieties 'Instalēt' lai sāktu jaunu GLPI instalāciju"
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "Izvēlieties 'Atjaunināt', lai atjauninātu veco GLPI versiju"
+
+msgid "Do you want to continue?"
+msgstr "Vai vēlaties turpināt?"
+
+msgid "Database connection parameters"
+msgstr "Datubāzes pieslēgšanās parametri"
+
+msgid "Test of the connection at the database"
+msgstr "Pārbauda savienojumu ar datubāzi"
+
+msgid "Can't connect to the database"
+msgstr "Nevaru pieslēgties datubāzei"
+
+msgid "The server answered: %s"
+msgstr "Servera atbilde: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Servera un/vai lietotāja lauks ir tukšs"
+
+msgid "Please select a database:"
+msgstr "Lūdzu izvēlieties datubāzi:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Izveidot jaunu datubāzi vai izvēlēties kādu no esošajām:"
+
+msgid "Please select the database to update:"
+msgstr "Lūdzu izvēlieties datubāzi ko atjaunot:"
+
+msgid "Initialization of the database"
+msgstr "Datubāzes inicializācija"
+
+msgid "Impossible to use the database:"
+msgstr "Datubāzi nav iespējams izmantot:"
+
+msgid "OK - database was initialized"
+msgstr "Datubāze tika sagatavota"
+
+msgid "Impossible to write the database setup file"
+msgstr "Nevaru izveidot datubāzes uzstādījumu datni"
+
+msgid "Database created"
+msgstr "Datubāze izveidota"
+
+msgid "Error in creating database!"
+msgstr "Kļūda veidojot datubāzi!"
+
+msgid "You didn't select a database!"
+msgstr "Jūs neizvēlējāties datubāzi!"
+
+msgid "Collect data"
+msgstr "Apkopot datus"
+
+msgid "The installation is finished"
+msgstr "Instalācija ir pabeigta"
+
+msgid "Default logins / passwords are:"
+msgstr "Noklusētais lietotājvārds / parole ir:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech tehniķa kontam"
+
+msgid "normal/normal for the normal account"
+msgstr "standarta - standarta lietotāja kontam"
+
+msgid "post-only/postonly for the postonly account"
+msgstr ""
+"post-only/post-only kontam ar tikai darba uzdevumu nosūtīšanas tiesībām"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+"Šos kontus Jūs varat dzēst vai mainīt tāpat kā sākotnējos datubāzes "
+"ierakstus."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Nevaru izveidot datni ar datubāzes pieejas datiem, lūdzu pārbaudiet datņu "
+"pieejas tiesības."
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "Noklusētā valoda"
+
+msgid "Beginning of the installation"
+msgstr "Instalācijas sākums"
+
+msgid "Step %d"
+msgstr "Solis %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Pieteikšanās"
+
+msgid "Remember me"
+msgstr "Atcerēties mani"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Jūsu pārlūkprogrammai nepieciešams ieslēgt JavaScript atbalstu!"
+
+msgid "You must accept cookies to reach this application"
+msgstr ""
+"Jūsu pārlūkprogrammai jāpieņem cepumiņi lai varētu darboties ar šo programmu"
+
+msgid "Invalid use of session ID"
+msgstr "Nederīgs sesijas ID lietojums"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Pieeja bieži uzdotiem jautājumiem"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "Pievienot izmaiņas"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "Pievienot ierakstu"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "Saglabāt"
+
+#, fuzzy
+#| msgid "Are you sure you want to return this non-reservable item?"
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Tiešām vēlies dzēst šo ierakstu no nomājamo saraksta?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Sūtīšanas datums"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Pieslēgties GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Neoficiālie tulkojumi arī ir pieejami"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Es izlasīju augstāk minēto licenci un piekrītu tai."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "Es izlasīju augstāk minēto licenci un nepiekrītu tai."
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "GLPI instalācija vai atjaunināšana"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Izvēlieties 'Instalēt' lai sāktu jaunu GLPI instalāciju"
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr "Izvēlieties 'Atjaunināt', lai atjauninātu veco GLPI versiju"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Vai vēlaties turpināt?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Datubāzes pieslēgšanās parametri"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Pārbauda savienojumu ar datubāzi"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Nevaru pieslēgties datubāzei"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Servera atbilde: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Servera un/vai lietotāja lauks ir tukšs"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Lūdzu izvēlieties datubāzi:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Izveidot jaunu datubāzi vai izvēlēties kādu no esošajām:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Lūdzu izvēlieties datubāzi ko atjaunot:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Datubāzes inicializācija"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Datubāzi nav iespējams izmantot:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "Datubāze tika sagatavota"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Nevaru izveidot datubāzes uzstādījumu datni"
-
-#~ msgid "Database created"
-#~ msgstr "Datubāze izveidota"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Kļūda veidojot datubāzi!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Jūs neizvēlējāties datubāzi!"
-
-#~ msgid "Collect data"
-#~ msgstr "Apkopot datus"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Instalācija ir pabeigta"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Noklusētais lietotājvārds / parole ir:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi administratora kontam"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech tehniķa kontam"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "standarta - standarta lietotāja kontam"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr ""
-#~ "post-only/post-only kontam ar tikai darba uzdevumu nosūtīšanas tiesībām"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "Šos kontus Jūs varat dzēst vai mainīt tāpat kā sākotnējos datubāzes "
-#~ "ierakstus."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Nevaru izveidot datni ar datubāzes pieejas datiem, lūdzu pārbaudiet datņu "
-#~ "pieejas tiesības."
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Instalācijas sākums"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Solis %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Pieteikšanās"
-
-#~ msgid "Remember me"
-#~ msgstr "Atcerēties mani"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Jūsu pārlūkprogrammai nepieciešams ieslēgt JavaScript atbalstu!"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr ""
-#~ "Jūsu pārlūkprogrammai jāpieņem cepumiņi lai varētu darboties ar šo "
-#~ "programmu"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Nederīgs sesijas ID lietojums"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Pieeja bieži uzdotiem jautājumiem"

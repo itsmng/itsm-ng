@@ -23170,417 +23170,1308 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s增加项目%2$s-%3$s：%4$s"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "寫"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "檢視外掛程式的類別"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "登入"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "發現 RSS feeds"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "檢視配置"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active 目錄"
+#, fuzzy
+#| msgid "No directory selected"
+msgid "No room found or selected"
+msgstr "沒有已選擇的目錄"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "您待結束的待辦事項"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Replace"
+msgid "Marketplace"
+msgstr "取代"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "擱置的待辦事項"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s增加项目%2$s-%3$s：%4$s"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "需處理的待辦事項"
+msgid "See the catalog of plugins"
+msgstr "檢視外掛程式的類別"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "你追蹤的待辦事項"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "您待處理的待辦事項"
+#, fuzzy
+#| msgid "Template for an incident"
+msgid "Empty for infinite"
+msgstr "事件模板"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "您待檢驗的待辦事項"
+msgid "RSS feeds found"
+msgstr "發現 RSS feeds"
 
-#~ msgid "Ticket followup"
-#~ msgstr "待辦事項追蹤"
+msgid "Active Directory"
+msgstr "Active 目錄"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d 筆新待辦事項"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "IP 版本"
 
-#~ msgid "No ticket found."
-#~ msgstr "沒有任何待辦事項。"
+#, fuzzy
+#| msgid "Confirm the final deletion?"
+msgid "Confirm the promotion?"
+msgstr "最終確認刪除嗎？"
 
-#~ msgid "Last tickets"
-#~ msgstr "最近的待辦事項"
+msgid "Your tickets to close"
+msgstr "您待結束的待辦事項"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "為此項目新增待辦事項..."
+msgid "Tickets on pending status"
+msgstr "擱置的待辦事項"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "最近的 %d 筆待辦事項"
+msgid "Tickets to be processed"
+msgstr "需處理的待辦事項"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "您沒有權限檢視所有待辦事項"
+msgid "Your observed tickets"
+msgstr "你追蹤的待辦事項"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "於已連結項目上的待辦事項"
+msgid "Your tickets in progress"
+msgstr "您待處理的待辦事項"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "沒有待辦事項處理中。"
+msgid "Your tickets to validate"
+msgstr "您待檢驗的待辦事項"
 
-#~ msgid "Assign equipment"
-#~ msgstr "指派 設備"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected approval status"
+msgstr "您待處理的待辦事項"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "自動結束待辦事項"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected solution"
+msgstr "您待處理的待辦事項"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "產生滿意度調查"
+msgid "Ticket followup"
+msgstr "待辦事項追蹤"
 
-#~ msgid "See my ticket"
-#~ msgstr "檢視我的待辦事項"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d 筆新待辦事項"
 
-#~ msgid "See group ticket"
-#~ msgstr "檢視群組待辦事項"
+msgid "No ticket found."
+msgstr "沒有任何待辦事項。"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "檢視由我的群組建立的待辦事項"
+msgid "Last tickets"
+msgstr "最近的待辦事項"
 
-#~ msgid "See all tickets"
-#~ msgstr "檢視所有待辦事項"
+msgid "New ticket for this item..."
+msgstr "為此項目新增待辦事項..."
 
-#~ msgid "See assigned"
-#~ msgstr "檢視已指派"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "最近的 %d 筆待辦事項"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "檢視已指派的待辦事項"
+msgid "You don't have right to see all tickets"
+msgstr "您沒有權限檢視所有待辦事項"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "指派待辦事項"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "於已連結項目上的待辦事項"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "竊取待辦事項"
+msgid "No ticket in progress."
+msgstr "沒有待辦事項處理中。"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "成為待辦事項負責人"
+msgid "Assign equipment"
+msgstr "指派 設備"
 
-#~ msgid "Change the priority"
-#~ msgstr "變更優先次序"
+msgid "Automatic tickets closing"
+msgstr "自動結束待辦事項"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "重新計算類別"
+msgid "Generation of satisfaction surveys"
+msgstr "產生滿意度調查"
 
-#~ msgid "Valid licenses"
-#~ msgstr "有效的授權"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "自動結束已解決的待辦事項於"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "安裝數量"
+msgid "See my ticket"
+msgstr "檢視我的待辦事項"
 
-#~ msgid "Merge"
-#~ msgstr "合併"
+msgid "See group ticket"
+msgstr "檢視群組待辦事項"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "完成合併後將軟體放進垃圾桶"
+msgid "See tickets created by my groups"
+msgstr "檢視由我的群組建立的待辦事項"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "See all tickets"
+msgstr "檢視所有待辦事項"
 
-#~ msgid "Connect a computer"
-#~ msgstr "連接至一台電腦"
+msgid "See assigned"
+msgstr "檢視已指派"
 
-#~ msgid "Not connected"
-#~ msgstr "無連接"
+msgid "See assigned tickets"
+msgstr "檢視已指派的待辦事項"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "有效期到%s"
+msgid "Assign a ticket"
+msgstr "指派待辦事項"
 
-#~ msgid "Solved"
-#~ msgstr "已解決"
+msgid "Steal"
+msgstr ""
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr "IP 網路不包含在資料庫內. 然而您可以查看現在可用的網路."
+msgid "Steal a ticket"
+msgstr "竊取待辦事項"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr "數個可用的網絡名稱！到選項 “網絡名稱” 來管理它們。"
+#, fuzzy
+#| msgid "Technician in charge"
+msgid "Beeing in charge"
+msgstr "負責技術員"
 
-#~ msgid "Add a network name"
-#~ msgstr "新增一個網路名稱"
+msgid "To be in charge of a ticket"
+msgstr "成為待辦事項負責人"
 
-#~ msgid "Not associated"
-#~ msgstr "未相關"
+msgid "Change the priority"
+msgstr "變更優先次序"
 
-#~ msgid "Create a new network name"
-#~ msgstr "創建一個新的網路名稱"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr ""
 
-#~ msgid "No network name found"
-#~ msgstr "沒有找到網路名稱"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
 
-#~ msgid "Clean"
-#~ msgstr "清除"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
 
-#~ msgid "Install"
-#~ msgstr "安裝"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to load ticket %d"
+msgstr "建立例行待辦事項失敗 %s"
 
-#~ msgid "Enable"
-#~ msgstr "啟動"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add followup to ticket %d"
+msgstr "建立例行待辦事項失敗 %s"
 
-#~ msgid "Uninstall"
-#~ msgstr "移除"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add task to ticket %d"
+msgstr "建立例行待辦事項失敗 %s"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "一封電子郵件已經發送到您的電子郵件地址。電子郵件中包含重設密碼的訊息。"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add document to ticket %d"
+msgstr "建立例行待辦事項失敗 %s"
 
-#~ msgid "Email address not found."
-#~ msgstr "未找到電子郵件地址。"
+msgid "Failed to link tickets %d and %d"
+msgstr ""
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr "MAC位址及IP位址設備都包括在一個聚合網路連接埠"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "刪除檔案失敗 %s"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr "上傳的檔案大小超出在 php.ini 中upload_max_filesize所設定的大小"
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s 清除版本 %2$s"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr "上傳的檔案大小超出在 HTML 表單中MAX_FILE_SIZE所設定的大小"
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "檢查外掛程式文件檔案的寫入權限"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "上傳的文件只有部分被上傳"
+msgid "Recalculate the category"
+msgstr "重新計算類別"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "磁碟寫入檔案失敗"
+msgid "Valid licenses"
+msgstr "有效的授權"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "PHP的擴展停止了檔案上傳"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "安裝數量"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr "上傳的檔案大小超出在 php.ini 中post_max_size所設定的大小"
+msgid "Merge"
+msgstr "合併"
 
-#~ msgid "File is too big"
-#~ msgstr "檔案過大"
+msgid "Software deleted after merging"
+msgstr "完成合併後將軟體放進垃圾桶"
 
-#~ msgid "File is too small"
-#~ msgstr "檔案過小"
+#, fuzzy
+#| msgid "You must install at least PHP %s."
+msgid "You must enable at least one notification mode."
+msgstr "你必須安裝 PHP 版本至少 %s"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "超過檔案數量限制"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "圖片超過最大寬度"
+msgid "Connect a computer"
+msgstr "連接至一台電腦"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "圖片需要最小寬度"
+msgid "Not connected"
+msgstr "無連接"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "圖片超過最大高度"
+#, fuzzy
+#| msgid "Show all"
+msgid "Show as map"
+msgstr "顯示全部"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "圖片需要最小高度"
+msgid "Valid to %s"
+msgstr "有效期到%s"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "不允許使用的檔案類型"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "最近的待辦事項"
 
-#~ msgid "Progress"
-#~ msgstr "進行"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "等待核准的待辦事項"
 
-#~ msgid "My settings"
-#~ msgstr "我的設定"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "連結待辦事項"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "你可於 GLPI-PROJECT.org 網站找到相關訊息。"
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "解決待辦事項"
 
-#~ msgid "Check all"
-#~ msgstr "全選"
+#, fuzzy
+#| msgid "Created tickets"
+msgid "Closed tickets"
+msgstr "已建立待辦事項"
 
-#~ msgid "Uncheck all"
-#~ msgstr "取消全部"
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "沒有名稱"
 
-#~ msgid "Check all as"
-#~ msgstr "檢查所有的如"
+#, fuzzy
+#| msgid "Time cost"
+msgid "Time to close"
+msgstr "時間成本"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "選擇過大，已停用此大量動作。"
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "驗證"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "為了增加上限：請在PHP配置更改max_input_vars或suhosin.post.max_vars。"
+msgid "Solved"
+msgstr "已解決"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d 在 %2$d"
+msgid "Share or embed this dashboard"
+msgstr ""
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "拖拉你的檔案到此, 或"
+msgid "Delete this dashboard"
+msgstr ""
 
-#~ msgid "Upload successful"
-#~ msgstr "更新成功"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle auto-refresh"
+msgstr "篩選器 切換"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "選擇/取消 全部"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle night mode"
+msgstr "篩選器 切換"
 
-#~ msgid "Saved searches"
-#~ msgstr "已儲存搜索"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle fullscreen"
+msgstr "篩選器 切換"
+
+msgid "Clone this dashboard"
+msgstr ""
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "顯示GLPI ID"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle edit mode"
+msgstr "篩選器 切換"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add filter"
+msgstr "新增一個項目"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "新增一個作業"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "其它"
+
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "預算"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "作業數量"
+
+msgid "Filters"
+msgstr ""
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "應用程式的URL"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP 連結"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+msgid "empty card !"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number of cores"
+msgid "Number of %s"
+msgstr "核心數量"
+
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s 依 %2$s"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "列出值"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "待辦事項數量"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets duration"
+msgid "Tickets status by month"
+msgstr "待辦事項處理時間"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "待辦事項類別"
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Top ticket's categories"
+msgstr "待辦事項類別"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "您待檢驗的待辦事項"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "待辦事項的預設類型"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "待辦事項位置"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "作為請求者的待辦事項數量"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "檢視由我的群組建立的待辦事項"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "待辦事項關閉於"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "檢視由我的群組建立的待辦事項"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignees"
+msgstr "您待處理的待辦事項"
+
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "新增追蹤至相關群組的待辦事項"
+
+#, fuzzy
+#| msgid "List of translations"
+msgid "List of reminders"
+msgstr "翻譯列表"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr "IP 網路不包含在資料庫內. 然而您可以查看現在可用的網路."
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr "數個可用的網絡名稱！到選項 “網絡名稱” 來管理它們。"
+
+msgid "Add a network name"
+msgstr "新增一個網路名稱"
+
+msgid "Not associated"
+msgstr "未相關"
+
+msgid "Create a new network name"
+msgstr "創建一個新的網路名稱"
+
+msgid "No network name found"
+msgstr "沒有找到網路名稱"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "檢查更新"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "安裝"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "中斷"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "建立於 %s"
 
-#~ msgid "Vertical split"
-#~ msgstr "垂直分割"
+msgid "fill your registration key in setup."
+msgstr ""
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "檢查是否有新版本可用"
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "你的註解已編輯"
 
-#~ msgid "Add to schedule"
-#~ msgstr "新增到日曆"
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "生成於 %s"
 
-#~ msgid "All categories"
-#~ msgstr "所有類別"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
 
-#~ msgid "Uncategorized software"
-#~ msgstr "未分類的軟體"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
 
-#~ msgid "Valid license"
-#~ msgstr "有效的授權"
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "常問的問題"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "上次更新日期"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "讀取註解"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "Filter plugin list"
+msgstr "已停用的外掛程式"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "主頁"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "讀"
+
+msgid "Clean"
+msgstr "清除"
+
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "登入無效. 無法新增使用者."
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "一個新的可用版本：%s"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "安裝"
+
+msgid "Enable"
+msgstr "啟動"
+
+msgid "Uninstall"
+msgstr "移除"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "已停用的外掛程式"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "延遲"
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "外掛程式"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "版本編號"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "預借"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "建立於 %s"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "預借"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "描述"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "未知的檔案"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "啟用會計和行政資訊"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "安裝完成"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "安裝完成"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr "一封電子郵件已經發送到您的電子郵件地址。電子郵件中包含重設密碼的訊息。"
+
+msgid "Email address not found."
+msgstr "未找到電子郵件地址。"
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr "MAC位址及IP位址設備都包括在一個聚合網路連接埠"
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "上傳的檔案大小超出在 php.ini 中upload_max_filesize所設定的大小"
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr "上傳的檔案大小超出在 HTML 表單中MAX_FILE_SIZE所設定的大小"
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "上傳的文件只有部分被上傳"
+
+msgid "Failed to write file to disk"
+msgstr "磁碟寫入檔案失敗"
+
+msgid "A PHP extension stopped the file upload"
+msgstr "PHP的擴展停止了檔案上傳"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "上傳的檔案大小超出在 php.ini 中post_max_size所設定的大小"
+
+msgid "File is too big"
+msgstr "檔案過大"
+
+msgid "File is too small"
+msgstr "檔案過小"
+
+msgid "Maximum number of files exceeded"
+msgstr "超過檔案數量限制"
+
+msgid "Image exceeds maximum width"
+msgstr "圖片超過最大寬度"
+
+msgid "Image requires a minimum width"
+msgstr "圖片需要最小寬度"
+
+msgid "Image exceeds maximum height"
+msgstr "圖片超過最大高度"
+
+msgid "Image requires a minimum height"
+msgstr "圖片需要最小高度"
+
+msgid "Filetype not allowed"
+msgstr "不允許使用的檔案類型"
+
+#, fuzzy
+#| msgid "No file was uploaded"
+msgid "File upload aborted"
+msgstr "未有檔案被上傳"
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to resize image"
+msgstr "磁碟寫入檔案失敗"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "使用者訊息"
+
+msgid "Progress"
+msgstr "進行"
+
+msgid "My settings"
+msgstr "我的設定"
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "你可於 GLPI-PROJECT.org 網站找到相關訊息。"
+
+msgid "Check all"
+msgstr "全選"
+
+msgid "Uncheck all"
+msgstr "取消全部"
+
+msgid "Check all as"
+msgstr "檢查所有的如"
+
+msgid "Selection too large, massive action disabled."
+msgstr "選擇過大，已停用此大量動作。"
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr "為了增加上限：請在PHP配置更改max_input_vars或suhosin.post.max_vars。"
+
+#, fuzzy
+#| msgid "Ticket creation failed (check mandatory fields)"
+msgid "The description field is mandatory"
+msgstr "待辦事項建立失敗 (請檢查必填欄位)"
+
+#, fuzzy
+#| msgid "From %1$s to %2$s"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "自 %1$s 至 %2$s"
+
+msgid "Empty array"
+msgstr ""
+
+msgid "%1$d on %2$d"
+msgstr "%1$d 在 %2$d"
+
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "結案"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+#, fuzzy
+#| msgid "No selected items"
+msgid "selecting them"
+msgstr "沒有已選擇的項目"
+
+#, fuzzy
+#| msgid "File (%s)"
+msgid "File(s)"
+msgstr "檔案(%s)"
+
+msgid "Drag and drop your file here, or"
+msgstr "拖拉你的檔案到此, 或"
+
+msgid "Upload successful"
+msgstr "更新成功"
+
+msgid "Check/uncheck all"
+msgstr "選擇/取消 全部"
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+#, fuzzy
+#| msgid "Phone model"
+#| msgid_plural "Phone models"
+msgid "Change mode"
+msgstr "電話機型號"
+
+#, fuzzy
+#| msgid "Debug mode has been enabled!"
+msgid "Debug mode enabled"
+msgstr "偵錯模式已開啟"
+
+#, fuzzy
+#| msgid "Debug mode has been disabled!"
+msgid "Debug mode disabled"
+msgstr "偵錯模式已關閉"
+
+msgid "Saved searches"
+msgstr "已儲存搜索"
+
+#, fuzzy
+#| msgid "Saved searches"
+msgid "Manage saved searches"
+msgstr "已儲存搜索"
+
+#, fuzzy
+#| msgid "API disabled"
+msgid "Add is disabled"
+msgstr "API 已停用"
+
+#, fuzzy
+#| msgid "Search result display"
+msgid "Search is disabled"
+msgstr "顯示搜尋結果"
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "全部管理"
+
+msgid "You are impersonating %s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "設定為私人"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr "顯示GLPI ID"
+
+msgid "Color palette"
+msgstr ""
+
+msgid "Layout"
+msgstr ""
+
+msgid "Tabs on left"
+msgstr ""
+
+msgid "Classic view"
+msgstr ""
+
+msgid "Vertical split"
+msgstr "垂直分割"
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "結束的合約"
+
+msgid "Dashboards"
+msgstr ""
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "預設的待辦事項"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "預設的待辦事項"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "預設的待辦事項"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "預設的待辦事項"
+
+msgid "Check if a new version is available"
+msgstr "檢查是否有新版本可用"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Show filters"
+msgstr "篩選器 切換"
+
+msgid "No historical matching your filters"
+msgstr ""
+
+msgid "Add to schedule"
+msgstr "新增到日曆"
+
+#, fuzzy
+#| msgid "Position"
+msgid "Position in room"
+msgstr "職位"
+
+msgid "Door orientation in room"
+msgstr ""
+
+msgid "North"
+msgstr ""
+
+msgid "East"
+msgstr ""
+
+msgid "South"
+msgstr ""
+
+msgid "West"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of items"
+msgid "Number of units"
+msgstr "項目數"
+
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+#, fuzzy
+#| msgid "Weight"
+msgid "Height"
+msgstr "重量"
+
+msgid "Measured power (in watts)"
+msgstr ""
+
+msgid "Max. weight"
+msgstr ""
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No rack found"
+msgstr "無此使用者"
+
+msgid "Following elements are out of room bounds"
+msgstr ""
+
+msgid "Blueprint"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Insert a rack here"
+msgstr ""
+
+msgid "Position must be set"
+msgstr ""
+
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "網路連接埠不可用"
+
+msgid "All categories"
+msgstr "所有類別"
+
+msgid "Uncategorized software"
+msgstr "未分類的軟體"
+
+msgid "Valid license"
+msgstr "有效的授權"
+
+#, fuzzy
+#| msgid "Type of component"
+msgid "Other component"
+msgstr "零組件的類型"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr ""
+
+msgid "Unofficial translations are also available"
+msgstr "非官方的翻譯也可"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "我已讀完並且接受以上預設的使用許可的條件。"
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "我已讀完代不接受被寫上面使用許可的條件"
+
+msgid "Installation or update of GLPI"
+msgstr "GLPI安裝或更新"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "選擇 '安裝' 以完整安裝新的GLPI."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "選擇從較早版本的 升級 GLPI"
+
+msgid "Do you want to continue?"
+msgstr "您要繼續嗎?"
+
+msgid "Database connection parameters"
+msgstr "資料庫連接參數"
+
+msgid "Test of the connection at the database"
+msgstr "測試接資料庫"
+
+msgid "Can't connect to the database"
+msgstr "無法連接在資料庫"
+
+msgid "The server answered: %s"
+msgstr "伺服器回答了: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "伺服器或使用者欄位未填寫"
+
+msgid "Please select a database:"
+msgstr "請選項一個資料庫："
+
+msgid "Create a new database or use an existing one:"
+msgstr "創建一個新的資料庫或是使用一個已經存在的資料庫:"
+
+msgid "Please select the database to update:"
+msgstr "請選擇資料庫更新："
+
+msgid "Initialization of the database"
+msgstr "初始化資料庫"
+
+msgid "Impossible to use the database:"
+msgstr "無法使用資料庫："
+
+msgid "OK - database was initialized"
+msgstr "OK-資料庫初始化了"
+
+msgid "Impossible to write the database setup file"
+msgstr "無法修改資料庫設定文件"
+
+msgid "Database created"
+msgstr "已建立資料庫"
+
+msgid "Error in creating database!"
+msgstr "在創建資料庫時出錯！"
+
+msgid "You didn't select a database!"
+msgstr "你沒有選擇資料庫！"
+
+msgid "Collect data"
+msgstr "蒐集資料"
+
+msgid "The installation is finished"
+msgstr "安裝完成"
+
+msgid "Default logins / passwords are:"
+msgstr "預設 logins / passwords 是:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech為工程師帳戶"
+
+msgid "normal/normal for the normal account"
+msgstr "normal為正常帳戶"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/post-only為postonly帳戶"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "您最好在第一筆資料建立入資料庫前能刪除或修改這些帳戶。"
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr "不可能創建資料庫連接文件，在文件請驗證權限"
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "預設語言"
+
+msgid "Beginning of the installation"
+msgstr "安裝的起點"
+
+msgid "Step %d"
+msgstr "步驟 %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI 驗證"
+
+msgid "Remember me"
+msgstr "記住我"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "你必須啟用瀏覽器的 Javascript 支援"
+
+msgid "You must accept cookies to reach this application"
+msgstr "您必要同意這個應用程式使用 Cookies"
+
+msgid "Invalid use of session ID"
+msgstr "期間 ID 使用有誤"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "檢視常見問答集"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "新增一個變更"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "新增一個項目"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "存檔"
+
+#, fuzzy
+#| msgid "Are you sure you want to return this non-reservable item?"
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "你確定要返回此非預留項目?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "送出日期"
 
 #~ msgid "Use GLPI"
 #~ msgstr "使用GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "非官方的翻譯也可"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "我已讀完並且接受以上預設的使用許可的條件。"
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "我已讀完代不接受被寫上面使用許可的條件"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "GLPI安裝或更新"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "選擇 '安裝' 以完整安裝新的GLPI."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr "選擇從較早版本的 升級 GLPI"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "您要繼續嗎?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "資料庫連接參數"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "測試接資料庫"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "無法連接在資料庫"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "伺服器回答了: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "伺服器或使用者欄位未填寫"
-
-#~ msgid "Please select a database:"
-#~ msgstr "請選項一個資料庫："
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "創建一個新的資料庫或是使用一個已經存在的資料庫:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "請選擇資料庫更新："
-
-#~ msgid "Initialization of the database"
-#~ msgstr "初始化資料庫"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "無法使用資料庫："
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK-資料庫初始化了"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "無法修改資料庫設定文件"
-
-#~ msgid "Database created"
-#~ msgstr "已建立資料庫"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "在創建資料庫時出錯！"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "你沒有選擇資料庫！"
-
-#~ msgid "Collect data"
-#~ msgstr "蒐集資料"
-
-#~ msgid "The installation is finished"
-#~ msgstr "安裝完成"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "預設 logins / passwords 是:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "GLPI/ GLPI的管理員帳戶"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech為工程師帳戶"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal為正常帳戶"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/post-only為postonly帳戶"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "您最好在第一筆資料建立入資料庫前能刪除或修改這些帳戶。"
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr "不可能創建資料庫連接文件，在文件請驗證權限"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "安裝的起點"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "步驟 %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI 驗證"
-
-#~ msgid "Remember me"
-#~ msgstr "記住我"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "你必須啟用瀏覽器的 Javascript 支援"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "您必要同意這個應用程式使用 Cookies"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "期間 ID 使用有誤"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "檢視常見問答集"

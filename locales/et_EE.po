@@ -23678,1128 +23678,1112 @@ msgstr "Tõmba vaid lugemata kirjad"
 msgid "Could not create dashboard"
 msgstr "Klooni juhtpaneel"
 
-#~ msgid "No room found or selected"
-#~ msgstr "Ruum pole valitud"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Kirjutamine"
 
-#~ msgid "Marketplace"
-#~ msgstr "Pood"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Kasutajanimi"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s lisas üksuse %2$s-%3$s:%4$s"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Vaata konfiguratsiooni"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Vaata lisaprogrammide kataloogi"
+msgid "No room found or selected"
+msgstr "Ruum pole valitud"
 
-#~ msgid ""
-#~ "If name is a valid email address, it will be automatically added to "
-#~ "blacklisted senders."
-#~ msgstr ""
-#~ "Kui nimi on korrektne eposti aadress, siis lisatakse see automaatselt "
-#~ "saatjate musta nimekirja."
+msgid "Marketplace"
+msgstr "Pood"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Lõpmata tühi"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s lisas üksuse %2$s-%3$s:%4$s"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "Leitud RSS vood"
+msgid "See the catalog of plugins"
+msgstr "Vaata lisaprogrammide kataloogi"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+"Kui nimi on korrektne eposti aadress, siis lisatakse see automaatselt "
+"saatjate musta nimekirja."
 
-#~ msgid "GLPI version"
-#~ msgstr "GLPI versioon"
+msgid "Empty for infinite"
+msgstr "Lõpmata tühi"
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "Kinnitada esiletoomine?"
+msgid "RSS feeds found"
+msgstr "Leitud RSS vood"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Sulgemist ootavad teated"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Ootel olevad teated"
+msgid "GLPI version"
+msgstr "GLPI versioon"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Töötlemist ootavad teated"
+msgid "Confirm the promotion?"
+msgstr "Kinnitada esiletoomine?"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Sinu vaadeldavad teated"
+msgid "Your tickets to close"
+msgstr "Sulgemist ootavad teated"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Sinu töötluses teated"
+msgid "Tickets on pending status"
+msgstr "Ootel olevad teated"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Kinnitamist ootavad teated"
+msgid "Tickets to be processed"
+msgstr "Töötlemist ootavad teated"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "Sinu teated tagasi lükatud kinnitusega"
+msgid "Your observed tickets"
+msgstr "Sinu vaadeldavad teated"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "Sinu teated tagasilükatud lahendusega"
+msgid "Your tickets in progress"
+msgstr "Sinu töötluses teated"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Teadete täiendused"
+msgid "Your tickets to validate"
+msgstr "Kinnitamist ootavad teated"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d uus teade"
-#~ msgstr[1] "%d uut teadet"
+msgid "Your tickets having rejected approval status"
+msgstr "Sinu teated tagasi lükatud kinnitusega"
 
-#~ msgid "No ticket found."
-#~ msgstr "Teateid ei leitud."
+msgid "Your tickets having rejected solution"
+msgstr "Sinu teated tagasilükatud lahendusega"
 
-#~ msgid "Last tickets"
-#~ msgstr "Viimased teated"
+msgid "Ticket followup"
+msgstr "Teadete täiendused"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Loo uus teade selle asja kohta..."
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d uus teade"
+msgstr[1] "%d uut teadet"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Viimane %d teade"
-#~ msgstr[1] "Viimased %d teadet"
+msgid "No ticket found."
+msgstr "Teateid ei leitud."
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Sul poleõigusi näha kõiki teateid"
+msgid "Last tickets"
+msgstr "Viimased teated"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Seotud üksuse teade"
-#~ msgstr[1] "Seotud üksuse teated"
+msgid "New ticket for this item..."
+msgstr "Loo uus teade selle asja kohta..."
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Töös pole teateid."
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Viimane %d teade"
+msgstr[1] "Viimased %d teadet"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Seo varustusega"
+msgid "You don't have right to see all tickets"
+msgstr "Sul poleõigusi näha kõiki teateid"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Automaatne teate sulgemine"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Seotud üksuse teade"
+msgstr[1] "Seotud üksuse teated"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Rahulolu uuringu genereerimine"
+msgid "No ticket in progress."
+msgstr "Töös pole teateid."
 
-#~ msgid "Automatic closed tickets purge"
-#~ msgstr "Automaatne suletud teadete puhastus"
+msgid "Assign equipment"
+msgstr "Seo varustusega"
 
-#~ msgid "See my ticket"
-#~ msgstr "Vaata oma teateid"
+msgid "Automatic tickets closing"
+msgstr "Automaatne teate sulgemine"
 
-#~ msgid "See group ticket"
-#~ msgstr "Minu grupide teated"
+msgid "Generation of satisfaction surveys"
+msgstr "Rahulolu uuringu genereerimine"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Vaata seotud gruppide loodud teateid"
+msgid "Automatic closed tickets purge"
+msgstr "Automaatne suletud teadete puhastus"
 
-#~ msgid "See all tickets"
-#~ msgstr "Vaata kõiki teateid"
+msgid "See my ticket"
+msgstr "Vaata oma teateid"
 
-#~ msgid "See assigned"
-#~ msgstr "Vaata määratuid"
+msgid "See group ticket"
+msgstr "Minu grupide teated"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Vaata määratud teateid"
+msgid "See tickets created by my groups"
+msgstr "Vaata seotud gruppide loodud teateid"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Määra teatele vastutaja"
+msgid "See all tickets"
+msgstr "Vaata kõiki teateid"
 
-#~ msgid "Steal"
-#~ msgstr "Varasta"
+msgid "See assigned"
+msgstr "Vaata määratuid"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Varasta teade"
+msgid "See assigned tickets"
+msgstr "Vaata määratud teateid"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Vastutaja"
+msgid "Assign a ticket"
+msgstr "Määra teatele vastutaja"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Võib olla teate vastutaja"
+msgid "Steal"
+msgstr "Varasta"
 
-#~ msgid "Change the priority"
-#~ msgstr "Muuda prioriteeti"
+msgid "Steal a ticket"
+msgstr "Varasta teade"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Kinnita lahendus/Vastuseks rahulolu küsitlus (minu teade)"
+msgid "Beeing in charge"
+msgstr "Vastutaja"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "Kinnita lahendus ja vasta oma loodud teate rahulolu küsitlusele"
+msgid "To be in charge of a ticket"
+msgstr "Võib olla teate vastutaja"
 
-#, php-format
-#~ msgid "Not enough rights to merge tickets %d and %d"
-#~ msgstr "Pole piisavalt õigusi teadete %d ja %d liitmiseks"
+msgid "Change the priority"
+msgstr "Muuda prioriteeti"
 
-#, php-format
-#~ msgid "Failed to load ticket %d"
-#~ msgstr "Teate %d laadimine ebaõnnestus"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Kinnita lahendus/Vastuseks rahulolu küsitlus (minu teade)"
 
-#, php-format
-#~ msgid "Failed to add followup to ticket %d"
-#~ msgstr "Täienduse lisamine teatele %d ebaõnnestus"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "Kinnita lahendus ja vasta oma loodud teate rahulolu küsitlusele"
 
-#, php-format
-#~ msgid "Failed to add task to ticket %d"
-#~ msgstr "Tegevuse lisamine teatele %d ebaõnnestus"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "Pole piisavalt õigusi teadete %d ja %d liitmiseks"
 
-#, php-format
-#~ msgid "Failed to add document to ticket %d"
-#~ msgstr "Dokumendi lisamine teatele %d ebaõnnestus"
+msgid "Failed to load ticket %d"
+msgstr "Teate %d laadimine ebaõnnestus"
 
-#, php-format
-#~ msgid "Failed to link tickets %d and %d"
-#~ msgstr "Teadete %d ja %d sidumine ebaõnnestus"
+msgid "Failed to add followup to ticket %d"
+msgstr "Täienduse lisamine teatele %d ebaõnnestus"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "Teate %d kusutamine ebaõnnestus"
+msgid "Failed to add task to ticket %d"
+msgstr "Tegevuse lisamine teatele %d ebaõnnestus"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%s liitis teate %s %s-ga"
+msgid "Failed to add document to ticket %d"
+msgstr "Dokumendi lisamine teatele %d ebaõnnestus"
 
-#~ msgid "Checking write permissions for marketplace plugins directory"
-#~ msgstr "Kirjutamise õigus poe plugina kaustale"
+msgid "Failed to link tickets %d and %d"
+msgstr "Teadete %d ja %d sidumine ebaõnnestus"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Tuvasta kategoori uuesti"
+msgid "Failed to delete ticket %d"
+msgstr "Teate %d kusutamine ebaõnnestus"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Kehtivad litsentsid"
+msgid "%s merges ticket %s into %s"
+msgstr "%s liitis teate %s %s-ga"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Paigalduste arv"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Kirjutamise õigus poe plugina kaustale"
 
-#~ msgid "Merge"
-#~ msgstr "Ühenda"
+msgid "Recalculate the category"
+msgstr "Tuvasta kategoori uuesti"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Pärast liitmist kustutatud tarkvara"
+msgid "Valid licenses"
+msgstr "Kehtivad litsentsid"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "Pead lubama vähemalt ühe teavituse valiku."
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Paigalduste arv"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Merge"
+msgstr "Ühenda"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Ühenda arvutiga"
+msgid "Software deleted after merging"
+msgstr "Pärast liitmist kustutatud tarkvara"
 
-#~ msgid "Not connected"
-#~ msgstr "Pole ühendatud"
+msgid "You must enable at least one notification mode."
+msgstr "Pead lubama vähemalt ühe teavituse valiku."
 
-#~ msgid "Show as map"
-#~ msgstr "Näitsa kaardina"
+msgid "GLPI"
+msgstr "GLPI"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Kehtib kuni %s"
+msgid "Connect a computer"
+msgstr "Ühenda arvutiga"
 
-#~ msgid "Late tickets"
-#~ msgstr "Üle aja teated"
+msgid "Not connected"
+msgstr "Pole ühendatud"
 
-#~ msgid "Tickets waiting for validation"
-#~ msgstr "Kinnitust ootavad teated"
+msgid "Show as map"
+msgstr "Näitsa kaardina"
 
-#~ msgid "Incoming tickets"
-#~ msgstr "Saabunud teated"
+msgid "Valid to %s"
+msgstr "Kehtib kuni %s"
 
-#~ msgid "Solved tickets"
-#~ msgstr "Lahendatud teated"
+msgid "Late tickets"
+msgstr "Üle aja teated"
 
-#~ msgid "Closed tickets"
-#~ msgstr "Suletud teated"
+msgid "Tickets waiting for validation"
+msgstr "Kinnitust ootavad teated"
 
-#~ msgid "without"
-#~ msgstr "ilma"
+msgid "Incoming tickets"
+msgstr "Saabunud teated"
 
-#~ msgid "Time to close"
-#~ msgstr "Sulgemise aeg"
+msgid "Solved tickets"
+msgstr "Lahendatud teated"
 
-#~ msgid "To validate"
-#~ msgstr "Valideerimiseks"
+msgid "Closed tickets"
+msgstr "Suletud teated"
 
-#~ msgid "Solved"
-#~ msgstr "Lahendatud"
+msgid "without"
+msgstr "ilma"
 
-#~ msgid "Share or embed this dashboard"
-#~ msgstr "Jaga või manusta see juhtpaneel"
+msgid "Time to close"
+msgstr "Sulgemise aeg"
 
-#~ msgid "Delete this dashboard"
-#~ msgstr "Kustuta juhtpaneel"
+msgid "To validate"
+msgstr "Valideerimiseks"
 
-#~ msgid "Toggle auto-refresh"
-#~ msgstr "Lülita auto-värskendus"
+msgid "Solved"
+msgstr "Lahendatud"
 
-#~ msgid "Toggle night mode"
-#~ msgstr "Lülita öörežiim"
+msgid "Share or embed this dashboard"
+msgstr "Jaga või manusta see juhtpaneel"
 
-#~ msgid "Toggle fullscreen"
-#~ msgstr "Lülita täisekraan"
+msgid "Delete this dashboard"
+msgstr "Kustuta juhtpaneel"
 
-#~ msgid "Toggle edit mode"
-#~ msgstr "Lülita muutmise režiim"
+msgid "Toggle auto-refresh"
+msgstr "Lülita auto-värskendus"
 
-#~ msgid "Add filter"
-#~ msgstr "Lisa filter"
+msgid "Toggle night mode"
+msgstr "Lülita öörežiim"
 
-#~ msgid "Add a new dashboard"
-#~ msgstr "Lisa uus juhtpaneel"
+msgid "Toggle fullscreen"
+msgstr "Lülita täisekraan"
 
-#~ msgid "others"
-#~ msgstr "teised"
+#, fuzzy
+#| msgid "Delete this dashboard"
+msgid "Clone this dashboard"
+msgstr "Kustuta juhtpaneel"
 
-#~ msgid "Widget"
-#~ msgstr "Vidin"
+msgid "Toggle edit mode"
+msgstr "Lülita muutmise režiim"
 
-#~ msgid "Use gradient palette"
-#~ msgstr "Kasuta gradient paletti"
+msgid "Add filter"
+msgstr "Lisa filter"
 
-#~ msgid "Display value labels on points/bars"
-#~ msgstr "Näita väärtuse sildid punktide/ribade juures"
+msgid "Add a new dashboard"
+msgstr "Lisa uus juhtpaneel"
 
-#~ msgid "Limit number of data"
-#~ msgstr "Piira andmete arvu"
+msgid "others"
+msgstr "teised"
 
-#~ msgid "Filters"
-#~ msgstr "Filtrid"
+msgid "Widget"
+msgstr "Vidin"
 
-#~ msgid "Embed in another application"
-#~ msgstr "Manusta teise rakendusse"
+msgid "Use gradient palette"
+msgstr "Kasuta gradient paletti"
 
-#~ msgid "Direct link"
-#~ msgstr "Otseviide"
+msgid "Display value labels on points/bars"
+msgstr "Näita väärtuse sildid punktide/ribade juures"
 
-#~ msgid "Iframe"
-#~ msgstr "Iframe"
+msgid "Limit number of data"
+msgstr "Piira andmete arvu"
 
-#~ msgid "Or share the dashboard to these target objects:"
-#~ msgstr "Või jaga juhtpaneeli nende sihtobjektidega:"
+msgid "Filters"
+msgstr "Filtrid"
 
-#~ msgid "empty card !"
-#~ msgstr "tühi kaart !"
+msgid "Embed in another application"
+msgstr "Manusta teise rakendusse"
 
-#, php-format
-#~ msgid "Number of %s"
-#~ msgstr "%s arv"
+msgid "Direct link"
+msgstr "Otseviide"
 
-#, php-format
-#~ msgid "%s by %s"
-#~ msgstr "%s %s-kaupa"
+msgid "Iframe"
+msgstr "Iframe"
 
-#, php-format
-#~ msgid "List of %s"
-#~ msgstr "%s nimekiri"
+msgid "Or share the dashboard to these target objects:"
+msgstr "Või jaga juhtpaneeli nende sihtobjektidega:"
 
-#~ msgid "Number of tickets by month"
-#~ msgstr "Teadete arv kuu kaupa"
+msgid "empty card !"
+msgstr "tühi kaart !"
 
-#~ msgid "Evolution of ticket in the past year"
-#~ msgstr "Teate areng viimase aasta jooksul"
+msgid "Number of %s"
+msgstr "%s arv"
 
-#~ msgid "Tickets status by month"
-#~ msgstr "Teadete olek kuu kaupa"
+msgid "%s by %s"
+msgstr "%s %s-kaupa"
 
-#~ msgid "Tickets times (in hours)"
-#~ msgstr "Teadete ajad (tundides)"
+msgid "List of %s"
+msgstr "%s nimekiri"
 
-#~ msgid "Tickets summary"
-#~ msgstr "Teadete kokkuvõte"
+msgid "Number of tickets by month"
+msgstr "Teadete arv kuu kaupa"
 
-#~ msgid "Top ticket's categories"
-#~ msgstr "Olulisemad teadete kategooriad"
+msgid "Evolution of ticket in the past year"
+msgstr "Teate areng viimase aasta jooksul"
 
-#~ msgid "Top ticket's entities"
-#~ msgstr "Olulisemad teadete üksused"
+msgid "Tickets status by month"
+msgstr "Teadete olek kuu kaupa"
 
-#~ msgid "Top ticket's request types"
-#~ msgstr "Olulisemad teadete taotluste tüübid"
+msgid "Tickets times (in hours)"
+msgstr "Teadete ajad (tundides)"
 
-#~ msgid "Top ticket's locations"
-#~ msgstr "Olulisemad teadete asukohad"
+msgid "Tickets summary"
+msgstr "Teadete kokkuvõte"
 
-#~ msgid "Top ticket's requesters"
-#~ msgstr "Suurimad teadete taotlejad"
+msgid "Top ticket's categories"
+msgstr "Olulisemad teadete kategooriad"
 
-#~ msgid "Top ticket's requester groups"
-#~ msgstr "Suurimad teadete taotlejate grupid"
+msgid "Top ticket's entities"
+msgstr "Olulisemad teadete üksused"
 
-#~ msgid "Top ticket's observers"
-#~ msgstr "Suurimad teadete jälgijad"
+msgid "Top ticket's request types"
+msgstr "Olulisemad teadete taotluste tüübid"
 
-#~ msgid "Top ticket's observer groups"
-#~ msgstr "Suurimad teadete jälgijate grupid"
+msgid "Top ticket's locations"
+msgstr "Olulisemad teadete asukohad"
 
-#~ msgid "Top ticket's assignees"
-#~ msgstr "Kellele on enim teateid määratud"
+msgid "Top ticket's requesters"
+msgstr "Suurimad teadete taotlejad"
 
-#~ msgid "Top ticket's assignee groups"
-#~ msgstr "Grupp kellele on enim teateid määratud"
+msgid "Top ticket's requester groups"
+msgstr "Suurimad teadete taotlejate grupid"
 
-#~ msgid "List of reminders"
-#~ msgstr "Meeldetuletuste nimekiri"
+msgid "Top ticket's observers"
+msgstr "Suurimad teadete jälgijad"
 
-#~ msgid "Editable markdown card"
-#~ msgstr "Muudetad markdown kaart"
+msgid "Top ticket's observer groups"
+msgstr "Suurimad teadete jälgijate grupid"
 
-#~ msgid "Toggle edit mode to edit content"
-#~ msgstr "Muutmiseks luba muutmise režiimi"
+msgid "Top ticket's assignees"
+msgstr "Kellele on enim teateid määratud"
 
-#~ msgid "field name in DB"
-#~ msgstr "välja nimi AB-s"
+msgid "Top ticket's assignee groups"
+msgstr "Grupp kellele on enim teateid määratud"
 
-#~ msgid "Example:"
-#~ msgstr "Näide:"
+msgid "List of reminders"
+msgstr "Meeldetuletuste nimekiri"
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "Alates GLPI 9.2 juurutasime uue statistikavõimaluse nimega „Telemeetria”, "
-#~ "mis anonüümselt teie loal saadab andmeid meie telemeetria veebisaidile."
+msgid "Editable markdown card"
+msgstr "Muudetad markdown kaart"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP-võrk puudub andmebaasist. Kuid sa võid vaadata praegu saadaolevaid "
-#~ "võrke."
+msgid "Toggle edit mode to edit content"
+msgstr "Muutmiseks luba muutmise režiimi"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Mitmed võrgumnimed on saadaval. Mine sakile \"Võrgunimed\" nende "
-#~ "haldamiseks."
+msgid "field name in DB"
+msgstr "välja nimi AB-s"
 
-#~ msgid "Add a network name"
-#~ msgstr "Lisa võrgu nimi"
+msgid "Example:"
+msgstr "Näide:"
 
-#~ msgid "Not associated"
-#~ msgstr "Seostamata"
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"Alates GLPI 9.2 juurutasime uue statistikavõimaluse nimega „Telemeetria”, "
+"mis anonüümselt teie loal saadab andmeid meie telemeetria veebisaidile."
 
-#~ msgid "Create a new network name"
-#~ msgstr "Loo uus võrgunimi"
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP-võrk puudub andmebaasist. Kuid sa võid vaadata praegu saadaolevaid võrke."
 
-#~ msgid "No network name found"
-#~ msgstr "Võrgunime ei leitud"
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Mitmed võrgumnimed on saadaval. Mine sakile \"Võrgunimed\" nende haldamiseks."
 
-#~ msgid "Unable to download plugin archive."
-#~ msgstr "Plugina paki allalaadimine ebaõnnestus."
+msgid "Add a network name"
+msgstr "Lisa võrgu nimi"
 
-#, php-format
-#~ msgid "Plugin archive format is not supported by your system : %s."
-#~ msgstr "Plugina paki formaat pole toetatud süsteemi poolt: %s."
+msgid "Not associated"
+msgstr "Seostamata"
 
-#~ msgid "Unable to extract plugin archive."
-#~ msgstr "Ei suuda avada plugina pakki."
+msgid "Create a new network name"
+msgstr "Loo uus võrgunimi"
 
-#~ msgid "Check all plugin updates"
-#~ msgstr "Kontrolli pluginate uuendusi"
+msgid "No network name found"
+msgstr "Võrgunime ei leitud"
 
-#, php-format
-#~ msgid "New version for plugin %s: %s"
-#~ msgstr "Uuendus pluginale %s: %s"
+msgid "Unable to download plugin archive."
+msgstr "Plugina paki allalaadimine ebaõnnestus."
 
-#~ msgid "Installed"
-#~ msgstr "Paigaldatud"
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr "Plugina paki formaat pole toetatud süsteemi poolt: %s."
 
-#~ msgid "Discover"
-#~ msgstr "Avasta"
+msgid "Unable to extract plugin archive."
+msgstr "Ei suuda avada plugina pakki."
 
-#, php-format
-#~ msgid ""
-#~ "%1$s services website seems not available from your network or offline"
-#~ msgstr "%1$s teenuse veebileht ei ole sinu võrgus kättesaadav või on maas."
+msgid "Check all plugin updates"
+msgstr "Kontrolli pluginate uuendusi"
 
-#~ msgid "Maybe you could setup a proxy"
-#~ msgstr "Ehk on vaja puhvri seadeid"
+msgid "New version for plugin %s: %s"
+msgstr "Uuendus pluginale %s: %s"
 
-#~ msgid "or please check later"
-#~ msgstr "või kontrolli hiljem"
+msgid "Installed"
+msgstr "Paigaldatud"
 
-#, php-format
-#~ msgid "Your %1$s registration is not valid."
-#~ msgstr "Teie %1$s registreerumine pole kehtiv."
+msgid "Discover"
+msgstr "Avasta"
 
-#~ msgid "A registration, at least a free one, is required to use marketplace!"
-#~ msgstr "Poe kasutamiseks on vajalik kasvõi tasuta registreerumine!"
+msgid "%1$s services website seems not available from your network or offline"
+msgstr "%1$s teenuse veebileht ei ole sinu võrgus kättesaadav või on maas."
 
-#, php-format
-#~ msgid "Register on %1$s"
-#~ msgstr "Registreeru %1$s"
+msgid "Maybe you could setup a proxy"
+msgstr "Ehk on vaja puhvri seadeid"
 
-#~ msgid "fill your registration key in setup."
-#~ msgstr "täida registreerumisevõti seadetes."
+msgid "or please check later"
+msgstr "või kontrolli hiljem"
 
-#, php-format
-#~ msgid "Your %1$s subscription has been terminated."
-#~ msgstr "Teie %1$s tellimus on katkestatud."
+msgid "Your %1$s registration is not valid."
+msgstr "Teie %1$s registreerumine pole kehtiv."
 
-#, php-format
-#~ msgid "Renew it on %1$s."
-#~ msgstr "Ueenda seda %1$s."
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr "Poe kasutamiseks on vajalik kasvõi tasuta registreerumine!"
 
-#, php-format
-#~ msgid "We can't write on the markeplace directory (%s)."
-#~ msgstr "Puudub kirjutamisõigus poe kaustale (%s)."
+msgid "Register on %1$s"
+msgstr "Registreeru %1$s"
 
-#~ msgid ""
-#~ "If you want to ease the plugins download, please check permissions and "
-#~ "ownership of this directory."
-#~ msgstr ""
-#~ "KUi soovid lihtsustatud pluginate allalaadimist, siis kontrolli selle "
-#~ "kausta omaniku ja juurdepääsu õiguseid."
+msgid "fill your registration key in setup."
+msgstr "täida registreerumisevõti seadetes."
 
-#~ msgid ""
-#~ "Otherwise, you will need to download and unzip the plugins archives "
-#~ "manually."
-#~ msgstr "Muidu pead plugina pakid ise käsitsis alla laadima ja paigaldama."
+msgid "Your %1$s subscription has been terminated."
+msgstr "Teie %1$s tellimus on katkestatud."
 
-#~ msgid "Alpha ASC"
-#~ msgstr "Tähestik Kasvavalt"
+msgid "Renew it on %1$s."
+msgstr "Ueenda seda %1$s."
 
-#~ msgid "Alpha DESC"
-#~ msgstr "Tähestik Kahanevalt"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr "Puudub kirjutamisõigus poe kaustale (%s)."
 
-#~ msgid "Most popular"
-#~ msgstr "Populaarseimad"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+"KUi soovid lihtsustatud pluginate allalaadimist, siis kontrolli selle kausta "
+"omaniku ja juurdepääsu õiguseid."
 
-#~ msgid "Last updated"
-#~ msgstr "Viimati uuendatud"
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr "Muidu pead plugina pakid ise käsitsis alla laadima ja paigaldama."
 
-#~ msgid "Most recent"
-#~ msgstr "Kõige uuem"
+msgid "Alpha ASC"
+msgstr "Tähestik Kasvavalt"
 
-#~ msgid "Best notes"
-#~ msgstr "Parimad märkmed"
+msgid "Alpha DESC"
+msgstr "Tähestik Kahanevalt"
 
-#~ msgid "Your plugin here ? Contact us."
-#~ msgstr "Teie plugin siin ? Võta ühendust."
+msgid "Most popular"
+msgstr "Populaarseimad"
 
-#~ msgid "Refresh plugin list"
-#~ msgstr "Värskenda pluginate nimekirja"
+msgid "Last updated"
+msgstr "Viimati uuendatud"
 
-#~ msgid "Filter plugin list"
-#~ msgstr "Plugina nimekirja filter"
+msgid "Most recent"
+msgstr "Kõige uuem"
 
-#~ msgid "Homepage"
-#~ msgstr "Koduleht"
+msgid "Best notes"
+msgstr "Parimad märkmed"
 
-#~ msgid "Get help"
-#~ msgstr "Abi"
+msgid "Your plugin here ? Contact us."
+msgstr "Teie plugin siin ? Võta ühendust."
 
-#~ msgid "Readme"
-#~ msgstr "Loemind"
+msgid "Refresh plugin list"
+msgstr "Värskenda pluginate nimekirja"
 
-#~ msgid "Clean"
-#~ msgstr "Puhasta"
+msgid "Filter plugin list"
+msgstr "Plugina nimekirja filter"
 
-#~ msgid "This plugin is not available for your GLPI version."
-#~ msgstr "See plugin pole saadaval teie GLPI versioonile."
+msgid "Homepage"
+msgstr "Koduleht"
 
-#~ msgid ""
-#~ "The plugin has an available update but its directory is not writable."
-#~ msgstr "Pluginal on uuendus saadaval, kuid plugina kaust pole kirjutatav."
+msgid "Get help"
+msgstr "Abi"
 
-#, php-format
-#~ msgid ""
-#~ "Download archive manually, you must uncompress it in plugins directory "
-#~ "(%s)"
-#~ msgstr "Laadi plugin käsitsi alla ja paki see lahti pluginate kausta (%s)"
+msgid "Readme"
+msgstr "Loemind"
 
-#, php-format
-#~ msgid "A new version (%s) is available, update ?"
-#~ msgstr "Uus versioon (%s) on saadaval, uuendada?"
+msgid "Clean"
+msgstr "Puhasta"
 
-#, php-format
-#~ msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-#~ msgstr "Sellele plugina (%s) jaoks on vaja kõrgemat GLPI-võrgu pakkumist"
+msgid "This plugin is not available for your GLPI version."
+msgstr "See plugin pole saadaval teie GLPI versioonile."
 
-#~ msgid "Install"
-#~ msgstr "Paigalda"
+msgid "The plugin has an available update but its directory is not writable."
+msgstr "Pluginal on uuendus saadaval, kuid plugina kaust pole kirjutatav."
 
-#~ msgid "Enable"
-#~ msgstr "Luba"
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr "Laadi plugin käsitsi alla ja paki see lahti pluginate kausta (%s)"
 
-#~ msgid "Uninstall"
-#~ msgstr "Eemalda"
+msgid "A new version (%s) is available, update ?"
+msgstr "Uus versioon (%s) on saadaval, uuendada?"
 
-#, php-format
-#~ msgid "You must have a %s subscription to get this plugin"
-#~ msgstr "Sul on vaja %s registreerumist selle plugina jaoks"
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr "Sellele plugina (%s) jaoks on vaja kõrgemat GLPI-võrgu pakkumist"
 
-#, php-format
-#~ msgid "You need at least the %s subscription level to get this plugin"
-#~ msgstr "Selle plugina jaoks on teil vaja %s taseme registreeringut"
+msgid "Install"
+msgstr "Paigalda"
 
-#, php-format
-#~ msgid "%s plugin"
-#~ msgid_plural "%s plugins"
-#~ msgstr[0] "%s plugin"
-#~ msgstr[1] "%s pluginad"
+msgid "Enable"
+msgstr "Luba"
 
-#~ msgid "GLPI provides a new marketplace to download and install plugins."
-#~ msgstr "GLPI pakub uut Poodi pluginate allalaadimiseks ja installimiseks."
+msgid "Uninstall"
+msgstr "Eemalda"
 
-#~ msgid ""
-#~ "Do you want to replace the plugins setup page by the new marketplace ?"
-#~ msgstr "Kas soovid asendada pluginate paigalduslehe uue poe lehega ?"
+msgid "You must have a %s subscription to get this plugin"
+msgstr "Sul on vaja %s registreerumist selle plugina jaoks"
 
-#~ msgid "Later"
-#~ msgstr "Hiljem"
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr "Selle plugina jaoks on teil vaja %s taseme registreeringut"
 
-#~ msgid "Switch to marketplace"
-#~ msgstr "Lülitu poele"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "%s plugin"
+msgstr[1] "%s pluginad"
 
-#~ msgid "Some updates are available for your installed plugins!"
-#~ msgstr "Mõned uuendused on saadaval installitud pluginatele!"
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr "GLPI pakub uut Poodi pluginate allalaadimiseks ja installimiseks."
 
-#~ msgid "Plugin name"
-#~ msgstr "Plugina nimi"
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr "Kas soovid asendada pluginate paigalduslehe uue poe lehega ?"
 
-#~ msgid "Plugin new version number"
-#~ msgstr "Plugina uue versiooni number"
+msgid "Later"
+msgstr "Hiljem"
 
-#~ msgid "Plugin old version number"
-#~ msgstr "Plugina vana versiooni number"
+msgid "Switch to marketplace"
+msgstr "Lülitu poele"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "Otsingus kasuta \"Aegumine sisaldab NULL\" et leida aegumatuid litsentse"
+msgid "Some updates are available for your installed plugins!"
+msgstr "Mõned uuendused on saadaval installitud pluginatele!"
 
-#~ msgid "Registration"
-#~ msgstr "Registreering"
+msgid "Plugin name"
+msgstr "Plugina nimi"
 
-#~ msgid ""
-#~ "A registration key is needed to use advanced feature (like marketplace) "
-#~ "in GLPI"
-#~ msgstr ""
-#~ "Registreerimis võti on vajalik GLPI laiendatud võimaluste jaoks (näit "
-#~ "Pood)"
+msgid "Plugin new version number"
+msgstr "Plugina uue versiooni number"
 
-#, php-format
-#~ msgid "Register on %1$s!"
-#~ msgstr "Registreeru %1$s!"
+msgid "Plugin old version number"
+msgstr "Plugina vana versiooni number"
 
-#~ msgid "And retrieve your key to paste it below"
-#~ msgstr "Telli oma võti ja sisesta see siia"
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"Otsingus kasuta \"Aegumine sisaldab NULL\" et leida aegumatuid litsentse"
 
-#, php-format
-#~ msgid "Error was: %s"
-#~ msgstr "Viga oli: %s"
+msgid "Registration"
+msgstr "Registreering"
 
-#~ msgid "Registration key"
-#~ msgstr "Registreerumisvõti"
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+"Registreerimis võti on vajalik GLPI laiendatud võimaluste jaoks (näit Pood)"
 
-#~ msgid "Subscription"
-#~ msgstr "Tellimus"
+msgid "Register on %1$s!"
+msgstr "Registreeru %1$s!"
 
-#~ msgid "Unknown"
-#~ msgstr "Tundmatu"
+msgid "And retrieve your key to paste it below"
+msgstr "Telli oma võti ja sisesta see siia"
 
-#~ msgid "Registered by"
-#~ msgstr "Registreeritud"
+msgid "Error was: %s"
+msgstr "Viga oli: %s"
 
-#~ msgid "Unable to fetch registration information."
-#~ msgstr "Ei suuda küsida registreerumisinfot."
+msgid "Registration key"
+msgstr "Registreerumisvõti"
 
-#~ msgid "The registration key is invalid."
-#~ msgstr "Registreerumisvõti pole kehtiv."
+msgid "Subscription"
+msgstr "Tellimus"
 
-#~ msgid "The registration key refers to a terminated subscription."
-#~ msgstr "Registreerimis võti viitab katkestatud tellimusele."
+msgid "Unknown"
+msgstr "Tundmatu"
 
-#~ msgid "The registration key is valid."
-#~ msgstr "Registreerumisvõti on kehtiv."
+msgid "Registered by"
+msgstr "Registreeritud"
 
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "Teil on vaja abi GLPI integreerimisel oma IT-ga, vigade paranduseks või "
-#~ "eelseadistatud reeglite või sõnastikega?\n"
-#~ "\n"
-#~ "ME pakume %s ruumi teile.\n"
-#~ "GLPI-Võrk on kommertstoode, mis sisaldab 3-taseme tugiteenuse tellimust, "
-#~ "see tagab vigade parandamise lepingu aja jooksul.\n"
-#~ "\n"
-#~ "Samas ruumis, saad <b>võtta ühendust ametliku partneriga</b> kes aitab "
-#~ "GLPI integreerimisel.\n"
-#~ "\n"
-#~ "Või toetada GLPI arendustegevust <b>annetades</b>."
+msgid "Unable to fetch registration information."
+msgstr "Ei suuda küsida registreerumisinfot."
 
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "Kas on probleeme GLPI täisutatud mooduli seadistamisel?\n"
-#~ "Me võime teid aidata sellega. Tehke omale toe tellimus %s."
+msgid "The registration key is invalid."
+msgstr "Registreerumisvõti pole kehtiv."
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "E mail on saadetud teie e-posti aadressile. E-mail sisaldad "
-#~ "informatsiooni salasõna taastamise kohta."
+msgid "The registration key refers to a terminated subscription."
+msgstr "Registreerimis võti viitab katkestatud tellimusele."
 
-#~ msgid "Email address not found."
-#~ msgstr "Aadressi ei leitud."
+msgid "The registration key is valid."
+msgstr "Registreerumisvõti on kehtiv."
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr "Seadme MAC aadress ja IP on seotud võrguseadme pordiga"
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"Teil on vaja abi GLPI integreerimisel oma IT-ga, vigade paranduseks või "
+"eelseadistatud reeglite või sõnastikega?\n"
+"\n"
+"ME pakume %s ruumi teile.\n"
+"GLPI-Võrk on kommertstoode, mis sisaldab 3-taseme tugiteenuse tellimust, see "
+"tagab vigade parandamise lepingu aja jooksul.\n"
+"\n"
+"Samas ruumis, saad <b>võtta ühendust ametliku partneriga</b> kes aitab GLPI "
+"integreerimisel.\n"
+"\n"
+"Või toetada GLPI arendustegevust <b>annetades</b>."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "Üleslaaditud faili suurus ületab \"upload_max_filesize\" väärtusega "
-#~ "lubatut php.ini-s"
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"Kas on probleeme GLPI täisutatud mooduli seadistamisel?\n"
+"Me võime teid aidata sellega. Tehke omale toe tellimus %s."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr "Üleslaaditud faili suurus ületab HTML vormis MAX_FILE_SIZE väärtust"
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"E mail on saadetud teie e-posti aadressile. E-mail sisaldad informatsiooni "
+"salasõna taastamise kohta."
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Fail laaditi vaid osaliselt üles"
+msgid "Email address not found."
+msgstr "Aadressi ei leitud."
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Faili salvestamine ebaõnnestus"
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr "Seadme MAC aadress ja IP on seotud võrguseadme pordiga"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "PHP laiendus peatas faili üleslaadimise"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"Üleslaaditud faili suurus ületab \"upload_max_filesize\" väärtusega lubatut "
+"php.ini-s"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr "Üleslaaditud fail ületab php.ini-s \"post_max_size\" väärtust"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr "Üleslaaditud faili suurus ületab HTML vormis MAX_FILE_SIZE väärtust"
 
-#~ msgid "File is too big"
-#~ msgstr "Fail on liiga suur"
+msgid "The uploaded file was only partially uploaded"
+msgstr "Fail laaditi vaid osaliselt üles"
 
-#~ msgid "File is too small"
-#~ msgstr "Fail on liiga väike"
+msgid "Failed to write file to disk"
+msgstr "Faili salvestamine ebaõnnestus"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Lubatud failide arv ületatud"
+msgid "A PHP extension stopped the file upload"
+msgstr "PHP laiendus peatas faili üleslaadimise"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Ületati pildi maks. laius"
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "Üleslaaditud fail ületab php.ini-s \"post_max_size\" väärtust"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Pildi minim. laius"
+msgid "File is too big"
+msgstr "Fail on liiga suur"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Ületati pildi maks. kõrgust"
+msgid "File is too small"
+msgstr "Fail on liiga väike"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Pildi minim. kõrgus"
+msgid "Maximum number of files exceeded"
+msgstr "Lubatud failide arv ületatud"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Faili tüüp pole lubatud"
+msgid "Image exceeds maximum width"
+msgstr "Ületati pildi maks. laius"
 
-#~ msgid "File upload aborted"
-#~ msgstr "Faili üleslaadimine katkestati"
+msgid "Image requires a minimum width"
+msgstr "Pildi minim. laius"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "Pildi suuruse muutmine ebaõnnestus"
+msgid "Image exceeds maximum height"
+msgstr "Ületati pildi maks. kõrgust"
 
-#~ msgid "Display GLPI debug information"
-#~ msgstr "Näita GLPI silumisinfot"
+msgid "Image requires a minimum height"
+msgstr "Pildi minim. kõrgus"
 
-#~ msgid "Progress"
-#~ msgstr "Edenemine"
+msgid "Filetype not allowed"
+msgstr "Faili tüüp pole lubatud"
 
-#~ msgid "My settings"
-#~ msgstr "Minu seaded"
+msgid "File upload aborted"
+msgstr "Faili üleslaadimine katkestati"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "Tagasi lehe algusse"
+msgid "Failed to resize image"
+msgstr "Pildi suuruse muutmine ebaõnnestus"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "Alla saab laadida aadressilt GLPI-PROJECT.org."
+msgid "Display GLPI debug information"
+msgstr "Näita GLPI silumisinfot"
 
-#~ msgid "Check all"
-#~ msgstr "Märgi kõik"
+msgid "Progress"
+msgstr "Edenemine"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Puhasta kõik"
+msgid "My settings"
+msgstr "Minu seaded"
 
-#~ msgid "Check all as"
-#~ msgstr "Märgi kõik"
+msgid "Back to top of the page"
+msgstr "Tagasi lehe algusse"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Näidatavate ridade arv on liiga suur massmuudatuste jaoks."
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "Alla saab laadida aadressilt GLPI-PROJECT.org."
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Limiidi suurendamiseks: muuda \"max_input_vars\" või \"suhosin.post."
-#~ "max_vars\" väärtusi php seadetes."
+msgid "Check all"
+msgstr "Märgi kõik"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "Kirjelduse väli on kohustuslik"
+msgid "Uncheck all"
+msgstr "Puhasta kõik"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "Alates %1$d kuni %2$d %3$d-st"
+msgid "Check all as"
+msgstr "Märgi kõik"
 
-#~ msgid "Empty array"
-#~ msgstr "Tühi massiiv"
+msgid "Selection too large, massive action disabled."
+msgstr "Näidatavate ridade arv on liiga suur massmuudatuste jaoks."
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d %2$d-le"
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Limiidi suurendamiseks: muuda \"max_input_vars\" või \"suhosin.post."
+"max_vars\" väärtusi php seadetes."
 
-#~ msgid "Close (Esc)"
-#~ msgstr "Sulge (Esc)"
+msgid "The description field is mandatory"
+msgstr "Kirjelduse väli on kohustuslik"
 
-#~ msgid "Share"
-#~ msgstr "Jaga"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "Alates %1$d kuni %2$d %3$d-st"
 
-#~ msgid "Zoom in/out"
-#~ msgstr "Suumige sisse/välja"
+msgid "Empty array"
+msgstr "Tühi massiiv"
 
-#~ msgid "Previous (arrow left)"
-#~ msgstr "Eelmine (vasak nool)"
+msgid "%1$d on %2$d"
+msgstr "%1$d %2$d-le"
 
-#~ msgid "Next (arrow right)"
-#~ msgstr "Järgmine (parem nool)"
+msgid "Close (Esc)"
+msgstr "Sulge (Esc)"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr "Manusta fail kas lohistades või kopeerides editoris või "
+msgid "Share"
+msgstr "Jaga"
 
-#~ msgid "selecting them"
-#~ msgstr "valides neid"
+msgid "Zoom in/out"
+msgstr "Suumige sisse/välja"
 
-#~ msgid "File(s)"
-#~ msgstr "Fail(id)"
+msgid "Previous (arrow left)"
+msgstr "Eelmine (vasak nool)"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Lohista fail siia või kasuta faili valimise dialoogi"
+msgid "Next (arrow right)"
+msgstr "Järgmine (parem nool)"
 
-#~ msgid "Upload successful"
-#~ msgstr "Üleslaadimine edukas"
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr "Manusta fail kas lohistades või kopeerides editoris või "
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Vali/Tühista kõik"
+msgid "selecting them"
+msgstr "valides neid"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Menüü leidmiseks alusta tippimist"
+msgid "File(s)"
+msgstr "Fail(id)"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "Silumisrežiim lubatud"
+msgid "Drag and drop your file here, or"
+msgstr "Lohista fail siia või kasuta faili valimise dialoogi"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "Silumisrežiim keelatud"
+msgid "Upload successful"
+msgstr "Üleslaadimine edukas"
 
-#~ msgid "Saved searches"
-#~ msgstr "Salvestatud otsingud"
+msgid "Check/uncheck all"
+msgstr "Vali/Tühista kõik"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Halda salvestatud otsinguid"
+msgid "Start typing to find a menu"
+msgstr "Menüü leidmiseks alusta tippimist"
 
-#~ msgid "Add is disabled"
-#~ msgstr "Lisamine on keelatud"
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Muudetud"
 
-#~ msgid "Search is disabled"
-#~ msgstr "Otsing on keelatud"
+msgid "Debug mode enabled"
+msgstr "Silumisrežiim lubatud"
 
-#~ msgid "Global Kanban"
-#~ msgstr "Üldine Kanban"
+msgid "Debug mode disabled"
+msgstr "Silumisrežiim keelatud"
 
-#, php-format
-#~ msgid "You are impersonating %s."
-#~ msgstr "Sa kehastad \"%s\"-i."
+msgid "Saved searches"
+msgstr "Salvestatud otsingud"
 
-#~ msgid "Stop impersonating"
-#~ msgstr "Lõpeta kehastumine"
+msgid "Manage saved searches"
+msgstr "Halda salvestatud otsinguid"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr "Luba sisenemine API-sse ja pärida sessiooni token kasutajaandmetega"
+msgid "Add is disabled"
+msgstr "Lisamine on keelatud"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "Luba sisenemine API-sse ja pärida sessiooni token välise tokeni abil. "
-#~ "Vaata Kaugjuurdepääsu võti kasutaja seadete lehel "
+msgid "Search is disabled"
+msgstr "Otsing on keelatud"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Näita GLPI ID numbrit"
+msgid "Global Kanban"
+msgstr "Üldine Kanban"
 
-#~ msgid "Color palette"
-#~ msgstr "Värviskeem"
+msgid "You are impersonating %s."
+msgstr "Sa kehastad \"%s\"-i."
 
-#~ msgid "Layout"
-#~ msgstr "Paigutus"
+msgid "Stop impersonating"
+msgstr "Lõpeta kehastumine"
 
-#~ msgid "Tabs on left"
-#~ msgstr "Kaardid vasakul"
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr "Luba sisenemine API-sse ja pärida sessiooni token kasutajaandmetega"
 
-#~ msgid "Classic view"
-#~ msgstr "Klassikaline vaade"
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"Luba sisenemine API-sse ja pärida sessiooni token välise tokeni abil. Vaata "
+"Kaugjuurdepääsu võti kasutaja seadete lehel "
 
-#~ msgid "Vertical split"
-#~ msgstr "Vertikaalne jaotus"
+msgid "Show GLPI ID"
+msgstr "Näita GLPI ID numbrit"
 
-#~ msgid "Dashboards"
-#~ msgstr "Juhtpaneelid"
+msgid "Color palette"
+msgstr "Värviskeem"
 
-#~ msgid "Default for central"
-#~ msgstr "Vaikimisi keskusele"
+msgid "Layout"
+msgstr "Paigutus"
 
-#~ msgid "Default for Assets"
-#~ msgstr "Vaikimisi varadele"
+msgid "Tabs on left"
+msgstr "Kaardid vasakul"
 
-#~ msgid "Default for Assistance"
-#~ msgstr "Vaikimisis Abistamisele"
+msgid "Classic view"
+msgstr "Klassikaline vaade"
 
-#~ msgid "Default for tickets (mini dashboard)"
-#~ msgstr "Vaikimisi teadetele (mini-juhtpaneel)"
+msgid "Vertical split"
+msgstr "Vertikaalne jaotus"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Kontrolli uue versiooni saadavust"
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Lepingu lõpp"
 
-#~ msgid "Show filters"
-#~ msgstr "Näita filterid"
+msgid "Dashboards"
+msgstr "Juhtpaneelid"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "Ajaloos puudub vaste filtritest"
+msgid "Default for central"
+msgstr "Vaikimisi keskusele"
 
-#~ msgid "Add to schedule"
-#~ msgstr "Lisa ajaplaani"
+msgid "Default for Assets"
+msgstr "Vaikimisi varadele"
 
-#~ msgid "Position in room"
-#~ msgstr "Asukoht ruumis"
+msgid "Default for Assistance"
+msgstr "Vaikimisis Abistamisele"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "Ukse suund ruumis"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Vaikimisi teadetele (mini-juhtpaneel)"
 
-#~ msgid "North"
-#~ msgstr "Põhi"
+msgid "Check if a new version is available"
+msgstr "Kontrolli uue versiooni saadavust"
 
-#~ msgid "East"
-#~ msgstr "Ida"
+msgid "Show filters"
+msgstr "Näita filterid"
 
-#~ msgid "South"
-#~ msgstr "Lõuna"
+msgid "No historical matching your filters"
+msgstr "Ajaloos puudub vaste filtritest"
 
-#~ msgid "West"
-#~ msgstr "Lääs"
+msgid "Add to schedule"
+msgstr "Lisa ajaplaani"
 
-#~ msgid "Number of units"
-#~ msgstr "Unitite arv"
+msgid "Position in room"
+msgstr "Asukoht ruumis"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "Door orientation in room"
+msgstr "Ukse suund ruumis"
 
-#~ msgid "Width"
-#~ msgstr "Laius"
+msgid "North"
+msgstr "Põhi"
 
-#~ msgid "Height"
-#~ msgstr "Kõrgus"
+msgid "East"
+msgstr "Ida"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "Mõõdetud võimsus (vattides)"
+msgid "South"
+msgstr "Lõuna"
 
-#~ msgid "Max. weight"
-#~ msgstr "Maks. kaal"
+msgid "West"
+msgstr "Lääs"
 
-#~ msgid "No rack found"
-#~ msgstr "Räkki ei leitud"
+msgid "Number of units"
+msgstr "Unitite arv"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "Järgnevad elemendid on väljapool ruumi mõõte"
+msgid "U"
+msgstr "U"
 
-#~ msgid "Blueprint"
-#~ msgstr "Plaan"
+msgid "Width"
+msgstr "Laius"
 
-#~ msgid "Grid"
-#~ msgstr "Ruudustik"
+msgid "Height"
+msgstr "Kõrgus"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "Aseta räkk siia"
+msgid "Measured power (in watts)"
+msgstr "Mõõdetud võimsus (vattides)"
 
-#~ msgid "Position must be set"
-#~ msgstr "Asukoht peab olema määratud"
+msgid "Max. weight"
+msgstr "Maks. kaal"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s positsioon pole saadaval"
+msgid "No rack found"
+msgstr "Räkki ei leitud"
 
-#~ msgid "All categories"
-#~ msgstr "Kõik valdkonnad"
+msgid "Following elements are out of room bounds"
+msgstr "Järgnevad elemendid on väljapool ruumi mõõte"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Valdkonnata tarkvara"
+msgid "Blueprint"
+msgstr "Plaan"
 
-#~ msgid "Valid license"
-#~ msgstr "Kehtiv litsents"
+msgid "Grid"
+msgstr "Ruudustik"
 
-#~ msgid "Other component"
-#~ msgstr "Muu komponent"
+msgid "Insert a rack here"
+msgstr "Aseta räkk siia"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "Viimane asi enne alustamist"
+msgid "Position must be set"
+msgstr "Asukoht peab olema määratud"
 
-#~ msgid "Donate"
-#~ msgstr "Anneta"
+msgid "%1$s position is not available"
+msgstr "%1$s positsioon pole saadaval"
+
+msgid "All categories"
+msgstr "Kõik valdkonnad"
+
+msgid "Uncategorized software"
+msgstr "Valdkonnata tarkvara"
+
+msgid "Valid license"
+msgstr "Kehtiv litsents"
+
+msgid "Other component"
+msgstr "Muu komponent"
+
+msgid "One last thing before starting"
+msgstr "Viimane asi enne alustamist"
+
+msgid "Donate"
+msgstr "Anneta"
+
+msgid "Unofficial translations are also available"
+msgstr "Mitteametlikud tõlked litsentsist"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Ma olen litsentsi lugenud ja NÕUSTUN litsentsi tingimustega."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Ma olen litsentsi lugenud ja EI NÕUSTU litsentsi tingimustega"
+
+msgid "Installation or update of GLPI"
+msgstr "GLPI uus paigaldus või uuendus"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Vali 'Paigalda', kui sul ei ole veel paigaldatud GLPI."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "Vali 'Uuenda', et uuendada sinu praegune GLPI paigaldus"
+
+msgid "Do you want to continue?"
+msgstr "Kas soovid jätkata?"
+
+msgid "Database connection parameters"
+msgstr "Ühenduse parameetrid"
+
+msgid "Test of the connection at the database"
+msgstr "Andmebaasi ühenduse kontroll"
+
+msgid "Can't connect to the database"
+msgstr "Ei saa andmebaasiga ühendust"
+
+msgid "The server answered: %s"
+msgstr "Serveri vastus: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Serveri ja/või kasutajanime väli on tühi"
+
+msgid "Please select a database:"
+msgstr "Vali andmebaas:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Loo uus andmebaas või kasuta olemasolevat:"
+
+msgid "Please select the database to update:"
+msgstr "Vali uuendatav andmebaas:"
+
+msgid "Initialization of the database"
+msgstr "Andmebaasi algseadistamine"
+
+msgid "Impossible to use the database:"
+msgstr "Võimatu kasutada andmebaasi:"
+
+msgid "OK - database was initialized"
+msgstr "Andmebaasi algseadistamine õnnestus"
+
+msgid "Impossible to write the database setup file"
+msgstr "Võimatu salvestada andmebaasi seadete faili"
+
+msgid "Database created"
+msgstr "Andmebaas on loodud"
+
+msgid "Error in creating database!"
+msgstr "Viga andmebaasi loomisel!"
+
+msgid "You didn't select a database!"
+msgstr "Sul on andmebaas valimata!"
+
+msgid "Collect data"
+msgstr "Kogu andmed"
+
+msgid "The installation is finished"
+msgstr "Paigaldus on lõppenud"
+
+msgid "Default logins / passwords are:"
+msgstr "Vaikimisi kasutajad ja salasõnad on:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech spetsialisti konto"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal tehniku konto"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly tavakasutaja konto"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "Neid kontosid saab muuta ja kustutada, samuti algseadistust."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Ei suuda luua andmebaasi ühenduse seadete faili, palun kontrolli õiguseid."
+
+msgid "Select your language"
+msgstr "Vali keel"
+
+msgid "Beginning of the installation"
+msgstr "Tarkvara paigaldamine"
+
+msgid "Step %d"
+msgstr "Samm %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Autentimine"
+
+msgid "Remember me"
+msgstr "Jäta mind meelde"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Luba veebilehitsejas JavaScript"
+
+msgid "You must accept cookies to reach this application"
+msgstr "Luba veebilehitsejas küpsised"
+
+msgid "Invalid use of session ID"
+msgstr "Sessioon on kehtetud"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Korduma kippuvad küsimused"
+
+msgid "Add a card"
+msgstr "Lisa kaart"
+
+msgid "Add a filter"
+msgstr "Lisa filter"
+
+msgid "Saved"
+msgstr "Salvestatud"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Oled kindel, et soovid kustutada juhtpaneeli %s ?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Saatmise aeg"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Alusta GLPI kasutamist"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Mitteametlikud tõlked litsentsist"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Ma olen litsentsi lugenud ja NÕUSTUN litsentsi tingimustega."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "Ma olen litsentsi lugenud ja EI NÕUSTU litsentsi tingimustega"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "GLPI uus paigaldus või uuendus"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Vali 'Paigalda', kui sul ei ole veel paigaldatud GLPI."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr "Vali 'Uuenda', et uuendada sinu praegune GLPI paigaldus"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Kas soovid jätkata?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Ühenduse parameetrid"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Andmebaasi ühenduse kontroll"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Ei saa andmebaasiga ühendust"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Serveri vastus: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Serveri ja/või kasutajanime väli on tühi"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Vali andmebaas:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Loo uus andmebaas või kasuta olemasolevat:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Vali uuendatav andmebaas:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Andmebaasi algseadistamine"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Võimatu kasutada andmebaasi:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "Andmebaasi algseadistamine õnnestus"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Võimatu salvestada andmebaasi seadete faili"
-
-#~ msgid "Database created"
-#~ msgstr "Andmebaas on loodud"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Viga andmebaasi loomisel!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Sul on andmebaas valimata!"
-
-#~ msgid "Collect data"
-#~ msgstr "Kogu andmed"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Paigaldus on lõppenud"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Vaikimisi kasutajad ja salasõnad on:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi administraatori konto"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech spetsialisti konto"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal tehniku konto"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly tavakasutaja konto"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "Neid kontosid saab muuta ja kustutada, samuti algseadistust."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Ei suuda luua andmebaasi ühenduse seadete faili, palun kontrolli õiguseid."
-
-#~ msgid "Select your language"
-#~ msgstr "Vali keel"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Tarkvara paigaldamine"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Samm %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Autentimine"
-
-#~ msgid "Remember me"
-#~ msgstr "Jäta mind meelde"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Luba veebilehitsejas JavaScript"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Luba veebilehitsejas küpsised"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Sessioon on kehtetud"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Korduma kippuvad küsimused"
-
-#~ msgid "Add a card"
-#~ msgstr "Lisa kaart"
-
-#~ msgid "Add a filter"
-#~ msgstr "Lisa filter"
-
-#~ msgid "Saved"
-#~ msgstr "Salvestatud"
-
-#, javascript-format
-#~ msgid "Are you sure you want to delete the dashboard %s ?"
-#~ msgstr "Oled kindel, et soovid kustutada juhtpaneeli %s ?"

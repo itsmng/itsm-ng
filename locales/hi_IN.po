@@ -23583,616 +23583,1282 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "No room found or selected"
-#~ msgstr "कोई कमरा नहीं मिला या चुना गया"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "लिखना"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "प्लगइन्स की सूची देखें"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "लॉग इन करें"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "अनंत के लिए खाली"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "कॉन्फ़िगरेशन देखें"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "आरएसएस फ़ीड मिला"
+msgid "No room found or selected"
+msgstr "कोई कमरा नहीं मिला या चुना गया"
 
-#~ msgid "Active Directory"
-#~ msgstr "सक्रिय निर्देशिका"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Replace"
+msgid "Marketplace"
+msgstr "प्रतिस्थापित करना"
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "प्रचार की पुष्टि करें?"
+#, fuzzy
+#| msgid "%1$s adds the item %2$s (%3$d)"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$sआइटम जोड़ता है%2$s(%3$d)"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "बंद करने के लिए आपके टिकट"
+msgid "See the catalog of plugins"
+msgstr "प्लगइन्स की सूची देखें"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "लंबित स्थिति पर टिकट"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "संसाधित होने के टिकट"
+msgid "Empty for infinite"
+msgstr "अनंत के लिए खाली"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "आपके मनाए गए टिकट"
+msgid "RSS feeds found"
+msgstr "आरएसएस फ़ीड मिला"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "आपके टिकट प्रगति पर हैं"
+msgid "Active Directory"
+msgstr "सक्रिय निर्देशिका"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "मान्य करने के लिए आपके टिकट"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "IP संस्करण"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "आपके टिकटों ने अनुमोदन की स्थिति को अस्वीकार कर दिया है"
+msgid "Confirm the promotion?"
+msgstr "प्रचार की पुष्टि करें?"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "आपके टिकट अस्वीकृत समाधान वाले हैं"
+msgid "Your tickets to close"
+msgstr "बंद करने के लिए आपके टिकट"
 
-#~ msgid "Ticket followup"
-#~ msgstr "टिकट अनुवर्ती"
+msgid "Tickets on pending status"
+msgstr "लंबित स्थिति पर टिकट"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d नए टिकट"
-#~ msgstr[1] "%dनए टिकट"
+msgid "Tickets to be processed"
+msgstr "संसाधित होने के टिकट"
 
-#~ msgid "No ticket found."
-#~ msgstr "कोई टिकट नहीं मिला"
+msgid "Your observed tickets"
+msgstr "आपके मनाए गए टिकट"
 
-#~ msgid "Last tickets"
-#~ msgstr "अंतिम टिकट"
+msgid "Your tickets in progress"
+msgstr "आपके टिकट प्रगति पर हैं"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "इस मद के लिए नया टिकट"
+msgid "Your tickets to validate"
+msgstr "मान्य करने के लिए आपके टिकट"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "अंतिम %d टिकट"
-#~ msgstr[1] "अंतिम %d टिकट"
+msgid "Your tickets having rejected approval status"
+msgstr "आपके टिकटों ने अनुमोदन की स्थिति को अस्वीकार कर दिया है"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "आपको सभी टिकट देखने का अधिकार नहीं है"
+msgid "Your tickets having rejected solution"
+msgstr "आपके टिकट अस्वीकृत समाधान वाले हैं"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "लिंक किए गए सामानों पर टिकट"
-#~ msgstr[1] "लिंक किए गए सामानों पर टिकट"
+msgid "Ticket followup"
+msgstr "टिकट अनुवर्ती"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "कोई टिकट प्रगति पर नहीं है।"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d नए टिकट"
+msgstr[1] "%dनए टिकट"
 
-#~ msgid "Assign equipment"
-#~ msgstr "उपकरण सौंपें"
+msgid "No ticket found."
+msgstr "कोई टिकट नहीं मिला"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "स्वचालित टिकट बंद हो रहा है"
+msgid "Last tickets"
+msgstr "अंतिम टिकट"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "संतुष्टि सर्वेक्षण का निर्माण"
+msgid "New ticket for this item..."
+msgstr "इस मद के लिए नया टिकट"
 
-#~ msgid "See my ticket"
-#~ msgstr "मेरा टिकट देखें"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "अंतिम %d टिकट"
+msgstr[1] "अंतिम %d टिकट"
 
-#~ msgid "See group ticket"
-#~ msgstr "समूह टिकट देखें"
+msgid "You don't have right to see all tickets"
+msgstr "आपको सभी टिकट देखने का अधिकार नहीं है"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "मेरे समूहों द्वारा बनाए गए टिकट देखें"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "लिंक किए गए सामानों पर टिकट"
+msgstr[1] "लिंक किए गए सामानों पर टिकट"
 
-#~ msgid "See all tickets"
-#~ msgstr "सभी टिकट देखें"
+msgid "No ticket in progress."
+msgstr "कोई टिकट प्रगति पर नहीं है।"
 
-#~ msgid "See assigned"
-#~ msgstr "असाइन  देखें"
+msgid "Assign equipment"
+msgstr "उपकरण सौंपें"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "असाइन टिकट देखें"
+msgid "Automatic tickets closing"
+msgstr "स्वचालित टिकट बंद हो रहा है"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "टिकट सौंपें"
+msgid "Generation of satisfaction surveys"
+msgstr "संतुष्टि सर्वेक्षण का निर्माण"
 
-#~ msgid "Steal"
-#~ msgstr "चुराना"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "हल किए गए टिकटों के स्वचालित बंद होने के बाद"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "टिकट चोरी करो"
+msgid "See my ticket"
+msgstr "मेरा टिकट देखें"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "प्रभारी मधुमक्खी"
+msgid "See group ticket"
+msgstr "समूह टिकट देखें"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "टिकट के प्रभारी होने के लिए"
+msgid "See tickets created by my groups"
+msgstr "मेरे समूहों द्वारा बनाए गए टिकट देखें"
 
-#~ msgid "Change the priority"
-#~ msgstr "प्राथमिकता बदलें"
+msgid "See all tickets"
+msgstr "सभी टिकट देखें"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "समाधान / उत्तर सर्वेक्षण (मेरा टिकट) स्वीकृत करें"
+msgid "See assigned"
+msgstr "असाइन  देखें"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr ""
-#~ "समाधान द्वारा स्वीकृति दें और मेरे द्वारा बनाए गए टिकट के लिए सर्वेक्षण का उत्तर दें"
+msgid "See assigned tickets"
+msgstr "असाइन टिकट देखें"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "श्रेणी का पुनर्मूल्यांकन करें"
+msgid "Assign a ticket"
+msgstr "टिकट सौंपें"
 
-#~ msgid "Valid licenses"
-#~ msgstr "वैध लाइसेंस"
+msgid "Steal"
+msgstr "चुराना"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "स्थापनाओं की संख्या"
+msgid "Steal a ticket"
+msgstr "टिकट चोरी करो"
 
-#~ msgid "Merge"
-#~ msgstr "संविलीन"
+msgid "Beeing in charge"
+msgstr "प्रभारी मधुमक्खी"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "विलय के बाद सॉफ्टवेयर हटा दिया गया"
+msgid "To be in charge of a ticket"
+msgstr "टिकट के प्रभारी होने के लिए"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "आपको कम से कम एक अधिसूचना मोड सक्षम करना होगा।"
+msgid "Change the priority"
+msgstr "प्राथमिकता बदलें"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "समाधान / उत्तर सर्वेक्षण (मेरा टिकट) स्वीकृत करें"
 
-#~ msgid "Connect a computer"
-#~ msgstr "एक कंप्यूटर से कनेक्ट करें"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "समाधान द्वारा स्वीकृति दें और मेरे द्वारा बनाए गए टिकट के लिए सर्वेक्षण का उत्तर दें"
 
-#~ msgid "Not connected"
-#~ msgstr "जुड़े नहीं हैं"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
 
-#~ msgid "Show as map"
-#~ msgstr "मानचित्र के रूप में दिखाएं"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to load ticket %d"
+msgstr "आवर्ती टिकट बनाने में विफल%s"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "%s के लिए मान्य"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add followup to ticket %d"
+msgstr "आवर्ती टिकट बनाने में विफल%s"
 
-#~ msgid "Solved"
-#~ msgstr "हल"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add task to ticket %d"
+msgstr "आवर्ती टिकट बनाने में विफल%s"
 
-#~ msgid "field name in DB"
-#~ msgstr "DB में क्षेत्र का नाम"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add document to ticket %d"
+msgstr "आवर्ती टिकट बनाने में विफल%s"
 
-#~ msgid "Example:"
-#~ msgstr "उदाहरण:"
+msgid "Failed to link tickets %d and %d"
+msgstr ""
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "जीएलपीआई 9.2 के बाद से, हमने \"टेलीमेट्री\" नामक एक नई सांख्यिकी सुविधा पेश की है, "
-#~ "जो अनामिक रूप से आपकी अनुमति के साथ, हमारी टेलीमेट्री वेबसाइट पर डेटा भेजती है।"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "फ़ाइल %s को हटाने में विफल"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "आईपी ​​नेटवर्क डेटाबेस में शामिल नहीं है। हालांकि, आप वर्तमान उपलब्ध नेटवर्क देख सकते हैं।"
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s%2$sसंस्करण परिष्कृत करता है"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr "कई नेटवर्क नाम उपलब्ध हैं! उन्हें प्रबंधित करने के लिए 'नेटवर्क नाम' टैब पर जाएं।"
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "प्लगइन्स दस्तावेज़ फ़ाइलों के लिए लेखन अनुमतियां जांचना"
 
-#~ msgid "Add a network name"
-#~ msgstr "एक नेटवर्क नाम जोड़ें"
+msgid "Recalculate the category"
+msgstr "श्रेणी का पुनर्मूल्यांकन करें"
 
-#~ msgid "Not associated"
-#~ msgstr "संबद्ध नहीं"
+msgid "Valid licenses"
+msgstr "वैध लाइसेंस"
 
-#~ msgid "Create a new network name"
-#~ msgstr "नया नेटवर्क नाम बनाएं"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "स्थापनाओं की संख्या"
 
-#~ msgid "No network name found"
-#~ msgstr "कोई नेटवर्क नाम नहीं मिला"
+msgid "Merge"
+msgstr "संविलीन"
 
-#~ msgid "Clean"
-#~ msgstr "स्वच्छ"
+msgid "Software deleted after merging"
+msgstr "विलय के बाद सॉफ्टवेयर हटा दिया गया"
 
-#~ msgid "Install"
-#~ msgstr "स्थापित करें"
+msgid "You must enable at least one notification mode."
+msgstr "आपको कम से कम एक अधिसूचना मोड सक्षम करना होगा।"
 
-#~ msgid "Enable"
-#~ msgstr "सक्षम करें"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid "Uninstall"
-#~ msgstr "स्थापना रद्द करें"
+msgid "Connect a computer"
+msgstr "एक कंप्यूटर से कनेक्ट करें"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "खोज इंजन पर, किसी भी समाप्ति तिथि के साथ लाइसेंस खोजने के लिए \"समाप्ति न्यूल\" का "
-#~ "उपयोग करें"
+msgid "Not connected"
+msgstr "जुड़े नहीं हैं"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "आपके ईमेल पते पर एक ईमेल भेजा गया है। ईमेल में आपके पासवर्ड को रीसेट करने के लिए "
-#~ "जानकारी है।"
+msgid "Show as map"
+msgstr "मानचित्र के रूप में दिखाएं"
 
-#~ msgid "Email address not found."
-#~ msgstr "यह ईमेल उपलब्ध नहीं है।"
+msgid "Valid to %s"
+msgstr "%s के लिए मान्य"
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr "मैक पता और उपकरण के आईपी एक समेकित नेटवर्क पोर्ट में शामिल हैं"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "अंतिम टिकट"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr "अपलोड की गई फ़ाइल php.ini में upload_max_filesize निर्देश से अधिक है"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "टिकट अनुमोदन की प्रतीक्षा कर रहा है"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "अपलोड की गई फ़ाइल MAX_FILE_SIZE निर्देश से अधिक है जो HTML फ़ॉर्म में निर्दिष्ट थी"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "लिंक टिकट"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "अपलोड की गई फाइल केवल आंशिक रूप से अपलोड की गई थी"
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "टिकट हल करें"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "डिस्क पर फ़ाइल लिखने में विफल"
+#, fuzzy
+#| msgid "Child tickets"
+msgid "Closed tickets"
+msgstr "बाल टिकट"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "एक PHP विस्तार फ़ाइल अपलोड बंद कर दिया"
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "बिना नाम का"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr "अपलोड की गई फ़ाइल php.ini में post_max_size निर्देश से अधिक है"
+#, fuzzy
+#| msgid "Time to own"
+msgid "Time to close"
+msgstr "स्वयं स्वीकार करने का समय"
 
-#~ msgid "File is too big"
-#~ msgstr "फ़ाइल बहुत बड़ी है"
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "मान्य करें"
 
-#~ msgid "File is too small"
-#~ msgstr "फ़ाइल बहुत छोटी है"
+msgid "Solved"
+msgstr "हल"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "फाइलों की अधिकतम संख्या पार हो गई"
+msgid "Share or embed this dashboard"
+msgstr ""
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "छवि अधिकतम चौड़ाई से अधिक है"
+msgid "Delete this dashboard"
+msgstr ""
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "छवि को न्यूनतम चौड़ाई की आवश्यकता है"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle auto-refresh"
+msgstr "फ़िल्टर टॉगल करें"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "छवि अधिकतम ऊंचाई से अधिक है"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle night mode"
+msgstr "फ़िल्टर टॉगल करें"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle fullscreen"
+msgstr "फ़िल्टर टॉगल करें"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "छवि को न्यूनतम ऊंचाई की आवश्यकता है"
+msgid "Clone this dashboard"
+msgstr ""
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle edit mode"
+msgstr "फ़िल्टर टॉगल करें"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add filter"
+msgstr "एक वस्तु जोड़ें"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "एक नया कार्य जोड़ें"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "अन्य"
+
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "बजट"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "कार्यों की संख्या"
+
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filters"
+msgstr "फ़िल्टर सूची"
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "आवेदन का यूआरएल"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP निर्देशिका लिंक"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+#, fuzzy
+#| msgid "Empty array"
+msgid "empty card !"
+msgstr "खाली सरणी"
+
+#, fuzzy
+#| msgid "Number of rows"
+msgid "Number of %s"
+msgstr "पंक्तियों की संख्या"
+
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s से %2$s"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "मूल्यों की सूची"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "टिकटों की संख्या"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket tasks to do"
+msgid "Tickets status by month"
+msgstr "टिकट कार्य करने के लिए"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "टिकट श्रेणियां"
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Top ticket's categories"
+msgstr "टिकट श्रेणियां"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "मान्य करने के लिए आपके टिकट"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "टिकट डिफ़ॉल्ट प्रकार"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "टिकट स्थान"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "अनुरोधकर्ता के रूप में टिकटों की संख्या"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "मेरे समूहों द्वारा बनाए गए टिकट देखें"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "टिकट के बाद बंद कर दिया"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "मेरे समूहों द्वारा बनाए गए टिकट देखें"
+
+#, fuzzy
+#| msgid "New group in assignees"
+msgid "Top ticket's assignees"
+msgstr "असाइनमेंट में नया समूह"
+
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "संबंधित समूहों के टिकटों पर एक फॉलोअप जोड़ें"
+
+#, fuzzy
+#| msgid "List of translations"
+msgid "List of reminders"
+msgstr "अनुवादों की सूची"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr "DB में क्षेत्र का नाम"
+
+msgid "Example:"
+msgstr "उदाहरण:"
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"जीएलपीआई 9.2 के बाद से, हमने \"टेलीमेट्री\" नामक एक नई सांख्यिकी सुविधा पेश की है, जो "
+"अनामिक रूप से आपकी अनुमति के साथ, हमारी टेलीमेट्री वेबसाइट पर डेटा भेजती है।"
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"आईपी ​​नेटवर्क डेटाबेस में शामिल नहीं है। हालांकि, आप वर्तमान उपलब्ध नेटवर्क देख सकते हैं।"
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr "कई नेटवर्क नाम उपलब्ध हैं! उन्हें प्रबंधित करने के लिए 'नेटवर्क नाम' टैब पर जाएं।"
+
+msgid "Add a network name"
+msgstr "एक नेटवर्क नाम जोड़ें"
+
+msgid "Not associated"
+msgstr "संबद्ध नहीं"
+
+msgid "Create a new network name"
+msgstr "नया नेटवर्क नाम बनाएं"
+
+msgid "No network name found"
+msgstr "कोई नेटवर्क नाम नहीं मिला"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "नए अपडेट के लिए जाँच करें"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "स्थापित करें"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "वियोजित करना"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+#, fuzzy
+#| msgid "%1$s position is not available"
+msgid "Your %1$s registration is not valid."
+msgstr "%1$s स्थिति उपलब्ध नहीं है"
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "%s पर बनाया गया"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "आपकी टिप्पणी संपादित कर दी गई है"
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "%s पर उत्पन्न"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "सबसे लोकप्रिय प्रश्न"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "अंतिम अद्यतन"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "नोट्स पढ़ें"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filter plugin list"
+msgstr "फ़िल्टर सूची"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "घर"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "पढ़ना"
+
+msgid "Clean"
+msgstr "स्वच्छ"
+
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "लॉगिन मान्य नहीं है। उपयोगकर्ता जोड़ने में असमर्थ।"
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "एक नया संस्करण उपलब्ध है: %s"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "स्थापित करें"
+
+msgid "Enable"
+msgstr "सक्षम करें"
+
+msgid "Uninstall"
+msgstr "स्थापना रद्द करें"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "अक्षम प्लगइन"
+msgstr[1] "अक्षम प्लगइन"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "देर से"
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "प्लगइन्स"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "भवन का नंबर"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"खोज इंजन पर, किसी भी समाप्ति तिथि के साथ लाइसेंस खोजने के लिए \"समाप्ति न्यूल\" का "
+"उपयोग करें"
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "आरक्षण"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "%s पर बनाया गया"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "आरक्षण"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "विवरण"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "अज्ञात फ़ाइल"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "वित्तीय और प्रशासनिक जानकारी सक्षम करें"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "स्थापना समाप्त हो गई है"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "स्थापना समाप्त हो गई है"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"आपके ईमेल पते पर एक ईमेल भेजा गया है। ईमेल में आपके पासवर्ड को रीसेट करने के लिए जानकारी है।"
+
+msgid "Email address not found."
+msgstr "यह ईमेल उपलब्ध नहीं है।"
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr "मैक पता और उपकरण के आईपी एक समेकित नेटवर्क पोर्ट में शामिल हैं"
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "अपलोड की गई फ़ाइल php.ini में upload_max_filesize निर्देश से अधिक है"
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"अपलोड की गई फ़ाइल MAX_FILE_SIZE निर्देश से अधिक है जो HTML फ़ॉर्म में निर्दिष्ट थी"
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "अपलोड की गई फाइल केवल आंशिक रूप से अपलोड की गई थी"
+
+msgid "Failed to write file to disk"
+msgstr "डिस्क पर फ़ाइल लिखने में विफल"
+
+msgid "A PHP extension stopped the file upload"
+msgstr "एक PHP विस्तार फ़ाइल अपलोड बंद कर दिया"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "अपलोड की गई फ़ाइल php.ini में post_max_size निर्देश से अधिक है"
+
+msgid "File is too big"
+msgstr "फ़ाइल बहुत बड़ी है"
+
+msgid "File is too small"
+msgstr "फ़ाइल बहुत छोटी है"
+
+msgid "Maximum number of files exceeded"
+msgstr "फाइलों की अधिकतम संख्या पार हो गई"
+
+msgid "Image exceeds maximum width"
+msgstr "छवि अधिकतम चौड़ाई से अधिक है"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "फ़ाइल प्रकार की अनुमति नहीं है"
+msgid "Image requires a minimum width"
+msgstr "छवि को न्यूनतम चौड़ाई की आवश्यकता है"
 
-#~ msgid "File upload aborted"
-#~ msgstr "फ़ाइल अपलोड निरस्त"
+msgid "Image exceeds maximum height"
+msgstr "छवि अधिकतम ऊंचाई से अधिक है"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "छवि का आकार बदलने में विफल"
+msgid "Image requires a minimum height"
+msgstr "छवि को न्यूनतम ऊंचाई की आवश्यकता है"
 
-#~ msgid "Progress"
-#~ msgstr "प्रगति"
+msgid "Filetype not allowed"
+msgstr "फ़ाइल प्रकार की अनुमति नहीं है"
 
-#~ msgid "My settings"
-#~ msgstr "मेरी पतिस्थिति"
+msgid "File upload aborted"
+msgstr "फ़ाइल अपलोड निरस्त"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "पृष्ठ के शीर्ष पर वापस जाएं"
+msgid "Failed to resize image"
+msgstr "छवि का आकार बदलने में विफल"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "आप इसे GLPI-PROJECT.org साइट पर पाएंगे।"
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "उपयोगकर्ता के लिए जानकारी"
 
-#~ msgid "Check all"
-#~ msgstr "सभी की जांच करो"
+msgid "Progress"
+msgstr "प्रगति"
 
-#~ msgid "Uncheck all"
-#~ msgstr "सब को अचयनित करें"
+msgid "My settings"
+msgstr "मेरी पतिस्थिति"
 
-#~ msgid "Check all as"
-#~ msgstr "सभी के रूप में जांचें"
+msgid "Back to top of the page"
+msgstr "पृष्ठ के शीर्ष पर वापस जाएं"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "चयन बहुत बड़ा, भारी कार्रवाई अक्षम।"
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "आप इसे GLPI-PROJECT.org साइट पर पाएंगे।"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "सीमा बढ़ाने के लिए: php कॉन्फ़िगरेशन में max_input_vars या suhosin.post.max_vars "
-#~ "बदलें।"
+msgid "Check all"
+msgstr "सभी की जांच करो"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "विवरण फ़ील्ड अनिवार्य है"
+msgid "Uncheck all"
+msgstr "सब को अचयनित करें"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "%3$d से %1$d से %2$d तक"
+msgid "Check all as"
+msgstr "सभी के रूप में जांचें"
 
-#~ msgid "Empty array"
-#~ msgstr "खाली सरणी"
+msgid "Selection too large, massive action disabled."
+msgstr "चयन बहुत बड़ा, भारी कार्रवाई अक्षम।"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%2$d पर %1$d"
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"सीमा बढ़ाने के लिए: php कॉन्फ़िगरेशन में max_input_vars या suhosin.post.max_vars बदलें।"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr "ड्रैग और ड्रॉप या फ़ाइल में कॉपी और पेस्ट करके फ़ाइल संलग्न करें या"
+msgid "The description field is mandatory"
+msgstr "विवरण फ़ील्ड अनिवार्य है"
 
-#~ msgid "selecting them"
-#~ msgstr "उन्हें चुनना"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "%3$d से %1$d से %2$d तक"
 
-#~ msgid "File(s)"
-#~ msgstr "फ़ाइल (रों)"
+msgid "Empty array"
+msgstr "खाली सरणी"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "अपनी फ़ाइल को यहां खींचें और छोड़ें, या"
+msgid "%1$d on %2$d"
+msgstr "%2$d पर %1$d"
 
-#~ msgid "Upload successful"
-#~ msgstr "सफलतापूर्वक अपलोड हो गया"
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "बंद"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "सभी को चेक / अनचेक करें"
+msgid "Share"
+msgstr ""
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "मेनू खोजने के लिए टाइप करना प्रारंभ करें"
+msgid "Zoom in/out"
+msgstr ""
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "डीबग मोड सक्षम"
+msgid "Previous (arrow left)"
+msgstr ""
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "डीबग मोड अक्षम"
+msgid "Next (arrow right)"
+msgstr ""
 
-#~ msgid "Saved searches"
-#~ msgstr "सहेजी गई खोजें"
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr "ड्रैग और ड्रॉप या फ़ाइल में कॉपी और पेस्ट करके फ़ाइल संलग्न करें या"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "सहेजी गई खोजें प्रबंधित करें"
+msgid "selecting them"
+msgstr "उन्हें चुनना"
 
-#~ msgid "Add is disabled"
-#~ msgstr "जोड़ें अक्षम है"
+msgid "File(s)"
+msgstr "फ़ाइल (रों)"
 
-#~ msgid "Search is disabled"
-#~ msgstr "खोज अक्षम है"
+msgid "Drag and drop your file here, or"
+msgstr "अपनी फ़ाइल को यहां खींचें और छोड़ें, या"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr ""
-#~ "एपीआई में लॉगिन करने और उपयोगकर्ता प्रमाण-पत्रों के साथ एक सत्र टोकन प्राप्त करने की "
-#~ "अनुमति दें"
+msgid "Upload successful"
+msgstr "सफलतापूर्वक अपलोड हो गया"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "API में लॉगिन करने और उपयोगकर्ता बाहरी टोकन के साथ एक सत्र टोकन प्राप्त करने की "
-#~ "अनुमति दें। उपयोगकर्ता सेटिंग्स टैब में दूरस्थ पहुंच कुंजी देखें"
+msgid "Check/uncheck all"
+msgstr "सभी को चेक / अनचेक करें"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "जीएलपीआई ID दिखाएं"
+msgid "Start typing to find a menu"
+msgstr "मेनू खोजने के लिए टाइप करना प्रारंभ करें"
 
-#~ msgid "Color palette"
-#~ msgstr "रंगों के प्रकार"
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "तबदील"
 
-#~ msgid "Layout"
-#~ msgstr "अभिन्यास"
+msgid "Debug mode enabled"
+msgstr "डीबग मोड सक्षम"
 
-#~ msgid "Tabs on left"
-#~ msgstr "बाईं ओर टैब्स"
+msgid "Debug mode disabled"
+msgstr "डीबग मोड अक्षम"
 
-#~ msgid "Classic view"
-#~ msgstr "शास्त्रीय दृश्य"
+msgid "Saved searches"
+msgstr "सहेजी गई खोजें"
 
-#~ msgid "Vertical split"
-#~ msgstr "लंबवत विभाजन"
+msgid "Manage saved searches"
+msgstr "सहेजी गई खोजें प्रबंधित करें"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "जांचें कि कोई नया संस्करण उपलब्ध है या नहीं"
+msgid "Add is disabled"
+msgstr "जोड़ें अक्षम है"
 
-#~ msgid "Show filters"
-#~ msgstr "फ़िल्टर दिखाएं"
+msgid "Search is disabled"
+msgstr "खोज अक्षम है"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "आपके फ़िल्टर से कोई ऐतिहासिक मिलान नहीं है"
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "वैश्विक प्रबंधन"
 
-#~ msgid "Add to schedule"
-#~ msgstr "अनुसूची में जोड़ें"
+msgid "You are impersonating %s."
+msgstr ""
 
-#~ msgid "Position in room"
-#~ msgstr "कमरे में स्थिति"
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "व्यक्तिगत सेट करें"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "कमरे में दरवाजा अभिविन्यास"
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+"एपीआई में लॉगिन करने और उपयोगकर्ता प्रमाण-पत्रों के साथ एक सत्र टोकन प्राप्त करने की "
+"अनुमति दें"
 
-#~ msgid "North"
-#~ msgstr "उत्तर"
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"API में लॉगिन करने और उपयोगकर्ता बाहरी टोकन के साथ एक सत्र टोकन प्राप्त करने की अनुमति "
+"दें। उपयोगकर्ता सेटिंग्स टैब में दूरस्थ पहुंच कुंजी देखें"
 
-#~ msgid "East"
-#~ msgstr "पूर्व"
+msgid "Show GLPI ID"
+msgstr "जीएलपीआई ID दिखाएं"
 
-#~ msgid "South"
-#~ msgstr "दक्षिण"
+msgid "Color palette"
+msgstr "रंगों के प्रकार"
 
-#~ msgid "West"
-#~ msgstr "पश्चिम"
+msgid "Layout"
+msgstr "अभिन्यास"
 
-#~ msgid "Number of units"
-#~ msgstr "इकाइयों की संख्या"
+msgid "Tabs on left"
+msgstr "बाईं ओर टैब्स"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "Classic view"
+msgstr "शास्त्रीय दृश्य"
 
-#~ msgid "Width"
-#~ msgstr "चौड़ाई"
+msgid "Vertical split"
+msgstr "लंबवत विभाजन"
 
-#~ msgid "Height"
-#~ msgstr "ऊंचाई"
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "अनुबंध की समाप्ति"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "मापित शक्ति (वाट में)"
+msgid "Dashboards"
+msgstr ""
 
-#~ msgid "Max. weight"
-#~ msgstr "अधिकतम वजन"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "टिकट के लिए डिफ़ॉल्ट"
 
-#~ msgid "No rack found"
-#~ msgstr "कोई रैक नहीं मिला"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "टिकट के लिए डिफ़ॉल्ट"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "निम्नलिखित तत्व कमरे की सीमा से बाहर हैं"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "टिकट के लिए डिफ़ॉल्ट"
 
-#~ msgid "Blueprint"
-#~ msgstr "मूल योजना"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "टिकट के लिए डिफ़ॉल्ट"
 
-#~ msgid "Grid"
-#~ msgstr "जाल"
+msgid "Check if a new version is available"
+msgstr "जांचें कि कोई नया संस्करण उपलब्ध है या नहीं"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "यहाँ एक रैक डालें"
+msgid "Show filters"
+msgstr "फ़िल्टर दिखाएं"
 
-#~ msgid "Position must be set"
-#~ msgstr "स्थिति निर्धारित की जानी चाहिए"
+msgid "No historical matching your filters"
+msgstr "आपके फ़िल्टर से कोई ऐतिहासिक मिलान नहीं है"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s स्थिति उपलब्ध नहीं है"
+msgid "Add to schedule"
+msgstr "अनुसूची में जोड़ें"
 
-#~ msgid "All categories"
-#~ msgstr "सब वर्ग"
+msgid "Position in room"
+msgstr "कमरे में स्थिति"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "सॉफ्टवेयर वर्गीकृत करें"
+msgid "Door orientation in room"
+msgstr "कमरे में दरवाजा अभिविन्यास"
 
-#~ msgid "Valid license"
-#~ msgstr "वैध लाइसेंस"
+msgid "North"
+msgstr "उत्तर"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "शुरू करने से पहले एक आखिरी बात"
+msgid "East"
+msgstr "पूर्व"
 
-#~ msgid "Donate"
-#~ msgstr "दान करना"
+msgid "South"
+msgstr "दक्षिण"
+
+msgid "West"
+msgstr "पश्चिम"
+
+msgid "Number of units"
+msgstr "इकाइयों की संख्या"
+
+msgid "U"
+msgstr "U"
+
+msgid "Width"
+msgstr "चौड़ाई"
+
+msgid "Height"
+msgstr "ऊंचाई"
+
+msgid "Measured power (in watts)"
+msgstr "मापित शक्ति (वाट में)"
+
+msgid "Max. weight"
+msgstr "अधिकतम वजन"
+
+msgid "No rack found"
+msgstr "कोई रैक नहीं मिला"
+
+msgid "Following elements are out of room bounds"
+msgstr "निम्नलिखित तत्व कमरे की सीमा से बाहर हैं"
+
+msgid "Blueprint"
+msgstr "मूल योजना"
+
+msgid "Grid"
+msgstr "जाल"
+
+msgid "Insert a rack here"
+msgstr "यहाँ एक रैक डालें"
+
+msgid "Position must be set"
+msgstr "स्थिति निर्धारित की जानी चाहिए"
+
+msgid "%1$s position is not available"
+msgstr "%1$s स्थिति उपलब्ध नहीं है"
+
+msgid "All categories"
+msgstr "सब वर्ग"
+
+msgid "Uncategorized software"
+msgstr "सॉफ्टवेयर वर्गीकृत करें"
+
+msgid "Valid license"
+msgstr "वैध लाइसेंस"
+
+#, fuzzy
+#| msgid "Other component model"
+#| msgid_plural "Other component models"
+msgid "Other component"
+msgstr "अन्य घटक मॉडल"
+
+msgid "One last thing before starting"
+msgstr "शुरू करने से पहले एक आखिरी बात"
+
+msgid "Donate"
+msgstr "दान करना"
+
+msgid "Unofficial translations are also available"
+msgstr "अनौपचारिक अनुवाद भी उपलब्ध हैं"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "मैंने ऊपर लिखे गए लाइसेंस की शर्तों को पढ़ और स्वीकार किया है I"
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "मैंने पढ़ा है और ऊपर लिखे गए लाइसेंस की शर्तों को स्वीकार नहीं किया है"
+
+msgid "Installation or update of GLPI"
+msgstr "जीएलपीआई की स्थापना या अपडेट"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "जीएलपीआई की पूरी तरह से नई स्थापना के लिए 'इंस्टॉल' चुनें"
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+"किसी पुराने संस्करण से जीएलपीआई के आपके संस्करण को अपडेट करने के लिए 'अपग्रेड' का चयन करें"
+
+msgid "Do you want to continue?"
+msgstr "क्या आप जारी रखना चाहते हैं?"
+
+msgid "Database connection parameters"
+msgstr "डेटाबेस कनेक्शन पैरामीटर"
+
+msgid "Test of the connection at the database"
+msgstr "डेटाबेस में कनेक्शन का परीक्षण करें"
+
+msgid "Can't connect to the database"
+msgstr "डेटाबेस से कनेक्ट नहीं हो सकता"
+
+msgid "The server answered: %s"
+msgstr "सर्वर ने उत्तर दिया:%s"
+
+msgid "The server or/and user field is empty"
+msgstr "सर्वर या / और उपयोगकर्ता फ़ील्ड रिक्त है"
+
+msgid "Please select a database:"
+msgstr "कृपया एक डेटाबेस चुनें:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "नया डेटाबेस बनाएं या मौजूदा का उपयोग करें:"
+
+msgid "Please select the database to update:"
+msgstr "अद्यतन करने के लिए कृपया डेटाबेस का चयन करें:"
+
+msgid "Initialization of the database"
+msgstr "डेटाबेस का आरंभ"
+
+msgid "Impossible to use the database:"
+msgstr "डेटाबेस का उपयोग करने के लिए असंभव:"
+
+msgid "OK - database was initialized"
+msgstr "ठीक - डेटाबेस प्रारंभ किया गया था"
+
+msgid "Impossible to write the database setup file"
+msgstr "डेटाबेस सेटअप फ़ाइल को लिखना असंभव"
+
+msgid "Database created"
+msgstr "डेटाबेस बनाया"
+
+msgid "Error in creating database!"
+msgstr "डेटाबेस बनाने में त्रुटि!"
+
+msgid "You didn't select a database!"
+msgstr "आपने एक डेटाबेस का चयन नहीं किया!"
+
+msgid "Collect data"
+msgstr "डेटा इकट्ठा करना"
+
+msgid "The installation is finished"
+msgstr "स्थापना समाप्त हो गई है"
+
+msgid "Default logins / passwords are:"
+msgstr "डिफ़ॉल्ट लॉग इन / पासवर्ड हैं:"
+
+msgid "tech/tech for the technician account"
+msgstr "तकनीशियन खाते के लिए तकनीक / तकनीक"
+
+msgid "normal/normal for the normal account"
+msgstr "सामान्य खाते के लिए सामान्य / सामान्य"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "केवल पोस्ट के लिए केवल पोस्ट / पोस्ट करें"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "आप इन खातों को हटा सकते हैं या संशोधित कर सकते हैं साथ ही प्रारंभिक डेटा भी।"
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr "डेटाबेस कनेक्शन फ़ाइल नहीं बना सकता, कृपया फ़ाइल अनुमतियों को सत्यापित करें।"
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "डिफ़ॉल्ट भाषा"
+
+msgid "Beginning of the installation"
+msgstr "स्थापना की शुरुआत"
+
+msgid "Step %d"
+msgstr "चरण%d"
+
+msgid "GLPI - Authentication"
+msgstr "जीएलपीआई - प्रमाणीकरण"
+
+msgid "Remember me"
+msgstr "मुझे याद रखना"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "आपको अपने ब्राउज़र के जावास्क्रिप्ट फ़ंक्शन को सक्रिय करना होगा"
+
+msgid "You must accept cookies to reach this application"
+msgstr "इस एप्लिकेशन पर पहुंचने के लिए आपको कुकीज़ स्वीकार करनी होगी"
+
+msgid "Invalid use of session ID"
+msgstr "सत्र आईडी का अमान्य उपयोग"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "अक्सर पूछे जाने वाले प्रश्नों "
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "एक बदलाव जोड़ें"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "एक वस्तु जोड़ें"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "सहेजें"
+
+#, fuzzy
+#| msgid "Are you sure you want to return this non-reservable item?"
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "क्या आप वाकई इस गैर-आरक्षित वस्तु को वापस करना चाहते हैं?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "प्रेषित तिथि"
 
 #~ msgid "Use GLPI"
 #~ msgstr "जीएलपीआई का उपयोग करें"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "अनौपचारिक अनुवाद भी उपलब्ध हैं"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "मैंने ऊपर लिखे गए लाइसेंस की शर्तों को पढ़ और स्वीकार किया है I"
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "मैंने पढ़ा है और ऊपर लिखे गए लाइसेंस की शर्तों को स्वीकार नहीं किया है"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "जीएलपीआई की स्थापना या अपडेट"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "जीएलपीआई की पूरी तरह से नई स्थापना के लिए 'इंस्टॉल' चुनें"
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "किसी पुराने संस्करण से जीएलपीआई के आपके संस्करण को अपडेट करने के लिए 'अपग्रेड' का चयन करें"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "क्या आप जारी रखना चाहते हैं?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "डेटाबेस कनेक्शन पैरामीटर"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "डेटाबेस में कनेक्शन का परीक्षण करें"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "डेटाबेस से कनेक्ट नहीं हो सकता"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "सर्वर ने उत्तर दिया:%s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "सर्वर या / और उपयोगकर्ता फ़ील्ड रिक्त है"
-
-#~ msgid "Please select a database:"
-#~ msgstr "कृपया एक डेटाबेस चुनें:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "नया डेटाबेस बनाएं या मौजूदा का उपयोग करें:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "अद्यतन करने के लिए कृपया डेटाबेस का चयन करें:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "डेटाबेस का आरंभ"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "डेटाबेस का उपयोग करने के लिए असंभव:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "ठीक - डेटाबेस प्रारंभ किया गया था"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "डेटाबेस सेटअप फ़ाइल को लिखना असंभव"
-
-#~ msgid "Database created"
-#~ msgstr "डेटाबेस बनाया"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "डेटाबेस बनाने में त्रुटि!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "आपने एक डेटाबेस का चयन नहीं किया!"
-
-#~ msgid "Collect data"
-#~ msgstr "डेटा इकट्ठा करना"
-
-#~ msgid "The installation is finished"
-#~ msgstr "स्थापना समाप्त हो गई है"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "डिफ़ॉल्ट लॉग इन / पासवर्ड हैं:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "व्यवस्थापक खाते के लिए glpi / glpi"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "तकनीशियन खाते के लिए तकनीक / तकनीक"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "सामान्य खाते के लिए सामान्य / सामान्य"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "केवल पोस्ट के लिए केवल पोस्ट / पोस्ट करें"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "आप इन खातों को हटा सकते हैं या संशोधित कर सकते हैं साथ ही प्रारंभिक डेटा भी।"
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr "डेटाबेस कनेक्शन फ़ाइल नहीं बना सकता, कृपया फ़ाइल अनुमतियों को सत्यापित करें।"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "स्थापना की शुरुआत"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "चरण%d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "जीएलपीआई - प्रमाणीकरण"
-
-#~ msgid "Remember me"
-#~ msgstr "मुझे याद रखना"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "आपको अपने ब्राउज़र के जावास्क्रिप्ट फ़ंक्शन को सक्रिय करना होगा"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "इस एप्लिकेशन पर पहुंचने के लिए आपको कुकीज़ स्वीकार करनी होगी"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "सत्र आईडी का अमान्य उपयोग"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "अक्सर पूछे जाने वाले प्रश्नों "

@@ -23581,464 +23581,1314 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "No room found or selected"
-#~ msgstr "Ingen rom funnet eller valgt"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Skrive"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Se i katalogen over innstikk"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Brukernavn"
+
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Se konfigurasjon"
+
+msgid "No room found or selected"
+msgstr "Ingen rom funnet eller valgt"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Replace"
+msgid "Marketplace"
+msgstr "Erstatte"
+
+#, fuzzy
+#| msgid "%1$s adds the item %2$s (%3$d)"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s legger til elementet %2$s (%3$d)"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS-innmatinger funnet"
+msgid "See the catalog of plugins"
+msgstr "Se i katalogen over innstikk"
+
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+
+#, fuzzy
+#| msgid "Template for an incident"
+msgid "Empty for infinite"
+msgstr "Mal for en hendelse"
+
+msgid "RSS feeds found"
+msgstr "RSS-innmatinger funnet"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Dine saker som kan avsluttes"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "IP versjon"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Saker som er satt på vent"
+#, fuzzy
+#| msgid "Confirm the final deletion?"
+msgid "Confirm the promotion?"
+msgstr "Bekreft endelig sletting?"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Saker som kan behandles"
+msgid "Your tickets to close"
+msgstr "Dine saker som kan avsluttes"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Saker du kan observere"
+msgid "Tickets on pending status"
+msgstr "Saker som er satt på vent"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Dine saker som blir behandlet"
+msgid "Tickets to be processed"
+msgstr "Saker som kan behandles"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Dine saker, som trenger validering"
+msgid "Your observed tickets"
+msgstr "Saker du kan observere"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Saksoppfølging"
+msgid "Your tickets in progress"
+msgstr "Dine saker som blir behandlet"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d ny sak"
-#~ msgstr[1] "%d nye saker"
+msgid "Your tickets to validate"
+msgstr "Dine saker, som trenger validering"
 
-#~ msgid "No ticket found."
-#~ msgstr "Ingen sak funnet."
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected approval status"
+msgstr "Dine saker som blir behandlet"
 
-#~ msgid "Last tickets"
-#~ msgstr "Siste saker"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected solution"
+msgstr "Dine saker som blir behandlet"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Ny sak for dette objektet..."
+msgid "Ticket followup"
+msgstr "Saksoppfølging"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Siste %d sak"
-#~ msgstr[1] "Siste %d saker"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d ny sak"
+msgstr[1] "%d nye saker"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Du har ikke rettigheter til å se alle saker"
+msgid "No ticket found."
+msgstr "Ingen sak funnet."
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Ingen saker pågår."
+msgid "Last tickets"
+msgstr "Siste saker"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Tilordne utstyr"
+msgid "New ticket for this item..."
+msgstr "Ny sak for dette objektet..."
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Automatisk saks lukking"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Siste %d sak"
+msgstr[1] "Siste %d saker"
 
-#~ msgid "See my ticket"
-#~ msgstr "Se min sak"
+msgid "You don't have right to see all tickets"
+msgstr "Du har ikke rettigheter til å se alle saker"
 
-#~ msgid "See group ticket"
-#~ msgstr "Se gruppe saker"
+#, fuzzy
+#| msgid "Changes on linked items"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Endringer på lenkede objekter"
+msgstr[1] "Endringer på lenkede objekter"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Se saker opprettet av min gruppe"
+msgid "No ticket in progress."
+msgstr "Ingen saker pågår."
 
-#~ msgid "See all tickets"
-#~ msgstr "Se alle saker"
+msgid "Assign equipment"
+msgstr "Tilordne utstyr"
 
-#~ msgid "See assigned"
-#~ msgstr "Se tildelte"
+msgid "Automatic tickets closing"
+msgstr "Automatisk saks lukking"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Se tildelte saker"
+#, fuzzy
+#| msgid "Number of answered satisfaction survey"
+msgid "Generation of satisfaction surveys"
+msgstr "Antall besvarte brukerundersøkelse"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Tildel sak"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "Automatisk lukking av løste saker etter"
 
-#~ msgid "Steal"
-#~ msgstr "Stjel"
+msgid "See my ticket"
+msgstr "Se min sak"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Overta sak"
+msgid "See group ticket"
+msgstr "Se gruppe saker"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Har ansvaret"
+msgid "See tickets created by my groups"
+msgstr "Se saker opprettet av min gruppe"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Ansvarlig for sak"
+msgid "See all tickets"
+msgstr "Se alle saker"
 
-#~ msgid "Change the priority"
-#~ msgstr "Endre prioritet"
+msgid "See assigned"
+msgstr "Se tildelte"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Gjør ny beregning av kategorien"
+msgid "See assigned tickets"
+msgstr "Se tildelte saker"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Gyldige lisenser"
+msgid "Assign a ticket"
+msgstr "Tildel sak"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Antall installasjoner"
+msgid "Steal"
+msgstr "Stjel"
 
-#~ msgid "Merge"
-#~ msgstr "Sammenslå"
+msgid "Steal a ticket"
+msgstr "Overta sak"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Programmvare lagt i papirkurven etter sammenslåing"
+msgid "Beeing in charge"
+msgstr "Har ansvaret"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "To be in charge of a ticket"
+msgstr "Ansvarlig for sak"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Tilknytt en datamaskin"
+msgid "Change the priority"
+msgstr "Endre prioritet"
 
-#~ msgid "Not connected"
-#~ msgstr "Ikke tilkoblet"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr ""
 
-#~ msgid "Show as map"
-#~ msgstr "Vis som kart"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Gyldig til %s"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
 
-#~ msgid "Solved"
-#~ msgstr "Løst"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to load ticket %d"
+msgstr "Kunne ikke slette filen %s"
 
-#~ msgid "field name in DB"
-#~ msgstr "feltnavn i DB"
+#, fuzzy
+#| msgid "Add a followup to tickets (requester)"
+msgid "Failed to add followup to ticket %d"
+msgstr "Legg til en oppfølging til saken (requester)"
 
-#~ msgid "Example:"
-#~ msgstr "Eksempel:"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to add task to ticket %d"
+msgstr "Kunne ikke slette filen %s"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Flere nettverknavn er tilgjengelig! Bruk arkfanen 'Nettverksnavn' for å "
-#~ "behandle dem."
+#, fuzzy
+#| msgid "Default heading when adding a document to a ticket"
+msgid "Failed to add document to ticket %d"
+msgstr "Standard overskrift når du legger ett dokument til en sak"
 
-#~ msgid "Add a network name"
-#~ msgstr "Legg til et nettverksnavn"
+msgid "Failed to link tickets %d and %d"
+msgstr ""
 
-#~ msgid "Not associated"
-#~ msgstr "Ikke assosiert"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "Kunne ikke slette filen %s"
 
-#~ msgid "Create a new network name"
-#~ msgstr "Opprett et nytt nettverksnavn"
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s sletter versjonen permanent %2$s"
 
-#~ msgid "No network name found"
-#~ msgstr "Ingen nettverksnavn funnet"
+#, fuzzy
+#| msgid "Checking write permissions for setting files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Sjekker Skrive for innstillingen filer"
 
-#~ msgid "Clean"
-#~ msgstr "Rense"
+msgid "Recalculate the category"
+msgstr "Gjør ny beregning av kategorien"
 
-#~ msgid "Install"
-#~ msgstr "Installere"
+msgid "Valid licenses"
+msgstr "Gyldige lisenser"
 
-#~ msgid "Enable"
-#~ msgstr "Aktivere"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Antall installasjoner"
 
-#~ msgid "Uninstall"
-#~ msgstr "Avinstallere"
+msgid "Merge"
+msgstr "Sammenslå"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "En epost er sendt til din registrerte epostadresse. Denne inneholder "
-#~ "opplysninger angående nullstilling av passord."
+msgid "Software deleted after merging"
+msgstr "Programmvare lagt i papirkurven etter sammenslåing"
 
-#~ msgid "Email address not found."
-#~ msgstr "Epost adresse ble ikke funnet."
+#, fuzzy
+#| msgid "You must install at least PHP %s."
+msgid "You must enable at least one notification mode."
+msgstr "Du må installere minimum versjon %s av PHP."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "Fila som er lastet opp er større enn upload_max_filesize-direktivet i php."
-#~ "ini"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "Fila som ble lastet opp er større enn MAX_FILE_SIZE-direktivet som var "
-#~ "angitt i HTML-skjemaet"
+msgid "Connect a computer"
+msgstr "Tilknytt en datamaskin"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Fila ble bare delvis lastet opp"
+msgid "Not connected"
+msgstr "Ikke tilkoblet"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Kunne ikke skrive til disk"
+msgid "Show as map"
+msgstr "Vis som kart"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "En PHP-utvidelse hindret opplastingen"
+msgid "Valid to %s"
+msgstr "Gyldig til %s"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr ""
-#~ "Fila som er lastet opp er større enn post_max_size-direktivet i php.ini"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "Siste saker"
 
-#~ msgid "File is too big"
-#~ msgstr "Fil er for stor"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Saker som venter på godkjennelse"
 
-#~ msgid "File is too small"
-#~ msgstr "Fil er for liten"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "Link saker"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Maksimum antall filer nådd"
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "Løs saker"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Bildet er bredere enn maksimal bredde"
+#, fuzzy
+#| msgid "Child tickets"
+msgid "Closed tickets"
+msgstr "Barne saker"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Bildet har krav om en minimum bredde"
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Uten navn"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Bildet er høyere enn maksimal høyde"
+#, fuzzy
+#| msgid "Time cost"
+msgid "Time to close"
+msgstr "Timepris"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Bildet har krav om en minimum høyde"
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "Valider"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Filtype ikke tilatt"
+msgid "Solved"
+msgstr "Løst"
 
-#~ msgid "Progress"
-#~ msgstr "Fremdrift"
+msgid "Share or embed this dashboard"
+msgstr ""
+
+msgid "Delete this dashboard"
+msgstr ""
+
+msgid "Toggle auto-refresh"
+msgstr ""
 
-#~ msgid "My settings"
-#~ msgstr "Mine innstillinger"
+#, fuzzy
+#| msgid "Monitor model"
+#| msgid_plural "Monitor models"
+msgid "Toggle night mode"
+msgstr "Skjerm modell"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "Du finner den på nettstedet GLPI-PROJECT.org."
+msgid "Toggle fullscreen"
+msgstr ""
+
+msgid "Clone this dashboard"
+msgstr ""
 
-#~ msgid "Check all"
-#~ msgstr "Marker alle"
+msgid "Toggle edit mode"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add filter"
+msgstr "Legg til element"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "Legg til ny oppgave"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "Andre"
+
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "Budsjett"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "Antall oppgaver"
+
+#, fuzzy
+#| msgid "Filter access"
+msgid "Filters"
+msgstr "Filter-tilgang"
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "Applikasjonens URL"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP-lenke"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+#, fuzzy
+#| msgid "Empty array"
+msgid "empty card !"
+msgstr "Tom samling"
+
+#, fuzzy
+#| msgid "Number of cores"
+msgid "Number of %s"
+msgstr "Antall kjerner"
+
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s av %2$s"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "Liste over verdier"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "Antall saker"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket tasks to do"
+msgid "Tickets status by month"
+msgstr "Saksoppgaver som kan gjøres"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "Saks kategorier"
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Top ticket's categories"
+msgstr "Saks kategorier"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "Dine saker, som trenger validering"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "Standard saks type"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "Sakslokalitet"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "Antall saker som melder"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "Se saker opprettet av min gruppe"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "For saker lukket etter"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "Se saker opprettet av min gruppe"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignees"
+msgstr "Dine saker som blir behandlet"
+
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "Lag oppfølging til saker i tilknyttede grupper"
+
+#, fuzzy
+#| msgid "List of translations"
+msgid "List of reminders"
+msgstr "Liste over oversettelser"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr "feltnavn i DB"
+
+msgid "Example:"
+msgstr "Eksempel:"
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Flere nettverknavn er tilgjengelig! Bruk arkfanen 'Nettverksnavn' for å "
+"behandle dem."
+
+msgid "Add a network name"
+msgstr "Legg til et nettverksnavn"
+
+msgid "Not associated"
+msgstr "Ikke assosiert"
+
+msgid "Create a new network name"
+msgstr "Opprett et nytt nettverksnavn"
+
+msgid "No network name found"
+msgstr "Ingen nettverksnavn funnet"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "Sjekk om det finnes nye oppdateringer"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "Installere"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "Frakoble"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "Opprettet %s"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Din kommentar har blitt redigert"
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "generert %s"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "Mest populære spørsmål"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Fjern alle markeringer"
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "Siste oppdatering"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "Les notater"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "Filter plugin list"
+msgstr "Deaktivert innstikk"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "Hjem"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "Les"
+
+msgid "Clean"
+msgstr "Rense"
+
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "Brukernavn er ikke gyldig. Kan ikke opprette brukeren."
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "En ny versjon er tilgjengelig: %s"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "Installere"
+
+msgid "Enable"
+msgstr "Aktivere"
+
+msgid "Uninstall"
+msgstr "Avinstallere"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Deaktivert innstikk"
+msgstr[1] "Deaktivert innstikk"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "Sent"
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "Plugin"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "Husnummer"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "Reservasjon"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "Opprettet %s"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "Reservasjon"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "Beskrivelse"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "Ukjent fil"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "Aktiver finansiell og administrativ informasjon"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "Installasjonen er fulført"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "Installasjonen er fulført"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"En epost er sendt til din registrerte epostadresse. Denne inneholder "
+"opplysninger angående nullstilling av passord."
+
+msgid "Email address not found."
+msgstr "Epost adresse ble ikke funnet."
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"Fila som er lastet opp er større enn upload_max_filesize-direktivet i php.ini"
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Fila som ble lastet opp er større enn MAX_FILE_SIZE-direktivet som var "
+"angitt i HTML-skjemaet"
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "Fila ble bare delvis lastet opp"
+
+msgid "Failed to write file to disk"
+msgstr "Kunne ikke skrive til disk"
+
+msgid "A PHP extension stopped the file upload"
+msgstr "En PHP-utvidelse hindret opplastingen"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+"Fila som er lastet opp er større enn post_max_size-direktivet i php.ini"
+
+msgid "File is too big"
+msgstr "Fil er for stor"
+
+msgid "File is too small"
+msgstr "Fil er for liten"
+
+msgid "Maximum number of files exceeded"
+msgstr "Maksimum antall filer nådd"
+
+msgid "Image exceeds maximum width"
+msgstr "Bildet er bredere enn maksimal bredde"
+
+msgid "Image requires a minimum width"
+msgstr "Bildet har krav om en minimum bredde"
+
+msgid "Image exceeds maximum height"
+msgstr "Bildet er høyere enn maksimal høyde"
+
+msgid "Image requires a minimum height"
+msgstr "Bildet har krav om en minimum høyde"
+
+msgid "Filetype not allowed"
+msgstr "Filtype ikke tilatt"
+
+#, fuzzy
+#| msgid "No file was uploaded"
+msgid "File upload aborted"
+msgstr "Ingen fil ble opplastet"
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to resize image"
+msgstr "Kunne ikke skrive til disk"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "Brukerinformasjon"
+
+msgid "Progress"
+msgstr "Fremdrift"
+
+msgid "My settings"
+msgstr "Mine innstillinger"
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "Du finner den på nettstedet GLPI-PROJECT.org."
+
+msgid "Check all"
+msgstr "Marker alle"
+
+msgid "Uncheck all"
+msgstr "Fjern alle markeringer"
+
+msgid "Check all as"
+msgstr "Merk alle som"
+
+msgid "Selection too large, massive action disabled."
+msgstr ""
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket creation failed (check mandatory fields)"
+msgid "The description field is mandatory"
+msgstr "Saksregistrering feilet (se over påkrevde felter)"
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr "Fra %1$d til %2$d av %3$d"
+
+msgid "Empty array"
+msgstr "Tom samling"
+
+msgid "%1$d on %2$d"
+msgstr "%1$d av %2$d"
+
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "Lukk"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
 
-#~ msgid "Check all as"
-#~ msgstr "Merk alle som"
+msgid "Next (arrow right)"
+msgstr ""
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "Fra %1$d til %2$d av %3$d"
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+#, fuzzy
+#| msgid "No selected items"
+msgid "selecting them"
+msgstr "Ingen valgte elementer"
+
+msgid "File(s)"
+msgstr "Fil(er)"
+
+msgid "Drag and drop your file here, or"
+msgstr "Dra og slipp fil her, eller"
+
+msgid "Upload successful"
+msgstr "Opplasting fullført"
+
+msgid "Check/uncheck all"
+msgstr "Merk/avmerk alle"
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Endret"
+
+msgid "Debug mode enabled"
+msgstr "Feilsøkingsmodus er aktivert"
+
+msgid "Debug mode disabled"
+msgstr "Feilsøkingsmodus er deaktivert"
+
+msgid "Saved searches"
+msgstr "Lagrede søk"
+
+#, fuzzy
+#| msgid "New saved search"
+msgid "Manage saved searches"
+msgstr "Nytt lagret søk"
+
+#, fuzzy
+#| msgid "API disabled"
+msgid "Add is disabled"
+msgstr "API deaktivert"
+
+#, fuzzy
+#| msgid "Search result display"
+msgid "Search is disabled"
+msgstr "Søkeresultatvisning"
 
-#~ msgid "Empty array"
-#~ msgstr "Tom samling"
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "Global styring"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d av %2$d"
+msgid "You are impersonating %s."
+msgstr ""
 
-#~ msgid "File(s)"
-#~ msgstr "Fil(er)"
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "Sett personlig"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Dra og slipp fil her, eller"
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
 
-#~ msgid "Upload successful"
-#~ msgstr "Opplasting fullført"
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Merk/avmerk alle"
+msgid "Show GLPI ID"
+msgstr "Vis GLPI ID"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "Feilsøkingsmodus er aktivert"
+msgid "Color palette"
+msgstr "Fargepalett"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "Feilsøkingsmodus er deaktivert"
+msgid "Layout"
+msgstr "Utseende"
 
-#~ msgid "Saved searches"
-#~ msgstr "Lagrede søk"
+msgid "Tabs on left"
+msgstr "Arkfaner til venstre"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Vis GLPI ID"
+msgid "Classic view"
+msgstr "Klassisk visning"
 
-#~ msgid "Color palette"
-#~ msgstr "Fargepalett"
+msgid "Vertical split"
+msgstr ""
 
-#~ msgid "Layout"
-#~ msgstr "Utseende"
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Kontrakt utgår"
 
-#~ msgid "Tabs on left"
-#~ msgstr "Arkfaner til venstre"
+msgid "Dashboards"
+msgstr ""
 
-#~ msgid "Classic view"
-#~ msgstr "Klassisk visning"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "Standard for saker"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Sjekk om nyere versjon er tilgjengelig"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "Standard for saker"
 
-#~ msgid "Add to schedule"
-#~ msgstr "Legg til i tidsplan"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "Standard for saker"
 
-#~ msgid "North"
-#~ msgstr "Nord"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Standard for saker"
 
-#~ msgid "East"
-#~ msgstr "Øst"
+msgid "Check if a new version is available"
+msgstr "Sjekk om nyere versjon er tilgjengelig"
 
-#~ msgid "South"
-#~ msgstr "Sør"
+#, fuzzy
+#| msgid "Show all"
+msgid "Show filters"
+msgstr "Vis alle"
 
-#~ msgid "West"
-#~ msgstr "Vest"
+msgid "No historical matching your filters"
+msgstr ""
 
-#~ msgid "Width"
-#~ msgstr "Bredde"
+msgid "Add to schedule"
+msgstr "Legg til i tidsplan"
 
-#~ msgid "Height"
-#~ msgstr "Høyde"
+#, fuzzy
+#| msgid "Position"
+msgid "Position in room"
+msgstr "Posisjon"
 
-#~ msgid "All categories"
-#~ msgstr "Alle kategorier"
+msgid "Door orientation in room"
+msgstr ""
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Ukategorisert programvare"
+msgid "North"
+msgstr "Nord"
 
-#~ msgid "Valid license"
-#~ msgstr "Gyldig lisens"
+msgid "East"
+msgstr "Øst"
 
-#~ msgid "Donate"
-#~ msgstr "Doner"
+msgid "South"
+msgstr "Sør"
+
+msgid "West"
+msgstr "Vest"
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of items"
+msgid "Number of units"
+msgstr "Antall elementer"
+
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr "Bredde"
+
+msgid "Height"
+msgstr "Høyde"
+
+#, fuzzy
+#| msgid "Max. power (in watts)"
+msgid "Measured power (in watts)"
+msgstr "Maks. effekt (watt)"
+
+msgid "Max. weight"
+msgstr ""
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No rack found"
+msgstr "Ingen bruker stiftet"
+
+msgid "Following elements are out of room bounds"
+msgstr ""
+
+msgid "Blueprint"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Insert a rack here"
+msgstr ""
+
+msgid "Position must be set"
+msgstr ""
+
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "Nettverksport er ikke tilgjengelig..."
+
+msgid "All categories"
+msgstr "Alle kategorier"
+
+msgid "Uncategorized software"
+msgstr "Ukategorisert programvare"
+
+msgid "Valid license"
+msgstr "Gyldig lisens"
+
+#, fuzzy
+#| msgid "Other component model"
+#| msgid_plural "Other component models"
+msgid "Other component"
+msgstr "Annen komponentmodell"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr "Doner"
+
+msgid "Unofficial translations are also available"
+msgstr "Uoffisielle oversettelser er også tilgjengelig"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Jeg har lest og godtar vilkårene i lisensavtalen skrevet ovenfor."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Jeg har lest og godtar ikke vilkårene i lisensen skrevet ovenfor"
+
+msgid "Installation or update of GLPI"
+msgstr "Installasjon eller oppdatering av GLPI"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Velg \"Installer\" for å helt ny installasjon av GLPI."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+"Velg \"Oppgrader\" for å oppgradere din versjon av GLPI fra en tidligere "
+"utgave"
+
+msgid "Do you want to continue?"
+msgstr "Vil du fortsette?"
+
+msgid "Database connection parameters"
+msgstr "Database forbindelse parametere"
+
+msgid "Test of the connection at the database"
+msgstr "Test av forbindelsen til databasen"
+
+msgid "Can't connect to the database"
+msgstr "Kan ikke koble til databasen"
+
+msgid "The server answered: %s"
+msgstr "Serveren svarte: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Tjener og/eller brukerfelt er tomt"
+
+msgid "Please select a database:"
+msgstr "Vennligst velg en database:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Opprette en ny database, eller bruk et eksisterende:"
+
+msgid "Please select the database to update:"
+msgstr "Velg databasen til oppdatering:"
+
+msgid "Initialization of the database"
+msgstr "Initialisering av database"
+
+msgid "Impossible to use the database:"
+msgstr "Umulig å bruke database:"
+
+msgid "OK - database was initialized"
+msgstr "OK - databasen ble initialisert"
+
+msgid "Impossible to write the database setup file"
+msgstr "Umulig å skrive databaseoppsettsfilen"
+
+msgid "Database created"
+msgstr "Database opprettet"
+
+msgid "Error in creating database!"
+msgstr "Feil oppstod ved oppretting av database!"
+
+msgid "You didn't select a database!"
+msgstr "Du valgte ikke noen database!"
+
+msgid "Collect data"
+msgstr "Samle data"
+
+msgid "The installation is finished"
+msgstr "Installasjonen er fulført"
+
+msgid "Default logins / passwords are:"
+msgstr "Standard brukernavn / passord er:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech / tech for tekniker-konto"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal for normal konto"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly for kun registrering"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Kan ikke opprette databasen forbindelse fil, venligst bekreft filrettigheter."
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "Forhåndsvalg språk"
+
+msgid "Beginning of the installation"
+msgstr "Starten på installasjonen"
+
+msgid "Step %d"
+msgstr "Steg %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Autentisering"
+
+msgid "Remember me"
+msgstr "Husk meg"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Du må aktivere JavaScript i din nettleser"
+
+msgid "You must accept cookies to reach this application"
+msgstr ""
+"Informasjonskapsler må være aktivert i nettleseren for å bruke denne "
+"applikasjonen"
+
+msgid "Invalid use of session ID"
+msgstr "Ugyldig bruk av sesjons-ID"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Tilgang til Ofte Stilte Spørsmål"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "Legg til endring"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "Legg til element"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "Lagre"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Sendt dato"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Bruk GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Uoffisielle oversettelser er også tilgjengelig"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Jeg har lest og godtar vilkårene i lisensavtalen skrevet ovenfor."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "Jeg har lest og godtar ikke vilkårene i lisensen skrevet ovenfor"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "Installasjon eller oppdatering av GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Velg \"Installer\" for å helt ny installasjon av GLPI."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "Velg \"Oppgrader\" for å oppgradere din versjon av GLPI fra en tidligere "
-#~ "utgave"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Vil du fortsette?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Database forbindelse parametere"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Test av forbindelsen til databasen"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Kan ikke koble til databasen"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Serveren svarte: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Tjener og/eller brukerfelt er tomt"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Vennligst velg en database:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Opprette en ny database, eller bruk et eksisterende:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Velg databasen til oppdatering:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Initialisering av database"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Umulig å bruke database:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK - databasen ble initialisert"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Umulig å skrive databaseoppsettsfilen"
-
-#~ msgid "Database created"
-#~ msgstr "Database opprettet"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Feil oppstod ved oppretting av database!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Du valgte ikke noen database!"
-
-#~ msgid "Collect data"
-#~ msgstr "Samle data"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Installasjonen er fulført"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Standard brukernavn / passord er:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi for administratorkonto"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech / tech for tekniker-konto"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal for normal konto"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly for kun registrering"
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Kan ikke opprette databasen forbindelse fil, venligst bekreft "
-#~ "filrettigheter."
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Starten på installasjonen"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Steg %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Autentisering"
-
-#~ msgid "Remember me"
-#~ msgstr "Husk meg"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Du må aktivere JavaScript i din nettleser"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr ""
-#~ "Informasjonskapsler må være aktivert i nettleseren for å bruke denne "
-#~ "applikasjonen"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Ugyldig bruk av sesjons-ID"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Tilgang til Ofte Stilte Spørsmål"

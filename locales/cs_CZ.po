@@ -24471,1033 +24471,1162 @@ msgstr "Stáhnout pouze nepřečtené emaily"
 msgid "Could not create dashboard"
 msgstr "Kopírovat nástěnku"
 
-#~ msgid "No room found or selected"
-#~ msgstr "Nebyly nalezeny nebo označeny žádné místnosti"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Zapisovat"
 
-#~ msgid "Marketplace"
-#~ msgstr "Obchod"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Uživatelské jméno"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s přidal(a) položku %2$s-%3$s:%4$s"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Zobrazit nastavení"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Zobrazit katalog zásuvných modulů"
+msgid "No room found or selected"
+msgstr "Nebyly nalezeny nebo označeny žádné místnosti"
 
-#~ msgid ""
-#~ "If name is a valid email address, it will be automatically added to "
-#~ "blacklisted senders."
-#~ msgstr ""
-#~ "Pokud jméno je platná e-mailová adresa, bude automaticky přidáno k "
-#~ "blokovaným odesilatelům."
+msgid "Marketplace"
+msgstr "Obchod"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Pro nekonečné nevyplňujte"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s přidal(a) položku %2$s-%3$s:%4$s"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS zdroj nalezen"
+msgid "See the catalog of plugins"
+msgstr "Zobrazit katalog zásuvných modulů"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+"Pokud jméno je platná e-mailová adresa, bude automaticky přidáno k "
+"blokovaným odesilatelům."
 
-#~ msgid "GLPI version"
-#~ msgstr "Verze GLPI"
+msgid "Empty for infinite"
+msgstr "Pro nekonečné nevyplňujte"
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "Potvrdit povýšení?"
+msgid "RSS feeds found"
+msgstr "RSS zdroj nalezen"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Vaše požadavky k uzavření"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Požadavky  ve stavu čekání"
+msgid "GLPI version"
+msgstr "Verze GLPI"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Požadavky ke zpracování"
+msgid "Confirm the promotion?"
+msgstr "Potvrdit povýšení?"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Vaše požadavky, které byly vzaty na vědomí"
+msgid "Your tickets to close"
+msgstr "Vaše požadavky k uzavření"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Vaše zpracovávané požadavky"
+msgid "Tickets on pending status"
+msgstr "Požadavky  ve stavu čekání"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Vaše požadavky ke schválení"
+msgid "Tickets to be processed"
+msgstr "Požadavky ke zpracování"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "Vaše požadavky, které mají stav schválení zamítnuto"
+msgid "Your observed tickets"
+msgstr "Vaše požadavky, které byly vzaty na vědomí"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "Vaše požadavky, které mají řešení zamítnuto"
+msgid "Your tickets in progress"
+msgstr "Vaše zpracovávané požadavky"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Doplňující komunikace k požadavku"
+msgid "Your tickets to validate"
+msgstr "Vaše požadavky ke schválení"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d nový požadavek"
-#~ msgstr[1] "%d nové požadavky"
-#~ msgstr[2] "%d nových požadavků"
-#~ msgstr[3] "%d nové požadavky"
+msgid "Your tickets having rejected approval status"
+msgstr "Vaše požadavky, které mají stav schválení zamítnuto"
 
-#~ msgid "No ticket found."
-#~ msgstr "Nebyl nalezen žádný požadavek."
+msgid "Your tickets having rejected solution"
+msgstr "Vaše požadavky, které mají řešení zamítnuto"
 
-#~ msgid "Last tickets"
-#~ msgstr "Nedávné požadavky"
+msgid "Ticket followup"
+msgstr "Doplňující komunikace k požadavku"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Nový požadavek pro tuto položku…"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d nový požadavek"
+msgstr[1] "%d nové požadavky"
+msgstr[2] "%d nových požadavků"
+msgstr[3] "%d nové požadavky"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "%d nedávný požadavek"
-#~ msgstr[1] "%d nedávné požadavky"
-#~ msgstr[2] "%d nedávných požadavků"
-#~ msgstr[3] "%d nedávné požadavky"
+msgid "No ticket found."
+msgstr "Nebyl nalezen žádný požadavek."
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Nemáte oprávnění zobrazit všechny požadavky"
+msgid "Last tickets"
+msgstr "Nedávné požadavky"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Požadavek na připojených položkách"
-#~ msgstr[1] "Požadavky na připojených položkách"
-#~ msgstr[2] "Požadavků na připojených položkách"
-#~ msgstr[3] "Požadavky na připojených položkách"
+msgid "New ticket for this item..."
+msgstr "Nový požadavek pro tuto položku…"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Není zpracováván žádný požadavek"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "%d nedávný požadavek"
+msgstr[1] "%d nedávné požadavky"
+msgstr[2] "%d nedávných požadavků"
+msgstr[3] "%d nedávné požadavky"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Přiřadit zařízení"
+msgid "You don't have right to see all tickets"
+msgstr "Nemáte oprávnění zobrazit všechny požadavky"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Automatické uzavírání požadavků"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Požadavek na připojených položkách"
+msgstr[1] "Požadavky na připojených položkách"
+msgstr[2] "Požadavků na připojených položkách"
+msgstr[3] "Požadavky na připojených položkách"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Vytváření průzkumů spokojenosti"
+msgid "No ticket in progress."
+msgstr "Není zpracováván žádný požadavek"
 
-#~ msgid "Automatic closed tickets purge"
-#~ msgstr "Automatické čištění uzavřených požadavků"
+msgid "Assign equipment"
+msgstr "Přiřadit zařízení"
 
-#~ msgid "See my ticket"
-#~ msgstr "Zobrazit své požadavky"
+msgid "Automatic tickets closing"
+msgstr "Automatické uzavírání požadavků"
 
-#~ msgid "See group ticket"
-#~ msgstr "Zobrazit požadavky skupiny"
+msgid "Generation of satisfaction surveys"
+msgstr "Vytváření průzkumů spokojenosti"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Zobrazit požadavky vytvořené mými skupinami"
+msgid "Automatic closed tickets purge"
+msgstr "Automatické čištění uzavřených požadavků"
 
-#~ msgid "See all tickets"
-#~ msgstr "Zobrazit všechny požadavky"
+msgid "See my ticket"
+msgstr "Zobrazit své požadavky"
 
-#~ msgid "See assigned"
-#~ msgstr "Zobrazit přidělené"
+msgid "See group ticket"
+msgstr "Zobrazit požadavky skupiny"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Zobrazit přiřazené požadavky"
+msgid "See tickets created by my groups"
+msgstr "Zobrazit požadavky vytvořené mými skupinami"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Přidělit požadavek"
+msgid "See all tickets"
+msgstr "Zobrazit všechny požadavky"
 
-#~ msgid "Steal"
-#~ msgstr "Převzít"
+msgid "See assigned"
+msgstr "Zobrazit přidělené"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Převzít si požadavek"
+msgid "See assigned tickets"
+msgstr "Zobrazit přiřazené požadavky"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Mít na starosti"
+msgid "Assign a ticket"
+msgstr "Přidělit požadavek"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Být zodpovědný za požadavek"
+msgid "Steal"
+msgstr "Převzít"
 
-#~ msgid "Change the priority"
-#~ msgstr "Změnit prioritu"
+msgid "Steal a ticket"
+msgstr "Převzít si požadavek"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Schválit řešení / odpovědět na průzkum (můj požadavek)"
+msgid "Beeing in charge"
+msgstr "Mít na starosti"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr ""
-#~ "Schválit řešení a odpovědět na průzkum ohledně požadavku, který jste "
-#~ "vytvořili"
+msgid "To be in charge of a ticket"
+msgstr "Být zodpovědný za požadavek"
 
-#, php-format
-#~ msgid "Not enough rights to merge tickets %d and %d"
-#~ msgstr "Nedostatečná oprávnění pro sloučení požadavků %d a %d"
+msgid "Change the priority"
+msgstr "Změnit prioritu"
 
-#, php-format
-#~ msgid "Failed to load ticket %d"
-#~ msgstr "Nepodařilo se načíst požadavek %d"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Schválit řešení / odpovědět na průzkum (můj požadavek)"
 
-#, php-format
-#~ msgid "Failed to add followup to ticket %d"
-#~ msgstr "Nepodařilo se přidat doplňující zprávu do požadavku %d"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
+"Schválit řešení a odpovědět na průzkum ohledně požadavku, který jste "
+"vytvořili"
 
-#, php-format
-#~ msgid "Failed to add task to ticket %d"
-#~ msgstr "Nepodařilo se přidat úkol k požadavku %d"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "Nedostatečná oprávnění pro sloučení požadavků %d a %d"
 
-#, php-format
-#~ msgid "Failed to add document to ticket %d"
-#~ msgstr "Nepodařilo se přidat dokument k požadavku %d"
+msgid "Failed to load ticket %d"
+msgstr "Nepodařilo se načíst požadavek %d"
 
-#, php-format
-#~ msgid "Failed to link tickets %d and %d"
-#~ msgstr "Nepodařilo se propojit požadavky %d a %d"
+msgid "Failed to add followup to ticket %d"
+msgstr "Nepodařilo se přidat doplňující zprávu do požadavku %d"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "Nepodařilo se smazat požadavek %d"
+msgid "Failed to add task to ticket %d"
+msgstr "Nepodařilo se přidat úkol k požadavku %d"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%sslučuje požadavek%sdo%s"
+msgid "Failed to add document to ticket %d"
+msgstr "Nepodařilo se přidat dokument k požadavku %d"
 
-#~ msgid "Checking write permissions for marketplace plugins directory"
-#~ msgstr "Kontrola oprávnění k zápisu pro adresář zásuvných modulů tržiště "
+msgid "Failed to link tickets %d and %d"
+msgstr "Nepodařilo se propojit požadavky %d a %d"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Přepočítat kategorii"
+msgid "Failed to delete ticket %d"
+msgstr "Nepodařilo se smazat požadavek %d"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Platné licence"
+msgid "%s merges ticket %s into %s"
+msgstr "%sslučuje požadavek%sdo%s"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Počet instalací"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Kontrola oprávnění k zápisu pro adresář zásuvných modulů tržiště "
 
-#~ msgid "Merge"
-#~ msgstr "Sloučit"
+msgid "Recalculate the category"
+msgstr "Přepočítat kategorii"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Software smazán při slučování"
+msgid "Valid licenses"
+msgstr "Platné licence"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "Je třeba zapnout alespoň jeden režim oznamování."
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Počet instalací"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Merge"
+msgstr "Sloučit"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Připojit počítač"
+msgid "Software deleted after merging"
+msgstr "Software smazán při slučování"
 
-#~ msgid "Not connected"
-#~ msgstr "Nepřipojeno"
+msgid "You must enable at least one notification mode."
+msgstr "Je třeba zapnout alespoň jeden režim oznamování."
 
-#~ msgid "Show as map"
-#~ msgstr "Zobrazit jako mapu"
+msgid "GLPI"
+msgstr "GLPI"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Platná do %s"
+msgid "Connect a computer"
+msgstr "Připojit počítač"
 
-#~ msgid "Late tickets"
-#~ msgstr "Zpožděné požadavky"
+msgid "Not connected"
+msgstr "Nepřipojeno"
 
-#~ msgid "Tickets waiting for validation"
-#~ msgstr "Požadavky čekající na kontrolu"
+msgid "Show as map"
+msgstr "Zobrazit jako mapu"
 
-#~ msgid "Incoming tickets"
-#~ msgstr "Příchozí požadavky"
+msgid "Valid to %s"
+msgstr "Platná do %s"
 
-#~ msgid "Solved tickets"
-#~ msgstr "Vyřešené požadavky"
+msgid "Late tickets"
+msgstr "Zpožděné požadavky"
 
-#~ msgid "Closed tickets"
-#~ msgstr "Uzavřené požadavky"
+msgid "Tickets waiting for validation"
+msgstr "Požadavky čekající na kontrolu"
 
-#~ msgid "without"
-#~ msgstr "bez"
+msgid "Incoming tickets"
+msgstr "Příchozí požadavky"
 
-#~ msgid "Time to close"
-#~ msgstr "Čas uzavřít"
+msgid "Solved tickets"
+msgstr "Vyřešené požadavky"
 
-#~ msgid "To validate"
-#~ msgstr "K ověření"
+msgid "Closed tickets"
+msgstr "Uzavřené požadavky"
 
-#~ msgid "Solved"
-#~ msgstr "Vyřešeno"
+msgid "without"
+msgstr "bez"
 
-#~ msgid "Share or embed this dashboard"
-#~ msgstr "Sdílet nebo zabudovat tento přehled"
+msgid "Time to close"
+msgstr "Čas uzavřít"
 
-#~ msgid "Delete this dashboard"
-#~ msgstr "Smazat tento přehled"
+msgid "To validate"
+msgstr "K ověření"
 
-#~ msgid "Toggle auto-refresh"
-#~ msgstr "Přepnout automatické obnovení"
+msgid "Solved"
+msgstr "Vyřešeno"
 
-#~ msgid "Toggle night mode"
-#~ msgstr "Přepnout noční mód"
+msgid "Share or embed this dashboard"
+msgstr "Sdílet nebo zabudovat tento přehled"
 
-#~ msgid "Toggle fullscreen"
-#~ msgstr "Vyp/zap. zobrazení na celou obrazovku"
+msgid "Delete this dashboard"
+msgstr "Smazat tento přehled"
 
-#~ msgid "Toggle edit mode"
-#~ msgstr "Přepnout režim úprav"
+msgid "Toggle auto-refresh"
+msgstr "Přepnout automatické obnovení"
 
-#~ msgid "Add filter"
-#~ msgstr "Přidat filtr"
+msgid "Toggle night mode"
+msgstr "Přepnout noční mód"
 
-#~ msgid "Add a new dashboard"
-#~ msgstr "Přidat nový přehled"
+msgid "Toggle fullscreen"
+msgstr "Vyp/zap. zobrazení na celou obrazovku"
 
-#~ msgid "others"
-#~ msgstr "ostatní"
+#, fuzzy
+#| msgid "Delete this dashboard"
+msgid "Clone this dashboard"
+msgstr "Smazat tento přehled"
 
-#~ msgid "Widget"
-#~ msgstr "Widget"
+msgid "Toggle edit mode"
+msgstr "Přepnout režim úprav"
 
-#~ msgid "Use gradient palette"
-#~ msgstr "Použít paletu přechodů"
+msgid "Add filter"
+msgstr "Přidat filtr"
 
-#~ msgid "Display value labels on points/bars"
-#~ msgstr "Zobrazit popisky hodnot na bodech/pruzích"
+msgid "Add a new dashboard"
+msgstr "Přidat nový přehled"
 
-#~ msgid "Limit number of data"
-#~ msgstr "Limit počtu dat"
+msgid "others"
+msgstr "ostatní"
 
-#~ msgid "Filters"
-#~ msgstr "Filtry"
+msgid "Widget"
+msgstr "Widget"
 
-#~ msgid "Embed in another application"
-#~ msgstr "Vložit do jiné aplikace"
+msgid "Use gradient palette"
+msgstr "Použít paletu přechodů"
 
-#~ msgid "Direct link"
-#~ msgstr "Přímý odkaz"
+msgid "Display value labels on points/bars"
+msgstr "Zobrazit popisky hodnot na bodech/pruzích"
 
-#~ msgid "Iframe"
-#~ msgstr "Iframe"
+msgid "Limit number of data"
+msgstr "Limit počtu dat"
 
-#~ msgid "Or share the dashboard to these target objects:"
-#~ msgstr "Nebo sdílet nástěnku s těmito cílovými objekty:"
+msgid "Filters"
+msgstr "Filtry"
 
-#~ msgid "empty card !"
-#~ msgstr "prázdná karta !"
+msgid "Embed in another application"
+msgstr "Vložit do jiné aplikace"
 
-#, php-format
-#~ msgid "Number of %s"
-#~ msgstr "Počet z %s"
+msgid "Direct link"
+msgstr "Přímý odkaz"
 
-#, php-format
-#~ msgid "%s by %s"
-#~ msgstr "%s z %s"
+msgid "Iframe"
+msgstr "Iframe"
 
-#, php-format
-#~ msgid "List of %s"
-#~ msgstr "Seznam %s"
+msgid "Or share the dashboard to these target objects:"
+msgstr "Nebo sdílet nástěnku s těmito cílovými objekty:"
 
-#~ msgid "Number of tickets by month"
-#~ msgstr "Počet požadavků dle měsíce"
+msgid "empty card !"
+msgstr "prázdná karta !"
 
-#~ msgid "Evolution of ticket in the past year"
-#~ msgstr "Vývoj požadavku v posledním roce"
+msgid "Number of %s"
+msgstr "Počet z %s"
 
-#~ msgid "Tickets status by month"
-#~ msgstr "Stav požadavků dle měsíce"
+msgid "%s by %s"
+msgstr "%s z %s"
 
-#~ msgid "Tickets times (in hours)"
-#~ msgstr "Čas požadavků (v hodinách)"
+msgid "List of %s"
+msgstr "Seznam %s"
 
-#~ msgid "Tickets summary"
-#~ msgstr "Shrnutí požadavků"
+msgid "Number of tickets by month"
+msgstr "Počet požadavků dle měsíce"
 
-#~ msgid "Top ticket's categories"
-#~ msgstr "Top kategorie požadavků"
+msgid "Evolution of ticket in the past year"
+msgstr "Vývoj požadavku v posledním roce"
 
-#~ msgid "Top ticket's entities"
-#~ msgstr "Top entity požadavků"
+msgid "Tickets status by month"
+msgstr "Stav požadavků dle měsíce"
 
-#~ msgid "Top ticket's request types"
-#~ msgstr "Top typů řešení požadavku"
+msgid "Tickets times (in hours)"
+msgstr "Čas požadavků (v hodinách)"
 
-#~ msgid "Top ticket's locations"
-#~ msgstr "Top umístění požadavků"
+msgid "Tickets summary"
+msgstr "Shrnutí požadavků"
 
-#~ msgid "Top ticket's requesters"
-#~ msgstr "Top žadatelů požadavků"
+msgid "Top ticket's categories"
+msgstr "Top kategorie požadavků"
 
-#~ msgid "Top ticket's requester groups"
-#~ msgstr "Top skupiny žadatelů požadavků"
+msgid "Top ticket's entities"
+msgstr "Top entity požadavků"
 
-#~ msgid "Top ticket's observers"
-#~ msgstr "Top pozorovatelů požadavků"
+msgid "Top ticket's request types"
+msgstr "Top typů řešení požadavku"
 
-#~ msgid "Top ticket's observer groups"
-#~ msgstr "Top skupin pozorovatele požadavků"
+msgid "Top ticket's locations"
+msgstr "Top umístění požadavků"
 
-#~ msgid "Top ticket's assignees"
-#~ msgstr "Top příjemců požadavků"
+msgid "Top ticket's requesters"
+msgstr "Top žadatelů požadavků"
 
-#~ msgid "Top ticket's assignee groups"
-#~ msgstr "Top skupin příjemců požadavků"
+msgid "Top ticket's requester groups"
+msgstr "Top skupiny žadatelů požadavků"
 
-#~ msgid "List of reminders"
-#~ msgstr "Seznam upomínek"
+msgid "Top ticket's observers"
+msgstr "Top pozorovatelů požadavků"
 
-#~ msgid "field name in DB"
-#~ msgstr "název kolonky v databázi"
+msgid "Top ticket's observer groups"
+msgstr "Top skupin pozorovatele požadavků"
 
-#~ msgid "Example:"
-#~ msgstr "Příklad:"
+msgid "Top ticket's assignees"
+msgstr "Top příjemců požadavků"
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "Počínaje GLPI verze 9.2 byla zavedena nová statistická funkce zvaná "
-#~ "„Telemetrie“, která s vaším svolením posílá anonymní údaje na náš "
-#~ "telemetrický web."
+msgid "Top ticket's assignee groups"
+msgstr "Top skupin příjemců požadavků"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP síť není obsažena v databázi, ale alespoň můžete vidět právě dostupné "
-#~ "sítě."
+msgid "List of reminders"
+msgstr "Seznam upomínek"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Je k dispozici několik názvů sítě! Pro jejich správu přejděte na záložku "
-#~ "„Název sítě“."
+#, fuzzy
+#| msgid "Editable markdown"
+msgid "Editable markdown card"
+msgstr "Upravitelné popisky"
 
-#~ msgid "Add a network name"
-#~ msgstr "Přidat název sítě"
+#, fuzzy
+#| msgid "Toggle edit mode"
+msgid "Toggle edit mode to edit content"
+msgstr "Přepnout režim úprav"
 
-#~ msgid "Not associated"
-#~ msgstr "Není přiřazen"
+msgid "field name in DB"
+msgstr "název kolonky v databázi"
 
-#~ msgid "Create a new network name"
-#~ msgstr "Vytvořit nový název sítě"
+msgid "Example:"
+msgstr "Příklad:"
 
-#~ msgid "No network name found"
-#~ msgstr "Nenalezen žádný název sítě"
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"Počínaje GLPI verze 9.2 byla zavedena nová statistická funkce zvaná "
+"„Telemetrie“, která s vaším svolením posílá anonymní údaje na náš "
+"telemetrický web."
 
-#~ msgid "Check all plugin updates"
-#~ msgstr "Zkontroluj akutualizace pro všechny zásuvné moduly"
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP síť není obsažena v databázi, ale alespoň můžete vidět právě dostupné "
+"sítě."
 
-#, php-format
-#~ msgid "New version for plugin %s: %s"
-#~ msgstr "Nová verze zásuvného modulu 1%s:1%s"
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Je k dispozici několik názvů sítě! Pro jejich správu přejděte na záložku "
+"„Název sítě“."
 
-#~ msgid "Installed"
-#~ msgstr "Instalováno"
+msgid "Add a network name"
+msgstr "Přidat název sítě"
 
-#~ msgid "Discover"
-#~ msgstr "Najít"
+msgid "Not associated"
+msgstr "Není přiřazen"
 
-#~ msgid "or please check later"
-#~ msgstr "nebo prosím zkontrolujte později"
+msgid "Create a new network name"
+msgstr "Vytvořit nový název sítě"
 
-#~ msgid "fill your registration key in setup."
-#~ msgstr "vyplňte váš registrační klíč v nastavení."
+msgid "No network name found"
+msgstr "Nenalezen žádný název sítě"
 
-#~ msgid "Alpha ASC"
-#~ msgstr "Vzestupně"
+#, fuzzy
+#| msgid "Unable to load plugin \"%s\" information."
+msgid "Unable to download plugin archive."
+msgstr "Není možné načíst informace zásuvného modulu \"%s\"."
 
-#~ msgid "Alpha DESC"
-#~ msgstr "Sestupně"
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
 
-#~ msgid "Most popular"
-#~ msgstr "Nejoblíbenější"
+#, fuzzy
+#| msgid "Unable to create Appliance item %d."
+msgid "Unable to extract plugin archive."
+msgstr "Nelze vytvořit položku Zařízení %d."
 
-#~ msgid "Last updated"
-#~ msgstr "Naposledy aktualizováno"
+msgid "Check all plugin updates"
+msgstr "Zkontroluj akutualizace pro všechny zásuvné moduly"
 
-#~ msgid "Refresh plugin list"
-#~ msgstr "Obnov seznam zásuvných modulů"
+msgid "New version for plugin %s: %s"
+msgstr "Nová verze zásuvného modulu 1%s:1%s"
 
-#~ msgid "Homepage"
-#~ msgstr "Domovská stránka"
+msgid "Installed"
+msgstr "Instalováno"
 
-#~ msgid "Get help"
-#~ msgstr "Získat pomoc"
+msgid "Discover"
+msgstr "Najít"
 
-#~ msgid "Readme"
-#~ msgstr "Čti mě"
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
 
-#~ msgid "Clean"
-#~ msgstr "Vyčistit"
+msgid "Maybe you could setup a proxy"
+msgstr ""
 
-#~ msgid "This plugin is not available for your GLPI version."
-#~ msgstr "Tento zásuvný modul není dostupný pro vaší verzi GLPI."
+msgid "or please check later"
+msgstr "nebo prosím zkontrolujte později"
 
-#~ msgid "Install"
-#~ msgstr "Nainstalovat"
+#, fuzzy
+#| msgid "The registration key is invalid."
+msgid "Your %1$s registration is not valid."
+msgstr "Registrační klíč není platný."
 
-#~ msgid "Enable"
-#~ msgstr "Zapnout"
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
 
-#~ msgid "Uninstall"
-#~ msgstr "Odinstalovat"
+#, fuzzy
+#| msgid "Registration"
+msgid "Register on %1$s"
+msgstr "Registrace"
 
-#, php-format
-#~ msgid "%s plugin"
-#~ msgid_plural "%s plugins"
-#~ msgstr[0] "%s zásuvný modul"
-#~ msgstr[1] "%s zásuvných modulů"
-#~ msgstr[2] "%s zásuvných modulů"
-#~ msgstr[3] "%s zásuvných modulů"
+msgid "fill your registration key in setup."
+msgstr "vyplňte váš registrační klíč v nastavení."
 
-#~ msgid "Later"
-#~ msgstr "Později"
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Váš komentář byl upraven"
 
-#~ msgid "Switch to marketplace"
-#~ msgstr "Přejít na obchod"
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "vytvořeno %s"
 
-#~ msgid "Some updates are available for your installed plugins!"
-#~ msgstr ""
-#~ "Jsou dostupné některé aktualizace pro vaše instalované zásuvné moduly!"
+#, fuzzy
+#| msgid "Checking write permissions for marketplace plugins directory"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr "Kontrola oprávnění k zápisu pro adresář zásuvných modulů tržiště "
 
-#~ msgid "Plugin name"
-#~ msgstr "Jméno zásuvného modulu"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
 
-#~ msgid "Plugin new version number"
-#~ msgstr "Verze nového zásuvného modulu"
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
 
-#~ msgid "Plugin old version number"
-#~ msgstr "Verze starého zásuvného modulu"
+msgid "Alpha ASC"
+msgstr "Vzestupně"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "Pro hledání licencí bez konce platnosti ve vyhledávači používejte „Konec "
-#~ "platnosti obsahuje NULL“"
+msgid "Alpha DESC"
+msgstr "Sestupně"
 
-#~ msgid "Registration"
-#~ msgstr "Registrace"
+msgid "Most popular"
+msgstr "Nejoblíbenější"
 
-#~ msgid ""
-#~ "A registration key is needed to use advanced feature (like marketplace) "
-#~ "in GLPI"
-#~ msgstr ""
-#~ "Pro použití pokročilých funkcí (jako je katalog doplňků) je zapotřebí "
-#~ "registračního klíče"
+msgid "Last updated"
+msgstr "Naposledy aktualizováno"
 
-#~ msgid "And retrieve your key to paste it below"
-#~ msgstr "A získejte klíč pro vás, který vložte do kolonky níže"
+msgid "Most recent"
+msgstr ""
 
-#~ msgid "Registration key"
-#~ msgstr "Registrační klíč"
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "Číst poznámky"
 
-#~ msgid "Subscription"
-#~ msgstr "Předplatné"
+msgid "Your plugin here ? Contact us."
+msgstr ""
 
-#~ msgid "Unknown"
-#~ msgstr "Neznámé"
+msgid "Refresh plugin list"
+msgstr "Obnov seznam zásuvných modulů"
 
-#~ msgid "Registered by"
-#~ msgstr "Registrováno na"
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filter plugin list"
+msgstr "Filtrovat seznam"
 
-#~ msgid "The registration key is invalid."
-#~ msgstr "Registrační klíč není platný."
+msgid "Homepage"
+msgstr "Domovská stránka"
 
-#~ msgid "The registration key is valid."
-#~ msgstr "Registrační klíč je platný."
+msgid "Get help"
+msgstr "Získat pomoc"
 
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "Potřebujete pomoct se začleněním GLPI do svého IT, přednostně opravit "
-#~ "chybu nebo použít přednastavená pravidla a číselníky?\n"
-#~ "\n"
-#~ "Nabízíme vám službu %s .\n"
-#~ "GLPI-Network je komerční produkt, který obsahuje předplatné pro 3. "
-#~ "(nejvyšší) úroveň podpory, což zajišťuje opravu nalezených chyb ve "
-#~ "stanoveném čase.\n"
-#~ "\n"
-#~ "V rámci toho je možné se <b>obracet na oficiálního partnera</b>, který "
-#~ "vám pomůže se začleněním GLPI.\n"
-#~ "\n"
-#~ "Nebo vývoj GLPI podpořte <b>darováním</b>."
+msgid "Readme"
+msgstr "Čti mě"
 
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "Máte potíže s nastavením pokročilého modulu pro GLPI?\n"
-#~ "Můžeme vás pomoci s řešením. Napište si o podporu na %s."
+msgid "Clean"
+msgstr "Vyčistit"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "Na vaši adresu byl zaslán e-mail. Obsahuje pokyny pro obnovení hesla."
+msgid "This plugin is not available for your GLPI version."
+msgstr "Tento zásuvný modul není dostupný pro vaší verzi GLPI."
 
-#~ msgid "Email address not found."
-#~ msgstr "E-mailová adresa nenalezena."
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "MAC a IP adresa síťového zařízení jsou obsažené v agregovaném síťovém "
-#~ "portu"
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "Velikost nahrávaného soubor překročila hodnotu upload_max_filesize "
-#~ "určenou v php.ini"
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "Je k dispozici nová verze: %s."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "Velikost nahrávaného souboru překročila hodnotu MAX_FILE_SIZE určenou v "
-#~ "HTML formuláři"
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Nahrávaný soubor byl nahrán jen částečně"
+msgid "Install"
+msgstr "Nainstalovat"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Neúspěšný zápis souboru na úložiště"
+msgid "Enable"
+msgstr "Zapnout"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "PHP rozšíření zastavilo nahrávání souboru"
+msgid "Uninstall"
+msgstr "Odinstalovat"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr ""
-#~ "Velikost nahrávaného souboru překročila hodnotu post_max_size určenou v "
-#~ "php.ini"
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
 
-#~ msgid "File is too big"
-#~ msgstr "Soubor je příliš velký"
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
 
-#~ msgid "File is too small"
-#~ msgstr "Soubor je příliš malý"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "%s zásuvný modul"
+msgstr[1] "%s zásuvných modulů"
+msgstr[2] "%s zásuvných modulů"
+msgstr[3] "%s zásuvných modulů"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Překročen maximální počet souborů"
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Obrázek překročil maximální šířku"
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Obrázek vyžaduje nějakou minimální šířku"
+msgid "Later"
+msgstr "Později"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Obrázek překročil maximální výšku"
+msgid "Switch to marketplace"
+msgstr "Přejít na obchod"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Obrázek vyžaduje nějakou minimální výšku"
+msgid "Some updates are available for your installed plugins!"
+msgstr "Jsou dostupné některé aktualizace pro vaše instalované zásuvné moduly!"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Nepovolený typ souboru"
+msgid "Plugin name"
+msgstr "Jméno zásuvného modulu"
 
-#~ msgid "File upload aborted"
-#~ msgstr "Nahrání souboru zrušeno"
+msgid "Plugin new version number"
+msgstr "Verze nového zásuvného modulu"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "Nepodařilo se změnit rozlišení obrázku"
+msgid "Plugin old version number"
+msgstr "Verze starého zásuvného modulu"
 
-#~ msgid "Display GLPI debug information"
-#~ msgstr "Zobrazit ladící informace GLPI"
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"Pro hledání licencí bez konce platnosti ve vyhledávači používejte „Konec "
+"platnosti obsahuje NULL“"
 
-#~ msgid "Progress"
-#~ msgstr "Postup"
+msgid "Registration"
+msgstr "Registrace"
 
-#~ msgid "My settings"
-#~ msgstr "Má nastavení"
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+"Pro použití pokročilých funkcí (jako je katalog doplňků) je zapotřebí "
+"registračního klíče"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "Zpět na začátek stránky"
+#, fuzzy
+#| msgid "Registration"
+msgid "Register on %1$s!"
+msgstr "Registrace"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "Najdete na webu GLPI-PROJECT.org."
+msgid "And retrieve your key to paste it below"
+msgstr "A získejte klíč pro vás, který vložte do kolonky níže"
 
-#~ msgid "Check all"
-#~ msgstr "Zaškrtnout vše"
+msgid "Error was: %s"
+msgstr ""
 
-#~ msgid "Uncheck all"
-#~ msgstr "Odškrtnout vše"
+msgid "Registration key"
+msgstr "Registrační klíč"
 
-#~ msgid "Check all as"
-#~ msgstr "Zaškrtnout vše jako"
+msgid "Subscription"
+msgstr "Předplatné"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Výběr je příliš velký, provedení hromadné akce bylo vypnuto."
+msgid "Unknown"
+msgstr "Neznámé"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Pro zvýšení limitu: změnit max_input_vars nebo suhosin.post.max_vars v "
-#~ "nastavení php."
+msgid "Registered by"
+msgstr "Registrováno na"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "Kolonku popis je povinné vyplnit"
+#, fuzzy
+#| msgid "Unable to load LDAP server information."
+msgid "Unable to fetch registration information."
+msgstr "Není možné načíst informace LDAP serveru"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "Od %1$d do %2$d z %3$d"
+msgid "The registration key is invalid."
+msgstr "Registrační klíč není platný."
 
-#~ msgid "Empty array"
-#~ msgstr "Prázdné pole"
+#, fuzzy
+#| msgid "The registration key is invalid."
+msgid "The registration key refers to a terminated subscription."
+msgstr "Registrační klíč není platný."
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d z %2$d"
+msgid "The registration key is valid."
+msgstr "Registrační klíč je platný."
 
-#~ msgid "Close (Esc)"
-#~ msgstr "Zavřít (Ecs)"
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"Potřebujete pomoct se začleněním GLPI do svého IT, přednostně opravit chybu "
+"nebo použít přednastavená pravidla a číselníky?\n"
+"\n"
+"Nabízíme vám službu %s .\n"
+"GLPI-Network je komerční produkt, který obsahuje předplatné pro 3. "
+"(nejvyšší) úroveň podpory, což zajišťuje opravu nalezených chyb ve "
+"stanoveném čase.\n"
+"\n"
+"V rámci toho je možné se <b>obracet na oficiálního partnera</b>, který vám "
+"pomůže se začleněním GLPI.\n"
+"\n"
+"Nebo vývoj GLPI podpořte <b>darováním</b>."
 
-#~ msgid "Share"
-#~ msgstr "Sdílet"
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"Máte potíže s nastavením pokročilého modulu pro GLPI?\n"
+"Můžeme vás pomoci s řešením. Napište si o podporu na %s."
 
-#~ msgid "Zoom in/out"
-#~ msgstr "Přiblížení/oddálení"
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr "Na vaši adresu byl zaslán e-mail. Obsahuje pokyny pro obnovení hesla."
 
-#~ msgid "Previous (arrow left)"
-#~ msgstr "Předchozí (šipka doleva)"
+msgid "Email address not found."
+msgstr "E-mailová adresa nenalezena."
 
-#~ msgid "Next (arrow right)"
-#~ msgstr "Následující (šipka doprava)"
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+"MAC a IP adresa síťového zařízení jsou obsažené v agregovaném síťovém portu"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr "Připojte soubor přetažením sem nebo vložte v editoru nebo"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"Velikost nahrávaného soubor překročila hodnotu upload_max_filesize určenou v "
+"php.ini"
 
-#~ msgid "selecting them"
-#~ msgstr "jejich výběrem"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Velikost nahrávaného souboru překročila hodnotu MAX_FILE_SIZE určenou v HTML "
+"formuláři"
 
-#~ msgid "File(s)"
-#~ msgstr "Soubory"
+msgid "The uploaded file was only partially uploaded"
+msgstr "Nahrávaný soubor byl nahrán jen částečně"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Přetáhněte soubor sem nebo"
+msgid "Failed to write file to disk"
+msgstr "Neúspěšný zápis souboru na úložiště"
 
-#~ msgid "Upload successful"
-#~ msgstr "Nahrání úspěšné"
+msgid "A PHP extension stopped the file upload"
+msgstr "PHP rozšíření zastavilo nahrávání souboru"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Zaškrtnout/odškrtnout vše"
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+"Velikost nahrávaného souboru překročila hodnotu post_max_size určenou v php."
+"ini"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Pro hledání v nabídce začněte psát"
+msgid "File is too big"
+msgstr "Soubor je příliš velký"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "Ladící režim byl zapnut!"
+msgid "File is too small"
+msgstr "Soubor je příliš malý"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "Ladící režim byl vypnut!"
+msgid "Maximum number of files exceeded"
+msgstr "Překročen maximální počet souborů"
 
-#~ msgid "Saved searches"
-#~ msgstr "Uložená hledání"
+msgid "Image exceeds maximum width"
+msgstr "Obrázek překročil maximální šířku"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Spravovat uložená hledání"
+msgid "Image requires a minimum width"
+msgstr "Obrázek vyžaduje nějakou minimální šířku"
 
-#~ msgid "Add is disabled"
-#~ msgstr "Přidání je vypnuto"
+msgid "Image exceeds maximum height"
+msgstr "Obrázek překročil maximální výšku"
 
-#~ msgid "Search is disabled"
-#~ msgstr "Hledání je vypnuto"
+msgid "Image requires a minimum height"
+msgstr "Obrázek vyžaduje nějakou minimální výšku"
 
-#~ msgid "Global Kanban"
-#~ msgstr "Globální Kanban"
+msgid "Filetype not allowed"
+msgstr "Nepovolený typ souboru"
 
-#, php-format
-#~ msgid "You are impersonating %s."
-#~ msgstr "Právě jste přepnutí do %s."
+msgid "File upload aborted"
+msgstr "Nahrání souboru zrušeno"
 
-#~ msgid "Stop impersonating"
-#~ msgstr "Opustit přepnutí se do jiného uživatele."
+msgid "Failed to resize image"
+msgstr "Nepodařilo se změnit rozlišení obrázku"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr ""
-#~ "Umožnit přihlášení k API a získat token sezení s přihlašovacími údaji "
-#~ "uživatele"
+msgid "Display GLPI debug information"
+msgstr "Zobrazit ladící informace GLPI"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "Umožnit přihlášení k API a získat token sezení pomocí externího tokenu "
-#~ "uživatele. Viz Vzdálený přístupový klíč v panelu Nastavení uživatele"
+msgid "Progress"
+msgstr "Postup"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Zobrazit GLPI identifikátor"
+msgid "My settings"
+msgstr "Má nastavení"
 
-#~ msgid "Color palette"
-#~ msgstr "Barevná paleta"
+msgid "Back to top of the page"
+msgstr "Zpět na začátek stránky"
 
-#~ msgid "Layout"
-#~ msgstr "Rozvržení"
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "Najdete na webu GLPI-PROJECT.org."
 
-#~ msgid "Tabs on left"
-#~ msgstr "Záložky vlevo"
+msgid "Check all"
+msgstr "Zaškrtnout vše"
 
-#~ msgid "Classic view"
-#~ msgstr "Klasické zobrazení"
+msgid "Uncheck all"
+msgstr "Odškrtnout vše"
 
-#~ msgid "Vertical split"
-#~ msgstr "Svislé rozdělení"
+msgid "Check all as"
+msgstr "Zaškrtnout vše jako"
 
-#~ msgid "Dashboards"
-#~ msgstr "Přehledy"
+msgid "Selection too large, massive action disabled."
+msgstr "Výběr je příliš velký, provedení hromadné akce bylo vypnuto."
 
-#~ msgid "Default for central"
-#~ msgstr "Výchozí pro centrálu"
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Pro zvýšení limitu: změnit max_input_vars nebo suhosin.post.max_vars v "
+"nastavení php."
 
-#~ msgid "Default for Assets"
-#~ msgstr "Výchozí pro majekty"
+msgid "The description field is mandatory"
+msgstr "Kolonku popis je povinné vyplnit"
 
-#~ msgid "Default for Assistance"
-#~ msgstr "Výchozí pro asistenci"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "Od %1$d do %2$d z %3$d"
 
-#~ msgid "Default for tickets (mini dashboard)"
-#~ msgstr "Výchozí pro požadavky (mini přehled)"
+msgid "Empty array"
+msgstr "Prázdné pole"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Zjistit dostupnost případné novější verze"
+msgid "%1$d on %2$d"
+msgstr "%1$d z %2$d"
 
-#~ msgid "Show filters"
-#~ msgstr "Zobrazit filtry"
+msgid "Close (Esc)"
+msgstr "Zavřít (Ecs)"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "Daným filtrům neodpovídá žádná historie"
+msgid "Share"
+msgstr "Sdílet"
 
-#~ msgid "Add to schedule"
-#~ msgstr "Přidat do kalendáře"
+msgid "Zoom in/out"
+msgstr "Přiblížení/oddálení"
 
-#~ msgid "Position in room"
-#~ msgstr "Pozice v místnosti"
+msgid "Previous (arrow left)"
+msgstr "Předchozí (šipka doleva)"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "Orientace dveří v místnosti"
+msgid "Next (arrow right)"
+msgstr "Následující (šipka doprava)"
 
-#~ msgid "North"
-#~ msgstr "Sever"
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr "Připojte soubor přetažením sem nebo vložte v editoru nebo"
 
-#~ msgid "East"
-#~ msgstr "Východ"
+msgid "selecting them"
+msgstr "jejich výběrem"
 
-#~ msgid "South"
-#~ msgstr "Jih"
+msgid "File(s)"
+msgstr "Soubory"
 
-#~ msgid "West"
-#~ msgstr "Západ"
+msgid "Drag and drop your file here, or"
+msgstr "Přetáhněte soubor sem nebo"
 
-#~ msgid "Number of units"
-#~ msgstr "Počet jednotek"
+msgid "Upload successful"
+msgstr "Nahrání úspěšné"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "Check/uncheck all"
+msgstr "Zaškrtnout/odškrtnout vše"
 
-#~ msgid "Width"
-#~ msgstr "Šířka"
+msgid "Start typing to find a menu"
+msgstr "Pro hledání v nabídce začněte psát"
 
-#~ msgid "Height"
-#~ msgstr "Výška"
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Změněno"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "Naměřený příkon (ve wattech)"
+msgid "Debug mode enabled"
+msgstr "Ladící režim byl zapnut!"
 
-#~ msgid "Max. weight"
-#~ msgstr "Nejvyšší hmotnost"
+msgid "Debug mode disabled"
+msgstr "Ladící režim byl vypnut!"
 
-#~ msgid "No rack found"
-#~ msgstr "Nenalezen žádný rozvaděč"
+msgid "Saved searches"
+msgstr "Uložená hledání"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "Následující prvky se nacházejí mimo místnost"
+msgid "Manage saved searches"
+msgstr "Spravovat uložená hledání"
 
-#~ msgid "Blueprint"
-#~ msgstr "Plánek"
+msgid "Add is disabled"
+msgstr "Přidání je vypnuto"
 
-#~ msgid "Grid"
-#~ msgstr "Mřížka"
+msgid "Search is disabled"
+msgstr "Hledání je vypnuto"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "Vložit rozvaděč sem"
+msgid "Global Kanban"
+msgstr "Globální Kanban"
 
-#~ msgid "Position must be set"
-#~ msgstr "Je třeba nastavit pozici"
+msgid "You are impersonating %s."
+msgstr "Právě jste přepnutí do %s."
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "Pozice %1$s není k dispozici"
+msgid "Stop impersonating"
+msgstr "Opustit přepnutí se do jiného uživatele."
 
-#~ msgid "All categories"
-#~ msgstr "Všechny kategorie"
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+"Umožnit přihlášení k API a získat token sezení s přihlašovacími údaji "
+"uživatele"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Neroztříděný software"
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"Umožnit přihlášení k API a získat token sezení pomocí externího tokenu "
+"uživatele. Viz Vzdálený přístupový klíč v panelu Nastavení uživatele"
 
-#~ msgid "Valid license"
-#~ msgstr "Platná licence"
+msgid "Show GLPI ID"
+msgstr "Zobrazit GLPI identifikátor"
 
-#~ msgid "Other component"
-#~ msgstr "Další komponenta"
+msgid "Color palette"
+msgstr "Barevná paleta"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "Poslední věc před zahájením"
+msgid "Layout"
+msgstr "Rozvržení"
 
-#~ msgid "Donate"
-#~ msgstr "Podpořit vývoj darováním"
+msgid "Tabs on left"
+msgstr "Záložky vlevo"
+
+msgid "Classic view"
+msgstr "Klasické zobrazení"
+
+msgid "Vertical split"
+msgstr "Svislé rozdělení"
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Konec smlouvy"
+
+msgid "Dashboards"
+msgstr "Přehledy"
+
+msgid "Default for central"
+msgstr "Výchozí pro centrálu"
+
+msgid "Default for Assets"
+msgstr "Výchozí pro majekty"
+
+msgid "Default for Assistance"
+msgstr "Výchozí pro asistenci"
+
+msgid "Default for tickets (mini dashboard)"
+msgstr "Výchozí pro požadavky (mini přehled)"
+
+msgid "Check if a new version is available"
+msgstr "Zjistit dostupnost případné novější verze"
+
+msgid "Show filters"
+msgstr "Zobrazit filtry"
+
+msgid "No historical matching your filters"
+msgstr "Daným filtrům neodpovídá žádná historie"
+
+msgid "Add to schedule"
+msgstr "Přidat do kalendáře"
+
+msgid "Position in room"
+msgstr "Pozice v místnosti"
+
+msgid "Door orientation in room"
+msgstr "Orientace dveří v místnosti"
+
+msgid "North"
+msgstr "Sever"
+
+msgid "East"
+msgstr "Východ"
+
+msgid "South"
+msgstr "Jih"
+
+msgid "West"
+msgstr "Západ"
+
+msgid "Number of units"
+msgstr "Počet jednotek"
+
+msgid "U"
+msgstr "U"
+
+msgid "Width"
+msgstr "Šířka"
+
+msgid "Height"
+msgstr "Výška"
+
+msgid "Measured power (in watts)"
+msgstr "Naměřený příkon (ve wattech)"
+
+msgid "Max. weight"
+msgstr "Nejvyšší hmotnost"
+
+msgid "No rack found"
+msgstr "Nenalezen žádný rozvaděč"
+
+msgid "Following elements are out of room bounds"
+msgstr "Následující prvky se nacházejí mimo místnost"
+
+msgid "Blueprint"
+msgstr "Plánek"
+
+msgid "Grid"
+msgstr "Mřížka"
+
+msgid "Insert a rack here"
+msgstr "Vložit rozvaděč sem"
+
+msgid "Position must be set"
+msgstr "Je třeba nastavit pozici"
+
+msgid "%1$s position is not available"
+msgstr "Pozice %1$s není k dispozici"
+
+msgid "All categories"
+msgstr "Všechny kategorie"
+
+msgid "Uncategorized software"
+msgstr "Neroztříděný software"
+
+msgid "Valid license"
+msgstr "Platná licence"
+
+msgid "Other component"
+msgstr "Další komponenta"
+
+msgid "One last thing before starting"
+msgstr "Poslední věc před zahájením"
+
+msgid "Donate"
+msgstr "Podpořit vývoj darováním"
+
+msgid "Unofficial translations are also available"
+msgstr "Jsou také k dispozici neoficiální překlady"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Přečetl jsem si výše uvedené licenční ujednání a SOUHLASÍM s ním."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Přečetl jsem si výše uvedené licenční ujednání a NESOUHLASÍM s ním"
+
+msgid "Installation or update of GLPI"
+msgstr "Instalace nebo aktualizace GLPI"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Pro úplně novou instalaci GLPI zvolte „Nainstalovat“."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "Pro aktualizaci z dřívější verze GLPI zvolte „Přejít na novější verzi“"
+
+msgid "Do you want to continue?"
+msgstr "Přejete si pokračovat?"
+
+msgid "Database connection parameters"
+msgstr "Parametry připojení k databázi"
+
+msgid "Test of the connection at the database"
+msgstr "Zkouška připojení k databázi"
+
+msgid "Can't connect to the database"
+msgstr "Nedaří se připojit do databáze"
+
+msgid "The server answered: %s"
+msgstr "Server odpověděl: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Není vyplněná kolonka server a/nebo uživatel"
+
+msgid "Please select a database:"
+msgstr "Zvolte databázi:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Vytvořit novou databázi nebo použít stávající:"
+
+msgid "Please select the database to update:"
+msgstr "Zvolte databázi kterou aktualizovat:"
+
+msgid "Initialization of the database"
+msgstr "Inicializace databáze"
+
+msgid "Impossible to use the database:"
+msgstr "Tuto databázi není možné použít:"
+
+msgid "OK - database was initialized"
+msgstr "OK – databáze byla inicializována"
+
+msgid "Impossible to write the database setup file"
+msgstr "Není možné zapsat do souboru s nastavením databáze"
+
+msgid "Database created"
+msgstr "Databáze vytvořena"
+
+msgid "Error in creating database!"
+msgstr "Chyba při vytváření databáze!"
+
+msgid "You didn't select a database!"
+msgstr "Nezvolili jste databázi!"
+
+msgid "Collect data"
+msgstr "Shromáždit data"
+
+msgid "The installation is finished"
+msgstr "Instalace je dokončena"
+
+msgid "Default logins / passwords are:"
+msgstr "Výchozí přihlašovací jména / hesla jsou:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech (účet technika)"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal (účet běžného uživatele)"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly (účet pouze pro zasílání)"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "Tyto účty můžete smazat nebo upravit, stejně jako výchozí údaje."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Nedaří se vytvořit soubor s databázovým připojením, ověřte přístupová práva "
+"k souboru."
+
+msgid "Select your language"
+msgstr "Vyberte svůj jazyk"
+
+msgid "Beginning of the installation"
+msgstr "Zahájení instalace"
+
+msgid "Step %d"
+msgstr "Krok %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI – ověření totožnosti"
+
+msgid "Remember me"
+msgstr "Zapamatovat si mne"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Je třeba, abyste si v prohlížeči povolili JavaScript"
+
+msgid "You must accept cookies to reach this application"
+msgstr "Pro fungování této aplikace je třeba přijmout cookies"
+
+msgid "Invalid use of session ID"
+msgstr "Neplatné použití identifikátoru sezení"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Přístup k nejčastějším dotazům (FAQ)"
+
+msgid "Add a card"
+msgstr "Přidat kartu"
+
+msgid "Add a filter"
+msgstr "Přidat filtr"
+
+msgid "Saved"
+msgstr "Uloženo"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Opravdu chcete přehled %s smazat?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Datum odeslání"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Používat GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Jsou také k dispozici neoficiální překlady"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Přečetl jsem si výše uvedené licenční ujednání a SOUHLASÍM s ním."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "Přečetl jsem si výše uvedené licenční ujednání a NESOUHLASÍM s ním"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "Instalace nebo aktualizace GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Pro úplně novou instalaci GLPI zvolte „Nainstalovat“."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "Pro aktualizaci z dřívější verze GLPI zvolte „Přejít na novější verzi“"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Přejete si pokračovat?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Parametry připojení k databázi"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Zkouška připojení k databázi"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Nedaří se připojit do databáze"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Server odpověděl: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Není vyplněná kolonka server a/nebo uživatel"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Zvolte databázi:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Vytvořit novou databázi nebo použít stávající:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Zvolte databázi kterou aktualizovat:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Inicializace databáze"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Tuto databázi není možné použít:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK – databáze byla inicializována"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Není možné zapsat do souboru s nastavením databáze"
-
-#~ msgid "Database created"
-#~ msgstr "Databáze vytvořena"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Chyba při vytváření databáze!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Nezvolili jste databázi!"
-
-#~ msgid "Collect data"
-#~ msgstr "Shromáždit data"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Instalace je dokončena"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Výchozí přihlašovací jména / hesla jsou:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi (účet správce)"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech (účet technika)"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal (účet běžného uživatele)"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly (účet pouze pro zasílání)"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "Tyto účty můžete smazat nebo upravit, stejně jako výchozí údaje."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Nedaří se vytvořit soubor s databázovým připojením, ověřte přístupová "
-#~ "práva k souboru."
-
-#~ msgid "Select your language"
-#~ msgstr "Vyberte svůj jazyk"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Zahájení instalace"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Krok %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI – ověření totožnosti"
-
-#~ msgid "Remember me"
-#~ msgstr "Zapamatovat si mne"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Je třeba, abyste si v prohlížeči povolili JavaScript"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Pro fungování této aplikace je třeba přijmout cookies"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Neplatné použití identifikátoru sezení"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Přístup k nejčastějším dotazům (FAQ)"
-
-#~ msgid "Add a card"
-#~ msgstr "Přidat kartu"
-
-#~ msgid "Add a filter"
-#~ msgstr "Přidat filtr"
-
-#~ msgid "Saved"
-#~ msgstr "Uloženo"
-
-#, javascript-format
-#~ msgid "Are you sure you want to delete the dashboard %s ?"
-#~ msgstr "Opravdu chcete přehled %s smazat?"

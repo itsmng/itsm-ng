@@ -23621,587 +23621,1293 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "No room found or selected"
-#~ msgstr "Tilaa ei löytynyt tai ei valittu"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Kirjoitus"
 
-#~ msgid "Marketplace"
-#~ msgstr "Kauppapaikka"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Käyttäjätunnus"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Katso liittännäisten luetteloa"
+#, fuzzy
+#| msgid "Use server configuration"
+msgid "Open ID connect configuration"
+msgstr "Käytä palvelimen asetuksia"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Tyhjä on loputon"
+msgid "No room found or selected"
+msgstr "Tilaa ei löytynyt tai ei valittu"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS-syötteet löytyivät"
+msgid "Marketplace"
+msgstr "Kauppapaikka"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+#, fuzzy
+#| msgid "%1$s adds the item %2$s (%3$d)"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s lisää kohteen %2$s (%3$d)"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Sulkeutuvat tikettisi"
+msgid "See the catalog of plugins"
+msgstr "Katso liittännäisten luetteloa"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Odotustilassa olevat tiketit"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Käsiteltävät tiketit"
+msgid "Empty for infinite"
+msgstr "Tyhjä on loputon"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Tarkkailemasi tiketit"
+msgid "RSS feeds found"
+msgstr "RSS-syötteet löytyivät"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Työn alla olevat tikettisi"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Hyväksyttävänä olevat tikettisi"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "IP -versio"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "Tiketilläsi on hylätty tila"
+#, fuzzy
+#| msgid "Confirm the final deletion?"
+msgid "Confirm the promotion?"
+msgstr "Vahvista pysyvä poisto?"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Tiketin seuranta"
+msgid "Your tickets to close"
+msgstr "Sulkeutuvat tikettisi"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d uusi tiketti"
-#~ msgstr[1] "%d uutta tikettiä"
+msgid "Tickets on pending status"
+msgstr "Odotustilassa olevat tiketit"
 
-#~ msgid "No ticket found."
-#~ msgstr "Tikettiä ei löydy"
+msgid "Tickets to be processed"
+msgstr "Käsiteltävät tiketit"
 
-#~ msgid "Last tickets"
-#~ msgstr "Viimeisimmät tiketit"
+msgid "Your observed tickets"
+msgstr "Tarkkailemasi tiketit"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Uusi tiketti tälle kohteelle ..."
+msgid "Your tickets in progress"
+msgstr "Työn alla olevat tikettisi"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Viimeisin %d tiketti"
-#~ msgstr[1] "Viimeisimmät %d tikettiä"
+msgid "Your tickets to validate"
+msgstr "Hyväksyttävänä olevat tikettisi"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Sinulla ei oikeutta nähdä kaikkia tikettejä"
+msgid "Your tickets having rejected approval status"
+msgstr "Tiketilläsi on hylätty tila"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Linkitetyn kohteen tiketti"
-#~ msgstr[1] "Linkitettyjen kohteiden tiketit"
+#, fuzzy
+#| msgid "Your tickets having rejected approval status"
+msgid "Your tickets having rejected solution"
+msgstr "Tiketilläsi on hylätty tila"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Tikettejä ei työn alla."
+msgid "Ticket followup"
+msgstr "Tiketin seuranta"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Liitä laite"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d uusi tiketti"
+msgstr[1] "%d uutta tikettiä"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Tikettien automaattinen sulkeminen"
+msgid "No ticket found."
+msgstr "Tikettiä ei löydy"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Tyytyväisyyskyselyjen luonti"
+msgid "Last tickets"
+msgstr "Viimeisimmät tiketit"
 
-#~ msgid "See my ticket"
-#~ msgstr "Katso tikettiäni"
+msgid "New ticket for this item..."
+msgstr "Uusi tiketti tälle kohteelle ..."
 
-#~ msgid "See group ticket"
-#~ msgstr "Katso ryhmäni tikettiä"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Viimeisin %d tiketti"
+msgstr[1] "Viimeisimmät %d tikettiä"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Katso ryhmieni luomia tikettejä"
+msgid "You don't have right to see all tickets"
+msgstr "Sinulla ei oikeutta nähdä kaikkia tikettejä"
 
-#~ msgid "See all tickets"
-#~ msgstr "Katso kaikkia tikettejä"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Linkitetyn kohteen tiketti"
+msgstr[1] "Linkitettyjen kohteiden tiketit"
 
-#~ msgid "See assigned"
-#~ msgstr "Katso osoitettuja"
+msgid "No ticket in progress."
+msgstr "Tikettejä ei työn alla."
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Katso osoitettuja tikettejä (yhdistetty ryhmä)"
+msgid "Assign equipment"
+msgstr "Liitä laite"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Osoita tiketti"
+msgid "Automatic tickets closing"
+msgstr "Tikettien automaattinen sulkeminen"
 
-#~ msgid "Steal"
-#~ msgstr "Varasta"
+msgid "Generation of satisfaction surveys"
+msgstr "Tyytyväisyyskyselyjen luonti"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Varasta tiketti"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "Ratkaistut tiketit sulkeutuvat automaattisesti, kun on kulunut"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Vastuussa"
+msgid "See my ticket"
+msgstr "Katso tikettiäni"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Vastaa tiketistä"
+msgid "See group ticket"
+msgstr "Katso ryhmäni tikettiä"
 
-#~ msgid "Change the priority"
-#~ msgstr "Muuta prioriteettia"
+msgid "See tickets created by my groups"
+msgstr "Katso ryhmieni luomia tikettejä"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Hyväksy ratkaisu/Vastaa kyselyyn (minun tiketti)"
+msgid "See all tickets"
+msgstr "Katso kaikkia tikettejä"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr ""
-#~ "Hyväksy ratkaisu ja vastaa kyselyyn, joka liittyy luomaani tikettiin."
+msgid "See assigned"
+msgstr "Katso osoitettuja"
 
-#, php-format
-#~ msgid "Failed to link tickets %d and %d"
-#~ msgstr "Tikettien %d ja %d linkittäminen epäonnistui"
+msgid "See assigned tickets"
+msgstr "Katso osoitettuja tikettejä (yhdistetty ryhmä)"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "Tiketin %d poisto epäonnistui"
+msgid "Assign a ticket"
+msgstr "Osoita tiketti"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Laske kategoria uudelleen"
+msgid "Steal"
+msgstr "Varasta"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Voimassa olevat lisenssit"
+msgid "Steal a ticket"
+msgstr "Varasta tiketti"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Asennusten lukumäärä"
+msgid "Beeing in charge"
+msgstr "Vastuussa"
 
-#~ msgid "Merge"
-#~ msgstr "Yhdistä"
+msgid "To be in charge of a ticket"
+msgstr "Vastaa tiketistä"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Ohjelmisto poistettu yhdistämisen jälkeen"
+msgid "Change the priority"
+msgstr "Muuta prioriteettia"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Hyväksy ratkaisu/Vastaa kyselyyn (minun tiketti)"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Tietokoneen yhdistäminen"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "Hyväksy ratkaisu ja vastaa kyselyyn, joka liittyy luomaani tikettiin."
 
-#~ msgid "Not connected"
-#~ msgstr "Ei ole yhdistetty"
+#, fuzzy
+#| msgid "Failed to link tickets %d and %d"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "Tikettien %d ja %d linkittäminen epäonnistui"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Voimassa ajankohtaan %s"
+#, fuzzy
+#| msgid "Failed to delete ticket %d"
+msgid "Failed to load ticket %d"
+msgstr "Tiketin %d poisto epäonnistui"
 
-#~ msgid "Solved"
-#~ msgstr "Ratkaistut"
+#, fuzzy
+#| msgid "Failed to delete ticket %d"
+msgid "Failed to add followup to ticket %d"
+msgstr "Tiketin %d poisto epäonnistui"
 
-#~ msgid "Example:"
-#~ msgstr "Esimerkki:"
+#, fuzzy
+#| msgid "Failed to delete ticket %d"
+msgid "Failed to add task to ticket %d"
+msgstr "Tiketin %d poisto epäonnistui"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP-verkkoa ei löydy tietokannasta. Voit kuitenkin nähdä käytettävissä "
-#~ "olevat verkot."
+#, fuzzy
+#| msgid "Failed to delete ticket %d"
+msgid "Failed to add document to ticket %d"
+msgstr "Tiketin %d poisto epäonnistui"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Käytettävissä useita verkkojen nimiä! Käytä 'Verkon nimi' välilehteä "
-#~ "niiden hallinnointiin."
+msgid "Failed to link tickets %d and %d"
+msgstr "Tikettien %d ja %d linkittäminen epäonnistui"
 
-#~ msgid "Add a network name"
-#~ msgstr "Lisää lähiverkon nimi"
+msgid "Failed to delete ticket %d"
+msgstr "Tiketin %d poisto epäonnistui"
 
-#~ msgid "Not associated"
-#~ msgstr "Ei ole yhdistetty"
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s poistaa pysyvästi version %2$s"
 
-#~ msgid "Create a new network name"
-#~ msgstr "Luo uusi verkon nimi"
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Asiakirjatiedostojen liitännäisten kirjoitusoikeuksien tarkistus"
 
-#~ msgid "No network name found"
-#~ msgstr "Lähiverkon nimeä ei löytynyt"
+msgid "Recalculate the category"
+msgstr "Laske kategoria uudelleen"
 
-#~ msgid "Clean"
-#~ msgstr "Tyhjennä"
+msgid "Valid licenses"
+msgstr "Voimassa olevat lisenssit"
 
-#~ msgid "Install"
-#~ msgstr "Asenna"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Asennusten lukumäärä"
 
-#~ msgid "Enable"
-#~ msgstr "Ota käyttöön"
+msgid "Merge"
+msgstr "Yhdistä"
 
-#~ msgid "Uninstall"
-#~ msgstr "Poista"
+msgid "Software deleted after merging"
+msgstr "Ohjelmisto poistettu yhdistämisen jälkeen"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "Hae lisenssejä, joissa ei ole päättymispäivää, käytämällä hakuehtoa "
-#~ "\"Päättyminen sisältää NULL\"."
+#, fuzzy
+#| msgid "You must install at least PHP %s."
+msgid "You must enable at least one notification mode."
+msgstr "Asenna vähintään PHP-versio %s"
 
-#~ msgid "Unknown"
-#~ msgstr "Tuntematon"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "Sähköposti on lähetetty antamaasi sähköpostiosoitteeseen. Sähköposti "
-#~ "sisältää ohjeet, miten vaihdat salasanan."
+msgid "Connect a computer"
+msgstr "Tietokoneen yhdistäminen"
 
-#~ msgid "Email address not found."
-#~ msgstr "Sähköpostiosoite ei löytynyt"
+msgid "Not connected"
+msgstr "Ei ole yhdistetty"
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "Laitteen MAC- ja IP-osoitteet on yhdistetty aggregoidussa verkkoportissa"
+#, fuzzy
+#| msgid "Show all"
+msgid "Show as map"
+msgstr "Näytä kaikki"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr "Ladattu tiedosto ylittää upload_max_file-size-arvon PHP.ini:ssä."
+msgid "Valid to %s"
+msgstr "Voimassa ajankohtaan %s"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "Ladattu tiedosto ylittää MAX_FILE_SIZE-arvon, joka oli määritetty HTML-"
-#~ "lomakkeella."
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "Viimeisimmät tiketit"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Ladattu tiedosto ladattiin ainoastaan osittain."
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Hyväksymistä odottavat tiketit"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Tiedoston kirjoitus levylle epäonnistui"
+#, fuzzy
+#| msgid "Ongoing tickets"
+msgid "Incoming tickets"
+msgstr "Käsittelyssä olevat tiketit"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "PHP-laajennos pysäytti tiedoston latauksen"
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "Ratkaise tiketit"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr "Ladattu tiedosto ylittää upload_max_file-size-arvon PHP.ini:ssä."
+#, fuzzy
+#| msgid "Created tickets"
+msgid "Closed tickets"
+msgstr "Luodut tiketit"
 
-#~ msgid "File is too big"
-#~ msgstr "Tiedosto on liian suuri"
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Ilman nimeä"
 
-#~ msgid "File is too small"
-#~ msgstr "Tiedosto on liian pieni"
+#, fuzzy
+#| msgid "Time to own"
+msgid "Time to close"
+msgstr "Vasteaika"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Tiedostojen enimmäismäärä ylittyi"
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "Hyväksy"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Kuva ylittää enimmäisleveyden"
+msgid "Solved"
+msgstr "Ratkaistut"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Kuva ei saa alittaa vähimmäisleveyttä"
+msgid "Share or embed this dashboard"
+msgstr ""
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Kuva ylittää enimmäiskorkeuden"
+msgid "Delete this dashboard"
+msgstr ""
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Kuva ei saa alittaa vähimmäiskorkeutta"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle auto-refresh"
+msgstr "Vaihda suodattimia"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Tiedostotyyppi ei ole sallittu"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle night mode"
+msgstr "Vaihda suodattimia"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle fullscreen"
+msgstr "Vaihda suodattimia"
 
-#~ msgid "File upload aborted"
-#~ msgstr "Tiedoston lataus peruutettu"
+msgid "Clone this dashboard"
+msgstr ""
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle edit mode"
+msgstr "Vaihda suodattimia"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add filter"
+msgstr "Kohteen lisäys"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "Lisää uusi tehtävä"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "Muut"
+
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "Budjetti"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "Tehtävien lukumäärä"
+
+#, fuzzy
+#| msgid "Filter access"
+msgid "Filters"
+msgstr "Suodata oikeuksia"
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "Sovelluksen URL"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP-hakemistolinkki"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+#, fuzzy
+#| msgid "Empty array"
+msgid "empty card !"
+msgstr "Tyhjä taulukko"
+
+#, fuzzy
+#| msgid "Number of rows"
+msgid "Number of %s"
+msgstr "Rivien määrä"
+
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s / %2$s"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "Arvojen luettelo"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "Tikettien lukumäärä"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket tasks to do"
+msgid "Tickets status by month"
+msgstr "Tikettitehtävät suoritettavaksi"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "Tikettikategoria"
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Top ticket's categories"
+msgstr "Tikettikategoria"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "Hyväksyttävänä olevat tikettisi"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "Tikettien oletustyyppi"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "Tiketin sijainti"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "Tikettien lukumäärä toimeksiantajana"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "Katso ryhmieni luomia tikettejä"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "Tiketeille suljettu jälkeen"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "Katso ryhmieni luomia tikettejä"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignees"
+msgstr "Työn alla olevat tikettisi"
+
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "Seurannan lisäys yhdistettyjen ryhmien tiketeille"
+
+#, fuzzy
+#| msgid "List of translations"
+msgid "List of reminders"
+msgstr "Käännösten luettelo"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr "Esimerkki:"
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP-verkkoa ei löydy tietokannasta. Voit kuitenkin nähdä käytettävissä olevat "
+"verkot."
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Käytettävissä useita verkkojen nimiä! Käytä 'Verkon nimi' välilehteä niiden "
+"hallinnointiin."
+
+msgid "Add a network name"
+msgstr "Lisää lähiverkon nimi"
+
+msgid "Not associated"
+msgstr "Ei ole yhdistetty"
+
+msgid "Create a new network name"
+msgstr "Luo uusi verkon nimi"
+
+msgid "No network name found"
+msgstr "Lähiverkon nimeä ei löytynyt"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "Tarkista uusien päivitysten saatavuus"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "Asenna"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "Sulje yhteys"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+#, fuzzy
+#| msgid "%1$s position is not available"
+msgid "Your %1$s registration is not valid."
+msgstr "%1$spaikka ei ole käytettävissä"
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "Luotu %s"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Kommenttiasi on muokattu"
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "luotu %s"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "Yleisimmät kysymykset"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "Viimeisin päivitys"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "Lue huomautuksia"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "Filter plugin list"
+msgstr "Käytöstä poistettu liitännäinen"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "Aloitus"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "Luku"
+
+msgid "Clean"
+msgstr "Tyhjennä"
+
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "Käyttäjätunnus on virheellinen. Käyttäjä ei voida lisätä."
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "Uusi versio on käytettävissä: %s."
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "Asenna"
+
+msgid "Enable"
+msgstr "Ota käyttöön"
+
+msgid "Uninstall"
+msgstr "Poista"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Käytöstä poistettu liitännäinen"
+msgstr[1] "Käytöstä poistettu liitännäinen"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "Myöhässä"
+
+#, fuzzy
+#| msgid "Marketplace"
+msgid "Switch to marketplace"
+msgstr "Kauppapaikka"
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "Liitännäinen"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "Rakennuksen numero"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"Hae lisenssejä, joissa ei ole päättymispäivää, käytämällä hakuehtoa "
+"\"Päättyminen sisältää NULL\"."
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "Varaus"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "Luotu %s"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "Varaus"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "Kuvaus"
+
+msgid "Unknown"
+msgstr "Tuntematon"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "Ota käyttöön talous- ja hallintotiedot"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "Asennus on valmis."
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "Asennus on valmis."
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"Sähköposti on lähetetty antamaasi sähköpostiosoitteeseen. Sähköposti "
+"sisältää ohjeet, miten vaihdat salasanan."
+
+msgid "Email address not found."
+msgstr "Sähköpostiosoite ei löytynyt"
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+"Laitteen MAC- ja IP-osoitteet on yhdistetty aggregoidussa verkkoportissa"
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "Ladattu tiedosto ylittää upload_max_file-size-arvon PHP.ini:ssä."
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Ladattu tiedosto ylittää MAX_FILE_SIZE-arvon, joka oli määritetty HTML-"
+"lomakkeella."
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "Ladattu tiedosto ladattiin ainoastaan osittain."
+
+msgid "Failed to write file to disk"
+msgstr "Tiedoston kirjoitus levylle epäonnistui"
+
+msgid "A PHP extension stopped the file upload"
+msgstr "PHP-laajennos pysäytti tiedoston latauksen"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "Ladattu tiedosto ylittää upload_max_file-size-arvon PHP.ini:ssä."
+
+msgid "File is too big"
+msgstr "Tiedosto on liian suuri"
+
+msgid "File is too small"
+msgstr "Tiedosto on liian pieni"
+
+msgid "Maximum number of files exceeded"
+msgstr "Tiedostojen enimmäismäärä ylittyi"
+
+msgid "Image exceeds maximum width"
+msgstr "Kuva ylittää enimmäisleveyden"
+
+msgid "Image requires a minimum width"
+msgstr "Kuva ei saa alittaa vähimmäisleveyttä"
+
+msgid "Image exceeds maximum height"
+msgstr "Kuva ylittää enimmäiskorkeuden"
+
+msgid "Image requires a minimum height"
+msgstr "Kuva ei saa alittaa vähimmäiskorkeutta"
+
+msgid "Filetype not allowed"
+msgstr "Tiedostotyyppi ei ole sallittu"
+
+msgid "File upload aborted"
+msgstr "Tiedoston lataus peruutettu"
+
+msgid "Failed to resize image"
+msgstr "Kuvakoon muutos epäonnistui"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "Käyttäjien tiedot"
+
+msgid "Progress"
+msgstr "Edistyminen"
+
+msgid "My settings"
+msgstr "Omat asetukset"
+
+msgid "Back to top of the page"
+msgstr "Takaisin sivun yläreunaan"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "Kuvakoon muutos epäonnistui"
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "Löydät sen GLPI-PROJECT.org-sivustolta"
 
-#~ msgid "Progress"
-#~ msgstr "Edistyminen"
+msgid "Check all"
+msgstr "Valitse kaikki"
 
-#~ msgid "My settings"
-#~ msgstr "Omat asetukset"
+msgid "Uncheck all"
+msgstr "Poista valinnat"
+
+msgid "Check all as"
+msgstr "Tarkista kaikki kuten"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "Takaisin sivun yläreunaan"
+msgid "Selection too large, massive action disabled."
+msgstr ""
+"Valinta on liian suuri: suurten joukkojen toiminnot on poistettu käytöstä."
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "Löydät sen GLPI-PROJECT.org-sivustolta"
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Kasvata rajaa muuttamalla php:n määrityksissä max_input_vars- tai suhosin."
+"post.max_vars-arvoa."
 
-#~ msgid "Check all"
-#~ msgstr "Valitse kaikki"
+msgid "The description field is mandatory"
+msgstr "Kuvauskenttä on pakollinen"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Poista valinnat"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "Riviltä %1$d riville %2$d / %3$d"
 
-#~ msgid "Check all as"
-#~ msgstr "Tarkista kaikki kuten"
+msgid "Empty array"
+msgstr "Tyhjä taulukko"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr ""
-#~ "Valinta on liian suuri: suurten joukkojen toiminnot on poistettu käytöstä."
+msgid "%1$d on %2$d"
+msgstr "%1$d / %2$d"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Kasvata rajaa muuttamalla php:n määrityksissä max_input_vars- tai suhosin."
-#~ "post.max_vars-arvoa."
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "Sulje"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "Kuvauskenttä on pakollinen"
+msgid "Share"
+msgstr ""
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "Riviltä %1$d riville %2$d / %3$d"
+msgid "Zoom in/out"
+msgstr ""
 
-#~ msgid "Empty array"
-#~ msgstr "Tyhjä taulukko"
+msgid "Previous (arrow left)"
+msgstr ""
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d / %2$d"
+msgid "Next (arrow right)"
+msgstr ""
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr ""
-#~ "Liitä tiedosto käyttäen joko raahaa ja pudota tai kopioi ja liitä -tapaa"
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+"Liitä tiedosto käyttäen joko raahaa ja pudota tai kopioi ja liitä -tapaa"
 
-#~ msgid "selecting them"
-#~ msgstr "valinta käynnissä"
+msgid "selecting them"
+msgstr "valinta käynnissä"
 
-#~ msgid "File(s)"
-#~ msgstr "Tiedostot (%s)"
+msgid "File(s)"
+msgstr "Tiedostot (%s)"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Raahaa ja pudota tiedosto tänne tai"
+msgid "Drag and drop your file here, or"
+msgstr "Raahaa ja pudota tiedosto tänne tai"
 
-#~ msgid "Upload successful"
-#~ msgstr "Lataus onnistui"
+msgid "Upload successful"
+msgstr "Lataus onnistui"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Valitse/poista kaikki"
+msgid "Check/uncheck all"
+msgstr "Valitse/poista kaikki"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Aloita kirjoittaminen löytääksesi valikon"
+msgid "Start typing to find a menu"
+msgstr "Aloita kirjoittaminen löytääksesi valikon"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "Virheenkorjaustila käytössä!"
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Muuttunut"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "Virheenkorjaustila poistettu käytöstä!"
+msgid "Debug mode enabled"
+msgstr "Virheenkorjaustila käytössä!"
 
-#~ msgid "Saved searches"
-#~ msgstr "Tallennetut haut"
+msgid "Debug mode disabled"
+msgstr "Virheenkorjaustila poistettu käytöstä!"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Hallinnoi tallennettuja hakuja"
+msgid "Saved searches"
+msgstr "Tallennetut haut"
 
-#~ msgid "Add is disabled"
-#~ msgstr "Lisääminen poistettu käytöstä"
+msgid "Manage saved searches"
+msgstr "Hallinnoi tallennettuja hakuja"
 
-#~ msgid "Search is disabled"
-#~ msgstr "Haku poistettu käytöstä"
+msgid "Add is disabled"
+msgstr "Lisääminen poistettu käytöstä"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Näytä GLPI-ID-tunnus"
+msgid "Search is disabled"
+msgstr "Haku poistettu käytöstä"
 
-#~ msgid "Color palette"
-#~ msgstr "Värivalikoima"
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "Yleinen hallinta"
 
-#~ msgid "Layout"
-#~ msgstr "Asettelu"
+msgid "You are impersonating %s."
+msgstr ""
 
-#~ msgid "Tabs on left"
-#~ msgstr "Välilehdet vasemmalla"
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "Aseta henkilökohtaiseksi"
 
-#~ msgid "Classic view"
-#~ msgstr "Perusnäkymä"
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
 
-#~ msgid "Vertical split"
-#~ msgstr "Pystysuora jako"
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Tarkista, onko uusi versio käytettävissä"
+msgid "Show GLPI ID"
+msgstr "Näytä GLPI-ID-tunnus"
 
-#~ msgid "Show filters"
-#~ msgstr "Näytä suodattimet"
+msgid "Color palette"
+msgstr "Värivalikoima"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "Ei historiallista vastaavuutta käytettyihin suodattimiin"
+msgid "Layout"
+msgstr "Asettelu"
 
-#~ msgid "Add to schedule"
-#~ msgstr "Lisää aikatauluun"
+msgid "Tabs on left"
+msgstr "Välilehdet vasemmalla"
 
-#~ msgid "Position in room"
-#~ msgstr "Paikka huoneessa"
+msgid "Classic view"
+msgstr "Perusnäkymä"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "Oven suunta huoneessa"
+msgid "Vertical split"
+msgstr "Pystysuora jako"
 
-#~ msgid "North"
-#~ msgstr "Pohjoinen"
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Sopimuksen umpeutuminen"
 
-#~ msgid "East"
-#~ msgstr "Itä"
+msgid "Dashboards"
+msgstr ""
 
-#~ msgid "South"
-#~ msgstr "Etelä"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "Oletuksena tiketeille"
 
-#~ msgid "West"
-#~ msgstr "Länsi"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "Oletuksena tiketeille"
 
-#~ msgid "Number of units"
-#~ msgstr "Laitemäärä"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "Oletuksena tiketeille"
 
-#~ msgid "Width"
-#~ msgstr "Leveys"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Oletuksena tiketeille"
 
-#~ msgid "Height"
-#~ msgstr "Korkeus"
+msgid "Check if a new version is available"
+msgstr "Tarkista, onko uusi versio käytettävissä"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "Mitattu teho (wattia)"
+msgid "Show filters"
+msgstr "Näytä suodattimet"
 
-#~ msgid "Max. weight"
-#~ msgstr "Max. kuormitus"
+msgid "No historical matching your filters"
+msgstr "Ei historiallista vastaavuutta käytettyihin suodattimiin"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "Seuraavat kohteet ovat huonerajojen ulkopuolella"
+msgid "Add to schedule"
+msgstr "Lisää aikatauluun"
 
-#~ msgid "Blueprint"
-#~ msgstr "Piirustus"
+msgid "Position in room"
+msgstr "Paikka huoneessa"
 
-#~ msgid "Grid"
-#~ msgstr "Ruudukko"
+msgid "Door orientation in room"
+msgstr "Oven suunta huoneessa"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "Aseta teline tähän"
+msgid "North"
+msgstr "Pohjoinen"
 
-#~ msgid "Position must be set"
-#~ msgstr "Paikka on asetettava"
+msgid "East"
+msgstr "Itä"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$spaikka ei ole käytettävissä"
+msgid "South"
+msgstr "Etelä"
 
-#~ msgid "All categories"
-#~ msgstr "Kaikki luokat"
+msgid "West"
+msgstr "Länsi"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Luokittelemattomat ohjelmistot"
+msgid "Number of units"
+msgstr "Laitemäärä"
 
-#~ msgid "Valid license"
-#~ msgstr "Voimassa oleva lisenssi"
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr "Leveys"
+
+msgid "Height"
+msgstr "Korkeus"
+
+msgid "Measured power (in watts)"
+msgstr "Mitattu teho (wattia)"
+
+msgid "Max. weight"
+msgstr "Max. kuormitus"
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No rack found"
+msgstr "Käyttäjää ei löytynyt"
+
+msgid "Following elements are out of room bounds"
+msgstr "Seuraavat kohteet ovat huonerajojen ulkopuolella"
+
+msgid "Blueprint"
+msgstr "Piirustus"
+
+msgid "Grid"
+msgstr "Ruudukko"
+
+msgid "Insert a rack here"
+msgstr "Aseta teline tähän"
+
+msgid "Position must be set"
+msgstr "Paikka on asetettava"
+
+msgid "%1$s position is not available"
+msgstr "%1$spaikka ei ole käytettävissä"
+
+msgid "All categories"
+msgstr "Kaikki luokat"
+
+msgid "Uncategorized software"
+msgstr "Luokittelemattomat ohjelmistot"
+
+msgid "Valid license"
+msgstr "Voimassa oleva lisenssi"
+
+#, fuzzy
+#| msgid "Update component"
+msgid "Other component"
+msgstr "Päivitä komponentti"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr ""
+
+msgid "Unofficial translations are also available"
+msgstr "Epäviralliset käännökset ovat myös käytettävissä"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Olen lukenut ja HYVÄKSYN edellä mainitut lisenssiehdot."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Olen lukenut ja EN HYVÄKSY edellä mainittuja lisenssiehtoja."
+
+msgid "Installation or update of GLPI"
+msgstr "GLPI:n asennus tai päivitys"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Asenna täysin uusi GLPi valitsemalla 'Asenna'"
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "Päivitä GLPI-versiosi valitsemalla 'Päivitä'"
+
+msgid "Do you want to continue?"
+msgstr "Haluatko jatkaa?"
+
+msgid "Database connection parameters"
+msgstr "Tietokantayhteyden parametrit"
+
+msgid "Test of the connection at the database"
+msgstr "Tietokantayhteyden testaus"
+
+msgid "Can't connect to the database"
+msgstr "Tietokantaan ei saada yhteyttä"
+
+msgid "The server answered: %s"
+msgstr "Palvelimen vastaus oli: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Palvelin- tai/ja käyttäjäkentät ovat tyhjät."
+
+msgid "Please select a database:"
+msgstr "Valitse tietokanta"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Luo uusi tietokanta tai käytä olemassa olevaa"
+
+msgid "Please select the database to update:"
+msgstr "Valitse päivitettävä tietokanta"
+
+msgid "Initialization of the database"
+msgstr "Tietokannan alustus"
+
+msgid "Impossible to use the database:"
+msgstr "Tietokantaa ei voida käyttää:"
+
+msgid "OK - database was initialized"
+msgstr "OK – tietokanta on alustettu"
+
+msgid "Impossible to write the database setup file"
+msgstr "Tietokannan asetustiedostoon ei voida kirjoittaa"
+
+msgid "Database created"
+msgstr "Tietokanta on luotu"
+
+msgid "Error in creating database!"
+msgstr "Tietokannan luonnissa syntyi virhe!"
+
+msgid "You didn't select a database!"
+msgstr "Et valinnut tietokantaa!"
+
+#, fuzzy
+#| msgid "Close date"
+msgid "Collect data"
+msgstr "Sulkemispäivä"
+
+msgid "The installation is finished"
+msgstr "Asennus on valmis."
+
+msgid "Default logins / passwords are:"
+msgstr "Oletuskäyttäjätunnukset / -salasanat ovat:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech asentajan tilille"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal tavalliselle tilille"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly postonly-tilille"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "Voit poistaa tai muokata sekä tilejä että niiden alkuarvoja."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Tietokannan yhteystiedostoa ei voitu luoda. Tarkista tiedostojen oikeudet."
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "Oletuskieli"
+
+msgid "Beginning of the installation"
+msgstr "Asennus alkaa"
+
+msgid "Step %d"
+msgstr "Askel %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Kirjautuminen"
+
+msgid "Remember me"
+msgstr "Muista minut"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Ota JavaScript käyttöön selaimessasi."
+
+msgid "You must accept cookies to reach this application"
+msgstr "Tämä sivu vaatii evästeiden (cookies) käyttöönoton."
+
+msgid "Invalid use of session ID"
+msgstr "Istuntotunnuksen virheellinen käyttö"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Pääsy Usein Kysyttyihin Kysymyksiin"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "Muutoksen lisäys"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "Kohteen lisäys"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "Tallenna"
+
+#, fuzzy
+#| msgid "Are you sure you want to return this non-reservable item?"
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr ""
+"Vahvista että haluat palauttaa tämän kohteen, joka ei ole varattavissa."
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Lähetyspäivä"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Käytä GLPI:tä"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Epäviralliset käännökset ovat myös käytettävissä"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Olen lukenut ja HYVÄKSYN edellä mainitut lisenssiehdot."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "Olen lukenut ja EN HYVÄKSY edellä mainittuja lisenssiehtoja."
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "GLPI:n asennus tai päivitys"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Asenna täysin uusi GLPi valitsemalla 'Asenna'"
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr "Päivitä GLPI-versiosi valitsemalla 'Päivitä'"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Haluatko jatkaa?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Tietokantayhteyden parametrit"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Tietokantayhteyden testaus"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Tietokantaan ei saada yhteyttä"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Palvelimen vastaus oli: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Palvelin- tai/ja käyttäjäkentät ovat tyhjät."
-
-#~ msgid "Please select a database:"
-#~ msgstr "Valitse tietokanta"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Luo uusi tietokanta tai käytä olemassa olevaa"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Valitse päivitettävä tietokanta"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Tietokannan alustus"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Tietokantaa ei voida käyttää:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK – tietokanta on alustettu"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Tietokannan asetustiedostoon ei voida kirjoittaa"
-
-#~ msgid "Database created"
-#~ msgstr "Tietokanta on luotu"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Tietokannan luonnissa syntyi virhe!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Et valinnut tietokantaa!"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Asennus on valmis."
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Oletuskäyttäjätunnukset / -salasanat ovat:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi ylläpitäjän tilille"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech asentajan tilille"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal tavalliselle tilille"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly postonly-tilille"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "Voit poistaa tai muokata sekä tilejä että niiden alkuarvoja."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Tietokannan yhteystiedostoa ei voitu luoda. Tarkista tiedostojen oikeudet."
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Asennus alkaa"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Askel %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Kirjautuminen"
-
-#~ msgid "Remember me"
-#~ msgstr "Muista minut"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Ota JavaScript käyttöön selaimessasi."
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Tämä sivu vaatii evästeiden (cookies) käyttöönoton."
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Istuntotunnuksen virheellinen käyttö"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Pääsy Usein Kysyttyihin Kysymyksiin"

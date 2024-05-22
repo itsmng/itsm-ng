@@ -24274,329 +24274,1354 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "No room found or selected"
-#~ msgstr "Kambarių nerasta arba pasirinkta"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Rašyti"
+
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Prisijungti"
+
+#, fuzzy
+#| msgid "When connecting or updating"
+msgid "Open ID connect configuration"
+msgstr "Kai jungiamasi ar atnaujinama"
+
+msgid "No room found or selected"
+msgstr "Kambarių nerasta arba pasirinkta"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Replace"
+msgid "Marketplace"
+msgstr "Pakeisti"
+
+#, fuzzy
+#| msgid "%1$s adds the item %2$s (%3$d)"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s prideda elementą %2$s (%3$d)"
+
+msgid "See the catalog of plugins"
+msgstr "Rodyti įskiepių katalogą"
+
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+
+#, fuzzy
+#| msgid "Template for an incident"
+msgid "Empty for infinite"
+msgstr "Incidento šablonas."
+
+msgid "RSS feeds found"
+msgstr ""
+
+msgid "Active Directory"
+msgstr "Active Directory"
+
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "IP protokolo versija"
+
+#, fuzzy
+#| msgid "Confirm the final deletion?"
+msgid "Confirm the promotion?"
+msgstr "Patvirtinti galutinį panaikinimą ?"
+
+msgid "Your tickets to close"
+msgstr "Jūsų paraiškos, kurias reikia uždaryti"
+
+msgid "Tickets on pending status"
+msgstr "Paraiškos, kurios turi laukimo vykdyti būseną"
+
+msgid "Tickets to be processed"
+msgstr "Vykdomos paraiškos"
+
+msgid "Your observed tickets"
+msgstr "Jūsų stebimos paraiškos"
+
+msgid "Your tickets in progress"
+msgstr "Vykdomos mano paraiškos"
+
+msgid "Your tickets to validate"
+msgstr "Jūsų paraiškos, kurias reikia patvirtinti"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected approval status"
+msgstr "Vykdomos mano paraiškos"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected solution"
+msgstr "Vykdomos mano paraiškos"
+
+msgid "Ticket followup"
+msgstr "Paraiškos vykdymo eiga"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "Nauja paraiška"
+msgstr[1] "Nauja paraiška"
+msgstr[2] "Nauja paraiška"
+msgstr[3] "Nauja paraiška"
+
+msgid "No ticket found."
+msgstr "Paraiškų nėra."
+
+msgid "Last tickets"
+msgstr "Paskutinės paraiškos"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Rodyti įskiepių katalogą"
+msgid "New ticket for this item..."
+msgstr "Nauja paraiška šiam elementui..."
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Paskutinės paraiškos"
+msgstr[1] "Paskutinės paraiškos"
+msgstr[2] "Paskutinės paraiškos"
+msgstr[3] "Paskutinės paraiškos"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Jūsų paraiškos, kurias reikia uždaryti"
+#, fuzzy
+#| msgid "You don't have right to connect"
+msgid "You don't have right to see all tickets"
+msgstr "Jūs neturite teisės prisijungti"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Paraiškos, kurios turi laukimo vykdyti būseną"
+#, fuzzy
+#| msgid "Problems on linked items"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Susijusių elementų problemos"
+msgstr[1] "Susijusių elementų problemos"
+msgstr[2] "Susijusių elementų problemos"
+msgstr[3] "Susijusių elementų problemos"
+
+msgid "No ticket in progress."
+msgstr "Nėra vykdomų paraiškų."
+
+msgid "Assign equipment"
+msgstr "Priskirti įrangą"
+
+msgid "Automatic tickets closing"
+msgstr "Automatinis paraiškų uždarymas"
+
+msgid "Generation of satisfaction surveys"
+msgstr "Patenkinamumo apklausos generavimas"
+
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "Automatiškai uždaryti paraiškas po"
+
+#, fuzzy
+#| msgid "See all tickets"
+msgid "See my ticket"
+msgstr "Rodyti visas paraiškas"
+
+#, fuzzy
+#| msgid "See all tickets"
+msgid "See group ticket"
+msgstr "Rodyti visas paraiškas"
+
+msgid "See tickets created by my groups"
+msgstr "Rodyti paraiškas, sukurtas mano grupių"
+
+msgid "See all tickets"
+msgstr "Rodyti visas paraiškas"
+
+#, fuzzy
+#| msgid "Assigned"
+msgid "See assigned"
+msgstr "Priskirtas"
+
+#, fuzzy
+#| msgid "Number of assigned tickets"
+msgid "See assigned tickets"
+msgstr "Priskirtų bilietų kiekis"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Vykdomos paraiškos"
+msgid "Assign a ticket"
+msgstr "Priskirti paraišką"
+
+msgid "Steal"
+msgstr ""
+
+msgid "Steal a ticket"
+msgstr "Perimti paraišką"
+
+msgid "Beeing in charge"
+msgstr ""
+
+msgid "To be in charge of a ticket"
+msgstr "Užimtas paraiškoje"
+
+msgid "Change the priority"
+msgstr "Keisti prioritetą"
+
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr ""
+
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
+
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to load ticket %d"
+msgstr "Pasikartojančios paraiškos sukūrimo klaida %s"
+
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add followup to ticket %d"
+msgstr "Pasikartojančios paraiškos sukūrimo klaida %s"
+
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add task to ticket %d"
+msgstr "Pasikartojančios paraiškos sukūrimo klaida %s"
+
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add document to ticket %d"
+msgstr "Pasikartojančios paraiškos sukūrimo klaida %s"
+
+msgid "Failed to link tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "Nepavyko pašalinti rinkmenos %s"
+
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s išvalo versiją %2$s"
+
+#, fuzzy
+#| msgid "Checking write permissions for automatic actions files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Automatinių veiksmų failų rašymo teisių tikrinimas"
+
+#, fuzzy
+#| msgid "Recalculate"
+msgid "Recalculate the category"
+msgstr "Perskaičiuoti"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Add a license"
+msgid "Valid licenses"
+msgstr "Pridėti licenziją"
+
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Įdiegimų skaičius"
+
+msgid "Merge"
+msgstr "Sulieti"
+
+msgid "Software deleted after merging"
+msgstr "Programinės įrangos ištrynimas po sujungimo"
+
+msgid "You must enable at least one notification mode."
+msgstr ""
+
+msgid "GLPI"
+msgstr "GLPI"
+
+msgid "Connect a computer"
+msgstr "Prijungti kompiuterį"
+
+msgid "Not connected"
+msgstr "Neprijungtas"
+
+#, fuzzy
+#| msgid "Show all"
+msgid "Show as map"
+msgstr "Rodyti visus"
+
+#, fuzzy
+#| msgid "Valid tags"
+msgid "Valid to %s"
+msgstr "Galiojančios žymos"
+
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "Paskutinės paraiškos"
+
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Patvirtinimo laukiančios paraiškos"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "Susieti paraiškas"
+
+#, fuzzy
+#| msgid "Not solved tickets"
+msgid "Solved tickets"
+msgstr "Neišspręstos paraiškos"
+
+#, fuzzy
+#| msgid "Created tickets"
+msgid "Closed tickets"
+msgstr "Sukurtos paraiškos"
+
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Be vardo"
+
+#, fuzzy
+#| msgid "Time to own"
+msgid "Time to close"
+msgstr "Priskyrimo laikas"
+
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "Tvirtinti"
+
+msgid "Solved"
+msgstr "Išspręstas"
+
+msgid "Share or embed this dashboard"
+msgstr ""
+
+msgid "Delete this dashboard"
+msgstr ""
+
+msgid "Toggle auto-refresh"
+msgstr ""
+
+#, fuzzy
+#| msgid "Monitor model"
+#| msgid_plural "Monitor models"
+msgid "Toggle night mode"
+msgstr "Monitoriaus modelis"
+
+msgid "Toggle fullscreen"
+msgstr ""
+
+msgid "Clone this dashboard"
+msgstr ""
+
+msgid "Toggle edit mode"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add date"
+msgid "Add filter"
+msgstr "Papildymo data"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "Pridėti naują užduotį"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "Kiti"
+
+msgid "Widget"
+msgstr ""
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "Užduočių kiekis"
+
+msgid "Filters"
+msgstr ""
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "Paraiškos URL"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP katalogo nuoroda"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+msgid "empty card !"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Number of %s"
+msgstr "Užduočių kiekis"
+
+#, fuzzy
+#| msgid "By %s"
+msgid "%s by %s"
+msgstr "Pagal %s"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "Reikšmių sąrašas"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "Paraiškų skaičius"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket tasks to do"
+msgid "Tickets status by month"
+msgstr "Užklausų užduotis atlikti"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets"
+msgid "Tickets summary"
+msgstr "Paraiškos"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's categories"
+msgstr "Paraiškoms, uždarytoms po"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "Jūsų paraiškos, kurias reikia patvirtinti"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "Įprastinis paraiškų tipas"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "Paraiškos vieta"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "Paraiškų skaičius (kaip užsakovo)"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "Rodyti paraiškas, sukurtas mano grupių"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "Paraiškoms, uždarytoms po"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "Rodyti paraiškas, sukurtas mano grupių"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignees"
+msgstr "Vykdomos mano paraiškos"
+
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "Pridėti tolesnius veiksmus susijusių grupių paraiškoms"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of reminders"
+msgstr "Reikšmių sąrašas"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP tinklas neįtrauktas į duomenų bazę. Tačiau galite matyti dabar galimus "
+"tinklus."
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Galimi keli tinklo pavadinimai! Eikite į skirtuką \"Tinklo pavadinimas\" ir "
+"tvarkykite jį."
+
+msgid "Add a network name"
+msgstr "Pridėti tinklo pavadinimą"
+
+msgid "Not associated"
+msgstr "Nesusietas"
+
+#, fuzzy
+#| msgid "Add a network name"
+msgid "Create a new network name"
+msgstr "Pridėti tinklo pavadinimą"
+
+msgid "No network name found"
+msgstr "Nerastas tinklo pavadinimas"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "Patikrinti ar nėra atnaujinimų"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "Įdiegti"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "Atjungti"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "Sukurta %s"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Jūsų komentaras buvo redaguotas"
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "generuojami %s"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "Dažniausi klausimai"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "Paskutinis pakeitimas"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "New note"
+msgid "Best notes"
+msgstr "Nauja pastaba"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "Filter plugin list"
+msgstr "Išjungti įskiepiai"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "Pradžia"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "Skaityti"
+
+msgid "Clean"
+msgstr "Išvalyti"
+
+msgid "This plugin is not available for your GLPI version."
+msgstr ""
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Check if a new version is available"
+msgid "A new version (%s) is available, update ?"
+msgstr "Tikrinti, ar yra naujesnė versija"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "Įdiegti"
+
+msgid "Enable"
+msgstr "Aktyvuoti"
+
+msgid "Uninstall"
+msgstr "Išdiegti"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Išjungti įskiepiai"
+msgstr[1] "Išjungti įskiepiai"
+msgstr[2] "Išjungti įskiepiai"
+msgstr[3] "Išjungti įskiepiai"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "Vėluoja"
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugins"
+msgid "Plugin name"
+msgstr "Papildiniai"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "Pastato numeris"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+
+#, fuzzy
+#| msgid "Administration"
+msgid "Registration"
+msgstr "Administravimas"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "Sukurta %s"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Destination entity"
+msgid "Registration key"
+msgstr "Paskirties padalinys"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "Aprašymas"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "Nežinoma rinkmena"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "Įgalinti finansinę ir administracinę informaciją"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "Įdiegimas baigtas"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "Įdiegimas baigtas"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"El.laiškas buvo išsiūstas jūsų nurodytu el.pašto adresu. Laiške pateikiama "
+"informaciją nurodanti, kaip iš naujo nustatyti jūsų slaptažodį."
+
+msgid "Email address not found."
+msgstr "Elektroninio pašto adresas nerastas."
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "Įkeltas failas viršija upload_max_filesize direktyvą faile  php.ini"
+
+#, fuzzy
+#| msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Įkeltas failas viršija \"post_max_size \" direktyvą faile  \"php.ini\"."
+
+msgid "The uploaded file was only partially uploaded"
+msgstr ""
+
+msgid "Failed to write file to disk"
+msgstr "Nepavyko įrašyti failo į diską"
+
+msgid "A PHP extension stopped the file upload"
+msgstr "PHP plėtinys sustabdytas, rinkmena įkelta"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+"Įkeltas failas viršija \"post_max_size \" direktyvą faile  \"php.ini\"."
+
+msgid "File is too big"
+msgstr "Failas užima per daug vietos"
+
+msgid "File is too small"
+msgstr "Failas yra per mažas"
+
+msgid "Maximum number of files exceeded"
+msgstr "Viršytas didžiausias failų skaičius"
+
+msgid "Image exceeds maximum width"
+msgstr "Vaizdas viršija maksimalų plotį"
+
+msgid "Image requires a minimum width"
+msgstr "Vaizdas neatitinka minimalaus pločio"
+
+msgid "Image exceeds maximum height"
+msgstr "Vaizdas viršija maksimalų aukštį"
+
+msgid "Image requires a minimum height"
+msgstr "Vaizdo neatitinka minimalaus aukščio"
+
+msgid "Filetype not allowed"
+msgstr "Failo tipas neleidžiamas"
+
+#, fuzzy
+#| msgid "No file was uploaded"
+msgid "File upload aborted"
+msgstr "Rinkmena nebuvo nusiųsta"
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to resize image"
+msgstr "Nepavyko įrašyti failo į diską"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "Duomenys apie naudotoją"
+
+msgid "Progress"
+msgstr "Eiga"
+
+msgid "My settings"
+msgstr "Asmeniniai nustatymai"
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "Jūs tai surasite glpi-project.org svetainėje.."
+
+msgid "Check all"
+msgstr "Pažymėti visus"
+
+msgid "Uncheck all"
+msgstr "Atžymėti visus"
+
+#, fuzzy
+#| msgid "Check all"
+msgid "Check all as"
+msgstr "Pažymėti visus"
+
+msgid "Selection too large, massive action disabled."
+msgstr "Pasirinkimas per didelis, masinis veiksmas išjungtas."
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Padidinti ribą: pakeiskite reikšmes max_input_vars arba suhosin.post."
+"max_vars  php konfigūracijoje."
+
+#, fuzzy
+#| msgid "Ticket creation failed (check mandatory fields)"
+msgid "The description field is mandatory"
+msgstr "Paraiškos sukūrimas nepavyko (patikrinkite privalomus laukus)"
+
+#, fuzzy
+#| msgid "%1$s: from %2$s to %3$s:"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "%1$s: nuo %2$s iki %3$s:"
+
+msgid "Empty array"
+msgstr ""
+
+#, fuzzy
+#| msgid "%1$s: %2$d"
+msgid "%1$d on %2$d"
+msgstr "%1$s: %2$d"
+
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "Uždaryti"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+#, fuzzy
+#| msgid "Deleting a problem"
+msgid "selecting them"
+msgstr "Problemos pašalinimas"
+
+#, fuzzy
+#| msgid "File (%s)"
+msgid "File(s)"
+msgstr "Failas (%s)"
+
+msgid "Drag and drop your file here, or"
+msgstr "Drag and drop"
+
+#, fuzzy
+#| msgid "Operation successful"
+msgid "Upload successful"
+msgstr "Operacija sėkminga"
+
+#, fuzzy
+#| msgid "Uncheck all"
+msgid "Check/uncheck all"
+msgstr "Atžymėti visus"
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+#, fuzzy
+#| msgid "Phone model"
+#| msgid_plural "Phone models"
+msgid "Change mode"
+msgstr "Telefono modelis"
+
+msgid "Debug mode enabled"
+msgstr ""
+
+msgid "Debug mode disabled"
+msgstr ""
+
+msgid "Saved searches"
+msgstr "Išsaugotos paieškos"
+
+#, fuzzy
+#| msgid "Saved searches"
+msgid "Manage saved searches"
+msgstr "Išsaugotos paieškos"
+
+#, fuzzy
+#| msgid "Disabled"
+msgid "Add is disabled"
+msgstr "Išjungtas"
+
+#, fuzzy
+#| msgid "Search has been saved"
+msgid "Search is disabled"
+msgstr "Paieška išsaugota"
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "Bendras valdymas"
+
+msgid "You are impersonating %s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "Nustatyti asmeniniu"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr "Rodyti GLPI ID"
+
+msgid "Color palette"
+msgstr ""
+
+msgid "Layout"
+msgstr ""
+
+msgid "Tabs on left"
+msgstr ""
+
+msgid "Classic view"
+msgstr ""
+
+msgid "Vertical split"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Sutarties pabaiga"
+
+msgid "Dashboards"
+msgstr ""
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "Numatyta paraiškoms"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "Numatyta paraiškoms"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "Numatyta paraiškoms"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Numatyta paraiškoms"
+
+msgid "Check if a new version is available"
+msgstr "Tikrinti, ar yra naujesnė versija"
+
+#, fuzzy
+#| msgid "Show all"
+msgid "Show filters"
+msgstr "Rodyti visus"
+
+msgid "No historical matching your filters"
+msgstr ""
+
+msgid "Add to schedule"
+msgstr "Pridėti į planavimą"
+
+#, fuzzy
+#| msgid "Position"
+msgid "Position in room"
+msgstr "Pozicija"
+
+msgid "Door orientation in room"
+msgstr ""
+
+msgid "North"
+msgstr ""
+
+msgid "East"
+msgstr ""
+
+msgid "South"
+msgstr ""
+
+msgid "West"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of units"
+msgstr "Paraiškų skaičius"
+
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Measured power (in watts)"
+msgstr ""
+
+msgid "Max. weight"
+msgstr ""
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No rack found"
+msgstr "Nėra tokio naudotojo"
+
+msgid "Following elements are out of room bounds"
+msgstr ""
+
+msgid "Blueprint"
+msgstr ""
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Jūsų stebimos paraiškos"
+msgid "Grid"
+msgstr ""
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Vykdomos mano paraiškos"
+msgid "Insert a rack here"
+msgstr ""
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Jūsų paraiškos, kurias reikia patvirtinti"
+msgid "Position must be set"
+msgstr ""
+
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "Tinklo prievadas nepasiekiamas..."
+
+msgid "All categories"
+msgstr "Visos kategorijos"
+
+msgid "Uncategorized software"
+msgstr "Nesuskirstyta kategorijomis programinė įranga"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Paraiškos vykdymo eiga"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Add a license"
+msgid "Valid license"
+msgstr "Pridėti licenziją"
 
-#~ msgid "No ticket found."
-#~ msgstr "Paraiškų nėra."
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of contracts"
+msgid "Other component"
+msgstr "Sutarčių kiekis"
 
-#~ msgid "Last tickets"
-#~ msgstr "Paskutinės paraiškos"
+msgid "One last thing before starting"
+msgstr ""
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Nauja paraiška šiam elementui..."
+msgid "Donate"
+msgstr ""
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Nėra vykdomų paraiškų."
+msgid "Unofficial translations are also available"
+msgstr "Neoficialūs vertimai taip pat galimi ."
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Perskaičiau licecijos sąlygas ir SUTINKU jų laikytis."
 
-#~ msgid "Assign equipment"
-#~ msgstr "Priskirti įrangą"
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Perskaičiau licencijos sąlygas ir NESUTINKU jų laikytis"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Automatinis paraiškų uždarymas"
+msgid "Installation or update of GLPI"
+msgstr "GLPI įdiegimas ir atnaujinimas"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Patenkinamumo apklausos generavimas"
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr ""
+"Pasirinkite 'Įdiegimas' naujam GLPI įdiegimui (duomenų bazė bus uždpildyta "
+"numatytosiomis reikšmėmis)"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Rodyti paraiškas, sukurtas mano grupių"
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
 
-#~ msgid "See all tickets"
-#~ msgstr "Rodyti visas paraiškas"
+msgid "Do you want to continue?"
+msgstr ""
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Priskirti paraišką"
+msgid "Database connection parameters"
+msgstr "Duomenų bazės prisijungimo parametrai"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Perimti paraišką"
+msgid "Test of the connection at the database"
+msgstr "Tikrinamas prisijungimas prie duomenų bazės"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Užimtas paraiškoje"
+msgid "Can't connect to the database"
+msgstr "Nepavyko prisijungimas prie duomenų bazės"
 
-#~ msgid "Change the priority"
-#~ msgstr "Keisti prioritetą"
+msgid "The server answered: %s"
+msgstr "Tarnybinės stoties pranešimas: %s"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Įdiegimų skaičius"
+msgid "The server or/and user field is empty"
+msgstr "Tarnybinės stoties ir/arba naudotojo vardo laukai neužpildyti"
 
-#~ msgid "Merge"
-#~ msgstr "Sulieti"
+msgid "Please select a database:"
+msgstr "Nurodykite duomenų bazę:"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Programinės įrangos ištrynimas po sujungimo"
+msgid "Create a new database or use an existing one:"
+msgstr "Sukurti naują duomenų bazę arba naudoti esančią:"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Please select the database to update:"
+msgstr "Nurodykite duomenų bazę atnaujinimui."
 
-#~ msgid "Connect a computer"
-#~ msgstr "Prijungti kompiuterį"
+msgid "Initialization of the database"
+msgstr "Duomenų bazės inicijavimas"
 
-#~ msgid "Not connected"
-#~ msgstr "Neprijungtas"
+msgid "Impossible to use the database:"
+msgstr "Nėra galimybės naudotis duomenų baze:"
 
-#~ msgid "Solved"
-#~ msgstr "Išspręstas"
+msgid "OK - database was initialized"
+msgstr "OK - duomenų bazė inicijuota"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP tinklas neįtrauktas į duomenų bazę. Tačiau galite matyti dabar galimus "
-#~ "tinklus."
+msgid "Impossible to write the database setup file"
+msgstr "Nėra galimybės įrašyti duomenų bazės sąrankos rinkmenoje"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Galimi keli tinklo pavadinimai! Eikite į skirtuką \"Tinklo pavadinimas\" "
-#~ "ir tvarkykite jį."
+msgid "Database created"
+msgstr "Duomenų bazė sukurta"
 
-#~ msgid "Add a network name"
-#~ msgstr "Pridėti tinklo pavadinimą"
+#, fuzzy
+#| msgid "Error in sending the email"
+msgid "Error in creating database!"
+msgstr "Klaida siunčiant el.laišką"
 
-#~ msgid "Not associated"
-#~ msgstr "Nesusietas"
+#, fuzzy
+#| msgid "Please select a database:"
+msgid "You didn't select a database!"
+msgstr "Nurodykite duomenų bazę:"
 
-#~ msgid "No network name found"
-#~ msgstr "Nerastas tinklo pavadinimas"
+#, fuzzy
+#| msgid "Close date"
+msgid "Collect data"
+msgstr "Uždarymo data"
 
-#~ msgid "Clean"
-#~ msgstr "Išvalyti"
+msgid "The installation is finished"
+msgstr "Įdiegimas baigtas"
 
-#~ msgid "Install"
-#~ msgstr "Įdiegti"
+msgid "Default logins / passwords are:"
+msgstr "Numatytieji prisijungimo vardai / slaptažodžiai yra:"
 
-#~ msgid "Enable"
-#~ msgstr "Aktyvuoti"
+msgid "tech/tech for the technician account"
+msgstr "tech/tech techniko prisijungimui"
 
-#~ msgid "Uninstall"
-#~ msgstr "Išdiegti"
+msgid "normal/normal for the normal account"
+msgstr "normal/normal skirta normaliai paskyrai"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "El.laiškas buvo išsiūstas jūsų nurodytu el.pašto adresu. Laiške "
-#~ "pateikiama informaciją nurodanti, kaip iš naujo nustatyti jūsų slaptažodį."
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly skirta pateikimo paskyrai"
 
-#~ msgid "Email address not found."
-#~ msgstr "Elektroninio pašto adresas nerastas."
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+"Galite ištrinti arba redaguoti šias paskyras, kaip taip pat ir pradinius "
+"duomenis."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr "Įkeltas failas viršija upload_max_filesize direktyvą faile  php.ini"
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Nėra galimybės sukurti rinkmenos prisijungimui prie duomenų bazės, "
+"patikrinkite leidimus rinkmenoms."
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Nepavyko įrašyti failo į diską"
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "Numatytoji kalba"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "PHP plėtinys sustabdytas, rinkmena įkelta"
+msgid "Beginning of the installation"
+msgstr "Įdiegimo pradžia"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr ""
-#~ "Įkeltas failas viršija \"post_max_size \" direktyvą faile  \"php.ini\"."
+msgid "Step %d"
+msgstr ""
 
-#~ msgid "File is too big"
-#~ msgstr "Failas užima per daug vietos"
+msgid "GLPI - Authentication"
+msgstr "GLPI - Autentifikacija"
 
-#~ msgid "File is too small"
-#~ msgstr "Failas yra per mažas"
+msgid "Remember me"
+msgstr "Prisimink mane"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Viršytas didžiausias failų skaičius"
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Jūs turite įjungti JavaScript funkcija savo naršyklėje"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Vaizdas viršija maksimalų plotį"
+msgid "You must accept cookies to reach this application"
+msgstr "Norėdami naudotis šia taikomaja programa privalote priimti slapukus"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Vaizdas neatitinka minimalaus pločio"
+msgid "Invalid use of session ID"
+msgstr "Neteisingas naudojimas arba sesijos ID"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Vaizdas viršija maksimalų aukštį"
+msgid "Access to the Frequently Asked Questions"
+msgstr "Prieiga prie Dažniausiai Užduodamų Klausimų"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Vaizdo neatitinka minimalaus aukščio"
+#, fuzzy
+#| msgid "Add a target"
+msgid "Add a card"
+msgstr "Pridėti tikslą"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Failo tipas neleidžiamas"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Add a new file"
+msgid "Add a filter"
+msgstr "Pridėti naują failą"
 
-#~ msgid "Progress"
-#~ msgstr "Eiga"
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "Išsaugoti"
 
-#~ msgid "My settings"
-#~ msgstr "Asmeniniai nustatymai"
+#, fuzzy
+#| msgid "Are you sure you want to return this non-reservable item?"
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Ar jūs tikrai norite grąžinti šį nerezervuojamą elementą?"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "Jūs tai surasite glpi-project.org svetainėje.."
-
-#~ msgid "Check all"
-#~ msgstr "Pažymėti visus"
-
-#~ msgid "Uncheck all"
-#~ msgstr "Atžymėti visus"
-
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Pasirinkimas per didelis, masinis veiksmas išjungtas."
-
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Padidinti ribą: pakeiskite reikšmes max_input_vars arba suhosin.post."
-#~ "max_vars  php konfigūracijoje."
-
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Drag and drop"
-
-#~ msgid "Saved searches"
-#~ msgstr "Išsaugotos paieškos"
-
-#~ msgid "Show GLPI ID"
-#~ msgstr "Rodyti GLPI ID"
-
-#~ msgid "Check if a new version is available"
-#~ msgstr "Tikrinti, ar yra naujesnė versija"
-
-#~ msgid "Add to schedule"
-#~ msgstr "Pridėti į planavimą"
-
-#~ msgid "All categories"
-#~ msgstr "Visos kategorijos"
-
-#~ msgid "Uncategorized software"
-#~ msgstr "Nesuskirstyta kategorijomis programinė įranga"
+#, fuzzy
+#| msgid "Send a notification"
+msgid "Send a test chat"
+msgstr "Siųsti pranešimą"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Į GLPI"
-
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Neoficialūs vertimai taip pat galimi ."
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Perskaičiau licecijos sąlygas ir SUTINKU jų laikytis."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "Perskaičiau licencijos sąlygas ir NESUTINKU jų laikytis"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "GLPI įdiegimas ir atnaujinimas"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr ""
-#~ "Pasirinkite 'Įdiegimas' naujam GLPI įdiegimui (duomenų bazė bus "
-#~ "uždpildyta numatytosiomis reikšmėmis)"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Duomenų bazės prisijungimo parametrai"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Tikrinamas prisijungimas prie duomenų bazės"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Nepavyko prisijungimas prie duomenų bazės"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Tarnybinės stoties pranešimas: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Tarnybinės stoties ir/arba naudotojo vardo laukai neužpildyti"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Nurodykite duomenų bazę:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Sukurti naują duomenų bazę arba naudoti esančią:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Nurodykite duomenų bazę atnaujinimui."
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Duomenų bazės inicijavimas"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Nėra galimybės naudotis duomenų baze:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK - duomenų bazė inicijuota"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Nėra galimybės įrašyti duomenų bazės sąrankos rinkmenoje"
-
-#~ msgid "Database created"
-#~ msgstr "Duomenų bazė sukurta"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Įdiegimas baigtas"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Numatytieji prisijungimo vardai / slaptažodžiai yra:"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech techniko prisijungimui"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal skirta normaliai paskyrai"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly skirta pateikimo paskyrai"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "Galite ištrinti arba redaguoti šias paskyras, kaip taip pat ir pradinius "
-#~ "duomenis."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Nėra galimybės sukurti rinkmenos prisijungimui prie duomenų bazės, "
-#~ "patikrinkite leidimus rinkmenoms."
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Įdiegimo pradžia"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Autentifikacija"
-
-#~ msgid "Remember me"
-#~ msgstr "Prisimink mane"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Jūs turite įjungti JavaScript funkcija savo naršyklėje"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Norėdami naudotis šia taikomaja programa privalote priimti slapukus"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Neteisingas naudojimas arba sesijos ID"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Prieiga prie Dažniausiai Užduodamų Klausimų"

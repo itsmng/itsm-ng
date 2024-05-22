@@ -23747,1151 +23747,1134 @@ msgstr "Yalnız okunmamış e-postalar toplansın"
 msgid "Could not create dashboard"
 msgstr "Bu panoyu kopyala"
 
-#~ msgid "No room found or selected"
-#~ msgstr "Herhangi bir oda bulunamadı ya da seçilmemiş"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Yazma"
 
-#~ msgid "Marketplace"
-#~ msgstr "Mağaza"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Kullanıcı Adı"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s, %2$s-%3$s:%4$s ögesini ekledi"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Yapılandırmayı görüntüle"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Uygulama eki listesini görüntüle"
+msgid "No room found or selected"
+msgstr "Herhangi bir oda bulunamadı ya da seçilmemiş"
 
-#~ msgid ""
-#~ "If name is a valid email address, it will be automatically added to "
-#~ "blacklisted senders."
-#~ msgstr ""
-#~ "Ad geçerli bir e-posta adresiyse, otomatik olarak kara listedeki "
-#~ "göndericilere eklenir."
+msgid "Marketplace"
+msgstr "Mağaza"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Sonsuz olması için boş bırakın"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s, %2$s-%3$s:%4$s ögesini ekledi"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS akışları bulundu"
+msgid "See the catalog of plugins"
+msgstr "Uygulama eki listesini görüntüle"
 
-#~ msgid "Active Directory"
-#~ msgstr "Aktif Dizin"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+"Ad geçerli bir e-posta adresiyse, otomatik olarak kara listedeki "
+"göndericilere eklenir."
 
-#~ msgid "GLPI version"
-#~ msgstr "GLPI sürümü"
+msgid "Empty for infinite"
+msgstr "Sonsuz olması için boş bırakın"
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "Yükseltmeyi onayla?"
+msgid "RSS feeds found"
+msgstr "RSS akışları bulundu"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Kapatılacak destek kayıtlarınız"
+msgid "Active Directory"
+msgstr "Aktif Dizin"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Bekleyen destek kayıtları"
+msgid "GLPI version"
+msgstr "GLPI sürümü"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "İşlenecek destek kayıtları"
+msgid "Confirm the promotion?"
+msgstr "Yükseltmeyi onayla?"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Gözlediğiniz destek kayıtları"
+msgid "Your tickets to close"
+msgstr "Kapatılacak destek kayıtlarınız"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "İşlenen destek kayıtlarınız"
+msgid "Tickets on pending status"
+msgstr "Bekleyen destek kayıtları"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Onaylanacak destek kayıtlarınız"
+msgid "Tickets to be processed"
+msgstr "İşlenecek destek kayıtları"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "Onay durumu reddedilmiş olan destek kayıtlarınız"
+msgid "Your observed tickets"
+msgstr "Gözlediğiniz destek kayıtları"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "Çözümü reddedilmiş destek kayıtlarınız"
+msgid "Your tickets in progress"
+msgstr "İşlenen destek kayıtlarınız"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Destek kaydı izleme"
+msgid "Your tickets to validate"
+msgstr "Onaylanacak destek kayıtlarınız"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d yeni destek kaydı"
-#~ msgstr[1] "%d yeni destek kaydı"
+msgid "Your tickets having rejected approval status"
+msgstr "Onay durumu reddedilmiş olan destek kayıtlarınız"
 
-#~ msgid "No ticket found."
-#~ msgstr "Herhangi bir destek kaydı bulunamadı."
+msgid "Your tickets having rejected solution"
+msgstr "Çözümü reddedilmiş destek kayıtlarınız"
 
-#~ msgid "Last tickets"
-#~ msgstr "Son destek kayıtları"
+msgid "Ticket followup"
+msgstr "Destek kaydı izleme"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Bu öge için yeni destek kaydı..."
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d yeni destek kaydı"
+msgstr[1] "%d yeni destek kaydı"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Son %d destek kaydı"
-#~ msgstr[1] "Son %d destek kaydı"
+msgid "No ticket found."
+msgstr "Herhangi bir destek kaydı bulunamadı."
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Tüm destek kayıtlarını görüntüleme izniniz yok"
+msgid "Last tickets"
+msgstr "Son destek kayıtları"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Bağlı ögeler üzerine destek kaydı"
-#~ msgstr[1] "Bağlı ögeler üzerine destek kayıtları"
+msgid "New ticket for this item..."
+msgstr "Bu öge için yeni destek kaydı..."
 
-#~ msgid "No ticket in progress."
-#~ msgstr "İşlenen bir destek kaydı yok."
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Son %d destek kaydı"
+msgstr[1] "Son %d destek kaydı"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Aygıt ata"
+msgid "You don't have right to see all tickets"
+msgstr "Tüm destek kayıtlarını görüntüleme izniniz yok"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Destek kayıtlarını otomatik kapatma"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Bağlı ögeler üzerine destek kaydı"
+msgstr[1] "Bağlı ögeler üzerine destek kayıtları"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Memnuniyet anketi oluşturma"
+msgid "No ticket in progress."
+msgstr "İşlenen bir destek kaydı yok."
 
-#~ msgid "Automatic closed tickets purge"
-#~ msgstr "Kapatılmış destek kayıtlarını otomatik temizleme"
+msgid "Assign equipment"
+msgstr "Aygıt ata"
 
-#~ msgid "See my ticket"
-#~ msgstr "Destek kaydımı görüntüle"
+msgid "Automatic tickets closing"
+msgstr "Destek kayıtlarını otomatik kapatma"
 
-#~ msgid "See group ticket"
-#~ msgstr "Grup destek kaydını görüntüle"
+msgid "Generation of satisfaction surveys"
+msgstr "Memnuniyet anketi oluşturma"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Gruplarım tarafından oluşturulmuş destek kayıtlarını görüntüle"
+msgid "Automatic closed tickets purge"
+msgstr "Kapatılmış destek kayıtlarını otomatik temizleme"
 
-#~ msgid "See all tickets"
-#~ msgstr "Tüm destek kayıtlarını görüntüle"
+msgid "See my ticket"
+msgstr "Destek kaydımı görüntüle"
 
-#~ msgid "See assigned"
-#~ msgstr "Atanmışları görüntüle"
+msgid "See group ticket"
+msgstr "Grup destek kaydını görüntüle"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Atanmış destek kayıtlarını görüntüle"
+msgid "See tickets created by my groups"
+msgstr "Gruplarım tarafından oluşturulmuş destek kayıtlarını görüntüle"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Destek kaydı ata"
+msgid "See all tickets"
+msgstr "Tüm destek kayıtlarını görüntüle"
 
-#~ msgid "Steal"
-#~ msgstr "Devral"
+msgid "See assigned"
+msgstr "Atanmışları görüntüle"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Destek kaydını devralın"
+msgid "See assigned tickets"
+msgstr "Atanmış destek kayıtlarını görüntüle"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Sorumlu olunuyor"
+msgid "Assign a ticket"
+msgstr "Destek kaydı ata"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Destek kaydının sorumlusu olarak"
+msgid "Steal"
+msgstr "Devral"
 
-#~ msgid "Change the priority"
-#~ msgstr "Önceliği değiştir"
+msgid "Steal a ticket"
+msgstr "Destek kaydını devralın"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Çözümü Onayla / Anketi Yanıtla (Destek Kaydım)"
+msgid "Beeing in charge"
+msgstr "Sorumlu olunuyor"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr ""
-#~ "Çözümü onayla ve benim için oluşturulmuş destek kaydı anketini yanıtla"
+msgid "To be in charge of a ticket"
+msgstr "Destek kaydının sorumlusu olarak"
 
-#, php-format
-#~ msgid "Not enough rights to merge tickets %d and %d"
-#~ msgstr "%d ve %d destek kayıtlarını birleştirme izniniz yok"
+msgid "Change the priority"
+msgstr "Önceliği değiştir"
 
-#, php-format
-#~ msgid "Failed to load ticket %d"
-#~ msgstr "%d destek kaydı yüklenemedi"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Çözümü Onayla / Anketi Yanıtla (Destek Kaydım)"
 
-#, php-format
-#~ msgid "Failed to add followup to ticket %d"
-#~ msgstr "%d destek kaydına izleme eklenemedi"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "Çözümü onayla ve benim için oluşturulmuş destek kaydı anketini yanıtla"
 
-#, php-format
-#~ msgid "Failed to add task to ticket %d"
-#~ msgstr "%d destek kaydına görev eklenemedi"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "%d ve %d destek kayıtlarını birleştirme izniniz yok"
 
-#, php-format
-#~ msgid "Failed to add document to ticket %d"
-#~ msgstr "%d destek kaydına belge eklenemedi"
+msgid "Failed to load ticket %d"
+msgstr "%d destek kaydı yüklenemedi"
 
-#, php-format
-#~ msgid "Failed to link tickets %d and %d"
-#~ msgstr "%d ve %d destek kayıtları bağlanamadı"
+msgid "Failed to add followup to ticket %d"
+msgstr "%d destek kaydına izleme eklenemedi"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "%d destek kaydı silinemedi"
+msgid "Failed to add task to ticket %d"
+msgstr "%d destek kaydına görev eklenemedi"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%s, %s destek kaydını %s ile birleştirir"
+msgid "Failed to add document to ticket %d"
+msgstr "%d destek kaydına belge eklenemedi"
 
-#~ msgid "Checking write permissions for marketplace plugins directory"
-#~ msgstr "Mağaza uygulama ekleri klasörünün yazma izinleri denetleniyor"
+msgid "Failed to link tickets %d and %d"
+msgstr "%d ve %d destek kayıtları bağlanamadı"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Kategoriyi yeniden hesapla"
+msgid "Failed to delete ticket %d"
+msgstr "%d destek kaydı silinemedi"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Geçerli lisanslar"
+msgid "%s merges ticket %s into %s"
+msgstr "%s, %s destek kaydını %s ile birleştirir"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Kurulum sayısı"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Mağaza uygulama ekleri klasörünün yazma izinleri denetleniyor"
 
-#~ msgid "Merge"
-#~ msgstr "Birleştir"
+msgid "Recalculate the category"
+msgstr "Kategoriyi yeniden hesapla"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Aktarma sonrası yazılım silindi"
+msgid "Valid licenses"
+msgstr "Geçerli lisanslar"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "En az bir bildirim kipini etkinleştirmelisiniz."
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Kurulum sayısı"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Merge"
+msgstr "Birleştir"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Bilgisayar bağla"
+msgid "Software deleted after merging"
+msgstr "Aktarma sonrası yazılım silindi"
 
-#~ msgid "Not connected"
-#~ msgstr "Bağlantı kurulmamış"
+msgid "You must enable at least one notification mode."
+msgstr "En az bir bildirim kipini etkinleştirmelisiniz."
 
-#~ msgid "Show as map"
-#~ msgstr "Harita olarak görüntüle"
+msgid "GLPI"
+msgstr "GLPI"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "%s zamanına kadar geçerli"
+msgid "Connect a computer"
+msgstr "Bilgisayar bağla"
 
-#~ msgid "Late tickets"
-#~ msgstr "Son destek kayıtları"
+msgid "Not connected"
+msgstr "Bağlantı kurulmamış"
 
-#~ msgid "Tickets waiting for validation"
-#~ msgstr "Onay bekleyen destek kayıtları"
+msgid "Show as map"
+msgstr "Harita olarak görüntüle"
 
-#~ msgid "Incoming tickets"
-#~ msgstr "Gelen destek kayıtları"
+msgid "Valid to %s"
+msgstr "%s zamanına kadar geçerli"
 
-#~ msgid "Solved tickets"
-#~ msgstr "Çözümlenmiş destek kayıtları"
+msgid "Late tickets"
+msgstr "Son destek kayıtları"
 
-#~ msgid "Closed tickets"
-#~ msgstr "Kapatılmış destek kayıtları"
+msgid "Tickets waiting for validation"
+msgstr "Onay bekleyen destek kayıtları"
 
-#~ msgid "without"
-#~ msgstr "şu olmayan"
+msgid "Incoming tickets"
+msgstr "Gelen destek kayıtları"
 
-#~ msgid "Time to close"
-#~ msgstr "Kapatılma zamanı"
+msgid "Solved tickets"
+msgstr "Çözümlenmiş destek kayıtları"
 
-#~ msgid "To validate"
-#~ msgstr "Onaylanacak"
+msgid "Closed tickets"
+msgstr "Kapatılmış destek kayıtları"
 
-#~ msgid "Solved"
-#~ msgstr "Çözülen"
+msgid "without"
+msgstr "şu olmayan"
 
-#~ msgid "Share or embed this dashboard"
-#~ msgstr "Bu panoyu paylaş ya da göm"
+msgid "Time to close"
+msgstr "Kapatılma zamanı"
 
-#~ msgid "Delete this dashboard"
-#~ msgstr "Bu panoyu sil"
+msgid "To validate"
+msgstr "Onaylanacak"
 
-#~ msgid "Toggle auto-refresh"
-#~ msgstr "Otomatik yenilemeyi aç/kapat"
+msgid "Solved"
+msgstr "Çözülen"
 
-#~ msgid "Toggle night mode"
-#~ msgstr "Gece kipini aç/kapat"
+msgid "Share or embed this dashboard"
+msgstr "Bu panoyu paylaş ya da göm"
 
-#~ msgid "Toggle fullscreen"
-#~ msgstr "Tam ekranı aç/kapat"
+msgid "Delete this dashboard"
+msgstr "Bu panoyu sil"
 
-#~ msgid "Toggle edit mode"
-#~ msgstr "Düzenleme kipini aç/kapat"
+msgid "Toggle auto-refresh"
+msgstr "Otomatik yenilemeyi aç/kapat"
 
-#~ msgid "Add filter"
-#~ msgstr "Süzgeç ekle"
+msgid "Toggle night mode"
+msgstr "Gece kipini aç/kapat"
 
-#~ msgid "Add a new dashboard"
-#~ msgstr "Yeni pano ekle"
+msgid "Toggle fullscreen"
+msgstr "Tam ekranı aç/kapat"
 
-#~ msgid "others"
-#~ msgstr "diğerleri"
+#, fuzzy
+#| msgid "Delete this dashboard"
+msgid "Clone this dashboard"
+msgstr "Bu panoyu sil"
 
-#~ msgid "Widget"
-#~ msgstr "Pano gereci"
+msgid "Toggle edit mode"
+msgstr "Düzenleme kipini aç/kapat"
 
-#~ msgid "Use gradient palette"
-#~ msgstr "Değişen palet kullanılsın"
+msgid "Add filter"
+msgstr "Süzgeç ekle"
 
-#~ msgid "Display value labels on points/bars"
-#~ msgstr "Nokta ya da çubuklarda değerler görüntülensin"
+msgid "Add a new dashboard"
+msgstr "Yeni pano ekle"
 
-#~ msgid "Limit number of data"
-#~ msgstr "Veri sayısını sınırla"
+msgid "others"
+msgstr "diğerleri"
 
-#~ msgid "Filters"
-#~ msgstr "Süzgeçler"
+msgid "Widget"
+msgstr "Pano gereci"
 
-#~ msgid "Embed in another application"
-#~ msgstr "Başka bir uygulamaya göm"
+msgid "Use gradient palette"
+msgstr "Değişen palet kullanılsın"
 
-#~ msgid "Direct link"
-#~ msgstr "Doğrudan bağlantı"
+msgid "Display value labels on points/bars"
+msgstr "Nokta ya da çubuklarda değerler görüntülensin"
 
-#~ msgid "Iframe"
-#~ msgstr "Iframe"
+msgid "Limit number of data"
+msgstr "Veri sayısını sınırla"
 
-#~ msgid "Or share the dashboard to these target objects:"
-#~ msgstr "Ya da panoyu şu hedef nesneler ile paylaş:"
+msgid "Filters"
+msgstr "Süzgeçler"
 
-#~ msgid "empty card !"
-#~ msgstr "kart boş!"
+msgid "Embed in another application"
+msgstr "Başka bir uygulamaya göm"
 
-#, php-format
-#~ msgid "Number of %s"
-#~ msgstr "%s sayısı"
+msgid "Direct link"
+msgstr "Doğrudan bağlantı"
 
-#, php-format
-#~ msgid "%s by %s"
-#~ msgstr "%s / %s "
+msgid "Iframe"
+msgstr "Iframe"
 
-#, php-format
-#~ msgid "List of %s"
-#~ msgstr "%s listesi"
+msgid "Or share the dashboard to these target objects:"
+msgstr "Ya da panoyu şu hedef nesneler ile paylaş:"
 
-#~ msgid "Number of tickets by month"
-#~ msgstr "Aya göre destek kaydı sayısı"
+msgid "empty card !"
+msgstr "kart boş!"
 
-#~ msgid "Evolution of ticket in the past year"
-#~ msgstr "Destek kaydının geçen yıldaki gelişimi"
+msgid "Number of %s"
+msgstr "%s sayısı"
 
-#~ msgid "Tickets status by month"
-#~ msgstr "Aya göre destek kayıtlarının durumu"
+msgid "%s by %s"
+msgstr "%s / %s "
 
-#~ msgid "Tickets times (in hours)"
-#~ msgstr "Destek kaydı süreleri (saat olarak)"
+msgid "List of %s"
+msgstr "%s listesi"
 
-#~ msgid "Tickets summary"
-#~ msgstr "Destek kayıtlarının özeti"
+msgid "Number of tickets by month"
+msgstr "Aya göre destek kaydı sayısı"
 
-#~ msgid "Top ticket's categories"
-#~ msgstr "Önde gelen destek kaydı kategorileri"
+msgid "Evolution of ticket in the past year"
+msgstr "Destek kaydının geçen yıldaki gelişimi"
 
-#~ msgid "Top ticket's entities"
-#~ msgstr "Önde gelen destek kaydı varlıkları"
+msgid "Tickets status by month"
+msgstr "Aya göre destek kayıtlarının durumu"
 
-#~ msgid "Top ticket's request types"
-#~ msgstr "Önde gelen destek kaydı istek türleri"
+msgid "Tickets times (in hours)"
+msgstr "Destek kaydı süreleri (saat olarak)"
 
-#~ msgid "Top ticket's locations"
-#~ msgstr "Önde gelen destek kayıtlarının konumu"
+msgid "Tickets summary"
+msgstr "Destek kayıtlarının özeti"
 
-#~ msgid "Top ticket's requesters"
-#~ msgstr "Önde gelen destek kaydı isteğinde bulunanlar"
+msgid "Top ticket's categories"
+msgstr "Önde gelen destek kaydı kategorileri"
 
-#~ msgid "Top ticket's requester groups"
-#~ msgstr "Önde gelen destek kaydı isteğinde bulunan gruplar"
+msgid "Top ticket's entities"
+msgstr "Önde gelen destek kaydı varlıkları"
 
-#~ msgid "Top ticket's observers"
-#~ msgstr "Önde gelen destek kaydı gözlemcileri"
+msgid "Top ticket's request types"
+msgstr "Önde gelen destek kaydı istek türleri"
 
-#~ msgid "Top ticket's observer groups"
-#~ msgstr "Önde gelen destek kaydı gözlemci grupları"
+msgid "Top ticket's locations"
+msgstr "Önde gelen destek kayıtlarının konumu"
 
-#~ msgid "Top ticket's assignees"
-#~ msgstr "Önde gelen destek kayıtlarının atandığı kişiler"
+msgid "Top ticket's requesters"
+msgstr "Önde gelen destek kaydı isteğinde bulunanlar"
 
-#~ msgid "Top ticket's assignee groups"
-#~ msgstr "Önde gelen destek kayıtlarının atandığı kişi grupları"
+msgid "Top ticket's requester groups"
+msgstr "Önde gelen destek kaydı isteğinde bulunan gruplar"
 
-#~ msgid "List of reminders"
-#~ msgstr "Anımsatıcı listesi"
+msgid "Top ticket's observers"
+msgstr "Önde gelen destek kaydı gözlemcileri"
 
-#~ msgid "Editable markdown card"
-#~ msgstr "Düzenlenebilir markdown kartı"
+msgid "Top ticket's observer groups"
+msgstr "Önde gelen destek kaydı gözlemci grupları"
 
-#~ msgid "Toggle edit mode to edit content"
-#~ msgstr "İçeriği düzenlemek için düzenleme kipini aç/kapat"
+msgid "Top ticket's assignees"
+msgstr "Önde gelen destek kayıtlarının atandığı kişiler"
 
-#~ msgid "field name in DB"
-#~ msgstr "veritabanındaki alan adı"
+msgid "Top ticket's assignee groups"
+msgstr "Önde gelen destek kayıtlarının atandığı kişi grupları"
 
-#~ msgid "Example:"
-#~ msgstr "Örnek:"
+msgid "List of reminders"
+msgstr "Anımsatıcı listesi"
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "GLPI 9.2 sürümüyle birlikte. vereceğiniz izinle adsız olarak verileri "
-#~ "uzaktan algılama web sitemize gönderen \"Uzaktan Algılama\" adı altında "
-#~ "yeni bir istatistik özelliği sunuyoruz."
+msgid "Editable markdown card"
+msgstr "Düzenlenebilir markdown kartı"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP ağı veritabanında yok. Bununla birlikte, kullanılabilecek ağlara "
-#~ "bakabilirsiniz."
+msgid "Toggle edit mode to edit content"
+msgstr "İçeriği düzenlemek için düzenleme kipini aç/kapat"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Kullanılabilecek bir kaç ağ adı var! Yönetmek için 'Ağ Adı' sekmesine "
-#~ "bakın."
+msgid "field name in DB"
+msgstr "veritabanındaki alan adı"
 
-#~ msgid "Add a network name"
-#~ msgstr "Ağ adı ekle"
+msgid "Example:"
+msgstr "Örnek:"
 
-#~ msgid "Not associated"
-#~ msgstr "İlişkilendirilmemiş"
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"GLPI 9.2 sürümüyle birlikte. vereceğiniz izinle adsız olarak verileri "
+"uzaktan algılama web sitemize gönderen \"Uzaktan Algılama\" adı altında yeni "
+"bir istatistik özelliği sunuyoruz."
 
-#~ msgid "Create a new network name"
-#~ msgstr "Yeni bir ağ adı ekle"
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP ağı veritabanında yok. Bununla birlikte, kullanılabilecek ağlara "
+"bakabilirsiniz."
 
-#~ msgid "No network name found"
-#~ msgstr "Herhangi bir ağ adı bulunamadı"
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Kullanılabilecek bir kaç ağ adı var! Yönetmek için 'Ağ Adı' sekmesine bakın."
 
-#~ msgid "Unable to download plugin archive."
-#~ msgstr "Uygulama eki arşivi indirilemedi"
+msgid "Add a network name"
+msgstr "Ağ adı ekle"
 
-#, php-format
-#~ msgid "Plugin archive format is not supported by your system : %s."
-#~ msgstr "Sisteminiz uygulama eki arşivi biçimini desteklenmiyor : %s."
+msgid "Not associated"
+msgstr "İlişkilendirilmemiş"
 
-#~ msgid "Unable to extract plugin archive."
-#~ msgstr "Uygulama eki arşivi ayıklanamadı."
+msgid "Create a new network name"
+msgstr "Yeni bir ağ adı ekle"
 
-#~ msgid "Check all plugin updates"
-#~ msgstr "Tüm uygulama eki güncellemelerini denetle"
+msgid "No network name found"
+msgstr "Herhangi bir ağ adı bulunamadı"
 
-#, php-format
-#~ msgid "New version for plugin %s: %s"
-#~ msgstr "%s uygulama ekinin yeni bir sürümü yayınlanmış: %s"
+msgid "Unable to download plugin archive."
+msgstr "Uygulama eki arşivi indirilemedi"
 
-#~ msgid "Installed"
-#~ msgstr "Kurulu"
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr "Sisteminiz uygulama eki arşivi biçimini desteklenmiyor : %s."
 
-#~ msgid "Discover"
-#~ msgstr "Keşfet"
+msgid "Unable to extract plugin archive."
+msgstr "Uygulama eki arşivi ayıklanamadı."
 
-#, php-format
-#~ msgid ""
-#~ "%1$s services website seems not available from your network or offline"
-#~ msgstr ""
-#~ "%1$s hizmetleri web sitesine ağınızdan erişilemiyor ya da çevrimdışı"
+msgid "Check all plugin updates"
+msgstr "Tüm uygulama eki güncellemelerini denetle"
 
-#~ msgid "Maybe you could setup a proxy"
-#~ msgstr "Bir vekil sunucu kullanmanız gerekebilir"
+msgid "New version for plugin %s: %s"
+msgstr "%s uygulama ekinin yeni bir sürümü yayınlanmış: %s"
 
-#~ msgid "or please check later"
-#~ msgstr "ya da daha sonra yeniden deneyin"
+msgid "Installed"
+msgstr "Kurulu"
 
-#, php-format
-#~ msgid "Your %1$s registration is not valid."
-#~ msgstr "%1$s kaydınız geçersiz."
+msgid "Discover"
+msgstr "Keşfet"
 
-#~ msgid "A registration, at least a free one, is required to use marketplace!"
-#~ msgstr ""
-#~ "Mağazayı kullanabilmek için ücretsiz de olsa kayıt olunması gereklidir!"
+msgid "%1$s services website seems not available from your network or offline"
+msgstr "%1$s hizmetleri web sitesine ağınızdan erişilemiyor ya da çevrimdışı"
 
-#, php-format
-#~ msgid "Register on %1$s"
-#~ msgstr "%1$s üzerine kayıt olun"
+msgid "Maybe you could setup a proxy"
+msgstr "Bir vekil sunucu kullanmanız gerekebilir"
 
-#~ msgid "fill your registration key in setup."
-#~ msgstr "kurulumda kayıt anahtarınızı yazın."
+msgid "or please check later"
+msgstr "ya da daha sonra yeniden deneyin"
 
-#, php-format
-#~ msgid "Your %1$s subscription has been terminated."
-#~ msgstr "%1$s aboneliğiniz sona erdirildi."
+msgid "Your %1$s registration is not valid."
+msgstr "%1$s kaydınız geçersiz."
 
-#, php-format
-#~ msgid "Renew it on %1$s."
-#~ msgstr "%1$s zamanında yenile."
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+"Mağazayı kullanabilmek için ücretsiz de olsa kayıt olunması gereklidir!"
 
-#, php-format
-#~ msgid "We can't write on the markeplace directory (%s)."
-#~ msgstr "Mağaza klasörüne yazılamadı (%s)."
+msgid "Register on %1$s"
+msgstr "%1$s üzerine kayıt olun"
 
-#~ msgid ""
-#~ "If you want to ease the plugins download, please check permissions and "
-#~ "ownership of this directory."
-#~ msgstr ""
-#~ "Uygulama eklerinin indirilmesini kolaylaştırmak istiyorsanız, bu klasörün "
-#~ "izinlerini ve sahipliğini denetleyin."
+msgid "fill your registration key in setup."
+msgstr "kurulumda kayıt anahtarınızı yazın."
 
-#~ msgid ""
-#~ "Otherwise, you will need to download and unzip the plugins archives "
-#~ "manually."
-#~ msgstr "Yoksa, uygulama eki arşivlerini el ile indirip ayıklamanız gerekir."
+msgid "Your %1$s subscription has been terminated."
+msgstr "%1$s aboneliğiniz sona erdirildi."
 
-#~ msgid "Alpha ASC"
-#~ msgstr "Alfabetik Artan"
+msgid "Renew it on %1$s."
+msgstr "%1$s zamanında yenile."
 
-#~ msgid "Alpha DESC"
-#~ msgstr "Alfabetik Azalan"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr "Mağaza klasörüne yazılamadı (%s)."
 
-#~ msgid "Most popular"
-#~ msgstr "En beğenilen"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+"Uygulama eklerinin indirilmesini kolaylaştırmak istiyorsanız, bu klasörün "
+"izinlerini ve sahipliğini denetleyin."
 
-#~ msgid "Last updated"
-#~ msgstr "Son güncellenen"
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr "Yoksa, uygulama eki arşivlerini el ile indirip ayıklamanız gerekir."
 
-#~ msgid "Most recent"
-#~ msgstr "En yeni"
+msgid "Alpha ASC"
+msgstr "Alfabetik Artan"
 
-#~ msgid "Best notes"
-#~ msgstr "En iyi değerlendirilmiş"
+msgid "Alpha DESC"
+msgstr "Alfabetik Azalan"
 
-#~ msgid "Your plugin here ? Contact us."
-#~ msgstr ""
-#~ "Uygulama ekinizin burada yer almasını ister misiniz? Bizimle "
-#~ "görüşebilirsiniz."
+msgid "Most popular"
+msgstr "En beğenilen"
 
-#~ msgid "Refresh plugin list"
-#~ msgstr "Uygulama eki listesini yenile"
+msgid "Last updated"
+msgstr "Son güncellenen"
 
-#~ msgid "Filter plugin list"
-#~ msgstr "Uygulama eki listesini süz"
+msgid "Most recent"
+msgstr "En yeni"
 
-#~ msgid "Homepage"
-#~ msgstr "Web sitesi"
+msgid "Best notes"
+msgstr "En iyi değerlendirilmiş"
 
-#~ msgid "Get help"
-#~ msgstr "Yardım alın"
+msgid "Your plugin here ? Contact us."
+msgstr ""
+"Uygulama ekinizin burada yer almasını ister misiniz? Bizimle "
+"görüşebilirsiniz."
 
-#~ msgid "Readme"
-#~ msgstr "Benioku"
+msgid "Refresh plugin list"
+msgstr "Uygulama eki listesini yenile"
 
-#~ msgid "Clean"
-#~ msgstr "Temizle"
+msgid "Filter plugin list"
+msgstr "Uygulama eki listesini süz"
 
-#~ msgid "This plugin is not available for your GLPI version."
-#~ msgstr "Bu uygulama eki geçerli GLPI sürümünüzde kullanılamaz."
+msgid "Homepage"
+msgstr "Web sitesi"
 
-#~ msgid ""
-#~ "The plugin has an available update but its directory is not writable."
-#~ msgstr ""
-#~ "Uygulama eki için güncelleme yayınlanmış ancak klasör yazılabilir değil."
+msgid "Get help"
+msgstr "Yardım alın"
 
-#, php-format
-#~ msgid ""
-#~ "Download archive manually, you must uncompress it in plugins directory "
-#~ "(%s)"
-#~ msgstr ""
-#~ "Arşiv dosyasını indirip ayıkladıktan sonra uygulama ekleri klasörüne el "
-#~ "ile yükleyin (%s)"
+msgid "Readme"
+msgstr "Benioku"
 
-#, php-format
-#~ msgid "A new version (%s) is available, update ?"
-#~ msgstr "Yeni bir sürüm (%s) yayınlanmış. Güncellensin mi?"
+msgid "Clean"
+msgstr "Temizle"
 
-#, php-format
-#~ msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-#~ msgstr ""
-#~ "Bu uygulama ekini (%s) alabilmek için daha üst bir GLPI Network  "
-#~ "aboneliğiniz olmalı"
+msgid "This plugin is not available for your GLPI version."
+msgstr "Bu uygulama eki geçerli GLPI sürümünüzde kullanılamaz."
 
-#~ msgid "Install"
-#~ msgstr "Kur"
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+"Uygulama eki için güncelleme yayınlanmış ancak klasör yazılabilir değil."
 
-#~ msgid "Enable"
-#~ msgstr "Etkinleştir"
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+"Arşiv dosyasını indirip ayıkladıktan sonra uygulama ekleri klasörüne el ile "
+"yükleyin (%s)"
 
-#~ msgid "Uninstall"
-#~ msgstr "Kaldır"
+msgid "A new version (%s) is available, update ?"
+msgstr "Yeni bir sürüm (%s) yayınlanmış. Güncellensin mi?"
 
-#, php-format
-#~ msgid "You must have a %s subscription to get this plugin"
-#~ msgstr "Bu uygulama ekini alabilmek için bir %s aboneliğiniz olmalı"
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+"Bu uygulama ekini (%s) alabilmek için daha üst bir GLPI Network  "
+"aboneliğiniz olmalı"
 
-#, php-format
-#~ msgid "You need at least the %s subscription level to get this plugin"
-#~ msgstr "Bu uygulama ekini alabilmek için en az %s aboneliğiniz olmalı"
+msgid "Install"
+msgstr "Kur"
 
-#, php-format
-#~ msgid "%s plugin"
-#~ msgid_plural "%s plugins"
-#~ msgstr[0] "%s uygulama eki"
-#~ msgstr[1] "%s uygulama eki"
+msgid "Enable"
+msgstr "Etkinleştir"
 
-#~ msgid "GLPI provides a new marketplace to download and install plugins."
-#~ msgstr "GLPI uygulama eklerini indirip kurmak için yeni mağazasını açtı."
+msgid "Uninstall"
+msgstr "Kaldır"
 
-#~ msgid ""
-#~ "Do you want to replace the plugins setup page by the new marketplace ?"
-#~ msgstr ""
-#~ "Uygulama eki kurulum sayfasını yeni mağaza ile değiştirmek ister misiniz?"
+msgid "You must have a %s subscription to get this plugin"
+msgstr "Bu uygulama ekini alabilmek için bir %s aboneliğiniz olmalı"
 
-#~ msgid "Later"
-#~ msgstr "Daha sonra"
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr "Bu uygulama ekini alabilmek için en az %s aboneliğiniz olmalı"
 
-#~ msgid "Switch to marketplace"
-#~ msgstr "Mağazaya geç"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "%s uygulama eki"
+msgstr[1] "%s uygulama eki"
 
-#~ msgid "Some updates are available for your installed plugins!"
-#~ msgstr "Kurulu uygulama ekleriniz için bazı güncellemeler yayınlanmış!"
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr "GLPI uygulama eklerini indirip kurmak için yeni mağazasını açtı."
 
-#~ msgid "Plugin name"
-#~ msgstr "Uygulama eki adı"
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+"Uygulama eki kurulum sayfasını yeni mağaza ile değiştirmek ister misiniz?"
 
-#~ msgid "Plugin new version number"
-#~ msgstr "Yeni uygulama eki sürümü"
+msgid "Later"
+msgstr "Daha sonra"
 
-#~ msgid "Plugin old version number"
-#~ msgstr "Eski uygulama eki sürümü"
+msgid "Switch to marketplace"
+msgstr "Mağazaya geç"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "Bitiş tarihi olmayan lisansları aramak için \"Expiration contains NULL\" "
-#~ "yazarak arayın"
+msgid "Some updates are available for your installed plugins!"
+msgstr "Kurulu uygulama ekleriniz için bazı güncellemeler yayınlanmış!"
 
-#~ msgid "Registration"
-#~ msgstr "Kayıt"
+msgid "Plugin name"
+msgstr "Uygulama eki adı"
 
-#~ msgid ""
-#~ "A registration key is needed to use advanced feature (like marketplace) "
-#~ "in GLPI"
-#~ msgstr ""
-#~ "GLPI üzerinde gelişmiş özellikleri (mağaza gibi) kullanabilmek için bir "
-#~ "kayıt anahtarı gereklidir"
+msgid "Plugin new version number"
+msgstr "Yeni uygulama eki sürümü"
 
-#, php-format
-#~ msgid "Register on %1$s!"
-#~ msgstr "%1$s üzerine kayıt olun!"
+msgid "Plugin old version number"
+msgstr "Eski uygulama eki sürümü"
 
-#~ msgid "And retrieve your key to paste it below"
-#~ msgstr "Aldığınız anahtarı kopyalayıp aşağıya yapıştırın"
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"Bitiş tarihi olmayan lisansları aramak için \"Expiration contains NULL\" "
+"yazarak arayın"
 
-#, php-format
-#~ msgid "Error was: %s"
-#~ msgstr "Hata: %s"
+msgid "Registration"
+msgstr "Kayıt"
 
-#~ msgid "Registration key"
-#~ msgstr "Kayıt anahtarı"
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+"GLPI üzerinde gelişmiş özellikleri (mağaza gibi) kullanabilmek için bir "
+"kayıt anahtarı gereklidir"
 
-#~ msgid "Subscription"
-#~ msgstr "Abonelik"
+msgid "Register on %1$s!"
+msgstr "%1$s üzerine kayıt olun!"
 
-#~ msgid "Unknown"
-#~ msgstr "Bilinmiyor"
+msgid "And retrieve your key to paste it below"
+msgstr "Aldığınız anahtarı kopyalayıp aşağıya yapıştırın"
 
-#~ msgid "Registered by"
-#~ msgstr "Kaydeden"
+msgid "Error was: %s"
+msgstr "Hata: %s"
 
-#~ msgid "Unable to fetch registration information."
-#~ msgstr "Kayıt bilgileri alınamadı."
+msgid "Registration key"
+msgstr "Kayıt anahtarı"
 
-#~ msgid "The registration key is invalid."
-#~ msgstr "Kayıt anahtarı geçersiz."
+msgid "Subscription"
+msgstr "Abonelik"
 
-#~ msgid "The registration key refers to a terminated subscription."
-#~ msgstr "Kayıt anahtarı sonlanmış bir aboneliğe ait."
+msgid "Unknown"
+msgstr "Bilinmiyor"
 
-#~ msgid "The registration key is valid."
-#~ msgstr "Kayıt anahtarı geçerli."
+msgid "Registered by"
+msgstr "Kaydeden"
 
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "GLPI uygulamasını BT uygulamalarınız ile birleştirmek, hata düzeltmesi ya "
-#~ "da hazır yapılandırılmış kural ve sözlükleri kullanmak gibi istekleriniz "
-#~ "var mı?\n"
-#~ "\n"
-#~ "Sizin için %s adresinden bu hizmetleri sağlıyoruz.\n"
-#~ "GLPI-Network, tier 3 destek aboneliği bulunan ticari bir üründür. Böylece "
-#~ "hataların belirli bir sürede düzeltileceğinden emin olabilirsiniz.\n"
-#~ "\n"
-#~ "Aynı siteden GLPI bütünleştirmesi için size yardımcı olacak <b>resmi bir "
-#~ "iş ortağı ile de iletişim kurabilirsiniz</b>.\n"
-#~ "\n"
-#~ "Ayrıca <b>bağış yaparak</b> GLPI geliştirme çalışmalarına da destek "
-#~ "olabilirsiniz."
+msgid "Unable to fetch registration information."
+msgstr "Kayıt bilgileri alınamadı."
 
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "Gelişmiş bir GLPI modülünü kurmakta sorun mu yaşıyorsunuz?\n"
-#~ "Sorunu çözmenize yardımcı olabiliriz. Destek almak için %s hesabı açın."
+msgid "The registration key is invalid."
+msgstr "Kayıt anahtarı geçersiz."
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "E-posta adresinize parolanızı sıfırlamak için gereken bilgilerin "
-#~ "bulunduğu bir ileti gönderildi."
+msgid "The registration key refers to a terminated subscription."
+msgstr "Kayıt anahtarı sonlanmış bir aboneliğe ait."
 
-#~ msgid "Email address not found."
-#~ msgstr "E-posta adresi bulunamadı."
+msgid "The registration key is valid."
+msgstr "Kayıt anahtarı geçerli."
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr "Toplama ağ kapısında aygıtın MAC adresi ve IP adresi bulunur"
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"GLPI uygulamasını BT uygulamalarınız ile birleştirmek, hata düzeltmesi ya da "
+"hazır yapılandırılmış kural ve sözlükleri kullanmak gibi istekleriniz var "
+"mı?\n"
+"\n"
+"Sizin için %s adresinden bu hizmetleri sağlıyoruz.\n"
+"GLPI-Network, tier 3 destek aboneliği bulunan ticari bir üründür. Böylece "
+"hataların belirli bir sürede düzeltileceğinden emin olabilirsiniz.\n"
+"\n"
+"Aynı siteden GLPI bütünleştirmesi için size yardımcı olacak <b>resmi bir iş "
+"ortağı ile de iletişim kurabilirsiniz</b>.\n"
+"\n"
+"Ayrıca <b>bağış yaparak</b> GLPI geliştirme çalışmalarına da destek "
+"olabilirsiniz."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "Yüklenen dosyanın boyutu, php.ini dosyasındaki upload_max_filesize "
-#~ "değerinden büyük"
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"Gelişmiş bir GLPI modülünü kurmakta sorun mu yaşıyorsunuz?\n"
+"Sorunu çözmenize yardımcı olabiliriz. Destek almak için %s hesabı açın."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "Yüklenen dosyanın boyutu, HTML formundaki MAX_FILE_SIZE değerinden büyük"
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"E-posta adresinize parolanızı sıfırlamak için gereken bilgilerin bulunduğu "
+"bir ileti gönderildi."
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Dosyanın yalnızca bir bölümü yüklendi"
+msgid "Email address not found."
+msgstr "E-posta adresi bulunamadı."
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Dosya diske yazılamadı"
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr "Toplama ağ kapısında aygıtın MAC adresi ve IP adresi bulunur"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "Bir PHP eklentisi yüklemeyi durdurdu"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"Yüklenen dosyanın boyutu, php.ini dosyasındaki upload_max_filesize "
+"değerinden büyük"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr ""
-#~ "Yüklenen dosyanın boyutu, php.ini dosyasındaki post_max_size değerinden "
-#~ "büyük"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Yüklenen dosyanın boyutu, HTML formundaki MAX_FILE_SIZE değerinden büyük"
 
-#~ msgid "File is too big"
-#~ msgstr "Dosya boyutu çok büyük"
+msgid "The uploaded file was only partially uploaded"
+msgstr "Dosyanın yalnızca bir bölümü yüklendi"
 
-#~ msgid "File is too small"
-#~ msgstr "Dosya boyutu çok küçük"
+msgid "Failed to write file to disk"
+msgstr "Dosya diske yazılamadı"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "İzin verilen en fazla dosya sayısı aşıldı"
+msgid "A PHP extension stopped the file upload"
+msgstr "Bir PHP eklentisi yüklemeyi durdurdu"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "İzin verilen en fazla görsel genişliği aşıldı"
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+"Yüklenen dosyanın boyutu, php.ini dosyasındaki post_max_size değerinden büyük"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "İzin verilen en az görsel genişliğine ulaşılamadı"
+msgid "File is too big"
+msgstr "Dosya boyutu çok büyük"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "İzin verilen en fazla görsel yüksekliği aşıldı"
+msgid "File is too small"
+msgstr "Dosya boyutu çok küçük"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "İzin verilen en az görsel yüksekliğine ulaşılamadı"
+msgid "Maximum number of files exceeded"
+msgstr "İzin verilen en fazla dosya sayısı aşıldı"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Bu dosya türüne izin verilmiyor"
+msgid "Image exceeds maximum width"
+msgstr "İzin verilen en fazla görsel genişliği aşıldı"
 
-#~ msgid "File upload aborted"
-#~ msgstr "Dosya yüklemesi iptal edildi"
+msgid "Image requires a minimum width"
+msgstr "İzin verilen en az görsel genişliğine ulaşılamadı"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "Görsel yeniden boyutlandırılamadı"
+msgid "Image exceeds maximum height"
+msgstr "İzin verilen en fazla görsel yüksekliği aşıldı"
 
-#~ msgid "Display GLPI debug information"
-#~ msgstr "GLPI hata ayıklama bilgileri görüntülensin"
+msgid "Image requires a minimum height"
+msgstr "İzin verilen en az görsel yüksekliğine ulaşılamadı"
 
-#~ msgid "Progress"
-#~ msgstr "İlerleme"
+msgid "Filetype not allowed"
+msgstr "Bu dosya türüne izin verilmiyor"
 
-#~ msgid "My settings"
-#~ msgstr "Ayarlarım"
+msgid "File upload aborted"
+msgstr "Dosya yüklemesi iptal edildi"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "Sayfanın üstüne geri dön"
+msgid "Failed to resize image"
+msgstr "Görsel yeniden boyutlandırılamadı"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "GLPI-PROJECT.org sitesinde bulabilirsiniz."
+msgid "Display GLPI debug information"
+msgstr "GLPI hata ayıklama bilgileri görüntülensin"
 
-#~ msgid "Check all"
-#~ msgstr "Tümünü seç"
+msgid "Progress"
+msgstr "İlerleme"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Tümünü bırak"
+msgid "My settings"
+msgstr "Ayarlarım"
 
-#~ msgid "Check all as"
-#~ msgstr "Tümü şu şekilde seçilsin"
+msgid "Back to top of the page"
+msgstr "Sayfanın üstüne geri dön"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Seçim çok büyük, toplu işlem devre dışı bırakıldı."
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "GLPI-PROJECT.org sitesinde bulabilirsiniz."
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Sınırı arttırmak için: php ayarlarından max_input_vars ya da suhosin.post."
-#~ "max_vars değerlerini değiştirin."
+msgid "Check all"
+msgstr "Tümünü seç"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "Açıklama alanının doldurulması zorunludur"
+msgid "Uncheck all"
+msgstr "Tümünü bırak"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "İlk: %1$d Son: %2$d Toplam: %3$d"
+msgid "Check all as"
+msgstr "Tümü şu şekilde seçilsin"
 
-#~ msgid "Empty array"
-#~ msgstr "Boş dizi"
+msgid "Selection too large, massive action disabled."
+msgstr "Seçim çok büyük, toplu işlem devre dışı bırakıldı."
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d / %2$d"
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Sınırı arttırmak için: php ayarlarından max_input_vars ya da suhosin.post."
+"max_vars değerlerini değiştirin."
 
-#~ msgid "Close (Esc)"
-#~ msgstr "Kapat (Esc)"
+msgid "The description field is mandatory"
+msgstr "Açıklama alanının doldurulması zorunludur"
 
-#~ msgid "Share"
-#~ msgstr "Paylaş"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "İlk: %1$d Son: %2$d Toplam: %3$d"
 
-#~ msgid "Zoom in/out"
-#~ msgstr "Yakınlaştır / Uzaklaştır"
+msgid "Empty array"
+msgstr "Boş dizi"
 
-#~ msgid "Previous (arrow left)"
-#~ msgstr "Önceki (sol ok)"
+msgid "%1$d on %2$d"
+msgstr "%1$d / %2$d"
 
-#~ msgid "Next (arrow right)"
-#~ msgstr "Sonraki (sağ ok)"
+msgid "Close (Esc)"
+msgstr "Kapat (Esc)"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr ""
-#~ "Dosyayı düzenleyici içine sürükleyip bırakın ya da kopyalayıp yapıştırın "
-#~ "ya da "
+msgid "Share"
+msgstr "Paylaş"
 
-#~ msgid "selecting them"
-#~ msgstr "onları seçin"
+msgid "Zoom in/out"
+msgstr "Yakınlaştır / Uzaklaştır"
 
-#~ msgid "File(s)"
-#~ msgstr "Dosya"
+msgid "Previous (arrow left)"
+msgstr "Önceki (sol ok)"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Dosyanızı sürükleyip buraya bırakın ya da"
+msgid "Next (arrow right)"
+msgstr "Sonraki (sağ ok)"
 
-#~ msgid "Upload successful"
-#~ msgstr "Yüklendi"
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+"Dosyayı düzenleyici içine sürükleyip bırakın ya da kopyalayıp yapıştırın ya "
+"da "
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Tümünü işaretle/kaldır"
+msgid "selecting them"
+msgstr "onları seçin"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Bir menü bulmak için yazmaya başlayın"
+msgid "File(s)"
+msgstr "Dosya"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "Hata ayıklama kipi etkin"
+msgid "Drag and drop your file here, or"
+msgstr "Dosyanızı sürükleyip buraya bırakın ya da"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "Hata ayıklama kipi devre dışı"
+msgid "Upload successful"
+msgstr "Yüklendi"
 
-#~ msgid "Saved searches"
-#~ msgstr "Kaydedilmiş aramalar"
+msgid "Check/uncheck all"
+msgstr "Tümünü işaretle/kaldır"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Kaydedilmiş arama yönetimi"
+msgid "Start typing to find a menu"
+msgstr "Bir menü bulmak için yazmaya başlayın"
 
-#~ msgid "Add is disabled"
-#~ msgstr "Ekleme devre dışı bırakılmış"
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Değiştirilmiş"
 
-#~ msgid "Search is disabled"
-#~ msgstr "Arama devre dışı bırakılmış"
+msgid "Debug mode enabled"
+msgstr "Hata ayıklama kipi etkin"
 
-#~ msgid "Global Kanban"
-#~ msgstr "Genel Kanban"
+msgid "Debug mode disabled"
+msgstr "Hata ayıklama kipi devre dışı"
 
-#, php-format
-#~ msgid "You are impersonating %s."
-#~ msgstr "%s kullanıcısı rolündesiniz."
+msgid "Saved searches"
+msgstr "Kaydedilmiş aramalar"
 
-#~ msgid "Stop impersonating"
-#~ msgstr "Rolden çık"
+msgid "Manage saved searches"
+msgstr "Kaydedilmiş arama yönetimi"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr ""
-#~ "Kimlik doğrulama bilgileri ile API oturumu açılmasını ve bir oturum kodu "
-#~ "alınmasını sağlar"
+msgid "Add is disabled"
+msgstr "Ekleme devre dışı bırakılmış"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "Dış kullanıcı kodu ile API oturumu açılmasını ve bir oturum kodu "
-#~ "alınmasını sağlar. Kullanıcı Ayarları sekmesindeki uzak erişim anahtarı "
-#~ "bölümüne bakabilirsiniz "
+msgid "Search is disabled"
+msgstr "Arama devre dışı bırakılmış"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "GLPI kodu görüntülensin"
+msgid "Global Kanban"
+msgstr "Genel Kanban"
 
-#~ msgid "Color palette"
-#~ msgstr "Renk paleti"
+msgid "You are impersonating %s."
+msgstr "%s kullanıcısı rolündesiniz."
 
-#~ msgid "Layout"
-#~ msgstr "Düzen"
+msgid "Stop impersonating"
+msgstr "Rolden çık"
 
-#~ msgid "Tabs on left"
-#~ msgstr "Sekmeler solda"
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+"Kimlik doğrulama bilgileri ile API oturumu açılmasını ve bir oturum kodu "
+"alınmasını sağlar"
 
-#~ msgid "Classic view"
-#~ msgstr "Klasik görünüm"
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"Dış kullanıcı kodu ile API oturumu açılmasını ve bir oturum kodu alınmasını "
+"sağlar. Kullanıcı Ayarları sekmesindeki uzak erişim anahtarı bölümüne "
+"bakabilirsiniz "
 
-#~ msgid "Vertical split"
-#~ msgstr "Dikey bölünmüş"
+msgid "Show GLPI ID"
+msgstr "GLPI kodu görüntülensin"
 
-#~ msgid "Dashboards"
-#~ msgstr "Panolar"
+msgid "Color palette"
+msgstr "Renk paleti"
 
-#~ msgid "Default for central"
-#~ msgstr "Destek merkezi varsayılanı"
+msgid "Layout"
+msgstr "Düzen"
 
-#~ msgid "Default for Assets"
-#~ msgstr "Varlıklar varsayılanı"
+msgid "Tabs on left"
+msgstr "Sekmeler solda"
 
-#~ msgid "Default for Assistance"
-#~ msgstr "Destek varsayılanı"
+msgid "Classic view"
+msgstr "Klasik görünüm"
 
-#~ msgid "Default for tickets (mini dashboard)"
-#~ msgstr "Destek kaydı varsayılanı (mini pano)"
+msgid "Vertical split"
+msgstr "Dikey bölünmüş"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Yeni sürümleri denetle"
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Sözleşme sonu"
 
-#~ msgid "Show filters"
-#~ msgstr "Süzgeçleri görüntüle"
+msgid "Dashboards"
+msgstr "Panolar"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "Süzgece uygun bir geçmiş kaydı yok"
+msgid "Default for central"
+msgstr "Destek merkezi varsayılanı"
 
-#~ msgid "Add to schedule"
-#~ msgstr "Takvime ekle"
+msgid "Default for Assets"
+msgstr "Varlıklar varsayılanı"
 
-#~ msgid "Position in room"
-#~ msgstr "Odadaki konum"
+msgid "Default for Assistance"
+msgstr "Destek varsayılanı"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "Oda kapısının yönü"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Destek kaydı varsayılanı (mini pano)"
 
-#~ msgid "North"
-#~ msgstr "Kuzey"
+msgid "Check if a new version is available"
+msgstr "Yeni sürümleri denetle"
 
-#~ msgid "East"
-#~ msgstr "Doğu"
+msgid "Show filters"
+msgstr "Süzgeçleri görüntüle"
 
-#~ msgid "South"
-#~ msgstr "Güney"
+msgid "No historical matching your filters"
+msgstr "Süzgece uygun bir geçmiş kaydı yok"
 
-#~ msgid "West"
-#~ msgstr "Batı"
+msgid "Add to schedule"
+msgstr "Takvime ekle"
 
-#~ msgid "Number of units"
-#~ msgstr "Birim sayısı"
+msgid "Position in room"
+msgstr "Odadaki konum"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "Door orientation in room"
+msgstr "Oda kapısının yönü"
 
-#~ msgid "Width"
-#~ msgstr "Genişlik"
+msgid "North"
+msgstr "Kuzey"
 
-#~ msgid "Height"
-#~ msgstr "Yükseklik"
+msgid "East"
+msgstr "Doğu"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "Ölçülen güç (watt)"
+msgid "South"
+msgstr "Güney"
 
-#~ msgid "Max. weight"
-#~ msgstr "En fazla ağırlık"
+msgid "West"
+msgstr "Batı"
 
-#~ msgid "No rack found"
-#~ msgstr "Herhangi bir kabin bulunamadı"
+msgid "Number of units"
+msgstr "Birim sayısı"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "Şu bileşenler oda ölçülerini aşıyor"
+msgid "U"
+msgstr "U"
 
-#~ msgid "Blueprint"
-#~ msgstr "Taslak çizim"
+msgid "Width"
+msgstr "Genişlik"
 
-#~ msgid "Grid"
-#~ msgstr "Tablo"
+msgid "Height"
+msgstr "Yükseklik"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "Buraya bir kabin ekle"
+msgid "Measured power (in watts)"
+msgstr "Ölçülen güç (watt)"
 
-#~ msgid "Position must be set"
-#~ msgstr "Konum ayarlanmalıdır"
+msgid "Max. weight"
+msgstr "En fazla ağırlık"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s konumu kullanılamıyor"
+msgid "No rack found"
+msgstr "Herhangi bir kabin bulunamadı"
 
-#~ msgid "All categories"
-#~ msgstr "Tüm kategoriler"
+msgid "Following elements are out of room bounds"
+msgstr "Şu bileşenler oda ölçülerini aşıyor"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Sınıflandırılmamış yazılım"
+msgid "Blueprint"
+msgstr "Taslak çizim"
 
-#~ msgid "Valid license"
-#~ msgstr "Geçerli lisans"
+msgid "Grid"
+msgstr "Tablo"
 
-#~ msgid "Other component"
-#~ msgstr "Diğer bileşen"
+msgid "Insert a rack here"
+msgstr "Buraya bir kabin ekle"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "Başlamadan önce son bir şey"
+msgid "Position must be set"
+msgstr "Konum ayarlanmalıdır"
 
-#~ msgid "Donate"
-#~ msgstr "Bağış yapın"
+msgid "%1$s position is not available"
+msgstr "%1$s konumu kullanılamıyor"
+
+msgid "All categories"
+msgstr "Tüm kategoriler"
+
+msgid "Uncategorized software"
+msgstr "Sınıflandırılmamış yazılım"
+
+msgid "Valid license"
+msgstr "Geçerli lisans"
+
+msgid "Other component"
+msgstr "Diğer bileşen"
+
+msgid "One last thing before starting"
+msgstr "Başlamadan önce son bir şey"
+
+msgid "Donate"
+msgstr "Bağış yapın"
+
+msgid "Unofficial translations are also available"
+msgstr "Ayrıca resmi olmayan çeviriler de bulunur"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Yukarıda yazılı olan lisans şartlarını okudum ve KABUL EDİYORUM."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Yukarıda yazılı olan lisans şartlarını okudum ve KABUL ETMİYORUM"
+
+msgid "Installation or update of GLPI"
+msgstr "GLPI kurulumu ya da güncellemesi"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Yeni bir GLPI kurulumu için 'Kurulum' seçin."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "Eski bir GLPI sürümünü güncellemek için 'Güncelleme' seçin"
+
+msgid "Do you want to continue?"
+msgstr "Devam etmek ister misiniz?"
+
+msgid "Database connection parameters"
+msgstr "Veritabanı bağlantısı ayarları"
+
+msgid "Test of the connection at the database"
+msgstr "Veritabanı bağlantısı sınaması"
+
+msgid "Can't connect to the database"
+msgstr "Veritabanı bağlantısı kurulamadı"
+
+msgid "The server answered: %s"
+msgstr "Sunucu yanıtı: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Sunucu ve/veya kullanıcı adı alanı boş"
+
+msgid "Please select a database:"
+msgstr "Bir veritabanı seçin:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Yeni bir veritabanı oluşturun ya da var olanı kullanın:"
+
+msgid "Please select the database to update:"
+msgstr "Güncellenecek veritabanını seçin:"
+
+msgid "Initialization of the database"
+msgstr "Veritabanı hazırlanıyor"
+
+msgid "Impossible to use the database:"
+msgstr "Bu veritabanı kullanılamıyor:"
+
+msgid "OK - database was initialized"
+msgstr "Tamam - veritabanı hazırlandı"
+
+msgid "Impossible to write the database setup file"
+msgstr "Veritabanı yapılandırma dosyasına yazılamıyor"
+
+msgid "Database created"
+msgstr "Veritabanı oluşturuldu"
+
+msgid "Error in creating database!"
+msgstr "Vertiabanı oluşturulurken sorun çıktı!"
+
+msgid "You didn't select a database!"
+msgstr "Henüz bir veritabanı seçmemişsiniz!"
+
+msgid "Collect data"
+msgstr "Verileri topla"
+
+msgid "The installation is finished"
+msgstr "Kurulum tamamlandı"
+
+msgid "Default logins / passwords are:"
+msgstr "Varsayılan kullanıcı adı ve parolalar:"
+
+msgid "tech/tech for the technician account"
+msgstr "Teknisyen hesabı için: tech/tech"
+
+msgid "normal/normal for the normal account"
+msgstr "Normal kullanıcı için: normal/normal"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "Yalnız ekleme hesabı için: post-only/post-only"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "Bu hesapları ve başlangıçtaki verileri silip değiştirebilirsiniz."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Veritabanı bağlantı dosyası oluşturulamadı, dosya izinlerini denetleyin."
+
+msgid "Select your language"
+msgstr "Dilinizi seçin"
+
+msgid "Beginning of the installation"
+msgstr "Kurulum başlangıcı"
+
+msgid "Step %d"
+msgstr "%d. adım"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Kimlik Doğrulama"
+
+msgid "Remember me"
+msgstr "Bilgilerim hatırlansın"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Web tarayıcınızın JavaScript işlevini etkinleştirmelisiniz"
+
+msgid "You must accept cookies to reach this application"
+msgstr "Bu uygulamayı kullanabilmek için çerezleri kabul etmelisiniz"
+
+msgid "Invalid use of session ID"
+msgstr "Oturum kodunun kullanımı geçersiz"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Sık sorulan sorulara erişim"
+
+msgid "Add a card"
+msgstr "Bir kart ekle"
+
+msgid "Add a filter"
+msgstr "Süzgeç ekle"
+
+msgid "Saved"
+msgstr "Kaydedildi"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "%s panosunu silmek istediğinize emin misiniz?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Gönderim tarihi"
 
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI Kullanmaya Geç"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Ayrıca resmi olmayan çeviriler de bulunur"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Yukarıda yazılı olan lisans şartlarını okudum ve KABUL EDİYORUM."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "Yukarıda yazılı olan lisans şartlarını okudum ve KABUL ETMİYORUM"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "GLPI kurulumu ya da güncellemesi"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Yeni bir GLPI kurulumu için 'Kurulum' seçin."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr "Eski bir GLPI sürümünü güncellemek için 'Güncelleme' seçin"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Devam etmek ister misiniz?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Veritabanı bağlantısı ayarları"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Veritabanı bağlantısı sınaması"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Veritabanı bağlantısı kurulamadı"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Sunucu yanıtı: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Sunucu ve/veya kullanıcı adı alanı boş"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Bir veritabanı seçin:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Yeni bir veritabanı oluşturun ya da var olanı kullanın:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Güncellenecek veritabanını seçin:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Veritabanı hazırlanıyor"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Bu veritabanı kullanılamıyor:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "Tamam - veritabanı hazırlandı"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Veritabanı yapılandırma dosyasına yazılamıyor"
-
-#~ msgid "Database created"
-#~ msgstr "Veritabanı oluşturuldu"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Vertiabanı oluşturulurken sorun çıktı!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Henüz bir veritabanı seçmemişsiniz!"
-
-#~ msgid "Collect data"
-#~ msgstr "Verileri topla"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Kurulum tamamlandı"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Varsayılan kullanıcı adı ve parolalar:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "Yönetici hesabı için: glpi/glpi"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "Teknisyen hesabı için: tech/tech"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "Normal kullanıcı için: normal/normal"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "Yalnız ekleme hesabı için: post-only/post-only"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "Bu hesapları ve başlangıçtaki verileri silip değiştirebilirsiniz."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Veritabanı bağlantı dosyası oluşturulamadı, dosya izinlerini denetleyin."
-
-#~ msgid "Select your language"
-#~ msgstr "Dilinizi seçin"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Kurulum başlangıcı"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "%d. adım"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Kimlik Doğrulama"
-
-#~ msgid "Remember me"
-#~ msgstr "Bilgilerim hatırlansın"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Web tarayıcınızın JavaScript işlevini etkinleştirmelisiniz"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Bu uygulamayı kullanabilmek için çerezleri kabul etmelisiniz"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Oturum kodunun kullanımı geçersiz"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Sık sorulan sorulara erişim"
-
-#~ msgid "Add a card"
-#~ msgstr "Bir kart ekle"
-
-#~ msgid "Add a filter"
-#~ msgstr "Süzgeç ekle"
-
-#~ msgid "Saved"
-#~ msgstr "Kaydedildi"
-
-#, javascript-format
-#~ msgid "Are you sure you want to delete the dashboard %s ?"
-#~ msgstr "%s panosunu silmek istediğinize emin misiniz?"

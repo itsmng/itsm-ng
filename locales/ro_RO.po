@@ -24010,561 +24010,1316 @@ msgstr "Colectează doar email-urile necitite"
 msgid "Could not create dashboard"
 msgstr "Dashboard mini tichete"
 
-#~ msgid "No room found or selected"
-#~ msgstr "Nu a fost găsită sau selectată nici o încăpere"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Scriere"
 
-#~ msgid "Marketplace"
-#~ msgstr "Marketplace"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Utilizator"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s adaugă elementul %2$s-%3$s:%4$s "
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Vezi configuraţia"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Vezi catalogul de plugin - uri"
+msgid "No room found or selected"
+msgstr "Nu a fost găsită sau selectată nici o încăpere"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Necompletat pentru infinit"
+msgid "Marketplace"
+msgstr "Marketplace"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "Fluxuri RSS găsite"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s adaugă elementul %2$s-%3$s:%4$s "
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+msgid "See the catalog of plugins"
+msgstr "Vezi catalogul de plugin - uri"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Tichete neînchise"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Tichete în aşteptare"
+msgid "Empty for infinite"
+msgstr "Necompletat pentru infinit"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Tichete de tratat"
+msgid "RSS feeds found"
+msgstr "Fluxuri RSS găsite"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Tichetele dvs observate"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Tichete în curs de rezolvare"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "Versiune IP"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Tichete nevalidate"
+#, fuzzy
+#| msgid "Confirm the final deletion?"
+msgid "Confirm the promotion?"
+msgstr "Confirmaţi ştergerea definitivă ?"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Comentarii la probleme"
+msgid "Your tickets to close"
+msgstr "Tichete neînchise"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d nou tichet"
-#~ msgstr[1] "%d noi tichete "
-#~ msgstr[2] "%d noi tichete "
+msgid "Tickets on pending status"
+msgstr "Tichete în aşteptare"
 
-#~ msgid "No ticket found."
-#~ msgstr "Nu a fost gasita nici o problema."
+msgid "Tickets to be processed"
+msgstr "Tichete de tratat"
 
-#~ msgid "Last tickets"
-#~ msgstr "Ultimele tichete"
+msgid "Your observed tickets"
+msgstr "Tichetele dvs observate"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Tichet nou pentru acest element..."
+msgid "Your tickets in progress"
+msgstr "Tichete în curs de rezolvare"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Ultimul %d tichet"
-#~ msgstr[1] "Ultimele %d tichete"
-#~ msgstr[2] "Ultimele %d tichete"
+msgid "Your tickets to validate"
+msgstr "Tichete nevalidate"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Nu aveti dreptul de a vedea toate tichetele"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected approval status"
+msgstr "Tichete în curs de rezolvare"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Nu sunt probleme în curs de rezolvare."
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected solution"
+msgstr "Tichete în curs de rezolvare"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Atribuie material"
+msgid "Ticket followup"
+msgstr "Comentarii la probleme"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Închidere automată tichete"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d nou tichet"
+msgstr[1] "%d noi tichete "
+msgstr[2] "%d noi tichete "
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Generare sondaj de satisfacţie"
+msgid "No ticket found."
+msgstr "Nu a fost gasita nici o problema."
 
-#~ msgid "See my ticket"
-#~ msgstr "Vezi tichetul meu"
+msgid "Last tickets"
+msgstr "Ultimele tichete"
 
-#~ msgid "See group ticket"
-#~ msgstr "Vezi grup tichet"
+msgid "New ticket for this item..."
+msgstr "Tichet nou pentru acest element..."
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Vezi tichetele create de grupurile mele"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Ultimul %d tichet"
+msgstr[1] "Ultimele %d tichete"
+msgstr[2] "Ultimele %d tichete"
 
-#~ msgid "See all tickets"
-#~ msgstr "Vezi toate tichetele"
+msgid "You don't have right to see all tickets"
+msgstr "Nu aveti dreptul de a vedea toate tichetele"
 
-#~ msgid "See assigned"
-#~ msgstr "Vezi atribuite"
+#, fuzzy
+#| msgid "Changes on linked items"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Schimbari pe elemente schimbate"
+msgstr[1] "Schimbari pe elemente schimbate"
+msgstr[2] "Schimbari pe elemente schimbate"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Vezi tichetele atribuite"
+msgid "No ticket in progress."
+msgstr "Nu sunt probleme în curs de rezolvare."
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Repartizeaza o problema"
+msgid "Assign equipment"
+msgstr "Atribuie material"
 
-#~ msgid "Steal"
-#~ msgstr "Fură "
+msgid "Automatic tickets closing"
+msgstr "Închidere automată tichete"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Imprumuta o problema"
+msgid "Generation of satisfaction surveys"
+msgstr "Generare sondaj de satisfacţie"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "A fi responsabil"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "Închidere automată a tichetelor rezolvate după"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Responsabil pe o anumita problema"
+msgid "See my ticket"
+msgstr "Vezi tichetul meu"
 
-#~ msgid "Change the priority"
-#~ msgstr "Schimbă prioritatea"
+msgid "See group ticket"
+msgstr "Vezi grup tichet"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Aproba soluția / Răspuns sondaj ( ticketul meu)"
+msgid "See tickets created by my groups"
+msgstr "Vezi tichetele create de grupurile mele"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "Aproba soluția și răspuns la sondajul pentru ticketul creat de mine"
+msgid "See all tickets"
+msgstr "Vezi toate tichetele"
 
-#, php-format
-#~ msgid "Failed to add document to ticket %d"
-#~ msgstr "Eroare la adăugarea unui document la tichetul %d"
+msgid "See assigned"
+msgstr "Vezi atribuite"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "Eroare la ștergerea tichetului %d"
+msgid "See assigned tickets"
+msgstr "Vezi tichetele atribuite"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Recalculare categorie"
+msgid "Assign a ticket"
+msgstr "Repartizeaza o problema"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Licente valide"
+msgid "Steal"
+msgstr "Fură "
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Număr instalări"
+msgid "Steal a ticket"
+msgstr "Imprumuta o problema"
 
-#~ msgid "Merge"
-#~ msgstr "Îmbină"
+msgid "Beeing in charge"
+msgstr "A fi responsabil"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Software şters după fuzionare"
+msgid "To be in charge of a ticket"
+msgstr "Responsabil pe o anumita problema"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Change the priority"
+msgstr "Schimbă prioritatea"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Conectare calculator"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Aproba soluția / Răspuns sondaj ( ticketul meu)"
 
-#~ msgid "Not connected"
-#~ msgstr "Deconectat"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "Aproba soluția și răspuns la sondajul pentru ticketul creat de mine"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Expiră la %s"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
 
-#~ msgid "Solved"
-#~ msgstr "Soluţionate"
+#, fuzzy
+#| msgid "Failed to delete ticket %d"
+msgid "Failed to load ticket %d"
+msgstr "Eroare la ștergerea tichetului %d"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "Reţeaua IP nu este inclus în baza de date. . Cu toate acestea, puteți "
-#~ "vedea rețelele disponibile."
+#, fuzzy
+#| msgid "Failed to add document to ticket %d"
+msgid "Failed to add followup to ticket %d"
+msgstr "Eroare la adăugarea unui document la tichetul %d"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Există mai multe nume de reţea! Utilizaţi tabul 'Nume reţea' pentru a le "
-#~ "gestiona."
+#, fuzzy
+#| msgid "Failed to add document to ticket %d"
+msgid "Failed to add task to ticket %d"
+msgstr "Eroare la adăugarea unui document la tichetul %d"
 
-#~ msgid "Add a network name"
-#~ msgstr "Adaugă un nume reţea"
+msgid "Failed to add document to ticket %d"
+msgstr "Eroare la adăugarea unui document la tichetul %d"
 
-#~ msgid "Not associated"
-#~ msgstr "Neasociat"
+#, fuzzy
+#| msgid "Failed to delete ticket %d"
+msgid "Failed to link tickets %d and %d"
+msgstr "Eroare la ștergerea tichetului %d"
 
-#~ msgid "Create a new network name"
-#~ msgstr "Crează un nou nume de reţea"
+msgid "Failed to delete ticket %d"
+msgstr "Eroare la ștergerea tichetului %d"
 
-#~ msgid "No network name found"
-#~ msgstr "Niciun nume reţea gasit"
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s elimină versiunea %2$s"
 
-#~ msgid "Clean"
-#~ msgstr "Şterge"
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Verifică permisiunile de scriere pentru  documentelor plugins"
 
-#~ msgid "Install"
-#~ msgstr "Instalează"
+msgid "Recalculate the category"
+msgstr "Recalculare categorie"
 
-#~ msgid "Enable"
-#~ msgstr "Activează"
+msgid "Valid licenses"
+msgstr "Licente valide"
 
-#~ msgid "Uninstall"
-#~ msgstr "Dezinstalează"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Număr instalări"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "În motorul de căutare, folosiţi \"Expiratrea conţine NULL\" pentru a "
-#~ "căuta licenţele fără dată de expirare"
+msgid "Merge"
+msgstr "Îmbină"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "Un email a fost trimis către adresa dvs. de email. Emailul conţine "
-#~ "informaţii pentru resetarea parolei dvs."
+msgid "Software deleted after merging"
+msgstr "Software şters după fuzionare"
 
-#~ msgid "Email address not found."
-#~ msgstr "Adresa cerută este necunoscută."
+#, fuzzy
+#| msgid "You must install at least PHP %s."
+msgid "You must enable at least one notification mode."
+msgstr "Trebuie să instalați cel puțin versiunea PHP %s."
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "Adresa MAC şi adresa IP a echipamentului sunt incluse intr-un port de "
-#~ "reţea agregat"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "Dimensiunea fișierului încărcat depășește dimensiunea setată în directiva "
-#~ "upload_max_filesize din php.ini."
+msgid "Connect a computer"
+msgstr "Conectare calculator"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "Dimensiunea fișierului încărcat depășește dimensiunea specificată în "
-#~ "formul HTML."
+msgid "Not connected"
+msgstr "Deconectat"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Fișierul a fost numai parțial incarcat."
+#, fuzzy
+#| msgid "Show all"
+msgid "Show as map"
+msgstr "Afişează tot"
+
+msgid "Valid to %s"
+msgstr "Expiră la %s"
+
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "Ultimele tichete"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Scrierea pe disk a eșuat."
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Tichete nevalidate"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "O extensie PHP a oprit incărcarea fisierului."
+#, fuzzy
+#| msgid "Ongoing tickets"
+msgid "Incoming tickets"
+msgstr "Tichete în curs"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr ""
-#~ "Dimensiunea fișierului încărcat depășește dimensiunea setată în directiva "
-#~ "post_max_size din php.ini."
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "Rezolvare tichete"
+
+#, fuzzy
+#| msgid "Created tickets"
+msgid "Closed tickets"
+msgstr "Tichete create"
+
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Fara nume"
+
+#, fuzzy
+#| msgid "Time to own"
+msgid "Time to close"
+msgstr "timp de livrare"
+
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "Valideaza"
+
+msgid "Solved"
+msgstr "Soluţionate"
+
+msgid "Share or embed this dashboard"
+msgstr ""
+
+#, fuzzy
+#| msgid "Helpdesk Dashboard"
+msgid "Delete this dashboard"
+msgstr "Tablou de bord Helpdesk"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle auto-refresh"
+msgstr "Filtre Comutare"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle night mode"
+msgstr "Filtre Comutare"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle fullscreen"
+msgstr "Filtre Comutare"
+
+#, fuzzy
+#| msgid "Mini tickets dashboard"
+msgid "Clone this dashboard"
+msgstr "Dashboard mini tichete"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle edit mode"
+msgstr "Filtre Comutare"
+
+#, fuzzy
+#| msgid "Add a filter"
+msgid "Add filter"
+msgstr "Adaugă un flitru"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "Adaugă task nou"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "Altele"
+
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "Buget"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "Număr taskuri"
+
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filters"
+msgstr "Listă filtre"
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "URL-ul aplicaţiei"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "Legatură director LDAP"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+#, fuzzy
+#| msgid "Empty array"
+msgid "empty card !"
+msgstr "Vector gol"
+
+#, fuzzy
+#| msgid "Number of costs"
+msgid "Number of %s"
+msgstr "Număr costuri"
+
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s by %2$s"
+
+#, fuzzy
+#| msgid "%s of %s"
+msgid "List of %s"
+msgstr "%s din %s"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "Numar de probleme"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets duration"
+msgid "Tickets status by month"
+msgstr "Durata tichete"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets duration"
+msgid "Tickets summary"
+msgstr "Durata tichete"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's categories"
+msgstr "Pentru tichetele închise după"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "Tichete nevalidate"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "Tip predefinit pentru tichete"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "Locaţie tichet"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "Număr tichete ca solicitator"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "Vezi tichetele create de grupurile mele"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "Pentru tichetele închise după"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "Vezi tichetele create de grupurile mele"
+
+#, fuzzy
+#| msgid "New group in assignees"
+msgid "Top ticket's assignees"
+msgstr "Grup nou în responsabili"
+
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "Adaugă un folloup la tichetele grupurilor asociate"
+
+#, fuzzy
+#| msgid "List of translations"
+msgid "List of reminders"
+msgstr "Lista traducerilor"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"Reţeaua IP nu este inclus în baza de date. . Cu toate acestea, puteți vedea "
+"rețelele disponibile."
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Există mai multe nume de reţea! Utilizaţi tabul 'Nume reţea' pentru a le "
+"gestiona."
+
+msgid "Add a network name"
+msgstr "Adaugă un nume reţea"
+
+msgid "Not associated"
+msgstr "Neasociat"
+
+msgid "Create a new network name"
+msgstr "Crează un nou nume de reţea"
+
+msgid "No network name found"
+msgstr "Niciun nume reţea gasit"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "Verifică pentru actualizări noi"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "Instalează"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "Deconectare"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "Creat pe  %s"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Comentariu dumneavoastra a fost editat"
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "generată pe %s"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "Cele mai frecvente întrebări"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "Ultima actualizare"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "Citeste note"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filter plugin list"
+msgstr "Listă filtre"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "Acasă"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "Citire"
+
+msgid "Clean"
+msgstr "Şterge"
+
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "Login-ul este invalid. Adăugare utilizator imposibilă."
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "O nouă versiune este disponibilă : %s."
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "Instalează"
+
+msgid "Enable"
+msgstr "Activează"
+
+msgid "Uninstall"
+msgstr "Dezinstalează"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Plugin dezactivat"
+msgstr[1] "Plugin dezactivat"
+msgstr[2] "Plugin dezactivat"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "În întarziere"
+
+#, fuzzy
+#| msgid "Marketplace"
+msgid "Switch to marketplace"
+msgstr "Marketplace"
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugins"
+msgid "Plugin name"
+msgstr "Pluginuri"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "Numar clădire"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"În motorul de căutare, folosiţi \"Expiratrea conţine NULL\" pentru a căuta "
+"licenţele fără dată de expirare"
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "Rezervare"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "Creat pe  %s"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "Rezervare"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "Descriere"
+
+#, fuzzy
+#| msgid "unknown"
+msgid "Unknown"
+msgstr "necunoscut"
+
+#, fuzzy
+#| msgid "yesterday"
+msgid "Registered by"
+msgstr "ieri"
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "Activează informaţiile financiare şi administrative"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "Instalarea a fost terminată"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "Instalarea a fost terminată"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"Un email a fost trimis către adresa dvs. de email. Emailul conţine "
+"informaţii pentru resetarea parolei dvs."
+
+msgid "Email address not found."
+msgstr "Adresa cerută este necunoscută."
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+"Adresa MAC şi adresa IP a echipamentului sunt incluse intr-un port de reţea "
+"agregat"
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"Dimensiunea fișierului încărcat depășește dimensiunea setată în directiva "
+"upload_max_filesize din php.ini."
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Dimensiunea fișierului încărcat depășește dimensiunea specificată în formul "
+"HTML."
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "Fișierul a fost numai parțial incarcat."
+
+msgid "Failed to write file to disk"
+msgstr "Scrierea pe disk a eșuat."
+
+msgid "A PHP extension stopped the file upload"
+msgstr "O extensie PHP a oprit incărcarea fisierului."
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+"Dimensiunea fișierului încărcat depășește dimensiunea setată în directiva "
+"post_max_size din php.ini."
+
+msgid "File is too big"
+msgstr "Fișierul este prea mare."
+
+msgid "File is too small"
+msgstr "Fișierul este prea mic."
+
+msgid "Maximum number of files exceeded"
+msgstr "Număr maxim de fișiere depășit."
+
+msgid "Image exceeds maximum width"
+msgstr "Imaginea depășeste lățimea maximă."
+
+msgid "Image requires a minimum width"
+msgstr "Imaginea necesită o lățime minimă."
+
+msgid "Image exceeds maximum height"
+msgstr "Imaginea depășeste înălțimea maximă."
+
+msgid "Image requires a minimum height"
+msgstr "Imaginea necesită o înălțime minimă."
+
+msgid "Filetype not allowed"
+msgstr "Tip de fișier nepermis."
+
+#, fuzzy
+#| msgid "No file was uploaded"
+msgid "File upload aborted"
+msgstr "Nici un fisier nu a fost încărcat."
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to resize image"
+msgstr "Scrierea pe disk a eșuat."
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "Informatii utilizator"
+
+msgid "Progress"
+msgstr "În curs de desfășurare"
+
+msgid "My settings"
+msgstr "Setările mele"
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "Este disponibil pe site-ul GLPI-PROJECT.org."
+
+msgid "Check all"
+msgstr "Bifează tot"
+
+msgid "Uncheck all"
+msgstr "Debifează tot"
+
+msgid "Check all as"
+msgstr "Bifează tot ca"
+
+msgid "Selection too large, massive action disabled."
+msgstr "Selecţie prea mare, acţiuni în masă dezactivate"
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Pentru creşterea limitei: schimbaţi max_input_vars or suhosin.post.max_vars "
+"în configurarea php."
+
+#, fuzzy
+#| msgid "Ticket creation failed (check mandatory fields)"
+msgid "The description field is mandatory"
+msgstr "Eşec la crearea tichetului  ( verificaţi câmpurile obligatorii)"
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr "De  la %1$d la %2$d din %3$d"
+
+msgid "Empty array"
+msgstr "Vector gol"
+
+msgid "%1$d on %2$d"
+msgstr "%1$d pe %2$d"
+
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "Închide"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+#, fuzzy
+#| msgid "No selected items"
+msgid "selecting them"
+msgstr "Nici un element selectat"
+
+msgid "File(s)"
+msgstr "Fişier(e)"
+
+msgid "Drag and drop your file here, or"
+msgstr "Drag and drop fişierul dvs aici , sau"
+
+msgid "Upload successful"
+msgstr "Succes upload  "
+
+msgid "Check/uncheck all"
+msgstr "Bifează/debifează tot"
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Schimbări"
+
+#, fuzzy
+#| msgid "Debug mode has been enabled!"
+msgid "Debug mode enabled"
+msgstr "Modul Debug a fost activat!"
+
+#, fuzzy
+#| msgid "Debug mode has been disabled!"
+msgid "Debug mode disabled"
+msgstr "Modul Debug a fost dezactivat!"
+
+msgid "Saved searches"
+msgstr "Cautari salvate"
+
+#, fuzzy
+#| msgid "New saved search"
+msgid "Manage saved searches"
+msgstr "Căutare salvată nouă"
+
+#, fuzzy
+#| msgid "API disabled"
+msgid "Add is disabled"
+msgstr "API dezactivat"
+
+#, fuzzy
+#| msgid "Search result display"
+msgid "Search is disabled"
+msgstr "Afişează rezultatele căutării"
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "Management global"
+
+#, fuzzy
+#| msgid "Unable to stop impersonating user"
+msgid "You are impersonating %s."
+msgstr "Incapabil a opri preluarea userului"
+
+#, fuzzy
+#| msgid "Unable to stop impersonating user"
+msgid "Stop impersonating"
+msgstr "Incapabil a opri preluarea userului"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr "Arată ID GLPI"
+
+msgid "Color palette"
+msgstr "Paleta Culori"
+
+msgid "Layout"
+msgstr "Layout"
+
+msgid "Tabs on left"
+msgstr "Taburi pe stanga"
+
+msgid "Classic view"
+msgstr "Vedere clasica"
+
+msgid "Vertical split"
+msgstr "Split Vertical "
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Exirare contract"
+
+#, fuzzy
+#| msgid "Assets Dashboard"
+msgid "Dashboards"
+msgstr "Panou de bord Asset-uri"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "Predefinit pentru tichete"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "Predefinit pentru tichete"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "Predefinit pentru tichete"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Predefinit pentru tichete"
 
-#~ msgid "File is too big"
-#~ msgstr "Fișierul este prea mare."
+msgid "Check if a new version is available"
+msgstr "Verifica daca o noua versiune este disponibila"
 
-#~ msgid "File is too small"
-#~ msgstr "Fișierul este prea mic."
+msgid "Show filters"
+msgstr "Afişează filtre"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Număr maxim de fișiere depășit."
+msgid "No historical matching your filters"
+msgstr ""
+
+msgid "Add to schedule"
+msgstr "Adaugă în planificare"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Imaginea depășeste lățimea maximă."
+msgid "Position in room"
+msgstr "Poziţie în cameră"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Imaginea necesită o lățime minimă."
+msgid "Door orientation in room"
+msgstr "Orientarea uşii în cameră"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Imaginea depășeste înălțimea maximă."
+msgid "North"
+msgstr "Nord"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Imaginea necesită o înălțime minimă."
+msgid "East"
+msgstr "Est"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Tip de fișier nepermis."
+msgid "South"
+msgstr "Sud"
 
-#~ msgid "Progress"
-#~ msgstr "În curs de desfășurare"
+msgid "West"
+msgstr "Vest"
 
-#~ msgid "My settings"
-#~ msgstr "Setările mele"
+msgid "Number of units"
+msgstr "Număr de unităţi"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "Este disponibil pe site-ul GLPI-PROJECT.org."
+msgid "U"
+msgstr "U"
 
-#~ msgid "Check all"
-#~ msgstr "Bifează tot"
+msgid "Width"
+msgstr "Lăţime"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Debifează tot"
+msgid "Height"
+msgstr "Înălţime"
 
-#~ msgid "Check all as"
-#~ msgstr "Bifează tot ca"
+msgid "Measured power (in watts)"
+msgstr "Putere măsurată (în waţi)"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Selecţie prea mare, acţiuni în masă dezactivate"
+msgid "Max. weight"
+msgstr "Greutate max."
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Pentru creşterea limitei: schimbaţi max_input_vars or suhosin.post."
-#~ "max_vars în configurarea php."
+msgid "No rack found"
+msgstr "Niciun rack nu a fost găsit"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "De  la %1$d la %2$d din %3$d"
+msgid "Following elements are out of room bounds"
+msgstr ""
 
-#~ msgid "Empty array"
-#~ msgstr "Vector gol"
+msgid "Blueprint"
+msgstr ""
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d pe %2$d"
+msgid "Grid"
+msgstr "Grid"
 
-#~ msgid "File(s)"
-#~ msgstr "Fişier(e)"
+msgid "Insert a rack here"
+msgstr "Inserează un rack aici"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Drag and drop fişierul dvs aici , sau"
+msgid "Position must be set"
+msgstr ""
 
-#~ msgid "Upload successful"
-#~ msgstr "Succes upload  "
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "Port reţea nedisponibil"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Bifează/debifează tot"
+msgid "All categories"
+msgstr "Toate categoriile"
 
-#~ msgid "Saved searches"
-#~ msgstr "Cautari salvate"
+msgid "Uncategorized software"
+msgstr "Software fara categorie"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Arată ID GLPI"
+msgid "Valid license"
+msgstr "Licenta valida"
 
-#~ msgid "Color palette"
-#~ msgstr "Paleta Culori"
+msgid "Other component"
+msgstr "Altă componentă"
 
-#~ msgid "Layout"
-#~ msgstr "Layout"
+msgid "One last thing before starting"
+msgstr ""
 
-#~ msgid "Tabs on left"
-#~ msgstr "Taburi pe stanga"
+msgid "Donate"
+msgstr "Donează"
 
-#~ msgid "Classic view"
-#~ msgstr "Vedere clasica"
+msgid "Unofficial translations are also available"
+msgstr "Traduceri neoficiale sunt deasemenea disponibile"
 
-#~ msgid "Vertical split"
-#~ msgstr "Split Vertical "
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Am citit si ACCEPT termenii din licenta de mai sus."
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Verifica daca o noua versiune este disponibila"
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Am citit si NU ACCEPT termenii de licenta de mai jos"
 
-#~ msgid "Show filters"
-#~ msgstr "Afişează filtre"
+msgid "Installation or update of GLPI"
+msgstr "Instalează sau actualizează GLPI"
 
-#~ msgid "Add to schedule"
-#~ msgstr "Adaugă în planificare"
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Alegeţi 'Instalare' pentru o instalare nouă a GLPI."
 
-#~ msgid "Position in room"
-#~ msgstr "Poziţie în cameră"
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+"Selectează 'Upgrade' pentru a lansa updgradarea versiunii GLPI pornind de la "
+"versiunea mai veche."
 
-#~ msgid "Door orientation in room"
-#~ msgstr "Orientarea uşii în cameră"
+msgid "Do you want to continue?"
+msgstr "Doriţi să continuaţi ?"
 
-#~ msgid "North"
-#~ msgstr "Nord"
+msgid "Database connection parameters"
+msgstr "Parametrii de conectare la baza de date"
 
-#~ msgid "East"
-#~ msgstr "Est"
+msgid "Test of the connection at the database"
+msgstr "Testarea conexiunii la baza de date"
 
-#~ msgid "South"
-#~ msgstr "Sud"
+msgid "Can't connect to the database"
+msgstr "Imposibil de conectat la baza de date"
 
-#~ msgid "West"
-#~ msgstr "Vest"
+msgid "The server answered: %s"
+msgstr "Serverul a rspuns: %s"
 
-#~ msgid "Number of units"
-#~ msgstr "Număr de unităţi"
+msgid "The server or/and user field is empty"
+msgstr "Câmpurile „server Mysql“ și/sau „nume utilizator Mysql“ sunt goale"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "Please select a database:"
+msgstr "Selectati o baza de date:"
 
-#~ msgid "Width"
-#~ msgstr "Lăţime"
+msgid "Create a new database or use an existing one:"
+msgstr "Creati o noua baza de date sau folositi una existenta:"
 
-#~ msgid "Height"
-#~ msgstr "Înălţime"
+msgid "Please select the database to update:"
+msgstr "Selectati o baza de date pentru actualizare:"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "Putere măsurată (în waţi)"
+msgid "Initialization of the database"
+msgstr "Iniţializare baza de date"
 
-#~ msgid "Max. weight"
-#~ msgstr "Greutate max."
+msgid "Impossible to use the database:"
+msgstr "Imposibil de utilizat baza de date:"
 
-#~ msgid "No rack found"
-#~ msgstr "Niciun rack nu a fost găsit"
+msgid "OK - database was initialized"
+msgstr "OK - baza de date a fost initializata"
 
-#~ msgid "Grid"
-#~ msgstr "Grid"
+msgid "Impossible to write the database setup file"
+msgstr "Imposibil de scris fisierul de setup al bazei de date"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "Inserează un rack aici"
+msgid "Database created"
+msgstr "Baza de date creată"
 
-#~ msgid "All categories"
-#~ msgstr "Toate categoriile"
+msgid "Error in creating database!"
+msgstr "Eroare la crearea bazei de date!"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Software fara categorie"
+msgid "You didn't select a database!"
+msgstr "Nu aveţi selectată baza de date!"
 
-#~ msgid "Valid license"
-#~ msgstr "Licenta valida"
+msgid "Collect data"
+msgstr "Colectare date"
 
-#~ msgid "Other component"
-#~ msgstr "Altă componentă"
+msgid "The installation is finished"
+msgstr "Instalarea a fost terminată"
 
-#~ msgid "Donate"
-#~ msgstr "Donează"
+msgid "Default logins / passwords are:"
+msgstr "Numele utilizator şi parola implicite sunt:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech pentru contul technicianului"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal pentru pentru contul normal"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly  pentru contul posteazădoar"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "Puteti şterge sau modifica aceste conturi precum şi datele iniţiale."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Imposibil de creat fisierul de conectare la baza de date, verificati "
+"permisiunile pentru fisiere"
+
+msgid "Select your language"
+msgstr "Selectează limba"
+
+msgid "Beginning of the installation"
+msgstr "Inceputul instalarii"
+
+msgid "Step %d"
+msgstr "Etapa %d"
+
+msgid "GLPI - Authentication"
+msgstr "Autentificare"
+
+msgid "Remember me"
+msgstr "Memoreaza"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Trebuie să activati JavaScript în browserul dumneavoastră"
+
+msgid "You must accept cookies to reach this application"
+msgstr ""
+"Trebuie să acceptați cookie-uri pentru a avea acces la această aplicație"
+
+msgid "Invalid use of session ID"
+msgstr "Utilizare nepermisă a ID-ului de sesiune"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Acces la intrebarile cele mai frecvente"
+
+msgid "Add a card"
+msgstr "Adaugă un card"
+
+msgid "Add a filter"
+msgstr "Adaugă un flitru"
+
+msgid "Saved"
+msgstr "Salvat"
+
+#, fuzzy
+#| msgid "Are you sure you want to return this non-reservable item?"
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Sunteţi sigur că doriţi să returnaţi acest nerezervabil element ?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Dată trimitere"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Folositi GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Traduceri neoficiale sunt deasemenea disponibile"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Am citit si ACCEPT termenii din licenta de mai sus."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "Am citit si NU ACCEPT termenii de licenta de mai jos"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "Instalează sau actualizează GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Alegeţi 'Instalare' pentru o instalare nouă a GLPI."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "Selectează 'Upgrade' pentru a lansa updgradarea versiunii GLPI pornind de "
-#~ "la versiunea mai veche."
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Doriţi să continuaţi ?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Parametrii de conectare la baza de date"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Testarea conexiunii la baza de date"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Imposibil de conectat la baza de date"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Serverul a rspuns: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Câmpurile „server Mysql“ și/sau „nume utilizator Mysql“ sunt goale"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Selectati o baza de date:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Creati o noua baza de date sau folositi una existenta:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Selectati o baza de date pentru actualizare:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Iniţializare baza de date"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Imposibil de utilizat baza de date:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK - baza de date a fost initializata"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Imposibil de scris fisierul de setup al bazei de date"
-
-#~ msgid "Database created"
-#~ msgstr "Baza de date creată"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Eroare la crearea bazei de date!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Nu aveţi selectată baza de date!"
-
-#~ msgid "Collect data"
-#~ msgstr "Colectare date"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Instalarea a fost terminată"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Numele utilizator şi parola implicite sunt:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi pentru contul de administrator"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech pentru contul technicianului"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal pentru pentru contul normal"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly  pentru contul posteazădoar"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "Puteti şterge sau modifica aceste conturi precum şi datele iniţiale."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Imposibil de creat fisierul de conectare la baza de date, verificati "
-#~ "permisiunile pentru fisiere"
-
-#~ msgid "Select your language"
-#~ msgstr "Selectează limba"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Inceputul instalarii"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Etapa %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "Autentificare"
-
-#~ msgid "Remember me"
-#~ msgstr "Memoreaza"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Trebuie să activati JavaScript în browserul dumneavoastră"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr ""
-#~ "Trebuie să acceptați cookie-uri pentru a avea acces la această aplicație"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Utilizare nepermisă a ID-ului de sesiune"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Acces la intrebarile cele mai frecvente"
-
-#~ msgid "Add a card"
-#~ msgstr "Adaugă un card"
-
-#~ msgid "Add a filter"
-#~ msgstr "Adaugă un flitru"
-
-#~ msgid "Saved"
-#~ msgstr "Salvat"

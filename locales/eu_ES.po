@@ -23650,501 +23650,1316 @@ msgstr "Bildu soilik irakurri gabeko posta mezuak"
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "No room found or selected"
-#~ msgstr "Ez da gelarik aurkitu edo aukeratu"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Idaztea"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Gehigarri zerrenda ikusi"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Erabiltzailea"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS feed-ak aurkitu dira"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Ikusi ezarpenak"
 
-#~ msgid "Active Directory"
-#~ msgstr "Direktorio Aktiboa"
+msgid "No room found or selected"
+msgstr "Ez da gelarik aurkitu edo aukeratu"
 
-#~ msgid "GLPI version"
-#~ msgstr "GLPIren bertsioa"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Replace"
+msgid "Marketplace"
+msgstr "Ordeztu"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Ixteko dituzun intzidentziak"
+#, fuzzy
+#| msgid "%1$s adds the item %2$s (%3$d)"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s-(e)k %2$s itema (%3$d) gehitu egin du"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Itxarote egoeran dauden tiketak"
+msgid "See the catalog of plugins"
+msgstr "Gehigarri zerrenda ikusi"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Prozesatzeke dauden intzidentziak"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Zuk behatutako tiketak"
+#, fuzzy
+#| msgid "Template for an incident"
+msgid "Empty for infinite"
+msgstr "Arazo batentzako eredua"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Lanean dauzkazun intzidentziak"
+msgid "RSS feeds found"
+msgstr "RSS feed-ak aurkitu dira"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Onesteko dauzkazun intzidentziak"
+msgid "Active Directory"
+msgstr "Direktorio Aktiboa"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Intzidentzien jarraipenenak"
+msgid "GLPI version"
+msgstr "GLPIren bertsioa"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "Tiket berri %d"
-#~ msgstr[1] "%d tiket berri"
+#, fuzzy
+#| msgid "Confirm the final deletion?"
+msgid "Confirm the promotion?"
+msgstr "Ezabaketa definitiboa konfirmatu?"
 
-#~ msgid "No ticket found."
-#~ msgstr "Ez dago intzidentziarik."
+msgid "Your tickets to close"
+msgstr "Ixteko dituzun intzidentziak"
 
-#~ msgid "Last tickets"
-#~ msgstr "Azken intzidentzia(k)"
+msgid "Tickets on pending status"
+msgstr "Itxarote egoeran dauden tiketak"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Item honetarako intzidentzia berria..."
+msgid "Tickets to be processed"
+msgstr "Prozesatzeke dauden intzidentziak"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Azkenengo %d tiketa"
-#~ msgstr[1] "Azkenengo %d tiketak"
+msgid "Your observed tickets"
+msgstr "Zuk behatutako tiketak"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Ez duzu baimenik tiket guztiak ikusteko"
+msgid "Your tickets in progress"
+msgstr "Lanean dauzkazun intzidentziak"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Ekipoari lotutako intzidentziak"
-#~ msgstr[1] "Sarekoen inguruko intzidentzia"
+msgid "Your tickets to validate"
+msgstr "Onesteko dauzkazun intzidentziak"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Ez dago intzidentziarik zain"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected approval status"
+msgstr "Lanean dauzkazun intzidentziak"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Materiala esleitu"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected solution"
+msgstr "Lanean dauzkazun intzidentziak"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Intzidentzien itxiera administratiboa"
+msgid "Ticket followup"
+msgstr "Intzidentzien jarraipenenak"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Asetasun inkesten sorkuntza"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "Tiket berri %d"
+msgstr[1] "%d tiket berri"
 
-#~ msgid "See my ticket"
-#~ msgstr "Ikusi nire tiketa"
+msgid "No ticket found."
+msgstr "Ez dago intzidentziarik."
 
-#~ msgid "See group ticket"
-#~ msgstr "Ikusi talde tiketa"
+msgid "Last tickets"
+msgstr "Azken intzidentzia(k)"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Ikusi nire taldeak sortutako tiketak"
+msgid "New ticket for this item..."
+msgstr "Item honetarako intzidentzia berria..."
 
-#~ msgid "See all tickets"
-#~ msgstr "Ikusi tiket guztiak"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Azkenengo %d tiketa"
+msgstr[1] "Azkenengo %d tiketak"
 
-#~ msgid "See assigned"
-#~ msgstr "Ikusi esleitutakoak"
+msgid "You don't have right to see all tickets"
+msgstr "Ez duzu baimenik tiket guztiak ikusteko"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Ikusi esleitutako tiketak"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Ekipoari lotutako intzidentziak"
+msgstr[1] "Sarekoen inguruko intzidentzia"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Intzidentzia esleitu"
+msgid "No ticket in progress."
+msgstr "Ez dago intzidentziarik zain"
 
-#~ msgid "Steal"
-#~ msgstr "Lapurtu"
+msgid "Assign equipment"
+msgstr "Materiala esleitu"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Intzidentzia kendu"
+msgid "Automatic tickets closing"
+msgstr "Intzidentzien itxiera administratiboa"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Arduradun izan"
+msgid "Generation of satisfaction surveys"
+msgstr "Asetasun inkesten sorkuntza"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Intzidentziaren jabe izan"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "Konpondutako tiketak hurrengo denbora pasa eta gero automatikoki itxi"
 
-#~ msgid "Change the priority"
-#~ msgstr "Lehentasuna aldatu"
+msgid "See my ticket"
+msgstr "Ikusi nire tiketa"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Konponbidea onestu/Inkesta erantzun (nire tiketa)"
+msgid "See group ticket"
+msgstr "Ikusi talde tiketa"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr ""
-#~ "Konponbidea onestu eta nik sorturiko tiketarentzako inkestari erantzun"
+msgid "See tickets created by my groups"
+msgstr "Ikusi nire taldeak sortutako tiketak"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Kategoria birkalkulatu"
+msgid "See all tickets"
+msgstr "Ikusi tiket guztiak"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Baliozko lizentziak"
+msgid "See assigned"
+msgstr "Ikusi esleitutakoak"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Instalazio kopurua"
+msgid "See assigned tickets"
+msgstr "Ikusi esleitutako tiketak"
 
-#~ msgid "Merge"
-#~ msgstr "Berriro elkartu"
+msgid "Assign a ticket"
+msgstr "Intzidentzia esleitu"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Elkarketaz geroztik ezabatutako softwarea"
+msgid "Steal"
+msgstr "Lapurtu"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Steal a ticket"
+msgstr "Intzidentzia kendu"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Ordenagailu bat konektatu"
+msgid "Beeing in charge"
+msgstr "Arduradun izan"
 
-#~ msgid "Not connected"
-#~ msgstr "Konektatu gabea"
+msgid "To be in charge of a ticket"
+msgstr "Intzidentziaren jabe izan"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "%s-rako balioduna"
+msgid "Change the priority"
+msgstr "Lehentasuna aldatu"
 
-#~ msgid "Solved"
-#~ msgstr "Bukatuta"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Konponbidea onestu/Inkesta erantzun (nire tiketa)"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP sarea ez dago datu basean sartua. Halere, erabilgarri dauden sareak "
-#~ "ikusi ditzakezu."
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "Konponbidea onestu eta nik sorturiko tiketarentzako inkestari erantzun"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Hainbat sare izen eskuragarri! Joan ‘Sare izena’ pestainara hauek "
-#~ "gestionatzeko."
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
 
-#~ msgid "Add a network name"
-#~ msgstr "Sare izena geitu"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to load ticket %d"
+msgstr "Ezin izan da %s tiket errekurrentea sortu "
 
-#~ msgid "Not associated"
-#~ msgstr "Elkartu gabea"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add followup to ticket %d"
+msgstr "Ezin izan da %s tiket errekurrentea sortu "
 
-#~ msgid "Create a new network name"
-#~ msgstr "Sare izen berri bat sortu"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add task to ticket %d"
+msgstr "Ezin izan da %s tiket errekurrentea sortu "
 
-#~ msgid "No network name found"
-#~ msgstr "Ez da sare izenik aurkitu"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add document to ticket %d"
+msgstr "Ezin izan da %s tiket errekurrentea sortu "
 
-#~ msgid "Clean"
-#~ msgstr "Garbitu"
+msgid "Failed to link tickets %d and %d"
+msgstr ""
 
-#~ msgid "Install"
-#~ msgstr "Instalatu"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "Hutsegitea fitxategia ezabatzean %s"
 
-#~ msgid "Enable"
-#~ msgstr "Gaitu"
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s-(e)k %2$s bertsioa ezabatu du"
 
-#~ msgid "Uninstall"
-#~ msgstr "Desinstalatu"
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Pluginen dokumentuen fitxategientzako idazteko baimenak egiaztatzen"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "Bilaketa motorean, erabili “Iraungitzeak NULL edukitzen du” iraungitze "
-#~ "data gabeko lizentziak bilatzeko"
+msgid "Recalculate the category"
+msgstr "Kategoria birkalkulatu"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "Zure posta helbidera mezua bidali da. Zure pasahitza berrezartzeko "
-#~ "argibideak bertan daude."
+msgid "Valid licenses"
+msgstr "Baliozko lizentziak"
 
-#~ msgid "Email address not found."
-#~ msgstr "Ez dago holako posta helbiderik"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Instalazio kopurua"
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "Ekipamenduaren MAC eta IP helbideak bateratutako sare portu batean daude "
-#~ "gehituta."
+msgid "Merge"
+msgstr "Berriro elkartu"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "Igotako fitxategia php.ini fitxategiaren upload_max_filesize politika "
-#~ "gainditzen du"
+msgid "Software deleted after merging"
+msgstr "Elkarketaz geroztik ezabatutako softwarea"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "Igotako fitxategia HTML formularioaren MAX_FILE_SIZE politika gainditzen "
-#~ "du"
+#, fuzzy
+#| msgid "Send a test browser notification to you"
+msgid "You must enable at least one notification mode."
+msgstr "Bidali nabigatzailearen probako jakinarazpena zuri"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Igotako fitxategia partzialki igo egin da bakarrik"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Ezin izan da fitxategia diskoan idatzi"
+msgid "Connect a computer"
+msgstr "Ordenagailu bat konektatu"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "PHP estentsio batek fitxategiaren igoera gelditu egin du"
+msgid "Not connected"
+msgstr "Konektatu gabea"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr ""
-#~ "Igotako fitxategiak php.ini fitxategiaren post_max_size politika "
-#~ "gainditzen du"
+#, fuzzy
+#| msgid "Show all"
+msgid "Show as map"
+msgstr "Denak ikusi"
 
-#~ msgid "File is too big"
-#~ msgstr "Fitxategia handiegia da"
+msgid "Valid to %s"
+msgstr "%s-rako balioduna"
 
-#~ msgid "File is too small"
-#~ msgstr "Fitxategia txikiegia da"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "Azken intzidentzia(k)"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Fitxategi kantitate maximoa gainditu egin da"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Intzidentziak zuk baliozkotu zain"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Irudiak zabalera maximoa gainditzen du"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "Tiketak elkartu"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Iruadia ez da zabalera minimora ailegatzen"
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "Tiketak konpondu"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Irudiak altuera maximoa gainditzen du"
+#, fuzzy
+#| msgid "Created tickets"
+msgid "Closed tickets"
+msgstr "Sortutako tiketak"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Irudia ez da altuera minimora ailegatzen"
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Izenik gabea"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Fitxategi mota ez baimendua"
+#, fuzzy
+#| msgid "Time to own"
+msgid "Time to close"
+msgstr "Propietatean izateko denbora"
 
-#~ msgid "File upload aborted"
-#~ msgstr "Fitxategiaren igoera ezeztatua"
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "Balidatu"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "Ezin izan da irudiaren tamaina aldatu"
+msgid "Solved"
+msgstr "Bukatuta"
 
-#~ msgid "Progress"
-#~ msgstr "Aurrerapena"
+msgid "Share or embed this dashboard"
+msgstr ""
+
+msgid "Delete this dashboard"
+msgstr ""
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle auto-refresh"
+msgstr "Filtroak gaitu/ezgaitu"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle night mode"
+msgstr "Filtroak gaitu/ezgaitu"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle fullscreen"
+msgstr "Filtroak gaitu/ezgaitu"
 
-#~ msgid "My settings"
-#~ msgstr "Nire ezarpenak"
+msgid "Clone this dashboard"
+msgstr ""
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle edit mode"
+msgstr "Filtroak gaitu/ezgaitu"
+
+#, fuzzy
+#| msgid "LDAP filter"
+msgid "Add filter"
+msgstr "LDAP iragazkia"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "Ataza berria gehitu"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "Beste batzuk"
+
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "Aurrekontua"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "Zeregin kopurua"
+
+#, fuzzy
+#| msgid "Filter access"
+msgid "Filters"
+msgstr "Sarrera filtratu"
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "Aplikazioaren URL-a"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP lotura"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+#, fuzzy
+#| msgid "Empty array"
+msgid "empty card !"
+msgstr "Husturiko arraia"
+
+#, fuzzy
+#| msgid "Number of rows"
+msgid "Number of %s"
+msgstr "Lerro kopurua"
+
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s, %2$s-ek aldatua"
+
+#, fuzzy
+#| msgid "%s of %s"
+msgid "List of %s"
+msgstr "%s / %s"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "Eleitutako intzidentziak"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket tasks to do"
+msgid "Tickets status by month"
+msgstr "Tiket zereginak"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "Tiketaren kategoria"
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Top ticket's categories"
+msgstr "Tiketaren kategoria"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "Onesteko dauzkazun intzidentziak"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "Tiketen lehenetsitako mota"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "Tiketaren kokapena"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "Eskatzaile bezalako tiket kopurua"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "Ikusi nire taldeak sortutako tiketak"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "Geroago itxitako tiketak"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "Ikusi nire taldeak sortutako tiketak"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignees"
+msgstr "Lanean dauzkazun intzidentziak"
+
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "Gehitu jarraipen bat elkartutako taldeen tiketei"
+
+#, fuzzy
+#| msgid "List of translations"
+msgid "List of reminders"
+msgstr "Itzulpen zerrenda"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP sarea ez dago datu basean sartua. Halere, erabilgarri dauden sareak ikusi "
+"ditzakezu."
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Hainbat sare izen eskuragarri! Joan ‘Sare izena’ pestainara hauek "
+"gestionatzeko."
+
+msgid "Add a network name"
+msgstr "Sare izena geitu"
+
+msgid "Not associated"
+msgstr "Elkartu gabea"
+
+msgid "Create a new network name"
+msgstr "Sare izen berri bat sortu"
+
+msgid "No network name found"
+msgstr "Ez da sare izenik aurkitu"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "Eguneraketak bilatu"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "Instalatu"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "Deskonektatu"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "%s-n sortua"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Zure iruzkina editatu da"
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "%s-n sortua"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "Gehien irakurritako artikuluak"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "Azken aldaketa"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "Oharrak irakurri"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "Filter plugin list"
+msgstr "Ezgaitutako plugin-a"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "Etxea"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "Irakurtzea"
+
+msgid "Clean"
+msgstr "Garbitu"
+
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "Login okerra. Ezin izan da erabiltzailea gehitu."
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "Bertsio berri bat eskuragarri dago: %s"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "Instalatu"
+
+msgid "Enable"
+msgstr "Gaitu"
+
+msgid "Uninstall"
+msgstr "Desinstalatu"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Ezgaitutako plugin-a"
+msgstr[1] "Ezgaitutako plugin-a"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "Berandu"
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "Gehigarria"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "Bulego-kodea"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"Bilaketa motorean, erabili “Iraungitzeak NULL edukitzen du” iraungitze data "
+"gabeko lizentziak bilatzeko"
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "Erreserba"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "%s-n sortua"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "Erreserba"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "Deskribapena"
+
+#, fuzzy
+#| msgid "unknown"
+msgid "Unknown"
+msgstr "ezezaguna"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Unable to load LDAP server information."
+msgid "Unable to fetch registration information."
+msgstr "Ezin izan da LDAP zerbitzariaren informazioa kargatu."
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "Instalazioa burutu da"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "Instalazioa burutu da"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"Zure posta helbidera mezua bidali da. Zure pasahitza berrezartzeko "
+"argibideak bertan daude."
+
+msgid "Email address not found."
+msgstr "Ez dago holako posta helbiderik"
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+"Ekipamenduaren MAC eta IP helbideak bateratutako sare portu batean daude "
+"gehituta."
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"Igotako fitxategia php.ini fitxategiaren upload_max_filesize politika "
+"gainditzen du"
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Igotako fitxategia HTML formularioaren MAX_FILE_SIZE politika gainditzen du"
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "Igotako fitxategia partzialki igo egin da bakarrik"
+
+msgid "Failed to write file to disk"
+msgstr "Ezin izan da fitxategia diskoan idatzi"
+
+msgid "A PHP extension stopped the file upload"
+msgstr "PHP estentsio batek fitxategiaren igoera gelditu egin du"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+"Igotako fitxategiak php.ini fitxategiaren post_max_size politika gainditzen "
+"du"
+
+msgid "File is too big"
+msgstr "Fitxategia handiegia da"
+
+msgid "File is too small"
+msgstr "Fitxategia txikiegia da"
+
+msgid "Maximum number of files exceeded"
+msgstr "Fitxategi kantitate maximoa gainditu egin da"
+
+msgid "Image exceeds maximum width"
+msgstr "Irudiak zabalera maximoa gainditzen du"
+
+msgid "Image requires a minimum width"
+msgstr "Iruadia ez da zabalera minimora ailegatzen"
+
+msgid "Image exceeds maximum height"
+msgstr "Irudiak altuera maximoa gainditzen du"
+
+msgid "Image requires a minimum height"
+msgstr "Irudia ez da altuera minimora ailegatzen"
+
+msgid "Filetype not allowed"
+msgstr "Fitxategi mota ez baimendua"
+
+msgid "File upload aborted"
+msgstr "Fitxategiaren igoera ezeztatua"
+
+msgid "Failed to resize image"
+msgstr "Ezin izan da irudiaren tamaina aldatu"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "Erabiltzailearen informazioa"
+
+msgid "Progress"
+msgstr "Aurrerapena"
+
+msgid "My settings"
+msgstr "Nire ezarpenak"
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "GLPI-PROJECT.org webgunean aurkituko duzu."
+
+msgid "Check all"
+msgstr "Denei marka jarri"
+
+msgid "Uncheck all"
+msgstr "Denei marka kendu"
+
+msgid "Check all as"
+msgstr "Markatu guztiak…"
+
+msgid "Selection too large, massive action disabled."
+msgstr "Aukeraketa handiegia, akzio masiboak ezgaituak."
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Limitea handitzeko: aldatu max_input_vars edo suhosin.post.max_vars php "
+"konfigurazioan."
+
+#, fuzzy
+#| msgid "Ticket creation failed (check mandatory fields)"
+msgid "The description field is mandatory"
+msgstr "Tiketaren sorkuntzak huts egin du (konprobatu derrigorrezko eremuak)"
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr "%1$d-tik %2$d-ra %3$d-n"
+
+msgid "Empty array"
+msgstr "Husturiko arraia"
+
+msgid "%1$d on %2$d"
+msgstr "%1$d %2$d-n"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "GLPI-PROJECT.org webgunean aurkituko duzu."
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "Itxi"
+
+msgid "Share"
+msgstr ""
 
-#~ msgid "Check all"
-#~ msgstr "Denei marka jarri"
+msgid "Zoom in/out"
+msgstr ""
 
-#~ msgid "Uncheck all"
-#~ msgstr "Denei marka kendu"
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+#, fuzzy
+#| msgid "No selected items"
+msgid "selecting them"
+msgstr "Ez dago elementurik aukeratuta"
+
+msgid "File(s)"
+msgstr "Fitxategia(k)"
+
+msgid "Drag and drop your file here, or"
+msgstr "Arrastratu zure fitxategia hona, edo"
+
+msgid "Upload successful"
+msgstr "Igoerak arrakasta izan du"
+
+msgid "Check/uncheck all"
+msgstr "Markatu/Desmarkatu guztiak"
+
+msgid "Start typing to find a menu"
+msgstr "Hasi idazten menu bat bilatzeko"
+
+#, fuzzy
+#| msgid "Change solved"
+msgid "Change mode"
+msgstr "Aldaketa konpondua"
+
+msgid "Debug mode enabled"
+msgstr "\"Debug\" modua gaituta"
+
+msgid "Debug mode disabled"
+msgstr "\"Debug\" modua ezgaituta"
+
+msgid "Saved searches"
+msgstr "Gordetako bilaketak"
+
+msgid "Manage saved searches"
+msgstr "Kudeatu gordetako bilaketak"
+
+msgid "Add is disabled"
+msgstr "Gehitzea ezgaituta dago"
 
-#~ msgid "Check all as"
-#~ msgstr "Markatu guztiak…"
+msgid "Search is disabled"
+msgstr "Bilaketa ezgaituta dago"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Aukeraketa handiegia, akzio masiboak ezgaituak."
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "Kudeaketa orokorra"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Limitea handitzeko: aldatu max_input_vars edo suhosin.post.max_vars php "
-#~ "konfigurazioan."
+msgid "You are impersonating %s."
+msgstr ""
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "%1$d-tik %2$d-ra %3$d-n"
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "Pribatua egin"
 
-#~ msgid "Empty array"
-#~ msgstr "Husturiko arraia"
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d %2$d-n"
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
 
-#~ msgid "File(s)"
-#~ msgstr "Fitxategia(k)"
+msgid "Show GLPI ID"
+msgstr "GLPI ID-a erakutsi"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Arrastratu zure fitxategia hona, edo"
+msgid "Color palette"
+msgstr "Kolore paleta"
 
-#~ msgid "Upload successful"
-#~ msgstr "Igoerak arrakasta izan du"
+msgid "Layout"
+msgstr "Diseinua"
+
+msgid "Tabs on left"
+msgstr "Pestainak ezkerrean"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Markatu/Desmarkatu guztiak"
+msgid "Classic view"
+msgstr "Bistaraketa klasikoa"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Hasi idazten menu bat bilatzeko"
+msgid "Vertical split"
+msgstr "Banaketa bertikala"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "\"Debug\" modua gaituta"
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Kontratuaren iraungitze-data"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "\"Debug\" modua ezgaituta"
+msgid "Dashboards"
+msgstr ""
 
-#~ msgid "Saved searches"
-#~ msgstr "Gordetako bilaketak"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "Helpdesk-erako lehenetsitako jatorria"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Kudeatu gordetako bilaketak"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "Helpdesk-erako lehenetsitako jatorria"
 
-#~ msgid "Add is disabled"
-#~ msgstr "Gehitzea ezgaituta dago"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "Helpdesk-erako lehenetsitako jatorria"
 
-#~ msgid "Search is disabled"
-#~ msgstr "Bilaketa ezgaituta dago"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Helpdesk-erako lehenetsitako jatorria"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "GLPI ID-a erakutsi"
+msgid "Check if a new version is available"
+msgstr "Bertsio berriagoak dauden egiaztatu"
 
-#~ msgid "Color palette"
-#~ msgstr "Kolore paleta"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Show filters"
+msgstr "Filtroak gaitu/ezgaitu"
 
-#~ msgid "Layout"
-#~ msgstr "Diseinua"
+msgid "No historical matching your filters"
+msgstr ""
 
-#~ msgid "Tabs on left"
-#~ msgstr "Pestainak ezkerrean"
+msgid "Add to schedule"
+msgstr "Zerrendara gehitu"
 
-#~ msgid "Classic view"
-#~ msgstr "Bistaraketa klasikoa"
+#, fuzzy
+#| msgid "Position"
+msgid "Position in room"
+msgstr "Posizioa"
 
-#~ msgid "Vertical split"
-#~ msgstr "Banaketa bertikala"
+msgid "Door orientation in room"
+msgstr ""
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Bertsio berriagoak dauden egiaztatu"
+msgid "North"
+msgstr ""
 
-#~ msgid "Add to schedule"
-#~ msgstr "Zerrendara gehitu"
+msgid "East"
+msgstr ""
 
-#~ msgid "All categories"
-#~ msgstr "Kategoria guztiak"
+msgid "South"
+msgstr ""
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Kategorizatu gabeko software-a"
+msgid "West"
+msgstr ""
 
-#~ msgid "Valid license"
-#~ msgstr "Baliozko lizentzia"
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of items"
+msgid "Number of units"
+msgstr "Elementu kopurua"
+
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+#, fuzzy
+#| msgid "Weight"
+msgid "Height"
+msgstr "Pisua"
+
+#, fuzzy
+#| msgid "Max. power (in watts)"
+msgid "Measured power (in watts)"
+msgstr "Energia maximoa (watt-etan)"
+
+msgid "Max. weight"
+msgstr ""
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No rack found"
+msgstr "Ez da erabiltzailerik aurkitu"
+
+msgid "Following elements are out of room bounds"
+msgstr ""
+
+msgid "Blueprint"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Insert a rack here"
+msgstr ""
+
+msgid "Position must be set"
+msgstr ""
+
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "Sare portua ez dago eskuragarri..."
+
+msgid "All categories"
+msgstr "Kategoria guztiak"
+
+msgid "Uncategorized software"
+msgstr "Kategorizatu gabeko software-a"
+
+msgid "Valid license"
+msgstr "Baliozko lizentzia"
+
+#, fuzzy
+#| msgid "Update component"
+msgid "Other component"
+msgstr "Osagaia eguneratu"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr ""
+
+msgid "Unofficial translations are also available"
+msgstr "Itzulpen ez ofizialak eskuragarri daude baita"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Goiko lizentzia ONARTZEN dut."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Goiko lizentzia EZ DUT ONARTZEN."
+
+msgid "Installation or update of GLPI"
+msgstr "GLPI instalatu ala eguneratu"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "'Instalazioa' aukeratu GLPI zerotik instalatzeko."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "Aukeratu ‘Eguneratu’ GLPI bertsioa zaharrago batetik eguneratzeko"
+
+msgid "Do you want to continue?"
+msgstr "Jarraitu nahi duzu?"
+
+msgid "Database connection parameters"
+msgstr "Datu-basearen konexio-parametroak"
+
+msgid "Test of the connection at the database"
+msgstr "Datu-basearekin lotura froga"
+
+msgid "Can't connect to the database"
+msgstr "Ezin izan da datu basera konektatu"
+
+msgid "The server answered: %s"
+msgstr "Zerbitzariak erantzun du: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Zerbitzaria edo/eta erabiltzaile eremua hutsik daude"
+
+msgid "Please select a database:"
+msgstr "Datu Base bat aukeratu:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Datu-base berria sortu ala dagoen bat erabili:"
+
+msgid "Please select the database to update:"
+msgstr "Mesedez, aukeratu datu basea eguneratzeko:"
+
+msgid "Initialization of the database"
+msgstr "Datu-basearen hasieraketa"
+
+msgid "Impossible to use the database:"
+msgstr "Ezin da datu basea erabili:"
+
+msgid "OK - database was initialized"
+msgstr "ADOS - datu-basea hasieratu da"
+
+msgid "Impossible to write the database setup file"
+msgstr "Ezin izan da datu basearen konfigurazio fitxategia idatzi"
+
+msgid "Database created"
+msgstr "Datu basea sortu da"
+
+msgid "Error in creating database!"
+msgstr "Errorea datu basea sortzerakoan"
+
+msgid "You didn't select a database!"
+msgstr "Ez duzu datu baserik aukeratu!"
+
+#, fuzzy
+#| msgid "Close date"
+msgid "Collect data"
+msgstr "Itxiera data"
+
+msgid "The installation is finished"
+msgstr "Instalazioa burutu da"
+
+msgid "Default logins / passwords are:"
+msgstr "Lehenetsitako erabiltzaile / pasahitzak dira:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech teknikariaren kontuan"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal ohiko kontuan"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly soilik idazteko kontuan"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "Kontu hauek ezabatu edo aldatu ditzakezu."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Ezin da datu base konexio fitxategia sortu, mesedez, egiaztatu fitxategi "
+"baimenak."
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "Lehenetsitako hizkuntza"
+
+msgid "Beginning of the installation"
+msgstr "Instalazioaren hasiera"
+
+msgid "Step %d"
+msgstr "%d pausoa"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Identifikazioa"
+
+msgid "Remember me"
+msgstr "Gogora nazazu"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "JavaScript funtzioa zure nabigatzailean aktibatu behar duzu"
+
+msgid "You must accept cookies to reach this application"
+msgstr "Sartzeko cookie-ak onartu behar dituzu"
+
+msgid "Invalid use of session ID"
+msgstr "Saioko IDa ez da baliozkoa"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Maiz egindako galderetara joan"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "Aldaketa bat gehitu"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "Elementu bat gehitu"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "Gorde"
+
+#, fuzzy
+#| msgid "Are you sure you want to return this non-reservable item?"
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Ziur zaude erreserbagarria ez den elementu hau bueltatu nahi duzula?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Bidaltze data"
 
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI erabili"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Itzulpen ez ofizialak eskuragarri daude baita"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Goiko lizentzia ONARTZEN dut."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "Goiko lizentzia EZ DUT ONARTZEN."
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "GLPI instalatu ala eguneratu"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "'Instalazioa' aukeratu GLPI zerotik instalatzeko."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr "Aukeratu ‘Eguneratu’ GLPI bertsioa zaharrago batetik eguneratzeko"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Jarraitu nahi duzu?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Datu-basearen konexio-parametroak"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Datu-basearekin lotura froga"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Ezin izan da datu basera konektatu"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Zerbitzariak erantzun du: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Zerbitzaria edo/eta erabiltzaile eremua hutsik daude"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Datu Base bat aukeratu:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Datu-base berria sortu ala dagoen bat erabili:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Mesedez, aukeratu datu basea eguneratzeko:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Datu-basearen hasieraketa"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Ezin da datu basea erabili:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "ADOS - datu-basea hasieratu da"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Ezin izan da datu basearen konfigurazio fitxategia idatzi"
-
-#~ msgid "Database created"
-#~ msgstr "Datu basea sortu da"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Errorea datu basea sortzerakoan"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Ez duzu datu baserik aukeratu!"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Instalazioa burutu da"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Lehenetsitako erabiltzaile / pasahitzak dira:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi administratzaile konturako"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech teknikariaren kontuan"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal ohiko kontuan"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly soilik idazteko kontuan"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "Kontu hauek ezabatu edo aldatu ditzakezu."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Ezin da datu base konexio fitxategia sortu, mesedez, egiaztatu fitxategi "
-#~ "baimenak."
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Instalazioaren hasiera"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "%d pausoa"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Identifikazioa"
-
-#~ msgid "Remember me"
-#~ msgstr "Gogora nazazu"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "JavaScript funtzioa zure nabigatzailean aktibatu behar duzu"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Sartzeko cookie-ak onartu behar dituzu"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Saioko IDa ez da baliozkoa"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Maiz egindako galderetara joan"
