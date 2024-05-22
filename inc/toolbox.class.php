@@ -2175,7 +2175,7 @@ class Toolbox {
          echo "<tr class='tab_bg_1'><td>". __('Incoming mail folder (optional, often INBOX)')."</td>";
          echo "<td>";
          echo "<input size='30' type='text' id='server_mailbox' name='server_mailbox' value=\"" . $tab['mailbox'] . "\" >";
-         echo "<i class='fa fa-list pointer get-imap-folder'></i>";
+         echo "<i class='fa fa-list pointer get-imap-folder' aria-hidden='true'></i>";
          echo "</td></tr>\n";
       }
 

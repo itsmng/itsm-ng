@@ -1603,7 +1603,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                      'after' => <<<HTML
                         <a class="btn border"
                            href="{$CFG_GLPI['root_doc']}/front/planning.php?checkavailability=checkavailability&itemtype={$item->getType()}&{$fkfield}={$item->getID()}">
-                           <i class='far fa-calendar-alt'></i>
+                           <i class='far fa-calendar-alt' title="Calendar"></i>
                         </a>
                      HTML,
                   ],

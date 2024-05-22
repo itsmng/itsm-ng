@@ -1291,7 +1291,7 @@ class Document extends CommonDBTM {
          if (Session::haveRight('dropdown', READ)) {
             $dt       = new DocumentType();
             $message .= " <a target='_blank' href='".$dt->getSearchURL()."' class='pointer'>
-                         <i class='fa fa-info'</i><span class='sr-only'>" . __('Manage document types')  . "</span></a>";
+                         <i class='fa fa-info' aria-hidden='true'</i><span class='sr-only'>" . __('Manage document types')  . "</span></a>";
          }
          Session::addMessageAfterRedirect($message, false, ERROR);
          return '';
@@ -1512,7 +1512,7 @@ class Document extends CommonDBTM {
 
       if (self::canApplyOn($itemtype)) {
          if (Document::canView()) {
-            $actions[$action_prefix.'add']    = "<i class='ma-icon far fa-file'></i>".
+            $actions[$action_prefix.'add']    = "<i class='ma-icon far fa-file' aria-hidden='true'></i>".
                                                 _x('button', 'Add a document');
             $actions[$action_prefix.'remove'] = _x('button', 'Remove a document');
          }

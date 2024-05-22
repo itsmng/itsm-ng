@@ -23,7 +23,7 @@
                 onchange="changeType()"
                 {% if format.checked %} checked {% endif %}>
             <label class="btn col-12" for="format-{{format.value}}">
-                <i class="{{format.icon}} fs-2"></i>
+                <i class="{{format.icon}} fs-2" aria-hidden="true"></i>
                 <p style="font-size: .8rem">{{format.name|trans}}</p>
             </label>
         </div>

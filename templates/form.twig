@@ -25,7 +25,7 @@
 			{% if button|length > 0 %}
 				<button {% for attr, val in button %} {{attr}}='{{val}}' {% endfor %}>
 					{% if button.icon %}
-						<i class='{{button.icon}} mx-2'></i>
+						<i class='{{button.icon}} mx-2' aria-hidden="true"></i>
 					{% endif %}
 					{{button.value|raw}}
 				</button>

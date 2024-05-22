@@ -1014,7 +1014,7 @@ class CommonGLPI {
          }
          echo "<a href='$glpilisturl' title=\"$glpilisttitle\"
                   class='navicon left'>
-                  <i class='far fa-list-alt pointer'></i>
+                  <i class='far fa-list-alt pointer' aria-hidden='true'></i>
                </a>";
 
          $name = '';

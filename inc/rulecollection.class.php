@@ -813,7 +813,7 @@ class RuleCollection extends CommonDBTM {
       $buttons["{$CFG_GLPI["root_doc"]}/front/rule.backup.php?action=export"] = _x('button', 'Export');
 
       echo "<div class='center mb-3'><table class='tab_glpi'><tr>";
-      echo "<td><i class='far fa-save fa-3x'></i></td>";
+      echo "<td><i class='far fa-save fa-3x' aria-hidden='true'></i></td>";
       foreach ($buttons as $key => $val) {
          echo "<td><a class='btn btn-secondary ' href='".$key."'>".$val."</a></td>";
       }

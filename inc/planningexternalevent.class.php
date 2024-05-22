@@ -340,8 +340,8 @@ JAVASCRIPT;
       if ($is_ajax && $is_rrule) {
          $options['candel'] = false;
          $options['addbuttons'] = [
-            'purge'          => "<i class='fas fa-trash-alt'></i>&nbsp;".__("Delete serie"),
-            'purge_instance' => "<i class='far fa-trash-alt'></i>&nbsp;".__("Delete instance"),
+            'purge'          => "<i class='fas fa-trash-alt' aria-hidden='true'></i>&nbsp;".__("Delete serie"),
+            'purge_instance' => "<i class='far fa-trash-alt' aria-hidden='true'></i>&nbsp;".__("Delete instance"),
          ];
       }
 

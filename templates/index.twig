@@ -13,11 +13,11 @@
             <input type="hidden" name="redirect" value="{{redirect|e}}"/>  
             {% endif %}
             <p class="login_input d-flex justify-content-around align-items-center" id="login_input_name">
-                <i class="fa fa-user fs-4 mx-2"></i>
+                <i class="fa fa-user fs-4 mx-2" aria-hidden="true"></i>
                 <input type="text" name="{{namfield}}" id="login_name" required="required" placeholder="{{"Login"|trans}}" autofocus="autofocus"/>
             </p>
             <p class="login_input d-flex justify-content-around align-items-center" id="login_input_password">
-                <i class="fa fa-lock fs-4 mx-2"></i>
+                <i class="fa fa-lock fs-4 mx-2" aria-hidden="true"></i>
                 <input type="password" name="{{pwdfield}}" id="login_password" required="required" placeholder="{{"Password"|trans}}"/>
             </p>
             {% if demo_mode %}

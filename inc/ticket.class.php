@@ -2735,31 +2735,31 @@ class Ticket extends CommonITILObject
       if (Session::getCurrentInterface() == 'central') {
          if (Ticket::canUpdate() && Ticket::canDelete()) {
             $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'merge_as_followup']
-               = "<i class='ma-icon fas fa-code-branch'></i>" .
+               = "<i class='ma-icon fas fa-code-branch' aria-hidden='true'></i>" .
                __('Merge as Followup');
          }
 
          if (Item_Ticket::canCreate()) {
             $actions['Item_Ticket' . MassiveAction::CLASS_ACTION_SEPARATOR . 'add_item']
-               = "<i class='ma-icon fas fa-plus'></i>" .
+               = "<i class='ma-icon fas fa-plus' aria-hidden='true'></i>" .
                _x('button', 'Add an item');
          }
 
          if (ITILFollowup::canCreate()) {
             $actions['ITILFollowup' . MassiveAction::CLASS_ACTION_SEPARATOR . 'add_followup']
-               = "<i class='ma-icon far fa-comment'></i>" .
+               = "<i class='ma-icon far fa-comment' aria-hidden='true'></i>" .
                __('Add a new followup');
          }
 
          if (TicketTask::canCreate()) {
             $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'add_task']
-               = "<i class='ma-icon far fa-check-square'></i>" .
+               = "<i class='ma-icon far fa-check-square' aria-hidden='true'></i>" .
                __('Add a new task');
          }
 
          if (TicketValidation::canCreate()) {
             $actions['TicketValidation' . MassiveAction::CLASS_ACTION_SEPARATOR . 'submit_validation']
-               = "<i class='ma-icon fas fa-check'></i>" .
+               = "<i class='ma-icon fas fa-check' aria-hidden='true'></i>" .
                __('Approval request');
          }
 
@@ -2770,15 +2770,15 @@ class Ticket extends CommonITILObject
 
          if (Session::haveRight(self::$rightname, UPDATE)) {
             $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'add_actor']
-               = "<i class='ma-icon fas fa-user'></i>" .
+               = "<i class='ma-icon fas fa-user' aria-hidden='true'></i>" .
                __('Add an actor');
             $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'update_notif']
                = __('Set notifications for all actors');
             $actions['Ticket_Ticket' . MassiveAction::CLASS_ACTION_SEPARATOR . 'add']
-               = "<i class='ma-icon fas fa-link'></i>" .
+               = "<i class='ma-icon fas fa-link' aria-hidden='true'></i>" .
                _x('button', 'Link tickets');
             $actions['ProjectTask_Ticket' . MassiveAction::CLASS_ACTION_SEPARATOR . 'add']
-               = "<i class='ma-icon fas fa-link'></i>" .
+               = "<i class='ma-icon fas fa-link' aria-hidden='true'></i>" .
                _x('button', 'Link project task');
 
             KnowbaseItem_Item::getMassiveActionsForItemtype($actions, __CLASS__, 0, $checkitem);
@@ -5960,7 +5960,7 @@ class Ticket extends CommonITILObject
 
       if (Session::getCurrentInterface() != "central") {
          echo "<a href=\"" . $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php?create_ticket=1\" class='pointer'>" .
-            __('Create a ticket') . "&nbsp;<i class='fa fa-plus'></i><span class='sr-only'>" . __s('Add') . "</span></a>";
+            __('Create a ticket') . "&nbsp;<i class='fa fa-plus' aria-hidden='true'></i><span class='sr-only'>" . __s('Add') . "</span></a>";
       } else {
          echo "<a href=\"" . Ticket::getSearchURL() . "?" .
             Toolbox::append_params($options, '&amp;') . "\">" . __('Ticket followup') . "</a>";

@@ -281,7 +281,7 @@ class Search {
                var fail_info = L.control();
                fail_info.onAdd = function (map) {
                   this._div = L.DomUtil.create('div', 'fail_info');
-                  this._div.innerHTML = _message + '<br/><span id=\'reload_data\'><i class=\'fa fa-sync\'></i> ".__s('Reload')."</span>';
+                  this._div.innerHTML = _message + '<br/><span id=\'reload_data\'><i class=\'fa fa-sync\' aria-hidden='true'></i> ".__s('Reload')."</span>';
                   return this._div;
                };
                fail_info.addTo(map_elt);
@@ -2038,12 +2038,12 @@ class Search {
             </span>";
       if (count($linked)) {
          echo "<span id='addmetasearchcriteria$rand_criteria' class='secondary'>
-                  <i class='far fa-plus-square'></i>
+                  <i class='far fa-plus-square' aria-hidden='true'></i>
                   ".__s('global rule')."
                </span>";
       }
       echo "<span id='addcriteriagroup$rand_criteria' class='secondary'>
-               <i class='fas fa-plus-circle'></i>
+               <i class='fas fa-plus-circle' aria-hidden='true'></i>
                ".__s('group')."
             </span>";
       $json_p = json_encode($p);
@@ -5944,7 +5944,7 @@ JAVASCRIPT;
                if ($data[$ID][0]['is_active']) {
                   return "<a href='reservation.php?reservationitems_id=".
                                           $data["refID"]."' title=\"".__s('See planning')."\">".
-                                          "<i class='far fa-calendar-alt'></i><span class='sr-only'>".__('See planning')."</span></a>";
+                                          "<i class='far fa-calendar-alt' aria-hidden='true'></i><span class='sr-only'>".__('See planning')."</span></a>";
                } else {
                   return "&nbsp;";
                }
