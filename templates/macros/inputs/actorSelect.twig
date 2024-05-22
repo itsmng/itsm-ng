@@ -1,0 +1,108 @@
+{% macro actorSelect(attributes, root_doc) %}
+  {% set rand=random() %}
+  <div {% if attributes.id %} id="{{attributes.id}}" {% endif %} class="w-100">
+    <div class="input-group m-0">
+      <select class="form-select" id="ActorTypeSelector_{{rand}}" name="_itil_{{attributes.actorType}}[_type]">
+        {% if attributes.actorTypes %}
+          {% for name, value in attributes.actorTypes %}
+            <option value="{{value}}">{{name|raw}}
+          {% endfor %}
+        {% endif %}
+      </select>
+      <select class="form-select" id="ActorSelector_{{rand}}">
+      </select>
+    </div>
+    <table id="ActorTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
+      <tbody>
+        {% for actor in attributes.values %}
+            <tr data-id="{{actor.id}}" data-type="{{actor.type}}">
+              <td>
+                <i class="{{ actor.icon|raw }}"></i>
+              </td>
+              <td> {{actor.name|raw}} </td>
+              <td class="d-flex flex-row-reverse">
+                <button type="button" class="btn btn-sm btn-outline-danger" onClick="removeActor{{rand}}('{{actor.type}}', '{{actor.id}}')"><i class="fas fa-times"></i></button>
+              </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <script>
+
+  function removeActor{{rand}}(type,id) {
+    $.ajax({
+      url: "{{root_doc}}/ajax/deleteItilActor.php",
+      type: "POST",
+      data: {
+        linkId: type,
+        objectTypeId: '{{attributes.actorTypeId}}',
+        objectId: id,
+        ticketId: '{{attributes.ticketId}}',
+      }
+    })
+    // remove the row from the table
+    $(`#ActorTable_{{rand}} tr[data-id='${id}'][data-type='${type}']`).remove();
+  }
+
+  function setActorSelectValues{{rand}}() {
+    $("#ActorSelector_{{rand}}").attr("name", "_itil_{{attributes.actorType}}[" +
+      $("#ActorTypeSelector_{{rand}}")[0].value + "s_id]");
+    if ($("#ActorTypeSelector_{{rand}}").val() == 0) {
+      $("#ActorSelector_{{rand}}").empty();
+      $("#ActorSelector_{{rand}}").attr("disabled", true);
+      return;
+    } else {
+      $("#ActorSelector_{{rand}}").attr("disabled", false);
+    };
+    $.ajax({
+      url: "{{root_doc}}/ajax/dropdownItilActors.php",
+      type: "POST",
+      data: {
+        type: $("#ActorTypeSelector_{{rand}}").val(),
+        actorType: '{{attributes.actorType}}',
+        actorTypeId: '{{attributes.actorTypeId}}',
+        itemtype: '{{attributes.itemType}}',
+        ticketId: '{{attributes.ticketId}}',
+      },
+      success: function (data) {
+        jsonData = JSON.parse(data);
+        $("#ActorSelector_{{rand}}").empty();
+        for (const key in jsonData) {
+          if (typeof jsonData[key] === "object") {
+              let optgroup = $("#ActorSelector_{{rand}}").append(
+                $("<optgroup>", {
+                  label: key,
+                })
+              );
+              for (const subkey in jsonData[key]) {
+                optgroup.append(
+                  $("<option>", {
+                    value: subkey,
+                    text: jsonData[key][subkey],
+                  })
+                );
+              }
+          } else {
+              $("#ActorSelector_{{rand}}").append(
+                $("<option>", {
+                  value: key,
+                  text: jsonData[key],
+                })
+              );
+          }
+        }
+      },
+    });
+  }
+  $(document).ready(() => {
+    setActorSelectValues{{rand}}()
+    // add all already present actors
+    let letJsonSelection = '';
+    let selection = '';
+    let newSelection = '';
+  })
+  $("#ActorTypeSelector_{{rand}}").on("change", setActorSelectValues{{rand}})
+  </script>
+{% endmacro %}
+{{ _self.actorSelect(attributes, root_doc) }}

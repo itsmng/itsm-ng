@@ -104,9 +104,6 @@ class Central extends CommonGLPI {
    }
 
    public function showGlobalDashboard() {
-      echo "<table class='tab_cadre_central'>";
-      Plugin::doHook('display_central');
-      echo "</table>";
 
       $dashboard = new Dashboard();
       if ($dashboard->getForUser()) {
@@ -134,13 +131,13 @@ class Central extends CommonGLPI {
             $finalResult[$ticket['status']] = $ticket;
          }
 
-         renderTwigTemplate('dashboard/dashboard.twig', [
+             renderTwigTemplate('dashboard/dashboard.twig', [
             'widgetGrid' => [
                [
                   [
                      'type' => 'count',
                      'title' => __('Computer'),
-                     'value' => countElementsInTable('glpi_computers', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                     'value' => countElementsInTableForMyEntities('glpi_computers'),
                      'options' => [
                         'icon' => 'fas fa-laptop',
                      ],
@@ -148,7 +145,7 @@ class Central extends CommonGLPI {
                   [
                      'type' => 'count',
                      'title' => __('Rack'),
-                     'value' => countElementsInTable('glpi_racks', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                     'value' => countElementsInTableForMyEntities('glpi_racks'),
                      'options' => [
                         'icon' => 'fas fa-server',
                      ],
@@ -156,7 +153,7 @@ class Central extends CommonGLPI {
                   [
                      'type' => 'count',
                      'title' => __('Network device'),
-                     'value' => countElementsInTable('glpi_networkequipments', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                     'value' => countElementsInTableForMyEntities('glpi_networkequipments'),
                      'options' => [
                         'icon' => 'fas fa-network-wired',
                      ],
@@ -164,7 +161,7 @@ class Central extends CommonGLPI {
                   [
                      'type' => 'count',
                      'title' => __('Software'),
-                     'value' => countElementsInTable('glpi_softwares', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                     'value' => countElementsInTableForMyEntities('glpi_softwares'),
                      'options' => [
                         'icon' => 'fas fa-cube',
                      ],
@@ -180,7 +177,7 @@ class Central extends CommonGLPI {
                   [
                      'type' => 'count',
                      'title' => __('Ticket'),
-                     'value' => countElementsInTable('glpi_tickets', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                     'value' => countElementsInTableForMyEntities('glpi_tickets'),
                      'options' => [
                         'icon' => 'fas fa-ticket-alt',
                      ],
@@ -188,7 +185,7 @@ class Central extends CommonGLPI {
                   [
                      'type' => 'count',
                      'title' => __('User'),
-                     'value' => countElementsInTable('glpi_users', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                     'value' => countElementsInTableForMyEntities('glpi_users'),
                      'options' => [
                         'icon' => 'fas fa-user',
                      ],
@@ -196,7 +193,7 @@ class Central extends CommonGLPI {
                   [
                      'type' => 'count',
                      'title' => __('Entity'),
-                     'value' => countElementsInTable('glpi_entities', ['entities_id' => $_SESSION['glpiactive_entity']]),
+                     'value' => countElementsInTableForMyEntities('glpi_entities'),
                      'options' => [
                         'icon' => 'fas fa-sitemap',
                      ],
@@ -262,8 +259,6 @@ class Central extends CommonGLPI {
       $showproblem = Session::haveRightsOr('problem', [Problem::READALL, Problem::READMY]);
 
       echo "<table class='tab_cadre_central'>";
-
-      Plugin::doHook('display_central');
 
       echo "<tr><th colspan='2'>";
       echo "</th></tr>";
@@ -377,6 +372,7 @@ class Central extends CommonGLPI {
 
       $warnings = [];
 
+      Plugin::doHook('display_central');
       $user = new User();
       $user->getFromDB(Session::getLoginUserID());
       if ($user->fields['authtype'] == Auth::DB_GLPI && $user->shouldChangePassword()) {

@@ -21,6 +21,7 @@
         "ext-mysqli": "*",
         "ext-simplexml": "*",
         "ext-zlib": "*",
+        "apereo/phpcas": "^1.6",
         "blueimp/jquery-file-upload": "^10.2",
         "doctrine/doctrine-module": "^6.0",
         "elvanto/litemoji": "^4.3",

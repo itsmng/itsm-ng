@@ -1622,6 +1622,11 @@ class Entity extends CommonTreeDropdown {
             __('Autofill dates for financial and administrative information') => [
                'visible' => true,
                'inputs' => [
+                  [
+                     'type'  => 'hidden',
+                     'name'  => 'id',
+                     'value' => $entity->getField('id'),
+                  ],
                   __('Date of purchase') => [
                      'type' => 'select',
                      'name' => 'autofill_buy_date',
@@ -1806,7 +1811,7 @@ class Entity extends CommonTreeDropdown {
             ],
             _n('Consumable', 'Consumables', Session::getPluralNumber()) => [
                'visible' => true,
-               'inputs' => [      
+               'inputs' => [
                   _n('Consumable', 'Consumables', Session::getPluralNumber()) => [
                      'type'  => 'select',
                      'name'  => 'consumables_alert_repeat',
@@ -1827,7 +1832,7 @@ class Entity extends CommonTreeDropdown {
             ],
             Contract::getTypeName() => [
                'visible' => true,
-               'inputs' => [      
+               'inputs' => [
                   __('Alarms on contracts') => [
                      'type'  => 'select',
                      'name'  => 'use_contracts_alert',
@@ -2208,7 +2213,7 @@ class Entity extends CommonTreeDropdown {
       if ($ID == 0) { // Remove parent option for root entity
          unset($anonymizeValues[self::CONFIG_PARENT]);
       }
-            
+
       $form = [
          'action' => $canedit ? Toolbox::getItemTypeFormURL(__CLASS__) : '',
          'buttons' => [
@@ -2274,7 +2279,7 @@ class Entity extends CommonTreeDropdown {
                      'type'  => 'select',
                      'name'  => 'tickettype',
                      'value' => $entity->fields["tickettype"],
-                     'values' => (($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : []) + 
+                     'values' => (($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : []) +
                         Ticket::getTypes(),
                      'col_lg' => 6,
                   ],
@@ -2318,7 +2323,7 @@ class Entity extends CommonTreeDropdown {
                      'type'  => 'select',
                      'name'  => 'autopurge_delay',
                      'value' => $entity->fields['autopurge_delay'],
-                     'values' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [] + 
+                     'values' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [] +
                         [self::CONFIG_NEVER => __('Never')] +
                         range(1, 3650),
                      'after' => __('days'),
