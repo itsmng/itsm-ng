@@ -23774,1170 +23774,1154 @@ msgstr "Зөвхөн уншаагүй имэйлийг цуглуулах"
 msgid "Could not create dashboard"
 msgstr "Энэ хянах самбарыг хуулбарлах"
 
-#~ msgid "No room found or selected"
-#~ msgstr "Өрөө олдоогүй эсвэл сонгогдоогүй"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Бичих"
 
-#~ msgid "Marketplace"
-#~ msgstr "Зах зээл"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Нэвтрэх"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s -г нэмэх %2$s - %3$s : %4$s"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Тохиргоог харна уу"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Нэмэлт өргөтгөлийн ангиллыг харах"
+msgid "No room found or selected"
+msgstr "Өрөө олдоогүй эсвэл сонгогдоогүй"
 
-#~ msgid ""
-#~ "If name is a valid email address, it will be automatically added to "
-#~ "blacklisted senders."
-#~ msgstr ""
-#~ "Нэр нь хүчинтэй имэйл хаяг бол blacklist-д орсон илгээгчдэд автоматаар "
-#~ "нэмэгдэх болно"
+msgid "Marketplace"
+msgstr "Зах зээл"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Хязгааргүй хоосон"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s -г нэмэх %2$s - %3$s : %4$s"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS хангамж олдлоо"
+msgid "See the catalog of plugins"
+msgstr "Нэмэлт өргөтгөлийн ангиллыг харах"
 
-#~ msgid "Active Directory"
-#~ msgstr "Идэвхтэй директор"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+"Нэр нь хүчинтэй имэйл хаяг бол blacklist-д орсон илгээгчдэд автоматаар "
+"нэмэгдэх болно"
 
-#~ msgid "GLPI version"
-#~ msgstr "GLPI хувилбар"
+msgid "Empty for infinite"
+msgstr "Хязгааргүй хоосон"
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "Урамшууллыг баталгаажуулах уу?"
+msgid "RSS feeds found"
+msgstr "RSS хангамж олдлоо"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Таны хаах дуудлагууд"
+msgid "Active Directory"
+msgstr "Идэвхтэй директор"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "\"Хүлээгдэж буй\" төлөвтэй дуудлагууд"
+msgid "GLPI version"
+msgstr "GLPI хувилбар"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Хуваарилагдах дуудлагууд"
+msgid "Confirm the promotion?"
+msgstr "Урамшууллыг баталгаажуулах уу?"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Таны ажиглаж буй дуудлагууд"
+msgid "Your tickets to close"
+msgstr "Таны хаах дуудлагууд"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Таны ажиллаж буй дуудлагууд"
+msgid "Tickets on pending status"
+msgstr "\"Хүлээгдэж буй\" төлөвтэй дуудлагууд"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Таны баталгаажуулах дуудлагууд"
+msgid "Tickets to be processed"
+msgstr "Хуваарилагдах дуудлагууд"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "Таны батлагдах төлөвт татгалзсан дуудлага"
+msgid "Your observed tickets"
+msgstr "Таны ажиглаж буй дуудлагууд"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "Таны шийдэлд бүртгэхээс татгалзсан дуудлагууд"
+msgid "Your tickets in progress"
+msgstr "Таны ажиллаж буй дуудлагууд"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Дуудлагыг followup хийх"
+msgid "Your tickets to validate"
+msgstr "Таны баталгаажуулах дуудлагууд"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d шинэ дуудлага"
-#~ msgstr[1] "%d тооны шинэ дуудлага"
+msgid "Your tickets having rejected approval status"
+msgstr "Таны батлагдах төлөвт татгалзсан дуудлага"
 
-#~ msgid "No ticket found."
-#~ msgstr "Дуудлага олдсонгүй."
+msgid "Your tickets having rejected solution"
+msgstr "Таны шийдэлд бүртгэхээс татгалзсан дуудлагууд"
 
-#~ msgid "Last tickets"
-#~ msgstr "Сүүлийн дуудлагууд"
+msgid "Ticket followup"
+msgstr "Дуудлагыг followup хийх"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Энэ төхөөрөмжид шинэ дуудлага..."
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d шинэ дуудлага"
+msgstr[1] "%d тооны шинэ дуудлага"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Сүүлийн %d дуудлага"
-#~ msgstr[1] "Сүүлийн %d дуудлагууд"
+msgid "No ticket found."
+msgstr "Дуудлага олдсонгүй."
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Та бүх дуудлагуудыг харах эрхгүй байна"
+msgid "Last tickets"
+msgstr "Сүүлийн дуудлагууд"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Төхөөрөмжүүдтэй холбогдсон дуудлага"
-#~ msgstr[1] "Төхөөрөмжтэй холбогдсон дуудлагууд"
+msgid "New ticket for this item..."
+msgstr "Энэ төхөөрөмжид шинэ дуудлага..."
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Ажиллаж буй дуудлага байхгүй."
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Сүүлийн %d дуудлага"
+msgstr[1] "Сүүлийн %d дуудлагууд"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Тоног төхөөрөмжийг томилох"
+msgid "You don't have right to see all tickets"
+msgstr "Та бүх дуудлагуудыг харах эрхгүй байна"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Дуудлагуудыг автоматаар хаах"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Төхөөрөмжүүдтэй холбогдсон дуудлага"
+msgstr[1] "Төхөөрөмжтэй холбогдсон дуудлагууд"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Сэтгэл ханамжийн судалгаа"
+msgid "No ticket in progress."
+msgstr "Ажиллаж буй дуудлага байхгүй."
 
-#~ msgid "Automatic closed tickets purge"
-#~ msgstr "Автоматаар хаагдсан дуудлагуудыг цэвэрлэх"
+msgid "Assign equipment"
+msgstr "Тоног төхөөрөмжийг томилох"
 
-#~ msgid "See my ticket"
-#~ msgstr "Дуудлагуудаа харах"
+msgid "Automatic tickets closing"
+msgstr "Дуудлагуудыг автоматаар хаах"
 
-#~ msgid "See group ticket"
-#~ msgstr "Группийн дуудлагыг харах"
+msgid "Generation of satisfaction surveys"
+msgstr "Сэтгэл ханамжийн судалгаа"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Өөрийн группийн үүсгэсэн дуудлагуудыг харах"
+msgid "Automatic closed tickets purge"
+msgstr "Автоматаар хаагдсан дуудлагуудыг цэвэрлэх"
 
-#~ msgid "See all tickets"
-#~ msgstr "Бүх дуудлагыг харах"
+msgid "See my ticket"
+msgstr "Дуудлагуудаа харах"
 
-#~ msgid "See assigned"
-#~ msgstr "Хуваарилалтыг харах"
+msgid "See group ticket"
+msgstr "Группийн дуудлагыг харах"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Хуваарилагдсан дуудлагуудыг харах"
+msgid "See tickets created by my groups"
+msgstr "Өөрийн группийн үүсгэсэн дуудлагуудыг харах"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Дуудлага хуваарилах"
+msgid "See all tickets"
+msgstr "Бүх дуудлагыг харах"
 
-#~ msgid "Steal"
-#~ msgstr "Булаах"
+msgid "See assigned"
+msgstr "Хуваарилалтыг харах"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Дуудлага дамжуулах"
+msgid "See assigned tickets"
+msgstr "Хуваарилагдсан дуудлагуудыг харах"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Хариуцах"
+msgid "Assign a ticket"
+msgstr "Дуудлага хуваарилах"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Дуудлагыг хариуцагч болох"
+msgid "Steal"
+msgstr "Булаах"
 
-#~ msgid "Change the priority"
-#~ msgstr "Түвшинг өөрчлөх"
+msgid "Steal a ticket"
+msgstr "Дуудлага дамжуулах"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Шийдлийг зөвшөөрөх/Судалгаанд хариулах (өөрийн дуудлага)"
+msgid "Beeing in charge"
+msgstr "Хариуцах"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "Миний үүсгэсэн дуудлагын талаарх судалгааг шийдэж, хариу бичнэ үү"
+msgid "To be in charge of a ticket"
+msgstr "Дуудлагыг хариуцагч болох"
 
-#, php-format
-#~ msgid "Not enough rights to merge tickets %d and %d"
-#~ msgstr "%d болон %d тасалбарыг нэгтгэх эрх хангалтгүй байна"
+msgid "Change the priority"
+msgstr "Түвшинг өөрчлөх"
 
-#, php-format
-#~ msgid "Failed to load ticket %d"
-#~ msgstr "%d дуудлагыг ачааллахад алдаа гарлаа"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Шийдлийг зөвшөөрөх/Судалгаанд хариулах (өөрийн дуудлага)"
 
-#, php-format
-#~ msgid "Failed to add followup to ticket %d"
-#~ msgstr "%d дуудлагад followup нэмэхэд алдаа гарлаа"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "Миний үүсгэсэн дуудлагын талаарх судалгааг шийдэж, хариу бичнэ үү"
 
-#, php-format
-#~ msgid "Failed to add task to ticket %d"
-#~ msgstr "%d дуудлагад даалгавар нэмэхэд алдаа гарлаа"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "%d болон %d тасалбарыг нэгтгэх эрх хангалтгүй байна"
 
-#, php-format
-#~ msgid "Failed to add document to ticket %d"
-#~ msgstr "%d дуудлагад баримт бичиг нэмэхэд алдаа гарлаа"
+msgid "Failed to load ticket %d"
+msgstr "%d дуудлагыг ачааллахад алдаа гарлаа"
 
-#, php-format
-#~ msgid "Failed to link tickets %d and %d"
-#~ msgstr "%d болон %d дуудлагыг холбож чадсангүй"
+msgid "Failed to add followup to ticket %d"
+msgstr "%d дуудлагад followup нэмэхэд алдаа гарлаа"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "%d дуудлагыг устгаж чадсангүй"
+msgid "Failed to add task to ticket %d"
+msgstr "%d дуудлагад даалгавар нэмэхэд алдаа гарлаа"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%s дуудлага %s-г %s-д нэгтгэв"
+msgid "Failed to add document to ticket %d"
+msgstr "%d дуудлагад баримт бичиг нэмэхэд алдаа гарлаа"
 
-#~ msgid "Checking write permissions for marketplace plugins directory"
-#~ msgstr ""
-#~ "Зах зээлийн нэмэлт өргөтгөлийн директорт бичих зөвшөөрлийг шалгаж байна"
+msgid "Failed to link tickets %d and %d"
+msgstr "%d болон %d дуудлагыг холбож чадсангүй"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Ангиллыг дахин тооцоолох"
+msgid "Failed to delete ticket %d"
+msgstr "%d дуудлагыг устгаж чадсангүй"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Хүчинтэй лицензүүд"
+msgid "%s merges ticket %s into %s"
+msgstr "%s дуудлага %s-г %s-д нэгтгэв"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Суулгалтын тоо"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr ""
+"Зах зээлийн нэмэлт өргөтгөлийн директорт бичих зөвшөөрлийг шалгаж байна"
 
-#~ msgid "Merge"
-#~ msgstr "Нэгтгэх"
+msgid "Recalculate the category"
+msgstr "Ангиллыг дахин тооцоолох"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Нэгтгэсний дараа програм устгагдсан"
+msgid "Valid licenses"
+msgstr "Хүчинтэй лицензүүд"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "Та дор хаяж нэг мэдэгдлийн горимыг идэвхжүүлэх ёстой."
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Суулгалтын тоо"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Merge"
+msgstr "Нэгтгэх"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Компьютероо холбоно уу"
+msgid "Software deleted after merging"
+msgstr "Нэгтгэсний дараа програм устгагдсан"
 
-#~ msgid "Not connected"
-#~ msgstr "Холбогдоогүй байна"
+msgid "You must enable at least one notification mode."
+msgstr "Та дор хаяж нэг мэдэгдлийн горимыг идэвхжүүлэх ёстой."
 
-#~ msgid "Show as map"
-#~ msgstr "Газрын зураг хэлбэрээр харуулах"
+msgid "GLPI"
+msgstr "GLPI"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Хүчинтэй байна %s"
+msgid "Connect a computer"
+msgstr "Компьютероо холбоно уу"
 
-#~ msgid "Late tickets"
-#~ msgstr "Хоцорсон дуудлагууд"
+msgid "Not connected"
+msgstr "Холбогдоогүй байна"
 
-#~ msgid "Tickets waiting for validation"
-#~ msgstr "Баталгаажуулахыг хүлээж байгаа дуудлагууд"
+msgid "Show as map"
+msgstr "Газрын зураг хэлбэрээр харуулах"
 
-#~ msgid "Incoming tickets"
-#~ msgstr "Ирж буй дуудлагууд"
+msgid "Valid to %s"
+msgstr "Хүчинтэй байна %s"
 
-#~ msgid "Solved tickets"
-#~ msgstr "Шийдвэрлэгдсэн дуудлагууд"
+msgid "Late tickets"
+msgstr "Хоцорсон дуудлагууд"
 
-#~ msgid "Closed tickets"
-#~ msgstr "Хаасан дуудлагууд"
+msgid "Tickets waiting for validation"
+msgstr "Баталгаажуулахыг хүлээж байгаа дуудлагууд"
 
-#~ msgid "without"
-#~ msgstr "үгүй"
+msgid "Incoming tickets"
+msgstr "Ирж буй дуудлагууд"
 
-#~ msgid "Time to close"
-#~ msgstr "Хаах цаг боллоо"
+msgid "Solved tickets"
+msgstr "Шийдвэрлэгдсэн дуудлагууд"
 
-#~ msgid "To validate"
-#~ msgstr "Баталгаажуулах"
+msgid "Closed tickets"
+msgstr "Хаасан дуудлагууд"
 
-#~ msgid "Solved"
-#~ msgstr "Шийдвэрлэгдсэн"
+msgid "without"
+msgstr "үгүй"
 
-#~ msgid "Share or embed this dashboard"
-#~ msgstr "Энэ хянах самбарыг хуваалцах буюу нэвтрүүлэх"
+msgid "Time to close"
+msgstr "Хаах цаг боллоо"
 
-#~ msgid "Delete this dashboard"
-#~ msgstr "Энэ хянах самбарыг устгах"
+msgid "To validate"
+msgstr "Баталгаажуулах"
 
-#~ msgid "Toggle auto-refresh"
-#~ msgstr "Автоматаар шинэчлэлтийг сэлгэх"
+msgid "Solved"
+msgstr "Шийдвэрлэгдсэн"
 
-#~ msgid "Toggle night mode"
-#~ msgstr "Шөнийн горимыг асаах"
+msgid "Share or embed this dashboard"
+msgstr "Энэ хянах самбарыг хуваалцах буюу нэвтрүүлэх"
 
-#~ msgid "Toggle fullscreen"
-#~ msgstr "Бүтэн дэлгэцийг асаах"
+msgid "Delete this dashboard"
+msgstr "Энэ хянах самбарыг устгах"
 
-#~ msgid "Toggle edit mode"
-#~ msgstr "Засах горимыг асаах"
+msgid "Toggle auto-refresh"
+msgstr "Автоматаар шинэчлэлтийг сэлгэх"
 
-#~ msgid "Add filter"
-#~ msgstr "Хайлтын хэсэг нэмэх"
+msgid "Toggle night mode"
+msgstr "Шөнийн горимыг асаах"
 
-#~ msgid "Add a new dashboard"
-#~ msgstr "Шинэ хянах самбар нэмэх"
+msgid "Toggle fullscreen"
+msgstr "Бүтэн дэлгэцийг асаах"
 
-#~ msgid "others"
-#~ msgstr "бусад"
+#, fuzzy
+#| msgid "Delete this dashboard"
+msgid "Clone this dashboard"
+msgstr "Энэ хянах самбарыг устгах"
 
-#~ msgid "Widget"
-#~ msgstr "Виджет"
+msgid "Toggle edit mode"
+msgstr "Засах горимыг асаах"
 
-#~ msgid "Use gradient palette"
-#~ msgstr "Градиент палитрыг ашиглана уу"
+msgid "Add filter"
+msgstr "Хайлтын хэсэг нэмэх"
 
-#~ msgid "Display value labels on points/bars"
-#~ msgstr "points/bars шошгуудын утгыг харуулах"
+msgid "Add a new dashboard"
+msgstr "Шинэ хянах самбар нэмэх"
 
-#~ msgid "Limit number of data"
-#~ msgstr "Өгөгдлийн тоог хязгаарлах"
+msgid "others"
+msgstr "бусад"
 
-#~ msgid "Filters"
-#~ msgstr "Хайлтын хэсэг"
+msgid "Widget"
+msgstr "Виджет"
 
-#~ msgid "Embed in another application"
-#~ msgstr "Өөр программд ​​оруулах"
+msgid "Use gradient palette"
+msgstr "Градиент палитрыг ашиглана уу"
 
-#~ msgid "Direct link"
-#~ msgstr "Шууд холбоос"
+msgid "Display value labels on points/bars"
+msgstr "points/bars шошгуудын утгыг харуулах"
 
-#~ msgid "Iframe"
-#~ msgstr "Iframe"
+msgid "Limit number of data"
+msgstr "Өгөгдлийн тоог хязгаарлах"
 
-#~ msgid "Or share the dashboard to these target objects:"
-#~ msgstr "Хянах самбарыг эдгээр зорилтот объектод хуваалцах:"
+msgid "Filters"
+msgstr "Хайлтын хэсэг"
 
-#~ msgid "empty card !"
-#~ msgstr "хоосон карт!"
+msgid "Embed in another application"
+msgstr "Өөр программд ​​оруулах"
 
-#, php-format
-#~ msgid "Number of %s"
-#~ msgstr "%s-ийн тоо"
+msgid "Direct link"
+msgstr "Шууд холбоос"
 
-#, php-format
-#~ msgid "%s by %s"
-#~ msgstr "%s-ээс %s"
+msgid "Iframe"
+msgstr "Iframe"
 
-#, php-format
-#~ msgid "List of %s"
-#~ msgstr "%s-н жагсаалт"
+msgid "Or share the dashboard to these target objects:"
+msgstr "Хянах самбарыг эдгээр зорилтот объектод хуваалцах:"
 
-#~ msgid "Number of tickets by month"
-#~ msgstr "Дуудлагын тоо сараар"
+msgid "empty card !"
+msgstr "хоосон карт!"
 
-#~ msgid "Evolution of ticket in the past year"
-#~ msgstr "Өнгөрсөн жилийн дуудлагын хувьсал"
+msgid "Number of %s"
+msgstr "%s-ийн тоо"
 
-#~ msgid "Tickets status by month"
-#~ msgstr "Дуудлагын төлөв сараар"
+msgid "%s by %s"
+msgstr "%s-ээс %s"
 
-#~ msgid "Tickets times (in hours)"
-#~ msgstr "Дуудлагын хугацаа (цагаар)"
+msgid "List of %s"
+msgstr "%s-н жагсаалт"
 
-#~ msgid "Tickets summary"
-#~ msgstr "Дуудлагуудын хураангуй"
+msgid "Number of tickets by month"
+msgstr "Дуудлагын тоо сараар"
 
-#~ msgid "Top ticket's categories"
-#~ msgstr "Дуудлагын тэргүүлэгч ангилал"
+msgid "Evolution of ticket in the past year"
+msgstr "Өнгөрсөн жилийн дуудлагын хувьсал"
 
-#~ msgid "Top ticket's entities"
-#~ msgstr "Дуудлагын тэргүүлэгч газар нэгж"
+msgid "Tickets status by month"
+msgstr "Дуудлагын төлөв сараар"
 
-#~ msgid "Top ticket's request types"
-#~ msgstr "Дуудлагын тэргүүлэгч хүсэлтийн төрөл"
+msgid "Tickets times (in hours)"
+msgstr "Дуудлагын хугацаа (цагаар)"
 
-#~ msgid "Top ticket's locations"
-#~ msgstr "Дуудлагын тэргүүлэгч байршил"
+msgid "Tickets summary"
+msgstr "Дуудлагуудын хураангуй"
 
-#~ msgid "Top ticket's requesters"
-#~ msgstr "Дуудлагын тэргүүлэгч дуудлага мэдээлэгч"
+msgid "Top ticket's categories"
+msgstr "Дуудлагын тэргүүлэгч ангилал"
 
-#~ msgid "Top ticket's requester groups"
-#~ msgstr "Дуудлагын тэргүүлэгч дуудлага мэдээлэгчийн групп"
+msgid "Top ticket's entities"
+msgstr "Дуудлагын тэргүүлэгч газар нэгж"
 
-#~ msgid "Top ticket's observers"
-#~ msgstr "Дуудлагын тэргүүлэгч ажиглагч"
+msgid "Top ticket's request types"
+msgstr "Дуудлагын тэргүүлэгч хүсэлтийн төрөл"
 
-#~ msgid "Top ticket's observer groups"
-#~ msgstr "Дуудлагын тэргүүлэгч ажиглагчийн групп"
+msgid "Top ticket's locations"
+msgstr "Дуудлагын тэргүүлэгч байршил"
 
-#~ msgid "Top ticket's assignees"
-#~ msgstr "Дуудлагын тэргүүлэгч хуваарилагч"
+msgid "Top ticket's requesters"
+msgstr "Дуудлагын тэргүүлэгч дуудлага мэдээлэгч"
 
-#~ msgid "Top ticket's assignee groups"
-#~ msgstr "Дуудлагын тэргүүлэгч хуваарилагчийн групп"
+msgid "Top ticket's requester groups"
+msgstr "Дуудлагын тэргүүлэгч дуудлага мэдээлэгчийн групп"
 
-#~ msgid "List of reminders"
-#~ msgstr "Сануулгуудын жагсаалт"
+msgid "Top ticket's observers"
+msgstr "Дуудлагын тэргүүлэгч ажиглагч"
 
-#~ msgid "Editable markdown card"
-#~ msgstr "Хямдарсан засах карт"
+msgid "Top ticket's observer groups"
+msgstr "Дуудлагын тэргүүлэгч ажиглагчийн групп"
 
-#~ msgid "Toggle edit mode to edit content"
-#~ msgstr "Агуулгыг засахын тулд засварлах горимыг асаах"
+msgid "Top ticket's assignees"
+msgstr "Дуудлагын тэргүүлэгч хуваарилагч"
 
-#~ msgid "field name in DB"
-#~ msgstr "DB дахь талбарын нэр"
+msgid "Top ticket's assignee groups"
+msgstr "Дуудлагын тэргүүлэгч хуваарилагчийн групп"
 
-#~ msgid "Example:"
-#~ msgstr "Жишээ:"
+msgid "List of reminders"
+msgstr "Сануулгуудын жагсаалт"
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "GLPI 9.2-ээс хойш бид \"Telemetry\" хэмээх шинэ статистик мэдээллийг "
-#~ "нэвтрүүлсэн бөгөөд энэ нь таны зөвшөөрөлгүйгээр өгөгдлийг манай "
-#~ "телеметрийн вэбсайт руу илгээдэг."
+msgid "Editable markdown card"
+msgstr "Хямдарсан засах карт"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP сүлжээ нь өгөгдлийн санд ороогүй болно. Гэсэн хэдий ч, та одоо байгаа "
-#~ "сүлжээнүүдийг харж болно."
+msgid "Toggle edit mode to edit content"
+msgstr "Агуулгыг засахын тулд засварлах горимыг асаах"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Сүлжээний хэд хэдэн нэр ашиглах боломжтой! Тэдгээрийг удирдахын тулд "
-#~ "'Сүлжээний нэр' гэсэн таб руу очно уу."
+msgid "field name in DB"
+msgstr "DB дахь талбарын нэр"
 
-#~ msgid "Add a network name"
-#~ msgstr "Сүлжээний нэр нэмэх"
+msgid "Example:"
+msgstr "Жишээ:"
 
-#~ msgid "Not associated"
-#~ msgstr "Холбогдоогүй байна"
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"GLPI 9.2-ээс хойш бид \"Telemetry\" хэмээх шинэ статистик мэдээллийг "
+"нэвтрүүлсэн бөгөөд энэ нь таны зөвшөөрөлгүйгээр өгөгдлийг манай телеметрийн "
+"вэбсайт руу илгээдэг."
 
-#~ msgid "Create a new network name"
-#~ msgstr "Шинэ сүлжээний нэр үүсгэх"
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP сүлжээ нь өгөгдлийн санд ороогүй болно. Гэсэн хэдий ч, та одоо байгаа "
+"сүлжээнүүдийг харж болно."
 
-#~ msgid "No network name found"
-#~ msgstr "Сүлжээний нэр олдсонгүй"
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Сүлжээний хэд хэдэн нэр ашиглах боломжтой! Тэдгээрийг удирдахын тулд "
+"'Сүлжээний нэр' гэсэн таб руу очно уу."
 
-#~ msgid "Unable to download plugin archive."
-#~ msgstr "Нэмэлт өргөтгөлгөлийн архивыг татаж авах боломжгүй байна."
+msgid "Add a network name"
+msgstr "Сүлжээний нэр нэмэх"
 
-#, php-format
-#~ msgid "Plugin archive format is not supported by your system : %s."
-#~ msgstr "Нэмэлт өргөтгөлийн архивын форматыг таны систем дэмждэггүй: %s."
+msgid "Not associated"
+msgstr "Холбогдоогүй байна"
 
-#~ msgid "Unable to extract plugin archive."
-#~ msgstr "Нэмэлт өргөтгөлийн архивыг задлах боломжгүй байна."
+msgid "Create a new network name"
+msgstr "Шинэ сүлжээний нэр үүсгэх"
 
-#~ msgid "Check all plugin updates"
-#~ msgstr "Бүх нэмэлт өргөтгөлийн шинэчлэлтийг шалгана уу"
+msgid "No network name found"
+msgstr "Сүлжээний нэр олдсонгүй"
 
-#, php-format
-#~ msgid "New version for plugin %s: %s"
-#~ msgstr "%s нэмэлт өргөтгөлийн шинэ хувилбар: %s"
+msgid "Unable to download plugin archive."
+msgstr "Нэмэлт өргөтгөлгөлийн архивыг татаж авах боломжгүй байна."
 
-#~ msgid "Installed"
-#~ msgstr "Суулгасан"
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr "Нэмэлт өргөтгөлийн архивын форматыг таны систем дэмждэггүй: %s."
 
-#~ msgid "Discover"
-#~ msgstr "Илрүүлэх"
+msgid "Unable to extract plugin archive."
+msgstr "Нэмэлт өргөтгөлийн архивыг задлах боломжгүй байна."
 
-#, php-format
-#~ msgid ""
-#~ "%1$s services website seems not available from your network or offline"
-#~ msgstr ""
-#~ "%1$s вэбийн service таны сүлжээнээс хандах боломжгүй эсвэл сүлжээ "
-#~ "тасарсан байна."
+msgid "Check all plugin updates"
+msgstr "Бүх нэмэлт өргөтгөлийн шинэчлэлтийг шалгана уу"
 
-#~ msgid "Maybe you could setup a proxy"
-#~ msgstr "Магадгүй та прокси тохируулж болох юм"
+msgid "New version for plugin %s: %s"
+msgstr "%s нэмэлт өргөтгөлийн шинэ хувилбар: %s"
 
-#~ msgid "or please check later"
-#~ msgstr "эсвэл дараа нь шалгана уу"
+msgid "Installed"
+msgstr "Суулгасан"
 
-#, php-format
-#~ msgid "Your %1$s registration is not valid."
-#~ msgstr "Таны %1$s бүртгэл хүчингүй байна."
+msgid "Discover"
+msgstr "Илрүүлэх"
 
-#~ msgid "A registration, at least a free one, is required to use marketplace!"
-#~ msgstr ""
-#~ "Зах зээлийг ашиглахын тулд дор хаяж нэг чөлөөт бүртгэл хийх шаардлагатай!"
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+"%1$s вэбийн service таны сүлжээнээс хандах боломжгүй эсвэл сүлжээ тасарсан "
+"байна."
 
-#, php-format
-#~ msgid "Register on %1$s"
-#~ msgstr "%1$s дээр бүртгүүлнэ үү!"
+msgid "Maybe you could setup a proxy"
+msgstr "Магадгүй та прокси тохируулж болох юм"
 
-#~ msgid "fill your registration key in setup."
-#~ msgstr "тохиргоон дээр бүртгэлийн түлхүүрээ оруулна уу."
+msgid "or please check later"
+msgstr "эсвэл дараа нь шалгана уу"
 
-#, php-format
-#~ msgid "Your %1$s subscription has been terminated."
-#~ msgstr "Таны %1$s-н захиалга цуцлагдлаа."
+msgid "Your %1$s registration is not valid."
+msgstr "Таны %1$s бүртгэл хүчингүй байна."
 
-#, php-format
-#~ msgid "Renew it on %1$s."
-#~ msgstr "Үүнийг %1$s дээр шинэчилнэ үү."
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+"Зах зээлийг ашиглахын тулд дор хаяж нэг чөлөөт бүртгэл хийх шаардлагатай!"
 
-#, php-format
-#~ msgid "We can't write on the markeplace directory (%s)."
-#~ msgstr "Бид зах зээлийн директор (%s) дээр бичих боломжгүй."
+msgid "Register on %1$s"
+msgstr "%1$s дээр бүртгүүлнэ үү!"
 
-#~ msgid ""
-#~ "If you want to ease the plugins download, please check permissions and "
-#~ "ownership of this directory."
-#~ msgstr ""
-#~ "Хэрэв та нэмэлт өргөтгөлийн татан авалтыг хөнгөвчлөхийг хүсч байвал энэ "
-#~ "директорын зөвшөөрлийг болон эзэмших эрхийг шалгана уу."
+msgid "fill your registration key in setup."
+msgstr "тохиргоон дээр бүртгэлийн түлхүүрээ оруулна уу."
 
-#~ msgid ""
-#~ "Otherwise, you will need to download and unzip the plugins archives "
-#~ "manually."
-#~ msgstr ""
-#~ "Үгүй бол, та татаж авах болон нэмэлт өргөтгөлийн архивыг гар аргаар "
-#~ "задлах хэрэгтэй болно"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Таны %1$s-н захиалга цуцлагдлаа."
 
-#~ msgid "Alpha ASC"
-#~ msgstr "Альфа ASC"
+msgid "Renew it on %1$s."
+msgstr "Үүнийг %1$s дээр шинэчилнэ үү."
 
-#~ msgid "Alpha DESC"
-#~ msgstr "Альфа DESC"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr "Бид зах зээлийн директор (%s) дээр бичих боломжгүй."
 
-#~ msgid "Most popular"
-#~ msgstr "Хамгийн алдартай"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+"Хэрэв та нэмэлт өргөтгөлийн татан авалтыг хөнгөвчлөхийг хүсч байвал энэ "
+"директорын зөвшөөрлийг болон эзэмших эрхийг шалгана уу."
 
-#~ msgid "Last updated"
-#~ msgstr "Сүүлд шинэчилсэн"
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+"Үгүй бол, та татаж авах болон нэмэлт өргөтгөлийн архивыг гар аргаар задлах "
+"хэрэгтэй болно"
 
-#~ msgid "Most recent"
-#~ msgstr "Хамгийн сүүлийн үеийн"
+msgid "Alpha ASC"
+msgstr "Альфа ASC"
 
-#~ msgid "Best notes"
-#~ msgstr "Шилдэг тэмдэглэл"
+msgid "Alpha DESC"
+msgstr "Альфа DESC"
 
-#~ msgid "Your plugin here ? Contact us."
-#~ msgstr "Таны нэмэлт өргөтгөл энд байна уу? Бидэнтэй холбоо бариарай."
+msgid "Most popular"
+msgstr "Хамгийн алдартай"
 
-#~ msgid "Refresh plugin list"
-#~ msgstr "Нэмэлт өргөтгөлийн жагсаалтыг дахин уншуулах"
+msgid "Last updated"
+msgstr "Сүүлд шинэчилсэн"
 
-#~ msgid "Filter plugin list"
-#~ msgstr "Нэмэлт өргөтгөлийн жагсаалтыг шүүх"
+msgid "Most recent"
+msgstr "Хамгийн сүүлийн үеийн"
 
-#~ msgid "Homepage"
-#~ msgstr "Нүүр хуудас"
+msgid "Best notes"
+msgstr "Шилдэг тэмдэглэл"
 
-#~ msgid "Get help"
-#~ msgstr "Туслах"
+msgid "Your plugin here ? Contact us."
+msgstr "Таны нэмэлт өргөтгөл энд байна уу? Бидэнтэй холбоо бариарай."
 
-#~ msgid "Readme"
-#~ msgstr "Намайг унш"
+msgid "Refresh plugin list"
+msgstr "Нэмэлт өргөтгөлийн жагсаалтыг дахин уншуулах"
 
-#~ msgid "Clean"
-#~ msgstr "Цэвэр"
+msgid "Filter plugin list"
+msgstr "Нэмэлт өргөтгөлийн жагсаалтыг шүүх"
 
-#~ msgid "This plugin is not available for your GLPI version."
-#~ msgstr "Энэ plugin-г таны GLPI хувилбарт ашиглах боломжгүй."
+msgid "Homepage"
+msgstr "Нүүр хуудас"
 
-#~ msgid ""
-#~ "The plugin has an available update but its directory is not writable."
-#~ msgstr ""
-#~ "Тус нэмэлт өргөтгөлийг шинэчлэх боломжтой байгаа тул диреткторыг нь "
-#~ "боловсруулах боломжгүй байна."
+msgid "Get help"
+msgstr "Туслах"
 
-#, php-format
-#~ msgid ""
-#~ "Download archive manually, you must uncompress it in plugins directory "
-#~ "(%s)"
-#~ msgstr ""
-#~ "Архивыг гараар татаж аваад, та нэмэлт өргөтгөлийн директороос (%s)-г "
-#~ "задлах ёстой."
+msgid "Readme"
+msgstr "Намайг унш"
 
-#, php-format
-#~ msgid "A new version (%s) is available, update ?"
-#~ msgstr "Шинэ хувилбар (%s) бэлэн байна, шинэчлэх үү?"
+msgid "Clean"
+msgstr "Цэвэр"
 
-#, php-format
-#~ msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-#~ msgstr ""
-#~ "Энэхүү нэмэлт өргөтгөлд (%s) нэвтрэхийн тулд та GLPI-Сүлжээний эрхээ "
-#~ "нэмэгдүүлэх хэрэгтэй."
+msgid "This plugin is not available for your GLPI version."
+msgstr "Энэ plugin-г таны GLPI хувилбарт ашиглах боломжгүй."
 
-#~ msgid "Install"
-#~ msgstr "Суулгах"
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+"Тус нэмэлт өргөтгөлийг шинэчлэх боломжтой байгаа тул диреткторыг нь "
+"боловсруулах боломжгүй байна."
 
-#~ msgid "Enable"
-#~ msgstr "Идэвхтэй"
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+"Архивыг гараар татаж аваад, та нэмэлт өргөтгөлийн директороос (%s)-г задлах "
+"ёстой."
 
-#~ msgid "Uninstall"
-#~ msgstr "Устгах"
+msgid "A new version (%s) is available, update ?"
+msgstr "Шинэ хувилбар (%s) бэлэн байна, шинэчлэх үү?"
 
-#, php-format
-#~ msgid "You must have a %s subscription to get this plugin"
-#~ msgstr "Та энэ нэмэлт өргөтгөлийг авахын тулд %s захиалгатай байх ёстой"
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+"Энэхүү нэмэлт өргөтгөлд (%s) нэвтрэхийн тулд та GLPI-Сүлжээний эрхээ "
+"нэмэгдүүлэх хэрэгтэй."
 
-#, php-format
-#~ msgid "You need at least the %s subscription level to get this plugin"
-#~ msgstr ""
-#~ "Энэ нэмэлт өргөтгөлийг авахын тулд та дор хаяж %s захиалгын түвшинтэй "
-#~ "байх шаардлагатай"
+msgid "Install"
+msgstr "Суулгах"
 
-#, php-format
-#~ msgid "%s plugin"
-#~ msgid_plural "%s plugins"
-#~ msgstr[0] "%s нэмэлт өргөтгөл"
-#~ msgstr[1] "%s нэмэлт өргөтгөл"
+msgid "Enable"
+msgstr "Идэвхтэй"
 
-#~ msgid "GLPI provides a new marketplace to download and install plugins."
-#~ msgstr ""
-#~ "GLPI нь нэмэлт өргөтгөлийг татаж, суулгах шинэ зах зээлийг бий болгодог."
+msgid "Uninstall"
+msgstr "Устгах"
 
-#~ msgid ""
-#~ "Do you want to replace the plugins setup page by the new marketplace ?"
-#~ msgstr ""
-#~ "Та нэмэлт өргөтгөлийг тохируулах хуудсыг шинэ зах зээлээр солихыг хүсч "
-#~ "байна уу?"
+msgid "You must have a %s subscription to get this plugin"
+msgstr "Та энэ нэмэлт өргөтгөлийг авахын тулд %s захиалгатай байх ёстой"
 
-#~ msgid "Later"
-#~ msgstr "Дараа"
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+"Энэ нэмэлт өргөтгөлийг авахын тулд та дор хаяж %s захиалгын түвшинтэй байх "
+"шаардлагатай"
 
-#~ msgid "Switch to marketplace"
-#~ msgstr "Зах зээл рүү шилжих"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "%s нэмэлт өргөтгөл"
+msgstr[1] "%s нэмэлт өргөтгөл"
 
-#~ msgid "Some updates are available for your installed plugins!"
-#~ msgstr "Суулгасан нэмэлт өргөтгөлд зарим шинэчлэл гарсан байна!"
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+"GLPI нь нэмэлт өргөтгөлийг татаж, суулгах шинэ зах зээлийг бий болгодог."
 
-#~ msgid "Plugin name"
-#~ msgstr "Нэмэлт өргөтгөлийн нэр"
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+"Та нэмэлт өргөтгөлийг тохируулах хуудсыг шинэ зах зээлээр солихыг хүсч байна "
+"уу?"
 
-#~ msgid "Plugin new version number"
-#~ msgstr "Нэмэлт өргөтгөлийн шинэ хувилбарын дугаар"
+msgid "Later"
+msgstr "Дараа"
 
-#~ msgid "Plugin old version number"
-#~ msgstr "Нэмэлт өргөтгөлийн хуучин хувилбарын дугаар"
+msgid "Switch to marketplace"
+msgstr "Зах зээл рүү шилжих"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "Хайлтын систем дээр лицензийн хүчинтэй хугацаа хязгааргүй байлгахын тулд "
-#~ "\"Хугацаа дуусах утга NULL байна\" -г ашиглана уу"
+msgid "Some updates are available for your installed plugins!"
+msgstr "Суулгасан нэмэлт өргөтгөлд зарим шинэчлэл гарсан байна!"
 
-#~ msgid "Registration"
-#~ msgstr "Бүртгэл"
+msgid "Plugin name"
+msgstr "Нэмэлт өргөтгөлийн нэр"
 
-#~ msgid ""
-#~ "A registration key is needed to use advanced feature (like marketplace) "
-#~ "in GLPI"
-#~ msgstr ""
-#~ "GLPI-д дэвшилтэт функцийг (зах зээл гэх мэт) ашиглахын тулд бүртгэлийн "
-#~ "түлхүүр шаардлагатай"
+msgid "Plugin new version number"
+msgstr "Нэмэлт өргөтгөлийн шинэ хувилбарын дугаар"
 
-#, php-format
-#~ msgid "Register on %1$s!"
-#~ msgstr "%1$s дээр бүртгүүлнэ үү!"
+msgid "Plugin old version number"
+msgstr "Нэмэлт өргөтгөлийн хуучин хувилбарын дугаар"
 
-#~ msgid "And retrieve your key to paste it below"
-#~ msgstr "Доор нь буулгахын тулд түлхүүр үгээ хадгална уу"
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"Хайлтын систем дээр лицензийн хүчинтэй хугацаа хязгааргүй байлгахын тулд "
+"\"Хугацаа дуусах утга NULL байна\" -г ашиглана уу"
 
-#, php-format
-#~ msgid "Error was: %s"
-#~ msgstr "Алдаа: %s"
+msgid "Registration"
+msgstr "Бүртгэл"
 
-#~ msgid "Registration key"
-#~ msgstr "Бүртгэлийн түлхүүр"
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+"GLPI-д дэвшилтэт функцийг (зах зээл гэх мэт) ашиглахын тулд бүртгэлийн "
+"түлхүүр шаардлагатай"
 
-#~ msgid "Subscription"
-#~ msgstr "Захиалга"
+msgid "Register on %1$s!"
+msgstr "%1$s дээр бүртгүүлнэ үү!"
 
-#~ msgid "Unknown"
-#~ msgstr "Тодорхойгүй"
+msgid "And retrieve your key to paste it below"
+msgstr "Доор нь буулгахын тулд түлхүүр үгээ хадгална уу"
 
-#~ msgid "Registered by"
-#~ msgstr "Бүртгэгдсэн"
+msgid "Error was: %s"
+msgstr "Алдаа: %s"
 
-#~ msgid "Unable to fetch registration information."
-#~ msgstr "Бүртгэлийн мэдээллийг авах боломжгүй байна."
+msgid "Registration key"
+msgstr "Бүртгэлийн түлхүүр"
 
-#~ msgid "The registration key is invalid."
-#~ msgstr "Бүртгэлийн түлхүүр буруу байна."
+msgid "Subscription"
+msgstr "Захиалга"
 
-#~ msgid "The registration key refers to a terminated subscription."
-#~ msgstr "Registration key нь дууссан бүртгэл"
+msgid "Unknown"
+msgstr "Тодорхойгүй"
 
-#~ msgid "The registration key is valid."
-#~ msgstr "Бүртгэлийн түлхүүр зөв байна."
+msgid "Registered by"
+msgstr "Бүртгэгдсэн"
 
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "GLPI -г өөрийн МТ-д нэвтрүүлэхэд танд тусламж хэрэгтэй байна уу? Алдаагаа "
-#~ "зассан уу? Урьдчилан тохируулсан дүрмүүд эсвэл лавлахуудын ашиг тусыг "
-#~ "хүртсэн үү?\n"
-#~ "\n"
-#~ "Бид %s -г санал болгож байна.\n"
-#~ "GLPI-Network нь гуравдугаар зэрэглэлийн буюу алдааг засах хугацаат амлалт "
-#~ "бүхий үйлчилгээтэй арилжааны бүтээгдэхүүн юм.\n"
-#~ "\n"
-#~ "Эндээс та GLPI-д шилжихэд туслах <b>албан ёсны хамтрагчтай холбогдож</b> "
-#~ "болно.\n"
-#~ "\n"
-#~ "Эсвэл GLPI хөгжүүлэлтэд <b>хандив</b>өгч дэмжээрэй."
+msgid "Unable to fetch registration information."
+msgstr "Бүртгэлийн мэдээллийг авах боломжгүй байна."
 
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "Дараагийн түвшний GLPI модулийг суулгахад асуудал гарсан уу? Бид танд "
-#~ "тэдгээрийг шийдвэрлэхэд тусалж чадна. %s дээр дарж бүртгүүлнэ үү."
+msgid "The registration key is invalid."
+msgstr "Бүртгэлийн түлхүүр буруу байна."
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "Таны имэйл хаяг руу мэйл илгээсэн байна. Мэйл нь таны нууц үгийг шинэчлэх "
-#~ "мэдээллийг агуулсан байна."
+msgid "The registration key refers to a terminated subscription."
+msgstr "Registration key нь дууссан бүртгэл"
 
-#~ msgid "Email address not found."
-#~ msgstr "Имэйл хаяг олдсонгүй."
+msgid "The registration key is valid."
+msgstr "Бүртгэлийн түлхүүр зөв байна."
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "Тоног төхөөрөмжийн MAC болон IP хаяг нь нэгтгэсэн сүлжээний портонд "
-#~ "багтсан болно"
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"GLPI -г өөрийн МТ-д нэвтрүүлэхэд танд тусламж хэрэгтэй байна уу? Алдаагаа "
+"зассан уу? Урьдчилан тохируулсан дүрмүүд эсвэл лавлахуудын ашиг тусыг "
+"хүртсэн үү?\n"
+"\n"
+"Бид %s -г санал болгож байна.\n"
+"GLPI-Network нь гуравдугаар зэрэглэлийн буюу алдааг засах хугацаат амлалт "
+"бүхий үйлчилгээтэй арилжааны бүтээгдэхүүн юм.\n"
+"\n"
+"Эндээс та GLPI-д шилжихэд туслах <b>албан ёсны хамтрагчтай холбогдож</b> "
+"болно.\n"
+"\n"
+"Эсвэл GLPI хөгжүүлэлтэд <b>хандив</b>өгч дэмжээрэй."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "Байршуулсан файл нь php.ini програм дахь upload_max_filesize хэмжээнээс "
-#~ "давсан байна"
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"Дараагийн түвшний GLPI модулийг суулгахад асуудал гарсан уу? Бид танд "
+"тэдгээрийг шийдвэрлэхэд тусалж чадна. %s дээр дарж бүртгүүлнэ үү."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "Байршуулсан файл нь HTML хэлбэрээр зааж өгсөн MAX_FILE_SIZE хэмжээнээс "
-#~ "давсан байна"
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"Таны имэйл хаяг руу мэйл илгээсэн байна. Мэйл нь таны нууц үгийг шинэчлэх "
+"мэдээллийг агуулсан байна."
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Байршуулсан файлыг зөвхөн хэсэгчлэн байршуулсан байна"
+msgid "Email address not found."
+msgstr "Имэйл хаяг олдсонгүй."
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Файлыг диск рүү бичиж чадсангүй"
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+"Тоног төхөөрөмжийн MAC болон IP хаяг нь нэгтгэсэн сүлжээний портонд багтсан "
+"болно"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "PHP өргөтгөл нь файл байршуулахыг зогсоосон"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"Байршуулсан файл нь php.ini програм дахь upload_max_filesize хэмжээнээс "
+"давсан байна"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr ""
-#~ "Байршуулсан файл нь php.ini програм дахь post_max_size хэмжээнээс давсан "
-#~ "байна"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Байршуулсан файл нь HTML хэлбэрээр зааж өгсөн MAX_FILE_SIZE хэмжээнээс "
+"давсан байна"
 
-#~ msgid "File is too big"
-#~ msgstr "Файл нь хэт том байна"
+msgid "The uploaded file was only partially uploaded"
+msgstr "Байршуулсан файлыг зөвхөн хэсэгчлэн байршуулсан байна"
 
-#~ msgid "File is too small"
-#~ msgstr "Файл нь хэт жижиг байна"
+msgid "Failed to write file to disk"
+msgstr "Файлыг диск рүү бичиж чадсангүй"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Файлын тоо хязгаараас хэтэрсэн байна"
+msgid "A PHP extension stopped the file upload"
+msgstr "PHP өргөтгөл нь файл байршуулахыг зогсоосон"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Зураг хамгийн дээд өргөнөөс хэтэрсэн байна"
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+"Байршуулсан файл нь php.ini програм дахь post_max_size хэмжээнээс давсан "
+"байна"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Зураг нь хамгийн бага өргөнтэй байх шаардлагатай"
+msgid "File is too big"
+msgstr "Файл нь хэт том байна"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Зураг хамгийн дээд өндрөөс хэтэрсэн байна"
+msgid "File is too small"
+msgstr "Файл нь хэт жижиг байна"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Зураг нь хамгийн бага өндөртэй байх шаардлагатай"
+msgid "Maximum number of files exceeded"
+msgstr "Файлын тоо хязгаараас хэтэрсэн байна"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Файлын төрөл зөвшөөрөгдөөгүй байна."
+msgid "Image exceeds maximum width"
+msgstr "Зураг хамгийн дээд өргөнөөс хэтэрсэн байна"
 
-#~ msgid "File upload aborted"
-#~ msgstr "Файл байршуулалтыг зогсоосон."
+msgid "Image requires a minimum width"
+msgstr "Зураг нь хамгийн бага өргөнтэй байх шаардлагатай"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "Зургийн хэмжээг өөрчилж чадсангүй"
+msgid "Image exceeds maximum height"
+msgstr "Зураг хамгийн дээд өндрөөс хэтэрсэн байна"
 
-#~ msgid "Display GLPI debug information"
-#~ msgstr "Debug мэдээллийг харуулах"
+msgid "Image requires a minimum height"
+msgstr "Зураг нь хамгийн бага өндөртэй байх шаардлагатай"
 
-#~ msgid "Progress"
-#~ msgstr "Үйл явц"
+msgid "Filetype not allowed"
+msgstr "Файлын төрөл зөвшөөрөгдөөгүй байна."
 
-#~ msgid "My settings"
-#~ msgstr "Миний тохиргоо"
+msgid "File upload aborted"
+msgstr "Файл байршуулалтыг зогсоосон."
 
-#~ msgid "Back to top of the page"
-#~ msgstr "Хуудасны дээд тал руу буцах"
+msgid "Failed to resize image"
+msgstr "Зургийн хэмжээг өөрчилж чадсангүй"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "Та үүнийг GLPI-PROJECT.org сайтаас олох болно."
+msgid "Display GLPI debug information"
+msgstr "Debug мэдээллийг харуулах"
 
-#~ msgid "Check all"
-#~ msgstr "Бүгдийг нь шалгах"
+msgid "Progress"
+msgstr "Үйл явц"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Бүгдээс сонголтыг арилгана уу"
+msgid "My settings"
+msgstr "Миний тохиргоо"
 
-#~ msgid "Check all as"
-#~ msgstr "Бүгдийг нь шалгах"
+msgid "Back to top of the page"
+msgstr "Хуудасны дээд тал руу буцах"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Сонгон шалгаруулалт хэт том, массив үйлдлийг идэвхгүй болгосон."
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "Та үүнийг GLPI-PROJECT.org сайтаас олох болно."
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Хязгаарыг нэмэгдүүлэхийн тулд: php тохиргоонд max_input_vars эсвэл "
-#~ "suhosin.post.max_vars-ийг солино уу."
+msgid "Check all"
+msgstr "Бүгдийг нь шалгах"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "\"Тайлбар\" талбар заавал бөглөгдөх ёстой"
+msgid "Uncheck all"
+msgstr "Бүгдээс сонголтыг арилгана уу"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "%3$d-ийн %1$d-ээс %2$d хүртэл"
+msgid "Check all as"
+msgstr "Бүгдийг нь шалгах"
 
-#~ msgid "Empty array"
-#~ msgstr "Хоосон массив"
+msgid "Selection too large, massive action disabled."
+msgstr "Сонгон шалгаруулалт хэт том, массив үйлдлийг идэвхгүй болгосон."
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%2$d дээр %1$d"
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Хязгаарыг нэмэгдүүлэхийн тулд: php тохиргоонд max_input_vars эсвэл suhosin."
+"post.max_vars-ийг солино уу."
 
-#~ msgid "Close (Esc)"
-#~ msgstr "Хаах (Esc)"
+msgid "The description field is mandatory"
+msgstr "\"Тайлбар\" талбар заавал бөглөгдөх ёстой"
 
-#~ msgid "Share"
-#~ msgstr "Хуваалцах"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "%3$d-ийн %1$d-ээс %2$d хүртэл"
 
-#~ msgid "Zoom in/out"
-#~ msgstr "Томруулах / багасгах"
+msgid "Empty array"
+msgstr "Хоосон массив"
 
-#~ msgid "Previous (arrow left)"
-#~ msgstr "Өмнөх (зүүн сум)"
+msgid "%1$d on %2$d"
+msgstr "%2$d дээр %1$d"
 
-#~ msgid "Next (arrow right)"
-#~ msgstr "Дараах (баруун сум)"
+msgid "Close (Esc)"
+msgstr "Хаах (Esc)"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr ""
-#~ "Файлыг чирж тавих буюу буулгах, эсвэл editor дээр хуулж, буулгах замаар "
-#~ "хавсаргана уу"
+msgid "Share"
+msgstr "Хуваалцах"
 
-#~ msgid "selecting them"
-#~ msgstr "сонголт хийх"
+msgid "Zoom in/out"
+msgstr "Томруулах / багасгах"
 
-#~ msgid "File(s)"
-#~ msgstr "Файл(ууд)"
+msgid "Previous (arrow left)"
+msgstr "Өмнөх (зүүн сум)"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Энд даран файлаа оруулна уу"
+msgid "Next (arrow right)"
+msgstr "Дараах (баруун сум)"
 
-#~ msgid "Upload successful"
-#~ msgstr "Байршуулалт амжилттай боллоо"
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+"Файлыг чирж тавих буюу буулгах, эсвэл editor дээр хуулж, буулгах замаар "
+"хавсаргана уу"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Бүгдийг шалгах/шалгахгүй байх"
+msgid "selecting them"
+msgstr "сонголт хийх"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Цэс олохын тулд бичиж эхлээрэй"
+msgid "File(s)"
+msgstr "Файл(ууд)"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "Debug хийх горим идэвхжсэн"
+msgid "Drag and drop your file here, or"
+msgstr "Энд даран файлаа оруулна уу"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "Debug хийх горимыг идэвхгүй болгосон"
+msgid "Upload successful"
+msgstr "Байршуулалт амжилттай боллоо"
 
-#~ msgid "Saved searches"
-#~ msgstr "Хадгалагдсан хайлтууд"
+msgid "Check/uncheck all"
+msgstr "Бүгдийг шалгах/шалгахгүй байх"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Хадгалсан хайлтуудыг удирдах"
+msgid "Start typing to find a menu"
+msgstr "Цэс олохын тулд бичиж эхлээрэй"
 
-#~ msgid "Add is disabled"
-#~ msgstr "Нэмэх үйлдлийг идэвхгүй болгосон"
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Өөрчлөгдсөн"
 
-#~ msgid "Search is disabled"
-#~ msgstr "Хайлт хийхийг идэвхгүй болгосон"
+msgid "Debug mode enabled"
+msgstr "Debug хийх горим идэвхжсэн"
 
-#~ msgid "Global Kanban"
-#~ msgstr "Олон нийтийн Kanban"
+msgid "Debug mode disabled"
+msgstr "Debug хийх горимыг идэвхгүй болгосон"
 
-#, php-format
-#~ msgid "You are impersonating %s."
-#~ msgstr "Та %s-ийн дүрд хувирч байна."
+msgid "Saved searches"
+msgstr "Хадгалагдсан хайлтууд"
 
-#~ msgid "Stop impersonating"
-#~ msgstr "Дүр эсгэхээ болино уу"
+msgid "Manage saved searches"
+msgstr "Хадгалсан хайлтуудыг удирдах"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr ""
-#~ "API-д нэвтрэн орж, хэрэглэгчийн мэдээлэл бүхий session тэмдгийг авах "
-#~ "боломжтой"
+msgid "Add is disabled"
+msgstr "Нэмэх үйлдлийг идэвхгүй болгосон"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "API-д нэвтрэн орж, хэрэглэгчийн гаднах token бүхий session тэмдгийг авах "
-#~ "боломжтой. Хэрэглэгчийн тохиргооны таб дээрээс алсын зайнаас нэвтрэх "
-#~ "түлхүүрийг харна уу"
+msgid "Search is disabled"
+msgstr "Хайлт хийхийг идэвхгүй болгосон"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "GLPI ID-г харах"
+msgid "Global Kanban"
+msgstr "Олон нийтийн Kanban"
 
-#~ msgid "Color palette"
-#~ msgstr "Өнгөний зохицол"
+msgid "You are impersonating %s."
+msgstr "Та %s-ийн дүрд хувирч байна."
 
-#~ msgid "Layout"
-#~ msgstr "Байршил"
+msgid "Stop impersonating"
+msgstr "Дүр эсгэхээ болино уу"
 
-#~ msgid "Tabs on left"
-#~ msgstr "Табыг зүүн талд харуулах"
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+"API-д нэвтрэн орж, хэрэглэгчийн мэдээлэл бүхий session тэмдгийг авах "
+"боломжтой"
 
-#~ msgid "Classic view"
-#~ msgstr "Сонгодог харагдац"
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"API-д нэвтрэн орж, хэрэглэгчийн гаднах token бүхий session тэмдгийг авах "
+"боломжтой. Хэрэглэгчийн тохиргооны таб дээрээс алсын зайнаас нэвтрэх "
+"түлхүүрийг харна уу"
 
-#~ msgid "Vertical split"
-#~ msgstr "Босоо хуваалт"
+msgid "Show GLPI ID"
+msgstr "GLPI ID-г харах"
 
-#~ msgid "Dashboards"
-#~ msgstr "Хянах самбарууд"
+msgid "Color palette"
+msgstr "Өнгөний зохицол"
 
-#~ msgid "Default for central"
-#~ msgstr "Үндсэн төв"
+msgid "Layout"
+msgstr "Байршил"
 
-#~ msgid "Default for Assets"
-#~ msgstr "Үндсэн хөрөнгө"
+msgid "Tabs on left"
+msgstr "Табыг зүүн талд харуулах"
 
-#~ msgid "Default for Assistance"
-#~ msgstr "Үндсэн тусламжийн утга"
+msgid "Classic view"
+msgstr "Сонгодог харагдац"
 
-#~ msgid "Default for tickets (mini dashboard)"
-#~ msgstr "Үндсэн дуудлага (Жижиг хэмжээний хяналтын самбар)"
+msgid "Vertical split"
+msgstr "Босоо хуваалт"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Шинэ хувилбар байгаа эсэхийг шалгана уу"
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Гэрээний төгсгөл"
 
-#~ msgid "Show filters"
-#~ msgstr "Шүүж харах"
+msgid "Dashboards"
+msgstr "Хянах самбарууд"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "Таны хайлтын хэсэгт тохирох түүх байхгүй байна"
+msgid "Default for central"
+msgstr "Үндсэн төв"
 
-#~ msgid "Add to schedule"
-#~ msgstr "Хуваарьт нэмэх"
+msgid "Default for Assets"
+msgstr "Үндсэн хөрөнгө"
 
-#~ msgid "Position in room"
-#~ msgstr "Өрөөн доторх байрлал"
+msgid "Default for Assistance"
+msgstr "Үндсэн тусламжийн утга"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "Өрөөн доторх хаалганы чиглэл"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Үндсэн дуудлага (Жижиг хэмжээний хяналтын самбар)"
 
-#~ msgid "North"
-#~ msgstr "Хойд"
+msgid "Check if a new version is available"
+msgstr "Шинэ хувилбар байгаа эсэхийг шалгана уу"
 
-#~ msgid "East"
-#~ msgstr "Дорнод"
+msgid "Show filters"
+msgstr "Шүүж харах"
 
-#~ msgid "South"
-#~ msgstr "Өмнөд"
+msgid "No historical matching your filters"
+msgstr "Таны хайлтын хэсэгт тохирох түүх байхгүй байна"
 
-#~ msgid "West"
-#~ msgstr "Баруун"
+msgid "Add to schedule"
+msgstr "Хуваарьт нэмэх"
 
-#~ msgid "Number of units"
-#~ msgstr "Нэгжийн тоо"
+msgid "Position in room"
+msgstr "Өрөөн доторх байрлал"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "Door orientation in room"
+msgstr "Өрөөн доторх хаалганы чиглэл"
 
-#~ msgid "Width"
-#~ msgstr "Өргөн"
+msgid "North"
+msgstr "Хойд"
 
-#~ msgid "Height"
-#~ msgstr "Өндөр"
+msgid "East"
+msgstr "Дорнод"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "Хэмжилтийн хүч (ваттаар)"
+msgid "South"
+msgstr "Өмнөд"
 
-#~ msgid "Max. weight"
-#~ msgstr "Макс. жин"
+msgid "West"
+msgstr "Баруун"
 
-#~ msgid "No rack found"
-#~ msgstr "Rack олдсонгүй"
+msgid "Number of units"
+msgstr "Нэгжийн тоо"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "Дараах элементүүд өрөөний хязгаараас хэтэрсэн байна"
+msgid "U"
+msgstr "U"
 
-#~ msgid "Blueprint"
-#~ msgstr "Төлөвлөлт"
+msgid "Width"
+msgstr "Өргөн"
 
-#~ msgid "Grid"
-#~ msgstr "Сүлжээ"
+msgid "Height"
+msgstr "Өндөр"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "Энд rack оруулна уу"
+msgid "Measured power (in watts)"
+msgstr "Хэмжилтийн хүч (ваттаар)"
 
-#~ msgid "Position must be set"
-#~ msgstr "Албан тушаалаа тохируулах ёстой"
+msgid "Max. weight"
+msgstr "Макс. жин"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s байршлыг ашиглах боломжгүй байна"
+msgid "No rack found"
+msgstr "Rack олдсонгүй"
 
-#~ msgid "All categories"
-#~ msgstr "Нийт ангилал"
+msgid "Following elements are out of room bounds"
+msgstr "Дараах элементүүд өрөөний хязгаараас хэтэрсэн байна"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Ангилагдаагүй програм хангамж"
+msgid "Blueprint"
+msgstr "Төлөвлөлт"
 
-#~ msgid "Valid license"
-#~ msgstr "Хүчинтэй лиценз"
+msgid "Grid"
+msgstr "Сүлжээ"
 
-#~ msgid "Other component"
-#~ msgstr "Бусад бүрэлдэхүүн хэсэг"
+msgid "Insert a rack here"
+msgstr "Энд rack оруулна уу"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "Эхлэхийн өмнөх хамгийн сүүлийн зүйл"
+msgid "Position must be set"
+msgstr "Албан тушаалаа тохируулах ёстой"
 
-#~ msgid "Donate"
-#~ msgstr "Хандив өгөх"
+msgid "%1$s position is not available"
+msgstr "%1$s байршлыг ашиглах боломжгүй байна"
+
+msgid "All categories"
+msgstr "Нийт ангилал"
+
+msgid "Uncategorized software"
+msgstr "Ангилагдаагүй програм хангамж"
+
+msgid "Valid license"
+msgstr "Хүчинтэй лиценз"
+
+msgid "Other component"
+msgstr "Бусад бүрэлдэхүүн хэсэг"
+
+msgid "One last thing before starting"
+msgstr "Эхлэхийн өмнөх хамгийн сүүлийн зүйл"
+
+msgid "Donate"
+msgstr "Хандив өгөх"
+
+msgid "Unofficial translations are also available"
+msgstr "Албан бус орчуулга байх боломжтой"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr ""
+"Би дээр дурдсан лицензийн нөхцлийг уншиж танилцсан ба хүлээн зөвшөөрч байна"
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr ""
+"Би дээр дурдсан лицензийн нөхцлийг уншиж танилцсан ба хүлээн зөвшөөрөхгүй "
+"байна"
+
+msgid "Installation or update of GLPI"
+msgstr "GLPI-г суулгах буюу шинэчлэх"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "GLPI-г шинэ install-г суулгахын тулд \"Суулгах\" хэсгийг сонгоно уу."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+"GLPI-ийн хувилбарыг өмнөх хувилбараас нь шинэчлэхийн тулд 'Шинэчлэх' гэснийг "
+"сонгоно уу"
+
+msgid "Do you want to continue?"
+msgstr "Үргэлжлүүлэхийг хүсч байна уу"
+
+msgid "Database connection parameters"
+msgstr "Өгөгдлийн сангийн холболтын параметрүүд"
+
+msgid "Test of the connection at the database"
+msgstr "Өгөгдлийн сантай холбогдох тест"
+
+msgid "Can't connect to the database"
+msgstr "Өгөгдлийн сантай холбогдож чадахгүй байна"
+
+msgid "The server answered: %s"
+msgstr "Сервер хариулав: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Сервер болон/эсвэл хэрэглэгчийн талбар хоосон байна"
+
+msgid "Please select a database:"
+msgstr "Өгөгдлийн санг сонгоно уу:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Шинэ өгөгдлийн сан үүсгэх эсвэл одоо байгаа өгөгдлийн сангаас ашиглах:"
+
+msgid "Please select the database to update:"
+msgstr "Шинэчлэлт хийхийн тулд өгөгдлийн сангаа сонгоно уу:"
+
+msgid "Initialization of the database"
+msgstr "Өгөгдлийн сан байгуулах"
+
+msgid "Impossible to use the database:"
+msgstr "Өгөгдлийн санг ашиглах боломжгүй байна"
+
+msgid "OK - database was initialized"
+msgstr "ОК - өгөгдлийн сан байгуулагдсан"
+
+msgid "Impossible to write the database setup file"
+msgstr "Өгөгдлийн сангийн тохиргооны файлыг бичих боломжгүй"
+
+msgid "Database created"
+msgstr "Өгөгдлийн сан үүссэн"
+
+msgid "Error in creating database!"
+msgstr "Өгөгдлийн санг үүсгэхэд алдаа гарлаа"
+
+msgid "You didn't select a database!"
+msgstr "Та өгөгдлийн санг сонгоогүй байна!"
+
+msgid "Collect data"
+msgstr "Өгөгдлийн цуглуулга"
+
+msgid "The installation is finished"
+msgstr "Программыг суулгаж дууссан"
+
+msgid "Default logins / passwords are:"
+msgstr "Үндсэн нэвтрэлт / нууц үгс нь:"
+
+msgid "tech/tech for the technician account"
+msgstr "техникчийн эрхэд зориулсан glpi/glpi"
+
+msgid "normal/normal for the normal account"
+msgstr "энгийн эрхэд зориулсан glpi/glpi"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "зөвхөн постлох эрхэд зориулсан glpi/glpi"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+"Та эдгээр хэрэглэгчийн бүртгэлүүдээс гадна анхны өгөгдлийг устгах эсвэл "
+"өөрчлөх боломжтой."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Өгөгдлийн сантай холбоотой файлыг үүсгэж чадахгүй байна, файлын зөвшөөрлийн "
+"эрхийг шалгана уу."
+
+msgid "Select your language"
+msgstr "Хэлээ сонгоно уу"
+
+msgid "Beginning of the installation"
+msgstr "Суурилуулалтыг эхлэх"
+
+msgid "Step %d"
+msgstr "Алхам %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI-Танилт"
+
+msgid "Remember me"
+msgstr "Сануулах"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Өөрийн веб хөтчийнхөө JavaScript функцийг идэвхжүүлэх ёстой"
+
+msgid "You must accept cookies to reach this application"
+msgstr "Энэ программд ​​хүрэхийн тулд та cookie-г хүлээн авах ёстой"
+
+msgid "Invalid use of session ID"
+msgstr "Session ID буруу байна"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Түгээмэл гардаг асуултууд руу хандах"
+
+msgid "Add a card"
+msgstr "Карт нэмэх"
+
+msgid "Add a filter"
+msgstr "Хайлтын хэсэг нэмэх"
+
+msgid "Saved"
+msgstr "Хадгалагдсан"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Хянах самбар %s-ыг устгахдаа итгэлтэй байна уу ?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Илгээх огноо"
 
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI ашиглах"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Албан бус орчуулга байх боломжтой"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr ""
-#~ "Би дээр дурдсан лицензийн нөхцлийг уншиж танилцсан ба хүлээн зөвшөөрч "
-#~ "байна"
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr ""
-#~ "Би дээр дурдсан лицензийн нөхцлийг уншиж танилцсан ба хүлээн зөвшөөрөхгүй "
-#~ "байна"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "GLPI-г суулгах буюу шинэчлэх"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr ""
-#~ "GLPI-г шинэ install-г суулгахын тулд \"Суулгах\" хэсгийг сонгоно уу."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "GLPI-ийн хувилбарыг өмнөх хувилбараас нь шинэчлэхийн тулд 'Шинэчлэх' "
-#~ "гэснийг сонгоно уу"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Үргэлжлүүлэхийг хүсч байна уу"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Өгөгдлийн сангийн холболтын параметрүүд"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Өгөгдлийн сантай холбогдох тест"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Өгөгдлийн сантай холбогдож чадахгүй байна"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Сервер хариулав: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Сервер болон/эсвэл хэрэглэгчийн талбар хоосон байна"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Өгөгдлийн санг сонгоно уу:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr ""
-#~ "Шинэ өгөгдлийн сан үүсгэх эсвэл одоо байгаа өгөгдлийн сангаас ашиглах:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Шинэчлэлт хийхийн тулд өгөгдлийн сангаа сонгоно уу:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Өгөгдлийн сан байгуулах"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Өгөгдлийн санг ашиглах боломжгүй байна"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "ОК - өгөгдлийн сан байгуулагдсан"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Өгөгдлийн сангийн тохиргооны файлыг бичих боломжгүй"
-
-#~ msgid "Database created"
-#~ msgstr "Өгөгдлийн сан үүссэн"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Өгөгдлийн санг үүсгэхэд алдаа гарлаа"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Та өгөгдлийн санг сонгоогүй байна!"
-
-#~ msgid "Collect data"
-#~ msgstr "Өгөгдлийн цуглуулга"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Программыг суулгаж дууссан"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Үндсэн нэвтрэлт / нууц үгс нь:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "админы эрхэд зориулсан glpi/glpi"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "техникчийн эрхэд зориулсан glpi/glpi"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "энгийн эрхэд зориулсан glpi/glpi"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "зөвхөн постлох эрхэд зориулсан glpi/glpi"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "Та эдгээр хэрэглэгчийн бүртгэлүүдээс гадна анхны өгөгдлийг устгах эсвэл "
-#~ "өөрчлөх боломжтой."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Өгөгдлийн сантай холбоотой файлыг үүсгэж чадахгүй байна, файлын "
-#~ "зөвшөөрлийн эрхийг шалгана уу."
-
-#~ msgid "Select your language"
-#~ msgstr "Хэлээ сонгоно уу"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Суурилуулалтыг эхлэх"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Алхам %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI-Танилт"
-
-#~ msgid "Remember me"
-#~ msgstr "Сануулах"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Өөрийн веб хөтчийнхөө JavaScript функцийг идэвхжүүлэх ёстой"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Энэ программд ​​хүрэхийн тулд та cookie-г хүлээн авах ёстой"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Session ID буруу байна"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Түгээмэл гардаг асуултууд руу хандах"
-
-#~ msgid "Add a card"
-#~ msgstr "Карт нэмэх"
-
-#~ msgid "Add a filter"
-#~ msgstr "Хайлтын хэсэг нэмэх"
-
-#~ msgid "Saved"
-#~ msgstr "Хадгалагдсан"
-
-#, javascript-format
-#~ msgid "Are you sure you want to delete the dashboard %s ?"
-#~ msgstr "Хянах самбар %s-ыг устгахдаа итгэлтэй байна уу ?"

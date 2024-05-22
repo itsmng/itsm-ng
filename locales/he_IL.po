@@ -24266,411 +24266,1317 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "No room found or selected"
-#~ msgstr "לא נמצא או לא נבחר חדר"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "כתיבה"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s מוסיף את הפריט %2$s-%3$s:%4$s"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "שם משתמש"
+
+#, fuzzy
+#| msgid "When connecting or updating"
+msgid "Open ID connect configuration"
+msgstr "בעת חיבור / עדכון"
+
+msgid "No room found or selected"
+msgstr "לא נמצא או לא נבחר חדר"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Replace"
+msgid "Marketplace"
+msgstr "החלף"
+
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s מוסיף את הפריט %2$s-%3$s:%4$s"
+
+msgid "See the catalog of plugins"
+msgstr "ראה את קטלוג של הרחבות "
+
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+
+#, fuzzy
+#| msgid "Template for an incident"
+msgid "Empty for infinite"
+msgstr "תבנית לתקלה"
+
+msgid "RSS feeds found"
+msgstr "הזנות RSS נמצאו"
+
+msgid "Active Directory"
+msgstr "Active Directory"
+
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "גירסת IP"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "ראה את קטלוג של הרחבות "
+#, fuzzy
+#| msgid "Confirm the final deletion?"
+msgid "Confirm the promotion?"
+msgstr "לאשר מחיקה סופית ?"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "הזנות RSS נמצאו"
+msgid "Your tickets to close"
+msgstr "פניותך שממתינות לסגירה"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+msgid "Tickets on pending status"
+msgstr "קריאות בסטטוס המתנה"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "פניותך שממתינות לסגירה"
+msgid "Tickets to be processed"
+msgstr "קריאות לביצוע"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "קריאות בסטטוס המתנה"
+msgid "Your observed tickets"
+msgstr "קריאות בהן אתה מוגדר כצופה"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "קריאות לביצוע"
+msgid "Your tickets in progress"
+msgstr "קריאות שלך בביצוע"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "קריאות בהן אתה מוגדר כצופה"
+msgid "Your tickets to validate"
+msgstr "הקריאות שלך לאישור"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "קריאות שלך בביצוע"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected approval status"
+msgstr "קריאות שלך בביצוע"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "הקריאות שלך לאישור"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected solution"
+msgstr "קריאות שלך בביצוע"
 
-#~ msgid "Ticket followup"
-#~ msgstr "מעקב אחר הקריאה"
+msgid "Ticket followup"
+msgstr "מעקב אחר הקריאה"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%dקריאה חדשה"
-#~ msgstr[1] "%dקריאות חדשות"
-#~ msgstr[2] "%dקריאות חדשות"
-#~ msgstr[3] "%dקריאות חדשות"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%dקריאה חדשה"
+msgstr[1] "%dקריאות חדשות"
+msgstr[2] "%dקריאות חדשות"
+msgstr[3] "%dקריאות חדשות"
 
-#~ msgid "No ticket found."
-#~ msgstr "לא נמצאו קריאות."
+msgid "No ticket found."
+msgstr "לא נמצאו קריאות."
 
-#~ msgid "Last tickets"
-#~ msgstr "קריאות שירות אחרונות"
+msgid "Last tickets"
+msgstr "קריאות שירות אחרונות"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "קריאה חדשה עבור הפריט הזה..."
+msgid "New ticket for this item..."
+msgstr "קריאה חדשה עבור הפריט הזה..."
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "%dקריאה אחרונה"
-#~ msgstr[1] "%dקריאות אחרונות"
-#~ msgstr[2] "%dקריאות אחרונות"
-#~ msgstr[3] "%dקריאות אחרונות"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "%dקריאה אחרונה"
+msgstr[1] "%dקריאות אחרונות"
+msgstr[2] "%dקריאות אחרונות"
+msgstr[3] "%dקריאות אחרונות"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "אין לך הרשאות לראות את כל הקריאות"
+msgid "You don't have right to see all tickets"
+msgstr "אין לך הרשאות לראות את כל הקריאות"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "קריאה על פריט מקושר"
-#~ msgstr[1] "קריאות על פריטים מקושרים"
-#~ msgstr[2] "קריאות על פריטים מקושרים"
-#~ msgstr[3] "קריאות על פריטים מקושרים"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "קריאה על פריט מקושר"
+msgstr[1] "קריאות על פריטים מקושרים"
+msgstr[2] "קריאות על פריטים מקושרים"
+msgstr[3] "קריאות על פריטים מקושרים"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "אין קריאות בביצוע"
+msgid "No ticket in progress."
+msgstr "אין קריאות בביצוע"
 
-#~ msgid "Assign equipment"
-#~ msgstr "שייך ציוד"
+msgid "Assign equipment"
+msgstr "שייך ציוד"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "סגירת קריאות אוטומטית"
+msgid "Automatic tickets closing"
+msgstr "סגירת קריאות אוטומטית"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "יצירת סקרי שביעות רצון"
+msgid "Generation of satisfaction surveys"
+msgstr "יצירת סקרי שביעות רצון"
 
-#~ msgid "See my ticket"
-#~ msgstr "לצפיה בקריאה שלך"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "סגירה אוטומטית של קריאה אחרי"
 
-#~ msgid "See group ticket"
-#~ msgstr "לצפיה בקריאה קבוצתית"
+msgid "See my ticket"
+msgstr "לצפיה בקריאה שלך"
+
+msgid "See group ticket"
+msgstr "לצפיה בקריאה קבוצתית"
+
+msgid "See tickets created by my groups"
+msgstr "לצפיה בקריאות שנפתחו על ידי הקבוצות שלך"
+
+msgid "See all tickets"
+msgstr "לצפיה בכל הקריאות"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "לצפיה בקריאות שנפתחו על ידי הקבוצות שלך"
+#, fuzzy
+#| msgid "See assigned tickets"
+msgid "See assigned"
+msgstr "לצפיה בקריאות שהוקצו אליך"
 
-#~ msgid "See all tickets"
-#~ msgstr "לצפיה בכל הקריאות"
+msgid "See assigned tickets"
+msgstr "לצפיה בקריאות שהוקצו אליך"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "לצפיה בקריאות שהוקצו אליך"
+msgid "Assign a ticket"
+msgstr "הקצה קריאה"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "הקצה קריאה"
+msgid "Steal"
+msgstr ""
 
-#~ msgid "Steal a ticket"
-#~ msgstr "לגנוב' קריאה'"
+msgid "Steal a ticket"
+msgstr "לגנוב' קריאה'"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "להיות אחראי על הקריאה"
+#, fuzzy
+#| msgid "Technician in charge"
+msgid "Beeing in charge"
+msgstr "טכנאי אחראי"
 
-#~ msgid "Change the priority"
-#~ msgstr "שנה את התעדוף"
+msgid "To be in charge of a ticket"
+msgstr "להיות אחראי על הקריאה"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "אשר פתרון/הגב לסקר (הקריאה שלי)"
+msgid "Change the priority"
+msgstr "שנה את התעדוף"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "אשר פתרון והגב לסקר עבור קריאה שפתחתי"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "אשר פתרון/הגב לסקר (הקריאה שלי)"
 
-#~ msgid "Merge"
-#~ msgstr "למזג"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "אשר פתרון והגב לסקר עבור קריאה שפתחתי"
+
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to load ticket %d"
+msgstr "מחיקת הקובץ נכשלה %s"
+
+#, fuzzy
+#| msgid "Add a followup to tickets (requester)"
+msgid "Failed to add followup to ticket %d"
+msgstr "הוסף מעקב לקריאת שירות (מבקש)"
+
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to add task to ticket %d"
+msgstr "מחיקת הקובץ נכשלה %s"
+
+#, fuzzy
+#| msgid "Default heading when adding a document to a ticket"
+msgid "Failed to add document to ticket %d"
+msgstr "כותרת ברירת מחדל עבור מסמך מצורף לקריאה"
+
+msgid "Failed to link tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "מחיקת הקובץ נכשלה %s"
+
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$sמחק את הגרסה לצמיתות%2$s"
+
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "בדיקת הרשאות כתיבה עבור קבצי מסמכים של הרחבות"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "תוכנה תכנס לסל המחזור לאחר מיזוג"
+#, fuzzy
+#| msgid "Recalculate"
+msgid "Recalculate the category"
+msgstr "לחשב מחדש"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+#, fuzzy
+#| msgid "Valid license"
+msgid "Valid licenses"
+msgstr "רישיון תקף"
 
-#~ msgid "Connect a computer"
-#~ msgstr "חבר מחשב"
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of lines"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "מספר קווים"
 
-#~ msgid "Not connected"
-#~ msgstr "לא מחוברים"
+msgid "Merge"
+msgstr "למזג"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "תקף ל - 1%s"
+msgid "Software deleted after merging"
+msgstr "תוכנה תכנס לסל המחזור לאחר מיזוג"
+
+msgid "You must enable at least one notification mode."
+msgstr ""
+
+msgid "GLPI"
+msgstr "GLPI"
+
+msgid "Connect a computer"
+msgstr "חבר מחשב"
+
+msgid "Not connected"
+msgstr "לא מחוברים"
+
+#, fuzzy
+#| msgid "Show all"
+msgid "Show as map"
+msgstr "הצג הכל"
+
+msgid "Valid to %s"
+msgstr "תקף ל - 1%s"
+
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "קריאות שירות אחרונות"
+
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "קריאות הממתינות לאישור"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "קריאות מקושרות"
+
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "פתור קריאות"
+
+#, fuzzy
+#| msgid "Child tickets"
+msgid "Closed tickets"
+msgstr "קריאות משניות"
+
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "ללא שם"
+
+#, fuzzy
+#| msgid "Time cost"
+msgid "Time to close"
+msgstr "עלות שעה"
+
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "אשר"
+
+msgid "Solved"
+msgstr "פתורות"
+
+msgid "Share or embed this dashboard"
+msgstr ""
+
+msgid "Delete this dashboard"
+msgstr ""
+
+msgid "Toggle auto-refresh"
+msgstr ""
+
+msgid "Toggle night mode"
+msgstr ""
+
+msgid "Toggle fullscreen"
+msgstr ""
+
+msgid "Clone this dashboard"
+msgstr ""
+
+msgid "Toggle edit mode"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add filter"
+msgstr "הוסף פריט"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "הוסף משימה חדשה"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "אחרים"
+
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "תקציב"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "מספר משימות"
+
+#, fuzzy
+#| msgid "Filter access"
+msgid "Filters"
+msgstr "סנן גישה"
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "קישור URL של הישום"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "קישור דרך LDAP"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+msgid "empty card !"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of items"
+msgid "Number of %s"
+msgstr "מספר פריטים"
+
+#, fuzzy
+#| msgid "By %s"
+msgid "%s by %s"
+msgstr "על ידי %s"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "רשימת ערכים"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "מספר קריאות"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket tasks to do"
+msgid "Tickets status by month"
+msgstr "משימות לביצוע בקריאה זו"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "קטגוריית קריאה"
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Top ticket's categories"
+msgstr "קטגוריית קריאה"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "הקריאות שלך לאישור"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "ברירת המחדל של סוג הקריאה"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "מיקום קריאה"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "מספר קריאות שפתחת כמבקש"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "לצפיה בקריאות שנפתחו על ידי הקבוצות שלך"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "עבור קריאות שנסגרו לאחר"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "לצפיה בקריאות שנפתחו על ידי הקבוצות שלך"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignees"
+msgstr "קריאות שלך בביצוע"
+
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "הוסף מעקב לקריאות של קבוצות מקושרות"
+
+#, fuzzy
+#| msgid "List of translations"
+msgid "List of reminders"
+msgstr "רשימת תרגומים"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+
+msgid "Add a network name"
+msgstr "הוסף שם רשת"
+
+#, fuzzy
+#| msgid "No associated item"
+msgid "Not associated"
+msgstr "לא נמצא פריט משוייך"
+
+#, fuzzy
+#| msgid "Add a network name"
+msgid "Create a new network name"
+msgstr "הוסף שם רשת"
+
+msgid "No network name found"
+msgstr "לא נמצאה שם רשת"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "בדוק עדכונים חדשים"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "התקן"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "נתק"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "נוצר ב-%s"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "ההערה שלך עברה עריכה"
+
+#, fuzzy
+#| msgid "Opened on %s"
+msgid "Renew it on %1$s."
+msgstr "נפתחה ב- %s"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "שאלות פופולריות ביותר"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "עודכן אחרון"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "קרא הערות"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "Filter plugin list"
+msgstr "הרחבה לא זמינה"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "דף הבית"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "קריאה בלבד"
+
+msgid "Clean"
+msgstr "נקה"
+
+msgid "This plugin is not available for your GLPI version."
+msgstr ""
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Check if a new version is available"
+msgid "A new version (%s) is available, update ?"
+msgstr "בדוק זמינות גרסה חדשה"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "התקן"
+
+msgid "Enable"
+msgstr "הפעל"
+
+msgid "Uninstall"
+msgstr "הסר התקנה"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "הרחבה לא זמינה"
+msgstr[1] "הרחבה לא זמינה"
+msgstr[2] "הרחבה לא זמינה"
+msgstr[3] "הרחבה לא זמינה"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "מתעכבות"
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugins"
+msgid "Plugin name"
+msgstr "הרחבות"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "מספר בניין"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+
+#, fuzzy
+#| msgid "Administration"
+msgid "Registration"
+msgstr "ניהול המערכת"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "נוצר ב-%s"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Destination entity"
+msgid "Registration key"
+msgstr "יישות יעד"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "תיאור"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "קובץ לא מוכר"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "הפעל את המידע הפיננסי וניהולי"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "ההתקנה הושלמה"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "ההתקנה הושלמה"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"הודעת דוא'ל נשלחה לכתובת הדוא'ל שלך. ההודעה מכילה מידע איך לאפס את הסיסמה."
+
+msgid "Email address not found."
+msgstr "כתובת דוא'ל לא נמצאת."
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "הקובץ שהועלה חורג ממגבלת גודל הקובץ שפורטה בקובץ PHP.INI"
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr "הקובץ שהועלה חורג ממגבלת גודל הקובץ שפורטה בטופס ה - HTML"
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "הקובץ הועלה רק בחלקו"
+
+msgid "Failed to write file to disk"
+msgstr "כתיבת קובץ לדיסק נכשלה"
+
+msgid "A PHP extension stopped the file upload"
+msgstr ""
+
+#, fuzzy
+#| msgid ""
+#| "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "הקובץ שהועלה חורג ממגבלת גודל הקובץ שפורטה בקובץ PHP.INI"
+
+msgid "File is too big"
+msgstr "קובץ גדול מדי"
+
+msgid "File is too small"
+msgstr "קובץ קטן מדי"
+
+msgid "Maximum number of files exceeded"
+msgstr "חרגת ממגבלת כמות הקבצים המקסימלית"
+
+msgid "Image exceeds maximum width"
+msgstr "התמונה חורגת ממגבלת הרוחב המקסימלית"
+
+msgid "Image requires a minimum width"
+msgstr "יש מגבלת מינימום לגבי רוחב התמונה"
+
+msgid "Image exceeds maximum height"
+msgstr "התמונה חורגת ממגבלת הגובה המקסימלית"
+
+msgid "Image requires a minimum height"
+msgstr "יש מגבלת מינימום לגבי גובה התמונה"
+
+msgid "Filetype not allowed"
+msgstr "סוג קובץ לא מותר"
+
+#, fuzzy
+#| msgid "No file was uploaded"
+msgid "File upload aborted"
+msgstr "שום קובץ לא הועלה"
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to resize image"
+msgstr "כתיבת קובץ לדיסק נכשלה"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "פרטי משתמש"
+
+msgid "Progress"
+msgstr "התקדמות"
+
+msgid "My settings"
+msgstr "ההגדרות שלי"
+
+msgid "Back to top of the page"
+msgstr "בחזרה לראש הדף"
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "ניתן למצוא באתר הפרויקט: glpi-project.org."
+
+msgid "Check all"
+msgstr "סמן הכל"
+
+msgid "Uncheck all"
+msgstr "בטל הכל"
+
+#, fuzzy
+#| msgid "Check all"
+msgid "Check all as"
+msgstr "סמן הכל"
+
+msgid "Selection too large, massive action disabled."
+msgstr ""
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+
+msgid "The description field is mandatory"
+msgstr "חובה למלא את שדה התיאור"
+
+#, fuzzy
+#| msgid "From %1$s to %2$s"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "מ %1$s עד %2$s"
+
+msgid "Empty array"
+msgstr ""
+
+#, fuzzy
+#| msgid "%1$s - %2$s"
+msgid "%1$d on %2$d"
+msgstr "%1$s - %2$s"
+
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "סגור"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+#, fuzzy
+#| msgid "Deleting a problem"
+msgid "selecting them"
+msgstr "מחיקת בעיה"
+
+#, fuzzy
+#| msgid "File (%s)"
+msgid "File(s)"
+msgstr "קובץ (%s)"
+
+msgid "Drag and drop your file here, or"
+msgstr "גרור ושחרר את הקובץ כאן , או"
+
+msgid "Upload successful"
+msgstr "העלאה התבצעה !"
+
+msgid "Check/uncheck all"
+msgstr "סמן הכל / בטל סימון של הכל"
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+#, fuzzy
+#| msgid "Change"
+#| msgid_plural "Changes"
+msgid "Change mode"
+msgstr "שינוי"
+
+#, fuzzy
+#| msgid "Debug mode has been enabled!"
+msgid "Debug mode enabled"
+msgstr "הופעל מצב ניפוי באגים"
+
+#, fuzzy
+#| msgid "Debug mode has been disabled!"
+msgid "Debug mode disabled"
+msgstr "מצב ניפוי באגים הושבת "
+
+msgid "Saved searches"
+msgstr "חיפושים שמורים"
+
+msgid "Manage saved searches"
+msgstr "נהל חיפושים שמורים"
+
+msgid "Add is disabled"
+msgstr "הוספה אינה מאופשרת"
+
+msgid "Search is disabled"
+msgstr "חיפוש אינו מאופשר"
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "ניהול גלובלי"
+
+msgid "You are impersonating %s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "הגדר כפרטי"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr "הצג GLPI ID"
+
+msgid "Color palette"
+msgstr ""
+
+msgid "Layout"
+msgstr "תוצאות להצגה בדף הבית"
+
+msgid "Tabs on left"
+msgstr "טאבים משמאל"
+
+msgid "Classic view"
+msgstr "תצוגה קלסית"
+
+msgid "Vertical split"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "סיום חוזה"
+
+msgid "Dashboards"
+msgstr ""
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "ברירת מחדל עבור קריאה"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "ברירת מחדל עבור קריאה"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "ברירת מחדל עבור קריאה"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "ברירת מחדל עבור קריאה"
 
-#~ msgid "Solved"
-#~ msgstr "פתורות"
+msgid "Check if a new version is available"
+msgstr "בדוק זמינות גרסה חדשה"
 
-#~ msgid "Add a network name"
-#~ msgstr "הוסף שם רשת"
+#, fuzzy
+#| msgid "Show all"
+msgid "Show filters"
+msgstr "הצג הכל"
 
-#~ msgid "No network name found"
-#~ msgstr "לא נמצאה שם רשת"
+msgid "No historical matching your filters"
+msgstr ""
 
-#~ msgid "Clean"
-#~ msgstr "נקה"
+msgid "Add to schedule"
+msgstr "הוסף ללוח זמנים"
 
-#~ msgid "Install"
-#~ msgstr "התקן"
+msgid "Position in room"
+msgstr ""
 
-#~ msgid "Enable"
-#~ msgstr "הפעל"
+msgid "Door orientation in room"
+msgstr ""
 
-#~ msgid "Uninstall"
-#~ msgstr "הסר התקנה"
+msgid "North"
+msgstr "צפון"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "הודעת דוא'ל נשלחה לכתובת הדוא'ל שלך. ההודעה מכילה מידע איך לאפס את הסיסמה."
+msgid "East"
+msgstr "מזרח"
 
-#~ msgid "Email address not found."
-#~ msgstr "כתובת דוא'ל לא נמצאת."
+msgid "South"
+msgstr "דרום"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr "הקובץ שהועלה חורג ממגבלת גודל הקובץ שפורטה בקובץ PHP.INI"
+msgid "West"
+msgstr "מערב"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr "הקובץ שהועלה חורג ממגבלת גודל הקובץ שפורטה בטופס ה - HTML"
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of items"
+msgid "Number of units"
+msgstr "מספר פריטים"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "הקובץ הועלה רק בחלקו"
+msgid "U"
+msgstr ""
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "כתיבת קובץ לדיסק נכשלה"
+msgid "Width"
+msgstr ""
 
-#~ msgid "File is too big"
-#~ msgstr "קובץ גדול מדי"
+#, fuzzy
+#| msgid "Weight"
+msgid "Height"
+msgstr "משקל"
 
-#~ msgid "File is too small"
-#~ msgstr "קובץ קטן מדי"
+#, fuzzy
+#| msgid "Max. power (in watts)"
+msgid "Measured power (in watts)"
+msgstr "מקסימום כח (בוואטים)"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "חרגת ממגבלת כמות הקבצים המקסימלית"
+msgid "Max. weight"
+msgstr ""
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "התמונה חורגת ממגבלת הרוחב המקסימלית"
+#, fuzzy
+#| msgid "No user found"
+msgid "No rack found"
+msgstr "לא נמצאו משתמשים"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "יש מגבלת מינימום לגבי רוחב התמונה"
+msgid "Following elements are out of room bounds"
+msgstr ""
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "התמונה חורגת ממגבלת הגובה המקסימלית"
+msgid "Blueprint"
+msgstr ""
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "יש מגבלת מינימום לגבי גובה התמונה"
+msgid "Grid"
+msgstr ""
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "סוג קובץ לא מותר"
+msgid "Insert a rack here"
+msgstr ""
 
-#~ msgid "Progress"
-#~ msgstr "התקדמות"
+msgid "Position must be set"
+msgstr ""
 
-#~ msgid "My settings"
-#~ msgstr "ההגדרות שלי"
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "נקודת רשת אינה זמינה..."
 
-#~ msgid "Back to top of the page"
-#~ msgstr "בחזרה לראש הדף"
+msgid "All categories"
+msgstr "כל הקטגוריות"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "ניתן למצוא באתר הפרויקט: glpi-project.org."
+msgid "Uncategorized software"
+msgstr "תוכנה ללא קטגוריה"
 
-#~ msgid "Check all"
-#~ msgstr "סמן הכל"
+msgid "Valid license"
+msgstr "רישיון תקף"
 
-#~ msgid "Uncheck all"
-#~ msgstr "בטל הכל"
+#, fuzzy
+#| msgid "Update component"
+msgid "Other component"
+msgstr "עדכן רכיב"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "חובה למלא את שדה התיאור"
+msgid "One last thing before starting"
+msgstr ""
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "גרור ושחרר את הקובץ כאן , או"
+msgid "Donate"
+msgstr ""
 
-#~ msgid "Upload successful"
-#~ msgstr "העלאה התבצעה !"
+msgid "Unofficial translations are also available"
+msgstr "תרגומים לא רשמיים זמינים"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "סמן הכל / בטל סימון של הכל"
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "אני קראתי ומקבל תנאיי הרישיון הכתובים לעיל."
 
-#~ msgid "Saved searches"
-#~ msgstr "חיפושים שמורים"
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "אני קראתי ואינני מקבל תנאיי הרישיון הכתובים לעיל."
 
-#~ msgid "Manage saved searches"
-#~ msgstr "נהל חיפושים שמורים"
+msgid "Installation or update of GLPI"
+msgstr "התקנה או שדרוג של GLPI"
 
-#~ msgid "Add is disabled"
-#~ msgstr "הוספה אינה מאופשרת"
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "בחר 'התקנה' עבור התקנה חדשה של מערכת GLPI."
 
-#~ msgid "Search is disabled"
-#~ msgstr "חיפוש אינו מאופשר"
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "הצג GLPI ID"
+msgid "Do you want to continue?"
+msgstr "האם ברצונך להמשיך?"
 
-#~ msgid "Layout"
-#~ msgstr "תוצאות להצגה בדף הבית"
+msgid "Database connection parameters"
+msgstr "פרטי החיבור לבסיס הנתונים"
 
-#~ msgid "Tabs on left"
-#~ msgstr "טאבים משמאל"
+msgid "Test of the connection at the database"
+msgstr "בדיקת התחברות לבסיס הנתונים"
 
-#~ msgid "Classic view"
-#~ msgstr "תצוגה קלסית"
+msgid "Can't connect to the database"
+msgstr "אין התחברות לבסיס הנתונים"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "בדוק זמינות גרסה חדשה"
+msgid "The server answered: %s"
+msgstr "השרת ענה: %s"
 
-#~ msgid "Add to schedule"
-#~ msgstr "הוסף ללוח זמנים"
+msgid "The server or/and user field is empty"
+msgstr "השדה שרת או/ו שמ משתמש ריק"
 
-#~ msgid "North"
-#~ msgstr "צפון"
+msgid "Please select a database:"
+msgstr "נה לבחור בסיס הנתונים:"
 
-#~ msgid "East"
-#~ msgstr "מזרח"
+msgid "Create a new database or use an existing one:"
+msgstr "לצור בסיס הנתונים חדש או להשתמש בבסיס הנתונים הקיים:"
 
-#~ msgid "South"
-#~ msgstr "דרום"
+msgid "Please select the database to update:"
+msgstr "נא לבחור בסיס הנתונים לעדכון:"
 
-#~ msgid "West"
-#~ msgstr "מערב"
+msgid "Initialization of the database"
+msgstr "אתחול בסיס הנתונים"
 
-#~ msgid "All categories"
-#~ msgstr "כל הקטגוריות"
+msgid "Impossible to use the database:"
+msgstr "אי אפשר להשתמש בבסיס הנתונים:"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "תוכנה ללא קטגוריה"
+msgid "OK - database was initialized"
+msgstr "אתחול בסיס הנתונים מאושר"
 
-#~ msgid "Valid license"
-#~ msgstr "רישיון תקף"
+msgid "Impossible to write the database setup file"
+msgstr "אי אפשר לכתוב את הקובץ הגדרות של בסיס הנתונים"
+
+msgid "Database created"
+msgstr "בסיס הנתונים נוצר"
+
+msgid "Error in creating database!"
+msgstr "שגיאה ביצירת מסד נתונים!"
+
+msgid "You didn't select a database!"
+msgstr "לא בחרת בסיס נתונים!"
+
+msgid "Collect data"
+msgstr "איסוף מידע"
+
+msgid "The installation is finished"
+msgstr "ההתקנה הושלמה"
+
+msgid "Default logins / passwords are:"
+msgstr "שמות המשתמשים וסיסמאות ברירת מחדל הם:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech עבור החשבון של טכנאי"
+
+msgid "normal/normal for the normal account"
+msgstr "NORMAL עבור החשבון הרגיל"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/post-only עבור החשבון מסוג פתיחת קריאות בלבד"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+"אתה יכול למחוק או לשנות חשבונות אלה, כמו גם את הערכים הראשונים במסד הנתונים."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"אין אפשרות לצור קובץ הגדרות החיבור לבסיס הנתונים, אנא בדוק הרשאות קבצים."
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "שפת ברירת מחדל"
+
+msgid "Beginning of the installation"
+msgstr "תחילת ההתקנה"
+
+msgid "Step %d"
+msgstr "צעד %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - אימות פרטים"
+
+msgid "Remember me"
+msgstr "זכור אותי"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "יש לאפשר הפעלת יישומי JAVASCRIPT בדפדפן"
+
+msgid "You must accept cookies to reach this application"
+msgstr "יש לאפשר קבלת COOKIES בדפדפן כדי לעבוד במערכת"
+
+msgid "Invalid use of session ID"
+msgstr "שימוש לא חוקי ב-Session ID"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "גישה אל השאלות הנפוצות"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "הוסף שינוי"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "הוסף פריט"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "שמירה"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr ""
+
+msgid "Send a test chat"
+msgstr ""
 
 #~ msgid "Use GLPI"
 #~ msgstr "השתמש ב-GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "תרגומים לא רשמיים זמינים"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "אני קראתי ומקבל תנאיי הרישיון הכתובים לעיל."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "אני קראתי ואינני מקבל תנאיי הרישיון הכתובים לעיל."
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "התקנה או שדרוג של GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "בחר 'התקנה' עבור התקנה חדשה של מערכת GLPI."
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "האם ברצונך להמשיך?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "פרטי החיבור לבסיס הנתונים"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "בדיקת התחברות לבסיס הנתונים"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "אין התחברות לבסיס הנתונים"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "השרת ענה: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "השדה שרת או/ו שמ משתמש ריק"
-
-#~ msgid "Please select a database:"
-#~ msgstr "נה לבחור בסיס הנתונים:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "לצור בסיס הנתונים חדש או להשתמש בבסיס הנתונים הקיים:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "נא לבחור בסיס הנתונים לעדכון:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "אתחול בסיס הנתונים"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "אי אפשר להשתמש בבסיס הנתונים:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "אתחול בסיס הנתונים מאושר"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "אי אפשר לכתוב את הקובץ הגדרות של בסיס הנתונים"
-
-#~ msgid "Database created"
-#~ msgstr "בסיס הנתונים נוצר"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "שגיאה ביצירת מסד נתונים!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "לא בחרת בסיס נתונים!"
-
-#~ msgid "Collect data"
-#~ msgstr "איסוף מידע"
-
-#~ msgid "The installation is finished"
-#~ msgstr "ההתקנה הושלמה"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "שמות המשתמשים וסיסמאות ברירת מחדל הם:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi עבור חשבון מנהל המערכת"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech עבור החשבון של טכנאי"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "NORMAL עבור החשבון הרגיל"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/post-only עבור החשבון מסוג פתיחת קריאות בלבד"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "אתה יכול למחוק או לשנות חשבונות אלה, כמו גם את הערכים הראשונים במסד "
-#~ "הנתונים."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "אין אפשרות לצור קובץ הגדרות החיבור לבסיס הנתונים, אנא בדוק הרשאות קבצים."
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "תחילת ההתקנה"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "צעד %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - אימות פרטים"
-
-#~ msgid "Remember me"
-#~ msgstr "זכור אותי"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "יש לאפשר הפעלת יישומי JAVASCRIPT בדפדפן"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "יש לאפשר קבלת COOKIES בדפדפן כדי לעבוד במערכת"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "שימוש לא חוקי ב-Session ID"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "גישה אל השאלות הנפוצות"

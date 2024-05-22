@@ -23105,3 +23105,1061 @@ msgstr ""
 #: src/dashboard/dashboard.form.php:50
 msgid "Could not create dashboard"
 msgstr ""
+
+msgid "Favorite"
+msgstr ""
+
+msgid "SSO Login"
+msgstr ""
+
+msgid "Open ID connect configuration"
+msgstr ""
+
+msgid "No room found or selected"
+msgstr ""
+
+msgid "Marketplace"
+msgstr ""
+
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr ""
+
+msgid "See the catalog of plugins"
+msgstr ""
+
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+
+msgid "Empty for infinite"
+msgstr ""
+
+msgid "RSS feeds found"
+msgstr ""
+
+msgid "Active Directory"
+msgstr ""
+
+msgid "GLPI version"
+msgstr ""
+
+msgid "Confirm the promotion?"
+msgstr ""
+
+msgid "Your tickets to close"
+msgstr ""
+
+msgid "Tickets on pending status"
+msgstr ""
+
+msgid "Tickets to be processed"
+msgstr ""
+
+msgid "Your observed tickets"
+msgstr ""
+
+msgid "Your tickets in progress"
+msgstr ""
+
+msgid "Your tickets to validate"
+msgstr ""
+
+msgid "Your tickets having rejected approval status"
+msgstr ""
+
+msgid "Your tickets having rejected solution"
+msgstr ""
+
+msgid "Ticket followup"
+msgstr ""
+
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d nouveau ticket"
+msgstr[1] "%d nouveaux tickets"
+
+msgid "No ticket found."
+msgstr ""
+
+msgid "Last tickets"
+msgstr ""
+
+msgid "New ticket for this item..."
+msgstr ""
+
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "%d dernier ticket"
+msgstr[1] "%d derniers tickets"
+
+msgid "You don't have right to see all tickets"
+msgstr ""
+
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Ticket sur les éléments liés"
+msgstr[1] "Tickets sur les éléments liés"
+
+msgid "No ticket in progress."
+msgstr ""
+
+msgid "Assign equipment"
+msgstr ""
+
+msgid "Automatic tickets closing"
+msgstr ""
+
+msgid "Generation of satisfaction surveys"
+msgstr ""
+
+msgid "Automatic closed tickets purge"
+msgstr ""
+
+msgid "See my ticket"
+msgstr ""
+
+msgid "See group ticket"
+msgstr ""
+
+msgid "See tickets created by my groups"
+msgstr ""
+
+msgid "See all tickets"
+msgstr ""
+
+msgid "See assigned"
+msgstr ""
+
+msgid "See assigned tickets"
+msgstr ""
+
+msgid "Assign a ticket"
+msgstr ""
+
+msgid "Steal"
+msgstr ""
+
+msgid "Steal a ticket"
+msgstr ""
+
+msgid "Beeing in charge"
+msgstr ""
+
+msgid "To be in charge of a ticket"
+msgstr ""
+
+msgid "Change the priority"
+msgstr ""
+
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr ""
+
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
+
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
+
+msgid "Failed to load ticket %d"
+msgstr ""
+
+msgid "Failed to add followup to ticket %d"
+msgstr ""
+
+msgid "Failed to add task to ticket %d"
+msgstr ""
+
+msgid "Failed to add document to ticket %d"
+msgstr ""
+
+msgid "Failed to link tickets %d and %d"
+msgstr ""
+
+msgid "Failed to delete ticket %d"
+msgstr ""
+
+msgid "%s merges ticket %s into %s"
+msgstr ""
+
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr ""
+
+msgid "Recalculate the category"
+msgstr ""
+
+msgid "Valid licenses"
+msgstr ""
+
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr ""
+
+msgid "Merge"
+msgstr ""
+
+msgid "Software deleted after merging"
+msgstr ""
+
+msgid "You must enable at least one notification mode."
+msgstr ""
+
+msgid "GLPI"
+msgstr ""
+
+msgid "Connect a computer"
+msgstr ""
+
+msgid "Not connected"
+msgstr ""
+
+msgid "Show as map"
+msgstr ""
+
+msgid "Valid to %s"
+msgstr ""
+
+msgid "Late tickets"
+msgstr ""
+
+msgid "Tickets waiting for validation"
+msgstr ""
+
+msgid "Incoming tickets"
+msgstr ""
+
+msgid "Solved tickets"
+msgstr ""
+
+msgid "Closed tickets"
+msgstr ""
+
+msgid "without"
+msgstr ""
+
+msgid "Time to close"
+msgstr ""
+
+msgid "To validate"
+msgstr ""
+
+msgid "Solved"
+msgstr ""
+
+msgid "Share or embed this dashboard"
+msgstr ""
+
+msgid "Delete this dashboard"
+msgstr ""
+
+msgid "Toggle auto-refresh"
+msgstr ""
+
+msgid "Toggle night mode"
+msgstr ""
+
+msgid "Toggle fullscreen"
+msgstr ""
+
+msgid "Clone this dashboard"
+msgstr ""
+
+msgid "Toggle edit mode"
+msgstr ""
+
+msgid "Add filter"
+msgstr ""
+
+msgid "Add a new dashboard"
+msgstr ""
+
+msgid "others"
+msgstr ""
+
+msgid "Widget"
+msgstr ""
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+msgid "Limit number of data"
+msgstr ""
+
+msgid "Filters"
+msgstr ""
+
+msgid "Embed in another application"
+msgstr ""
+
+msgid "Direct link"
+msgstr ""
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+msgid "empty card !"
+msgstr ""
+
+msgid "Number of %s"
+msgstr ""
+
+msgid "%s by %s"
+msgstr ""
+
+msgid "List of %s"
+msgstr ""
+
+msgid "Number of tickets by month"
+msgstr ""
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+msgid "Tickets status by month"
+msgstr ""
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+msgid "Tickets summary"
+msgstr ""
+
+msgid "Top ticket's categories"
+msgstr ""
+
+msgid "Top ticket's entities"
+msgstr ""
+
+msgid "Top ticket's request types"
+msgstr ""
+
+msgid "Top ticket's locations"
+msgstr ""
+
+msgid "Top ticket's requesters"
+msgstr ""
+
+msgid "Top ticket's requester groups"
+msgstr ""
+
+msgid "Top ticket's observers"
+msgstr ""
+
+msgid "Top ticket's observer groups"
+msgstr ""
+
+msgid "Top ticket's assignees"
+msgstr ""
+
+msgid "Top ticket's assignee groups"
+msgstr ""
+
+msgid "List of reminders"
+msgstr ""
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+
+msgid "Add a network name"
+msgstr ""
+
+msgid "Not associated"
+msgstr ""
+
+msgid "Create a new network name"
+msgstr ""
+
+msgid "No network name found"
+msgstr ""
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+msgid "Check all plugin updates"
+msgstr ""
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+msgid "Installed"
+msgstr ""
+
+msgid "Discover"
+msgstr ""
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+msgid "Register on %1$s"
+msgstr ""
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+msgid "Your %1$s subscription has been terminated."
+msgstr ""
+
+msgid "Renew it on %1$s."
+msgstr ""
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+msgid "Most popular"
+msgstr ""
+
+msgid "Last updated"
+msgstr ""
+
+msgid "Most recent"
+msgstr ""
+
+msgid "Best notes"
+msgstr ""
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+msgid "Filter plugin list"
+msgstr ""
+
+msgid "Homepage"
+msgstr ""
+
+msgid "Get help"
+msgstr ""
+
+msgid "Readme"
+msgstr ""
+
+msgid "Clean"
+msgstr ""
+
+msgid "This plugin is not available for your GLPI version."
+msgstr ""
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+msgid "A new version (%s) is available, update ?"
+msgstr ""
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr ""
+
+msgid "Enable"
+msgstr ""
+
+msgid "Uninstall"
+msgstr ""
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Plugin %s"
+msgstr[1] "Plugins %s"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+msgid "Later"
+msgstr ""
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+msgid "Plugin name"
+msgstr ""
+
+msgid "Plugin new version number"
+msgstr ""
+
+msgid "Plugin old version number"
+msgstr ""
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+
+msgid "Registration"
+msgstr ""
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+msgid "Register on %1$s!"
+msgstr ""
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+msgid "Registration key"
+msgstr ""
+
+msgid "Subscription"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+msgid "Registered by"
+msgstr ""
+
+msgid "Unable to fetch registration information."
+msgstr ""
+
+msgid "The registration key is invalid."
+msgstr ""
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+msgid "The registration key is valid."
+msgstr ""
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+
+msgid "Email address not found."
+msgstr ""
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+
+msgid "The uploaded file was only partially uploaded"
+msgstr ""
+
+msgid "Failed to write file to disk"
+msgstr ""
+
+msgid "A PHP extension stopped the file upload"
+msgstr ""
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+
+msgid "File is too big"
+msgstr ""
+
+msgid "File is too small"
+msgstr ""
+
+msgid "Maximum number of files exceeded"
+msgstr ""
+
+msgid "Image exceeds maximum width"
+msgstr ""
+
+msgid "Image requires a minimum width"
+msgstr ""
+
+msgid "Image exceeds maximum height"
+msgstr ""
+
+msgid "Image requires a minimum height"
+msgstr ""
+
+msgid "Filetype not allowed"
+msgstr ""
+
+msgid "File upload aborted"
+msgstr ""
+
+msgid "Failed to resize image"
+msgstr ""
+
+msgid "Display GLPI debug information"
+msgstr ""
+
+msgid "Progress"
+msgstr ""
+
+msgid "My settings"
+msgstr ""
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr ""
+
+msgid "Check all"
+msgstr ""
+
+msgid "Uncheck all"
+msgstr ""
+
+msgid "Check all as"
+msgstr ""
+
+msgid "Selection too large, massive action disabled."
+msgstr ""
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+
+msgid "The description field is mandatory"
+msgstr ""
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr ""
+
+msgid "Empty array"
+msgstr ""
+
+msgid "%1$d on %2$d"
+msgstr ""
+
+msgid "Close (Esc)"
+msgstr ""
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+msgid "selecting them"
+msgstr ""
+
+msgid "File(s)"
+msgstr ""
+
+msgid "Drag and drop your file here, or"
+msgstr ""
+
+msgid "Upload successful"
+msgstr ""
+
+msgid "Check/uncheck all"
+msgstr ""
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+msgid "Change mode"
+msgstr ""
+
+msgid "Debug mode enabled"
+msgstr ""
+
+msgid "Debug mode disabled"
+msgstr ""
+
+msgid "Saved searches"
+msgstr ""
+
+msgid "Manage saved searches"
+msgstr ""
+
+msgid "Add is disabled"
+msgstr ""
+
+msgid "Search is disabled"
+msgstr ""
+
+msgid "Global Kanban"
+msgstr ""
+
+msgid "You are impersonating %s."
+msgstr ""
+
+msgid "Stop impersonating"
+msgstr ""
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr ""
+
+msgid "Color palette"
+msgstr ""
+
+msgid "Layout"
+msgstr ""
+
+msgid "Tabs on left"
+msgstr ""
+
+msgid "Classic view"
+msgstr ""
+
+msgid "Vertical split"
+msgstr ""
+
+msgid "Enable high contrast"
+msgstr ""
+
+msgid "Dashboards"
+msgstr ""
+
+msgid "Default for central"
+msgstr ""
+
+msgid "Default for Assets"
+msgstr ""
+
+msgid "Default for Assistance"
+msgstr ""
+
+msgid "Default for tickets (mini dashboard)"
+msgstr ""
+
+msgid "Check if a new version is available"
+msgstr ""
+
+msgid "Show filters"
+msgstr ""
+
+msgid "No historical matching your filters"
+msgstr ""
+
+msgid "Add to schedule"
+msgstr ""
+
+msgid "Position in room"
+msgstr ""
+
+msgid "Door orientation in room"
+msgstr ""
+
+msgid "North"
+msgstr ""
+
+msgid "East"
+msgstr ""
+
+msgid "South"
+msgstr ""
+
+msgid "West"
+msgstr ""
+
+msgid "Number of units"
+msgstr ""
+
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Measured power (in watts)"
+msgstr ""
+
+msgid "Max. weight"
+msgstr ""
+
+msgid "No rack found"
+msgstr ""
+
+msgid "Following elements are out of room bounds"
+msgstr ""
+
+msgid "Blueprint"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Insert a rack here"
+msgstr ""
+
+msgid "Position must be set"
+msgstr ""
+
+msgid "%1$s position is not available"
+msgstr ""
+
+msgid "All categories"
+msgstr ""
+
+msgid "Uncategorized software"
+msgstr ""
+
+msgid "Valid license"
+msgstr ""
+
+msgid "Other component"
+msgstr ""
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr ""
+
+msgid "Unofficial translations are also available"
+msgstr ""
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr ""
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr ""
+
+msgid "Installation or update of GLPI"
+msgstr ""
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr ""
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+
+msgid "Do you want to continue?"
+msgstr ""
+
+msgid "Database connection parameters"
+msgstr ""
+
+msgid "Test of the connection at the database"
+msgstr ""
+
+msgid "Can't connect to the database"
+msgstr ""
+
+msgid "The server answered: %s"
+msgstr ""
+
+msgid "The server or/and user field is empty"
+msgstr ""
+
+msgid "Please select a database:"
+msgstr ""
+
+msgid "Create a new database or use an existing one:"
+msgstr ""
+
+msgid "Please select the database to update:"
+msgstr ""
+
+msgid "Initialization of the database"
+msgstr ""
+
+msgid "Impossible to use the database:"
+msgstr ""
+
+msgid "OK - database was initialized"
+msgstr ""
+
+msgid "Impossible to write the database setup file"
+msgstr ""
+
+msgid "Database created"
+msgstr ""
+
+msgid "Error in creating database!"
+msgstr ""
+
+msgid "You didn't select a database!"
+msgstr ""
+
+msgid "Collect data"
+msgstr ""
+
+msgid "The installation is finished"
+msgstr ""
+
+msgid "Default logins / passwords are:"
+msgstr ""
+
+msgid "tech/tech for the technician account"
+msgstr ""
+
+msgid "normal/normal for the normal account"
+msgstr ""
+
+msgid "post-only/postonly for the postonly account"
+msgstr ""
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+
+msgid "Select your language"
+msgstr ""
+
+msgid "Beginning of the installation"
+msgstr ""
+
+msgid "Step %d"
+msgstr ""
+
+msgid "GLPI - Authentication"
+msgstr ""
+
+msgid "Remember me"
+msgstr ""
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr ""
+
+msgid "You must accept cookies to reach this application"
+msgstr ""
+
+msgid "Invalid use of session ID"
+msgstr ""
+
+msgid "Access to the Frequently Asked Questions"
+msgstr ""
+
+msgid "Add a card"
+msgstr ""
+
+msgid "Add a filter"
+msgstr ""
+
+msgid "Saved"
+msgstr ""
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr ""
+
+msgid "Send a test chat"
+msgstr ""

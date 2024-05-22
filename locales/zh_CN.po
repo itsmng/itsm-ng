@@ -23201,862 +23201,1187 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr "迷你工单看板"
 
-#~ msgid "No room found or selected"
-#~ msgstr "未选择或未找到房间"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "写入"
 
-#~ msgid "Marketplace"
-#~ msgstr "市场"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "用户名"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s 添加项目 %2$s-%3$s:%4$s"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "查看设置"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "查看插件目录"
+msgid "No room found or selected"
+msgstr "未选择或未找到房间"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "空项"
+msgid "Marketplace"
+msgstr "市场"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "找到RSS订阅"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s 添加项目 %2$s-%3$s:%4$s"
 
-#~ msgid "Active Directory"
-#~ msgstr "活动目录"
+msgid "See the catalog of plugins"
+msgstr "查看插件目录"
 
-#~ msgid "GLPI version"
-#~ msgstr "GLPI版本"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "确认提升吗?"
+msgid "Empty for infinite"
+msgstr "空项"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "您待结案的工单"
+msgid "RSS feeds found"
+msgstr "找到RSS订阅"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "搁置状态中的工单"
+msgid "Active Directory"
+msgstr "活动目录"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "需处理的工单"
+msgid "GLPI version"
+msgstr "GLPI版本"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "您关注的工单"
+msgid "Confirm the promotion?"
+msgstr "确认提升吗?"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "您进行中的工单"
+msgid "Your tickets to close"
+msgstr "您待结案的工单"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "您待确认的工单"
+msgid "Tickets on pending status"
+msgstr "搁置状态中的工单"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "您的工单被拒绝批准状态"
+msgid "Tickets to be processed"
+msgstr "需处理的工单"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "您的工单被拒绝了"
+msgid "Your observed tickets"
+msgstr "您关注的工单"
 
-#~ msgid "Ticket followup"
-#~ msgstr "工单后续追踪"
+msgid "Your tickets in progress"
+msgstr "您进行中的工单"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d 新的工单"
+msgid "Your tickets to validate"
+msgstr "您待确认的工单"
 
-#~ msgid "No ticket found."
-#~ msgstr "找不到工单"
+msgid "Your tickets having rejected approval status"
+msgstr "您的工单被拒绝批准状态"
 
-#~ msgid "Last tickets"
-#~ msgstr "最新工单"
+msgid "Your tickets having rejected solution"
+msgstr "您的工单被拒绝了"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "为此项目新建工单"
+msgid "Ticket followup"
+msgstr "工单后续追踪"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "最新 %d 笔工单"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d 新的工单"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "您无权访问所有案例。"
+msgid "No ticket found."
+msgstr "找不到工单"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "关联到项目的工单"
+msgid "Last tickets"
+msgstr "最新工单"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "没有正在处理的工单"
+msgid "New ticket for this item..."
+msgstr "为此项目新建工单"
 
-#~ msgid "Assign equipment"
-#~ msgstr "分配装备"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "最新 %d 笔工单"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "工单自动结案"
+msgid "You don't have right to see all tickets"
+msgstr "您无权访问所有案例。"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "生成满意度调查"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "关联到项目的工单"
 
-#~ msgid "Automatic closed tickets purge"
-#~ msgstr "自动关闭工单清除"
+msgid "No ticket in progress."
+msgstr "没有正在处理的工单"
 
-#~ msgid "See my ticket"
-#~ msgstr "查看本人工单"
+msgid "Assign equipment"
+msgstr "分配装备"
 
-#~ msgid "See group ticket"
-#~ msgstr "查看群组工单"
+msgid "Automatic tickets closing"
+msgstr "工单自动结案"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "查看我的群组创建的工单"
+msgid "Generation of satisfaction surveys"
+msgstr "生成满意度调查"
 
-#~ msgid "See all tickets"
-#~ msgstr "查看所有工单"
+msgid "Automatic closed tickets purge"
+msgstr "自动关闭工单清除"
 
-#~ msgid "See assigned"
-#~ msgstr "查看分配"
+msgid "See my ticket"
+msgstr "查看本人工单"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "查看分配工单"
+msgid "See group ticket"
+msgstr "查看群组工单"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "分配工单"
+msgid "See tickets created by my groups"
+msgstr "查看我的群组创建的工单"
 
-#~ msgid "Steal"
-#~ msgstr "拦截"
+msgid "See all tickets"
+msgstr "查看所有工单"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "拦截工单"
+msgid "See assigned"
+msgstr "查看分配"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "负责人"
+msgid "See assigned tickets"
+msgstr "查看分配工单"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "接手负责工单"
+msgid "Assign a ticket"
+msgstr "分配工单"
 
-#~ msgid "Change the priority"
-#~ msgstr "改变优先级"
+msgid "Steal"
+msgstr "拦截"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "批准解决方案/回复调查（我的工单）"
+msgid "Steal a ticket"
+msgstr "拦截工单"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "批准解决方案并回复由我创建的工单调查"
+msgid "Beeing in charge"
+msgstr "负责人"
 
-#, php-format
-#~ msgid "Not enough rights to merge tickets %d and %d"
-#~ msgstr "没有足够的权限合并工单%d和%d"
+msgid "To be in charge of a ticket"
+msgstr "接手负责工单"
 
-#, php-format
-#~ msgid "Failed to load ticket %d"
-#~ msgstr "加载工单%d失败"
+msgid "Change the priority"
+msgstr "改变优先级"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "无法删除工单%d"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "批准解决方案/回复调查（我的工单）"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%s 合并工单 %s 成 %s"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "批准解决方案并回复由我创建的工单调查"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "重新计算类别"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "没有足够的权限合并工单%d和%d"
 
-#~ msgid "Valid licenses"
-#~ msgstr "验证授权"
+msgid "Failed to load ticket %d"
+msgstr "加载工单%d失败"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "安装的数量"
+#, fuzzy
+#| msgid "Failed to delete ticket %d"
+msgid "Failed to add followup to ticket %d"
+msgstr "无法删除工单%d"
 
-#~ msgid "Merge"
-#~ msgstr "合并"
+#, fuzzy
+#| msgid "Failed to load ticket %d"
+msgid "Failed to add task to ticket %d"
+msgstr "加载工单%d失败"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "合并后删除的软件"
+#, fuzzy
+#| msgid "Failed to delete ticket %d"
+msgid "Failed to add document to ticket %d"
+msgstr "无法删除工单%d"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "您必须至少启用一种通知模式。"
+#, fuzzy
+#| msgid "Failed to load ticket %d"
+msgid "Failed to link tickets %d and %d"
+msgstr "加载工单%d失败"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Failed to delete ticket %d"
+msgstr "无法删除工单%d"
 
-#~ msgid "Connect a computer"
-#~ msgstr "连接到电脑"
+msgid "%s merges ticket %s into %s"
+msgstr "%s 合并工单 %s 成 %s"
 
-#~ msgid "Not connected"
-#~ msgstr "没有连接"
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "测试插件文件的写入权限"
 
-#~ msgid "Show as map"
-#~ msgstr "显示为地图"
+msgid "Recalculate the category"
+msgstr "重新计算类别"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "有效期至 %s"
+msgid "Valid licenses"
+msgstr "验证授权"
 
-#~ msgid "Incoming tickets"
-#~ msgstr "传入中的工单"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "安装的数量"
 
-#~ msgid "Solved tickets"
-#~ msgstr "已解决的工单"
+msgid "Merge"
+msgstr "合并"
 
-#~ msgid "Closed tickets"
-#~ msgstr "已关闭的工单"
+msgid "Software deleted after merging"
+msgstr "合并后删除的软件"
 
-#~ msgid "Solved"
-#~ msgstr "已解决"
+msgid "You must enable at least one notification mode."
+msgstr "您必须至少启用一种通知模式。"
 
-#~ msgid "Toggle auto-refresh"
-#~ msgstr "切换至自动刷新"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid "Toggle night mode"
-#~ msgstr "切换至夜间模式"
+msgid "Connect a computer"
+msgstr "连接到电脑"
 
-#~ msgid "Toggle fullscreen"
-#~ msgstr "切换至全屏"
+msgid "Not connected"
+msgstr "没有连接"
 
-#~ msgid "Toggle edit mode"
-#~ msgstr "切换至编辑模式"
+msgid "Show as map"
+msgstr "显示为地图"
 
-#~ msgid "others"
-#~ msgstr "其他"
+msgid "Valid to %s"
+msgstr "有效期至 %s"
 
-#~ msgid "Number of tickets by month"
-#~ msgstr "月度工单数"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "最新工单"
 
-#~ msgid "Tickets status by month"
-#~ msgstr "按月份筛选工单状态"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "待审批工单"
 
-#~ msgid "Tickets times (in hours)"
-#~ msgstr "工单时间 (小时)"
+msgid "Incoming tickets"
+msgstr "传入中的工单"
 
-#~ msgid "Top ticket's categories"
-#~ msgstr "工单类别TOP榜"
+msgid "Solved tickets"
+msgstr "已解决的工单"
 
-#~ msgid "Top ticket's entities"
-#~ msgstr "工单组织TOP榜"
+msgid "Closed tickets"
+msgstr "已关闭的工单"
 
-#~ msgid "Top ticket's request types"
-#~ msgstr "工单申请类别TOP榜"
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "没有名称"
 
-#~ msgid "Top ticket's locations"
-#~ msgstr "工单位置TOP榜"
+#, fuzzy
+#| msgid "Time to own"
+msgid "Time to close"
+msgstr "保留时间"
 
-#~ msgid "Top ticket's requesters"
-#~ msgstr "工单申请TOP榜"
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "验证"
 
-#~ msgid "Top ticket's requester groups"
-#~ msgstr "工单申请群组TOP榜"
+msgid "Solved"
+msgstr "已解决"
 
-#~ msgid "Top ticket's observers"
-#~ msgstr "工单观察员TOP榜"
+msgid "Share or embed this dashboard"
+msgstr ""
 
-#~ msgid "Top ticket's observer groups"
-#~ msgstr "工单观察员群组TOP榜"
+#, fuzzy
+#| msgid "Helpdesk Dashboard"
+msgid "Delete this dashboard"
+msgstr "客服看板"
 
-#~ msgid "Top ticket's assignees"
-#~ msgstr "工单受让人TOP榜"
+msgid "Toggle auto-refresh"
+msgstr "切换至自动刷新"
 
-#~ msgid "Top ticket's assignee groups"
-#~ msgstr "工单受让人群组TOP榜"
+msgid "Toggle night mode"
+msgstr "切换至夜间模式"
 
-#~ msgid "Toggle edit mode to edit content"
-#~ msgstr "切换至编辑模式以编辑内容"
+msgid "Toggle fullscreen"
+msgstr "切换至全屏"
 
-#~ msgid "field name in DB"
-#~ msgstr "数据库字段名"
+#, fuzzy
+#| msgid "Mini tickets dashboard"
+msgid "Clone this dashboard"
+msgstr "迷你工单看板"
 
-#~ msgid "Example:"
-#~ msgstr "例如:"
+msgid "Toggle edit mode"
+msgstr "切换至编辑模式"
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "自GLPI 9.2以来，我们引入了一项名为“Telemetry”的新统计功能，匿名获得您的许"
-#~ "可，将数据发送到我们的遥测网站。"
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add filter"
+msgstr "添加项目"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr "IP网络不在数据库中，不过您可以查看当前可用网络。"
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "添加新任务"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr "多个网络名可用！到“网络名字”标签去管理它们。"
+msgid "others"
+msgstr "其他"
 
-#~ msgid "Add a network name"
-#~ msgstr "添加一个网络名字"
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "预算"
 
-#~ msgid "Not associated"
-#~ msgstr "没有关联"
+msgid "Use gradient palette"
+msgstr ""
 
-#~ msgid "Create a new network name"
-#~ msgstr "创建一个新的网络名字"
+msgid "Display value labels on points/bars"
+msgstr ""
 
-#~ msgid "No network name found"
-#~ msgstr "找不到网络名字"
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "任务数量"
 
-#~ msgid "Unable to download plugin archive."
-#~ msgstr "无法下载插件。"
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filters"
+msgstr "过滤列表"
 
-#, php-format
-#~ msgid "Plugin archive format is not supported by your system : %s."
-#~ msgstr "插件格式不被您的系统: %s 支持。"
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "应用程序的URL地址"
 
-#~ msgid "Unable to extract plugin archive."
-#~ msgstr "无法解压插件。"
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP 连接"
 
-#~ msgid "Check all plugin updates"
-#~ msgstr "检查所有插件更新"
+msgid "Iframe"
+msgstr ""
 
-#, php-format
-#~ msgid "New version for plugin %s: %s"
-#~ msgstr "插件%s的新版本: %s"
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
 
-#~ msgid "Installed"
-#~ msgstr "已安装"
+#, fuzzy
+#| msgid "Empty array"
+msgid "empty card !"
+msgstr "空数组"
 
-#~ msgid "Discover"
-#~ msgstr "发现"
+#, fuzzy
+#| msgid "Number of rows"
+msgid "Number of %s"
+msgstr "列数"
 
-#~ msgid "Maybe you could setup a proxy"
-#~ msgstr "您或许可以设置一个代理"
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s 作者 %2$s"
 
-#~ msgid "or please check later"
-#~ msgstr "或者请稍后检查"
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "列出值"
 
-#~ msgid "A registration, at least a free one, is required to use marketplace!"
-#~ msgstr "使用市场前您需要进行注册, 至少是免费注册!"
+msgid "Number of tickets by month"
+msgstr "月度工单数"
 
-#~ msgid "fill your registration key in setup."
-#~ msgstr "在设置中输入您的注册密钥"
+msgid "Evolution of ticket in the past year"
+msgstr ""
 
-#~ msgid "Alpha ASC"
-#~ msgstr "字母顺序"
+msgid "Tickets status by month"
+msgstr "按月份筛选工单状态"
 
-#~ msgid "Alpha DESC"
-#~ msgstr "字母倒序"
+msgid "Tickets times (in hours)"
+msgstr "工单时间 (小时)"
 
-#~ msgid "Most popular"
-#~ msgstr "最热门"
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "工单类别"
 
-#~ msgid "Last updated"
-#~ msgstr "最后更新"
+msgid "Top ticket's categories"
+msgstr "工单类别TOP榜"
 
-#~ msgid "Most recent"
-#~ msgstr "最近"
+msgid "Top ticket's entities"
+msgstr "工单组织TOP榜"
 
-#~ msgid "Refresh plugin list"
-#~ msgstr "刷新插件列表"
+msgid "Top ticket's request types"
+msgstr "工单申请类别TOP榜"
 
-#~ msgid "Homepage"
-#~ msgstr "主页"
+msgid "Top ticket's locations"
+msgstr "工单位置TOP榜"
 
-#~ msgid "Get help"
-#~ msgstr "获取帮助"
+msgid "Top ticket's requesters"
+msgstr "工单申请TOP榜"
 
-#~ msgid "Clean"
-#~ msgstr "清除"
+msgid "Top ticket's requester groups"
+msgstr "工单申请群组TOP榜"
 
-#~ msgid "Install"
-#~ msgstr "安装"
+msgid "Top ticket's observers"
+msgstr "工单观察员TOP榜"
 
-#~ msgid "Enable"
-#~ msgstr "启用"
+msgid "Top ticket's observer groups"
+msgstr "工单观察员群组TOP榜"
 
-#~ msgid "Uninstall"
-#~ msgstr "卸载"
+msgid "Top ticket's assignees"
+msgstr "工单受让人TOP榜"
 
-#, php-format
-#~ msgid "%s plugin"
-#~ msgid_plural "%s plugins"
-#~ msgstr[0] "%s 插件"
+msgid "Top ticket's assignee groups"
+msgstr "工单受让人群组TOP榜"
 
-#~ msgid "Some updates are available for your installed plugins!"
-#~ msgstr "您安装的插件有一些更新可用!"
+#, fuzzy
+#| msgid "Translation of reminders"
+msgid "List of reminders"
+msgstr "提醒翻译"
 
-#~ msgid "Plugin name"
-#~ msgstr "插件名称"
+msgid "Editable markdown card"
+msgstr ""
 
-#~ msgid "Plugin new version number"
-#~ msgstr "插件新版本号"
+msgid "Toggle edit mode to edit content"
+msgstr "切换至编辑模式以编辑内容"
 
-#~ msgid "Plugin old version number"
-#~ msgstr "插件旧版本号"
+msgid "field name in DB"
+msgstr "数据库字段名"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr "在搜索引擎上，使用“过期包含NULL”来搜索没有过期日期的许可证"
+msgid "Example:"
+msgstr "例如:"
 
-#~ msgid "Registration"
-#~ msgstr "注册"
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"自GLPI 9.2以来，我们引入了一项名为“Telemetry”的新统计功能，匿名获得您的许可，"
+"将数据发送到我们的遥测网站。"
 
-#~ msgid "Registration key"
-#~ msgstr "注册码"
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr "IP网络不在数据库中，不过您可以查看当前可用网络。"
 
-#~ msgid "Subscription"
-#~ msgstr "订阅"
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr "多个网络名可用！到“网络名字”标签去管理它们。"
 
-#~ msgid "The registration key is invalid."
-#~ msgstr "注册密钥无效。"
+msgid "Add a network name"
+msgstr "添加一个网络名字"
 
-#~ msgid "The registration key is valid."
-#~ msgstr "注册密钥有效。"
+msgid "Not associated"
+msgstr "没有关联"
 
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "您需要找一下你们网管，GLPI 有没有bug或者要不要预先配置好规则或字典等"
-#~ "等？ \n"
-#~ "\n"
-#~ "我们提供 %s 空间给您。\n"
-#~ " GLPI在线版是一个商业产品，包括第3层订阅支持，确保遇到的错误能在承诺时间内"
-#~ "纠正。 \n"
-#~ "\n"
-#~ "在这空间中, 您将能获得 <b> 联系正式合伙人 </b>  帮助您实现GLPI集成。 \n"
-#~ "\n"
-#~ "或者,  <b>捐赠</b>GLPI以表达支持GLPI的开发工作。"
+msgid "Create a new network name"
+msgstr "创建一个新的网络名字"
 
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "如您在使用 GLPI 模块高级功能中遇到问题?\n"
-#~ "请与我们取得联系。 我们将竭诚为您服务 %s。"
+msgid "No network name found"
+msgstr "找不到网络名字"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr "一封邮件已发送到您的邮箱，邮件中包含重置密码的信息。"
+msgid "Unable to download plugin archive."
+msgstr "无法下载插件。"
 
-#~ msgid "Email address not found."
-#~ msgstr "未发现邮件地址"
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr "插件格式不被您的系统: %s 支持。"
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr "设备的MAC地址和IP地址已经包含在汇聚网络端口中。"
+msgid "Unable to extract plugin archive."
+msgstr "无法解压插件。"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr "上传的文件超出了 php.ini 文件中 upload_max_filesize 参数的值"
+msgid "Check all plugin updates"
+msgstr "检查所有插件更新"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr "上传的文件的大小超过了  HTML表单中指定的 MAX_FILE_SIZE 参数的值"
+msgid "New version for plugin %s: %s"
+msgstr "插件%s的新版本: %s"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "上传的文件仅上传了一部分"
+msgid "Installed"
+msgstr "已安装"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "文件写盘失败"
+msgid "Discover"
+msgstr "发现"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "一个PHP 扩展停止了文件上传"
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr "上传的文件超出了 php.ini 文件中 upload_max_filesize 参数的值"
+msgid "Maybe you could setup a proxy"
+msgstr "您或许可以设置一个代理"
 
-#~ msgid "File is too big"
-#~ msgstr "文件太大"
+msgid "or please check later"
+msgstr "或者请稍后检查"
 
-#~ msgid "File is too small"
-#~ msgstr "文件太小"
+#, fuzzy
+#| msgid "The registration key is invalid."
+msgid "Your %1$s registration is not valid."
+msgstr "注册密钥无效。"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "文件超出了最大数量"
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr "使用市场前您需要进行注册, 至少是免费注册!"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "图片超出最大宽度"
+#, fuzzy
+#| msgid "Registration"
+msgid "Register on %1$s"
+msgstr "注册"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "图片小于最小宽度"
+msgid "fill your registration key in setup."
+msgstr "在设置中输入您的注册密钥"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "图片超出最大高度"
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "评论已被修改"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "图片小于最小高度"
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "产生于 %s"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "文件类型不允许"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
 
-#~ msgid "File upload aborted"
-#~ msgstr "文件上传已中止"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
 
-#~ msgid "Failed to resize image"
-#~ msgstr "无法调整图像大小"
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
 
-#~ msgid "Progress"
-#~ msgstr "进度"
+msgid "Alpha ASC"
+msgstr "字母顺序"
 
-#~ msgid "My settings"
-#~ msgstr "我的设置"
+msgid "Alpha DESC"
+msgstr "字母倒序"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "返回顶部"
+msgid "Most popular"
+msgstr "最热门"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "您可以在GLPI-PROJECT.org网站中找到。"
+msgid "Last updated"
+msgstr "最后更新"
 
-#~ msgid "Check all"
-#~ msgstr "全选"
+msgid "Most recent"
+msgstr "最近"
 
-#~ msgid "Uncheck all"
-#~ msgstr "取消全选"
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "阅读笔记"
 
-#~ msgid "Check all as"
-#~ msgstr "选择所有 像"
+msgid "Your plugin here ? Contact us."
+msgstr ""
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "选择太多，禁止批量执行"
+msgid "Refresh plugin list"
+msgstr "刷新插件列表"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "为了提高上限: 请在php配置中更改 max_input_vars 或者 suhosin.post.max_vars "
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filter plugin list"
+msgstr "过滤列表"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "描述字段为必填"
+msgid "Homepage"
+msgstr "主页"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "第 %1$d 到 %2$d 共 %3$d"
+msgid "Get help"
+msgstr "获取帮助"
 
-#~ msgid "Empty array"
-#~ msgstr "空数组"
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "读"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d 在 %2$d"
+msgid "Clean"
+msgstr "清除"
 
-#~ msgid "Close (Esc)"
-#~ msgstr "关闭 (Esc)"
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "登录无效。无法添加用户。"
 
-#~ msgid "Share"
-#~ msgstr "分享"
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
 
-#~ msgid "Zoom in/out"
-#~ msgstr "放大/缩小"
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
 
-#~ msgid "Next (arrow right)"
-#~ msgstr "下一步（向右箭头）"
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "新版本可用:%s."
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr "通过拖动并 & 放开或复制 & 并粘贴到编辑框或者 "
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
 
-#~ msgid "selecting them"
-#~ msgstr "选择"
+msgid "Install"
+msgstr "安装"
 
-#~ msgid "File(s)"
-#~ msgstr "上传文件"
+msgid "Enable"
+msgstr "启用"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "批量选中要上传的文件并拖动到此处后松开鼠标，或者单个上传"
+msgid "Uninstall"
+msgstr "卸载"
 
-#~ msgid "Upload successful"
-#~ msgstr "上传成功"
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "全选/不选"
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "开始输入查找菜单"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "%s 插件"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "启用调试模式"
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "禁用调试模式"
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
 
-#~ msgid "Saved searches"
-#~ msgstr "保存筛选项"
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "延迟"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "管理筛选项"
+#, fuzzy
+#| msgid "Marketplace"
+msgid "Switch to marketplace"
+msgstr "市场"
 
-#~ msgid "Add is disabled"
-#~ msgstr "禁止添加"
+msgid "Some updates are available for your installed plugins!"
+msgstr "您安装的插件有一些更新可用!"
 
-#~ msgid "Search is disabled"
-#~ msgstr "禁用搜索"
+msgid "Plugin name"
+msgstr "插件名称"
 
-#~ msgid "Global Kanban"
-#~ msgstr "全局看板"
+msgid "Plugin new version number"
+msgstr "插件新版本号"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr "允许登录API并获取具有用户凭据的会话令牌"
+msgid "Plugin old version number"
+msgstr "插件旧版本号"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "允许登录API并获取具有用户外部令牌的会话令牌。请参阅用户设置选项卡中的远程"
-#~ "访问密钥"
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr "在搜索引擎上，使用“过期包含NULL”来搜索没有过期日期的许可证"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "显示GLPI ID"
+msgid "Registration"
+msgstr "注册"
 
-#~ msgid "Color palette"
-#~ msgstr "调色板"
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
 
-#~ msgid "Layout"
-#~ msgstr "布局"
+#, fuzzy
+#| msgid "Registration"
+msgid "Register on %1$s!"
+msgstr "注册"
 
-#~ msgid "Tabs on left"
-#~ msgstr "导航标签在左"
+msgid "And retrieve your key to paste it below"
+msgstr ""
 
-#~ msgid "Classic view"
-#~ msgstr "简洁界面"
+msgid "Error was: %s"
+msgstr ""
 
-#~ msgid "Vertical split"
-#~ msgstr "垂直分割"
+msgid "Registration key"
+msgstr "注册码"
 
-#~ msgid "Dashboards"
-#~ msgstr "看板"
+msgid "Subscription"
+msgstr "订阅"
 
-#~ msgid "Default for central"
-#~ msgstr "central默认值"
+#, fuzzy
+#| msgid "unknown"
+msgid "Unknown"
+msgstr "未知"
 
-#~ msgid "Default for Assets"
-#~ msgstr "资产默认值"
+#, fuzzy
+#| msgid "yesterday"
+msgid "Registered by"
+msgstr "昨天"
 
-#~ msgid "Default for Assistance"
-#~ msgstr "Assistance默认值 "
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "启用财务和管理信息"
 
-#~ msgid "Default for tickets (mini dashboard)"
-#~ msgstr "工单默认值 (迷你看板)"
+msgid "The registration key is invalid."
+msgstr "注册密钥无效。"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "检查是否有新版本"
+#, fuzzy
+#| msgid "The registration key is invalid."
+msgid "The registration key refers to a terminated subscription."
+msgstr "注册密钥无效。"
 
-#~ msgid "Show filters"
-#~ msgstr "显示筛选器"
+msgid "The registration key is valid."
+msgstr "注册密钥有效。"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "与过滤条件不匹配"
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"您需要找一下你们网管，GLPI 有没有bug或者要不要预先配置好规则或字典等等？ \n"
+"\n"
+"我们提供 %s 空间给您。\n"
+" GLPI在线版是一个商业产品，包括第3层订阅支持，确保遇到的错误能在承诺时间内纠"
+"正。 \n"
+"\n"
+"在这空间中, 您将能获得 <b> 联系正式合伙人 </b>  帮助您实现GLPI集成。 \n"
+"\n"
+"或者,  <b>捐赠</b>GLPI以表达支持GLPI的开发工作。"
 
-#~ msgid "Add to schedule"
-#~ msgstr "添加到日程表"
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"如您在使用 GLPI 模块高级功能中遇到问题?\n"
+"请与我们取得联系。 我们将竭诚为您服务 %s。"
 
-#~ msgid "Position in room"
-#~ msgstr "房间位置"
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr "一封邮件已发送到您的邮箱，邮件中包含重置密码的信息。"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "室内定位门"
+msgid "Email address not found."
+msgstr "未发现邮件地址"
 
-#~ msgid "North"
-#~ msgstr "北"
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr "设备的MAC地址和IP地址已经包含在汇聚网络端口中。"
 
-#~ msgid "East"
-#~ msgstr "东"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "上传的文件超出了 php.ini 文件中 upload_max_filesize 参数的值"
 
-#~ msgid "South"
-#~ msgstr "南"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr "上传的文件的大小超过了  HTML表单中指定的 MAX_FILE_SIZE 参数的值"
 
-#~ msgid "West"
-#~ msgstr "西"
+msgid "The uploaded file was only partially uploaded"
+msgstr "上传的文件仅上传了一部分"
 
-#~ msgid "Number of units"
-#~ msgstr "单位数量"
+msgid "Failed to write file to disk"
+msgstr "文件写盘失败"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "A PHP extension stopped the file upload"
+msgstr "一个PHP 扩展停止了文件上传"
 
-#~ msgid "Width"
-#~ msgstr "宽度"
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "上传的文件超出了 php.ini 文件中 upload_max_filesize 参数的值"
 
-#~ msgid "Height"
-#~ msgstr "高度"
+msgid "File is too big"
+msgstr "文件太大"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "标准功率 (瓦)"
+msgid "File is too small"
+msgstr "文件太小"
 
-#~ msgid "Max. weight"
-#~ msgstr "最大重量"
+msgid "Maximum number of files exceeded"
+msgstr "文件超出了最大数量"
 
-#~ msgid "No rack found"
-#~ msgstr "没有发现机柜"
+msgid "Image exceeds maximum width"
+msgstr "图片超出最大宽度"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "以下元素不在房间范围内"
+msgid "Image requires a minimum width"
+msgstr "图片小于最小宽度"
 
-#~ msgid "Blueprint"
-#~ msgstr "蓝图"
+msgid "Image exceeds maximum height"
+msgstr "图片超出最大高度"
 
-#~ msgid "Grid"
-#~ msgstr "网格"
+msgid "Image requires a minimum height"
+msgstr "图片小于最小高度"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "此处插入机柜"
+msgid "Filetype not allowed"
+msgstr "文件类型不允许"
 
-#~ msgid "Position must be set"
-#~ msgstr "必须设置位置"
+msgid "File upload aborted"
+msgstr "文件上传已中止"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s 位置无效"
+msgid "Failed to resize image"
+msgstr "无法调整图像大小"
 
-#~ msgid "All categories"
-#~ msgstr "所有类别"
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "用户信息"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "未分类的软件"
+msgid "Progress"
+msgstr "进度"
 
-#~ msgid "Valid license"
-#~ msgstr "验证授权"
+msgid "My settings"
+msgstr "我的设置"
 
-#~ msgid "Other component"
-#~ msgstr "其他部件"
+msgid "Back to top of the page"
+msgstr "返回顶部"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "开始前的最后一件事"
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "您可以在GLPI-PROJECT.org网站中找到。"
 
-#~ msgid "Donate"
-#~ msgstr "捐赠"
+msgid "Check all"
+msgstr "全选"
+
+msgid "Uncheck all"
+msgstr "取消全选"
+
+msgid "Check all as"
+msgstr "选择所有 像"
+
+msgid "Selection too large, massive action disabled."
+msgstr "选择太多，禁止批量执行"
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"为了提高上限: 请在php配置中更改 max_input_vars 或者 suhosin.post.max_vars "
+
+msgid "The description field is mandatory"
+msgstr "描述字段为必填"
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr "第 %1$d 到 %2$d 共 %3$d"
+
+msgid "Empty array"
+msgstr "空数组"
+
+msgid "%1$d on %2$d"
+msgstr "%1$d 在 %2$d"
+
+msgid "Close (Esc)"
+msgstr "关闭 (Esc)"
+
+msgid "Share"
+msgstr "分享"
+
+msgid "Zoom in/out"
+msgstr "放大/缩小"
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr "下一步（向右箭头）"
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr "通过拖动并 & 放开或复制 & 并粘贴到编辑框或者 "
+
+msgid "selecting them"
+msgstr "选择"
+
+msgid "File(s)"
+msgstr "上传文件"
+
+msgid "Drag and drop your file here, or"
+msgstr "批量选中要上传的文件并拖动到此处后松开鼠标，或者单个上传"
+
+msgid "Upload successful"
+msgstr "上传成功"
+
+msgid "Check/uncheck all"
+msgstr "全选/不选"
+
+msgid "Start typing to find a menu"
+msgstr "开始输入查找菜单"
+
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "已更改"
+
+msgid "Debug mode enabled"
+msgstr "启用调试模式"
+
+msgid "Debug mode disabled"
+msgstr "禁用调试模式"
+
+msgid "Saved searches"
+msgstr "保存筛选项"
+
+msgid "Manage saved searches"
+msgstr "管理筛选项"
+
+msgid "Add is disabled"
+msgstr "禁止添加"
+
+msgid "Search is disabled"
+msgstr "禁用搜索"
+
+msgid "Global Kanban"
+msgstr "全局看板"
+
+#, fuzzy
+#| msgid "Unable to stop impersonating user"
+msgid "You are impersonating %s."
+msgstr "无法停止冒充用户"
+
+#, fuzzy
+#| msgid "Unable to stop impersonating user"
+msgid "Stop impersonating"
+msgstr "无法停止冒充用户"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr "允许登录API并获取具有用户凭据的会话令牌"
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"允许登录API并获取具有用户外部令牌的会话令牌。请参阅用户设置选项卡中的远程访问"
+"密钥"
+
+msgid "Show GLPI ID"
+msgstr "显示GLPI ID"
+
+msgid "Color palette"
+msgstr "调色板"
+
+msgid "Layout"
+msgstr "布局"
+
+msgid "Tabs on left"
+msgstr "导航标签在左"
+
+msgid "Classic view"
+msgstr "简洁界面"
+
+msgid "Vertical split"
+msgstr "垂直分割"
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "合同结束"
+
+msgid "Dashboards"
+msgstr "看板"
+
+msgid "Default for central"
+msgstr "central默认值"
+
+msgid "Default for Assets"
+msgstr "资产默认值"
+
+msgid "Default for Assistance"
+msgstr "Assistance默认值 "
+
+msgid "Default for tickets (mini dashboard)"
+msgstr "工单默认值 (迷你看板)"
+
+msgid "Check if a new version is available"
+msgstr "检查是否有新版本"
+
+msgid "Show filters"
+msgstr "显示筛选器"
+
+msgid "No historical matching your filters"
+msgstr "与过滤条件不匹配"
+
+msgid "Add to schedule"
+msgstr "添加到日程表"
+
+msgid "Position in room"
+msgstr "房间位置"
+
+msgid "Door orientation in room"
+msgstr "室内定位门"
+
+msgid "North"
+msgstr "北"
+
+msgid "East"
+msgstr "东"
+
+msgid "South"
+msgstr "南"
+
+msgid "West"
+msgstr "西"
+
+msgid "Number of units"
+msgstr "单位数量"
+
+msgid "U"
+msgstr "U"
+
+msgid "Width"
+msgstr "宽度"
+
+msgid "Height"
+msgstr "高度"
+
+msgid "Measured power (in watts)"
+msgstr "标准功率 (瓦)"
+
+msgid "Max. weight"
+msgstr "最大重量"
+
+msgid "No rack found"
+msgstr "没有发现机柜"
+
+msgid "Following elements are out of room bounds"
+msgstr "以下元素不在房间范围内"
+
+msgid "Blueprint"
+msgstr "蓝图"
+
+msgid "Grid"
+msgstr "网格"
+
+msgid "Insert a rack here"
+msgstr "此处插入机柜"
+
+msgid "Position must be set"
+msgstr "必须设置位置"
+
+msgid "%1$s position is not available"
+msgstr "%1$s 位置无效"
+
+msgid "All categories"
+msgstr "所有类别"
+
+msgid "Uncategorized software"
+msgstr "未分类的软件"
+
+msgid "Valid license"
+msgstr "验证授权"
+
+msgid "Other component"
+msgstr "其他部件"
+
+msgid "One last thing before starting"
+msgstr "开始前的最后一件事"
+
+msgid "Donate"
+msgstr "捐赠"
+
+msgid "Unofficial translations are also available"
+msgstr "非官方（正式）翻译的许可证"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "我已阅读并 同意 以上使用许可的条款"
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "我已阅读但 不同意 使用许可上的条款"
+
+msgid "Installation or update of GLPI"
+msgstr "安装或升级GLPI"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "选择“安装”可全新安装GLPI"
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "选择“升级”可以将您早期版本的GLPI更新。"
+
+msgid "Do you want to continue?"
+msgstr "您想要继续么？"
+
+msgid "Database connection parameters"
+msgstr "数据库连接参数"
+
+msgid "Test of the connection at the database"
+msgstr "测试这个数据库的连接"
+
+msgid "Can't connect to the database"
+msgstr "无法连接到数据库"
+
+msgid "The server answered: %s"
+msgstr "服务器反馈信息: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "服务器 / 用户字段为空"
+
+msgid "Please select a database:"
+msgstr "请选择数据库："
+
+msgid "Create a new database or use an existing one:"
+msgstr "创建新数据库或使用已存在的："
+
+msgid "Please select the database to update:"
+msgstr "请选择需要更新的数据库："
+
+msgid "Initialization of the database"
+msgstr "数据库初始化"
+
+msgid "Impossible to use the database:"
+msgstr "不能使用数据库："
+
+msgid "OK - database was initialized"
+msgstr "OK-数据库已经初始化"
+
+msgid "Impossible to write the database setup file"
+msgstr "数据库设置文件无法写入"
+
+msgid "Database created"
+msgstr "数据库已创建"
+
+msgid "Error in creating database!"
+msgstr "创建数据库错误！"
+
+msgid "You didn't select a database!"
+msgstr "您没有选择数据库！"
+
+msgid "Collect data"
+msgstr "收集数据"
+
+msgid "The installation is finished"
+msgstr "安装完成"
+
+msgid "Default logins / passwords are:"
+msgstr "默认 登录名/密码是："
+
+msgid "tech/tech for the technician account"
+msgstr "技术员帐号是 tech/tech"
+
+msgid "normal/normal for the normal account"
+msgstr "普通帐号是 normal/normal"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "只能发布的帐号是 post-only/postonly"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "您可以删除或修改这些帐号和初始数据。"
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr "不可能创建数据库连接文件，请核实文件权限。"
+
+msgid "Select your language"
+msgstr "选择语言"
+
+msgid "Beginning of the installation"
+msgstr "开始安装"
+
+msgid "Step %d"
+msgstr "步骤 %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - 登陆入口"
+
+msgid "Remember me"
+msgstr "自动登录"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "您必须启用浏览器的JavaScript功能"
+
+msgid "You must accept cookies to reach this application"
+msgstr "访问本站您必须同意本站启用cookies"
+
+msgid "Invalid use of session ID"
+msgstr "无效的用户会话ID"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "查看常见问题解答（FAQ）"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "添加变更"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "添加项目"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "保存"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "您确定要删除这看板 %s ?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "发送日期"
 
 #~ msgid "Use GLPI"
 #~ msgstr "使用GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "非官方（正式）翻译的许可证"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "我已阅读并 同意 以上使用许可的条款"
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "我已阅读但 不同意 使用许可上的条款"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "安装或升级GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "选择“安装”可全新安装GLPI"
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr "选择“升级”可以将您早期版本的GLPI更新。"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "您想要继续么？"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "数据库连接参数"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "测试这个数据库的连接"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "无法连接到数据库"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "服务器反馈信息: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "服务器 / 用户字段为空"
-
-#~ msgid "Please select a database:"
-#~ msgstr "请选择数据库："
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "创建新数据库或使用已存在的："
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "请选择需要更新的数据库："
-
-#~ msgid "Initialization of the database"
-#~ msgstr "数据库初始化"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "不能使用数据库："
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK-数据库已经初始化"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "数据库设置文件无法写入"
-
-#~ msgid "Database created"
-#~ msgstr "数据库已创建"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "创建数据库错误！"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "您没有选择数据库！"
-
-#~ msgid "Collect data"
-#~ msgstr "收集数据"
-
-#~ msgid "The installation is finished"
-#~ msgstr "安装完成"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "默认 登录名/密码是："
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "默认管理员帐号是 glpi/glpi  "
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "技术员帐号是 tech/tech"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "普通帐号是 normal/normal"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "只能发布的帐号是 post-only/postonly"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "您可以删除或修改这些帐号和初始数据。"
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr "不可能创建数据库连接文件，请核实文件权限。"
-
-#~ msgid "Select your language"
-#~ msgstr "选择语言"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "开始安装"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "步骤 %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - 登陆入口"
-
-#~ msgid "Remember me"
-#~ msgstr "自动登录"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "您必须启用浏览器的JavaScript功能"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "访问本站您必须同意本站启用cookies"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "无效的用户会话ID"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "查看常见问题解答（FAQ）"
-
-#, javascript-format
-#~ msgid "Are you sure you want to delete the dashboard %s ?"
-#~ msgstr "您确定要删除这看板 %s ?"

@@ -23523,217 +23523,1339 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "رده افزوده را ببینید"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "نوشتن"
 
-#~ msgid "Active Directory"
-#~ msgstr "شاخه فعال"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "ورود"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "درخواست شما بسته شد"
+#, fuzzy
+#| msgid "When connecting or updating"
+msgid "Open ID connect configuration"
+msgstr "هنگام اتصال یا بروزرسانی"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "درخواست پردازش شده"
+#, fuzzy
+#| msgid "No directory selected"
+msgid "No room found or selected"
+msgstr "هیچ فهرستی انتخاب نشده است"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "درخواست شما در جریان است"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Replace"
+msgid "Marketplace"
+msgstr "جایگزین‌"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "درخواست شما اعتبارسنجی شد"
+#, fuzzy
+#| msgid "%1$s adds the item %2$s"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s قلم به آيتم  %2$s شد."
 
-#~ msgid "Ticket followup"
-#~ msgstr "پیگیری درخواست"
+msgid "See the catalog of plugins"
+msgstr "رده افزوده را ببینید"
 
-#~ msgid "No ticket found."
-#~ msgstr "درخواستی یافت نشد."
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Last tickets"
-#~ msgstr "آخرین درخواست ها"
+#, fuzzy
+#| msgid "Template for an incident"
+msgid "Empty for infinite"
+msgstr "قالب برای یک رویداد"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "درخواست جدید برای این عنوان."
+msgid "RSS feeds found"
+msgstr ""
 
-#~ msgid "No ticket in progress."
-#~ msgstr "درخواستی در جریان نیست."
+msgid "Active Directory"
+msgstr "شاخه فعال"
 
-#~ msgid "Assign equipment"
-#~ msgstr "اختصاص تجهیزات"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "نگارش ip"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "درخواست های خودکار بسته شده"
+msgid "Confirm the promotion?"
+msgstr ""
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "ایجاد نظرسنجی از رضایت"
+msgid "Your tickets to close"
+msgstr "درخواست شما بسته شد"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "تخصیص یک درخواست"
+msgid "Tickets on pending status"
+msgstr ""
 
-#~ msgid "Steal a ticket"
-#~ msgstr "سرقت درخواست"
+msgid "Tickets to be processed"
+msgstr "درخواست پردازش شده"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "عهده دار بودن درخواست"
+#, fuzzy
+#| msgid "Not solved tickets"
+msgid "Your observed tickets"
+msgstr "درخواست حل نشده است"
 
-#~ msgid "Merge"
-#~ msgstr "ترکیب کردن"
+msgid "Your tickets in progress"
+msgstr "درخواست شما در جریان است"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "بعد از ادغام نرم افزار حذف شده است"
+msgid "Your tickets to validate"
+msgstr "درخواست شما اعتبارسنجی شد"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected approval status"
+msgstr "درخواست شما در جریان است"
 
-#~ msgid "Solved"
-#~ msgstr "حل شده"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected solution"
+msgstr "درخواست شما در جریان است"
 
-#~ msgid "Clean"
-#~ msgstr "پاک کردن"
+msgid "Ticket followup"
+msgstr "پیگیری درخواست"
 
-#~ msgid "Install"
-#~ msgstr "نصب"
+#, fuzzy
+#| msgid "New ticket"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "درخواست جدید"
+msgstr[1] "درخواست جدید"
 
-#~ msgid "Enable"
-#~ msgstr "فعال"
+msgid "No ticket found."
+msgstr "درخواستی یافت نشد."
 
-#~ msgid "Uninstall"
-#~ msgstr "عزل"
+msgid "Last tickets"
+msgstr "آخرین درخواست ها"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "یک رایانامه به نشانی رایانامه شما فرستاده شده است. رایانامه حاوی اطلاعات "
-#~ "برای تنظیم مجدد گذر واژه شماست."
+msgid "New ticket for this item..."
+msgstr "درخواست جدید برای این عنوان."
 
-#~ msgid "Email address not found."
-#~ msgstr "نشانی رایانامه یافت نشد"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "آخرین درخواست ها"
+msgstr[1] "آخرین درخواست ها"
 
-#~ msgid "Progress"
-#~ msgstr "پیشرفت"
+#, fuzzy
+#| msgid "You don't have right to connect"
+msgid "You don't have right to see all tickets"
+msgstr "شما حق اتصال ندارید"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "شما آن را در سایت GLPI-PROJECT.org می یابید."
+#, fuzzy
+#| msgid "Problems on linked items"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "مسائل در مورد عناوین مرتبط"
+msgstr[1] "مسائل در مورد عناوین مرتبط"
 
-#~ msgid "Check all"
-#~ msgstr "نشان‌گذاری همه"
+msgid "No ticket in progress."
+msgstr "درخواستی در جریان نیست."
 
-#~ msgid "Uncheck all"
-#~ msgstr "بی‌نشان کردن همه"
+msgid "Assign equipment"
+msgstr "اختصاص تجهیزات"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "انتخاب بیش از حد بزرگ است، عملیات حجیم فعال نیست."
+msgid "Automatic tickets closing"
+msgstr "درخواست های خودکار بسته شده"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "برای افزایش حد: max_input_vars یا suhosin.post.max_vars را در تنظیمات پی "
-#~ "اچ پی تغییر دهید."
+msgid "Generation of satisfaction surveys"
+msgstr "ایجاد نظرسنجی از رضایت"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "نمایش شناسه GLPI"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "بستن خودکار پس از رفع درخواست"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "بررسی کنید اگر نسخه جدید موجود است"
+#, fuzzy
+#| msgid "Steal a ticket"
+msgid "See my ticket"
+msgstr "سرقت درخواست"
 
-#~ msgid "Add to schedule"
-#~ msgstr "افزودن زمانبندی"
+#, fuzzy
+#| msgid "Steal a ticket"
+msgid "See group ticket"
+msgstr "سرقت درخواست"
+
+msgid "See tickets created by my groups"
+msgstr ""
+
+#, fuzzy
+#| msgid "Steal a ticket"
+msgid "See all tickets"
+msgstr "سرقت درخواست"
+
+#, fuzzy
+#| msgid "Assigned"
+msgid "See assigned"
+msgstr "تخصیص داده شده"
+
+#, fuzzy
+#| msgid "Created tickets"
+msgid "See assigned tickets"
+msgstr "درخواست ها ایجاد شد."
+
+msgid "Assign a ticket"
+msgstr "تخصیص یک درخواست"
+
+msgid "Steal"
+msgstr ""
+
+msgid "Steal a ticket"
+msgstr "سرقت درخواست"
+
+msgid "Beeing in charge"
+msgstr ""
+
+msgid "To be in charge of a ticket"
+msgstr "عهده دار بودن درخواست"
+
+msgid "Change the priority"
+msgstr ""
+
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr ""
+
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
+
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to load ticket %d"
+msgstr "شکست در حذف پرونده %s"
+
+#, fuzzy
+#| msgid "Add a followup to tickets (requester)"
+msgid "Failed to add followup to ticket %d"
+msgstr "افزودن پیگیری برای درخواست ها(درخواست کننده)"
+
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to add task to ticket %d"
+msgstr "شکست در حذف پرونده %s"
+
+#, fuzzy
+#| msgid "Default heading when adding a document to a ticket"
+msgid "Failed to add document to ticket %d"
+msgstr "عنوان پیش فرض هنگامی که سندی به درخواستی اضافه می شود"
+
+msgid "Failed to link tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "شکست در حذف پرونده %s"
+
+msgid "%s merges ticket %s into %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Checking write permissions for setting files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "بررسی مجوزهای نوشتن برای پرونده های نصب"
+
+#, fuzzy
+#| msgid "Recalculate"
+msgid "Recalculate the category"
+msgstr "دوباره حساب کردن"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Add a license"
+msgid "Valid licenses"
+msgstr "افزودن مجوز"
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of lines"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "تعداد خطوط"
+
+msgid "Merge"
+msgstr "ترکیب کردن"
+
+msgid "Software deleted after merging"
+msgstr "بعد از ادغام نرم افزار حذف شده است"
+
+msgid "You must enable at least one notification mode."
+msgstr ""
+
+msgid "GLPI"
+msgstr "GLPI"
+
+#, fuzzy
+#| msgid "Connection filter"
+msgid "Connect a computer"
+msgstr "صافی اتصال"
+
+#, fuzzy
+#| msgid "Not connected."
+msgid "Not connected"
+msgstr "متصل نیست"
+
+#, fuzzy
+#| msgid "Show all"
+msgid "Show as map"
+msgstr "نمایش همه"
+
+#, fuzzy
+#| msgid "Valid tags"
+msgid "Valid to %s"
+msgstr "برچسب های معتبر"
+
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "آخرین درخواست ها"
+
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "درخواست در انتظار تصویب"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "درخواست پیوند"
+
+#, fuzzy
+#| msgid "Not solved tickets"
+msgid "Solved tickets"
+msgstr "درخواست حل نشده است"
+
+#, fuzzy
+#| msgid "Created tickets"
+msgid "Closed tickets"
+msgstr "درخواست ها ایجاد شد."
+
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "بدون نام"
+
+#, fuzzy
+#| msgid "Time cost"
+msgid "Time to close"
+msgstr "هزینه زمان"
+
+#, fuzzy
+#| msgid "To update"
+msgid "To validate"
+msgstr "برای بروزرسانی"
+
+msgid "Solved"
+msgstr "حل شده"
+
+msgid "Share or embed this dashboard"
+msgstr ""
+
+msgid "Delete this dashboard"
+msgstr ""
+
+msgid "Toggle auto-refresh"
+msgstr ""
+
+msgid "Toggle night mode"
+msgstr ""
+
+msgid "Toggle fullscreen"
+msgstr ""
+
+msgid "Clone this dashboard"
+msgstr ""
+
+msgid "Toggle edit mode"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add date"
+msgid "Add filter"
+msgstr "افزودن تاریخ"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "افزودن تکلیف جدید"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "دیگران"
+
+msgid "Widget"
+msgstr ""
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgid "Max number of items"
+msgid "Limit number of data"
+msgstr "حداکثر تعداد عناصر"
+
+msgid "Filters"
+msgstr ""
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "نشانی اینترنتی برنامه کاربردی"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "پیوند فهرست LDAP"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+msgid "empty card !"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of lines"
+msgid "Number of %s"
+msgstr "تعداد خطوط"
+
+#, fuzzy
+#| msgid "By %s"
+msgid "%s by %s"
+msgstr "توسط %s"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "فهرست مقادیر"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "تعداد درخواست ها"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+msgid "Tickets status by month"
+msgstr ""
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets"
+msgid "Tickets summary"
+msgstr "درخواست ها"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's categories"
+msgstr "برای درخواست بعد از بسته شدن"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "درخواست شما اعتبارسنجی شد"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "نوع درخواست های پیش فرض"
+
+#, fuzzy
+#| msgid "Stock location"
+msgid "Top ticket's locations"
+msgstr "محل انبار"
+
+#, fuzzy
+#| msgid "Add a followup to tickets (requester)"
+msgid "Top ticket's requesters"
+msgstr "افزودن پیگیری برای درخواست ها(درخواست کننده)"
+
+#, fuzzy
+#| msgid "Requester group"
+#| msgid_plural "Requester groups"
+msgid "Top ticket's requester groups"
+msgstr "گروه درخواست کننده"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "برای درخواست بعد از بسته شدن"
+
+msgid "Top ticket's observer groups"
+msgstr ""
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignees"
+msgstr "درخواست شما در جریان است"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignee groups"
+msgstr "درخواست شما در جریان است"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of reminders"
+msgstr "فهرست مقادیر"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+
+#, fuzzy
+#| msgid "Network name"
+#| msgid_plural "Network names"
+msgid "Add a network name"
+msgstr "نام های شبکه"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Associate"
+msgid "Not associated"
+msgstr "تعیین"
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "Create a new network name"
+msgstr "ایجاد یک درخواست"
+
+#, fuzzy
+#| msgid "No network port found"
+msgid "No network name found"
+msgstr "درگاه شبکه پیدا نشد"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "بررسی بروزآوری های جدید"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "نصب"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "انفصال"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+msgid "Register on %1$s"
+msgstr ""
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+msgid "Your %1$s subscription has been terminated."
+msgstr ""
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "ایجاد شده بر %s"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "رایج ترین سئوالات"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "اخرین بروزرسانی"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "New note"
+msgid "Best notes"
+msgstr "یادداشت جدید"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "Filter plugin list"
+msgstr "افزونه از کار انداخته شده"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "خانه"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "بازخواندن"
+
+msgid "Clean"
+msgstr "پاک کردن"
+
+msgid "This plugin is not available for your GLPI version."
+msgstr ""
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Check if a new version is available"
+msgid "A new version (%s) is available, update ?"
+msgstr "بررسی کنید اگر نسخه جدید موجود است"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "نصب"
+
+msgid "Enable"
+msgstr "فعال"
+
+msgid "Uninstall"
+msgstr "عزل"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "افزونه از کار انداخته شده"
+msgstr[1] "افزونه از کار انداخته شده"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "دیر"
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "افزونه"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "تعداد ساختمان"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+
+#, fuzzy
+#| msgid "Administration"
+msgid "Registration"
+msgstr "مدیریت"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+msgid "Register on %1$s!"
+msgstr ""
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Destination entity"
+msgid "Registration key"
+msgstr "نهاد مقصد"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "شرح"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "پرونده ناشناخته"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "فعال کردن اطلاعات مالی و اداری"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "نصب تمام شد"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "نصب تمام شد"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"یک رایانامه به نشانی رایانامه شما فرستاده شده است. رایانامه حاوی اطلاعات "
+"برای تنظیم مجدد گذر واژه شماست."
+
+msgid "Email address not found."
+msgstr "نشانی رایانامه یافت نشد"
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+
+msgid "The uploaded file was only partially uploaded"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to write file to disk"
+msgstr "شکست در حذف پرونده %s"
+
+msgid "A PHP extension stopped the file upload"
+msgstr ""
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+
+msgid "File is too big"
+msgstr ""
+
+msgid "File is too small"
+msgstr ""
+
+#, fuzzy
+#| msgid "Max number of items"
+msgid "Maximum number of files exceeded"
+msgstr "حداکثر تعداد عناصر"
+
+msgid "Image exceeds maximum width"
+msgstr ""
+
+msgid "Image requires a minimum width"
+msgstr ""
+
+msgid "Image exceeds maximum height"
+msgstr ""
+
+msgid "Image requires a minimum height"
+msgstr ""
+
+#, fuzzy
+#| msgid "File not found"
+msgid "Filetype not allowed"
+msgstr "پرونده پیدا نشد"
+
+msgid "File upload aborted"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to resize image"
+msgstr "شکست در حذف پرونده %s"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "اطلاعات کاربر"
+
+msgid "Progress"
+msgstr "پیشرفت"
+
+#, fuzzy
+#| msgid "Settings"
+msgid "My settings"
+msgstr "تنظیم ها"
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "شما آن را در سایت GLPI-PROJECT.org می یابید."
+
+msgid "Check all"
+msgstr "نشان‌گذاری همه"
+
+msgid "Uncheck all"
+msgstr "بی‌نشان کردن همه"
+
+#, fuzzy
+#| msgid "Check all"
+msgid "Check all as"
+msgstr "نشان‌گذاری همه"
+
+msgid "Selection too large, massive action disabled."
+msgstr "انتخاب بیش از حد بزرگ است، عملیات حجیم فعال نیست."
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"برای افزایش حد: max_input_vars یا suhosin.post.max_vars را در تنظیمات پی اچ "
+"پی تغییر دهید."
+
+msgid "The description field is mandatory"
+msgstr ""
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr ""
+
+msgid "Empty array"
+msgstr ""
+
+msgid "%1$d on %2$d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Closed on %s"
+msgid "Close (Esc)"
+msgstr "بسته شده در %s"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+#, fuzzy
+#| msgid "Deleting a problem"
+msgid "selecting them"
+msgstr "حذف یک مسئله"
+
+#, fuzzy
+#| msgid "File"
+msgid "File(s)"
+msgstr "پرونده"
+
+msgid "Drag and drop your file here, or"
+msgstr ""
+
+#, fuzzy
+#| msgid "Operation successful"
+msgid "Upload successful"
+msgstr "عملیات موفقیت آمیز"
+
+#, fuzzy
+#| msgid "Uncheck all"
+msgid "Check/uncheck all"
+msgstr "بی‌نشان کردن همه"
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+#, fuzzy
+#| msgid "Transfer mode"
+msgid "Change mode"
+msgstr "روش انتقال"
+
+msgid "Debug mode enabled"
+msgstr ""
+
+msgid "Debug mode disabled"
+msgstr ""
+
+#, fuzzy
+#| msgid "Search"
+msgid "Saved searches"
+msgstr "جستجو"
+
+msgid "Manage saved searches"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled"
+msgid "Add is disabled"
+msgstr "از کار انداخته شده"
+
+msgid "Search is disabled"
+msgstr ""
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "مدیریت سراسری"
+
+msgid "You are impersonating %s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "تنظیم شخصی"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr "نمایش شناسه GLPI"
+
+msgid "Color palette"
+msgstr ""
+
+msgid "Layout"
+msgstr ""
+
+msgid "Tabs on left"
+msgstr ""
+
+msgid "Classic view"
+msgstr ""
+
+msgid "Vertical split"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "انتهای قرارداد"
+
+msgid "Dashboards"
+msgstr ""
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "پیش فرض برای درخواست کنندگان"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "پیش فرض برای درخواست کنندگان"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "پیش فرض برای درخواست کنندگان"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "پیش فرض برای درخواست کنندگان"
+
+msgid "Check if a new version is available"
+msgstr "بررسی کنید اگر نسخه جدید موجود است"
+
+#, fuzzy
+#| msgid "Show all"
+msgid "Show filters"
+msgstr "نمایش همه"
+
+msgid "No historical matching your filters"
+msgstr ""
+
+msgid "Add to schedule"
+msgstr "افزودن زمانبندی"
+
+#, fuzzy
+#| msgid "Position"
+msgid "Position in room"
+msgstr "موقعیت"
+
+msgid "Door orientation in room"
+msgstr ""
+
+msgid "North"
+msgstr ""
+
+msgid "East"
+msgstr ""
+
+msgid "South"
+msgstr ""
+
+msgid "West"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of units"
+msgstr "تعداد درخواست ها"
+
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Measured power (in watts)"
+msgstr ""
+
+msgid "Max. weight"
+msgstr ""
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No rack found"
+msgstr "کاربری یافت نشد"
+
+msgid "Following elements are out of room bounds"
+msgstr ""
+
+msgid "Blueprint"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Insert a rack here"
+msgstr ""
+
+msgid "Position must be set"
+msgstr ""
+
+msgid "%1$s position is not available"
+msgstr ""
+
+#, fuzzy
+#| msgid "Allocated memory test"
+msgid "All categories"
+msgstr "آزمون حافظه اختصاص داده شده"
+
+#, fuzzy
+#| msgid "Unauthorized file type"
+msgid "Uncategorized software"
+msgstr "نوع پرونده غیرمجاز"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Add a license"
+msgid "Valid license"
+msgstr "افزودن مجوز"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Other component"
+msgstr "تعداد درخواست ها"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr ""
+
+msgid "Unofficial translations are also available"
+msgstr "ترجمه های غیرمستند نیز در دسترس هستند"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "شرایط اجازه نامه نوشته شده در بالا را خواندم و قبول دارم."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "شرایط اجازه نامه نوشته شده در بالا را خواندم و قبول ندارم."
+
+msgid "Installation or update of GLPI"
+msgstr "نصب یا بروزآوری GLPI"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "برای نصب کاملا جدید از GLPI 'نصب' را انتخاب کنید."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+
+msgid "Do you want to continue?"
+msgstr ""
+
+msgid "Database connection parameters"
+msgstr "پارامترهای ارتباط پایگاه داده"
+
+msgid "Test of the connection at the database"
+msgstr "آزمایش ارتباط با پایگاه داده"
+
+msgid "Can't connect to the database"
+msgstr "نمی توان به پایگاه داده متصل شد"
+
+msgid "The server answered: %s"
+msgstr "خادم پاسخ داد: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "جزءخادم یا/ و کاربر خالی است"
+
+msgid "Please select a database:"
+msgstr "پایگاه داده را انتخاب کنید:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "ایجاد یک پایگاه داده جدید و یا استفاده از یک پایگاه موجود :"
+
+msgid "Please select the database to update:"
+msgstr "پایگاه داده را برای بروزآوری انتخاب کنید:"
+
+msgid "Initialization of the database"
+msgstr "مقداردهی آغازی پایگاه داده"
+
+msgid "Impossible to use the database:"
+msgstr "استفاده از پایگاه داده امکان پذیر نمی باشد:"
+
+msgid "OK - database was initialized"
+msgstr "خوب - پایگاه داده مقدار دهی آغازی شد"
+
+msgid "Impossible to write the database setup file"
+msgstr "نوشتن پرونده نصب پایگاه داده امکان پذیر نیست"
+
+msgid "Database created"
+msgstr "پایگاه داده ساخته شد"
+
+#, fuzzy
+#| msgid "Error in sending the email"
+msgid "Error in creating database!"
+msgstr "خطا در ارسال رایانامه"
+
+#, fuzzy
+#| msgid "Please select a database:"
+msgid "You didn't select a database!"
+msgstr "پایگاه داده را انتخاب کنید:"
+
+msgid "Collect data"
+msgstr ""
+
+msgid "The installation is finished"
+msgstr "نصب تمام شد"
+
+msgid "Default logins / passwords are:"
+msgstr "کلمه عبور / رمز پیش فرض:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech برای حساب کاربری کاردان فنی"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal برای حساب کاربری عادی"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly برای حساب کاربر فقط ارسال کننده"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+"شما می توانید این حساب ها را با داده های اولیه به خوبی حذف کنید و یا تغییر "
+"دهید.."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"نمی توان پرونده ارتباط با پایگاه داده را ایجاد نمود، لطفا دسترسی ها را بررسی "
+"نمایید."
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "زبان پیش فرض"
+
+msgid "Beginning of the installation"
+msgstr "شروع نصب"
+
+msgid "Step %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication"
+msgid "GLPI - Authentication"
+msgstr "تصدیق"
+
+#, fuzzy
+#| msgid "December"
+msgid "Remember me"
+msgstr "دسامبر"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "جاوا اسکريپت بايد براي مرورگر شما فعال گردد."
+
+msgid "You must accept cookies to reach this application"
+msgstr "شما باید کوکی ها را برای دسترسی به این برنامه قبول کنید"
+
+msgid "Invalid use of session ID"
+msgstr "استفاده نادرست از شناسه جلسه"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "دسترسی به پرسش و پاسخ های متداول"
+
+#, fuzzy
+#| msgid "Add a target"
+msgid "Add a card"
+msgstr "افزودن هدف"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Add a new file"
+msgid "Add a filter"
+msgstr "افزودن فایل جدید"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "ذخیره"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Send a notification"
+msgid "Send a test chat"
+msgstr "فرستادن یک اخطار"
 
 #~ msgid "Use GLPI"
 #~ msgstr "استفاده از GLPI"
-
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "ترجمه های غیرمستند نیز در دسترس هستند"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "شرایط اجازه نامه نوشته شده در بالا را خواندم و قبول دارم."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "شرایط اجازه نامه نوشته شده در بالا را خواندم و قبول ندارم."
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "نصب یا بروزآوری GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "برای نصب کاملا جدید از GLPI 'نصب' را انتخاب کنید."
-
-#~ msgid "Database connection parameters"
-#~ msgstr "پارامترهای ارتباط پایگاه داده"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "آزمایش ارتباط با پایگاه داده"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "نمی توان به پایگاه داده متصل شد"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "خادم پاسخ داد: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "جزءخادم یا/ و کاربر خالی است"
-
-#~ msgid "Please select a database:"
-#~ msgstr "پایگاه داده را انتخاب کنید:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "ایجاد یک پایگاه داده جدید و یا استفاده از یک پایگاه موجود :"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "پایگاه داده را برای بروزآوری انتخاب کنید:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "مقداردهی آغازی پایگاه داده"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "استفاده از پایگاه داده امکان پذیر نمی باشد:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "خوب - پایگاه داده مقدار دهی آغازی شد"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "نوشتن پرونده نصب پایگاه داده امکان پذیر نیست"
-
-#~ msgid "Database created"
-#~ msgstr "پایگاه داده ساخته شد"
-
-#~ msgid "The installation is finished"
-#~ msgstr "نصب تمام شد"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "کلمه عبور / رمز پیش فرض:"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech برای حساب کاربری کاردان فنی"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal برای حساب کاربری عادی"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly برای حساب کاربر فقط ارسال کننده"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "شما می توانید این حساب ها را با داده های اولیه به خوبی حذف کنید و یا "
-#~ "تغییر دهید.."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "نمی توان پرونده ارتباط با پایگاه داده را ایجاد نمود، لطفا دسترسی ها را "
-#~ "بررسی نمایید."
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "شروع نصب"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "جاوا اسکريپت بايد براي مرورگر شما فعال گردد."
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "شما باید کوکی ها را برای دسترسی به این برنامه قبول کنید"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "استفاده نادرست از شناسه جلسه"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "دسترسی به پرسش و پاسخ های متداول"

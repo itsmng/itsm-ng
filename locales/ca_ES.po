@@ -23785,1145 +23785,1154 @@ msgstr "Només agrupa el correu no llegit"
 msgid "Could not create dashboard"
 msgstr "Clona aquest panell de control"
 
-#~ msgid "No room found or selected"
-#~ msgstr "No s'ha trobat cap habitació ni s'ha seleccionat"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Escriptura"
 
-#~ msgid "Marketplace"
-#~ msgstr "Mercat"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Usuari"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s afegeix l'element %2$s-%3$s:%4$s"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Veure configuració"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Mostra la llista de connectors"
+msgid "No room found or selected"
+msgstr "No s'ha trobat cap habitació ni s'ha seleccionat"
 
-#~ msgid ""
-#~ "If name is a valid email address, it will be automatically added to "
-#~ "blacklisted senders."
-#~ msgstr ""
-#~ "Si el nom es un correu electrònic vàlid, automàticament ser afegit a la "
-#~ "llista negra de remitents."
+msgid "Marketplace"
+msgstr "Mercat"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Buit per l'infinit"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s afegeix l'element %2$s-%3$s:%4$s"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS feeds trobat"
+msgid "See the catalog of plugins"
+msgstr "Mostra la llista de connectors"
 
-#~ msgid "Active Directory"
-#~ msgstr "Directori Actiu"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+"Si el nom es un correu electrònic vàlid, automàticament ser afegit a la "
+"llista negra de remitents."
 
-#~ msgid "GLPI version"
-#~ msgstr "Versió de GLPI"
+msgid "Empty for infinite"
+msgstr "Buit per l'infinit"
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "Confirmes la promoció?"
+msgid "RSS feeds found"
+msgstr "RSS feeds trobat"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Les teves incidències per tancar"
+msgid "Active Directory"
+msgstr "Directori Actiu"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Incidència pendent"
+msgid "GLPI version"
+msgstr "Versió de GLPI"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Incidències per a processar"
+msgid "Confirm the promotion?"
+msgstr "Confirmes la promoció?"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Les teves incidències observades"
+msgid "Your tickets to close"
+msgstr "Les teves incidències per tancar"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Les teves incidències en curs"
+msgid "Tickets on pending status"
+msgstr "Incidència pendent"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Les teves incidències per a validar"
+msgid "Tickets to be processed"
+msgstr "Incidències per a processar"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "Els teus tiquets amb estat d'aprovació rebutjat"
+msgid "Your observed tickets"
+msgstr "Les teves incidències observades"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "Els teus tiquets amb una solució rebutjada"
+msgid "Your tickets in progress"
+msgstr "Les teves incidències en curs"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Seguiment d'incidències"
+msgid "Your tickets to validate"
+msgstr "Les teves incidències per a validar"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d incidència nova"
-#~ msgstr[1] "%d incidències noves"
+msgid "Your tickets having rejected approval status"
+msgstr "Els teus tiquets amb estat d'aprovació rebutjat"
 
-#~ msgid "No ticket found."
-#~ msgstr "No s'han trobat incidències."
+msgid "Your tickets having rejected solution"
+msgstr "Els teus tiquets amb una solució rebutjada"
 
-#~ msgid "Last tickets"
-#~ msgstr "Últimes incidències"
+msgid "Ticket followup"
+msgstr "Seguiment d'incidències"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Nova incidència per a aquest element..."
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d incidència nova"
+msgstr[1] "%d incidències noves"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Última %d incidència"
-#~ msgstr[1] "Últimes %d incidències"
+msgid "No ticket found."
+msgstr "No s'han trobat incidències."
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "No tens permisos per a veure totes les incidències"
+msgid "Last tickets"
+msgstr "Últimes incidències"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Incidència sobre elements enllaçats"
-#~ msgstr[1] "Incidències sobre elements enllaçats"
+msgid "New ticket for this item..."
+msgstr "Nova incidència per a aquest element..."
 
-#~ msgid "No ticket in progress."
-#~ msgstr "No hi ha incidències pendents."
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Última %d incidència"
+msgstr[1] "Últimes %d incidències"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Assigna material"
+msgid "You don't have right to see all tickets"
+msgstr "No tens permisos per a veure totes les incidències"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Tancament administratiu de les incidències"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Incidència sobre elements enllaçats"
+msgstr[1] "Incidències sobre elements enllaçats"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Generació d'enquestes de satisfacció"
+msgid "No ticket in progress."
+msgstr "No hi ha incidències pendents."
 
-#~ msgid "Automatic closed tickets purge"
-#~ msgstr "Tiquets tancats purgats automàticament"
+msgid "Assign equipment"
+msgstr "Assigna material"
 
-#~ msgid "See my ticket"
-#~ msgstr "Veure la meva incidència"
+msgid "Automatic tickets closing"
+msgstr "Tancament administratiu de les incidències"
 
-#~ msgid "See group ticket"
-#~ msgstr "Veure el grup de la incidència"
+msgid "Generation of satisfaction surveys"
+msgstr "Generació d'enquestes de satisfacció"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Veure incidències creades pels meus grups"
+msgid "Automatic closed tickets purge"
+msgstr "Tiquets tancats purgats automàticament"
 
-#~ msgid "See all tickets"
-#~ msgstr "Veure totes les incidències"
+msgid "See my ticket"
+msgstr "Veure la meva incidència"
 
-#~ msgid "See assigned"
-#~ msgstr "Veure assignada"
+msgid "See group ticket"
+msgstr "Veure el grup de la incidència"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Veure incidències assignades"
+msgid "See tickets created by my groups"
+msgstr "Veure incidències creades pels meus grups"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Assigna una incidència"
+msgid "See all tickets"
+msgstr "Veure totes les incidències"
 
-#~ msgid "Steal"
-#~ msgstr "Roba"
+msgid "See assigned"
+msgstr "Veure assignada"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Roba una incidència"
+msgid "See assigned tickets"
+msgstr "Veure incidències assignades"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Estar a càrrec"
+msgid "Assign a ticket"
+msgstr "Assigna una incidència"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Estar a càrrec d'una incidència"
+msgid "Steal"
+msgstr "Roba"
 
-#~ msgid "Change the priority"
-#~ msgstr "Modifica la prioritat"
+msgid "Steal a ticket"
+msgstr "Roba una incidència"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Aprova la solució/Respon enquesta (el meu tiquet)"
+msgid "Beeing in charge"
+msgstr "Estar a càrrec"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "Aprova la solució i respon a l'enquesta del teu tiquet"
+msgid "To be in charge of a ticket"
+msgstr "Estar a càrrec d'una incidència"
 
-#, php-format
-#~ msgid "Not enough rights to merge tickets %d and %d"
-#~ msgstr "No tens permis per fusionar els tiquets %d i %d"
+msgid "Change the priority"
+msgstr "Modifica la prioritat"
 
-#, php-format
-#~ msgid "Failed to load ticket %d"
-#~ msgstr "Ha fallat la càrrega del tiquet %d"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Aprova la solució/Respon enquesta (el meu tiquet)"
 
-#, php-format
-#~ msgid "Failed to add followup to ticket %d"
-#~ msgstr "No s'ha pogut afegir el seguiment del tiquet %d"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "Aprova la solució i respon a l'enquesta del teu tiquet"
 
-#, php-format
-#~ msgid "Failed to add task to ticket %d"
-#~ msgstr "No s'ha pogut afegir una tasca al tiquet %d"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "No tens permis per fusionar els tiquets %d i %d"
 
-#, php-format
-#~ msgid "Failed to add document to ticket %d"
-#~ msgstr "No s'ha pogut afegir el document al tiquet %d"
+msgid "Failed to load ticket %d"
+msgstr "Ha fallat la càrrega del tiquet %d"
 
-#, php-format
-#~ msgid "Failed to link tickets %d and %d"
-#~ msgstr "Ha fallat l'enllaç entre els tiquets %d i %d"
+msgid "Failed to add followup to ticket %d"
+msgstr "No s'ha pogut afegir el seguiment del tiquet %d"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "Ha fallat l'eliminació del tiquet %d"
+msgid "Failed to add task to ticket %d"
+msgstr "No s'ha pogut afegir una tasca al tiquet %d"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%s fusionat el tiquet %s a %s"
+msgid "Failed to add document to ticket %d"
+msgstr "No s'ha pogut afegir el document al tiquet %d"
 
-#~ msgid "Checking write permissions for marketplace plugins directory"
-#~ msgstr ""
-#~ "Comprovant permisos d'edició pel directori dels plugins del marketplace"
+msgid "Failed to link tickets %d and %d"
+msgstr "Ha fallat l'enllaç entre els tiquets %d i %d"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Recalcula la categoria"
+msgid "Failed to delete ticket %d"
+msgstr "Ha fallat l'eliminació del tiquet %d"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Llicències vàlides"
+msgid "%s merges ticket %s into %s"
+msgstr "%s fusionat el tiquet %s a %s"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Nombre d'instal·lacions"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr ""
+"Comprovant permisos d'edició pel directori dels plugins del marketplace"
 
-#~ msgid "Merge"
-#~ msgstr "Reagrupa"
+msgid "Recalculate the category"
+msgstr "Recalcula la categoria"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Programes enviats a la paperera després de reagrupar"
+msgid "Valid licenses"
+msgstr "Llicències vàlides"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "Has d'activar al menys una manera de notificació."
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Nombre d'instal·lacions"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Merge"
+msgstr "Reagrupa"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Connecta un ordinador"
+msgid "Software deleted after merging"
+msgstr "Programes enviats a la paperera després de reagrupar"
 
-#~ msgid "Not connected"
-#~ msgstr "No connectat"
+msgid "You must enable at least one notification mode."
+msgstr "Has d'activar al menys una manera de notificació."
 
-#~ msgid "Show as map"
-#~ msgstr "Mostra com un mapa"
+msgid "GLPI"
+msgstr "GLPI"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Vàlid per %s"
+msgid "Connect a computer"
+msgstr "Connecta un ordinador"
 
-#~ msgid "Late tickets"
-#~ msgstr "Incidències tardanes"
+msgid "Not connected"
+msgstr "No connectat"
 
-#~ msgid "Incoming tickets"
-#~ msgstr "Incidències entrants"
+msgid "Show as map"
+msgstr "Mostra com un mapa"
 
-#~ msgid "Solved tickets"
-#~ msgstr "Incidències resoltes"
+msgid "Valid to %s"
+msgstr "Vàlid per %s"
 
-#~ msgid "Closed tickets"
-#~ msgstr "Incidències tancades"
+msgid "Late tickets"
+msgstr "Incidències tardanes"
 
-#~ msgid "without"
-#~ msgstr "sense"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Incidències esperant aprovació"
 
-#~ msgid "Time to close"
-#~ msgstr "Temps per tancar"
+msgid "Incoming tickets"
+msgstr "Incidències entrants"
 
-#~ msgid "To validate"
-#~ msgstr "Per validar"
+msgid "Solved tickets"
+msgstr "Incidències resoltes"
 
-#~ msgid "Solved"
-#~ msgstr "Resoltes"
+msgid "Closed tickets"
+msgstr "Incidències tancades"
 
-#~ msgid "Share or embed this dashboard"
-#~ msgstr "Comparteix o encasta aquest panell de control"
+msgid "without"
+msgstr "sense"
 
-#~ msgid "Delete this dashboard"
-#~ msgstr "Borra aquest panell de control"
+msgid "Time to close"
+msgstr "Temps per tancar"
 
-#~ msgid "Toggle auto-refresh"
-#~ msgstr "Activa l'auto-actualització"
+msgid "To validate"
+msgstr "Per validar"
 
-#~ msgid "Toggle night mode"
-#~ msgstr "Activa el mode nit"
+msgid "Solved"
+msgstr "Resoltes"
 
-#~ msgid "Toggle fullscreen"
-#~ msgstr "Activa pantalla completa"
+msgid "Share or embed this dashboard"
+msgstr "Comparteix o encasta aquest panell de control"
 
-#~ msgid "Toggle edit mode"
-#~ msgstr "Activa el mode d'edició"
+msgid "Delete this dashboard"
+msgstr "Borra aquest panell de control"
 
-#~ msgid "Add filter"
-#~ msgstr "Afegeix filtre"
+msgid "Toggle auto-refresh"
+msgstr "Activa l'auto-actualització"
 
-#~ msgid "Add a new dashboard"
-#~ msgstr "Afegeix un nou panell de control"
+msgid "Toggle night mode"
+msgstr "Activa el mode nit"
 
-#~ msgid "others"
-#~ msgstr "altres"
+msgid "Toggle fullscreen"
+msgstr "Activa pantalla completa"
 
-#~ msgid "Widget"
-#~ msgstr "Widget"
+#, fuzzy
+#| msgid "Delete this dashboard"
+msgid "Clone this dashboard"
+msgstr "Borra aquest panell de control"
 
-#~ msgid "Use gradient palette"
-#~ msgstr "Utilitza una paleta de degradats"
+msgid "Toggle edit mode"
+msgstr "Activa el mode d'edició"
 
-#~ msgid "Display value labels on points/bars"
-#~ msgstr "Mostra els valors de les etiquetes als punts/barres"
+msgid "Add filter"
+msgstr "Afegeix filtre"
 
-#~ msgid "Limit number of data"
-#~ msgstr "Número límit de dades"
+msgid "Add a new dashboard"
+msgstr "Afegeix un nou panell de control"
 
-#~ msgid "Filters"
-#~ msgstr "Filtres"
+msgid "others"
+msgstr "altres"
 
-#~ msgid "Embed in another application"
-#~ msgstr "Encasta en una altre aplicació"
+msgid "Widget"
+msgstr "Widget"
 
-#~ msgid "Direct link"
-#~ msgstr "Enllaç directe"
+msgid "Use gradient palette"
+msgstr "Utilitza una paleta de degradats"
 
-#~ msgid "Iframe"
-#~ msgstr "Iframe"
+msgid "Display value labels on points/bars"
+msgstr "Mostra els valors de les etiquetes als punts/barres"
 
-#~ msgid "Or share the dashboard to these target objects:"
-#~ msgstr "O comparteix el panell de control a aquests objectius:"
+msgid "Limit number of data"
+msgstr "Número límit de dades"
 
-#~ msgid "empty card !"
-#~ msgstr "tarjeta buida !"
+msgid "Filters"
+msgstr "Filtres"
 
-#, php-format
-#~ msgid "Number of %s"
-#~ msgstr "Nombre de %s"
+msgid "Embed in another application"
+msgstr "Encasta en una altre aplicació"
 
-#, php-format
-#~ msgid "%s by %s"
-#~ msgstr "%s per %s"
+msgid "Direct link"
+msgstr "Enllaç directe"
 
-#, php-format
-#~ msgid "List of %s"
-#~ msgstr "Llista de %s"
+msgid "Iframe"
+msgstr "Iframe"
 
-#~ msgid "Number of tickets by month"
-#~ msgstr "Num d'incidències per mes"
+msgid "Or share the dashboard to these target objects:"
+msgstr "O comparteix el panell de control a aquests objectius:"
 
-#~ msgid "Evolution of ticket in the past year"
-#~ msgstr "Evolució del tiquet en l'últim any"
+msgid "empty card !"
+msgstr "tarjeta buida !"
 
-#~ msgid "Tickets status by month"
-#~ msgstr "Estat de les incidéncies per mes"
+msgid "Number of %s"
+msgstr "Nombre de %s"
 
-#~ msgid "Tickets times (in hours)"
-#~ msgstr "Horaris de les incidències (en hores)"
+msgid "%s by %s"
+msgstr "%s per %s"
 
-#~ msgid "Tickets summary"
-#~ msgstr "Resum de les incidències"
+msgid "List of %s"
+msgstr "Llista de %s"
 
-#~ msgid "Top ticket's categories"
-#~ msgstr "Top de les categories de tiquets"
+msgid "Number of tickets by month"
+msgstr "Num d'incidències per mes"
 
-#~ msgid "Top ticket's entities"
-#~ msgstr "Top entiats dels tiquets"
+msgid "Evolution of ticket in the past year"
+msgstr "Evolució del tiquet en l'últim any"
 
-#~ msgid "Top ticket's request types"
-#~ msgstr "Top de tipus de peticions dels tiquets"
+msgid "Tickets status by month"
+msgstr "Estat de les incidéncies per mes"
 
-#~ msgid "Top ticket's locations"
-#~ msgstr "Top de ubicacions dels tiquets"
+msgid "Tickets times (in hours)"
+msgstr "Horaris de les incidències (en hores)"
 
-#~ msgid "Top ticket's requesters"
-#~ msgstr "Top de sol·licitants de tiquets"
+msgid "Tickets summary"
+msgstr "Resum de les incidències"
 
-#~ msgid "Top ticket's requester groups"
-#~ msgstr "Top de grups sol·licitants de tiquets"
+msgid "Top ticket's categories"
+msgstr "Top de les categories de tiquets"
 
-#~ msgid "Top ticket's observers"
-#~ msgstr "Top observadors de tiquets"
+msgid "Top ticket's entities"
+msgstr "Top entiats dels tiquets"
 
-#~ msgid "Top ticket's observer groups"
-#~ msgstr "Top de grups observadors de tiquets"
+msgid "Top ticket's request types"
+msgstr "Top de tipus de peticions dels tiquets"
 
-#~ msgid "Top ticket's assignees"
-#~ msgstr "Top d'assignats a tiquets"
+msgid "Top ticket's locations"
+msgstr "Top de ubicacions dels tiquets"
 
-#~ msgid "Top ticket's assignee groups"
-#~ msgstr "Top de grups assignats a tiquets"
+msgid "Top ticket's requesters"
+msgstr "Top de sol·licitants de tiquets"
 
-#~ msgid "List of reminders"
-#~ msgstr "Llista de recordatoris"
+msgid "Top ticket's requester groups"
+msgstr "Top de grups sol·licitants de tiquets"
 
-#~ msgid "Editable markdown card"
-#~ msgstr "Tarjeta de descompte editable"
+msgid "Top ticket's observers"
+msgstr "Top observadors de tiquets"
 
-#~ msgid "Toggle edit mode to edit content"
-#~ msgstr "Activa el mode d'edició per editar el contingut"
+msgid "Top ticket's observer groups"
+msgstr "Top de grups observadors de tiquets"
 
-#~ msgid "field name in DB"
-#~ msgstr "nom del camp a la BD"
+msgid "Top ticket's assignees"
+msgstr "Top d'assignats a tiquets"
 
-#~ msgid "Example:"
-#~ msgstr "Exemple:"
+msgid "Top ticket's assignee groups"
+msgstr "Top de grups assignats a tiquets"
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "Des de GLPI 9.2, hem introduït una funció d'estadístiques anomenada "
-#~ "\"Telemetria\", que anònimament amb el teu permís, envia dades a la "
-#~ "nostre pàgina web de telemetria."
+msgid "List of reminders"
+msgstr "Llista de recordatoris"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "Xarxa IP no inclosa a la base de dades. Tot i això, es poden veure les "
-#~ "xarxes disponibles"
+msgid "Editable markdown card"
+msgstr "Tarjeta de descompte editable"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Diversos noms de xarxa disponibles! Ves a la pestanya \"Noms de xarxa\" "
-#~ "per gestionar-ho."
+msgid "Toggle edit mode to edit content"
+msgstr "Activa el mode d'edició per editar el contingut"
 
-#~ msgid "Add a network name"
-#~ msgstr "Afegeix un nom de xarxa"
+msgid "field name in DB"
+msgstr "nom del camp a la BD"
 
-#~ msgid "Not associated"
-#~ msgstr "No associat"
+msgid "Example:"
+msgstr "Exemple:"
 
-#~ msgid "Create a new network name"
-#~ msgstr "Crea un nou nom de xarxa"
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"Des de GLPI 9.2, hem introduït una funció d'estadístiques anomenada "
+"\"Telemetria\", que anònimament amb el teu permís, envia dades a la nostre "
+"pàgina web de telemetria."
 
-#~ msgid "No network name found"
-#~ msgstr "No s'ha trobat el nom de xarxa"
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"Xarxa IP no inclosa a la base de dades. Tot i això, es poden veure les "
+"xarxes disponibles"
 
-#~ msgid "Unable to download plugin archive."
-#~ msgstr "No es pot descarregar l'arxiu del plugin."
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Diversos noms de xarxa disponibles! Ves a la pestanya \"Noms de xarxa\" per "
+"gestionar-ho."
 
-#, php-format
-#~ msgid "Plugin archive format is not supported by your system : %s."
-#~ msgstr ""
-#~ "El format de l'arxiu del plugin no es compatible amb el teu sistema: %s"
+msgid "Add a network name"
+msgstr "Afegeix un nom de xarxa"
 
-#~ msgid "Unable to extract plugin archive."
-#~ msgstr "No es pot extreure l'arxiu del plugin."
+msgid "Not associated"
+msgstr "No associat"
 
-#~ msgid "Check all plugin updates"
-#~ msgstr "Comprova totes les actualitzacions del plugin"
+msgid "Create a new network name"
+msgstr "Crea un nou nom de xarxa"
 
-#, php-format
-#~ msgid "New version for plugin %s: %s"
-#~ msgstr "Nova versió pel plugin %s: %s"
+msgid "No network name found"
+msgstr "No s'ha trobat el nom de xarxa"
 
-#~ msgid "Installed"
-#~ msgstr "Instal·lat"
+msgid "Unable to download plugin archive."
+msgstr "No es pot descarregar l'arxiu del plugin."
 
-#~ msgid "Discover"
-#~ msgstr "Descobreix"
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+"El format de l'arxiu del plugin no es compatible amb el teu sistema: %s"
 
-#, php-format
-#~ msgid ""
-#~ "%1$s services website seems not available from your network or offline"
-#~ msgstr ""
-#~ "Els serveis de la pàgina web %1$s no estàn disponibles des de la teva "
-#~ "xarxa o desconnectat"
+msgid "Unable to extract plugin archive."
+msgstr "No es pot extreure l'arxiu del plugin."
 
-#~ msgid "Maybe you could setup a proxy"
-#~ msgstr "Potser pots configurar un proxy"
+msgid "Check all plugin updates"
+msgstr "Comprova totes les actualitzacions del plugin"
 
-#~ msgid "or please check later"
-#~ msgstr "o si us plau revisa-ho més tard"
+msgid "New version for plugin %s: %s"
+msgstr "Nova versió pel plugin %s: %s"
 
-#, php-format
-#~ msgid "Your %1$s registration is not valid."
-#~ msgstr "El teu registre %1$s no es vàlid."
+msgid "Installed"
+msgstr "Instal·lat"
 
-#~ msgid "A registration, at least a free one, is required to use marketplace!"
-#~ msgstr ""
-#~ "Cal registrar-se, al menys de forma gratuïta, per utilitzar marketplace!"
+msgid "Discover"
+msgstr "Descobreix"
 
-#, php-format
-#~ msgid "Register on %1$s"
-#~ msgstr "Registra't a %1$s"
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+"Els serveis de la pàgina web %1$s no estàn disponibles des de la teva xarxa "
+"o desconnectat"
 
-#~ msgid "fill your registration key in setup."
-#~ msgstr "fica la teva clau de registre a la configuració."
+msgid "Maybe you could setup a proxy"
+msgstr "Potser pots configurar un proxy"
 
-#, php-format
-#~ msgid "We can't write on the markeplace directory (%s)."
-#~ msgstr "No podem escriure en el directori del marketplace (%s)."
+msgid "or please check later"
+msgstr "o si us plau revisa-ho més tard"
 
-#~ msgid ""
-#~ "If you want to ease the plugins download, please check permissions and "
-#~ "ownership of this directory."
-#~ msgstr ""
-#~ "Si vols facilitar la descàrrega de plugins, si us plau revisa els "
-#~ "permisos i propietat d'aquest directori."
+msgid "Your %1$s registration is not valid."
+msgstr "El teu registre %1$s no es vàlid."
 
-#~ msgid ""
-#~ "Otherwise, you will need to download and unzip the plugins archives "
-#~ "manually."
-#~ msgstr ""
-#~ "Si no és així, hauràs de descarregar i extreure tots els arxius dels "
-#~ "plugins manualment."
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+"Cal registrar-se, al menys de forma gratuïta, per utilitzar marketplace!"
 
-#~ msgid "Alpha ASC"
-#~ msgstr "Alfa ASC"
+msgid "Register on %1$s"
+msgstr "Registra't a %1$s"
 
-#~ msgid "Alpha DESC"
-#~ msgstr "Alfa DESC"
+msgid "fill your registration key in setup."
+msgstr "fica la teva clau de registre a la configuració."
 
-#~ msgid "Most popular"
-#~ msgstr "Més popular"
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "El teu comentari s'ha editat"
 
-#~ msgid "Last updated"
-#~ msgstr "Última actualització"
+#, fuzzy
+#| msgid "Register on %1$s"
+msgid "Renew it on %1$s."
+msgstr "Registra't a %1$s"
 
-#~ msgid "Most recent"
-#~ msgstr "Més recent"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr "No podem escriure en el directori del marketplace (%s)."
 
-#~ msgid "Best notes"
-#~ msgstr "Millors notes"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+"Si vols facilitar la descàrrega de plugins, si us plau revisa els permisos i "
+"propietat d'aquest directori."
 
-#~ msgid "Your plugin here ? Contact us."
-#~ msgstr "El teu plugin aquí ? Contacta'ns"
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+"Si no és així, hauràs de descarregar i extreure tots els arxius dels plugins "
+"manualment."
 
-#~ msgid "Refresh plugin list"
-#~ msgstr "Actualitza la llista de plugins"
+msgid "Alpha ASC"
+msgstr "Alfa ASC"
 
-#~ msgid "Filter plugin list"
-#~ msgstr "Filtra la llista de plugins"
+msgid "Alpha DESC"
+msgstr "Alfa DESC"
 
-#~ msgid "Homepage"
-#~ msgstr "Pàgina inicial"
+msgid "Most popular"
+msgstr "Més popular"
 
-#~ msgid "Get help"
-#~ msgstr "Obté ajuda"
+msgid "Last updated"
+msgstr "Última actualització"
 
-#~ msgid "Readme"
-#~ msgstr "Llegeix-me"
+msgid "Most recent"
+msgstr "Més recent"
 
-#~ msgid "Clean"
-#~ msgstr "Neteja"
+msgid "Best notes"
+msgstr "Millors notes"
 
-#~ msgid ""
-#~ "The plugin has an available update but its directory is not writable."
-#~ msgstr ""
-#~ "El plugin té una actualització disponible però el directori no es pot "
-#~ "escriure."
+msgid "Your plugin here ? Contact us."
+msgstr "El teu plugin aquí ? Contacta'ns"
 
-#, php-format
-#~ msgid ""
-#~ "Download archive manually, you must uncompress it in plugins directory "
-#~ "(%s)"
-#~ msgstr ""
-#~ "Descarrega els arxius manualment, l'has de descomprimir en el directori "
-#~ "de plugins (%s)"
+msgid "Refresh plugin list"
+msgstr "Actualitza la llista de plugins"
 
-#, php-format
-#~ msgid "A new version (%s) is available, update ?"
-#~ msgstr "Una nova versió (%s) està disponible, vols actualitzar ? "
+msgid "Filter plugin list"
+msgstr "Filtra la llista de plugins"
 
-#, php-format
-#~ msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-#~ msgstr ""
-#~ "Necessites una xarxa-GLPI superior per oferir accés a aquest plugin (%s)"
+msgid "Homepage"
+msgstr "Pàgina inicial"
 
-#~ msgid "Install"
-#~ msgstr "Instal·la"
+msgid "Get help"
+msgstr "Obté ajuda"
 
-#~ msgid "Enable"
-#~ msgstr "Activa"
+msgid "Readme"
+msgstr "Llegeix-me"
 
-#~ msgid "Uninstall"
-#~ msgstr "Desinstal·la"
+msgid "Clean"
+msgstr "Neteja"
 
-#, php-format
-#~ msgid "You must have a %s subscription to get this plugin"
-#~ msgstr "Has de tenir una subscripció %s per tenir aquest plugin"
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "El nom d'usuari no és vàlid. No es pot afegir l'usuari."
 
-#, php-format
-#~ msgid "You need at least the %s subscription level to get this plugin"
-#~ msgstr ""
-#~ "Al menys necessites el nivell de subscripció %s per obtenir aquest plugin"
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+"El plugin té una actualització disponible però el directori no es pot "
+"escriure."
 
-#, php-format
-#~ msgid "%s plugin"
-#~ msgid_plural "%s plugins"
-#~ msgstr[0] "%s plugin"
-#~ msgstr[1] "%s plugins"
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+"Descarrega els arxius manualment, l'has de descomprimir en el directori de "
+"plugins (%s)"
 
-#~ msgid "GLPI provides a new marketplace to download and install plugins."
-#~ msgstr ""
-#~ "GLPI proporciona un nou market place per descarregar i instal·lar plugins."
+msgid "A new version (%s) is available, update ?"
+msgstr "Una nova versió (%s) està disponible, vols actualitzar ? "
 
-#~ msgid ""
-#~ "Do you want to replace the plugins setup page by the new marketplace ?"
-#~ msgstr ""
-#~ "Vols substituïr la pàgina de configuració de plugins per el nou "
-#~ "marketplace ?"
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+"Necessites una xarxa-GLPI superior per oferir accés a aquest plugin (%s)"
 
-#~ msgid "Later"
-#~ msgstr "Més tard"
+msgid "Install"
+msgstr "Instal·la"
 
-#~ msgid "Switch to marketplace"
-#~ msgstr "Canvia a marketplace"
+msgid "Enable"
+msgstr "Activa"
 
-#~ msgid "Some updates are available for your installed plugins!"
-#~ msgstr ""
-#~ "Algunes actualitzacions estan disponibles pels teus plugins instal·lats!"
+msgid "Uninstall"
+msgstr "Desinstal·la"
 
-#~ msgid "Plugin name"
-#~ msgstr "Nom del plugin"
+msgid "You must have a %s subscription to get this plugin"
+msgstr "Has de tenir una subscripció %s per tenir aquest plugin"
 
-#~ msgid "Plugin new version number"
-#~ msgstr "Número de la nova versió del plugin"
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+"Al menys necessites el nivell de subscripció %s per obtenir aquest plugin"
 
-#~ msgid "Plugin old version number"
-#~ msgstr "Número de la versió antiga del plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "%s plugin"
+msgstr[1] "%s plugins"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "En el motor de recerca, usa \"Venciment conté NULL\" per cercar "
-#~ "llicències sense data de venciment"
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+"GLPI proporciona un nou market place per descarregar i instal·lar plugins."
 
-#~ msgid "Registration"
-#~ msgstr "Registre"
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+"Vols substituïr la pàgina de configuració de plugins per el nou marketplace ?"
 
-#~ msgid ""
-#~ "A registration key is needed to use advanced feature (like marketplace) "
-#~ "in GLPI"
-#~ msgstr ""
-#~ "Una clau de registre és necessaria per utilitzar les característiques "
-#~ "avançades (com el marketplace) en GLPI"
+msgid "Later"
+msgstr "Més tard"
 
-#, php-format
-#~ msgid "Register on %1$s!"
-#~ msgstr "Registra't a %1$s!"
+msgid "Switch to marketplace"
+msgstr "Canvia a marketplace"
 
-#~ msgid "And retrieve your key to paste it below"
-#~ msgstr "I recupera la teva clau per enganxar-la a sota"
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+"Algunes actualitzacions estan disponibles pels teus plugins instal·lats!"
 
-#, php-format
-#~ msgid "Error was: %s"
-#~ msgstr "L'error era: %s"
+msgid "Plugin name"
+msgstr "Nom del plugin"
 
-#~ msgid "Registration key"
-#~ msgstr "Clau de registre"
+msgid "Plugin new version number"
+msgstr "Número de la nova versió del plugin"
 
-#~ msgid "Subscription"
-#~ msgstr "Subscripció"
+msgid "Plugin old version number"
+msgstr "Número de la versió antiga del plugin"
 
-#~ msgid "Unknown"
-#~ msgstr "Desconegut"
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"En el motor de recerca, usa \"Venciment conté NULL\" per cercar llicències "
+"sense data de venciment"
 
-#~ msgid "Registered by"
-#~ msgstr "Registrat per"
+msgid "Registration"
+msgstr "Registre"
 
-#~ msgid "Unable to fetch registration information."
-#~ msgstr "No es pot obtenir l'informació del registre."
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+"Una clau de registre és necessaria per utilitzar les característiques "
+"avançades (com el marketplace) en GLPI"
 
-#~ msgid "The registration key is invalid."
-#~ msgstr "La clau de registre no és vàlida."
+msgid "Register on %1$s!"
+msgstr "Registra't a %1$s!"
 
-#~ msgid "The registration key is valid."
-#~ msgstr "La clau de registre és vàlida."
+msgid "And retrieve your key to paste it below"
+msgstr "I recupera la teva clau per enganxar-la a sota"
 
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "Necessites ajuda per integrar GLPI al teu IT, arreglar un bug o "
-#~ "beneficiar-se de les normes pre-configurades o diccionaris?\n"
-#~ "\n"
-#~ "Et proporcionem l'espai %s. \n"
-#~ "GLPI-Network és un producte comercial que inclou una subscripció per "
-#~ "support de nivell 3, assegurant la correcció de bugs is a commercial "
-#~ "product that includes a subscription for tier 3 support, ensuring the "
-#~ "correction of bugs trobats en temps de compromís.\n"
-#~ "\n"
-#~ "En el mateix espai, podràs <b>contactar amb un partner oficial</b> per "
-#~ "ajudar-te amb la teva integració de GLPI.\n"
-#~ "\n"
-#~ "O, dóna suport al desenvolupament de GLPI <b>donant aqui</b>."
+msgid "Error was: %s"
+msgstr "L'error era: %s"
 
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "Tens problemes configurant el mòdul avançat de GLPI?\n"
-#~ "Et podem ajudar a resoldre els problemes. Registret per suport a %s."
+msgid "Registration key"
+msgstr "Clau de registre"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "S'ha enviat un correu a la teva adreça de correu. Aquest correu té "
-#~ "informació per reiniciar la teva contrasenya."
+msgid "Subscription"
+msgstr "Subscripció"
 
-#~ msgid "Email address not found."
-#~ msgstr "L'adreça de correu no existeix."
+msgid "Unknown"
+msgstr "Desconegut"
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "L'adreça MAC i l'adreça IP de l'equip s'inclouen en un port de xarxa "
-#~ "afegit"
+msgid "Registered by"
+msgstr "Registrat per"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "El fitxer carregat excedeix la directiva upload_max_filesize a php.ini"
+msgid "Unable to fetch registration information."
+msgstr "No es pot obtenir l'informació del registre."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "El fitxer carregat excedeix la directiva MAX_FILE_SIZE que s'ha "
-#~ "especificat al formulari HTML"
+msgid "The registration key is invalid."
+msgstr "La clau de registre no és vàlida."
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "El fitxer carregat va ser pujat només parcialment"
+#, fuzzy
+#| msgid "The registration key is invalid."
+msgid "The registration key refers to a terminated subscription."
+msgstr "La clau de registre no és vàlida."
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "No s'ha pogut escriure el fitxer al disc"
+msgid "The registration key is valid."
+msgstr "La clau de registre és vàlida."
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "Una extensió de PHP va aturar la càrrega de fitxers"
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"Necessites ajuda per integrar GLPI al teu IT, arreglar un bug o beneficiar-"
+"se de les normes pre-configurades o diccionaris?\n"
+"\n"
+"Et proporcionem l'espai %s. \n"
+"GLPI-Network és un producte comercial que inclou una subscripció per support "
+"de nivell 3, assegurant la correcció de bugs is a commercial product that "
+"includes a subscription for tier 3 support, ensuring the correction of bugs "
+"trobats en temps de compromís.\n"
+"\n"
+"En el mateix espai, podràs <b>contactar amb un partner oficial</b> per "
+"ajudar-te amb la teva integració de GLPI.\n"
+"\n"
+"O, dóna suport al desenvolupament de GLPI <b>donant aqui</b>."
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr "El fitxer carregat excedeix la directiva post_max_size a php.ini"
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"Tens problemes configurant el mòdul avançat de GLPI?\n"
+"Et podem ajudar a resoldre els problemes. Registret per suport a %s."
 
-#~ msgid "File is too big"
-#~ msgstr "El fitxer és massa gran"
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"S'ha enviat un correu a la teva adreça de correu. Aquest correu té "
+"informació per reiniciar la teva contrasenya."
 
-#~ msgid "File is too small"
-#~ msgstr "El fixer és massa petit"
+msgid "Email address not found."
+msgstr "L'adreça de correu no existeix."
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Superada la capacitat màxima de fitxers"
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+"L'adreça MAC i l'adreça IP de l'equip s'inclouen en un port de xarxa afegit"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "La imatge sobrepassa l'ample màxim"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "El fitxer carregat excedeix la directiva upload_max_filesize a php.ini"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "La imatge requereix un amplada mínima"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"El fitxer carregat excedeix la directiva MAX_FILE_SIZE que s'ha especificat "
+"al formulari HTML"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "La imatge sobrepassa l'alçada màxima"
+msgid "The uploaded file was only partially uploaded"
+msgstr "El fitxer carregat va ser pujat només parcialment"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "La imatge requereix una alçada mínima"
+msgid "Failed to write file to disk"
+msgstr "No s'ha pogut escriure el fitxer al disc"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Tipus de fitxer no permès"
+msgid "A PHP extension stopped the file upload"
+msgstr "Una extensió de PHP va aturar la càrrega de fitxers"
 
-#~ msgid "File upload aborted"
-#~ msgstr "Càrrega de l'arxiu abortada"
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "El fitxer carregat excedeix la directiva post_max_size a php.ini"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "No s'ha pogut redimensionar la imatge"
+msgid "File is too big"
+msgstr "El fitxer és massa gran"
 
-#~ msgid "Display GLPI debug information"
-#~ msgstr "Mostra l'informació de debug de GLPI"
+msgid "File is too small"
+msgstr "El fixer és massa petit"
 
-#~ msgid "Progress"
-#~ msgstr "Progrés"
+msgid "Maximum number of files exceeded"
+msgstr "Superada la capacitat màxima de fitxers"
 
-#~ msgid "My settings"
-#~ msgstr "Les meves opcions"
+msgid "Image exceeds maximum width"
+msgstr "La imatge sobrepassa l'ample màxim"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "Ves al principi de la pàgina"
+msgid "Image requires a minimum width"
+msgstr "La imatge requereix un amplada mínima"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr ""
-#~ "El trobaràs al lloc de GLPI: <a href='http://glpi-project.org' "
-#~ "target='_blank'>http://glpi-project.org</a>."
+msgid "Image exceeds maximum height"
+msgstr "La imatge sobrepassa l'alçada màxima"
 
-#~ msgid "Check all"
-#~ msgstr "Marca tot"
+msgid "Image requires a minimum height"
+msgstr "La imatge requereix una alçada mínima"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Desmarca tot"
+msgid "Filetype not allowed"
+msgstr "Tipus de fitxer no permès"
 
-#~ msgid "Check all as"
-#~ msgstr "Marca tots com a"
+msgid "File upload aborted"
+msgstr "Càrrega de l'arxiu abortada"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Selecció massa gran, acció desactivada"
+msgid "Failed to resize image"
+msgstr "No s'ha pogut redimensionar la imatge"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Per incrementar el límit: canvia max_input_vars o suhosin.post.max_vars a "
-#~ "la configuració de php."
+msgid "Display GLPI debug information"
+msgstr "Mostra l'informació de debug de GLPI"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "El camp de descripció és obligatori"
+msgid "Progress"
+msgstr "Progrés"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "De %1$d a %2$d de %3$d"
+msgid "My settings"
+msgstr "Les meves opcions"
 
-#~ msgid "Empty array"
-#~ msgstr "Cadena buida"
+msgid "Back to top of the page"
+msgstr "Ves al principi de la pàgina"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d a %2$d"
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr ""
+"El trobaràs al lloc de GLPI: <a href='http://glpi-project.org' "
+"target='_blank'>http://glpi-project.org</a>."
 
-#~ msgid "Close (Esc)"
-#~ msgstr "Tanca (Esc)"
+msgid "Check all"
+msgstr "Marca tot"
 
-#~ msgid "Share"
-#~ msgstr "Comparteix"
+msgid "Uncheck all"
+msgstr "Desmarca tot"
 
-#~ msgid "Zoom in/out"
-#~ msgstr "Amplia/allunya"
+msgid "Check all as"
+msgstr "Marca tots com a"
 
-#~ msgid "Previous (arrow left)"
-#~ msgstr "Anterior (fletxa esquerre)"
+msgid "Selection too large, massive action disabled."
+msgstr "Selecció massa gran, acció desactivada"
 
-#~ msgid "Next (arrow right)"
-#~ msgstr "Següent (fletxa dreta)"
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Per incrementar el límit: canvia max_input_vars o suhosin.post.max_vars a la "
+"configuració de php."
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr ""
-#~ "Adjunta l'arxiu arrossegant-lo o copiant i enganxant-lo en l'editor o"
+msgid "The description field is mandatory"
+msgstr "El camp de descripció és obligatori"
 
-#~ msgid "selecting them"
-#~ msgstr "selecciona'ls"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "De %1$d a %2$d de %3$d"
 
-#~ msgid "File(s)"
-#~ msgstr "Fitxers"
+msgid "Empty array"
+msgstr "Cadena buida"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Arrossega i deixa anar el fitxer aquí, o"
+msgid "%1$d on %2$d"
+msgstr "%1$d a %2$d"
 
-#~ msgid "Upload successful"
-#~ msgstr "Càrrega correcta"
+msgid "Close (Esc)"
+msgstr "Tanca (Esc)"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Marca/desmarca tots"
+msgid "Share"
+msgstr "Comparteix"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Comença a escriure per trobar el menú"
+msgid "Zoom in/out"
+msgstr "Amplia/allunya"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "Mode debug activat"
+msgid "Previous (arrow left)"
+msgstr "Anterior (fletxa esquerre)"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "Mode debug desactivat"
+msgid "Next (arrow right)"
+msgstr "Següent (fletxa dreta)"
 
-#~ msgid "Saved searches"
-#~ msgstr "Cerques guardades"
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr "Adjunta l'arxiu arrossegant-lo o copiant i enganxant-lo en l'editor o"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Gestiona les cerques guadades"
+msgid "selecting them"
+msgstr "selecciona'ls"
 
-#~ msgid "Add is disabled"
-#~ msgstr "L'opció d'afegir està desactivada"
+msgid "File(s)"
+msgstr "Fitxers"
 
-#~ msgid "Search is disabled"
-#~ msgstr "La cerca està desactivada"
+msgid "Drag and drop your file here, or"
+msgstr "Arrossega i deixa anar el fitxer aquí, o"
 
-#~ msgid "Global Kanban"
-#~ msgstr "Kanban global"
+msgid "Upload successful"
+msgstr "Càrrega correcta"
 
-#, php-format
-#~ msgid "You are impersonating %s."
-#~ msgstr "Estàs suplantant a %s."
+msgid "Check/uncheck all"
+msgstr "Marca/desmarca tots"
 
-#~ msgid "Stop impersonating"
-#~ msgstr "Para de suplantar"
+msgid "Start typing to find a menu"
+msgstr "Comença a escriure per trobar el menú"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr ""
-#~ "Permet iniciar sessió a API i obté un token de sessió amb les credencials "
-#~ "de l'usuari"
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Canviat"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "Permet iniciar sessió a API i obté un token de sessió amb token d'usuari "
-#~ "extern. Consulta la clau d'accés remot en la pestanya de configuració de "
-#~ "l'usuari"
+msgid "Debug mode enabled"
+msgstr "Mode debug activat"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Mostra els ID GLPI"
+msgid "Debug mode disabled"
+msgstr "Mode debug desactivat"
 
-#~ msgid "Color palette"
-#~ msgstr "Paleta de colors"
+msgid "Saved searches"
+msgstr "Cerques guardades"
 
-#~ msgid "Layout"
-#~ msgstr "Disposició"
+msgid "Manage saved searches"
+msgstr "Gestiona les cerques guadades"
 
-#~ msgid "Tabs on left"
-#~ msgstr "Pestanyes de l'esquerra"
+msgid "Add is disabled"
+msgstr "L'opció d'afegir està desactivada"
 
-#~ msgid "Classic view"
-#~ msgstr "Vista clàssica"
+msgid "Search is disabled"
+msgstr "La cerca està desactivada"
 
-#~ msgid "Vertical split"
-#~ msgstr "Divisió vertical"
+msgid "Global Kanban"
+msgstr "Kanban global"
 
-#~ msgid "Dashboards"
-#~ msgstr "Panells de control"
+msgid "You are impersonating %s."
+msgstr "Estàs suplantant a %s."
 
-#~ msgid "Default for central"
-#~ msgstr "Per defecte per central"
+msgid "Stop impersonating"
+msgstr "Para de suplantar"
 
-#~ msgid "Default for Assets"
-#~ msgstr "Per defecte per Assets"
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+"Permet iniciar sessió a API i obté un token de sessió amb les credencials de "
+"l'usuari"
 
-#~ msgid "Default for Assistance"
-#~ msgstr "Per defecte per Assistència"
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"Permet iniciar sessió a API i obté un token de sessió amb token d'usuari "
+"extern. Consulta la clau d'accés remot en la pestanya de configuració de "
+"l'usuari"
 
-#~ msgid "Default for tickets (mini dashboard)"
-#~ msgstr "Valor predeterminat per a les incidències (mini dashboard)"
+msgid "Show GLPI ID"
+msgstr "Mostra els ID GLPI"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Comprova si hi ha una versió nova disponible"
+msgid "Color palette"
+msgstr "Paleta de colors"
 
-#~ msgid "Show filters"
-#~ msgstr "Mostra els filtres"
+msgid "Layout"
+msgstr "Disposició"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "Cap històric que coincideixi amb els teus filtres"
+msgid "Tabs on left"
+msgstr "Pestanyes de l'esquerra"
 
-#~ msgid "Add to schedule"
-#~ msgstr "Afegeix a la llista"
+msgid "Classic view"
+msgstr "Vista clàssica"
 
-#~ msgid "Position in room"
-#~ msgstr "Posició en sala"
+msgid "Vertical split"
+msgstr "Divisió vertical"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "Orientació de la porta en la sala"
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Caducitat del contracte"
 
-#~ msgid "North"
-#~ msgstr "Nord"
+msgid "Dashboards"
+msgstr "Panells de control"
 
-#~ msgid "East"
-#~ msgstr "Est"
+msgid "Default for central"
+msgstr "Per defecte per central"
 
-#~ msgid "South"
-#~ msgstr "Sud"
+msgid "Default for Assets"
+msgstr "Per defecte per Assets"
 
-#~ msgid "West"
-#~ msgstr "Oest"
+msgid "Default for Assistance"
+msgstr "Per defecte per Assistència"
 
-#~ msgid "Number of units"
-#~ msgstr "Nombre d'unitats"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Valor predeterminat per a les incidències (mini dashboard)"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "Check if a new version is available"
+msgstr "Comprova si hi ha una versió nova disponible"
 
-#~ msgid "Width"
-#~ msgstr "Amplada"
+msgid "Show filters"
+msgstr "Mostra els filtres"
 
-#~ msgid "Height"
-#~ msgstr "Alçada"
+msgid "No historical matching your filters"
+msgstr "Cap històric que coincideixi amb els teus filtres"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "Energia mesurada (en watts)"
+msgid "Add to schedule"
+msgstr "Afegeix a la llista"
 
-#~ msgid "Max. weight"
-#~ msgstr "Màx. pes"
+msgid "Position in room"
+msgstr "Posició en sala"
 
-#~ msgid "No rack found"
-#~ msgstr "No s'ha trobat rack"
+msgid "Door orientation in room"
+msgstr "Orientació de la porta en la sala"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "Els seguents elements estàn for dels límits de la sala"
+msgid "North"
+msgstr "Nord"
 
-#~ msgid "Blueprint"
-#~ msgstr "Pla"
+msgid "East"
+msgstr "Est"
 
-#~ msgid "Grid"
-#~ msgstr "Retícula"
+msgid "South"
+msgstr "Sud"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "Insereix un rack aquí"
+msgid "West"
+msgstr "Oest"
 
-#~ msgid "Position must be set"
-#~ msgstr "S'ha d'especificar la posició"
+msgid "Number of units"
+msgstr "Nombre d'unitats"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s posició no disponible"
+msgid "U"
+msgstr "U"
 
-#~ msgid "All categories"
-#~ msgstr "Totes les categories"
+msgid "Width"
+msgstr "Amplada"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Programari sense categoritzar"
+msgid "Height"
+msgstr "Alçada"
 
-#~ msgid "Valid license"
-#~ msgstr "Llicència vàlida"
+msgid "Measured power (in watts)"
+msgstr "Energia mesurada (en watts)"
 
-#~ msgid "Other component"
-#~ msgstr "Altre component"
+msgid "Max. weight"
+msgstr "Màx. pes"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "Una última cosa abans de començar"
+msgid "No rack found"
+msgstr "No s'ha trobat rack"
 
-#~ msgid "Donate"
-#~ msgstr "Feu un donatiu"
+msgid "Following elements are out of room bounds"
+msgstr "Els seguents elements estàn for dels límits de la sala"
+
+msgid "Blueprint"
+msgstr "Pla"
+
+msgid "Grid"
+msgstr "Retícula"
+
+msgid "Insert a rack here"
+msgstr "Insereix un rack aquí"
+
+msgid "Position must be set"
+msgstr "S'ha d'especificar la posició"
+
+msgid "%1$s position is not available"
+msgstr "%1$s posició no disponible"
+
+msgid "All categories"
+msgstr "Totes les categories"
+
+msgid "Uncategorized software"
+msgstr "Programari sense categoritzar"
+
+msgid "Valid license"
+msgstr "Llicència vàlida"
+
+msgid "Other component"
+msgstr "Altre component"
+
+msgid "One last thing before starting"
+msgstr "Una última cosa abans de començar"
+
+msgid "Donate"
+msgstr "Feu un donatiu"
+
+msgid "Unofficial translations are also available"
+msgstr "Les traduccions no oficials estan també disponibles"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "He llegit i accepto els termes de la llicència comentats a dalt."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "He llegit i NO accepto els termes de la llicència comentats a dalt."
+
+msgid "Installation or update of GLPI"
+msgstr "Instal·lació o actualització de GLPI"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Tria 'Instal·la' per a una nova instal·lació completa de GLPI"
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "Selecciona 'Actualitza' per actualitzar GLPI des d'una versió anterior"
+
+msgid "Do you want to continue?"
+msgstr "Vols continuar?"
+
+msgid "Database connection parameters"
+msgstr "Paràmetres de connexió a la base de dades"
+
+msgid "Test of the connection at the database"
+msgstr "Prova de la connexió a la base de dades"
+
+msgid "Can't connect to the database"
+msgstr "Impossible connectar-se a la base de dades"
+
+msgid "The server answered: %s"
+msgstr "El servidor ha respost: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "El camp servidor i/o el camp usuari estan buits"
+
+msgid "Please select a database:"
+msgstr "Selecciona una base de dades:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Crea una nova base de dades o utilitza la que ja existeix:"
+
+msgid "Please select the database to update:"
+msgstr "Selecciona la base de dades per a actualitzar:"
+
+msgid "Initialization of the database"
+msgstr "Inicialització de la base de dades"
+
+msgid "Impossible to use the database:"
+msgstr "Impossible utilitzar la base de dades:"
+
+msgid "OK - database was initialized"
+msgstr "D'acord - La base de dades ha estat inicialitzada"
+
+msgid "Impossible to write the database setup file"
+msgstr "Impossible escriure el fitxer de configuració de la teva BD"
+
+msgid "Database created"
+msgstr "Base de dades creada"
+
+msgid "Error in creating database!"
+msgstr "Error creant la base de dades!"
+
+msgid "You didn't select a database!"
+msgstr "No has seleccionat cap base de dades!"
+
+msgid "Collect data"
+msgstr "Recopilar dades"
+
+msgid "The installation is finished"
+msgstr "La instal·lació ha acabat"
+
+msgid "Default logins / passwords are:"
+msgstr "Les credencials predeterminades són:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech pel compte del tècnic"
+
+msgid "normal/normal for the normal account"
+msgstr "normal pel compte normal"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly pel compte postonly"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+"Podeu suprimir o modificar aquests comptes i les primeres entrades a la base "
+"de dades"
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Impossible crear el fitxer de connexió a la base de dades, comprova els "
+"permisos dels arxius."
+
+msgid "Select your language"
+msgstr "Selecciona el teu idiom"
+
+msgid "Beginning of the installation"
+msgstr "Inici de la instal·lació"
+
+msgid "Step %d"
+msgstr "Pas %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Autenticació"
+
+msgid "Remember me"
+msgstr "Recorda'm"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Has d'activar JavaScript al teu navegador"
+
+msgid "You must accept cookies to reach this application"
+msgstr "Has d'autoritzar les galetes per accedir a l'aplicació"
+
+msgid "Invalid use of session ID"
+msgstr "Ús no vàlid d'ID de sessió"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Accedeix a les Preguntes Més Freqüents"
+
+msgid "Add a card"
+msgstr "Afegeix una tarjeta"
+
+msgid "Add a filter"
+msgstr "Afegeix un filtre"
+
+msgid "Saved"
+msgstr "Guardat"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Estas segur que vols borrar el panell de control %s ?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Data d'enviament"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Utilitza GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Les traduccions no oficials estan també disponibles"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "He llegit i accepto els termes de la llicència comentats a dalt."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "He llegit i NO accepto els termes de la llicència comentats a dalt."
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "Instal·lació o actualització de GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Tria 'Instal·la' per a una nova instal·lació completa de GLPI"
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "Selecciona 'Actualitza' per actualitzar GLPI des d'una versió anterior"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Vols continuar?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Paràmetres de connexió a la base de dades"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Prova de la connexió a la base de dades"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Impossible connectar-se a la base de dades"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "El servidor ha respost: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "El camp servidor i/o el camp usuari estan buits"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Selecciona una base de dades:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Crea una nova base de dades o utilitza la que ja existeix:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Selecciona la base de dades per a actualitzar:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Inicialització de la base de dades"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Impossible utilitzar la base de dades:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "D'acord - La base de dades ha estat inicialitzada"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Impossible escriure el fitxer de configuració de la teva BD"
-
-#~ msgid "Database created"
-#~ msgstr "Base de dades creada"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Error creant la base de dades!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "No has seleccionat cap base de dades!"
-
-#~ msgid "Collect data"
-#~ msgstr "Recopilar dades"
-
-#~ msgid "The installation is finished"
-#~ msgstr "La instal·lació ha acabat"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Les credencials predeterminades són:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi pel compte d'administrador"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech pel compte del tècnic"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal pel compte normal"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly pel compte postonly"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "Podeu suprimir o modificar aquests comptes i les primeres entrades a la "
-#~ "base de dades"
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Impossible crear el fitxer de connexió a la base de dades, comprova els "
-#~ "permisos dels arxius."
-
-#~ msgid "Select your language"
-#~ msgstr "Selecciona el teu idiom"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Inici de la instal·lació"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Pas %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Autenticació"
-
-#~ msgid "Remember me"
-#~ msgstr "Recorda'm"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Has d'activar JavaScript al teu navegador"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Has d'autoritzar les galetes per accedir a l'aplicació"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Ús no vàlid d'ID de sessió"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Accedeix a les Preguntes Més Freqüents"
-
-#~ msgid "Add a card"
-#~ msgstr "Afegeix una tarjeta"
-
-#~ msgid "Add a filter"
-#~ msgstr "Afegeix un filtre"
-
-#~ msgid "Saved"
-#~ msgstr "Guardat"
-
-#, javascript-format
-#~ msgid "Are you sure you want to delete the dashboard %s ?"
-#~ msgstr "Estas segur que vols borrar el panell de control %s ?"

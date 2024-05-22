@@ -23723,3 +23723,1513 @@ msgstr ""
 #| msgid "Update dashboard"
 msgid "Could not create dashboard"
 msgstr "Update dashboard"
+
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Write"
+
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Login"
+
+#, fuzzy
+#| msgid "Open ID connect authentication"
+msgid "Open ID connect configuration"
+msgstr "Open ID connect authentication"
+
+#, fuzzy
+#| msgid "No directory selected"
+msgid "No room found or selected"
+msgstr "No directory selected"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Replace"
+msgid "Marketplace"
+msgstr "Replace"
+
+#, fuzzy
+#| msgid "%1$s adds the item %2$s (%3$d)"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s adds the item %2$s (%3$d)"
+
+msgid "See the catalog of plugins"
+msgstr ""
+
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+
+#, fuzzy
+#| msgid "Template for an incident"
+msgid "Empty for infinite"
+msgstr "Template for an incident"
+
+#, fuzzy
+#| msgid "RSS feed"
+#| msgid_plural "RSS feed"
+msgid "RSS feeds found"
+msgstr "RSS feed"
+
+#, fuzzy
+#| msgid "Directory"
+msgid "Active Directory"
+msgstr "Directory"
+
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "IP version"
+
+#, fuzzy
+#| msgid "Confirm the final deletion?"
+msgid "Confirm the promotion?"
+msgstr "Confirm the final deletion?"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Your tickets to close"
+msgstr "For tickets closed after"
+
+#, fuzzy
+#| msgid "Problems on pending status"
+msgid "Tickets on pending status"
+msgstr "Problems on pending status"
+
+#, fuzzy
+#| msgid "Problems to be processed"
+msgid "Tickets to be processed"
+msgstr "Problems to be processed"
+
+#, fuzzy
+#| msgid "Not solved tickets"
+msgid "Your observed tickets"
+msgstr "Not solved tickets"
+
+#, fuzzy
+#| msgid "Your problems in progress"
+msgid "Your tickets in progress"
+msgstr "Your problems in progress"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Your tickets to validate"
+msgstr "For tickets closed after"
+
+msgid "Your tickets having rejected approval status"
+msgstr ""
+
+#, fuzzy
+#| msgid "Your ticket has been registered."
+msgid "Your tickets having rejected solution"
+msgstr "Your ticket has been registered."
+
+#, fuzzy
+#| msgid "New followup"
+msgid "Ticket followup"
+msgstr "New followup"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "New ticket"
+msgstr[1] "New ticket"
+
+#, fuzzy
+#| msgid "No items found."
+msgid "No ticket found."
+msgstr "No items found."
+
+#, fuzzy
+#| msgid "Parent tickets"
+msgid "Last tickets"
+msgstr "Parent tickets"
+
+#, fuzzy
+#| msgid "New change for this item..."
+msgid "New ticket for this item..."
+msgstr "New change for this item..."
+
+#, fuzzy
+#| msgid "Last %d change"
+#| msgid_plural "Last %d changes"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Last %d change"
+msgstr[1] "Last %d changes"
+
+#, fuzzy
+#| msgid "You don't have right to connect"
+msgid "You don't have right to see all tickets"
+msgstr "You don't have right to connect"
+
+#, fuzzy
+#| msgid "No linked items"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "No linked items"
+msgstr[1] "No linked items"
+
+#, fuzzy
+#| msgid "No item in progress."
+msgid "No ticket in progress."
+msgstr "No item in progress."
+
+#, fuzzy
+#| msgid "Assign: equipment by IP address"
+msgid "Assign equipment"
+msgstr "Assign: equipment by IP address"
+
+#, fuzzy
+#| msgid "Automatic action"
+#| msgid_plural "Automatic actions"
+msgid "Automatic tickets closing"
+msgstr "Automatic action"
+
+#, fuzzy
+#| msgid "Creation date of the satisfaction survey"
+msgid "Generation of satisfaction surveys"
+msgstr "Creation date of the satisfaction survey"
+
+#, fuzzy
+#| msgid "Automatic purge of closed tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "Automatic purge of closed tickets after"
+
+#, fuzzy
+#| msgid "By ticket"
+msgid "See my ticket"
+msgstr "By ticket"
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "See group ticket"
+msgstr "Create a ticket"
+
+#, fuzzy
+#| msgid "Devices own by my groups"
+msgid "See tickets created by my groups"
+msgstr "Devices own by my groups"
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "See all tickets"
+msgstr "Create a ticket"
+
+#, fuzzy
+#| msgid "Assigned"
+msgid "See assigned"
+msgstr "Assigned"
+
+#, fuzzy
+#| msgid "Assigned tickets"
+msgid "See assigned tickets"
+msgstr "Assigned tickets"
+
+#, fuzzy
+#| msgid "Assigned tickets"
+msgid "Assign a ticket"
+msgstr "Assigned tickets"
+
+msgid "Steal"
+msgstr ""
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "Steal a ticket"
+msgstr "Create a ticket"
+
+#, fuzzy
+#| msgid "Deleting a change"
+msgid "Beeing in charge"
+msgstr "Deleting a change"
+
+#, fuzzy
+#| msgid "Can be in charge of a task"
+msgid "To be in charge of a ticket"
+msgstr "Can be in charge of a task"
+
+#, fuzzy
+#| msgid "Change template"
+#| msgid_plural "change templates"
+msgid "Change the priority"
+msgstr "Change template"
+
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr ""
+
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
+
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to load ticket %d"
+msgstr "Failed to create recurrent ticket %s"
+
+#, fuzzy
+#| msgid "%s promotes a followup from ticket %s"
+msgid "Failed to add followup to ticket %d"
+msgstr "%s promotes a followup from ticket %s"
+
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add task to ticket %d"
+msgstr "Failed to create recurrent ticket %s"
+
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add document to ticket %d"
+msgstr "Failed to create recurrent ticket %s"
+
+msgid "Failed to link tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "Failed to delete the file %s"
+
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s purges the version %2$s"
+
+#, fuzzy
+#| msgid "Checking write permissions for directory %s"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Checking write permissions for directory %s"
+
+#, fuzzy
+#| msgid "Recalculate"
+msgid "Recalculate the category"
+msgstr "Recalculate"
+
+#, fuzzy
+#| msgid "Valid since"
+msgid "Valid licenses"
+msgstr "Valid since"
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of lines"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Number of lines"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Merge"
+msgid "Merge"
+msgstr "Merge"
+
+msgid "Software deleted after merging"
+msgstr ""
+
+#, fuzzy
+#| msgid "Send a test browser notification to you"
+msgid "You must enable at least one notification mode."
+msgstr "Send a test browser notification to you"
+
+msgid "GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Connect a component"
+msgid "Connect a computer"
+msgstr "Connect a component"
+
+#, fuzzy
+#| msgid "Not connected."
+msgid "Not connected"
+msgstr "Not connected."
+
+#, fuzzy
+#| msgid "Show impact"
+msgid "Show as map"
+msgstr "Show impact"
+
+#, fuzzy
+#| msgid "Valid tags"
+msgid "Valid to %s"
+msgstr "Valid tags"
+
+#, fuzzy
+#| msgid "Created tickets"
+msgid "Late tickets"
+msgstr "Created tickets"
+
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Tickets awaiting approval"
+
+#, fuzzy
+#| msgid "Ongoing tickets"
+msgid "Incoming tickets"
+msgstr "Ongoing tickets"
+
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "Solve tickets"
+
+#, fuzzy
+#| msgid "Child tickets"
+msgid "Closed tickets"
+msgstr "Child tickets"
+
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Without name"
+
+#, fuzzy
+#| msgid "Time to own"
+msgid "Time to close"
+msgstr "Time to own"
+
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "Validate"
+
+#, fuzzy
+#| msgctxt "ticket"
+#| msgid "Solved"
+#| msgid_plural "Solved"
+msgid "Solved"
+msgstr "Solved"
+
+msgid "Share or embed this dashboard"
+msgstr ""
+
+#, fuzzy
+#| msgid "Delete this card"
+msgid "Delete this dashboard"
+msgstr "Delete this card"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle auto-refresh"
+msgstr "Toggle filters"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle night mode"
+msgstr "Toggle filters"
+
+#, fuzzy
+#| msgid "Toggle collapse"
+msgid "Toggle fullscreen"
+msgstr "Toggle collapse"
+
+#, fuzzy
+#| msgid "Mini tickets dashboard"
+msgid "Clone this dashboard"
+msgstr "Mini tickets dashboard"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle edit mode"
+msgstr "Toggle filters"
+
+#, fuzzy
+#| msgid "LDAP filter"
+msgid "Add filter"
+msgstr "LDAP filter"
+
+#, fuzzy
+#| msgid "Update dashboard"
+msgid "Add a new dashboard"
+msgstr "Update dashboard"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "Others"
+
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "Budget"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "Number of tasks"
+
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filters"
+msgstr "Filter list"
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "URL of the application"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP directory link"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+msgid "empty card !"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number of rows"
+msgid "Number of %s"
+msgstr "Number of rows"
+
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s by %2$s"
+
+#, fuzzy
+#| msgid "%s of %s"
+msgid "List of %s"
+msgstr "%s of %s"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "Number of tickets"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets by status"
+msgid "Tickets status by month"
+msgstr "Tickets by status"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "Ticket category"
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Top ticket's categories"
+msgstr "Ticket category"
+
+msgid "Top ticket's entities"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "Tickets default type"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "Ticket location"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "Number of tickets as requester"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requester groups"
+msgstr "Number of tickets as requester"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "For tickets closed after"
+
+msgid "Top ticket's observer groups"
+msgstr ""
+
+#, fuzzy
+#| msgid "New group in assignees"
+msgid "Top ticket's assignees"
+msgstr "New group in assignees"
+
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "Add a followup to tickets of associated groups"
+
+#, fuzzy
+#| msgid "Translation of reminders"
+msgid "List of reminders"
+msgstr "Translation of reminders"
+
+#, fuzzy
+#| msgid "Editable markdown"
+msgid "Editable markdown card"
+msgstr "Editable markdown"
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+
+#, fuzzy
+#| msgid "Add a network"
+msgid "Add a network name"
+msgstr "Add a network"
+
+#, fuzzy
+#| msgid "No associated item"
+msgid "Not associated"
+msgstr "No associated item"
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "Create a new network name"
+msgstr "Create a ticket"
+
+#, fuzzy
+#| msgid "No network port found"
+msgid "No network name found"
+msgstr "No network port found"
+
+#, fuzzy
+#| msgid "Unable to load plugin \"%s\" information."
+msgid "Unable to download plugin archive."
+msgstr "Unable to load plugin \"%s\" information."
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Unable to create Appliance item %d."
+msgid "Unable to extract plugin archive."
+msgstr "Unable to create Appliance item %d."
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "Check for new updates"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Install"
+msgid "Installed"
+msgstr "Install"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "Disconnect"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "Created on %s"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Your comment has been edited"
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "generated on %s"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "Most popular questions"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "Last update"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "Read notes"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filter plugin list"
+msgstr "Filter list"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "Home"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "Read"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Clean"
+msgid "Clean"
+msgstr "Clean"
+
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "The login is not valid. Unable to add the user."
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "A new version is available: %s."
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Install"
+msgid "Install"
+msgstr "Install"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Enable"
+msgid "Enable"
+msgstr "Enable"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Uninstall"
+msgid "Uninstall"
+msgstr "Uninstall"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "All plugins"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "All plugins"
+msgstr[1] "All plugins"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "Late"
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "Plugin"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "Building number"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "Reservation"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "Created on %s"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "Reservation"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "Description"
+
+#, fuzzy
+#| msgid "unknown"
+msgid "Unknown"
+msgstr "unknown"
+
+#, fuzzy
+#| msgid "yesterday"
+msgid "Registered by"
+msgstr "yesterday"
+
+#, fuzzy
+#| msgid "Unable to load LDAP server information."
+msgid "Unable to fetch registration information."
+msgstr "Unable to load LDAP server information."
+
+#, fuzzy
+#| msgid "session_token seems invalid"
+msgid "The registration key is invalid."
+msgstr "session_token seems invalid"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+msgid "The registration key is valid."
+msgstr ""
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+
+#, fuzzy
+#| msgid "File %s not found."
+msgid "Email address not found."
+msgstr "File %s not found."
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+
+msgid "The uploaded file was only partially uploaded"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to write file to disk"
+msgstr "Failed to delete the file %s"
+
+msgid "A PHP extension stopped the file upload"
+msgstr ""
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+
+msgid "File is too big"
+msgstr ""
+
+msgid "File is too small"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maximum number of results"
+msgid "Maximum number of files exceeded"
+msgstr "Maximum number of results"
+
+msgid "Image exceeds maximum width"
+msgstr ""
+
+msgid "Image requires a minimum width"
+msgstr ""
+
+msgid "Image exceeds maximum height"
+msgstr ""
+
+msgid "Image requires a minimum height"
+msgstr ""
+
+#, fuzzy
+#| msgid "File not found"
+msgid "Filetype not allowed"
+msgstr "File not found"
+
+#, fuzzy
+#| msgid "No file was uploaded"
+msgid "File upload aborted"
+msgstr "No file was uploaded"
+
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to resize image"
+msgstr "Failed to delete the file %s"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "User information"
+
+msgid "Progress"
+msgstr ""
+
+#, fuzzy
+#| msgid "Settings"
+msgid "My settings"
+msgstr "Settings"
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr ""
+
+#, fuzzy
+#| msgid "Change all"
+msgid "Check all"
+msgstr "Change all"
+
+msgid "Uncheck all"
+msgstr ""
+
+#, fuzzy
+#| msgid "Checklist"
+msgid "Check all as"
+msgstr "Checklist"
+
+msgid "Selection too large, massive action disabled."
+msgstr ""
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+
+#, fuzzy
+#| msgid "A device ID is mandatory"
+msgid "The description field is mandatory"
+msgstr "A device ID is mandatory"
+
+#, fuzzy
+#| msgid "From %1$s to %2$s"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "From %1$s to %2$s"
+
+msgid "Empty array"
+msgstr ""
+
+#, fuzzy
+#| msgid "%1$s on %2$s"
+msgid "%1$d on %2$d"
+msgstr "%1$s on %2$s"
+
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "Close"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+#, fuzzy
+#| msgid "No selected items"
+msgid "selecting them"
+msgstr "No selected items"
+
+#, fuzzy
+#| msgid "File (%s)"
+msgid "File(s)"
+msgstr "File (%s)"
+
+msgid "Drag and drop your file here, or"
+msgstr ""
+
+#, fuzzy
+#| msgid "Operation successful"
+msgid "Upload successful"
+msgstr "Operation successful"
+
+#, fuzzy
+#| msgid "Select/unselect all"
+msgid "Check/uncheck all"
+msgstr "Select/unselect all"
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Changed"
+
+#, fuzzy
+#| msgid "Debug mode has been enabled!"
+msgid "Debug mode enabled"
+msgstr "Debug mode has been enabled!"
+
+#, fuzzy
+#| msgid "Debug mode has been disabled!"
+msgid "Debug mode disabled"
+msgstr "Debug mode has been disabled!"
+
+#, fuzzy
+#| msgid "Saved search"
+#| msgid_plural "Saved searches"
+msgid "Saved searches"
+msgstr "Saved search"
+
+#, fuzzy
+#| msgid "New saved search"
+msgid "Manage saved searches"
+msgstr "New saved search"
+
+#, fuzzy
+#| msgid "API disabled"
+msgid "Add is disabled"
+msgstr "API disabled"
+
+#, fuzzy
+#| msgid "Search result display"
+msgid "Search is disabled"
+msgstr "Search result display"
+
+#, fuzzy
+#| msgid "Global Management"
+msgid "Global Kanban"
+msgstr "Global Management"
+
+#, fuzzy
+#| msgid "%1$s starts impersonating user %2$s"
+msgid "You are impersonating %s."
+msgstr "%1$s starts impersonating user %2$s"
+
+#, fuzzy
+#| msgid "Unable to stop impersonating user"
+msgid "Stop impersonating"
+msgstr "Unable to stop impersonating user"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr ""
+
+msgid "Color palette"
+msgstr ""
+
+msgid "Layout"
+msgstr ""
+
+#, fuzzy
+#| msgid "On left"
+msgid "Tabs on left"
+msgstr "On left"
+
+#, fuzzy
+#| msgid "Passive device"
+#| msgid_plural "Passive devices"
+msgid "Classic view"
+msgstr "Passive device"
+
+#, fuzzy
+#| msgid "Critical state unit"
+msgid "Vertical split"
+msgstr "Critical state unit"
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "End of contract"
+
+#, fuzzy
+#| msgid "Dashboard"
+msgid "Dashboards"
+msgstr "Dashboard"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "Default for tickets"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "Default for tickets"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "Default for tickets"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Default for tickets"
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "Check if a new version is available"
+msgstr "A new version is available: %s."
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Show filters"
+msgstr "Toggle filters"
+
+msgid "No historical matching your filters"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add a schedule"
+msgid "Add to schedule"
+msgstr "Add a schedule"
+
+#, fuzzy
+#| msgid "Position"
+msgid "Position in room"
+msgstr "Position"
+
+msgid "Door orientation in room"
+msgstr ""
+
+msgid "North"
+msgstr ""
+
+msgid "East"
+msgstr ""
+
+msgid "South"
+msgstr ""
+
+msgid "West"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of items"
+msgid "Number of units"
+msgstr "Number of items"
+
+#, fuzzy
+#| msgid "Up"
+msgid "U"
+msgstr "Up"
+
+msgid "Width"
+msgstr ""
+
+#, fuzzy
+#| msgid "Weight"
+msgid "Height"
+msgstr "Weight"
+
+#, fuzzy
+#| msgid "Max. power (in watts)"
+msgid "Measured power (in watts)"
+msgstr "Max. power (in watts)"
+
+msgid "Max. weight"
+msgstr ""
+
+#, fuzzy
+#| msgid "No racks found."
+msgid "No rack found"
+msgstr "No racks found."
+
+#, fuzzy
+#| msgid "Following elements are out of rack bounds"
+msgid "Following elements are out of room bounds"
+msgstr "Following elements are out of rack bounds"
+
+msgid "Blueprint"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+#, fuzzy
+#| msgid "Insert an item here"
+msgid "Insert a rack here"
+msgstr "Insert an item here"
+
+msgid "Position must be set"
+msgstr ""
+
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "Network port is not available..."
+
+#, fuzzy
+#| msgid "Allocated memory test"
+msgid "All categories"
+msgstr "Allocated memory test"
+
+#, fuzzy
+#| msgid "Installed software"
+msgid "Uncategorized software"
+msgstr "Installed software"
+
+#, fuzzy
+#| msgid "Valid since"
+msgid "Valid license"
+msgstr "Valid since"
+
+#, fuzzy
+#| msgid "Other component model"
+#| msgid_plural "Other component models"
+msgid "Other component"
+msgstr "Other component model"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr ""
+
+#, fuzzy
+#| msgid "No statistics are available"
+msgid "Unofficial translations are also available"
+msgstr "No statistics are available"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr ""
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr ""
+
+#, fuzzy
+#| msgid "Installation date"
+msgid "Installation or update of GLPI"
+msgstr "Installation date"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr ""
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+
+#, fuzzy
+#| msgid "Do you want to continue ?"
+msgid "Do you want to continue?"
+msgstr "Do you want to continue ?"
+
+#, fuzzy
+#| msgid "Database connection successful"
+msgid "Database connection parameters"
+msgstr "Database connection successful"
+
+#, fuzzy
+#| msgid "can't connect to the database"
+msgid "Test of the connection at the database"
+msgstr "can't connect to the database"
+
+#, fuzzy
+#| msgid "Can't connect to the database."
+msgid "Can't connect to the database"
+msgstr "Can't connect to the database."
+
+#, fuzzy
+#| msgid "Time elapsed: %s."
+msgid "The server answered: %s"
+msgstr "Time elapsed: %s."
+
+msgid "The server or/and user field is empty"
+msgstr ""
+
+#, fuzzy
+#| msgid "Please select a device"
+msgid "Please select a database:"
+msgstr "Please select a device"
+
+msgid "Create a new database or use an existing one:"
+msgstr ""
+
+#, fuzzy
+#| msgid "Please select a device type"
+msgid "Please select the database to update:"
+msgstr "Please select a device type"
+
+#, fuzzy
+#| msgid "can't connect to the database"
+msgid "Initialization of the database"
+msgstr "can't connect to the database"
+
+#, fuzzy
+#| msgid "Unable to connect to database."
+msgid "Impossible to use the database:"
+msgstr "Unable to connect to database."
+
+msgid "OK - database was initialized"
+msgstr ""
+
+msgid "Impossible to write the database setup file"
+msgstr ""
+
+#, fuzzy
+#| msgid "Database name"
+msgid "Database created"
+msgstr "Database name"
+
+#, fuzzy
+#| msgid "Creating the database..."
+msgid "Error in creating database!"
+msgstr "Creating the database..."
+
+msgid "You didn't select a database!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Close date"
+msgid "Collect data"
+msgstr "Close date"
+
+#, fuzzy
+#| msgid "The \"%s\" extension is installed"
+msgid "The installation is finished"
+msgstr "The \"%s\" extension is installed"
+
+#, fuzzy
+#| msgid "Empty login or password"
+msgid "Default logins / passwords are:"
+msgstr "Empty login or password"
+
+msgid "tech/tech for the technician account"
+msgstr ""
+
+msgid "normal/normal for the normal account"
+msgstr ""
+
+msgid "post-only/postonly for the postonly account"
+msgstr ""
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "Default language"
+
+#, fuzzy
+#| msgid "Beginning of the month"
+msgid "Beginning of the installation"
+msgstr "Beginning of the month"
+
+msgid "Step %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication"
+msgid "GLPI - Authentication"
+msgstr "Authentication"
+
+#, fuzzy
+#| msgid "Team member"
+#| msgid_plural "Team members"
+msgid "Remember me"
+msgstr "Team member"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr ""
+
+msgid "You must accept cookies to reach this application"
+msgstr ""
+
+#, fuzzy
+#| msgid "Invalid process"
+msgid "Invalid use of session ID"
+msgstr "Invalid process"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "Add a change"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "Add an item"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "Save"
+
+#, fuzzy
+#| msgid "Are you sure you want to add this item to transfer list?"
+#| msgid_plural "Are you sure you want to add these items to transfer list?"
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Are you sure you want to add this item to transfer list?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Send date"

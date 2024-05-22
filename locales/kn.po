@@ -23557,367 +23557,1294 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "No room found or selected"
-#~ msgstr "ಯಾವುದೇ ಕೊಠಡಿ ಕಂಡುಬಂದಿಲ್ಲ ಅಥವಾ ಆಯ್ಕೆ ಮಾಡಿಲ್ಲ"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "ಲೇಖಿಸಿ"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "ಅನಂತಕ್ಕೆ ಖಾಲಿ"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "ಲಾಗಿನ್ ಮಾಡಿ"
+
+#, fuzzy
+#| msgid "When connecting or updating"
+msgid "Open ID connect configuration"
+msgstr "ಸಂಪರ್ಕಿಸುವಾಗ ಅಥವಾ ನವೀಕರಿಸುವಾಗ"
+
+msgid "No room found or selected"
+msgstr "ಯಾವುದೇ ಕೊಠಡಿ ಕಂಡುಬಂದಿಲ್ಲ ಅಥವಾ ಆಯ್ಕೆ ಮಾಡಿಲ್ಲ"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Replace"
+msgid "Marketplace"
+msgstr "ಬದಲಾಯಿಸಿ"
+
+#, fuzzy
+#| msgid "%1$s adds the item %2$s"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$sಐಟಂ ಸೇರಿಸುತ್ತದೆ %2$s "
+
+msgid "See the catalog of plugins"
+msgstr ""
+
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+
+msgid "Empty for infinite"
+msgstr "ಅನಂತಕ್ಕೆ ಖಾಲಿ"
+
+msgid "RSS feeds found"
+msgstr ""
+
+msgid "Active Directory"
+msgstr "ಸಕ್ರಿಯ ಡೈರೆಕ್ಟರಿ"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Add a version"
+msgid "GLPI version"
+msgstr "ಒಂದು ಆವೃತ್ತಿಯನ್ನು ಸೇರಿಸಿ"
 
-#~ msgid "Active Directory"
-#~ msgstr "ಸಕ್ರಿಯ ಡೈರೆಕ್ಟರಿ"
+#, fuzzy
+#| msgid "Confirm the final deletion?"
+msgid "Confirm the promotion?"
+msgstr "ಅಂತಿಮ ಅಳಿಸುವಿಕೆಗೆ ದೃಢೀಕರಿಸಿ?"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "ಮುಚ್ಚಲು ನಿಮ್ಮ ಟಿಕೆಟ್ಗಳು"
+msgid "Your tickets to close"
+msgstr "ಮುಚ್ಚಲು ನಿಮ್ಮ ಟಿಕೆಟ್ಗಳು"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "ಬಾಕಿ ಇರುವ ಸ್ಥಿತಿಯಲ್ಲಿ ಟಿಕೆಟ್ಗಳು"
+msgid "Tickets on pending status"
+msgstr "ಬಾಕಿ ಇರುವ ಸ್ಥಿತಿಯಲ್ಲಿ ಟಿಕೆಟ್ಗಳು"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "ಟಿಕೆಟ್ಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಬೇಕು"
+msgid "Tickets to be processed"
+msgstr "ಟಿಕೆಟ್ಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಬೇಕು"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "ನಿಮ್ಮ ಗಮನಿಸಿದ ಟಿಕೆಟ್ಗಳು"
+msgid "Your observed tickets"
+msgstr "ನಿಮ್ಮ ಗಮನಿಸಿದ ಟಿಕೆಟ್ಗಳು"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "ನಿಮ್ಮ ಟಿಕೆಟ್ ಪ್ರಗತಿಯಲ್ಲಿದೆ"
+msgid "Your tickets in progress"
+msgstr "ನಿಮ್ಮ ಟಿಕೆಟ್ ಪ್ರಗತಿಯಲ್ಲಿದೆ"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "ಮೌಲ್ಯೀಕರಿಸಲು ನಿಮ್ಮ ಟಿಕೆಟ್"
+msgid "Your tickets to validate"
+msgstr "ಮೌಲ್ಯೀಕರಿಸಲು ನಿಮ್ಮ ಟಿಕೆಟ್"
 
-#~ msgid "Ticket followup"
-#~ msgstr "ಟಿಕೆಟ್ ಅನುಸರಣೆ"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected approval status"
+msgstr "ನಿಮ್ಮ ಟಿಕೆಟ್ ಪ್ರಗತಿಯಲ್ಲಿದೆ"
 
-#~ msgid "No ticket found."
-#~ msgstr "ಯಾವುದೇ ಟಿಕೆಟ್ ಕಂಡುಬಂದಿಲ್ಲ."
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected solution"
+msgstr "ನಿಮ್ಮ ಟಿಕೆಟ್ ಪ್ರಗತಿಯಲ್ಲಿದೆ"
 
-#~ msgid "Last tickets"
-#~ msgstr "ಕೊನೆಯ ಟಿಕೆಟ್"
+msgid "Ticket followup"
+msgstr "ಟಿಕೆಟ್ ಅನುಸರಣೆ"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "ಈ ಐಟಂಗಾಗಿ ಹೊಸ ಟಿಕೆಟ್ ..."
+#, fuzzy
+#| msgid "New ticket"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "ಹೊಸ ಟಿಕೆಟ್"
+msgstr[1] "ಹೊಸ ಟಿಕೆಟ್"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "ಎಲ್ಲಾ ಟಿಕೆಟ್ಗಳನ್ನು ವೀಕ್ಷಿಸಲು ನಿಮಗೆ ಸೂಕ್ತವಿಲ್ಲ"
+msgid "No ticket found."
+msgstr "ಯಾವುದೇ ಟಿಕೆಟ್ ಕಂಡುಬಂದಿಲ್ಲ."
 
-#~ msgid "No ticket in progress."
-#~ msgstr "ಯಾವುದೇ ಟಿಕೆಟ್ ಪ್ರಗತಿಯಲ್ಲಿದೆ."
+msgid "Last tickets"
+msgstr "ಕೊನೆಯ ಟಿಕೆಟ್"
 
-#~ msgid "Assign equipment"
-#~ msgstr "ಸಲಕರಣೆಗಳನ್ನು ನಿಗದಿಪಡಿಸಿ"
+msgid "New ticket for this item..."
+msgstr "ಈ ಐಟಂಗಾಗಿ ಹೊಸ ಟಿಕೆಟ್ ..."
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "ಸ್ವಯಂಚಾಲಿತ ಟಿಕೆಟ್ ಮುಚ್ಚುವುದು"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "ಕೊನೆಯ ಟಿಕೆಟ್"
+msgstr[1] "ಕೊನೆಯ ಟಿಕೆಟ್"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "ತೃಪ್ತಿ ಸಮೀಕ್ಷೆಗಳ ಜನರೇಷನ್"
+msgid "You don't have right to see all tickets"
+msgstr "ಎಲ್ಲಾ ಟಿಕೆಟ್ಗಳನ್ನು ವೀಕ್ಷಿಸಲು ನಿಮಗೆ ಸೂಕ್ತವಿಲ್ಲ"
 
-#~ msgid "See my ticket"
-#~ msgstr "ನನ್ನ ಟಿಕೆಟ್ ನೋಡಿ"
+#, fuzzy
+#| msgid "Changes on linked items"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "ಲಿಂಕ್ ಮಾಡಲಾದ ಐಟಂಗಳಲ್ಲಿ ಬದಲಾವಣೆಗಳು"
+msgstr[1] "ಲಿಂಕ್ ಮಾಡಲಾದ ಐಟಂಗಳಲ್ಲಿ ಬದಲಾವಣೆಗಳು"
 
-#~ msgid "See group ticket"
-#~ msgstr "ಗುಂಪು ಟಿಕೆಟ್ ನೋಡಿ"
+msgid "No ticket in progress."
+msgstr "ಯಾವುದೇ ಟಿಕೆಟ್ ಪ್ರಗತಿಯಲ್ಲಿದೆ."
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "ನನ್ನ ಗುಂಪುಗಳು ರಚಿಸಿದ ಟಿಕೆಟ್ಗಳನ್ನು ನೋಡಿ"
+msgid "Assign equipment"
+msgstr "ಸಲಕರಣೆಗಳನ್ನು ನಿಗದಿಪಡಿಸಿ"
 
-#~ msgid "See all tickets"
-#~ msgstr "ಎಲ್ಲಾ ಟಿಕೆಟ್ಗಳನ್ನು ನೋಡಿ"
+msgid "Automatic tickets closing"
+msgstr "ಸ್ವಯಂಚಾಲಿತ ಟಿಕೆಟ್ ಮುಚ್ಚುವುದು"
 
-#~ msgid "See assigned"
-#~ msgstr "ಗೊತ್ತುಪಡಿಸಿದ ನೋಡಿ"
+msgid "Generation of satisfaction surveys"
+msgstr "ತೃಪ್ತಿ ಸಮೀಕ್ಷೆಗಳ ಜನರೇಷನ್"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "ಗೊತ್ತುಪಡಿಸಿದ ಟಿಕೆಟ್ಗಳನ್ನು ನೋಡಿ"
+#, fuzzy
+#| msgid "Automatic tickets closing"
+msgid "Automatic closed tickets purge"
+msgstr "ಸ್ವಯಂಚಾಲಿತ ಟಿಕೆಟ್ ಮುಚ್ಚುವುದು"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "ಟಿಕೆಟ್ ನಿಗದಿಪಡಿಸಿ"
+msgid "See my ticket"
+msgstr "ನನ್ನ ಟಿಕೆಟ್ ನೋಡಿ"
 
-#~ msgid "Steal"
-#~ msgstr "ಕಳವು"
+msgid "See group ticket"
+msgstr "ಗುಂಪು ಟಿಕೆಟ್ ನೋಡಿ"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "ಟಿಕೆಟ್ ಕದಿಯಿರಿ"
+msgid "See tickets created by my groups"
+msgstr "ನನ್ನ ಗುಂಪುಗಳು ರಚಿಸಿದ ಟಿಕೆಟ್ಗಳನ್ನು ನೋಡಿ"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "ಉಸ್ತುವಾರಿ"
+msgid "See all tickets"
+msgstr "ಎಲ್ಲಾ ಟಿಕೆಟ್ಗಳನ್ನು ನೋಡಿ"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "ಟಿಕೆಟ್ನ ಉಸ್ತುವಾರಿ ವಹಿಸಲು"
+msgid "See assigned"
+msgstr "ಗೊತ್ತುಪಡಿಸಿದ ನೋಡಿ"
 
-#~ msgid "Change the priority"
-#~ msgstr "ಆದ್ಯತೆಯನ್ನು ಬದಲಾಯಿಸಿ"
+msgid "See assigned tickets"
+msgstr "ಗೊತ್ತುಪಡಿಸಿದ ಟಿಕೆಟ್ಗಳನ್ನು ನೋಡಿ"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "ಪರಿಹಾರ / ಪ್ರತ್ಯುತ್ತರ ಸಮೀಕ್ಷೆಯನ್ನು ಅನುಮೋದಿಸಿ (ನನ್ನ ಟಿಕೆಟ್)"
+msgid "Assign a ticket"
+msgstr "ಟಿಕೆಟ್ ನಿಗದಿಪಡಿಸಿ"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "ಪರಿಹಾರವನ್ನು ಅನುಮೋದಿಸಿ ಮತ್ತು ನನ್ನಿಂದ ರಚಿಸಲಾದ ಟಿಕೆಟ್ಗಾಗಿ ಸಮೀಕ್ಷೆಗೆ ಉತ್ತರಿಸಿ"
+msgid "Steal"
+msgstr "ಕಳವು"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "ವರ್ಗವನ್ನು ಮರುಪರಿಶೀಲಿಸಿ"
+msgid "Steal a ticket"
+msgstr "ಟಿಕೆಟ್ ಕದಿಯಿರಿ"
 
-#~ msgid "Valid licenses"
-#~ msgstr "ಮಾನ್ಯ ಪರವಾನಗಿಗಳು"
+msgid "Beeing in charge"
+msgstr "ಉಸ್ತುವಾರಿ"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "ಅನುಸ್ಥಾಪನೆಗಳ ಸಂಖ್ಯೆ"
+msgid "To be in charge of a ticket"
+msgstr "ಟಿಕೆಟ್ನ ಉಸ್ತುವಾರಿ ವಹಿಸಲು"
 
-#~ msgid "Merge"
-#~ msgstr "ವಿಲೀನಗೊಳಿಸು"
+msgid "Change the priority"
+msgstr "ಆದ್ಯತೆಯನ್ನು ಬದಲಾಯಿಸಿ"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "ವಿಲೀನಗೊಂಡ ನಂತರ ಸಾಫ್ಟ್ವೇರ್ ಅಳಿಸಲಾಗಿದೆ"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "ಪರಿಹಾರ / ಪ್ರತ್ಯುತ್ತರ ಸಮೀಕ್ಷೆಯನ್ನು ಅನುಮೋದಿಸಿ (ನನ್ನ ಟಿಕೆಟ್)"
 
-#~ msgid "Solved"
-#~ msgstr "ಪರಿಹಾರ"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "ಪರಿಹಾರವನ್ನು ಅನುಮೋದಿಸಿ ಮತ್ತು ನನ್ನಿಂದ ರಚಿಸಲಾದ ಟಿಕೆಟ್ಗಾಗಿ ಸಮೀಕ್ಷೆಗೆ ಉತ್ತರಿಸಿ"
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "GLPI 9.2 ರಿಂದ, ನಾವು ನಿಮ್ಮ ಅನುಮತಿಯೊಂದಿಗೆ ಅನಾಮಧೇಯವಾಗಿ \"ಟೆಲಿಮೆಟ್ರಿ\" ಎಂಬ ಹೊಸ "
-#~ "ಅಂಕಿ ಅಂಶವನ್ನು ನಮ್ಮ ಟೆಲಿಮೆಟ್ರಿ ವೆಬ್ಸೈಟ್ಗೆ ಕಳುಹಿಸುತ್ತೇವೆ."
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
 
-#~ msgid "Install"
-#~ msgstr "ಸ್ಥಾಪಿಸಿ"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to load ticket %d"
+msgstr "ಪುನರಾವರ್ತಿತ ಟಿಕೆಟ್ ರಚಿಸಲು ವಿಫಲವಾಗಿದೆ %s"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "ಹುಡುಕಾಟ ಇಂಜಿನ್ನಲ್ಲಿ, ಮುಕ್ತಾಯ ದಿನಾಂಕವಿಲ್ಲದ ಪರವಾನಗಿಗಳನ್ನು ಹುಡುಕಲು \"ಮುಕ್ತಾಯವು "
-#~ "NULL ಅನ್ನು ಹೊಂದಿದೆ\" ಅನ್ನು ಬಳಸಿ"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add followup to ticket %d"
+msgstr "ಪುನರಾವರ್ತಿತ ಟಿಕೆಟ್ ರಚಿಸಲು ವಿಫಲವಾಗಿದೆ %s"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "ನಿಮ್ಮ ಇಮೇಲ್ ವಿಳಾಸಕ್ಕೆ ಇಮೇಲ್ ಕಳುಹಿಸಲಾಗಿದೆ. ಇಮೇಲ್ ನಿಮ್ಮ ಪಾಸ್ವರ್ಡ್ ಮರುಹೊಂದಿಸಲು "
-#~ "ಮಾಹಿತಿಯನ್ನು ಒಳಗೊಂಡಿದೆ."
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add task to ticket %d"
+msgstr "ಪುನರಾವರ್ತಿತ ಟಿಕೆಟ್ ರಚಿಸಲು ವಿಫಲವಾಗಿದೆ %s"
 
-#~ msgid "Email address not found."
-#~ msgstr "ಇಮೇಲ್ ವಿಳಾಸ ಕಂಡುಬಂದಿಲ್ಲ."
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add document to ticket %d"
+msgstr "ಪುನರಾವರ್ತಿತ ಟಿಕೆಟ್ ರಚಿಸಲು ವಿಫಲವಾಗಿದೆ %s"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "ಫೈಲ್ ಅನ್ನು ಡಿಸ್ಕ್ಗೆ ಬರೆಯಲು ವಿಫಲವಾಗಿದೆ"
+msgid "Failed to link tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to delete ticket %d"
+msgstr "ಪುನರಾವರ್ತಿತ ಟಿಕೆಟ್ ರಚಿಸಲು ವಿಫಲವಾಗಿದೆ %s"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "ಒಂದು ಪಿಎಚ್ಪಿ ವಿಸ್ತರಣೆಯು ಫೈಲ್ ಅಪ್ಲೋಡ್ ಅನ್ನು ನಿಲ್ಲಿಸಿದೆ"
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$sಆವೃತ್ತಿಯನ್ನು ಶುದ್ಧೀಕರಿಸುತ್ತದೆ %2$s "
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr "ಅಪ್ಲೋಡ್ ಮಾಡಿದ ಫೈಲ್ php.ini ನಲ್ಲಿ post_max_size ನಿರ್ದೇಶನವನ್ನು ಮೀರಿದೆ"
+#, fuzzy
+#| msgid "Checking write permissions for session files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "ಸೆಷನ್ ಫೈಲ್ಗಳಿಗಾಗಿ ಬರೆಯುವ ಅನುಮತಿಗಳನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ"
 
-#~ msgid "File is too big"
-#~ msgstr "ಫೈಲ್ ತುಂಬಾ ದೊಡ್ಡದಾಗಿದೆ"
+msgid "Recalculate the category"
+msgstr "ವರ್ಗವನ್ನು ಮರುಪರಿಶೀಲಿಸಿ"
 
-#~ msgid "File is too small"
-#~ msgstr "ಫೈಲ್ ತುಂಬಾ ಚಿಕ್ಕದಾಗಿದೆ"
+msgid "Valid licenses"
+msgstr "ಮಾನ್ಯ ಪರವಾನಗಿಗಳು"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "ಗರಿಷ್ಠ ಸಂಖ್ಯೆಯ ಫೈಲ್ಗಳು ಮೀರಿದೆ"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "ಅನುಸ್ಥಾಪನೆಗಳ ಸಂಖ್ಯೆ"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "ಚಿತ್ರವು ಗರಿಷ್ಠ ಅಗಲವನ್ನು ಮೀರಿದೆ"
+msgid "Merge"
+msgstr "ವಿಲೀನಗೊಳಿಸು"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "ಚಿತ್ರಕ್ಕೆ ಕನಿಷ್ಠ ಅಗಲ ಬೇಕು"
+msgid "Software deleted after merging"
+msgstr "ವಿಲೀನಗೊಂಡ ನಂತರ ಸಾಫ್ಟ್ವೇರ್ ಅಳಿಸಲಾಗಿದೆ"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "ಚಿತ್ರ ಗರಿಷ್ಠ ಎತ್ತರ ಮೀರಿದೆ"
+#, fuzzy
+#| msgid "You must install at least PHP %s."
+msgid "You must enable at least one notification mode."
+msgstr "ನೀವು ಕನಿಷ್ಠ ಪಿಎಚ್ಪಿ ಅನ್ನು ಸ್ಥಾಪಿಸಬೇಕು %s"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "ಚಿತ್ರಕ್ಕೆ ಕನಿಷ್ಠ ಎತ್ತರ ಬೇಕಾಗುತ್ತದೆ"
+#, fuzzy
+#| msgid "Use GLPI"
+msgid "GLPI"
+msgstr "GLPI ಬಳಸಿ"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "ಫೈಲ್ಟೈಪ್ ಅನುಮತಿಸಲಾಗಿಲ್ಲ"
+#, fuzzy
+#| msgid "Connection filter"
+msgid "Connect a computer"
+msgstr "ಸಂಪರ್ಕ ಫಿಲ್ಟರ್"
 
-#~ msgid "Progress"
-#~ msgstr "ಪ್ರಗತಿ"
+#, fuzzy
+#| msgctxt "status"
+#| msgid "Not closed"
+msgid "Not connected"
+msgstr "ಮುಚ್ಚಿಲ್ಲ"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "ಪುಟದ ಹಿಂತಿರುಗಿ"
+msgid "Show as map"
+msgstr ""
 
-#~ msgid "Check all"
-#~ msgstr "ಎಲ್ಲವನ್ನು ಪರೀಕ್ಷಿಸು"
+#, fuzzy
+#| msgid "Valid tags"
+msgid "Valid to %s"
+msgstr "ಮಾನ್ಯ ಟ್ಯಾಗ್ಗಳು"
 
-#~ msgid "Uncheck all"
-#~ msgstr "ಎಲ್ಲದನ್ನು ತೆಗಿ"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "ಕೊನೆಯ ಟಿಕೆಟ್"
 
-#~ msgid "Check all as"
-#~ msgstr "ಎಲ್ಲವನ್ನು ಪರಿಶೀಲಿಸಿ"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "ಟಿಕೆಟ್ಗಳು ಅನುಮೋದನೆಗೆ ಕಾಯುತ್ತಿವೆ"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "ಆಯ್ಕೆ ತುಂಬಾ ದೊಡ್ಡದಾಗಿದೆ, ಬೃಹತ್ ಕ್ರಮವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ."
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "ಲಿಂಕ್ ಟಿಕೆಟ್"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "ಮಿತಿಯನ್ನು ಹೆಚ್ಚಿಸಲು: max_input_vars ಅಥವಾ php ಸಂರಚನೆಯಲ್ಲಿ suhosin.post."
-#~ "max_vars ಅನ್ನು ಬದಲಾಯಿಸಿ."
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "ಟಿಕೆಟ್ಗಳನ್ನು ಪರಿಹರಿಸಿ"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "ವಿವರಣೆ ಕ್ಷೇತ್ರವು ಕಡ್ಡಾಯವಾಗಿದೆ"
+#, fuzzy
+#| msgid "Child tickets"
+msgid "Closed tickets"
+msgstr "ಮಕ್ಕಳ ಟಿಕೆಟ್ಗಳು"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr ""
-#~ "ಡ್ರ್ಯಾಗ್ ಮತ್ತು ಡ್ರಾಪ್ ಅಥವಾ ಸಂಪಾದಕದಲ್ಲಿ ನಕಲಿಸಿ ಮತ್ತು ಅಂಟಿಸಿ ಫೈಲ್ ಅನ್ನು ಲಗತ್ತಿಸಿ ಅಥವಾ"
+#, fuzzy
+#| msgid "Without title"
+msgid "without"
+msgstr "ಶೀರ್ಷಿಕೆಯಿಲ್ಲದೆ"
 
-#~ msgid "selecting them"
-#~ msgstr "ಅವುಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ"
+#, fuzzy
+#| msgid "Time to resolve"
+msgid "Time to close"
+msgstr "ಪರಿಹರಿಸಲು ಸಮಯ"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "ನಿಮ್ಮ ಫೈಲ್ ಅನ್ನು ಇಲ್ಲಿ ಎಳೆದು ಬಿಡಿ"
+#, fuzzy
+#| msgid "Total value"
+msgid "To validate"
+msgstr "ಒಟ್ಟು ಮೌಲ್ಯ"
 
-#~ msgid "Upload successful"
-#~ msgstr "ಅಪ್ಲೋಡ್ ಯಶಸ್ವಿಯಾಗಿದೆ"
+msgid "Solved"
+msgstr "ಪರಿಹಾರ"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "ಚೆಕ್ / ಎಲ್ಲವನ್ನೂ ಗುರುತಿಸಬೇಡಿ"
+msgid "Share or embed this dashboard"
+msgstr ""
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "ಮೆನು ಹುಡುಕಲು ಟೈಪ್ ಮಾಡಲು ಪ್ರಾರಂಭಿಸಿ"
+msgid "Delete this dashboard"
+msgstr ""
 
-#~ msgid "Saved searches"
-#~ msgstr "ಉಳಿಸಿದ ಹುಡುಕಾಟಗಳು"
+msgid "Toggle auto-refresh"
+msgstr ""
 
-#~ msgid "Manage saved searches"
-#~ msgstr "ಉಳಿಸಿದ ಹುಡುಕಾಟಗಳನ್ನು ನಿರ್ವಹಿಸಿ"
+msgid "Toggle night mode"
+msgstr ""
 
-#~ msgid "Add is disabled"
-#~ msgstr "ಸೇರಿಸು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
+msgid "Toggle fullscreen"
+msgstr ""
 
-#~ msgid "Search is disabled"
-#~ msgstr "ಹುಡುಕಾಟವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
+msgid "Clone this dashboard"
+msgstr ""
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "ಹೊಸ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ ಎಂದು ಪರಿಶೀಲಿಸಿ"
+msgid "Toggle edit mode"
+msgstr ""
 
-#~ msgid "Add to schedule"
-#~ msgstr "ವೇಳಾಪಟ್ಟಿಯನ್ನು ಸೇರಿಸಿ"
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add filter"
+msgstr "ಐಟಂ ಸೇರಿಸಿ"
 
-#~ msgid "Use GLPI"
-#~ msgstr "GLPI ಬಳಸಿ"
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "ಹೊಸ ಕೆಲಸವನ್ನು ಸೇರಿಸಿ"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "ಅನಧಿಕೃತ ಅನುವಾದಗಳು ಸಹ ಲಭ್ಯವಿದೆ"
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "ಇತರರು"
 
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "ಮೇಲೆ ಬರೆದ ಪರವಾನಗಿಯ ನಿಯಮಗಳನ್ನು ನಾನು ಓದಿದ್ದೇನೆ ಮತ್ತು ಒಪ್ಪಿಕೊಂಡಿದ್ದೇನೆ."
+msgid "Widget"
+msgstr ""
 
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "ನಾನು ಓದಿದ್ದೇನೆ ಮತ್ತು ಮೇಲೆ ಬರೆದ ಪರವಾನಗಿ ನಿಯಮಗಳನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುವುದಿಲ್ಲ"
+msgid "Use gradient palette"
+msgstr ""
 
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "ಜಿಎಲ್ಪಿಐನ ಅನುಸ್ಥಾಪನೆ ಅಥವಾ ಅಪ್ಡೇಟ್"
+msgid "Display value labels on points/bars"
+msgstr ""
 
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "GLPI ಯ ಸಂಪೂರ್ಣ ಹೊಸ ಅನುಸ್ಥಾಪನೆಗೆ 'ಸ್ಥಾಪನೆ' ಆಯ್ಕೆಮಾಡಿ."
+#, fuzzy
+#| msgid "Maximum number of results"
+msgid "Limit number of data"
+msgstr "ಗರಿಷ್ಠ ಫಲಿತಾಂಶಗಳ ಸಂಖ್ಯೆ"
 
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "ಹಿಂದಿನ ಆವೃತ್ತಿಯಿಂದ ನಿಮ್ಮ ಆವೃತ್ತಿಯ GLPI ಅನ್ನು ನವೀಕರಿಸಲು 'ಅಪ್ಗ್ರೇಡ್' ಆಯ್ಕೆಮಾಡಿ"
+#, fuzzy
+#| msgid "Filter access"
+msgid "Filters"
+msgstr "ಫಿಲ್ಟರ್ ಪ್ರವೇಶ"
 
-#~ msgid "Do you want to continue?"
-#~ msgstr "ನೀವು ಮುಂದುವರಿಸಲು ಬಯಸುತ್ತೀರಾ?"
+msgid "Embed in another application"
+msgstr ""
 
-#~ msgid "Database connection parameters"
-#~ msgstr "ಡೇಟಾಬೇಸ್ ಸಂಪರ್ಕ ನಿಯತಾಂಕಗಳು"
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP ಡೈರೆಕ್ಟರಿ ಲಿಂಕ್"
 
-#~ msgid "Test of the connection at the database"
-#~ msgstr "ಡೇಟಾಬೇಸ್ನಲ್ಲಿ ಸಂಪರ್ಕದ ಟೆಸ್ಟ್"
+msgid "Iframe"
+msgstr ""
 
-#~ msgid "Can't connect to the database"
-#~ msgstr "ಡೇಟಾಬೇಸ್ಗೆ ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ"
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
 
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "ಸರ್ವರ್ ಉತ್ತರಿಸಿದೆ:%s"
+msgid "empty card !"
+msgstr ""
 
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "ಸರ್ವರ್ ಅಥವಾ / ಮತ್ತು ಬಳಕೆದಾರ ಕ್ಷೇತ್ರ ಖಾಲಿಯಾಗಿದೆ"
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of lines"
+msgid "Number of %s"
+msgstr "ಸಾಲುಗಳ ಸಂಖ್ಯೆ"
 
-#~ msgid "Please select a database:"
-#~ msgstr "ದಯವಿಟ್ಟು ಡೇಟಾಬೇಸ್ ಅನ್ನು ಆಯ್ಕೆ ಮಾಡಿ:"
+msgid "%s by %s"
+msgstr ""
+
+msgid "List of %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "ಟಿಕೆಟ್ಗಳ ಸಂಖ್ಯೆ"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+msgid "Tickets status by month"
+msgstr ""
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets"
+msgid "Tickets summary"
+msgstr "ಟಿಕೆಟ್ಗಳು"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's categories"
+msgstr "ಟಿಕೆಟ್ ಮುಚ್ಚಿದ ನಂತರ"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "ಮೌಲ್ಯೀಕರಿಸಲು ನಿಮ್ಮ ಟಿಕೆಟ್"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's request types"
+msgstr "ಕೋರಿಕೆಯಾಗಿ ಟಿಕೆಟ್ಗಳ ಸಂಖ್ಯೆ"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "ಟಿಕೆಟ್ ಸ್ಥಳ"
 
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "ಒಂದು ಹೊಸ ಡೇಟಾಬೇಸ್ ರಚಿಸಿ ಅಥವಾ ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಒಂದನ್ನು ಬಳಸಿ:"
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "ಕೋರಿಕೆಯಾಗಿ ಟಿಕೆಟ್ಗಳ ಸಂಖ್ಯೆ"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "ನನ್ನ ಗುಂಪುಗಳು ರಚಿಸಿದ ಟಿಕೆಟ್ಗಳನ್ನು ನೋಡಿ"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "ಟಿಕೆಟ್ ಮುಚ್ಚಿದ ನಂತರ"
 
-#~ msgid "Please select the database to update:"
-#~ msgstr "ದಯವಿಟ್ಟು ನವೀಕರಿಸಲು ಡೇಟಾಬೇಸ್ ಆಯ್ಕೆಮಾಡಿ:"
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "ನನ್ನ ಗುಂಪುಗಳು ರಚಿಸಿದ ಟಿಕೆಟ್ಗಳನ್ನು ನೋಡಿ"
 
-#~ msgid "Initialization of the database"
-#~ msgstr "ಡೇಟಾಬೇಸ್ನ ಪ್ರಾರಂಭಿಸುವಿಕೆ"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignees"
+msgstr "ನಿಮ್ಮ ಟಿಕೆಟ್ ಪ್ರಗತಿಯಲ್ಲಿದೆ"
 
-#~ msgid "Impossible to use the database:"
-#~ msgstr "ಡೇಟಾಬೇಸ್ ಬಳಸಲು ಅಸಾಧ್ಯ:"
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "ಸಂಯೋಜಿತ ಗುಂಪುಗಳ ಟಿಕೆಟ್ಗಳಿಗೆ ಅನುಸರಣೆಯನ್ನು ಸೇರಿಸಿ"
 
-#~ msgid "OK - database was initialized"
-#~ msgstr "ಸರಿ - ಡೇಟಾಬೇಸ್ ಅನ್ನು ಆರಂಭಿಸಲಾಗಿದೆ"
+msgid "List of reminders"
+msgstr ""
 
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "ಡೇಟಾಬೇಸ್ ಸೆಟಪ್ ಫೈಲ್ ಬರೆಯಲು ಅಸಾಧ್ಯ"
+msgid "Editable markdown card"
+msgstr ""
 
-#~ msgid "Database created"
-#~ msgstr "ಡೇಟಾಬೇಸ್ ರಚಿಸಲಾಗಿದೆ"
+msgid "Toggle edit mode to edit content"
+msgstr ""
 
-#~ msgid "You didn't select a database!"
-#~ msgstr "ನೀವು ಡೇಟಾಬೇಸ್ ಅನ್ನು ಆಯ್ಕೆ ಮಾಡಲಿಲ್ಲ!"
+msgid "field name in DB"
+msgstr ""
 
-#~ msgid "Collect data"
-#~ msgstr "ಮಾಹಿತಿ ಸಂಗ್ರಹಿಸು"
+msgid "Example:"
+msgstr ""
 
-#~ msgid "The installation is finished"
-#~ msgstr "ಅನುಸ್ಥಾಪನೆಯು ಮುಗಿದಿದೆ"
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"GLPI 9.2 ರಿಂದ, ನಾವು ನಿಮ್ಮ ಅನುಮತಿಯೊಂದಿಗೆ ಅನಾಮಧೇಯವಾಗಿ \"ಟೆಲಿಮೆಟ್ರಿ\" ಎಂಬ ಹೊಸ "
+"ಅಂಕಿ ಅಂಶವನ್ನು ನಮ್ಮ ಟೆಲಿಮೆಟ್ರಿ ವೆಬ್ಸೈಟ್ಗೆ ಕಳುಹಿಸುತ್ತೇವೆ."
 
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "ಡೀಫಾಲ್ಟ್ ಲಾಗಿನ್ಗಳು / ಪಾಸ್ವರ್ಡ್ಗಳು:"
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a network name"
+msgstr "ಹೊಸ ಕೆಲಸವನ್ನು ಸೇರಿಸಿ"
+
+#, fuzzy
+#| msgid "No associated item"
+msgid "Not associated"
+msgstr "ಸಂಬಂಧಿತ ಐಟಂ ಇಲ್ಲ"
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "Create a new network name"
+msgstr "ಟಿಕೆಟ್ ರಚಿಸಿ"
+
+#, fuzzy
+#| msgid "No ticket found."
+msgid "No network name found"
+msgstr "ಯಾವುದೇ ಟಿಕೆಟ್ ಕಂಡುಬಂದಿಲ್ಲ."
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check all as"
+msgid "Check all plugin updates"
+msgstr "ಎಲ್ಲವನ್ನು ಪರಿಶೀಲಿಸಿ"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "ಸ್ಥಾಪಿಸಿ"
+
+msgid "Discover"
+msgstr ""
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "%sರಚಿಸಲಾಗಿದೆ"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "ನಿಮ್ಮ ಕಾಮೆಂಟ್ ಅನ್ನು ಸಂಪಾದಿಸಲಾಗಿದೆ"
+
+msgid "Renew it on %1$s."
+msgstr ""
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+msgid "Most popular"
+msgstr ""
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "ಕೊನೆಯ ನವೀಕರಣ"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "ಟಿಪ್ಪಣಿಗಳನ್ನು ಓದಿ"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+msgid "Filter plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "ಮುಖಪುಟ"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "ಓದಿ"
+
+#, fuzzy
+#| msgid "Clear"
+msgid "Clean"
+msgstr "ನಿಚ್ಚಳ"
+
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "ಲಾಗಿನ್ ಮಾನ್ಯವಾಗಿಲ್ಲ. ಬಳಕೆದಾರರನ್ನು ಸೇರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ."
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "ಹೊಸ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ:%s"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "ಸ್ಥಾಪಿಸಿ"
+
+#, fuzzy
+#| msgctxt "authentication"
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
+
+#, fuzzy
+#| msgid "Install"
+msgid "Uninstall"
+msgstr "ಸ್ಥಾಪಿಸಿ"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugins"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "ಪ್ಲಗಿನ್ಗಳು"
+msgstr[1] "ಪ್ಲಗಿನ್ಗಳು"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr " ವಿಳಂಬವಾದ"
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugins"
+msgid "Plugin name"
+msgstr "ಪ್ಲಗಿನ್ಗಳು"
+
+msgid "Plugin new version number"
+msgstr ""
+
+msgid "Plugin old version number"
+msgstr ""
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"ಹುಡುಕಾಟ ಇಂಜಿನ್ನಲ್ಲಿ, ಮುಕ್ತಾಯ ದಿನಾಂಕವಿಲ್ಲದ ಪರವಾನಗಿಗಳನ್ನು ಹುಡುಕಲು \"ಮುಕ್ತಾಯವು NULL "
+"ಅನ್ನು ಹೊಂದಿದೆ\" ಅನ್ನು ಬಳಸಿ"
+
+#, fuzzy
+#| msgid "Administration"
+msgid "Registration"
+msgstr " ಕಾರ್ಯಭಾರ"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "%sರಚಿಸಲಾಗಿದೆ"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Destination entity"
+msgid "Registration key"
+msgstr "ಗಮ್ಯಸ್ಥಾನ ಘಟಕದ"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "ವಿವರಣೆ"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr " ಅಜ್ಞಾತ ಕಡತ"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "ಹಣಕಾಸು ಮತ್ತು ಆಡಳಿತಾತ್ಮಕ ಮಾಹಿತಿಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "ಅನುಸ್ಥಾಪನೆಯು ಮುಗಿದಿದೆ"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "ಅನುಸ್ಥಾಪನೆಯು ಮುಗಿದಿದೆ"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"ನಿಮ್ಮ ಇಮೇಲ್ ವಿಳಾಸಕ್ಕೆ ಇಮೇಲ್ ಕಳುಹಿಸಲಾಗಿದೆ. ಇಮೇಲ್ ನಿಮ್ಮ ಪಾಸ್ವರ್ಡ್ ಮರುಹೊಂದಿಸಲು "
+"ಮಾಹಿತಿಯನ್ನು ಒಳಗೊಂಡಿದೆ."
+
+msgid "Email address not found."
+msgstr "ಇಮೇಲ್ ವಿಳಾಸ ಕಂಡುಬಂದಿಲ್ಲ."
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+
+#, fuzzy
+#| msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "ಅಪ್ಲೋಡ್ ಮಾಡಿದ ಫೈಲ್ php.ini ನಲ್ಲಿ post_max_size ನಿರ್ದೇಶನವನ್ನು ಮೀರಿದೆ"
+
+#, fuzzy
+#| msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr "ಅಪ್ಲೋಡ್ ಮಾಡಿದ ಫೈಲ್ php.ini ನಲ್ಲಿ post_max_size ನಿರ್ದೇಶನವನ್ನು ಮೀರಿದೆ"
+
+msgid "The uploaded file was only partially uploaded"
+msgstr ""
+
+msgid "Failed to write file to disk"
+msgstr "ಫೈಲ್ ಅನ್ನು ಡಿಸ್ಕ್ಗೆ ಬರೆಯಲು ವಿಫಲವಾಗಿದೆ"
+
+msgid "A PHP extension stopped the file upload"
+msgstr "ಒಂದು ಪಿಎಚ್ಪಿ ವಿಸ್ತರಣೆಯು ಫೈಲ್ ಅಪ್ಲೋಡ್ ಅನ್ನು ನಿಲ್ಲಿಸಿದೆ"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "ಅಪ್ಲೋಡ್ ಮಾಡಿದ ಫೈಲ್ php.ini ನಲ್ಲಿ post_max_size ನಿರ್ದೇಶನವನ್ನು ಮೀರಿದೆ"
+
+msgid "File is too big"
+msgstr "ಫೈಲ್ ತುಂಬಾ ದೊಡ್ಡದಾಗಿದೆ"
+
+msgid "File is too small"
+msgstr "ಫೈಲ್ ತುಂಬಾ ಚಿಕ್ಕದಾಗಿದೆ"
+
+msgid "Maximum number of files exceeded"
+msgstr "ಗರಿಷ್ಠ ಸಂಖ್ಯೆಯ ಫೈಲ್ಗಳು ಮೀರಿದೆ"
+
+msgid "Image exceeds maximum width"
+msgstr "ಚಿತ್ರವು ಗರಿಷ್ಠ ಅಗಲವನ್ನು ಮೀರಿದೆ"
+
+msgid "Image requires a minimum width"
+msgstr "ಚಿತ್ರಕ್ಕೆ ಕನಿಷ್ಠ ಅಗಲ ಬೇಕು"
+
+msgid "Image exceeds maximum height"
+msgstr "ಚಿತ್ರ ಗರಿಷ್ಠ ಎತ್ತರ ಮೀರಿದೆ"
+
+msgid "Image requires a minimum height"
+msgstr "ಚಿತ್ರಕ್ಕೆ ಕನಿಷ್ಠ ಎತ್ತರ ಬೇಕಾಗುತ್ತದೆ"
+
+msgid "Filetype not allowed"
+msgstr "ಫೈಲ್ಟೈಪ್ ಅನುಮತಿಸಲಾಗಿಲ್ಲ"
+
+msgid "File upload aborted"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to resize image"
+msgstr "ಫೈಲ್ ಅನ್ನು ಡಿಸ್ಕ್ಗೆ ಬರೆಯಲು ವಿಫಲವಾಗಿದೆ"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "ಬಳಕೆದಾರ ಮಾಹಿತಿ"
+
+msgid "Progress"
+msgstr "ಪ್ರಗತಿ"
+
+msgid "My settings"
+msgstr ""
+
+msgid "Back to top of the page"
+msgstr "ಪುಟದ ಹಿಂತಿರುಗಿ"
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr ""
+
+msgid "Check all"
+msgstr "ಎಲ್ಲವನ್ನು ಪರೀಕ್ಷಿಸು"
+
+msgid "Uncheck all"
+msgstr "ಎಲ್ಲದನ್ನು ತೆಗಿ"
+
+msgid "Check all as"
+msgstr "ಎಲ್ಲವನ್ನು ಪರಿಶೀಲಿಸಿ"
+
+msgid "Selection too large, massive action disabled."
+msgstr "ಆಯ್ಕೆ ತುಂಬಾ ದೊಡ್ಡದಾಗಿದೆ, ಬೃಹತ್ ಕ್ರಮವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ."
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"ಮಿತಿಯನ್ನು ಹೆಚ್ಚಿಸಲು: max_input_vars ಅಥವಾ php ಸಂರಚನೆಯಲ್ಲಿ suhosin.post.max_vars "
+"ಅನ್ನು ಬದಲಾಯಿಸಿ."
+
+msgid "The description field is mandatory"
+msgstr "ವಿವರಣೆ ಕ್ಷೇತ್ರವು ಕಡ್ಡಾಯವಾಗಿದೆ"
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr ""
+
+msgid "Empty array"
+msgstr ""
+
+#, fuzzy
+#| msgid "%1$s - %2$s"
+msgid "%1$d on %2$d"
+msgstr "%1$s -%2$s"
+
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "ಮುಚ್ಚಿ"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+"ಡ್ರ್ಯಾಗ್ ಮತ್ತು ಡ್ರಾಪ್ ಅಥವಾ ಸಂಪಾದಕದಲ್ಲಿ ನಕಲಿಸಿ ಮತ್ತು ಅಂಟಿಸಿ ಫೈಲ್ ಅನ್ನು ಲಗತ್ತಿಸಿ ಅಥವಾ"
+
+msgid "selecting them"
+msgstr "ಅವುಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ"
+
+#, fuzzy
+#| msgid "File (%s)"
+msgid "File(s)"
+msgstr "ಫೈಲ್ %s"
+
+msgid "Drag and drop your file here, or"
+msgstr "ನಿಮ್ಮ ಫೈಲ್ ಅನ್ನು ಇಲ್ಲಿ ಎಳೆದು ಬಿಡಿ"
+
+msgid "Upload successful"
+msgstr "ಅಪ್ಲೋಡ್ ಯಶಸ್ವಿಯಾಗಿದೆ"
+
+msgid "Check/uncheck all"
+msgstr "ಚೆಕ್ / ಎಲ್ಲವನ್ನೂ ಗುರುತಿಸಬೇಡಿ"
+
+msgid "Start typing to find a menu"
+msgstr "ಮೆನು ಹುಡುಕಲು ಟೈಪ್ ಮಾಡಲು ಪ್ರಾರಂಭಿಸಿ"
+
+#, fuzzy
+#| msgid "Change"
+#| msgid_plural "Changes"
+msgid "Change mode"
+msgstr "ಬದಲಾವಣೆಗಳು"
+
+#, fuzzy
+#| msgid "Debug mode has been enabled!"
+msgid "Debug mode enabled"
+msgstr "ಡೀಬಗ್ ಮೋಡ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ!"
+
+#, fuzzy
+#| msgid "Debug mode has been disabled!"
+msgid "Debug mode disabled"
+msgstr "ಡೀಬಗ್ ಮೋಡ್ ಅನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ!"
+
+msgid "Saved searches"
+msgstr "ಉಳಿಸಿದ ಹುಡುಕಾಟಗಳು"
+
+msgid "Manage saved searches"
+msgstr "ಉಳಿಸಿದ ಹುಡುಕಾಟಗಳನ್ನು ನಿರ್ವಹಿಸಿ"
+
+msgid "Add is disabled"
+msgstr "ಸೇರಿಸು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
+
+msgid "Search is disabled"
+msgstr "ಹುಡುಕಾಟವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "ಜಾಗತಿಕ ನಿರ್ವಹಣೆ"
+
+msgid "You are impersonating %s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "ವೈಯಕ್ತಿಕ ಹೊಂದಿಸಿ"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr ""
+
+msgid "Color palette"
+msgstr ""
+
+msgid "Layout"
+msgstr ""
+
+msgid "Tabs on left"
+msgstr ""
+
+msgid "Classic view"
+msgstr ""
+
+msgid "Vertical split"
+msgstr ""
+
+msgid "Enable high contrast"
+msgstr ""
+
+msgid "Dashboards"
+msgstr ""
+
+#, fuzzy
+#| msgid "Default documents:"
+msgid "Default for central"
+msgstr "ಡೀಫಾಲ್ಟ್ ಡಾಕ್ಯುಮೆಂಟ್ಗಳು:"
+
+#, fuzzy
+#| msgid "Default report"
+msgid "Default for Assets"
+msgstr "ಡೀಫಾಲ್ಟ್ ವರದಿ"
+
+#, fuzzy
+#| msgid "Assistance"
+msgid "Default for Assistance"
+msgstr "ಸಹಾಯ"
+
+msgid "Default for tickets (mini dashboard)"
+msgstr ""
+
+msgid "Check if a new version is available"
+msgstr "ಹೊಸ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ ಎಂದು ಪರಿಶೀಲಿಸಿ"
+
+msgid "Show filters"
+msgstr ""
+
+msgid "No historical matching your filters"
+msgstr ""
+
+msgid "Add to schedule"
+msgstr "ವೇಳಾಪಟ್ಟಿಯನ್ನು ಸೇರಿಸಿ"
+
+msgid "Position in room"
+msgstr ""
+
+msgid "Door orientation in room"
+msgstr ""
+
+msgid "North"
+msgstr ""
+
+msgid "East"
+msgstr ""
+
+msgid "South"
+msgstr ""
+
+msgid "West"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of documents"
+msgid "Number of units"
+msgstr "ದಾಖಲೆಗಳ ಸಂಖ್ಯೆ"
+
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Measured power (in watts)"
+msgstr ""
+
+msgid "Max. weight"
+msgstr ""
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No rack found"
+msgstr "ಯಾವುದೇ ಬಳಕೆದಾರರೂ ಕಂಡುಬಂದಿಲ್ಲ"
+
+msgid "Following elements are out of room bounds"
+msgstr ""
+
+msgid "Blueprint"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Insert a rack here"
+msgstr ""
+
+msgid "Position must be set"
+msgstr ""
+
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "ನೆಟ್ವರ್ಕ್ ಪೋರ್ಟ್ ಲಭ್ಯವಿಲ್ಲ ..."
+
+#, fuzzy
+#| msgid "Allocated memory test"
+msgid "All categories"
+msgstr "ಮೀಸಲಾತಿ ಮೆಮೊರಿ ಪರೀಕ್ಷೆ"
+
+msgid "Uncategorized software"
+msgstr ""
+
+#, fuzzy
+#| msgid "Valid licenses"
+msgid "Valid license"
+msgstr "ಮಾನ್ಯ ಪರವಾನಗಿಗಳು"
+
+#, fuzzy
+#| msgid "Type of component"
+msgid "Other component"
+msgstr "ಘಟಕದ ಪ್ರಕಾರ"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr ""
+
+msgid "Unofficial translations are also available"
+msgstr "ಅನಧಿಕೃತ ಅನುವಾದಗಳು ಸಹ ಲಭ್ಯವಿದೆ"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "ಮೇಲೆ ಬರೆದ ಪರವಾನಗಿಯ ನಿಯಮಗಳನ್ನು ನಾನು ಓದಿದ್ದೇನೆ ಮತ್ತು ಒಪ್ಪಿಕೊಂಡಿದ್ದೇನೆ."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "ನಾನು ಓದಿದ್ದೇನೆ ಮತ್ತು ಮೇಲೆ ಬರೆದ ಪರವಾನಗಿ ನಿಯಮಗಳನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುವುದಿಲ್ಲ"
+
+msgid "Installation or update of GLPI"
+msgstr "ಜಿಎಲ್ಪಿಐನ ಅನುಸ್ಥಾಪನೆ ಅಥವಾ ಅಪ್ಡೇಟ್"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "GLPI ಯ ಸಂಪೂರ್ಣ ಹೊಸ ಅನುಸ್ಥಾಪನೆಗೆ 'ಸ್ಥಾಪನೆ' ಆಯ್ಕೆಮಾಡಿ."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "ಹಿಂದಿನ ಆವೃತ್ತಿಯಿಂದ ನಿಮ್ಮ ಆವೃತ್ತಿಯ GLPI ಅನ್ನು ನವೀಕರಿಸಲು 'ಅಪ್ಗ್ರೇಡ್' ಆಯ್ಕೆಮಾಡಿ"
+
+msgid "Do you want to continue?"
+msgstr "ನೀವು ಮುಂದುವರಿಸಲು ಬಯಸುತ್ತೀರಾ?"
+
+msgid "Database connection parameters"
+msgstr "ಡೇಟಾಬೇಸ್ ಸಂಪರ್ಕ ನಿಯತಾಂಕಗಳು"
+
+msgid "Test of the connection at the database"
+msgstr "ಡೇಟಾಬೇಸ್ನಲ್ಲಿ ಸಂಪರ್ಕದ ಟೆಸ್ಟ್"
+
+msgid "Can't connect to the database"
+msgstr "ಡೇಟಾಬೇಸ್ಗೆ ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ"
+
+msgid "The server answered: %s"
+msgstr "ಸರ್ವರ್ ಉತ್ತರಿಸಿದೆ:%s"
+
+msgid "The server or/and user field is empty"
+msgstr "ಸರ್ವರ್ ಅಥವಾ / ಮತ್ತು ಬಳಕೆದಾರ ಕ್ಷೇತ್ರ ಖಾಲಿಯಾಗಿದೆ"
+
+msgid "Please select a database:"
+msgstr "ದಯವಿಟ್ಟು ಡೇಟಾಬೇಸ್ ಅನ್ನು ಆಯ್ಕೆ ಮಾಡಿ:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "ಒಂದು ಹೊಸ ಡೇಟಾಬೇಸ್ ರಚಿಸಿ ಅಥವಾ ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಒಂದನ್ನು ಬಳಸಿ:"
+
+msgid "Please select the database to update:"
+msgstr "ದಯವಿಟ್ಟು ನವೀಕರಿಸಲು ಡೇಟಾಬೇಸ್ ಆಯ್ಕೆಮಾಡಿ:"
+
+msgid "Initialization of the database"
+msgstr "ಡೇಟಾಬೇಸ್ನ ಪ್ರಾರಂಭಿಸುವಿಕೆ"
+
+msgid "Impossible to use the database:"
+msgstr "ಡೇಟಾಬೇಸ್ ಬಳಸಲು ಅಸಾಧ್ಯ:"
+
+msgid "OK - database was initialized"
+msgstr "ಸರಿ - ಡೇಟಾಬೇಸ್ ಅನ್ನು ಆರಂಭಿಸಲಾಗಿದೆ"
+
+msgid "Impossible to write the database setup file"
+msgstr "ಡೇಟಾಬೇಸ್ ಸೆಟಪ್ ಫೈಲ್ ಬರೆಯಲು ಅಸಾಧ್ಯ"
+
+msgid "Database created"
+msgstr "ಡೇಟಾಬೇಸ್ ರಚಿಸಲಾಗಿದೆ"
+
+#, fuzzy
+#| msgid "You didn't select a database!"
+msgid "Error in creating database!"
+msgstr "ನೀವು ಡೇಟಾಬೇಸ್ ಅನ್ನು ಆಯ್ಕೆ ಮಾಡಲಿಲ್ಲ!"
+
+msgid "You didn't select a database!"
+msgstr "ನೀವು ಡೇಟಾಬೇಸ್ ಅನ್ನು ಆಯ್ಕೆ ಮಾಡಲಿಲ್ಲ!"
+
+msgid "Collect data"
+msgstr "ಮಾಹಿತಿ ಸಂಗ್ರಹಿಸು"
+
+msgid "The installation is finished"
+msgstr "ಅನುಸ್ಥಾಪನೆಯು ಮುಗಿದಿದೆ"
+
+msgid "Default logins / passwords are:"
+msgstr "ಡೀಫಾಲ್ಟ್ ಲಾಗಿನ್ಗಳು / ಪಾಸ್ವರ್ಡ್ಗಳು:"
+
+msgid "tech/tech for the technician account"
+msgstr "ತಂತ್ರಜ್ಞ / ತಂತ್ರಜ್ಞ ಖಾತೆಗೆ ಟೆಕ್ / ಟೆಕ್"
+
+msgid "normal/normal for the normal account"
+msgstr "ಸಾಮಾನ್ಯ ಖಾತೆಗೆ ಸಾಮಾನ್ಯ / ಸಾಮಾನ್ಯ"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "ನಂತರದ ಖಾತೆಗೆ ಪೋಸ್ಟ್-ಮಾತ್ರ / ಪೋಸ್ಟ್ನಲಿ"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "ಈ ಖಾತೆಗಳನ್ನು ಹಾಗೆಯೇ ಆರಂಭಿಕ ಡೇಟಾವನ್ನು ನೀವು ಅಳಿಸಬಹುದು ಅಥವಾ ಮಾರ್ಪಡಿಸಬಹುದು."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr "ಡೇಟಾಬೇಸ್ ಸಂಪರ್ಕ ಫೈಲ್ ರಚಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ದಯವಿಟ್ಟು ಫೈಲ್ ಅನುಮತಿಗಳನ್ನು ಪರಿಶೀಲಿಸಿ."
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr " ಹಾಲಿ ವ್ಯವಸ್ಥೆ"
+
+msgid "Beginning of the installation"
+msgstr "ಅನುಸ್ಥಾಪನೆಯ ಆರಂಭ"
+
+msgid "Step %d"
+msgstr "ಹಂತ %d"
+
+msgid "GLPI - Authentication"
+msgstr "ಜಿಎಲ್ಪಿಐ - ದೃಢೀಕರಣ"
+
+msgid "Remember me"
+msgstr "ನನ್ನನ್ನು ಲಾಗಿನ್ ಆಗಿಯೇ ಇಡಿ"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "ನಿಮ್ಮ ಬ್ರೌಸರ್ನ ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್  ನೀವು ಸಕ್ರಿಯಗೊಳಿಸಬೇಕು"
+
+msgid "You must accept cookies to reach this application"
+msgstr "ಈ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ತಲುಪಲು ನೀವು ಕುಕೀಗಳನ್ನು ಸ್ವೀಕರಿಸಬೇಕು"
+
+msgid "Invalid use of session ID"
+msgstr "ಅಧಿವೇಶನ ID ಯ ಅಮಾನ್ಯವಾದ ಬಳಕೆ"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "ಪದೇ ಪದೇ ಕೇಳಲಾಗುವ ಪ್ರಶ್ನೆಗಳು "
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "ಬದಲಾವಣೆ ಸೇರಿಸಿ"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "ಐಟಂ ಸೇರಿಸಿ"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "ಉಳಿಸಿ"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "ಕಳುಹಿಸಿದ ದಿನಾಂಕ"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "ನಿರ್ವಾಹಕ ಖಾತೆಗೆ glpi / glpi"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "ತಂತ್ರಜ್ಞ / ತಂತ್ರಜ್ಞ ಖಾತೆಗೆ ಟೆಕ್ / ಟೆಕ್"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "ಸಾಮಾನ್ಯ ಖಾತೆಗೆ ಸಾಮಾನ್ಯ / ಸಾಮಾನ್ಯ"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "ನಂತರದ ಖಾತೆಗೆ ಪೋಸ್ಟ್-ಮಾತ್ರ / ಪೋಸ್ಟ್ನಲಿ"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "ಈ ಖಾತೆಗಳನ್ನು ಹಾಗೆಯೇ ಆರಂಭಿಕ ಡೇಟಾವನ್ನು ನೀವು ಅಳಿಸಬಹುದು ಅಥವಾ ಮಾರ್ಪಡಿಸಬಹುದು."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "ಡೇಟಾಬೇಸ್ ಸಂಪರ್ಕ ಫೈಲ್ ರಚಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ದಯವಿಟ್ಟು ಫೈಲ್ ಅನುಮತಿಗಳನ್ನು ಪರಿಶೀಲಿಸಿ."
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "ಅನುಸ್ಥಾಪನೆಯ ಆರಂಭ"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "ಹಂತ %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "ಜಿಎಲ್ಪಿಐ - ದೃಢೀಕರಣ"
-
-#~ msgid "Remember me"
-#~ msgstr "ನನ್ನನ್ನು ಲಾಗಿನ್ ಆಗಿಯೇ ಇಡಿ"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "ನಿಮ್ಮ ಬ್ರೌಸರ್ನ ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್  ನೀವು ಸಕ್ರಿಯಗೊಳಿಸಬೇಕು"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "ಈ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ತಲುಪಲು ನೀವು ಕುಕೀಗಳನ್ನು ಸ್ವೀಕರಿಸಬೇಕು"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "ಅಧಿವೇಶನ ID ಯ ಅಮಾನ್ಯವಾದ ಬಳಕೆ"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "ಪದೇ ಪದೇ ಕೇಳಲಾಗುವ ಪ್ರಶ್ನೆಗಳು "

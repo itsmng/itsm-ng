@@ -23183,246 +23183,1337 @@ msgstr "Hanya kumpulkan email belum dibaca"
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "No room found or selected"
-#~ msgstr "Tidak ada ruang yang ditemukan atau dipilih"
+msgid "Favorite"
+msgstr ""
 
-#~ msgid "Marketplace"
-#~ msgstr "Lapangan Pasar"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Login"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s menambahkan item %2$s-%3$s:4%4$s"
+#, fuzzy
+#| msgid "Automatic closing configuration"
+msgid "Open ID connect configuration"
+msgstr "Konfigurasi menutup otomatis"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Lihat plugin katalog"
+msgid "No room found or selected"
+msgstr "Tidak ada ruang yang ditemukan atau dipilih"
 
-#~ msgid "Active Directory"
-#~ msgstr "Direktori Aktif"
+msgid "Marketplace"
+msgstr "Lapangan Pasar"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Tiket Anda yang tutup"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s menambahkan item %2$s-%3$s:4%4$s"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Tiket Anda dalam proses"
+msgid "See the catalog of plugins"
+msgstr "Lihat plugin katalog"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Tiket Anda untuk validasi"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Ticket followup"
-#~ msgstr "Tindak Lanjut Tiket"
+msgid "Empty for infinite"
+msgstr ""
 
-#~ msgid "No ticket found."
-#~ msgstr "Tiket tak ditemukan"
+msgid "RSS feeds found"
+msgstr ""
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Tak ada tiket dalam proses."
+msgid "Active Directory"
+msgstr "Direktori Aktif"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Menetapkan peralatan"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "IP versi"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Tiket otomatis menutup"
+msgid "Confirm the promotion?"
+msgstr ""
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Menetapkan tiket"
+msgid "Your tickets to close"
+msgstr "Tiket Anda yang tutup"
 
-#~ msgid "Merge"
-#~ msgstr "Gabung"
+msgid "Tickets on pending status"
+msgstr ""
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Tickets to be processed"
+msgstr ""
 
-#~ msgid "Solved"
-#~ msgstr "Dipecahkan"
+#, fuzzy
+#| msgid "Number of assigned tickets"
+msgid "Your observed tickets"
+msgstr "Jumlah tiket yang ditugaskan"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Tersedia beberapa nama jaringan! Buka tab 'Nama Jaringan' untuk "
-#~ "mengelolanya."
+msgid "Your tickets in progress"
+msgstr "Tiket Anda dalam proses"
 
-#~ msgid "Add a network name"
-#~ msgstr "Tambahkan nama jaringan"
+msgid "Your tickets to validate"
+msgstr "Tiket Anda untuk validasi"
 
-#~ msgid "Create a new network name"
-#~ msgstr "Buat nama jaringan baru"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected approval status"
+msgstr "Tiket Anda dalam proses"
 
-#~ msgid "No network name found"
-#~ msgstr "Nama jaringan tak ditemukan"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected solution"
+msgstr "Tiket Anda dalam proses"
 
-#~ msgid "Clean"
-#~ msgstr "Bersihkan"
+msgid "Ticket followup"
+msgstr "Tindak Lanjut Tiket"
 
-#~ msgid "Install"
-#~ msgstr "Pasang"
+#, fuzzy
+#| msgid "New ticket"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "Tiket baru"
 
-#~ msgid "Uninstall"
-#~ msgstr "Buang"
+msgid "No ticket found."
+msgstr "Tiket tak ditemukan"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "Pada mesin pencari, gunakan \"Kadaluarsa berisi NULL\" untuk mencari "
-#~ "lisensi tanpa tanggal kadaluarsa"
+#, fuzzy
+#| msgid "Add a ticket"
+msgid "Last tickets"
+msgstr "Tambahkan tiket"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "Sebuah email telah dikirim ke alamat email anda. Email tersebut berisi "
-#~ "informasi untuk mengatur ulang kata sandi anda."
+#, fuzzy
+#| msgid "New change for this item..."
+msgid "New ticket for this item..."
+msgstr "Perubahan baru untuk item ini..."
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Gagal menulis file ke disk"
+#, fuzzy
+#| msgid "Last update"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Terakhir diperbaharui"
 
-#~ msgid "File is too big"
-#~ msgstr "File terlalu besar"
+#, fuzzy
+#| msgid "You don't have right to connect"
+msgid "You don't have right to see all tickets"
+msgstr "Anda tak punya hak untuk tersambung"
 
-#~ msgid "File is too small"
-#~ msgstr "File terlalu kecil"
+#, fuzzy
+#| msgid "Changes on linked items"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Perubahan pada item terkait"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Jumlah maksimum file melebihi"
+msgid "No ticket in progress."
+msgstr "Tak ada tiket dalam proses."
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Gambar melebihi lebar maksimum"
+msgid "Assign equipment"
+msgstr "Menetapkan peralatan"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Gambar memerlukan lebar minimum"
+msgid "Automatic tickets closing"
+msgstr "Tiket otomatis menutup"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Gambar melebihi ketinggian maksimum"
+#, fuzzy
+#| msgid "Satisfaction survey"
+msgid "Generation of satisfaction surveys"
+msgstr "Survei kepuasan"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Gambar membutuhkan ketinggian minimum"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "Tiket menutup otomatis setelah"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Jenis file tidak diizinkan"
+#, fuzzy
+#| msgid "New ticket"
+msgid "See my ticket"
+msgstr "Tiket baru"
 
-#~ msgid "Progress"
-#~ msgstr "Perkembangan"
+#, fuzzy
+#| msgid "New ticket"
+msgid "See group ticket"
+msgstr "Tiket baru"
 
-#~ msgid "Check all"
-#~ msgstr "Pilih Semua"
+msgid "See tickets created by my groups"
+msgstr ""
 
-#~ msgid "Uncheck all"
-#~ msgstr "Semua Tak Dipilih"
+#, fuzzy
+#| msgid "Add a ticket"
+msgid "See all tickets"
+msgstr "Tambahkan tiket"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Memeriksa versi baru yang tersedia"
+#, fuzzy
+#| msgid "Assigned"
+msgid "See assigned"
+msgstr "Assigned"
+
+#, fuzzy
+#| msgid "Number of assigned tickets"
+msgid "See assigned tickets"
+msgstr "Jumlah tiket yang ditugaskan"
+
+msgid "Assign a ticket"
+msgstr "Menetapkan tiket"
+
+msgid "Steal"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add a ticket"
+msgid "Steal a ticket"
+msgstr "Tambahkan tiket"
+
+msgid "Beeing in charge"
+msgstr ""
+
+#, fuzzy
+#| msgid "Group in charge of the task"
+msgid "To be in charge of a ticket"
+msgstr "Kelompok yang bertanggung jawab atas tugas"
+
+msgid "Change the priority"
+msgstr ""
+
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr ""
+
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
+
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to load ticket %d"
+msgstr "Gagal membuat tiket berulang %s"
+
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add followup to ticket %d"
+msgstr "Gagal membuat tiket berulang %s"
+
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add task to ticket %d"
+msgstr "Gagal membuat tiket berulang %s"
+
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add document to ticket %d"
+msgstr "Gagal membuat tiket berulang %s"
+
+msgid "Failed to link tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "Gagal menghapus berkas %s"
+
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s pembersihan versi %2$s "
+
+#, fuzzy
+#| msgid "Checking write permissions for setting files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Memeriksa izin menulis untuk seting"
+
+msgid "Recalculate the category"
+msgstr ""
+
+#, fuzzy
+#| msgid "Valid since"
+msgid "Valid licenses"
+msgstr "Berlaku sejak"
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of contracts"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Jumlah kontrak"
+
+msgid "Merge"
+msgstr "Gabung"
+
+msgid "Software deleted after merging"
+msgstr ""
+
+msgid "You must enable at least one notification mode."
+msgstr ""
+
+msgid "GLPI"
+msgstr "GLPI"
+
+#, fuzzy
+#| msgid "Computer"
+#| msgid_plural "Computers"
+msgid "Connect a computer"
+msgstr "Komputer"
+
+#, fuzzy
+#| msgid "Not connected."
+msgid "Not connected"
+msgstr "Tak Tersambung"
+
+#, fuzzy
+#| msgid "Show all"
+msgid "Show as map"
+msgstr "Tampilkan Semua"
+
+#, fuzzy
+#| msgid "Valid tags"
+msgid "Valid to %s"
+msgstr "Tag valid"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "Late tickets"
+msgstr "Tiket baru"
+
+#, fuzzy
+#| msgid "Network ports waiting for manual migration"
+msgid "Tickets waiting for validation"
+msgstr "Port jaringan menunggu migrasi manual"
+
+#, fuzzy
+#| msgid "Recurrent tickets"
+msgid "Incoming tickets"
+msgstr "Tiket berulang"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "Solved tickets"
+msgstr "Tiket baru"
+
+#, fuzzy
+#| msgid "Close time"
+#| msgid_plural "Close times"
+msgid "Closed tickets"
+msgstr "Jam tutup"
+
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Tanpa nama"
+
+#, fuzzy
+#| msgid "Time cost"
+msgid "Time to close"
+msgstr "Biaya waktu"
+
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "Validasi"
+
+msgid "Solved"
+msgstr "Dipecahkan"
+
+msgid "Share or embed this dashboard"
+msgstr ""
+
+#, fuzzy
+#| msgid "Helpdesk Dashboard"
+msgid "Delete this dashboard"
+msgstr "Dasbor Helpdesk"
+
+msgid "Toggle auto-refresh"
+msgstr ""
+
+#, fuzzy
+#| msgid "Monitor model"
+#| msgid_plural "Monitor models"
+msgid "Toggle night mode"
+msgstr "Model Monitor"
+
+msgid "Toggle fullscreen"
+msgstr ""
+
+#, fuzzy
+#| msgid "Assets Dashboard"
+msgid "Clone this dashboard"
+msgstr "Dasbor Aset"
+
+msgid "Toggle edit mode"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add date"
+msgid "Add filter"
+msgstr "Tambah Tanggal"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "Tambah tugas baru"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "Lainnya"
+
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "Anggaran"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "Jumlah tugas"
+
+msgid "Filters"
+msgstr ""
+
+msgid "Embed in another application"
+msgstr ""
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "Tautan Direktori LDAP"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+msgid "empty card !"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Number of %s"
+msgstr "Jumlah tugas"
+
+msgid "%s by %s"
+msgstr ""
+
+msgid "List of %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "Jumlah tiket"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket tasks to do"
+msgid "Tickets status by month"
+msgstr "Tiket tugas untuk dikerjakan"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets"
+msgid "Tickets summary"
+msgstr "Tiket"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's categories"
+msgstr "Untuk tiket ditutup setelah"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "Tiket Anda untuk validasi"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's request types"
+msgstr "Jumlah tiket sebagai pemohon"
+
+#, fuzzy
+#| msgid "Stock location"
+msgid "Top ticket's locations"
+msgstr "Lokasi stok"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "Jumlah tiket sebagai pemohon"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requester groups"
+msgstr "Jumlah tiket sebagai pemohon"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "Untuk tiket ditutup setelah"
+
+msgid "Top ticket's observer groups"
+msgstr ""
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignees"
+msgstr "Tiket Anda dalam proses"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignee groups"
+msgstr "Tiket Anda dalam proses"
+
+msgid "List of reminders"
+msgstr ""
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Tersedia beberapa nama jaringan! Buka tab 'Nama Jaringan' untuk mengelolanya."
+
+msgid "Add a network name"
+msgstr "Tambahkan nama jaringan"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Associate"
+msgid "Not associated"
+msgstr "Kaitkan"
+
+msgid "Create a new network name"
+msgstr "Buat nama jaringan baru"
+
+msgid "No network name found"
+msgstr "Nama jaringan tak ditemukan"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "Periksa update terbaru"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "Pasang"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "Putus Sambungan"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+msgid "Register on %1$s"
+msgstr ""
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Komentar Anda telah disunting"
+
+#, fuzzy
+#| msgid "Opened on %s"
+msgid "Renew it on %1$s."
+msgstr "Dibuka pada %s"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "Pertanyaan paling populer"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "Terakhir diperbaharui"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "Baca catatan"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+msgid "Filter plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "Beranda"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "Baca"
+
+msgid "Clean"
+msgstr "Bersihkan"
+
+msgid "This plugin is not available for your GLPI version."
+msgstr ""
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Check if a new version is available"
+msgid "A new version (%s) is available, update ?"
+msgstr "Memeriksa versi baru yang tersedia"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "Pasang"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Enable"
+msgid "Enable"
+msgstr "Aktifkan"
+
+msgid "Uninstall"
+msgstr "Buang"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Plugins"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "Terlambat"
+
+#, fuzzy
+#| msgid "Marketplace"
+msgid "Switch to marketplace"
+msgstr "Lapangan Pasar"
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "Plugins"
+
+msgid "Plugin new version number"
+msgstr ""
+
+msgid "Plugin old version number"
+msgstr ""
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"Pada mesin pencari, gunakan \"Kadaluarsa berisi NULL\" untuk mencari lisensi "
+"tanpa tanggal kadaluarsa"
+
+#, fuzzy
+#| msgid "Administration"
+msgid "Registration"
+msgstr "Administrasi"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+msgid "Register on %1$s!"
+msgstr ""
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Destination entity"
+msgid "Registration key"
+msgstr "Entitas tujuan"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "Deskripsi"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "File tak diketahui"
+
+msgid "Registered by"
+msgstr ""
+
+msgid "Unable to fetch registration information."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "Instalasi selesai"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "Instalasi selesai"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"Sebuah email telah dikirim ke alamat email anda. Email tersebut berisi "
+"informasi untuk mengatur ulang kata sandi anda."
+
+#, fuzzy
+#| msgid "File %s not found."
+msgid "Email address not found."
+msgstr "Berkas %s tak ditemukan"
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+
+msgid "The uploaded file was only partially uploaded"
+msgstr ""
+
+msgid "Failed to write file to disk"
+msgstr "Gagal menulis file ke disk"
+
+msgid "A PHP extension stopped the file upload"
+msgstr ""
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+
+msgid "File is too big"
+msgstr "File terlalu besar"
+
+msgid "File is too small"
+msgstr "File terlalu kecil"
+
+msgid "Maximum number of files exceeded"
+msgstr "Jumlah maksimum file melebihi"
+
+msgid "Image exceeds maximum width"
+msgstr "Gambar melebihi lebar maksimum"
+
+msgid "Image requires a minimum width"
+msgstr "Gambar memerlukan lebar minimum"
+
+msgid "Image exceeds maximum height"
+msgstr "Gambar melebihi ketinggian maksimum"
+
+msgid "Image requires a minimum height"
+msgstr "Gambar membutuhkan ketinggian minimum"
+
+msgid "Filetype not allowed"
+msgstr "Jenis file tidak diizinkan"
+
+#, fuzzy
+#| msgid "No file was uploaded"
+msgid "File upload aborted"
+msgstr "Tidak ada file yang diupload"
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to resize image"
+msgstr "Gagal menulis file ke disk"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "Informasi pengguna"
+
+msgid "Progress"
+msgstr "Perkembangan"
+
+#, fuzzy
+#| msgid "Settings"
+msgid "My settings"
+msgstr "Seting"
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr ""
+
+msgid "Check all"
+msgstr "Pilih Semua"
+
+msgid "Uncheck all"
+msgstr "Semua Tak Dipilih"
+
+#, fuzzy
+#| msgid "Check all"
+msgid "Check all as"
+msgstr "Pilih Semua"
+
+msgid "Selection too large, massive action disabled."
+msgstr ""
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+
+msgid "The description field is mandatory"
+msgstr ""
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr ""
+
+msgid "Empty array"
+msgstr ""
+
+#, fuzzy
+#| msgid "%1$s - %2$s"
+msgid "%1$d on %2$d"
+msgstr "%1$s - %2$s"
+
+msgid "Close (Esc)"
+msgstr ""
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+#, fuzzy
+#| msgid "Operating system"
+#| msgid_plural "Operating systems"
+msgid "selecting them"
+msgstr "Sistem operasi"
+
+#, fuzzy
+#| msgid "File"
+msgid "File(s)"
+msgstr "Berkas"
+
+msgid "Drag and drop your file here, or"
+msgstr ""
+
+#, fuzzy
+#| msgid "Operation successful"
+msgid "Upload successful"
+msgstr "Operasi berhasil"
+
+#, fuzzy
+#| msgid "Uncheck all"
+msgid "Check/uncheck all"
+msgstr "Semua Tak Dipilih"
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+#, fuzzy
+#| msgid "Phone model"
+#| msgid_plural "Phone models"
+msgid "Change mode"
+msgstr "Model Telepon"
+
+#, fuzzy
+#| msgid "Debug mode has been enabled!"
+msgid "Debug mode enabled"
+msgstr "Mode debug sudah diaktifkan"
+
+#, fuzzy
+#| msgid "Debug mode has been disabled!"
+msgid "Debug mode disabled"
+msgstr "Mode debug sudah di non-aktifkan"
+
+#, fuzzy
+#| msgid "Search"
+msgid "Saved searches"
+msgstr "Cari"
+
+msgid "Manage saved searches"
+msgstr ""
+
+#, fuzzy
+#| msgid "API disabled"
+msgid "Add is disabled"
+msgstr "API dinonaktifkan"
+
+#, fuzzy
+#| msgid "Search result display"
+msgid "Search is disabled"
+msgstr "Tampilan hasil pencarian"
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "Manajemen global"
+
+#, fuzzy
+#| msgid "Unable to stop impersonating user"
+msgid "You are impersonating %s."
+msgstr "Tidak dapat berhenti meniru identitas pengguna"
+
+#, fuzzy
+#| msgid "Unable to stop impersonating user"
+msgid "Stop impersonating"
+msgstr "Tidak dapat berhenti meniru identitas pengguna"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr ""
+
+msgid "Color palette"
+msgstr ""
+
+msgid "Layout"
+msgstr ""
+
+msgid "Tabs on left"
+msgstr ""
+
+msgid "Classic view"
+msgstr ""
+
+msgid "Vertical split"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Akhir kontrak"
+
+#, fuzzy
+#| msgid "Assets Dashboard"
+msgid "Dashboards"
+msgstr "Dasbor Aset"
+
+#, fuzzy
+#| msgid "Default entity"
+msgid "Default for central"
+msgstr "Bawaan entitas"
+
+#, fuzzy
+#| msgid "Default values"
+msgid "Default for Assets"
+msgstr "Nilai awalan"
+
+#, fuzzy
+#| msgid "Assistance"
+msgid "Default for Assistance"
+msgstr "Bantuan"
+
+msgid "Default for tickets (mini dashboard)"
+msgstr ""
+
+msgid "Check if a new version is available"
+msgstr "Memeriksa versi baru yang tersedia"
+
+#, fuzzy
+#| msgid "Show all"
+msgid "Show filters"
+msgstr "Tampilkan Semua"
+
+msgid "No historical matching your filters"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add a schedule"
+msgid "Add to schedule"
+msgstr "Tambah jadwal"
+
+msgid "Position in room"
+msgstr ""
+
+msgid "Door orientation in room"
+msgstr ""
+
+msgid "North"
+msgstr ""
+
+msgid "East"
+msgstr ""
+
+msgid "South"
+msgstr ""
+
+msgid "West"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of units"
+msgstr "Jumlah tiket"
+
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+#, fuzzy
+#| msgid "Weight"
+msgid "Height"
+msgstr "Berat"
+
+msgid "Measured power (in watts)"
+msgstr ""
+
+msgid "Max. weight"
+msgstr ""
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No rack found"
+msgstr "User tidak ditemukan"
+
+msgid "Following elements are out of room bounds"
+msgstr ""
+
+msgid "Blueprint"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Insert a rack here"
+msgstr ""
+
+msgid "Position must be set"
+msgstr ""
+
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "Port jaringan tidak tersedia..."
+
+#, fuzzy
+#| msgid "Allocated memory test"
+msgid "All categories"
+msgstr "Tes alokasi memori"
+
+#, fuzzy
+#| msgid "Unauthorized file type"
+msgid "Uncategorized software"
+msgstr "Tipe berkas tak sah"
+
+#, fuzzy
+#| msgid "Valid since"
+msgid "Valid license"
+msgstr "Berlaku sejak"
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of contracts"
+msgid "Other component"
+msgstr "Jumlah kontrak"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr ""
+
+msgid "Unofficial translations are also available"
+msgstr "Terjemahan tidak resmi juga tersedia"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr ""
+"Saya telah membaca dan SETUJU atas ketentuan lisensi yang tertulis di atas."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr ""
+"Saya telah membaca dan TIDAK SETUJU atas ketentuan lisensi yang tertulis di "
+"atas"
+
+msgid "Installation or update of GLPI"
+msgstr "Instalasi atau update GLPI"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Pilih 'Install' untuk instalasi baru GLPI."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "Pilih \"Upgrade\" untuk memperbarui versi GLPI dari versi sebelumnya"
+
+msgid "Do you want to continue?"
+msgstr "Apakah Anda ingin melanjutkan?"
+
+msgid "Database connection parameters"
+msgstr "Parameter sambungan basis data"
+
+msgid "Test of the connection at the database"
+msgstr "Tes sambungan ke basis data"
+
+msgid "Can't connect to the database"
+msgstr "Tak dapat menyambung ke basisdata"
+
+msgid "The server answered: %s"
+msgstr "Jawaban server: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Field server dan/atau user kosong"
+
+msgid "Please select a database:"
+msgstr "Silakan pilih basis data:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Buat basis data baru atau gunakan yang ada:"
+
+msgid "Please select the database to update:"
+msgstr "Silakan pilih basis data yang akan diperbaharui:"
+
+msgid "Initialization of the database"
+msgstr "Inisialisasi database"
+
+msgid "Impossible to use the database:"
+msgstr "Basis data tak bisa digunakan:"
+
+msgid "OK - database was initialized"
+msgstr "OK - basis data sudah di inisialisasi"
+
+msgid "Impossible to write the database setup file"
+msgstr "Tak bisa menulis di berkas basis data"
+
+msgid "Database created"
+msgstr "Basisdata berhasil dibuat"
+
+msgid "Error in creating database!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Please select a database:"
+msgid "You didn't select a database!"
+msgstr "Silakan pilih basis data:"
+
+msgid "Collect data"
+msgstr ""
+
+msgid "The installation is finished"
+msgstr "Instalasi selesai"
+
+msgid "Default logins / passwords are:"
+msgstr "Default login / password :"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech untuk akun teknisi"
+
+msgid "normal/normal for the normal account"
+msgstr ""
+
+msgid "post-only/postonly for the postonly account"
+msgstr ""
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+"Anda dapat menghapus atau memodifikasi account tersebut sebagai data awal."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Tak dapat membuat berkas sambungan basis data, silakan verifikasi perizinan "
+"berkas."
+
+msgid "Select your language"
+msgstr ""
+
+msgid "Beginning of the installation"
+msgstr "Memulai pemasangan"
+
+msgid "Step %d"
+msgstr "Langkah %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Otentifikasi"
+
+msgid "Remember me"
+msgstr "Ingat saya"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Anda harus mengaktifkan fungsi JavaScript pada browser Anda"
+
+msgid "You must accept cookies to reach this application"
+msgstr "Anda harus menerima cookies untuk menjalankan aplikasi"
+
+msgid "Invalid use of session ID"
+msgstr "Penggunaan ID sesi tidak valid"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Akses ke pertanyaan yang sering diajukan"
+
+#, fuzzy
+#| msgid "Add an actor"
+msgid "Add a card"
+msgstr "Tambah aktor"
+
+#, fuzzy
+#| msgid "Add a user"
+msgid "Add a filter"
+msgstr "Tambah user"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "Simpan"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr ""
+
+msgid "Send a test chat"
+msgstr ""
 
 #~ msgid "Use GLPI"
 #~ msgstr "Gunakan GLPI"
-
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Terjemahan tidak resmi juga tersedia"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr ""
-#~ "Saya telah membaca dan SETUJU atas ketentuan lisensi yang tertulis di "
-#~ "atas."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr ""
-#~ "Saya telah membaca dan TIDAK SETUJU atas ketentuan lisensi yang tertulis "
-#~ "di atas"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "Instalasi atau update GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Pilih 'Install' untuk instalasi baru GLPI."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "Pilih \"Upgrade\" untuk memperbarui versi GLPI dari versi sebelumnya"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Apakah Anda ingin melanjutkan?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Parameter sambungan basis data"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Tes sambungan ke basis data"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Tak dapat menyambung ke basisdata"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Jawaban server: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Field server dan/atau user kosong"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Silakan pilih basis data:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Buat basis data baru atau gunakan yang ada:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Silakan pilih basis data yang akan diperbaharui:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Inisialisasi database"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Basis data tak bisa digunakan:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK - basis data sudah di inisialisasi"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Tak bisa menulis di berkas basis data"
-
-#~ msgid "Database created"
-#~ msgstr "Basisdata berhasil dibuat"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Instalasi selesai"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Default login / password :"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech untuk akun teknisi"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "Anda dapat menghapus atau memodifikasi account tersebut sebagai data awal."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Tak dapat membuat berkas sambungan basis data, silakan verifikasi "
-#~ "perizinan berkas."
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Memulai pemasangan"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Langkah %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Otentifikasi"
-
-#~ msgid "Remember me"
-#~ msgstr "Ingat saya"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Anda harus mengaktifkan fungsi JavaScript pada browser Anda"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Anda harus menerima cookies untuk menjalankan aplikasi"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Penggunaan ID sesi tidak valid"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Akses ke pertanyaan yang sering diajukan"
