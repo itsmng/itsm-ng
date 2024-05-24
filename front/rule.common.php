@@ -70,7 +70,7 @@ if (isset($_POST["action"])) {
       exit();
    }
 
-   echo "<table class='tab_cadrehov'>";
+   echo "<table class='tab_cadrehov' aria-label='Replay the rules dictionary'>";
 
    echo "<tr><th><div class='relative b'>" .$rulecollection->getTitle(). "<br>" .
          __('Replay the rules dictionary'). "</div></th></tr>\n";

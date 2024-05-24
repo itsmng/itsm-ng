@@ -173,7 +173,7 @@ if (count($all_criteria)) {
       if (count($iterator)) {
          $item = new $key();
          echo "<div class='center b'>".$item->getTypeName(1)."</div>";
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Device list' >";
          echo "<tr><th>".__('Name')."</th>";
          echo "<th>".__('Deleted')."</th>";
          if ($display_entity) {

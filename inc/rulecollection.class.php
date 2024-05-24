@@ -373,7 +373,7 @@ class RuleCollection extends CommonDBTM {
 
    function showEngineSummary() {
 
-      echo "<table class='tab_cadre_fixe'><tr><th>";
+      echo "<table class='tab_cadre_fixe' aria-label='Engine'><tr><th>";
 
       //Display information about the how the rules engine process the rules
       if ($this->stop_on_first_match) {
@@ -445,7 +445,7 @@ class RuleCollection extends CommonDBTM {
          }
          $use_conditions = true;
          // Mini Search engine
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Search Engine'>";
          echo "<tr class='tab_bg_1'><td class='center' width='50%'>";
          echo __('Rules used for')."</td><td>";
          $rule->dropdownConditions(['value' => $p['condition'],
@@ -812,7 +812,7 @@ class RuleCollection extends CommonDBTM {
       $buttons["{$CFG_GLPI["root_doc"]}/front/rule.backup.php?action=import"] = _x('button', 'Import');
       $buttons["{$CFG_GLPI["root_doc"]}/front/rule.backup.php?action=export"] = _x('button', 'Export');
 
-      echo "<div class='center mb-3'><table class='tab_glpi'><tr>";
+      echo "<div class='center mb-3'><table class='tab_glpi' aria-label='Key'><tr>";
       echo "<td><i class='far fa-save fa-3x' aria-hidden='true'></i></td>";
       foreach ($buttons as $key => $val) {
          echo "<td><a class='btn btn-secondary ' href='".$key."'>".$val."</a></td>";
@@ -1115,7 +1115,7 @@ class RuleCollection extends CommonDBTM {
       //print report
       echo "<form name='form' method='post' action='rule.backup.php' >";
       echo "<div class='spaced' id='tabsbody'>";
-      echo "<table class='tab_cadre'>";
+      echo "<table class='tab_cadre' aria-label='Print Report'>";
       echo "<input type='hidden' name='action' value='process_import'>";
       echo "<tr><th colspan='3'>".__('Rules refused')."</th></tr>";
       echo "<tr>";
@@ -1141,7 +1141,7 @@ class RuleCollection extends CommonDBTM {
          echo "<td>".$rules['rule'][$k_rule]['name']."</td>";
          echo "<td>";
 
-         echo "<table class='tab_cadre' style='width:100%'>";
+         echo "<table class='tab_cadre' style='width:100%' aria-label='Entity'>";
          //show entity select
          if (!isset($refused['criterias']) && !isset($refused['actions'])) {
             if (isset($refused['entity'])) {
@@ -1167,7 +1167,7 @@ class RuleCollection extends CommonDBTM {
             echo "<td>".__('Criteria refused')."</td>";
             echo "<td>";
 
-            echo "<table class='tab_cadre' style='width:100%'>";
+            echo "<table class='tab_cadre' style='width:100%' aria-label='Criteria refused'>";
             echo "<tr class='tab_bg_2'>";
             echo "<th class='center b'>"._n('Criterion', 'Criteria', 1)."</th>\n";
             echo "<th class='center b'>".__('Condition')."</th>\n";
@@ -1199,7 +1199,7 @@ class RuleCollection extends CommonDBTM {
             echo "<td>".__('Actions refused')."</td>";
             echo "<td>";
 
-            echo "<table class='tab_cadre' style='width:100%'>";
+            echo "<table class='tab_cadre' style='width:100%' aria-label='Action Refused'>";
             echo "<tr class='tab_bg_2'>";
             echo "<th class='center b'>"._n('Field', 'Fields', Session::getPluralNumber())."</th>";
             echo "<th class='center b'>".__('Action type')."</th>";
@@ -1438,7 +1438,7 @@ class RuleCollection extends CommonDBTM {
          $criterias = $rule->getAllCriteria();
          echo "<form name='testrule_form' id='testrulesengine_form' method='post' action='$target'>";
          echo "\n<div class='center'>";
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Rule collection preview'>";
          echo "<tr><th colspan='2'>" . _n('Criterion', 'Criteria', Session::getPluralNumber()) . "</th></tr>\n";
 
          //Brower all criterias
@@ -1651,7 +1651,7 @@ class RuleCollection extends CommonDBTM {
       echo "<div class='center'>";
 
       if (isset($output["result"])) {
-         echo "<table class='tab_cadrehov'>";
+         echo "<table class='tab_cadrehov' aria-label='Rule engine preview'>";
          echo "<tr><th colspan='2'>" . __('Result details') . "</th></tr>\n";
 
          foreach ($output["result"] as $ID=>$rule_result) {
@@ -1681,7 +1681,7 @@ class RuleCollection extends CommonDBTM {
       unset($output["result"]);
       $global_result = (count($output)?1:0);
 
-      echo "<br><table class='tab_cadrehov'>";
+      echo "<br><table class='tab_cadrehov' aria-label='Test result'>";
       $this->showTestResults($rule, $output, $global_result);
       echo "</table></div>";
    }
@@ -1721,7 +1721,7 @@ class RuleCollection extends CommonDBTM {
    function showTestResults($rule, array $output, $global_result) {
 
       $actions = $rule->getAllActions();
-      echo "<table class='tab_cadrehov'>";
+      echo "<table class='tab_cadrehov' aria-label='Rule Results'>";
       echo "<tr><th colspan='2'>" . __('Rule results') . "</th></tr>\n";
       echo "<tr class='tab_bg_1'>";
       echo "<td class='center'>"._n('Validation', 'Validations', 1)."</td>";

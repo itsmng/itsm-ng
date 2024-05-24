@@ -7246,7 +7246,7 @@ JAVASCRIPT;
          case self::PDF_OUTPUT_LANDSCAPE : //pdf
          case self::PDF_OUTPUT_PORTRAIT :
             global $PDF_TABLE;
-            $PDF_TABLE = "<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\" >";
+            $PDF_TABLE = "<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\" aria-label='Exported PDF Table'>";
             break;
 
          case self::SYLK_OUTPUT : // Sylk
@@ -7293,9 +7293,9 @@ JAVASCRIPT;
 
          default :
             if ($fixed) {
-               $out = "<div class='center'><table border='0' class='tab_cadre_fixehov'>\n";
+               $out = "<div class='center'><table border='0' class='tab_cadre_fixehov' aria-label='default'>\n";
             } else {
-               $out = "<div class='center'><table border='0' class='tab_cadrehov'>\n";
+               $out = "<div class='center'><table border='0' class='tab_cadrehov' aria-label='default'>\n";
             }
       }
       return $out;

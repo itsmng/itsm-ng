@@ -187,7 +187,7 @@ function display_new_locations() {
    $result = $DB->query($query);
 
    $data_old = [];
-   echo "<table><tr>";
+   echo "<table aria-label='data_old'><tr>";
 
    for ($i=0; $i<=$MAX_LEVEL; $i++) {
       echo "<th>$i</th><th>&nbsp;</th>";

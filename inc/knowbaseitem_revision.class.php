@@ -114,7 +114,7 @@ class KnowbaseItem_Revision extends CommonDBTM {
       if ($number < 1) {
          $no_txt = __('No revisions');
          echo "<div class='center'>";
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='No Revisions'>";
          echo "<tr><th>$no_txt</th></tr>";
          echo "</table>";
          echo "</div>";
@@ -127,7 +127,7 @@ class KnowbaseItem_Revision extends CommonDBTM {
       echo "<div class='center'>";
       echo "<input type='button' name='compare' value='"._sx('button', 'Compare selected revisions').
              "' class='submit compare'>";
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Revisions'>";
       $header = '<tr>';
       $header .= "<th title='" . _sn('Revision', 'Revisions', 1) . "'>#</th>";
       $header .= "<th>&nbsp;</th>";
@@ -209,7 +209,7 @@ class KnowbaseItem_Revision extends CommonDBTM {
                      },
                      success: function(data) {
                         var title = '" . __('Show revision %rev') . "'.replace(/%rev/, _this.data('rev'));
-                        var html = '<div title=\"' + title + '\" id=\"compare_view\"><table class=\"tab_cadre_fixehov\">';
+                        var html = '<div title=\"' + title + '\" id=\"compare_view\"><table class=\"tab_cadre_fixehov\" aria-label='Revision'>';
                         html += '<h2>".__('Subject')."</h2>';
                         html += '<div>' + data.name + '</div>';
                         html += '<h2>".__('Content')."</h2>';
@@ -246,7 +246,7 @@ class KnowbaseItem_Revision extends CommonDBTM {
                            _diffid = '" . __('current') . "';
                         }
                         var title = '" . __s('Compare revisions old and diff') . "'.replace(/old/, _oldid).replace(/diff/, _diffid);
-                        var html_compare = '<div title=\"' + title + '\" id=\"compare_view\"><table class=\"tab_cadre_fixehov\">';
+                        var html_compare = '<div title=\"' + title + '\" id=\"compare_view\"><table class=\"tab_cadre_fixehov\" aria-label='Revision'>';
                         html_compare += '<tr><th></th><th>" . __s('Original') . "</th><th>" . __s('Changed') ."</th><th>" . __('Differences')  . "</th></tr>';
                         html_compare += '<tr><th>" . __s('Subject') . "</th><td class=\"original\">' + data['old']['name'] + '</td><td class=\"changed\">' + data['diff']['name'] + '</td><td class=\"diff\"></td></tr>';
                         html_compare += '<tr><th>" . __s('Content')  . "</th><td class=\"original\">' + data['old']['answer'] + '</td><td class=\"changed\">' + data['diff']['answer'] + '</td><td class=\"diff\"></td></tr>';

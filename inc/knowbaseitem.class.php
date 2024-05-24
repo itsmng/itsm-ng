@@ -992,7 +992,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
       $tmp = "<a href='".$this->getSearchURL().
              "?knowbaseitemcategories_id=$knowbaseitemcategories_id&forcetab=Knowbase$2'>".
              $fullcategoryname."</a>";
-      $out.= "<table class='tab_cadre_fixe'>";
+      $out.= "<table class='tab_cadre_fixe' aria-label='Category'>";
       $out.= "<tr><th colspan='4'>".sprintf(__('%1$s: %2$s'), __('Category'), $tmp);
       $out.= "</th></tr>";
 
@@ -1088,7 +1088,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
 
       echo "<div>";
       echo "<form method='get' action='".$this->getSearchURL()."'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Search Form'>";
       echo "<tr class='tab_bg_2'><td class='right' width='50%'>";
       echo "<input type='text' size='50' name='contains' value=\"".
              Html::cleanInputText(stripslashes($params["contains"]))."\"></td>";
@@ -1138,7 +1138,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
           && !$faq) {
          echo "<div>";
          echo "<form method='get' action='".$this->getSearchURL()."'>";
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Browse Form'>";
          echo "<tr class='tab_bg_2'><td class='right' width='50%'>".__('Category')."&nbsp;";
          KnowbaseItemCategory::dropdown(['value' => $params["knowbaseitemcategories_id"]]);
          echo "</td><td class='left'>";
@@ -1178,7 +1178,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
 
       echo "<div>";
       echo "<form method='get' action='".$this->getSearchURL()."'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Manage Form'>";
       echo "<tr class='tab_bg_2'><td class='right' width='50%'>";
       $values = ['myunpublished' => __('My unpublished articles'),
                       'allmy'         => __('All my articles')];
@@ -1831,7 +1831,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
       $iterator = $DB->request($criteria);
 
       if (count($iterator)) {
-         echo "<table class='tab_cadrehov'>";
+         echo "<table class='tab_cadrehov' aria-label='Recent Popular'>";
          echo "<tr class='noHover'><th>".$title."</th></tr>";
          while ($data = $iterator->next()) {
             $name = $data['name'];

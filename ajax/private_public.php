@@ -58,7 +58,7 @@ if (isset($_POST['is_private'])) {
          } else {
             $val = $_SESSION['glpiactive_entity'];
          }
-         echo "<table width='100%'>";
+         echo "<table width='100%' aria-label='public or private settings table'>";
          echo "<tr><td>";
          echo "<input type='hidden' name='is_private' value='0'>\n";
          echo __('Public');

@@ -399,7 +399,7 @@ class ComputerAntivirus extends CommonDBChild {
          ]
       );
 
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Antivirus information'>";
       $colspan = 7;
       if (Plugin::haveImport()) {
          $colspan++;

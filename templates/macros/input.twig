@@ -14,7 +14,7 @@
         {% endfor %}
       </select>
     </div>
-    <table id="ObjectTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
+    <table id="ObjectTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center" aria-label="Object Table">
       <tbody>
         {% for object in attributes.values %}
             <tr data-id="{{object.tickets_id}}" data-type="{{object.link}}">
@@ -76,7 +76,7 @@
       <select class="form-select" id="ActorSelector_{{rand}}">
       </select>
     </div>
-    <table id="ActorTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
+    <table id="ActorTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center" aria-label="Actor Table">
       <tbody>
         {% for actor in attributes.values %}
             <tr data-id="{{actor.id}}" data-type="{{actor.type}}">
@@ -203,7 +203,7 @@
       id={{rand}}
     {% endif %}
     />
-    <table class="w-100 fs-6 table table-sm table-hover align-middle text-center">
+    <table class="w-100 fs-6 table table-sm table-hover align-middle text-center" aria-label="data">
       <tbody>
         {% for documentId, title in attributes.values %}
             <tr data-id="{{documentId}}">
@@ -342,7 +342,7 @@
           <i class="fas fa-plus" title="add options"></i>
       </button>
     </div>
-    <table id="OptionTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
+    <table id="OptionTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center" aria-label="Option Table">
       <tbody>
         {% for inputs in attributes.values %}
             <tr data-value="{{loop.index}}" style="display: flex" id="{{rand}}{{loop.index}}">

@@ -218,7 +218,7 @@ class NotificationEvent extends CommonDBTM {
    static function debugEvent($item, $options = []) {
 
       echo "<div class='spaced'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Notification'>";
       echo "<tr><th colspan='3'>"._n('Notification', 'Notifications', Session::getPluralNumber()).
             "</th><th colspan='2'><font color='blue'> (".$item->getTypeName(1).")</font></th></tr>";
 

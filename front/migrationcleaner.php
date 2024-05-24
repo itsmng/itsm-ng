@@ -48,7 +48,7 @@ if (!$DB->tableExists('glpi_networkportmigrations')) {
 Html::header(__('Migration cleaner'), $_SERVER['PHP_SELF'], "tools", "migration");
 
 echo "<div class='spaced' id='tabsbody'>";
-echo "<table class='tab_cadre_fixe'>";
+echo "<table class='tab_cadre_fixe' aria-label='Migration tools'>";
 
 echo "<tr><th>" . __('"Migration cleaner" tool') . "</td></tr>";
 

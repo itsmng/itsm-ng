@@ -73,7 +73,7 @@ echo "<div class='center'>";
 echo "<p class='b'>".__('Search the ID of your hardware')."</p>";
 echo " <form name='form1' method='post' action='".$_SERVER['PHP_SELF']."'>";
 
-echo "<table class='tab_cadre_fixe'>";
+echo "<table class='tab_cadre_fixe' aria-label='Search form>";
 echo "<tr><th height='29'>".__('Enter the first letters (user, item name, serial or asset number)').
      "</th></tr>";
 echo "<tr><td class='tab_bg_1 center'>";
@@ -85,7 +85,7 @@ Html::closeForm();
 echo "</div>";
 
 if (isset($_POST["send"])) {
-   echo "<table class='tab_cadre_fixe'>";
+   echo "<table class='tab_cadre_fixe' aria-label='Search results table'>";
    echo " <tr class='tab_bg3'>";
    echo " <td class='center b' width='30%'>".__('Alternate username')."</td>";
    echo " <td class='center b' width='20%'>".__('Hardware type')."</td>";

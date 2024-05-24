@@ -442,7 +442,7 @@ class AuthLDAP extends CommonDBTM {
          renderTwigForm($form);
 
       } else {
-         echo "<div class='center'>&nbsp;<table class='tab_cadre_fixe'>";
+         echo "<div class='center'>&nbsp;<table class='tab_cadre_fixe' aria-label='LDAP authentication'>";
          echo "<tr><th colspan='2'>" . self::getTypeName(1) . "</th></tr>";
          echo "<tr class='tab_bg_2'><td class='center'>";
          echo "<p class='red'>".sprintf(__('%s extension is missing'), 'LDAP')."</p>";
@@ -465,7 +465,7 @@ class AuthLDAP extends CommonDBTM {
 
       echo "<div class='center'>";
       echo "<form method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Advanced information'>";
 
       echo "<tr class='tab_bg_2'><th colspan='4'>";
       echo "<input type='hidden' name='id' value='$ID'>". __('Advanced information')."</th></tr>";
@@ -571,7 +571,7 @@ class AuthLDAP extends CommonDBTM {
                                       'container'     => 'massAuthLdapReplicate'.$rand];
          Html::showMassiveActions($massiveactionparams);
          echo "<input type='hidden' name='id' value='$ID'>";
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='List of LDAP directory replicates'>";
          echo "<tr class='noHover'>".
               "<th colspan='4'>".__('List of LDAP directory replicates') . "</th></tr>";
 
@@ -678,7 +678,7 @@ class AuthLDAP extends CommonDBTM {
       echo "<div class='center'>";
       echo "<form method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<input type='hidden' name='id' value='$ID'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Belonging to groups'>";
 
       echo "<tr><th class='center' colspan='4'>" . __('Belonging to groups') . "</th></tr>";
 
@@ -764,7 +764,7 @@ class AuthLDAP extends CommonDBTM {
       echo "<div class='center'>";
       echo "<form method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<input type='hidden' name='id' value='$ID'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Binding to the LDAP directory'>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<th class='center' colspan='4'>" . __('Binding to the LDAP directory') . "</th></tr>";
@@ -857,7 +857,7 @@ class AuthLDAP extends CommonDBTM {
       echo "<div class='center'>";
       echo "<form method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<input type='hidden' name='id' value='$ID'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Import entities from LDAP directory'>";
 
       echo "<tr><th class='center' colspan='4'>". __('Import entities from LDAP directory').
            "</th></tr>";
@@ -1306,7 +1306,7 @@ class AuthLDAP extends CommonDBTM {
 
       echo "<div class='center'>";
       echo "<form method='post' action='$target'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='filters'>";
       echo "<tr><th colspan='2'>" . ($users?__('Search filter for users')
                                            :__('Filter to search in groups')) . "</th></tr>";
 
@@ -1484,7 +1484,7 @@ class AuthLDAP extends CommonDBTM {
       global $CFG_GLPI;
 
       if ($limitexceeded) {
-         echo "<div class='firstbloc'><table class='tab_cadre_fixe'>";
+         echo "<div class='firstbloc'><table class='tab_cadre_fixe' aria-label='Warning'>";
          echo "<tr><th class='red'>";
          echo "<img class='center' src='".$CFG_GLPI["root_doc"]."/pics/warning.png'
                 alt='".__('Warning')."'>&nbsp;".
@@ -1550,7 +1550,7 @@ class AuthLDAP extends CommonDBTM {
                               'specific_actions' => [$form_action => $textbutton]];
             Html::showMassiveActions($massiveactionparams);
 
-            echo "<table class='tab_cadre_fixe'>";
+            echo "<table class='tab_cadre_fixe' aria-label='LDAP update'>";
             echo "<tr>";
             echo "<th width='10'>";
             echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
@@ -2006,7 +2006,7 @@ class AuthLDAP extends CommonDBTM {
                                                                      'ldap_import_recursive']]];
             Html::showMassiveActions($massiveactionparams);
 
-            echo "<table class='tab_cadre_fixe'>";
+            echo "<table class='tab_cadre_fixe' aria-label='Child entitites'>";
             echo "<tr>";
             echo "<th width='10'>";
             Html::showCheckbox(['criterion' => ['tag_for_massive' => 'select_item']]);
@@ -2369,7 +2369,7 @@ class AuthLDAP extends CommonDBTM {
       echo "<div class='center'>";
       echo "<form action='$target' method=\"post\">";
       echo "<p>" . __('Please choose LDAP directory to import users and groups from') . "</p>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='LDAP directory choice'>";
       echo "<tr class='tab_bg_2'><th colspan='2'>" . __('LDAP directory choice') . "</th></tr>";
 
       //If more than one ldap server
@@ -3192,7 +3192,7 @@ class AuthLDAP extends CommonDBTM {
 
       echo "<form method='post' action='".$_SERVER['PHP_SELF']."'>";
 
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Users synchronization'>";
 
       echo "<tr><th colspan='4' class='middle'><div class='relative'>";
       echo "<span>" .($_SESSION['ldap_import']['mode']?__('Synchronizing already imported users')
@@ -3294,7 +3294,7 @@ class AuthLDAP extends CommonDBTM {
             }
             Dropdown::showAdvanceDateRestrictionSwitch($enabled);
 
-            echo "<table class='tab_cadre_fixe'>";
+            echo "<table class='tab_cadre_fixe' aria-label='Authentication'>";
 
             if (($_SESSION['ldap_import']['authldaps_id'] !=  NOT_AVAILABLE)
                 && ($_SESSION['ldap_import']['authldaps_id'] > 0)) {
@@ -3615,7 +3615,7 @@ class AuthLDAP extends CommonDBTM {
     */
    static function showDateRestrictionForm($options = []) {
 
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Filter by date'>";
       echo "<tr class='tab_bg_2'>";
 
       $enabled = (isset($options['enabled'])?$options['enabled']:false);

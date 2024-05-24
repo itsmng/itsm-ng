@@ -1124,7 +1124,7 @@ class Contract extends CommonDBTM {
       ])->next();
       $contractpre30 = $result['cpt'];
 
-      echo "<table class='tab_cadrehov'>";
+      echo "<table class='tab_cadrehov' aria-label='Contracts Table'>";
       echo "<tr class='noHover'><th colspan='2'>";
       echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/contract.php?reset=reset\">".
              self::getTypeName(1)."</a></th></tr>";

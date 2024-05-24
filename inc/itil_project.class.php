@@ -376,7 +376,7 @@ class Itil_Project extends CommonDBRelation {
             'massive_action' => $massive_action,
          ]);
          echo '<div class="spaced">';
-         echo '<table class="tab_cadre_fixehov">';
+         echo '<table class="tab_cadre_fixehov" aria-label="Item Detail">';
          if ($numrows) {
             $i = 0;
             foreach ($items as $data) {

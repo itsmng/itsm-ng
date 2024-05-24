@@ -274,7 +274,7 @@ class Netpoint extends CommonDropdown {
          echo "<div class='first-bloc'>";
          // Minimal form for quick input.
          echo "<form action='".$netpoint->getFormURL()."' method='post'>";
-         echo "<br><table class='tab_cadre_fixe'>";
+         echo "<br><table class='tab_cadre_fixe' aria-label='Location'>";
          echo "<tr class='tab_bg_2 center'>";
          echo "<td class='b'>"._n('Network outlet', 'Network outlets', 1)."</td>";
          echo "<td>".__('Name')."</td><td>";
@@ -288,7 +288,7 @@ class Netpoint extends CommonDropdown {
 
          // Minimal form for massive input.
          echo "<form action='".$netpoint->getFormURL()."' method='post'>";
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Location'>";
          echo "<tr class='tab_bg_2 center'>";
          echo "<td class='b'>"._n('Network outlet', 'Network outlets', Session::getPluralNumber())."</td>";
          echo "<td>".__('Name')."</td><td>";
@@ -315,7 +315,7 @@ class Netpoint extends CommonDropdown {
       echo "<div class='spaced'>";
 
       if ($number < 1) {
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='No item Found'>";
          echo "<tr><th>".self::getTypeName(1)."</th>";
          echo "<th>".__('No item found')."</th></tr>";
          echo "</table>\n";
@@ -336,7 +336,7 @@ class Netpoint extends CommonDropdown {
             Html::showMassiveActions($massiveactionparams);
          }
 
-         echo "<table class='tab_cadre_fixe'><tr>";
+         echo "<table class='tab_cadre_fixe' aria-label='Location Detail'><tr>";
 
          if ($canedit) {
             echo "<th width='10'>";

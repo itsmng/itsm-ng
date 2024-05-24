@@ -1109,7 +1109,7 @@ class CronTask extends CommonDBTM{
       global $DB;
 
       echo "<br><div class='center'>";
-      echo "<table class='tab_cadre'>";
+      echo "<table class='tab_cadre' aria-label='Statistics'>";
       echo "<tr><th colspan='2'>&nbsp;".__('Statistics')."</th></tr>\n";
 
       $nbstart = countElementsInTable('glpi_crontasklogs',
@@ -1246,7 +1246,7 @@ class CronTask extends CommonDBTM{
 
       echo "<br><div class='center'>";
       if ($number < 1) {
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='History'>";
          echo "<tr><th>".__('No item found')."</th></tr>";
          echo "</table>";
          echo "</div>";
@@ -1268,7 +1268,7 @@ class CronTask extends CommonDBTM{
       ]);
 
       if (count($iterator)) {
-         echo "<table class='tab_cadrehov'>";
+         echo "<table class='tab_cadrehov' aria-label='Activity Log'>";
          $header = "<tr>";
          $header .= "<th>"._n('Date', 'Dates', 1)."</th>";
          $header .= "<th>".__('Total duration')."</th>";
@@ -1329,7 +1329,7 @@ class CronTask extends CommonDBTM{
       ]);
 
       if (count($iterator)) {
-         echo "<table class='tab_cadrehov'><tr>";
+         echo "<table class='tab_cadrehov' aria-label='Activity Log Table'><tr>";
          echo "<th>"._n('Date', 'Dates', 1)."</th>";
          echo "<th>".__('Status')."</th>";
          echo "<th>". __('Duration')."</th>";

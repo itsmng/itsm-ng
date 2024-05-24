@@ -364,7 +364,7 @@ class SoftwareVersion extends CommonDBChild {
                                              $soft->getName()));
 
       if (count($iterator)) {
-         echo "<table class='tab_cadre_fixehov'><tr>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Comments'><tr>";
          echo "<th>".self::getTypeName(Session::getPluralNumber())."</th>";
          echo "<th>".__('Status')."</th>";
          echo "<th>".OperatingSystem::getTypeName(1)."</th>";
@@ -392,7 +392,7 @@ class SoftwareVersion extends CommonDBChild {
          echo "</table>\n";
 
       } else {
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='No item found'>";
          echo "<tr><th>".__('No item found')."</th></tr>";
          echo "</table>\n";
       }

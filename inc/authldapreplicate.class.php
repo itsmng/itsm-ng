@@ -77,7 +77,7 @@ class AuthLdapReplicate extends CommonDBTM {
 
       echo "<form action='$target' method='post' name='add_replicate_form' id='add_replicate_form'>";
       echo "<div class='center'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='LDAP replica'>";
 
       echo "<tr><th colspan='4'>".__('Add a LDAP directory replica'). "</th></tr>";
       echo "<tr class='tab_bg_1'><td class='center'>".__('Name')."</td>";

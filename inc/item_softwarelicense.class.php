@@ -197,7 +197,7 @@ class Item_SoftwareLicense extends CommonDBRelation {
             return true;
          case 'add_item' :
             global $CFG_GLPI;
-            echo "<table class='tab_cadre_fixe'>";
+            echo "<table class='tab_cadre_fixe' aria-label='Item detail'>";
             echo "<tr class='tab_bg_2 center'>";
             echo "<td>";
             $rand = Dropdown::showItemTypes('itemtype', $CFG_GLPI['software_types'], [
@@ -484,7 +484,7 @@ class Item_SoftwareLicense extends CommonDBRelation {
       }
 
       echo "<div class='center'>";
-      echo "<table class='tab_cadre'><tr>";
+      echo "<table class='tab_cadre' aria-label='Number of affected items'><tr>";
       echo "<th>".Entity::getTypeName(1)."</th>";
       echo "<th>".__('Number of affected items')."</th>";
       echo "</tr>\n";

@@ -358,7 +358,7 @@ class Budget extends CommonDropdown{
 
       $number = count($iterator);
 
-      echo "<div class='spaced'><table class='tab_cadre_fixe'>";
+      echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Associated Items Table'>";
       echo "<tr><th colspan='2'>";
       Html::printPagerForm();
       echo "</th><th colspan='4'>";
@@ -851,7 +851,7 @@ class Budget extends CommonDropdown{
       $budget->getFromDB($budgets_id);
 
       $colspan = count($found_types)+2;
-      echo "<div class='spaced'><table class='tab_cadre_fixehov'>";
+      echo "<div class='spaced'><table class='tab_cadre_fixehov' aria-label='Total Spent on the Budget Table'>";
       echo "<tr class='noHover'><th colspan='$colspan'>".__('Total spent on the budget')."</th></tr>";
       echo "<tr><th>".Entity::getTypeName(1)."</th>";
       if (count($found_types)) {

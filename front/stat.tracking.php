@@ -120,7 +120,7 @@ echo "<div class='center'><form method='get' name='form' action='stat.tracking.p
 // Keep it first param
 echo "<input type='hidden' name='itemtype' value=\"". $_GET["itemtype"] ."\">";
 
-echo "<table class='tab_cadre_fixe'>";
+echo "<table class='tab_cadre_fixe' aria-label='Statistics report filter'>";
 echo "<tr class='tab_bg_2'><td rowspan='2' class='center' width='30%'>";
 Dropdown::showFromArray('type', $values, ['value' => $_GET['type']]);
 echo "</td>";

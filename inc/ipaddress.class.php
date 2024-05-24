@@ -274,7 +274,7 @@ class IPAddress extends CommonDBChild {
 
             Html::printAjaxPager(self::getTypeName(Session::getPluralNumber()), $start, $count);
          } else {
-            echo "<table class='tab_cadre_fixe'>";
+            echo "<table class='tab_cadre_fixe' aria-label='No IP address found'>";
             echo "<tr><th>".__('No IP address found')."</th></tr>";
             echo "</table>";
          }

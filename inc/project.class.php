@@ -1384,7 +1384,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
       }
 
       echo "<div class='spaced'>";
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Project List'>";
       echo "<tr class='noHover'><th colspan='12'>".Project::getTypeName($numrows)."</th></tr>";
       if ($numrows) {
          Project::commonListHeader();

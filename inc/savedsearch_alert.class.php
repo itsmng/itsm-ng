@@ -260,7 +260,7 @@ class SavedSearch_Alert extends CommonDBChild {
          'WHERE'  => ['savedsearches_id' => $ID]
       ]);
 
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label'Tables for active item'>";
 
       $colspan = 4;
       if ($iterator->numrows()) {

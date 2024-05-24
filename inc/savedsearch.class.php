@@ -789,7 +789,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria {
       echo "<div class='center' id='tabsbody' >";
 
       $colspan = 2;
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Filter List'>";
       echo "<thead><tr><th colspan='$colspan' class='search_header'>" .
                   "<input type='text' id='filter_savedsearch' placeholder='".__('Filter list')."' style='width: 95%; padding: 5px'></i>" .
            "</th></tr></thead>";

@@ -1064,7 +1064,7 @@ class ITILFollowup  extends CommonDBChild {
 
       $out = "";
       if (count($iterator)) {
-         $out .= "<div class='center'><table class='tab_cadre' width='100%'>\n
+         $out .= "<div class='center' aria-label='ITIL Objects Information'><table class='tab_cadre' width='100%'>\n
                   <tr><th>"._n('Date', 'Dates', 1)."</th><th>"._n('Requester', 'Requesters', 1)."</th>
                   <th>".__('Description')."</th></tr>\n";
 

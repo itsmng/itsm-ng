@@ -44,7 +44,7 @@ Report::title();
 
 // Titre
 
-echo "<table class='tab_cadre' >";
+echo "<table class='tab_cadre' aria-label='Network Report Form' >";
 echo "<tr><th colspan='3'>&nbsp;".__('Network report')."</th></tr>";
 echo "</table><br>";
 
@@ -101,7 +101,7 @@ renderTwigForm($form);
 
 if (countElementsInTableForMyEntities("glpi_netpoints") > 0) {
    echo "<form name='form3' method='post' action='report.netpoint.list.php'>";
-   echo "<table class='tab_cadre' width='500'>";
+   echo "<table class='tab_cadre' width='500' aria-label='Report Choices by Location'>";
    echo "<tr class='tab_bg_1'><td width='120'>".__('By network outlet')."</td>";
    echo "<td>";
    Netpoint::dropdownNetpoint("prise", 0, -1, 1, $_SESSION["glpiactive_entity"]);

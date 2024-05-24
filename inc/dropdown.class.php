@@ -1024,7 +1024,7 @@ class Dropdown {
    **/
    static function showItemTypeMenu($title, $optgroup, $value = '') {
 
-      echo "<table class='tab_cadre' width='50%'>";
+      echo "<table class='tab_cadre' width='50%' aria-label='Item Type Menu'>";
       echo "<tr class='tab_bg_1'><td class='b'>&nbsp;".$title."&nbsp; ";
       $selected = '';
 
@@ -1062,8 +1062,8 @@ class Dropdown {
          $nb += count($dp);
       }
       $step = ($nb > 15 ? ($nb/3) : $nb);
-      echo "<table class='tab_glpi'><tr class='top'><td width='33%' class='center'>";
-      echo "<table class='tab_cadre'>";
+      echo "<table class='tab_glpi'><tr class='top'><td width='33%' class='center' aria-label=' Item type List'>";
+      echo "<table class='tab_cadre' aria-label=' Item type SubList'>";
       $i = 1;
 
       foreach ($optgroup as $label => $dp) {
@@ -1081,7 +1081,7 @@ class Dropdown {
          }
 
          if (($i >= $step) && ($i < $nb)) {
-            echo "</table></td><td width='25'>&nbsp;</td><td><table class='tab_cadre'>";
+            echo "</table></td><td width='25'>&nbsp;</td><td><table class='tab_cadre' aria-label='Item Type Sublist Detail'>";
             $step += $step;
          }
       }

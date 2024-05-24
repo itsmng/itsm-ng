@@ -247,7 +247,7 @@ class Contract_Supplier extends CommonDBRelation {
                 action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
          echo "<input type='hidden' name='contracts_id' value='$instID'>";
 
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Add a supplier'>";
          echo "<tr class='tab_bg_2'><th colspan='2'>".__('Add a supplier')."</th></tr>";
 
          echo "<tr class='tab_bg_1'><td class='right'>";
@@ -270,7 +270,7 @@ class Contract_Supplier extends CommonDBRelation {
                                       'container'     => 'mass'.__CLASS__.$rand];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Suppliers Table'>";
       $header_begin  = "<tr>";
       $header_top    = '';
       $header_bottom = '';

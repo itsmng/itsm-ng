@@ -220,7 +220,7 @@ class Notification_NotificationTemplate extends CommonDBRelation
          'WHERE'  => ['notificationtemplates_id' => $ID]
       ]);
 
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Notification'>";
       $colspan = 2;
 
       if ($iterator->numrows()) {

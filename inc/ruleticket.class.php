@@ -98,7 +98,7 @@ class RuleTicket extends Rule {
          }
       }
       if ($showwarning) {
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Urgency or impact used in actions'>";
          echo "<tr class='tab_bg_2'><td>".
                __('Urgency or impact used in actions, think to add Priority: recompute action if needed.').
                "</td></tr>\n";

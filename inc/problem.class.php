@@ -831,7 +831,7 @@ class Problem extends CommonITILObject {
          : $total_row_count;
 
       if ($displayed_row_count > 0) {
-         echo "<table class='tab_cadrehov'>";
+         echo "<table class='tab_cadrehov' aria-label='Home Display'>";
          echo "<tr class='noHover'><th colspan='3'>";
 
          $options  = [
@@ -1044,7 +1044,7 @@ class Problem extends CommonITILObject {
       $options['criteria'][0]['link']       = 'AND';
       $options['reset']                     ='reset';
 
-      echo "<table class='tab_cadrehov' >";
+      echo "<table class='tab_cadrehov' aira-label='Problem followup'>";
       echo "<tr class='noHover'><th colspan='2'>";
 
       echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/problem.php?".
@@ -1755,7 +1755,7 @@ class Problem extends CommonITILObject {
             // Mini search engine
             if ($item->haveChildren()) {
                $tree = Session::getSavedOption(__CLASS__, 'tree', 0);
-               echo "<table class='tab_cadre_fixe'>";
+               echo "<table class='tab_cadre_fixe' aria-label='Last Problem'>";
                echo "<tr class='tab_bg_1'><th>".__('Last problems')."</th></tr>";
                echo "<tr class='tab_bg_1'><td class='center'>";
                echo __('Child groups');
@@ -1807,7 +1807,7 @@ class Problem extends CommonITILObject {
       $number = count($iterator);
 
       // Ticket for the item
-      echo "<div><table class='tab_cadre_fixe'>";
+      echo "<div><table class='tab_cadre_fixe' aria-label='Item'>";
 
       $colspan = 11;
       if (count($_SESSION["glpiactiveentities"]) > 1) {
@@ -1864,7 +1864,7 @@ class Problem extends CommonITILObject {
          $iterator = $DB->request($criteria);
          $number = count($iterator);
 
-         echo "<div class='spaced'><table class='tab_cadre_fixe'>";
+         echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Problems on linked items'>";
          echo "<tr><th colspan='$colspan'>";
          echo __('Problems on linked items');
 

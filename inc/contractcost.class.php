@@ -357,7 +357,7 @@ class ContractCost extends CommonDBChild {
          echo __('Add a new cost')."</a></div>\n";
       }
 
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='contract Information'>";
       echo "<tr><th colspan='5'>".self::getTypeName(count($iterator))."</th></tr>";
 
       if (count($iterator)) {

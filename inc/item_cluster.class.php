@@ -122,7 +122,7 @@ class Item_Cluster extends CommonDBRelation {
       $items = iterator_to_array($items);
 
       if (!count($items)) {
-         echo "<table class='tab_cadre_fixe'><tr><th>".__('No item found')."</th></tr>";
+         echo "<table class='tab_cadre_fixe' aria-label='No item Found'><tr><th>".__('No item found')."</th></tr>";
          echo "</table>";
       } else {
          if ($canedit) {
@@ -134,7 +134,7 @@ class Item_Cluster extends CommonDBRelation {
             Html::showMassiveActions($massiveactionparams);
          }
 
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Selectable Item'>";
          $header = "<tr>";
          if ($canedit) {
             $header .= "<th width='10'>";

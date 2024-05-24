@@ -152,7 +152,7 @@ class KnowbaseItemTranslation extends CommonDBChild {
          $linkusers_id = false;
       }
 
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Show Full'>";
 
       echo "<tr><td class='left' colspan='4'><h2>".__('Subject')."</h2>";
       echo $this->fields["name"];
@@ -214,7 +214,7 @@ class KnowbaseItemTranslation extends CommonDBChild {
          Session::initNavigateListItems('KnowbaseItemTranslation', __('Entry translations list'));
 
          echo "<div class='center'>";
-         echo "<table class='tab_cadre_fixehov'><tr class='tab_bg_2'>";
+         echo "<table class='tab_cadre_fixehov'><tr class='tab_bg_2' aria-label='Language'>";
          echo "<th colspan='4'>".__("List of translations")."</th></tr>";
          if ($canedit) {
             echo "<th width='10'>";
@@ -251,7 +251,7 @@ class KnowbaseItemTranslation extends CommonDBChild {
             Html::closeForm();
          }
       } else {
-         echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
+         echo "<table class='tab_cadre_fixe' aria-label='No translation Found'><tr class='tab_bg_2'>";
          echo "<th class='b'>" . __("No translation found")."</th></tr></table>";
       }
 

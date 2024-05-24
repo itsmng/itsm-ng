@@ -770,7 +770,7 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
          $this->setError(true);
       } else {
          $this->setError(false);
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='RSS feed table'>";
          echo "<tr><th colspan='3'>".$feed->get_title()."</th>";
          foreach ($feed->get_items(0, $this->fields['max_items']) as $item) {
             $link = URL::sanitizeURL($item->get_permalink());
@@ -954,7 +954,7 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
          }
       }
 
-      echo "<br><table class='tab_cadrehov'>";
+      echo "<br><table class='tab_cadrehov' aria-label='RSS feed'>";
       echo "<tr class='noHover'><th colspan='2'><div class='relative'><span>$titre</span>";
 
       if (($personal && self::canCreate())

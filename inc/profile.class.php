@@ -659,7 +659,7 @@ class Profile extends CommonDBTM
    {
 
       echo "<div class='spaced'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aroa-label='Caption'>";
       echo "<tr class='tab_bg_2'><td width='70' style='text-decoration:underline' class='b'>";
       echo __('Caption') . "</td>";
       echo "<td class='tab_bg_4' width='15' style='border:1px solid black'></td>";
@@ -834,7 +834,7 @@ class Profile extends CommonDBTM
       $matrix_options['title'] = __('Assistance');
       $this->displayRightsChoiceMatrix($rights, $matrix_options);
 
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Hardware'>";
       echo "<tr class='tab_bg_5'><th colspan='2'>" . __('Association') . "</th></tr>\n";
 
       echo "<tr class='tab_bg_2'>";
@@ -1339,7 +1339,7 @@ class Profile extends CommonDBTM
          echo "<form method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
       }
 
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='ITIL Template'>";
       // Assistance / Tracking-helpdesk
       echo "<tr class='tab_bg_1'><th colspan='2'>" . __('ITIL Templates') . "</th></tr>\n";
 
@@ -1423,7 +1423,7 @@ class Profile extends CommonDBTM
       $matrix_options['title'] = _n('Validation', 'Validations', Session::getPluralNumber());
       $this->displayRightsChoiceMatrix($rights, $matrix_options);
 
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Group Hardware'>";
 
       echo "<tr class='tab_bg_5'><th colspan='2'>" . __('Association') . "</th>";
       echo "</tr>\n";

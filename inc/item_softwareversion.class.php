@@ -584,7 +584,7 @@ class Item_SoftwareVersion extends CommonDBRelation
 
       echo "<div class='center'>";
       if ($number < 1) {
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='No item Found'>";
          echo "<tr><th>" . __('No item found') . "</th></tr>";
          echo "</table></div>\n";
          return;
@@ -794,7 +794,7 @@ class Item_SoftwareVersion extends CommonDBRelation
             Html::showMassiveActions($massiveactionparams);
          }
 
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Item detail'>";
 
          $header_begin  = "<tr>";
          $header_top    = '';
@@ -931,7 +931,7 @@ class Item_SoftwareVersion extends CommonDBRelation
       }
 
       echo "<div class='center'>";
-      echo "<table class='tab_cadre'><tr>";
+      echo "<table class='tab_cadre' aria-label='software Version'><tr>";
       echo "<th>" . Entity::getTypeName(1) . "</th>";
       echo "<th>" . self::getTypeName(Session::getPluralNumber()) . "</th>";
       echo "</tr>\n";
@@ -1548,7 +1548,7 @@ class Item_SoftwareVersion extends CommonDBRelation
 
             $link_item = Toolbox::getItemTypeFormURL('SoftwareLicense');
             $link      = $link_item . "?id=" . $licdata['id'];
-            $comment   = "<table><tr><td>" . __('Name') . "</td><td>" . $licdata['name'] . "</td></tr>" .
+            $comment   = "<table aria-label='Software License'><tr><td>" . __('Name') . "</td><td>" . $licdata['name'] . "</td></tr>" .
                "<tr><td>" . __('Serial number') . "</td><td>" . $licdata['serial'] . "</td></tr>" .
                "<tr><td>" . __('Comments') . '</td><td>' . $licdata['comment'] . "</td></tr>" .
                "</table>";
@@ -1655,7 +1655,7 @@ class Item_SoftwareVersion extends CommonDBRelation
       }
       echo "</td><td class='b'>" . $data["name"] . " - " . $serial;
 
-      $comment = "<table><tr><td>" . __('Name') . "</td>" . "<td>" . $data['name'] . "</td></tr>" .
+      $comment = "<table aria-label='Software License ID'><tr><td>" . __('Name') . "</td>" . "<td>" . $data['name'] . "</td></tr>" .
          "<tr><td>" . __('Serial number') . "</td><td>" . $data['serial'] . "</td></tr>" .
          "<tr><td>" . __('Comments') . "</td><td>" . $data['comment'] . "</td></tr></table>";
 

@@ -255,7 +255,7 @@ class ComputerVirtualMachine extends CommonDBChild {
          );
 
          if (!empty($hosts)) {
-            echo "<table class='tab_cadre_fixehov'>";
+            echo "<table class='tab_cadre_fixehov' aria_label='List of virtualized environments'>";
             echo  "<tr class='noHover'><th colspan='2' >".__('List of virtualized environments')."</th></tr>";
 
             $header = "<tr><th>".__('Name')."</th>";
@@ -271,7 +271,7 @@ class ComputerVirtualMachine extends CommonDBChild {
                if ($computer->can($host['computers_id'], READ)) {
                   echo "<a href='".Computer::getFormURLWithID($computer->fields['id'])."'>";
                   echo $computer->fields['name']."</a>";
-                  $tooltip = "<table><tr><td>".__('Name')."</td><td>".$computer->fields['name'].
+                  $tooltip = "<table aria-label='Virtual Machine Informations'><tr><td>".__('Name')."</td><td>".$computer->fields['name'].
                              '</td></tr>';
                   $tooltip.= "<tr><td>".__('Serial number')."</td><td>".$computer->fields['serial'].
                              '</td></tr>';
@@ -335,7 +335,7 @@ class ComputerVirtualMachine extends CommonDBChild {
          ]
       );
 
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Virtual Machine table'>";
 
       Session::initNavigateListItems('ComputerVirtualMachine',
                                      sprintf(__('%1$s = %2$s'), Computer::getTypeName(1),
@@ -393,7 +393,7 @@ class ComputerVirtualMachine extends CommonDBChild {
                   $url  = "<a href='".$computer->getFormURLWithID($link_computer)."'>";
                   $url .= $computer->fields["name"]."</a>";
 
-                  $tooltip = "<table><tr><td>".__('Name')."</td><td>".$computer->fields['name'].
+                  $tooltip = "<table aria-label ='virtual Machine Information'><tr><td>".__('Name')."</td><td>".$computer->fields['name'].
                              '</td></tr>';
                   $tooltip.= "<tr><td>".__('Serial number')."</td><td>".$computer->fields['serial'].
                              '</td></tr>';

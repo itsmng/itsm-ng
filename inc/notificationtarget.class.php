@@ -1437,7 +1437,7 @@ class NotificationTarget extends CommonDBChild {
          ] + getEntitiesRestrictCriteria(Notification::getTable(), '', '', true)
       ]);
 
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='notification Method'>";
 
       if (count($iterator)) {
          echo "<tr><th>".__('Name')."</th>";

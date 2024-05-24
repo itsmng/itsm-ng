@@ -1030,7 +1030,7 @@ class IPNetwork extends CommonImplicitTreeDropdown {
           && Session::canViewAllEntities()) {
 
          echo "<div class='spaced' id='tabsbody'>";
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Reinit Newtork'>";
 
          echo "<tr><td class='center'>";
          Html::showSimpleForm(IPNetwork::getFormURL(), 'reinit_network',

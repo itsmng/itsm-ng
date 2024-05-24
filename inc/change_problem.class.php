@@ -155,7 +155,7 @@ class Change_Problem extends CommonDBRelation{
          echo "<form name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
                 action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
 
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Problem Changes Table'>";
          echo "<tr class='tab_bg_2'><th colspan='3'>".__('Add a change')."</th></tr>";
 
          echo "<tr class='tab_bg_2'><td>";
@@ -186,7 +186,7 @@ class Change_Problem extends CommonDBRelation{
          Html::showMassiveActions($massiveactionparams);
       }
 
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Changes Table'>";
       echo "<tr class='noHover'><th colspan='12'>".Change::getTypeName($numrows)."</th>";
       echo "</tr>";
       if ($numrows) {

@@ -502,7 +502,7 @@ class Supplier extends CommonDBTM
       $types_iterator = Infocom::getTypes(['suppliers_id' => $instID]);
       $number = count($types_iterator);
 
-      echo "<div class='spaced'><table class='tab_cadre_fixe'>";
+      echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='No associated Item'>";
       echo "<tr><th colspan='2'>";
       Html::printPagerForm();
       echo "</th><th colspan='3'>";

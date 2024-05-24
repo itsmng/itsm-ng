@@ -404,7 +404,7 @@ class Planning extends CommonGLPI {
       asort($users);
       // Use get method to check availability
       echo "<div class='center'><form method='GET' name='form' action='planning.php'>\n";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-mabel='Availability'>";
       $colspan = 5;
       if (count($users) > 1) {
          $colspan++;
@@ -468,7 +468,7 @@ class Planning extends CommonGLPI {
             }
 
             // Print Headers
-            echo "<br><div class='center'><table class='tab_cadre_fixe'>";
+            echo "<br><div class='center'><table class='tab_cadre_fixe' aria-label='Planning'>";
             $colnumber  = 1;
             $plan_begin = explode(":", $CFG_GLPI["planning_begin"]);
             $plan_end   = explode(":", $CFG_GLPI["planning_end"]);
@@ -574,7 +574,7 @@ class Planning extends CommonGLPI {
             echo "</table></div>";
          }
       }
-      echo "<div><table class='tab_cadre'>";
+      echo "<div><table class='tab_cadre' aria-label='Availability'>";
       echo "<tr class='tab_bg_1'>";
       echo "<th>".__('Caption')."</th>";
       echo "<td class='available' colspan=8>".__('Available')."</td>";
@@ -1426,7 +1426,7 @@ class Planning extends CommonGLPI {
          $end = date("Y-m-d H:i:s", strtotime($begin)+HOUR_TIMESTAMP);
       }
 
-      echo "<table class='card'>";
+      echo "<table class='card' aria-label='Event Classic Form'>";
 
       if ($display_dates) {
          echo "<tr class='tab_bg_2'><td>".__('Start date')."</td><td>";
@@ -2287,7 +2287,7 @@ class Planning extends CommonGLPI {
          return false;
       }
 
-      echo "<table class='tab_cadrehov'>";
+      echo "<table class='tab_cadrehov' aria-label='Planning'>";
       echo "<tr class='noHover'><th>";
       echo "<a href='".$CFG_GLPI["root_doc"]."/front/planning.php'>".__('Your planning')."</a>";
       echo "</th></tr>";

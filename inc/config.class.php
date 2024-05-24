@@ -797,7 +797,7 @@ class Config extends CommonDBTM {
       echo "<form name='form' action=\"".Toolbox::getItemTypeFormURL(__CLASS__)."\" method='post' data-track-changes='true'>";
       echo "<div class='center' id='tabsbody'>";
       echo "<input type='hidden' name='_dbslave_status' value='1'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='DB Slave form'>";
 
       echo "<tr class='tab_bg_2'><th colspan='4'>" . _n('SQL replica', 'SQL replicas', Session::getPluralNumber()) .
           "</th></tr>";
@@ -1781,7 +1781,7 @@ class Config extends CommonDBTM {
       }
 
       echo "<div class='center' id='tabsbody'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria_label='Performance Informations'>";
 
       echo "<tr><th colspan='4'>" . __('PHP opcode cache') . "</th></tr>";
       $ext = 'Zend OPcache';
@@ -1946,7 +1946,7 @@ class Config extends CommonDBTM {
       $width = 128;
 
       ob_start();
-      echo "<table>";
+      echo "<table aria-label=System Information'>";
       echo "<tr class='tab_bg_1'><td><pre>\n";
       echo "ITSM-NG $ver (" . $CFG_GLPI['root_doc']." => " . GLPI_ROOT . ")\n";
       echo "Installation mode: " . GLPI_INSTALL_MODE . "\n";

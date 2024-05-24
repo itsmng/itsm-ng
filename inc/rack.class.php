@@ -574,7 +574,7 @@ class Rack extends CommonDBTM
 
       $rack = new self();
       if (!count($racks)) {
-         echo "<table class='tab_cadre_fixe'><tr><th>".__('No rack found')."</th></tr>";
+         echo "<table class='tab_cadre_fixe' aria-label='No rack Found'><tr><th>".__('No rack found')."</th></tr>";
          echo "</table>";
       } else {
          if ($canedit) {
@@ -586,7 +586,7 @@ class Rack extends CommonDBTM
             Html::showMassiveActions($massiveactionparams);
          }
 
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Rack List'>";
          $header = "<tr>";
          if ($canedit) {
             $header .= "<th width='10'>";
@@ -661,7 +661,7 @@ class Rack extends CommonDBTM
       }
 
       if (count($outbound)) {
-         echo "<table class='outbound'><thead><th>";
+         echo "<table class='outbound' aria-label='Following elements are out of room bounds'><thead><th>";
          echo __('Following elements are out of room bounds');
          echo "</th></thead><tbody>";
          foreach ($outbound as $out) {

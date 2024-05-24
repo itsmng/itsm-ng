@@ -104,7 +104,7 @@ class Central extends CommonGLPI {
    }
 
    public function showGlobalDashboard() {
-      echo "<table class='tab_cadre_central'>";
+      echo "<table class='tab_cadre_central' aria-label='Tickets by Status Table'>";
       Plugin::doHook('display_central');
       echo "</table>";
 
@@ -218,9 +218,9 @@ class Central extends CommonGLPI {
       $showticket  = Session::haveRight("ticket", Ticket::READALL);
       $showproblem = Session::haveRight("problem", Problem::READALL);
 
-      echo "<table class='tab_cadre_central'><tr class='noHover'>";
+      echo "<table class='tab_cadre_central'><tr class='noHover' aria-label='Global View Outer Table'>";
       echo "<td class='top' width='50%'>";
-      echo "<table class='central'>";
+      echo "<table class='central' aria-label='Global View Inner Table'>";
       echo "<tr class='noHover'><td>";
       if ($showticket) {
          Ticket::showCentralCount();
@@ -261,14 +261,14 @@ class Central extends CommonGLPI {
 
       $showproblem = Session::haveRightsOr('problem', [Problem::READALL, Problem::READMY]);
 
-      echo "<table class='tab_cadre_central'>";
+      echo "<table class='tab_cadre_central' aria-label='My View Outer Table'>";
 
       Plugin::doHook('display_central');
 
       echo "<tr><th colspan='2'>";
       echo "</th></tr>";
 
-      echo "<tr class='noHover'><td class='top' width='50%'><table class='central'>";
+      echo "<tr class='noHover'><td class='top' width='50%'><table class='central' aria-label='My View Inner Table'>";
       echo "<tr class='noHover'><td>";
       if (Session::haveRightsOr('ticketvalidation', TicketValidation::getValidateRights())) {
          Ticket::showCentralList(0, "tovalidate", false);
@@ -298,7 +298,7 @@ class Central extends CommonGLPI {
       }
       echo "</td></tr>";
       echo "</table></td>";
-      echo "<td class='top'  width='50%'><table class='central'>";
+      echo "<td class='top'  width='50%'><table class='central' aria-label='central Table'>";
       echo "<tr class='noHover'><td>";
       Planning::showCentral(Session::getLoginUserID());
       Reminder::showListForCentral();
@@ -317,7 +317,7 @@ class Central extends CommonGLPI {
    **/
    static function showRSSView() {
 
-      echo "<table class='tab_cadre_central'>";
+      echo "<table class='tab_cadre_central' aria-label='RSS View Table'>";
 
       echo "<tr class='noHover'><td class='top' width='50%'>";
       RSSFeed::showListForCentral();
@@ -341,8 +341,8 @@ class Central extends CommonGLPI {
 
       $showproblem = Session::haveRightsOr('problem', [Problem::READALL, Problem::READMY]);
 
-      echo "<table class='tab_cadre_central'>";
-      echo "<tr class='noHover'><td class='top' width='50%'><table class='central'>";
+      echo "<table class='tab_cadre_central' aria-label='Group Table'>";
+      echo "<tr class='noHover'><td class='top' width='50%'><table class='central' aria-label='group view'>";
       echo "<tr class='noHover'><td>";
       if ($showticket) {
          Ticket::showCentralList(0, "process", true);
@@ -358,7 +358,7 @@ class Central extends CommonGLPI {
 
       echo "</td></tr>";
       echo "</table></td>";
-      echo "<td class='top' width='50%'><table class='central'>";
+      echo "<td class='top' width='50%'><table class='central' aria-label='Group View'>";
       echo "<tr class='noHover'><td>";
       if (Session::haveRight('ticket', Ticket::READGROUP)) {
          Ticket::showCentralList(0, "observed", true);

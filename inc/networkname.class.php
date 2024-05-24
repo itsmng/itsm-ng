@@ -761,7 +761,7 @@ class NetworkName extends FQDNLabel {
 
          echo "<div class='firstbloc'>\n";
          echo "<form method='post' action='".static::getFormURL()."'>\n";
-         echo "<table class='tab_cadre_fixe'>\n";
+         echo "<table class='tab_cadre_fixe' aria-label='Netork'>\n";
          echo "<tr><th colspan='4'>".__('Add a network name')."</th></tr>";
 
          echo "<tr class='tab_bg_1'><td class='right'>";
@@ -873,7 +873,7 @@ class NetworkName extends FQDNLabel {
             Html::printAjaxPager(self::getTypeName(Session::getPluralNumber()), $start, self::countForItem($item));
          }
       } else {
-         echo "<table class='tab_cadre_fixe'><tr><th>".__('No network name found')."</th></tr>";
+         echo "<table class='tab_cadre_fixe' aria-label='no network name found'><tr><th>".__('No network name found')."</th></tr>";
          echo "</table>";
       }
    }

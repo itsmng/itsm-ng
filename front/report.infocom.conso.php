@@ -175,7 +175,7 @@ function display_infocoms_report($itemtype, $begin, $end) {
          && ($item = getItemForItemtype($itemtype))) {
 
       echo "<h2>".$item->getTypeName(1)."</h2>";
-      echo "<table class='tab_cadre'>";
+      echo "<table class='tab_cadre' aria-label='Report Data for Each Item Type' >";
 
       $valeursoustot      = 0;
       $valeurnettesoustot = 0;
@@ -300,7 +300,7 @@ function display_infocoms_report($itemtype, $begin, $end) {
 $types = $CFG_GLPI["infocom_types"];
 
 $i = 0;
-echo "<table width='90%'><tr><td class='center top'>";
+echo "<table width='90%' aria-label='Total Values'><tr><td class='center top'>";
 while (count($types) > 0) {
    $type = array_shift($types);
 

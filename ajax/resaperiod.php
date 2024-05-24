@@ -45,7 +45,7 @@ Session::checkLoginUser();
 
 if (isset($_POST['type']) && isset($_POST['end'])) {
 
-   echo "<table width='90%'>";
+   echo "<table width='90%' aria-label='Periodicity settings table'>";
    switch ($_POST['type']) {
       case 'day' :
          echo "<tr><td>".__('End date').'</td><td>';
@@ -57,7 +57,7 @@ if (isset($_POST['type']) && isset($_POST['end'])) {
          echo "<tr><td>".__('End date').'</td><td>';
          Html::showDateField('periodicity[end]', ['value' => $_POST['end']]);
          echo "</td></tr></table>";
-         echo "<table class='tab_glpi'>";
+         echo "<table class='tab_glpi' aria-label='Days of the week selection table'>";
          echo "<tr class='center'><td>&nbsp;</td>";
          $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
          foreach ($days as $day) {

@@ -297,7 +297,7 @@ class ReservationItem extends CommonDBChild {
       $ri = new self();
 
       echo "<div>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Reserve an item'>";
       echo "<tr><th colspan='2'>".__('Reserve an item')."</th></tr>";
       echo "<tr class='tab_bg_1'>";
       if ($ri->getFromDBbyItem($item->getType(), $item->getID())) {
@@ -355,7 +355,7 @@ class ReservationItem extends CommonDBChild {
 
          echo "<div class='center'><form method='post' name=form action='".$this->getFormURL()."'>";
          echo "<input type='hidden' name='id' value='$ID'>";
-         echo "<table class='tab_cadre'>";
+         echo "<table class='tab_cadre' aria-label='Modify the comment'>";
          echo "<tr><th colspan='2'>".__s('Modify the comment')."</th></tr>";
 
          // Ajouter le nom du materiel
@@ -416,7 +416,7 @@ class ReservationItem extends CommonDBChild {
          $_POST['reservation_types'] = '';
       }
       echo "<form method='post' name='form' action='".Toolbox::getItemTypeSearchURL(__CLASS__)."'>";
-      echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Find a free item in a specific period'><tr class='tab_bg_2'>";
       echo "<th colspan='3'>".__('Find a free item in a specific period')."</th></tr>";
 
       echo "<tr class='tab_bg_2'><td>".__('Start date')."</td><td>";
@@ -503,7 +503,7 @@ class ReservationItem extends CommonDBChild {
       // GET method passed to form creation
       echo "<div id='nosearch' class='center'>";
       echo "<form name='form' method='GET' action='".Reservation::getFormURL()."'>";
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Reservation table'>";
       echo "<tr><th colspan='".($showentity?"5":"4")."'>".self::getTypeName(1)."</th></tr>\n";
 
       foreach ($CFG_GLPI["reservation_types"] as $itemtype) {

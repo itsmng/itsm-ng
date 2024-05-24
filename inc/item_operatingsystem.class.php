@@ -213,7 +213,7 @@ class Item_OperatingSystem extends CommonDBRelation {
          Html::showMassiveActions($massiveactionparams);
       }
 
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Editable Table'>";
 
       $header_begin  = "<tr>";
       $header_top    = '';

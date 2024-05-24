@@ -370,7 +370,7 @@ class ProjectCost extends CommonDBChild {
          echo __('Add a new cost')."</a></div>\n";
       }
       $total = 0;
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Date'>";
       echo "<tr class='noHover'><th colspan='5'>".self::getTypeName(count($iterator)).
             "</th></tr>";
 

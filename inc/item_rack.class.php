@@ -130,7 +130,7 @@ class Item_Rack extends CommonDBRelation {
 
       echo "<h2>".__("Racked items")."</h2>";
       if (!count($items)) {
-         echo "<table class='tab_cadre_fixe'><tr><th>".__('No item found')."</th></tr>";
+         echo "<table class='tab_cadre_fixe' aria-label='No Item Found'><tr><th>".__('No item found')."</th></tr>";
          echo "</table>";
       } else {
          if ($canedit) {
@@ -142,7 +142,7 @@ class Item_Rack extends CommonDBRelation {
             Html::showMassiveActions($massiveactionparams);
          }
 
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Item Detail'>";
          $header = "<tr>";
          if ($canedit) {
             $header .= "<th width='10'>";
@@ -283,7 +283,7 @@ class Item_Rack extends CommonDBRelation {
       }
 
       if (count($outbound)) {
-         echo "<table class='outbound'><thead><th>";
+         echo "<table class='outbound' aria-label='Following elements are out of rack bounds'><thead><th>";
          echo __('Following elements are out of rack bounds');
          echo "</th></thead><tbody>";
          foreach ($outbound as $out) {

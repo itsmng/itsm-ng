@@ -272,7 +272,7 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField {
          echo "<form name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
                action='".static::getFormURL()."'>";
 
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Add a predefined field'>";
          echo "<tr class='tab_bg_2'><th colspan='3'>".__('Add a predefined field')."</th></tr>";
          echo "<tr class='tab_bg_2'><td class='right top' width='30%'>";
          echo "<input type='hidden' name='".static::$items_id."' value='$ID'>";
@@ -319,7 +319,7 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField {
                                        'container'     => 'mass'.static::getType().$rand];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='ITIL Template'>";
       echo "<tr class='noHover'><th colspan='3'>";
       echo self::getTypeName($numrows);
       echo "</th></tr>";

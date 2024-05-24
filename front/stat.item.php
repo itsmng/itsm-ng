@@ -65,7 +65,7 @@ if (!isset($_GET["start"])) {
 Stat::title();
 
 echo "<div class='center'><form method='post' name='form' action='stat.item.php'>";
-echo "<table class='tab_cadre'><tr class='tab_bg_2'>";
+echo "<table class='tab_cadre'><tr class='tab_bg_2'> aria-label='Statistics'";
 echo "<td class='right'>".__('Start date')."</td><td>";
 Html::showDateField("date1", ['value' => $_POST["date1"]]);
 echo "</td><td rowspan='2' class='center'>";
