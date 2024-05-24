@@ -1188,7 +1188,7 @@ class SoftwareLicense extends CommonTreeDropdown {
             Html::showMassiveActions($massiveactionparams);
          }
 
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='List of Items'>";
 
          $header_begin  = "<tr><th>";
          $header_top    = Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
@@ -1278,7 +1278,7 @@ class SoftwareLicense extends CommonTreeDropdown {
          }
          Html::printAjaxPager(self::getTypeName(Session::getPluralNumber()), $start, $number);
       } else {
-         echo "<table class='tab_cadre_fixe'><tr><th>".__('No item found')."</th></tr></table>";
+         echo "<table class='tab_cadre_fixe' aria-label='No item found'><tr><th>".__('No item found')."</th></tr></table>";
       }
 
       echo "</div>";
@@ -1370,7 +1370,7 @@ class SoftwareLicense extends CommonTreeDropdown {
       $ID            = $item->getID();
 
       echo "<div class='spaced'>";
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Sons of items'>";
       echo "<tr class='noHover'><th colspan='".($nb+3)."'>".sprintf(__('Sons of %s'),
                                                                     $item->getTreeLink());
       echo "</th></tr>";

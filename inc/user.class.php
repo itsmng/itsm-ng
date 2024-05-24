@@ -2446,7 +2446,7 @@ class User extends CommonDBTM {
           && ($userid != Session::getLoginUserID())) {
          return false;
       }
-      echo "<table class='tab_glpi left' width='100%'>";
+      echo "<table class='tab_glpi left' width='100%' aria-label='Personnal information'>";
       echo "<tr class='tab_bg_1'>";
       echo "<td class='b' width='20%'>";
       echo __('Name');
@@ -3989,7 +3989,7 @@ class User extends CommonDBTM {
       echo "<div class='center'>\n";
       echo "<form method='post' action='".Toolbox::getItemTypeFormURL('User')."'>\n";
 
-      echo "<table class='tab_cadre'>\n";
+      echo "<table class='tab_cadre' aria-label='External Auth form'>\n";
       echo "<tr><th colspan='4'>".__('Automatically add a user of an external source')."</th></tr>\n";
 
       echo "<tr class='tab_bg_1'><td>".__('Login')."</td>\n";
@@ -4154,7 +4154,7 @@ class User extends CommonDBTM {
          $groups[$data["groups_id"]] = $data["name"];
       }
 
-      echo "<div class='spaced'><table class='tab_cadre_fixehov'>";
+      echo "<div class='spaced'><table class='tab_cadre_fixehov' aria-label='items information'>";
       $header = "<tr><th>"._n('Type', 'Types', 1)."</th>";
       $header .= "<th>".Entity::getTypeName(1)."</th>";
       $header .= "<th>".__('Name')."</th>";
@@ -4233,7 +4233,7 @@ class User extends CommonDBTM {
       echo "</table></div>";
 
       if (count($group_where)) {
-         echo "<div class='spaced'><table class='tab_cadre_fixehov'>";
+         echo "<div class='spaced'><table class='tab_cadre_fixehov' aria-label='Items Informations'>";
          $header = "<tr>".
                "<th>"._n('Type', 'Types', 1)."</th>".
                "<th>".Entity::getTypeName(1)."</th>".
@@ -4498,7 +4498,7 @@ class User extends CommonDBTM {
       global $CFG_GLPI;
 
       echo '<form method="post" action="' . $CFG_GLPI['root_doc'] . '/front/updatepassword.php">';
-      echo '<table class="tab_cadre">';
+      echo '<table class="tab_cadre" aria-label="Password Update">';
       echo '<tr><th colspan="2">' . __('Password update') . '</th></tr>';
 
       if (Session::mustChangePassword()) {
@@ -4594,7 +4594,7 @@ class User extends CommonDBTM {
       echo "<div class='center'>";
       echo "<form method='post' name='forgetpassword' action='".$CFG_GLPI['root_doc'].
                "/front/lostpassword.php'>";
-      echo "<table class='tab_cadre'>";
+      echo "<table class='tab_cadre' aria-label='Forgot Password'>";
       echo "<tr><th colspan='2'>" . __('Forgotten password?')."</th></tr>";
 
       echo "<tr class='tab_bg_1'>";
@@ -4638,7 +4638,7 @@ class User extends CommonDBTM {
       echo "<div class='center'>";
       echo "<form method='post' name='forgetpassword' action='".$CFG_GLPI['root_doc'].
              "/front/lostpassword.php'>";
-      echo "<table class='tab_cadre'>";
+      echo "<table class='tab_cadre' aria-label='Forgot Password'>";
       echo "<tr><th colspan='2'>" . __('Forgotten password?')."</th></tr>";
 
       echo "<tr class='tab_bg_1'><td colspan='2'>" .
@@ -4865,7 +4865,7 @@ class User extends CommonDBTM {
          return false;
       }
       echo "<div class='spaced'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='LDAP Debug'>";
       echo "<tr><th colspan='4'>".AuthLDAP::getTypeName(1)."</th></tr>";
 
       echo "<tr class='tab_bg_2'><td>".__('User DN')."</td>";

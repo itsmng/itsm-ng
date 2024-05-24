@@ -94,7 +94,7 @@ if (isset($_GET['create_ticket'])) {
    $ticket->showFormHelpdesk(Session::getLoginUserID());
 
 } else {
-   echo "<table class='tab_cadre_postonly'>";
+   echo "<table class='tab_cadre_postonly' aria-label='Search form'>";
 
    $user = new User();
    $user->getFromDB(Session::getLoginUserID());
@@ -123,7 +123,7 @@ if (isset($_GET['create_ticket'])) {
 
    echo "<tr class='noHover'>";
    echo "<td class='top' width='50%'><br>";
-   echo "<table class='central'>";
+   echo "<table class='central' aria-label='Search results table for hardware items'>";
    Plugin::doHook('display_central');
    if (Session::haveRight('ticket', CREATE)) {
       echo "<tr class='noHover'><td class='top'>";
@@ -148,7 +148,7 @@ if (isset($_GET['create_ticket'])) {
    echo "</table></td>";
 
    echo "<td class='top' width='50%'><br>";
-   echo "<table class='central'>";
+   echo "<table class='central' aria-label='Search results table for software items'>";
 
    // Show KB items
    if (Session::haveRight('knowbase', KnowbaseItem::READFAQ)) {

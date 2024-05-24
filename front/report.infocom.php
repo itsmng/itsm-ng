@@ -170,7 +170,7 @@ function display_infocoms_report($itemtype, $begin, $end) {
 
       echo "<h2>".$item->getTypeName(1)."</h2>";
 
-      echo "<table class='tab_cadre'><tr><th>".__('Name')."</th>";
+      echo "<table class='tab_cadre' aria-label='Report Form'><tr><th>".__('Name')."</th>";
       if ($display_entity) {
          echo "<th>".Entity::getTypeName(1)."</th>";
       }
@@ -310,7 +310,7 @@ function display_infocoms_report($itemtype, $begin, $end) {
 $types = $CFG_GLPI["infocom_types"];
 
 $i = 0;
-echo "<table><tr><td class='top'>";
+echo "<table aria-label='Report Data for Each Item Type'><tr><td class='top'>";
 
 while (count($types) > 0) {
    $type = array_shift($types);

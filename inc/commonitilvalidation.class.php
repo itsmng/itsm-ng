@@ -809,7 +809,7 @@ abstract class CommonITILValidation  extends CommonDBChild {
                      __('Approver'), __('Approval comments')];
       $nb_colonnes = count($colonnes);
 
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Summary'>";
       echo "<tr class='noHover'><th colspan='".$nb_colonnes."'>".__('Approvals for the ticket').
            "</th></tr>";
 

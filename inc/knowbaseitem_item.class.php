@@ -249,7 +249,7 @@ class KnowbaseItem_Item extends CommonDBRelation {
             __('No linked items') :
             __('No knowledge base entries linked');
          echo "<div class='center'>";
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Base Item'>";
          echo "<tr><th>$no_txt</th></tr>";
          echo "</table>";
          echo "</div>";

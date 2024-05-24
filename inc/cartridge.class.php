@@ -402,7 +402,7 @@ class Cartridge extends CommonDBChild {
          }
 
          if (!$nohtml) {
-            $out .= "<table  class='tab_format $highlight' width='100%'><tr><td>";
+            $out .= "<table  class='tab_format $highlight' width='100%' aria-label='Printer Cartridge Details Table'><tr><td>";
             $out .= __('Total')."</td><td>$total";
             $out .= "</td><td colspan='2'></td><tr>";
             $out .= "<tr><td>";

@@ -1020,7 +1020,7 @@ class Rule extends CommonDBTM {
              && (in_array('regex_result', $val['force_actions'])
                  || in_array('append_regex_result', $val['force_actions']))) {
 
-            echo "<table class='tab_cadre_fixe'>";
+            echo "<table class='tab_cadre_fixe' aria-label='regular expression'>";
             echo "<tr class='tab_bg_2'><td>".
                   __('It is possible to affect the result of a regular expression using the string #0').
                  "</td></tr>\n";
@@ -1107,7 +1107,7 @@ class Rule extends CommonDBTM {
          Html::showMassiveActions($massiveactionparams);
       }
 
-      echo "<table $style>";
+      echo "<table $style aria-label='Actions'>";
       echo "<tr class='noHover'>";
       echo "<th colspan='".($canedit && $nb?'4':'3')."'>" . _n('Action', 'Actions', Session::getPluralNumber()) . "</th></tr>";
 
@@ -1210,7 +1210,7 @@ class Rule extends CommonDBTM {
          Html::showMassiveActions($massiveactionparams);
       }
 
-      echo "<table $style>";
+      echo "<table $style aria-label='Criteria'>";
       echo "<tr class='noHover'>".
            "<th colspan='".($canedit&&$nb?" 4 ":"3")."'>". _n('Criterion', 'Criteria', Session::getPluralNumber())."</th>".
            "</tr>\n";
@@ -2053,7 +2053,7 @@ class Rule extends CommonDBTM {
       }
 
       echo "<div class='spaced'>";
-      echo "<table class='tab_cadrehov'>";
+      echo "<table class='tab_cadrehov' aria-label='Result Details'>";
       echo "<tr><th colspan='4'>" . __('Result details') . "</th></tr>";
 
       echo "<tr class='tab_bg_2'>";
@@ -2078,7 +2078,7 @@ class Rule extends CommonDBTM {
       $global_result = (isset($output["_rule_process"])?1:0);
 
       echo "<div class='spaced'>";
-      echo "<table class='tab_cadrehov'>";
+      echo "<table class='tab_cadrehov' aria-label='Rule results'>";
       echo "<tr><th colspan='2'>" . __('Rule results') . "</th></tr>";
       echo "<tr class='tab_bg_1'>";
       echo "<td class='center b'>"._n('Validation', 'Validations', 1)."</td><td>";
@@ -2106,7 +2106,7 @@ class Rule extends CommonDBTM {
          echo "<td>".__('Result of the regular expression')."</td>";
          echo "<td>";
          if (!empty($this->regex_results[0])) {
-            echo "<table class='tab_cadre'>";
+            echo "<table class='tab_cadre' aria-label='Key'>";
             echo "<tr><th>".__('Key')."</th><th>".__('Value')."</th></tr>";
             foreach ($this->regex_results[0] as $key => $value) {
                echo "<tr class='tab_bg_1'>";
@@ -2610,7 +2610,7 @@ class Rule extends CommonDBTM {
       if ($this->getRuleWithCriteriasAndActions($rules_id, 1, 0)) {
          echo "<form name='testrule_form' id='testrule_form' method='post' action='$target'>\n";
          echo "<div class='spaced'>";
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Criteria'>";
          echo "<tr><th colspan='3'>" . _n('Criterion', 'Criteria', Session::getPluralNumber()) . "</th></tr>";
 
          $type_match        = (($this->fields["match"] == self::AND_MATCHING) ?__('and') :__('or'));

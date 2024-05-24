@@ -336,7 +336,7 @@ class Item_Disk extends CommonDBChild {
       echo "<div class='center'>";
 
       $iterator = self::getFromItem($item);
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Item Detail'>";
       $colspan = 8;
       if (Plugin::haveImport()) {
          $colspan++;

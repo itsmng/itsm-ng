@@ -77,7 +77,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection {
       echo "<form name='testrule_form' id='softdictionnary_confirmation' method='post' action=\"" .
              $target . "\">\n";
       echo "<div class='center'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Warning'>";
       echo "<tr><th colspan='2' class='b'>" .
             __('Warning before running rename based on the dictionary rules') . "</th></tr>\n";
       echo "<tr><td class='tab_bg_2 center'>";

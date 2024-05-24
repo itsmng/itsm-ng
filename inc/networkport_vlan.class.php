@@ -128,7 +128,7 @@ class NetworkPort_Vlan extends CommonDBRelation {
       if ($canedit) {
          echo "<div class='firstbloc'>\n";
          echo "<form method='post' action='".static::getFormURL()."'>\n";
-         echo "<table class='tab_cadre_fixe'>\n";
+         echo "<table class='tab_cadre_fixe' aria-label='VLAN'>\n";
          echo "<tr><th colspan='4'>".__('Associate a VLAN')."</th></tr>";
 
          echo "<tr class='tab_bg_1'><td class='right'>";
@@ -153,7 +153,7 @@ class NetworkPort_Vlan extends CommonDBRelation {
                                       'container'     => 'mass'.__CLASS__.$rand];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='VLAN Detail'>";
 
       $header_begin  = "<tr>";
       $header_top    = '';
@@ -251,7 +251,7 @@ class NetworkPort_Vlan extends CommonDBRelation {
                                       'container'     => 'mass'.__CLASS__.$rand];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='VLAN Detail'>";
 
       $header_begin  = "<tr>";
       $header_top    = '';

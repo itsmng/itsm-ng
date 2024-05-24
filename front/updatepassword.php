@@ -79,7 +79,7 @@ if (array_key_exists('update', $_POST)) {
 }
 
 if ($success) {
-   echo '<table class="tab_cadre">';
+   echo '<table class="tab_cadre" aria-label="Password update form">';
    echo '<tr><th colspan="2">' . __('Password update') . '</th></tr>';
    echo '<tr>';
    echo '<td>';

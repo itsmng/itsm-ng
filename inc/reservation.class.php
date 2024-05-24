@@ -425,7 +425,7 @@ class Reservation extends CommonDBChild {
 
          if ((!isset($m->fields['is_active'])) || !$m->fields['is_active']) {
             echo "<div class='center'>";
-            echo "<table class='tab_cadre_fixe'>";
+            echo "<table class='tab_cadre_fixe' aria-label='Device unavailable'>";
             echo "<tr class='tab_bg_2'>";
             echo "<td class='center b'>".__('Device temporarily unavailable')."</td></tr>";
             echo "<tr class='tab_bg_1'><td class='center b'>";
@@ -455,7 +455,7 @@ class Reservation extends CommonDBChild {
          $all  = "&nbsp;";
       }
 
-      echo "<div class='center'><table class='tab_glpi'><tr><td>";
+      echo "<div class='center'><table class='tab_glpi' aria-label='Reservation'><tr><td>";
       echo "<img src='".$CFG_GLPI["root_doc"]."/pics/reservation.png' alt=''></td>";
       echo "<td class ='b'>".$name."</td></tr>";
       echo "<tr><td colspan='2' class ='center'>$all</td></tr></table></div><br>\n";
@@ -477,7 +477,7 @@ class Reservation extends CommonDBChild {
                                              $annee_courante));
 
       echo "<div class='center'>";
-      echo "<table class='tab_glpi'><tr><td><a href='reservation.php".$str_precedent."'>";
+      echo "<table class='tab_glpi' aria-label='Reservation'><tr><td><a href='reservation.php".$str_precedent."'>";
       echo "<img src='".$CFG_GLPI["root_doc"]."/pics/left.png' alt=\"".__s('Previous').
              "\" title=\"".__s('Previous')."\"></a></td>";
       echo "<td class='b'>".sprintf(__('%1$s %2$s'), $monthsarray[$mois_courant], $annee_courante).
@@ -487,9 +487,9 @@ class Reservation extends CommonDBChild {
              "\" title=\"".__s('Next')."\"></a></td></tr></table>\n";
 
       // test
-      echo "<table width='90%' class='tab_glpi'><tr><td class='top' width='100px'>";
+      echo "<table width='90%' class='tab_glpi' aria-label='Test'><tr><td class='top' width='100px'>";
 
-      echo "<table><tr><td width='100px' class='top'>";
+      echo "<table aria-label='Test'><tr><td width='100px' class='top'>";
 
       // today date
       $today = getdate(time());
@@ -531,7 +531,7 @@ class Reservation extends CommonDBChild {
       echo "</td><td class='top' width='100%'>";
 
       // test
-      echo "<table width='100%' class='tab_cadre'><tr>";
+      echo "<table width='100%' class='tab_cadre' aria-label='Days'><tr>";
       echo "<th width='14%'>".__('Monday')."</th>";
       echo "<th width='14%'>".__('Tuesday')."</th>";
       echo "<th width='14%'>".__('Wednesday')."</th>";
@@ -560,7 +560,7 @@ class Reservation extends CommonDBChild {
          }
 
          echo "<td class='top' height='100px'>";
-         echo "<table class='center' width='100%'><tr><td class='center'>";
+         echo "<table class='center' width='100%' aria-label='Calendar Day'><tr><td class='center'>";
          echo "<span class='calendrier_jour'>".$i."</span></td></tr>\n";
 
          if (!empty($ID)) {
@@ -650,7 +650,7 @@ class Reservation extends CommonDBChild {
          echo "<input type='hidden' name='id' value='$ID'>";
       }
 
-      echo "<table class='tab_cadre' width='700px'>";
+      echo "<table class='tab_cadre' width='700px' aria-label='Reserve Item'>";
       echo "<tr><th colspan='2'>".__('Reserve an item')."</th></tr>\n";
 
       // Add Hardware name
@@ -1004,7 +1004,7 @@ class Reservation extends CommonDBChild {
       ]);
 
       if (count($iterator)) {
-         echo "<table width='100%'>";
+         echo "<table width='100%' aria-label='User Time Interval'>";
          while ($row = $iterator->next()) {
             echo "<tr>";
             $user->getFromDB($row["users_id"]);
@@ -1090,7 +1090,7 @@ class Reservation extends CommonDBChild {
             'ORDER'  => 'begin'
          ]);
 
-         echo "<table class='tab_cadre_fixehov'><tr><th colspan='5'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Current and future reservations'><tr><th colspan='5'>";
 
          if (count($iterator) && $ri->fields["is_active"]
              && Session::haveRight('reservation', ReservationItem::RESERVEANITEM)) {
@@ -1149,7 +1149,7 @@ class Reservation extends CommonDBChild {
             'ORDER'  => 'begin DESC'
          ]);
 
-         echo "<div class='spaced'><table class='tab_cadre_fixehov'><tr><th colspan='5'>";
+         echo "<div class='spaced'><table class='tab_cadre_fixehov' aria-label='Past Reservations'><tr><th colspan='5'>";
 
          if (count($iterator) && $ri->fields["is_active"]
              && Session::haveRight('reservation', ReservationItem::RESERVEANITEM)) {
@@ -1255,7 +1255,7 @@ class Reservation extends CommonDBChild {
       ]);
 
       $ri = new ReservationItem();
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Current and future reservations'>";
       echo "<tr><th colspan='6'>".__('Current and future reservations')."</th></tr>\n";
 
       if (count($iterator) == 0) {
@@ -1339,7 +1339,7 @@ class Reservation extends CommonDBChild {
       ]);
 
       echo "<div class='spaced'>";
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Past Reservations'>";
       echo "<tr><th colspan='6'>".__('Past reservations')."</th></tr>\n";
 
       if (count($iterator) == 0) {

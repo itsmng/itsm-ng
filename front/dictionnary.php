@@ -40,11 +40,11 @@ Html::header(__('Administration'), $_SERVER['PHP_SELF'], "admin", "dictionnary",
 RuleCollection::titleBackup();
 $dictionnaries = RuleCollection::getDictionnaries();
 
-echo "<div class='center'><table class='tab_cadre'>";
+echo "<div class='center'><table class='tab_cadre' aria-label='Dictionaries type table'>";
 echo "<tr><th colspan='".count($dictionnaries)."'>" . __('Dictionaries') . "</th></tr>";
 echo "<tr class='tab_bg_1'>";
 foreach ($dictionnaries as $dictionnary) {
-   echo "<td class='top'><table class='tab_cadre'>";
+   echo "<td class='top'><table class='tab_cadre' aria-label='Dictionaries entries table'>";
    echo "<tr><th>" . $dictionnary['type'] . "</th></tr>";
    foreach ($dictionnary['entries'] as $entry) {
       echo "<tr class='tab_bg_1'><td class='center b'>";

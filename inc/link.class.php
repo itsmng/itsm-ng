@@ -562,7 +562,7 @@ class Link extends CommonDBTM {
 
       $iterator = self::getLinksDataForItem($item);
 
-      echo "<div class='spaced'><table class='tab_cadre_fixe'>";
+      echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Item Detail'>";
 
       if (count($iterator)) {
          echo "<tr><th>".self::getTypeName(Session::getPluralNumber())."</th></tr>";

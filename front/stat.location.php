@@ -79,7 +79,7 @@ echo "<form method='get' name='form' action='stat.location.php'>";
 // keep it first param
 echo "<input type='hidden' name='itemtype' value='". $_GET['itemtype'] ."'>";
 
-echo "<table class='tab_cadre_fixe' ><tr class='tab_bg_2'><td rowspan='2' width='30%'>";
+echo "<table class='tab_cadre_fixe' aria-label='Statistics report filter'><tr class='tab_bg_2'><td rowspan='2' width='30%'>";
 $values = [_n('Dropdown', 'Dropdowns', Session::getPluralNumber()) => ['ComputerType'    => _n('Type', 'Types', 1),
                                                        'ComputerModel'   => _n('Model', 'Models', 1),
                                                        'OperatingSystem' => OperatingSystem::getTypeName(1),

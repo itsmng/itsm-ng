@@ -355,7 +355,7 @@ class DropdownTranslation extends CommonDBChild {
             Html::showMassiveActions($massiveactionparams);
          }
          echo "<div class='center'>";
-         echo "<table class='tab_cadre_fixehov'><tr class='tab_bg_2'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='List of translations'><tr class='tab_bg_2'>";
          echo "<th colspan='4'>".__("List of translations")."</th></tr><tr>";
          if ($canedit) {
             echo "<th width='10'>";
@@ -406,7 +406,7 @@ class DropdownTranslation extends CommonDBChild {
             Html::closeForm();
          }
       } else {
-         echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
+         echo "<table class='tab_cadre_fixe' aria-label='No translation found''><tr class='tab_bg_2'>";
          echo "<th class='b'>" . __("No translation found")."</th></tr></table>";
       }
       return true;

@@ -805,7 +805,7 @@ class Item_Ticket extends CommonItilObject_Item {
          'values' => $values,
          'massive_action' => $massive_action,
       ]);
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Item Detail'>";
       $totalnb = 0;
       while ($row = $types_iterator->next()) {
          $itemtype = $row['itemtype'];

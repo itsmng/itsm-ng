@@ -1244,7 +1244,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
 
       $iterator = $DB->request($criteria);
       if (count($criteria)) {
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Criteria'>";
 
          $header = '<tr>';
          foreach ($columns as $key => $val) {
@@ -1300,7 +1300,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
          echo "</table>\n";
 
       } else {
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='No item Found'>";
          echo "<tr><th>".__('No item found')."</th></tr>";
          echo "</table>\n";
       }
@@ -1368,7 +1368,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
          echo "<form name='projecttaskteam_form$rand' id='projecttaskteam_form$rand' ";
          echo " method='post' action='".Toolbox::getItemTypeFormURL('ProjectTaskTeam')."'>";
          echo "<input type='hidden' name='projecttasks_id' value='$ID'>";
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Add a team member'>";
          echo "<tr class='tab_bg_1'><th colspan='2'>".__('Add a team member')."</tr>";
          echo "<tr class='tab_bg_2'><td>";
 
@@ -1396,7 +1396,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                                       'container'     => 'mass'.__CLASS__.$rand];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Type and member'>";
       $header_begin  = "<tr>";
       $header_top    = '';
       $header_bottom = '';

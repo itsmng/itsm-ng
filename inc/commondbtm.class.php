@@ -2807,7 +2807,7 @@ class CommonDBTM extends CommonGLPI {
       }
 
       echo "<div class='spaced' id='tabsbody'>";
-      echo "<table class='tab_cadre_fixe' id='mainformtable'>";
+      echo "<table class='tab_cadre_fixe' id='mainformtable'  aria-label='form table'>";
 
       if ($params['formtitle'] !== '' && $params['formtitle'] !== false) {
          echo "<tr class='headerRow'><th colspan='".$params['colspan']."'>";
@@ -2854,7 +2854,7 @@ class CommonDBTM extends CommonGLPI {
          if (get_class($this) != 'Entity') {
             if ($this->maybeRecursive()) {
                if (Session::isMultiEntitiesMode()) {
-                  echo "<table class='tab_format'><tr class='headerRow responsive_hidden'><th>".$entityname."</th>";
+                  echo "<table class='tab_format' aria-label='Child Entities'><tr class='headerRow responsive_hidden'><th>".$entityname."</th>";
                   echo "<th class='right'><label for='dropdown_is_recursive$rand'>".__('Child entities')."</label></th><th>";
                   if ($params['canedit']) {
                      if ($this instanceof CommonDBChild) {
@@ -5080,7 +5080,7 @@ class CommonDBTM extends CommonGLPI {
          Html::redirect($target_blank);
       }
 
-      echo "<div class='center'><table class='tab_cadre'>";
+      echo "<div class='center'><table class='tab_cadre' aria-label ='Template Table'>";
       if ($add) {
          echo "<tr><th>" . $item->getTypeName(1)."</th>";
          echo "<th>".__('Choose a template')."</th></tr>";

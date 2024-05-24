@@ -1027,7 +1027,7 @@ class Software extends CommonDBTM {
                                     'item'          => $this];
          Html::showMassiveActions($massiveactionparams);
 
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Installations'>";
          echo "<tr><th width='10'>";
          echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
          echo "</th>";
@@ -1072,7 +1072,7 @@ class Software extends CommonDBTM {
 
       if ($html) {
          echo "<div class='center'>";
-         echo "<table class='tab_cadrehov'><tr><th>".__('Merging')."</th></tr>";
+         echo "<table class='tab_cadrehov' aria-label='Merging'><tr><th>".__('Merging')."</th></tr>";
          echo "<tr class='tab_bg_2'><td>";
          Html::createProgressBar(__('Work in progress...'));
          echo "</td></tr></table></div>\n";

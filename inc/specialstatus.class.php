@@ -146,7 +146,7 @@ class SpecialStatus extends CommonTreeDropdown {
       }
 
       echo "<form method='post' action='./specialstatus.php' method='post'>";
-      echo "<table style='width:40%' class='tab_cadre' cellpadding='5'>";
+      echo "<table style='width:40%' class='tab_cadre' cellpadding='5' aria-label='Special Status'>";
       echo "<tr><th colspan='5'>".__("Special Status")."</th></tr>";
       echo "<tr class='tab_bg_1'>";
       echo "<td><b>".__("Name")."</b></td>";
@@ -210,7 +210,7 @@ class SpecialStatus extends CommonTreeDropdown {
       }
       echo "<br>";
       $_SESSION["id"] = $id;
-      echo "<table style='width:40%; margin-top: 2.5em; text-align:center' cellpadding='2'><tr class='tab_bg_1'>";
+      echo "<table style='width:40%; margin-top: 2.5em; text-align:center' cellpadding='2'><tr class='tab_bg_1' aria-label='Confirm / Cancel'>";
       echo "<td><input type='submit' name='force' value='". _sx('button', 'Confirm') ."' class='submit'></td>";
       echo "<td><input type='submit' name='cancel' value='". _sx('button', 'Cancel') ."' class='submit'></td>";
       echo "</tr></table>";
@@ -239,7 +239,7 @@ class SpecialStatus extends CommonTreeDropdown {
       self::keepStatusSet($before, $after);
    }
    echo "<form method='post' action='./specialstatus.form.php' method='post'>";
-   echo "<table style='width:40%' class='tab_cadre' cellpadding='5'>";
+   echo "<table style='width:40%' class='tab_cadre' cellpadding='5' aria-label='New / Special Status'>";
    echo "<tr><th colspan='4'>".__("New Status - Special status")."</th></tr>";
    echo "<tr class='tab_bg_1'>";
    echo "<td><b>".__("Name")."</b></td>";

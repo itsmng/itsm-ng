@@ -213,7 +213,7 @@ class HTMLTableMain extends HTMLTableBase {
          Session::initNavigateListItems($itemtype, $title);
       }
 
-      echo "\n<table class='tab_cadre_fixehov'";
+      echo "\n<table aria_label='Data Table 'class='tab_cadre_fixehov'";
       if (!empty($p['html_id'])) {
          echo " id='".$p['html_id']."'";
       }

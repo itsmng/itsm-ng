@@ -1384,7 +1384,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                echo __('None');
             }
          } else {
-            echo "<table width='100%'>";
+            echo "<table width='100%' aria-label='Object Summary'>";
             if (isset($this->fields["state"])) {
                echo "<tr><td>"._x('item', 'State')."</td><td>";
                echo Planning::getState($this->fields["state"])."</td></tr>";

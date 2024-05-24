@@ -362,7 +362,7 @@ class Domain_Item extends CommonDBRelation {
          'massive_action' => $massive_action,
       ]);
       echo "<div class='spaced'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Show Domain'>";
       echo "<tr>";
 
       while ($data = $iterator->next()) {
@@ -576,7 +576,7 @@ class Domain_Item extends CommonDBRelation {
          ) {
             echo "<form name='domain_form$rand' id='domain_form$rand' method='post'
                    action='" . Toolbox::getItemTypeFormURL('Domain') . "'>";
-            echo "<table class='tab_cadre_fixe'>";
+            echo "<table class='tab_cadre_fixe' aria-label='Domain Relations'>";
             echo "<tr class='tab_bg_1'>";
             echo "<td colspan='4' class='center'>";
             echo "<input type='hidden' name='entities_id' value='$entity'>";
@@ -618,7 +618,7 @@ class Domain_Item extends CommonDBRelation {
          $massiveactionparams = ['num_displayed' => $number];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Actions'>";
 
       echo "<tr>";
       if ($canedit && $number && ($withtemplate < 2)) {

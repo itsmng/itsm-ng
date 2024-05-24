@@ -800,7 +800,7 @@ class Html
 
       $ref_pic_text = htmlentities($ref_pic_text, ENT_QUOTES, 'UTF-8');
 
-      echo "<div class='center'><table class='tab_glpi'><tr>";
+      echo "<div class='center'><table class='tab_glpi' aria-label='Title Display'><tr>";
       if ($ref_pic_link != "") {
          $ref_pic_text = self::clean($ref_pic_text);
          echo "<td>" . Html::image($ref_pic_link, ['alt' => $ref_pic_text]) . "</td>";
@@ -896,7 +896,7 @@ class Html
             echo "<div class='b'>" . $SQL_TOTAL_REQUEST . " Queries ";
             echo "took  " . array_sum($DEBUG_SQL['times']) . "s</div>";
 
-            echo "<table class='tab_cadre'><tr><th>N&#176; </th><th>Queries</th><th>Time</th>";
+            echo "<table class='tab_cadre' aria-label='SQL Debug Information'><tr><th>N&#176; </th><th>Queries</th><th>Time</th>";
             echo "<th>Rows</th><th>Errors</th></tr>";
 
             foreach ($DEBUG_SQL['queries'] as $num => $query) {
@@ -1252,13 +1252,13 @@ class Html
       }
 
       $percentwidth = floor($percent * $width / 100);
-      $output       = "<div class='center'><table class='tab_cadre' width='" . ($width + 20) . "px'>";
+      $output       = "<div class='center'><table class='tab_cadre' width='" . ($width + 20) . "px' aria-label='Progress Bar'>";
 
       if (!$param['simple']) {
          $output .= "<tr><th class='center'>" . $param['title'] . "&nbsp;" . $percent . "%</th></tr>";
       }
       $output .= "<tr><td>
-                  <table class='tabcompact'><tr><td class='center' style='background:url(" . $CFG_GLPI["root_doc"] .
+                  <table class='tabcompact' aria-label='Progress Bar'><tr><td class='center' style='background:url(" . $CFG_GLPI["root_doc"] .
          "/pics/loader.png) repeat-x; padding: 0px;font-size: 10px;' width='" .
          $percentwidth . " px' height='12'>";
 
@@ -2386,9 +2386,9 @@ JAVASCRIPT;
       Toolbox::deprecated('openArrowMassives() method is deprecated');
 
       if ($fixed) {
-         echo "<table class='tab_glpi' width='950px'>";
+         echo "<table class='tab_glpi' width='950px' aria-label='Arrow Massive Action'>";
       } else {
-         echo "<table class='tab_glpi' width='80%'>";
+         echo "<table class='tab_glpi' width='80%' aria-label='Arrow Massive Action'>";
       }
 
       echo "<tr>";
@@ -2852,7 +2852,7 @@ JAVASCRIPT;
             !$p['ontop']
             || (isset($p['forcecreate']) && $p['forcecreate'])
          ) {
-            $out .= "<table class='tab_cadre' width='$width'><tr class='tab_bg_1'>" .
+            $out .= "<table class='tab_cadre' width='$width' aria-label='Massive Action Warning'><tr class='tab_bg_1'>" .
                "<td><span class='b'>";
             $out .= __('Selection too large, massive action disabled.') . "</span>";
             if ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE) {
@@ -2899,7 +2899,7 @@ JAVASCRIPT;
             );
          }
          if ($p['display_arrow']) {
-            $out .= "<table class='tab_glpi' width='$width'><tr>";
+            $out .= "<table class='tab_glpi' width='$width' aria-label='Display Arrow'><tr>";
             $out .= "<td width='30px'><img src='" . $CFG_GLPI["root_doc"] . "/pics/arrow-left" .
                ($p['ontop'] ? '-top' : '') . ".png' alt=''></td>";
                $out .= "<td width='100%' class='left'>";
@@ -3423,7 +3423,7 @@ JS;
          $specific_value = $value;
          $value          = 0;
       }
-      $output    .= "<table width='100%'><tr><td width='50%'>";
+      $output    .= "<table width='100%' aria-label='Date Time Search'><tr><td width='50%'>";
 
       $dates      = Html::getGenericDateTimeSearchItems($p);
 
@@ -4278,7 +4278,7 @@ JAVASCRIPT
 
       $out = '';
       // Print it
-      $out .= "<div><table class='tab_cadre_pager'>";
+      $out .= "<div><table class='tab_cadre_pager' aria-label='Pagination Table'>";
       if (!empty($title)) {
          $out .= "<tr><th colspan='6'>$title</th></tr>";
       }
@@ -4340,7 +4340,7 @@ JAVASCRIPT
    {
 
       if (count($tab)) {
-         echo "<table class='tab_cadre'>";
+         echo "<table class='tab_cadre' aria-label='clean array'>";
          // For debug / no gettext
          echo "<tr><th>KEY</th><th>=></th><th>VALUE</th></tr>";
 
@@ -4447,7 +4447,7 @@ JAVASCRIPT
       }
 
       // Print it
-      echo "<div><table class='tab_cadre_pager'>";
+      echo "<div><table class='tab_cadre_pager' aria-label='Navigation control'>";
       echo "<tr>";
 
       if (strpos($target, '?') == false) {
@@ -6111,7 +6111,7 @@ JAVASCRIPT;
          $number_columns += 1;
       }
       $width = round(100 / $number_columns);
-      echo "\n<table class='" . $param['table_class'] . "'>\n";
+      echo "\n<table class='" . $param['table_class'] . "' aria-label='Selectable Items'>\n";
 
       if (!empty($param['title'])) {
          echo "\t<tr>\n";

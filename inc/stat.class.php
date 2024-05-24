@@ -1491,7 +1491,7 @@ class Stat extends CommonGLPI {
       }
 
       //Affichage du tableau de presentation des stats
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Statistics'>";
       echo "<tr><th colspan='2'>".__('Select statistics to be displayed')."</th></tr>";
       echo "<tr class='tab_bg_1'><td class='center'>";
 
@@ -1821,7 +1821,7 @@ class Stat extends CommonGLPI {
       // Keep it at first parameter
       $out .= "<input type='hidden' name='itemtype' value='$itemtype'>";
 
-      $out .= "<table class='tab_cadre'>";
+      $out .= "<table class='tab_cadre' aria-label='Start Date'>";
       $out .= "<tr class='tab_bg_2'><td class='right'>".__('Start date')."</td><td>";
       $out .= Html::showDateField(
          'date1',

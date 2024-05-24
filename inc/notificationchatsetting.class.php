@@ -113,7 +113,7 @@ class NotificationChatSetting extends NotificationSetting
             }
         });
         });");
-        $out .= "<table class='tab_cadre_fixe'>";
+        $out .= "<table class='tab_cadre_fixe' aria-label='Notification Chat'>";
 
 
         $out .= "<tr class='tab_bg_1'><th colspan='8'>" . _n(
@@ -263,7 +263,7 @@ class NotificationChatSetting extends NotificationSetting
             $result[] = $res;
         }
 
-        echo "<table class='tab_cadre_fixe'>";
+        echo "<table class='tab_cadre_fixe' aria-label='configs List Chats'>";
         echo "<tbody>";
         echo "<tr class='tab_bg_1'>";
         echo "<th colspan='6'>" . "Liste des configs chats" . "</th>";

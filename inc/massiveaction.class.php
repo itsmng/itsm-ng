@@ -785,7 +785,7 @@ class MassiveAction {
                $choose_field = (count($options) >= 1);
 
                // Beware: "class='tab_cadre_fixe'" induce side effects ...
-               echo "<table width='100%'><tr>";
+               echo "<table width='100%' aria-label='Actions sub Form'><tr>";
 
                $colspan = 0;
                if ($choose_field) {

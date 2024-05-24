@@ -284,7 +284,7 @@ class Log extends CommonDBTM {
       // No Events in database
       if ($total_number < 1) {
          echo "<div class='center'>";
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='No historical'>";
          echo "<tr><th>".__('No historical')."</th></tr>";
          echo "</table>";
          echo "</div><br>";

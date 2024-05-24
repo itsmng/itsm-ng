@@ -270,7 +270,7 @@ class Impact extends CommonGLPI {
          }
 
          $has_impact = true;
-         echo '<table class="tab_cadre_fixehov impact-list-group">';
+         echo '<table class="tab_cadre_fixehov impact-list-group" aria-label="Impact List Group">';
 
          // Header
          echo '<thead>';
@@ -375,7 +375,7 @@ class Impact extends CommonGLPI {
 
          echo '<div id="list_depth_dialog" class="impact-dialog" title=' . __("Settings") . '>';
          echo '<form action="'.$CFG_GLPI['root_doc'].'/front/impactitem.form.php" method="POST">';
-         echo '<table class="tab_cadre_fixe">';
+         echo '<table class="tab_cadre_fixe" aria-label="Impact Settings Form">';
          echo '<tr>';
          echo '<td><label for="impact_max_depth_' . $rand . '">' . __("Max depth") . '</label></td>';
          echo '<td>' . Html::input("max_depth", [
@@ -978,7 +978,7 @@ class Impact extends CommonGLPI {
       $formName = "form_impact_network";
 
       echo "<form name=\"$formName\" action=\"$action\" method=\"post\" class='no-track'>";
-      echo "<table class='tab_cadre_fixe network-table'>";
+      echo "<table class='tab_cadre_fixe network-table' aria-label='Impact Nework'>";
       echo '<tr><td class="network-parent">';
       echo '<span id="help_text"></span>';
 
@@ -1514,7 +1514,7 @@ class Impact extends CommonGLPI {
     */
    public static function printEditCompoundDialog() {
       echo '<div id="edit_compound_dialog"  class="impact-dialog">';
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Edit Compound Dialog'>";
 
       // First row: name field
       echo "<tr>";

@@ -572,7 +572,7 @@ class Group extends CommonTreeDropdown {
 
       echo "<form name='groupldap_form' id='groupldap_form' method='post' action='".
              $this->getFormURL()."'>";
-      echo "<div class='spaced'><table class='tab_cadre_fixe'>";
+      echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='LDAP Form'>";
 
       if (Group::canUpdate()
           && Session::haveRight("user", User::UPDATEAUTHENT)
@@ -788,7 +788,7 @@ class Group extends CommonTreeDropdown {
       }
       echo "<div class='spaced'>";
       // Mini Search engine
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe'> aria-label='Search parameters'";
       echo "<tr class='tab_bg_1'><th colspan='3'>$title</tr>";
       echo "<tr class='tab_bg_1'><td class='center'>";
       echo _n('Type', 'Types', 1)."&nbsp;";
@@ -847,7 +847,7 @@ class Group extends CommonTreeDropdown {
                                                                     'changegroup' => __('Move')] ];
             Html::showMassiveActions($massiveactionparams);
          }
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Selectable Items Table'>";
          $header_begin  = "<tr><th width='10'>";
          if ($item->canUpdate($data['items_id'])
              || ($item->canView($data['items_id'])

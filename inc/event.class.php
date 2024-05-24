@@ -255,7 +255,7 @@ class Event extends CommonDBTM {
 
       // No Events in database
       if ($number < 1) {
-         echo "<br><div class='spaced'><table class='tab_cadrehov'>";
+         echo "<br><div class='spaced'><table class='tab_cadrehov' aria_label='No Event'>";
          echo "<tr><th>".__('No Event')."</th></tr>";
          echo "</table></div>";
          return;
@@ -264,7 +264,7 @@ class Event extends CommonDBTM {
       // Output events
       $i = 0;
 
-      echo "<br><div class='spaced'><table class='tab_cadre'>";
+      echo "<br><div class='spaced'><table class='tab_cadre' aria-label='Last Event'>";
       echo "<tr><th colspan='5'>";
       //TRANS: %d is the number of item to display
       echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/event.php\">".
@@ -367,7 +367,7 @@ class Event extends CommonDBTM {
       $parameters = "sort=$sort&amp;order=$order";
       Html::printPager($start, $numrows, $target, $parameters);
 
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='sortable Table'>";
       echo "<tr>";
 
       foreach ($items as $field => $args) {

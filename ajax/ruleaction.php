@@ -63,7 +63,7 @@ if (isset($_POST["sub_type"]) && class_exists($_POST["sub_type"])) {
       $already_used = in_array($_POST["field"], $used);
    }
 
-   echo "<table width='100%'><tr><td width='30%'>";
+   echo "<table width='100%'><tr><td width='30%' aria-label='Rule action settings table'>";
    $rule = getItemForItemtype($_POST["sub_type"]);
    $actions_options = $rule->getAllActions();
    $action_type = '';

@@ -1040,7 +1040,7 @@ class Infocom extends CommonDBChild {
             if ($ic->can(-1, CREATE, $input)
                 && ($withtemplate != 2)) {
                echo "<div class='spaced b'>";
-               echo "<table class='tab_cadre_fixe'><tr class='tab_bg_1'><th>";
+               echo "<table class='tab_cadre_fixe' aria-label='financial and administrative information'><tr class='tab_bg_1'><th>";
                echo sprintf(__('%1$s - %2$s'), $item->getTypeName(1), $item->getName())."</th></tr>";
                echo "<tr class='tab_bg_1'><td class='center'>";
 

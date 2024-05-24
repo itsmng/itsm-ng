@@ -274,7 +274,7 @@ if ($foundkey >= 0) {
 $stat = new Stat();
 
 echo "<div class='center'>";
-echo "<table class='tab_cadre'>";
+echo "<table class='tab_cadre'> aria-label='External authentication sources'";
 echo "<tr><td>";
 if ($prev > 0) {
    echo "<a href=\"".$_SERVER['PHP_SELF']."?$cleantarget&amp;date1=".$_POST["date1"]."&amp;date2=".
@@ -299,7 +299,7 @@ echo "</table></div><br>";
 $target = preg_replace("/&/", "&amp;", $_SERVER["REQUEST_URI"]);
 
 echo "<form method='post' name='form' action='$target'><div class='center'>";
-echo "<table class='tab_cadre'>";
+echo "<table class='tab_cadre' aria-label='Statistics'>";
 echo "<tr class='tab_bg_2'><td class='right'>".__('Start date')."</td><td>";
 Html::showDateField("date1", ['value' => $_POST["date1"]]);
 echo "</td><td rowspan='2' class='center'>";

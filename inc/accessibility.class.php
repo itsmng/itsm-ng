@@ -122,7 +122,7 @@ class Accessibility extends CommonDBTM {
         }
 
         echo "<div class='center' id='tabsbody'>";
-        echo "<table class='tab_cadre_fixe' style='position: relative'>";
+        echo "<table class='tab_cadre_fixe' style='position: relative' aria-label='Accessibility settings'>";
         echo "<tr><th colspan='4'>" . __('Interface') . "</th></tr>";
         echo "<tr class='tab_bg_1' >";
         echo "<td width='40%'><label for='access_zoom_level_drop$rand'>" .__('UI Scale') . "</label></td>";
@@ -324,7 +324,7 @@ class Accessibility extends CommonDBTM {
             echo "</div>";
     
             echo "<div class='spaced'>";
-            echo "<table class='tab_cadre_fixe' style=' height: 120px; overflow-y: scroll;'>";
+            echo "<table class='tab_cadre_fixe' style=' height: 120px; overflow-y: scroll;' aria-label='Shortcuts'>";
             echo "<tr >";
             echo "<td width='100%' style='position: absolute;  left: 50%; transform: translate(-50%, 0%);'>";
             echo "<p style='width: 100%; overflow-wrap: break-word;' class='center' id='shortcut_added'></p>";

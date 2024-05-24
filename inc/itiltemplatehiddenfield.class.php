@@ -184,7 +184,7 @@ abstract class ITILTemplateHiddenField extends ITILTemplateField {
          echo "<form name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
                   action='".$ttm->getFormURL()."'>";
 
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Add a hidden field'>";
          echo "<tr class='tab_bg_2'><th colspan='2'>".__('Add a hidden field')."</th></tr>";
          echo "<tr class='tab_bg_2'><td class='right'>";
          echo "<input type='hidden' name='" . static::$items_id . "' value='$ID'>";
@@ -205,7 +205,7 @@ abstract class ITILTemplateHiddenField extends ITILTemplateField {
                                       'container'     => 'mass'.$ttm->getType().$rand];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Number ITIL Template'>";
       echo "<tr class='noHover'><th colspan='2'>";
       echo static::getTypeName(count($iterator));
       echo "</th></tr>";

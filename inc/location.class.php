@@ -458,7 +458,7 @@ class Location extends CommonTreeDropdown {
       $number = $DB->request($criteria)->next()['total'];
 
       // Mini Search engine
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Search Item'>";
       echo "<tr class='tab_bg_1'><th colspan='2'>"._n('Type', 'Types', 1)."</th></tr>";
       echo "<tr class='tab_bg_1'><td class='center'>";
       echo _n('Type', 'Types', 1)."&nbsp;";
@@ -475,7 +475,7 @@ class Location extends CommonTreeDropdown {
          echo "<div class='spaced'>";
          Html::printAjaxPager('', $start, $number);
 
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Item Detail'>";
          echo "<tr><th>"._n('Type', 'Types', 1)."</th>";
          echo "<th>".Entity::getTypeName(1)."</th>";
          echo "<th>".__('Name')."</th>";

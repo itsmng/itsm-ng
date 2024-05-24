@@ -170,7 +170,7 @@ class ProjectTask_Ticket extends CommonDBRelation
          echo "<form name='projecttaskticket_form$rand' id='projecttaskticket_form$rand'
                 method='post' action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
 
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Add a ticket'>";
          echo "<tr class='tab_bg_2'><th colspan='3'>" . __('Add a ticket') . "</th></tr>";
 
          echo "<tr class='tab_bg_2'><td class='right'>";
@@ -214,7 +214,7 @@ class ProjectTask_Ticket extends CommonDBRelation
          Html::showMassiveActions($massiveactionparams);
       }
 
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Ticket'>";
       echo "<tr><th colspan='12'>" . Ticket::getTypeName($numrows) . "</th>";
       echo "</tr>";
       if ($numrows) {

@@ -397,10 +397,10 @@ class DCRoom extends CommonDBTM {
       );
 
       if (!count($rooms)) {
-         echo "<table class='tab_cadre_fixe'><tr><th>".__('No server room found')."</th></tr>";
+         echo "<table class='tab_cadre_fixe' aria-label='Server Rooms Table'><tr><th>".__('No server room found')."</th></tr>";
          echo "</table>";
       } else {
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Server Rooms Table'>";
          $header = "<tr>";
          if ($canedit) {
             $header .= "<th width='10'>";

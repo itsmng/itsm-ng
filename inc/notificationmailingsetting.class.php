@@ -64,7 +64,7 @@ class NotificationMailingSetting extends NotificationSetting {
       $out = "<form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' method='post'>";
       $out .= "<div>";
       $out .= "<input type='hidden' name='id' value='1'>";
-      $out .= "<table class='tab_cadre_fixe'>";
+      $out .= "<table class='tab_cadre_fixe' aria-label='Email Notification'>";
       $out .= "<tr class='tab_bg_1'><th colspan='4'>"._n('Email notification',
                                                          'Email notifications',
                                                          Session::getPluralNumber())."</th></tr>";
@@ -207,7 +207,7 @@ class NotificationMailingSetting extends NotificationSetting {
 
          $out .= "</table>";
 
-         $out .= "<table class='tab_cadre_fixe";
+         $out .= "<table class='tab_cadre_fixe aria-label='Check certificate'";
          if ($CFG_GLPI["smtp_mode"] == MAIL_MAIL) {
             $out .= " starthidden";
          }

@@ -307,7 +307,7 @@ class PDU_Rack extends CommonDBRelation {
       ]);
 
       if (!count($items)) {
-         echo "<table class='tab_cadre_fixe'><tr><th>".__('No item found')."</th></tr>";
+         echo "<table class='tab_cadre_fixe' aria-label='No item Found'><tr><th>".__('No item found')."</th></tr>";
          echo "</table>";
       } else {
          if ($canedit) {
@@ -319,7 +319,7 @@ class PDU_Rack extends CommonDBRelation {
             Html::showMassiveActions($massiveactionparams);
          }
 
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Rack Stats'>";
          $header = "<tr>";
          if ($canedit) {
             $header .= "<th width='10'>";
@@ -407,7 +407,7 @@ class PDU_Rack extends CommonDBRelation {
       echo "<h2>".__("Power units")."</h2>";
       echo "<div class='rack_side_block_content'>";
       if (count($found_pdus)) {
-         echo "<table class='pdu_list'>";
+         echo "<table class='pdu_list' aria-label='Rack Stats'>";
          foreach ($found_pdus as $current_pdu) {
             if ($pdu->getFromDB($current_pdu['pdus_id'])) {
                $bg_color = $current_pdu['bgcolor'];

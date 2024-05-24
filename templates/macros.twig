@@ -35,7 +35,7 @@
     {% set default_header_args = {"field" : "", "sortable" : true, type :  "text" , default : ""}|merge(header['args']) %}
     {% set row_length = max(body.rows[0]|length, header.args|length, header.titles|length)  - 1 %}
     <div class={{args.class}}>
-        <table
+        <table aria-label="data"
         id={{args.id}}
         data-toggle="table"
         data-height="1px"

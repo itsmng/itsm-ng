@@ -103,7 +103,7 @@ class Report extends CommonGLPI{
          $report_list["state"]["file"] = "report.state.php";
       }
       //Affichage du tableau de presentation des stats
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Statistics'>";
       echo "<tr><th colspan='2'>".__('Select the report you want to generate')."</th></tr>";
       echo "<tr class='tab_bg_1'><td class='center'>";
 
@@ -176,7 +176,7 @@ class Report extends CommonGLPI{
 
       $linkitems = $CFG_GLPI['directconnect_types'];
 
-      echo "<table class='tab_cadrehov'>";
+      echo "<table class='tab_cadrehov' aria-label='Show default report'>";
 
       foreach ($items as $itemtype) {
          $table_item = getTableForItemType($itemtype);
@@ -440,7 +440,7 @@ class Report extends CommonGLPI{
       $iterator = $DB->request($criteria);
 
       if (count($iterator)) {
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov'aria-label='Devices'>";
          echo "<tr>";
          if (!empty($extra)) {
             echo "<td>&nbsp;</td>";

@@ -2001,7 +2001,7 @@ class Entity extends CommonTreeDropdown {
          echo "<form method='post' name=form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' data-track-changes='true'>";
       }
 
-      echo "<table class='tab_cadre_fixe custom_css_configuration'>";
+      echo "<table class='tab_cadre_fixe custom_css_configuration' aria-label='Customization option'>";
 
       Plugin::doHook("pre_item_form", ['item' => $entity, 'options' => []]);
 

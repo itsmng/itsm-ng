@@ -1407,7 +1407,7 @@ class Change extends CommonITILObject {
             // Mini search engine
             if ($item->haveChildren()) {
                $tree = Session::getSavedOption(__CLASS__, 'tree', 0);
-               echo "<table class='tab_cadre_fixe'>";
+               echo "<table class='tab_cadre_fixe' aria-label='Last changes'>";
                echo "<tr class='tab_bg_1'><th>".__('Last changes')."</th></tr>";
                echo "<tr class='tab_bg_1'><td class='center'>";
                echo __('Child groups');
@@ -1459,7 +1459,7 @@ class Change extends CommonITILObject {
       $number = count($iterator);
 
       // Ticket for the item
-      echo "<div><table class='tab_cadre_fixe'>";
+      echo "<div><table class='tab_cadre_fixe' aria-label='Changes'>";
 
       $colspan = 11;
       if (count($_SESSION["glpiactiveentities"]) > 1) {
@@ -1514,7 +1514,7 @@ class Change extends CommonITILObject {
          $iterator = $DB->request($criteria);
          $number = count($iterator);
 
-         echo "<div class='spaced'><table class='tab_cadre_fixe'>";
+         echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Changes on linked items'>";
          echo "<tr><th colspan='$colspan'>";
          echo __('Changes on linked items');
 

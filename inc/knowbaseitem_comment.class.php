@@ -123,7 +123,7 @@ class KnowbaseItem_Comment extends CommonDBTM {
       if ($number < 1) {
          $no_txt = __('No comments');
          echo "<div class='center'>";
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Base item'>";
          echo "<tr><th>$no_txt</th></tr>";
          echo "</table>";
          echo "</div>";

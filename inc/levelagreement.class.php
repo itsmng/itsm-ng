@@ -281,7 +281,7 @@ abstract class LevelAgreement extends CommonDBChild {
       list($dateField, $laField) = static::getFieldNames($type);
       $rand = mt_rand();
       $pre  = static::$prefix;
-      echo "<table width='100%'>";
+      echo "<table width='100%' aria-label ='Ticket'>";
       echo "<tr class='tab_bg_1'>";
 
       if (!isset($ticket->fields[$dateField]) || $ticket->fields[$dateField] == 'NULL') {
@@ -480,7 +480,7 @@ abstract class LevelAgreement extends CommonDBChild {
             Html::showMassiveActions($massiveactionparams);
          }
 
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Item Detail'>";
          $header_begin  = "<tr>";
          $header_top    = '';
          $header_bottom = '';
@@ -573,7 +573,7 @@ abstract class LevelAgreement extends CommonDBChild {
 
       echo "<div class='spaced'>";
       if (!$nb) {
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='No item Found'>";
          echo "<tr><th>" . __('No item found') . "</th>";
          echo "</tr>\n";
          echo "</table>\n";
@@ -587,7 +587,7 @@ abstract class LevelAgreement extends CommonDBChild {
                                          'purge'  => _x('button', 'Delete permanently')]];
             Html::showMassiveActions($massiveactionparams);
          }
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='rule List'>";
          $header_begin  = "<tr>";
          $header_top    = '';
          $header_bottom = '';

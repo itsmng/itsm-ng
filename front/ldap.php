@@ -41,7 +41,7 @@ if (isset($_SESSION["ldap_sortorder"])) {
 }
 
 AuthLDAP::manageValuesInSession([], true);
-echo "<div class='center'><table class='tab_cadre'>";
+echo "<div class='center'><table class='tab_cadre' aria-label='LDAP directory link'>";
 echo "<tr><th>".__('Bulk import users from a LDAP directory')."</th></tr>";
 
 echo "<tr class='tab_bg_1'><td class='center b'>".

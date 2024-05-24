@@ -360,7 +360,7 @@ class CalendarSegment extends CommonDBChild {
          echo "<form name='calendarsegment_form$rand' id='calendarsegment_form$rand' method='post'
                 action='";
          echo Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Add Schedule Table'>";
          echo "<tr class='tab_bg_1'><th colspan='7'>".__('Add a schedule')."</tr>";
 
          echo "<tr class='tab_bg_2'><td class='center'>"._n('Day', 'Days', 1)."</td><td>";
@@ -386,7 +386,7 @@ class CalendarSegment extends CommonDBChild {
                            'container'     => 'mass'.__CLASS__.$rand];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='Schedule Details Table'>";
       echo "<tr>";
       if ($canedit && $numrows) {
          echo "<th width='10'>";

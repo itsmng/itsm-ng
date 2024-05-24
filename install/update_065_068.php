@@ -991,7 +991,7 @@ function rembo($string) {
       for ($i = 0; $i < $num_tokens; ++$i) {
          $string .= $outside[$i];
          if (isset($inside[$i])) {
-            $string .= '<br><br><div class="spaced"><table class="code center"><tr>' .
+            $string .= '<br><br><div class="spaced"><table class="code center" aria-label="Count"><tr>' .
                        '<td class="punquote"><span class="b">Code:</span><br><br><pre>'.
                        trim($inside[$i]).'</pre></td></tr></table></div>';
          }

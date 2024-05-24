@@ -244,7 +244,7 @@ class Profile_User extends CommonDBRelation {
          $canedit ? 'massive_action' : '' => $massiveActionValues
       ]);
       if ($num > 0) {
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Data Rows'>";
 
          while ($data = $iterator->next()) {
             echo "<tr class='tab_bg_1'>";
@@ -298,7 +298,7 @@ class Profile_User extends CommonDBRelation {
          }
          echo "</table>";
       } else {
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='No item Found'>";
          echo "<tr><th>".__('No item found')."</th></tr>";
          echo "</table>\n";
       }
@@ -338,7 +338,7 @@ class Profile_User extends CommonDBRelation {
          echo "<div class='firstbloc'>";
          echo "<form name='entityuser_form$rand' id='entityuser_form$rand' method='post' action='";
          echo Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Add Authorization'>";
          echo "<tr class='tab_bg_1'><th colspan='6'>".__('Add an authorization to a user')."</tr>";
          echo "<tr class='tab_bg_1'><td class='tab_bg_2 center'>".User::getTypeName(1)."&nbsp;";
          echo "<input type='hidden' name='entities_id' value='$ID'>";
@@ -407,7 +407,7 @@ class Profile_User extends CommonDBRelation {
                         => ['purge' => _x('button', 'Delete permanently')]];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='User Managment'>";
       echo "<thead><tr>";
 
       echo "<th class='noHover' colspan='$headerspan'>";
@@ -553,13 +553,13 @@ class Profile_User extends CommonDBRelation {
                            'container'     => 'mass'.__CLASS__.$rand];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixe'><tr>";
+      echo "<table class='tab_cadre_fixe' aria-label='Profil User'><tr>";
       echo "<th>".sprintf(__('%1$s: %2$s'), Profile::getTypeName(1), $prof->fields["name"])."</th></tr>\n";
 
       echo "<tr><th colspan='2'>".sprintf(__('%1$s (%2$s)'), User::getTypeName(Session::getPluralNumber()),
                                           __('D=Dynamic, R=Recursive'))."</th></tr>";
       echo "</table>\n";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Entity Data'>";
 
       $i              = 0;
       $nb_per_line    = 3;
@@ -606,7 +606,7 @@ class Profile_User extends CommonDBRelation {
                echo "<div class='center' id='entity$temp$rand' style='display:none;'>\n";
                echo Html::getCheckAllAsCheckbox("entity$temp$rand").__('All');
 
-               echo "<table class='tab_cadre_fixe'>\n";
+               echo "<table class='tab_cadre_fixe' aria-label='User Detail'>\n";
             }
 
             if (($i%$nb_per_line) == 0) {

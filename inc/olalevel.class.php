@@ -93,7 +93,7 @@ class OlaLevel extends LevelAgreementLevel {
          echo "<form name='olalevel_form$rand' id='olalevel_form$rand' method='post' action='";
          echo Toolbox::getItemTypeFormURL(__CLASS__)."'>";
 
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Add an escalation level'>";
          echo "<tr class='tab_bg_1'><th colspan='7'>".__('Add an escalation level')."</tr>";
 
          echo "<tr class='tab_bg_2'><td class='center'>".__('Name')."";
@@ -135,7 +135,7 @@ class OlaLevel extends LevelAgreementLevel {
          Html::showMassiveActions($massiveactionparams);
       }
 
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label='OLA Detail'>";
       echo "<tr>";
       if ($canedit && $numrows) {
          echo "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand)."</th>";

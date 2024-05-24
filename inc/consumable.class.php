@@ -652,7 +652,7 @@ class Consumable extends CommonDBChild {
       $total = [];
       if (count($types) > 0) {
          // Produce headline
-         echo "<div class='center'><table class='tab_cadrehov'><tr>";
+         echo "<div class='center'><table class='tab_cadrehov' aria-label='summary'><tr>";
 
          // Type
          echo "<th>".__('Give to')."</th>";

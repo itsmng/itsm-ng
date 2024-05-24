@@ -201,7 +201,7 @@ if (count($all_criteria)) {
       if (count($iterator)) {
          $item = new $key();
          echo "<div class='center'><span class='b'>".$item->getTypeName(1)."</span></div>";
-         echo "<table class='tab_cadrehov'>";
+         echo "<table class='tab_cadrehov' aria-label='Hardware list under contract'>";
          echo "<tr><th>".__('Name')."</th>";
          echo "<th>".__('Deleted')."</th>";
          if ($display_entity) {

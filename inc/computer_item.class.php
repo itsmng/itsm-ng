@@ -526,7 +526,7 @@ class Computer_Item extends CommonDBRelation{
          echo "<form name='computeritem_form$rand' id='computeritem_form$rand' method='post'
                 action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
 
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Computer connections Table'>";
          echo "<tr class='tab_bg_2'><th colspan='2'>".__('Connect a computer')."</th></tr>";
 
          echo "<tr class='tab_bg_1'><td class='right'>";
@@ -559,7 +559,7 @@ class Computer_Item extends CommonDBRelation{
                         => 'mass'.__CLASS__.$rand];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov'>";
+      echo "<table class='tab_cadre_fixehov' aria-label ='Computer Informations'>";
 
       if ($number > 0) {
          $header_begin  = "<tr>";

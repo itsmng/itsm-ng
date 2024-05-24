@@ -858,7 +858,7 @@ class Reminder extends CommonDBVisible implements
       $iterator = $DB->request($criteria);
       $nb = count($iterator);
 
-      echo "<br><table class='tab_cadrehov'>";
+      echo "<br><table class='tab_cadrehov' aria-label='Reminders'>";
       echo "<tr class='noHover'><th><div class='relative'><span>$titre</span>";
 
       if (($personal && self::canCreate())

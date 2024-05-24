@@ -293,7 +293,7 @@ class DisplayPreference extends CommonDBTM {
 
       if ($numrows == 0) {
          Session::checkRight(self::$rightname, self::PERSONAL);
-         echo "<table class='tab_cadre_fixe'><tr><th colspan='4'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Personal Criteria Table'><tr><th colspan='4'>";
          echo "<form method='post' action='$target'>";
          echo "<input type='hidden' name='itemtype' value='$itemtype'>";
          echo "<input type='hidden' name='users_id' value='$IDuser'>";
@@ -307,7 +307,7 @@ class DisplayPreference extends CommonDBTM {
       } else {
          $already_added = self::getForTypeUser($itemtype, $IDuser);
 
-         echo "<table class='tab_cadre_fixe'><tr><th colspan='4'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Personal Criteria Table'><tr><th colspan='4'>";
          echo "<form method='post' action='$target'>";
          echo "<input type='hidden' name='itemtype' value='$itemtype'>";
          echo "<input type='hidden' name='users_id' value='$IDuser'>";
@@ -588,7 +588,7 @@ class DisplayPreference extends CommonDBTM {
          'minimal' => true,
       ]);
 
-      echo "<table class='w-100'>";
+      echo "<table class='w-100' aria-label='Search Options Table'>";
 
       // print first element
       $i = 0;
@@ -696,7 +696,7 @@ class DisplayPreference extends CommonDBTM {
 
          echo Html::hidden('users_id', ['value'                 => $users_id,
                                              'data-glpicore-ma-tags' => 'common']);
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='List of Items with Actions'>";
          echo "<tr>";
          echo "<th width='10'>";
          echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
@@ -721,7 +721,7 @@ class DisplayPreference extends CommonDBTM {
          echo "</div>";
 
       } else {
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='No item found'>";
          echo "<tr class='tab_bg_2'><td class='b center'>".__('No item found')."</td></tr>";
          echo "</table>";
       }

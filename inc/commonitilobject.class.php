@@ -5128,7 +5128,7 @@ abstract class CommonITILObject extends CommonDBTM {
     * @param $entities_id
    **/
    static function showMassiveSolutionForm(CommonITILObject $item) {
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Massive Solution Form Table'>";
       echo '<tr><th colspan=4>'.__('Solve tickets').'</th></tr>';
 
       $solution = new ITILSolution();
@@ -5339,7 +5339,7 @@ abstract class CommonITILObject extends CommonDBTM {
    }
 
    function showStatsDates() {
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Statistics dates'>";
       echo "<tr><th colspan='2'>"._n('Date', 'Dates', Session::getPluralNumber())."</th></tr>";
 
       echo "<tr class='tab_bg_2'><td>".__('Opening date')."</td>";
@@ -5363,7 +5363,7 @@ abstract class CommonITILObject extends CommonDBTM {
 
    function showStatsTimes() {
       echo "<div class='dates_timelines'>";
-      echo "<table class='tab_cadre_fixe'>";
+      echo "<table class='tab_cadre_fixe' aria-label='Statistics Time'>";
       echo "<tr><th colspan='2'>"._n('Time', 'Times', Session::getPluralNumber())."</th></tr>";
 
       if (isset($this->fields['takeintoaccount_delay_stat'])) {
@@ -7823,7 +7823,7 @@ abstract class CommonITILObject extends CommonDBTM {
       }
       echo "<div class='spaced' id='tabsbody'>";
 
-      echo "<table class='tab_cadre_fixe' id='mainformtable'>";
+      echo "<table class='tab_cadre_fixe' id='mainformtable' aria-label='Main Form Table'>";
 
       // Optional line
       $ismultientities = Session::isMultiEntitiesMode();

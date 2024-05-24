@@ -3920,7 +3920,7 @@ class Ticket extends CommonITILObject
       $delegating = User::getDelegateGroupsForUser($options['entities_id']);
 
       if (count($delegating) || $CFG_GLPI['use_check_pref']) {
-         echo "<div class='center'><table class='tab_cadre_fixe'>";
+         echo "<div class='center'><table class='tab_cadre_fixe' aria-label='This ticket concerns me'>";
       }
 
       if (count($delegating)) {
@@ -4061,7 +4061,7 @@ class Ticket extends CommonITILObject
          echo "<input type='hidden' name='locations_id' value='" . $options['locations_id'] . "'>";
       }
       echo "<input type='hidden' name='entities_id' value='" . $_SESSION["glpiactive_entity"] . "'>";
-      echo "<div class='center'><table class='tab_cadre_fixe'>";
+      echo "<div class='center'><table class='tab_cadre_fixe' aria-label='describe incident or request'>";
 
       Plugin::doHook("pre_item_form", ['item' => $this, 'options' => &$options]);
 
@@ -5955,7 +5955,7 @@ class Ticket extends CommonITILObject
       $options['criteria'][0]['value']      = 'process';
       $options['criteria'][0]['link']       = 'AND';
 
-      echo "<table class='tab_cadrehov' >";
+      echo "<table class='tab_cadrehov' aria-label='Table Descritpion'>";
       echo "<tr class='noHover'><th colspan='2'>";
 
       if (Session::getCurrentInterface() != "central") {
@@ -6040,7 +6040,7 @@ class Ticket extends CommonITILObject
          $options['criteria'][0]['value']   = $_SESSION['INCOMING'];
          $options['criteria'][0]['link']       = 'AND';
 
-         echo "<div class='center'><table class='tab_cadre_fixe' style='min-width: 85%'>";
+         echo "<div class='center'><table class='tab_cadre_fixe' style='min-width: 85%' aria-label='New Ticket'>";
          //TRANS: %d is the number of new tickets
          echo "<tr><th colspan='12'>" . sprintf(_n('%d new ticket', '%d new tickets', $number), $number);
          echo "<a href='" . Ticket::getSearchURL() . "?" .
@@ -6056,7 +6056,7 @@ class Ticket extends CommonITILObject
          echo "</table></div>";
       } else {
          echo "<div class='center'>";
-         echo "<table class='tab_cadre_fixe' style='min-width: 85%'>";
+         echo "<table class='tab_cadre_fixe' style='min-width: 85%' aria-label='No ticket Found'>";
          echo "<tr><th>" . __('No ticket found.') . "</th></tr>";
          echo "</table>";
          echo "</div><br>";
@@ -6150,7 +6150,7 @@ class Ticket extends CommonITILObject
             // Mini search engine
             if ($item->haveChildren()) {
                $tree = Session::getSavedOption(__CLASS__, 'tree', 0);
-               echo "<table class='tab_cadre_fixe'>";
+               echo "<table class='tab_cadre_fixe' aria-label='Last Ticket'>";
                echo "<tr class='tab_bg_1'><th>" . __('Last tickets') . "</th></tr>";
                echo "<tr class='tab_bg_1'><td class='center'>";
                echo __('Child groups') . "&nbsp;";
@@ -6264,7 +6264,7 @@ class Ticket extends CommonITILObject
       echo "<div>";
 
       if ($number > 0) {
-         echo "<table class='tab_cadre_fixehov'>";
+         echo "<table class='tab_cadre_fixehov' aria-label='Ticket'>";
          if (Session::haveRight(self::$rightname, self::READALL)) {
             Session::initNavigateListItems(
                'Ticket',
@@ -6286,7 +6286,7 @@ class Ticket extends CommonITILObject
             echo "<tr><th colspan='$colspan'>" . __("You don't have right to see all tickets") . "</th></tr>";
          }
       } else {
-         echo "<table class='tab_cadre_fixe'>";
+         echo "<table class='tab_cadre_fixe' aria-label='No ticket Found'>";
          echo "<tr><th>" . __('No ticket found.') . "</th></tr>";
       }
 
@@ -6324,7 +6324,7 @@ class Ticket extends CommonITILObject
          $iterator = $DB->request($criteria);
          $number = count($iterator);
 
-         echo "<div class='spaced'><table class='tab_cadre_fixe'>";
+         echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Ticket on linked item'>";
          echo "<tr><th colspan='12'>";
          echo _n('Ticket on linked items', 'Tickets on linked items', $number);
          echo "</th></tr>";
