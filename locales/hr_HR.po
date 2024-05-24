@@ -24103,1131 +24103,1139 @@ msgstr "Prikupl samo nepročitanu poštu"
 msgid "Could not create dashboard"
 msgstr "Kloniraj ovu preglednu ploču"
 
-#~ msgid "No room found or selected"
-#~ msgstr "Nijedna soba nije pronađena niti odabrana"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Pisanje"
 
-#~ msgid "Marketplace"
-#~ msgstr "Tržnica"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Prijava"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s dodaje predmet %2$s-%3$s:%4$s"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Pogledaj konfiguraciju"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Pogledaj katalog dodataka"
+msgid "No room found or selected"
+msgstr "Nijedna soba nije pronađena niti odabrana"
 
-#~ msgid ""
-#~ "If name is a valid email address, it will be automatically added to "
-#~ "blacklisted senders."
-#~ msgstr ""
-#~ "Ako je ime potvrđena email adresa, automatski će se dodati pošiljateljima "
-#~ "s crne liste."
+msgid "Marketplace"
+msgstr "Tržnica"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Prazno za beskonačno"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s dodaje predmet %2$s-%3$s:%4$s"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS feedovi pronađeni"
+msgid "See the catalog of plugins"
+msgstr "Pogledaj katalog dodataka"
 
-#~ msgid "Active Directory"
-#~ msgstr "Aktivna mapa"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+"Ako je ime potvrđena email adresa, automatski će se dodati pošiljateljima s "
+"crne liste."
 
-#~ msgid "GLPI version"
-#~ msgstr "Verzija GLPI-a"
+msgid "Empty for infinite"
+msgstr "Prazno za beskonačno"
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "Potvrditi promociju?"
+msgid "RSS feeds found"
+msgstr "RSS feedovi pronađeni"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Tvoji nalozi za zatvaranje"
+msgid "Active Directory"
+msgstr "Aktivna mapa"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Nalozi u stanju čekanja"
+msgid "GLPI version"
+msgstr "Verzija GLPI-a"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Nalozi za obradu"
+msgid "Confirm the promotion?"
+msgstr "Potvrditi promociju?"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Tvoji promatrani nalozi"
+msgid "Your tickets to close"
+msgstr "Tvoji nalozi za zatvaranje"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Tvoji nalozi u tijeku"
+msgid "Tickets on pending status"
+msgstr "Nalozi u stanju čekanja"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Tvoji nalozi za provjeru"
+msgid "Tickets to be processed"
+msgstr "Nalozi za obradu"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "Tvoji nalozi, koji imaju odbijeno stanje odobravanja"
+msgid "Your observed tickets"
+msgstr "Tvoji promatrani nalozi"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "Tvoji nalozi, koji imaju odbijeno rješenje"
+msgid "Your tickets in progress"
+msgstr "Tvoji nalozi u tijeku"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Priopćenje naloga"
+msgid "Your tickets to validate"
+msgstr "Tvoji nalozi za provjeru"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d novi nalog"
-#~ msgstr[1] "%d nova naloga"
-#~ msgstr[2] "%d novih naloga"
+msgid "Your tickets having rejected approval status"
+msgstr "Tvoji nalozi, koji imaju odbijeno stanje odobravanja"
 
-#~ msgid "No ticket found."
-#~ msgstr "Nijedan nalog nije pronađen."
+msgid "Your tickets having rejected solution"
+msgstr "Tvoji nalozi, koji imaju odbijeno rješenje"
 
-#~ msgid "Last tickets"
-#~ msgstr "Posljednji nalozi"
+msgid "Ticket followup"
+msgstr "Priopćenje naloga"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Novi nalog za ovaj predmet …"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d novi nalog"
+msgstr[1] "%d nova naloga"
+msgstr[2] "%d novih naloga"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Zadnji %d nalog"
-#~ msgstr[1] "Zadnja %d naloga"
-#~ msgstr[2] "Zadnjih %d naloga"
+msgid "No ticket found."
+msgstr "Nijedan nalog nije pronađen."
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Nemaš prava za prikaz svih naloga"
+msgid "Last tickets"
+msgstr "Posljednji nalozi"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Nalog o povezanim predmetima"
-#~ msgstr[1] "Nalozi o povezanim predmetima"
-#~ msgstr[2] "Nalozi o povezanim predmetima"
+msgid "New ticket for this item..."
+msgstr "Novi nalog za ovaj predmet …"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Nema naloga u tijeku."
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Zadnji %d nalog"
+msgstr[1] "Zadnja %d naloga"
+msgstr[2] "Zadnjih %d naloga"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Dodijeli opremu"
+msgid "You don't have right to see all tickets"
+msgstr "Nemaš prava za prikaz svih naloga"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Automatsko zatvaranje naloga"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Nalog o povezanim predmetima"
+msgstr[1] "Nalozi o povezanim predmetima"
+msgstr[2] "Nalozi o povezanim predmetima"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Generiranje upitnika zadovoljstva"
+msgid "No ticket in progress."
+msgstr "Nema naloga u tijeku."
 
-#~ msgid "Automatic closed tickets purge"
-#~ msgstr "Brisanje automatski zatvorenih naloga"
+msgid "Assign equipment"
+msgstr "Dodijeli opremu"
 
-#~ msgid "See my ticket"
-#~ msgstr "Pogledaj moje naloge"
+msgid "Automatic tickets closing"
+msgstr "Automatsko zatvaranje naloga"
 
-#~ msgid "See group ticket"
-#~ msgstr "Pogledaj grupni nalog"
+msgid "Generation of satisfaction surveys"
+msgstr "Generiranje upitnika zadovoljstva"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Pogledaj naloge koje je stvorila moja grupa"
+msgid "Automatic closed tickets purge"
+msgstr "Brisanje automatski zatvorenih naloga"
 
-#~ msgid "See all tickets"
-#~ msgstr "Pogledaj sve naloge"
+msgid "See my ticket"
+msgstr "Pogledaj moje naloge"
 
-#~ msgid "See assigned"
-#~ msgstr "Pogledaj dodijeljene"
+msgid "See group ticket"
+msgstr "Pogledaj grupni nalog"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Pogledaj dodijeljene naloge"
+msgid "See tickets created by my groups"
+msgstr "Pogledaj naloge koje je stvorila moja grupa"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Dodijeli nalog"
+msgid "See all tickets"
+msgstr "Pogledaj sve naloge"
 
-#~ msgid "Steal"
-#~ msgstr "Preuzmi"
+msgid "See assigned"
+msgstr "Pogledaj dodijeljene"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Preuzmi nalog"
+msgid "See assigned tickets"
+msgstr "Pogledaj dodijeljene naloge"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Odgovornost"
+msgid "Assign a ticket"
+msgstr "Dodijeli nalog"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Odgovornost za nalog"
+msgid "Steal"
+msgstr "Preuzmi"
 
-#~ msgid "Change the priority"
-#~ msgstr "Izmijeni prioritet"
+msgid "Steal a ticket"
+msgstr "Preuzmi nalog"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Odobri rješenje/Odgovori na anketu (moj nalog)"
+msgid "Beeing in charge"
+msgstr "Odgovornost"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "Odobri rješenje i odgovori na anketu za moj nalog"
+msgid "To be in charge of a ticket"
+msgstr "Odgovornost za nalog"
 
-#, php-format
-#~ msgid "Not enough rights to merge tickets %d and %d"
-#~ msgstr "Nedovoljno prava za sjedinjavanje naloga %d i %d"
+msgid "Change the priority"
+msgstr "Izmijeni prioritet"
 
-#, php-format
-#~ msgid "Failed to load ticket %d"
-#~ msgstr "Neuspjelo učitavanje naloga %d"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Odobri rješenje/Odgovori na anketu (moj nalog)"
 
-#, php-format
-#~ msgid "Failed to add followup to ticket %d"
-#~ msgstr "Neuspjelo dodavanje priopćenja nalogu %d"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "Odobri rješenje i odgovori na anketu za moj nalog"
 
-#, php-format
-#~ msgid "Failed to add task to ticket %d"
-#~ msgstr "Neuspjelo dodavanje zadatka nalogu %d"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "Nedovoljno prava za sjedinjavanje naloga %d i %d"
 
-#, php-format
-#~ msgid "Failed to add document to ticket %d"
-#~ msgstr "Neuspjelo dodavanje dokumenta nalogu %d"
+msgid "Failed to load ticket %d"
+msgstr "Neuspjelo učitavanje naloga %d"
 
-#, php-format
-#~ msgid "Failed to link tickets %d and %d"
-#~ msgstr "Neuspjelo povezivanje naloga %d i %d"
+msgid "Failed to add followup to ticket %d"
+msgstr "Neuspjelo dodavanje priopćenja nalogu %d"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "Neuspjelo brisanje naloga %d"
+msgid "Failed to add task to ticket %d"
+msgstr "Neuspjelo dodavanje zadatka nalogu %d"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%s sjedinjuje nalog %s u %s"
+msgid "Failed to add document to ticket %d"
+msgstr "Neuspjelo dodavanje dokumenta nalogu %d"
 
-#~ msgid "Checking write permissions for marketplace plugins directory"
-#~ msgstr "Provjera dozvole pisanja za mapu dodataka tržnice"
+msgid "Failed to link tickets %d and %d"
+msgstr "Neuspjelo povezivanje naloga %d i %d"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Ponovo izračunaj kategoriju"
+msgid "Failed to delete ticket %d"
+msgstr "Neuspjelo brisanje naloga %d"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Valjane licence"
+msgid "%s merges ticket %s into %s"
+msgstr "%s sjedinjuje nalog %s u %s"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Broj instalacija"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Provjera dozvole pisanja za mapu dodataka tržnice"
 
-#~ msgid "Merge"
-#~ msgstr "Sjedini"
+msgid "Recalculate the category"
+msgstr "Ponovo izračunaj kategoriju"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Softver izbrisan nakon sjedinjavanja"
+msgid "Valid licenses"
+msgstr "Valjane licence"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "Moraš aktivirati barem jedan modus obavještavanja."
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Broj instalacija"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Merge"
+msgstr "Sjedini"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Spoji jedno računalo"
+msgid "Software deleted after merging"
+msgstr "Softver izbrisan nakon sjedinjavanja"
 
-#~ msgid "Not connected"
-#~ msgstr "Nije spojeno"
+msgid "You must enable at least one notification mode."
+msgstr "Moraš aktivirati barem jedan modus obavještavanja."
 
-#~ msgid "Show as map"
-#~ msgstr "Prikaži kao kartu"
+msgid "GLPI"
+msgstr "GLPI"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Vrijedi do %s"
+msgid "Connect a computer"
+msgstr "Spoji jedno računalo"
 
-#~ msgid "Late tickets"
-#~ msgstr "Zakašnjeli nalozi"
+msgid "Not connected"
+msgstr "Nije spojeno"
 
-#~ msgid "Incoming tickets"
-#~ msgstr "Ulazni nalozi"
+msgid "Show as map"
+msgstr "Prikaži kao kartu"
 
-#~ msgid "Solved tickets"
-#~ msgstr "Riješeni nalozi"
+msgid "Valid to %s"
+msgstr "Vrijedi do %s"
 
-#~ msgid "Closed tickets"
-#~ msgstr "Zatvoreni nalozi"
+msgid "Late tickets"
+msgstr "Zakašnjeli nalozi"
 
-#~ msgid "without"
-#~ msgstr "bez"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Nalozi koji čekaju odobrenje"
 
-#~ msgid "Time to close"
-#~ msgstr "Vrijeme za zatvaranje"
+msgid "Incoming tickets"
+msgstr "Ulazni nalozi"
 
-#~ msgid "To validate"
-#~ msgstr "Treba provjeriti"
+msgid "Solved tickets"
+msgstr "Riješeni nalozi"
 
-#~ msgid "Solved"
-#~ msgstr "Riješeni"
+msgid "Closed tickets"
+msgstr "Zatvoreni nalozi"
 
-#~ msgid "Share or embed this dashboard"
-#~ msgstr "Dijeli ili ugradi ovu preglednu ploču"
+msgid "without"
+msgstr "bez"
 
-#~ msgid "Delete this dashboard"
-#~ msgstr "Izbriši ovu preglednu ploču"
+msgid "Time to close"
+msgstr "Vrijeme za zatvaranje"
 
-#~ msgid "Toggle auto-refresh"
-#~ msgstr "Uklj/Isklj automatsko aktualiziranje"
+msgid "To validate"
+msgstr "Treba provjeriti"
 
-#~ msgid "Toggle night mode"
-#~ msgstr "Uklj/Isklj noćni modus"
+msgid "Solved"
+msgstr "Riješeni"
 
-#~ msgid "Toggle fullscreen"
-#~ msgstr "Uklj/Isklj cjeloekranski prikaz"
+msgid "Share or embed this dashboard"
+msgstr "Dijeli ili ugradi ovu preglednu ploču"
 
-#~ msgid "Toggle edit mode"
-#~ msgstr "Uklj/Isklj modus za uređivanje"
+msgid "Delete this dashboard"
+msgstr "Izbriši ovu preglednu ploču"
 
-#~ msgid "Add filter"
-#~ msgstr "Dodaj filtar"
+msgid "Toggle auto-refresh"
+msgstr "Uklj/Isklj automatsko aktualiziranje"
 
-#~ msgid "Add a new dashboard"
-#~ msgstr "Dodaj novu preglednu ploču"
+msgid "Toggle night mode"
+msgstr "Uklj/Isklj noćni modus"
 
-#~ msgid "others"
-#~ msgstr "ostalo"
+msgid "Toggle fullscreen"
+msgstr "Uklj/Isklj cjeloekranski prikaz"
 
-#~ msgid "Widget"
-#~ msgstr "Widget"
+#, fuzzy
+#| msgid "Delete this dashboard"
+msgid "Clone this dashboard"
+msgstr "Izbriši ovu preglednu ploču"
 
-#~ msgid "Use gradient palette"
-#~ msgstr "Koristi paletu gradijenata"
+msgid "Toggle edit mode"
+msgstr "Uklj/Isklj modus za uređivanje"
 
-#~ msgid "Display value labels on points/bars"
-#~ msgstr "Prikaži vrijednosti na točkama/trakama"
+msgid "Add filter"
+msgstr "Dodaj filtar"
 
-#~ msgid "Limit number of data"
-#~ msgstr "Ograniči broj podataka"
+msgid "Add a new dashboard"
+msgstr "Dodaj novu preglednu ploču"
 
-#~ msgid "Filters"
-#~ msgstr "Filtri"
+msgid "others"
+msgstr "ostalo"
 
-#~ msgid "Embed in another application"
-#~ msgstr "Ugradi u jedan drugi program"
+msgid "Widget"
+msgstr "Widget"
 
-#~ msgid "Direct link"
-#~ msgstr "Direktna poveznica"
+msgid "Use gradient palette"
+msgstr "Koristi paletu gradijenata"
 
-#~ msgid "Iframe"
-#~ msgstr "Iframe"
+msgid "Display value labels on points/bars"
+msgstr "Prikaži vrijednosti na točkama/trakama"
 
-#~ msgid "Or share the dashboard to these target objects:"
-#~ msgstr "Ili dijeli preglednu ploču s ovim objektima cilja:"
+msgid "Limit number of data"
+msgstr "Ograniči broj podataka"
 
-#~ msgid "empty card !"
-#~ msgstr "prazn kartica!"
+msgid "Filters"
+msgstr "Filtri"
 
-#, php-format
-#~ msgid "Number of %s"
-#~ msgstr "Broj za %s"
+msgid "Embed in another application"
+msgstr "Ugradi u jedan drugi program"
 
-#, php-format
-#~ msgid "%s by %s"
-#~ msgstr "%s od %s"
+msgid "Direct link"
+msgstr "Direktna poveznica"
 
-#, php-format
-#~ msgid "List of %s"
-#~ msgstr "Popis za %s"
+msgid "Iframe"
+msgstr "Iframe"
 
-#~ msgid "Number of tickets by month"
-#~ msgstr "Broj naloga po mjesecu"
+msgid "Or share the dashboard to these target objects:"
+msgstr "Ili dijeli preglednu ploču s ovim objektima cilja:"
 
-#~ msgid "Evolution of ticket in the past year"
-#~ msgstr "Razvoj naloga u prošlih godinu dana"
+msgid "empty card !"
+msgstr "prazn kartica!"
 
-#~ msgid "Tickets status by month"
-#~ msgstr "Stanja naloga po mjesecu"
+msgid "Number of %s"
+msgstr "Broj za %s"
 
-#~ msgid "Tickets times (in hours)"
-#~ msgstr "Vremena naloga (u satima)"
+msgid "%s by %s"
+msgstr "%s od %s"
 
-#~ msgid "Tickets summary"
-#~ msgstr "Sažetak naloga"
+msgid "List of %s"
+msgstr "Popis za %s"
 
-#~ msgid "Top ticket's categories"
-#~ msgstr "Top kategorije naloga"
+msgid "Number of tickets by month"
+msgstr "Broj naloga po mjesecu"
 
-#~ msgid "Top ticket's entities"
-#~ msgstr "Top entiteti naloga"
+msgid "Evolution of ticket in the past year"
+msgstr "Razvoj naloga u prošlih godinu dana"
 
-#~ msgid "Top ticket's request types"
-#~ msgstr "Top vrste zahtjeva naloga"
+msgid "Tickets status by month"
+msgstr "Stanja naloga po mjesecu"
 
-#~ msgid "Top ticket's locations"
-#~ msgstr "Top mjesta naloga"
+msgid "Tickets times (in hours)"
+msgstr "Vremena naloga (u satima)"
 
-#~ msgid "Top ticket's requesters"
-#~ msgstr "Top podnositelji zahtjeva"
+msgid "Tickets summary"
+msgstr "Sažetak naloga"
 
-#~ msgid "Top ticket's requester groups"
-#~ msgstr "Top grupe podnositelja zahtjeva"
+msgid "Top ticket's categories"
+msgstr "Top kategorije naloga"
 
-#~ msgid "Top ticket's observers"
-#~ msgstr "Top promatrači zahtjeva"
+msgid "Top ticket's entities"
+msgstr "Top entiteti naloga"
 
-#~ msgid "Top ticket's observer groups"
-#~ msgstr "Top grupe promatrača zahtjeva"
+msgid "Top ticket's request types"
+msgstr "Top vrste zahtjeva naloga"
 
-#~ msgid "Top ticket's assignees"
-#~ msgstr "Top opunomoćenici zahtjeva"
+msgid "Top ticket's locations"
+msgstr "Top mjesta naloga"
 
-#~ msgid "Top ticket's assignee groups"
-#~ msgstr "Top grupe opunomoćenika zahtjeva"
+msgid "Top ticket's requesters"
+msgstr "Top podnositelji zahtjeva"
 
-#~ msgid "List of reminders"
-#~ msgstr "Popis podsjetnika"
+msgid "Top ticket's requester groups"
+msgstr "Top grupe podnositelja zahtjeva"
 
-#~ msgid "Editable markdown card"
-#~ msgstr "Urediva markdown kartica"
+msgid "Top ticket's observers"
+msgstr "Top promatrači zahtjeva"
 
-#~ msgid "Toggle edit mode to edit content"
-#~ msgstr "Uklj/Isklj modus za uređivanje sadržaja"
+msgid "Top ticket's observer groups"
+msgstr "Top grupe promatrača zahtjeva"
 
-#~ msgid "field name in DB"
-#~ msgstr "ime polja u bazi podataka"
+msgid "Top ticket's assignees"
+msgstr "Top opunomoćenici zahtjeva"
 
-#~ msgid "Example:"
-#~ msgstr "Primjer:"
+msgid "Top ticket's assignee groups"
+msgstr "Top grupe opunomoćenika zahtjeva"
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "U GLPI 9.2 smo uveli novu statističku funkciju zvanu „Telemetrija” koja "
-#~ "anonimno, uz tvoj pristanak, šalje podatke na našu web stranicu "
-#~ "telemetrije."
+msgid "List of reminders"
+msgstr "Popis podsjetnika"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP mreža nije uključena u bazu podataka. Međutim, možeš vidjeti "
-#~ "trenutačno dostupne mreže."
+msgid "Editable markdown card"
+msgstr "Urediva markdown kartica"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Nekoliko mrežnih imena nađeno! Idi na tabulator 'Mrežno ime' za "
-#~ "upravljanje njima."
+msgid "Toggle edit mode to edit content"
+msgstr "Uklj/Isklj modus za uređivanje sadržaja"
 
-#~ msgid "Add a network name"
-#~ msgstr "Dodaj mrežno ime"
+msgid "field name in DB"
+msgstr "ime polja u bazi podataka"
 
-#~ msgid "Not associated"
-#~ msgstr "Nije povezano"
+msgid "Example:"
+msgstr "Primjer:"
 
-#~ msgid "Create a new network name"
-#~ msgstr "Stvori novo ime mreže"
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"U GLPI 9.2 smo uveli novu statističku funkciju zvanu „Telemetrija” koja "
+"anonimno, uz tvoj pristanak, šalje podatke na našu web stranicu telemetrije."
 
-#~ msgid "No network name found"
-#~ msgstr "Nijedno mrežno ime nije pronađeno"
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP mreža nije uključena u bazu podataka. Međutim, možeš vidjeti trenutačno "
+"dostupne mreže."
 
-#~ msgid "Unable to download plugin archive."
-#~ msgstr "Nije moguće preuzeti arhivu dodatka."
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Nekoliko mrežnih imena nađeno! Idi na tabulator 'Mrežno ime' za upravljanje "
+"njima."
 
-#, php-format
-#~ msgid "Plugin archive format is not supported by your system : %s."
-#~ msgstr "Tvoj sustav ne podržava format arhive dodatka: %s."
+msgid "Add a network name"
+msgstr "Dodaj mrežno ime"
 
-#~ msgid "Unable to extract plugin archive."
-#~ msgstr "Nije moguće raspakirati arhivu dodatka."
+msgid "Not associated"
+msgstr "Nije povezano"
 
-#~ msgid "Check all plugin updates"
-#~ msgstr "Provjeri aktualnost verzija svih dodataka"
+msgid "Create a new network name"
+msgstr "Stvori novo ime mreže"
 
-#, php-format
-#~ msgid "New version for plugin %s: %s"
-#~ msgstr "Nova verzija za dodatak %s: %s"
+msgid "No network name found"
+msgstr "Nijedno mrežno ime nije pronađeno"
 
-#~ msgid "Installed"
-#~ msgstr "Instalirano"
+msgid "Unable to download plugin archive."
+msgstr "Nije moguće preuzeti arhivu dodatka."
 
-#~ msgid "Discover"
-#~ msgstr "Otkrij"
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr "Tvoj sustav ne podržava format arhive dodatka: %s."
 
-#, php-format
-#~ msgid ""
-#~ "%1$s services website seems not available from your network or offline"
-#~ msgstr ""
-#~ "Čini se da web mjesto %1$s usluga nije dostupno s vaše mreže ili izvan "
-#~ "mreže"
+msgid "Unable to extract plugin archive."
+msgstr "Nije moguće raspakirati arhivu dodatka."
 
-#~ msgid "Maybe you could setup a proxy"
-#~ msgstr "Možda možeš postaviti proxija"
+msgid "Check all plugin updates"
+msgstr "Provjeri aktualnost verzija svih dodataka"
 
-#~ msgid "or please check later"
-#~ msgstr "ili navrati kasnije"
+msgid "New version for plugin %s: %s"
+msgstr "Nova verzija za dodatak %s: %s"
 
-#, php-format
-#~ msgid "Your %1$s registration is not valid."
-#~ msgstr "Tvoja %1$s registracija nije valjana."
+msgid "Installed"
+msgstr "Instalirano"
 
-#~ msgid "A registration, at least a free one, is required to use marketplace!"
-#~ msgstr "Za upotrebu tržnice, potrebna je (barem besplatna) registracija!"
+msgid "Discover"
+msgstr "Otkrij"
 
-#, php-format
-#~ msgid "Register on %1$s"
-#~ msgstr "Registriraj se na %1$s"
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+"Čini se da web mjesto %1$s usluga nije dostupno s vaše mreže ili izvan mreže"
 
-#~ msgid "fill your registration key in setup."
-#~ msgstr "u upiši svoj registracijski ključ u instalaciji."
+msgid "Maybe you could setup a proxy"
+msgstr "Možda možeš postaviti proxija"
 
-#, php-format
-#~ msgid "We can't write on the markeplace directory (%s)."
-#~ msgstr "Ne možemo pisati u mapu tržnice (%s)."
+msgid "or please check later"
+msgstr "ili navrati kasnije"
 
-#~ msgid ""
-#~ "If you want to ease the plugins download, please check permissions and "
-#~ "ownership of this directory."
-#~ msgstr ""
-#~ "Ako želiš olakšati preuzimanje dodataka, provjeri dozvole i vlasništvo za "
-#~ "ovu mapu."
+msgid "Your %1$s registration is not valid."
+msgstr "Tvoja %1$s registracija nije valjana."
 
-#~ msgid ""
-#~ "Otherwise, you will need to download and unzip the plugins archives "
-#~ "manually."
-#~ msgstr ""
-#~ "U suprotnom ćeš arhivu dodataka morati ručno preuzeti i raspakirati."
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr "Za upotrebu tržnice, potrebna je (barem besplatna) registracija!"
 
-#~ msgid "Alpha ASC"
-#~ msgstr "Alfabetski uzlazno"
+msgid "Register on %1$s"
+msgstr "Registriraj se na %1$s"
 
-#~ msgid "Alpha DESC"
-#~ msgstr "Alfabetski silazno"
+msgid "fill your registration key in setup."
+msgstr "u upiši svoj registracijski ključ u instalaciji."
 
-#~ msgid "Most popular"
-#~ msgstr "Najpopularnije"
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Tvoj komentar je promijenjen"
 
-#~ msgid "Last updated"
-#~ msgstr "Zadnje aktualizirano"
+#, fuzzy
+#| msgid "Register on %1$s"
+msgid "Renew it on %1$s."
+msgstr "Registriraj se na %1$s"
 
-#~ msgid "Most recent"
-#~ msgstr "Najnovije"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr "Ne možemo pisati u mapu tržnice (%s)."
 
-#~ msgid "Best notes"
-#~ msgstr "Najbolje napomene"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+"Ako želiš olakšati preuzimanje dodataka, provjeri dozvole i vlasništvo za "
+"ovu mapu."
 
-#~ msgid "Your plugin here ? Contact us."
-#~ msgstr "Želiš ovdje vidjeti tvoj dodatak? Kontaktiraj nas."
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr "U suprotnom ćeš arhivu dodataka morati ručno preuzeti i raspakirati."
 
-#~ msgid "Refresh plugin list"
-#~ msgstr "Aktualiziraj popis dodataka"
+msgid "Alpha ASC"
+msgstr "Alfabetski uzlazno"
 
-#~ msgid "Filter plugin list"
-#~ msgstr "Filtriraj popis dodataka"
+msgid "Alpha DESC"
+msgstr "Alfabetski silazno"
 
-#~ msgid "Homepage"
-#~ msgstr "Početna web-stranica"
+msgid "Most popular"
+msgstr "Najpopularnije"
 
-#~ msgid "Get help"
-#~ msgstr "Pomoć"
+msgid "Last updated"
+msgstr "Zadnje aktualizirano"
 
-#~ msgid "Readme"
-#~ msgstr "README dokument"
+msgid "Most recent"
+msgstr "Najnovije"
 
-#~ msgid "Clean"
-#~ msgstr "Očisti"
+msgid "Best notes"
+msgstr "Najbolje napomene"
 
-#~ msgid ""
-#~ "The plugin has an available update but its directory is not writable."
-#~ msgstr ""
-#~ "Za dadatak postoji nova verzija, ali u njegovu mapu nije moguće pisati."
+msgid "Your plugin here ? Contact us."
+msgstr "Želiš ovdje vidjeti tvoj dodatak? Kontaktiraj nas."
 
-#, php-format
-#~ msgid ""
-#~ "Download archive manually, you must uncompress it in plugins directory "
-#~ "(%s)"
-#~ msgstr "Ručno preuzmi arhivu, moraš je otpakirati u mapi dodataka (%s)"
+msgid "Refresh plugin list"
+msgstr "Aktualiziraj popis dodataka"
 
-#, php-format
-#~ msgid "A new version (%s) is available, update ?"
-#~ msgstr "Dostupna je nova verzija (%s). Želiš li aktualizirati?"
+msgid "Filter plugin list"
+msgstr "Filtriraj popis dodataka"
 
-#, php-format
-#~ msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-#~ msgstr "Za pristup ovom dodatku potrebna je ponuda vrhunske GLPI-mreže (%s)"
+msgid "Homepage"
+msgstr "Početna web-stranica"
 
-#~ msgid "Install"
-#~ msgstr "Instaliraj"
+msgid "Get help"
+msgstr "Pomoć"
 
-#~ msgid "Enable"
-#~ msgstr "Aktiviraj"
+msgid "Readme"
+msgstr "README dokument"
 
-#~ msgid "Uninstall"
-#~ msgstr "Deinstaliraj"
+msgid "Clean"
+msgstr "Očisti"
 
-#, php-format
-#~ msgid "You must have a %s subscription to get this plugin"
-#~ msgstr "Za dobivanje ovog dodatka potrebna je pretplata na %s"
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "Prijava nije ispravna. Nije moguće dodati korisnika."
 
-#, php-format
-#~ msgid "You need at least the %s subscription level to get this plugin"
-#~ msgstr "Za dobivanje ovog dodatka potrebna je pretplata barem razine %s"
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+"Za dadatak postoji nova verzija, ali u njegovu mapu nije moguće pisati."
 
-#, php-format
-#~ msgid "%s plugin"
-#~ msgid_plural "%s plugins"
-#~ msgstr[0] "%s dodatak"
-#~ msgstr[1] "%s dodatka"
-#~ msgstr[2] "%s dodataka"
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr "Ručno preuzmi arhivu, moraš je otpakirati u mapi dodataka (%s)"
 
-#~ msgid "GLPI provides a new marketplace to download and install plugins."
-#~ msgstr "GLPI nudi novu tržnicu za preuzimanje i instaliranje dodataka."
+msgid "A new version (%s) is available, update ?"
+msgstr "Dostupna je nova verzija (%s). Želiš li aktualizirati?"
 
-#~ msgid ""
-#~ "Do you want to replace the plugins setup page by the new marketplace ?"
-#~ msgstr ""
-#~ "Želiš li zamijeniti stranicu za postavljanje dodataka s novom tržnicom?"
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr "Za pristup ovom dodatku potrebna je ponuda vrhunske GLPI-mreže (%s)"
 
-#~ msgid "Later"
-#~ msgstr "Kasnije"
+msgid "Install"
+msgstr "Instaliraj"
 
-#~ msgid "Switch to marketplace"
-#~ msgstr "Promijeni na tržnicu"
+msgid "Enable"
+msgstr "Aktiviraj"
 
-#~ msgid "Some updates are available for your installed plugins!"
-#~ msgstr "Postoje nove verzije za neke instalirane dodatke!"
+msgid "Uninstall"
+msgstr "Deinstaliraj"
 
-#~ msgid "Plugin name"
-#~ msgstr "Ime dodatka"
+msgid "You must have a %s subscription to get this plugin"
+msgstr "Za dobivanje ovog dodatka potrebna je pretplata na %s"
 
-#~ msgid "Plugin new version number"
-#~ msgstr "Broj nove verzije dodatka"
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr "Za dobivanje ovog dodatka potrebna je pretplata barem razine %s"
 
-#~ msgid "Plugin old version number"
-#~ msgstr "Broj stare verzije dodatka"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "%s dodatak"
+msgstr[1] "%s dodatka"
+msgstr[2] "%s dodataka"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "Na tražilici, koristiti „Istek sadržava NULL” za traženje licence bez "
-#~ "datuma isteka"
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr "GLPI nudi novu tržnicu za preuzimanje i instaliranje dodataka."
 
-#~ msgid "Registration"
-#~ msgstr "Registracija"
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+"Želiš li zamijeniti stranicu za postavljanje dodataka s novom tržnicom?"
 
-#~ msgid ""
-#~ "A registration key is needed to use advanced feature (like marketplace) "
-#~ "in GLPI"
-#~ msgstr ""
-#~ "Za upotrebu napredne funkcije (kao što je tržnica) u GLPI-u potreban je "
-#~ "registracijski ključ"
+msgid "Later"
+msgstr "Kasnije"
 
-#, php-format
-#~ msgid "Register on %1$s!"
-#~ msgstr "Registriraj se na %1$s!"
+msgid "Switch to marketplace"
+msgstr "Promijeni na tržnicu"
 
-#~ msgid "And retrieve your key to paste it below"
-#~ msgstr "I dolje umetni ključ i dobiveni ključ"
+msgid "Some updates are available for your installed plugins!"
+msgstr "Postoje nove verzije za neke instalirane dodatke!"
 
-#, php-format
-#~ msgid "Error was: %s"
-#~ msgstr "Greška je bila:%s"
+msgid "Plugin name"
+msgstr "Ime dodatka"
 
-#~ msgid "Registration key"
-#~ msgstr "Ključ za registraciju"
+msgid "Plugin new version number"
+msgstr "Broj nove verzije dodatka"
 
-#~ msgid "Subscription"
-#~ msgstr "Pretplata"
+msgid "Plugin old version number"
+msgstr "Broj stare verzije dodatka"
 
-#~ msgid "Unknown"
-#~ msgstr "Nepoznata"
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"Na tražilici, koristiti „Istek sadržava NULL” za traženje licence bez datuma "
+"isteka"
 
-#~ msgid "Registered by"
-#~ msgstr "Registrirano od"
+msgid "Registration"
+msgstr "Registracija"
 
-#~ msgid "Unable to fetch registration information."
-#~ msgstr "Nije moguće dohvatiti podatke o registraciji."
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+"Za upotrebu napredne funkcije (kao što je tržnica) u GLPI-u potreban je "
+"registracijski ključ"
 
-#~ msgid "The registration key is invalid."
-#~ msgstr "Ključ za registraciju je neispravan."
+msgid "Register on %1$s!"
+msgstr "Registriraj se na %1$s!"
 
-#~ msgid "The registration key is valid."
-#~ msgstr "Ključ za registraciju je ispravan."
+msgid "And retrieve your key to paste it below"
+msgstr "I dolje umetni ključ i dobiveni ključ"
 
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "Trebaš pomoć s integracijom GLPI-a u vlastiti IT sustav, želiš ispraviti "
-#~ "grešku ili iskoristi unaprijed konfigurirana pravila ili rječnike?\n"
-#~ "\n"
-#~ "Nudimo ti prostor %s.\n"
-#~ "GLPI-mreža je komercijalni proizvod koji uključuje pretplatu za podršku "
-#~ "razine 3, čime se osigurava ispravljanje grešaka s kojima se suočavaš za "
-#~ "vrijeme trajanja obveza.\n"
-#~ "\n"
-#~ "U tom istom prostoru moći ćeš <b>kontaktirati službenog partnera</b> koji "
-#~ "pomaže pri integraciji GLPI-a.\n"
-#~ "\n"
-#~ "Ili podrži razvoj GLPI-a putem <b>doniranja</b>."
+msgid "Error was: %s"
+msgstr "Greška je bila:%s"
 
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "Imaš poteškoće s postavljanjem naprednog GLPI modula?\n"
-#~ "Možemo ti ih pomoći riješiti. Prijavi se za podršku na %s."
+msgid "Registration key"
+msgstr "Ključ za registraciju"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "E-mail je poslan na tvoju e-mail adresu s podacima za ponovno "
-#~ "postavljanje lozinke."
+msgid "Subscription"
+msgstr "Pretplata"
 
-#~ msgid "Email address not found."
-#~ msgstr "E-mail adresa nije nađena."
+msgid "Unknown"
+msgstr "Nepoznata"
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "MAC adresa i IP adresa opreme su uključeni u sažeti mrežni priključak"
+msgid "Registered by"
+msgstr "Registrirano od"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr "Datoteka premašuje upload_max_filesize direktivu u php.ini"
+msgid "Unable to fetch registration information."
+msgstr "Nije moguće dohvatiti podatke o registraciji."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "Datoteka premašuje MAX_FILE_SIZE direktivu koja je navedena u HTML obrazcu"
+msgid "The registration key is invalid."
+msgstr "Ključ za registraciju je neispravan."
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Učitana datoteka je samo djelomično prenesena"
+#, fuzzy
+#| msgid "The registration key is invalid."
+msgid "The registration key refers to a terminated subscription."
+msgstr "Ključ za registraciju je neispravan."
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Zapisivanje datoteke na disk nije uspjelo"
+msgid "The registration key is valid."
+msgstr "Ključ za registraciju je ispravan."
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "PHP proširenje je zaustavilo prijenos datoteke"
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"Trebaš pomoć s integracijom GLPI-a u vlastiti IT sustav, želiš ispraviti "
+"grešku ili iskoristi unaprijed konfigurirana pravila ili rječnike?\n"
+"\n"
+"Nudimo ti prostor %s.\n"
+"GLPI-mreža je komercijalni proizvod koji uključuje pretplatu za podršku "
+"razine 3, čime se osigurava ispravljanje grešaka s kojima se suočavaš za "
+"vrijeme trajanja obveza.\n"
+"\n"
+"U tom istom prostoru moći ćeš <b>kontaktirati službenog partnera</b> koji "
+"pomaže pri integraciji GLPI-a.\n"
+"\n"
+"Ili podrži razvoj GLPI-a putem <b>doniranja</b>."
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr "Datoteka premašuje post_max_filesize direktivu u php.ini"
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"Imaš poteškoće s postavljanjem naprednog GLPI modula?\n"
+"Možemo ti ih pomoći riješiti. Prijavi se za podršku na %s."
 
-#~ msgid "File is too big"
-#~ msgstr "Datoteka je prevelika"
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"E-mail je poslan na tvoju e-mail adresu s podacima za ponovno postavljanje "
+"lozinke."
 
-#~ msgid "File is too small"
-#~ msgstr "Datoteka je premala"
+msgid "Email address not found."
+msgstr "E-mail adresa nije nađena."
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Prekoračen maksimalni broj datoteka"
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr "MAC adresa i IP adresa opreme su uključeni u sažeti mrežni priključak"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Slika prelazi maksimalnu širinu"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "Datoteka premašuje upload_max_filesize direktivu u php.ini"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Slika zahtijeva minimalnu širinu"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Datoteka premašuje MAX_FILE_SIZE direktivu koja je navedena u HTML obrazcu"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Slika prelazi maksimalnu visinu"
+msgid "The uploaded file was only partially uploaded"
+msgstr "Učitana datoteka je samo djelomično prenesena"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Slika zahtijeva minimalnu visinu"
+msgid "Failed to write file to disk"
+msgstr "Zapisivanje datoteke na disk nije uspjelo"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Nedozvoljena vrsta datoteke"
+msgid "A PHP extension stopped the file upload"
+msgstr "PHP proširenje je zaustavilo prijenos datoteke"
 
-#~ msgid "File upload aborted"
-#~ msgstr "Prijenos datoteke prekinut"
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "Datoteka premašuje post_max_filesize direktivu u php.ini"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "Neuspjelo mijenjanje veličine slike"
+msgid "File is too big"
+msgstr "Datoteka je prevelika"
 
-#~ msgid "Display GLPI debug information"
-#~ msgstr "Prikažite informacije o otklanjanju pogrešaka GLPI-a"
+msgid "File is too small"
+msgstr "Datoteka je premala"
 
-#~ msgid "Progress"
-#~ msgstr "Napredak"
+msgid "Maximum number of files exceeded"
+msgstr "Prekoračen maksimalni broj datoteka"
 
-#~ msgid "My settings"
-#~ msgstr "Moje postavke"
+msgid "Image exceeds maximum width"
+msgstr "Slika prelazi maksimalnu širinu"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "Natrag na vrh stranice"
+msgid "Image requires a minimum width"
+msgstr "Slika zahtijeva minimalnu širinu"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "Naći ćeš je na stranicama GLPI-PROJECT.org."
+msgid "Image exceeds maximum height"
+msgstr "Slika prelazi maksimalnu visinu"
 
-#~ msgid "Check all"
-#~ msgstr "Označi sve"
+msgid "Image requires a minimum height"
+msgstr "Slika zahtijeva minimalnu visinu"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Odznači sve"
+msgid "Filetype not allowed"
+msgstr "Nedozvoljena vrsta datoteke"
 
-#~ msgid "Check all as"
-#~ msgstr "Označi sve kao"
+msgid "File upload aborted"
+msgstr "Prijenos datoteke prekinut"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Odabir prevelik, masovna radnja deaktivirana."
+msgid "Failed to resize image"
+msgstr "Neuspjelo mijenjanje veličine slike"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Za povećanje ograničenja: promijeni max_input_vars ili suhosin.post."
-#~ "max_vars u postavkama php-a."
+msgid "Display GLPI debug information"
+msgstr "Prikažite informacije o otklanjanju pogrešaka GLPI-a"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "Opisno polje je obavezno"
+msgid "Progress"
+msgstr "Napredak"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "Od %1$d. do %2$d. od %3$d"
+msgid "My settings"
+msgstr "Moje postavke"
 
-#~ msgid "Empty array"
-#~ msgstr "Prazan niz"
+msgid "Back to top of the page"
+msgstr "Natrag na vrh stranice"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d na %2$d"
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "Naći ćeš je na stranicama GLPI-PROJECT.org."
 
-#~ msgid "Close (Esc)"
-#~ msgstr "Zatvori (Esc)"
+msgid "Check all"
+msgstr "Označi sve"
 
-#~ msgid "Share"
-#~ msgstr "Dijeli"
+msgid "Uncheck all"
+msgstr "Odznači sve"
 
-#~ msgid "Zoom in/out"
-#~ msgstr "Uvećaj/umanji zumiranje"
+msgid "Check all as"
+msgstr "Označi sve kao"
 
-#~ msgid "Previous (arrow left)"
-#~ msgstr "Prethodno (lijeva strelica)"
+msgid "Selection too large, massive action disabled."
+msgstr "Odabir prevelik, masovna radnja deaktivirana."
 
-#~ msgid "Next (arrow right)"
-#~ msgstr "Sljedeće (desna strelica)"
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Za povećanje ograničenja: promijeni max_input_vars ili suhosin.post.max_vars "
+"u postavkama php-a."
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr ""
-#~ "Zalijepi datoteku pomoću „povuci i ispusti” ili „kopiraj i zalijepi” u "
-#~ "uređivaču ili "
+msgid "The description field is mandatory"
+msgstr "Opisno polje je obavezno"
 
-#~ msgid "selecting them"
-#~ msgstr "njihovim odabirom"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "Od %1$d. do %2$d. od %3$d"
 
-#~ msgid "File(s)"
-#~ msgstr "Datoteka(e)"
+msgid "Empty array"
+msgstr "Prazan niz"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Povuci i ispusti datoteku ovdje ili"
+msgid "%1$d on %2$d"
+msgstr "%1$d na %2$d"
 
-#~ msgid "Upload successful"
-#~ msgstr "Prijenos uspješan"
+msgid "Close (Esc)"
+msgstr "Zatvori (Esc)"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Označi/odznači sve"
+msgid "Share"
+msgstr "Dijeli"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Započni tipkati za pronalaženje izbornika"
+msgid "Zoom in/out"
+msgstr "Uvećaj/umanji zumiranje"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "Modus otklanjanje grešaka aktiviran"
+msgid "Previous (arrow left)"
+msgstr "Prethodno (lijeva strelica)"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "Modus otklanjanje grešaka deaktiviran"
+msgid "Next (arrow right)"
+msgstr "Sljedeće (desna strelica)"
 
-#~ msgid "Saved searches"
-#~ msgstr "Spremljene pretrage"
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+"Zalijepi datoteku pomoću „povuci i ispusti” ili „kopiraj i zalijepi” u "
+"uređivaču ili "
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Upravljaj spremljenim pretragama"
+msgid "selecting them"
+msgstr "njihovim odabirom"
 
-#~ msgid "Add is disabled"
-#~ msgstr "Dodavanje je deaktivirano"
+msgid "File(s)"
+msgstr "Datoteka(e)"
 
-#~ msgid "Search is disabled"
-#~ msgstr "Pretraga je deaktivirana"
+msgid "Drag and drop your file here, or"
+msgstr "Povuci i ispusti datoteku ovdje ili"
 
-#~ msgid "Global Kanban"
-#~ msgstr "Globalni Kanban"
+msgid "Upload successful"
+msgstr "Prijenos uspješan"
 
-#, php-format
-#~ msgid "You are impersonating %s."
-#~ msgstr "Personificiraš %s."
+msgid "Check/uncheck all"
+msgstr "Označi/odznači sve"
 
-#~ msgid "Stop impersonating"
-#~ msgstr "Prestani personificirati"
+msgid "Start typing to find a menu"
+msgstr "Započni tipkati za pronalaženje izbornika"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr ""
-#~ "Dozvoli prijavu na API i dobij token za sesiju s korisničkim "
-#~ "vjerodajnicama"
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Izmjenjeno"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "Dozvoli prijavu na API i dobij token za sesiju s korisničkim vanjskim "
-#~ "tokenom. Pogledaj „Ključevi za udaljeni pristup” u kartici korisničkih "
-#~ "postavki "
+msgid "Debug mode enabled"
+msgstr "Modus otklanjanje grešaka aktiviran"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Prikaži GLPI ID"
+msgid "Debug mode disabled"
+msgstr "Modus otklanjanje grešaka deaktiviran"
 
-#~ msgid "Color palette"
-#~ msgstr "Paleta boja"
+msgid "Saved searches"
+msgstr "Spremljene pretrage"
 
-#~ msgid "Layout"
-#~ msgstr "Izgled"
+msgid "Manage saved searches"
+msgstr "Upravljaj spremljenim pretragama"
 
-#~ msgid "Tabs on left"
-#~ msgstr "Kartice na lijevoj strani"
+msgid "Add is disabled"
+msgstr "Dodavanje je deaktivirano"
 
-#~ msgid "Classic view"
-#~ msgstr "Klasični prikaz"
+msgid "Search is disabled"
+msgstr "Pretraga je deaktivirana"
 
-#~ msgid "Vertical split"
-#~ msgstr "Okomito dijeljenje"
+msgid "Global Kanban"
+msgstr "Globalni Kanban"
 
-#~ msgid "Dashboards"
-#~ msgstr "Pregledne ploče"
+msgid "You are impersonating %s."
+msgstr "Personificiraš %s."
 
-#~ msgid "Default for central"
-#~ msgstr "Standardno za centralnu"
+msgid "Stop impersonating"
+msgstr "Prestani personificirati"
 
-#~ msgid "Default for Assets"
-#~ msgstr "Standardno za inventar"
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+"Dozvoli prijavu na API i dobij token za sesiju s korisničkim vjerodajnicama"
 
-#~ msgid "Default for Assistance"
-#~ msgstr "Standardno za pomoć"
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"Dozvoli prijavu na API i dobij token za sesiju s korisničkim vanjskim "
+"tokenom. Pogledaj „Ključevi za udaljeni pristup” u kartici korisničkih "
+"postavki "
 
-#~ msgid "Default for tickets (mini dashboard)"
-#~ msgstr "Standardno za naloge (mala pregledna ploča)"
+msgid "Show GLPI ID"
+msgstr "Prikaži GLPI ID"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Provjeri, je li dostupna nova verzija"
+msgid "Color palette"
+msgstr "Paleta boja"
 
-#~ msgid "Show filters"
-#~ msgstr "Prikaži filtre"
+msgid "Layout"
+msgstr "Izgled"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "Nema povijesti koja se poklapa s tvojim filtrima"
+msgid "Tabs on left"
+msgstr "Kartice na lijevoj strani"
 
-#~ msgid "Add to schedule"
-#~ msgstr "Dodaj u kalendar"
+msgid "Classic view"
+msgstr "Klasični prikaz"
 
-#~ msgid "Position in room"
-#~ msgstr "Položaj unutar prostorije"
+msgid "Vertical split"
+msgstr "Okomito dijeljenje"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "Orijentacija vrata unutar prostorije"
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Završetak ugovorne obaveze"
 
-#~ msgid "North"
-#~ msgstr "Sjever"
+msgid "Dashboards"
+msgstr "Pregledne ploče"
 
-#~ msgid "East"
-#~ msgstr "Istok"
+msgid "Default for central"
+msgstr "Standardno za centralnu"
 
-#~ msgid "South"
-#~ msgstr "Jug"
+msgid "Default for Assets"
+msgstr "Standardno za inventar"
 
-#~ msgid "West"
-#~ msgstr "Zapad"
+msgid "Default for Assistance"
+msgstr "Standardno za pomoć"
 
-#~ msgid "Number of units"
-#~ msgstr "Broj jedinica"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Standardno za naloge (mala pregledna ploča)"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "Check if a new version is available"
+msgstr "Provjeri, je li dostupna nova verzija"
 
-#~ msgid "Width"
-#~ msgstr "Širina"
+msgid "Show filters"
+msgstr "Prikaži filtre"
 
-#~ msgid "Height"
-#~ msgstr "Visina"
+msgid "No historical matching your filters"
+msgstr "Nema povijesti koja se poklapa s tvojim filtrima"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "Izmjerena snaga (u wattima)"
+msgid "Add to schedule"
+msgstr "Dodaj u kalendar"
 
-#~ msgid "Max. weight"
-#~ msgstr "Maks. težina"
+msgid "Position in room"
+msgstr "Položaj unutar prostorije"
 
-#~ msgid "No rack found"
-#~ msgstr "Nijedan ormar nije pronađen"
+msgid "Door orientation in room"
+msgstr "Orijentacija vrata unutar prostorije"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "Sljedeći elementi se nalaze izvan granica sobe"
+msgid "North"
+msgstr "Sjever"
 
-#~ msgid "Blueprint"
-#~ msgstr "Nacrt"
+msgid "East"
+msgstr "Istok"
 
-#~ msgid "Grid"
-#~ msgstr "Mreža"
+msgid "South"
+msgstr "Jug"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "Ovdje umetni ormar"
+msgid "West"
+msgstr "Zapad"
 
-#~ msgid "Position must be set"
-#~ msgstr "Položaj mora biti postavljen"
+msgid "Number of units"
+msgstr "Broj jedinica"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s položaj nije dostupan"
+msgid "U"
+msgstr "U"
 
-#~ msgid "All categories"
-#~ msgstr "Sve kategorije"
+msgid "Width"
+msgstr "Širina"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Nekategorizirani softver"
+msgid "Height"
+msgstr "Visina"
 
-#~ msgid "Valid license"
-#~ msgstr "Valjana licenca"
+msgid "Measured power (in watts)"
+msgstr "Izmjerena snaga (u wattima)"
 
-#~ msgid "Other component"
-#~ msgstr "Druga komponenta"
+msgid "Max. weight"
+msgstr "Maks. težina"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "Još jedna stvar prije nego što počnete"
+msgid "No rack found"
+msgstr "Nijedan ormar nije pronađen"
 
-#~ msgid "Donate"
-#~ msgstr "Doniraj"
+msgid "Following elements are out of room bounds"
+msgstr "Sljedeći elementi se nalaze izvan granica sobe"
+
+msgid "Blueprint"
+msgstr "Nacrt"
+
+msgid "Grid"
+msgstr "Mreža"
+
+msgid "Insert a rack here"
+msgstr "Ovdje umetni ormar"
+
+msgid "Position must be set"
+msgstr "Položaj mora biti postavljen"
+
+msgid "%1$s position is not available"
+msgstr "%1$s položaj nije dostupan"
+
+msgid "All categories"
+msgstr "Sve kategorije"
+
+msgid "Uncategorized software"
+msgstr "Nekategorizirani softver"
+
+msgid "Valid license"
+msgstr "Valjana licenca"
+
+msgid "Other component"
+msgstr "Druga komponenta"
+
+msgid "One last thing before starting"
+msgstr "Još jedna stvar prije nego što počnete"
+
+msgid "Donate"
+msgstr "Doniraj"
+
+msgid "Unofficial translations are also available"
+msgstr "Neslužbeni prijevodi su također dostupni"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Pročitao(la) sam i PRISTAJEM na gore navedene uvjete licence."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Pročitao(la) sam i NE PRISTAJEM na gore navedene uvjete licence"
+
+msgid "Installation or update of GLPI"
+msgstr "Instaliranje ili aktualiziranje GLPI-a"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Odaberi „Instaliraj” za kompletno novu instalaciju GLPI-a."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+"Odaberi „Nadogradi” za aktualiziranje verzije GLPI-a iz jedne ranije verzije"
+
+msgid "Do you want to continue?"
+msgstr "Želiš nastaviti?"
+
+msgid "Database connection parameters"
+msgstr "Parametri veze s bazom podataka"
+
+msgid "Test of the connection at the database"
+msgstr "Test veze pri bazi podataka"
+
+msgid "Can't connect to the database"
+msgstr "Nije moguće spojiti se s bazom podataka"
+
+msgid "The server answered: %s"
+msgstr "Poslužitelj je odgovorio: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Polje poslužitelja i/ili korisnika je prazno"
+
+msgid "Please select a database:"
+msgstr "Odaberi bazu podataka:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Stvori novu bazu podataka ili odaberi postojeću:"
+
+msgid "Please select the database to update:"
+msgstr "Odaberi bazu podataka koju želiš aktualizirati:"
+
+msgid "Initialization of the database"
+msgstr "Inicijaliziranje baze podataka"
+
+msgid "Impossible to use the database:"
+msgstr "Nemoguće koristiti bazu podataka:"
+
+msgid "OK - database was initialized"
+msgstr "U redu – baza podataka je inicijalizirana"
+
+msgid "Impossible to write the database setup file"
+msgstr "Nemoguće zapisati datoteku instalacije baze podataka"
+
+msgid "Database created"
+msgstr "Baza podataka stvorena"
+
+msgid "Error in creating database!"
+msgstr "Greška pri izradi baze podataka!"
+
+msgid "You didn't select a database!"
+msgstr "Niste odabrali bazu podataka!"
+
+msgid "Collect data"
+msgstr "Preuzmi podatke"
+
+msgid "The installation is finished"
+msgstr "Instalacija je završena"
+
+msgid "Default logins / passwords are:"
+msgstr "Standardne prijave/lozinke su:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech za račun tehničara"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal za normalni korisnički račun"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly za račun koji se koristi samo za slanje"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "Možeš izbrisati ili mijenjati ove račune kao i početne podatke."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Nije moguće stvoriti datoteku veza za bazu podataka, provjeri dozvole za "
+"datoteke."
+
+msgid "Select your language"
+msgstr "Odaberite vaš jezik"
+
+msgid "Beginning of the installation"
+msgstr "Početak instalacije"
+
+msgid "Step %d"
+msgstr "%d. korak"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI – Autentifikacija"
+
+msgid "Remember me"
+msgstr "Zapamti me"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Tvoj preglednik mora imati aktiviran JavaScript"
+
+msgid "You must accept cookies to reach this application"
+msgstr "Za pristup aplikaciji potrebno je prihvatiti kolačiće"
+
+msgid "Invalid use of session ID"
+msgstr "Neispravna upotreba ID-a sesije"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Pristup na često postavljena pitanja"
+
+msgid "Add a card"
+msgstr "Dodaj karticu"
+
+msgid "Add a filter"
+msgstr "Dodaj filtar"
+
+msgid "Saved"
+msgstr "Spremljeno"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Sigurno želiš izbrisati preglednu ploču „%s”?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Datum slanja"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Koristi GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Neslužbeni prijevodi su također dostupni"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Pročitao(la) sam i PRISTAJEM na gore navedene uvjete licence."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "Pročitao(la) sam i NE PRISTAJEM na gore navedene uvjete licence"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "Instaliranje ili aktualiziranje GLPI-a"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Odaberi „Instaliraj” za kompletno novu instalaciju GLPI-a."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "Odaberi „Nadogradi” za aktualiziranje verzije GLPI-a iz jedne ranije "
-#~ "verzije"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Želiš nastaviti?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Parametri veze s bazom podataka"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Test veze pri bazi podataka"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Nije moguće spojiti se s bazom podataka"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Poslužitelj je odgovorio: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Polje poslužitelja i/ili korisnika je prazno"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Odaberi bazu podataka:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Stvori novu bazu podataka ili odaberi postojeću:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Odaberi bazu podataka koju želiš aktualizirati:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Inicijaliziranje baze podataka"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Nemoguće koristiti bazu podataka:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "U redu – baza podataka je inicijalizirana"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Nemoguće zapisati datoteku instalacije baze podataka"
-
-#~ msgid "Database created"
-#~ msgstr "Baza podataka stvorena"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Greška pri izradi baze podataka!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Niste odabrali bazu podataka!"
-
-#~ msgid "Collect data"
-#~ msgstr "Preuzmi podatke"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Instalacija je završena"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Standardne prijave/lozinke su:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi za račun administratora"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech za račun tehničara"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal za normalni korisnički račun"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly za račun koji se koristi samo za slanje"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "Možeš izbrisati ili mijenjati ove račune kao i početne podatke."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Nije moguće stvoriti datoteku veza za bazu podataka, provjeri dozvole za "
-#~ "datoteke."
-
-#~ msgid "Select your language"
-#~ msgstr "Odaberite vaš jezik"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Početak instalacije"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "%d. korak"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI – Autentifikacija"
-
-#~ msgid "Remember me"
-#~ msgstr "Zapamti me"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Tvoj preglednik mora imati aktiviran JavaScript"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Za pristup aplikaciji potrebno je prihvatiti kolačiće"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Neispravna upotreba ID-a sesije"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Pristup na često postavljena pitanja"
-
-#~ msgid "Add a card"
-#~ msgstr "Dodaj karticu"
-
-#~ msgid "Add a filter"
-#~ msgstr "Dodaj filtar"
-
-#~ msgid "Saved"
-#~ msgstr "Spremljeno"
-
-#, javascript-format
-#~ msgid "Are you sure you want to delete the dashboard %s ?"
-#~ msgstr "Sigurno želiš izbrisati preglednu ploču „%s”?"

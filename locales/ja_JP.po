@@ -23347,1148 +23347,1127 @@ msgstr "未読メールのみ収集"
 msgid "Could not create dashboard"
 msgstr "このダッシュボードをコピー"
 
-#~ msgid "No room found or selected"
-#~ msgstr "スペースがないか、選択されていません"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "編集"
 
-#~ msgid "Marketplace"
-#~ msgstr "マーケットプレース"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "ユーザー名"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s がアイテム %2$s - %3$s :  %4$sを追加"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "設定を見る"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "プラグインの一覧を表示"
+msgid "No room found or selected"
+msgstr "スペースがないか、選択されていません"
 
-#~ msgid ""
-#~ "If name is a valid email address, it will be automatically added to "
-#~ "blacklisted senders."
-#~ msgstr ""
-#~ "名前が有効なメールアドレスなら、自動的に送信者ブラックリストに追加されま"
-#~ "す。"
+msgid "Marketplace"
+msgstr "マーケットプレース"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "空だと無期限"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s がアイテム %2$s - %3$s :  %4$sを追加"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSSフィードが見つかりました"
+msgid "See the catalog of plugins"
+msgstr "プラグインの一覧を表示"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+"名前が有効なメールアドレスなら、自動的に送信者ブラックリストに追加されます。"
 
-#~ msgid "GLPI version"
-#~ msgstr "GLPIバージョン"
+msgid "Empty for infinite"
+msgstr "空だと無期限"
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "プロモーションを確認しますか？"
+msgid "RSS feeds found"
+msgstr "RSSフィードが見つかりました"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "終了予定のチケット"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "保留中のチケット"
+msgid "GLPI version"
+msgstr "GLPIバージョン"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "処理予定のチケット"
+msgid "Confirm the promotion?"
+msgstr "プロモーションを確認しますか？"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "監視中のチケット"
+msgid "Your tickets to close"
+msgstr "終了予定のチケット"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "対応中のチケット"
+msgid "Tickets on pending status"
+msgstr "保留中のチケット"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "検証予定のチケット"
+msgid "Tickets to be processed"
+msgstr "処理予定のチケット"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "あなたのチケットは承認ステータスが拒否されました"
+msgid "Your observed tickets"
+msgstr "監視中のチケット"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "あなたのチケットは解決策が拒否されました"
+msgid "Your tickets in progress"
+msgstr "対応中のチケット"
 
-#~ msgid "Ticket followup"
-#~ msgstr "ヘルプデスク対応状況（インシデントチケット管理）"
+msgid "Your tickets to validate"
+msgstr "検証予定のチケット"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d 個の新規チケット"
+msgid "Your tickets having rejected approval status"
+msgstr "あなたのチケットは承認ステータスが拒否されました"
 
-#~ msgid "No ticket found."
-#~ msgstr "チケットはありません"
+msgid "Your tickets having rejected solution"
+msgstr "あなたのチケットは解決策が拒否されました"
 
-#~ msgid "Last tickets"
-#~ msgstr "最新のチケット"
+msgid "Ticket followup"
+msgstr "ヘルプデスク対応状況（インシデントチケット管理）"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "このアイテムの新しいチケット..."
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d 個の新規チケット"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "最新の %d 個のチケット"
+msgid "No ticket found."
+msgstr "チケットはありません"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "全てのチケットを表示する権限がありません"
+msgid "Last tickets"
+msgstr "最新のチケット"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "リンクされたアイテムのチケット"
+msgid "New ticket for this item..."
+msgstr "このアイテムの新しいチケット..."
 
-#~ msgid "No ticket in progress."
-#~ msgstr "対応中のチケットはありません"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "最新の %d 個のチケット"
 
-#~ msgid "Assign equipment"
-#~ msgstr "機器の割り当て"
+msgid "You don't have right to see all tickets"
+msgstr "全てのチケットを表示する権限がありません"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "チケット自動完了"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "リンクされたアイテムのチケット"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "満足度調査の作成"
+msgid "No ticket in progress."
+msgstr "対応中のチケットはありません"
 
-#~ msgid "Automatic closed tickets purge"
-#~ msgstr "自動終了したチケットの抹消"
+msgid "Assign equipment"
+msgstr "機器の割り当て"
 
-#~ msgid "See my ticket"
-#~ msgstr "自分のチケットの表示"
+msgid "Automatic tickets closing"
+msgstr "チケット自動完了"
 
-#~ msgid "See group ticket"
-#~ msgstr "グループチケットの表示"
+msgid "Generation of satisfaction surveys"
+msgstr "満足度調査の作成"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "自グループが作成したチケットの表示"
+msgid "Automatic closed tickets purge"
+msgstr "自動終了したチケットの抹消"
 
-#~ msgid "See all tickets"
-#~ msgstr "全てのチケットを表示"
+msgid "See my ticket"
+msgstr "自分のチケットの表示"
 
-#~ msgid "See assigned"
-#~ msgstr "割当済みの表示"
+msgid "See group ticket"
+msgstr "グループチケットの表示"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "割当済みチケットの表示"
+msgid "See tickets created by my groups"
+msgstr "自グループが作成したチケットの表示"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "チケットの割り当て"
+msgid "See all tickets"
+msgstr "全てのチケットを表示"
 
-#~ msgid "Steal"
-#~ msgstr "横取り"
+msgid "See assigned"
+msgstr "割当済みの表示"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "チケットの横取り"
+msgid "See assigned tickets"
+msgstr "割当済みチケットの表示"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "担当予定"
+msgid "Assign a ticket"
+msgstr "チケットの割り当て"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "チケットを担当する"
+msgid "Steal"
+msgstr "横取り"
 
-#~ msgid "Change the priority"
-#~ msgstr "優先順位の変更"
+msgid "Steal a ticket"
+msgstr "チケットの横取り"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "解決策の承認/アンケートに回答(自分のチケット)"
+msgid "Beeing in charge"
+msgstr "担当予定"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "自分で作成したチケットの解決策の承認とアンケートへの回答"
+msgid "To be in charge of a ticket"
+msgstr "チケットを担当する"
 
-#, php-format
-#~ msgid "Not enough rights to merge tickets %d and %d"
-#~ msgstr "チケット %d と %d をマージするための十分な権限がありません"
+msgid "Change the priority"
+msgstr "優先順位の変更"
 
-#, php-format
-#~ msgid "Failed to load ticket %d"
-#~ msgstr "チケット %d を読み込めませんでした"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "解決策の承認/アンケートに回答(自分のチケット)"
 
-#, php-format
-#~ msgid "Failed to add followup to ticket %d"
-#~ msgstr "チケット %d にフォローを追加できませんでした"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "自分で作成したチケットの解決策の承認とアンケートへの回答"
 
-#, php-format
-#~ msgid "Failed to add task to ticket %d"
-#~ msgstr "チケット %d にタスクを追加できませんでした"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "チケット %d と %d をマージするための十分な権限がありません"
 
-#, php-format
-#~ msgid "Failed to add document to ticket %d"
-#~ msgstr "チケット %d にドキュメントを追加できませんでした"
+msgid "Failed to load ticket %d"
+msgstr "チケット %d を読み込めませんでした"
 
-#, php-format
-#~ msgid "Failed to link tickets %d and %d"
-#~ msgstr "チケット %d と %d をリンクできませんでした"
+msgid "Failed to add followup to ticket %d"
+msgstr "チケット %d にフォローを追加できませんでした"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "チケット %d を削除できませんでした"
+msgid "Failed to add task to ticket %d"
+msgstr "チケット %d にタスクを追加できませんでした"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%s はチケット %s を %s にマージします"
+msgid "Failed to add document to ticket %d"
+msgstr "チケット %d にドキュメントを追加できませんでした"
 
-#~ msgid "Checking write permissions for marketplace plugins directory"
-#~ msgstr ""
-#~ "マーケットプレイスのプラグインディレクトリへの書き込み権限を確認しています"
+msgid "Failed to link tickets %d and %d"
+msgstr "チケット %d と %d をリンクできませんでした"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "カテゴリの再計算"
+msgid "Failed to delete ticket %d"
+msgstr "チケット %d を削除できませんでした"
 
-#~ msgid "Valid licenses"
-#~ msgstr "有効なライセンス"
+msgid "%s merges ticket %s into %s"
+msgstr "%s はチケット %s を %s にマージします"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "インストール数"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr ""
+"マーケットプレイスのプラグインディレクトリへの書き込み権限を確認しています"
 
-#~ msgid "Merge"
-#~ msgstr "マージ"
+msgid "Recalculate the category"
+msgstr "カテゴリの再計算"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "マージ後に削除されたソフトウェア"
+msgid "Valid licenses"
+msgstr "有効なライセンス"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "少なくとも1つの通知モードを有効にする必要があります。"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "インストール数"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Merge"
+msgstr "マージ"
 
-#~ msgid "Connect a computer"
-#~ msgstr "コンピューターへの接続"
+msgid "Software deleted after merging"
+msgstr "マージ後に削除されたソフトウェア"
 
-#~ msgid "Not connected"
-#~ msgstr "未接続"
+msgid "You must enable at least one notification mode."
+msgstr "少なくとも1つの通知モードを有効にする必要があります。"
 
-#~ msgid "Show as map"
-#~ msgstr "地図で見る "
+msgid "GLPI"
+msgstr "GLPI"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "%s まで有効"
+msgid "Connect a computer"
+msgstr "コンピューターへの接続"
 
-#~ msgid "Late tickets"
-#~ msgstr "対応遅れチケット"
+msgid "Not connected"
+msgstr "未接続"
 
-#~ msgid "Tickets waiting for validation"
-#~ msgstr "確認待ちのチケット"
+msgid "Show as map"
+msgstr "地図で見る "
 
-#~ msgid "Incoming tickets"
-#~ msgstr "新規のチケット"
+msgid "Valid to %s"
+msgstr "%s まで有効"
 
-#~ msgid "Solved tickets"
-#~ msgstr "解決済みチケット"
+msgid "Late tickets"
+msgstr "対応遅れチケット"
 
-#~ msgid "Closed tickets"
-#~ msgstr "終了したチケット"
+msgid "Tickets waiting for validation"
+msgstr "確認待ちのチケット"
 
-#~ msgid "without"
-#~ msgstr "未記載"
+msgid "Incoming tickets"
+msgstr "新規のチケット"
 
-#~ msgid "Time to close"
-#~ msgstr "終了までの時間"
+msgid "Solved tickets"
+msgstr "解決済みチケット"
 
-#~ msgid "To validate"
-#~ msgstr "検証する"
+msgid "Closed tickets"
+msgstr "終了したチケット"
 
-#~ msgid "Solved"
-#~ msgstr "解決"
+msgid "without"
+msgstr "未記載"
 
-#~ msgid "Share or embed this dashboard"
-#~ msgstr "このダッシュボードを共有または埋め込む"
+msgid "Time to close"
+msgstr "終了までの時間"
 
-#~ msgid "Delete this dashboard"
-#~ msgstr "このダッシュボードを削除"
+msgid "To validate"
+msgstr "検証する"
 
-#~ msgid "Toggle auto-refresh"
-#~ msgstr "自動更新を切り替え"
+msgid "Solved"
+msgstr "解決"
 
-#~ msgid "Toggle night mode"
-#~ msgstr "ナイトモードを切り替え"
+msgid "Share or embed this dashboard"
+msgstr "このダッシュボードを共有または埋め込む"
 
-#~ msgid "Toggle fullscreen"
-#~ msgstr "全画面表示を切り替え"
+msgid "Delete this dashboard"
+msgstr "このダッシュボードを削除"
 
-#~ msgid "Toggle edit mode"
-#~ msgstr "編集モードを切り替え"
+msgid "Toggle auto-refresh"
+msgstr "自動更新を切り替え"
 
-#~ msgid "Add filter"
-#~ msgstr "フィルタを追加"
+msgid "Toggle night mode"
+msgstr "ナイトモードを切り替え"
 
-#~ msgid "Add a new dashboard"
-#~ msgstr "新しいダッシュボートを追加"
+msgid "Toggle fullscreen"
+msgstr "全画面表示を切り替え"
 
-#~ msgid "others"
-#~ msgstr "その他"
+#, fuzzy
+#| msgid "Delete this dashboard"
+msgid "Clone this dashboard"
+msgstr "このダッシュボードを削除"
 
-#~ msgid "Widget"
-#~ msgstr "ウィジェット"
+msgid "Toggle edit mode"
+msgstr "編集モードを切り替え"
 
-#~ msgid "Use gradient palette"
-#~ msgstr "グラデーションパレットを使用する"
+msgid "Add filter"
+msgstr "フィルタを追加"
 
-#~ msgid "Display value labels on points/bars"
-#~ msgstr "値ラベルを表示する"
+msgid "Add a new dashboard"
+msgstr "新しいダッシュボートを追加"
 
-#~ msgid "Limit number of data"
-#~ msgstr "データ数を制限する"
+msgid "others"
+msgstr "その他"
 
-#~ msgid "Filters"
-#~ msgstr "フィルタ"
+msgid "Widget"
+msgstr "ウィジェット"
 
-#~ msgid "Embed in another application"
-#~ msgstr "別のアプリケーションに埋め込む"
+msgid "Use gradient palette"
+msgstr "グラデーションパレットを使用する"
 
-#~ msgid "Direct link"
-#~ msgstr "直接リンク"
+msgid "Display value labels on points/bars"
+msgstr "値ラベルを表示する"
 
-#~ msgid "Iframe"
-#~ msgstr "Iframe"
+msgid "Limit number of data"
+msgstr "データ数を制限する"
 
-#~ msgid "Or share the dashboard to these target objects:"
-#~ msgstr ""
-#~ "または、これらのターゲットオブジェクトとダッシュボードを共有します。"
+msgid "Filters"
+msgstr "フィルタ"
 
-#~ msgid "empty card !"
-#~ msgstr "空のカード！"
+msgid "Embed in another application"
+msgstr "別のアプリケーションに埋め込む"
 
-#, php-format
-#~ msgid "Number of %s"
-#~ msgstr "%s の数"
+msgid "Direct link"
+msgstr "直接リンク"
 
-#, php-format
-#~ msgid "%s by %s"
-#~ msgstr "%s by %s"
+msgid "Iframe"
+msgstr "Iframe"
 
-#, php-format
-#~ msgid "List of %s"
-#~ msgstr "%s の一覧"
+msgid "Or share the dashboard to these target objects:"
+msgstr "または、これらのターゲットオブジェクトとダッシュボードを共有します。"
 
-#~ msgid "Number of tickets by month"
-#~ msgstr "月別のチケット数"
+msgid "empty card !"
+msgstr "空のカード！"
 
-#~ msgid "Evolution of ticket in the past year"
-#~ msgstr "過去1年間のチケットの推移"
+msgid "Number of %s"
+msgstr "%s の数"
 
-#~ msgid "Tickets status by month"
-#~ msgstr "月別チケット状況"
+msgid "%s by %s"
+msgstr "%s by %s"
 
-#~ msgid "Tickets times (in hours)"
-#~ msgstr "チケット時間 (時)"
+msgid "List of %s"
+msgstr "%s の一覧"
 
-#~ msgid "Tickets summary"
-#~ msgstr "チケットの概要"
+msgid "Number of tickets by month"
+msgstr "月別のチケット数"
 
-#~ msgid "Top ticket's categories"
-#~ msgstr "チケットの上位カテゴリ"
+msgid "Evolution of ticket in the past year"
+msgstr "過去1年間のチケットの推移"
 
-#~ msgid "Top ticket's entities"
-#~ msgstr "チケットの上位エンティティ"
+msgid "Tickets status by month"
+msgstr "月別チケット状況"
 
-#~ msgid "Top ticket's request types"
-#~ msgstr "上位チケットの依頼の種類"
+msgid "Tickets times (in hours)"
+msgstr "チケット時間 (時)"
 
-#~ msgid "Top ticket's locations"
-#~ msgstr "チケットの上位場所"
+msgid "Tickets summary"
+msgstr "チケットの概要"
 
-#~ msgid "Top ticket's requesters"
-#~ msgstr "チケットの上位依頼者"
+msgid "Top ticket's categories"
+msgstr "チケットの上位カテゴリ"
 
-#~ msgid "Top ticket's requester groups"
-#~ msgstr "チケットの上位依頼者グループ"
+msgid "Top ticket's entities"
+msgstr "チケットの上位エンティティ"
 
-#~ msgid "Top ticket's observers"
-#~ msgstr "チケットの上位オブザーバ"
+msgid "Top ticket's request types"
+msgstr "上位チケットの依頼の種類"
 
-#~ msgid "Top ticket's observer groups"
-#~ msgstr "チケットの上位オブザーバグループ"
+msgid "Top ticket's locations"
+msgstr "チケットの上位場所"
 
-#~ msgid "Top ticket's assignees"
-#~ msgstr "チケットの上位担当者"
+msgid "Top ticket's requesters"
+msgstr "チケットの上位依頼者"
 
-#~ msgid "Top ticket's assignee groups"
-#~ msgstr "チケットの上位担当グループ"
+msgid "Top ticket's requester groups"
+msgstr "チケットの上位依頼者グループ"
 
-#~ msgid "List of reminders"
-#~ msgstr "リマインダ一覧"
+msgid "Top ticket's observers"
+msgstr "チケットの上位オブザーバ"
 
-#~ msgid "Editable markdown card"
-#~ msgstr "編集可能なマークダウンカード"
+msgid "Top ticket's observer groups"
+msgstr "チケットの上位オブザーバグループ"
 
-#~ msgid "Toggle edit mode to edit content"
-#~ msgstr "コンテンツを編集するには編集モードに切り替えます"
+msgid "Top ticket's assignees"
+msgstr "チケットの上位担当者"
 
-#~ msgid "field name in DB"
-#~ msgstr "DBのフィールド名"
+msgid "Top ticket's assignee groups"
+msgstr "チケットの上位担当グループ"
 
-#~ msgid "Example:"
-#~ msgstr "例："
+msgid "List of reminders"
+msgstr "リマインダ一覧"
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "GLPI 9.2以降、\"テレメトリ\"と呼ばれる新しい統計機能を導入しました。これ"
-#~ "は、許可を得てテレメトリWebサイトへ匿名でデータを送信します。"
+msgid "Editable markdown card"
+msgstr "編集可能なマークダウンカード"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IPネットワークはデータベースに含まれていません。しかし、現在有効なネット"
-#~ "ワークは表示されます"
+msgid "Toggle edit mode to edit content"
+msgstr "コンテンツを編集するには編集モードに切り替えます"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "いくつかのネットワーク名は使用可能になりました。「ネットワーク名」タブに移"
-#~ "動しそれらを設定してください"
+msgid "field name in DB"
+msgstr "DBのフィールド名"
 
-#~ msgid "Add a network name"
-#~ msgstr "ネットワーク名の追加"
+msgid "Example:"
+msgstr "例："
 
-#~ msgid "Not associated"
-#~ msgstr "関連付けられたものはありません"
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"GLPI 9.2以降、\"テレメトリ\"と呼ばれる新しい統計機能を導入しました。これは、"
+"許可を得てテレメトリWebサイトへ匿名でデータを送信します。"
 
-#~ msgid "Create a new network name"
-#~ msgstr "ネットワーク名の作成"
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IPネットワークはデータベースに含まれていません。しかし、現在有効なネットワー"
+"クは表示されます"
 
-#~ msgid "No network name found"
-#~ msgstr "ネットワーク名が見つかりません"
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"いくつかのネットワーク名は使用可能になりました。「ネットワーク名」タブに移動"
+"しそれらを設定してください"
 
-#~ msgid "Unable to download plugin archive."
-#~ msgstr "プラグインアーカイブをダウンロードできません。"
+msgid "Add a network name"
+msgstr "ネットワーク名の追加"
 
-#, php-format
-#~ msgid "Plugin archive format is not supported by your system : %s."
-#~ msgstr ""
-#~ "ご利用のシステムではプラグインアーカイブ形式がサポートされていません。：%s"
+msgid "Not associated"
+msgstr "関連付けられたものはありません"
 
-#~ msgid "Unable to extract plugin archive."
-#~ msgstr "プラグインアーカイブを抽出できません。"
+msgid "Create a new network name"
+msgstr "ネットワーク名の作成"
 
-#~ msgid "Check all plugin updates"
-#~ msgstr "すべてのプラグインの更新を確認する"
+msgid "No network name found"
+msgstr "ネットワーク名が見つかりません"
 
-#, php-format
-#~ msgid "New version for plugin %s: %s"
-#~ msgstr "プラグインの新しいバージョン %s : %s"
+msgid "Unable to download plugin archive."
+msgstr "プラグインアーカイブをダウンロードできません。"
 
-#~ msgid "Installed"
-#~ msgstr "インストール済み"
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+"ご利用のシステムではプラグインアーカイブ形式がサポートされていません。：%s"
 
-#~ msgid "Discover"
-#~ msgstr "発見する"
+msgid "Unable to extract plugin archive."
+msgstr "プラグインアーカイブを抽出できません。"
 
-#, php-format
-#~ msgid ""
-#~ "%1$s services website seems not available from your network or offline"
-#~ msgstr ""
-#~ "%1$sサービスサイトは、ネットワークまたはオフラインから利用できないようです"
+msgid "Check all plugin updates"
+msgstr "すべてのプラグインの更新を確認する"
 
-#~ msgid "Maybe you could setup a proxy"
-#~ msgstr "プロキシを設定できるかもしれません"
+msgid "New version for plugin %s: %s"
+msgstr "プラグインの新しいバージョン %s : %s"
 
-#~ msgid "or please check later"
-#~ msgstr "または後で確認してください"
+msgid "Installed"
+msgstr "インストール済み"
 
-#, php-format
-#~ msgid "Your %1$s registration is not valid."
-#~ msgstr "あなたの %1$s は登録無効です。"
+msgid "Discover"
+msgstr "発見する"
 
-#~ msgid "A registration, at least a free one, is required to use marketplace!"
-#~ msgstr "マーケットプレイスを利用するには、無料の登録が必要です!"
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+"%1$sサービスサイトは、ネットワークまたはオフラインから利用できないようです"
 
-#, php-format
-#~ msgid "Register on %1$s"
-#~ msgstr "%1$s に登録"
+msgid "Maybe you could setup a proxy"
+msgstr "プロキシを設定できるかもしれません"
 
-#~ msgid "fill your registration key in setup."
-#~ msgstr "セットアップで登録キーを入力してください。"
+msgid "or please check later"
+msgstr "または後で確認してください"
 
-#, php-format
-#~ msgid "Your %1$s subscription has been terminated."
-#~ msgstr "%1$s のサブスクリプションは終了しました。"
+msgid "Your %1$s registration is not valid."
+msgstr "あなたの %1$s は登録無効です。"
 
-#, php-format
-#~ msgid "Renew it on %1$s."
-#~ msgstr "%1$s で更新してください。"
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr "マーケットプレイスを利用するには、無料の登録が必要です!"
 
-#, php-format
-#~ msgid "We can't write on the markeplace directory (%s)."
-#~ msgstr "マーケットプレイス ディレクトリ (%s) へ書き込めません。"
+msgid "Register on %1$s"
+msgstr "%1$s に登録"
 
-#~ msgid ""
-#~ "If you want to ease the plugins download, please check permissions and "
-#~ "ownership of this directory."
-#~ msgstr ""
-#~ "プラグインのダウンロードを簡単にしたい場合は、このディレクトリの権限と所有"
-#~ "権を確認してください。"
+msgid "fill your registration key in setup."
+msgstr "セットアップで登録キーを入力してください。"
 
-#~ msgid ""
-#~ "Otherwise, you will need to download and unzip the plugins archives "
-#~ "manually."
-#~ msgstr ""
-#~ "それ以外の場合は、プラグインアーカイブを手動でダウンロードして解凍する必要"
-#~ "があります。"
+msgid "Your %1$s subscription has been terminated."
+msgstr "%1$s のサブスクリプションは終了しました。"
 
-#~ msgid "Alpha ASC"
-#~ msgstr "Alpha昇順"
+msgid "Renew it on %1$s."
+msgstr "%1$s で更新してください。"
 
-#~ msgid "Alpha DESC"
-#~ msgstr "Alpha降順"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr "マーケットプレイス ディレクトリ (%s) へ書き込めません。"
 
-#~ msgid "Most popular"
-#~ msgstr "人気の高い順"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+"プラグインのダウンロードを簡単にしたい場合は、このディレクトリの権限と所有権"
+"を確認してください。"
 
-#~ msgid "Last updated"
-#~ msgstr "最終更新日"
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+"それ以外の場合は、プラグインアーカイブを手動でダウンロードして解凍する必要が"
+"あります。"
 
-#~ msgid "Most recent"
-#~ msgstr "新着"
+msgid "Alpha ASC"
+msgstr "Alpha昇順"
 
-#~ msgid "Best notes"
-#~ msgstr "高評価"
+msgid "Alpha DESC"
+msgstr "Alpha降順"
 
-#~ msgid "Your plugin here ? Contact us."
-#~ msgstr "必要なプラグインはここにありますか？私たちに連絡してください。"
+msgid "Most popular"
+msgstr "人気の高い順"
 
-#~ msgid "Refresh plugin list"
-#~ msgstr "プラグインリストの更新"
+msgid "Last updated"
+msgstr "最終更新日"
 
-#~ msgid "Filter plugin list"
-#~ msgstr "プラグインリストをフィルタ"
+msgid "Most recent"
+msgstr "新着"
 
-#~ msgid "Homepage"
-#~ msgstr "ホームページ"
+msgid "Best notes"
+msgstr "高評価"
 
-#~ msgid "Get help"
-#~ msgstr "助けを求める"
+msgid "Your plugin here ? Contact us."
+msgstr "必要なプラグインはここにありますか？私たちに連絡してください。"
 
-#~ msgid "Readme"
-#~ msgstr "Readme"
+msgid "Refresh plugin list"
+msgstr "プラグインリストの更新"
 
-#~ msgid "Clean"
-#~ msgstr "クリーニング"
+msgid "Filter plugin list"
+msgstr "プラグインリストをフィルタ"
 
-#~ msgid "This plugin is not available for your GLPI version."
-#~ msgstr "このプラグインは、お使いの GLPI のバージョンには無効です。"
+msgid "Homepage"
+msgstr "ホームページ"
 
-#~ msgid ""
-#~ "The plugin has an available update but its directory is not writable."
-#~ msgstr ""
-#~ "プラグインには利用可能なアップデートがありますが、そのディレクトリは書き込"
-#~ "み可能ではありません。"
+msgid "Get help"
+msgstr "助けを求める"
 
-#, php-format
-#~ msgid ""
-#~ "Download archive manually, you must uncompress it in plugins directory "
-#~ "(%s)"
-#~ msgstr ""
-#~ "アーカイブを手動でダウンロードして、プラグインディレクトリ (%s) へ解凍しま"
-#~ "す"
+msgid "Readme"
+msgstr "Readme"
 
-#, php-format
-#~ msgid "A new version (%s) is available, update ?"
-#~ msgstr "新しいバージョン (%s) を利用できます。更新しますか？"
+msgid "Clean"
+msgstr "クリーニング"
 
-#, php-format
-#~ msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-#~ msgstr ""
-#~ "このプラグイン (%s) を利用するには、GLPI-Network への申し込みが必要です"
+msgid "This plugin is not available for your GLPI version."
+msgstr "このプラグインは、お使いの GLPI のバージョンには無効です。"
 
-#~ msgid "Install"
-#~ msgstr "インストール"
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+"プラグインには利用可能なアップデートがありますが、そのディレクトリは書き込み"
+"可能ではありません。"
 
-#~ msgid "Enable"
-#~ msgstr "有効にする"
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+"アーカイブを手動でダウンロードして、プラグインディレクトリ (%s) へ解凍します"
 
-#~ msgid "Uninstall"
-#~ msgstr "アンインストール"
+msgid "A new version (%s) is available, update ?"
+msgstr "新しいバージョン (%s) を利用できます。更新しますか？"
 
-#, php-format
-#~ msgid "You must have a %s subscription to get this plugin"
-#~ msgstr "このプラグインを取得するには、%s サブスクリプションが必要です。"
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+"このプラグイン (%s) を利用するには、GLPI-Network への申し込みが必要です"
 
-#, php-format
-#~ msgid "You need at least the %s subscription level to get this plugin"
-#~ msgstr ""
-#~ "このプラグインを取得するには、%s サブスクリプション以上のレベルが必要で"
-#~ "す。"
+msgid "Install"
+msgstr "インストール"
 
-#, php-format
-#~ msgid "%s plugin"
-#~ msgid_plural "%s plugins"
-#~ msgstr[0] "%s プラグイン"
+msgid "Enable"
+msgstr "有効にする"
 
-#~ msgid "GLPI provides a new marketplace to download and install plugins."
-#~ msgstr ""
-#~ "GLPIは、プラグインをダウンロードしてインストールするための新しいマーケット"
-#~ "プレイスを提供します。"
+msgid "Uninstall"
+msgstr "アンインストール"
 
-#~ msgid ""
-#~ "Do you want to replace the plugins setup page by the new marketplace ?"
-#~ msgstr ""
-#~ "プラグインのセットアップページを新しいマーケットプレイスに置き換えますか？"
+msgid "You must have a %s subscription to get this plugin"
+msgstr "このプラグインを取得するには、%s サブスクリプションが必要です。"
 
-#~ msgid "Later"
-#~ msgstr "後で"
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+"このプラグインを取得するには、%s サブスクリプション以上のレベルが必要です。"
 
-#~ msgid "Switch to marketplace"
-#~ msgstr "マーケットプレイスへ切り替え"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "%s プラグイン"
 
-#~ msgid "Some updates are available for your installed plugins!"
-#~ msgstr "インストールされているプラグインのアップデートが可能です!"
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+"GLPIは、プラグインをダウンロードしてインストールするための新しいマーケットプ"
+"レイスを提供します。"
 
-#~ msgid "Plugin name"
-#~ msgstr "プラグイン名"
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+"プラグインのセットアップページを新しいマーケットプレイスに置き換えますか？"
 
-#~ msgid "Plugin new version number"
-#~ msgstr "プラグインの新しいバージョン"
+msgid "Later"
+msgstr "後で"
 
-#~ msgid "Plugin old version number"
-#~ msgstr "プラグインの古いバージョン"
+msgid "Switch to marketplace"
+msgstr "マーケットプレイスへ切り替え"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "検索エンジンで、失効日のないライセンスを検索するには「失効日にNULL」を指定"
-#~ "してください"
+msgid "Some updates are available for your installed plugins!"
+msgstr "インストールされているプラグインのアップデートが可能です!"
 
-#~ msgid "Registration"
-#~ msgstr "登録"
+msgid "Plugin name"
+msgstr "プラグイン名"
 
-#~ msgid ""
-#~ "A registration key is needed to use advanced feature (like marketplace) "
-#~ "in GLPI"
-#~ msgstr ""
-#~ "GLPIの高度な機能（マーケットプレイスなど）を使用するには、登録キーが必要で"
-#~ "す"
+msgid "Plugin new version number"
+msgstr "プラグインの新しいバージョン"
 
-#, php-format
-#~ msgid "Register on %1$s!"
-#~ msgstr "%1$s へ登録!"
+msgid "Plugin old version number"
+msgstr "プラグインの古いバージョン"
 
-#~ msgid "And retrieve your key to paste it below"
-#~ msgstr "キーを取得して以下に貼り付けてください"
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"検索エンジンで、失効日のないライセンスを検索するには「失効日にNULL」を指定し"
+"てください"
 
-#, php-format
-#~ msgid "Error was: %s"
-#~ msgstr "エラー: %s"
+msgid "Registration"
+msgstr "登録"
 
-#~ msgid "Registration key"
-#~ msgstr "登録キー"
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+"GLPIの高度な機能（マーケットプレイスなど）を使用するには、登録キーが必要です"
 
-#~ msgid "Subscription"
-#~ msgstr "サブスクリプション"
+msgid "Register on %1$s!"
+msgstr "%1$s へ登録!"
 
-#~ msgid "Unknown"
-#~ msgstr "不明"
+msgid "And retrieve your key to paste it below"
+msgstr "キーを取得して以下に貼り付けてください"
 
-#~ msgid "Registered by"
-#~ msgstr "登録者"
+msgid "Error was: %s"
+msgstr "エラー: %s"
 
-#~ msgid "Unable to fetch registration information."
-#~ msgstr "登録情報を取得できません。"
+msgid "Registration key"
+msgstr "登録キー"
 
-#~ msgid "The registration key is invalid."
-#~ msgstr "登録キーが無効です。"
+msgid "Subscription"
+msgstr "サブスクリプション"
 
-#~ msgid "The registration key refers to a terminated subscription."
-#~ msgstr "登録キーは期限切れの購入のものです。"
+msgid "Unknown"
+msgstr "不明"
 
-#~ msgid "The registration key is valid."
-#~ msgstr "登録キーは有効です。"
+msgid "Registered by"
+msgstr "登録者"
 
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "不具合の修正やあらかじめ定義されたルールや辞書等、あなたのITにGLPIの総合的"
-#~ "な支援が必要ですか？\n"
-#~ "\n"
-#~ "私たちはあなたのために %s 空間を提供します。\n"
-#~ "GLPI-Network は、約束された期間内での不具合の修正を保証するTier 3のサポー"
-#~ "トが含まれた商用製品です。\n"
-#~ "同じ空間で、GLPIの導入を助けるために<b>認定パートナーとの連絡</b>を可能に"
-#~ "します。\n"
-#~ "\n"
-#~ "または、<b>寄付</b>でGLPIの開発努力を支援してください。"
+msgid "Unable to fetch registration information."
+msgstr "登録情報を取得できません。"
 
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "高度なGLPIモジュールの設定でお困りですか？\n"
-#~ "当社が解決のお手伝いをいたします。%s のサポートに登録してください。"
+msgid "The registration key is invalid."
+msgstr "登録キーが無効です。"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "あなたのメールアドレスにメールを送信しました。メールにはパスワードの変更方"
-#~ "法が記載されています"
+msgid "The registration key refers to a terminated subscription."
+msgstr "登録キーは期限切れの購入のものです。"
 
-#~ msgid "Email address not found."
-#~ msgstr "メールアドレスが見つかりません"
+msgid "The registration key is valid."
+msgstr "登録キーは有効です。"
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr "機器のMACアドレスとIPアドレスはネットワーク接続に含まれています"
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"不具合の修正やあらかじめ定義されたルールや辞書等、あなたのITにGLPIの総合的な"
+"支援が必要ですか？\n"
+"\n"
+"私たちはあなたのために %s 空間を提供します。\n"
+"GLPI-Network は、約束された期間内での不具合の修正を保証するTier 3のサポートが"
+"含まれた商用製品です。\n"
+"同じ空間で、GLPIの導入を助けるために<b>認定パートナーとの連絡</b>を可能にしま"
+"す。\n"
+"\n"
+"または、<b>寄付</b>でGLPIの開発努力を支援してください。"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "アップロードされたファイルはphp.iniで指定されたupload_max_filesizeを超えて"
-#~ "います"
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"高度なGLPIモジュールの設定でお困りですか？\n"
+"当社が解決のお手伝いをいたします。%s のサポートに登録してください。"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "アップロードされたファイルはHTMLフォームで定義されたMAX_FILE_SIZEを超えて"
-#~ "います"
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"あなたのメールアドレスにメールを送信しました。メールにはパスワードの変更方法"
+"が記載されています"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "アップロードされたファイルは一部分しかアップロードされていません"
+msgid "Email address not found."
+msgstr "メールアドレスが見つかりません"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "ディスクへのファイルの書き出しに失敗しました"
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr "機器のMACアドレスとIPアドレスはネットワーク接続に含まれています"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "PHP 拡張モジュールはファイルのアップロードを停止しました"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"アップロードされたファイルはphp.iniで指定されたupload_max_filesizeを超えてい"
+"ます"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr ""
-#~ "アップロードされたファイルはphp.iniで指定されたpost_max_sizeを超えています"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"アップロードされたファイルはHTMLフォームで定義されたMAX_FILE_SIZEを超えていま"
+"す"
 
-#~ msgid "File is too big"
-#~ msgstr "ファイルは大きすぎます"
+msgid "The uploaded file was only partially uploaded"
+msgstr "アップロードされたファイルは一部分しかアップロードされていません"
 
-#~ msgid "File is too small"
-#~ msgstr "ファイルは小さすぎます"
+msgid "Failed to write file to disk"
+msgstr "ディスクへのファイルの書き出しに失敗しました"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "ファイルの最大数を超えました"
+msgid "A PHP extension stopped the file upload"
+msgstr "PHP 拡張モジュールはファイルのアップロードを停止しました"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "イメージは最大幅を超えました"
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+"アップロードされたファイルはphp.iniで指定されたpost_max_sizeを超えています"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "イメージは最小幅が必要です"
+msgid "File is too big"
+msgstr "ファイルは大きすぎます"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "イメージは最大高を超えています"
+msgid "File is too small"
+msgstr "ファイルは小さすぎます"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "イメージは最小高が必要です"
+msgid "Maximum number of files exceeded"
+msgstr "ファイルの最大数を超えました"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "許可されないファイルの種類"
+msgid "Image exceeds maximum width"
+msgstr "イメージは最大幅を超えました"
 
-#~ msgid "File upload aborted"
-#~ msgstr "ファイルアップロードは中断されました"
+msgid "Image requires a minimum width"
+msgstr "イメージは最小幅が必要です"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "画像のリサイズに失敗しました"
+msgid "Image exceeds maximum height"
+msgstr "イメージは最大高を超えています"
 
-#~ msgid "Display GLPI debug information"
-#~ msgstr "GLPIデバッグ情報を表示する"
+msgid "Image requires a minimum height"
+msgstr "イメージは最小高が必要です"
 
-#~ msgid "Progress"
-#~ msgstr "進捗状況"
+msgid "Filetype not allowed"
+msgstr "許可されないファイルの種類"
 
-#~ msgid "My settings"
-#~ msgstr "個人別設定"
+msgid "File upload aborted"
+msgstr "ファイルアップロードは中断されました"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "ページの先頭へ戻る"
+msgid "Failed to resize image"
+msgstr "画像のリサイズに失敗しました"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "GLPIプロジェクト公式サイト（GLPI-PROJECT.org）で入手できます"
+msgid "Display GLPI debug information"
+msgstr "GLPIデバッグ情報を表示する"
 
-#~ msgid "Check all"
-#~ msgstr "全て選択"
+msgid "Progress"
+msgstr "進捗状況"
 
-#~ msgid "Uncheck all"
-#~ msgstr "選択を全て解除"
+msgid "My settings"
+msgstr "個人別設定"
 
-#~ msgid "Check all as"
-#~ msgstr "次を全て選択"
+msgid "Back to top of the page"
+msgstr "ページの先頭へ戻る"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "選択したものは大きすぎます。バッチ動作は無効です"
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "GLPIプロジェクト公式サイト（GLPI-PROJECT.org）で入手できます"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "制限を拡大するためには、phpの設定でmax_input_varsまたはsuhosin.post."
-#~ "max_varsを変更してください"
+msgid "Check all"
+msgstr "全て選択"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "説明フィールドは必須です"
+msgid "Uncheck all"
+msgstr "選択を全て解除"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "%3$d の %1$d から %2$d まで"
+msgid "Check all as"
+msgstr "次を全て選択"
 
-#~ msgid "Empty array"
-#~ msgstr "空の配列"
+msgid "Selection too large, massive action disabled."
+msgstr "選択したものは大きすぎます。バッチ動作は無効です"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d on %2$d"
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"制限を拡大するためには、phpの設定でmax_input_varsまたはsuhosin.post.max_vars"
+"を変更してください"
 
-#~ msgid "Close (Esc)"
-#~ msgstr "閉じる(Esc)"
+msgid "The description field is mandatory"
+msgstr "説明フィールドは必須です"
 
-#~ msgid "Share"
-#~ msgstr "共有"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "%3$d の %1$d から %2$d まで"
 
-#~ msgid "Zoom in/out"
-#~ msgstr "ズームイン/ズームアウト"
+msgid "Empty array"
+msgstr "空の配列"
 
-#~ msgid "Previous (arrow left)"
-#~ msgstr "前へ（左矢印）"
+msgid "%1$d on %2$d"
+msgstr "%1$d on %2$d"
 
-#~ msgid "Next (arrow right)"
-#~ msgstr "次へ（右矢印）"
+msgid "Close (Esc)"
+msgstr "閉じる(Esc)"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr "ここにファイルをドラッグ＆ドロップするか、"
+msgid "Share"
+msgstr "共有"
 
-#~ msgid "selecting them"
-#~ msgstr "ファイルを選択"
+msgid "Zoom in/out"
+msgstr "ズームイン/ズームアウト"
 
-#~ msgid "File(s)"
-#~ msgstr "ファイル"
+msgid "Previous (arrow left)"
+msgstr "前へ（左矢印）"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "ここにファイルをドラッグ＆ドロップするか、"
+msgid "Next (arrow right)"
+msgstr "次へ（右矢印）"
 
-#~ msgid "Upload successful"
-#~ msgstr "アップロードしました"
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr "ここにファイルをドラッグ＆ドロップするか、"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "全チェック/全チェック解除"
+msgid "selecting them"
+msgstr "ファイルを選択"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "入力を開始してメニューを検索"
+msgid "File(s)"
+msgstr "ファイル"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "デバッグモード が有効です"
+msgid "Drag and drop your file here, or"
+msgstr "ここにファイルをドラッグ＆ドロップするか、"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "デバッグモード が無効です"
+msgid "Upload successful"
+msgstr "アップロードしました"
 
-#~ msgid "Saved searches"
-#~ msgstr "検索条件"
+msgid "Check/uncheck all"
+msgstr "全チェック/全チェック解除"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "検索条件の管理"
+msgid "Start typing to find a menu"
+msgstr "入力を開始してメニューを検索"
 
-#~ msgid "Add is disabled"
-#~ msgstr "追加は無効化されています"
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "変更後"
 
-#~ msgid "Search is disabled"
-#~ msgstr "検索は無効化されています"
+msgid "Debug mode enabled"
+msgstr "デバッグモード が有効です"
 
-#~ msgid "Global Kanban"
-#~ msgstr "グローバル カンバン"
+msgid "Debug mode disabled"
+msgstr "デバッグモード が無効です"
 
-#, php-format
-#~ msgid "You are impersonating %s."
-#~ msgstr "あなたは %s に偽装している。"
+msgid "Saved searches"
+msgstr "検索条件"
 
-#~ msgid "Stop impersonating"
-#~ msgstr "ユーザー偽装を終了"
+msgid "Manage saved searches"
+msgstr "検索条件の管理"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr ""
-#~ "ユーザー認証で、API にログインしセッション トークンを取得することを許可す"
-#~ "る"
+msgid "Add is disabled"
+msgstr "追加は無効化されています"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "ユーザーの外部トークンで、APIにログインしセッション トークンを取得すること"
-#~ "を許可する。ユーザー設定タブ内のリモート アクセスキーを参照。"
+msgid "Search is disabled"
+msgstr "検索は無効化されています"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "GLPI IDを表示"
+msgid "Global Kanban"
+msgstr "グローバル カンバン"
 
-#~ msgid "Color palette"
-#~ msgstr "カラーパレット"
+msgid "You are impersonating %s."
+msgstr "あなたは %s に偽装している。"
 
-#~ msgid "Layout"
-#~ msgstr "レイアウト"
+msgid "Stop impersonating"
+msgstr "ユーザー偽装を終了"
 
-#~ msgid "Tabs on left"
-#~ msgstr "左上のタブ"
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+"ユーザー認証で、API にログインしセッション トークンを取得することを許可する"
 
-#~ msgid "Classic view"
-#~ msgstr "クラシック表示"
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"ユーザーの外部トークンで、APIにログインしセッション トークンを取得することを"
+"許可する。ユーザー設定タブ内のリモート アクセスキーを参照。"
 
-#~ msgid "Vertical split"
-#~ msgstr "縦分割"
+msgid "Show GLPI ID"
+msgstr "GLPI IDを表示"
 
-#~ msgid "Dashboards"
-#~ msgstr " ダッシュボード"
+msgid "Color palette"
+msgstr "カラーパレット"
 
-#~ msgid "Default for central"
-#~ msgstr "中央のデフォルト"
+msgid "Layout"
+msgstr "レイアウト"
 
-#~ msgid "Default for Assets"
-#~ msgstr "情報資産のデフォルト"
+msgid "Tabs on left"
+msgstr "左上のタブ"
 
-#~ msgid "Default for Assistance"
-#~ msgstr "ユーザーサポートのデフォルト"
+msgid "Classic view"
+msgstr "クラシック表示"
 
-#~ msgid "Default for tickets (mini dashboard)"
-#~ msgstr "チケットのデフォルト（ミニダッシュボード）"
+msgid "Vertical split"
+msgstr "縦分割"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "新しいバージョンを確認"
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "契約の終了"
 
-#~ msgid "Show filters"
-#~ msgstr "フィルターを表示"
+msgid "Dashboards"
+msgstr " ダッシュボード"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "過去のフィルタに一致するものがありません"
+msgid "Default for central"
+msgstr "中央のデフォルト"
 
-#~ msgid "Add to schedule"
-#~ msgstr "予定表に追加"
+msgid "Default for Assets"
+msgstr "情報資産のデフォルト"
 
-#~ msgid "Position in room"
-#~ msgstr "部屋の中の位置"
+msgid "Default for Assistance"
+msgstr "ユーザーサポートのデフォルト"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "部屋のドアの向き"
+msgid "Default for tickets (mini dashboard)"
+msgstr "チケットのデフォルト（ミニダッシュボード）"
 
-#~ msgid "North"
-#~ msgstr "北"
+msgid "Check if a new version is available"
+msgstr "新しいバージョンを確認"
 
-#~ msgid "East"
-#~ msgstr "東"
+msgid "Show filters"
+msgstr "フィルターを表示"
 
-#~ msgid "South"
-#~ msgstr "南"
+msgid "No historical matching your filters"
+msgstr "過去のフィルタに一致するものがありません"
 
-#~ msgid "West"
-#~ msgstr "西"
+msgid "Add to schedule"
+msgstr "予定表に追加"
 
-#~ msgid "Number of units"
-#~ msgstr "ユニット数"
+msgid "Position in room"
+msgstr "部屋の中の位置"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "Door orientation in room"
+msgstr "部屋のドアの向き"
 
-#~ msgid "Width"
-#~ msgstr "幅 (mm)"
+msgid "North"
+msgstr "北"
 
-#~ msgid "Height"
-#~ msgstr "高さ (mm)"
+msgid "East"
+msgstr "東"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "測定電力 (W)"
+msgid "South"
+msgstr "南"
 
-#~ msgid "Max. weight"
-#~ msgstr "耐荷重 (kg)"
+msgid "West"
+msgstr "西"
 
-#~ msgid "No rack found"
-#~ msgstr "ラックがありません"
+msgid "Number of units"
+msgstr "ユニット数"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "次の要素は部屋の外です"
+msgid "U"
+msgstr "U"
 
-#~ msgid "Blueprint"
-#~ msgstr "図面"
+msgid "Width"
+msgstr "幅 (mm)"
 
-#~ msgid "Grid"
-#~ msgstr "グリッド"
+msgid "Height"
+msgstr "高さ (mm)"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "ここにラックを挿入してください"
+msgid "Measured power (in watts)"
+msgstr "測定電力 (W)"
 
-#~ msgid "Position must be set"
-#~ msgstr "位置を設定する必要があります"
+msgid "Max. weight"
+msgstr "耐荷重 (kg)"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s 位置は使用できません"
+msgid "No rack found"
+msgstr "ラックがありません"
 
-#~ msgid "All categories"
-#~ msgstr "全カテゴリ"
+msgid "Following elements are out of room bounds"
+msgstr "次の要素は部屋の外です"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "カテゴリ分類されないソフトウェア"
+msgid "Blueprint"
+msgstr "図面"
 
-#~ msgid "Valid license"
-#~ msgstr "有効なライセンス"
+msgid "Grid"
+msgstr "グリッド"
 
-#~ msgid "Other component"
-#~ msgstr "その他のコンポーネント"
+msgid "Insert a rack here"
+msgstr "ここにラックを挿入してください"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "始める前に最後に一言"
+msgid "Position must be set"
+msgstr "位置を設定する必要があります"
 
-#~ msgid "Donate"
-#~ msgstr "寄付する"
+msgid "%1$s position is not available"
+msgstr "%1$s 位置は使用できません"
+
+msgid "All categories"
+msgstr "全カテゴリ"
+
+msgid "Uncategorized software"
+msgstr "カテゴリ分類されないソフトウェア"
+
+msgid "Valid license"
+msgstr "有効なライセンス"
+
+msgid "Other component"
+msgstr "その他のコンポーネント"
+
+msgid "One last thing before starting"
+msgstr "始める前に最後に一言"
+
+msgid "Donate"
+msgstr "寄付する"
+
+msgid "Unofficial translations are also available"
+msgstr "非公式の変換も有効とする"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "ライセンスを読みました。これを受諾します"
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "ライセンスを読みましたが受諾しません"
+
+msgid "Installation or update of GLPI"
+msgstr "GLPIのインストール・更新"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "GLPIをクリーンインストールする場合、「インストール」を選択してください"
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "「アップグレード」は以前のバージョンのGLPIを更新します"
+
+msgid "Do you want to continue?"
+msgstr "処理を続けますか?"
+
+msgid "Database connection parameters"
+msgstr "データベース接続パラメータ"
+
+msgid "Test of the connection at the database"
+msgstr "データベースへの接続を検証"
+
+msgid "Can't connect to the database"
+msgstr "データベースに接続できません"
+
+msgid "The server answered: %s"
+msgstr "サーバーから受信成功: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "サーバー名もしくはユーザー名が空白です"
+
+msgid "Please select a database:"
+msgstr "データベースを選択してください:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "新しいデータベースを作成するか、既存のデータベースを使用してください:"
+
+msgid "Please select the database to update:"
+msgstr "アップデートするデータベースを選択してください:"
+
+msgid "Initialization of the database"
+msgstr "データベースの初期化"
+
+msgid "Impossible to use the database:"
+msgstr "データベースを使用できません："
+
+msgid "OK - database was initialized"
+msgstr "Ok - データベースは初期化されました"
+
+msgid "Impossible to write the database setup file"
+msgstr "データベース設定ファイルに書き込みできません"
+
+msgid "Database created"
+msgstr "データベースを作成しました"
+
+msgid "Error in creating database!"
+msgstr "データベースの作成中にエラーが発生しました"
+
+msgid "You didn't select a database!"
+msgstr "データベースを選択していません!"
+
+msgid "Collect data"
+msgstr "データの収集"
+
+msgid "The installation is finished"
+msgstr "インストールは完了しました"
+
+msgid "Default logins / passwords are:"
+msgstr "デフォルトのユーザー名 / パスワードは："
+
+msgid "tech/tech for the technician account"
+msgstr "技術者アカウント：tech/tech"
+
+msgid "normal/normal for the normal account"
+msgstr "標準アカウント: normal/normal"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "投稿専用アカウント: post-only/postonly"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "これらのアカウントは、初期データと同様に削除や修正が可能です。"
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"データベース接続ファイルが作成できません、ファイルパーミッションを確認してく"
+"ださい"
+
+msgid "Select your language"
+msgstr "言語を選んでください"
+
+msgid "Beginning of the installation"
+msgstr "インストールを開始しました"
+
+msgid "Step %d"
+msgstr "ステップ %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - 認証"
+
+msgid "Remember me"
+msgstr "ログインを記憶"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "ブラウザでJavaScriptを有効にする必要があります"
+
+msgid "You must accept cookies to reach this application"
+msgstr "このアプリケーションを使うにはクッキーを有効にする必要があります。"
+
+msgid "Invalid use of session ID"
+msgstr "セッションIDの使用は無効です"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "FAQへのアクセス"
+
+msgid "Add a card"
+msgstr "カードを追加"
+
+msgid "Add a filter"
+msgstr "フィルタを追加"
+
+msgid "Saved"
+msgstr "保存しました"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "本当に %s ダッシュボードを削除しますか?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "送信日"
 
 #~ msgid "Use GLPI"
 #~ msgstr "GLPIを使用"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "非公式の変換も有効とする"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "ライセンスを読みました。これを受諾します"
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "ライセンスを読みましたが受諾しません"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "GLPIのインストール・更新"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr ""
-#~ "GLPIをクリーンインストールする場合、「インストール」を選択してください"
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr "「アップグレード」は以前のバージョンのGLPIを更新します"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "処理を続けますか?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "データベース接続パラメータ"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "データベースへの接続を検証"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "データベースに接続できません"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "サーバーから受信成功: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "サーバー名もしくはユーザー名が空白です"
-
-#~ msgid "Please select a database:"
-#~ msgstr "データベースを選択してください:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr ""
-#~ "新しいデータベースを作成するか、既存のデータベースを使用してください:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "アップデートするデータベースを選択してください:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "データベースの初期化"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "データベースを使用できません："
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "Ok - データベースは初期化されました"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "データベース設定ファイルに書き込みできません"
-
-#~ msgid "Database created"
-#~ msgstr "データベースを作成しました"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "データベースの作成中にエラーが発生しました"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "データベースを選択していません!"
-
-#~ msgid "Collect data"
-#~ msgstr "データの収集"
-
-#~ msgid "The installation is finished"
-#~ msgstr "インストールは完了しました"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "デフォルトのユーザー名 / パスワードは："
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "管理者アカウント:glpi/glpi"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "技術者アカウント：tech/tech"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "標準アカウント: normal/normal"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "投稿専用アカウント: post-only/postonly"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "これらのアカウントは、初期データと同様に削除や修正が可能です。"
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "データベース接続ファイルが作成できません、ファイルパーミッションを確認して"
-#~ "ください"
-
-#~ msgid "Select your language"
-#~ msgstr "言語を選んでください"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "インストールを開始しました"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "ステップ %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - 認証"
-
-#~ msgid "Remember me"
-#~ msgstr "ログインを記憶"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "ブラウザでJavaScriptを有効にする必要があります"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "このアプリケーションを使うにはクッキーを有効にする必要があります。"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "セッションIDの使用は無効です"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "FAQへのアクセス"
-
-#~ msgid "Add a card"
-#~ msgstr "カードを追加"
-
-#~ msgid "Add a filter"
-#~ msgstr "フィルタを追加"
-
-#~ msgid "Saved"
-#~ msgstr "保存しました"
-
-#, javascript-format
-#~ msgid "Are you sure you want to delete the dashboard %s ?"
-#~ msgstr "本当に %s ダッシュボードを削除しますか?"

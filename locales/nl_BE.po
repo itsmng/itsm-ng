@@ -23703,685 +23703,1319 @@ msgstr "Enkel ongelezen e-mails ophalen"
 msgid "Could not create dashboard"
 msgstr "Mini tickets dashboard"
 
-#~ msgid "No room found or selected"
-#~ msgstr "Geen kamer gevonden of geselecteerd"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Schrijf"
 
-#~ msgid "Marketplace"
-#~ msgstr "Marktplaats"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Inloggen"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s voegt het item %2$s-%3$stoe:%4$s"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Zie configuratie"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Bekijk de lijst van invoegtoepassingen"
+msgid "No room found or selected"
+msgstr "Geen kamer gevonden of geselecteerd"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Leeg voor oneindig"
+msgid "Marketplace"
+msgstr "Marktplaats"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS feeds gevonden"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s voegt het item %2$s-%3$stoe:%4$s"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+msgid "See the catalog of plugins"
+msgstr "Bekijk de lijst van invoegtoepassingen"
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "Bevestig de bevordering?"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Uw af te sluiten Incident-tickets"
+msgid "Empty for infinite"
+msgstr "Leeg voor oneindig"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Tickets met de status \"In behandeling\""
+msgid "RSS feeds found"
+msgstr "RSS feeds gevonden"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Te verwerken incident-tickets"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Gevolgde tickets"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "IP versie"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Uw huidige incident-tickets"
+msgid "Confirm the promotion?"
+msgstr "Bevestig de bevordering?"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Uw incident-tickets ter validatie"
+msgid "Your tickets to close"
+msgstr "Uw af te sluiten Incident-tickets"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "Uw tickets hebben de goedkeuringsstatus afgewezen"
+msgid "Tickets on pending status"
+msgstr "Tickets met de status \"In behandeling\""
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "Uw tickets hebben een afgewezen oplossing"
+msgid "Tickets to be processed"
+msgstr "Te verwerken incident-tickets"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Opvolging van een Incident-ticket"
+msgid "Your observed tickets"
+msgstr "Gevolgde tickets"
 
-#~ msgid "No ticket found."
-#~ msgstr "Geen incident-ticket gevonden."
+msgid "Your tickets in progress"
+msgstr "Uw huidige incident-tickets"
 
-#~ msgid "Last tickets"
-#~ msgstr "Laatste incident-ticket(s)"
+msgid "Your tickets to validate"
+msgstr "Uw incident-tickets ter validatie"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Nieuw incident-ticket voor dit item ..."
+msgid "Your tickets having rejected approval status"
+msgstr "Uw tickets hebben de goedkeuringsstatus afgewezen"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Je hebt geen rechten om alle tickets te zien"
+msgid "Your tickets having rejected solution"
+msgstr "Uw tickets hebben een afgewezen oplossing"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Geen incident-ticket in werking"
+msgid "Ticket followup"
+msgstr "Opvolging van een Incident-ticket"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Apparatuur toewijzen"
+#, fuzzy
+#| msgid "New ticket"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "Nieuw incident-ticket toevoegen"
+msgstr[1] "Nieuw incident-ticket toevoegen"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Automatisch aflsuiten van de incident-tickets"
+msgid "No ticket found."
+msgstr "Geen incident-ticket gevonden."
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Generatie van tevredenheidsenquetes"
+msgid "Last tickets"
+msgstr "Laatste incident-ticket(s)"
 
-#~ msgid "See my ticket"
-#~ msgstr "Toon mijn ticket"
+msgid "New ticket for this item..."
+msgstr "Nieuw incident-ticket voor dit item ..."
 
-#~ msgid "See group ticket"
-#~ msgstr "Toon groep ticket"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Laatste incident-ticket(s)"
+msgstr[1] "Laatste incident-ticket(s)"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Bekijk tickets aangemaakt door mijn groepen"
+msgid "You don't have right to see all tickets"
+msgstr "Je hebt geen rechten om alle tickets te zien"
 
-#~ msgid "See all tickets"
-#~ msgstr "Bekijk alle tickets"
+#, fuzzy
+#| msgid "No linked items"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Geen gelinkte items"
+msgstr[1] "Geen gelinkte items"
 
-#~ msgid "See assigned"
-#~ msgstr "Toon toegewezen"
+msgid "No ticket in progress."
+msgstr "Geen incident-ticket in werking"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Toon toegewezen tickets"
+msgid "Assign equipment"
+msgstr "Apparatuur toewijzen"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Een incident-ticket toewijzen"
+msgid "Automatic tickets closing"
+msgstr "Automatisch aflsuiten van de incident-tickets"
 
-#~ msgid "Steal"
-#~ msgstr "Neem over"
+msgid "Generation of satisfaction surveys"
+msgstr "Generatie van tevredenheidsenquetes"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Neem een incident-ticket over"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "Automatisch afsluiten van opgeloste incidenten-tickets na (termijn)"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Eigenaar van"
+msgid "See my ticket"
+msgstr "Toon mijn ticket"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Verantwoordelijke voor een incident-ticket"
+msgid "See group ticket"
+msgstr "Toon groep ticket"
 
-#~ msgid "Change the priority"
-#~ msgstr "Wijzig de prioriteit"
+msgid "See tickets created by my groups"
+msgstr "Bekijk tickets aangemaakt door mijn groepen"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Keur de oplossing goed/Beantwoordt de enquete (mijn ticket)"
+msgid "See all tickets"
+msgstr "Bekijk alle tickets"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr ""
-#~ "Keur de oplossing goed en beantwoordt de enquete voor het ticket dat ik "
-#~ "aanmaakte"
+msgid "See assigned"
+msgstr "Toon toegewezen"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%s voegt ticket samen %s in %s"
+msgid "See assigned tickets"
+msgstr "Toon toegewezen tickets"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Her-berekenen van de categorie"
+msgid "Assign a ticket"
+msgstr "Een incident-ticket toewijzen"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Geldige licenties"
+msgid "Steal"
+msgstr "Neem over"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Aantal installaties"
-
-#~ msgid "Merge"
-#~ msgstr "Samenvoegen"
-
-#~ msgid "Software deleted after merging"
-#~ msgstr "Software verwijderd na samenvoeging"
-
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "U moet ten minste één meldingsmodus inschakelen."
-
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
-
-#~ msgid "Connect a computer"
-#~ msgstr "Sluit een computer aan"
-
-#~ msgid "Not connected"
-#~ msgstr "Niet verbonden"
-
-#~ msgid "Show as map"
-#~ msgstr "Toon als kaart"
-
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Geldig voor %s"
-
-#~ msgid "Solved"
-#~ msgstr "Opgelost"
-
-#~ msgid "field name in DB"
-#~ msgstr "veld naam in DB"
-
-#~ msgid "Example:"
-#~ msgstr "Voorbeeld:"
-
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "Sinds GLPI 9.2 hebben we een nieuwe statistische functie geïntroduceerd, "
-#~ "genaamd \"Telemetrie\", die anoniem met uw toestemming gegevens naar onze "
-#~ "telemetrie-website verzendt."
-
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "Het ip adres is niet aanwezig in het systeem. U kunt nog wel op dit "
-#~ "moment beschikbare netwerken zien."
-
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Verschillende netwerknamen beschikbaar! Ga naar het tabblad 'Netwerknaam' "
-#~ "om deze te beheren."
-
-#~ msgid "Add a network name"
-#~ msgstr "Voeg een netwerknaam toe"
-
-#~ msgid "Not associated"
-#~ msgstr "Niet geassocieerd"
-
-#~ msgid "Create a new network name"
-#~ msgstr "Maak nieuwe netwerknaam"
-
-#~ msgid "No network name found"
-#~ msgstr "Geen netwerknaam gevonden"
-
-#~ msgid "Clean"
-#~ msgstr "Schoonmaken"
-
-#~ msgid "Install"
-#~ msgstr "Installeren"
-
-#~ msgid "Enable"
-#~ msgstr "Inschakelen"
-
-#~ msgid "Uninstall"
-#~ msgstr "De-installeren"
-
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "Bij zoeken, gebruik \"Vervaldatum bevat NULL\" om licenties te zien "
-#~ "zonder vervaldatum"
-
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "Heeft u hulp nodig bij het integreren van GLPI in uw IT-infrastructuur, "
-#~ "heeft u een bug of wenst u te profiteren van vooraf geconfigureerde "
-#~ "regels of woordenboeken?\n"
-#~ "\n"
-#~ "Wij bieden u de %s ruimte.\n"
-#~ "GLPI-Network is een commercieel product dat een abonnement voor "
-#~ "ondersteuning van niveau 3 omvat, dat de correctie van bugs met een inzet "
-#~ "tijd garandeert.\n"
-#~ "\n"
-#~ "In deze ruimte zul je in staat zijn <b> om contact op te nemen met een "
-#~ "officiële partner </b> die u zal helpen met uw GLPI-integratie\n"
-#~ "\n"
-#~ "Of ondersteun de GLPI-ontwikkelingsinspanning door te <b>doneren</b>."
-
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "Heeft u problemen met het opzetten van een geavanceerde GLPI-module?\n"
-#~ "Wij kunnen u helpen deze op te lossen. Meld u aan voor ondersteuning op "
-#~ "%s."
-
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "Er is een e-mail naar uw e-mailadres gestuurd met gegevens om uw "
-#~ "wachtwoord te veranderen."
-
-#~ msgid "Email address not found."
-#~ msgstr "E-mailadres niet gevonden."
-
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "MAC- en IP-adres van het apparaat zitten in een samengestelde netwerkpoort"
-
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "Het aangeboden bestand overschrijdt de MAX_FILE_SIZE richtlijn in php.ini"
-
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "Het aangeboden bestand overschrijdt de MAX_FILE_SIZE richtlijn, die in "
-#~ "het HTML formulier werd opgegeven"
-
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Het aangeboden bestand werd gedeeltelijk ontvangen"
-
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Bestand kon niet opgeslagen worden"
-
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr ""
-#~ "Een PHP extensie zorgde ervoor dat het bestand niet geupload kon worden"
-
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr ""
-#~ "Het aangeboden bestand overschrijdt de MAX_FILE_SIZE richtlijn in php.ini"
-
-#~ msgid "File is too big"
-#~ msgstr "Het bestand is te groot"
-
-#~ msgid "File is too small"
-#~ msgstr "Het bestand is te klein"
-
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Het maximum aantal bestanden wordt overschreden"
-
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "De afbeelding overschrijdt de maximum breedte"
-
-#~ msgid "Image requires a minimum width"
-#~ msgstr "De afbeelding vereist een minimum breedte"
-
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "De afbeelding overschrijdt de maximum hoogte"
-
-#~ msgid "Image requires a minimum height"
-#~ msgstr "De afbeelding vereist een minimum hoogte"
-
-#~ msgid "Filetype not allowed"
-#~ msgstr "DIt bestandstype is niet toegestaan"
-
-#~ msgid "File upload aborted"
-#~ msgstr "Bestand upload afgebroken"
-
-#~ msgid "Failed to resize image"
-#~ msgstr "Formaat van afbeelding kan niet worden gewijzigd"
-
-#~ msgid "Progress"
-#~ msgstr "Voortgang"
-
-#~ msgid "My settings"
-#~ msgstr "Mijn instellingen"
-
-#~ msgid "Back to top of the page"
-#~ msgstr "Terug naar bovenaan de pagina"
-
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr ""
-#~ "Deze is beschikbaar vanaf de GLPI-website: <a href='http://glpi-project."
-#~ "org' target='_blank'>http://glpi-project.org</a>."
-
-#~ msgid "Check all"
-#~ msgstr "Markeer alles"
+msgid "Steal a ticket"
+msgstr "Neem een incident-ticket over"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Demarkeer alles"
+msgid "Beeing in charge"
+msgstr "Eigenaar van"
 
-#~ msgid "Check all as"
-#~ msgstr "Markeer alles als"
+msgid "To be in charge of a ticket"
+msgstr "Verantwoordelijke voor een incident-ticket"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Selectie te groot, massale actie uitgeschakeld"
+msgid "Change the priority"
+msgstr "Wijzig de prioriteit"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Om de limiet te verhogen : wijzig max_input_vars of suhosin.post.max_vars "
-#~ "in de php configuratie"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Keur de oplossing goed/Beantwoordt de enquete (mijn ticket)"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "Het beschrijvingsveld is verplicht"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
+"Keur de oplossing goed en beantwoordt de enquete voor het ticket dat ik "
+"aanmaakte"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "%1$d tot %2$d van %3$d"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
 
-#~ msgid "Empty array"
-#~ msgstr "Lege array"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to load ticket %d"
+msgstr "Niet geslaagd om een terugkerend %s aan te maken"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d op %2$d"
+#, fuzzy
+#| msgid "%s promotes a followup from ticket %s"
+msgid "Failed to add followup to ticket %d"
+msgstr "%s promoveer opvolging van ticket %s"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr ""
-#~ "Bestand bijvoegen door middel van slepen en laten vallen of kopiëren en "
-#~ "plakken in de editor of"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add task to ticket %d"
+msgstr "Niet geslaagd om een terugkerend %s aan te maken"
 
-#~ msgid "selecting them"
-#~ msgstr "selecteer ze"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add document to ticket %d"
+msgstr "Niet geslaagd om een terugkerend %s aan te maken"
 
-#~ msgid "File(s)"
-#~ msgstr "Bestand(en)"
+msgid "Failed to link tickets %d and %d"
+msgstr ""
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Sleep en zet uw bestand hier neer, of"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "Het verwijderen van het bestand is mislukt %s"
 
-#~ msgid "Upload successful"
-#~ msgstr "Upload geslaagd"
+msgid "%s merges ticket %s into %s"
+msgstr "%s voegt ticket samen %s in %s"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Markeer/demarkeer alles"
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Testen van schrijfrechten voor invoegtoepassingen document bestanden"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Start met typen om een menu te vinden"
+msgid "Recalculate the category"
+msgstr "Her-berekenen van de categorie"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "Debug mode ingeschakeld"
+msgid "Valid licenses"
+msgstr "Geldige licenties"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "Debug mode uitgeschakeld"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Aantal installaties"
 
-#~ msgid "Saved searches"
-#~ msgstr "Bewaarde zoekacties"
+msgid "Merge"
+msgstr "Samenvoegen"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Beheer bewaarde zoekopdrachten"
+msgid "Software deleted after merging"
+msgstr "Software verwijderd na samenvoeging"
 
-#~ msgid "Add is disabled"
-#~ msgstr "Toevoegen is uitgeschakeld"
+msgid "You must enable at least one notification mode."
+msgstr "U moet ten minste één meldingsmodus inschakelen."
 
-#~ msgid "Search is disabled"
-#~ msgstr "Zoeken is uitgeschakeld"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr ""
-#~ "Sta toe om in te loggen op de API en een sessietoken te verkrijgen met "
-#~ "gebruikersgegevens"
+msgid "Connect a computer"
+msgstr "Sluit een computer aan"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "Sta toe om in te loggen bij de API en een sessietoken te krijgen met een "
-#~ "externe gebruikerstoken. Zie Sleutel voor externe toegang op het tabblad "
-#~ "Gebruikersinstellingen"
+msgid "Not connected"
+msgstr "Niet verbonden"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Toon GLPI-ID"
+msgid "Show as map"
+msgstr "Toon als kaart"
 
-#~ msgid "Color palette"
-#~ msgstr "Kleurpalet"
+msgid "Valid to %s"
+msgstr "Geldig voor %s"
 
-#~ msgid "Layout"
-#~ msgstr "Layout"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "Laatste incident-ticket(s)"
 
-#~ msgid "Tabs on left"
-#~ msgstr "Tabs links"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Incident-tickets die op uw validatie wachten"
 
-#~ msgid "Classic view"
-#~ msgstr "Klassieke weergave"
+#, fuzzy
+#| msgid "Ongoing tickets"
+msgid "Incoming tickets"
+msgstr "Lopente tickets"
 
-#~ msgid "Vertical split"
-#~ msgstr "Vertikaal splitsen"
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "Los een probleem op"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Controleer of er een nieuwe versie beschikbaar is"
+#, fuzzy
+#| msgid "Child tickets"
+msgid "Closed tickets"
+msgstr "Kind tickets"
 
-#~ msgid "Show filters"
-#~ msgstr "Filters weergeven"
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Zonder naam"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "Geen historische overeenkomst met uw filters"
+#, fuzzy
+#| msgid "Time to own"
+msgid "Time to close"
+msgstr "Behandeltijd"
+
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "Bevestig"
+
+msgid "Solved"
+msgstr "Opgelost"
+
+msgid "Share or embed this dashboard"
+msgstr ""
 
-#~ msgid "Add to schedule"
-#~ msgstr "Aan planning toevoegen"
+#, fuzzy
+#| msgid "Helpdesk Dashboard"
+msgid "Delete this dashboard"
+msgstr "Helpdesk Dashboard"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle auto-refresh"
+msgstr "Filter aan/uit"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle night mode"
+msgstr "Filter aan/uit"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle fullscreen"
+msgstr "Filter aan/uit"
+
+#, fuzzy
+#| msgid "Mini tickets dashboard"
+msgid "Clone this dashboard"
+msgstr "Mini tickets dashboard"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle edit mode"
+msgstr "Filter aan/uit"
+
+#, fuzzy
+#| msgid "Add a filter"
+msgid "Add filter"
+msgstr "Voeg een filter toe"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "Een nieuwe taak toevoegen"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "Andere"
+
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "Budget"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "Aantal taken"
+
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filters"
+msgstr "Filter lijst"
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "(Base) URL van de applicatie"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP directory link"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+#, fuzzy
+#| msgid "Empty array"
+msgid "empty card !"
+msgstr "Lege array"
+
+#, fuzzy
+#| msgid "Number of rows"
+msgid "Number of %s"
+msgstr "Aantal rijen"
+
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s door %2$s"
+
+#, fuzzy
+#| msgid "%s of %s"
+msgid "List of %s"
+msgstr "%s van %s"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "Aantal Incident-tickets"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket tasks to do"
+msgid "Tickets status by month"
+msgstr "Ongedane taken voor dit ticket"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets duration"
+msgid "Tickets summary"
+msgstr "Tickets duur"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's categories"
+msgstr "Voor tickets afgesloten na"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "Uw incident-tickets ter validatie"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "Standaard incident-tickettype"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "Ticket locatie"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "Aantal tickets als indiener"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "Bekijk tickets aangemaakt door mijn groepen"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "Voor tickets afgesloten na"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "Bekijk tickets aangemaakt door mijn groepen"
+
+#, fuzzy
+#| msgid "New group in assignees"
+msgid "Top ticket's assignees"
+msgstr "Nieuwe groep in toegewezen"
+
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "Voeg een opvolging toe aan de tickets van geassocieerde groepen"
+
+#, fuzzy
+#| msgid "List of translations"
+msgid "List of reminders"
+msgstr "Lijst vertalingen"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr "veld naam in DB"
+
+msgid "Example:"
+msgstr "Voorbeeld:"
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"Sinds GLPI 9.2 hebben we een nieuwe statistische functie geïntroduceerd, "
+"genaamd \"Telemetrie\", die anoniem met uw toestemming gegevens naar onze "
+"telemetrie-website verzendt."
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"Het ip adres is niet aanwezig in het systeem. U kunt nog wel op dit moment "
+"beschikbare netwerken zien."
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Verschillende netwerknamen beschikbaar! Ga naar het tabblad 'Netwerknaam' om "
+"deze te beheren."
+
+msgid "Add a network name"
+msgstr "Voeg een netwerknaam toe"
+
+msgid "Not associated"
+msgstr "Niet geassocieerd"
+
+msgid "Create a new network name"
+msgstr "Maak nieuwe netwerknaam"
+
+msgid "No network name found"
+msgstr "Geen netwerknaam gevonden"
+
+#, fuzzy
+#| msgid "Unable to add domain item %s."
+msgid "Unable to download plugin archive."
+msgstr "Kan domeinitem %s niet toevoegen."
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "Controle van de aanwezigheid van de updates"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "Installeren"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "Verbinding verbreken"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+#, fuzzy
+#| msgid "%1$s position is not available"
+msgid "Your %1$s registration is not valid."
+msgstr "%1$s positie is niet beschikbaar"
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "Aangemaakt op %s"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Jouw opmerking is bewerkt"
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "gegenereerd op %s"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "Meest populaire vragen"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "Laatste update"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "Lees opmerkingen"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filter plugin list"
+msgstr "Filter lijst"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "Home"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "Lezen"
+
+msgid "Clean"
+msgstr "Schoonmaken"
+
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "Loginnaam is ongeldig. Niet mogelijk om gebruiker toe te voegen."
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "Een nieuwe versie is beschikbaar: %s."
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "Installeren"
+
+msgid "Enable"
+msgstr "Inschakelen"
+
+msgid "Uninstall"
+msgstr "De-installeren"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Invoegtoepassing uitgeschakeld"
+msgstr[1] "Invoegtoepassing uitgeschakeld"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "Laat"
+
+#, fuzzy
+#| msgid "Marketplace"
+msgid "Switch to marketplace"
+msgstr "Marktplaats"
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "Invoegtoepassing"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "Gebouwnummer"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"Bij zoeken, gebruik \"Vervaldatum bevat NULL\" om licenties te zien zonder "
+"vervaldatum"
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "Reservatie"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "Aangemaakt op %s"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "Reservatie"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "Beschrijving"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "Onbekend bestand"
+
+#, fuzzy
+#| msgid "yesterday"
+msgid "Registered by"
+msgstr "gisteren"
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "Activeer de financiële & administratieve informatie"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "De installatie is voltooid"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "De installatie is voltooid"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"Heeft u hulp nodig bij het integreren van GLPI in uw IT-infrastructuur, "
+"heeft u een bug of wenst u te profiteren van vooraf geconfigureerde regels "
+"of woordenboeken?\n"
+"\n"
+"Wij bieden u de %s ruimte.\n"
+"GLPI-Network is een commercieel product dat een abonnement voor "
+"ondersteuning van niveau 3 omvat, dat de correctie van bugs met een inzet "
+"tijd garandeert.\n"
+"\n"
+"In deze ruimte zul je in staat zijn <b> om contact op te nemen met een "
+"officiële partner </b> die u zal helpen met uw GLPI-integratie\n"
+"\n"
+"Of ondersteun de GLPI-ontwikkelingsinspanning door te <b>doneren</b>."
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"Heeft u problemen met het opzetten van een geavanceerde GLPI-module?\n"
+"Wij kunnen u helpen deze op te lossen. Meld u aan voor ondersteuning op %s."
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"Er is een e-mail naar uw e-mailadres gestuurd met gegevens om uw wachtwoord "
+"te veranderen."
+
+msgid "Email address not found."
+msgstr "E-mailadres niet gevonden."
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+"MAC- en IP-adres van het apparaat zitten in een samengestelde netwerkpoort"
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"Het aangeboden bestand overschrijdt de MAX_FILE_SIZE richtlijn in php.ini"
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Het aangeboden bestand overschrijdt de MAX_FILE_SIZE richtlijn, die in het "
+"HTML formulier werd opgegeven"
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "Het aangeboden bestand werd gedeeltelijk ontvangen"
+
+msgid "Failed to write file to disk"
+msgstr "Bestand kon niet opgeslagen worden"
+
+msgid "A PHP extension stopped the file upload"
+msgstr ""
+"Een PHP extensie zorgde ervoor dat het bestand niet geupload kon worden"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+"Het aangeboden bestand overschrijdt de MAX_FILE_SIZE richtlijn in php.ini"
+
+msgid "File is too big"
+msgstr "Het bestand is te groot"
+
+msgid "File is too small"
+msgstr "Het bestand is te klein"
+
+msgid "Maximum number of files exceeded"
+msgstr "Het maximum aantal bestanden wordt overschreden"
+
+msgid "Image exceeds maximum width"
+msgstr "De afbeelding overschrijdt de maximum breedte"
+
+msgid "Image requires a minimum width"
+msgstr "De afbeelding vereist een minimum breedte"
+
+msgid "Image exceeds maximum height"
+msgstr "De afbeelding overschrijdt de maximum hoogte"
+
+msgid "Image requires a minimum height"
+msgstr "De afbeelding vereist een minimum hoogte"
+
+msgid "Filetype not allowed"
+msgstr "DIt bestandstype is niet toegestaan"
+
+msgid "File upload aborted"
+msgstr "Bestand upload afgebroken"
+
+msgid "Failed to resize image"
+msgstr "Formaat van afbeelding kan niet worden gewijzigd"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "Gebruikersinformatie"
+
+msgid "Progress"
+msgstr "Voortgang"
+
+msgid "My settings"
+msgstr "Mijn instellingen"
+
+msgid "Back to top of the page"
+msgstr "Terug naar bovenaan de pagina"
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr ""
+"Deze is beschikbaar vanaf de GLPI-website: <a href='http://glpi-project.org' "
+"target='_blank'>http://glpi-project.org</a>."
+
+msgid "Check all"
+msgstr "Markeer alles"
+
+msgid "Uncheck all"
+msgstr "Demarkeer alles"
+
+msgid "Check all as"
+msgstr "Markeer alles als"
+
+msgid "Selection too large, massive action disabled."
+msgstr "Selectie te groot, massale actie uitgeschakeld"
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Om de limiet te verhogen : wijzig max_input_vars of suhosin.post.max_vars in "
+"de php configuratie"
+
+msgid "The description field is mandatory"
+msgstr "Het beschrijvingsveld is verplicht"
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr "%1$d tot %2$d van %3$d"
+
+msgid "Empty array"
+msgstr "Lege array"
+
+msgid "%1$d on %2$d"
+msgstr "%1$d op %2$d"
+
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "Sluiten"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+"Bestand bijvoegen door middel van slepen en laten vallen of kopiëren en "
+"plakken in de editor of"
+
+msgid "selecting them"
+msgstr "selecteer ze"
+
+msgid "File(s)"
+msgstr "Bestand(en)"
+
+msgid "Drag and drop your file here, or"
+msgstr "Sleep en zet uw bestand hier neer, of"
+
+msgid "Upload successful"
+msgstr "Upload geslaagd"
+
+msgid "Check/uncheck all"
+msgstr "Markeer/demarkeer alles"
+
+msgid "Start typing to find a menu"
+msgstr "Start met typen om een menu te vinden"
+
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Gewijzigd"
+
+msgid "Debug mode enabled"
+msgstr "Debug mode ingeschakeld"
+
+msgid "Debug mode disabled"
+msgstr "Debug mode uitgeschakeld"
+
+msgid "Saved searches"
+msgstr "Bewaarde zoekacties"
+
+msgid "Manage saved searches"
+msgstr "Beheer bewaarde zoekopdrachten"
+
+msgid "Add is disabled"
+msgstr "Toevoegen is uitgeschakeld"
+
+msgid "Search is disabled"
+msgstr "Zoeken is uitgeschakeld"
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "Globaal beheer"
+
+#, fuzzy
+#| msgid "Unable to stop impersonating user"
+msgid "You are impersonating %s."
+msgstr "Kan het nabootsen van de identiteit van de gebruiker niet stoppen"
+
+#, fuzzy
+#| msgid "Unable to stop impersonating user"
+msgid "Stop impersonating"
+msgstr "Kan het nabootsen van de identiteit van de gebruiker niet stoppen"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+"Sta toe om in te loggen op de API en een sessietoken te verkrijgen met "
+"gebruikersgegevens"
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"Sta toe om in te loggen bij de API en een sessietoken te krijgen met een "
+"externe gebruikerstoken. Zie Sleutel voor externe toegang op het tabblad "
+"Gebruikersinstellingen"
+
+msgid "Show GLPI ID"
+msgstr "Toon GLPI-ID"
+
+msgid "Color palette"
+msgstr "Kleurpalet"
+
+msgid "Layout"
+msgstr "Layout"
+
+msgid "Tabs on left"
+msgstr "Tabs links"
+
+msgid "Classic view"
+msgstr "Klassieke weergave"
+
+msgid "Vertical split"
+msgstr "Vertikaal splitsen"
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Vervaldatum contract"
+
+#, fuzzy
+#| msgid "Assets Dashboard"
+msgid "Dashboards"
+msgstr "Activa Dashboard"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "Standaardwaarden voor de incident-tickets"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "Standaardwaarden voor de incident-tickets"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "Standaardwaarden voor de incident-tickets"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Standaardwaarden voor de incident-tickets"
+
+msgid "Check if a new version is available"
+msgstr "Controleer of er een nieuwe versie beschikbaar is"
+
+msgid "Show filters"
+msgstr "Filters weergeven"
+
+msgid "No historical matching your filters"
+msgstr "Geen historische overeenkomst met uw filters"
+
+msgid "Add to schedule"
+msgstr "Aan planning toevoegen"
+
+msgid "Position in room"
+msgstr "Positie in lokaal"
+
+msgid "Door orientation in room"
+msgstr "Deur oriëntatie in lokaal"
+
+msgid "North"
+msgstr "Noord"
+
+msgid "East"
+msgstr "Oost"
+
+msgid "South"
+msgstr "Zuid"
+
+msgid "West"
+msgstr "West"
+
+msgid "Number of units"
+msgstr "Aantal eenheden"
+
+msgid "U"
+msgstr "U"
 
-#~ msgid "Position in room"
-#~ msgstr "Positie in lokaal"
+msgid "Width"
+msgstr "Breedte"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "Deur oriëntatie in lokaal"
+msgid "Height"
+msgstr "Hoogte"
 
-#~ msgid "North"
-#~ msgstr "Noord"
+msgid "Measured power (in watts)"
+msgstr "Gemeten vermogen (in watt)"
 
-#~ msgid "East"
-#~ msgstr "Oost"
+msgid "Max. weight"
+msgstr "Max. gewicht"
 
-#~ msgid "South"
-#~ msgstr "Zuid"
+msgid "No rack found"
+msgstr "Geen rack gevonden"
 
-#~ msgid "West"
-#~ msgstr "West"
+msgid "Following elements are out of room bounds"
+msgstr "Volgende elementen zijn buiten lokaalgrenzen"
 
-#~ msgid "Number of units"
-#~ msgstr "Aantal eenheden"
+msgid "Blueprint"
+msgstr "Plan"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "Grid"
+msgstr "Rooster"
 
-#~ msgid "Width"
-#~ msgstr "Breedte"
+msgid "Insert a rack here"
+msgstr "Voeg hier een rack toe"
 
-#~ msgid "Height"
-#~ msgstr "Hoogte"
+msgid "Position must be set"
+msgstr "Positie moet ingesteld zijn"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "Gemeten vermogen (in watt)"
+msgid "%1$s position is not available"
+msgstr "%1$s positie is niet beschikbaar"
 
-#~ msgid "Max. weight"
-#~ msgstr "Max. gewicht"
+msgid "All categories"
+msgstr "Alle categorieen"
 
-#~ msgid "No rack found"
-#~ msgstr "Geen rack gevonden"
+msgid "Uncategorized software"
+msgstr "Ongecategoriseerde software"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "Volgende elementen zijn buiten lokaalgrenzen"
+msgid "Valid license"
+msgstr "Geldige licentie"
 
-#~ msgid "Blueprint"
-#~ msgstr "Plan"
+#, fuzzy
+#| msgid "Update component"
+msgid "Other component"
+msgstr "Component bijwerken"
 
-#~ msgid "Grid"
-#~ msgstr "Rooster"
+msgid "One last thing before starting"
+msgstr "Nog een ding voor we starten"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "Voeg hier een rack toe"
+msgid "Donate"
+msgstr "Doneren"
 
-#~ msgid "Position must be set"
-#~ msgstr "Positie moet ingesteld zijn"
+msgid "Unofficial translations are also available"
+msgstr "Niet officiële vertalingen zijn ook beschikbaar"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s positie is niet beschikbaar"
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Ik heb de licentievoorwaarden hierboven gelezen en AANVAARD deze"
 
-#~ msgid "All categories"
-#~ msgstr "Alle categorieen"
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Ik heb de licentievoorwaarden hierboven gelezen en AANVAARD deze NIET"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Ongecategoriseerde software"
+msgid "Installation or update of GLPI"
+msgstr "Installeer of update GLPI"
 
-#~ msgid "Valid license"
-#~ msgstr "Geldige licentie"
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Kies 'Installeren' voor een nieuwe complete installatie van GLPI."
 
-#~ msgid "One last thing before starting"
-#~ msgstr "Nog een ding voor we starten"
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+"Selecteer \"Opwaarderen\" om uw GLPI versie naar de meest recente versie op "
+"te waarderen."
 
-#~ msgid "Donate"
-#~ msgstr "Doneren"
+msgid "Do you want to continue?"
+msgstr "Doorgaan?"
+
+msgid "Database connection parameters"
+msgstr "Parameters voor de databankverbinding"
+
+msgid "Test of the connection at the database"
+msgstr "Test van de verbinding met de databank"
+
+msgid "Can't connect to the database"
+msgstr "Onmogelijk een verbinding te maken met de databank"
+
+msgid "The server answered: %s"
+msgstr "De server antwoordde: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Server- en/of gebruikersveld is leeg"
+
+msgid "Please select a database:"
+msgstr "Selecteer een databank:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Maak een nieuwe of gebruik een bestaande databank:"
+
+msgid "Please select the database to update:"
+msgstr "Selecteer de databank die bijgewerkt moet worden:"
+
+msgid "Initialization of the database"
+msgstr "Initialisatie van de database"
+
+msgid "Impossible to use the database:"
+msgstr "Onmogelijk om de databank te gebruiken:"
+
+msgid "OK - database was initialized"
+msgstr "OK - databank is geïnitialiseerd"
+
+msgid "Impossible to write the database setup file"
+msgstr "Onmogelijk om te schrijven naar het databank-set-upbestand"
+
+msgid "Database created"
+msgstr "Databank aangemaakt"
+
+msgid "Error in creating database!"
+msgstr "Fout bij aanmaken databank!"
+
+msgid "You didn't select a database!"
+msgstr "Je heb geen databank geselecteerd!"
+
+msgid "Collect data"
+msgstr "Gegevens verzamelen"
+
+msgid "The installation is finished"
+msgstr "De installatie is voltooid"
+
+msgid "Default logins / passwords are:"
+msgstr "Standaard gebruikersnaam/wachtwoord zijn:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech voor de technische gebruiker"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal voor het normal account"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/post-only voor het 'alleen posten'-gebruikersaccount"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+"U kunt deze gebruikers verwijderen of wijzigen, net als de intiële waarden "
+"in de databank"
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Onmogelijk om het databank verbindingsbestand aan te maken.  Controleer de "
+"rechten van de bestanden."
+
+msgid "Select your language"
+msgstr "Selecteer jouw taal"
+
+msgid "Beginning of the installation"
+msgstr "Start van de installatie"
+
+msgid "Step %d"
+msgstr "Stap %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Authenticatie"
+
+msgid "Remember me"
+msgstr "Onthoud mij"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "U moet JavaScript activeren in uw browser"
+
+msgid "You must accept cookies to reach this application"
+msgstr "U moet cookies accepteren om dit programma te gebruiken"
+
+msgid "Invalid use of session ID"
+msgstr "Onjuist gebruik van sessie-ID"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Toegang tot de FAQ"
+
+msgid "Add a card"
+msgstr "Voeg een kaart toe"
+
+msgid "Add a filter"
+msgstr "Voeg een filter toe"
+
+msgid "Saved"
+msgstr "Opgeslagen"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Ben je zeker dat je dashboard %s wil verwijderen?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Zend datum"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Gebruik GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Niet officiële vertalingen zijn ook beschikbaar"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Ik heb de licentievoorwaarden hierboven gelezen en AANVAARD deze"
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr ""
-#~ "Ik heb de licentievoorwaarden hierboven gelezen en AANVAARD deze NIET"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "Installeer of update GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Kies 'Installeren' voor een nieuwe complete installatie van GLPI."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "Selecteer \"Opwaarderen\" om uw GLPI versie naar de meest recente versie "
-#~ "op te waarderen."
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Doorgaan?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Parameters voor de databankverbinding"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Test van de verbinding met de databank"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Onmogelijk een verbinding te maken met de databank"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "De server antwoordde: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Server- en/of gebruikersveld is leeg"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Selecteer een databank:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Maak een nieuwe of gebruik een bestaande databank:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Selecteer de databank die bijgewerkt moet worden:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Initialisatie van de database"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Onmogelijk om de databank te gebruiken:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK - databank is geïnitialiseerd"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Onmogelijk om te schrijven naar het databank-set-upbestand"
-
-#~ msgid "Database created"
-#~ msgstr "Databank aangemaakt"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Fout bij aanmaken databank!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Je heb geen databank geselecteerd!"
-
-#~ msgid "Collect data"
-#~ msgstr "Gegevens verzamelen"
-
-#~ msgid "The installation is finished"
-#~ msgstr "De installatie is voltooid"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Standaard gebruikersnaam/wachtwoord zijn:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi voor de beheerder/administrator account"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech voor de technische gebruiker"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal voor het normal account"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/post-only voor het 'alleen posten'-gebruikersaccount"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "U kunt deze gebruikers verwijderen of wijzigen, net als de intiële "
-#~ "waarden in de databank"
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Onmogelijk om het databank verbindingsbestand aan te maken.  Controleer "
-#~ "de rechten van de bestanden."
-
-#~ msgid "Select your language"
-#~ msgstr "Selecteer jouw taal"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Start van de installatie"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Stap %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Authenticatie"
-
-#~ msgid "Remember me"
-#~ msgstr "Onthoud mij"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "U moet JavaScript activeren in uw browser"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "U moet cookies accepteren om dit programma te gebruiken"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Onjuist gebruik van sessie-ID"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Toegang tot de FAQ"
-
-#~ msgid "Add a card"
-#~ msgstr "Voeg een kaart toe"
-
-#~ msgid "Add a filter"
-#~ msgstr "Voeg een filter toe"
-
-#~ msgid "Saved"
-#~ msgstr "Opgeslagen"
-
-#, javascript-format
-#~ msgid "Are you sure you want to delete the dashboard %s ?"
-#~ msgstr "Ben je zeker dat je dashboard %s wil verwijderen?"

@@ -1,9 +1,9 @@
-/*
+/**
  * ---------------------------------------------------------------------
- * GLPI - Gestionnaire Libre de Parc Informatique
- * Copyright (C) 2015-2022 Teclib' and contributors.
+ * ITSM-NG
+ * Copyright (C) 2022 ITSM-NG and contributors.
  *
- * http://glpi-project.org
+ * https://www.itsm-ng.org
  *
  * based on GLPI - Gestionnaire Libre de Parc Informatique
  * Copyright (C) 2003-2014 by the INDEPNET Development Team.
@@ -12,20 +12,20 @@
  *
  * LICENSE
  *
- * This file is part of GLPI.
+ * This file is part of ITSM-NG.
  *
- * GLPI is free software; you can redistribute it and/or modify
+ * ITSM-NG is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * GLPI is distributed in the hope that it will be useful,
+ * ITSM-NG is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
+ * along with ITSM-NG. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
  */
 
@@ -41,193 +41,156 @@ const libOutputPath = 'public/lib';
 /*
  * GLPI core files build configuration.
  */
-var glpiConfig = {
-   entry: {
-      'glpi': path.resolve(__dirname, 'js/main.js'),
-   },
-   output: {
-      filename: '[name].js',
-      path: path.resolve(__dirname, 'public/build'),
-   },
+const glpiConfig = {
+  entry: {
+    glpi: path.resolve(__dirname, 'js/main.js'),
+  },
+  output: {
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'public/build'),
+  },
+  mode: 'none',
+  devtool: 'source-map',
+  stats: {
+    all: false,
+    errors: true,
+    errorDetails: true,
+    warnings: true,
+    entrypoints: true,
+    timings: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+    ],
+  },
 };
 
 /*
  * External libraries files build configuration.
  */
-var libsConfig = {
-   entry: function () {
-      // Create an entry per *.js file in lib/bundle directory.
-      // Entry name will be name of the file (without ext).
-      var entries = {};
-
-      let files = glob.sync(path.resolve(__dirname, 'lib/bundles') + '/!(*.min).js');
-      files.forEach(function (file) {
-         entries[path.basename(file, '.js')] = file;
-      });
-
-      return entries;
-   },
-   output: {
-      filename: '[name].js',
-      path: path.resolve(__dirname, libOutputPath),
-   },
-   module: {
-      rules: [
-         {
-            // Load scripts with no compilation for packages that are directly providing "dist" files.
-            // This prevents useless compilation pass and can also
-            // prevents incompatibility issues with the webpack require feature.
-            // It also removes existing sourcemaps that cannot be used correctly.
-            test: /\.js$/,
-            include: [
-               path.resolve(__dirname, 'node_modules/@fullcalendar'),
-               path.resolve(__dirname, 'node_modules/codemirror'),
-               path.resolve(__dirname, 'node_modules/cystoscape'),
-               path.resolve(__dirname, 'node_modules/cytoscape-context-menus'),
-               path.resolve(__dirname, 'node_modules/gridstack'),
-               path.resolve(__dirname, 'node_modules/jquery-migrate'),
-               path.resolve(__dirname, 'node_modules/jstree'),
-               path.resolve(__dirname, 'node_modules/photoswipe'),
-               path.resolve(__dirname, 'node_modules/rrule'),
-               path.resolve(__dirname, 'vendor/blueimp/jquery-file-upload'),
-            ],
-            use: ['script-loader', 'strip-sourcemap-loader'],
-         },
-         {
-            // Build styles
-            test: /\.css$/i,
-            use: [MiniCssExtractPlugin.loader, 'css-loader'],
-         },
-         {
-            // Copy images and fonts
-            test: /\.((gif|png|jp(e?)g)|(eot|ttf|svg|woff2?))$/,
-            use: {
-               loader: 'file-loader',
-               options: {
-                  name: function (filename) {
-                     // Keep only relative path
-                     var sanitizedPath = path.relative(__dirname, filename);
-
-                     // Sanitize name
-                     sanitizedPath = sanitizedPath.replace(/[^\\/\w-.]/, '');
-
-                     // Remove the first directory (lib, node_modules, ...) and empty parts
-                     // and replace directory separator by '/' (windows case)
-                     sanitizedPath = sanitizedPath.split(path.sep)
-                        .filter(function (part, index) {
-                           return '' != part && index != 0;
-                        }).join('/');
-
-                     return sanitizedPath;
-                  },
-               },
+const libsConfig = {
+  entry: () => {
+    const entries = {};
+    const files = glob.sync(path.resolve(__dirname, 'lib/bundles') + '/!(*.min).js');
+    files.forEach(file => {
+      entries[path.basename(file, '.js')] = file;
+    });
+    return entries;
+  },
+  output: {
+    filename: '[name].js',
+    path: path.resolve(__dirname, libOutputPath),
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: [
+          path.resolve(__dirname, 'node_modules/@fullcalendar'),
+          path.resolve(__dirname, 'node_modules/codemirror'),
+          path.resolve(__dirname, 'node_modules/cystoscape'),
+          path.resolve(__dirname, 'node_modules/cytoscape-context-menus'),
+          path.resolve(__dirname, 'node_modules/gridstack'),
+          path.resolve(__dirname, 'node_modules/jquery-migrate'),
+          path.resolve(__dirname, 'node_modules/jstree'),
+          path.resolve(__dirname, 'node_modules/photoswipe'),
+          path.resolve(__dirname, 'node_modules/rrule'),
+          path.resolve(__dirname, 'vendor/blueimp/jquery-file-upload'),
+        ],
+        use: ['script-loader', 'strip-sourcemap-loader'],
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
+      {
+        test: /\.(gif|png|jpe?g|eot|ttf|svg|woff2?)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: (filename) => {
+              const sanitizedPath = path.relative(__dirname, filename)
+                .replace(/[^\\/\w-.]/g, '')
+                .split(path.sep)
+                .filter((part, index) => part && index !== 0)
+                .join('/');
+              return sanitizedPath;
             },
-         },
-      ],
-   },
-   plugins: [
-      new CleanWebpackPlugin(), // Clean lib dir content
-      new MiniCssExtractPlugin({ filename: '[name].css' }), // Extract styles into CSS files
-   ],
-   resolve: {
-      // Use only main file in requirement resolution as we do not yet handle modules correctly
-      mainFields: [
-         'main',
-      ],
-      fallback: {
-         'tty': require.resolve('tty-browserify'),
-         'stream': require.resolve('stream-browserify'),
-         "buffer": require.resolve("buffer/"),
-         "os": require.resolve("os-browserify/browser"),
+          },
+        },
       },
-   },
-}
-
-var libs = {
-   '@fullcalendar': [
-      {
-         context: 'core',
-         from: 'locales/*.js',
-      }
-   ],
-   'flatpickr': [
-      {
-         context: 'dist',
-         from: 'l10n/*.js',
-      },
-      {
-         context: 'dist',
-         from: 'themes/*.css',
-      }
-   ],
-   'jquery-ui': [
-      {
-         context: 'ui',
-         from: 'i18n/*.js',
-      }
-   ],
-   'select2': [
-      {
-         context: 'dist',
-         from: 'js/i18n/*.js',
-      }
-   ],
-   'tinymce-i18n': [
-      {
-         from: 'langs/*.js',
-      }
-   ],
+    ],
+  },
+  plugins: [
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({ filename: '[name].css' }),
+  ],
+  resolve: {
+    mainFields: ['main'],
+    fallback: {
+      tty: require.resolve('tty-browserify'),
+      stream: require.resolve('stream-browserify'),
+      buffer: require.resolve('buffer/'),
+      os: require.resolve('os-browserify/browser'),
+    },
+  },
+  mode: 'none',
+  devtool: 'source-map',
+  stats: {
+    all: false,
+    errors: true,
+    errorDetails: true,
+    warnings: true,
+    entrypoints: true,
+    timings: true,
+  },
 };
 
-for (let packageName in libs) {
-   let libPackage = libs[packageName];
-   let to = libOutputPath + '/' + packageName.replace(/^@/, ''); // remove leading @ in case of prefixed package
-
-   let copyPatterns = [];
-
-   for (let e = 0; e < libPackage.length; e++) {
-      let packageEntry = libPackage[e];
-
-      let context = 'node_modules/' + packageName;
-      if (Object.prototype.hasOwnProperty.call(packageEntry, 'context')) {
-         context += '/' + packageEntry.context;
-      }
-
-      let copyParams = {
-         context: path.resolve(__dirname, context),
-         from:    packageEntry.from,
-         to:      path.resolve(__dirname, to),
-         toType:  'dir',
-      };
-
-      if (Object.prototype.hasOwnProperty.call(packageEntry, 'ignore')) {
-         copyParams.ignore = packageEntry.ignore;
-      }
-
-      copyPatterns.push(copyParams);
-   }
-
-   libsConfig.plugins.push(new CopyWebpackPlugin({patterns:copyPatterns}));
-}
-
-module.exports = function() {
-   var configs = [glpiConfig, libsConfig];
-
-   for (let config of configs) {
-      config.mode = 'none'; // Force 'none' mode, as optimizations will be done on release process
-      config.devtool = 'source-map'; // Add sourcemap to files
-
-      // Limit verbosity to only usefull information
-      config.stats = {
-         all: false,
-         errors: true,
-         errorDetails: true,
-         warnings: true,
-
-         entrypoints: true,
-         timings: true,
-      };
-   }
-
-   return configs;
+const libs = {
+  '@fullcalendar': [{ context: 'core', from: 'locales/*.js' }],
+  flatpickr: [
+    { context: 'dist', from: 'l10n/*.js' },
+    { context: 'dist', from: 'themes/*.css' },
+  ],
+  'jquery-ui': [{ context: 'ui', from: 'i18n/*.js' }],
+  select2: [{ context: 'dist', from: 'js/i18n/*.js' }],
+  'tinymce-i18n': [{ from: 'langs/*.js' }],
 };
+
+const generateCopyPatterns = (libPackage, packageName) => {
+  const to = `${libOutputPath}/${packageName.replace(/^@/, '')}`;
+  return libPackage.map(entry => ({
+    context: path.resolve(__dirname, `node_modules/${packageName}`, entry.context || ''),
+    from: entry.from,
+    to: path.resolve(__dirname, to),
+    toType: 'dir',
+    ...(entry.ignore && { ignore: entry.ignore }),
+  }));
+};
+
+Object.entries(libs).forEach(([packageName, libPackage]) => {
+  const copyPatterns = generateCopyPatterns(libPackage, packageName);
+  libsConfig.plugins.push(new CopyWebpackPlugin({ patterns: copyPatterns }));
+});
+
+module.exports = [glpiConfig, libsConfig];

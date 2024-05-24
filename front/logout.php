@@ -48,8 +48,17 @@ if (!isset($_SESSION["noAUTO"])
     && $_SESSION["glpiauthtype"] == Auth::CAS
     && Toolbox::canUseCAS()) {
 
-   phpCAS::client(CAS_VERSION_2_0, $CFG_GLPI["cas_host"], intval($CFG_GLPI["cas_port"]),
-                  $CFG_GLPI["cas_uri"], false);
+   $has_service_base_url_arg = version_compare(phpCAS::getVersion(), '1.6.0', '>=')
+        || count((new ReflectionMethod(phpCAS::class, 'client'))->getParameters()) > 6;
+   if (!$has_service_base_url_arg) {
+       phpCAS::client($CFG_GLPI["cas_version"], $CFG_GLPI["cas_host"], intval($CFG_GLPI["cas_port"]),
+                      $CFG_GLPI["cas_uri"], false);
+   } else {
+       $url_base = parse_url($CFG_GLPI["url_base"]);
+       $service_base_url = $url_base["scheme"] . "://" . $url_base["host"] . (isset($url_base["port"]) ? ":" . $url_base["port"] : "");
+       phpCAS::client($CFG_GLPI["cas_version"], $CFG_GLPI["cas_host"], intval($CFG_GLPI["cas_port"]),
+                      $CFG_GLPI["cas_uri"], $service_base_url, false);
+   }
    phpCAS::setServerLogoutURL(strval($CFG_GLPI["cas_logout"]));
    phpCAS::logout();
 }

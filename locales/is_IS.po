@@ -23493,125 +23493,1300 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS straumur fannst"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Skrifa"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Innskráning"
 
-#~ msgid "Merge"
-#~ msgstr "Sameina"
+msgid "Open ID connect configuration"
+msgstr ""
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "No room found or selected"
+msgstr ""
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Gildir til %s"
+msgid "Marketplace"
+msgstr ""
 
-#~ msgid "Solved"
-#~ msgstr "Leyst"
+#, fuzzy
+#| msgid "%1$s adds the item %2$s"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s bætir við %2$s "
 
-#~ msgid "Email address not found."
-#~ msgstr "Netfang fannst ekki"
+msgid "See the catalog of plugins"
+msgstr ""
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Gat ekki skrifað skránna á disk"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "File is too big"
-#~ msgstr "Skráinn er of stór"
+msgid "Empty for infinite"
+msgstr ""
 
-#~ msgid "File is too small"
-#~ msgstr "Skráinn er of lítil"
+msgid "RSS feeds found"
+msgstr "RSS straumur fannst"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Myndin er of breið"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Myndin þarf að ná lágmarks breidd"
+#, fuzzy
+#| msgid "version"
+msgid "GLPI version"
+msgstr "útgáfa"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Myndin er of há"
+msgid "Confirm the promotion?"
+msgstr ""
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Myndin þarf að ná lágmarks hæð"
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Your tickets to close"
+msgstr "Fyrir beiðnar lokaðar eftir"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Skráargerð ekki leyfð"
+#, fuzzy
+#| msgid "Problems on pending status"
+msgid "Tickets on pending status"
+msgstr "Vandamál í bið"
 
-#~ msgid "Check all"
-#~ msgstr "Velja allt"
+msgid "Tickets to be processed"
+msgstr ""
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d á %2$d"
+#, fuzzy
+#| msgid "Number of assigned tickets"
+msgid "Your observed tickets"
+msgstr "Fjöldi úthlutaðra beiðna"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Dragðu skránna hingað, eða"
+#, fuzzy
+#| msgid "Work in progress..."
+msgid "Your tickets in progress"
+msgstr "Í vinnslu"
 
-#~ msgid "Upload successful"
-#~ msgstr "Uppfærsla tókst"
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Your tickets to validate"
+msgstr "Fyrir beiðnar lokaðar eftir"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Merkja/Afmerkja allt"
+msgid "Your tickets having rejected approval status"
+msgstr ""
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "kanna hvort ný útgáfa er fyrir hendi"
+msgid "Your tickets having rejected solution"
+msgstr ""
+
+#, fuzzy
+#| msgid "New followup"
+msgid "Ticket followup"
+msgstr "Ný uppfærsla"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "Ný beiðni"
+msgstr[1] "Ný beiðni"
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No ticket found."
+msgstr "Engin notandi fannst"
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "Last tickets"
+msgstr "Búa til beiðni"
+
+msgid "New ticket for this item..."
+msgstr ""
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Búa til beiðni"
+msgstr[1] "Búa til beiðni"
+
+msgid "You don't have right to see all tickets"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket solved"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Verkbeiðni leyst"
+msgstr[1] "Verkbeiðni leyst"
+
+#, fuzzy
+#| msgid "Work in progress..."
+msgid "No ticket in progress."
+msgstr "Í vinnslu"
+
+msgid "Assign equipment"
+msgstr ""
+
+#, fuzzy
+#| msgid "Automatic redirection, else click"
+msgid "Automatic tickets closing"
+msgstr "Sjálfvirk framsending, annars smellið á "
+
+#, fuzzy
+#| msgid "Duration of survey"
+msgid "Generation of satisfaction surveys"
+msgstr "Tímamörk könnunar"
+
+#, fuzzy
+#| msgid "Automatic assignment of tickets"
+msgid "Automatic closed tickets purge"
+msgstr "Sjálfvirk tenging beiðna við þjónustuaðila"
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "See my ticket"
+msgstr "Búa til beiðni"
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "See group ticket"
+msgstr "Búa til beiðni"
+
+#, fuzzy
+#| msgid "Devices own by my groups"
+msgid "See tickets created by my groups"
+msgstr "Tæki í eigu minna hópa"
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "See all tickets"
+msgstr "Búa til beiðni"
+
+#, fuzzy
+#| msgid "Assigned"
+msgid "See assigned"
+msgstr "Úthlutað"
+
+#, fuzzy
+#| msgid "Number of assigned tickets"
+msgid "See assigned tickets"
+msgstr "Fjöldi úthlutaðra beiðna"
+
+#, fuzzy
+#| msgid "Deletion of a ticket"
+msgid "Assign a ticket"
+msgstr "Verkbeiðni eytt"
+
+msgid "Steal"
+msgstr ""
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "Steal a ticket"
+msgstr "Búa til beiðni"
+
+msgid "Beeing in charge"
+msgstr ""
+
+#, fuzzy
+#| msgid "Deletion of a ticket"
+msgid "To be in charge of a ticket"
+msgstr "Verkbeiðni eytt"
+
+msgid "Change the priority"
+msgstr ""
+
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr ""
+
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
+
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Deletion of a ticket"
+msgid "Failed to load ticket %d"
+msgstr "Verkbeiðni eytt"
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to add followup to ticket %d"
+msgstr "Gat ekki skrifað skránna á disk"
+
+msgid "Failed to add task to ticket %d"
+msgstr ""
+
+msgid "Failed to add document to ticket %d"
+msgstr ""
+
+msgid "Failed to link tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to delete ticket %d"
+msgstr "Gat ekki skrifað skránna á disk"
+
+msgid "%s merges ticket %s into %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Checking write permissions for log files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Athuga skrif heimildir fyrir atvikaskráningar skrár"
+
+#, fuzzy
+#| msgid "Recalculate"
+msgid "Recalculate the category"
+msgstr "Endurreikna"
+
+#, fuzzy
+#| msgid "Valid since"
+msgid "Valid licenses"
+msgstr "Gildir frá"
+
+#, fuzzy
+#| msgid "Beginning of the installation"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Upphaf uppsetningar"
+
+msgid "Merge"
+msgstr "Sameina"
+
+msgid "Software deleted after merging"
+msgstr ""
+
+msgid "You must enable at least one notification mode."
+msgstr ""
+
+msgid "GLPI"
+msgstr "GLPI"
+
+#, fuzzy
+#| msgid "Connection filter"
+msgid "Connect a computer"
+msgstr "Sía fyrir tengingu"
+
+#, fuzzy
+#| msgid "Connected to"
+msgid "Not connected"
+msgstr "Tengd við"
+
+#, fuzzy
+#| msgid "Show all"
+msgid "Show as map"
+msgstr "Sýna alt"
+
+msgid "Valid to %s"
+msgstr "Gildir til %s"
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "Late tickets"
+msgstr "Búa til beiðni"
+
+msgid "Tickets waiting for validation"
+msgstr ""
+
+msgid "Incoming tickets"
+msgstr ""
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "Solved tickets"
+msgstr "Ný beiðni"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "Closed tickets"
+msgstr "Ný beiðni"
+
+msgid "without"
+msgstr ""
+
+#, fuzzy
+#| msgid "Time cost"
+msgid "Time to close"
+msgstr "Tímakostnaður"
+
+msgid "To validate"
+msgstr ""
+
+msgid "Solved"
+msgstr "Leyst"
+
+msgid "Share or embed this dashboard"
+msgstr ""
+
+msgid "Delete this dashboard"
+msgstr ""
+
+msgid "Toggle auto-refresh"
+msgstr ""
+
+msgid "Toggle night mode"
+msgstr ""
+
+msgid "Toggle fullscreen"
+msgstr ""
+
+msgid "Clone this dashboard"
+msgstr ""
+
+msgid "Toggle edit mode"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Add a new file"
+msgid "Add filter"
+msgstr "Bæta við nýrri skrá"
+
+#, fuzzy
+#| msgid "Add a new action"
+msgid "Add a new dashboard"
+msgstr "Bæta við nýrri aðgerð"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "Aðrir"
+
+msgid "Widget"
+msgstr ""
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+msgid "Limit number of data"
+msgstr ""
+
+msgid "Filters"
+msgstr ""
+
+msgid "Embed in another application"
+msgstr ""
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP tenging"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+msgid "empty card !"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of %s"
+msgstr "Fjöldi beiðna"
+
+msgid "%s by %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "Töluröð"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "Fjöldi beiðna"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+msgid "Tickets status by month"
+msgstr ""
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets"
+msgid "Tickets summary"
+msgstr "Beiðnir"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's categories"
+msgstr "Fyrir beiðnar lokaðar eftir"
+
+msgid "Top ticket's entities"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "Sjálfgefin gerð beiðna"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "Staðsetning beiðnar"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "Fjöldi umbeðinna beiðna"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requester groups"
+msgstr "Fjöldi umbeðinna beiðna"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "Fyrir beiðnar lokaðar eftir"
+
+msgid "Top ticket's observer groups"
+msgstr ""
+
+msgid "Top ticket's assignees"
+msgstr ""
+
+msgid "Top ticket's assignee groups"
+msgstr ""
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of reminders"
+msgstr "Töluröð"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Add a new file"
+msgid "Add a network name"
+msgstr "Bæta við nýrri skrá"
+
+msgid "Not associated"
+msgstr ""
+
+#, fuzzy
+#| msgid "Create a ticket"
+msgid "Create a new network name"
+msgstr "Búa til beiðni"
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No network name found"
+msgstr "Engin notandi fannst"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+msgid "Check all plugin updates"
+msgstr ""
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+msgid "Installed"
+msgstr ""
+
+msgid "Discover"
+msgstr ""
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+msgid "Register on %1$s"
+msgstr ""
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+msgid "Your %1$s subscription has been terminated."
+msgstr ""
+
+msgid "Renew it on %1$s."
+msgstr ""
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "Vinsælustu spurningarnar"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "Síðasta uppfærsla"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "does not exist"
+msgid "Best notes"
+msgstr "óraunveruleg"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "Filter plugin list"
+msgstr "Óvirk viðbót"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "Heim"
+
+msgid "Get help"
+msgstr ""
+
+msgid "Readme"
+msgstr ""
+
+#, fuzzy
+#| msgid "Clear"
+msgid "Clean"
+msgstr "Hreinsa"
+
+msgid "This plugin is not available for your GLPI version."
+msgstr ""
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Check if a new version is available"
+msgid "A new version (%s) is available, update ?"
+msgstr "kanna hvort ný útgáfa er fyrir hendi"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "authentication"
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Virkt"
+
+msgid "Uninstall"
+msgstr ""
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Óvirk viðbót"
+msgstr[1] "Óvirk viðbót"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+msgid "Later"
+msgstr ""
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugins"
+msgid "Plugin name"
+msgstr "Viðbætur"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "Húsnúmer"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+
+#, fuzzy
+#| msgid "Administration"
+msgid "Registration"
+msgstr "Kerfisstjórn"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+msgid "Register on %1$s!"
+msgstr ""
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Administration"
+msgid "Registration key"
+msgstr "Kerfisstjórn"
+
+#, fuzzy
+#| msgid "Position"
+msgid "Subscription"
+msgstr "Staða"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "Óþekkt skrá"
+
+msgid "Registered by"
+msgstr ""
+
+msgid "Unable to fetch registration information."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "Uppsetningu er lokið"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "Uppsetningu er lokið"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+
+msgid "Email address not found."
+msgstr "Netfang fannst ekki"
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+
+msgid "The uploaded file was only partially uploaded"
+msgstr ""
+
+msgid "Failed to write file to disk"
+msgstr "Gat ekki skrifað skránna á disk"
+
+msgid "A PHP extension stopped the file upload"
+msgstr ""
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+
+msgid "File is too big"
+msgstr "Skráinn er of stór"
+
+msgid "File is too small"
+msgstr "Skráinn er of lítil"
+
+msgid "Maximum number of files exceeded"
+msgstr ""
+
+msgid "Image exceeds maximum width"
+msgstr "Myndin er of breið"
+
+msgid "Image requires a minimum width"
+msgstr "Myndin þarf að ná lágmarks breidd"
+
+msgid "Image exceeds maximum height"
+msgstr "Myndin er of há"
+
+msgid "Image requires a minimum height"
+msgstr "Myndin þarf að ná lágmarks hæð"
+
+msgid "Filetype not allowed"
+msgstr "Skráargerð ekki leyfð"
+
+#, fuzzy
+#| msgid "No file was uploaded"
+msgid "File upload aborted"
+msgstr "Engin skrá var sótt"
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to resize image"
+msgstr "Gat ekki skrifað skránna á disk"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "Notendaupplýsingar"
+
+msgid "Progress"
+msgstr ""
+
+#, fuzzy
+#| msgid "Settings"
+msgid "My settings"
+msgstr "Stillingar"
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr ""
+
+msgid "Check all"
+msgstr "Velja allt"
+
+#, fuzzy
+#| msgid "Check all"
+msgid "Uncheck all"
+msgstr "Velja allt"
+
+#, fuzzy
+#| msgid "Check all"
+msgid "Check all as"
+msgstr "Velja allt"
+
+msgid "Selection too large, massive action disabled."
+msgstr ""
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+
+msgid "The description field is mandatory"
+msgstr ""
+
+#, fuzzy
+#| msgid "Total: %1$d, New: %2$d, Used: %3$d"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "Samtals: %1$d, Ný: %2$d, Notuð: %3$d"
+
+msgid "Empty array"
+msgstr ""
+
+msgid "%1$d on %2$d"
+msgstr "%1$d á %2$d"
+
+#, fuzzy
+#| msgid "Closed on %s"
+msgid "Close (Esc)"
+msgstr "Lokið þann %s"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+#, fuzzy
+#| msgid "No selected items"
+msgid "selecting them"
+msgstr "Ekkert valið"
+
+#, fuzzy
+#| msgid "File"
+msgid "File(s)"
+msgstr "Skrá"
+
+msgid "Drag and drop your file here, or"
+msgstr "Dragðu skránna hingað, eða"
+
+msgid "Upload successful"
+msgstr "Uppfærsla tókst"
+
+msgid "Check/uncheck all"
+msgstr "Merkja/Afmerkja allt"
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+#, fuzzy
+#| msgid "Transfer mode"
+msgid "Change mode"
+msgstr "Tegund færslu"
+
+msgid "Debug mode enabled"
+msgstr ""
+
+msgid "Debug mode disabled"
+msgstr ""
+
+#, fuzzy
+#| msgid "Search"
+msgid "Saved searches"
+msgstr "Leita"
+
+msgid "Manage saved searches"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled"
+msgid "Add is disabled"
+msgstr "Óvirkt"
+
+msgid "Search is disabled"
+msgstr ""
+
+#, fuzzy
+#| msgid "Global"
+msgid "Global Kanban"
+msgstr "Altækt"
+
+msgid "You are impersonating %s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "Gera persónuleg"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr ""
+
+msgid "Color palette"
+msgstr ""
+
+msgid "Layout"
+msgstr ""
+
+msgid "Tabs on left"
+msgstr ""
+
+msgid "Classic view"
+msgstr ""
+
+msgid "Vertical split"
+msgstr ""
+
+msgid "Enable high contrast"
+msgstr ""
+
+msgid "Dashboards"
+msgstr ""
+
+#, fuzzy
+#| msgid "Default email"
+msgid "Default for central"
+msgstr "Sjálfgefið netfang"
+
+#, fuzzy
+#| msgid "Default values"
+msgid "Default for Assets"
+msgstr "Sjáfgefnar tölur"
+
+#, fuzzy
+#| msgid "Default search"
+msgid "Default for Assistance"
+msgstr "Sjálfgefin leit"
+
+msgid "Default for tickets (mini dashboard)"
+msgstr ""
+
+msgid "Check if a new version is available"
+msgstr "kanna hvort ný útgáfa er fyrir hendi"
+
+#, fuzzy
+#| msgid "Show all"
+msgid "Show filters"
+msgstr "Sýna alt"
+
+msgid "No historical matching your filters"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add a schedule"
+msgid "Add to schedule"
+msgstr "Bæta við áætlun"
+
+#, fuzzy
+#| msgid "Position"
+msgid "Position in room"
+msgstr "Staða"
+
+msgid "Door orientation in room"
+msgstr ""
+
+msgid "North"
+msgstr ""
+
+msgid "East"
+msgstr ""
+
+msgid "South"
+msgstr ""
+
+msgid "West"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of units"
+msgstr "Fjöldi beiðna"
+
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Measured power (in watts)"
+msgstr ""
+
+msgid "Max. weight"
+msgstr ""
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No rack found"
+msgstr "Engin notandi fannst"
+
+msgid "Following elements are out of room bounds"
+msgstr ""
+
+msgid "Blueprint"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Insert a rack here"
+msgstr ""
+
+msgid "Position must be set"
+msgstr ""
+
+#, fuzzy
+#| msgid "No action available"
+msgid "%1$s position is not available"
+msgstr "Engin aðgerð tiltæk"
+
+#, fuzzy
+#| msgid "All my articles"
+msgid "All categories"
+msgstr "Allar greinarnar mínar"
+
+msgid "Uncategorized software"
+msgstr ""
+
+#, fuzzy
+#| msgid "Valid since"
+msgid "Valid license"
+msgstr "Gildir frá"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Other component"
+msgstr "Fjöldi beiðna"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr ""
+
+msgid "Unofficial translations are also available"
+msgstr ""
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr ""
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr ""
+
+msgid "Installation or update of GLPI"
+msgstr "Uppsetning eða uppfærsla á GLPI"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr ""
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+
+msgid "Do you want to continue?"
+msgstr "Viltu halda áfram"
+
+#, fuzzy
+#| msgid "Database connection setup"
+msgid "Database connection parameters"
+msgstr "Uppsetning á gagnagrunnstengingu"
+
+msgid "Test of the connection at the database"
+msgstr ""
+
+#, fuzzy
+#| msgid "Impossible to use the database:"
+msgid "Can't connect to the database"
+msgstr "Ekki mögulegt að nota gagnagrunn:"
+
+msgid "The server answered: %s"
+msgstr ""
+
+msgid "The server or/and user field is empty"
+msgstr ""
+
+msgid "Please select a database:"
+msgstr "Vinsamlegast veldu gagnagrunn"
+
+msgid "Create a new database or use an existing one:"
+msgstr ""
+
+#, fuzzy
+#| msgid "Please select a database:"
+msgid "Please select the database to update:"
+msgstr "Vinsamlegast veldu gagnagrunn"
+
+#, fuzzy
+#| msgid "Impossible to use the database:"
+msgid "Initialization of the database"
+msgstr "Ekki mögulegt að nota gagnagrunn:"
+
+msgid "Impossible to use the database:"
+msgstr "Ekki mögulegt að nota gagnagrunn:"
+
+msgid "OK - database was initialized"
+msgstr "OK - Gagnagrunnur var frumstilltur"
+
+#, fuzzy
+#| msgid "Impossible to use the database:"
+msgid "Impossible to write the database setup file"
+msgstr "Ekki mögulegt að nota gagnagrunn:"
+
+msgid "Database created"
+msgstr "Gagnagrunnur tilbúinn"
+
+#, fuzzy
+#| msgid "You didn't select a database!"
+msgid "Error in creating database!"
+msgstr "Þú valdir ekki gagnagrunn"
+
+msgid "You didn't select a database!"
+msgstr "Þú valdir ekki gagnagrunn"
+
+msgid "Collect data"
+msgstr ""
+
+msgid "The installation is finished"
+msgstr "Uppsetningu er lokið"
+
+msgid "Default logins / passwords are:"
+msgstr "Sjálfgefin innskráning / lykilorð eru:"
+
+msgid "tech/tech for the technician account"
+msgstr ""
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal fyrir normal notandann"
+
+#, fuzzy
+#| msgid "normal/normal for the normal account"
+msgid "post-only/postonly for the postonly account"
+msgstr "normal/normal fyrir normal notandann"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+
+msgid "Select your language"
+msgstr ""
+
+msgid "Beginning of the installation"
+msgstr "Upphaf uppsetningar"
+
+msgid "Step %d"
+msgstr "Skref %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Auðkenning"
+
+#, fuzzy
+#| msgid "December"
+msgid "Remember me"
+msgstr "Desember"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Þú þarft að virkja \"Javascript\" í vafranum þínum"
+
+msgid "You must accept cookies to reach this application"
+msgstr "Þú þarft að virkja \"Cokkies\" í vafranum þínum"
+
+msgid "Invalid use of session ID"
+msgstr "Röng notkun setu KENNIS"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Aðgengi að Oft Spurðum Spurningum "
+
+#, fuzzy
+#| msgid "Add a user"
+msgid "Add a card"
+msgstr "Bæta við notanda"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Add a new file"
+msgid "Add a filter"
+msgstr "Bæta við nýrri skrá"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "Vista"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr ""
+
+msgid "Send a test chat"
+msgstr ""
 
 #~ msgid "Use GLPI"
 #~ msgstr "Nota GLPI"
 
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "Uppsetning eða uppfærsla á GLPI"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Viltu halda áfram"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Vinsamlegast veldu gagnagrunn"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Ekki mögulegt að nota gagnagrunn:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK - Gagnagrunnur var frumstilltur"
-
-#~ msgid "Database created"
-#~ msgstr "Gagnagrunnur tilbúinn"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Þú valdir ekki gagnagrunn"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Uppsetningu er lokið"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Sjálfgefin innskráning / lykilorð eru:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi fyrir administrator aðganginn"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal fyrir normal notandann"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Upphaf uppsetningar"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Skref %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Auðkenning"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Þú þarft að virkja \"Javascript\" í vafranum þínum"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Þú þarft að virkja \"Cokkies\" í vafranum þínum"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Röng notkun setu KENNIS"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Aðgengi að Oft Spurðum Spurningum "

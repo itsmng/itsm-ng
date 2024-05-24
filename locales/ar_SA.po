@@ -24941,163 +24941,1350 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "No room found or selected"
-#~ msgstr "لم يتم العثور على غرفة أو تحديدها"
+msgid "Favorite"
+msgstr ""
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "عرض بيان البرامج الإضافية"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "تسجيل دخول"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "تم العثور على تغذية RSS"
+#, fuzzy
+#| msgid "Automatic closing configuration"
+msgid "Open ID connect configuration"
+msgstr "إعدادات الإغلاق التلقائي"
 
-#~ msgid "See all tickets"
-#~ msgstr "عرض جميع التذاكر"
+msgid "No room found or selected"
+msgstr "لم يتم العثور على غرفة أو تحديدها"
 
-#~ msgid "Change the priority"
-#~ msgstr "تغيير الأهمية"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Replace"
+msgid "Marketplace"
+msgstr "إستبدال"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "عدد مرات التثبيت"
+#, fuzzy
+#| msgid "%1$s adds the item %2$s"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s قام بإضافة %2$s"
 
-#~ msgid "Merge"
-#~ msgstr "دمج"
+msgid "See the catalog of plugins"
+msgstr "عرض بيان البرامج الإضافية"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Connect a computer"
-#~ msgstr "إتصال بجهاز حاسوب"
+msgid "Empty for infinite"
+msgstr ""
 
-#~ msgid "Solved"
-#~ msgstr "تم حله"
+msgid "RSS feeds found"
+msgstr "تم العثور على تغذية RSS"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "هناك العديد من أسماء الشبكة! إذهب إلى تبويب \"إسم الشبكة\" لتتمكن من "
-#~ "إدارتها."
+msgid "Active Directory"
+msgstr ""
 
-#~ msgid "Add a network name"
-#~ msgstr "إضافة إسم شبكة"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "نسخة بروتوكول الإنترنت"
 
-#~ msgid "Create a new network name"
-#~ msgstr "إنشاء إسم للشبكة"
+msgid "Confirm the promotion?"
+msgstr ""
 
-#~ msgid "No network name found"
-#~ msgstr "لم يتم العثور على إسم الشبكة"
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Your tickets to close"
+msgstr "للتذاكر المغلقة بعد"
 
-#~ msgid "Clean"
-#~ msgstr "نظف"
+msgid "Tickets on pending status"
+msgstr ""
 
-#~ msgid "Install"
-#~ msgstr "تثبيت"
+msgid "Tickets to be processed"
+msgstr ""
 
-#~ msgid "Enable"
-#~ msgstr "تفعيل"
+#, fuzzy
+#| msgid "Not solved tickets"
+msgid "Your observed tickets"
+msgstr "تذاكر غير مغلقة"
 
-#~ msgid "Uninstall"
-#~ msgstr "الغاء التثبيت"
+#, fuzzy
+#| msgid "Work in progress..."
+msgid "Your tickets in progress"
+msgstr "جاري العمل"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "تم إرسال رسالة إلى بريدك الإلتروني. تحتوي هذه الرسالة على معلومات لإعادة "
-#~ "تعيين كلمة المرور الخاصة بك."
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Your tickets to validate"
+msgstr "للتذاكر المغلقة بعد"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "تعذر الكتابة على القرص"
+msgid "Your tickets having rejected approval status"
+msgstr ""
 
-#~ msgid "File is too big"
-#~ msgstr "حجم الملف كبير جداً"
+msgid "Your tickets having rejected solution"
+msgstr ""
 
-#~ msgid "File is too small"
-#~ msgstr "حجم الملف صغير جداً"
+#, fuzzy
+#| msgid "Email followup"
+msgid "Ticket followup"
+msgstr "المتابعة بواسطة البريد الإلكتروني"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "عرض الصورة أكبر من المسموح به"
+#, fuzzy
+#| msgid "New ticket"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "تذكرة جديدة"
+msgstr[1] "تذكرة جديدة"
+msgstr[2] "تذكرة جديدة"
+msgstr[3] "تذكرة جديدة"
+msgstr[4] "تذكرة جديدة"
+msgstr[5] "تذكرة جديدة"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "إرتفاع الصورة أكبر من المسموح به"
+#, fuzzy
+#| msgid "No item found"
+msgid "No ticket found."
+msgstr "لا يوجد نتائج"
 
-#~ msgid "My settings"
-#~ msgstr "إعداداتي"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Last tickets"
+msgstr "ربط التذاكر"
 
-#~ msgid "Check all"
-#~ msgstr "تحديد الكل"
+msgid "New ticket for this item..."
+msgstr ""
 
-#~ msgid "Uncheck all"
-#~ msgstr "إلغاء التحديد"
+#, fuzzy
+#| msgid "Last update"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "أخر تحديث"
+msgstr[1] "أخر تحديث"
+msgstr[2] "أخر تحديث"
+msgstr[3] "أخر تحديث"
+msgstr[4] "أخر تحديث"
+msgstr[5] "أخر تحديث"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "لزيادة الحد: قم بتغيير قيمة max_input_vars أو  suhosin.post.max_vars  في "
-#~ "إعدادات php"
+#, fuzzy
+#| msgid "You do not have rights to delete %s item."
+msgid "You don't have right to see all tickets"
+msgstr "ليس لديك الصلاحية لحذف %s  مادة."
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "عرض رقم التعريف في GLPI"
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of linked tickets"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "عدد التذاكر المرتبطة"
+msgstr[1] "عدد التذاكر المرتبطة"
+msgstr[2] "عدد التذاكر المرتبطة"
+msgstr[3] "عدد التذاكر المرتبطة"
+msgstr[4] "عدد التذاكر المرتبطة"
+msgstr[5] "عدد التذاكر المرتبطة"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "البحث عن التحديثات"
+#, fuzzy
+#| msgid "Work in progress..."
+msgid "No ticket in progress."
+msgstr "جاري العمل"
 
-#~ msgid "All categories"
-#~ msgstr "جميع التصنيفات"
+#, fuzzy
+#| msgid "Assign: equipment by name + domain"
+msgid "Assign equipment"
+msgstr "ربط: الجهاز حسب الإسم + إسم النطاق"
 
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "تركيب أو تحديث GLPI"
+#, fuzzy
+#| msgid "Automatic redirection, else click"
+msgid "Automatic tickets closing"
+msgstr "التحويل التلقائي، غير ذلك اضغط"
 
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr "إختر \"تحديث\" لتحديث نسختك القديمة من GLPI."
+#, fuzzy
+#| msgid "Creation date of the satisfaction survey"
+msgid "Generation of satisfaction surveys"
+msgstr "تاريخ إنشاء إستبيان الرضاء"
 
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "إن حقل إسم الخادم و/أو المستخدم فارغ"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "إغلاق التذاكر تلقائيا بعد الحل"
 
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "إنشاء قاعدة بيانات جديدة أو إستخدام اخرى متوفرة: "
+#, fuzzy
+#| msgid "See all tickets"
+msgid "See my ticket"
+msgstr "عرض جميع التذاكر"
 
-#~ msgid "Please select the database to update:"
-#~ msgstr "الرجاء إختيار قواعد البيانات للتحديث:"
+#, fuzzy
+#| msgid "See all tickets"
+msgid "See group ticket"
+msgstr "عرض جميع التذاكر"
 
-#~ msgid "The installation is finished"
-#~ msgstr "تم الإنتهاء من التركيب"
+msgid "See tickets created by my groups"
+msgstr ""
 
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "إسم المستخدم التلقائي  / كلمة المرور التلقائية هي:"
+msgid "See all tickets"
+msgstr "عرض جميع التذاكر"
+
+#, fuzzy
+#| msgid "Assigned to"
+msgid "See assigned"
+msgstr "تم تحديدها إلى"
+
+#, fuzzy
+#| msgid "Number of assigned tickets"
+msgid "See assigned tickets"
+msgstr "عدد التذاكر المسندة"
+
+#, fuzzy
+#| msgid "Add a ticket"
+msgid "Assign a ticket"
+msgstr "إضافة تذكرة دعم فني"
+
+msgid "Steal"
+msgstr ""
+
+#, fuzzy
+#| msgid "See all tickets"
+msgid "Steal a ticket"
+msgstr "عرض جميع التذاكر"
+
+msgid "Beeing in charge"
+msgstr ""
+
+#, fuzzy
+#| msgid "Update of a ticket"
+msgid "To be in charge of a ticket"
+msgstr "تعديل المذكرة"
+
+msgid "Change the priority"
+msgstr "تغيير الأهمية"
+
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr ""
+
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
+
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Update of a ticket"
+msgid "Failed to load ticket %d"
+msgstr "تعديل المذكرة"
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to add followup to ticket %d"
+msgstr "تعذر الكتابة على القرص"
+
+msgid "Failed to add task to ticket %d"
+msgstr ""
+
+msgid "Failed to add document to ticket %d"
+msgstr ""
+
+msgid "Failed to link tickets %d and %d"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to delete ticket %d"
+msgstr "تعذر الكتابة على القرص"
+
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s قام بحذف الإصدار %2$s"
+
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "التأكد من صلاحيات الكتابة لملفات وثائق البرامج الإضافية"
+
+msgid "Recalculate the category"
+msgstr ""
+
+#, fuzzy
+#| msgid "Invalid filename"
+msgid "Valid licenses"
+msgstr "إسم ملف غير صحيح"
+
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "عدد مرات التثبيت"
+
+msgid "Merge"
+msgstr "دمج"
+
+msgid "Software deleted after merging"
+msgstr ""
+
+msgid "You must enable at least one notification mode."
+msgstr ""
+
+msgid "GLPI"
+msgstr "GLPI"
+
+msgid "Connect a computer"
+msgstr "إتصال بجهاز حاسوب"
+
+#, fuzzy
+#| msgid "Not connected."
+msgid "Not connected"
+msgstr "غير متصل"
+
+#, fuzzy
+#| msgid "Show all"
+msgid "Show as map"
+msgstr "اظهار الكل"
+
+#, fuzzy
+#| msgid "Valid tags"
+msgid "Valid to %s"
+msgstr "الوسوم الصالحة"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Late tickets"
+msgstr "ربط التذاكر"
+
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "تذاكر بإنتظار الموافقة"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "ربط التذاكر"
+
+#, fuzzy
+#| msgid "Not solved tickets"
+msgid "Solved tickets"
+msgstr "تذاكر غير مغلقة"
+
+#, fuzzy
+#| msgid "Not solved tickets"
+msgid "Closed tickets"
+msgstr "تذاكر غير مغلقة"
+
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "بدون إسم"
+
+#, fuzzy
+#| msgid "Time to own"
+msgid "Time to close"
+msgstr "الوقت لإمتلاكه"
+
+#, fuzzy
+#| msgid "To update"
+msgid "To validate"
+msgstr "للتحديث"
+
+msgid "Solved"
+msgstr "تم حله"
+
+msgid "Share or embed this dashboard"
+msgstr ""
+
+msgid "Delete this dashboard"
+msgstr ""
+
+msgid "Toggle auto-refresh"
+msgstr ""
+
+msgid "Toggle night mode"
+msgstr ""
+
+msgid "Toggle fullscreen"
+msgstr ""
+
+msgid "Clone this dashboard"
+msgstr ""
+
+msgid "Toggle edit mode"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add filter"
+msgstr "إضافة مادة"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "اضف مهام جديد"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "أخرى"
+
+msgid "Widget"
+msgstr ""
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "عدد المهام"
+
+msgid "Filters"
+msgstr ""
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "رابط الطلب"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "رابط سجل LDAP"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+msgid "empty card !"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of items"
+msgid "Number of %s"
+msgstr "عدد العناصر"
+
+#, fuzzy
+#| msgid "By %s"
+msgid "%s by %s"
+msgstr "بواسطة %s"
+
+msgid "List of %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "عدد التذاكر"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets duration"
+msgid "Tickets status by month"
+msgstr "فترة التذكرة"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets duration"
+msgid "Tickets summary"
+msgstr "فترة التذكرة"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's categories"
+msgstr "للتذاكر المغلقة بعد"
+
+msgid "Top ticket's entities"
+msgstr ""
+
+msgid "Top ticket's request types"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets duration"
+msgid "Top ticket's locations"
+msgstr "فترة التذكرة"
+
+msgid "Top ticket's requesters"
+msgstr ""
+
+msgid "Top ticket's requester groups"
+msgstr ""
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "للتذاكر المغلقة بعد"
+
+msgid "Top ticket's observer groups"
+msgstr ""
+
+msgid "Top ticket's assignees"
+msgstr ""
+
+msgid "Top ticket's assignee groups"
+msgstr ""
+
+#, fuzzy
+#| msgid "Dictionnary of printers"
+msgid "List of reminders"
+msgstr "قائمة الطابعات"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"هناك العديد من أسماء الشبكة! إذهب إلى تبويب \"إسم الشبكة\" لتتمكن من إدارتها."
+
+msgid "Add a network name"
+msgstr "إضافة إسم شبكة"
+
+#, fuzzy
+#| msgid "No associated item"
+msgid "Not associated"
+msgstr "لا يوجد عناصر ذات صلة"
+
+msgid "Create a new network name"
+msgstr "إنشاء إسم للشبكة"
+
+msgid "No network name found"
+msgstr "لم يتم العثور على إسم الشبكة"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "البحث عن التحديثات"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "تثبيت"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "قطع الاتصال"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+msgid "Register on %1$s"
+msgstr ""
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "تم تعديل تعليقك"
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "تم إنشائه في %s"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+msgid "Most popular"
+msgstr ""
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "أخر تحديث"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "قراءة الملاحظات"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "Filter plugin list"
+msgstr "برنامج إضافي معطل"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "الرئيسية"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "قراءة"
+
+msgid "Clean"
+msgstr "نظف"
+
+msgid "This plugin is not available for your GLPI version."
+msgstr ""
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Check if a new version is available"
+msgid "A new version (%s) is available, update ?"
+msgstr "البحث عن التحديثات"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "تثبيت"
+
+msgid "Enable"
+msgstr "تفعيل"
+
+msgid "Uninstall"
+msgstr "الغاء التثبيت"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "برنامج إضافي معطل"
+msgstr[1] "برنامج إضافي معطل"
+msgstr[2] "برنامج إضافي معطل"
+msgstr[3] "برنامج إضافي معطل"
+msgstr[4] "برنامج إضافي معطل"
+msgstr[5] "برنامج إضافي معطل"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "متاخرة"
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugins"
+msgid "Plugin name"
+msgstr "البرامج الإضافية"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "رقم المبنى"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+
+#, fuzzy
+#| msgid "Administration"
+msgid "Registration"
+msgstr "التنحكم"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+msgid "Register on %1$s!"
+msgstr ""
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Administration"
+msgid "Registration key"
+msgstr "التنحكم"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "وصف"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "ملف غير معروف"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "تفعيل المعلومات المالية والإدارية"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "تم الإنتهاء من التركيب"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "تم الإنتهاء من التركيب"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"تم إرسال رسالة إلى بريدك الإلتروني. تحتوي هذه الرسالة على معلومات لإعادة "
+"تعيين كلمة المرور الخاصة بك."
+
+#, fuzzy
+#| msgid "File %s not found."
+msgid "Email address not found."
+msgstr "لم يتم العثور على الملفات %s "
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+
+msgid "The uploaded file was only partially uploaded"
+msgstr ""
+
+msgid "Failed to write file to disk"
+msgstr "تعذر الكتابة على القرص"
+
+msgid "A PHP extension stopped the file upload"
+msgstr ""
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+
+msgid "File is too big"
+msgstr "حجم الملف كبير جداً"
+
+msgid "File is too small"
+msgstr "حجم الملف صغير جداً"
+
+#, fuzzy
+#| msgid "Max number of items"
+msgid "Maximum number of files exceeded"
+msgstr "الحد الأقصى للعناصر"
+
+msgid "Image exceeds maximum width"
+msgstr "عرض الصورة أكبر من المسموح به"
+
+#, fuzzy
+#| msgid "Image exceeds maximum width"
+msgid "Image requires a minimum width"
+msgstr "عرض الصورة أكبر من المسموح به"
+
+msgid "Image exceeds maximum height"
+msgstr "إرتفاع الصورة أكبر من المسموح به"
+
+#, fuzzy
+#| msgid "Image exceeds maximum height"
+msgid "Image requires a minimum height"
+msgstr "إرتفاع الصورة أكبر من المسموح به"
+
+#, fuzzy
+#| msgid "File not found"
+msgid "Filetype not allowed"
+msgstr "لم يتم العثور على ملف"
+
+#, fuzzy
+#| msgid "No file was uploaded"
+msgid "File upload aborted"
+msgstr "لم يتم رفع الملف"
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to resize image"
+msgstr "تعذر الكتابة على القرص"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "معلومات المستخدم"
+
+msgid "Progress"
+msgstr ""
+
+msgid "My settings"
+msgstr "إعداداتي"
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr ""
+
+msgid "Check all"
+msgstr "تحديد الكل"
+
+msgid "Uncheck all"
+msgstr "إلغاء التحديد"
+
+#, fuzzy
+#| msgid "Check all"
+msgid "Check all as"
+msgstr "تحديد الكل"
+
+msgid "Selection too large, massive action disabled."
+msgstr ""
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"لزيادة الحد: قم بتغيير قيمة max_input_vars أو  suhosin.post.max_vars  في "
+"إعدادات php"
+
+msgid "The description field is mandatory"
+msgstr ""
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr ""
+
+msgid "Empty array"
+msgstr ""
+
+#, fuzzy
+#| msgid "%1$s: %2$d"
+msgid "%1$d on %2$d"
+msgstr "%1$s: %2$d"
+
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "إغلاق"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+#, fuzzy
+#| msgid "Delete the item"
+msgid "selecting them"
+msgstr "حذف العنصر"
+
+#, fuzzy
+#| msgid "File"
+msgid "File(s)"
+msgstr "ملف"
+
+msgid "Drag and drop your file here, or"
+msgstr ""
+
+#, fuzzy
+#| msgid "Operation successful"
+msgid "Upload successful"
+msgstr "تمت العملية بنجاح"
+
+#, fuzzy
+#| msgid "Uncheck all"
+msgid "Check/uncheck all"
+msgstr "إلغاء التحديد"
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+#, fuzzy
+#| msgid "Change"
+#| msgid_plural "Changes"
+msgid "Change mode"
+msgstr "تغييرات"
+
+#, fuzzy
+#| msgid "Debug mode has been enabled!"
+msgid "Debug mode enabled"
+msgstr "تم تمكين وضع التصحيح!"
+
+#, fuzzy
+#| msgid "Debug mode has been disabled!"
+msgid "Debug mode disabled"
+msgstr "تم تعطيل  وضع التصحيح!"
+
+#, fuzzy
+#| msgid "Search"
+msgid "Saved searches"
+msgstr "بحث"
+
+msgid "Manage saved searches"
+msgstr ""
+
+#, fuzzy
+#| msgid "API disabled"
+msgid "Add is disabled"
+msgstr "الواجهة البرمجية غير مفعلة"
+
+#, fuzzy
+#| msgid "Search has been saved"
+msgid "Search is disabled"
+msgstr "تم حفظ البحث"
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "الإداراة العامة"
+
+msgid "You are impersonating %s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "ضبط كشخصي"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr "عرض رقم التعريف في GLPI"
+
+msgid "Color palette"
+msgstr ""
+
+msgid "Layout"
+msgstr ""
+
+msgid "Tabs on left"
+msgstr ""
+
+msgid "Classic view"
+msgstr ""
+
+msgid "Vertical split"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "نهاية العقد"
+
+msgid "Dashboards"
+msgstr ""
+
+#, fuzzy
+#| msgid "Default server"
+msgid "Default for central"
+msgstr "الخادم التلقائي"
+
+#, fuzzy
+#| msgid "Default report"
+msgid "Default for Assets"
+msgstr "التقرير التلقائي"
+
+#, fuzzy
+#| msgid "Assistance"
+msgid "Default for Assistance"
+msgstr "المساعدة"
+
+msgid "Default for tickets (mini dashboard)"
+msgstr ""
+
+msgid "Check if a new version is available"
+msgstr "البحث عن التحديثات"
+
+#, fuzzy
+#| msgid "Search or filter results"
+msgid "Show filters"
+msgstr "أبحث أو أحصر النتائج"
+
+msgid "No historical matching your filters"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add a supplier"
+msgid "Add to schedule"
+msgstr "إضافة مورد"
+
+msgid "Position in room"
+msgstr ""
+
+msgid "Door orientation in room"
+msgstr ""
+
+msgid "North"
+msgstr ""
+
+msgid "East"
+msgstr ""
+
+msgid "South"
+msgstr ""
+
+msgid "West"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of items"
+msgid "Number of units"
+msgstr "عدد العناصر"
+
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Measured power (in watts)"
+msgstr ""
+
+msgid "Max. weight"
+msgstr ""
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No rack found"
+msgstr "لم يتم العثور على مستخدمين"
+
+msgid "Following elements are out of room bounds"
+msgstr ""
+
+msgid "Blueprint"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Insert a rack here"
+msgstr ""
+
+msgid "Position must be set"
+msgstr ""
+
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "منفذ الإنترنت غير متوفر .. "
+
+msgid "All categories"
+msgstr "جميع التصنيفات"
+
+msgid "Uncategorized software"
+msgstr ""
+
+#, fuzzy
+#| msgid "Invalid filename"
+msgid "Valid license"
+msgstr "إسم ملف غير صحيح"
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of documents"
+msgid "Other component"
+msgstr "عدد الوثائق"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr ""
+
+msgid "Unofficial translations are also available"
+msgstr ""
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr ""
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr ""
+
+msgid "Installation or update of GLPI"
+msgstr "تركيب أو تحديث GLPI"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr ""
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "إختر \"تحديث\" لتحديث نسختك القديمة من GLPI."
+
+msgid "Do you want to continue?"
+msgstr ""
+
+msgid "Database connection parameters"
+msgstr ""
+
+msgid "Test of the connection at the database"
+msgstr ""
+
+#, fuzzy
+#| msgid "Change of the database layout - %s"
+msgid "Can't connect to the database"
+msgstr "تغيير طريقة عرض قواعد البيانات - %s"
+
+#, fuzzy
+#| msgid "The server or/and user field is empty"
+msgid "The server answered: %s"
+msgstr "إن حقل إسم الخادم و/أو المستخدم فارغ"
+
+msgid "The server or/and user field is empty"
+msgstr "إن حقل إسم الخادم و/أو المستخدم فارغ"
+
+#, fuzzy
+#| msgid "Please select the database to update:"
+msgid "Please select a database:"
+msgstr "الرجاء إختيار قواعد البيانات للتحديث:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "إنشاء قاعدة بيانات جديدة أو إستخدام اخرى متوفرة: "
+
+msgid "Please select the database to update:"
+msgstr "الرجاء إختيار قواعد البيانات للتحديث:"
+
+msgid "Initialization of the database"
+msgstr ""
+
+msgid "Impossible to use the database:"
+msgstr ""
+
+msgid "OK - database was initialized"
+msgstr ""
+
+msgid "Impossible to write the database setup file"
+msgstr ""
+
+#, fuzzy
+#| msgid "Database"
+msgid "Database created"
+msgstr "قاعدة بيانات"
+
+msgid "Error in creating database!"
+msgstr ""
+
+msgid "You didn't select a database!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Close date"
+msgid "Collect data"
+msgstr "تاريخ الإغلاق"
+
+msgid "The installation is finished"
+msgstr "تم الإنتهاء من التركيب"
+
+msgid "Default logins / passwords are:"
+msgstr "إسم المستخدم التلقائي  / كلمة المرور التلقائية هي:"
+
+msgid "tech/tech for the technician account"
+msgstr "الحساب tech/tech لموظفي الدعم الفني"
+
+msgid "normal/normal for the normal account"
+msgstr "الحساب normal/normal للمستخدمين العاديين"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "الحساب post-only/postonly للإضافة فقط"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "بإمكان حذف أو تعديل هذا الحساب بالإضافة إلى المعلومات المبدئية"
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "اللغة التلقائية"
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of installations"
+msgid "Beginning of the installation"
+msgstr "عدد مرات التثبيت"
+
+msgid "Step %d"
+msgstr ""
+
+msgid "GLPI - Authentication"
+msgstr "التحقق من الهوية GLPI"
+
+msgid "Remember me"
+msgstr "تذكرنى"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "يجب تشغيل خاصية جافاسكريبت على متصفح الويب"
+
+msgid "You must accept cookies to reach this application"
+msgstr "يجب عليك السماح بالكعكات (الكوكيز) لإستخدام هذا البرنامج"
+
+msgid "Invalid use of session ID"
+msgstr "إستخدام غير صالح لبيانات التعريف"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "الدخول إلى الأسئلة الشائعة"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "إضافة تغيير"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "إضافة مادة"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "حفظ"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr ""
+
+msgid "Send a test chat"
+msgstr ""
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "الحساب glpi/glpi للمدراء"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "الحساب tech/tech لموظفي الدعم الفني"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "الحساب normal/normal للمستخدمين العاديين"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "الحساب post-only/postonly للإضافة فقط"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "بإمكان حذف أو تعديل هذا الحساب بالإضافة إلى المعلومات المبدئية"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "التحقق من الهوية GLPI"
-
-#~ msgid "Remember me"
-#~ msgstr "تذكرنى"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "يجب تشغيل خاصية جافاسكريبت على متصفح الويب"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "يجب عليك السماح بالكعكات (الكوكيز) لإستخدام هذا البرنامج"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "إستخدام غير صالح لبيانات التعريف"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "الدخول إلى الأسئلة الشائعة"

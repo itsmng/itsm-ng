@@ -23245,819 +23245,1231 @@ msgstr "안 읽은 메일만 모으기"
 msgid "Could not create dashboard"
 msgstr "이 대시보드 복제"
 
-#~ msgid "No room found or selected"
-#~ msgstr "방이 없거나 선택되지 않았음"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "쓰기"
 
-#~ msgid "Marketplace"
-#~ msgstr "마켓플레이스"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "로그인"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s가 품목 %2$s - %3$s 에 추가 : %4$s"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "구성 보기"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "플러그인 목록 보기"
+msgid "No room found or selected"
+msgstr "방이 없거나 선택되지 않았음"
 
-#~ msgid ""
-#~ "If name is a valid email address, it will be automatically added to "
-#~ "blacklisted senders."
-#~ msgstr "이름이 맞는 이메일 주소라면, 자동으로 차단된 발신자에 추가됩니다."
+msgid "Marketplace"
+msgstr "마켓플레이스"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "제한없을 경우 비움"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s가 품목 %2$s - %3$s 에 추가 : %4$s"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS 피드를 발견했습니다"
+msgid "See the catalog of plugins"
+msgstr "플러그인 목록 보기"
 
-#~ msgid "Active Directory"
-#~ msgstr "액티브 디렉터리"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr "이름이 맞는 이메일 주소라면, 자동으로 차단된 발신자에 추가됩니다."
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "승격을 확인 하시겠습니까?"
+msgid "Empty for infinite"
+msgstr "제한없을 경우 비움"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "종료 할 당신의 표"
+msgid "RSS feeds found"
+msgstr "RSS 피드를 발견했습니다"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "대기 중인 표"
+msgid "Active Directory"
+msgstr "액티브 디렉터리"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "진행 할 표"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "IP 버전"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "당신이 주시하는 표"
+msgid "Confirm the promotion?"
+msgstr "승격을 확인 하시겠습니까?"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "진행 중인 당신의 표"
+msgid "Your tickets to close"
+msgstr "종료 할 당신의 표"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "당신의 확인해야 할 표"
+msgid "Tickets on pending status"
+msgstr "대기 중인 표"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "당신의 표에 거부된 승인 상태가 있음"
+msgid "Tickets to be processed"
+msgstr "진행 할 표"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "당신의 표에 거부된 해결책이 있음"
+msgid "Your observed tickets"
+msgstr "당신이 주시하는 표"
 
-#~ msgid "Ticket followup"
-#~ msgstr "표 추적"
+msgid "Your tickets in progress"
+msgstr "진행 중인 당신의 표"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d 새 표들"
+msgid "Your tickets to validate"
+msgstr "당신의 확인해야 할 표"
 
-#~ msgid "No ticket found."
-#~ msgstr "검색된 표 없음."
+msgid "Your tickets having rejected approval status"
+msgstr "당신의 표에 거부된 승인 상태가 있음"
 
-#~ msgid "Last tickets"
-#~ msgstr "최근 표들"
+msgid "Your tickets having rejected solution"
+msgstr "당신의 표에 거부된 해결책이 있음"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "이 품목에 대한 새 표..."
+msgid "Ticket followup"
+msgstr "표 추적"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "최근 %d 표들"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d 새 표들"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "모든 표를 볼 권한이 없습니다"
+msgid "No ticket found."
+msgstr "검색된 표 없음."
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "연결된 품목의 표"
+msgid "Last tickets"
+msgstr "최근 표들"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "진행 중인 표 없음"
+msgid "New ticket for this item..."
+msgstr "이 품목에 대한 새 표..."
 
-#~ msgid "Assign equipment"
-#~ msgstr "장비 할당"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "최근 %d 표들"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "자동 표 마감"
+msgid "You don't have right to see all tickets"
+msgstr "모든 표를 볼 권한이 없습니다"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "만족도 설문 생성"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "연결된 품목의 표"
 
-#~ msgid "Automatic closed tickets purge"
-#~ msgstr "마감된 표 자동 제거"
+msgid "No ticket in progress."
+msgstr "진행 중인 표 없음"
 
-#~ msgid "See my ticket"
-#~ msgstr "내 표 보기"
+msgid "Assign equipment"
+msgstr "장비 할당"
 
-#~ msgid "See group ticket"
-#~ msgstr "그룹 표 보기"
+msgid "Automatic tickets closing"
+msgstr "자동 표 마감"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "내 그룹이 생성한 표 보기"
+msgid "Generation of satisfaction surveys"
+msgstr "만족도 설문 생성"
 
-#~ msgid "See all tickets"
-#~ msgstr "모든 표 보기"
+msgid "Automatic closed tickets purge"
+msgstr "마감된 표 자동 제거"
 
-#~ msgid "See assigned"
-#~ msgstr "할당 보기"
+msgid "See my ticket"
+msgstr "내 표 보기"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "할당된 표 보기"
+msgid "See group ticket"
+msgstr "그룹 표 보기"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "표 할당"
+msgid "See tickets created by my groups"
+msgstr "내 그룹이 생성한 표 보기"
 
-#~ msgid "Steal"
-#~ msgstr "도난"
+msgid "See all tickets"
+msgstr "모든 표 보기"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "표 도난"
+msgid "See assigned"
+msgstr "할당 보기"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "담당"
+msgid "See assigned tickets"
+msgstr "할당된 표 보기"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "담당하게될 표"
+msgid "Assign a ticket"
+msgstr "표 할당"
 
-#~ msgid "Change the priority"
-#~ msgstr "우선순위 변경"
+msgid "Steal"
+msgstr "도난"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "해결책 승인/설문조사 응답(내 표)"
+msgid "Steal a ticket"
+msgstr "표 도난"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "내가 생성한 헤결책 승인 및 표에 대한 설문조사 응답하기"
+msgid "Beeing in charge"
+msgstr "담당"
 
-#, php-format
-#~ msgid "Not enough rights to merge tickets %d and %d"
-#~ msgstr "표 %d와 %d의 병합에 대한 충분한 권한이 없음 "
+msgid "To be in charge of a ticket"
+msgstr "담당하게될 표"
 
-#, php-format
-#~ msgid "Failed to load ticket %d"
-#~ msgstr "표 %d 불러오기 실패함"
+msgid "Change the priority"
+msgstr "우선순위 변경"
 
-#, php-format
-#~ msgid "Failed to add followup to ticket %d"
-#~ msgstr "표 %d에 추적 추가 실패함"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "해결책 승인/설문조사 응답(내 표)"
 
-#, php-format
-#~ msgid "Failed to add task to ticket %d"
-#~ msgstr "표 %d에 업무 추가 실패함"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "내가 생성한 헤결책 승인 및 표에 대한 설문조사 응답하기"
 
-#, php-format
-#~ msgid "Failed to add document to ticket %d"
-#~ msgstr "표 %d에 문서 추가 실패함"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "표 %d와 %d의 병합에 대한 충분한 권한이 없음 "
 
-#, php-format
-#~ msgid "Failed to link tickets %d and %d"
-#~ msgstr "표 %d과 %d 링크 실패함"
+msgid "Failed to load ticket %d"
+msgstr "표 %d 불러오기 실패함"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "표 %d 삭제 실패함"
+msgid "Failed to add followup to ticket %d"
+msgstr "표 %d에 추적 추가 실패함"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%s이 표 %s를 %s에 병합함"
+msgid "Failed to add task to ticket %d"
+msgstr "표 %d에 업무 추가 실패함"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "분류 재검토"
+msgid "Failed to add document to ticket %d"
+msgstr "표 %d에 문서 추가 실패함"
 
-#~ msgid "Valid licenses"
-#~ msgstr "유효한 라이선스"
+msgid "Failed to link tickets %d and %d"
+msgstr "표 %d과 %d 링크 실패함"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "설치본 수량"
+msgid "Failed to delete ticket %d"
+msgstr "표 %d 삭제 실패함"
 
-#~ msgid "Merge"
-#~ msgstr "병합"
+msgid "%s merges ticket %s into %s"
+msgstr "%s이 표 %s를 %s에 병합함"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "병합 후 소프트웨어 삭제됨"
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "플러그인 문서 파일용 쓰기 권한 확인"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "하나 이상의 통지모드로 사용 해야 합니다."
+msgid "Recalculate the category"
+msgstr "분류 재검토"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Valid licenses"
+msgstr "유효한 라이선스"
 
-#~ msgid "Connect a computer"
-#~ msgstr "컴퓨터 연결"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "설치본 수량"
 
-#~ msgid "Not connected"
-#~ msgstr "장착 안됨"
+msgid "Merge"
+msgstr "병합"
 
-#~ msgid "Show as map"
-#~ msgstr "지도로 보기"
+msgid "Software deleted after merging"
+msgstr "병합 후 소프트웨어 삭제됨"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "%s를 확인"
+msgid "You must enable at least one notification mode."
+msgstr "하나 이상의 통지모드로 사용 해야 합니다."
 
-#~ msgid "Incoming tickets"
-#~ msgstr "요청된 티켓"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid "Solved"
-#~ msgstr "해결됨"
+msgid "Connect a computer"
+msgstr "컴퓨터 연결"
 
-#~ msgid "Share or embed this dashboard"
-#~ msgstr "이 대시보드 공유 또는 삽입"
+msgid "Not connected"
+msgstr "장착 안됨"
 
-#~ msgid "Delete this dashboard"
-#~ msgstr "이 대시보드 삭제"
+msgid "Show as map"
+msgstr "지도로 보기"
 
-#~ msgid "Toggle auto-refresh"
-#~ msgstr "자동-새로고침 전환"
+msgid "Valid to %s"
+msgstr "%s를 확인"
 
-#~ msgid "Toggle night mode"
-#~ msgstr "야간 모드 전환"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "최근 표들"
 
-#~ msgid "Toggle fullscreen"
-#~ msgstr "전체화면 전환"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "승인 대기중인 표"
 
-#~ msgid "Toggle edit mode"
-#~ msgstr "수정 모드 전환"
+msgid "Incoming tickets"
+msgstr "요청된 티켓"
 
-#~ msgid "Add filter"
-#~ msgstr "필터 추가"
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "표 처리"
 
-#~ msgid "Add a new dashboard"
-#~ msgstr "새 대시보드 추가"
+#, fuzzy
+#| msgid "Child tickets"
+msgid "Closed tickets"
+msgstr "하위 표"
 
-#~ msgid "others"
-#~ msgstr "기타"
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "이름 없음"
 
-#~ msgid "Widget"
-#~ msgstr "위젯"
+#, fuzzy
+#| msgid "Time to own"
+msgid "Time to close"
+msgstr "전달 소요 시간"
 
-#~ msgid "Use gradient palette"
-#~ msgstr "그라데이션 팔레트 사용"
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "인증하다"
 
-#~ msgid "Display value labels on points/bars"
-#~ msgstr "점/막대에 값 라벨 표시"
+msgid "Solved"
+msgstr "해결됨"
 
-#~ msgid "Limit number of data"
-#~ msgstr "데이터 갯수 제한"
+msgid "Share or embed this dashboard"
+msgstr "이 대시보드 공유 또는 삽입"
 
-#~ msgid "Filters"
-#~ msgstr "필터"
+msgid "Delete this dashboard"
+msgstr "이 대시보드 삭제"
 
-#~ msgid "Embed in another application"
-#~ msgstr "다른 어플리케이션에 삽입"
+msgid "Toggle auto-refresh"
+msgstr "자동-새로고침 전환"
 
-#~ msgid "Direct link"
-#~ msgstr "직접 링크"
+msgid "Toggle night mode"
+msgstr "야간 모드 전환"
 
-#~ msgid "Iframe"
-#~ msgstr "Iframe"
+msgid "Toggle fullscreen"
+msgstr "전체화면 전환"
 
-#~ msgid "empty card !"
-#~ msgstr "빈 카드 !"
+#, fuzzy
+#| msgid "Delete this dashboard"
+msgid "Clone this dashboard"
+msgstr "이 대시보드 삭제"
 
-#, php-format
-#~ msgid "Number of %s"
-#~ msgstr "%s의 수"
+msgid "Toggle edit mode"
+msgstr "수정 모드 전환"
 
-#~ msgid "field name in DB"
-#~ msgstr "DB의 필드 이름"
+msgid "Add filter"
+msgstr "필터 추가"
 
-#~ msgid "Example:"
-#~ msgstr "예시:"
+msgid "Add a new dashboard"
+msgstr "새 대시보드 추가"
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "GLPI 9.2부터 우리는 \"원격 측정\"라는 새로운 통계 기능을 도입했습니다, 당"
-#~ "신의 허가 를 얻어 익명으로, 원격 측정 웹 사이트에 자료를 전송합니다."
+msgid "others"
+msgstr "기타"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP 네트워크는 데이터베이스에 포함되지 않습니다. 그러나, 현재 사용 가능한 "
-#~ "네트워크를 볼 수 있습니다."
+msgid "Widget"
+msgstr "위젯"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "몇몇 네트워크 이름이 가능합니다! '네트워크 이름' 탭으로 가서 관리하세요."
+msgid "Use gradient palette"
+msgstr "그라데이션 팔레트 사용"
 
-#~ msgid "Add a network name"
-#~ msgstr "네트워크 명 추가"
+msgid "Display value labels on points/bars"
+msgstr "점/막대에 값 라벨 표시"
 
-#~ msgid "Not associated"
-#~ msgstr "연관 안됨"
+msgid "Limit number of data"
+msgstr "데이터 갯수 제한"
 
-#~ msgid "Create a new network name"
-#~ msgstr "새 네트워크 명 생성"
+msgid "Filters"
+msgstr "필터"
 
-#~ msgid "No network name found"
-#~ msgstr "검색된 네트워크 명 없음"
+msgid "Embed in another application"
+msgstr "다른 어플리케이션에 삽입"
 
-#~ msgid "Unable to download plugin archive."
-#~ msgstr "플러그인 아카이브를 다운로드 할 수 없습니다."
+msgid "Direct link"
+msgstr "직접 링크"
 
-#~ msgid "Unable to extract plugin archive."
-#~ msgstr "플러그인 아카이브를 추출할 수 없습니다."
+msgid "Iframe"
+msgstr "Iframe"
 
-#~ msgid "Check all plugin updates"
-#~ msgstr "모든 플러그인 업데이트 확인"
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
 
-#, php-format
-#~ msgid "New version for plugin %s: %s"
-#~ msgstr "플러그인 %s용 새 버전 : %s"
+msgid "empty card !"
+msgstr "빈 카드 !"
 
-#~ msgid "Installed"
-#~ msgstr "설치됨"
+msgid "Number of %s"
+msgstr "%s의 수"
 
-#~ msgid "Discover"
-#~ msgstr "찾기"
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s 로 %2$s"
 
-#~ msgid "Alpha ASC"
-#~ msgstr "알파벳 ASC"
+#, fuzzy
+#| msgid "%s of %s"
+msgid "List of %s"
+msgstr "%s의 %s"
 
-#~ msgid "Alpha DESC"
-#~ msgstr "알파벳 DESC"
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "티켓 수량"
 
-#~ msgid "Refresh plugin list"
-#~ msgstr "플러그인 목록 새로고침"
+msgid "Evolution of ticket in the past year"
+msgstr ""
 
-#~ msgid "Filter plugin list"
-#~ msgstr "플러그인 목록 필터."
+#, fuzzy
+#| msgid "Ticket tasks to do"
+msgid "Tickets status by month"
+msgstr "해야 할 표 작업"
 
-#~ msgid "Homepage"
-#~ msgstr "홈페이지"
+msgid "Tickets times (in hours)"
+msgstr ""
 
-#~ msgid "Clean"
-#~ msgstr "지우기"
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "표 항목"
 
-#~ msgid "Install"
-#~ msgstr "설치"
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Top ticket's categories"
+msgstr "표 항목"
 
-#~ msgid "Enable"
-#~ msgstr "사용"
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "당신의 확인해야 할 표"
 
-#~ msgid "Uninstall"
-#~ msgstr "제거"
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "표 기본 유형"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "검색 엔진에서, 만료 일자가 없는 라이선스 검색 시  \"NULL이 포함된 만료\" "
-#~ "사용"
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "표 위치"
 
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "GLPI를 IT에 통합하거나, 버그를 수정하거나 미리 구성된 규칙이나 사전을 활용"
-#~ "할 필요가 있습니까?\n"
-#~ "\n"
-#~ "우리는 당신을 위한 %s 공간을 제공합니다.\n"
-#~ "GLPI-네트워크는 Tier 3 지원을 위한 가입을 포함하는 상용 제품으로 약정 기간"
-#~ "에 발생한 버그를 수정합니다.\n"
-#~ "\n"
-#~ "이 같은 공간에서, <b>공식 제휴사에게 연락</b>하여 GLPI 통합을 도울 수 있습"
-#~ "니다.\n"
-#~ "\n"
-#~ "또는 <b>기부</b>로서 GLPI 개발 노력을 지원해주세요."
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "요청자로써 표 수량"
 
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "GLPI 모듈 고급 설정에 문제가 발생했나요?\n"
-#~ "해결할 수 있도록 도와드립니다. %s의 지원을 위해 로그인 하세요."
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "내 그룹이 생성한 표 보기"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "이메일이 당신의 메일주소로 발송되었습니다. 비밀번호를 재설정할 정보가 포함"
-#~ "되어 있습니다."
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "이후 닫힌 티켓"
 
-#~ msgid "Email address not found."
-#~ msgstr "이메일 주소를 찾을 수 없습니다."
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "내 그룹이 생성한 표 보기"
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "장비의 MAC 주소와 장비의 IP에는 하나의 집계된 네트워크 포트가 포함되었습니"
-#~ "다"
+#, fuzzy
+#| msgid "New group in assignees"
+msgid "Top ticket's assignees"
+msgstr "양수인의 신규 그룹"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "업로드된 파일이 php.ini에서 설정된 upload_max_filesize 값을 초과합니다"
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "연관된 그룹의 표에 추적 추가"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr "업로드된 파일이 HTML 폼에서 정의된 MAX_FILE_SIZE 값을 초과합니다"
+#, fuzzy
+#| msgid "List of translations"
+msgid "List of reminders"
+msgstr "번역 목록"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "일부 파일만 업로드 되었습니다"
+#, fuzzy
+#| msgid "Editable markdown"
+msgid "Editable markdown card"
+msgstr "편집가능한 마크다운"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "디스크에 파일 쓰기가 실패했습니다."
+#, fuzzy
+#| msgid "Toggle edit mode"
+msgid "Toggle edit mode to edit content"
+msgstr "수정 모드 전환"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "PHP 확장기능이 파일 업로드를 중단하였습니다"
+msgid "field name in DB"
+msgstr "DB의 필드 이름"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr "업로드된 파일이 php.ini에서 설정된 post_max_size 값을 초과합니다"
+msgid "Example:"
+msgstr "예시:"
 
-#~ msgid "File is too big"
-#~ msgstr "파일이 너무 큽니다."
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"GLPI 9.2부터 우리는 \"원격 측정\"라는 새로운 통계 기능을 도입했습니다, 당신"
+"의 허가 를 얻어 익명으로, 원격 측정 웹 사이트에 자료를 전송합니다."
 
-#~ msgid "File is too small"
-#~ msgstr "파일이 너무 작습니다."
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP 네트워크는 데이터베이스에 포함되지 않습니다. 그러나, 현재 사용 가능한 네트"
+"워크를 볼 수 있습니다."
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "최대 파일수 초과"
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"몇몇 네트워크 이름이 가능합니다! '네트워크 이름' 탭으로 가서 관리하세요."
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "이미지 최대 너비 초과"
+msgid "Add a network name"
+msgstr "네트워크 명 추가"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "이미지는 최소 너비가 필요합니다."
+msgid "Not associated"
+msgstr "연관 안됨"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "이미지 최대 높이 초과"
+msgid "Create a new network name"
+msgstr "새 네트워크 명 생성"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "이미지 최소 높이 필요"
+msgid "No network name found"
+msgstr "검색된 네트워크 명 없음"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "허용되지 않는 파일유형"
+msgid "Unable to download plugin archive."
+msgstr "플러그인 아카이브를 다운로드 할 수 없습니다."
 
-#~ msgid "File upload aborted"
-#~ msgstr "파일 업로드가 중단되었습니다"
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
 
-#~ msgid "Failed to resize image"
-#~ msgstr "이미지 크기변경 실패함"
+msgid "Unable to extract plugin archive."
+msgstr "플러그인 아카이브를 추출할 수 없습니다."
 
-#~ msgid "Progress"
-#~ msgstr "진행"
+msgid "Check all plugin updates"
+msgstr "모든 플러그인 업데이트 확인"
 
-#~ msgid "My settings"
-#~ msgstr "내 설정"
+msgid "New version for plugin %s: %s"
+msgstr "플러그인 %s용 새 버전 : %s"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "페이지 상단으로 돌아가기"
+msgid "Installed"
+msgstr "설치됨"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "GLPI-PROJECT.org 사이트에 찾을 수 있습니다."
+msgid "Discover"
+msgstr "찾기"
 
-#~ msgid "Check all"
-#~ msgstr "모두 선택"
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
 
-#~ msgid "Uncheck all"
-#~ msgstr "모두 선택 해제"
+msgid "Maybe you could setup a proxy"
+msgstr ""
 
-#~ msgid "Check all as"
-#~ msgstr "로써 모두 선택"
+msgid "or please check later"
+msgstr ""
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "선택을 많이 하면, 대량 수행을 할 수 없습니다."
+#, fuzzy
+#| msgid "%1$s position is not available"
+msgid "Your %1$s registration is not valid."
+msgstr "%1$s 위치는 사용할 수 없습니다"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "제한값을 늘리려면: max_input_vars 또는 php 구성의 suhosin.post.max_vars를 "
-#~ "변경하세요."
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "상세정보 항목 은 필수입니다"
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "%s에 생성됨"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "%3$d의 %1$d에서 %2$d까지"
+msgid "fill your registration key in setup."
+msgstr ""
 
-#~ msgid "Empty array"
-#~ msgstr "빈 배열"
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "답글이 수정되었습니다"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%2$d의 %1$d"
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "%s에 생성됨"
 
-#~ msgid "Close (Esc)"
-#~ msgstr "닫음 (Esc)"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
 
-#~ msgid "Share"
-#~ msgstr "공유"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
 
-#~ msgid "Zoom in/out"
-#~ msgstr "확대/축소"
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
 
-#~ msgid "Previous (arrow left)"
-#~ msgstr "이전 (왼쪽 방향키)"
+msgid "Alpha ASC"
+msgstr "알파벳 ASC"
 
-#~ msgid "Next (arrow right)"
-#~ msgstr "다음 (오른쪽 방향키)"
+msgid "Alpha DESC"
+msgstr "알파벳 DESC"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr "편집기에 첨부할 파일을 끌어 넣기나 복사해서 붙여넣기 하거나"
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "가장 인기있는 질문들"
 
-#~ msgid "selecting them"
-#~ msgstr "그것들을 선택"
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "최종 수정"
 
-#~ msgid "File(s)"
-#~ msgstr "파일(들)"
+msgid "Most recent"
+msgstr ""
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "여기에 파일을 끌어 놓기, 또는"
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "노트 읽기"
 
-#~ msgid "Upload successful"
-#~ msgstr "업로드 되었습니다"
+msgid "Your plugin here ? Contact us."
+msgstr ""
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "모두 선택/해제"
+msgid "Refresh plugin list"
+msgstr "플러그인 목록 새로고침"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "입력하여 메뉴 찾기"
+msgid "Filter plugin list"
+msgstr "플러그인 목록 필터."
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "디버그 모드"
+msgid "Homepage"
+msgstr "홈페이지"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "디버그 모드 해제"
+msgid "Get help"
+msgstr ""
 
-#~ msgid "Saved searches"
-#~ msgstr "저장된 검색들"
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "읽기"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "저장된 검색 관리"
+msgid "Clean"
+msgstr "지우기"
 
-#~ msgid "Add is disabled"
-#~ msgstr "추가는 비활성화 되었습니다"
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "잘못된 로그인 입니다. 사용자를 추가할 수 없습니다."
 
-#~ msgid "Search is disabled"
-#~ msgstr "검색이 비활성화 되었습니다"
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
 
-#~ msgid "Global Kanban"
-#~ msgstr "전체 간판"
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
 
-#, php-format
-#~ msgid "You are impersonating %s."
-#~ msgstr "당신은 %s을 대행합니다."
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "새 버전 사용가능: %s."
 
-#~ msgid "Stop impersonating"
-#~ msgstr "대행 중지"
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr "API 로그인과 사용자 인증으로 세션 토큰 획득을 허용합니다"
+msgid "Install"
+msgstr "설치"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "API 로그인과 사용자 외부 토큰을 사용한 세션 토큰의 획득을 허용합니다. 사용"
-#~ "자 설정 탭의 원격 접근 키를 참고하세요"
+msgid "Enable"
+msgstr "사용"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "GLPI ID 보이기"
+msgid "Uninstall"
+msgstr "제거"
 
-#~ msgid "Color palette"
-#~ msgstr "색상 파레트"
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
 
-#~ msgid "Layout"
-#~ msgstr "윤곽"
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
 
-#~ msgid "Tabs on left"
-#~ msgstr "왼쪽으로 탭"
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "플러그인 사용안함"
 
-#~ msgid "Classic view"
-#~ msgstr "예전 형식 보기"
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
 
-#~ msgid "Vertical split"
-#~ msgstr "수직 나누기"
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "새 버전이 사용 가능한지 체크하세요"
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "늦음"
 
-#~ msgid "Show filters"
-#~ msgstr "필터 보이기"
+#, fuzzy
+#| msgid "Marketplace"
+msgid "Switch to marketplace"
+msgstr "마켓플레이스"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "당신의 필터와 일치하는 기록 없음"
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
 
-#~ msgid "Add to schedule"
-#~ msgstr "일정에 추가"
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "플러그인"
 
-#~ msgid "Position in room"
-#~ msgstr "방 안의 위치"
+msgid "Plugin new version number"
+msgstr ""
 
-#~ msgid "Door orientation in room"
-#~ msgstr "방 안의 문 방향"
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "건물 번호"
 
-#~ msgid "North"
-#~ msgstr "북"
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"검색 엔진에서, 만료 일자가 없는 라이선스 검색 시  \"NULL이 포함된 만료\" 사용"
 
-#~ msgid "East"
-#~ msgstr "동"
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "예약"
 
-#~ msgid "South"
-#~ msgstr "남"
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
 
-#~ msgid "West"
-#~ msgstr "서"
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "%s에 생성됨"
 
-#~ msgid "Number of units"
-#~ msgstr "단위 수"
+msgid "And retrieve your key to paste it below"
+msgstr ""
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "Error was: %s"
+msgstr ""
 
-#~ msgid "Width"
-#~ msgstr "너비"
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "예약"
 
-#~ msgid "Height"
-#~ msgstr "높이"
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "설명"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "측정된 전력 (와츠 단위)"
+#, fuzzy
+#| msgid "unknown"
+msgid "Unknown"
+msgstr "알 수 없음"
 
-#~ msgid "Max. weight"
-#~ msgstr "최고 무게"
+msgid "Registered by"
+msgstr ""
 
-#~ msgid "No rack found"
-#~ msgstr "검색된 랙 없음"
+#, fuzzy
+#| msgid "Unable to load LDAP server information."
+msgid "Unable to fetch registration information."
+msgstr "LDAP 서버 정보를 불러올 수 없습니다."
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "다음 요소들은 방의 경계 밖에 있습니다"
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "설치 완료"
 
-#~ msgid "Blueprint"
-#~ msgstr "청사진"
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
 
-#~ msgid "Grid"
-#~ msgstr "그리드"
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "설치 완료"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "여기에 랙 삽입"
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"GLPI를 IT에 통합하거나, 버그를 수정하거나 미리 구성된 규칙이나 사전을 활용할 "
+"필요가 있습니까?\n"
+"\n"
+"우리는 당신을 위한 %s 공간을 제공합니다.\n"
+"GLPI-네트워크는 Tier 3 지원을 위한 가입을 포함하는 상용 제품으로 약정 기간에 "
+"발생한 버그를 수정합니다.\n"
+"\n"
+"이 같은 공간에서, <b>공식 제휴사에게 연락</b>하여 GLPI 통합을 도울 수 있습니"
+"다.\n"
+"\n"
+"또는 <b>기부</b>로서 GLPI 개발 노력을 지원해주세요."
 
-#~ msgid "Position must be set"
-#~ msgstr "위치가 설정되야 합니다"
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"GLPI 모듈 고급 설정에 문제가 발생했나요?\n"
+"해결할 수 있도록 도와드립니다. %s의 지원을 위해 로그인 하세요."
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s 위치는 사용할 수 없습니다"
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"이메일이 당신의 메일주소로 발송되었습니다. 비밀번호를 재설정할 정보가 포함되"
+"어 있습니다."
 
-#~ msgid "All categories"
-#~ msgstr "모든 항목들"
+msgid "Email address not found."
+msgstr "이메일 주소를 찾을 수 없습니다."
 
-#~ msgid "Uncategorized software"
-#~ msgstr "미분류 소프트웨어"
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+"장비의 MAC 주소와 장비의 IP에는 하나의 집계된 네트워크 포트가 포함되었습니다"
 
-#~ msgid "Valid license"
-#~ msgstr "유효한 라이선스"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "업로드된 파일이 php.ini에서 설정된 upload_max_filesize 값을 초과합니다"
 
-#~ msgid "Other component"
-#~ msgstr "다른 컴포넌트"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr "업로드된 파일이 HTML 폼에서 정의된 MAX_FILE_SIZE 값을 초과합니다"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "시작 전 마지막 하나"
+msgid "The uploaded file was only partially uploaded"
+msgstr "일부 파일만 업로드 되었습니다"
 
-#~ msgid "Donate"
-#~ msgstr "기부"
+msgid "Failed to write file to disk"
+msgstr "디스크에 파일 쓰기가 실패했습니다."
+
+msgid "A PHP extension stopped the file upload"
+msgstr "PHP 확장기능이 파일 업로드를 중단하였습니다"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "업로드된 파일이 php.ini에서 설정된 post_max_size 값을 초과합니다"
+
+msgid "File is too big"
+msgstr "파일이 너무 큽니다."
+
+msgid "File is too small"
+msgstr "파일이 너무 작습니다."
+
+msgid "Maximum number of files exceeded"
+msgstr "최대 파일수 초과"
+
+msgid "Image exceeds maximum width"
+msgstr "이미지 최대 너비 초과"
+
+msgid "Image requires a minimum width"
+msgstr "이미지는 최소 너비가 필요합니다."
+
+msgid "Image exceeds maximum height"
+msgstr "이미지 최대 높이 초과"
+
+msgid "Image requires a minimum height"
+msgstr "이미지 최소 높이 필요"
+
+msgid "Filetype not allowed"
+msgstr "허용되지 않는 파일유형"
+
+msgid "File upload aborted"
+msgstr "파일 업로드가 중단되었습니다"
+
+msgid "Failed to resize image"
+msgstr "이미지 크기변경 실패함"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "사용자 정보"
+
+msgid "Progress"
+msgstr "진행"
+
+msgid "My settings"
+msgstr "내 설정"
+
+msgid "Back to top of the page"
+msgstr "페이지 상단으로 돌아가기"
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "GLPI-PROJECT.org 사이트에 찾을 수 있습니다."
+
+msgid "Check all"
+msgstr "모두 선택"
+
+msgid "Uncheck all"
+msgstr "모두 선택 해제"
+
+msgid "Check all as"
+msgstr "로써 모두 선택"
+
+msgid "Selection too large, massive action disabled."
+msgstr "선택을 많이 하면, 대량 수행을 할 수 없습니다."
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"제한값을 늘리려면: max_input_vars 또는 php 구성의 suhosin.post.max_vars를 변"
+"경하세요."
+
+msgid "The description field is mandatory"
+msgstr "상세정보 항목 은 필수입니다"
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr "%3$d의 %1$d에서 %2$d까지"
+
+msgid "Empty array"
+msgstr "빈 배열"
+
+msgid "%1$d on %2$d"
+msgstr "%2$d의 %1$d"
+
+msgid "Close (Esc)"
+msgstr "닫음 (Esc)"
+
+msgid "Share"
+msgstr "공유"
+
+msgid "Zoom in/out"
+msgstr "확대/축소"
+
+msgid "Previous (arrow left)"
+msgstr "이전 (왼쪽 방향키)"
+
+msgid "Next (arrow right)"
+msgstr "다음 (오른쪽 방향키)"
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr "편집기에 첨부할 파일을 끌어 넣기나 복사해서 붙여넣기 하거나"
+
+msgid "selecting them"
+msgstr "그것들을 선택"
+
+msgid "File(s)"
+msgstr "파일(들)"
+
+msgid "Drag and drop your file here, or"
+msgstr "여기에 파일을 끌어 놓기, 또는"
+
+msgid "Upload successful"
+msgstr "업로드 되었습니다"
+
+msgid "Check/uncheck all"
+msgstr "모두 선택/해제"
+
+msgid "Start typing to find a menu"
+msgstr "입력하여 메뉴 찾기"
+
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "변경됨"
+
+msgid "Debug mode enabled"
+msgstr "디버그 모드"
+
+msgid "Debug mode disabled"
+msgstr "디버그 모드 해제"
+
+msgid "Saved searches"
+msgstr "저장된 검색들"
+
+msgid "Manage saved searches"
+msgstr "저장된 검색 관리"
+
+msgid "Add is disabled"
+msgstr "추가는 비활성화 되었습니다"
+
+msgid "Search is disabled"
+msgstr "검색이 비활성화 되었습니다"
+
+msgid "Global Kanban"
+msgstr "전체 간판"
+
+msgid "You are impersonating %s."
+msgstr "당신은 %s을 대행합니다."
+
+msgid "Stop impersonating"
+msgstr "대행 중지"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr "API 로그인과 사용자 인증으로 세션 토큰 획득을 허용합니다"
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"API 로그인과 사용자 외부 토큰을 사용한 세션 토큰의 획득을 허용합니다. 사용자 "
+"설정 탭의 원격 접근 키를 참고하세요"
+
+msgid "Show GLPI ID"
+msgstr "GLPI ID 보이기"
+
+msgid "Color palette"
+msgstr "색상 파레트"
+
+msgid "Layout"
+msgstr "윤곽"
+
+msgid "Tabs on left"
+msgstr "왼쪽으로 탭"
+
+msgid "Classic view"
+msgstr "예전 형식 보기"
+
+msgid "Vertical split"
+msgstr "수직 나누기"
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "계약 종료"
+
+#, fuzzy
+#| msgid "Assets Dashboard"
+msgid "Dashboards"
+msgstr "자산 대시보드"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "표 용 기본값"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "표 용 기본값"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "표 용 기본값"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "표 용 기본값"
+
+msgid "Check if a new version is available"
+msgstr "새 버전이 사용 가능한지 체크하세요"
+
+msgid "Show filters"
+msgstr "필터 보이기"
+
+msgid "No historical matching your filters"
+msgstr "당신의 필터와 일치하는 기록 없음"
+
+msgid "Add to schedule"
+msgstr "일정에 추가"
+
+msgid "Position in room"
+msgstr "방 안의 위치"
+
+msgid "Door orientation in room"
+msgstr "방 안의 문 방향"
+
+msgid "North"
+msgstr "북"
+
+msgid "East"
+msgstr "동"
+
+msgid "South"
+msgstr "남"
+
+msgid "West"
+msgstr "서"
+
+msgid "Number of units"
+msgstr "단위 수"
+
+msgid "U"
+msgstr "U"
+
+msgid "Width"
+msgstr "너비"
+
+msgid "Height"
+msgstr "높이"
+
+msgid "Measured power (in watts)"
+msgstr "측정된 전력 (와츠 단위)"
+
+msgid "Max. weight"
+msgstr "최고 무게"
+
+msgid "No rack found"
+msgstr "검색된 랙 없음"
+
+msgid "Following elements are out of room bounds"
+msgstr "다음 요소들은 방의 경계 밖에 있습니다"
+
+msgid "Blueprint"
+msgstr "청사진"
+
+msgid "Grid"
+msgstr "그리드"
+
+msgid "Insert a rack here"
+msgstr "여기에 랙 삽입"
+
+msgid "Position must be set"
+msgstr "위치가 설정되야 합니다"
+
+msgid "%1$s position is not available"
+msgstr "%1$s 위치는 사용할 수 없습니다"
+
+msgid "All categories"
+msgstr "모든 항목들"
+
+msgid "Uncategorized software"
+msgstr "미분류 소프트웨어"
+
+msgid "Valid license"
+msgstr "유효한 라이선스"
+
+msgid "Other component"
+msgstr "다른 컴포넌트"
+
+msgid "One last thing before starting"
+msgstr "시작 전 마지막 하나"
+
+msgid "Donate"
+msgstr "기부"
+
+msgid "Unofficial translations are also available"
+msgstr "비공식 번역 역시 가능합니다"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "위에 기술된 라이선스 조항을 읽고 동의합니다."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "위에 기술된 라이선스 조항을 읽고 동의 하지 않습니다."
+
+msgid "Installation or update of GLPI"
+msgstr "GLPI 설치 또는 업데이트"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "GLPI를 완전 새로 설치 하려면 \"설치\"를 선택하세요."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "이전 버전에서 GLPI의 버전을 갱신하려면 \"업그레이드\"를 선택하세요"
+
+msgid "Do you want to continue?"
+msgstr "계속하시겠습니까?"
+
+msgid "Database connection parameters"
+msgstr "데이터베이스 접속 매개변수"
+
+msgid "Test of the connection at the database"
+msgstr "데이터베이스 접속 테스트"
+
+msgid "Can't connect to the database"
+msgstr "데이터베이스에 접속할 수 없습니다."
+
+msgid "The server answered: %s"
+msgstr "서버 응답: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "서버 또는 / 사용자 항목이 공란입니다"
+
+msgid "Please select a database:"
+msgstr "데이터베이스를 선택하세요:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "새 데이터베이스를 생성하거나 기존 것을 사용합니다:"
+
+msgid "Please select the database to update:"
+msgstr "갱신할 데이터베이스를 선택해 주세요:"
+
+msgid "Initialization of the database"
+msgstr "데이터베이스 초기화"
+
+msgid "Impossible to use the database:"
+msgstr "데이터베이스를 사용할 수 없습니다:"
+
+msgid "OK - database was initialized"
+msgstr "OK - 데이터베이스가 초기화 되었습니다."
+
+msgid "Impossible to write the database setup file"
+msgstr "데이터베이스 셋업 파일 쓰기 불가능"
+
+msgid "Database created"
+msgstr "데이터베이스 생성됨"
+
+msgid "Error in creating database!"
+msgstr "데이터베이스 생성 중 오류"
+
+msgid "You didn't select a database!"
+msgstr "데이터베이스를 선택하지 않았습니다."
+
+msgid "Collect data"
+msgstr "자료 수집"
+
+msgid "The installation is finished"
+msgstr "설치 완료"
+
+msgid "Default logins / passwords are:"
+msgstr "기본 로그인 / 비밀번호는 "
+
+msgid "tech/tech for the technician account"
+msgstr "기술자 계정은 tech/tech 입니다"
+
+msgid "normal/normal for the normal account"
+msgstr "일반 계정은 normal/normal 입니다"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "작성만 가능한 계정은 post-only/postonly 입니다"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "초기 데이터 뿐만 아니라 이 계정들까지 삭제 또는 수정할수 있습니다."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"데이터베이스 접속 파일을 생성할 수 없습니다. 파일의 권한을 확인해 주세요."
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "기본 언어"
+
+msgid "Beginning of the installation"
+msgstr "설치 시작"
+
+msgid "Step %d"
+msgstr "단계 %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - 인증"
+
+msgid "Remember me"
+msgstr "기억하기"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "브라우저의 JavaScript 기능을 활성화 해야 합니다."
+
+msgid "You must accept cookies to reach this application"
+msgstr "이 응용프로그램을 사용하려면 쿠키를 허용해야 합니다."
+
+msgid "Invalid use of session ID"
+msgstr "세션 ID가 유효하지 않습니다."
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "FAQ 에 접근"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "변경 사항 추가"
+
+#, fuzzy
+#| msgid "Add filter"
+msgid "Add a filter"
+msgstr "필터 추가"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "저장"
+
+#, fuzzy
+#| msgid "Are you sure you want to add this item to transfer list?"
+#| msgid_plural "Are you sure you want to add these items to transfer list?"
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "이 품목들을 전송 목록에 추가 하시겠습니까?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "전송 일자"
 
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI 사용"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "비공식 번역 역시 가능합니다"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "위에 기술된 라이선스 조항을 읽고 동의합니다."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "위에 기술된 라이선스 조항을 읽고 동의 하지 않습니다."
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "GLPI 설치 또는 업데이트"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "GLPI를 완전 새로 설치 하려면 \"설치\"를 선택하세요."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr "이전 버전에서 GLPI의 버전을 갱신하려면 \"업그레이드\"를 선택하세요"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "계속하시겠습니까?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "데이터베이스 접속 매개변수"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "데이터베이스 접속 테스트"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "데이터베이스에 접속할 수 없습니다."
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "서버 응답: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "서버 또는 / 사용자 항목이 공란입니다"
-
-#~ msgid "Please select a database:"
-#~ msgstr "데이터베이스를 선택하세요:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "새 데이터베이스를 생성하거나 기존 것을 사용합니다:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "갱신할 데이터베이스를 선택해 주세요:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "데이터베이스 초기화"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "데이터베이스를 사용할 수 없습니다:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK - 데이터베이스가 초기화 되었습니다."
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "데이터베이스 셋업 파일 쓰기 불가능"
-
-#~ msgid "Database created"
-#~ msgstr "데이터베이스 생성됨"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "데이터베이스 생성 중 오류"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "데이터베이스를 선택하지 않았습니다."
-
-#~ msgid "Collect data"
-#~ msgstr "자료 수집"
-
-#~ msgid "The installation is finished"
-#~ msgstr "설치 완료"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "기본 로그인 / 비밀번호는 "
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "관리자 계정은 glpi/glpi 입니다"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "기술자 계정은 tech/tech 입니다"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "일반 계정은 normal/normal 입니다"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "작성만 가능한 계정은 post-only/postonly 입니다"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "초기 데이터 뿐만 아니라 이 계정들까지 삭제 또는 수정할수 있습니다."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "데이터베이스 접속 파일을 생성할 수 없습니다. 파일의 권한을 확인해 주세요."
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "설치 시작"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "단계 %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - 인증"
-
-#~ msgid "Remember me"
-#~ msgstr "기억하기"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "브라우저의 JavaScript 기능을 활성화 해야 합니다."
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "이 응용프로그램을 사용하려면 쿠키를 허용해야 합니다."
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "세션 ID가 유효하지 않습니다."
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "FAQ 에 접근"

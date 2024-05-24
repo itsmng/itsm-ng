@@ -150,6 +150,10 @@ $twig_vars["copyright_message"] = Html::getCopyrightMessage(false);
 
 $twig_vars["csrf_token"] = $_SESSION['_glpi_csrf_token'];
 
+ob_start();
+Plugin::doHook("display_login");
+$twig_vars['pluginHook'] = ob_get_clean();
+
 // call cron
 if (!GLPI_DEMO_MODE) {
  CronTask::callCronForce();

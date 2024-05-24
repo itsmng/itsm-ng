@@ -23707,698 +23707,1310 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "No room found or selected"
-#~ msgstr "Habitación no encontrada o seleccionada"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Escritura"
 
-#~ msgid "Marketplace"
-#~ msgstr "tienda en línea "
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Inicio de sesión"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Ver catálogo de plugins"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Ver configuración"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Vaciado por infinito"
+msgid "No room found or selected"
+msgstr "Habitación no encontrada o seleccionada"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "Feeds RSS encontrados"
+msgid "Marketplace"
+msgstr "tienda en línea "
 
-#~ msgid "Active Directory"
-#~ msgstr "Directorio Activo"
+#, fuzzy
+#| msgid "%1$s adds the item %2$s (%3$d)"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s agrega el elemento %2$s (%3$d)"
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "¿Confirmar la promocion?"
+msgid "See the catalog of plugins"
+msgstr "Ver catálogo de plugins"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Sus incidentes por cerrar"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Incidentes con estado pendiente"
+msgid "Empty for infinite"
+msgstr "Vaciado por infinito"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Incidentes a ser procesados"
+msgid "RSS feeds found"
+msgstr "Feeds RSS encontrados"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Sus incidentes observados"
+msgid "Active Directory"
+msgstr "Directorio Activo"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Sus incidentes en progreso"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "Versión IP"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Sus incidentes por validar"
+msgid "Confirm the promotion?"
+msgstr "¿Confirmar la promocion?"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "Sus solicitudes con requerimiento de aprobación rechazado."
+msgid "Your tickets to close"
+msgstr "Sus incidentes por cerrar"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "Sus solicitudes con solución rechazada"
+msgid "Tickets on pending status"
+msgstr "Incidentes con estado pendiente"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Seguimiento de incidente"
+msgid "Tickets to be processed"
+msgstr "Incidentes a ser procesados"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d nuevo ticket"
-#~ msgstr[1] "%d nuevos tickets"
+msgid "Your observed tickets"
+msgstr "Sus incidentes observados"
 
-#~ msgid "No ticket found."
-#~ msgstr "No se han encontrado incidentes."
+msgid "Your tickets in progress"
+msgstr "Sus incidentes en progreso"
 
-#~ msgid "Last tickets"
-#~ msgstr "Últimos incidentes"
+msgid "Your tickets to validate"
+msgstr "Sus incidentes por validar"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Nuevo incidente para este elemento..."
+msgid "Your tickets having rejected approval status"
+msgstr "Sus solicitudes con requerimiento de aprobación rechazado."
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Último %d ticket"
-#~ msgstr[1] "Últimos %d ticketes"
+msgid "Your tickets having rejected solution"
+msgstr "Sus solicitudes con solución rechazada"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "No tiene permisos para ver todos los tickets"
+msgid "Ticket followup"
+msgstr "Seguimiento de incidente"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Ticket en articulo vinculado"
-#~ msgstr[1] "Ticketes en articulos vinculados"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d nuevo ticket"
+msgstr[1] "%d nuevos tickets"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "No hay incidentes en progreso."
+msgid "No ticket found."
+msgstr "No se han encontrado incidentes."
 
-#~ msgid "Assign equipment"
-#~ msgstr "Asignar material"
+msgid "Last tickets"
+msgstr "Últimos incidentes"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Cierre autmático de incidentes"
+msgid "New ticket for this item..."
+msgstr "Nuevo incidente para este elemento..."
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Generación de encuestas de satisfacción"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Último %d ticket"
+msgstr[1] "Últimos %d ticketes"
 
-#~ msgid "See my ticket"
-#~ msgstr "Ver mi ticket"
+msgid "You don't have right to see all tickets"
+msgstr "No tiene permisos para ver todos los tickets"
 
-#~ msgid "See group ticket"
-#~ msgstr "Ver ticketes de grupo"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Ticket en articulo vinculado"
+msgstr[1] "Ticketes en articulos vinculados"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Ver incidentes creados por mis grupos"
+msgid "No ticket in progress."
+msgstr "No hay incidentes en progreso."
 
-#~ msgid "See all tickets"
-#~ msgstr "Ver todos los incidentes"
+msgid "Assign equipment"
+msgstr "Asignar material"
 
-#~ msgid "See assigned"
-#~ msgstr "Ver asignados"
+msgid "Automatic tickets closing"
+msgstr "Cierre autmático de incidentes"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Ver ticketes asignados"
+msgid "Generation of satisfaction surveys"
+msgstr "Generación de encuestas de satisfacción"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Asignar un incidente"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "Cierre automático de incidentes resueltos después de"
 
-#~ msgid "Steal"
-#~ msgstr "Robar"
+msgid "See my ticket"
+msgstr "Ver mi ticket"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Robar un incidente"
+msgid "See group ticket"
+msgstr "Ver ticketes de grupo"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Estar a cargo"
+msgid "See tickets created by my groups"
+msgstr "Ver incidentes creados por mis grupos"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Estar a cargo de un incidente"
+msgid "See all tickets"
+msgstr "Ver todos los incidentes"
 
-#~ msgid "Change the priority"
-#~ msgstr "Cambiar la prioridad"
+msgid "See assigned"
+msgstr "Ver asignados"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Aprobar la encuesta de solución / respuesta (mi ticket)"
+msgid "See assigned tickets"
+msgstr "Ver ticketes asignados"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr ""
-#~ "Aprobar la solución y responder a la encuesta para el ticket creado por mí"
+msgid "Assign a ticket"
+msgstr "Asignar un incidente"
 
-#, php-format
-#~ msgid "Not enough rights to merge tickets %d and %d"
-#~ msgstr "No tiene suficientes permisos para agrupar tickets %dy%d"
+msgid "Steal"
+msgstr "Robar"
 
-#, php-format
-#~ msgid "Failed to load ticket %d"
-#~ msgstr "Fallo al cargar el ticket %d"
+msgid "Steal a ticket"
+msgstr "Robar un incidente"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "Fallo al eliminar ticket%d"
+msgid "Beeing in charge"
+msgstr "Estar a cargo"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%stickets fusionados %s en %s"
+msgid "To be in charge of a ticket"
+msgstr "Estar a cargo de un incidente"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Recalcular la categoría"
+msgid "Change the priority"
+msgstr "Cambiar la prioridad"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Licencias válidas"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Aprobar la encuesta de solución / respuesta (mi ticket)"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Número de instalaciones"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
+"Aprobar la solución y responder a la encuesta para el ticket creado por mí"
 
-#~ msgid "Merge"
-#~ msgstr "Reagrupar"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "No tiene suficientes permisos para agrupar tickets %dy%d"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Programas enviados a la papelera después de reagrupar"
+msgid "Failed to load ticket %d"
+msgstr "Fallo al cargar el ticket %d"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "Debe habilitar al menos un modo de notificación."
+#, fuzzy
+#| msgid "Failed to delete ticket %d"
+msgid "Failed to add followup to ticket %d"
+msgstr "Fallo al eliminar ticket%d"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
-
-#~ msgid "Connect a computer"
-#~ msgstr "Conectar una computadora"
-
-#~ msgid "Not connected"
-#~ msgstr "No conectado"
-
-#~ msgid "Show as map"
-#~ msgstr "Mostrar como mapa"
-
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Válido para %s"
-
-#~ msgid "Solved"
-#~ msgstr "Resueltos"
-
-#~ msgid "Toggle fullscreen"
-#~ msgstr "Cambiar a pantalla completa"
-
-#~ msgid "field name in DB"
-#~ msgstr "nombre del campo en BD"
-
-#~ msgid "Example:"
-#~ msgstr "Ejemplo:"
-
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "Desde GLPI 9.2, hemos introducido una nueva característica de "
-#~ "estadísticas llamada \"Telemetría\", que de forma anónima con su permiso, "
-#~ "envía datos a nuestro sitio web de telemetría."
-
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "La red IP no está incluida en la base de datos. Sin embargo, puede ver "
-#~ "las redes disponibles actuales."
-
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Hay muchos nombres de red disponibles! Diríjase a la pestaña 'Nombre de "
-#~ "Red' para administrarlos."
-
-#~ msgid "Add a network name"
-#~ msgstr "Agregar un nombre de red"
-
-#~ msgid "Not associated"
-#~ msgstr "No asociado"
-
-#~ msgid "Create a new network name"
-#~ msgstr "Crear un nuevo nombre de red"
-
-#~ msgid "No network name found"
-#~ msgstr "Nombre de red no encontrado"
-
-#~ msgid "Clean"
-#~ msgstr "Limpiar"
-
-#~ msgid "Install"
-#~ msgstr "Instalar"
-
-#~ msgid "Enable"
-#~ msgstr "Activar"
-
-#~ msgid "Uninstall"
-#~ msgstr "Desinstalar"
-
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "En el buscador, utilize \"Expiration contains NULL\" para realizar una "
-#~ "busqueda de licencias sin fecha de caducación"
-
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "¿Necesita ayuda para integrar GLPI en su TI, corregir un error o "
-#~ "beneficiarse de reglas o diccionarios preconfigurados?\n"
-#~ "\n"
-#~ "Proporcionamos %s el espacio para ti.\n"
-#~ "GLPI-Network es un producto comercial que incluye una suscripción para "
-#~ "soporte de nivel 3, asegurando la corrección de errores encontrados con "
-#~ "un tiempo de compromiso.\n"
-#~ "\n"
-#~ "En este mismo espacio, podrá ponerse en <b>contacto con un socio oficial</"
-#~ "b> para ayudarlo con su integración GLPI.\n"
-#~ "\n"
-#~ "O bien, apoye el esfuerzo de desarrollo de GLPI mediante la <b>donación</"
-#~ "b>."
-
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "¿Tienes problemas para configurar un modulo avanzado de GLPI? Nosotros "
-#~ "podemos ayudarte a resolverlos. Únete para obtener soporte en %s"
-
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "Un correo ha sido enviado a su dirección de correo. El mismo contiene "
-#~ "información para el reinicio de su clave."
-
-#~ msgid "Email address not found."
-#~ msgstr "Dirección de correo no encontrada."
-
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "La dirección física y la IP del equipo son incluidas en un puerto de red "
-#~ "agregado"
-
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "El archivo subido excede la directiva upload_max_filesize en php.ini"
+#, fuzzy
+#| msgid "Failed to load ticket %d"
+msgid "Failed to add task to ticket %d"
+msgstr "Fallo al cargar el ticket %d"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "El archivo subido excede la directiva MAX_FILE_SIZE que fue especificada "
-#~ "en la forma HTML"
+#, fuzzy
+#| msgid "Failed to delete ticket %d"
+msgid "Failed to add document to ticket %d"
+msgstr "Fallo al eliminar ticket%d"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "El archivo fue parcialmente subido"
+#, fuzzy
+#| msgid "Failed to load ticket %d"
+msgid "Failed to link tickets %d and %d"
+msgstr "Fallo al cargar el ticket %d"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Fallo escritura del archivo al disco"
+msgid "Failed to delete ticket %d"
+msgstr "Fallo al eliminar ticket%d"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "Una extensión PHP detuvo la subida del archivo"
+msgid "%s merges ticket %s into %s"
+msgstr "%stickets fusionados %s en %s"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr "El archivo subido excede la directiva post_max_size en php.ini"
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Prueba de escritura sobre documentos de plugins"
 
-#~ msgid "File is too big"
-#~ msgstr "El archivo es muy grande"
+msgid "Recalculate the category"
+msgstr "Recalcular la categoría"
 
-#~ msgid "File is too small"
-#~ msgstr "El archivo es muy pequeño"
+msgid "Valid licenses"
+msgstr "Licencias válidas"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Número máximo de archivos alcanzado"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Número de instalaciones"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "La imagen excede la anchura máxima"
+msgid "Merge"
+msgstr "Reagrupar"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "La imagen requiere un mínimo de anchura"
+msgid "Software deleted after merging"
+msgstr "Programas enviados a la papelera después de reagrupar"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "La imagen excede la altura máxima"
+msgid "You must enable at least one notification mode."
+msgstr "Debe habilitar al menos un modo de notificación."
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "La imagen requiere un mínimo de altura"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Tipo de archivo no permitido"
+msgid "Connect a computer"
+msgstr "Conectar una computadora"
 
-#~ msgid "File upload aborted"
-#~ msgstr "Carga de archivo abortada"
+msgid "Not connected"
+msgstr "No conectado"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "Error al cambiar de tamaño de la imagen"
+msgid "Show as map"
+msgstr "Mostrar como mapa"
 
-#~ msgid "Progress"
-#~ msgstr "Progreso"
+msgid "Valid to %s"
+msgstr "Válido para %s"
 
-#~ msgid "My settings"
-#~ msgstr "Preferencias"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "Últimos incidentes"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "Volver a la parte superior de la página"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Incidente esperando por aprobación"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr ""
-#~ "Está disponible en el sitio de GLPI : <a href='http://glpi-project.org' "
-#~ "target='_blank'>http://glpi-project.org</a>."
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "Enlazar incidentes"
 
-#~ msgid "Check all"
-#~ msgstr "Marcar todo"
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "Resolver incidentes"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Desmarcar todo"
+#, fuzzy
+#| msgid "Child tickets"
+msgid "Closed tickets"
+msgstr "Ticketes hijos"
 
-#~ msgid "Check all as"
-#~ msgstr "Revisar todo como"
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Sin nombre"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Selección demasiado grande, acción masiva deshabilitada."
+#, fuzzy
+#| msgid "Time to own"
+msgid "Time to close"
+msgstr "Tiempo en adueñarse"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Para incrementar el límite: cambiar max_input_vars o suhosin.post."
-#~ "max_vars en la configuración de PHP"
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "Validar"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "El campo de descripción es obligatorio"
+msgid "Solved"
+msgstr "Resueltos"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "Desde %1$d hasta %2$d de %3$d"
+msgid "Share or embed this dashboard"
+msgstr ""
 
-#~ msgid "Empty array"
-#~ msgstr "Arreglo vacio"
+#, fuzzy
+#| msgid "Helpdesk Dashboard"
+msgid "Delete this dashboard"
+msgstr "Panel de mesa de ayuda"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d en %2$d"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle auto-refresh"
+msgstr "Alternar filtros"
 
-#~ msgid "Close (Esc)"
-#~ msgstr "Cerrar (Esc)"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle night mode"
+msgstr "Alternar filtros"
+
+msgid "Toggle fullscreen"
+msgstr "Cambiar a pantalla completa"
 
-#~ msgid "Share"
-#~ msgstr "Compartir"
+#, fuzzy
+#| msgid "Assets Dashboard"
+msgid "Clone this dashboard"
+msgstr "Panel de activos"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle edit mode"
+msgstr "Alternar filtros"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add filter"
+msgstr "Agregar un elemento"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "Agregar una nueva tarea"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "Otros"
+
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "Presupuesto"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "Número de tarefas"
+
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filters"
+msgstr "Lista de filtros"
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "URL de la aplicación"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "Enlace de directorio LDAP"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+#, fuzzy
+#| msgid "Empty array"
+msgid "empty card !"
+msgstr "Arreglo vacio"
+
+#, fuzzy
+#| msgid "Number of rows"
+msgid "Number of %s"
+msgstr "Número de filas"
+
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s por %2$s"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "Lista de valores"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "Cantidad de incidentes"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket tasks to do"
+msgid "Tickets status by month"
+msgstr "Tareas del ticket para hacer"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "Categoría del ticket"
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Top ticket's categories"
+msgstr "Categoría del ticket"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "Sus incidentes por validar"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "Tipo predeterminado de incidentes"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "Lugar del incidente"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "Cantidad de incidentes como solicitante"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "Ver incidentes creados por mis grupos"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "Para los incidentes cerrados luego de"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "Ver incidentes creados por mis grupos"
+
+#, fuzzy
+#| msgid "New group in assignees"
+msgid "Top ticket's assignees"
+msgstr "Nuevo grupo en asignados"
+
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "Agregar un seguimiento a incidentes de grupos asociados"
+
+#, fuzzy
+#| msgid "List of translations"
+msgid "List of reminders"
+msgstr "Traducciones"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr "nombre del campo en BD"
+
+msgid "Example:"
+msgstr "Ejemplo:"
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"Desde GLPI 9.2, hemos introducido una nueva característica de estadísticas "
+"llamada \"Telemetría\", que de forma anónima con su permiso, envía datos a "
+"nuestro sitio web de telemetría."
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"La red IP no está incluida en la base de datos. Sin embargo, puede ver las "
+"redes disponibles actuales."
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Hay muchos nombres de red disponibles! Diríjase a la pestaña 'Nombre de Red' "
+"para administrarlos."
+
+msgid "Add a network name"
+msgstr "Agregar un nombre de red"
+
+msgid "Not associated"
+msgstr "No asociado"
+
+msgid "Create a new network name"
+msgstr "Crear un nuevo nombre de red"
+
+msgid "No network name found"
+msgstr "Nombre de red no encontrado"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "Revisar por nuevas actualizaciones"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "Instalar"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "Desconectar"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+#, fuzzy
+#| msgid "%1$s position is not available"
+msgid "Your %1$s registration is not valid."
+msgstr "%1$s posición no está disponible"
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "Creado el %s"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Su comentario ha sido editado"
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "generado en %s"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "Artículos más consultados"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "Última modificación"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "Leer notas"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filter plugin list"
+msgstr "Lista de filtros"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "Inicio"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "Lectura"
+
+msgid "Clean"
+msgstr "Limpiar"
+
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "Login no valido. No se pudo agregar el usuario"
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "Una nueva versión esta disponible: %s"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "Instalar"
+
+msgid "Enable"
+msgstr "Activar"
+
+msgid "Uninstall"
+msgstr "Desinstalar"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Plugin deshabilitado"
+msgstr[1] "Plugin deshabilitado"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "Tarde"
+
+#, fuzzy
+#| msgid "Marketplace"
+msgid "Switch to marketplace"
+msgstr "tienda en línea "
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "Plugin"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "# de Edificio"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"En el buscador, utilize \"Expiration contains NULL\" para realizar una "
+"busqueda de licencias sin fecha de caducación"
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "Reservación"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "Creado el %s"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "Reservación"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "Descripción"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "Archivo desconocido"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "Activar los datos financieros"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "La instalación ha terminado"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "La instalación ha terminado"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"¿Necesita ayuda para integrar GLPI en su TI, corregir un error o "
+"beneficiarse de reglas o diccionarios preconfigurados?\n"
+"\n"
+"Proporcionamos %s el espacio para ti.\n"
+"GLPI-Network es un producto comercial que incluye una suscripción para "
+"soporte de nivel 3, asegurando la corrección de errores encontrados con un "
+"tiempo de compromiso.\n"
+"\n"
+"En este mismo espacio, podrá ponerse en <b>contacto con un socio oficial</b> "
+"para ayudarlo con su integración GLPI.\n"
+"\n"
+"O bien, apoye el esfuerzo de desarrollo de GLPI mediante la <b>donación</b>."
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"¿Tienes problemas para configurar un modulo avanzado de GLPI? Nosotros "
+"podemos ayudarte a resolverlos. Únete para obtener soporte en %s"
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"Un correo ha sido enviado a su dirección de correo. El mismo contiene "
+"información para el reinicio de su clave."
+
+msgid "Email address not found."
+msgstr "Dirección de correo no encontrada."
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+"La dirección física y la IP del equipo son incluidas en un puerto de red "
+"agregado"
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "El archivo subido excede la directiva upload_max_filesize en php.ini"
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"El archivo subido excede la directiva MAX_FILE_SIZE que fue especificada en "
+"la forma HTML"
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "El archivo fue parcialmente subido"
+
+msgid "Failed to write file to disk"
+msgstr "Fallo escritura del archivo al disco"
+
+msgid "A PHP extension stopped the file upload"
+msgstr "Una extensión PHP detuvo la subida del archivo"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "El archivo subido excede la directiva post_max_size en php.ini"
+
+msgid "File is too big"
+msgstr "El archivo es muy grande"
+
+msgid "File is too small"
+msgstr "El archivo es muy pequeño"
+
+msgid "Maximum number of files exceeded"
+msgstr "Número máximo de archivos alcanzado"
+
+msgid "Image exceeds maximum width"
+msgstr "La imagen excede la anchura máxima"
+
+msgid "Image requires a minimum width"
+msgstr "La imagen requiere un mínimo de anchura"
+
+msgid "Image exceeds maximum height"
+msgstr "La imagen excede la altura máxima"
+
+msgid "Image requires a minimum height"
+msgstr "La imagen requiere un mínimo de altura"
+
+msgid "Filetype not allowed"
+msgstr "Tipo de archivo no permitido"
+
+msgid "File upload aborted"
+msgstr "Carga de archivo abortada"
+
+msgid "Failed to resize image"
+msgstr "Error al cambiar de tamaño de la imagen"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "Información del usuario"
+
+msgid "Progress"
+msgstr "Progreso"
+
+msgid "My settings"
+msgstr "Preferencias"
+
+msgid "Back to top of the page"
+msgstr "Volver a la parte superior de la página"
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr ""
+"Está disponible en el sitio de GLPI : <a href='http://glpi-project.org' "
+"target='_blank'>http://glpi-project.org</a>."
+
+msgid "Check all"
+msgstr "Marcar todo"
+
+msgid "Uncheck all"
+msgstr "Desmarcar todo"
+
+msgid "Check all as"
+msgstr "Revisar todo como"
+
+msgid "Selection too large, massive action disabled."
+msgstr "Selección demasiado grande, acción masiva deshabilitada."
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Para incrementar el límite: cambiar max_input_vars o suhosin.post.max_vars "
+"en la configuración de PHP"
+
+msgid "The description field is mandatory"
+msgstr "El campo de descripción es obligatorio"
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr "Desde %1$d hasta %2$d de %3$d"
+
+msgid "Empty array"
+msgstr "Arreglo vacio"
+
+msgid "%1$d on %2$d"
+msgstr "%1$d en %2$d"
+
+msgid "Close (Esc)"
+msgstr "Cerrar (Esc)"
+
+msgid "Share"
+msgstr "Compartir"
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+"Adjuntar archivo arrastrando y soltando o copiar y pegar en el editor o"
+
+msgid "selecting them"
+msgstr "seleccionándolos"
+
+msgid "File(s)"
+msgstr "Archivo(s)"
+
+msgid "Drag and drop your file here, or"
+msgstr "Arrastre y coloque su archivo aquí o"
+
+msgid "Upload successful"
+msgstr "Subida completa"
+
+msgid "Check/uncheck all"
+msgstr "Seleccionar/deseleccionar todo"
+
+msgid "Start typing to find a menu"
+msgstr "Comience a escribir para encontrar un menú"
+
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Cambiado"
+
+msgid "Debug mode enabled"
+msgstr "Modo depuración habilitado"
+
+msgid "Debug mode disabled"
+msgstr "Modo depuración deshabilitado"
+
+msgid "Saved searches"
+msgstr "Búsquedas guardadas"
+
+msgid "Manage saved searches"
+msgstr "Administrar búsquedas guardadas"
+
+msgid "Add is disabled"
+msgstr "Agregar esta deshabilitado"
+
+msgid "Search is disabled"
+msgstr "Buscar esta deshabilitado"
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "Gestión global"
+
+msgid "You are impersonating %s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "Hacerlo personal"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+"Permitir el inicio de sesión en API y obtener un token de sesión con "
+"credenciales de usuario"
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"Permita que inicie sesión en la API y obtenga un token de sesión con el "
+"token externo del usuario. Ver clave de acceso remoto en la pestaña de "
+"Configuración del usuario"
+
+msgid "Show GLPI ID"
+msgstr "Mostrar ID de GLPI"
+
+msgid "Color palette"
+msgstr "Paleta de colores"
+
+msgid "Layout"
+msgstr "Diseño"
+
+msgid "Tabs on left"
+msgstr "Pestañas al lado izquierdo"
+
+msgid "Classic view"
+msgstr "Vista clásica"
+
+msgid "Vertical split"
+msgstr "Divisón vertical"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr ""
-#~ "Adjuntar archivo arrastrando y soltando o copiar y pegar en el editor o"
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Cierre de contrato"
+
+#, fuzzy
+#| msgid "Assets Dashboard"
+msgid "Dashboards"
+msgstr "Panel de activos"
 
-#~ msgid "selecting them"
-#~ msgstr "seleccionándolos"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "Predeterminado para incidentes"
 
-#~ msgid "File(s)"
-#~ msgstr "Archivo(s)"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "Predeterminado para incidentes"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Arrastre y coloque su archivo aquí o"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "Predeterminado para incidentes"
 
-#~ msgid "Upload successful"
-#~ msgstr "Subida completa"
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Predeterminado para incidentes"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Seleccionar/deseleccionar todo"
+msgid "Check if a new version is available"
+msgstr "Comprobar si hay una nueva versión disponible"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Comience a escribir para encontrar un menú"
+msgid "Show filters"
+msgstr "Mostrar filtros"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "Modo depuración habilitado"
+msgid "No historical matching your filters"
+msgstr "Sin histórico que coincida con sus filtros"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "Modo depuración deshabilitado"
+msgid "Add to schedule"
+msgstr "Agregar a horario"
 
-#~ msgid "Saved searches"
-#~ msgstr "Búsquedas guardadas"
+msgid "Position in room"
+msgstr "Posición del cuarto"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Administrar búsquedas guardadas"
+msgid "Door orientation in room"
+msgstr "Oritentación de la puerta en el cuarto"
 
-#~ msgid "Add is disabled"
-#~ msgstr "Agregar esta deshabilitado"
+msgid "North"
+msgstr "Norte"
 
-#~ msgid "Search is disabled"
-#~ msgstr "Buscar esta deshabilitado"
+msgid "East"
+msgstr "Este"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr ""
-#~ "Permitir el inicio de sesión en API y obtener un token de sesión con "
-#~ "credenciales de usuario"
+msgid "South"
+msgstr "Sur"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "Permita que inicie sesión en la API y obtenga un token de sesión con el "
-#~ "token externo del usuario. Ver clave de acceso remoto en la pestaña de "
-#~ "Configuración del usuario"
+msgid "West"
+msgstr "Oeste"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Mostrar ID de GLPI"
+msgid "Number of units"
+msgstr "Número de unidades"
 
-#~ msgid "Color palette"
-#~ msgstr "Paleta de colores"
+msgid "U"
+msgstr "U"
 
-#~ msgid "Layout"
-#~ msgstr "Diseño"
+msgid "Width"
+msgstr "Ancho"
 
-#~ msgid "Tabs on left"
-#~ msgstr "Pestañas al lado izquierdo"
+msgid "Height"
+msgstr "Altura"
 
-#~ msgid "Classic view"
-#~ msgstr "Vista clásica"
+msgid "Measured power (in watts)"
+msgstr "Potencia medida (en vatios)"
 
-#~ msgid "Vertical split"
-#~ msgstr "Divisón vertical"
+msgid "Max. weight"
+msgstr "Peso max."
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Comprobar si hay una nueva versión disponible"
+msgid "No rack found"
+msgstr "No se encontró bastidor"
 
-#~ msgid "Show filters"
-#~ msgstr "Mostrar filtros"
+msgid "Following elements are out of room bounds"
+msgstr "Los siguientes elementos están fuera de los límites de la habitación"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "Sin histórico que coincida con sus filtros"
+msgid "Blueprint"
+msgstr "Blueprint"
 
-#~ msgid "Add to schedule"
-#~ msgstr "Agregar a horario"
+msgid "Grid"
+msgstr "Cuadrícula"
 
-#~ msgid "Position in room"
-#~ msgstr "Posición del cuarto"
+msgid "Insert a rack here"
+msgstr "Inserte un bastidor aquí"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "Oritentación de la puerta en el cuarto"
+msgid "Position must be set"
+msgstr "La posición debe ser configurada"
 
-#~ msgid "North"
-#~ msgstr "Norte"
+msgid "%1$s position is not available"
+msgstr "%1$s posición no está disponible"
 
-#~ msgid "East"
-#~ msgstr "Este"
+msgid "All categories"
+msgstr "Todas las categorías"
 
-#~ msgid "South"
-#~ msgstr "Sur"
+msgid "Uncategorized software"
+msgstr "Software sin categoría"
 
-#~ msgid "West"
-#~ msgstr "Oeste"
+msgid "Valid license"
+msgstr "Licencia válida"
 
-#~ msgid "Number of units"
-#~ msgstr "Número de unidades"
+#, fuzzy
+#| msgid "Other component model"
+#| msgid_plural "Other component models"
+msgid "Other component"
+msgstr "Otro modelo de componente"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "One last thing before starting"
+msgstr "Una última cosa antes de comenzar"
 
-#~ msgid "Width"
-#~ msgstr "Ancho"
+msgid "Donate"
+msgstr "Donar"
 
-#~ msgid "Height"
-#~ msgstr "Altura"
+msgid "Unofficial translations are also available"
+msgstr "Traducciones no oficiales también están disponibles"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "Potencia medida (en vatios)"
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "He leído y ACEPTO los términos de la licencia enunciados arriba."
 
-#~ msgid "Max. weight"
-#~ msgstr "Peso max."
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "He leído y NO ACEPTO los términos de la licencia enunciados arriba"
 
-#~ msgid "No rack found"
-#~ msgstr "No se encontró bastidor"
+msgid "Installation or update of GLPI"
+msgstr "Instalación o actualización de GLPI"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr ""
-#~ "Los siguientes elementos están fuera de los límites de la habitación"
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Seleccione 'Instalar' para una nueva instalación de GLPI."
 
-#~ msgid "Blueprint"
-#~ msgstr "Blueprint"
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+"Seleccione 'Actualizar' para subir su versión de GLPI desde una versión "
+"anterior"
 
-#~ msgid "Grid"
-#~ msgstr "Cuadrícula"
+msgid "Do you want to continue?"
+msgstr "Desea continuar?"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "Inserte un bastidor aquí"
+msgid "Database connection parameters"
+msgstr "Parámetros de conexión a la base de datos"
 
-#~ msgid "Position must be set"
-#~ msgstr "La posición debe ser configurada"
+msgid "Test of the connection at the database"
+msgstr "Prueba de la conexión a la base de datos"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s posición no está disponible"
+msgid "Can't connect to the database"
+msgstr "Imposible conectarse a la base de datos"
 
-#~ msgid "All categories"
-#~ msgstr "Todas las categorías"
+msgid "The server answered: %s"
+msgstr "El servidor ha respondido: %s"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Software sin categoría"
+msgid "The server or/and user field is empty"
+msgstr "El campo servidor y/o usuario está vacio"
 
-#~ msgid "Valid license"
-#~ msgstr "Licencia válida"
+msgid "Please select a database:"
+msgstr "Seleccione una base de datos:"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "Una última cosa antes de comenzar"
+msgid "Create a new database or use an existing one:"
+msgstr "Crear una nueva base de datos o utilizar la que ya existe:"
 
-#~ msgid "Donate"
-#~ msgstr "Donar"
+msgid "Please select the database to update:"
+msgstr "Seleccione la base de datos a actualizar:"
+
+msgid "Initialization of the database"
+msgstr "Inicialización de base de datos"
+
+msgid "Impossible to use the database:"
+msgstr "Imposible utilizar la base:"
+
+msgid "OK - database was initialized"
+msgstr "OK - La base ha sido inicializada"
+
+msgid "Impossible to write the database setup file"
+msgstr "Imposible escribir el archivo de configuración de su base de datos"
+
+msgid "Database created"
+msgstr "Base de datos creada"
+
+msgid "Error in creating database!"
+msgstr "Error al crear la base de datos!"
+
+msgid "You didn't select a database!"
+msgstr "No seleccionó una base de datos!"
+
+msgid "Collect data"
+msgstr "Recolectar datos"
+
+msgid "The installation is finished"
+msgstr "La instalación ha terminado"
+
+msgid "Default logins / passwords are:"
+msgstr "Login/contraseña predeterminados son:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech para la cuenta de técnico"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal para cuenta normal"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly para cuenta sólo-reportar"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "Puede borrar ó modificar estas cuentas así como los datos iniciales."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Imposible crear el archivo de conexión a la base de datos, compruebe los "
+"permisos sobre los archivos"
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "Idioma predeterminado"
+
+msgid "Beginning of the installation"
+msgstr "Inicio de la instalación"
+
+msgid "Step %d"
+msgstr "Paso %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Autenticación"
+
+msgid "Remember me"
+msgstr "Recuerdame"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Debe activar la funcion de JavaScript de su navegador"
+
+msgid "You must accept cookies to reach this application"
+msgstr "Debe aceptar cookies para acceder a esta aplicación"
+
+msgid "Invalid use of session ID"
+msgstr "Uso inválido de ID de sesión"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Acceder a las Preguntas Frecuentes"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "Agregar un cambio"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "Agregar un elemento"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "Guardar"
+
+#, fuzzy
+#| msgid "Are you sure you want to return this non-reservable item?"
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Está usted seguro que quiere retornar este elemento no reservable?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Fecha enviada"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Traducciones no oficiales también están disponibles"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "He leído y ACEPTO los términos de la licencia enunciados arriba."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "He leído y NO ACEPTO los términos de la licencia enunciados arriba"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "Instalación o actualización de GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Seleccione 'Instalar' para una nueva instalación de GLPI."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "Seleccione 'Actualizar' para subir su versión de GLPI desde una versión "
-#~ "anterior"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Desea continuar?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Parámetros de conexión a la base de datos"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Prueba de la conexión a la base de datos"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Imposible conectarse a la base de datos"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "El servidor ha respondido: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "El campo servidor y/o usuario está vacio"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Seleccione una base de datos:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Crear una nueva base de datos o utilizar la que ya existe:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Seleccione la base de datos a actualizar:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Inicialización de base de datos"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Imposible utilizar la base:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK - La base ha sido inicializada"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Imposible escribir el archivo de configuración de su base de datos"
-
-#~ msgid "Database created"
-#~ msgstr "Base de datos creada"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Error al crear la base de datos!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "No seleccionó una base de datos!"
-
-#~ msgid "Collect data"
-#~ msgstr "Recolectar datos"
-
-#~ msgid "The installation is finished"
-#~ msgstr "La instalación ha terminado"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Login/contraseña predeterminados son:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi para la cuenta de administrador"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech para la cuenta de técnico"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal para cuenta normal"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly para cuenta sólo-reportar"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "Puede borrar ó modificar estas cuentas así como los datos iniciales."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Imposible crear el archivo de conexión a la base de datos, compruebe los "
-#~ "permisos sobre los archivos"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Inicio de la instalación"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Paso %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Autenticación"
-
-#~ msgid "Remember me"
-#~ msgstr "Recuerdame"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Debe activar la funcion de JavaScript de su navegador"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Debe aceptar cookies para acceder a esta aplicación"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Uso inválido de ID de sesión"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Acceder a las Preguntas Frecuentes"

@@ -1,0 +1,60 @@
+{% macro file(attributes, root_doc) %}
+  {% set rand=random() %}
+  <div>
+    <input class='form-control h-100' {% for name, value in attributes|filter((v, k) => k != 'values') %} {{name}}="{{value}}" {% endfor %}
+    {% if attributes.id is not defined %}
+      id={{rand}}
+    {% endif %}
+    />
+    <table class="w-100 fs-6 table table-sm table-hover align-middle text-center">
+      <tbody>
+        {% for documentId, title in attributes.values %}
+            <tr data-id="{{documentId}}">
+              <td>
+                {{title|raw}}
+              </td>
+              <td class="d-flex flex-row-reverse">
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFileLink({{documentId}})"><i class="fas fa-times"></i></button>
+              </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <script>
+  function removeFileLink{{rand}}(id) {
+    $.ajax({
+      url: "{{root_doc}}/ajax/deleteItilActor.php",
+      type: "POST",
+      data: {
+        id: '{{attributes.ticket_id}}',
+      },
+    })
+    $(`#ObjectTable_{{rand}} tr[data-id='${id}'][data-type='${type}']`).remove();
+  }
+
+  $('#{{attributes.id|default(rand)}}').on('change', function() {
+      let formData = new FormData();
+      formData.append('name', 'filename');
+      formData.append('showFileSize', $('#{{attributes.id|default(rand)}}').prop('files').length);
+      for (let i = 0; i < $('#{{attributes.id|default(rand)}}').prop('files').length; i++) {
+          formData.append(i, $('#{{attributes.id|default(rand)}}').prop('files')[i]);
+      }
+      $.ajax({
+      url: '{{root_doc}}' + '/ajax/fileupload.php',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+          // add an hidden input containing the data for all files
+              if ($('#hiddenInputForFiles').length == 0) {
+                  $('#{{attributes.id|default(rand)}}').after('<input type="hidden" id="hiddenInputForFiles{{rand}}" name="{{attributes.name}}" value="">');
+              }
+              $('#hiddenInputForFiles{{rand}}').val(data);
+          }
+      });
+  })
+  </script>
+{% endmacro %}
+{{ _self.file(attributes, root_doc) }}

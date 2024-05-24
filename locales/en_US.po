@@ -23699,1127 +23699,1133 @@ msgstr "Collect only the unread mail"
 msgid "Could not create dashboard"
 msgstr "Clone this dashboard"
 
-#~ msgid "No room found or selected"
-#~ msgstr "No room found or selected"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Write"
 
-#~ msgid "Marketplace"
-#~ msgstr "Marketplace"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Login"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$s adds the item %2$s-%3$s:%4$s"
+#, fuzzy
+#| msgid "Open ID connect authentication"
+msgid "Open ID connect configuration"
+msgstr "Open ID connect authentication"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "See the Catalog of Plugins"
+msgid "No room found or selected"
+msgstr "No room found or selected"
 
-#~ msgid ""
-#~ "If name is a valid email address, it will be automatically added to "
-#~ "blacklisted senders."
-#~ msgstr ""
-#~ "If the name is a valid email address, it will be automatically be added "
-#~ "to the blacklisted senders."
+msgid "Marketplace"
+msgstr "Marketplace"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Empty for infinite"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s adds the item %2$s-%3$s:%4$s"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS feeds found"
+msgid "See the catalog of plugins"
+msgstr "See the Catalog of Plugins"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+"If the name is a valid email address, it will be automatically be added to "
+"the blacklisted senders."
 
-#~ msgid "GLPI version"
-#~ msgstr "GLPI version"
+msgid "Empty for infinite"
+msgstr "Empty for infinite"
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "Confirm the promotion?"
+msgid "RSS feeds found"
+msgstr "RSS feeds found"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Your Tickets to Close"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Tickets on Pending Status"
+msgid "GLPI version"
+msgstr "GLPI version"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Tickets to be Processed"
+msgid "Confirm the promotion?"
+msgstr "Confirm the promotion?"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Your Observed Tickets"
+msgid "Your tickets to close"
+msgstr "Your Tickets to Close"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Your Tickets in Progress"
+msgid "Tickets on pending status"
+msgstr "Tickets on Pending Status"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Your Tickets to Validate"
+msgid "Tickets to be processed"
+msgstr "Tickets to be Processed"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "Your tickets that have rejected approval status"
+msgid "Your observed tickets"
+msgstr "Your Observed Tickets"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "Your tickets that have rejected solution"
+msgid "Your tickets in progress"
+msgstr "Your Tickets in Progress"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Ticket Followup"
+msgid "Your tickets to validate"
+msgstr "Your Tickets to Validate"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d new ticket"
-#~ msgstr[1] "%d new tickets"
+msgid "Your tickets having rejected approval status"
+msgstr "Your tickets that have rejected approval status"
 
-#~ msgid "No ticket found."
-#~ msgstr "No Ticket Found."
+msgid "Your tickets having rejected solution"
+msgstr "Your tickets that have rejected solution"
 
-#~ msgid "Last tickets"
-#~ msgstr "Last Tickets"
+msgid "Ticket followup"
+msgstr "Ticket Followup"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "New ticket for this item..."
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d new ticket"
+msgstr[1] "%d new tickets"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Last %d ticket"
-#~ msgstr[1] "Last %d tickets"
+msgid "No ticket found."
+msgstr "No Ticket Found."
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "You don't have right to see all tickets"
+msgid "Last tickets"
+msgstr "Last Tickets"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Ticket on Linked Items"
-#~ msgstr[1] "Tickets on Linked Items"
+msgid "New ticket for this item..."
+msgstr "New ticket for this item..."
 
-#~ msgid "No ticket in progress."
-#~ msgstr "No Ticket in Progress."
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Last %d ticket"
+msgstr[1] "Last %d tickets"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Assign Equipment"
+msgid "You don't have right to see all tickets"
+msgstr "You don't have right to see all tickets"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Automatic Tickets Closing"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Ticket on Linked Items"
+msgstr[1] "Tickets on Linked Items"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Generation of Satisfaction Surveys"
+msgid "No ticket in progress."
+msgstr "No Ticket in Progress."
 
-#~ msgid "Automatic closed tickets purge"
-#~ msgstr "Automatic purging of closed tickets"
+msgid "Assign equipment"
+msgstr "Assign Equipment"
 
-#~ msgid "See my ticket"
-#~ msgstr "See My Ticket"
+msgid "Automatic tickets closing"
+msgstr "Automatic Tickets Closing"
 
-#~ msgid "See group ticket"
-#~ msgstr "See Group Ticket"
+msgid "Generation of satisfaction surveys"
+msgstr "Generation of Satisfaction Surveys"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "See Tickets Created by my Groups"
+msgid "Automatic closed tickets purge"
+msgstr "Automatic purging of closed tickets"
 
-#~ msgid "See all tickets"
-#~ msgstr "See All Tickets"
+msgid "See my ticket"
+msgstr "See My Ticket"
 
-#~ msgid "See assigned"
-#~ msgstr "See Assigned"
+msgid "See group ticket"
+msgstr "See Group Ticket"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "See Assigned Tickets"
+msgid "See tickets created by my groups"
+msgstr "See Tickets Created by my Groups"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Assign a Ticket"
+msgid "See all tickets"
+msgstr "See All Tickets"
 
-#~ msgid "Steal"
-#~ msgstr "Steal"
+msgid "See assigned"
+msgstr "See Assigned"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Steal a Ticket"
+msgid "See assigned tickets"
+msgstr "See Assigned Tickets"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Assigned Tickets"
+msgid "Assign a ticket"
+msgstr "Assign a Ticket"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "To be assigned of a ticket"
+msgid "Steal"
+msgstr "Steal"
 
-#~ msgid "Change the priority"
-#~ msgstr "Change the Priority"
+msgid "Steal a ticket"
+msgstr "Steal a Ticket"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Approve solution/Reply survey (my ticket)"
+msgid "Beeing in charge"
+msgstr "Assigned Tickets"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "Approve solution & reply to survey for ticket created by me"
+msgid "To be in charge of a ticket"
+msgstr "To be assigned of a ticket"
 
-#, php-format
-#~ msgid "Not enough rights to merge tickets %d and %d"
-#~ msgstr "Not enough rights to merge tickets %d and %d"
+msgid "Change the priority"
+msgstr "Change the Priority"
 
-#, php-format
-#~ msgid "Failed to load ticket %d"
-#~ msgstr "Failed to load ticket %d"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Approve solution/Reply survey (my ticket)"
 
-#, php-format
-#~ msgid "Failed to add followup to ticket %d"
-#~ msgstr "Failed to add followup to ticket %d"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "Approve solution & reply to survey for ticket created by me"
 
-#, php-format
-#~ msgid "Failed to add task to ticket %d"
-#~ msgstr "Failed to add task to ticket %d"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "Not enough rights to merge tickets %d and %d"
 
-#, php-format
-#~ msgid "Failed to add document to ticket %d"
-#~ msgstr "Failed to add document to ticket %d"
+msgid "Failed to load ticket %d"
+msgstr "Failed to load ticket %d"
 
-#, php-format
-#~ msgid "Failed to link tickets %d and %d"
-#~ msgstr "Failed to link tickets %d and %d"
+msgid "Failed to add followup to ticket %d"
+msgstr "Failed to add followup to ticket %d"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "Failed to delete ticket %d"
+msgid "Failed to add task to ticket %d"
+msgstr "Failed to add task to ticket %d"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%s merges ticket %s into %s"
+msgid "Failed to add document to ticket %d"
+msgstr "Failed to add document to ticket %d"
 
-#~ msgid "Checking write permissions for marketplace plugins directory"
-#~ msgstr "Checking write permissions for marketplace plugins directory"
+msgid "Failed to link tickets %d and %d"
+msgstr "Failed to link tickets %d and %d"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Recalculate the Category"
+msgid "Failed to delete ticket %d"
+msgstr "Failed to delete ticket %d"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Valid Licenses"
+msgid "%s merges ticket %s into %s"
+msgstr "%s merges ticket %s into %s"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Number of Installations"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Checking write permissions for marketplace plugins directory"
 
-#~ msgid "Merge"
-#~ msgstr "Merge"
+msgid "Recalculate the category"
+msgstr "Recalculate the Category"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Software Deleted after Merging"
+msgid "Valid licenses"
+msgstr "Valid Licenses"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "You must enable at least one notification mode."
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Number of Installations"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Merge"
+msgstr "Merge"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Connect a Computer"
+msgid "Software deleted after merging"
+msgstr "Software Deleted after Merging"
 
-#~ msgid "Not connected"
-#~ msgstr "Not Connected"
+msgid "You must enable at least one notification mode."
+msgstr "You must enable at least one notification mode."
 
-#~ msgid "Show as map"
-#~ msgstr "Show as map"
+msgid "GLPI"
+msgstr "GLPI"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Valid to %s"
+msgid "Connect a computer"
+msgstr "Connect a Computer"
 
-#~ msgid "Late tickets"
-#~ msgstr "Late tickets"
+msgid "Not connected"
+msgstr "Not Connected"
 
-#~ msgid "Incoming tickets"
-#~ msgstr "Incoming tickets"
+msgid "Show as map"
+msgstr "Show as map"
 
-#~ msgid "Solved tickets"
-#~ msgstr "Solved tickets"
+msgid "Valid to %s"
+msgstr "Valid to %s"
 
-#~ msgid "Closed tickets"
-#~ msgstr "Closed tickets"
+msgid "Late tickets"
+msgstr "Late tickets"
 
-#~ msgid "without"
-#~ msgstr "without"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Tickets Awaiting Approval"
 
-#~ msgid "Time to close"
-#~ msgstr "Time to close"
+msgid "Incoming tickets"
+msgstr "Incoming tickets"
 
-#~ msgid "To validate"
-#~ msgstr "To validate"
+msgid "Solved tickets"
+msgstr "Solved tickets"
 
-#~ msgid "Solved"
-#~ msgstr "Solved"
+msgid "Closed tickets"
+msgstr "Closed tickets"
 
-#~ msgid "Share or embed this dashboard"
-#~ msgstr "Share or embed this dashboard"
+msgid "without"
+msgstr "without"
 
-#~ msgid "Delete this dashboard"
-#~ msgstr "Delete this dashboard"
+msgid "Time to close"
+msgstr "Time to close"
 
-#~ msgid "Toggle auto-refresh"
-#~ msgstr "Toggle auto-refresh"
+msgid "To validate"
+msgstr "To validate"
 
-#~ msgid "Toggle night mode"
-#~ msgstr "Toggle night mode"
+msgid "Solved"
+msgstr "Solved"
 
-#~ msgid "Toggle fullscreen"
-#~ msgstr "Toggle Fullscreen"
+msgid "Share or embed this dashboard"
+msgstr "Share or embed this dashboard"
 
-#~ msgid "Toggle edit mode"
-#~ msgstr "Toggle edit mode"
+msgid "Delete this dashboard"
+msgstr "Delete this dashboard"
 
-#~ msgid "Add filter"
-#~ msgstr "Add filter"
+msgid "Toggle auto-refresh"
+msgstr "Toggle auto-refresh"
 
-#~ msgid "Add a new dashboard"
-#~ msgstr "Add a new dashboard"
+msgid "Toggle night mode"
+msgstr "Toggle night mode"
 
-#~ msgid "others"
-#~ msgstr "others"
+msgid "Toggle fullscreen"
+msgstr "Toggle Fullscreen"
 
-#~ msgid "Widget"
-#~ msgstr "Widget"
+#, fuzzy
+#| msgid "Delete this dashboard"
+msgid "Clone this dashboard"
+msgstr "Delete this dashboard"
 
-#~ msgid "Use gradient palette"
-#~ msgstr "Use gradient palette"
+msgid "Toggle edit mode"
+msgstr "Toggle edit mode"
 
-#~ msgid "Display value labels on points/bars"
-#~ msgstr "Display value labels on points/bars"
+msgid "Add filter"
+msgstr "Add filter"
 
-#~ msgid "Limit number of data"
-#~ msgstr "Limit number of data"
+msgid "Add a new dashboard"
+msgstr "Add a new dashboard"
 
-#~ msgid "Filters"
-#~ msgstr "Filters"
+msgid "others"
+msgstr "others"
 
-#~ msgid "Embed in another application"
-#~ msgstr "Embed in another application"
+msgid "Widget"
+msgstr "Widget"
 
-#~ msgid "Direct link"
-#~ msgstr "Direct link"
+msgid "Use gradient palette"
+msgstr "Use gradient palette"
 
-#~ msgid "Iframe"
-#~ msgstr "Iframe"
+msgid "Display value labels on points/bars"
+msgstr "Display value labels on points/bars"
 
-#~ msgid "Or share the dashboard to these target objects:"
-#~ msgstr "Or share the dashboard to these target objects:"
+msgid "Limit number of data"
+msgstr "Limit number of data"
 
-#~ msgid "empty card !"
-#~ msgstr "empty card!"
+msgid "Filters"
+msgstr "Filters"
 
-#, php-format
-#~ msgid "Number of %s"
-#~ msgstr "Number of %s"
+msgid "Embed in another application"
+msgstr "Embed in another application"
 
-#, php-format
-#~ msgid "%s by %s"
-#~ msgstr "%s by %s"
+msgid "Direct link"
+msgstr "Direct link"
 
-#, php-format
-#~ msgid "List of %s"
-#~ msgstr "List of %s"
+msgid "Iframe"
+msgstr "Iframe"
 
-#~ msgid "Number of tickets by month"
-#~ msgstr "Number of tickets by month"
+msgid "Or share the dashboard to these target objects:"
+msgstr "Or share the dashboard to these target objects:"
 
-#~ msgid "Evolution of ticket in the past year"
-#~ msgstr "Evolution of ticket in the past year"
+msgid "empty card !"
+msgstr "empty card!"
 
-#~ msgid "Tickets status by month"
-#~ msgstr "Tickets status by month"
+msgid "Number of %s"
+msgstr "Number of %s"
 
-#~ msgid "Tickets times (in hours)"
-#~ msgstr "Tickets times (in hours)"
+msgid "%s by %s"
+msgstr "%s by %s"
 
-#~ msgid "Tickets summary"
-#~ msgstr "Tickets summary"
+msgid "List of %s"
+msgstr "List of %s"
 
-#~ msgid "Top ticket's categories"
-#~ msgstr "Top ticket's categories"
+msgid "Number of tickets by month"
+msgstr "Number of tickets by month"
 
-#~ msgid "Top ticket's entities"
-#~ msgstr "Top ticket's entities"
+msgid "Evolution of ticket in the past year"
+msgstr "Evolution of ticket in the past year"
 
-#~ msgid "Top ticket's request types"
-#~ msgstr "Top ticket's request types"
+msgid "Tickets status by month"
+msgstr "Tickets status by month"
 
-#~ msgid "Top ticket's locations"
-#~ msgstr "Top ticket's locations"
+msgid "Tickets times (in hours)"
+msgstr "Tickets times (in hours)"
 
-#~ msgid "Top ticket's requesters"
-#~ msgstr "Top ticket's requesters"
+msgid "Tickets summary"
+msgstr "Tickets summary"
 
-#~ msgid "Top ticket's requester groups"
-#~ msgstr "Top ticket's requester groups"
+msgid "Top ticket's categories"
+msgstr "Top ticket's categories"
 
-#~ msgid "Top ticket's observers"
-#~ msgstr "Top ticket's observers"
+msgid "Top ticket's entities"
+msgstr "Top ticket's entities"
 
-#~ msgid "Top ticket's observer groups"
-#~ msgstr "Top ticket's observer groups"
+msgid "Top ticket's request types"
+msgstr "Top ticket's request types"
 
-#~ msgid "Top ticket's assignees"
-#~ msgstr "Top ticket's assignees"
+msgid "Top ticket's locations"
+msgstr "Top ticket's locations"
 
-#~ msgid "Top ticket's assignee groups"
-#~ msgstr "Top ticket's assignee groups"
+msgid "Top ticket's requesters"
+msgstr "Top ticket's requesters"
 
-#~ msgid "List of reminders"
-#~ msgstr "List of reminders"
+msgid "Top ticket's requester groups"
+msgstr "Top ticket's requester groups"
 
-#~ msgid "Editable markdown card"
-#~ msgstr "Editable markdown card"
+msgid "Top ticket's observers"
+msgstr "Top ticket's observers"
 
-#~ msgid "Toggle edit mode to edit content"
-#~ msgstr "Toggle edit mode to edit content"
+msgid "Top ticket's observer groups"
+msgstr "Top ticket's observer groups"
 
-#~ msgid "field name in DB"
-#~ msgstr "field name in DB"
+msgid "Top ticket's assignees"
+msgstr "Top ticket's assignees"
 
-#~ msgid "Example:"
-#~ msgstr "Example:"
+msgid "Top ticket's assignee groups"
+msgstr "Top ticket's assignee groups"
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
+msgid "List of reminders"
+msgstr "List of reminders"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
+msgid "Editable markdown card"
+msgstr "Editable markdown card"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Several hostnames are available! Go to the 'Hostnames' tab to manage them."
+msgid "Toggle edit mode to edit content"
+msgstr "Toggle edit mode to edit content"
 
-#~ msgid "Add a network name"
-#~ msgstr "Add hostname"
+msgid "field name in DB"
+msgstr "field name in DB"
 
-#~ msgid "Not associated"
-#~ msgstr "Not Associated"
+msgid "Example:"
+msgstr "Example:"
 
-#~ msgid "Create a new network name"
-#~ msgstr "Create Hostname"
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
 
-#~ msgid "No network name found"
-#~ msgstr "No hostname found."
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
 
-#~ msgid "Unable to download plugin archive."
-#~ msgstr "Unable to download plugin archive."
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Several hostnames are available! Go to the 'Hostnames' tab to manage them."
 
-#, php-format
-#~ msgid "Plugin archive format is not supported by your system : %s."
-#~ msgstr "Plugin archive format is not supported by your system: %s."
+msgid "Add a network name"
+msgstr "Add hostname"
 
-#~ msgid "Unable to extract plugin archive."
-#~ msgstr "Unable to extract plugin archive."
+msgid "Not associated"
+msgstr "Not Associated"
 
-#~ msgid "Check all plugin updates"
-#~ msgstr "Check all plugin updates"
+msgid "Create a new network name"
+msgstr "Create Hostname"
 
-#, php-format
-#~ msgid "New version for plugin %s: %s"
-#~ msgstr "New version for plugin %s: %s"
+msgid "No network name found"
+msgstr "No hostname found."
 
-#~ msgid "Installed"
-#~ msgstr "Installed"
+msgid "Unable to download plugin archive."
+msgstr "Unable to download plugin archive."
 
-#~ msgid "Discover"
-#~ msgstr "Discover"
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr "Plugin archive format is not supported by your system: %s."
 
-#, php-format
-#~ msgid ""
-#~ "%1$s services website seems not available from your network or offline"
-#~ msgstr ""
-#~ "%1$s services website seems not available from your network or offline"
+msgid "Unable to extract plugin archive."
+msgstr "Unable to extract plugin archive."
 
-#~ msgid "Maybe you could setup a proxy"
-#~ msgstr "Maybe you could setup a proxy"
+msgid "Check all plugin updates"
+msgstr "Check all plugin updates"
 
-#~ msgid "or please check later"
-#~ msgstr "or please check later"
+msgid "New version for plugin %s: %s"
+msgstr "New version for plugin %s: %s"
 
-#, php-format
-#~ msgid "Your %1$s registration is not valid."
-#~ msgstr "Your %1$s registration is not valid."
+msgid "Installed"
+msgstr "Installed"
 
-#~ msgid "A registration, at least a free one, is required to use marketplace!"
-#~ msgstr ""
-#~ "A registration, at least a free one, is required to use the marketplace!"
+msgid "Discover"
+msgstr "Discover"
 
-#, php-format
-#~ msgid "Register on %1$s"
-#~ msgstr "Register on %1$s"
+msgid "%1$s services website seems not available from your network or offline"
+msgstr "%1$s services website seems not available from your network or offline"
 
-#~ msgid "fill your registration key in setup."
-#~ msgstr "fill your registration key in setup."
+msgid "Maybe you could setup a proxy"
+msgstr "Maybe you could setup a proxy"
 
-#, php-format
-#~ msgid "We can't write on the markeplace directory (%s)."
-#~ msgstr "We can't write on the markeplace directory (%s)."
+msgid "or please check later"
+msgstr "or please check later"
 
-#~ msgid ""
-#~ "If you want to ease the plugins download, please check permissions and "
-#~ "ownership of this directory."
-#~ msgstr ""
-#~ "If you want to ease the plugins download, please check the permissions "
-#~ "and ownership of this directory."
+msgid "Your %1$s registration is not valid."
+msgstr "Your %1$s registration is not valid."
 
-#~ msgid ""
-#~ "Otherwise, you will need to download and unzip the plugins archives "
-#~ "manually."
-#~ msgstr ""
-#~ "Otherwise, you will need to download and unzip the plugins archives "
-#~ "manually."
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+"A registration, at least a free one, is required to use the marketplace!"
 
-#~ msgid "Alpha ASC"
-#~ msgstr "Alpha ASC"
+msgid "Register on %1$s"
+msgstr "Register on %1$s"
 
-#~ msgid "Alpha DESC"
-#~ msgstr "Alpha DESC"
+msgid "fill your registration key in setup."
+msgstr "fill your registration key in setup."
 
-#~ msgid "Most popular"
-#~ msgstr "Most popular"
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Your comment has been edited"
 
-#~ msgid "Last updated"
-#~ msgstr "Last updated"
+#, fuzzy
+#| msgid "Register on %1$s"
+msgid "Renew it on %1$s."
+msgstr "Register on %1$s"
 
-#~ msgid "Most recent"
-#~ msgstr "Most recent"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr "We can't write on the markeplace directory (%s)."
 
-#~ msgid "Best notes"
-#~ msgstr "Best notes"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+"If you want to ease the plugins download, please check the permissions and "
+"ownership of this directory."
 
-#~ msgid "Your plugin here ? Contact us."
-#~ msgstr "Your plugin here? Contact us."
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
 
-#~ msgid "Refresh plugin list"
-#~ msgstr "Refresh plugin list"
+msgid "Alpha ASC"
+msgstr "Alpha ASC"
 
-#~ msgid "Filter plugin list"
-#~ msgstr "Filter plugin list"
+msgid "Alpha DESC"
+msgstr "Alpha DESC"
 
-#~ msgid "Homepage"
-#~ msgstr "Homepage"
+msgid "Most popular"
+msgstr "Most popular"
 
-#~ msgid "Get help"
-#~ msgstr "Get help"
+msgid "Last updated"
+msgstr "Last updated"
 
-#~ msgid "Readme"
-#~ msgstr "Readme"
+msgid "Most recent"
+msgstr "Most recent"
 
-#~ msgid "Clean"
-#~ msgstr "Clean"
+msgid "Best notes"
+msgstr "Best notes"
 
-#~ msgid ""
-#~ "The plugin has an available update but its directory is not writable."
-#~ msgstr ""
-#~ "The plugin has an available update but its directory is not writable."
+msgid "Your plugin here ? Contact us."
+msgstr "Your plugin here? Contact us."
 
-#, php-format
-#~ msgid ""
-#~ "Download archive manually, you must uncompress it in plugins directory "
-#~ "(%s)"
-#~ msgstr ""
-#~ "Download archive manually, you must uncompress it in plugins directory "
-#~ "(%s)"
+msgid "Refresh plugin list"
+msgstr "Refresh plugin list"
 
-#, php-format
-#~ msgid "A new version (%s) is available, update ?"
-#~ msgstr "A new version (%s) is available, update?"
+msgid "Filter plugin list"
+msgstr "Filter plugin list"
 
-#, php-format
-#~ msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-#~ msgstr ""
-#~ "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgid "Homepage"
+msgstr "Homepage"
 
-#~ msgid "Install"
-#~ msgstr "Install"
+msgid "Get help"
+msgstr "Get help"
 
-#~ msgid "Enable"
-#~ msgstr "Enable"
+msgid "Readme"
+msgstr "Readme"
 
-#~ msgid "Uninstall"
-#~ msgstr "Uninstall"
+msgid "Clean"
+msgstr "Clean"
 
-#, php-format
-#~ msgid "You must have a %s subscription to get this plugin"
-#~ msgstr "You must have a %s subscription to get this plugin"
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "The login is not valid. Unable to add user."
 
-#, php-format
-#~ msgid "You need at least the %s subscription level to get this plugin"
-#~ msgstr "You need at least the %s subscription level to get this plugin"
+msgid "The plugin has an available update but its directory is not writable."
+msgstr "The plugin has an available update but its directory is not writable."
 
-#, php-format
-#~ msgid "%s plugin"
-#~ msgid_plural "%s plugins"
-#~ msgstr[0] "%s plugin"
-#~ msgstr[1] "%s plugins"
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
 
-#~ msgid "GLPI provides a new marketplace to download and install plugins."
-#~ msgstr "GLPI provides a new marketplace to download and install plugins."
+msgid "A new version (%s) is available, update ?"
+msgstr "A new version (%s) is available, update?"
 
-#~ msgid ""
-#~ "Do you want to replace the plugins setup page by the new marketplace ?"
-#~ msgstr ""
-#~ "Do you want to replace the plugins setup page by the new marketplace ?"
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr "You need a superior GLPI-Network offer to access to this plugin (%s)"
 
-#~ msgid "Later"
-#~ msgstr "Later"
+msgid "Install"
+msgstr "Install"
 
-#~ msgid "Switch to marketplace"
-#~ msgstr "Switch to marketplace"
+msgid "Enable"
+msgstr "Enable"
 
-#~ msgid "Some updates are available for your installed plugins!"
-#~ msgstr "Some updates are available for your installed plugins!"
+msgid "Uninstall"
+msgstr "Uninstall"
 
-#~ msgid "Plugin name"
-#~ msgstr "Plugin name"
+msgid "You must have a %s subscription to get this plugin"
+msgstr "You must have a %s subscription to get this plugin"
 
-#~ msgid "Plugin new version number"
-#~ msgstr "Plugin new version number"
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr "You need at least the %s subscription level to get this plugin"
 
-#~ msgid "Plugin old version number"
-#~ msgstr "Plugin old version number"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "%s plugin"
+msgstr[1] "%s plugins"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr "GLPI provides a new marketplace to download and install plugins."
 
-#~ msgid "Registration"
-#~ msgstr "Registration"
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr "Do you want to replace the plugins setup page by the new marketplace ?"
 
-#~ msgid ""
-#~ "A registration key is needed to use advanced feature (like marketplace) "
-#~ "in GLPI"
-#~ msgstr ""
-#~ "A registration key is needed to use advanced feature (like marketplace) "
-#~ "in GLPI"
+msgid "Later"
+msgstr "Later"
 
-#, php-format
-#~ msgid "Register on %1$s!"
-#~ msgstr "Register on %1$s!"
+msgid "Switch to marketplace"
+msgstr "Switch to marketplace"
 
-#~ msgid "And retrieve your key to paste it below"
-#~ msgstr "And retrieve your key to paste it below"
+msgid "Some updates are available for your installed plugins!"
+msgstr "Some updates are available for your installed plugins!"
 
-#, php-format
-#~ msgid "Error was: %s"
-#~ msgstr "Error was: %s"
+msgid "Plugin name"
+msgstr "Plugin name"
 
-#~ msgid "Registration key"
-#~ msgstr "Registration key"
+msgid "Plugin new version number"
+msgstr "Plugin new version number"
 
-#~ msgid "Subscription"
-#~ msgstr "Subscription"
+msgid "Plugin old version number"
+msgstr "Plugin old version number"
 
-#~ msgid "Unknown"
-#~ msgstr "Unknown"
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
 
-#~ msgid "Registered by"
-#~ msgstr "Registered by"
+msgid "Registration"
+msgstr "Registration"
 
-#~ msgid "Unable to fetch registration information."
-#~ msgstr "Unable to fetch registration information."
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
 
-#~ msgid "The registration key is invalid."
-#~ msgstr "The registration key is invalid."
+msgid "Register on %1$s!"
+msgstr "Register on %1$s!"
 
-#~ msgid "The registration key is valid."
-#~ msgstr "The registration key is valid."
+msgid "And retrieve your key to paste it below"
+msgstr "And retrieve your key to paste it below"
 
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "Do you need help to integrate GLPI into your IT, have a bug fixed or "
-#~ "benefit from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support. This ensures the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Support the GLPI development effort by <b>donating</b>."
+msgid "Error was: %s"
+msgstr "Error was: %s"
 
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
+msgid "Registration key"
+msgstr "Registration key"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
+msgid "Subscription"
+msgstr "Subscription"
 
-#~ msgid "Email address not found."
-#~ msgstr "Email address not found."
+msgid "Unknown"
+msgstr "Unknown"
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "The MAC address & the IP of the equipment are included in an aggregated "
-#~ "network port"
+msgid "Registered by"
+msgstr "Registered by"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgid "Unable to fetch registration information."
+msgstr "Unable to fetch registration information."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
+msgid "The registration key is invalid."
+msgstr "The registration key is invalid."
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "The uploaded file was only partially uploaded"
+#, fuzzy
+#| msgid "The registration key is invalid."
+msgid "The registration key refers to a terminated subscription."
+msgstr "The registration key is invalid."
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Failed to write file to disk"
+msgid "The registration key is valid."
+msgstr "The registration key is valid."
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "A PHP extension stopped the file upload"
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"Do you need help to integrate GLPI into your IT, have a bug fixed or benefit "
+"from pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support. This ensures the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Support the GLPI development effort by <b>donating</b>."
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr "The uploaded file exceeds the post_max_size directive in php.ini"
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
 
-#~ msgid "File is too big"
-#~ msgstr "File is too big"
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
 
-#~ msgid "File is too small"
-#~ msgstr "File is too small"
+msgid "Email address not found."
+msgstr "Email address not found."
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Maximum number of files exceeded"
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+"The MAC address & the IP of the equipment are included in an aggregated "
+"network port"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Image exceeds maximum width"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Image requires a minimum width"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Image exceeds maximum height"
+msgid "The uploaded file was only partially uploaded"
+msgstr "The uploaded file was only partially uploaded"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Image requires a minimum height"
+msgid "Failed to write file to disk"
+msgstr "Failed to write file to disk"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Filetype not allowed"
+msgid "A PHP extension stopped the file upload"
+msgstr "A PHP extension stopped the file upload"
 
-#~ msgid "File upload aborted"
-#~ msgstr "File upload aborted"
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "The uploaded file exceeds the post_max_size directive in php.ini"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "Failed to resize image"
+msgid "File is too big"
+msgstr "File is too big"
 
-#~ msgid "Display GLPI debug information"
-#~ msgstr "Display GLPI debug information"
+msgid "File is too small"
+msgstr "File is too small"
 
-#~ msgid "Progress"
-#~ msgstr "Progress"
+msgid "Maximum number of files exceeded"
+msgstr "Maximum number of files exceeded"
 
-#~ msgid "My settings"
-#~ msgstr "My Settings"
+msgid "Image exceeds maximum width"
+msgstr "Image exceeds maximum width"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "Back to top of the page"
+msgid "Image requires a minimum width"
+msgstr "Image requires a minimum width"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "You will find it on the GLPI-PROJECT.org site."
+msgid "Image exceeds maximum height"
+msgstr "Image exceeds maximum height"
 
-#~ msgid "Check all"
-#~ msgstr "Check All"
+msgid "Image requires a minimum height"
+msgstr "Image requires a minimum height"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Uncheck All"
+msgid "Filetype not allowed"
+msgstr "Filetype not allowed"
 
-#~ msgid "Check all as"
-#~ msgstr "Check all as"
+msgid "File upload aborted"
+msgstr "File upload aborted"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Selection too large, massive action disabled."
+msgid "Failed to resize image"
+msgstr "Failed to resize image"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
+msgid "Display GLPI debug information"
+msgstr "Display GLPI debug information"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "The description field is mandatory"
+msgid "Progress"
+msgstr "Progress"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "From %1$d to %2$d of %3$d"
+msgid "My settings"
+msgstr "My Settings"
 
-#~ msgid "Empty array"
-#~ msgstr "Empty array"
+msgid "Back to top of the page"
+msgstr "Back to top of the page"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d on %2$d"
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "You will find it on the GLPI-PROJECT.org site."
 
-#~ msgid "Close (Esc)"
-#~ msgstr "Close (ESC)"
+msgid "Check all"
+msgstr "Check All"
 
-#~ msgid "Share"
-#~ msgstr "Share"
+msgid "Uncheck all"
+msgstr "Uncheck All"
 
-#~ msgid "Zoom in/out"
-#~ msgstr "Zoom In/Out"
+msgid "Check all as"
+msgstr "Check all as"
 
-#~ msgid "Previous (arrow left)"
-#~ msgstr "Previous (arrow left)"
+msgid "Selection too large, massive action disabled."
+msgstr "Selection too large, massive action disabled."
 
-#~ msgid "Next (arrow right)"
-#~ msgstr "Next (arrow right)"
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr "Attach file by drag & drop or copy & paste in editor or "
+msgid "The description field is mandatory"
+msgstr "The description field is mandatory"
 
-#~ msgid "selecting them"
-#~ msgstr "selecting them"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "From %1$d to %2$d of %3$d"
 
-#~ msgid "File(s)"
-#~ msgstr "File(s)"
+msgid "Empty array"
+msgstr "Empty array"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Drag & drop your file here, or"
+msgid "%1$d on %2$d"
+msgstr "%1$d on %2$d"
 
-#~ msgid "Upload successful"
-#~ msgstr "Upload Successful"
+msgid "Close (Esc)"
+msgstr "Close (ESC)"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Check/Uncheck All"
+msgid "Share"
+msgstr "Share"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Start typing to find a menu"
+msgid "Zoom in/out"
+msgstr "Zoom In/Out"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "Debug mode enabled"
+msgid "Previous (arrow left)"
+msgstr "Previous (arrow left)"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "Debug mode disabled"
+msgid "Next (arrow right)"
+msgstr "Next (arrow right)"
 
-#~ msgid "Saved searches"
-#~ msgstr "Saved searches"
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr "Attach file by drag & drop or copy & paste in editor or "
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Manage saved searches"
+msgid "selecting them"
+msgstr "selecting them"
 
-#~ msgid "Add is disabled"
-#~ msgstr "Add is disabled"
+msgid "File(s)"
+msgstr "File(s)"
 
-#~ msgid "Search is disabled"
-#~ msgstr "Search is disabled"
+msgid "Drag and drop your file here, or"
+msgstr "Drag & drop your file here, or"
 
-#~ msgid "Global Kanban"
-#~ msgstr "Global Kanban"
+msgid "Upload successful"
+msgstr "Upload Successful"
 
-#, php-format
-#~ msgid "You are impersonating %s."
-#~ msgstr "You are impersonating %s."
+msgid "Check/uncheck all"
+msgstr "Check/Uncheck All"
 
-#~ msgid "Stop impersonating"
-#~ msgstr "Stop impersonating"
+msgid "Start typing to find a menu"
+msgstr "Start typing to find a menu"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr "Allow to login to API and get a session token with user credentials"
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Changed"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
+msgid "Debug mode enabled"
+msgstr "Debug mode enabled"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Show GLPI ID"
+msgid "Debug mode disabled"
+msgstr "Debug mode disabled"
 
-#~ msgid "Color palette"
-#~ msgstr "Color Palette"
+msgid "Saved searches"
+msgstr "Saved searches"
 
-#~ msgid "Layout"
-#~ msgstr "Layout"
+msgid "Manage saved searches"
+msgstr "Manage saved searches"
 
-#~ msgid "Tabs on left"
-#~ msgstr "Tabs on Left"
+msgid "Add is disabled"
+msgstr "Add is disabled"
 
-#~ msgid "Classic view"
-#~ msgstr "Classic View"
+msgid "Search is disabled"
+msgstr "Search is disabled"
 
-#~ msgid "Vertical split"
-#~ msgstr "Vertical Split"
+msgid "Global Kanban"
+msgstr "Global Kanban"
 
-#~ msgid "Dashboards"
-#~ msgstr "Dashboards"
+msgid "You are impersonating %s."
+msgstr "You are impersonating %s."
 
-#~ msgid "Default for central"
-#~ msgstr "Default for central"
+msgid "Stop impersonating"
+msgstr "Stop impersonating"
 
-#~ msgid "Default for Assets"
-#~ msgstr "Default for Assets"
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr "Allow to login to API and get a session token with user credentials"
 
-#~ msgid "Default for Assistance"
-#~ msgstr "Default for Assistance"
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
 
-#~ msgid "Default for tickets (mini dashboard)"
-#~ msgstr "Default for tickets (mini dashboard)"
+msgid "Show GLPI ID"
+msgstr "Show GLPI ID"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Check if a New Version is Available"
+msgid "Color palette"
+msgstr "Color Palette"
 
-#~ msgid "Show filters"
-#~ msgstr "Show Filters"
+msgid "Layout"
+msgstr "Layout"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "No historical data matching your filters"
+msgid "Tabs on left"
+msgstr "Tabs on Left"
 
-#~ msgid "Add to schedule"
-#~ msgstr "Add to Schedule"
+msgid "Classic view"
+msgstr "Classic View"
 
-#~ msgid "Position in room"
-#~ msgstr "Position in room"
+msgid "Vertical split"
+msgstr "Vertical Split"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "Door orientation in room"
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "End of Contract"
 
-#~ msgid "North"
-#~ msgstr "North"
+msgid "Dashboards"
+msgstr "Dashboards"
 
-#~ msgid "East"
-#~ msgstr "East"
+msgid "Default for central"
+msgstr "Default for central"
 
-#~ msgid "South"
-#~ msgstr "South"
+msgid "Default for Assets"
+msgstr "Default for Assets"
 
-#~ msgid "West"
-#~ msgstr "West"
+msgid "Default for Assistance"
+msgstr "Default for Assistance"
 
-#~ msgid "Number of units"
-#~ msgstr "Number of units"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Default for tickets (mini dashboard)"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "Check if a new version is available"
+msgstr "Check if a New Version is Available"
 
-#~ msgid "Width"
-#~ msgstr "Width"
+msgid "Show filters"
+msgstr "Show Filters"
 
-#~ msgid "Height"
-#~ msgstr "Height"
+msgid "No historical matching your filters"
+msgstr "No historical data matching your filters"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "Measured Power (in watts)"
+msgid "Add to schedule"
+msgstr "Add to Schedule"
 
-#~ msgid "Max. weight"
-#~ msgstr "Max. weight"
+msgid "Position in room"
+msgstr "Position in room"
 
-#~ msgid "No rack found"
-#~ msgstr "No rack found"
+msgid "Door orientation in room"
+msgstr "Door orientation in room"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "Following elements are out of room bounds"
+msgid "North"
+msgstr "North"
 
-#~ msgid "Blueprint"
-#~ msgstr "Blueprint"
+msgid "East"
+msgstr "East"
 
-#~ msgid "Grid"
-#~ msgstr "Grid"
+msgid "South"
+msgstr "South"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "Insert a rack here"
+msgid "West"
+msgstr "West"
 
-#~ msgid "Position must be set"
-#~ msgstr "Position must be set"
+msgid "Number of units"
+msgstr "Number of units"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s position is not available"
+msgid "U"
+msgstr "U"
 
-#~ msgid "All categories"
-#~ msgstr "All Categories"
+msgid "Width"
+msgstr "Width"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Uncategorized Software"
+msgid "Height"
+msgstr "Height"
 
-#~ msgid "Valid license"
-#~ msgstr "Valid License"
+msgid "Measured power (in watts)"
+msgstr "Measured Power (in watts)"
 
-#~ msgid "Other component"
-#~ msgstr "Other components"
+msgid "Max. weight"
+msgstr "Max. weight"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "One last thing before starting"
+msgid "No rack found"
+msgstr "No rack found"
 
-#~ msgid "Donate"
-#~ msgstr "Donate"
+msgid "Following elements are out of room bounds"
+msgstr "Following elements are out of room bounds"
+
+msgid "Blueprint"
+msgstr "Blueprint"
+
+msgid "Grid"
+msgstr "Grid"
+
+msgid "Insert a rack here"
+msgstr "Insert a rack here"
+
+msgid "Position must be set"
+msgstr "Position must be set"
+
+msgid "%1$s position is not available"
+msgstr "%1$s position is not available"
+
+msgid "All categories"
+msgstr "All Categories"
+
+msgid "Uncategorized software"
+msgstr "Uncategorized Software"
+
+msgid "Valid license"
+msgstr "Valid License"
+
+msgid "Other component"
+msgstr "Other components"
+
+msgid "One last thing before starting"
+msgstr "One last thing before starting"
+
+msgid "Donate"
+msgstr "Donate"
+
+msgid "Unofficial translations are also available"
+msgstr "Unofficial translations are also available"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "I have read & ACCEPT the terms of the license written above."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "I have read & DO NOT ACCEPT the terms of the license written above"
+
+msgid "Installation or update of GLPI"
+msgstr "Installation or Update of GLPI"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Choose 'Install' for a completely new installation of GLPI."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+"Select 'Upgrade' to update your version of GLPI from an earlier version"
+
+msgid "Do you want to continue?"
+msgstr "Do you want to continue?"
+
+msgid "Database connection parameters"
+msgstr "Database connection parameters"
+
+msgid "Test of the connection at the database"
+msgstr "Test of the connection at the database"
+
+msgid "Can't connect to the database"
+msgstr "Can't connect to the database"
+
+msgid "The server answered: %s"
+msgstr "The server answered: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "The server or/and user field is empty"
+
+msgid "Please select a database:"
+msgstr "Please select a database:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Create a new database or use an existing one:"
+
+msgid "Please select the database to update:"
+msgstr "Please select the database to update:"
+
+msgid "Initialization of the database"
+msgstr "Initialization of the database"
+
+msgid "Impossible to use the database:"
+msgstr "Impossible to use the database:"
+
+msgid "OK - database was initialized"
+msgstr "OK - database was initialized"
+
+msgid "Impossible to write the database setup file"
+msgstr "Impossible to write the database setup file"
+
+msgid "Database created"
+msgstr "Database Created"
+
+msgid "Error in creating database!"
+msgstr "Error in creating database!"
+
+msgid "You didn't select a database!"
+msgstr "You didn't select a database!"
+
+msgid "Collect data"
+msgstr "Collect data"
+
+msgid "The installation is finished"
+msgstr "The installation is finished"
+
+msgid "Default logins / passwords are:"
+msgstr "Default logins / passwords are:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech for the technician account"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal for the normal account"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly for the postonly account"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "You can delete or modify these accounts as well as the initial data."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Can't create the database connection file, please verify file permissions."
+
+msgid "Select your language"
+msgstr "Select your language"
+
+msgid "Beginning of the installation"
+msgstr "Beginning of the installation"
+
+msgid "Step %d"
+msgstr "Step %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Authentication"
+
+msgid "Remember me"
+msgstr "Remember me"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "You must activate the JavaScript function on your browser"
+
+msgid "You must accept cookies to reach this application"
+msgstr "You must accept cookies to reach this application"
+
+msgid "Invalid use of session ID"
+msgstr "Invalid use of session ID"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Frequently Asked Questions"
+
+msgid "Add a card"
+msgstr "Add a card"
+
+msgid "Add a filter"
+msgstr "Add a filter"
+
+msgid "Saved"
+msgstr "Saved"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Are you sure you want to delete the dashboard %s ?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Send Date"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Use GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Unofficial translations are also available"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "I have read & ACCEPT the terms of the license written above."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "I have read & DO NOT ACCEPT the terms of the license written above"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "Installation or Update of GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Choose 'Install' for a completely new installation of GLPI."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Do you want to continue?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Database connection parameters"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Test of the connection at the database"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Can't connect to the database"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "The server answered: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "The server or/and user field is empty"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Please select a database:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Create a new database or use an existing one:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Please select the database to update:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Initialization of the database"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Impossible to use the database:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK - database was initialized"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Impossible to write the database setup file"
-
-#~ msgid "Database created"
-#~ msgstr "Database Created"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Error in creating database!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "You didn't select a database!"
-
-#~ msgid "Collect data"
-#~ msgstr "Collect data"
-
-#~ msgid "The installation is finished"
-#~ msgstr "The installation is finished"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Default logins / passwords are:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi for the administrator account"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech for the technician account"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal for the normal account"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly for the postonly account"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "You can delete or modify these accounts as well as the initial data."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Can't create the database connection file, please verify file permissions."
-
-#~ msgid "Select your language"
-#~ msgstr "Select your language"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Beginning of the installation"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Step %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Authentication"
-
-#~ msgid "Remember me"
-#~ msgstr "Remember me"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "You must activate the JavaScript function on your browser"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "You must accept cookies to reach this application"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Invalid use of session ID"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Frequently Asked Questions"
-
-#~ msgid "Add a card"
-#~ msgstr "Add a card"
-
-#~ msgid "Add a filter"
-#~ msgstr "Add a filter"
-
-#~ msgid "Saved"
-#~ msgstr "Saved"
-
-#, javascript-format
-#~ msgid "Are you sure you want to delete the dashboard %s ?"
-#~ msgstr "Are you sure you want to delete the dashboard %s ?"

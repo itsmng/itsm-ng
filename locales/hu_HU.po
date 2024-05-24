@@ -23595,531 +23595,1307 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "No room found or selected"
-#~ msgstr "Nincs megadott szoba vagy nem található"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Ír"
 
-#~ msgid "Marketplace"
-#~ msgstr "Piactér"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Felhasználónév"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Bővítmények katalógusának megtekintése"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Beállítás megtekintése"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Üres a végtelenhez"
+msgid "No room found or selected"
+msgstr "Nincs megadott szoba vagy nem található"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS csatornák találhatók"
+msgid "Marketplace"
+msgstr "Piactér"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+#, fuzzy
+#| msgid "%1$s adds the item %2$s (%3$d)"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s hozzáadta a következő elemet: %2$s (%3$d)"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Lezárandó bejelentéseid"
+msgid "See the catalog of plugins"
+msgstr "Bővítmények katalógusának megtekintése"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Bejelentések szüneteltetett állapotban"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Feldolgozandó bejelentések"
+msgid "Empty for infinite"
+msgstr "Üres a végtelenhez"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Az ön által ellenőrzött bejelentések"
+msgid "RSS feeds found"
+msgstr "RSS csatornák találhatók"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Folyamatban levő bejelentések"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Jóváhagyásra váró bejelentéseid"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "IP verzió"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Bejelentés követése"
+#, fuzzy
+#| msgid "Confirm the final deletion?"
+msgid "Confirm the promotion?"
+msgstr "Végső törlés megerősítése ?"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d új bejelentés"
-#~ msgstr[1] "%d új bejelentés"
+msgid "Your tickets to close"
+msgstr "Lezárandó bejelentéseid"
 
-#~ msgid "No ticket found."
-#~ msgstr "Nincs bejelentés.."
+msgid "Tickets on pending status"
+msgstr "Bejelentések szüneteltetett állapotban"
 
-#~ msgid "Last tickets"
-#~ msgstr "utolsó bejelentés(ek)"
+msgid "Tickets to be processed"
+msgstr "Feldolgozandó bejelentések"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Új bejelentés a tételhez..."
+msgid "Your observed tickets"
+msgstr "Az ön által ellenőrzött bejelentések"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Utolsó %d bejelentés"
-#~ msgstr[1] "Utolsó %d bejelentés"
+msgid "Your tickets in progress"
+msgstr "Folyamatban levő bejelentések"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Nincs joga megtekinteni az összes bejelentést!"
+msgid "Your tickets to validate"
+msgstr "Jóváhagyásra váró bejelentéseid"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Hivatkozott tételek bejelentése"
-#~ msgstr[1] "Hivatkozott tételek bejelentései"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected approval status"
+msgstr "Folyamatban levő bejelentések"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Nincs folyamatban levő bejelentés."
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected solution"
+msgstr "Folyamatban levő bejelentések"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Eszköz hozzárendelése"
+msgid "Ticket followup"
+msgstr "Bejelentés követése"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Bejelentések adminisztratív lezárása"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d új bejelentés"
+msgstr[1] "%d új bejelentés"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Elégedettségi felmérés generálása"
+msgid "No ticket found."
+msgstr "Nincs bejelentés.."
 
-#~ msgid "See my ticket"
-#~ msgstr "Saját bejelentésem"
+msgid "Last tickets"
+msgstr "utolsó bejelentés(ek)"
 
-#~ msgid "See group ticket"
-#~ msgstr "Csoport bejelentése"
+msgid "New ticket for this item..."
+msgstr "Új bejelentés a tételhez..."
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "A csoportom által létrehozott bejelentések"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Utolsó %d bejelentés"
+msgstr[1] "Utolsó %d bejelentés"
 
-#~ msgid "See all tickets"
-#~ msgstr "Minden bejelentés"
+msgid "You don't have right to see all tickets"
+msgstr "Nincs joga megtekinteni az összes bejelentést!"
 
-#~ msgid "See assigned"
-#~ msgstr "Hozzárendeltek megnézése"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Hivatkozott tételek bejelentése"
+msgstr[1] "Hivatkozott tételek bejelentései"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Hozzárendelt bejelentések"
+msgid "No ticket in progress."
+msgstr "Nincs folyamatban levő bejelentés."
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Bejelentés hozzárendelése"
+msgid "Assign equipment"
+msgstr "Eszköz hozzárendelése"
 
-#~ msgid "Steal"
-#~ msgstr "Ellop"
+msgid "Automatic tickets closing"
+msgstr "Bejelentések adminisztratív lezárása"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Bejelentés eltulajdonítása"
+msgid "Generation of satisfaction surveys"
+msgstr "Elégedettségi felmérés generálása"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Módosítás alatt"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "Bejelentések automatikus lezárásának napja"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Bejelentés átvétele"
+msgid "See my ticket"
+msgstr "Saját bejelentésem"
 
-#~ msgid "Change the priority"
-#~ msgstr "Prioritás módosítása"
+msgid "See group ticket"
+msgstr "Csoport bejelentése"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Approve solution/Reply survey (my ticket)"
+msgid "See tickets created by my groups"
+msgstr "A csoportom által létrehozott bejelentések"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "Approve solution and reply to survey for ticket created by me"
+msgid "See all tickets"
+msgstr "Minden bejelentés"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Kategória újraszámítása"
+msgid "See assigned"
+msgstr "Hozzárendeltek megnézése"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Érvényes liszenszek"
+msgid "See assigned tickets"
+msgstr "Hozzárendelt bejelentések"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Telepítések száma"
+msgid "Assign a ticket"
+msgstr "Bejelentés hozzárendelése"
 
-#~ msgid "Merge"
-#~ msgstr "Összefűz"
+msgid "Steal"
+msgstr "Ellop"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "A szoftver lomtárba helyezése összefűzés után"
+msgid "Steal a ticket"
+msgstr "Bejelentés eltulajdonítása"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Beeing in charge"
+msgstr "Módosítás alatt"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Számítógép kapcsolása"
+msgid "To be in charge of a ticket"
+msgstr "Bejelentés átvétele"
 
-#~ msgid "Not connected"
-#~ msgstr "Nincs kapcsolat"
+msgid "Change the priority"
+msgstr "Prioritás módosítása"
 
-#~ msgid "Show as map"
-#~ msgstr "Térkép megjelenítése"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Approve solution/Reply survey (my ticket)"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Érvényes eddig: %s"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "Approve solution and reply to survey for ticket created by me"
 
-#~ msgid "Late tickets"
-#~ msgstr "Késésben"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
 
-#~ msgid "Solved"
-#~ msgstr "Megoldva"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to load ticket %d"
+msgstr "Ismétlődő bejelentések sikertelen létrehozása %s"
 
-#~ msgid "Number of tickets by month"
-#~ msgstr "Jegyek száma havonta"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add followup to ticket %d"
+msgstr "Ismétlődő bejelentések sikertelen létrehozása %s"
 
-#~ msgid "Tickets status by month"
-#~ msgstr "Jegyek állapota havonta"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add task to ticket %d"
+msgstr "Ismétlődő bejelentések sikertelen létrehozása %s"
 
-#~ msgid "Top ticket's categories"
-#~ msgstr "Vezető jegy kategóriák"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add document to ticket %d"
+msgstr "Ismétlődő bejelentések sikertelen létrehozása %s"
 
-#~ msgid "Top ticket's locations"
-#~ msgstr "Vezető jegy helyek"
+msgid "Failed to link tickets %d and %d"
+msgstr ""
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP hálózat nem szerepel az adatbázisban. Ellenőrizze a jelenleg elérhető "
-#~ "hálózatokat."
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "Sikertelen törlés %s"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Több hálózatnév érhető el ! Lépj a 'Hálózat név' fülre a kezelésükhöz."
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s törölte a %2$s verziót"
 
-#~ msgid "Add a network name"
-#~ msgstr "Hálózatnév hozzáadása"
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Pluginok dokumentációnak írási jogosultság ellenőrzése "
 
-#~ msgid "Not associated"
-#~ msgstr "Nincs hozzárendelve"
+msgid "Recalculate the category"
+msgstr "Kategória újraszámítása"
 
-#~ msgid "Create a new network name"
-#~ msgstr "Új hálózatnév"
+msgid "Valid licenses"
+msgstr "Érvényes liszenszek"
 
-#~ msgid "No network name found"
-#~ msgstr "Nincs ilyen hálózatnév"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Telepítések száma"
 
-#~ msgid "Clean"
-#~ msgstr "Tisztítás"
+msgid "Merge"
+msgstr "Összefűz"
 
-#~ msgid "Install"
-#~ msgstr "Telepít"
+msgid "Software deleted after merging"
+msgstr "A szoftver lomtárba helyezése összefűzés után"
 
-#~ msgid "Enable"
-#~ msgstr "Bekapcsol"
+#, fuzzy
+#| msgid "You must install at least PHP %s."
+msgid "You must enable at least one notification mode."
+msgstr "Legalább PHP %s-t kell telepíteni.."
 
-#~ msgid "Uninstall"
-#~ msgstr "Telepítés törlése"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "Keresésnél használd a \"NULL - t tartalmaz\" típusó keresést a lejárat "
-#~ "nélküliek megtalálásához"
+msgid "Connect a computer"
+msgstr "Számítógép kapcsolása"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "Ellenőrizd az email fiókod, információt tartalmaz a jelszavad "
-#~ "beállításához."
+msgid "Not connected"
+msgstr "Nincs kapcsolat"
 
-#~ msgid "Email address not found."
-#~ msgstr "Nincs email cím"
+msgid "Show as map"
+msgstr "Térkép megjelenítése"
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "A felszerelés MAC címe és IP címe a felszerelésnek hozzátartozik a "
-#~ "megadott hálózati porthoz."
+msgid "Valid to %s"
+msgstr "Érvényes eddig: %s"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "A feltöltött fájl mérete nagyobb mint az upload_max_filesize beállítás a "
-#~ "php.ini-ben."
+msgid "Late tickets"
+msgstr "Késésben"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "A feltöltött fájl méretet nagyobb mint a MAX_FILE_SIZE direktíva a HTML "
-#~ "űrlapon."
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "A bejelentés jóváhagyásra vár"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "A feltöltött fájl csak részben töltődött fel."
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "Hivatkozás bejelentésekre"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "A fájl lemezre írása sikertelen"
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "Megoldott bejelentések"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "Egy PHP kiterjesztés megállította a fájl feltöltését"
+#, fuzzy
+#| msgid "Created tickets"
+msgid "Closed tickets"
+msgstr "Létrehozott bejelentések"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr ""
-#~ "A feltöltött fájl mérete nagyobb mint a php.ini-ben beállított "
-#~ "post_max_size paraméter."
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Név nélkül"
 
-#~ msgid "File is too big"
-#~ msgstr "A fájl túl nagy"
+#, fuzzy
+#| msgid "Time to own"
+msgid "Time to close"
+msgstr "Tulajdonlás ideje"
 
-#~ msgid "File is too small"
-#~ msgstr "A fájl túl kicsi"
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "Érvényesítés"
+
+msgid "Solved"
+msgstr "Megoldva"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "A fájlok elérték maximális számukat"
+msgid "Share or embed this dashboard"
+msgstr ""
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "A kép túl széles"
+#, fuzzy
+#| msgid "Assets Dashboard"
+msgid "Delete this dashboard"
+msgstr "Leltárak irányítópult"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "A kép túl keskeny"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle auto-refresh"
+msgstr "Szűrők ki/be"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle night mode"
+msgstr "Szűrők ki/be"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "A kép túl magas"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle fullscreen"
+msgstr "Szűrők ki/be"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "A kép túl alacsony"
+#, fuzzy
+#| msgid "Assets Dashboard"
+msgid "Clone this dashboard"
+msgstr "Leltárak irányítópult"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "A fájltípus nem engedélyezett"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle edit mode"
+msgstr "Szűrők ki/be"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add filter"
+msgstr "Új elem"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "Új feladat"
 
-#~ msgid "Progress"
-#~ msgstr "Folyamatban"
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "Egyebek"
 
-#~ msgid "My settings"
-#~ msgstr "Saját beállítások"
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "Költségvetés"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "Feladatok száma"
+
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filters"
+msgstr "Lista szűrő"
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "Az alkalmazás URL címe"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP kapcsolat"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+#, fuzzy
+#| msgid "Empty array"
+msgid "empty card !"
+msgstr "Üres tömb"
+
+#, fuzzy
+#| msgid "Number of costs"
+msgid "Number of %s"
+msgstr "Költségek száma"
+
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s %2$s által"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "Értékek listája"
+
+msgid "Number of tickets by month"
+msgstr "Jegyek száma havonta"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+msgid "Tickets status by month"
+msgstr "Jegyek állapota havonta"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "Bejelentés kategória"
+
+msgid "Top ticket's categories"
+msgstr "Vezető jegy kategóriák"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "Vissza a lap tetejére"
+#, fuzzy
+#| msgid "Top ticket's categories"
+msgid "Top ticket's entities"
+msgstr "Vezető jegy kategóriák"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "Bejelentések alapértelmezett típusa"
+
+msgid "Top ticket's locations"
+msgstr "Vezető jegy helyek"
+
+#, fuzzy
+#| msgid "Top ticket's categories"
+msgid "Top ticket's requesters"
+msgstr "Vezető jegy kategóriák"
+
+#, fuzzy
+#| msgid "Top ticket's categories"
+msgid "Top ticket's requester groups"
+msgstr "Vezető jegy kategóriák"
+
+#, fuzzy
+#| msgid "Top ticket's categories"
+msgid "Top ticket's observers"
+msgstr "Vezető jegy kategóriák"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr ""
-#~ "Elérhető a GLPI weboldaláról: <a href='http://glpi-project.org' "
-#~ "target='_blank'>http://glpi-project.org</a>."
+#, fuzzy
+#| msgid "Top ticket's categories"
+msgid "Top ticket's observer groups"
+msgstr "Vezető jegy kategóriák"
 
-#~ msgid "Check all"
-#~ msgstr "Mindet kijelöl"
+#, fuzzy
+#| msgid "Top ticket's locations"
+msgid "Top ticket's assignees"
+msgstr "Vezető jegy helyek"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Kijelölést megszüntet"
+#, fuzzy
+#| msgid "Top ticket's categories"
+msgid "Top ticket's assignee groups"
+msgstr "Vezető jegy kategóriák"
 
-#~ msgid "Check all as"
-#~ msgstr "Összes kijelölése mint"
+#, fuzzy
+#| msgid "List of translations"
+msgid "List of reminders"
+msgstr "Fordítások listája"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "A kijelölés túl nagy, tömeges műveletek letiltva."
+msgid "Editable markdown card"
+msgstr ""
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "A limit növeléséhez: módosítsd a max_input_vars vagy a suhosin.post."
-#~ "max_vars értékét a php konfigurációjában."
+msgid "Toggle edit mode to edit content"
+msgstr ""
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "A leírás mező kötelező"
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "%1$d től %2$d -ig  %3$d -ból"
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
 
-#~ msgid "Empty array"
-#~ msgstr "Üres tömb"
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP hálózat nem szerepel az adatbázisban. Ellenőrizze a jelenleg elérhető "
+"hálózatokat."
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr "Több hálózatnév érhető el ! Lépj a 'Hálózat név' fülre a kezelésükhöz."
+
+msgid "Add a network name"
+msgstr "Hálózatnév hozzáadása"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d %2$d -ból/ből"
+msgid "Not associated"
+msgstr "Nincs hozzárendelve"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr "Fájl csatolása húzással vagy beillesztéssel a szerkesztőbe vagy"
+msgid "Create a new network name"
+msgstr "Új hálózatnév"
+
+msgid "No network name found"
+msgstr "Nincs ilyen hálózatnév"
+
+msgid "Unable to download plugin archive."
+msgstr ""
 
-#~ msgid "selecting them"
-#~ msgstr "kiválasztásuk"
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
 
-#~ msgid "File(s)"
-#~ msgstr "Fájl(ok)"
+msgid "Unable to extract plugin archive."
+msgstr ""
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Fogja és húzza a fájlt ide, vagy"
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "Új frissítések ellenőrzése"
 
-#~ msgid "Upload successful"
-#~ msgstr "Sikeres feltötés"
+msgid "New version for plugin %s: %s"
+msgstr ""
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Kijelölés/kijelölés megszüntetése"
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "Telepít"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Kezdj el gépelni menüpont kereséshez"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "Leválaszt"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
 
-#~ msgid "Saved searches"
-#~ msgstr "Mentett keresések"
+msgid "Maybe you could setup a proxy"
+msgstr ""
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Mentett keresések kezelése"
+msgid "or please check later"
+msgstr ""
 
-#~ msgid "Add is disabled"
-#~ msgstr "Hozzáadás kikapcsolva"
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
 
-#~ msgid "Search is disabled"
-#~ msgstr "Keresés kikapcsolva"
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "Létrehozva %s"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "GLPI ID megjelenítése"
+msgid "fill your registration key in setup."
+msgstr ""
 
-#~ msgid "Color palette"
-#~ msgstr "Színpaletta"
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "A megjegyzésed szerkesztve"
 
-#~ msgid "Layout"
-#~ msgstr "Elrendezés"
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "létrehozva %s"
 
-#~ msgid "Tabs on left"
-#~ msgstr "Fülek balra"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
 
-#~ msgid "Classic view"
-#~ msgstr "Klasszikus nézet"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
 
-#~ msgid "Vertical split"
-#~ msgstr "Függőleges elrendezés"
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Új verzió ellenőrzése"
+msgid "Alpha ASC"
+msgstr ""
 
-#~ msgid "Add to schedule"
-#~ msgstr "Hozzáadás a naptárhoz"
+msgid "Alpha DESC"
+msgstr ""
 
-#~ msgid "Width"
-#~ msgstr "Szélesség"
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "Legnépszerűbb kérdések"
 
-#~ msgid "Height"
-#~ msgstr "Magasság"
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "Utoljára frissítve"
 
-#~ msgid "All categories"
-#~ msgstr "Minden kategória"
+msgid "Most recent"
+msgstr ""
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Kategorizálatlan szoftverek"
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "Megjegyzések olvasása"
 
-#~ msgid "Valid license"
-#~ msgstr "Érvényes liszensz"
+msgid "Your plugin here ? Contact us."
+msgstr ""
 
-#~ msgid "Donate"
-#~ msgstr "Támogatás"
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Filter list"
+msgid "Filter plugin list"
+msgstr "Lista szűrő"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "Fel"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "Olvas"
+
+msgid "Clean"
+msgstr "Tisztítás"
+
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "Érvénytelen felhasználónév. Nem lehet létrehozni a felhasználót."
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "Új verzió érhető el : %s."
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "Telepít"
+
+msgid "Enable"
+msgstr "Bekapcsol"
+
+msgid "Uninstall"
+msgstr "Telepítés törlése"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Kikapcsolt bővítmény"
+msgstr[1] "Kikapcsolt bővítmény"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "Később"
+
+#, fuzzy
+#| msgid "Marketplace"
+msgid "Switch to marketplace"
+msgstr "Piactér"
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "Bővítmény"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "Épület száma"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"Keresésnél használd a \"NULL - t tartalmaz\" típusó keresést a lejárat "
+"nélküliek megtalálásához"
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "Foglalás"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "Létrehozva %s"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "Foglalás"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "Leírás"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "Ismeretlen fájl"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "Pénzügyi és adminisztratív információk aktiválása"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "A telepítés kész"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "A telepítés kész"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"Ellenőrizd az email fiókod, információt tartalmaz a jelszavad beállításához."
+
+msgid "Email address not found."
+msgstr "Nincs email cím"
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+"A felszerelés MAC címe és IP címe a felszerelésnek hozzátartozik a megadott "
+"hálózati porthoz."
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"A feltöltött fájl mérete nagyobb mint az upload_max_filesize beállítás a php."
+"ini-ben."
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"A feltöltött fájl méretet nagyobb mint a MAX_FILE_SIZE direktíva a HTML "
+"űrlapon."
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "A feltöltött fájl csak részben töltődött fel."
+
+msgid "Failed to write file to disk"
+msgstr "A fájl lemezre írása sikertelen"
+
+msgid "A PHP extension stopped the file upload"
+msgstr "Egy PHP kiterjesztés megállította a fájl feltöltését"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+"A feltöltött fájl mérete nagyobb mint a php.ini-ben beállított post_max_size "
+"paraméter."
+
+msgid "File is too big"
+msgstr "A fájl túl nagy"
+
+msgid "File is too small"
+msgstr "A fájl túl kicsi"
+
+msgid "Maximum number of files exceeded"
+msgstr "A fájlok elérték maximális számukat"
+
+msgid "Image exceeds maximum width"
+msgstr "A kép túl széles"
+
+msgid "Image requires a minimum width"
+msgstr "A kép túl keskeny"
+
+msgid "Image exceeds maximum height"
+msgstr "A kép túl magas"
+
+msgid "Image requires a minimum height"
+msgstr "A kép túl alacsony"
+
+msgid "Filetype not allowed"
+msgstr "A fájltípus nem engedélyezett"
+
+#, fuzzy
+#| msgid "No file was uploaded"
+msgid "File upload aborted"
+msgstr "Nem lett fájl feltöltve."
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to resize image"
+msgstr "A fájl lemezre írása sikertelen"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "Felhasználói információk"
+
+msgid "Progress"
+msgstr "Folyamatban"
+
+msgid "My settings"
+msgstr "Saját beállítások"
+
+msgid "Back to top of the page"
+msgstr "Vissza a lap tetejére"
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr ""
+"Elérhető a GLPI weboldaláról: <a href='http://glpi-project.org' "
+"target='_blank'>http://glpi-project.org</a>."
+
+msgid "Check all"
+msgstr "Mindet kijelöl"
+
+msgid "Uncheck all"
+msgstr "Kijelölést megszüntet"
+
+msgid "Check all as"
+msgstr "Összes kijelölése mint"
+
+msgid "Selection too large, massive action disabled."
+msgstr "A kijelölés túl nagy, tömeges műveletek letiltva."
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"A limit növeléséhez: módosítsd a max_input_vars vagy a suhosin.post.max_vars "
+"értékét a php konfigurációjában."
+
+msgid "The description field is mandatory"
+msgstr "A leírás mező kötelező"
+
+msgid "From %1$d to %2$d of %3$d"
+msgstr "%1$d től %2$d -ig  %3$d -ból"
+
+msgid "Empty array"
+msgstr "Üres tömb"
+
+msgid "%1$d on %2$d"
+msgstr "%1$d %2$d -ból/ből"
+
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "Lezár"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr "Fájl csatolása húzással vagy beillesztéssel a szerkesztőbe vagy"
+
+msgid "selecting them"
+msgstr "kiválasztásuk"
+
+msgid "File(s)"
+msgstr "Fájl(ok)"
+
+msgid "Drag and drop your file here, or"
+msgstr "Fogja és húzza a fájlt ide, vagy"
+
+msgid "Upload successful"
+msgstr "Sikeres feltötés"
+
+msgid "Check/uncheck all"
+msgstr "Kijelölés/kijelölés megszüntetése"
+
+msgid "Start typing to find a menu"
+msgstr "Kezdj el gépelni menüpont kereséshez"
+
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Módosított"
+
+msgid "Debug mode enabled"
+msgstr ""
+
+#, fuzzy
+#| msgid "Auto login disabled"
+msgid "Debug mode disabled"
+msgstr "Automatikus bejelentkezés kikapcsolva"
+
+msgid "Saved searches"
+msgstr "Mentett keresések"
+
+msgid "Manage saved searches"
+msgstr "Mentett keresések kezelése"
+
+msgid "Add is disabled"
+msgstr "Hozzáadás kikapcsolva"
+
+msgid "Search is disabled"
+msgstr "Keresés kikapcsolva"
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "Globális kezelés"
+
+msgid "You are impersonating %s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "Privatizál"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr "GLPI ID megjelenítése"
+
+msgid "Color palette"
+msgstr "Színpaletta"
+
+msgid "Layout"
+msgstr "Elrendezés"
+
+msgid "Tabs on left"
+msgstr "Fülek balra"
+
+msgid "Classic view"
+msgstr "Klasszikus nézet"
+
+msgid "Vertical split"
+msgstr "Függőleges elrendezés"
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Szerződés lejár"
+
+#, fuzzy
+#| msgid "Assets Dashboard"
+msgid "Dashboards"
+msgstr "Leltárak irányítópult"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "Helpdeskben a kérések alapértelmezett forrása"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "Helpdeskben a kérések alapértelmezett forrása"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "Helpdeskben a kérések alapértelmezett forrása"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Helpdeskben a kérések alapértelmezett forrása"
+
+msgid "Check if a new version is available"
+msgstr "Új verzió ellenőrzése"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Show filters"
+msgstr "Szűrők ki/be"
+
+msgid "No historical matching your filters"
+msgstr ""
+
+msgid "Add to schedule"
+msgstr "Hozzáadás a naptárhoz"
+
+#, fuzzy
+#| msgid "Position"
+msgid "Position in room"
+msgstr "Pozíció"
+
+msgid "Door orientation in room"
+msgstr ""
+
+msgid "North"
+msgstr ""
+
+msgid "East"
+msgstr ""
+
+msgid "South"
+msgstr ""
+
+msgid "West"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of items"
+msgid "Number of units"
+msgstr "Elemek száma"
+
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr "Szélesség"
+
+msgid "Height"
+msgstr "Magasság"
+
+msgid "Measured power (in watts)"
+msgstr ""
+
+msgid "Max. weight"
+msgstr ""
+
+#, fuzzy
+#| msgid "No data found"
+msgid "No rack found"
+msgstr "Nincs elég adat"
+
+msgid "Following elements are out of room bounds"
+msgstr ""
+
+msgid "Blueprint"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Insert a rack here"
+msgstr ""
+
+msgid "Position must be set"
+msgstr ""
+
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "Hálózati port nem elérhető"
+
+msgid "All categories"
+msgstr "Minden kategória"
+
+msgid "Uncategorized software"
+msgstr "Kategorizálatlan szoftverek"
+
+msgid "Valid license"
+msgstr "Érvényes liszensz"
+
+#, fuzzy
+#| msgid "Other component model"
+#| msgid_plural "Other component models"
+msgid "Other component"
+msgstr "Egyéb alkatrész modell"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr "Támogatás"
+
+msgid "Unofficial translations are also available"
+msgstr "Vannak további, nem hivatalos fordítások"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Elolvastam és EGYETÉRTEK a licencfeltételekkel."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Elolvastam és NEM ÉRTEK EGYET a licencfeltételekkel"
+
+msgid "Installation or update of GLPI"
+msgstr "GLPI telepítés vagy frissítés"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Válassza a Telepítést teljesen új GLPI telepítéséhez."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "Válaszd a frissítést korábbi verzió megújításához"
+
+msgid "Do you want to continue?"
+msgstr "Biztosan folytatod ?"
+
+msgid "Database connection parameters"
+msgstr "Adatbázis kapcsolódás paraméterei"
+
+msgid "Test of the connection at the database"
+msgstr "Adatbázis kapcsolat ellenőrzése"
+
+msgid "Can't connect to the database"
+msgstr "Nem lehet csatlakozni az adatbázishoz"
+
+msgid "The server answered: %s"
+msgstr "A kiszolgáló válaszolt: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "A kiszolgáló címe vagy a felhasználónév mező üres"
+
+msgid "Please select a database:"
+msgstr "Válassz adatbázist:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Új adatbázis létrehozása vagy létező használata :"
+
+msgid "Please select the database to update:"
+msgstr "Válassza ki a frissítendő adatbázist:"
+
+msgid "Initialization of the database"
+msgstr "Az adatbázis inicializálása"
+
+msgid "Impossible to use the database:"
+msgstr "Nem lehet használni a következő adatbázist:"
+
+msgid "OK - database was initialized"
+msgstr "OK - adatbázis inicializálása sikerült"
+
+msgid "Impossible to write the database setup file"
+msgstr "Nem lehet írni az adatbázis beállításait tartalmazó fájlt"
+
+msgid "Database created"
+msgstr "Adatbázis létrehozva"
+
+msgid "Error in creating database!"
+msgstr "Hiba az adatbázis létrehozása közben !"
+
+msgid "You didn't select a database!"
+msgstr "Nem választott adatbázist !"
+
+#, fuzzy
+#| msgid "Close date"
+msgid "Collect data"
+msgstr "Lezárás dátuma"
+
+msgid "The installation is finished"
+msgstr "A telepítés kész"
+
+msgid "Default logins / passwords are:"
+msgstr "Az alapértelmezett felhasználónevek/jelszavak:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech-el a technikus fiókhoz"
+
+msgid "normal/normal for the normal account"
+msgstr "normal-al a normál belépéshez"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/post-only a csak beküldő felhasználóhoz"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "Ezen felhasználók törölhetők."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Nem lehet létrehozni az adatbázis-kapcsolati fájlt, ellenőrizd a fájlok "
+"hozzáférési jogait"
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "Alapértelmezett nyelv"
+
+msgid "Beginning of the installation"
+msgstr "Telepítés megkezdése"
+
+msgid "Step %d"
+msgstr "%d lépés"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Hitelesítés"
+
+msgid "Remember me"
+msgstr "Jegyezd meg"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Engedélyezned kell a böngőszőben a Javascript-et. "
+
+msgid "You must accept cookies to reach this application"
+msgstr "Engedélyezni kell a sütiket az alkalmazás használatához"
+
+msgid "Invalid use of session ID"
+msgstr "Munkamenet ID érvénytelen használata"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Hozzáférés a Gy.I.K.-hez"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "Új változtatás"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "Új elem"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "Mentés"
+
+#, fuzzy
+#| msgid "Are you sure you want to return this non-reservable item?"
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Biztos, hogy törölhető a tétel a kölcsönzésekből ?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Küldés dátuma"
 
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI használata"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Vannak további, nem hivatalos fordítások"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Elolvastam és EGYETÉRTEK a licencfeltételekkel."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "Elolvastam és NEM ÉRTEK EGYET a licencfeltételekkel"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "GLPI telepítés vagy frissítés"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Válassza a Telepítést teljesen új GLPI telepítéséhez."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr "Válaszd a frissítést korábbi verzió megújításához"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Biztosan folytatod ?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Adatbázis kapcsolódás paraméterei"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Adatbázis kapcsolat ellenőrzése"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Nem lehet csatlakozni az adatbázishoz"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "A kiszolgáló válaszolt: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "A kiszolgáló címe vagy a felhasználónév mező üres"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Válassz adatbázist:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Új adatbázis létrehozása vagy létező használata :"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Válassza ki a frissítendő adatbázist:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Az adatbázis inicializálása"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Nem lehet használni a következő adatbázist:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK - adatbázis inicializálása sikerült"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Nem lehet írni az adatbázis beállításait tartalmazó fájlt"
-
-#~ msgid "Database created"
-#~ msgstr "Adatbázis létrehozva"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Hiba az adatbázis létrehozása közben !"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Nem választott adatbázist !"
-
-#~ msgid "The installation is finished"
-#~ msgstr "A telepítés kész"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Az alapértelmezett felhasználónevek/jelszavak:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi-vel az admin jogokhoz"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech-el a technikus fiókhoz"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal-al a normál belépéshez"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/post-only a csak beküldő felhasználóhoz"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "Ezen felhasználók törölhetők."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Nem lehet létrehozni az adatbázis-kapcsolati fájlt, ellenőrizd a fájlok "
-#~ "hozzáférési jogait"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Telepítés megkezdése"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "%d lépés"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Hitelesítés"
-
-#~ msgid "Remember me"
-#~ msgstr "Jegyezd meg"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Engedélyezned kell a böngőszőben a Javascript-et. "
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Engedélyezni kell a sütiket az alkalmazás használatához"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Munkamenet ID érvénytelen használata"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Hozzáférés a Gy.I.K.-hez"

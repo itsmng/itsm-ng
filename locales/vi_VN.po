@@ -23233,459 +23233,1326 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Thấy danh mục các tiện ích"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Ghi"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "Tìm thấy nguồn RSS"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Đăng nhập"
+
+#, fuzzy
+#| msgid "When connecting or updating"
+msgid "Open ID connect configuration"
+msgstr "Khi đang kết nối hoặc đang cập nhật"
+
+#, fuzzy
+#| msgid "No directory selected"
+msgid "No room found or selected"
+msgstr "Không thư mục được chọn"
 
-#~ msgid "Active Directory"
-#~ msgstr "Thư mục hoạt động"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Replace"
+msgid "Marketplace"
+msgstr "Thay thế"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Các thẻ của bạn để đóng"
+#, fuzzy
+#| msgid "%1$s adds the item %2$s (%3$d)"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s thêm một mục %2$s (%3$d)"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Các thẻ đang chờ giải quyết"
+msgid "See the catalog of plugins"
+msgstr "Thấy danh mục các tiện ích"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Các thẻ cần giải quyết"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Bạn đã xem xét các thẻ này"
+#, fuzzy
+#| msgid "Template for an incident"
+msgid "Empty for infinite"
+msgstr "Biểu mẫu cho một sự cố"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Các thẻ của bạn đang được xử lý"
+msgid "RSS feeds found"
+msgstr "Tìm thấy nguồn RSS"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Các thẻ của bạn để xác nhận"
+msgid "Active Directory"
+msgstr "Thư mục hoạt động"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Theo ticket"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "Phiên bản IP"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d thẻ mới"
+#, fuzzy
+#| msgid "Confirm the final deletion?"
+msgid "Confirm the promotion?"
+msgstr "Xác nhận việc xóa cuối cùng?"
 
-#~ msgid "No ticket found."
-#~ msgstr "Không tìm thấy thẻ nào."
+msgid "Your tickets to close"
+msgstr "Các thẻ của bạn để đóng"
 
-#~ msgid "Last tickets"
-#~ msgstr "Các thẻ cuối"
+msgid "Tickets on pending status"
+msgstr "Các thẻ đang chờ giải quyết"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Vé mới cho mục này..."
+msgid "Tickets to be processed"
+msgstr "Các thẻ cần giải quyết"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "%d thẻ cuối"
+msgid "Your observed tickets"
+msgstr "Bạn đã xem xét các thẻ này"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Bạn không có quyền xem tất cả các vé"
+msgid "Your tickets in progress"
+msgstr "Các thẻ của bạn đang được xử lý"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Các thẻ trên các mục được liên kết"
+msgid "Your tickets to validate"
+msgstr "Các thẻ của bạn để xác nhận"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Không có thẻ nào đang được xử lý"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected approval status"
+msgstr "Các thẻ của bạn đang được xử lý"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Gán thiết bị"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected solution"
+msgstr "Các thẻ của bạn đang được xử lý"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Tự đóng các thẻ"
+msgid "Ticket followup"
+msgstr "Theo ticket"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Tạo ra các khảo sát sự hài lòng"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d thẻ mới"
 
-#~ msgid "See my ticket"
-#~ msgstr "Xem vé của tôi"
+msgid "No ticket found."
+msgstr "Không tìm thấy thẻ nào."
 
-#~ msgid "See group ticket"
-#~ msgstr "Xem nhóm vé"
+msgid "Last tickets"
+msgstr "Các thẻ cuối"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Xem các vé đã tạo bởi nhóm của tôi"
+msgid "New ticket for this item..."
+msgstr "Vé mới cho mục này..."
 
-#~ msgid "See all tickets"
-#~ msgstr "Xem tất cả các vé"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "%d thẻ cuối"
 
-#~ msgid "See assigned"
-#~ msgstr "Xem đã gán"
+msgid "You don't have right to see all tickets"
+msgstr "Bạn không có quyền xem tất cả các vé"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Xem các vé đã gán"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Các thẻ trên các mục được liên kết"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Gán một thẻ"
+msgid "No ticket in progress."
+msgstr "Không có thẻ nào đang được xử lý"
 
-#~ msgid "Steal"
-#~ msgstr "Giành"
+msgid "Assign equipment"
+msgstr "Gán thiết bị"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Giành một vé"
+msgid "Automatic tickets closing"
+msgstr "Tự đóng các thẻ"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Đang phụ trách"
+msgid "Generation of satisfaction surveys"
+msgstr "Tạo ra các khảo sát sự hài lòng"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Chịu trách nhiệm một thẻ"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "Tự động đóng các vé đã giải quyết sau khi"
 
-#~ msgid "Change the priority"
-#~ msgstr "Thay đổi mức ưu tiên"
+msgid "See my ticket"
+msgstr "Xem vé của tôi"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Chấp nhận giải pháp / hồi đáp bảng khảo sát (thẻ của tôi)"
+msgid "See group ticket"
+msgstr "Xem nhóm vé"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr ""
-#~ "Chấp nhận giải pháp và hồi đáp đến bảng khảo sát cho thẻ được tạo bởi tôi"
+msgid "See tickets created by my groups"
+msgstr "Xem các vé đã tạo bởi nhóm của tôi"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Tính toán lại danh mục này"
+msgid "See all tickets"
+msgstr "Xem tất cả các vé"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Các giấy phép có hiệu lực"
+msgid "See assigned"
+msgstr "Xem đã gán"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Số lượng các cài đặt"
+msgid "See assigned tickets"
+msgstr "Xem các vé đã gán"
 
-#~ msgid "Merge"
-#~ msgstr "Trộn"
+msgid "Assign a ticket"
+msgstr "Gán một thẻ"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Phần mềm trong giỏ rác sau khi trộn"
+msgid "Steal"
+msgstr "Giành"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Steal a ticket"
+msgstr "Giành một vé"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Kết nốt một máy tính"
+msgid "Beeing in charge"
+msgstr "Đang phụ trách"
 
-#~ msgid "Not connected"
-#~ msgstr "Không được kết nối"
+msgid "To be in charge of a ticket"
+msgstr "Chịu trách nhiệm một thẻ"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Giá trị đến %s"
+msgid "Change the priority"
+msgstr "Thay đổi mức ưu tiên"
 
-#~ msgid "Solved"
-#~ msgstr "Đã giải quyết"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Chấp nhận giải pháp / hồi đáp bảng khảo sát (thẻ của tôi)"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "Mạng IP không được bao gồm trong các cơ sở dữ liệu này. Tuy nhiên, bạn có "
-#~ "thể xem các mạng sẵn hiện nay."
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
+"Chấp nhận giải pháp và hồi đáp đến bảng khảo sát cho thẻ được tạo bởi tôi"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr "Một số tên mạng có sẵn! Đi đến tab 'Tên mạng' để quản lý chúng."
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
 
-#~ msgid "Add a network name"
-#~ msgstr "Thêm một tên mạng"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to load ticket %d"
+msgstr "Tạo vé định kỳ thất bại %s"
 
-#~ msgid "Not associated"
-#~ msgstr "Không được kết hợp"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add followup to ticket %d"
+msgstr "Tạo vé định kỳ thất bại %s"
 
-#~ msgid "Create a new network name"
-#~ msgstr "Tạo một tên mạng mới"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add task to ticket %d"
+msgstr "Tạo vé định kỳ thất bại %s"
 
-#~ msgid "No network name found"
-#~ msgstr "Không tìm thấy tên mạng"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add document to ticket %d"
+msgstr "Tạo vé định kỳ thất bại %s"
 
-#~ msgid "Clean"
-#~ msgstr "Xóa"
+msgid "Failed to link tickets %d and %d"
+msgstr ""
 
-#~ msgid "Install"
-#~ msgstr "Cài đặt"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "Không thể xóa tập tin %s"
 
-#~ msgid "Enable"
-#~ msgstr "Cho phép"
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s loại bỏ phiên bản %2$s"
 
-#~ msgid "Uninstall"
-#~ msgstr "Gỡ cài đặt"
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Đang kiểm tra quyền ghi cho các tập tin tài liệu các tiện ích"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "Trong máy tìm kiếm, dùng \"Hết hạn bao gồm rỗng\" để tìm các giấy phép "
-#~ "không có ngày hết hạn"
+msgid "Recalculate the category"
+msgstr "Tính toán lại danh mục này"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "Một email đã được gửi đến địa chỉ email của bạn. Các email có chứa thông "
-#~ "tin cho thiết lập lại mật khẩu của bạn."
+msgid "Valid licenses"
+msgstr "Các giấy phép có hiệu lực"
 
-#~ msgid "Email address not found."
-#~ msgstr "Không tìm thấy địa chỉ email"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Số lượng các cài đặt"
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "Các địa chỉ MAC và địa chỉ IP của thiết bị được đưa vào trong một cổng "
-#~ "mạng tổng hợp"
+msgid "Merge"
+msgstr "Trộn"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "Tập tin được tải lên vượt quá kích thước cho phép (chỉ thị "
-#~ "upload_max_filesize trong php.ini)"
+msgid "Software deleted after merging"
+msgstr "Phần mềm trong giỏ rác sau khi trộn"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "Tập tin được tải lên vượt quá kích thước cho phép (chỉ thị MAX_FILE_SIZE "
-#~ "trong biểu mẫu HTML)"
+msgid "You must enable at least one notification mode."
+msgstr ""
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Tập tin được tải lên chỉ tải lên được một phần"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Không thể ghi tập tin vào đĩa"
+msgid "Connect a computer"
+msgstr "Kết nốt một máy tính"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "Một phần mở rộng PHP đã dừng tải các tập tin lên"
+msgid "Not connected"
+msgstr "Không được kết nối"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr ""
-#~ "Tập tin tải lên vượt quá kích cỡ cho theo (chỉ thị post_max_size trong "
-#~ "php.ini)"
+#, fuzzy
+#| msgid "Show all"
+msgid "Show as map"
+msgstr "Hiện tất cả"
 
-#~ msgid "File is too big"
-#~ msgstr "Tập tin quá lớn"
+msgid "Valid to %s"
+msgstr "Giá trị đến %s"
 
-#~ msgid "File is too small"
-#~ msgstr "Tập tin quá nhỏ"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "Các thẻ cuối"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Vượt quá số lượng tập tin tối đa"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Ticket đang chờ bạn duyệt"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Ảnh vượt quá chiều rộng tối đa"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "Các thẻ kết nối"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Ảnh cần đạt chiều rộng tối thiểu"
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "Giải quyết các vé"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Ảnh vượt quá chiều cao tối đa"
+#, fuzzy
+#| msgid "Created tickets"
+msgid "Closed tickets"
+msgstr "Các vé đã tạo"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Ảnh cần đạt chiều cao tối thiểu"
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Không kèm tên"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Kiểu tập tin không được cho phép"
+#, fuzzy
+#| msgid "Time cost"
+msgid "Time to close"
+msgstr "Chi phí thời gian"
 
-#~ msgid "Progress"
-#~ msgstr "Tiến độ"
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "Đánh giá"
 
-#~ msgid "My settings"
-#~ msgstr "Các thiết lập của tôi"
+msgid "Solved"
+msgstr "Đã giải quyết"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "Bạn sẽ tìm thấy nó trên trang GLPI-PROJECT.org"
+msgid "Share or embed this dashboard"
+msgstr ""
 
-#~ msgid "Check all"
-#~ msgstr "Đánh dấu tất cả"
+msgid "Delete this dashboard"
+msgstr ""
 
-#~ msgid "Uncheck all"
-#~ msgstr "Bỏ đánh dấu tất cả"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle auto-refresh"
+msgstr "Các bộ lọc chuyển đổi"
 
-#~ msgid "Check all as"
-#~ msgstr "Đánh dấu tất cả như"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle night mode"
+msgstr "Các bộ lọc chuyển đổi"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Lựa chọn quá lớn, hành động lớn vô hiệu hóa."
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle fullscreen"
+msgstr "Các bộ lọc chuyển đổi"
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Để tăng giới hạn: thay đổi max_input_vars hoặc suhosin.post.max_vars "
-#~ "trong thiết lập php."
+msgid "Clone this dashboard"
+msgstr ""
 
-#~ msgid "Empty array"
-#~ msgstr "Mảng rỗng"
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle edit mode"
+msgstr "Các bộ lọc chuyển đổi"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d trên %2$d"
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add filter"
+msgstr "Thêm một mục"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "Thêm một nhiệm vụ mới"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "Khác"
+
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "Các ngân sách"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "Số lượng các nhiệm vụ"
+
+msgid "Filters"
+msgstr ""
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "URL của ứng dụng"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "Liên kết của thư mục LDAP"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+#, fuzzy
+#| msgid "Empty array"
+msgid "empty card !"
+msgstr "Mảng rỗng"
+
+#, fuzzy
+#| msgid "Number of costs"
+msgid "Number of %s"
+msgstr "Số lượng các chi phí"
+
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s by %2$s"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "Danh sách các giá trị"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "Số lượng ticket"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets duration"
+msgid "Tickets status by month"
+msgstr "Thời gian các vé"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "Các danh mục thẻ"
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Top ticket's categories"
+msgstr "Các danh mục thẻ"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "Các thẻ của bạn để xác nhận"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "Các vé dạng mặc định"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "Vị trí thẻ"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "Số lượng các thẻ như người yêu cầu"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "Xem các vé đã tạo bởi nhóm của tôi"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "Đối với các vé được đóng sau khi"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "Xem các vé đã tạo bởi nhóm của tôi"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Kéo và thả tập tin của bạn vào đây, hoặc"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignees"
+msgstr "Các thẻ của bạn đang được xử lý"
 
-#~ msgid "Upload successful"
-#~ msgstr "Tải lên thành công"
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "Thêm một theo dõi cho các vé của các nhóm kết hợp"
+
+#, fuzzy
+#| msgid "List of translations"
+msgid "List of reminders"
+msgstr "Danh sách các phiên dịch"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Chọn/không chọn tất cả"
+msgid "field name in DB"
+msgstr ""
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Hiện GLPI ID"
+msgid "Example:"
+msgstr ""
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
 
-#~ msgid "Color palette"
-#~ msgstr "Bảng màu"
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"Mạng IP không được bao gồm trong các cơ sở dữ liệu này. Tuy nhiên, bạn có "
+"thể xem các mạng sẵn hiện nay."
 
-#~ msgid "Layout"
-#~ msgstr "Bố trí"
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr "Một số tên mạng có sẵn! Đi đến tab 'Tên mạng' để quản lý chúng."
 
-#~ msgid "Tabs on left"
-#~ msgstr "Các tab bên trái"
+msgid "Add a network name"
+msgstr "Thêm một tên mạng"
 
-#~ msgid "Classic view"
-#~ msgstr "Xem cổ điển"
+msgid "Not associated"
+msgstr "Không được kết hợp"
+
+msgid "Create a new network name"
+msgstr "Tạo một tên mạng mới"
 
-#~ msgid "Vertical split"
-#~ msgstr "Phân chia theo chiều dọc"
+msgid "No network name found"
+msgstr "Không tìm thấy tên mạng"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Kiểm tra phiên bản mới"
+msgid "Unable to download plugin archive."
+msgstr ""
 
-#~ msgid "Add to schedule"
-#~ msgstr "Thêm vào lịch"
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
 
-#~ msgid "All categories"
-#~ msgstr "Tất cả các danh mục"
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "Kiểm tra các cập nhật mới"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Phân mềm chưa phân loại"
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "Cài đặt"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "Ngắt kết nối"
 
-#~ msgid "Valid license"
-#~ msgstr "Giấy phép có giá trị"
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "Đã tạo vào %s"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+msgid "Your %1$s subscription has been terminated."
+msgstr ""
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "được tạo vào %s"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "Các câu hỏi phổ biến nhất"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "Cập nhật lần cuối"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "Đọc các ghi chú"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "Filter plugin list"
+msgstr "Tắt tiện ích"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "Trang chính"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "Đọc"
+
+msgid "Clean"
+msgstr "Xóa"
+
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "Đang nhập này không hợp lệ. Không thể thêm người dùng này."
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "Một phiên bản mới đã sẵn sàng: %s"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "Cài đặt"
+
+msgid "Enable"
+msgstr "Cho phép"
+
+msgid "Uninstall"
+msgstr "Gỡ cài đặt"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Tắt tiện ích"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "Trễ"
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "Các tiện ích"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "Số tòa nhà"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"Trong máy tìm kiếm, dùng \"Hết hạn bao gồm rỗng\" để tìm các giấy phép không "
+"có ngày hết hạn"
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "Các đặt chỗ"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "Đã tạo vào %s"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "Các đặt chỗ"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "Mô tả"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "Tập tin chưa biết"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "Kích hoạt các thông tin tài chính và hành chính"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "Quá trình cài đặt đã hoàn tất"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "Quá trình cài đặt đã hoàn tất"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"Một email đã được gửi đến địa chỉ email của bạn. Các email có chứa thông tin "
+"cho thiết lập lại mật khẩu của bạn."
+
+msgid "Email address not found."
+msgstr "Không tìm thấy địa chỉ email"
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+"Các địa chỉ MAC và địa chỉ IP của thiết bị được đưa vào trong một cổng mạng "
+"tổng hợp"
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"Tập tin được tải lên vượt quá kích thước cho phép (chỉ thị "
+"upload_max_filesize trong php.ini)"
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Tập tin được tải lên vượt quá kích thước cho phép (chỉ thị MAX_FILE_SIZE "
+"trong biểu mẫu HTML)"
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "Tập tin được tải lên chỉ tải lên được một phần"
+
+msgid "Failed to write file to disk"
+msgstr "Không thể ghi tập tin vào đĩa"
+
+msgid "A PHP extension stopped the file upload"
+msgstr "Một phần mở rộng PHP đã dừng tải các tập tin lên"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+"Tập tin tải lên vượt quá kích cỡ cho theo (chỉ thị post_max_size trong php."
+"ini)"
+
+msgid "File is too big"
+msgstr "Tập tin quá lớn"
+
+msgid "File is too small"
+msgstr "Tập tin quá nhỏ"
+
+msgid "Maximum number of files exceeded"
+msgstr "Vượt quá số lượng tập tin tối đa"
+
+msgid "Image exceeds maximum width"
+msgstr "Ảnh vượt quá chiều rộng tối đa"
+
+msgid "Image requires a minimum width"
+msgstr "Ảnh cần đạt chiều rộng tối thiểu"
+
+msgid "Image exceeds maximum height"
+msgstr "Ảnh vượt quá chiều cao tối đa"
+
+msgid "Image requires a minimum height"
+msgstr "Ảnh cần đạt chiều cao tối thiểu"
+
+msgid "Filetype not allowed"
+msgstr "Kiểu tập tin không được cho phép"
+
+#, fuzzy
+#| msgid "No file was uploaded"
+msgid "File upload aborted"
+msgstr "Không có tập tin được tải lên"
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to resize image"
+msgstr "Không thể ghi tập tin vào đĩa"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "Thông tin người dùng"
+
+msgid "Progress"
+msgstr "Tiến độ"
+
+msgid "My settings"
+msgstr "Các thiết lập của tôi"
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "Bạn sẽ tìm thấy nó trên trang GLPI-PROJECT.org"
+
+msgid "Check all"
+msgstr "Đánh dấu tất cả"
+
+msgid "Uncheck all"
+msgstr "Bỏ đánh dấu tất cả"
+
+msgid "Check all as"
+msgstr "Đánh dấu tất cả như"
+
+msgid "Selection too large, massive action disabled."
+msgstr "Lựa chọn quá lớn, hành động lớn vô hiệu hóa."
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Để tăng giới hạn: thay đổi max_input_vars hoặc suhosin.post.max_vars trong "
+"thiết lập php."
+
+#, fuzzy
+#| msgid "Ticket creation failed (check mandatory fields)"
+msgid "The description field is mandatory"
+msgstr "Tạo thẻ thất bại (kiểm tra các trường bắt buộc)"
+
+#, fuzzy
+#| msgid "From %1$s to %2$s"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "Từ %1$s đến %2$s"
+
+msgid "Empty array"
+msgstr "Mảng rỗng"
+
+msgid "%1$d on %2$d"
+msgstr "%1$d trên %2$d"
+
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "Đóng"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+#, fuzzy
+#| msgid "No selected items"
+msgid "selecting them"
+msgstr "Không có mục được chọn"
+
+#, fuzzy
+#| msgid "File (%s)"
+msgid "File(s)"
+msgstr "Tập tin (%s)"
+
+msgid "Drag and drop your file here, or"
+msgstr "Kéo và thả tập tin của bạn vào đây, hoặc"
+
+msgid "Upload successful"
+msgstr "Tải lên thành công"
+
+msgid "Check/uncheck all"
+msgstr "Chọn/không chọn tất cả"
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+#, fuzzy
+#| msgid "Change solved"
+msgid "Change mode"
+msgstr "Thay đổi được giải quyết"
+
+msgid "Debug mode enabled"
+msgstr ""
+
+msgid "Debug mode disabled"
+msgstr ""
+
+#, fuzzy
+#| msgid "Search"
+msgid "Saved searches"
+msgstr "Tìm"
+
+msgid "Manage saved searches"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled"
+msgid "Add is disabled"
+msgstr "Ngưng"
+
+#, fuzzy
+#| msgid "Search result display"
+msgid "Search is disabled"
+msgstr "Hiện kết quả tìm kiếm"
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "Quản lý toàn cục"
+
+msgid "You are impersonating %s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "Đặt cá nhân"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr "Hiện GLPI ID"
+
+msgid "Color palette"
+msgstr "Bảng màu"
+
+msgid "Layout"
+msgstr "Bố trí"
+
+msgid "Tabs on left"
+msgstr "Các tab bên trái"
+
+msgid "Classic view"
+msgstr "Xem cổ điển"
+
+msgid "Vertical split"
+msgstr "Phân chia theo chiều dọc"
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Kết thúc hợp đồng"
+
+msgid "Dashboards"
+msgstr ""
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "Mặc định cho ticket"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "Mặc định cho ticket"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "Mặc định cho ticket"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Mặc định cho ticket"
+
+msgid "Check if a new version is available"
+msgstr "Kiểm tra phiên bản mới"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Show filters"
+msgstr "Các bộ lọc chuyển đổi"
+
+msgid "No historical matching your filters"
+msgstr ""
+
+msgid "Add to schedule"
+msgstr "Thêm vào lịch"
+
+#, fuzzy
+#| msgid "Position"
+msgid "Position in room"
+msgstr "Chức vụ"
+
+msgid "Door orientation in room"
+msgstr ""
+
+msgid "North"
+msgstr ""
+
+msgid "East"
+msgstr ""
+
+msgid "South"
+msgstr ""
+
+msgid "West"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of items"
+msgid "Number of units"
+msgstr "Số lượng các mục"
+
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Measured power (in watts)"
+msgstr ""
+
+msgid "Max. weight"
+msgstr ""
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No rack found"
+msgstr "Không tìm thấy người dùng"
+
+msgid "Following elements are out of room bounds"
+msgstr ""
+
+msgid "Blueprint"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Insert a rack here"
+msgstr ""
+
+msgid "Position must be set"
+msgstr ""
+
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "Cổng mạng không có sẵn"
+
+msgid "All categories"
+msgstr "Tất cả các danh mục"
+
+msgid "Uncategorized software"
+msgstr "Phân mềm chưa phân loại"
+
+msgid "Valid license"
+msgstr "Giấy phép có giá trị"
+
+#, fuzzy
+#| msgid "Type of component"
+msgid "Other component"
+msgstr "Kiểu của linh kiện"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr ""
+
+msgid "Unofficial translations are also available"
+msgstr "Các phiên dịch không chính thức cũng có sẵn"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Tôi đã đọc và chấp nhận các điều khoản của giấy phép được viết ở trên."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr ""
+"Tôi đã đọc và KHÔNG CHẤP NHẬN các điều khoản của giấy phép được viết ở trên"
+
+msgid "Installation or update of GLPI"
+msgstr "Cài đặt hoặc nâng cấp GLPI"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Chọn \"Cài đặt\" để cài đặt mới hoàn toàn GLPI."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+"Chọn \"Nâng cấp\" để nâng cấp phiên bản GLPI của bạn từ một phiên bản trước"
+
+msgid "Do you want to continue?"
+msgstr "Bạn có muốn tiếp tục?"
+
+msgid "Database connection parameters"
+msgstr "Các thông số kết nối cơ sở dữ liệu"
+
+msgid "Test of the connection at the database"
+msgstr "Kiểm tra kết nối tới cơ sở dữ liệu này"
+
+msgid "Can't connect to the database"
+msgstr "Không thể kết nối tới cơ sở dữ liệu"
+
+msgid "The server answered: %s"
+msgstr "Máy chủ đã trả lời: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Trường máy chủ hoặc/và người dùng là rỗng"
+
+msgid "Please select a database:"
+msgstr "Hãy chọn một cơ sở dữ liệu:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Tạo một cơ sở dữ liệu mới hoặc dùng cái đang tồn tại:"
+
+msgid "Please select the database to update:"
+msgstr "Hãy chọn cơ sở dữ liệu để cập nhật:"
+
+msgid "Initialization of the database"
+msgstr "Khởi động cơ sở dữ liệu này"
+
+msgid "Impossible to use the database:"
+msgstr "Không thể dùng cơ sở dữ liệu này:"
+
+msgid "OK - database was initialized"
+msgstr "Tốt - cơ sở dữ liệu đã được khởi động"
+
+msgid "Impossible to write the database setup file"
+msgstr "Không thể ghi các tập tin thiết lập cơ sở dữ liệu"
+
+msgid "Database created"
+msgstr "Cơ sở dữ liệu đã được tạo"
+
+msgid "Error in creating database!"
+msgstr "Lỗi trong việc tạo cơ sở dữ liệu"
+
+msgid "You didn't select a database!"
+msgstr "Bạn chưa chọn cơ sở dữ liệu"
+
+#, fuzzy
+#| msgid "Close date"
+msgid "Collect data"
+msgstr "Ngày đóng"
+
+msgid "The installation is finished"
+msgstr "Quá trình cài đặt đã hoàn tất"
+
+msgid "Default logins / passwords are:"
+msgstr "Tài khoản và mật khẩu mặc định là:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech cho tài khoản kỹ thuật viên"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal cho tài khoản thông thường"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly cho tài khoản chỉ gửi"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+"Bạn có thể xóa hoặc sửa đổi các tài khoản cũng như các dữ liệu ban đầu."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Không thể tạo tập tin kết nối cơ sở dữ liệu, xin vui lòng xác minh quyền tập "
+"tin."
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "Ngôn ngữ mặc định"
+
+msgid "Beginning of the installation"
+msgstr "Bắt đầu cài đặt"
+
+msgid "Step %d"
+msgstr "Bước %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Xác Thực"
+
+#, fuzzy
+#| msgid "Team member"
+#| msgid_plural "Team members"
+msgid "Remember me"
+msgstr "Các thành viên nhóm"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Bạn phải kích hoạt hàm JavaScript này trên trình duyệt của bạn"
+
+msgid "You must accept cookies to reach this application"
+msgstr "Bạn phải chấp nhận Cookies để truy cập ứng dụng này"
+
+msgid "Invalid use of session ID"
+msgstr "Sử dụng không hợp lệ ID phiên"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Truy cập vào các câu hỏi thường gặp"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "Thêm một thay đổi"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "Thêm một mục"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "Lưu"
+
+#, fuzzy
+#| msgid "Are you sure you want to return this non-reservable item?"
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Bạn có chắc chắn muốn chuyển mục này thành không thể đặt trước?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Ngày gửi"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Dùng GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Các phiên dịch không chính thức cũng có sẵn"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr ""
-#~ "Tôi đã đọc và chấp nhận các điều khoản của giấy phép được viết ở trên."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr ""
-#~ "Tôi đã đọc và KHÔNG CHẤP NHẬN các điều khoản của giấy phép được viết ở "
-#~ "trên"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "Cài đặt hoặc nâng cấp GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Chọn \"Cài đặt\" để cài đặt mới hoàn toàn GLPI."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "Chọn \"Nâng cấp\" để nâng cấp phiên bản GLPI của bạn từ một phiên bản "
-#~ "trước"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Bạn có muốn tiếp tục?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Các thông số kết nối cơ sở dữ liệu"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Kiểm tra kết nối tới cơ sở dữ liệu này"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Không thể kết nối tới cơ sở dữ liệu"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Máy chủ đã trả lời: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Trường máy chủ hoặc/và người dùng là rỗng"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Hãy chọn một cơ sở dữ liệu:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Tạo một cơ sở dữ liệu mới hoặc dùng cái đang tồn tại:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Hãy chọn cơ sở dữ liệu để cập nhật:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Khởi động cơ sở dữ liệu này"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Không thể dùng cơ sở dữ liệu này:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "Tốt - cơ sở dữ liệu đã được khởi động"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Không thể ghi các tập tin thiết lập cơ sở dữ liệu"
-
-#~ msgid "Database created"
-#~ msgstr "Cơ sở dữ liệu đã được tạo"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Lỗi trong việc tạo cơ sở dữ liệu"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Bạn chưa chọn cơ sở dữ liệu"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Quá trình cài đặt đã hoàn tất"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Tài khoản và mật khẩu mặc định là:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi cho tài khoản quản trị viên"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech cho tài khoản kỹ thuật viên"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal cho tài khoản thông thường"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly cho tài khoản chỉ gửi"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "Bạn có thể xóa hoặc sửa đổi các tài khoản cũng như các dữ liệu ban đầu."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Không thể tạo tập tin kết nối cơ sở dữ liệu, xin vui lòng xác minh quyền "
-#~ "tập tin."
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Bắt đầu cài đặt"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Bước %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Xác Thực"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Bạn phải kích hoạt hàm JavaScript này trên trình duyệt của bạn"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Bạn phải chấp nhận Cookies để truy cập ứng dụng này"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Sử dụng không hợp lệ ID phiên"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Truy cập vào các câu hỏi thường gặp"

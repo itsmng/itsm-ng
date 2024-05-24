@@ -24453,1150 +24453,1135 @@ msgstr "Забирати лише непрочитані листи"
 msgid "Could not create dashboard"
 msgstr "Клонувати цю дошку"
 
-#~ msgid "No room found or selected"
-#~ msgstr "Приміщення відсутнє або не обране"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Запис"
 
-#~ msgid "Marketplace"
-#~ msgstr "Marketplace"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Ім’я користувача"
 
-#, php-format
-#~ msgid "%1$s adds the item %2$s-%3$s:%4$s"
-#~ msgstr "%1$sдодав елементl %2$s-%3$s:%4$s"
+#, fuzzy
+#| msgid "See configuration"
+msgid "Open ID connect configuration"
+msgstr "Дивитись налаштування"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Дивіться каталог плугінів"
+msgid "No room found or selected"
+msgstr "Приміщення відсутнє або не обране"
 
-#~ msgid ""
-#~ "If name is a valid email address, it will be automatically added to "
-#~ "blacklisted senders."
-#~ msgstr ""
-#~ "Якщо ім'я є адресою електронної пошти, то воно буде автоматично додане в "
-#~ "чорний список відправників."
+msgid "Marketplace"
+msgstr "Marketplace"
 
-#~ msgid "Empty for infinite"
-#~ msgstr "Порожнє, якщо безкінечне"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$sдодав елементl %2$s-%3$s:%4$s"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "Знайдено потік RSS"
+msgid "See the catalog of plugins"
+msgstr "Дивіться каталог плугінів"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+"Якщо ім'я є адресою електронної пошти, то воно буде автоматично додане в "
+"чорний список відправників."
 
-#~ msgid "GLPI version"
-#~ msgstr "Версія GLPI"
+msgid "Empty for infinite"
+msgstr "Порожнє, якщо безкінечне"
 
-#~ msgid "Confirm the promotion?"
-#~ msgstr "Підтвердити розповсюдження?"
+msgid "RSS feeds found"
+msgstr "Знайдено потік RSS"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Ваші заявки, які потрібно закривати"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Заявки в статусі очікування"
+msgid "GLPI version"
+msgstr "Версія GLPI"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Заявки для обробки"
+msgid "Confirm the promotion?"
+msgstr "Підтвердити розповсюдження?"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Ваші заявки під наглядом"
+msgid "Your tickets to close"
+msgstr "Ваші заявки, які потрібно закривати"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Ваші заявки в роботі"
+msgid "Tickets on pending status"
+msgstr "Заявки в статусі очікування"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Ваші заявки в перевірці"
+msgid "Tickets to be processed"
+msgstr "Заявки для обробки"
 
-#~ msgid "Your tickets having rejected approval status"
-#~ msgstr "Ваші заявки зі статусом відхиленого схвалення"
+msgid "Your observed tickets"
+msgstr "Ваші заявки під наглядом"
 
-#~ msgid "Your tickets having rejected solution"
-#~ msgstr "Ваші заявки зі статусом відхиленого рішення"
+msgid "Your tickets in progress"
+msgstr "Ваші заявки в роботі"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Відповідь на заявку"
+msgid "Your tickets to validate"
+msgstr "Ваші заявки в перевірці"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d нова Заявка"
-#~ msgstr[1] "%d нові Заявки"
-#~ msgstr[2] "%d нових Заявок"
-#~ msgstr[3] "%d нових Заявок"
+msgid "Your tickets having rejected approval status"
+msgstr "Ваші заявки зі статусом відхиленого схвалення"
 
-#~ msgid "No ticket found."
-#~ msgstr "Заявок не знайдено."
+msgid "Your tickets having rejected solution"
+msgstr "Ваші заявки зі статусом відхиленого рішення"
 
-#~ msgid "Last tickets"
-#~ msgstr "Останні заявки"
+msgid "Ticket followup"
+msgstr "Відповідь на заявку"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Нова Заявка щодо цього елементу"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d нова Заявка"
+msgstr[1] "%d нові Заявки"
+msgstr[2] "%d нових Заявок"
+msgstr[3] "%d нових Заявок"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Остання %d Заявка"
-#~ msgstr[1] "Останні %d Заявки"
-#~ msgstr[2] "Останніх %d Заявок"
-#~ msgstr[3] "Останніх %d Заявок"
+msgid "No ticket found."
+msgstr "Заявок не знайдено."
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "Ви не можете бачити всі Заявки"
+msgid "Last tickets"
+msgstr "Останні заявки"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Заявка щодо пов’язаних елементів"
-#~ msgstr[1] "Заявки щодо пов’язаних елементів"
-#~ msgstr[2] "Заявки щодо пов’язаних елементів"
-#~ msgstr[3] "Заявки щодо пов’язаних елементів"
+msgid "New ticket for this item..."
+msgstr "Нова Заявка щодо цього елементу"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Немає заявки в роботі."
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Остання %d Заявка"
+msgstr[1] "Останні %d Заявки"
+msgstr[2] "Останніх %d Заявок"
+msgstr[3] "Останніх %d Заявок"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Призначити обладнання"
+msgid "You don't have right to see all tickets"
+msgstr "Ви не можете бачити всі Заявки"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Автоматичне закриття заявок"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Заявка щодо пов’язаних елементів"
+msgstr[1] "Заявки щодо пов’язаних елементів"
+msgstr[2] "Заявки щодо пов’язаних елементів"
+msgstr[3] "Заявки щодо пов’язаних елементів"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Генерація опитувань задоволеності"
+msgid "No ticket in progress."
+msgstr "Немає заявки в роботі."
 
-#~ msgid "Automatic closed tickets purge"
-#~ msgstr "Автоматична чистка вирішених заявок"
+msgid "Assign equipment"
+msgstr "Призначити обладнання"
 
-#~ msgid "See my ticket"
-#~ msgstr "Переглянути свою Заявку"
+msgid "Automatic tickets closing"
+msgstr "Автоматичне закриття заявок"
 
-#~ msgid "See group ticket"
-#~ msgstr "Переглянути Заявку групи"
+msgid "Generation of satisfaction surveys"
+msgstr "Генерація опитувань задоволеності"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Переглянути Заявки, створені моєю групою"
+msgid "Automatic closed tickets purge"
+msgstr "Автоматична чистка вирішених заявок"
 
-#~ msgid "See all tickets"
-#~ msgstr "Переглянути всі заявки"
+msgid "See my ticket"
+msgstr "Переглянути свою Заявку"
 
-#~ msgid "See assigned"
-#~ msgstr "Переглянути призначені"
+msgid "See group ticket"
+msgstr "Переглянути Заявку групи"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Переглянути призначені Заявки"
+msgid "See tickets created by my groups"
+msgstr "Переглянути Заявки, створені моєю групою"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Призначити заявку"
+msgid "See all tickets"
+msgstr "Переглянути всі заявки"
 
-#~ msgid "Steal"
-#~ msgstr "Призначити собі"
+msgid "See assigned"
+msgstr "Переглянути призначені"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Привласнити заявку"
+msgid "See assigned tickets"
+msgstr "Переглянути призначені Заявки"
 
-#~ msgid "Beeing in charge"
-#~ msgstr "Бути відповідальним"
+msgid "Assign a ticket"
+msgstr "Призначити заявку"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Стати відповідальним за заявку"
+msgid "Steal"
+msgstr "Призначити собі"
 
-#~ msgid "Change the priority"
-#~ msgstr "Зміна пріоритету"
+msgid "Steal a ticket"
+msgstr "Привласнити заявку"
 
-#~ msgid "Approve solution/Reply survey (my ticket)"
-#~ msgstr "Прийняти рішення/Заповнити опитування (моя заявка)"
+msgid "Beeing in charge"
+msgstr "Бути відповідальним"
 
-#~ msgid "Approve solution and reply to survey for ticket created by me"
-#~ msgstr "Прийняти рішення та заповнити опитування для заявки, створеної мною"
+msgid "To be in charge of a ticket"
+msgstr "Стати відповідальним за заявку"
 
-#, php-format
-#~ msgid "Not enough rights to merge tickets %d and %d"
-#~ msgstr "Недостатньо прав для об'єднання заявки %d та %d"
+msgid "Change the priority"
+msgstr "Зміна пріоритету"
 
-#, php-format
-#~ msgid "Failed to load ticket %d"
-#~ msgstr "Не вдалося завантажити заявку %d"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr "Прийняти рішення/Заповнити опитування (моя заявка)"
 
-#, php-format
-#~ msgid "Failed to add followup to ticket %d"
-#~ msgstr "Не вдалося додати відповідь до заявки %d"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr "Прийняти рішення та заповнити опитування для заявки, створеної мною"
 
-#, php-format
-#~ msgid "Failed to add task to ticket %d"
-#~ msgstr "Не вдалося додати завдання до заявки %d"
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr "Недостатньо прав для об'єднання заявки %d та %d"
 
-#, php-format
-#~ msgid "Failed to add document to ticket %d"
-#~ msgstr "Не вдалося додати документ до заявки %d"
+msgid "Failed to load ticket %d"
+msgstr "Не вдалося завантажити заявку %d"
 
-#, php-format
-#~ msgid "Failed to link tickets %d and %d"
-#~ msgstr "Не вдалося об'єднати заявку %d та %d"
+msgid "Failed to add followup to ticket %d"
+msgstr "Не вдалося додати відповідь до заявки %d"
 
-#, php-format
-#~ msgid "Failed to delete ticket %d"
-#~ msgstr "Не вдалося видалити заявку %d"
+msgid "Failed to add task to ticket %d"
+msgstr "Не вдалося додати завдання до заявки %d"
 
-#, php-format
-#~ msgid "%s merges ticket %s into %s"
-#~ msgstr "%s об'єднує заявку %s до %s"
+msgid "Failed to add document to ticket %d"
+msgstr "Не вдалося додати документ до заявки %d"
 
-#~ msgid "Checking write permissions for marketplace plugins directory"
-#~ msgstr "Перевірка прав запису папки плугінів маркетплейсу"
+msgid "Failed to link tickets %d and %d"
+msgstr "Не вдалося об'єднати заявку %d та %d"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "Перерахувати категорію"
+msgid "Failed to delete ticket %d"
+msgstr "Не вдалося видалити заявку %d"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Діючі ліцензії"
+msgid "%s merges ticket %s into %s"
+msgstr "%s об'єднує заявку %s до %s"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Кількість інсталяцій"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Перевірка прав запису папки плугінів маркетплейсу"
 
-#~ msgid "Merge"
-#~ msgstr "Об’єднати"
+msgid "Recalculate the category"
+msgstr "Перерахувати категорію"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "ПЗ буде видалено після об’єднання"
+msgid "Valid licenses"
+msgstr "Діючі ліцензії"
 
-#~ msgid "You must enable at least one notification mode."
-#~ msgstr "Необхідно увімкнути хоча б один режим сповіщень."
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Кількість інсталяцій"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Merge"
+msgstr "Об’єднати"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Підключити комп’ютер"
+msgid "Software deleted after merging"
+msgstr "ПЗ буде видалено після об’єднання"
 
-#~ msgid "Not connected"
-#~ msgstr "Не підключено"
+msgid "You must enable at least one notification mode."
+msgstr "Необхідно увімкнути хоча б один режим сповіщень."
 
-#~ msgid "Show as map"
-#~ msgstr "Показати як карту"
+msgid "GLPI"
+msgstr "GLPI"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Дійсно до %s"
+msgid "Connect a computer"
+msgstr "Підключити комп’ютер"
 
-#~ msgid "Late tickets"
-#~ msgstr "Останні заявки"
+msgid "Not connected"
+msgstr "Не підключено"
 
-#~ msgid "Tickets waiting for validation"
-#~ msgstr "Заявки, які очікують затвердження"
+msgid "Show as map"
+msgstr "Показати як карту"
 
-#~ msgid "Incoming tickets"
-#~ msgstr "Вхідні заявки"
+msgid "Valid to %s"
+msgstr "Дійсно до %s"
 
-#~ msgid "Solved tickets"
-#~ msgstr "Вирішені заявки"
+msgid "Late tickets"
+msgstr "Останні заявки"
 
-#~ msgid "Closed tickets"
-#~ msgstr "Закриті заявки"
+msgid "Tickets waiting for validation"
+msgstr "Заявки, які очікують затвердження"
 
-#~ msgid "without"
-#~ msgstr "не вказано"
+msgid "Incoming tickets"
+msgstr "Вхідні заявки"
 
-#~ msgid "Time to close"
-#~ msgstr "Час до закриття"
+msgid "Solved tickets"
+msgstr "Вирішені заявки"
 
-#~ msgid "To validate"
-#~ msgstr "На перевірку"
+msgid "Closed tickets"
+msgstr "Закриті заявки"
 
-#~ msgid "Solved"
-#~ msgstr "Вирішене"
+msgid "without"
+msgstr "не вказано"
 
-#~ msgid "Share or embed this dashboard"
-#~ msgstr "Поділіться або вбудуйте цю дошку"
+msgid "Time to close"
+msgstr "Час до закриття"
 
-#~ msgid "Delete this dashboard"
-#~ msgstr "Видалити цю дошку"
+msgid "To validate"
+msgstr "На перевірку"
 
-#~ msgid "Toggle auto-refresh"
-#~ msgstr "Перемкнути авто-оновлення"
+msgid "Solved"
+msgstr "Вирішене"
 
-#~ msgid "Toggle night mode"
-#~ msgstr "Перемкнути нічний режим"
+msgid "Share or embed this dashboard"
+msgstr "Поділіться або вбудуйте цю дошку"
 
-#~ msgid "Toggle fullscreen"
-#~ msgstr "Перемкнути повний екран"
+msgid "Delete this dashboard"
+msgstr "Видалити цю дошку"
 
-#~ msgid "Toggle edit mode"
-#~ msgstr "Перемкнути режим редагування"
+msgid "Toggle auto-refresh"
+msgstr "Перемкнути авто-оновлення"
 
-#~ msgid "Add filter"
-#~ msgstr "Додати фільтр"
+msgid "Toggle night mode"
+msgstr "Перемкнути нічний режим"
 
-#~ msgid "Add a new dashboard"
-#~ msgstr "Додати нову дошку"
+msgid "Toggle fullscreen"
+msgstr "Перемкнути повний екран"
 
-#~ msgid "others"
-#~ msgstr "інші"
+#, fuzzy
+#| msgid "Delete this dashboard"
+msgid "Clone this dashboard"
+msgstr "Видалити цю дошку"
 
-#~ msgid "Widget"
-#~ msgstr "Віджет"
+msgid "Toggle edit mode"
+msgstr "Перемкнути режим редагування"
 
-#~ msgid "Use gradient palette"
-#~ msgstr "Використати градієнтну палітру"
+msgid "Add filter"
+msgstr "Додати фільтр"
 
-#~ msgid "Display value labels on points/bars"
-#~ msgstr "Показувати мітки значень на точках/паличках"
+msgid "Add a new dashboard"
+msgstr "Додати нову дошку"
 
-#~ msgid "Limit number of data"
-#~ msgstr "Обмежити кількість даних"
+msgid "others"
+msgstr "інші"
 
-#~ msgid "Filters"
-#~ msgstr "Фільтри"
+msgid "Widget"
+msgstr "Віджет"
 
-#~ msgid "Embed in another application"
-#~ msgstr "Вбудувати в іншу програму"
+msgid "Use gradient palette"
+msgstr "Використати градієнтну палітру"
 
-#~ msgid "Direct link"
-#~ msgstr "Прямий зв'язок"
+msgid "Display value labels on points/bars"
+msgstr "Показувати мітки значень на точках/паличках"
 
-#~ msgid "Iframe"
-#~ msgstr "Iframe"
+msgid "Limit number of data"
+msgstr "Обмежити кількість даних"
 
-#~ msgid "Or share the dashboard to these target objects:"
-#~ msgstr "Або поділитись дошкою з цими цільовими об'єктами:"
+msgid "Filters"
+msgstr "Фільтри"
 
-#~ msgid "empty card !"
-#~ msgstr "порожня картка !"
+msgid "Embed in another application"
+msgstr "Вбудувати в іншу програму"
 
-#, php-format
-#~ msgid "Number of %s"
-#~ msgstr "Кількість %s"
+msgid "Direct link"
+msgstr "Прямий зв'язок"
 
-#, php-format
-#~ msgid "%s by %s"
-#~ msgstr "%s по %s"
+msgid "Iframe"
+msgstr "Iframe"
 
-#, php-format
-#~ msgid "List of %s"
-#~ msgstr "Список %s"
+msgid "Or share the dashboard to these target objects:"
+msgstr "Або поділитись дошкою з цими цільовими об'єктами:"
 
-#~ msgid "Number of tickets by month"
-#~ msgstr "Кількість заявок в місяць"
+msgid "empty card !"
+msgstr "порожня картка !"
 
-#~ msgid "Evolution of ticket in the past year"
-#~ msgstr "Розвиток заявок за останній рік"
+msgid "Number of %s"
+msgstr "Кількість %s"
 
-#~ msgid "Tickets status by month"
-#~ msgstr "Статус заявок в місяць"
+msgid "%s by %s"
+msgstr "%s по %s"
 
-#~ msgid "Tickets times (in hours)"
-#~ msgstr "Час заявок (в годинах)"
+msgid "List of %s"
+msgstr "Список %s"
 
-#~ msgid "Tickets summary"
-#~ msgstr "Заявки зведено"
+msgid "Number of tickets by month"
+msgstr "Кількість заявок в місяць"
 
-#~ msgid "Top ticket's categories"
-#~ msgstr "Топ категорій заявок"
+msgid "Evolution of ticket in the past year"
+msgstr "Розвиток заявок за останній рік"
 
-#~ msgid "Top ticket's entities"
-#~ msgstr "Топ підрозділів заявок"
+msgid "Tickets status by month"
+msgstr "Статус заявок в місяць"
 
-#~ msgid "Top ticket's request types"
-#~ msgstr "Топ типів заявок"
+msgid "Tickets times (in hours)"
+msgstr "Час заявок (в годинах)"
 
-#~ msgid "Top ticket's locations"
-#~ msgstr "Топ розташувань заявок"
+msgid "Tickets summary"
+msgstr "Заявки зведено"
 
-#~ msgid "Top ticket's requesters"
-#~ msgstr "Топ заявників"
+msgid "Top ticket's categories"
+msgstr "Топ категорій заявок"
 
-#~ msgid "Top ticket's requester groups"
-#~ msgstr "Топ груп заявників"
+msgid "Top ticket's entities"
+msgstr "Топ підрозділів заявок"
 
-#~ msgid "Top ticket's observers"
-#~ msgstr "Топ спостерігачів заявок"
+msgid "Top ticket's request types"
+msgstr "Топ типів заявок"
 
-#~ msgid "Top ticket's observer groups"
-#~ msgstr "Топ груп спостерігачів заявок"
+msgid "Top ticket's locations"
+msgstr "Топ розташувань заявок"
 
-#~ msgid "Top ticket's assignees"
-#~ msgstr "Топ виконавців заявок"
+msgid "Top ticket's requesters"
+msgstr "Топ заявників"
 
-#~ msgid "Top ticket's assignee groups"
-#~ msgstr "Топ груп виконавців заявок"
+msgid "Top ticket's requester groups"
+msgstr "Топ груп заявників"
 
-#~ msgid "List of reminders"
-#~ msgstr "Список нагадувань"
+msgid "Top ticket's observers"
+msgstr "Топ спостерігачів заявок"
 
-#~ msgid "Editable markdown card"
-#~ msgstr "Картка редагованої помітки"
+msgid "Top ticket's observer groups"
+msgstr "Топ груп спостерігачів заявок"
 
-#~ msgid "Toggle edit mode to edit content"
-#~ msgstr "Перемкнути режим редагування для зміни змісту"
+msgid "Top ticket's assignees"
+msgstr "Топ виконавців заявок"
 
-#~ msgid "field name in DB"
-#~ msgstr "назва поля бази даних"
+msgid "Top ticket's assignee groups"
+msgstr "Топ груп виконавців заявок"
 
-#~ msgid "Example:"
-#~ msgstr "Наприклад:"
+msgid "List of reminders"
+msgstr "Список нагадувань"
 
-#~ msgid ""
-#~ "Since GLPI 9.2, we’ve introduced a new statistics feature called "
-#~ "“Telemetry”, that anonymously with your permission, sends data to our "
-#~ "telemetry website."
-#~ msgstr ""
-#~ "Починаючи з GLPI 9.2, ми запроваджуємо нову статистичну функцію "
-#~ "\"Телеметрія\", яка анонімно і з Вашого дозволу надсилає інформацію до "
-#~ "нашого телеметричного серверу."
+msgid "Editable markdown card"
+msgstr "Картка редагованої помітки"
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP мережа не описана в базі. Але перегляд наявних зараз мереж можливий."
+msgid "Toggle edit mode to edit content"
+msgstr "Перемкнути режим редагування для зміни змісту"
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Доступні декілька назв мережі! Для керування ними, перейдіть на вкладку "
-#~ "'Назва мережі\"."
+msgid "field name in DB"
+msgstr "назва поля бази даних"
 
-#~ msgid "Add a network name"
-#~ msgstr "Додати назву мережі"
+msgid "Example:"
+msgstr "Наприклад:"
 
-#~ msgid "Not associated"
-#~ msgstr "Не прив’язано"
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+"Починаючи з GLPI 9.2, ми запроваджуємо нову статистичну функцію "
+"\"Телеметрія\", яка анонімно і з Вашого дозволу надсилає інформацію до "
+"нашого телеметричного серверу."
 
-#~ msgid "Create a new network name"
-#~ msgstr "Створити нову назву мережі"
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP мережа не описана в базі. Але перегляд наявних зараз мереж можливий."
 
-#~ msgid "No network name found"
-#~ msgstr "Не знайдені назви мереж"
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Доступні декілька назв мережі! Для керування ними, перейдіть на вкладку "
+"'Назва мережі\"."
 
-#~ msgid "Unable to download plugin archive."
-#~ msgstr "Не можу завантажити архів плугіну."
+msgid "Add a network name"
+msgstr "Додати назву мережі"
 
-#, php-format
-#~ msgid "Plugin archive format is not supported by your system : %s."
-#~ msgstr "Формат архіву плугіну не підтримується вашою системою: %s."
+msgid "Not associated"
+msgstr "Не прив’язано"
 
-#~ msgid "Unable to extract plugin archive."
-#~ msgstr "Не можу розкрити архів плугіну."
+msgid "Create a new network name"
+msgstr "Створити нову назву мережі"
 
-#~ msgid "Check all plugin updates"
-#~ msgstr "Перевірити оновлення всіх плугінів"
+msgid "No network name found"
+msgstr "Не знайдені назви мереж"
 
-#, php-format
-#~ msgid "New version for plugin %s: %s"
-#~ msgstr "Нова версія плугіну %s: %s"
+msgid "Unable to download plugin archive."
+msgstr "Не можу завантажити архів плугіну."
 
-#~ msgid "Installed"
-#~ msgstr "Встановлено"
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr "Формат архіву плугіну не підтримується вашою системою: %s."
 
-#~ msgid "Discover"
-#~ msgstr "Знайти"
+msgid "Unable to extract plugin archive."
+msgstr "Не можу розкрити архів плугіну."
 
-#, php-format
-#~ msgid ""
-#~ "%1$s services website seems not available from your network or offline"
-#~ msgstr ""
-#~ "Схоже, що вебсайт сервісів %1$s недоступний з вашої мережі або в офлайні."
+msgid "Check all plugin updates"
+msgstr "Перевірити оновлення всіх плугінів"
 
-#~ msgid "Maybe you could setup a proxy"
-#~ msgstr "Можливо потрібно налаштувати проксі"
+msgid "New version for plugin %s: %s"
+msgstr "Нова версія плугіну %s: %s"
 
-#~ msgid "or please check later"
-#~ msgstr "або перевірте пізніше"
+msgid "Installed"
+msgstr "Встановлено"
 
-#, php-format
-#~ msgid "Your %1$s registration is not valid."
-#~ msgstr "Ваша реєстрація %1$s не дійсна."
+msgid "Discover"
+msgstr "Знайти"
 
-#~ msgid "A registration, at least a free one, is required to use marketplace!"
-#~ msgstr "Для використання маркетплейсу потрібна реєстрація, мінімум вільна!"
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+"Схоже, що вебсайт сервісів %1$s недоступний з вашої мережі або в офлайні."
 
-#, php-format
-#~ msgid "Register on %1$s"
-#~ msgstr "Зареєструватись на %1$s"
+msgid "Maybe you could setup a proxy"
+msgstr "Можливо потрібно налаштувати проксі"
 
-#~ msgid "fill your registration key in setup."
-#~ msgstr "заповніть ваш ключ реєстрації в налаштуваннях."
+msgid "or please check later"
+msgstr "або перевірте пізніше"
 
-#, php-format
-#~ msgid "Your %1$s subscription has been terminated."
-#~ msgstr "Ваша підписка %1$s припинена."
+msgid "Your %1$s registration is not valid."
+msgstr "Ваша реєстрація %1$s не дійсна."
 
-#, php-format
-#~ msgid "Renew it on %1$s."
-#~ msgstr "Оновіть її на %1$s."
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr "Для використання маркетплейсу потрібна реєстрація, мінімум вільна!"
 
-#, php-format
-#~ msgid "We can't write on the markeplace directory (%s)."
-#~ msgstr "Ви не можете писати в каталог маркетплейсу (%s). "
+msgid "Register on %1$s"
+msgstr "Зареєструватись на %1$s"
 
-#~ msgid ""
-#~ "If you want to ease the plugins download, please check permissions and "
-#~ "ownership of this directory."
-#~ msgstr ""
-#~ "Для спрощення завантаження плугінів, перевірте дозволи та власника цього "
-#~ "каталогу."
+msgid "fill your registration key in setup."
+msgstr "заповніть ваш ключ реєстрації в налаштуваннях."
 
-#~ msgid ""
-#~ "Otherwise, you will need to download and unzip the plugins archives "
-#~ "manually."
-#~ msgstr ""
-#~ "Інакше необхідно буде вручну завантажувати і розкривати архіви плугінів."
+msgid "Your %1$s subscription has been terminated."
+msgstr "Ваша підписка %1$s припинена."
 
-#~ msgid "Alpha ASC"
-#~ msgstr "Alpha ASC"
+msgid "Renew it on %1$s."
+msgstr "Оновіть її на %1$s."
 
-#~ msgid "Alpha DESC"
-#~ msgstr "Alpha DESC"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr "Ви не можете писати в каталог маркетплейсу (%s). "
 
-#~ msgid "Most popular"
-#~ msgstr "Найбільш популярні"
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+"Для спрощення завантаження плугінів, перевірте дозволи та власника цього "
+"каталогу."
 
-#~ msgid "Last updated"
-#~ msgstr "Недавно оновлені"
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+"Інакше необхідно буде вручну завантажувати і розкривати архіви плугінів."
 
-#~ msgid "Most recent"
-#~ msgstr "Найновіші"
+msgid "Alpha ASC"
+msgstr "Alpha ASC"
 
-#~ msgid "Best notes"
-#~ msgstr "Кращі нотатки"
+msgid "Alpha DESC"
+msgstr "Alpha DESC"
 
-#~ msgid "Your plugin here ? Contact us."
-#~ msgstr "Ваш плугін є тут? Зв'яжіться з нами."
+msgid "Most popular"
+msgstr "Найбільш популярні"
 
-#~ msgid "Refresh plugin list"
-#~ msgstr "Оновити список плугінів"
+msgid "Last updated"
+msgstr "Недавно оновлені"
 
-#~ msgid "Filter plugin list"
-#~ msgstr "Фільтрувати список плугінів"
+msgid "Most recent"
+msgstr "Найновіші"
 
-#~ msgid "Homepage"
-#~ msgstr "Домашня сторінка"
+msgid "Best notes"
+msgstr "Кращі нотатки"
 
-#~ msgid "Get help"
-#~ msgstr "Отримати допомогу"
+msgid "Your plugin here ? Contact us."
+msgstr "Ваш плугін є тут? Зв'яжіться з нами."
 
-#~ msgid "Readme"
-#~ msgstr "Readme"
+msgid "Refresh plugin list"
+msgstr "Оновити список плугінів"
 
-#~ msgid "Clean"
-#~ msgstr "Очистити"
+msgid "Filter plugin list"
+msgstr "Фільтрувати список плугінів"
 
-#~ msgid "This plugin is not available for your GLPI version."
-#~ msgstr "Цей плугін не доступний для вашої версії GLPI."
+msgid "Homepage"
+msgstr "Домашня сторінка"
 
-#~ msgid ""
-#~ "The plugin has an available update but its directory is not writable."
-#~ msgstr "У плугіна є оновлення, але його каталог не доступний для запису."
+msgid "Get help"
+msgstr "Отримати допомогу"
 
-#, php-format
-#~ msgid ""
-#~ "Download archive manually, you must uncompress it in plugins directory "
-#~ "(%s)"
-#~ msgstr "Завантажте архів вручну та розкрийте його в каталозі плугіну (%s)"
+msgid "Readme"
+msgstr "Readme"
 
-#, php-format
-#~ msgid "A new version (%s) is available, update ?"
-#~ msgstr "Доступна нова версія (%s), оновити?"
+msgid "Clean"
+msgstr "Очистити"
 
-#, php-format
-#~ msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-#~ msgstr ""
-#~ "Для доступу до цього плугіну (%s) потрібен \"superior GLPI-Network "
-#~ "offer\"."
+msgid "This plugin is not available for your GLPI version."
+msgstr "Цей плугін не доступний для вашої версії GLPI."
 
-#~ msgid "Install"
-#~ msgstr "Встановити"
+msgid "The plugin has an available update but its directory is not writable."
+msgstr "У плугіна є оновлення, але його каталог не доступний для запису."
 
-#~ msgid "Enable"
-#~ msgstr "Активувати"
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr "Завантажте архів вручну та розкрийте його в каталозі плугіну (%s)"
 
-#~ msgid "Uninstall"
-#~ msgstr "Видалити"
+msgid "A new version (%s) is available, update ?"
+msgstr "Доступна нова версія (%s), оновити?"
 
-#, php-format
-#~ msgid "You must have a %s subscription to get this plugin"
-#~ msgstr "Для отримання цього плугіну потрібна підписка %s"
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+"Для доступу до цього плугіну (%s) потрібен \"superior GLPI-Network offer\"."
 
-#, php-format
-#~ msgid "You need at least the %s subscription level to get this plugin"
-#~ msgstr "Для отримання цього плугіну потрібен рівень підписки не менше %s"
+msgid "Install"
+msgstr "Встановити"
 
-#, php-format
-#~ msgid "%s plugin"
-#~ msgid_plural "%s plugins"
-#~ msgstr[0] "%s плугін"
-#~ msgstr[1] "%s плугіни "
-#~ msgstr[2] "%s плугінів"
-#~ msgstr[3] "%s плугіни"
+msgid "Enable"
+msgstr "Активувати"
 
-#~ msgid "GLPI provides a new marketplace to download and install plugins."
-#~ msgstr ""
-#~ "GLPI надає новий маркетплейс для завантаження та встановлення плугінів."
+msgid "Uninstall"
+msgstr "Видалити"
 
-#~ msgid ""
-#~ "Do you want to replace the plugins setup page by the new marketplace ?"
-#~ msgstr ""
-#~ "Ви хочете поміняти сторінку налаштувань плугінів на новий маркетплейс? "
+msgid "You must have a %s subscription to get this plugin"
+msgstr "Для отримання цього плугіну потрібна підписка %s"
 
-#~ msgid "Later"
-#~ msgstr "Пізніше"
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr "Для отримання цього плугіну потрібен рівень підписки не менше %s"
 
-#~ msgid "Switch to marketplace"
-#~ msgstr "Перемкнутись на маркетплейс"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "%s плугін"
+msgstr[1] "%s плугіни "
+msgstr[2] "%s плугінів"
+msgstr[3] "%s плугіни"
 
-#~ msgid "Some updates are available for your installed plugins!"
-#~ msgstr "Для встановлених плугінів є оновлення!"
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+"GLPI надає новий маркетплейс для завантаження та встановлення плугінів."
 
-#~ msgid "Plugin name"
-#~ msgstr "Назва плугіну"
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+"Ви хочете поміняти сторінку налаштувань плугінів на новий маркетплейс? "
 
-#~ msgid "Plugin new version number"
-#~ msgstr "Номер нової версії плугіну"
+msgid "Later"
+msgstr "Пізніше"
 
-#~ msgid "Plugin old version number"
-#~ msgstr "Номер старої версії плугіну"
+msgid "Switch to marketplace"
+msgstr "Перемкнутись на маркетплейс"
 
-#~ msgid ""
-#~ "On search engine, use \"Expiration contains NULL\" to search licenses "
-#~ "with no expiration date"
-#~ msgstr ""
-#~ "При пошуку використайте \"Строк містить NULL\" для пошуку ліцензій без "
-#~ "строку дії"
+msgid "Some updates are available for your installed plugins!"
+msgstr "Для встановлених плугінів є оновлення!"
 
-#~ msgid "Registration"
-#~ msgstr "Реєстрація"
+msgid "Plugin name"
+msgstr "Назва плугіну"
 
-#~ msgid ""
-#~ "A registration key is needed to use advanced feature (like marketplace) "
-#~ "in GLPI"
-#~ msgstr ""
-#~ "Ключ реєстрації потрібен для використання в GLPI розширеної функції (як "
-#~ "маркетплейс)"
+msgid "Plugin new version number"
+msgstr "Номер нової версії плугіну"
 
-#, php-format
-#~ msgid "Register on %1$s!"
-#~ msgstr "Зареєструйтесь на %1$s!"
+msgid "Plugin old version number"
+msgstr "Номер старої версії плугіну"
 
-#~ msgid "And retrieve your key to paste it below"
-#~ msgstr "І отримайте свій ключ щоб вставити його нижче"
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+"При пошуку використайте \"Строк містить NULL\" для пошуку ліцензій без "
+"строку дії"
 
-#, php-format
-#~ msgid "Error was: %s"
-#~ msgstr "Була помилка: %s"
+msgid "Registration"
+msgstr "Реєстрація"
 
-#~ msgid "Registration key"
-#~ msgstr "Ключ реєстрації"
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+"Ключ реєстрації потрібен для використання в GLPI розширеної функції (як "
+"маркетплейс)"
 
-#~ msgid "Subscription"
-#~ msgstr "Підписка"
+msgid "Register on %1$s!"
+msgstr "Зареєструйтесь на %1$s!"
 
-#~ msgid "Unknown"
-#~ msgstr "Невідомо"
+msgid "And retrieve your key to paste it below"
+msgstr "І отримайте свій ключ щоб вставити його нижче"
 
-#~ msgid "Registered by"
-#~ msgstr "Зареєстровано"
+msgid "Error was: %s"
+msgstr "Була помилка: %s"
 
-#~ msgid "Unable to fetch registration information."
-#~ msgstr "Не можу отримати інформацію реєстрації."
+msgid "Registration key"
+msgstr "Ключ реєстрації"
 
-#~ msgid "The registration key is invalid."
-#~ msgstr "Ключ реєстрації не дійсний."
+msgid "Subscription"
+msgstr "Підписка"
 
-#~ msgid "The registration key refers to a terminated subscription."
-#~ msgstr "Ключ реєстрації посилається на припинену підписку."
+msgid "Unknown"
+msgstr "Невідомо"
 
-#~ msgid "The registration key is valid."
-#~ msgstr "Ключ реєстрації дійсний."
+msgid "Registered by"
+msgstr "Зареєстровано"
 
-#, php-format
-#~ msgid ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
-#~ msgstr ""
-#~ "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-#~ "from pre-configured rules or dictionaries?\n"
-#~ "\n"
-#~ "We provide the %s space for you.\n"
-#~ "GLPI-Network is a commercial product that includes a subscription for "
-#~ "tier 3 support, ensuring the correction of bugs encountered with a "
-#~ "commitment time.\n"
-#~ "\n"
-#~ "In this same space, you will be able to <b>contact an official partner</"
-#~ "b> to help you with your GLPI integration.\n"
-#~ "\n"
-#~ "Or, support the GLPI development effort by <b>donating</b>."
+msgid "Unable to fetch registration information."
+msgstr "Не можу отримати інформацію реєстрації."
 
-#, php-format
-#~ msgid ""
-#~ "Having troubles setting up an advanced GLPI module?\n"
-#~ "We can help you solve them. Sign up for support on %s."
-#~ msgstr ""
-#~ "Складнощі з налаштуванням модуля GLPI?\n"
-#~ "Ми можемо допомогти їх вирішити. Зареєструйтесь на %s для отримання "
-#~ "підтримки."
+msgid "The registration key is invalid."
+msgstr "Ключ реєстрації не дійсний."
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "Лист надіслано на Вашу адресу електронної пошти. У листі міститься "
-#~ "інформація для скидання пароля."
+msgid "The registration key refers to a terminated subscription."
+msgstr "Ключ реєстрації посилається на припинену підписку."
 
-#~ msgid "Email address not found."
-#~ msgstr "Адреса електронної пошти не знайдена."
+msgid "The registration key is valid."
+msgstr "Ключ реєстрації дійсний."
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr "MAC адреса та IP обладнання входить в агрегований мережевий порт"
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr "Завантажений файл перевищує параметр upload_max_filesize в php.ini"
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+"Складнощі з налаштуванням модуля GLPI?\n"
+"Ми можемо допомогти їх вирішити. Зареєструйтесь на %s для отримання "
+"підтримки."
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "Завантажений файл перевищує параметр MAX_FILE_SIZE, вказаний в формі HTML"
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"Лист надіслано на Вашу адресу електронної пошти. У листі міститься "
+"інформація для скидання пароля."
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Завантажений файл був завантажений лише частково"
+msgid "Email address not found."
+msgstr "Адреса електронної пошти не знайдена."
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Не вдалось записати файл на диск"
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr "MAC адреса та IP обладнання входить в агрегований мережевий порт"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "Розширення PHP зупинило завантаження файлу"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "Завантажений файл перевищує параметр upload_max_filesize в php.ini"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr "Завантажений файл перевищує параметр post_max_size в php.ini"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Завантажений файл перевищує параметр MAX_FILE_SIZE, вказаний в формі HTML"
 
-#~ msgid "File is too big"
-#~ msgstr "Файл занадто великий"
+msgid "The uploaded file was only partially uploaded"
+msgstr "Завантажений файл був завантажений лише частково"
 
-#~ msgid "File is too small"
-#~ msgstr "Файл занадто маленький"
+msgid "Failed to write file to disk"
+msgstr "Не вдалось записати файл на диск"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Перевищена максимальна кількість файлів"
+msgid "A PHP extension stopped the file upload"
+msgstr "Розширення PHP зупинило завантаження файлу"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Зображення перевищило максимальну ширину"
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "Завантажений файл перевищує параметр post_max_size в php.ini"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Зображення вимагає мінімальної ширини"
+msgid "File is too big"
+msgstr "Файл занадто великий"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Зображення перевищило максимальну висоту"
+msgid "File is too small"
+msgstr "Файл занадто маленький"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Зображення вимагає мінімальної висоти"
+msgid "Maximum number of files exceeded"
+msgstr "Перевищена максимальна кількість файлів"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Заборонений тип файлу"
+msgid "Image exceeds maximum width"
+msgstr "Зображення перевищило максимальну ширину"
 
-#~ msgid "File upload aborted"
-#~ msgstr "Завантаження файлу припинено"
+msgid "Image requires a minimum width"
+msgstr "Зображення вимагає мінімальної ширини"
 
-#~ msgid "Failed to resize image"
-#~ msgstr "Не вдалось змінити розмір зображення"
+msgid "Image exceeds maximum height"
+msgstr "Зображення перевищило максимальну висоту"
 
-#~ msgid "Display GLPI debug information"
-#~ msgstr "Показувати налагоджувальну інформацію GLPI"
+msgid "Image requires a minimum height"
+msgstr "Зображення вимагає мінімальної висоти"
 
-#~ msgid "Progress"
-#~ msgstr "Прогрес"
+msgid "Filetype not allowed"
+msgstr "Заборонений тип файлу"
 
-#~ msgid "My settings"
-#~ msgstr "Мої налаштування"
+msgid "File upload aborted"
+msgstr "Завантаження файлу припинено"
 
-#~ msgid "Back to top of the page"
-#~ msgstr "Повернутись в початок сторінки"
+msgid "Failed to resize image"
+msgstr "Не вдалось змінити розмір зображення"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "Її можна знайти на сайті GLPI-PROJECT.org."
+msgid "Display GLPI debug information"
+msgstr "Показувати налагоджувальну інформацію GLPI"
 
-#~ msgid "Check all"
-#~ msgstr "Позначити Все"
+msgid "Progress"
+msgstr "Прогрес"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Зняти Всі позначки"
+msgid "My settings"
+msgstr "Мої налаштування"
 
-#~ msgid "Check all as"
-#~ msgstr "Позначити все як"
+msgid "Back to top of the page"
+msgstr "Повернутись в початок сторінки"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "Вибір занадто великий, пакетна дія вимкнена"
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "Її можна знайти на сайті GLPI-PROJECT.org."
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "Щоб збільшити обмеження: встановіть max_input_vars або suhosin.post."
-#~ "max_vars в налаштуваннях php."
+msgid "Check all"
+msgstr "Позначити Все"
 
-#~ msgid "The description field is mandatory"
-#~ msgstr "Поле опису обов'язкове"
+msgid "Uncheck all"
+msgstr "Зняти Всі позначки"
 
-#, php-format
-#~ msgid "From %1$d to %2$d of %3$d"
-#~ msgstr "З %1$d до %2$d %3$d"
+msgid "Check all as"
+msgstr "Позначити все як"
 
-#~ msgid "Empty array"
-#~ msgstr "Порожній масив"
+msgid "Selection too large, massive action disabled."
+msgstr "Вибір занадто великий, пакетна дія вимкнена"
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d з %2$d"
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"Щоб збільшити обмеження: встановіть max_input_vars або suhosin.post.max_vars "
+"в налаштуваннях php."
 
-#~ msgid "Close (Esc)"
-#~ msgstr "Закрити (Esc)"
+msgid "The description field is mandatory"
+msgstr "Поле опису обов'язкове"
 
-#~ msgid "Share"
-#~ msgstr "Поділитись"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "З %1$d до %2$d %3$d"
 
-#~ msgid "Zoom in/out"
-#~ msgstr "Збільшити/Зменшити"
+msgid "Empty array"
+msgstr "Порожній масив"
 
-#~ msgid "Previous (arrow left)"
-#~ msgstr "Попереднє (стрілка вліво)"
+msgid "%1$d on %2$d"
+msgstr "%1$d з %2$d"
 
-#~ msgid "Next (arrow right)"
-#~ msgstr "Наступне (стрілка вправо)"
+msgid "Close (Esc)"
+msgstr "Закрити (Esc)"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr "Додайте файл перетягуванням або копіюванням в редакторі або"
+msgid "Share"
+msgstr "Поділитись"
 
-#~ msgid "selecting them"
-#~ msgstr "обиранням"
+msgid "Zoom in/out"
+msgstr "Збільшити/Зменшити"
 
-#~ msgid "File(s)"
-#~ msgstr "Файл(и)"
+msgid "Previous (arrow left)"
+msgstr "Попереднє (стрілка вліво)"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Перетягніть файл сюди, або"
+msgid "Next (arrow right)"
+msgstr "Наступне (стрілка вправо)"
 
-#~ msgid "Upload successful"
-#~ msgstr "Завантажено успішно"
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr "Додайте файл перетягуванням або копіюванням в редакторі або"
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Позначити все/Зняти позначку зі всього"
+msgid "selecting them"
+msgstr "обиранням"
 
-#~ msgid "Start typing to find a menu"
-#~ msgstr "Почніть набирати для пошуку меню"
+msgid "File(s)"
+msgstr "Файл(и)"
 
-#~ msgid "Debug mode enabled"
-#~ msgstr "Налагодження увімкнено"
+msgid "Drag and drop your file here, or"
+msgstr "Перетягніть файл сюди, або"
 
-#~ msgid "Debug mode disabled"
-#~ msgstr "Налагодження вимкнено"
+msgid "Upload successful"
+msgstr "Завантажено успішно"
 
-#~ msgid "Saved searches"
-#~ msgstr "Збережені пошуки"
+msgid "Check/uncheck all"
+msgstr "Позначити все/Зняти позначку зі всього"
 
-#~ msgid "Manage saved searches"
-#~ msgstr "Керувати збереженими пошуками"
+msgid "Start typing to find a menu"
+msgstr "Почніть набирати для пошуку меню"
 
-#~ msgid "Add is disabled"
-#~ msgstr "Додавання вимкнене"
+#, fuzzy
+#| msgid "Changed"
+msgid "Change mode"
+msgstr "Змінено"
 
-#~ msgid "Search is disabled"
-#~ msgstr "Пошук вимкнено"
+msgid "Debug mode enabled"
+msgstr "Налагодження увімкнено"
 
-#~ msgid "Global Kanban"
-#~ msgstr "Глобальний Kanban"
+msgid "Debug mode disabled"
+msgstr "Налагодження вимкнено"
 
-#, php-format
-#~ msgid "You are impersonating %s."
-#~ msgstr "Ви виконуєте роль %s."
+msgid "Saved searches"
+msgstr "Збережені пошуки"
 
-#~ msgid "Stop impersonating"
-#~ msgstr "Припинити виконання ролі"
+msgid "Manage saved searches"
+msgstr "Керувати збереженими пошуками"
 
-#~ msgid "Allow to login to API and get a session token with user credentials"
-#~ msgstr ""
-#~ "Дозволити вхід до API та отримувати ключ сесії з ідентифікаційними даними "
-#~ "користувача."
+msgid "Add is disabled"
+msgstr "Додавання вимкнене"
 
-#~ msgid ""
-#~ "Allow to login to API and get a session token with user external token. "
-#~ "See Remote access key in user Settings tab "
-#~ msgstr ""
-#~ "Дозволити вхід до API та отримувати ключ сесії з зовнішнім ключем "
-#~ "користувача.\n"
-#~ "Дивись Ключ зовнішнього доступу в закладці налаштувань користувача"
+msgid "Search is disabled"
+msgstr "Пошук вимкнено"
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Показувати GLPI ID"
+msgid "Global Kanban"
+msgstr "Глобальний Kanban"
 
-#~ msgid "Color palette"
-#~ msgstr "Палітра кольорів"
+msgid "You are impersonating %s."
+msgstr "Ви виконуєте роль %s."
 
-#~ msgid "Layout"
-#~ msgstr "Схема"
+msgid "Stop impersonating"
+msgstr "Припинити виконання ролі"
 
-#~ msgid "Tabs on left"
-#~ msgstr "Вкладки зліва"
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+"Дозволити вхід до API та отримувати ключ сесії з ідентифікаційними даними "
+"користувача."
 
-#~ msgid "Classic view"
-#~ msgstr "Класичний вигляд"
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+"Дозволити вхід до API та отримувати ключ сесії з зовнішнім ключем "
+"користувача.\n"
+"Дивись Ключ зовнішнього доступу в закладці налаштувань користувача"
 
-#~ msgid "Vertical split"
-#~ msgstr "Вертикальне розділення"
+msgid "Show GLPI ID"
+msgstr "Показувати GLPI ID"
 
-#~ msgid "Dashboards"
-#~ msgstr "Дошки"
+msgid "Color palette"
+msgstr "Палітра кольорів"
 
-#~ msgid "Default for central"
-#~ msgstr "Типово для централа"
+msgid "Layout"
+msgstr "Схема"
 
-#~ msgid "Default for Assets"
-#~ msgstr "Типово для активів"
+msgid "Tabs on left"
+msgstr "Вкладки зліва"
 
-#~ msgid "Default for Assistance"
-#~ msgstr "Типово для підтримки"
+msgid "Classic view"
+msgstr "Класичний вигляд"
 
-#~ msgid "Default for tickets (mini dashboard)"
-#~ msgstr "Типово для заявок (міні дошки)"
+msgid "Vertical split"
+msgstr "Вертикальне розділення"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Перевірка наявності нової версії"
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Закінчення договору"
 
-#~ msgid "Show filters"
-#~ msgstr "Показати фільтри"
+msgid "Dashboards"
+msgstr "Дошки"
 
-#~ msgid "No historical matching your filters"
-#~ msgstr "Немає даних з вказаними фільтрами"
+msgid "Default for central"
+msgstr "Типово для централа"
 
-#~ msgid "Add to schedule"
-#~ msgstr "Додати в розклад"
+msgid "Default for Assets"
+msgstr "Типово для активів"
 
-#~ msgid "Position in room"
-#~ msgstr "Позиція в приміщенні"
+msgid "Default for Assistance"
+msgstr "Типово для підтримки"
 
-#~ msgid "Door orientation in room"
-#~ msgstr "Орієнтація двері в приміщенні"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Типово для заявок (міні дошки)"
 
-#~ msgid "North"
-#~ msgstr "Північ"
+msgid "Check if a new version is available"
+msgstr "Перевірка наявності нової версії"
 
-#~ msgid "East"
-#~ msgstr "Схід"
+msgid "Show filters"
+msgstr "Показати фільтри"
 
-#~ msgid "South"
-#~ msgstr "Південь"
+msgid "No historical matching your filters"
+msgstr "Немає даних з вказаними фільтрами"
 
-#~ msgid "West"
-#~ msgstr "Захід"
+msgid "Add to schedule"
+msgstr "Додати в розклад"
 
-#~ msgid "Number of units"
-#~ msgstr "Кількість юнітів"
+msgid "Position in room"
+msgstr "Позиція в приміщенні"
 
-#~ msgid "U"
-#~ msgstr "U"
+msgid "Door orientation in room"
+msgstr "Орієнтація двері в приміщенні"
 
-#~ msgid "Width"
-#~ msgstr "Ширина"
+msgid "North"
+msgstr "Північ"
 
-#~ msgid "Height"
-#~ msgstr "Висота"
+msgid "East"
+msgstr "Схід"
 
-#~ msgid "Measured power (in watts)"
-#~ msgstr "Виміряна потужність (у Ватах)"
+msgid "South"
+msgstr "Південь"
 
-#~ msgid "Max. weight"
-#~ msgstr "Максимальна вага"
+msgid "West"
+msgstr "Захід"
 
-#~ msgid "No rack found"
-#~ msgstr "Шафа не знайдена"
+msgid "Number of units"
+msgstr "Кількість юнітів"
 
-#~ msgid "Following elements are out of room bounds"
-#~ msgstr "Наступні елементи поза межами кімнати"
+msgid "U"
+msgstr "U"
 
-#~ msgid "Blueprint"
-#~ msgstr "Креслення"
+msgid "Width"
+msgstr "Ширина"
 
-#~ msgid "Grid"
-#~ msgstr "Сітка"
+msgid "Height"
+msgstr "Висота"
 
-#~ msgid "Insert a rack here"
-#~ msgstr "Поставте тут шафу"
+msgid "Measured power (in watts)"
+msgstr "Виміряна потужність (у Ватах)"
 
-#~ msgid "Position must be set"
-#~ msgstr "Необхідно вказати позицію"
+msgid "Max. weight"
+msgstr "Максимальна вага"
 
-#, php-format
-#~ msgid "%1$s position is not available"
-#~ msgstr "%1$s позиція недоступна"
+msgid "No rack found"
+msgstr "Шафа не знайдена"
 
-#~ msgid "All categories"
-#~ msgstr "Всі категорії"
+msgid "Following elements are out of room bounds"
+msgstr "Наступні елементи поза межами кімнати"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "ПЗ без категорії"
+msgid "Blueprint"
+msgstr "Креслення"
 
-#~ msgid "Valid license"
-#~ msgstr "Діюча ліцензія"
+msgid "Grid"
+msgstr "Сітка"
 
-#~ msgid "Other component"
-#~ msgstr "Інший компонент"
+msgid "Insert a rack here"
+msgstr "Поставте тут шафу"
 
-#~ msgid "One last thing before starting"
-#~ msgstr "Остання річ перед запуском"
+msgid "Position must be set"
+msgstr "Необхідно вказати позицію"
 
-#~ msgid "Donate"
-#~ msgstr "Пожертва"
+msgid "%1$s position is not available"
+msgstr "%1$s позиція недоступна"
+
+msgid "All categories"
+msgstr "Всі категорії"
+
+msgid "Uncategorized software"
+msgstr "ПЗ без категорії"
+
+msgid "Valid license"
+msgstr "Діюча ліцензія"
+
+msgid "Other component"
+msgstr "Інший компонент"
+
+msgid "One last thing before starting"
+msgstr "Остання річ перед запуском"
+
+msgid "Donate"
+msgstr "Пожертва"
+
+msgid "Unofficial translations are also available"
+msgstr "Неофіційні переклали також доступні"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Я прочитав і ПРИЙМАЮ всі пункти ліцензії."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Я прочитав і НЕ ПРИЙМАЮ всі пункти ліцензії"
+
+msgid "Installation or update of GLPI"
+msgstr "Встановлення або оновлення GLPI"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Оберіть 'Встановлення' для повного нового встановлення GLPI ."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "Оберіть 'Оновити', щоб оновити Вашу версію GLPI з попередньої версії"
+
+msgid "Do you want to continue?"
+msgstr "Продовжувати?"
+
+msgid "Database connection parameters"
+msgstr "Параметри з’єднання з базою даних"
+
+msgid "Test of the connection at the database"
+msgstr "Перевірка зв’язку з базою даних"
+
+msgid "Can't connect to the database"
+msgstr "Неможливо з’єднатися з базою даних"
+
+msgid "The server answered: %s"
+msgstr "Сервер повернув: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Поле сервера та/або користувача порожнє"
+
+msgid "Please select a database:"
+msgstr "Виберіть базу даних:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Створити нову базу даних або використовувати існуючу:"
+
+msgid "Please select the database to update:"
+msgstr "Виберіть базу даних для оновлення:"
+
+msgid "Initialization of the database"
+msgstr "Ініціалізація бази даних"
+
+msgid "Impossible to use the database:"
+msgstr "Неможливо використовувати базу даних:"
+
+msgid "OK - database was initialized"
+msgstr "OK - базу даних проініціалізовано"
+
+msgid "Impossible to write the database setup file"
+msgstr "Неможливо записати файл встановлення бази даних"
+
+msgid "Database created"
+msgstr "Базу даних створено"
+
+msgid "Error in creating database!"
+msgstr "Помилка при створенні бази даних!"
+
+msgid "You didn't select a database!"
+msgstr "Ви не обрали базу даних!"
+
+msgid "Collect data"
+msgstr "Зібрати дані"
+
+msgid "The installation is finished"
+msgstr "Встановлення завершено"
+
+msgid "Default logins / passwords are:"
+msgstr "Стандартні імена і паролі користувачів:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech для технічного облікового запису"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal для звичайного облікового запису"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/post-only для облікового запису створення заявок"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr ""
+"Ви можете змінити або видалити ці облікові записи, як і перші записи в БД."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Не вдається створити файл підключення до БД. Перевірте, будь ласка, права "
+"доступу до файлу."
+
+msgid "Select your language"
+msgstr "Оберіть мову"
+
+msgid "Beginning of the installation"
+msgstr "Початок встановлення"
+
+msgid "Step %d"
+msgstr "Крок %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Аутентифікація"
+
+msgid "Remember me"
+msgstr "Запам'ятати мене"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Ви маєте увімкнути JavaScript у своєму оглядачі"
+
+msgid "You must accept cookies to reach this application"
+msgstr "Ви маєте увімкнути cookies у своєму оглядачі"
+
+msgid "Invalid use of session ID"
+msgstr "Невірне використання ID сесії"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Переглянути питання, які задають найчастіше (FAQ)"
+
+msgid "Add a card"
+msgstr "Додати картку"
+
+msgid "Add a filter"
+msgstr "Додати фільтр"
+
+msgid "Saved"
+msgstr "Збережено"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Справді видалити дошку %s?"
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Дата відправки"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Запустити GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Неофіційні переклали також доступні"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Я прочитав і ПРИЙМАЮ всі пункти ліцензії."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "Я прочитав і НЕ ПРИЙМАЮ всі пункти ліцензії"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "Встановлення або оновлення GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Оберіть 'Встановлення' для повного нового встановлення GLPI ."
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr ""
-#~ "Оберіть 'Оновити', щоб оновити Вашу версію GLPI з попередньої версії"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Продовжувати?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Параметри з’єднання з базою даних"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Перевірка зв’язку з базою даних"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Неможливо з’єднатися з базою даних"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Сервер повернув: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Поле сервера та/або користувача порожнє"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Виберіть базу даних:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Створити нову базу даних або використовувати існуючу:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Виберіть базу даних для оновлення:"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Ініціалізація бази даних"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Неможливо використовувати базу даних:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "OK - базу даних проініціалізовано"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "Неможливо записати файл встановлення бази даних"
-
-#~ msgid "Database created"
-#~ msgstr "Базу даних створено"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Помилка при створенні бази даних!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Ви не обрали базу даних!"
-
-#~ msgid "Collect data"
-#~ msgstr "Зібрати дані"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Встановлення завершено"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Стандартні імена і паролі користувачів:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi для облікового запису адміністратора"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech для технічного облікового запису"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal для звичайного облікового запису"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/post-only для облікового запису створення заявок"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr ""
-#~ "Ви можете змінити або видалити ці облікові записи, як і перші записи в БД."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Не вдається створити файл підключення до БД. Перевірте, будь ласка, права "
-#~ "доступу до файлу."
-
-#~ msgid "Select your language"
-#~ msgstr "Оберіть мову"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Початок встановлення"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Крок %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Аутентифікація"
-
-#~ msgid "Remember me"
-#~ msgstr "Запам'ятати мене"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Ви маєте увімкнути JavaScript у своєму оглядачі"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Ви маєте увімкнути cookies у своєму оглядачі"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Невірне використання ID сесії"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Переглянути питання, які задають найчастіше (FAQ)"
-
-#~ msgid "Add a card"
-#~ msgstr "Додати картку"
-
-#~ msgid "Add a filter"
-#~ msgstr "Додати фільтр"
-
-#~ msgid "Saved"
-#~ msgstr "Збережено"
-
-#, javascript-format
-#~ msgid "Are you sure you want to delete the dashboard %s ?"
-#~ msgstr "Справді видалити дошку %s?"

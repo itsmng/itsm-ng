@@ -23174,436 +23174,1322 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "No room found or selected"
-#~ msgstr "ไม่พบห้องที่ต้องการหรือที่เลือก"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "เขียน"
 
-#~ msgid "Marketplace"
-#~ msgstr "ร้านค้า"
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "เข้าสู่ระบบ"
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "ดูแคตตาล็อกของปลั๊กอิน"
+#, fuzzy
+#| msgid "When connecting or updating"
+msgid "Open ID connect configuration"
+msgstr "เมื่อมีการเชื่อมต่อหรืออัพเดท"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS feeds found"
+msgid "No room found or selected"
+msgstr "ไม่พบห้องที่ต้องการหรือที่เลือก"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+msgid "Marketplace"
+msgstr "ร้านค้า"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Ticket ของคุณที่ปิด"
+#, fuzzy
+#| msgid "%1$s adds the item %2$s (%3$d)"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s เพิ่มรายการ %2$s (%3$d)"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Tickets เกี่ยวกับสถานะที่ค้างอยู่"
+msgid "See the catalog of plugins"
+msgstr "ดูแคตตาล็อกของปลั๊กอิน"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Tickets ที่ต้องดำเนินการ"
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Ticket สังเกตของคุณ"
+#, fuzzy
+#| msgid "Template for an incident"
+msgid "Empty for infinite"
+msgstr "แม่แบบเหตุการณ์ผิดปกติ"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Ticket ของคุณในความคืบหน้า"
+msgid "RSS feeds found"
+msgstr "RSS feeds found"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Ticket ของคุณที่จะตรวจสอบ"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Ticket followup"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "IP version"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d Ticket ใหม่"
+#, fuzzy
+#| msgid "Confirm the final deletion?"
+msgid "Confirm the promotion?"
+msgstr "ยืนยันการลบสุดท้าย?"
 
-#~ msgid "No ticket found."
-#~ msgstr "ไม่พบ Ticket"
+msgid "Your tickets to close"
+msgstr "Ticket ของคุณที่ปิด"
 
-#~ msgid "Last tickets"
-#~ msgstr "Ticket ล่าสุด"
+msgid "Tickets on pending status"
+msgstr "Tickets เกี่ยวกับสถานะที่ค้างอยู่"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Ticket ใหม่สำหรับรายการ"
+msgid "Tickets to be processed"
+msgstr "Tickets ที่ต้องดำเนินการ"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "ล่าสุด %d Ticket"
+msgid "Your observed tickets"
+msgstr "Ticket สังเกตของคุณ"
 
-#~ msgid "You don't have right to see all tickets"
-#~ msgstr "คุณไม่ได้มีสิทธิที่จะเห็น Ticket ทั้งหมด"
+msgid "Your tickets in progress"
+msgstr "Ticket ของคุณในความคืบหน้า"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Ticket บนลิงค์รายการ"
+msgid "Your tickets to validate"
+msgstr "Ticket ของคุณที่จะตรวจสอบ"
 
-#~ msgid "No ticket in progress."
-#~ msgstr "ไม่มี Ticket ในการดำเนินการ"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected approval status"
+msgstr "Ticket ของคุณในความคืบหน้า"
 
-#~ msgid "Assign equipment"
-#~ msgstr "มอบหมายอุปกรณ์"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected solution"
+msgstr "Ticket ของคุณในความคืบหน้า"
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "ปิด Ticket อัตโนมัติ"
+msgid "Ticket followup"
+msgstr "Ticket followup"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "รุ่นของการสำรวจความพึงพอใจ"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d Ticket ใหม่"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "ดู Tickets ในกลุ่มของฉัน"
+msgid "No ticket found."
+msgstr "ไม่พบ Ticket"
 
-#~ msgid "See all tickets"
-#~ msgstr "ดู Ticket ทั้งหมด"
+msgid "Last tickets"
+msgstr "Ticket ล่าสุด"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "มอบหมาย Ticket"
+msgid "New ticket for this item..."
+msgstr "Ticket ใหม่สำหรับรายการ"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Steal a ticket"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "ล่าสุด %d Ticket"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "อยู่ในค่าใช้จ่ายของ Ticket"
+msgid "You don't have right to see all tickets"
+msgstr "คุณไม่ได้มีสิทธิที่จะเห็น Ticket ทั้งหมด"
 
-#~ msgid "Change the priority"
-#~ msgstr "เปลี่ยนลำดับความสำคัญ"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Ticket บนลิงค์รายการ"
 
-#~ msgid "Recalculate the category"
-#~ msgstr "คำนวณหมวดหมู่"
+msgid "No ticket in progress."
+msgstr "ไม่มี Ticket ในการดำเนินการ"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "จำนวนติดตั้ง"
+msgid "Assign equipment"
+msgstr "มอบหมายอุปกรณ์"
 
-#~ msgid "Merge"
-#~ msgstr "รวม"
+msgid "Automatic tickets closing"
+msgstr "ปิด Ticket อัตโนมัติ"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "ลบโปรแกรมหลังจากควบรวม"
+msgid "Generation of satisfaction surveys"
+msgstr "รุ่นของการสำรวจความพึงพอใจ"
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "ปิดอัตโนมัติของ Tickets แก้ไขหลังจาก"
 
-#~ msgid "Connect a computer"
-#~ msgstr "เชื่อมต่อคอมพิวเตอร์"
+#, fuzzy
+#| msgid "See all tickets"
+msgid "See my ticket"
+msgstr "ดู Ticket ทั้งหมด"
 
-#~ msgid "Not connected"
-#~ msgstr "ไม่เชื่อมต่อ"
+#, fuzzy
+#| msgid "See all tickets"
+msgid "See group ticket"
+msgstr "ดู Ticket ทั้งหมด"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "ที่ถูกต้อง %s"
+msgid "See tickets created by my groups"
+msgstr "ดู Tickets ในกลุ่มของฉัน"
 
-#~ msgid "Solved"
-#~ msgstr "ปัญหา"
+msgid "See all tickets"
+msgstr "ดู Ticket ทั้งหมด"
 
-#~ msgid "Delete this dashboard"
-#~ msgstr "ลบแดชบอร์ดนี้"
+#, fuzzy
+#| msgid "Assigned"
+msgid "See assigned"
+msgstr "มอบหมาย"
 
-#~ msgid "Toggle fullscreen"
-#~ msgstr "สลับใช้เต็มจอ"
+#, fuzzy
+#| msgid "See all tickets"
+msgid "See assigned tickets"
+msgstr "ดู Ticket ทั้งหมด"
 
-#~ msgid "Add filter"
-#~ msgstr "เพิ่มการกรอง"
+msgid "Assign a ticket"
+msgstr "มอบหมาย Ticket"
 
-#~ msgid "Widget"
-#~ msgstr "วิดเจ็ท"
+msgid "Steal"
+msgstr ""
 
-#~ msgid "Limit number of data"
-#~ msgstr "จำกัดจำนวนข้อมูล"
+msgid "Steal a ticket"
+msgstr "Steal a ticket"
 
-#~ msgid "Filters"
-#~ msgstr "ฟิลเตอร์"
+#, fuzzy
+#| msgid "Technician in charge"
+msgid "Beeing in charge"
+msgstr "ไอทีที่รับผิดชอบ"
 
-#~ msgid "Number of tickets by month"
-#~ msgstr "จำนวนการแจ้งซ่อมตามเดือน"
+msgid "To be in charge of a ticket"
+msgstr "อยู่ในค่าใช้จ่ายของ Ticket"
 
-#~ msgid "Tickets status by month"
-#~ msgstr "สถานะการแจ้งซ่อมตามเดือน"
+msgid "Change the priority"
+msgstr "เปลี่ยนลำดับความสำคัญ"
 
-#~ msgid "Example:"
-#~ msgstr "ตัวอย่าง"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr ""
 
-#~ msgid ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
-#~ msgstr ""
-#~ "IP network is not included in the database. However, you can see current "
-#~ "available networks."
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
 
-#~ msgid "Add a network name"
-#~ msgstr "เพิ่มเน็ตเวร์ค"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to load ticket %d"
+msgstr "สร้าง Ticket ผิดพลาด %s"
 
-#~ msgid "Not associated"
-#~ msgstr "ไม่เกี่ยวข้อง"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add followup to ticket %d"
+msgstr "สร้าง Ticket ผิดพลาด %s"
 
-#~ msgid "Create a new network name"
-#~ msgstr "สร้างชื่อเครือข่ายใหม่"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add task to ticket %d"
+msgstr "สร้าง Ticket ผิดพลาด %s"
 
-#~ msgid "No network name found"
-#~ msgstr "ไม่มีชื่อเน็ตเวร์ค"
+#, fuzzy
+#| msgid "Failed to create recurrent ticket %s"
+msgid "Failed to add document to ticket %d"
+msgstr "สร้าง Ticket ผิดพลาด %s"
+
+msgid "Failed to link tickets %d and %d"
+msgstr ""
 
-#~ msgid "Clean"
-#~ msgstr "คลีน"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "ลบไฟล์ %s ไม่สำเร็จ"
+
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s ล้างข้อมูล รุ่นที่ %2$s"
+
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "การตรวจสอบสิทธิ์การเขียนปลั๊กอินสำหรับไฟล์เอกสาร"
+
+msgid "Recalculate the category"
+msgstr "คำนวณหมวดหมู่"
+
+#, fuzzy
+#| msgid "Valid license"
+msgid "Valid licenses"
+msgstr "ใบอนุญาตถูกต้อง"
+
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "จำนวนติดตั้ง"
+
+msgid "Merge"
+msgstr "รวม"
+
+msgid "Software deleted after merging"
+msgstr "ลบโปรแกรมหลังจากควบรวม"
+
+msgid "You must enable at least one notification mode."
+msgstr ""
 
-#~ msgid "Install"
-#~ msgstr "ติดตั้ง"
+msgid "GLPI"
+msgstr "GLPI"
+
+msgid "Connect a computer"
+msgstr "เชื่อมต่อคอมพิวเตอร์"
+
+msgid "Not connected"
+msgstr "ไม่เชื่อมต่อ"
+
+#, fuzzy
+#| msgid "Show all"
+msgid "Show as map"
+msgstr "โชว์ทั้งหมด"
 
-#~ msgid "Enable"
-#~ msgstr "เปิดการใช้งาน"
+msgid "Valid to %s"
+msgstr "ที่ถูกต้อง %s"
 
-#~ msgid "Uninstall"
-#~ msgstr "ถอดนการติดตั้ง"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "Ticket ล่าสุด"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr "อีเมล์ได้ถูกส่งไปยังที่อยู่อีเมลของคุณ อีเมลที่มีข้อมูลสำหรับการตั้งค่ารหัสผ่านของคุณ"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Tickets รอการอนุมัติ"
 
-#~ msgid "Email address not found."
-#~ msgstr "ไม่พบอีเมล์"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "ลิงค์ Ticket"
 
-#~ msgid ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
-#~ msgstr ""
-#~ "The MAC address and the IP of the equipment are included in an aggregated "
-#~ "network port"
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "แก้ปัญหา Ticket"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr "มีกำจำกัดไฟล์ Upload ใน php.ini"
+#, fuzzy
+#| msgid "Created tickets"
+msgid "Closed tickets"
+msgstr "สร้าง Ticket"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Without name"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "การอัพโหลดไฟล์ ถูกอัพโหลดเพียงบางส่วนเท่านั้น"
+#, fuzzy
+#| msgid "Time cost"
+msgid "Time to close"
+msgstr "ค่าใช้จ่ายเวลา"
+
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "การตรวจสอบ"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "ไม่สามารถเขียนไฟล์ไปยังดิสก์."
+msgid "Solved"
+msgstr "ปัญหา"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "PHP extension หยุดการอัปโหลดไฟล์"
+#, fuzzy
+#| msgid "Delete this dashboard"
+msgid "Share or embed this dashboard"
+msgstr "ลบแดชบอร์ดนี้"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr "The uploaded file exceeds the post_max_size directive in php.ini"
+msgid "Delete this dashboard"
+msgstr "ลบแดชบอร์ดนี้"
 
-#~ msgid "File is too big"
-#~ msgstr "ไฟล์ใหญ่เกินไป."
+#, fuzzy
+#| msgid "Toggle fullscreen"
+msgid "Toggle auto-refresh"
+msgstr "สลับใช้เต็มจอ"
 
-#~ msgid "File is too small"
-#~ msgstr "ไฟล์มีขนาดเล็กเกินไป"
+#, fuzzy
+#| msgid "Monitor model"
+#| msgid_plural "Monitor models"
+msgid "Toggle night mode"
+msgstr "รุ่นจอภาพ"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "จำนวนสูงสุดของไฟล์เกิน"
+msgid "Toggle fullscreen"
+msgstr "สลับใช้เต็มจอ"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "รูปภาพเกินความกว้างสูงสุด"
+#, fuzzy
+#| msgid "Delete this dashboard"
+msgid "Clone this dashboard"
+msgstr "ลบแดชบอร์ดนี้"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "รูปภาพต้องมีความกว้างต่ำสุด"
+msgid "Toggle edit mode"
+msgstr ""
+
+msgid "Add filter"
+msgstr "เพิ่มการกรอง"
+
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "เพิ่มงานใหม่"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "อื่นๆ"
+
+msgid "Widget"
+msgstr "วิดเจ็ท"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+msgid "Limit number of data"
+msgstr "จำกัดจำนวนข้อมูล"
+
+msgid "Filters"
+msgstr "ฟิลเตอร์"
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "URL ของโปรแกรม"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP directory link"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+msgid "empty card !"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number of costs"
+msgid "Number of %s"
+msgstr "จำนวนต้นทุน"
+
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s โดย %2$s"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "รายการของค่า"
+
+msgid "Number of tickets by month"
+msgstr "จำนวนการแจ้งซ่อมตามเดือน"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+msgid "Tickets status by month"
+msgstr "สถานะการแจ้งซ่อมตามเดือน"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "หมวดหมู่ Ticket"
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Top ticket's categories"
+msgstr "หมวดหมู่ Ticket"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "Ticket ของคุณที่จะตรวจสอบ"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "ชนิดเริ่มต้นTickets"
+
+#, fuzzy
+#| msgid "Ticket location"
+msgid "Top ticket's locations"
+msgstr "สถานที่ Ticket"
+
+#, fuzzy
+#| msgid "Number of tickets as requester"
+msgid "Top ticket's requesters"
+msgstr "จำนวน Ticket ที่เป็นผู้ร้องขอ"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "ดู Tickets ในกลุ่มของฉัน"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "สำหรับ Ticket ที่ปิดตามหลัง"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "ดู Tickets ในกลุ่มของฉัน"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignees"
+msgstr "Ticket ของคุณในความคืบหน้า"
+
+#, fuzzy
+#| msgid "Add a followup to tickets of associated groups"
+msgid "Top ticket's assignee groups"
+msgstr "Add a followup to tickets of associated groups"
+
+#, fuzzy
+#| msgid "Personal reminder"
+#| msgid_plural "Personal reminders"
+msgid "List of reminders"
+msgstr "เตือนส่วนบุคคล"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr "ตัวอย่าง"
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+
+msgid "Add a network name"
+msgstr "เพิ่มเน็ตเวร์ค"
+
+msgid "Not associated"
+msgstr "ไม่เกี่ยวข้อง"
+
+msgid "Create a new network name"
+msgstr "สร้างชื่อเครือข่ายใหม่"
+
+msgid "No network name found"
+msgstr "ไม่มีชื่อเน็ตเวร์ค"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "ตรวจสอบอัพเดท"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "ติดตั้ง"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "ตัดการเชื่อมต่อ"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "สร้างเมื่อ %s"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "ความคิดเห็นของคุณได้รับการแก้ไขแล้ว"
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "สร้างขึ้นบน %s"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "รูปภาพเกินความสูงสูงสุด"
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "รูปภาพต้องมีความสูงต่ำสุด"
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "ชนิดของไฟล์ไม่ได้รับอนุญาต"
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "คำถามที่นิยมมากที่สุด"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "อัพเดทล่าสุด"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Best notes"
+msgstr "อ่านโน้ต"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "Filter plugin list"
+msgstr "ปิดการใช้งานปลั๊กอิน"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "หน้าหลัก"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "อ่าน"
+
+msgid "Clean"
+msgstr "คลีน"
+
+#, fuzzy
+#| msgid "The login is not valid. Unable to add the user."
+msgid "This plugin is not available for your GLPI version."
+msgstr "การเข้าสู่ระบบไม่ถูกต้อง. ไม่สามารถเพิ่มผู้ใช้."
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "รุ่นใหม่สามารถใช้ได้: %s"
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "ติดตั้ง"
+
+msgid "Enable"
+msgstr "เปิดการใช้งาน"
+
+msgid "Uninstall"
+msgstr "ถอดนการติดตั้ง"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "ปิดการใช้งานปลั๊กอิน"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "ล่าสุด"
+
+#, fuzzy
+#| msgid "Marketplace"
+msgid "Switch to marketplace"
+msgstr "ร้านค้า"
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "ปลั๊กอิน"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "หมายเลขอาคาร"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "การจอง"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "สร้างเมื่อ %s"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "การจอง"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "คำอธิบาย"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "ไม่รู้จักไฟล์"
+
+#, fuzzy
+#| msgid "yesterday"
+msgid "Registered by"
+msgstr "เมื่อวาน"
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "เปิดใช้งานข้อมูลทางการเงินและการบริหารจัดการ"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "ติดตั้งเสร็จสิ้น"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "ติดตั้งเสร็จสิ้น"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr "อีเมล์ได้ถูกส่งไปยังที่อยู่อีเมลของคุณ อีเมลที่มีข้อมูลสำหรับการตั้งค่ารหัสผ่านของคุณ"
+
+msgid "Email address not found."
+msgstr "ไม่พบอีเมล์"
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "มีกำจำกัดไฟล์ Upload ใน php.ini"
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "การอัพโหลดไฟล์ ถูกอัพโหลดเพียงบางส่วนเท่านั้น"
+
+msgid "Failed to write file to disk"
+msgstr "ไม่สามารถเขียนไฟล์ไปยังดิสก์."
+
+msgid "A PHP extension stopped the file upload"
+msgstr "PHP extension หยุดการอัปโหลดไฟล์"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr "The uploaded file exceeds the post_max_size directive in php.ini"
+
+msgid "File is too big"
+msgstr "ไฟล์ใหญ่เกินไป."
+
+msgid "File is too small"
+msgstr "ไฟล์มีขนาดเล็กเกินไป"
+
+msgid "Maximum number of files exceeded"
+msgstr "จำนวนสูงสุดของไฟล์เกิน"
+
+msgid "Image exceeds maximum width"
+msgstr "รูปภาพเกินความกว้างสูงสุด"
+
+msgid "Image requires a minimum width"
+msgstr "รูปภาพต้องมีความกว้างต่ำสุด"
+
+msgid "Image exceeds maximum height"
+msgstr "รูปภาพเกินความสูงสูงสุด"
+
+msgid "Image requires a minimum height"
+msgstr "รูปภาพต้องมีความสูงต่ำสุด"
+
+msgid "Filetype not allowed"
+msgstr "ชนิดของไฟล์ไม่ได้รับอนุญาต"
+
+#, fuzzy
+#| msgid "No file was uploaded"
+msgid "File upload aborted"
+msgstr "ไม่มีไฟล์อัพโหลด"
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to resize image"
+msgstr "ไม่สามารถเขียนไฟล์ไปยังดิสก์."
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "ข้อมูลผู้ใช้"
+
+msgid "Progress"
+msgstr "ความคืบหน้า"
+
+msgid "My settings"
+msgstr "การตั้งค่าของฉัน"
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "ไปยังเว็บ  GLPI-PROJECT.org"
+
+msgid "Check all"
+msgstr "เลือกทั้งหมด"
+
+msgid "Uncheck all"
+msgstr "ไม่เลือก"
+
+msgid "Check all as"
+msgstr "ตรวจสอบทั้งหมดเป็น"
+
+msgid "Selection too large, massive action disabled."
+msgstr "ถูกปิดการใช้งาน"
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+
+#, fuzzy
+#| msgid "Ticket creation failed (check mandatory fields)"
+msgid "The description field is mandatory"
+msgstr "Ticket สร้างไม่สำเร็จ  (ตรวจสอบเขตข้อมูลจำเป็น)"
+
+#, fuzzy
+#| msgid "From %1$s to %2$s"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "จาก %1$s ถึง %2$s"
+
+msgid "Empty array"
+msgstr ""
+
+msgid "%1$d on %2$d"
+msgstr "%1$d บน %2$d"
+
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "ปิด"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr "แนบไฟล์โดยลากและวางหรือคัดลอกและวางในตัวแก้ไขหรือเลือก"
+
+#, fuzzy
+#| msgid "No selected items"
+msgid "selecting them"
+msgstr "ไม่มีรายการที่เลือก"
+
+#, fuzzy
+#| msgid "File (%s)"
+msgid "File(s)"
+msgstr "ไฟล์ (%s)"
+
+msgid "Drag and drop your file here, or"
+msgstr ""
+
+#, fuzzy
+#| msgid "Operation successful"
+msgid "Upload successful"
+msgstr "การดำเนินการสำเร็จ"
+
+#, fuzzy
+#| msgid "Uncheck all"
+msgid "Check/uncheck all"
+msgstr "ไม่เลือก"
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+#, fuzzy
+#| msgid "Phone model"
+#| msgid_plural "Phone models"
+msgid "Change mode"
+msgstr "รุ่นโทรศัพท์"
+
+#, fuzzy
+#| msgid "Debug mode has been enabled!"
+msgid "Debug mode enabled"
+msgstr "เปิดโหมดการแก้ไขบั้ค"
+
+#, fuzzy
+#| msgid "Debug mode has been disabled!"
+msgid "Debug mode disabled"
+msgstr "ปิดโหมดการแก้ไขบั้ค"
+
+msgid "Saved searches"
+msgstr "ค้นหาที่บันทึกไว้"
+
+#, fuzzy
+#| msgid "New saved search"
+msgid "Manage saved searches"
+msgstr "การค้นหาที่บันทึกใหม่"
+
+#, fuzzy
+#| msgid "API disabled"
+msgid "Add is disabled"
+msgstr "API disabled"
+
+#, fuzzy
+#| msgid "Search has been saved"
+msgid "Search is disabled"
+msgstr "บันทึกการค้นหาแล้ว"
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "จัดการโกลบอล"
+
+msgid "You are impersonating %s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "ตั้งค่าส่วนตัว"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr "โชว์ GLPI ID"
+
+msgid "Color palette"
+msgstr ""
+
+msgid "Layout"
+msgstr ""
+
+#, fuzzy
+#| msgid "On left"
+msgid "Tabs on left"
+msgstr "ทางซ้าย"
+
+msgid "Classic view"
+msgstr "Classic view"
+
+msgid "Vertical split"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "วันสิ้นสุดสัญญา"
+
+#, fuzzy
+#| msgid "Assets Dashboard"
+msgid "Dashboards"
+msgstr "Assets Dashboard"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "ค่าเริ่มต้นสำหรับ Ticket"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "ค่าเริ่มต้นสำหรับ Ticket"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "ค่าเริ่มต้นสำหรับ Ticket"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "ค่าเริ่มต้นสำหรับ Ticket"
+
+msgid "Check if a new version is available"
+msgstr "ตรวจสอบว่ารุ่นใหม่สามารถใช้ได้"
+
+#, fuzzy
+#| msgid "Add filter"
+msgid "Show filters"
+msgstr "เพิ่มการกรอง"
+
+msgid "No historical matching your filters"
+msgstr ""
+
+msgid "Add to schedule"
+msgstr "Add to schedule"
+
+#, fuzzy
+#| msgid "Position"
+msgid "Position in room"
+msgstr "ตำแหน่ง"
+
+msgid "Door orientation in room"
+msgstr ""
+
+msgid "North"
+msgstr ""
+
+msgid "East"
+msgstr ""
 
-#~ msgid "Progress"
-#~ msgstr "ความคืบหน้า"
+msgid "South"
+msgstr ""
 
-#~ msgid "My settings"
-#~ msgstr "การตั้งค่าของฉัน"
+msgid "West"
+msgstr ""
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "ไปยังเว็บ  GLPI-PROJECT.org"
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of items"
+msgid "Number of units"
+msgstr "จำนวนรายการ"
 
-#~ msgid "Check all"
-#~ msgstr "เลือกทั้งหมด"
+msgid "U"
+msgstr ""
 
-#~ msgid "Uncheck all"
-#~ msgstr "ไม่เลือก"
+msgid "Width"
+msgstr ""
 
-#~ msgid "Check all as"
-#~ msgstr "ตรวจสอบทั้งหมดเป็น"
+#, fuzzy
+#| msgid "Right"
+msgid "Height"
+msgstr "ขวา"
 
-#~ msgid "Selection too large, massive action disabled."
-#~ msgstr "ถูกปิดการใช้งาน"
+msgid "Measured power (in watts)"
+msgstr ""
 
-#~ msgid ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
-#~ msgstr ""
-#~ "To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-#~ "php configuration."
+msgid "Max. weight"
+msgstr ""
 
-#, php-format
-#~ msgid "%1$d on %2$d"
-#~ msgstr "%1$d บน %2$d"
+#, fuzzy
+#| msgid "No data found"
+msgid "No rack found"
+msgstr "ไม่พบข้อมูล"
 
-#~ msgid "Attach file by drag & drop or copy & paste in editor or "
-#~ msgstr "แนบไฟล์โดยลากและวางหรือคัดลอกและวางในตัวแก้ไขหรือเลือก"
+msgid "Following elements are out of room bounds"
+msgstr ""
 
-#~ msgid "Saved searches"
-#~ msgstr "ค้นหาที่บันทึกไว้"
+msgid "Blueprint"
+msgstr ""
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "โชว์ GLPI ID"
+msgid "Grid"
+msgstr ""
 
-#~ msgid "Classic view"
-#~ msgstr "Classic view"
+msgid "Insert a rack here"
+msgstr ""
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "ตรวจสอบว่ารุ่นใหม่สามารถใช้ได้"
+msgid "Position must be set"
+msgstr ""
 
-#~ msgid "Add to schedule"
-#~ msgstr "Add to schedule"
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "Network port is not available..."
 
-#~ msgid "All categories"
-#~ msgstr "ทุกรายการ"
+msgid "All categories"
+msgstr "ทุกรายการ"
 
-#~ msgid "Uncategorized software"
-#~ msgstr "ซอฟแวร์ไม่มีหมวดหมู่"
+msgid "Uncategorized software"
+msgstr "ซอฟแวร์ไม่มีหมวดหมู่"
 
-#~ msgid "Valid license"
-#~ msgstr "ใบอนุญาตถูกต้อง"
+msgid "Valid license"
+msgstr "ใบอนุญาตถูกต้อง"
+
+#, fuzzy
+#| msgid "Delete component"
+msgid "Other component"
+msgstr "ลบองค์ประกอบ"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr ""
+
+msgid "Unofficial translations are also available"
+msgstr "การแปลอย่างไม่เป็นทางการนอกจากนี้ยังมี"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "ข้าพเจ้าได้อ่านและยอมรับเงื่อนไขของใบอนุญาตที่เขียนข้างต้น"
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "ข้าพเจ้าได้อ่านและไม่ยอมรับเงื่อนไขของใบอนุญาตที่เขียนข้างต้น"
+
+msgid "Installation or update of GLPI"
+msgstr "ติดตั้ง หรือ อัพเดท GLPI"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "เลือก \"ติดตั้ง\" สำหรับติดตั้งใหม่"
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr "เลือก \"อัพเกรด\" สำหรับการอัพเดท GLPI"
+
+msgid "Do you want to continue?"
+msgstr "คุณต้องการที่จะดำเนินการต่อหรือไม่"
+
+msgid "Database connection parameters"
+msgstr "พารามิเตอร์การเชื่อมต่อฐานข้อมูล"
+
+msgid "Test of the connection at the database"
+msgstr "ทดสอบการเชื่อมต่อฐานข้อมูล"
+
+msgid "Can't connect to the database"
+msgstr "ไม่สามารถเชื่อมติดฐานข้อมูลได้"
+
+msgid "The server answered: %s"
+msgstr "The server answered: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "The server or/and user field is empty"
+
+msgid "Please select a database:"
+msgstr "กรุณาเลือกฐานข้อมูล"
+
+msgid "Create a new database or use an existing one:"
+msgstr "สร้างฐานข้อมูลใหม่"
+
+msgid "Please select the database to update:"
+msgstr "กรุณาเลือดฐานข้อมูลที่ต้องการอัพเดท"
+
+msgid "Initialization of the database"
+msgstr "เตรียมฐานข้อมูล"
+
+msgid "Impossible to use the database:"
+msgstr "เป็นไปไม่ได้ที่จะใช้ฐานข้อมูล:"
+
+msgid "OK - database was initialized"
+msgstr "ตกลง - ฐานข้อมูลได้รับการเตรียม"
+
+msgid "Impossible to write the database setup file"
+msgstr "เป็นไปไม่ได้ที่จะเขียนไฟล์ติดตั้งฐานข้อมูล"
+
+msgid "Database created"
+msgstr "ฐานข้อมูลที่สร้าง"
+
+msgid "Error in creating database!"
+msgstr "เกิดข้อผิดพลาดในการสร้างฐานข้อูล"
+
+msgid "You didn't select a database!"
+msgstr "คุณไม่ได้เลือกฐานข้อมูล!"
+
+#, fuzzy
+#| msgid "Close date"
+msgid "Collect data"
+msgstr "วันที่ปิด"
+
+msgid "The installation is finished"
+msgstr "ติดตั้งเสร็จสิ้น"
+
+msgid "Default logins / passwords are:"
+msgstr "ผู้ใช้และรหัสผ่านเริ่มต้น"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech ช่างเทคนิค IT Support"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal for the normal account"
+
+msgid "post-only/postonly for the postonly account"
+msgstr "post-only/postonly โพสได้อย่างเดียว"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "คุณสามารถลบหรือแก้ไขบัญชีเหล่านี้เป็นข้อมูลเบื้องต้น"
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr "ไม่สามารถสร้างแฟ้มการเชื่อมต่อฐานข้อมูลโปรดตรวจสอบสิทธิ์ของแฟ้ม"
+
+msgid "Select your language"
+msgstr "เลือกภาษาของคุณ"
+
+msgid "Beginning of the installation"
+msgstr "เริ่มการติดตั้ง"
+
+msgid "Step %d"
+msgstr "Step %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - ยืนยันตัวตน"
+
+msgid "Remember me"
+msgstr "จดจำ"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "คุณต้องเปิดใช้งานฟังก์ชั่นใช้งาน JavaScript ของเบราว์เซอร์ของคุณ"
+
+msgid "You must accept cookies to reach this application"
+msgstr "คุณต้องยอมรับคุกกี้เพื่อเข้าถึงโปรแกรมนี้"
+
+msgid "Invalid use of session ID"
+msgstr "ไม่มีเซสชั่น ID"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "การเข้าถึงคำถามที่พบบ่อย"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "เพิ่มการเปลี่ยนแปลง"
+
+#, fuzzy
+#| msgid "Add filter"
+msgid "Add a filter"
+msgstr "เพิ่มการกรอง"
+
+msgid "Saved"
+msgstr "บันทึก"
+
+#, fuzzy
+#| msgid "Are you sure you want to return this non-reservable item?"
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr "Are you sure you want to return this non-reservable item?"
+
+#, fuzzy
+#| msgid "Send a notification"
+msgid "Send a test chat"
+msgstr "ส่งการแจ้งเตือน"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Use GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "การแปลอย่างไม่เป็นทางการนอกจากนี้ยังมี"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "ข้าพเจ้าได้อ่านและยอมรับเงื่อนไขของใบอนุญาตที่เขียนข้างต้น"
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "ข้าพเจ้าได้อ่านและไม่ยอมรับเงื่อนไขของใบอนุญาตที่เขียนข้างต้น"
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "ติดตั้ง หรือ อัพเดท GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "เลือก \"ติดตั้ง\" สำหรับติดตั้งใหม่"
-
-#~ msgid ""
-#~ "Select 'Upgrade' to update your version of GLPI from an earlier version"
-#~ msgstr "เลือก \"อัพเกรด\" สำหรับการอัพเดท GLPI"
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "คุณต้องการที่จะดำเนินการต่อหรือไม่"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "พารามิเตอร์การเชื่อมต่อฐานข้อมูล"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "ทดสอบการเชื่อมต่อฐานข้อมูล"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "ไม่สามารถเชื่อมติดฐานข้อมูลได้"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "The server answered: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "The server or/and user field is empty"
-
-#~ msgid "Please select a database:"
-#~ msgstr "กรุณาเลือกฐานข้อมูล"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "สร้างฐานข้อมูลใหม่"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "กรุณาเลือดฐานข้อมูลที่ต้องการอัพเดท"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "เตรียมฐานข้อมูล"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "เป็นไปไม่ได้ที่จะใช้ฐานข้อมูล:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "ตกลง - ฐานข้อมูลได้รับการเตรียม"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr "เป็นไปไม่ได้ที่จะเขียนไฟล์ติดตั้งฐานข้อมูล"
-
-#~ msgid "Database created"
-#~ msgstr "ฐานข้อมูลที่สร้าง"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "เกิดข้อผิดพลาดในการสร้างฐานข้อูล"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "คุณไม่ได้เลือกฐานข้อมูล!"
-
-#~ msgid "The installation is finished"
-#~ msgstr "ติดตั้งเสร็จสิ้น"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "ผู้ใช้และรหัสผ่านเริ่มต้น"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "Glpi/Glpi สำหรับผู้ดูแลระบบ"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech ช่างเทคนิค IT Support"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal for the normal account"
-
-#~ msgid "post-only/postonly for the postonly account"
-#~ msgstr "post-only/postonly โพสได้อย่างเดียว"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "คุณสามารถลบหรือแก้ไขบัญชีเหล่านี้เป็นข้อมูลเบื้องต้น"
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr "ไม่สามารถสร้างแฟ้มการเชื่อมต่อฐานข้อมูลโปรดตรวจสอบสิทธิ์ของแฟ้ม"
-
-#~ msgid "Select your language"
-#~ msgstr "เลือกภาษาของคุณ"
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "เริ่มการติดตั้ง"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Step %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - ยืนยันตัวตน"
-
-#~ msgid "Remember me"
-#~ msgstr "จดจำ"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "คุณต้องเปิดใช้งานฟังก์ชั่นใช้งาน JavaScript ของเบราว์เซอร์ของคุณ"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "คุณต้องยอมรับคุกกี้เพื่อเข้าถึงโปรแกรมนี้"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "ไม่มีเซสชั่น ID"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "การเข้าถึงคำถามที่พบบ่อย"
-
-#~ msgid "Saved"
-#~ msgstr "บันทึก"

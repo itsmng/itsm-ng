@@ -23552,379 +23552,1315 @@ msgstr ""
 msgid "Could not create dashboard"
 msgstr ""
 
-#~ msgid "See the catalog of plugins"
-#~ msgstr "Se plugin-katalogen"
+#, fuzzy
+#| msgid "Write"
+msgid "Favorite"
+msgstr "Skriv"
+
+#, fuzzy
+#| msgid "Login"
+msgid "SSO Login"
+msgstr "Konto"
+
+#, fuzzy
+#| msgid "When connecting or updating"
+msgid "Open ID connect configuration"
+msgstr "Vid kontakt eller uppdatering"
+
+#, fuzzy
+#| msgid "No directory selected"
+msgid "No room found or selected"
+msgstr "Ingen katalog vald"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Replace"
+msgid "Marketplace"
+msgstr "Byt ut"
+
+#, fuzzy
+#| msgid "%1$s adds the item %2$s (%3$d)"
+msgid "%1$s adds the item %2$s-%3$s:%4$s"
+msgstr "%1$s lägger till objektet %2$s (%3$d)"
+
+msgid "See the catalog of plugins"
+msgstr "Se plugin-katalogen"
+
+msgid ""
+"If name is a valid email address, it will be automatically added to "
+"blacklisted senders."
+msgstr ""
+
+#, fuzzy
+#| msgid "Template for an incident"
+msgid "Empty for infinite"
+msgstr "Incident-mall"
 
-#~ msgid "RSS feeds found"
-#~ msgstr "RSS-flöden hittade"
+msgid "RSS feeds found"
+msgstr "RSS-flöden hittade"
 
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
+msgid "Active Directory"
+msgstr "Active Directory"
 
-#~ msgid "Your tickets to close"
-#~ msgstr "Ärenden att stänga"
+#, fuzzy
+#| msgid "IP version"
+msgid "GLPI version"
+msgstr "IP version"
 
-#~ msgid "Tickets on pending status"
-#~ msgstr "Ärenden med stauts väntande"
+#, fuzzy
+#| msgid "Confirm the final deletion?"
+msgid "Confirm the promotion?"
+msgstr "Bekräfta den slutgiltiga raderingen?"
 
-#~ msgid "Tickets to be processed"
-#~ msgstr "Ärenden som ska behandlas"
+msgid "Your tickets to close"
+msgstr "Ärenden att stänga"
 
-#~ msgid "Your observed tickets"
-#~ msgstr "Dina ärenden att bevaka"
+msgid "Tickets on pending status"
+msgstr "Ärenden med stauts väntande"
 
-#~ msgid "Your tickets in progress"
-#~ msgstr "Dina pågående ärenden"
+msgid "Tickets to be processed"
+msgstr "Ärenden som ska behandlas"
 
-#~ msgid "Your tickets to validate"
-#~ msgstr "Dina ärenden att utvärdera"
+msgid "Your observed tickets"
+msgstr "Dina ärenden att bevaka"
 
-#~ msgid "Ticket followup"
-#~ msgstr "Ärendeuppföljning"
+msgid "Your tickets in progress"
+msgstr "Dina pågående ärenden"
 
-#, php-format
-#~ msgid "%d new ticket"
-#~ msgid_plural "%d new tickets"
-#~ msgstr[0] "%d nytt ärende"
-#~ msgstr[1] "%d nya ärenden"
+msgid "Your tickets to validate"
+msgstr "Dina ärenden att utvärdera"
 
-#~ msgid "No ticket found."
-#~ msgstr "Inga ärenden funna."
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected approval status"
+msgstr "Dina pågående ärenden"
 
-#~ msgid "Last tickets"
-#~ msgstr "Senaste ärende(-n)"
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Your tickets having rejected solution"
+msgstr "Dina pågående ärenden"
 
-#~ msgid "New ticket for this item..."
-#~ msgstr "Nytt ärende för detta objekt..."
+msgid "Ticket followup"
+msgstr "Ärendeuppföljning"
 
-#, php-format
-#~ msgid "Last %d ticket"
-#~ msgid_plural "Last %d tickets"
-#~ msgstr[0] "Senaste %d ärendet"
-#~ msgstr[1] "Senaste %d ärendena"
+msgid "%d new ticket"
+msgid_plural "%d new tickets"
+msgstr[0] "%d nytt ärende"
+msgstr[1] "%d nya ärenden"
 
-#~ msgid "Ticket on linked items"
-#~ msgid_plural "Tickets on linked items"
-#~ msgstr[0] "Ärenden på länkade objekt"
-#~ msgstr[1] "Ärenden på länkade objekt"
+msgid "No ticket found."
+msgstr "Inga ärenden funna."
 
-#~ msgid "No ticket in progress."
-#~ msgstr "Inga pågående ärenden"
+msgid "Last tickets"
+msgstr "Senaste ärende(-n)"
 
-#~ msgid "Assign equipment"
-#~ msgstr "Tilldela utrustning"
+msgid "New ticket for this item..."
+msgstr "Nytt ärende för detta objekt..."
 
-#~ msgid "Automatic tickets closing"
-#~ msgstr "Automatisk stängning av ärenden"
+msgid "Last %d ticket"
+msgid_plural "Last %d tickets"
+msgstr[0] "Senaste %d ärendet"
+msgstr[1] "Senaste %d ärendena"
 
-#~ msgid "Generation of satisfaction surveys"
-#~ msgstr "Generering av kundnöjdhetsundersökning"
+#, fuzzy
+#| msgid "You don't have right to connect"
+msgid "You don't have right to see all tickets"
+msgstr "Du har inte rätt att ansluta"
 
-#~ msgid "See my ticket"
-#~ msgstr "Visa mina ärenden"
+msgid "Ticket on linked items"
+msgid_plural "Tickets on linked items"
+msgstr[0] "Ärenden på länkade objekt"
+msgstr[1] "Ärenden på länkade objekt"
 
-#~ msgid "See group ticket"
-#~ msgstr "Visa ärenden för grupp"
+msgid "No ticket in progress."
+msgstr "Inga pågående ärenden"
 
-#~ msgid "See tickets created by my groups"
-#~ msgstr "Visa ärenden skapade av min grupp"
+msgid "Assign equipment"
+msgstr "Tilldela utrustning"
 
-#~ msgid "See all tickets"
-#~ msgstr "Visa alla ärenden"
+msgid "Automatic tickets closing"
+msgstr "Automatisk stängning av ärenden"
 
-#~ msgid "See assigned"
-#~ msgstr "Visa tilldelade"
+msgid "Generation of satisfaction surveys"
+msgstr "Generering av kundnöjdhetsundersökning"
 
-#~ msgid "See assigned tickets"
-#~ msgstr "Visa tilldelade ärenden"
+#, fuzzy
+#| msgid "Automatic closing of solved tickets after"
+msgid "Automatic closed tickets purge"
+msgstr "Automatisk stängning av lösta ärenden efter"
 
-#~ msgid "Assign a ticket"
-#~ msgstr "Delegera ärenden"
+msgid "See my ticket"
+msgstr "Visa mina ärenden"
 
-#~ msgid "Steal a ticket"
-#~ msgstr "Överta ärenden"
+msgid "See group ticket"
+msgstr "Visa ärenden för grupp"
 
-#~ msgid "To be in charge of a ticket"
-#~ msgstr "Äga ärenden"
+msgid "See tickets created by my groups"
+msgstr "Visa ärenden skapade av min grupp"
 
-#~ msgid "Change the priority"
-#~ msgstr "Ändra prioritet"
+msgid "See all tickets"
+msgstr "Visa alla ärenden"
 
-#~ msgid "Valid licenses"
-#~ msgstr "Giltiga licenser"
+msgid "See assigned"
+msgstr "Visa tilldelade"
 
-#~ msgctxt "quantity"
-#~ msgid "Number of installations"
-#~ msgstr "Antal installationer"
+msgid "See assigned tickets"
+msgstr "Visa tilldelade ärenden"
 
-#~ msgid "Merge"
-#~ msgstr "Sammanfoga"
+msgid "Assign a ticket"
+msgstr "Delegera ärenden"
 
-#~ msgid "Software deleted after merging"
-#~ msgstr "Programvaror raderade efter sammanfogning"
+msgid "Steal"
+msgstr ""
 
-#~ msgid "GLPI"
-#~ msgstr "GLPI"
+msgid "Steal a ticket"
+msgstr "Överta ärenden"
 
-#~ msgid "Connect a computer"
-#~ msgstr "Koppla en dator"
+msgid "Beeing in charge"
+msgstr ""
 
-#~ msgid "Not connected"
-#~ msgstr "Ej ansluten"
+msgid "To be in charge of a ticket"
+msgstr "Äga ärenden"
 
-#~ msgid "Show as map"
-#~ msgstr "Visa som karta"
+msgid "Change the priority"
+msgstr "Ändra prioritet"
 
-#, php-format
-#~ msgid "Valid to %s"
-#~ msgstr "Giltig till %s"
+msgid "Approve solution/Reply survey (my ticket)"
+msgstr ""
 
-#~ msgid "Solved"
-#~ msgstr "Löst"
+msgid "Approve solution and reply to survey for ticket created by me"
+msgstr ""
 
-#~ msgid ""
-#~ "Several network names available! Go to the tab 'Network Name' to manage "
-#~ "them."
-#~ msgstr ""
-#~ "Det finns flera nätverksnamn tillgängliga! Gå till fliken "
-#~ "\"Nätverksnamn\" för att hantera dem."
+msgid "Not enough rights to merge tickets %d and %d"
+msgstr ""
 
-#~ msgid "Add a network name"
-#~ msgstr "Lägg till ett nätverksnamn"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to load ticket %d"
+msgstr "Radering av fil misslyckades %s"
 
-#~ msgid "No network name found"
-#~ msgstr "Inget nätverksnamn hittat"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to add followup to ticket %d"
+msgstr "Radering av fil misslyckades %s"
 
-#~ msgid "Clean"
-#~ msgstr "Rensa"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to add task to ticket %d"
+msgstr "Radering av fil misslyckades %s"
 
-#~ msgid "Install"
-#~ msgstr "Installera"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to add document to ticket %d"
+msgstr "Radering av fil misslyckades %s"
 
-#~ msgid "Enable"
-#~ msgstr "Aktivera"
+msgid "Failed to link tickets %d and %d"
+msgstr ""
 
-#~ msgid "Uninstall"
-#~ msgstr "Avinstallera"
+#, fuzzy
+#| msgid "Failed to delete the file %s"
+msgid "Failed to delete ticket %d"
+msgstr "Radering av fil misslyckades %s"
 
-#~ msgid ""
-#~ "An email has been sent to your email address. The email contains "
-#~ "information for reset your password."
-#~ msgstr ""
-#~ "Ett email har skickats till din mailadress som innehåller information hur "
-#~ "du återställer ditt lösenord."
+#, fuzzy
+#| msgid "%1$s purges the version %2$s"
+msgid "%s merges ticket %s into %s"
+msgstr "%1$s rensar bort version %2$s"
 
-#~ msgid "Email address not found."
-#~ msgstr "Emailadress kan inte hittas."
+#, fuzzy
+#| msgid "Checking write permissions for plugins document files"
+msgid "Checking write permissions for marketplace plugins directory"
+msgstr "Kontrollerar skrivrättigheter för dokumentfiler till tillägg"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-#~ msgstr ""
-#~ "Den uppladdade filen överstiger angivet värde upload_max_filesize i php."
-#~ "ini"
+#, fuzzy
+#| msgid "Recalculate"
+msgid "Recalculate the category"
+msgstr "Beräkna om"
 
-#~ msgid ""
-#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-#~ "in the HTML form"
-#~ msgstr ""
-#~ "Den uppladdade filen överstiger värdet MAX_FILE_SIZE som angavs i HTML-"
-#~ "formuläret"
+msgid "Valid licenses"
+msgstr "Giltiga licenser"
 
-#~ msgid "The uploaded file was only partially uploaded"
-#~ msgstr "Den uppladdade filen laddades endast delvis upp"
+msgctxt "quantity"
+msgid "Number of installations"
+msgstr "Antal installationer"
 
-#~ msgid "Failed to write file to disk"
-#~ msgstr "Misslyckades skriva fil till disk"
+msgid "Merge"
+msgstr "Sammanfoga"
 
-#~ msgid "A PHP extension stopped the file upload"
-#~ msgstr "En PHP-modul hindrade filuppladdningen"
+msgid "Software deleted after merging"
+msgstr "Programvaror raderade efter sammanfogning"
 
-#~ msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-#~ msgstr ""
-#~ "Den uppladdade filen överstiger värdet post_max_size som ages i php.ini"
+#, fuzzy
+#| msgid "You must install at least PHP %s."
+msgid "You must enable at least one notification mode."
+msgstr "Du måste installera PHP 1%s."
 
-#~ msgid "File is too big"
-#~ msgstr "Filen är för stor"
+msgid "GLPI"
+msgstr "GLPI"
 
-#~ msgid "File is too small"
-#~ msgstr "Filen är för liten"
+msgid "Connect a computer"
+msgstr "Koppla en dator"
 
-#~ msgid "Maximum number of files exceeded"
-#~ msgstr "Max antal filer överskriden"
+msgid "Not connected"
+msgstr "Ej ansluten"
 
-#~ msgid "Image exceeds maximum width"
-#~ msgstr "Bilden överskrider maxbredd"
+msgid "Show as map"
+msgstr "Visa som karta"
 
-#~ msgid "Image requires a minimum width"
-#~ msgstr "Bilden krävern en minimibredd"
+msgid "Valid to %s"
+msgstr "Giltig till %s"
 
-#~ msgid "Image exceeds maximum height"
-#~ msgstr "Bilden överskrider maxhöjden"
+#, fuzzy
+#| msgid "Last tickets"
+msgid "Late tickets"
+msgstr "Senaste ärende(-n)"
 
-#~ msgid "Image requires a minimum height"
-#~ msgstr "Bilden kräver en minimihöjd"
+#, fuzzy
+#| msgid "Tickets awaiting approval"
+msgid "Tickets waiting for validation"
+msgstr "Ärende som väntar på godkännanden"
 
-#~ msgid "Filetype not allowed"
-#~ msgstr "Filtyp är inte tillåten"
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Link tickets"
+msgid "Incoming tickets"
+msgstr "Länka ärenden"
 
-#~ msgid "Progress"
-#~ msgstr "Förlopp"
+#, fuzzy
+#| msgid "Solve tickets"
+msgid "Solved tickets"
+msgstr "Lös ärende"
 
-#~ msgid "My settings"
-#~ msgstr "Mina inställningar"
+#, fuzzy
+#| msgid "Created tickets"
+msgid "Closed tickets"
+msgstr "Skapade ärenden"
 
-#~ msgid "You will find it on the GLPI-PROJECT.org site."
-#~ msgstr "Du hittar det på siten glpi-project.org."
+#, fuzzy
+#| msgid "Without name"
+msgid "without"
+msgstr "Utan namn"
 
-#~ msgid "Check all"
-#~ msgstr "Markera alla"
+#, fuzzy
+#| msgid "Time cost"
+msgid "Time to close"
+msgstr "Timkostnad"
 
-#~ msgid "Uncheck all"
-#~ msgstr "Avmarkera alla"
+#, fuzzy
+#| msgid "Validate"
+msgid "To validate"
+msgstr "Validera"
 
-#~ msgid "Drag and drop your file here, or"
-#~ msgstr "Drag och släpp din fil här, eller"
+msgid "Solved"
+msgstr "Löst"
 
-#~ msgid "Upload successful"
-#~ msgstr "Uppladdning lyckades"
+msgid "Share or embed this dashboard"
+msgstr ""
 
-#~ msgid "Check/uncheck all"
-#~ msgstr "Markera/avmarkera allt"
+msgid "Delete this dashboard"
+msgstr ""
 
-#~ msgid "Saved searches"
-#~ msgstr "Sparade sökningar"
+msgid "Toggle auto-refresh"
+msgstr ""
 
-#~ msgid "Show GLPI ID"
-#~ msgstr "Visa GLPI ID"
+#, fuzzy
+#| msgid "Monitor model"
+#| msgid_plural "Monitor models"
+msgid "Toggle night mode"
+msgstr "Skärm modell"
 
-#~ msgid "Check if a new version is available"
-#~ msgstr "Kontrollera om ny version finns tillgänglig"
+msgid "Toggle fullscreen"
+msgstr ""
 
-#~ msgid "Add to schedule"
-#~ msgstr "Lägg till i schema"
+msgid "Clone this dashboard"
+msgstr ""
 
-#~ msgid "All categories"
-#~ msgstr "Alla kategorier"
+msgid "Toggle edit mode"
+msgstr ""
 
-#~ msgid "Uncategorized software"
-#~ msgstr "Okategoriserad programvara"
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add filter"
+msgstr "Lägg till ett objekt"
 
-#~ msgid "Valid license"
-#~ msgstr "Giltig licens"
+#, fuzzy
+#| msgid "Add a new task"
+msgid "Add a new dashboard"
+msgstr "Lägg till ny uppgift"
+
+#, fuzzy
+#| msgid "Others"
+msgid "others"
+msgstr "Övrigt"
+
+#, fuzzy
+#| msgid "Budget"
+#| msgid_plural "Budgets"
+msgid "Widget"
+msgstr "Budget"
+
+msgid "Use gradient palette"
+msgstr ""
+
+msgid "Display value labels on points/bars"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of tasks"
+msgid "Limit number of data"
+msgstr "Antal uppgifter"
+
+msgid "Filters"
+msgstr ""
+
+#, fuzzy
+#| msgid "URL of the application"
+msgid "Embed in another application"
+msgstr "URL till applikationen"
+
+#, fuzzy
+#| msgid "LDAP directory link"
+msgid "Direct link"
+msgstr "LDAP kataloglänk"
+
+msgid "Iframe"
+msgstr ""
+
+msgid "Or share the dashboard to these target objects:"
+msgstr ""
+
+msgid "empty card !"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number of cores"
+msgid "Number of %s"
+msgstr "Antal kärnor"
+
+#, fuzzy
+#| msgid "%1$s by %2$s"
+msgid "%s by %s"
+msgstr "%1$s av %2$s"
+
+#, fuzzy
+#| msgid "List of values"
+msgid "List of %s"
+msgstr "Lista av värden"
+
+#, fuzzy
+#| msgid "Number of tickets"
+msgid "Number of tickets by month"
+msgstr "Antal ärenden"
+
+msgid "Evolution of ticket in the past year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tickets duration"
+msgid "Tickets status by month"
+msgstr "Ärendets tidsåtgång"
+
+msgid "Tickets times (in hours)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Tickets summary"
+msgstr "Ärendekategori"
+
+#, fuzzy
+#| msgid "Ticket category"
+#| msgid_plural "Ticket categories"
+msgid "Top ticket's categories"
+msgstr "Ärendekategori"
+
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Top ticket's entities"
+msgstr "Dina ärenden att utvärdera"
+
+#, fuzzy
+#| msgid "Tickets default type"
+msgid "Top ticket's request types"
+msgstr "Förvald ärendetyp"
+
+#, fuzzy
+#| msgid "Tickets duration"
+msgid "Top ticket's locations"
+msgstr "Ärendets tidsåtgång"
+
+msgid "Top ticket's requesters"
+msgstr ""
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's requester groups"
+msgstr "Visa ärenden skapade av min grupp"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Top ticket's observers"
+msgstr "För ärenden stängda efter"
+
+#, fuzzy
+#| msgid "See tickets created by my groups"
+msgid "Top ticket's observer groups"
+msgstr "Visa ärenden skapade av min grupp"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignees"
+msgstr "Dina pågående ärenden"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Top ticket's assignee groups"
+msgstr "Dina pågående ärenden"
+
+#, fuzzy
+#| msgid "List of translations"
+msgid "List of reminders"
+msgstr "Förteckning över översättningar"
+
+msgid "Editable markdown card"
+msgstr ""
+
+msgid "Toggle edit mode to edit content"
+msgstr ""
+
+msgid "field name in DB"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
+
+msgid ""
+"Since GLPI 9.2, we’ve introduced a new statistics feature called "
+"“Telemetry”, that anonymously with your permission, sends data to our "
+"telemetry website."
+msgstr ""
+
+msgid ""
+"IP network is not included in the database. However, you can see current "
+"available networks."
+msgstr ""
+
+msgid ""
+"Several network names available! Go to the tab 'Network Name' to manage them."
+msgstr ""
+"Det finns flera nätverksnamn tillgängliga! Gå till fliken \"Nätverksnamn\" "
+"för att hantera dem."
+
+msgid "Add a network name"
+msgstr "Lägg till ett nätverksnamn"
+
+#, fuzzy
+#| msgid "No associated item"
+msgid "Not associated"
+msgstr "Inget associerat objekt"
+
+#, fuzzy
+#| msgid "Add a network name"
+msgid "Create a new network name"
+msgstr "Lägg till ett nätverksnamn"
+
+msgid "No network name found"
+msgstr "Inget nätverksnamn hittat"
+
+msgid "Unable to download plugin archive."
+msgstr ""
+
+msgid "Plugin archive format is not supported by your system : %s."
+msgstr ""
+
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, fuzzy
+#| msgid "Check for new updates"
+msgid "Check all plugin updates"
+msgstr "Kontroll av nya uppdateringar"
+
+msgid "New version for plugin %s: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Install"
+msgid "Installed"
+msgstr "Installera"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Disconnect"
+msgid "Discover"
+msgstr "Koppla från"
+
+msgid "%1$s services website seems not available from your network or offline"
+msgstr ""
+
+msgid "Maybe you could setup a proxy"
+msgstr ""
+
+msgid "or please check later"
+msgstr ""
+
+msgid "Your %1$s registration is not valid."
+msgstr ""
+
+msgid "A registration, at least a free one, is required to use marketplace!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s"
+msgstr "Skapad den %s"
+
+msgid "fill your registration key in setup."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your comment has been edited"
+msgid "Your %1$s subscription has been terminated."
+msgstr "Din kommentar har redigerats"
+
+#, fuzzy
+#| msgid "generated on %s"
+msgid "Renew it on %1$s."
+msgstr "genererad %s"
+
+msgid "We can't write on the markeplace directory (%s)."
+msgstr ""
+
+msgid ""
+"If you want to ease the plugins download, please check permissions and "
+"ownership of this directory."
+msgstr ""
+
+msgid ""
+"Otherwise, you will need to download and unzip the plugins archives manually."
+msgstr ""
+
+msgid "Alpha ASC"
+msgstr ""
+
+msgid "Alpha DESC"
+msgstr ""
+
+#, fuzzy
+#| msgid "Most popular questions"
+msgid "Most popular"
+msgstr "Vanligaste frågorna"
+
+#, fuzzy
+#| msgid "Last update"
+msgid "Last updated"
+msgstr "Senaste uppdatering"
+
+msgid "Most recent"
+msgstr ""
+
+#, fuzzy
+#| msgid "New note"
+msgid "Best notes"
+msgstr "Ny anteckning"
+
+msgid "Your plugin here ? Contact us."
+msgstr ""
+
+msgid "Refresh plugin list"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "Filter plugin list"
+msgstr "Av-aktiverad plugin"
+
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "Hem"
+
+msgid "Get help"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read"
+msgid "Readme"
+msgstr "Läs"
+
+msgid "Clean"
+msgstr "Rensa"
+
+msgid "This plugin is not available for your GLPI version."
+msgstr ""
+
+msgid "The plugin has an available update but its directory is not writable."
+msgstr ""
+
+msgid ""
+"Download archive manually, you must uncompress it in plugins directory (%s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "A new version is available: %s."
+msgid "A new version (%s) is available, update ?"
+msgstr "En ny version finns tillgänglig: %s."
+
+msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr ""
+
+msgid "Install"
+msgstr "Installera"
+
+msgid "Enable"
+msgstr "Aktivera"
+
+msgid "Uninstall"
+msgstr "Avinstallera"
+
+msgid "You must have a %s subscription to get this plugin"
+msgstr ""
+
+msgid "You need at least the %s subscription level to get this plugin"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled plugin"
+msgid "%s plugin"
+msgid_plural "%s plugins"
+msgstr[0] "Av-aktiverad plugin"
+msgstr[1] "Av-aktiverad plugin"
+
+msgid "GLPI provides a new marketplace to download and install plugins."
+msgstr ""
+
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Late"
+msgid "Later"
+msgstr "Sena"
+
+msgid "Switch to marketplace"
+msgstr ""
+
+msgid "Some updates are available for your installed plugins!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Plugin"
+#| msgid_plural "Plugins"
+msgid "Plugin name"
+msgstr "Tillägg"
+
+msgid "Plugin new version number"
+msgstr ""
+
+#, fuzzy
+#| msgid "Building number"
+msgid "Plugin old version number"
+msgstr "Byggnad nummer"
+
+msgid ""
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration"
+msgstr "Reservation"
+
+msgid ""
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Created on %s"
+msgid "Register on %1$s!"
+msgstr "Skapad den %s"
+
+msgid "And retrieve your key to paste it below"
+msgstr ""
+
+msgid "Error was: %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reservation"
+#| msgid_plural "Reservations"
+msgid "Registration key"
+msgstr "Reservation"
+
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "Beskrivning"
+
+#, fuzzy
+#| msgid "Unknown file"
+msgid "Unknown"
+msgstr "Okänd fil"
+
+msgid "Registered by"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enable the financial and administrative information"
+msgid "Unable to fetch registration information."
+msgstr "Aktivera den finansiella och administrativa informationen"
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is invalid."
+msgstr "Installationen avslutad"
+
+msgid "The registration key refers to a terminated subscription."
+msgstr ""
+
+#, fuzzy
+#| msgid "The installation is finished"
+msgid "The registration key is valid."
+msgstr "Installationen avslutad"
+
+msgid ""
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
+"\n"
+"We provide the %s space for you.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
+"\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
+"\n"
+"Or, support the GLPI development effort by <b>donating</b>."
+msgstr ""
+
+msgid ""
+"Having troubles setting up an advanced GLPI module?\n"
+"We can help you solve them. Sign up for support on %s."
+msgstr ""
+
+msgid ""
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
+msgstr ""
+"Ett email har skickats till din mailadress som innehåller information hur du "
+"återställer ditt lösenord."
+
+msgid "Email address not found."
+msgstr "Emailadress kan inte hittas."
+
+msgid ""
+"The MAC address and the IP of the equipment are included in an aggregated "
+"network port"
+msgstr ""
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"Den uppladdade filen överstiger angivet värde upload_max_filesize i php.ini"
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Den uppladdade filen överstiger värdet MAX_FILE_SIZE som angavs i HTML-"
+"formuläret"
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "Den uppladdade filen laddades endast delvis upp"
+
+msgid "Failed to write file to disk"
+msgstr "Misslyckades skriva fil till disk"
+
+msgid "A PHP extension stopped the file upload"
+msgstr "En PHP-modul hindrade filuppladdningen"
+
+msgid "The uploaded file exceeds the post_max_size directive in php.ini"
+msgstr ""
+"Den uppladdade filen överstiger värdet post_max_size som ages i php.ini"
+
+msgid "File is too big"
+msgstr "Filen är för stor"
+
+msgid "File is too small"
+msgstr "Filen är för liten"
+
+msgid "Maximum number of files exceeded"
+msgstr "Max antal filer överskriden"
+
+msgid "Image exceeds maximum width"
+msgstr "Bilden överskrider maxbredd"
+
+msgid "Image requires a minimum width"
+msgstr "Bilden krävern en minimibredd"
+
+msgid "Image exceeds maximum height"
+msgstr "Bilden överskrider maxhöjden"
+
+msgid "Image requires a minimum height"
+msgstr "Bilden kräver en minimihöjd"
+
+msgid "Filetype not allowed"
+msgstr "Filtyp är inte tillåten"
+
+#, fuzzy
+#| msgid "No file was uploaded"
+msgid "File upload aborted"
+msgstr "Ingen fil laddades upp"
+
+#, fuzzy
+#| msgid "Failed to write file to disk"
+msgid "Failed to resize image"
+msgstr "Misslyckades skriva fil till disk"
+
+#, fuzzy
+#| msgid "User information"
+msgid "Display GLPI debug information"
+msgstr "Användarinformation"
+
+msgid "Progress"
+msgstr "Förlopp"
+
+msgid "My settings"
+msgstr "Mina inställningar"
+
+msgid "Back to top of the page"
+msgstr ""
+
+msgid "You will find it on the GLPI-PROJECT.org site."
+msgstr "Du hittar det på siten glpi-project.org."
+
+msgid "Check all"
+msgstr "Markera alla"
+
+msgid "Uncheck all"
+msgstr "Avmarkera alla"
+
+#, fuzzy
+#| msgid "Check all"
+msgid "Check all as"
+msgstr "Markera alla"
+
+msgid "Selection too large, massive action disabled."
+msgstr ""
+
+msgid ""
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
+msgstr ""
+
+msgid "The description field is mandatory"
+msgstr ""
+
+#, fuzzy
+#| msgid "From %1$s to %2$s"
+msgid "From %1$d to %2$d of %3$d"
+msgstr "Från %1$s till %2$s"
+
+msgid "Empty array"
+msgstr ""
+
+#, fuzzy
+#| msgid "%1$s: %2$d"
+msgid "%1$d on %2$d"
+msgstr "%1$s: %2$d"
+
+#, fuzzy
+#| msgid "Close"
+msgid "Close (Esc)"
+msgstr "Stäng"
+
+msgid "Share"
+msgstr ""
+
+msgid "Zoom in/out"
+msgstr ""
+
+msgid "Previous (arrow left)"
+msgstr ""
+
+msgid "Next (arrow right)"
+msgstr ""
+
+msgid "Attach file by drag & drop or copy & paste in editor or "
+msgstr ""
+
+#, fuzzy
+#| msgid "No selected items"
+msgid "selecting them"
+msgstr "Inget valt objekt"
+
+#, fuzzy
+#| msgid "File (%s)"
+msgid "File(s)"
+msgstr "Fil (%s)"
+
+msgid "Drag and drop your file here, or"
+msgstr "Drag och släpp din fil här, eller"
+
+msgid "Upload successful"
+msgstr "Uppladdning lyckades"
+
+msgid "Check/uncheck all"
+msgstr "Markera/avmarkera allt"
+
+msgid "Start typing to find a menu"
+msgstr ""
+
+#, fuzzy
+#| msgid "Change solved"
+msgid "Change mode"
+msgstr "Ändring utförd"
+
+msgid "Debug mode enabled"
+msgstr ""
+
+msgid "Debug mode disabled"
+msgstr ""
+
+msgid "Saved searches"
+msgstr "Sparade sökningar"
+
+#, fuzzy
+#| msgid "Saved searches"
+msgid "Manage saved searches"
+msgstr "Sparade sökningar"
+
+#, fuzzy
+#| msgid "Disabled"
+msgid "Add is disabled"
+msgstr "Av-aktiverad"
+
+msgid "Search is disabled"
+msgstr ""
+
+#, fuzzy
+#| msgid "Global management"
+msgid "Global Kanban"
+msgstr "Global hantering"
+
+msgid "You are impersonating %s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set personal"
+msgid "Stop impersonating"
+msgstr "Sätt som personlig"
+
+msgid "Allow to login to API and get a session token with user credentials"
+msgstr ""
+
+msgid ""
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
+msgstr ""
+
+msgid "Show GLPI ID"
+msgstr "Visa GLPI ID"
+
+msgid "Color palette"
+msgstr ""
+
+msgid "Layout"
+msgstr ""
+
+msgid "Tabs on left"
+msgstr ""
+
+msgid "Classic view"
+msgstr ""
+
+msgid "Vertical split"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "Enable high contrast"
+msgstr "Avslutning av kontrakt"
+
+msgid "Dashboards"
+msgstr ""
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for central"
+msgstr "Default för ärenden"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assets"
+msgstr "Default för ärenden"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for Assistance"
+msgstr "Default för ärenden"
+
+#, fuzzy
+#| msgid "Default for tickets"
+msgid "Default for tickets (mini dashboard)"
+msgstr "Default för ärenden"
+
+msgid "Check if a new version is available"
+msgstr "Kontrollera om ny version finns tillgänglig"
+
+#, fuzzy
+#| msgid "Show the trashbin"
+msgid "Show filters"
+msgstr "Visa papperskorgen"
+
+msgid "No historical matching your filters"
+msgstr ""
+
+msgid "Add to schedule"
+msgstr "Lägg till i schema"
+
+#, fuzzy
+#| msgid "Position"
+msgid "Position in room"
+msgstr "Position"
+
+msgid "Door orientation in room"
+msgstr ""
+
+msgid "North"
+msgstr ""
+
+msgid "East"
+msgstr ""
+
+msgid "South"
+msgstr ""
+
+msgid "West"
+msgstr ""
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of items"
+msgid "Number of units"
+msgstr "Antal objekt"
+
+msgid "U"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Measured power (in watts)"
+msgstr ""
+
+msgid "Max. weight"
+msgstr ""
+
+#, fuzzy
+#| msgid "No user found"
+msgid "No rack found"
+msgstr "Hittar ingen användare"
+
+msgid "Following elements are out of room bounds"
+msgstr ""
+
+msgid "Blueprint"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Insert a rack here"
+msgstr ""
+
+msgid "Position must be set"
+msgstr ""
+
+#, fuzzy
+#| msgid "Network port is not available..."
+msgid "%1$s position is not available"
+msgstr "Nätverksport är inte tillgänglig..."
+
+msgid "All categories"
+msgstr "Alla kategorier"
+
+msgid "Uncategorized software"
+msgstr "Okategoriserad programvara"
+
+msgid "Valid license"
+msgstr "Giltig licens"
+
+#, fuzzy
+#| msgctxt "quantity"
+#| msgid "Number of documents"
+msgid "Other component"
+msgstr "Antal dokument"
+
+msgid "One last thing before starting"
+msgstr ""
+
+msgid "Donate"
+msgstr ""
+
+msgid "Unofficial translations are also available"
+msgstr "Inofficiell översättning är också tillgänglig"
+
+msgid "I have read and ACCEPT the terms of the license written above."
+msgstr "Jag har läst och ACCEPTERAT vilkoren i licensen ovan."
+
+msgid "I have read and DO NOT ACCEPT the terms of the license written above"
+msgstr "Jag har läst och EJ ACCEPTERAT vilkoren i licensen ovan."
+
+msgid "Installation or update of GLPI"
+msgstr "Installation eller uppdatering av GLPI"
+
+msgid "Choose 'Install' for a completely new installation of GLPI."
+msgstr "Välj 'Installera' för en helt ny installation av GLPI."
+
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgstr ""
+
+msgid "Do you want to continue?"
+msgstr "Vill du fortsätta?"
+
+msgid "Database connection parameters"
+msgstr "Parametrar för anslutning till databas"
+
+msgid "Test of the connection at the database"
+msgstr "Kontroll av anslutning till databasen"
+
+msgid "Can't connect to the database"
+msgstr "Anslutning till databasen misslyckades"
+
+msgid "The server answered: %s"
+msgstr "Server svarade: %s"
+
+msgid "The server or/and user field is empty"
+msgstr "Server- och/eller användarfält är tomt"
+
+msgid "Please select a database:"
+msgstr "Välj databas:"
+
+msgid "Create a new database or use an existing one:"
+msgstr "Ny databas, eller använd en existerande:"
+
+msgid "Please select the database to update:"
+msgstr "Välj databas att uppdatera"
+
+msgid "Initialization of the database"
+msgstr "Initiering av databas"
+
+msgid "Impossible to use the database:"
+msgstr "Kan ej använda databasen:"
+
+msgid "OK - database was initialized"
+msgstr "Databasen är initialiserad"
+
+msgid "Impossible to write the database setup file"
+msgstr "Sparning av inställningsfil för anslutning till databasen misslyckades"
+
+msgid "Database created"
+msgstr "Databasen skapades"
+
+msgid "Error in creating database!"
+msgstr "Fel vid skapandet av databasen!"
+
+msgid "You didn't select a database!"
+msgstr "Du valde inte någon databas!"
+
+#, fuzzy
+#| msgid "Close date"
+msgid "Collect data"
+msgstr "Stängnings datum"
+
+msgid "The installation is finished"
+msgstr "Installationen avslutad"
+
+msgid "Default logins / passwords are:"
+msgstr "Standard konton och lösenord:"
+
+msgid "tech/tech for the technician account"
+msgstr "tech/tech för den tekniska ansvariges konto"
+
+msgid "normal/normal for the normal account"
+msgstr "normal/normal för normalanvändarens konto"
+
+#, fuzzy
+#| msgid "normal/normal for the normal account"
+msgid "post-only/postonly for the postonly account"
+msgstr "normal/normal för normalanvändarens konto"
+
+msgid "You can delete or modify these accounts as well as the initial data."
+msgstr "Du kan radera eller förändra dessa konton och den initiala datan."
+
+msgid ""
+"Can't create the database connection file, please verify file permissions."
+msgstr ""
+"Skapandet av inställningsfil för anslutning till databasen misslyckades. "
+"Kontrollera skriv och läsrättigheter."
+
+#, fuzzy
+#| msgid "Default language"
+msgid "Select your language"
+msgstr "Standardspråk"
+
+msgid "Beginning of the installation"
+msgstr "Start av installation"
+
+msgid "Step %d"
+msgstr "Steg %d"
+
+msgid "GLPI - Authentication"
+msgstr "GLPI - Autentisering"
+
+msgid "Remember me"
+msgstr "Kom ihåg mig"
+
+msgid "You must activate the JavaScript function of your browser"
+msgstr "Du måste aktivera JavaScript i din webbäsare"
+
+msgid "You must accept cookies to reach this application"
+msgstr "Cookies måste tillåtas för den här applikationen"
+
+msgid "Invalid use of session ID"
+msgstr "Ogiltigt användande av sessions-ID"
+
+msgid "Access to the Frequently Asked Questions"
+msgstr "Vanliga frågor och svar (FAQ)"
+
+#, fuzzy
+#| msgid "Add a change"
+msgid "Add a card"
+msgstr "Lägg till en förändring"
+
+#, fuzzy
+#| msgid "Add an item"
+msgid "Add a filter"
+msgstr "Lägg till ett objekt"
+
+#, fuzzy
+#| msgid "Save"
+msgid "Saved"
+msgstr "Spara"
+
+msgid "Are you sure you want to delete the dashboard %s ?"
+msgstr ""
+
+#, fuzzy
+#| msgid "Send date"
+msgid "Send a test chat"
+msgstr "Sändningsdatum"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Starta GLPI"
 
-#~ msgid "Unofficial translations are also available"
-#~ msgstr "Inofficiell översättning är också tillgänglig"
-
-#~ msgid "I have read and ACCEPT the terms of the license written above."
-#~ msgstr "Jag har läst och ACCEPTERAT vilkoren i licensen ovan."
-
-#~ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
-#~ msgstr "Jag har läst och EJ ACCEPTERAT vilkoren i licensen ovan."
-
-#~ msgid "Installation or update of GLPI"
-#~ msgstr "Installation eller uppdatering av GLPI"
-
-#~ msgid "Choose 'Install' for a completely new installation of GLPI."
-#~ msgstr "Välj 'Installera' för en helt ny installation av GLPI."
-
-#~ msgid "Do you want to continue?"
-#~ msgstr "Vill du fortsätta?"
-
-#~ msgid "Database connection parameters"
-#~ msgstr "Parametrar för anslutning till databas"
-
-#~ msgid "Test of the connection at the database"
-#~ msgstr "Kontroll av anslutning till databasen"
-
-#~ msgid "Can't connect to the database"
-#~ msgstr "Anslutning till databasen misslyckades"
-
-#, php-format
-#~ msgid "The server answered: %s"
-#~ msgstr "Server svarade: %s"
-
-#~ msgid "The server or/and user field is empty"
-#~ msgstr "Server- och/eller användarfält är tomt"
-
-#~ msgid "Please select a database:"
-#~ msgstr "Välj databas:"
-
-#~ msgid "Create a new database or use an existing one:"
-#~ msgstr "Ny databas, eller använd en existerande:"
-
-#~ msgid "Please select the database to update:"
-#~ msgstr "Välj databas att uppdatera"
-
-#~ msgid "Initialization of the database"
-#~ msgstr "Initiering av databas"
-
-#~ msgid "Impossible to use the database:"
-#~ msgstr "Kan ej använda databasen:"
-
-#~ msgid "OK - database was initialized"
-#~ msgstr "Databasen är initialiserad"
-
-#~ msgid "Impossible to write the database setup file"
-#~ msgstr ""
-#~ "Sparning av inställningsfil för anslutning till databasen misslyckades"
-
-#~ msgid "Database created"
-#~ msgstr "Databasen skapades"
-
-#~ msgid "Error in creating database!"
-#~ msgstr "Fel vid skapandet av databasen!"
-
-#~ msgid "You didn't select a database!"
-#~ msgstr "Du valde inte någon databas!"
-
-#~ msgid "The installation is finished"
-#~ msgstr "Installationen avslutad"
-
-#~ msgid "Default logins / passwords are:"
-#~ msgstr "Standard konton och lösenord:"
-
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi för administratörens konto"
-
-#~ msgid "tech/tech for the technician account"
-#~ msgstr "tech/tech för den tekniska ansvariges konto"
-
-#~ msgid "normal/normal for the normal account"
-#~ msgstr "normal/normal för normalanvändarens konto"
-
-#~ msgid "You can delete or modify these accounts as well as the initial data."
-#~ msgstr "Du kan radera eller förändra dessa konton och den initiala datan."
-
-#~ msgid ""
-#~ "Can't create the database connection file, please verify file permissions."
-#~ msgstr ""
-#~ "Skapandet av inställningsfil för anslutning till databasen misslyckades. "
-#~ "Kontrollera skriv och läsrättigheter."
-
-#~ msgid "Beginning of the installation"
-#~ msgstr "Start av installation"
-
-#, php-format
-#~ msgid "Step %d"
-#~ msgstr "Steg %d"
-
-#~ msgid "GLPI - Authentication"
-#~ msgstr "GLPI - Autentisering"
-
-#~ msgid "Remember me"
-#~ msgstr "Kom ihåg mig"
-
-#~ msgid "You must activate the JavaScript function of your browser"
-#~ msgstr "Du måste aktivera JavaScript i din webbäsare"
-
-#~ msgid "You must accept cookies to reach this application"
-#~ msgstr "Cookies måste tillåtas för den här applikationen"
-
-#~ msgid "Invalid use of session ID"
-#~ msgstr "Ogiltigt användande av sessions-ID"
-
-#~ msgid "Access to the Frequently Asked Questions"
-#~ msgstr "Vanliga frågor och svar (FAQ)"
