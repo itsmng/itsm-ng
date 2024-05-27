@@ -615,7 +615,7 @@ class Change extends CommonITILObject {
 
    private function getActorsForAction($action) {
       $actors = [];
-  
+
       $userActors = $this->getUsers($action);
       foreach ($userActors as $userActor) {
         $actors[] = [
@@ -625,7 +625,7 @@ class Change extends CommonITILObject {
           'icon' => User::getIcon($userActor['users_id']),
         ];
       }
-  
+
       $groupActors = $this->getGroups($action);
       foreach ($groupActors as $groupActor) {
         $group = new Group();
@@ -637,7 +637,7 @@ class Change extends CommonITILObject {
           'icon' => Group::getIcon(),
         ];
       }
-  
+
       if ($action == CommonITILActor::ASSIGN) {
         $supplierActors = $this->getSuppliers($action);
         foreach ($supplierActors as $supplierActor) {
@@ -977,7 +977,7 @@ class Change extends CommonITILObject {
                   __('Category') => [
                      'type'  => 'select',
                      'name' => 'itilcategories_id',
-                     'values' => getOptionForItems(ITILCategory::class),
+                     'itemtype' => ItilCategory::class,
                      'value' => $this->fields['itilcategories_id'],
                      'actions' => getItemActionButtons(['info', 'add'], ITILCategory::class),
                      $canupdate ? '' : 'disabled' => '',
