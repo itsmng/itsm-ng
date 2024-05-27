@@ -335,7 +335,7 @@ class Item_OperatingSystem extends CommonDBRelation {
                   __("Name") => [
                      'type' => 'select',
                      'name' => 'operatingsystems_id',
-                     'values' => getOptionForItems(OperatingSystem::class),
+                     'itemtype' => OperatingSystem::class,
                      'value' => $this->fields['operatingsystems_id'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], OperatingSystem::class)
                   ],
@@ -384,7 +384,7 @@ class Item_OperatingSystem extends CommonDBRelation {
                      'name' => 'license_number',
                      'value' => $this->fields['license_number'] ?? '',
                   ],
-               ] 
+               ]
             ]
          ]
       ];
@@ -399,7 +399,7 @@ class Item_OperatingSystem extends CommonDBRelation {
          'formfooter'   => null,
          ]]);
       $additionnalHtml = ob_get_clean();
-         
+
       renderTwigForm($form, $additionnalHtml);
       return true;
    }
