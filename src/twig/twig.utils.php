@@ -12,7 +12,9 @@ function expandForm($form, $fields = [])
                             $form['content'][$contentKey]['inputs'][$inputKey]['values'] =
                                 array_merge ([Dropdown::EMPTY_VALUE], getItemByEntity(
                                 $input['itemtype'],
-                                $fields['entities_id'] ?? Session::getActiveEntity(),
+                                $input['entity']
+                                    ?? $fields['entities_id']
+                                    ?? Session::getActiveEntity(),
                                 $input['conditions'] ?? [],
                                 $input['used'] ?? [])
                             );
@@ -34,6 +36,7 @@ function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
         'itemtype' => $itemtype,
         'condition' => $cond,
         'used' => $used,
+        'display_emptychoice' => false,
     ], false);
     foreach ($values['results'] as $key => $value) {
         if (!$value || !count($value))
