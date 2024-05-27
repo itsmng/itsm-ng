@@ -38,6 +38,7 @@ function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
         'used' => $used,
         'display_emptychoice' => false,
     ], false);
+    $options = [];
     foreach ($values['results'] as $key => $value) {
         if (!$value || !count($value))
             continue;
@@ -187,7 +188,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
             __('Template name') => [
                 'type' => 'text',
                 'name' => 'template_name',
-                'value' => $fields['template_name']
+                'value' => $fields['template_name'] ?? ''
             ]
         ], $form['content'][array_key_first($form['content'])]['inputs']);
     };
