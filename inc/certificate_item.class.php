@@ -465,7 +465,7 @@ class Certificate_Item extends CommonDBRelation {
                         '' => [
                            'type' => 'select',
                            'name' => 'certificates_id',
-                           'values' => getOptionForItems(Certificate::class),
+                           'itemtype' => Certificate::class,
                            'actions' => getItemActionButtons(['info'] , Certificate::class),
                            'col_lg' => 12,
                            'col_md' => 12,
