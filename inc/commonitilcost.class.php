@@ -474,7 +474,7 @@ abstract class CommonITILCost extends CommonDBChild {
                      'type' => 'select',
                      'name' => 'budgets_id',
                      'value' => $this->fields["budgets_id"],
-                     'values' => getOptionForItems(Budget::class, ['entities_id' => $item->fields['entities_id']]),
+                     'itemtype' => Budget::class,
                   ],
                   __('Comments') => [
                      'type' => 'textarea',
