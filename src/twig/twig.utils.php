@@ -29,12 +29,13 @@ function expandForm($form, $fields = [])
 
 function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
 {
-    $cond = array_merge($conditions,
+    $cond = $conditions +
     getEntitiesRestrictCriteria($itemtype::getTable(),
-        'entities_id', $entity, true));
+        'entities_id', $entity, true);
+    $key = Dropdown::addNewCondition($cond);
     $values = Dropdown::getDropdownValue([
         'itemtype' => $itemtype,
-        'condition' => $cond,
+        'condition' => $key,
         'used' => $used,
         'display_emptychoice' => false,
     ], false);

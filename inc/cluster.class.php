@@ -112,7 +112,8 @@ class Cluster extends CommonDBTM
                   __('Status') => [
                      'name' => 'states_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('State', ['is_visible_line' => 1]),
+                     'itemtype' => State::class,
+                     'conditions' => ['is_visible_line' => 1],
                      'value' => $this->fields['states_id'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "State"),
                   ],
@@ -150,7 +151,8 @@ class Cluster extends CommonDBTM
                   __('Group in charge of the hardware') => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
-                     'values' => getOptionForItems('Group', ['is_assign' => 1]),
+                     'itemtype' => Group::class,
+                     'conditions' => ['is_assign' => 1],
                      'value' => $this->fields['groups_id_tech'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
