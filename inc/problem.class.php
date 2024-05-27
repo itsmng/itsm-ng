@@ -1466,7 +1466,7 @@ class Problem extends CommonITILObject {
                   __('Category') => [
                      'type'  => 'select',
                      'name' => 'itilcategories_id',
-                     'values' => getOptionForItems(ITILCategory::class),
+                     'itemtype' => ITILCategory::class,
                      'value' => $this->fields['itilcategories_id'],
                      'actions' => getItemActionButtons(['info', 'add'], ITILCategory::class),
                      $canupdate ? '' : 'disabled' => '',

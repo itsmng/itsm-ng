@@ -135,7 +135,7 @@ class Appliance_Item extends CommonDBRelation {
          foreach ($itemtypes as $itemtype) {
             $options[$itemtype] = $itemtype::getTypeName(1);
          };
-   
+
          $form = [
             'action' => Toolbox::getItemTypeFormURL(__CLASS__),
             'buttons' => [
@@ -305,7 +305,7 @@ class Appliance_Item extends CommonDBRelation {
                      __('Add to an appliance') => [
                         'type' => 'select',
                         'name' => 'appliances_id',
-                        'values' => getOptionForItems(Appliance::class),
+                        'itemtype' => Appliance::class,
                         'actions' => getItemActionButtons(['info'] , Appliance::class),
                         'col_lg' => 12,
                         'col_md' => 12,
@@ -324,7 +324,7 @@ class Appliance_Item extends CommonDBRelation {
                'display_arrow' => false,
                'specific_actions' => [
                   'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
-               ],   
+               ],
             ];
             Html::showMassiveActions($massiveactionparams);
          }
