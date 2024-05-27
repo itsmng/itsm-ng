@@ -68,13 +68,13 @@ class TaskTemplate extends CommonDropdown {
          TaskCategory::getTypeName(1) => [
             'name'  => 'taskcategories_id',
             'type'  => 'select',
-            'values' => getOptionForItems('TaskCategory'),
+            'itemtype' => TaskCategory::class,
             'value' => $this->fields['taskcategories_id']
          ],
          __('Status') => [
             'name'  => 'state',
             'type'  => 'select',
-            'values' => getOptionForItems('State'),
+            'itemtype' => State::class,
             'value' => $this->fields['state']
          ],
          __('Private') => [
@@ -104,7 +104,8 @@ class TaskTemplate extends CommonDropdown {
          Group::getTypeName(1) => [
             'name'  => 'groups_id_tech',
             'type'  => 'select',
-            'values' => getOptionForItems('Group', ['is_task' => 1]),
+            'itemtype' => Group::class,
+            'conditions' => ['is_task' => 1],
             'value' => $this->fields['groups_id_tech'],
             'actions' => getItemActionButtons(['info', 'add'], Group::class),
          ],
