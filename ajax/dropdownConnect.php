@@ -48,9 +48,9 @@ $used = [];
 if (isset($_POST["used"])) {
    $used = $_POST["used"];
 }
-$options = getOptionForItems(
+$options = getItemByEntity(
    $_POST['itemtype'],
-   [ 'entities_id' => $_POST["entity_restrict"] ]
+   $_POST["entity_restrict"]
 );
 if (isset($used[$_POST['itemtype']])) {
    $options = array_diff_key($options, array_combine($used[$_POST['itemtype']], $used[$_POST['itemtype']]));
