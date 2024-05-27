@@ -1,11 +1,11 @@
 <?php
 
-function expandForm($form, $fields = [], $additionnalHtml = '')
+function expandForm($form, $fields = [])
 {
     foreach ($form['content'] as $contentKey => $content) {
         if (isset($content['inputs'])) {
             foreach ($content['inputs'] as $inputKey => $input) {
-                switch ($input['type'])
+                switch ($input['type'] ?? '')
                 {
                     case 'select':
                         if (isset($input['itemtype']) && !isset($input['values'])) {
@@ -224,7 +224,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     }
     try {
         echo $twig->render('form.twig', [
-            'form' => $form,
+            'form' => expandForM($form, $fields),
             'additionnalHtml' => $additionnalHtml,
             'root_doc' => $CFG_GLPI['root_doc'],
             'csrf_token' => $_SESSION['_glpi_csrf_token'],

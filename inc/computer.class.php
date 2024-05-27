@@ -459,7 +459,6 @@ class Computer extends CommonDBTM {
          'formfooter'   => null,
          ]]);
       $additionnalHtml = ob_get_clean();
-      $form = expandForm($form, $this->fields, $additionnalHtml);
       renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }
