@@ -23904,7 +23904,6 @@ msgstr "Aucune salle trouvée ou sélectionnée"
 msgid "Marketplace"
 msgstr "Marketplace"
 
-php-format
 msgid "%1$s adds the item %2$s-%3$s:%4$s"
 msgstr "%1$s ajoute l'élément %2$s-%3$s:%4$s"
 
@@ -23960,7 +23959,6 @@ msgstr "Vos tickets ayant une solution rejetée"
 msgid "Ticket followup"
 msgstr "Suivi des tickets"
 
-php-format
 msgid "%d new ticket"
 msgid_plural "%d new tickets"
 msgstr[0] "%d nouveau ticket"
@@ -23975,7 +23973,6 @@ msgstr "Derniers tickets"
 msgid "New ticket for this item..."
 msgstr "Nouveau ticket pour cet élément..."
 
-php-format
 msgid "Last %d ticket"
 msgid_plural "Last %d tickets"
 msgstr[0] "%d dernier ticket"
@@ -24045,38 +24042,30 @@ msgstr "Approbation solution / Réponse satisfaction (mes tickets)"
 
 msgid "Approve solution and reply to survey for ticket created by me"
 msgstr ""
-"Approbation de la solution et réponse à la satisfaction des tickets dont "
-"je suis le demandeur"
+"Approbation de la solution et réponse à la satisfaction des tickets dont je "
+"suis le demandeur"
 
-php-format
 msgid "Not enough rights to merge tickets %d and %d"
 msgstr "Droits insuffisants pour regrouper les tickets%d et %d"
 
-php-format
 msgid "Failed to load ticket %d"
 msgstr "Échec du chargement du ticket %d"
 
-php-format
 msgid "Failed to add followup to ticket %d"
 msgstr "Échec de l'ajout du suivi au ticket %d"
 
-php-format
 msgid "Failed to add task to ticket %d"
 msgstr "Échec d'ajout de la tâche au ticket %d"
 
-php-format
 msgid "Failed to add document to ticket %d"
 msgstr "Échec d'ajout du document au ticket %d"
 
-php-format
 msgid "Failed to link tickets %d and %d"
 msgstr "Échec de liaison des tickets %d et %d"
 
-php-format
 msgid "Failed to delete ticket %d"
 msgstr "Échec de la suppression du ticket %d"
 
-php-format
 msgid "%s merges ticket %s into %s"
 msgstr "%sa fusionné le ticket %s dans %s"
 
@@ -24114,7 +24103,6 @@ msgstr "Non connecté"
 msgid "Show as map"
 msgstr "Afficher sur la carte"
 
-php-format
 msgid "Valid to %s"
 msgstr "Expirant le %s"
 
@@ -24205,15 +24193,12 @@ msgstr "Ou partager ce tableau de bord avec ces éléments cibles :"
 msgid "empty card !"
 msgstr "carte vide !"
 
-php-format
 msgid "Number of %s"
 msgstr "Nombre de %s"
 
-php-format
 msgid "%s by %s"
 msgstr "%s par %s"
 
-php-format
 msgid "List of %s"
 msgstr "Liste des %s"
 
@@ -24294,11 +24279,10 @@ msgstr ""
 "pouvez voir les réseaux disponibles."
 
 msgid ""
-"Several network names available! Go to the tab 'Network Name' to manage "
-"them."
+"Several network names available! Go to the tab 'Network Name' to manage them."
 msgstr ""
-"Il existe plusieurs noms de réseau ! Utilisez l'onglet 'Nom réseau' pour "
-"les gérer."
+"Il existe plusieurs noms de réseau ! Utilisez l'onglet 'Nom réseau' pour les "
+"gérer."
 
 msgid "Add a network name"
 msgstr "Ajouter un nom réseau"
@@ -24315,7 +24299,6 @@ msgstr "Aucun nom réseau trouvé"
 msgid "Unable to download plugin archive."
 msgstr "Impossible de télécharger l'archive du plugin."
 
-php-format
 msgid "Plugin archive format is not supported by your system : %s."
 msgstr "L'archive du plugin n'est pas supportée sur votre système : %s."
 
@@ -24325,7 +24308,6 @@ msgstr "Impossible d'extraire l'archive du plugin."
 msgid "Check all plugin updates"
 msgstr "Vérifier les mises à jour de tous les plugins"
 
-php-format
 msgid "New version for plugin %s: %s"
 msgstr "Nouvelle version pour le plugin %s : %s"
 
@@ -24335,12 +24317,10 @@ msgstr "Installé"
 msgid "Discover"
 msgstr "Découvrir"
 
-php-format
-msgid ""
-"%1$s services website seems not available from your network or offline"
+msgid "%1$s services website seems not available from your network or offline"
 msgstr ""
-"Le site web des services %1$s ne semble pas disponible ou votre réseau "
-"est hors ligne"
+"Le site web des services %1$s ne semble pas disponible ou votre réseau est "
+"hors ligne"
 
 msgid "Maybe you could setup a proxy"
 msgstr "Peut-être pouvez-vous configurer un proxy"
@@ -24348,7 +24328,6 @@ msgstr "Peut-être pouvez-vous configurer un proxy"
 msgid "or please check later"
 msgstr "ou réessayez plus tard"
 
-php-format
 msgid "Your %1$s registration is not valid."
 msgstr "Votre enregistrement %1$s n'est pas valide"
 
@@ -24357,22 +24336,18 @@ msgstr ""
 "Un enregistrement, au moins un gratuit, est requis pour utiliser le "
 "marketplace !"
 
-php-format
 msgid "Register on %1$s"
 msgstr "Enregistré sur %1$s"
 
 msgid "fill your registration key in setup."
 msgstr "renseignez votre clé d'enregistrement dans la configuration."
 
-php-format
 msgid "Your %1$s subscription has been terminated."
 msgstr "Votre souscription %1$s a été résilié."
 
-php-format
 msgid "Renew it on %1$s."
 msgstr "Renouvelez la sur %1$s."
 
-php-format
 msgid "We can't write on the markeplace directory (%s)."
 msgstr "Impossible d'écrire dans le dossier du marketplace (%s)."
 
@@ -24384,11 +24359,10 @@ msgstr ""
 "vérifier les autorisations et droits de ce dossier."
 
 msgid ""
-"Otherwise, you will need to download and unzip the plugins archives "
-"manually."
+"Otherwise, you will need to download and unzip the plugins archives manually."
 msgstr ""
-"Autrement, vous devrez télécharger et décompresser les archives des "
-"plugins manuellement."
+"Autrement, vous devrez télécharger et décompresser les archives des plugins "
+"manuellement."
 
 msgid "Alpha ASC"
 msgstr "Alpha ASC"
@@ -24432,25 +24406,20 @@ msgstr "Nettoyer"
 msgid "This plugin is not available for your GLPI version."
 msgstr "Ce plugin n'est pas disponible pour votre version de GLPI."
 
-msgid ""
-"The plugin has an available update but its directory is not writable."
+msgid "The plugin has an available update but its directory is not writable."
 msgstr ""
 "Une mise à jour est disponible pour le plugin, mais son dossier n'est pas "
 "accessible en écriture."
 
-php-format
 msgid ""
-"Download archive manually, you must uncompress it in plugins directory "
-"(%s)"
+"Download archive manually, you must uncompress it in plugins directory (%s)"
 msgstr ""
 "Télécharger l'archive manuellement, vous devrez la décompresser dans le "
 "dossier du plugin (%s)"
 
-php-format
 msgid "A new version (%s) is available, update ?"
 msgstr "Une nouvelle version (%s) est disponible, mettre à jour ?"
 
-php-format
 msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
 msgstr ""
 "Vous avez besoin d'une offre GLPI-Network supérieure pour accéder à ce "
@@ -24465,16 +24434,13 @@ msgstr "Activer"
 msgid "Uninstall"
 msgstr "Désinstaller"
 
-php-format
 msgid "You must have a %s subscription to get this plugin"
 msgstr "Vous devez posséder une souscription %s pour obtenir ce plugin"
 
-php-format
 msgid "You need at least the %s subscription level to get this plugin"
 msgstr ""
 "Vous devez posséder au minimum une souscription %s pour obtenir ce plugin"
 
-php-format
 msgid "%s plugin"
 msgid_plural "%s plugins"
 msgstr[0] "Plugin %s"
@@ -24485,11 +24451,10 @@ msgstr ""
 "GLPI fournit un nouveau marketplace pour télécharger et installer des "
 "plugins."
 
-msgid ""
-"Do you want to replace the plugins setup page by the new marketplace ?"
+msgid "Do you want to replace the plugins setup page by the new marketplace ?"
 msgstr ""
-"Souhaitez vous remplacer la page de configuration des plugins par le "
-"nouveau marketplace ?"
+"Souhaitez vous remplacer la page de configuration des plugins par le nouveau "
+"marketplace ?"
 
 msgid "Later"
 msgstr "Plus tard"
@@ -24511,8 +24476,8 @@ msgid "Plugin old version number"
 msgstr "Ancienne version du plugin"
 
 msgid ""
-"On search engine, use \"Expiration contains NULL\" to search licenses "
-"with no expiration date"
+"On search engine, use \"Expiration contains NULL\" to search licenses with "
+"no expiration date"
 msgstr ""
 "Dans le moteur de recherche, utilisez \"Expiration contient NULL\" pour "
 "rechercher les licences sans date d'expiration"
@@ -24521,20 +24486,18 @@ msgid "Registration"
 msgstr "Enregistrement"
 
 msgid ""
-"A registration key is needed to use advanced feature (like marketplace) "
-"in GLPI"
+"A registration key is needed to use advanced feature (like marketplace) in "
+"GLPI"
 msgstr ""
 "Une clé d'enregistrement est requise pour les fonctionnalités avancées "
 "(comme le marketplace) de GLPI."
 
-php-format
 msgid "Register on %1$s!"
 msgstr "S'enregistrer sur %1$s !"
 
 msgid "And retrieve your key to paste it below"
 msgstr "Et récupérez votre clé pour la coller ci-dessous"
 
-php-format
 msgid "Error was: %s"
 msgstr "L'erreur était : %s"
 
@@ -24562,24 +24525,22 @@ msgstr "La clé de souscription fait référence à une souscription résiliée.
 msgid "The registration key is valid."
 msgstr "La clé d'enregistrement est valide."
 
-php-format
 msgid ""
-"You need help to integrate GLPI in your IT, have a bug fixed or benefit "
-"from pre-configured rules or dictionaries?\n"
+"You need help to integrate GLPI in your IT, have a bug fixed or benefit from "
+"pre-configured rules or dictionaries?\n"
 "\n"
 "We provide the %s space for you.\n"
-"GLPI-Network is a commercial product that includes a subscription for "
-"tier 3 support, ensuring the correction of bugs encountered with a "
-"commitment time.\n"
+"GLPI-Network is a commercial product that includes a subscription for tier 3 "
+"support, ensuring the correction of bugs encountered with a commitment "
+"time.\n"
 "\n"
-"In this same space, you will be able to <b>contact an official partner</"
-"b> to help you with your GLPI integration.\n"
+"In this same space, you will be able to <b>contact an official partner</b> "
+"to help you with your GLPI integration.\n"
 "\n"
 "Or, support the GLPI development effort by <b>donating</b>."
 msgstr ""
 "Vous souhaitez obtenir de l’aide pour intégrer GLPI dans votre SI, faire "
-"corriger un bug ou bénéficier de règles ou dictionnaires pré-"
-"configurés ?\n"
+"corriger un bug ou bénéficier de règles ou dictionnaires pré-configurés ?\n"
 "\n"
 "Nous mettons à votre disposition l’espace %s.\n"
 "GLPI-Network est un produit commercial qui comprend une souscription au "
@@ -24592,7 +24553,6 @@ msgstr ""
 "Ou encore, soutenir l’effort de développement de GLPI en effectuant un "
 "<b>don</b>."
 
-php-format
 msgid ""
 "Having troubles setting up an advanced GLPI module?\n"
 "We can help you solve them. Sign up for support on %s."
@@ -24602,8 +24562,8 @@ msgstr ""
 "support sur %s."
 
 msgid ""
-"An email has been sent to your email address. The email contains "
-"information for reset your password."
+"An email has been sent to your email address. The email contains information "
+"for reset your password."
 msgstr ""
 "Un courriel a été envoyé à votre adresse email. Le courriel contient les "
 "informations pour réinitialiser votre mot de passe."
@@ -24618,14 +24578,13 @@ msgstr ""
 "L'adresse MAC et l'adresse IP de l'équipement sont inclus dans un port "
 "réseau agrégé"
 
-msgid ""
-"The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr ""
 "Le fichier téléchargé excède la directive upload_max_filesize dans php.ini"
 
 msgid ""
-"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
-"in the HTML form"
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
 msgstr ""
 "Le fichier téléchargé excède la directive MAX_FILE_SIZE spécifiée dans le "
 "formulaire HTML"
@@ -24640,8 +24599,7 @@ msgid "A PHP extension stopped the file upload"
 msgstr "Une extension PHP a arrêté le téléchargement"
 
 msgid "The uploaded file exceeds the post_max_size directive in php.ini"
-msgstr ""
-"Le fichier téléchargé excède la directive post_max_size dans php.ini"
+msgstr "Le fichier téléchargé excède la directive post_max_size dans php.ini"
 
 msgid "File is too big"
 msgstr "Le fichier est trop gros"
@@ -24701,23 +24659,21 @@ msgid "Selection too large, massive action disabled."
 msgstr "Sélection trop importante, actions de masse désactivées."
 
 msgid ""
-"To increase the limit: change max_input_vars or suhosin.post.max_vars in "
-"php configuration."
+"To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
+"configuration."
 msgstr ""
-"Pour augmenter la limite, modifier la valeur de max_input_vars ou de "
-"suhosin.post.max_vars dans la configuration PHP."
+"Pour augmenter la limite, modifier la valeur de max_input_vars ou de suhosin."
+"post.max_vars dans la configuration PHP."
 
 msgid "The description field is mandatory"
 msgstr "Le champ description est obligatoire"
 
-php-format
 msgid "From %1$d to %2$d of %3$d"
 msgstr "De %1$d à %2$d sur %3$d"
 
 msgid "Empty array"
 msgstr "Tableau vide"
 
-php-format
 msgid "%1$d on %2$d"
 msgstr "%1$d sur %2$d"
 
@@ -24738,8 +24694,8 @@ msgstr "Suivant (flèche droite)"
 
 msgid "Attach file by drag & drop or copy & paste in editor or "
 msgstr ""
-"Attacher un fichier par glisser déplacer ou par copier-coller dans "
-"l'éditeur ou "
+"Attacher un fichier par glisser déplacer ou par copier-coller dans l'éditeur "
+"ou "
 
 msgid "selecting them"
 msgstr "sélectionnez les"
@@ -24783,7 +24739,6 @@ msgstr "La recherche est désactivée"
 msgid "Global Kanban"
 msgstr "Kanban global"
 
-php-format
 msgid "You are impersonating %s."
 msgstr "Vous prenez l'identité de %s."
 
@@ -24792,12 +24747,12 @@ msgstr "Arrêter de prendre l'identité."
 
 msgid "Allow to login to API and get a session token with user credentials"
 msgstr ""
-"Permettre la connexion à l'API et l'obtention d'un jeton de session avec "
-"les identifiants utilisateur"
+"Permettre la connexion à l'API et l'obtention d'un jeton de session avec les "
+"identifiants utilisateur"
 
 msgid ""
-"Allow to login to API and get a session token with user external token. "
-"See Remote access key in user Settings tab "
+"Allow to login to API and get a session token with user external token. See "
+"Remote access key in user Settings tab "
 msgstr ""
 "Permet la connexion à l'API et l'obtention d'un jeton de session avec le "
 "jeton externe d'un utilisateur. Voir la clé d'accès distant dans l'onglet "
@@ -24905,7 +24860,6 @@ msgstr "Insérer une baie ici"
 msgid "Position must be set"
 msgstr "La position doit être définie"
 
-php-format
 msgid "%1$s position is not available"
 msgstr "La position %1$s n'est pas disponible"
 
@@ -24940,14 +24894,12 @@ msgid "Installation or update of GLPI"
 msgstr "Installation ou mise à jour de ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr ""
-"Choisissez 'Installation' pour une nouvelle installation de ITSM-NG."
+msgstr "Choisissez 'Installation' pour une nouvelle installation de ITSM-NG."
 
-msgid ""
-"Select 'Upgrade' to update your version of GLPI from an earlier version"
+msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
-"Choisissez 'Mise à jour' pour lancer la mise à jour de votre version de "
-"ITSM-NG à partir d'une version antérieure ou d'une version de GLPI.."
+"Choisissez 'Mise à jour' pour lancer la mise à jour de votre version de ITSM-"
+"NG à partir d'une version antérieure ou d'une version de GLPI.."
 
 msgid "Do you want to continue?"
 msgstr "Voulez-vous continuer ?"
@@ -24961,7 +24913,6 @@ msgstr "Test de connexion à la base de données"
 msgid "Can't connect to the database"
 msgstr "Impossible de se connecter à la base de données"
 
-php-format
 msgid "The server answered: %s"
 msgstr "Le serveur a répondu : %s"
 
@@ -25025,8 +24976,8 @@ msgstr ""
 msgid ""
 "Can't create the database connection file, please verify file permissions."
 msgstr ""
-"Impossible de créer le fichier de connexion à la base de données, "
-"vérifiez les droits sur les fichiers."
+"Impossible de créer le fichier de connexion à la base de données, vérifiez "
+"les droits sur les fichiers."
 
 msgid "Select your language"
 msgstr "Sélectionnez votre langue"
@@ -25034,7 +24985,6 @@ msgstr "Sélectionnez votre langue"
 msgid "Beginning of the installation"
 msgstr "Début de l'installation"
 
-php-format
 msgid "Step %d"
 msgstr "Étape %d"
 
@@ -25065,7 +25015,6 @@ msgstr "Ajouter un filtre"
 msgid "Saved"
 msgstr "Enregistré"
 
-javascript-format
 msgid "Are you sure you want to delete the dashboard %s ?"
 msgstr "Êtes vous sûr de vouloir supprimer le tableau de bord %s ?"
 
