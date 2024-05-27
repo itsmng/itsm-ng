@@ -347,7 +347,9 @@ class Computer extends CommonDBTM {
                   __('Location') => [
                      'name' => 'locations_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id'],]),
+                     'values' => getOptionForItems('Location',
+                        getEntitiesRestrictCriteria('glpi_locations',
+                        'entities_id', $this->fields['entities_id'], true)),
                      'value' => $this->fields['locations_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "Location"),
                   ],
@@ -375,7 +377,10 @@ class Computer extends CommonDBTM {
                   __('Group in charge of the hardware') => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
-                     'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'values' => getOptionForItems('Group',
+                        array_merge(['is_assign' => 1],
+                        getEntitiesRestrictCriteria('glpi_groups',
+                        'entities_id', $this->fields['entities_id'], true))),
                      'value' => $this->fields['groups_id_tech'],
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
