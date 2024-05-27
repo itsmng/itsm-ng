@@ -130,7 +130,7 @@ class Cluster extends CommonDBTM
                   __('Type') => [
                      'name' => 'clustertypes_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('ClusterType'),
+                     'itemtype' => ClusterType::class,
                      'value' => $this->fields['clustertypes_id'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "ClusterType"),
                   ],
