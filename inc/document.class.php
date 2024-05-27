@@ -1473,7 +1473,7 @@ class Document extends CommonDBTM {
                      $('#selectForMaDocumentId').empty();
                      for (const i in jsonData) {
                         $('#selectForMaDocumentId').append('<option value="' + i + '">' + jsonData[i] + '</option>');
-                     } 
+                     }
                   }
                });
                JS,
@@ -1483,7 +1483,7 @@ class Document extends CommonDBTM {
             'type' => 'select',
             'id' => 'selectForMaDocumentId',
             'name' => 'peer_documents_id',
-            'values' => getOptionForItems(Document::class),
+            'itemtype' => Document::class,
             'col_lg' => 12,
             'col_md' => 12,
             'actions' => getItemActionButtons(['info'], Document::class)
