@@ -1,5 +1,30 @@
 <?php
 
+function expandForm($form, $fields = [], $additionnalHtml = '')
+{
+    foreach ($form['content'] as $contentKey => $content) {
+        if (isset($content['inputs'])) {
+            foreach ($content['inputs'] as $inputKey => $input) {
+                switch ($input['type'])
+                {
+                    case 'select':
+                        if (isset($input['itemtype']) && !isset($input['values'])) {
+                            $form['content'][$contentKey]['inputs'][$inputKey]['values'] =
+                                array_merge ([Dropdown::EMPTY_VALUE], getItemByEntity(
+                                $input['itemtype'],
+                                $fields['entities_id'] ?? Session::getActiveEntity(),
+                                $input['conditions'] ?? [],
+                                $input['used'] ?? [])
+                            );
+                        }
+                        break;
+                }
+            }
+        }
+    }
+    return $form;
+}
+
 function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
 {
     $cond = array_merge($conditions,

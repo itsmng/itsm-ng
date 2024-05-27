@@ -375,8 +375,7 @@ class Computer extends CommonDBTM {
                   __('Group in charge of the hardware') => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
-                     'values' => getItemByEntity(Group::class,
-                        $this->fields['entities_id'], ['is_assign' => 1]),
+                     'itemtype' => Group::class,
                      'value' => $this->fields['groups_id_tech'],
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
@@ -424,7 +423,7 @@ class Computer extends CommonDBTM {
                   Group::getTypeName(1) => [
                      'name' => 'groups_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('Group', ['is_itemgroup' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => Group::class,
                      'value' => $this->fields['groups_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
@@ -460,7 +459,7 @@ class Computer extends CommonDBTM {
          'formfooter'   => null,
          ]]);
       $additionnalHtml = ob_get_clean();
-         
+      $form = expandForm($form, $this->fields, $additionnalHtml);
       renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }
