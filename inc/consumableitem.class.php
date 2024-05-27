@@ -178,14 +178,15 @@ class ConsumableItem extends CommonDBTM {
                   __('Group in charge of the hardware') => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
-                     'values' => getOptionForItems('Group', ["is_assign" => 1]),
+                     'itemtype' => Group::class,
+                     'conditions' => ['is_assign' => 1],
                      'value' => $this->fields['groups_id_tech'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __('Stock location') => [
                      'name' => 'locations_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('Location', ["entities_id" => $this->fields["entities_id"]]),
+                     'itemtype' => Location::class,
                      'value' => $this->fields['locations_id'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "Location"),
                   ],
@@ -223,7 +224,7 @@ class ConsumableItem extends CommonDBTM {
          'formfooter'   => null,
          ]]);
       $additionnalHtml = ob_get_clean();
-         
+
       renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }
