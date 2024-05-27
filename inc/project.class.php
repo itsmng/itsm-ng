@@ -1430,7 +1430,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
       $form = [
          'action' => $this->getFormURL(),
          'buttons' => [
-            $this->fields["is_deleted"] == 1 && self::canDelete() ? [
+            ($this->fields["is_deleted"] ?? 0) == 1 && self::canDelete() ? [
               'type' => 'submit',
               'name' => 'restore',
               'value' => __('Restore'),
@@ -1489,10 +1489,8 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
                   __('As child of') => [
                      'type' => 'select',
                      'name' => 'projects_id',
-                     'values' => getOptionForItems(Project::class, [
-                        'NOT' => ['id' => $this->fields['id']],
-                        'entities_id' => $this->fields['entities_id'],   
-                     ]),
+                     'itemtype' => Project::class,
+                     'condition' => ['NOT' => ['id' => $this->fields['id']]],
                      'value' => $this->fields['projects_id'],
                      'actions' => getItemActionButtons(['info'], Project::class)
                   ],
@@ -1553,10 +1551,8 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
                   Group::getTypeName(1) => [
                      'type' => 'select',
                      'name' => 'users_id',
-                     'values' => getOptionForItems(Group::class, [
-                        'entities_id' => $this->fields['entities_id'],
-                        'is_manager' => 1,
-                     ]),
+                     'itemtype' => Group::class,
+                     'condition' => ['is_manager' => 1],
                      'value' => $this->fields['groups_id'],
                      'col_lg' => 6,
                   ]
@@ -1666,7 +1662,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
          foreach ($itemtypes as $itemtype) {
             $options[$itemtype] = $itemtype::getTypeName(1);
          };
-   
+
          $form = [
             'action' => Toolbox::getItemTypeFormURL(ProjectTeam::class),
             'buttons' => [
