@@ -248,7 +248,8 @@ class Domain_Item extends CommonDBRelation {
                         __('Relation') => [
                            'type' => 'select',
                            'name' => 'domainrelations_id',
-                           'values' => getOptionForItems(DomainRelation::class, [], false),
+                           'itemtype' => DomainRelation::class,
+                           'value' => DomainRelation::BELONGS,
                            'actions' => getItemActionButtons(['info', 'add'], DomainRelation::class)
                         ]
                      ]
@@ -414,7 +415,7 @@ class Domain_Item extends CommonDBRelation {
 
                while ($data = $linked_iterator->next()) {
 
-                  
+
                   Session::addToNavigateListItems($itemtype, $data["id"]);
                   $item->getFromDB($data["id"]);
 
