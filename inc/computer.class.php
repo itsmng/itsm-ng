@@ -340,7 +340,8 @@ class Computer extends CommonDBTM {
                   __('Status') => [
                      'name' => 'states_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('State', ['is_visible_computer' => 1]),
+                     'itemtype' => State::class,
+                     'conditions' => ['is_visible_computer' => 1],
                      'value' => $this->fields['states_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "State"),
                   ],
