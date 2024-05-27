@@ -47,7 +47,7 @@ class BusinessCriticity  extends CommonTreeDropdown {
          __('As child of') => [
             'name'  => $this->getForeignKeyField(),
             'type'  => 'select',
-            'values'  => getOptionForItems('BusinessCriticity', ['NOT' => ['id' => $this->getID()]]),
+            'itemtype' => BusinessCriticity::class,
             'value' => $this->fields[$this->getForeignKeyField()],
          ]
       ];
