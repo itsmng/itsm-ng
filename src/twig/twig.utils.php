@@ -1,11 +1,35 @@
 <?php
 
-/**
- * @param $form
- */
+function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
+{
+    $cond = array_merge($conditions,
+    getEntitiesRestrictCriteria($itemtype::getTable(),
+        'entities_id', $entity, true));
+    $values = Dropdown::getDropdownValue([
+        'itemtype' => $itemtype,
+        'condition' => $cond,
+        'used' => $used,
+    ], false);
+    foreach ($values['results'] as $key => $value) {
+        if (!$value || !count($value))
+            continue;
+
+        if (isset($value['children'])) {
+            if (!isset($options[$value['text']])) {
+                $options[$value['text']] = [];
+            }
+            foreach ($value['children'] as $childValue) {
+                $options[$value['text']][$childValue['id']] = $childValue['text'];
+            }
+        } else {
+            $options[$value['id']] = $value['text'];
+        }
+    }
+    return $options;
+}
+
 function getOptionForItems($item, $conditions = [], $display_emptychoice = true, $isDevice = false, $used = [])
 {
-
     $entity_restrict = false;
     if (isset($conditions['entities_id']) && isset($conditions['is_recursive'])) {
         $entity_restrict = '[' .
