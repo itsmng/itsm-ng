@@ -25065,7 +25065,7 @@ msgstr "Ajouter un filtre"
 msgid "Saved"
 msgstr "Enregistré"
 
-javascript-format
+#, javascript-format
 msgid "Are you sure you want to delete the dashboard %s ?"
 msgstr "Êtes vous sûr de vouloir supprimer le tableau de bord %s ?"
 
