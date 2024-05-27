@@ -340,7 +340,7 @@ class NetworkEquipment extends CommonDBTM {
                      'name' => 'groups_id_tech',
                      'type' => 'select',
                      'value' => $this->fields['groups_id_tech'],
-                     'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]), // NEED right => own_ticket
+                     'itemtype' => Group::class,
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __("Model") => [
@@ -417,7 +417,7 @@ class NetworkEquipment extends CommonDBTM {
          'formfooter'   => null,
          ]]);
       $additionnalHtml = ob_get_clean();
-         
+
       renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }

@@ -137,7 +137,7 @@ class Enclosure extends CommonDBTM {
                   __('Location') => [
                      'name' => 'locations_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id'],]),
+                     'itemtype' => Location::class,
                      'value' => $this->fields['locations_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "Location"),
                   ],
@@ -192,7 +192,7 @@ class Enclosure extends CommonDBTM {
          'formfooter'   => null,
          ]]);
       $additionnalHtml = ob_get_clean();
-         
+
       renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }
