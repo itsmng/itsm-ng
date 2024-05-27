@@ -60,13 +60,13 @@ class NetworkPortWifi extends NetworkPortInstantiation {
                   DeviceNetworkCard::getTypeName(1) => [
                      'type' => 'select',
                      'name' => 'items_devicenetworkcards_id',
-                     'values' => getOptionForItems(DeviceNetworkCard::class, [], true, true),
+                     'itemtype' => DeviceNetworkCard::class,
                      'value' => $this->fields['items_devicenetworkcards_id']
                   ],
                   WifiNetwork::getTypeName(1) => [
                      'type' => 'select',
                      'name' => 'wifinetworks_id',
-                     'values' => getOptionForItems(WifiNetwork::class),
+                     'itemtype' => WifiNetwork::class,
                      'value' => $this->fields["wifinetworks_id"],
                      'actions' => getItemActionButtons(['info', 'add'], WifiNetwork::class)
                   ],
@@ -86,7 +86,7 @@ class NetworkPortWifi extends NetworkPortInstantiation {
                      'type' => 'text',
                      'name' => 'mac',
                      'value' => $netport->fields['mac'],
-                  ],   
+                  ],
                ]
             ]
          ];
