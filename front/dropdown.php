@@ -40,7 +40,38 @@ echo "<div class='center'>";
 
 $optgroup = Dropdown::getStandardDropdownItemTypes();
 if (count($optgroup) > 0) {
-   Dropdown::showItemTypeMenu(_n('Dropdown', 'Dropdowns', Session::getPluralNumber()), $optgroup);
+    $selected = '';
+    foreach ($optgroup as $label => $dp) {
+       foreach ($dp as $key => $val) {
+          $search = $key::getSearchURL();
+          $values[$label][$search] = $val;
+       }
+    }
+      //Dropdown::showFromArray('dpmenu', $values,
+                              //['on_change'
+                                       //=> "var _value = this.options[this.selectedIndex].value; if (_value != 0) {window.location.href=_value;}",
+                                    //'value'               => $selected,
+                                    //'display_emptychoice' => true]);
+    renderTwigTemplate('macros/wrappedInput.twig', [
+        'title' => _n('Dropdown', 'Dropdowns', Session::getPluralNumber()),
+        'input' => [
+            'type' => 'select',
+            'id' => 'dpmenu',
+            'name' => 'dpmenu',
+            'values' => [Dropdown::EMPTY_VALUE] + $values,
+            'hooks' => [
+                'change' => <<<JS
+                    var _value = this.options[this.selectedIndex].value;
+                    if (_value != 0) {
+                        window.location.href=_value;
+                    }
+                JS
+            ],
+            'col_lg' => 12,
+            'col_md' => 12,
+            'searchable' => true,
+        ]
+    ]);
 } else {
    Html::displayRightError();
 }
