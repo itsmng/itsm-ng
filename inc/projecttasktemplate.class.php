@@ -73,7 +73,8 @@ class ProjectTaskTemplate extends CommonDropdown {
          __('As child of') => [
             'name'  => 'projecttasks_id',
             'type'  => 'select',
-            'values' => getOptionForItems('ProjectTask', ['NOT' => ['id' => $this->getID()]]),
+            'itemtype' => ProjectTask::class,
+            'condition' => ['AND' => ['NOT' => ['id' => $this->getID()], 'is_template' => 1]],
             'value' => $this->fields['projecttasks_id'],
             'actions' => getItemActionButtons(['info', 'add'], 'ProjectTask')
          ],
