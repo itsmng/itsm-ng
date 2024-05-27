@@ -182,7 +182,7 @@ class ITILSolution extends CommonDBChild {
                      'type' => 'select',
                      'name' => 'solutiontemplates_id',
                      'id' => 'DropdownForSolutionTemplate',
-                     'values' => getOptionForItems(SolutionTemplate::class),
+                     'itemtype' => SolutionTemplate::class,
                      'actions' => getItemActionButtons(['info', 'add'], SolutionTemplate::class),
                      'hooks' => [
                         'change' => <<<JS
@@ -225,14 +225,14 @@ class ITILSolution extends CommonDBChild {
                      'type' => 'select',
                      'name' => 'solutiontypes_id',
                      'id' => 'DropdownForSolutionTypeId',
-                     'values' => getOptionForItems(SolutionType::class),
+                     'itemtype' => SolutionType::class,
                      'value' => $this->fields['solutiontypes_id'],
                      'actions' => getItemActionButtons(['info', 'add'], SolutionType::class),
                   ] : [
                      'content' => Dropdown::getDropdownName('glpi_solutiontypes',
                         $this->getField('solutiontypes_id')),
                   ],
-                  str_replace('%id', isset($kb) ? $kb->getID() : '', __('Link to knowledge base entry #%id')) => 
+                  str_replace('%id', isset($kb) ? $kb->getID() : '', __('Link to knowledge base entry #%id')) =>
                   (Session::haveRightsOr('knowbase', [READ, KnowbaseItem::READFAQ]) && isset($options['kb_id_toload']) && $options['kb_id_toload'] != 0) ? [
                      'type' => 'checkbox',
                      'name' => 'kb_linked_id',

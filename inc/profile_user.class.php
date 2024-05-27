@@ -149,7 +149,7 @@ class Profile_User extends CommonDBRelation {
                      Entity::getTypeName() => [
                         'type'    => 'select',
                         'name'    => 'entities_id',
-                        'values'   => getOptionForItems('Entity'),
+                        'itemtype' => Entity::class,
                         'value' => $_SESSION['glpiactiveentities'],
                         'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
                      ],
