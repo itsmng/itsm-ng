@@ -23904,7 +23904,7 @@ msgstr "Aucune salle trouvée ou sélectionnée"
 msgid "Marketplace"
 msgstr "Marketplace"
 
-php-format
+#, php-format
 msgid "%1$s adds the item %2$s-%3$s:%4$s"
 msgstr "%1$s ajoute l'élément %2$s-%3$s:%4$s"
 
@@ -23960,7 +23960,7 @@ msgstr "Vos tickets ayant une solution rejetée"
 msgid "Ticket followup"
 msgstr "Suivi des tickets"
 
-php-format
+#, php-format
 msgid "%d new ticket"
 msgid_plural "%d new tickets"
 msgstr[0] "%d nouveau ticket"
@@ -23975,7 +23975,7 @@ msgstr "Derniers tickets"
 msgid "New ticket for this item..."
 msgstr "Nouveau ticket pour cet élément..."
 
-php-format
+#, php-format
 msgid "Last %d ticket"
 msgid_plural "Last %d tickets"
 msgstr[0] "%d dernier ticket"
@@ -24048,35 +24048,35 @@ msgstr ""
 "Approbation de la solution et réponse à la satisfaction des tickets dont "
 "je suis le demandeur"
 
-php-format
+#, php-format
 msgid "Not enough rights to merge tickets %d and %d"
 msgstr "Droits insuffisants pour regrouper les tickets%d et %d"
 
-php-format
+#, php-format
 msgid "Failed to load ticket %d"
 msgstr "Échec du chargement du ticket %d"
 
-php-format
+#, php-format
 msgid "Failed to add followup to ticket %d"
 msgstr "Échec de l'ajout du suivi au ticket %d"
 
-php-format
+#, php-format
 msgid "Failed to add task to ticket %d"
 msgstr "Échec d'ajout de la tâche au ticket %d"
 
-php-format
+#, php-format
 msgid "Failed to add document to ticket %d"
 msgstr "Échec d'ajout du document au ticket %d"
 
-php-format
+#, php-format
 msgid "Failed to link tickets %d and %d"
 msgstr "Échec de liaison des tickets %d et %d"
 
-php-format
+#, php-format
 msgid "Failed to delete ticket %d"
 msgstr "Échec de la suppression du ticket %d"
 
-php-format
+#, php-format
 msgid "%s merges ticket %s into %s"
 msgstr "%sa fusionné le ticket %s dans %s"
 
@@ -24114,7 +24114,7 @@ msgstr "Non connecté"
 msgid "Show as map"
 msgstr "Afficher sur la carte"
 
-php-format
+#, php-format
 msgid "Valid to %s"
 msgstr "Expirant le %s"
 
@@ -24205,15 +24205,15 @@ msgstr "Ou partager ce tableau de bord avec ces éléments cibles :"
 msgid "empty card !"
 msgstr "carte vide !"
 
-php-format
+#, php-format
 msgid "Number of %s"
 msgstr "Nombre de %s"
 
-php-format
+#, php-format
 msgid "%s by %s"
 msgstr "%s par %s"
 
-php-format
+#, php-format
 msgid "List of %s"
 msgstr "Liste des %s"
 
@@ -24315,7 +24315,7 @@ msgstr "Aucun nom réseau trouvé"
 msgid "Unable to download plugin archive."
 msgstr "Impossible de télécharger l'archive du plugin."
 
-php-format
+#, php-format
 msgid "Plugin archive format is not supported by your system : %s."
 msgstr "L'archive du plugin n'est pas supportée sur votre système : %s."
 
@@ -24325,7 +24325,7 @@ msgstr "Impossible d'extraire l'archive du plugin."
 msgid "Check all plugin updates"
 msgstr "Vérifier les mises à jour de tous les plugins"
 
-php-format
+#, php-format
 msgid "New version for plugin %s: %s"
 msgstr "Nouvelle version pour le plugin %s : %s"
 
@@ -24335,7 +24335,7 @@ msgstr "Installé"
 msgid "Discover"
 msgstr "Découvrir"
 
-php-format
+#, php-format
 msgid ""
 "%1$s services website seems not available from your network or offline"
 msgstr ""
@@ -24348,7 +24348,7 @@ msgstr "Peut-être pouvez-vous configurer un proxy"
 msgid "or please check later"
 msgstr "ou réessayez plus tard"
 
-php-format
+#, php-format
 msgid "Your %1$s registration is not valid."
 msgstr "Votre enregistrement %1$s n'est pas valide"
 
@@ -24357,22 +24357,22 @@ msgstr ""
 "Un enregistrement, au moins un gratuit, est requis pour utiliser le "
 "marketplace !"
 
-php-format
+#, php-format
 msgid "Register on %1$s"
 msgstr "Enregistré sur %1$s"
 
 msgid "fill your registration key in setup."
 msgstr "renseignez votre clé d'enregistrement dans la configuration."
 
-php-format
+#, php-format
 msgid "Your %1$s subscription has been terminated."
 msgstr "Votre souscription %1$s a été résilié."
 
-php-format
+#, php-format
 msgid "Renew it on %1$s."
 msgstr "Renouvelez la sur %1$s."
 
-php-format
+#, php-format
 msgid "We can't write on the markeplace directory (%s)."
 msgstr "Impossible d'écrire dans le dossier du marketplace (%s)."
 
@@ -24438,7 +24438,7 @@ msgstr ""
 "Une mise à jour est disponible pour le plugin, mais son dossier n'est pas "
 "accessible en écriture."
 
-php-format
+#, php-format
 msgid ""
 "Download archive manually, you must uncompress it in plugins directory "
 "(%s)"
@@ -24446,11 +24446,11 @@ msgstr ""
 "Télécharger l'archive manuellement, vous devrez la décompresser dans le "
 "dossier du plugin (%s)"
 
-php-format
+#, php-format
 msgid "A new version (%s) is available, update ?"
 msgstr "Une nouvelle version (%s) est disponible, mettre à jour ?"
 
-php-format
+#, php-format
 msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
 msgstr ""
 "Vous avez besoin d'une offre GLPI-Network supérieure pour accéder à ce "
@@ -24465,16 +24465,16 @@ msgstr "Activer"
 msgid "Uninstall"
 msgstr "Désinstaller"
 
-php-format
+#, php-format
 msgid "You must have a %s subscription to get this plugin"
 msgstr "Vous devez posséder une souscription %s pour obtenir ce plugin"
 
-php-format
+#, php-format
 msgid "You need at least the %s subscription level to get this plugin"
 msgstr ""
 "Vous devez posséder au minimum une souscription %s pour obtenir ce plugin"
 
-php-format
+#, php-format
 msgid "%s plugin"
 msgid_plural "%s plugins"
 msgstr[0] "Plugin %s"
@@ -24527,14 +24527,14 @@ msgstr ""
 "Une clé d'enregistrement est requise pour les fonctionnalités avancées "
 "(comme le marketplace) de GLPI."
 
-php-format
+#, php-format
 msgid "Register on %1$s!"
 msgstr "S'enregistrer sur %1$s !"
 
 msgid "And retrieve your key to paste it below"
 msgstr "Et récupérez votre clé pour la coller ci-dessous"
 
-php-format
+#, php-format
 msgid "Error was: %s"
 msgstr "L'erreur était : %s"
 
@@ -24562,7 +24562,7 @@ msgstr "La clé de souscription fait référence à une souscription résiliée.
 msgid "The registration key is valid."
 msgstr "La clé d'enregistrement est valide."
 
-php-format
+#, php-format
 msgid ""
 "You need help to integrate GLPI in your IT, have a bug fixed or benefit "
 "from pre-configured rules or dictionaries?\n"
@@ -24592,7 +24592,7 @@ msgstr ""
 "Ou encore, soutenir l’effort de développement de GLPI en effectuant un "
 "<b>don</b>."
 
-php-format
+#, php-format
 msgid ""
 "Having troubles setting up an advanced GLPI module?\n"
 "We can help you solve them. Sign up for support on %s."
@@ -24710,14 +24710,14 @@ msgstr ""
 msgid "The description field is mandatory"
 msgstr "Le champ description est obligatoire"
 
-php-format
+#, php-format
 msgid "From %1$d to %2$d of %3$d"
 msgstr "De %1$d à %2$d sur %3$d"
 
 msgid "Empty array"
 msgstr "Tableau vide"
 
-php-format
+#, php-format
 msgid "%1$d on %2$d"
 msgstr "%1$d sur %2$d"
 
@@ -24783,7 +24783,7 @@ msgstr "La recherche est désactivée"
 msgid "Global Kanban"
 msgstr "Kanban global"
 
-php-format
+#, php-format
 msgid "You are impersonating %s."
 msgstr "Vous prenez l'identité de %s."
 
@@ -24905,7 +24905,7 @@ msgstr "Insérer une baie ici"
 msgid "Position must be set"
 msgstr "La position doit être définie"
 
-php-format
+#, php-format
 msgid "%1$s position is not available"
 msgstr "La position %1$s n'est pas disponible"
 
@@ -24961,7 +24961,7 @@ msgstr "Test de connexion à la base de données"
 msgid "Can't connect to the database"
 msgstr "Impossible de se connecter à la base de données"
 
-php-format
+#, php-format
 msgid "The server answered: %s"
 msgstr "Le serveur a répondu : %s"
 
@@ -25034,7 +25034,7 @@ msgstr "Sélectionnez votre langue"
 msgid "Beginning of the installation"
 msgstr "Début de l'installation"
 
-php-format
+#, php-format
 msgid "Step %d"
 msgstr "Étape %d"
 
