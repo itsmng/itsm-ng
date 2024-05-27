@@ -718,16 +718,14 @@ class Document_Item extends CommonDBRelation{
                         'value' => $item->getID()
                      ] : [],
                   ]
-               ] 
+               ]
             ]
          ];
          renderTwigForm($form);
 
          if (Document::canView()
              && ($nb > count($used))) {
-            $values = getOptionForItems(Document::class, [
-               'entities_id' => $entities,
-            ]);
+            $values = getItemByEntity(Document::class, $entities);
             $criteria = [
                'FROM'   => 'glpi_documentcategories',
                'WHERE'  => [
@@ -740,12 +738,12 @@ class Document_Item extends CommonDBRelation{
                'ORDER'  => 'name'
             ];
             $iterator = $DB->request($criteria);
-      
+
             $headings = [];
             while ($data = $iterator->next()) {
                $headings[$data['id']] = $data['name'];
             }
-      
+
             foreach ($used as $id) {
                unset($values[$id]);
             }
@@ -783,7 +781,7 @@ class Document_Item extends CommonDBRelation{
                                     $('#selectForDocumentId').empty();
                                     for (const i in jsonData) {
                                        $('#selectForDocumentId').append('<option value="' + i + '">' + jsonData[i] + '</option>');
-                                    } 
+                                    }
                                  }
                               });
                               JS,
@@ -793,10 +791,10 @@ class Document_Item extends CommonDBRelation{
                            'type' => 'select',
                            'id' => 'selectForDocumentId',
                            'name' => 'documents_id',
-                           'values' => getOptionForItems(Document::class),
+                           'itemtype' => Document::class,
                            'col_lg' => 6,
                            'actions' => getItemActionButtons(['info'], Document::class)
-                        ],               
+                        ],
                         [
                            'type' => 'hidden',
                            'name' => 'itemtype',
@@ -991,7 +989,7 @@ class Document_Item extends CommonDBRelation{
          }
          $used[$docID] = $docID;
          $assocID      = $data["assocID"];
-         
+
          $values[] = [
             $link,
             $data['entity'],
