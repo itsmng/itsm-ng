@@ -948,7 +948,7 @@ class Html
                collapsible: true
             }).addClass( 'ui-tabs-vertical ui-helper-clearfix' );
 
-            $('<li class=\"close\"><button id= \"close_debug$rand\">close debug</button></li>')
+            $('<li class=\"close\"><button aria-label='Close Debug' id= \"close_debug$rand\">close debug</button></li>')
                .appendTo('#debugtabs$rand ul');
 
             $('#close_debug$rand').button({
@@ -2732,7 +2732,7 @@ JAVASCRIPT;
       if (empty($name)) {
          $name = 'massaction_' . mt_rand();
       }
-      return  "<form name='$name' id='$name' method='post'
+      return  "<form aria-label='$name' name='$name' id='$name' method='post'
                action='" . $CFG_GLPI["root_doc"] . "/front/massiveaction.php'>";
    }
 
@@ -3784,7 +3784,7 @@ JS;
       global $CFG_GLPI;
 
       if (count($_SESSION["glpiprofiles"]) > 1) {
-         echo '<form name="form" method="post" action="' . $target . '">';
+         echo '<form aria-label="Profile Selecter" name="form" method="post" action="' . $target . '">';
          $values = [];
          foreach ($_SESSION["glpiprofiles"] as $key => $val) {
             $values[$key] = $val['name'];
@@ -4486,7 +4486,7 @@ JAVASCRIPT
       ) {
 
          echo "<td class='tab_bg_2 responsive_hidden' width='30%'>";
-         echo "<form method='GET' action='" . $CFG_GLPI["root_doc"] . "/front/report.dynamic.php'>";
+         echo "<form aria-label='Item Type' method='GET' action='" . $CFG_GLPI["root_doc"] . "/front/report.dynamic.php'>";
          echo Html::hidden('item_type', ['value' => $item_type_output]);
 
          if ($item_type_output_param != 0) {
@@ -4557,11 +4557,11 @@ JAVASCRIPT
 
       $out = '';
       if ($action) {
-         $out .= "<form method='POST' action=\"$action\">";
+         $out .= "<form aria-label='Items number' method='POST' action=\"$action\">";
          $out .= "<span class='responsive_hidden'>" . __('Display (number of items)') . "</span>&nbsp;";
          $out .= Dropdown::showListLimit("submit()", false);
       } else {
-         $out .= "<form method='POST' action =''>\n";
+         $out .= "<form aria-label='Items number' method='POST' action =''>\n";
          $out .= "<span class='responsive_hidden'>" . __('Display (number of items)') . "</span>&nbsp;";
          $out .= Dropdown::showListLimit("reloadTab(\"glpilist_limit=\"+this.value+\"$additional_params\")", false);
       }
@@ -5113,19 +5113,19 @@ JAVASCRIPT
       $out .= "<div class='pswp__counter'></div>";
 
       if (isset($p['controls']['close']) && $p['controls']['close']) {
-         $out .= "<button class='pswp__button pswp__button--close' title='" . __('Close (Esc)') . "'></button>";
+         $out .= "<button class='pswp__button pswp__button--close' aria-label='Close' title='" . __('Close (Esc)') . "'></button>";
       }
 
       if (isset($p['controls']['share']) && $p['controls']['share']) {
-         $out .= "<button class='pswp__button pswp__button--share' title='" . __('Share') . "'></button>";
+         $out .= "<button class='pswp__button pswp__button--share' aria-label='Share' title='" . __('Share') . "'></button>";
       }
 
       if (isset($p['controls']['fullscreen']) && $p['controls']['fullscreen']) {
-         $out .= "<button class='pswp__button pswp__button--fs' title='" . __('Toggle fullscreen') . "'></button>";
+         $out .= "<button class='pswp__button pswp__button--fs' aria-label='FullScreen' title='" . __('Toggle fullscreen') . "'></button>";
       }
 
       if (isset($p['controls']['zoom']) && $p['controls']['zoom']) {
-         $out .= "<button class='pswp__button pswp__button--zoom' title='" . __('Zoom in/out') . "'></button>";
+         $out .= "<button class='pswp__button pswp__button--zoom' aria-label='Zoom' title='" . __('Zoom in/out') . "'></button>";
       }
 
       $out .= "<div class='pswp__preloader'>";
@@ -5136,9 +5136,9 @@ JAVASCRIPT
       $out .= "<div class='pswp__share-modal pswp__share-modal--hidden pswp__single-tap'>";
       $out .= "<div class='pswp__share-tooltip'></div>";
       $out .= "</div>";
-      $out .= "<button class='pswp__button pswp__button--arrow--left' title='" . __('Previous (arrow left)') . "'>";
+      $out .= "<button class='pswp__button pswp__button--arrow--left' aria-label='Previous' title='" . __('Previous (arrow left)') . "'>";
       $out .= "</button>";
-      $out .= "<button class='pswp__button pswp__button--arrow--right' title='" . __('Next (arrow right)') . "'>";
+      $out .= "<button class='pswp__button pswp__button--arrow--right' aria-label='Next' title='" . __('Next (arrow right)') . "'>";
       $out .= "</button>";
       $out .= "<div class='pswp__caption'>";
       $out .= "<div class='pswp__caption__center'></div>";
@@ -5368,7 +5368,7 @@ JAVASCRIPT;
          unset($options['selected']);
       }
       $select = sprintf(
-         '<select name="%1$s" %2$s>',
+         '<select aria-label="$name" name="%1$s" %2$s>',
          self::cleanInputText($name),
          self::parseAttributes($options)
       );
@@ -5443,7 +5443,7 @@ JAVASCRIPT;
          );
       }
 
-      $button = "<button type='submit' value='%s' %s>
+      $button = "<button type='submit' aria-label='$caption' value='%s' %s>
                $caption
             </button>&nbsp;";
 
@@ -7503,10 +7503,10 @@ JAVASCRIPT;
        }
 
        echo '<div class="banner-impersonate">';
-       echo '<form name="form" method="post" action="' . User::getFormURL() . '">';
+       echo '<form aria-label="Impersonate" name="form" method="post" action="' . User::getFormURL() . '">';
        echo sprintf(__('You are impersonating %s.'), $_SESSION['glpiname']);
        echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
-       echo '<button type="submit" name="impersonate" class="btn-linkstyled" value="0">';
+       echo '<button type="submit" aria-label="Impersonate" name="impersonate" class="btn-linkstyled" value="0">';
        echo __s('Stop impersonating');
        echo '</button>';
        echo '</form>';

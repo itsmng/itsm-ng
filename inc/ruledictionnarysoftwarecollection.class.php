@@ -74,7 +74,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection {
    function warningBeforeReplayRulesOnExistingDB($target) {
       global $CFG_GLPI;
 
-      echo "<form name='testrule_form' id='softdictionnary_confirmation' method='post' action=\"" .
+      echo "<form aria-label='Soft Dictionnary Confirmation' name='testrule_form' id='softdictionnary_confirmation' method='post' action=\"" .
              $target . "\">\n";
       echo "<div class='center'>";
       echo "<table class='tab_cadre_fixe' aria-label='Warning'>";

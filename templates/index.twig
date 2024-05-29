@@ -5,7 +5,7 @@
         <h1 id='logo_login'></h1>
         <div id='text-login'>{{text_login|raw}}</div>
     <div id='boxlogin'>
-        <form action='{{root_doc}}/front/login.php' method='post'>
+        <form aria-label="Login Form" action='{{root_doc}}/front/login.php' method='post'>
             <input type='hidden' name='_glpi_csrf_token' value={{csrf_token}} />
             {% if noAUTO_set %}
             <input type='hidden' name='noAUTO' value='1' />
@@ -22,7 +22,7 @@
             </p>
             {% if demo_mode %}
                 <p class="login_input" id="login_lang">
-                    <select name="language" class="login_input">
+                    <select aria-label="Languages" name="language" class="login_input">
                         {% for key,language in languages %}
                         <option value="{{key}}" {% if current_language == key %} selected {% endif %}>{{language}}</option>
                         {% endfor %}
@@ -30,7 +30,7 @@
                 </p>
             {% endif %}
             {% if display_login_source and auth_dropdown|length > 1 %}
-            <select name="auth" class="login_input">
+            <select aria-label="Authentication" name="auth" class="login_input">
                 {% for key,login_method in auth_dropdown %}
                 <option value="{{key}}" {% if auth_dropdown_default == key %} selected {% endif %}>{{login_method}}</option>
                 {% endfor %}
@@ -51,9 +51,9 @@
             {% endif %}
         </form>
         {% if is_activate %}
-            <form method='post' action='./index.php'>
+            <form aria-label="SSO Login" method='post' action='./index.php'>
                 <p class="login_input">
-                    <button type='submit' name='login_oidc' class='btn btn-info w-100 h-auto'>{{"SSO Login"|trans}}</button>
+                    <button type='submit' name='login_oidc' aria-label="SSO Login" class='btn btn-info w-100 h-auto'>{{"SSO Login"|trans}}</button>
                     <input type='hidden' name='redirect' value='{{redirect}}' />
                     <input type="hidden" name="_glpi_csrf_token" value="{{csrf_token}}">
                 </p>

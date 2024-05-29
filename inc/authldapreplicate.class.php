@@ -75,7 +75,7 @@ class AuthLdapReplicate extends CommonDBTM {
     */
    static function addNewReplicateForm($target, $master_id) {
 
-      echo "<form action='$target' method='post' name='add_replicate_form' id='add_replicate_form'>";
+      echo "<form aria-label='Nex Replicate Form' action='$target' method='post' name='add_replicate_form' id='add_replicate_form'>";
       echo "<div class='center'>";
       echo "<table class='tab_cadre_fixe' aria-label='LDAP replica'>";
 

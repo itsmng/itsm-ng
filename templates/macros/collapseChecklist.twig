@@ -9,7 +9,7 @@
 			{% set rand = random() %}
 			<li class="d-flex flex-column justify-content-start">
 				<div class="d-flex align-items-center input-group">
-					<button type="button" class="btn btn-link dropdown-checkbox-toggle" data-bs-toggle="collapse" href="#list-for-{{title|slug}}-{{rand}}" aria-expanded="false">
+					<button type="button" class="btn btn-link dropdown-checkbox-toggle" aria-label="CheckList" data-bs-toggle="collapse" href="#list-for-{{title|slug}}-{{rand}}" aria-expanded="false">
 						<i class="fas fa-caret-right" title="dropdownup"style="{% if content.content|length == 0 %} opacity: .2 {% endif %}"></i>
 					</button>
 					{% if content.value %}

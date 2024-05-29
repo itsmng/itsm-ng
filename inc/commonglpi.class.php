@@ -1068,7 +1068,7 @@ class CommonGLPI {
 
             if (count($actions)) {
                echo "<div class='dropdown'>";
-               echo "<button type='button' class='btn btn-sm btn-secondary dropdown-toggle' data-bs-toggle='dropdown'>
+               echo "<button type='button' class='btn btn-sm btn-secondary dropdown-toggle' data-bs-toggle='dropdown' aria-label='Actions'>
                         ".__("Actions")."
                      </button>";
 
@@ -1387,7 +1387,7 @@ class CommonGLPI {
             $display_options = $_SESSION['glpi_display_options'][self::getType()][$sub_itemtype];
          }
          echo "<div class='center'>";
-         echo "\n<form method='get' action='".$CFG_GLPI['root_doc']."/front/display.options.php'>\n";
+         echo "\n<form aria-label='Display Options' method='get' action='".$CFG_GLPI['root_doc']."/front/display.options.php'>\n";
          echo "<input type='hidden' name='itemtype' value='NetworkPort'>\n";
          echo "<input type='hidden' name='sub_itemtype' value='$sub_itemtype'>\n";
          echo "<table class='tab_cadre' aira-label='display Option'>";

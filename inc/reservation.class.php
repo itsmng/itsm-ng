@@ -644,7 +644,7 @@ class Reservation extends CommonDBChild {
          return false;
       }
 
-      echo "<div class='center'><form method='post' name=form action='".Reservation::getFormURL()."'>";
+      echo "<div class='center'><form aria-label='Form' method='post' name=form action='".Reservation::getFormURL()."'>";
 
       if (!empty($ID)) {
          echo "<input type='hidden' name='id' value='$ID'>";

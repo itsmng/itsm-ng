@@ -10,6 +10,7 @@
       {% endfor %}
       <button type="button"
         class="btn btn-sm btn-outline-success"
+        aria-label="Add Option"
         onClick="addOption{{rand}}({{attributes.getInputAdd}}())">
           <i class="fas fa-plus"></i>
       </button>
@@ -35,7 +36,7 @@
                 {% endfor %}
               </td>
               <td class="d-flex">
-                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeOption{{rand}}('{{loop.index}}')"><i class="fas fa-times"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger" aria-label="Remove Option" onclick="removeOption{{rand}}('{{loop.index}}')"><i class="fas fa-times"></i></button>
               </td>
             </tr>
         {% endfor %}

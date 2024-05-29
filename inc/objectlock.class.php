@@ -300,10 +300,10 @@ class ObjectLock extends CommonDBTM {
 
       $msg = "<span class=red style='padding-left:5px;'>";
       $msg .= __('Warning: read-only!')."</span>";
-      $msg .= '<form action="' . $_SERVER['REQUEST_URI'] . '" method="POST" style="display:inline;">';
+      $msg .= '<form aria-label="read Only message" action="' . $_SERVER['REQUEST_URI'] . '" method="POST" style="display:inline;">';
       $msg .= Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
       $msg .= Html::hidden('lockwrite', ['value' => 1]);
-      $msg .= '<button type="submit" class="vsubmit">'.
+      $msg .= '<button type="submit" class="vsubmit" aria-label="request write on">'.
                 __('Request write on ').$this->itemtypename." #".$this->itemid.'</button>';
       $msg .= '</form>';
 

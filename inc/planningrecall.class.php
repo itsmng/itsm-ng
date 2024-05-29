@@ -322,7 +322,7 @@ class PlanningRecall extends CommonDBChild {
          return false;
       } // Do not check items_id and item get because may be used when creating item (task for example)
 
-      echo "<form method='post' action='".PlanningRecall::getFormURL()."'>";
+      echo "<form aria-label='Update planning' method='post' action='".PlanningRecall::getFormURL()."'>";
       echo "<table width='100%' aria-label='update planning'><tr><td>";
       self::dropdown($options);
       echo "&nbsp;";

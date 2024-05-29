@@ -16,9 +16,9 @@
 
 	{% if main_menu.args.access == 'central' %}
 		<div id="searchbar">
-			<form role="search" method="get" action="{{root_doc}}/front/search.php">
+			<form aria-label="Search" role="search" method="get" action="{{root_doc}}/front/search.php">
 				<input type="search" name="globalsearch" placeholder="{{"Search"|trans}}...">
-				<button type="submit" class="btn btn-link">
+				<button type="submit" aria-label="Search" class="btn btn-link">
 					<i class="fa fa-search" title="Research"></i>
 				</button>
 			</form>

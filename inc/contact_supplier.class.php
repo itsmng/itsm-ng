@@ -122,7 +122,7 @@ class Contact_Supplier extends CommonDBRelation{
 
       if ($canedit) {
          echo "<div class='firstbloc'>";
-         echo "<form name='contactsupplier_form$rand' id='contactsupplier_form$rand'
+         echo "<form aria-label='Add supplier' name='contactsupplier_form$rand' id='contactsupplier_form$rand'
                 method='post' action='";
          echo Toolbox::getItemTypeFormURL(__CLASS__)."'>";
          echo "<table class='tab_cadre_fixe'> aria-label='Add supplier form'";

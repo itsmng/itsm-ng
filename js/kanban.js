@@ -333,7 +333,7 @@
 
     var buildToolbar = function () {
       var toolbar = $("<div class='kanban-toolbar'></div>").appendTo(self.element);
-      $("<select name='kanban-board-switcher'></select>").appendTo(toolbar);
+      $("<select aria-label='kanban Board Switcher' name='kanban-board-switcher'></select>").appendTo(toolbar);
       var filter_input = $("<input name='filter' type='text' placeholder='" + __("Search or filter results") + "'/>").appendTo(toolbar);
       if (self.allow_modify_view) {
         var add_column = "<input type='button' class='kanban-add-column submit' value='" + __("Add column") + "'/>";
@@ -1397,7 +1397,7 @@
 
       var uniqueID = Math.floor(Math.random() * 999999);
       var formID = "form_add_" + itemtype + "_" + uniqueID;
-      var add_form = "<form id='" + formID + "' class='kanban-add-form kanban-form no-track'>";
+      var add_form = "<form aria-label='Item Form' id='" + formID + "' class='kanban-add-form kanban-form no-track'>";
       var form_header = "<div class='kanban-item-header'>";
       form_header += "<span class='kanban-item-title'>" + self.supported_itemtypes[itemtype]["name"] + "</span>";
       form_header += "<i class='fas fa-times' title='Close' onclick='$(this).parent().parent().remove()'></i></div>";
@@ -1456,7 +1456,7 @@
 
       var uniqueID = Math.floor(Math.random() * 999999);
       var formID = "form_add_" + itemtype + "_" + uniqueID;
-      var add_form = "<form id='" + formID + "' class='kanban-add-form kanban-bulk-add-form kanban-form no-track'>";
+      var add_form = "<form aria-label='Item Form' id='" + formID + "' class='kanban-add-form kanban-bulk-add-form kanban-form no-track'>";
       var form_header = "<div class='kanban-item-header'>";
       form_header += "<span class='kanban-item-title'>" + self.supported_itemtypes[itemtype]["name"] + "</span>";
       form_header += "<i class='fas fa-times' title='Close' onclick='$(this).parent().parent().remove()'></i>";
@@ -1520,7 +1520,7 @@
       var formID = "form_add_column_" + uniqueID;
       self.add_column_form = "#" + formID;
       var add_form = "<div id='" + formID + "' class='kanban-form kanban-add-column-form' style='display: none'>";
-      add_form += "<form class='no-track'>";
+      add_form += "<form aria-label='Build add Column Form' class='no-track'>";
       var form_header = "<div class='kanban-item-header'>";
       form_header += "<span class='kanban-item-title'>" + __("Add a column from existing status") + "</span></div>";
       add_form += form_header;
@@ -1542,7 +1542,7 @@
       var formID = "form_create_column_" + uniqueID;
       self.create_column_form = "#" + formID;
       var create_form = "<div id='" + formID + "' class='kanban-form kanban-create-column-form' style='display: none'>";
-      create_form += "<form class='no-track'>";
+      create_form += "<form aria-label='Create Column Form' class='no-track'>";
       var form_header = "<div class='kanban-item-header'>";
       form_header += "<span class='kanban-item-title'>" + __("Create status") + "</span></div>";
       create_form += form_header;

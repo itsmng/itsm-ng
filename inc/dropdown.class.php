@@ -1836,7 +1836,7 @@ class Dropdown {
          $output .= implode('<br>', $to_display);
       } else {
 
-         $output  .= "<select name='$field_name' id='$field_id'";
+         $output  .= "<select name='$field_name' id='$field_id' aria-label='$field_name'";
 
          if ($param['tooltip']) {
             $output .= ' title="'.Html::entities_deep($param['tooltip']).'"';
@@ -2126,7 +2126,7 @@ class Dropdown {
       $values['-'.Search::CSV_OUTPUT]           = __('All pages in CSV');
 
       Dropdown::showFromArray('display_type', $values);
-      echo "<button type='submit' name='export' class='unstyled pointer' ".
+      echo "<button type='submit' aria-label='Export' name='export' class='unstyled pointer' ".
              " title=\"" . _sx('button', 'Export') . "\">" .
              "<i class='far fa-save' aria-hidden='true'></i><span class='sr-only'>"._sx('button', 'Export')."<span>";
    }

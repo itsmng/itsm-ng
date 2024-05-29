@@ -357,7 +357,7 @@ class CalendarSegment extends CommonDBChild {
 
       if ($canedit) {
          echo "<div class='firstbloc'>";
-         echo "<form name='calendarsegment_form$rand' id='calendarsegment_form$rand' method='post'
+         echo "<form name='calendarsegment_form$rand' aria-label='Add a Schedule' id='calendarsegment_form$rand' method='post'
                 action='";
          echo Toolbox::getItemTypeFormURL(__CLASS__)."'>";
          echo "<table class='tab_cadre_fixe' aria-label='Add Schedule Table'>";

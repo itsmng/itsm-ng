@@ -297,7 +297,7 @@ class Group_User extends CommonDBRelation{
       $nb = count($res);
 
       if ($nb) {
-         echo "<form name='groupuser_form$rand' id='groupuser_form$rand' method='post'
+         echo "<form aria-label='Group User' name='groupuser_form$rand' id='groupuser_form$rand' method='post'
                 action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
          echo "<input type='hidden' name='groups_id' value='".$group->fields['id']."'>";
 

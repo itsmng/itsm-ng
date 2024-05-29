@@ -116,7 +116,7 @@ foreach ($items as $label => $tab) {
    }
 }
 
-echo "<div class='center'><form method='get' name='form' action='stat.tracking.php'>";
+echo "<div class='center'><form aria-label='Tracking Statistics' method='get' name='form' action='stat.tracking.php'>";
 // Keep it first param
 echo "<input type='hidden' name='itemtype' value=\"". $_GET["itemtype"] ."\">";
 

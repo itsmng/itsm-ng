@@ -137,7 +137,7 @@ function update_importDropdown ($table, $name) {
  */
 function showContentUpdateForm() {
    $_SESSION['do_content_update'] = true;
-   echo "<form action='update_content.php' method='post'>";
+   echo "<form aria-label='Content Update' action='update_content.php' method='post'>";
    echo "<div class='center'>";
    echo "<h3>".__('Update successful, your database is up to date')."</h3>";
    echo "<p>".__('You must now proceed to updating your database content')."</p></div>";
@@ -361,7 +361,7 @@ function showLocationUpdateForm() {
       echo "<p>".__('Provide a delimiter in order to automate the new hierarchy generation.')."<br>";
       echo __('You can also specify a root location which will include all the generated locations.');
       echo "</p>";
-      echo "<form action='".$CFG_GLPI["root_doc"]."/install/update.php' method='post'>";
+      echo "<form aria-label='Validate Location' action='".$CFG_GLPI["root_doc"]."/install/update.php' method='post'>";
       echo "<p>".__('Delimiter')."&nbsp;".
             "<input type='text' name='car_sep' value='".$_POST['car_sep']."'></p>";
       echo "<p>".__('Root location').'&nbsp;'.
@@ -380,7 +380,7 @@ function showLocationUpdateForm() {
       display_new_locations();
       echo "<p>".__("This is the new hierarchy. If it's complete approve it.")."</p>";
       echo "<div class='center'>";
-      echo "<form action='".$CFG_GLPI["root_doc"]."/install/update.php' method='post'>";
+      echo "<form aria-label='New Location' action='".$CFG_GLPI["root_doc"]."/install/update.php' method='post'>";
       echo "<input type='submit' class='submit' name='validate_location' value=\"".
              _sx('button', 'Post')."\">";
       echo "<input type='hidden' name='from_update' value='from_update'>";
@@ -524,7 +524,7 @@ function updateTreeDropdown() {
 function showSecurityKeyCheckForm() {
    global $CFG_GLPI, $update;
 
-   echo '<form action="update.php" method="post">';
+   echo '<form aria-label="Security Key Check" action="update.php" method="post">';
    echo '<input type="hidden" name="continuer" value="1" />';
    echo '<input type="hidden" name="missing_key_warning_shown" value="1" />';
    echo '<div class="center">';
@@ -588,7 +588,7 @@ if (empty($_POST["continuer"]) && empty($_POST["from_update"])) {
       echo "<div class='center'>";
       echo "<h3><span class='migred'>".sprintf(__('Caution! You will update the ITSM-NG database named: %s'), $DB->dbdefault) ."</h3>";
 
-      echo "<form action='update.php' method='post'>";
+      echo "<form aria-label='Database Name Update' action='update.php' method='post'>";
       if (strlen(ITSM_SCHEMA_VERSION) > 40) {
          echo Config::agreeDevMessage();
       }
@@ -645,7 +645,7 @@ if (empty($_POST["continuer"]) && empty($_POST["from_update"])) {
                   break;
 
                default:
-                  echo "<form action='".$CFG_GLPI["root_doc"]."/install/update.php' method='post'>";
+                  echo "<form aria-label='Connection Database' action='".$CFG_GLPI["root_doc"]."/install/update.php' method='post'>";
                   echo "<input type='hidden' name='update_end' value='1'/>";
 
                   echo "<p class='w-100 text-center'><input type='submit' name='submit' class='btn btn-primary' value='".

@@ -298,7 +298,7 @@ echo "</table></div><br>";
 
 $target = preg_replace("/&/", "&amp;", $_SERVER["REQUEST_URI"]);
 
-echo "<form method='post' name='form' action='$target'><div class='center'>";
+echo "<form aria-label='Statistics' method='post' name='form' action='$target'><div class='center'>";
 echo "<table class='tab_cadre' aria-label='Statistics'>";
 echo "<tr class='tab_bg_2'><td class='right'>".__('Start date')."</td><td>";
 Html::showDateField("date1", ['value' => $_POST["date1"]]);

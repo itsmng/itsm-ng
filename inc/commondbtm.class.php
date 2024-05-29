@@ -2674,7 +2674,7 @@ class CommonDBTM extends CommonGLPI {
          echo "<tr class='tab_bg_2'>";
          echo "<td class='right' colspan='".($params['colspan']*2)."'>";
          foreach ($params['addbuttons'] as $key => $val) {
-            echo "<button type='submit' class='btn btn-secondary' name='$key' value='1'>
+            echo "<button type='submit' class='btn btn-secondary' name='$key' value='1' aria-label='$val'>
                   $val
                </button>&nbsp;";
          }
@@ -2777,7 +2777,7 @@ class CommonDBTM extends CommonGLPI {
 
       $rand = mt_rand();
       if ($this->canEdit($ID)) {
-         echo "<form name='form' method='post' action='".$params['target']."' ".
+         echo "<form aria-label='Form Header' name='form' method='post' action='".$params['target']."' ".
                 $params['formoptions']." enctype=\"multipart/form-data\">";
 
          //Should add an hidden entities_id field ?

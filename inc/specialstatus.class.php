@@ -145,7 +145,7 @@ class SpecialStatus extends CommonTreeDropdown {
          );
       }
 
-      echo "<form method='post' action='./specialstatus.php' method='post'>";
+      echo "<form aria-label='Informations' method='post' action='./specialstatus.php' method='post'>";
       echo "<table style='width:40%' class='tab_cadre' cellpadding='5' aria-label='Special Status'>";
       echo "<tr><th colspan='5'>".__("Special Status")."</th></tr>";
       echo "<tr class='tab_bg_1'>";
@@ -197,7 +197,7 @@ class SpecialStatus extends CommonTreeDropdown {
             $result[] = $tab["id"][$data["status"]];
          }
       }
-      echo "<form method='post' action='./specialstatus.php' method='post'>";
+      echo "<form aria-label='Status' method='post' action='./specialstatus.php' method='post'>";
       if (isset($result)) {
          $count = count($result);
          
@@ -238,7 +238,7 @@ class SpecialStatus extends CommonTreeDropdown {
       $after = Ticket::getAllStatusArray(false, true);
       self::keepStatusSet($before, $after);
    }
-   echo "<form method='post' action='./specialstatus.form.php' method='post'>";
+   echo "<form aria-label='Status' method='post' action='./specialstatus.form.php' method='post'>";
    echo "<table style='width:40%' class='tab_cadre' cellpadding='5' aria-label='New / Special Status'>";
    echo "<tr><th colspan='4'>".__("New Status - Special status")."</th></tr>";
    echo "<tr class='tab_bg_1'>";

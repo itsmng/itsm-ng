@@ -1,6 +1,6 @@
 {% from 'macros/wrappedInput.twig' import wrappedInput %}
 
-<form {% if form.attributes.name is not defined %} name="form" {% endif %} action="{{form.action}}" enctype="multipart/form-data" method={{form.method|default('post')}} class="container" {% for name, value in form.attributes %} {{name}}="{{value}}" {% endfor %}>
+<form {% if form.attributes.name is not defined %} aria-label="Main Form" name="form" {% endif %} action="{{form.action}}" enctype="multipart/form-data" method={{form.method|default('post')}} class="container" {% for name, value in form.attributes %} {{name}}="{{value}}" {% endfor %}>
 	{% for key, bloc in form.content  %}
 		<div class="container mb-3" {% for name, value in bloc.attributes %} {{name}}="{{value}}" {% endfor %}>
 			{% if bloc.visible %}
@@ -19,11 +19,11 @@
 	<div class="d-flex justify-content-around">
 		<input type="hidden" name="_glpi_csrf_token" value="{{csrf_token}}"/>
 		{% if not form.buttons %}
-			<button type="submit" class='btn btn-primary'>{{"Submit"|trans}}</button>
+			<button type="submit" aria-label="Submit" class='btn btn-primary'>{{"Submit"|trans}}</button>
 		{% endif %}
 		{% for button in form.buttons %}
 			{% if button|length > 0 %}
-				<button {% for attr, val in button %} {{attr}}='{{val}}' {% endfor %}>
+				<button {% for attr, val in button %} {{attr}}='{{val}}' {% endfor %} aria-label="{{ val }}">
 					{% if button.icon %}
 						<i class='{{button.icon}} mx-2' aria-hidden="true"></i>
 					{% endif %}
