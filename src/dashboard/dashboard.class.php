@@ -125,7 +125,7 @@ class Dashboard extends \CommonDBTM
                      'searchable' => true,
                      'name' => 'userId',
                      'value' => $this->fields['userId'] ?? '',
-                     'values' => getOptionForItems(User::class),
+                     'values' => getItemByEntity(User::class, Session::getActiveEntity()),
                      'required' => true,
                   ],
                ]

@@ -305,14 +305,14 @@ class NetworkEquipment extends CommonDBTM {
                      'name' => 'states_id',
                      'type' => 'select',
                      'value' => $this->fields['states_id'],
-                     'values' => getOptionForItems('State', ['is_visible_networkequipment' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => State::class,
                      'actions' => getItemActionButtons(['info', 'add'], "State"),
                   ],
                   __('Location') => [
                      'name' => 'locations_id',
                      'type' => 'select',
                      'value' => $this->fields['locations_id'],
-                     'values' => getOptionForItems("Location", ['entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => Location::class,
                      'actions' => getItemActionButtons(['info', 'add'], "Location"),
                   ],
                   __('Type') => [
@@ -340,7 +340,7 @@ class NetworkEquipment extends CommonDBTM {
                      'name' => 'groups_id_tech',
                      'type' => 'select',
                      'value' => $this->fields['groups_id_tech'],
-                     'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]), // NEED right => own_ticket
+                     'itemtype' => Group::class,
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __("Model") => [
@@ -374,7 +374,7 @@ class NetworkEquipment extends CommonDBTM {
                      'name' => 'users_id',
                      'type' => 'select',
                      'value' => $this->fields['users_id'],
-                     'values' => getOptionForItems("User", ['entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => User::class,
                      'actions' => getItemActionButtons(['info'], "User"),
                   ],
                   __("Network") => [
@@ -388,7 +388,7 @@ class NetworkEquipment extends CommonDBTM {
                      'name' => 'groups_id',
                      'type' => 'select',
                      'value' => $this->fields['groups_id'],
-                     'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => Group::class,
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __("Memory") => [
@@ -417,7 +417,7 @@ class NetworkEquipment extends CommonDBTM {
          'formfooter'   => null,
          ]]);
       $additionnalHtml = ob_get_clean();
-         
+
       renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }

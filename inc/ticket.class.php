@@ -2799,7 +2799,8 @@ class Ticket extends CommonITILObject
                Ticket::getTypeName() => [
                   'type' => 'select',
                   'name' => '_mergeticket',
-                  'values' => getOptionForItems(Ticket::class, [], true, false, $ma->items['Ticket']),
+                  'itemtype' => Ticket::class,
+                  'used' => $ma->items['Ticket'],
                   'col_lg' => 12,
                   'col_md' => 12,
                   'actions' => getItemActionButtons(['info'], Ticket::class),
@@ -5039,7 +5040,7 @@ class Ticket extends CommonITILObject
                   Location::getTypeName(1) => [
                      'type' => 'select',
                      'name' => 'locations_id',
-                     'values' => getOptionForItems('Location'),
+                     'itemtype' => Location::class,
                      'value' => $this->fields['locations_id'],
                      'actions' => getItemActionButtons(['info', 'add'], 'Location'),
                      $canupdate ? '' : 'disabled' => '',

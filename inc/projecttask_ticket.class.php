@@ -325,9 +325,9 @@ class ProjectTask_Ticket extends CommonDBRelation
                         'type' => 'select',
                         'name' => 'projects_id',
                         'id' => 'DropdownForProjectIdProjectTask',
-                        'values' => getOptionForItems(Project::class,
-                           ['entities_id' => $ticket->getEntityID(), 'is_recursive' => $ticket->isRecursive(),
-                              'NOT' => ['projectstates_id' => $finished_states_ids]]),
+                        'itemtype' => Project::class,
+                        'conditions' => [ 'NOT' => ['projectstates_id' => $finished_states_ids] ],
+                        'entity' => $ticket->getEntityID(),
                         'col_lg' => 6,
                         'hooks' => [
                            'change' => <<<JS
@@ -352,12 +352,25 @@ class ProjectTask_Ticket extends CommonDBRelation
                                     },
                                     success: function(data) {
                                        const jsonData = JSON.parse(data);
+                                       console.log(jsonData);
                                        $('#DropdownForProjectTaskIdProjectTask').empty();
                                        for (const [key, value] of Object.entries(jsonData)) {
-                                          $('#DropdownForProjectTaskIdProjectTask').append($('<option>', {
-                                             value: key,
-                                             text: value
-                                          }));
+                                          if (typeof value === 'object') {
+                                             const group = $('#DropdownForProjectTaskIdProjectTask').append($('<optgroup>', {
+                                                label: key
+                                             }));
+                                             for (const [skey, svalue] of Object.entries(value)) {
+                                                group.append($('<option>', {
+                                                   value: skey,
+                                                   text: svalue
+                                                }));
+                                             }
+                                          } else {
+                                              $('#DropdownForProjectTaskIdProjectTask').append($('<option>', {
+                                                 value: key,
+                                                 text: value
+                                              }));
+                                          }
                                        }
                                     }
                                  });

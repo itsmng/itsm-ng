@@ -51,7 +51,7 @@ if (isset($_POST["projects_id"])) {
       $condition['glpi_projecttasks.entities_id'] = $_POST['entity_restrict'];
    }
 
-   $values = getOptionForItems(ProjectTask::class, $condition);
+   $values = getItemByEntity(ProjectTask::class, Session::getActiveEntity(), $condition);
    if (isset($_POST["used"]) && !empty($_POST["used"])) {
       $used = $_POST["used"];
       foreach ($used as $key => $value) {

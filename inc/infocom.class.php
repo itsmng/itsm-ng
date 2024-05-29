@@ -1128,7 +1128,7 @@ class Infocom extends CommonDBChild {
                            __('Supplier') => $withtemplate != 2 ? [
                               'type' => 'select',
                               'name' => 'suppliers_id',
-                              'values' => getOptionForItems('Supplier', ['entities_id' => $item->getEntityID()]),
+                              'itemtype' => Supplier::class,
                               'value' => $ic->fields["suppliers_id"],
                               'actions' => getItemActionButtons(['info'], 'Supplier')
                            ] : [
@@ -1137,7 +1137,7 @@ class Infocom extends CommonDBChild {
                            Budget::getTypeName(1) => Budget::canView() ? [
                               'type' => 'select',
                               'name' => 'budgets_id',
-                              'values' => getOptionForItems('Budget', ['entities_id' => $item->getEntityID()]),
+                              'itemtype' => Budget::class,
                               'value' => $ic->fields["budgets_id"],
                               'actions' => getItemActionButtons(['info', 'add'], 'Budget')
                            ] : [],
@@ -1223,7 +1223,7 @@ class Infocom extends CommonDBChild {
                            _n('Business criticity', 'Business criticities', 1) => [
                               'type' => 'select',
                               'name' => 'businesscriticities_id',
-                              'values' => getOptionForItems('BusinessCriticity'),
+                              'itemtype' => BusinessCriticity::class,
                               'value' => $ic->fields["businesscriticities_id"],
                               'actions' => getItemActionButtons(['info', 'add'], 'BusinessCriticity')
                            ],

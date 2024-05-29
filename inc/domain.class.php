@@ -352,7 +352,7 @@ class Domain extends CommonDropdown
                   __('Group in charge') => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
-                     'values' => getOptionForItems("Group"),
+                     'itemtype' => Group::class,
                      'value' => $this->fields['groups_id_tech'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],

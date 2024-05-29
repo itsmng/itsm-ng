@@ -188,14 +188,15 @@ class Phone extends CommonDBTM {
                   __('Status') => [
                      'name' => 'states_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('State', ['is_visible_phone' => 1]),
+                     'itemtype' => State::class,
+                     'conditions' => ['is_visible_phone' => 1],
                      'value' => $this->fields['states_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "State"),
                   ],
                   __('Location') => [
                      'name' => 'locations_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id'],]),
+                     'itemtype' => Location::class,
                      'value' => $this->fields['locations_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "Location"),
                   ],
@@ -223,7 +224,8 @@ class Phone extends CommonDBTM {
                   __('Group in charge of the hardware') => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
-                     'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => Group::class,
+                     'conditions' => ['is_assign' => 1],
                      'value' => $this->fields['groups_id_tech'],
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
@@ -257,7 +259,7 @@ class Phone extends CommonDBTM {
                   User::getTypeName(1) => [
                      'name' => 'users_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]), // TODO : add right => all
+                     'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['users_id'],
                      'actions' => getItemActionButtons(['info'], "User"),
                   ],
@@ -268,13 +270,14 @@ class Phone extends CommonDBTM {
                            0 => __('Unit Management'),
                            1 => __('Global Management'),
                      ],
-                     'disabled' => $CFG_GLPI['phones_management_restrict'] != 2 , 
+                     'disabled' => $CFG_GLPI['phones_management_restrict'] != 2 ,
                      'value' => $this->fields['is_global'],
                   ],
                   Group::getTypeName(1) => [
                      'name' => 'groups_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('Group', ['is_assign' => 1,'entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => Group::class,
+                     'conditions' => ['is_assign' => 1],
                      'value' => $this->fields["groups_id"],
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],

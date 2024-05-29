@@ -192,14 +192,15 @@ class Peripheral extends CommonDBTM {
                   __('Status') => [
                      'name' => 'status',
                      'type' => 'select',
-                     'values' => getOptionForItems('State', ['is_visible_peripheral' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => State::class,
+                     'condition' => ['is_visible_peripheral' => 1],
                      'value' => $this->fields['states_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "State"),
                   ],
                   __('Location') => [
                      'name' => 'locations_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => Location::class,
                      'value' => $this->fields['locations_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "Location"),
                   ],
@@ -227,7 +228,8 @@ class Peripheral extends CommonDBTM {
                   __('Group in charge of the hardware') => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
-                     'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => Group::class,
+                     'condition' => ['is_assign' => 1],
                      'value' => $this->fields['groups_id_tech'],
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
@@ -272,13 +274,14 @@ class Peripheral extends CommonDBTM {
                            0 => __('Unit Management'),
                            1 => __('Global Management'),
                      ],
-                     'disabled' => $CFG_GLPI['monitors_management_restrict'] != 2 , 
+                     'disabled' => $CFG_GLPI['monitors_management_restrict'] != 2 ,
                      'value' => $this->fields['is_global'],
                   ],
                   Group::getTypeName(1) => [
                      'name' => 'groups_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('Group', ['is_itemgroup' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => Group::class,
+                     'condition' => ['is_itemgroup' => 1],
                      'value' => $this->fields['groups_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
@@ -307,7 +310,7 @@ class Peripheral extends CommonDBTM {
          'formfooter'   => null,
          ]]);
       $additionnalHtml = ob_get_clean();
-         
+
       renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }

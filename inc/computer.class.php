@@ -340,14 +340,15 @@ class Computer extends CommonDBTM {
                   __('Status') => [
                      'name' => 'states_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('State', ['is_visible_computer' => 1]),
+                     'itemtype' => State::class,
+                     'conditions' => ['is_visible_computer' => 1],
                      'value' => $this->fields['states_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "State"),
                   ],
                   __('Location') => [
                      'name' => 'locations_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id'],]),
+                     'values' => getItemByEntity(Location::class, $this->fields['entities_id']),
                      'value' => $this->fields['locations_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "Location"),
                   ],
@@ -375,7 +376,7 @@ class Computer extends CommonDBTM {
                   __('Group in charge of the hardware') => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
-                     'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => Group::class,
                      'value' => $this->fields['groups_id_tech'],
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
@@ -423,7 +424,7 @@ class Computer extends CommonDBTM {
                   Group::getTypeName(1) => [
                      'name' => 'groups_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('Group', ['is_itemgroup' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => Group::class,
                      'value' => $this->fields['groups_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
@@ -459,7 +460,6 @@ class Computer extends CommonDBTM {
          'formfooter'   => null,
          ]]);
       $additionnalHtml = ob_get_clean();
-         
       renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }

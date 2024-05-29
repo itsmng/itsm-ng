@@ -318,7 +318,8 @@ class SoftwareLicense extends CommonTreeDropdown {
                   ] : [
                      'type' => 'select',
                      'name' => 'softwares_id',
-                     'values' => getOptionForItems('Software', ['is_template' => 0, 'is_deleted' => 0]),
+                     'itemtype' => Software::class,
+                     'conditions' => ['is_template' => 0, 'is_deleted' => 0],
                      'value' => $this->fields["softwares_id"],
                      'actions' => getItemActionButtons(['info'], 'Software')
                   ],
@@ -330,27 +331,30 @@ class SoftwareLicense extends CommonTreeDropdown {
                   __('Status') => [
                      'type' => 'select',
                      'name' => 'states_id',
-                     'values' => getOptionForItems('State', ['is_visible_softwarelicense' => 1]),
+                     'itemtype' => State::class,
+                     'conditions' => ['is_visible_softwarelicense' => 1],
                      'value' => $this->fields["states_id"],
                   ],
                   __('As child of') => [
                      'type' => 'select',
                      'name' => 'softwarelicenses_id',
-                     'values' => getOptionForItems('SoftwareLicense', [
-                        'softwares_id' => $this->fields['softwares_id'],
-                     ]),
+                     'itemtype' => SoftwareLicense::class,
+                     'conditions' => ['AND' => [
+                        'NOT' => ['id' => $ID],
+                        'softwares_id' => $this->fields['softwares_id']
+                     ]],
                      'actions' => getItemActionButtons(['info', 'add'], 'SoftwareLicense')
                   ],
                   Location::getTypeName(1) => [
                      'type' => 'select',
                      'name' => 'locations_id',
-                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => Location::class,
                      'actions' => getItemActionButtons(['info', 'add'], 'Location')
                   ],
                   _n('Type', 'Types', 1) => [
                      'type' => 'select',
                      'name' => 'softwarelicensetypes_id',
-                     'values' => getOptionForItems('SoftwareLicenseType'),
+                     'itemtype' => SoftwareLicenseType::class,
                      'value' => $this->fields["softwarelicensetypes_id"],
                      'actions' => getItemActionButtons(['info', 'add'], 'SoftwareLicenseType')
                   ],
@@ -371,7 +375,8 @@ class SoftwareLicense extends CommonTreeDropdown {
                   __('Group in charge of the license') => [
                      'type' => 'select',
                      'name' => 'groups_id_tech',
-                     'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => Group::class,
+                     'copnditions' => ['is_assign' => 1],
                      'value' => $this->fields["groups_id_tech"],
                      'actions' => getItemActionButtons(['info', 'add'], 'Group')
                   ],
@@ -395,10 +400,8 @@ class SoftwareLicense extends CommonTreeDropdown {
                   Group::getTypeName(1) => [
                      'type' => 'select',
                      'name' => 'groups_id',
-                     'values' => getOptionForItems('Group', [
-                        'is_itemgroup' => 1,
-                        'entities_id' => $this->fields['entities_id']
-                     ]),
+                     'itemtype' => Group::class,
+                     'conditions' => ['is_itemgroup' => 1],
                      'value' => $this->fields["groups_id"],
                      'actions' => getItemActionButtons(['info', 'add'], 'Group')
                   ],
@@ -410,17 +413,15 @@ class SoftwareLicense extends CommonTreeDropdown {
                   __('Version in use') => [
                      'type' => 'select',
                      'name' => 'softwareversions_id_use',
-                     'values' => getOptionForItems('SoftwareVersion', [
-                        'softwares_id' => $this->fields['softwares_id'],
-                     ]),
+                     'itemtype' => SoftwareVersion::class,
+                     'conditions' => ['softwares_id' => $this->fields['softwares_id']],
                      'value' => $this->fields["softwareversions_id_use"],
                   ],
                   __('Purchase version') => [
                      'type' => 'select',
                      'name' => 'softwareversions_id_buy',
-                     'values' => getOptionForItems('SoftwareVersion', [
-                        'softwares_id' => $this->fields['softwares_id'],
-                     ]),
+                     'itemtype' => SoftwareVersion::class,
+                     'conditions' => ['softwares_id' => $this->fields['softwares_id']],
                      'value' => $this->fields["softwareversions_id_buy"],
                   ],
                   _x('quantity', 'Number') . ' (0 = '. __('Unlimited') .')' => [

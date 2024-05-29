@@ -1,11 +1,65 @@
 <?php
 
-/**
- * @param $form
- */
+function expandForm($form, $fields = [])
+{
+    foreach ($form['content'] as $contentKey => $content) {
+        if (isset($content['inputs'])) {
+            foreach ($content['inputs'] as $inputKey => $input) {
+                switch ($input['type'] ?? '')
+                {
+                    case 'select':
+                        if (isset($input['itemtype']) && !isset($input['values'])) {
+                            $form['content'][$contentKey]['inputs'][$inputKey]['values'] =
+                                array_merge ([Dropdown::EMPTY_VALUE], getItemByEntity(
+                                $input['itemtype'],
+                                $input['entity']
+                                    ?? $fields['entities_id']
+                                    ?? Session::getActiveEntity(),
+                                $input['conditions'] ?? [],
+                                $input['used'] ?? [])
+                            );
+                        }
+                        break;
+                }
+            }
+        }
+    }
+    return $form;
+}
+
+function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
+{
+    $cond = $conditions +
+    getEntitiesRestrictCriteria($itemtype::getTable(),
+        'entities_id', $entity, true);
+    $key = Dropdown::addNewCondition($cond);
+    $values = Dropdown::getDropdownValue([
+        'itemtype' => $itemtype,
+        'condition' => $key,
+        'used' => $used,
+        'display_emptychoice' => false,
+    ], false);
+    $options = [];
+    foreach ($values['results'] as $key => $value) {
+        if (!$value || !count($value))
+            continue;
+
+        if (isset($value['children'])) {
+            if (!isset($options[$value['text']])) {
+                $options[$value['text']] = [];
+            }
+            foreach ($value['children'] as $childValue) {
+                $options[$value['text']][$childValue['id']] = $childValue['text'];
+            }
+        } else {
+            $options[$value['id']] = $value['text'];
+        }
+    }
+    return $options;
+}
+
 function getOptionForItems($item, $conditions = [], $display_emptychoice = true, $isDevice = false, $used = [])
 {
-
     $entity_restrict = false;
     if (isset($conditions['entities_id']) && isset($conditions['is_recursive'])) {
         $entity_restrict = '[' .
@@ -135,7 +189,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
             __('Template name') => [
                 'type' => 'text',
                 'name' => 'template_name',
-                'value' => $fields['template_name']
+                'value' => $fields['template_name'] ?? ''
             ]
         ], $form['content'][array_key_first($form['content'])]['inputs']);
     };
@@ -175,7 +229,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     }
     try {
         echo $twig->render('form.twig', [
-            'form' => $form,
+            'form' => expandForM($form, $fields),
             'additionnalHtml' => $additionnalHtml,
             'root_doc' => $CFG_GLPI['root_doc'],
             'csrf_token' => $_SESSION['_glpi_csrf_token'],

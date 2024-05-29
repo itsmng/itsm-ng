@@ -84,7 +84,7 @@ class Datacenter extends CommonDBTM {
                   __('Location') => [
                         'name' => 'locations_id',
                         'type' => 'select',
-                        'values' => getOptionForItems("Location"),
+                        'itemtype' => Location::class,
                         'value' => $this->fields['locations_id'] ?? '',
                   ],
                ]
@@ -93,7 +93,7 @@ class Datacenter extends CommonDBTM {
       ];
 
       require_once GLPI_ROOT . '/src/twig/twig.utils.php';
-      renderTwigForm($form); 
+      renderTwigForm($form);
 
       return true;
    }

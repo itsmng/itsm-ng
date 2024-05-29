@@ -530,7 +530,7 @@ abstract class CommonTreeDropdown extends CommonDropdown {
                ]
             ],
          ];
-         renderTwigForm($form);
+         renderTwigForm($form, '', $this->fields);
       }
 
       $header_fields = [__('Name')];

@@ -139,7 +139,7 @@ class SLM extends CommonDBTM
                   __('Calendar') => [
                      'name' => 'calendars_id',
                      'type' => 'select',
-                     'values' => getOptionForItems("Calendar"),
+                     'itemtype' => Calendar::class,
                      'value' => $this->fields['calendars_id'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "Calendar"),
                   ],

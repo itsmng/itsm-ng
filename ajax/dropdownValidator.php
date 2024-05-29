@@ -54,7 +54,7 @@ if (isset($_POST["validatortype"])) {
          $name = !empty($_POST['name']) ? $_POST['name'].'[groups_id]':'groups_id';
          $value = (isset($_POST['users_id_validate']['groups_id']) ? $_POST['users_id_validate']['groups_id'] : $_POST['groups_id']);
 
-         echo json_encode(getOptionForItems(Group::class, $_POST['entity'] ? ['entities_id' => $_POST['entity']] : []));
+         echo json_encode(getItemByEntity(Group::class, $_POST['entity'] ?? Session::getActiveEntity()));
          break;
 
       case 'list_users' :

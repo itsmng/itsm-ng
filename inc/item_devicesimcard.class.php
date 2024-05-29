@@ -132,7 +132,7 @@ class Item_DeviceSimcard extends Item_Devices
             'datatype'   => 'dropdown',
             'formContent' => [
                'type' => 'select',
-               'values' => getOptionForItems(Line::class),
+               'values' => getItemByEntity(Line::class, Session::getActiveEntity()),
                'actions' => getItemActionButtons(['info'], Line::class),
             ]
          ],
@@ -169,7 +169,7 @@ class Item_DeviceSimcard extends Item_Devices
             'datatype'   => 'dropdown',
             'formContent' => [
                'type' => 'select',
-               'values' => getOptionForItems(Group::class),
+               'values' => getItemByEntity(Group::class, Session::getActiveEntity()),
             ]
          ],
       ];

@@ -592,7 +592,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                      'type' => 'select',
                      'id' => 'projecttasktemplates_id_dropdown',
                      'name' => 'projecttasktemplates_id',
-                     'values' => getOptionForItems(ProjectTaskTemplate::class),
+                     'itemtype' => ProjectTaskTemplate::class,
                      'value' => $this->fields['projecttasktemplates_id'],
                      'actions' => getItemActionButtons(['info', 'add'], ProjectTaskTemplate::class),
                      'col_lg' => 12,
@@ -640,8 +640,11 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                   __('As child of') => [
                      'type' => 'select',
                      'name' => 'projecttasks_id',
-                     'values' => getOptionForItems(ProjectTask::class,
-                        ['NOT' => ['id' => $ID], ['glpi_projecttasks.projects_id' => $this->fields['projects_id']]]),
+                     'itemtype' => ProjectTask::class,
+                     'conditions' => [
+                        'NOT' => ['id' => $ID],
+                        ['glpi_projecttasks.projects_id' => $this->fields['projects_id']]
+                     ],
                      'value' => $projecttasks_id,
                   ],
                   __('Creation date') => $ID > 0 ? [

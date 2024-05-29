@@ -128,10 +128,8 @@ class Calendar_Holiday extends CommonDBRelation {
                      Holiday::getTypeName() => [
                         'type' => 'select',
                         'name' => 'holidays_id',
-                        'values' => getOptionForItems(Holiday::class, [
-                           'entities_id' => $calendar->fields['entities_id'],
-                        ],
-                        true, false, $used),
+                        'itemtype' => Holiday::class,
+                        'used' => $used,
                         'col_lg' => 12,
                         'col_md' => 12,
                      ]

@@ -138,14 +138,11 @@ class Item_SoftwareLicense extends CommonDBRelation {
                Software::getTypeName() => [
                   'type' => 'select',
                   'name' => Software::getForeignKeyField(),
-                  'values' => getOptionForItems(
-                     Software::class,
-                     [
-                        'is_deleted' => 0,
+                  'itemtype' => Software::class,
+                  'conditions' => [
                         'entities_id' => $_SESSION["glpiactive_entity"],
                         'is_template' => 0
-                     ]
-                  ),
+                  ],
                   'actions' => getItemActionButtons(['info'], Software::class),
                   'col_lg' => 12,
                   'col_md' => 12,
