@@ -486,7 +486,7 @@ abstract class CommonDropdown extends CommonDBTM {
          // Delete form (set to 0)
          echo "<p>".__('If you confirm the deletion, all uses of this dropdown will be blanked.') .
               "</p>";
-         echo "<form action='$target' method='post'>";
+         echo "<form aria-label='Delete Confirm' action='$target' method='post'>";
          echo "<table class='tab_cadre' aria-label='Delete Confirm Form'><tr>";
          echo "<td><input type='hidden' name='id' value='$ID'>";
          echo "<input type='hidden' name='itemtype' value='".$this->getType()."' />";
@@ -502,7 +502,7 @@ abstract class CommonDropdown extends CommonDBTM {
 
       // Replace form (set to new value)
       echo "<p>". __('You can also replace all uses of this dropdown by another.') ."</p>";
-      echo "<form action='$target' method='post'>";
+      echo "<form aria-label='replace' action='$target' method='post'>";
       echo "<table class='tab_cadre' aria-label='Replace Form'><tr><td>";
 
       if ($this instanceof CommonTreeDropdown) {

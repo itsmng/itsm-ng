@@ -1087,7 +1087,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
       }
 
       echo "<div>";
-      echo "<form method='get' action='".$this->getSearchURL()."'>";
+      echo "<form aria-label='Search Form' method='get' action='".$this->getSearchURL()."'>";
       echo "<table class='tab_cadre_fixe' aria-label='Search Form'>";
       echo "<tr class='tab_bg_2'><td class='right' width='50%'>";
       echo "<input type='text' size='50' name='contains' value=\"".
@@ -1137,7 +1137,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
       if (Session::getLoginUserID()
           && !$faq) {
          echo "<div>";
-         echo "<form method='get' action='".$this->getSearchURL()."'>";
+         echo "<form aria-label='Browse Form' method='get' action='".$this->getSearchURL()."'>";
          echo "<table class='tab_cadre_fixe' aria-label='Browse Form'>";
          echo "<tr class='tab_bg_2'><td class='right' width='50%'>".__('Category')."&nbsp;";
          KnowbaseItemCategory::dropdown(['value' => $params["knowbaseitemcategories_id"]]);
@@ -1177,7 +1177,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
       }
 
       echo "<div>";
-      echo "<form method='get' action='".$this->getSearchURL()."'>";
+      echo "<form aria-label='Manage Form' method='get' action='".$this->getSearchURL()."'>";
       echo "<table class='tab_cadre_fixe' aria-label='Manage Form'>";
       echo "<tr class='tab_bg_2'><td class='right' width='50%'>";
       $values = ['myunpublished' => __('My unpublished articles'),

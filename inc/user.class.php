@@ -2080,7 +2080,7 @@ class User extends CommonDBTM {
                        User::getFormURLWithID($ID)."&amp;getvcard=1' title='".__s('Download user VCard').
                        "'><span class='sr-only'>". __('Vcard')."</span></a>";
          if (Session::canImpersonate($ID)) {
-            $formtitle .= '<button type="button" class="pointer btn-linkstyled btn-impersonate" name="impersonate" value="1">'
+            $formtitle .= '<button type="button" class="pointer btn-linkstyled btn-impersonate" aria-label="Impersonate" name="impersonate" value="1">'
                . '<i class="fas fa-user-secret fa-lg" title="' . __s('Impersonate') . '"></i> '
                . '<span class="sr-only">' . __s('Impersonate') . '</span>'
                . '</button>';
@@ -3987,7 +3987,7 @@ class User extends CommonDBTM {
       }
 
       echo "<div class='center'>\n";
-      echo "<form method='post' action='".Toolbox::getItemTypeFormURL('User')."'>\n";
+      echo "<form aria-label='External Authentication' method='post' action='".Toolbox::getItemTypeFormURL('User')."'>\n";
 
       echo "<table class='tab_cadre' aria-label='External Auth form'>\n";
       echo "<tr><th colspan='4'>".__('Automatically add a user of an external source')."</th></tr>\n";
@@ -4497,7 +4497,7 @@ class User extends CommonDBTM {
    public function showPasswordUpdateForm(array $error_messages = []) {
       global $CFG_GLPI;
 
-      echo '<form method="post" action="' . $CFG_GLPI['root_doc'] . '/front/updatepassword.php">';
+      echo '<form aria-label="Password Update" method="post" action="' . $CFG_GLPI['root_doc'] . '/front/updatepassword.php">';
       echo '<table class="tab_cadre" aria-label="Password Update">';
       echo '<tr><th colspan="2">' . __('Password update') . '</th></tr>';
 
@@ -4592,7 +4592,7 @@ class User extends CommonDBTM {
       }
 
       echo "<div class='center'>";
-      echo "<form method='post' name='forgetpassword' action='".$CFG_GLPI['root_doc'].
+      echo "<form aria-label='Forget Password' method='post' name='forgetpassword' action='".$CFG_GLPI['root_doc'].
                "/front/lostpassword.php'>";
       echo "<table class='tab_cadre' aria-label='Forgot Password'>";
       echo "<tr><th colspan='2'>" . __('Forgotten password?')."</th></tr>";
@@ -4636,7 +4636,7 @@ class User extends CommonDBTM {
       global $CFG_GLPI;
 
       echo "<div class='center'>";
-      echo "<form method='post' name='forgetpassword' action='".$CFG_GLPI['root_doc'].
+      echo "<form aria-label='Password Forget Request' method='post' name='forgetpassword' action='".$CFG_GLPI['root_doc'].
              "/front/lostpassword.php'>";
       echo "<table class='tab_cadre' aria-label='Forgot Password'>";
       echo "<tr><th colspan='2'>" . __('Forgotten password?')."</th></tr>";
@@ -5216,7 +5216,7 @@ class User extends CommonDBTM {
       }
 
       $out = '';
-      $out .= "<form method='post' name='switchlang' action='".User::getFormURL()."' autocomplete='off'>";
+      $out .= "<form aria-label='Switch Language' method='post' name='switchlang' action='".User::getFormURL()."' autocomplete='off'>";
       $out .= "<p class='center'>";
       $out .= Dropdown::showLanguages("language", $params);
       if ($params['showbutton'] === true) {

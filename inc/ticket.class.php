@@ -3914,7 +3914,7 @@ class Ticket extends CommonITILObject
       );
 
       if (!$ticket_template) {
-         echo "<form method='post' name='helpdeskform' action='" .
+         echo "<form aria-label='HelpDesk' method='post' name='helpdeskform' action='" .
             $CFG_GLPI["root_doc"] . "/front/tracking.injector.php' enctype='multipart/form-data'>";
       }
 

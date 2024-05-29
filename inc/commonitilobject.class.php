@@ -7575,17 +7575,17 @@ abstract class CommonITILObject extends CommonDBTM {
          if (strpos($item['type'], 'Validation') > 0 &&
             (isset($item_i['can_answer']) && $item_i['can_answer'])) {
             $form_url = $item['type']::getFormURL();
-            echo "<form id='validationanswers_id_{$item_i['id']}' class='center' action='$form_url' method='post'>";
+            echo "<form aria-label='Validation Answer' id='validationanswers_id_{$item_i['id']}' class='center' action='$form_url' method='post'>";
             echo Html::hidden('id', ['value' => $item_i['id']]);
             echo Html::hidden('users_id_validate', ['value' => $item_i['users_id_validate']]);
             Html::textarea([
                'name'   => 'comment_validation',
                'rows'   => 5
             ]);
-            echo "<button type='submit' class='submit approve' name='approval_action' value='approve'>";
+            echo "<button type='submit' class='submit approve' name='approval_action' value='approve' aria-label='Approval Action'>";
             echo "<i class='far fa-thumbs-up' aria-hidden='true'></i>&nbsp;&nbsp;".__('Approve')."</button>";
 
-            echo "<button type='submit' class='submit refuse very_small_space' name='approval_action' value='refuse'>";
+            echo "<button type='submit' class='submit refuse very_small_space' name='approval_action' value='refuse' aria-label='Refuse Action'>";
             echo "<i class='far fa-thumbs-down' aria-hidden='true'></i>&nbsp;&nbsp;".__('Refuse')."</button>";
             Html::closeForm();
          }
@@ -7661,12 +7661,12 @@ abstract class CommonITILObject extends CommonDBTM {
             $doc = new Document();
             $doc->getFromDB($item_i['id']);
             if ($doc->can($item_i['id'], UPDATE)) {
-               echo '<form method="POST" action="' . static::getFormURL() . '" style="display:inline;">';
+               echo '<form aria-label="Delete" method="POST" action="' . static::getFormURL() . '" style="display:inline;">';
                echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
                echo Html::hidden('delete_document', ['value' => 1]);
                echo Html::hidden('documents_id', ['value' => $item_i['id']]);
                echo Html::hidden($foreignKey, ['value' => $this->getID()]);
-               echo '<button type="submit" class="unstyled">';
+               echo '<button type="submit" class="unstyled" aria-label="Delete">';
                echo '<i class="delete_document fas fa-trash-alt pointer"
                         title="' .  _sx("button", "Delete permanently") . '"></i>';
                echo '<span class="sr-only">' . _sx('button', 'Delete permanently') . '</span></a>';
@@ -7805,7 +7805,7 @@ abstract class CommonITILObject extends CommonDBTM {
       $rand = mt_rand();
 
       if (!isset($options['template_preview']) || !$options['template_preview']) {
-         $output = "<form method='post' name='form_ticket' enctype='multipart/form-data' action='".static::getFormURL()."'";
+         $output = "<form aria-label='Form Ticket' method='post' name='form_ticket' enctype='multipart/form-data' action='".static::getFormURL()."'";
          if ($ID) {
             $output .= " data-track-changes='true'";
          }

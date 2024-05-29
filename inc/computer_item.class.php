@@ -523,7 +523,7 @@ class Computer_Item extends CommonDBRelation{
           && ($global || !$number)
           && !(!empty($withtemplate) && ($withtemplate == 2))) {
          echo "<div class='firstbloc'>";
-         echo "<form name='computeritem_form$rand' id='computeritem_form$rand' method='post'
+         echo "<form aria-label='Computer item' name='computeritem_form$rand' id='computeritem_form$rand' method='post'
                 action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
 
          echo "<table class='tab_cadre_fixe' aria-label='Computer connections Table'>";

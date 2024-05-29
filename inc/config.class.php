@@ -794,7 +794,7 @@ class Config extends CommonDBTM {
            return;
       }
 
-      echo "<form name='form' action=\"".Toolbox::getItemTypeFormURL(__CLASS__)."\" method='post' data-track-changes='true'>";
+      echo "<form aria-label='DB Slave' name='form' action=\"".Toolbox::getItemTypeFormURL(__CLASS__)."\" method='post' data-track-changes='true'>";
       echo "<div class='center' id='tabsbody'>";
       echo "<input type='hidden' name='_dbslave_status' value='1'>";
       echo "<table class='tab_cadre_fixe' aria-label='DB Slave form'>";
@@ -1844,10 +1844,10 @@ class Config extends CommonDBTM {
 
          if ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE) {
              echo "<tr><td></td><td colspan='3'>";
-             echo '<form method="POST" action="' . static::getFormURL() . '" style="display:inline;">';
+             echo '<form aria-label="Reset" method="POST" action="' . static::getFormURL() . '" style="display:inline;">';
              echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
              echo Html::hidden('reset_opcache', ['value' => 1]);
-             echo '<button type="submit" class="btn btn-secondary">';
+             echo '<button type="submit" class="btn btn-secondary" aria-label="Reset">';
              echo __('Reset');
              echo '</button>';
              echo '</form>';
@@ -1895,11 +1895,11 @@ class Config extends CommonDBTM {
 
       if ($GLPI_CACHE instanceof FlushableInterface) {
           echo "<tr><td></td><td colspan='3'>";
-          echo '<form method="POST" action="' . static::getFormURL() . '" style="display:inline;">';
+          echo '<form aria-label="Reset" method="POST" action="' . static::getFormURL() . '" style="display:inline;">';
           echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
           echo Html::hidden('reset_cache', ['value' => 1]);
           echo Html::hidden('optname', ['value' => 'cache_db']);
-          echo '<button type="submit" class="btn btn-secondary">';
+          echo '<button type="submit" class="btn btn-secondary" aria-label="Reset">';
           echo __('Reset');
           echo '</button>';
           echo '</form>';
@@ -1916,11 +1916,11 @@ class Config extends CommonDBTM {
 
       if ($translation_cache instanceof FlushableInterface) {
           echo "<tr><td></td><td colspan='3'>";
-          echo '<form method="POST" action="' . static::getFormURL() . '" style="display:inline;">';
+          echo '<form aria-label="Reset" method="POST" action="' . static::getFormURL() . '" style="display:inline;">';
           echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
           echo Html::hidden('reset_cache', ['value' => 1]);
           echo Html::hidden('optname', ['value' => 'cache_trans']);
-          echo '<button type="submit" class="btn btn-secondary">';
+          echo '<button type="submit" class="btn btn-secondary" aria-label="Reset">';
           echo __('Reset');
           echo '</button>';
           echo '</form>';

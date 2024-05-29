@@ -2,12 +2,12 @@
 <div class="modal modal-lg fade" id="widgetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content" id="dashboard-edit-modal">
-		<form action="{{addWidget_action}}" method="get" class="text-center">
+		<form aria-label="Add Widget" action="{{addWidget_action}}" method="get" class="text-center">
 			<div class="modal-header d-flex justify-content-between">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">{{"New widget"|trans}}</h1>
                 <div>
-                    <button type="button" class="btn btn-primary" onclick="addWidget()">{{"Add widget"|trans}}</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">{{"Close"|trans}}</button>
+                    <button type="button" aria-label="Add Widget" class="btn btn-primary" onclick="addWidget()">{{"Add widget"|trans}}</button>
+                    <button type="button" class="btn btn-secondary" aria-label="Close" data-bs-dismiss="modal" aria-label="Close">{{"Close"|trans}}</button>
                 </div>
 			</div>
 			<div class="modal-body row">

@@ -72,7 +72,7 @@ class Lock extends CommonGLPI {
       }
 
       echo "<div width='50%'>";
-      echo "<form method='post' id='lock_form'
+      echo "<form aria-label='Locked Form' method='post' id='lock_form'
              name='lock_form' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<input type='hidden' name='id' value='$ID'>\n";
       echo "<input type='hidden' name='itemtype' value='$itemtype'>\n";

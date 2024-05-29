@@ -464,7 +464,7 @@ class AuthLDAP extends CommonDBTM {
       $hidden = '';
 
       echo "<div class='center'>";
-      echo "<form method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
+      echo "<form aria-label='Advanced config' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<table class='tab_cadre_fixe' aria-label='Advanced information'>";
 
       echo "<tr class='tab_bg_2'><th colspan='4'>";
@@ -676,7 +676,7 @@ class AuthLDAP extends CommonDBTM {
       $ID = $this->getField('id');
 
       echo "<div class='center'>";
-      echo "<form method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
+      echo "<form aria-label='Groups Config' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<input type='hidden' name='id' value='$ID'>";
       echo "<table class='tab_cadre_fixe' aria-label='Belonging to groups'>";
 
@@ -762,7 +762,7 @@ class AuthLDAP extends CommonDBTM {
       $ID = $this->getField('id');
 
       echo "<div class='center'>";
-      echo "<form method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
+      echo "<form aria-label='User config' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<input type='hidden' name='id' value='$ID'>";
       echo "<table class='tab_cadre_fixe' aria-label='Binding to the LDAP directory'>";
 
@@ -855,7 +855,7 @@ class AuthLDAP extends CommonDBTM {
       $ID = $this->getField('id');
 
       echo "<div class='center'>";
-      echo "<form method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
+      echo "<form aria-label='Entity Config' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<input type='hidden' name='id' value='$ID'>";
       echo "<table class='tab_cadre_fixe' aria-label='Import entities from LDAP directory'>";
 
@@ -1305,7 +1305,7 @@ class AuthLDAP extends CommonDBTM {
       }
 
       echo "<div class='center'>";
-      echo "<form method='post' action='$target'>";
+      echo "<form aria-label='LDAP Filters' method='post' action='$target'>";
       echo "<table class='tab_cadre_fixe' aria-label='filters'>";
       echo "<tr><th colspan='2'>" . ($users?__('Search filter for users')
                                            :__('Filter to search in groups')) . "</th></tr>";
@@ -2367,7 +2367,7 @@ class AuthLDAP extends CommonDBTM {
       }
 
       echo "<div class='center'>";
-      echo "<form action='$target' method=\"post\">";
+      echo "<form aria-label='LDAP choose directory' action='$target' method=\"post\">";
       echo "<p>" . __('Please choose LDAP directory to import users and groups from') . "</p>";
       echo "<table class='tab_cadre_fixe' aria-label='LDAP directory choice'>";
       echo "<tr class='tab_bg_2'><th colspan='2'>" . __('LDAP directory choice') . "</th></tr>";
@@ -3190,7 +3190,7 @@ class AuthLDAP extends CommonDBTM {
       $authldap->getFromDB($_SESSION['ldap_import']['authldaps_id']);
       echo "<div class='center'>";
 
-      echo "<form method='post' action='".$_SERVER['PHP_SELF']."'>";
+      echo "<form aria-label='User Import From' method='post' action='".$_SERVER['PHP_SELF']."'>";
 
       echo "<table class='tab_cadre_fixe' aria-label='Users synchronization'>";
 

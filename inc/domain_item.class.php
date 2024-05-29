@@ -575,7 +575,7 @@ class Domain_Item extends CommonDBRelation {
          if (Session::haveRight('domain', READ)
              && ($nb > count($used))
          ) {
-            echo "<form name='domain_form$rand' id='domain_form$rand' method='post'
+            echo "<form  aria-label='Domain' name='domain_form$rand' id='domain_form$rand' method='post'
                    action='" . Toolbox::getItemTypeFormURL('Domain') . "'>";
             echo "<table class='tab_cadre_fixe' aria-label='Domain Relations'>";
             echo "<tr class='tab_bg_1'>";

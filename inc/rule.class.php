@@ -2608,7 +2608,7 @@ class Rule extends CommonDBTM {
       $criteria = $this->getAllCriteria();
 
       if ($this->getRuleWithCriteriasAndActions($rules_id, 1, 0)) {
-         echo "<form name='testrule_form' id='testrule_form' method='post' action='$target'>\n";
+         echo "<form aria-label='Test Rule' name='testrule_form' id='testrule_form' method='post' action='$target'>\n";
          echo "<div class='spaced'>";
          echo "<table class='tab_cadre_fixe' aria-label='Criteria'>";
          echo "<tr><th colspan='3'>" . _n('Criterion', 'Criteria', Session::getPluralNumber()) . "</th></tr>";

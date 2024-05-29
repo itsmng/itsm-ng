@@ -570,7 +570,7 @@ class Group extends CommonTreeDropdown {
       $options = [];
       $this->initForm($ID, $options);
 
-      echo "<form name='groupldap_form' id='groupldap_form' method='post' action='".
+      echo "<form aria-label='LDAP Group' name='groupldap_form' id='groupldap_form' method='post' action='".
              $this->getFormURL()."'>";
       echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='LDAP Form'>";
 

@@ -253,10 +253,10 @@ class Change_Ticket extends CommonDBRelation{
 
       if ($canedit) {
          echo "<div class='firstbloc'>";
-         echo "<form name='changeticket_form$rand' id='changeticket_form$rand' method='post'
+         echo "<form aria-label='Add a ticket' name='changeticket_form$rand' id='changeticket_form$rand' method='post'
                 action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
 
-         echo "<table class='tab_cadre_fixe' aria-label='true'>";
+         echo "<table class='tab_cadre_fixe' aria-label='Add a ticket'>";
          echo "<tr class='tab_bg_2'><th colspan='2'>".__('Add a ticket')."</th></tr>";
 
          echo "<tr class='tab_bg_2'><td>";

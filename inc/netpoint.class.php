@@ -273,7 +273,7 @@ class Netpoint extends CommonDropdown {
       if ($canedit) {
          echo "<div class='first-bloc'>";
          // Minimal form for quick input.
-         echo "<form action='".$netpoint->getFormURL()."' method='post'>";
+         echo "<form aria-label='Location' action='".$netpoint->getFormURL()."' method='post'>";
          echo "<br><table class='tab_cadre_fixe' aria-label='Location'>";
          echo "<tr class='tab_bg_2 center'>";
          echo "<td class='b'>"._n('Network outlet', 'Network outlets', 1)."</td>";
@@ -287,7 +287,7 @@ class Netpoint extends CommonDropdown {
          Html::closeForm();
 
          // Minimal form for massive input.
-         echo "<form action='".$netpoint->getFormURL()."' method='post'>";
+         echo "<form aria-label='Location' action='".$netpoint->getFormURL()."' method='post'>";
          echo "<table class='tab_cadre_fixe' aria-label='Location'>";
          echo "<tr class='tab_bg_2 center'>";
          echo "<td class='b'>"._n('Network outlet', 'Network outlets', Session::getPluralNumber())."</td>";

@@ -1,6 +1,6 @@
 <div class="modal-header ">
 	<h1 class="modal-title fs-5" id="exampleModalLabel">{{"actions"|trans}}</h1>
-    <select id="action-select">
+    <select aria-label="Action Select" id="action-select">
         {% for key, action in actions %}
             <option value="{{ action }}" onclick="populateSubForm('{{ key }}')">{{ action }}</option>
         {% endfor %}
@@ -10,7 +10,7 @@
 <div class="modal-body text-center" id="v-pills-tabContent">
 </div>
 <div class="modal-footer">
-	<button type="button" class="btn btn-primary">{{"save"|trans}}</button>
+	<button type="button" aria-label='Save' class="btn btn-primary">{{"save"|trans}}</button>
 </div>
 
 <script>

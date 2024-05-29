@@ -30,7 +30,7 @@
         {% endif %}
 
 </div>
-<form action="install.php?step=5" method="post">
+<form aria-label="Back" action="install.php?step=5" method="post">
     {{button('submit', 'Back'|trans)}}
 </form>
 
@@ -56,14 +56,14 @@
         {% if error == 'create_config' %}
 
 <p>{{"Can't create the database connection file, please verify file permissions."|trans}}</p>
-<form action="install.php?step=3" method="post">
+<form aria-label="Continue" action="install.php?step=3" method="post">
     {{button('submit', 'Do you want to continue ?'|trans)}}
 </form>
 
         {% else %}
 
 <h3>{{"Caution! You are about to update the ITSM-NG database named"|trans}} : {{update['db']}}<h3>
-<form action="update.php" method="post">
+<form aria-label="Continue" action="update.php" method="post">
     <input type='submit' class='btn btn-warning' name='continuer' value={{"Continue"|trans}}>
 </form>
 

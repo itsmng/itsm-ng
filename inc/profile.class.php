@@ -800,7 +800,7 @@ class Profile extends CommonDBTM
 
       echo "<div class='spaced'>";
       if ($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE])) {
-         echo "<form method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
+         echo "<form aria-label='Tracking HelpDesk' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
       }
 
       $matrix_options = [
@@ -947,7 +947,7 @@ class Profile extends CommonDBTM
 
       echo "<div class='spaced'>";
       if ($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE])) {
-         echo "<form method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
+         echo "<form aria-label='Tools HelpDesk' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
       }
 
       $matrix_options = [
@@ -1013,7 +1013,7 @@ class Profile extends CommonDBTM
       if (($canedit = Session::haveRightsOr(self::$rightname, [UPDATE, CREATE, PURGE]))
          && $openform
       ) {
-         echo "<form method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
+         echo "<form aria-label='Asset' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
       }
 
       $rights = [
@@ -1119,7 +1119,7 @@ class Profile extends CommonDBTM
       if (($canedit = Session::haveRightsOr(self::$rightname, [UPDATE, CREATE, PURGE]))
          && $openform
       ) {
-         echo "<form method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
+         echo "<form aria-label='Managment' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
       }
 
       $matrix_options = [
@@ -1248,7 +1248,7 @@ class Profile extends CommonDBTM
       if (($canedit = Session::haveRightsOr(self::$rightname, [UPDATE, CREATE, PURGE]))
          && $openform
       ) {
-         echo "<form method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
+         echo "<form aria-label='Tools' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
       }
 
       $matrix_options = [
@@ -1336,7 +1336,7 @@ class Profile extends CommonDBTM
       if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
          && $openform
       ) {
-         echo "<form method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
+         echo "<form aria-label='Tracking' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
       }
 
       echo "<table class='tab_cadre_fixe' aria-label='ITIL Template'>";
@@ -1598,7 +1598,7 @@ class Profile extends CommonDBTM
       if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
          && $openform
       ) {
-         echo "<form method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
+         echo "<form aria-label='Life Cycle' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
       }
 
       $this->displayLifeCycleMatrix(
@@ -1731,7 +1731,7 @@ class Profile extends CommonDBTM
       if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
          && $openform
       ) {
-         echo "<form method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
+         echo "<form aria-label='Life Cycle HelpDesk' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
       }
 
       $this->displayLifeCycleMatrixTicketHelpdesk(
@@ -1769,7 +1769,7 @@ class Profile extends CommonDBTM
 
       if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
          && $openform) {
-         echo "<form method='post' action='".$this->getFormURL()."' data-track-changes='true'>";
+         echo "<form aria-label='Access' method='post' action='".$this->getFormURL()."' data-track-changes='true'>";
       }
 
       $matrix_options = [
@@ -1816,7 +1816,7 @@ class Profile extends CommonDBTM
       echo "<div class='spaced'>";
       if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
          && $openform) {
-         echo "<form method='post' action='".$this->getFormURL()."' data-track-changes='true'>";
+         echo "<form aria-label='Acces HelpDesk' method='post' action='".$this->getFormURL()."' data-track-changes='true'>";
       }
 
       $matrix_options = ['canedit'       => $canedit,
@@ -1865,7 +1865,7 @@ class Profile extends CommonDBTM
       if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
          && $openform
       ) {
-         echo "<form method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
+         echo "<form aria-label='Admin' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
       }
 
       $matrix_options = [
@@ -2008,7 +2008,7 @@ class Profile extends CommonDBTM
       if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
          && $openform
       ) {
-         echo "<form method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
+         echo "<form aria-label='Setup' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
       }
 
       $dropdown_rights = $this->getRights();
@@ -2166,7 +2166,7 @@ class Profile extends CommonDBTM
       if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
          && $openform
       ) {
-         echo "<form method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
+         echo "<form aria-label='Setup HelpDesk' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
       }
 
       $rights = [[

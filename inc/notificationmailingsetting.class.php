@@ -61,7 +61,7 @@ class NotificationMailingSetting extends NotificationSetting {
          $options['display'] = true;
       }
 
-      $out = "<form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' method='post'>";
+      $out = "<form aria-label='Form Config' action='".Toolbox::getItemTypeFormURL(__CLASS__)."' method='post'>";
       $out .= "<div>";
       $out .= "<input type='hidden' name='id' value='1'>";
       $out .= "<table class='tab_cadre_fixe' aria-label='Email Notification'>";

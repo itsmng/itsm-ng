@@ -3,8 +3,8 @@
 
 <h3>{{'Select your language'|trans}}</h3>
 <div class="container mt-5">
-    <form action="install.php?step=1" method="post">
-        <select name="language" id="select_box" class="form-select p-0 mb-3">
+    <form aria-label="Languages" action="install.php?step=1" method="post">
+        <select aria-label="Language" name="language" id="select_box" class="form-select p-0 mb-3">
             {% for region,language_list in languages %}
             <optgroup label={{region|capitalize}}>
             {% for language_data in language_list %}
@@ -14,7 +14,7 @@
                 {% endfor %}
             {% endfor %}
         </select>
-        <button type="submit" name="submit" class="btn btn-warning" value={{'OK'|trans}}/>OK</button>
+        <button type="submit" name="submit" aria-label="OK" class="btn btn-warning" value={{'OK'|trans}}/>OK</button>
 
     </form>
 </div>

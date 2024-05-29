@@ -100,7 +100,7 @@ $form = [
 renderTwigForm($form);
 
 if (countElementsInTableForMyEntities("glpi_netpoints") > 0) {
-   echo "<form name='form3' method='post' action='report.netpoint.list.php'>";
+   echo "<form name='form3' aria-label='Report Choices by location' method='post' action='report.netpoint.list.php'>";
    echo "<table class='tab_cadre' width='500' aria-label='Report Choices by Location'>";
    echo "<tr class='tab_bg_1'><td width='120'>".__('By network outlet')."</td>";
    echo "<td>";

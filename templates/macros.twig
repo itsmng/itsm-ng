@@ -8,9 +8,9 @@
 
 {% macro button(type = "button", text, name, value) %}
     {% if type != "submit" %}
-    <button type="{{type|default("submit")}}" name="{{name|default("submit")}}" class="{{class|default("submit")}}" value="{{ value|e }}"/></button>
+    <button type="{{type|default("submit")}}" aria-label="{{ name }}" name="{{name|default("submit")}}" class="{{class|default("submit")}}" value="{{ value|e }}"/></button>
     {% else %}
-    <button type="{{ type }}" name="{{ name }}" value="{{ value|e }}" class="btn btn-warning submit"/><i class="fas fa-circle-o-notch fa-spin" aria-hidden="true"></i>{{text}}</button>
+    <button type="{{ type }}" name="{{ name }}" aria-label="{{ name }}" value="{{ value|e }}" class="btn btn-warning submit"/><i class="fas fa-circle-o-notch fa-spin" aria-hidden="true"></i>{{text}}</button>
     {% endif %}
 {% endmacro %}
     

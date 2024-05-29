@@ -760,8 +760,8 @@ class NetworkName extends FQDNLabel {
          $itemtype = $item->getType();
 
          echo "<div class='firstbloc'>\n";
-         echo "<form method='post' action='".static::getFormURL()."'>\n";
-         echo "<table class='tab_cadre_fixe' aria-label='Netork'>\n";
+         echo "<form aria-label='Network' method='post' action='".static::getFormURL()."'>\n";
+         echo "<table class='tab_cadre_fixe' aria-label='Network'>\n";
          echo "<tr><th colspan='4'>".__('Add a network name')."</th></tr>";
 
          echo "<tr class='tab_bg_1'><td class='right'>";

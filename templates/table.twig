@@ -9,12 +9,12 @@
 		class="btn-group"
 		>
 		{% if massive_action is defined %}
-		<button type="button" class="btn btn-secondary" onclick="massiveaction_window{{id}}.dialog('open')">
+		<button type="button" aria-label="Actions" class="btn btn-secondary" onclick="massiveaction_window{{id}}.dialog('open')">
 			<i class="fas fa-hammer" title="Actions"></i>
 		</button>
 		{% endif %}
 		{% if column_edit is defined %}
-		<button type="button" class="btn btn-secondary" onclick="$('#search-config-{{itemtype}}').dialog('open')">
+		<button type="button" class="btn btn-secondary" aria-label="Options" onclick="$('#search-config-{{itemtype}}').dialog('open')">
 			<i class="fas fa-wrench" title="Options"></i>
 		</button>
 		{% endif %}

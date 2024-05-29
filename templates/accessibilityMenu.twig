@@ -1,42 +1,42 @@
 <div class="position-absolute d-block" id="accessibility-menu" style="z-index: 100; right: -500px; transition: right .2s ease-out">
-    <button class="position-absolute btn btn-lg btn-accessibility" onclick="toggleMenu(this)">
+    <button class="position-absolute btn btn-lg btn-accessibility" onclick="toggleMenu(this)" aria-label="Toggle accessibility menu">
         <i class="fas fa-wheelchair fs-3" aria-hidden='true'></i>
     </button>
     <div class="d-flex flex-column align-items-start bg-light border border-info" id="accessibility-menu-content">
         <h2 class="fs-4 px-3">{{"Accessibility Tools"|trans}}</h2>
-        <button href="#" class="btn btn-link text-black" onclick="changeFontSize(1)" style="text-decoration: none">
+        <button class="btn btn-link text-black" onclick="changeFontSize(1)" style="text-decoration: none" aria-label="Increase text size">
             <i class="fas fa-search-plus" aria-hidden='true'></i>
             {{"Increase Text"|trans}}
         </button>
-        <button href="#" class="btn btn-link text-black" onclick="changeFontSize(-1)" style="text-decoration: none">
+        <button class="btn btn-link text-black" onclick="changeFontSize(-1)" style="text-decoration: none" aria-label="Decrease text size">
             <i class="fas fa-search-minus" aria-hidden='true'></i>
             {{"Decrease Text"|trans}}
         </button>
-        <button href="#" class="btn btn-link text-black" onclick="toggleClassForBody('accessibility-grayscale')" style="text-decoration: none">
+        <button class="btn btn-link text-black" onclick="toggleClassForBody('accessibility-grayscale')" style="text-decoration: none" aria-label="Toggle grayscale">
             <i class="fas fa-adjust" aria-hidden='true'></i>
             {{"GrayScale"|trans}}
         </button>
-        <button href="#" class="btn btn-link text-black" onclick="toggleHighContrast()" style="text-decoration: none">
+        <button class="btn btn-link text-black" onclick="toggleHighContrast()" style="text-decoration: none" aria-label="Toggle high contrast">
             <i class="far fa-circle" aria-hidden='true'></i>
             {{"High Contrast"|trans}}
         </button>
-        <button href="#" class="btn btn-link text-black" onclick="toggleNegativeHighContrast()" style="text-decoration: none">
+        <button class="btn btn-link text-black" onclick="toggleNegativeHighContrast()" style="text-decoration: none" aria-label="Toggle negative contrast">
             <i class="fas fa-circle" aria-hidden='true'></i>
             {{"Negative Contrast"|trans}}
         </button>
-        <button href="#" class="btn btn-link text-black" onclick="toggleClassForBody('accessibility-link-underline')" style="text-decoration: none">
+        <button class="btn btn-link text-black" onclick="toggleClassForBody('accessibility-link-underline')" style="text-decoration: none" aria-label="Toggle underline links">
             <i class="fas fa-link" aria-hidden='true'></i>
             {{"Links Underline"|trans}}
         </button>
-        <button href="#" class="btn btn-link text-black" onclick="toggleClassForBody('accessibility-readable-font')" style="text-decoration: none">
+        <button class="btn btn-link text-black" onclick="toggleClassForBody('accessibility-readable-font')" style="text-decoration: none" aria-label="Toggle readable font">
             <i class="fas fa-spell-check" aria-hidden='true'></i>
             {{"Readable Font"|trans}}
         </button>
-        <button href="#" class="btn btn-link text-black" onclick="resetAllAccessibilityOptions()" style="text-decoration: none">
+        <button class="btn btn-link text-black" onclick="resetAllAccessibilityOptions()" style="text-decoration: none" aria-label="Reset accessibility options">
             <i class="fas fa-undo" aria-hidden='true'></i>
             {{"Reset"|trans}}
         </button>
-        <button href="#" class="btn btn-link text-black">{{""}}</button>
+        <button class="btn btn-link text-black" aria-label="Empty button"></button>
     </div>
 </div>
 <script>

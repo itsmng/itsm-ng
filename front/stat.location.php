@@ -75,7 +75,7 @@ if (!isset($_GET['itemtype'])) {
 $stat = new Stat();
 Stat::title();
 
-echo "<form method='get' name='form' action='stat.location.php'>";
+echo "<form aria-label='Location Statistics' method='get' name='form' action='stat.location.php'>";
 // keep it first param
 echo "<input type='hidden' name='itemtype' value='". $_GET['itemtype'] ."'>";
 

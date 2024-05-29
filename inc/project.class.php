@@ -1373,7 +1373,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
 
       if ($this->can($ID, UPDATE)) {
          echo "<div class='firstbloc'>";
-         echo "<form name='project_form$rand' id='project_form$rand' method='post'
+         echo "<form aria-label='Project' name='project_form$rand' id='project_form$rand' method='post'
          action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
 
          echo "<a href='".Toolbox::getItemTypeFormURL('Project')."?projects_id=$ID'>";

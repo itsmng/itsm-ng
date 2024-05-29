@@ -21,7 +21,7 @@
 {% if (missing_requirements  == "none") %}
 
 <div class="buttons">
-    <form action="install.php?step=4" method="post">
+    <form aria-label="Continue" action="install.php?step=4" method="post">
             {{button('submit', 'Continue'|trans)}}
     </form>
 </div>
@@ -29,10 +29,10 @@
 {% elseif missing_requirements  == "optional" %}
 
 <div class="buttons">
-    <form action="install.php?step=3" method="post" class="mb-3">
+    <form aria-label="Try Again" action="install.php?step=3" method="post" class="mb-3">
         {{button('submit', 'Try again'|trans)}}
     </form>
-    <form action="install.php?step=4" method="post">
+    <form aria-label="Continue" action="install.php?step=4" method="post">
         {{button('submit', 'Continue'|trans)}}
     </form>
 </div>
@@ -40,7 +40,7 @@
 {% else %}
 
 <div class="buttons">
-    <form action="install.php?step=3" method="post">
+    <form aria-label="Try again" action="install.php?step=3" method="post">
         {{button('submit', 'Try again'|trans)}}
     </form>
 </div>

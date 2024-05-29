@@ -114,7 +114,7 @@ class Accessibility extends CommonDBTM {
         }
 
         if ((!$userpref && $canedit) || ($userpref && $canedituser)) {
-            echo "<form name='form' action='$url' method='post' data-track-changes='true'>";
+            echo "<form aria-label='form' name='form' action='$url' method='post' data-track-changes='true'>";
         }
 
         if ($userpref) {

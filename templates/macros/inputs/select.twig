@@ -1,6 +1,13 @@
 {% macro select(attributes) %}
   <select class='form-select {{attributes.class}}'
-    {% for name, value in attributes %} {% if name not in  ['values', 'class']%}{{name}}="{{value}}"{% endif %} {% endfor %}>
+    {% for name, value in attributes %} 
+      {% if name not in  ['values', 'class']%}
+        {{name}}="{{value}}"
+      {% endif %}
+    {% endfor %}
+    {% if attributes.name is defined %}
+      aria-label="{{ attributes.name }}"
+    {% endif %}>
     {% for key, item in attributes.values %}
       {% if item is iterable %}
         <optgroup label="{{key}}">
@@ -9,7 +16,7 @@
           {% endfor %}
         </optgroup>
       {% else %}
-          <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
+        <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
       {% endif %}
     {% endfor %}
   </select>

@@ -90,7 +90,7 @@ class OlaLevel extends LevelAgreementLevel {
 
       if ($canedit) {
          echo "<div class='center first-bloc'>";
-         echo "<form name='olalevel_form$rand' id='olalevel_form$rand' method='post' action='";
+         echo "<form aria-label='OLA' name='olalevel_form$rand' id='olalevel_form$rand' method='post' action='";
          echo Toolbox::getItemTypeFormURL(__CLASS__)."'>";
 
          echo "<table class='tab_cadre_fixe' aria-label='Add an escalation level'>";

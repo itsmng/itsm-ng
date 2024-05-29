@@ -126,7 +126,7 @@ class IPNetwork_Vlan extends CommonDBRelation {
 
       if ($canedit) {
          echo "<div class='firstbloc'>\n";
-         echo "<form method='post' action='".static::getFormURL()."'>\n";
+         echo "<form aria-label='VLAN' method='post' action='".static::getFormURL()."'>\n";
          echo "<table class='tab_cadre_fixe' aria-label='Associate a VLAN'>\n";
          echo "<tr><th>".__('Associate a VLAN')."</th></tr>";
 

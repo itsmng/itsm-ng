@@ -3,11 +3,11 @@
     <ul class="col col-sm-12 col-md-{{listSize|default(5)}} p-0 {% if tabs|length == 1 %}d-none{% endif %}"
         id="options-for-{{itemName|slug}}" data-size="{{listSize|default(5)}}">
         <li class="d-none d-md-table btn-group mb-2 text-right ms-auto">
-            <button class="btn btn-outline-secondary" onclick="changeListSize(1)" id="increase-list-size">
+            <button class="btn btn-outline-secondary" aria-label="Increase List Size" onclick="changeListSize(1)" id="increase-list-size">
                 <i class="fas fa-arrow-left" aria-hidden="true"></i>
                 <span class="visually-hidden">{{"Increase list width"|trans}}</span>
             </button>
-            <button class="btn btn-outline-secondary" onclick="changeListSize(-1)" id="decrease-list-size">
+            <button class="btn btn-outline-secondary" aria-label="Decrease List Size" onclick="changeListSize(-1)" id="decrease-list-size">
                 <i class="fas fa-arrow-right" aria-hidden="true"></i>
                 <span class="visually-hidden">{{"Decrease list width"|trans}}</span>
             </button>
@@ -16,7 +16,7 @@
         <li>
             <h2 class="d-flex bg-light border w-100 m-0">
                 <button
-                    class="btn btn-sm btn-light m-2 me-0 moveToMainButton"
+                    class="btn btn-sm btn-light m-2 me-0 moveToMainButton" aria-label="Move To Main View"
                     title="{{"Move to main view"|trans}}">
                     <i class="fas fa-share-square fa-rotate-180" aria-hidden="true"></i>
                     <span class="visually-hidden">{{"Move to main view"|trans}}</span>

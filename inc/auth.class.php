@@ -1467,7 +1467,7 @@ class Auth extends CommonGLPI
       global $DB, $CFG_GLPI;
 
       if (Session::haveRight("user", User::UPDATEAUTHENT)) {
-         echo "<form method='post' action='" . Toolbox::getItemTypeFormURL('User') . "'>";
+         echo "<form aria-label='Synchronization form' method='post' action='" . Toolbox::getItemTypeFormURL('User') . "'>";
          echo "<div class='firstbloc'>";
 
          switch ($user->getField('authtype')) {

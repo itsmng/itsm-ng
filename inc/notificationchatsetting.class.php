@@ -67,7 +67,7 @@ class NotificationChatSetting extends NotificationSetting
             $options['display'] = true;
         }
 
-        $out = "<form action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "' method='post'>";
+        $out = "<form aria_label='form config' action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "' method='post'>";
         $out .= "<div>";
         $out .= "<input type='hidden' name='id' value='1'>";
         $out .= Html::scriptBlock("$(function() {

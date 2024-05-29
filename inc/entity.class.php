@@ -1191,7 +1191,7 @@ class Entity extends CommonTreeDropdown {
              __s('Show all')."\">".str_replace(" ", "&nbsp;", __('Show all'))."</a></div>";
 
       echo "<div class='left' style='width:100%'>";
-      echo "<form id='entsearchform'>";
+      echo "<form aria-label='Entity Search' id='entsearchform'>";
       echo Html::input('entsearchtext', ['id' => 'entsearchtext']);
       echo Html::submit(__('Search'), ['id' => 'entsearch']);
       echo "</form>";
@@ -1489,7 +1489,7 @@ class Entity extends CommonTreeDropdown {
       $canedit = $entity->can($ID, UPDATE);
 
       if ($canedit) {
-         echo "<form method='post' name=form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' data-track-changes='true'>";
+         echo "<form aria-label='Entity Action' method='post' name=form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' data-track-changes='true'>";
       }
       $form = [
          'action' => $canedit ? Toolbox::getItemTypeFormURL(__CLASS__) : '',
@@ -1998,7 +1998,7 @@ class Entity extends CommonTreeDropdown {
 
       echo "<div class='spaced'>";
       if ($canedit) {
-         echo "<form method='post' name=form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' data-track-changes='true'>";
+         echo "<form aria-label='Customization Option' method='post' name=form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' data-track-changes='true'>";
       }
 
       echo "<table class='tab_cadre_fixe custom_css_configuration' aria-label='Customization option'>";

@@ -163,7 +163,7 @@ abstract class CommonITILActor extends CommonDBRelation {
       }
       $item = new static::$itemtype_1();
 
-      echo "<br><form method='post' action='".$_SERVER['PHP_SELF']."'>";
+      echo "<br><form aria-label='Notification' method='post' action='".$_SERVER['PHP_SELF']."'>";
       echo "<div class='center'>";
       echo "<table class='tab_cadre' width='80%' aria-label='User Notification'>";
       echo "<tr class='tab_bg_2'><td>".$item->getTypeName(1)."</td>";
@@ -240,7 +240,7 @@ abstract class CommonITILActor extends CommonDBRelation {
       }
       $item = new static::$itemtype_1();
 
-      echo "<br><form method='post' action='".$_SERVER['PHP_SELF']."'>";
+      echo "<br><form aria-label='Supplier Notification' method='post' action='".$_SERVER['PHP_SELF']."'>";
       echo "<div class='center'>";
       echo "<table class='tab_cadre' width='80%' aria-label='Supplier Notifications'>";
       echo "<tr class='tab_bg_2'><td>".$item->getTypeName(1)."</td>";

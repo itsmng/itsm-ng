@@ -1197,7 +1197,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
           && $item->can($ID, UPDATE)) {
          $rand = mt_rand();
          echo "<div class='firstbloc'>";
-         echo "<form name='projecttask_form$rand' id='projecttask_form$rand' method='post'
+         echo "<form aria-label='Project Task' name='projecttask_form$rand' id='projecttask_form$rand' method='post'
                 action='".Toolbox::getItemTypeFormURL('ProjectTask')."'>";
          $projet = $item->fields['projects_id'];
          echo "<a href='".Toolbox::getItemTypeFormURL('ProjectTask')."?projecttasks_id=$ID&amp;projects_id=$projet'>";
@@ -1368,7 +1368,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
 
       if ($canedit) {
          echo "<div class='firstbloc'>";
-         echo "<form name='projecttaskteam_form$rand' id='projecttaskteam_form$rand' ";
+         echo "<form aria-label='Project task Team' name='projecttaskteam_form$rand' id='projecttaskteam_form$rand' ";
          echo " method='post' action='".Toolbox::getItemTypeFormURL('ProjectTaskTeam')."'>";
          echo "<input type='hidden' name='projecttasks_id' value='$ID'>";
          echo "<table class='tab_cadre_fixe' aria-label='Add a team member'>";
