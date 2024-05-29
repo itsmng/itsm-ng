@@ -5791,7 +5791,6 @@ ul.indexes {
       left: 45%;
       font-size: 1em;
       color: grey;
-      top: 5px;
       font-family: 'Font Awesome\ 5 Free';
       position: absolute;
       font-weight: 900;
@@ -5955,14 +5954,13 @@ ul.indexes {
    float: left;
    text-align: center;
    background: #4C4C4C;
-   padding-top: 18px;
+   padding-block: 18px;
 }
 
 .racks_col h2 {
    font-size: 1em;
    color: #555;
    background-color: #e6e6e6;
-   height: 18px;
    margin: 0;
    padding: 5px 0;
 }
@@ -5979,7 +5977,6 @@ ul.indexes {
 }
 
 .racks_add {
-   position: absolute;
    display: block;
    width: 100%;
    z-index: 2;

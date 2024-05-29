@@ -324,10 +324,7 @@ class Item_Rack extends CommonDBRelation {
       foreach ($data[Rack::FRONT] as $current_item) {
          echo self::getCell($current_item, !$canedit);
       }
-      echo '   <div class="grid-stack-item lock-bottom"
-                    gs-no-resize="true" gs-no-move="true"
-                    gs-h="1" gs-w="2" gs-x="0" gs-y="'.$rack->fields['number_units'].'"></div>
-            </div>
+      echo '</div>
             <ul class="indexes"></ul>';
       // append some spaces on bottom for having symetrical view between front and rear
       for ($i = 0; $i < $nb_bot_pdu; $i++) {
