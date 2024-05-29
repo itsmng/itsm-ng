@@ -181,7 +181,7 @@ abstract class ITILTemplateHiddenField extends ITILTemplateField {
 
       if ($canedit) {
          echo "<div class='firstbloc'>";
-         echo "<form name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
+         echo "<form aria-label='Hidden field' name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
                   action='".$ttm->getFormURL()."'>";
 
          echo "<table class='tab_cadre_fixe' aria-label='Add a hidden field'>";

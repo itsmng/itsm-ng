@@ -403,8 +403,8 @@ class Planning extends CommonGLPI {
       }
       asort($users);
       // Use get method to check availability
-      echo "<div class='center'><form method='GET' name='form' action='planning.php'>\n";
-      echo "<table class='tab_cadre_fixe' aria-mabel='Availability'>";
+      echo "<div class='center'><form aria-label='Availability' method='GET' name='form' action='planning.php'>\n";
+      echo "<table class='tab_cadre_fixe' aria-label='Availability'>";
       $colspan = 5;
       if (count($users) > 1) {
          $colspan++;
@@ -1025,7 +1025,7 @@ class Planning extends CommonGLPI {
       global $CFG_GLPI;
 
       $rand = mt_rand();
-      echo "<form action='".self::getFormURL()."'>";
+      echo "<form aria-label='Add Planning' action='".self::getFormURL()."'>";
       echo __("Actor").": <br>";
 
       $planning_types = ['user' => User::getTypeName(1)];

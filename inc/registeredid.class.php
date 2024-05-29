@@ -69,7 +69,7 @@ class RegisteredID  extends CommonDBChild {
    **/
    static function getJSCodeToAddForItemChild($field_name, $child_count_js_var) {
 
-      $result  ="<select name=\'" . $field_name . "_type[-'+$child_count_js_var+']\'>";
+      $result = "<select name='" . $field_name . "_type[-'+$child_count_js_var+']' aria-label='" . $field_name . "'>";
       $result .="<option value=\'\'>".Dropdown::EMPTY_VALUE."</option>";
       foreach (self::getRegisteredIDTypes() as $name => $label) {
          $result .="<option value=\'$name\'>$label</option>";
@@ -96,7 +96,7 @@ class RegisteredID  extends CommonDBChild {
       $registeredIDTypes = self::getRegisteredIDTypes();
 
       if ($canedit) {
-         echo "<select name='$type_field'>";
+         echo "<select aria-label='$field_name' name='$type_field'>";
          echo "<option value=''>".Dropdown::EMPTY_VALUE."</option>";
          foreach ($registeredIDTypes as $name => $label) {
             echo "<option value='$name'";

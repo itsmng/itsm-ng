@@ -21,8 +21,8 @@
 
 			{% if main_menu.args.access == 'central' %}
             <div id="searchbar">
-                <form role="search" method="get" action="{{root_doc}}/front/search.php">
-                    <input type="search" name="globalsearch" placeholder="{{"Search"|trans}}...">
+                <form aria-label="search" role="search" method="get" action="{{root_doc}}/front/search.php">
+                    <input type="search" name="globalsearch" aria-label="Search" placeholder="{{"Search"|trans}}...">
                     <button type="submit" class="btn btn-link">
                         <i class="fa fa-search" title="Search"></i>
                     </button>
@@ -46,7 +46,7 @@
 				</ul>
 
 				<div class="dropdown">
-					<button class="btn me-1 text-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+					<button class="btn me-1 text-light" aria-label="Menu" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
 						<i class="fas fa-bars" title="menu"></i>
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">

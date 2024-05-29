@@ -374,7 +374,7 @@ class Impact extends CommonGLPI {
          $rand = mt_rand();
 
          echo '<div id="list_depth_dialog" class="impact-dialog" title=' . __("Settings") . '>';
-         echo '<form action="'.$CFG_GLPI['root_doc'].'/front/impactitem.form.php" method="POST">';
+         echo '<form aria-label="Settings" action="'.$CFG_GLPI['root_doc'].'/front/impactitem.form.php" method="POST">';
          echo '<table class="tab_cadre_fixe" aria-label="Impact Settings Form">';
          echo '<tr>';
          echo '<td><label for="impact_max_depth_' . $rand . '">' . __("Max depth") . '</label></td>';
@@ -977,7 +977,7 @@ class Impact extends CommonGLPI {
       $action = $CFG_GLPI['root_doc'] . '/ajax/impact.php';
       $formName = "form_impact_network";
 
-      echo "<form name=\"$formName\" action=\"$action\" method=\"post\" class='no-track'>";
+      echo "<form aria-label='Impact network' name=\"$formName\" action=\"$action\" method=\"post\" class='no-track'>";
       echo "<table class='tab_cadre_fixe network-table' aria-label='Impact Nework'>";
       echo '<tr><td class="network-parent">';
       echo '<span id="help_text"></span>';

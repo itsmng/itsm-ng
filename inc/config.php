@@ -181,7 +181,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
          echo "</table></div>";
 
          if ($error) {
-            echo "<form action='".$CFG_GLPI["root_doc"]."/index.php' method='post'>";
+            echo "<form aria-label='Error' action='".$CFG_GLPI["root_doc"]."/index.php' method='post'>";
             echo "<input type='submit' name='submit' class='btn btn-secondary mb-3' value=\"".__s('Try again')."\">";
             Html::closeForm();
          }
@@ -226,7 +226,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
             }
 
             if ($older === true) {
-               echo "<form method='post' action='".$CFG_GLPI["root_doc"]."/install/update.php'>";
+               echo "<form method='post' aria-label='old DB' action='".$CFG_GLPI["root_doc"]."/install/update.php'>";
                if ($dev === true) {
                   echo Config::agreeDevMessage();
                }

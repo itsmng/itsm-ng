@@ -167,7 +167,7 @@ class ProjectTask_Ticket extends CommonDBRelation
 
       if ($canedit) {
          echo "<div class='firstbloc'>";
-         echo "<form name='projecttaskticket_form$rand' id='projecttaskticket_form$rand'
+         echo "<form aria-label='Project Task' name='projecttaskticket_form$rand' id='projecttaskticket_form$rand'
                 method='post' action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
 
          echo "<table class='tab_cadre_fixe' aria-label='Add a ticket'>";

@@ -71,7 +71,7 @@ function fillidfield(Type,Id) {
 
 echo "<div class='center'>";
 echo "<p class='b'>".__('Search the ID of your hardware')."</p>";
-echo " <form name='form1' method='post' action='".$_SERVER['PHP_SELF']."'>";
+echo " <form name='form1' aria-label='Hardware ' method='post' action='".$_SERVER['PHP_SELF']."'>";
 
 echo "<table class='tab_cadre_fixe' aria-label='Search form>";
 echo "<tr><th height='29'>".__('Enter the first letters (user, item name, serial or asset number)').

@@ -10,7 +10,7 @@
     <p>{{'The server answered: %s'|trans|format(connect_error)}}:</p>
 </div>
 <div class="buttons">
-    <form action='install.php?step=4' method='post'>
+    <form aria-label="Back" action='install.php?step=4' method='post'>
         {{button('submit', 'Back'|trans)}}
     </form>
 </div>
@@ -26,7 +26,7 @@
     {% else %}
 
 <p>{{"Database version seems correct (%s) - Perfect!"|trans|format(version)}}</p>
-<form action='install.php?step=6' method='post'>
+<form aria-label="Install" action='install.php?step=6' method='post'>
 
         {% if action == 'install' %}
 

@@ -152,7 +152,7 @@ class Change_Problem extends CommonDBRelation{
       if ($canedit) {
          echo "<div class='firstbloc'>";
 
-         echo "<form name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
+         echo "<form aria-label='Problem Changes' name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
                 action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
 
          echo "<table class='tab_cadre_fixe' aria-label='Problem Changes Table'>";

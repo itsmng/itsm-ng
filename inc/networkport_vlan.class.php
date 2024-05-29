@@ -127,7 +127,7 @@ class NetworkPort_Vlan extends CommonDBRelation {
 
       if ($canedit) {
          echo "<div class='firstbloc'>\n";
-         echo "<form method='post' action='".static::getFormURL()."'>\n";
+         echo "<form aria-label='VLAN' method='post' action='".static::getFormURL()."'>\n";
          echo "<table class='tab_cadre_fixe' aria-label='VLAN'>\n";
          echo "<tr><th colspan='4'>".__('Associate a VLAN')."</th></tr>";
 

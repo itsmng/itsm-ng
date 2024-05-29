@@ -1,22 +1,39 @@
 {% macro input(input, root_doc = '') %}
   {% if input.hooks and not input.id %}
-    {% set input  = input|merge({'id': random()}) %}
-	{% endif %}
+    {% set input = input|merge({'id': random()}) %}
+  {% endif %}
   {% set attributes = input|filter((v, k) => k not in ['hooks', 'init']) %}
   {% if attributes.type == 'checkbox' %}
     <div class="form-switch">
       {% if not attributes.no_zero %}
-      <input type="hidden" name="{{attributes.name}}" value="0" {% if attributes.class %} class="{{attributes.class}}" {% endif %}>
+        <input type="hidden" name="{{attributes.name}}" value="0" {% if attributes.class %} class="{{attributes.class}}" {% endif %}>
       {% endif %}
       <input role="switch" class='form-check-input {% if attributes.class %} {{attributes.class}} {% endif %}'
-        {% for name, value in attributes|filter((v, k) => k != 'value')  %}
-        {{name}}="{{value}}" {% endfor %} value={{attributes.content|default(1)}}
+        {% for name, value in attributes|filter((v, k) => k != 'value') %}
+          {{name}}="{{value}}" 
+        {% endfor %}
+        {% if attributes.name is defined %}
+          aria-label="{{ attributes.name }}"
+        {% endif %}
+        value={{attributes.content|default(1)}}
         {% if attributes.value == 1 %} checked {% endif %}/>
     </div>
   {% elseif attributes.type == 'radio' %}
-    <input class='form-check' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+    <input class='form-check' 
+      {% for name, value in attributes %}
+        {{name}}="{{value}}" 
+      {% endfor %}
+      {% if attributes.name is defined %}
+        aria-label="{{ attributes.name }}"
+      {% endif %}/>
   {% elseif attributes.type == 'textarea' %}
-    <textarea class='form-control' {% for name, value in attributes|filter(k,v => k != 'value') %} {{name}}="{{value}}" {% endfor %}>{{attributes.value|default("")|raw}}</textarea>
+    <textarea class='form-control' 
+      {% for name, value in attributes|filter((v, k) => k != 'value') %}
+        {{name}}="{{value}}" 
+      {% endfor %}
+      {% if attributes.name is defined %}
+        aria-label="{{ attributes.name }}"
+      {% endif %}>{{attributes.value|default("")|raw}}</textarea>
   {% elseif attributes.type == 'richtextarea' %}
     {% include 'macros/inputs/richtextarea.twig' %}
   {% elseif attributes.type == 'select' %}
@@ -40,21 +57,26 @@
   {% elseif attributes.type == 'password' %}
     {% include 'macros/inputs/password.twig' %}
   {% else %}
-    <input class='form-control' {% for name, value in attributes %} {{name}}="{{value}}" {% endfor %}/>
+    <input class='form-control' 
+      {% for name, value in attributes %}
+        {{name}}="{{value}}" 
+      {% endfor %}
+      {% if attributes.name is defined %}
+        aria-label="{{ attributes.name }}"
+      {% endif %}/>
   {% endif %}
   {% if input.hooks is defined and input.hooks is not empty %}
     <script>
       $(document).ready(() => {
-      {% if input.init %}
+        {% if input.init %}
           {{input.init|raw}}
-      {% endif %}
-      {% for hook, script in input.hooks %}
-        $("#{{input.id}}").on("{{hook}}", function() {
-          {{script|raw}}
-        });
-      {% endfor %}
+        {% endif %}
+        {% for hook, script in input.hooks %}
+          $("#{{input.id}}").on("{{hook}}", function() {
+            {{script|raw}}
+          });
+        {% endfor %}
       });
     </script>
   {% endif %}
 {% endmacro %}
-{{_self.input(_context)}}

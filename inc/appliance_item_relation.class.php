@@ -233,7 +233,7 @@ class Appliance_Item_Relation extends CommonDBRelation {
       if ($canedit) {
          $form_url = Appliance_Item_Relation::getFormURL();
          echo "<div id='add_relation_dialog' title='"._x('button', "Add an item")."' style='display:none;'>
-         <form action='{$form_url}' method='POST'>
+         <form  aria-label='Add Relation dialog' action='{$form_url}' method='POST'>
             <p>".Dropdown::showSelectItemFromItemtypes([
                'items_id_name'   => 'items_id',
                'itemtypes'       => Appliance_Item_Relation::getTypes(true),

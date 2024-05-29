@@ -269,7 +269,7 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField {
 
       if ($canedit) {
          echo "<div class='firstbloc'>";
-         echo "<form name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
+         echo "<form aria-label='Predefined Field' name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
                action='".static::getFormURL()."'>";
 
          echo "<table class='tab_cadre_fixe' aria-label='Add a predefined field'>";

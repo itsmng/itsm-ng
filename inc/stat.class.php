@@ -1817,7 +1817,7 @@ class Stat extends CommonGLPI {
     * @return void|string
     */
    public function displaySearchForm($itemtype, $date1, $date2, $display = true) {
-      $out = "<form method='get' name='form' action='stat.global.php'><div class='center'>";
+      $out = "<form aria-label='Search' method='get' name='form' action='stat.global.php'><div class='center'>";
       // Keep it at first parameter
       $out .= "<input type='hidden' name='itemtype' value='$itemtype'>";
 

@@ -1999,7 +1999,7 @@ class Search {
 
       $main_block_class = '';
       if ($p['mainform']) {
-         echo "<form name='searchform$itemtype' method='get' action='".$p['target']."'>";
+         echo "<form aria-label='Searc Form $itemtype' name='searchform$itemtype' method='get' action='".$p['target']."'>";
       } else {
          $main_block_class = "sub_criteria";
       }

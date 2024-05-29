@@ -85,7 +85,7 @@ class SlaLevel extends LevelAgreementLevel {
 
       if ($canedit) {
          echo "<div class='center first-bloc'>";
-         echo "<form name='slalevel_form$rand' id='slalevel_form$rand' method='post' action='";
+         echo "<form aria-label='SLA Level Form $rand' name='slalevel_form$rand' id='slalevel_form$rand' method='post' action='";
          echo Toolbox::getItemTypeFormURL(__CLASS__)."'>";
 
          echo "<table class='tab_cadre_fixe' aria-label='Add an escalation level'>";

@@ -1,7 +1,7 @@
 <div class="banner-impersonate">
-    <form name="form" method="post" action={{user_form_url}}>
+    <form aria-label="Impersonate Form" name="form" method="post" action={{user_form_url}}>
         {{'You are impersonating'|trans}} {{impersonate_name}}.
         <input type="hidden" name="_glpi_csrf_token" value="{{csrf_token}}">
-        <button type="submit" name="impersonate" class="btn-linkstyled" value="0">{{'Stop impersonating'|trans}}</button>
+        <button type="submit" aria-label="Stop Impersonating" name="impersonate" class="btn-linkstyled" value="0">{{'Stop impersonating'|trans}}</button>
     </form>
 </div>

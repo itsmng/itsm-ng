@@ -85,7 +85,7 @@ body {
 
 <div id="contenuform">
 
-<form method="post" name="helpdeskform" action="tracking.injector.php">
+<form method="post" aria-label="Helpdesk reporting" name="helpdeskform" action="tracking.injector.php">
    <input type="hidden" name="_type" value="Helpdesk" />
    <input type="hidden" name="_auto_import" value="1" />
       <h2 align='center'><?php echo __("Helpdesk reporting form"); ?></h2>
@@ -96,7 +96,7 @@ body {
       <label for="urgency">
          <?php echo __("Select an urgency level"); ?>
       </label>
-      <select name="urgency" id="urgency">
+      <select aria-label="Urgency" name="urgency" id="urgency">
          <option value="5"><?php echo _x('urgency', 'Very high');?></option>
          <option value="4"><?php echo _x('urgency', 'High');?></option>
          <option value="3" selected="selected"><?php echo _x('urgency', 'Medium');?></option>

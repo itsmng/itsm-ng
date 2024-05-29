@@ -935,7 +935,7 @@ class RuleCollection extends CommonDBTM {
    **/
    static function displayImportRulesForm() {
 
-      echo "<form name='form' method='post' action='rule.backup.php' ".
+      echo "<form aria-label='Import' name='form' method='post' action='rule.backup.php' ".
              "enctype='multipart/form-data' >";
       echo "<div class='center'>";
 
@@ -1113,7 +1113,7 @@ class RuleCollection extends CommonDBTM {
       }
 
       //print report
-      echo "<form name='form' method='post' action='rule.backup.php' >";
+      echo "<form aria-label='Rejection' name='form' method='post' action='rule.backup.php' >";
       echo "<div class='spaced' id='tabsbody'>";
       echo "<table class='tab_cadre' aria-label='Print Report'>";
       echo "<input type='hidden' name='action' value='process_import'>";
@@ -1436,7 +1436,7 @@ class RuleCollection extends CommonDBTM {
       if (count($input)) {
          $rule      = $this->getRuleClass();
          $criterias = $rule->getAllCriteria();
-         echo "<form name='testrule_form' id='testrulesengine_form' method='post' action='$target'>";
+         echo "<form aria-label='Test Rule Engine' name='testrule_form' id='testrulesengine_form' method='post' action='$target'>";
          echo "\n<div class='center'>";
          echo "<table class='tab_cadre_fixe' aria-label='Rule collection preview'>";
          echo "<tr><th colspan='2'>" . _n('Criterion', 'Criteria', Session::getPluralNumber()) . "</th></tr>\n";

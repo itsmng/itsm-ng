@@ -294,7 +294,7 @@ class DisplayPreference extends CommonDBTM {
       if ($numrows == 0) {
          Session::checkRight(self::$rightname, self::PERSONAL);
          echo "<table class='tab_cadre_fixe' aria-label='Personal Criteria Table'><tr><th colspan='4'>";
-         echo "<form method='post' action='$target'>";
+         echo "<form aria-label='Personal Criteria' method='post' action='$target'>";
          echo "<input type='hidden' name='itemtype' value='$itemtype'>";
          echo "<input type='hidden' name='users_id' value='$IDuser'>";
          echo __('No personal criteria. Create personal parameters?')."<span class='small_space'>";
@@ -308,7 +308,7 @@ class DisplayPreference extends CommonDBTM {
          $already_added = self::getForTypeUser($itemtype, $IDuser);
 
          echo "<table class='tab_cadre_fixe' aria-label='Personal Criteria Table'><tr><th colspan='4'>";
-         echo "<form method='post' action='$target'>";
+         echo "<form aria-label='Personal Criteria' method='post' action='$target'>";
          echo "<input type='hidden' name='itemtype' value='$itemtype'>";
          echo "<input type='hidden' name='users_id' value='$IDuser'>";
          echo __('Select default items to show')."<span class='small_space'>";
@@ -319,7 +319,7 @@ class DisplayPreference extends CommonDBTM {
 
          echo "</th></tr>";
          echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
-         echo "<form method='post' action=\"$target\">";
+         echo "<form aria-label='Personnal Criteria' method='post' action=\"$target\">";
          echo "<input type='hidden' name='itemtype' value='$itemtype'>";
          echo "<input type='hidden' name='users_id' value='$IDuser'>";
          $group  = '';
@@ -373,11 +373,11 @@ class DisplayPreference extends CommonDBTM {
 
                   if ($i != 0) {
                      echo "<td class='center middle'>";
-                     echo "<form method='post' action='$target'>";
+                     echo "<form aria-label='Informations' method='post' action='$target'>";
                      echo "<input type='hidden' name='id' value='".$data["id"]."'>";
                      echo "<input type='hidden' name='users_id' value='$IDuser'>";
                      echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                     echo "<button type='submit' name='up'".
+                     echo "<button type='submit' aria-label='UP 'name='up'".
                          " title=\"".__s('Bring up')."\"".
                          " class='unstyled pointer'><i class='fa fa-arrow-up' aria-hidden='true'></i></button>";
                      Html::closeForm();
@@ -389,11 +389,11 @@ class DisplayPreference extends CommonDBTM {
 
                   if ($i != ($numrows-1)) {
                      echo "<td class='center middle'>";
-                     echo "<form method='post' action='$target'>";
+                     echo "<form aria-label='Informations' method='post' action='$target'>";
                      echo "<input type='hidden' name='id' value='".$data["id"]."'>";
                      echo "<input type='hidden' name='users_id' value='$IDuser'>";
                      echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                     echo "<button type='submit' name='down'".
+                     echo "<button type='submit' aria-label='down' name='down'".
                          " title=\"".__s('Bring down')."\"".
                          " class='unstyled pointer'><i class='fa fa-arrow-down' aria-hidden='true'></i></button>";
                      Html::closeForm();
@@ -405,11 +405,11 @@ class DisplayPreference extends CommonDBTM {
 
                   if (!isset($searchopt[$data["num"]]["noremove"]) || $searchopt[$data["num"]]["noremove"] !== true) {
                      echo "<td class='center middle'>";
-                     echo "<form method='post' action='$target'>";
+                     echo "<form aria-label='Item Information' method='post' action='$target'>";
                      echo "<input type='hidden' name='id' value='".$data["id"]."'>";
                      echo "<input type='hidden' name='users_id' value='$IDuser'>";
                      echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                     echo "<button type='submit' name='purge'".
+                     echo "<button type='submit' aria-label='Delete' name='purge'".
                            " title=\""._sx('button', 'Delete permanently')."\"".
                            " class='unstyled pointer'><i class='fa fa-times-circle' aria-hidden='true'></i></button>";
                      Html::closeForm();
@@ -538,11 +538,11 @@ class DisplayPreference extends CommonDBTM {
                if ($global_write) {
                   if ($i != 0) {
                      $newValue['up'] = <<<HTML
-                        <form method="post" action="$target">
+                        <form aria-label="Informations" method="post" action="$target">
                            <input type="hidden" name="id" value="{$data['id']}">
                            <input type="hidden" name="users_id" value="$IDuser">
                            <input type="hidden" name="itemtype" value="$itemtype">
-                           <button type="submit" name="up" title="Bring up" class="btn btn-sm text-sm fs-6">
+                           <button type="submit" name="up" title="Bring up" class="btn btn-sm text-sm fs-6" aria-label='Bring Up'>
                               <i class="fa fa-arrow-up"></i>
                            </button>
                            <input type="hidden" name="_glpi_csrf_token" value="$_SESSION[_glpi_csrf_token]">
@@ -552,11 +552,11 @@ class DisplayPreference extends CommonDBTM {
 
                   if ($i != ($numrows-1)) {
                      $newValue['down'] = <<<HTML
-                        <form method="post" action="$target">
+                        <form aria-label="Informations" method="post" action="$target">
                            <input type="hidden" name="id" value="{$data['id']}">
                            <input type="hidden" name="users_id" value="$IDuser">
                            <input type="hidden" name="itemtype" value="$itemtype">
-                           <button type="submit" name="down" title="Bring down" class="btn btn-sm fs-6">
+                           <button type="submit" name="down" title="Bring down" class="btn btn-sm fs-6" aria-label='Bring Down'>
                               <i class="fa fa-arrow-down" aria-hidden='true'></i>
                            </button>
                            <input type="hidden" name="_glpi_csrf_token" value="$_SESSION[_glpi_csrf_token]">
@@ -566,11 +566,11 @@ class DisplayPreference extends CommonDBTM {
 
                   if (!isset($searchopt[$data["num"]]["noremove"]) || $searchopt[$data["num"]]["noremove"] !== true) {
                      $newValue['close'] = <<<HTML
-                        <form method="post" action="$target">
+                        <form aria-label='Informations' method="post" action="$target">
                            <input type="hidden" name="id" value="{$data['id']}">
                            <input type="hidden" name="users_id" value="$IDuser">
                            <input type="hidden" name="itemtype" value="$itemtype">
-                           <button type="submit" name="purge" title="Delete permanently" class="btn btn-xs fs-6">
+                           <button type="submit" name="purge" title="Delete permanently" class="btn btn-xs fs-6" aria-label='Delete'>
                               <i class="fa fa-times-circle" aria-hidden='true'></i>
                            </button>
                            <input type="hidden" name="_glpi_csrf_token" value="$_SESSION[_glpi_csrf_token]">
@@ -606,11 +606,11 @@ class DisplayPreference extends CommonDBTM {
                if ($global_write) {
                   if ($i != 0) {
                      echo "<td class='center middle'>";
-                     echo "<form method='post' action='$target'>";
+                     echo "<form aria-label='Informations' method='post' action='$target'>";
                      echo "<input type='hidden' name='id' value='".$data["id"]."'>";
                      echo "<input type='hidden' name='users_id' value='$IDuser'>";
                      echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                     echo "<button type='submit' name='up'".
+                     echo "<button type='submit' aria-label='Bring Down' name='up'".
                          " title=\"".__s('Bring up')."\"".
                          " class='unstyled pointer'><i class='fa fa-arrow-up' aria-hidden='true'></i></button>";
                      Html::closeForm();
@@ -622,11 +622,11 @@ class DisplayPreference extends CommonDBTM {
 
                   if ($i != ($numrows-1)) {
                      echo "<td class='center middle'>";
-                     echo "<form method='post' action='$target'>";
+                     echo "<form  aria-label='Informations' method='post' action='$target'>";
                      echo "<input type='hidden' name='id' value='".$data["id"]."'>";
                      echo "<input type='hidden' name='users_id' value='$IDuser'>";
                      echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                     echo "<button type='submit' name='down'".
+                     echo "<button type='submit' aria-label='Bring Down' name='down'".
                          " title=\"".__s('Bring down')."\"".
                          " class='unstyled pointer'><i class='fa fa-arrow-down' aria-hidden='true'></i></button>";
                      Html::closeForm();
@@ -638,11 +638,11 @@ class DisplayPreference extends CommonDBTM {
 
                   if (!isset($searchopt[$data["num"]]["noremove"]) || $searchopt[$data["num"]]["noremove"] !== true) {
                      echo "<td class='center middle'>";
-                     echo "<form method='post' action='$target'>";
+                     echo "<form aria-label='Informations' method='post' action='$target'>";
                      echo "<input type='hidden' name='id' value='".$data["id"]."'>";
                      echo "<input type='hidden' name='users_id' value='$IDuser'>";
                      echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                     echo "<button type='submit' name='purge'".
+                     echo "<button type='submit' aria-label='Delete' name='purge'".
                            " title=\""._sx('button', 'Delete permanently')."\"".
                            " class='unstyled pointer'><i class='fa fa-times-circle' aria-hidden='true'></i></button>";
                      Html::closeForm();

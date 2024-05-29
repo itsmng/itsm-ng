@@ -336,7 +336,7 @@ class Profile_User extends CommonDBRelation {
 
       if ($canedit) {
          echo "<div class='firstbloc'>";
-         echo "<form name='entityuser_form$rand' id='entityuser_form$rand' method='post' action='";
+         echo "<form aria-label='Add Authorization' name='entityuser_form$rand' id='entityuser_form$rand' method='post' action='";
          echo Toolbox::getItemTypeFormURL(__CLASS__)."'>";
          echo "<table class='tab_cadre_fixe' aria-label='Add Authorization'>";
          echo "<tr class='tab_bg_1'><th colspan='6'>".__('Add an authorization to a user')."</tr>";

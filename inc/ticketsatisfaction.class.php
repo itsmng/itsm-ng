@@ -122,7 +122,7 @@ class TicketSatisfaction extends CommonDBTM {
          echo "<td>";
          echo "<input type='hidden' name='tickets_id' value='$tid'>";
 
-         echo "<select id='satisfaction_data' name='satisfaction'>";
+         echo "<select aria-label='Satisfaction' id='satisfaction_data' name='satisfaction'>";
 
          for ($i=0; $i<=5; $i++) {
             echo "<option value='$i' ".(($i == $this->fields["satisfaction"])?'selected':'').
