@@ -84,23 +84,22 @@ var initRack = function() {
       });
 
    // use each to re-init options for each grid
-   $('.grid-stack').each(function() {
-      $(this).gridstack({
-         cellHeight: 20,
-         verticalMargin: 1,
-         float: true,
-         disableOneColumnMode: true,
-         animate: true,
-         removeTimeout: 100,
-         disableResize: true,
-         draggable: {
-            handle: '.grid-stack-item-content',
-            appendTo: 'body',
-            containment: '.grid-stack',
-            cursor: 'move',
-            scroll: true
-         }
-      });
+   GridStack.init({
+      handle: '.grid-stack',
+      cellHeight: 20,
+      verticalMargin: 1,
+      float: true,
+      disableOneColumnMode: true,
+      animate: true,
+      removeTimeout: 100,
+      disableResize: true,
+      draggable: {
+         handle: '.grid-stack-item-content',
+         appendTo: 'body',
+         containment: '.grid-stack',
+         cursor: 'move',
+         scroll: true
+      }
    });
 
    $('.grid-stack')
@@ -153,15 +152,12 @@ var initRack = function() {
    }
 
    // lock all item (prevent pushing down elements)
-   $('.grid-stack').each(function (idx, gsEl) {
-      $(gsEl)
-         .data('gridstack')
-         .locked('.grid-stack-item', true);
-   });
-
-   // add containment to items, this avoid bad collisions on the start of the grid
-   $('.grid-stack .grid-stack-item')
-      .draggable('option', 'containment', 'parent');
+  $('.grid-stack').each(function (idx, gsEl) {
+    const gridstack = $(gsEl).data('gridstack');
+    if (gridstack) {
+      gridstack.disableDragAndDrop('.grid-stack-item');
+    }
+  });
 };
 
 
