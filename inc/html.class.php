@@ -948,7 +948,7 @@ class Html
                collapsible: true
             }).addClass( 'ui-tabs-vertical ui-helper-clearfix' );
 
-            $('<li class=\"close\"><button aria-label='Close Debug' id= \"close_debug$rand\">close debug</button></li>')
+            $('<li class=\"close\"><button aria-label=\"Close Debug\" id= \"close_debug$rand\">close debug</button></li>')
                .appendTo('#debugtabs$rand ul');
 
             $('#close_debug$rand').button({
