@@ -64,7 +64,7 @@ $form = [
             __('By location') => [
                'type' => 'select',
                'name' => 'locations_id',
-               'values' => getOptionForItems(Location::class, ['entities_id' => $_SESSION["glpiactive_entity"]]),
+               'itemtype' => Location::class,
                'col_lg' => 12,
                'col_md' => 12,
             ]
@@ -89,7 +89,7 @@ $form = [
             __('By hardware') => [
                'type' => 'select',
                'name' => 'switch',
-               'values' => getOptionForItems(NetworkEquipment::class),
+               'itemtype' => NetworkEquipment::class,
                'col_lg' => 12,
                'col_md' => 12,
             ]

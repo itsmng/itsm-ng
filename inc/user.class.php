@@ -741,7 +741,7 @@ class User extends CommonDBTM {
          $picture = json_decode(stripslashes($input['picture']), true)[0];
          unset($input['picture']);
       }
-      
+
       //picture manually uploaded by user
       if (isset($input["_blank_picture"]) && $input["_blank_picture"]) {
          unlink($this->fields['picture']);
@@ -2316,7 +2316,7 @@ class User extends CommonDBTM {
                   Location::getTypeName(1) => (!empty($ID)) ? [
                      'type' => 'select',
                      'name' => 'locations_id',
-                     'values' => getOptionForItems('Location'),
+                     'itemtype' => Location::class,
                      'value' => $this->fields['locations_id'],
                      'actions' => getItemActionButtons(['info', 'add'], 'Location'),
                   ] : [],
@@ -2556,13 +2556,13 @@ class User extends CommonDBTM {
                "<input type='email' class='form-control' name='_useremails[{$email['id']}]' value='".$email['email']."'>",
             ];
          }
-   
+
          $tz_warning = '';
          $tz_available = $DB->areTimezonesAvailable($tz_warning);
          if ($tz_available) {
             $timezones = $DB->getTimezones();
          }
-   
+
 
          // Display the result
          $form = [
@@ -2651,7 +2651,7 @@ class User extends CommonDBTM {
                      __('Location') => [
                         'name' => 'locations_id',
                         'type' => 'select',
-                        'values' => getOptionForItems("Location"),
+                        'itemtype' => Location::class,
                         'value' => $this->fields['locations_id'] ?? '',
                         'actions' => getItemActionButtons(['info', 'add'], "Location"),
                      ],

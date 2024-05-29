@@ -287,7 +287,7 @@ class Change_Problem extends CommonDBRelation{
                      __('Problem') => [
                         'type' => 'select',
                         'name' => 'problems_id',
-                        'values' => getOptionForItems(Problem::class),
+                        'itemtype' => Problem::class,
                         'col_lg' => 12,
                         'col_md' => 12,
                         'actions' => getItemActionButtons(['info'], Problem::class),
@@ -329,7 +329,7 @@ class Change_Problem extends CommonDBRelation{
          $newValue = [];
 
          $newValue[] = sprintf(__('%1$s: %2$s'), __('ID'), $data["id"])."&nbsp;".CommonITILObject::getStatusIcon($data["status"]);
-         
+
          if ($data['status'] == CommonITILObject::CLOSED) {
             $newValue[] = sprintf(__('Closed on %s'),'<br>').Html::convDateTime($data['closedate']);
          } else if ($data['status'] == CommonITILObject::SOLVED) {

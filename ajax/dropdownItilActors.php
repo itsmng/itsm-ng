@@ -59,7 +59,7 @@ if (isset($_POST["type"])
                   $right = 'id';
                }
             }
-            
+
             $forbiddenActors = [];
             if (isset($_POST['actorTypeId'])) {
                $forbiddenActors = $ticket->getUsers($_POST['actorTypeId']);
@@ -95,7 +95,7 @@ if (isset($_POST["type"])
                });
             }
             $forbiddenActors = array_column($forbiddenActors, 'groups_id');
-            $options = getOptionForItems('Group');
+            $options = getItemByEntity(Group::class, Session::getActiveEntity());
             $options = array_diff_key($options, array_combine($forbiddenActors, $forbiddenActors));
             echo json_encode($options);
             break;
@@ -110,7 +110,7 @@ if (isset($_POST["type"])
             $forbiddenActors = array_filter($forbiddenActors, function($actor) {
                return isset($actor['suppliers_id']);
             });
-            $options = getOptionForItems('Supplier');
+            $options = getItemByEntity('Supplier', Session::getActiveEntity());
             $forbiddenActors = array_column($forbiddenActors, 'suppliers_id');
             $options = array_diff_key($options, array_combine($forbiddenActors, $forbiddenActors));
             echo json_encode($options);

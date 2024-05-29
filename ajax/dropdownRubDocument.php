@@ -62,10 +62,8 @@ if (isset($_POST["rubdoc"])) {
    if (!isset($_POST['entity']) || $_POST['entity'] === '') {
       $_POST['entity'] = $_SESSION['glpiactive_entity'];
    }
-   $values = getOptionForItems(Document::class, [
-      'entities_id' => intval($_POST['entity']),
-      'glpi_documents.documentcategories_id' => (int)$_POST["rubdoc"]
-   ]);
+   $values = getItemByEntity(Document::class, intval($_POST['entity']),
+      ['glpi_documents.documentcategories_id' => (int)$_POST["rubdoc"]]);
    foreach ($used as $id) {
       unset($values[$id]);
    }

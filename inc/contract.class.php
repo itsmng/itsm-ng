@@ -229,8 +229,8 @@ class Contract extends CommonDBTM {
                   __('Status') => [
                      'type' => 'select',
                      'name' => 'states_id',
-                     'values' => getOptionForItems('State',
-                     ['is_visible_contract' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => State::class,
+                     'conditions' => ['is_visible_contract' => 1],
                      'value' => $this->fields['states_id'],
                   ],
                   __('Start date') => [

@@ -81,7 +81,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation {
    function showInstantiationForm(NetworkPort $netport, $options, $recursiveItems) {
       global $CFG_GLPI;
 
-      $returnValue = [ 
+      $returnValue = [
             $this->getTypeName() => [
                'visible' => true,
                'inputs' => [],
@@ -99,7 +99,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation {
             DeviceNetworkCard::getTypeName(1) => !$options['several'] ? [
                'type' => 'select',
                'name' => 'items_devicenetworkcards_id',
-               'values' => getOptionForItems(DeviceNetworkCard::class, [], true, true),
+               'itemtype' => DeviceNetworkCard::class,
                'value' => $this->fields['items_devicenetworkcards_id'],
                'actions' => getItemActionButtons(['info', 'add'], DeviceNetworkCard::class),
             ] : [],
@@ -129,7 +129,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation {
             'type' => 'select',
             'name' => 'speed',
             'values' => array_merge(self::getPortSpeed(),
-               (!isset($standard_speeds[$this->fields['speed']]) && !empty($this->fields['speed'])) ? 
+               (!isset($standard_speeds[$this->fields['speed']]) && !empty($this->fields['speed'])) ?
                   ['speed_other_value' => self::transformPortSpeed($this->fields['speed'], true)] :
                      ['speed_other_value' => __('Other')]),
             'value' => $this->fields['speed'],
@@ -163,7 +163,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation {
                      },
                      success: function(data) {
                         const jsonData = JSON.parse(data);
-                        
+
                         $('#NetworkPortConnect_items_id').empty();
                         for (const key in jsonData) {
                            $('#NetworkPortConnect_items_id').append('<option value="' + key + '">' + jsonData[key] + '</option>');
@@ -190,7 +190,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation {
                      },
                      success: function(data) {
                         const jsonData = JSON.parse(data);
-                        
+
                         $('#NetworkPortConnect_networkports_id_2').empty();
                         for (const key in jsonData) {
                            $('#NetworkPortConnect_networkports_id_2').append('<option value="' + key + '">' + jsonData[key] + '</option>');

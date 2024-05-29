@@ -120,7 +120,7 @@ class Calendar extends CommonDropdown {
                'input' => [
                   'type'  => 'select',
                   'name'  => 'holidays_id',
-                  'values' => getOptionForItems(Holiday::class),
+                  'itemtype' => Holiday::class,
                   'col_lg' => 12,
                   'col_md' => 12,
                   'actions' => getItemActionButtons(['info', 'add'], Holiday::class)

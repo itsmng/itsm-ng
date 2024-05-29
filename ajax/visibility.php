@@ -48,7 +48,7 @@ switch ($_POST['type']) {
       echo json_encode(getOptionsForUsers($_POST['right']));
       break;
    case 'Group' :
-      echo json_encode(getOptionForItems(Group::class));
+      echo json_encode(getItemByEntity(Group::class, Session::getActiveEntity()));
       break;
    case 'Profile' :
       global $DB;

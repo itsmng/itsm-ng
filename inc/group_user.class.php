@@ -182,9 +182,9 @@ class Group_User extends CommonDBRelation{
          $groups[] = $data;
       }
 
-      $options = getOptionForItems('Group', [ 'is_usergroup' => 1, ]
+      $options = getItemByEntity('Group', Session::getActiveEntity(), [ 'is_usergroup' => 1, ]
          + getEntitiesRestrictCriteria(Group::getTable(), '', '', true));
-      
+
       foreach ($used as $id) {
          unset($options[$id]);
       }
