@@ -188,7 +188,8 @@ class Rack extends CommonDBTM
                   __("Status") => [
                      'name' => 'states_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('State', ['is_visible_computer' => 1, 'entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => State::class,
+                     'conditions' => ['is_visible_computer' => 1, 'entities_id' => $this->fields['entities_id']],
                      'value' => $this->fields['states_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "State"),
                   ],
@@ -196,7 +197,7 @@ class Rack extends CommonDBTM
                      'name' => 'locations_id',
                      'id' => 'locations_id_dropdown',
                      'type' => 'select',
-                     'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => Location::class,
                      'value' => $this->fields['locations_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "Location"),
                   ],
@@ -224,7 +225,8 @@ class Rack extends CommonDBTM
                   __("Group in charge of the hardware") => [
                      'name' => 'groups_id_tech',
                      'type' => 'select',
-                     'values' => getOptionForItems('Group', ['entities_id' => $this->fields['entities_id'], 'is_assign' => 1]),
+                     'itemtype' => Group::class,
+                     'conditions' => ['is_assign' => 1],
                      'value' => $this->fields['groups_id_tech'],
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
@@ -249,7 +251,7 @@ class Rack extends CommonDBTM
                      'name' => 'dcrooms_id',
                      'type' => 'select',
                      'id' => 'dcrooms_dropdown_id',
-                     'values' => getOptionForItems('DcRoom', ['entities_id' => $this->fields['entities_id']]),
+                     'itemtype' => DCRoom::class,
                      'value' => $this->fields['dcrooms_id'],
                      'hooks' => [
                         'change' => $loadDcPositionHook . $loadLocationHook,
