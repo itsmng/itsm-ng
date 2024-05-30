@@ -1490,9 +1490,13 @@ class CommonDBTM extends CommonGLPI {
          }
 
          // Try to find an available name
-         do {
-            $copy_name = $this->computeCloneName($current_name, ++$copy_index);
-         } while (countElementsInTable($table, [$name_field => $copy_name]) > 0);
+         if (!$input['is_template'] || countElementsInTable($table, [$name_field => $current_name]) > 0) {
+             do {
+                $copy_name = $this->computeCloneName($current_name, ++$copy_index);
+             } while (countElementsInTable($table, [$name_field => $copy_name]) > 0);
+         } else {
+            $copy_name = $current_name;
+         }
 
          // Update index cache
          $this->last_clone_index = $copy_index;
