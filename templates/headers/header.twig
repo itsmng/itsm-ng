@@ -54,7 +54,7 @@
 						<li id="debug_mode" class="dropdown-item">
 							<a href="{{root_doc}}/ajax/switchdebug.php" class="debug{{is_debug_active ? 'on' : 'off'}}" title="{{'Change mode'|trans}} {{is_debug_active ? 'Debug mode enabled'|trans : 'Debug mode disabled'|trans}}">
 								<i class="fas fa-bug" aria-hidden="true" aria-hidden="true"></i>
-								Debug mode
+								{{'Debug'|trans}}
 							</a>
 						</li>
 						{% endif %}
@@ -69,22 +69,22 @@
 							</a>
 						</li>
 						<li id="menu-help" class="dropdown-item">
-							
+
 							<a href="https://www.itsm-ng.org" title={{'Help'|trans}}>
 								<i class="fas fa-question" aria-hidden="true"></i>
-								Help
+								{{'Help'|trans}}
 							</a>
 						</li>
 						<li id="deconnexion" class="dropdown-item">
-							<a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout'|trans}}>
+							<a href="{{root_doc}}/front/logout.php{{noAUTO ? '?noAUTO=1'}}" title={{'Logout URL'|trans}}>
 								<i class="fas fa-sign-out-alt" aria-hidden="true"></i>
-								Logout
+								{{'Logout URL'|trans}}
 							</a>
 						</li>
 					</ul>
 				</div>
 			</div>
-			
+
 		</header>
 
 		{% if accessibilityMenu %}
@@ -108,4 +108,4 @@
 				</div>
 				<main role='main' id='page'>
 
-					
+
