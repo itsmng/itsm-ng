@@ -25623,5 +25623,8 @@ msgstr "Ar jūs tikrai norite grąžinti šį nerezervuojamą elementą?"
 msgid "Send a test chat"
 msgstr "Siųsti pranešimą"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Į GLPI"

@@ -25009,6 +25009,9 @@ msgstr "Está usted seguro que quiere retornar este elemento no reservable?"
 msgid "Send a test chat"
 msgstr "Fecha enviada"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar GLPI"
 

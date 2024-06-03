@@ -24969,6 +24969,9 @@ msgstr "¿Está seguro de que desea eliminar el tablero %s ?"
 msgid "Send a test chat"
 msgstr "Fecha de envío"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar GLPI"
 

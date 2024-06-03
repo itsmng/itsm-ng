@@ -25026,6 +25026,9 @@ msgstr "¿Está seguro de que desea eliminar el panel %s?"
 msgid "Send a test chat"
 msgstr "Fecha de envío"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"
 

@@ -25014,6 +25014,9 @@ msgstr "Ben je zeker dat je dashboard %s wil verwijderen?"
 msgid "Send a test chat"
 msgstr "Zend datum"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gebruik GLPI"
 

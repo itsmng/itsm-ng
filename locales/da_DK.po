@@ -24894,6 +24894,9 @@ msgstr "Er du sikker på at du ønsker at aflevere dette ikke-reserverbare emne?
 msgid "Send a test chat"
 msgstr "Afsendelsesdato"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Brug GLPI"
 

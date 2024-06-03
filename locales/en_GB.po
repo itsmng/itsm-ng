@@ -25233,3 +25233,6 @@ msgstr "Are you sure you want to add this item to transfer list?"
 #| msgid "Send date"
 msgid "Send a test chat"
 msgstr "Send date"
+
+msgid "Navbar"
+msgstr ""

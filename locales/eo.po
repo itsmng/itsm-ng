@@ -24912,6 +24912,9 @@ msgstr "Вы уверены, что хотите вернуть этот не р
 msgid "Send a test chat"
 msgstr "Дата отправки"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Запустить GLPI"
 
