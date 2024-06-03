@@ -24846,5 +24846,8 @@ msgstr ""
 msgid "Send a test chat"
 msgstr "ಕಳುಹಿಸಿದ ದಿನಾಂಕ"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "ನಿರ್ವಾಹಕ ಖಾತೆಗೆ glpi / glpi"

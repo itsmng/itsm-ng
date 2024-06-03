@@ -25550,6 +25550,9 @@ msgstr ""
 msgid "Send a test chat"
 msgstr "Pošlji obvestilo"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Uporabi GLPI"
 

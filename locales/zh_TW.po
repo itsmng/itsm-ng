@@ -24470,6 +24470,9 @@ msgstr "你確定要返回此非預留項目?"
 msgid "Send a test chat"
 msgstr "送出日期"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用GLPI"
 

@@ -24930,6 +24930,9 @@ msgstr "Tem certeza de que deseja excluir o painel  %s ?"
 msgid "Send a test chat"
 msgstr "Data de envio"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Usar o GLPI"
 

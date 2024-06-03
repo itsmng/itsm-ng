@@ -24958,6 +24958,9 @@ msgstr "Ziur zaude erreserbagarria ez den elementu hau bueltatu nahi duzula?"
 msgid "Send a test chat"
 msgstr "Bidaltze data"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI erabili"
 

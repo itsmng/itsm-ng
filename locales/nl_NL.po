@@ -25013,6 +25013,9 @@ msgstr "Weet je zeker dat je dit niet reserveerbare item wilt retourneren?"
 msgid "Send a test chat"
 msgstr "Zend datum"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gebruik GLPI"
 

@@ -25234,6 +25234,9 @@ msgstr "Sigurno želiš izbrisati preglednu ploču „%s”?"
 msgid "Send a test chat"
 msgstr "Datum slanja"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Koristi GLPI"
 

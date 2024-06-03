@@ -25261,6 +25261,9 @@ msgstr ""
 msgid "Send a test chat"
 msgstr "Datum slanja"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Počni sa koriščenjem GLPI"
 

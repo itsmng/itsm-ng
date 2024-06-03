@@ -25230,6 +25230,9 @@ msgstr "Tiešām vēlies dzēst šo ierakstu no nomājamo saraksta?"
 msgid "Send a test chat"
 msgstr "Sūtīšanas datums"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Pieslēgties GLPI"
 

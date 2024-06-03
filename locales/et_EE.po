@@ -24782,6 +24782,9 @@ msgstr "Oled kindel, et soovid kustutada juhtpaneeli %s ?"
 msgid "Send a test chat"
 msgstr "Saatmise aeg"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Alusta GLPI kasutamist"
 

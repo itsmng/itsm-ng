@@ -24894,6 +24894,9 @@ msgstr "Biztos, hogy törölhető a tétel a kölcsönzésekből ?"
 msgid "Send a test chat"
 msgstr "Küldés dátuma"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI használata"
 

@@ -24857,5 +24857,8 @@ msgstr ""
 msgid "Send a test chat"
 msgstr "فرستادن یک اخطار"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "استفاده از GLPI"

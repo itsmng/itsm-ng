@@ -25021,6 +25021,9 @@ msgstr "Wollen Sie das Dashboard %s wirklich löschen?"
 msgid "Send a test chat"
 msgstr "Absendedatum"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG benutzen"
 
