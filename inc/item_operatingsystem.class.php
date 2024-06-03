@@ -335,7 +335,7 @@ class Item_OperatingSystem extends CommonDBRelation {
                   __("Name") => [
                      'type' => 'select',
                      'name' => 'operatingsystems_id',
-                     'itemtype' => OperatingSystem::class,
+                     'values' => getOptionForItems(OperatingSystem::class),
                      'value' => $this->fields['operatingsystems_id'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], OperatingSystem::class)
                   ],
