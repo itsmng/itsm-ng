@@ -76,32 +76,6 @@ function makeCount() {
     `);
 }
 
-function makeChart(type, data, params) {
-  const title = $("#title-widget-modal").val();
-  $("#preview-graph-widget-modal").html(`
-        <div class="fw-bold fs-6">${title}</div>
-        <div class="ct-chart ct-golden-section w-100" style="max-height: 20rem" id="current-previewed-chart"></div>
-    `);
-  switch (type) {
-    case "bar":
-      params.horizontalBars = $("#direction-selection-widget-modal-select").val() == "horizontal";
-      new Chartist.BarChart("#current-previewed-chart", data, params);
-      break;
-    case "line":
-      new Chartist.LineChart("#current-previewed-chart", data, params);
-      break;
-    case "pie":
-      data.series = data.series[0];
-      params.donut = $("#pie-format-selection-widget-modal-select").val() == "donut" || $("#pie-format-selection-widget-modal-select").val() == "half";
-      if ($("#pie-format-selection-widget-modal-select").val() == "half") {
-        params.startAngle = 270;
-        params.total = data.series.reduce((a, b) => a + b, 0) * 2;
-      }
-      new Chartist.PieChart("#current-previewed-chart", data, params);
-      break;
-  }
-}
-
 function updatePreview() {
   const labels = dataPreview.map((row) => {
     return row[$("#ItemTypeDropdownForDashboard").val() + "_" + $("#parameter-selection-widget-modal-select").val()][0].name;

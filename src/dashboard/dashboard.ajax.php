@@ -70,6 +70,6 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['dataFilters'])) {
    exit;
 } else if (($_REQUEST['action'] == 'getSearch')  && isset($_REQUEST['itemtype'])) {
    Session::checkRight("dashboard", READ);
-   Search::showGenericSearch($_REQUEST['itemtype'], ['hide' => false]);
+   Search::showGenericSearch($_REQUEST['itemtype'], ['hide' => false, 'showbookmark' => false]);
    exit;
 }

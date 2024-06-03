@@ -1,9 +1,4 @@
-{% if widget.type == 'count' %}
-    {{ _self.number(widget.title, widget.value, widget.options.icon, widget.color) }}
-{% else %}
-    {{ _self.chart(widget.type, widget.title, widget.labels, widget.series, widget.options, widget.color, root_doc) }}
-{% endif %}
-
+{{ _self.number(widget.title, widget.value, widget.options.icon, widget.color) }}
 {% macro number(title = '', value = 0, icon = '', color = "black") %}
 	<div class="d-flex justify-content-center align-items-center">
 		<i class="{{icon}} fs-1 text-{{color}}" aria-hidden="true"></i>
@@ -12,36 +7,4 @@
 			<div class="fs-3 text-${color}">{{value}}</div>
 		</div>
 	</div>
-{% endmacro %}
-
-{% macro chart(type = 'Line', title = '', labels = [], series = [], options = [], color = "black", root_doc) %}
-	{% set rand = random() %}
-	<div class="fw-bold fs-6 {{color ? "text-" ~ color : ''}}">{{title}}</div>
-	<div class="ct-chart ct-golden-section w-100" style="max-height: 20rem" id="widgetFor{{title|slug}}_{{rand}}"></div>
-	<link rel="stylesheet" href="{{root_doc}}/node_modules/chartist/dist/index.css">
-	<script>
-	$(document).ready(function() {
-		const options = {
-			{% if options.pieformat == 'donut' or options.pieformat == 'half' %}
-				donut: true,
-				{% if options.pieformat == 'half' %}
-					startAngle: 270,
-					total: {{series | json_encode | raw}}.reduce((a, b) => a + b, 0) * 2,
-				{% endif %}
-			{% elseif options.direction == 'horizontal' %}
-				horizontalBars: true,
-			{% endif %}
-		}
-		var chart = new Chartist.{{type|capitalize ~ 'Chart'}}("#widgetFor{{title|slug}}_{{rand}}",
-			{
-				labels: {{labels | json_encode | raw}},
-				series: {{series | json_encode | raw}},
-			},
-			options
-		);
-		setTimeout(function() {
-			chart.update();
-		}, 500);
-	});
-	</script>
 {% endmacro %}
