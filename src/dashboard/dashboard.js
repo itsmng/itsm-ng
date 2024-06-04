@@ -1,4 +1,4 @@
-var dataPreview = [];
+var countPreview = 0;
 var filters = {};
 
 function fetchPreview() {
@@ -34,24 +34,10 @@ function fetchPreview() {
       action: "preview",
       dataFilters: jsonData,
     },
-    success: function (data) {
-      const dataToPreview = JSON.parse(data);
-      const cols = dataToPreview.data.cols;
-
-      const orderBySelect = document.getElementById("parameter-selection-widget-modal-select");
-      orderBySelect.innerHTML = "";
-      for (const col of cols) {
-        const option = document.createElement("option");
-        option.value = col.id;
-        var name = col.name;
-        if (col.groupname) {
-          name += " (" + col.groupname.name + ")";
-        }
-        option.innerHTML = name;
-        orderBySelect.appendChild(option);
-      }
-      dataPreview = dataToPreview.data.rows;
+    success: function (count) {
       filters = formContent;
+      delete filters._glpi_csrf_token;
+      countPreview = count;
       updatePreview();
     },
     error: function (data) {
@@ -63,7 +49,7 @@ function fetchPreview() {
 function makeCount() {
   const icon = $("#icon-widget-modal").val();
   const title = $("#title-widget-modal").val();
-  const value = dataPreview.length;
+  const value = countPreview;
 
   $("#preview-graph-widget-modal").html(`
         <div class="d-flex justify-content-center align-items-center">
@@ -77,35 +63,7 @@ function makeCount() {
 }
 
 function updatePreview() {
-  const labels = dataPreview.map((row) => {
-    return row[$("#ItemTypeDropdownForDashboard").val() + "_" + $("#parameter-selection-widget-modal-select").val()][0].name;
-  });
-  const series = {};
-  for (const label of labels) {
-    if (series[label]) {
-      series[label]++;
-    } else {
-      series[label] = 1;
-    }
-  }
-  const uniqueLabels = [...new Set(labels)];
-  const seriesCounts = Object.values(series);
-
-  const format = $('input[name="format"]:checked').val();
-  const data = {
-    labels: uniqueLabels,
-    series: [seriesCounts],
-  };
-  const params = {
-    axisY: {
-      onlyInteger: true,
-    },
-  };
-  if (format == "count") {
     makeCount();
-  } else {
-    makeChart(format, data, params);
-  }
 }
 
 function openWidgetModal(coords) {
@@ -130,7 +88,7 @@ function removeWidget(x, y) {
       action: "delete",
       coords: JSON.stringify([x, y]),
     },
-    success: function (data) {
+    success: function () {
       location.reload();
     },
     error: function (data) {
@@ -142,17 +100,11 @@ function removeWidget(x, y) {
 function addWidget() {
   const coords = JSON.parse($('#widgetModal input[name="coords"]').val());
   const title = $("#title-widget-modal").val();
-  const format = $('input[name="format"]:checked').val();
+  const icon = $("#icon-widget-modal").val();
+  const filter = JSON.stringify(filters);
 
-  const options = {
-    icon: $("#icon-widget-modal").val(),
-    direction: $("#direction-selection-widget-modal-select").val(),
-    pieFormat: $("#pie-format-selection-widget-modal-select").val(),
-  };
+  const widget = { coords, title, icon, filter };
 
-  const widget = { format, coords, title, filters, options };
-
-  widget.options.comparison = $("#parameter-selection-widget-modal-select").val();
   $.ajax({
     url: "./dashboard.ajax.php",
     type: "POST",

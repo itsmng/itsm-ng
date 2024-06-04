@@ -250,35 +250,7 @@ class Dashboard extends \CommonDBTM
       foreach ($content as $rowKey => $row) {
          foreach ($row as $cellKey => $widget) {
             $res = Search::getDatas($widget['filters']['itemtype'], $widget['filters']);
-            if ($widget['type'] == 'count') {
-               $content[$rowKey][$cellKey]['value'] = $res['data']['totalcount'];
-               continue;
-            }
-            $labels = array_map(function($row) use ($widget) {
-               $name = $widget['filters']['itemtype'] . '_' . $widget['options']['comparison'];
-               return $row[$name][0]['name'];
-            }, $res['data']['rows']);
-            $series = [];
-            foreach ($labels as $label) {
-               if (isset($series[$label])) {
-                  $series[$label]++;
-               } else {
-                  $series[$label] = 1;
-               }
-            }
-            $uniqueLabels = array_values(array_unique($labels));
-            $seriesCounts = array_values($series);
-            switch ($widget['type']) {
-               case 'pie':
-                  $content[$rowKey][$cellKey]['labels'] = $uniqueLabels;
-                  $content[$rowKey][$cellKey]['series'] = $seriesCounts;
-                  break;
-               case 'bar':
-               case 'line':
-                  $content[$rowKey][$cellKey]['labels'] = $uniqueLabels;
-                  $content[$rowKey][$cellKey]['series'] = [$seriesCounts];
-                  break;
-            }
+            $content[$rowKey][$cellKey]['value'] = $res['data']['totalcount'];
          }
       }
       return $content;
@@ -313,14 +285,13 @@ class Dashboard extends \CommonDBTM
       return $url;
    }
 
-   function addWidget(string $format = 'count', array $coords = [0, 0], string $title = '', array $filters = [], array $options = [])
+   function addWidget(array $coords = [0, 0], string $title = '', array $filters = [], string $icon = '')
    {
       $dashboard = json_decode($this->fields['content'], true) ?? [];
       $widget = [
-         'type' => $format,
          'title' => $title,
          'filters' => $filters,
-         'options' => $options,
+         'icon' => $icon,
       ];
 
       $this->placeWidgetAtCoord($dashboard, $widget, $coords);
