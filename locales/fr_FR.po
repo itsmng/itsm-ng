@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2024-06-05 08:03+0000\n"
+"PO-Revision-Date: 2024-06-05 08:13+0000\n"
 "Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "fr/>\n"
@@ -19781,6 +19781,8 @@ msgstr "Migration des clés primaires/étrangères vers des entiers non signés"
 #, php-format
 msgid "Found %s primary/foreign key columns(s) using signed integers."
 msgstr ""
+"Nous avons trouvé %s colonne(s) de clé primaire/étrangère utilisant des "
+"entiers signés."
 
 #: inc/console/migration/unsignedkeyscommand.class.php:76
 #: inc/console/migration/timestampscommand.class.php:98
@@ -19803,6 +19805,8 @@ msgstr "Migration interrompue."
 msgid ""
 "Migration of column \"%s.%s\" cannot be done as it contains negative values."
 msgstr ""
+"La migration de la colonne « %s.%s » ne peut être effectuée, car elle "
+"contient des valeurs négatives."
 
 #: inc/console/migration/unsignedkeyscommand.class.php:135
 #, php-format
@@ -19814,7 +19818,7 @@ msgstr ""
 #: inc/console/migration/unsignedkeyscommand.class.php:153
 #, php-format
 msgid "Migrating column \"%s.%s\"..."
-msgstr ""
+msgstr "Migration de la colonne « %s.%s »..."
 
 #: inc/console/migration/unsignedkeyscommand.class.php:172
 #, php-format
@@ -19823,7 +19827,7 @@ msgstr ""
 
 #: inc/console/migration/unsignedkeyscommand.class.php:192
 msgid "Errors occured during migration."
-msgstr ""
+msgstr "Des erreurs se sont produites pendant la migration."
 
 #: inc/console/migration/unsignedkeyscommand.class.php:198
 #: inc/console/migration/buildmissingtimestampscommand.class.php:125
@@ -19854,7 +19858,7 @@ msgstr "Mise à jour de `%s`.`%s` échouée avec le message \"(%s) %s\"."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
 msgid "Migrate Racks plugin data into ITSM-ng core tables"
-msgstr ""
+msgstr "Migrer les données du plugin Racks dans les tables du cœur d'ITSM-ng"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:168
 msgid "Ignore \"PluginRacksOther\" models and elements"
@@ -19891,6 +19895,8 @@ msgid ""
 "You are about to launch migration of Racks plugin data into ITSM-ng core "
 "tables."
 msgstr ""
+"Vous êtes sur le point de lancer la migration des données du plugin Racks "
+"vers le cœur d'ITSM-ng."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:217
 #: inc/console/migration/appliancesplugintocorecommand.class.php:162
@@ -19916,6 +19922,8 @@ msgid ""
 "Racks plugin is not part of ITSM-ng plugin list. It has never been installed "
 "or has been cleaned."
 msgstr ""
+"Le plugin Racks ne fait pas partie de la liste des plugins ITSM-ng. Il n'a "
+"jamais été installé ou a été nettoyé."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:281
 #: inc/console/migration/racksplugintocorecommand.class.php:296
@@ -19980,7 +19988,7 @@ msgstr "Importation des modèles autres ..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
 msgid "Other items do not exist in ITSM-ng core."
-msgstr ""
+msgstr "D'autres éléments n'existent pas dans le cœur ITSM-ng."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
 #, php-format
@@ -20184,7 +20192,7 @@ msgstr "Mise à jour de `%s` échouée avec le message \"(%s) %s\"."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:145
 msgid "Migrate Appliances plugin data into ITSM-ng core tables"
-msgstr ""
+msgstr "Migrer les données du plugin Appliances dans le cœur d'ITSM-ng"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:160
 msgid ""
@@ -22159,15 +22167,15 @@ msgstr "Approuver la solution"
 
 #: inc/itilfollowup.class.php:736 inc/itilfollowup.class.php:738
 msgid "Approbation de la solution"
-msgstr ""
+msgstr "Approbation de la solution"
 
 #: inc/itilfollowup.class.php:739 inc/itilfollowup.class.php:741
 msgid "itemtype"
-msgstr ""
+msgstr "itemtype"
 
 #: inc/itilfollowup.class.php:744 inc/itilfollowup.class.php:746
 msgid "items_id"
-msgstr ""
+msgstr "items_id"
 
 #: inc/itilfollowup.class.php:749 inc/itilfollowup.class.php:751
 msgid "requesttypes_id"
@@ -23699,44 +23707,30 @@ msgid "CSRF token is invalid"
 msgstr "Le CSRF est invalide"
 
 #: inc/config.class.php:1252
-#, fuzzy
-#| msgid "Accessibility"
 msgid "Acessibility menu"
-msgstr "Accessibilité"
+msgstr "Menu d'Accessibilité"
 
 #: templates/install/requirements.twig:4
-#, fuzzy
-#| msgid ""
-#| "Checking of the compatibility of your environment with the execution of "
-#| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
 msgstr ""
 "Vérification de la compatibilité de votre environnement avec l'exécution de "
 "ITSM-NG"
 
 #: templates/install/databases.twig:4
-#, fuzzy
-#| msgid "Database connection setup"
 msgid "Testing database connection"
-msgstr "Configuration de la connexion à la base de données"
+msgstr "Tester la connexion à la base de données"
 
 #: inc/auth.class.php:1631
-#, fuzzy
-#| msgid "Command used"
 msgid "Can use CAS"
-msgstr "Commande utilisée"
+msgstr "Peut utiliser CAS"
 
 #: inc/auth.class.php:1886
-#, fuzzy
-#| msgid "Logout"
 msgid "Logout URL"
-msgstr "Déconnexion"
+msgstr "URL de déconnexion"
 
 #: inc/change.class.php:1150
-#, fuzzy
-#| msgid "Plans"
 msgid "Plan"
-msgstr "Plans"
+msgstr "Plan"
 
 #: inc/notification.class.php:252
 msgid "If not active, the notification will not be sent"
@@ -23751,76 +23745,51 @@ msgid "Type of the item to which the notification is attached"
 msgstr ""
 
 #: inc/notification.class.php:275
-#, fuzzy
-#| msgid "Send a notification"
 msgid "Event that triggers the notification"
-msgstr "Envoyer une notification"
+msgstr "Événement qui déclenche la notification"
 
 #: inc/problem_ticket.class.php:440 inc/change_ticket.class.php:439
-#, fuzzy
-#| msgid "Entity"
-#| msgid_plural "Entities"
 msgid "Entities"
 msgstr "Entité"
 
 #: inc/commonitilobject.class.php:3208
-#, fuzzy
-#| msgid "Action type"
 msgid "Actor type"
-msgstr "Type d'action"
+msgstr "Type d'acteur"
 
 #: inc/config.class.php:1029
-#, fuzzy
-#| msgid "Limit of the schedules for planning"
 msgid "Limit of the schedules for planning : From"
-msgstr "Limite des horaires pour le planning"
+msgstr "Limite des horaires pour la planification : A partir de"
 
 #: inc/config.class.php:1035
-#, fuzzy
-#| msgid "Top"
 msgid "To"
-msgstr "En haut"
+msgstr "Pour"
 
 #: inc/config.class.php:1452 inc/config.class.php:1459
 #: inc/config.class.php:1466 inc/config.class.php:1473
 #: inc/config.class.php:1480 inc/config.class.php:1487
-#, fuzzy
-#| msgid "Priority"
 msgid "Priority color"
-msgstr "Priorité"
+msgstr "Couleur de priorité"
 
 #: inc/commonitilvalidation.class.php:744
-#, fuzzy
-#| msgctxt "button"
-#| msgid "Update"
 msgctxt "button"
 msgid "update"
-msgstr "Modifier"
+msgstr "modifier"
 
 #: inc/itil_project.class.php:517
-#, fuzzy
-#| msgid "Manager group"
 msgid "Manager Group"
 msgstr "Groupe superviseur"
 
 #: inc/includes.php:156
-#, fuzzy
-#| msgid "CSRF token is invalid"
 msgid "CSRF token is invalid while loading: "
-msgstr "Le CSRF est invalide"
+msgstr "Le CSRF est invalide. "
 
 #: inc/cartridge.class.php:78
-#, fuzzy
-#| msgid "images"
 msgid "Pages"
-msgstr "images"
+msgstr "Pages"
 
 #: inc/item_devices.class.php:706
-#, fuzzy
-#| msgctxt "quantity"
-#| msgid "Number of documents"
 msgid "Number of components"
-msgstr "Nombre de documents"
+msgstr "Nombre de composants"
 
 #: inc/entity.class.php:1849 inc/entity.class.php:1872
 #: inc/entity.class.php:1889 inc/entity.class.php:1906
@@ -23829,24 +23798,17 @@ msgstr "Nombre de documents"
 #: inc/entity.class.php:2324 inc/entity.class.php:2355
 #: inc/entity.class.php:2376
 msgid "days"
-msgstr ""
+msgstr "jours"
 
 #: inc/entity.class.php:1914
-#, fuzzy
-#| msgid "Alerts on reservations"
 msgid "Alarms on reservations"
 msgstr "Alertes sur les réservations"
 
 #: inc/entity.class.php:1918
-#, fuzzy
-#| msgid "%d hour"
-#| msgid_plural "%d hours"
 msgid "hours"
-msgstr "%d heure"
+msgstr "heures"
 
 #: inc/entity.class.php:1926
-#, fuzzy
-#| msgid "Alerts on tickets which are not solved since"
 msgid "Alarms on tickets which are not solved since"
 msgstr "Alertes sur les tickets non résolu depuis"
 
@@ -23858,23 +23820,17 @@ msgstr ""
 
 #: src/MailServer.php:346
 msgid "Protocol"
-msgstr ""
+msgstr "Protocole"
 
 #: src/MailServer.php:364
-#, fuzzy
-#| msgid "Certificat"
 msgid "Verify Certificat"
-msgstr "Certificat"
+msgstr "Vérifier le certificat"
 
 #: src/MailServer.php:370
-#, fuzzy
-#| msgid "NORSH"
 msgid "RSH"
-msgstr "NORSH"
+msgstr "RSH"
 
 #: src/MailServer.php:376
-#, fuzzy
-#| msgid "Security"
 msgid "Secure"
 msgstr "Sécurité"
 
@@ -23895,10 +23851,8 @@ msgid "Collect only unread mail"
 msgstr "Collecter uniquement les emails non lus"
 
 #: src/dashboard/dashboard.form.php:50
-#, fuzzy
-#| msgid "Update dashboard"
 msgid "Could not create dashboard"
-msgstr "Mettre à jour le tableau de bord"
+msgstr "Impossible de créer un tableau de bord"
 
 msgid "Favorite"
 msgstr "Favoris"
