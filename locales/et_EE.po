@@ -24785,6 +24785,11 @@ msgstr "Saatmise aeg"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Välju"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Alusta GLPI kasutamist"
 

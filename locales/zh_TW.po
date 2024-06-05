@@ -24473,6 +24473,11 @@ msgstr "送出日期"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "登出"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用GLPI"
 

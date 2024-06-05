@@ -25237,6 +25237,11 @@ msgstr "Datum slanja"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Odjava"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Koristi GLPI"
 

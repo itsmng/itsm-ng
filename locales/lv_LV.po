@@ -25233,6 +25233,11 @@ msgstr "Sūtīšanas datums"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Beigt darbu"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Pieslēgties GLPI"
 

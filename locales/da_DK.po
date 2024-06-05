@@ -24897,6 +24897,11 @@ msgstr "Afsendelsesdato"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Log af"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Brug GLPI"
 

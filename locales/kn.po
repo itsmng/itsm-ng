@@ -24849,5 +24849,10 @@ msgstr "ಕಳುಹಿಸಿದ ದಿನಾಂಕ"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "ಲಾಗ್ ಔಟ್"
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "ನಿರ್ವಾಹಕ ಖಾತೆಗೆ glpi / glpi"

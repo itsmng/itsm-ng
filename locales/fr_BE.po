@@ -9,21 +9,21 @@
 #
 #: inc/rssfeed.class.php:690 inc/authldap.class.php:734
 #: inc/authldap.class.php:742
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2019-04-24 11:58+0000\n"
-"Last-Translator: alexandre delaunay <delaunay.alexandre@gmail.com>, 2021\n"
-"Language-Team: French (Belgium) (https://www.transifex.com/glpi/teams/1637/"
-"fr_BE/)\n"
+"PO-Revision-Date: 2024-06-05 07:49+0000\n"
+"Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
+"Language-Team: French (Belgium) <https://hosted.weblate.org/projects/itsm-ng/"
+"itsm-ng/fr_BE/>\n"
 "Language: fr_BE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.6-dev\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -25025,7 +25025,12 @@ msgid "Send a test chat"
 msgstr "Date d'envoi"
 
 msgid "Navbar"
-msgstr ""
+msgstr "Barre de navigation"
+
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Déconnexion"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Utiliser ITSM-NG"

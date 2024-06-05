@@ -24166,3 +24166,6 @@ msgstr ""
 
 msgid "Navbar"
 msgstr ""
+
+msgid "Logout"
+msgstr "Déconnexion"

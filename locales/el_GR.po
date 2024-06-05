@@ -24985,6 +24985,11 @@ msgstr "Στείλε γνωστοποίηση"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Αποσύνδεση"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Χρήση GLPI"
 

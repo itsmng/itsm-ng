@@ -24961,6 +24961,11 @@ msgstr "Bidaltze data"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Saioa itxi"
+
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI erabili"
 

@@ -24518,5 +24518,10 @@ msgstr ""
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Keluar"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gunakan GLPI"
