@@ -396,6 +396,8 @@ class Search {
          $p['start'] = 0;
       }
 
+      $p = self::cleanParams($p);
+
       $data             = [];
       $data['search']   = $p;
       $data['itemtype'] = $itemtype;
@@ -6755,9 +6757,29 @@ JAVASCRIPT;
          }
       }
 
-      return $params;
+      return self::cleanParams($params);
    }
 
+    public static function cleanParams(array $params): array
+    {
+        $int_params = [
+            'sort'
+        ];
+
+        foreach ($params as $key => &$val) {
+            if (in_array($key, $int_params)) {
+                if (is_array($val)) {
+                    foreach ($val as &$subval) {
+                        $subval = (int)$subval;
+                    }
+                } else {
+                    $val = (int)$val;
+                }
+            }
+        }
+
+        return $params;
+    }
 
    /**
     * Clean search options depending of user active profile
