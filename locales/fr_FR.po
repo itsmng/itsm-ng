@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2024-06-05 08:13+0000\n"
+"PO-Revision-Date: 2024-06-05 08:15+0000\n"
 "Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "fr/>\n"
@@ -23852,7 +23852,7 @@ msgstr "Collecter uniquement les emails non lus"
 
 #: src/dashboard/dashboard.form.php:50
 msgid "Could not create dashboard"
-msgstr "Impossible de créer un tableau de bord"
+msgstr "Impossible de créer le tableau de bord"
 
 msgid "Favorite"
 msgstr "Favoris"
