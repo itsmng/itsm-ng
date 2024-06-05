@@ -24988,3 +24988,6 @@ msgstr "Envoyer un message de test"
 
 msgid "Navbar"
 msgstr "Barre de navigation"
+
+msgid "Logout"
+msgstr "Déconnexion"

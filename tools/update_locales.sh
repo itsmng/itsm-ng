@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 
-for lang in `find ../locales -name "*.po" -type f -printf "%f\n"`
-do
+find ../locales -name "*.po" | while read file; do
+  lang=$(basename $file .po)
   echo "Updating $lang";
-  msgattrib --no-fuzzy -o ../locales/$lang ../locales/$lang
-  msgmerge -U --no-fuzzy-matching ../locales/$lang ../locales/glpi.pot
+  msgfmt $file -o ../locales/$lang.mo
 done
-
-rm ../locales/*.po~
