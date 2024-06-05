@@ -25450,3 +25450,8 @@ msgstr ""
 
 msgid "Navbar"
 msgstr ""
+
+#, fuzzy
+#| msgid "Log out fallback URL"
+msgid "Logout"
+msgstr "Спасылка пасля выхаду"

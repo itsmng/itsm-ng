@@ -24774,3 +24774,8 @@ msgstr ""
 
 msgid "Navbar"
 msgstr ""
+
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Logg ut"

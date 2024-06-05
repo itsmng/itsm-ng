@@ -25578,6 +25578,11 @@ msgstr ""
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "התנתק"
+
 #~ msgid "Use GLPI"
 #~ msgstr "השתמש ב-GLPI"
 

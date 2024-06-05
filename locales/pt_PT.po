@@ -24933,6 +24933,11 @@ msgstr "Data de envio"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Sair"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Usar o GLPI"
 

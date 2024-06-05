@@ -24897,6 +24897,11 @@ msgstr "Küldés dátuma"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Kilépés"
+
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI használata"
 

@@ -24860,5 +24860,10 @@ msgstr "فرستادن یک اخطار"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "خروج"
+
 #~ msgid "Use GLPI"
 #~ msgstr "استفاده از GLPI"

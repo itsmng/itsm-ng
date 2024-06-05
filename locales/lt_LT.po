@@ -25626,5 +25626,10 @@ msgstr "Siųsti pranešimą"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Atsijungti"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Į GLPI"

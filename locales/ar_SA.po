@@ -26289,5 +26289,10 @@ msgstr ""
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "تسجيل الخروج"
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "الحساب glpi/glpi للمدراء"

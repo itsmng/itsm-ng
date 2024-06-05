@@ -24909,6 +24909,11 @@ msgstr "Lähetyspäivä"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Kirjaudu ulos"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Käytä GLPI:tä"
 

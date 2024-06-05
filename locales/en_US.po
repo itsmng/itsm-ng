@@ -24827,6 +24827,11 @@ msgstr "Send Date"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Logout"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Use GLPI"
 

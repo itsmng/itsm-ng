@@ -25553,6 +25553,11 @@ msgstr "Pošlji obvestilo"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Odjavi"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Uporabi GLPI"
 

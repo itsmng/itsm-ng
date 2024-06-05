@@ -24788,6 +24788,9 @@ msgstr ""
 msgid "Navbar"
 msgstr ""
 
+msgid "Logout"
+msgstr "Déconnexion"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Nota GLPI"
 

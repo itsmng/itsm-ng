@@ -24876,6 +24876,11 @@ msgstr "Gönderim tarihi"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Oturumu kapat"
+
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI Kullanmaya Geç"
 

@@ -24554,6 +24554,11 @@ msgstr "Ngày gửi"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Đăng xuất"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Dùng GLPI"
 
