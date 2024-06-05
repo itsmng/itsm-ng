@@ -126,18 +126,6 @@ var initRack = function() {
    $('#viewgraph .cell_add, #viewgraph .grid-stack-item').each(function() {
       var tipcontent = $(this).find('.tipcontent');
       if (tipcontent.length) {
-         $(this).qtip({
-            position: {
-               my: 'left center',
-               at: 'right center'
-            },
-            content: {
-               text: tipcontent
-            },
-            style: {
-               classes: 'qtip-shadow qtip-bootstrap rack_tipcontent'
-            }
-         });
       }
    });
 
