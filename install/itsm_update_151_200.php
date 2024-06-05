@@ -51,7 +51,6 @@ function update151to200() : bool {
         'menu_position' => "text default 'menu-left'",
         'menu_small' => "text default 'false'",
         'menu_open' => "longtext default '[]'",
-        'accessibility_menu' => "tinyint(1) default '0'",
     ];
     foreach ($userModifications as $field => $definition) {
         if (!$DB->fieldExists('glpi_users', $field)) {
