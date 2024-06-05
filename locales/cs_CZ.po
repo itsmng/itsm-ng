@@ -25628,6 +25628,11 @@ msgstr "Datum odeslání"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Odhlásit"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Používat GLPI"
 

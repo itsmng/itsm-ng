@@ -25021,6 +25021,11 @@ msgstr "Date d'envoi"
 msgid "Navbar"
 msgstr "Barre de navigation"
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Déconnexion"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utiliser GLPI"
 

@@ -25236,3 +25236,8 @@ msgstr "Send date"
 
 msgid "Navbar"
 msgstr ""
+
+#, fuzzy
+#| msgid "Log out fallback URL"
+msgid "Logout"
+msgstr "Log out fallback URL"

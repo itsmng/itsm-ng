@@ -24923,6 +24923,11 @@ msgstr "Илгээх огноо"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Гарах"
+
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI ашиглах"
 

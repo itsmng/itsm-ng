@@ -24469,6 +24469,11 @@ msgstr "送信日"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "ログアウト"
+
 #~ msgid "Use GLPI"
 #~ msgstr "GLPIを使用"
 

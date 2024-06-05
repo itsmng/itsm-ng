@@ -24383,6 +24383,11 @@ msgstr "发送日期"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "退出"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用GLPI"
 

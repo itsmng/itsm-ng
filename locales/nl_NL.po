@@ -25016,6 +25016,11 @@ msgstr "Zend datum"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Uitloggen"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gebruik GLPI"
 

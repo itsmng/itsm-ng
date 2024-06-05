@@ -24471,6 +24471,11 @@ msgstr "전송 일자"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "로그아웃"
+
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI 사용"
 

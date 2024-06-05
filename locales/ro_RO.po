@@ -25321,6 +25321,11 @@ msgstr "Dată trimitere"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Logout"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Folositi GLPI"
 

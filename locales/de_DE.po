@@ -25024,6 +25024,11 @@ msgstr "Absendedatum"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Abmelden"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG benutzen"
 

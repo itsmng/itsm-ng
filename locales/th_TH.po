@@ -24491,6 +24491,11 @@ msgstr "ส่งการแจ้งเตือน"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "ออกจากระบบ"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Use GLPI"
 

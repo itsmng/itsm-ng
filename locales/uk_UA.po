@@ -25583,6 +25583,11 @@ msgstr "Дата відправки"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Вихід"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Запустити GLPI"
 

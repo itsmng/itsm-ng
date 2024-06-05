@@ -16757,7 +16757,8 @@ msgstr "Une erreur est survenue au chargement des contenus !"
 
 #: inc/ajax.class.php:455
 msgid "Please check ITSM-NG logs or contact your administrator."
-msgstr "Veuillez vérifier les logs d'ITSM-NG ou contacter votre administrateur."
+msgstr ""
+"Veuillez vérifier les logs d'ITSM-NG ou contacter votre administrateur."
 
 #: inc/ajax.class.php:456
 msgid "try to reload"

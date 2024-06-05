@@ -24890,6 +24890,11 @@ msgstr "Sendt dato"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Logg av"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Bruk GLPI"
 

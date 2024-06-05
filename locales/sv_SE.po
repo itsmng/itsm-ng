@@ -24862,6 +24862,11 @@ msgstr "Sändningsdatum"
 msgid "Navbar"
 msgstr ""
 
+#, fuzzy
+#| msgid "Logout"
+msgid "Logout"
+msgstr "Logga ut"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Starta GLPI"
 
