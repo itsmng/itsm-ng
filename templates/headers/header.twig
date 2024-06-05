@@ -12,6 +12,16 @@
 			{% include impersonate_banner.path with impersonate_banner.args%}
 		{% endif %}
 
+		<button class="skip-link sr-only sr-only-focusable">{{'Jump to menu'|trans}}</button>
+		<button class="skip-link sr-only sr-only-focusable" onclick="changeFontSize(1)">{{'Increase Text'|trans}}</button>
+		<button class="skip-link sr-only sr-only-focusable" onclick="changeFontSize(-1)">{{'Decrease Text'|trans}}</button>
+		<button class="skip-link sr-only sr-only-focusable" onclick="toggleClassForBody('accessibility-grayscale')">{{'GrayScale'|trans}}</button>
+		<button class="skip-link sr-only sr-only-focusable" onclick="toggleHighContrast()">{{'High contrast'|trans}}</button>
+		<button class="skip-link sr-only sr-only-focusable" onclick="toggleNegativeHighContrast()">{{'Negative contrast'|trans}}</button>
+		<button class="skip-link sr-only sr-only-focusable" onclick="toggleClassForBody('accessibility-link-underline')">{{'Links underline'|trans}}</button>
+		<button class="skip-link sr-only sr-only-focusable" onclick="toggleClassForBody('accessibility-readable-font')">{{'Readable font'|trans}}</button>
+		<button class="skip-link sr-only sr-only-focusable" onclick="resetAllAccessibilityOptions()">{{'Reset'|trans}}</button>
+		<script src="{{root_doc}}/js/accessibility.js"></script>
 		<header role='banner' id='header_top' class='d-flex justify-content-between align-items-center'>
 			<div class="header_logo m-3" id='c_logo'>
 				<a href="{{root_doc}}/" accesskey='1' title={{"Home"|trans}}>
@@ -107,5 +117,3 @@
 					{% include "headers/utils/actions.twig" with {'links': links, 'root_doc':root_doc} %}
 				</div>
 				<main role='main' id='page'>
-
-
