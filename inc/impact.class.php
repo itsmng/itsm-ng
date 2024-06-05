@@ -1093,7 +1093,7 @@ class Impact extends CommonGLPI {
 
       echo '<h4>' . __('Max depth') . '</h4>';
       echo '<div class="impact-side-settings-item">';
-      echo '<input id="max_depth" type="range" class="impact-range" min="1" max ="10" step="1" value="5"><span id="max_depth_view" class="impact-checkbox-label"></span>';
+      echo '<input id="max_depth" type="range" aria-label="Max Depth" class="impact-range" min="1" max ="10" step="1" value="5"><span id="max_depth_view" class="impact-checkbox-label"></span>';
       echo '</div>';
 
       echo '</div>'; // div class="impact-side-settings">
