@@ -24906,6 +24906,9 @@ msgstr ""
 msgid "Send a test chat"
 msgstr "Lähetyspäivä"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Käytä GLPI:tä"
 

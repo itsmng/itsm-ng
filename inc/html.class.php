@@ -1915,7 +1915,6 @@ JAVASCRIPT;
 
       $user = new User();
       $user->getFromDB(Session::getLoginUserID());
-      $twig_vars['accessibilityMenu'] = $user->fields['accessibility_menu'];
 
       $twig_vars['username'] = getUserName(Session::getLoginUserID());
       $twig_vars['main_menu']['args']['access'] = Session::getCurrentInterface();

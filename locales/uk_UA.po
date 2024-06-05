@@ -25580,6 +25580,9 @@ msgstr "Справді видалити дошку %s?"
 msgid "Send a test chat"
 msgstr "Дата відправки"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Запустити GLPI"
 

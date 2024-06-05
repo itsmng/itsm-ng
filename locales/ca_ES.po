@@ -24931,6 +24931,9 @@ msgstr "Estas segur que vols borrar el panell de control %s ?"
 msgid "Send a test chat"
 msgstr "Data d'enviament"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilitza GLPI"
 

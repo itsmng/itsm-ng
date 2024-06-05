@@ -25024,6 +25024,9 @@ msgstr "Êtes-vous sûr de vouloir rendre cet élément non réservable ?"
 msgid "Send a test chat"
 msgstr "Date d'envoi"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utiliser ITSM-NG"
 

@@ -24920,6 +24920,9 @@ msgstr "Хянах самбар %s-ыг устгахдаа итгэлтэй ба
 msgid "Send a test chat"
 msgstr "Илгээх огноо"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI ашиглах"
 

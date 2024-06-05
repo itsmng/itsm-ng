@@ -25663,6 +25663,9 @@ msgstr "Czy na pewno chcesz usunąć pulpit %s?"
 msgid "Send a test chat"
 msgstr "Data wysłania"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Używaj GLPI"
 

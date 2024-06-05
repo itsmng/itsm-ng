@@ -25625,6 +25625,9 @@ msgstr "Opravdu chcete přehled %s smazat?"
 msgid "Send a test chat"
 msgstr "Datum odeslání"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Používat GLPI"
 

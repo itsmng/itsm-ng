@@ -7144,7 +7144,6 @@ CREATE TABLE `glpi_users` (
   `menu_position` text DEFAULT 'menu-left',
   `menu_small` text DEFAULT 'false',
   `menu_open` longtext DEFAULT '[]',
-  `accessibility_menu` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unicityloginauth` (`name`, `authtype`, `auths_id`),
   KEY `firstname` (`firstname`),

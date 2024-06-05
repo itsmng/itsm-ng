@@ -24466,6 +24466,9 @@ msgstr "本当に %s ダッシュボードを削除しますか?"
 msgid "Send a test chat"
 msgstr "送信日"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "GLPIを使用"
 

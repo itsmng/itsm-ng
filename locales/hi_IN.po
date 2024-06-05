@@ -24857,6 +24857,9 @@ msgstr "क्या आप वाकई इस गैर-आरक्षित 
 msgid "Send a test chat"
 msgstr "प्रेषित तिथि"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "जीएलपीआई का उपयोग करें"
 

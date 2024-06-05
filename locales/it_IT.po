@@ -24945,6 +24945,9 @@ msgstr "Sei sicuro di voler eliminare il cruscotto %s?"
 msgid "Send a test chat"
 msgstr "Data di invio"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Usa GLPI"
 

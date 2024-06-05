@@ -24886,6 +24886,9 @@ msgstr "Seguro que queres eliminar o cadro de control %s?"
 msgid "Send a test chat"
 msgstr "Data de envío"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar GLPI"
 

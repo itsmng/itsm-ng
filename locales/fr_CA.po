@@ -25018,6 +25018,9 @@ msgstr "Êtes vous sûr de vouloir supprimer le tableau de bord %s ?"
 msgid "Send a test chat"
 msgstr "Date d'envoi"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utiliser GLPI"
 
