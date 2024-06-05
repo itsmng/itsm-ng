@@ -24488,6 +24488,9 @@ msgstr "Are you sure you want to return this non-reservable item?"
 msgid "Send a test chat"
 msgstr "ส่งการแจ้งเตือน"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Use GLPI"
 

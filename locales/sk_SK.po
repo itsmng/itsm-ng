@@ -25573,6 +25573,9 @@ msgstr "Naozaj chcete zmazať dashboard %s ?"
 msgid "Send a test chat"
 msgstr "Dátum odoslania"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Spustiť GLPI"
 

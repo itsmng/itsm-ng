@@ -24824,6 +24824,9 @@ msgstr "Are you sure you want to delete the dashboard %s ?"
 msgid "Send a test chat"
 msgstr "Send Date"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Use GLPI"
 

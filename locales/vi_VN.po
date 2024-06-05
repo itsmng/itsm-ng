@@ -24551,6 +24551,9 @@ msgstr "Bạn có chắc chắn muốn chuyển mục này thành không thể �
 msgid "Send a test chat"
 msgstr "Ngày gửi"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Dùng GLPI"
 

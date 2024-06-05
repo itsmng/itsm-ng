@@ -24982,6 +24982,9 @@ msgstr ""
 msgid "Send a test chat"
 msgstr "Στείλε γνωστοποίηση"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Χρήση GLPI"
 

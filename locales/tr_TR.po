@@ -24873,6 +24873,9 @@ msgstr "%s panosunu silmek istediğinize emin misiniz?"
 msgid "Send a test chat"
 msgstr "Gönderim tarihi"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "GLPI Kullanmaya Geç"
 

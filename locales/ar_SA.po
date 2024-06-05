@@ -26286,5 +26286,8 @@ msgstr ""
 msgid "Send a test chat"
 msgstr ""
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "الحساب glpi/glpi للمدراء"

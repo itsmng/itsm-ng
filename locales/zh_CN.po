@@ -24380,6 +24380,9 @@ msgstr "您确定要删除这看板 %s ?"
 msgid "Send a test chat"
 msgstr "发送日期"
 
+msgid "Navbar"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用GLPI"
 
