@@ -40,6 +40,21 @@ function toggleHighContrast() {
    }
 }
 
+const jumpToMenu = () => {
+   jumpToElement('menu-assets');
+};
+
+const jumpToElement = (elementId) => {
+   const element = document.getElementById(elementId);
+   if (element) {
+      element.focus();
+   } else {
+      console.error('Element with ID ' + elementId + ' not found.');
+   }
+};
+document.getElementById('jump_menu').addEventListener('click', jumpToMenu);
+
+
 function toggleNegativeHighContrast() {
    const body = $("body");
    const isHighContrast = body.hasClass("accessibility-negative-high-contrast");
@@ -95,4 +110,5 @@ $(document).ready(function () {
    const menu = $("#accessibility-menu");
    menu.css("right", -menu.outerWidth() + "px");
    placeAccessibilityButton();
-});
+}
+);
