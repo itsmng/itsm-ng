@@ -49,7 +49,7 @@ if ($_POST["idtable"] && class_exists($_POST["idtable"])) {
    $isDevice  = strpos($_POST["idtable"], "Device") === 0;
    $values = getOptionForItems($_POST['idtable'], ($condition ?? []) + (isset($entity_restrict)
       ? ['entities_id' => $_POST['entity_restrict']] : []), true, $isDevice);
-   
+
    if (isset($_POST['used'])) {
       $_POST['used'] = Toolbox::jsonDecode($_POST['used'], true);
    }
@@ -57,8 +57,18 @@ if ($_POST["idtable"] && class_exists($_POST["idtable"])) {
       $used = $_POST['used'][$_POST['idtable']];
       if (isset($used)) {
          foreach($used as $usedId) {
-            if (isset($values[$usedId])) {
-               unset($values[$usedId]);
+            foreach($values as $key => $value) {
+                if (gettype($value) == 'array') {
+                    foreach($value as $subKey => $subValue) {
+                        if ($usedId == $subKey) {
+                            unset($values[$key][$subKey]);
+                        }
+                    }
+                } else {
+                    if ($usedId == $key) {
+                        unset($values[$key]);
+                    }
+                }
             }
          }
       }

@@ -38,7 +38,7 @@ global $CFG_GLPI;
 if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['dataFilters'])) {
    Session::checkRight("dashboard", READ);
    $dataFilters = json_decode(stripslashes($_REQUEST['dataFilters'] ?? '[]'), true);
-   echo json_encode(Search::getDatas($dataFilters['itemtype'], $dataFilters + ['list_limit' => 0]));
+   echo json_encode(Search::getDatas($dataFilters['itemtype'], $dataFilters)['data']['totalcount']);
 } else if (($_REQUEST['action'] == 'delete') && isset($_REQUEST['coords']) && isset($_REQUEST['id'])) {
    Session::checkRight("dashboard", UPDATE);
    $dashboard = new Dashboard();
@@ -51,18 +51,17 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['dataFilters'])) {
    exit;
 } else if (($_REQUEST['action'] == 'add') && isset($_REQUEST['widget']) && isset($_REQUEST['id'])) {
    Session::checkRight("dashboard", UPDATE);
-   
+
    $dashboard = new Dashboard();
    $dashboard->getFromDB($_REQUEST['id']);
    $widget = json_decode(stripslashes($_REQUEST['widget']), true);
    $options = $_REQUEST['options'] ?? [];
 
-   $format = $widget['format'];
    $coords = $widget['coords'];
    $title = $widget['title'];
-   $filters = $widget['filters'];
-   $options = $widget['options'];
-   if ($dashboard->addWidget($format, $coords, $title, $filters, $options)) {
+   $filters = json_decode($widget['filter'], true);
+   $icon = $widget['icon'];
+   if ($dashboard->addWidget($coords, $title, $filters, $icon)) {
       echo json_encode(["status" => "success"]);
    } else {
       echo json_encode(["status" => "error"]);
@@ -70,6 +69,6 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['dataFilters'])) {
    exit;
 } else if (($_REQUEST['action'] == 'getSearch')  && isset($_REQUEST['itemtype'])) {
    Session::checkRight("dashboard", READ);
-   Search::showGenericSearch($_REQUEST['itemtype'], ['hide' => false]);
+   Search::showGenericSearch($_REQUEST['itemtype'], ['hide' => false, 'showbookmark' => false]);
    exit;
 }

@@ -133,53 +133,37 @@ class Item_Rack extends CommonDBRelation {
          echo "<table class='tab_cadre_fixe' aria-label='No Item Found'><tr><th>".__('No item found')."</th></tr>";
          echo "</table>";
       } else {
-         if ($canedit) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-            $massiveactionparams = [
-               'num_displayed'   => min($_SESSION['glpilist_limit'], count($items)),
-               'container'       => 'mass'.__CLASS__.$rand
-            ];
-            Html::showMassiveActions($massiveactionparams);
-         }
+         $massiveActionId = 'mass'.__CLASS__.$rand;
 
-         echo "<table class='tab_cadre_fixehov' aria-label='Item Detail'>";
-         $header = "<tr>";
-         if ($canedit) {
-            $header .= "<th width='10'>";
-            $header .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header .= "</th>";
-         }
-         $header .= "<th>"._n('Item', 'Items', 1)."</th>";
-         $header .= "<th>".__('Position')."</th>";
-         $header .= "<th>".__('Orientation')."</th>";
-         $header .= "</tr>";
-
-         echo $header;
+         $massiveactionparams = [
+            'num_displayed'   => min($_SESSION['glpilist_limit'], count($items)),
+            'container'       => $massiveActionId,
+            'display_arrow'   => false,
+         ];
+         Html::showMassiveActions($massiveactionparams);
+         $fields = [
+           'item' => _n('Item', 'Items', 1),
+           'position' => __('Position'),
+           'orientation' => __('Orientation')
+         ];
+         $values = [];
+         $massiveActionValues = [];
          foreach ($items as $row) {
             $item = new $row['itemtype'];
             $item->getFromDB($row['items_id']);
-            echo "<tr lass='tab_bg_1'>";
-            if ($canedit) {
-               echo "<td>";
-               Html::showMassiveActionCheckBox(__CLASS__, $row["id"]);
-               echo "</td>";
-            }
-            echo "<td>" . $item->getLink() . "</td>";
-            echo "<td>{$row['position']}</td>";
-            $txt_orientation = $row['orientation'] == Rack::FRONT ? __('Front') : __('Rear');
-            echo "<td>$txt_orientation</td>";
-            echo "</tr>";
+            $values[] = [
+                'item' => $item->getLink(),
+                'position' => $row['position'],
+                'orientation' => $row['orientation'] == Rack::FRONT ? __('Front') : __('Rear')
+            ];
+            $massiveActionValues[] = sprintf("item[%s][%s]", $item->getType(), $item->getID());
          }
-         echo $header;
-         echo "</table>";
-
-         if ($canedit && count($items)) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-         }
-         if ($canedit) {
-            Html::closeForm();
-         }
+         renderTwigTemplate('table.twig', [
+           'id' => $massiveActionId,
+           'fields' => $fields,
+           'values' => $values,
+           'massive_action' => $massiveActionValues,
+         ]);
       }
 
       PDU_Rack::showListForRack($rack);
@@ -312,7 +296,7 @@ class Item_Rack extends CommonDBRelation {
          echo "<div class='virtual_pdu_space'></div>";
       }
       echo '<ul class="indexes"></ul>
-            <div class="grid-stack grid-stack-2 grid-rack"
+            <div class="grid-stack grid-rack"
                  id="grid-front"
                  gs-column="2"
                  gs-max-row="'.($rack->fields['number_units'] + 1).'">';
@@ -324,10 +308,7 @@ class Item_Rack extends CommonDBRelation {
       foreach ($data[Rack::FRONT] as $current_item) {
          echo self::getCell($current_item, !$canedit);
       }
-      echo '   <div class="grid-stack-item lock-bottom"
-                    gs-no-resize="true" gs-no-move="true"
-                    gs-h="1" gs-w="2" gs-x="0" gs-y="'.$rack->fields['number_units'].'"></div>
-            </div>
+      echo '</div>
             <ul class="indexes"></ul>';
       // append some spaces on bottom for having symetrical view between front and rear
       for ($i = 0; $i < $nb_bot_pdu; $i++) {
@@ -341,7 +322,7 @@ class Item_Rack extends CommonDBRelation {
       PDU_Rack::showVizForRack($rack, PDU_Rack::SIDE_TOP);
       PDU_Rack::showVizForRack($rack, PDU_Rack::SIDE_LEFT);
       echo '<ul class="indexes"></ul>
-            <div class="grid-stack grid-stack-2 grid-rack"
+            <div class="grid-stack grid-rack"
                  id="grid2-rear"
                  gs-column="2"
                  gs-max-row="'.($rack->fields['number_units'] + 1).'">';
@@ -353,11 +334,7 @@ class Item_Rack extends CommonDBRelation {
       foreach ($data[Rack::REAR] as $current_item) {
          echo self::getCell($current_item, !$canedit);
       }
-      echo '   <div class="grid-stack-item lock-bottom"
-                    gs-no-resize="true" gs-no-move="true"
-                    gs-h="1" gs-w="2" gs-x="0" gs-y="'.$rack->fields['number_units'].'">
-               </div>
-            </div>
+      echo '</div>
             <ul class="indexes"></ul>';
       PDU_Rack::showVizForRack($rack, PDU_Rack::SIDE_RIGHT);
       PDU_Rack::showVizForRack($rack, PDU_Rack::SIDE_BOTTOM);
@@ -376,6 +353,8 @@ class Item_Rack extends CommonDBRelation {
       $rack_add_tip = __s('Insert an item here');
       $ajax_url     = $CFG_GLPI['root_doc']."/ajax/rack.php";
 
+      echo Html::script('js/common.js');
+      echo Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js");
       $js = <<<JAVASCRIPT
       // init variables to pass to js/rack.js
       var grid_link_url      = "{$link->getFormURL()}";
@@ -399,24 +378,24 @@ class Item_Rack extends CommonDBRelation {
                if (dirty) {
                   return;
                }
-               var grid = $(event.target).data('gridstack');
-               var is_rack_rear = $(grid.container).parents('.racks_col').hasClass('rack_rear');
-               $.each(items, function(index, item) {
-                  var is_half_rack = item.el.hasClass('half_rack');
-                  var is_el_rear   = item.el.hasClass('rear');
-                  var new_pos      = grid_rack_units - item.y - item.height + 1;
+               var grid = event.target.gridstack;
+               var is_rack_rear = $(grid.el).parents('.racks_col').hasClass('rack_rear');
+               $.each(grid.getGridItems(), function(index, item) {
+                  item = $(item);
+                  const node = item[0].gridstackNode;
+                  var is_half_rack = item.hasClass('half_rack');
+                  var is_el_rear   = item.hasClass('rear');
+                  var new_pos      = grid_rack_units - node.y - node.h + 1;
                   $.post(grid_item_ajax_url, {
-                     id: item.id,
+                     id: node.id,
                      action: 'move_item',
                      position: new_pos,
-                     hpos: getHpos(item.x, is_half_rack, is_rack_rear),
+                     hpos: getHpos(node.x, is_half_rack, is_rack_rear),
                   }, function(answer) {
-                     var answer = jQuery.parseJSON(answer);
-
                      // revert to old position
                      if (!answer.status) {
                         dirty = true;
-                        grid.move(item.el, x_before_drag, y_before_drag);
+                        grid.update(item.el, {x: x_before_drag, y: y_before_drag});
                         dirty = false;
                         displayAjaxMessageAfterRedirect();
                      } else {
@@ -424,23 +403,24 @@ class Item_Rack extends CommonDBRelation {
                         var other_side_cls = $(item.el).hasClass('item_rear')
                            ? "item_front"
                            : "item_rear";
-                        var other_side_el = $('.grid-stack-item.'+other_side_cls+'[gs-id='+item.id+']');
+                        var other_side_el = $('.grid-stack-item.'+other_side_cls+'[gs-id='+node.id+']');
 
                         if (other_side_el.length) {
-                           var other_side_grid = $(other_side_el).parent().data('gridstack');
-                           new_x = item.x;
-                           new_y = item.y;
-                           if (item.width == 1) {
-                              new_x = (item.x == 0 ? 1 : 0);
+                           var other_side_grid = $(other_side_el).parent().get(0).gridstack;
+                           new_x = node.x;
+                           new_y = node.y;
+                           if (node.w == 1) {
+                              new_x = (node.x == 0 ? 1 : 0);
                            }
                            dirty = true;
-                           other_side_grid.move(other_side_el, new_x, new_y);
+                           other_side_grid.update(other_side_el, {x: new_x, y: new_y});
                            dirty = false;
+                           document.location.reload();
                         }
                      }
                   }).fail(function() {
                      dirty = true;
-                     grid.move(item.el, x_before_drag, y_before_drag);
+                     grid.update(item.el, {x: x_before_drag, y: y_before_drag});
                      dirty = false;
                      displayAjaxMessageAfterRedirect();
                   });
@@ -547,48 +527,14 @@ JAVASCRIPT;
    function showForm($ID, $options = []) {
       global $DB, $CFG_GLPI;
 
-      $colspan = 4;
-
-      echo "<div class='center'>";
-
-      $this->initForm($ID, $options);
-      $this->showFormHeader();
-
       $rack = new Rack();
-      $rack->getFromDB($this->fields['racks_id']);
+      $rack->getFromDB($options['racks_id'] ?? $this->fields['racks_id']);
 
-      $rand = mt_rand();
+     $types = array_combine($CFG_GLPI['rackable_types'], $CFG_GLPI['rackable_types']);
+     foreach ($types as $type => &$text) {
+        $text = $type::getTypeName(1);
+     }
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_itemtype$rand'>".__('Item type')."</label></td>";
-      echo "<td>";
-
-      if (isset($options['_onlypdu']) && $options['_onlypdu']) {
-         $this->fields['itemtype'] = 'PDU';
-         echo Html::hidden(
-            'itemtype',
-            [
-               'id'    => "itemtype_$rand",
-               'value' => 'PDU'
-            ]
-         );
-         echo PDU::getTypeName(1);
-      } else {
-         $types = array_combine($CFG_GLPI['rackable_types'], $CFG_GLPI['rackable_types']);
-         foreach ($types as $type => &$text) {
-            $text = $type::getTypeName(1);
-         }
-         Dropdown::showFromArray(
-            'itemtype',
-            $types, [
-               'display_emptychoice'   => true,
-               'value'                 => $this->fields["itemtype"],
-               'rand'                  => $rand
-            ]
-         );
-      }
-
-      //get all used items
       $used = $used_reserved = [];
       $iterator = $DB->request([
          'FROM' => $this->getTable()
@@ -618,148 +564,157 @@ JAVASCRIPT;
       while ($row = $iterator->next()) {
          $used[$row['itemtype']][] = $row['items_id'];
       }
-      echo Html::hidden(
-         'used',
-         [
-            'id'    => "used_$rand",
-            'value' => json_encode($used)
-         ]
-      );
 
-      //TODO: update possible positions according to selected item number of units
-      //TODO: update positions on rack selection
-      //TODO: update hpos from item model info is_half_rack
-      //TODO: update orientation according to item model depth
-
-      echo "</td>";
-      echo "<td><label for='dropdown_items_id$rand'>"._n('Item', 'Items', 1)."</label></td>";
-      echo "<td id='items_id'>";
-      if (isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])) {
-         $itemtype = $this->fields['itemtype'];
-         $itemtype = new $itemtype();
-         $itemtype::dropdown([
-            'name'   => "items_id",
-            'value'  => $this->fields['items_id'],
-            'rand'   => $rand
-         ]);
-      } else {
-         Dropdown::showFromArray(
-            'items_id',
-            [], [
-               'display_emptychoice'   => true,
-               'rand'                  => $rand
+      $form = [
+        'action' => $this->getFormURL(),
+        'buttons' => [
+           ($this->canUpdateItem() ? [
+              'type' => 'submit',
+              'name' => $this->isNewID($ID) ? 'add' : 'update',
+              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+              'class' => 'btn btn-secondary'
+           ] : []),
+           (!$this->isNewID($ID) && self::canPurge() ? [
+              'type' => 'submit',
+              'name' => 'purge',
+              'value' => __('Delete permanently'),
+              'class' => 'btn btn-danger'
+           ] : []),
+        ],
+       'content' => [
+            $this->getTypeName(1) => [
+                'visible' => true,
+                'inputs' => [
+                    (isset($options['_onlypdu']) && $options['_onlypdu']) ? [
+                        'type' => 'hidden',
+                        'name' => 'itemtype',
+                        'value' => 'PDU'
+                    ] : [],
+                    [
+                        'type' => 'hidden',
+                        'id' => 'used_input',
+                        'name' => 'used',
+                        'value' => json_encode($used)
+                    ],
+                    __('Item type') => (isset($options['_onlypdu']) && $options['_onlypdu']) ? [
+                        'content' => PDU::getTypeName(1)
+                    ] : [
+                        'type' => 'select',
+                        'id' => 'dropdown_itemtype',
+                        'name' => 'itemtype',
+                        'values' => [Dropdown::EMPTY_VALUE] + $types,
+                        'value' => $this->fields["itemtype"] ?? 0,
+                        'hooks' => [
+                            'change' => <<<JS
+                                const val = $('#dropdown_itemtype').val();
+                                $('#dropdown_items_id').empty();
+                                if (val == 0) {
+                                    $('#dropdown_items_id').prop('disabled', true);
+                                    return;
+                                }
+                                $.post({
+                                    url: "{$CFG_GLPI["root_doc"]}/ajax/dropdownAllItems.php",
+                                    data: {
+                                        idtable: val,
+                                        is_reserved: $('#dropdown_is_reserved').val(),
+                                        used: $('#used_input').val(),
+                                        entity_restrict: {$rack->fields['entities_id']}
+                                    },
+                                    success: function(data) {
+                                        const json = JSON.parse(data);
+                                        for (const [key, value] of Object.entries(json)) {
+                                            if (typeof value === 'object') {
+                                                const group = $('#dropdown_items_id').append($('<optgroup>').attr('label', key));
+                                                for (const [k, v] of Object.entries(value)) {
+                                                    group.append($('<option>').val(k).text(v));
+                                                }
+                                            } else {
+                                                $('#dropdown_items_id').append($('<option>').val(key).text(value));
+                                            }
+                                        }
+                                        $('#dropdown_items_id').prop('disabled', false);
+                                    }
+                                });
+                            JS,
+                        ]
+                    ],
+                    _n('Item', 'Items', 1) => [
+                        'type' => 'select',
+                        'id' => 'dropdown_items_id',
+                        'name' => 'items_id',
+                        'value' => $this->fields["items_id"] ?? 0,
+                        'values' => isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])
+                            ? getItemByEntity(new $this->fields['itemtype'], $this->fields['entities_id'])
+                            : []
+                    ],
+                    Rack::getTypeName(1) => [
+                        'type' => 'select',
+                        'itemtype' => Rack::class,
+                        'name' => 'racks_id',
+                        'value' => $options["racks_id"] ?? $this->fields["racks_id"] ?? 0,
+                    ],
+                    __('Position') => [
+                        'type' => 'number',
+                        'name' => 'position',
+                        'min' => 1,
+                        'max' => $rack->fields['number_units'] ?? 1,
+                        'step' => 1,
+                        'value' => $options["position"] ?? $this->fields["position"] ?? 0,
+                    ],
+                    __('Orientation (front rack point of view)') => [
+                        'type' => 'select',
+                        'name' => 'orientation',
+                        'values' => [
+                            Rack::FRONT => __('Front'),
+                            Rack::REAR  => __('Rear')
+                        ],
+                        'value' => $options["orientation"] ?? $this->fields["orientation"] ?? 0,
+                    ],
+                    __('Background color') => [
+                        'type' => 'color',
+                        'name' => 'bgcolor',
+                        'value' => $options["bgcolor"] ?? $this->fields["bgcolor"] ?? '#69CEBA',
+                    ],
+                    __('Horizontal position (from rack point of view)') => [
+                        'type' => 'select',
+                        'name' => 'hpos',
+                        'values' => [
+                            Rack::POS_NONE  => __('None'),
+                            Rack::POS_LEFT  => __('Left'),
+                            Rack::POS_RIGHT => __('Right')
+                        ],
+                        'value' => $options["hpos"] ?? $this->fields["hpos"] ?? 0,
+                    ],
+                    __('Reserved position ?') => [
+                        'type' => 'checkbox',
+                        'name' => 'is_reserved',
+                        'value' => $options["is_reserved"] ?? $this->fields["is_reserved"] ?? 0,
+                    ]
+                ]
             ]
-         );
-      }
-
-      echo "</td>";
-      echo "</tr>";
+       ]
+      ];
+      renderTwigForm($form, '', $this->fields);
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_racks_id$rand'>".Rack::getTypeName(1)."</label></td>";
-      echo "<td>";
-      Rack::dropdown(['value' => $this->fields["racks_id"], 'rand' => $rand]);
-      echo "</td>";
-      echo "<td><label for='dropdown_position$rand'>".__('Position')."</label></td>";
-      echo "<td >";
-      Dropdown::showNumber(
-         'position', [
-            'value'  => $this->fields["position"],
-            'min'    => 1,
-            'max'    => $rack->fields['number_units'],
-            'step'   => 1,
-            'used'   => $rack->getFilled($this->fields['itemtype'], $this->fields['items_id']),
-            'rand'   => $rand
-         ]
-      );
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_orientation$rand'>".__('Orientation (front rack point of view)')."</label></td>";
-      echo "<td >";
-      Dropdown::showFromArray(
-         'orientation', [
-            Rack::FRONT => __('Front'),
-            Rack::REAR  => __('Rear')
-         ], [
-            'value' => $this->fields["orientation"],
-            'rand' => $rand
-         ]
-      );
-      echo "</td>";
-      echo "<td><label for='bgcolor$rand'>".__('Background color')."</label></td>";
-      echo "<td>";
-      Html::showColorField(
-         'bgcolor', [
-            'value'  => $this->fields['bgcolor'],
-            'rand'   => $rand
-         ]
-      );
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_hpos$rand'>".__('Horizontal position (from rack point of view)')."</label></td>";
-      echo "<td>";
-      Dropdown::showFromArray(
-         'hpos',
-         [
-            Rack::POS_NONE    => __('None'),
-            Rack::POS_LEFT    => __('Left'),
-            Rack::POS_RIGHT   => __('Right')
-         ], [
-            'value'  => $this->fields['hpos'],
-            'rand'   => $rand
-         ]
-      );
-      echo "</td>";
-      echo "<td><label for='dropdown_is_reserved$rand'>".__('Reserved position ?')."</label></td>";
       echo "<td>";
 
       echo Html::scriptBlock("
          var toggleUsed = function(reserved) {
             if (reserved == 1) {
-               $('#used_$rand').val('".json_encode($used_reserved)."');
+               $('#used_').val('".json_encode($used_reserved)."');
             } else {
-               $('#used_$rand').val('".json_encode($used)."');
+               $('#used_').val('".json_encode($used)."');
             }
             // force change of itemtype dropdown to have a correct (with empty/filled used input)
             // filtered items list
-            $('#dropdown_itemtype$rand').trigger('change');
+            $('#dropdown_itemtype').trigger('change');
          }
       ");
-      Dropdown::showYesNo(
-         'is_reserved',
-         $this->fields['is_reserved'],
-         -1, [
-            'rand'      => $rand,
-            'on_change' => 'toggleUsed(this.value)'
-         ]
-      );
-
       $entities = $rack->fields['entities_id'];
       if ($rack->fields['is_recursive']) {
          $entities = getSonsOf('glpi_entities', $entities);
       }
-
-      Ajax::updateItemOnSelectEvent(
-         ["dropdown_itemtype$rand", "dropdown_is_reserved$rand", "used_$rand"],
-         "items_id",
-         $CFG_GLPI["root_doc"]."/ajax/dropdownAllItems.php", [
-            'idtable'         => '__VALUE0__',
-            'name'            => 'items_id',
-            'value'           => $this->fields['items_id'],
-            'rand'            => $rand,
-            'is_reserved'     => '__VALUE1__',
-            'used'            => '__VALUE2__',
-            'entity_restrict' => $entities,
-         ]
-      );
-      echo "</td>";
-      echo "</tr>";
-
-      $this->showFormButtons($options);
    }
 
    function post_getEmpty() {

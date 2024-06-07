@@ -863,10 +863,11 @@ class Html
          $rand = mt_rand();
          echo "<div class='debug " . ($ajax ? "debug_ajax" : "") . "' bg-primary>";
          if (!$ajax) {
+            $debug_title = __s('Display GLPI debug information');
             echo <<<HTML
             <span class='fa-stack fa-lg' id='see_debug'>
                <i class='fa fa-circle fa-stack-2x text-primary' aria-hidden="true"></i>
-               <a href='#' class='fa fa-bug fa-stack-1x text-white' title='" . __s('Display GLPI debug information')  . "'>
+               <a href='#' class='fa fa-bug fa-stack-1x text-white' title='{$debug_title}'>
                   <span class='sr-only'>See GLPI DEBUG</span>
                </a>
             </span>
@@ -948,7 +949,7 @@ class Html
                collapsible: true
             }).addClass( 'ui-tabs-vertical ui-helper-clearfix' );
 
-            $('<li class=\"close\"><button aria-label='Close Debug' id= \"close_debug$rand\">close debug</button></li>')
+            $('<li class=\"close\"><button aria-label=\"Close Debug\" id= \"close_debug$rand\">close debug</button></li>')
                .appendTo('#debugtabs$rand ul');
 
             $('#close_debug$rand').button({

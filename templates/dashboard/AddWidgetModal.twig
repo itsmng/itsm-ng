@@ -1,5 +1,4 @@
-{% from 'macros/collapseChecklist.twig' import collapseChecklist %}
-<div class="modal modal-lg fade" id="widgetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal modal-lg fade" id="widgetModal" tabindex="-1" aria-label="Add widget modal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content" id="dashboard-edit-modal">
 		<form aria-label="Add Widget" action="{{addWidget_action}}" method="get" class="text-center">
@@ -37,9 +36,6 @@ $(function() {
 });
 
 $("#data-selection-search-content").on('change', fetchPreview);
-$("#parameter-selection-widget-modal-select").on('change', updatePreview);
-$('#direction-selection-widget-modal-select').on('change', updatePreview);
-$('#pie-format-selection-widget-modal-select').on('change', updatePreview);
 $('#title-widget-modal').on('change', updatePreview);
 $('#icon-widget-modal').on('change', updatePreview);
 </script>

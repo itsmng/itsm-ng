@@ -84,23 +84,18 @@ var initRack = function() {
       });
 
    // use each to re-init options for each grid
-   $('.grid-stack').each(function() {
-      $(this).gridstack({
-         cellHeight: 20,
-         verticalMargin: 1,
-         float: true,
-         disableOneColumnMode: true,
-         animate: true,
-         removeTimeout: 100,
-         disableResize: true,
-         draggable: {
-            handle: '.grid-stack-item-content',
-            appendTo: 'body',
-            containment: '.grid-stack',
-            cursor: 'move',
-            scroll: true
-         }
-      });
+   GridStack.initAll({
+      cellHeight: 20,
+      float: true,
+      columnOpts: { breakpoints: [{w: 768, c:1}] },
+      animate: true,
+      disableResize: true,
+      minRow: grid_rack_units,
+      maxRow: grid_rack_units,
+      draggable: {
+         containment: '.grid-stack',
+         scroll: true
+      }
    });
 
    $('.grid-stack')
@@ -124,24 +119,6 @@ var initRack = function() {
          }
       });
 
-   $('#viewgraph .cell_add, #viewgraph .grid-stack-item').each(function() {
-      var tipcontent = $(this).find('.tipcontent');
-      if (tipcontent.length) {
-         $(this).qtip({
-            position: {
-               my: 'left center',
-               at: 'right center'
-            },
-            content: {
-               text: tipcontent
-            },
-            style: {
-               classes: 'qtip-shadow qtip-bootstrap rack_tipcontent'
-            }
-         });
-      }
-   });
-
    for (var i = grid_rack_units; i >= 1; i--) {
       // add index number front of each rows
       $('.indexes').append('<li>' + i + '</li>');
@@ -153,28 +130,21 @@ var initRack = function() {
    }
 
    // lock all item (prevent pushing down elements)
-   $('.grid-stack').each(function (idx, gsEl) {
-      $(gsEl)
-         .data('gridstack')
-         .locked('.grid-stack-item', true);
-   });
-
-   // add containment to items, this avoid bad collisions on the start of the grid
-   $('.grid-stack .grid-stack-item')
-      .draggable('option', 'containment', 'parent');
+  $('.grid-stack').each(function (idx, gsEl) {
+    const gridstack = $(gsEl).data('gridstack');
+    if (gridstack) {
+      gridstack.disableDragAndDrop('.grid-stack-item');
+    }
+  });
 };
 
 
 var getHpos = function(x, is_half_rack, is_rack_rear) {
    if (!is_half_rack) {
       return 0;
-   } else if (x == 0 && !is_rack_rear) {
-      return 1;
-   } else if (x == 0 && is_rack_rear) {
-      return 2;
-   } else if (x == 1 && is_rack_rear) {
-      return 1;
-   } else if (x == 1 && !is_rack_rear) {
-      return 2;
+   } else if (x == 0) {
+      return is_rack_rear ? 2 : 1;
+   } else if (x == 1) {
+      return is_rack_rear ? 1 : 2;
    }
 };

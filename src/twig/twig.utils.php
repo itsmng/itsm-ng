@@ -309,6 +309,7 @@ function getItemActionButtons(array $actions, string $itemType): array
                 $content = [
                     'icon' => 'fas fa-info',
                     'onClick' => "window.location.href = '{$itemSearchUrl}'",
+                    'info' => 'Info',
                 ];
                 break;
             case 'add':
@@ -317,6 +318,7 @@ function getItemActionButtons(array $actions, string $itemType): array
                 $content = [
                     'icon' => 'fas fa-plus',
                     'onClick' => "window.location.href = '{$itemFormUrl}'",
+                    'info' => 'Add',
                 ];
                 break;
         }
