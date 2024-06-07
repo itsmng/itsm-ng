@@ -863,10 +863,11 @@ class Html
          $rand = mt_rand();
          echo "<div class='debug " . ($ajax ? "debug_ajax" : "") . "' bg-primary>";
          if (!$ajax) {
+            $debug_title = __s('Display GLPI debug information');
             echo <<<HTML
             <span class='fa-stack fa-lg' id='see_debug'>
                <i class='fa fa-circle fa-stack-2x text-primary' aria-hidden="true"></i>
-               <a href='#' class='fa fa-bug fa-stack-1x text-white' title='" . __s('Display GLPI debug information')  . "'>
+               <a href='#' class='fa fa-bug fa-stack-1x text-white' title='{$debug_title}'>
                   <span class='sr-only'>See GLPI DEBUG</span>
                </a>
             </span>

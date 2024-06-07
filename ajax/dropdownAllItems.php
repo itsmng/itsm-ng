@@ -59,8 +59,10 @@ if ($_POST["idtable"] && class_exists($_POST["idtable"])) {
          foreach($used as $usedId) {
             foreach($values as $key => $value) {
                 if (gettype($value) == 'array') {
-                    if (array_key_exists($usedId, $value)) {
-                        unset($values[$key]);
+                    foreach($value as $subKey => $subValue) {
+                        if ($usedId == $subKey) {
+                            unset($values[$key][$subKey]);
+                        }
                     }
                 } else {
                     if ($usedId == $key) {

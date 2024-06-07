@@ -87,17 +87,14 @@ var initRack = function() {
    GridStack.init({
       handle: '.grid-stack',
       cellHeight: 20,
-      verticalMargin: 1,
       float: true,
-      disableOneColumnMode: true,
+      columnOpts: { breakpoints: [{w: 768, c:1}] },
       animate: true,
-      removeTimeout: 100,
       disableResize: true,
+      minRow: grid_rack_units,
+      maxRow: grid_rack_units,
       draggable: {
-         handle: '.grid-stack-item-content',
-         appendTo: 'body',
          containment: '.grid-stack',
-         cursor: 'move',
          scroll: true
       }
    });
@@ -123,12 +120,6 @@ var initRack = function() {
          }
       });
 
-   $('#viewgraph .cell_add, #viewgraph .grid-stack-item').each(function() {
-      var tipcontent = $(this).find('.tipcontent');
-      if (tipcontent.length) {
-      }
-   });
-
    for (var i = grid_rack_units; i >= 1; i--) {
       // add index number front of each rows
       $('.indexes').append('<li>' + i + '</li>');
@@ -152,13 +143,9 @@ var initRack = function() {
 var getHpos = function(x, is_half_rack, is_rack_rear) {
    if (!is_half_rack) {
       return 0;
-   } else if (x == 0 && !is_rack_rear) {
-      return 1;
-   } else if (x == 0 && is_rack_rear) {
-      return 2;
-   } else if (x == 1 && is_rack_rear) {
-      return 1;
-   } else if (x == 1 && !is_rack_rear) {
-      return 2;
+   } else if (x == 0) {
+      return is_rack_rear ? 2 : 1;
+   } else if (x == 1) {
+      return is_rack_rear ? 1 : 2;
    }
 };

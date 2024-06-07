@@ -723,14 +723,6 @@ class Rack extends CommonDBTM
       }
 
       // add a locked element to bottom to display a full grid
-      echo "<div class='grid-stack-item lock-bottom'
-                 gs-no-resize='true'
-                 gs-no-move='true'
-                 gs-h='1'
-                 gs-w='$cols'
-                 gs-x='0'
-                 gs-y='$rows'></div>";
-
       echo "</div>"; //.grid-stack
       echo $blueprint;
       echo "</div>"; //.grid-room

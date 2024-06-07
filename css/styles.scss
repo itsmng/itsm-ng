@@ -5597,6 +5597,8 @@ div#viewgraph {
 .grid-stack .grid-stack-item {
    z-index: 3;
    opacity: 1;
+   width: 100%;
+   height: 20px;
 }
 
 .clear_picture .grid-stack .grid-stack-item {
@@ -5613,6 +5615,8 @@ div#viewgraph {
       text-align: center;
       overflow: hidden;
       cursor: move;
+      height: 20px;
+      inset: 0 !important;
 
       /* fallback */
       cursor: -webkit-grab;
@@ -5631,7 +5635,7 @@ div#viewgraph {
 }
 
 .grid-stack-item-content a {
-   font-size: 1em;
+   font-size: 1rem;
    font-weight: bold;
 }
 
@@ -5954,7 +5958,7 @@ ul.indexes {
    float: left;
    text-align: center;
    background: #4C4C4C;
-   padding-block: 18px;
+   padding-block: 20px;
 }
 
 .racks_col h2 {
@@ -6058,7 +6062,7 @@ ul.indexes {
    margin: 0 -1px;
 }
 
-.racks_row ul.indexes li {
+.rack_side ul.indexes li {
    height: 20px;
    width: 20px;
    margin-bottom: 1px;

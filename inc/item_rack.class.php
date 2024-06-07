@@ -296,7 +296,7 @@ class Item_Rack extends CommonDBRelation {
          echo "<div class='virtual_pdu_space'></div>";
       }
       echo '<ul class="indexes"></ul>
-            <div class="grid-stack grid-stack-2 grid-rack"
+            <div class="grid-stack grid-rack"
                  id="grid-front"
                  gs-column="2"
                  gs-max-row="'.($rack->fields['number_units'] + 1).'">';
@@ -322,7 +322,7 @@ class Item_Rack extends CommonDBRelation {
       PDU_Rack::showVizForRack($rack, PDU_Rack::SIDE_TOP);
       PDU_Rack::showVizForRack($rack, PDU_Rack::SIDE_LEFT);
       echo '<ul class="indexes"></ul>
-            <div class="grid-stack grid-stack-2 grid-rack"
+            <div class="grid-stack grid-rack gs-id-0"
                  id="grid2-rear"
                  gs-column="2"
                  gs-max-row="'.($rack->fields['number_units'] + 1).'">';
@@ -334,11 +334,7 @@ class Item_Rack extends CommonDBRelation {
       foreach ($data[Rack::REAR] as $current_item) {
          echo self::getCell($current_item, !$canedit);
       }
-      echo '   <div class="grid-stack-item lock-bottom"
-                    gs-no-resize="true" gs-no-move="true"
-                    gs-h="1" gs-w="2" gs-x="0" gs-y="'.$rack->fields['number_units'].'">
-               </div>
-            </div>
+      echo '</div>
             <ul class="indexes"></ul>';
       PDU_Rack::showVizForRack($rack, PDU_Rack::SIDE_RIGHT);
       PDU_Rack::showVizForRack($rack, PDU_Rack::SIDE_BOTTOM);
@@ -382,24 +378,24 @@ class Item_Rack extends CommonDBRelation {
                if (dirty) {
                   return;
                }
-               var grid = $(event.target).data('gridstack');
-               var is_rack_rear = $(grid.container).parents('.racks_col').hasClass('rack_rear');
-               $.each(items, function(index, item) {
-                  var is_half_rack = item.el.hasClass('half_rack');
-                  var is_el_rear   = item.el.hasClass('rear');
-                  var new_pos      = grid_rack_units - item.y - item.height + 1;
+               var grid = event.target.gridstack;
+               var is_rack_rear = $(grid.el).parents('.racks_col').hasClass('rack_rear');
+               $.each(grid.getGridItems(), function(index, item) {
+                  item = $(item);
+                  const node = item[0].gridstackNode;
+                  var is_half_rack = item.hasClass('half_rack');
+                  var is_el_rear   = item.hasClass('rear');
+                  var new_pos      = grid_rack_units - node.y - node.h + 1;
                   $.post(grid_item_ajax_url, {
-                     id: item.id,
+                     id: node.id,
                      action: 'move_item',
                      position: new_pos,
-                     hpos: getHpos(item.x, is_half_rack, is_rack_rear),
+                     hpos: getHpos(node.x, is_half_rack, is_rack_rear),
                   }, function(answer) {
-                     var answer = jQuery.parseJSON(answer);
-
                      // revert to old position
                      if (!answer.status) {
                         dirty = true;
-                        grid.move(item.el, x_before_drag, y_before_drag);
+                        grid.update(item.el, {x: x_before_drag, y: y_before_drag});
                         dirty = false;
                         displayAjaxMessageAfterRedirect();
                      } else {
@@ -407,23 +403,24 @@ class Item_Rack extends CommonDBRelation {
                         var other_side_cls = $(item.el).hasClass('item_rear')
                            ? "item_front"
                            : "item_rear";
-                        var other_side_el = $('.grid-stack-item.'+other_side_cls+'[gs-id='+item.id+']');
+                        var other_side_el = $('.grid-stack-item.'+other_side_cls+'[gs-id='+node.id+']');
 
                         if (other_side_el.length) {
-                           var other_side_grid = $(other_side_el).parent().data('gridstack');
-                           new_x = item.x;
-                           new_y = item.y;
-                           if (item.width == 1) {
-                              new_x = (item.x == 0 ? 1 : 0);
+                           var other_side_grid = $(other_side_el).parent().get(0);
+console.log(event.target, other_side_grid);
+                           new_x = node.x;
+                           new_y = node.y;
+                           if (node.w == 1) {
+                              new_x = (node.x == 0 ? 1 : 0);
                            }
                            dirty = true;
-                           other_side_grid.move(other_side_el, new_x, new_y);
+                           other_side_grid.update(other_side_el, {x: new_x, y: new_y});
                            dirty = false;
                         }
                      }
                   }).fail(function() {
                      dirty = true;
-                     grid.move(item.el, x_before_drag, y_before_drag);
+                     grid.update(item.el, {x: x_before_drag, y: y_before_drag});
                      dirty = false;
                      displayAjaxMessageAfterRedirect();
                   });
