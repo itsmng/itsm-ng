@@ -7348,7 +7348,7 @@ msgstr "Ultima atualização no directório LDAP"
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
 msgid "Last update in GLPI"
-msgstr "Ultima atualização no GLPI"
+msgstr "Ultima atualização no ITSM-NG"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
 msgid "No user to be synchronized"
@@ -7381,7 +7381,7 @@ msgstr "Directório LDAP preferido"
 
 #: inc/authldap.class.php:2401
 msgid "No LDAP directory defined in GLPI"
-msgstr "Não existe directório LDAP definido no GLPI"
+msgstr "Não existe directório LDAP definido no ITSM-NG"
 
 #: inc/authldap.class.php:2772
 msgid "User not found or several users found"
@@ -9402,7 +9402,7 @@ msgstr "Falhou atualização de `%s` com mensagem \"(%s) %s\"."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
 msgid "Migrate Racks plugin data into GLPI core tables"
-msgstr "Migrar plugin Racks para as tabelas nucleares do GLPI"
+msgstr "Migrar plugin Racks para as tabelas nucleares do ITSM-NG"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:168
 msgid "Ignore \"PluginRacksOther\" models and elements"
@@ -9530,7 +9530,7 @@ msgstr "Importando outros modelos..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
 msgid "Other items do not exist in GLPI core."
-msgstr "Não existem outros itens no núcleo do GLPI."
+msgstr "Não existem outros itens no núcleo do ITSM-NG."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
 #, php-format
@@ -9713,7 +9713,7 @@ msgstr "Não foi possível criar sala por omissão."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:145
 msgid "Migrate Appliances plugin data into GLPI core tables"
-msgstr "Migrar dados do plugin Appliances para as tabelas core do GLPI"
+msgstr "Migrar dados do plugin Appliances para as tabelas core do ITSM-NG"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:160
 msgid ""
@@ -9754,7 +9754,7 @@ msgstr "Associar itens ao ticket"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:334
 msgid "Updating GLPI itemtypes..."
-msgstr "A atualizar os tipos de item do GLPI..."
+msgstr "A atualizar os tipos de item do ITSM-NG..."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:359
 #, php-format
@@ -9852,7 +9852,7 @@ msgstr "A atualização de '%s'.'%s' falhou com a mensagem \"(%s) %s\"."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:91
 msgid "Migrate Domains plugin data into GLPI core tables"
-msgstr "Migrar dados do plugin Domínios para as tabelas core do GLPI"
+msgstr "Migrar dados do plugin Domínios para as tabelas core do ITSM-NG"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:98
 #, php-format
@@ -10266,7 +10266,7 @@ msgstr "O valor da opção --db-password não pode ser nulo."
 
 #: inc/console/database/installcommand.class.php:91
 msgid "Default language of GLPI"
-msgstr "Idioma padrão do GLPI"
+msgstr "Idioma padrão do ITSM-NG"
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -10339,11 +10339,11 @@ msgstr "Atual"
 
 #: inc/console/database/updatecommand.class.php:128
 msgid "GLPI version"
-msgstr "versão GLPI"
+msgstr "versão ITSM-NG"
 
 #: inc/console/database/updatecommand.class.php:129
 msgid "GLPI database version"
-msgstr "Versão da base de dados GLPI"
+msgstr "Versão da base de dados ITSM-NG"
 
 #: inc/console/database/updatecommand.class.php:137
 #, php-format
@@ -12023,7 +12023,7 @@ msgstr "Memória alocada"
 #: inc/system/requirement/memorylimit.class.php:75
 #, php-format
 msgid "A minimum of %s is commonly required for GLPI."
-msgstr "Um mínimo de %s é geralmente requerido pelo GLPI."
+msgstr "Um mínimo de %s é geralmente requerido pelo ITSM-NG."
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -12102,7 +12102,7 @@ msgstr "\"session.use_trans_sid\" tem de ser configurado para off."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
 msgid "See .htaccess file in the GLPI root for more information."
-msgstr "Verifique o ficheiro .htaccess na raiz do GLPI para mais informação."
+msgstr "Verifique o ficheiro .htaccess na raiz do ITSM-NG para mais informação."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -12949,7 +12949,7 @@ msgstr "O plugin %1$s foi desativado!"
 
 #: inc/plugin.class.php:1662 inc/crontask.class.php:841
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 #: inc/plugin.class.php:1662 inc/notificationmailingsetting.class.php:156
 msgid "PHP"
@@ -12993,7 +12993,7 @@ msgstr "Este plugin requer o parâmetro PHP %1$s"
 #: inc/plugin.class.php:1728
 #, php-format
 msgid "This plugin requires GLPI parameter %1$s"
-msgstr "Este plugin requer um parâmetro GLPI %1$s"
+msgstr "Este plugin requer um parâmetro ITSM-NG %1$s"
 
 #: inc/plugin.class.php:2004 inc/plugin.class.php:2443
 msgctxt "plugin"
@@ -14351,7 +14351,7 @@ msgstr "CLI"
 
 #: inc/crontask.class.php:908
 msgid "A minimum of 64 Mio is commonly required for GLPI."
-msgstr "São necessários no minímo 64MB para o GLPI."
+msgstr "São necessários no minímo 64MB para o ITSM-NG."
 
 #: inc/crontask.class.php:913
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -15477,7 +15477,7 @@ msgstr "Item desbloqueado !"
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_revision.class.php:262
 msgid "Contact your GLPI admin!"
-msgstr "Contacte o seu administrador de GLPI !"
+msgstr "Contacte o seu administrador de ITSM-NG !"
 
 #: inc/objectlock.class.php:157
 msgid "Item NOT unlocked!"
@@ -16449,7 +16449,7 @@ msgstr ""
 
 #: inc/telemetry.class.php:433
 msgid "Reference your GLPI"
-msgstr "Referenciar seu GLPI"
+msgstr "Referenciar seu ITSM-NG"
 
 #: inc/telemetry.class.php:435
 #, php-format
@@ -17099,7 +17099,7 @@ msgstr "Limpar"
 
 #: inc/marketplace/view.class.php:670
 msgid "This plugin is not available for your GLPI version."
-msgstr "Este plugin não está disponível para a sua versão do GLPI."
+msgstr "Este plugin não está disponível para a sua versão do ITSM-NG."
 
 #: inc/marketplace/view.class.php:682
 msgid "The plugin has an available update but its directory is not writable."
@@ -17157,7 +17157,7 @@ msgstr[1] "%s plugins"
 
 #: inc/marketplace/view.class.php:988
 msgid "GLPI provides a new marketplace to download and install plugins."
-msgstr "O GLPI disponibiliza uma novo loja para obter e instalar plugins."
+msgstr "O ITSM-NG disponibiliza uma novo loja para obter e instalar plugins."
 
 #: inc/marketplace/view.class.php:990
 msgid "Do you want to replace the plugins setup page by the new marketplace ?"
@@ -17336,7 +17336,7 @@ msgstr "Entidade alvo para o computador"
 
 #: inc/ruleimportcomputer.class.php:81
 msgid "Find computers in GLPI having the status"
-msgstr "Encontrar máquinas no GLPI com o estado"
+msgstr "Encontrar máquinas no ITSM-NG com o estado"
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -17360,11 +17360,11 @@ msgstr "Sim se vazio"
 
 #: inc/ruleimportcomputer.class.php:178
 msgid "is already present in GLPI"
-msgstr "já está presente no GLPI"
+msgstr "já está presente no ITSM-NG"
 
 #: inc/ruleimportcomputer.class.php:179
 msgid "is empty in GLPI"
-msgstr "está vazio no GLPI"
+msgstr "está vazio no ITSM-NG"
 
 #: inc/enclosure.class.php:57
 msgid "Enclosure"
@@ -18043,7 +18043,7 @@ msgstr "Ultimo login a %s"
 
 #: inc/user.class.php:2802
 msgid "Use GLPI in mode"
-msgstr "Usar GLPI no modo"
+msgstr "Usar ITSM-NG no modo"
 
 #: inc/user.class.php:2804
 msgid "Normal"
@@ -18542,7 +18542,7 @@ msgstr "Reaplicação de regras na base de dados existente terminou em %s"
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
 msgid "Software deleted by GLPI dictionary rules"
-msgstr "Software eliminado pelas regras de dicionário do GLPI"
+msgstr "Software eliminado pelas regras de dicionário do ITSM-NG"
 
 #: inc/location.class.php:70 inc/location.class.php:156
 #: inc/location.class.php:270 inc/location.class.php:327
@@ -19334,7 +19334,7 @@ msgstr "A criar o índice de texto - %s"
 #: inc/migration.class.php:792
 #, php-format
 msgid "Automatically generated by GLPI %s"
-msgstr "Gerado automaticamente pelo GLPI %s"
+msgstr "Gerado automaticamente pelo ITSM-NG %s"
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -19486,7 +19486,7 @@ msgstr[1] "%1$s%2$s segundos"
 
 #: inc/html.class.php:791
 msgid "Display GLPI debug information"
-msgstr "Mostrar informação de depuração do GLPI"
+msgstr "Mostrar informação de depuração do ITSM-NG"
 
 #: inc/html.class.php:1156
 msgid "Progress"
@@ -19503,7 +19503,7 @@ msgstr "Voltar ao início da página"
 
 #: inc/html.class.php:1789
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Encontrá-lo-á no site GLPI-PROJECT.org."
+msgstr "Encontrá-lo-á no site ITSM-NG-PROJECT.org."
 
 #: inc/html.class.php:1880 inc/html.class.php:1881 inc/html.class.php:6884
 #: inc/html.class.php:6886
@@ -19747,7 +19747,7 @@ msgstr "CSS"
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
 msgid "Automatically generated by GLPI"
-msgstr "Gerado automaticamente pelo GLPI"
+msgstr "Gerado automaticamente pelo ITSM-NG"
 
 #: inc/networkportlocal.class.php:47
 msgid "Local loop port"
@@ -20103,7 +20103,7 @@ msgstr "Acção quando um utilizador é removido do directório LDAP"
 
 #: inc/config.class.php:696
 msgid "GLPI server time zone"
-msgstr "Fuso horário do servidor GLPI"
+msgstr "Fuso horário do servidor ITSM-NG"
 
 #: inc/config.class.php:738 install/install.php:216
 msgid "SQL server (MariaDB or MySQL)"
@@ -20268,7 +20268,7 @@ msgstr "Exibir contadores"
 
 #: inc/config.class.php:1138
 msgid "Show GLPI ID"
-msgstr "Visualizar GLPI ID"
+msgstr "Visualizar ITSM-NG ID"
 
 #: inc/config.class.php:1145
 msgid "Keep devices when purging an item"
@@ -22198,7 +22198,7 @@ msgstr "Ocorreu um erro ao carregar o conteúdo!"
 
 #: inc/ajax.class.php:431
 msgid "Please check GLPI logs or contact your administrator."
-msgstr "Verifique os logs do GLPI ou entre em contato com o administrador."
+msgstr "Verifique os logs do ITSM-NG ou entre em contato com o administrador."
 
 #: inc/ajax.class.php:432
 msgid "try to reload"
@@ -22238,7 +22238,7 @@ msgstr "Utilizador ou palavra-passe errado(a)"
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
 msgid "User not authorized to connect in GLPI"
-msgstr "Utilizador não autorizado a ligar-se ao GLPI"
+msgstr "Utilizador não autorizado a ligar-se ao ITSM-NG"
 
 #: inc/auth.class.php:590
 msgid "Login with external token disabled"
@@ -22282,7 +22282,7 @@ msgstr "Falhou login para %1$s do IP %2$s"
 
 #: inc/auth.class.php:1019
 msgid "Authentication on GLPI database"
-msgstr "Autenticação na base de dados GLPI"
+msgstr "Autenticação na base de dados ITSM-NG"
 
 #: inc/auth.class.php:1031
 msgid "Authentication on a LDAP directory"
@@ -22314,7 +22314,7 @@ msgstr "autenticação por certificado x509"
 
 #: inc/auth.class.php:1130 inc/auth.class.php:1657
 msgid "GLPI internal database"
-msgstr "Base de dados interna GLPI"
+msgstr "Base de dados interna ITSM-NG"
 
 #: inc/auth.class.php:1136
 msgid "Not yet authenticated"
@@ -22855,12 +22855,12 @@ msgstr "Impossível efetuar uma atualização desta forma!!"
 
 #: install/update.php:577
 msgid "Go back to GLPI"
-msgstr "Voltar para o GLPI"
+msgstr "Voltar para o ITSM-NG"
 
 #: install/update.php:582
 #, php-format
 msgid "Caution! You will update the GLPI database named: %s"
-msgstr "Atenção! Vai atualizar a base de dados do GLPI com a denominação: %s"
+msgstr "Atenção! Vai atualizar a base de dados do ITSM-NG com a denominação: %s"
 
 #: install/update.php:588 install/install.php:130 install/install.php:171
 #: install/install.php:182 install/install.php:224 install/install.php:308
@@ -22884,7 +22884,7 @@ msgstr "Donativo"
 #: install/update.php:660 install/update_content.php:367
 #: install/install.php:545
 msgid "Use GLPI"
-msgstr "Usar o GLPI"
+msgstr "Usar o ITSM-NG"
 
 #: install/update.php:669
 msgid ""
@@ -22939,11 +22939,11 @@ msgstr "Eu li e NÃO ACEITO os termos da licença descrita acima"
 
 #: install/install.php:139
 msgid "Installation or update of GLPI"
-msgstr "Instalação ou atualização do GLPI"
+msgstr "Instalação ou atualização do ITSM-NG"
 
 #: install/install.php:140
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Escolha 'Instalar' para um nova instalação limpa do GLPI."
+msgstr "Escolha 'Instalar' para um nova instalação limpa do ITSM-NG."
 
 #: install/install.php:141
 msgid ""
@@ -22955,7 +22955,7 @@ msgstr ""
 #: install/install.php:158
 msgid ""
 "Checking of the compatibility of your environment with the execution of GLPI"
-msgstr "A verificar a compatibilidade do seu ambiente para a execução do GLPI"
+msgstr "A verificar a compatibilidade do seu ambiente para a execução do ITSM-NG"
 
 #: install/install.php:177 install/install.php:196 install/install.php:562
 msgid "Do you want to continue?"
@@ -23106,7 +23106,7 @@ msgstr "Novo"
 
 #: index.php:74
 msgid "GLPI - Authentication"
-msgstr "GLPI - Autenticação"
+msgstr "ITSM-NG - Autenticação"
 
 #: index.php:147
 msgid "Default (from user profile)"

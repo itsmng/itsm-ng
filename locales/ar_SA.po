@@ -7752,7 +7752,7 @@ msgstr "اخر تحديث في دليل LDAP"
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
 msgid "Last update in GLPI"
-msgstr "أخر تحديث في GLPI"
+msgstr "أخر تحديث في ITSM-NG"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
 msgid "No user to be synchronized"
@@ -13533,7 +13533,7 @@ msgstr ""
 
 #: inc/plugin.class.php:1662 inc/crontask.class.php:841
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 #: inc/plugin.class.php:1662 inc/notificationmailingsetting.class.php:156
 msgid "PHP"
@@ -18196,7 +18196,7 @@ msgstr ""
 
 #: inc/ruleimportcomputer.class.php:81
 msgid "Find computers in GLPI having the status"
-msgstr "إبحث عن أجهزة الحاسب في GLPI ذات الحالة"
+msgstr "إبحث عن أجهزة الحاسب في ITSM-NG ذات الحالة"
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -18220,7 +18220,7 @@ msgstr ""
 
 #: inc/ruleimportcomputer.class.php:178
 msgid "is already present in GLPI"
-msgstr "موجودة مسبقا في GLPI"
+msgstr "موجودة مسبقا في ITSM-NG"
 
 #: inc/ruleimportcomputer.class.php:179
 msgid "is empty in GLPI"
@@ -18923,7 +18923,7 @@ msgstr "أخر دخول في %s"
 
 #: inc/user.class.php:2802
 msgid "Use GLPI in mode"
-msgstr "طريقة إستخدام GLPI"
+msgstr "طريقة إستخدام ITSM-NG"
 
 #: inc/user.class.php:2804
 msgid "Normal"
@@ -21244,7 +21244,7 @@ msgstr ""
 
 #: inc/config.class.php:1138
 msgid "Show GLPI ID"
-msgstr "عرض رقم التعريف في GLPI"
+msgstr "عرض رقم التعريف في ITSM-NG"
 
 #: inc/config.class.php:1145
 msgid "Keep devices when purging an item"
@@ -23317,7 +23317,7 @@ msgstr "هناك خطأ في إسم المستخدم أو كلمة المرور"
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
 msgid "User not authorized to connect in GLPI"
-msgstr "مستخدم غير مصرح له بإستخدام GLPI"
+msgstr "مستخدم غير مصرح له بإستخدام ITSM-NG"
 
 #: inc/auth.class.php:590
 msgid "Login with external token disabled"
@@ -23369,7 +23369,7 @@ msgstr "تعذر تسجيل دخول  %1$s من الأيبي %2$s"
 
 #: inc/auth.class.php:1019
 msgid "Authentication on GLPI database"
-msgstr "التحقق من الهوية في قواعد بيانات GLPI"
+msgstr "التحقق من الهوية في قواعد بيانات ITSM-NG"
 
 #: inc/auth.class.php:1031
 msgid "Authentication on a LDAP directory"
@@ -23401,7 +23401,7 @@ msgstr "شهادة x509 للتحقق من الهوية"
 
 #: inc/auth.class.php:1130 inc/auth.class.php:1657
 msgid "GLPI internal database"
-msgstr "قاعدة بيانات GLPI الداخلية"
+msgstr "قاعدة بيانات ITSM-NG الداخلية"
 
 #: inc/auth.class.php:1136
 msgid "Not yet authenticated"
@@ -23956,12 +23956,12 @@ msgstr "لا يمكن القيام بالتحديث بهذه الطريقة!"
 
 #: install/update.php:577
 msgid "Go back to GLPI"
-msgstr "العودة إلى GLPI"
+msgstr "العودة إلى ITSM-NG"
 
 #: install/update.php:582
 #, php-format
 msgid "Caution! You will update the GLPI database named: %s"
-msgstr "تحذير! ستقوم بتعديل قواعد بيانات GLPI والتي تحمل إسم: %s"
+msgstr "تحذير! ستقوم بتعديل قواعد بيانات ITSM-NG والتي تحمل إسم: %s"
 
 #: install/update.php:588 install/install.php:130 install/install.php:171
 #: install/install.php:182 install/install.php:224 install/install.php:308
@@ -24039,7 +24039,7 @@ msgstr ""
 
 #: install/install.php:139
 msgid "Installation or update of GLPI"
-msgstr "تركيب أو تحديث GLPI"
+msgstr "تركيب أو تحديث ITSM-NG"
 
 #: install/install.php:140
 msgid "Choose 'Install' for a completely new installation of GLPI."
@@ -24048,7 +24048,7 @@ msgstr ""
 #: install/install.php:141
 msgid ""
 "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "إختر \"تحديث\" لتحديث نسختك القديمة من GLPI."
+msgstr "إختر \"تحديث\" لتحديث نسختك القديمة من ITSM-NG."
 
 #: install/install.php:158
 msgid ""
@@ -24200,7 +24200,7 @@ msgstr "جديد"
 
 #: index.php:74
 msgid "GLPI - Authentication"
-msgstr "التحقق من الهوية GLPI"
+msgstr "التحقق من الهوية ITSM-NG"
 
 #: index.php:147
 msgid "Default (from user profile)"

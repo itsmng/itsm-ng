@@ -7568,7 +7568,7 @@ msgstr "Poslední změna v LDAP adresáři"
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
 msgid "Last update in GLPI"
-msgstr "Poslední změna v GLPI"
+msgstr "Poslední změna v ITSM-NG"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
 msgid "No user to be synchronized"
@@ -7601,7 +7601,7 @@ msgstr "Volba LDAP adresáře"
 
 #: inc/authldap.class.php:2401
 msgid "No LDAP directory defined in GLPI"
-msgstr "V GLPI nebyl určen žádný LDAP adresář"
+msgstr "V ITSM-NG nebyl určen žádný LDAP adresář"
 
 #: inc/authldap.class.php:2772
 msgid "User not found or several users found"
@@ -9820,7 +9820,7 @@ msgstr "Import ostatních modelů..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
 msgid "Other items do not exist in GLPI core."
-msgstr "Ostatní položky neexistují v jádře GLPI."
+msgstr "Ostatní položky neexistují v jádře ITSM-NG."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
 #, php-format
@@ -10003,7 +10003,7 @@ msgstr "Nelze vytvořit výchozí místnost."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:145
 msgid "Migrate Appliances plugin data into GLPI core tables"
-msgstr "Migrovat data zásuvného modulu Zařízení do tabulek jádra GLPI."
+msgstr "Migrovat data zásuvného modulu Zařízení do tabulek jádra ITSM-NG."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:160
 msgid ""
@@ -10015,7 +10015,7 @@ msgstr ""
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:161
 msgid "Any previous appliance created in core will be lost."
-msgstr "Předchozí vytvořená zařízení v jádře GLPI budou ztracena."
+msgstr "Předchozí vytvořená zařízení v jádře ITSM-NG budou ztracena."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:209
 #, php-format
@@ -10044,7 +10044,7 @@ msgstr "Položky přiřaditelné k požadavku"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:334
 msgid "Updating GLPI itemtypes..."
-msgstr "Aktualizace typů položek GLPI..."
+msgstr "Aktualizace typů položek ITSM-NG..."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:359
 #, php-format
@@ -10138,7 +10138,7 @@ msgstr "Aktualizace `%s`.`%s`  skončila s chybou \"(%s) %s\"."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:91
 msgid "Migrate Domains plugin data into GLPI core tables"
-msgstr "Migrace dat zásuvného modulu Domény do tabulek jádra GLPI"
+msgstr "Migrace dat zásuvného modulu Domény do tabulek jádra ITSM-NG"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:98
 #, php-format
@@ -10549,7 +10549,7 @@ msgstr "Hodnota volby --db-password nesmí být prázdná."
 
 #: inc/console/database/installcommand.class.php:91
 msgid "Default language of GLPI"
-msgstr "Výchozí jazyk GLPI"
+msgstr "Výchozí jazyk ITSM-NG"
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -10621,11 +10621,11 @@ msgstr "Aktuální"
 
 #: inc/console/database/updatecommand.class.php:128
 msgid "GLPI version"
-msgstr "Verze GLPI"
+msgstr "Verze ITSM-NG"
 
 #: inc/console/database/updatecommand.class.php:129
 msgid "GLPI database version"
-msgstr "Verze databáze GLPI"
+msgstr "Verze databáze ITSM-NG"
 
 #: inc/console/database/updatecommand.class.php:137
 #, php-format
@@ -12353,7 +12353,7 @@ msgstr "Předpřidělená paměť"
 #: inc/system/requirement/memorylimit.class.php:75
 #, php-format
 msgid "A minimum of %s is commonly required for GLPI."
-msgstr "Pro GLPI je vyžadováno minimum %s."
+msgstr "Pro ITSM-NG je vyžadováno minimum %s."
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -12430,7 +12430,7 @@ msgstr "\"session.use_trans_sid\" musí být vypnuto."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
 msgid "See .htaccess file in the GLPI root for more information."
-msgstr "Podívejte se do souboru .htaccess v adresáři GLPI pro více informací."
+msgstr "Podívejte se do souboru .htaccess v adresáři ITSM-NG pro více informací."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -13307,7 +13307,7 @@ msgstr "Zásuvný modul %1$s byl vypnut!"
 
 #: inc/plugin.class.php:1662 inc/crontask.class.php:841
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 #: inc/plugin.class.php:1662 inc/notificationmailingsetting.class.php:156
 msgid "PHP"
@@ -13352,7 +13352,7 @@ msgstr "Tento zásuvný modul vyžaduje PHP parametr %1$s"
 #: inc/plugin.class.php:1728
 #, php-format
 msgid "This plugin requires GLPI parameter %1$s"
-msgstr "Tento zásuvný modul vyžaduje GLPI parametr %1$s"
+msgstr "Tento zásuvný modul vyžaduje ITSM-NG parametr %1$s"
 
 #: inc/plugin.class.php:2004 inc/plugin.class.php:2443
 msgctxt "plugin"
@@ -14793,7 +14793,7 @@ msgstr "Příkazový řádek"
 
 #: inc/crontask.class.php:908
 msgid "A minimum of 64 Mio is commonly required for GLPI."
-msgstr "Obvykle je pro GLPI vyžadováno přinejmenším 64 MiB."
+msgstr "Obvykle je pro ITSM-NG vyžadováno přinejmenším 64 MiB."
 
 #: inc/crontask.class.php:913
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -15969,7 +15969,7 @@ msgstr "Položka odemčena!"
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_revision.class.php:262
 msgid "Contact your GLPI admin!"
-msgstr "Kontaktujte svého správce GLPI!"
+msgstr "Kontaktujte svého správce ITSM-NG!"
 
 #: inc/objectlock.class.php:157
 msgid "Item NOT unlocked!"
@@ -16953,7 +16953,7 @@ msgstr ""
 
 #: inc/telemetry.class.php:433
 msgid "Reference your GLPI"
-msgstr "Odkažte na své GLPI"
+msgstr "Odkažte na své ITSM-NG"
 
 #: inc/telemetry.class.php:435
 #, php-format
@@ -17612,7 +17612,7 @@ msgstr "Vyčistit"
 
 #: inc/marketplace/view.class.php:670
 msgid "This plugin is not available for your GLPI version."
-msgstr "Tento zásuvný modul není dostupný pro vaší verzi GLPI."
+msgstr "Tento zásuvný modul není dostupný pro vaší verzi ITSM-NG."
 
 #: inc/marketplace/view.class.php:682
 msgid "The plugin has an available update but its directory is not writable."
@@ -17851,7 +17851,7 @@ msgstr "Cílová entita pro počítač"
 
 #: inc/ruleimportcomputer.class.php:81
 msgid "Find computers in GLPI having the status"
-msgstr "Najít v GLPI počítače mající tento stav"
+msgstr "Najít v ITSM-NG počítače mající tento stav"
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -17875,11 +17875,11 @@ msgstr "Ano, pokud je prázdné"
 
 #: inc/ruleimportcomputer.class.php:178
 msgid "is already present in GLPI"
-msgstr "už je přítomno v GLPI"
+msgstr "už je přítomno v ITSM-NG"
 
 #: inc/ruleimportcomputer.class.php:179
 msgid "is empty in GLPI"
-msgstr "je prázdné v GLPI"
+msgstr "je prázdné v ITSM-NG"
 
 #: inc/enclosure.class.php:57
 msgid "Enclosure"
@@ -18577,7 +18577,7 @@ msgstr "Minulé přihlášení v %s"
 
 #: inc/user.class.php:2802
 msgid "Use GLPI in mode"
-msgstr "Použít GLPI v režimu"
+msgstr "Použít ITSM-NG v režimu"
 
 #: inc/user.class.php:2804
 msgid "Normal"
@@ -19083,7 +19083,7 @@ msgstr "Zopakování pravidel na stávající databázi dokončeno v %s"
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
 msgid "Software deleted by GLPI dictionary rules"
-msgstr "Software smazán na základě pravidel GLPI číselníku"
+msgstr "Software smazán na základě pravidel ITSM-NG číselníku"
 
 #: inc/location.class.php:70 inc/location.class.php:156
 #: inc/location.class.php:270 inc/location.class.php:327
@@ -19914,7 +19914,7 @@ msgstr "Přidává se rejstřík pro jednotnost – %s"
 #: inc/migration.class.php:792
 #, php-format
 msgid "Automatically generated by GLPI %s"
-msgstr "Automaticky vytvořeno GLPI %s"
+msgstr "Automaticky vytvořeno ITSM-NG %s"
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -20076,7 +20076,7 @@ msgstr[3] "%1$s%2$s sekundy"
 
 #: inc/html.class.php:791
 msgid "Display GLPI debug information"
-msgstr "Zobrazit ladící informace GLPI"
+msgstr "Zobrazit ladící informace ITSM-NG"
 
 #: inc/html.class.php:1156
 msgid "Progress"
@@ -20093,7 +20093,7 @@ msgstr "Zpět na začátek stránky"
 
 #: inc/html.class.php:1789
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Najdete na webu GLPI-PROJECT.org."
+msgstr "Najdete na webu ITSM-NG-PROJECT.org."
 
 #: inc/html.class.php:1880 inc/html.class.php:1881 inc/html.class.php:6884
 #: inc/html.class.php:6886
@@ -20349,7 +20349,7 @@ msgstr "CSS"
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
 msgid "Automatically generated by GLPI"
-msgstr "Automaticky vytvořeno GLPI"
+msgstr "Automaticky vytvořeno ITSM-NG"
 
 #: inc/networkportlocal.class.php:47
 msgid "Local loop port"
@@ -20699,7 +20699,7 @@ msgstr "Akce, když bude uživatel smazán z LDAP adresáře"
 
 #: inc/config.class.php:696
 msgid "GLPI server time zone"
-msgstr "Časová zóna GLPI serveru"
+msgstr "Časová zóna ITSM-NG serveru"
 
 #: inc/config.class.php:738 install/install.php:216
 msgid "SQL server (MariaDB or MySQL)"
@@ -20864,7 +20864,7 @@ msgstr "Zobrazit počítadla"
 
 #: inc/config.class.php:1138
 msgid "Show GLPI ID"
-msgstr "Zobrazit GLPI identifikátor"
+msgstr "Zobrazit ITSM-NG identifikátor"
 
 #: inc/config.class.php:1145
 msgid "Keep devices when purging an item"
@@ -21100,7 +21100,7 @@ msgstr "Reset"
 #: inc/config.class.php:1698
 #, php-format
 msgid "Installing and enabling the \"%s\" extension may improve GLPI performance"
-msgstr "Instalace a zapnutí „%s“ rozšíření může zlepšit výkon GLPI"
+msgstr "Instalace a zapnutí „%s“ rozšíření může zlepšit výkon ITSM-NG"
 
 #: inc/config.class.php:1702
 msgid "User data cache"
@@ -22892,7 +22892,7 @@ msgstr "Neplatné uživatelské jméno nebo heslo"
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
 msgid "User not authorized to connect in GLPI"
-msgstr "Uživatel není pověřen pro připojení ke GLPI"
+msgstr "Uživatel není pověřen pro připojení ke ITSM-NG"
 
 #: inc/auth.class.php:590
 msgid "Login with external token disabled"
@@ -22940,7 +22940,7 @@ msgstr "Neúspěšné přihlášení uživatele %1$s z IP adresy %2$s"
 
 #: inc/auth.class.php:1019
 msgid "Authentication on GLPI database"
-msgstr "Ověřování v databázi GLPI"
+msgstr "Ověřování v databázi ITSM-NG"
 
 #: inc/auth.class.php:1031
 msgid "Authentication on a LDAP directory"
@@ -22972,7 +22972,7 @@ msgstr "ověření x509 certifikátem"
 
 #: inc/auth.class.php:1130 inc/auth.class.php:1657
 msgid "GLPI internal database"
-msgstr "Vnitřní databáze GLPI"
+msgstr "Vnitřní databáze ITSM-NG"
 
 #: inc/auth.class.php:1136
 msgid "Not yet authenticated"
@@ -23524,12 +23524,12 @@ msgstr "Takto není možné aktualizaci dokončit!"
 
 #: install/update.php:577
 msgid "Go back to GLPI"
-msgstr "Návrat zpět do GLPI"
+msgstr "Návrat zpět do ITSM-NG"
 
 #: install/update.php:582
 #, php-format
 msgid "Caution! You will update the GLPI database named: %s"
-msgstr "Pozor! Bude aktualizována GLPI databáze nazvaná: %s"
+msgstr "Pozor! Bude aktualizována ITSM-NG databáze nazvaná: %s"
 
 #: install/update.php:588 install/install.php:130 install/install.php:171
 #: install/install.php:182 install/install.php:224 install/install.php:308
@@ -23553,7 +23553,7 @@ msgstr "Podpořit vývoj darováním"
 #: install/update.php:660 install/update_content.php:367
 #: install/install.php:545
 msgid "Use GLPI"
-msgstr "Používat GLPI"
+msgstr "Používat ITSM-NG"
 
 #: install/update.php:669
 msgid ""
@@ -23608,11 +23608,11 @@ msgstr "Přečetl jsem si výše uvedené licenční ujednání a NESOUHLASÍM s
 
 #: install/install.php:139
 msgid "Installation or update of GLPI"
-msgstr "Instalace nebo aktualizace GLPI"
+msgstr "Instalace nebo aktualizace ITSM-NG"
 
 #: install/install.php:140
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Pro úplně novou instalaci GLPI zvolte „Nainstalovat“."
+msgstr "Pro úplně novou instalaci ITSM-NG zvolte „Nainstalovat“."
 
 #: install/install.php:141
 msgid ""
@@ -23623,7 +23623,7 @@ msgstr ""
 #: install/install.php:158
 msgid ""
 "Checking of the compatibility of your environment with the execution of GLPI"
-msgstr "Kontrola kompatibility vašeho prostředí pro provoz GLPI"
+msgstr "Kontrola kompatibility vašeho prostředí pro provoz ITSM-NG"
 
 #: install/install.php:177 install/install.php:196 install/install.php:562
 msgid "Do you want to continue?"
@@ -23772,7 +23772,7 @@ msgstr "Nové"
 
 #: index.php:74
 msgid "GLPI - Authentication"
-msgstr "GLPI – ověření totožnosti"
+msgstr "ITSM-NG – ověření totožnosti"
 
 #: index.php:147
 msgid "Default (from user profile)"

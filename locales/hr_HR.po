@@ -7447,7 +7447,7 @@ msgstr "Zadnje aktualiziranje u LDAP mapi"
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
 msgid "Last update in GLPI"
-msgstr "Zadnje aktualiziranje u GLPI-u"
+msgstr "Zadnje aktualiziranje u ITSM-NG-u"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
 msgid "No user to be synchronized"
@@ -7480,7 +7480,7 @@ msgstr "Izbor LDAP mape"
 
 #: inc/authldap.class.php:2401
 msgid "No LDAP directory defined in GLPI"
-msgstr "U GLPI-u nema definirane LDAP mape"
+msgstr "U ITSM-NG-u nema definirane LDAP mape"
 
 #: inc/authldap.class.php:2772
 msgid "User not found or several users found"
@@ -9536,7 +9536,7 @@ msgstr "Aktualiziranje za `%s` neuspjelo s porukom „(%s) %s”."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
 msgid "Migrate Racks plugin data into GLPI core tables"
-msgstr "Migriraj podatke dodatka Ormari u osnovne GLPI-tablice"
+msgstr "Migriraj podatke dodatka Ormari u osnovne ITSM-NG-tablice"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:168
 msgid "Ignore \"PluginRacksOther\" models and elements"
@@ -9664,7 +9664,7 @@ msgstr "Uvoz drugih modela …"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
 msgid "Other items do not exist in GLPI core."
-msgstr "U GLPI osnovi ne postoje drugi predmeti."
+msgstr "U ITSM-NG osnovi ne postoje drugi predmeti."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
 #, php-format
@@ -9847,7 +9847,7 @@ msgstr "Nije moguće stvoriti standardnu sobu."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:145
 msgid "Migrate Appliances plugin data into GLPI core tables"
-msgstr "Migriraj podatke dodatka Uređaji u osnovne GLPI-tablice"
+msgstr "Migriraj podatke dodatka Uređaji u osnovne ITSM-NG-tablice"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:160
 msgid ""
@@ -9887,7 +9887,7 @@ msgstr "Povezivi predmeti s nalogom"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:334
 msgid "Updating GLPI itemtypes..."
-msgstr "Aktualiziranje GLPI vrste predmeta …"
+msgstr "Aktualiziranje ITSM-NG vrste predmeta …"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:359
 #, php-format
@@ -9983,7 +9983,7 @@ msgstr "Aktualiziranje za `%s`. `%s` neuspjelo s porukom „(%s) %s”."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:91
 msgid "Migrate Domains plugin data into GLPI core tables"
-msgstr "Migriraj podatke dodatka Domene u osnovne GLPI-tablice"
+msgstr "Migriraj podatke dodatka Domene u osnovne ITSM-NG-tablice"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:98
 #, php-format
@@ -10395,7 +10395,7 @@ msgstr "Vrijednost opcije --db-password ne može biti nulla."
 
 #: inc/console/database/installcommand.class.php:91
 msgid "Default language of GLPI"
-msgstr "Standardni jezik za GLPI"
+msgstr "Standardni jezik za ITSM-NG"
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -10469,11 +10469,11 @@ msgstr "Tekući"
 
 #: inc/console/database/updatecommand.class.php:128
 msgid "GLPI version"
-msgstr "Verzija GLPI-a"
+msgstr "Verzija ITSM-NG-a"
 
 #: inc/console/database/updatecommand.class.php:129
 msgid "GLPI database version"
-msgstr "Verzija GLPI baze podataka"
+msgstr "Verzija ITSM-NG baze podataka"
 
 #: inc/console/database/updatecommand.class.php:137
 #, php-format
@@ -12172,7 +12172,7 @@ msgstr "Dodijeljena memorija"
 #: inc/system/requirement/memorylimit.class.php:75
 #, php-format
 msgid "A minimum of %s is commonly required for GLPI."
-msgstr "Za GLPI je uobičajeno potrebno barem %s."
+msgstr "Za ITSM-NG je uobičajeno potrebno barem %s."
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -12251,7 +12251,7 @@ msgstr "\"session.use_trans_sid\" mora biti postavljeno na isključeno."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
 msgid "See .htaccess file in the GLPI root for more information."
-msgstr "Pogledati datoteku .htaccess u GLPI-korijenu za daljnje informacije."
+msgstr "Pogledati datoteku .htaccess u ITSM-NG-korijenu za daljnje informacije."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -13111,7 +13111,7 @@ msgstr "Dodatak %1$s je deaktiviran!"
 
 #: inc/plugin.class.php:1662 inc/crontask.class.php:841
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 #: inc/plugin.class.php:1662 inc/notificationmailingsetting.class.php:156
 msgid "PHP"
@@ -13155,7 +13155,7 @@ msgstr "Ovaj dodatak zahtijeva PHP parametar %1$s"
 #: inc/plugin.class.php:1728
 #, php-format
 msgid "This plugin requires GLPI parameter %1$s"
-msgstr "Ovaj dodatak zahtijeva GLPI parametar %1$s"
+msgstr "Ovaj dodatak zahtijeva ITSM-NG parametar %1$s"
 
 #: inc/plugin.class.php:2004 inc/plugin.class.php:2443
 msgctxt "plugin"
@@ -14553,7 +14553,7 @@ msgstr "CLI"
 
 #: inc/crontask.class.php:908
 msgid "A minimum of 64 Mio is commonly required for GLPI."
-msgstr "Za GLPI je uobičajeno potrebno barem 64 MB."
+msgstr "Za ITSM-NG je uobičajeno potrebno barem 64 MB."
 
 #: inc/crontask.class.php:913
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -15703,7 +15703,7 @@ msgstr "Predmet je otključan!"
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_revision.class.php:262
 msgid "Contact your GLPI admin!"
-msgstr "Obrati se svom GLPI administratoru!"
+msgstr "Obrati se svom ITSM-NG administratoru!"
 
 #: inc/objectlock.class.php:157
 msgid "Item NOT unlocked!"
@@ -16652,7 +16652,7 @@ msgstr "Pošalji „statistiku korištenja”"
 
 #: inc/telemetry.class.php:417
 msgid "We need your help to improve GLPI and the plugins ecosystem!"
-msgstr "Trebamo tvoju pomoć za poboljšavanje GLPI-a i ekosustava dodataka!"
+msgstr "Trebamo tvoju pomoć za poboljšavanje ITSM-NG-a i ekosustava dodataka!"
 
 #: inc/telemetry.class.php:418
 msgid ""
@@ -16680,7 +16680,7 @@ msgstr ""
 
 #: inc/telemetry.class.php:433
 msgid "Reference your GLPI"
-msgstr "Referenciraj svoj GLPI"
+msgstr "Referenciraj svoj ITSM-NG"
 
 #: inc/telemetry.class.php:435
 #, php-format
@@ -17355,7 +17355,7 @@ msgstr "Dostupna je nova verzija (%s). Želiš li aktualizirati?"
 #: inc/marketplace/view.class.php:722
 #, php-format
 msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-msgstr "Za pristup ovom dodatku potrebna je ponuda vrhunske GLPI-mreže (%s)"
+msgstr "Za pristup ovom dodatku potrebna je ponuda vrhunske ITSM-NG-mreže (%s)"
 
 #: inc/marketplace/view.class.php:734
 msgid "Install"
@@ -17389,7 +17389,7 @@ msgstr[2] "%s dodataka"
 
 #: inc/marketplace/view.class.php:988
 msgid "GLPI provides a new marketplace to download and install plugins."
-msgstr "GLPI nudi novu tržnicu za preuzimanje i instaliranje dodataka."
+msgstr "ITSM-NG nudi novu tržnicu za preuzimanje i instaliranje dodataka."
 
 #: inc/marketplace/view.class.php:990
 msgid "Do you want to replace the plugins setup page by the new marketplace ?"
@@ -17571,7 +17571,7 @@ msgstr "Ciljni entitet za računalo"
 
 #: inc/ruleimportcomputer.class.php:81
 msgid "Find computers in GLPI having the status"
-msgstr "Pronađi računala u GLPI-u koja imaju stanje"
+msgstr "Pronađi računala u ITSM-NG-u koja imaju stanje"
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -17595,11 +17595,11 @@ msgstr "Da ukoliko prazno"
 
 #: inc/ruleimportcomputer.class.php:178
 msgid "is already present in GLPI"
-msgstr "se već nalaze u GLPI-u"
+msgstr "se već nalaze u ITSM-NG-u"
 
 #: inc/ruleimportcomputer.class.php:179
 msgid "is empty in GLPI"
-msgstr "je prazan u GLPI-u"
+msgstr "je prazan u ITSM-NG-u"
 
 #: inc/enclosure.class.php:57
 msgid "Enclosure"
@@ -18287,7 +18287,7 @@ msgstr "Zadnja prijava %s"
 
 #: inc/user.class.php:2802
 msgid "Use GLPI in mode"
-msgstr "Koristi GLPI u modusu"
+msgstr "Koristi ITSM-NG u modusu"
 
 #: inc/user.class.php:2804
 msgid "Normal"
@@ -18785,7 +18785,7 @@ msgstr "Ponovna primjena pravila na postojećoj bazi podataka završila %s"
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
 msgid "Software deleted by GLPI dictionary rules"
-msgstr "Softver izbrisan prema GLPI pravilima rječnika"
+msgstr "Softver izbrisan prema ITSM-NG pravilima rječnika"
 
 #: inc/location.class.php:70 inc/location.class.php:156
 #: inc/location.class.php:270 inc/location.class.php:327
@@ -19590,7 +19590,7 @@ msgstr "Dodavanje jedinstvenih indeksa – %s"
 #: inc/migration.class.php:792
 #, php-format
 msgid "Automatically generated by GLPI %s"
-msgstr "Automatski stvoreno od GLPI-a %s"
+msgstr "Automatski stvoreno od ITSM-NG-a %s"
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -19747,7 +19747,7 @@ msgstr[2] "%1$s%2$s sekundi"
 
 #: inc/html.class.php:791
 msgid "Display GLPI debug information"
-msgstr "Prikažite informacije o otklanjanju pogrešaka GLPI-a"
+msgstr "Prikažite informacije o otklanjanju pogrešaka ITSM-NG-a"
 
 #: inc/html.class.php:1156
 msgid "Progress"
@@ -19764,7 +19764,7 @@ msgstr "Natrag na vrh stranice"
 
 #: inc/html.class.php:1789
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Naći ćeš je na stranicama GLPI-PROJECT.org."
+msgstr "Naći ćeš je na stranicama ITSM-NG-PROJECT.org."
 
 #: inc/html.class.php:1880 inc/html.class.php:1881 inc/html.class.php:6884
 #: inc/html.class.php:6886
@@ -20016,7 +20016,7 @@ msgstr "CSS"
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
 msgid "Automatically generated by GLPI"
-msgstr "Automatski stvoreno GLPI-em"
+msgstr "Automatski stvoreno ITSM-NG-em"
 
 #: inc/networkportlocal.class.php:47
 msgid "Local loop port"
@@ -20365,7 +20365,7 @@ msgstr "Radnja, kad se korisnik briše iz LDAP mape"
 
 #: inc/config.class.php:696
 msgid "GLPI server time zone"
-msgstr "Vremenska zona GLPI poslužitelja"
+msgstr "Vremenska zona ITSM-NG poslužitelja"
 
 #: inc/config.class.php:738 install/install.php:216
 msgid "SQL server (MariaDB or MySQL)"
@@ -20528,7 +20528,7 @@ msgstr "Prikaži brojače"
 
 #: inc/config.class.php:1138
 msgid "Show GLPI ID"
-msgstr "Prikaži GLPI ID"
+msgstr "Prikaži ITSM-NG ID"
 
 #: inc/config.class.php:1145
 msgid "Keep devices when purging an item"
@@ -22484,7 +22484,7 @@ msgstr "Pojavila se greška prilikom učitavanja sadržaja!"
 
 #: inc/ajax.class.php:431
 msgid "Please check GLPI logs or contact your administrator."
-msgstr "Provjeri log zapise GLPI-a ili kontaktiraj administratora."
+msgstr "Provjeri log zapise ITSM-NG-a ili kontaktiraj administratora."
 
 #: inc/ajax.class.php:432
 msgid "try to reload"
@@ -22528,7 +22528,7 @@ msgstr "Neispravno korisničko ime ili lozinka"
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
 msgid "User not authorized to connect in GLPI"
-msgstr "Korisnik nije ovlašten za pristup u GLPI"
+msgstr "Korisnik nije ovlašten za pristup u ITSM-NG"
 
 #: inc/auth.class.php:590
 msgid "Login with external token disabled"
@@ -22574,7 +22574,7 @@ msgstr "Neusjela prijava za %1$s sa IP adrese %2$s"
 
 #: inc/auth.class.php:1019
 msgid "Authentication on GLPI database"
-msgstr "Autentifikacija na GLPI bazu podataka"
+msgstr "Autentifikacija na ITSM-NG bazu podataka"
 
 #: inc/auth.class.php:1031
 msgid "Authentication on a LDAP directory"
@@ -22606,7 +22606,7 @@ msgstr "Autentifikacija x509 certifikatom"
 
 #: inc/auth.class.php:1130 inc/auth.class.php:1657
 msgid "GLPI internal database"
-msgstr "GLPI interna baza podataka"
+msgstr "ITSM-NG interna baza podataka"
 
 #: inc/auth.class.php:1136
 msgid "Not yet authenticated"
@@ -23151,12 +23151,12 @@ msgstr "Nemoguće dovršiti aktualiziranje na ovaj način!"
 
 #: install/update.php:577
 msgid "Go back to GLPI"
-msgstr "Idi natrag na GLPI"
+msgstr "Idi natrag na ITSM-NG"
 
 #: install/update.php:582
 #, php-format
 msgid "Caution! You will update the GLPI database named: %s"
-msgstr "Oprez! Aktualizirat ćeš GLPI bazu podataka: %s"
+msgstr "Oprez! Aktualizirat ćeš ITSM-NG bazu podataka: %s"
 
 #: install/update.php:588 install/install.php:130 install/install.php:171
 #: install/install.php:182 install/install.php:224 install/install.php:308
@@ -23180,7 +23180,7 @@ msgstr "Doniraj"
 #: install/update.php:660 install/update_content.php:367
 #: install/install.php:545
 msgid "Use GLPI"
-msgstr "Koristi GLPI"
+msgstr "Koristi ITSM-NG"
 
 #: install/update.php:669
 msgid ""
@@ -23234,11 +23234,11 @@ msgstr "Pročitao(la) sam i NE PRISTAJEM na gore navedene uvjete licence"
 
 #: install/install.php:139
 msgid "Installation or update of GLPI"
-msgstr "Instaliranje ili aktualiziranje GLPI-a"
+msgstr "Instaliranje ili aktualiziranje ITSM-NG-a"
 
 #: install/install.php:140
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Odaberi „Instaliraj” za kompletno novu instalaciju GLPI-a."
+msgstr "Odaberi „Instaliraj” za kompletno novu instalaciju ITSM-NG-a."
 
 #: install/install.php:141
 msgid ""
@@ -23249,7 +23249,7 @@ msgstr ""
 #: install/install.php:158
 msgid ""
 "Checking of the compatibility of your environment with the execution of GLPI"
-msgstr "Provjera kompatibilnosti tvog okruženja s izvršavanjem GLPI-a"
+msgstr "Provjera kompatibilnosti tvog okruženja s izvršavanjem ITSM-NG-a"
 
 #: install/install.php:177 install/install.php:196 install/install.php:562
 msgid "Do you want to continue?"
@@ -23398,7 +23398,7 @@ msgstr "Novi"
 
 #: index.php:74
 msgid "GLPI - Authentication"
-msgstr "GLPI – Autentifikacija"
+msgstr "ITSM-NG – Autentifikacija"
 
 #: index.php:147
 msgid "Default (from user profile)"

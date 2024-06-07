@@ -12757,7 +12757,7 @@ msgstr ""
 
 #: inc/plugin.class.php:1662 inc/crontask.class.php:841
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 #: inc/plugin.class.php:1662 inc/notificationmailingsetting.class.php:156
 msgid "PHP"
@@ -21945,7 +21945,7 @@ msgstr "Misheppnaðar innskráningar fyrir %1$s frá IP %2$s "
 
 #: inc/auth.class.php:1019
 msgid "Authentication on GLPI database"
-msgstr "Auðkenna við GLPI gagnagrunn"
+msgstr "Auðkenna við ITSM-NG gagnagrunn"
 
 #: inc/auth.class.php:1031
 msgid "Authentication on a LDAP directory"
@@ -22504,12 +22504,12 @@ msgstr ""
 
 #: install/update.php:577
 msgid "Go back to GLPI"
-msgstr "Fara til baka í GLPI"
+msgstr "Fara til baka í ITSM-NG"
 
 #: install/update.php:582
 #, php-format
 msgid "Caution! You will update the GLPI database named: %s"
-msgstr "ATH! Þú ert að uppfæra GLPI gagnagrunninn: %s"
+msgstr "ATH! Þú ert að uppfæra ITSM-NG gagnagrunninn: %s"
 
 #: install/update.php:588 install/install.php:130 install/install.php:171
 #: install/install.php:182 install/install.php:224 install/install.php:308
@@ -22533,7 +22533,7 @@ msgstr ""
 #: install/update.php:660 install/update_content.php:367
 #: install/install.php:545
 msgid "Use GLPI"
-msgstr "Nota GLPI"
+msgstr "Nota ITSM-NG"
 
 #: install/update.php:669
 msgid ""
@@ -22585,7 +22585,7 @@ msgstr ""
 
 #: install/install.php:139
 msgid "Installation or update of GLPI"
-msgstr "Uppsetning eða uppfærsla á GLPI"
+msgstr "Uppsetning eða uppfærsla á ITSM-NG"
 
 #: install/install.php:140
 msgid "Choose 'Install' for a completely new installation of GLPI."
@@ -22746,7 +22746,7 @@ msgstr "Ný"
 
 #: index.php:74
 msgid "GLPI - Authentication"
-msgstr "GLPI - Auðkenning"
+msgstr "ITSM-NG - Auðkenning"
 
 #: index.php:147
 msgid "Default (from user profile)"

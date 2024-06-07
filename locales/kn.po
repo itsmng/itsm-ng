@@ -7337,7 +7337,7 @@ msgstr "LDAP ಡೈರೆಕ್ಟರಿ ಆಯ್ಕೆಯು"
 
 #: inc/authldap.class.php:2401
 msgid "No LDAP directory defined in GLPI"
-msgstr "GLPI ಯಲ್ಲಿ ವ್ಯಾಖ್ಯಾನಿಸಲಾಗಿಲ್ಲ LDAP ಡೈರೆಕ್ಟರಿ"
+msgstr "ITSM-NG ಯಲ್ಲಿ ವ್ಯಾಖ್ಯಾನಿಸಲಾಗಿಲ್ಲ LDAP ಡೈರೆಕ್ಟರಿ"
 
 #: inc/authldap.class.php:2772
 msgid "User not found or several users found"
@@ -16233,7 +16233,7 @@ msgstr "\"ಬಳಕೆಯ ಅಂಕಿಅಂಶಗಳನ್ನು\" ಕಳುಹ
 
 #: inc/telemetry.class.php:417
 msgid "We need your help to improve GLPI and the plugins ecosystem!"
-msgstr "GLPI ಮತ್ತು ಪ್ಲಗ್ಇನ್ಗಳ ಪರಿಸರ ವ್ಯವಸ್ಥೆಯನ್ನು ಸುಧಾರಿಸಲು ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು!"
+msgstr "ITSM-NG ಮತ್ತು ಪ್ಲಗ್ಇನ್ಗಳ ಪರಿಸರ ವ್ಯವಸ್ಥೆಯನ್ನು ಸುಧಾರಿಸಲು ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು!"
 
 #: inc/telemetry.class.php:418
 msgid ""
@@ -17815,7 +17815,7 @@ msgstr "ಕೊನೆಯ ಲಾಗಿನ್ %s"
 
 #: inc/user.class.php:2802
 msgid "Use GLPI in mode"
-msgstr "ಕ್ರಮದಲ್ಲಿ GLPI ಬಳಸಿ"
+msgstr "ಕ್ರಮದಲ್ಲಿ ITSM-NG ಬಳಸಿ"
 
 #: inc/user.class.php:2804
 msgid "Normal"
@@ -21973,7 +21973,7 @@ msgstr "ತಪ್ಪಾದ ಬಳಕೆದಾರಹೆಸರು ಅಥವಾ ಪ
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
 msgid "User not authorized to connect in GLPI"
-msgstr "GLPI ನಲ್ಲಿ ಸಂಪರ್ಕಿಸಲು ಬಳಕೆದಾರರಿಗೆ ಅಧಿಕಾರವಿಲ್ಲ"
+msgstr "ITSM-NG ನಲ್ಲಿ ಸಂಪರ್ಕಿಸಲು ಬಳಕೆದಾರರಿಗೆ ಅಧಿಕಾರವಿಲ್ಲ"
 
 #: inc/auth.class.php:590
 msgid "Login with external token disabled"
@@ -22579,7 +22579,7 @@ msgstr "ಈ ಮೂಲಕ ನವೀಕರಣವನ್ನು ಸಾಧಿಸಲು
 
 #: install/update.php:577
 msgid "Go back to GLPI"
-msgstr "GLPI ಗೆ ಹಿಂತಿರುಗಿ"
+msgstr "ITSM-NG ಗೆ ಹಿಂತಿರುಗಿ"
 
 #: install/update.php:582
 #, php-format
@@ -22608,7 +22608,7 @@ msgstr ""
 #: install/update.php:660 install/update_content.php:367
 #: install/install.php:545
 msgid "Use GLPI"
-msgstr "GLPI ಬಳಸಿ"
+msgstr "ITSM-NG ಬಳಸಿ"
 
 #: install/update.php:669
 msgid ""
@@ -22666,7 +22666,7 @@ msgstr "ಜಿಎಲ್ಪಿಐನ ಅನುಸ್ಥಾಪನೆ ಅಥವಾ 
 
 #: install/install.php:140
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "GLPI ಯ ಸಂಪೂರ್ಣ ಹೊಸ ಅನುಸ್ಥಾಪನೆಗೆ 'ಸ್ಥಾಪನೆ' ಆಯ್ಕೆಮಾಡಿ."
+msgstr "ITSM-NG ಯ ಸಂಪೂರ್ಣ ಹೊಸ ಅನುಸ್ಥಾಪನೆಗೆ 'ಸ್ಥಾಪನೆ' ಆಯ್ಕೆಮಾಡಿ."
 
 #: install/install.php:141
 msgid ""
@@ -22677,7 +22677,7 @@ msgstr ""
 #: install/install.php:158
 msgid ""
 "Checking of the compatibility of your environment with the execution of GLPI"
-msgstr "GLPI ನ ಮರಣದಂಡನೆಯೊಂದಿಗೆ ನಿಮ್ಮ ಪರಿಸರದ ಹೊಂದಾಣಿಕೆಯನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ"
+msgstr "ITSM-NG ನ ಮರಣದಂಡನೆಯೊಂದಿಗೆ ನಿಮ್ಮ ಪರಿಸರದ ಹೊಂದಾಣಿಕೆಯನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ"
 
 #: install/install.php:177 install/install.php:196 install/install.php:562
 msgid "Do you want to continue?"

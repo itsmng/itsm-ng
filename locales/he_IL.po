@@ -7527,7 +7527,7 @@ msgstr "עדכון אחרון בתיקיית LDAP"
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
 msgid "Last update in GLPI"
-msgstr "עדכון אחרון ב - GLPI"
+msgstr "עדכון אחרון ב - ITSM-NG"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
 msgid "No user to be synchronized"
@@ -7560,7 +7560,7 @@ msgstr "בחירת שרת LDAP"
 
 #: inc/authldap.class.php:2401
 msgid "No LDAP directory defined in GLPI"
-msgstr "לא הוגדרה תיקיית LDAP ב - GLPI"
+msgstr "לא הוגדרה תיקיית LDAP ב - ITSM-NG"
 
 #: inc/authldap.class.php:2772
 msgid "User not found or several users found"
@@ -13157,7 +13157,7 @@ msgstr ""
 
 #: inc/plugin.class.php:1662 inc/crontask.class.php:841
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 #: inc/plugin.class.php:1662 inc/notificationmailingsetting.class.php:156
 msgid "PHP"
@@ -13201,7 +13201,7 @@ msgstr "הפלגאין דורש פרמטר PHP %1$s"
 #: inc/plugin.class.php:1728
 #, php-format
 msgid "This plugin requires GLPI parameter %1$s"
-msgstr "הפלגאין דורש פרמטר GLPI %1$s"
+msgstr "הפלגאין דורש פרמטר ITSM-NG %1$s"
 
 #: inc/plugin.class.php:2004 inc/plugin.class.php:2443
 msgctxt "plugin"
@@ -18360,7 +18360,7 @@ msgstr ""
 
 #: inc/user.class.php:2802
 msgid "Use GLPI in mode"
-msgstr "להשתמש ב-GLPI במצב"
+msgstr "להשתמש ב-ITSM-NG במצב"
 
 #: inc/user.class.php:2804
 msgid "Normal"
@@ -20613,7 +20613,7 @@ msgstr "הצג מונים"
 
 #: inc/config.class.php:1138
 msgid "Show GLPI ID"
-msgstr "הצג GLPI ID"
+msgstr "הצג ITSM-NG ID"
 
 #: inc/config.class.php:1145
 msgid "Keep devices when purging an item"
@@ -20847,7 +20847,7 @@ msgstr "ריסט"
 #: inc/config.class.php:1698
 #, php-format
 msgid "Installing and enabling the \"%s\" extension may improve GLPI performance"
-msgstr "התקנת הרחבה %sוהפעלתה עשוייה לשפר את ביצועי GLPI"
+msgstr "התקנת הרחבה %sוהפעלתה עשוייה לשפר את ביצועי ITSM-NG"
 
 #: inc/config.class.php:1702
 msgid "User data cache"
@@ -22587,7 +22587,7 @@ msgstr "אירעה שגיאה במהלך העלאת התוכן !"
 
 #: inc/ajax.class.php:431
 msgid "Please check GLPI logs or contact your administrator."
-msgstr "אנא בדוק לוגים של GLPI או צור קשר עם מנהל הרשת"
+msgstr "אנא בדוק לוגים של ITSM-NG או צור קשר עם מנהל הרשת"
 
 #: inc/ajax.class.php:432
 msgid "try to reload"
@@ -22635,7 +22635,7 @@ msgstr "שם משתמש או סיסמה שגויים"
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
 msgid "User not authorized to connect in GLPI"
-msgstr "משתמש לא מורשה כדי להתחבר ל-GLPI"
+msgstr "משתמש לא מורשה כדי להתחבר ל-ITSM-NG"
 
 #: inc/auth.class.php:590
 msgid "Login with external token disabled"
@@ -22683,7 +22683,7 @@ msgstr "חיבור נכשל עבור %1$s מכתובת IP %2$s"
 
 #: inc/auth.class.php:1019
 msgid "Authentication on GLPI database"
-msgstr "לאמת באמצעות בסיס הנתונים של GLPI"
+msgstr "לאמת באמצעות בסיס הנתונים של ITSM-NG"
 
 #: inc/auth.class.php:1031
 msgid "Authentication on a LDAP directory"
@@ -22715,7 +22715,7 @@ msgstr "אימות אישור מסוג x509"
 
 #: inc/auth.class.php:1130 inc/auth.class.php:1657
 msgid "GLPI internal database"
-msgstr "בסיס פנימי GLPI"
+msgstr "בסיס פנימי ITSM-NG"
 
 #: inc/auth.class.php:1136
 msgid "Not yet authenticated"
@@ -23256,7 +23256,7 @@ msgstr "בלתי אפשרי להשלים עדכון בדרך הזו!!"
 
 #: install/update.php:577
 msgid "Go back to GLPI"
-msgstr "חזרה ל-GLPI"
+msgstr "חזרה ל-ITSM-NG"
 
 #: install/update.php:582
 #, php-format
@@ -23285,7 +23285,7 @@ msgstr ""
 #: install/update.php:660 install/update_content.php:367
 #: install/install.php:545
 msgid "Use GLPI"
-msgstr "השתמש ב-GLPI"
+msgstr "השתמש ב-ITSM-NG"
 
 #: install/update.php:669
 msgid ""
@@ -23337,11 +23337,11 @@ msgstr "אני קראתי ואינני מקבל תנאיי הרישיון הכת
 
 #: install/install.php:139
 msgid "Installation or update of GLPI"
-msgstr "התקנה או שדרוג של GLPI"
+msgstr "התקנה או שדרוג של ITSM-NG"
 
 #: install/install.php:140
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "בחר 'התקנה' עבור התקנה חדשה של מערכת GLPI."
+msgstr "בחר 'התקנה' עבור התקנה חדשה של מערכת ITSM-NG."
 
 #: install/install.php:141
 msgid ""
@@ -23351,7 +23351,7 @@ msgstr ""
 #: install/install.php:158
 msgid ""
 "Checking of the compatibility of your environment with the execution of GLPI"
-msgstr "בדיקת התאימות של הסביבה עם הפעלה של GLPI."
+msgstr "בדיקת התאימות של הסביבה עם הפעלה של ITSM-NG."
 
 #: install/install.php:177 install/install.php:196 install/install.php:562
 msgid "Do you want to continue?"
@@ -23500,7 +23500,7 @@ msgstr "חדש"
 
 #: index.php:74
 msgid "GLPI - Authentication"
-msgstr "GLPI - אימות פרטים"
+msgstr "ITSM-NG - אימות פרטים"
 
 #: index.php:147
 msgid "Default (from user profile)"

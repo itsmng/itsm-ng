@@ -7180,7 +7180,7 @@ msgstr "Kemaskini terakhir di dalam direktori LDAP"
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
 msgid "Last update in GLPI"
-msgstr "Kemaskini terakhir dalam GLPI"
+msgstr "Kemaskini terakhir dalam ITSM-NG"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
 msgid "No user to be synchronized"
@@ -7213,7 +7213,7 @@ msgstr "pilihan direktori LDAP"
 
 #: inc/authldap.class.php:2401
 msgid "No LDAP directory defined in GLPI"
-msgstr "Tiada direktori LDAP ditentukan dalam GLPI"
+msgstr "Tiada direktori LDAP ditentukan dalam ITSM-NG"
 
 #: inc/authldap.class.php:2772
 msgid "User not found or several users found"
@@ -21563,7 +21563,7 @@ msgstr "Katanama atau katalaluan tidak tepat"
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
 msgid "User not authorized to connect in GLPI"
-msgstr "Pengguna tidak ada kebenaran untuk menggunakan GLPI"
+msgstr "Pengguna tidak ada kebenaran untuk menggunakan ITSM-NG"
 
 #: inc/auth.class.php:590
 msgid "Login with external token disabled"
@@ -21605,7 +21605,7 @@ msgstr "Gagal masuk bagi %1$s dari IP %2$s"
 
 #: inc/auth.class.php:1019
 msgid "Authentication on GLPI database"
-msgstr "Pengesahan dari simpanan data GLPI"
+msgstr "Pengesahan dari simpanan data ITSM-NG"
 
 #: inc/auth.class.php:1031
 msgid "Authentication on a LDAP directory"
@@ -21637,7 +21637,7 @@ msgstr "x509 pengesahan sijil"
 
 #: inc/auth.class.php:1130 inc/auth.class.php:1657
 msgid "GLPI internal database"
-msgstr "GLPI simpanan data dalaman"
+msgstr "ITSM-NG simpanan data dalaman"
 
 #: inc/auth.class.php:1136
 msgid "Not yet authenticated"
@@ -22399,7 +22399,7 @@ msgstr "Baru"
 
 #: index.php:74
 msgid "GLPI - Authentication"
-msgstr "GLPI - Pengesahan"
+msgstr "ITSM-NG - Pengesahan"
 
 #: index.php:147
 msgid "Default (from user profile)"

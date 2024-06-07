@@ -7332,7 +7332,7 @@ msgstr "LDAP директор дах хамгийн сүүлийн шинэчл�
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
 msgid "Last update in GLPI"
-msgstr "GLPI дахь хамгийн сүүлийн шинэчлэл"
+msgstr "ITSM-NG дахь хамгийн сүүлийн шинэчлэл"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
 msgid "No user to be synchronized"
@@ -7366,7 +7366,7 @@ msgstr "LDAP директорын сонголт"
 
 #: inc/authldap.class.php:2401
 msgid "No LDAP directory defined in GLPI"
-msgstr "GLPI дээр LDAP директор олдсонгүй"
+msgstr "ITSM-NG дээр LDAP директор олдсонгүй"
 
 #: inc/authldap.class.php:2772
 msgid "User not found or several users found"
@@ -9383,7 +9383,7 @@ msgstr "\"(%s)%s\" мессежээр \"%s\" шинэчлэлт амжилтгү
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
 msgid "Migrate Racks plugin data into GLPI core tables"
-msgstr "Rack-н нэмэлт өргөтгөлийн өгөгдлийг GLPI үндсэн хүснэгтэд шилжүүлэх"
+msgstr "Rack-н нэмэлт өргөтгөлийн өгөгдлийг ITSM-NG үндсэн хүснэгтэд шилжүүлэх"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:168
 msgid "Ignore \"PluginRacksOther\" models and elements"
@@ -9510,7 +9510,7 @@ msgstr "Бусад загваруудыг импорт хийж байна..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
 msgid "Other items do not exist in GLPI core."
-msgstr "Бусад нь GLPI гол зүйлд байхгүй байна."
+msgstr "Бусад нь ITSM-NG гол зүйлд байхгүй байна."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
 #, php-format
@@ -9734,7 +9734,7 @@ msgstr "Дуудлагатай холбоотой зүйлс"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:334
 msgid "Updating GLPI itemtypes..."
-msgstr "GLPI-н төрлүүдийг шинэчилж байна..."
+msgstr "ITSM-NG-н төрлүүдийг шинэчилж байна..."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:359
 #, php-format
@@ -9830,7 +9830,7 @@ msgstr "\"(%s)%s\" мессежээр `%s`.`%s` шинэчлэлт амжилт�
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:91
 msgid "Migrate Domains plugin data into GLPI core tables"
-msgstr "Домэйн нэмэлт өргөтгөлийн өгөгдлийг GLPI үндсэн хүснэгтэд шилжүүлэх"
+msgstr "Домэйн нэмэлт өргөтгөлийн өгөгдлийг ITSM-NG үндсэн хүснэгтэд шилжүүлэх"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:98
 #, php-format
@@ -10247,7 +10247,7 @@ msgstr "--db-password сонголтын утга тэг байж болохгү
 
 #: inc/console/database/installcommand.class.php:91
 msgid "Default language of GLPI"
-msgstr "GLPI-н үндсэн хэл"
+msgstr "ITSM-NG-н үндсэн хэл"
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -10320,11 +10320,11 @@ msgstr "Одоогийн"
 
 #: inc/console/database/updatecommand.class.php:128
 msgid "GLPI version"
-msgstr "GLPI хувилбар"
+msgstr "ITSM-NG хувилбар"
 
 #: inc/console/database/updatecommand.class.php:129
 msgid "GLPI database version"
-msgstr "GLPI өгөгдлийн сангийн хувилбар"
+msgstr "ITSM-NG өгөгдлийн сангийн хувилбар"
 
 #: inc/console/database/updatecommand.class.php:137
 #, php-format
@@ -12014,7 +12014,7 @@ msgstr "Хуваарилагдсан санах ой"
 #: inc/system/requirement/memorylimit.class.php:75
 #, php-format
 msgid "A minimum of %s is commonly required for GLPI."
-msgstr "GLPI-т хамгийн багадаа %s шаардлагатай байдаг."
+msgstr "ITSM-NG-т хамгийн багадаа %s шаардлагатай байдаг."
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -12944,7 +12944,7 @@ msgstr "%1$s нэмэлт өргөтгөлийг идэвхгүй болгосо
 
 #: inc/plugin.class.php:1662 inc/crontask.class.php:841
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 #: inc/plugin.class.php:1662 inc/notificationmailingsetting.class.php:156
 msgid "PHP"
@@ -12989,7 +12989,7 @@ msgstr "Энэ нэмэлт өргөтгөл нь PHP параметрийг %1$
 #: inc/plugin.class.php:1728
 #, php-format
 msgid "This plugin requires GLPI parameter %1$s"
-msgstr "Энэ нэмэлт өргөтгөлд GLPI параметр %1$s шаардлагатай"
+msgstr "Энэ нэмэлт өргөтгөлд ITSM-NG параметр %1$s шаардлагатай"
 
 #: inc/plugin.class.php:2004 inc/plugin.class.php:2443
 msgctxt "plugin"
@@ -14351,7 +14351,7 @@ msgstr "CLI"
 
 #: inc/crontask.class.php:908
 msgid "A minimum of 64 Mio is commonly required for GLPI."
-msgstr "GLPI-д хамгийн багадаа 64 Mio шаардлагатай байдаг."
+msgstr "ITSM-NG-д хамгийн багадаа 64 Mio шаардлагатай байдаг."
 
 #: inc/crontask.class.php:913
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -15470,7 +15470,7 @@ msgstr "Түгжээг тайллаа!"
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_revision.class.php:262
 msgid "Contact your GLPI admin!"
-msgstr "Өөрийн GLPI админтай холбогдоно уу!"
+msgstr "Өөрийн ITSM-NG админтай холбогдоно уу!"
 
 #: inc/objectlock.class.php:157
 msgid "Item NOT unlocked!"
@@ -16442,7 +16442,7 @@ msgstr ""
 
 #: inc/telemetry.class.php:433
 msgid "Reference your GLPI"
-msgstr "Өөрийн GLPI-г лавлана уу"
+msgstr "Өөрийн ITSM-NG-г лавлана уу"
 
 #: inc/telemetry.class.php:435
 #, php-format
@@ -17091,7 +17091,7 @@ msgstr "Цэвэр"
 
 #: inc/marketplace/view.class.php:670
 msgid "This plugin is not available for your GLPI version."
-msgstr "Энэ plugin-г таны GLPI хувилбарт ашиглах боломжгүй."
+msgstr "Энэ plugin-г таны ITSM-NG хувилбарт ашиглах боломжгүй."
 
 #: inc/marketplace/view.class.php:682
 msgid "The plugin has an available update but its directory is not writable."
@@ -17334,7 +17334,7 @@ msgstr "Компьютерийн зорилтот газар нэгж"
 
 #: inc/ruleimportcomputer.class.php:81
 msgid "Find computers in GLPI having the status"
-msgstr "GLPI төлөвтэй компьютер хайж олох"
+msgstr "ITSM-NG төлөвтэй компьютер хайж олох"
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -17358,11 +17358,11 @@ msgstr "Хэрэв хоосон бол боломжтой"
 
 #: inc/ruleimportcomputer.class.php:178
 msgid "is already present in GLPI"
-msgstr "GLPI-д аль хэдийн орсон байна"
+msgstr "ITSM-NG-д аль хэдийн орсон байна"
 
 #: inc/ruleimportcomputer.class.php:179
 msgid "is empty in GLPI"
-msgstr "GLPI-д хоосон байна"
+msgstr "ITSM-NG-д хоосон байна"
 
 #: inc/enclosure.class.php:57
 msgid "Enclosure"
@@ -18040,7 +18040,7 @@ msgstr "%s-д сүүлд нэвтрэх"
 
 #: inc/user.class.php:2802
 msgid "Use GLPI in mode"
-msgstr "GLPI горимыг ашигла"
+msgstr "ITSM-NG горимыг ашигла"
 
 #: inc/user.class.php:2804
 msgid "Normal"
@@ -18539,7 +18539,7 @@ msgstr "Одоо байгаа өгөгдлийн санд дахин байрш�
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
 msgid "Software deleted by GLPI dictionary rules"
-msgstr "GLPI лавлахын дүрмийн дагуу устгасан програм"
+msgstr "ITSM-NG лавлахын дүрмийн дагуу устгасан програм"
 
 #: inc/location.class.php:70 inc/location.class.php:156
 #: inc/location.class.php:270 inc/location.class.php:327
@@ -19336,7 +19336,7 @@ msgstr "Цор ганц индекс нэмэх - %s"
 #: inc/migration.class.php:792
 #, php-format
 msgid "Automatically generated by GLPI %s"
-msgstr "GLPI %s автоматаар үүсгэгдсэн"
+msgstr "ITSM-NG %s автоматаар үүсгэгдсэн"
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -19505,7 +19505,7 @@ msgstr "Хуудасны дээд тал руу буцах"
 
 #: inc/html.class.php:1789
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Та үүнийг GLPI-PROJECT.org сайтаас олох болно."
+msgstr "Та үүнийг ITSM-NG-PROJECT.org сайтаас олох болно."
 
 #: inc/html.class.php:1880 inc/html.class.php:1881 inc/html.class.php:6884
 #: inc/html.class.php:6886
@@ -19751,7 +19751,7 @@ msgstr "CSS"
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
 msgid "Automatically generated by GLPI"
-msgstr "GLPI автоматаар үүсгэгдсэн"
+msgstr "ITSM-NG автоматаар үүсгэгдсэн"
 
 #: inc/networkportlocal.class.php:47
 msgid "Local loop port"
@@ -20101,7 +20101,7 @@ msgstr "Хэрэглэгчийг LDAP директороос устгасан ү
 
 #: inc/config.class.php:696
 msgid "GLPI server time zone"
-msgstr "GLPI серверийн цагийн бүс"
+msgstr "ITSM-NG серверийн цагийн бүс"
 
 #: inc/config.class.php:738 install/install.php:216
 msgid "SQL server (MariaDB or MySQL)"
@@ -20265,7 +20265,7 @@ msgstr "Тоологчийг харуулах"
 
 #: inc/config.class.php:1138
 msgid "Show GLPI ID"
-msgstr "GLPI ID-г харах"
+msgstr "ITSM-NG ID-г харах"
 
 #: inc/config.class.php:1145
 msgid "Keep devices when purging an item"
@@ -22194,7 +22194,7 @@ msgstr "Агуулгыг ачаалахад алдаа гарлаа!"
 
 #: inc/ajax.class.php:431
 msgid "Please check GLPI logs or contact your administrator."
-msgstr "GLPI бүртгэлийг шалгах буюу админтайгаа холбогдоно уу."
+msgstr "ITSM-NG бүртгэлийг шалгах буюу админтайгаа холбогдоно уу."
 
 #: inc/ajax.class.php:432
 msgid "try to reload"
@@ -22234,7 +22234,7 @@ msgstr "Хэрэглэгчийн нэр эсвэл нууц үг буруу ба
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
 msgid "User not authorized to connect in GLPI"
-msgstr "Хэрэглэгч GLPI-д холбогдох эрхгүй байна"
+msgstr "Хэрэглэгч ITSM-NG-д холбогдох эрхгүй байна"
 
 #: inc/auth.class.php:590
 msgid "Login with external token disabled"
@@ -22278,7 +22278,7 @@ msgstr "%1$s-с IP %2$s-д нэвтрэх явц амжилтгүй боллоо
 
 #: inc/auth.class.php:1019
 msgid "Authentication on GLPI database"
-msgstr "GLPI өгөгдлийн сан дээрх танилт"
+msgstr "ITSM-NG өгөгдлийн сан дээрх танилт"
 
 #: inc/auth.class.php:1031
 msgid "Authentication on a LDAP directory"
@@ -22310,7 +22310,7 @@ msgstr "x509 сертификатын танилт"
 
 #: inc/auth.class.php:1130 inc/auth.class.php:1657
 msgid "GLPI internal database"
-msgstr "GLPI дотоод өгөгдлийн сан"
+msgstr "ITSM-NG дотоод өгөгдлийн сан"
 
 #: inc/auth.class.php:1136
 msgid "Not yet authenticated"
@@ -22845,7 +22845,7 @@ msgstr "Энэ аргаар шинэчлэлт хийх боломжгүй ба�
 
 #: install/update.php:577
 msgid "Go back to GLPI"
-msgstr "GLPI руу буцах"
+msgstr "ITSM-NG руу буцах"
 
 #: install/update.php:582
 #, php-format
@@ -22875,7 +22875,7 @@ msgstr "Хандив өгөх"
 #: install/update.php:660 install/update_content.php:367
 #: install/install.php:545
 msgid "Use GLPI"
-msgstr "GLPI ашиглах"
+msgstr "ITSM-NG ашиглах"
 
 #: install/update.php:669
 msgid ""
@@ -22932,11 +22932,11 @@ msgstr ""
 
 #: install/install.php:139
 msgid "Installation or update of GLPI"
-msgstr "GLPI-г суулгах буюу шинэчлэх"
+msgstr "ITSM-NG-г суулгах буюу шинэчлэх"
 
 #: install/install.php:140
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "GLPI-г шинэ install-г суулгахын тулд \"Суулгах\" хэсгийг сонгоно уу."
+msgstr "ITSM-NG-г шинэ install-г суулгахын тулд \"Суулгах\" хэсгийг сонгоно уу."
 
 #: install/install.php:141
 msgid ""
@@ -23102,7 +23102,7 @@ msgstr "Шинэ"
 
 #: index.php:74
 msgid "GLPI - Authentication"
-msgstr "GLPI-Танилт"
+msgstr "ITSM-NG-Танилт"
 
 #: index.php:147
 msgid "Default (from user profile)"

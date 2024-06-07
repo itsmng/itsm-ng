@@ -7312,7 +7312,7 @@ msgstr "Viimane LDAP kataloogi uuendus"
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
 msgid "Last update in GLPI"
-msgstr "Viimane uuendus GLPI-s"
+msgstr "Viimane uuendus ITSM-NG-s"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
 msgid "No user to be synchronized"
@@ -7345,7 +7345,7 @@ msgstr "LDAP kataloogi valik"
 
 #: inc/authldap.class.php:2401
 msgid "No LDAP directory defined in GLPI"
-msgstr "Ühteegi LDAP kataloogi ei ole GLPI-s defineeritud"
+msgstr "Ühteegi LDAP kataloogi ei ole ITSM-NG-s defineeritud"
 
 #: inc/authldap.class.php:2772
 msgid "User not found or several users found"
@@ -7437,7 +7437,7 @@ msgstr "Rahulolu-uuringule vastatud"
 #: inc/ticketsatisfaction.class.php:230 inc/ticketsatisfaction.class.php:280
 #: inc/entity.class.php:2710 inc/entity.class.php:3311
 msgid "Internal survey"
-msgstr "GLPI rahulolu-uuring"
+msgstr "ITSM-NG rahulolu-uuring"
 
 #: inc/event.class.php:149 inc/config.class.php:2275
 msgid "System"
@@ -8259,7 +8259,7 @@ msgstr "Olemi administraator"
 
 #: inc/notificationtarget.class.php:1267 inc/config.class.php:303
 msgid "URL of the application"
-msgstr "GLPI aadress"
+msgstr "ITSM-NG aadress"
 
 #: inc/autoupdatesystem.class.php:40
 msgid "Update Source"
@@ -9358,7 +9358,7 @@ msgstr "`%s` uuendamine ebaõnnestus teatega \"(%s) %s\"."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
 msgid "Migrate Racks plugin data into GLPI core tables"
-msgstr "Migreeri Racks plugina andmed GLPI põhitabelitesse"
+msgstr "Migreeri Racks plugina andmed ITSM-NG põhitabelitesse"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:168
 msgid "Ignore \"PluginRacksOther\" models and elements"
@@ -9393,7 +9393,7 @@ msgstr ""
 msgid ""
 "You are about to launch migration of Racks plugin data into GLPI core "
 "tables."
-msgstr "Oled käivitamas \"Racks\" plugina andmete importi GLPI põhitabelitesse."
+msgstr "Oled käivitamas \"Racks\" plugina andmete importi ITSM-NG põhitabelitesse."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:217
 #: inc/console/migration/appliancesplugintocorecommand.class.php:162
@@ -9481,7 +9481,7 @@ msgstr "Impordin teised mudelid..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
 msgid "Other items do not exist in GLPI core."
-msgstr "Teised üksused mis puudvad GLPI põhibaasist."
+msgstr "Teised üksused mis puudvad ITSM-NG põhibaasist."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
 #, php-format
@@ -9705,7 +9705,7 @@ msgstr "Teatega seotavad asjad"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:334
 msgid "Updating GLPI itemtypes..."
-msgstr "Uuendan GLPI üksuse tüüpe..."
+msgstr "Uuendan ITSM-NG üksuse tüüpe..."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:359
 #, php-format
@@ -9799,7 +9799,7 @@ msgstr "`%s`.`%s` uuendamine ebaõnnestus teatega \"(%s) %s\"."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:91
 msgid "Migrate Domains plugin data into GLPI core tables"
-msgstr "Migreeri \"Domains\" plugina andmed GLPI põhitabelitesse"
+msgstr "Migreeri \"Domains\" plugina andmed ITSM-NG põhitabelitesse"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:98
 #, php-format
@@ -9812,7 +9812,7 @@ msgstr ""
 msgid ""
 "You are about to launch migration of Domains plugin data into GLPI core "
 "tables."
-msgstr "Oled käivitamas \"Domains\" plugina andmete importi GLPI põhitabelitesse."
+msgstr "Oled käivitamas \"Domains\" plugina andmete importi ITSM-NG põhitabelitesse."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:182
 msgid ""
@@ -10057,7 +10057,7 @@ msgstr ""
 msgid ""
 "Output language (default value is existing GLPI \"language\" configuration "
 "or \"en_GB\")"
-msgstr "Väljundi keel (vaikimisi on GLPI valitud süsteemi keel või \"en_GB\")"
+msgstr "Väljundi keel (vaikimisi on ITSM-NG valitud süsteemi keel või \"en_GB\")"
 
 #: inc/console/application.class.php:212
 #, php-format
@@ -10197,7 +10197,7 @@ msgstr "Valik \"--db-password\" väärtus ei saa olla tühi."
 
 #: inc/console/database/installcommand.class.php:91
 msgid "Default language of GLPI"
-msgstr "GLPI vaikimisi keel"
+msgstr "ITSM-NG vaikimisi keel"
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -10268,11 +10268,11 @@ msgstr "Kehtiv"
 
 #: inc/console/database/updatecommand.class.php:128
 msgid "GLPI version"
-msgstr "GLPI versioon"
+msgstr "ITSM-NG versioon"
 
 #: inc/console/database/updatecommand.class.php:129
 msgid "GLPI database version"
-msgstr "GLPI andmebaasi versioon"
+msgstr "ITSM-NG andmebaasi versioon"
 
 #: inc/console/database/updatecommand.class.php:137
 #, php-format
@@ -11944,7 +11944,7 @@ msgstr "Eraldatud mälu"
 #: inc/system/requirement/memorylimit.class.php:75
 #, php-format
 msgid "A minimum of %s is commonly required for GLPI."
-msgstr "Minimaalselt %s on üldiselt vajalik GLPI-le."
+msgstr "Minimaalselt %s on üldiselt vajalik ITSM-NG-le."
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -12022,7 +12022,7 @@ msgstr "\"session.use_trans_sid\" peab olema \"off\" väärtusega."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
 msgid "See .htaccess file in the GLPI root for more information."
-msgstr "Vaata .htaccess faili GLPI juurkaustas rohekemaks infoks."
+msgstr "Vaata .htaccess faili ITSM-NG juurkaustas rohekemaks infoks."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -12866,7 +12866,7 @@ msgstr "Plugin %1$s on keelatud!"
 
 #: inc/plugin.class.php:1662 inc/crontask.class.php:841
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 #: inc/plugin.class.php:1662 inc/notificationmailingsetting.class.php:156
 msgid "PHP"
@@ -12910,7 +12910,7 @@ msgstr "See plugin vajab PHP parameetrit %1$s"
 #: inc/plugin.class.php:1728
 #, php-format
 msgid "This plugin requires GLPI parameter %1$s"
-msgstr "See plugin vajab GLPI parameetrit %1$s"
+msgstr "See plugin vajab ITSM-NG parameetrit %1$s"
 
 #: inc/plugin.class.php:2004 inc/plugin.class.php:2443
 msgctxt "plugin"
@@ -14264,7 +14264,7 @@ msgstr "Käsurealt"
 
 #: inc/crontask.class.php:908
 msgid "A minimum of 64 Mio is commonly required for GLPI."
-msgstr "Minimaalselt 64 MB on üldiselt soovitatav GLPI-le."
+msgstr "Minimaalselt 64 MB on üldiselt soovitatav ITSM-NG-le."
 
 #: inc/crontask.class.php:913
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -15378,7 +15378,7 @@ msgstr "Üksus vabastatud!"
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_revision.class.php:262
 msgid "Contact your GLPI admin!"
-msgstr "Kontakteeru oma GLPI adminniga!"
+msgstr "Kontakteeru oma ITSM-NG adminniga!"
 
 #: inc/objectlock.class.php:157
 msgid "Item NOT unlocked!"
@@ -16317,7 +16317,7 @@ msgstr "Saada \"kasutusstatistika\""
 
 #: inc/telemetry.class.php:417
 msgid "We need your help to improve GLPI and the plugins ecosystem!"
-msgstr "Me vajame teie abi GLPI ja pluginate ökosüsteemi parendamiseks!"
+msgstr "Me vajame teie abi ITSM-NG ja pluginate ökosüsteemi parendamiseks!"
 
 #: inc/telemetry.class.php:418
 msgid ""
@@ -16345,7 +16345,7 @@ msgstr ""
 
 #: inc/telemetry.class.php:433
 msgid "Reference your GLPI"
-msgstr "Viide oma GLPI-le"
+msgstr "Viide oma ITSM-NG-le"
 
 #: inc/telemetry.class.php:435
 #, php-format
@@ -16985,7 +16985,7 @@ msgstr "Puhasta"
 
 #: inc/marketplace/view.class.php:670
 msgid "This plugin is not available for your GLPI version."
-msgstr "See plugin pole saadaval teie GLPI versioonile."
+msgstr "See plugin pole saadaval teie ITSM-NG versioonile."
 
 #: inc/marketplace/view.class.php:682
 msgid "The plugin has an available update but its directory is not writable."
@@ -17005,7 +17005,7 @@ msgstr "Uus versioon (%s) on saadaval, uuendada?"
 #: inc/marketplace/view.class.php:722
 #, php-format
 msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-msgstr "Sellele plugina (%s) jaoks on vaja kõrgemat GLPI-võrgu pakkumist"
+msgstr "Sellele plugina (%s) jaoks on vaja kõrgemat ITSM-NG-võrgu pakkumist"
 
 #: inc/marketplace/view.class.php:734
 msgid "Install"
@@ -17038,7 +17038,7 @@ msgstr[1] "%s pluginad"
 
 #: inc/marketplace/view.class.php:988
 msgid "GLPI provides a new marketplace to download and install plugins."
-msgstr "GLPI pakub uut Poodi pluginate allalaadimiseks ja installimiseks."
+msgstr "ITSM-NG pakub uut Poodi pluginate allalaadimiseks ja installimiseks."
 
 #: inc/marketplace/view.class.php:990
 msgid "Do you want to replace the plugins setup page by the new marketplace ?"
@@ -17239,11 +17239,11 @@ msgstr "Jah kui tühi"
 
 #: inc/ruleimportcomputer.class.php:178
 msgid "is already present in GLPI"
-msgstr "on juba GLPI-s"
+msgstr "on juba ITSM-NG-s"
 
 #: inc/ruleimportcomputer.class.php:179
 msgid "is empty in GLPI"
-msgstr "on tühi GLPI-s"
+msgstr "on tühi ITSM-NG-s"
 
 #: inc/enclosure.class.php:57
 msgid "Enclosure"
@@ -17919,7 +17919,7 @@ msgstr "Viimane sisenemine %s"
 
 #: inc/user.class.php:2802
 msgid "Use GLPI in mode"
-msgstr "GLPI režiim"
+msgstr "ITSM-NG režiim"
 
 #: inc/user.class.php:2804
 msgid "Normal"
@@ -18412,7 +18412,7 @@ msgstr "Käivita reeglid olemasoleval andmebaasis mis lõppesid %s"
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
 msgid "Software deleted by GLPI dictionary rules"
-msgstr "GLPI sõnastiku reeglite poolt kustutatud tarkvara"
+msgstr "ITSM-NG sõnastiku reeglite poolt kustutatud tarkvara"
 
 #: inc/location.class.php:70 inc/location.class.php:156
 #: inc/location.class.php:270 inc/location.class.php:327
@@ -19200,7 +19200,7 @@ msgstr "Lisan unikaalsuse indeksid - %s"
 #: inc/migration.class.php:792
 #, php-format
 msgid "Automatically generated by GLPI %s"
-msgstr "Automaatkiri GLPI %s"
+msgstr "Automaatkiri ITSM-NG %s"
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -19352,7 +19352,7 @@ msgstr[1] "%1$s%2$s sekundit"
 
 #: inc/html.class.php:791
 msgid "Display GLPI debug information"
-msgstr "Näita GLPI silumisinfot"
+msgstr "Näita ITSM-NG silumisinfot"
 
 #: inc/html.class.php:1156
 msgid "Progress"
@@ -19369,7 +19369,7 @@ msgstr "Tagasi lehe algusse"
 
 #: inc/html.class.php:1789
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Alla saab laadida aadressilt GLPI-PROJECT.org."
+msgstr "Alla saab laadida aadressilt ITSM-NG-PROJECT.org."
 
 #: inc/html.class.php:1880 inc/html.class.php:1881 inc/html.class.php:6884
 #: inc/html.class.php:6886
@@ -19613,7 +19613,7 @@ msgstr "CSS"
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
 msgid "Automatically generated by GLPI"
-msgstr "GLPI poolt automaatselt genereeritud"
+msgstr "ITSM-NG poolt automaatselt genereeritud"
 
 #: inc/networkportlocal.class.php:47
 msgid "Local loop port"
@@ -19961,7 +19961,7 @@ msgstr "Mida teha, kui kasutaja kustutatakse LDAP katalogist"
 
 #: inc/config.class.php:696
 msgid "GLPI server time zone"
-msgstr "GLPI serveri ajavöönd"
+msgstr "ITSM-NG serveri ajavöönd"
 
 #: inc/config.class.php:738 install/install.php:216
 msgid "SQL server (MariaDB or MySQL)"
@@ -20123,7 +20123,7 @@ msgstr "Näita loendureid"
 
 #: inc/config.class.php:1138
 msgid "Show GLPI ID"
-msgstr "Näita GLPI ID numbrit"
+msgstr "Näita ITSM-NG ID numbrit"
 
 #: inc/config.class.php:1145
 msgid "Keep devices when purging an item"
@@ -20359,7 +20359,7 @@ msgstr "Lähtesta"
 #: inc/config.class.php:1698
 #, php-format
 msgid "Installing and enabling the \"%s\" extension may improve GLPI performance"
-msgstr "Laienduse \"%s\" paigaldamine ja lubamine võib parandada GLPI võimekust"
+msgstr "Laienduse \"%s\" paigaldamine ja lubamine võib parandada ITSM-NG võimekust"
 
 #: inc/config.class.php:1702
 msgid "User data cache"
@@ -22042,7 +22042,7 @@ msgstr "Sisu laadimisel ilmnes viga!"
 
 #: inc/ajax.class.php:431
 msgid "Please check GLPI logs or contact your administrator."
-msgstr "Palun vaata GLPI logisid või võta ühendust administraatoriga."
+msgstr "Palun vaata ITSM-NG logisid või võta ühendust administraatoriga."
 
 #: inc/ajax.class.php:432
 msgid "try to reload"
@@ -22082,7 +22082,7 @@ msgstr "Vale kasutajanimi või salasõna"
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
 msgid "User not authorized to connect in GLPI"
-msgstr "Kasutajal pole lubatud ühenduda GLPI-ga"
+msgstr "Kasutajal pole lubatud ühenduda ITSM-NG-ga"
 
 #: inc/auth.class.php:590
 msgid "Login with external token disabled"
@@ -22126,7 +22126,7 @@ msgstr "Ebaõnnestunud sisselogimine kasutajalt %1$s IP-aadressilt %2$s"
 
 #: inc/auth.class.php:1019
 msgid "Authentication on GLPI database"
-msgstr "Kasutajatuvastus GLPI andmebaasis"
+msgstr "Kasutajatuvastus ITSM-NG andmebaasis"
 
 #: inc/auth.class.php:1031
 msgid "Authentication on a LDAP directory"
@@ -22158,7 +22158,7 @@ msgstr "x509 sertfikaadi autentimine"
 
 #: inc/auth.class.php:1130 inc/auth.class.php:1657
 msgid "GLPI internal database"
-msgstr "GLPI sisemine andmebaas"
+msgstr "ITSM-NG sisemine andmebaas"
 
 #: inc/auth.class.php:1136
 msgid "Not yet authenticated"
@@ -22692,12 +22692,12 @@ msgstr "Võimatu on teostada uuendust sel moel!"
 
 #: install/update.php:577
 msgid "Go back to GLPI"
-msgstr "Tagasi GLPI-sse"
+msgstr "Tagasi ITSM-NG-sse"
 
 #: install/update.php:582
 #, php-format
 msgid "Caution! You will update the GLPI database named: %s"
-msgstr "Hoiatus! Sa uuendad GLPI andmebaasi nimega: %s"
+msgstr "Hoiatus! Sa uuendad ITSM-NG andmebaasi nimega: %s"
 
 #: install/update.php:588 install/install.php:130 install/install.php:171
 #: install/install.php:182 install/install.php:224 install/install.php:308
@@ -22721,7 +22721,7 @@ msgstr "Anneta"
 #: install/update.php:660 install/update_content.php:367
 #: install/install.php:545
 msgid "Use GLPI"
-msgstr "Alusta GLPI kasutamist"
+msgstr "Alusta ITSM-NG kasutamist"
 
 #: install/update.php:669
 msgid ""
@@ -22775,21 +22775,21 @@ msgstr "Ma olen litsentsi lugenud ja EI NÕUSTU litsentsi tingimustega"
 
 #: install/install.php:139
 msgid "Installation or update of GLPI"
-msgstr "GLPI uus paigaldus või uuendus"
+msgstr "ITSM-NG uus paigaldus või uuendus"
 
 #: install/install.php:140
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Vali 'Paigalda', kui sul ei ole veel paigaldatud GLPI."
+msgstr "Vali 'Paigalda', kui sul ei ole veel paigaldatud ITSM-NG."
 
 #: install/install.php:141
 msgid ""
 "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Vali 'Uuenda', et uuendada sinu praegune GLPI paigaldus"
+msgstr "Vali 'Uuenda', et uuendada sinu praegune ITSM-NG paigaldus"
 
 #: install/install.php:158
 msgid ""
 "Checking of the compatibility of your environment with the execution of GLPI"
-msgstr "Keskkonna kontroll GLPI tarkvara käivitamiseks"
+msgstr "Keskkonna kontroll ITSM-NG tarkvara käivitamiseks"
 
 #: install/install.php:177 install/install.php:196 install/install.php:562
 msgid "Do you want to continue?"
@@ -22937,7 +22937,7 @@ msgstr "Uued"
 
 #: index.php:74
 msgid "GLPI - Authentication"
-msgstr "GLPI - Autentimine"
+msgstr "ITSM-NG - Autentimine"
 
 #: index.php:147
 msgid "Default (from user profile)"
