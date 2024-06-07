@@ -6001,6 +6001,15 @@ ul.indexes {
    z-index: 1;
    border: 1px solid #D4D4D4;
    float: left;
+
+   .grid-stack-item-content {
+       inset: 0 !important;
+   }
+
+   .grid-stack-placeholder > .placeholder-content {
+       inset: 0 !important;
+       height: 20px;
+   }
 }
 
 .side_pdus_nofloat .grid-stack-item .grid-stack-item-content, .grid-rack .grid-stack-item:not(.lock-bottom) .grid-stack-item-content {
