@@ -7555,7 +7555,7 @@ msgstr "Останнє оновлення в LDAP каталозі"
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
 msgid "Last update in GLPI"
-msgstr "Останнє оновлення в GLPI"
+msgstr "Останнє оновлення в ITSM-NG"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
 msgid "No user to be synchronized"
@@ -7588,7 +7588,7 @@ msgstr "Вибрати каталог LDAP"
 
 #: inc/authldap.class.php:2401
 msgid "No LDAP directory defined in GLPI"
-msgstr "Не визначено каталог LDAP в GLPI"
+msgstr "Не визначено каталог LDAP в ITSM-NG"
 
 #: inc/authldap.class.php:2772
 msgid "User not found or several users found"
@@ -9682,7 +9682,7 @@ msgstr "Оновлення `%s`  припинено з повідомлення�
 
 #: inc/console/migration/racksplugintocorecommand.class.php:162
 msgid "Migrate Racks plugin data into GLPI core tables"
-msgstr "Міграція даних плугіну Шафи до основних таблиць GLPI"
+msgstr "Міграція даних плугіну Шафи до основних таблиць ITSM-NG"
 
 #: inc/console/migration/racksplugintocorecommand.class.php:168
 msgid "Ignore \"PluginRacksOther\" models and elements"
@@ -9716,7 +9716,7 @@ msgstr ""
 msgid ""
 "You are about to launch migration of Racks plugin data into GLPI core "
 "tables."
-msgstr "Ви збираєтесь мігрувати дані плугіну Шафи до основних таблиць GLPI."
+msgstr "Ви збираєтесь мігрувати дані плугіну Шафи до основних таблиць ITSM-NG."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:217
 #: inc/console/migration/appliancesplugintocorecommand.class.php:162
@@ -9805,7 +9805,7 @@ msgstr "Імпорт інших моделей..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
 msgid "Other items do not exist in GLPI core."
-msgstr "Інші елементи не існують в ядрі GLPI."
+msgstr "Інші елементи не існують в ядрі ITSM-NG."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
 #, php-format
@@ -9988,7 +9988,7 @@ msgstr "Не можу створити кімнату по замовчуван�
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:145
 msgid "Migrate Appliances plugin data into GLPI core tables"
-msgstr "Міграція даних плугіну Appliances до основних таблиць GLPI"
+msgstr "Міграція даних плугіну Appliances до основних таблиць ITSM-NG"
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:160
 msgid ""
@@ -10028,7 +10028,7 @@ msgstr "Елементи, що можуть пов’язуватись з за�
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:334
 msgid "Updating GLPI itemtypes..."
-msgstr "Оновлення типів елементів GLPI..."
+msgstr "Оновлення типів елементів ITSM-NG..."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:359
 #, php-format
@@ -10124,7 +10124,7 @@ msgstr "Оновлення `%s`.`%s` припинено з повідомлен�
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:91
 msgid "Migrate Domains plugin data into GLPI core tables"
-msgstr "Міграція даних плугіну Домени до основних таблиць GLPI"
+msgstr "Міграція даних плугіну Домени до основних таблиць ITSM-NG"
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:98
 #, php-format
@@ -10136,7 +10136,7 @@ msgstr ""
 msgid ""
 "You are about to launch migration of Domains plugin data into GLPI core "
 "tables."
-msgstr "Ви збираєтесь мігрувати дані плугіну Домени до основних таблиць GLPI."
+msgstr "Ви збираєтесь мігрувати дані плугіну Домени до основних таблиць ITSM-NG."
 
 #: inc/console/migration/domainsplugintocorecommand.class.php:182
 msgid ""
@@ -10529,7 +10529,7 @@ msgstr "Значення опції --db-password не може бути пор�
 
 #: inc/console/database/installcommand.class.php:91
 msgid "Default language of GLPI"
-msgstr "Мова GLPI по замовчуванню"
+msgstr "Мова ITSM-NG по замовчуванню"
 
 #: inc/console/database/installcommand.class.php:99
 msgid "Force execution of installation, overriding existing database"
@@ -10601,11 +10601,11 @@ msgstr "Поточна"
 
 #: inc/console/database/updatecommand.class.php:128
 msgid "GLPI version"
-msgstr "Версія GLPI"
+msgstr "Версія ITSM-NG"
 
 #: inc/console/database/updatecommand.class.php:129
 msgid "GLPI database version"
-msgstr "Версія бази даних GLPI"
+msgstr "Версія бази даних ITSM-NG"
 
 #: inc/console/database/updatecommand.class.php:137
 #, php-format
@@ -12326,7 +12326,7 @@ msgstr "Виділена пам’ять"
 #: inc/system/requirement/memorylimit.class.php:75
 #, php-format
 msgid "A minimum of %s is commonly required for GLPI."
-msgstr "Для GLPI зазвичай потрібно мінімум %s."
+msgstr "Для ITSM-NG зазвичай потрібно мінімум %s."
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -12405,7 +12405,7 @@ msgstr "Параметр \"session.use_trans_sid\" має бути вимкне�
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
 msgid "See .htaccess file in the GLPI root for more information."
-msgstr "Дивись .htaccess файл в корені GLPI для додаткової інформації."
+msgstr "Дивись .htaccess файл в корені ITSM-NG для додаткової інформації."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -13277,7 +13277,7 @@ msgstr "Плугін %1$s вимкнено!"
 
 #: inc/plugin.class.php:1662 inc/crontask.class.php:841
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 #: inc/plugin.class.php:1662 inc/notificationmailingsetting.class.php:156
 msgid "PHP"
@@ -13321,7 +13321,7 @@ msgstr "Цей плугін вимагає параметр PHP %1$s"
 #: inc/plugin.class.php:1728
 #, php-format
 msgid "This plugin requires GLPI parameter %1$s"
-msgstr "Цей плугін вимагає параметр GLPI %1$s"
+msgstr "Цей плугін вимагає параметр ITSM-NG %1$s"
 
 #: inc/plugin.class.php:2004 inc/plugin.class.php:2443
 msgctxt "plugin"
@@ -14765,7 +14765,7 @@ msgstr "CLI"
 
 #: inc/crontask.class.php:908
 msgid "A minimum of 64 Mio is commonly required for GLPI."
-msgstr "Звичайно для GLPI потрібно мінімум 64 Mio."
+msgstr "Звичайно для ITSM-NG потрібно мінімум 64 Mio."
 
 #: inc/crontask.class.php:913
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -15943,7 +15943,7 @@ msgstr "Елемент розблоковано!"
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_revision.class.php:262
 msgid "Contact your GLPI admin!"
-msgstr "Зв'яжіться з адміністратором GLPI!"
+msgstr "Зв'яжіться з адміністратором ITSM-NG!"
 
 #: inc/objectlock.class.php:157
 msgid "Item NOT unlocked!"
@@ -16926,7 +16926,7 @@ msgstr ""
 
 #: inc/telemetry.class.php:433
 msgid "Reference your GLPI"
-msgstr "Опишіть ваш GLPI"
+msgstr "Опишіть ваш ITSM-NG"
 
 #: inc/telemetry.class.php:435
 #, php-format
@@ -17587,7 +17587,7 @@ msgstr "Очистити"
 
 #: inc/marketplace/view.class.php:670
 msgid "This plugin is not available for your GLPI version."
-msgstr "Цей плугін не доступний для вашої версії GLPI."
+msgstr "Цей плугін не доступний для вашої версії ITSM-NG."
 
 #: inc/marketplace/view.class.php:682
 msgid "The plugin has an available update but its directory is not writable."
@@ -17852,11 +17852,11 @@ msgstr "Так, якщо порожнє"
 
 #: inc/ruleimportcomputer.class.php:178
 msgid "is already present in GLPI"
-msgstr "вже присутній в GLPI"
+msgstr "вже присутній в ITSM-NG"
 
 #: inc/ruleimportcomputer.class.php:179
 msgid "is empty in GLPI"
-msgstr "є порожнім в GLPI"
+msgstr "є порожнім в ITSM-NG"
 
 #: inc/enclosure.class.php:57
 msgid "Enclosure"
@@ -18474,7 +18474,7 @@ msgstr "Файл не є файлом зображення"
 
 #: inc/user.class.php:2006
 msgid "Add user..."
-msgstr "Додати користувача GLPI"
+msgstr "Додати користувача ITSM-NG"
 
 #: inc/user.class.php:2012
 msgid "... From an external source"
@@ -18552,7 +18552,7 @@ msgstr "Останній вхід %s"
 
 #: inc/user.class.php:2802
 msgid "Use GLPI in mode"
-msgstr "Використовувати GLPI у режимі"
+msgstr "Використовувати ITSM-NG у режимі"
 
 #: inc/user.class.php:2804
 msgid "Normal"
@@ -19060,7 +19060,7 @@ msgstr "Застосування правил на актуальній базі
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
 msgid "Software deleted by GLPI dictionary rules"
-msgstr "ПЗ, видалене правилами каталогів GLPI"
+msgstr "ПЗ, видалене правилами каталогів ITSM-NG"
 
 #: inc/location.class.php:70 inc/location.class.php:156
 #: inc/location.class.php:270 inc/location.class.php:327
@@ -20048,7 +20048,7 @@ msgstr[3] "%1$s%2$s секунд"
 
 #: inc/html.class.php:791
 msgid "Display GLPI debug information"
-msgstr "Показувати налагоджувальну інформацію GLPI"
+msgstr "Показувати налагоджувальну інформацію ITSM-NG"
 
 #: inc/html.class.php:1156
 msgid "Progress"
@@ -20065,7 +20065,7 @@ msgstr "Повернутись в початок сторінки"
 
 #: inc/html.class.php:1789
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Її можна знайти на сайті GLPI-PROJECT.org."
+msgstr "Її можна знайти на сайті ITSM-NG-PROJECT.org."
 
 #: inc/html.class.php:1880 inc/html.class.php:1881 inc/html.class.php:6884
 #: inc/html.class.php:6886
@@ -20321,7 +20321,7 @@ msgstr "CSS"
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
 msgid "Automatically generated by GLPI"
-msgstr "Автоматично згенеровано GLPI %s"
+msgstr "Автоматично згенеровано ITSM-NG %s"
 
 #: inc/networkportlocal.class.php:47
 msgid "Local loop port"
@@ -20671,7 +20671,7 @@ msgstr "Дія після видалення користувача з AD/LDAP"
 
 #: inc/config.class.php:696
 msgid "GLPI server time zone"
-msgstr "Годинний пояс сервера GLPI"
+msgstr "Годинний пояс сервера ITSM-NG"
 
 #: inc/config.class.php:738 install/install.php:216
 msgid "SQL server (MariaDB or MySQL)"
@@ -20835,7 +20835,7 @@ msgstr "Показати лічильники"
 
 #: inc/config.class.php:1138
 msgid "Show GLPI ID"
-msgstr "Показувати GLPI ID"
+msgstr "Показувати ITSM-NG ID"
 
 #: inc/config.class.php:1145
 msgid "Keep devices when purging an item"
@@ -22860,7 +22860,7 @@ msgstr "Невірний користувач або пароль"
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
 msgid "User not authorized to connect in GLPI"
-msgstr "Користувач не має дозволу входити в GLPI"
+msgstr "Користувач не має дозволу входити в ITSM-NG"
 
 #: inc/auth.class.php:590
 msgid "Login with external token disabled"
@@ -22908,7 +22908,7 @@ msgstr "Невдала реєстрація %1$s з IP %2$s"
 
 #: inc/auth.class.php:1019
 msgid "Authentication on GLPI database"
-msgstr "Аутентифікація через базу GLPI"
+msgstr "Аутентифікація через базу ITSM-NG"
 
 #: inc/auth.class.php:1031
 msgid "Authentication on a LDAP directory"
@@ -22940,7 +22940,7 @@ msgstr "авторизація через сертифікат x509 "
 
 #: inc/auth.class.php:1130 inc/auth.class.php:1657
 msgid "GLPI internal database"
-msgstr "Вбудована база GLPI"
+msgstr "Вбудована база ITSM-NG"
 
 #: inc/auth.class.php:1136
 msgid "Not yet authenticated"
@@ -23495,12 +23495,12 @@ msgstr "Оновлення таким шляхом неможливе!!"
 
 #: install/update.php:577
 msgid "Go back to GLPI"
-msgstr "Повернутись в GLPI"
+msgstr "Повернутись в ITSM-NG"
 
 #: install/update.php:582
 #, php-format
 msgid "Caution! You will update the GLPI database named: %s"
-msgstr "Увага! Ви збираєтесь оновити базу GLPI з назвою: %s"
+msgstr "Увага! Ви збираєтесь оновити базу ITSM-NG з назвою: %s"
 
 #: install/update.php:588 install/install.php:130 install/install.php:171
 #: install/install.php:182 install/install.php:224 install/install.php:308
@@ -23524,7 +23524,7 @@ msgstr "Пожертва"
 #: install/update.php:660 install/update_content.php:367
 #: install/install.php:545
 msgid "Use GLPI"
-msgstr "Запустити GLPI"
+msgstr "Запустити ITSM-NG"
 
 #: install/update.php:669
 msgid ""
@@ -23577,21 +23577,21 @@ msgstr "Я прочитав і НЕ ПРИЙМАЮ всі пункти ліце�
 
 #: install/install.php:139
 msgid "Installation or update of GLPI"
-msgstr "Встановлення або оновлення GLPI"
+msgstr "Встановлення або оновлення ITSM-NG"
 
 #: install/install.php:140
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Оберіть 'Встановлення' для повного нового встановлення GLPI ."
+msgstr "Оберіть 'Встановлення' для повного нового встановлення ITSM-NG ."
 
 #: install/install.php:141
 msgid ""
 "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Оберіть 'Оновити', щоб оновити Вашу версію GLPI з попередньої версії"
+msgstr "Оберіть 'Оновити', щоб оновити Вашу версію ITSM-NG з попередньої версії"
 
 #: install/install.php:158
 msgid ""
 "Checking of the compatibility of your environment with the execution of GLPI"
-msgstr "Перевірка вашого оточення на сумісність з GLPI"
+msgstr "Перевірка вашого оточення на сумісність з ITSM-NG"
 
 #: install/install.php:177 install/install.php:196 install/install.php:562
 msgid "Do you want to continue?"
@@ -23741,7 +23741,7 @@ msgstr "Новий"
 
 #: index.php:74
 msgid "GLPI - Authentication"
-msgstr "GLPI - Аутентифікація"
+msgstr "ITSM-NG - Аутентифікація"
 
 #: index.php:147
 msgid "Default (from user profile)"

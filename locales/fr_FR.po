@@ -16517,7 +16517,7 @@ msgstr ""
 
 #: inc/telemetry.class.php:433
 msgid "Reference your GLPI"
-msgstr "Référencez votre GLPI"
+msgstr "Référencez votre ITSM-NG"
 
 #: inc/telemetry.class.php:435
 #, php-format
@@ -17173,7 +17173,7 @@ msgstr "Nettoyer"
 
 #: inc/marketplace/view.class.php:670
 msgid "This plugin is not available for your GLPI version."
-msgstr "Ce plugin n'est pas disponible pour votre version de GLPI."
+msgstr "Ce plugin n'est pas disponible pour votre version de ITSM-NG."
 
 #: inc/marketplace/view.class.php:682
 msgid "The plugin has an available update but its directory is not writable."

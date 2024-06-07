@@ -16984,7 +16984,7 @@ msgstr "A new version (%s) is available, update ?"
 #: inc/marketplace/view.class.php:722
 #, php-format
 msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-msgstr "You need a superior GLPI-Network offer to access to this plugin (%s)"
+msgstr "You need a superior ITSM-NG-Network offer to access to this plugin (%s)"
 
 #: inc/marketplace/view.class.php:734
 msgid "Install"
@@ -17017,7 +17017,7 @@ msgstr[1] "%s plugins"
 
 #: inc/marketplace/view.class.php:988
 msgid "GLPI provides a new marketplace to download and install plugins."
-msgstr "GLPI provides a new marketplace to download and install plugins."
+msgstr "ITSM-NG provides a new marketplace to download and install plugins."
 
 #: inc/marketplace/view.class.php:990
 msgid "Do you want to replace the plugins setup page by the new marketplace ?"

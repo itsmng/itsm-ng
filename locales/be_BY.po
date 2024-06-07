@@ -7523,7 +7523,7 @@ msgstr "Апошняе абнаўленне ў каталогу LDAP"
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
 msgid "Last update in GLPI"
-msgstr "Апошняе абнаўленне ў GLPI"
+msgstr "Апошняе абнаўленне ў ITSM-NG"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
 msgid "No user to be synchronized"
@@ -7556,7 +7556,7 @@ msgstr "Выбар каталога LDAP"
 
 #: inc/authldap.class.php:2401
 msgid "No LDAP directory defined in GLPI"
-msgstr "Ня вызначан каталог LDAP ў GLPI "
+msgstr "Ня вызначан каталог LDAP ў ITSM-NG "
 
 #: inc/authldap.class.php:2772
 msgid "User not found or several users found"
@@ -22610,7 +22610,7 @@ msgstr "Няправільнае імя карыстальніка або пар
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
 msgid "User not authorized to connect in GLPI"
-msgstr "Карыстальнік не мае дазволу ўваходзіць ў  GLPI"
+msgstr "Карыстальнік не мае дазволу ўваходзіць ў  ITSM-NG"
 
 #: inc/auth.class.php:590
 msgid "Login with external token disabled"
@@ -22658,7 +22658,7 @@ msgstr "Няўдалы ўваход у сістэму для  %1$s з IP %2$s"
 
 #: inc/auth.class.php:1019
 msgid "Authentication on GLPI database"
-msgstr "Аўтэнтыфікацыя ў базе GLPI"
+msgstr "Аўтэнтыфікацыя ў базе ITSM-NG"
 
 #: inc/auth.class.php:1031
 msgid "Authentication on a LDAP directory"
@@ -22690,7 +22690,7 @@ msgstr "Аўтэнтыфікацыя праз сертыфікат x509"
 
 #: inc/auth.class.php:1130 inc/auth.class.php:1657
 msgid "GLPI internal database"
-msgstr "Унутраная база дадзеных GLPI"
+msgstr "Унутраная база дадзеных ITSM-NG"
 
 #: inc/auth.class.php:1136
 msgid "Not yet authenticated"
@@ -23473,7 +23473,7 @@ msgstr "Новых"
 
 #: index.php:74
 msgid "GLPI - Authentication"
-msgstr "GLPI - Аўтэнтіфікацыя"
+msgstr "ITSM-NG - Аўтэнтіфікацыя"
 
 #: index.php:147
 msgid "Default (from user profile)"

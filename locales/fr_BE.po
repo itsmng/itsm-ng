@@ -16331,7 +16331,7 @@ msgstr ""
 
 #: inc/telemetry.class.php:433
 msgid "Reference your GLPI"
-msgstr "Référencez votre GLPI"
+msgstr "Référencez votre ITSM-NG"
 
 #: inc/telemetry.class.php:435
 #, php-format

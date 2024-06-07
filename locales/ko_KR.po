@@ -7184,7 +7184,7 @@ msgstr "LDAP 디렉토리 마지막 갱신"
 
 #: inc/authldap.class.php:1565 inc/authldap.class.php:1614
 msgid "Last update in GLPI"
-msgstr "GLPI 내 최신 업데이트"
+msgstr "ITSM-NG 내 최신 업데이트"
 
 #: inc/authldap.class.php:1626 inc/authldap.class.php:1631
 msgid "No user to be synchronized"
@@ -7217,7 +7217,7 @@ msgstr "LDAP 디렉터리 선택"
 
 #: inc/authldap.class.php:2401
 msgid "No LDAP directory defined in GLPI"
-msgstr "GLPI 에 정의된 LDAP 디렉터리 없음"
+msgstr "ITSM-NG 에 정의된 LDAP 디렉터리 없음"
 
 #: inc/authldap.class.php:2772
 msgid "User not found or several users found"
@@ -9286,7 +9286,7 @@ msgstr "다른 모델 불러오기 중..."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:527
 msgid "Other items do not exist in GLPI core."
-msgstr "다른 항목들은 GLPI 코어에 없습니다."
+msgstr "다른 항목들은 ITSM-NG 코어에 없습니다."
 
 #: inc/console/migration/racksplugintocorecommand.class.php:529
 #, php-format
@@ -9838,13 +9838,13 @@ msgstr "사용할 디렉토리 구성"
 
 #: inc/console/application.class.php:185
 msgid "Disable GLPI plugins (unless commands forces plugins loading)"
-msgstr "GLPI 플러그인 비활성화 (명령으로 강제로 플러그인을 로드하지 않는 경우)"
+msgstr "ITSM-NG 플러그인 비활성화 (명령으로 강제로 플러그인을 로드하지 않는 경우)"
 
 #: inc/console/application.class.php:191
 msgid ""
 "Output language (default value is existing GLPI \"language\" configuration "
 "or \"en_GB\")"
-msgstr "출력 언어 (기본값은 기존 GLPI \"언어\" 구성 또는 \"en_GB\")"
+msgstr "출력 언어 (기본값은 기존 ITSM-NG \"언어\" 구성 또는 \"en_GB\")"
 
 #: inc/console/application.class.php:212
 #, php-format
@@ -12572,7 +12572,7 @@ msgstr "플러그인 %1$s이 비활성화 되었습니다!"
 
 #: inc/plugin.class.php:1662 inc/crontask.class.php:841
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 #: inc/plugin.class.php:1662 inc/notificationmailingsetting.class.php:156
 msgid "PHP"
@@ -12616,7 +12616,7 @@ msgstr "이 플러그인은 PHP 매개변수 %1$s가 필요합니다"
 #: inc/plugin.class.php:1728
 #, php-format
 msgid "This plugin requires GLPI parameter %1$s"
-msgstr "이 플러그인 은 GLPI 매개변수 %1$s 가 필요합니다"
+msgstr "이 플러그인 은 ITSM-NG 매개변수 %1$s 가 필요합니다"
 
 #: inc/plugin.class.php:2004 inc/plugin.class.php:2443
 msgctxt "plugin"
@@ -13928,7 +13928,7 @@ msgstr "CLI"
 
 #: inc/crontask.class.php:908
 msgid "A minimum of 64 Mio is commonly required for GLPI."
-msgstr "GLPI에는 보통 최소 64 Mio 가 요구됩니다."
+msgstr "ITSM-NG에는 보통 최소 64 Mio 가 요구됩니다."
 
 #: inc/crontask.class.php:913
 msgid "No task with Run mode = CLI, fix your tasks configuration"
@@ -15006,7 +15006,7 @@ msgstr "품목 잠금 해제!"
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_revision.class.php:262
 msgid "Contact your GLPI admin!"
-msgstr "GLPI 관리자에게 연락하세요!"
+msgstr "ITSM-NG 관리자에게 연락하세요!"
 
 #: inc/objectlock.class.php:157
 msgid "Item NOT unlocked!"
@@ -15938,7 +15938,7 @@ msgstr "\"사용 통계\" 전송"
 
 #: inc/telemetry.class.php:417
 msgid "We need your help to improve GLPI and the plugins ecosystem!"
-msgstr "GLPI와 플러그인 생태계를 향상시키려면 당신의 도움이 필요합니다!"
+msgstr "ITSM-NG와 플러그인 생태계를 향상시키려면 당신의 도움이 필요합니다!"
 
 #: inc/telemetry.class.php:418
 msgid ""
@@ -15953,16 +15953,16 @@ msgstr ""
 msgid ""
 "Once sent, usage statistics are aggregated and made available to a broad "
 "range of GLPI developers."
-msgstr "전송되면, 사용 통계가 집계되어 수많은 GLPI 개발자들에게 제공됩니다."
+msgstr "전송되면, 사용 통계가 집계되어 수많은 ITSM-NG 개발자들에게 제공됩니다."
 
 #: inc/telemetry.class.php:420
 msgid ""
 "Let us know your usage to improve future versions of GLPI and its plugins!"
-msgstr "GLPI와 플러그인의 추후 버전 개선을 위해 사용 정보를 제공해 주세요!"
+msgstr "ITSM-NG와 플러그인의 추후 버전 개선을 위해 사용 정보를 제공해 주세요!"
 
 #: inc/telemetry.class.php:433
 msgid "Reference your GLPI"
-msgstr "GLPI 참조"
+msgstr "ITSM-NG 참조"
 
 #: inc/telemetry.class.php:435
 #, php-format
@@ -16809,7 +16809,7 @@ msgstr "컴퓨터에 대한 대상 개체"
 
 #: inc/ruleimportcomputer.class.php:81
 msgid "Find computers in GLPI having the status"
-msgstr "GLPI에서 상태 값이 있는 컴퓨터 검색"
+msgstr "ITSM-NG에서 상태 값이 있는 컴퓨터 검색"
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -16833,11 +16833,11 @@ msgstr "비었으면 예"
 
 #: inc/ruleimportcomputer.class.php:178
 msgid "is already present in GLPI"
-msgstr "GLPI에 이미 존재함"
+msgstr "ITSM-NG에 이미 존재함"
 
 #: inc/ruleimportcomputer.class.php:179
 msgid "is empty in GLPI"
-msgstr "GLPI에 비었음"
+msgstr "ITSM-NG에 비었음"
 
 #: inc/enclosure.class.php:57
 msgid "Enclosure"
@@ -17494,7 +17494,7 @@ msgstr "%s에서 최근 로그인"
 
 #: inc/user.class.php:2802
 msgid "Use GLPI in mode"
-msgstr "GLPI 사용"
+msgstr "ITSM-NG 사용"
 
 #: inc/user.class.php:2804
 msgid "Normal"
@@ -17973,7 +17973,7 @@ msgstr "데이터베이스에 존재하는 재연 규칙은 %s에서 종료되�
 #: inc/ruledictionnarysoftwarecollection.class.php:318
 #: inc/ruledictionnarysoftwarecollection.class.php:431
 msgid "Software deleted by GLPI dictionary rules"
-msgstr "GLPI 사전 규칙에 의해 소프트웨어가 삭제됨"
+msgstr "ITSM-NG 사전 규칙에 의해 소프트웨어가 삭제됨"
 
 #: inc/location.class.php:70 inc/location.class.php:156
 #: inc/location.class.php:270 inc/location.class.php:327
@@ -18742,7 +18742,7 @@ msgstr "단일 색인 추가 - %s"
 #: inc/migration.class.php:792
 #, php-format
 msgid "Automatically generated by GLPI %s"
-msgstr "GLPI %s가 자동으로 생성함"
+msgstr "ITSM-NG %s가 자동으로 생성함"
 
 #. TRANS: %s is the table or item to migrate
 #. TRANS: %s is 'Clean reservation entity link'
@@ -18906,7 +18906,7 @@ msgstr "페이지 상단으로 돌아가기"
 
 #: inc/html.class.php:1789
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "GLPI-PROJECT.org 사이트에 찾을 수 있습니다."
+msgstr "ITSM-NG-PROJECT.org 사이트에 찾을 수 있습니다."
 
 #: inc/html.class.php:1880 inc/html.class.php:1881 inc/html.class.php:6884
 #: inc/html.class.php:6886
@@ -19142,7 +19142,7 @@ msgstr "CSS"
 #: inc/notificationtemplate.class.php:243
 #: inc/notificationtemplate.class.php:261
 msgid "Automatically generated by GLPI"
-msgstr "GLPI가 자동 생성함"
+msgstr "ITSM-NG가 자동 생성함"
 
 #: inc/networkportlocal.class.php:47
 msgid "Local loop port"
@@ -19490,7 +19490,7 @@ msgstr "사용자의 동작이 LDAP 디렉토리에서 삭제되었습니다"
 
 #: inc/config.class.php:696
 msgid "GLPI server time zone"
-msgstr "GLPI 서버 표준시간대"
+msgstr "ITSM-NG 서버 표준시간대"
 
 #: inc/config.class.php:738 install/install.php:216
 msgid "SQL server (MariaDB or MySQL)"
@@ -19648,7 +19648,7 @@ msgstr "카운터 표시"
 
 #: inc/config.class.php:1138
 msgid "Show GLPI ID"
-msgstr "GLPI ID 보이기"
+msgstr "ITSM-NG ID 보이기"
 
 #: inc/config.class.php:1145
 msgid "Keep devices when purging an item"
@@ -19882,7 +19882,7 @@ msgstr "재설정"
 #: inc/config.class.php:1698
 #, php-format
 msgid "Installing and enabling the \"%s\" extension may improve GLPI performance"
-msgstr "\"%s\" 확장기능을 설치하고 사용하면 GLPI 성능이 개선 될 것입니다"
+msgstr "\"%s\" 확장기능을 설치하고 사용하면 ITSM-NG 성능이 개선 될 것입니다"
 
 #: inc/config.class.php:1702
 msgid "User data cache"
@@ -21539,7 +21539,7 @@ msgstr "내용을 불러오는 중 오류 발생!"
 
 #: inc/ajax.class.php:431
 msgid "Please check GLPI logs or contact your administrator."
-msgstr "GLPI 로그를 확인하거나 관리자에게 연락하세요."
+msgstr "ITSM-NG 로그를 확인하거나 관리자에게 연락하세요."
 
 #: inc/ajax.class.php:432
 msgid "try to reload"
@@ -21575,7 +21575,7 @@ msgstr "잘못된 사용자 이름 또는 비밀번호"
 
 #: inc/auth.class.php:272 inc/auth.class.php:899 inc/auth.class.php:927
 msgid "User not authorized to connect in GLPI"
-msgstr "GLPI 에 접속하도록 인증되지 않은 사용자"
+msgstr "ITSM-NG 에 접속하도록 인증되지 않은 사용자"
 
 #: inc/auth.class.php:590
 msgid "Login with external token disabled"
@@ -21617,7 +21617,7 @@ msgstr "IP %2$s에서 %1$s로 로그인 실패"
 
 #: inc/auth.class.php:1019
 msgid "Authentication on GLPI database"
-msgstr "GLPI 데이터베이스 인증"
+msgstr "ITSM-NG 데이터베이스 인증"
 
 #: inc/auth.class.php:1031
 msgid "Authentication on a LDAP directory"
@@ -21649,7 +21649,7 @@ msgstr "x509 승인 인증"
 
 #: inc/auth.class.php:1130 inc/auth.class.php:1657
 msgid "GLPI internal database"
-msgstr "GLPI 내부 데이터베이스"
+msgstr "ITSM-NG 내부 데이터베이스"
 
 #: inc/auth.class.php:1136
 msgid "Not yet authenticated"
@@ -21700,7 +21700,7 @@ msgstr "PHP 파서에 CURL 확장기능이 설치되지 않았습니다"
 msgid ""
 "The CAS lib isn't available, GLPI doesn't package it anymore for license "
 "compatibility issue."
-msgstr "CAS lib는 사용할 수 없습니다, GLPI가 라이선스 호환 문제로 더 이상 패키지에 넣지 않았습니다."
+msgstr "CAS lib는 사용할 수 없습니다, ITSM-NG가 라이선스 호환 문제로 더 이상 패키지에 넣지 않았습니다."
 
 #: inc/auth.class.php:1500
 msgid "Impossible to use CAS as external source of connection"
@@ -22169,12 +22169,12 @@ msgstr "이 방법으로는 갱신을 완료 할 수 없습니다!"
 
 #: install/update.php:577
 msgid "Go back to GLPI"
-msgstr "GLPI로 돌아가기"
+msgstr "ITSM-NG로 돌아가기"
 
 #: install/update.php:582
 #, php-format
 msgid "Caution! You will update the GLPI database named: %s"
-msgstr "주의! GLPI 데이터 베이스 이름이 다음으로 변경됩니다: %s"
+msgstr "주의! ITSM-NG 데이터 베이스 이름이 다음으로 변경됩니다: %s"
 
 #: install/update.php:588 install/install.php:130 install/install.php:171
 #: install/install.php:182 install/install.php:224 install/install.php:308
@@ -22198,7 +22198,7 @@ msgstr "기부"
 #: install/update.php:660 install/update_content.php:367
 #: install/install.php:545
 msgid "Use GLPI"
-msgstr "GLPI 사용"
+msgstr "ITSM-NG 사용"
 
 #: install/update.php:669
 msgid ""
@@ -22250,21 +22250,21 @@ msgstr "위에 기술된 라이선스 조항을 읽고 동의 하지 않습니�
 
 #: install/install.php:139
 msgid "Installation or update of GLPI"
-msgstr "GLPI 설치 또는 업데이트"
+msgstr "ITSM-NG 설치 또는 업데이트"
 
 #: install/install.php:140
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "GLPI를 완전 새로 설치 하려면 \"설치\"를 선택하세요."
+msgstr "ITSM-NG를 완전 새로 설치 하려면 \"설치\"를 선택하세요."
 
 #: install/install.php:141
 msgid ""
 "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "이전 버전에서 GLPI의 버전을 갱신하려면 \"업그레이드\"를 선택하세요"
+msgstr "이전 버전에서 ITSM-NG의 버전을 갱신하려면 \"업그레이드\"를 선택하세요"
 
 #: install/install.php:158
 msgid ""
 "Checking of the compatibility of your environment with the execution of GLPI"
-msgstr "GLPI 실행을 위한 구동 환경의 호환성 확인"
+msgstr "ITSM-NG 실행을 위한 구동 환경의 호환성 확인"
 
 #: install/install.php:177 install/install.php:196 install/install.php:562
 msgid "Do you want to continue?"
@@ -22411,7 +22411,7 @@ msgstr "신규"
 
 #: index.php:74
 msgid "GLPI - Authentication"
-msgstr "GLPI - 인증"
+msgstr "ITSM-NG - 인증"
 
 #: index.php:147
 msgid "Default (from user profile)"
