@@ -84,8 +84,7 @@ var initRack = function() {
       });
 
    // use each to re-init options for each grid
-   GridStack.init({
-      handle: '.grid-stack',
+   GridStack.initAll({
       cellHeight: 20,
       float: true,
       columnOpts: { breakpoints: [{w: 768, c:1}] },

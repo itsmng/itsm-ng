@@ -322,7 +322,7 @@ class Item_Rack extends CommonDBRelation {
       PDU_Rack::showVizForRack($rack, PDU_Rack::SIDE_TOP);
       PDU_Rack::showVizForRack($rack, PDU_Rack::SIDE_LEFT);
       echo '<ul class="indexes"></ul>
-            <div class="grid-stack grid-rack gs-id-0"
+            <div class="grid-stack grid-rack"
                  id="grid2-rear"
                  gs-column="2"
                  gs-max-row="'.($rack->fields['number_units'] + 1).'">';
@@ -406,8 +406,7 @@ class Item_Rack extends CommonDBRelation {
                         var other_side_el = $('.grid-stack-item.'+other_side_cls+'[gs-id='+node.id+']');
 
                         if (other_side_el.length) {
-                           var other_side_grid = $(other_side_el).parent().get(0);
-console.log(event.target, other_side_grid);
+                           var other_side_grid = $(other_side_el).parent().get(0).gridstack;
                            new_x = node.x;
                            new_y = node.y;
                            if (node.w == 1) {
@@ -416,6 +415,7 @@ console.log(event.target, other_side_grid);
                            dirty = true;
                            other_side_grid.update(other_side_el, {x: new_x, y: new_y});
                            dirty = false;
+                           document.location.reload();
                         }
                      }
                   }).fail(function() {
