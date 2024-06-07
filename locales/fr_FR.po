@@ -9720,7 +9720,7 @@ msgstr ""
 
 #: inc/config.php:245 inc/config.php:246
 msgid "Upgrade from GLPI 10 is not supported."
-msgstr "La mise à jour à partir de GLPI 10 n'est pas prise en charge."
+msgstr "La mise à jour à partir de ITSM-NG 10 n'est pas prise en charge."
 
 #: inc/rulecollection.class.php:328
 msgid "Rules list"
@@ -24370,7 +24370,7 @@ msgid "Clean"
 msgstr "Nettoyer"
 
 msgid "This plugin is not available for your GLPI version."
-msgstr "Ce plugin n'est pas disponible pour votre version de GLPI."
+msgstr "Ce plugin n'est pas disponible pour votre version de ITSM-NG."
 
 msgid "The plugin has an available update but its directory is not writable."
 msgstr ""

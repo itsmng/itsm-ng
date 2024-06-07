@@ -9659,7 +9659,7 @@ msgstr ""
 
 #: inc/config.php:245 inc/config.php:246
 msgid "Upgrade from GLPI 10 is not supported."
-msgstr "Upgrade from GLPI 10 is not supported."
+msgstr "Upgrade from ITSM-NG 10 is not supported."
 
 #: inc/rulecollection.class.php:328
 msgid "Rules list"

@@ -23342,7 +23342,7 @@ msgstr ""
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Kontroll av kompatibiliteten til miljøet med kjøring av GLPI"
+msgstr "Kontroll av kompatibiliteten til miljøet med kjøring av ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23765,7 +23765,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Use GLPI"
 msgid "GLPI"
-msgstr "Bruk GLPI"
+msgstr "Bruk ITSM-NG"
 
 #, fuzzy
 #| msgid "Connection filter"
@@ -24355,7 +24355,7 @@ msgid "Back to top of the page"
 msgstr ""
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Du finner den på GLPI-PROJECT.org nettsted."
+msgstr "Du finner den på ITSM-NG-PROJECT.org nettsted."
 
 msgid "Check all"
 msgstr "Sjekk Alle"
@@ -24632,7 +24632,7 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Jeg har lest og godtar ikke vilkårene i lisensen skrevet ovenfor"
 
 msgid "Installation or update of GLPI"
-msgstr "Installasjon eller oppdatering av GLPI"
+msgstr "Installasjon eller oppdatering av ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
 msgstr ""

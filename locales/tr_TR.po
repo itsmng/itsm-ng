@@ -23558,7 +23558,7 @@ msgstr "Görünürlük bitiş tarihi"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Platformunuzun, GLPI çalıştırma uyumluluğu sınanıyor"
+msgstr "Platformunuzun, ITSM-NG çalıştırma uyumluluğu sınanıyor"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23791,7 +23791,7 @@ msgid "Active Directory"
 msgstr "Aktif Dizin"
 
 msgid "GLPI version"
-msgstr "GLPI sürümü"
+msgstr "ITSM-NG sürümü"
 
 msgid "Confirm the promotion?"
 msgstr "Yükseltmeyi onayla?"
@@ -23954,7 +23954,7 @@ msgid "You must enable at least one notification mode."
 msgstr "En az bir bildirim kipini etkinleştirmelisiniz."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Bilgisayar bağla"
@@ -24264,7 +24264,7 @@ msgid "Clean"
 msgstr "Temizle"
 
 msgid "This plugin is not available for your GLPI version."
-msgstr "Bu uygulama eki geçerli GLPI sürümünüzde kullanılamaz."
+msgstr "Bu uygulama eki geçerli ITSM-NG sürümünüzde kullanılamaz."
 
 msgid "The plugin has an available update but its directory is not writable."
 msgstr ""
@@ -24305,7 +24305,7 @@ msgstr[0] "%s uygulama eki"
 msgstr[1] "%s uygulama eki"
 
 msgid "GLPI provides a new marketplace to download and install plugins."
-msgstr "GLPI uygulama eklerini indirip kurmak için yeni mağazasını açtı."
+msgstr "ITSM-NG uygulama eklerini indirip kurmak için yeni mağazasını açtı."
 
 msgid "Do you want to replace the plugins setup page by the new marketplace ?"
 msgstr ""
@@ -24484,7 +24484,7 @@ msgid "Failed to resize image"
 msgstr "Görsel yeniden boyutlandırılamadı"
 
 msgid "Display GLPI debug information"
-msgstr "GLPI hata ayıklama bilgileri görüntülensin"
+msgstr "ITSM-NG hata ayıklama bilgileri görüntülensin"
 
 msgid "Progress"
 msgstr "İlerleme"
@@ -24496,7 +24496,7 @@ msgid "Back to top of the page"
 msgstr "Sayfanın üstüne geri dön"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "GLPI-PROJECT.org sitesinde bulabilirsiniz."
+msgstr "ITSM-NG-PROJECT.org sitesinde bulabilirsiniz."
 
 msgid "Check all"
 msgstr "Tümünü seç"
@@ -24613,7 +24613,7 @@ msgstr ""
 "bakabilirsiniz "
 
 msgid "Show GLPI ID"
-msgstr "GLPI kodu görüntülensin"
+msgstr "ITSM-NG kodu görüntülensin"
 
 msgid "Color palette"
 msgstr "Renk paleti"
@@ -24747,13 +24747,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Yukarıda yazılı olan lisans şartlarını okudum ve KABUL ETMİYORUM"
 
 msgid "Installation or update of GLPI"
-msgstr "GLPI kurulumu ya da güncellemesi"
+msgstr "ITSM-NG kurulumu ya da güncellemesi"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Yeni bir GLPI kurulumu için 'Kurulum' seçin."
+msgstr "Yeni bir ITSM-NG kurulumu için 'Kurulum' seçin."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Eski bir GLPI sürümünü güncellemek için 'Güncelleme' seçin"
+msgstr "Eski bir ITSM-NG sürümünü güncellemek için 'Güncelleme' seçin"
 
 msgid "Do you want to continue?"
 msgstr "Devam etmek ister misiniz?"
@@ -24839,7 +24839,7 @@ msgid "Step %d"
 msgstr "%d. adım"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Kimlik Doğrulama"
+msgstr "ITSM-NG - Kimlik Doğrulama"
 
 msgid "Remember me"
 msgstr "Bilgilerim hatırlansın"
@@ -24882,7 +24882,7 @@ msgid "Logout"
 msgstr "Oturumu kapat"
 
 #~ msgid "Use GLPI"
-#~ msgstr "GLPI Kullanmaya Geç"
+#~ msgstr "ITSM-NG Kullanmaya Geç"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "Yönetici hesabı için: glpi/glpi"

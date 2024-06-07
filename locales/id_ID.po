@@ -23011,7 +23011,7 @@ msgstr ""
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Memeriksa lingkungan yang cocok untuk GLPI"
+msgstr "Memeriksa lingkungan yang cocok untuk ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23440,7 +23440,7 @@ msgid "You must enable at least one notification mode."
 msgstr ""
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 #, fuzzy
 #| msgid "Computer"
@@ -24381,13 +24381,13 @@ msgstr ""
 "atas"
 
 msgid "Installation or update of GLPI"
-msgstr "Instalasi atau update GLPI"
+msgstr "Instalasi atau update ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Pilih 'Install' untuk instalasi baru GLPI."
+msgstr "Pilih 'Install' untuk instalasi baru ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Pilih \"Upgrade\" untuk memperbarui versi GLPI dari versi sebelumnya"
+msgstr "Pilih \"Upgrade\" untuk memperbarui versi ITSM-NG dari versi sebelumnya"
 
 msgid "Do you want to continue?"
 msgstr "Apakah Anda ingin melanjutkan?"
@@ -24477,7 +24477,7 @@ msgid "Step %d"
 msgstr "Langkah %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Otentifikasi"
+msgstr "ITSM-NG - Otentifikasi"
 
 msgid "Remember me"
 msgstr "Ingat saya"
@@ -24524,4 +24524,4 @@ msgid "Logout"
 msgstr "Keluar"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Gunakan GLPI"
+#~ msgstr "Gunakan ITSM-NG"

@@ -1847,23 +1847,6 @@ class CronTask extends CommonDBTM{
       return ($vol > 0 ? 1 : 0);
    }
 
-
-   /**
-    * Cron job to check if a new version is available
-    *
-    * @param CronTask $task for log
-    *
-    * @return integer
-   **/
-   static function cronCheckUpdate($task) {
-
-      $result = Toolbox::checkNewVersionAvailable();
-      $task->log($result);
-
-      return 1;
-   }
-
-
    /**
     * Check zombie crontask
     *

@@ -23818,7 +23818,7 @@ msgid "Active Directory"
 msgstr "Идэвхтэй директор"
 
 msgid "GLPI version"
-msgstr "GLPI хувилбар"
+msgstr "ITSM-NG хувилбар"
 
 msgid "Confirm the promotion?"
 msgstr "Урамшууллыг баталгаажуулах уу?"
@@ -23982,7 +23982,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Та дор хаяж нэг мэдэгдлийн горимыг идэвхжүүлэх ёстой."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Компьютероо холбоно уу"
@@ -24295,7 +24295,7 @@ msgid "Clean"
 msgstr "Цэвэр"
 
 msgid "This plugin is not available for your GLPI version."
-msgstr "Энэ plugin-г таны GLPI хувилбарт ашиглах боломжгүй."
+msgstr "Энэ plugin-г таны ITSM-NG хувилбарт ашиглах боломжгүй."
 
 msgid "The plugin has an available update but its directory is not writable."
 msgstr ""
@@ -24535,7 +24535,7 @@ msgid "Back to top of the page"
 msgstr "Хуудасны дээд тал руу буцах"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Та үүнийг GLPI-PROJECT.org сайтаас олох болно."
+msgstr "Та үүнийг ITSM-NG-PROJECT.org сайтаас олох болно."
 
 msgid "Check all"
 msgstr "Бүгдийг нь шалгах"
@@ -24652,7 +24652,7 @@ msgstr ""
 "түлхүүрийг харна уу"
 
 msgid "Show GLPI ID"
-msgstr "GLPI ID-г харах"
+msgstr "ITSM-NG ID-г харах"
 
 msgid "Color palette"
 msgstr "Өнгөний зохицол"
@@ -24789,10 +24789,10 @@ msgstr ""
 "байна"
 
 msgid "Installation or update of GLPI"
-msgstr "GLPI-г суулгах буюу шинэчлэх"
+msgstr "ITSM-NG-г суулгах буюу шинэчлэх"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "GLPI-г шинэ install-г суулгахын тулд \"Суулгах\" хэсгийг сонгоно уу."
+msgstr "ITSM-NG-г шинэ install-г суулгахын тулд \"Суулгах\" хэсгийг сонгоно уу."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -24886,7 +24886,7 @@ msgid "Step %d"
 msgstr "Алхам %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI-Танилт"
+msgstr "ITSM-NG-Танилт"
 
 msgid "Remember me"
 msgstr "Сануулах"
@@ -24929,7 +24929,7 @@ msgid "Logout"
 msgstr "Гарах"
 
 #~ msgid "Use GLPI"
-#~ msgstr "GLPI ашиглах"
+#~ msgstr "ITSM-NG ашиглах"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "админы эрхэд зориулсан glpi/glpi"

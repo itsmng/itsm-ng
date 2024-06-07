@@ -11397,7 +11397,7 @@ msgstr "Prueba de conexión con el servidor LDAP"
 
 #: inc/authldap.class.php:761 inc/authldap.class.php:770
 msgid "Binding to the LDAP directory"
-msgstr "Enlace GLPI/LDAP"
+msgstr "Enlace ITSM-NG/LDAP"
 
 #: inc/authldap.class.php:763 inc/authldap.class.php:965
 #: inc/authldap.class.php:3316 inc/oidc.class.php:314 inc/auth.class.php:1682
@@ -23870,7 +23870,7 @@ msgid "Active Directory"
 msgstr "Directorio Activo"
 
 msgid "GLPI version"
-msgstr "Versión GLPI"
+msgstr "Versión ITSM-NG"
 
 msgid "Confirm the promotion?"
 msgstr "¿Confirmar la promoción?"
@@ -24035,7 +24035,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Debe habilitar al menos un modo de notificación."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Conectar un computador"
@@ -24348,7 +24348,7 @@ msgid "Clean"
 msgstr "Limpiar"
 
 msgid "This plugin is not available for your GLPI version."
-msgstr "Este complemento no está disponible para su versión GLPI."
+msgstr "Este complemento no está disponible para su versión ITSM-NG."
 
 msgid "The plugin has an available update but its directory is not writable."
 msgstr ""
@@ -24574,7 +24574,7 @@ msgid "Failed to resize image"
 msgstr "Error al cambiar el tamaño de la imagen"
 
 msgid "Display GLPI debug information"
-msgstr "Mostrar información de depuración GLPI"
+msgstr "Mostrar información de depuración ITSM-NG"
 
 msgid "Progress"
 msgstr "Progreso"
@@ -24704,7 +24704,7 @@ msgstr ""
 "Configuración"
 
 msgid "Show GLPI ID"
-msgstr "Mostrar los ID GLPI"
+msgstr "Mostrar los ID ITSM-NG"
 
 msgid "Color palette"
 msgstr "Paleta de colores"
@@ -24838,10 +24838,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "He leído y NO ACEPTO los términos de la licencia enunciados arriba"
 
 msgid "Installation or update of GLPI"
-msgstr "Instalación o actualización de GLPI"
+msgstr "Instalación o actualización de ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Elija 'Instalación' para una nueva instalación completa de GLPI"
+msgstr "Elija 'Instalación' para una nueva instalación completa de ITSM-NG"
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -24935,7 +24935,7 @@ msgid "Step %d"
 msgstr "Paso %d"
 
 msgid "GLPI - Authentication"
-msgstr "Autenticación - GLPI"
+msgstr "Autenticación - ITSM-NG"
 
 msgid "Remember me"
 msgstr "Recuerdame"
@@ -24978,7 +24978,7 @@ msgid "Logout"
 msgstr "Cerrar sesión"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Utilizar GLPI"
+#~ msgstr "Utilizar ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi para la cuenta administrador"

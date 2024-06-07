@@ -22455,7 +22455,7 @@ msgstr "Fisierul nu este un fisier de imagine"
 
 #: inc/user.class.php:2042 inc/user.class.php:2009
 msgid "Add user..."
-msgstr "Adauga un utilizator GLPI..."
+msgstr "Adauga un utilizator ITSM-NG..."
 
 #: inc/user.class.php:2048 inc/user.class.php:2015
 msgid "... From an external source"
@@ -23822,7 +23822,7 @@ msgstr "Dată final vizibilitate"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Verificare compatibilitatea mediului cu rularea GLPI"
+msgstr "Verificare compatibilitatea mediului cu rularea ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -24244,7 +24244,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Trebuie să instalați cel puțin versiunea PHP %s."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Conectare calculator"
@@ -24908,7 +24908,7 @@ msgid "Back to top of the page"
 msgstr ""
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Este disponibil pe site-ul GLPI-PROJECT.org."
+msgstr "Este disponibil pe site-ul ITSM-NG-PROJECT.org."
 
 msgid "Check all"
 msgstr "Bifează tot"
@@ -25040,7 +25040,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "Arată ID GLPI"
+msgstr "Arată ID ITSM-NG"
 
 msgid "Color palette"
 msgstr "Paleta Culori"
@@ -25186,10 +25186,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Am citit si NU ACCEPT termenii de licenta de mai jos"
 
 msgid "Installation or update of GLPI"
-msgstr "Instalează sau actualizează GLPI"
+msgstr "Instalează sau actualizează ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Alegeţi 'Instalare' pentru o instalare nouă a GLPI."
+msgstr "Alegeţi 'Instalare' pentru o instalare nouă a ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -25327,7 +25327,7 @@ msgid "Logout"
 msgstr "Logout"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Folositi GLPI"
+#~ msgstr "Folositi ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi pentru contul de administrator"

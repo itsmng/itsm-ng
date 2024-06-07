@@ -23869,7 +23869,7 @@ msgid "You must enable at least one notification mode."
 msgstr ""
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Conectar una computadora"
@@ -24523,7 +24523,7 @@ msgid "Back to top of the page"
 msgstr ""
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Podrá buscar en el sitio de GLPI-PROJECT."
+msgstr "Podrá buscar en el sitio de ITSM-NG-PROJECT."
 
 msgid "Check all"
 msgstr "Marcar todo"
@@ -24653,7 +24653,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "Mostrar ID de GLPI"
+msgstr "Mostrar ID de ITSM-NG"
 
 msgid "Color palette"
 msgstr ""
@@ -24808,10 +24808,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "He leído y NO ACEPTO los términos de la licencia enunciados arriba"
 
 msgid "Installation or update of GLPI"
-msgstr "Instalación o actualización de GLPI"
+msgstr "Instalación o actualización de ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Elija 'Instalar' para una nueva instalación de GLPI."
+msgstr "Elija 'Instalar' para una nueva instalación de ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -24907,7 +24907,7 @@ msgid "Step %d"
 msgstr "Paso %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Autentificación"
+msgstr "ITSM-NG - Autentificación"
 
 #, fuzzy
 #| msgid "Team member"
@@ -24961,7 +24961,7 @@ msgid "Logout"
 msgstr "Desconexión"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Utilizar GLPI"
+#~ msgstr "Utilizar ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi para la cuenta del administrador"

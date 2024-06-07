@@ -23631,7 +23631,7 @@ msgstr "Data final de visibilidade"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Verificando a compatibilidade do seu ambiente para a execução do GLPI"
+msgstr "Verificando a compatibilidade do seu ambiente para a execução do ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23862,7 +23862,7 @@ msgid "Active Directory"
 msgstr "Active Directory"
 
 msgid "GLPI version"
-msgstr "Versão do GLPI"
+msgstr "Versão do ITSM-NG"
 
 msgid "Confirm the promotion?"
 msgstr "Confirma a promoção?"
@@ -24028,7 +24028,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Você deve habilitar pelo menos um modo de notificação."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Conectar um computador"
@@ -24341,7 +24341,7 @@ msgid "Clean"
 msgstr "Limpar"
 
 msgid "This plugin is not available for your GLPI version."
-msgstr "Este plugin não está disponível para sua versão GLPI."
+msgstr "Este plugin não está disponível para sua versão ITSM-NG."
 
 msgid "The plugin has an available update but its directory is not writable."
 msgstr ""
@@ -24563,7 +24563,7 @@ msgid "Failed to resize image"
 msgstr "Erro ao redimensionar a imagem"
 
 msgid "Display GLPI debug information"
-msgstr "Exibir informações de depuração do GLPI"
+msgstr "Exibir informações de depuração do ITSM-NG"
 
 msgid "Progress"
 msgstr "Progresso"
@@ -24575,7 +24575,7 @@ msgid "Back to top of the page"
 msgstr "Voltar ao início da página"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Você encontrará no site GLPI-PROJECT.org."
+msgstr "Você encontrará no site ITSM-NG-PROJECT.org."
 
 msgid "Check all"
 msgstr "Marcar todos"
@@ -24690,7 +24690,7 @@ msgstr ""
 "Configurações do usuário"
 
 msgid "Show GLPI ID"
-msgstr "Mostrar ID do GLPI"
+msgstr "Mostrar ID do ITSM-NG"
 
 msgid "Color palette"
 msgstr "Paleta de cores"
@@ -24824,10 +24824,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Eu li e NÃO ACEITO os termos de licença acima."
 
 msgid "Installation or update of GLPI"
-msgstr "Instalar ou atualizar o GLPI"
+msgstr "Instalar ou atualizar o ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Escolha \"Instalar\" para uma nova instalação do GLPI."
+msgstr "Escolha \"Instalar\" para uma nova instalação do ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -24920,7 +24920,7 @@ msgid "Step %d"
 msgstr "Etapa %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Autenticação"
+msgstr "ITSM-NG - Autenticação"
 
 msgid "Remember me"
 msgstr "Lembrar de mim"
@@ -24963,7 +24963,7 @@ msgid "Logout"
 msgstr "Sair"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Usar GLPI"
+#~ msgstr "Usar ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi para a conta do usuário administrador"

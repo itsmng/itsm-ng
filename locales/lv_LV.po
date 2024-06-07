@@ -23809,7 +23809,7 @@ msgstr "Beigu datums redzams"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Notiek servera darba vides un GLPI saderības pārbaude"
+msgstr "Notiek servera darba vides un ITSM-NG saderības pārbaude"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -24038,7 +24038,7 @@ msgid "Active Directory"
 msgstr "Active Directory"
 
 msgid "GLPI version"
-msgstr "GLPI versija"
+msgstr "ITSM-NG versija"
 
 msgid "Confirm the promotion?"
 msgstr "Vai apstiprināt paaugstināšanu?"
@@ -24206,7 +24206,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Jums ir jāiespējo vismaz viens paziņojumu režīms."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Savienot ar datoru"
@@ -24945,7 +24945,7 @@ msgstr ""
 "marķieri. Skatiet Attālās piekļuves atslēgu cilnē Lietotāja iestatījumi"
 
 msgid "Show GLPI ID"
-msgstr "Rādīt GLPI ID"
+msgstr "Rādīt ITSM-NG ID"
 
 msgid "Color palette"
 msgstr "Krāsu palete"
@@ -25089,13 +25089,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Es izlasīju augstāk minēto licenci un nepiekrītu tai."
 
 msgid "Installation or update of GLPI"
-msgstr "GLPI instalācija vai atjaunināšana"
+msgstr "ITSM-NG instalācija vai atjaunināšana"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Izvēlieties 'Instalēt' lai sāktu jaunu GLPI instalāciju"
+msgstr "Izvēlieties 'Instalēt' lai sāktu jaunu ITSM-NG instalāciju"
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Izvēlieties 'Atjaunināt', lai atjauninātu veco GLPI versiju"
+msgstr "Izvēlieties 'Atjaunināt', lai atjauninātu veco ITSM-NG versiju"
 
 msgid "Do you want to continue?"
 msgstr "Vai vēlaties turpināt?"
@@ -25187,7 +25187,7 @@ msgid "Step %d"
 msgstr "Solis %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Pieteikšanās"
+msgstr "ITSM-NG - Pieteikšanās"
 
 msgid "Remember me"
 msgstr "Atcerēties mani"
@@ -25239,7 +25239,7 @@ msgid "Logout"
 msgstr "Beigt darbu"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Pieslēgties GLPI"
+#~ msgstr "Pieslēgties ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi administratora kontam"

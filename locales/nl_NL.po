@@ -11382,7 +11382,7 @@ msgstr "Test om een verbinding met de LDAP directorie te krijgen"
 
 #: inc/authldap.class.php:761 inc/authldap.class.php:770
 msgid "Binding to the LDAP directory"
-msgstr "GLPI/LDAP-links"
+msgstr "ITSM-NG/LDAP-links"
 
 #: inc/authldap.class.php:763 inc/authldap.class.php:965
 #: inc/authldap.class.php:3316 inc/oidc.class.php:314 inc/auth.class.php:1682
@@ -23520,7 +23520,7 @@ msgstr "Zichtbaarheid eind datum"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Compatibiliteitscontrole van het systeem waar GLPI draait"
+msgstr "Compatibiliteitscontrole van het systeem waar ITSM-NG draait"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23935,7 +23935,7 @@ msgid "You must enable at least one notification mode."
 msgstr "U moet ten minste één meldingsmodus inschakelen."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Sluit een computer aan"
@@ -24728,7 +24728,7 @@ msgstr ""
 "Gebruikersinstellingen"
 
 msgid "Show GLPI ID"
-msgstr "Toon GLPI-ID"
+msgstr "Toon ITSM-NG-ID"
 
 msgid "Color palette"
 msgstr "Kleurpalet"
@@ -24874,10 +24874,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Ik heb de licentievoorwaarden hierboven gelezen en AANVAARD deze NIET"
 
 msgid "Installation or update of GLPI"
-msgstr "Installeer of update GLPI"
+msgstr "Installeer of update ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Kies 'Installeren' voor een nieuwe complete installatie van GLPI."
+msgstr "Kies 'Installeren' voor een nieuwe complete installatie van ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -24971,7 +24971,7 @@ msgid "Step %d"
 msgstr "Stap %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Authenticatie"
+msgstr "ITSM-NG - Authenticatie"
 
 msgid "Remember me"
 msgstr "Onthoud mij"
@@ -25022,7 +25022,7 @@ msgid "Logout"
 msgstr "Uitloggen"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Gebruik GLPI"
+#~ msgstr "Gebruik ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi voor de beheerder/administrator account"

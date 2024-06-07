@@ -23411,7 +23411,7 @@ msgstr "Synligheds slutdato"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Checker kombatibiliteten af dit miljø med kørslen af GLPI"
+msgstr "Checker kombatibiliteten af dit miljø med kørslen af ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23832,7 +23832,7 @@ msgid "You must enable at least one notification mode."
 msgstr ""
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Tilslut en computer"
@@ -24469,7 +24469,7 @@ msgid "Back to top of the page"
 msgstr ""
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Du kan finde det på GLPI-PROJECT.org webstedet."
+msgstr "Du kan finde det på ITSM-NG-PROJECT.org webstedet."
 
 msgid "Check all"
 msgstr "Markér alle"
@@ -24599,7 +24599,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "Vis GLPI ID"
+msgstr "Vis ITSM-NG ID"
 
 msgid "Color palette"
 msgstr "Farve palette"
@@ -24756,10 +24756,10 @@ msgstr ""
 "Jeg har læst og accepterer IKKE betingelserne af den ovenstående licens."
 
 msgid "Installation or update of GLPI"
-msgstr "Installation eller opdatering af GLPI"
+msgstr "Installation eller opdatering af ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Vælg 'Installation' for en helt ny installation af GLPI."
+msgstr "Vælg 'Installation' for en helt ny installation af ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -24852,7 +24852,7 @@ msgid "Step %d"
 msgstr "Trin %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Godkendelse"
+msgstr "ITSM-NG - Godkendelse"
 
 msgid "Remember me"
 msgstr "Husk mig"
@@ -24903,7 +24903,7 @@ msgid "Logout"
 msgstr "Log af"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Brug GLPI"
+#~ msgstr "Brug ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi for administrator kontoen"
