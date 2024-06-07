@@ -21901,7 +21901,7 @@ msgstr "Источник"
 
 #: inc/notificationmailing.class.php:91
 msgid "This is a test email."
-msgstr "Это тестовое сообщение для проверки работы почты в GLPI."
+msgstr "Это тестовое сообщение для проверки работы почты в ITSM-NG."
 
 #: inc/notificationmailing.class.php:101
 msgid "Mail test"
@@ -24250,7 +24250,7 @@ msgstr "Видимость конечной даты"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Проверка окружения на совместимость с GLPI"
+msgstr "Проверка окружения на совместимость с ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -24482,7 +24482,7 @@ msgid "Active Directory"
 msgstr "Active Directory"
 
 msgid "GLPI version"
-msgstr "Версия GLPI"
+msgstr "Версия ITSM-NG"
 
 msgid "Confirm the promotion?"
 msgstr "Подтверждаете публикацию?"
@@ -24651,7 +24651,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Вам необходимо включить хотя бы один режим уведомления."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Подключить компьютер"
@@ -25224,7 +25224,7 @@ msgid "Back to top of the page"
 msgstr "Вернуться к началу страницы"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Вы найдете ее на сайте GLPI-PROJECT.org."
+msgstr "Вы найдете ее на сайте ITSM-NG-PROJECT.org."
 
 msgid "Check all"
 msgstr "Выделить все"
@@ -25339,7 +25339,7 @@ msgstr ""
 "Смотрите Ключ удаленного доступа во вкладке пользователя \"Настройки\""
 
 msgid "Show GLPI ID"
-msgstr "Показывать GLPI ID"
+msgstr "Показывать ITSM-NG ID"
 
 msgid "Color palette"
 msgstr "Цветовая схема"
@@ -25473,10 +25473,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Я прочел и НЕ ПРИНИМАЮ все пункты лицензии"
 
 msgid "Installation or update of GLPI"
-msgstr "Установка или обновление GLPI"
+msgstr "Установка или обновление ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Выберите 'Установка' для новой полной установки GLPI."
+msgstr "Выберите 'Установка' для новой полной установки ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -25565,7 +25565,7 @@ msgid "Step %d"
 msgstr "Шаг %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Аутентификация"
+msgstr "ITSM-NG - Аутентификация"
 
 msgid "Remember me"
 msgstr "Запомнить меня"
@@ -25608,7 +25608,7 @@ msgid "Logout"
 msgstr "Выйти"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Запустить GLPI"
+#~ msgstr "Запустить ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi для учетной записи администратора"

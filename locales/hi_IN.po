@@ -23811,7 +23811,7 @@ msgid "You must enable at least one notification mode."
 msgstr "आपको कम से कम एक अधिसूचना मोड सक्षम करना होगा।"
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "एक कंप्यूटर से कनेक्ट करें"
@@ -24457,7 +24457,7 @@ msgid "Back to top of the page"
 msgstr "पृष्ठ के शीर्ष पर वापस जाएं"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "आप इसे GLPI-PROJECT.org साइट पर पाएंगे।"
+msgstr "आप इसे ITSM-NG-PROJECT.org साइट पर पाएंगे।"
 
 msgid "Check all"
 msgstr "सभी की जांच करो"

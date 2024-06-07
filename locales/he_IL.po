@@ -24086,7 +24086,7 @@ msgstr ""
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "בדיקת התאימות של הסביבה עם הפעלה של GLPI."
+msgstr "בדיקת התאימות של הסביבה עם הפעלה של ITSM-NG."
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -24517,7 +24517,7 @@ msgid "You must enable at least one notification mode."
 msgstr ""
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "חבר מחשב"
@@ -25285,7 +25285,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "הצג GLPI ID"
+msgstr "הצג ITSM-NG ID"
 
 msgid "Color palette"
 msgstr ""
@@ -25442,10 +25442,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "אני קראתי ואינני מקבל תנאיי הרישיון הכתובים לעיל."
 
 msgid "Installation or update of GLPI"
-msgstr "התקנה או שדרוג של GLPI"
+msgstr "התקנה או שדרוג של ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "בחר 'התקנה' עבור התקנה חדשה של מערכת GLPI."
+msgstr "בחר 'התקנה' עבור התקנה חדשה של מערכת ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -25537,7 +25537,7 @@ msgid "Step %d"
 msgstr "צעד %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - אימות פרטים"
+msgstr "ITSM-NG - אימות פרטים"
 
 msgid "Remember me"
 msgstr "זכור אותי"
@@ -25584,7 +25584,7 @@ msgid "Logout"
 msgstr "התנתק"
 
 #~ msgid "Use GLPI"
-#~ msgstr "השתמש ב-GLPI"
+#~ msgstr "השתמש ב-ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi עבור חשבון מנהל המערכת"

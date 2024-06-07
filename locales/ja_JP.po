@@ -21837,7 +21837,7 @@ msgstr "画像ファイルではありません"
 
 #: inc/user.class.php:2042 inc/user.class.php:2009
 msgid "Add user..."
-msgstr "GLPI ユーザーを追加"
+msgstr "ITSM-NG ユーザーを追加"
 
 #: inc/user.class.php:2048 inc/user.class.php:2015
 msgid "... From an external source"
@@ -23160,7 +23160,7 @@ msgstr "表示終了日"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "GLPI実行環境の検証"
+msgstr "ITSM-NG実行環境の検証"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23390,7 +23390,7 @@ msgid "Active Directory"
 msgstr "Active Directory"
 
 msgid "GLPI version"
-msgstr "GLPIバージョン"
+msgstr "ITSM-NGバージョン"
 
 msgid "Confirm the promotion?"
 msgstr "プロモーションを確認しますか？"
@@ -23551,7 +23551,7 @@ msgid "You must enable at least one notification mode."
 msgstr "少なくとも1つの通知モードを有効にする必要があります。"
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "コンピューターへの接続"
@@ -23862,7 +23862,7 @@ msgid "Clean"
 msgstr "クリーニング"
 
 msgid "This plugin is not available for your GLPI version."
-msgstr "このプラグインは、お使いの GLPI のバージョンには無効です。"
+msgstr "このプラグインは、お使いの ITSM-NG のバージョンには無効です。"
 
 msgid "The plugin has an available update but its directory is not writable."
 msgstr ""
@@ -24080,7 +24080,7 @@ msgid "Failed to resize image"
 msgstr "画像のリサイズに失敗しました"
 
 msgid "Display GLPI debug information"
-msgstr "GLPIデバッグ情報を表示する"
+msgstr "ITSM-NGデバッグ情報を表示する"
 
 msgid "Progress"
 msgstr "進捗状況"
@@ -24092,7 +24092,7 @@ msgid "Back to top of the page"
 msgstr "ページの先頭へ戻る"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "GLPIプロジェクト公式サイト（GLPI-PROJECT.org）で入手できます"
+msgstr "ITSM-NGプロジェクト公式サイト（ITSM-NG-PROJECT.org）で入手できます"
 
 msgid "Check all"
 msgstr "全て選択"
@@ -24205,7 +24205,7 @@ msgstr ""
 "許可する。ユーザー設定タブ内のリモート アクセスキーを参照。"
 
 msgid "Show GLPI ID"
-msgstr "GLPI IDを表示"
+msgstr "ITSM-NG IDを表示"
 
 msgid "Color palette"
 msgstr "カラーパレット"
@@ -24339,13 +24339,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "ライセンスを読みましたが受諾しません"
 
 msgid "Installation or update of GLPI"
-msgstr "GLPIのインストール・更新"
+msgstr "ITSM-NGのインストール・更新"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "GLPIをクリーンインストールする場合、「インストール」を選択してください"
+msgstr "ITSM-NGをクリーンインストールする場合、「インストール」を選択してください"
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "「アップグレード」は以前のバージョンのGLPIを更新します"
+msgstr "「アップグレード」は以前のバージョンのITSM-NGを更新します"
 
 msgid "Do you want to continue?"
 msgstr "処理を続けますか?"
@@ -24432,7 +24432,7 @@ msgid "Step %d"
 msgstr "ステップ %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - 認証"
+msgstr "ITSM-NG - 認証"
 
 msgid "Remember me"
 msgstr "ログインを記憶"
@@ -24475,7 +24475,7 @@ msgid "Logout"
 msgstr "ログアウト"
 
 #~ msgid "Use GLPI"
-#~ msgstr "GLPIを使用"
+#~ msgstr "ITSM-NGを使用"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "管理者アカウント:glpi/glpi"

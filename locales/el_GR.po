@@ -23464,7 +23464,7 @@ msgstr "Ημερομηνία λήξης ορατότητας"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Έλεγχος συμβατότητας του περιβάλλοντός σας για την εκτέλεση του GLPI"
+msgstr "Έλεγχος συμβατότητας του περιβάλλοντός σας για την εκτέλεση του ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23889,7 +23889,7 @@ msgid "You must enable at least one notification mode."
 msgstr ""
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Σύνδεσε έναν υπολογιστή"
@@ -24674,7 +24674,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "Εμφάνισε GLPI ID"
+msgstr "Εμφάνισε ITSM-NG ID"
 
 msgid "Color palette"
 msgstr ""
@@ -24837,7 +24837,7 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Έχω διαβάσει και ΔΕΝ ΔΕΧΟΜΑΙ τους όρους της άδειας χρήσης παραπάνω"
 
 msgid "Installation or update of GLPI"
-msgstr "Εγκατάσταση ή αναβάθμιση του GLPI"
+msgstr "Εγκατάσταση ή αναβάθμιση του ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
 msgstr ""
@@ -24845,7 +24845,7 @@ msgstr ""
 "δεδομένα θα χρησιμοποιηθούν)."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Επιλέξτε 'Αναβάθμιση' για αναβάθμιση προηγούμενης έκδοσης του GLPI"
+msgstr "Επιλέξτε 'Αναβάθμιση' για αναβάθμιση προηγούμενης έκδοσης του ITSM-NG"
 
 msgid "Do you want to continue?"
 msgstr "Θέλετε να συνεχίσετε;"
@@ -24938,7 +24938,7 @@ msgid "Step %d"
 msgstr "Βήμα %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Αυθεντικοποίηση"
+msgstr "ITSM-NG - Αυθεντικοποίηση"
 
 msgid "Remember me"
 msgstr "Να με θυμάσαι"
@@ -24991,7 +24991,7 @@ msgid "Logout"
 msgstr "Αποσύνδεση"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Χρήση GLPI"
+#~ msgstr "Χρήση ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi για τον λογαριασμό διαχειριστή"

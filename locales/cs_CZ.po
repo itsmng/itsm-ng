@@ -20744,7 +20744,7 @@ msgstr ""
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:161
 msgid "Any previous appliance created in core will be lost."
-msgstr "Předchozí vytvořená zařízení v jádře GLPI budou ztracena."
+msgstr "Předchozí vytvořená zařízení v jádře ITSM-NG budou ztracena."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:209
 #, php-format
@@ -24282,7 +24282,7 @@ msgstr "Datum konce viditelnosti"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Kontrola kompatibility vašeho prostředí pro provoz GLPI"
+msgstr "Kontrola kompatibility vašeho prostředí pro provoz ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -24515,7 +24515,7 @@ msgid "Active Directory"
 msgstr "Active Directory"
 
 msgid "GLPI version"
-msgstr "Verze GLPI"
+msgstr "Verze ITSM-NG"
 
 msgid "Confirm the promotion?"
 msgstr "Potvrdit povýšení?"
@@ -24686,7 +24686,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Je třeba zapnout alespoň jeden režim oznamování."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Připojit počítač"
@@ -25014,7 +25014,7 @@ msgid "Clean"
 msgstr "Vyčistit"
 
 msgid "This plugin is not available for your GLPI version."
-msgstr "Tento zásuvný modul není dostupný pro vaší verzi GLPI."
+msgstr "Tento zásuvný modul není dostupný pro vaší verzi ITSM-NG."
 
 msgid "The plugin has an available update but its directory is not writable."
 msgstr ""
@@ -25238,7 +25238,7 @@ msgid "Failed to resize image"
 msgstr "Nepodařilo se změnit rozlišení obrázku"
 
 msgid "Display GLPI debug information"
-msgstr "Zobrazit ladící informace GLPI"
+msgstr "Zobrazit ladící informace ITSM-NG"
 
 msgid "Progress"
 msgstr "Postup"
@@ -25250,7 +25250,7 @@ msgid "Back to top of the page"
 msgstr "Zpět na začátek stránky"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Najdete na webu GLPI-PROJECT.org."
+msgstr "Najdete na webu ITSM-NG-PROJECT.org."
 
 msgid "Check all"
 msgstr "Zaškrtnout vše"
@@ -25364,7 +25364,7 @@ msgstr ""
 "uživatele. Viz Vzdálený přístupový klíč v panelu Nastavení uživatele"
 
 msgid "Show GLPI ID"
-msgstr "Zobrazit GLPI identifikátor"
+msgstr "Zobrazit ITSM-NG identifikátor"
 
 msgid "Color palette"
 msgstr "Barevná paleta"
@@ -25498,13 +25498,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Přečetl jsem si výše uvedené licenční ujednání a NESOUHLASÍM s ním"
 
 msgid "Installation or update of GLPI"
-msgstr "Instalace nebo aktualizace GLPI"
+msgstr "Instalace nebo aktualizace ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Pro úplně novou instalaci GLPI zvolte „Nainstalovat“."
+msgstr "Pro úplně novou instalaci ITSM-NG zvolte „Nainstalovat“."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Pro aktualizaci z dřívější verze GLPI zvolte „Přejít na novější verzi“"
+msgstr "Pro aktualizaci z dřívější verze ITSM-NG zvolte „Přejít na novější verzi“"
 
 msgid "Do you want to continue?"
 msgstr "Přejete si pokračovat?"
@@ -25591,7 +25591,7 @@ msgid "Step %d"
 msgstr "Krok %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI – ověření totožnosti"
+msgstr "ITSM-NG – ověření totožnosti"
 
 msgid "Remember me"
 msgstr "Zapamatovat si mne"
@@ -25634,7 +25634,7 @@ msgid "Logout"
 msgstr "Odhlásit"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Používat GLPI"
+#~ msgstr "Používat ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi (účet správce)"

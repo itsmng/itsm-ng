@@ -25223,7 +25223,7 @@ msgid "You must enable at least one notification mode."
 msgstr ""
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "إتصال بجهاز حاسوب"
@@ -25986,7 +25986,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "عرض رقم التعريف في GLPI"
+msgstr "عرض رقم التعريف في ITSM-NG"
 
 msgid "Color palette"
 msgstr ""
@@ -26142,13 +26142,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr ""
 
 msgid "Installation or update of GLPI"
-msgstr "تركيب أو تحديث GLPI"
+msgstr "تركيب أو تحديث ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
 msgstr ""
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "إختر \"تحديث\" لتحديث نسختك القديمة من GLPI."
+msgstr "إختر \"تحديث\" لتحديث نسختك القديمة من ITSM-NG."
 
 msgid "Do you want to continue?"
 msgstr ""
@@ -26248,7 +26248,7 @@ msgid "Step %d"
 msgstr ""
 
 msgid "GLPI - Authentication"
-msgstr "التحقق من الهوية GLPI"
+msgstr "التحقق من الهوية ITSM-NG"
 
 msgid "Remember me"
 msgstr "تذكرنى"

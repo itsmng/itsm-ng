@@ -23398,7 +23398,7 @@ msgstr "Sluttdato for synlighet"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Kontroll av kompatibiliteten til miljøet med kjøring av GLPI"
+msgstr "Kontroll av kompatibiliteten til miljøet med kjøring av ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23823,7 +23823,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Du må installere minimum versjon %s av PHP."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Tilknytt en datamaskin"
@@ -24467,7 +24467,7 @@ msgid "Back to top of the page"
 msgstr ""
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Du finner den på nettstedet GLPI-PROJECT.org."
+msgstr "Du finner den på nettstedet ITSM-NG-PROJECT.org."
 
 msgid "Check all"
 msgstr "Marker alle"
@@ -24591,7 +24591,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "Vis GLPI ID"
+msgstr "Vis ITSM-NG ID"
 
 msgid "Color palette"
 msgstr "Fargepalett"
@@ -24749,10 +24749,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Jeg har lest og godtar ikke vilkårene i lisensen skrevet ovenfor"
 
 msgid "Installation or update of GLPI"
-msgstr "Installasjon eller oppdatering av GLPI"
+msgstr "Installasjon eller oppdatering av ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Velg \"Installer\" for å helt ny installasjon av GLPI."
+msgstr "Velg \"Installer\" for å helt ny installasjon av ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -24845,7 +24845,7 @@ msgid "Step %d"
 msgstr "Steg %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Autentisering"
+msgstr "ITSM-NG - Autentisering"
 
 msgid "Remember me"
 msgstr "Husk meg"
@@ -24896,7 +24896,7 @@ msgid "Logout"
 msgstr "Logg av"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Bruk GLPI"
+#~ msgstr "Bruk ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi for administratorkonto"

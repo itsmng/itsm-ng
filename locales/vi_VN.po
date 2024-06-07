@@ -23469,7 +23469,7 @@ msgid "You must enable at least one notification mode."
 msgstr ""
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Kết nốt một máy tính"
@@ -24121,7 +24121,7 @@ msgid "Back to top of the page"
 msgstr ""
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Bạn sẽ tìm thấy nó trên trang GLPI-PROJECT.org"
+msgstr "Bạn sẽ tìm thấy nó trên trang ITSM-NG-PROJECT.org"
 
 msgid "Check all"
 msgstr "Đánh dấu tất cả"
@@ -24251,7 +24251,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "Hiện GLPI ID"
+msgstr "Hiện ITSM-NG ID"
 
 msgid "Color palette"
 msgstr "Bảng màu"
@@ -24407,10 +24407,10 @@ msgstr ""
 "Tôi đã đọc và KHÔNG CHẤP NHẬN các điều khoản của giấy phép được viết ở trên"
 
 msgid "Installation or update of GLPI"
-msgstr "Cài đặt hoặc nâng cấp GLPI"
+msgstr "Cài đặt hoặc nâng cấp ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Chọn \"Cài đặt\" để cài đặt mới hoàn toàn GLPI."
+msgstr "Chọn \"Cài đặt\" để cài đặt mới hoàn toàn ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -24506,7 +24506,7 @@ msgid "Step %d"
 msgstr "Bước %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Xác Thực"
+msgstr "ITSM-NG - Xác Thực"
 
 #, fuzzy
 #| msgid "Team member"
@@ -24560,7 +24560,7 @@ msgid "Logout"
 msgstr "Đăng xuất"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Dùng GLPI"
+#~ msgstr "Dùng ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi cho tài khoản quản trị viên"

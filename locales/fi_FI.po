@@ -23435,7 +23435,7 @@ msgstr "Näkyvyyden päättymispäivä"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Ympäristön GLPI-yhteensopivuuden tarkistus"
+msgstr "Ympäristön ITSM-NG-yhteensopivuuden tarkistus"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23852,7 +23852,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Asenna vähintään PHP-versio %s"
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Tietokoneen yhdistäminen"
@@ -24503,7 +24503,7 @@ msgid "Back to top of the page"
 msgstr "Takaisin sivun yläreunaan"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Löydät sen GLPI-PROJECT.org-sivustolta"
+msgstr "Löydät sen ITSM-NG-PROJECT.org-sivustolta"
 
 msgid "Check all"
 msgstr "Valitse kaikki"
@@ -24621,7 +24621,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "Näytä GLPI-ID-tunnus"
+msgstr "Näytä ITSM-NG-ID-tunnus"
 
 msgid "Color palette"
 msgstr "Värivalikoima"
@@ -24767,13 +24767,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Olen lukenut ja EN HYVÄKSY edellä mainittuja lisenssiehtoja."
 
 msgid "Installation or update of GLPI"
-msgstr "GLPI:n asennus tai päivitys"
+msgstr "ITSM-NG:n asennus tai päivitys"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
 msgstr "Asenna täysin uusi GLPi valitsemalla 'Asenna'"
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Päivitä GLPI-versiosi valitsemalla 'Päivitä'"
+msgstr "Päivitä ITSM-NG-versiosi valitsemalla 'Päivitä'"
 
 msgid "Do you want to continue?"
 msgstr "Haluatko jatkaa?"
@@ -24863,7 +24863,7 @@ msgid "Step %d"
 msgstr "Askel %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Kirjautuminen"
+msgstr "ITSM-NG - Kirjautuminen"
 
 msgid "Remember me"
 msgstr "Muista minut"
@@ -24915,7 +24915,7 @@ msgid "Logout"
 msgstr "Kirjaudu ulos"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Käytä GLPI:tä"
+#~ msgstr "Käytä ITSM-NG:tä"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi ylläpitäjän tilille"

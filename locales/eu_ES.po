@@ -11355,7 +11355,7 @@ msgstr "LDAP direktoriora konexioa frogatu"
 
 #: inc/authldap.class.php:761 inc/authldap.class.php:770
 msgid "Binding to the LDAP directory"
-msgstr "GLPI/LDAP lotura"
+msgstr "ITSM-NG/LDAP lotura"
 
 #: inc/authldap.class.php:763 inc/authldap.class.php:965
 #: inc/authldap.class.php:3316 inc/oidc.class.php:314 inc/auth.class.php:1682
@@ -23699,7 +23699,7 @@ msgid "Active Directory"
 msgstr "Direktorio Aktiboa"
 
 msgid "GLPI version"
-msgstr "GLPIren bertsioa"
+msgstr "ITSM-NGren bertsioa"
 
 #, fuzzy
 #| msgid "Confirm the final deletion?"
@@ -23886,7 +23886,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Bidali nabigatzailearen probako jakinarazpena zuri"
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Ordenagailu bat konektatu"
@@ -24540,7 +24540,7 @@ msgid "Back to top of the page"
 msgstr ""
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "GLPI-PROJECT.org webgunean aurkituko duzu."
+msgstr "ITSM-NG-PROJECT.org webgunean aurkituko duzu."
 
 msgid "Check all"
 msgstr "Denei marka jarri"
@@ -24660,7 +24660,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "GLPI ID-a erakutsi"
+msgstr "ITSM-NG ID-a erakutsi"
 
 msgid "Color palette"
 msgstr "Kolore paleta"
@@ -24819,13 +24819,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Goiko lizentzia EZ DUT ONARTZEN."
 
 msgid "Installation or update of GLPI"
-msgstr "GLPI instalatu ala eguneratu"
+msgstr "ITSM-NG instalatu ala eguneratu"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "'Instalazioa' aukeratu GLPI zerotik instalatzeko."
+msgstr "'Instalazioa' aukeratu ITSM-NG zerotik instalatzeko."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Aukeratu ‘Eguneratu’ GLPI bertsioa zaharrago batetik eguneratzeko"
+msgstr "Aukeratu ‘Eguneratu’ ITSM-NG bertsioa zaharrago batetik eguneratzeko"
 
 msgid "Do you want to continue?"
 msgstr "Jarraitu nahi duzu?"
@@ -24916,7 +24916,7 @@ msgid "Step %d"
 msgstr "%d pausoa"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Identifikazioa"
+msgstr "ITSM-NG - Identifikazioa"
 
 msgid "Remember me"
 msgstr "Gogora nazazu"
@@ -24967,7 +24967,7 @@ msgid "Logout"
 msgstr "Saioa itxi"
 
 #~ msgid "Use GLPI"
-#~ msgstr "GLPI erabili"
+#~ msgstr "ITSM-NG erabili"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi administratzaile konturako"

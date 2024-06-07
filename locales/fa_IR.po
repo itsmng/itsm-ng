@@ -23356,7 +23356,7 @@ msgstr ""
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "بررسی سازگاری محیط شما با اجرای GLPI"
+msgstr "بررسی سازگاری محیط شما با اجرای ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23785,7 +23785,7 @@ msgid "You must enable at least one notification mode."
 msgstr ""
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 #, fuzzy
 #| msgid "Connection filter"
@@ -24422,7 +24422,7 @@ msgid "Back to top of the page"
 msgstr ""
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "شما آن را در سایت GLPI-PROJECT.org می یابید."
+msgstr "شما آن را در سایت ITSM-NG-PROJECT.org می یابید."
 
 msgid "Check all"
 msgstr "نشان‌گذاری همه"
@@ -24552,7 +24552,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "نمایش شناسه GLPI"
+msgstr "نمایش شناسه ITSM-NG"
 
 msgid "Color palette"
 msgstr ""
@@ -24711,10 +24711,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "شرایط اجازه نامه نوشته شده در بالا را خواندم و قبول ندارم."
 
 msgid "Installation or update of GLPI"
-msgstr "نصب یا بروزآوری GLPI"
+msgstr "نصب یا بروزآوری ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "برای نصب کاملا جدید از GLPI 'نصب' را انتخاب کنید."
+msgstr "برای نصب کاملا جدید از ITSM-NG 'نصب' را انتخاب کنید."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -24866,4 +24866,4 @@ msgid "Logout"
 msgstr "خروج"
 
 #~ msgid "Use GLPI"
-#~ msgstr "استفاده از GLPI"
+#~ msgstr "استفاده از ITSM-NG"

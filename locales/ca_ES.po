@@ -11384,7 +11384,7 @@ msgstr "Prova de connexió amb el servidor LDAP"
 
 #: inc/authldap.class.php:761 inc/authldap.class.php:770
 msgid "Binding to the LDAP directory"
-msgstr "Enllaç GLPI/LDAP"
+msgstr "Enllaç ITSM-NG/LDAP"
 
 #: inc/authldap.class.php:763 inc/authldap.class.php:965
 #: inc/authldap.class.php:3316 inc/oidc.class.php:314 inc/auth.class.php:1682
@@ -23598,7 +23598,7 @@ msgstr "Data final visibilitat"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Verificació de la compatibilitat del teu entorn amb l'execució de GLPI"
+msgstr "Verificació de la compatibilitat del teu entorn amb l'execució de ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23829,7 +23829,7 @@ msgid "Active Directory"
 msgstr "Directori Actiu"
 
 msgid "GLPI version"
-msgstr "Versió de GLPI"
+msgstr "Versió de ITSM-NG"
 
 msgid "Confirm the promotion?"
 msgstr "Confirmes la promoció?"
@@ -23993,7 +23993,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Has d'activar al menys una manera de notificació."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Connecta un ordinador"
@@ -24539,7 +24539,7 @@ msgid "Failed to resize image"
 msgstr "No s'ha pogut redimensionar la imatge"
 
 msgid "Display GLPI debug information"
-msgstr "Mostra l'informació de debug de GLPI"
+msgstr "Mostra l'informació de debug de ITSM-NG"
 
 msgid "Progress"
 msgstr "Progrés"
@@ -24668,7 +24668,7 @@ msgstr ""
 "l'usuari"
 
 msgid "Show GLPI ID"
-msgstr "Mostra els ID GLPI"
+msgstr "Mostra els ID ITSM-NG"
 
 msgid "Color palette"
 msgstr "Paleta de colors"
@@ -24802,13 +24802,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "He llegit i NO accepto els termes de la llicència comentats a dalt."
 
 msgid "Installation or update of GLPI"
-msgstr "Instal·lació o actualització de GLPI"
+msgstr "Instal·lació o actualització de ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Tria 'Instal·la' per a una nova instal·lació completa de GLPI"
+msgstr "Tria 'Instal·la' per a una nova instal·lació completa de ITSM-NG"
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Selecciona 'Actualitza' per actualitzar GLPI des d'una versió anterior"
+msgstr "Selecciona 'Actualitza' per actualitzar ITSM-NG des d'una versió anterior"
 
 msgid "Do you want to continue?"
 msgstr "Vols continuar?"
@@ -24897,7 +24897,7 @@ msgid "Step %d"
 msgstr "Pas %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Autenticació"
+msgstr "ITSM-NG - Autenticació"
 
 msgid "Remember me"
 msgstr "Recorda'm"
@@ -24940,7 +24940,7 @@ msgid "Logout"
 msgstr "Desconnexió"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Utilitza GLPI"
+#~ msgstr "Utilitza ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi pel compte d'administrador"

@@ -23762,7 +23762,7 @@ msgid "You must enable at least one notification mode."
 msgstr ""
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 #, fuzzy
 #| msgid "Connection filter"
@@ -24639,7 +24639,7 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr ""
 
 msgid "Installation or update of GLPI"
-msgstr "Uppsetning eða uppfærsla á GLPI"
+msgstr "Uppsetning eða uppfærsla á ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
 msgstr ""
@@ -24744,7 +24744,7 @@ msgid "Step %d"
 msgstr "Skref %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Auðkenning"
+msgstr "ITSM-NG - Auðkenning"
 
 #, fuzzy
 #| msgid "December"
@@ -24792,7 +24792,7 @@ msgid "Logout"
 msgstr "Déconnexion"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Nota GLPI"
+#~ msgstr "Nota ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi fyrir administrator aðganginn"
