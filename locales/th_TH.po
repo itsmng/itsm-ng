@@ -22996,7 +22996,7 @@ msgstr "วันที่สิ้นสุดการแสดงผล"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "การตรวจสอบความเข้ากันได้ของสภาพแวดล้อมของคุณที่มีการดำเนินการของ GLPI"
+msgstr "การตรวจสอบความเข้ากันได้ของสภาพแวดล้อมของคุณที่มีการดำเนินการของ ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23416,7 +23416,7 @@ msgid "You must enable at least one notification mode."
 msgstr ""
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "เชื่อมต่อคอมพิวเตอร์"
@@ -24055,7 +24055,7 @@ msgid "Back to top of the page"
 msgstr ""
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "ไปยังเว็บ  GLPI-PROJECT.org"
+msgstr "ไปยังเว็บ  ITSM-NG-PROJECT.org"
 
 msgid "Check all"
 msgstr "เลือกทั้งหมด"
@@ -24194,7 +24194,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "โชว์ GLPI ID"
+msgstr "โชว์ ITSM-NG ID"
 
 msgid "Color palette"
 msgstr ""
@@ -24355,13 +24355,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "ข้าพเจ้าได้อ่านและไม่ยอมรับเงื่อนไขของใบอนุญาตที่เขียนข้างต้น"
 
 msgid "Installation or update of GLPI"
-msgstr "ติดตั้ง หรือ อัพเดท GLPI"
+msgstr "ติดตั้ง หรือ อัพเดท ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
 msgstr "เลือก \"ติดตั้ง\" สำหรับติดตั้งใหม่"
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "เลือก \"อัพเกรด\" สำหรับการอัพเดท GLPI"
+msgstr "เลือก \"อัพเกรด\" สำหรับการอัพเดท ITSM-NG"
 
 msgid "Do you want to continue?"
 msgstr "คุณต้องการที่จะดำเนินการต่อหรือไม่"
@@ -24448,7 +24448,7 @@ msgid "Step %d"
 msgstr "Step %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - ยืนยันตัวตน"
+msgstr "ITSM-NG - ยืนยันตัวตน"
 
 msgid "Remember me"
 msgstr "จดจำ"
@@ -24497,7 +24497,7 @@ msgid "Logout"
 msgstr "ออกจากระบบ"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Use GLPI"
+#~ msgstr "Use ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "Glpi/Glpi สำหรับผู้ดูแลระบบ"

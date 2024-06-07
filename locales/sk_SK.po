@@ -24254,7 +24254,7 @@ msgstr "Viditeľnosť do"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Kontrola kompatibility prostredia a GLPI"
+msgstr "Kontrola kompatibility prostredia a ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -24485,7 +24485,7 @@ msgid "Active Directory"
 msgstr "Active Directory"
 
 msgid "GLPI version"
-msgstr "GLPI verzia"
+msgstr "ITSM-NG verzia"
 
 msgid "Confirm the promotion?"
 msgstr "Potvrdiť povýšenie?"
@@ -24655,7 +24655,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Musíte povoliť minimálne jeden režim oznámenia."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Pripojiť počítač"
@@ -24964,7 +24964,7 @@ msgid "Clean"
 msgstr "Zmazať"
 
 msgid "This plugin is not available for your GLPI version."
-msgstr "Tento plugin nie je dostupný pre vašu verziu GLPI."
+msgstr "Tento plugin nie je dostupný pre vašu verziu ITSM-NG."
 
 msgid "The plugin has an available update but its directory is not writable."
 msgstr ""
@@ -24979,7 +24979,7 @@ msgid "A new version (%s) is available, update ?"
 msgstr " K dispozícii je nová verzia (%s), chcete aktualizovať?"
 
 msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-msgstr "Pre prístup k tomuto pluginu (%s) potrebujete GLPI-Network."
+msgstr "Pre prístup k tomuto pluginu (%s) potrebujete ITSM-NG-Network."
 
 msgid "Install"
 msgstr "Inštalovať"
@@ -25005,7 +25005,7 @@ msgstr[2] "%s pluginov"
 msgstr[3] "%s pluginov"
 
 msgid "GLPI provides a new marketplace to download and install plugins."
-msgstr "GLPI poskytuje nový obchod na sťahovanie a inštaláciu pluginov."
+msgstr "ITSM-NG poskytuje nový obchod na sťahovanie a inštaláciu pluginov."
 
 msgid "Do you want to replace the plugins setup page by the new marketplace ?"
 msgstr "Chcete nahradiť stránku s nastavením pluginov za nový obchod?"
@@ -25181,7 +25181,7 @@ msgid "Failed to resize image"
 msgstr "Nepodarilo sa zmeniť veľkosť obrázka"
 
 msgid "Display GLPI debug information"
-msgstr "Zobraziť GLPI ladiace informácie"
+msgstr "Zobraziť ITSM-NG ladiace informácie"
 
 msgid "Progress"
 msgstr "Postup"
@@ -25310,7 +25310,7 @@ msgstr ""
 "používateľa."
 
 msgid "Show GLPI ID"
-msgstr "Zobraziť GLPI ID"
+msgstr "Zobraziť ITSM-NG ID"
 
 msgid "Color palette"
 msgstr "Farebná paleta"
@@ -25446,13 +25446,13 @@ msgstr ""
 "Prečítal(a) som si licenčné ujednanie uvedené vyššie a NESÚHLASÍM s ním."
 
 msgid "Installation or update of GLPI"
-msgstr "Inštalácia alebo aktualizácia GLPI"
+msgstr "Inštalácia alebo aktualizácia ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Pre novú inštaláciu GLPI zvoľte 'Inštalácia'."
+msgstr "Pre novú inštaláciu ITSM-NG zvoľte 'Inštalácia'."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Pre aktualizáciu GLPI zvoľte 'Aktualizovať'"
+msgstr "Pre aktualizáciu ITSM-NG zvoľte 'Aktualizovať'"
 
 msgid "Do you want to continue?"
 msgstr "Chcete pokračovať?"
@@ -25539,7 +25539,7 @@ msgid "Step %d"
 msgstr "Krok %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Autentifikácia"
+msgstr "ITSM-NG - Autentifikácia"
 
 msgid "Remember me"
 msgstr "Zapamätať si ma"
@@ -25582,7 +25582,7 @@ msgid "Logout"
 msgstr "Odhlásiť sa"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Spustiť GLPI"
+#~ msgstr "Spustiť ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi pre účet administrátora"

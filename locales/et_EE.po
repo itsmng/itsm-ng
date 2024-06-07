@@ -4746,7 +4746,7 @@ msgstr "Üldine seadistus"
 #: inc/config.class.php:302 inc/notificationtarget.class.php:1272
 #: inc/config.class.php:308 inc/notificationtarget.class.php:1282
 msgid "URL of the application"
-msgstr "GLPI aadress"
+msgstr "ITSM-NG aadress"
 
 #: inc/config.class.php:307 inc/config.class.php:315
 #, fuzzy
@@ -12892,7 +12892,7 @@ msgstr "Rahulolu-uuringu seadistus"
 #: inc/ticketsatisfaction.class.php:230 inc/ticketsatisfaction.class.php:280
 #: inc/entity.class.php:2342 inc/entity.class.php:2919
 msgid "Internal survey"
-msgstr "GLPI rahulolu-uuring"
+msgstr "ITSM-NG rahulolu-uuring"
 
 #: inc/entity.class.php:2711 inc/entity.class.php:3312
 #: inc/ticketsatisfaction.class.php:111 inc/ticketsatisfaction.class.php:233
@@ -23491,7 +23491,7 @@ msgstr "Nähtav kuni"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Keskkonna kontroll GLPI tarkvara käivitamiseks"
+msgstr "Keskkonna kontroll ITSM-NG tarkvara käivitamiseks"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23722,7 +23722,7 @@ msgid "Active Directory"
 msgstr "Active Directory"
 
 msgid "GLPI version"
-msgstr "GLPI versioon"
+msgstr "ITSM-NG versioon"
 
 msgid "Confirm the promotion?"
 msgstr "Kinnitada esiletoomine?"
@@ -23885,7 +23885,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Pead lubama vähemalt ühe teavituse valiku."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Ühenda arvutiga"
@@ -24190,7 +24190,7 @@ msgid "Clean"
 msgstr "Puhasta"
 
 msgid "This plugin is not available for your GLPI version."
-msgstr "See plugin pole saadaval teie GLPI versioonile."
+msgstr "See plugin pole saadaval teie ITSM-NG versioonile."
 
 msgid "The plugin has an available update but its directory is not writable."
 msgstr "Pluginal on uuendus saadaval, kuid plugina kaust pole kirjutatav."
@@ -24203,7 +24203,7 @@ msgid "A new version (%s) is available, update ?"
 msgstr "Uus versioon (%s) on saadaval, uuendada?"
 
 msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-msgstr "Sellele plugina (%s) jaoks on vaja kõrgemat GLPI-võrgu pakkumist"
+msgstr "Sellele plugina (%s) jaoks on vaja kõrgemat ITSM-NG-võrgu pakkumist"
 
 msgid "Install"
 msgstr "Paigalda"
@@ -24226,7 +24226,7 @@ msgstr[0] "%s plugin"
 msgstr[1] "%s pluginad"
 
 msgid "GLPI provides a new marketplace to download and install plugins."
-msgstr "GLPI pakub uut Poodi pluginate allalaadimiseks ja installimiseks."
+msgstr "ITSM-NG pakub uut Poodi pluginate allalaadimiseks ja installimiseks."
 
 msgid "Do you want to replace the plugins setup page by the new marketplace ?"
 msgstr "Kas soovid asendada pluginate paigalduslehe uue poe lehega ?"
@@ -24398,7 +24398,7 @@ msgid "Failed to resize image"
 msgstr "Pildi suuruse muutmine ebaõnnestus"
 
 msgid "Display GLPI debug information"
-msgstr "Näita GLPI silumisinfot"
+msgstr "Näita ITSM-NG silumisinfot"
 
 msgid "Progress"
 msgstr "Edenemine"
@@ -24410,7 +24410,7 @@ msgid "Back to top of the page"
 msgstr "Tagasi lehe algusse"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Alla saab laadida aadressilt GLPI-PROJECT.org."
+msgstr "Alla saab laadida aadressilt ITSM-NG-PROJECT.org."
 
 msgid "Check all"
 msgstr "Märgi kõik"
@@ -24522,7 +24522,7 @@ msgstr ""
 "Kaugjuurdepääsu võti kasutaja seadete lehel "
 
 msgid "Show GLPI ID"
-msgstr "Näita GLPI ID numbrit"
+msgstr "Näita ITSM-NG ID numbrit"
 
 msgid "Color palette"
 msgstr "Värviskeem"
@@ -24656,13 +24656,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Ma olen litsentsi lugenud ja EI NÕUSTU litsentsi tingimustega"
 
 msgid "Installation or update of GLPI"
-msgstr "GLPI uus paigaldus või uuendus"
+msgstr "ITSM-NG uus paigaldus või uuendus"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Vali 'Paigalda', kui sul ei ole veel paigaldatud GLPI."
+msgstr "Vali 'Paigalda', kui sul ei ole veel paigaldatud ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Vali 'Uuenda', et uuendada sinu praegune GLPI paigaldus"
+msgstr "Vali 'Uuenda', et uuendada sinu praegune ITSM-NG paigaldus"
 
 msgid "Do you want to continue?"
 msgstr "Kas soovid jätkata?"
@@ -24748,7 +24748,7 @@ msgid "Step %d"
 msgstr "Samm %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Autentimine"
+msgstr "ITSM-NG - Autentimine"
 
 msgid "Remember me"
 msgstr "Jäta mind meelde"
@@ -24791,7 +24791,7 @@ msgid "Logout"
 msgstr "Välju"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Alusta GLPI kasutamist"
+#~ msgstr "Alusta ITSM-NG kasutamist"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi administraatori konto"

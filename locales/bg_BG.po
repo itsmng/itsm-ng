@@ -23466,7 +23466,7 @@ msgstr ""
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Проверка на обкръжението за съвместимост с GLPI"
+msgstr "Проверка на обкръжението за съвместимост с ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23699,7 +23699,7 @@ msgid "Active Directory"
 msgstr "Активна директория"
 
 msgid "GLPI version"
-msgstr "GLPI версия"
+msgstr "ITSM-NG версия"
 
 #, fuzzy
 #| msgid "Confirm the final deletion?"
@@ -23870,7 +23870,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Трябва да активирате поне един режим за известия."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Свързване на компютър"
@@ -24213,7 +24213,7 @@ msgid "Clean"
 msgstr "Изчистване"
 
 msgid "This plugin is not available for your GLPI version."
-msgstr "Тази приставка не е на разположение за Вашата GLPI версия."
+msgstr "Тази приставка не е на разположение за Вашата ITSM-NG версия."
 
 msgid "The plugin has an available update but its directory is not writable."
 msgstr ""
@@ -24434,7 +24434,7 @@ msgid "Failed to resize image"
 msgstr "Неуспешно преоразмеряване на изображение"
 
 msgid "Display GLPI debug information"
-msgstr "Показване на GLPI информация за отстраняване на грешки"
+msgstr "Показване на ITSM-NG информация за отстраняване на грешки"
 
 msgid "Progress"
 msgstr "Прогрес"
@@ -24446,7 +24446,7 @@ msgid "Back to top of the page"
 msgstr "Обратно в началото на страницата"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Ще го намерите на сайта GLPI-PROJECT.org."
+msgstr "Ще го намерите на сайта ITSM-NG-PROJECT.org."
 
 msgid "Check all"
 msgstr "Поставяне на отметка на всички"
@@ -24566,7 +24566,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "Покажи GLPI Идентификатор"
+msgstr "Покажи ITSM-NG Идентификатор"
 
 msgid "Color palette"
 msgstr "Цветова палитра"
@@ -24706,10 +24706,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Прочетох и НЕ ПРИЕМАМ всички точки на лицензното споразумение."
 
 msgid "Installation or update of GLPI"
-msgstr "Инсталиране или Обновяване на GLPI"
+msgstr "Инсталиране или Обновяване на ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Изберете 'Install' за изцяло нова инсталация на GLPI."
+msgstr "Изберете 'Install' за изцяло нова инсталация на ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -24811,7 +24811,7 @@ msgid "Step %d"
 msgstr "Стъпка %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Удостоверяване"
+msgstr "ITSM-NG - Удостоверяване"
 
 msgid "Remember me"
 msgstr "Запомни ме"
@@ -24860,7 +24860,7 @@ msgid "Logout"
 msgstr "Изход"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Стартирайте GLPI"
+#~ msgstr "Стартирайте ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi за администраторския потребител"

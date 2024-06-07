@@ -23916,7 +23916,7 @@ msgstr "Završni datum vidljivosti"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Provjera kompatibilnosti tvog okruženja s izvršavanjem GLPI-a"
+msgstr "Provjera kompatibilnosti tvog okruženja s izvršavanjem ITSM-NG-a"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -24147,7 +24147,7 @@ msgid "Active Directory"
 msgstr "Aktivna mapa"
 
 msgid "GLPI version"
-msgstr "Verzija GLPI-a"
+msgstr "Verzija ITSM-NG-a"
 
 msgid "Confirm the promotion?"
 msgstr "Potvrditi promociju?"
@@ -24313,7 +24313,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Moraš aktivirati barem jedan modus obavještavanja."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Spoji jedno računalo"
@@ -24643,7 +24643,7 @@ msgid "A new version (%s) is available, update ?"
 msgstr "Dostupna je nova verzija (%s). Želiš li aktualizirati?"
 
 msgid "You need a superior GLPI-Network offer to access to this plugin (%s)"
-msgstr "Za pristup ovom dodatku potrebna je ponuda vrhunske GLPI-mreže (%s)"
+msgstr "Za pristup ovom dodatku potrebna je ponuda vrhunske ITSM-NG-mreže (%s)"
 
 msgid "Install"
 msgstr "Instaliraj"
@@ -24667,7 +24667,7 @@ msgstr[1] "%s dodatka"
 msgstr[2] "%s dodataka"
 
 msgid "GLPI provides a new marketplace to download and install plugins."
-msgstr "GLPI nudi novu tržnicu za preuzimanje i instaliranje dodataka."
+msgstr "ITSM-NG nudi novu tržnicu za preuzimanje i instaliranje dodataka."
 
 msgid "Do you want to replace the plugins setup page by the new marketplace ?"
 msgstr ""
@@ -24844,7 +24844,7 @@ msgid "Failed to resize image"
 msgstr "Neuspjelo mijenjanje veličine slike"
 
 msgid "Display GLPI debug information"
-msgstr "Prikažite informacije o otklanjanju pogrešaka GLPI-a"
+msgstr "Prikažite informacije o otklanjanju pogrešaka ITSM-NG-a"
 
 msgid "Progress"
 msgstr "Napredak"
@@ -24856,7 +24856,7 @@ msgid "Back to top of the page"
 msgstr "Natrag na vrh stranice"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Naći ćeš je na stranicama GLPI-PROJECT.org."
+msgstr "Naći ćeš je na stranicama ITSM-NG-PROJECT.org."
 
 msgid "Check all"
 msgstr "Označi sve"
@@ -24972,7 +24972,7 @@ msgstr ""
 "postavki "
 
 msgid "Show GLPI ID"
-msgstr "Prikaži GLPI ID"
+msgstr "Prikaži ITSM-NG ID"
 
 msgid "Color palette"
 msgstr "Paleta boja"
@@ -25106,10 +25106,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Pročitao(la) sam i NE PRISTAJEM na gore navedene uvjete licence"
 
 msgid "Installation or update of GLPI"
-msgstr "Instaliranje ili aktualiziranje GLPI-a"
+msgstr "Instaliranje ili aktualiziranje ITSM-NG-a"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Odaberi „Instaliraj” za kompletno novu instalaciju GLPI-a."
+msgstr "Odaberi „Instaliraj” za kompletno novu instalaciju ITSM-NG-a."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -25200,7 +25200,7 @@ msgid "Step %d"
 msgstr "%d. korak"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI – Autentifikacija"
+msgstr "ITSM-NG – Autentifikacija"
 
 msgid "Remember me"
 msgstr "Zapamti me"
@@ -25243,7 +25243,7 @@ msgid "Logout"
 msgstr "Odjava"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Koristi GLPI"
+#~ msgstr "Koristi ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi za račun administratora"

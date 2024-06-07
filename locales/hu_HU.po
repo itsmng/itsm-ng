@@ -22069,7 +22069,7 @@ msgstr "Nem képfájl"
 
 #: inc/user.class.php:2042 inc/user.class.php:2009
 msgid "Add user..."
-msgstr "Új GLPI felhasználó"
+msgstr "Új ITSM-NG felhasználó"
 
 #: inc/user.class.php:2048 inc/user.class.php:2015
 msgid "... From an external source"
@@ -23408,7 +23408,7 @@ msgstr "Láthatóság vége"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Ellenőrzöm, hogy a GLPI kompatibilis-e a környezettel"
+msgstr "Ellenőrzöm, hogy a ITSM-NG kompatibilis-e a környezettel"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23828,7 +23828,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Legalább PHP %s-t kell telepíteni.."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Számítógép kapcsolása"
@@ -24597,7 +24597,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "GLPI ID megjelenítése"
+msgstr "ITSM-NG ID megjelenítése"
 
 msgid "Color palette"
 msgstr "Színpaletta"
@@ -24755,10 +24755,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Elolvastam és NEM ÉRTEK EGYET a licencfeltételekkel"
 
 msgid "Installation or update of GLPI"
-msgstr "GLPI telepítés vagy frissítés"
+msgstr "ITSM-NG telepítés vagy frissítés"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Válassza a Telepítést teljesen új GLPI telepítéséhez."
+msgstr "Válassza a Telepítést teljesen új ITSM-NG telepítéséhez."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr "Válaszd a frissítést korábbi verzió megújításához"
@@ -24852,7 +24852,7 @@ msgid "Step %d"
 msgstr "%d lépés"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Hitelesítés"
+msgstr "ITSM-NG - Hitelesítés"
 
 msgid "Remember me"
 msgstr "Jegyezd meg"
@@ -24903,7 +24903,7 @@ msgid "Logout"
 msgstr "Kilépés"
 
 #~ msgid "Use GLPI"
-#~ msgstr "GLPI használata"
+#~ msgstr "ITSM-NG használata"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi-vel az admin jogokhoz"

@@ -24103,7 +24103,7 @@ msgstr ""
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Tikrinama sąlygos GLPI funkcionavimui"
+msgstr "Tikrinama sąlygos ITSM-NG funkcionavimui"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -24537,7 +24537,7 @@ msgid "You must enable at least one notification mode."
 msgstr ""
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Prijungti kompiuterį"
@@ -25317,7 +25317,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "Rodyti GLPI ID"
+msgstr "Rodyti ITSM-NG ID"
 
 msgid "Color palette"
 msgstr ""
@@ -25475,7 +25475,7 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Perskaičiau licencijos sąlygas ir NESUTINKU jų laikytis"
 
 msgid "Installation or update of GLPI"
-msgstr "GLPI įdiegimas ir atnaujinimas"
+msgstr "ITSM-NG įdiegimas ir atnaujinimas"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
 msgstr ""
@@ -25580,7 +25580,7 @@ msgid "Step %d"
 msgstr ""
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Autentifikacija"
+msgstr "ITSM-NG - Autentifikacija"
 
 msgid "Remember me"
 msgstr "Prisimink mane"
@@ -25632,4 +25632,4 @@ msgid "Logout"
 msgstr "Atsijungti"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Į GLPI"
+#~ msgstr "Į ITSM-NG"

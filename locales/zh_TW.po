@@ -23407,7 +23407,7 @@ msgid "You must enable at least one notification mode."
 msgstr "你必須安裝 PHP 版本至少 %s"
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "連接至一台電腦"
@@ -24045,7 +24045,7 @@ msgid "Back to top of the page"
 msgstr ""
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "你可於 GLPI-PROJECT.org 網站找到相關訊息。"
+msgstr "你可於 ITSM-NG-PROJECT.org 網站找到相關訊息。"
 
 msgid "Check all"
 msgstr "全選"
@@ -24178,7 +24178,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "顯示GLPI ID"
+msgstr "顯示ITSM-NG ID"
 
 msgid "Color palette"
 msgstr ""
@@ -24335,13 +24335,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "我已讀完代不接受被寫上面使用許可的條件"
 
 msgid "Installation or update of GLPI"
-msgstr "GLPI安裝或更新"
+msgstr "ITSM-NG安裝或更新"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "選擇 '安裝' 以完整安裝新的GLPI."
+msgstr "選擇 '安裝' 以完整安裝新的ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "選擇從較早版本的 升級 GLPI"
+msgstr "選擇從較早版本的 升級 ITSM-NG"
 
 msgid "Do you want to continue?"
 msgstr "您要繼續嗎?"
@@ -24428,7 +24428,7 @@ msgid "Step %d"
 msgstr "步驟 %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI 驗證"
+msgstr "ITSM-NG 驗證"
 
 msgid "Remember me"
 msgstr "記住我"
@@ -24479,7 +24479,7 @@ msgid "Logout"
 msgstr "登出"
 
 #~ msgid "Use GLPI"
-#~ msgstr "使用GLPI"
+#~ msgstr "使用ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
-#~ msgstr "GLPI/ GLPI的管理員帳戶"
+#~ msgstr "ITSM-NG/ ITSM-NG的管理員帳戶"

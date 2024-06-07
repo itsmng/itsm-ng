@@ -23929,7 +23929,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Debe habilitar al menos un modo de notificación."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Conectar una computadora"
@@ -24723,7 +24723,7 @@ msgstr ""
 "Configuración del usuario"
 
 msgid "Show GLPI ID"
-msgstr "Mostrar ID de GLPI"
+msgstr "Mostrar ID de ITSM-NG"
 
 msgid "Color palette"
 msgstr "Paleta de colores"
@@ -24870,10 +24870,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "He leído y NO ACEPTO los términos de la licencia enunciados arriba"
 
 msgid "Installation or update of GLPI"
-msgstr "Instalación o actualización de GLPI"
+msgstr "Instalación o actualización de ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Seleccione 'Instalar' para una nueva instalación de GLPI."
+msgstr "Seleccione 'Instalar' para una nueva instalación de ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -24967,7 +24967,7 @@ msgid "Step %d"
 msgstr "Paso %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Autenticación"
+msgstr "ITSM-NG - Autenticación"
 
 msgid "Remember me"
 msgstr "Recuerdame"
@@ -25018,7 +25018,7 @@ msgid "Logout"
 msgstr "Cerrar Sesión"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Utilizar GLPI"
+#~ msgstr "Utilizar ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi para la cuenta de administrador"

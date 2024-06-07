@@ -20868,7 +20868,7 @@ msgstr ""
 msgid ""
 "Besides, if you appreciate GLPI and its community, please take a minute to "
 "reference your organization by filling %1$s."
-msgstr "此外，如果您了解GLPI及其社区，请花一点时间填写%1$s参考您的组织"
+msgstr "此外，如果您了解ITSM-NG及其社区，请花一点时间填写%1$s参考您的组织"
 
 #: inc/telemetry.class.php:439
 msgid "the following form"
@@ -23243,7 +23243,7 @@ msgid "Active Directory"
 msgstr "活动目录"
 
 msgid "GLPI version"
-msgstr "GLPI版本"
+msgstr "ITSM-NG版本"
 
 msgid "Confirm the promotion?"
 msgstr "确认提升吗?"
@@ -23413,7 +23413,7 @@ msgid "You must enable at least one notification mode."
 msgstr "您必须至少启用一种通知模式。"
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "连接到电脑"
@@ -24000,7 +24000,7 @@ msgid "Back to top of the page"
 msgstr "返回顶部"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "您可以在GLPI-PROJECT.org网站中找到。"
+msgstr "您可以在ITSM-NG-PROJECT.org网站中找到。"
 
 msgid "Check all"
 msgstr "全选"
@@ -24115,7 +24115,7 @@ msgstr ""
 "密钥"
 
 msgid "Show GLPI ID"
-msgstr "显示GLPI ID"
+msgstr "显示ITSM-NG ID"
 
 msgid "Color palette"
 msgstr "调色板"
@@ -24249,13 +24249,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "我已阅读但 不同意 使用许可上的条款"
 
 msgid "Installation or update of GLPI"
-msgstr "安装或升级GLPI"
+msgstr "安装或升级ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "选择“安装”可全新安装GLPI"
+msgstr "选择“安装”可全新安装ITSM-NG"
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "选择“升级”可以将您早期版本的GLPI更新。"
+msgstr "选择“升级”可以将您早期版本的ITSM-NG更新。"
 
 msgid "Do you want to continue?"
 msgstr "您想要继续么？"
@@ -24340,7 +24340,7 @@ msgid "Step %d"
 msgstr "步骤 %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - 登陆入口"
+msgstr "ITSM-NG - 登陆入口"
 
 msgid "Remember me"
 msgstr "自动登录"
@@ -24389,7 +24389,7 @@ msgid "Logout"
 msgstr "退出"
 
 #~ msgid "Use GLPI"
-#~ msgstr "使用GLPI"
+#~ msgstr "使用ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "默认管理员帐号是 glpi/glpi  "

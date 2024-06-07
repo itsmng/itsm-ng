@@ -23058,7 +23058,7 @@ msgstr "보기 종료일"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "GLPI 실행을 위한 구동 환경의 호환성 확인"
+msgstr "ITSM-NG 실행을 위한 구동 환경의 호환성 확인"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23451,7 +23451,7 @@ msgid "You must enable at least one notification mode."
 msgstr "하나 이상의 통지모드로 사용 해야 합니다."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "컴퓨터 연결"
@@ -24075,7 +24075,7 @@ msgid "Back to top of the page"
 msgstr "페이지 상단으로 돌아가기"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "GLPI-PROJECT.org 사이트에 찾을 수 있습니다."
+msgstr "ITSM-NG-PROJECT.org 사이트에 찾을 수 있습니다."
 
 msgid "Check all"
 msgstr "모두 선택"
@@ -24187,7 +24187,7 @@ msgstr ""
 "설정 탭의 원격 접근 키를 참고하세요"
 
 msgid "Show GLPI ID"
-msgstr "GLPI ID 보이기"
+msgstr "ITSM-NG ID 보이기"
 
 msgid "Color palette"
 msgstr "색상 파레트"
@@ -24331,13 +24331,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "위에 기술된 라이선스 조항을 읽고 동의 하지 않습니다."
 
 msgid "Installation or update of GLPI"
-msgstr "GLPI 설치 또는 업데이트"
+msgstr "ITSM-NG 설치 또는 업데이트"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "GLPI를 완전 새로 설치 하려면 \"설치\"를 선택하세요."
+msgstr "ITSM-NG를 완전 새로 설치 하려면 \"설치\"를 선택하세요."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "이전 버전에서 GLPI의 버전을 갱신하려면 \"업그레이드\"를 선택하세요"
+msgstr "이전 버전에서 ITSM-NG의 버전을 갱신하려면 \"업그레이드\"를 선택하세요"
 
 msgid "Do you want to continue?"
 msgstr "계속하시겠습니까?"
@@ -24425,7 +24425,7 @@ msgid "Step %d"
 msgstr "단계 %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - 인증"
+msgstr "ITSM-NG - 인증"
 
 msgid "Remember me"
 msgstr "기억하기"
@@ -24477,7 +24477,7 @@ msgid "Logout"
 msgstr "로그아웃"
 
 #~ msgid "Use GLPI"
-#~ msgstr "GLPI 사용"
+#~ msgstr "ITSM-NG 사용"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "관리자 계정은 glpi/glpi 입니다"

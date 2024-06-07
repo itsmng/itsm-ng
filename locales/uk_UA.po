@@ -22870,7 +22870,7 @@ msgstr "Файл не є файлом зображення"
 
 #: inc/user.class.php:2042 inc/user.class.php:2009
 msgid "Add user..."
-msgstr "Додати користувача GLPI"
+msgstr "Додати користувача ITSM-NG"
 
 #: inc/user.class.php:2048 inc/user.class.php:2015
 msgid "... From an external source"
@@ -24265,7 +24265,7 @@ msgstr "Дата закінчення видимості"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Перевірка вашого оточення на сумісність з GLPI"
+msgstr "Перевірка вашого оточення на сумісність з ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -24497,7 +24497,7 @@ msgid "Active Directory"
 msgstr "Active Directory"
 
 msgid "GLPI version"
-msgstr "Версія GLPI"
+msgstr "Версія ITSM-NG"
 
 msgid "Confirm the promotion?"
 msgstr "Підтвердити розповсюдження?"
@@ -24666,7 +24666,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Необхідно увімкнути хоча б один режим сповіщень."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Підключити комп’ютер"
@@ -24975,7 +24975,7 @@ msgid "Clean"
 msgstr "Очистити"
 
 msgid "This plugin is not available for your GLPI version."
-msgstr "Цей плугін не доступний для вашої версії GLPI."
+msgstr "Цей плугін не доступний для вашої версії ITSM-NG."
 
 msgid "The plugin has an available update but its directory is not writable."
 msgstr "У плугіна є оновлення, але його каталог не доступний для запису."
@@ -25191,7 +25191,7 @@ msgid "Failed to resize image"
 msgstr "Не вдалось змінити розмір зображення"
 
 msgid "Display GLPI debug information"
-msgstr "Показувати налагоджувальну інформацію GLPI"
+msgstr "Показувати налагоджувальну інформацію ITSM-NG"
 
 msgid "Progress"
 msgstr "Прогрес"
@@ -25203,7 +25203,7 @@ msgid "Back to top of the page"
 msgstr "Повернутись в початок сторінки"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Її можна знайти на сайті GLPI-PROJECT.org."
+msgstr "Її можна знайти на сайті ITSM-NG-PROJECT.org."
 
 msgid "Check all"
 msgstr "Позначити Все"
@@ -25318,7 +25318,7 @@ msgstr ""
 "Дивись Ключ зовнішнього доступу в закладці налаштувань користувача"
 
 msgid "Show GLPI ID"
-msgstr "Показувати GLPI ID"
+msgstr "Показувати ITSM-NG ID"
 
 msgid "Color palette"
 msgstr "Палітра кольорів"
@@ -25452,13 +25452,13 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Я прочитав і НЕ ПРИЙМАЮ всі пункти ліцензії"
 
 msgid "Installation or update of GLPI"
-msgstr "Встановлення або оновлення GLPI"
+msgstr "Встановлення або оновлення ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Оберіть 'Встановлення' для повного нового встановлення GLPI ."
+msgstr "Оберіть 'Встановлення' для повного нового встановлення ITSM-NG ."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Оберіть 'Оновити', щоб оновити Вашу версію GLPI з попередньої версії"
+msgstr "Оберіть 'Оновити', щоб оновити Вашу версію ITSM-NG з попередньої версії"
 
 msgid "Do you want to continue?"
 msgstr "Продовжувати?"
@@ -25546,7 +25546,7 @@ msgid "Step %d"
 msgstr "Крок %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Аутентифікація"
+msgstr "ITSM-NG - Аутентифікація"
 
 msgid "Remember me"
 msgstr "Запам'ятати мене"
@@ -25589,7 +25589,7 @@ msgid "Logout"
 msgstr "Вихід"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Запустити GLPI"
+#~ msgstr "Запустити ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi для облікового запису адміністратора"

@@ -25410,7 +25410,7 @@ msgid "Step %d"
 msgstr ""
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Аўтэнтіфікацыя"
+msgstr "ITSM-NG - Аўтэнтіфікацыя"
 
 msgid "Remember me"
 msgstr ""

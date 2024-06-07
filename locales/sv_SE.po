@@ -23373,7 +23373,7 @@ msgstr ""
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Kontrollerar kompabiliteten av miljön för användning med GLPI"
+msgstr "Kontrollerar kompabiliteten av miljön för användning med ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -23796,7 +23796,7 @@ msgid "You must enable at least one notification mode."
 msgstr "Du måste installera PHP 1%s."
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Koppla en dator"
@@ -24564,7 +24564,7 @@ msgid ""
 msgstr ""
 
 msgid "Show GLPI ID"
-msgstr "Visa GLPI ID"
+msgstr "Visa ITSM-NG ID"
 
 msgid "Color palette"
 msgstr ""
@@ -24720,10 +24720,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Jag har läst och EJ ACCEPTERAT vilkoren i licensen ovan."
 
 msgid "Installation or update of GLPI"
-msgstr "Installation eller uppdatering av GLPI"
+msgstr "Installation eller uppdatering av ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Välj 'Installera' för en helt ny installation av GLPI."
+msgstr "Välj 'Installera' för en helt ny installation av ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -24819,7 +24819,7 @@ msgid "Step %d"
 msgstr "Steg %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Autentisering"
+msgstr "ITSM-NG - Autentisering"
 
 msgid "Remember me"
 msgstr "Kom ihåg mig"
@@ -24868,7 +24868,7 @@ msgid "Logout"
 msgstr "Logga ut"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Starta GLPI"
+#~ msgstr "Starta ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi för administratörens konto"

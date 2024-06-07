@@ -24061,7 +24061,7 @@ msgstr ""
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Preverjanje združljivosti vašega okolja z izvajanjem GLPI"
+msgstr "Preverjanje združljivosti vašega okolja z izvajanjem ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -24494,7 +24494,7 @@ msgid "You must enable at least one notification mode."
 msgstr ""
 
 msgid "GLPI"
-msgstr "GLPI"
+msgstr "ITSM-NG"
 
 msgid "Connect a computer"
 msgstr "Poveži računalnik"
@@ -25411,10 +25411,10 @@ msgid "I have read and DO NOT ACCEPT the terms of the license written above"
 msgstr "Sem prebral in SE NE STRINJAM s pogoji pogodbe, ki so napisani zgoraj"
 
 msgid "Installation or update of GLPI"
-msgstr "Namestitev ali posodobitev GLPI"
+msgstr "Namestitev ali posodobitev ITSM-NG"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "Izberite 'Namesti' za popolnoma novo namestitev GLPI,"
+msgstr "Izberite 'Namesti' za popolnoma novo namestitev ITSM-NG,"
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -25508,7 +25508,7 @@ msgid "Step %d"
 msgstr "Korak %d"
 
 msgid "GLPI - Authentication"
-msgstr "GLPI - Prijava"
+msgstr "ITSM-NG - Prijava"
 
 #, fuzzy
 #| msgid "December"
@@ -25559,7 +25559,7 @@ msgid "Logout"
 msgstr "Odjavi"
 
 #~ msgid "Use GLPI"
-#~ msgstr "Uporabi GLPI"
+#~ msgstr "Uporabi ITSM-NG"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi za račun skrbnika"
