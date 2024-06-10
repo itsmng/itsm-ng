@@ -1874,20 +1874,6 @@ JAVASCRIPT;
          )->next()['menu_small'];
       $twig_vars['menu_small'] = filter_var($twig_vars['menu_small'], FILTER_VALIDATE_BOOLEAN);
 
-      $menu_width = $DB->request(
-               [
-                  'SELECT' => 'menu_width',
-                  'FROM'   => 'glpi_users',
-                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
-               ]
-         );
-
-      $menu_width_row = $menu_width->next();
-      if ($menu_width_row != null && isset($menu_width_row['menu_width'])){
-         $menu_width = json_decode($menu_width_row['menu_width'], true);
-         $twig_vars['menu_width'] = $menu_width;
-      }
-
       $menu = self::getMainMenu($sector, $item, $option)['args']['menu'];
       $twig_vars['breadcrumb_items'] = [
          [
