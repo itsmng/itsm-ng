@@ -31,6 +31,7 @@
  */
 
 use Glpi\Event;
+use PharIo\Manifest\License;
 use Sabre\HTTP\HttpException;
 
 if (!defined('GLPI_ROOT')) {
@@ -112,94 +113,65 @@ class Central extends CommonGLPI {
       if ($dashboard->getForUser()) {
          $dashboard->show();
       } else {
-         global $DB;
-
-         $ticketsByStatus = iterator_to_array($DB->query('SELECT status,
-            COUNT(*) AS ticket_count
-            FROM
-               glpi_tickets
-            WHERE
-               is_deleted = 0
-            GROUP BY
-               status;
-         '));
-         $finalResult = [];
-         foreach (Ticket::getAllStatusArray() as $index => $status) {
-            $finalResult[$index] = [
-               'status' => $index,
-               'ticket_count' => 0
-            ];
-         }
-         foreach ($ticketsByStatus as $ticket) {
-            $finalResult[$ticket['status']] = $ticket;
-         }
-
-             renderTwigTemplate('dashboard/dashboard.twig', [
+         renderTwigTemplate('dashboard/dashboard.twig', [
             'widgetGrid' => [
                [
                   [
-                     'type' => 'count',
-                     'title' => __('Computer'),
+                     'title' => Computer::getTypeName(2),
                      'value' => countElementsInTableForMyEntities('glpi_computers'),
-                     'options' => [
-                        'icon' => 'fas fa-laptop',
-                     ],
+                     'icon' => Computer::getIcon(),
                   ],
                   [
-                     'type' => 'count',
-                     'title' => __('Rack'),
+                     'title' => Rack::getTypeName(2),
                      'value' => countElementsInTableForMyEntities('glpi_racks'),
-                     'options' => [
-                        'icon' => 'fas fa-server',
-                     ],
+                     'icon' => Rack::getIcon(),
                   ],
                   [
-                     'type' => 'count',
-                     'title' => __('Network device'),
+                     'title' => NetworkEquipment::getTypeName(2),
                      'value' => countElementsInTableForMyEntities('glpi_networkequipments'),
-                     'options' => [
-                        'icon' => 'fas fa-network-wired',
-                     ],
+                     'icon' => NetworkEquipment::getIcon(),
                   ],
                   [
-                     'type' => 'count',
-                     'title' => __('Software'),
+                     'title' => Software::getTypeName(2),
                      'value' => countElementsInTableForMyEntities('glpi_softwares'),
-                     'options' => [
-                        'icon' => 'fas fa-cube',
-                     ],
+                     'icon' => Software::getIcon(),
                   ],
                ], [
                   [
-                     'type' => 'bar',
-                     'title' => __('Tickets by status'),
-                     'labels' => array_values(Ticket::getAllStatusArray()),
-                     'series' => [array_column($finalResult, 'ticket_count')],
-                  ],
-               ], [
-                  [
-                     'type' => 'count',
-                     'title' => __('Ticket'),
+                     'title' => Ticket::getTypeName(2),
                      'value' => countElementsInTableForMyEntities('glpi_tickets'),
-                     'options' => [
-                        'icon' => 'fas fa-ticket-alt',
-                     ],
+                     'icon' => Ticket::getIcon(),
                   ],
                   [
-                     'type' => 'count',
-                     'title' => __('User'),
+                     'title' => User::getTypeName(2),
                      'value' => countElementsInTableForMyEntities('glpi_users'),
-                     'options' => [
-                        'icon' => 'fas fa-user',
-                     ],
+                     'icon' => User::getIcon(),
                   ],
                   [
-                     'type' => 'count',
-                     'title' => __('Entity'),
+                     'title' => Entity::getTypeName(2),
                      'value' => countElementsInTableForMyEntities('glpi_entities'),
-                     'options' => [
-                        'icon' => 'fas fa-sitemap',
-                     ],
+                     'icon' => Entity::getIcon(),
+                  ],
+               ], [
+                  [
+                     'title' => Document::getTypeName(2),
+                     'value' => countElementsInTableForMyEntities('glpi_documents'),
+                     'icon' => Document::getIcon(),
+                  ],
+                  [
+                     'title' => Contract::getTypeName(2),
+                     'value' => countElementsInTableForMyEntities('glpi_documents'),
+                     'icon' => Contract::getIcon(),
+                  ],
+                  [
+                     'title' => Budget::getTypeName(2),
+                     'value' => countElementsInTableForMyEntities('glpi_budgets'),
+                     'icon' => Budget::getIcon(),
+                  ],
+                  [
+                     'title' => Plugin::getTypeName(2),
+                     'value' => countElementsInTableForMyEntities('glpi_budgets'),
+                     'icon' => Plugin::getIcon(),
                   ],
                ]
             ]
