@@ -4630,24 +4630,32 @@ class User extends CommonDBTM {
    static function showPasswordForgetRequestForm() {
       global $CFG_GLPI;
 
-      echo "<div class='center'>";
-      echo "<form aria-label='Password Forget Request' method='post' name='forgetpassword' action='".$CFG_GLPI['root_doc'].
-             "/front/lostpassword.php'>";
-      echo "<table class='tab_cadre' aria-label='Forgot Password'>";
-      echo "<tr><th colspan='2'>" . __('Forgotten password?')."</th></tr>";
-
-      echo "<tr class='tab_bg_1'><td colspan='2'>" .
-            __('Please enter your email address. An email will be sent to you and you will be able to choose a new password.').
-           "</td></tr>";
-
-      echo "<tr class='tab_bg_2 center'>";
-      echo "<td><input type='text' size='60' name='email' value=''></td>";
-      echo "<td><input type='submit' name='update' value=\"".__s('Save')."\" class='submit'>";
-      echo "</td></tr>";
-
-      echo "</table>";
-      Html::closeForm();
-      echo "</div>";
+      $form = [
+        'action' => $CFG_GLPI['root_doc'] . '/front/lostpassword.php',
+        'buttons' => [
+            [
+                'name' => 'update',
+                'value' => __s('Save'),
+                'class' => 'btn btn-secondary'
+            ],
+        ],
+        'content' => [
+            __('Forgotten password?') => [
+                'visible' => true,
+                'inputs' => [
+                    __('Please enter your email address. An email will be sent to you and you will be able to choose a new password.') => [
+                        'type' => 'text',
+                        'name' => 'email',
+                        'value' => '',
+                        'size' => 60,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ]
+                ],
+            ]
+        ]
+      ];
+      renderTwigForm($form);
    }
 
 
