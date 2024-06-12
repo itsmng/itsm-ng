@@ -1466,6 +1466,9 @@ class Html
          }
       }
 
+      if (Session::getLoginUserID() != 0) {
+          Html::requireJs('hotkeys');
+      }
 
       if (Session::getCurrentInterface() == "helpdesk") {
          echo Html::css('public/lib/jquery.rateit.css');

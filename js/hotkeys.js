@@ -30,20 +30,20 @@
  */
  $(document).ready(function() {
    var url = window.location.href;
-   
+
    if(!url.includes("front/login.php")) {
       $.get(CFG_GLPI.root_doc+'/ajax/hotkeys.php', {
-       
+
       }, function(html) {
               $(document.body).append(html);
          });
    }
 });
 /**
-* 
-* @param {String} shortcut to be handling  
+*
+* @param {String} shortcut to be handling
 * @param {function} callback function to make the redirection
-* @param {Array} opt  
+* @param {Array} opt
 */
 function hotkeys(shortcut,callback,opt) {
   //Provide a set of default options
@@ -74,7 +74,7 @@ function hotkeys(shortcut,callback,opt) {
      var keys = shortcut.toLowerCase().split("+");
      //Key Pressed - counts the number of valid keypresses - if it is same as the number of keys, the shortcut function is invoked
      var kp = 0;
-     
+
      //Work around for stupid Shift key bug created by using lowercase - as a result the shift+num combination was broken
      var shift_nums = {
         "`":"~",
@@ -115,15 +115,15 @@ function hotkeys(shortcut,callback,opt) {
         'numlock':144,
         'num_lock':144,
         'num':144,
-        
+
         'pause':19,
         'break':19,
-        
+
         'insert':45,
         'home':36,
         'delete':46,
         'end':35,
-        
+
         'pageup':33,
         'page_up':33,
         'pu':33,
@@ -170,7 +170,7 @@ function hotkeys(shortcut,callback,opt) {
            if(character == k) kp++;
            else {
               if(shift_nums[character] && e.shiftKey) { //Stupid Shift key bug created by using lowercase
-                 character = shift_nums[character]; 
+                 character = shift_nums[character];
                  if(character == k) kp++;
               }
            }
@@ -182,7 +182,7 @@ function hotkeys(shortcut,callback,opt) {
      }
   }
 
-  //Attach the function with the event	
+  //Attach the function with the event
   if(ele.addEventListener) ele.addEventListener(opt['type'], func, false);
   else if(ele.attachEvent) ele.attachEvent('on'+opt['type'], func);
   else ele['on'+opt['type']] = func;
