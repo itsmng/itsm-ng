@@ -1466,6 +1466,9 @@ class Html
          }
       }
 
+      if (Session::getLoginUserID() != 0) {
+          Html::requireJs('hotkeys');
+      }
 
       if (Session::getCurrentInterface() == "helpdesk") {
          echo Html::css('public/lib/jquery.rateit.css');
@@ -6677,8 +6680,8 @@ JAVASCRIPT;
             $_SESSION['glpi_js_toload']['notifications_ajax'][] = 'js/notifications_ajax.js';
             break;
          case 'fuzzy':
-            // $_SESSION['glpi_js_toload'][$name][] = 'public/lib/fuzzy.js';
-            // $_SESSION['glpi_js_toload'][$name][] = 'js/fuzzysearch.js';
+            $_SESSION['glpi_js_toload'][$name][] = 'public/lib/fuzzy.js';
+            $_SESSION['glpi_js_toload'][$name][] = 'js/fuzzysearch.js';
             break;
          case 'sortable':
             $_SESSION['glpi_js_toload'][$name][] = 'public/lib/sortable.js';
@@ -6931,14 +6934,18 @@ JAVASCRIPT;
    {
       switch ($action) {
          case 'getHtml':
-            return "<div id='fuzzysearch'>
-                    <input type='text' placeholder='" . __("Start typing to find a menu") . "'>
+            return <<<HTML
+                <div id='fuzzysearch' class='card'>
+                    <div class="card-header">
+                        <input type='text' placeholder='Start typing to find a menu'>
+                        <button class="btn"><i class='fa fa-2x fa-times' aria-hidden='true'></i></button>
+                    </div>
                     <ul class='results'></ul>
-                    <i class='fa fa-2x fa-times' aria-hidden='true'></i>
                     </div>
                     <div class='ui-widget-overlay ui-front fuzzymodal' style='z-index: 100;'>
-                    </div>";
-            break;
+                </div>
+
+            HTML;
 
          default;
             $fuzzy_entries = [];
