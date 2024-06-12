@@ -332,6 +332,11 @@ hr {
    background: #FFF;
    z-index: 200;
 
+   .card-header {
+       display: flex;
+       align-items: center;
+   }
+
    input {
       border: 2px solid #CCC;
       font-size: 1.5em;
@@ -371,19 +376,6 @@ hr {
          line-height: 100%;
          display: block;
       }
-   }
-
-   .fa-times {
-      position: absolute;
-      top: 0;
-      right: -30px;
-      color: #848484;
-      cursor: pointer;
-      background: #FFF;
-      width: 30px;
-      height: 30px;
-      padding: 3px 6px;
-      box-sizing: border-box;
    }
 }
 
