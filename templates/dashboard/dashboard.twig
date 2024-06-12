@@ -1,10 +1,11 @@
+{% set rand=random() %}
 <div class="ms-auto text-end">
 {% if edit %}
 	<button type="button" onClick="toggleEdit()" aria-label="Edit" class="btn btn-link btn-sm text-end"><i class='fas fa-edit' title="edit"></i></button>
 {% endif %}
-	<button type="button" onClick="fullscreen()" aria-label="FullScreen" class="btn btn-link btn-sm text-end"><i class='fas fa-expand' title="edit"></i></button>
+	<button type="button" onClick="fullscreen{{rand}}()" aria-label="FullScreen" class="btn btn-link btn-sm text-end"><i class='fas fa-expand' title="edit"></i></button>
 </div>
-<div id="main-dashboard" class='container bg-white'>
+<div id="dashboard{{rand}}" class='container bg-white'>
 {% if edit %}
 	{{_self.editButton(false, [-1, -1])}}
 {% endif %}
@@ -37,8 +38,8 @@
 
 
 <script>
-	function fullscreen() {
-		var mainDashboard = document.getElementById("main-dashboard");
+	function fullscreen{{rand}}() {
+		var mainDashboard = document.getElementById("dashboard{{rand}}");
 
 		if (document.fullscreenElement || document.webkitFullscreenElement ||
 			document.mozFullScreenElement || document.msFullscreenElement) {

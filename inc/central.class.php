@@ -113,69 +113,58 @@ class Central extends CommonGLPI {
       if ($dashboard->getForUser()) {
          $dashboard->show();
       } else {
-         renderTwigTemplate('dashboard/dashboard.twig', [
-            'widgetGrid' => [
-               [
-                  [
-                     'title' => Computer::getTypeName(2),
-                     'value' => countElementsInTableForMyEntities('glpi_computers'),
-                     'icon' => Computer::getIcon(),
-                  ],
-                  [
-                     'title' => Rack::getTypeName(2),
-                     'value' => countElementsInTableForMyEntities('glpi_racks'),
-                     'icon' => Rack::getIcon(),
-                  ],
-                  [
-                     'title' => NetworkEquipment::getTypeName(2),
-                     'value' => countElementsInTableForMyEntities('glpi_networkequipments'),
-                     'icon' => NetworkEquipment::getIcon(),
-                  ],
-                  [
-                     'title' => Software::getTypeName(2),
-                     'value' => countElementsInTableForMyEntities('glpi_softwares'),
-                     'icon' => Software::getIcon(),
-                  ],
-               ], [
-                  [
-                     'title' => Ticket::getTypeName(2),
-                     'value' => countElementsInTableForMyEntities('glpi_tickets'),
-                     'icon' => Ticket::getIcon(),
-                  ],
-                  [
-                     'title' => User::getTypeName(2),
-                     'value' => countElementsInTableForMyEntities('glpi_users'),
-                     'icon' => User::getIcon(),
-                  ],
-                  [
-                     'title' => Entity::getTypeName(2),
-                     'value' => countElementsInTableForMyEntities('glpi_entities'),
-                     'icon' => Entity::getIcon(),
-                  ],
-               ], [
-                  [
-                     'title' => Document::getTypeName(2),
-                     'value' => countElementsInTableForMyEntities('glpi_documents'),
-                     'icon' => Document::getIcon(),
-                  ],
-                  [
-                     'title' => Contract::getTypeName(2),
-                     'value' => countElementsInTableForMyEntities('glpi_documents'),
-                     'icon' => Contract::getIcon(),
-                  ],
-                  [
-                     'title' => Budget::getTypeName(2),
-                     'value' => countElementsInTableForMyEntities('glpi_budgets'),
-                     'icon' => Budget::getIcon(),
-                  ],
-                  [
-                     'title' => Plugin::getTypeName(2),
-                     'value' => countElementsInTableForMyEntities('glpi_budgets'),
-                     'icon' => Plugin::getIcon(),
-                  ],
-               ]
-            ]
-         ]);
+         $grid = [
+            __('General') => [
+                'right' => true,
+                'items' => [
+                    Entity::class,
+                    User::class,
+                    Plugin::class,
+                    Budget::class,
+                ]
+            ],
+            __('Assets') => [
+                'right' => true,
+                'items' => [
+                    Computer::class,
+                    Monitor::class,
+                    NetworkEquipment::class,
+                    Peripheral::class,
+                    Phone::class,
+                    Printer::class,
+                    Software::class,
+                ]
+            ],
+            __('Tickets') => [
+                'right' => true,
+                'items' => [
+                    Ticket::class,
+                    Problem::class,
+                    Change::class,
+                ]
+            ],
+         ];
+         foreach ($grid as $title => $section) {
+            if (!$section['right'])
+               continue;
+            echo <<<HTML
+                <div class="card my-3">
+                    <div class="card-header">
+                        <h5 class="card-title">$title</h5>
+                    </div>
+                    <div class="card-body">
+            HTML;
+            $dashboard = ['widgetGrid' => [[]]];
+            foreach ($section['items'] as $item) {
+               $dashboard['widgetGrid'][0][] = [
+                     'title' => $item::getTypeName(2),
+                     'value' => countElementsInTableForMyEntities($item::getTable()),
+                     'icon' => $item::getIcon(),
+               ];
+            }
+            renderTwigTemplate('dashboard/dashboard.twig', $dashboard);
+            echo "</div></div>";
+         }
       }
 
       Html::accessibilityHeader();
