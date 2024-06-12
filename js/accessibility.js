@@ -43,6 +43,9 @@ function toggleHighContrast() {
 const jumpToMenu = () => {
    jumpToElement('menu-assets');
 };
+const jumpToContent = () => {
+   jumpToElement('breadcrumb-link-1');
+};
 
 const jumpToElement = (elementId) => {
    const element = document.getElementById(elementId);
@@ -53,7 +56,7 @@ const jumpToElement = (elementId) => {
    }
 };
 document.getElementById('jump_menu').addEventListener('click', jumpToMenu);
-
+document.getElementById('jump_content').addEventListener('click', jumpToContent);
 
 function toggleNegativeHighContrast() {
    const body = $("body");
