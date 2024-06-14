@@ -34,6 +34,7 @@ jobs:
       - name: Start MySQL
         run: |
           sudo apt autoremove --purge mysql*
+          sudo apt update
           sudo apt install mariadb-server
           sudo mysql -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;"
           sudo mysql -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASSWORD';"
