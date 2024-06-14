@@ -769,19 +769,19 @@ class Profile extends CommonDBTM
 				'name' => 'add',
 				'value' => __('Add'),
 				'class' => 'submit-button btn btn-secondary'
-			];         
+			];
       } else {
          $button['Button'] = [
 				'type' => 'submit',
 				'name' => 'save',
 				'value' => __('Save'),
 				'class' => 'submit-button btn btn-secondary'
-			];    
+			];
       }
-     
+
       array_push($form['buttons'], $button['Button']);
 
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
 
       return true;
    }
