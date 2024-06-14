@@ -20,15 +20,18 @@
       {% endif %}
     {% endfor %}
   </select>
-  {% if attributes.searchable %}
   <script>
-      $(document).ready(function() {
+      $(function() {
+          {% if attributes.searchable %}
           var select_box_element = document.querySelector('#{{attributes.id}}');
           dselect(select_box_element, {
             search: true
           });
+          {% endif %}
+          $('#{{attributes.id}}').scroll(function() {
+              onScrollLoadMore(this);
+          });
       });
   </script>
-  {% endif %}
 {% endmacro %}
 {{ _self.select(attributes) }}
