@@ -164,12 +164,12 @@ class Budget extends CommonDropdown{
 						],
                   __('Start date') => [
                      'name' => 'begin_date',
-                     'type'  => 'datetime-local',
+                     'type'  => 'date',
                      'value' => $this->fields['begin_date'],
                   ],
                   __('End date') => [
 							'name' => 'end_date',
-							'type'  => 'datetime-local',
+							'type'  => 'date',
 							'value' => $this->fields['end_date'],
 						],
                   __('Location') => [
