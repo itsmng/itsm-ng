@@ -778,7 +778,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
             ]
          ]
       ];
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
       return true;
    }
 
