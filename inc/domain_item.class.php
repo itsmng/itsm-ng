@@ -351,7 +351,7 @@ class Domain_Item extends CommonDBRelation {
                      $newValue[] = Dropdown::getDropdownName("glpi_entities", $data['entity']);
                   }
                   $values[] = $newValue;
-                  $massive_action[] = sprintf('item[%s][%s]', $item::class, $data['id']);
+                  $massive_action[] = sprintf('item[%s][%s]', self::class, $data['id']);
                }
             }
          }
@@ -570,83 +570,95 @@ class Domain_Item extends CommonDBRelation {
          $result = $domain_iterator->next();
          $nb     = $result['cpt'];
 
-         echo "<div class='firstbloc'>";
-
          if (Session::haveRight('domain', READ)
              && ($nb > count($used))
          ) {
-            echo "<form  aria-label='Domain' name='domain_form$rand' id='domain_form$rand' method='post'
-                   action='" . Toolbox::getItemTypeFormURL('Domain') . "'>";
-            echo "<table class='tab_cadre_fixe' aria-label='Domain Relations'>";
-            echo "<tr class='tab_bg_1'>";
-            echo "<td colspan='4' class='center'>";
-            echo "<input type='hidden' name='entities_id' value='$entity'>";
-            echo "<input type='hidden' name='is_recursive' value='$is_recursive'>";
-            echo "<input type='hidden' name='itemtype' value='" . $item->getType() . "'>";
-            echo "<input type='hidden' name='items_id' value='$ID'>";
-            if ($item->getType() == 'Ticket') {
-               echo "<input type='hidden' name='tickets_id' value='$ID'>";
-            }
-
-            Dropdown::show(
-               'DomainRelation', [
-                  'name'   => "domainrelations_id",
-                  'value'  => DomainRelation::BELONGS,
-                  'display_emptychoice'   => false
-               ]
-            );
-
-            Domain::dropdownDomains([
-               'entity' => $entities,
-               'used'   => $used
-            ]);
-
-            echo "</td><td class='center' width='20%'>";
-            echo "<input type='submit' name='additem' value=\"" .
-                 __('Associate a domain') . "\" class='submit'>";
-            echo "</td>";
-            echo "</tr>";
-            echo "</table>";
-            Html::closeForm();
+            $form = [
+                'action' => Toolbox::getItemTypeFormURL('Domain'),
+                'buttons' => [
+                   [
+                      'name' => 'additem',
+                      'value' => __('Associate a domain'),
+                      'class' => 'btn btn-secondary',
+                   ]
+                ],
+                'content' => [
+                    '' => [
+                        'visible' => true,
+                        'inputs' => [
+                            DomainRelation::getTypeName() => [
+                                'type' => 'select',
+                                'name' => 'domainrelations_id',
+                                'itemtype' => DomainRelation::class,
+                                'value' => DomainRelation::BELONGS,
+                                'actions' => getItemActionButtons(['info', 'add'], DomainRelation::class),
+                                'col_lg' => 6,
+                            ],
+                            __('Domain') => [
+                                'type' => 'select',
+                                'name' => 'domains_id',
+                                'itemtype' => Domain::class,
+                                'used' => $used,
+                                'col_lg' => 6,
+                            ],
+                            [
+                                'type' => 'hidden',
+                                'name' => 'items_id',
+                                'value' => $ID,
+                            ],
+                            [
+                                'type' => 'hidden',
+                                'name' => 'itemtype',
+                                'value' => $item->getType(),
+                            ],
+                            [
+                                'type' => 'hidden',
+                                'name' => 'entities_id',
+                                'value' => $entity,
+                            ],
+                            [
+                                'type' => 'hidden',
+                                'name' => 'is_recursive',
+                                'value' => $is_recursive,
+                            ],
+                        ]
+                    ]
+                ]
+            ];
+            renderTwigForm($form);
          }
-
-         echo "</div>";
       }
 
-      echo "<div class='spaced'>";
+      $massivactionId = 'mass' . __CLASS__ . $rand;
+      $fields = [
+        'name' => __('Name'),
+        'groups_id_tech' => __('Group in charge'),
+        'users_id_tech' => __('Technician in charge'),
+        'domaintypes_id' => _n('Type', 'Types', 1),
+        'date_creation' => __('Creation date'),
+        'expiration' => __('Expiration date'),
+      ];
+      if (Session::isMultiEntitiesMode()) {
+         $fields['entities_id'] = Entity::getTypeName(1);
+      }
+      $values = [];
+      $massive_action = [];
       if ($canedit && $number && ($withtemplate < 2)) {
-         Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-         $massiveactionparams = ['num_displayed' => $number];
+         $massiveactionparams = [
+            'container' => $massivactionId,
+            'num_displayed' => $number,
+            'display_arrow' => false,
+            'specific_actions' => [
+                'MassiveAction:update' => __('Modify'),
+                'MassiveAction:purge' => __('Delete'),
+            ]
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixe' aria-label='Actions'>";
-
-      echo "<tr>";
-      if ($canedit && $number && ($withtemplate < 2)) {
-         echo "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
-      }
-      echo "<th>" . __('Name') . "</th>";
-      if (Session::isMultiEntitiesMode()) {
-         echo "<th>" . Entity::getTypeName(1) . "</th>";
-      }
-      echo "<th>" . __('Group in charge') . "</th>";
-      echo "<th>" . __('Technician in charge') . "</th>";
-      echo "<th>" . _n('Type', 'Types', 1) . "</th>";
-      if (!$item instanceof DomainRelation) {
-         echo "<th>" . DomainRelation::getTypeName(1) . "</th>";
-      }
-      echo "<th>" . __('Creation date') . "</th>";
-      echo "<th>" . __('Expiration date') . "</th>";
-      echo "</tr>";
       $used = [];
 
+      $i = 0;
       if ($number) {
-         Session::initNavigateListItems('Domain',
-            //TRANS : %1$s is the itemtype name,
-            //        %2$s is the name of the item (used for headings of a list)
-                                        sprintf(__('%1$s = %2$s'),
-                                                $item->getTypeName(1), $item->getName()));
-
          foreach ($domains as $data) {
             $domainID = $data["id"];
             $link     = NOT_AVAILABLE;
@@ -659,44 +671,32 @@ class Domain_Item extends CommonDBRelation {
 
             $used[$domainID] = $domainID;
 
-            echo "<tr class='tab_bg_1" . ($data["is_deleted"] ? "_2" : "") . "'>";
             if ($canedit && ($withtemplate < 2)) {
-               echo "<td width='10'>";
-               Html::showMassiveActionCheckBox(__CLASS__, $data["assocID"]);
-               echo "</td>";
+                $massive_action[$i] = sprintf('item[%s][%s]', self::class, $domainID);
             }
-            echo "<td class='center'>$link</td>";
+            $newValue = [
+                'name' => $link,
+                'groups_id_tech' => Dropdown::getDropdownName("glpi_groups", $data["groups_id_tech"]),
+                'users_id_tech' => getUserName($data["users_id_tech"]),
+                'domaintypes_id' => Dropdown::getDropdownName("glpi_domaintypes", $data["domaintypes_id"]),
+                'date_creation' => Html::convDate($data["date_creation"]),
+                'expiration' => $data["date_expiration"] <= date('Y-m-d') && !empty($data["date_expiration"]) ?
+                    "<div class='deleted'>" . Html::convDate($data["date_expiration"]) . "</div>" :
+                    (empty($data["date_expiration"]) ? __('Does not expire') : Html::convDate($data["date_expiration"])),
+            ];
             if (Session::isMultiEntitiesMode()) {
-               echo "<td class='center'>" . Dropdown::getDropdownName("glpi_entities", $data['entities_id']) . "</td>";
+               $newValue['entities_id'] = Dropdown::getDropdownName("glpi_entities", $data['entity']);
             }
-            echo "<td class='center'>" . Dropdown::getDropdownName("glpi_groups", $data["groups_id_tech"]) . "</td>";
-            echo "<td class='center'>" . getUserName($data["users_id_tech"]) . "</td>";
-            echo "<td class='center'>" . Dropdown::getDropdownName("glpi_domaintypes", $data["domaintypes_id"]) . "</td>";
-            if (!$item instanceof DomainRelation) {
-               echo "<td class='center'>" . Dropdown::getDropdownName("glpi_domainrelations", $data["domainrelations_id"]) . "</td>";
-            }
-            echo "<td class='center'>" . Html::convDate($data["date_creation"]) . "</td>";
-            if ($data["date_expiration"] <= date('Y-m-d')
-                && !empty($data["date_expiration"])
-            ) {
-               echo "<td class='center'><div class='deleted'>" . Html::convDate($data["date_expiration"]) . "</div></td>";
-            } else if (empty($data["date_expiration"])) {
-               echo "<td class='center'>" . __('Does not expire') . "</td>";
-            } else {
-               echo "<td class='center'>" . Html::convDate($data["date_expiration"]) . "</td>";
-            }
-            echo "</tr>";
+            $values[] = $newValue;
             $i++;
          }
       }
-
-      echo "</table>";
-      if ($canedit && $number && ($withtemplate < 2)) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
+      renderTwigTemplate('table.twig', [
+         'id' => $massivactionId,
+         'fields' => $fields,
+         'values' => $values,
+         'massive_action' => $massive_action,
+      ]);
    }
 
    function rawSearchOptions() {
