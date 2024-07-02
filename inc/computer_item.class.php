@@ -522,104 +522,95 @@ class Computer_Item extends CommonDBRelation{
       if ($canedit
           && ($global || !$number)
           && !(!empty($withtemplate) && ($withtemplate == 2))) {
-         echo "<div class='firstbloc'>";
-         echo "<form aria-label='Computer item' name='computeritem_form$rand' id='computeritem_form$rand' method='post'
-                action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-
-         echo "<table class='tab_cadre_fixe' aria-label='Computer connections Table'>";
-         echo "<tr class='tab_bg_2'><th colspan='2'>".__('Connect a computer')."</th></tr>";
-
-         echo "<tr class='tab_bg_1'><td class='right'>";
-         echo "<input type='hidden' name='items_id' value='$ID'>";
-         echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
-         if ($item->isRecursive()) {
-            self::dropdownConnect('Computer', $item->getType(), "computers_id",
-                                  getSonsOf("glpi_entities", $item->getEntityID()), 0, $used);
-         } else {
-            self::dropdownConnect('Computer', $item->getType(), "computers_id",
-                                  $item->getEntityID(), 0, $used);
-         }
-         echo "</td><td class='center'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Connect')."\" class='submit'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
-         echo "</div>";
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+                [
+                    'type'  => 'submit',
+                    'name'  => 'add',
+                    'value' => _sx('button', 'Connect'),
+                    'class' => 'btn btn-secondary',
+                ]
+            ],
+            'content' => [
+                '' => [
+                    'visible' => true,
+                    'inputs' => [
+                        Computer::getTypeName() => [
+                            'type' => 'select',
+                            'name' => 'computers_id',
+                            'values' => getItemByEntity(Computer::class, $item->fields['entities_id']),
+                            'col_lg' => 12,
+                            'col_md' => 12,
+                        ],
+                        [
+                            'type'  => 'hidden',
+                            'name'  => 'itemtype',
+                            'value' => $item->getType(),
+                        ],
+                        [
+                            'type'  => 'hidden',
+                            'name'  => 'items_id',
+                            'value' => $ID,
+                        ],
+                    ]
+                ]
+            ],
+         ];
+         renderTwigForm($form);
       }
 
       echo "<div class='spaced'>";
+      $massActionId = 'mass'.__CLASS__.$rand;
       if ($canedit && $number) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams
-            = ['num_displayed'
-                        => min($_SESSION['glpilist_limit'], $number),
-                    'specific_actions'
-                        => ['purge' => _x('button', 'Disconnect')],
-                    'container'
-                        => 'mass'.__CLASS__.$rand];
+         $massiveactionparams = [
+            'num_displayed' => min($_SESSION['glpilist_limit'], $number),
+            'specific_actions' => ['purge' => _x('button', 'Disconnect')],
+            'container' => 'mass'.__CLASS__.$rand,
+            'display_arrow' => false,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixehov' aria-label ='Computer Informations'>";
-
       if ($number > 0) {
-         $header_begin  = "<tr>";
-         $header_top    = '';
-         $header_bottom = '';
-         $header_end    = '';
-
-         if ($canedit) {
-            $header_top    .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header_top    .= "</th>";
-            $header_bottom .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header_bottom .= "</th>";
-         }
-
-         $header_end .= "<th>".__('Name')."</th>";
-         if (Plugin::haveImport()) {
-            $header_end .= "<th>".__('Automatic inventory')."</th>";
-         }
-         $header_end .= "<th>".Entity::getTypeName(1)."</th>";
-         $header_end .= "<th>".__('Serial number')."</th>";
-         $header_end .= "<th>".__('Inventory number')."</th>";
-         $header_end .= "</tr>";
-         echo $header_begin.$header_top.$header_end;
-
+        $fields = [
+            'name' => __('Name'),
+            'entity' => Entity::getTypeName(1),
+            'serial' => __('Serial number'),
+           'otherserial' =>  __('Inventory number'),
+        ];
+        if (Plugin::haveImport()) {
+            $fields['inventory'] = __('Automatic inventory');
+        }
+        $values = [];
+        $massiveActionValues = [];
          foreach ($compids as $key => $compid) {
             $comp->getFromDB($compid);
 
-            echo "<tr class='tab_bg_1'>";
 
             if ($canedit) {
-               echo "<td width='10'>";
-               Html::showMassiveActionCheckBox(__CLASS__, $key);
-               echo "</td>";
+               $massiveActionValues[$key] = 'item[Computer_Item]['.$key.']';
             }
-            echo "<td ".
-                  ($comp->getField('is_deleted')?"class='tab_bg_2_2'":"").
-                 ">".$comp->getLink()."</td>";
+            $newValue = [
+                'name' => $comp->getLink(),
+                'entity' => Dropdown::getDropdownName("glpi_entities", $comp->getField('entities_id')),
+                'serial' => $comp->getField('serial'),
+                'otherserial' => $comp->getField('otherserial'),
+            ];
             if (Plugin::haveImport()) {
-               echo "<td>".Dropdown::getYesNo($dynamic[$key])."</td>";
+                $newValue['inventory'] = Dropdown::getYesNo($dynamic[$key]);
             }
-            echo "<td class='center'>".Dropdown::getDropdownName("glpi_entities",
-                                                               $comp->getField('entities_id'));
-            echo "</td>";
-            echo "<td class='center'>".$comp->getField('serial')."</td>";
-            echo "<td class='center'>".$comp->getField('otherserial')."</td>";
-            echo "</tr>";
+            $values[$key] = $newValue;
          }
-         echo $header_begin.$header_bottom.$header_end;
+         renderTwigTemplate('table.twig', [
+            'id' => $massActionId,
+            'fields' => $fields,
+            'values' => $values,
+            'massive_action' => $massiveActionValues,
+         ]);
       } else {
          echo "<tr><td class='tab_bg_1 b'><i>".__('Not connected')."</i>";
          echo "</td></tr>";
       }
-
-      echo "</table>";
-      if ($canedit && $number) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-      echo "</div>";
    }
 
 
