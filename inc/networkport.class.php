@@ -567,7 +567,7 @@ class NetworkPort extends CommonDBChild {
                      __('Add several ports') => [
                         'type' => 'checkbox',
                         'name' => 'several',
-                        'value' => 1
+                        'value' => 0
                      ]
                   ]
                ]
@@ -709,7 +709,7 @@ class NetworkPort extends CommonDBChild {
             $is_active_network_port = true;
 
             $save_canedit = $canedit;
-            
+
             if (!empty($portType)) {
                $name = sprintf(__('%1$s (%2$s)'), self::getTypeName($number_port),
                                  call_user_func([$portType, 'getTypeName']));
