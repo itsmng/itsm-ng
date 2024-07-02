@@ -1,0 +1,75 @@
+<div id="Radar-Chart">
+    <canvas id="radarChart" aria-label="radarChart(Tickets by status)"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: '{{ root_doc }}/ajax/ticket.ajax.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(ticketData) {
+            const data = {
+                labels: [
+                    '{{ "New" | trans }}',
+                    '{{ "Pending" | trans }}',
+                    '{{ "Assigned" | trans }}',
+                    '{{ "Planned" | trans }}',
+                    '{{ "Solved" | trans }}',
+                    '{{ "Closed" | trans }}'
+                ],
+                datasets: [{
+                    label: 'All Tickets',
+                    data: ticketData,
+                    fill: true,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    pointBackgroundColor: 'rgb(54, 162, 235)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(54, 162, 235)'
+                }]
+            };
+
+            const config = {
+                type: 'radar',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: Math.round(Math.max(...ticketData) * 1.1),
+                            ticks: {
+                                callback: function(value) {
+                                    return value;
+                                }
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            new Chart(ctx, config);
+        },
+        error: function(xhr, status, error) {
+            console.error('Erreur lors de la récupération des données des tickets:', status, error);
+        }
+    });
+});
+</script>

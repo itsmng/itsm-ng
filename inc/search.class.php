@@ -322,7 +322,6 @@ class Search {
       return $data;
    }
 
-
    /**
     * Prepare search criteria to be used for a search
     *
