@@ -14,6 +14,7 @@
         "@fullcalendar/rrule": "^4.4.2",
         "@fullcalendar/timegrid": "^4.4.2",
         "@jarstone/dselect": "^1.0.4",
+        "chart.js": "^4.4.3",
         "chartist": "^1.3.0",
         "codemirror": "^5.51.0",
         "css-select": "^5.1.0",
