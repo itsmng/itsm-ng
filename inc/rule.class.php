@@ -1199,57 +1199,56 @@ class Rule extends CommonDBTM {
 
       $nb = sizeof($this->criterias);
 
+      $massactionId = 'mass'.$this->rulecriteriaclass.$rand;
       if ($canedit && $nb) {
-         Html::openMassiveActionsForm('mass'.$this->rulecriteriaclass.$rand);
-         $massiveactionparams = ['num_displayed'  => min($_SESSION['glpilist_limit'], $nb),
-                                      'check_itemtype' => get_class($this),
-                                      'check_items_id' => $rules_id,
-                                      'container'      => 'mass'.$this->rulecriteriaclass.$rand,
-                                      'extraparams'    => ['rule_class_name'
-                                                                    => $this->getType()]];
+         $massiveactionparams = [
+            'num_displayed'  => min($_SESSION['glpilist_limit'], $nb),
+            'check_itemtype' => get_class($this),
+            'check_items_id' => $rules_id,
+            'container'      => $massactionId,
+            'extraparams'    => ['rule_class_name' => $this->getType()],
+            'display_arrow'  => false,
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
 
-      echo "<table $style aria-label='Criteria'>";
-      echo "<tr class='noHover'>".
-           "<th colspan='".($canedit&&$nb?" 4 ":"3")."'>". _n('Criterion', 'Criteria', Session::getPluralNumber())."</th>".
-           "</tr>\n";
+      $fields = [
+        'criterion' => _n('Criterion', 'Criteria', 1),
+        'condition' => __('Condition'),
+        'reason'    => __('Reason'),
 
-      $header_begin  = "<tr>";
-      $header_top    = '';
-      $header_bottom = '';
-      $header_end    = '';
-
-      if ($canedit && $nb) {
-         $header_top    .= "<th width='10'>";
-         $header_top    .= Html::getCheckAllAsCheckbox('mass'.$this->rulecriteriaclass.$rand);
-         $header_top    .= "</th>";
-         $header_bottom .= "<th width='10'>";
-         $header_bottom .= Html::getCheckAllAsCheckbox('mass'.$this->rulecriteriaclass.$rand);
-         $header_bottom .= "</th>";
-      }
-      $header_end .= "<th class='center b'>"._n('Criterion', 'Criteria', 1)."</th>\n";
-      $header_end .= "<th class='center b'>".__('Condition')."</th>\n";
-      $header_end .= "<th class='center b'>".__('Reason')."</th>\n";
-      $header_end .= "</tr>\n";
-      echo $header_begin.$header_top.$header_end;
-
+      ];
+      $values = [];
+      $massiveActionValues = [];
       foreach ($this->criterias as $criterion) {
-         $this->showMinimalCriteriaForm($criterion->fields, $canedit, $rand);
-      }
+         if ($canedit) {
+            echo "\n<script type='text/javascript' >\n";
+            echo "function viewEditCriteria". $criterion->fields[$this->rules_id_field].$criterion->fields["id"]."$rand() {\n";
+            $params = ['type'               => $this->rulecriteriaclass,
+                           'parenttype'          => $this->getType(),
+                           $this->rules_id_field => $criterion->fields[$this->rules_id_field],
+                           'id'                  => $criterion->fields["id"]];
+            Ajax::updateItemJsCode("viewcriteria" . $criterion->fields[$this->rules_id_field] . "$rand",
+                                 $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php", $params);
+            echo "};";
+            echo "</script>\n";
+         }
 
-      if ($nb) {
-         echo $header_begin.$header_bottom.$header_end;
+         $values[$criterion->fields['id']] = [
+            'criterion' => "<button class='btn btn-sm' onclick=" .
+                "viewEditCriteria". $criterion->fields[$this->rules_id_field].$criterion->fields["id"]."$rand()>" .
+                $this->getCriteriaName($criterion->fields["criteria"]) . "</button>",
+            'condition' => RuleCriteria::getConditionByID($criterion->fields["condition"], get_class($this), $criterion->fields["criteria"]),
+            'reason' => $this->getCriteriaDisplayPattern($criterion->fields["criteria"], $criterion->fields["condition"], $criterion->fields["pattern"]),
+         ];
+         $massiveActionValues[$criterion->fields['id']] = sprintf('item[%s][%s]', $criterion::class, $criterion->fields['id']);
       }
-      echo "</table>\n";
-
-      if ($canedit && $nb) {
-         $massiveactionparams['ontop'] = false;
-         Html::showMassiveActions($massiveactionparams);
-         Html::closeForm();
-      }
-
-      echo "</div>\n";
+      renderTwigTemplate('table.twig', [
+        'id' => $massactionId,
+        'fields' => $fields,
+        'values' => $values,
+        'massive_action' => $massiveActionValues,
+      ]);
    }
 
 

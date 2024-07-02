@@ -595,7 +595,7 @@ class RuleCriteria extends CommonDBChild {
 
       $group      = [];
       $groupname  = _n('Criterion', 'Criteria', Session::getPluralNumber());
-      foreach ($rule->getAllCriteria() as $ID => $crit) {
+      foreach ($rule->getAllCriteria() as $id => $crit) {
          // Manage group system
          if (!is_array($crit)) {
             if (count($group)) {
@@ -605,7 +605,7 @@ class RuleCriteria extends CommonDBChild {
             $group     = [];
             $groupname = $crit;
          } else {
-            $group[$ID] = $crit['name'];
+            $group[$id] = $crit['name'];
          }
       }
       if (count($group)) {
