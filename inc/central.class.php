@@ -119,7 +119,6 @@ class Central extends CommonGLPI {
                 'items' => [
                     Entity::class,
                     User::class,
-                    Plugin::class,
                     Budget::class,
                 ]
             ],
