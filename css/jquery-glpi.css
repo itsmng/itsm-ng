@@ -220,20 +220,7 @@
     padding-left: 1em;
     max-width: 270px;
  }
- .select2-selection.select2-selection--single:before {
-    content: '\02026';
-    position: absolute;
-    z-index: 1;
-    left: -1em;
-    background-color: inherit;
-    padding-left: 1em;
-    margin-left: .5em;
-    background-color: inherit;
-    line-height: 26px;
-    margin-top: -2px;
-    padding-right: .1em;
- }
- 
+
  .select2-selection.select2-selection--single .select2-selection__rendered {
     min-width: 100%;
     position: relative;

@@ -1,6 +1,12 @@
 {% macro select(attributes) %}
+  {% if not attributes.id %}
+    {% set id = random() %}
+  {% endif %}
   <select class='form-select {{attributes.class}}'
-    {% for name, value in attributes %} 
+    {% if not attributes.id %}
+      id="{{id}}"
+    {% endif %}
+    {% for name, value in attributes %}
       {% if name not in  ['values', 'class']%}
         {{name}}="{{value}}"
       {% endif %}
@@ -22,16 +28,14 @@
   </select>
   <script>
       $(function() {
-          {% if attributes.searchable %}
-          var select_box_element = document.querySelector('#{{attributes.id}}');
-          dselect(select_box_element, {
-            search: true
-          });
-          {% endif %}
-          $('#{{attributes.id}}').scroll(function() {
-              onScrollLoadMore(this);
-          });
+          $.getScript('{{root_doc}}/node_modules/select2/dist/js/select2.min.js', function() {
+                $('#{{attributes.id ? attributes.id : id}}').select2({
+                    theme: 'bootstrap-5',
+                    width: '100%',
+                });
+            });
       });
+
   </script>
 {% endmacro %}
 {{ _self.select(attributes) }}
