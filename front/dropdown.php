@@ -69,7 +69,6 @@ if (count($optgroup) > 0) {
             ],
             'col_lg' => 12,
             'col_md' => 12,
-            'searchable' => true,
         ]
     ]);
 } else {

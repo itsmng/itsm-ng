@@ -48,7 +48,7 @@ class Html
     static private $css = [
         'vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css',
         'css/bootstrap-select.min.css',
-        'node_modules/@jarstone/dselect/dist/css/dselect.min.css',
+        'node_modules/select2/dist/css/select2.min.css',
         "node_modules/jquery-ui-dist/jquery-ui.min.css",
         'node_modules/@fortawesome/fontawesome-free/css/all.css',
         'css/jstree-glpi.css',
@@ -65,7 +65,7 @@ class Html
         "node_modules/tableexport.jquery.plugin/tableExport.min.js",
         "vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js",
         "vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js",
-        "node_modules/@jarstone/dselect/dist/js/dselect.min.js",
+        "node_modules/select2/dist/js/select2.min.js",
         "src/ngFunctions.js",
 
    ];
@@ -1362,8 +1362,9 @@ class Html
 
       echo Html::css('vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css');
       echo Html::css('css/bootstrap-select.min.css');
-      echo Html::css('node_modules/@jarstone/dselect/dist/css/dselect.min.css');
+      echo Html::css('vendor/twbs/bootstrap/dist/css/bootstrap.min.css');
       echo Html::css("node_modules/jquery-ui-dist/jquery-ui.min.css");
+      echo Html::css("node_modules/select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.min.css");
 
 
       echo Html::css('public/lib/base.css');
@@ -1972,10 +1973,10 @@ JAVASCRIPT;
       self::loadJavascript();
       echo Html::script("node_modules/jquery-ui-dist/jquery-ui.min.js");
       echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
+      echo Html::script("node_modules/select2/dist/js/select2.min.js");
       echo Html::script("node_modules/tableexport.jquery.plugin/tableExport.min.js");
       echo Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js");
       echo Html::script("vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js");
-      echo Html::script("node_modules/@jarstone/dselect/dist/js/dselect.min.js");
       echo Html::script("src/ngFunctions.js");
       echo Html::script("node_modules/gridstack/dist/gridstack-all.js");
       echo Html::script("node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js");

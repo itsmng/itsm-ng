@@ -113,7 +113,6 @@ class Dashboard extends \CommonDBTM
                   __('Profile') => [
                      'type' => 'select',
                      'id' => 'ProfileDropdownForDashboard',
-                     'searchable' => true,
                      'name' => 'profileId',
                      'value' => $this->fields['profileId'] ?? '',
                      'values' => getOptionForItems(Profile::class),
@@ -122,7 +121,6 @@ class Dashboard extends \CommonDBTM
                   __('User') => [
                      'type' => 'select',
                      'id' => 'UserDropdownForDashboard',
-                     'searchable' => true,
                      'name' => 'userId',
                      'value' => $this->fields['userId'] ?? '',
                      'values' => getItemByEntity(User::class, Session::getActiveEntity()),

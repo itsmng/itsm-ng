@@ -334,7 +334,7 @@ class AuthLDAP extends CommonDBTM {
       if (!Config::canUpdate()) {
          return false;
       }
-      if (empty($ID)) {
+      if ($this->isNewID($ID)) {
          $this->getEmpty();
          if (isset($options['preconfig'])) {
             $this->preconfig($options['preconfig']);
@@ -369,6 +369,13 @@ class AuthLDAP extends CommonDBTM {
                         'name' => 'id',
                         'value' => $ID
                      ],
+                     __('Preconfiguration') => $this->isNewID($ID) ? [
+                        'content' => <<<HTML
+                            <a href='{$this->getFormURL()}?preconfig=AD'>Active Directory</a>
+                            &nbsp;&nbsp;/&nbsp;&nbsp;
+                            <a href='{$this->getFormURL()}?preconfig=default'>Default values</a>
+                        HTML,
+                     ] : [],
                      __('Name') => [
                         'name' => 'name',
                         'type' => 'text',
