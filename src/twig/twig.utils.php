@@ -2,6 +2,8 @@
 
 function expandForm($form, $fields = [])
 {
+    global $CFG_GLPI;
+
     foreach ($form['content'] as $contentKey => $content) {
         if (isset($content['inputs'])) {
             foreach ($content['inputs'] as $inputKey => $input) {
@@ -9,15 +11,19 @@ function expandForm($form, $fields = [])
                 {
                     case 'select':
                         if (isset($input['itemtype']) && !isset($input['values'])) {
-                            $form['content'][$contentKey]['inputs'][$inputKey]['values'] =
-                                array_merge ([Dropdown::EMPTY_VALUE], getItemByEntity(
-                                $input['itemtype'],
-                                $input['entity']
-                                    ?? $fields['entities_id']
-                                    ?? Session::getActiveEntity(),
-                                $input['conditions'] ?? [],
-                                $input['used'] ?? [])
-                            );
+                            $form['content'][$contentKey]['inputs'][$inputKey]['ajax'] =
+                                [
+                                    'url' => $CFG_GLPI['root_doc'] . '/ajax/getDropdownValue.php',
+                                    'type' => "POST",
+                                    'data' => [
+                                        'itemtype' => $input['itemtype'],
+                                        'display_emptychoice' => 1,
+                                        'condition' => $input['condition'] ?? [],
+                                        'used' => $input['used'] ?? [],
+                                        'emptylabel' => Dropdown::EMPTY_VALUE,
+                                        'permit_select_parent' => 0,
+                                    ],
+                                ];
                         }
                         break;
                 }

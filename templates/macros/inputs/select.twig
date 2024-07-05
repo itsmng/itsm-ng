@@ -28,10 +28,27 @@
   </select>
   <script>
       $(function() {
+        {% if attributes.ajax %}
+            const params = {{attributes.ajax|json_encode|raw}};
+            const data = params.data;
+            params.dataType = 'json';
+            params.delay = 250;
+            params.data = function (params) {
+                return {
+                    searchText: params.term,
+                    page: params.page || 1,
+                    page_limit: 100,
+                    ...data
+                };
+            };
+        {% endif %}
           $.getScript('{{root_doc}}/node_modules/select2/dist/js/select2.min.js', function() {
                 $('#{{attributes.id ? attributes.id : id}}').select2({
                     theme: 'bootstrap-5',
                     width: '100%',
+                    {% if attributes.ajax %}
+                    ajax: params,
+                    {% endif %}
                 });
             });
       });

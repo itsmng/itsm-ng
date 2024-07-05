@@ -1111,9 +1111,7 @@ class Item_SoftwareVersion extends CommonDBRelation
                         'type' => 'select',
                         'id' => 'dropdownForSoftware',
                         'name' => 'softwareversions_id',
-                        'values' => getOptionForItems('Software',
-                          getEntitiesRestrictCriteria('glpi_softwares',
-                          'entities_id', $entities_id, true)),
+                        'itemtype' => 'Software',
                         'col_lg' => 6,
                         'hooks' => [
                            'change' => <<<JS
