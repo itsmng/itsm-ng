@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2024-06-05 07:49+0000\n"
+"PO-Revision-Date: 2024-07-08 07:51+0000\n"
 "Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
 "Language-Team: French (Belgium) <https://hosted.weblate.org/projects/itsm-ng/"
 "itsm-ng/fr_BE/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.6-dev\n"
+"X-Generator: Weblate 5.7-dev\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -23693,10 +23693,8 @@ msgid "RSH"
 msgstr "NORSH"
 
 #: src/MailServer.php:376
-#, fuzzy
-#| msgid "Security"
 msgid "Secure"
-msgstr "Sécurité"
+msgstr "Sécurisé"
 
 #: src/MailServer.php:430
 msgid "Use mail date, instead of collect one"
