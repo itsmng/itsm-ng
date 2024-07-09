@@ -216,6 +216,53 @@ class Central extends CommonGLPI {
     * Show the central personal view
    **/
    static function showMyView() {
+      global $CFG_GLPI;
+      $objects = $CFG_GLPI['globalsearch_types'];
+      asort($objects);
+      $values = [];
+      foreach ($objects as $object) {
+         $values[$object] = ((string) $object)::getTypeName();
+      }
+      $jsUpdate = <<<JS
+         $.ajax({
+            url: "{$CFG_GLPI['root_doc']}/src/dashboard/dashboard.ajax.php",
+            data: {
+               action: "getSearch",
+               itemtype: $('#ItemTypeDropdownForDashboard').val(),
+            },
+            success: function(data) {
+               $('#data-selection-search-content').html(data);
+               $('#data-selection-search-content form').attr('action', "#");
+               fetchPreview("{$CFG_GLPI['root_doc']}/src/dashboard/dashboard.ajax.php");
+            }
+         });
+      JS;
+      ob_start();
+      renderTwigTemplate('macros/wrappedInput.twig', [
+         'title' => __('Itemtype'),
+         'input' => [
+            'type' => 'select',
+            'id' => 'ItemTypeDropdownForDashboard',
+            'values' => $values,
+            'value' => array_key_first($values),
+            'col_lg' => 12,
+            'col_md' => 12,
+            'init' => $jsUpdate,
+            'hooks' => [
+               'change' => $jsUpdate,
+            ],
+            'noLib' => true,
+         ]
+      ]);
+      renderTwigTemplate('dashboard/dashboard.twig', [
+        'edit' => true,
+        'dataSelection' => ob_get_clean(),
+        'widgetGrid' => [
+            [
+                ['title' => 'test', 'value' => 'test', 'icon' => 'fa fa-cogs'],
+            ],
+        ]
+      ]);
       $showticket  = Session::haveRightsOr("ticket",
                                            [Ticket::READMY, Ticket::READALL, Ticket::READASSIGN]);
 

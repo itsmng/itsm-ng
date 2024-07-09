@@ -14,12 +14,12 @@
 		{{_self.editButton(true, [ rowIndex, -1 ])}}
 	{% endif %}
 			{% for colIndex, widget in row %}
-				<div class="col border d-flex flex-column-reverse align-items-center justify-content-center 
+				<div class="col border d-flex flex-column-reverse align-items-center justify-content-center
 				{{widget.background ? 'bg-' ~ widget.background : ''}}
 				">
 					{% include 'dashboard/widget.twig' with widget %}
 					{% if edit %}
-						<button type="button" class="ms-auto btn btn-link editButton" aria-label="Remove Widget" onClick="removeWidget({{rowIndex}},{{colIndex}})">
+						<button type="button" class="ms-auto btn btn-link editButton" style="display: none;" aria-label="Remove Widget" onClick="removeWidget({{rowIndex}},{{colIndex}})">
 							<i class="fas fa-trash-alt" title="delete"></i>
 						</button>
 					{% endif %}
@@ -37,6 +37,7 @@
 
 
 <script>
+    const root_doc = '{{root_doc}}';
 	function fullscreen{{rand}}() {
 		var mainDashboard = document.getElementById("dashboard{{rand}}");
 
@@ -82,7 +83,7 @@
 {% else %}
 	{% set class = "row w-100 mx-auto"%}
 {% endif %}
-<button type="button" aria-label="Open Widget" class="{{class}} editButton btn btn-light border p-1" style="{{style}}" onClick="openWidgetModal({{coords|json_encode}})">
+<button type="button" aria-label="Open Widget" class="{{class}} editButton btn btn-light border p-1" style="display: none;{{style}}" onClick="openWidgetModal({{coords|json_encode}})">
 	<i class="fas fa-plus mx-auto" title="edit"></i>
 </button>
 {% endmacro %}

@@ -28,7 +28,7 @@ function fetchPreview() {
   const jsonData = JSON.stringify(formContent);
 
   $.ajax({
-    url: "./dashboard.ajax.php",
+    url: root_doc + "/src/dashboard/dashboard.ajax.php",
     type: "POST",
     data: {
       action: "preview",
@@ -81,7 +81,7 @@ function toggleEdit() {
 
 function removeWidget(x, y) {
   $.ajax({
-    url: "./dashboard.ajax.php",
+    url: root_doc + "/src/dashboard/dashboard.ajax.php",
     type: "POST",
     data: {
       id: $("input[name='dashboardId']").val(),
@@ -106,7 +106,7 @@ function addWidget() {
   const widget = { coords, title, icon, filter };
 
   $.ajax({
-    url: "./dashboard.ajax.php",
+    url: root_doc + "/src/dashboard/dashboard.ajax.php",
     type: "POST",
     data: {
       id: $("input[name='dashboardId']").val(),
