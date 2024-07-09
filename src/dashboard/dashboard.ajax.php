@@ -53,7 +53,13 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['dataFilters'])) {
    Session::checkRight("dashboard", UPDATE);
 
    $dashboard = new Dashboard();
-   $dashboard->getFromDB($_REQUEST['id']);
+   if (!$_REQUEST['id']) {
+        $id = $dashboard->add([
+            'content' => json_encode([]),
+            'userId' => Session::getLoginUserID(),
+        ]);
+   }
+   $dashboard->getFromDB($id ?? $_REQUEST['id']);
    $widget = json_decode(stripslashes($_REQUEST['widget']), true);
    $options = $_REQUEST['options'] ?? [];
 

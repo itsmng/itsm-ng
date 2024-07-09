@@ -237,32 +237,9 @@ class Central extends CommonGLPI {
             }
          });
       JS;
-      ob_start();
-      renderTwigTemplate('macros/wrappedInput.twig', [
-         'title' => __('Itemtype'),
-         'input' => [
-            'type' => 'select',
-            'id' => 'ItemTypeDropdownForDashboard',
-            'values' => $values,
-            'value' => array_key_first($values),
-            'col_lg' => 12,
-            'col_md' => 12,
-            'init' => $jsUpdate,
-            'hooks' => [
-               'change' => $jsUpdate,
-            ],
-            'noLib' => true,
-         ]
-      ]);
-      renderTwigTemplate('dashboard/dashboard.twig', [
-        'edit' => true,
-        'dataSelection' => ob_get_clean(),
-        'widgetGrid' => [
-            [
-                ['title' => 'test', 'value' => 'test', 'icon' => 'fa fa-cogs'],
-            ],
-        ]
-      ]);
+      $dashboard = new Dashboard();
+      $dashboard->getForUser();
+      $dashboard->show(null, true);
       $showticket  = Session::haveRightsOr("ticket",
                                            [Ticket::READMY, Ticket::READALL, Ticket::READASSIGN]);
 
