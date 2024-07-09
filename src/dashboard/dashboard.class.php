@@ -56,34 +56,6 @@ class Dashboard extends \CommonDBTM
       return 'fas fa-tachometer-alt';
    }
 
-   static function getMenuContent()
-   {
-      $menu = [];
-
-      if (static::canView()) {
-
-         $menu['title'] = self::getMenuName();
-         $menu['page']  = '/src/dashboard/dashboard.php';
-         $menu['icon']  = self::getIcon();
-         $menu['links'] = [
-            'add' => '/src/dashboard/dashboard.form.php'
-         ];
-      }
-      if (count($menu)) {
-         return $menu;
-      }
-      return false;
-   }
-
-   static function getFormUrl($full = true)
-   {
-      global $CFG_GLPI;
-      if ($full) {
-         return $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.form.php";
-      }
-      return "/src/dashboard/dashboard.form.php";
-   }
-
    /**
     * Show the form to create or edit a dashboard
     *

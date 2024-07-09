@@ -110,60 +110,56 @@ class Central extends CommonGLPI {
       echo "</table>";
 
       $dashboard = new Dashboard();
-      if ($dashboard->getForUser()) {
-         $dashboard->show();
-      } else {
-         $grid = [
-            __('General') => [
-                'right' => true,
-                'items' => [
-                    Entity::class,
-                    User::class,
-                    Budget::class,
-                ]
-            ],
-            __('Assets') => [
-                'right' => true,
-                'items' => [
-                    Computer::class,
-                    Monitor::class,
-                    NetworkEquipment::class,
-                    Peripheral::class,
-                    Phone::class,
-                    Printer::class,
-                    Software::class,
-                ]
-            ],
-            __('Tickets') => [
-                'right' => true,
-                'items' => [
-                    Ticket::class,
-                    Problem::class,
-                    Change::class,
-                ]
-            ],
-         ];
-         foreach ($grid as $title => $section) {
-            if (!$section['right'])
-               continue;
-            echo <<<HTML
-                <div class="card my-3">
-                    <div class="card-header">
-                        <h5 class="card-title">$title</h5>
-                    </div>
-                    <div class="card-body">
-            HTML;
-            $dashboard = ['widgetGrid' => [[]]];
-            foreach ($section['items'] as $item) {
-               $dashboard['widgetGrid'][0][] = [
-                     'title' => $item::getTypeName(2),
-                     'value' => countElementsInTableForMyEntities($item::getTable()),
-                     'icon' => $item::getIcon(),
-               ];
-            }
-            renderTwigTemplate('dashboard/dashboard.twig', $dashboard);
-            echo "</div></div>";
+      $grid = [
+         __('General') => [
+             'right' => true,
+             'items' => [
+                 Entity::class,
+                 User::class,
+                 Budget::class,
+             ]
+         ],
+         __('Assets') => [
+             'right' => true,
+             'items' => [
+                 Computer::class,
+                 Monitor::class,
+                 NetworkEquipment::class,
+                 Peripheral::class,
+                 Phone::class,
+                 Printer::class,
+                 Software::class,
+             ]
+         ],
+         __('Tickets') => [
+             'right' => true,
+             'items' => [
+                 Ticket::class,
+                 Problem::class,
+                 Change::class,
+             ]
+         ],
+      ];
+      foreach ($grid as $title => $section) {
+         if (!$section['right'])
+            continue;
+         echo <<<HTML
+             <div class="card my-3">
+                 <div class="card-header">
+                     <h5 class="card-title">$title</h5>
+                 </div>
+                 <div class="card-body">
+         HTML;
+         $dashboard = ['widgetGrid' => [[]]];
+         foreach ($section['items'] as $item) {
+            $dashboard['widgetGrid'][0][] = [
+                  'title' => $item::getTypeName(2),
+                  'value' => countElementsInTableForMyEntities($item::getTable()),
+                  'icon' => $item::getIcon(),
+            ];
          }
+         renderTwigTemplate('dashboard/dashboard.twig', $dashboard);
+         echo "</div></div>";
       }
 
       Html::accessibilityHeader();
