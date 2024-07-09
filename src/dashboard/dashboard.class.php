@@ -56,34 +56,6 @@ class Dashboard extends \CommonDBTM
       return 'fas fa-tachometer-alt';
    }
 
-   static function getMenuContent()
-   {
-      $menu = [];
-
-      if (static::canView()) {
-
-         $menu['title'] = self::getMenuName();
-         $menu['page']  = '/src/dashboard/dashboard.php';
-         $menu['icon']  = self::getIcon();
-         $menu['links'] = [
-            'add' => '/src/dashboard/dashboard.form.php'
-         ];
-      }
-      if (count($menu)) {
-         return $menu;
-      }
-      return false;
-   }
-
-   static function getFormUrl($full = true)
-   {
-      global $CFG_GLPI;
-      if ($full) {
-         return $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.form.php";
-      }
-      return "/src/dashboard/dashboard.form.php";
-   }
-
    /**
     * Show the form to create or edit a dashboard
     *
@@ -155,30 +127,20 @@ class Dashboard extends \CommonDBTM
    {
       global $DB;
 
-      $profileId = $_SESSION['glpiactiveprofile']['id'];
       $userId = Session::getLoginUserID();
 
       $dashboardId = iterator_to_array(
-         $DB->query("SELECT id FROM `" . self::getTable() . "` WHERE profileId = $profileId AND userId = $userId")
+         $DB->query("SELECT id FROM `" . self::getTable() . "` WHERE userId = $userId")
       );
       if (!$dashboardId) {
          $dashboardId = iterator_to_array(
-            $DB->query("SELECT id FROM `" . self::getTable() . "` WHERE profileId = $profileId AND userId = 0")
+            $DB->query("SELECT id FROM `" . self::getTable() . "` WHERE userId = 0")
          );
       }
       if (!$dashboardId)
          return false;
       $this->getFromDB($dashboardId[0]['id']);
       return true;
-   }
-
-   static function parseOptions($format, $options, $data)
-   {
-      if (isset($options['total']) && $format == 'pie') {
-         $options['total'] = array_sum($data['1']) * 2;
-         $options['startAngle'] = intval($options['startAngle']);
-      }
-      return $options;
    }
 
    function show($ID = null, $edit = false)

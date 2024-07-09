@@ -1606,7 +1606,7 @@ class Auth extends CommonGLPI
                   __('CAS Version') => (function_exists('curl_init') && Toolbox::canUseCAS()) ? [
                      'type' => 'select',
                      'name' => 'cas_version',
-                     'value' => $CFG_GLPI["cas_version"],
+                     'value' => $CFG_GLPI["cas_version"] ?? 'CAS_VERSION_2_0',
                      'values' => [
                         'CAS_VERSION_1_0' => __('Version 1'),
                         'CAS_VERSION_2_0' => __('Version 2'),

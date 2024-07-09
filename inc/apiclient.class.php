@@ -183,72 +183,102 @@ class APIClient extends CommonDBTM {
     */
    function showForm ($ID, $options = []) {
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
+      $form = [
+        'action' => $this->getFormURL(),
+        'buttons' => [
+            [
+                'name' => $this->isNewID($ID) ? 'add' : 'update',
+                'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+                'class' => 'btn btn-secondary'
+            ],
+            $this->isNewID($ID) ? [] : [
+                'name' => 'purge',
+                'value' => __('Delete permanently'),
+                'class' => 'btn btn-danger'
+            ]
+        ],
+        'content' => [
+            $this->getTypeName() => [
+                'visible' => true,
+                'inputs' => [
+                    __('Name') => [
+                        'name' => 'name',
+                        'value' => $this->fields["name"],
+                        'type' => 'text',
+                        'size' => 50,
+                        'required' => true
+                    ],
+                    __('Active') => [
+                        'name' => 'is_active',
+                        'value' => $this->fields["is_active"],
+                        'type' => 'checkbox',
+                    ],
+                    __('Log connections') => [
+                        'name' => 'dolog_method',
+                        'value' => $this->fields["dolog_method"],
+                        'type' => 'select',
+                        'values' => self::getLogMethod()
+                    ],
+                    __('Comments') => [
+                        'name' => 'comment',
+                        'value' => $this->fields["comment"],
+                        'type' => 'textarea',
+                        'rows' => 3,
+                        'cols' => 50,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ]
+                ]
+            ],
+            __('Filter access') => [
+                'visible' => true,
+                'inputs' => [
+                    '' => [
+                        'content' => __('Leave these parameters empty to disable API access restriction'),
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                    __('IPv4 address range') . ' ' . '(' . __('Start') . ')' => [
+                        'name' => 'ipv4_range_start',
+                        'value' => $this->fields["ipv4_range_start"] ? long2ip($this->fields["ipv4_range_start"]) : '',
+                        'type' => 'text',
+                        'size' => 17,
+                        'col_lg' => 6,
+                    ],
+                    __('IPv4 address range') . ' ' . '(' . __('End') . ')' => [
+                        'name' => 'ipv4_range_end',
+                        'value' => $this->fields["ipv4_range_end"] ? long2ip($this->fields["ipv4_range_end"]) : '',
+                        'type' => 'text',
+                        'size' => 17,
+                        'col_lg' => 6,
+                    ],
+                    __('IPv6 address') => [
+                        'name' => 'ipv6',
+                        'value' => $this->fields["ipv6"],
+                        'type' => 'text',
+                        'size' => 50,
+                        'col_lg' => 12,
+                        'col_md' => 12,
+                    ],
+                    __('Application token') => [
+                        'name' => 'app_token',
+                        'value' => $this->fields["app_token"],
+                        'type' => 'text',
+                        'size' => 50,
+                        'col_lg' => 6,
+                    ],
+                    __('Regenerate') => [
+                        'name' => '_reset_app_token',
+                        'value' => 0,
+                        'type' => 'checkbox',
+                        'col_lg' => 6,
+                    ]
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Name')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "name");
-      echo "</td>";
-      echo "<td rowspan='3'>".__('Comments')."</td>";
-      echo "<td rowspan='3'>";
-      echo "<textarea name='comment' >".$this->fields["comment"]."</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td >".__('Active')."</td>";
-      echo "<td>";
-      Dropdown::showYesNo("is_active", $this->fields["is_active"]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td >".__('Log connections')."</td>";
-      echo "<td>";
-      Dropdown::showFromArray("dolog_method",
-                              self::getLogMethod(),
-                              ['value' => $this->fields["dolog_method"]]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<th colspan='4'>";
-      echo "<div class='center'>". __("Filter access")."</div>";
-      echo "</th></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td colspan='4'>";
-      echo "<i>".__('Leave these parameters empty to disable API access restriction')."</i>";
-      echo "<br><br><br>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('IPv4 address range')."</td>";
-      echo "<td colspan='3'>";
-      echo "<input type='text' name='ipv4_range_start' value='".
-            ($this->fields["ipv4_range_start"] ? long2ip($this->fields["ipv4_range_start"]) : '') .
-            "' size='17'> - ";
-      echo "<input type='text' name='ipv4_range_end' value='" .
-            ($this->fields["ipv4_range_end"] ? long2ip($this->fields["ipv4_range_end"]) : '') .
-            "' size='17'>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('IPv6 address')."</td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, "ipv6");
-      echo "</td>";
-      echo "<td colspan='2'></td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".sprintf(__('%1$s (%2$s)'), __('Application token'), "app_token")."</td>";
-      echo "<td colspan='2'>";
-      Html::autocompletionTextField($this, "app_token");
-      echo "<br><input type='checkbox' name='_reset_app_token' id='app_token'>&nbsp;";
-      echo "<label for='app_token'>".__('Regenerate')."</label>";
-      echo "</td><td></td></tr>";
-
-      $this->showFormButtons($options);
+                ]
+            ]
+        ]
+      ];
+      renderTwigForm($form, '', $this->fields);
    }
 
    function prepareInputForAdd($input) {
