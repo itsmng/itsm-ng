@@ -733,7 +733,14 @@ class Item_Devices extends CommonDBRelation
                                     success: function(data) {
                                        const jsonDatas = JSON.parse(data);
                                        for (const key in jsonDatas) {
-                                          $('select[name="devices_id"]').append('<option value="' + key + '">' + jsonDatas[key] + '</option>');
+                                          if (typeof(jsonDatas[key]) == 'object') {
+                                            $('select[name="devices_id"]').append('<optgroup label="' + key + '"></optgroup>');
+                                            for (const child in jsonDatas[key]) {
+                                              $('select[name="devices_id"] optgroup').last().append('<option value="' + child + '">' + jsonDatas[key][child] + '</option>');
+                                            }
+                                          } else {
+                                              $('select[name="devices_id"]').append('<option value="' + key + '">' + jsonDatas[key] + '</option>');
+                                          }
                                        }
                                     }
                                  });
