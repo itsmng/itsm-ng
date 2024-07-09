@@ -92,7 +92,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation {
             _n('Network outlet', 'Network outlets', 1) => !$options['several'] ? [
                'type' => 'select',
                'name' => 'netpoints_id',
-               'values' => getOptionForItems(Netpoint::class),
+               'itemtype' => Netpoint::class,
                'value' => $this->fields['netpoints_id'],
                'actions' => getItemActionButtons(['info', 'add'], Netpoint::class),
             ] : [],
