@@ -192,7 +192,7 @@ class Dashboard extends \CommonDBTM
          };
          $twig_vars['ajaxUrl'] = $CFG_GLPI['root_doc'] . "/src/dashboard/dashboard.ajax.php";
          $twig_vars['edit'] = $edit;
-         $twig_vars['dashboardId'] = $ID ?? $this->fields['id'];
+         $twig_vars['dashboardId'] = $ID ?? $this->fields['id'] ?? null;
          $twig_vars['widgetGrid'] = self::expandContent(json_decode($this->fields['content'] ?? '[]', true) ?? []);
          $twig_vars['base'] = $CFG_GLPI['root_doc'];
          renderTwigTemplate('dashboard/dashboard.twig', $twig_vars);
@@ -209,8 +209,10 @@ class Dashboard extends \CommonDBTM
       // make series and labels from content
       foreach ($content as $rowKey => $row) {
          foreach ($row as $cellKey => $widget) {
-            $res = Search::getDatas($widget['filters']['itemtype'], $widget['filters']);
-            $content[$rowKey][$cellKey]['value'] = $res['data']['totalcount'];
+            if (isset($widget['filters']['itemtype'])) {
+               $res = Search::getDatas($widget['filters']['itemtype'], $widget['filters']);
+               $content[$rowKey][$cellKey]['value'] = $res['data']['totalcount'];
+            }
          }
       }
       return $content;
