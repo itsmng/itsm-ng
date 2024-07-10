@@ -7,7 +7,7 @@
       id="{{id}}"
     {% endif %}
     {% for name, value in attributes %}
-      {% if name not in  ['values', 'class']%}
+      {% if name not in  ['values', 'class', 'multiple']%}
         {{name}}="{{value}}"
       {% endif %}
     {% endfor %}
@@ -48,6 +48,9 @@
                     theme: 'bootstrap-5',
                     {% if attributes.ajax %}
                     ajax: params,
+                    {% endif %}
+                    {% if attributes.multiple %}
+                    multiple: true,
                     {% endif %}
                 });
             });
