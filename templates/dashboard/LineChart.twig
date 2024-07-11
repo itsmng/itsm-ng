@@ -1,0 +1,55 @@
+<div id="ChartLine">
+    <canvas id="Linechart" aria-label="LineChart(Tickets by status)"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: '{{ root_doc }}/ajax/ticket.ajax.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(ticketData) {
+            const data = {
+                labels: [
+                    '{{ "New" | trans }}',
+                    '{{ "Pending" | trans }}',
+                    '{{ "Assigned" | trans }}',
+                    '{{ "Planned" | trans }}',
+                    '{{ "Solved" | trans }}',
+                    '{{ "Closed" | trans }}'
+                ],
+                datasets: [{
+                    label: 'All Tickets',
+                    data: ticketData,
+                    fill: false,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    tension: 0.1
+                }]
+            };
+
+            const config = {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+
+            const ctx = document.getElementById('Linechart').getContext('2d');
+            new Chart(ctx, config);
+        },
+        error: function(xhr, status, error) {
+            console.error('Erreur lors de la récupération des données des tickets:', status, error);
+        }
+    });
+});
+</script>
