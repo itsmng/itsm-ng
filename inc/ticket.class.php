@@ -5839,9 +5839,9 @@ class Ticket extends CommonITILObject
          }
          echo "<p>" . $title . "</p>";
          renderTwigTemplate('table.twig', [
-            'minimal' => true,
             'fields'  => $fields,
-            'values'  => $values
+            'values'  => $values,
+            'noToolBar' => true
          ]);
       }
    }

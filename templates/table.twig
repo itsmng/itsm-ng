@@ -3,7 +3,7 @@
 		{% set id = 'table' ~ random() %}
 	{% endif %}
 	{% set rand=random() %}
-	{% if not minimal %}
+	{% if not minimal or noToolBar is not defined %}
 	<div
 		id="toolbar{{rand}}"
 		class="btn-group"
@@ -27,18 +27,22 @@
 		data-height="{{height}}"
 		{% endif %}
 		{% if not minimal %}
-			data-toolbar="#toolbar{{rand}}"
-			data-show-columns-toggle-all="true"
-			data-click-to-select="true"
+            {% if noToolBar is not defined %}
+                data-toolbar="#toolbar{{rand}}"
+                data-show-columns-toggle-all="true"
+                data-click-to-select="true"
+                {% if noSearch is not defined %}
+                    data-search="true"
+                {% endif %}
+                data-show-export="true"
+                data-show-columns="true"
+            {% endif %}
 			{% if not height %}
 				data-pagination="true"
 				show-extended-pagination="true"
 			{% endif %}
-			data-search="true"
 			data-sortable="true"
-			data-show-export="true"
             data-page-size="15"
-			data-show-columns="true"
 			data-icons="icons"
 		{% endif %}
 		{% if url is defined %}
