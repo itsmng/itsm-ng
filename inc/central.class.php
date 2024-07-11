@@ -271,8 +271,6 @@ class Central extends CommonGLPI {
       }
       echo "</td></tr>";
       echo "</table></td></tr></table>";
-      $twig = Twig::load(GLPI_ROOT . "/templates/dashboard", false, true);
-      echo $twig->render('RadarChart.twig');
    }
 
 
