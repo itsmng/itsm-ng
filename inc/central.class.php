@@ -219,20 +219,6 @@ class Central extends CommonGLPI {
       foreach ($objects as $object) {
          $values[$object] = ((string) $object)::getTypeName();
       }
-      $jsUpdate = <<<JS
-         $.ajax({
-            url: "{$CFG_GLPI['root_doc']}/src/dashboard/dashboard.ajax.php",
-            data: {
-               action: "getSearch",
-               itemtype: $('#ItemTypeDropdownForDashboard').val(),
-            },
-            success: function(data) {
-               $('#data-selection-search-content').html(data);
-               $('#data-selection-search-content form').attr('action', "#");
-               fetchPreview("{$CFG_GLPI['root_doc']}/src/dashboard/dashboard.ajax.php");
-            }
-         });
-      JS;
       $dashboard = new Dashboard();
       $dashboard->getForUser();
       $dashboard->show(null, true);
