@@ -42,7 +42,7 @@
 				show-extended-pagination="true"
 			{% endif %}
 			data-sortable="true"
-            data-page-size="15"
+            data-page-size="{{pageSize is defined ? pageSize : 15}}"
 			data-icons="icons"
 		{% endif %}
 		{% if url is defined %}
