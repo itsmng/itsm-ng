@@ -6,22 +6,26 @@
 
 <script>
 $(document).ready(function() {
+    function getLastSixMonths() {
+        const months = [];
+        const date = new Date();
+
+        for (let i = 0; i < 6; i++) {
+            months.push(date.toLocaleString('default', { month: 'long' }));
+            date.setMonth(date.getMonth() - 1);
+        }
+
+        return months.reverse();
+    }
     $.ajax({
-        url: '{{ root_doc }}/ajax/ticket.ajax.php',
+        url: '{{ root_doc }}/ajax/ticketmonths.ajax.php',
         method: 'GET',
         dataType: 'json',
         success: function(ticketData) {
             const data = {
-                labels: [
-                    '{{ "New" | trans }}',
-                    '{{ "Pending" | trans }}',
-                    '{{ "Assigned" | trans }}',
-                    '{{ "Planned" | trans }}',
-                    '{{ "Solved" | trans }}',
-                    '{{ "Closed" | trans }}'
-                ],
+                labels: getLastSixMonths(),
                 datasets: [{
-                    label: 'All Tickets',
+                    label: 'New Tickets',
                     data: ticketData,
                     fill: false,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
@@ -38,6 +42,8 @@ $(document).ready(function() {
                     maintainAspectRatio: true,
                     scales: {
                         y: {
+                            min: 0,
+                            max: Math.round(Math.max(...ticketData) * 1.1),
                             beginAtZero: true
                         }
                     }

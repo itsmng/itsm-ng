@@ -6,38 +6,43 @@
 
 <script>
 $(document).ready(function() {
+    function getLastSixMonths() {
+        const months = [];
+        const date = new Date();
+
+        for (let i = 0; i < 6; i++) {
+            months.push(date.toLocaleString('default', { month: 'long' }));
+            date.setMonth(date.getMonth() - 1);
+        }
+
+        return months.reverse();
+    }
+
     $.ajax({
-        url: '{{ root_doc }}/ajax/ticket.ajax.php',
+        url: '{{ root_doc }}/ajax/ticketmonths.ajax.php',
         method: 'GET',
         dataType: 'json',
         success: function(ticketData) {
             const data = {
-                labels: [
-                    '{{ "New" | trans }}',
-                    '{{ "Pending" | trans }}',
-                    '{{ "Assigned" | trans }}',
-                    '{{ "Planned" | trans }}',
-                    '{{ "Solved" | trans }}',
-                    '{{ "Closed" | trans }}'
-                ],
+                labels: getLastSixMonths(),
                 datasets: [{
-                    label: 'All Tickets',
+                    label: 'New Tickets',
                     data: ticketData,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)'
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)'
                     ],
                     borderWidth: 1
                 }]
@@ -51,6 +56,8 @@ $(document).ready(function() {
                     maintainAspectRatio: true,
                     scales: {
                         y: {
+                            min: 0,
+                            max: Math.round(Math.max(...ticketData) * 1.1),
                             beginAtZero: true
                         }
                     }
