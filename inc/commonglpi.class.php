@@ -900,7 +900,7 @@ class CommonGLPI {
              'formName' => $this->getTypeName(),
              'glpiroot' => $CFG_GLPI['root_doc'],
           ];
-          if ($_REQUEST['forcetab']) {
+          if (isset($_REQUEST['forcetab'])) {
              $twigVars['forcetab'] = $_REQUEST['forcetab'];
           }
           renderTwigTemplate('item.twig', $twigVars);
