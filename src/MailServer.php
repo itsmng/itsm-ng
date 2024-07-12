@@ -333,8 +333,8 @@ class MailServer
                             'value' => $fields['is_active'] ?? '',
                         ],
                         __('Email domain Name (users email will be login@domain)') => $mailcollector ? [] : [
-                            'type' => 'host',
-                            'name' => 'text',
+                            'type' => 'text',
+                            'name' => 'host',
                             'value' => $fields['host'] ?? ''
                         ],
                         __('Server') => [
