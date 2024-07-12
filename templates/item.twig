@@ -179,7 +179,9 @@ $(document).ready(function() {
         selectedTab = sessionValues.selected;
         openCollapse();
     }
-    if (sessionValues['main']) {
+    if ('{{forcetab is defined ? forcetab : ''}}' !== '') {
+        moveBodyToMainView($('#tab-{{forcetab|default('')|slug}}').prev().find('button.moveToMainButton'));
+    } else if (sessionValues['main']) {
         moveBodyToMainView($('#' + sessionValues.main).prev().find('button.moveToMainButton'));
     } else {
         moveBodyToMainView($('button.moveToMainButton').first());

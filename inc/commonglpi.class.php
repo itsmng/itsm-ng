@@ -893,13 +893,17 @@ class CommonGLPI {
          }
       }
       if (count($onglets) > 1) {
-          renderTwigTemplate('item.twig', [
+          $twigVars = [
              'tabs' => $tabs,
              'layoutFor' => $target,
              'itemName' => $this::class,
              'formName' => $this->getTypeName(),
              'glpiroot' => $CFG_GLPI['root_doc'],
-          ]);
+          ];
+          if ($_REQUEST['forcetab']) {
+             $twigVars['forcetab'] = $_REQUEST['forcetab'];
+          }
+          renderTwigTemplate('item.twig', $twigVars);
           return;
       }
       self::displayStandardTab($this, key($onglets), $withtemplate, $options);
