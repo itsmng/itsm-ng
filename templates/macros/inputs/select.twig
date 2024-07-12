@@ -42,22 +42,37 @@
                     ...data
                 };
             };
+            params.initSelection = function (element, callback) {
+                const id = $(element).val();
+                if (id !== '') {
+                    $.ajax({
+                        url: params.url,
+                        dataType: 'json',
+                        data: {
+                            id: id,
+                            ...data
+                        }
+                    }).done(function(data) {
+                        callback(data);
+                    });
+                }
+            };
         {% endif %}
-          $.getScript('{{root_doc}}/node_modules/select2/dist/js/select2.min.js', function() {
-                $('#{{attributes.id ? attributes.id : id}}').select2({
-                    theme: 'bootstrap-5',
-                    width: '100%',
-                    {% if attributes.ajax %}
-                    ajax: params,
-                    {% endif %}
-                    {% if attributes.multiple %}
-                    multiple: true,
-                    {% endif %}
-                });
+        $.getScript('{{root_doc}}/node_modules/select2/dist/js/select2.min.js', function() {
+            $('#{{attributes.id ? attributes.id : id}}').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                {% if attributes.ajax %}
+                ajax: params,
+                {% endif %}
+                {% if attributes.multiple %}
+                multiple: true,
+                {% endif %}
             });
+        });
       });
 
   </script>
-{% endif %}
+  {% endif %}
 {% endmacro %}
 {{ _self.select(attributes) }}

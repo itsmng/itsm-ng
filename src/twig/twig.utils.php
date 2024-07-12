@@ -11,6 +11,7 @@ function expandForm($form, $fields = [])
                 {
                     case 'select':
                         if (isset($input['itemtype']) && !isset($input['values'])) {
+                            $form['content'][$contentKey]['inputs'][$inputKey]['values'] = getItemByEntity($input['itemtype'], $fields['entities_id'] ?? Session::getActiveEntity());
                             $form['content'][$contentKey]['inputs'][$inputKey]['ajax'] =
                                 [
                                     'url' => $CFG_GLPI['root_doc'] . '/ajax/getDropdownValue.php',
