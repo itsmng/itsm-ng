@@ -57,15 +57,15 @@
   {% elseif attributes.type == 'password' %}
     {% include 'macros/inputs/password.twig' %}
   {% else %}
-    <input class='form-control' 
+    <input class='form-control'
       {% for name, value in attributes %}
-        {{name}}="{{value}}" 
+        {{name}}="{{value}}"
       {% endfor %}
       {% if attributes.name is defined %}
         aria-label="{{ attributes.name }}"
       {% endif %}/>
   {% endif %}
-  {% if input.hooks is defined and input.hooks is not empty %}
+  {% if input.init is defined or (input.hooks is defined and input.hooks is not empty) %}
     <script>
       $(document).ready(() => {
         {% if input.init %}
