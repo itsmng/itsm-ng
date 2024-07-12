@@ -811,13 +811,13 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
                      ),
                   ] : [],
                   __('Visible since') => [
-                     'type' => 'date',
+                     'type' => 'datetime-local',
                      'name' => 'begin_date',
                      'value' => $this->fields["begin_date"],
                      'col_lg' => 6,
                   ],
                   __('Visible until') => [
-                     'type' => 'date',
+                     'type' => 'datetime-local',
                      'name' => 'end_date',
                      'value' => $this->fields["end_date"],
                      'col_lg' => 6,
@@ -852,9 +852,6 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
                      'hooks' => [
                         'change' => <<<JS
                         var type = jQuery(this).val();
-                        // empty value -> disable all
-                        // entity -> enable entity and checkbox, disable others
-                        // * -> enable all
                         $("#selectForEntity").prop("disabled", type == 0);
                         $("#checkboxForChildEntities").prop("disabled", type == 0);
                         $("#selectForTarget").prop("disabled", type == 0 || type == "Entity");
@@ -873,11 +870,26 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
                               $("#selectForTarget").empty();
                               $("#selectForTarget").attr("name", '_visibility[' + type.toLowerCase() + "s_id]");
                               for (const [key, value] of Object.entries(jsonData)) {
-                                 $("#selectForTarget").append(
-                                    $("<option></option>")
-                                       .attr("value", key)
-                                       .text(value)
-                                 );
+                                 if (typeof(value) == 'object') {
+                                    //add optgroup
+                                    const group = $("#selectForTarget").append(
+                                       $("<optgroup></optgroup>")
+                                          .attr("label", key)
+                                    );
+                                    foreach (const [key, value] of Object.entries(value.children)) {
+                                       group.append(
+                                          $("<option></option>")
+                                             .attr("value", key)
+                                             .text(value)
+                                       );
+                                    }
+                                 } else {
+                                     $("#selectForTarget").append(
+                                        $("<option></option>")
+                                           .attr("value", key)
+                                           .text(value)
+                                     );
+                                 }
                               }
                            }
                         });
