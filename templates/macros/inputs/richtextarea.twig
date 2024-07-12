@@ -4,7 +4,6 @@
     {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %}>
     {{attributes.value|default('')|raw}}</textarea>
   <script>
-  var {{attributes.id|default('ckEditorInstance')}};
   $(document).ready(() => {
     if ({{attributes.id|default("ckEditorInstance" ~ rand)}}.config) {
         return;
