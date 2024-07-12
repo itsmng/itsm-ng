@@ -4060,6 +4060,7 @@ class CommonDBTM extends CommonGLPI {
          'values' => getOptionForItems(get_called_class(),
             $options['conditions'] ?? [], true,
             strpos(get_called_class(), 'Device') === 0),
+         'value' => $options['value'] ?? 0,
       ]);
       return true;
    }
