@@ -734,7 +734,7 @@ class Profile extends CommonDBTM
                      ]
 						],
 						__('Update password') => [
-							'name' => 'password_update',
+							'name' => '_password_update',
 							'type' => 'select',
                      'id' => 'password_update',
                      'values' => [
