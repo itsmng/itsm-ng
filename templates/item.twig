@@ -1,7 +1,7 @@
 <div class="row px-3 w-100">
-    <div id="main-accordion-view" class="col col-sm-12 col-md-{{(tabs|length == 1) ? 12 : 7}} p-3"></div>
-    <ul class="col col-sm-12 col-md-{{listSize|default(5)}} p-0 {% if tabs|length == 1 %}d-none{% endif %}"
-        id="options-for-{{itemName|slug}}" data-size="{{listSize|default(5)}}">
+    <div id="main-accordion-view" class="col col-sm-12 col-md-{{(tabs|length == 1) ? 12 : 8}} p-3"></div>
+    <ul class="col col-sm-12 col-md-{{listSize|default(4)}} p-0 {% if tabs|length == 1 %}d-none{% endif %}"
+        id="options-for-{{itemName|slug}}" data-size="{{listSize|default(4)}}">
         <li class="d-none d-md-table btn-group mb-2 text-right ms-auto">
             <button class="btn btn-outline-secondary" aria-label="Increase List Size" onclick="changeListSize(1)" id="increase-list-size">
                 <i class="fas fa-arrow-left" aria-hidden="true"></i>
@@ -173,7 +173,7 @@ $('button.moveToMainButton').on('click', function(e) {
 $(document).ready(function() {
     const sessionValues = JSON.parse(sessionStorage.getItem('{{itemName|slug}}')) ?? {};
     if (sessionValues.size) {
-        changeListSize(sessionValues.size - 5);
+        changeListSize(sessionValues.size - 8);
     }
     if (sessionValues.selected) {
         selectedTab = sessionValues.selected;
