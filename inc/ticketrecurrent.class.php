@@ -176,9 +176,13 @@ class TicketRecurrent extends CommonDropdown
             'name'  => 'periodicity',
             'type'  => 'select',
             'values' => Timezone::GetTimeStamp([
-               'min'   => DAY_TIMESTAMP,
+               'min'   => HOUR_TIMESTAMP,
+               'step'  => HOUR_TIMESTAMP,
+            ]) +
+            Timezone::GetTimeStamp([
+               'min'   => 2 * DAY_TIMESTAMP,
                'step'  => DAY_TIMESTAMP,
-               'max'   => 2 * MONTH_TIMESTAMP
+               'max'   => 30 * DAY_TIMESTAMP
             ]),
             'value' => $this->fields['periodicity']
          ],

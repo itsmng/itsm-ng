@@ -195,11 +195,23 @@ abstract class CommonDBVisible extends CommonDBTM {
                                  $("#selectForTarget$rand").empty();
                                  $("#selectForTarget$rand").attr("name", type.toLowerCase() + "s_id");
                                  for (const [key, value] of Object.entries(jsonData)) {
-                                    $("#selectForTarget$rand").append(
-                                       $("<option></option>")
-                                          .attr("value", key)
-                                          .text(value)
-                                    );
+                                    if (typeof(value) === "object") {
+                                        const optgroup = $("<optgroup></optgroup>").attr("label", key);
+                                        for (const [k, v] of Object.entries(value)) {
+                                           optgroup.append(
+                                              $("<option></option>")
+                                                 .attr("value", k)
+                                                 .text(v)
+                                           );
+                                        }
+                                        $("#selectForTarget$rand").append(optgroup);
+                                    } else {
+                                        $("#selectForTarget$rand").append(
+                                           $("<option></option>")
+                                              .attr("value", key)
+                                              .text(value)
+                                        );
+                                    }
                                  }
                               }
                            });
