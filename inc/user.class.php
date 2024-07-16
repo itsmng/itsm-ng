@@ -2357,15 +2357,13 @@ class User extends CommonDBTM {
                      'name' => 'entities_id',
                      'values' => getOptionForItems('Entity'),
                      'value' => $this->fields['entities_id'],
-                     'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
                      'col_lg' => 6,
                      ] : [],
                   __('Default group') => ($higherrights) ? [
                      'type' => 'select',
                      'name' => 'groups_id',
-                     'values' => array_merge([Dropdown::EMPTY_VALUE], $groupUser),
+                     'values' =>[Dropdown::EMPTY_VALUE] + $groupUser,
                      'value' => $this->fields['groups_id'],
-                     'actions' => getItemActionButtons(['info', 'add'], 'Group'),
                      'col_lg' => 6,
                   ] : [],
                   __('Responsible') => ($higherrights) ? [
@@ -2373,7 +2371,6 @@ class User extends CommonDBTM {
                      'name' => 'users_id_supervisor',
                      'values' => getOptionsForUsers('all'),
                      'value' => $this->fields['users_id_supervisor'],
-                     'actions' => getItemActionButtons(['info'], 'User'),
                      'col_lg' => 6,
                   ] : [],
                ]

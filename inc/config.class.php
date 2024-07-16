@@ -769,8 +769,7 @@ class Config extends CommonDBTM {
                   __('ITSM-NG server time zone') => [
                       'name' => 'time_offset',
                       'type' => 'select',
-                      //  'values' => '' ?? Timezone::showGMT(),
-                      'values' => [],
+                      'values' => Timezone::showGMT(),
                       'value' => $CFG_GLPI["time_offset"],
                   ],
                ],

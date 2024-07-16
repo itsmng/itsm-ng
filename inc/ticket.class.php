@@ -4816,9 +4816,10 @@ class Ticket extends CommonITILObject
       $display_save_btn = (!array_key_exists('locked', $options) || !$options['locked'])
          && ($canupdate || $can_requester || $canpriority || $canassign || $canassigntome);
 
-
+      $formUrl = $this->getFormURL();
+      $reopenLabel = __('Reopen');
       $form = [
-         'action' => $this->getFormURL(),
+         'action' => $formUrl,
          'buttons' => $display_save_btn ? [
             $this->fields["is_deleted"] == 1 && self::canDelete() ? [
                'type' => 'submit',
@@ -4994,7 +4995,11 @@ class Ticket extends CommonITILObject
                      'name' => 'status',
                      'values' => static::getAllowedStatusArray($this->fields['status']),
                      'value' => $this->fields['status'],
-                     $canupdate ? '' : 'disabled' => ''
+                     $canupdate ? '' : 'disabled' => '',
+                     'after' => $this->fields['status'] == self::CLOSED ? <<<HTML
+                        <a href="{$formUrl}?id={$ID}&_openfollowup=1&forcetab=Ticket$1"
+                        >{$reopenLabel}</a>
+                     HTML : '',
                   ],
                   RequestType::getTypeName(1) => [
                      'type' => 'select',

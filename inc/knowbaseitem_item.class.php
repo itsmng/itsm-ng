@@ -144,11 +144,11 @@ class KnowbaseItem_Item extends CommonDBRelation {
          $options = [];
 
          foreach ($CFG_GLPI["state_types"] as $type) {
-            if ($item = getItemForItemtype($type)) {
-               if (!$item->canView()) {
+            if ($subitem = getItemForItemtype($type)) {
+               if (!$subitem->canView()) {
                   continue;
                }
-               $options[$type] = $item->getTypeName(1);
+               $options[$type] = $subitem->getTypeName(1);
             }
          }
          asort($options);
@@ -278,8 +278,6 @@ class KnowbaseItem_Item extends CommonDBRelation {
       ];
       $values = [];
       $massive_action = [];
-      $item = new KnowbaseItem();
-      $item->getFromDB($item_id);
       foreach (self::getItems($item, $start) as $data) {
          $linked_item = null;
          if ($item->getType() == KnowbaseItem::getType()) {
