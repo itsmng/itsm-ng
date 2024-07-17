@@ -143,7 +143,7 @@ class KnowbaseItem_Item extends CommonDBRelation {
       if ($canedit && $ok_state) {
          $options = [];
 
-         foreach ($CFG_GLPI["state_types"] as $type) {
+         foreach ($CFG_GLPI["globalsearch_types"] as $type) {
             if ($subitem = getItemForItemtype($type)) {
                if (!$subitem->canView()) {
                   continue;
