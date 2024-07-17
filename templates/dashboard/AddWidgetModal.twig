@@ -19,6 +19,9 @@
                 <button class="btn btn-outline-secondary fs-2 w-100 mx-2" type="button" data-format="bar">
                     <i class="fas fa-chart-bar"></i>
                 </button>
+                <button class="btn btn-outline-secondary fs-2 w-100 mx-2" type="button" data-format="line">
+                    <i class="fas fa-chart-line"></i>
+                </button>
                 <button class="btn btn-outline-secondary fs-2 w-100 mx-2" type="button" data-format="radar">
                     <i class="fas fa-star-of-life"></i>
                 </button>
@@ -44,6 +47,9 @@
                 </div>
                 <div id="format-radar" style="display: none" class="justify-content-center">
                     {% include "dashboard/RadarChart.twig" %}
+                </div>
+                <div id="format-line" style="display: none" class="justify-content-center">
+                    {% include "dashboard/LineChart.twig" %}
                 </div>
 			</div>
             <input type="hidden" name="dashboardId" value="{{dashboardId}}"/>

@@ -2,8 +2,6 @@
     <canvas id="Linechart" aria-label="LineChart(Tickets by status)"></canvas>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
 $(document).ready(function() {
     function getLastSixMonths() {
@@ -51,7 +49,9 @@ $(document).ready(function() {
             };
 
             const ctx = document.getElementById('Linechart').getContext('2d');
-            new Chart(ctx, config);
+            $.getScript('{{ root_doc }}/node_modules/chart.js/dist/chart.umd.js', function() {
+                new Chart(ctx, config);
+            });
         },
         error: function(xhr, status, error) {
             console.error('Erreur lors de la récupération des données des tickets:', status, error);
