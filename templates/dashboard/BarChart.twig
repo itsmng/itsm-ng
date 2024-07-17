@@ -65,7 +65,9 @@ $(document).ready(function() {
             };
 
             const ctx = document.getElementById('Barchart').getContext('2d');
-            new Chart(ctx, config);
+            $.getScript('{{ root_doc }}/node_modules/chart.js/dist/chart.umd.js', function() {
+                new Chart(ctx, config);
+            });
         },
         error: function(xhr, status, error) {
             console.error('Erreur lors de la récupération des données des tickets:', status, error);

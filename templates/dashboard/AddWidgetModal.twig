@@ -9,16 +9,41 @@
                     <button type="button" class="btn btn-secondary" aria-label="Close" data-bs-dismiss="modal" aria-label="Close">{{"Close"|trans}}</button>
                 </div>
 			</div>
-			<div class="modal-body row">
-                <div id="data-selection-widget-modal" class="col-12 col-lg-6 accordion accordion-flush">
-					{{ dataSelection|raw }}
-					<div id="data-selection-search-content"></div>
-                </div>
-
-                <div class="col-12 col-lg-6 d-flex flex-column p-0" id="modal-preview-window">
-                    {% include "dashboard/dashboardParams.twig" %}
-                    <div id="preview-graph-widget-modal" style="height: 25rem">
+            <div class="d-flex justify-content-evenly mt-2">
+                <button class="btn btn-outline-secondary fs-2 w-100 mx-2" type="button" data-format="number">
+                    <i class="fas fa-sort-numeric-up-alt"></i>
+                </button>
+                <button class="btn btn-outline-secondary fs-2 w-100 mx-2" type="button" data-format="pie">
+                    <i class="fas fa-chart-pie"></i>
+                </button>
+                <button class="btn btn-outline-secondary fs-2 w-100 mx-2" type="button" data-format="bar">
+                    <i class="fas fa-chart-bar"></i>
+                </button>
+                <button class="btn btn-outline-secondary fs-2 w-100 mx-2" type="button" data-format="radar">
+                    <i class="fas fa-star-of-life"></i>
+                </button>
+            </div>
+			<div class="modal-body">
+                <div id="format-number" class="jusify-content-center">
+                    <div id="data-selection-widget-modal" class="col-12 col-lg-6 accordion accordion-flush">
+                        {{ dataSelection|raw }}
+                        <div id="data-selection-search-content"></div>
                     </div>
+
+                    <div class="col-12 col-lg-6 d-flex flex-column p-0" id="modal-preview-window">
+                        {% include "dashboard/dashboardParams.twig" %}
+                        <div id="preview-graph-widget-modal" style="height: 25rem">
+                        </div>
+                    </div>
+                </div>
+                <div id="format-pie" style="display: none" class="justify-content-center">
+                    {% include "dashboard/Donutchart.twig" %}
+                </div>
+                <div id="format-bar" style="display: none" class="justify-content-center">
+                    {% include "dashboard/BarChart.twig" %}
+                </div>
+                <div id="format-radar" style="display: none" class="justify-content-center">
+                    {% include "dashboard/RadarChart.twig" %}
                 </div>
 			</div>
             <input type="hidden" name="dashboardId" value="{{dashboardId}}"/>
@@ -38,4 +63,16 @@ $(function() {
 $("#data-selection-search-content").on('change', fetchPreview);
 $('#title-widget-modal').on('change', updatePreview);
 $('#icon-widget-modal').on('change', updatePreview);
+
+$('button[data-format]').on('click', function() {
+    var format = $(this).data('format');
+    $('#format-' + format).attr('style', 'display: flex');
+    // hide all other #format-x
+    $('button[data-format]').each(function() {
+        if ($(this).data('format') !== format) {
+            $('#format-' + $(this).data('format')).hide();
+        }
+    });
+});
+
 </script>
