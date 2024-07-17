@@ -700,15 +700,27 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
                   __('Refresh rate') => [
                      'name' => 'refresh_rate',
                      'type' => 'select',
-                    //  'values' => Timezone::GetTimeStamp(),
-                    'values' => [],
+                     'values' => Timezone::GetTimeStamp([
+                         'min' => HOUR_TIMESTAMP,
+                         'max' => DAY_TIMESTAMP,
+                         'step' => HOUR_TIMESTAMP,
+                         'toadd' => [
+                             5 * MINUTE_TIMESTAMP,
+                             15 * MINUTE_TIMESTAMP,
+                             30 * MINUTE_TIMESTAMP,
+                             45 * MINUTE_TIMESTAMP
+                         ],
+                     ]),
                      'value' => $this->fields['refresh_rate'] ?? ''
 
                   ],
                   __('Number of items displayed') => [
                      'name' => 'max_items',
-                     'type' => 'select',
-                     'values' => [ '20' => 20]
+                     'type' => 'number',
+                     'min' => 5,
+                     'max' => 100,
+                     'step' => 5,
+                     'value' => $this->fields['max_items'] ?? ''
                   ],
                   __('Error retrieving RSS feed') => [
                      'name' => 'have_error',
