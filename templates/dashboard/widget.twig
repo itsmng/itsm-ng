@@ -1,4 +1,3 @@
-{{ _self.number(widget.title, widget.value, widget.icon, widget.color) }}
 {% macro number(title = '', value = 0, icon = '', color = "black") %}
 	<div class="d-flex justify-content-center align-items-center">
 		<i class="{{icon}} fs-1 text-{{color}}" aria-hidden="true"></i>
@@ -8,3 +7,14 @@
 		</div>
 	</div>
 {% endmacro %}
+{% if widget.format == 'number' %}
+	{{ _self.number(widget.title, widget.value, widget.icon, widget.color) }}
+{% elseif widget.format == 'pie' %}
+	{% include "dashboard/Donutchart.twig" %}
+{% elseif widget.format == 'bar' %}
+	{% include "dashboard/BarChart.twig" %}
+{% elseif widget.format == 'radar' %}
+	{% include "dashboard/RadarChart.twig" %}
+{% elseif widget.format == 'line' %}
+	{% include "dashboard/LineChart.twig" %}
+{% endif %}
