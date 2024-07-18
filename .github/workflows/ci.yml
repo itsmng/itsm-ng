@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DB_DATABASE: test_db
-      DB_DATABASE_UNIT: test_db
+      DB_DATABASE_UNIT: unit_db
       DB_USER: test
       DB_PASSWORD: test
     strategy:
