@@ -7,14 +7,17 @@
 		</div>
 	</div>
 {% endmacro %}
-{% if widget.format == 'number' %}
-	{{ _self.number(widget.title, widget.value, widget.icon, widget.color) }}
-{% elseif widget.format == 'pie' %}
-	{% include "dashboard/Donutchart.twig" %}
-{% elseif widget.format == 'bar' %}
-	{% include "dashboard/BarChart.twig" %}
-{% elseif widget.format == 'radar' %}
-	{% include "dashboard/RadarChart.twig" %}
-{% elseif widget.format == 'line' %}
-	{% include "dashboard/LineChart.twig" %}
-{% endif %}
+{% macro widget(widget) %}
+    {% if widget.format is not defined or widget.format == 'number' %}
+        {{ _self.number(widget.title, widget.value, widget.icon, widget.color) }}
+    {% elseif widget.format == 'pie' %}
+        {% include "dashboard/Donutchart.twig" %}
+    {% elseif widget.format == 'bar' %}
+        {% include "dashboard/BarChart.twig" %}
+    {% elseif widget.format == 'radar' %}
+        {% include "dashboard/RadarChart.twig" %}
+    {% elseif widget.format == 'line' %}
+        {% include "dashboard/LineChart.twig" %}
+    {% endif %}
+{% endmacro %}
+{{ _self.widget(_context) }}
