@@ -611,8 +611,10 @@ class Reminder extends CommonDBVisible implements
                   ],
                   __('Description') => [
                      'name' => 'text',
-                     'type' => 'textarea',
+                     'type' => 'richtextarea',
                      'value' => $this->fields['text'] ?? '',
+                     'col_lg' => 12,
+                     'col_md' => 12,
                   ],
                ]
             ],
@@ -680,10 +682,6 @@ class Reminder extends CommonDBVisible implements
                      'value' => $this->fields['end'] ?? '',
                   ],
                   _x('Planning', 'Reminder') => ($ID && isset($this->fields["is_planned"]) && PlanningRecall::isAvailable()) ? ( $this->can($ID, UPDATE) ? [
-                     'type' => 'select',
-                     'name' => 'reminders_id',
-                     'value' => $this->fields['reminders_id'] ?? '',
-                     'values' => getOptionForItems('PlanningRecall', ['itemtype' => 'Reminder', 'items_id' => $ID])
                   ] : [
                      'content' => PlanningRecall::specificForm(['itemtype' => 'Reminder', 'items_id' => $ID]),
                   ]) : [],

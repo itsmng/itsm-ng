@@ -1490,7 +1490,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
                      'type' => 'select',
                      'name' => 'projects_id',
                      'itemtype' => Project::class,
-                     'condition' => ['NOT' => ['id' => $this->fields['id']]],
+                     'used' => [$this->fields['id']],
                      'value' => $this->fields['projects_id'],
                      'actions' => getItemActionButtons(['info'], Project::class)
                   ],
@@ -1550,7 +1550,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
                   ],
                   Group::getTypeName(1) => [
                      'type' => 'select',
-                     'name' => 'users_id',
+                     'name' => 'groups_id',
                      'itemtype' => Group::class,
                      'condition' => ['is_manager' => 1],
                      'value' => $this->fields['groups_id'],
