@@ -102,17 +102,19 @@ function addWidget() {
   const title = $("#title-widget-modal").val();
   const icon = $("#icon-widget-modal").val();
   const filter = JSON.stringify(filters);
+  const format = $("input[name='format']:checked").data("format");
+  const widget = { coords, title, icon, filter, format };
 
-  const widget = { coords, title, icon, filter };
+  const data = {
+    id: $("input[name='dashboardId']").val(),
+    action: "add",
+    widget: JSON.stringify(widget),
+  };
 
   $.ajax({
     url: root_doc + "/src/dashboard/dashboard.ajax.php",
     type: "POST",
-    data: {
-      id: $("input[name='dashboardId']").val(),
-      action: "add",
-      widget: JSON.stringify(widget),
-    },
+    data,
     success: function (data) {
       location.reload();
     },

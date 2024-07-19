@@ -27,6 +27,9 @@ $monthIndex = array_flip($months);
 // Fetch results and populate ticketData array with actual ticket counts
 while ($row = $result->next()) {
     $month = $row['month'];
+    if (!isset($monthIndex[$month])) {
+        continue;
+    }
     $ticketData[$monthIndex[$month]] = (int)$row['ticket_count'];
 }
 

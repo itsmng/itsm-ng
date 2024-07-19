@@ -247,13 +247,14 @@ class Dashboard extends \CommonDBTM
       return $url;
    }
 
-   function addWidget(array $coords = [0, 0], string $title = '', array $filters = [], string $icon = '')
+   function addWidget(array $coords = [0, 0], string $title = '', array $filters = [], string $icon = '', string $format = 'number')
    {
       $dashboard = json_decode($this->fields['content'], true) ?? [];
       $widget = [
          'title' => $title,
          'filters' => $filters,
          'icon' => $icon,
+         'format' => $format,
       ];
 
       $this->placeWidgetAtCoord($dashboard, $widget, $coords);
