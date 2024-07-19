@@ -11,21 +11,21 @@
 #
 #: inc/rssfeed.class.php:690 inc/authldap.class.php:734
 #: inc/authldap.class.php:742
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2019-04-24 11:58+0000\n"
-"Last-Translator: alexandre delaunay <delaunay.alexandre@gmail.com>, 2021\n"
-"Language-Team: Dutch (Belgium) (https://www.transifex.com/glpi/teams/1637/"
-"nl_BE/)\n"
+"PO-Revision-Date: 2024-07-18 22:10+0000\n"
+"Last-Translator: Kim <kimberley.liesens275@gmail.com>\n"
+"Language-Team: Dutch (Belgium) <https://hosted.weblate.org/projects/itsm-ng/"
+"itsm-ng/nl_BE/>\n"
 "Language: nl_BE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.7-dev\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -616,7 +616,7 @@ msgstr ""
 
 #: ajax/deleteItilActor.php:98
 msgid "Error while deleting actor"
-msgstr ""
+msgstr "Acteur succesvol verwijderd"
 
 #: ajax/telemetry.php:46
 msgid ""
@@ -2017,7 +2017,7 @@ msgstr "LDAP kan niet gebruikt worden als externe verbindingsbron"
 
 #: front/setup.auth.php:58
 msgid "Open ID connect authentication"
-msgstr ""
+msgstr "OpenID Connect-authenticatie"
 
 #: front/setup.auth.php:61
 msgid "Others authentication methods"
@@ -2130,19 +2130,19 @@ msgstr "%1$s voegt het veld %2$s toe"
 
 #: front/ticket.php:59 front/ticket.php:61
 msgid "New tickets"
-msgstr ""
+msgstr "Nieuwe tickets"
 
 #: front/ticket.php:65 front/ticket.php:69
 msgid "Pending tickets"
-msgstr ""
+msgstr "Openstaande tickets"
 
 #: front/ticket.php:71 front/ticket.php:77
 msgid "Assigned tickets"
-msgstr ""
+msgstr "Toegewezen tickets"
 
 #: front/ticket.php:77 front/ticket.php:85
 msgid "Planned tickets"
-msgstr ""
+msgstr "Geplande tickets"
 
 #: front/login.php:92 inc/oidc.class.php:81 inc/oidc.class.php:93
 msgid "Log in again"
@@ -2510,8 +2510,8 @@ msgstr "Id"
 #: src/MailServer.php:325 src/dashboard/dashboard.class.php:107
 msgid "Name"
 msgid_plural "Names"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Naam"
+msgstr[1] "Namen"
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
@@ -2602,8 +2602,8 @@ msgstr "%s actualiseert kosten"
 #: inc/profile.class.php:2468 inc/transfer.class.php:3639
 msgid "Contract"
 msgid_plural "Contract"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Contract"
+msgstr[1] "Contracten"
 
 #. TRANS: %s is the user login
 #: front/contract_supplier.form.php:57 front/contact_supplier.form.php:51
@@ -3687,7 +3687,7 @@ msgstr "Kan het nabootsen van de identiteit van de gebruiker niet stoppen"
 
 #: front/document.form.php:66
 msgid "Could not add document"
-msgstr ""
+msgstr "Kan document niet toevoegen"
 
 #: inc/operatingsystemedition.class.php:42
 #: inc/item_operatingsystem.class.php:365
@@ -3849,8 +3849,8 @@ msgstr "Verbonden met"
 #: inc/cluster.class.php:58 inc/cluster.class.php:99
 msgid "Cluster"
 msgid_plural "Clusters"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Cluster"
+msgstr[1] "Clusters"
 
 #: inc/cluster.class.php:94 inc/printer.class.php:285 inc/monitor.class.php:171
 #: inc/link.class.php:160 inc/networkequipment.class.php:286
@@ -3969,7 +3969,7 @@ msgstr[1] "Versies"
 
 #: inc/cluster.class.php:136
 msgid "Auto update system"
-msgstr ""
+msgstr "Automatisch updates systeem"
 
 #: inc/cluster.class.php:143 inc/cluster.class.php:223
 #: inc/printer.class.php:323 inc/printer.class.php:750
@@ -4351,18 +4351,19 @@ msgstr "Uw PHP-parser is niet gecompileerd met ondersteuning voor sessies!"
 msgid ""
 "\"session.auto_start\" and \"session.use_trans_sid\" must be set to off."
 msgstr ""
+"\"session.auto_start\" en \"session.use_trans_sid\" moeten op off staan."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:65
 msgid "\"session.auto_start\" must be set to off."
-msgstr ""
+msgstr "\"session.auto_start\" moet worden uitgeschakeld."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:67
 msgid "\"session.use_trans_sid\" must be set to off."
-msgstr ""
+msgstr "\"session.use_trans_sid\" moet op off staan."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:71
 msgid "See .htaccess file in the ITSM-NG root for more information."
-msgstr ""
+msgstr "Zie .htaccess bestand in de ITSM-NG root voor meer informatie."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -4407,6 +4408,8 @@ msgid ""
 "Checking that web access to files directory is protected cannot be done on "
 "CLI context."
 msgstr ""
+"Controleren of de web toegang tot de bestands directory beveiligd is, kan "
+"niet in de CLI-context."
 
 #: inc/system/requirement/protectedwebaccess.class.php:113
 #: inc/config.class.php:2797
@@ -4423,6 +4426,8 @@ msgid ""
 "Make sure access to %s (%s) is forbidden; otherwise review .htaccess file "
 "and web server configuration."
 msgstr ""
+"Controleer of toegang tot %s (%s) verboden is; controleer anders het ."
+"htaccess-bestand en de webserver configuratie."
 
 #: inc/system/requirement/protectedwebaccess.class.php:116
 #: inc/config.class.php:2798
@@ -4431,7 +4436,7 @@ msgstr "error log bestand"
 
 #: inc/system/requirement/selinux.class.php:45
 msgid "Check SELinux configuration"
-msgstr ""
+msgstr "SELinux configuratie controleren"
 
 #. TRANS: %s is mode name (Permissive, Enforcing, Disabled or Unknown)
 #. TRANS: %s is mode name (Permissive, Enforcing of Disabled)
@@ -4442,16 +4447,16 @@ msgstr "SELinux mode is %s"
 
 #: inc/system/requirement/selinux.class.php:90
 msgid "For security reasons, SELinux mode should be Enforcing."
-msgstr ""
+msgstr "Om veiligheidsredenen moet de SELinux modus Enforcing zijn."
 
 #: inc/system/requirement/selinux.class.php:131
 #, php-format
 msgid "SELinux boolean %s is %s, some features may require this to be on."
-msgstr ""
+msgstr "SELinux boolean %s is %s, voor sommige functies moet dit aan staan."
 
 #: inc/system/requirement/selinux.class.php:141
 msgid "SELinux configuration is OK."
-msgstr ""
+msgstr "SELinux configuratie is OK."
 
 #: inc/system/requirement/logswriteaccess.class.php:59
 #: inc/config.class.php:2656
@@ -4460,12 +4465,12 @@ msgstr "Test met het schrijven van log bestanden"
 
 #: inc/system/requirement/logswriteaccess.class.php:67
 msgid "The log file has been created successfully."
-msgstr ""
+msgstr "Het logbestand is succesvol aangemaakt."
 
 #: inc/system/requirement/logswriteaccess.class.php:70
 #, php-format
 msgid "The log file could not be created in %s."
-msgstr ""
+msgstr "Het logbestand kon niet worden aangemaakt in %s."
 
 #: inc/system/requirement/phpversion.class.php:55
 msgid "Testing PHP Parser"
@@ -4497,16 +4502,17 @@ msgstr "De versie van uw database-engine lijkt te oud: %s."
 
 #: inc/system/requirement/dbtimezones.class.php:52
 msgid "Testing DB timezone data"
-msgstr ""
+msgstr "DB-tijdzonegegevens testen"
 
 #: inc/system/requirement/dbtimezones.class.php:66
 msgid "Timezones seems loaded in database"
-msgstr ""
+msgstr "Tijdzones lijken geladen in database"
 
 #: inc/system/requirement/mysqlimysqlnd.class.php:61
 #, php-format
 msgid "%s extension is installed but is not using mysqlnd driver"
 msgstr ""
+"%s extensie is geïnstalleerd maar gebruikt het mysqlnd stuurprogramma niet"
 
 #: inc/system/requirement/memorylimit.class.php:55
 msgid "Allocated memory test"
@@ -4515,7 +4521,7 @@ msgstr "Test van voorbehouden geheugen"
 #: inc/system/requirement/memorylimit.class.php:70
 #, php-format
 msgid "Allocated memory > %s - Perfect!"
-msgstr ""
+msgstr "Toegewezen geheugen > %s - Perfect!"
 
 #: inc/system/requirement/memorylimit.class.php:71
 msgid "Unlimited memory - Perfect!"
@@ -4528,7 +4534,7 @@ msgstr "Toegewezen geheugen"
 #: inc/system/requirement/memorylimit.class.php:75
 #, php-format
 msgid "A minimum of %s is commonly required for ITSM-NG."
-msgstr ""
+msgstr "Een minimum van %s is gewoonlijk vereist voor ITSM-NG."
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -4602,38 +4608,38 @@ msgstr "Controleer schrijf rechten van upload bestanden"
 #: inc/system/requirement/directorywriteaccess.class.php:100
 #, php-format
 msgid "Checking write permissions for directory %s"
-msgstr ""
+msgstr "Schrijfrechten controleren voor directory %s"
 
 #: inc/system/requirement/directorywriteaccess.class.php:113
 #, php-format
 msgid "Write access to %s has been validated."
-msgstr ""
+msgstr "Schrijftoegang tot %s is gevalideerd."
 
 #: inc/system/requirement/directorywriteaccess.class.php:117
 #, php-format
 msgid "The file was created in %s but can't be deleted."
-msgstr ""
+msgstr "Het bestand werd aangemaakt in %s maar kan niet worden verwijderd."
 
 #: inc/system/requirement/directorywriteaccess.class.php:120
 #, php-format
 msgid "The file could not be created in %s."
-msgstr ""
+msgstr "Het bestand kon niet worden aangemaakt in %s."
 
 #: inc/system/requirement/directorywriteaccess.class.php:123
 #, php-format
 msgid "The directory was created in %s but could not be removed."
-msgstr ""
+msgstr "De map werd aangemaakt in %s maar kon niet worden verwijderd."
 
 #: inc/system/requirement/directorywriteaccess.class.php:126
 #, php-format
 msgid "The directory could not be created in %s."
-msgstr ""
+msgstr "De map kon niet worden aangemaakt in %s."
 
 #: inc/fieldblacklist.class.php:50
 msgid "Ignored value for the unicity"
 msgid_plural "Ignored values for the unicity"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Genegeerde waarde voor de uniciteit"
+msgstr[1] "Genegeerde waarden voor de uniciteit"
 
 #: inc/netpoint.class.php:65 inc/netpoint.class.php:279
 #: inc/netpoint.class.php:293 inc/netpoint.class.php:410
@@ -4645,8 +4651,8 @@ msgstr[1] ""
 #: inc/networkportinstantiation.class.php:595 inc/networkport.class.php:1088
 msgid "Network outlet"
 msgid_plural "Network outlets"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Netwerkaansluiting"
+msgstr[1] "Netwerkaansluitingen"
 
 #: inc/netpoint.class.php:100
 #, php-format
@@ -4692,8 +4698,8 @@ msgstr "Permanent verwijderen"
 #: inc/devicebatterytype.class.php:41
 msgid "Battery type"
 msgid_plural "Battery types"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Batterij type"
+msgstr[1] "Batterij types"
 
 #: inc/peripheralmodel.class.php:41 inc/rule.class.php:323
 msgid "Peripheral model"
@@ -4709,8 +4715,8 @@ msgstr "Regels om een item toe te wijzen aan een entiteit"
 #: inc/devicesimcardtype.class.php:44
 msgid "Simcard type"
 msgid_plural "Simcard types"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Simkaart type"
+msgstr[1] "Simkaart types"
 
 #: inc/config.class.php:75
 msgctxt "setup"
@@ -4719,11 +4725,11 @@ msgstr "Algemeen"
 
 #: inc/config.class.php:150
 msgid "Invalid base URL!"
-msgstr ""
+msgstr "Ongeldige basis URL!"
 
 #: inc/config.class.php:157
 msgid "Invalid API base URL!"
-msgstr ""
+msgstr "Ongeldige API basis URL!"
 
 #: inc/config.class.php:258
 #: inc/console/maintenance/enablemaintenancemodecommand.class.php:83
@@ -4787,7 +4793,7 @@ msgstr "Kennisbank vertaling"
 
 #: inc/config.class.php:365 inc/config.class.php:372
 msgid "Translation of reminders"
-msgstr ""
+msgstr "Vertaling van herinneringen"
 
 #: inc/config.class.php:371 inc/config.class.php:379
 msgid "Dynamic display"
@@ -5044,7 +5050,7 @@ msgstr "Beperk printer management"
 
 #: inc/config.class.php:558 inc/config.class.php:596
 msgid "Devices displayed in menu"
-msgstr ""
+msgstr "Apparaten weergegeven in menu"
 
 #: inc/config.class.php:590 inc/config.class.php:607
 msgid "Automatic transfer of computers"
