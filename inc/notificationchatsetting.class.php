@@ -67,186 +67,137 @@ class NotificationChatSetting extends NotificationSetting
             $options['display'] = true;
         }
 
-        $out = "<form aria_label='form config' action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "' method='post'>";
-        $out .= "<div>";
-        $out .= "<input type='hidden' name='id' value='1'>";
-        $out .= Html::scriptBlock("$(function() {
-
-        $('[name=value]').prop('disabled', true);
-        $('[name=value_entity]').attr('hidden', true);
-        $('[name=value_group]').attr('hidden', true);
-        $('[name=value_location]').attr('hidden', true);
-        $('[name=value_category]').attr('hidden', true);
-
-        $('[name=type]').on('change', function() {
-            var _val = $(this).find('option:selected').val();
-            if (_val == 'all') {
-                $('[name=value_all]').attr('hidden', false);
-                $('[name=value_entity]').attr('hidden', true);
-                $('[name=value_group]').attr('hidden', true);
-                $('[name=value_location]').attr('hidden', true);
-                $('[name=value_category]').attr('hidden', true);
-            } else if (_val == 'entity') {
-                $('[name=value_all]').attr('hidden', true);
-                $('[name=value_entity]').attr('hidden', false);
-                $('[name=value_group]').attr('hidden', true);
-                $('[name=value_location]').attr('hidden', true);
-                $('[name=value_category]').attr('hidden', true);
-            } else if (_val == 'group') {
-                $('[name=value_all]').attr('hidden', true);
-                $('[name=value_entity]').attr('hidden', true);
-                $('[name=value_group]').attr('hidden', false);
-                $('[name=value_location]').attr('hidden', true);
-                $('[name=value_category]').attr('hidden', true);
-            } else if (_val == 'location') {
-                $('[name=value_all]').attr('hidden', true);
-                $('[name=value_entity]').attr('hidden', true);
-                $('[name=value_group]').attr('hidden', true);
-                $('[name=value_location]').attr('hidden', false);
-                $('[name=value_category]').attr('hidden', true);
-            } else if (_val == 'category') {
-                $('[name=value_all]').attr('hidden', true);
-                $('[name=value_entity]').attr('hidden', true);
-                $('[name=value_group]').attr('hidden', true);
-                $('[name=value_location]').attr('hidden', true);
-                $('[name=value_category]').attr('hidden', false);
-            }
-        });
-        });");
-        $out .= "<table class='tab_cadre_fixe' aria-label='Notification Chat'>";
-
-
-        $out .= "<tr class='tab_bg_1'><th colspan='8'>" . _n(
-            'Chat notification',
-            'Chat notifications',
-            Session::getPluralNumber()
-        ) . "</th></tr>";
-
-        if ($CFG_GLPI['notifications_chat']) {
-
-            $out .= "<tr class='tab_bg_2'>";
-
-            $chatmoderand = mt_rand();
-            $out .= "<td><label for='dropdown_chat_mode$chatmoderand'>" . __('Mode') . "</label></td><td>";
-            $chat_modes = [
-                CHAT_ROCKET     => __('Rocket chat'),
-                CHAT_SLACK      => __('Slack'),
-                CHAT_TEAMS      => __('Teams'),
-                CHAT_ZULIP      => __('Zulip')
-
-            ];
-
-            $types = [
-                'all'      => __("All"),
-                'entity'   => __("Entity"),
-                'group'    => __("Group"),
-                'location' => __("Location"),
-                'category' => __("ITIL category")
-            ];
-
-            $groupsRaw = (new Group)->find();
-            $groups = [];
-            foreach ($groupsRaw as $key => $group) {
-                $groups[$group['id']] = $group['completename'];
-            }
-
-            $entitiesRaw = (new Entity)->find();
-            $entities = [];
-            foreach ($entitiesRaw as $key => $entity) {
-                $entities[$entity['id']] = $entity['completename'];
-            }
-
-            $locationsRaw = (new Location)->find();
-            $locations = [];
-            foreach ($locationsRaw as $key => $location) {
-                $locations[$location['id']] = $location['completename'];
-            }
-
-            $categoriesRaw = (new ITILCategory)->find();
-            $categories = [];
-            foreach ($categoriesRaw as $key => $category) {
-                $categories[$category['id']] = $category['completename'];
-            }
-
-            $out .= Dropdown::showFromArray(
-                "chat_mode",
-                $chat_modes,
-                [
-                    'value'     => CHAT_SLACK,
-                    'display'   => false,
-                    'rand'      => $chatmoderand
-                ]
-            );
-            $out .= "</td>";
-            $out .= "<td><label for='hookurl'>" . __('URL') . "</label></td>";
-            $out .= "<td><input type='text' name='hookurl' id='hookurl'></td>";
-            $out .= "<td><label for='type'>" . __('Type') . "</label></td>";
-            $out .= "<td>";
-            $out .= Dropdown::showFromArray(
-                'type', 
-                $types, 
-                [
-                    'value' => 'all',
-                    'display'   => false,
-                ]
-            );
-            $out .= "</td>";
-            $out .= "<td><label for='value'>" . __('Value') . "</label></td>";
-            $out .= "<td name='value_all'><input type='text' name='value' id='value' disable></td>";
-            $out .= "<td name='value_entity'>";
-            $out .= Dropdown::showFromArray(
-                'value_entity', 
-                $entities, 
-                [
-                    'display'   => false,
-                ]
-            );
-            $out .= "</td>";
-            $out .= "<td name='value_group'>";
-            $out .= Dropdown::showFromArray(
-                'value_group', 
-                $groups, 
-                [
-                    'display'   => false,
-                ]
-            );
-            $out .= "</td>";
-            $out .= "<td name='value_location'>";
-            $out .= Dropdown::showFromArray(
-                'value_location', 
-                $locations, 
-                [
-                    'display'   => false,
-                ]
-            );
-            $out .= "</td>";
-            $out .= "<td name='value_category'>";
-            $out .= Dropdown::showFromArray(
-                'value_category', 
-                $categories, 
-                [
-                    'display'   => false,
-                ]
-            );
-            $out .= "</td>";
-            $out .= "</tr>";
-
-        } else {
-            $out .= "<tr><td colspan='6'>" . __('Notifications are disabled.')  .
-                "<a href='{$CFG_GLPI['root_doc']}/front/setup.notification.php'>" .
-                __('See configuration') . "</a></td></tr>";
-            $out .= "</table>";
+        $formValues = [];
+        $groupsRaw = (new Group)->find();
+        foreach ($groupsRaw as $key => $group) {
+            $formValues['group'][$group['id']] = $group['completename'];
         }
-        $options['candel']     = false;
-        $options['colspan']     = 12;
-        
-        //do not satisfy display param since showFormButtons() will not :(
-        echo $out;
-        $this->showFormButtons($options);
 
+        $entitiesRaw = (new Entity)->find();
+        foreach ($entitiesRaw as $key => $entity) {
+            $formValues['entity'][$entity['id']] = $entity['completename'];
+        }
 
-        // Display existing configs
-        echo "<div>";
+        $locationsRaw = (new Location)->find();
+        foreach ($locationsRaw as $key => $location) {
+            $formValues['location'][$location['id']] = $location['completename'];
+        }
+
+        $categoriesRaw = (new ITILCategory)->find();
+        foreach ($categoriesRaw as $key => $category) {
+            $formValues['category'][$category['id']] = $category['completename'];
+        }
+
+        $chat_modes = [
+            CHAT_ROCKET     => __('Rocket chat'),
+            CHAT_SLACK      => __('Slack'),
+            CHAT_TEAMS      => __('Teams'),
+            CHAT_ZULIP      => __('Zulip')
+        ];
+
+        $types = [
+            'all'      => __("All"),
+            'entity'   => __("Entity"),
+            'group'    => __("Group"),
+            'location' => __("Location"),
+            'category' => __("ITIL category")
+        ];
+
+        $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+                [
+                    'name'   => 'update',
+                    'value'  => _sx('button', 'Save'),
+                    'class'  => 'btn btn-secondary',
+                    'type'   => 'submit'
+                ]
+            ],
+            'content' => [
+                __('New chat configuration') => [
+                    'visible' => true,
+                    'inputs'  => [
+                        __('Mode') => [
+                            'type'  => 'select',
+                            'name'  => 'chat',
+                            'values' => $chat_modes,
+                            'value' => CHAT_SLACK,
+                        ],
+                        __('URL') => [
+                            'type'  => 'text',
+                            'name'  => 'hookurl',
+                            'value' => '',
+                        ],
+                        __('Type') => [
+                            'type'  => 'select',
+                            'name'  => 'type',
+                            'values' => $types,
+                            'value' => 'all',
+                            'hooks' => [
+                                'change' => <<<JS
+                                    var _val = $(this).find('option:selected').val();
+                                    if (_val == 'entity') {
+                                        $('[name=value_entity]').attr('disabled', false);
+                                        $('[name=value_group]').attr('disabled', true);
+                                        $('[name=value_location]').attr('disabled', true);
+                                        $('[name=value_category]').attr('disabled', true);
+                                    } else if (_val == 'group') {
+                                        $('[name=value_entity]').attr('disabled', true);
+                                        $('[name=value_group]').attr('disabled', false);
+                                        $('[name=value_location]').attr('disabled', true);
+                                        $('[name=value_category]').attr('disabled', true);
+                                    } else if (_val == 'location') {
+                                        $('[name=value_entity]').attr('disabled', true);
+                                        $('[name=value_group]').attr('disabled', true);
+                                        $('[name=value_location]').attr('disabled', false);
+                                        $('[name=value_category]').attr('disabled', true);
+                                    } else if (_val == 'category') {
+                                        $('[name=value_entity]').attr('disabled', true);
+                                        $('[name=value_group]').attr('disabled', true);
+                                        $('[name=value_location]').attr('disabled', true);
+                                        $('[name=value_category]').attr('disabled', false);
+                                    }
+                                JS,
+                            ]
+                        ],
+                        Group::getTypeName(1) => [
+                            'type'  => 'select',
+                            'name'  => 'value_group',
+                            'values' => $formValues['group'],
+                            'value' => $formValues['group'][1],
+                            'disabled' => true,
+                        ],
+                        Entity::getTypeName(1) => [
+                            'type'  => 'select',
+                            'name'  => 'value_entity',
+                            'values' => $formValues['entity'],
+                            'value' => $formValues['entity'][1],
+                            'disabled' => true,
+                        ],
+                        Location::getTypeName(1) => [
+                            'type'  => 'select',
+                            'name'  => 'value_location',
+                            'values' => $formValues['location'],
+                            'value' => $formValues['location'][1],
+                            'disabled' => true,
+                        ],
+                        ITILCategory::getTypeName(1) => [
+                            'type'  => 'select',
+                            'name'  => 'value_category',
+                            'values' => $formValues['category'],
+                            'value' => $formValues['category'][1],
+                            'disabled' => true,
+                        ],
+                        [
+                            'type'  => 'hidden',
+                            'name'  => 'id',
+                            'value' => '1',
+                        ],
+                    ]
+                ]
+            ],
+        ];
+        renderTwigForm($form);
 
         $query = "SELECT * FROM glpi_notificationchatconfigs";
         $iterators = $DB->request($query);
@@ -263,43 +214,54 @@ class NotificationChatSetting extends NotificationSetting
             $result[] = $res;
         }
 
-        echo "<table class='tab_cadre_fixe' aria-label='configs List Chats'>";
-        echo "<tbody>";
-        echo "<tr class='tab_bg_1'>";
+        $fields = [
+            'chat' => __('Mode'),
+            'hookurl' => __('URL'),
+            'type' => __('Type'),
+            'value' => __('Value'),
+            'actions' => __('Actions'),
+        ];
+        $values = [];
+
         echo "<th colspan='6'>" . "Liste des configs chats" . "</th>";
-        echo "</tr>";
+        $testLabel = __("Test");
+        $deleteLabel = __("Delete");
         foreach ($result as $key => $value) {
-            echo "<tr class='tab_bg_2'>";
-            echo "<td>" . $chat_modes[$value['chat']] . "</td>";
-            echo "<td>" . $value['hookurl'] . "</td>";
-            echo "<td>" . $types[$value['type']] . "</td>";
+            $newValue = [
+                'chat' => $chat_modes[$value['chat']],
+                'hookurl' => $value['hookurl'],
+                'type' => $types[$value['type']],
+            ];
 
             switch ($value['type']) {
                 case 'entity':
-                    echo "<td>" . $entities[$value['value']] . "</td>";
+                    $newValue['value'] = $formValues['entity'][$value['value']];
                     break;
                 case 'group':
-                    echo "<td>" . $groups[$value['value']] . "</td>";
+                    $newValue['value'] = $formValues['group'][$value['value']];
                     break;
                 case 'location':
-                    echo "<td>" . $locations[$value['value']] . "</td>";
+                    $newValue['value'] = $formValues['location'][$value['value']];
                     break;
                 case 'category':
-                    echo "<td>" . $categories[$value['value']] . "</td>";
-                    break;   
+                    $newValue['value'] = $formValues['categories'][$value['value']];
+                    break;
                 default:
-                    echo "<td>" . $value['value'] . "</td>";
+                    $newValue['value'] = $value['value'];
                     break;
             }
-            
-            echo "<td><a href='notificationchatsetting.form.php?test=" . $value['id'] ."' class='vsubmit'>" . __("Test") . "</a></td>";
-            echo "<td><a href='notificationchatsetting.form.php?delete=" . $value['id'] ."' class='vsubmit'>" . __("Delete") . "</a></td>";
-            echo "</tr>";
+            $newValue['actions'] = <<<HTML
+                <div class="btn-group">
+                    <a href="notificationchatsetting.form.php?test={$value['id']}" class="btn btn-sm btn-outline-secondary">{$testLabel}</a>
+                    <a href="notificationchatsetting.form.php?delete={$value['id']}" class="btn btn-sm btn-outline-secondary">{$deleteLabel}</a>
+                </div>
+            HTML;
+            $values[] = $newValue;
         }
-        echo "</tbody>";
-        echo "</table>";
-
-        echo "</div>";
+        renderTwigTemplate('table.twig', [
+            'fields' => $fields,
+            'values' => $values,
+        ]);
     }
 
 }
