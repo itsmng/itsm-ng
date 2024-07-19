@@ -124,10 +124,13 @@ class Document extends CommonDBTM {
    function canCreateItem() {
 
       if (isset($this->input['itemtype']) && isset($this->input['items_id'])) {
-         if ($item = getItemForItemtype($this->input['itemtype'])) {
-            if ($item->canAddItem('Document')) {
-               return true;
-            }
+         if (
+            ($item = getItemForItemtype($this->input['itemtype']))
+            && $item->getFromDB($this->input['items_id'])
+         ) {
+            return $item->canAddItem('Document');
+         } else {
+            unset($this->input['itemtype'], $this->input['items_id']);
          }
       }
 

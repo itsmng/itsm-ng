@@ -85,6 +85,11 @@ class Plugin extends CommonDBTM {
     */
    const NOTUPDATED     = 6;
 
+    /**
+     * Plugin key validation pattern.
+     */
+   private const PLUGIN_KEY_PATTERN = '/^[a-z0-9]+$/i';
+
    static $rightname = 'config';
 
    /**
@@ -148,6 +153,35 @@ class Plugin extends CommonDBTM {
       ];
 
    }
+
+       public function prepareInputForAdd($input)
+    {
+        $input = $this->prepareInput($input);
+
+        return $input;
+    }
+
+    public function prepareInputForUpdate($input)
+    {
+        $input = $this->prepareInput($input);
+
+        return $input;
+    }
+
+    private function prepareInput(array $input)
+    {
+        if ($this->isNewItem() || array_key_exists('directory', $input)) {
+            if (preg_match(self::PLUGIN_KEY_PATTERN, $input['directory'] ?? '') !== 1) {
+                Session::addMessageAfterRedirect(
+                    __s('Invalid plugin directory'),
+                    false,
+                    ERROR
+                );
+                return false;
+            }
+        }
+        return $input;
+    }
 
 
    /**
@@ -224,6 +258,11 @@ class Plugin extends CommonDBTM {
       global $LOADED_PLUGINS;
 
       $loaded = false;
+
+      if (preg_match(self::PLUGIN_KEY_PATTERN, $plugin_key) !== 1) {
+            // Prevent issues with illegal chars
+            return false;
+      }
       foreach (PLUGINS_DIRECTORIES as $base_dir) {
          if (!is_dir($base_dir)) {
             continue;
