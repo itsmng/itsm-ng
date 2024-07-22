@@ -141,10 +141,10 @@ async function moveBodyToMainView(target) {
     updateSession('main', mainTab);
 }
 
-function changeListSize(delta) {
+function changeListSize(delta, init) {
     const list = $('#options-for-{{itemName|slug}}');
     const main = $('#main-accordion-view');
-    const size = list.data('size') + delta;
+    const size = init ? delta : list.data('size') + delta;
     const increase = $('#increase-list-size');
     const decrease = $('#decrease-list-size');
     const min = 3;
@@ -170,10 +170,12 @@ $('button.moveToMainButton').on('click', function(e) {
     moveBodyToMainView($(e.currentTarget));
 });
 
-$(document).ready(function() {
+$(function() {
     const sessionValues = JSON.parse(sessionStorage.getItem('{{itemName|slug}}')) ?? {};
     if (sessionValues.size) {
-        changeListSize(sessionValues.size - 8);
+        console.log(sessionValues.size);
+        changeListSize(sessionValues.size, true);
+        console.log(JSON.parse(sessionStorage.getItem('{{itemName|slug}}')));
     }
     if (sessionValues.selected) {
         selectedTab = sessionValues.selected;
