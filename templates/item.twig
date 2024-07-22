@@ -3,18 +3,18 @@
     <ul class="col col-sm-12 col-md-{{listSize|default(4)}} p-0 {% if tabs|length == 1 %}d-none{% endif %}"
         id="options-for-{{itemName|slug}}" data-size="{{listSize|default(4)}}">
         <li class="d-none d-md-table btn-group mb-2 text-right ms-auto">
-            <button class="btn btn-outline-secondary" aria-label="Increase List Size" onclick="changeListSize(1)" id="increase-list-size">
+            <button class="btn btn-sm btn-outline-secondary" aria-label="Increase List Size" onclick="changeListSize(1)" id="increase-list-size">
                 <i class="fas fa-arrow-left" aria-hidden="true"></i>
                 <span class="visually-hidden">{{"Increase list width"|trans}}</span>
             </button>
-            <button class="btn btn-outline-secondary" aria-label="Decrease List Size" onclick="changeListSize(-1)" id="decrease-list-size">
+            <button class="btn btn-sm btn-outline-secondary" aria-label="Decrease List Size" onclick="changeListSize(-1)" id="decrease-list-size">
                 <i class="fas fa-arrow-right" aria-hidden="true"></i>
                 <span class="visually-hidden">{{"Decrease list width"|trans}}</span>
             </button>
         </li>
         {% for key, tab in tabs %}
         <li>
-            <h2 class="d-flex bg-light border w-100 m-0">
+            <div class="d-flex bg-light border w-100 m-0">
                 <button
                     class="btn btn-sm btn-light m-2 me-0 moveToMainButton" aria-label="Move To Main View"
                     title="{{"Move to main view"|trans}}">
@@ -22,14 +22,14 @@
                     <span class="visually-hidden">{{"Move to main view"|trans}}</span>
                 </button>
                 <button
-                    class="btn btn-light w-100 d-flex justify-content-between align-items-center collapse-button"
+                    class="btn btn-sm btn-light w-100 d-flex justify-content-between align-items-center collapse-button"
                     type="button"
                     aria-expanded="false"
                     aria-controls="tab-{{key|slug}}">
                     {{tab['title']|raw}}
                     <i class="fas fa-plus fa-xs" aria-hidden="true"></i>
                 </button>
-            </h2>
+            </div>
             <div class="border border-top-0 overflow-auto"
                 id="tab-{{key|slug}}"
                 data-url="{{tab['url']}}"
