@@ -332,8 +332,8 @@ class NetworkEquipment extends CommonDBTM {
                   __("Manufacturer") => [
                      'name' => 'manufacturers_id',
                      'type' => 'select',
-                     'value' => $this->fields['manufacturers_id'],
                      'values' => getOptionForItems("Manufacturer"),
+                     'value' => $this->fields['manufacturers_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                   ],
                   __("Group in charge of the software") => [
@@ -344,9 +344,9 @@ class NetworkEquipment extends CommonDBTM {
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __("Model") => [
-                     'name' => 'manufacturers_id',
+                     'name' => 'networkequipmentmodels_id',
                      'type' => 'select',
-                     'value' => $this->fields['manufacturers_id'],
+                     'value' => $this->fields['networkequipmentmodels_id'],
                      'values' => getOptionForItems("NetworkEquipmentModel"),
                      'actions' => getItemActionButtons(['info', 'add'], "NetworkEquipmentModel"),
                   ],
