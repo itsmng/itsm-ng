@@ -359,17 +359,17 @@ class Contract extends CommonDBTM {
                   ],
                   __('Sundays and holidays') => [
                      'type' => 'checkbox',
-                     'name' => 'use_sunday',
+                     'name' => 'use_monday',
                      'value' => $this->fields['use_monday'],
                   ],
                   __('on Sunday start') => [
                      'type' => 'time',
-                     'name' => 'sunday_begin_hour',
+                     'name' => 'monday_begin_hour',
                      'value' => $this->fields['monday_begin_hour'],
                   ],
                   __('on Sunday end') => [
                      'type' => 'time',
-                     'name' => 'sunday_end_hour',
+                     'name' => 'monday_end_hour',
                      'value' => $this->fields['monday_end_hour'],
                   ],
                ]
