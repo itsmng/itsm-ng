@@ -50,7 +50,8 @@ abstract class CommonTreeDropdown extends CommonDropdown {
          __('As child of') => [
             'name'  => $this->getForeignKeyField(),
             'type'  => 'select',
-            'list'  => false
+            'itemtype' => $this->getType(),
+            'used' => [$this->fields['id']],
          ]
       ];
    }
@@ -614,7 +615,7 @@ abstract class CommonTreeDropdown extends CommonDropdown {
                'input' => [
                   'type' => 'select',
                   'name' => 'parent',
-                  'values' => getOptionForItems($itemtype, ['entities_id' => $_SESSION['glpiactive_entity'],]),
+                  'itemtype' => $itemtype,
                ]
             ]);
             echo "<br><br><input type='submit' name='massiveaction' class='btn btn-secondary' value='".

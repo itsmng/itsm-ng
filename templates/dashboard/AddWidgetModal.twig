@@ -9,16 +9,46 @@
                     <button type="button" class="btn btn-secondary" aria-label="Close" data-bs-dismiss="modal" aria-label="Close">{{"Close"|trans}}</button>
                 </div>
 			</div>
-			<div class="modal-body row">
-                <div id="data-selection-widget-modal" class="col-12 col-lg-6 accordion accordion-flush">
-					{{ dataSelection|raw }}
-					<div id="data-selection-search-content"></div>
-                </div>
+            <div class="d-flex justify-content-evenly mt-2">
+                <input type="radio" class="btn-check" id="button-format-number" autocomplete="off" data-format="number" name="format" checked>
+                <label for="button-format-number" class="btn btn-outline-secondary fs-2 w-100 mx-2"><i class="fas fa-sort-numeric-up-alt"></i></label>
 
-                <div class="col-12 col-lg-6 d-flex flex-column p-0" id="modal-preview-window">
-                    {% include "dashboard/dashboardParams.twig" %}
-                    <div id="preview-graph-widget-modal" style="height: 25rem">
+                <input type="radio" class="btn-check" id="button-format-pie" autocomplete="off" data-format="pie" name="format">
+                <label for="button-format-pie" class="btn btn-outline-secondary fs-2 w-100 mx-2"><i class="fas fa-chart-pie"></i></label>
+
+                <input type="radio" class="btn-check" id="button-format-bar" autocomplete="off" data-format="bar" name="format">
+                <label for="button-format-bar" class="btn btn-outline-secondary fs-2 w-100 mx-2"><i class="fas fa-chart-bar"></i></label>
+
+                <input type="radio" class="btn-check" id="button-format-line" autocomplete="off" data-format="line" name="format">
+                <label for="button-format-line" class="btn btn-outline-secondary fs-2 w-100 mx-2"><i class="fas fa-chart-line"></i></label>
+
+                <input type="radio" class="btn-check" id="button-format-radar" autocomplete="off" data-format="radar" name="format">
+                <label for="button-format-radar" class="btn btn-outline-secondary fs-2 w-100 mx-2"><i class="fas fa-star-of-life"></i></label>
+            </div>
+			<div class="modal-body">
+                <div id="format-number" style="display: flex" class="jusify-content-center">
+                    <div id="data-selection-widget-modal" class="col-12 col-lg-6 accordion accordion-flush">
+                        {{ dataSelection|raw }}
+                        <div id="data-selection-search-content"></div>
                     </div>
+
+                    <div class="col-12 col-lg-6 d-flex flex-column p-0" id="modal-preview-window">
+                        {% include "dashboard/dashboardParams.twig" %}
+                        <div id="preview-graph-widget-modal" style="height: 25rem">
+                        </div>
+                    </div>
+                </div>
+                <div id="format-pie" style="display: none" class="justify-content-center">
+                    {% include "dashboard/Donutchart.twig" %}
+                </div>
+                <div id="format-bar" style="display: none" class="justify-content-center">
+                    {% include "dashboard/BarChart.twig" %}
+                </div>
+                <div id="format-radar" style="display: none" class="justify-content-center">
+                    {% include "dashboard/RadarChart.twig" %}
+                </div>
+                <div id="format-line" style="display: none" class="justify-content-center">
+                    {% include "dashboard/LineChart.twig" %}
                 </div>
 			</div>
             <input type="hidden" name="dashboardId" value="{{dashboardId}}"/>
@@ -38,4 +68,16 @@ $(function() {
 $("#data-selection-search-content").on('change', fetchPreview);
 $('#title-widget-modal').on('change', updatePreview);
 $('#icon-widget-modal').on('change', updatePreview);
+
+$('input[name="format"]').on('change', function() {
+    var format = $(this).data('format');
+    $('#format-' + format).attr('style', 'display: flex');
+    // hide all other #format-x
+    $('input[name="format"]').each(function() {
+        if ($(this).data('format') !== format) {
+            $('#format-' + $(this).data('format')).hide();
+        }
+    });
+});
+
 </script>
