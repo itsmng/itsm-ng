@@ -351,7 +351,7 @@ class DomainRecord extends CommonDBChild {
                      'actions' => getItemActionButtons(['info', 'add'], DomainRecordType::class)
                   ],
                   __('Creation date') => [
-                     'type' => 'date',
+                     'type' => 'datetime-local',
                      'name' => 'date_creation',
                      'value' => $this->fields["date_creation"] ?? '',
                   ],
@@ -388,7 +388,7 @@ class DomainRecord extends CommonDBChild {
             ]
          ]
       ];
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
 
       return true;
    }
