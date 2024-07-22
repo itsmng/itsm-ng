@@ -349,6 +349,7 @@ class SoftwareLicense extends CommonTreeDropdown {
                      'type' => 'select',
                      'name' => 'locations_id',
                      'itemtype' => Location::class,
+                     'value' => $this->fields["locations_id"],
                      'actions' => getItemActionButtons(['info', 'add'], 'Location')
                   ],
                   _n('Type', 'Types', 1) => [

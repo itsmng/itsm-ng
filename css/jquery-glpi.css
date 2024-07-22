@@ -47,11 +47,11 @@
  .ui-state-active a:visited {
     color: #212121;
  }
- 
+
  .ui-dialog { z-index: 1000 !important ;}
  .ui-widget-overlay.glpi_modal { z-index: 2000 !important ;}
  .glpi_modal { z-index: 5000 !important ;}
- 
+
  .ui-widget-content span.vsubmit, a.vsubmit {color: #8f5a0a;}
  /* css for timepicker */
  .ui-datepicker {width:20em; z-index:10000 !important;}
@@ -61,20 +61,20 @@
  .ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
  .ui-timepicker-div td { font-size: 90%; }
  .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
- 
+
  .ui-timepicker-rtl{ direction: rtl; }
  .ui-timepicker-rtl dl { text-align: right; }
  .ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
- 
+
  .hasDatepicker {margin-right:3px;}
- 
+
  /* css styles for tabs */
- 
+
  .ui-tabs {
     width: 98%;
     margin: auto;
  }
- 
+
  .ui-tabs-vertical {
     width: 98%;
     border: 0;
@@ -101,7 +101,7 @@
     -o-text-overflow: ellipsis;
     overflow: hidden;
  }
- 
+
  .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active {
     padding-bottom: 0;
     margin-bottom: 1px;
@@ -112,9 +112,9 @@
     margin-left: 180px;
     float: center;
  }
- 
+
  /* css styles for progress bar */
- 
+
  .ui-progressbar .ui-progressbar-value { background-image: url('../pics/jquery/pbar-ani.gif'); }
  .doaction_progress_text {
     float:left;
@@ -124,7 +124,7 @@
     padding-top:3px;
     font-weight:bold;
  }
- 
+
  .ui-autocomplete {
     max-height: 200px;
     font-size: 11px;
@@ -132,15 +132,15 @@
     /* prevent horizontal scrollbar */
     overflow-x: hidden;
  }
- 
+
  .ui-autocomplete a {
     color : black;
  }
- 
+
  html .ui-autocomplete {
     max-height: 100px;
  }
- 
+
  .ui-widget-content .error {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -152,62 +152,61 @@
     border-style: solid;
     padding: .2em;
  }
- 
+
  .ui-widget-content .error {
     border-color: red;
  }
- 
+
  /** Select2 v4 */
  .select2-container .select2-selection--single {
     height: 22px;
  }
- 
+
  .select2-container--default .select2-selection--single .select2-selection__rendered {
     line-height: 22px;
     font-weight: normal;
     font-size: 11px;
  }
- 
+
  .select2-container--default .select2-selection--single .select2-selection__arrow {
     height: 18px;
  }
- 
+
  .select2-container--default .select2-selection--single {
     border: 1px solid #D3D3D3;
     overflow: hidden;
  }
- 
+
  .select2-results__option {
     padding: 3px 6px;
  }
- 
+
  .select2-rendered__match {
     text-decoration: underline;
  }
- 
+
  .select2-container--default .select2-selection--multiple .select2-selection__choice {
     padding: 4px 8px;
  }
- 
+
  .select2-container--default .select2-search--inline .select2-search__field {
     border: 0!important;
  }
- 
+
  .select2-selection__choice > * {
     vertical-align: middle;
  }
- 
+
  .select2-container {
     max-width: 500px;
     word-break: break-all;
     font-size: 11px;
-    margin-right: .5em;
  }
- 
+
  .select2-search--dropdown .select2-search__field {
     padding: 0 4px;
  }
- 
+
  /** left-ellipsis stuff... */
  .select2-selection.select2-selection--single {
     min-width: 72px;
@@ -245,9 +244,9 @@
  }
  /** End left-ellipsis stuff */
  /** End Select2 v4 */
- 
+
  /* SELECT2 */
- 
+
  .ui-widget .ui-widget-header {
    font-family: Verdana,Arial,sans-serif;
    font-size: 1.1em;
@@ -255,7 +254,7 @@
  .ui-widget .ui-widget .ui-widget-header {
    font-size: 1em;
  }
- 
+
  .select2-results li {
     font-family: 'Bitstream Vera Sans', arial, Tahoma, 'Sans serif';
     font-size: 11px;
@@ -264,7 +263,7 @@
     font-family: 'Bitstream Vera Sans', arial, Tahoma, 'Sans serif';
     font-size: 11px;
  }
- 
+
  .select2-container .select2-choice {
      height: 22px;
      padding: 0 0 0 8px;
@@ -277,7 +276,7 @@
      /* to have cut on left : not working reverse display for simple items*/
      /*direction: rtl;*/
  }
- 
+
  .select2-container .select2-choice div b {
      margin-top: -2px;
  }
@@ -291,35 +290,35 @@
  .select2-results ul.select2-result-sub ul.select2-result-sub ul.select2-result-sub ul.select2-result-sub ul.select2-result-sub > li .select2-result-label { padding-left: 10px }
  .select2-results ul.select2-result-sub ul.select2-result-sub ul.select2-result-sub ul.select2-result-sub ul.select2-result-sub ul.select2-result-sub > li .select2-result-label { padding-left: 10px }
  .select2-results ul.select2-result-sub ul.select2-result-sub ul.select2-result-sub ul.select2-result-sub ul.select2-result-sub ul.select2-result-sub ul.select2-result-sub > li .select2-result-label { padding-left: 10px }
- 
+
  /* Menu actions*/
  .select2-actionable-menu {
     width: 80%;
     margin:auto;
  }
- 
+
  input.submit {
     font-size : 12px;
  }
- 
+
  .uploadbar {
     height: 18px;
     text-align: center;
     font-weight:bold;
     background-image: url('../pics/jquery/pbar-ani.gif');
  }
- 
+
  /* GANTT diagram */
- 
+
  .fn-gantt {
     text-align: left;
     font-size: 11px;
  }
- 
+
  .fn-gantt .ganttMilestone {
      background-color: #000000;
  }
- 
+
  /** select2 disabled **/
  .select2-container.select2-container-disabled .select2-choice,
  .select2-container.select2-container-disabled .select2-choice .select2-arrow {

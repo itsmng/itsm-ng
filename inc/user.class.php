@@ -2129,6 +2129,13 @@ class User extends CommonDBTM {
          $groupUser[$group['id']] = $group['completename'];
       }
 
+      $profileUser = [];
+      foreach (Profile_User::getUserProfiles($this->fields['id']) as $profile) {
+         $profileTmp = new Profile();
+         $profileTmp->getFromDB($profile);
+         $profileUser[$profile] = $profileTmp->fields['name'];
+      }
+
       $form = [
          'action' => $this->getFormURL(),
          'buttons' => [
@@ -2348,7 +2355,7 @@ class User extends CommonDBTM {
                   __('Default profile') => ($higherrights || $ismyself) ? [
                      'type' => 'select',
                      'name' => 'profiles_id',
-                     'values' => getOptionForItems('Profile'),
+                     'values' => [Dropdown::EMPTY_VALUE] + $profileUser,
                      'value' => $this->fields['profiles_id'],
                      'col_lg' => 6,
                   ] : [],

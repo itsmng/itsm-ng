@@ -151,7 +151,7 @@ class Monitor extends CommonDBTM {
     function showForm($ID, $options = []) {
       global $CFG_GLPI;
       $isNew = $this->isNewID($ID) || (isset($options['withtemplate']) && $options['withtemplate'] == 2);
-      
+
       $form = [
          'action' => $this->getFormURL(),
          'buttons' => [
@@ -218,7 +218,7 @@ class Monitor extends CommonDBTM {
                      'actions' => getItemActionButtons(['info'], "User"),
                   ],
                   __("Manufacturer") => [
-                     'name' => 'manufacturer_id',
+                     'name' => 'manufacturers_id',
                      'type' => 'select',
                      'values' => getOptionForItems('Manufacturer'),
                      'value' => $this->fields['manufacturers_id'],
@@ -250,7 +250,8 @@ class Monitor extends CommonDBTM {
                   ], // DOES NOT TAKE INTO ACCOUNT AUTOCOMPLETION FIELD
                     User::getTypeName(1) => [
                      'type' => 'select',
-                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]),
+                     'name' => 'users_id',
+                     'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['users_id'],
                      'actions' => getItemActionButtons(['info'], "User"),
                   ],
@@ -279,7 +280,7 @@ class Monitor extends CommonDBTM {
                            0 => __('Unit Management'),
                            1 => __('Global Management'),
                      ],
-                     'disabled' => $CFG_GLPI['monitors_management_restrict'] != 2 , 
+                     'disabled' => $CFG_GLPI['monitors_management_restrict'] != 2 ,
                      'value' => $this->fields['is_global'],
                   ],
                ],
@@ -342,7 +343,7 @@ class Monitor extends CommonDBTM {
          'formfooter'   => null,
          ]]);
       $additionnalHtml = ob_get_clean();
-         
+
       renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }
