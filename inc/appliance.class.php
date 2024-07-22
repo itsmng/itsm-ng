@@ -171,7 +171,7 @@ class Appliance extends CommonDBTM
                   __('Appliance type') => [
                      'name' => 'appliancetypes_id',
                      'type' => 'select',
-                     'values' => getOptionForItems("State"),
+                     'values' => getOptionForItems("ApplianceType"),
                      'value' => $this->fields['appliancetypes_id'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "Appliancetype"),
                   ],
