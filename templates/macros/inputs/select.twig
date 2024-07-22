@@ -61,7 +61,6 @@
         $.getScript('{{root_doc}}/node_modules/select2/dist/js/select2.min.js', function() {
             $('#{{attributes.id ? attributes.id : id}}').select2({
                 theme: 'bootstrap-5',
-                width: '100%',
                 {% if attributes.ajax %}
                 ajax: params,
                 {% endif %}
