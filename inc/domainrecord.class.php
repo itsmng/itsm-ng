@@ -326,7 +326,7 @@ class DomainRecord extends CommonDBChild {
              'value' => __('Delete permanently'),
              'class' => 'btn btn-danger'
            ] : []),
-         ], 
+         ],
          'content' => [
             '' => [
                'visible' => true,
@@ -450,7 +450,8 @@ class DomainRecord extends CommonDBChild {
                      '' => [
                         'type' => 'select',
                         'name' => 'domainrecords_id',
-                        'values' => getOptionForItems(DomainRecord::class, ['domains_id' => 0]),
+                        'itemtype' => DomainRecord::class,
+                        'condition' => ['domains_id' => 0],
                         'actions' => getItemActionButtons(['info', 'add'], DomainRecord::class),
                         'col_lg' => 12,
                         'col_md' => 12,
