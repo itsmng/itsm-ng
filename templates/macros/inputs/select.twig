@@ -68,9 +68,13 @@
                 multiple: true,
                 {% endif %}
             });
+            {% if attributes.multiple %}
+            $('#{{attributes.id ? attributes.id : id}}')
+                .val(JSON.parse('{{attributes.value|json_encode|raw}}'))
+                .trigger('change');
+            {% endif %}
         });
       });
-
   </script>
   {% endif %}
 {% endmacro %}
