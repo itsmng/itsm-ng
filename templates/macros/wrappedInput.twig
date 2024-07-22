@@ -25,12 +25,12 @@
                 {{ input.content|raw }}
             {% endif %}
             {% if input.after %}
-                <div class="input-group-text">
+                <div class="input-group-text input-group-sm">
                     {{input.after|raw}}
                 </div>
             {% endif %}
             {% for action in input.actions %}
-                <button type="button" class="btn border" aria-label="{{ action.info }}" onclick="{{action.onClick}}">
+                <button type="button" class="btn btn-sm border" aria-label="{{ action.info }}" onclick="{{action.onClick}}">
                     <a class="{{action.icon}}"></a>
                 </button>
             {% endfor %}

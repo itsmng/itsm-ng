@@ -57,7 +57,7 @@
   {% elseif attributes.type == 'password' %}
     {% include 'macros/inputs/password.twig' %}
   {% else %}
-    <input class='form-control'
+    <input class='form-control form-control-sm'
       {% for name, value in attributes %}
         {{name}}="{{value}}"
       {% endfor %}

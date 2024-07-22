@@ -2,7 +2,7 @@
   {% if not attributes.id %}
     {% set id = random() %}
   {% endif %}
-  <select class='form-select {{attributes.class}}'
+  <select class='form-select form-select-sm {{attributes.class}}'
     {% if not attributes.id %}
       id="{{id}}"
     {% endif %}
