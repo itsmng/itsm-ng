@@ -549,16 +549,16 @@ class Profile_User extends CommonDBRelation {
 
       if ($canedit && $nb) {
          Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $nb),
-                           'container'     => 'mass'.__CLASS__.$rand];
+         $massiveactionparams = [
+            'num_displayed' => min($_SESSION['glpilist_limit'], $nb),
+            'container'     => 'mass'.__CLASS__.$rand,
+            'deprecated'    => true
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixe' aria-label='Profil User'><tr>";
-      echo "<th>".sprintf(__('%1$s: %2$s'), Profile::getTypeName(1), $prof->fields["name"])."</th></tr>\n";
-
-      echo "<tr><th colspan='2'>".sprintf(__('%1$s (%2$s)'), User::getTypeName(Session::getPluralNumber()),
-                                          __('D=Dynamic, R=Recursive'))."</th></tr>";
-      echo "</table>\n";
+      echo "<h2>" . sprintf(__('%1$s: %2$s'), Profile::getTypeName(1), $prof->fields["name"]) . "</h2>\n";
+      echo "<p>" . sprintf(__('%1$s (%2$s)'), User::getTypeName(Session::getPluralNumber()),
+                                          __('D=Dynamic, R=Recursive')) . "</p>";
       echo "<table class='tab_cadre_fixe' aria-label='Entity Data'>";
 
       $i              = 0;
