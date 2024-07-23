@@ -27,8 +27,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2024-07-08 07:51+0000\n"
-"Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
+"PO-Revision-Date: 2024-07-23 13:43+0000\n"
+"Last-Translator: alemarch <antoine.lemarchand05@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -4770,7 +4770,7 @@ msgstr "URL de l'application"
 
 #: inc/config.class.php:307 inc/config.class.php:315
 msgid "Text in the login box"
-msgstr ""
+msgstr "Texte dans la boîte de connexion"
 
 #: inc/config.class.php:313 inc/config.class.php:334
 msgid "Allow FAQ anonymous access"
@@ -5424,6 +5424,8 @@ msgstr "Fait"
 #: inc/config.class.php:1255 inc/config.class.php:1419
 msgid "Automatically refresh data (tickets list, project kanban) in minutes"
 msgstr ""
+"Rafraîchir automatiquement les données (liste de tickets, projet kanban) en "
+"minutes"
 
 #: inc/config.class.php:1264 inc/config.class.php:1428
 msgid "Pre-select me as a technician when creating a ticket"
@@ -5435,27 +5437,27 @@ msgstr "Me pré-selectionner en tant que demandeur à la création d'un ticket"
 
 #: inc/config.class.php:1288
 msgid "Priority color 1"
-msgstr ""
+msgstr "Couleur de priorité 1"
 
 #: inc/config.class.php:1295
 msgid "Priority color 2"
-msgstr ""
+msgstr "Couleur de priorité 2"
 
 #: inc/config.class.php:1302
 msgid "Priority color 3"
-msgstr ""
+msgstr "Couleur de priorité 3"
 
 #: inc/config.class.php:1309
 msgid "Priority color 4"
-msgstr ""
+msgstr "Couleur de priorité 4"
 
 #: inc/config.class.php:1316
 msgid "Priority color 5"
-msgstr ""
+msgstr "Couleur de priorité 5"
 
 #: inc/config.class.php:1323
 msgid "Priority color 6"
-msgstr ""
+msgstr "Couleur de priorité 6"
 
 #: inc/config.class.php:1332 inc/config.class.php:1496
 msgid "Due date progression"
@@ -7521,7 +7523,7 @@ msgstr "Entité de destination de l'ordinateur"
 
 #: inc/ruleimportcomputer.class.php:81
 msgid "Find computers in ITSM-NG having the status"
-msgstr ""
+msgstr "Trouver des ordinateur dans ITSM-NG ayant le statut"
 
 #: inc/ruleimportcomputer.class.php:90
 msgid "Subnet"
@@ -10549,7 +10551,7 @@ msgstr[1] "Châssis"
 
 #: inc/enclosure.class.php:122 inc/enclosure.class.php:123
 msgid "Power supplies"
-msgstr ""
+msgstr "Alimentations"
 
 #: inc/contract_supplier.class.php:136 inc/contract.class.php:204
 #: inc/contract_item.class.php:336 inc/contract_supplier.class.php:144
@@ -10653,11 +10655,11 @@ msgstr "Heures d'intervention"
 
 #: inc/contract.class.php:332 inc/contract.class.php:333
 msgid "on week start"
-msgstr ""
+msgstr "au début de la semaine"
 
 #: inc/contract.class.php:338 inc/contract.class.php:339
 msgid "on week end"
-msgstr ""
+msgstr "à la fin de la semaine"
 
 #: inc/contract.class.php:344 inc/contract.class.php:345
 msgid "on Saturday"
@@ -10665,11 +10667,11 @@ msgstr "le samedi"
 
 #: inc/contract.class.php:349 inc/contract.class.php:350
 msgid "on Saturday start"
-msgstr ""
+msgstr "au début du samedi"
 
 #: inc/contract.class.php:354 inc/contract.class.php:355
 msgid "on Saturday end"
-msgstr ""
+msgstr "à la fin du samedi"
 
 #: inc/contract.class.php:359 inc/contract.class.php:360
 msgid "Sundays and holidays"
@@ -10677,11 +10679,11 @@ msgstr "Dimanches et fêtes"
 
 #: inc/contract.class.php:364 inc/contract.class.php:365
 msgid "on Sunday start"
-msgstr ""
+msgstr "au début du dimanche"
 
 #: inc/contract.class.php:369 inc/contract.class.php:370
 msgid "on Sunday end"
-msgstr ""
+msgstr "à la fin du dimanche"
 
 #: inc/contract.class.php:415 inc/contract.class.php:416
 msgctxt "quantity"
@@ -13662,7 +13664,7 @@ msgstr "Identifiant d'entité"
 
 #: inc/domain.class.php:364 inc/certificate.class.php:544
 msgid "Types"
-msgstr ""
+msgstr "Types"
 
 #: inc/domain.class.php:689
 msgid "Domains expired since more"
@@ -14590,6 +14592,10 @@ msgid ""
 "an email containing the informations required to reset your password. Please "
 "contact your administrator if you do not receive any email."
 msgstr ""
+"Si l’adresse mail est liée à un utilisateur ITSM-NG existant, vous recevrez "
+"un mail contenant les informations nécessaires à la réinitialisation du mot "
+"de passe. Veuillez contacter un administrateur si vous ne recevez pas de "
+"mail."
 
 #: inc/api/api.class.php:2192 inc/user.class.php:4761
 msgid "Reset password successful."
@@ -15636,7 +15642,7 @@ msgstr "Vous ne pouvez pas utiliser la description prédéfinie telle quelle"
 
 #: inc/commonitilobject.class.php:1772
 msgid "Incorrect value for date field."
-msgstr ""
+msgstr "Valeur incorrect pour un champ de date."
 
 #: inc/commonitilobject.class.php:2432
 msgctxt "priority"
@@ -16539,13 +16545,13 @@ msgstr "Il vous suffit de suivre ce lien (vous disposez d'une journée) :"
 #: inc/notificationchatconfig.class.php:119
 #, php-format
 msgid "Rocket chat: the chat %s was sent"
-msgstr ""
+msgstr "Rocket chat : Le chat %s à été envoyé"
 
 #: inc/notificationchatconfig.class.php:65
 #: inc/notificationchatconfig.class.php:127
 #, php-format
 msgid "Fatal-error: the chat %s was not send to rocket chat"
-msgstr ""
+msgstr "Fatal-error : le chat %s n'a pas pu être envoyé à rocket chat"
 
 #: inc/html.class.php:188 inc/softwarelicense.class.php:422
 #: inc/html.class.php:238 inc/softwarelicense.class.php:441
@@ -17715,8 +17721,8 @@ msgstr "Activer les notifications chat"
 #: inc/notificationchatsetting.class.php:120
 msgid "Chat notification"
 msgid_plural "Chat notifications"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Notification chat"
+msgstr[1] "Notifications chat"
 
 #: inc/notificationchatsetting.class.php:132
 msgid "Rocket chat"
@@ -18330,12 +18336,12 @@ msgstr "Nettoyer"
 #: inc/commondbtm.class.php:1455
 #, php-format
 msgid "%s (copy)"
-msgstr ""
+msgstr "%s (copie)"
 
 #: inc/commondbtm.class.php:1459
 #, php-format
 msgid "%s (copy %d)"
-msgstr ""
+msgstr "%s (copie %d)"
 
 #: inc/commondbtm.class.php:1790
 msgid "Item successfully updated"
@@ -18483,7 +18489,7 @@ msgstr "Erreur lors de l'insertion d'un chat dans la file d'attente"
 #: inc/notificationchat.class.php:118
 #, php-format
 msgid "Fatal-error: The chat %s was not added to queue "
-msgstr ""
+msgstr "Fatal-error : Le chat %s n'a pas été ajouté à la file d'attente. "
 
 #: inc/notificationchat.class.php:129
 #, php-format
@@ -19749,6 +19755,8 @@ msgid ""
 "Output language (default value is existing ITSM-NG \"language\" "
 "configuration or \"en_GB\")"
 msgstr ""
+"Langage de sortie (La valeur \"langage\" par défaut existant dans la "
+"configuration ITSM-NG ou \"en_GB\" )"
 
 #: inc/console/application.class.php:212
 #, php-format
@@ -19815,6 +19823,8 @@ msgid ""
 "Migration of column \"%s.%s\" cannot be done as it is referenced in "
 "CONSTRAINT \"%s\" of table \"%s.%s\"."
 msgstr ""
+"La migration de la colonne \"%s.%s\" ne peut être exécutée car elle est "
+"référencée dans la CONSTRAINT \"%s\" de la table \"%s.%s\"."
 
 #: inc/console/migration/unsignedkeyscommand.class.php:153
 #, php-format
@@ -19825,6 +19835,7 @@ msgstr "Migration de la colonne « %s.%s »..."
 #, php-format
 msgid "Migration of column \"%s.%s\" failed with message \"(%s) %s\"."
 msgstr ""
+"La migration de la colonne \"%s.%s\" a échoué avec le message \"(%s) %s\"."
 
 #: inc/console/migration/unsignedkeyscommand.class.php:192
 msgid "Errors occured during migration."
@@ -23735,11 +23746,11 @@ msgstr "Plan"
 
 #: inc/notification.class.php:252
 msgid "If not active, the notification will not be sent"
-msgstr ""
+msgstr "Si inactif, la notification ne sera pas envoyée"
 
 #: inc/notification.class.php:259
 msgid "If checked, the user can respond to the notification"
-msgstr ""
+msgstr "Si coché, l'utilisateur peut répondre à la notification"
 
 #: inc/notification.class.php:267
 msgid "Type of the item to which the notification is attached"
