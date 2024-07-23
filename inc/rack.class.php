@@ -216,7 +216,7 @@ class Rack extends CommonDBTM
                      'actions' => getItemActionButtons(['info'], "User"),
                   ],
                   __("Manufacturer") => [
-                     'name' => 'manufacturer_id',
+                     'name' => 'manufacturers_id',
                      'type' => 'select',
                      'values' => getOptionForItems('Manufacturer'),
                      'value' => $this->fields['manufacturers_id'],
@@ -256,6 +256,7 @@ class Rack extends CommonDBTM
                      'hooks' => [
                         'change' => $loadDcPositionHook . $loadLocationHook,
                      ],
+                     'init' => $loadDcPositionHook . $loadLocationHook,
                   ],
                   __("Position in room") => [
                      'name' => 'position',

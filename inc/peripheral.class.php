@@ -190,7 +190,7 @@ class Peripheral extends CommonDBTM {
                      'value' => $this->fields['name'],
                   ],
                   __('Status') => [
-                     'name' => 'status',
+                     'name' => 'states_id',
                      'type' => 'select',
                      'itemtype' => State::class,
                      'condition' => ['is_visible_peripheral' => 1],
@@ -263,7 +263,7 @@ class Peripheral extends CommonDBTM {
                   User::getTypeName(1) => [
                      'name' => 'users_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('User', ['entities_id' => $this->fields['entities_id']]),
+                     'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields['users_id'],
                      'actions' => getItemActionButtons(['info'], "User"),
                   ],

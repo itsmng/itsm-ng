@@ -2786,6 +2786,7 @@ JAVASCRIPT;
       $p['item']              = false;
       $p['tag_to_send']       = 'common';
       $p['display']           = true;
+      $p['deprecated']        = false;
 
       foreach ($options as $key => $val) {
          if (isset($p[$key])) {
@@ -2857,7 +2858,16 @@ JAVASCRIPT;
             $out .= "<div id='massiveactioncontent$identifier'></div>";
             if (!empty($p['tag_to_send'])) {
                $container = $p['container'];
-               $js_modal_fields = <<<JS
+               $js_modal_fields = $p['deprecated'] ? <<<JS
+                  var items = $('[data-glpicore-ma-tags~="{$p['tag_to_send']}"]')
+                    .each(function( index ) {
+                        fields[$(this).attr('name')] = $(this).attr('value');
+                        if (($(this).attr('type') == 'checkbox') && (!$(this).is(':checked'))) {
+                           fields[$(this).attr('name')] = 0;
+                        }
+                    });
+                  console.log(items);
+               JS : <<<JS
                   let rows = $("#$identifier").bootstrapTable('getSelections');
                   for (let i = 0; i < rows.length; i++) {
                      fields[rows[i].value] = 1;
