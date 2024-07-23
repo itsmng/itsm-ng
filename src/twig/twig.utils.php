@@ -11,7 +11,7 @@ function expandForm($form, $fields = [])
                 {
                     case 'select':
                         if (isset($input['itemtype']) && !isset($input['values'])) {
-                            $form['content'][$contentKey]['inputs'][$inputKey]['values'] = getItemByEntity(
+                            $form['content'][$contentKey]['inputs'][$inputKey]['values'] = [DROPDOWN::EMPTY_VALUE] + getItemByEntity(
                                 $input['itemtype'],
                                 $fields['entities_id'] ?? Session::getActiveEntity(),
                                 $input['condition'] ?? [],
@@ -25,6 +25,7 @@ function expandForm($form, $fields = [])
                                         'itemtype' => $input['itemtype'],
                                         'display_emptychoice' => 1,
                                         'condition' => $input['condition'] ?? [],
+                                        'entity_restrict' => $fields['entities_id'] ?? Session::getActiveEntity(),
                                         'used' => $input['used'] ?? [],
                                         'emptylabel' => Dropdown::EMPTY_VALUE,
                                         'permit_select_parent' => 0,
@@ -243,7 +244,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     }
     try {
         echo $twig->render('form.twig', [
-            'form' => expandForM($form, $fields),
+            'form' => expandForm($form, $fields),
             'additionnalHtml' => $additionnalHtml,
             'root_doc' => $CFG_GLPI['root_doc'],
             'csrf_token' => $_SESSION['_glpi_csrf_token'],
