@@ -330,13 +330,13 @@ class Contract extends CommonDBTM {
             __('Support hours') => [
                'visible' => true,
                'inputs' => [
-                  __('on week start') => [
+                  __('Start') => [
                      'type' => 'time',
                      'name' => 'week_begin_hour',
                      'value' => $this->fields['week_begin_hour'],
                      'col_lg' => 6,
                   ],
-                  __('on week end') => [
+                  __('End') => [
                      'type' => 'time',
                      'name' => 'week_end_hour',
                      'value' => $this->fields['week_end_hour'],
@@ -347,12 +347,12 @@ class Contract extends CommonDBTM {
                      'name' => 'use_saturday',
                      'value' => $this->fields['use_saturday'],
                   ],
-                  __('on Saturday start') => [
+                  __('Start') . ' (' . __('Saturday') . ')' => [
                      'type' => 'time',
                      'name' => 'saturday_begin_hour',
                      'value' => $this->fields['saturday_begin_hour'],
                   ],
-                  __('on Saturday end') => [
+                  __('End') . ' (' . __('Saturday') . ')' => [
                      'type' => 'time',
                      'name' => 'saturday_end_hour',
                      'value' => $this->fields['saturday_end_hour'],
@@ -362,12 +362,12 @@ class Contract extends CommonDBTM {
                      'name' => 'use_monday',
                      'value' => $this->fields['use_monday'],
                   ],
-                  __('on Sunday start') => [
+                  __('Start') . ' (' . __('Sundays and holidays') . ')' => [
                      'type' => 'time',
                      'name' => 'monday_begin_hour',
                      'value' => $this->fields['monday_begin_hour'],
                   ],
-                  __('on Sunday end') => [
+                  __('End') . ' (' . __('Sundays and holidays') . ')' => [
                      'type' => 'time',
                      'name' => 'monday_end_hour',
                      'value' => $this->fields['monday_end_hour'],
