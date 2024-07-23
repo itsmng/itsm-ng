@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2024-07-08 07:51+0000\n"
+"PO-Revision-Date: 2024-07-23 14:00+0000\n"
 "Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
 "Language-Team: French (Belgium) <https://hosted.weblate.org/projects/itsm-ng/"
 "itsm-ng/fr_BE/>\n"
@@ -4748,10 +4748,8 @@ msgid "URL of the application"
 msgstr "URL de l'application"
 
 #: inc/config.class.php:307 inc/config.class.php:315
-#, fuzzy
-#| msgid "Text in the login box (HTML tags supported)"
 msgid "Text in the login box"
-msgstr "Texte sur la page de connexion (balises HTML supportées)"
+msgstr "Texte dans la boîte de connexion"
 
 #: inc/config.class.php:313 inc/config.class.php:334
 msgid "Allow FAQ anonymous access"
@@ -5405,6 +5403,8 @@ msgstr "Fait"
 #: inc/config.class.php:1255 inc/config.class.php:1419
 msgid "Automatically refresh data (tickets list, project kanban) in minutes"
 msgstr ""
+"Rafraîchir automatiquement les données (liste de tickets, projet kanban) en "
+"minutes"
 
 #: inc/config.class.php:1264 inc/config.class.php:1428
 msgid "Pre-select me as a technician when creating a ticket"
@@ -5420,23 +5420,23 @@ msgstr ""
 
 #: inc/config.class.php:1295
 msgid "Priority color 2"
-msgstr ""
+msgstr "Couleur de priorité 2"
 
 #: inc/config.class.php:1302
 msgid "Priority color 3"
-msgstr ""
+msgstr "Couleur de priorité 3"
 
 #: inc/config.class.php:1309
 msgid "Priority color 4"
-msgstr ""
+msgstr "Couleur de priorité 4"
 
 #: inc/config.class.php:1316
 msgid "Priority color 5"
-msgstr ""
+msgstr "Couleur de priorité 5"
 
 #: inc/config.class.php:1323
 msgid "Priority color 6"
-msgstr ""
+msgstr "Couleur de priorité 6"
 
 #: inc/config.class.php:1332 inc/config.class.php:1496
 msgid "Due date progression"
@@ -18433,7 +18433,7 @@ msgstr ""
 #: inc/notificationchat.class.php:118
 #, php-format
 msgid "Fatal-error: The chat %s was not added to queue "
-msgstr ""
+msgstr "Fatal-error : Le chat %s n'a pas été ajouté à la file d'attente. "
 
 #: inc/notificationchat.class.php:129
 #, php-format
@@ -19675,6 +19675,8 @@ msgid ""
 "Output language (default value is existing ITSM-NG \"language\" "
 "configuration or \"en_GB\")"
 msgstr ""
+"Langage de sortie (La valeur \"langage\" par défaut existant dans la "
+"\"configuration ITSM-NG ou \"en_GB\" )"
 
 #: inc/console/application.class.php:212
 #, php-format
@@ -19737,6 +19739,8 @@ msgid ""
 "Migration of column \"%s.%s\" cannot be done as it is referenced in "
 "CONSTRAINT \"%s\" of table \"%s.%s\"."
 msgstr ""
+"La migration de la colonne \"%s.%s\" ne peut être exécutée, car elle est "
+"référencée dans la CONSTRAINT \"%s\" de la table \"%s.%s\"."
 
 #: inc/console/migration/unsignedkeyscommand.class.php:153
 #, php-format
@@ -19747,6 +19751,7 @@ msgstr ""
 #, php-format
 msgid "Migration of column \"%s.%s\" failed with message \"(%s) %s\"."
 msgstr ""
+"La migration de la colonne \"%s.%s\" a échoué avec le message \"(%s) %s\"."
 
 #: inc/console/migration/unsignedkeyscommand.class.php:192
 msgid "Errors occured during migration."
@@ -23564,11 +23569,11 @@ msgstr "Plans"
 
 #: inc/notification.class.php:252
 msgid "If not active, the notification will not be sent"
-msgstr ""
+msgstr "Si inactif, la notification ne sera pas envoyée"
 
 #: inc/notification.class.php:259
 msgid "If checked, the user can respond to the notification"
-msgstr ""
+msgstr "Si coché, l'utilisateur peut répondre à la notification"
 
 #: inc/notification.class.php:267
 msgid "Type of the item to which the notification is attached"
