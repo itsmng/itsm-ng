@@ -1098,12 +1098,16 @@ class Rule extends CommonDBTM {
       echo "<div class='spaced'>";
       if ($canedit && $nb) {
          Html::openMassiveActionsForm('mass'.$this->ruleactionclass.$rand);
-         $massiveactionparams = ['num_displayed'  => min($_SESSION['glpilist_limit'], $nb),
-                                      'check_itemtype' => get_class($this),
-                                      'check_items_id' => $rules_id,
-                                      'container'      => 'mass'.$this->ruleactionclass.$rand,
-                                      'extraparams'    => ['rule_class_name'
-                                                                    => $this->getType()]];
+         $massiveactionparams = [
+             'num_displayed'  => min($_SESSION['glpilist_limit'], $nb),
+             'check_itemtype' => get_class($this),
+             'check_items_id' => $rules_id,
+             'container'      => 'mass'.$this->ruleactionclass.$rand,
+             'extraparams'    => [
+                'rule_class_name' => $this->getType()
+             ],
+             'deprecated'     => true
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
 
@@ -1310,6 +1314,7 @@ class Rule extends CommonDBTM {
       $p['used']                = [];
       $p['value']               = '';
       $p['display_emptychoice'] = true;
+      $p['noHtml']              = false;
 
       if (is_array($options) && count($options)) {
          foreach ($options as $key => $val) {
@@ -1351,6 +1356,9 @@ class Rule extends CommonDBTM {
          if (empty($value) && !isset($used[$ID])) {
             $value = $ID;
          }
+      }
+      if ($p['noHtml']) {
+         return $items;
       }
       return Dropdown::showFromArray($p['name'], $items, $p);
    }

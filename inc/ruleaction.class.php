@@ -739,25 +739,57 @@ class RuleAction extends CommonDBChild {
 
          $this->check(-1, CREATE, $options);
       }
-      $this->showFormHeader($options);
 
-      echo "<tr class='tab_bg_1 center'>";
-      echo "<td>"._n('Action', 'Actions', 1) . "</td><td colspan='3'>";
-      echo "<input type='hidden' name='".$rule->getRuleIdField()."' value='".
-             $this->fields[static::$items_id]."'>";
       $used = $this->getAlreadyUsedForRuleID($this->fields[static::$items_id], $rule->getType());
-      // On edit : unset selected value
       if ($ID
           && isset($used[$this->fields['field']])) {
          unset($used[$this->fields['field']]);
       }
-      $rand   = $rule->dropdownActions(['value' => $this->fields['field'],
-                                             'used'  => $used]);
+      $rand = rand();
+
+      $form = [
+         'action' => $this->getFormURL(),
+         'buttons' => [
+            [
+               'name'  => 'add',
+               'value' => __('Add'),
+               'class' => 'btn btn-secondary',
+            ]
+         ],
+         'content' => [
+            '' => [
+               'visible' => true,
+               'inputs' => [
+                  [
+                     'type' => 'hidden',
+                     'name' => $rule->getRuleIdField(),
+                     'value' => $this->fields[static::$items_id],
+                  ],
+                  _n('Action', 'Actions', 1) => [
+                     'type' => 'select',
+                     'name' => 'field',
+                     'id'   => 'dropdown_field' . $rand,
+                     'values' => [Dropdown::EMPTY_VALUE] +
+                         $rule->dropdownActions(['noHtml' => true, 'used' => $used]),
+                     'value' => $this->fields['field'],
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  '' => [
+                     'content' => '<span class="w-100" id="action_span"></span>',
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+               ]
+            ]
+         ]
+      ];
+      renderTwigForm($form);
+
       $params = ['field'                 => '__VALUE__',
                       'sub_type'              => $rule->getType(),
                       'ruleactions_id'        => $this->getID(),
                       $rule->getRuleIdField() => $this->fields[static::$items_id]];
-
       Ajax::updateItemOnSelectEvent("dropdown_field$rand", "action_span",
                                     $CFG_GLPI["root_doc"]."/ajax/ruleaction.php", $params);
 
@@ -772,11 +804,5 @@ class RuleAction extends CommonDBChild {
                                  $params);
          echo '});</script>';
       }
-      echo "</td></tr>";
-      echo "<tr><td colspan='4'><span id='action_span'>\n";
-      echo "</span></td>\n";
-      echo "</tr>\n";
-      $this->showFormButtons($options);
    }
-
 }
