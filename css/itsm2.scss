@@ -892,8 +892,8 @@ main {
 .menu-bottom {
     position: absolute;
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: flex-start;
     bottom: 0;
     width: 100%;
 }
@@ -1356,4 +1356,9 @@ div.chip > p {
 #ChartLine {
     width: 500px;
     margin: 20px;
+}
+
+.accessibility-text {
+    font-size: 13px;
+    color: white;
 }
