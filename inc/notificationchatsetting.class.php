@@ -69,21 +69,25 @@ class NotificationChatSetting extends NotificationSetting
 
         $formValues = [];
         $groupsRaw = (new Group)->find();
+        $formValues['group'] = [];
         foreach ($groupsRaw as $key => $group) {
             $formValues['group'][$group['id']] = $group['completename'];
         }
 
         $entitiesRaw = (new Entity)->find();
+        $formValues['entity'] = [];
         foreach ($entitiesRaw as $key => $entity) {
             $formValues['entity'][$entity['id']] = $entity['completename'];
         }
 
         $locationsRaw = (new Location)->find();
+        $formValues['location'] = [];
         foreach ($locationsRaw as $key => $location) {
             $formValues['location'][$location['id']] = $location['completename'];
         }
 
         $categoriesRaw = (new ITILCategory)->find();
+        $formValues['category'] = [];
         foreach ($categoriesRaw as $key => $category) {
             $formValues['category'][$category['id']] = $category['completename'];
         }
@@ -114,7 +118,7 @@ class NotificationChatSetting extends NotificationSetting
                 ]
             ],
             'content' => [
-                __('New chat configuration') => [
+                __('Chat notifications') => [
                     'visible' => true,
                     'inputs'  => [
                         __('Mode') => [
@@ -164,28 +168,28 @@ class NotificationChatSetting extends NotificationSetting
                             'type'  => 'select',
                             'name'  => 'value_group',
                             'values' => $formValues['group'],
-                            'value' => $formValues['group'][1],
+                            'value' => $formValues['group'][array_key_first($formValues['group'])] ?? '',
                             'disabled' => true,
                         ],
                         Entity::getTypeName(1) => [
                             'type'  => 'select',
                             'name'  => 'value_entity',
                             'values' => $formValues['entity'],
-                            'value' => $formValues['entity'][1],
+                            'value' => $formValues['entity'][array_key_first($formValues['entity'])] ?? '',
                             'disabled' => true,
                         ],
                         Location::getTypeName(1) => [
                             'type'  => 'select',
                             'name'  => 'value_location',
                             'values' => $formValues['location'],
-                            'value' => $formValues['location'][1],
+                            'value' => $formValues['location'][array_key_first($formValues['location'])] ?? '',
                             'disabled' => true,
                         ],
                         ITILCategory::getTypeName(1) => [
                             'type'  => 'select',
                             'name'  => 'value_category',
                             'values' => $formValues['category'],
-                            'value' => $formValues['category'][1],
+                            'value' => $formValues['category'][array_key_first($formValues['category'])] ?? '',
                             'disabled' => true,
                         ],
                         [
