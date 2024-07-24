@@ -149,7 +149,7 @@ class Profile_User extends CommonDBRelation {
                      Entity::getTypeName() => [
                         'type'    => 'select',
                         'name'    => 'entities_id',
-                        'itemtype' => Entity::class,
+                        'values'  => getOptionForItems('Entity'),
                         'value' => $_SESSION['glpiactiveentities'],
                         'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
                      ],
@@ -176,7 +176,7 @@ class Profile_User extends CommonDBRelation {
       $num = count($iterator);
 
       if ($canedit && $num) {
-         $massiveactionparams = [   
+         $massiveactionparams = [
             'num_displayed' => min($_SESSION['glpilist_limit'], $num),
             'container'     => 'TableForProfileUser',
             'display_arrow' => false,

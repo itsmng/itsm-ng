@@ -2136,6 +2136,13 @@ class User extends CommonDBTM {
          $profileUser[$profile] = $profileTmp->fields['name'];
       }
 
+      $entityUser = [];
+      foreach (Profile_User::getUserEntities($this->fields['id']) as $entity) {
+         $entityTmp = new Entity();
+         $entityTmp->getFromDB($entity);
+         $entityUser[$entity] = $entityTmp->fields['completename'];
+      }
+
       $form = [
          'action' => $this->getFormURL(),
          'buttons' => [
@@ -2362,7 +2369,7 @@ class User extends CommonDBTM {
                   __('Default entity') => ($higherrights) ? [
                      'type' => 'select',
                      'name' => 'entities_id',
-                     'values' => getOptionForItems('Entity'),
+                     'values' => [-1 => Dropdown::EMPTY_VALUE] + $entityUser,
                      'value' => $this->fields['entities_id'],
                      'col_lg' => 6,
                      ] : [],
