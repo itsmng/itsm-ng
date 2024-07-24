@@ -1206,10 +1206,11 @@ class Profile extends CommonDBTM
       renderTwigTemplate(
          'macros/input.twig',
          [
-            'type'     => 'checklist',
-            'name'     => 'managed_domainrecordtypes',
-            'options'  => $values,
-            'values'   => $this->fields['managed_domainrecordtypes'],
+            'type'     => 'select',
+            'name'     => 'managed_domainrecordtypes[]',
+            'multiple' => true,
+            'values'  => $values,
+            'value'   => $this->fields['managed_domainrecordtypes'],
          ]
       );
       echo "</div>\n";

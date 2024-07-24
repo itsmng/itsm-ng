@@ -587,14 +587,14 @@ class Certificate extends CommonDBTM
                      'actions' => getItemActionButtons(['info', 'add'], "Group"),
                   ],
                   __('Alternate username number') => [
-                     'name' => 'others',
-                     'type' => 'text',
-                     'value' => $this->fields['others'] ?? '',
-                  ],
-                  __('Alternate username') => [
                      'name' => 'contact_num',
                      'type' => 'text',
                      'value' => $this->fields['contact_num'] ?? '',
+                  ],
+                  __('Alternate username') => [
+                     'name' => 'contact',
+                     'type' => 'text',
+                     'value' => $this->fields['contact'] ?? '',
                   ],
                   __('Self-signed') => [
                      'name' => 'is_autosign',

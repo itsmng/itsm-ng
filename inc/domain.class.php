@@ -369,10 +369,10 @@ class Domain extends CommonDropdown
                      'actions' => getItemActionButtons(['info', 'add'], "DomainType"),
                   ],
                   __('Technician in charge') => [
-                     'name' => 'groups_id_tech',
+                     'name' => 'users_id_tech',
                      'type' => 'select',
                      'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']  ?? '']),
-                     'value' => $this->fields['groups_id_tech'] ?? '',
+                     'value' => $this->fields['users_id_tech'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "DomainType"),
                   ],
                   __('Comments') => [

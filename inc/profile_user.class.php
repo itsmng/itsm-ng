@@ -149,7 +149,7 @@ class Profile_User extends CommonDBRelation {
                      Entity::getTypeName() => [
                         'type'    => 'select',
                         'name'    => 'entities_id',
-                        'itemtype' => Entity::class,
+                        'values'  => getOptionForItems('Entity'),
                         'value' => $_SESSION['glpiactiveentities'],
                         'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
                      ],
@@ -176,7 +176,7 @@ class Profile_User extends CommonDBRelation {
       $num = count($iterator);
 
       if ($canedit && $num) {
-         $massiveactionparams = [   
+         $massiveactionparams = [
             'num_displayed' => min($_SESSION['glpilist_limit'], $num),
             'container'     => 'TableForProfileUser',
             'display_arrow' => false,
@@ -336,22 +336,48 @@ class Profile_User extends CommonDBRelation {
 
       if ($canedit) {
          echo "<div class='firstbloc'>";
-         echo "<form aria-label='Add Authorization' name='entityuser_form$rand' id='entityuser_form$rand' method='post' action='";
-         echo Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-         echo "<table class='tab_cadre_fixe' aria-label='Add Authorization'>";
-         echo "<tr class='tab_bg_1'><th colspan='6'>".__('Add an authorization to a user')."</tr>";
-         echo "<tr class='tab_bg_1'><td class='tab_bg_2 center'>".User::getTypeName(1)."&nbsp;";
-         echo "<input type='hidden' name='entities_id' value='$ID'>";
-         User::dropdown(['right' => 'all']);
-         echo "</td><td class='tab_bg_2 center'>".self::getTypeName(1)."</td><td>";
-         Profile::dropdownUnder(['value' => Profile::getDefault()]);
-         echo "</td><td class='tab_bg_2 center'>".__('Recursive')."</td><td>";
-         Dropdown::showYesNo("is_recursive", 0);
-         echo "</td><td class='tab_bg_2 center'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
+         $form = [
+            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+            'buttons' => [
+               [
+                  'type' => 'submit',
+                  'name' => 'add',
+                  'value' => _sx('button', 'Add'),
+                  'class' => 'btn btn-secondary',
+               ]
+            ],
+            'content' => [
+               __('Add an authorization to a user') => [
+                  'visible' => true,
+                  'inputs' => [
+                     [
+                        'type' => 'hidden',
+                        'name' => 'entities_id',
+                        'value' => $ID,
+                     ],
+                     User::getTypeName() => [
+                        'type'    => 'select',
+                        'name'    => 'users_id',
+                        'itemtype' => User::class,
+                        'value' => $_SESSION['glpiactiveentities'],
+                        'actions' => getItemActionButtons(['info'], 'User'),
+                     ],
+                     self::getTypeName() => [
+                        'type'    => 'select',
+                        'name'    => 'profiles_id',
+                        'values'   => getOptionForItems('Profile'),
+                        'value' => Profile::getDefault(),
+                     ],
+                     __('Recursive') => [
+                        'type'    => 'checkbox',
+                        'name'    => 'is_recursive',
+                        'value' => 0,
+                     ],
+                  ]
+               ],
+            ],
+         ];
+         renderTwigForm($form);
          echo "</div>";
       }
 
@@ -400,11 +426,13 @@ class Profile_User extends CommonDBRelation {
       echo "<div class='spaced'>";
       if ($canedit && $nb) {
          Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams
-            = ['container'
-                        => 'mass'.__CLASS__.$rand,
-                    'specific_actions'
-                        => ['purge' => _x('button', 'Delete permanently')]];
+         $massiveactionparams = [
+            'container' => 'mass'.__CLASS__.$rand,
+            'specific_actions' => [
+               'purge' => _x('button', 'Delete permanently')
+            ],
+            'deprecated' => true
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
       echo "<table class='tab_cadre_fixehov' aria-label='User Managment'>";
@@ -549,16 +577,16 @@ class Profile_User extends CommonDBRelation {
 
       if ($canedit && $nb) {
          Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $nb),
-                           'container'     => 'mass'.__CLASS__.$rand];
+         $massiveactionparams = [
+            'num_displayed' => min($_SESSION['glpilist_limit'], $nb),
+            'container'     => 'mass'.__CLASS__.$rand,
+            'deprecated'    => true
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
-      echo "<table class='tab_cadre_fixe' aria-label='Profil User'><tr>";
-      echo "<th>".sprintf(__('%1$s: %2$s'), Profile::getTypeName(1), $prof->fields["name"])."</th></tr>\n";
-
-      echo "<tr><th colspan='2'>".sprintf(__('%1$s (%2$s)'), User::getTypeName(Session::getPluralNumber()),
-                                          __('D=Dynamic, R=Recursive'))."</th></tr>";
-      echo "</table>\n";
+      echo "<h2>" . sprintf(__('%1$s: %2$s'), Profile::getTypeName(1), $prof->fields["name"]) . "</h2>\n";
+      echo "<p>" . sprintf(__('%1$s (%2$s)'), User::getTypeName(Session::getPluralNumber()),
+                                          __('D=Dynamic, R=Recursive')) . "</p>";
       echo "<table class='tab_cadre_fixe' aria-label='Entity Data'>";
 
       $i              = 0;

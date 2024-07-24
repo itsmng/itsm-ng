@@ -2,7 +2,7 @@
   {% if not attributes.id %}
     {% set id = random() %}
   {% endif %}
-  <select class='form-select {{attributes.class}}'
+  <select class='form-select form-select-sm {{attributes.class}}'
     {% if not attributes.id %}
       id="{{id}}"
     {% endif %}
@@ -61,7 +61,6 @@
         $.getScript('{{root_doc}}/node_modules/select2/dist/js/select2.min.js', function() {
             $('#{{attributes.id ? attributes.id : id}}').select2({
                 theme: 'bootstrap-5',
-                width: '100%',
                 {% if attributes.ajax %}
                 ajax: params,
                 {% endif %}
@@ -69,9 +68,13 @@
                 multiple: true,
                 {% endif %}
             });
+            {% if attributes.multiple %}
+            $('#{{attributes.id ? attributes.id : id}}')
+                .val(JSON.parse('{{attributes.value|json_encode|raw}}'))
+                .trigger('change');
+            {% endif %}
         });
       });
-
   </script>
   {% endif %}
 {% endmacro %}

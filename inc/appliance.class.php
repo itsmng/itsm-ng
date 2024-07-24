@@ -150,7 +150,7 @@ class Appliance extends CommonDBTM
                   __('User') => [
                      'name' => 'users_id',
                      'type' => 'select',
-                     'values' => getOptionForItems("User"),
+                     'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']  ?? '']),
                      'value' => $this->fields['users_id'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "User"),
                   ],
@@ -171,7 +171,7 @@ class Appliance extends CommonDBTM
                   __('Appliance type') => [
                      'name' => 'appliancetypes_id',
                      'type' => 'select',
-                     'values' => getOptionForItems("State"),
+                     'values' => getOptionForItems("ApplianceType"),
                      'value' => $this->fields['appliancetypes_id'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "Appliancetype"),
                   ],
@@ -183,10 +183,10 @@ class Appliance extends CommonDBTM
                      'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                   ],
                   __('Appliance environment') => [
-                     'name' => 'appliancetypes_id',
+                     'name' => 'applianceenvironments_id',
                      'type' => 'select',
                      'values' => getOptionForItems("ApplianceEnvironment"),
-                     'value' => $this->fields['appliancetypes_id'] ?? '',
+                     'value' => $this->fields['applianceenvironments_id'] ?? '',
                      'actions' => getItemActionButtons(['info', 'add'], "ApplianceEnvironment"),
                   ],
                   __('Inventory number') => [

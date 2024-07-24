@@ -1115,7 +1115,7 @@ class Infocom extends CommonDBChild {
                               (($withtemplate == 2) ? 'disabled' : '') => true
                            ],
                            __('Decommission date') => [
-                              'type' => 'date',
+                              'type' => 'datetime-local',
                               'name' => 'decommission_date',
                               'value' => $ic->fields["decommission_date"],
                               (($withtemplate == 2) ? 'disabled' : '') => true
@@ -1129,6 +1129,7 @@ class Infocom extends CommonDBChild {
                               'type' => 'select',
                               'name' => 'suppliers_id',
                               'itemtype' => Supplier::class,
+                              'condition' => ['entities_id' => $ic->fields["entities_id"]],
                               'value' => $ic->fields["suppliers_id"],
                               'actions' => getItemActionButtons(['info'], 'Supplier')
                            ] : [
