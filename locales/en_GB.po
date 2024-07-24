@@ -25241,3 +25241,38 @@ msgstr ""
 #| msgid "Log out fallback URL"
 msgid "Logout"
 msgstr "Log out fallback URL"
+
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "Maintenance text"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Decreasing"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "End of contract"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "Read notes"

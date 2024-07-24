@@ -25035,6 +25035,41 @@ msgstr "Barre de navigation"
 msgid "Logout"
 msgstr "Déconnexion"
 
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "Texte de maintenance"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Dégressif"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Expiration contrat"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "Lire les notes"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utiliser ITSM-NG"
 

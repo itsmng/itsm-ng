@@ -24496,6 +24496,41 @@ msgstr ""
 msgid "Logout"
 msgstr "ออกจากระบบ"
 
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "ข้อความการบำรุงรักษา"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "ลดลง"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "วันสิ้นสุดสัญญา"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "อ่านโน้ต"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Use ITSM-NG"
 

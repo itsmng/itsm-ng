@@ -25583,6 +25583,41 @@ msgstr ""
 msgid "Logout"
 msgstr "התנתק"
 
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "טקסט תחזוקה"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "יורדת"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "סיום חוזה"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "קרא הערות"
+
 #~ msgid "Use GLPI"
 #~ msgstr "השתמש ב-ITSM-NG"
 

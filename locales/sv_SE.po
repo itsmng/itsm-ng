@@ -24867,6 +24867,39 @@ msgstr ""
 msgid "Logout"
 msgstr "Logga ut"
 
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "Text för underhållsläge"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Minskande"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Avslutning av kontrakt"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+msgid "Readable font"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Starta ITSM-NG"
 
