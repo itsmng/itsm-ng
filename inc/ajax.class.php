@@ -325,7 +325,7 @@ class Ajax {
       $url .= (strstr($url, '?') ?'&' :  '?').'_in_modal=1';
 
       $out  = "<div id=\"$domid\">";
-      $out .= "<iframe id='Iframe$domid' class='iframe hidden'></iframe></div>";
+      $out .= "<iframe id='Iframe$domid' class='iframe hidden' title='Iframe'=></iframe></div>";
 
       $out .= "<script type='text/javascript'>
          $(function() {
