@@ -25631,5 +25631,36 @@ msgstr ""
 msgid "Logout"
 msgstr "Atsijungti"
 
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+msgid "Increase text"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Degresinis"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Sutarties pabaiga"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+msgid "Readable font"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Į ITSM-NG"

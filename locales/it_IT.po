@@ -23621,7 +23621,8 @@ msgstr "Data di fine visibilità"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Verifica della compatibilità del tuo ambiente per l'esecuzione di ITSM-NG"
+msgstr ""
+"Verifica della compatibilità del tuo ambiente per l'esecuzione di ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -24822,7 +24823,8 @@ msgid "Choose 'Install' for a completely new installation of GLPI."
 msgstr "Seleziona 'Installa' per una nuova installazione di ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Seleziona 'Aggiorna' per aggiornare una precedente versione di ITSM-NG."
+msgstr ""
+"Seleziona 'Aggiorna' per aggiornare una precedente versione di ITSM-NG."
 
 msgid "Do you want to continue?"
 msgstr "Vuoi continuare?"
@@ -24952,6 +24954,41 @@ msgstr ""
 #| msgid "Logout"
 msgid "Logout"
 msgstr "Esci"
+
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "Testo da visualizzare in modalità manutenzione"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Decrescente"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Scadenza del contratto"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "Leggi le note"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Usa ITSM-NG"

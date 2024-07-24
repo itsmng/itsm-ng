@@ -24779,3 +24779,32 @@ msgstr ""
 #| msgid "Logout"
 msgid "Logout"
 msgstr "Logg ut"
+
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+msgid "Increase text"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Synkende"
+
+msgid "GrayScale"
+msgstr ""
+
+msgid "High Contrast"
+msgstr ""
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+msgid "Readable font"
+msgstr ""

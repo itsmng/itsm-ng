@@ -23459,7 +23459,8 @@ msgstr "Data de fin de visibilidade"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Verificación da compatibilidade da súa contorna coa execución de ITSM-NG"
+msgstr ""
+"Verificación da compatibilidade da súa contorna coa execución de ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -24893,6 +24894,41 @@ msgstr ""
 #| msgid "Logout"
 msgid "Logout"
 msgstr "Desconexión"
+
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "Texto de mantemento"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Reducido"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Caducidade de contrato"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "Ler as notas"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"

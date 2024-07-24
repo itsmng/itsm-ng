@@ -24865,6 +24865,41 @@ msgstr ""
 msgid "Logout"
 msgstr "लोग आउट"
 
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "रखरखाव पाठ"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "घटाना"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "अनुबंध की समाप्ति"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "नोट्स पढ़ें"
+
 #~ msgid "Use GLPI"
 #~ msgstr "जीएलपीआई का उपयोग करें"
 

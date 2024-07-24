@@ -24717,7 +24717,8 @@ msgid "Choose 'Install' for a completely new installation of GLPI."
 msgstr "ITSM-NG ಯ ಸಂಪೂರ್ಣ ಹೊಸ ಅನುಸ್ಥಾಪನೆಗೆ 'ಸ್ಥಾಪನೆ' ಆಯ್ಕೆಮಾಡಿ."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "ಹಿಂದಿನ ಆವೃತ್ತಿಯಿಂದ ನಿಮ್ಮ ಆವೃತ್ತಿಯ ITSM-NG ಅನ್ನು ನವೀಕರಿಸಲು 'ಅಪ್ಗ್ರೇಡ್' ಆಯ್ಕೆಮಾಡಿ"
+msgstr ""
+"ಹಿಂದಿನ ಆವೃತ್ತಿಯಿಂದ ನಿಮ್ಮ ಆವೃತ್ತಿಯ ITSM-NG ಅನ್ನು ನವೀಕರಿಸಲು 'ಅಪ್ಗ್ರೇಡ್' ಆಯ್ಕೆಮಾಡಿ"
 
 msgid "Do you want to continue?"
 msgstr "ನೀವು ಮುಂದುವರಿಸಲು ಬಯಸುತ್ತೀರಾ?"
@@ -24853,6 +24854,37 @@ msgstr ""
 #| msgid "Logout"
 msgid "Logout"
 msgstr "ಲಾಗ್ ಔಟ್"
+
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+msgid "Increase text"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "ಕಡಿಮೆ"
+
+msgid "GrayScale"
+msgstr ""
+
+msgid "High Contrast"
+msgstr ""
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "ಟಿಪ್ಪಣಿಗಳನ್ನು ಓದಿ"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "ನಿರ್ವಾಹಕ ಖಾತೆಗೆ glpi / glpi"
