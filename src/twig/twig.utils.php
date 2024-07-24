@@ -11,9 +11,14 @@ function expandForm($form, $fields = [])
                 {
                     case 'select':
                         if (isset($input['itemtype']) && !isset($input['values'])) {
-                            $form['content'][$contentKey]['inputs'][$inputKey]['values'] = [DROPDOWN::EMPTY_VALUE] + getItemByEntity(
+                            $restrict = $input['condition']['entities_id'] ?? $fields['entities_id'] ?? Session::getActiveEntity();
+                            if (isset($input['condition']['entities_id'])) {
+                                unset($input['condition']['entities_id']);
+                            }
+                            $form['content'][$contentKey]['inputs'][$inputKey]['values'] = $input['display_emptychoice'] ?? true ? [DROPDOWN::EMPTY_VALUE] : [] +
+                            getItemByEntity(
                                 $input['itemtype'],
-                                $fields['entities_id'] ?? Session::getActiveEntity(),
+                                $restrict,
                                 $input['condition'] ?? [],
                                 $input['used'] ?? []
                             );
@@ -23,9 +28,9 @@ function expandForm($form, $fields = [])
                                     'type' => "POST",
                                     'data' => [
                                         'itemtype' => $input['itemtype'],
-                                        'display_emptychoice' => 1,
+                                        'display_emptychoice' => $input['display_emptychoice'] ?? 1,
                                         'condition' => $input['condition'] ?? [],
-                                        'entity_restrict' => $fields['entities_id'] ?? Session::getActiveEntity(),
+                                        'entity_restrict' => $restrict,
                                         'used' => $input['used'] ?? [],
                                         'emptylabel' => Dropdown::EMPTY_VALUE,
                                         'permit_select_parent' => 0,
@@ -50,7 +55,6 @@ function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
         'itemtype' => $itemtype,
         'condition' => $key,
         'used' => $used,
-        'display_emptychoice' => false,
     ], false);
     $options = [];
     foreach ($values['results'] as $key => $value) {

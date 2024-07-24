@@ -1970,6 +1970,20 @@ class Entity extends CommonTreeDropdown {
       renderTwigForm($form, $additionnal);
    }
 
+   function getAdditionalFields() {
+      return [
+         __('As child of') => [
+            'name'  => $this->getForeignKeyField(),
+            'type'  => 'select',
+            'itemtype' => $this->getType(),
+            'condition' => ['entities_id' => -1],
+            'display_emptychoice' => false,
+            'used' => [$this->fields['id']],
+            'value' => $this->fields['entities_id'],
+         ]
+      ];
+   }
+
    /**
     * UI customization configuration form.
     *
