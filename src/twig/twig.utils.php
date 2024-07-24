@@ -12,10 +12,14 @@ function expandForm($form, $fields = [])
                     case 'select':
                         if (isset($input['itemtype']) && !isset($input['values'])) {
                             $restrict = $input['condition']['entities_id'] ?? $fields['entities_id'] ?? Session::getActiveEntity();
+                            $recursive = $input['condition']['is_recursive'] ?? $fields['is_recursive'] ?? Session::getIsActiveEntityRecursive();
                             if (isset($input['condition']['entities_id'])) {
                                 unset($input['condition']['entities_id']);
                             }
-                            $form['content'][$contentKey]['inputs'][$inputKey]['values'] = $input['display_emptychoice'] ?? true ? [DROPDOWN::EMPTY_VALUE] : [] +
+                            if (isset($input['condition']['is_recursive'])) {
+                                unset($input['condition']['is_recursive']);
+                            }
+                            $form['content'][$contentKey]['inputs'][$inputKey]['values'] = ($input['display_emptychoice'] ?? true ? [DROPDOWN::EMPTY_VALUE] : []) +
                             getItemByEntity(
                                 $input['itemtype'],
                                 $restrict,
@@ -31,6 +35,7 @@ function expandForm($form, $fields = [])
                                         'display_emptychoice' => $input['display_emptychoice'] ?? 1,
                                         'condition' => $input['condition'] ?? [],
                                         'entity_restrict' => $restrict,
+                                        'recursive' => $recursive,
                                         'used' => $input['used'] ?? [],
                                         'emptylabel' => Dropdown::EMPTY_VALUE,
                                         'permit_select_parent' => 0,
@@ -68,7 +73,6 @@ function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
             foreach ($value['children'] as $childValue) {
                 $options[$value['text']][$childValue['id']] = $childValue['text'];
             }
-        } else {
             $options[$value['id']] = $value['text'];
         }
     }
@@ -213,14 +217,12 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     if (isset($_SESSION['glpiactiveentities']) &&
         count($_SESSION['glpiactiveentities']) > 1 &&
         isset($fields['entities_id'])) {
+        $entity_name = Dropdown::getDropdownName('glpi_entities', $fields['entities_id']);
         $form['content'] = [Entity::getTypeName() => [
             'visible' => true,
             'inputs' => [
                 __('Entity') => [
-                    'type' => 'select',
-                    'name' => 'entities_id',
-                    'values' => getOptionForItems(Entity::class),
-                    'value' => $fields['entities_id'] ?? Session::getActiveEntity(),
+                    'content' => $entity_name,
                     'col_lg' => 8,
                     'col_md' => 8,
                 ],
