@@ -25558,6 +25558,37 @@ msgstr ""
 msgid "Logout"
 msgstr "Odjavi"
 
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+msgid "Increase text"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Upadanje"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Konec pogodbe"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+msgid "Readable font"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Uporabi ITSM-NG"
 

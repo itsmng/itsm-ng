@@ -25003,3 +25003,30 @@ msgstr "Barre de navigation"
 
 msgid "Logout"
 msgstr "Déconnexion"
+
+msgid "Jump to menu"
+msgstr "Sauter au menu"
+
+msgid "Jump to content"
+msgstr "Sauter au contenu"
+
+msgid "Increase text"
+msgstr "Augmenter la taille du texte"
+
+msgid "Decrease text"
+msgstr "Diminuer la taille du texte"
+
+msgid "GrayScale"
+msgstr "Niveaux de gris"
+
+msgid "High Contrast"
+msgstr "Hauts contrastes"
+
+msgid "Negative Contrast"
+msgstr "Contrastes négatifs"
+
+msgid "Links underline"
+msgstr "Liens soulignés"
+
+msgid "Readable font"
+msgstr "Police lisible"

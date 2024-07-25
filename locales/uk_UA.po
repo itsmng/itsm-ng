@@ -25458,7 +25458,8 @@ msgid "Choose 'Install' for a completely new installation of GLPI."
 msgstr "Оберіть 'Встановлення' для повного нового встановлення ITSM-NG ."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Оберіть 'Оновити', щоб оновити Вашу версію ITSM-NG з попередньої версії"
+msgstr ""
+"Оберіть 'Оновити', щоб оновити Вашу версію ITSM-NG з попередньої версії"
 
 msgid "Do you want to continue?"
 msgstr "Продовжувати?"
@@ -25587,6 +25588,41 @@ msgstr ""
 #| msgid "Logout"
 msgid "Logout"
 msgstr "Вихід"
+
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "Текст режиму обслуговування"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Зменшення"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Закінчення договору"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "Прочитати нотатки"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Запустити ITSM-NG"

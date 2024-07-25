@@ -166,7 +166,7 @@ class Html extends \GLPITestCase {
          ['<img src="test.png" onerror="javascript:alert(document.cookie);" alt="test image" />', '', '<img src="test.png" alt="test image" />'],
          ['<img src="test.png" onload="javascript:alert(document.cookie);" alt="test image" />', '', '<img src="test.png" alt="test image" />'],
          // iframes should not be preserved by default
-         ['Here is an iframe: <iframe src="http://glpi-project.org/"></iframe>', 'Here is an iframe:', 'Here is an iframe:'],
+         ['Here is an iframe: <iframe src="http://glpi-project.org/" title="Iframe"></iframe>', 'Here is an iframe:', 'Here is an iframe:'],
          // HTML comments should be removed
          ['<p>Legit<!-- This is an HTML comment --> text</p>', 'Legit text', '<p>Legit text</p>'],
          // CDATA should be removed

@@ -24478,6 +24478,39 @@ msgstr ""
 msgid "Logout"
 msgstr "登出"
 
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+msgid "Increase text"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "遞減"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "結束的合約"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "讀取註解"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"
 

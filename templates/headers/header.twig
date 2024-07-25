@@ -33,7 +33,7 @@
 			{% if main_menu.args.access == 'central' %}
             <div id="searchbar">
                 <form aria-label="search" role="search" method="get" action="{{root_doc}}/front/search.php">
-                    <input type="search" name="globalsearch" aria-label="Search" placeholder="{{"Search"|trans}}...">
+                    <input type="search" name="globalsearch" aria-label="Valider" placeholder="{{"Search"|trans}}...">
                     <button type="submit" class="btn btn-link">
                         <i class="fa fa-search" title="Search"></i>
                     </button>
@@ -107,6 +107,7 @@
 				{% include main_menu.path with main_menu.args %}
 				<div class="menu-bottom">
 					<a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors"></a>
+					<a class="accessibility-text" title="{{'Accessibility'|trans}}" href="{{root_doc}}/front/accessibility.php">Déclaration d'accessibilité</a>
 				</div>
 			</nav>
 			<div class="main-container">
