@@ -24914,6 +24914,41 @@ msgstr ""
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "Tiedoteteksti järjestelmän ylläpidosta"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Aleneva"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Sopimuksen umpeutuminen"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "Lue huomautuksia"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Käytä ITSM-NG:tä"
 

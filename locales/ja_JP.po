@@ -24342,7 +24342,8 @@ msgid "Installation or update of GLPI"
 msgstr "ITSM-NGのインストール・更新"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "ITSM-NGをクリーンインストールする場合、「インストール」を選択してください"
+msgstr ""
+"ITSM-NGをクリーンインストールする場合、「インストール」を選択してください"
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr "「アップグレード」は以前のバージョンのITSM-NGを更新します"
@@ -24473,6 +24474,41 @@ msgstr ""
 #| msgid "Logout"
 msgid "Logout"
 msgstr "ログアウト"
+
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "メンテナンステキスト"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "逓減"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "契約の終了"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "メモの参照"
 
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NGを使用"

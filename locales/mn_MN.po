@@ -24792,7 +24792,8 @@ msgid "Installation or update of GLPI"
 msgstr "ITSM-NG-г суулгах буюу шинэчлэх"
 
 msgid "Choose 'Install' for a completely new installation of GLPI."
-msgstr "ITSM-NG-г шинэ install-г суулгахын тулд \"Суулгах\" хэсгийг сонгоно уу."
+msgstr ""
+"ITSM-NG-г шинэ install-г суулгахын тулд \"Суулгах\" хэсгийг сонгоно уу."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
@@ -24927,6 +24928,41 @@ msgstr ""
 #| msgid "Logout"
 msgid "Logout"
 msgstr "Гарах"
+
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "Засвар үйлчилгээний текст"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Буурч байна"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Гэрээний төгсгөл"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "Тэмдэглэл унших"
 
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG ашиглах"

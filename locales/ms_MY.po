@@ -24380,3 +24380,33 @@ msgstr ""
 
 msgid "Logout"
 msgstr "Déconnexion"
+
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+msgid "Increase text"
+msgstr ""
+
+msgid "Decrease text"
+msgstr ""
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "Contact"
+#| msgid_plural "Contacts"
+msgid "High Contrast"
+msgstr "Hubungan"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+msgid "Readable font"
+msgstr ""

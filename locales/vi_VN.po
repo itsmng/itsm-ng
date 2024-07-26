@@ -24559,6 +24559,41 @@ msgstr ""
 msgid "Logout"
 msgstr "Đăng xuất"
 
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "Văn bản bảo trì"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Đang giảm"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Kết thúc hợp đồng"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "Đọc các ghi chú"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Dùng ITSM-NG"
 
