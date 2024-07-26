@@ -48,36 +48,15 @@ class ItsmngUploadHandler {
 
     static function getUploadPath($type, $filename, $withDir = true) {
         $extension = strtoupper(pathinfo($filename, PATHINFO_EXTENSION));
-        switch ($type) {
-            case self::UPLOAD:
-                $upload_path = '/_uploads';
-                break;
-            case self::TMP:
-                $upload_path = '/_tmp';
-                break;
-            case self::PICTURE:
-                $upload_path = '/_pictures';
-                break;
-            case self::PLUGIN:
-                $upload_path = '/_plugins';
-                break;
-            case self::DUMP:
-                $upload_path = '/_dumps';
-                break;
-            default:
-                return $type;
-                break;
-        }
-        if (!file_exists(GLPI_DOC_DIR . $upload_path . '/' . $extension)) {
-            if (!mkdir(GLPI_DOC_DIR . $upload_path . '/' . $extension, 0777, true)) {
+        if (!file_exists(GLPI_DOC_DIR . '/' . $extension)) {
+            if (!mkdir(GLPI_DOC_DIR . '/' . $extension, 0777, true)) {
                 return false;
             }
         }
         if ($withDir) {
-            return GLPI_DOC_DIR . $upload_path . '/' . $extension;
+            return GLPI_DOC_DIR . '/' . $extension;
         }
         return $extension;
-
     }
 
     static function generateBaseDocumentFromPost($POST) {
@@ -107,7 +86,7 @@ class ItsmngUploadHandler {
             $uniqid . '_min' . '.' . pathinfo($filename, PATHINFO_EXTENSION);
           Toolbox::resizePicture($uploadfile, $thumb);
       }
-      return $uploadfile;
+      return self::getUploadPath($type, $filename, false) . '/' . $filename;
    }
 
    static function storeTmpFiles($files) {
