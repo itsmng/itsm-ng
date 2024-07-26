@@ -25504,7 +25504,8 @@ msgid "Choose 'Install' for a completely new installation of GLPI."
 msgstr "Pro úplně novou instalaci ITSM-NG zvolte „Nainstalovat“."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Pro aktualizaci z dřívější verze ITSM-NG zvolte „Přejít na novější verzi“"
+msgstr ""
+"Pro aktualizaci z dřívější verze ITSM-NG zvolte „Přejít na novější verzi“"
 
 msgid "Do you want to continue?"
 msgstr "Přejete si pokračovat?"
@@ -25632,6 +25633,41 @@ msgstr ""
 #| msgid "Logout"
 msgid "Logout"
 msgstr "Odhlásit"
+
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "Text při údržbě"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Snižující se"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Konec smlouvy"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "Číst poznámky"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Používat ITSM-NG"

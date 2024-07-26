@@ -24417,7 +24417,8 @@ msgstr[0] "%splugin"
 msgstr[1] "%s plugins"
 
 msgid "GLPI provides a new marketplace to download and install plugins."
-msgstr "ITSM-NG proporciona una nueva tienda para descargar e instalar plugins."
+msgstr ""
+"ITSM-NG proporciona una nueva tienda para descargar e instalar plugins."
 
 msgid "Do you want to replace the plugins setup page by the new marketplace ?"
 msgstr ""
@@ -24992,6 +24993,41 @@ msgstr ""
 #| msgid "Logout"
 msgid "Logout"
 msgstr "Desconexión"
+
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "Texto de mantenimiento"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Reducido"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Fin del contrato"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "Leer notas"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"

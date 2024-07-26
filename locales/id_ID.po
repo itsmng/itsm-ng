@@ -24387,7 +24387,8 @@ msgid "Choose 'Install' for a completely new installation of GLPI."
 msgstr "Pilih 'Install' untuk instalasi baru ITSM-NG."
 
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
-msgstr "Pilih \"Upgrade\" untuk memperbarui versi ITSM-NG dari versi sebelumnya"
+msgstr ""
+"Pilih \"Upgrade\" untuk memperbarui versi ITSM-NG dari versi sebelumnya"
 
 msgid "Do you want to continue?"
 msgstr "Apakah Anda ingin melanjutkan?"
@@ -24522,6 +24523,39 @@ msgstr ""
 #| msgid "Logout"
 msgid "Logout"
 msgstr "Keluar"
+
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+msgid "Increase text"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Penurunan"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Akhir kontrak"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "Baca catatan"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Gunakan ITSM-NG"

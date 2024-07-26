@@ -24865,5 +24865,36 @@ msgstr ""
 msgid "Logout"
 msgstr "خروج"
 
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+msgid "Increase text"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "کاهنده"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "انتهای قرارداد"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+msgid "Readable font"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "استفاده از ITSM-NG"

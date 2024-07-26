@@ -23464,7 +23464,8 @@ msgstr "Ημερομηνία λήξης ορατότητας"
 #| "Checking of the compatibility of your environment with the execution of "
 #| "GLPI"
 msgid "Checking for environment's requirements with the execution of ITSM-NG"
-msgstr "Έλεγχος συμβατότητας του περιβάλλοντός σας για την εκτέλεση του ITSM-NG"
+msgstr ""
+"Έλεγχος συμβατότητας του περιβάλλοντός σας για την εκτέλεση του ITSM-NG"
 
 #: templates/install/databases.twig:4
 #, fuzzy
@@ -24989,6 +24990,39 @@ msgstr ""
 #| msgid "Logout"
 msgid "Logout"
 msgstr "Αποσύνδεση"
+
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+msgid "Increase text"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Φθήνοντα"
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "Λήξη σύμβασης"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "Ανάγνωση σημειώσεων"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Χρήση ITSM-NG"

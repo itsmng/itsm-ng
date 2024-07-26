@@ -24791,6 +24791,35 @@ msgstr ""
 msgid "Logout"
 msgstr "Déconnexion"
 
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+msgid "Increase text"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease text"
+msgstr "Lækkandi"
+
+msgid "GrayScale"
+msgstr ""
+
+msgid "High Contrast"
+msgstr ""
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+msgid "Readable font"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Nota ITSM-NG"
 

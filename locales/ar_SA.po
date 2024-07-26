@@ -26294,5 +26294,38 @@ msgstr ""
 msgid "Logout"
 msgstr "تسجيل الخروج"
 
+msgid "Jump to menu"
+msgstr ""
+
+msgid "Jump to content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase text"
+msgstr "رسالة الصيانة"
+
+msgid "Decrease text"
+msgstr ""
+
+msgid "GrayScale"
+msgstr ""
+
+#, fuzzy
+#| msgid "End of contract"
+msgid "High Contrast"
+msgstr "نهاية العقد"
+
+msgid "Negative Contrast"
+msgstr ""
+
+msgid "Links underline"
+msgstr ""
+
+#, fuzzy
+#| msgid "Read notes"
+msgid "Readable font"
+msgstr "قراءة الملاحظات"
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "الحساب glpi/glpi للمدراء"
