@@ -175,16 +175,15 @@ class TicketRecurrent extends CommonDropdown
          __('Periodicity') => [
             'name'  => 'periodicity',
             'type'  => 'select',
-            'values' => array_merge(
-                array_combine(
-                    range(HOUR_TIMESTAMP, DAY_TIMESTAMP - HOUR_TIMESTAMP, HOUR_TIMESTAMP),
-                    array_map(function($hours) { return $hours . ' Heure'; }, range(1, 23))
-                ),
-                array_combine(
-                    range(DAY_TIMESTAMP, 2 * MONTH_TIMESTAMP, DAY_TIMESTAMP),
-                    array_map(function($days) { return $days . ' Jours'; }, range(1, 60))
-                )
-            ),
+            'values' => Timezone::GetTimeStamp([
+               'min'   => HOUR_TIMESTAMP,
+               'step'  => HOUR_TIMESTAMP,
+            ]) +
+            Timezone::GetTimeStamp([
+               'min'   => 2 * DAY_TIMESTAMP,
+               'step'  => DAY_TIMESTAMP,
+               'max'   => 30 * DAY_TIMESTAMP
+            ]),
             'value' => $this->fields['periodicity']
         ],                     
          __('Preliminary creation') => [

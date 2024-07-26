@@ -893,7 +893,8 @@ main {
     position: absolute;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     bottom: 0;
     width: 100%;
 }
@@ -1359,6 +1360,8 @@ div.chip > p {
 }
 
 .accessibility-text {
-    font-size: 13px;
+    font-size: 0.625rem;
     color: white;
+    text-overflow: ellipsis;
 }
+
