@@ -79,7 +79,10 @@ jobs:
         run: |
           sudo apt install gettext -y
           cd tools/
+          # Remove the 'v' prefix from the tag
+          export TAG=$(sed -e 's/^v//' <<< $TAG)
           ./make_release.sh -y ../ $TAG
+          mv /tmp/itsm-ng-${TAG}.tgz /tmp/itsm-ng-v${TAG}.tgz
 
       - name: Upload release
         uses: actions/upload-artifact@v4
@@ -94,4 +97,5 @@ jobs:
           body: "New release is available"
           name: ITSM-NG ${{ github.ref_name }}
           draft: true
+          generate_release_notes: true
 
