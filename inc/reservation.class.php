@@ -30,6 +30,8 @@
  * ---------------------------------------------------------------------
  */
 
+use itsmng\Timezone;
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
@@ -643,21 +645,10 @@ class Reservation extends CommonDBChild {
       if (!isset($options['item']) || (count($options['item']) == 0)) {
          return false;
       }
-
-      echo "<div class='center'><form aria-label='Form' method='post' name=form action='".Reservation::getFormURL()."'>";
-
-      if (!empty($ID)) {
-         echo "<input type='hidden' name='id' value='$ID'>";
-      }
-
-      echo "<table class='tab_cadre' width='700px' aria-label='Reserve Item'>";
-      echo "<tr><th colspan='2'>".__('Reserve an item')."</th></tr>\n";
-
+      ob_start();
       // Add Hardware name
       $r = new ReservationItem();
 
-      echo "<tr class='tab_bg_1'><td>"._n('Item', 'Items', 1)."</td>";
-      echo "<td>";
       foreach ($options['item'] as $itemID) {
          $r->getFromDB($itemID);
          $type = $r->fields["itemtype"];
@@ -677,117 +668,147 @@ class Reservation extends CommonDBChild {
          echo "<span class='b'>".sprintf(__('%1$s - %2$s'), $type, $name)."</span><br>";
          echo "<input type='hidden' name='items[$itemID]' value='$itemID'>";
       }
-
-      echo "</td></tr>\n";
+      $items = ob_get_clean();
 
       $uid = (empty($ID) ? Session::getLoginUserID() : $resa->fields['users_id']);
-      echo "<tr class='tab_bg_2'><td>".__('By')."</td>";
-      echo "<td>";
-      if (!Session::haveRight("reservation", UPDATE)
-          || is_null($item)
-          || !Session::haveAccessToEntity($item->fields["entities_id"])) {
 
-         echo "<input type='hidden' name='users_id' value='".$uid."'>";
-         echo Dropdown::getDropdownName(
-            User::getTable(),
-            $uid
-         );
-      } else {
-         User::dropdown([
-            'value'        => $uid,
-            'entity'       => $item->getEntityID(),
-            'entity_sons'  => $item->isRecursive(),
-            'right'        => 'all'
-         ]);
-      }
-      echo "</td></tr>\n";
-      echo "<tr class='tab_bg_2'><td>".__('Start date')."</td><td>";
-      $rand_begin = Html::showDateTimeField("resa[begin]",
-                                            ['value'      => $resa->fields["begin"],
-                                                  'maybeempty' => false]);
-      echo "</td></tr>\n";
       $default_delay = floor((strtotime($resa->fields["end"])-strtotime($resa->fields["begin"]))
                              /$CFG_GLPI['time_step']/MINUTE_TIMESTAMP)
                        *$CFG_GLPI['time_step']*MINUTE_TIMESTAMP;
-      echo "<tr class='tab_bg_2'><td>".__('Duration')."</td><td>";
-      $rand = Dropdown::showTimeStamp("resa[_duration]",
-                                      ['min'        => 0,
-                                            'max'        => 24*HOUR_TIMESTAMP,
-                                            'value'      => $default_delay,
-                                            'emptylabel' => __('Specify an end date')]);
-      echo "<br><div id='date_end$rand'></div>";
-      $params = ['duration'     => '__VALUE__',
-                      'end'          => $resa->fields["end"],
-                      'name'         => "resa[end]"];
 
-      Ajax::updateItemOnSelectEvent("dropdown_resa[_duration]$rand", "date_end$rand",
-                                    $CFG_GLPI["root_doc"]."/ajax/planningend.php", $params);
-
-      if ($default_delay == 0) {
-         $params['duration'] = 0;
-         Ajax::updateItem("date_end$rand", $CFG_GLPI["root_doc"]."/ajax/planningend.php", $params);
-      }
-      Alert::displayLastAlert('Reservation', $ID);
-      echo "</td></tr>\n";
-
-      if (empty($ID)) {
-         echo "<tr class='tab_bg_2'><td>".__('Repetition')."</td>";
-         echo "<td>";
-         $values   = [''      => _x('periodicity', 'None'),
-                           'day'   => _x('periodicity', 'Daily'),
-                           'week'  => _x('periodicity', 'Weekly'),
-                           'month' => _x('periodicity', 'Monthly')];
-         $rand     = Dropdown::showFromArray('periodicity[type]', $values);
-         $field_id = Html::cleanId("dropdown_periodicity[type]$rand");
-
-         $params   = ['type'     => '__VALUE__',
-                           'end'      => $resa->fields["end"]];
-
-         Ajax::updateItemOnSelectEvent($field_id, "resaperiodcontent$rand",
-                                       $CFG_GLPI["root_doc"]."/ajax/resaperiod.php", $params);
-         echo "<br><div id='resaperiodcontent$rand'></div>";
-
-         echo "</td></tr>\n";
-      }
-
-      echo "<tr class='tab_bg_2'><td>".__('Comments')."</td>";
-      echo "<td><textarea name='comment' rows='8' cols='60'>".$resa->fields["comment"]."</textarea>";
-      echo "</td></tr>\n";
-
-      if (empty($ID)) {
-         echo "<tr class='tab_bg_2'>";
-         echo "<td colspan='2' class='top center'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
-         echo "</td></tr>\n";
-
-      } else {
-         if (($resa->fields["users_id"] == Session::getLoginUserID())
-             || Session::haveRightsOr(static::$rightname, [PURGE, UPDATE])) {
-            echo "<tr class='tab_bg_2'>";
-            if (($resa->fields["users_id"] == Session::getLoginUserID())
-                || Session::haveRight(static::$rightname, PURGE)) {
-               echo "<td class='top center'>";
-               echo "<input type='submit' name='purge' value=\""._sx('button', 'Delete permanently')."\"
-                      class='submit'>";
-               if ($resa->fields["group"] > 0) {
-                  echo "<br><input type='checkbox' name='_delete_group'>&nbsp;".
-                             __s('Delete all repetition');
-               }
-               echo "</td>";
-            }
-            if (($resa->fields["users_id"] == Session::getLoginUserID())
-                || Session::haveRight(static::$rightname, UPDATE)) {
-               echo "<td class='top center'>";
-               echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\"
-                     class='submit'>";
-               echo "</td>";
-            }
-            echo "</tr>\n";
-         }
-      }
-      echo "</table>";
-      Html::closeForm();
-      echo "</div>\n";
+      $form = [
+         'action'      => Reservation::getFormURL(),
+         'buttons'     => [
+            empty($ID) ? [
+               'name'  => 'add',
+               'value'  => __('Add'),
+               'type'  => 'submit',
+               'class' => 'btn btn-secondary'
+            ] : ( Session::haveRight('reservation', UPDATE) ? [
+               'name'  => 'update',
+               'value'  => __('Save'),
+               'type'  => 'submit',
+               'class' => 'btn btn-secondary'
+            ] : []),
+            Session::haveRight('reservation', PURGE) && !empty($ID) ? [
+               'name'  => 'purge',
+               'value'  => __('Delete permanently'),
+               'type'  => 'submit',
+               'class' => 'btn btn-secondary'
+            ] : [],
+         ],
+         'content'     => [
+            __('Reserve an item') => [
+                'visible' => true,
+                'inputs'   => [
+                    !empty($ID) ? [
+                        'type'  => 'hidden',
+                        'name'  => 'id',
+                        'value' => $ID
+                    ] : [],
+                    _n('Item', 'Items', 1) => [
+                        'content' => $items,
+                        'col_lg'  => 12,
+                        'col_md'  => 12,
+                    ],
+                    !Session::haveRight("reservation", UPDATE) ? [
+                        'type'  => 'hidden',
+                        'name'  => 'users_id',
+                        'value' => $uid
+                    ] : [],
+                    !Session::haveRight("reservation", UPDATE) ? [
+                        'content' => Dropdown::getDropdownName(
+                            User::getTable(),
+                            $uid
+                        ),
+                        'col_lg'  => 12,
+                        'col_md'  => 12,
+                    ] : [],
+                    __('By') => Session::haveRight("reservation", UPDATE) ? [
+                        'type'  => 'select',
+                        'name'  => 'users_id',
+                        'values' => getOptionsForUsers('all'),
+                        'value'  => $uid,
+                    ] : [],
+                    __('Start date') => [
+                        'type'  => 'datetime-local',
+                        'name'  => 'begin',
+                        'value' => $resa->fields["begin"],
+                        'min'   => date('Y-m-d H:00:00'),
+                        'max'   => date('Y-m-d H:00:00', strtotime('+1 day')),
+                    ],
+                    __('Duration') => [
+                        'type' => 'select',
+                        'name' => 'duration',
+                        'values' => [__('Specify an end date')] + Timezone::GetTimeStamp([
+                            'min'        => 0,
+                            'max'        => 24*HOUR_TIMESTAMP,
+                        ]),
+                        'value' => $default_delay,
+                        'hooks' => [
+                            'change' => <<<JS
+                               const value = this.value;
+                               const endDate = $('#entTimeStamp');
+                               if (value == 0) {
+                                   endDate.prop('disabled', false);
+                               } else {
+                                   endDate.prop('disabled', true);
+                               }
+                            JS,
+                        ],
+                    ],
+                    __('End date') => [
+                        'type'  => 'datetime-local',
+                        'id'    => 'entTimeStamp',
+                        'name'  => 'end',
+                        'value' => $resa->fields["end"],
+                        'min'   => date('Y-m-d H:00:00', strtotime('+1 day')),
+                        'max'   => date('Y-m-d H:00:00'),
+                        'disabled' => true,
+                    ],
+                    __('Repetition') => !empty($ID) ? [] : [
+                        'type'  => 'select',
+                        'name'  => 'periodicity',
+                        'values' => [''      => _x('periodicity', 'None'),
+                                     'day'   => _x('periodicity', 'Daily'),
+                                     'week'  => _x('periodicity', 'Weekly'),
+                                     'month' => _x('periodicity', 'Monthly')],
+                        'value' => $resa->fields["periodicity"],
+                        'hooks' => [
+                            'change' => <<<JS
+                               const value = this.value;
+                               // remove the T from date
+                               $.ajax({
+                                   url: '{$CFG_GLPI['root_doc']}/ajax/resaperiod.php',
+                                   type: 'POST',
+                                   data: {
+                                      type: value,
+                                      end:  $('#entTimeStamp').val().replace('T', ' ')
+                                   },
+                                   success: function(data) {
+                                      $('#resaperiodcontent').html(data);
+                                   }
+                                });
+                            JS,
+                        ],
+                    ],
+                    '' => !empty($ID) ? [] : [
+                        'content' => "<div id='resaperiodcontent'></div>",
+                        'col_lg'  => 12,
+                        'col_md'  => 12,
+                    ],
+                    __('Comments') => [
+                        'type'  => 'textarea',
+                        'name'  => 'comment',
+                        'value' => $resa->fields["comment"],
+                        'col_lg'  => 12,
+                        'col_md'  => 12,
+                    ],
+                ],
+            ],
+         ]
+      ];
+      renderTwigForm($form);
    }
 
 
