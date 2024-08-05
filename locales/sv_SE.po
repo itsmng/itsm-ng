@@ -24818,7 +24818,7 @@ msgstr "Start av installation"
 msgid "Step %d"
 msgstr "Steg %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Autentisering"
 
 msgid "Remember me"

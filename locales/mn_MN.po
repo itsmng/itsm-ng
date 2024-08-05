@@ -24886,7 +24886,7 @@ msgstr "Суурилуулалтыг эхлэх"
 msgid "Step %d"
 msgstr "Алхам %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG-Танилт"
 
 msgid "Remember me"

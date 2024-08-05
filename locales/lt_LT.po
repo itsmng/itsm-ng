@@ -25579,7 +25579,7 @@ msgstr "Įdiegimo pradžia"
 msgid "Step %d"
 msgstr ""
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Autentifikacija"
 
 msgid "Remember me"

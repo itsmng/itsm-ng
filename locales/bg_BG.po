@@ -24810,7 +24810,7 @@ msgstr "Начало на инсталацията"
 msgid "Step %d"
 msgstr "Стъпка %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Удостоверяване"
 
 msgid "Remember me"

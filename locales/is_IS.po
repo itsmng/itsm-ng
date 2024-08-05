@@ -24743,7 +24743,7 @@ msgstr "Upphaf uppsetningar"
 msgid "Step %d"
 msgstr "Skref %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Auðkenning"
 
 #, fuzzy

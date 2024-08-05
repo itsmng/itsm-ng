@@ -24862,7 +24862,7 @@ msgstr "Asennus alkaa"
 msgid "Step %d"
 msgstr "Askel %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Kirjautuminen"
 
 msgid "Remember me"

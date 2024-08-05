@@ -24505,7 +24505,7 @@ msgstr "Bắt đầu cài đặt"
 msgid "Step %d"
 msgstr "Bước %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Xác Thực"
 
 #, fuzzy

@@ -25538,7 +25538,7 @@ msgstr "Začiatok inštalácie"
 msgid "Step %d"
 msgstr "Krok %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Autentifikácia"
 
 msgid "Remember me"

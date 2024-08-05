@@ -25536,7 +25536,7 @@ msgstr "תחילת ההתקנה"
 msgid "Step %d"
 msgstr "צעד %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - אימות פרטים"
 
 msgid "Remember me"

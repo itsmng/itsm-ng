@@ -24814,7 +24814,7 @@ msgstr "स्थापना की शुरुआत"
 msgid "Step %d"
 msgstr "चरण%d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "जीएलपीआई - प्रमाणीकरण"
 
 msgid "Remember me"

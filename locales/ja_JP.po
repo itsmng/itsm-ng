@@ -24432,7 +24432,7 @@ msgstr "インストールを開始しました"
 msgid "Step %d"
 msgstr "ステップ %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - 認証"
 
 msgid "Remember me"

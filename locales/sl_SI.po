@@ -25507,7 +25507,7 @@ msgstr "Začetek namestitve"
 msgid "Step %d"
 msgstr "Korak %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Prijava"
 
 #, fuzzy

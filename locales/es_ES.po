@@ -24991,7 +24991,7 @@ msgstr "Comienzo de la instalación"
 msgid "Step %d"
 msgstr "Paso %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Autenticación"
 
 msgid "Remember me"

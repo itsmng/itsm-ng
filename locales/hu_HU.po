@@ -24851,7 +24851,7 @@ msgstr "Telepítés megkezdése"
 msgid "Step %d"
 msgstr "%d lépés"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Hitelesítés"
 
 msgid "Remember me"
