@@ -48,17 +48,34 @@ if (isset($_POST['type']) && isset($_POST['end'])) {
    echo "<table width='90%' aria-label='Periodicity settings table'>";
    switch ($_POST['type']) {
       case 'day' :
-         echo "<tr><td>".__('End date').'</td><td>';
-         Html::showDateField('periodicity[end]', ['value' => $_POST['end']]);
+         renderTwigTemplate('macros/wrappedInput.twig', [
+            'title' => __('End date') . ' (' . __('Repetition') . ')',
+            'input' => [
+                'type'  => 'datetime-local',
+                'name'  => 'periodicity[end]',
+                'value' => $_POST['end'],
+                'min'   => date('Y-m-d H:00:00'),
+                'max'   => date('Y-m-d H:00:00', strtotime('+1 day')),
+                'col_lg' => 12,
+                'col_md' => 12,
+            ]
+         ]);
          echo "</td></tr>";
          break;
 
       case 'week' :
-         echo "<tr><td>".__('End date').'</td><td>';
-         Html::showDateField('periodicity[end]', ['value' => $_POST['end']]);
-         echo "</td></tr></table>";
-         echo "<table class='tab_glpi' aria-label='Days of the week selection table'>";
-         echo "<tr class='center'><td>&nbsp;</td>";
+         renderTwigTemplate('macros/wrappedInput.twig', [
+            'title' => __('End date') . ' (' . __('Repetition') . ')',
+            'input' => [
+                'type'  => 'datetime-local',
+                'name'  => 'periodicity[end]',
+                'value' => $_POST['end'],
+                'min'   => date('Y-m-d H:00:00'),
+                'max'   => date('Y-m-d H:00:00', strtotime('+1 day')),
+                'col_lg' => 12,
+                'col_md' => 12,
+            ]
+         ]);
          $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
          foreach ($days as $day) {
             echo "<th>".__($day)."</th>";
@@ -72,14 +89,30 @@ if (isset($_POST['type']) && isset($_POST['end'])) {
          break;
 
       case 'month' :
-         echo "<tr><td colspan='2'>";
          $values = ['date' => __('Each month, same date'),
                          'day'  => __('Each month, same day of week')];
-         Dropdown::showFromArray('periodicity[subtype]', $values);
-         echo "</td></tr>";
-         echo "<tr><td>".__('End date').'</td><td>';
-         Html::showDateField('periodicity[end]', ['value' => $_POST['end']]);
-         echo "</td></tr>";
+         renderTwigTemplate('macros/wrappedInput.twig', [
+            'title' => __('Type'),
+            'input' => [
+                'type'  => 'select',
+                'name'  => 'periodicity[subtype]',
+                'values' => $values,
+                'col_lg' => 12,
+                'col_md' => 12,
+            ]
+         ]);
+         renderTwigTemplate('macros/wrappedInput.twig', [
+            'title' => __('End date') . ' (' . __('Repetition') . ')',
+            'input' => [
+                'type'  => 'datetime-local',
+                'name'  => 'periodicity[end]',
+                'value' => $_POST['end'],
+                'min'   => date('Y-m-d H:00:00'),
+                'max'   => date('Y-m-d H:00:00', strtotime('+1 day')),
+                'col_lg' => 12,
+                'col_md' => 12,
+            ]
+         ]);
 
    }
    echo '</table>';
