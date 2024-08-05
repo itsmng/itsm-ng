@@ -29921,6 +29921,3 @@ msgstr ""
 
 msgid "Readable font"
 msgstr ""
-
-msgid "ITSM-NG - Authentication"
-msgstr ""
