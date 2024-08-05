@@ -25185,7 +25185,7 @@ msgstr ""
 
 #, fuzzy
 #| msgid "Authentication"
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "Authentication"
 
 #, fuzzy

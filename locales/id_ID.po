@@ -24477,7 +24477,7 @@ msgstr "Memulai pemasangan"
 msgid "Step %d"
 msgstr "Langkah %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Otentifikasi"
 
 msgid "Remember me"

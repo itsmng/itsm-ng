@@ -24424,7 +24424,7 @@ msgstr "설치 시작"
 msgid "Step %d"
 msgstr "단계 %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - 인증"
 
 msgid "Remember me"

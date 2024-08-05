@@ -24427,7 +24427,7 @@ msgstr "安裝的起點"
 msgid "Step %d"
 msgstr "步驟 %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG 驗證"
 
 msgid "Remember me"

@@ -25280,7 +25280,7 @@ msgstr "Inceputul instalarii"
 msgid "Step %d"
 msgstr "Etapa %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "Autentificare"
 
 msgid "Remember me"

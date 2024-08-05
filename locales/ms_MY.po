@@ -24336,7 +24336,7 @@ msgstr ""
 msgid "Step %d"
 msgstr ""
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Pengesahan"
 
 msgid "Remember me"

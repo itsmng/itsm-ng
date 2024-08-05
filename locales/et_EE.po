@@ -24747,7 +24747,7 @@ msgstr "Tarkvara paigaldamine"
 msgid "Step %d"
 msgstr "Samm %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Autentimine"
 
 msgid "Remember me"

@@ -25186,7 +25186,7 @@ msgstr "Instalācijas sākums"
 msgid "Step %d"
 msgstr "Solis %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Pieteikšanās"
 
 msgid "Remember me"

@@ -24867,7 +24867,7 @@ msgstr "Начало установки"
 msgid "Step %d"
 msgstr "Шаг %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Aŭtentigo"
 
 #, fuzzy
