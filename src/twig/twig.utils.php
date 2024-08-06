@@ -75,7 +75,6 @@ function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
             foreach ($value['children'] as $childValue) {
                 $options[$value['text']][$childValue['id']] = $childValue['text'];
             }
-            $options[$value['id']] = $value['text'];
         } else {
             $options[$value['id']] = $value['text'];
         }
