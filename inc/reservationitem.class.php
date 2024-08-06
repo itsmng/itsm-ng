@@ -30,6 +30,8 @@
  * ---------------------------------------------------------------------
  */
 
+use itsmng\Timezone;
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
@@ -415,35 +417,6 @@ class ReservationItem extends CommonDBChild {
          $_POST['reserve']["end"]    = date("Y-m-d H:i:s", $begin_time+HOUR_TIMESTAMP);
          $_POST['reservation_types'] = '';
       }
-      echo "<form aria-label='Search Item by Perdiod' method='post' name='form' action='".Toolbox::getItemTypeSearchURL(__CLASS__)."'>";
-      echo "<table class='tab_cadre_fixe' aria-label='Find a free item in a specific period'><tr class='tab_bg_2'>";
-      echo "<th colspan='3'>".__('Find a free item in a specific period')."</th></tr>";
-
-      echo "<tr class='tab_bg_2'><td>".__('Start date')."</td><td>";
-      Html::showDateTimeField("reserve[begin]", ['value'      =>  $_POST['reserve']["begin"],
-                                                      'maybeempty' => false]);
-      echo "</td><td rowspan='3'>";
-      echo "<input type='submit' class='submit' name='submit' value=\""._sx('button', 'Search')."\">";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>".__('Duration')."</td><td>";
-      $default_delay = floor((strtotime($_POST['reserve']["end"]) - strtotime($_POST['reserve']["begin"]))
-                             /$CFG_GLPI['time_step']/MINUTE_TIMESTAMP)
-                       *$CFG_GLPI['time_step']*MINUTE_TIMESTAMP;
-      $rand = Dropdown::showTimeStamp("reserve[_duration]", ['min'        => 0,
-                                                          'max'        => 48*HOUR_TIMESTAMP,
-                                                          'value'      => $default_delay,
-                                                          'emptylabel' => __('Specify an end date')]);
-      echo "<br><div id='date_end$rand'></div>";
-      $params = ['duration'     => '__VALUE__',
-                     'end'          => $_POST['reserve']["end"],
-                     'name'         => "reserve[end]"];
-
-      Ajax::updateItemOnSelectEvent("dropdown_reserve[_duration]$rand", "date_end$rand",
-                                    $CFG_GLPI["root_doc"]."/ajax/planningend.php", $params);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>".__('Item type')."</td><td>";
 
       $iterator = $DB->request([
          'SELECT'          => 'itemtype',
@@ -491,13 +464,69 @@ class ReservationItem extends CommonDBChild {
          $values["Peripheral#$id"] = $ptype['name'];
       }
 
-      Dropdown::showFromArray("reservation_types", $values,
-                              ['value'               => $_POST['reservation_types'],
-                                    'display_emptychoice' => true]);
-
-      echo "</td></tr>";
-      echo "</table>";
-      Html::closeForm();
+      $form = [
+         'action'      => Toolbox::getItemTypeSearchURL(__CLASS__),
+         'buttons'     => [
+            'submit' => [
+               'name'  => 'submit',
+               'value' => __('Search'),
+               'class' => 'btn btn-secondary',
+            ]
+         ],
+         'content' => [
+            __('Find a free item in a specific period') => [
+                'visible' => true,
+                'inputs' => [
+                    __('Start date') => [
+                        'type'        => 'datetime-local',
+                        'name'        => 'reserve[begin]',
+                        'value'       => $_POST['reserve']["begin"],
+                        'required'    => true,
+                        'col_lg'     => 6,
+                    ],
+                    __('Duration') => [
+                        'type'        => 'select',
+                        'name'        => 'reserve[_duration]',
+                        'values'      => [__('Specify an end date')] + Timezone::GetTimeStamp([
+                            'min'        => 0,
+                            'max'        => 48*HOUR_TIMESTAMP,
+                        ]),
+                        'value'       => $_POST['reserve']["_duration"] ?? 3600,
+                        'required'    => true,
+                        'hooks'       => [
+                            'change' => <<<JS
+                                const value = this.value;
+                                const endDatetime = $('#endDatetime');
+                                if (value > 0) {
+                                    endDatetime.prop('disabled', true);
+                                } else {
+                                    endDatetime.prop('disabled', false);
+                                }
+                            JS
+                        ],
+                        'col_lg'     => 6,
+                    ],
+                    __('End date') => [
+                        'type'        => 'datetime-local',
+                        'id'          => 'endDatetime',
+                        'name'        => 'reserve[end]',
+                        'value'       => $_POST['reserve']["end"],
+                        'disabled'     => true,
+                        'col_lg'     => 6,
+                    ],
+                    __('Item type') => [
+                        'type'        => 'select',
+                        'name'        => 'reservation_types',
+                        'values'      => $values,
+                        'value'       => $_POST['reservation_types'],
+                        'required'    => true,
+                        'col_lg'     => 6,
+                    ],
+                ]
+            ],
+         ],
+      ];
+      renderTwigForm($form);
       echo "</div>";
 
       // GET method passed to form creation
@@ -623,7 +652,7 @@ class ReservationItem extends CommonDBChild {
             echo Html::hidden('begin', ['value' => $_POST['reserve']["begin"]]);
             echo Html::hidden('end', ['value'   => $_POST['reserve']["end"]]);
          }
-         echo "<input type='submit' value=\""._sx('button', 'Add')."\" class='submit'></td></tr>\n";
+         echo "<input type='submit' value=\""._sx('button', 'Add')."\" class='btn btn-secondary'></td></tr>\n";
 
       }
       echo "</table>\n";
