@@ -24196,3 +24196,6 @@ msgstr ""
 
 msgid "Readable font"
 msgstr ""
+
+msgid "Navbar settings"
+msgstr ""

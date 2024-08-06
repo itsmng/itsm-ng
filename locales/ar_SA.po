@@ -26327,5 +26327,10 @@ msgstr ""
 msgid "Readable font"
 msgstr "قراءة الملاحظات"
 
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "إعداداتي"
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "الحساب glpi/glpi للمدراء"

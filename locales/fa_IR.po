@@ -24896,5 +24896,10 @@ msgstr ""
 msgid "Readable font"
 msgstr ""
 
+#, fuzzy
+#| msgid "Settings"
+msgid "Navbar settings"
+msgstr "تنظیم ها"
+
 #~ msgid "Use GLPI"
 #~ msgstr "استفاده از ITSM-NG"

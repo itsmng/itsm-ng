@@ -25589,6 +25589,11 @@ msgstr ""
 msgid "Readable font"
 msgstr ""
 
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Moje nastavitve"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Uporabi ITSM-NG"
 

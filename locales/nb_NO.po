@@ -24930,6 +24930,11 @@ msgstr ""
 msgid "Readable font"
 msgstr "Les notater"
 
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Mine innstillinger"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Bruk ITSM-NG"
 

@@ -24825,6 +24825,11 @@ msgstr ""
 msgid "Readable font"
 msgstr "Loe märkusi"
 
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Minu seaded"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Alusta ITSM-NG kasutamist"
 

@@ -24900,6 +24900,11 @@ msgstr ""
 msgid "Readable font"
 msgstr "नोट्स पढ़ें"
 
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "मेरी पतिस्थिति"
+
 #~ msgid "Use GLPI"
 #~ msgstr "जीएलपीआई का उपयोग करें"
 

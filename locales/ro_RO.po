@@ -25361,6 +25361,11 @@ msgstr ""
 msgid "Readable font"
 msgstr "Citeste note"
 
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Setările mele"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Folositi ITSM-NG"
 

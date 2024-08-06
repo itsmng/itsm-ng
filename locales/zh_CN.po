@@ -24423,6 +24423,11 @@ msgstr ""
 msgid "Readable font"
 msgstr "阅读笔记"
 
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "我的设置"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"
 

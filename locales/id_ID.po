@@ -24557,5 +24557,10 @@ msgstr ""
 msgid "Readable font"
 msgstr "Baca catatan"
 
+#, fuzzy
+#| msgid "Settings"
+msgid "Navbar settings"
+msgstr "Seting"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gunakan ITSM-NG"
