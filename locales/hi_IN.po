@@ -24814,7 +24814,7 @@ msgstr "स्थापना की शुरुआत"
 msgid "Step %d"
 msgstr "चरण%d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "जीएलपीआई - प्रमाणीकरण"
 
 msgid "Remember me"
@@ -24899,6 +24899,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "नोट्स पढ़ें"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "मेरी पतिस्थिति"
 
 #~ msgid "Use GLPI"
 #~ msgstr "जीएलपीआई का उपयोग करें"

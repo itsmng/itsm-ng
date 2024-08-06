@@ -27,8 +27,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2024-07-23 13:43+0000\n"
-"Last-Translator: alemarch <antoine.lemarchand05@gmail.com>\n"
+"PO-Revision-Date: 2024-08-06 08:57+0000\n"
+"Last-Translator: Florian Blanchet <florian.blanchet@itsm-ng.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -7000,11 +7000,11 @@ msgstr "Mode"
 
 #: inc/queuedchat.class.php:382 inc/queuednotification.class.php:463
 msgid "Send chat in queue"
-msgstr ""
+msgstr "Envoyer le chat dans la file d'attente"
 
 #: inc/queuedchat.class.php:383 inc/queuednotification.class.php:464
 msgid "Maximum chat to send at once"
-msgstr ""
+msgstr "Nombre maximum de chats à envoyer en même temps"
 
 #: inc/queuedchat.class.php:388
 msgid "Clean chat queue"
@@ -7012,7 +7012,7 @@ msgstr "Nettoyer la file d'attente du chat"
 
 #: inc/queuedchat.class.php:389 inc/queuednotification.class.php:468
 msgid "Days to keep sent chat"
-msgstr ""
+msgstr "Jours de rétention du chat envoyé"
 
 #: inc/queuedchat.class.php:615
 msgid "Ticket ID"
@@ -8667,7 +8667,7 @@ msgstr "Les statuts ont été mis à jour !"
 
 #: inc/specialstatus.class.php:142
 msgid "Status has been removed!"
-msgstr "Le statut a été supprimé!"
+msgstr "Le statut a été supprimé !"
 
 #: inc/specialstatus.class.php:153 inc/specialstatus.class.php:246
 #: inc/commondcmodeldropdown.class.php:65
@@ -10393,7 +10393,7 @@ msgstr "De"
 #: inc/reminder.class.php:642
 #, php-format
 msgid "%1$s to %2$s"
-msgstr ""
+msgstr "%1$s à %2$s"
 
 #: inc/ticketvalidation.class.php:99
 msgid "Create for request"
@@ -14893,7 +14893,7 @@ msgstr "Montrer la révision %rev"
 #: inc/knowbaseitem_comment.class.php:177
 #: inc/knowbaseitem_comment.class.php:211 inc/objectlock.class.php:157
 msgid "Contact your ITSM-NG admin!"
-msgstr "Contactez votre administrateur ITSM-NG!"
+msgstr "Contactez votre administrateur ITSM-NG !"
 
 #: inc/knowbaseitem_revision.class.php:225
 #: inc/knowbaseitem_comment.class.php:177
@@ -20211,6 +20211,8 @@ msgid ""
 "You are about to launch migration of Appliances plugin data into ITSM-ng "
 "core tables."
 msgstr ""
+"Vous êtes sur le point de lancer la migration des données du plugin "
+"Appliances vers les tables centrales d'ITSM-ng."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:161
 msgid "Any previous appliance created in core will be lost."
@@ -23754,7 +23756,7 @@ msgstr "Si coché, l'utilisateur peut répondre à la notification"
 
 #: inc/notification.class.php:267
 msgid "Type of the item to which the notification is attached"
-msgstr ""
+msgstr "Type de l'élément auquel la notification est jointe"
 
 #: inc/notification.class.php:275
 msgid "Event that triggers the notification"
@@ -24306,7 +24308,7 @@ msgid "or please check later"
 msgstr "ou réessayez plus tard"
 
 msgid "Your %1$s registration is not valid."
-msgstr "Votre enregistrement %1$s n'est pas valide"
+msgstr "Votre enregistrement %1$s n'est pas valide."
 
 msgid "A registration, at least a free one, is required to use marketplace!"
 msgstr ""
@@ -24621,7 +24623,7 @@ msgid "Back to top of the page"
 msgstr "Retour en haut de page"
 
 msgid "You will find it on the GLPI-PROJECT.org site."
-msgstr "Vous la trouverez sur le site itsm-ng.org"
+msgstr "Vous la trouverez sur le site itsm-ng.org."
 
 msgid "Check all"
 msgstr "Tout cocher"
@@ -24720,7 +24722,7 @@ msgid "You are impersonating %s."
 msgstr "Vous prenez l'identité de %s."
 
 msgid "Stop impersonating"
-msgstr "Arrêter de prendre l'identité."
+msgstr "Arrêter de prendre l'identité"
 
 msgid "Allow to login to API and get a session token with user credentials"
 msgstr ""
@@ -24876,7 +24878,7 @@ msgstr "Choisissez 'Installation' pour une nouvelle installation de ITSM-NG."
 msgid "Select 'Upgrade' to update your version of GLPI from an earlier version"
 msgstr ""
 "Choisissez 'Mise à jour' pour lancer la mise à jour de votre version de ITSM-"
-"NG à partir d'une version antérieure ou d'une version de GLPI.."
+"NG à partir d'une version antérieure ou d'une version de GLPI"
 
 msgid "Do you want to continue?"
 msgstr "Voulez-vous continuer ?"
@@ -24906,7 +24908,7 @@ msgid "Please select the database to update:"
 msgstr "Veuillez sélectionner la base de données à mettre à jour :"
 
 msgid "Initialization of the database"
-msgstr "Initialisation de la base de données."
+msgstr "Initialisation de la base de données"
 
 msgid "Impossible to use the database:"
 msgstr "Impossible d'utiliser la base :"
@@ -24965,7 +24967,7 @@ msgstr "Début de l'installation"
 msgid "Step %d"
 msgstr "Étape %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Authentification"
 
 msgid "Remember me"
@@ -25030,3 +25032,6 @@ msgstr "Liens soulignés"
 
 msgid "Readable font"
 msgstr "Police lisible"
+
+msgid "Navbar settings"
+msgstr "Paramètres de la barre de navigation"

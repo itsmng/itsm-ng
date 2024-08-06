@@ -24951,7 +24951,7 @@ msgstr "Inicio de la instalación"
 msgid "Step %d"
 msgstr "Paso %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "Autenticación - ITSM-NG"
 
 msgid "Remember me"
@@ -25028,6 +25028,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "Leer notas"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Preferencias"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"

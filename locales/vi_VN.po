@@ -24505,7 +24505,7 @@ msgstr "Bắt đầu cài đặt"
 msgid "Step %d"
 msgstr "Bước %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Xác Thực"
 
 #, fuzzy
@@ -24593,6 +24593,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "Đọc các ghi chú"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Các thiết lập của tôi"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Dùng ITSM-NG"

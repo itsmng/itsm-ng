@@ -24424,7 +24424,7 @@ msgstr "설치 시작"
 msgid "Step %d"
 msgstr "단계 %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - 인증"
 
 msgid "Remember me"
@@ -24510,6 +24510,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "노트 읽기"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "내 설정"
 
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG 사용"

@@ -45,12 +45,12 @@
 				<ul class="list-unstyled d-flex justify-content-around m-0">
 					<li id="language_link" class="p-2">
 						<a href="{{root_doc}}/front/preference.php?forcetab=User$1" title={{'Language'|trans}}>
-							<i class="fas fa-language" aria-hidden="true"></i>
+							<i class="fas fa-language" aria-label="{{ 'Languages'|trans }}"></i>
 						</a>
 					</li>
 					<li id="menu-options" class="p-2">
 						<a href="#" title={{'Navbar'|trans}} data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="far fa-window-maximize" aria-hidden="true"></i>
+							<i class="far fa-window-maximize" aria-label="{{ 'Navbar settings'|trans }}"></i>
 						</a>
 						{% include "nav/nav-settings.twig" %}
 					</li>

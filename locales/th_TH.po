@@ -24447,7 +24447,7 @@ msgstr "เริ่มการติดตั้ง"
 msgid "Step %d"
 msgstr "Step %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - ยืนยันตัวตน"
 
 msgid "Remember me"
@@ -24530,6 +24530,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "อ่านโน้ต"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "การตั้งค่าของฉัน"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Use ITSM-NG"

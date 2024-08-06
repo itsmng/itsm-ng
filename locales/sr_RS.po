@@ -25216,7 +25216,7 @@ msgstr "Početak instalacije"
 msgid "Step %d"
 msgstr "Korak %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Identifikacija"
 
 msgid "Remember me"
@@ -25303,6 +25303,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "Čitaj beleške"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Moja podešavanja"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Počni sa koriščenjem ITSM-NG"

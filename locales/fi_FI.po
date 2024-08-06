@@ -24862,7 +24862,7 @@ msgstr "Asennus alkaa"
 msgid "Step %d"
 msgstr "Askel %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Kirjautuminen"
 
 msgid "Remember me"
@@ -24948,6 +24948,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "Lue huomautuksia"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Omat asetukset"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Käytä ITSM-NG:tä"

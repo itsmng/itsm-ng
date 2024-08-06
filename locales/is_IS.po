@@ -24743,7 +24743,7 @@ msgstr "Upphaf uppsetningar"
 msgid "Step %d"
 msgstr "Skref %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Auðkenning"
 
 #, fuzzy
@@ -24819,6 +24819,11 @@ msgstr ""
 
 msgid "Readable font"
 msgstr ""
+
+#, fuzzy
+#| msgid "Settings"
+msgid "Navbar settings"
+msgstr "Stillingar"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Nota ITSM-NG"

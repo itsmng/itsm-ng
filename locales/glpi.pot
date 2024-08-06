@@ -29856,7 +29856,7 @@ msgstr ""
 msgid "Step %d"
 msgstr ""
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr ""
 
 msgid "Remember me"
@@ -29921,3 +29921,8 @@ msgstr ""
 
 msgid "Readable font"
 msgstr ""
+
+msgid "Navbar settings"
+msgstr ""
+
+

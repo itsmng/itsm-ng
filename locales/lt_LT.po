@@ -25579,7 +25579,7 @@ msgstr "Įdiegimo pradžia"
 msgid "Step %d"
 msgstr ""
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Autentifikacija"
 
 msgid "Remember me"
@@ -25661,6 +25661,11 @@ msgstr ""
 
 msgid "Readable font"
 msgstr ""
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Asmeniniai nustatymai"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Į ITSM-NG"

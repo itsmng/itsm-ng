@@ -24339,7 +24339,7 @@ msgstr "开始安装"
 msgid "Step %d"
 msgstr "步骤 %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - 登陆入口"
 
 msgid "Remember me"
@@ -24422,6 +24422,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "阅读笔记"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "我的设置"
 
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"

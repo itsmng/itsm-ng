@@ -24432,7 +24432,7 @@ msgstr "インストールを開始しました"
 msgid "Step %d"
 msgstr "ステップ %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - 認証"
 
 msgid "Remember me"
@@ -24509,6 +24509,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "メモの参照"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "個人別設定"
 
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NGを使用"

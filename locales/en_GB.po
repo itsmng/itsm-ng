@@ -25185,7 +25185,7 @@ msgstr ""
 
 #, fuzzy
 #| msgid "Authentication"
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "Authentication"
 
 #, fuzzy
@@ -25276,3 +25276,8 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "Read notes"
+
+#, fuzzy
+#| msgid "Settings"
+msgid "Navbar settings"
+msgstr "Settings"

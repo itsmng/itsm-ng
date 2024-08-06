@@ -24938,7 +24938,7 @@ msgstr "Ξεκίνημα της εγκατάστασης"
 msgid "Step %d"
 msgstr "Βήμα %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Αυθεντικοποίηση"
 
 msgid "Remember me"
@@ -25023,6 +25023,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "Ανάγνωση σημειώσεων"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Οι ρυθμίσεις μου"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Χρήση ITSM-NG"

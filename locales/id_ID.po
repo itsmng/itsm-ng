@@ -24477,7 +24477,7 @@ msgstr "Memulai pemasangan"
 msgid "Step %d"
 msgstr "Langkah %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Otentifikasi"
 
 msgid "Remember me"
@@ -24556,6 +24556,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "Baca catatan"
+
+#, fuzzy
+#| msgid "Settings"
+msgid "Navbar settings"
+msgstr "Seting"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Gunakan ITSM-NG"

@@ -24886,7 +24886,7 @@ msgstr "Суурилуулалтыг эхлэх"
 msgid "Step %d"
 msgstr "Алхам %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG-Танилт"
 
 msgid "Remember me"
@@ -24963,6 +24963,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "Тэмдэглэл унших"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Миний тохиргоо"
 
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG ашиглах"

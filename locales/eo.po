@@ -24867,7 +24867,7 @@ msgstr "Начало установки"
 msgid "Step %d"
 msgstr "Шаг %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Aŭtentigo"
 
 #, fuzzy
@@ -24954,6 +24954,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "Прочитать заметки"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Мои настройки"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Запустить ITSM-NG"

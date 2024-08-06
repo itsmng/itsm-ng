@@ -25280,7 +25280,7 @@ msgstr "Inceputul instalarii"
 msgid "Step %d"
 msgstr "Etapa %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "Autentificare"
 
 msgid "Remember me"
@@ -25360,6 +25360,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "Citeste note"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Setările mele"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Folositi ITSM-NG"

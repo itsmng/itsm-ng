@@ -15,21 +15,21 @@
 #
 #: inc/rssfeed.class.php:690 inc/authldap.class.php:734
 #: inc/authldap.class.php:742
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2019-04-24 11:58+0000\n"
-"Last-Translator: alexandre delaunay <delaunay.alexandre@gmail.com>, 2021\n"
-"Language-Team: Chinese (Taiwan) (https://www.transifex.com/glpi/teams/1637/"
-"zh_TW/)\n"
+"PO-Revision-Date: 2024-08-06 08:57+0000\n"
+"Last-Translator: Ricky From Hong Kong <lamricky11@hotmail.com>\n"
+"Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
+"itsm-ng/itsm-ng/zh_Hant/>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.7-dev\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -3340,7 +3340,7 @@ msgstr "分配給"
 
 #: front/stat.tracking.php:102
 msgid "Technician as assigned"
-msgstr " 技術人員已指派"
+msgstr "技術人員已指派"
 
 #: front/stat.tracking.php:104
 msgid "Technician in tasks"
@@ -24427,7 +24427,7 @@ msgstr "安裝的起點"
 msgid "Step %d"
 msgstr "步驟 %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG 驗證"
 
 msgid "Remember me"
@@ -24510,6 +24510,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "讀取註解"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "我的設定"
 
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"

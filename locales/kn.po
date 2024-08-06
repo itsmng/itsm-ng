@@ -24806,7 +24806,7 @@ msgstr "ಅನುಸ್ಥಾಪನೆಯ ಆರಂಭ"
 msgid "Step %d"
 msgstr "ಹಂತ %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ಜಿಎಲ್ಪಿಐ - ದೃಢೀಕರಣ"
 
 msgid "Remember me"
@@ -24885,6 +24885,9 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "ಟಿಪ್ಪಣಿಗಳನ್ನು ಓದಿ"
+
+msgid "Navbar settings"
+msgstr ""
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "ನಿರ್ವಾಹಕ ಖಾತೆಗೆ glpi / glpi"

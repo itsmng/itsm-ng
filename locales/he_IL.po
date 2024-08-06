@@ -25536,7 +25536,7 @@ msgstr "תחילת ההתקנה"
 msgid "Step %d"
 msgstr "צעד %d"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - אימות פרטים"
 
 msgid "Remember me"
@@ -25617,6 +25617,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "קרא הערות"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "ההגדרות שלי"
 
 #~ msgid "Use GLPI"
 #~ msgstr "השתמש ב-ITSM-NG"

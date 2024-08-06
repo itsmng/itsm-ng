@@ -24838,7 +24838,7 @@ msgstr "Kurulum başlangıcı"
 msgid "Step %d"
 msgstr "%d. adım"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Kimlik Doğrulama"
 
 msgid "Remember me"
@@ -24915,6 +24915,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "Notları okuyun"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Ayarlarım"
 
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG Kullanmaya Geç"

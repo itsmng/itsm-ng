@@ -24851,7 +24851,7 @@ msgstr "Telepítés megkezdése"
 msgid "Step %d"
 msgstr "%d lépés"
 
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "ITSM-NG - Hitelesítés"
 
 msgid "Remember me"
@@ -24936,6 +24936,11 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "Megjegyzések olvasása"
+
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Saját beállítások"
 
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG használata"

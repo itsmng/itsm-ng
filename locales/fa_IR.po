@@ -24813,7 +24813,7 @@ msgstr ""
 
 #, fuzzy
 #| msgid "Authentication"
-msgid "GLPI - Authentication"
+msgid "ITSM-NG - Authentication"
 msgstr "تصدیق"
 
 #, fuzzy
@@ -24895,6 +24895,11 @@ msgstr ""
 
 msgid "Readable font"
 msgstr ""
+
+#, fuzzy
+#| msgid "Settings"
+msgid "Navbar settings"
+msgstr "تنظیم ها"
 
 #~ msgid "Use GLPI"
 #~ msgstr "استفاده از ITSM-NG"
