@@ -24886,5 +24886,8 @@ msgstr ""
 msgid "Readable font"
 msgstr "ಟಿಪ್ಪಣಿಗಳನ್ನು ಓದಿ"
 
+msgid "Navbar settings"
+msgstr ""
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "ನಿರ್ವಾಹಕ ಖಾತೆಗೆ glpi / glpi"

@@ -24808,3 +24808,8 @@ msgstr ""
 
 msgid "Readable font"
 msgstr ""
+
+#, fuzzy
+#| msgid "Settings"
+msgid "Navbar settings"
+msgstr "Instillinger"

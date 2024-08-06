@@ -24511,6 +24511,11 @@ msgstr ""
 msgid "Readable font"
 msgstr "노트 읽기"
 
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "내 설정"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG 사용"
 

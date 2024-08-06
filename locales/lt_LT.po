@@ -25662,5 +25662,10 @@ msgstr ""
 msgid "Readable font"
 msgstr ""
 
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Asmeniniai nustatymai"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Į ITSM-NG"

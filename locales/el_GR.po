@@ -25024,6 +25024,11 @@ msgstr ""
 msgid "Readable font"
 msgstr "Ανάγνωση σημειώσεων"
 
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Οι ρυθμίσεις μου"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Χρήση ITSM-NG"
 

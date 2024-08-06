@@ -25276,3 +25276,8 @@ msgstr ""
 #| msgid "Read notes"
 msgid "Readable font"
 msgstr "Read notes"
+
+#, fuzzy
+#| msgid "Settings"
+msgid "Navbar settings"
+msgstr "Settings"

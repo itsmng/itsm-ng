@@ -25063,6 +25063,11 @@ msgstr ""
 msgid "Readable font"
 msgstr "Lees opmerkingen"
 
+#, fuzzy
+#| msgid "My settings"
+msgid "Navbar settings"
+msgstr "Mijn instellingen"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gebruik ITSM-NG"
 
