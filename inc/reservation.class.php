@@ -735,7 +735,6 @@ class Reservation extends CommonDBChild {
                         'name'  => 'begin',
                         'value' => $resa->fields["begin"],
                         'min'   => date('Y-m-d H:00:00'),
-                        'max'   => date('Y-m-d H:00:00', strtotime('+1 day')),
                     ],
                     __('Duration') => [
                         'type' => 'select',
