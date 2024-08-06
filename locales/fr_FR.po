@@ -25030,3 +25030,6 @@ msgstr "Liens soulignés"
 
 msgid "Readable font"
 msgstr "Police lisible"
+
+msgid "Navbar settings"
+msgstr "Paramètres de la barre de navigation"

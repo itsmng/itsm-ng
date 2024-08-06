@@ -1365,3 +1365,8 @@ div.chip > p {
     text-overflow: ellipsis;
 }
 
+.accessibility-text:hover {
+    text-decoration: underline !important;
+    color: white !important;
+}
+
