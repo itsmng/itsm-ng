@@ -945,26 +945,28 @@ class Html
          }
 
          echo Html::scriptBlock("
-            $('#debugtabs$rand').tabs({
-               collapsible: true
-            }).addClass( 'ui-tabs-vertical ui-helper-clearfix' );
+            $(function() {
+                $('#debugtabs$rand').tabs({
+                   collapsible: true
+                }).addClass( 'ui-tabs-vertical ui-helper-clearfix' );
 
-            $('<li class=\"close\"><button aria-label=\"Close Debug\" id= \"close_debug$rand\">close debug</button></li>')
-               .appendTo('#debugtabs$rand ul');
+                $('<li class=\"close\"><button aria-label=\"Close Debug\" id= \"close_debug$rand\">X</button></li>')
+                   .appendTo('#debugtabs$rand ul');
 
-            $('#close_debug$rand').button({
-               icons: {
-                  primary: 'ui-icon-close'
-               },
-               text: false
-            }).click(function() {
-                $('#debugtabs$rand').css('display', 'none');
-            });
+                $('#close_debug$rand').button({
+                   icons: {
+                      primary: 'ui-icon-close'
+                   },
+                   text: false
+                }).click(function() {
+                    $('#debugtabs$rand').css('display', 'none');
+                });
 
-            $('#see_debug').click(function(e) {
-               e.preventDefault();
-               console.log('see_debug #debugtabs$rand');
-               $('#debugtabs$rand').css('display', 'block');
+                $('#see_debug').click(function(e) {
+                   e.preventDefault();
+                   console.log('see_debug #debugtabs$rand');
+                   $('#debugtabs$rand').css('display', 'block');
+                });
             });
          ");
 
@@ -5652,7 +5654,7 @@ JAVASCRIPT;
          $options['media'] = 'all';
       }
 
-      $version = GLPI_VERSION;
+      $version = ITSM_VERSION;
       if (isset($options['version'])) {
          $version = $options['version'];
          unset($options['version']);
