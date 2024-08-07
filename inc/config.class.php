@@ -3825,7 +3825,7 @@ class Config extends CommonDBTM {
       if ($glpi_key->isConfigSecured($context, $name)) {
          $newvalue = $oldvalue = '********';
       }
-      $oldvalue = $name . ($context !== 'core' ? ' (' . $context . ') ' : ', ') . $oldvalue;
+      $oldvalue = $name . ($context !== 'core' ? ' (' . $context . ') ' : ' ') . $oldvalue;
       Log::constructHistory($this, ['value' => $oldvalue], ['value' => $newvalue]);
    }
 
