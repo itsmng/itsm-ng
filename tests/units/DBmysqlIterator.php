@@ -33,6 +33,7 @@
 namespace tests\units;
 
 use DbTestCase;
+use GlpitestSQLError;
 use Monolog\Logger;
 use Monolog\Handler\TestHandler;
 
@@ -66,7 +67,7 @@ class DBmysqlIterator extends DbTestCase {
             $DB->request('fakeTable');
          }
       )
-         ->isInstanceOf('GlpitestSQLerror')
+         ->isInstanceOf(GlpitestSQLError::class)
          ->message
             ->contains("fakeTable' doesn't exist");
    }

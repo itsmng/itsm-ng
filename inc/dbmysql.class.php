@@ -324,8 +324,19 @@ class DBmysql {
          $TIMER->start();
       }
 
-      $res = $this->dbh->query($query);
-      if (!$res) {
+      try {
+         $res = $this->dbh->query($query);
+
+         if ($is_debug && $CFG_GLPI["debug_sql"]) {
+            $TIME                                   = $TIMER->getTime();
+            $DEBUG_SQL["times"][$SQL_TOTAL_REQUEST] = $TIME;
+            $DEBUG_SQL['rows'][$SQL_TOTAL_REQUEST] = $this->affectedRows();
+         }
+         if ($this->execution_time === true) {
+            $this->execution_time = $TIMER->getTime(0, true);
+         }
+         return $res;
+      } catch (\mysqli_sql_exception $e) {
          // no translation for error logs
          $error = "  *** MySQL query error:\n  SQL: ".$query."\n  Error: ".
                    $this->dbh->error."\n";
@@ -342,16 +353,6 @@ class DBmysql {
             $DEBUG_SQL["errors"][$SQL_TOTAL_REQUEST] = $this->error();
          }
       }
-
-      if ($is_debug && $CFG_GLPI["debug_sql"]) {
-         $TIME                                   = $TIMER->getTime();
-         $DEBUG_SQL["times"][$SQL_TOTAL_REQUEST] = $TIME;
-         $DEBUG_SQL['rows'][$SQL_TOTAL_REQUEST] = $this->affectedRows();
-      }
-      if ($this->execution_time === true) {
-         $this->execution_time = $TIMER->getTime(0, true);
-      }
-      return $res;
    }
 
    /**

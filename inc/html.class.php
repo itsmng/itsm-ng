@@ -165,6 +165,12 @@ class Html
               $value
          );
       }
+      // add "denied:" to email links
+      $value = str_replace(
+          'href="mailto:',
+          'href="denied:mailto:',
+          $value
+      );
 
       $value = str_replace(["\r\n", "\r"], "\n", $value);
       $value = preg_replace("/(\n[ ]*){2,}/", "\n\n", $value, -1);
