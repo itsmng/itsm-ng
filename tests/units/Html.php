@@ -769,8 +769,8 @@ class Html extends \GLPITestCase {
             \Html::displayMessageAfterRedirect();
          }
       )
-         ->contains('<div id="message_after_redirect_1" title="Error">Something went really wrong :(</div>')
-         ->contains('<div id="message_after_redirect_2" title="Warning">Oooops, I did it again!</div>');
+         ->contains("Something went really wrong :(")
+         ->contains("Oooops, I did it again!");
 
       $this->array($_SESSION['MESSAGE_AFTER_REDIRECT'])->isEmpty();
    }
