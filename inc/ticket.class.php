@@ -5842,7 +5842,7 @@ class Ticket extends CommonITILObject
             }
             $values[] = $newValue;
          }
-         echo "<p>" . $title . "</p>";
+         echo "<p class='table-title'>" . $title . "</p>";
          renderTwigTemplate('table.twig', [
             'fields'  => $fields,
             'values'  => $values,
