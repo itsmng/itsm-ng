@@ -1386,7 +1386,13 @@ class Dropdown {
                         success: function(data) {
                            const jsonDatas = JSON.parse(data);
                            for (const key in jsonDatas) {
-                              $('#selectItemForTicketMassiveAction').append('<option value="' + key + '">' + jsonDatas[key] + '</option>');
+                             if (typeof jsonDatas[key] === 'object') {
+                                for (const key2 in jsonDatas[key]) {
+                                   $('#selectItemForTicketMassiveAction').append('<option value="' + key2 + '">' + jsonDatas[key][key2] + '</option>');
+                                }
+                             } else {
+                                $('#selectItemForTicketMassiveAction').append('<option value="' + key + '">' + jsonDatas[key] + '</option>');
+                             }
                            }
                         }
                      });
