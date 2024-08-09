@@ -32,10 +32,10 @@
 
 			{% if main_menu.args.access == 'central' %}
             <div id="searchbar">
-                <form aria-label="search" role="search" method="get" action="{{root_doc}}/front/search.php">
+                <form aria-label="{{"Search"|trans}}" role="search" method="get" action="{{root_doc}}/front/search.php">
                     <input type="search" name="globalsearch" aria-label="Valider" placeholder="{{"Search"|trans}}...">
                     <button type="submit" class="btn btn-link">
-                        <i class="fa fa-search" title="Search"></i>
+                        <i class="fa fa-search" title="{{"Search"|trans}}"></i>
                     </button>
                 </form>
             </div>
@@ -48,9 +48,9 @@
 							<i class="fas fa-language" aria-label="{{ 'Languages'|trans }}"></i>
 						</a>
 					</li>
-					<li id="menu-options" class="p-2">
-						<a href="#" title={{'Navbar'|trans}} data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="far fa-window-maximize" aria-label="{{ 'Navbar settings'|trans }}"></i>
+					<li id="menu-options" class="p-2" aria-hidden="true">
+						<a href="#" title="{{'Navbar'|trans }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-hidden="true">
+							<i class="far fa-window-maximize" aria-label="{{'Navbar'|trans }}"></i>
 						</a>
 						{% include "nav/nav-settings.twig" %}
 					</li>
