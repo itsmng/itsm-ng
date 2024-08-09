@@ -637,7 +637,7 @@ class ReservationItem extends CommonDBChild {
             echo "<td><a href='reservation.php?reservationitems_id=".$row['id']."'>".
                         sprintf(__('%1$s - %2$s'), $typename, $row["name"])."</a></td>";
             echo "<td>".Dropdown::getDropdownName("glpi_locations", $row["location"])."</td>";
-            echo "<td>".nl2br($row["comment"])."</td>";
+            echo "<td>".nl2br($row["comment"] ?? '')."</td>";
             if ($showentity) {
                echo "<td>".Dropdown::getDropdownName("glpi_entities", $row["entities_id"]).
                      "</td>";
