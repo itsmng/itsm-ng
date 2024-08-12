@@ -181,7 +181,7 @@ class Dropdown {
             ]),
       ];
 
-      $output = "<span class='no-wrap'>";
+      $output = "<span class='no-wrap input-group'>";
       $output.= Html::jsAjaxDropdown($params['name'], $field_id,
                                      $params['url'],
                                      $p);
@@ -212,14 +212,14 @@ class Dropdown {
                )
             );
          }
-         $output .= "&nbsp;".Html::showToolTip($comment, $options_tooltip);
+         $output .= Html::showToolTip($comment, $options_tooltip);
 
          if (($item instanceof CommonDropdown)
              && $item->canCreate()
              && !isset($_REQUEST['_in_modal'])
              && $params['addicon']) {
 
-               $output .= "<span class='fa fa-plus-circle pointer' title=\"".__s('Add')."\"
+               $output .= "<span class='fa fa-plus-circle pointer input-group-text' title=\"".__s('Add')."\"
                             onClick=\"".Html::jsGetElementbyID('add_'.$field_id).".dialog('open');\"
                            ><span class='sr-only'>" . __s('Add') . "</span></span>";
                $output .= Ajax::createIframeModalWindow('add_'.$field_id,
@@ -235,7 +235,7 @@ class Dropdown {
          }
 
          if ($itemtype == 'Location') {
-            $output .= "<span class='fa fa-globe-americas pointer' title='".__s('Display on map')."' onclick='showMapForLocation(this)' data-fid='$field_id'></span>";
+            $output .= "<span class='fa fa-globe-americas pointer input-group-text' title='".__s('Display on map')."' onclick='showMapForLocation(this)' data-fid='$field_id'></span>";
          }
 
          $paramscomment = [
@@ -247,7 +247,7 @@ class Dropdown {
              && Session::haveRight('knowbase', READ)) {
 
             if (method_exists($item, 'getLinks')) {
-               $output .= "<span id='$kblink_id'>";
+               $output .= "<span id='$kblink_id' class='input-group-text'>";
                $output .= '&nbsp;'.$item->getLinks();
                $output .= "</span>";
                $paramscomment['withlink'] = $kblink_id;
