@@ -732,7 +732,7 @@ class Reservation extends CommonDBChild {
                     ] : [],
                     __('Start date') => [
                         'type'  => 'datetime-local',
-                        'name'  => 'begin',
+                        'name'  => 'resa[begin]',
                         'value' => $resa->fields["begin"],
                         'min'   => date('Y-m-d H:00:00'),
                     ],
@@ -759,7 +759,7 @@ class Reservation extends CommonDBChild {
                     __('End date') => [
                         'type'  => 'datetime-local',
                         'id'    => 'entTimeStamp',
-                        'name'  => 'end',
+                        'name'  => 'resa[end]',
                         'value' => $resa->fields["end"],
                         'min'   => date('Y-m-d H:00:00', strtotime('+1 day')),
                         'max'   => date('Y-m-d H:00:00'),
@@ -772,7 +772,7 @@ class Reservation extends CommonDBChild {
                                      'day'   => _x('periodicity', 'Daily'),
                                      'week'  => _x('periodicity', 'Weekly'),
                                      'month' => _x('periodicity', 'Monthly')],
-                        'value' => $resa->fields["periodicity"],
+                        'value' => $resa->fields["periodicity"] ?? '',
                         'hooks' => [
                             'change' => <<<JS
                                const value = this.value;
