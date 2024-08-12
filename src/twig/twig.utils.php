@@ -338,10 +338,10 @@ function getItemActionButtons(array $actions, string $itemType): array
                 break;
             case 'add':
                 $item = new $itemType;
-                $itemFormUrl = $item->getFormUrl();
+                Ajax::createModalWindow('add_'.$itemType, $item->getFormUrl() . '?_in_modal=1');
                 $content = [
                     'icon' => 'fas fa-plus',
-                    'onClick' => "window.location.href = '{$itemFormUrl}'",
+                    'onClick' => "add_".$itemType.".dialog('open');",
                     'info' => 'Add',
                 ];
                 break;

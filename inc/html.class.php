@@ -2011,7 +2011,7 @@ JAVASCRIPT;
             && strstr($_SERVER['REQUEST_URI'], '/ajax/common.tabs.php')
          ) {
             echo "&nbsp;&nbsp;&nbsp;&nbsp;";
-            echo "<a href='" . $_SERVER['REQUEST_URI'] . "&full_page_tab=1' class='vsubmit'>Display only tab for debug</a>";
+            echo "<a href='" . $_SERVER['REQUEST_URI'] . "&full_page_tab=1' class='btn btn-secondary btn-sm my-2'>Display only tab for debug</a>";
          }
          echo "</div>";
          echo "<div id='see_ajaxdebug$rand' name='see_ajaxdebug$rand' style=\"display:none;\">";
@@ -3904,7 +3904,7 @@ JS;
             //for compatibility. Use fontawesome instead.
             $out .= "<img id='tooltip$rand' src='" . $param['img'] . "' class='pointer'>";
          } else {
-            $out .= "<span id='tooltip$rand' class='fas {$param['awesome-class']} pointer'></span>";
+            $out .= "<span id='tooltip$rand' class='fas {$param['awesome-class']} pointer input-group-text'></span>";
          }
 
          if (!empty($param['link'])) {
@@ -4962,7 +4962,8 @@ JAVASCRIPT
 
       $options = [
          'id'        => $field_id,
-         'selected'  => $value
+         'selected'  => $value,
+         'class'     => 'form-select'
       ];
 
       // manage multiple select (with multiple values)
