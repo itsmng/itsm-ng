@@ -5449,7 +5449,7 @@ JAVASCRIPT;
          );
       }
 
-      $button = "<button type='submit' aria-label='$caption' value='%s' %s>
+      $button = "<button type='submit' aria-label='".self::clean($caption)."' value='%s' %s>
                $caption
             </button>&nbsp;";
 

@@ -19,7 +19,7 @@
 	<div class="d-flex justify-content-around">
 		<input type="hidden" name="_glpi_csrf_token" value="{{csrf_token}}"/>
 		{% if not form.buttons %}
-			<button type="submit" aria-label="Submit" class='btn btn-primary'>{{"Submit"|trans}}</button>
+			<button type="submit" aria-label="{{"Send"|trans}}" class='btn btn-primary'>{{"Send"|trans}}</button>
 		{% endif %}
 		{% for button in form.buttons %}
 			{% if button|length > 0 %}
