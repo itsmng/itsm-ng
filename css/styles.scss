@@ -1064,7 +1064,6 @@ input {
          position: absolute;
          bottom: 0;
          width: 100%;
-         z-index: 3;
       }
 
       .debug_ajax {
@@ -3366,7 +3365,7 @@ a.copyright {
    top: inherit !important;
    height: 300px !important;
    z-index: 100 !important;
-   width: 98%;
+   width: 100%;
 }
 
 .debug_ajax .ui-tabs {

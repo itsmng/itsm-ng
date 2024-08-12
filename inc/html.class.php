@@ -880,7 +880,7 @@ class Html
             HTML;
          }
 
-         echo "<div id='debugtabs$rand'><ul>";
+         echo "<div id='debugtabs$rand' style='display: none;'><ul>";
          if ($CFG_GLPI["debug_sql"]) {
             echo "<li><a href='#debugsql$rand'>SQL REQUEST</a></li>";
          }
