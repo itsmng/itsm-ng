@@ -53,7 +53,7 @@
                 <span>
                     <img src="{{root_doc}}/pics/menu_showall.png" url="{{root_doc}}{{val}}" alt="{{'Setup'|trans}}">
                 </span>
-            {% else %}
+            {% elseif (key != "add" and key != "search") %}
                 <span>
                     <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Setup'|trans}}">
                         {{key|raw}}
