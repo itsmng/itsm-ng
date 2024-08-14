@@ -1026,6 +1026,9 @@ main {
 .menu-top .copyright-message {
     display: none;
 }
+.menu-top .accessibility-text {
+    display: none;
+}
 /* .nav-side-menu li a {
     text-decoration: none;
     color: #e1ffff;
@@ -1362,7 +1365,7 @@ div.chip > p {
 }
 
 .accessibility-text {
-    font-size: 0.75rem;
+    font-size: 0.850rem;
     color: white;
     text-overflow: ellipsis;
 }
@@ -1385,3 +1388,4 @@ div.chip > p {
     padding: 10px;
     border-radius: 5px;
 }
+

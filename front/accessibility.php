@@ -49,12 +49,11 @@ echo "<h2 class='mt-4'>Résultats des tests</h2>";
 echo "<h4 class='mt-4'>ARA</h4>";
 echo "<p class='mb-4'>L'audit de conformité révèle qu'ITSM-NG est conforme au RGAA 4.1 à 84% en moyenne.</p>";
 echo "<h4 class='mt-4'>Lighthouse</h4>";
-echo "<p class='mb-4'>L'outil lighthouse révèle qu'ITSM-NG est conforme au RGAA 4.1 à 90% en moyenne.</p>";
+echo "<p class='mb-4'>L'outil lighthouse révèle qu'ITSM-NG possède un taux d'accessibilité de 90% en moyenne.</p>";
 echo "<h2 class='mt-4'>Retour d'information</h2>";
 echo "<p class='mb-4'>Si vous rencontrez des difficultés pour accéder à une partie quelconque de ITSM-NG, ou si vous avez des suggestions pour améliorer l'accessibilité, nous vous invitons à nous contacter. Votre retour serait précieux pour nous permettre d'identifier et de résoudre les potentiels problèmes d'accessibilité auquel vous feriez face. Vous pourriez nous joindre à l'adresse suivante :</p>";
 echo "<p class='mb-4'><strong>Email :</strong> <a href='mailto:contact@itsm-ng.com'>contact@itsm-ng.com</a></p>";
 echo "<p class='mb-4'>Merci de nous fournir autant de détails que possible sur le problème rencontré, y compris les pages spécifiques ou les fonctionnalités concernées. Nous ferions de notre mieux pour vous répondre dans les meilleurs délais et apporter les corrections nécessaires.</p>";
-
 echo "</div>";
 
 Html::footer();
