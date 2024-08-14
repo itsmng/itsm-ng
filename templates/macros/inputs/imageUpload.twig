@@ -1,13 +1,15 @@
 {% macro imageUpload(attributes, root_doc) %}
   {% set rand=random() %}
-  <div class="input-group">
-    <input class='form-control h-100' type="file" {% for name, value in attributes|filter((v, k) => k != 'values') %} {{name}}="{{value}}" {% endfor %}/>
-    <input type="checkbox" class="btn-check" name="_blank_{{attributes.name}}" value="1" id="clearPictureFor{{attributes.name}}"/>
-    <label class="btn btn-outline-danger" for="clearPictureFor{{attributes.name}}">{{"Clear"|trans}}</label>
+  <div class="flex flex-col">
+      <div class="input-group">
+        <input class='form-control h-100' type="file" {% for name, value in attributes|filter((v, k) => k != 'values') %} {{name}}="{{value}}" {% endfor %}/>
+        <input type="checkbox" class="btn-check" name="_blank_{{attributes.name}}" value="1" id="clearPictureFor{{attributes.name}}"/>
+        <label class="btn btn-outline-danger" for="clearPictureFor{{attributes.name}}">{{"Clear"|trans}}</label>
+      </div>
+      {% if attributes.value %}
+        <img class="img-thumbnail" src="{{root_doc}}{{ attributes.external ? '' : '/front/document.send.php?file=' }}{{attributes.value}}" alt="Preview of {{attributes.name}}"></img>
+      {% endif %}
   </div>
-  {% if attributes.value %}
-    <img class="img-thumbnail" src="{{root_doc}}{{ attributes.external ? '' : '/front/document.send.php?file=' }}{{attributes.value}}" alt="Preview of {{attributes.name}}"></img>
-  {% endif %}
   <script>
     $('#{{attributes.id}}').on('change', function() {
       let formData = new FormData();
