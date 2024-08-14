@@ -40,21 +40,25 @@ if (!defined('GLPI_ROOT')) {
  **/
 class ItsmngUploadHandler {
 
-    const UPLOAD = '_upload';
-    const TMP = '_tmp';
-    const PICTURE = '_picture';
-    const PLUGIN = '_plugin';
-    const DUMP = '_dump';
+    const UPLOAD = GLPI_UPLOAD_DIR;
+    const TMP = GLPI_TMP_DIR;
+    const PICTURE = GLPI_PICTURE_DIR;
+    const PLUGIN = GLPI_PLUGIN_DOC_DIR;
+    const DUMP = GLPI_DUMP_DIR;
 
     static function getUploadPath($type, $filename, $withDir = true) {
-        $extension = strtoupper(pathinfo($filename, PATHINFO_EXTENSION));
-        if (!file_exists(GLPI_DOC_DIR . '/' . $extension)) {
-            if (!mkdir(GLPI_DOC_DIR . '/' . $extension, 0777, true)) {
+        if (isset(self::$$type)) {
+            $extension = strtoupper(pathinfo($filename, PATHINFO_EXTENSION)) . '/';
+        } else {
+            $extension = '';
+        }
+        if (!file_exists($type . $extension)) {
+            if (!mkdir($type . $extension, 0777, true)) {
                 return false;
             }
         }
         if ($withDir) {
-            return GLPI_DOC_DIR . '/' . $extension;
+            return $type . $extension;
         }
         return $extension;
     }
