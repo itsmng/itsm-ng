@@ -26,6 +26,13 @@ function expandForm($form, $fields = [])
                                 $input['condition'] ?? [],
                                 $input['used'] ?? []
                             );
+                            if (isset($input['value']) && !in_array($input['value'], $form['content'][$contentKey]['inputs'][$inputKey]['values'])) {
+                                $item = new $input['itemtype'];
+                                $item->getFromDB($input['value']);
+                                if (isset($item->fields['name'])) {
+                                    $form['content'][$contentKey]['inputs'][$inputKey]['values'][$input['value']] = $item->fields['name'];
+                                }
+                            }
                             $form['content'][$contentKey]['inputs'][$inputKey]['ajax'] =
                                 [
                                     'url' => $CFG_GLPI['root_doc'] . '/ajax/getDropdownValue.php',
