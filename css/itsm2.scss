@@ -5,7 +5,7 @@
 :root {
     --header-height: 3.5rem;
     --subheader-height: 4rem;
-    --nav-open-width: 11rem;
+    --nav-open-width: 12rem;
     --nav-close-width: 5em;
     --nav-transition-time: 0s;
     --menu-count: 10; //define in html
@@ -897,6 +897,8 @@ main {
     justify-content: center;
     bottom: 0;
     width: 100%;
+    background-color: var(--bs-nav);
+    padding: .2rem;
 }
 
 .icons_nav {

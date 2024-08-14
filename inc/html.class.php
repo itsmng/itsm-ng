@@ -3904,7 +3904,7 @@ JS;
             //for compatibility. Use fontawesome instead.
             $out .= "<img id='tooltip$rand' src='" . $param['img'] . "' class='pointer'>";
          } else {
-            $out .= "<span id='tooltip$rand' class='fas {$param['awesome-class']} pointer input-group-text'></span>";
+            $out .= "<span id='tooltip$rand' class='fas {$param['awesome-class']} pointer'></span>";
          }
 
          if (!empty($param['link'])) {
@@ -3999,7 +3999,7 @@ JS;
       if ($can_autocomplete && $CFG_GLPI["use_ajax_autocompletion"]) {
          $output .=  "<input " . $params['option'] . " id='text$name' type='{$params['type']}' name='" .
             $params['name'] . "' value=\"" . self::cleanInputText($params['value']) . "\"
-                       class='autocompletion-text-field'";
+                       class='form-control'";
 
          if ($params['required'] == true) {
             $output .= " required='required'";
@@ -4652,7 +4652,7 @@ JAVASCRIPT
          }
       }
 
-      $link = "<a ";
+      $link = "<a class='m-1'";
 
       if (!empty($btoption)) {
          $link .= ' ' . $btoption . ' ';
@@ -5375,7 +5375,7 @@ JAVASCRIPT;
          unset($options['selected']);
       }
       $select = sprintf(
-         '<select aria-label="$name" name="%1$s" %2$s>',
+         '<select aria-label="$name" name="%1$s" class="form-select" %2$s>',
          self::cleanInputText($name),
          self::parseAttributes($options)
       );
@@ -5421,7 +5421,7 @@ JAVASCRIPT;
 
       // Set default class to submit
       if (!isset($options['class'])) {
-         $options['class'] = 'vsubmit';
+         $options['class'] = 'btn btn-sm btn-secondary';
       }
       if (isset($options['confirm'])) {
          if (!empty($options['confirm'])) {
