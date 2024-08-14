@@ -16,7 +16,7 @@
 
                             {% if menu_name == 'favorite' %}
                                 <p>{{'You can add your favorite section to this menu. To do this click on the cogwheel then click and the star next to the menu you wish to add as a favorite.'|trans}}</p>
-                                
+
                                 {% for menu_name, data in menu|filter(data => data['show_menu']) %}
                                     {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
                                         {% if val['is_favorite'] %}
@@ -55,7 +55,7 @@
         const menuItems = document.querySelectorAll('.menu');
 
         menuItems.forEach(function(item) {
-         
+            
             item.addEventListener('show.bs.collapse', function() {
                 menuItems.forEach(function(otherItem) {
                     if (otherItem !== item) {
@@ -66,7 +66,24 @@
                     }
                 });
             });
+
+            document.addEventListener('click', function(event) {
+                if (!item.contains(event.target)) {
+                    const submenu = item.querySelector('.sub-menu');
+                    if (submenu.classList.contains('show')) {
+                        submenu.classList.remove('show');
+                    }
+                }
+            });
+
+            item.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    const submenu = item.querySelector('.sub-menu');
+                    if (submenu.classList.contains('show')) {
+                        submenu.classList.remove('show');
+                    }
+                }
+            });
         });
     });
 </script>
-
