@@ -211,67 +211,92 @@ class Central extends CommonGLPI {
    /**
     * Show the central personal view
    **/
-   static function showMyView() {
-      global $CFG_GLPI;
-      $objects = $CFG_GLPI['globalsearch_types'];
-      asort($objects);
-      $values = [];
-      foreach ($objects as $object) {
-         $values[$object] = ((string) $object)::getTypeName();
-      }
-      $dashboard = new Dashboard();
-      $dashboard->getForUser();
-      $dashboard->show(null, true);
-      $showticket  = Session::haveRightsOr("ticket",
-                                           [Ticket::READMY, Ticket::READALL, Ticket::READASSIGN]);
-
-      $showproblem = Session::haveRightsOr('problem', [Problem::READALL, Problem::READMY]);
-
-      echo "<table class='tab_cadre_central' aria-label='My View Outer Table'>";
-
-      echo "<tr><th colspan='2'>";
-      echo "</th></tr>";
-
-      echo "<tr class='noHover'><td class='top' width='50%'><table class='central' aria-label='My View Inner Table'>";
-      echo "<tr class='noHover'><td>";
-      if (Session::haveRightsOr('ticketvalidation', TicketValidation::getValidateRights())) {
-         Ticket::showCentralList(0, "tovalidate", false);
-      }
-      if ($showticket) {
-
-         if (Ticket::isAllowedStatus(Ticket::SOLVED, Ticket::CLOSED)) {
-            Ticket::showCentralList(0, "toapprove", false);
-         }
-
-         Ticket::showCentralList(0, "survey", false);
-
-         Ticket::showCentralList(0, "validation.rejected", false);
-         Ticket::showCentralList(0, "solution.rejected", false);
-         Ticket::showCentralList(0, "requestbyself", false);
-         Ticket::showCentralList(0, "observed", false);
-
-         Ticket::showCentralList(0, "process", false);
-         Ticket::showCentralList(0, "waiting", false);
-
-         TicketTask::showCentralList(0, "todo", false);
-
-      }
-      if ($showproblem) {
-         Problem::showCentralList(0, "process", false);
-         ProblemTask::showCentralList(0, "todo", false);
-      }
-      echo "</td></tr>";
-      echo "</table></td>";
-      echo "<td class='top'  width='50%'><table class='central' aria-label='central Table'>";
-      echo "<tr class='noHover'><td>";
-      Planning::showCentral(Session::getLoginUserID());
-      Reminder::showListForCentral();
-      if (Session::haveRight("reminder_public", READ)) {
-         Reminder::showListForCentral(false);
-      }
-      echo "</td></tr>";
-      echo "</table></td></tr></table>";
+  static function showMyView() {
+   global $CFG_GLPI;
+   $objects = $CFG_GLPI['globalsearch_types'];
+   asort($objects);
+   $values = [];
+   foreach ($objects as $object) {
+       $values[$object] = ((string) $object)::getTypeName();
    }
+   $dashboard = new Dashboard();
+   $dashboard->getForUser();
+   $dashboard->show(null, true);
+   $showticket  = Session::haveRightsOr("ticket",
+                                        [Ticket::READMY, Ticket::READALL, Ticket::READASSIGN]);
+
+   $showproblem = Session::haveRightsOr('problem', [Problem::READALL, Problem::READMY]);
+
+
+   echo "<div id='main-container' style='width: 100%;'>";
+
+   echo "<div id='table1' style='width: 100%; margin-bottom: 20px;'>";
+   echo "<table class='central' style='width: 100%;' aria-label='My View Inner Table'>";
+   echo "<tr class='noHover'><td>";
+   if (Session::haveRightsOr('ticketvalidation', TicketValidation::getValidateRights())) {
+       Ticket::showCentralList(0, "tovalidate", false);
+   }
+   if ($showticket) {
+
+       if (Ticket::isAllowedStatus(Ticket::SOLVED, Ticket::CLOSED)) {
+           Ticket::showCentralList(0, "toapprove", false);
+       }
+
+       Ticket::showCentralList(0, "survey", false);
+
+       Ticket::showCentralList(0, "validation.rejected", false);
+       Ticket::showCentralList(0, "solution.rejected", false);
+       Ticket::showCentralList(0, "requestbyself", false);
+       Ticket::showCentralList(0, "observed", false);
+
+       Ticket::showCentralList(0, "process", false);
+       Ticket::showCentralList(0, "waiting", false);
+
+       TicketTask::showCentralList(0, "todo", false);
+       
+   }
+   if ($showproblem) {
+       Problem::showCentralList(0, "process", false);
+       ProblemTask::showCentralList(0, "todo", false);
+   }
+   echo "</td></tr>";
+   echo "</table>";
+   echo "</div>";
+
+   echo "<div id='table2' style='width: 100%;'>";
+   echo "<table class='central' style='width: 100%;' aria-label='Central Table'>";
+   echo "<tr class='noHover'><td>";
+   Planning::showCentral(Session::getLoginUserID());
+   Reminder::showListForCentral();
+   if (Session::haveRight("reminder_public", READ)) {
+       Reminder::showListForCentral(false);
+   }
+   echo "</td></tr>";
+   echo "</table>";
+   echo "</div>";
+
+   echo "<div style='text-align: center; margin-top: 20px;'>";
+   echo "<button onclick='swapTables()' style='padding: 10px 20px; font-size: 16px;'>Inverser les tableaux</button>";
+   echo "</div>";
+
+   echo "</div>";
+
+   echo "<script type='text/javascript'>
+           function swapTables() {
+               var container = document.getElementById(\"main-container\");
+               var table1 = document.getElementById(\"table1\");
+               var table2 = document.getElementById(\"table2\");
+
+               // Vérifie l'ordre actuel des tableaux et les inverse
+               if (table1.nextSibling === table2) {
+                   container.insertBefore(table2, table1);
+               } else {
+                   container.insertBefore(table1, table2);
+               }
+           }
+         </script>";
+}
+
 
 
    /**
