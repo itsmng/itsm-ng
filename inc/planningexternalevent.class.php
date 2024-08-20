@@ -299,7 +299,7 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
                     __('Files') => [
                         'type' => 'files',
                         'name' => 'documents_id',
-                        'value' => $this->fields['documents_id'],
+                        'value' => $this->fields['documents_id'] ?? null,
                         'multiple' => true,
                         'col_lg' => 12,
                         'col_md' => 12,
