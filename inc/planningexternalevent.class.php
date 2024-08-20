@@ -255,7 +255,7 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
                         'values' => getOptionsForUsers('all', [], false),
                         'value' => $this->fields['users_id_guests'],
                         'multiple' => true,
-                        'after' => __('Each guest will have a read-only copy of this event'),
+                        'after' => "<i class='fas fa-info-circle' title='".__('Each guest will have a read-only copy of this event')."'></i>",
                     ],
                     __('Status') => [
                         'type' => 'select',
