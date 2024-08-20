@@ -736,34 +736,12 @@ class Reservation extends CommonDBChild {
                         'value' => $resa->fields["begin"],
                         'min'   => date('Y-m-d H:00:00'),
                     ],
-                    __('Duration') => [
-                        'type' => 'select',
-                        'name' => 'duration',
-                        'values' => [__('Specify an end date')] + Timezone::GetTimeStamp([
-                            'min'        => 0,
-                            'max'        => 24*HOUR_TIMESTAMP,
-                        ]),
-                        'value' => $default_delay,
-                        'hooks' => [
-                            'change' => <<<JS
-                               const value = this.value;
-                               const endDate = $('#entTimeStamp');
-                               if (value == 0) {
-                                   endDate.prop('disabled', false);
-                               } else {
-                                   endDate.prop('disabled', true);
-                               }
-                            JS,
-                        ],
-                    ],
                     __('End date') => [
                         'type'  => 'datetime-local',
                         'id'    => 'entTimeStamp',
                         'name'  => 'resa[end]',
                         'value' => $resa->fields["end"],
-                        'min'   => date('Y-m-d H:00:00', strtotime('+1 day')),
-                        'max'   => date('Y-m-d H:00:00'),
-                        'disabled' => true,
+                        'min'   => $this->fields["begin"] ?? date('Y-m-d H:00:00'),
                     ],
                     __('Repetition') => !empty($ID) ? [] : [
                         'type'  => 'select',

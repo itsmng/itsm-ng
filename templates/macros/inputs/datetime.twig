@@ -2,7 +2,7 @@
   {% set rand=random() %}
   <input class='form-control' step="1" {% if not attributes.id %} id={{rand}} {% endif %}
     {% for name, value in attributes %} {{name}}="{{value|replace({' ': 'T'})}}" {% endfor %}/>
-  <input type="hidden" id="hidden_{{attributes.id|default(rand)}}" name="{{attributes.name}}" value="{{attributes.value|replace({' ': 'T'})}}" {{attributes.disabled ? 'disabled' : ''}}>
+  <input type="hidden" id="hidden_{{attributes.id|default(rand)}}" name="{{attributes.name}}" value="{{attributes.value|replace({'T': ' '})}}" {{attributes.disabled ? 'disabled' : ''}}>
   <script>
   $('#{{attributes.id|default(rand)}}').on('change', function() {
       $('input[name="{{attributes.name}}"]').last().val($('#{{attributes.id|default(rand)}}').val().replace('T', ' '))
