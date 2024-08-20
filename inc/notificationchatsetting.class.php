@@ -123,7 +123,7 @@ class NotificationChatSetting extends NotificationSetting
                     'inputs'  => [
                         __('Mode') => [
                             'type'  => 'select',
-                            'name'  => 'chat',
+                            'name'  => 'chat_mode',
                             'values' => $chat_modes,
                             'value' => CHAT_SLACK,
                         ],

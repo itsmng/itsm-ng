@@ -1083,10 +1083,20 @@ class Planning extends CommonGLPI {
          $rights = 'groups';
       }
 
-      User::dropdown(['entity'      => $_SESSION['glpiactive_entity'],
-                           'entity_sons' => $_SESSION['glpiactive_entity_recursive'],
-                           'right'       => $rights,
-                           'used'        => $used]);
+      $users = getOptionsForUsers($rights,
+        ['entities_id' => $_SESSION['glpiactive_entity']]);
+      foreach ($used as $user) {
+         if (isset($users[$user])) {
+            unset($users[$user]);
+         }
+      }
+
+      renderTwigTemplate('macros/input.twig', [
+         'name'        => 'users_id',
+         'type'        => 'select',
+         'values'      => $users,
+      ]);
+
       echo "<br /><br />";
       echo Html::hidden('action', ['value' => 'send_add_user_form']);
       echo Html::submit(_sx('button', 'Add'));
