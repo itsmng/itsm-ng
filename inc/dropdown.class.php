@@ -1966,10 +1966,10 @@ class Dropdown {
          $deselect = __('None');
          $output  .= "<div class='invisible' id='selectallbuttons_$field_id'>";
          $output  .= "<div class='select2-actionable-menu'>";
-         $output  .= "<a class='vsubmit' ".
+         $output  .= "<a class='btn btn-sm btn-secondary' ".
                       "onclick=\"selectAll('$field_id');$('#$field_id').select2('close');\">$select".
                      "</a> ";
-         $output  .= "<a class='vsubmit floatright' onclick=\"deselectAll('$field_id');\">$deselect".
+         $output  .= "<a class='btn btn-sm btn-secondary floatright' onclick=\"deselectAll('$field_id');\">$deselect".
                      "</a>";
          $output  .= "</div></div>";
 

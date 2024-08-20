@@ -5348,7 +5348,7 @@ JAVASCRIPT;
          unset($options['type']);
       }
       return sprintf(
-         '<input type="%1$s" name="%2$s" %3$s />',
+         '<input type="%1$s" name="%2$s" %3$s class="form-control"/>',
          $type,
          Html::cleanInputText($fieldName),
          Html::parseAttributes($options)
