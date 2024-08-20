@@ -1440,15 +1440,13 @@ class Planning extends CommonGLPI {
 
       if ($display_dates) {
          echo "<tr class='tab_bg_2'><td>".__('Start date')."</td><td>";
-         Html::showDateTimeField("plan[begin]", [
-            'value'      => $begin,
-            'maybeempty' => false,
-            'canedit'    => true,
-            'mindate'    => '',
-            'maxdate'    => '',
-            'mintime'    => $mintime,
-            'maxtime'    => $CFG_GLPI["planning_end"],
-            'rand'       => $rand,
+         renderTwigTemplate('macros/input.twig', [
+            'name'        => 'plan[begin]',
+            'type'        => 'date',
+            'value'       => $begin ?? date("Y-m-d H:i:s"),
+            'required'    => true,
+            'min'         => $mintime,
+            'max'         => $CFG_GLPI["planning_end"],
          ]);
          echo "</td></tr>";
       }

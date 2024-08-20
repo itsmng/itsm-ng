@@ -571,6 +571,9 @@ class Reminder extends CommonDBVisible implements
     *     - from_planning_ajax : set to disable planning form part
     **/
    function showForm($ID, $options = []) {
+      global $CFG_GLPI;
+
+      $rand = mt_rand();
       $form = [
          'action' => Toolbox::getItemTypeFormURL('reminder'),
          'buttons' => [
@@ -627,6 +630,7 @@ class Reminder extends CommonDBVisible implements
                      'type' => 'datetime-local',
                      'value' => str_replace(' ', 'T', $this->fields['begin_view_date'] ?? ''),
                      'step' => 1,
+                     'col_lg' => 6,
                   ],
                   __('End') => [
                      'id' => 'visibilityEndDate',
@@ -634,61 +638,51 @@ class Reminder extends CommonDBVisible implements
                      'type' => 'datetime-local',
                      'value' => str_replace(' ', 'T', $this->fields['end_view_date'] ?? ''),
                      'step' => 1,
+                     'col_lg' => 6,
                   ],
                ]
             ] : [],
             _n('Calendar', 'Calendars', 1) => [
                'visible' => true,
                'inputs' => [
-                  __('From') => isset($options['from_planning_ajax']) ? [
-                     'content' => sprintf(__('%1$s to %2$s'), Html::convDateTime($options["begin"]),
-                        Html::convDateTime($options["end"])),
-                  ] : [],
-                  __('Planning') => [
-                     'name' => 'is_planned',
-                     'id' => 'isPlannedCheckbox',
-                     'type' => 'checkbox',
-                     'value' => isset($this->fields['begin']) ? '1' : '0',
-                     'hooks' => [
-                        'change' => <<<JS
-                           if ($(this).is(':checked')) {
-                              $('input[name="plan[begin]"]').prop('disabled', false);
-                              $('input[name="plan[end]"]').prop('disabled', false);
-                           } else {
-                              $('input[name="plan[begin]"]').prop('disabled', true);
-                              $('input[name="plan[end]"]').prop('disabled', true);
-                           }
-                        JS,
-                     ],
-                     'init' => <<<JS
-                        if ($(this).is(':checked')) {
-                           $('input[name="plan[begin]"]').prop('disabled', false);
-                           $('input[name="plan[end]"]').prop('disabled', false);
-                        } else {
-                           $('input[name="plan[begin]"]').prop('disabled', true);
-                           $('input[name="plan[end]"]').prop('disabled', true);
-                        }
-                     JS,
-                     $this->isNewID($ID) ? '' : 'disabled' => ''
+                  '' => [
+                    'content' => (function() use ($rand) {
+                        $planLabel = !$this->fields['is_planned'] ? __('Add to planning') : sprintf(__('from %1$s to %2$s'),
+                           Html::convDateTime($this->fields['begin']),
+                           Html::convDateTime($this->fields['end']));
+                        return <<<HTML
+                           <div id="plan{$rand}" onClick="showPlanUpdate{$rand}()">
+                              <span class="btn">$planLabel</span>
+                           </div>
+                        HTML;
+                    })(),
+                    'col_lg' => 12,
+                    'col_md' => 12,
                   ],
-                  __('Begin') => [
-                     'name' => 'plan[begin]',
-                     'type' => 'datetime-local',
-                     'value' => $this->fields['begin'] ?? '',
-                  ],
-                  __('End') => [
-                     'name' => 'plan[end]',
-                     'type' => 'datetime-local',
-                     'value' => $this->fields['end'] ?? '',
-                  ],
-                  _x('Planning', 'Reminder') => ($ID && isset($this->fields["is_planned"]) && PlanningRecall::isAvailable()) ? ( $this->can($ID, UPDATE) ? [
-                  ] : [
-                     'content' => PlanningRecall::specificForm(['itemtype' => 'Reminder', 'items_id' => $ID]),
-                  ]) : [],
-               ]
-            ],
+               ],
+            ]
          ]
       ];
+      $userId = Session::getLoginUserID();
+      echo Html::scriptBlock(<<<JS
+         function showPlanUpdate{$rand}() {
+            $.ajax({
+               url: "{$CFG_GLPI["root_doc"]}/ajax/planning.php",
+               type: "POST",
+               data: {
+                  action: 'add_event_classic_form',
+                  form: 'remind',
+                  user_tech: {$userId},
+                  itemtype: 'Reminder',
+                  items_id: {$this->fields["id"]}
+               }
+             }
+            ).done(function(data) {
+               $('#plan{$rand}').replaceWith(data);
+            });
+         }
+      JS
+      );
 
       renderTwigForm($form);
 

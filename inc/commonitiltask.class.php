@@ -1451,9 +1451,12 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
          $options[$fkfield] = $item->getField('id');
          $this->check(-1, CREATE, $options);
       }
-      
-      // $canplan = (!$item->isStatusExists(CommonITILObject::PLANNED)
-      // || $item->isAllowedStatus($item->fields['status'], CommonITILObject::PLANNED));
+
+      $canplan = (!$item->isStatusExists(CommonITILObject::PLANNED)
+          || $item->isAllowedStatus($item->fields['status'], CommonITILObject::PLANNED));
+      $rand = mt_rand();
+
+      $planLabel = __('Plan this task');
 
       $form = [
          'action' => $this->getFormURL(),
@@ -1601,7 +1604,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                      'value' => (($ID > -1) ? $this->fields["users_id_tech"] : Session::getLoginUserID()),
                      'actions' => getItemActionButtons(['info'], User::class),
                      'after' => <<<HTML
-                        <a class="btn border"
+                        <a
                            href="{$CFG_GLPI['root_doc']}/front/planning.php?checkavailability=checkavailability&itemtype={$item->getType()}&{$fkfield}={$item->getID()}">
                            <i class='far fa-calendar-alt' title="Calendar"></i>
                         </a>
@@ -1624,10 +1627,39 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                      'col_lg' => 12,
                      'col_md' => 12,
                   ],
+                  __('Planning') => $canplan ? [
+                     'content' => <<<HTML
+                        <div id="plan{$rand}" onClick="showPlanUpdate{$rand}()">
+                           <span class="btn btn-secondary">$planLabel</span>
+                        </div>
+                     HTML,
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ] : [],
                ]
             ]
          ]
       ];
+      $entity = Session::getActiveEntity();
+      echo Html::scriptBlock(<<<JS
+         function showPlanUpdate{$rand}() {
+            $.ajax({
+               url: "{$CFG_GLPI["root_doc"]}/ajax/planning.php",
+               type: "POST",
+               data: {
+                  action: 'add_event_classic_form',
+                  form: 'followups',
+                  entity: {$entity},
+                  itemtype: 'TicketTask',
+                  items_id: {$item->getID()}
+               }
+             }
+            ).done(function(data) {
+               $('#plan{$rand}').replaceWith(data);
+            });
+         }
+      JS
+      );
       renderTwigForm($form);
       return true;
    }
@@ -1848,13 +1880,13 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                   $item_link->getFromDB($job->fields['problems_id']);
                   $tab_name = "ProblemTask";
                }
-      
+
                $bgcolor = $_SESSION["glpipriority_".$item_link->fields["priority"]];
                $name    = sprintf(__('%1$s: %2$s'), __('ID'), $job->fields["id"]);
                $newValue[] = "<div class='priority_block' style='border-color: $bgcolor'>
                   <span style='background: $bgcolor'></span>&nbsp;$name</div>";
                $newValue[] = $item_link->fields['name'];
-      
+
                $link = "<a href='".$item_link->getFormURLWithID($item_link->fields["id"]);
                $link .= "&amp;forcetab=".$tab_name."$1";
                $link   .= "'>";
