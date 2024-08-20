@@ -31,14 +31,15 @@
 			</div>
 
 			{% if main_menu.args.access == 'central' %}
-            <div id="searchbar">
-                <form aria-label="{{"Search"|trans}}" role="search" method="get" action="{{root_doc}}/front/search.php">
-                    <input type="search" name="globalsearch" aria-label="Valider" placeholder="{{"Search"|trans}}...">
-                    <button type="submit" class="btn btn-link">
-                        <i class="fa fa-search" title="{{"Search"|trans}}"></i>
-                    </button>
-                </form>
-            </div>
+				<div id="searchbar">
+					<form aria-label="{{"Search"|trans}}" role="search" method="get" action="{{root_doc}}/front/search.php">
+						<button type="button" id="search-icon" class="btn btn-link">
+							<i class="fa fa-search" title="{{"Search"|trans}}"></i>
+						</button>
+						<input type="search" name="globalsearch" aria-label="Valider" placeholder="{{"Search"|trans}}..." id="search-input">
+					</form>
+				</div>
+				
 			{% endif %}
 
 			<div class="d-flex justify-content-start align-items-center">
@@ -119,3 +120,31 @@
 					{% include "headers/utils/actions.twig" with {'links': links, 'root_doc':root_doc} %}
 				</div>
 				<main role='main' id='page'>
+
+
+<script>
+	document.getElementById('search-icon').addEventListener('click', function() {
+		const searchBar = document.getElementById('searchbar');
+		const searchInput = document.getElementById('search-input');
+	
+		if (searchBar.classList.contains('expanded')) {
+			searchInput.blur();
+			searchBar.classList.remove('expanded');
+		} else {
+			searchBar.classList.add('expanded');
+			searchInput.focus();
+		}
+	});
+	
+	document.addEventListener('click', function(event) {
+		const searchBar = document.getElementById('searchbar');
+		const searchInput = document.getElementById('search-input');
+		const searchIcon = document.getElementById('search-icon');
+	
+		if (!searchBar.contains(event.target) && !searchIcon.contains(event.target)) {
+			searchBar.classList.remove('expanded');
+			searchInput.blur();
+		}
+	});
+	
+</script>	

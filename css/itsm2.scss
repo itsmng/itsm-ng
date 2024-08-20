@@ -30,35 +30,50 @@ a {
 
 div#searchbar {
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
     align-items: center;
+    position: relative;
     height: 2.5rem;
     border-radius: 20px;
     background-color: white;
     padding: 2px 10px;
-
-    input[type="search"] {
-        height: 90%;
-        outline: 0;
-        border: 0;
-    }
-
-    .fa-search {
-        background-color: transparent;
-        color: var(--bs-primary);
-        padding: 10px;
-        border-radius: 50%;
-        transition: color 0.3s ease;
-        transition: background-color 0.3s ease;
-        cursor: pointer;
-    }
-
-    &:hover .fa-search {
-        background-color: var(--bs-primary);
-        color: var(--bs-primary-text);
-    }
+    transition: all 0.3s ease-in-out;
 }
+
+#search-icon {
+    font-size: 20px;
+    background-color: transparent;
+    border: none;
+    color: var(--bs-primary);
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+#search-icon:hover {
+    transform: scale(1.2);
+    color: var(--bs-primary-hover);
+}
+
+#search-input {
+    width: 0;
+    height: 100%;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+
+    transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#searchbar.expanded #search-input {
+    width: 200px;
+    opacity: 1;
+    visibility: visible;
+}
+
+
 
 header {
     display: flex;
