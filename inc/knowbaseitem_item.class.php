@@ -104,7 +104,7 @@ class KnowbaseItem_Item extends CommonDBRelation {
    **/
    static function showForItem(CommonDBTM $item, $withtemplate = 0) {
       global $CFG_GLPI;
-      
+
       $item_id = $item->getID();
       $item_type = $item::getType();
 
@@ -209,11 +209,29 @@ class KnowbaseItem_Item extends CommonDBRelation {
                            };
                            $.post(url, data, function(response) {
                               const jsonResponse = JSON.parse(response);
+                              $('#selectForItemKnowbaseItem').empty();
                               for (const key in jsonResponse) {
                                  if (jsonResponse.hasOwnProperty(key)) {
-                                    $('#selectForItemKnowbaseItem').append(
-                                       $('<option></option>').val(key).html(jsonResponse[key])
-                                    );
+                                    if (typeof(jsonResponse[key]) == 'object') {
+                                       const group = $("#selectForItemKnowbaseItem").append(
+                                          $("<optgroup></optgroup>")
+                                             .attr("label", key)
+                                       );
+                                       for (const [skey, svalue] of Object.entries(jsonResponse[key])) {
+                                          console.log(skey, svalue);
+                                          group.append(
+                                             $("<option></option>")
+                                                .attr("value", skey)
+                                                .text(svalue)
+                                          );
+                                       }
+                                    } else {
+                                       $("#selectForItemKnowbaseItem").append(
+                                          $("<option></option>")
+                                             .attr("value", key)
+                                             .text(jsonResponse[key])
+                                       );
+                                    }
                                  }
                               }
                            });
@@ -224,7 +242,7 @@ class KnowbaseItem_Item extends CommonDBRelation {
                         'name' => 'knowbaseitems_id',
                         'values' => getOptionForItems(KnowbaseItem::class,
                            (isset(KnowbaseItem::getVisibilityCriteria()['WHERE'])
-                              && count(KnowbaseItem::getVisibilityCriteria()['WHERE'])) 
+                              && count(KnowbaseItem::getVisibilityCriteria()['WHERE']))
                                  ? KnowbaseItem::getVisibilityCriteria()['WHERE'] : [],
                         ),
                         'value' => '',
