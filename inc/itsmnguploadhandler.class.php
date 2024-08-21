@@ -46,19 +46,21 @@ class ItsmngUploadHandler {
     const PLUGIN = GLPI_PLUGIN_DOC_DIR;
     const DUMP = GLPI_DUMP_DIR;
 
+    const TYPES = [self::UPLOAD, self::TMP, self::PICTURE, self::PLUGIN, self::DUMP];
+
     static function getUploadPath($type, $filename, $withDir = true) {
-        if (isset(self::$$type)) {
+        if (in_array($type, self::TYPES)) {
             $extension = strtoupper(pathinfo($filename, PATHINFO_EXTENSION)) . '/';
         } else {
             $extension = '';
         }
-        if (!file_exists($type . $extension)) {
-            if (!mkdir($type . $extension, 0777, true)) {
+        if (!file_exists($type . '/' . $extension)) {
+            if (!mkdir($type . '/' . $extension, 0777, true)) {
                 return false;
             }
         }
         if ($withDir) {
-            return $type . $extension;
+            return $type . '/' . $extension;
         }
         return $extension;
     }
