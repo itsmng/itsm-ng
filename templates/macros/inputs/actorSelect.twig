@@ -46,8 +46,12 @@
   }
 
   function setActorSelectValues{{rand}}() {
-    $("#ActorSelector_{{rand}}").attr("name", "_itil_{{attributes.actorType}}[" +
-      $("#ActorTypeSelector_{{rand}}")[0].value + "s_id]");
+    {% if attributes.single is defined and attributes.single %}
+    const name = "{{attributes.name}}";
+    {% else %}
+    const name = "_itil_{{attributes.actorType}}[" + $("#ActorTypeSelector_{{rand}}")[0].value + "s_id]";
+    {% endif %}
+    $("#ActorSelector_{{rand}}").attr("name", name);
     if ($("#ActorTypeSelector_{{rand}}").val() == 0) {
       $("#ActorSelector_{{rand}}").empty();
       $("#ActorSelector_{{rand}}").attr("disabled", true);
