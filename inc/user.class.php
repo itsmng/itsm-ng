@@ -749,8 +749,9 @@ class User extends CommonDBTM {
       } else {
          if (isset($picture) && !empty($picture) && $picture['path'] != $this->fields['picture']) {
             if (Document::isImage($picture['path'])) {
-               unlink(GLPI_DOC_DIR . '/' . $this->fields['picture']);
-               $uploadedPath = ItsmngUploadHandler::uploadFile($picture['path'], $picture['name'], ItsmngUploadHandler::PICTURE);
+               unlink(GLPI_PICTURE_DIR . '/' . $this->fields['picture']);
+               $uploadedPath = str_replace(GLPI_DOC_DIR . '/', '', GLPI_PICTURE_DIR) .
+                    '/' . ItsmngUploadHandler::uploadFile($picture['path'], $picture['name'], ItsmngUploadHandler::PICTURE);
                $input['picture'] = $uploadedPath;
             } else {
                Session::addMessageAfterRedirect(__('The file is not an image file.'),
