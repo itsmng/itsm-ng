@@ -24942,6 +24942,11 @@ msgstr "Læs noter"
 msgid "Navbar settings"
 msgstr "Mine indstillinger"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Sager"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Brug ITSM-NG"
 

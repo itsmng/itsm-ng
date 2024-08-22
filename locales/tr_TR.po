@@ -24921,6 +24921,11 @@ msgstr "Notları okuyun"
 msgid "Navbar settings"
 msgstr "Ayarlarım"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Destek kayıtları"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG Kullanmaya Geç"
 

@@ -25006,6 +25006,11 @@ msgstr "Oharrak irakurri"
 msgid "Navbar settings"
 msgstr "Nire ezarpenak"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Jarraipenak"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG erabili"
 

@@ -24825,6 +24825,11 @@ msgstr ""
 msgid "Navbar settings"
 msgstr "Stillingar"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Beiðnir"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Nota ITSM-NG"
 

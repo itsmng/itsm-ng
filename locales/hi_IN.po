@@ -24905,6 +24905,11 @@ msgstr "नोट्स पढ़ें"
 msgid "Navbar settings"
 msgstr "मेरी पतिस्थिति"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "टिकट"
+
 #~ msgid "Use GLPI"
 #~ msgstr "जीएलपीआई का उपयोग करें"
 

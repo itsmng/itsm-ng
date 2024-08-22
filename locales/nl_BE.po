@@ -25068,6 +25068,11 @@ msgstr "Lees opmerkingen"
 msgid "Navbar settings"
 msgstr "Mijn instellingen"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Incident-tickets"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gebruik ITSM-NG"
 

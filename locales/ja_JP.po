@@ -24515,6 +24515,11 @@ msgstr "メモの参照"
 msgid "Navbar settings"
 msgstr "個人別設定"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "チケット"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NGを使用"
 

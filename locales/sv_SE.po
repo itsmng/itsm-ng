@@ -24905,6 +24905,11 @@ msgstr ""
 msgid "Navbar settings"
 msgstr "Mina inställningar"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Ärenden"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Starta ITSM-NG"
 

@@ -24942,6 +24942,11 @@ msgstr "Megjegyzések olvasása"
 msgid "Navbar settings"
 msgstr "Saját beállítások"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Bejelentések"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG használata"
 

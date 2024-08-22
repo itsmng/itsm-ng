@@ -25309,6 +25309,11 @@ msgstr "Čitaj beleške"
 msgid "Navbar settings"
 msgstr "Moja podešavanja"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Tiketi"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Počni sa koriščenjem ITSM-NG"
 
