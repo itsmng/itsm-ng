@@ -29924,5 +29924,3 @@ msgstr ""
 
 msgid "Navbar settings"
 msgstr ""
-
-
