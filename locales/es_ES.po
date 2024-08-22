@@ -25072,6 +25072,11 @@ msgstr "Tipo de letra legible"
 msgid "Navbar settings"
 msgstr "Mis opciones"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Peticiones"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"
 

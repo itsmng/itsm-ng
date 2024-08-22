@@ -24516,6 +24516,11 @@ msgstr "노트 읽기"
 msgid "Navbar settings"
 msgstr "내 설정"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "티켓"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG 사용"
 

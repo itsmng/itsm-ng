@@ -24413,3 +24413,8 @@ msgstr ""
 
 msgid "Navbar settings"
 msgstr ""
+
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "tiket tiket"

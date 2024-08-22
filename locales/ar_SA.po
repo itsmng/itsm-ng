@@ -26332,5 +26332,10 @@ msgstr "قراءة الملاحظات"
 msgid "Navbar settings"
 msgstr "إعداداتي"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "التذاكر"
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "الحساب glpi/glpi للمدراء"

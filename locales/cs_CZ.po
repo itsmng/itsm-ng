@@ -25674,6 +25674,11 @@ msgstr "Číst poznámky"
 msgid "Navbar settings"
 msgstr "Má nastavení"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Požadavky"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Používat ITSM-NG"
 

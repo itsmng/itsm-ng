@@ -24954,6 +24954,11 @@ msgstr "Lue huomautuksia"
 msgid "Navbar settings"
 msgstr "Omat asetukset"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Tiketit"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Käytä ITSM-NG:tä"
 

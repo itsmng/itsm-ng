@@ -24979,6 +24979,11 @@ msgstr "Ler notas"
 msgid "Navbar settings"
 msgstr "Minhas configurações"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Tickets"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Usar o ITSM-NG"
 

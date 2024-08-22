@@ -25711,6 +25711,11 @@ msgstr "Przeczytaj uwagi"
 msgid "Navbar settings"
 msgstr "Moje ustawienia"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Zgłoszenia"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Używaj ITSM-NG"
 

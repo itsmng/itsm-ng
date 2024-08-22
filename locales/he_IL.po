@@ -25623,6 +25623,11 @@ msgstr "קרא הערות"
 msgid "Navbar settings"
 msgstr "ההגדרות שלי"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "קריאות שירות"
+
 #~ msgid "Use GLPI"
 #~ msgstr "השתמש ב-ITSM-NG"
 

@@ -25281,3 +25281,8 @@ msgstr "Read notes"
 #| msgid "Settings"
 msgid "Navbar settings"
 msgstr "Settings"
+
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Tickets"

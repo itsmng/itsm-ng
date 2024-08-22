@@ -25278,6 +25278,11 @@ msgstr "Lasīt piezīmes"
 msgid "Navbar settings"
 msgstr "Mani uzstādījumi"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Pieteikumi"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Pieslēgties ITSM-NG"
 
