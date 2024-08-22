@@ -276,7 +276,10 @@ class Central extends CommonGLPI {
    echo "</div>";
 
    echo "<div style='text-align: center; margin-top: 20px;'>";
-   echo "<button onclick='swapTables()' style='padding: 10px 20px; font-size: 16px;'>Inverser les tableaux</button>";
+   echo "<button onclick='swapTables()' style='padding: 10px 20px; font-size: 16px;'>
+        <i class='fas fa-exchange-alt' title='Inverser les tableaux' style='transform: rotate(90deg);'></i>
+      </button>";
+
    echo "</div>";
 
    echo "</div>";

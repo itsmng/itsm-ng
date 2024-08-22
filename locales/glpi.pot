@@ -29925,4 +29925,6 @@ msgstr ""
 msgid "Navbar settings"
 msgstr ""
 
+msgid "All Tickets"
+msgstr ""
 
