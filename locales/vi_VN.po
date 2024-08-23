@@ -24604,6 +24604,11 @@ msgstr "Các thiết lập của tôi"
 msgid "All Tickets"
 msgstr "Ticket"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Các thẻ của bạn để xác nhận"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Dùng ITSM-NG"
 

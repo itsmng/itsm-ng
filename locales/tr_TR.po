@@ -24926,6 +24926,11 @@ msgstr "Ayarlarım"
 msgid "All Tickets"
 msgstr "Destek kayıtları"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Onaylanacak destek kayıtlarınız"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG Kullanmaya Geç"
 

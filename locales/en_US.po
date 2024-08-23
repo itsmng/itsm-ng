@@ -24878,6 +24878,11 @@ msgstr "My Settings"
 msgid "All Tickets"
 msgstr "Tickets"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Your Tickets to Validate"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Use ITSM-NG"
 

@@ -24947,6 +24947,11 @@ msgstr "Mine indstillinger"
 msgid "All Tickets"
 msgstr "Sager"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Dine sager til godkendelse"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Brug ITSM-NG"
 

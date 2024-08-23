@@ -25628,6 +25628,11 @@ msgstr "ההגדרות שלי"
 msgid "All Tickets"
 msgstr "קריאות שירות"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "הקריאות שלך לאישור"
+
 #~ msgid "Use GLPI"
 #~ msgstr "השתמש ב-ITSM-NG"
 

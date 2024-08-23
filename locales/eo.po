@@ -24965,6 +24965,11 @@ msgstr "Мои настройки"
 msgid "All Tickets"
 msgstr "Заявки"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Ваши заявки, которые нужно согласовать"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Запустить ITSM-NG"
 

@@ -25371,6 +25371,11 @@ msgstr "Setările mele"
 msgid "All Tickets"
 msgstr "Tichete"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Tichete nevalidate"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Folositi ITSM-NG"
 

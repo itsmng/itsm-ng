@@ -25716,6 +25716,11 @@ msgstr "Moje ustawienia"
 msgid "All Tickets"
 msgstr "Zgłoszenia"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Twoje zgłoszenia do weryfikacji"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Używaj ITSM-NG"
 

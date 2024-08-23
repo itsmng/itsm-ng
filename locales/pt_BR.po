@@ -25008,6 +25008,11 @@ msgstr "Minhas configurações"
 msgid "All Tickets"
 msgstr "Chamados"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Seus chamados a serem validados"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Usar ITSM-NG"
 

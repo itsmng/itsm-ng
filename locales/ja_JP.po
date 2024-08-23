@@ -24520,6 +24520,11 @@ msgstr "個人別設定"
 msgid "All Tickets"
 msgstr "チケット"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "検証予定のチケット"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NGを使用"
 

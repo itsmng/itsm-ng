@@ -25034,6 +25034,11 @@ msgstr "Οι ρυθμίσεις μου"
 msgid "All Tickets"
 msgstr "Αιτήματα"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Τα αιτήματά σας προς τεκμηρίωση"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Χρήση ITSM-NG"
 

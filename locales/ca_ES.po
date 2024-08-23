@@ -24986,6 +24986,11 @@ msgstr "Les meves opcions"
 msgid "All Tickets"
 msgstr "Incidències"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Les teves incidències per a validar"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilitza ITSM-NG"
 

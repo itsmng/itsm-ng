@@ -24940,6 +24940,11 @@ msgstr "As miñas configuracións"
 msgid "All Tickets"
 msgstr "Peticións"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "As súas peticións a validar"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"
 

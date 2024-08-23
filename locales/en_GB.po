@@ -25286,3 +25286,8 @@ msgstr "Settings"
 #| msgid "Tickets"
 msgid "All Tickets"
 msgstr "Tickets"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Tickets to validate"
+msgstr "For tickets closed after"

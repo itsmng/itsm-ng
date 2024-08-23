@@ -24906,5 +24906,10 @@ msgstr "تنظیم ها"
 msgid "All Tickets"
 msgstr "درخواست ها"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "درخواست شما اعتبارسنجی شد"
+
 #~ msgid "Use GLPI"
 #~ msgstr "استفاده از ITSM-NG"

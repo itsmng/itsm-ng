@@ -25011,6 +25011,11 @@ msgstr "Nire ezarpenak"
 msgid "All Tickets"
 msgstr "Jarraipenak"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Onesteko dauzkazun intzidentziak"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG erabili"
 

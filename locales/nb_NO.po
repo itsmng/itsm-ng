@@ -24940,6 +24940,11 @@ msgstr "Mine innstillinger"
 msgid "All Tickets"
 msgstr "Saker"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Dine saker, som trenger validering"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Bruk ITSM-NG"
 
