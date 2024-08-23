@@ -29928,8 +29928,5 @@ msgstr ""
 msgid "All Tickets"
 msgstr ""
 
-msgid "New tickets"
-msgstr ""
-
 msgid "Tickets to validate"
 msgstr ""
