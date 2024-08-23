@@ -1,3 +1,15 @@
+{% macro optgroup(name, options, selected) %}
+  <optgroup label="{{name}}">
+    {% for name, content in options %}
+      {% if content is iterable %}
+        {{ _self.optgroup(name, content) }}
+      {% else %}
+        <option value="{{name}}" {% if selected == name %}selected="selected"{% endif %}>{{content|raw}}</option>
+      {% endif %}
+    {% endfor %}
+  </optgroup>
+{% endmacro %}
+
 {% macro select(attributes) %}
   {% if not attributes.id %}
     {% set id = random() %}
@@ -16,13 +28,9 @@
     {% endif %}>
     {% for key, item in attributes.values %}
       {% if item is iterable %}
-        <optgroup label="{{key}}">
-          {% for key, item in item %}
-            <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
-          {% endfor %}
-        </optgroup>
+        {{ _self.optgroup(key, item) }}
       {% else %}
-        <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item}}</option>
+        <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item|raw}}</option>
       {% endif %}
     {% endfor %}
   </select>
@@ -58,6 +66,7 @@
                 }
             };
         {% endif %}
+        {% if (attributes.noLib is not defined or attributes.noLib == false) %}
         $.getScript('{{root_doc}}/node_modules/select2/dist/js/select2.min.js', function() {
             $('#{{attributes.id ? attributes.id : id}}').select2({
                 theme: 'bootstrap-5',
@@ -78,6 +87,7 @@
             {% endif %}
         });
       });
+      {% endif %}
   </script>
   {% endif %}
 {% endmacro %}

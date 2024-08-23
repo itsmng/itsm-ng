@@ -173,9 +173,7 @@ $('button.moveToMainButton').on('click', function(e) {
 $(function() {
     const sessionValues = JSON.parse(sessionStorage.getItem('{{itemName|slug}}')) ?? {};
     if (sessionValues.size) {
-        console.log(sessionValues.size);
         changeListSize(sessionValues.size, true);
-        console.log(JSON.parse(sessionStorage.getItem('{{itemName|slug}}')));
     }
     if (sessionValues.selected) {
         selectedTab = sessionValues.selected;
