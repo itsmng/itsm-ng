@@ -25041,3 +25041,9 @@ msgstr "Nouveaux tickets"
 
 msgid "All Tickets"
 msgstr "Tous les tickets"
+
+msgid "New Tickets"
+msgstr "Nouveaux tickets"   
+
+msgid "Tickets to validate"
+msgstr "Tickets à valider"

@@ -327,41 +327,49 @@ class Central extends CommonGLPI {
    /**
     * Show the central group view
    **/
-   static function showGroupView() {
+ static function showGroupView() {
 
-      $showticket = Session::haveRightsOr("ticket", [Ticket::READALL, Ticket::READASSIGN]);
+    $showticket = Session::haveRightsOr("ticket", [Ticket::READALL, Ticket::READASSIGN]);
 
-      $showproblem = Session::haveRightsOr('problem', [Problem::READALL, Problem::READMY]);
+    $showproblem = Session::haveRightsOr('problem', [Problem::READALL, Problem::READMY]);
 
-      echo "<table class='tab_cadre_central' aria-label='Group Table'>";
-      echo "<tr class='noHover'><td class='top' width='50%'><table class='central' aria-label='group view'>";
-      echo "<tr class='noHover'><td>";
-      if ($showticket) {
-         Ticket::showCentralList(0, "process", true);
-         TicketTask::showCentralList(0, "todo", true);
-      }
-      if (Session::haveRight('ticket', Ticket::READGROUP)) {
-         Ticket::showCentralList(0, "waiting", true);
-      }
-      if ($showproblem) {
-         Problem::showCentralList(0, "process", true);
-         ProblemTask::showCentralList(0, "todo", true);
-      }
+    echo "<div class='group-view-container'>";
+    echo "<div class='group-view-table'>";
+    echo "<table class='central' aria-label='Group View'>";
+    echo "<tr class='noHover'><td>";
+    if ($showticket) {
+        Ticket::showCentralList(0, "process", true);
+        TicketTask::showCentralList(0, "todo", true);
+    }
+    if (Session::haveRight('ticket', Ticket::READGROUP)) {
+        Ticket::showCentralList(0, "waiting", true);
+    }
+    if ($showproblem) {
+        Problem::showCentralList(0, "process", true);
+        ProblemTask::showCentralList(0, "todo", true);
+    }
+    
+    echo "</td></tr>";
+    echo "</table>";
+    echo "</div>";
 
-      echo "</td></tr>";
-      echo "</table></td>";
-      echo "<td class='top' width='50%'><table class='central' aria-label='Group View'>";
-      echo "<tr class='noHover'><td>";
-      if (Session::haveRight('ticket', Ticket::READGROUP)) {
-         Ticket::showCentralList(0, "observed", true);
-         Ticket::showCentralList(0, "toapprove", true);
-         Ticket::showCentralList(0, "requestbyself", true);
-      } else {
-         Ticket::showCentralList(0, "waiting", true);
-      }
-      echo "</td></tr>";
-      echo "</table></td></tr></table>";
-   }
+    echo "<div class='group-view-table'>";
+    echo "<table class='central' aria-label='Group View'>";
+    echo "<tr class='noHover'><td>";
+    if (Session::haveRight('ticket', Ticket::READGROUP)) {
+        Ticket::showCentralList(0, "observed", true);
+        Ticket::showCentralList(0, "toapprove", true);
+        Ticket::showCentralList(0, "requestbyself", true);
+    } else {
+        Ticket::showCentralList(0, "waiting", true);
+    }
+    echo "</td></tr>";
+    echo "</table>";
+    echo "</div>";
+
+    echo "</div>";
+}
+
 
 
    static function showMessages() {
