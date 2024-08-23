@@ -24830,6 +24830,11 @@ msgstr "Loe märkusi"
 msgid "Navbar settings"
 msgstr "Minu seaded"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Teated"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Alusta ITSM-NG kasutamist"
 

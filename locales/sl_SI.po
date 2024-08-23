@@ -25594,6 +25594,11 @@ msgstr ""
 msgid "Navbar settings"
 msgstr "Moje nastavitve"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Naloge"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Uporabi ITSM-NG"
 

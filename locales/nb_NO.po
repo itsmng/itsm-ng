@@ -24935,6 +24935,11 @@ msgstr "Les notater"
 msgid "Navbar settings"
 msgstr "Mine innstillinger"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Saker"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Bruk ITSM-NG"
 

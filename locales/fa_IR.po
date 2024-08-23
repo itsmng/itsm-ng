@@ -24901,5 +24901,10 @@ msgstr ""
 msgid "Navbar settings"
 msgstr "تنظیم ها"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "درخواست ها"
+
 #~ msgid "Use GLPI"
 #~ msgstr "استفاده از ITSM-NG"

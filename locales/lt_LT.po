@@ -25667,5 +25667,10 @@ msgstr ""
 msgid "Navbar settings"
 msgstr "Asmeniniai nustatymai"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Paraiškos"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Į ITSM-NG"

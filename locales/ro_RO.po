@@ -25366,6 +25366,11 @@ msgstr "Citeste note"
 msgid "Navbar settings"
 msgstr "Setările mele"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Tichete"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Folositi ITSM-NG"
 

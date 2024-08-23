@@ -24813,3 +24813,8 @@ msgstr ""
 #| msgid "Settings"
 msgid "Navbar settings"
 msgstr "Instillinger"
+
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Oppgaver"

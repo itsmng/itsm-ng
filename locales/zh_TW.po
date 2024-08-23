@@ -24516,6 +24516,11 @@ msgstr "讀取註解"
 msgid "Navbar settings"
 msgstr "我的設定"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "待辦事項"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"
 

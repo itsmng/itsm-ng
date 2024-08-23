@@ -24428,6 +24428,11 @@ msgstr "阅读笔记"
 msgid "Navbar settings"
 msgstr "我的设置"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "工单"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"
 

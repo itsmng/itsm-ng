@@ -25029,6 +25029,11 @@ msgstr "Ανάγνωση σημειώσεων"
 msgid "Navbar settings"
 msgstr "Οι ρυθμίσεις μου"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Αιτήματα"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Χρήση ITSM-NG"
 

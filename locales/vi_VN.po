@@ -24599,6 +24599,11 @@ msgstr "Đọc các ghi chú"
 msgid "Navbar settings"
 msgstr "Các thiết lập của tôi"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Ticket"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Dùng ITSM-NG"
 

@@ -25069,6 +25069,11 @@ msgstr "Notizen lesen"
 msgid "Navbar settings"
 msgstr "Benutzereinstellungen"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Tickets"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG benutzen"
 

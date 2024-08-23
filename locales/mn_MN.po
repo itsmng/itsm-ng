@@ -24969,6 +24969,11 @@ msgstr "Тэмдэглэл унших"
 msgid "Navbar settings"
 msgstr "Миний тохиргоо"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Дуудлага"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG ашиглах"
 

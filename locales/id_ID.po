@@ -24562,5 +24562,10 @@ msgstr "Baca catatan"
 msgid "Navbar settings"
 msgstr "Seting"
 
+#, fuzzy
+#| msgid "Tickets"
+msgid "All Tickets"
+msgstr "Tiket"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gunakan ITSM-NG"
