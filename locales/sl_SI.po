@@ -25599,6 +25599,11 @@ msgstr "Moje nastavitve"
 msgid "All Tickets"
 msgstr "Naloge"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Tvoja opravila so veljavna"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Uporabi ITSM-NG"
 

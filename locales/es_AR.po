@@ -25046,6 +25046,11 @@ msgstr "Mis preferencias"
 msgid "All Tickets"
 msgstr "Servicios"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Sus servicios a convalidar"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"
 

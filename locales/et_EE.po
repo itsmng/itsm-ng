@@ -24835,6 +24835,11 @@ msgstr "Minu seaded"
 msgid "All Tickets"
 msgstr "Teated"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Kinnitamist ootavad teated"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Alusta ITSM-NG kasutamist"
 

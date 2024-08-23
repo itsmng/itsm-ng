@@ -24894,5 +24894,10 @@ msgstr ""
 msgid "All Tickets"
 msgstr "ಟಿಕೆಟ್ಗಳು"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "ಮೌಲ್ಯೀಕರಿಸಲು ನಿಮ್ಮ ಟಿಕೆಟ್"
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "ನಿರ್ವಾಹಕ ಖಾತೆಗೆ glpi / glpi"

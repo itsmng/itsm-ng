@@ -25073,6 +25073,11 @@ msgstr "Mijn instellingen"
 msgid "All Tickets"
 msgstr "Incident-tickets"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Uw incident-tickets ter validatie"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gebruik ITSM-NG"
 

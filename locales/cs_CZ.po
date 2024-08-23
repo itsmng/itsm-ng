@@ -25679,6 +25679,11 @@ msgstr "Má nastavení"
 msgid "All Tickets"
 msgstr "Požadavky"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Vaše požadavky ke schválení"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Používat ITSM-NG"
 

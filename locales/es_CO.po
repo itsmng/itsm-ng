@@ -25022,6 +25022,11 @@ msgstr "Mis preferencias"
 msgid "All Tickets"
 msgstr "Casos"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Sus casos por validar"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"
 

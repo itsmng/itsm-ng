@@ -24418,3 +24418,8 @@ msgstr ""
 #| msgid "Tickets"
 msgid "All Tickets"
 msgstr "tiket tiket"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Tickets to validate"
+msgstr "Untuk tiket yang ditutup selepas"

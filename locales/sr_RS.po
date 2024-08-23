@@ -25314,6 +25314,11 @@ msgstr "Moja podešavanja"
 msgid "All Tickets"
 msgstr "Tiketi"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Vaši tiketi za potvrdu"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Počni sa koriščenjem ITSM-NG"
 

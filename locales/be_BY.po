@@ -25490,3 +25490,8 @@ msgstr ""
 #| msgid "Tickets"
 msgid "All Tickets"
 msgstr "Заяўкі"
+
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Tickets to validate"
+msgstr "Для заявак, закрытых пасля"

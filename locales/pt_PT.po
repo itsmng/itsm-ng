@@ -24984,6 +24984,11 @@ msgstr "Minhas configurações"
 msgid "All Tickets"
 msgstr "Tickets"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Os seus tickets para validar"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Usar o ITSM-NG"
 

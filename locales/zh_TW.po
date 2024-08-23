@@ -24521,6 +24521,11 @@ msgstr "我的設定"
 msgid "All Tickets"
 msgstr "待辦事項"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "您待檢驗的待辦事項"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"
 

@@ -24433,6 +24433,11 @@ msgstr "我的设置"
 msgid "All Tickets"
 msgstr "工单"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "您待确认的工单"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"
 
