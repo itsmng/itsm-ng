@@ -25036,9 +25036,6 @@ msgstr "Police lisible"
 msgid "Navbar settings"
 msgstr "Paramètres de la barre de navigation"
 
-msgid "New tickets"
-msgstr "Nouveaux tickets"
-
 msgid "All Tickets"
 msgstr "Tous les tickets"
 
