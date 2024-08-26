@@ -137,11 +137,6 @@ abstract class LevelAgreement extends CommonDBChild {
     *@return boolean item found
    **/
    function showForm($ID, $options = []) {
-      $rowspan = 3;
-      if ($ID > 0) {
-         $rowspan = 5;
-      }
-
       // Get SLM object
       $slm = new SLM();
       if (isset($options['parent'])) {
@@ -165,105 +160,92 @@ abstract class LevelAgreement extends CommonDBChild {
       ob_start();
       $this->showFormWarning();
       $warnings = ob_get_clean();
-      
-      $form = [
-         'action' => $options['target'] ?? $this->getFormURL(),
-         'buttons' => [
-            [
-               'type' => 'submit',
-               'name' => $this->isNewID($ID) ? 'add' : 'update',
-               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-               'class' => 'btn btn-secondary'
-            ],
-            !$this->isNewID($ID) && $this->can($ID, PURGE) ? [
-               'type' => 'submit',
-               'name' => 'purge',
-               'value' => __('Delete permanently'),
-               'class' => 'btn btn-danger'
-            ] : null,
-            ],
-            'content' => [
-               '' => [
-                  'visible' => true,
-                  'inputs' => [
-                     $this->isNewID($ID) ? [] : [
-                        'type' => 'hidden',
-                        'name' => 'id',
-                        'value' => $ID
-                     ],
-                     __('Name') => [
-                        'type' => 'text',
-                        'name' => 'name',
-                        'value' => $this->fields['name'],
-                     ],
-                     __('SLM') => [
-                        'content' => $slm->getLink(),
-                     ],
-                     [
-                        'type' => 'hidden',
-                        'name' => 'slms_id',
-                        'value' => $this->fields['slms_id'],
-                     ],
-                     __('Last update') => $ID > 0 ? [
-                        'content' => $this->fields["date_mod"] ? Html::convDateTime($this->fields["date_mod"])
-                        : __('Never'),
-                     ] : [],
-                     _n('Type', 'Types', 1) => [
-                        'type' => 'select',
-                        'name' => 'type',
-                        'value' => $this->fields['type'],
-                        'values' => self::getTypes(),
-                     ],
 
-                        __('Maximum time') => [
-                           'type' => 'number',
-                           'name' => 'number_time',
-                           'value' => $this->fields['number_time'],
-                        'min' => 0,
-                     ],
-                     '' => [
-                        'type' => 'select',
-                        'name' => 'definition_time',
-                        'id' => 'dropdown_definition_time',
-                        'value' => $this->fields['definition_time'],
-                        'values' => [
-                           'minute' => _n('Minute', 'Minutes', Session::getPluralNumber()),
-                           'hour' => _n('Hour', 'Hours', Session::getPluralNumber()),
-                           'day' => _n('Day', 'Days', Session::getPluralNumber()),
-                        ],
-                        'hooks' => [
-                           'change' => <<<JS
-                           if ($('#dropdown_definition_time').val() == 'day') {
-                              $('#end_of_working_day').removeAttr('disabled');
-                           } else {
-                              $('#end_of_working_day').attr('disabled', 'disabled');
-                           }
-                           JS,
-                        ]
-                     ],
-                     __('End of working day') => [
-                        'type' => 'checkbox',
-                        'id' => 'end_of_working_day',
-                        'name' => 'end_of_working_day',
-                        'value' => $this->fields['end_of_working_day'],
-                        $this->fields['calendars_id'] != 'day' ? 'disabled' : '' => true,
-                     ],
-                     __('Comments') => [
-                        'type' => 'textarea',
-                        'name' => 'comment',
-                        'value' => $this->fields['comment'],
-                        'rows' => 8,
-                        'col_lg' => 12,
-                        'col_md' => 12,
-                     ],
-                     ' ' => [
-                        'content' => $warnings,
-                     ]
-                  ]
-               ]
-            ]
+      $form = [
+        'action' => $options['target'] ?? $this->getFormURL(),
+        'itemtype' => $this->getType(),
+        'content' => [
+           '' => [
+              'visible' => true,
+              'inputs' => [
+                 $this->isNewID($ID) ? [] : [
+                    'type' => 'hidden',
+                    'name' => 'id',
+                    'value' => $ID
+                 ],
+                 __('Name') => [
+                    'type' => 'text',
+                    'name' => 'name',
+                    'value' => $this->fields['name'],
+                 ],
+                 __('SLM') => [
+                    'content' => $slm->getLink(),
+                 ],
+                 [
+                    'type' => 'hidden',
+                    'name' => 'slms_id',
+                    'value' => $this->fields['slms_id'],
+                 ],
+                 __('Last update') => $ID > 0 ? [
+                    'content' => $this->fields["date_mod"] ? Html::convDateTime($this->fields["date_mod"])
+                    : __('Never'),
+                 ] : [],
+                 _n('Type', 'Types', 1) => [
+                    'type' => 'select',
+                    'name' => 'type',
+                    'value' => $this->fields['type'],
+                    'values' => self::getTypes(),
+                 ],
+
+                    __('Maximum time') => [
+                       'type' => 'number',
+                       'name' => 'number_time',
+                       'value' => $this->fields['number_time'],
+                    'min' => 0,
+                 ],
+                 '' => [
+                    'type' => 'select',
+                    'name' => 'definition_time',
+                    'id' => 'dropdown_definition_time',
+                    'value' => $this->fields['definition_time'],
+                    'values' => [
+                       'minute' => _n('Minute', 'Minutes', Session::getPluralNumber()),
+                       'hour' => _n('Hour', 'Hours', Session::getPluralNumber()),
+                       'day' => _n('Day', 'Days', Session::getPluralNumber()),
+                    ],
+                    'hooks' => [
+                       'change' => <<<JS
+                       if ($('#dropdown_definition_time').val() == 'day') {
+                          $('#end_of_working_day').removeAttr('disabled');
+                       } else {
+                          $('#end_of_working_day').attr('disabled', 'disabled');
+                       }
+                       JS,
+                    ]
+                 ],
+                 __('End of working day') => [
+                    'type' => 'checkbox',
+                    'id' => 'end_of_working_day',
+                    'name' => 'end_of_working_day',
+                    'value' => $this->fields['end_of_working_day'],
+                    $this->fields['calendars_id'] != 'day' ? 'disabled' : '' => true,
+                 ],
+                 __('Comments') => [
+                    'type' => 'textarea',
+                    'name' => 'comment',
+                    'value' => $this->fields['comment'],
+                    'rows' => 8,
+                    'col_lg' => 12,
+                    'col_md' => 12,
+                 ],
+                 ' ' => [
+                    'content' => $warnings,
+                 ]
+              ]
+           ]
+        ]
       ];
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
 
       return true;
    }
