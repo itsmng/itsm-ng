@@ -2874,7 +2874,6 @@ JAVASCRIPT;
                            fields[$(this).attr('name')] = 0;
                         }
                     });
-                  console.log(items);
                JS : <<<JS
                   let rows = $("#$identifier").bootstrapTable('getSelections');
                   for (let i = 0; i < rows.length; i++) {
