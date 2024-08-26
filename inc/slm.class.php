@@ -108,20 +108,7 @@ class SLM extends CommonDBTM
    {
       $form = [
          'action' => Toolbox::getItemTypeFormURL('slm'),
-         'buttons' => [
-            [
-               'type' => 'submit',
-               'name' => $this->isNewID($ID) ? 'add' : 'update',
-               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-               'class' => 'btn btn-secondary',
-            ],
-            $this->isNewID($ID) ? [] : [
-               'type' => 'submit',
-               'name' => 'purge',
-               'value' => __('Delete permanently'),
-               'class' => 'btn btn-secondary'
-            ]
-         ],
+         'itemtype' => $this->getType(),
          'content' => [
             __('Niveau de services') => [
                'visible' => true,
@@ -152,7 +139,7 @@ class SLM extends CommonDBTM
             ]
          ]
       ];
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
 
       return true;
    }
