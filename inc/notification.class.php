@@ -206,7 +206,7 @@ class Notification extends CommonDBTM {
          }
       }
 
-      $events = [];
+      $events = [Dropdown::EMPTY_VALUE];
       $target = NotificationTarget::getInstanceByType($this->fields['itemtype']);
       if ($target) {
          $events = $target->getAllEvents();
