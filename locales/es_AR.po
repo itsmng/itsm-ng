@@ -25051,6 +25051,16 @@ msgstr "Servicios"
 msgid "Tickets to validate"
 msgstr "Sus servicios a convalidar"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Nuevo incidente"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Agregar cartuchos"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"
 

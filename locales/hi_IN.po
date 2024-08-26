@@ -24915,6 +24915,16 @@ msgstr "टिकट"
 msgid "Tickets to validate"
 msgstr "मान्य करने के लिए आपके टिकट"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "नया टिकट"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "कारतूस जोड़ें"
+
 #~ msgid "Use GLPI"
 #~ msgstr "जीएलपीआई का उपयोग करें"
 

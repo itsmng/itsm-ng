@@ -25639,6 +25639,16 @@ msgstr "Заявки"
 msgid "Tickets to validate"
 msgstr "Ваші заявки в перевірці"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Нова заявка"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Додати картриджі"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Запустити ITSM-NG"
 

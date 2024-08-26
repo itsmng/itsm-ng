@@ -25684,6 +25684,16 @@ msgstr "Požadavky"
 msgid "Tickets to validate"
 msgstr "Vaše požadavky ke schválení"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Nový požadavek"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Přidat náplně"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Používat ITSM-NG"
 

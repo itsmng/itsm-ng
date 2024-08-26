@@ -24526,6 +24526,16 @@ msgstr "待辦事項"
 msgid "Tickets to validate"
 msgstr "您待檢驗的待辦事項"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "新增待辦事項"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "新增印表機耗材"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"
 

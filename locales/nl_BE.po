@@ -25078,6 +25078,16 @@ msgstr "Incident-tickets"
 msgid "Tickets to validate"
 msgstr "Uw incident-tickets ter validatie"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Nieuw incident-ticket toevoegen"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Cartridges toevoegen"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gebruik ITSM-NG"
 

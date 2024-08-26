@@ -25376,6 +25376,16 @@ msgstr "Tichete"
 msgid "Tickets to validate"
 msgstr "Tichete nevalidate"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Tichet nou"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Adăugare cartuşe"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Folositi ITSM-NG"
 

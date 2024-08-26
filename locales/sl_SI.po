@@ -25604,6 +25604,16 @@ msgstr "Naloge"
 msgid "Tickets to validate"
 msgstr "Tvoja opravila so veljavna"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Novo nalogo"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Dodaj kartuše"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Uporabi ITSM-NG"
 

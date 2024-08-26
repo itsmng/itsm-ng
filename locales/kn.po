@@ -24899,5 +24899,15 @@ msgstr "ಟಿಕೆಟ್ಗಳು"
 msgid "Tickets to validate"
 msgstr "ಮೌಲ್ಯೀಕರಿಸಲು ನಿಮ್ಮ ಟಿಕೆಟ್"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "ಹೊಸ ಟಿಕೆಟ್"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "ಕಾರ್ಟ್ರಿಜ್ಗಳನ್ನು ಸೇರಿಸಿ"
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "ನಿರ್ವಾಹಕ ಖಾತೆಗೆ glpi / glpi"

@@ -25495,3 +25495,13 @@ msgstr "Заяўкі"
 #| msgid "For tickets closed after"
 msgid "Tickets to validate"
 msgstr "Для заявак, закрытых пасля"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Новая заявка"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Дадаць картрыджы"

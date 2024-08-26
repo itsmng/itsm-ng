@@ -24525,6 +24525,16 @@ msgstr "チケット"
 msgid "Tickets to validate"
 msgstr "検証予定のチケット"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "新しいチケット"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "カートリッジの追加"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NGを使用"
 

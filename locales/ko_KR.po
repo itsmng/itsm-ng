@@ -24526,6 +24526,16 @@ msgstr "티켓"
 msgid "Tickets to validate"
 msgstr "당신의 확인해야 할 표"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "새 티켓"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "카트리지 추가"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG 사용"
 
