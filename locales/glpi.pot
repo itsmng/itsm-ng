@@ -29930,3 +29930,9 @@ msgstr ""
 
 msgid "Tickets to validate"
 msgstr ""
+
+msgid "New widget"
+msgstr ""
+
+msgid "Add widget"
+msgstr ""

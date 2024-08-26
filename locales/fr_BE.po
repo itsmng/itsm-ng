@@ -25090,3 +25090,9 @@ msgstr "Vos tickets à valider"
 
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "glpi/glpi pour le compte administrateur"
+
+msgid "New widget"
+msgstr "Nouveau widget"
+
+msgid "Add widget"
+msgstr "Ajouter un widget"
