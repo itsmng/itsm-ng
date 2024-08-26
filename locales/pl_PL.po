@@ -25721,6 +25721,16 @@ msgstr "Zgłoszenia"
 msgid "Tickets to validate"
 msgstr "Twoje zgłoszenia do weryfikacji"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Nowe zgłoszenie"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Dodaj kartridże"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Używaj ITSM-NG"
 

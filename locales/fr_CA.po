@@ -25079,14 +25079,14 @@ msgstr "Tickets"
 msgid "Tickets to validate"
 msgstr "Vos tickets à valider"
 
-#~ msgid "Use GLPI"
-#~ msgstr "Utiliser ITSM-NG"
-
-#~ msgid "glpi/glpi for the administrator account"
-#~ msgstr "glpi/glpi pour le compte administrateur"
-
 msgid "New widget"
 msgstr "Nouveau widget"
 
 msgid "Add widget"
 msgstr "Ajouter un widget"
+
+#~ msgid "Use GLPI"
+#~ msgstr "Utiliser ITSM-NG"
+
+#~ msgid "glpi/glpi for the administrator account"
+#~ msgstr "glpi/glpi pour le compte administrateur"

@@ -25039,6 +25039,16 @@ msgstr "Αιτήματα"
 msgid "Tickets to validate"
 msgstr "Τα αιτήματά σας προς τεκμηρίωση"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Νέο αίτημα"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Προσθήκη φυσιγγίων"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Χρήση ITSM-NG"
 

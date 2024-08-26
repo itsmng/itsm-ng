@@ -25013,6 +25013,16 @@ msgstr "Chamados"
 msgid "Tickets to validate"
 msgstr "Seus chamados a serem validados"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Novo chamado"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Adicionar cartuchos"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Usar ITSM-NG"
 

@@ -25005,6 +25005,16 @@ msgstr "Chiamate"
 msgid "Tickets to validate"
 msgstr "Le tue chiamate da convalidate"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Nuova chiamata"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Aggiungi cartucce"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Usa ITSM-NG"
 

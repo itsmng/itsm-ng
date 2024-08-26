@@ -24952,6 +24952,16 @@ msgstr "Sager"
 msgid "Tickets to validate"
 msgstr "Dine sager til godkendelse"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Ny sag"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Tilføj patroner"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Brug ITSM-NG"
 

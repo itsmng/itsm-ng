@@ -25016,6 +25016,16 @@ msgstr "Jarraipenak"
 msgid "Tickets to validate"
 msgstr "Onesteko dauzkazun intzidentziak"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Intzidentzia sortu"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Gehitu kartutxoak"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG erabili"
 

@@ -24991,6 +24991,16 @@ msgstr "Incidències"
 msgid "Tickets to validate"
 msgstr "Les teves incidències per a validar"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Obre una incidència"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Afegeix cartutxos"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilitza ITSM-NG"
 

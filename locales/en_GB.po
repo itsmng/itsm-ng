@@ -25291,3 +25291,13 @@ msgstr "Tickets"
 #| msgid "For tickets closed after"
 msgid "Tickets to validate"
 msgstr "For tickets closed after"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "New ticket"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Add cartridges"

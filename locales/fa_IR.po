@@ -24911,5 +24911,15 @@ msgstr "درخواست ها"
 msgid "Tickets to validate"
 msgstr "درخواست شما اعتبارسنجی شد"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "درخواست جدید"
+
+#, fuzzy
+#| msgid "Add date"
+msgid "Add widget"
+msgstr "افزودن تاریخ"
+
 #~ msgid "Use GLPI"
 #~ msgstr "استفاده از ITSM-NG"

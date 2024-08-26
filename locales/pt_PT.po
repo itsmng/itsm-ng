@@ -24989,6 +24989,16 @@ msgstr "Tickets"
 msgid "Tickets to validate"
 msgstr "Os seus tickets para validar"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Novo ticket"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Adiciona cartuchos"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Usar o ITSM-NG"
 

@@ -24438,6 +24438,16 @@ msgstr "工单"
 msgid "Tickets to validate"
 msgstr "您待确认的工单"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "新增工单"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "添加打印耗材"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"
 

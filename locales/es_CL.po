@@ -24992,6 +24992,16 @@ msgstr "Incidentes"
 msgid "Tickets to validate"
 msgstr "Sus incidentes por validar"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Nuevo incidente"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Agregar cartuchos"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"
 

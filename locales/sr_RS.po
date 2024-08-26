@@ -25319,6 +25319,16 @@ msgstr "Tiketi"
 msgid "Tickets to validate"
 msgstr "Vaši tiketi za potvrdu"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Novi tiket"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Dodaj kertridže"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Počni sa koriščenjem ITSM-NG"
 

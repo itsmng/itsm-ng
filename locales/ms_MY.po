@@ -24423,3 +24423,13 @@ msgstr "tiket tiket"
 #| msgid "For tickets closed after"
 msgid "Tickets to validate"
 msgstr "Untuk tiket yang ditutup selepas"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Ticket baru"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Tambah katrij"

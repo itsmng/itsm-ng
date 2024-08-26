@@ -24840,6 +24840,16 @@ msgstr "Teated"
 msgid "Tickets to validate"
 msgstr "Kinnitamist ootavad teated"
 
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Uus teade"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Lisa kassette"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Alusta ITSM-NG kasutamist"
 
