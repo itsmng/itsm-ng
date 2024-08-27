@@ -1,5 +1,49 @@
 <?php
 
+function expandSelect(&$select, $fields = []) {
+    global $CFG_GLPI;
+
+    if (isset($select['itemtype']) && !isset($select['values'])) {
+        $restrict = $select['condition']['entities_id'] ?? $fields['entities_id'] ?? Session::getActiveEntity();
+        $recursive = $select['condition']['is_recursive'] ?? $fields['is_recursive'] ?? Session::getIsActiveEntityRecursive();
+        if (isset($select['condition']['entities_id'])) {
+            unset($select['condition']['entities_id']);
+        }
+        if (isset($select['condition']['is_recursive'])) {
+            unset($select['condition']['is_recursive']);
+        }
+        $select['values'] = ($select['display_emptychoice'] ?? true ? [DROPDOWN::EMPTY_VALUE] : []) +
+        getItemByEntity(
+            $select['itemtype'],
+            $restrict,
+            $select['condition'] ?? [],
+            $select['used'] ?? []
+        );
+        if (isset($select['value']) && !in_array($select['value'], $select['values'])) {
+            $item = new $select['itemtype'];
+            $item->getFromDB($select['value']);
+            if (isset($item->fields['name'])) {
+                $select['values'][$select['value']] = $item->fields['name'];
+            }
+        }
+        $select['ajax'] =
+            [
+                'url' => $CFG_GLPI['root_doc'] . '/ajax/getDropdownValue.php',
+                'type' => "POST",
+                'data' => [
+                    'itemtype' => $select['itemtype'],
+                    'display_emptychoice' => $select['display_emptychoice'] ?? 1,
+                    'condition' => $select['condition'] ?? [],
+                    'entity_restrict' => $restrict,
+                    'recursive' => $recursive,
+                    'used' => $select['used'] ?? [],
+                    'emptylabel' => Dropdown::EMPTY_VALUE,
+                    'permit_select_parent' => 0,
+                ],
+            ];
+    }
+}
+
 function expandForm($form, $fields = [])
 {
     global $CFG_GLPI;
@@ -7,52 +51,43 @@ function expandForm($form, $fields = [])
     foreach ($form['content'] as $contentKey => $content) {
         if (isset($content['inputs'])) {
             foreach ($content['inputs'] as $inputKey => $input) {
-                switch ($input['type'] ?? '')
-                {
-                    case 'select':
-                        if (isset($input['itemtype']) && !isset($input['values'])) {
-                            $restrict = $input['condition']['entities_id'] ?? $fields['entities_id'] ?? Session::getActiveEntity();
-                            $recursive = $input['condition']['is_recursive'] ?? $fields['is_recursive'] ?? Session::getIsActiveEntityRecursive();
-                            if (isset($input['condition']['entities_id'])) {
-                                unset($input['condition']['entities_id']);
-                            }
-                            if (isset($input['condition']['is_recursive'])) {
-                                unset($input['condition']['is_recursive']);
-                            }
-                            $form['content'][$contentKey]['inputs'][$inputKey]['values'] = ($input['display_emptychoice'] ?? true ? [DROPDOWN::EMPTY_VALUE] : []) +
-                            getItemByEntity(
-                                $input['itemtype'],
-                                $restrict,
-                                $input['condition'] ?? [],
-                                $input['used'] ?? []
-                            );
-                            if (isset($input['value']) && !in_array($input['value'], $form['content'][$contentKey]['inputs'][$inputKey]['values'])) {
-                                $item = new $input['itemtype'];
-                                $item->getFromDB($input['value']);
-                                if (isset($item->fields['name'])) {
-                                    $form['content'][$contentKey]['inputs'][$inputKey]['values'][$input['value']] = $item->fields['name'];
-                                }
-                            }
-                            $form['content'][$contentKey]['inputs'][$inputKey]['ajax'] =
-                                [
-                                    'url' => $CFG_GLPI['root_doc'] . '/ajax/getDropdownValue.php',
-                                    'type' => "POST",
-                                    'data' => [
-                                        'itemtype' => $input['itemtype'],
-                                        'display_emptychoice' => $input['display_emptychoice'] ?? 1,
-                                        'condition' => $input['condition'] ?? [],
-                                        'entity_restrict' => $restrict,
-                                        'recursive' => $recursive,
-                                        'used' => $input['used'] ?? [],
-                                        'emptylabel' => Dropdown::EMPTY_VALUE,
-                                        'permit_select_parent' => 0,
-                                    ],
-                                ];
-                        }
-                        break;
+                if ($input['type'] ?? '' == 'select') {
+                    expandSelect($form['content'][$contentKey]['inputs'][$inputKey], $fields);
                 }
             }
         }
+    }
+    if (!isset($form['buttons']) && isset($form['itemtype'])) {
+        $item = new $form['itemtype'];
+        $isNew = !isset($fields['id']) || intval($fields['id']) <= 0 ||
+            isset($fields['withtemplate']) && $fields['withtemplate'] == 2;
+        $isDeleted = isset($fields['is_deleted']) && $fields['is_deleted'];
+
+        $form['buttons'] = [
+            $isNew ? ($item::canCreate() ? [
+                'class' => 'btn btn-secondary',
+                'name' => 'add',
+                'value' => __('Add'),
+            ] : []) : ($item::canUpdate() ? [
+                'class' => 'btn btn-secondary',
+                'name' => 'update',
+                'value' => __('Update'),
+            ] : []),
+            !$isNew && ($isDeleted || !isset($fields['is_deleted'])) ? ($item::canPurge() ? [
+                'class' => 'btn btn-danger',
+                'name' => 'purge',
+                'value' => __('Delete permanently'),
+            ] : []) : ($item::canDelete() && !$isNew ? [
+                'class' => 'btn btn-danger',
+                'name' => 'delete',
+                'value' => __('Put in trashbin'),
+            ] : []),
+            $isDeleted && $item::canDelete() ? [
+                'class' => 'btn btn-success',
+                'name' => 'restore',
+                'value' => __('Restore'),
+            ] : [],
+        ];
     }
     return $form;
 }
@@ -226,7 +261,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     };
     if (isset($_SESSION['glpiactiveentities']) &&
         count($_SESSION['glpiactiveentities']) > 1 &&
-        isset($fields['entities_id'])) {
+        isset($fields['entities_id']) && !isset($fields['noEntity'])) {
         $entity_name = Dropdown::getDropdownName('glpi_entities', $fields['entities_id']);
         $form['content'] = [Entity::getTypeName() => [
             'visible' => true,

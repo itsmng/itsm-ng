@@ -2146,298 +2146,275 @@ class User extends CommonDBTM {
 
       $form = [
          'action' => $this->getFormURL(),
-         'buttons' => [
-            $this->fields["is_deleted"] == 1 && self::canDelete() ? [
-              'type' => 'submit',
-              'name' => 'restore',
-              'value' => __('Restore'),
-              'class' => 'btn btn-secondary'
-            ] : ($this->canUpdateItem() ? [
-              'type' => 'submit',
-              'name' => $this->isNewID($ID) ? 'add' : 'update',
-              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-              'class' => 'btn btn-secondary'
-            ] : []),
-            !$this->isNewID($ID) && !$this->isDeleted() && $this->canDeleteItem() ? [
-              'type' => 'submit',
-              'name' => 'delete',
-              'value' => __('Put in trashbin'),
-              'class' => 'btn btn-danger'
-            ] : (!$this->isNewID($ID) && self::canPurge() ? [
-              'type' => 'submit',
-              'name' => 'purge',
-              'value' => __('Delete permanently'),
-              'class' => 'btn btn-danger'
-            ] : []),
-          ],
-          'content' => [
-            $formtitle => [
-               'visible' => true,
-               'inputs' => [
-                  empty($ID) => [
-                     'type' => 'hidden',
-                     'name' => 'authtype',
-                     'value' => 1,
-                  ],
-                  __('Login') => [
-                     'type' => ($this->fields["name"] == ""
-                     || !empty($this->fields["password"])
-                     || ($this->fields["authtype"] == Auth::DB_GLPI))
-                     ? 'text'
-                     : 'hidden',
-                     'name' => 'name',
-                     'value' => $this->fields['name'],
-                  ],
-                  $this->isNewID($ID) ? [] : [
-                     'type' => 'hidden',
-                     'name' => 'id',
-                     'value' => $ID,
-                  ],
-                  __('Synchronization field') => ($extauth
-                  && $this->fields['auths_id']
-                  && AuthLDAP::isSyncFieldConfigured($this->fields['auths_id']))
-                  ? [
-                     'type' => 'text',
-                        'name' => 'sync_field',
-                        'value' => $this->fields['sync_field'],
-                        (self::canUpdate() && (!$extauth || empty($ID))) ? 'disabled' : '',
-                  ] : [],
-                  __('Surname') => [
-                     'type' => 'text',
-                     'name' => 'realname',
-                     'value' => $this->fields['realname'],
-                  ],
-                  __('First name') => [
-                     'type' => 'text',
-                     'name' => 'firstname',
-                     'value' => $this->fields['firstname'],
-                  ],
-                  __('Password') => (self::canUpdate()
-                     && (!$extauth || empty($ID))
-                     && $caneditpassword)
-                        ? [
-                           'type' => 'password',
-                           'name' => 'password',
-                           'value' => '',
-                           'size' => '20',
-                           'col_lg' => 6,
-                  ] : [],
-                  __('Password confirmation') => (self::canUpdate()
-                     && (!$extauth || empty($ID))
-                     && $caneditpassword)
-                        ? [
-                           'type' => 'password',
-                           'name' => 'password2',
-                           'value' => '',
-                           'size' => '20',
-                           'col_lg' => 6,
-                  ] : [],
-                  __('Time zone') => ($tz_available || Session::haveRight("config", READ)) ? ( $tz_available ? [
-                     'type' => 'select',
-                     'name' => 'timezone',
-                     'values' => array_merge([__('Use server configuration')], $timezones),
-                     'value' => $this->fields["timezone"],
-                  ] : [
-                     'content' => "<img src=\"{$CFG_GLPI['root_doc']}/pics/warning_min.png\">"
-                  ]) : [],
-                  __('Active') => (!GLPI_DEMO_MODE) ? [
-                     'type' => 'checkbox',
-                     'name' => 'is_active',
-                     'value' => $this->fields['is_active'],
-                  ] : [],
-                  _n('Email', 'Emails', Session::getPluralNumber()) => [
-                     'type' => 'multiSelect',
-                     'name' => '_useremails',
-                     'inputs' => [
-                        [
-                           'name' => 'current_useremails',
-                           'type' => 'email',
-                        ]
-                     ],
-                     'values' => $emailsValues,
-                     'getInputAdd' => <<<JS
-                     function () {
-                        let re = /\S+@\S+\.\S+/;
-                        if (!$('input[name="current_useremails"]').val() || !re.test($('input[name="current_useremails"]').val())) {
-                           return;
-                        }
-                        var values = {};
-                        var title = "<input type='radio' class='form-check-input mx-1' title='{$defaultEmailTitle}' name='_default_email' value='-1'>" +
-                                    "<input type='email' class='form-control' name='_useremails[-1]' value='" + $('input[name="current_useremails"]').val() + "'>";
-                        return {values, title};
-                     }
-                     JS,
-                  ],
-                  __('Valid since') => (!GLPI_DEMO_MODE) ? [
-                     'type' => 'datetime-local',
-                     'name' => 'begin_date',
-                     'id' => 'BeginDatePicker',
-                     'value' => $this->fields['begin_date'],
-                     'col_lg' => 6,
-                  ] : [],
-                  __('Valid until') => (!GLPI_DEMO_MODE) ? [
-                     'type' => 'datetime-local',
-                     'name' => 'end_date',
-                     'id' => 'EndDatePicker',
-                     'value' => $this->fields['end_date'],
-                     'col_lg' => 6,
-                  ] : [],
-                  Phone::getTypeName(1) => [
-                     'type' => 'text',
-                     'name' => 'phone',
-                     'value' => $this->fields['phone'],
-                  ],
-                  __('Phone 2') => [
-                     'type' => 'text',
-                     'name' => 'phone2',
-                     'value' => $this->fields['phone2'],
-                  ],
-                  __('Mobile phone') => [
-                     'type' => 'text',
-                     'name' => 'mobile',
-                     'value' => $this->fields['mobile'],
-                  ],
-                  __('Authentication') => (!empty($ID)
-                     && Session::haveRight(self::$rightname, self::READAUTHENT)) ? [
-                        'content' => Auth::getMethodName($this->fields["authtype"], $this->fields["auths_id"]),
-                  ] : [],
-                  __('Last synchronization') => (!empty($ID)
-                     && Session::haveRight(self::$rightname, self::READAUTHENT
-                     && !empty($this->fields["date_sync"]))) ? [
-                        'content' => Html::convDateTime($this->fields["date_sync"]),
-                  ] : [],
-                  __('User DN') => (!empty($ID)
-                     && Session::haveRight(self::$rightname, self::READAUTHENT
-                     && !empty($this->fields["user_dn"]))) ? [
-                        'content' => $this->fields["user_dn"],
-                  ] : [],
-                  __('LDAP Directory') => (!empty($ID)
-                     && Session::haveRight(self::$rightname, self::READAUTHENT
-                     && $this->fields['is_deleted_ldap'])) ? [
-                        'content' => 'MISSING',
-                  ] : [],
-                  __('Administrative number') => [
-                     'type' => 'text',
-                     'name' => 'registration_number',
-                     'value' => $this->fields['registration_number'],
-                  ],
-                  _x('person', 'Title') => [
-                     'type' => 'select',
-                     'name' => 'usertitles_id',
-                     'values' => getOptionForItems('UserTitle'),
-                     'value' => $this->fields['usertitles_id'],
-                     'actions' => getItemActionButtons(['info', 'add'], 'UserTitle'),
-                  ],
-                  Location::getTypeName(1) => (!empty($ID)) ? [
-                     'type' => 'select',
-                     'name' => 'locations_id',
-                     'itemtype' => Location::class,
-                     'value' => $this->fields['locations_id'],
-                     'actions' => getItemActionButtons(['info', 'add'], 'Location'),
-                  ] : [],
-               ]
-            ],
-            _n('Authorization', 'Authorizations', 1) =>  [
-               'visible' => true,
-               'inputs' => (empty($ID)) ? [
-                  __('Recursive') => [
-                     'type' => 'checkbox',
-                     'name' => '_is_recursive',
-                     'value' => $this->fields['_is_recursive'],
-                  ],
-                  Profile::getTypeName(1) => [
-                     'type' => 'select',
-                     'name' => '_profiles_id',
-                     'values' => getOptionForItems('Profile'),
-                     'value' => $this->fields['_profiles_id'],
-                     'actions' => getItemActionButtons(['info', 'add'], 'Profile'),
-                  ],
-                  Entity::getTypeName(1) => [
-                     'type' => 'select',
-                     'name' => '_entities_id',
-                     'values' => getOptionForItems('Entity'),
-                     'value' => $this->fields['_entities_id'],
-                     'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
-                  ],
-               ] : [
-                  __('Default profile') => ($higherrights || $ismyself) ? [
-                     'type' => 'select',
-                     'name' => 'profiles_id',
-                     'values' => [Dropdown::EMPTY_VALUE] + $profileUser,
-                     'value' => $this->fields['profiles_id'],
-                     'col_lg' => 6,
-                  ] : [],
-                  __('Default entity') => ($higherrights) ? [
-                     'type' => 'select',
-                     'name' => 'entities_id',
-                     'values' => [-1 => Dropdown::EMPTY_VALUE] + $entityUser,
-                     'value' => $this->fields['entities_id'],
-                     'col_lg' => 6,
-                     ] : [],
-                  __('Default group') => ($higherrights) ? [
-                     'type' => 'select',
-                     'name' => 'groups_id',
-                     'values' =>[Dropdown::EMPTY_VALUE] + $groupUser,
-                     'value' => $this->fields['groups_id'],
-                     'col_lg' => 6,
-                  ] : [],
-                  __('Responsible') => ($higherrights) ? [
-                     'type' => 'select',
-                     'name' => 'users_id_supervisor',
-                     'values' => getOptionsForUsers('all'),
-                     'value' => $this->fields['users_id_supervisor'],
-                     'col_lg' => 6,
-                  ] : [],
-               ]
-            ],
-            __('Remote access keys') => ($caneditpassword && !empty($ID)) ? [
-               'visible' => true,
-               'inputs' => [
-                  __("Personal token") => (!empty($this->fields["personal_token"])) ? [
-                     'type' => 'text',
-                     'name' => '_personal_token',
-                     'value' => $this->fields["personal_token"],
-                     'after' => sprintf(__('generated on %s'),
-                                        Html::convDateTime($this->fields["personal_token_date"])),
-                     'col_lg' => 8,
-                     'col_md' => 8,
-                  ] : [
-                     'content' => '',
-                     'col_lg' => 8,
-                     'col_md' => 8,
-                  ],
-                  __('Regenerate') . ' ' . __("Personal token") => [
-                     'type' => 'checkbox',
-                     'name' => '_reset_personal_token',
-                     'value' => '',
-                     'col_lg' => 4,
-                     'col_md' => 4,
-                  ],
-                  __("API token") => (!empty($this->fields["api_token"])) ? [
-                     'type' => 'text',
-                     'name' => '_api_token',
-                     'value' => $this->fields["api_token"],
-                     'after' => sprintf(__('generated on %s'),
-                                        Html::convDateTime($this->fields["api_token_date"])),
-                     'col_lg' => 8,
-                     'col_md' => 8,
-                  ] : [
-                     'content' => '',
-                     'col_lg' => 8,
-                     'col_md' => 8,
-                  ],
-                  __('Regenerate') . ' ' . __("API token") => [
-                     'type' => 'checkbox',
-                     'name' => '_reset_api_token',
-                     'value' => '',
-                     'col_lg' => 4,
-                     'col_md' => 4,
-                  ],
-               ]
-            ] : []
-          ]
+         'itemtype' => self::class,
+         'content' => [
+           $formtitle => [
+              'visible' => true,
+              'inputs' => [
+                 empty($ID) => [
+                    'type' => 'hidden',
+                    'name' => 'authtype',
+                    'value' => 1,
+                 ],
+                 __('Login') => [
+                    'type' => ($this->fields["name"] == ""
+                    || !empty($this->fields["password"])
+                    || ($this->fields["authtype"] == Auth::DB_GLPI))
+                    ? 'text'
+                    : 'hidden',
+                    'name' => 'name',
+                    'value' => $this->fields['name'],
+                 ],
+                 $this->isNewID($ID) ? [] : [
+                    'type' => 'hidden',
+                    'name' => 'id',
+                    'value' => $ID,
+                 ],
+                 __('Synchronization field') => ($extauth
+                 && $this->fields['auths_id']
+                 && AuthLDAP::isSyncFieldConfigured($this->fields['auths_id']))
+                 ? [
+                    'type' => 'text',
+                       'name' => 'sync_field',
+                       'value' => $this->fields['sync_field'],
+                       (self::canUpdate() && (!$extauth || empty($ID))) ? 'disabled' : '',
+                 ] : [],
+                 __('Surname') => [
+                    'type' => 'text',
+                    'name' => 'realname',
+                    'value' => $this->fields['realname'],
+                 ],
+                 __('First name') => [
+                    'type' => 'text',
+                    'name' => 'firstname',
+                    'value' => $this->fields['firstname'],
+                 ],
+                 __('Password') => (self::canUpdate()
+                    && (!$extauth || empty($ID))
+                    && $caneditpassword)
+                       ? [
+                          'type' => 'password',
+                          'name' => 'password',
+                          'value' => '',
+                          'size' => '20',
+                          'col_lg' => 6,
+                 ] : [],
+                 __('Password confirmation') => (self::canUpdate()
+                    && (!$extauth || empty($ID))
+                    && $caneditpassword)
+                       ? [
+                          'type' => 'password',
+                          'name' => 'password2',
+                          'value' => '',
+                          'size' => '20',
+                          'col_lg' => 6,
+                 ] : [],
+                 __('Time zone') => ($tz_available || Session::haveRight("config", READ)) ? ( $tz_available ? [
+                    'type' => 'select',
+                    'name' => 'timezone',
+                    'values' => array_merge([__('Use server configuration')], $timezones),
+                    'value' => $this->fields["timezone"],
+                 ] : [
+                    'content' => "<img src=\"{$CFG_GLPI['root_doc']}/pics/warning_min.png\">"
+                 ]) : [],
+                 __('Active') => (!GLPI_DEMO_MODE) ? [
+                    'type' => 'checkbox',
+                    'name' => 'is_active',
+                    'value' => $this->fields['is_active'],
+                 ] : [],
+                 _n('Email', 'Emails', Session::getPluralNumber()) => [
+                    'type' => 'multiSelect',
+                    'name' => '_useremails',
+                    'inputs' => [
+                       [
+                          'name' => 'current_useremails',
+                          'type' => 'email',
+                       ]
+                    ],
+                    'values' => $emailsValues,
+                    'getInputAdd' => <<<JS
+                    function () {
+                       let re = /\S+@\S+\.\S+/;
+                       if (!$('input[name="current_useremails"]').val() || !re.test($('input[name="current_useremails"]').val())) {
+                          return;
+                       }
+                       var values = {};
+                       var title = "<input type='radio' class='form-check-input mx-1' title='{$defaultEmailTitle}' name='_default_email' value='-1'>" +
+                                   "<input type='email' class='form-control' name='_useremails[-1]' value='" + $('input[name="current_useremails"]').val() + "'>";
+                       return {values, title};
+                    }
+                    JS,
+                 ],
+                 __('Valid since') => (!GLPI_DEMO_MODE) ? [
+                    'type' => 'datetime-local',
+                    'name' => 'begin_date',
+                    'id' => 'BeginDatePicker',
+                    'value' => $this->fields['begin_date'],
+                    'col_lg' => 6,
+                 ] : [],
+                 __('Valid until') => (!GLPI_DEMO_MODE) ? [
+                    'type' => 'datetime-local',
+                    'name' => 'end_date',
+                    'id' => 'EndDatePicker',
+                    'value' => $this->fields['end_date'],
+                    'col_lg' => 6,
+                 ] : [],
+                 Phone::getTypeName(1) => [
+                    'type' => 'text',
+                    'name' => 'phone',
+                    'value' => $this->fields['phone'],
+                 ],
+                 __('Phone 2') => [
+                    'type' => 'text',
+                    'name' => 'phone2',
+                    'value' => $this->fields['phone2'],
+                 ],
+                 __('Mobile phone') => [
+                    'type' => 'text',
+                    'name' => 'mobile',
+                    'value' => $this->fields['mobile'],
+                 ],
+                 __('Authentication') => (!empty($ID)
+                    && Session::haveRight(self::$rightname, self::READAUTHENT)) ? [
+                       'content' => Auth::getMethodName($this->fields["authtype"], $this->fields["auths_id"]),
+                 ] : [],
+                 __('Last synchronization') => (!empty($ID)
+                    && Session::haveRight(self::$rightname, self::READAUTHENT
+                    && !empty($this->fields["date_sync"]))) ? [
+                       'content' => Html::convDateTime($this->fields["date_sync"]),
+                 ] : [],
+                 __('User DN') => (!empty($ID)
+                    && Session::haveRight(self::$rightname, self::READAUTHENT
+                    && !empty($this->fields["user_dn"]))) ? [
+                       'content' => $this->fields["user_dn"],
+                 ] : [],
+                 __('LDAP Directory') => (!empty($ID)
+                    && Session::haveRight(self::$rightname, self::READAUTHENT
+                    && $this->fields['is_deleted_ldap'])) ? [
+                       'content' => 'MISSING',
+                 ] : [],
+                 __('Administrative number') => [
+                    'type' => 'text',
+                    'name' => 'registration_number',
+                    'value' => $this->fields['registration_number'],
+                 ],
+                 _x('person', 'Title') => [
+                    'type' => 'select',
+                    'name' => 'usertitles_id',
+                    'values' => getOptionForItems('UserTitle'),
+                    'value' => $this->fields['usertitles_id'],
+                    'actions' => getItemActionButtons(['info', 'add'], 'UserTitle'),
+                 ],
+                 Location::getTypeName(1) => (!empty($ID)) ? [
+                    'type' => 'select',
+                    'name' => 'locations_id',
+                    'itemtype' => Location::class,
+                    'value' => $this->fields['locations_id'],
+                    'actions' => getItemActionButtons(['info', 'add'], 'Location'),
+                 ] : [],
+              ]
+           ],
+           _n('Authorization', 'Authorizations', 1) =>  [
+              'visible' => true,
+              'inputs' => (empty($ID)) ? [
+                 __('Recursive') => [
+                    'type' => 'checkbox',
+                    'name' => '_is_recursive',
+                    'value' => $this->fields['_is_recursive'],
+                 ],
+                 Profile::getTypeName(1) => [
+                    'type' => 'select',
+                    'name' => '_profiles_id',
+                    'values' => getOptionForItems('Profile'),
+                    'value' => $this->fields['_profiles_id'],
+                    'actions' => getItemActionButtons(['info', 'add'], 'Profile'),
+                 ],
+                 Entity::getTypeName(1) => [
+                    'type' => 'select',
+                    'name' => '_entities_id',
+                    'values' => getOptionForItems('Entity'),
+                    'value' => $this->fields['_entities_id'],
+                    'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
+                 ],
+              ] : [
+                 __('Default profile') => ($higherrights || $ismyself) ? [
+                    'type' => 'select',
+                    'name' => 'profiles_id',
+                    'values' => [Dropdown::EMPTY_VALUE] + $profileUser,
+                    'value' => $this->fields['profiles_id'],
+                    'col_lg' => 6,
+                 ] : [],
+                 __('Default entity') => ($higherrights) ? [
+                    'type' => 'select',
+                    'name' => 'entities_id',
+                    'values' => [-1 => Dropdown::EMPTY_VALUE] + $entityUser,
+                    'value' => $this->fields['entities_id'],
+                    'col_lg' => 6,
+                    ] : [],
+                 __('Default group') => ($higherrights) ? [
+                    'type' => 'select',
+                    'name' => 'groups_id',
+                    'values' =>[Dropdown::EMPTY_VALUE] + $groupUser,
+                    'value' => $this->fields['groups_id'],
+                    'col_lg' => 6,
+                 ] : [],
+                 __('Responsible') => ($higherrights) ? [
+                    'type' => 'select',
+                    'name' => 'users_id_supervisor',
+                    'values' => getOptionsForUsers('all'),
+                    'value' => $this->fields['users_id_supervisor'],
+                    'col_lg' => 6,
+                 ] : [],
+              ]
+           ],
+           __('Remote access keys') => ($caneditpassword && !empty($ID)) ? [
+              'visible' => true,
+              'inputs' => [
+                 __("Personal token") => (!empty($this->fields["personal_token"])) ? [
+                    'type' => 'text',
+                    'name' => '_personal_token',
+                    'value' => $this->fields["personal_token"],
+                    'after' => sprintf(__('generated on %s'),
+                                       Html::convDateTime($this->fields["personal_token_date"])),
+                    'col_lg' => 8,
+                    'col_md' => 8,
+                 ] : [
+                    'content' => '',
+                    'col_lg' => 8,
+                    'col_md' => 8,
+                 ],
+                 __('Regenerate') . ' ' . __("Personal token") => [
+                    'type' => 'checkbox',
+                    'name' => '_reset_personal_token',
+                    'value' => '',
+                    'col_lg' => 4,
+                    'col_md' => 4,
+                 ],
+                 __("API token") => (!empty($this->fields["api_token"])) ? [
+                    'type' => 'text',
+                    'name' => '_api_token',
+                    'value' => $this->fields["api_token"],
+                    'after' => sprintf(__('generated on %s'),
+                                       Html::convDateTime($this->fields["api_token_date"])),
+                    'col_lg' => 8,
+                    'col_md' => 8,
+                 ] : [
+                    'content' => '',
+                    'col_lg' => 8,
+                    'col_md' => 8,
+                 ],
+                 __('Regenerate') . ' ' . __("API token") => [
+                    'type' => 'checkbox',
+                    'name' => '_reset_api_token',
+                    'value' => '',
+                    'col_lg' => 4,
+                    'col_md' => 4,
+                 ],
+              ]
+           ] : []
+         ]
       ];
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields + ['noEntity' => true]);
       return true;
    }
 

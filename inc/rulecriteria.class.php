@@ -615,14 +615,7 @@ class RuleCriteria extends CommonDBChild {
 
       $form = [
         'action' => Toolbox::getItemTypeFormURL(__CLASS__),
-        'buttons' => [
-            [
-                'name'  => $this->isNewID($ID) ? 'add' : 'update',
-                'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-                'type'  => 'submit',
-                'class' => 'btn btn-secondary',
-            ],
-        ],
+        'itemtype' => self::class,
         'content' => [
             $this->getTypeName() => [
                 'visible' => true,
@@ -664,12 +657,7 @@ class RuleCriteria extends CommonDBChild {
             ]
         ]
       ];
-      renderTwigForm($form);
-//      $params = ['criteria' => '__VALUE__',
-//                      'sub_type' => $rule->getType()];
-//
-//      Ajax::updateItemOnSelectEvent("dropdown_criteria", "criteria_span",
-//                                    $CFG_GLPI["root_doc"]."/ajax/rulecriteria.php", $params);
+      renderTwigForm($form, '', $this->fields);
    }
 
 }

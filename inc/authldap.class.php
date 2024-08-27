@@ -346,20 +346,7 @@ class AuthLDAP extends CommonDBTM {
       if (Toolbox::canUseLdap()) {
          $form = [
             'action' => Toolbox::getItemTypeFormURL('authldap'),
-            'buttons' => [
-               [
-                  'type' => 'submit',
-                  'name' => $this->isNewID($ID) ? 'add' : 'update',
-                  'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-                  'class' => 'btn btn-secondary',
-               ],
-               $this->isNewID($ID) ? [] : [
-                  'type' => 'submit',
-                  'name' => 'purge',
-                  'value' => __('Delete permanently'),
-                  'class' => 'btn btn-secondary'
-               ]
-            ],
+            'itemtype' => self::class,
             'content' => [
                __('LDAP directory') => [
                   'visible' => true,
@@ -446,7 +433,7 @@ class AuthLDAP extends CommonDBTM {
             ]
          ];
 
-         renderTwigForm($form);
+         renderTwigForm($form, '', $this->fields);
 
       } else {
          echo "<div class='center'>&nbsp;<table class='tab_cadre_fixe' aria-label='LDAP authentication'>";

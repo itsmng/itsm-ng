@@ -248,19 +248,7 @@ abstract class CommonDropdown extends CommonDBTM {
 
       $form = [
         'action' => $this->getFormURL(),
-        'buttons' => [
-          [
-            'type' => 'submit',
-            'name' => $this->isNewID($ID) ? 'add' : 'update',
-            'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-            'class' => 'btn btn-secondary'
-          ], (isset($this->fields['is_protected']) && $this->fields['is_protected']) ? [
-            'type' => 'submit',
-            'name' => 'delete',
-            'value' => __('Delete permanently'),
-            'class' => 'btn btn-error'
-          ] : []
-        ],
+        'itemtype' => $this::class,
         'content' => [
         __('New item') . ' - ' . $this->getTypeName() => [
             'visible' => true,
@@ -283,7 +271,7 @@ abstract class CommonDropdown extends CommonDBTM {
                 'col_lg' => 6,
               ],
             ]
-          ] 
+          ]
         ]
       ];
 
@@ -292,7 +280,7 @@ abstract class CommonDropdown extends CommonDBTM {
         $form['content'][__('New item') . ' - ' . $this->getTypeName()]['inputs'],
         $fields
       );
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
 
       if (isset($this->fields['is_protected']) && $this->fields['is_protected']) {
          $options['candel'] = false;

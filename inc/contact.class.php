@@ -159,20 +159,7 @@ class Contact extends CommonDBTM{
    function showForm($ID) {
       $form = [
 			'action' => Toolbox::getItemTypeFormURL('contact'),
-			'buttons' => [
-				[
-					'type' => 'submit',
-					'name' => $this->isNewID($ID) ? 'add' : 'update',
-					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-					'class' => 'btn btn-secondary',
-				],
-				$this->isNewID($ID) ? [] : [
-					'type' => 'submit',
-					'name' => 'delete',
-					'value' => __('Put in trashbin'),
-					'class' => 'btn btn-secondary'
-				]
-			],
+            'itemtype' => self::class,
             'content' => [
 				__('Contact') => [
 					'visible' => true,
@@ -265,7 +252,7 @@ class Contact extends CommonDBTM{
             ]
         	]
 		];
-    	renderTwigForm($form);
+    	renderTwigForm($form, '', $this->fields);
 
       return true;
    }

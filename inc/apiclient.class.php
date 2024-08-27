@@ -185,18 +185,7 @@ class APIClient extends CommonDBTM {
 
       $form = [
         'action' => $this->getFormURL(),
-        'buttons' => [
-            [
-                'name' => $this->isNewID($ID) ? 'add' : 'update',
-                'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-                'class' => 'btn btn-secondary'
-            ],
-            $this->isNewID($ID) ? [] : [
-                'name' => 'purge',
-                'value' => __('Delete permanently'),
-                'class' => 'btn btn-danger'
-            ]
-        ],
+        'itemtype' => $this::class,
         'content' => [
             $this->getTypeName() => [
                 'visible' => true,

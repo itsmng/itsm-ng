@@ -4820,30 +4820,7 @@ class Ticket extends CommonITILObject
       $reopenLabel = __('Reopen');
       $form = [
          'action' => $formUrl,
-         'buttons' => $display_save_btn ? [
-            $this->fields["is_deleted"] == 1 && self::canDelete() ? [
-               'type' => 'submit',
-               'name' => 'restore',
-               'value' => __('Restore'),
-               'class' => 'btn btn-secondary'
-            ] : ($this->canUpdateItem() ? [
-               'type' => 'submit',
-               'name' => $this->isNewID($ID) ? 'add' : 'update',
-               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-               'class' => 'btn btn-secondary'
-            ] : []),
-            !$this->isNewID($ID) && !$this->isDeleted() && $this->canDeleteItem() ? [
-               'type' => 'submit',
-               'name' => 'delete',
-               'value' => __('Put in trashbin'),
-               'class' => 'btn btn-danger'
-            ] : (!$this->isNewID($ID) && self::canPurge() ? [
-               'type' => 'submit',
-               'name' => 'purge',
-               'value' => __('Delete permanently'),
-               'class' => 'btn btn-danger'
-            ] : []),
-         ] : [],
+         'itemtype' => $display_save_btn ? self::class : null,
          'content' => [
             __('New') . ' ' . $this->getTypeName() => [
                'visible' => true,
@@ -5166,7 +5143,7 @@ class Ticket extends CommonITILObject
       ob_start();
       Plugin::doHook("post_item_form", ['item' => $this, 'options' => &$options]);
       $additionnalHtml = ob_get_clean();
-      renderTwigForm($form, $additionnalHtml);
+      renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }
 

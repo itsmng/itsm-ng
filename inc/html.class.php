@@ -2874,7 +2874,6 @@ JAVASCRIPT;
                            fields[$(this).attr('name')] = 0;
                         }
                     });
-                  console.log(items);
                JS : <<<JS
                   let rows = $("#$identifier").bootstrapTable('getSelections');
                   for (let i = 0; i < rows.length; i++) {
@@ -4679,7 +4678,7 @@ JAVASCRIPT
          $link .= $btlabel;
       } else {
          if (substr($btimage, 0, strlen('fa-')) === 'fa-') {
-            $link .= "<span class='fa $btimage' title='$btlabel'><span class='sr-only'>$btlabel</span>";
+            $link .= "<span class='fa $btimage pointer' title='$btlabel'><span class='sr-only'>$btlabel</span>";
          } else {
             $link .= "<img src='$btimage' title='$btlabel' alt='$btlabel' class='pointer'>";
          }

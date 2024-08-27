@@ -700,13 +700,7 @@ class Item_Ticket extends CommonItilObject_Item {
 
          $form = [
             'action' => Toolbox::getItemTypeFormURL(__CLASS__),
-            'buttons' => [
-               'add' => [
-                  'name'  => 'add',
-                  'value' => _sx('button', 'Add'),
-                  'class' => 'btn btn-secondary',
-               ]
-            ],
+            'itemtype' => self::class,
             'content' => [
                __('Add an item') => [
                   'visible' => true,

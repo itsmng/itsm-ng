@@ -58,15 +58,8 @@ class Datacenter extends CommonDBTM {
 
    function showForm($ID) {
       $form = [
-	      'action' => Toolbox::getItemTypeFormURL('datacenter'),
-		   'buttons' => [
-		      [
-			   'type' => 'submit',
-			   'name' => $this->isNewID($ID) ? 'add' : 'update',
-			   'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-			   'class' => 'btn btn-secondary',
-            ],
-         ],
+	     'action' => Toolbox::getItemTypeFormURL('datacenter'),
+         'itemtype' => $this::class,
          'content' => [
              __('Data center') => [
                'visible' => true,
@@ -92,8 +85,7 @@ class Datacenter extends CommonDBTM {
          ]
       ];
 
-      require_once GLPI_ROOT . '/src/twig/twig.utils.php';
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
 
       return true;
    }
