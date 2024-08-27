@@ -4604,7 +4604,7 @@ JAVASCRIPT
          // or $num == $tot
          $cpt = "<span class='primary-bg primary-fg count'>$tot</span>";
       }
-      return sprintf(__('%1$s %2$s'), $string, $cpt);
+      return "<p class='table-title'>" . sprintf(__('%1$s %2$s'), $string, $cpt) . "</p>";
    }
 
 
