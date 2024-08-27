@@ -25672,5 +25672,20 @@ msgstr "Asmeniniai nustatymai"
 msgid "All Tickets"
 msgstr "Paraiškos"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Jūsų paraiškos, kurias reikia patvirtinti"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Nauja paraiška"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Pridėti kasetes"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Į ITSM-NG"

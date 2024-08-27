@@ -25287,6 +25287,21 @@ msgstr "Moje postavke"
 msgid "All Tickets"
 msgstr "Nalozi"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Tvoji nalozi za provjeru"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Novi nalog"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Dodaj tonere"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Koristi ITSM-NG"
 

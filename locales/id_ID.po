@@ -24567,5 +24567,20 @@ msgstr "Seting"
 msgid "All Tickets"
 msgstr "Tiket"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Tiket Anda untuk validasi"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Tiket baru"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Tambah cartridge"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gunakan ITSM-NG"

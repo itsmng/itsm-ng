@@ -24910,6 +24910,21 @@ msgstr "मेरी पतिस्थिति"
 msgid "All Tickets"
 msgstr "टिकट"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "मान्य करने के लिए आपके टिकट"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "नया टिकट"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "कारतूस जोड़ें"
+
 #~ msgid "Use GLPI"
 #~ msgstr "जीएलपीआई का उपयोग करें"
 

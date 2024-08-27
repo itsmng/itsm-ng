@@ -24202,3 +24202,15 @@ msgstr ""
 
 msgid "All Tickets"
 msgstr ""
+
+#, fuzzy
+#| msgid "Ticket on linked items"
+#| msgid_plural "Tickets on linked items"
+msgid "Tickets to validate"
+msgstr "Ticket sur les éléments liés"
+
+msgid "New widget"
+msgstr ""
+
+msgid "Add widget"
+msgstr ""

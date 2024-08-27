@@ -26337,5 +26337,20 @@ msgstr "إعداداتي"
 msgid "All Tickets"
 msgstr "التذاكر"
 
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Tickets to validate"
+msgstr "للتذاكر المغلقة بعد"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "تذكرة جديدة"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "إضافة خرطوشة حبر"
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "الحساب glpi/glpi للمدراء"

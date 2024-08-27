@@ -24830,6 +24830,22 @@ msgstr "Stillingar"
 msgid "All Tickets"
 msgstr "Beiðnir"
 
+#, fuzzy
+#| msgid "For tickets closed after"
+msgid "Tickets to validate"
+msgstr "Fyrir beiðnar lokaðar eftir"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Ný beiðni"
+
+#, fuzzy
+#| msgctxt "button"
+#| msgid "Add a new file"
+msgid "Add widget"
+msgstr "Bæta við nýrri skrá"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Nota ITSM-NG"
 

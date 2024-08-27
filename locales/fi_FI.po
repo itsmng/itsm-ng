@@ -24959,6 +24959,21 @@ msgstr "Omat asetukset"
 msgid "All Tickets"
 msgstr "Tiketit"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Hyväksyttävänä olevat tikettisi"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Uusi tiketti:"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Lisää värikasetteja"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Käytä ITSM-NG:tä"
 

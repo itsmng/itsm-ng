@@ -25066,6 +25066,21 @@ msgstr "Mijn instellingen"
 msgid "All Tickets"
 msgstr "Incident-tickets"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Uw incident-tickets ter validatie"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Nieuw incident-ticket toevoegen"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Cartridges toevoegen"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gebruik ITSM-NG"
 

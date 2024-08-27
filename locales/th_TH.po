@@ -24541,6 +24541,21 @@ msgstr "การตั้งค่าของฉัน"
 msgid "All Tickets"
 msgstr "Tickets"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Ticket ของคุณที่จะตรวจสอบ"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "แจ้งเคสใหม่"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "เพิ่มตลับหมึก"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Use ITSM-NG"
 

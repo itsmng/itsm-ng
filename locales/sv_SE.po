@@ -24910,6 +24910,21 @@ msgstr "Mina inställningar"
 msgid "All Tickets"
 msgstr "Ärenden"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Dina ärenden att utvärdera"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Nytt ärende"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Lägg till Patroner/Toners"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Starta ITSM-NG"
 

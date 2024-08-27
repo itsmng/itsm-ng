@@ -24604,6 +24604,21 @@ msgstr "Các thiết lập của tôi"
 msgid "All Tickets"
 msgstr "Ticket"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Các thẻ của bạn để xác nhận"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Vé mới"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Thêm các hộp mực"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Dùng ITSM-NG"
 

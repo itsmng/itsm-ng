@@ -24904,6 +24904,21 @@ msgstr "Моите настройки"
 msgid "All Tickets"
 msgstr "Заявки"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Вашите завки за валидация"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Нова заявка"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Добавяне на касети"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Стартирайте ITSM-NG"
 

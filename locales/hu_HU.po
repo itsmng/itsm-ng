@@ -24947,6 +24947,21 @@ msgstr "Saját beállítások"
 msgid "All Tickets"
 msgstr "Bejelentések"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Jóváhagyásra váró bejelentéseid"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Új bejelentés"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Patronok hozzáadása"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG használata"
 

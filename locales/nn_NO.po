@@ -24818,3 +24818,16 @@ msgstr "Instillinger"
 #| msgid "Tickets"
 msgid "All Tickets"
 msgstr "Oppgaver"
+
+#, fuzzy
+#| msgid "Your tickets in progress"
+msgid "Tickets to validate"
+msgstr "Dine oppgaver blir behandlet"
+
+msgid "New widget"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add date"
+msgid "Add widget"
+msgstr "Legg til dato"

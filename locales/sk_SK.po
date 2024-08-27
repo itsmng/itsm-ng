@@ -25626,6 +25626,21 @@ msgstr "Moje nastavenia"
 msgid "All Tickets"
 msgstr "Požiadavky"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Požiadavky na schválenie"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Nová požiadavka"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Pridať náplne"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Spustiť ITSM-NG"
 

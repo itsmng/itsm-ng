@@ -25283,6 +25283,21 @@ msgstr "Mani uzstādījumi"
 msgid "All Tickets"
 msgstr "Pieteikumi"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Jūsu pieteikumi, kas jāapstiprina"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Jauns pieteikums"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Pievienot kasetnes"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Pieslēgties ITSM-NG"
 

@@ -24974,6 +24974,21 @@ msgstr "Миний тохиргоо"
 msgid "All Tickets"
 msgstr "Дуудлага"
 
+#, fuzzy
+#| msgid "Your tickets to validate"
+msgid "Tickets to validate"
+msgstr "Таны баталгаажуулах дуудлагууд"
+
+#, fuzzy
+#| msgid "New ticket"
+msgid "New widget"
+msgstr "Шинэ дуудлага"
+
+#, fuzzy
+#| msgid "Add cartridges"
+msgid "Add widget"
+msgstr "Картриджийг нэмэх"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG ашиглах"
 
