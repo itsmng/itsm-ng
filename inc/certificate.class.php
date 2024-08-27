@@ -499,20 +499,7 @@ class Certificate extends CommonDBTM
    {
       $form = [
          'action' => Toolbox::getItemTypeFormURL('certificate'),
-         'buttons' => [
-            [
-               'type' => 'submit',
-               'name' => $this->isNewID($ID) ? 'add' : 'update',
-               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-               'class' => 'btn btn-secondary',
-            ],
-            $this->isNewID($ID) ? [] : [
-               'type' => 'submit',
-               'name' => 'delete',
-               'value' => __('Put in trashbin'),
-               'class' => 'btn btn-secondary'
-            ]
-         ],
+         'itemtype' => $this::class,
          'content' => [
             __('Certificate') => [
                'visible' => true,
@@ -640,7 +627,7 @@ class Certificate extends CommonDBTM
             ]
          ]
       ];
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
 
       return true;
    }

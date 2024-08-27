@@ -73,7 +73,7 @@ function expandForm($form, $fields = [])
                 'name' => 'update',
                 'value' => __('Update'),
             ] : []),
-            $isDeleted || !isset($fields['is_deleted']) ? ($item::canPurge() ? [
+            !$isNew && ($isDeleted || !isset($fields['is_deleted'])) ? ($item::canPurge() ? [
                 'class' => 'btn btn-danger',
                 'name' => 'purge',
                 'value' => __('Delete permanently'),
@@ -261,7 +261,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     };
     if (isset($_SESSION['glpiactiveentities']) &&
         count($_SESSION['glpiactiveentities']) > 1 &&
-        isset($fields['entities_id'])) {
+        isset($fields['entities_id']) && !isset($fields['noEntity'])) {
         $entity_name = Dropdown::getDropdownName('glpi_entities', $fields['entities_id']);
         $form['content'] = [Entity::getTypeName() => [
             'visible' => true,

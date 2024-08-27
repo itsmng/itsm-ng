@@ -300,19 +300,7 @@ class Item_OperatingSystem extends CommonDBRelation {
       }
       $form = [
          'action' => $this->getFormURL(),
-         'buttons' => [
-            [
-              'type' => 'submit',
-              'name' => $this->isNewID($ID) ? 'add' : 'update',
-              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-              'class' => 'btn btn-secondary'
-            ], !$this->isNewID($ID) ? [
-              'type' => 'submit',
-              'name' => 'purge',
-              'value' => __('Delete permanently'),
-              'class' => 'btn btn-secondary'
-            ] : []
-          ],
+         'itemtype' => $this::class,
          'content' => [
             '' => [
                'visible' => true,
@@ -400,7 +388,7 @@ class Item_OperatingSystem extends CommonDBRelation {
          ]]);
       $additionnalHtml = ob_get_clean();
 
-      renderTwigForm($form, $additionnalHtml);
+      renderTwigForm($form, $additionnalHtml, $this->fields);
       return true;
    }
 

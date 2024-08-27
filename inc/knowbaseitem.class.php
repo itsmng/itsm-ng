@@ -730,14 +730,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
 
       $form = [
          'action' => self::getFormURL(),
-         'buttons' => [
-            $canedit ? [
-               'type' => 'submit',
-               'name' => self::isNewID($ID) ? 'add' : 'update',
-               'value' => self::isNewID($ID) ? __('Add') : __('Update'),
-               'class' => 'btn btn-secondary'
-            ] : [],
-         ],
+         'itemtype' => $this::class,
          'content' => [
             [
                'visible' => false,
@@ -922,7 +915,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria {
             ]
          ]
       ];
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
 
       return true;
    } // function showForm

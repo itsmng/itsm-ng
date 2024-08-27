@@ -147,20 +147,7 @@ class Link extends CommonDBTM {
 
       $form = [
          'action' => Toolbox::getItemTypeFormURL('link'),
-			'buttons' => [
-				[
-					'type' => 'submit',
-					'name' => $this->isNewID($ID) ? 'add' : 'update',
-					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-					'class' => 'btn btn-secondary',
-				],
-				$this->isNewID($ID) ? [] : [
-					'type' => 'submit',
-					'name' => 'delete',
-					'value' => __('Put in trashbin'),
-					'class' => 'btn btn-secondary'
-				]
-			],
+         'itemtype' => $this::class,
          'content' => [
 				__('New item') . ' - ' . __('External links') => [
 					'visible' => true,
@@ -190,7 +177,7 @@ class Link extends CommonDBTM {
 							'value' => $this->fields['data'] ?? '',
 						],
                   __('Valid tags') => [
-                     "content" => "<p>[LOGIN] [ID] [NAME] [LOCATION] [LOCATIONID] [IP] [MAC] [NETWORK] 
+                     "content" => "<p>[LOGIN] [ID] [NAME] [LOCATION] [LOCATIONID] [IP] [MAC] [NETWORK]
                      [DOMAIN] [SERIAL] [OTHERSERIAL] [USER] [GROUP] [REALNAME] [FIRSTNAME]
                      <br>ou<br>
                      [FIELD:nom du champ en base] (Exemple : [FIELD:name], [FIELD:content], ...)
@@ -201,7 +188,7 @@ class Link extends CommonDBTM {
         	]
       ];
 
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
       return true;
    }
 

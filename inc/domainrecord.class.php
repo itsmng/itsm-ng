@@ -303,30 +303,7 @@ class DomainRecord extends CommonDBChild {
    function showForm($ID, $options = []) {
       $form = [
          'action' => $this->getFormURL(),
-         'buttons' => [
-           isset($this->fields["is_deleted"]) && $this->fields['is_deleted'] == 1 && self::canDelete() ? [
-             'type' => 'submit',
-             'name' => 'restore',
-             'value' => __('Restore'),
-             'class' => 'btn btn-secondary'
-           ] : [
-             'type' => 'submit',
-             'name' => $this->isNewID($ID) ? 'add' : 'update',
-             'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-             'class' => 'btn btn-secondary'
-           ],
-           !$this->isNewID($ID) && !$this->isDeleted() && $this->canDeleteItem() ? [
-             'type' => 'submit',
-             'name' => 'delete',
-             'value' => __('Put in trashbin'),
-             'class' => 'btn btn-danger'
-           ] : (!$this->isNewID($ID) && self::canPurge() ? [
-             'type' => 'submit',
-             'name' => 'purge',
-             'value' => __('Delete permanently'),
-             'class' => 'btn btn-danger'
-           ] : []),
-         ],
+         'itemtype' => $this::class,
          'content' => [
             '' => [
                'visible' => true,
