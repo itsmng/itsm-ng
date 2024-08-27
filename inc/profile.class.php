@@ -703,8 +703,8 @@ class Profile extends CommonDBTM
    function showForm($ID, $options = [])
    {
       $form = [
-			'action' => Toolbox::getItemTypeFormURL('profile'),
-			'buttons' => [],
+		 'action' => Toolbox::getItemTypeFormURL('profile'),
+         'itemtype' => self::class,
          'content' => [
 				__('Profile') => [
 					'visible' => true,
@@ -752,34 +752,16 @@ class Profile extends CommonDBTM
                         '1' => __('Yes'),
                      ],
 							'value' => $this->fields['create_ticket_on_login']
-						],
-						__('Comment') => [
-							'name' => 'comment',
-							'type' => 'textarea',
-							'value' => $this->fields['comment'] ?? ''
-						],
+					 ],
+					 __('Comment') => [
+						'name' => 'comment',
+						'type' => 'textarea',
+						'value' => $this->fields['comment'] ?? ''
+					 ],
                ]
             ]
-        	]
-		];
-
-      if ($_GET['id'] <= 0) {
-         $button['Button'] = [
-				'type' => 'submit',
-				'name' => 'add',
-				'value' => __('Add'),
-				'class' => 'submit-button btn btn-secondary'
-			];
-      } else {
-         $button['Button'] = [
-				'type' => 'submit',
-				'name' => 'save',
-				'value' => __('Save'),
-				'class' => 'submit-button btn btn-secondary'
-			];
-      }
-
-      array_push($form['buttons'], $button['Button']);
+         ]
+	  ];
 
       renderTwigForm($form, '', $this->fields);
 

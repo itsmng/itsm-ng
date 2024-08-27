@@ -1429,30 +1429,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
 
       $form = [
          'action' => $this->getFormURL(),
-         'buttons' => [
-            ($this->fields["is_deleted"] ?? 0) == 1 && self::canDelete() ? [
-              'type' => 'submit',
-              'name' => 'restore',
-              'value' => __('Restore'),
-              'class' => 'btn btn-secondary'
-            ] : ($this->canUpdateItem() ? [
-              'type' => 'submit',
-              'name' => $this->isNewID($ID) ? 'add' : 'update',
-              'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-              'class' => 'btn btn-secondary'
-            ] : []),
-            !$this->isNewID($ID) && !$this->isDeleted() && $this->canDeleteItem() ? [
-              'type' => 'submit',
-              'name' => 'delete',
-              'value' => __('Put in trashbin'),
-              'class' => 'btn btn-danger'
-            ] : (!$this->isNewID($ID) && self::canPurge() ? [
-              'type' => 'submit',
-              'name' => 'purge',
-              'value' => __('Delete permanently'),
-              'class' => 'btn btn-danger'
-            ] : []),
-          ],
+         'itemtype' => $this::class,
           'content' => [
             $this->getTypeName() => [
                'visible' => true,
@@ -1599,7 +1576,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
             ]
           ]
       ];
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
 
       return true;
    }

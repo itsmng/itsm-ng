@@ -311,20 +311,7 @@ class Domain extends CommonDropdown
    {
       $form = [
          'action' => Toolbox::getItemTypeFormURL('domain'),
-         'buttons' => [
-            [
-               'type' => 'submit',
-               'name' => $this->isNewID($ID) ? 'add' : 'update',
-               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-               'class' => 'btn btn-secondary',
-            ],
-            $this->isNewID($ID) ? [] : [
-               'type' => 'submit',
-               'name' => 'delete',
-               'value' => __('Put in trashbin'),
-               'class' => 'btn btn-secondary'
-            ]
-         ],
+         'itemtype' => self::class,
          'content' => [
             __('Domain') => [
                'visible' => true,
@@ -385,7 +372,7 @@ class Domain extends CommonDropdown
          ]
       ];
 
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
 
       return true;
    }

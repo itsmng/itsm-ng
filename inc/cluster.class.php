@@ -81,20 +81,7 @@ class Cluster extends CommonDBTM
    {
       $form = [
          'action' => Toolbox::getItemTypeFormURL('cluster'),
-         'buttons' => [
-            [
-               'type' => 'submit',
-               'name' => $this->isNewID($ID) ? 'add' : 'update',
-               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-               'class' => 'btn btn-secondary',
-            ],
-            $this->isNewID($ID) ? [] : [
-               'type' => 'submit',
-               'name' => 'delete',
-               'value' => __('Put in trashbin'),
-               'class' => 'btn btn-secondary'
-            ]
-         ],
+         'itemtype' => $this::class,
          'content' => [
             __('Cluster') => [
                'visible' => true,
@@ -165,7 +152,7 @@ class Cluster extends CommonDBTM
             ]
          ]
       ];
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
 
       return true;
    }

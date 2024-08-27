@@ -576,14 +576,7 @@ class Reminder extends CommonDBVisible implements
       $rand = mt_rand();
       $form = [
          'action' => Toolbox::getItemTypeFormURL('reminder'),
-         'buttons' => [
-            [
-               'type' => 'submit',
-               'name' => $this->isNewID($ID) ? 'add' : 'update',
-               'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-               'class' => 'submit-button btn btn-secondary',
-            ],
-         ],
+         'itemtype' => self::class,
          'content' => [
             __('New item') . " - " . __('Note') => [
                'visible' => true,
@@ -684,7 +677,7 @@ class Reminder extends CommonDBVisible implements
       JS
       );
 
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
 
       return true;
    }

@@ -155,18 +155,7 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
 
       $form = [
         'action' => $this->getFormURL(),
-        'buttons' => [
-            [
-                'name'  => $this->isNewID($ID) ? 'add' : 'update',
-                'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-                'class'  => 'btn btn-secondary'
-            ],
-            $this->isNewID($ID) ? [] : [
-                'name'  => 'purge',
-                'value' => __('Delete'),
-                'class'  => 'btn btn-danger'
-            ]
-        ],
+        'itemtype' => self::class,
         'content' => [
             $this->getTypeName() => [
                 'visible' => true,
@@ -309,21 +298,6 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
         ],
       ];
       renderTwigForm($form, '', $this->fields);
-
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
-
-      echo "</td></tr>";
-
-      if ($is_ajax && $is_rrule) {
-         $options['candel'] = false;
-         $options['addbuttons'] = [
-            'purge'          => "<i class='fas fa-trash-alt' aria-hidden='true'></i>&nbsp;".__("Delete serie"),
-            'purge_instance' => "<i class='far fa-trash-alt' aria-hidden='true'></i>&nbsp;".__("Delete instance"),
-         ];
-      }
-
-      $this->showFormButtons($options);
 
       return true;
    }
