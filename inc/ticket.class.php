@@ -5427,6 +5427,7 @@ class Ticket extends CommonITILObject
             'reset'    => 'reset',
          ];
          $forcetab = '';
+         $title = '';
          if ($showgrouptickets) {
             switch ($status) {
                case "toapprove":
@@ -5822,7 +5823,7 @@ class Ticket extends CommonITILObject
             }
             $values[] = $newValue;
          }
-         echo "<p class='table-title'>" . $title . "</p>";
+         echo "<p class='table-title'>" . $title . "</a></p>";
          renderTwigTemplate('table.twig', [
             'fields'  => $fields,
             'values'  => $values,

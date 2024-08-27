@@ -1044,7 +1044,7 @@ class Problem extends CommonITILObject {
       $options['criteria'][0]['link']       = 'AND';
       $options['reset']                     ='reset';
 
-      echo "<table class='tab_cadrehov' aira-label='Problem followup'>";
+      echo "<table class='tab_cadrehov' aria-label='Problem followup'>";
       echo "<tr class='noHover'><th colspan='2'>";
 
       echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/problem.php?".
