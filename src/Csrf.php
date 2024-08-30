@@ -7,7 +7,7 @@ class Csrf {
     static function generate() {
         $token = bin2hex(random_bytes(32));
         $_SESSION['_glpi_csrf_token'] = $token;
-        $_SESSION['csrf_token_time'] = time() + 350;
+        $_SESSION['csrf_token_time'] = time() + 3600;
         return $token;
     }
 
