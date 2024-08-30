@@ -5950,8 +5950,8 @@ class Ticket extends CommonITILObject
          echo "<a href=\"" . $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php?create_ticket=1\" class='pointer'>" .
             __('Create a ticket') . "&nbsp;<i class='fa fa-plus' aria-hidden='true'></i><span class='sr-only'>" . __s('Add') . "</span></a>";
       } else {
-         echo "<a href=\"" . Ticket::getSearchURL() . "?" .
-            Toolbox::append_params($options, '&amp;') . "\">" . __('Ticket followup') . "</a>";
+         echo "<p class='table-title mt-0'><a href=\"" . Ticket::getSearchURL() . "?" .
+            Toolbox::append_params($options, '&amp;') . "\">" . __('Ticket followup') . "</a></p>";
       }
       echo "</th></tr>";
       echo "<tr><th>" . _n('Ticket', 'Tickets', Session::getPluralNumber()) . "</th>

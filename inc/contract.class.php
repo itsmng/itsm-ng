@@ -1113,8 +1113,8 @@ class Contract extends CommonDBTM {
 
       echo "<table class='tab_cadrehov' aria-label='Contracts Table'>";
       echo "<tr class='noHover'><th colspan='2'>";
-      echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/contract.php?reset=reset\">".
-             self::getTypeName(1)."</a></th></tr>";
+      echo "<p class='table-title mt-0'><a href=\"".$CFG_GLPI["root_doc"]."/front/contract.php?reset=reset\">".
+             self::getTypeName(1)."</a></p></th></tr>";
 
       echo "<tr class='tab_bg_2'>";
       $options = [

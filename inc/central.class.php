@@ -169,43 +169,59 @@ class Central extends CommonGLPI {
    /**
     * Show the central global view
    **/
-   static function showGlobalView() {
+ static function showGlobalView() {
 
-      $showticket  = Session::haveRight("ticket", Ticket::READALL);
-      $showproblem = Session::haveRight("problem", Problem::READALL);
+    $showticket  = Session::haveRight("ticket", Ticket::READALL);
+    $showproblem = Session::haveRight("problem", Problem::READALL);
 
-      echo "<table class='tab_cadre_central'><tr class='noHover' aria-label='Global View Outer Table'>";
-      echo "<td class='top' width='50%'>";
-      echo "<table class='central' aria-label='Global View Inner Table'>";
-      echo "<tr class='noHover'><td>";
-      if ($showticket) {
-         Ticket::showCentralCount();
-      } else {
-         Ticket::showCentralCount(true);
-      }
-      if ($showproblem) {
-         Problem::showCentralCount();
-      }
-      if (Contract::canView()) {
-         Contract::showCentral();
-      }
-      echo "</td></tr>";
-      echo "</table></td>";
+    echo "<table class='tab_cadre_central'><tr class='noHover' aria-label='Global View Outer Table'>";
+    
+    echo "<td class='top' width='33%'>";
+    echo "<table class='central' aria-label='Table Description'>";
+    echo "<tr class='noHover'><td>";
+    if ($showticket) {
+        Ticket::showCentralCount();
+    } else {
+        Ticket::showCentralCount(true);
+    }
+    echo "</td></tr>";
+    echo "</table></td>";
 
-      if (Session::haveRight("logs", READ)) {
-         echo "<td class='top'  width='50%'>";
+    echo "<td class='top' width='33%'>";
+    echo "<table class='central' aria-label='Problem followup'>";
+    echo "<tr class='noHover'><td>";
+    if ($showproblem) {
+        Problem::showCentralCount();
+    }
+    echo "</td></tr>";
+    echo "</table></td>";
 
-         //Show last add events
-         Event::showForUser($_SESSION["glpiname"]);
-         echo "</td>";
-      }
-      echo "</tr></table>";
+    echo "<td class='top' width='33%'>";
+    echo "<table class='central' aria-label='Contracts Table'>";
+    echo "<tr class='noHover'><td>";
+    if (Contract::canView()) {
+        Contract::showCentral();
+    }
+    echo "</td></tr>";
+    echo "</table></td>";
+    
+    echo "</tr></table>";
 
-      if ($_SESSION["glpishow_jobs_at_login"] && $showticket) {
-         echo "<br>";
-         Ticket::showCentralNewList();
-      }
+    if (Session::haveRight("logs", READ)) {
+      echo "<td class='top'  width='50%'>";
+
+      //Show last add events
+      Event::showForUser($_SESSION["glpiname"]);
+      echo "</td>";
    }
+   echo "</tr></table>";
+
+    if ($_SESSION["glpishow_jobs_at_login"] && $showticket) {
+        echo "<br>";
+        Ticket::showCentralNewList();
+    }
+}
+
 
 
    /**
