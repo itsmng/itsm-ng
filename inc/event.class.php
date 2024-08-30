@@ -267,8 +267,8 @@ class Event extends CommonDBTM {
       echo "<br><div class='spaced'><table class='tab_cadre' aria-label='Last Event'>";
       echo "<tr><th colspan='5'>";
       //TRANS: %d is the number of item to display
-      echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/event.php\">".
-             sprintf(__('Last %d events'), $_SESSION['glpilist_limit'])."</a>";
+      echo "<p class='table-title'><a href=\"".$CFG_GLPI["root_doc"]."/front/event.php\">".
+             sprintf(__('Last %d events'), $_SESSION['glpilist_limit'])."</a></p>";
       echo "</th></tr>";
 
       echo "<tr><th>".__('Source')."</th>";

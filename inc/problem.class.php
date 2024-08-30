@@ -1047,8 +1047,8 @@ class Problem extends CommonITILObject {
       echo "<table class='tab_cadrehov' aria-label='Problem followup'>";
       echo "<tr class='noHover'><th colspan='2'>";
 
-      echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/problem.php?".
-               Toolbox::append_params($options, '&amp;')."\">".__('Problem followup')."</a>";
+      echo "<p class='table-title mt-0'><a href=\"".$CFG_GLPI["root_doc"]."/front/problem.php?".
+               Toolbox::append_params($options, '&amp;')."\">".__('Problem followup')."</a> </p>";
 
       echo "</th></tr>";
       echo "<tr><th>".Problem::getTypeName(Session::getPluralNumber())."</th>
