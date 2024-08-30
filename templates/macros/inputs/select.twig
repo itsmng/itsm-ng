@@ -28,7 +28,7 @@
     {% endif %}>
     {% for key, item in attributes.values %}
       {% if item is iterable %}
-        {{ _self.optgroup(key, item) }}
+        {{ _self.optgroup(key, item, attributes.value) }}
       {% else %}
         <option value="{{key}}" {% if attributes.value == key %}selected="selected"{% endif %}>{{item|raw}}</option>
       {% endif %}

@@ -382,11 +382,11 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria {
                      'name' => 'url',
                      'value' => $options['url'],
                   ] : [],
-                  [
+                  $this->isNewID($ID) ? [
                      'type' => 'hidden',
                      'name' => 'id',
                      'value' => $ID,
-                  ],
+                  ] : [],
                   __('Name') => [
                      'type' => 'text',
                      'name' => 'name',

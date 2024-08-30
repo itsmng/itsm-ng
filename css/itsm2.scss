@@ -97,7 +97,8 @@ header {
 }
 
 #language_link a i,
-#menu-options a i {
+#menu-options a i,
+#bookmark_link a i{
     color: var(--bs-header-text) !important;
 }
 

@@ -1903,6 +1903,18 @@ JAVASCRIPT;
             'href'  => $CFG_GLPI['root_doc'] . $menu[$sector]['content'][$item]['page'],
          ];
       };
+      /// Bookmark load
+      Ajax::createSlidePanel(
+         'showSavedSearches',
+         [
+            'title'     => __('Saved searches'),
+            'url'       => $CFG_GLPI['root_doc'] . '/ajax/savedsearch.php?action=show',
+            'icon'      => '/pics/menu_config.png',
+            'icon_url'  => SavedSearch::getSearchURL(),
+            'icon_txt'  => __('Manage saved searches')
+         ]
+      );
+
 
       ob_start();
          Html::showProfileSelecter($CFG_GLPI["root_doc"]
