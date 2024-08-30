@@ -1406,3 +1406,6 @@ div.chip > p {
     border-radius: 5px;
 }
 
+.table-title:has(a:empty) {
+    display: none;
+}

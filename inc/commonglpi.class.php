@@ -1398,7 +1398,7 @@ class CommonGLPI {
          echo "\n<form aria-label='Display Options' method='get' action='".$CFG_GLPI['root_doc']."/front/display.options.php'>\n";
          echo "<input type='hidden' name='itemtype' value='NetworkPort'>\n";
          echo "<input type='hidden' name='sub_itemtype' value='$sub_itemtype'>\n";
-         echo "<table class='tab_cadre' aira-label='display Option'>";
+         echo "<table class='tab_cadre' aria-label='display Option'>";
          echo "<tr><th colspan='2'>".__s('Display options')."</th></tr>\n";
          echo "<tr><td colspan='2'>";
          echo "<input type='submit' class='submit' name='reset' value=\"".
