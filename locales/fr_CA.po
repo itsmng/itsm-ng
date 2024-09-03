@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2024-08-30 09:38+0000\n"
+"PO-Revision-Date: 2024-09-03 07:09+0000\n"
 "Last-Translator: ITSM-NG <dev@itsm-ng.com>\n"
 "Language-Team: French (Canada) <https://hosted.weblate.org/projects/itsm-ng/"
 "itsm-ng/fr_CA/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.7.1-dev\n"
+"X-Generator: Weblate 5.8-dev\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -610,11 +610,11 @@ msgstr "Veuillez compléter la latitude et la longitude de ce lieu."
 
 #: ajax/deleteItilActor.php:92
 msgid "Actor deleted successfully"
-msgstr ""
+msgstr "Acteur supprimé avec succès"
 
 #: ajax/deleteItilActor.php:98
 msgid "Error while deleting actor"
-msgstr ""
+msgstr "Erreur lors de la suppression d'un acteur"
 
 #: ajax/telemetry.php:46
 msgid ""
@@ -2018,7 +2018,7 @@ msgstr "Impossible d'utiliser LDAP comme source de connexion externe"
 
 #: front/setup.auth.php:58
 msgid "Open ID connect authentication"
-msgstr ""
+msgstr "Authentication avec OpenID Connect"
 
 #: front/setup.auth.php:61
 msgid "Others authentication methods"
@@ -2509,8 +2509,8 @@ msgstr "ID"
 #: src/MailServer.php:325 src/dashboard/dashboard.class.php:107
 msgid "Name"
 msgid_plural "Names"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Nom"
+msgstr[1] "Noms"
 
 #: front/impactcsv.php:91 inc/impact.class.php:260
 msgid "Impacted by"
@@ -3691,7 +3691,7 @@ msgstr "Impossible d'arrêter la personnification de l'utilisateur"
 
 #: front/document.form.php:66
 msgid "Could not add document"
-msgstr ""
+msgstr "Impossible d'ajouter le document"
 
 #: inc/operatingsystemedition.class.php:42
 #: inc/item_operatingsystem.class.php:365
@@ -3973,7 +3973,7 @@ msgstr[1] "Versions"
 
 #: inc/cluster.class.php:136
 msgid "Auto update system"
-msgstr ""
+msgstr "Système de mise à jour automatique"
 
 #: inc/cluster.class.php:143 inc/cluster.class.php:223
 #: inc/printer.class.php:323 inc/printer.class.php:750
@@ -4368,6 +4368,7 @@ msgstr "\"session.use_trans_sid\" doit être désactivé."
 #: inc/system/requirement/sessionsconfiguration.class.php:71
 msgid "See .htaccess file in the ITSM-NG root for more information."
 msgstr ""
+"Voir le fichier .htaccess dans la racine d'ITSM-NG pour plus d'informations."
 
 #: inc/system/requirement/sessionsconfiguration.class.php:77
 msgid "Sessions support is available - Perfect!"
@@ -4540,7 +4541,7 @@ msgstr "Mémoire allouée"
 #: inc/system/requirement/memorylimit.class.php:75
 #, php-format
 msgid "A minimum of %s is commonly required for ITSM-NG."
-msgstr ""
+msgstr "Un minimum de %s est généralement requis pour ITSM-NG."
 
 #: inc/system/requirement/memorylimit.class.php:76
 msgid "Try increasing the memory_limit parameter in the php.ini file."
@@ -9716,7 +9717,7 @@ msgstr ""
 
 #: inc/config.php:245 inc/config.php:246
 msgid "Upgrade from GLPI 10 is not supported."
-msgstr ""
+msgstr "La mise à jour à partir de ITSM-NG 10 n'est pas prise en charge."
 
 #: inc/rulecollection.class.php:328
 msgid "Rules list"
@@ -14590,6 +14591,10 @@ msgid ""
 "an email containing the informations required to reset your password. Please "
 "contact your administrator if you do not receive any email."
 msgstr ""
+"Si l’adresse mail est liée à un utilisateur ITSM-NG existant, vous recevrez "
+"un mail contenant les informations nécessaires à la réinitialisation du mot "
+"de passe. Veuillez contacter un administrateur si vous ne recevez pas de "
+"mail."
 
 #: inc/api/api.class.php:2192 inc/user.class.php:4761
 msgid "Reset password successful."
