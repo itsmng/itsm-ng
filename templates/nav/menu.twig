@@ -1,9 +1,6 @@
-<nav class="nav-side-menu">
-
-    <div class="menu-list">
-
+<nav id='menu' class="{{menu_small ? 'menu-close' : 'menu-open'}} d-flex flex-column space-between">
+    <div class="menu-list flex-grow-1">
         <ul id="menu-content" class="menu-content collapse out">
-
             {% for menu_name, data in menu|filter(data => data['show_menu']) %}
                 <li title="{{data['title']}}" id='menu-{{menu_name}}' class='menu {{data['class']}} {{menu_favorite_on ? '' : 'hidden'}}' tabindex="0">
                     <a href="#" class="nav-link {{menu[menu_name]['is_open'] ?: 'collapsed'}}" onclick="openMenu(this, '{{menu_name}}')" data-bs-toggle="collapse" data-bs-target="#submenu-{{menu_name}}" aria-expanded="false">
@@ -48,14 +45,18 @@
             {% endfor %}
         </ul>
     </div>
+    <div class="menu-bottom">
+        <a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors"></a>
+        <a class="accessibility-text" title="{{'Accessibility'|trans}}" href="{{root_doc}}/front/accessibility.php">Déclaration d'accessibilité</a>
+    </div>
 </nav>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {     
+    document.addEventListener('DOMContentLoaded', function() {
         const menuItems = document.querySelectorAll('.menu');
 
         menuItems.forEach(function(item) {
-            
+
             item.addEventListener('show.bs.collapse', function() {
                 menuItems.forEach(function(otherItem) {
                     if (otherItem !== item) {

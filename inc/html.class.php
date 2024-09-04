@@ -1875,16 +1875,7 @@ JAVASCRIPT;
          )->next()['menu_favorite_on'];
       $twig_vars['menu_favorite_on'] = filter_var($twig_vars['menu_favorite_on'], FILTER_VALIDATE_BOOLEAN);
 
-      $twig_vars['menu_small'] = $DB->request(
-               [
-                  'SELECT' => 'menu_small',
-                  'FROM'   => 'glpi_users',
-                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
-               ]
-         )->next()['menu_small'];
-      $twig_vars['menu_small'] = filter_var($twig_vars['menu_small'], FILTER_VALIDATE_BOOLEAN);
-
-      $menu = self::getMainMenu($sector, $item, $option)['args']['menu'];
+      $menu = $twig_vars['main_menu']['args']['menu'];
       $twig_vars['breadcrumb_items'] = [
          [
             'title' => __('Home'),
@@ -7280,6 +7271,15 @@ JAVASCRIPT;
       "link" => $link, "item" => $item,
       "option" => $option, "sector"=> $sector];
       $twig_vars['links'] = $links;
+
+      $twig_vars['menu_small'] = $DB->request(
+               [
+                  'SELECT' => 'menu_small',
+                  'FROM'   => 'glpi_users',
+                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
+               ]
+         )->next()['menu_small'];
+      $twig_vars['menu_small'] = filter_var($twig_vars['menu_small'], FILTER_VALIDATE_BOOLEAN);
 
       // TODO: add profile selector
       // Profile selector
