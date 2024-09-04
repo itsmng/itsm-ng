@@ -39,7 +39,7 @@
 						<input type="search" name="globalsearch" aria-label="Valider" placeholder="{{"Search"|trans}}..." id="search-input">
 					</form>
 				</div>
-				
+
 			{% endif %}
 
 			<div class="d-flex justify-content-start align-items-center">
@@ -50,7 +50,7 @@
 						</a>
 					</li>
 					<li id="menu-options" class="p-2" aria-hidden="true">
-						<a href="#" title="{{'Navbar'|trans }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-hidden="true">
+						<a href="#" title="{{'Navbar'|trans }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="far fa-window-maximize" aria-label="{{'Navbar'|trans }}"></i>
 						</a>
 						{% include "nav/nav-settings.twig" %}
@@ -125,7 +125,7 @@
 	document.getElementById('search-icon').addEventListener('click', function() {
 		const searchBar = document.getElementById('searchbar');
 		const searchInput = document.getElementById('search-input');
-	
+
 		if (searchBar.classList.contains('expanded')) {
 			searchInput.blur();
 			searchBar.classList.remove('expanded');
@@ -134,16 +134,16 @@
 			searchInput.focus();
 		}
 	});
-	
+
 	document.addEventListener('click', function(event) {
 		const searchBar = document.getElementById('searchbar');
 		const searchInput = document.getElementById('search-input');
 		const searchIcon = document.getElementById('search-icon');
-	
+
 		if (!searchBar.contains(event.target) && !searchIcon.contains(event.target)) {
 			searchBar.classList.remove('expanded');
 			searchInput.blur();
 		}
 	});
-	
-</script>	
+
+</script>
