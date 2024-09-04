@@ -1244,7 +1244,9 @@ class Item_SoftwareVersion extends CommonDBRelation
          $allOptions = getOptionForItems(Software::class, ['entities_id' => $entities_id, 'is_template' => 0]);
          $options = [];
          foreach($installedSoftware as $id) {
-            $options[$id] = $allOptions[$id];
+            if (isset($allOptions[$id])) {
+               $options[$id] = $allOptions[$id];
+            }
          }
          $form = [
             'action' => Item_SoftwareLicense::getFormURL(),
