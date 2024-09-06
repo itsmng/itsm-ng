@@ -4870,11 +4870,11 @@ class Ticket extends CommonITILObject
                      'col_lg' => 6,
                   ] : [],
                   __('SLA') . ' (' . __('Time to own') . ')' => $ID ? [
-                     'type' => 'select',
-                     'name' => 'slas_id_tto',
-                     'itemtype' => SLA::class,
-                     'condition' => ['type' => SLM::TTO],
-                     'col_lg' => 6,
+                    'content' => (function () use ($tt, $canupdate) {
+                        ob_start();
+                        (new SLA())->showForTicket($this, SLM::TTO, $tt, $canupdate);
+                        return ob_get_clean();
+                    })(),
                   ] : [],
                   __('Time to resolve') => $ID ? [
                      'type' => 'datetime-local',
@@ -4884,11 +4884,11 @@ class Ticket extends CommonITILObject
                      'col_lg' => 6,
                   ] : [],
                   __('SLA') . ' (' . __('Time to resolve') . ')' => $ID ? [
-                     'type' => 'select',
-                     'name' => 'slas_id_ttr',
-                     'itemtype' => SLA::class,
-                     'condition' => ['type' => SLM::TTR],
-                     'col_lg' => 6,
+                    'content' => (function () use ($tt, $canupdate) {
+                        ob_start();
+                        (new SLA())->showForTicket($this, SLM::TTR, $tt, $canupdate);
+                        return ob_get_clean();
+                    })(),
                   ] : [],
                   __('Internal time to own') => $ID ? [
                      'type' => 'datetime-local',
@@ -4898,11 +4898,11 @@ class Ticket extends CommonITILObject
                      'col_lg' => 6,
                   ] : [],
                   __('SLA') . ' (' . __('Internal time to own') . ')' => $ID ? [
-                     'type' => 'select',
-                     'name' => 'olas_id_tto',
-                     'itemtype' => OLA::class,
-                     'condition' => ['type' => SLM::TTO],
-                     'col_lg' => 6,
+                    'content' => (function () use ($tt, $canupdate) {
+                        ob_start();
+                        (new OLA())->showForTicket($this, SLM::TTO, $tt, $canupdate);
+                        return ob_get_clean();
+                    })(),
                   ] : [],
                   __('Internal time to resolve') => $ID ? [
                      'type' => 'datetime-local',
@@ -4912,11 +4912,11 @@ class Ticket extends CommonITILObject
                      'col_lg' => 6,
                   ] : [],
                   __('SLA') . ' (' . __('Internal time to resolve') . ')' => $ID ? [
-                     'type' => 'select',
-                     'name' => 'olas_id_ttr',
-                     'itemtype' => OLA::class,
-                     'condition' => ['type' => SLM::TTR],
-                     'col_lg' => 6,
+                    'content' => (function () use ($tt, $canupdate) {
+                        ob_start();
+                        (new OLA())->showForTicket($this, SLM::TTR, $tt, $canupdate);
+                        return ob_get_clean();
+                    })(),
                   ] : [],
                ]
             ],
