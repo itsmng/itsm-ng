@@ -51,7 +51,9 @@
                 </span>
             {% elseif key == "config" %}
                 <span>
-                    <img src="{{root_doc}}/pics/menu_showall.png" url="{{root_doc}}{{val}}" alt="{{'Setup'|trans}}">
+                    <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Setup'|trans}}">
+                        <i class="pointer fa fa-cog" aria-hidden="true"></i>
+                    </a>
                 </span>
             {% elseif (key != "add" and key != "search") %}
                 <span>

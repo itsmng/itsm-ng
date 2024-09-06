@@ -63,8 +63,8 @@ class Central extends CommonGLPI {
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
       if ($item->getType() == __CLASS__) {
-         $tabs = [
-            0 => __('Dashboard'),
+         $tabs = Session::haveRight('dashboard', READ) ? [ 0 => __('Dashboard') ] : [];
+         $tabs += [
             1 => __('Personal View'),
             2 => __('Group View'),
             3 => __('Global View'),
@@ -235,9 +235,11 @@ class Central extends CommonGLPI {
    foreach ($objects as $object) {
        $values[$object] = ((string) $object)::getTypeName();
    }
-   $dashboard = new Dashboard();
-   $dashboard->getForUser();
-   $dashboard->show(null, true);
+   if (Session::haveRight('dashboard', Ticket::READALL)) {
+       $dashboard = new Dashboard();
+       $dashboard->getForUser();
+       $dashboard->show(null, true);
+   }
    $showticket  = Session::haveRightsOr("ticket",
                                         [Ticket::READMY, Ticket::READALL, Ticket::READASSIGN]);
 
