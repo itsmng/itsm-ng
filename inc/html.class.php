@@ -6451,67 +6451,68 @@ JAVASCRIPT;
     */
    static function redefineConfirm()
    {
+      echo self::scriptBlock(<<<JS
+          var confirmed = false;
+          var lastClickedElement;
 
-      echo self::scriptBlock("
-      var confirmed = false;
-      var lastClickedElement;
+          // store last clicked element on dom
+          $(document).click(function(event) {
+              lastClickedElement = $(event.target);
+          });
 
-      // store last clicked element on dom
-      $(document).click(function(event) {
-          lastClickedElement = $(event.target);
-      });
+          // asynchronous confirm dialog with jquery ui
+          var newConfirm = function(message, caption) {
+             message = message.replace('\\n', '<br>');
+             caption = caption || '';
 
-      // asynchronous confirm dialog with jquery ui
-      var newConfirm = function(message, caption) {
-         message = message.replace('\\n', '<br>');
-         caption = caption || '';
+             $('<div></div>').html(message).dialog({
+                title: caption,
+                dialogClass: 'fixed glpi_modal',
+                buttons: {
+                   '" . addslashes(_x('button', 'Confirm')) . "': function () {
+                      $(this).dialog('close');
+                      confirmed = true;
 
-         $('<div></div>').html(message).dialog({
-            title: caption,
-            dialogClass: 'fixed glpi_modal',
-            buttons: {
-               '" . addslashes(_x('button', 'Confirm')) . "': function () {
-                  $(this).dialog('close');
-                  confirmed = true;
+                      //trigger click on the same element (to return true value)
+                      lastClickedElement.click();
 
-                  //trigger click on the same element (to return true value)
-                  lastClickedElement.click();
+                      // re-init confirmed (to permit usage of 'confirm' function again in the page)
+                      // maybe timeout is not essential ...
+                      setTimeout(function(){  confirmed = false; }, 100);
+                   },
+                   '" . addslashes(_x('button', 'Cancel')) . "': function () {
+                      $(this).dialog('close');
+                      confirmed = false;
+                   }
+                },
+                open: function(event, ui) {
+                   $(this).parent().prev('.ui-widget-overlay').addClass('glpi_modal');
+                },
+                close: function () {
+                    $(this).remove();
+                },
+                draggable: true,
+                modal: true,
+                resizable: false,
+                width: 'auto'
+             });
+          };
 
-                  // re-init confirmed (to permit usage of 'confirm' function again in the page)
-                  // maybe timeout is not essential ...
-                  setTimeout(function(){  confirmed = false; }, 100);
-               },
-               '" . addslashes(_x('button', 'Cancel')) . "': function () {
-                  $(this).dialog('close');
-                  confirmed = false;
-               }
-            },
-            open: function(event, ui) {
-               $(this).parent().prev('.ui-widget-overlay').addClass('glpi_modal');
-            },
-            close: function () {
-                $(this).remove();
-            },
-            draggable: true,
-            modal: true,
-            resizable: false,
-            width: 'auto'
-         });
-      };
+          window.nativeConfirm = window.confirm;
 
-      window.nativeConfirm = window.confirm;
+          // redefine native 'confirm' function
+          window.confirm = function (message, caption) {
+             // if watched var isn't true, we can display dialog
+             if(!confirmed) {
+                // call asynchronous dialog
+                newConfirm(message, caption);
+             }
 
-      // redefine native 'confirm' function
-      window.confirm = function (message, caption) {
-         // if watched var isn't true, we can display dialog
-         if(!confirmed) {
-            // call asynchronous dialog
-            newConfirm(message, caption);
-         }
-
-         // return early
-         return confirmed;
-      };");
+             // return early
+             return confirmed;
+          };
+        JS
+      );
    }
 
 

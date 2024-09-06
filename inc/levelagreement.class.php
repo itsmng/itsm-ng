@@ -340,8 +340,11 @@ abstract class LevelAgreement extends CommonDBChild {
             echo $tt->getBeginHiddenFieldValue($dateField);
             echo "<span class='assign_la'>";
             if ($canupdate) {
-               Html::showDateTimeField($dateField, ['value'      => $ticket->fields[$dateField],
-                                                    'maybeempty' => true]);
+               renderTwigTemplate('macros/input.twig',[
+                  'type'      => 'datetime-local',
+                  'name'      => $dateField,
+                  'value'     => $ticket->fields[$dateField],
+               ]);
             } else {
                echo Html::convDateTime($ticket->fields[$dateField]);
             }
@@ -376,10 +379,13 @@ abstract class LevelAgreement extends CommonDBChild {
       } else { // New Ticket
          echo "<td>";
          echo $tt->getBeginHiddenFieldValue($dateField);
-         Html::showDateTimeField($dateField, ['value'      => $ticket->fields[$dateField],
-                                              'maybeempty' => false,
-                                              'canedit'    => $canupdate,
-                                              'required'   => $tt->isMandatoryField($dateField)]);
+         renderTwigTemplate('macros/input.twig',[
+            'type'      => 'datetime-local',
+            'name'      => $dateField,
+            'value'     => $ticket->fields[$dateField],
+            $tt->isMandatoryField($dateField) ? 'required' : '' => true,
+            $canupdate ? null : 'disabled' => true,
+         ]);
          echo $tt->getEndHiddenFieldValue($dateField, $ticket);
          echo "</td>";
          $data     = $this->find(
