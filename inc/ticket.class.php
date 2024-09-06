@@ -4869,11 +4869,25 @@ class Ticket extends CommonITILObject
                      'value' => $this->fields["time_to_own"],
                      'col_lg' => 6,
                   ] : [],
+                  __('SLA') . ' (' . __('Time to own') . ')' => $ID ? [
+                     'type' => 'select',
+                     'name' => 'slas_id_tto',
+                     'itemtype' => SLA::class,
+                     'condition' => ['type' => SLM::TTO],
+                     'col_lg' => 6,
+                  ] : [],
                   __('Time to resolve') => $ID ? [
                      'type' => 'datetime-local',
                      'name' => 'time_to_resolve',
                      'id' => rand(),
                      'value' => $this->fields["time_to_resolve"],
+                     'col_lg' => 6,
+                  ] : [],
+                  __('SLA') . ' (' . __('Time to resolve') . ')' => $ID ? [
+                     'type' => 'select',
+                     'name' => 'slas_id_ttr',
+                     'itemtype' => SLA::class,
+                     'condition' => ['type' => SLM::TTR],
                      'col_lg' => 6,
                   ] : [],
                   __('Internal time to own') => $ID ? [
@@ -4883,11 +4897,25 @@ class Ticket extends CommonITILObject
                      'value' => $this->fields["time_to_resolve"],
                      'col_lg' => 6,
                   ] : [],
+                  __('SLA') . ' (' . __('Internal time to own') . ')' => $ID ? [
+                     'type' => 'select',
+                     'name' => 'olas_id_tto',
+                     'itemtype' => OLA::class,
+                     'condition' => ['type' => SLM::TTO],
+                     'col_lg' => 6,
+                  ] : [],
                   __('Internal time to resolve') => $ID ? [
                      'type' => 'datetime-local',
                      'name' => 'time_to_resolve',
                      'id' => rand(),
                      'value' => $this->fields["time_to_resolve"],
+                     'col_lg' => 6,
+                  ] : [],
+                  __('SLA') . ' (' . __('Internal time to resolve') . ')' => $ID ? [
+                     'type' => 'select',
+                     'name' => 'olas_id_ttr',
+                     'itemtype' => OLA::class,
+                     'condition' => ['type' => SLM::TTR],
                      'col_lg' => 6,
                   ] : [],
                ]
