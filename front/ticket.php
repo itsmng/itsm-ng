@@ -81,7 +81,7 @@ $dashboard->show([
          [
             'title' => 'Closed tickets',
             'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::CLOSED, 'entities_id' => $_SESSION['glpiactive_entity']]),
-            'icon' => 'fas fa-times-circle',
+            'icon' => 'fas fa-lock',
          ],
       ]
    ]
