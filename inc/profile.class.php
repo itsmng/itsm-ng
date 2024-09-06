@@ -2014,8 +2014,13 @@ class Profile extends CommonDBTM
          ],
          [
             'itemtype'  => 'Grid',
-            'label'     => __('All dashboards'),
-            'field'     => 'dashboard'
+            'label'     => __('Dashboards'),
+            'field'     => 'dashboard',
+            'rights'    => [
+               READ    => __('Read'),
+               Ticket::READALL  => __('Read my'),
+               UPDATE  => __('Update')
+            ],
          ],
          [
             'itemtype'  => 'DisplayPreference',
