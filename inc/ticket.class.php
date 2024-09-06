@@ -6030,10 +6030,10 @@ class Ticket extends CommonITILObject
 
          echo "<div class='center'><table class='tab_cadre_fixe' style='min-width: 85%' aria-label='New Ticket'>";
          //TRANS: %d is the number of new tickets
-         echo "<tr><th colspan='12'>" . sprintf(_n('%d new ticket', '%d new tickets', $number), $number);
+         echo "<tr><p class='table-title mt-0' style='font-size :16px'>" . sprintf(_n('%d new ticket', '%d new tickets', $number), $number);
          echo "<a href='" . Ticket::getSearchURL() . "?" .
-            Toolbox::append_params($options, '&amp;') . "'>" . __('Show all') . "</a>";
-         echo "</th></tr>";
+            Toolbox::append_params($options, '&amp;') . "' class='btn btn-link'>" . __('Show all') . "</a>";
+         echo "</p></tr>";
 
          self::commonListHeader(Search::HTML_OUTPUT);
 
@@ -7788,7 +7788,7 @@ class Ticket extends CommonITILObject
 
    static function getIcon()
    {
-      return "fas fa-exclamation-circle";
+      return "fas fa-ticket-alt";
    }
 
    public static function getItemLinkClass(): string

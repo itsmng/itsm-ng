@@ -444,14 +444,16 @@ class Plugin extends CommonDBTM {
              && countElementsInTable(self::getTable(), ['directory' => $new_specs['directory']]) === 0) {
             $plugin_key    = $new_specs['directory'];
             $informations = $new_specs['informations'];
-         } else {
+         } 
+         else {
             trigger_error(
                sprintf(
                   'Unable to load plugin "%s" information.',
                   $plugin_key
                ),
                E_USER_WARNING
-            );
+            )
+            ;
             // Plugin is known but we are unable to load information, we ignore it
             return;
          }
