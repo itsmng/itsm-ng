@@ -6451,6 +6451,8 @@ JAVASCRIPT;
     */
    static function redefineConfirm()
    {
+      $confirmLabel = _x('button', 'Confirm');
+      $cancelLabel = _x('button', 'Cancel');
       echo self::scriptBlock(<<<JS
           var confirmed = false;
           var lastClickedElement;
@@ -6469,7 +6471,7 @@ JAVASCRIPT;
                 title: caption,
                 dialogClass: 'fixed glpi_modal',
                 buttons: {
-                   '" . addslashes(_x('button', 'Confirm')) . "': function () {
+                   {$confirmLabel}: function () {
                       $(this).dialog('close');
                       confirmed = true;
 
@@ -6480,7 +6482,7 @@ JAVASCRIPT;
                       // maybe timeout is not essential ...
                       setTimeout(function(){  confirmed = false; }, 100);
                    },
-                   '" . addslashes(_x('button', 'Cancel')) . "': function () {
+                   $cancelLabel: function () {
                       $(this).dialog('close');
                       confirmed = false;
                    }
