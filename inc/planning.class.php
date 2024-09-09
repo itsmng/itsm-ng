@@ -1442,8 +1442,8 @@ class Planning extends CommonGLPI {
          echo "<tr class='tab_bg_2'><td>".__('Start date')."</td><td>";
          renderTwigTemplate('macros/input.twig', [
             'name'        => 'plan[begin]',
-            'type'        => 'date',
-            'value'       => $begin ?? date("Y-m-d H:i:s"),
+            'type'        => 'datetime-local',
+            'value'       => $begin,
             'required'    => true,
             'min'         => $mintime,
             'max'         => $CFG_GLPI["planning_end"],
