@@ -585,9 +585,6 @@ nav#menu {
         color: var(--primary-text-color);
         width: 100%;
         padding: 5px;
-        padding-right: calc(
-            5px + 1em
-        ); //take into account star-icon {position: absolute};
         overflow: hidden;
         box-sizing: border-box;
         border-radius: 5px;
@@ -844,28 +841,17 @@ nav#menu {
             text-rendering: auto;
             -webkit-font-smoothing: antialiased;
             font-family: "Font Awesome 5 Free";
-            font-weight: 900;
+            font-weight: 400;
             content: "\f005";
             line-height: 1;
-        }
-        .favorite-mode & {
-            pointer-events: auto;
-            &::before {
-                display: inline-block;
-            }
         }
         .menu-close & {
             display: none;
         }
+    }
 
-        //    .section-favorite &::before {
-        //     visibility: visible;
-        //     font-weight: 900;
-        //    }
-
-        //    #submenu-favorite &::before {
-        //     visibility: hidden;
-        //    }
+    .section-favorite i.star-icon::before {
+        font-weight: 900;
     }
 
     #submenu-favorite {
@@ -880,19 +866,23 @@ nav#menu {
     }
 }
 
-nav#menu .section-favorite i.star-icon::before {
-    font-weight: 900;
+
+nav#menu.favorite-mode i.star-icon::before {
+    pointer-events: auto;
+    display: inline-block;
 }
 
 #submenu-favorite i.star-icon::before {
     display: none;
 }
+
 .favorite-mode #submenu-favorite i.star-icon {
     &::before {
         display: inline-block;
         font-weight: 900;
     }
     // pointer-events: auto;
+
 }
 
 /* bold odd test choice menu */
