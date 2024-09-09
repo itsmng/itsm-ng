@@ -74,12 +74,12 @@ $dashboard->show([
             'icon' => 'fas fa-calendar-check',
          ],
          [
-            'title' => 'Solved tickets',
+            'title' => __('Solved tickets'),
             'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::SOLVED, 'entities_id' => $_SESSION['glpiactive_entity']]),
             'icon' => 'fas fa-check-circle',
          ],
          [
-            'title' => 'Closed tickets',
+            'title' => __('Closed tickets'),
             'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::CLOSED, 'entities_id' => $_SESSION['glpiactive_entity']]),
             'icon' => 'fas fa-lock',
          ],
