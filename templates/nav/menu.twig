@@ -68,7 +68,7 @@
                 });
             });
 
-            document.addEventListener('click', function(event) {
+            document.getElementById('menu').addEventListener('click', function(event) {
                 if (!item.contains(event.target)) {
                     const submenu = item.querySelector('.sub-menu');
                     if (submenu.classList.contains('show')) {
