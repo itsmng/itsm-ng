@@ -105,10 +105,6 @@ class Central extends CommonGLPI {
    }
 
    public function showGlobalDashboard() {
-      echo "<table class='tab_cadre_central' aria-label='Tickets by Status Table'>";
-      Plugin::doHook('display_central');
-      echo "</table>";
-
       $dashboard = new Dashboard();
       $grid = [
          __('General') => [
