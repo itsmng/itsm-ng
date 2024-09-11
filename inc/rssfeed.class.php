@@ -653,20 +653,7 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
 
       $form = [
 			'action' => Toolbox::getItemTypeFormURL('rssfeed'),
-			'buttons' => [
-				[
-					'type' => 'submit',
-					'name' => $this->isNewID($ID) ? 'add' : 'update',
-					'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-					'class' => 'btn btn-secondary',
-				],
-				$this->isNewID($ID) ? [] : [
-					'type' => 'submit',
-					'name' => 'purge',
-					'value' => __('Delete permanently'),
-					'class' => 'btn btn-secondary'
-				]
-			],
+            'itemtype' => 'rssfeed',
 			'content' => [
 				__('RSS feed') => [
 					'visible' => true,
@@ -737,7 +724,7 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
 				]
 			]
 		];
-		renderTwigForm($form);
+		renderTwigForm($form, '', $this->fields);
 
       return true;
    }

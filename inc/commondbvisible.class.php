@@ -300,7 +300,7 @@ abstract class CommonDBVisible extends CommonDBTM {
                   Group::getTypeName(1),
                   $entname,
                ];
-               $massive_action[] = sprintf('item[%s][%s]', Group_Reminder::class, $data['id']);
+               $massive_action[] = sprintf('item[%s][%s]', 'Group_' . $this->getType(), $data['id']);
             }
          }
       }
@@ -319,7 +319,7 @@ abstract class CommonDBVisible extends CommonDBTM {
                   Entity::getTypeName(1),
                   $entname,
                ];
-               $massive_action[] = sprintf('item[%s][%s]', Entity_Reminder::class, $data['id']);
+               $massive_action[] = sprintf('item[%s][%s]', 'Entity_' . $this->getType(), $data['id']);
             }
          }
       }
@@ -343,7 +343,7 @@ abstract class CommonDBVisible extends CommonDBTM {
                   Profile::getTypeName(1),
                   $entname,
                ];
-               $massive_action[] = sprintf('item[%s][%s]', Profile_Reminder::class, $data['id']);
+               $massive_action[] = sprintf('item[%s][%s]', 'Profile_'.$this->getType(), $data['id']);
             }
          }
       }
