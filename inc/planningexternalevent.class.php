@@ -143,6 +143,9 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
       }
 
       ob_start();
+      if (empty($this->fields['begin'])) {
+         $this->fields['begin'] = $options['begin'];
+      }
       if (empty($this->fields['end'])) {
          $this->fields['end'] = $options['end'];
       }
