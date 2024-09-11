@@ -1614,7 +1614,7 @@ class Stat extends CommonGLPI {
       Html::requireJs('charts');
       $out .= "<script type='text/javascript'>
                   $(function() {
-                     var chart_$slug = new Chartist.Line('#$slug', {
+                     var chart_$slug = new (window.Chartist.LineChart)('#$slug', {
                         labels: ['" . implode('\', \'', Toolbox::addslashes_deep($labels))  . "'],
                         series: [";
 
@@ -1654,9 +1654,6 @@ class Stat extends CommonGLPI {
 
       if ($param['legend'] === true || $param['tooltip'] === true) {
          $out .= ", plugins: [";
-         if ($param['legend'] === true) {
-            $out .= "Chartist.plugins.legend()";
-         }
          if ($param['tooltip'] === true) {
             $out .= ($param['legend'] === true ? ',' : '') . "Chartist.plugins.tooltip()";
          }
@@ -1758,7 +1755,6 @@ class Stat extends CommonGLPI {
                         height: 300,
                         width: 300,
                         plugins: [
-                           Chartist.plugins.legend(),
                            Chartist.plugins.tooltip()
                         ]
                      });

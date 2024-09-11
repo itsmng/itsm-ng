@@ -948,8 +948,7 @@ JAVASCRIPT;
       $legend_options = "";
       if ($p['legend']) {
          $height = "100";
-         $legend_options = "
-            Chartist.plugins.legend(),";
+         $legend_options = "";
       }
 
       $html = <<<HTML
@@ -1360,8 +1359,7 @@ JAVASCRIPT;
       $legend_options = "";
       if ($p['legend']) {
          $height = "calc(100% - 40px)";
-         $legend_options = "
-            Chartist.plugins.legend(),";
+         $legend_options = "";
       }
 
       $html = <<<HTML
@@ -1405,7 +1403,7 @@ HTML;
 
       $js = <<<JAVASCRIPT
       $(function () {
-         var chart = new Chartist.Line('#chart-{$p['rand']} .chart', {
+         var chart = new Chartist.LineChart('#chart-{$p['rand']} .chart', {
             labels: {$json_labels},
             series: {$json_series},
          }, {

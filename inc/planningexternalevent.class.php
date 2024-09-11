@@ -143,6 +143,9 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
       }
 
       ob_start();
+      if (empty($this->fields['end'])) {
+         $this->fields['end'] = $options['end'];
+      }
       Planning::showAddEventClassicForm([
          'items_id'  => $this->fields['id'],
          'itemtype'  => $this->getType(),
@@ -272,6 +275,8 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
                     ],
                     _n('Calendar', 'Calendars', 1) => [
                         'content' => $calendarInput,
+                        'col_lg' => 12,
+                        'col_md' => 12,
                     ],
                     __('Repeat') => [
                         'content' => self::showRepetitionForm($this->fields['rrule'] ?? '', [
