@@ -1262,50 +1262,12 @@ class Item_SoftwareVersion extends CommonDBRelation
                SoftwareLicense::getTypeName(Session::getPluralNumber()) => [
                   'visible' => 'true',
                   'inputs' => [
-                     // only software installed on item
-                     Software::getTypeName(Session::getPluralNumber()) => [
-                        'type' => 'select',
-                        'id' => 'softwareDropdownForLicence',
-                        'name' => 'softwares_id',
-                        'values' => [Dropdown::EMPTY_VALUE] + $options,
-                        'col_lg' => 6,
-                        'hooks' => [
-                           'change' => <<<JS
-                              var softwareversions_id = $(this).val();
-                              var url = '{$CFG_GLPI["root_doc"]}/ajax/dropdownSoftwareLicense.php';
-
-                              if (softwareversions_id == 0) {
-                                 $('#licenceDropdown').empty();
-                                 $('#licenceDropdown').prop('disabled', true);
-                                 return;
-                              }
-                              $.ajax({
-                                 url: url,
-                                 type: 'POST',
-                                 data: {
-                                    softwares_id: softwareversions_id,
-                                    entity_restrict: 0,
-                                 },
-                                 dataType: 'json',
-                                 success: function(data) {
-
-                                    $('#licenceDropdown').prop('disabled', false);
-                                    $('#licenceDropdown').empty();
-                                    for (const [key, value] of Object.entries(data)) {
-                                       $('#licenceDropdown').append(
-                                          $('<option></option>').val(key).html(value)
-                                       )
-                                    }
-                                 },
-                              });
-                           JS,
-                        ]
-                     ],
                      SoftwareLicense::getTypeName(Session::getPluralNumber()) => [
                         'type' => 'select',
                         'id' => 'licenceDropdown',
                         'name' => 'softwarelicenses_id',
-                        'values' => getOptionForItems('SoftwareLicense', ['entities_id' => $entities_id]),
+                        'itemtype' => 'SoftwareLicense',
+                        'conditions' => ['entities_id' => $entities_id],
                         'disabled' => true,
                         'col_lg' => 6,
                      ],
