@@ -2,7 +2,7 @@
 
 {% if menu_width is empty %}
 
-	<body class={{body_class}}>
+	<body {% if body_class is not empty %} class={{body_class}} {% endif %} style="width: 100%;">
 
 	{% else %}
 
