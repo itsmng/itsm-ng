@@ -31,9 +31,6 @@
                 data-toolbar="#toolbar{{rand}}"
                 data-show-columns-toggle-all="true"
                 data-click-to-select="true"
-                {% if noSearch is not defined %}
-                    data-search="true"
-                {% endif %}
                 data-show-export="true"
                 data-show-columns="true"
             {% endif %}
@@ -99,7 +96,7 @@
 		setTimeout(function() {
 			$('#{{id}}').bootstrapTable();
 		}, 200);
-		
+
 		{% if not minimal %}
 			const toggles = sessionStorage.getItem('{{itemtype}}-toggles');
 			var togglesArray = new Set();
