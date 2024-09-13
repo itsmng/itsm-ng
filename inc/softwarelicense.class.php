@@ -410,7 +410,7 @@ class SoftwareLicense extends CommonTreeDropdown {
                      'max' => 10000,
                      'step' => 1,
                   ],
-                  __('Quota Status') => $ID > 0 ? 
+                  __('Quota Status') => $ID > 0 ?
                      ($this->fields['is_valid'] ? [
                         'content' => "<span class='green'>"._x('adjective', 'Valid').'<span>'
                      ]
@@ -441,7 +441,7 @@ class SoftwareLicense extends CommonTreeDropdown {
             ]
          ]
       ];
-      renderTwigForm($form);
+      renderTwigForm($form, '', $this->fields);
 
       return true;
    }

@@ -391,7 +391,6 @@ class Certificate_Item extends CommonDBRelation {
       }
 
       $canedit      = $item->canAddItem('Certificate');
-      $rand         = mt_rand();
       $is_recursive = $item->isRecursive();
 
       $iterator = self::getListForItem($item);
@@ -466,6 +465,7 @@ class Certificate_Item extends CommonDBRelation {
                            'type' => 'select',
                            'name' => 'certificates_id',
                            'itemtype' => Certificate::class,
+                           'condition' => ['is_deleted' => 0, 'entities_id' => $item->fields['entities_id']],
                            'actions' => getItemActionButtons(['info'] , Certificate::class),
                            'col_lg' => 12,
                            'col_md' => 12,
