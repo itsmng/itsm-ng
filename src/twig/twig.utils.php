@@ -293,6 +293,19 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
         ], $form['content'][array_key_first($form['content'])]['inputs']);
 
     }
+    if (isset($form['itemtype'])) {
+        $item = new $form['itemtype']();
+        if ($fields['id'] > 0) {
+            $item->getFromDB($fields['id']);
+        }
+        ob_start();
+        Plugin::doHook("post_item_form", ['item' => $item]);
+        if (!empty($additionnalHtml)) {
+            $additionnalHtml .= ob_get_clean();
+        } else {
+            $additionnalHtml = ob_get_clean();
+        }
+    }
     try {
         echo $twig->render('form.twig', [
             'form' => expandForm($form, $fields),
