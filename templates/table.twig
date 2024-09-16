@@ -153,7 +153,7 @@
 			sessionStorage.setItem('{{itemtype}}-toggles', JSON.stringify(Array.from(togglesArray)));
 		});
 
-		{% if is_trash is defined %}
+		{% if is_trash is defined and can_trash %}
 			function buttons{{rand}}() {
 				buttons = {
 					btnshowTrash: {
