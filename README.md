@@ -4,6 +4,7 @@
 
 [![Run tests](https://github.com/itsmng/itsm-ng/actions/workflows/ci.yml/badge.svg?branch=itsm_2.0.0)](https://github.com/itsmng/itsm-ng/actions/workflows/ci.yml)
 [![Translation](https://hosted.weblate.org/widget/itsm-ng/itsm-ng/svg-badge.svg)](https://hosted.weblate.org/projects/itsm-ng/itsm-ng)
+[![Translation](https://img.shields.io/github/v/release/itsmng/itsm-ng)](https://github.com/itsmng/itsm-ng/releases)
 
 ITSM-NG is a GLPI fork with the objective of offering a strong community component and relevant technological choices.
 
@@ -11,7 +12,7 @@ ITSM-NG is a GLPI fork with the objective of offering a strong community compone
 
 Here is the list of the different libraries and modules and their versions useful for ITSM-NG.
 
-* Apache, Nginx, IIS, etc
+* Apache, Nginx, etc
 * MariaDB >= 10.0 or MySQL >= 5.6
 * PHP 8.1 or newer
 * Required PHP extensions :
@@ -28,6 +29,7 @@ Here is the list of the different libraries and modules and their versions usefu
   * zlib
 
 * Recommanded PHP extensions :
+  * APCU (cache)
   * exif (security enhancement on image validation)
   * imap (mail collector and users authentication)
   * ldap (users authentication)
