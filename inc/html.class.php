@@ -1882,6 +1882,10 @@ JAVASCRIPT;
             'href'  => $CFG_GLPI['root_doc'] . '/front/central.php'
          ],
       ];
+      $twig_vars['help_link'] = 'https://itsm-ng.org';
+      if (is_dir(GLPI_ROOT . '/docs')) {
+         $twig_vars['help_link'] = $CFG_GLPI['root_doc'] . '/docs';
+      };
       if (isset($sector) && isset($menu[$sector])) {
          $twig_vars['breadcrumb_items'][] = [
             'title' => $menu[$sector]['title'],
