@@ -1531,6 +1531,7 @@ class Search {
          'is_deleted'     => $data['search']['is_deleted'],
          'itemtype'       => $data['itemtype']
       ];
+      $can_trash = isset($data['item']->fields['is_deleted']);
 
       $url = $CFG_GLPI['root_doc'] . "/src/search/search.ajax.php?itemtype={$data['itemtype']}&deleted={$data['search']['is_deleted']}";
       if ($data['search']['criteria']) {
@@ -1541,6 +1542,7 @@ class Search {
          'id' => 'SearchTableFor'.$data['itemtype'],
          'fields' => $fields,
          'url' => $url,
+         'can_trash' => $can_trash,
          'is_trash' => $data['search']['is_deleted'],
          'massive_action' => $massiveActionValues,
          'itemtype' => $data['itemtype'],
@@ -2268,7 +2270,7 @@ JAVASCRIPT;
       if (isset($criteria['field'])) {
          $value = $criteria['field'];
       }
-      
+
       $subValue = $criteria['value'] ?? '';
 
       $spanid   = Html::cleanId('SearchSpan'.$request["itemtype"].$prefix.$num);
