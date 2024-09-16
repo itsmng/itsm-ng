@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2024-08-24 13:09+0000\n"
+"PO-Revision-Date: 2024-09-15 09:09+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "es/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.1-dev\n"
+"X-Generator: Weblate 5.8-dev\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -4761,10 +4761,8 @@ msgid "URL of the application"
 msgstr "URL de la aplicación"
 
 #: inc/config.class.php:307 inc/config.class.php:315
-#, fuzzy
-#| msgid "Text in the login box (HTML tags supported)"
 msgid "Text in the login box"
-msgstr "Texto en el cuadro de inicio de sesión (etiquetas HTML soportadas)"
+msgstr "Texto en el cuadro de inicio de sesión"
 
 #: inc/config.class.php:313 inc/config.class.php:334
 msgid "Allow FAQ anonymous access"
