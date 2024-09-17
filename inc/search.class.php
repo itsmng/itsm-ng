@@ -2010,7 +2010,6 @@ class Search {
       $nbsearchcountvar      = 'nbcriteria'.strtolower($itemtype).mt_rand();
       $searchcriteriatableid = 'criteriatable'.strtolower($itemtype).mt_rand();
       // init criteria count
-      echo "<hr>";
       echo Html::scriptBlock("
          var $nbsearchcountvar = ".count($p['criteria']).";
       ");
@@ -2177,8 +2176,6 @@ JAVASCRIPT;
          // Reset to start when submit new search
          echo Html::hidden('start', ['value'    => 0]);
       }
-
-      echo "<hr>";
       echo "</div>";
       if ($p['mainform']) {
          Html::closeForm();

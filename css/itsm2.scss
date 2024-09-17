@@ -1178,9 +1178,9 @@ div.chip > p {
 }
 
 #searchcriteria {
-    width: 100%;
     text-align: center;
-    margin: 0 auto;
+    margin-inline: auto;
+    width: 50%;
 
     ul {
         padding-left: 0;
@@ -1192,7 +1192,7 @@ div.chip > p {
             color: var(--bs-primary-text);
         }
         input[type="submit"] {
-            background: var(--bs-primary);
+            background: #c31212;
             color: var(--bs-primary-text);
         }
     }
@@ -1407,4 +1407,18 @@ div.chip > p {
 
 .central {
     width: 100%;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+}
+
+.secondary {
+    border-radius: 0.5rem;    
+}
+
+.submit {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
 }
