@@ -2006,7 +2006,7 @@ class Search {
       } else {
          $main_block_class = "sub_criteria";
       }
-      echo "<div id='searchcriteria' class='$main_block_class'" . ($p['hide'] ? " style='display: none;'" : "") . ">";
+      echo "<div id='searchcriteria' class='$main_block_class'" . ($p['hide'] ? " style='display: ;'" : "none") . ">";
       $nbsearchcountvar      = 'nbcriteria'.strtolower($itemtype).mt_rand();
       $searchcriteriatableid = 'criteriatable'.strtolower($itemtype).mt_rand();
       // init criteria count
