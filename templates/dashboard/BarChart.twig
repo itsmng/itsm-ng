@@ -24,7 +24,7 @@ $(document).ready(function() {
             const data = {
                 labels: getLastSixMonths(),
                 datasets: [{
-                    label: 'New Tickets',
+                    label: '{{ "New Tickets" | trans }}',
                     data: ticketData,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
