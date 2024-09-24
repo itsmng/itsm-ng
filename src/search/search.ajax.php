@@ -61,6 +61,8 @@ if (isset($_GET['search'])) {
             'value' => $_GET['search']
         ]
     ];
+} else {
+    $params['criteria'] = [];
 }
 if(isset($_GET['criteria'])) {
     $criterias = json_decode(stripslashes($_GET['criteria']), true);
