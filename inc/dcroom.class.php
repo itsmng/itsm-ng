@@ -357,7 +357,8 @@ class DCRoom extends CommonDBTM {
          Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
          $massiveactionparams = [
             'num_displayed'   => min($_SESSION['glpilist_limit'], count($rooms)),
-            'container'       => 'mass'.__CLASS__.$rand
+            'container'       => 'mass'.__CLASS__.$rand,
+            'deprecated'      => true
          ];
          Html::showMassiveActions($massiveactionparams);
       }
