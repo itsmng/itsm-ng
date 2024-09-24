@@ -738,13 +738,7 @@ abstract class CommonITILValidation  extends CommonDBChild {
       $itemtype = static::$itemtype;
       $form = [
          'action' => $canadd ? $itemtype::getFormURL() : '',
-         'buttons' => [
-            [
-               'name' => 'update',
-               'value' => _x('button', 'update'),
-               'class' => 'btn btn-secondary mb-3'
-            ]
-         ],
+         'itemtype' => $itemtype,
          'content' => [
             self::getTypeName(Session::getPluralNumber()) => [
                'visible' => 'true',
@@ -780,7 +774,7 @@ abstract class CommonITILValidation  extends CommonDBChild {
             ]
          ]
       ];
-      renderTwigForm($form);
+      renderTwigForm($form, '', $item->fields);
 
       echo "<div id='viewvalidation" . $tID . "$rand'></div>\n";
 
