@@ -298,6 +298,12 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
         if ($fields['id'] > 0) {
             $item->getFromDB($fields['id']);
         }
+        $preItemFormHtml = '';
+        ob_start();
+        Plugin::doHook("pre_item_form", ['item' => $item]);
+        if (!empty($additionnalHtml)) {
+            $preItemFormHtml .= ob_get_clean();
+        }
         ob_start();
         Plugin::doHook("post_item_form", ['item' => $item]);
         if (!empty($additionnalHtml)) {
@@ -309,6 +315,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     try {
         echo $twig->render('form.twig', [
             'form' => expandForm($form, $fields),
+            'preItemFormHtml' => $preItemFormHtml,
             'additionnalHtml' => $additionnalHtml,
             'root_doc' => $CFG_GLPI['root_doc'],
             'csrf_token' => $_SESSION['_glpi_csrf_token'],
