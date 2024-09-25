@@ -295,7 +295,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     }
     if (isset($form['itemtype'])) {
         $item = new $form['itemtype']();
-        if ($fields['id'] > 0) {
+        if (isset($fields['id']) && $fields['id'] > 0) {
             $item->getFromDB($fields['id']);
         }
         $preItemFormHtml = '';
@@ -315,7 +315,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     try {
         echo $twig->render('form.twig', [
             'form' => expandForm($form, $fields),
-            'preItemFormHtml' => $preItemFormHtml,
+            'preItemFormHtml' => $preItemFormHtml ?? '',
             'additionnalHtml' => $additionnalHtml,
             'root_doc' => $CFG_GLPI['root_doc'],
             'csrf_token' => $_SESSION['_glpi_csrf_token'],

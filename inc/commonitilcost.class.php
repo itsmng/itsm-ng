@@ -474,6 +474,10 @@ abstract class CommonITILCost extends CommonDBChild {
                      'type' => 'select',
                      'name' => 'budgets_id',
                      'value' => $this->fields["budgets_id"],
+                     'condition' => [
+                        'entities_id' => $this->fields['entities_id'],
+                        'is_recursive' => 1,
+                     ],
                      'itemtype' => Budget::class,
                   ],
                   __('Comments') => [
