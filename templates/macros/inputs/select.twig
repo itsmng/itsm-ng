@@ -11,7 +11,6 @@
 {% endmacro %}
 
 {% macro select(attributes) %}
-{{ attributes|dump }}
   {% if not attributes.id %}
     {% set id = random() %}
   {% endif %}
