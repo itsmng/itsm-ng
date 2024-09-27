@@ -11,6 +11,7 @@
 {% endmacro %}
 
 {% macro select(attributes) %}
+{{ attributes|dump }}
   {% if not attributes.id %}
     {% set id = random() %}
   {% endif %}
@@ -19,7 +20,7 @@
       id="{{id}}"
     {% endif %}
     {% for name, value in attributes %}
-      {% if name not in  ['values', 'class', 'multiple']%}
+      {% if name not in  ['values', 'class', 'multiple', 'conditions', 'ajax']%}
         {{name}}="{{value}}"
       {% endif %}
     {% endfor %}
