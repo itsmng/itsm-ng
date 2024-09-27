@@ -84,7 +84,7 @@ class DCRoom extends CommonDBTM {
                     __('Name') => [
                         'type' => 'text',
                         'name' => 'name',
-                        'value' => $this->fields["name"],
+                        'value' => $this->fields["name"] ?? $options['name'] ?? '',
                         'size' => 50,
                         'max' => 255,
                         'comment' => false
@@ -93,14 +93,14 @@ class DCRoom extends CommonDBTM {
                         'type' => 'select',
                         'id' => 'dropdown_locations_id',
                         'name' => 'locations_id',
-                        'value' => $this->fields["locations_id"],
+                        'value' => $this->fields["locations_id"] ?? $options['locations_id'] ?? 0,
                         'values' => getOptionForItems(Location::class),
                     ],
                     Datacenter::getTypeName(1) => [
                         'type' => 'select',
                         'id' => 'dropdown_datacenters_id',
                         'name' => 'datacenters_id',
-                        'value' => $this->fields["datacenters_id"],
+                        'value' => $this->fields["datacenters_id"] ?? $options['datacenters_id'] ?? 0,
                         'values' => getOptionForItems(Datacenter::class),
                         'hooks' => [
                             'change' => <<<JS
@@ -129,7 +129,7 @@ class DCRoom extends CommonDBTM {
                     __('Number of columns') => [
                         'type' => 'number',
                         'name' => 'vis_cols',
-                        'value' => $this->fields["vis_cols"],
+                        'value' => $this->fields["vis_cols"] ?? $options['vis_cols'] ?? 1,
                         'min' => 1,
                         'max' => 100,
                         'step' => 1,
@@ -138,7 +138,7 @@ class DCRoom extends CommonDBTM {
                     __('Number of rows') => [
                         'type' => 'number',
                         'name' => 'vis_rows',
-                        'value' => $this->fields["vis_rows"],
+                        'value' => $this->fields["vis_rows"] ?? $options['vis_rows'] ?? 1,
                         'min' => 1,
                         'max' => 100,
                         'step' => 1,
@@ -149,7 +149,7 @@ class DCRoom extends CommonDBTM {
                         'id' => 'blueprintImagePick',
                         'name' => 'blueprint',
                         'accept' => 'image/*',
-                        'value' => $this->fields["blueprint"],
+                        'value' => $this->fields["blueprint"] ?? '',
                         'col_lg' => 12,
                         'col_md' => 12,
                     ]

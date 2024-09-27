@@ -173,33 +173,6 @@ class Item_Cluster extends CommonDBRelation {
    function showForm($ID, $options = []) {
       global $DB, $CFG_GLPI;
 
-      echo "<div class='center'>";
-
-      $this->initForm($ID, $options);
-      $this->showFormHeader();
-
-      $cluster = new Cluster();
-      $cluster->getFromDB($this->fields['clusters_id']);
-
-      $rand = mt_rand();
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_itemtype$rand'>".__('Item type')."</label></td>";
-      echo "<td>";
-      $types = $CFG_GLPI['cluster_types'];
-      $translated_types = [];
-      foreach ($types as $type) {
-         $translated_types[$type] = $type::getTypeName(1);
-      }
-      Dropdown::showFromArray(
-         'itemtype',
-         $translated_types, [
-            'display_emptychoice'   => true,
-            'value'                 => $this->fields["itemtype"],
-            'rand'                  => $rand
-         ]
-      );
-
       //get all used items
       $used = [];
       $iterator = $DB->request([
@@ -208,51 +181,93 @@ class Item_Cluster extends CommonDBRelation {
       while ($row = $iterator->next()) {
          $used [$row['itemtype']][] = $row['items_id'];
       }
+      $jsUsed = json_encode($used);
 
-      Ajax::updateItemOnSelectEvent(
-         "dropdown_itemtype$rand",
-         "items_id",
-         $CFG_GLPI["root_doc"]."/ajax/dropdownAllItems.php", [
-            'idtable'   => '__VALUE__',
-            'name'      => 'items_id',
-            'value'     => $this->fields['items_id'],
-            'rand'      => $rand,
-            'used'      => $used
-         ]
-      );
+      $loadItemDropdownScript = <<<JS
+        $.ajax({
+            url: '{$CFG_GLPI["root_doc"]}/ajax/dropdownAllItems.php',
+            data: {
+                idtable: $('#dropdown_itemtype').val(),
+                name: 'items_id',
+                value: $('#dropdown_items_id').val(),
+                rand: $('#dropdown_items_id').attr('rand'),
+                used: JSON.stringify($jsUsed)
+            },
+            type: 'POST',
+            success: function(data) {
+                const jsonData = JSON.parse(data);
+                $('#dropdown_items_id').empty();
+                for (const [key, value] of Object.entries(jsonData)) {
+                    if (typeof value === 'object') {
+                        // add optgroup
+                        let group = $('<optgroup>', {
+                            label: key
+                        });
+                        $('#dropdown_items_id').append(group);
+                        for (const [key2, value2] of Object.entries(value)) {
+                            group.append($('<option>', {
+                                value: key2,
+                                text: value2
+                            }));
+                        }
+                    } else {
+                        $('#dropdown_items_id').append($('<option>', {
+                            value: key,
+                            text: value
+                        }));
+                    }
+                }
+            }
+        });
+      JS;
 
-      echo "</td>";
-      echo "<td><label for='dropdown_items_id$rand'>"._n('Item', 'Items', 1)."</label></td>";
-      echo "<td id='items_id'>";
-      if (isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])) {
-         $itemtype = $this->fields['itemtype'];
-         $itemtype = new $itemtype();
-         $itemtype::dropdown([
-            'name'   => "items_id",
-            'value'  => $this->fields['items_id'],
-            'rand'   => $rand
-         ]);
-      } else {
-         Dropdown::showFromArray(
-            'items_id',
-            [], [
-               'display_emptychoice'   => true,
-               'rand'                  => $rand
-            ]
-         );
+      $itemtypes = $CFG_GLPI['cluster_types'];
+      $itemtypesValues = [];
+      foreach ($itemtypes as $itemtype) {
+         $itemtypesValues[$itemtype] = $itemtype::getTypeName(1);
       }
 
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td><label for='dropdown_clusters_id$rand'>".Cluster::getTypeName(1)."</label></td>";
-      echo "<td>";
-      Cluster::dropdown(['value' => $this->fields["clusters_id"], 'rand' => $rand]);
-      echo "</td>";
-      echo "</tr>";
-
-      $this->showFormButtons($options);
+      $form = [
+        'action' => $this->getFormURL(),
+        'itemtype' => $this::class,
+        'content' => [
+          $this->getTypeName() => [
+            'visible' => true,
+            'inputs' => [
+              $this->isNewID($ID) ? [] : [
+                'type' => 'hidden',
+                'name' => 'id',
+                'value' => $ID
+              ],
+              __('Item type') => [
+                'type' => 'select',
+                'id' => 'dropdown_itemtype',
+                'name' => 'itemtype',
+                'value' => $this->fields["itemtype"] ?? $options['itemtype'] ?? '',
+                'values' => $itemtypesValues,
+                'hooks' => [
+                    'change' => $loadItemDropdownScript
+                ],
+                'init' => $loadItemDropdownScript
+              ],
+              __('Item') => [
+                'type' => 'select',
+                'id' => 'dropdown_items_id',
+                'name' => 'items_id',
+                'value' => $this->fields["items_id"] ?? $options['items_id'] ?? 0,
+              ],
+              Cluster::getTypeName(1) => [
+                'type' => 'select',
+                'id' => 'dropdown_clusters_id',
+                'itemtype' => Cluster::class,
+                'name' => 'clusters_id',
+                'value' => $this->fields["clusters_id"] ?? $options['clusters_id'] ?? 0,
+              ],
+            ]
+          ]
+        ]
+      ];
+      renderTwigForm($form, '', $this->fields);
    }
 
    function prepareInputForAdd($input) {

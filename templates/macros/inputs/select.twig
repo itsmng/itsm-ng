@@ -19,7 +19,7 @@
       id="{{id}}"
     {% endif %}
     {% for name, value in attributes %}
-      {% if name not in  ['values', 'class', 'multiple']%}
+      {% if name not in  ['values', 'class', 'multiple', 'conditions', 'ajax']%}
         {{name}}="{{value}}"
       {% endif %}
     {% endfor %}
