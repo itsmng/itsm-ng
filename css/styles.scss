@@ -92,12 +92,6 @@ small {
    font-size: 10px;
 }
 
-sup {
-   vertical-align: baseline;
-   position: relative;
-   top: -0.4em;
-}
-
 .big {
    font-size: 14px;
 }
@@ -812,7 +806,7 @@ input {
    font-size: 1rem;
 }
 
-.ui-tabs sup.tab_nb {
+.ui-tabs {
    border-radius: 50%;
    background-color: #FFF;
    min-width: 18px;
@@ -825,21 +819,21 @@ input {
    margin-right: -5px;
 }
 
-.layout_lefttab .ui-tabs sup.tab_nb {
+.layout_lefttab .ui-tabs {
    position: absolute;
    right: 8px;
    top: 5px;
 }
 
 .ui-tabs {
-   .alltab sup.tab_nb {
+   .alltab {
       position: relative;
       top: 0;
       right: 0;
       background-color: #F1F1F1;
    }
 
-   .ui-state-active sup.tab_nb {
+   .ui-state-active{
       background-color: #E6E6E6;
    }
 }
