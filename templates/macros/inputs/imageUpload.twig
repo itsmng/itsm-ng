@@ -8,6 +8,8 @@
       </div>
       {% if attributes.value %}
         <img class="img-thumbnail" src="{{root_doc}}{{ attributes.external ? '' : '/front/document.send.php?file=' }}{{attributes.value}}" alt="Preview of {{attributes.name}}"></img>
+      {% elseif attributes.docId %}
+        <img class="img-thumbnail" src="{{root_doc}}/front/document.send.php?docid={{attributes.docId}}" alt="Preview of {{attributes.name}}"></img>
       {% endif %}
   </div>
   <script>
