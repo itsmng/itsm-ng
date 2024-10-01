@@ -54,15 +54,19 @@ class ItsmngUploadHandler {
         } else {
             $extension = '';
         }
-        if (!file_exists($type . '/' . $extension)) {
-            if (!mkdir($type . '/' . $extension, 0777, true)) {
+        if (!empty($type) && !str_ends_with($type, '/')) {
+            $type .= '/';
+        }
+        if (!file_exists($type . $extension)) {
+            if (!mkdir($type . $extension, 0777, true)) {
                 return false;
             }
         }
         if ($withDir) {
-            return $type . '/' . $extension;
+            return $type . $extension;
         }
-        return $extension;
+        $relativePath = str_replace(GLPI_DOC_DIR, '', $type) . $extension;
+        return $relativePath;
     }
 
     static function generateBaseDocumentFromPost($POST) {
