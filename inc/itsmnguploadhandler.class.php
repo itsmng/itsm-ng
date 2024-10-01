@@ -79,78 +79,114 @@ class ItsmngUploadHandler {
             'users_id'              => Session::getLoginUserID() ?? 0,
             'is_deleted'            => $POST['is_deleted'] ?? 0,
             'tickets_id'            => $POST['tickets_id'] ?? 0,
-      ];
+        ];
         return $baseDoc;
-   }
+    }
 
-   static function uploadFile($filepath, $filename, $type = self::UPLOAD, $name = null) {
-      $uploadPath = self::getUploadPath($type, $filename);
-      $uniqid = $name ?? uniqid();
-      $filename = $uniqid . '.' . pathinfo($filename, PATHINFO_EXTENSION);
-      $uploadfile = $uploadPath . '/' . $filename;
-      if (!rename($filepath, $uploadfile)) {
-          return false;
-      }
-      if ($type == self::PICTURE) {
-          $thumb = $uploadPath . '/' .
-            $uniqid . '_min' . '.' . pathinfo($filename, PATHINFO_EXTENSION);
-          Toolbox::resizePicture($uploadfile, $thumb);
-      }
-      return self::getUploadPath($type, $filename, false) . '/' . $filename;
-   }
-
-   static function storeTmpFiles($files) {
-      $tmpFiles = [];
-      foreach ($files as $file) {
-        $uploadPath = self::getUploadPath(self::TMP, $file['name']);
-        $filename = uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+    static function uploadFile($filepath, $filename, $type = self::UPLOAD, $name = null) {
+        $uploadPath = self::getUploadPath($type, $filename);
+        $uniqid = $name ?? uniqid();
+        $filename = $uniqid . '.' . pathinfo($filename, PATHINFO_EXTENSION);
         $uploadfile = $uploadPath . '/' . $filename;
-        if (!move_uploaded_file($file['tmp_name'], $uploadfile)) {
+        if (!rename($filepath, $uploadfile)) {
             return false;
         }
-        $tmpFiles[] = [
-            'path'   => $uploadfile,
-            'name'   => $file['name'],
-            'format' => $file['type'],
-        ];
-      }
-      return $tmpFiles;
-   }
+        if ($type == self::PICTURE) {
+            $thumb = $uploadPath . '/' .
+                $uniqid . '_min' . '.' . pathinfo($filename, PATHINFO_EXTENSION);
+            Toolbox::resizePicture($uploadfile, $thumb);
+        }
+        return self::getUploadPath($type, $filename, false) . '/' . $filename;
+    }
+
+    static private function getValidExtPatterns() {
+        global $DB;
+        $valid_type_iterator = $DB->request([
+            'FROM'   => 'glpi_documenttypes',
+            'WHERE'  => [
+                'is_uploadable'   => 1
+            ]
+        ]);
+
+        $valid_ext_patterns = [];
+        foreach ($valid_type_iterator as $valid_type) {
+            $valid_ext = $valid_type['ext'];
+            if (preg_match('/\/.+\//', $valid_ext)) {
+                // Filename matches pattern
+                // Remove surrounding '/' as it will be included in a larger pattern
+                // and protect by surrounding parenthesis to prevent conflict with other patterns
+                $valid_ext_patterns[] = '(' . substr($valid_ext, 1, -1) . ')';
+            } else {
+                // Filename ends with allowed ext
+                $valid_ext_patterns[] = '\.' . preg_quote($valid_type['ext'], '/') . '$';
+            }
+        }
+        return $valid_ext_patterns;
+    }
+
+    static function storeTmpFiles($files) {
+        $tmpFiles = [];
+
+        foreach ($files as $file) {
+            $valid_regex = '/(' . implode('|', self::getValidExtPatterns()) . ')$/';
+            if (!preg_match($valid_regex, $file['name'])) {
+                Session::addMessageAfterRedirect(
+                    __('Invalid file extension', 'itsmng'),
+                    false,
+                    ERROR
+                );
+                continue;
+            }
+
+            $uploadPath = self::getUploadPath(self::TMP, $file['name']);
+            $filename = uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+            $uploadfile = $uploadPath . '/' . $filename;
+            if (!move_uploaded_file($file['tmp_name'], $uploadfile)) {
+                return false;
+            }
+            $tmpFiles[] = [
+                'path'   => $uploadfile,
+                'name'   => $file['name'],
+                'format' => $file['type'],
+            ];
+        }
+        return $tmpFiles;
+    }
 
 
-   static function addFileToDb($file, $name = null) {
-       $newDoc = ItsmngUploadHandler::generateBaseDocumentFromPost($_POST);
-       if (!$name) {
-           $name = $file['name'];
-       }
-       $doc = new Document();
-       $newDoc['filepath'] = ItsmngUploadHandler::uploadFile(
-           $file['path'],
-           $file['name'],
-           ItsmngUploadHandler::UPLOAD
-      );
-       $newDoc['filename'] = $file['name'];
-       $newDoc['name'] = $name;
-       $newDoc['mime'] = $file['format'];
-       $doc->add($newDoc);
-       return $doc;
-   }
+    static function addFileToDb($file, $name = null) {
+        $newDoc = ItsmngUploadHandler::generateBaseDocumentFromPost($_POST);
+        if (!$name) {
+            $name = $file['name'];
+        }
+        $doc = new Document();
+        $newDoc['filepath'] = ItsmngUploadHandler::uploadFile(
+            $file['path'],
+            $file['name'],
+            ItsmngUploadHandler::UPLOAD
+        );
+        $newDoc['filename'] = $file['name'];
+        $newDoc['name'] = $name;
+        $newDoc['mime'] = $file['format'];
+        $doc->add($newDoc);
+        return $doc;
+    }
 
-   static function linkDocToItem($id, $entity, $isRecursive, $itemType, $itemId, $userId) {
-       $docItem = new Document_Item();
-       $docItem->add([
-           'documents_id' => $id,
-           'entities_id'  => $entity,
-           'is_recursive' => $isRecursive,
-           'itemtype'     => $itemType,
-           'items_id'     => $itemId,
-           'users_id'     => $userId,
-      ]);
-   }
+    static function linkDocToItem($id, $entity, $isRecursive, $itemType, $itemId, $userId) {
+        $docItem = new Document_Item();
+        $docItem->add([
+            'documents_id' => $id,
+            'entities_id'  => $entity,
+            'is_recursive' => $isRecursive,
+            'itemtype'     => $itemType,
+            'items_id'     => $itemId,
+            'users_id'     => $userId,
+        ]);
+    }
 
-   static function removeFiles($files) {
-       foreach ($files as $file) {
-           unlink($file['path']);
-      }
-   }
+    static function removeFiles($files) {
+        foreach ($files as $file) {
+            unlink($file['path']);
+        }
+    }
 }
