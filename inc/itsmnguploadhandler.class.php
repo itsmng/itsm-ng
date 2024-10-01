@@ -118,15 +118,19 @@ class ItsmngUploadHandler {
    }
 
 
-   static function addFileToDb($file) {
-       $doc = new Document();
+   static function addFileToDb($file, $name = null) {
        $newDoc = ItsmngUploadHandler::generateBaseDocumentFromPost($_POST);
-       $newDoc['filename'] = $file['name'];
+       if (!$name) {
+           $name = $file['name'];
+       }
+       $doc = new Document();
        $newDoc['filepath'] = ItsmngUploadHandler::uploadFile(
            $file['path'],
            $file['name'],
            ItsmngUploadHandler::UPLOAD
       );
+       $newDoc['filename'] = $file['name'];
+       $newDoc['name'] = $name;
        $newDoc['mime'] = $file['format'];
        $doc->add($newDoc);
        return $doc;
