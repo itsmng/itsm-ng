@@ -6455,6 +6455,8 @@ JAVASCRIPT;
     */
    static function redefineConfirm()
    {
+      global $CFG_GLPI;
+
       $confirmLabel = _x('button', 'Confirm');
       $cancelLabel = _x('button', 'Cancel');
       echo self::scriptBlock(<<<JS
@@ -6468,40 +6470,42 @@ JAVASCRIPT;
 
           // asynchronous confirm dialog with jquery ui
           var newConfirm = function(message, caption) {
-             message = message.replace('\\n', '<br>');
-             caption = caption || '';
+            $.getScript('{$CFG_GLPI["root_doc"]}/node_modules/jquery-ui/dist/jquery-ui.min.js', function() {
+                 message = message.replace('\\n', '<br>');
+                 caption = caption || '';
 
-             $('<div></div>').html(message).dialog({
-                title: caption,
-                dialogClass: 'fixed glpi_modal',
-                buttons: {
-                   {$confirmLabel}: function () {
-                      $(this).dialog('close');
-                      confirmed = true;
+                 $('<div></div>').html(message).dialog({
+                    title: caption,
+                    dialogClass: 'fixed glpi_modal',
+                    buttons: {
+                       {$confirmLabel}: function () {
+                          $(this).dialog('close');
+                          confirmed = true;
 
-                      //trigger click on the same element (to return true value)
-                      lastClickedElement.click();
+                          //trigger click on the same element (to return true value)
+                          lastClickedElement.click();
 
-                      // re-init confirmed (to permit usage of 'confirm' function again in the page)
-                      // maybe timeout is not essential ...
-                      setTimeout(function(){  confirmed = false; }, 100);
-                   },
-                   $cancelLabel: function () {
-                      $(this).dialog('close');
-                      confirmed = false;
-                   }
-                },
-                open: function(event, ui) {
-                   $(this).parent().prev('.ui-widget-overlay').addClass('glpi_modal');
-                },
-                close: function () {
-                    $(this).remove();
-                },
-                draggable: true,
-                modal: true,
-                resizable: false,
-                width: 'auto'
-             });
+                          // re-init confirmed (to permit usage of 'confirm' function again in the page)
+                          // maybe timeout is not essential ...
+                          setTimeout(function(){  confirmed = false; }, 100);
+                       },
+                       $cancelLabel: function () {
+                          $(this).dialog('close');
+                          confirmed = false;
+                       }
+                    },
+                    open: function(event, ui) {
+                       $(this).parent().prev('.ui-widget-overlay').addClass('glpi_modal');
+                    },
+                    close: function () {
+                        $(this).remove();
+                    },
+                    draggable: true,
+                    modal: true,
+                    resizable: false,
+                    width: 'auto'
+                 });
+              });
           };
 
           window.nativeConfirm = window.confirm;
