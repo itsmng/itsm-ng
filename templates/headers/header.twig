@@ -95,10 +95,6 @@
 
 		</header>
 
-		{% if accessibilityMenu %}
-			{% include "accessibilityMenu.twig" %}
-		{% endif %}
-
 		<div id="main-test" class="{{menu_position}}" data-root="{{root_doc}}">
             {% include main_menu.path with main_menu.args %}
 			<div class="main-container flex-grow-1">
