@@ -12,17 +12,8 @@
 			{% include impersonate_banner.path with impersonate_banner.args%}
 		{% endif %}
 
-		<button class="skip-link sr-only sr-only-focusable" id="jump_menu" onclick="jumpToMenu()">{{'Jump to menu'|trans}}</button>
-		<button class="skip-link sr-only sr-only-focusable" id="jump_content" onclick="jumpToContent()">{{'Jump to content'|trans}}</button>
-		<button class="skip-link sr-only sr-only-focusable" onclick="changeFontSize(1)">{{'Increase text'|trans}}</button>
-		<button class="skip-link sr-only sr-only-focusable" onclick="changeFontSize(-1)">{{'Decrease text'|trans}}</button>
-		<button class="skip-link sr-only sr-only-focusable" onclick="toggleClassForBody('accessibility-grayscale')">{{'GrayScale'|trans}}</button>
-		<button class="skip-link sr-only sr-only-focusable" onclick="toggleHighContrast()">{{'High Contrast'|trans}}</button>
-		<button class="skip-link sr-only sr-only-focusable" onclick="toggleNegativeHighContrast()">{{'Negative Contrast'|trans}}</button>
-		<button class="skip-link sr-only sr-only-focusable" onclick="toggleClassForBody('accessibility-link-underline')">{{'Links underline'|trans}}</button>
-		<button class="skip-link sr-only sr-only-focusable" onclick="toggleClassForBody('accessibility-readable-font')">{{'Readable font'|trans}}</button>
-		<button class="skip-link sr-only sr-only-focusable" onclick="resetAllAccessibilityOptions()">{{'Reset'|trans}}</button>
-		<script src="{{root_doc}}/js/accessibility.js"></script>
+        {% include "headers/utils/accessibility_buttons.twig" %}
+
 		<header role='banner' id='header_top' class='d-flex justify-content-between align-items-center'>
 			<div class="header_logo m-3" id='c_logo'>
 				<a href="{{root_doc}}/" accesskey='1' title={{"Home"|trans}}>

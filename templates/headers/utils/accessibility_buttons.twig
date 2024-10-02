@@ -1,0 +1,13 @@
+<div class="position-absolute">
+    <button class="skip-link sr-only sr-only-focusable" id="jump_menu" onclick="jumpToMenu()">{{'Jump to menu'|trans}}</button>
+    <button class="skip-link sr-only sr-only-focusable" id="jump_content" onclick="jumpToContent()">{{'Jump to content'|trans}}</button>
+    <button class="skip-link sr-only sr-only-focusable" onclick="changeFontSize(1)">{{'Increase text'|trans}}</button>
+    <button class="skip-link sr-only sr-only-focusable" onclick="changeFontSize(-1)">{{'Decrease text'|trans}}</button>
+    <button class="skip-link sr-only sr-only-focusable" onclick="toggleClassForBody('accessibility-grayscale')">{{'GrayScale'|trans}}</button>
+    <button class="skip-link sr-only sr-only-focusable" onclick="toggleHighContrast()">{{'High Contrast'|trans}}</button>
+    <button class="skip-link sr-only sr-only-focusable" onclick="toggleNegativeHighContrast()">{{'Negative Contrast'|trans}}</button>
+    <button class="skip-link sr-only sr-only-focusable" onclick="toggleClassForBody('accessibility-link-underline')">{{'Links underline'|trans}}</button>
+    <button class="skip-link sr-only sr-only-focusable" onclick="toggleClassForBody('accessibility-readable-font')">{{'Readable font'|trans}}</button>
+    <button class="skip-link sr-only sr-only-focusable" onclick="resetAllAccessibilityOptions()">{{'Reset'|trans}}</button>
+</div>
+<script src="{{root_doc}}/js/accessibility.js"></script>
