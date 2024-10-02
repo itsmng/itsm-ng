@@ -307,6 +307,7 @@ class Ajax {
     * @return void|string (see $options['display'])
     */
    static function createIframeModalWindow($domid, $url, $options = []) {
+       global $CFG_GLPI;
 
       $param = ['width'         => 1050,
                      'height'        => 500,
@@ -328,7 +329,7 @@ class Ajax {
       $out .= "<iframe id='Iframe$domid' class='iframe hidden' title='Iframe'=></iframe></div>";
 
       $out .= "<script type='text/javascript'>
-         $(function() {
+         $.getScript('" . $CFG_GLPI["root_doc"] . "/node_modules/jquery-ui-dist/jquery-ui.min.js', function() {
             $('#$domid').dialog({
                modal: true,
                autoOpen: false,
@@ -808,7 +809,7 @@ class Ajax {
             }
          }
          $out .= "}\n";
-         
+
       }
       $out.= ")\n";
       // $out .= <<<JS
