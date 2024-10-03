@@ -26,8 +26,8 @@
 	{% endif %}
 
 	<ul class='d-flex justify-content-around m-0 color-primary'>
-		<li id='language_link' class="p-2">
-			<a href="{{root_doc}}/front/preference.php?forcetab=User$1" title={{'Language'|trans}}>
+		<li id='language_link' aria-label={{ 'Languages'|trans }} class='p-2'>
+			<a href="{{root_doc}}/front/preference.php?forcetab=User$1" title={{'Language'|trans}} aria-label={{ 'Languages'|trans }}>
 				<i class='fa fa-globe ' aria-hidden="true"></i>
 			</a>
 		</li>

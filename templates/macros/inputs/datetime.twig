@@ -1,7 +1,8 @@
 {% macro datetime(attributes) %}
   {% set rand=random() %}
   <input class='form-control' step="1" {% if not attributes.id %} id={{rand}} {% endif %}
-    {% for name, value in attributes %} {{name}}="{{value|replace({' ': 'T'})}}" {% endfor %}/>
+    {% for name, value in attributes %} {{name}}="{{value|replace({' ': 'T'})}}" {% endfor %}
+      aria-label="{{ attributes.name }}"/>
   <input type="hidden" id="hidden_{{attributes.id|default(rand)}}" name="{{attributes.name}}" value="{{attributes.value|replace({'T': ' '})}}" {{attributes.disabled ? 'disabled' : ''}}>
   <script>
   $('#{{attributes.id|default(rand)}}').on('change', function() {
