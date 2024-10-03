@@ -2,6 +2,7 @@
     <div class="menu-list flex-grow-1">
         <ul id="menu-content" class="menu-content collapse out">
             {% for menu_name, data in menu|filter(data => data['show_menu']) %}
+            {% if data['content']|filter(val => val['show_sub_menu']) is not empty %}
                 <li title="{{data['title']}}" id='menu-{{menu_name}}' class='menu {{data['class']}} {{menu_favorite_on ? '' : 'hidden'}}' tabindex="0">
                     <a href="#" class="nav-link {{menu[menu_name]['is_open'] ?: 'collapsed'}}" onclick="openMenu(this, '{{menu_name}}')" data-bs-toggle="collapse" data-bs-target="#submenu-{{menu_name}}" aria-expanded="false">
                         <i class="bubble-icon fas {{menu[menu_name]['icon']}}" aria-hidden="true"></i>
@@ -42,6 +43,7 @@
                         </ul>
                     {% endif %}
                 </li>
+            {% endif %}
             {% endfor %}
         </ul>
     </div>
