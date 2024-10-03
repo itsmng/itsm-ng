@@ -455,81 +455,98 @@ class AuthLDAP extends CommonDBTM {
    function showFormAdvancedConfig() {
 
       $ID = $this->getField('id');
-      $hidden = '';
+      $elements = [-12, -11, -10, -9, -8, -7, -6, -5, -4, -3.5, -3, -2, -1, 0,
+                        '+1', '+2', '+3', '+3.5', '+4', '+4.5', '+5', '+5.5', '+6', '+6.5', '+7',
+                        '+8', '+9', '+9.5', '+10', '+11', '+12', '+13'];
 
-      echo "<div class='center'>";
-      echo "<form aria-label='Advanced config' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-      echo "<table class='tab_cadre_fixe' aria-label='Advanced information'>";
-
-      echo "<tr class='tab_bg_2'><th colspan='4'>";
-      echo "<input type='hidden' name='id' value='$ID'>". __('Advanced information')."</th></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Use TLS') . "</td><td>";
-      if (function_exists("ldap_start_tls")) {
-         Dropdown::showYesNo('use_tls', $this->fields["use_tls"]);
-      } else {
-         echo "<input type='hidden' name='use_tls' value='0'>".__('ldap_start_tls does not exist');
-      }
-      echo "</td>";
-      echo "<td>" . __('LDAP directory time zone') . "</td><td>";
-      Dropdown::showGMT("time_offset", $this->fields["time_offset"]);
-      echo"</td></tr>";
-
-      if (self::isLdapPageSizeAvailable(false, false)) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>" . __('Use paged results') . "</td><td>";
-         Dropdown::showYesNo('can_support_pagesize', $this->fields["can_support_pagesize"]);
-         echo "</td>";
-         echo "<td>" . __('Page size') . "</td><td>";
-         Dropdown::showNumber("pagesize", ['value' => $this->fields['pagesize'],
-                                                'min'   => 100,
-                                                'max'   => 100000,
-                                                'step'  => 100]);
-         echo"</td></tr>";
-
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>" . __('Maximum number of results') . "</td><td>";
-         Dropdown::showNumber('ldap_maxlimit', ['value' => $this->fields['ldap_maxlimit'],
-                                                     'min'   => 100,
-                                                     'max'   => 999999,
-                                                     'step'  => 100,
-                                                     'toadd' => [0 => __('Unlimited')]]);
-         echo "</td><td colspan='2'></td></tr>";
-
-      } else {
-         $hidden .= "<input type='hidden' name='can_support_pagesize' value='0'>";
-         $hidden .= "<input type='hidden' name='pagesize' value='0'>";
-         $hidden .= "<input type='hidden' name='ldap_maxlimit' value='0'>";
+      $timezones = [];
+      foreach ($elements as $element) {
+         if ($element != 0) {
+            $timezones[$element*HOUR_TIMESTAMP] = sprintf(__('%1$s %2$s'), __('GMT'),
+                                                       sprintf(_n('%s hour', '%s hours', $element),
+                                                               $element));
+         } else {
+            $timezones[$element*HOUR_TIMESTAMP] = __('GMT');
+         }
       }
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('How LDAP aliases should be handled') . "</td><td colspan='4'>";
-      $alias_options = [
-         LDAP_DEREF_NEVER     => __('Never dereferenced (default)'),
-         LDAP_DEREF_ALWAYS    => __('Always dereferenced'),
-         LDAP_DEREF_SEARCHING => __('Dereferenced during the search (but not when locating)'),
-         LDAP_DEREF_FINDING   => __('Dereferenced when locating (not during the search)'),
+      $form = [
+          'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+          'attributes' => [
+              'name' => 'Advanced Config',
+          ],
+          'buttons' => [
+              [
+                  'type' => 'submit',
+                  'name' => 'update',
+                  'value' => _sx('button', 'Save'),
+                  'class' => 'btn btn-secondary',
+              ],
+          ],
+          'content' => [
+              __('Advanced information') => [
+                  'visible' => true,
+                  'inputs' => [
+                      [
+                          'type' => 'hidden',
+                          'name' => 'id',
+                          'value' => $ID
+                      ],
+                      __('Use TLS') => [
+                          'name' => 'use_tls',
+                          'type' => function_exists('ldap_start_tls') ? 'checkbox' : 'hidden',
+                          'value' => $this->fields['use_tls'] ?? 0,
+                      ],
+                      __('LDAP directory time zone') => [
+                          'name' => 'time_offset',
+                          'type' => 'select',
+                          'values' => $timezones,
+                          'value' => $this->fields['time_offset'] ?? '',
+                      ],
+                      __('Use paged results') => [
+                          'name' => 'can_support_pagesize',
+                          'type' => self::isLdapPageSizeAvailable(false, false) ? 'checkbox' : 'hidden',
+                          'value' => $this->fields['can_support_pagesize'] ?? 0,
+                      ],
+                      __('Page size') => [
+                          'name' => 'pagesize',
+                          'type' => self::isLdapPageSizeAvailable(false, false) ? 'number' : 'hidden',
+                          'min'   => 100,
+                          'max'   => 100000,
+                          'step'  => 100,
+                          'value' => $this->fields['pagesize'] < 100 ? 100 : $this->fields['pagesize'],
+                      ],
+                      __('Maximum number of results') => [
+                          'name' => 'ldap_maxlimit',
+                          'type' => self::isLdapPageSizeAvailable(false, false) ? 'number' : 'hidden',
+                          'min'   => 0,
+                          'max'   => 999999,
+                          'step'  => 100,
+                          'value' => $this->fields['ldap_maxlimit'],
+                      ],
+                      __('Domain name used by inventory tool for link the user') => [
+                          'name' => 'inventory_domain',
+                          'type' => 'text',
+                          'value' => $this->fields['inventory_domain'] ?? '',
+                      ],
+                      __('How LDAP aliases should be handled') => [
+                          'name' => 'deref_option',
+                          'type' => 'select',
+                          'values' => [
+                              LDAP_DEREF_NEVER     => __('Never dereferenced (default)'),
+                              LDAP_DEREF_ALWAYS    => __('Always dereferenced'),
+                              LDAP_DEREF_SEARCHING => __('Dereferenced during the search (but not when locating)'),
+                              LDAP_DEREF_FINDING   => __('Dereferenced when locating (not during the search)'),
+                          ],
+                          'value' => $this->fields["deref_option"] ?? LDAP_DEREF_NEVER,
+                          'col_lg' => 12,
+                          'col_md' => 12,
+                      ],
+                  ]
+              ],
+           ]
       ];
-      Dropdown::showFromArray("deref_option", $alias_options,
-                              ['value' => $this->fields["deref_option"]]);
-      echo"</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Domain name used by inventory tool for link the user')."</td>";
-      echo "<td colspan='3'>";
-      Html::autocompletionTextField($this, "inventory_domain", ['size' => 100]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
-      echo "<input type='submit' name='update' class='submit' value=\"".__s('Save')."\">";
-      echo $hidden;
-      echo "</td></tr>";
-
-      echo "</table>";
-      Html::closeForm();
-      echo "</div>";
-
+      renderTwigForm($form, '', $this->fields);
    }
 
    /**
@@ -669,39 +686,65 @@ class AuthLDAP extends CommonDBTM {
 
       $ID = $this->getField('id');
 
-      echo "<div class='center'>";
-      echo "<form aria-label='Groups Config' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-      echo "<input type='hidden' name='id' value='$ID'>";
-      echo "<table class='tab_cadre_fixe' aria-label='Belonging to groups'>";
-
-      echo "<tr><th class='center' colspan='4'>" . __('Belonging to groups') . "</th></tr>";
-
-      echo "<tr class='tab_bg_1'><td>" . __('Search type') . "</td><td>";
-      self::dropdownGroupSearchType(['value' => $this->fields["group_search_type"]]);
-      echo "</td>";
-      echo "<td>" . __('User attribute containing its groups') . "</td>";
-      echo "<td><input type='text' name='group_field' value='".$this->fields["group_field"]."'>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>" . __('Filter to search in groups')."</td><td colspan='3'>";
-      echo "<textarea cols='100' rows='1' name='group_condition'>".$this->fields["group_condition"];
-      echo "</textarea>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>" . __('Group attribute containing its users') . "</td>";
-      echo "<td><input type='text' name='group_member_field' value='".
-                 $this->fields["group_member_field"]."'></td>";
-      echo "<td>" . __('Use DN in the search') . "</td>";
-      echo "<td>";
-      Dropdown::showYesNo("use_dn", $this->fields["use_dn"]);
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
-      echo "<input type='submit' name='update' class='submit' value=\"".__s('Save')."\">";
-      echo "</td></tr>";
-      echo "</table>";
-      Html::closeForm();
-      echo "</div>";
+      $form = [
+          'action' => Toolbox::getItemTypeFormURL('authldap'),
+          'attributes' => [
+              'name' => 'Groups Config',
+          ],
+          'buttons' => [
+              [
+                  'type' => 'submit',
+                  'name' => 'update',
+                  'value' => _sx('button', 'Save'),
+                  'class' => 'btn btn-secondary',
+              ],
+          ],
+          'content' => [
+              __('Belonging to groups') => [
+                  'visible' => true,
+                  'inputs' => [
+                      [
+                          'type' => 'hidden',
+                          'name' => 'id',
+                          'value' => $ID
+                      ],
+                      __('Search type') => [
+                          'name' => 'group_search_type',
+                          'type' => 'select',
+                          'values' => self::getGroupSearchTypeName(),
+                          'value' => $this->fields['group_search_type'] ?? '',
+                          'col_lg' => 6,
+                      ],
+                      __('User attribute containing its groups') => [
+                          'name' => 'group_field',
+                          'type' => 'text',
+                          'value' => $this->fields['group_field'] ?? '',
+                          'col_lg' => 6,
+                      ],
+                      __('Filter to search in groups') => [
+                          'name' => 'group_condition',
+                          'type' => 'textarea',
+                          'value' => $this->fields['group_condition'] ?? '',
+                          'col_lg' => 12,
+                          'col_md' => 12,
+                      ],
+                      __('Group attribute containing its users') => [
+                          'name' => 'group_member_field',
+                          'type' => 'text',
+                          'value' => $this->fields['group_member_field'] ?? '',
+                          'col_lg' => 6,
+                      ],
+                      __('Use DN in the search') => [
+                          'name' => 'use_dn',
+                          'type' => 'checkbox',
+                          'value' => $this->fields['use_dn'] ?? '',
+                          'col_lg' => 6,
+                      ],
+                  ]
+              ]
+          ]
+      ];
+      renderTwigForm($form, '', $this->fields);
    }
 
     /**
@@ -755,88 +798,118 @@ class AuthLDAP extends CommonDBTM {
 
       $ID = $this->getField('id');
 
-      echo "<div class='center'>";
-      echo "<form aria-label='User config' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-      echo "<input type='hidden' name='id' value='$ID'>";
-      echo "<table class='tab_cadre_fixe' aria-label='Binding to the LDAP directory'>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<th class='center' colspan='4'>" . __('Binding to the LDAP directory') . "</th></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Surname') . "</td>";
-      echo "<td><input type='text' name='realname_field' value='".
-                 $this->fields["realname_field"]."'></td>";
-      echo "<td>" . __('First name') . "</td>";
-      echo "<td><input type='text' name='firstname_field' value='".
-                 $this->fields["firstname_field"]."'></td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Comments') . "</td>";
-      echo "<td><input type='text' name='comment_field' value='".$this->fields["comment_field"]."'>";
-      echo "</td>";
-      echo "<td>" . __('Administrative number') . "</td>";
-      echo "<td>";
-      echo "<input type='text' name='registration_number_field' value='".
-             $this->fields["registration_number_field"]."'>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>" . _n('Email', 'Emails', 1) . "</td>";
-      echo "<td><input type='text' name='email1_field' value='".$this->fields["email1_field"]."'>";
-      echo "</td>";
-      echo "<td>" . sprintf(__('%1$s %2$s'), _n('Email', 'Emails', 1), '2') . "</td>";
-      echo "<td><input type='text' name='email2_field' value='".$this->fields["email2_field"]."'>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>" . sprintf(__('%1$s %2$s'), _n('Email', 'Emails', 1), '3') . "</td>";
-      echo "<td><input type='text' name='email3_field' value='".$this->fields["email3_field"]."'>";
-      echo "</td>";
-      echo "<td>" . sprintf(__('%1$s %2$s'), _n('Email', 'Emails', 1), '4') . "</td>";
-      echo "<td><input type='text' name='email4_field' value='".$this->fields["email4_field"]."'>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . _x('ldap', 'Phone') . "</td>";
-      echo "<td><input type='text' name='phone_field'value='".$this->fields["phone_field"]."'>";
-      echo "</td>";
-      echo "<td>" .  __('Phone 2') . "</td>";
-      echo "<td><input type='text' name='phone2_field'value='".$this->fields["phone2_field"]."'>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Mobile phone') . "</td>";
-      echo "<td><input type='text' name='mobile_field'value='".$this->fields["mobile_field"]."'>";
-      echo "</td>";
-      echo "<td>" . _x('person', 'Title') . "</td>";
-      echo "<td><input type='text' name='title_field' value='".$this->fields["title_field"]."'>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Category') . "</td>";
-      echo "<td><input type='text' name='category_field' value='".
-                 $this->fields["category_field"]."'></td>";
-      echo "<td>" . __('Language') . "</td>";
-      echo "<td><input type='text' name='language_field' value='".
-                 $this->fields["language_field"]."'></td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Picture') . "</td>";
-      echo "<td><input type='text' name='picture_field' value='".
-                 $this->fields["picture_field"]."'></td>";
-      echo "<td>" . Location::getTypeName(1) . "</td>";
-      echo "<td><input type='text' name='location_field' value='".$this->fields["location_field"]."'>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Responsible') . "</td>";
-      echo "<td><input type='text' name='responsible_field' value='".
-           $this->fields["responsible_field"]."'></td>";
-      echo "<td colspan='2'></td></tr>";
-
-      echo "<tr><td colspan=4 class='center green'>".__('You can use a field name or an expression using various %{fieldname}').
-           " <br />".__('Example for location: %{city} > %{roomnumber}')."</td></tr>";
-
-      echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
-      echo "<input type='submit' name='update' class='submit' value=\"".__s('Save')."\">";
-      echo "</td></tr>";
-      echo "</table>";
-      Html::closeForm();
-      echo "</div>";
+      $form = [
+         'action' => Toolbox::getItemTypeFormURL('authldap'),
+         'buttons' => [
+            [
+               'type' => 'submit',
+               'name' => 'update',
+               'value' => _sx('button', 'Save'),
+               'class' => 'btn btn-secondary',
+            ],
+         ],
+         'content' => [
+             __('Binding to the LDAP directory') => [
+                  'visible' => true,
+                  'inputs' => [
+                      [
+                          'type' => 'hidden',
+                          'name' => 'id',
+                          'value' => $ID
+                      ],
+                      __('Surname') => [
+                         'name' => 'realname_field',
+                         'type' => 'text',
+                         'value' => $this->fields['realname_field'] ?? '',
+                      ],
+                      __('First name') => [
+                         'name' => 'firstname_field',
+                         'type' => 'text',
+                         'value' => $this->fields['firstname_field'] ?? '',
+                      ],
+                      __('Administrative number') => [
+                         'name' => 'registration_number_field',
+                         'type' => 'text',
+                         'value' => $this->fields['registration_number_field'] ?? '',
+                      ],
+                      _n('Email', 'Emails', 1) => [
+                         'name' => 'email1_field',
+                         'type' => 'text',
+                         'value' => $this->fields['email1_field'] ?? '',
+                      ],
+                      sprintf(__('%1$s %2$s'), _n('Email', 'Emails', 1), '2') => [
+                         'name' => 'email2_field',
+                         'type' => 'text',
+                         'value' => $this->fields['email2_field'] ?? '',
+                      ],
+                      sprintf(__('%1$s %2$s'), _n('Email', 'Emails', 1), '3') => [
+                         'name' => 'email3_field',
+                         'type' => 'text',
+                         'value' => $this->fields['email3_field'] ?? '',
+                      ],
+                      sprintf(__('%1$s %2$s'), _n('Email', 'Emails', 1), '4') => [
+                         'name' => 'email4_field',
+                         'type' => 'text',
+                         'value' => $this->fields['email4_field'] ?? '',
+                      ],
+                      _x('ldap', 'Phone') => [
+                         'name' => 'phone_field',
+                         'type' => 'text',
+                         'value' => $this->fields['phone_field'] ?? '',
+                      ],
+                      __('Phone 2') => [
+                         'name' => 'phone2_field',
+                         'type' => 'text',
+                         'value' => $this->fields['phone2_field'] ?? '',
+                      ],
+                      __('Mobile phone') => [
+                         'name' => 'mobile_field',
+                         'type' => 'text',
+                         'value' => $this->fields['mobile_field'] ?? '',
+                      ],
+                      __('Category') => [
+                         'name' => 'category_field',
+                         'type' => 'text',
+                         'value' => $this->fields['category_field'] ?? '',
+                      ],
+                      __('Language') => [
+                         'name' => 'language_field',
+                         'type' => 'text',
+                         'value' => $this->fields['language_field'] ?? '',
+                      ],
+                      __('Picture') => [
+                         'name' => 'picture_field',
+                         'type' => 'text',
+                         'value' => $this->fields['picture_field'] ?? '',
+                      ],
+                      Location::getTypeName(1) => [
+                         'name' => 'location_field',
+                         'type' => 'text',
+                         'value' => $this->fields['location_field'] ?? '',
+                      ],
+                      __('Responsible') => [
+                         'name' => 'responsible_field',
+                         'type' => 'text',
+                         'value' => $this->fields['responsible_field'] ?? '',
+                      ],
+                      __("Comments") => [
+                         'name' => 'comment_field',
+                         'type' => 'textarea',
+                         'value' => $this->fields['comment_field'] ?? '',
+                         'col_lg' => 12,
+                         'col_md' => 12,
+                      ],
+                      '' => [
+                          'content' => '<div class="center green w-100">' . __('You can use a field name or an expression using various %{fieldname}') .
+                                ' <br />' . __('Example for location: %{city} > %{roomnumber}') . '</div>',
+                          'col_lg' => 12,
+                          'col_md' => 12,
+                      ],
+                  ]
+               ]
+         ]
+      ];
+      renderTwigForm($form, '', $this->fields);
    }
 
    /**
@@ -3328,7 +3401,7 @@ class AuthLDAP extends CommonDBTM {
                   if (isset($_SESSION['ldap_import']['criterias'][$field])) {
                      $field_value = Html::entities_deep(Toolbox::unclean_cross_side_scripting_deep(Toolbox::stripslashes_deep($_SESSION['ldap_import']['criterias'][$field])));
                   }
-                  echo "<input type='text' id='criterias$field' name='criterias[$field]' value='$field_value'>";
+                  echo "<input type='text' class='form-control' id='criterias$field' name='criterias[$field]' value='$field_value'>";
                   echo "</td>";
                   if ($field_counter == 2) {
                      echo "</tr>";
@@ -3352,7 +3425,7 @@ class AuthLDAP extends CommonDBTM {
 
          if ($_SESSION['ldap_import']['authldaps_id']) {
             echo "<tr class='tab_bg_2'><td colspan='4' class='center'>";
-            echo "<input class='submit' type='submit' name='search' value=\"".
+            echo "<input class='btn btn-secondary' type='submit' name='search' value=\"".
                    _sx('button', 'Search')."\">";
             echo "</td></tr>";
          } else {
