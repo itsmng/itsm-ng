@@ -66,28 +66,13 @@
                 }
             };
         {% endif %}
-        {% if (attributes.noLib is not defined or attributes.noLib == false) %}
-        $.getScript('{{root_doc}}/node_modules/select2/dist/js/select2.min.js', function() {
-            $('#{{attributes.id ? attributes.id : id}}').select2({
-                theme: 'bootstrap-5',
-                escapeMarkup: function(markup) {
-                    return markup;
-                },
-                {% if attributes.ajax %}
-                ajax: params,
-                {% endif %}
-                {% if attributes.multiple %}
-                multiple: true,
-                {% endif %}
-            });
-            {% if attributes.multiple %}
-            $('#{{attributes.id ? attributes.id : id}}')
-                .val(JSON.parse('{{attributes.value|json_encode|raw}}'))
-                .trigger('change');
-            {% endif %}
+        $(document).on('keydown', 'select', function(event) {
+          if (event.key === ' ' && !$(this).is(':focus')) {
+            event.preventDefault();
+            $(this).click();
+          }
         });
       });
-      {% endif %}
   </script>
   {% endif %}
 {% endmacro %}
