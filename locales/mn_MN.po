@@ -24989,6 +24989,22 @@ msgstr "Шинэ дуудлага"
 msgid "Add widget"
 msgstr "Картриджийг нэмэх"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Хуваарилах"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Сервер"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Хүсэлт гаргагч"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG ашиглах"
 

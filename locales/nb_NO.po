@@ -24955,6 +24955,22 @@ msgstr "Ny sak"
 msgid "Add widget"
 msgstr "Legg til kassetter"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Tildele"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Server"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Innmelder"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Bruk ITSM-NG"
 

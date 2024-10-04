@@ -24850,6 +24850,22 @@ msgstr "Uus teade"
 msgid "Add widget"
 msgstr "Lisa kassette"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Määra"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Server"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Taotleja"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Alusta ITSM-NG kasutamist"
 

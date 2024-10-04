@@ -24925,6 +24925,22 @@ msgstr "नया टिकट"
 msgid "Add widget"
 msgstr "कारतूस जोड़ें"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "सौंपना"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "सर्वर"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "अनुरोधकर्ताओं"
+
 #~ msgid "Use GLPI"
 #~ msgstr "जीएलपीआई का उपयोग करें"
 

@@ -24893,6 +24893,22 @@ msgstr "New Ticket"
 msgid "Add widget"
 msgstr "Add Cartridges"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Assign"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Server"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Requester"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Use ITSM-NG"
 

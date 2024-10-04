@@ -25505,3 +25505,16 @@ msgstr "Новая заявка"
 #| msgid "Add cartridges"
 msgid "Add widget"
 msgstr "Дадаць картрыджы"
+
+#, fuzzy
+#| msgid "Assigned to"
+msgid "assign"
+msgstr "Прызначанаe да"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Сервер"
+
+msgid "requester"
+msgstr ""

@@ -24980,6 +24980,21 @@ msgstr "Новая заявка"
 msgid "Add widget"
 msgstr "Добавить картриджи"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Назначить"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Сервер"
+
+#, fuzzy
+#| msgid "Requester ID"
+msgid "requester"
+msgstr "ID инициатора запроса"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Запустить ITSM-NG"
 

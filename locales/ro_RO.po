@@ -25386,6 +25386,22 @@ msgstr "Tichet nou"
 msgid "Add widget"
 msgstr "Adăugare cartuşe"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Atribuie"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Server"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Solicitant"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Folositi ITSM-NG"
 

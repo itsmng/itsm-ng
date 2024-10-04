@@ -24448,6 +24448,22 @@ msgstr "新增工单"
 msgid "Add widget"
 msgstr "添加打印耗材"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "分配"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "服务器"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "请求者"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"
 

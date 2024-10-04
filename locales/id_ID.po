@@ -24582,5 +24582,21 @@ msgstr "Tiket baru"
 msgid "Add widget"
 msgstr "Tambah cartridge"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Menugaskan"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Server"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Pemohon"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gunakan ITSM-NG"

@@ -25694,6 +25694,22 @@ msgstr "Nový požadavek"
 msgid "Add widget"
 msgstr "Přidat náplně"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Přiřadit"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Server"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Žadatel"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Používat ITSM-NG"
 

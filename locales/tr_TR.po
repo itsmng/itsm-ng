@@ -24941,6 +24941,22 @@ msgstr "Yeni destek kaydı"
 msgid "Add widget"
 msgstr "Kartuş ekle"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Atama"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Sunucu"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "İsteyen"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG Kullanmaya Geç"
 

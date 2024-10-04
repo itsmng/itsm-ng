@@ -25089,6 +25089,22 @@ msgstr "Neues Supportticket"
 msgid "Add widget"
 msgstr "Kartuschen hinzufügen"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Zuweisen"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Server"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Anforderer"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG benutzen"
 
