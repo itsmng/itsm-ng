@@ -2,14 +2,14 @@
   {% set rand=random() %}
   <div {% if attributes.id %} id="{{attributes.id}}" {% endif %} class="w-100">
     <div class="input-group m-0">
-      <select aria-label="Actor Type Selector" class="form-select" id="ActorTypeSelector_{{rand}}" name="_itil_{{attributes.actorType}}[_type]">
+      <select aria-label="{{ attributes.actorType | trans}}" class="form-select" id="ActorTypeSelector_{{rand}}" name="_itil_{{attributes.actorType}}[_type]">
         {% if attributes.actorTypes %}
           {% for name, value in attributes.actorTypes %}
             <option value="{{value}}">{{name|raw}}
           {% endfor %}
         {% endif %}
       </select>
-      <select aria-label="Actor Selector" class="form-select" id="ActorSelector_{{rand}}">
+      <select aria-label="{{ attributes.actorType | trans}}" class="form-select" id="ActorSelector_{{rand}}">
       </select>
     </div>
     <table id="ActorTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
@@ -21,7 +21,7 @@
               </td>
               <td> {{actor.name|raw}} </td>
               <td class="d-flex flex-row-reverse">
-                <button type="button" class="btn btn-sm btn-outline-danger" aria-label="Remove Actor" onClick="removeActor{{rand}}('{{actor.type}}', '{{actor.id}}')"><i class="fas fa-times"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger" aria-label="Remove actor {{ actor.name }}" onClick="removeActor{{rand}}('{{actor.type}}', '{{actor.id}}')"><i class="fas fa-times"></i></button>
               </td>
             </tr>
         {% endfor %}
