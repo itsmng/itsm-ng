@@ -24925,6 +24925,22 @@ msgstr "Nytt ärende"
 msgid "Add widget"
 msgstr "Lägg till Patroner/Toners"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Tilldela"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Server"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Beställare"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Starta ITSM-NG"
 

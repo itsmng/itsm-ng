@@ -25023,6 +25023,22 @@ msgstr "Novo chamado"
 msgid "Add widget"
 msgstr "Adicionar cartuchos"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Atribuir"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Servidor"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Requerente"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Usar ITSM-NG"
 

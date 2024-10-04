@@ -25002,6 +25002,21 @@ msgstr "Nuevo incidente"
 msgid "Add widget"
 msgstr "Agregar cartuchos"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Asignar"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Servidor"
+
+#, fuzzy
+#| msgid "Requester ID"
+msgid "requester"
+msgstr "ID del solicitante"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"
 

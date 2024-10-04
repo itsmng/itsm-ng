@@ -25302,6 +25302,22 @@ msgstr "Novi nalog"
 msgid "Add widget"
 msgstr "Dodaj tonere"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Dodijeli"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Poslužitelj"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Podnositelj"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Koristi ITSM-NG"
 

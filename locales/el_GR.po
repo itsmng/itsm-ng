@@ -25049,6 +25049,21 @@ msgstr "Νέο αίτημα"
 msgid "Add widget"
 msgstr "Προσθήκη φυσιγγίων"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Ανάθεση"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Διακομιστής"
+
+#, fuzzy
+#| msgid "Requester ID"
+msgid "requester"
+msgstr "Ταυτότητα αιτούντα"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Χρήση ITSM-NG"
 

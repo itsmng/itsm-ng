@@ -25298,6 +25298,22 @@ msgstr "Jauns pieteikums"
 msgid "Add widget"
 msgstr "Pievienot kasetnes"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Piešķirt"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Serveris"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Pieprasītāji"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Pieslēgties ITSM-NG"
 
