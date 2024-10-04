@@ -25614,6 +25614,21 @@ msgstr "Novo nalogo"
 msgid "Add widget"
 msgstr "Dodaj kartuše"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Dodeli"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Server"
+
+#, fuzzy
+#| msgid "Requester ID"
+msgid "requester"
+msgstr "ID naročnika"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Uporabi ITSM-NG"
 

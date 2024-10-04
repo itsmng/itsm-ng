@@ -26352,5 +26352,20 @@ msgstr "تذكرة جديدة"
 msgid "Add widget"
 msgstr "إضافة خرطوشة حبر"
 
+#, fuzzy
+#| msgid "Assigned to"
+msgid "assign"
+msgstr "تم تحديدها إلى"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "الخادم"
+
+#, fuzzy
+#| msgid "Requests"
+msgid "requester"
+msgstr "طلبات"
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "الحساب glpi/glpi للمدراء"

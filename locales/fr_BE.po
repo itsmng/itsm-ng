@@ -25091,6 +25091,21 @@ msgstr "Nouveau widget"
 msgid "Add widget"
 msgstr "Ajouter un widget"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Assigner"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Serveur"
+
+#, fuzzy
+#| msgid "Requester ID"
+msgid "requester"
+msgstr "ID du demandeur"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utiliser ITSM-NG"
 

@@ -25687,5 +25687,21 @@ msgstr "Nauja paraiška"
 msgid "Add widget"
 msgstr "Pridėti kasetes"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Priskirti"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Tarnybinė stotis"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Užsakovas"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Į ITSM-NG"

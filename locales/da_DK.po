@@ -24962,6 +24962,21 @@ msgstr "Ny sag"
 msgid "Add widget"
 msgstr "Tilføj patroner"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Tilknyt"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Server"
+
+#, fuzzy
+#| msgid "Requester ID"
+msgid "requester"
+msgstr "Forespørger-ID"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Brug ITSM-NG"
 

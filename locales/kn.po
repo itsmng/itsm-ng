@@ -24909,5 +24909,20 @@ msgstr "ಹೊಸ ಟಿಕೆಟ್"
 msgid "Add widget"
 msgstr "ಕಾರ್ಟ್ರಿಜ್ಗಳನ್ನು ಸೇರಿಸಿ"
 
+#, fuzzy
+#| msgid "See assigned"
+msgid "assign"
+msgstr "ಗೊತ್ತುಪಡಿಸಿದ ನೋಡಿ"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "ಸರ್ವರ್"
+
+#, fuzzy
+#| msgid "Requests"
+msgid "requester"
+msgstr "ವಿನಂತಿಗಳು"
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "ನಿರ್ವಾಹಕ ಖಾತೆಗೆ glpi / glpi"

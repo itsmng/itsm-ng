@@ -24535,6 +24535,22 @@ msgstr "新しいチケット"
 msgid "Add widget"
 msgstr "カートリッジの追加"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "割り当て"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "サーバー"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "依頼者"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NGを使用"
 

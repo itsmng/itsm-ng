@@ -24831,3 +24831,16 @@ msgstr ""
 #| msgid "Add date"
 msgid "Add widget"
 msgstr "Legg til dato"
+
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Tildele"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Server"
+
+msgid "requester"
+msgstr ""

@@ -25643,6 +25643,22 @@ msgstr "הוסף קריאת שירות חדשה"
 msgid "Add widget"
 msgstr "הוסף מחסניות"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "הקצה"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "שרת"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "פונה"
+
 #~ msgid "Use GLPI"
 #~ msgstr "השתמש ב-ITSM-NG"
 

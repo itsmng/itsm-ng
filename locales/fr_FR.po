@@ -25047,3 +25047,15 @@ msgstr "Nouveau widget"
 
 msgid "Add widget"
 msgstr "Ajouter un widget"
+
+msgid "assign"
+msgstr "Assigner"
+
+msgid "observer"
+msgstr "Observateur"
+
+msgid "requester"
+msgstr "Demandeur"
+
+#~ msgid "Remove actor %s"
+#~ msgstr "Supprimer l'acteur %s"

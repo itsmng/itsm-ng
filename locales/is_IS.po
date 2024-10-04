@@ -24846,6 +24846,19 @@ msgstr "Ný beiðni"
 msgid "Add widget"
 msgstr "Bæta við nýrri skrá"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Úthluta"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Þjónn"
+
+msgid "requester"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Nota ITSM-NG"
 

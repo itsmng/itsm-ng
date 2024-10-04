@@ -24962,6 +24962,22 @@ msgstr "Új bejelentés"
 msgid "Add widget"
 msgstr "Patronok hozzáadása"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Hozzárendel"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Kiszolgáló"
+
+#, fuzzy
+#| msgid "Requester"
+#| msgid_plural "Requesters"
+msgid "requester"
+msgstr "Igénylő"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG használata"
 

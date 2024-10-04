@@ -25329,6 +25329,21 @@ msgstr "Novi tiket"
 msgid "Add widget"
 msgstr "Dodaj kertridže"
 
+#, fuzzy
+#| msgid "Assign"
+msgid "assign"
+msgstr "Dodeli"
+
+#, fuzzy
+#| msgid "Server"
+msgid "observer"
+msgstr "Server"
+
+#, fuzzy
+#| msgid "Requester ID"
+msgid "requester"
+msgstr "ID potraživača"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Počni sa koriščenjem ITSM-NG"
 
