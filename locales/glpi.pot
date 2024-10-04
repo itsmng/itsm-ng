@@ -29936,3 +29936,12 @@ msgstr ""
 
 msgid "Add widget"
 msgstr ""
+
+msgid "assign"
+msgstr ""
+
+msgid "observer"
+msgstr ""
+
+msgid "requester"
+msgstr ""
