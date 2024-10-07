@@ -41,13 +41,13 @@
 						</a>
 					</li>
 					<li id="menu-options" class="p-2" aria-hidden="true">
-						<a href="#" title="{{'Navbar'|trans }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="far fa-window-maximize" aria-label="{{'Navbar'|trans }}"></i>
+						<a href="#" title="{{'Navbar'|trans }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="{{'Navbar'|trans }}">
+							<i class="far fa-window-maximize" aria-hidden="true"></i>
 						</a>
 						{% include "nav/nav-settings.twig" %}
 					</li>
                     <li id='bookmark_link' class="p-2">
-                        <a href='#' id='showSavedSearchesLink' title='{{'Load a saved search'|trans}}'>
+                        <a href='#' id='showSavedSearchesLink' title='{{'Load a saved search'|trans}}' aria-label='{{'Load a saved search'|trans}}'>
                             <i class="fas fa-star" aria-label="{{'Saved searches'|trans}}"></i>
                         </a>
                     </li>

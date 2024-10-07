@@ -2,12 +2,12 @@
     <li class='icons_block'>
         <span>
             {% if links['add'] is defined %}
-                <a href='{{root_doc}}{{links['add']}}' class='pointer' title='{{'Add'|trans}}'>
+                <a href='{{root_doc}}{{links['add']}}' class='pointer' title='{{'Add'|trans}}' aria-label='{{'Add'|trans}}'>
                     <i class='fa fa-plus' aria-hidden="true"></i>
                     <span class='sr-only'>{{'Add'|trans}}</span>
                 </a>
             {% else %}
-                <a href='#' class='pointer disabled' title='{{'Add is disabled'|trans}}'>
+                <a href='#' class='pointer disabled' title='{{'Add is disabled'|trans}}' aria-label='{{'Add is disabled'|trans}}'>
                     <i class='fa fa-plus' aria-hidden="true"></i>
                     <span class='sr-only'>{{'Add is disabled'|trans}}</span>
                 </a>
@@ -15,12 +15,12 @@
         </span>
         <span>
             {% if links['search'] is defined %}
-                <a onClick='$(searchcriteria).toggle()' class='pointer' title="{{'Search'|trans}}">
+                <a onClick='$(searchcriteria).toggle()' class='pointer' title="{{'Search'|trans}}" aria-label="{{'Search'|trans}}">
                     <i class='fa fa-search'></i>
                     <span class='sr-only'>{{'Search'|trans}}</span>
                 </a>
             {% else %}
-                <a href='#' class='pointer disabled' title='{{"Search is disabled"|trans}}'>
+                <a href='#' class='pointer disabled' title='{{"Search is disabled"|trans}}' aria-label='{{"Search is disabled"|trans}}'>
                     <i class='fa fa-search' aria-hidden="true"></i>
                     <span class='sr-only'>{{'Search is disabled'|trans}}</span>
                 </a>
@@ -29,7 +29,7 @@
         {% for key, val in links %}
             {% if key == "template" %}
                 <span>
-                    <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Manage templates...'|trans}}">
+                    <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Manage templates...'|trans}}" aria-label="{{'Manage templates...'|trans}}">
                         <i class="pointer fa fa-layer-group" aria-hidden="true"></i>
                     </a>
                 </span>
@@ -39,25 +39,25 @@
                 </span>
             {% elseif key == "summary" %}
                 <span>
-                    <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Summary'|trans}}">
+                    <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Summary'|trans}}" aria-label="{{'Summary'|trans}}">
                         <i class="pointer fas fa-stream" aria-hidden="true"></i>
                     </a>
                 </span>
             {% elseif key == "summary_kanban" %}
                 <span>
-                    <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Global Kanban'|trans}}">
+                    <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Global Kanban'|trans}}" aria-label="{{'Global Kanban'|trans}}">
                         <i class="pointer fas fa-columns" aria-hidden="true"></i>
                     </a>
                 </span>
             {% elseif key == "config" %}
                 <span>
-                    <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Setup'|trans}}">
+                    <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Setup'|trans}}" aria-label="{{'Setup'|trans}}">
                         <i class="pointer fa fa-cog" aria-hidden="true"></i>
                     </a>
                 </span>
             {% elseif (key != "add" and key != "search") %}
                 <span>
-                    <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Setup'|trans}}">
+                    <a class="pointer" href="{{root_doc}}{{val}}" title="{{'Setup'|trans}}" aria-label="{{'Setup'|trans}}">
                         {{key|raw}}
                     </a>
                 </span>
@@ -68,7 +68,7 @@
 
 {% if show_ticket %}
 <span>
-    <a class='pointer' href='{{root_doc}}/front/helpdesk.public.php?create_ticket=1' title={{'Add'|trans}}>
+    <a class='pointer' href='{{root_doc}}/front/helpdesk.public.php?create_ticket=1' title={{'Add'|trans}} aria-label={{'Add'|trans}}>
         <i class='fa fa-plus' aria-hidden="true"></i>
         <span class='sr-only'>{{'Add'|trans}}</span>
     </a>

@@ -996,7 +996,7 @@ class CommonGLPI {
 
          if ($first >= 0) {
             echo "<a href='$cleantarget?id=$first$extraparamhtml'
-                     class='navicon left'>
+                     class='navicon left' aria-label=\"".__s('First')."\">
                      <i class='fas fa-angle-double-left pointer' title=\"".__s('First')."\"></i>
                   </a>";
          }
@@ -1004,7 +1004,7 @@ class CommonGLPI {
          if ($prev >= 0) {
             echo "<a href='$cleantarget?id=$prev$extraparamhtml'
                      id='previouspage'
-                     class='navicon left'>
+                     class='navicon left' aria-label=\"".__s('Previous')."\">
                      <i class='fas fa-angle-left pointer' title=\"".__s('Previous')."\"></i>
                   </a>";
             $js = '$("body").keydown(function(e) {
@@ -1021,7 +1021,7 @@ class CommonGLPI {
             $glpilisttitle = __s('List');
          }
          echo "<a href='$glpilisturl' title=\"$glpilisttitle\"
-                  class='navicon left'>
+                  class='navicon left' aria-label='Liste'>
                   <i class='far fa-list-alt pointer' aria-hidden='true'></i>
                </a>";
 
@@ -1146,7 +1146,7 @@ class CommonGLPI {
          if ($next >= 0) {
             echo "<a href='$cleantarget?id=$next$extraparamhtml'
                      id='nextpage'
-                     class='navicon right'>" .
+                     class='navicon right' aria-label=\"".__s('Next')."\">" .
                "<i class='fas fa-angle-right pointer' title=\"".__s('Next')."\"></i>
                     </a>";
             $js = '$("body").keydown(function(e) {
@@ -1161,7 +1161,7 @@ class CommonGLPI {
 
          if ($last >= 0) {
             echo "<a href='$cleantarget?id=$last $extraparamhtml'
-                     class='navicon right'>" .
+                     class='navicon right' aria-label=\"" . __s('Last') . "\">" .
                "<i class='fas fa-angle-double-right pointer' title=\"" . __s('Last') . "\"></i></a>";
          }
 
