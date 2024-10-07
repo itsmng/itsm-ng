@@ -24635,6 +24635,16 @@ msgstr "Máy chủ"
 msgid "requester"
 msgstr "Những người yêu cầu"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Văn bản bảo trì"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Đang giảm"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Dùng ITSM-NG"
 

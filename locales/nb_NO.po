@@ -24971,6 +24971,16 @@ msgstr "Server"
 msgid "requester"
 msgstr "Innmelder"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Vedlikholdstekst"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Synkende"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Bruk ITSM-NG"
 

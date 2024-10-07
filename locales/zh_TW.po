@@ -24552,6 +24552,14 @@ msgstr "伺服器"
 msgid "requester"
 msgstr "請求者"
 
+msgid "Increase List Size"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "遞減"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"
 

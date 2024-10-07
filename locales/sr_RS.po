@@ -25344,6 +25344,16 @@ msgstr "Server"
 msgid "requester"
 msgstr "ID potraživača"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Tekst održavanja"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Smanjenje"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Počni sa koriščenjem ITSM-NG"
 

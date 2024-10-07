@@ -25314,6 +25314,16 @@ msgstr "Serveris"
 msgid "requester"
 msgstr "Pieprasītāji"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Uzturēšanas teksts"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Samazinās"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Pieslēgties ITSM-NG"
 

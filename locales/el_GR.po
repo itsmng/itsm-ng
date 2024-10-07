@@ -25064,6 +25064,14 @@ msgstr "Διακομιστής"
 msgid "requester"
 msgstr "Ταυτότητα αιτούντα"
 
+msgid "Increase List Size"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Φθήνοντα"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Χρήση ITSM-NG"
 

@@ -24598,5 +24598,13 @@ msgstr "Server"
 msgid "requester"
 msgstr "Pemohon"
 
+msgid "Increase List Size"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Penurunan"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gunakan ITSM-NG"

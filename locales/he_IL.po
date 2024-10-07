@@ -25659,6 +25659,16 @@ msgstr "שרת"
 msgid "requester"
 msgstr "פונה"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "טקסט תחזוקה"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "יורדת"
+
 #~ msgid "Use GLPI"
 #~ msgstr "השתמש ב-ITSM-NG"
 

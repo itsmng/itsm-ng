@@ -25017,6 +25017,16 @@ msgstr "Servidor"
 msgid "requester"
 msgstr "Sol·licitant"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Text de manteniment"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Reduït"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilitza ITSM-NG"
 

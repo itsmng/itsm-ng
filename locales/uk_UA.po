@@ -25665,6 +25665,16 @@ msgstr "Сервер"
 msgid "requester"
 msgstr "Заявник"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Текст режиму обслуговування"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Зменшення"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Запустити ITSM-NG"
 

@@ -25747,6 +25747,16 @@ msgstr "Serwer"
 msgid "requester"
 msgstr "Zgłaszający"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Tekst serwisowy"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Zmniejszający się"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Używaj ITSM-NG"
 

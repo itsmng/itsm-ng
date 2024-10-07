@@ -25005,6 +25005,16 @@ msgstr "Сервер"
 msgid "requester"
 msgstr "Хүсэлт гаргагч"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Засвар үйлчилгээний текст"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Буурч байна"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG ашиглах"
 

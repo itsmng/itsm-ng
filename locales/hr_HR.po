@@ -25318,6 +25318,16 @@ msgstr "Poslužitelj"
 msgid "requester"
 msgstr "Podnositelj"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Tekst za održavanje"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Smanjenje"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Koristi ITSM-NG"
 

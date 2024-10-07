@@ -24978,6 +24978,16 @@ msgstr "Kiszolgáló"
 msgid "requester"
 msgstr "Igénylő"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Karbantartási szöveg"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Degresszív"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG használata"
 

@@ -24844,3 +24844,11 @@ msgstr "Server"
 
 msgid "requester"
 msgstr ""
+
+msgid "Increase List Size"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Synkende"

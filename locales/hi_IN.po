@@ -24941,6 +24941,16 @@ msgstr "सर्वर"
 msgid "requester"
 msgstr "अनुरोधकर्ताओं"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "रखरखाव पाठ"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "घटाना"
+
 #~ msgid "Use GLPI"
 #~ msgstr "जीएलपीआई का उपयोग करें"
 

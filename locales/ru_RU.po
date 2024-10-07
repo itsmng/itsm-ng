@@ -25683,6 +25683,16 @@ msgstr "Сервер"
 msgid "requester"
 msgstr "Инициатор запроса"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Текст обслуживания"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Убывающий"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Запустить ITSM-NG"
 
