@@ -2,6 +2,7 @@
     {% import 'macros/input.twig' as inputMacro %}
     {% set options = ['actions', 'after', 'before', 'col', 'col_md', 'col_lg'] %}
     {% set attributes = input | filter((v, k) => k not in options) %}
+    {% set id = input.id ? input.id : random() %}
     {% if input.type != 'hidden' and input|length > 0 %}
         <div class="
                 col{{ input.col ? '-' ~ input.col : '-12' }}
@@ -9,7 +10,7 @@
                 col-lg{{ input.col_lg ? '-' ~ input.col_lg : '-4' }}
                 text-start">
             {% if title|length > 0 %}
-                <label for="{{input.name}}">{{title|raw}}</label>
+                <label for="{{id}}" class="form-label w-100">{{title|raw}}
             {% endif %}
             <div class="d-flex flex-nowrap w-100 justify-content-between align-items-center input-group my-1">
     {% endif %}
@@ -19,11 +20,12 @@
                 </div>
             {% endif %}
             {% if input.type %}
-                {% set attributes = attributes|merge({'aria-label': input.name}) %}
+                {% set attributes = attributes|merge({'aria-label': input.name, 'id': id }) %}
                 {{ inputMacro.input(attributes, root_doc) }}
             {% else %}
                 {{ input.content|raw }}
             {% endif %}
+            </label>
             {% if input.after %}
                 <div class="input-group-text input-group-sm">
                     {{input.after|raw}}
