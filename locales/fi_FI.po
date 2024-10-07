@@ -24990,6 +24990,16 @@ msgstr "Palvelin"
 msgid "requester"
 msgstr "Toimeksiantaja"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Tiedoteteksti järjestelmän ylläpidosta"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Aleneva"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Käytä ITSM-NG:tä"
 

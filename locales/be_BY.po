@@ -25518,3 +25518,9 @@ msgstr "Сервер"
 
 msgid "requester"
 msgstr ""
+
+msgid "Increase List Size"
+msgstr ""
+
+msgid "Decrease List Size"
+msgstr ""

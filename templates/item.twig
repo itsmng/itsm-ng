@@ -3,11 +3,11 @@
     <ul class="col col-sm-12 col-md-{{listSize|default(4)}} p-0 {% if tabs|length == 1 %}d-none{% endif %}"
         id="options-for-{{itemName|slug}}" data-size="{{listSize|default(4)}}">
         <li class="d-none d-md-table btn-group mb-2 text-right ms-auto">
-            <button class="btn btn-sm btn-outline-secondary" aria-label="Increase List Size" onclick="changeListSize(1)" id="increase-list-size">
+            <button class="btn btn-sm btn-outline-secondary" aria-label={{"Increase List Size"|trans}} onclick="changeListSize(1)" id="increase-list-size">
                 <i class="fas fa-arrow-left" aria-hidden="true"></i>
                 <span class="visually-hidden">{{"Increase list width"|trans}}</span>
             </button>
-            <button class="btn btn-sm btn-outline-secondary" aria-label="Decrease List Size" onclick="changeListSize(-1)" id="decrease-list-size">
+            <button class="btn btn-sm btn-outline-secondary" aria-label={{"Decrease List Size"|trans}} onclick="changeListSize(-1)" id="decrease-list-size">
                 <i class="fas fa-arrow-right" aria-hidden="true"></i>
                 <span class="visually-hidden">{{"Decrease list width"|trans}}</span>
             </button>

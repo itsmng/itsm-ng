@@ -25402,6 +25402,16 @@ msgstr "Server"
 msgid "requester"
 msgstr "Solicitant"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Text mentenanţă"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Degresivă"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Folositi ITSM-NG"
 

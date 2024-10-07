@@ -25703,5 +25703,13 @@ msgstr "Tarnybinė stotis"
 msgid "requester"
 msgstr "Užsakovas"
 
+msgid "Increase List Size"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Degresinis"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Į ITSM-NG"

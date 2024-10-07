@@ -25629,6 +25629,14 @@ msgstr "Server"
 msgid "requester"
 msgstr "ID naročnika"
 
+msgid "Increase List Size"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Upadanje"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Uporabi ITSM-NG"
 

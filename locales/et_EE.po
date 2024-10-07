@@ -24866,6 +24866,16 @@ msgstr "Server"
 msgid "requester"
 msgstr "Taotleja"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Hoolduse tekst"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Regressiivne"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Alusta ITSM-NG kasutamist"
 

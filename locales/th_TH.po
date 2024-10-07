@@ -24572,6 +24572,16 @@ msgstr "เซิร์ฟเวอร์"
 msgid "requester"
 msgstr "ผู้แจ้ง"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "ข้อความการบำรุงรักษา"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "ลดลง"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Use ITSM-NG"
 

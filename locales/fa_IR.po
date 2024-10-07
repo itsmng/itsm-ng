@@ -24937,5 +24937,13 @@ msgstr "سرور"
 msgid "requester"
 msgstr "درخواست کننده"
 
+msgid "Increase List Size"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "کاهنده"
+
 #~ msgid "Use GLPI"
 #~ msgstr "استفاده از ITSM-NG"

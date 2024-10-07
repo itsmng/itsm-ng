@@ -25097,6 +25097,16 @@ msgstr "Server"
 msgid "requester"
 msgstr "Aanvrager"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Onderhoud tekst"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Degressief"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gebruik ITSM-NG"
 
