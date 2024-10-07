@@ -5168,10 +5168,7 @@ class Ticket extends CommonITILObject
             ],
          ]
       ];
-      ob_start();
-      Plugin::doHook("post_item_form", ['item' => $this, 'options' => &$options]);
-      $additionnalHtml = ob_get_clean();
-      renderTwigForm($form, $additionnalHtml, $this->fields);
+      renderTwigForm($form, '', $this->fields);
       return true;
    }
 

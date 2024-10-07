@@ -13,11 +13,10 @@
 {% macro select(attributes) %}
   {% if not attributes.id %}
     {% set id = random() %}
+  {% else %}
+    {% set id = attributes.id %}
   {% endif %}
-  <select class='form-select form-select-sm {{attributes.class}}'
-    {% if not attributes.id %}
-      id="{{id}}"
-    {% endif %}
+  <select class='form-select form-select-sm {{attributes.class}}' id="{{id}}"
     {% for name, value in attributes %}
       {% if name not in  ['values', 'class', 'multiple', 'conditions', 'ajax']%}
         {{name}}="{{value}}"
@@ -34,7 +33,7 @@
       {% endif %}
     {% endfor %}
   </select>
-  {% if noLib is not defined %}
+  {% if attributes.noLib is not defined or attributes.noLib == false %}
   <script>
       $(function() {
         {% if attributes.ajax %}
@@ -66,6 +65,26 @@
                 }
             };
         {% endif %}
+        $.getScript('{{root_doc}}/node_modules/select2/dist/js/select2.min.js', function() {
+            $('#{{attributes.id ? attributes.id : id}}').select2({
+                theme: 'bootstrap-5',
+                escapeMarkup: function(markup) {
+                    return markup;
+                },
+                {% if attributes.ajax %}
+                ajax: params,
+                {% endif %}
+                {% if attributes.multiple %}
+                multiple: true,
+                {% endif %}
+                width: 'resolve',
+            });
+            {% if attributes.multiple %}
+            $('#{{attributes.id ? attributes.id : id}}')
+                .val(JSON.parse('{{attributes.value|json_encode|raw}}'))
+                .trigger('change');
+            {% endif %}
+        });
         $(document).on('keydown', 'select', function(event) {
           if (event.key === ' ' && !$(this).is(':focus')) {
             event.preventDefault();

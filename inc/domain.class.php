@@ -51,6 +51,10 @@ class Domain extends CommonDropdown
    protected $usenotepad       = true;
    static    $tags             = '[DOMAIN_NAME]';
 
+   function title() {
+      return '';
+   }
+
    static function getTypeName($nb = 0)
    {
       return _n('Domain', 'Domains', $nb);
