@@ -49,6 +49,9 @@ class SoftwareLicense extends CommonTreeDropdown {
    static $rightname                   = 'license';
    protected $usenotepad               = true;
 
+   function title() {
+      return '';
+   }
 
    public function getCloneRelations() :array {
       return [];

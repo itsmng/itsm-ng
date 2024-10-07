@@ -58,6 +58,9 @@ class Budget extends CommonDropdown{
       return _n('Budget', 'Budgets', $nb);
    }
 
+   function title() {
+      return '';
+   }
 
    function defineTabs($options = []) {
 

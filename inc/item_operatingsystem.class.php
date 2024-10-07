@@ -377,18 +377,7 @@ class Item_OperatingSystem extends CommonDBRelation {
          ]
       ];
 
-      ob_start();
-      Plugin::doHook("post_item_form", ['item' => $this, 'options' => [
-         'colspan'      => 2,
-         'withtemplate' => '',
-         'candel'       => true,
-         'canedit'      => true,
-         'addbuttons'   => [],
-         'formfooter'   => null,
-         ]]);
-      $additionnalHtml = ob_get_clean();
-
-      renderTwigForm($form, $additionnalHtml, $this->fields);
+      renderTwigForm($form, '', $this->fields);
       return true;
    }
 
