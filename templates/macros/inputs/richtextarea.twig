@@ -4,18 +4,18 @@
     {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %}>
     {{attributes.value|default('')|raw}}</textarea>
   <script>
-  $(document).ready(() => {
-    if ({{attributes.id|default("ckEditorInstance" ~ rand)}}.config) {
+  $(function() {
+    if (typeof editor_{{attributes.id|default("ckEditorInstance" ~ rand)}} !== 'undefined' && editor_{{attributes.id|default("ckEditorInstance" ~ rand)}}.config) {
         return;
     }
     ClassicEditor
-      .create(document.querySelector('#{{attributes.id|default("ckEditorInstance" ~ rand)}}'), {
+      .create(document.getElementById('{{attributes.id|default("ckEditorInstance" ~ rand)}}'), {
         toolbar: ['heading',
           '|', 'bold', 'italic', 'blockQuote', 'link',
           '|', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable']
       })
       .then(editor => {
-        {{attributes.id|default("ckEditorInstance" ~ rand)}} = editor
+        var editor_{{attributes.id|default("ckEditorInstance" ~ rand)}} = editor
       })
       .catch(error => {
         console.error(error);
