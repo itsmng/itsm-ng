@@ -25710,6 +25710,16 @@ msgstr "Server"
 msgid "requester"
 msgstr "Žadatel"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Text při údržbě"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Snižující se"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Používat ITSM-NG"
 

@@ -24941,6 +24941,16 @@ msgstr "Server"
 msgid "requester"
 msgstr "Beställare"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Text för underhållsläge"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Minskande"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Starta ITSM-NG"
 

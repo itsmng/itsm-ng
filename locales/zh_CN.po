@@ -24464,6 +24464,16 @@ msgstr "服务器"
 msgid "requester"
 msgstr "请求者"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "维护文本"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "递减"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"
 

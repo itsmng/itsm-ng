@@ -24924,5 +24924,13 @@ msgstr "ಸರ್ವರ್"
 msgid "requester"
 msgstr "ವಿನಂತಿಗಳು"
 
+msgid "Increase List Size"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "ಕಡಿಮೆ"
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "ನಿರ್ವಾಹಕ ಖಾತೆಗೆ glpi / glpi"

@@ -24957,6 +24957,16 @@ msgstr "Sunucu"
 msgid "requester"
 msgstr "İsteyen"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Bakım metni"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Azalan"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG Kullanmaya Geç"
 

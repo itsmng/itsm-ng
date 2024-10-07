@@ -24551,6 +24551,16 @@ msgstr "サーバー"
 msgid "requester"
 msgstr "依頼者"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "メンテナンステキスト"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "逓減"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NGを使用"
 

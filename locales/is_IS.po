@@ -24859,6 +24859,14 @@ msgstr "Þjónn"
 msgid "requester"
 msgstr ""
 
+msgid "Increase List Size"
+msgstr ""
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Lækkandi"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Nota ITSM-NG"
 

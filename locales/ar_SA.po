@@ -26367,5 +26367,13 @@ msgstr "الخادم"
 msgid "requester"
 msgstr "طلبات"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "رسالة الصيانة"
+
+msgid "Decrease List Size"
+msgstr ""
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "الحساب glpi/glpi للمدراء"

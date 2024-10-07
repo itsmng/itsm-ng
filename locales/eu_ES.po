@@ -25042,6 +25042,16 @@ msgstr "Zerbitzaria"
 msgid "requester"
 msgstr "Eskatzailea"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Mantenketa testua"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Jaisten"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG erabili"
 

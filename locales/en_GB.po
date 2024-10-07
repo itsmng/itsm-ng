@@ -25317,3 +25317,13 @@ msgstr "Server"
 #| msgid_plural "Requesters"
 msgid "requester"
 msgstr "Requester"
+
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Maintenance text"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Decreasing"

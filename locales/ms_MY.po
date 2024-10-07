@@ -24449,3 +24449,9 @@ msgstr "Server"
 #| msgid_plural "Requesters"
 msgid "requester"
 msgstr "Peminta"
+
+msgid "Increase List Size"
+msgstr ""
+
+msgid "Decrease List Size"
+msgstr ""

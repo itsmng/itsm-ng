@@ -24935,6 +24935,16 @@ msgstr "Сървър"
 msgid "requester"
 msgstr "Заявител"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Текст за режим на поддръжка"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Намаляващо"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Стартирайте ITSM-NG"
 

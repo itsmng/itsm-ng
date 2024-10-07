@@ -24977,6 +24977,16 @@ msgstr "Server"
 msgid "requester"
 msgstr "Forespørger-ID"
 
+#, fuzzy
+#| msgid "Maintenance text"
+msgid "Increase List Size"
+msgstr "Vedligeholdelsestekst"
+
+#, fuzzy
+#| msgid "Decreasing"
+msgid "Decrease List Size"
+msgstr "Degressive"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Brug ITSM-NG"
 
