@@ -768,7 +768,7 @@ class Dropdown {
       }
 
       $params['value'] = $value;
-      $params['width'] = "65px";
+      $params['width'] = "5rem";
       return self::showFromArray($name, $options, $params);
    }
 
@@ -1842,116 +1842,67 @@ class Dropdown {
          $output .= implode('<br>', $to_display);
       } else {
 
-         $output  .= "<select name='$field_name' id='$field_id' aria-label='$field_name'";
+         $input = [
+            'type'        => 'select',
+            'name'        => $name,
+            'id'          => $field_id,
+            'aria-label'  => $field_name,
+            'title'       => Html::entities_deep($param['tooltip'] ?? $field_name),
+            'hooks'       => [
+               'change' => $param['on_change'] ?? '',
+            ],
+            'multiple'    => $param['multiple'] ?? false,
+            $param['disabled'] ? 'disabled' : '' => true,
+            $param['noselect2'] ? 'noLib' : '' => true,
+            'style' => ($param['width'] ? ('width:' . $param['width']) : ''),
+         ];
 
-         if ($param['tooltip']) {
-            $output .= ' title="'.Html::entities_deep($param['tooltip']).'"';
-         }
-
-         if ($param['class']) {
-            $output .= ' class="'.Html::entities_deep($param['class']).'"';
-         } else {
-            $output .= ' class="form-select"';
-         }
-
-         if (!empty($param["on_change"])) {
-            $output .= " onChange='".$param["on_change"]."'";
-         }
-
-         if ((is_int($param["size"])) && ($param["size"] > 0)) {
-            $output .= " size='".$param["size"]."'";
-         }
-
-         if ($param["multiple"]) {
-            $output .= " multiple";
-         }
-
-         if ($param["disabled"]) {
-            $output .= " disabled='disabled'";
-         }
-
-         $output .= '>';
          $max_option_size = 0;
          foreach ($elements as $key => $val) {
             // optgroup management
             if (is_array($val)) {
-               $opt_goup = Html::entities_deep($key);
-               if ($max_option_size < strlen($opt_goup)) {
-                  $max_option_size = strlen($opt_goup);
+               $opt_group = Html::entities_deep($key);
+               if ($max_option_size < strlen($opt_group)) {
+                  $max_option_size = strlen($opt_group);
                }
 
-               $output .= "<optgroup label=\"$opt_goup\"";
-               $optgroup_tooltips = false;
-               if (isset($param['option_tooltips'][$key])) {
-                  if (is_array($param['option_tooltips'][$key])) {
-                     if (isset($param['option_tooltips'][$key]['__optgroup_label'])) {
-                        $output .= ' title="'.$param['option_tooltips'][$key]['__optgroup_label'].'"';
-                     }
-                     $optgroup_tooltips = $param['option_tooltips'][$key];
-                  } else {
-                     $output .= ' title="'.$param['option_tooltips'][$key].'"';
-                  }
-               }
-               $output .= ">";
+               $input['values'][$opt_group] = [];
 
                foreach ($val as $key2 => $val2) {
                   if (!isset($param['used'][$key2])) {
-                     $output .= "<option value='".$key2."'";
-                     // Do not use in_array : trouble with 0 and empty value
                      foreach ($param['values'] as $value) {
                         if (strcmp($key2, $value) === 0) {
-                           $output .= " selected";
+                           $input['value'] = $key2;
                            break;
                         }
                      }
-                     if ($optgroup_tooltips && isset($optgroup_tooltips[$key2])) {
-                        $output .= ' title="'.$optgroup_tooltips[$key2].'"';
-                     }
-                     $output .= ">" .  Html::entities_deep($val2) . "</option>";
+                     $input['values'][$opt_group][$key2] = Html::entities_deep($val2);
                      if ($max_option_size < strlen($val2)) {
                         $max_option_size = strlen($val2);
                      }
                   }
                }
-               $output .= "</optgroup>";
             } else {
                if (!isset($param['used'][$key])) {
-                  $output .= "<option value='".Html::entities_deep($key)."'";
-                  // Do not use in_array : trouble with 0 and empty value
                   foreach ($param['values'] as $value) {
                      if (strcmp($key, $value)===0) {
-                        $output .= " selected";
+                        $input['value'] = $key;
                         break;
                      }
                   }
-                  if (isset($param['option_tooltips'][$key])) {
-                     $output .= ' title="'.$param['option_tooltips'][$key].'"';
-                  }
-                  $output .= ">" .Html::entities_deep($val) . "</option>";
                   if ($max_option_size < strlen($val)) {
                      $max_option_size = strlen($val);
                   }
+                  $input['values'][Html::entities_deep($key)] = $val;
                }
             }
          }
 
          if ($param['other'] !== false) {
-            $output .= "<option value='$other_select_option'";
+            $input['values'][$other_select_option] = __('Other...');
             if (is_string($param['other'])) {
-               $output .= " selected";
+               $input['value'] = $other_select_option;
             }
-            $output .= ">".__('Other...')."</option>";
-         }
-
-         $output .= "</select>";
-         if ($param['other'] !== false) {
-            $output .= "<input name='$other_select_option' id='$other_select_option' type='text'";
-            if (is_string($param['other'])) {
-               $output .= " value=\"" . $param['other'] . "\"";
-            } else {
-               $output .= " style=\"display: none\"";
-            }
-            $output .= ">";
          }
       }
 
@@ -1960,30 +1911,11 @@ class Dropdown {
          $output .= Html::jsAdaptDropdown($field_id, ['width' => $param["width"]]);
       }
 
-      if ($param["multiple"]) {
-         // Hack for All / None because select2 does not provide it
-         $select   = __('All');
-         $deselect = __('None');
-         $output  .= "<div class='invisible' id='selectallbuttons_$field_id'>";
-         $output  .= "<div class='select2-actionable-menu'>";
-         $output  .= "<a class='btn btn-sm btn-secondary' ".
-                      "onclick=\"selectAll('$field_id');$('#$field_id').select2('close');\">$select".
-                     "</a> ";
-         $output  .= "<a class='btn btn-sm btn-secondary floatright' onclick=\"deselectAll('$field_id');\">$deselect".
-                     "</a>";
-         $output  .= "</div></div>";
-
-         $js = "
-         var multichecksappend$field_id = false;
-         $('#$field_id').on('select2:open', function(e) {
-            if (!multichecksappend$field_id) {
-               $('#select2-$field_id-results').parent().append($('#selectallbuttons_$field_id').html());
-               multichecksappend$field_id = true;
-            }
-         });";
-         $output .= Html::scriptBlock($js);
-      }
       $output .= Ajax::commonDropdownUpdateItem($param, false);
+
+      ob_start();
+      renderTwigTemplate('macros/input.twig', $input);
+      $output .= ob_get_clean();
 
       if ($param['display']) {
          echo $output;

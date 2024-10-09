@@ -4054,8 +4054,7 @@ class CommonDBTM extends CommonGLPI {
    static function dropdown($options = []) {
       /// TODO try to revert usage : Dropdown::show calling this function
       /// TODO use this function instead of Dropdown::show
-      ob_start();
-      renderTwigTemplate('macros/input.twig', [
+      $fields = [
          'type' => 'select',
          'name' => ($options['name'] ?? static::getForeignKeyField()),
          'itemtype' => get_called_class(),
@@ -4063,8 +4062,12 @@ class CommonDBTM extends CommonGLPI {
          'used' => $options['used'] ?? [],
          'id' => 'dropdown_' . ($options['name'] ?? static::getForeignKeyField()) . rand(),
          'value' => $options['value'] ?? 0,
-      ]);
-      return ob_get_clean();
+      ];
+      expandSelect($fields, $options);
+      ob_start();
+      renderTwigTemplate('macros/input.twig', $fields);
+      $select = ob_get_clean();
+      return $select;
    }
 
 
