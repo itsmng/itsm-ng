@@ -4054,16 +4054,17 @@ class CommonDBTM extends CommonGLPI {
    static function dropdown($options = []) {
       /// TODO try to revert usage : Dropdown::show calling this function
       /// TODO use this function instead of Dropdown::show
+      ob_start();
       renderTwigTemplate('macros/input.twig', [
          'type' => 'select',
          'name' => ($options['name'] ?? static::getForeignKeyField()),
+         'itemtype' => get_called_class(),
+         'condition' => $options['conditions'] ?? [],
+         'used' => $options['used'] ?? [],
          'id' => 'dropdown_' . ($options['name'] ?? static::getForeignKeyField()) . rand(),
-         'values' => getOptionForItems(get_called_class(),
-            $options['conditions'] ?? [], true,
-            strpos(get_called_class(), 'Device') === 0),
          'value' => $options['value'] ?? 0,
       ]);
-      return true;
+      return ob_get_clean();
    }
 
 
