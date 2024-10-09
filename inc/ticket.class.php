@@ -4849,6 +4849,7 @@ class Ticket extends CommonITILObject
                   ] : [],
                   __('By') => $ID ? [
                      'type' => 'select',
+                     'noLib' => 'true',
                      'name' => 'users_id_recipient',
                      'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
                      'value' => $this->fields["users_id_recipient"],
@@ -4939,6 +4940,7 @@ class Ticket extends CommonITILObject
                   ] : [],
                   _n('Type', 'Types', 1) => [
                      'type' => 'select',
+                     'noLib' => 'true',
                      'id' => 'dropdownForTicketType',
                      'name' => 'type',
                      'values' => $this->getTypes(),
@@ -4969,6 +4971,7 @@ class Ticket extends CommonITILObject
                   ],
                   __('Category') => [
                      'type' => 'select',
+                     'noLib' => 'true',
                      'id' => 'dropdownForTicketCategory',
                      'name' => 'itilcategories_id',
                      'actions' => getItemActionButtons(['info', 'add'], 'ITILCategory'),
@@ -4997,6 +5000,7 @@ class Ticket extends CommonITILObject
                   ],
                   __('Status') => [
                      'type' => 'select',
+                     'noLib' => 'true',
                      'name' => 'status',
                      'values' => static::getAllowedStatusArray($this->fields['status']),
                      'value' => $this->fields['status'],
@@ -5008,6 +5012,7 @@ class Ticket extends CommonITILObject
                   ],
                   RequestType::getTypeName(1) => [
                      'type' => 'select',
+                     'noLib' => 'true',
                      'name' => 'requesttypes_id',
                      'values' => getOptionForItems('RequestType', ['is_active' => 1, 'is_ticketheader' => 1]),
                      'value' => 'requesttypes_id',
@@ -5015,6 +5020,7 @@ class Ticket extends CommonITILObject
                   ],
                   __('Urgency') => [
                      'type' => 'select',
+                     'noLib' => 'true',
                      'name' => 'urgency',
                      'values' => [
                         1 => static::getUrgencyName(1),
@@ -5028,6 +5034,7 @@ class Ticket extends CommonITILObject
                   ],
                   !$ID ? __('Approval request') : CommonITILValidation::getTypeName(1) => !$ID ? [] : [
                      'type' => 'select',
+                     'noLib' => 'true',
                      'name' => 'global_validation',
                      'values' => CommonITILValidation::getAllStatusArray(false, true),
                      'value' => $this->fields['global_validation'],
@@ -5036,6 +5043,7 @@ class Ticket extends CommonITILObject
                   ],
                   __('Impact') => [
                      'type' => 'select',
+                     'noLib' => 'true',
                      'name' => 'impact',
                      'values' => [
                         1 => static::getUrgencyName(1),
@@ -5049,6 +5057,7 @@ class Ticket extends CommonITILObject
                   ],
                   Location::getTypeName(1) => [
                      'type' => 'select',
+                     'noLib' => 'true',
                      'name' => 'locations_id',
                      'itemtype' => Location::class,
                      'value' => $this->fields['locations_id'],
@@ -5057,6 +5066,7 @@ class Ticket extends CommonITILObject
                   ],
                   __('Priority') => [
                      'type' => 'select',
+                     'noLib' => 'true',
                      'name' => 'priority',
                      'values' => [
                         1 => static::getUrgencyName(1),
