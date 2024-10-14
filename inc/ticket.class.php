@@ -4532,7 +4532,7 @@ class Ticket extends CommonITILObject
          if ($actor['use_notification']) {
             $email = $actor['alternative_email'];
             $actorObj = new $actorType();
-            if (empty($email) && $actorObj->getFromDB($actor['id'])) {
+            if (empty($email) && $actorObj->getFromDB($actor[$actorType == User::class ? 'users_id' : 'suppliers_id'])) {
                $email = $actorType == User::class ? $actorObj->getDefaultEmail() : $actorObj->fields['email'];
             }
             $text .= sprintf(__('%1$s: %2$s'), _n('Email', 'Emails', 1), $email);
