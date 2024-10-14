@@ -7042,7 +7042,7 @@ abstract class CommonITILObject extends CommonDBTM {
    
             $item['timeline_position'] = $document_item['timeline_position'];
    
-          if ($document_item_obj->canView() || $document_item['users_id'] == Session::getLoginUserID()) {
+          if ($document_item_obj->canView() || Session::haveRight(Ticket::$rightname, Ticket::READDOCUMENT)) {
             $timeline[$date."_document_".$document_item['documents_id']]
                = ['type' => 'Document_Item', 'item' => $item];
           }
