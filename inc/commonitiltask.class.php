@@ -1555,7 +1555,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                      'value' => $this->fields['taskcategories_id'],
                      'actions' => getItemActionButtons(['info', 'add'], TaskCategory::class),
                   ],
-                  __('Status') => (isset($this->fields["state"])) ? [
+                  __('State') => (isset($this->fields["state"])) ? [
                      'type' => 'select',
                      'name' => 'state',
                      'id' => 'DropdownStateTask',
@@ -1622,6 +1622,13 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                      'col_lg' => 12,
                      'col_md' => 12,
                   ] : [],
+                  __('Status') => [
+                     'type' => 'select',
+                     'name' => '_status',
+                     'values' => $item->getAllowedStatusArray($item->fields['status']),
+                     'value' => $item->getField('status'),
+                     'required' => true,
+                  ],
                ]
             ]
          ]

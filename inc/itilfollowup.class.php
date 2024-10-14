@@ -925,7 +925,13 @@ class ITILFollowup  extends CommonDBChild {
                         'col_lg' => 12,
                         'col_md' => 12,
                      ],
-       
+                     __('Status') => [
+                        'type' => 'select',
+                        'name' => '_status',
+                        'values' => $item->getAllowedStatusArray($item->fields['status']),
+                        'value' => $item->getField('status'),
+                        'required' => true,
+                     ],
                   ]
                ]
             ]
