@@ -76,7 +76,7 @@ jobs:
 
       - name: Clean environment
         run: |
-          rm config/config_db.php config/glpicrypt.key
+          rm -f config/config_db.php config/glpicrypt.key files/_log/*.log
 
       - name: Release ITSM-ng
         run: |
