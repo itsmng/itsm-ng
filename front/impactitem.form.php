@@ -30,24 +30,24 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 $impact_item = new ImpactItem();
 
 if (isset($_POST["update"])) {
-   $id = $_POST["id"] ?? 0;
+    $id = $_POST["id"] ?? 0;
 
-   // Can't update, id is missing
-   if ($id === 0) {
-      Toolbox::logWarning("Can't update the target impact item, id is missing");
-      Html::back();
-   }
+    // Can't update, id is missing
+    if ($id === 0) {
+        Toolbox::logWarning("Can't update the target impact item, id is missing");
+        Html::back();
+    }
 
-   // Load item and check rights
-   $impact_item->getFromDB($id);
-   Session::checkRight($impact_item->fields['itemtype']::$rightname, UPDATE);
+    // Load item and check rights
+    $impact_item->getFromDB($id);
+    Session::checkRight($impact_item->fields['itemtype']::$rightname, UPDATE);
 
-   // Update item and back
-   $impact_item->update($_POST);
-   Html::redirect(Html::getBackUrl() . "#list");
+    // Update item and back
+    $impact_item->update($_POST);
+    Html::redirect(Html::getBackUrl() . "#list");
 }

@@ -35,89 +35,93 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class LineOperator extends CommonDropdown {
+class LineOperator extends CommonDropdown
+{
+    public static $rightname = 'lineoperator';
 
-   static $rightname = 'lineoperator';
+    public $can_be_translated = false;
 
-   public $can_be_translated = false;
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Line operator', 'Line operators', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('Line operator', 'Line operators', $nb);
-   }
+    public function getAdditionalFields()
+    {
+        return [
+           __('Mobile Country Code') => [
+              'name'  => 'mcc',
+              'type'  => 'number',
+              'value' => $this->fields['mcc'],
+           ],
+           __('Mobile Network Code') => [
+              'name'  => 'mnc',
+              'type'  => 'number',
+              'value' => $this->fields['mnc'],
+           ],
+        ];
+    }
 
-   function getAdditionalFields() {
-      return [
-         __('Mobile Country Code') => [
-            'name'  => 'mcc',
-            'type'  => 'number',
-            'value' => $this->fields['mcc'],
-         ],
-         __('Mobile Network Code') => [
-            'name'  => 'mnc',
-            'type'  => 'number',
-            'value' => $this->fields['mnc'],
-         ],
-      ];
-   }
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+        $tab[] = [
+              'id'                 => '11',
+              'table'              => $this->getTable(),
+              'field'              => 'mcc',
+              'name'               => __('Mobile Country Code'),
+              'datatype'           => 'text',
+              'autocomplete'       => true,
+        ];
 
-      $tab[] = [
-            'id'                 => '11',
-            'table'              => $this->getTable(),
-            'field'              => 'mcc',
-            'name'               => __('Mobile Country Code'),
-            'datatype'           => 'text',
-            'autocomplete'       => true,
-      ];
+        $tab[] = [
+              'id'                 => '12',
+              'table'              => $this->getTable(),
+              'field'              => 'mnc',
+              'name'               => __('Mobile Network Code'),
+              'datatype'           => 'text',
+              'autocomplete'       => true,
+        ];
 
-      $tab[] = [
-            'id'                 => '12',
-            'table'              => $this->getTable(),
-            'field'              => 'mnc',
-            'name'               => __('Mobile Network Code'),
-            'datatype'           => 'text',
-            'autocomplete'       => true,
-      ];
+        return $tab;
+    }
 
-      return $tab;
-   }
+    public function prepareInputForAdd($input)
+    {
+        global $DB;
 
-   public function prepareInputForAdd($input) {
-      global $DB;
+        $input = parent::prepareInputForAdd($input);
 
-      $input = parent::prepareInputForAdd($input);
+        if (!isset($input['mcc'])) {
+            $input['mcc'] = 0;
+        }
+        if (!isset($input['mnc'])) {
+            $input['mnc'] = 0;
+        }
 
-      if (!isset($input['mcc'])) {
-         $input['mcc'] = 0;
-      }
-      if (!isset($input['mnc'])) {
-         $input['mnc'] = 0;
-      }
+        //check for mcc/mnc unicity
+        $result = $DB->request([
+           'COUNT'  => 'cpt',
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+              'mcc' => $input['mcc'],
+              'mnc' => $input['mnc']
+           ]
+        ])->next();
 
-      //check for mcc/mnc unicity
-      $result = $DB->request([
-         'COUNT'  => 'cpt',
-         'FROM'   => self::getTable(),
-         'WHERE'  => [
-            'mcc' => $input['mcc'],
-            'mnc' => $input['mnc']
-         ]
-      ])->next();
+        if ($result['cpt'] > 0) {
+            Session::addMessageAfterRedirect(
+                __('Mobile country code and network code combination must be unique!'),
+                ERROR,
+                true
+            );
+            return false;
+        }
 
-      if ($result['cpt'] > 0) {
-         Session::addMessageAfterRedirect(
-            __('Mobile country code and network code combination must be unique!'),
-            ERROR,
-            true
-         );
-         return false;
-      }
-
-      return $input;
-   }
+        return $input;
+    }
 }

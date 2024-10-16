@@ -33,7 +33,7 @@
 use itsmng\Csrf;
 
 if (!defined('GLPI_ROOT')) {
-   define('GLPI_ROOT', dirname(__DIR__));
+    define('GLPI_ROOT', dirname(__DIR__));
 }
 
 include_once GLPI_ROOT . '/inc/based_config.php';
@@ -42,13 +42,13 @@ include_once GLPI_ROOT . '/inc/based_config.php';
 $TIMER_DEBUG = new Timer();
 $TIMER_DEBUG->start();
 
-include_once (GLPI_ROOT . "/src/twig/twig.utils.php");
+include_once(GLPI_ROOT . "/src/twig/twig.utils.php");
 
 /// TODO try to remove them if possible
-include_once (GLPI_ROOT . "/inc/db.function.php");
+include_once(GLPI_ROOT . "/inc/db.function.php");
 
 // Standard includes
-include_once (GLPI_ROOT . "/inc/config.php");
+include_once(GLPI_ROOT . "/inc/config.php");
 
 // Security of PHP_SELF
 $_SERVER['PHP_SELF'] = Html::cleanParametersURL($_SERVER['PHP_SELF']);
@@ -58,37 +58,37 @@ Session::loadLanguage();
 
 if (isset($_SESSION['glpi_use_mode'])
     && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
-   $SQL_TOTAL_REQUEST    = 0;
-   $DEBUG_SQL = [
-      'queries' => [],
-      'errors'  => [],
-      'times'   => [],
-   ];
-   $DEBUG_AUTOLOAD       = [];
+    $SQL_TOTAL_REQUEST    = 0;
+    $DEBUG_SQL = [
+       'queries' => [],
+       'errors'  => [],
+       'times'   => [],
+    ];
+    $DEBUG_AUTOLOAD       = [];
 }
 
 // Security system
 if (isset($_POST)) {
-   $_UPOST = $_POST; //keep raw, as a workaround
-   if (isset($_POST['_glpi_simple_form'])) {
-      $_POST = array_map('urldecode', $_POST);
-   }
-   $_POST = Toolbox::sanitize($_POST);
+    $_UPOST = $_POST; //keep raw, as a workaround
+    if (isset($_POST['_glpi_simple_form'])) {
+        $_POST = array_map('urldecode', $_POST);
+    }
+    $_POST = Toolbox::sanitize($_POST);
 }
 if (isset($_GET)) {
-   $_UGET = $_GET; //keep raw, as a workaround
-   $_GET  = Toolbox::sanitize($_GET);
+    $_UGET = $_GET; //keep raw, as a workaround
+    $_GET  = Toolbox::sanitize($_GET);
 }
 if (isset($_REQUEST)) {
-   $_UREQUEST = $_REQUEST; //keep raw, as a workaround
-   $_REQUEST  = Toolbox::sanitize($_REQUEST);
+    $_UREQUEST = $_REQUEST; //keep raw, as a workaround
+    $_REQUEST  = Toolbox::sanitize($_REQUEST);
 }
 if (isset($_FILES)) {
-   $_UFILES = $_FILES; //keep raw, as a workaround
-   foreach ($_FILES as &$file) {
-      $file['name'] = Toolbox::addslashes_deep($file['name']);
-      $file['name'] = Toolbox::clean_cross_side_scripting_deep($file['name']);
-   }
+    $_UFILES = $_FILES; //keep raw, as a workaround
+    foreach ($_FILES as &$file) {
+        $file['name'] = Toolbox::addslashes_deep($file['name']);
+        $file['name'] = Toolbox::clean_cross_side_scripting_deep($file['name']);
+    }
 }
 unset($file);
 
@@ -96,54 +96,54 @@ unset($file);
 $HEADER_LOADED = false;
 $FOOTER_LOADED = false;
 if (isset($AJAX_INCLUDE)) {
-   $HEADER_LOADED = true;
+    $HEADER_LOADED = true;
 }
 
 /* On startup, register all plugins configured for use. */
 if (!isset($PLUGINS_INCLUDED)) {
-   // PLugin already included
-   $PLUGINS_INCLUDED = 1;
-   $PLUGINS_EXCLUDED = isset($PLUGINS_EXCLUDED) ? $PLUGINS_EXCLUDED : [];
-   $LOADED_PLUGINS   = [];
-   $plugin           = new Plugin();
-   $plugin->init(true, $PLUGINS_EXCLUDED);
+    // PLugin already included
+    $PLUGINS_INCLUDED = 1;
+    $PLUGINS_EXCLUDED = isset($PLUGINS_EXCLUDED) ? $PLUGINS_EXCLUDED : [];
+    $LOADED_PLUGINS   = [];
+    $plugin           = new Plugin();
+    $plugin->init(true, $PLUGINS_EXCLUDED);
 }
 
 
 if (!isset($_SESSION["MESSAGE_AFTER_REDIRECT"])) {
-   $_SESSION["MESSAGE_AFTER_REDIRECT"]=[];
+    $_SESSION["MESSAGE_AFTER_REDIRECT"] = [];
 }
 
 // Manage force tab
 if (isset($_REQUEST['forcetab'])) {
-   if (preg_match('/\/plugins\/([a-zA-Z]+)\/front\/([a-zA-Z]+).form.php/', $_SERVER['PHP_SELF'], $matches)) {
-      $itemtype = 'plugin'.$matches[1].$matches[2];
-      Session::setActiveTab($itemtype, $_REQUEST['forcetab']);
-   } else if (preg_match('/([a-zA-Z]+).form.php/', $_SERVER['PHP_SELF'], $matches)) {
-      $itemtype = $matches[1];
-      Session::setActiveTab($itemtype, $_REQUEST['forcetab']);
-   } else if (preg_match('/\/plugins\/([a-zA-Z]+)\/front\/([a-zA-Z]+).php/', $_SERVER['PHP_SELF'], $matches)) {
-      $itemtype = 'plugin'.$matches[1].$matches[2];
-      Session::setActiveTab($itemtype, $_REQUEST['forcetab']);
-   } else if (preg_match('/([a-zA-Z]+).php/', $_SERVER['PHP_SELF'], $matches)) {
-      $itemtype = $matches[1];
-      Session::setActiveTab($itemtype, $_REQUEST['forcetab']);
-   }
+    if (preg_match('/\/plugins\/([a-zA-Z]+)\/front\/([a-zA-Z]+).form.php/', $_SERVER['PHP_SELF'], $matches)) {
+        $itemtype = 'plugin'.$matches[1].$matches[2];
+        Session::setActiveTab($itemtype, $_REQUEST['forcetab']);
+    } elseif (preg_match('/([a-zA-Z]+).form.php/', $_SERVER['PHP_SELF'], $matches)) {
+        $itemtype = $matches[1];
+        Session::setActiveTab($itemtype, $_REQUEST['forcetab']);
+    } elseif (preg_match('/\/plugins\/([a-zA-Z]+)\/front\/([a-zA-Z]+).php/', $_SERVER['PHP_SELF'], $matches)) {
+        $itemtype = 'plugin'.$matches[1].$matches[2];
+        Session::setActiveTab($itemtype, $_REQUEST['forcetab']);
+    } elseif (preg_match('/([a-zA-Z]+).php/', $_SERVER['PHP_SELF'], $matches)) {
+        $itemtype = $matches[1];
+        Session::setActiveTab($itemtype, $_REQUEST['forcetab']);
+    }
 }
 // Manage tabs
 if (isset($_REQUEST['glpi_tab']) && isset($_REQUEST['itemtype'])) {
-   Session::setActiveTab($_REQUEST['itemtype'], $_REQUEST['glpi_tab']);
+    Session::setActiveTab($_REQUEST['itemtype'], $_REQUEST['glpi_tab']);
 }
 // Override list-limit if choosen
 if (isset($_REQUEST['glpilist_limit'])) {
-   $_SESSION['glpilist_limit'] = $_REQUEST['glpilist_limit'];
+    $_SESSION['glpilist_limit'] = $_REQUEST['glpilist_limit'];
 }
 
 // Security : Check HTTP_REFERRER : need to be in GLPI.
 if (!defined('DO_NOT_CHECK_HTTP_REFERER')
     && !isCommandLine()
     && isset($_POST) && is_array($_POST) && count($_POST)) {
-   Toolbox::checkValidReferer();
+    Toolbox::checkValidReferer();
 }
 
 // Security : check CSRF token
@@ -152,12 +152,12 @@ if (GLPI_USE_CSRF_CHECK
    && isset($_POST) && is_array($_POST) && count($_POST)
    && preg_match(':'.$CFG_GLPI['root_doc'].'(/(plugins)/[^/]*|)/ajax/:', $_SERVER['REQUEST_URI']) === 0
    && preg_match(':'.$CFG_GLPI['root_doc'].'/src/.*\.ajax\.php$:', $_SERVER['REQUEST_URI']) === 0) {
-      if (!Csrf::verify()) {
-         Session::addMessageAfterRedirect(__('CSRF token is invalid while loading: ' . $_SERVER['HTTP_REFERER']), false, ERROR);
-         Html::back();
-      }
-} else if (GLPI_USE_CSRF_CHECK && !isAPI()
+    if (!Csrf::verify()) {
+        Session::addMessageAfterRedirect(__('CSRF token is invalid while loading: ' . $_SERVER['HTTP_REFERER']), false, ERROR);
+        Html::back();
+    }
+} elseif (GLPI_USE_CSRF_CHECK && !isAPI()
    && (!isset($_SESSION['csrf_token_time']) || time() > $_SESSION['csrf_token_time'])
    && !isset($_POST['csrf_token'])) {
-   Csrf::generate();
+    Csrf::generate();
 }

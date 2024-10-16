@@ -32,21 +32,21 @@
 
 use Glpi\Event;
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 $user = new User();
 
 
 // Manage lost password
 if (isset($_GET['lostpassword'])) {
-   Html::nullHeader();
-   if (isset($_GET['password_forget_token'])) {
-      User::showPasswordForgetChangeForm($_GET['password_forget_token']);
-   } else {
-      User::showPasswordForgetRequestForm();
-   }
-   Html::nullFooter();
-   exit();
+    Html::nullHeader();
+    if (isset($_GET['password_forget_token'])) {
+        User::showPasswordForgetChangeForm($_GET['password_forget_token']);
+    } else {
+        User::showPasswordForgetRequestForm();
+    }
+    Html::nullFooter();
+    exit();
 }
 
 
@@ -54,18 +54,22 @@ Session::checkLoginUser();
 
 if (isset($_POST["update"])
     && ($_POST["id"] == Session::getLoginUserID())) {
-   $user->update($_POST);
-   Event::log($_POST["id"], "users", 5, "setup",
-              //TRANS: %s is the user login
-              sprintf(__('%s updates an item'), $_SESSION["glpiname"]));
-   Html::back();
+    $user->update($_POST);
+    Event::log(
+        $_POST["id"],
+        "users",
+        5,
+        "setup",
+        //TRANS: %s is the user login
+        sprintf(__('%s updates an item'), $_SESSION["glpiname"])
+    );
+    Html::back();
 
 } else {
-   Html::header(Preference::getTypeName(1), $_SERVER['PHP_SELF'], 'preference');
+    Html::header(Preference::getTypeName(1), $_SERVER['PHP_SELF'], 'preference');
 
-   $pref = new Preference();
-   $pref->display(['main_class' => 'tab_cadre_fixe']);
+    $pref = new Preference();
+    $pref->display(['main_class' => 'tab_cadre_fixe']);
 
-   Html::footer();
+    Html::footer();
 }
-

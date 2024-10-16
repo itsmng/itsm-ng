@@ -30,19 +30,20 @@
  * ---------------------------------------------------------------------
  */
 
-class RuleDictionnaryMonitorTypeCollection extends RuleDictionnaryDropdownCollection {
+class RuleDictionnaryMonitorTypeCollection extends RuleDictionnaryDropdownCollection
+{
+    // From RuleCollection
+    //public $rule_class_name = 'RuleDictionnaryMonitorType';
 
-   // From RuleCollection
-   //public $rule_class_name = 'RuleDictionnaryMonitorType';
+    public $item_table  = "glpi_monitortypes";
+    public $menu_option = "type.monitor";
 
-   public $item_table  = "glpi_monitortypes";
-   public $menu_option = "type.monitor";
-
-   /**
-    * @see RuleCollection::getTitle()
-   **/
-   function getTitle() {
-      return __('Dictionnary of monitor types');
-   }
+    /**
+     * @see RuleCollection::getTitle()
+    **/
+    public function getTitle()
+    {
+        return __('Dictionnary of monitor types');
+    }
 
 }

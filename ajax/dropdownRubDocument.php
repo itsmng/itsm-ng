@@ -31,42 +31,45 @@
  */
 
 if (strpos($_SERVER['PHP_SELF'], "dropdownRubDocument.php")) {
-   $AJAX_INCLUDE = 1;
-   include ('../inc/includes.php');
-   header("Content-Type: text/html; charset=UTF-8");
-   Html::header_nocache();
+    $AJAX_INCLUDE = 1;
+    include('../inc/includes.php');
+    header("Content-Type: text/html; charset=UTF-8");
+    Html::header_nocache();
 }
 
 Session::checkCentralAccess();
 
 // Make a select box
 if (isset($_POST["rubdoc"])) {
-   $used = [];
+    $used = [];
 
-   // Clean used array
-   if (isset($_POST['used']) && is_array($_POST['used']) && (count($_POST['used']) > 0)) {
-      $iterator = $DB->request([
-         'SELECT' => ['id'],
-         'FROM'   => 'glpi_documents',
-         'WHERE'  => [
-            'id'                    => $_POST['used'],
-            'documentcategories_id' => (int)$_POST['rubdoc']
-         ]
-      ]);
+    // Clean used array
+    if (isset($_POST['used']) && is_array($_POST['used']) && (count($_POST['used']) > 0)) {
+        $iterator = $DB->request([
+           'SELECT' => ['id'],
+           'FROM'   => 'glpi_documents',
+           'WHERE'  => [
+              'id'                    => $_POST['used'],
+              'documentcategories_id' => (int)$_POST['rubdoc']
+           ]
+        ]);
 
-      while ($data = $iterator->next()) {
-         $used[$data['id']] = $data['id'];
-      }
-   }
+        while ($data = $iterator->next()) {
+            $used[$data['id']] = $data['id'];
+        }
+    }
 
-   if (!isset($_POST['entity']) || $_POST['entity'] === '') {
-      $_POST['entity'] = $_SESSION['glpiactive_entity'];
-   }
-   $values = getItemByEntity(Document::class, intval($_POST['entity']),
-      ['glpi_documents.documentcategories_id' => (int)$_POST["rubdoc"]]);
-   foreach ($used as $id) {
-      unset($values[$id]);
-   }
+    if (!isset($_POST['entity']) || $_POST['entity'] === '') {
+        $_POST['entity'] = $_SESSION['glpiactive_entity'];
+    }
+    $values = getItemByEntity(
+        Document::class,
+        intval($_POST['entity']),
+        ['glpi_documents.documentcategories_id' => (int)$_POST["rubdoc"]]
+    );
+    foreach ($used as $id) {
+        unset($values[$id]);
+    }
 
-   echo json_encode($values);
+    echo json_encode($values);
 }

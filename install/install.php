@@ -3,8 +3,8 @@
 session_start();
 define('GLPI_ROOT', realpath('..'));
 
-include_once (GLPI_ROOT . "/inc/based_config.php");
-include_once (GLPI_ROOT . "/inc/db.function.php");
+include_once(GLPI_ROOT . "/inc/based_config.php");
+include_once(GLPI_ROOT . "/inc/db.function.php");
 
 $GLPI = new GLPI();
 $GLPI->initLogger();
@@ -19,10 +19,10 @@ require_once GLPI_ROOT . "/src/languages/language.class.php";
 //allow previous page action
 header("Cache-Control: private, max-age=10800, pre-check=10800");
 header("Pragma: private");
-header("Expires: " . date(DATE_RFC822,strtotime("+2 day")));
+header("Expires: " . date(DATE_RFC822, strtotime("+2 day")));
 
 //get header data, raw in TWIG
-$header_data = [  
+$header_data = [
     "javascript"    =>  [
         Html::script("public/lib/base.js"),
         Html::script("public/lib/fuzzy.js"),
@@ -59,7 +59,7 @@ switch ($step) {
     case "0":
         $regions = Language::getLanguagesByRegion();
 
-        if (isset($_SESSION['language'])){
+        if (isset($_SESSION['language'])) {
             $language = $_SESSION['language'];
         } else {
             $language = Session::getPreferredLanguage();
@@ -68,7 +68,7 @@ switch ($step) {
         break;
 
     case "1":
-        if (isset($_POST['language'])){
+        if (isset($_POST['language'])) {
             $_SESSION['language'] = $_POST['language'];
             $_SESSION['glpilanguage'] = $_SESSION['language']; //required due to the way Session::loadLanguage works
         }
@@ -78,9 +78,9 @@ switch ($step) {
         break;
 
     case "3":
-        if (isset($_POST['install'])){
+        if (isset($_POST['install'])) {
             $_SESSION['action'] = 'install';
-        } else if (isset($_POST['update'])){
+        } elseif (isset($_POST['update'])) {
             $_SESSION['action'] = 'update';
         }
         $raw_requirements = (new RequirementsManager())->getCoreRequirementList(null);
@@ -98,7 +98,7 @@ switch ($step) {
         }
         if ($raw_requirements->hasMissingMandatoryRequirements()) {
             $missing_requirements = "mandatory";
-        } else if ($raw_requirements->hasMissingOptionalRequirements()) {
+        } elseif ($raw_requirements->hasMissingOptionalRequirements()) {
             $missing_requirements = "optional";
         } else {
             $missing_requirements = "none";
@@ -115,7 +115,7 @@ switch ($step) {
         break;
 
     case "5":
-        if (isset($_POST['db_host'])){
+        if (isset($_POST['db_host'])) {
             $_SESSION['db_host'] = $_POST['db_host'];
             $_SESSION['db_user'] = $_POST['db_user'];
             $_SESSION['db_pass'] = $_POST['db_pass'];
@@ -127,9 +127,9 @@ switch ($step) {
             $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass']);
         } else {
             $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass'], '', $hostport[1]);
-        } 
+        }
         $connect_error = $link->connect_error;
-        if (!$connect_error){
+        if (!$connect_error) {
             $DB_ver = $link->query("SELECT version()");
             $row = $DB_ver->fetch_array();
             $version = $row[0];
@@ -143,13 +143,14 @@ switch ($step) {
                 $databases_info = [];
                 $db_info = [];
                 if ($DB_list = $link->query(
-                   "SELECT S.schema_name AS 'name', COUNT(T.table_name) AS 'table_count', DATE(MIN(T.create_time)) AS 'table_create', DATE(MAX(T.update_time)) AS 'table_update'
+                    "SELECT S.schema_name AS 'name', COUNT(T.table_name) AS 'table_count', DATE(MIN(T.create_time)) AS 'table_create', DATE(MAX(T.update_time)) AS 'table_update'
                     FROM information_schema.tables AS T 
                     RIGHT JOIN information_schema.schemata AS S 
                     ON S.schema_name = T.table_schema
-                    GROUP BY S.schema_name;")){
+                    GROUP BY S.schema_name;"
+                )) {
                     while ($row = $DB_list->fetch_array(MYSQLI_NUM)) {
-                        if (!in_array($row[0],["information_schema","mysql","performance_schema","sys"])){
+                        if (!in_array($row[0], ["information_schema","mysql","performance_schema","sys"])) {
                             $databases_info[] = array_combine(["name", "table_count", "creation_date", "last_update"], $row);
                         }
                     }
@@ -157,14 +158,14 @@ switch ($step) {
             }
             $link->close();
         }
-        $twig_vars = [  'host' =>           $_SESSION['db_host'],   'user' =>       $_SESSION['db_user'], 
-                        'connect_error' =>  $connect_error,         'version' =>    $version, 
+        $twig_vars = [  'host' =>           $_SESSION['db_host'],   'user' =>       $_SESSION['db_user'],
+                        'connect_error' =>  $connect_error,         'version' =>    $version,
                         'ver_too_old' =>    $ver_too_old,           'action' =>     $_SESSION['action'],
                         'databases' =>      $databases_info];
         break;
 
     case "6":
-        if (isset($_POST['newdatabasename']) and $_POST['newdatabasename'] != ""){
+        if (isset($_POST['newdatabasename']) and $_POST['newdatabasename'] != "") {
             $new_db = true;
             $_SESSION["databasename"] = $_POST['newdatabasename'];
         } else {
@@ -175,21 +176,21 @@ switch ($step) {
         $sql_error = "";
         $error = "";
         $db_state = "";
-        if ($_SESSION['action'] == 'install'){
+        if ($_SESSION['action'] == 'install') {
             $glpikey = new GLPIKey();
             $secured = $glpikey->keyExists();
             if (!$secured) {
                 $secured = $glpikey->generate();
                 $error = "secured";
             }
-            if ($secured){
+            if ($secured) {
                 mysqli_report(MYSQLI_REPORT_OFF);
                 $hostport = explode(":", $_SESSION['db_host']);
                 if (count($hostport) < 2) {
                     $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass']);
                 } else {
                     $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass'], '', $hostport[1]);
-                } 
+                }
                 $databasename = $link->real_escape_string($_SESSION['databasename']);// use db already created
                 $DB_selected = $link->select_db($databasename);
                 if ($new_db && !$DB_selected) {
@@ -200,20 +201,20 @@ switch ($step) {
                         $error = "create_db";
                     }
                 }
-                if (!$DB_selected){
+                if (!$DB_selected) {
                     $sql_error = $link->error;
                     $error = "use";
                 } else {
-                    if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'])){
-                    } else { 
+                    if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'])) {
+                    } else {
                         $error = "setup";
                     }
-                } 
+                }
             } else {
                 $error = "select";
             }
-        } else if ($_SESSION['action'] == 'update') {
-            if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'])){
+        } elseif ($_SESSION['action'] == 'update') {
+            if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'])) {
                 global $DB;
                 $update = [
                     'db' => $_SESSION['databasename'],
@@ -222,14 +223,14 @@ switch ($step) {
                 $error = "create_config";
             }
         }
-        
+
         if (!isset($secured)) {
             $secured = false;
         }
-            
+
         $twig_vars = [  'action'    => $_SESSION['action'],
-                        'created'   =>  $db_created,            
-                        'error'     => $error,          
+                        'created'   =>  $db_created,
+                        'error'     => $error,
                         'secured'   => $secured,
                         'sql_error' => $sql_error,
                         'update'    => isset($update) ? $update : null,
@@ -237,6 +238,7 @@ switch ($step) {
         break;
     case "7":
         Toolbox::createSchema($_SESSION['language']);
+        // no break
     case "8":
         include_once(GLPI_ROOT . "/inc/dbmysql.class.php");
         include_once(GLPI_CONFIG_DIR . "/config_db.php");
@@ -245,7 +247,8 @@ switch ($step) {
         $url_base = str_replace("/install/install.php", "", $_SERVER['HTTP_REFERER']);
         $DB->update(
             'glpi_configs',
-            ['value' => $DB->escape($url_base)], [
+            ['value' => $DB->escape($url_base)],
+            [
                 'context'   => 'core',
                 'name'      => 'url_base'
             ]
@@ -254,16 +257,17 @@ switch ($step) {
         $url_base_api = "$url_base/apirest.php/";
         $DB->update(
             'glpi_configs',
-            ['value' => $DB->escape($url_base_api)], [
+            ['value' => $DB->escape($url_base_api)],
+            [
                 'context'   => 'core',
                 'name'      => 'url_base_api'
             ]
         );
 }
-    
+
 try {
     include_once(GLPI_ROOT . "/src/twig/twig.utils.php");
-    renderTwigTemplate('install/index.twig',  [
+    renderTwigTemplate('install/index.twig', [
         'step' => ['number' => $step, 'progress' => $step / count($steps), 'name' => $steps_name[$step]],
         'header_data' => $header_data] + $twig_vars);
 } catch (\Exception $e) {

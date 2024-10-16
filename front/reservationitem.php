@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRightsOr('reservation', [READ, ReservationItem::RESERVEANITEM]);
 
@@ -40,9 +40,9 @@ $res = new ReservationItem();
 $res->display($_GET);
 
 if (isset($_POST['submit'])) {
-   $_SESSION['glpi_saved']['ReservationItem'] = $_POST;
+    $_SESSION['glpi_saved']['ReservationItem'] = $_POST;
 } else {
-   unset($_SESSION['glpi_saved']['ReservationItem']);
+    unset($_SESSION['glpi_saved']['ReservationItem']);
 }
 
 Html::footer();

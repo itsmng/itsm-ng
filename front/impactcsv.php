@@ -30,15 +30,15 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 $itemtype = $_GET['itemtype'] ?? '';
 $items_id = $_GET['items_id'] ?? '';
 
 // Check for mandatory params
 if (empty($itemtype) || empty($items_id)) {
-   http_response_code(400);
-   die();
+    http_response_code(400);
+    die();
 }
 
 // Check right
@@ -54,16 +54,16 @@ $impact_item = ImpactItem::findForItem($item);
 $impact_context = ImpactContext::findForImpactItem($impact_item);
 
 if (!$impact_context) {
-   $max_depth = \Impact::DEFAULT_DEPTH;
+    $max_depth = \Impact::DEFAULT_DEPTH;
 } else {
-   $max_deph = $impact_context->fields["max_depth"];
+    $max_deph = $impact_context->fields["max_depth"];
 }
 
 // Load list data
 $data = [];
 $directions = [Impact::DIRECTION_FORWARD, Impact::DIRECTION_BACKWARD];
 foreach ($directions as $direction) {
-   $data[$direction] = Impact::buildListData($graph, $direction, $item, $max_deph);
+    $data[$direction] = Impact::buildListData($graph, $direction, $item, $max_deph);
 }
 
 // Output csv data
@@ -72,7 +72,7 @@ header("Content-Type: text/csv");
 header("Content-Disposition: attachment; filename='impact.csv'; filename*=UTF-8''$filename");
 $output = fopen('php://output', 'w');
 if ($output === false) {
-   throw new \RuntimeException("Can't open php://output");
+    throw new \RuntimeException("Can't open php://output");
 }
 
 // Title of the cols in the first line
@@ -85,20 +85,20 @@ fputcsv($output, [
 
 // Flatten the hiarchical $data and insert it line by line
 foreach ($data as $direction => $impact_data) {
-   if ($direction == Impact::DIRECTION_FORWARD) {
-      $direction_label = __("Impact");
-   } else {
-      $direction_label = __("Impacted by");
-   }
+    if ($direction == Impact::DIRECTION_FORWARD) {
+        $direction_label = __("Impact");
+    } else {
+        $direction_label = __("Impacted by");
+    }
 
-   foreach ($impact_data as $data_type => $data_elements) {
-      foreach ($data_elements as $data_element) {
-         fputcsv($output, [
-            $direction_label,
-            $data_type,
-            $data_element['stored']->fields['id'],
-            $data_element['stored']->fields['name'],
-         ]);
-      }
-   }
+    foreach ($impact_data as $data_type => $data_elements) {
+        foreach ($data_elements as $data_element) {
+            fputcsv($output, [
+               $direction_label,
+               $data_type,
+               $data_element['stored']->fields['id'],
+               $data_element['stored']->fields['name'],
+            ]);
+        }
+    }
 }

@@ -31,38 +31,38 @@
  */
 
 // Direct access to file
-include ('../inc/includes.php');
+include('../inc/includes.php');
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkLoginUser();
 
 if (!isset($_REQUEST['action'])) {
-   die;
+    die;
 }
 
 if (!Session::validateIDOR($_REQUEST)) {
-   die;
+    die;
 }
 
 switch ($_REQUEST['action']) {
-   case "display_criteria":
-      Search::displayCriteria($_REQUEST);
-      break;
+    case "display_criteria":
+        Search::displayCriteria($_REQUEST);
+        break;
 
-   case "display_meta_criteria":
-      Search::displayMetaCriteria($_REQUEST);
-      break;
+    case "display_meta_criteria":
+        Search::displayMetaCriteria($_REQUEST);
+        break;
 
-   case "display_criteria_group":
-      Search::displayCriteriaGroup($_REQUEST);
-      break;
+    case "display_criteria_group":
+        Search::displayCriteriaGroup($_REQUEST);
+        break;
 
-   case "display_searchoption":
-      Search::displaySearchoption($_REQUEST);
-      break;
+    case "display_searchoption":
+        Search::displaySearchoption($_REQUEST);
+        break;
 
-   case "display_searchoption_value":
-      Search::displaySearchoptionValue($_REQUEST);
-      break;
+    case "display_searchoption_value":
+        Search::displaySearchoptionValue($_REQUEST);
+        break;
 }

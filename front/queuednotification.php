@@ -34,7 +34,7 @@
  * @since 0.85
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRight("queuednotification", READ);
 

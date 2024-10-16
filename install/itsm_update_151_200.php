@@ -35,7 +35,8 @@
  *
  * @return bool for success (will die for most error)
  **/
-function update151to200() : bool {
+function update151to200(): bool
+{
     /** @global Migration $migration */
     global $DB, $migration;
 

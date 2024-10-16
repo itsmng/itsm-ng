@@ -31,69 +31,72 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * SolutionTemplate Class
 **/
-class SolutionTemplate extends CommonDropdown {
+class SolutionTemplate extends CommonDropdown
+{
+    // From CommonDBTM
+    public $dohistory = true;
 
-   // From CommonDBTM
-   public $dohistory = true;
+    public static $rightname = 'solutiontemplate';
 
-   static $rightname = 'solutiontemplate';
-
-   public $can_be_translated = false;
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Solution template', 'Solution templates', $nb);
-   }
+    public $can_be_translated = false;
 
 
-   function getAdditionalFields() {
-
-      return [
-         SolutionType::getTypeName(1) => [
-            'name'  => 'solutiontypes_id',
-            'type'  => 'select',
-            'values' => getOptionForItems('SolutionType'),
-            'value' => $this->fields['solutiontypes_id'],
-            'actions' => getItemActionButtons(['info', 'add'], 'SolutionType')
-         ],
-         __('Content') => [
-            'name'  => 'content',
-            'id'    => 'TextAreaForSolutionContent',
-            'type'  => 'richtextarea',
-            'value' => $this->fields['content'],
-            'col_lg' => 12,
-            'col_md' => 12,
-         ]
-      ];
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Solution template', 'Solution templates', $nb);
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    public function getAdditionalFields()
+    {
 
-      $tab[] = [
-         'id'                 => '4',
-         'name'               => __('Content'),
-         'field'              => 'content',
-         'table'              => $this->getTable(),
-         'datatype'           => 'text',
-         'htmltext'           => true
-      ];
+        return [
+           SolutionType::getTypeName(1) => [
+              'name'  => 'solutiontypes_id',
+              'type'  => 'select',
+              'values' => getOptionForItems('SolutionType'),
+              'value' => $this->fields['solutiontypes_id'],
+              'actions' => getItemActionButtons(['info', 'add'], 'SolutionType')
+           ],
+           __('Content') => [
+              'name'  => 'content',
+              'id'    => 'TextAreaForSolutionContent',
+              'type'  => 'richtextarea',
+              'value' => $this->fields['content'],
+              'col_lg' => 12,
+              'col_md' => 12,
+           ]
+        ];
+    }
 
-      $tab[] = [
-         'id'                 => '3',
-         'name'               => SolutionType::getTypeName(1),
-         'field'              => 'name',
-         'table'              => getTableForItemType('SolutionType'),
-         'datatype'           => 'dropdown'
-      ];
 
-      return $tab;
-   }
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
+
+        $tab[] = [
+           'id'                 => '4',
+           'name'               => __('Content'),
+           'field'              => 'content',
+           'table'              => $this->getTable(),
+           'datatype'           => 'text',
+           'htmltext'           => true
+        ];
+
+        $tab[] = [
+           'id'                 => '3',
+           'name'               => SolutionType::getTypeName(1),
+           'field'              => 'name',
+           'table'              => getTableForItemType('SolutionType'),
+           'datatype'           => 'dropdown'
+        ];
+
+        return $tab;
+    }
 }

@@ -30,8 +30,8 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 $task = new ProblemTask();
 
-include (GLPI_ROOT . "/front/commonitiltask.form.php");
+include(GLPI_ROOT . "/front/commonitiltask.form.php");

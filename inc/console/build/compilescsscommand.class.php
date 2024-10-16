@@ -33,7 +33,7 @@
 namespace Glpi\Console\Build;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 use Html;
@@ -44,97 +44,100 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CompileScssCommand extends Command {
+class CompileScssCommand extends Command
+{
+    /**
+     * Error code returned if unable to write compiled CSS.
+     *
+     * @var integer
+     */
+    public const ERROR_UNABLE_TO_WRITE_COMPILED_FILE = 1;
 
-   /**
-    * Error code returned if unable to write compiled CSS.
-    *
-    * @var integer
-    */
-   const ERROR_UNABLE_TO_WRITE_COMPILED_FILE = 1;
+    protected function configure()
+    {
+        parent::configure();
 
-   protected function configure() {
-      parent::configure();
+        $this->setName('itsmng:build:compile_scss');
+        $this->setAliases(['build:compile_scss']);
+        $this->setDescription('Compile SCSS file.');
 
-      $this->setName('itsmng:build:compile_scss');
-      $this->setAliases(['build:compile_scss']);
-      $this->setDescription('Compile SCSS file.');
+        $this->addOption(
+            'file',
+            'f',
+            InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+            'File to compile (compile all SCSS files by default)'
+        );
+    }
 
-      $this->addOption(
-         'file',
-         'f',
-         InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-         'File to compile (compile all SCSS files by default)'
-      );
-   }
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
 
-   protected function initialize(InputInterface $input, OutputInterface $output) {
+        $compile_directory = Html::getScssCompileDir();
 
-      $compile_directory = Html::getScssCompileDir();
+        if (!@is_dir($compile_directory) && !@mkdir($compile_directory)) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Destination directory "%s" cannot be accessed.',
+                    $compile_directory
+                )
+            );
+        }
+    }
 
-      if (!@is_dir($compile_directory) && !@mkdir($compile_directory)) {
-         throw new \RuntimeException(
-            sprintf(
-               'Destination directory "%s" cannot be accessed.',
-               $compile_directory
-            )
-         );
-      }
-   }
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
-   protected function execute(InputInterface $input, OutputInterface $output) {
+        $files = $input->getOption('file');
 
-      $files = $input->getOption('file');
+        if (empty($files)) {
+            $root_path = realpath(GLPI_ROOT);
 
-      if (empty($files)) {
-         $root_path = realpath(GLPI_ROOT);
+            $css_dir_iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($root_path . '/css'),
+                RecursiveIteratorIterator::SELF_FIRST
+            );
+            /** @var \SplFileInfo $file */
+            foreach ($css_dir_iterator as $file) {
+                if (!$file->isReadable() || !$file->isFile() || $file->getExtension() !== 'scss') {
+                    continue;
+                }
 
-         $css_dir_iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($root_path . '/css'),
-            RecursiveIteratorIterator::SELF_FIRST
-         );
-         /** @var \SplFileInfo $file */
-         foreach ($css_dir_iterator as $file) {
-            if (!$file->isReadable() || !$file->isFile() || $file->getExtension() !== 'scss') {
-               continue;
+                $files[] = str_replace($root_path . '/', '', dirname($file->getRealPath()))
+                   . '/'
+                   . preg_replace('/^_?(.*)\.scss$/', '$1', $file->getBasename());
             }
+        }
 
-            $files[] = str_replace($root_path . '/', '', dirname($file->getRealPath()))
-               . '/'
-               . preg_replace('/^_?(.*)\.scss$/', '$1', $file->getBasename());
-         }
-      }
+        foreach ($files as $file) {
+            $output->writeln(
+                '<comment>' . sprintf('Processing "%s".', $file) . '</comment>',
+                OutputInterface::VERBOSITY_VERBOSE
+            );
 
-      foreach ($files as $file) {
-         $output->writeln(
-            '<comment>' . sprintf('Processing "%s".', $file) . '</comment>',
-            OutputInterface::VERBOSITY_VERBOSE
-         );
-
-         $compiled_path = Html::getScssCompilePath($file);
-         $css = Html::compileScss(
-            [
-               'file'    => $file,
-               'nocache' => true,
+            $compiled_path = Html::getScssCompilePath($file);
+            $css = Html::compileScss(
+                [
+                  'file'    => $file,
+                  'nocache' => true,
             ]
-         );
-
-         if (strlen($css) === @file_put_contents($compiled_path, $css)) {
-            $message = sprintf('"%s" compiled successfully in "%s".', $file, $compiled_path);
-            $output->writeln(
-               '<info>' . $message . '</info>',
-               OutputInterface::VERBOSITY_NORMAL
             );
-         } else {
-            $message = sprintf('Unable to write compiled CSS in "%s".', $compiled_path);
-            $output->writeln(
-               '<error>' . $message . '</error>',
-               OutputInterface::VERBOSITY_QUIET
-            );
-            return self::ERROR_UNABLE_TO_WRITE_COMPILED_FILE;
-         }
-      }
 
-      return 0; // Success
-   }
+            if (strlen($css) === @file_put_contents($compiled_path, $css)) {
+                $message = sprintf('"%s" compiled successfully in "%s".', $file, $compiled_path);
+                $output->writeln(
+                    '<info>' . $message . '</info>',
+                    OutputInterface::VERBOSITY_NORMAL
+                );
+            } else {
+                $message = sprintf('Unable to write compiled CSS in "%s".', $compiled_path);
+                $output->writeln(
+                    '<error>' . $message . '</error>',
+                    OutputInterface::VERBOSITY_QUIET
+                );
+                return self::ERROR_UNABLE_TO_WRITE_COMPILED_FILE;
+            }
+        }
+
+        return 0; // Success
+    }
 }

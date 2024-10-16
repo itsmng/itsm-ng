@@ -31,19 +31,20 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class MonitorType
-class MonitorType extends CommonDropdown {
+class MonitorType extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Monitor type', 'Monitor types', $nb);
+    }
 
-
-   static function getTypeName($nb = 0) {
-      return _n('Monitor type', 'Monitor types', $nb);
-   }
-
-   static function getFieldLabel() {
-      return _n('Type', 'Types', 1);
-   }
+    public static function getFieldLabel()
+    {
+        return _n('Type', 'Types', 1);
+    }
 
 }

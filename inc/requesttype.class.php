@@ -31,272 +31,283 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class RequestType
-class RequestType extends CommonDropdown {
+class RequestType extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Request source', 'Request sources', $nb);
+    }
 
 
-   static function getTypeName($nb = 0) {
-      return _n('Request source', 'Request sources', $nb);
-   }
+    public function getAdditionalFields()
+    {
+
+        return [
+           __('Active') => [
+              'name'  => 'is_active',
+              'type'  => 'checkbox',
+              'value' => $this->fields['is_active']
+           ],
+           __('Default for tickets') => [
+              'name'  => 'is_helpdesk_default',
+              'type'  => 'checkbox',
+              'value' => $this->fields['is_helpdesk_default']
+           ],
+           __('Default for followups') => [
+              'name'  => 'is_followup_default',
+              'type'  => 'checkbox',
+              'value' => $this->fields['is_followup_default']
+           ],
+           __('Default for mail recipients') => [
+              'name'  => 'is_mail_default',
+              'type'  => 'checkbox',
+              'value' => $this->fields['is_mail_default']
+           ],
+           __('Default for followup mail recipients') => [
+              'name'  => 'is_mailfollowup_default',
+              'type'  => 'checkbox',
+              'value' => $this->fields['is_mailfollowup_default']
+           ],
+           __('Request source visible for tickets') => [
+              'name'  => 'is_ticketheader',
+              'type'  => 'checkbox',
+              'value' => $this->fields['is_ticketheader']
+           ],
+           __('Request source visible for followups') => [
+              'name'  => 'is_itilfollowup',
+              'type'  => 'checkbox',
+              'value' => $this->fields['is_itilfollowup']
+           ],
+        ];
+    }
 
 
-   function getAdditionalFields() {
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
 
-      return [
-         __('Active') => [
-            'name'  => 'is_active',
-            'type'  => 'checkbox',
-            'value' => $this->fields['is_active']
-         ],
-         __('Default for tickets') => [
-            'name'  => 'is_helpdesk_default',
-            'type'  => 'checkbox',
-            'value' => $this->fields['is_helpdesk_default']
-         ],
-         __('Default for followups') => [
-            'name'  => 'is_followup_default',
-            'type'  => 'checkbox',
-            'value' => $this->fields['is_followup_default']
-         ],
-         __('Default for mail recipients') => [
-            'name'  => 'is_mail_default',
-            'type'  => 'checkbox',
-            'value' => $this->fields['is_mail_default']
-         ],
-         __('Default for followup mail recipients') => [
-            'name'  => 'is_mailfollowup_default',
-            'type'  => 'checkbox',
-            'value' => $this->fields['is_mailfollowup_default']
-         ],
-         __('Request source visible for tickets') => [
-            'name'  => 'is_ticketheader',
-            'type'  => 'checkbox',
-            'value' => $this->fields['is_ticketheader']
-         ],
-         __('Request source visible for followups') => [
-            'name'  => 'is_itilfollowup',
-            'type'  => 'checkbox',
-            'value' => $this->fields['is_itilfollowup']
-         ],
-      ];
-   }
+        $tab[] = [
+           'id'                 => '14',
+           'table'              => $this->getTable(),
+           'field'              => 'is_helpdesk_default',
+           'name'               => __('Default for tickets'),
+           'datatype'           => 'bool',
+           'massiveaction'      => false
+        ];
 
+        $tab[] = [
+           'id'                 => '182',
+           'table'              => $this->getTable(),
+           'field'              => 'is_followup_default',
+           'name'               => __('Default for followups'),
+           'datatype'           => 'bool',
+           'massiveaction'      => false
+        ];
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+        $tab[] = [
+           'id'                 => '15',
+           'table'              => $this->getTable(),
+           'field'              => 'is_mail_default',
+           'name'               => __('Default for mail recipients'),
+           'datatype'           => 'bool',
+           'massiveaction'      => false
+        ];
 
-      $tab[] = [
-         'id'                 => '14',
-         'table'              => $this->getTable(),
-         'field'              => 'is_helpdesk_default',
-         'name'               => __('Default for tickets'),
-         'datatype'           => 'bool',
-         'massiveaction'      => false
-      ];
+        $tab[] = [
+           'id'                 => '183',
+           'table'              => $this->getTable(),
+           'field'              => 'is_mailfollowup_default',
+           'name'               => __('Default for followup mail recipients'),
+           'datatype'           => 'bool',
+           'massiveaction'      => false
+        ];
 
-      $tab[] = [
-         'id'                 => '182',
-         'table'              => $this->getTable(),
-         'field'              => 'is_followup_default',
-         'name'               => __('Default for followups'),
-         'datatype'           => 'bool',
-         'massiveaction'      => false
-      ];
+        $tab[] = [
+           'id'                 => '8',
+           'table'              => $this->getTable(),
+           'field'              => 'is_active',
+           'name'               => __('Active'),
+           'datatype'           => 'bool'
+        ];
 
-      $tab[] = [
-         'id'                 => '15',
-         'table'              => $this->getTable(),
-         'field'              => 'is_mail_default',
-         'name'               => __('Default for mail recipients'),
-         'datatype'           => 'bool',
-         'massiveaction'      => false
-      ];
+        $tab[] = [
+           'id'                 => '180',
+           'table'              => $this->getTable(),
+           'field'              => 'is_ticketheader',
+           'name'               => __('Request source visible for tickets'),
+           'datatype'           => 'bool'
+        ];
 
-      $tab[] = [
-         'id'                 => '183',
-         'table'              => $this->getTable(),
-         'field'              => 'is_mailfollowup_default',
-         'name'               => __('Default for followup mail recipients'),
-         'datatype'           => 'bool',
-         'massiveaction'      => false
-      ];
+        $tab[] = [
+           'id'                 => '181',
+           'table'              => $this->getTable(),
+           'field'              => 'is_itilfollowup',
+           'name'               => __('Request source visible for followups'),
+           'datatype'           => 'bool'
+        ];
 
-      $tab[] = [
-         'id'                 => '8',
-         'table'              => $this->getTable(),
-         'field'              => 'is_active',
-         'name'               => __('Active'),
-         'datatype'           => 'bool'
-      ];
-
-      $tab[] = [
-         'id'                 => '180',
-         'table'              => $this->getTable(),
-         'field'              => 'is_ticketheader',
-         'name'               => __('Request source visible for tickets'),
-         'datatype'           => 'bool'
-      ];
-
-      $tab[] = [
-         'id'                 => '181',
-         'table'              => $this->getTable(),
-         'field'              => 'is_itilfollowup',
-         'name'               => __('Request source visible for followups'),
-         'datatype'           => 'bool'
-      ];
-
-      return $tab;
-   }
+        return $tab;
+    }
 
 
-   function post_addItem() {
-      global $DB;
+    public function post_addItem()
+    {
+        global $DB;
 
-      $update = [];
+        $update = [];
 
-      if (isset($this->input["is_helpdesk_default"]) && $this->input["is_helpdesk_default"]) {
-         $update['is_helpdesk_default'] = 0;
-      }
-
-      if (isset($this->input["is_followup_default"]) && $this->input["is_followup_default"]) {
-         $update['is_followup_default'] = 0;
-      }
-
-      if (isset($this->input["is_mail_default"]) && $this->input["is_mail_default"]) {
-         $update['is_mail_default'] = 0;
-      }
-
-      if (isset($this->input["is_mailfollowup_default"]) && $this->input["is_mailfollowup_default"]) {
-         $update['is_mailfollowup_default'] = 0;
-      }
-
-      if (count($update)) {
-         $DB->update(
-            $this->getTable(),
-            $update, [
-               'id' => ['<>', $this->fields['id']]
-            ]
-         );
-      }
-   }
-
-
-   /**
-    * @see CommonDBTM::post_updateItem()
-   **/
-   function post_updateItem($history = 1) {
-      global $DB;
-      $update =[];
-
-      if (in_array('is_helpdesk_default', $this->updates)) {
-         if ($this->input["is_helpdesk_default"]) {
+        if (isset($this->input["is_helpdesk_default"]) && $this->input["is_helpdesk_default"]) {
             $update['is_helpdesk_default'] = 0;
-         } else {
-            Session::addMessageAfterRedirect(__('Be careful: there is no default value'), true);
-         }
-      }
+        }
 
-      if (in_array('is_followup_default', $this->updates)) {
-         if ($this->input["is_followup_default"]) {
+        if (isset($this->input["is_followup_default"]) && $this->input["is_followup_default"]) {
             $update['is_followup_default'] = 0;
-         } else {
-            Session::addMessageAfterRedirect(__('Be careful: there is no default value'), true);
-         }
-      }
+        }
 
-      if (in_array('is_mail_default', $this->updates)) {
-         if ($this->input["is_mail_default"]) {
+        if (isset($this->input["is_mail_default"]) && $this->input["is_mail_default"]) {
             $update['is_mail_default'] = 0;
-         } else {
-            Session::addMessageAfterRedirect(__('Be careful: there is no default value'), true);
-         }
-      }
+        }
 
-      if (in_array('is_mailfollowup_default', $this->updates)) {
-         if ($this->input["is_mailfollowup_default"]) {
+        if (isset($this->input["is_mailfollowup_default"]) && $this->input["is_mailfollowup_default"]) {
             $update['is_mailfollowup_default'] = 0;
-         } else {
-            Session::addMessageAfterRedirect(__('Be careful: there is no default value'), true);
-         }
-      }
+        }
 
-      if (count($update)) {
-         $DB->update(
-            $this->getTable(),
-            $update, [
-               'id' => ['<>', $this->fields['id']]
+        if (count($update)) {
+            $DB->update(
+                $this->getTable(),
+                $update,
+                [
+                  'id' => ['<>', $this->fields['id']]
             ]
-         );
-      }
-   }
+            );
+        }
+    }
 
 
-   /**
-    * Get the default request type for a given source (mail, helpdesk)
-    *
-    * @param $source string
-    *
-    * @return requesttypes_id
-   **/
-   static function getDefault($source) {
-      global $DB;
+    /**
+     * @see CommonDBTM::post_updateItem()
+    **/
+    public function post_updateItem($history = 1)
+    {
+        global $DB;
+        $update = [];
 
-      if (!in_array($source, ['mail', 'mailfollowup', 'helpdesk', 'followup'])) {
-         return 0;
-      }
+        if (in_array('is_helpdesk_default', $this->updates)) {
+            if ($this->input["is_helpdesk_default"]) {
+                $update['is_helpdesk_default'] = 0;
+            } else {
+                Session::addMessageAfterRedirect(__('Be careful: there is no default value'), true);
+            }
+        }
 
-      foreach ($DB->request('glpi_requesttypes', ['is_'.$source.'_default' => 1, 'is_active' => 1]) as $data) {
-         return $data['id'];
-      }
-      return 0;
-   }
+        if (in_array('is_followup_default', $this->updates)) {
+            if ($this->input["is_followup_default"]) {
+                $update['is_followup_default'] = 0;
+            } else {
+                Session::addMessageAfterRedirect(__('Be careful: there is no default value'), true);
+            }
+        }
 
+        if (in_array('is_mail_default', $this->updates)) {
+            if ($this->input["is_mail_default"]) {
+                $update['is_mail_default'] = 0;
+            } else {
+                Session::addMessageAfterRedirect(__('Be careful: there is no default value'), true);
+            }
+        }
 
-   function cleanDBonPurge() {
-      Rule::cleanForItemCriteria($this);
-   }
+        if (in_array('is_mailfollowup_default', $this->updates)) {
+            if ($this->input["is_mailfollowup_default"]) {
+                $update['is_mailfollowup_default'] = 0;
+            } else {
+                Session::addMessageAfterRedirect(__('Be careful: there is no default value'), true);
+            }
+        }
 
-
-   function cleanRelationData() {
-
-      parent::cleanRelationData();
-
-      if ($this->isUsedAsDefaultRequestType()) {
-         $newval = (isset($this->input['_replace_by']) ? $this->input['_replace_by'] : 0);
-
-         Config::setConfigurationValues(
-            'core',
-            [
-               'default_requesttypes_id' => $newval,
+        if (count($update)) {
+            $DB->update(
+                $this->getTable(),
+                $update,
+                [
+                  'id' => ['<>', $this->fields['id']]
             ]
-         );
-      }
-   }
+            );
+        }
+    }
 
 
-   function isUsed() {
+    /**
+     * Get the default request type for a given source (mail, helpdesk)
+     *
+     * @param $source string
+     *
+     * @return requesttypes_id
+    **/
+    public static function getDefault($source)
+    {
+        global $DB;
 
-      if (parent::isUsed()) {
-         return true;
-      }
+        if (!in_array($source, ['mail', 'mailfollowup', 'helpdesk', 'followup'])) {
+            return 0;
+        }
 
-      return $this->isUsedAsDefaultRequestType();
-   }
+        foreach ($DB->request('glpi_requesttypes', ['is_'.$source.'_default' => 1, 'is_active' => 1]) as $data) {
+            return $data['id'];
+        }
+        return 0;
+    }
 
 
-   /**
-    * Check if type is used as default for new tickets.
-    *
-    * @return boolean
-    */
-   private function isUsedAsDefaultRequestType() {
+    public function cleanDBonPurge()
+    {
+        Rule::cleanForItemCriteria($this);
+    }
 
-      $config_values = Config::getConfigurationValues('core', ['default_requesttypes_id']);
 
-      return array_key_exists('default_requesttypes_id', $config_values)
-         && $config_values['default_requesttypes_id'] == $this->fields['id'];
-   }
+    public function cleanRelationData()
+    {
+
+        parent::cleanRelationData();
+
+        if ($this->isUsedAsDefaultRequestType()) {
+            $newval = (isset($this->input['_replace_by']) ? $this->input['_replace_by'] : 0);
+
+            Config::setConfigurationValues(
+                'core',
+                [
+                  'default_requesttypes_id' => $newval,
+            ]
+            );
+        }
+    }
+
+
+    public function isUsed()
+    {
+
+        if (parent::isUsed()) {
+            return true;
+        }
+
+        return $this->isUsedAsDefaultRequestType();
+    }
+
+
+    /**
+     * Check if type is used as default for new tickets.
+     *
+     * @return boolean
+     */
+    private function isUsedAsDefaultRequestType()
+    {
+
+        $config_values = Config::getConfigurationValues('core', ['default_requesttypes_id']);
+
+        return array_key_exists('default_requesttypes_id', $config_values)
+           && $config_values['default_requesttypes_id'] == $this->fields['id'];
+    }
 }

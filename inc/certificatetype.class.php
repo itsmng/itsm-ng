@@ -31,21 +31,23 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
  * Class to manage certificate types
  */
-class CertificateType extends CommonDropdown {
+class CertificateType extends CommonDropdown
+{
+    public $can_be_translated = true;
 
-   var $can_be_translated = true;
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Certificate type', 'Certificate types', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('Certificate type', 'Certificate types', $nb);
-   }
-
-   static function getFieldLabel() {
-      return _n('Type', 'Types', 1);
-   }
+    public static function getFieldLabel()
+    {
+        return _n('Type', 'Types', 1);
+    }
 }

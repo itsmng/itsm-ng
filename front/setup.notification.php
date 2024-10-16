@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkSeveralRightsOr(['notification' => READ,
                                     'config'       => UPDATE]);
@@ -39,7 +39,7 @@ Html::header(_n('Notification', 'Notifications', Session::getPluralNumber()), $_
 
 if (!Session::haveRight("config", READ)
    && Session::haveRight("notification", READ)) {
-   Html::redirect($CFG_GLPI["root_doc"].'/front/notification.php');
+    Html::redirect($CFG_GLPI["root_doc"].'/front/notification.php');
 }
 
 $settingconfig = new NotificationSettingConfig();
@@ -48,8 +48,8 @@ $settingconfig = new NotificationSettingConfig();
 Notification_NotificationTemplate::getModes();
 
 if (count($_POST)) {
-   $settingconfig->update($_POST);
-   Html::back();
+    $settingconfig->update($_POST);
+    Html::back();
 }
 
 $settingconfig->showForm();

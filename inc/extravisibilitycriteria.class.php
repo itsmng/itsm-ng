@@ -31,19 +31,19 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 interface ExtraVisibilityCriteria
 {
-   /**
-    * Return visibility joins to add to DBIterator parameters
-    *
-    * @since 9.5
-    *
-    * @param boolean $forceall force all joins (false by default)
-    *
-    * @return array
-    */
-   public static function getVisibilityCriteria(bool $forceall = false): array;
+    /**
+     * Return visibility joins to add to DBIterator parameters
+     *
+     * @since 9.5
+     *
+     * @param boolean $forceall force all joins (false by default)
+     *
+     * @return array
+     */
+    public static function getVisibilityCriteria(bool $forceall = false): array;
 }

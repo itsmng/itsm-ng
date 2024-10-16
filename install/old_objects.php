@@ -37,5 +37,7 @@
 **/
 
 if (!class_exists('Bookmark')) {
-   class Bookmark extends SavedSearch {}
+    class Bookmark extends SavedSearch
+    {
+    }
 }

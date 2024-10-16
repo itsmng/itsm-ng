@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -39,24 +39,27 @@ if (!defined('GLPI_ROOT')) {
  *
  * @since 0.85
 **/
-class ChangeCost extends CommonITILCost {
-
-   // From CommonDBChild
-   static public $itemtype  = 'Change';
-   static public $items_id  = 'changes_id';
-
-
-   static function canCreate() {
-      return Session::haveRight('change', UPDATE);
-   }
+class ChangeCost extends CommonITILCost
+{
+    // From CommonDBChild
+    public static $itemtype  = 'Change';
+    public static $items_id  = 'changes_id';
 
 
-   static function canView() {
-      return Session::haveRightsOr('change', [Change::READALL, Change::READMY]);
-   }
+    public static function canCreate()
+    {
+        return Session::haveRight('change', UPDATE);
+    }
 
 
-   static function canUpdate() {
-      return Session::haveRight('change', UPDATE);
-   }
+    public static function canView()
+    {
+        return Session::haveRightsOr('change', [Change::READALL, Change::READMY]);
+    }
+
+
+    public static function canUpdate()
+    {
+        return Session::haveRight('change', UPDATE);
+    }
 }

@@ -34,14 +34,14 @@
  * @since 0.85
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 $translation = new DropdownTranslation();
 if (isset($_POST['add'])) {
-   $translation->add($_POST);
-} else if (isset($_POST['update'])) {
-   $translation->update($_POST);
-} else if (isset($_POST['purge'])) {
-   $translation->delete($_POST, 1);
+    $translation->add($_POST);
+} elseif (isset($_POST['update'])) {
+    $translation->update($_POST);
+} elseif (isset($_POST['purge'])) {
+    $translation->delete($_POST, 1);
 }
 Html::back();

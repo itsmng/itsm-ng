@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
@@ -39,32 +39,36 @@ if (!defined('GLPI_ROOT')) {
  *
  * since version 9.5.0
 **/
-class ChangeTemplate extends ITILTemplate {
-   use Glpi\Features\Clonable;
+class ChangeTemplate extends ITILTemplate
+{
+    use Glpi\Features\Clonable;
 
-   public $second_level_menu         = "change";
-   public $third_level_menu          = "ChangeTemplate";
+    public $second_level_menu         = "change";
+    public $third_level_menu          = "ChangeTemplate";
 
-   static function getTypeName($nb = 0) {
-      return _n('Change template', 'change templates', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Change template', 'change templates', $nb);
+    }
 
-   public function getCloneRelations() :array {
-      return [
-         ChangeTemplateHiddenField::class,
-         ChangeTemplateMandatoryField::class,
-         ChangeTemplatePredefinedField::class,
-      ];
-   }
+    public function getCloneRelations(): array
+    {
+        return [
+           ChangeTemplateHiddenField::class,
+           ChangeTemplateMandatoryField::class,
+           ChangeTemplatePredefinedField::class,
+        ];
+    }
 
-   public static function getExtraAllowedFields($withtypeandcategory = 0, $withitemtype = 0) {
-      $change = new Change();
-      return [
-         $change->getSearchOptionIDByField('field', 'impactcontent', 'glpi_changes')      => 'impactcontent',
-         $change->getSearchOptionIDByField('field', 'controlistcontent', 'glpi_changes')  => 'controlistcontent',
-         $change->getSearchOptionIDByField('field', 'rolloutplancontent', 'glpi_changes') => 'rolloutplancontent',
-         $change->getSearchOptionIDByField('field', 'backoutplancontent', 'glpi_changes') => 'backoutplancontent',
-         $change->getSearchOptionIDByField('field', 'checklistcontent', 'glpi_changes')   => 'checklistcontent'
-      ];
-   }
+    public static function getExtraAllowedFields($withtypeandcategory = 0, $withitemtype = 0)
+    {
+        $change = new Change();
+        return [
+           $change->getSearchOptionIDByField('field', 'impactcontent', 'glpi_changes')      => 'impactcontent',
+           $change->getSearchOptionIDByField('field', 'controlistcontent', 'glpi_changes')  => 'controlistcontent',
+           $change->getSearchOptionIDByField('field', 'rolloutplancontent', 'glpi_changes') => 'rolloutplancontent',
+           $change->getSearchOptionIDByField('field', 'backoutplancontent', 'glpi_changes') => 'backoutplancontent',
+           $change->getSearchOptionIDByField('field', 'checklistcontent', 'glpi_changes')   => 'checklistcontent'
+        ];
+    }
 }

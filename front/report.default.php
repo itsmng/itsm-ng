@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRight("reports", READ);
 
@@ -41,4 +41,3 @@ Report::title();
 Report::showDefaultReport();
 
 Html::footer();
-

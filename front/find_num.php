@@ -30,10 +30,10 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 if (!$CFG_GLPI["use_anonymous_helpdesk"]) {
-   exit();
+    exit();
 }
 
 // Send UTF8 Headers
@@ -48,7 +48,7 @@ echo "<html lang=\"{$CFG_GLPI["languages"][$_SESSION['glpilanguage']][3]}\">";
 <?php
 echo Html::scss('css/styles');
 if (isset($_SESSION['glpihighcontrast_css']) && $_SESSION['glpihighcontrast_css']) {
-   echo Html::scss('css/highcontrast');
+    echo Html::scss('css/highcontrast');
 }
 $theme = isset($_SESSION['glpipalette']) ? $_SESSION['glpipalette'] : 'itsmng';
 echo Html::scss('css/palettes/' . $theme);
@@ -85,78 +85,78 @@ Html::closeForm();
 echo "</div>";
 
 if (isset($_POST["send"])) {
-   echo "<table class='tab_cadre_fixe' aria-label='Search results table'>";
-   echo " <tr class='tab_bg3'>";
-   echo " <td class='center b' width='30%'>".__('Alternate username')."</td>";
-   echo " <td class='center b' width='20%'>".__('Hardware type')."</td>";
-   echo " <td class='center b' width='30%'>"._n('Associated element', 'Associated elements', Session::getPluralNumber())."</td>";
-   echo " <td class='center b' width='5%'>".__('ID')."</td>";
-   echo " <td class='center b' width='10%'>".__('Serial number')."</td>";
-   echo " <td class='center b' width='10%'>".__('Inventory number')."</td>";
-   echo " </tr>";
+    echo "<table class='tab_cadre_fixe' aria-label='Search results table'>";
+    echo " <tr class='tab_bg3'>";
+    echo " <td class='center b' width='30%'>".__('Alternate username')."</td>";
+    echo " <td class='center b' width='20%'>".__('Hardware type')."</td>";
+    echo " <td class='center b' width='30%'>"._n('Associated element', 'Associated elements', Session::getPluralNumber())."</td>";
+    echo " <td class='center b' width='5%'>".__('ID')."</td>";
+    echo " <td class='center b' width='10%'>".__('Serial number')."</td>";
+    echo " <td class='center b' width='10%'>".__('Inventory number')."</td>";
+    echo " </tr>";
 
-   $types = ['Computer'         => Computer::getTypeName(1),
-                  'NetworkEquipment' => NetworkEquipment::getTypeName(1),
-                  'Printer'          => Printer::getTypeName(1),
-                  'Monitor'          => Monitor::getTypeName(1),
-                  'Peripheral'       => Peripheral::getTypeName(1)];
-   foreach ($types as $type => $label) {
-      $iterator = $DB->request([
-         'SELECT' => ['name', 'id', 'contact', 'serial', 'otherserial'],
-         'FROM'   => getTableForItemType($type),
-         'WHERE'  => [
-            'is_template'  => 0,
-            'is_deleted'   => 0,
-            'OR'           => [
-               'contact'      => ['LIKE', '%' . $_POST['NomContact'] . '%'],
-               'name'         => ['LIKE', '%' . $_POST['NomContact'] . '%'],
-               'serial'       => ['LIKE', '%' . $_POST['NomContact'] . '%'],
-               'otherserial'  => ['LIKE', '%' . $_POST['NomContact'] . '%'],
-            ]
-         ],
-         'ORDER'           => ['name']
-      ]);
+    $types = ['Computer'         => Computer::getTypeName(1),
+                   'NetworkEquipment' => NetworkEquipment::getTypeName(1),
+                   'Printer'          => Printer::getTypeName(1),
+                   'Monitor'          => Monitor::getTypeName(1),
+                   'Peripheral'       => Peripheral::getTypeName(1)];
+    foreach ($types as $type => $label) {
+        $iterator = $DB->request([
+           'SELECT' => ['name', 'id', 'contact', 'serial', 'otherserial'],
+           'FROM'   => getTableForItemType($type),
+           'WHERE'  => [
+              'is_template'  => 0,
+              'is_deleted'   => 0,
+              'OR'           => [
+                 'contact'      => ['LIKE', '%' . $_POST['NomContact'] . '%'],
+                 'name'         => ['LIKE', '%' . $_POST['NomContact'] . '%'],
+                 'serial'       => ['LIKE', '%' . $_POST['NomContact'] . '%'],
+                 'otherserial'  => ['LIKE', '%' . $_POST['NomContact'] . '%'],
+              ]
+           ],
+           'ORDER'           => ['name']
+        ]);
 
-      while ($ligne = $iterator->next()) {
-         $Comp_num = $ligne['id'];
-         $Contact  = $ligne['contact'];
-         $Computer = $ligne['name'];
-         $s1       = $ligne['serial'];
-         $s2       = $ligne['otherserial'];
-         echo " <tr class='tab_bg_1' onClick=\"fillidfield(".$type.",".$Comp_num.")\">";
-         echo "<td class='center'>&nbsp;$Contact&nbsp;</td>";
-         echo "<td class='center'>&nbsp;$label&nbsp;</td>";
-         echo "<td class='center b'>&nbsp;$Computer&nbsp;</td>";
-         echo "<td class='center'>&nbsp;$Comp_num&nbsp;</td>";
-         echo "<td class='center'>&nbsp;$s1&nbsp;</td>";
-         echo "<td class='center'>&nbsp;$s2&nbsp;</td>";
-         echo "<td class='center'>";
-         echo "</td></tr>";
-      }
-   }
+        while ($ligne = $iterator->next()) {
+            $Comp_num = $ligne['id'];
+            $Contact  = $ligne['contact'];
+            $Computer = $ligne['name'];
+            $s1       = $ligne['serial'];
+            $s2       = $ligne['otherserial'];
+            echo " <tr class='tab_bg_1' onClick=\"fillidfield(".$type.",".$Comp_num.")\">";
+            echo "<td class='center'>&nbsp;$Contact&nbsp;</td>";
+            echo "<td class='center'>&nbsp;$label&nbsp;</td>";
+            echo "<td class='center b'>&nbsp;$Computer&nbsp;</td>";
+            echo "<td class='center'>&nbsp;$Comp_num&nbsp;</td>";
+            echo "<td class='center'>&nbsp;$s1&nbsp;</td>";
+            echo "<td class='center'>&nbsp;$s2&nbsp;</td>";
+            echo "<td class='center'>";
+            echo "</td></tr>";
+        }
+    }
 
-   $iterator = $DB->request([
-      'SELECT' => ['name', 'id'],
-      'FROM'   => 'glpi_softwares',
-      'WHERE'  => [
-         'is_template'  => 0,
-         'is_deleted'   => 0,
-         'name'         => ['LIKE', "%{$_POST['NomContact']}%"]
-      ],
-      'ORDER'  => ['name']
-   ]);
+    $iterator = $DB->request([
+       'SELECT' => ['name', 'id'],
+       'FROM'   => 'glpi_softwares',
+       'WHERE'  => [
+          'is_template'  => 0,
+          'is_deleted'   => 0,
+          'name'         => ['LIKE', "%{$_POST['NomContact']}%"]
+       ],
+       'ORDER'  => ['name']
+    ]);
 
-   while ($ligne = $iterator->next()) {
-      $Comp_num = $ligne['id'];
-      $Computer = $ligne['name'];
-      echo " <tr class='tab_find' onClick=\"fillidfield('Software',".$Comp_num.")\">";
-      echo "<td class='center'>&nbsp;</td>";
-      echo "<td class='center'>&nbsp;"._n('Software', 'Software', 1)."&nbsp;</td>";
-      echo "<td class='center b'>&nbsp;$Computer&nbsp;</td>";
-      echo "<td class='center'>&nbsp;$Comp_num&nbsp;</td>";
-      echo "<td class='center'>&nbsp;</td></tr>";
-   }
+    while ($ligne = $iterator->next()) {
+        $Comp_num = $ligne['id'];
+        $Computer = $ligne['name'];
+        echo " <tr class='tab_find' onClick=\"fillidfield('Software',".$Comp_num.")\">";
+        echo "<td class='center'>&nbsp;</td>";
+        echo "<td class='center'>&nbsp;"._n('Software', 'Software', 1)."&nbsp;</td>";
+        echo "<td class='center b'>&nbsp;$Computer&nbsp;</td>";
+        echo "<td class='center'>&nbsp;$Comp_num&nbsp;</td>";
+        echo "<td class='center'>&nbsp;</td></tr>";
+    }
 
-   echo "</table>";
+    echo "</table>";
 }
 echo '</body></html>';

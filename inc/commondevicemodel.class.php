@@ -31,29 +31,31 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /// Class DeviceBatteryModel
-abstract class CommonDeviceModel extends CommonDropdown {
+abstract class CommonDeviceModel extends CommonDropdown
+{
+    public static function getFormURL($full = true)
+    {
+        global $CFG_GLPI;
 
-   static function getFormURL($full = true) {
-      global $CFG_GLPI;
+        $dir = ($full ? $CFG_GLPI['root_doc'] : '');
+        $itemtype = get_called_class();
+        $link = "$dir/front/devicemodel.form.php?itemtype=$itemtype";
 
-      $dir = ($full ? $CFG_GLPI['root_doc'] : '');
-      $itemtype = get_called_class();
-      $link = "$dir/front/devicemodel.form.php?itemtype=$itemtype";
+        return $link;
+    }
 
-      return $link;
-   }
+    public static function getSearchURL($full = true)
+    {
+        global $CFG_GLPI;
 
-   static function getSearchURL($full = true) {
-      global $CFG_GLPI;
+        $dir = ($full ? $CFG_GLPI['root_doc'] : '');
+        $itemtype = get_called_class();
+        $link = "$dir/front/devicemodel.php?itemtype=$itemtype";
 
-      $dir = ($full ? $CFG_GLPI['root_doc'] : '');
-      $itemtype = get_called_class();
-      $link = "$dir/front/devicemodel.php?itemtype=$itemtype";
-
-      return $link;
-   }
+        return $link;
+    }
 }

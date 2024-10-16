@@ -31,266 +31,279 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * NotImportedEmail Class
 **/
-class NotImportedEmail extends CommonDBTM {
+class NotImportedEmail extends CommonDBTM
+{
+    public static $rightname = 'config';
 
-   static $rightname = 'config';
-
-   const MATCH_NO_RULE     = 0;
-   const USER_UNKNOWN      = 1;
-   const FAILED_OPERATION  = 2;
-   const FAILED_INSERT     = self::FAILED_OPERATION;
-   const NOT_ENOUGH_RIGHTS = 3;
-
-
-   function getForbiddenStandardMassiveAction() {
-
-      $forbidden   = parent::getForbiddenStandardMassiveAction();
-      $forbidden[] = 'delete';
-      $forbidden[] = 'purge';
-      $forbidden[] = 'restore';
-      return $forbidden;
-   }
+    public const MATCH_NO_RULE     = 0;
+    public const USER_UNKNOWN      = 1;
+    public const FAILED_OPERATION  = 2;
+    public const FAILED_INSERT     = self::FAILED_OPERATION;
+    public const NOT_ENOUGH_RIGHTS = 3;
 
 
-   static function getTypeName($nb = 0) {
-      return _n('Refused email', 'Refused emails', $nb);
-   }
+    public function getForbiddenStandardMassiveAction()
+    {
+
+        $forbidden   = parent::getForbiddenStandardMassiveAction();
+        $forbidden[] = 'delete';
+        $forbidden[] = 'purge';
+        $forbidden[] = 'restore';
+        return $forbidden;
+    }
 
 
-   /**
-    * @see CommonDBTM::getSpecificMassiveActions()
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Refused email', 'Refused emails', $nb);
+    }
+
+
+    /**
+     * @see CommonDBTM::getSpecificMassiveActions()
+     **/
+    public function getSpecificMassiveActions($checkitem = null)
+    {
+
+        $isadmin = static::canUpdate();
+        $actions = parent::getSpecificMassiveActions($checkitem);
+
+        if ($isadmin) {
+            $prefix                          = __CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR;
+            $actions[$prefix.'delete_email'] = __('Delete emails');
+            $actions[$prefix.'import_email'] = _x('button', 'Import');
+        }
+        return $actions;
+    }
+
+
+    /**
+     * @since 0.85
+     *
+     * @see CommonDBTM::showMassiveActionsSubForm()
     **/
-   function getSpecificMassiveActions($checkitem = null) {
+    public static function showMassiveActionsSubForm(MassiveAction $ma)
+    {
 
-      $isadmin = static::canUpdate();
-      $actions = parent::getSpecificMassiveActions($checkitem);
-
-      if ($isadmin) {
-         $prefix                          = __CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR;
-         $actions[$prefix.'delete_email'] = __('Delete emails');
-         $actions[$prefix.'import_email'] = _x('button', 'Import');
-      }
-      return $actions;
-   }
-
-
-   /**
-    * @since 0.85
-    *
-    * @see CommonDBTM::showMassiveActionsSubForm()
-   **/
-   static function showMassiveActionsSubForm(MassiveAction $ma) {
-
-      switch ($ma->getAction()) {
-         case 'import_email' :
-            Entity::dropdown();
-            echo "<br><br>";
-            echo Html::submit(_x('button', 'Import'), ['name' => 'massiveaction']);
-            return true;
-      }
-      return parent::showMassiveActionsSubForm($ma);
-   }
+        switch ($ma->getAction()) {
+            case 'import_email':
+                Entity::dropdown();
+                echo "<br><br>";
+                echo Html::submit(_x('button', 'Import'), ['name' => 'massiveaction']);
+                return true;
+        }
+        return parent::showMassiveActionsSubForm($ma);
+    }
 
 
-   /**
-    * @since 0.85
-    *
-    * @see CommonDBTM::processMassiveActionsForOneItemtype()
-   **/
-   static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item,
-                                                       array $ids) {
+    /**
+     * @since 0.85
+     *
+     * @see CommonDBTM::processMassiveActionsForOneItemtype()
+    **/
+    public static function processMassiveActionsForOneItemtype(
+        MassiveAction $ma,
+        CommonDBTM $item,
+        array $ids
+    ) {
 
-      switch ($ma->getAction()) {
-         case 'delete_email' :
-         case 'import_email' :
-            if (!$item->canUpdate()) {
-               $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_NORIGHT);
-            } else {
-               $input = $ma->getInput();
-               if (count($ids)) {
-                  $mailcollector = new MailCollector();
-                  if ($ma->getAction() == 'delete_email') {
-                     $mailcollector->deleteOrImportSeveralEmails($ids, 0);
-                  } else {
-                     $mailcollector->deleteOrImportSeveralEmails($ids, 1, $input['entities_id']);
-                  }
-               }
-               $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_OK);
-            }
-            return;
-      }
-      parent::processMassiveActionsForOneItemtype($ma, $item, $ids);
-   }
-
-
-   function rawSearchOptions() {
-      $tab = [];
-
-      $tab[] = [
-         'id'                 => '1',
-         'table'              => $this->getTable(),
-         'field'              => 'from',
-         'name'               => __('From email header'),
-         'massiveaction'      => false,
-         'datatype'           => 'string'
-      ];
-
-      $tab[] = [
-         'id'                 => '2',
-         'table'              => $this->getTable(),
-         'field'              => 'to',
-         'name'               => __('To email header'),
-         'massiveaction'      => false,
-         'datatype'           => 'string'
-      ];
-
-      $tab[] = [
-         'id'                 => '3',
-         'table'              => $this->getTable(),
-         'field'              => 'subject',
-         'name'               => __('Subject email header'),
-         'massiveaction'      => false,
-         'datatype'           => 'string'
-      ];
-
-      $tab[] = [
-         'id'                 => '4',
-         'table'              => 'glpi_mailcollectors',
-         'field'              => 'name',
-         'name'               => __('Mails receiver'),
-         'datatype'           => 'itemlink'
-      ];
-
-      $tab[] = [
-         'id'                 => '5',
-         'table'              => $this->getTable(),
-         'field'              => 'messageid',
-         'name'               => __('Message-ID email header'),
-         'massiveaction'      => false,
-         'datatype'           => 'string'
-      ];
-
-      $tab[] = [
-         'id'                 => '6',
-         'table'              => 'glpi_users',
-         'field'              => 'name',
-         'name'               => _n('Requester', 'Requesters', 1),
-         'datatype'           => 'dropdown',
-         'right'              => 'all'
-      ];
-
-      $tab[] = [
-         'id'                 => '16',
-         'table'              => $this->getTable(),
-         'field'              => 'reason',
-         'name'               => __('Reason of rejection'),
-         'datatype'           => 'specific',
-         'massiveaction'      => false
-      ];
-
-      $tab[] = [
-         'id'                 => '19',
-         'table'              => $this->getTable(),
-         'field'              => 'date',
-         'name'               => _n('Date', 'Dates', 1),
-         'datatype'           => 'datetime',
-         'massiveaction'      => false
-      ];
-
-      return $tab;
-   }
+        switch ($ma->getAction()) {
+            case 'delete_email':
+            case 'import_email':
+                if (!$item->canUpdate()) {
+                    $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_NORIGHT);
+                } else {
+                    $input = $ma->getInput();
+                    if (count($ids)) {
+                        $mailcollector = new MailCollector();
+                        if ($ma->getAction() == 'delete_email') {
+                            $mailcollector->deleteOrImportSeveralEmails($ids, 0);
+                        } else {
+                            $mailcollector->deleteOrImportSeveralEmails($ids, 1, $input['entities_id']);
+                        }
+                    }
+                    $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_OK);
+                }
+                return;
+        }
+        parent::processMassiveActionsForOneItemtype($ma, $item, $ids);
+    }
 
 
-   static function deleteLog() {
-      global $DB;
+    public function rawSearchOptions()
+    {
+        $tab = [];
 
-      $query = "TRUNCATE `glpi_notimportedemails`";
-      $DB->query($query);
-   }
+        $tab[] = [
+           'id'                 => '1',
+           'table'              => $this->getTable(),
+           'field'              => 'from',
+           'name'               => __('From email header'),
+           'massiveaction'      => false,
+           'datatype'           => 'string'
+        ];
+
+        $tab[] = [
+           'id'                 => '2',
+           'table'              => $this->getTable(),
+           'field'              => 'to',
+           'name'               => __('To email header'),
+           'massiveaction'      => false,
+           'datatype'           => 'string'
+        ];
+
+        $tab[] = [
+           'id'                 => '3',
+           'table'              => $this->getTable(),
+           'field'              => 'subject',
+           'name'               => __('Subject email header'),
+           'massiveaction'      => false,
+           'datatype'           => 'string'
+        ];
+
+        $tab[] = [
+           'id'                 => '4',
+           'table'              => 'glpi_mailcollectors',
+           'field'              => 'name',
+           'name'               => __('Mails receiver'),
+           'datatype'           => 'itemlink'
+        ];
+
+        $tab[] = [
+           'id'                 => '5',
+           'table'              => $this->getTable(),
+           'field'              => 'messageid',
+           'name'               => __('Message-ID email header'),
+           'massiveaction'      => false,
+           'datatype'           => 'string'
+        ];
+
+        $tab[] = [
+           'id'                 => '6',
+           'table'              => 'glpi_users',
+           'field'              => 'name',
+           'name'               => _n('Requester', 'Requesters', 1),
+           'datatype'           => 'dropdown',
+           'right'              => 'all'
+        ];
+
+        $tab[] = [
+           'id'                 => '16',
+           'table'              => $this->getTable(),
+           'field'              => 'reason',
+           'name'               => __('Reason of rejection'),
+           'datatype'           => 'specific',
+           'massiveaction'      => false
+        ];
+
+        $tab[] = [
+           'id'                 => '19',
+           'table'              => $this->getTable(),
+           'field'              => 'date',
+           'name'               => _n('Date', 'Dates', 1),
+           'datatype'           => 'datetime',
+           'massiveaction'      => false
+        ];
+
+        return $tab;
+    }
 
 
-   /**
-    * @param $reason_id
-   **/
-   static function getReason($reason_id) {
+    public static function deleteLog()
+    {
+        global $DB;
 
-      $tab = self::getAllReasons();
-      if (isset($tab[$reason_id])) {
-         return $tab[$reason_id];
-      }
-      return NOT_AVAILABLE;
-   }
+        $query = "TRUNCATE `glpi_notimportedemails`";
+        $DB->query($query);
+    }
 
 
-   /**
-    * @since versin 0.84
-    *
-    * Get All possible reasons array
-   **/
-   static function getAllReasons() {
+    /**
+     * @param $reason_id
+    **/
+    public static function getReason($reason_id)
+    {
 
-      return [
-         self::MATCH_NO_RULE     => __('Unable to affect the email to an entity'),
-         self::USER_UNKNOWN      => __('Email not found. Impossible import'),
-         self::FAILED_OPERATION  => __('Failed operation'),
-         self::NOT_ENOUGH_RIGHTS => __('Not enough rights'),
-      ];
-   }
+        $tab = self::getAllReasons();
+        if (isset($tab[$reason_id])) {
+            return $tab[$reason_id];
+        }
+        return NOT_AVAILABLE;
+    }
 
 
-   /**
-    * @since 0.84
-    *
-    * @param $field
-    * @param $values
-    * @param $options   array
-   **/
-   static function getSpecificValueToDisplay($field, $values, array $options = []) {
+    /**
+     * @since versin 0.84
+     *
+     * Get All possible reasons array
+    **/
+    public static function getAllReasons()
+    {
 
-      if (!is_array($values)) {
-         $values = [$field => $values];
-      }
-      switch ($field) {
-         case 'reason' :
-            return self::getReason($values[$field]);
-
-         case 'messageid' :
-            $clean = ['<' => '',
-                           '>' => ''];
-            return strtr($values[$field], $clean);
-      }
-      return parent::getSpecificValueToDisplay($field, $values, $options);
-   }
+        return [
+           self::MATCH_NO_RULE     => __('Unable to affect the email to an entity'),
+           self::USER_UNKNOWN      => __('Email not found. Impossible import'),
+           self::FAILED_OPERATION  => __('Failed operation'),
+           self::NOT_ENOUGH_RIGHTS => __('Not enough rights'),
+        ];
+    }
 
 
-   /**
-    * @since 0.84
-    *
-    * @param $field
-    * @param $name               (default '')
-    * @param $values             (default '')
-    * @param $options      array
-   **/
-   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
+    /**
+     * @since 0.84
+     *
+     * @param $field
+     * @param $values
+     * @param $options   array
+    **/
+    public static function getSpecificValueToDisplay($field, $values, array $options = [])
+    {
 
-      if (!is_array($values)) {
-         $values = [$field => $values];
-      }
-      $options['display'] = false;
+        if (!is_array($values)) {
+            $values = [$field => $values];
+        }
+        switch ($field) {
+            case 'reason':
+                return self::getReason($values[$field]);
 
-      switch ($field) {
-         case 'reason' :
-            $options['value'] = $values[$field];
-            return Dropdown::showFromArray($name, self::getAllReasons(), $options);
-      }
-      return parent::getSpecificValueToSelect($field, $name, $values, $options);
-   }
+            case 'messageid':
+                $clean = ['<' => '',
+                               '>' => ''];
+                return strtr($values[$field], $clean);
+        }
+        return parent::getSpecificValueToDisplay($field, $values, $options);
+    }
+
+
+    /**
+     * @since 0.84
+     *
+     * @param $field
+     * @param $name               (default '')
+     * @param $values             (default '')
+     * @param $options      array
+    **/
+    public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
+    {
+
+        if (!is_array($values)) {
+            $values = [$field => $values];
+        }
+        $options['display'] = false;
+
+        switch ($field) {
+            case 'reason':
+                $options['value'] = $values[$field];
+                return Dropdown::showFromArray($name, self::getAllReasons(), $options);
+        }
+        return parent::getSpecificValueToSelect($field, $name, $values, $options);
+    }
 
 
 }

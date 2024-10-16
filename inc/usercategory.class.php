@@ -31,14 +31,14 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class UserCategory
-class UserCategory extends CommonDropdown {
-
-
-   static function getTypeName($nb = 0) {
-      return _n('User category', 'User categories', $nb);
-   }
+class UserCategory extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('User category', 'User categories', $nb);
+    }
 }

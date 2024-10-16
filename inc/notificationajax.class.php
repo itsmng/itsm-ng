@@ -31,141 +31,154 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  *  NotificationAjax
 **/
-class NotificationAjax implements NotificationInterface {
+class NotificationAjax implements NotificationInterface
+{
+    /**
+     * Check data
+     *
+     * @param mixed $value   The data to check (may differ for every notification mode)
+     * @param array $options Optionnal special options (may be needed)
+     *
+     * @return boolean
+    **/
+    public static function check($value, $options = [])
+    {
+        //waiting for a user ID
+        $value = (int)$value;
+        return $value > 0;
+    }
 
-   /**
-    * Check data
-    *
-    * @param mixed $value   The data to check (may differ for every notification mode)
-    * @param array $options Optionnal special options (may be needed)
-    *
-    * @return boolean
-   **/
-   static function check($value, $options = []) {
-      //waiting for a user ID
-      $value = (int)$value;
-      return $value > 0;
-   }
-
-   static function testNotification() {
-      $instance = new self();
-      return $instance->sendNotification([
-         '_itemtype'                   => 'NotificationAjax',
-         '_items_id'                   => 1,
-         '_notificationtemplates_id'   => 0,
-         '_entities_id'                => 0,
-         'fromname'                    => 'TEST',
-         'subject'                     => 'Test notification',
-         'content_text'                => "Hello, this is a test notification.",
-         'to'                          => Session::getLoginUserID()
-      ]);
-   }
+    public static function testNotification()
+    {
+        $instance = new self();
+        return $instance->sendNotification([
+           '_itemtype'                   => 'NotificationAjax',
+           '_items_id'                   => 1,
+           '_notificationtemplates_id'   => 0,
+           '_entities_id'                => 0,
+           'fromname'                    => 'TEST',
+           'subject'                     => 'Test notification',
+           'content_text'                => "Hello, this is a test notification.",
+           'to'                          => Session::getLoginUserID()
+        ]);
+    }
 
 
-   function sendNotification($options = []) {
+    public function sendNotification($options = [])
+    {
 
-      $data = [];
-      $data['itemtype']                             = $options['_itemtype'];
-      $data['items_id']                             = $options['_items_id'];
-      $data['notificationtemplates_id']             = $options['_notificationtemplates_id'];
-      $data['entities_id']                          = $options['_entities_id'];
+        $data = [];
+        $data['itemtype']                             = $options['_itemtype'];
+        $data['items_id']                             = $options['_items_id'];
+        $data['notificationtemplates_id']             = $options['_notificationtemplates_id'];
+        $data['entities_id']                          = $options['_entities_id'];
 
-      $data['sendername']                           = $options['fromname'];
+        $data['sendername']                           = $options['fromname'];
 
-      $data['name']                                 = $options['subject'];
-      $data['body_text']                            = $options['content_text'];
-      $data['recipient']                            = $options['to'];
+        $data['name']                                 = $options['subject'];
+        $data['body_text']                            = $options['content_text'];
+        $data['recipient']                            = $options['to'];
 
-      $data['mode'] = Notification_NotificationTemplate::MODE_AJAX;
+        $data['mode'] = Notification_NotificationTemplate::MODE_AJAX;
 
-      $queue = new QueuedNotification();
+        $queue = new QueuedNotification();
 
-      if (!$queue->add(Toolbox::addslashes_deep($data))) {
-         Session::addMessageAfterRedirect(__('Error inserting browser notification to queue'), true, ERROR);
-         return false;
-      } else {
-         //TRANS to be written in logs %1$s is the to email / %2$s is the subject of the mail
-         Toolbox::logInFile("notification",
-                            sprintf(__('%1$s: %2$s'),
-                                    sprintf(__('A browser notification to %s was added to queue'),
-                                            $options['to']),
-                                    $options['subject']."\n"));
-      }
+        if (!$queue->add(Toolbox::addslashes_deep($data))) {
+            Session::addMessageAfterRedirect(__('Error inserting browser notification to queue'), true, ERROR);
+            return false;
+        } else {
+            //TRANS to be written in logs %1$s is the to email / %2$s is the subject of the mail
+            Toolbox::logInFile(
+                "notification",
+                sprintf(
+                    __('%1$s: %2$s'),
+                    sprintf(
+                        __('A browser notification to %s was added to queue'),
+                        $options['to']
+                    ),
+                    $options['subject']."\n"
+                )
+            );
+        }
 
-      return true;
-   }
+        return true;
+    }
 
-   /**
-    * Get users own notifications
-    *
-    * @return array|false
-    */
-   public static function getMyNotifications() {
-      global $DB, $CFG_GLPI;
+    /**
+     * Get users own notifications
+     *
+     * @return array|false
+     */
+    public static function getMyNotifications()
+    {
+        global $DB, $CFG_GLPI;
 
-      $return = [];
-      if ($CFG_GLPI['notifications_ajax']) {
-         $iterator = $DB->request([
-            'FROM'   => 'glpi_queuednotifications',
-            'WHERE'  => [
-               'is_deleted'   => false,
-               'recipient'    => Session::getLoginUserID(),
-               'mode'         => Notification_NotificationTemplate::MODE_AJAX
-            ]
-         ]);
+        $return = [];
+        if ($CFG_GLPI['notifications_ajax']) {
+            $iterator = $DB->request([
+               'FROM'   => 'glpi_queuednotifications',
+               'WHERE'  => [
+                  'is_deleted'   => false,
+                  'recipient'    => Session::getLoginUserID(),
+                  'mode'         => Notification_NotificationTemplate::MODE_AJAX
+               ]
+            ]);
 
-         if ($iterator->numrows()) {
-            while ($row = $iterator->next()) {
-               $url = null;
-               if ($row['itemtype'] != 'NotificationAjax' &&
-                  method_exists($row['itemtype'], 'getFormURL')
-               ) {
-                  $item = new $row['itemtype'];
-                  $url = $item->getFormURL(false)."?id={$row['items_id']}";
-               }
+            if ($iterator->numrows()) {
+                while ($row = $iterator->next()) {
+                    $url = null;
+                    if ($row['itemtype'] != 'NotificationAjax' &&
+                       method_exists($row['itemtype'], 'getFormURL')
+                    ) {
+                        $item = new $row['itemtype']();
+                        $url = $item->getFormURL(false)."?id={$row['items_id']}";
+                    }
 
-               $return[] = [
-                  'id'     => $row['id'],
-                  'title'  => $row['name'],
-                  'body'   => $row['body_text'],
-                  'url'    => $url
-               ];
+                    $return[] = [
+                       'id'     => $row['id'],
+                       'title'  => $row['name'],
+                       'body'   => $row['body_text'],
+                       'url'    => $url
+                    ];
+                }
             }
-         }
-      }
+        }
 
-      if (count($return)) {
-         return $return;
-      } else {
-         return false;
-      }
-   }
+        if (count($return)) {
+            return $return;
+        } else {
+            return false;
+        }
+    }
 
-   /**
-    * Mark raised notification as deleted
-    *
-    * @param integer $id Notification id
-    *
-    * @return void
-    */
-   static public function raisedNotification($id) {
-      global $DB;
+    /**
+     * Mark raised notification as deleted
+     *
+     * @param integer $id Notification id
+     *
+     * @return void
+     */
+    public static function raisedNotification($id)
+    {
+        global $DB;
 
-      $now = date('Y-m-d H:i:s');
-      $DB->update(
-         'glpi_queuednotifications', [
-            'sent_time'    => $now,
-            'is_deleted'   => 1
-         ], [
-            'id'        => $id,
-            'recipient' => Session::getLoginUserID()
+        $now = date('Y-m-d H:i:s');
+        $DB->update(
+            'glpi_queuednotifications',
+            [
+              'sent_time'    => $now,
+              'is_deleted'   => 1
+         ],
+            [
+              'id'        => $id,
+              'recipient' => Session::getLoginUserID()
          ]
-      );
-   }
+        );
+    }
 }

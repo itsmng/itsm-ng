@@ -33,7 +33,7 @@
 namespace Glpi\Features;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 use CommonDBConnexity;
@@ -43,41 +43,43 @@ use Toolbox;
 /**
  * Clonable objects
  **/
-trait Clonable {
-   /**
-    * Get relations class to clone along with current eleemnt
-    *
-    * @return CommonDBTM::class[]
-    */
-   abstract public function getCloneRelations() :array;
+trait Clonable
+{
+    /**
+     * Get relations class to clone along with current eleemnt
+     *
+     * @return CommonDBTM::class[]
+     */
+    abstract public function getCloneRelations(): array;
 
-   public function post_clone($source, $history) {
-      parent::post_clone($source, $history);
+    public function post_clone($source, $history)
+    {
+        parent::post_clone($source, $history);
 
-      $clone_relations = $this->getCloneRelations();
-      foreach ($clone_relations as $classname) {
-         $override_input = [];
+        $clone_relations = $this->getCloneRelations();
+        foreach ($clone_relations as $classname) {
+            $override_input = [];
 
-         if (!is_a($classname, CommonDBConnexity::class, true)) {
-            Toolbox::logWarning(
-               sprintf(
-                  'Unable to clone elements of class %s as it does not extends "CommonDBConnexity"',
-                  $classname
-               )
-            );
-            continue;
-         }
+            if (!is_a($classname, CommonDBConnexity::class, true)) {
+                Toolbox::logWarning(
+                    sprintf(
+                        'Unable to clone elements of class %s as it does not extends "CommonDBConnexity"',
+                        $classname
+                    )
+                );
+                continue;
+            }
 
-         $override_input[$classname::getItemField($this->getType())] = $this->getID();
+            $override_input[$classname::getItemField($this->getType())] = $this->getID();
 
-         // Force entity / recursivity based on cloned parent, with fallback on session values
-         $override_input['entities_id'] = $this->isEntityAssign() ? $this->getEntityID() : Session::getActiveEntity();
-         $override_input['is_recursive'] = $this->maybeRecursive() ? $this->isRecursive() : Session::getIsActiveEntityRecursive();
+            // Force entity / recursivity based on cloned parent, with fallback on session values
+            $override_input['entities_id'] = $this->isEntityAssign() ? $this->getEntityID() : Session::getActiveEntity();
+            $override_input['is_recursive'] = $this->maybeRecursive() ? $this->isRecursive() : Session::getIsActiveEntityRecursive();
 
-         $relation_items = $classname::getItemsAssociatedTo($this->getType(), $source->getID());
-         foreach ($relation_items as $relation_item) {
-            $relation_item->clone($override_input, $history);
-         }
-      }
-   }
+            $relation_items = $classname::getItemsAssociatedTo($this->getType(), $source->getID());
+            foreach ($relation_items as $relation_item) {
+                $relation_item->clone($override_input, $history);
+            }
+        }
+    }
 }

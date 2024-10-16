@@ -35,89 +35,96 @@
 */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 
 /**
  * NotificationTargetSoftwareLicense Class
 **/
-class NotificationTargetCertificate extends NotificationTarget {
+class NotificationTargetCertificate extends NotificationTarget
+{
+    public function getEvents()
+    {
+        return ['alert' => __('Alarms on expired certificates')];
+    }
+
+    public function addAdditionalTargets($event = '')
+    {
+        $this->addTarget(
+            Notification::ITEM_TECH_IN_CHARGE,
+            __('Technician in charge of the certificate')
+        );
+        $this->addTarget(
+            Notification::ITEM_TECH_GROUP_IN_CHARGE,
+            __('Group in charge of the certificate')
+        );
+    }
+
+    public function addDataForTemplate($event, $options = [])
+    {
+
+        $events = $this->getAllEvents();
+
+        //These 2 params should be defined in $options table
+        //The only case where they're not defined in when displaying
+        //the debug tab of a certificate
+        if (!isset($options['certificates'])) {
+            $options['certificates'] = [];
+        }
+        if (!isset($options['entities_id'])) {
+            $options['entities_id'] = $options['item']->fields['entities_id'];
+        }
+
+        $this->data['##certificate.action##'] = $events[$event];
+        $this->data['##certificate.entity##'] = Dropdown::getDropdownName(
+            'glpi_entities',
+            $options['entities_id']
+        );
+
+        foreach ($options['certificates'] as $id => $certificate) {
+            $this->data['certificates'][] = [
+               '##certificate.name##'           => $certificate['name'],
+               '##certificate.serial##'         => $certificate['serial'],
+               '##certificate.expirationdate##' => Html::convDate($certificate["date_expiration"]),
+               '##certificate.url##'            => $this->formatURL(
+                   $options['additionnaloption']['usertype'],
+                   "Certificate_".$id
+               ),
+            ];
+        }
+
+        $this->getTags();
+        foreach ($this->tag_descriptions[NotificationTarget::TAG_LANGUAGE] as $tag => $values) {
+            if (!isset($this->data[$tag])) {
+                $this->data[$tag] = $values['label'];
+            }
+        }
+    }
 
 
-   function getEvents() {
-      return ['alert' => __('Alarms on expired certificates')];
-   }
+    public function getTags()
+    {
 
-   function addAdditionalTargets($event = '') {
-      $this->addTarget(
-         Notification::ITEM_TECH_IN_CHARGE,
-         __('Technician in charge of the certificate')
-      );
-      $this->addTarget(
-         Notification::ITEM_TECH_GROUP_IN_CHARGE,
-         __('Group in charge of the certificate')
-      );
-   }
+        $tags = ['certificate.expirationdate' => __('Expiration date'),
+                 'certificate.name'           => __('Name'),
+                 'certificate.serial'         => __('Serial number'),
+                 'certificate.url'            => __('URL'),
+                 'certificate.entity'         => Entity::getTypeName(1),
+                 ];
 
-   function addDataForTemplate($event, $options = []) {
+        foreach ($tags as $tag => $label) {
+            $this->addTagToList(['tag'   => $tag,
+                                 'label' => $label,
+                                 'value' => true]);
+        }
 
-      $events = $this->getAllEvents();
+        $this->addTagToList(['tag'     => 'certificates',
+                             'label'   => __('Device list'),
+                             'value'   => false,
+                             'foreach' => true]);
 
-      //These 2 params should be defined in $options table
-      //The only case where they're not defined in when displaying
-      //the debug tab of a certificate
-      if (!isset($options['certificates'])) {
-         $options['certificates'] = [];
-      }
-      if (!isset($options['entities_id'])) {
-         $options['entities_id'] = $options['item']->fields['entities_id'];
-      }
-
-      $this->data['##certificate.action##'] = $events[$event];
-      $this->data['##certificate.entity##'] = Dropdown::getDropdownName('glpi_entities',
-                                                                        $options['entities_id']);
-
-      foreach ($options['certificates'] as $id => $certificate) {
-         $this->data['certificates'][] = [
-            '##certificate.name##'           => $certificate['name'],
-            '##certificate.serial##'         => $certificate['serial'],
-            '##certificate.expirationdate##' => Html::convDate($certificate["date_expiration"]),
-            '##certificate.url##'            => $this->formatURL($options['additionnaloption']['usertype'],
-                                                                 "Certificate_".$id),
-         ];
-      }
-
-      $this->getTags();
-      foreach ($this->tag_descriptions[NotificationTarget::TAG_LANGUAGE] as $tag => $values) {
-         if (!isset($this->data[$tag])) {
-            $this->data[$tag] = $values['label'];
-         }
-      }
-   }
-
-
-   function getTags() {
-
-      $tags = ['certificate.expirationdate' => __('Expiration date'),
-               'certificate.name'           => __('Name'),
-               'certificate.serial'         => __('Serial number'),
-               'certificate.url'            => __('URL'),
-               'certificate.entity'         => Entity::getTypeName(1),
-               ];
-
-      foreach ($tags as $tag => $label) {
-         $this->addTagToList(['tag'   => $tag,
-                              'label' => $label,
-                              'value' => true]);
-      }
-
-      $this->addTagToList(['tag'     => 'certificates',
-                           'label'   => __('Device list'),
-                           'value'   => false,
-                           'foreach' => true]);
-
-      asort($this->tag_descriptions);
-   }
+        asort($this->tag_descriptions);
+    }
 
 }

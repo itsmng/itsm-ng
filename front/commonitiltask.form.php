@@ -39,61 +39,76 @@ use Glpi\Event;
 
 // autoload include in objecttask.form (tickettask, problemtask,...)
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 Session::checkCentralAccess();
 
 if (!($task instanceof CommonITILTask)) {
-   Html::displayErrorAndDie('');
+    Html::displayErrorAndDie('');
 }
 if (!$task->canView()) {
-   Html::displayRightError();
+    Html::displayRightError();
 }
 
 $itemtype = $task->getItilObjectItemType();
 $fk       = getForeignKeyFieldForItemType($itemtype);
 
 if (isset($_POST["add"])) {
-   $task->check(-1, CREATE, $_POST);
-   $task->add($_POST);
+    $task->check(-1, CREATE, $_POST);
+    $task->add($_POST);
 
-   if (isset($_POST['files'])) {
-      $files = json_decode(stripslashes($_POST['files']), true);
-      foreach ($files as $file) {
-         $doc = ItsmngUploadHandler::addFileToDb($file);
-         ItsmngUploadHandler::linkDocToItem(
-            $doc->getID(),
-            Session::getActiveEntity(),
-            Session::getIsActiveEntityRecursive(),
-            $_POST['itemtype'],
-            $_POST['items_id'],
-            Session::getLoginUserID()
-         );
-      }
-   }
+    if (isset($_POST['files'])) {
+        $files = json_decode(stripslashes($_POST['files']), true);
+        foreach ($files as $file) {
+            $doc = ItsmngUploadHandler::addFileToDb($file);
+            ItsmngUploadHandler::linkDocToItem(
+                $doc->getID(),
+                Session::getActiveEntity(),
+                Session::getIsActiveEntityRecursive(),
+                $_POST['itemtype'],
+                $_POST['items_id'],
+                Session::getLoginUserID()
+            );
+        }
+    }
 
-   Event::log($task->getField($fk), strtolower($itemtype), 4, "tracking",
-              //TRANS: %s is the user login
-              sprintf(__('%s adds a task'), $_SESSION["glpiname"]));
-   Html::redirect($itemtype::getFormURLWithID($task->getField($fk)));
+    Event::log(
+        $task->getField($fk),
+        strtolower($itemtype),
+        4,
+        "tracking",
+        //TRANS: %s is the user login
+        sprintf(__('%s adds a task'), $_SESSION["glpiname"])
+    );
+    Html::redirect($itemtype::getFormURLWithID($task->getField($fk)));
 
-} else if (isset($_POST["purge"])) {
-   $task->check($_POST['id'], PURGE);
-   $task->delete($_POST, 1);
+} elseif (isset($_POST["purge"])) {
+    $task->check($_POST['id'], PURGE);
+    $task->delete($_POST, 1);
 
-   Event::log($task->getField($fk), strtolower($itemtype), 4, "tracking",
-              //TRANS: %s is the user login
-              sprintf(__('%s purges a task'), $_SESSION["glpiname"]));
-   Html::redirect($itemtype::getFormURLWithID($task->getField($fk)));
+    Event::log(
+        $task->getField($fk),
+        strtolower($itemtype),
+        4,
+        "tracking",
+        //TRANS: %s is the user login
+        sprintf(__('%s purges a task'), $_SESSION["glpiname"])
+    );
+    Html::redirect($itemtype::getFormURLWithID($task->getField($fk)));
 
-} else if (isset($_POST["update"])) {
-   $task->check($_POST["id"], UPDATE);
-   $task->update($_POST);
+} elseif (isset($_POST["update"])) {
+    $task->check($_POST["id"], UPDATE);
+    $task->update($_POST);
 
-   Event::log($task->getField($fk), strtolower($itemtype), 4, "tracking",
-              //TRANS: %s is the user login
-              sprintf(__('%s updates a task'), $_SESSION["glpiname"]));
-   Html::back();
+    Event::log(
+        $task->getField($fk),
+        strtolower($itemtype),
+        4,
+        "tracking",
+        //TRANS: %s is the user login
+        sprintf(__('%s updates a task'), $_SESSION["glpiname"])
+    );
+    Html::back();
 
 }
 

@@ -31,12 +31,15 @@
  * ---------------------------------------------------------------------
  */
 
-class Accessibility extends CommonDBTM {
-    static function getTypeName($nb = 0) {
+class Accessibility extends CommonDBTM
+{
+    public static function getTypeName($nb = 0)
+    {
         return __("Accessibility");
     }
 
-    function getRights($interface = 'central') {
+    public function getRights($interface = 'central')
+    {
         $values[READ] = ["short" => __("Read"),
             "long" => __("See this parameter in your settings")];
         $values[UPDATE] = ["short" => __("Edit"),
@@ -51,13 +54,14 @@ class Accessibility extends CommonDBTM {
 
     /*************************************** TABS ********************************************/
 
-    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
 
         switch ($item->getType()) {
-            case 'Preference' :
+            case 'Preference':
                 return __('Accessibility');
 
-            case 'User' :
+            case 'User':
                 if (User::canUpdate()
                     && $item->currentUserHaveMoreRightThan($item->getID())) {
                     return __('Accessibility');
@@ -69,7 +73,8 @@ class Accessibility extends CommonDBTM {
         return '';
     }
 
-    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
         global $CFG_GLPI;
 
         if ($item->getType() == 'Preference') {
@@ -80,7 +85,7 @@ class Accessibility extends CommonDBTM {
                 $config->showAccessForm($user->fields);
             }
 
-        } else if ($item->getType() == 'User') {
+        } elseif ($item->getType() == 'User') {
             $config = new self();
             $user   = new User();
             $user->computePreferences();
@@ -91,7 +96,8 @@ class Accessibility extends CommonDBTM {
 
     /*************************************** FORM ********************************************/
 
-    function showAccessForm($data = [], $displayShortcut = true) {
+    public function showAccessForm($data = [], $displayShortcut = true)
+    {
         global $CFG_GLPI, $DB;
 
         $user = new User();
@@ -162,67 +168,72 @@ class Accessibility extends CommonDBTM {
         echo "<tr class='tab_bg_1' >";
         echo "<td width='40%'><label for='access_shortcuts_drop$rand'>" .__('Enable shortcuts') . "</label></td>";
         echo "<td width='40%'>";
-        Dropdown::showYesNo('access_shortcuts', $data["access_shortcuts"], -1,['rand' => $rand]);
+        Dropdown::showYesNo('access_shortcuts', $data["access_shortcuts"], -1, ['rand' => $rand]);
         echo "</td></tr>";
-         
-        if($displayShortcut) {
+
+        if ($displayShortcut) {
             echo "<tr><th colspan='4'>" . __('Shortcuts') . "<span id ='alert_save' style='display:none; position: absolute; left: 50.5%; color: #ae0c2a; '><i>".__("Don't forget to save")."</i></span>" . " <a style='position: absolute; right: 25px; cursor: pointer; user-select: none;' onclick='\$(\".togshortcuts\").toggle(400);'>[".__("Toggle view")."]</a></th></tr>";
 
-            if(is_null($data["access_custom_shortcuts"])) $shortcuts = [];
-            else $shortcuts = json_decode($data["access_custom_shortcuts"], true);
+            if (is_null($data["access_custom_shortcuts"])) {
+                $shortcuts = [];
+            } else {
+                $shortcuts = json_decode($data["access_custom_shortcuts"], true);
+            }
             $font = $user->fields["access_font"];
             $cpt = 1;
             $classes = [];
-    
+
             foreach (get_declared_classes() as $class) {
                 if (is_subclass_of($class, "CommonGLPI")) {
                     $tabs = array($class => $class::getTypeName());
                     $classes = array_merge($classes, $tabs);
-                    
+
                 }
             }
-    
+
             unset($classes["no_all_tab"]); // Remove superfluous element
             ksort($classes);
-    
-            foreach($classes as $tab => $display){
+
+            foreach ($classes as $tab => $display) {
                 $shortcut = $shortcuts[$tab] ?? __("shift+alt+" .$cpt);
-    
+
                 echo "<tr class='togshortcuts' style='display: none;' enctype='application/json'>";
                 echo "<input type='hidden' id='$tab' name='$tab' value='$shortcut' >";
                 echo "<td width='40%'><label for='$tab$rand'>" . $display . "</label></td>";
                 echo "<td width='40%'>";
-    
+
                 if (!is_array($shortcut)) {
                     $shortcutHtml = "<kbd style='font-family:$font'>$shortcut</kbd>";
                 } else {
                     $shortcutHtml = "<kbd style='font-family:$font'>".implode("</kbd>+<kbd>", $shortcut)."</kbd>";
                 }
-    
+
                 Html::accessibilityHeader();
-                echo "<span class='$tab' name='$tab' style='cursor: pointer;' onclick='myFunction($tab)'>$shortcutHtml</span>"; // Clicking this should edit the value in the hidden input for the HTML form.           
+                echo "<span class='$tab' name='$tab' style='cursor: pointer;' onclick='myFunction($tab)'>$shortcutHtml</span>"; // Clicking this should edit the value in the hidden input for the HTML form.
                 echo "&nbsp;";
                 echo "<span id='infoBulle_$tab' style='background: orange; position: absolute;  height: 14.7px; margin-top: 0.2px;color: orange; border-radius: 3px;'></span>";
                 echo "</td></tr>";
                 $cpt++;
             }
-    
-    
-            $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true );
-    
+
+
+            $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true);
+
             unset($currentShortcut["DCRoom"]);
             unset($currentShortcut["update"]);
             $all_shotcuts = array();
             $all_classes = array();
-    
-            if(!is_null($currentShortcut)) foreach($currentShortcut as $name => $shortcut){
-                if(is_subclass_of($name, "CommonGLPI")){
-                    $url = Toolbox::getItemTypeFormURL($name);
-                    array_push($all_shotcuts, $shortcut);
-                    array_push($all_classes, $name);
-                }       
+
+            if (!is_null($currentShortcut)) {
+                foreach ($currentShortcut as $name => $shortcut) {
+                    if (is_subclass_of($name, "CommonGLPI")) {
+                        $url = Toolbox::getItemTypeFormURL($name);
+                        array_push($all_shotcuts, $shortcut);
+                        array_push($all_classes, $name);
+                    }
+                }
             }
-            
+
             echo Html::scriptBlock('
             
             function myFunction(rack) {
@@ -307,13 +318,13 @@ class Accessibility extends CommonDBTM {
             echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
             echo "</td></tr>";
         }
-        
+
         echo "</table></div>";
         Html::closeForm();
 
-        if($displayShortcut) {
+        if ($displayShortcut) {
             echo "<div id='modalForm'  tabindex='-1' role='dialog' class='ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-draggable ui-resizable' style='position: fixed; height: 150px; width: 300px; top: 30%; left: 40%; display:none;' >";
-        
+
             echo "<div class='ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle'>";
             echo "<span id='ui-id-8' class='ui-dialog-title'>Enter your shortcut &nbsp;</span>";
             echo "<button type='button' id='btnClose'class='ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close' title='Close'>";
@@ -322,26 +333,26 @@ class Accessibility extends CommonDBTM {
             echo "Close";
             echo "</button>";
             echo "</div>";
-    
+
             echo "<div class='spaced'>";
             echo "<table class='tab_cadre_fixe' style=' height: 120px; overflow-y: scroll;' aria-label='Shortcuts'>";
             echo "<tr >";
             echo "<td width='100%' style='position: absolute;  left: 50%; transform: translate(-50%, 0%);'>";
             echo "<p style='width: 100%; overflow-wrap: break-word;' class='center' id='shortcut_added'></p>";
             echo "</td></tr>";
-    
+
             echo "<tr >";
             echo "<td width='100%' style='position: absolute; left: 50%; transform: translate(-50%, 0%);'>
                 <p  id='shortcut_existant' class='center' style='color: red; width: 100%;'></p>
             </td>";
             echo "</tr>";
-    
+
             echo "<tr >";
             echo "<td  style='position: absolute; margin: 0; left: 50%; transform: translate(-50%, 0%); '>";
             echo "<input type='submit'  id='submit_in_modal'  name='submit_in_modal' class='vsubmit' value=\""._sx('button', 'Update')."\">";
             echo "</td>";
             echo "</tr>";
-    
+
             echo "</table>";
             echo "</div>";
             echo "</div>";

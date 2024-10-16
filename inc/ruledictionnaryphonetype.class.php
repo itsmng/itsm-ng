@@ -30,46 +30,48 @@
  * ---------------------------------------------------------------------
  */
 
-class RuleDictionnaryPhoneType extends RuleDictionnaryDropdown {
+class RuleDictionnaryPhoneType extends RuleDictionnaryDropdown
+{
+    /**
+     * Constructor
+    **/
+    public function __construct()
+    {
+        parent::__construct('RuleDictionnaryPhoneType');
+    }
 
 
-   /**
-    * Constructor
-   **/
-   function __construct() {
-      parent::__construct('RuleDictionnaryPhoneType');
-   }
+    /**
+     * @see Rule::getCriterias()
+    **/
+    public function getCriterias()
+    {
+
+        static $criterias = [];
+
+        if (count($criterias)) {
+            return $criterias;
+        }
+
+        $criterias['name']['field'] = 'name';
+        $criterias['name']['name']  = _n('Type', 'Types', 1);
+        $criterias['name']['table'] = 'glpi_phonetypes';
+
+        return $criterias;
+    }
 
 
-   /**
-    * @see Rule::getCriterias()
-   **/
-   function getCriterias() {
+    /**
+     * @see Rule::getActions()
+    **/
+    public function getActions()
+    {
 
-      static $criterias = [];
+        $actions                          = [];
+        $actions['name']['name']          = _n('Type', 'Types', 1);
+        $actions['name']['force_actions'] = ['append_regex_result', 'assign', 'regex_result'];
 
-      if (count($criterias)) {
-         return $criterias;
-      }
-
-      $criterias['name']['field'] = 'name';
-      $criterias['name']['name']  = _n('Type', 'Types', 1);
-      $criterias['name']['table'] = 'glpi_phonetypes';
-
-      return $criterias;
-   }
-
-
-   /**
-    * @see Rule::getActions()
-   **/
-   function getActions() {
-
-      $actions                          = [];
-      $actions['name']['name']          = _n('Type', 'Types', 1);
-      $actions['name']['force_actions'] = ['append_regex_result', 'assign', 'regex_result'];
-
-      return $actions;
-   }
+        return $actions;
+    }
 
 }

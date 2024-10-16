@@ -31,18 +31,18 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * ChangeValidation class
  */
-class ChangeValidation  extends CommonITILValidation {
+class ChangeValidation extends CommonITILValidation
+{
+    // From CommonDBChild
+    public static $itemtype           = 'Change';
+    public static $items_id           = 'changes_id';
 
-   // From CommonDBChild
-   static public $itemtype           = 'Change';
-   static public $items_id           = 'changes_id';
-
-   static $rightname                 = 'changevalidation';
+    public static $rightname                 = 'changevalidation';
 
 }

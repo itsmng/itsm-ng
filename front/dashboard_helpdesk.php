@@ -35,7 +35,7 @@
  * @since 0.84
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 
 Session::checkCentralAccess();
@@ -43,7 +43,7 @@ $default = Grid::getDefaultDashboardForMenu('helpdesk');
 
 // Redirect to "/front/ticket.php" if no dashboard found
 if ($default == "") {
-   Html::redirect($CFG_GLPI["root_doc"] . "/front/ticket.php");
+    Html::redirect($CFG_GLPI["root_doc"] . "/front/ticket.php");
 }
 
 Html::header(__('Helpdesk Dashboard'), $_SERVER['PHP_SELF'], "helpdesk", "dashboard");

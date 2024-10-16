@@ -31,204 +31,215 @@
 * */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class FQDN : Fully Qualified Domain Name
 /// since version 0.84
-class FQDN extends CommonDropdown {
+class FQDN extends CommonDropdown
+{
+    public $dohistory = true;
 
-   public $dohistory = true;
+    public static $rightname = 'internet';
 
-   static $rightname = 'internet';
-
-   public $can_be_translated = false;
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Internet domain', 'Internet domains', $nb);
-   }
+    public $can_be_translated = false;
 
 
-   function getAdditionalFields() {
-
-      return [
-         __('FQDN') => [
-            'name'    => 'fqdn',
-            'type'    => 'text',
-            'title'
-            => __('Fully Qualified Domain Name. Use the classical notation (labels separated by dots). For example: indepnet.net'),
-            'required' => true
-            ]
-         ];
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Internet domain', 'Internet domains', $nb);
+    }
 
 
-   /**
-    * \brief Prepare the input before adding or updating
-    * Checking suppose that each FQDN is compose of dot separated array of labels and its unique
-    * \see (FQDNLabel)
-    *
-    * @param array $input fields of the record to check
-    *
-    * @return boolean|array  false or fields checked and updated (lowercase for the fqdn field)
-   **/
-   function prepareInput($input) {
+    public function getAdditionalFields()
+    {
 
-      if (isset($input['fqdn'])
-          || $this->isNewID($this->getID())) {
-
-         // Check that FQDN is not empty
-         if (empty($input['fqdn'])) {
-            Session::addMessageAfterRedirect(__('FQDN must not be empty'), false, ERROR);
-            return false;
-         }
-
-         // Transform it to lower case
-         $input["fqdn"] = strtolower($input['fqdn']);
-
-         // Then check its validity
-         if (!self::checkFQDN($input["fqdn"])) {
-            Session::addMessageAfterRedirect(__('FQDN is not valid'), false, ERROR);
-            return false;
-         }
-
-      }
-      return $input;
-   }
+        return [
+           __('FQDN') => [
+              'name'    => 'fqdn',
+              'type'    => 'text',
+              'title'
+              => __('Fully Qualified Domain Name. Use the classical notation (labels separated by dots). For example: indepnet.net'),
+              'required' => true
+              ]
+           ];
+    }
 
 
-   function prepareInputForAdd($input) {
-      return $this->prepareInput(parent::prepareInputForAdd($input));
-   }
+    /**
+     * \brief Prepare the input before adding or updating
+     * Checking suppose that each FQDN is compose of dot separated array of labels and its unique
+     * \see (FQDNLabel)
+     *
+     * @param array $input fields of the record to check
+     *
+     * @return boolean|array  false or fields checked and updated (lowercase for the fqdn field)
+    **/
+    public function prepareInput($input)
+    {
+
+        if (isset($input['fqdn'])
+            || $this->isNewID($this->getID())) {
+
+            // Check that FQDN is not empty
+            if (empty($input['fqdn'])) {
+                Session::addMessageAfterRedirect(__('FQDN must not be empty'), false, ERROR);
+                return false;
+            }
+
+            // Transform it to lower case
+            $input["fqdn"] = strtolower($input['fqdn']);
+
+            // Then check its validity
+            if (!self::checkFQDN($input["fqdn"])) {
+                Session::addMessageAfterRedirect(__('FQDN is not valid'), false, ERROR);
+                return false;
+            }
+
+        }
+        return $input;
+    }
 
 
-   function prepareInputForUpdate($input) {
-      return $this->prepareInput(parent::prepareInputForUpdate($input));
-   }
+    public function prepareInputForAdd($input)
+    {
+        return $this->prepareInput(parent::prepareInputForAdd($input));
+    }
 
 
-   function defineTabs($options = []) {
-
-      $ong = [];
-      $this->addStandardTab('NetworkName', $ong, $options);
-      $this->addStandardTab('NetworkAlias', $ong, $options);
-      $this->addStandardTab('Log', $ong, $options);
-
-      return $ong;
-   }
+    public function prepareInputForUpdate($input)
+    {
+        return $this->prepareInput(parent::prepareInputForUpdate($input));
+    }
 
 
-   /**
-    * @return string the FQDN of the element, or "" if invalid FQDN
-   **/
-   function getFQDN() {
+    public function defineTabs($options = [])
+    {
 
-      if ($this->can($this->getID(), READ)) {
-         return $this->fields["fqdn"];
-      }
-      return "";
-   }
+        $ong = [];
+        $this->addStandardTab('NetworkName', $ong, $options);
+        $this->addStandardTab('NetworkAlias', $ong, $options);
+        $this->addStandardTab('Log', $ong, $options);
 
-
-   /**
-    * Search FQDN id from string FDQDN
-    *
-    * @param string  $fqdn             value of the fdqn (for instance : indeptnet.net)
-    * @param boolean $wildcard_search  true if we search with wildcard (false by default)
-    *
-    * @return integer|integer[]
-    *    if $wildcard_search == false : the id of the fqdn, -1 if not found or several answers
-    *    if $wildcard_search == true : an array of the id of the fqdn
-   **/
-   static function getFQDNIDByFQDN($fqdn, $wildcard_search = false) {
-      global $DB;
-
-      if (empty($fqdn)) {
-         return 0;
-      }
-
-      $fqdn = strtolower($fqdn);
-      if ($wildcard_search) {
-         $count = 0;
-         $fqdn  = str_replace('*', '%', $fqdn, $count);
-         if ($count == 0) {
-            $fqdn = '%'.$fqdn.'%';
-         }
-         $relation = ['LIKE', $fqdn];
-      } else {
-         $relation = $fqdn;
-      }
-
-      $iterator = $DB->request([
-         'SELECT' => 'id',
-         'FROM'   => self::getTable(),
-         'WHERE'  => ['fqdn' => $relation]
-      ]);
-
-      $fqdns_id_list = [];
-      while ($line = $iterator->next()) {
-         $fqdns_id_list[] = $line['id'];
-      }
-
-      if (!$wildcard_search) {
-         if (count($fqdns_id_list) != 1) {
-            return -1;
-         }
-         return $fqdns_id_list[0];
-      }
-
-      return $fqdns_id_list;
-   }
+        return $ong;
+    }
 
 
-   /**
-    * @param integer $ID  id of the FQDN
-    *
-    * @return string  the FQDN of the element, or "" if invalid FQDN
-   **/
-   static function getFQDNFromID($ID) {
+    /**
+     * @return string the FQDN of the element, or "" if invalid FQDN
+    **/
+    public function getFQDN()
+    {
 
-      $thisDomain = new self();
-      if ($thisDomain->getFromDB($ID)) {
-         return $thisDomain->getFQDN();
-      }
-      return "";
-   }
+        if ($this->can($this->getID(), READ)) {
+            return $this->fields["fqdn"];
+        }
+        return "";
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    /**
+     * Search FQDN id from string FDQDN
+     *
+     * @param string  $fqdn             value of the fdqn (for instance : indeptnet.net)
+     * @param boolean $wildcard_search  true if we search with wildcard (false by default)
+     *
+     * @return integer|integer[]
+     *    if $wildcard_search == false : the id of the fqdn, -1 if not found or several answers
+     *    if $wildcard_search == true : an array of the id of the fqdn
+    **/
+    public static function getFQDNIDByFQDN($fqdn, $wildcard_search = false)
+    {
+        global $DB;
 
-      $tab[] = [
-         'id'                 => '11',
-         'table'              => $this->getTable(),
-         'field'              => 'fqdn',
-         'name'               => __('FQDN'),
-         'datatype'           => 'string',
-         'autocomplete'       => true,
-      ];
+        if (empty($fqdn)) {
+            return 0;
+        }
 
-      return $tab;
-   }
+        $fqdn = strtolower($fqdn);
+        if ($wildcard_search) {
+            $count = 0;
+            $fqdn  = str_replace('*', '%', $fqdn, $count);
+            if ($count == 0) {
+                $fqdn = '%'.$fqdn.'%';
+            }
+            $relation = ['LIKE', $fqdn];
+        } else {
+            $relation = $fqdn;
+        }
+
+        $iterator = $DB->request([
+           'SELECT' => 'id',
+           'FROM'   => self::getTable(),
+           'WHERE'  => ['fqdn' => $relation]
+        ]);
+
+        $fqdns_id_list = [];
+        while ($line = $iterator->next()) {
+            $fqdns_id_list[] = $line['id'];
+        }
+
+        if (!$wildcard_search) {
+            if (count($fqdns_id_list) != 1) {
+                return -1;
+            }
+            return $fqdns_id_list[0];
+        }
+
+        return $fqdns_id_list;
+    }
 
 
-   /**
-    * Check FQDN Validity
-    *
-    * @param string $fqdn  the FQDN to check
-    *
-    * @return boolean  true if the FQDN is valid
-   **/
-   static function checkFQDN($fqdn) {
+    /**
+     * @param integer $ID  id of the FQDN
+     *
+     * @return string  the FQDN of the element, or "" if invalid FQDN
+    **/
+    public static function getFQDNFromID($ID)
+    {
 
-      // The FQDN must be compose of several labels separated by dots '.'
-      $labels = explode(".", $fqdn);
-      foreach ($labels as $label) {
-         if (($label == "") || (!FQDNLabel::checkFQDNLabel($label))) {
-            return false;
-         }
-      }
-      return true;
-   }
+        $thisDomain = new self();
+        if ($thisDomain->getFromDB($ID)) {
+            return $thisDomain->getFQDN();
+        }
+        return "";
+    }
+
+
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
+
+        $tab[] = [
+           'id'                 => '11',
+           'table'              => $this->getTable(),
+           'field'              => 'fqdn',
+           'name'               => __('FQDN'),
+           'datatype'           => 'string',
+           'autocomplete'       => true,
+        ];
+
+        return $tab;
+    }
+
+
+    /**
+     * Check FQDN Validity
+     *
+     * @param string $fqdn  the FQDN to check
+     *
+     * @return boolean  true if the FQDN is valid
+    **/
+    public static function checkFQDN($fqdn)
+    {
+
+        // The FQDN must be compose of several labels separated by dots '.'
+        $labels = explode(".", $fqdn);
+        foreach ($labels as $label) {
+            if (($label == "") || (!FQDNLabel::checkFQDNLabel($label))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

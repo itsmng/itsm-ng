@@ -33,48 +33,50 @@
 namespace Glpi\System\Requirement;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * @since 9.5.0
  */
-class SessionsConfiguration extends AbstractRequirement {
+class SessionsConfiguration extends AbstractRequirement
+{
+    public function __construct()
+    {
+        $this->title = __('Sessions test');
+    }
 
-   public function __construct() {
-      $this->title = __('Sessions test');
-   }
+    protected function check()
+    {
+        // Check session extension
+        if (!extension_loaded('session')) {
+            $this->validated = false;
+            $this->validation_messages[] = __('Your parser PHP is not installed with sessions support!');
+            return;
+        }
 
-   protected function check() {
-      // Check session extension
-      if (!extension_loaded('session')) {
-         $this->validated = false;
-         $this->validation_messages[] = __('Your parser PHP is not installed with sessions support!');
-         return;
-      }
+        // Check configuration values
+        $is_autostart_on   = ini_get('session.auto_start') == 1;
+        $is_usetranssid_on = ini_get('session.use_trans_sid') == 1
+           || isset($_POST[session_name()]) || isset($_GET[session_name()]);
 
-      // Check configuration values
-      $is_autostart_on   = ini_get('session.auto_start') == 1;
-      $is_usetranssid_on = ini_get('session.use_trans_sid') == 1
-         || isset($_POST[session_name()]) || isset($_GET[session_name()]);
+        if ($is_autostart_on || $is_usetranssid_on) {
+            if ($is_autostart_on && $is_usetranssid_on) {
+                $this->validation_messages[] = __('"session.auto_start" and "session.use_trans_sid" must be set to off.');
+            } elseif ($is_autostart_on) {
+                $this->validation_messages[] = __('"session.auto_start" must be set to off.');
+            } else {
+                $this->validation_messages[] = __('"session.use_trans_sid" must be set to off.');
+            }
 
-      if ($is_autostart_on || $is_usetranssid_on) {
-         if ($is_autostart_on && $is_usetranssid_on) {
-            $this->validation_messages[] = __('"session.auto_start" and "session.use_trans_sid" must be set to off.');
-         } else if ($is_autostart_on) {
-            $this->validation_messages[] = __('"session.auto_start" must be set to off.');
-         } else {
-            $this->validation_messages[] = __('"session.use_trans_sid" must be set to off.');
-         }
+            $this->validated = false;
+            $this->validation_messages[] = __('See .htaccess file in the ITSM-NG root for more information.');
 
-         $this->validated = false;
-         $this->validation_messages[] = __('See .htaccess file in the ITSM-NG root for more information.');
+            return;
+        }
 
-         return;
-      }
-
-      $this->validated = true;
-      $this->validation_messages[] = __s('Sessions support is available - Perfect!');
-   }
+        $this->validated = true;
+        $this->validation_messages[] = __s('Sessions support is available - Perfect!');
+    }
 
 }

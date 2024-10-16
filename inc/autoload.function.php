@@ -32,7 +32,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 define('NS_GLPI', 'Glpi\\');
@@ -45,7 +45,7 @@ define('NS_PLUG', 'GlpiPlugin\\');
  */
 function isCommandLine()
 {
-   return (PHP_SAPI == 'cli');
+    return (PHP_SAPI == 'cli');
 }
 
 /**
@@ -55,28 +55,28 @@ function isCommandLine()
  */
 function isAPI()
 {
-   global $CFG_GLPI;
+    global $CFG_GLPI;
 
-   $called_url = (!empty($_SERVER['HTTPS'] ?? "") && ($_SERVER['HTTPS'] ?? "") !== 'off'
-      ? 'https'
-      : 'http') .
-      '://' . ($_SERVER['HTTP_HOST'] ?? "") .
-      ($_SERVER['REQUEST_URI'] ?? "");
+    $called_url = (!empty($_SERVER['HTTPS'] ?? "") && ($_SERVER['HTTPS'] ?? "") !== 'off'
+       ? 'https'
+       : 'http') .
+       '://' . ($_SERVER['HTTP_HOST'] ?? "") .
+       ($_SERVER['REQUEST_URI'] ?? "");
 
-   $base_api_url = $CFG_GLPI['url_base_api'] ?? ""; // $CFG_GLPI may be not defined if DB is not available
-   if (!empty($base_api_url) && strpos($called_url, $base_api_url) !== false) {
-      return true;
-   }
+    $base_api_url = $CFG_GLPI['url_base_api'] ?? ""; // $CFG_GLPI may be not defined if DB is not available
+    if (!empty($base_api_url) && strpos($called_url, $base_api_url) !== false) {
+        return true;
+    }
 
-   $script = isset($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : '';
-   if (strpos($script, 'apirest.php') !== false) {
-      return true;
-   }
-   if (strpos($script, 'apixmlrpc.php') !== false) {
-      return true;
-   }
+    $script = isset($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : '';
+    if (strpos($script, 'apirest.php') !== false) {
+        return true;
+    }
+    if (strpos($script, 'apixmlrpc.php') !== false) {
+        return true;
+    }
 
-   return false;
+    return false;
 }
 
 
@@ -90,21 +90,21 @@ function isAPI()
 function isPluginItemType($classname)
 {
 
-   /** @var array $matches */
-   if (preg_match("/^Plugin([A-Z][a-z0-9]+)([A-Z]\w+)$/", $classname, $matches)) {
-      $plug           = [];
-      $plug['plugin'] = $matches[1];
-      $plug['class']  = $matches[2];
-      return $plug;
-   } else if (substr($classname, 0, \strlen(NS_PLUG)) === NS_PLUG) {
-      $tab = explode('\\', $classname, 3);
-      $plug           = [];
-      $plug['plugin'] = $tab[1];
-      $plug['class']  = $tab[2];
-      return $plug;
-   }
-   // Standard case
-   return false;
+    /** @var array $matches */
+    if (preg_match("/^Plugin([A-Z][a-z0-9]+)([A-Z]\w+)$/", $classname, $matches)) {
+        $plug           = [];
+        $plug['plugin'] = $matches[1];
+        $plug['class']  = $matches[2];
+        return $plug;
+    } elseif (substr($classname, 0, \strlen(NS_PLUG)) === NS_PLUG) {
+        $tab = explode('\\', $classname, 3);
+        $plug           = [];
+        $plug['plugin'] = $tab[1];
+        $plug['class']  = $tab[2];
+        return $plug;
+    }
+    // Standard case
+    return false;
 }
 
 
@@ -120,17 +120,17 @@ function isPluginItemType($classname)
  */
 function __($str, $domain = 'glpi')
 {
-   global $TRANSLATE;
+    global $TRANSLATE;
 
-   if (is_null($TRANSLATE)) { // before login
-      return $str;
-   }
-   $trans = $TRANSLATE->translate($str, $domain);
-   // Wrong call when plural defined
-   if (is_array($trans)) {
-      return $trans[0];
-   }
-   return  $trans;
+    if (is_null($TRANSLATE)) { // before login
+        return $str;
+    }
+    $trans = $TRANSLATE->translate($str, $domain);
+    // Wrong call when plural defined
+    if (is_array($trans)) {
+        return $trans[0];
+    }
+    return  $trans;
 }
 
 
@@ -146,7 +146,7 @@ function __($str, $domain = 'glpi')
  */
 function __s($str, $domain = 'glpi')
 {
-   return htmlentities(__($str, $domain), ENT_QUOTES, 'UTF-8');
+    return htmlentities(__($str, $domain), ENT_QUOTES, 'UTF-8');
 }
 
 
@@ -163,7 +163,7 @@ function __s($str, $domain = 'glpi')
  */
 function _sx($ctx, $str, $domain = 'glpi')
 {
-   return htmlentities(_x($ctx, $str, $domain), ENT_QUOTES, 'UTF-8');
+    return htmlentities(_x($ctx, $str, $domain), ENT_QUOTES, 'UTF-8');
 }
 
 
@@ -181,17 +181,17 @@ function _sx($ctx, $str, $domain = 'glpi')
  */
 function _n($sing, $plural, $nb, $domain = 'glpi')
 {
-   global $TRANSLATE;
+    global $TRANSLATE;
 
-   if (is_null($TRANSLATE)) { // before login
-      if ($nb == 0 || $nb > 1) {
-         return $plural;
-      } else {
-         return $sing;
-      }
-   }
+    if (is_null($TRANSLATE)) { // before login
+        if ($nb == 0 || $nb > 1) {
+            return $plural;
+        } else {
+            return $sing;
+        }
+    }
 
-   return $TRANSLATE->translatePlural($sing, $plural, $nb, $domain);
+    return $TRANSLATE->translatePlural($sing, $plural, $nb, $domain);
 }
 
 
@@ -209,7 +209,7 @@ function _n($sing, $plural, $nb, $domain = 'glpi')
  */
 function _sn($sing, $plural, $nb, $domain = 'glpi')
 {
-   return htmlentities(_n($sing, $plural, $nb, $domain), ENT_QUOTES, 'UTF-8');
+    return htmlentities(_n($sing, $plural, $nb, $domain), ENT_QUOTES, 'UTF-8');
 }
 
 
@@ -227,15 +227,15 @@ function _sn($sing, $plural, $nb, $domain = 'glpi')
 function _x($ctx, $str, $domain = 'glpi')
 {
 
-   // simulate pgettext
-   $msg   = $ctx . "\004" . $str;
-   $trans = __($msg, $domain);
+    // simulate pgettext
+    $msg   = $ctx . "\004" . $str;
+    $trans = __($msg, $domain);
 
-   if ($trans == $msg) {
-      // No translation
-      return $str;
-   }
-   return $trans;
+    if ($trans == $msg) {
+        // No translation
+        return $str;
+    }
+    return $trans;
 }
 
 
@@ -255,20 +255,20 @@ function _x($ctx, $str, $domain = 'glpi')
 function _nx($ctx, $sing, $plural, $nb, $domain = 'glpi')
 {
 
-   // simulate pgettext
-   $singmsg    = $ctx . "\004" . $sing;
-   $pluralmsg  = $ctx . "\004" . $plural;
-   $trans      = _n($singmsg, $pluralmsg, $nb, $domain);
+    // simulate pgettext
+    $singmsg    = $ctx . "\004" . $sing;
+    $pluralmsg  = $ctx . "\004" . $plural;
+    $trans      = _n($singmsg, $pluralmsg, $nb, $domain);
 
-   if ($trans == $singmsg) {
-      // No translation
-      return $sing;
-   }
-   if ($trans == $pluralmsg) {
-      // No translation
-      return $plural;
-   }
-   return $trans;
+    if ($trans == $singmsg) {
+        // No translation
+        return $sing;
+    }
+    if ($trans == $pluralmsg) {
+        // No translation
+        return $plural;
+    }
+    return $trans;
 }
 
 
@@ -281,83 +281,83 @@ function _nx($ctx, $sing, $plural, $nb, $domain = 'glpi')
  */
 function glpi_autoload($classname)
 {
-   global $DEBUG_AUTOLOAD;
-   static $notfound = [
-      'xStates'    => true,
-      'xAllAssets' => true,
-   ];
-   // empty classname or non concerted plugin or classname containing dot (leaving GLPI main treee)
-   if (empty($classname) || is_numeric($classname) || (strpos($classname, '.') !== false)) {
-      trigger_error(
-         sprintf('Trying to load a forbidden class name "%1$s"', $classname),
-         E_USER_ERROR
-      );
-      return false;
-   }
+    global $DEBUG_AUTOLOAD;
+    static $notfound = [
+       'xStates'    => true,
+       'xAllAssets' => true,
+    ];
+    // empty classname or non concerted plugin or classname containing dot (leaving GLPI main treee)
+    if (empty($classname) || is_numeric($classname) || (strpos($classname, '.') !== false)) {
+        trigger_error(
+            sprintf('Trying to load a forbidden class name "%1$s"', $classname),
+            E_USER_ERROR
+        );
+        return false;
+    }
 
-   if (
-      $classname === 'phpCAS'
-      && file_exists(stream_resolve_include_path("CAS.php"))
-   ) {
-      return true;
-   }
+    if (
+        $classname === 'phpCAS'
+        && file_exists(stream_resolve_include_path("CAS.php"))
+    ) {
+        return true;
+    }
 
-   // $dirs = array_merge([GLPI_ROOT . "/inc/"], glob(GLPI_ROOT . "/src/*/"));
-   $dir = GLPI_ROOT . "/inc/";
-   $newdir = GLPI_ROOT . "/src/";
+    // $dirs = array_merge([GLPI_ROOT . "/inc/"], glob(GLPI_ROOT . "/src/*/"));
+    $dir = GLPI_ROOT . "/inc/";
+    $newdir = GLPI_ROOT . "/src/";
 
-   // Deprecation warn for Computer_Software* classes
-   if ($classname === 'Computer_SoftwareLicense') {
-      Toolbox::deprecated('Computer_SoftwareLicense has been replaced by Item_SoftwareLicense.');
-   }
-   if ($classname === 'Computer_SoftwareVersion') {
-      Toolbox::deprecated('Computer_SoftwareVersion has been replaced by Item_SoftwareVersion.');
-   }
+    // Deprecation warn for Computer_Software* classes
+    if ($classname === 'Computer_SoftwareLicense') {
+        Toolbox::deprecated('Computer_SoftwareLicense has been replaced by Item_SoftwareLicense.');
+    }
+    if ($classname === 'Computer_SoftwareVersion') {
+        Toolbox::deprecated('Computer_SoftwareVersion has been replaced by Item_SoftwareVersion.');
+    }
 
-   if ($plug = isPluginItemType($classname)) {
-      $plugname = strtolower($plug['plugin']);
+    if ($plug = isPluginItemType($classname)) {
+        $plugname = strtolower($plug['plugin']);
 
-      // check plugin exists and is enabled
-      if (!Plugin::isPluginLoaded($plugname)) {
-         // Do not load plugin class if plugin is not loaded
-         return false;
-      }
+        // check plugin exists and is enabled
+        if (!Plugin::isPluginLoaded($plugname)) {
+            // Do not load plugin class if plugin is not loaded
+            return false;
+        }
 
-      $item = str_replace('\\', '/', strtolower($plug['class']));
+        $item = str_replace('\\', '/', strtolower($plug['class']));
 
-      // load from first found directory
-      foreach (PLUGINS_DIRECTORIES as $base_dir) {
-         $dir = "$base_dir/$plugname/inc/";
-         if (is_dir($dir)) {
-            break;
-         }
-      }
-   } else {
-      $item = strtolower($classname);
-      if (substr($classname, 0, \strlen(NS_GLPI)) === NS_GLPI) {
-         $item = str_replace('\\', '/', substr($item, \strlen(NS_GLPI)));
-      }
-   }
+        // load from first found directory
+        foreach (PLUGINS_DIRECTORIES as $base_dir) {
+            $dir = "$base_dir/$plugname/inc/";
+            if (is_dir($dir)) {
+                break;
+            }
+        }
+    } else {
+        $item = strtolower($classname);
+        if (substr($classname, 0, \strlen(NS_GLPI)) === NS_GLPI) {
+            $item = str_replace('\\', '/', substr($item, \strlen(NS_GLPI)));
+        }
+    }
 
-   if (file_exists("$dir$item.class.php")) {
-      include_once("$dir$item.class.php");
-      if (
-         isset($_SESSION['glpi_use_mode'])
-         && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
-      ) {
-         $DEBUG_AUTOLOAD[] = $classname;
-      }
-   }
+    if (file_exists("$dir$item.class.php")) {
+        include_once("$dir$item.class.php");
+        if (
+            isset($_SESSION['glpi_use_mode'])
+            && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
+        ) {
+            $DEBUG_AUTOLOAD[] = $classname;
+        }
+    }
 
-   foreach (glob("$newdir*/$item.class.php") as $file) {
-      include_once($file);
-      if (
-         isset($_SESSION['glpi_use_mode'])
-         && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
-      ) {
-         $DEBUG_AUTOLOAD[] = $classname;
-      }
-   }
+    foreach (glob("$newdir*/$item.class.php") as $file) {
+        include_once($file);
+        if (
+            isset($_SESSION['glpi_use_mode'])
+            && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
+        ) {
+            $DEBUG_AUTOLOAD[] = $classname;
+        }
+    }
 }
 
 // Check if dependencies are up to date
@@ -366,32 +366,32 @@ $needrun  = false;
 // composer dependencies
 $autoload = GLPI_ROOT . '/vendor/autoload.php';
 if (!file_exists($autoload)) {
-   $needrun = true;
+    $needrun = true;
 }
 
 // node dependencies
 if (!file_exists(GLPI_ROOT . '/public/lib')) {
-   $needrun = true;
-} else if (file_exists(GLPI_ROOT . '/package-lock.json')) {
-   if (!file_exists(GLPI_ROOT . '/.package.hash')) {
-      /* First time */
-      $needrun = true;
-   } else if (sha1_file(GLPI_ROOT . '/package-lock.json') != file_get_contents(GLPI_ROOT . '/.package.hash')) {
-      /* update */
-      $needrun = true;
-   }
+    $needrun = true;
+} elseif (file_exists(GLPI_ROOT . '/package-lock.json')) {
+    if (!file_exists(GLPI_ROOT . '/.package.hash')) {
+        /* First time */
+        $needrun = true;
+    } elseif (sha1_file(GLPI_ROOT . '/package-lock.json') != file_get_contents(GLPI_ROOT . '/.package.hash')) {
+        /* update */
+        $needrun = true;
+    }
 }
 
 if ($needrun) {
-   $deps_install_msg[] = 'Application dependencies are not up to date.';
-   $deps_install_msg[] = 'Run "php bin/console dependencies install" in the ITSM-NG tree to fix this.';
-   if (isCommandLine()) {
-      echo implode(PHP_EOL, $deps_install_msg);
-   } else {
-      $msg = $deps_install_msg;
-      require_once("front/error.php");
-   }
-   die(1);
+    $deps_install_msg[] = 'Application dependencies are not up to date.';
+    $deps_install_msg[] = 'Run "php bin/console dependencies install" in the ITSM-NG tree to fix this.';
+    if (isCommandLine()) {
+        echo implode(PHP_EOL, $deps_install_msg);
+    } else {
+        $msg = $deps_install_msg;
+        require_once("front/error.php");
+    }
+    die(1);
 }
 
 require_once $autoload;

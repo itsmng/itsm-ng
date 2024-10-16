@@ -31,13 +31,14 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class RackType
-class RackType extends CommonDropdown {
-
-   static function getTypeName($nb = 0) {
-      return _n('Rack type', 'Rack types', $nb);
-   }
+class RackType extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Rack type', 'Rack types', $nb);
+    }
 }

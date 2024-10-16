@@ -30,13 +30,13 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 Html::header_nocache();
 
 Session::checkLoginUser();
 
 if (!isset($_REQUEST['id'])) {
-   throw new \RuntimeException('Required argument missing!');
+    throw new \RuntimeException('Required argument missing!');
 }
 
 $id = $_REQUEST['id'];
@@ -45,10 +45,10 @@ $rand = isset($_REQUEST['rand']) ? $_REQUEST['rand'] : mt_rand();
 
 $room = new DCRoom();
 if ($room->getFromDB($id)) {
-   $used = $room->getFilled($current);
-   $positions = $room->getAllPositions();
+    $used = $room->getFilled($current);
+    $positions = $room->getAllPositions();
 
-   echo json_encode(array_diff_key($positions, $used));
+    echo json_encode(array_diff_key($positions, $used));
 } else {
-   echo json_encode([]);
+    echo json_encode([]);
 }

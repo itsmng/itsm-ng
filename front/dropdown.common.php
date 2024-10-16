@@ -36,12 +36,12 @@
  */
 
 if (!($dropdown instanceof CommonDropdown)) {
-   Html::displayErrorAndDie('');
+    Html::displayErrorAndDie('');
 }
 if (!$dropdown->canView()) {
-   // Gestion timeout session
-   Session::redirectIfNotLoggedIn();
-   Html::displayRightError();
+    // Gestion timeout session
+    Session::redirectIfNotLoggedIn();
+    Html::displayRightError();
 }
 
 $dropdown->displayHeader();

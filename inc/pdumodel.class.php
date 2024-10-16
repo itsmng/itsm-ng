@@ -31,13 +31,14 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class PDUModel
-class PDUModel extends CommonDCModelDropdown {
-
-   static function getTypeName($nb = 0) {
-      return _n('PDU model', 'PDU models', $nb);
-   }
+class PDUModel extends CommonDCModelDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('PDU model', 'PDU models', $nb);
+    }
 }

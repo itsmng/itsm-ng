@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
@@ -34,156 +34,162 @@ if (!defined('GLPI_ROOT')) {
  * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
 **/
-class Item_Cluster extends CommonDBRelation {
+class Item_Cluster extends CommonDBRelation
+{
+    public static $itemtype_1 = 'Cluster';
+    public static $items_id_1 = 'clusters_id';
+    public static $itemtype_2 = 'itemtype';
+    public static $items_id_2 = 'items_id';
+    public static $checkItem_1_Rights = self::DONT_CHECK_ITEM_RIGHTS;
+    public static $mustBeAttached_1      = false;
+    public static $mustBeAttached_2      = false;
 
-   static public $itemtype_1 = 'Cluster';
-   static public $items_id_1 = 'clusters_id';
-   static public $itemtype_2 = 'itemtype';
-   static public $items_id_2 = 'items_id';
-   static public $checkItem_1_Rights = self::DONT_CHECK_ITEM_RIGHTS;
-   static public $mustBeAttached_1      = false;
-   static public $mustBeAttached_2      = false;
-
-   static function getTypeName($nb = 0) {
-      return _n('Item', 'Item', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Item', 'Item', $nb);
+    }
 
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      $nb = 0;
-      if ($_SESSION['glpishow_count_on_tabs']) {
-         $nb = self::countForMainItem($item);
-      }
-      return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
-   }
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
+        $nb = 0;
+        if ($_SESSION['glpishow_count_on_tabs']) {
+            $nb = self::countForMainItem($item);
+        }
+        return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
+    }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-      self::showItems($item, $withtemplate);
-   }
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
+        self::showItems($item, $withtemplate);
+    }
 
-   function getForbiddenStandardMassiveAction() {
-      $forbidden   = parent::getForbiddenStandardMassiveAction();
-      $forbidden[] = 'MassiveAction:update';
-      $forbidden[] = 'CommonDBConnexity:affect';
-      $forbidden[] = 'CommonDBConnexity:unaffect';
+    public function getForbiddenStandardMassiveAction()
+    {
+        $forbidden   = parent::getForbiddenStandardMassiveAction();
+        $forbidden[] = 'MassiveAction:update';
+        $forbidden[] = 'CommonDBConnexity:affect';
+        $forbidden[] = 'CommonDBConnexity:unaffect';
 
-      return $forbidden;
-   }
+        return $forbidden;
+    }
 
-   /**
-    * Print enclosure items
-    *
-    * @return void
-   **/
-   static function showItems(Cluster $cluster) {
-      global $DB;
+    /**
+     * Print enclosure items
+     *
+     * @return void
+    **/
+    public static function showItems(Cluster $cluster)
+    {
+        global $DB;
 
-      $ID = $cluster->fields['id'];
-      $rand = mt_rand();
+        $ID = $cluster->fields['id'];
+        $rand = mt_rand();
 
-      if (!$cluster->getFromDB($ID)
-          || !$cluster->can($ID, READ)) {
-         return false;
-      }
-      $canedit = $cluster->canEdit($ID);
+        if (!$cluster->getFromDB($ID)
+            || !$cluster->can($ID, READ)) {
+            return false;
+        }
+        $canedit = $cluster->canEdit($ID);
 
-      $items = $DB->request([
-         'FROM'   => self::getTable(),
-         'WHERE'  => [
-            'clusters_id' => $ID
-         ]
-      ]);
+        $items = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+              'clusters_id' => $ID
+           ]
+        ]);
 
-      Session::initNavigateListItems(
-         self::getType(),
-         //TRANS : %1$s is the itemtype name,
-         //        %2$s is the name of the item (used for headings of a list)
-         sprintf(
-            __('%1$s = %2$s'),
-            $cluster->getTypeName(1),
-            $cluster->getName()
-         )
-      );
+        Session::initNavigateListItems(
+            self::getType(),
+            //TRANS : %1$s is the itemtype name,
+            //        %2$s is the name of the item (used for headings of a list)
+            sprintf(
+                __('%1$s = %2$s'),
+                $cluster->getTypeName(1),
+                $cluster->getName()
+            )
+        );
 
-      if ($cluster->canAddItem('itemtype')) {
-         echo "<div class='firstbloc'>";
-         Html::showSimpleForm(
-            self::getFormURL(),
-            '_add_fromitem',
-            __('Add new item to this cluster...'),
-            [
-               'cluster'   => $ID,
-               'position'  => 1
+        if ($cluster->canAddItem('itemtype')) {
+            echo "<div class='firstbloc'>";
+            Html::showSimpleForm(
+                self::getFormURL(),
+                '_add_fromitem',
+                __('Add new item to this cluster...'),
+                [
+                  'cluster'   => $ID,
+                  'position'  => 1
             ]
-         );
-         echo "</div>";
-      }
+            );
+            echo "</div>";
+        }
 
-      $items = iterator_to_array($items);
+        $items = iterator_to_array($items);
 
-      if (!count($items)) {
-         echo "<table class='tab_cadre_fixe' aria-label='No item Found'><tr><th>".__('No item found')."</th></tr>";
-         echo "</table>";
-      } else {
-         if ($canedit) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-            $massiveactionparams = [
-               'num_displayed'   => min($_SESSION['glpilist_limit'], count($items)),
-               'container'       => 'mass'.__CLASS__.$rand
-            ];
-            Html::showMassiveActions($massiveactionparams);
-         }
-
-         echo "<table class='tab_cadre_fixehov' aria-label='Selectable Item'>";
-         $header = "<tr>";
-         if ($canedit) {
-            $header .= "<th width='10'>";
-            $header .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
-            $header .= "</th>";
-         }
-         $header .= "<th>"._n('Item', 'Items', 1)."</th>";
-         $header .= "</tr>";
-
-         echo $header;
-         foreach ($items as $row) {
-            $item = new $row['itemtype'];
-            $item->getFromDB($row['items_id']);
-            echo "<tr lass='tab_bg_1'>";
+        if (!count($items)) {
+            echo "<table class='tab_cadre_fixe' aria-label='No item Found'><tr><th>".__('No item found')."</th></tr>";
+            echo "</table>";
+        } else {
             if ($canedit) {
-               echo "<td>";
-               Html::showMassiveActionCheckBox(__CLASS__, $row["id"]);
-               echo "</td>";
+                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+                $massiveactionparams = [
+                   'num_displayed'   => min($_SESSION['glpilist_limit'], count($items)),
+                   'container'       => 'mass'.__CLASS__.$rand
+                ];
+                Html::showMassiveActions($massiveactionparams);
             }
-            echo "<td>" . $item->getLink() . "</td>";
-            echo "</tr>";
-         }
-         echo $header;
-         echo "</table>";
 
-         if ($canedit && count($items)) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-         }
-         if ($canedit) {
-            Html::closeForm();
-         }
-      }
-   }
+            echo "<table class='tab_cadre_fixehov' aria-label='Selectable Item'>";
+            $header = "<tr>";
+            if ($canedit) {
+                $header .= "<th width='10'>";
+                $header .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+                $header .= "</th>";
+            }
+            $header .= "<th>"._n('Item', 'Items', 1)."</th>";
+            $header .= "</tr>";
 
-   function showForm($ID, $options = []) {
-      global $DB, $CFG_GLPI;
+            echo $header;
+            foreach ($items as $row) {
+                $item = new $row['itemtype']();
+                $item->getFromDB($row['items_id']);
+                echo "<tr lass='tab_bg_1'>";
+                if ($canedit) {
+                    echo "<td>";
+                    Html::showMassiveActionCheckBox(__CLASS__, $row["id"]);
+                    echo "</td>";
+                }
+                echo "<td>" . $item->getLink() . "</td>";
+                echo "</tr>";
+            }
+            echo $header;
+            echo "</table>";
 
-      //get all used items
-      $used = [];
-      $iterator = $DB->request([
-         'FROM'   => $this->getTable()
-      ]);
-      while ($row = $iterator->next()) {
-         $used [$row['itemtype']][] = $row['items_id'];
-      }
-      $jsUsed = json_encode($used);
+            if ($canedit && count($items)) {
+                $massiveactionparams['ontop'] = false;
+                Html::showMassiveActions($massiveactionparams);
+            }
+            if ($canedit) {
+                Html::closeForm();
+            }
+        }
+    }
 
-      $loadItemDropdownScript = <<<JS
+    public function showForm($ID, $options = [])
+    {
+        global $DB, $CFG_GLPI;
+
+        //get all used items
+        $used = [];
+        $iterator = $DB->request([
+           'FROM'   => $this->getTable()
+        ]);
+        while ($row = $iterator->next()) {
+            $used [$row['itemtype']][] = $row['items_id'];
+        }
+        $jsUsed = json_encode($used);
+
+        $loadItemDropdownScript = <<<JS
         $.ajax({
             url: '{$CFG_GLPI["root_doc"]}/ajax/dropdownAllItems.php',
             data: {
@@ -221,98 +227,101 @@ class Item_Cluster extends CommonDBRelation {
         });
       JS;
 
-      $itemtypes = $CFG_GLPI['cluster_types'];
-      $itemtypesValues = [];
-      foreach ($itemtypes as $itemtype) {
-         $itemtypesValues[$itemtype] = $itemtype::getTypeName(1);
-      }
+        $itemtypes = $CFG_GLPI['cluster_types'];
+        $itemtypesValues = [];
+        foreach ($itemtypes as $itemtype) {
+            $itemtypesValues[$itemtype] = $itemtype::getTypeName(1);
+        }
 
-      $form = [
-        'action' => $this->getFormURL(),
-        'itemtype' => $this::class,
-        'content' => [
-          $this->getTypeName() => [
-            'visible' => true,
-            'inputs' => [
-              $this->isNewID($ID) ? [] : [
-                'type' => 'hidden',
-                'name' => 'id',
-                'value' => $ID
-              ],
-              __('Item type') => [
-                'type' => 'select',
-                'id' => 'dropdown_itemtype',
-                'name' => 'itemtype',
-                'value' => $this->fields["itemtype"] ?? $options['itemtype'] ?? '',
-                'values' => $itemtypesValues,
-                'hooks' => [
-                    'change' => $loadItemDropdownScript
+        $form = [
+          'action' => $this->getFormURL(),
+          'itemtype' => $this::class,
+          'content' => [
+            $this->getTypeName() => [
+              'visible' => true,
+              'inputs' => [
+                $this->isNewID($ID) ? [] : [
+                  'type' => 'hidden',
+                  'name' => 'id',
+                  'value' => $ID
                 ],
-                'init' => $loadItemDropdownScript
-              ],
-              __('Item') => [
-                'type' => 'select',
-                'id' => 'dropdown_items_id',
-                'name' => 'items_id',
-                'value' => $this->fields["items_id"] ?? $options['items_id'] ?? 0,
-              ],
-              Cluster::getTypeName(1) => [
-                'type' => 'select',
-                'id' => 'dropdown_clusters_id',
-                'itemtype' => Cluster::class,
-                'name' => 'clusters_id',
-                'value' => $this->fields["clusters_id"] ?? $options['clusters_id'] ?? 0,
-              ],
+                __('Item type') => [
+                  'type' => 'select',
+                  'id' => 'dropdown_itemtype',
+                  'name' => 'itemtype',
+                  'value' => $this->fields["itemtype"] ?? $options['itemtype'] ?? '',
+                  'values' => $itemtypesValues,
+                  'hooks' => [
+                      'change' => $loadItemDropdownScript
+                  ],
+                  'init' => $loadItemDropdownScript
+                ],
+                __('Item') => [
+                  'type' => 'select',
+                  'id' => 'dropdown_items_id',
+                  'name' => 'items_id',
+                  'value' => $this->fields["items_id"] ?? $options['items_id'] ?? 0,
+                ],
+                Cluster::getTypeName(1) => [
+                  'type' => 'select',
+                  'id' => 'dropdown_clusters_id',
+                  'itemtype' => Cluster::class,
+                  'name' => 'clusters_id',
+                  'value' => $this->fields["clusters_id"] ?? $options['clusters_id'] ?? 0,
+                ],
+              ]
             ]
           ]
-        ]
-      ];
-      renderTwigForm($form, '', $this->fields);
-   }
+        ];
+        renderTwigForm($form, '', $this->fields);
+    }
 
-   function prepareInputForAdd($input) {
-      return $this->prepareInput($input);
-   }
+    public function prepareInputForAdd($input)
+    {
+        return $this->prepareInput($input);
+    }
 
-   function prepareInputForUpdate($input) {
-      return $this->prepareInput($input);
-   }
+    public function prepareInputForUpdate($input)
+    {
+        return $this->prepareInput($input);
+    }
 
-   /**
-    * Prepares input (for update and add)
-    *
-    * @param array $input Input data
-    *
-    * @return array
-    */
-   private function prepareInput($input) {
-      $error_detected = [];
+    /**
+     * Prepares input (for update and add)
+     *
+     * @param array $input Input data
+     *
+     * @return array
+     */
+    private function prepareInput($input)
+    {
+        $error_detected = [];
 
-      //check for requirements
-      if (($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
-          || (isset($input['itemtype']) && empty($input['itemtype']))) {
-         $error_detected[] = __('An item type is required');
-      }
-      if (($this->isNewItem() && (!isset($input['items_id']) || empty($input['items_id'])))
-          || (isset($input['items_id']) && empty($input['items_id']))) {
-         $error_detected[] = __('An item is required');
-      }
-      if (($this->isNewItem() && (!isset($input['clusters_id']) || empty($input['clusters_id'])))
-          || (isset($input['clusters_id']) && empty($input['clusters_id']))) {
-         $error_detected[] = __('A cluster is required');
-      }
+        //check for requirements
+        if (($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
+            || (isset($input['itemtype']) && empty($input['itemtype']))) {
+            $error_detected[] = __('An item type is required');
+        }
+        if (($this->isNewItem() && (!isset($input['items_id']) || empty($input['items_id'])))
+            || (isset($input['items_id']) && empty($input['items_id']))) {
+            $error_detected[] = __('An item is required');
+        }
+        if (($this->isNewItem() && (!isset($input['clusters_id']) || empty($input['clusters_id'])))
+            || (isset($input['clusters_id']) && empty($input['clusters_id']))) {
+            $error_detected[] = __('A cluster is required');
+        }
 
-      if (count($error_detected)) {
-         foreach ($error_detected as $error) {
-            Session::addMessageAfterRedirect(
-               $error,
-               true,
-               ERROR
-            );
-         }
-         return false;
-      }
+        if (count($error_detected)) {
+            foreach ($error_detected as $error) {
+                Session::addMessageAfterRedirect(
+                    $error,
+                    true,
+                    ERROR
+                );
+            }
+            return false;
+        }
 
-      return $input;
-   }
+        return $input;
+    }
 }

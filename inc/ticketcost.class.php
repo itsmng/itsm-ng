@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -39,12 +39,12 @@ if (!defined('GLPI_ROOT')) {
  *
  * @since 0.84
 **/
-class TicketCost extends CommonITILCost {
+class TicketCost extends CommonITILCost
+{
+    // From CommonDBChild
+    public static $itemtype  = 'Ticket';
+    public static $items_id  = 'tickets_id';
 
-   // From CommonDBChild
-   static public $itemtype  = 'Ticket';
-   static public $items_id  = 'tickets_id';
-
-   static $rightname        = 'ticketcost';
+    public static $rightname        = 'ticketcost';
 
 }

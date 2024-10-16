@@ -31,126 +31,139 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class DeviceMotherboard
-class DeviceMotherboard extends CommonDevice {
+class DeviceMotherboard extends CommonDevice
+{
+    protected static $forward_entity_to = ['Item_DeviceMotherboard', 'Infocom'];
 
-   static protected $forward_entity_to = ['Item_DeviceMotherboard', 'Infocom'];
+    public static function getTypeName($nb = 0)
+    {
+        return _n('System board', 'System boards', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('System board', 'System boards', $nb);
-   }
 
+    public function getAdditionalFields()
+    {
 
-   function getAdditionalFields() {
-
-      return array_merge(
-         parent::getAdditionalFields(),
-         [
-            __('Chipset') => [
-               'name'  => 'chipset',
-               'type'  => 'text',
-               'value' => $this->fields['chipset'],
-            ],
-            _n('Model', 'Models', 1) => [
-               'name'  => 'devicemotherboardmodels_id',
-               'type'  => 'select',
-               'values' => getOptionForItems('DeviceMotherBoardModel'),
-               'value' => $this->fields['devicemotherboardmodels_id'],
-               'actions' => getItemActionButtons(['info', 'add'], 'DeviceMotherBoardModel'),
-            ]
+        return array_merge(
+            parent::getAdditionalFields(),
+            [
+              __('Chipset') => [
+                 'name'  => 'chipset',
+                 'type'  => 'text',
+                 'value' => $this->fields['chipset'],
+              ],
+              _n('Model', 'Models', 1) => [
+                 'name'  => 'devicemotherboardmodels_id',
+                 'type'  => 'select',
+                 'values' => getOptionForItems('DeviceMotherBoardModel'),
+                 'value' => $this->fields['devicemotherboardmodels_id'],
+                 'actions' => getItemActionButtons(['info', 'add'], 'DeviceMotherBoardModel'),
+              ]
          ]
-      );
-   }
+        );
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
 
-      $tab[] = [
-         'id'                 => '11',
-         'table'              => $this->getTable(),
-         'field'              => 'chipset',
-         'name'               => __('Chipset'),
-         'datatype'           => 'string',
-         'autocomplete'       => true,
-      ];
+        $tab[] = [
+           'id'                 => '11',
+           'table'              => $this->getTable(),
+           'field'              => 'chipset',
+           'name'               => __('Chipset'),
+           'datatype'           => 'string',
+           'autocomplete'       => true,
+        ];
 
-      $tab[] = [
-         'id'                 => '12',
-         'table'              => 'glpi_devicemotherboardmodels',
-         'field'              => 'name',
-         'name'               => _n('Model', 'Models', 1),
-         'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+           'id'                 => '12',
+           'table'              => 'glpi_devicemotherboardmodels',
+           'field'              => 'name',
+           'name'               => _n('Model', 'Models', 1),
+           'datatype'           => 'dropdown'
+        ];
 
-      return $tab;
-   }
-
-
-   static function getHTMLTableHeader($itemtype, HTMLTableBase $base,
-                                      HTMLTableSuperHeader $super = null,
-                                      HTMLTableHeader $father = null, array $options = []) {
-
-      $column = parent::getHTMLTableHeader($itemtype, $base, $super, $father, $options);
-
-      if ($column == $father) {
-         return $father;
-      }
-
-      switch ($itemtype) {
-         case 'Computer' :
-            Manufacturer::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
-            break;
-      }
-   }
+        return $tab;
+    }
 
 
-   function getHTMLTableCellForItem(HTMLTableRow $row = null, CommonDBTM $item = null,
-                                    HTMLTableCell $father = null, array $options = []) {
+    public static function getHTMLTableHeader(
+        $itemtype,
+        HTMLTableBase $base,
+        HTMLTableSuperHeader $super = null,
+        HTMLTableHeader $father = null,
+        array $options = []
+    ) {
 
-      $column = parent::getHTMLTableCellForItem($row, $item, $father, $options);
+        $column = parent::getHTMLTableHeader($itemtype, $base, $super, $father, $options);
 
-      if ($column == $father) {
-         return $father;
-      }
+        if ($column == $father) {
+            return $father;
+        }
 
-      switch ($item->getType()) {
-         case 'Computer' :
-            Manufacturer::getHTMLTableCellsForItem($row, $this, null, $options);
-            break;
-      }
-   }
+        switch ($itemtype) {
+            case 'Computer':
+                Manufacturer::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
+                break;
+        }
+    }
 
 
-   function getImportCriteria() {
+    public function getHTMLTableCellForItem(
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
+        array $options = []
+    ) {
 
-      return ['designation'      => 'equal',
-                   'manufacturers_id' => 'equal',
-                   'chipset'          => 'equal'];
-   }
+        $column = parent::getHTMLTableCellForItem($row, $item, $father, $options);
 
-   public static function rawSearchOptionsToAdd($itemtype, $main_joinparams) {
-      $tab = [];
+        if ($column == $father) {
+            return $father;
+        }
 
-      $tab[] = [
-         'id'                 => '14',
-         'table'              => 'glpi_devicemotherboards',
-         'field'              => 'designation',
-         'name'               => static::getTypeName(1),
-         'forcegroupby'       => true,
-         'massiveaction'      => false,
-         'datatype'           => 'string',
-         'joinparams'         => [
-            'beforejoin'         => [
-               'table'              => 'glpi_items_devicemotherboards',
-               'joinparams'         => $main_joinparams
-            ]
-         ]
-      ];
+        switch ($item->getType()) {
+            case 'Computer':
+                Manufacturer::getHTMLTableCellsForItem($row, $this, null, $options);
+                break;
+        }
+    }
 
-      return $tab;
-   }
+
+    public function getImportCriteria()
+    {
+
+        return ['designation'      => 'equal',
+                     'manufacturers_id' => 'equal',
+                     'chipset'          => 'equal'];
+    }
+
+    public static function rawSearchOptionsToAdd($itemtype, $main_joinparams)
+    {
+        $tab = [];
+
+        $tab[] = [
+           'id'                 => '14',
+           'table'              => 'glpi_devicemotherboards',
+           'field'              => 'designation',
+           'name'               => static::getTypeName(1),
+           'forcegroupby'       => true,
+           'massiveaction'      => false,
+           'datatype'           => 'string',
+           'joinparams'         => [
+              'beforejoin'         => [
+                 'table'              => 'glpi_items_devicemotherboards',
+                 'joinparams'         => $main_joinparams
+              ]
+           ]
+        ];
+
+        return $tab;
+    }
 }

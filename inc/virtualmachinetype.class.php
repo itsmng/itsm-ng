@@ -31,17 +31,18 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class VirtualMachineType
-class VirtualMachineType extends CommonDropdown {
+class VirtualMachineType extends CommonDropdown
+{
+    public $can_be_translated = false;
 
-   public $can_be_translated = false;
 
-
-   static function getTypeName($nb = 0) {
-      return _n('Virtualization system', 'Virtualization systems', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Virtualization system', 'Virtualization systems', $nb);
+    }
 
 }

@@ -38,17 +38,18 @@ if (!defined('GLPI_ROOT')) {
  *
  * @since 9.2
  **/
-class ItsmngUploadHandler {
+class ItsmngUploadHandler
+{
+    public const UPLOAD = GLPI_UPLOAD_DIR;
+    public const TMP = GLPI_TMP_DIR;
+    public const PICTURE = GLPI_PICTURE_DIR;
+    public const PLUGIN = GLPI_PLUGIN_DOC_DIR;
+    public const DUMP = GLPI_DUMP_DIR;
 
-    const UPLOAD = GLPI_UPLOAD_DIR;
-    const TMP = GLPI_TMP_DIR;
-    const PICTURE = GLPI_PICTURE_DIR;
-    const PLUGIN = GLPI_PLUGIN_DOC_DIR;
-    const DUMP = GLPI_DUMP_DIR;
+    public const TYPES = [self::UPLOAD, self::TMP, self::PICTURE, self::PLUGIN, self::DUMP];
 
-    const TYPES = [self::UPLOAD, self::TMP, self::PICTURE, self::PLUGIN, self::DUMP];
-
-    static function getUploadPath($type, $filename, $withDir = true) {
+    public static function getUploadPath($type, $filename, $withDir = true)
+    {
         if (in_array($type, self::TYPES)) {
             $extension = strtoupper(pathinfo($filename, PATHINFO_EXTENSION)) . '/';
         } else {
@@ -69,7 +70,8 @@ class ItsmngUploadHandler {
         return $relativePath;
     }
 
-    static function generateBaseDocumentFromPost($POST) {
+    public static function generateBaseDocumentFromPost($POST)
+    {
         $baseDoc = [
             'entities_id'           => $POST['entities_id'] ?? 0,
             'is_recursive'          => $POST['is_recursive'] ?? 0,
@@ -83,7 +85,8 @@ class ItsmngUploadHandler {
         return $baseDoc;
     }
 
-    static function uploadFile($filepath, $filename, $type = self::UPLOAD, $name = null) {
+    public static function uploadFile($filepath, $filename, $type = self::UPLOAD, $name = null)
+    {
         $uploadPath = self::getUploadPath($type, $filename);
         $uniqid = $name ?? uniqid();
         $filename = $uniqid . '.' . pathinfo($filename, PATHINFO_EXTENSION);
@@ -99,7 +102,8 @@ class ItsmngUploadHandler {
         return self::getUploadPath($type, $filename, false) . '/' . $filename;
     }
 
-    static private function getValidExtPatterns() {
+    private static function getValidExtPatterns()
+    {
         global $DB;
         $valid_type_iterator = $DB->request([
             'FROM'   => 'glpi_documenttypes',
@@ -124,7 +128,8 @@ class ItsmngUploadHandler {
         return $valid_ext_patterns;
     }
 
-    static function storeTmpFiles($files) {
+    public static function storeTmpFiles($files)
+    {
         $tmpFiles = [];
 
         foreach ($files as $file) {
@@ -154,7 +159,8 @@ class ItsmngUploadHandler {
     }
 
 
-    static function addFileToDb($file, $name = null) {
+    public static function addFileToDb($file, $name = null)
+    {
         $newDoc = ItsmngUploadHandler::generateBaseDocumentFromPost($_POST);
         if (!$name) {
             $name = $file['name'];
@@ -172,7 +178,8 @@ class ItsmngUploadHandler {
         return $doc;
     }
 
-    static function linkDocToItem($id, $entity, $isRecursive, $itemType, $itemId, $userId) {
+    public static function linkDocToItem($id, $entity, $isRecursive, $itemType, $itemId, $userId)
+    {
         $docItem = new Document_Item();
         $docItem->add([
             'documents_id' => $id,
@@ -184,7 +191,8 @@ class ItsmngUploadHandler {
         ]);
     }
 
-    static function removeFiles($files) {
+    public static function removeFiles($files)
+    {
         foreach ($files as $file) {
             unlink($file['path']);
         }

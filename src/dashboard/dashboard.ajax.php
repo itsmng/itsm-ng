@@ -27,55 +27,55 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../../inc/includes.php');
+include('../../inc/includes.php');
 
 if (!isset($_REQUEST["action"])) {
-   exit;
+    exit;
 }
 
 global $CFG_GLPI;
 
 if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['dataFilters'])) {
-   Session::checkRight("dashboard", READ);
-   $dataFilters = json_decode(stripslashes($_REQUEST['dataFilters'] ?? '[]'), true);
-   echo json_encode(Search::getDatas($dataFilters['itemtype'], $dataFilters)['data']['totalcount']);
-} else if (($_REQUEST['action'] == 'delete') && isset($_REQUEST['coords']) && isset($_REQUEST['id'])) {
-   Session::checkRight("dashboard", UPDATE);
-   $dashboard = new Dashboard();
-   $dashboard->getFromDB($_REQUEST['id']);
-   if ($dashboard->deleteWidget(json_decode($_REQUEST['coords']))) {
-      echo json_encode(["status" => "success"]);
-   } else {
-      echo json_encode(["status" => "error"]);
-   }
-   exit;
-} else if (($_REQUEST['action'] == 'add') && isset($_REQUEST['widget']) && isset($_REQUEST['id'])) {
-   Session::checkRight("dashboard", UPDATE);
+    Session::checkRight("dashboard", READ);
+    $dataFilters = json_decode(stripslashes($_REQUEST['dataFilters'] ?? '[]'), true);
+    echo json_encode(Search::getDatas($dataFilters['itemtype'], $dataFilters)['data']['totalcount']);
+} elseif (($_REQUEST['action'] == 'delete') && isset($_REQUEST['coords']) && isset($_REQUEST['id'])) {
+    Session::checkRight("dashboard", UPDATE);
+    $dashboard = new Dashboard();
+    $dashboard->getFromDB($_REQUEST['id']);
+    if ($dashboard->deleteWidget(json_decode($_REQUEST['coords']))) {
+        echo json_encode(["status" => "success"]);
+    } else {
+        echo json_encode(["status" => "error"]);
+    }
+    exit;
+} elseif (($_REQUEST['action'] == 'add') && isset($_REQUEST['widget']) && isset($_REQUEST['id'])) {
+    Session::checkRight("dashboard", UPDATE);
 
-   $dashboard = new Dashboard();
-   if (!$_REQUEST['id']) {
+    $dashboard = new Dashboard();
+    if (!$_REQUEST['id']) {
         $id = $dashboard->add([
             'content' => json_encode([]),
             'userId' => Session::getLoginUserID(),
         ]);
-   }
-   $dashboard->getFromDB($id ?? $_REQUEST['id']);
-   $widget = json_decode(stripslashes($_REQUEST['widget']), true);
-   $options = $_REQUEST['options'] ?? [];
+    }
+    $dashboard->getFromDB($id ?? $_REQUEST['id']);
+    $widget = json_decode(stripslashes($_REQUEST['widget']), true);
+    $options = $_REQUEST['options'] ?? [];
 
-   $coords = $widget['coords'];
-   $title = $widget['title'];
-   $filters = json_decode($widget['filter'], true);
-   $icon = $widget['icon'];
-   $format = $widget['format'];
-   if ($dashboard->addWidget($coords, $title, $filters, $icon, $format)) {
-      echo json_encode(["status" => "success"]);
-   } else {
-      echo json_encode(["status" => "error"]);
-   }
-   exit;
-} else if (($_REQUEST['action'] == 'getSearch')  && isset($_REQUEST['itemtype'])) {
-   Session::checkRight("dashboard", READ);
-   Search::showGenericSearch($_REQUEST['itemtype'], ['hide' => false, 'showbookmark' => false]);
-   exit;
+    $coords = $widget['coords'];
+    $title = $widget['title'];
+    $filters = json_decode($widget['filter'], true);
+    $icon = $widget['icon'];
+    $format = $widget['format'];
+    if ($dashboard->addWidget($coords, $title, $filters, $icon, $format)) {
+        echo json_encode(["status" => "success"]);
+    } else {
+        echo json_encode(["status" => "error"]);
+    }
+    exit;
+} elseif (($_REQUEST['action'] == 'getSearch')  && isset($_REQUEST['itemtype'])) {
+    Session::checkRight("dashboard", READ);
+    Search::showGenericSearch($_REQUEST['itemtype'], ['hide' => false, 'showbookmark' => false]);
+    exit;
 }

@@ -31,14 +31,14 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class DeviceBatteryType extends CommonDeviceType {
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Battery type', 'Battery types', $nb);
-   }
+class DeviceBatteryType extends CommonDeviceType
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Battery type', 'Battery types', $nb);
+    }
 
 }

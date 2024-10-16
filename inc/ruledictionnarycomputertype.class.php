@@ -30,43 +30,45 @@
  * ---------------------------------------------------------------------
  */
 
-class RuleDictionnaryComputerType extends RuleDictionnaryDropdown {
+class RuleDictionnaryComputerType extends RuleDictionnaryDropdown
+{
+    /**
+     * Constructor
+    **/
+    public function __construct()
+    {
+        parent::__construct('RuleDictionnaryComputerType');
+    }
 
 
-   /**
-    * Constructor
-   **/
-   function __construct() {
-      parent::__construct('RuleDictionnaryComputerType');
-   }
+    public function getCriterias()
+    {
+
+        static $criterias = [];
+
+        if (count($criterias)) {
+            return $criterias;
+        }
+
+        $criterias['name']['field'] = 'name';
+        $criterias['name']['name']  = _n('Type', 'Types', 1);
+        $criterias['name']['table'] = 'glpi_computertypes';
+
+        return $criterias;
+    }
 
 
-   function getCriterias() {
+    /**
+     * @see Rule::getActions()
+    **/
+    public function getActions()
+    {
 
-      static $criterias = [];
+        $actions                          = [];
+        $actions['name']['name']          = _n('Type', 'Types', 1);
+        $actions['name']['force_actions'] = ['append_regex_result', 'assign','regex_result'];
 
-      if (count($criterias)) {
-         return $criterias;
-      }
-
-      $criterias['name']['field'] = 'name';
-      $criterias['name']['name']  = _n('Type', 'Types', 1);
-      $criterias['name']['table'] = 'glpi_computertypes';
-
-      return $criterias;
-   }
-
-
-   /**
-    * @see Rule::getActions()
-   **/
-   function getActions() {
-
-      $actions                          = [];
-      $actions['name']['name']          = _n('Type', 'Types', 1);
-      $actions['name']['force_actions'] = ['append_regex_result', 'assign','regex_result'];
-
-      return $actions;
-   }
+        return $actions;
+    }
 
 }

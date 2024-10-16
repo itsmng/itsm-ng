@@ -31,17 +31,18 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class Filesystem
-class Filesystem extends CommonDropdown {
+class Filesystem extends CommonDropdown
+{
+    public $can_be_translated = false;
 
-   public $can_be_translated = false;
 
-
-   static function getTypeName($nb = 0) {
-      return _n('File system', 'File systems', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('File system', 'File systems', $nb);
+    }
 
 }

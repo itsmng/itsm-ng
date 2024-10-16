@@ -34,32 +34,32 @@
  * @brief
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkLoginUser();
 
 if (isset($_POST["projects_id"])) {
-   $condition = ['glpi_projecttasks.projectstates_id' => ['<>', 3]];
+    $condition = ['glpi_projecttasks.projectstates_id' => ['<>', 3]];
 
-   if ($_POST["projects_id"] > 0) {
-      $condition['glpi_projecttasks.projects_id'] = $_POST['projects_id'];
-   }
+    if ($_POST["projects_id"] > 0) {
+        $condition['glpi_projecttasks.projects_id'] = $_POST['projects_id'];
+    }
 
-   if (isset($_POST['entity_restrict']) && $_POST['entity_restrict'] > 0) {
-      $condition['glpi_projecttasks.entities_id'] = $_POST['entity_restrict'];
-   }
+    if (isset($_POST['entity_restrict']) && $_POST['entity_restrict'] > 0) {
+        $condition['glpi_projecttasks.entities_id'] = $_POST['entity_restrict'];
+    }
 
-   $values = getItemByEntity(ProjectTask::class, Session::getActiveEntity(), $condition);
-   if (isset($_POST["used"]) && !empty($_POST["used"])) {
-      $used = $_POST["used"];
-      foreach ($used as $key => $value) {
-         if (isset($values[$key])) {
-            unset($values[$key]);
-         }
-      }
-   }
+    $values = getItemByEntity(ProjectTask::class, Session::getActiveEntity(), $condition);
+    if (isset($_POST["used"]) && !empty($_POST["used"])) {
+        $used = $_POST["used"];
+        foreach ($used as $key => $value) {
+            if (isset($values[$key])) {
+                unset($values[$key]);
+            }
+        }
+    }
 
-   echo json_encode($values);
+    echo json_encode($values);
 }

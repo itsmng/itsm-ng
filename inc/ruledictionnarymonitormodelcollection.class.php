@@ -30,15 +30,17 @@
  * ---------------------------------------------------------------------
  */
 
-class RuleDictionnaryMonitorModelCollection extends RuleDictionnaryDropdownCollection {
-   public $item_table  = "glpi_monitormodels";
-   public $menu_option = "model.monitor";
+class RuleDictionnaryMonitorModelCollection extends RuleDictionnaryDropdownCollection
+{
+    public $item_table  = "glpi_monitormodels";
+    public $menu_option = "model.monitor";
 
-   /**
-    * @see RuleCollection::getTitle()
-   **/
-   function getTitle() {
-      return __('Dictionnary of computer models');
-   }
+    /**
+     * @see RuleCollection::getTitle()
+    **/
+    public function getTitle()
+    {
+        return __('Dictionnary of computer models');
+    }
 
 }

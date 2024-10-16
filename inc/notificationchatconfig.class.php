@@ -2,8 +2,7 @@
 
 class NotificationChatConfig extends CommonDBTM
 {
-
-    function processPostData($rocketUrl, $chat, $type, $value)
+    public function processPostData($rocketUrl, $chat, $type, $value)
     {
         $return = $this->add(array(
             'hookurl' => $rocketUrl,
@@ -38,7 +37,7 @@ class NotificationChatConfig extends CommonDBTM
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
 
-        // Set HTTP Header for POST request 
+        // Set HTTP Header for POST request
         curl_setopt(
             $ch,
             CURLOPT_HTTPHEADER,
@@ -100,7 +99,7 @@ class NotificationChatConfig extends CommonDBTM
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
 
-        // Set HTTP Header for POST request 
+        // Set HTTP Header for POST request
         curl_setopt(
             $ch,
             CURLOPT_HTTPHEADER,

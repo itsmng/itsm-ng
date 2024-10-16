@@ -33,37 +33,39 @@
 namespace Glpi\System\Requirement;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * @since 9.5.0
  */
-class DbTimezones extends AbstractRequirement {
+class DbTimezones extends AbstractRequirement
+{
+    /**
+     * DB instance.
+     *
+     * @var \DBmysql
+     */
+    private $db;
 
-   /**
-    * DB instance.
-    *
-    * @var \DBmysql
-    */
-   private $db;
+    public function __construct(\DBmysql $db)
+    {
+        $this->title = __('Testing DB timezone data');
+        $this->db = $db;
+        $this->optional = true;
+    }
 
-   public function __construct(\DBmysql $db) {
-      $this->title = __('Testing DB timezone data');
-      $this->db = $db;
-      $this->optional = true;
-   }
+    protected function check()
+    {
+        $tz_warning = '';
+        $tz_available = $this->db->areTimezonesAvailable($tz_warning);
 
-   protected function check() {
-      $tz_warning = '';
-      $tz_available = $this->db->areTimezonesAvailable($tz_warning);
-
-      if (!$tz_available) {
-         $this->validated = false;
-         $this->validation_messages[] = $tz_warning;
-      } else {
-         $this->validated = true;
-         $this->validation_messages[] = __('Timezones seems loaded in database');
-      }
-   }
+        if (!$tz_available) {
+            $this->validated = false;
+            $this->validation_messages[] = $tz_warning;
+        } else {
+            $this->validated = true;
+            $this->validation_messages[] = __('Timezones seems loaded in database');
+        }
+    }
 }

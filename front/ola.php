@@ -34,7 +34,7 @@
  * @since 9.1
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRight("slm", READ);
 

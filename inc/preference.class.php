@@ -31,31 +31,32 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 // class Preference for the current connected User
-class Preference extends CommonGLPI {
+class Preference extends CommonGLPI
+{
+    public static function getTypeName($nb = 0)
+    {
+        // Always plural
+        return __('Settings');
+    }
 
 
-   static function getTypeName($nb = 0) {
-      // Always plural
-      return __('Settings');
-   }
+    public function defineTabs($options = [])
+    {
 
+        $ong = [];
+        $this->addStandardTab('User', $ong, $options);
+        if (Session::haveRightsOr('personalization', [READ, UPDATE])) {
+            $this->addStandardTab('Config', $ong, $options);
+        }
+        // if (Session::haveRightsOr('accessibility', [READ, UPDATE])) {
+        //    $this->addStandardTab('Accessibility', $ong, $options);
+        // }
+        $this->addStandardTab('DisplayPreference', $ong, $options);
 
-   function defineTabs($options = []) {
-
-      $ong = [];
-      $this->addStandardTab('User', $ong, $options);
-      if (Session::haveRightsOr('personalization', [READ, UPDATE])) {
-         $this->addStandardTab('Config', $ong, $options);
-      }
-      // if (Session::haveRightsOr('accessibility', [READ, UPDATE])) {
-      //    $this->addStandardTab('Accessibility', $ong, $options);
-      // }
-      $this->addStandardTab('DisplayPreference', $ong, $options);
-
-      return $ong;
-   }
+        return $ong;
+    }
 }

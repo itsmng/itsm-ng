@@ -34,15 +34,15 @@
  * @since 0.84
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkCentralAccess();
 
 if (isset($_POST["add"])) {
-   Item_Devices::addDevicesFromPOST($_POST);
-   Html::back();
-} else if (isset($_POST["updateall"])) {
-   Item_Devices::updateAll($_POST);
-   Html::back();
+    Item_Devices::addDevicesFromPOST($_POST);
+    Html::back();
+} elseif (isset($_POST["updateall"])) {
+    Item_Devices::updateAll($_POST);
+    Html::back();
 }
 Html::displayErrorAndDie('Lost');

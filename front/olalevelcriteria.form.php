@@ -33,26 +33,26 @@
 /**
  * @since 9.2
  */
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 
 $criteria = new OlaLevelCriteria();
 
 if (isset($_POST["add"])) {
-   $criteria->check(-1, CREATE, $_POST);
-   $criteria->add($_POST);
+    $criteria->check(-1, CREATE, $_POST);
+    $criteria->add($_POST);
 
-   Html::back();
+    Html::back();
 
-} else if (isset($_POST["update"])) {
-   $criteria->check($_POST['id'], UPDATE);
-   $criteria->update($_POST);
+} elseif (isset($_POST["update"])) {
+    $criteria->check($_POST['id'], UPDATE);
+    $criteria->update($_POST);
 
-   Html::back();
+    Html::back();
 
-} else if (isset($_POST["purge"])) {
-   $criteria->check($_POST['id'], PURGE);
-   $criteria->delete($_POST, 1);
+} elseif (isset($_POST["purge"])) {
+    $criteria->check($_POST['id'], PURGE);
+    $criteria->delete($_POST, 1);
 
-   Html::back();
+    Html::back();
 }

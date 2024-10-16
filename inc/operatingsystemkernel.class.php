@@ -31,14 +31,15 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class OperatingSystemKernel extends CommonDropdown {
+class OperatingSystemKernel extends CommonDropdown
+{
+    public $can_be_translated = false;
 
-   public $can_be_translated = false;
-
-   static function getTypeName($nb = 0) {
-      return _n('Kernel', 'Kernels', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Kernel', 'Kernels', $nb);
+    }
 }

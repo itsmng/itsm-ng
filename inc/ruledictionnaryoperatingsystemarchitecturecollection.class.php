@@ -30,15 +30,17 @@
  * ---------------------------------------------------------------------
  */
 
-class RuleDictionnaryOperatingSystemArchitectureCollection extends RuleDictionnaryDropdownCollection {
-   public $item_table  = "glpi_operatingsystemarchitectures";
-   public $menu_option = "os_arch";
+class RuleDictionnaryOperatingSystemArchitectureCollection extends RuleDictionnaryDropdownCollection
+{
+    public $item_table  = "glpi_operatingsystemarchitectures";
+    public $menu_option = "os_arch";
 
-   /**
-    * @see RuleCollection::getTitle()
-   **/
-   function getTitle() {
-      return __('Dictionnary of operating system architectures');
-   }
+    /**
+     * @see RuleCollection::getTitle()
+    **/
+    public function getTitle()
+    {
+        return __('Dictionnary of operating system architectures');
+    }
 
 }

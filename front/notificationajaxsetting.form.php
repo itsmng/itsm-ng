@@ -30,18 +30,18 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRight("config", UPDATE);
 $notificationajax = new NotificationAjaxSetting();
 
 if (!empty($_POST["test_ajax_send"])) {
-   NotificationAjax::testNotification();
-   Html::back();
-} else if (!empty($_POST["update"])) {
-   $config = new Config();
-   $config->update($_POST);
-   Html::back();
+    NotificationAjax::testNotification();
+    Html::back();
+} elseif (!empty($_POST["update"])) {
+    $config = new Config();
+    $config->update($_POST);
+    Html::back();
 }
 
 Html::header(Notification::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "config", "notification", "config");

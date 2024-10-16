@@ -31,165 +31,169 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class KnowbaseItem_Revision
 /// since version 9.2
-class KnowbaseItem_Revision extends CommonDBTM {
+class KnowbaseItem_Revision extends CommonDBTM
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Revision', 'Revisions', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('Revision', 'Revisions', $nb);
-   }
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
+        if (!$item->canUpdateItem()) {
+            return '';
+        }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      if (!$item->canUpdateItem()) {
-         return '';
-      }
+        $nb = 0;
+        if ($_SESSION['glpishow_count_on_tabs']) {
+            $where = [];
+            if ($item->getType() == KnowbaseItem::getType()) {
+                $where = [
+                   'knowbaseitems_id' => $item->getID(),
+                   'language'         => ''
+                ];
+            } else {
+                $where = [
+                   'knowbaseitems_id' => $item->fields['knowbaseitems_id'],
+                   'language'         => $item->fields['language']
+                ];
+            }
 
-      $nb = 0;
-      if ($_SESSION['glpishow_count_on_tabs']) {
-         $where = [];
-         if ($item->getType() == KnowbaseItem::getType()) {
+            $nb = countElementsInTable(
+                'glpi_knowbaseitems_revisions',
+                $where
+            );
+        }
+        return self::createTabEntry(self::getTypeName($nb), $nb);
+    }
+
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
+        self::showForItem($item, $withtemplate);
+        return true;
+    }
+
+    /**
+     * Show linked items of a knowbase item
+     *
+     * @param $item                     CommonDBTM object
+     * @param $withtemplate    integer  withtemplate param (default 0)
+    **/
+    public static function showForItem(CommonDBTM $item, $withtemplate = 0)
+    {
+        global $DB, $CFG_GLPI;
+
+        $item_id = $item->getID();
+        $item_type = $item::getType();
+        if (isset($_GET["start"])) {
+            $start = intval($_GET["start"]);
+        } else {
+            $start = 0;
+        }
+
+        // Total Number of revisions
+        if ($item->getType() == KnowbaseItem::getType()) {
             $where = [
                'knowbaseitems_id' => $item->getID(),
                'language'         => ''
             ];
-         } else {
+        } else {
             $where = [
                'knowbaseitems_id' => $item->fields['knowbaseitems_id'],
                'language'         => $item->fields['language']
             ];
-         }
+        }
 
-         $nb = countElementsInTable(
+        $number = countElementsInTable(
             'glpi_knowbaseitems_revisions',
             $where
-         );
-      }
-      return self::createTabEntry(self::getTypeName($nb), $nb);
-   }
+        );
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-      self::showForItem($item, $withtemplate);
-      return true;
-   }
+        // No revisions in database
+        if ($number < 1) {
+            $no_txt = __('No revisions');
+            echo "<div class='center'>";
+            echo "<table class='tab_cadre_fixe' aria-label='No Revisions'>";
+            echo "<tr><th>$no_txt</th></tr>";
+            echo "</table>";
+            echo "</div>";
+            return;
+        }
+        // Display the pager
 
-   /**
-    * Show linked items of a knowbase item
-    *
-    * @param $item                     CommonDBTM object
-    * @param $withtemplate    integer  withtemplate param (default 0)
-   **/
-   static function showForItem(CommonDBTM $item, $withtemplate = 0) {
-      global $DB, $CFG_GLPI;
+        Html::printAjaxPager(self::getTypeName(1), $start, $number);
+        // Output events
+        echo "<div class='center'>";
+        echo "<input type='button' name='compare' value='"._sx('button', 'Compare selected revisions').
+               "' class='submit compare'>";
+        echo "<table class='tab_cadre_fixehov' aria-label='Revisions'>";
+        $header = '<tr>';
+        $header .= "<th title='" . _sn('Revision', 'Revisions', 1) . "'>#</th>";
+        $header .= "<th>&nbsp;</th>";
+        $header .= "<th>" . __('Author')  . "</th>";
+        $header .= "<th>".__('Creation date')."</th>";
+        $header .= "<th></th></tr>";
+        echo $header;
 
-      $item_id = $item->getID();
-      $item_type = $item::getType();
-      if (isset($_GET["start"])) {
-         $start = intval($_GET["start"]);
-      } else {
-         $start = 0;
-      }
+        $user = new User();
+        $user->getFromDB($item->fields['users_id']);
 
-      // Total Number of revisions
-      if ($item->getType() == KnowbaseItem::getType()) {
-         $where = [
-            'knowbaseitems_id' => $item->getID(),
-            'language'         => ''
-         ];
-      } else {
-         $where = [
-            'knowbaseitems_id' => $item->fields['knowbaseitems_id'],
-            'language'         => $item->fields['language']
-         ];
-      }
+        //current contents
+        echo "<tr class='tab_bg_2'>";
+        echo "<td>(" . __('cur')  . ")</td>" .
+                "<td><input type='radio' name='oldid' value='0' style='visibility:hidden'/>" .
+                "<input type='radio' name='diff' value='0' checked='checked'/></td>" .
+                "<td>" . $user->getLink() . "</td>".
+                "<td class='tab_date'>". $item->fields['date_mod'] . "</td>" .
+                "<td></td>" .
+                "</tr>";
 
-      $number = countElementsInTable(
-         'glpi_knowbaseitems_revisions',
-         $where
-       );
+        $revisions = $DB->request(
+            'glpi_knowbaseitems_revisions',
+            $where + ['ORDER' => 'id DESC']
+        );
 
-      // No revisions in database
-      if ($number < 1) {
-         $no_txt = __('No revisions');
-         echo "<div class='center'>";
-         echo "<table class='tab_cadre_fixe' aria-label='No Revisions'>";
-         echo "<tr><th>$no_txt</th></tr>";
-         echo "</table>";
-         echo "</div>";
-         return;
-      }
-      // Display the pager
+        $is_checked = true;
+        foreach ($revisions as $revision) {
+            // Before GLPI 9.3.1, author was not stored in revision.
+            // See https://github.com/glpi-project/glpi/issues/4377.
+            $hasRevUser = $user->getFromDB($revision['users_id']);
 
-      Html::printAjaxPager(self::getTypeName(1), $start, $number);
-      // Output events
-      echo "<div class='center'>";
-      echo "<input type='button' name='compare' value='"._sx('button', 'Compare selected revisions').
-             "' class='submit compare'>";
-      echo "<table class='tab_cadre_fixehov' aria-label='Revisions'>";
-      $header = '<tr>';
-      $header .= "<th title='" . _sn('Revision', 'Revisions', 1) . "'>#</th>";
-      $header .= "<th>&nbsp;</th>";
-      $header .= "<th>" . __('Author')  . "</th>";
-      $header .= "<th>".__('Creation date')."</th>";
-      $header .= "<th></th></tr>";
-      echo $header;
+            echo "<tr class='tab_bg_2'>";
+            echo "<td>" . $revision['revision']  . "</td>" .
+                    "<td><input type='radio' name='oldid' value='{$revision['id']}'";
 
-      $user = new User();
-      $user->getFromDB($item->fields['users_id']);
+            if ($is_checked) {
+                echo " checked='checked'";
+                $is_checked = false;
+            }
 
-      //current contents
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>(" . __('cur')  . ")</td>" .
-              "<td><input type='radio' name='oldid' value='0' style='visibility:hidden'/>" .
-              "<input type='radio' name='diff' value='0' checked='checked'/></td>" .
-              "<td>" . $user->getLink() . "</td>".
-              "<td class='tab_date'>". $item->fields['date_mod'] . "</td>" .
-              "<td></td>" .
-              "</tr>";
+            echo "/> <input type='radio' name='diff' value='{$revision['id']}'/></td>";
 
-      $revisions = $DB->request(
-         'glpi_knowbaseitems_revisions',
-         $where + ['ORDER' => 'id DESC']
-      );
+            echo "<td>" . ($hasRevUser ? $user->getLink() : __('Unknown user')) . "</td>".
+                "<td class='tab_date'>". $revision['date_creation'] . "</td>";
 
-      $is_checked = true;
-      foreach ($revisions as $revision) {
-         // Before GLPI 9.3.1, author was not stored in revision.
-         // See https://github.com/glpi-project/glpi/issues/4377.
-         $hasRevUser = $user->getFromDB($revision['users_id']);
+            $form = null;
+            if ($item->getType() == KnowbaseItem::getType()) {
+                $form = KnowbaseItem::getFormURLWithID($revision['knowbaseitems_id']);
+            } else {
+                $form = KnowbaseItemTranslation::getFormURLWithID($revision['knowbaseitems_id']);
+            }
 
-         echo "<tr class='tab_bg_2'>";
-         echo "<td>" . $revision['revision']  . "</td>" .
-                 "<td><input type='radio' name='oldid' value='{$revision['id']}'";
-
-         if ($is_checked) {
-            echo " checked='checked'";
-            $is_checked = false;
-         }
-
-         echo "/> <input type='radio' name='diff' value='{$revision['id']}'/></td>";
-
-         echo "<td>" . ($hasRevUser ? $user->getLink() : __('Unknown user')) . "</td>".
-             "<td class='tab_date'>". $revision['date_creation'] . "</td>";
-
-         $form = null;
-         if ($item->getType() == KnowbaseItem::getType()) {
-            $form = KnowbaseItem::getFormURLWithID($revision['knowbaseitems_id']);
-         } else {
-            $form = KnowbaseItemTranslation::getFormURLWithID($revision['knowbaseitems_id']);
-         }
-
-         echo "<td><a href='#' data-rev='" . $revision['revision']  . "'
+            echo "<td><a href='#' data-rev='" . $revision['revision']  . "'
                     data-revid='" . $revision['id']  . "' class='show'>" . __('show') . "</a>
                  - <a href='$form&to_rev={$revision['id']}' class='restore'>".
-                    __('restore')  . "</a></td>";
-         echo "</tr>";
-      }
+                       __('restore')  . "</a></td>";
+            echo "</tr>";
+        }
 
-      echo Html::script("public/lib/jquery-prettytextdiff.js");
-      echo "<script type='text/javascript'>
+        echo Html::script("public/lib/jquery-prettytextdiff.js");
+        echo "<script type='text/javascript'>
             $(function() {
                $('.restore').on('click', function(e) {
                   lastClickedElement = e.target;
@@ -222,7 +226,7 @@ class KnowbaseItem_Revision extends CommonDBTM {
                         });
                      },
                      error: function() { ".
-                        Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!'))."
+                          Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!'))."
                      }
                   });
                });
@@ -259,7 +263,7 @@ class KnowbaseItem_Revision extends CommonDBTM {
                         $('#compare_view tr').prettyTextDiff();
                      },
                      error: function() { ".
-                        Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load requested comparison!'))."
+                          Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load requested comparison!'))."
                      }
                   });
                });
@@ -279,81 +283,84 @@ class KnowbaseItem_Revision extends CommonDBTM {
             });
          </script>";
 
-      echo $header;
-      echo "</table>";
-      echo "<input type='button' name='compare' value='"._sx('button', 'Compare selected revisions')."' class='submit compare'>";
-      echo "</div>";
-      Html::printAjaxPager(self::getTypeName(1), $start, $number);
-   }
+        echo $header;
+        echo "</table>";
+        echo "<input type='button' name='compare' value='"._sx('button', 'Compare selected revisions')."' class='submit compare'>";
+        echo "</div>";
+        Html::printAjaxPager(self::getTypeName(1), $start, $number);
+    }
 
-   /**
-    * Populate and create a new revision from KnowbaseItem information
-    *
-    * @param KnowbaseItem $item Knowledge base item
-    *
-    * @return boolean
-    */
-   public function createNew(KnowbaseItem $item) {
-      $this->getEmpty();
-      unset($this->fields['id']);
-      $this->fields['knowbaseitems_id'] = $item->fields['id'];
-      $this->fields['name'] = Toolbox::addslashes_deep($item->fields['name']);
-      $this->fields['answer'] = Toolbox::clean_cross_side_scripting_deep(
-         Toolbox::addslashes_deep($item->fields['answer'])
-      );
-      $this->fields['date_creation'] = $item->fields['date_mod'];
-      $this->fields['revision'] = $this->getNewRevision();
-      $this->fields['users_id'] = $item->fields['users_id'];
-      $this->addToDB();
-   }
+    /**
+     * Populate and create a new revision from KnowbaseItem information
+     *
+     * @param KnowbaseItem $item Knowledge base item
+     *
+     * @return boolean
+     */
+    public function createNew(KnowbaseItem $item)
+    {
+        $this->getEmpty();
+        unset($this->fields['id']);
+        $this->fields['knowbaseitems_id'] = $item->fields['id'];
+        $this->fields['name'] = Toolbox::addslashes_deep($item->fields['name']);
+        $this->fields['answer'] = Toolbox::clean_cross_side_scripting_deep(
+            Toolbox::addslashes_deep($item->fields['answer'])
+        );
+        $this->fields['date_creation'] = $item->fields['date_mod'];
+        $this->fields['revision'] = $this->getNewRevision();
+        $this->fields['users_id'] = $item->fields['users_id'];
+        $this->addToDB();
+    }
 
-   /**
-    * Populate and create a new revision from KnowbaseItem information
-    *
-    * @param KnowbaseItemTranslation $item Knowledge base item translation
-    *
-    * @return boolean
-    */
-   public function createNewTranslated(KnowbaseItemTranslation $item) {
-      $this->getEmpty();
-      unset($this->fields['id']);
-      $this->fields['knowbaseitems_id'] = $item->fields['knowbaseitems_id'];
-      $this->fields['name'] = Toolbox::addslashes_deep($item->fields['name']);
-      $this->fields['answer'] = Toolbox::clean_cross_side_scripting_deep(
-         Toolbox::addslashes_deep($item->fields['answer'])
-      );
-      $this->fields['date_creation'] = $item->fields['date_mod'];
-      $this->fields['language'] = $item->fields['language'];
-      $this->fields['revision'] = $this->getNewRevision();
-      $this->fields['users_id'] = $item->fields['users_id'];
-      $this->addToDB();
-   }
+    /**
+     * Populate and create a new revision from KnowbaseItem information
+     *
+     * @param KnowbaseItemTranslation $item Knowledge base item translation
+     *
+     * @return boolean
+     */
+    public function createNewTranslated(KnowbaseItemTranslation $item)
+    {
+        $this->getEmpty();
+        unset($this->fields['id']);
+        $this->fields['knowbaseitems_id'] = $item->fields['knowbaseitems_id'];
+        $this->fields['name'] = Toolbox::addslashes_deep($item->fields['name']);
+        $this->fields['answer'] = Toolbox::clean_cross_side_scripting_deep(
+            Toolbox::addslashes_deep($item->fields['answer'])
+        );
+        $this->fields['date_creation'] = $item->fields['date_mod'];
+        $this->fields['language'] = $item->fields['language'];
+        $this->fields['revision'] = $this->getNewRevision();
+        $this->fields['users_id'] = $item->fields['users_id'];
+        $this->addToDB();
+    }
 
-   /**
-    * Get new revision number for item
-    *
-    * @return integer
-    */
-   private function getNewRevision() {
-      global $DB;
+    /**
+     * Get new revision number for item
+     *
+     * @return integer
+     */
+    private function getNewRevision()
+    {
+        global $DB;
 
-      $result = $DB->request([
-         'SELECT' => ['MAX' => 'revision AS revision'],
-         'FROM'   => 'glpi_knowbaseitems_revisions',
-         'WHERE'  => [
-            'knowbaseitems_id'   => $this->fields['knowbaseitems_id'],
-            'language'           => $this->fields['language']
-         ]
-      ])->next();
+        $result = $DB->request([
+           'SELECT' => ['MAX' => 'revision AS revision'],
+           'FROM'   => 'glpi_knowbaseitems_revisions',
+           'WHERE'  => [
+              'knowbaseitems_id'   => $this->fields['knowbaseitems_id'],
+              'language'           => $this->fields['language']
+           ]
+        ])->next();
 
-      $rev = $result['revision'];
-      if ($rev === null) {
-         //no revisions yet
-         $rev = 1;
-      } else {
-         ++$rev;
-      }
+        $rev = $result['revision'];
+        if ($rev === null) {
+            //no revisions yet
+            $rev = 1;
+        } else {
+            ++$rev;
+        }
 
-      return $rev;
-   }
+        return $rev;
+    }
 }

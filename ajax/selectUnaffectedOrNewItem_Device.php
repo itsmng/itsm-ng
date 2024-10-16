@@ -34,7 +34,7 @@
  * @since 0.85
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
@@ -44,37 +44,37 @@ Session::checkCentralAccess();
 // Make a select box
 if ($_POST['items_id']
     && $_POST['itemtype'] && class_exists($_POST['itemtype'])) {
-   $devicetype = $_POST['itemtype'];
-   $linktype   = $devicetype::getItem_DeviceType();
+    $devicetype = $_POST['itemtype'];
+    $linktype   = $devicetype::getItem_DeviceType();
 
-   if (count($linktype::getSpecificities())) {
-      $keys = array_keys($linktype::getSpecificities());
-      array_walk($keys, function (&$val) use ($DB) { return $DB->quoteName($val); });
-      $name_field = new QueryExpression(
-         "CONCAT_WS(' - ', " . implode(', ', $keys) . ")"
+    if (count($linktype::getSpecificities())) {
+        $keys = array_keys($linktype::getSpecificities());
+        array_walk($keys, function (&$val) use ($DB) { return $DB->quoteName($val); });
+        $name_field = new QueryExpression(
+            "CONCAT_WS(' - ', " . implode(', ', $keys) . ")"
          . "AS ".$DB->quoteName("name")
-      );
-   } else {
-      $name_field = 'id AS name';
-   }
-   $result = $DB->request(
-      [
-         'SELECT' => ['id', $name_field],
-         'FROM'   => $linktype::getTable(),
-         'WHERE'  => [
-            $devicetype::getForeignKeyField() => $_POST['items_id'],
-            'itemtype'                        => '',
-         ]
+        );
+    } else {
+        $name_field = 'id AS name';
+    }
+    $result = $DB->request(
+        [
+          'SELECT' => ['id', $name_field],
+          'FROM'   => $linktype::getTable(),
+          'WHERE'  => [
+             $devicetype::getForeignKeyField() => $_POST['items_id'],
+             'itemtype'                        => '',
+          ]
       ]
-   );
-   $devices = [];
-   foreach ($result as $row) {
-      $name = $row['name'];
-      if (empty($name)) {
-         $name = $row['id'];
-      }
-      $devices[$row['id']] = $name;
+    );
+    $devices = [];
+    foreach ($result as $row) {
+        $name = $row['name'];
+        if (empty($name)) {
+            $name = $row['id'];
+        }
+        $devices[$row['id']] = $name;
 
-   }
-   echo json_encode(['name' => $devicetype::getForeignKeyField(), 'options' => $devices]);
+    }
+    echo json_encode(['name' => $devicetype::getForeignKeyField(), 'options' => $devices]);
 }

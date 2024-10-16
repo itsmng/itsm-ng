@@ -30,46 +30,48 @@
  * ---------------------------------------------------------------------
  */
 
-class RuleDictionnaryOperatingSystemServicePack extends RuleDictionnaryDropdown {
+class RuleDictionnaryOperatingSystemServicePack extends RuleDictionnaryDropdown
+{
+    /**
+     * Constructor
+    **/
+    public function __construct()
+    {
+        parent::__construct('RuleDictionnaryOperatingSystemServicePack');
+    }
 
 
-   /**
-    * Constructor
-   **/
-   function __construct() {
-      parent::__construct('RuleDictionnaryOperatingSystemServicePack');
-   }
+    /**
+     * @see Rule::getCriterias()
+    **/
+    public function getCriterias()
+    {
+
+        static $criterias = [];
+
+        if (count($criterias)) {
+            return $criterias;
+        }
+
+        $criterias['name']['field'] = 'name';
+        $criterias['name']['name']  = OperatingSystemServicePack::getTypeName(1);
+        $criterias['name']['table'] = 'glpi_operatingsystemservicepacks';
+
+        return $criterias;
+    }
 
 
-   /**
-    * @see Rule::getCriterias()
-   **/
-   function getCriterias() {
+    /**
+     * @see Rule::getActions()
+    **/
+    public function getActions()
+    {
 
-      static $criterias = [];
+        $actions                          = [];
+        $actions['name']['name']          = OperatingSystemServicePack::getTypeName(1);
+        $actions['name']['force_actions'] = ['append_regex_result', 'assign', 'regex_result'];
 
-      if (count($criterias)) {
-         return $criterias;
-      }
-
-      $criterias['name']['field'] = 'name';
-      $criterias['name']['name']  = OperatingSystemServicePack::getTypeName(1);
-      $criterias['name']['table'] = 'glpi_operatingsystemservicepacks';
-
-      return $criterias;
-   }
-
-
-   /**
-    * @see Rule::getActions()
-   **/
-   function getActions() {
-
-      $actions                          = [];
-      $actions['name']['name']          = OperatingSystemServicePack::getTypeName(1);
-      $actions['name']['force_actions'] = ['append_regex_result', 'assign', 'regex_result'];
-
-      return $actions;
-   }
+        return $actions;
+    }
 
 }

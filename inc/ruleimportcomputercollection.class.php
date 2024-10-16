@@ -31,34 +31,36 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Import rules collection class
-class RuleImportComputerCollection extends RuleCollection {
-
-   // From RuleCollection
-   public $stop_on_first_match = true;
-   static $rightname           = 'rule_import';
-   public $menu_option         = 'linkcomputer';
-
-
-   /**
-    * @since 0.84
-    *
-    * @return boolean
-   **/
-   function canList() {
-      if (Plugin::haveImport()) {
-         return static::canView();
-      }
-      return false;
-   }
+class RuleImportComputerCollection extends RuleCollection
+{
+    // From RuleCollection
+    public $stop_on_first_match = true;
+    public static $rightname           = 'rule_import';
+    public $menu_option         = 'linkcomputer';
 
 
-   function getTitle() {
-      return __('Rules for import and link computers');
-   }
+    /**
+     * @since 0.84
+     *
+     * @return boolean
+    **/
+    public function canList()
+    {
+        if (Plugin::haveImport()) {
+            return static::canView();
+        }
+        return false;
+    }
+
+
+    public function getTitle()
+    {
+        return __('Rules for import and link computers');
+    }
 
 
 }

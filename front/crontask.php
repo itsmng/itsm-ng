@@ -34,7 +34,7 @@
  * Search engine from cron tasks
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRight("config", UPDATE);
 
@@ -42,21 +42,37 @@ Html::header(CronTask::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SE
 
 $crontask = new CronTask();
 if ($crontask->getNeedToRun(CronTask::MODE_INTERNAL)) {
-   $name = sprintf(__('%1$s %2$s'), $crontask->fields['name'],
-                   Html::getSimpleForm($crontask->getFormURL(),
-                                       ['execute' => $crontask->fields['name']],
-                                             __('Execute')));
-   Html::displayTitle($CFG_GLPI['root_doc'].'/pics/warning.png', __('Next run'),
-                      sprintf(__('Next task to run: %s'), $name));
+    $name = sprintf(
+        __('%1$s %2$s'),
+        $crontask->fields['name'],
+        Html::getSimpleForm(
+            $crontask->getFormURL(),
+            ['execute' => $crontask->fields['name']],
+            __('Execute')
+        )
+    );
+    Html::displayTitle(
+        $CFG_GLPI['root_doc'].'/pics/warning.png',
+        __('Next run'),
+        sprintf(__('Next task to run: %s'), $name)
+    );
 } else {
-   Html::displayTitle($CFG_GLPI['root_doc'].'/pics/ok.png', __('No action pending'),
-                      __('No action pending'));
+    Html::displayTitle(
+        $CFG_GLPI['root_doc'].'/pics/ok.png',
+        __('No action pending'),
+        __('No action pending')
+    );
 }
 
-if ($CFG_GLPI['cron_limit'] < countElementsInTable('glpi_crontasks',
-                                                   ['frequency' => MINUTE_TIMESTAMP])) {
-   Html::displayTitle('', '',
-                      __('You have more automatic actions which need to run each minute than the number allow each run. Increase this config.'));
+if ($CFG_GLPI['cron_limit'] < countElementsInTable(
+    'glpi_crontasks',
+    ['frequency' => MINUTE_TIMESTAMP]
+)) {
+    Html::displayTitle(
+        '',
+        '',
+        __('You have more automatic actions which need to run each minute than the number allow each run. Increase this config.')
+    );
 }
 
 Search::show('CronTask');

@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 //!  ConsumableItem Class
@@ -40,469 +40,496 @@ if (!defined('GLPI_ROOT')) {
  * @see Consumable
  * @author Julien Dombre
 */
-class ConsumableItem extends CommonDBTM {
-   // From CommonDBTM
-   static protected $forward_entity_to = ['Consumable', 'Infocom'];
-   public $dohistory                   = true;
-   protected $usenotepad               = true;
+class ConsumableItem extends CommonDBTM
+{
+    // From CommonDBTM
+    protected static $forward_entity_to = ['Consumable', 'Infocom'];
+    public $dohistory                   = true;
+    protected $usenotepad               = true;
 
-   static $rightname                   = 'consumable';
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Consumable model', 'Consumable models', $nb);
-   }
+    public static $rightname                   = 'consumable';
 
 
-   static function getMenuName() {
-      return Consumable::getTypeName(Session::getPluralNumber());
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Consumable model', 'Consumable models', $nb);
+    }
 
 
-   static function getAdditionalMenuLinks() {
-
-      if (static::canView()) {
-         return ['summary' => '/front/consumableitem.php?synthese=yes'];
-      }
-      return false;
-   }
+    public static function getMenuName()
+    {
+        return Consumable::getTypeName(Session::getPluralNumber());
+    }
 
 
-   function getPostAdditionalInfosForName() {
+    public static function getAdditionalMenuLinks()
+    {
 
-      if (isset($this->fields["ref"]) && !empty($this->fields["ref"])) {
-         return $this->fields["ref"];
-      }
-      return '';
-   }
+        if (static::canView()) {
+            return ['summary' => '/front/consumableitem.php?synthese=yes'];
+        }
+        return false;
+    }
 
 
-   function cleanDBonPurge() {
+    public function getPostAdditionalInfosForName()
+    {
 
-      $this->deleteChildrenAndRelationsFromDb(
-         [
-            Consumable::class,
+        if (isset($this->fields["ref"]) && !empty($this->fields["ref"])) {
+            return $this->fields["ref"];
+        }
+        return '';
+    }
+
+
+    public function cleanDBonPurge()
+    {
+
+        $this->deleteChildrenAndRelationsFromDb(
+            [
+              Consumable::class,
          ]
-      );
+        );
 
-      // Alert does not extends CommonDBConnexity
-      $alert = new Alert();
-      $alert->cleanDBonItemDelete($this->getType(), $this->fields['id']);
-   }
-
-
-   function post_getEmpty() {
-
-      $this->fields["alarm_threshold"] = Entity::getUsedConfig(
-              "consumables_alert_repeat", $this->fields["entities_id"],
-              "default_consumables_alarm_threshold", 10);
-   }
+        // Alert does not extends CommonDBConnexity
+        $alert = new Alert();
+        $alert->cleanDBonItemDelete($this->getType(), $this->fields['id']);
+    }
 
 
-   function defineTabs($options = []) {
+    public function post_getEmpty()
+    {
 
-      $ong = [];
-      $this->addDefaultFormTab($ong);
-      $this->addStandardTab('Consumable', $ong, $options);
-      $this->addStandardTab('Infocom', $ong, $options);
-      $this->addStandardTab('Document_Item', $ong, $options);
-      $this->addStandardTab('Link', $ong, $options);
-      $this->addStandardTab('Notepad', $ong, $options);
-      $this->addStandardTab('Log', $ong, $options);
-
-      return $ong;
-   }
+        $this->fields["alarm_threshold"] = Entity::getUsedConfig(
+            "consumables_alert_repeat",
+            $this->fields["entities_id"],
+            "default_consumables_alarm_threshold",
+            10
+        );
+    }
 
 
-   /**
-    * Print the consumable type form
-    *
-    * @param integer $ID    ID of the item
-    * @param array $options
-    *    - target filename : where to go when done.
-    *    - withtemplate boolean : template or basic item
-    *
-    * @return true
-    */
-   function showForm($ID, $options = []) {
-      $form = [
-         'action' => $this->getFormURL(),
-         'itemtype' => self::class,
-         'content' => [
-            __('General') => [
-               'visible' => true,
-               'inputs' => [
-                  __("Name") => [
-                     'name' => 'name',
-                     'type' => 'text',
-                     'value' => $this->fields['name'] ?? '',
-                     'placeholder' => ''
-                  ],
-                  Manufacturer::getTypeName(1) => [
-                     'name' => 'manufacturers_id',
-                     'type' => 'select',
-                     'values' => getOptionForItems('Manufacturer'),
-                     'value' => $this->fields['manufacturers_id'] ?? '',
-                     'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
-                  ],
-                  __('Technician in charge of the hardware') => [
-                     'name' => 'users_id_tech',
-                     'type' => 'select',
-                     'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
-                     'value' => $this->fields['users_id_tech'] ?? '',
-                     'actions' => getItemActionButtons(['info'], "User"),
-                  ],
-                  __('Group in charge of the hardware') => [
-                     'name' => 'groups_id_tech',
-                     'type' => 'select',
-                     'itemtype' => Group::class,
-                     'conditions' => ['is_assign' => 1],
-                     'value' => $this->fields['groups_id_tech'] ?? '',
-                     'actions' => getItemActionButtons(['info', 'add'], "Group"),
-                  ],
-                  __('Stock location') => [
-                     'name' => 'locations_id',
-                     'type' => 'select',
-                     'itemtype' => Location::class,
-                     'value' => $this->fields['locations_id'] ?? '',
-                     'actions' => getItemActionButtons(['info', 'add'], "Location"),
-                  ],
-                  __('Alert threshold') => [
-                     'name' => 'alarm_threshold',
-                     'type' => 'number',
-                     'value' => $this->fields['alarm_threshold'] ?? '',
-                     'min' => 0,
-                     'max' => 100,
-                     'step' => 1,
-                  ],
-                  __('Inventory number') => [
-                     'name' => 'otherserial',
-                     'type' => 'text',
-                     'value' => $this->fields['otherserial'] ?? '',
-                     'placeholder' => ''
-                  ],
-                  __('Comments') => [
-                     'name' => 'comment',
-                     'type' => 'textarea',
-                     'value' => $this->fields['comment'] ?? '',
-                  ],
-               ],
-            ]
-         ]
-      ];
+    public function defineTabs($options = [])
+    {
 
-      ob_start();
+        $ong = [];
+        $this->addDefaultFormTab($ong);
+        $this->addStandardTab('Consumable', $ong, $options);
+        $this->addStandardTab('Infocom', $ong, $options);
+        $this->addStandardTab('Document_Item', $ong, $options);
+        $this->addStandardTab('Link', $ong, $options);
+        $this->addStandardTab('Notepad', $ong, $options);
+        $this->addStandardTab('Log', $ong, $options);
 
-      renderTwigForm($form, '', $this->fields);
-      return true;
-   }
+        return $ong;
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    /**
+     * Print the consumable type form
+     *
+     * @param integer $ID    ID of the item
+     * @param array $options
+     *    - target filename : where to go when done.
+     *    - withtemplate boolean : template or basic item
+     *
+     * @return true
+     */
+    public function showForm($ID, $options = [])
+    {
+        $form = [
+           'action' => $this->getFormURL(),
+           'itemtype' => self::class,
+           'content' => [
+              __('General') => [
+                 'visible' => true,
+                 'inputs' => [
+                    __("Name") => [
+                       'name' => 'name',
+                       'type' => 'text',
+                       'value' => $this->fields['name'] ?? '',
+                       'placeholder' => ''
+                    ],
+                    Manufacturer::getTypeName(1) => [
+                       'name' => 'manufacturers_id',
+                       'type' => 'select',
+                       'values' => getOptionForItems('Manufacturer'),
+                       'value' => $this->fields['manufacturers_id'] ?? '',
+                       'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
+                    ],
+                    __('Technician in charge of the hardware') => [
+                       'name' => 'users_id_tech',
+                       'type' => 'select',
+                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+                       'value' => $this->fields['users_id_tech'] ?? '',
+                       'actions' => getItemActionButtons(['info'], "User"),
+                    ],
+                    __('Group in charge of the hardware') => [
+                       'name' => 'groups_id_tech',
+                       'type' => 'select',
+                       'itemtype' => Group::class,
+                       'conditions' => ['is_assign' => 1],
+                       'value' => $this->fields['groups_id_tech'] ?? '',
+                       'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                    ],
+                    __('Stock location') => [
+                       'name' => 'locations_id',
+                       'type' => 'select',
+                       'itemtype' => Location::class,
+                       'value' => $this->fields['locations_id'] ?? '',
+                       'actions' => getItemActionButtons(['info', 'add'], "Location"),
+                    ],
+                    __('Alert threshold') => [
+                       'name' => 'alarm_threshold',
+                       'type' => 'number',
+                       'value' => $this->fields['alarm_threshold'] ?? '',
+                       'min' => 0,
+                       'max' => 100,
+                       'step' => 1,
+                    ],
+                    __('Inventory number') => [
+                       'name' => 'otherserial',
+                       'type' => 'text',
+                       'value' => $this->fields['otherserial'] ?? '',
+                       'placeholder' => ''
+                    ],
+                    __('Comments') => [
+                       'name' => 'comment',
+                       'type' => 'textarea',
+                       'value' => $this->fields['comment'] ?? '',
+                    ],
+                 ],
+              ]
+           ]
+        ];
 
-      $tab[] = [
-         'id'                 => '2',
-         'table'              => $this->getTable(),
-         'field'              => 'id',
-         'name'               => __('ID'),
-         'datatype'           => 'number',
-         'massiveaction'      => false
-      ];
+        ob_start();
 
-      $tab[] = [
-         'id'                 => '34',
-         'table'              => $this->getTable(),
-         'field'              => 'ref',
-         'name'               => __('Reference'),
-         'datatype'           => 'string',
-         'autocomplete'       => true,
-      ];
-
-      $tab[] = [
-         'id'                 => '6',
-         'table'              => $this->getTable(),
-         'field'              => 'otherserial',
-         'name'               => __('Inventory number'),
-         'datatype'           => 'string',
-         'autocomplete'       => true,
-      ];
-
-      $tab[] = [
-         'id'                 => '4',
-         'table'              => 'glpi_consumableitemtypes',
-         'field'              => 'name',
-         'name'               => _n('Type', 'Types', 1),
-         'datatype'           => 'dropdown'
-      ];
-
-      $tab[] = [
-         'id'                 => '23',
-         'table'              => 'glpi_manufacturers',
-         'field'              => 'name',
-         'name'               => Manufacturer::getTypeName(1),
-         'datatype'           => 'dropdown'
-      ];
-
-      $tab[] = [
-         'id'                 => '9',
-         'table'              => $this->getTable(),
-         'field'              => '_virtual',
-         'linkfield'          => '_virtual',
-         'name'               => _n('Consumable', 'Consumables', Session::getPluralNumber()),
-         'datatype'           => 'specific',
-         'massiveaction'      => false,
-         'nosearch'           => true,
-         'nosort'             => true,
-         'additionalfields'   => ['alarm_threshold']
-      ];
-
-      $tab[] = [
-         'id'                 => '17',
-         'table'              => 'glpi_consumables',
-         'field'              => 'id',
-         'name'               => __('Number of used consumables'),
-         'datatype'           => 'count',
-         'forcegroupby'       => true,
-         'usehaving'          => true,
-         'massiveaction'      => false,
-         'joinparams'         => [
-            'jointype'           => 'child',
-            'condition'          => 'AND NEWTABLE.`date_out` IS NOT NULL'
-         ]
-      ];
-
-      $tab[] = [
-         'id'                 => '19',
-         'table'              => 'glpi_consumables',
-         'field'              => 'id',
-         'name'               => __('Number of new consumables'),
-         'datatype'           => 'count',
-         'forcegroupby'       => true,
-         'usehaving'          => true,
-         'massiveaction'      => false,
-         'joinparams'         => [
-            'jointype'           => 'child',
-            'condition'          => 'AND NEWTABLE.`date_out` IS NULL'
-         ]
-      ];
-
-      $tab = array_merge($tab, Location::rawSearchOptionsToAdd());
-
-      $tab[] = [
-         'id'                 => '24',
-         'table'              => 'glpi_users',
-         'field'              => 'name',
-         'linkfield'          => 'users_id_tech',
-         'name'               => __('Technician in charge of the hardware'),
-         'datatype'           => 'dropdown',
-         'right'              => 'own_ticket'
-      ];
-
-      $tab[] = [
-         'id'                 => '49',
-         'table'              => 'glpi_groups',
-         'field'              => 'completename',
-         'linkfield'          => 'groups_id_tech',
-         'name'               => __('Group in charge of the hardware'),
-         'condition'          => ['is_assign' => 1],
-         'datatype'           => 'dropdown'
-      ];
-
-      $tab[] = [
-         'id'                 => '8',
-         'table'              => $this->getTable(),
-         'field'              => 'alarm_threshold',
-         'name'               => __('Alert threshold'),
-         'datatype'           => 'number',
-         'toadd'              => [
-            '-1'                 => 'Never'
-         ]
-      ];
-
-      $tab[] = [
-         'id'                 => '16',
-         'table'              => $this->getTable(),
-         'field'              => 'comment',
-         'name'               => __('Comments'),
-         'datatype'           => 'text'
-      ];
-
-      $tab[] = [
-         'id'                 => '80',
-         'table'              => 'glpi_entities',
-         'field'              => 'completename',
-         'name'               => Entity::getTypeName(1),
-         'massiveaction'      => false,
-         'datatype'           => 'dropdown'
-      ];
-
-      $tab = array_merge($tab, Notepad::rawSearchOptionsToAdd());
-
-      return $tab;
-   }
+        renderTwigForm($form, '', $this->fields);
+        return true;
+    }
 
 
-   static function cronInfo($name) {
-      return ['description' => __('Send alarms on consumables')];
-   }
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
+
+        $tab[] = [
+           'id'                 => '2',
+           'table'              => $this->getTable(),
+           'field'              => 'id',
+           'name'               => __('ID'),
+           'datatype'           => 'number',
+           'massiveaction'      => false
+        ];
+
+        $tab[] = [
+           'id'                 => '34',
+           'table'              => $this->getTable(),
+           'field'              => 'ref',
+           'name'               => __('Reference'),
+           'datatype'           => 'string',
+           'autocomplete'       => true,
+        ];
+
+        $tab[] = [
+           'id'                 => '6',
+           'table'              => $this->getTable(),
+           'field'              => 'otherserial',
+           'name'               => __('Inventory number'),
+           'datatype'           => 'string',
+           'autocomplete'       => true,
+        ];
+
+        $tab[] = [
+           'id'                 => '4',
+           'table'              => 'glpi_consumableitemtypes',
+           'field'              => 'name',
+           'name'               => _n('Type', 'Types', 1),
+           'datatype'           => 'dropdown'
+        ];
+
+        $tab[] = [
+           'id'                 => '23',
+           'table'              => 'glpi_manufacturers',
+           'field'              => 'name',
+           'name'               => Manufacturer::getTypeName(1),
+           'datatype'           => 'dropdown'
+        ];
+
+        $tab[] = [
+           'id'                 => '9',
+           'table'              => $this->getTable(),
+           'field'              => '_virtual',
+           'linkfield'          => '_virtual',
+           'name'               => _n('Consumable', 'Consumables', Session::getPluralNumber()),
+           'datatype'           => 'specific',
+           'massiveaction'      => false,
+           'nosearch'           => true,
+           'nosort'             => true,
+           'additionalfields'   => ['alarm_threshold']
+        ];
+
+        $tab[] = [
+           'id'                 => '17',
+           'table'              => 'glpi_consumables',
+           'field'              => 'id',
+           'name'               => __('Number of used consumables'),
+           'datatype'           => 'count',
+           'forcegroupby'       => true,
+           'usehaving'          => true,
+           'massiveaction'      => false,
+           'joinparams'         => [
+              'jointype'           => 'child',
+              'condition'          => 'AND NEWTABLE.`date_out` IS NOT NULL'
+           ]
+        ];
+
+        $tab[] = [
+           'id'                 => '19',
+           'table'              => 'glpi_consumables',
+           'field'              => 'id',
+           'name'               => __('Number of new consumables'),
+           'datatype'           => 'count',
+           'forcegroupby'       => true,
+           'usehaving'          => true,
+           'massiveaction'      => false,
+           'joinparams'         => [
+              'jointype'           => 'child',
+              'condition'          => 'AND NEWTABLE.`date_out` IS NULL'
+           ]
+        ];
+
+        $tab = array_merge($tab, Location::rawSearchOptionsToAdd());
+
+        $tab[] = [
+           'id'                 => '24',
+           'table'              => 'glpi_users',
+           'field'              => 'name',
+           'linkfield'          => 'users_id_tech',
+           'name'               => __('Technician in charge of the hardware'),
+           'datatype'           => 'dropdown',
+           'right'              => 'own_ticket'
+        ];
+
+        $tab[] = [
+           'id'                 => '49',
+           'table'              => 'glpi_groups',
+           'field'              => 'completename',
+           'linkfield'          => 'groups_id_tech',
+           'name'               => __('Group in charge of the hardware'),
+           'condition'          => ['is_assign' => 1],
+           'datatype'           => 'dropdown'
+        ];
+
+        $tab[] = [
+           'id'                 => '8',
+           'table'              => $this->getTable(),
+           'field'              => 'alarm_threshold',
+           'name'               => __('Alert threshold'),
+           'datatype'           => 'number',
+           'toadd'              => [
+              '-1'                 => 'Never'
+           ]
+        ];
+
+        $tab[] = [
+           'id'                 => '16',
+           'table'              => $this->getTable(),
+           'field'              => 'comment',
+           'name'               => __('Comments'),
+           'datatype'           => 'text'
+        ];
+
+        $tab[] = [
+           'id'                 => '80',
+           'table'              => 'glpi_entities',
+           'field'              => 'completename',
+           'name'               => Entity::getTypeName(1),
+           'massiveaction'      => false,
+           'datatype'           => 'dropdown'
+        ];
+
+        $tab = array_merge($tab, Notepad::rawSearchOptionsToAdd());
+
+        return $tab;
+    }
 
 
-   /**
-    * Cron action on consumables : alert if a stock is behind the threshold
-    *
-    * @param CronTask|null $task to log, if NULL display (default NULL)
-    *
-    * @return integer 0 : nothing to do 1 : done with success
-   **/
-   static function cronConsumable(CronTask $task = null) {
-      global $DB, $CFG_GLPI;
+    public static function cronInfo($name)
+    {
+        return ['description' => __('Send alarms on consumables')];
+    }
 
-      $cron_status = 1;
 
-      if ($CFG_GLPI["use_notifications"]) {
-         $message = [];
-         $items   = [];
-         $alert   = new Alert();
+    /**
+     * Cron action on consumables : alert if a stock is behind the threshold
+     *
+     * @param CronTask|null $task to log, if NULL display (default NULL)
+     *
+     * @return integer 0 : nothing to do 1 : done with success
+    **/
+    public static function cronConsumable(CronTask $task = null)
+    {
+        global $DB, $CFG_GLPI;
 
-         foreach (Entity::getEntitiesToNotify('consumables_alert_repeat') as $entity => $repeat) {
+        $cron_status = 1;
 
-            $alerts_result = $DB->request(
-               [
-                  'SELECT'    => [
-                     'glpi_consumableitems.id AS consID',
-                     'glpi_consumableitems.entities_id AS entity',
-                     'glpi_consumableitems.ref AS ref',
-                     'glpi_consumableitems.name AS name',
-                     'glpi_consumableitems.alarm_threshold AS threshold',
-                     'glpi_alerts.id AS alertID',
-                     'glpi_alerts.date',
-                  ],
-                  'FROM'      => ConsumableItem::getTable(),
-                  'LEFT JOIN' => [
-                     'glpi_alerts' => [
-                        'FKEY' => [
-                           'glpi_alerts'         => 'items_id',
-                           'glpi_consumableitems' => 'id',
-                           [
-                              'AND' => ['glpi_alerts.itemtype' => 'ConsumableItem'],
-                           ],
-                        ]
-                     ]
-                  ],
-                  'WHERE'     => [
-                     'glpi_consumableitems.is_deleted'      => 0,
-                     'glpi_consumableitems.alarm_threshold' => ['>=', 0],
-                     'glpi_consumableitems.entities_id'     => $entity,
-                     'OR'                                  => [
-                        ['glpi_alerts.date' => null],
-                        ['glpi_alerts.date' => ['<', new QueryExpression('CURRENT_TIMESTAMP() - INTERVAL ' . $repeat . ' second')]],
-                     ],
-                  ],
-               ]
-            );
-
-            $message = "";
+        if ($CFG_GLPI["use_notifications"]) {
+            $message = [];
             $items   = [];
+            $alert   = new Alert();
 
-            foreach ($alerts_result as $consumable) {
-               if (($unused=Consumable::getUnusedNumber($consumable["consID"]))
-                              <=$consumable["threshold"]) {
-                  // define message alert
-                  //TRANS: %1$s is the consumable name, %2$s its reference, %3$d the remaining number
-                  $message .= sprintf(__('Threshold of alarm reached for the type of consumable: %1$s - Reference %2$s - Remaining %3$d'),
-                                      $consumable['name'], $consumable['ref'], $unused);
-                  $message.='<br>';
+            foreach (Entity::getEntitiesToNotify('consumables_alert_repeat') as $entity => $repeat) {
 
-                  $items[$consumable["consID"]] = $consumable;
+                $alerts_result = $DB->request(
+                    [
+                      'SELECT'    => [
+                         'glpi_consumableitems.id AS consID',
+                         'glpi_consumableitems.entities_id AS entity',
+                         'glpi_consumableitems.ref AS ref',
+                         'glpi_consumableitems.name AS name',
+                         'glpi_consumableitems.alarm_threshold AS threshold',
+                         'glpi_alerts.id AS alertID',
+                         'glpi_alerts.date',
+                      ],
+                      'FROM'      => ConsumableItem::getTable(),
+                      'LEFT JOIN' => [
+                         'glpi_alerts' => [
+                            'FKEY' => [
+                               'glpi_alerts'         => 'items_id',
+                               'glpi_consumableitems' => 'id',
+                               [
+                                  'AND' => ['glpi_alerts.itemtype' => 'ConsumableItem'],
+                               ],
+                            ]
+                         ]
+                      ],
+                      'WHERE'     => [
+                         'glpi_consumableitems.is_deleted'      => 0,
+                         'glpi_consumableitems.alarm_threshold' => ['>=', 0],
+                         'glpi_consumableitems.entities_id'     => $entity,
+                         'OR'                                  => [
+                            ['glpi_alerts.date' => null],
+                            ['glpi_alerts.date' => ['<', new QueryExpression('CURRENT_TIMESTAMP() - INTERVAL ' . $repeat . ' second')]],
+                         ],
+                      ],
+               ]
+                );
 
-                  // if alert exists -> delete
-                  if (!empty($consumable["alertID"])) {
-                     $alert->delete(["id" => $consumable["alertID"]]);
-                  }
-               }
+                $message = "";
+                $items   = [];
+
+                foreach ($alerts_result as $consumable) {
+                    if (($unused = Consumable::getUnusedNumber($consumable["consID"]))
+                                   <= $consumable["threshold"]) {
+                        // define message alert
+                        //TRANS: %1$s is the consumable name, %2$s its reference, %3$d the remaining number
+                        $message .= sprintf(
+                            __('Threshold of alarm reached for the type of consumable: %1$s - Reference %2$s - Remaining %3$d'),
+                            $consumable['name'],
+                            $consumable['ref'],
+                            $unused
+                        );
+                        $message .= '<br>';
+
+                        $items[$consumable["consID"]] = $consumable;
+
+                        // if alert exists -> delete
+                        if (!empty($consumable["alertID"])) {
+                            $alert->delete(["id" => $consumable["alertID"]]);
+                        }
+                    }
+                }
+
+                if (!empty($items)) {
+                    $options = [
+                       'entities_id' => $entity,
+                       'items'       => $items,
+                    ];
+
+                    if (NotificationEvent::raiseEvent('alert', new ConsumableItem(), $options)) {
+                        if ($task) {
+                            $task->log(Dropdown::getDropdownName(
+                                "glpi_entities",
+                                $entity
+                            )." :  $message\n");
+                            $task->addVolume(1);
+                        } else {
+                            Session::addMessageAfterRedirect(Dropdown::getDropdownName(
+                                "glpi_entities",
+                                $entity
+                            ).
+                                                             " :  $message");
+                        }
+
+                        $input = [
+                           'type'     => Alert::THRESHOLD,
+                           'itemtype' => 'ConsumableItem',
+                        ];
+
+                        // add alerts
+                        foreach ($items as $ID => $consumable) {
+                            $input["items_id"] = $ID;
+                            $alert->add($input);
+                            unset($alert->fields['id']);
+                        }
+
+                    } else {
+                        $entityname = Dropdown::getDropdownName('glpi_entities', $entity);
+                        //TRANS: %s is entity name
+                        $msg = sprintf(__('%s: send consumable alert failed'), $entityname);
+                        if ($task) {
+                            $task->log($msg);
+                        } else {
+                            Session::addMessageAfterRedirect($msg, false, ERROR);
+                        }
+                    }
+                }
             }
-
-            if (!empty($items)) {
-               $options = [
-                  'entities_id' => $entity,
-                  'items'       => $items,
-               ];
-
-               if (NotificationEvent::raiseEvent('alert', new ConsumableItem(), $options)) {
-                  if ($task) {
-                     $task->log(Dropdown::getDropdownName("glpi_entities",
-                                                          $entity)." :  $message\n");
-                     $task->addVolume(1);
-                  } else {
-                     Session::addMessageAfterRedirect(Dropdown::getDropdownName("glpi_entities",
-                                                                                $entity).
-                                                      " :  $message");
-                  }
-
-                  $input = [
-                     'type'     => Alert::THRESHOLD,
-                     'itemtype' => 'ConsumableItem',
-                  ];
-
-                  // add alerts
-                  foreach ($items as $ID=>$consumable) {
-                     $input["items_id"] = $ID;
-                     $alert->add($input);
-                     unset($alert->fields['id']);
-                  }
-
-               } else {
-                  $entityname = Dropdown::getDropdownName('glpi_entities', $entity);
-                  //TRANS: %s is entity name
-                  $msg = sprintf(__('%s: send consumable alert failed'), $entityname);
-                  if ($task) {
-                     $task->log($msg);
-                  } else {
-                     Session::addMessageAfterRedirect($msg, false, ERROR);
-                  }
-               }
-            }
-         }
-      }
-      return $cron_status;
-   }
+        }
+        return $cron_status;
+    }
 
 
-   function getEvents() {
-      return ['alert' => __('Send alarms on consumables')];
-   }
+    public function getEvents()
+    {
+        return ['alert' => __('Send alarms on consumables')];
+    }
 
 
-   /**
-    * Display debug information for current object
-   **/
-   function showDebug() {
+    /**
+     * Display debug information for current object
+    **/
+    public function showDebug()
+    {
 
-      // see query_alert in cronConsumable()
-      $item = ['consID'    => $this->fields['id'],
-                    'entity'    => $this->fields['entities_id'],
-                    'ref'       => $this->fields['ref'],
-                    'name'      => $this->fields['name'],
-                    'threshold' => $this->fields['alarm_threshold']];
+        // see query_alert in cronConsumable()
+        $item = ['consID'    => $this->fields['id'],
+                      'entity'    => $this->fields['entities_id'],
+                      'ref'       => $this->fields['ref'],
+                      'name'      => $this->fields['name'],
+                      'threshold' => $this->fields['alarm_threshold']];
 
-      $options = [];
-      $options['entities_id'] = $this->getEntityID();
-      $options['items']       = [$item];
-      NotificationEvent::debugEvent($this, $options);
-   }
-
-
-   function canUpdateItem() {
-
-      if (!$this->checkEntity(true)) { //check entities recursively
-         return false;
-      }
-      return true;
-   }
+        $options = [];
+        $options['entities_id'] = $this->getEntityID();
+        $options['items']       = [$item];
+        NotificationEvent::debugEvent($this, $options);
+    }
 
 
-   static function getIcon() {
-      return Consumable::getIcon();
-   }
+    public function canUpdateItem()
+    {
+
+        if (!$this->checkEntity(true)) { //check entities recursively
+            return false;
+        }
+        return true;
+    }
+
+
+    public static function getIcon()
+    {
+        return Consumable::getIcon();
+    }
 }

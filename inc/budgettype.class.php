@@ -31,18 +31,18 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * Class BudgetType
  * @since 9.1
 **/
-class BudgetType extends CommonDropdown {
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Budget type', 'Budget types', $nb);
-   }
+class BudgetType extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Budget type', 'Budget types', $nb);
+    }
 
 }

@@ -31,32 +31,32 @@
  */
 
 if (strpos($_SERVER['PHP_SELF'], "dropdownTicketCategories.php")) {
-  include ('../inc/includes.php');
-  header("Content-Type: text/html; charset=UTF-8");
-  Html::header_nocache();
-} else if (!defined('GLPI_ROOT')) {
-  die("Sorry. You can't access this file directly");
+    include('../inc/includes.php');
+    header("Content-Type: text/html; charset=UTF-8");
+    Html::header_nocache();
+} elseif (!defined('GLPI_ROOT')) {
+    die("Sorry. You can't access this file directly");
 }
 
 $opt = ['entity' => $_POST["entity_restrict"]];
-$condition  =[];
+$condition  = [];
 
 if (Session::getCurrentInterface() == "helpdesk") {
-  $condition['is_helpdeskvisible'] = 1;
+    $condition['is_helpdeskvisible'] = 1;
 }
 $query = <<<SQL
 SELECT * from glpi_itilcategories
 SQL;
 if ($_POST["type"]) {
-  switch ($_POST['type']) {
-    case Ticket::INCIDENT_TYPE :
-      $query .= ' WHERE is_incident = 1';
-      break;
+    switch ($_POST['type']) {
+        case Ticket::INCIDENT_TYPE:
+            $query .= ' WHERE is_incident = 1';
+            break;
 
-    case Ticket::DEMAND_TYPE:
-      $query .= ' WHERE is_request = 1';
-      break;
-  }
+        case Ticket::DEMAND_TYPE:
+            $query .= ' WHERE is_request = 1';
+            break;
+    }
 }
 
 global $DB;

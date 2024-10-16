@@ -30,9 +30,8 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 $rulecollection = new RuleTicketCollection($_SESSION['glpiactive_entity']);
 
-include (GLPI_ROOT . "/front/rule.common.php");
-
+include(GLPI_ROOT . "/front/rule.common.php");

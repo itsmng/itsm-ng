@@ -33,7 +33,7 @@
 namespace Glpi\Console\System;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 use Glpi\Console\AbstractCommand;
@@ -42,64 +42,67 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CheckRequirementsCommand extends AbstractCommand {
+class CheckRequirementsCommand extends AbstractCommand
+{
+    protected $requires_db = false;
 
-   protected $requires_db = false;
+    protected function configure()
+    {
+        parent::configure();
 
-   protected function configure() {
-      parent::configure();
+        $this->setName('itsmng:system:check_requirements');
+        $this->setAliases(['system:check_requirements']);
+        $this->setDescription(__('Check system requirements'));
+    }
 
-      $this->setName('itsmng:system:check_requirements');
-      $this->setAliases(['system:check_requirements']);
-      $this->setDescription(__('Check system requirements'));
-   }
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
-   protected function execute(InputInterface $input, OutputInterface $output) {
+        $requirements_manager = new RequirementsManager();
+        $core_requirements = $requirements_manager->getCoreRequirementList(
+            $this->db instanceof \DBmysql && $this->db->connected ? $this->db : null
+        );
 
-      $requirements_manager = new RequirementsManager();
-      $core_requirements = $requirements_manager->getCoreRequirementList(
-         $this->db instanceof \DBmysql && $this->db->connected ? $this->db : null
-      );
-
-      $informations = new Table($output);
-      $informations->setHeaders(
-         [
-            __('Requirement'),
-            __('Status'),
-            __('Messages'),
-         ]
-      );
-
-      /* @var \Glpi\System\Requirement\RequirementInterface $requirement */
-      foreach ($core_requirements as $requirement) {
-         if ($requirement->isOutOfContext()) {
-            continue; // skip requirement if not relevant
-         }
-
-         if ($requirement->isValidated()) {
-            $status = sprintf('<%s>[%s]</>', 'fg=black;bg=green', __('OK'));
-         } else {
-            $status = $requirement->isOptional()
-               ? sprintf('<%s>[%s]</> ', 'fg=white;bg=yellow', __('WARNING'))
-               : sprintf('<%s>[%s]</> ', 'fg=white;bg=red', __('ERROR'));
-         }
-
-         $informations->addRow(
+        $informations = new Table($output);
+        $informations->setHeaders(
             [
-               $requirement->getTitle(),
-               $status,
-               $requirement->isValidated() ? '' : implode("\n", $requirement->getValidationMessages())
+              __('Requirement'),
+              __('Status'),
+              __('Messages'),
+         ]
+        );
+
+        /* @var \Glpi\System\Requirement\RequirementInterface $requirement */
+        foreach ($core_requirements as $requirement) {
+            if ($requirement->isOutOfContext()) {
+                continue; // skip requirement if not relevant
+            }
+
+            if ($requirement->isValidated()) {
+                $status = sprintf('<%s>[%s]</>', 'fg=black;bg=green', __('OK'));
+            } else {
+                $status = $requirement->isOptional()
+                   ? sprintf('<%s>[%s]</> ', 'fg=white;bg=yellow', __('WARNING'))
+                   : sprintf('<%s>[%s]</> ', 'fg=white;bg=red', __('ERROR'));
+            }
+
+            $informations->addRow(
+                [
+                  $requirement->getTitle(),
+                  $status,
+                  $requirement->isValidated() ? '' : implode("\n", $requirement->getValidationMessages())
             ]
-         );
-      }
+            );
+        }
 
-      $informations->render();
+        $informations->render();
 
-      return 0; // Success
-   }
+        return 0; // Success
+    }
 
-   public function mustCheckMandatoryRequirements(): bool {
+    public function mustCheckMandatoryRequirements(): bool
+    {
 
-      return false;
-   }
+        return false;
+    }
 }

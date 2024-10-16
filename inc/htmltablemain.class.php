@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 
@@ -61,204 +61,212 @@ if (!defined('GLPI_ROOT')) {
 /// For further explaination, refer to NetworkPort and all its dependencies (NetworkName, IPAddress,
 /// IPNetwork, ...) or Computer_Device and each kind of device.
 /// @since 0.84
-class HTMLTableMain extends HTMLTableBase {
+class HTMLTableMain extends HTMLTableBase
+{
+    private $groups    = [];
+    private $itemtypes = [];
+    private $title     = '';
 
 
-   private $groups    = [];
-   private $itemtypes = [];
-   private $title     = '';
+    public function __construct()
+    {
+        parent::__construct(true);
+    }
 
 
-   function __construct() {
-      parent::__construct(true);
-   }
+    /**
+     * We can define a global name for the table : this will print as header that colspan all columns
+     *
+     * @param string $name  the name to print inside the header
+     *
+     * @return void
+    **/
+    public function setTitle($name)
+    {
+        $this->title = $name;
+    }
 
 
-   /**
-    * We can define a global name for the table : this will print as header that colspan all columns
-    *
-    * @param string $name  the name to print inside the header
-    *
-    * @return void
-   **/
-   function setTitle($name) {
-      $this->title = $name;
-   }
+    public function tryAddHeader()
+    {
+
+        if (count($this->groups) > 0) {
+            throw new Exception('Implementation error: must define all headers before any subgroups');
+        }
+    }
 
 
-   function tryAddHeader() {
+    /**
+     * @param $name      string   The name of the group, to be able to retrieve the group
+     *                            later with HTMLTableMain::getHeaderByName()
+     * @param $content            (@see HTMLTableEntity::content)
+     *                             The title of the group : display before the group itself
+     *
+     * TODO : study to be sure that the order is the one we have defined ...
+     *
+     * @return boolean|HTMLTableGroup
+    **/
+    public function createGroup($name, $content)
+    {
 
-      if (count($this->groups) > 0) {
-         throw new Exception('Implementation error: must define all headers before any subgroups');
-      }
-   }
-
-
-   /**
-    * @param $name      string   The name of the group, to be able to retrieve the group
-    *                            later with HTMLTableMain::getHeaderByName()
-    * @param $content            (@see HTMLTableEntity::content)
-    *                             The title of the group : display before the group itself
-    *
-    * TODO : study to be sure that the order is the one we have defined ...
-    *
-    * @return boolean|HTMLTableGroup
-   **/
-   function createGroup($name, $content) {
-
-      if (!empty($name)) {
-         if (!isset($this->groups[$name])) {
-            $this->groups[$name] = new HTMLTableGroup($this, $name, $content);
-         }
-      }
-      return $this->getGroup($name);
-   }
+        if (!empty($name)) {
+            if (!isset($this->groups[$name])) {
+                $this->groups[$name] = new HTMLTableGroup($this, $name, $content);
+            }
+        }
+        return $this->getGroup($name);
+    }
 
 
-   /**
-    * @param $itemtype
-    * @param $title
-   **/
-   function addItemType($itemtype, $title) {
-      $this->itemtypes[$itemtype] = $title;
-   }
+    /**
+     * @param $itemtype
+     * @param $title
+    **/
+    public function addItemType($itemtype, $title)
+    {
+        $this->itemtypes[$itemtype] = $title;
+    }
 
 
-   /**
-    * Retrieve a group by its name
-    *
-    * @param $group_name (string) the group name
-    *
-    * @return boolean|HTMLTableGroup
-   **/
-   function getGroup($group_name) {
+    /**
+     * Retrieve a group by its name
+     *
+     * @param $group_name (string) the group name
+     *
+     * @return boolean|HTMLTableGroup
+    **/
+    public function getGroup($group_name)
+    {
 
-      if (isset($this->groups[$group_name])) {
-         return $this->groups[$group_name];
-      }
-      return false;
-   }
-
-
-   /**
-    * Display the super headers, for the global table, or the groups
-   **/
-   function displaySuperHeader() {
-
-      echo "\t\t<tr class='noHover'>\n";
-      foreach ($this->getHeaderOrder() as $header_name) {
-         $header = $this->getSuperHeaderByName($header_name);
-         echo "\t\t\t";
-         $header->displayTableHeader(true);
-         echo "\n";
-      }
-      echo "\t\t</tr>\n";
-   }
+        if (isset($this->groups[$group_name])) {
+            return $this->groups[$group_name];
+        }
+        return false;
+    }
 
 
-   /**
-    * get the total number of rows (ie.: the sum of each group number of rows)
-    *
-    * Beware that a row is counted only if it is not empty (ie.: at least one addCell)
-    *
-    * @return integer the total number of rows
-   **/
-   function getNumberOfRows() {
+    /**
+     * Display the super headers, for the global table, or the groups
+    **/
+    public function displaySuperHeader()
+    {
 
-      $numberOfRow = 0;
-      foreach ($this->groups as $group) {
-         $numberOfRow += $group->getNumberOfRows();
-      }
-      return $numberOfRow;
-   }
+        echo "\t\t<tr class='noHover'>\n";
+        foreach ($this->getHeaderOrder() as $header_name) {
+            $header = $this->getSuperHeaderByName($header_name);
+            echo "\t\t\t";
+            $header->displayTableHeader(true);
+            echo "\n";
+        }
+        echo "\t\t</tr>\n";
+    }
 
 
-   /**
-    * Display the table itself
-    *
-    * @param $params    array of possible options:
-    *    'html_id'                                the global HTML ID of the table
-    *    'display_thead'                          display the header before the first group
-    *    'display_tfoot'                          display the header at the end of the table
-    *    'display_header_for_each_group'          display the header of each group
-    *    'display_header_on_foot_for_each_group'  repeat group header on foot of group
-    *    'display_super_for_each_group'           display the super header befor each group
-    *    'display_title_for_each_group'           display the title of each group
-    *
-    * @return void
-   **/
-   function display(array $params) {
+    /**
+     * get the total number of rows (ie.: the sum of each group number of rows)
+     *
+     * Beware that a row is counted only if it is not empty (ie.: at least one addCell)
+     *
+     * @return integer the total number of rows
+    **/
+    public function getNumberOfRows()
+    {
 
-      $p['html_id']        = '';
-      $p['display_thead']  = true;
-      $p['display_tfoot']  = true;
+        $numberOfRow = 0;
+        foreach ($this->groups as $group) {
+            $numberOfRow += $group->getNumberOfRows();
+        }
+        return $numberOfRow;
+    }
 
-      foreach ($params as $key => $val) {
-         $p[$key] = $val;
-      }
 
-      foreach ($this->groups as $group) {
-         $group->prepareDisplay();
-      }
+    /**
+     * Display the table itself
+     *
+     * @param $params    array of possible options:
+     *    'html_id'                                the global HTML ID of the table
+     *    'display_thead'                          display the header before the first group
+     *    'display_tfoot'                          display the header at the end of the table
+     *    'display_header_for_each_group'          display the header of each group
+     *    'display_header_on_foot_for_each_group'  repeat group header on foot of group
+     *    'display_super_for_each_group'           display the super header befor each group
+     *    'display_title_for_each_group'           display the title of each group
+     *
+     * @return void
+    **/
+    public function display(array $params)
+    {
 
-      $totalNumberOfRow = $this->getNumberOfRows();
+        $p['html_id']        = '';
+        $p['display_thead']  = true;
+        $p['display_tfoot']  = true;
 
-      $totalNumberOfColumn = 0;
-      foreach ($this->getHeaders() as $header) {
-         $colspan              = $header['']->getColSpan();
-         $totalNumberOfColumn += $colspan;
-      }
+        foreach ($params as $key => $val) {
+            $p[$key] = $val;
+        }
 
-      foreach ($this->itemtypes as $itemtype => $title) {
-         Session::initNavigateListItems($itemtype, $title);
-      }
+        foreach ($this->groups as $group) {
+            $group->prepareDisplay();
+        }
 
-      echo "\n<table aria_label='Data Table 'class='tab_cadre_fixehov'";
-      if (!empty($p['html_id'])) {
-         echo " id='".$p['html_id']."'";
-      }
-      echo ">\n";
+        $totalNumberOfRow = $this->getNumberOfRows();
 
-      $open_thead = ((!empty($this->title)) || ($p['display_thead']));
-      if ($open_thead) {
-         echo "\t<thead>\n";
-      }
+        $totalNumberOfColumn = 0;
+        foreach ($this->getHeaders() as $header) {
+            $colspan              = $header['']->getColSpan();
+            $totalNumberOfColumn += $colspan;
+        }
 
-      if (!empty($this->title)) {
-         echo "\t\t<tr class='noHover'><th colspan='$totalNumberOfColumn'>".$this->title.
-              "</th></tr>\n";
-      }
+        foreach ($this->itemtypes as $itemtype => $title) {
+            Session::initNavigateListItems($itemtype, $title);
+        }
 
-      if ($totalNumberOfRow == 0) {
+        echo "\n<table aria_label='Data Table 'class='tab_cadre_fixehov'";
+        if (!empty($p['html_id'])) {
+            echo " id='".$p['html_id']."'";
+        }
+        echo ">\n";
 
-         if ($open_thead) {
-            echo "\t</thead>\n";
-         }
+        $open_thead = ((!empty($this->title)) || ($p['display_thead']));
+        if ($open_thead) {
+            echo "\t<thead>\n";
+        }
 
-         echo "\t\t<tr class='tab_bg_1'>".
-              "<td class='center' colspan='$totalNumberOfColumn'>" . __('None') ."</td></tr>\n";
+        if (!empty($this->title)) {
+            echo "\t\t<tr class='noHover'><th colspan='$totalNumberOfColumn'>".$this->title.
+                 "</th></tr>\n";
+        }
 
-      } else {
+        if ($totalNumberOfRow == 0) {
 
-         if ($p['display_thead']) {
-            $this->displaySuperHeader();
-         }
+            if ($open_thead) {
+                echo "\t</thead>\n";
+            }
 
-         if ($open_thead) {
-            echo "\t</thead>\n";
-         }
+            echo "\t\t<tr class='tab_bg_1'>".
+                 "<td class='center' colspan='$totalNumberOfColumn'>" . __('None') ."</td></tr>\n";
 
-         if ($p['display_tfoot']) {
-            echo "\t<tfoot>\n";
-            $this->displaySuperHeader();
-            echo "\t</tfoot>\n";
-         }
+        } else {
 
-         foreach ($this->groups as $group) {
-            $group->displayGroup($totalNumberOfColumn, $p);
-         }
-      }
-      echo "</table>\n";
-   }
+            if ($p['display_thead']) {
+                $this->displaySuperHeader();
+            }
+
+            if ($open_thead) {
+                echo "\t</thead>\n";
+            }
+
+            if ($p['display_tfoot']) {
+                echo "\t<tfoot>\n";
+                $this->displaySuperHeader();
+                echo "\t</tfoot>\n";
+            }
+
+            foreach ($this->groups as $group) {
+                $group->displayGroup($totalNumberOfColumn, $p);
+            }
+        }
+        echo "</table>\n";
+    }
 
 }

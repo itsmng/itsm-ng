@@ -31,89 +31,94 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * UNION query class
 **/
-class QueryUnion extends AbstractQuery {
-   private $queries = [];
-   private $distinct = false;
+class QueryUnion extends AbstractQuery
+{
+    private $queries = [];
+    private $distinct = false;
 
-   /**
-    * Create a sub query
-    *
-    * @param array   $queries  An array of queries to union. Either SubQuery objects
-    *                          or an array of criteria to build them.
-    *                          You can also add later using @see addQuery
-    * @param boolean $distinct Include duplicatesi or not. Turning on may has
-    *                          huge cost on queries performances.
-    * @param string  $alias    Union ALIAS. Defaults to null.
-    */
-   public function __construct(array $queries = [], $distinct = false, $alias = null) {
-      parent::__construct($alias);
-      $this->distinct = $distinct;
+    /**
+     * Create a sub query
+     *
+     * @param array   $queries  An array of queries to union. Either SubQuery objects
+     *                          or an array of criteria to build them.
+     *                          You can also add later using @see addQuery
+     * @param boolean $distinct Include duplicatesi or not. Turning on may has
+     *                          huge cost on queries performances.
+     * @param string  $alias    Union ALIAS. Defaults to null.
+     */
+    public function __construct(array $queries = [], $distinct = false, $alias = null)
+    {
+        parent::__construct($alias);
+        $this->distinct = $distinct;
 
-      foreach ($queries as $query) {
-         $this->addQuery($query);
-      }
-   }
+        foreach ($queries as $query) {
+            $this->addQuery($query);
+        }
+    }
 
-   /**
-    * Add a query
-    *
-    * @param QuerySubQuery|array $query Either a SubQuery object
-    *                                   or an array of criteria to build it.
-    */
-   public function addQuery($query) {
-      if (!$query instanceof \QuerySubQuery) {
-         $query = new \QuerySubQuery($query);
-      }
-      $this->queries[] = $query;
-   }
+    /**
+     * Add a query
+     *
+     * @param QuerySubQuery|array $query Either a SubQuery object
+     *                                   or an array of criteria to build it.
+     */
+    public function addQuery($query)
+    {
+        if (!$query instanceof \QuerySubQuery) {
+            $query = new \QuerySubQuery($query);
+        }
+        $this->queries[] = $query;
+    }
 
 
-   /**
-    * Get queries
-    *
-    * @return array
-    */
-   public function getQueries() {
-      return $this->queries;
-   }
+    /**
+     * Get queries
+     *
+     * @return array
+     */
+    public function getQueries()
+    {
+        return $this->queries;
+    }
 
-   /**
-    *
-    * Get SQL query
-    *
-    * @return string
-    */
-   public function getQuery() {
-      global $DB;
+    /**
+     *
+     * Get SQL query
+     *
+     * @return string
+     */
+    public function getQuery()
+    {
+        global $DB;
 
-      $union_queries = $this->getQueries();
-      if (empty($union_queries
-      )) {
-         throw new \RuntimeException('Cannot build an empty union query');
-      }
+        $union_queries = $this->getQueries();
+        if (empty($union_queries
+        )) {
+            throw new \RuntimeException('Cannot build an empty union query');
+        }
 
-      $queries = [];
-      foreach ($union_queries as $uquery) {
-         $queries[] = $uquery->getQuery();
-      }
+        $queries = [];
+        foreach ($union_queries as $uquery) {
+            $queries[] = $uquery->getQuery();
+        }
 
-      $keyword = 'UNION';
-      if (!$this->distinct) {
-         $keyword .= ' ALL';
-      }
-      $query = '(' . implode(" $keyword ", $queries) . ')';
+        $keyword = 'UNION';
+        if (!$this->distinct) {
+            $keyword .= ' ALL';
+        }
+        $query = '(' . implode(" $keyword ", $queries) . ')';
 
-      $alias = $this->alias !== null
-         ? $this->alias
-         : 'union_' . md5($query);
-      $query .= ' AS ' . $DB->quoteName($alias);
+        $alias = $this->alias !== null
+           ? $this->alias
+           : 'union_' . md5($query);
+        $query .= ' AS ' . $DB->quoteName($alias);
 
-      return $query;
-   }
+        return $query;
+    }
 }

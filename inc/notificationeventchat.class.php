@@ -39,14 +39,13 @@ if (!defined('GLPI_ROOT')) {
 
 class NotificationEventChat extends NotificationEventAbstract implements NotificationEventInterface
 {
-
-    static public function getTargetFieldName()
+    public static function getTargetFieldName()
     {
         return 'chat';
     }
 
 
-    static public function getTargetField(&$data)
+    public static function getTargetField(&$data)
     {
         $field = self::getTargetFieldName();
         if (!isset($data[$field])) {
@@ -57,13 +56,13 @@ class NotificationEventChat extends NotificationEventAbstract implements Notific
         return $field;
     }
 
-    static public function canCron()
+    public static function canCron()
     {
         return true;
     }
 
 
-    static public function getAdminData()
+    public static function getAdminData()
     {
         global $CFG_GLPI;
 
@@ -75,13 +74,13 @@ class NotificationEventChat extends NotificationEventAbstract implements Notific
 
         //return true;
     }
-    static public function getEntityAdminsData($entity)
+    public static function getEntityAdminsData($entity)
     {
 
         return true;
     }
 
-    static public function send(array $data)
+    public static function send(array $data)
     {
         global $CFG_GLPI, $DB;
 
@@ -114,7 +113,7 @@ class NotificationEventChat extends NotificationEventAbstract implements Notific
             }
 
             foreach ($webHooks as $key => $value) {
-                $sendChat->sendRocketNotificationNew($current->fields['ticketTitle'], $current->fields['items_id'], $current->fields['entName'],  $current->fields['serverName'], $value);
+                $sendChat->sendRocketNotificationNew($current->fields['ticketTitle'], $current->fields['items_id'], $current->fields['entName'], $current->fields['serverName'], $value);
             }
 
             $processed[] = $current->getID();

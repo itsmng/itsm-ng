@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -39,72 +39,74 @@ if (!defined('GLPI_ROOT')) {
  *
  * @since 0.84
 **/
-class IPAddress_IPNetwork extends CommonDBRelation {
+class IPAddress_IPNetwork extends CommonDBRelation
+{
+    // From CommonDBRelation
+    public static $itemtype_1 = 'IPAddress';
+    public static $items_id_1 = 'ipaddresses_id';
 
-   // From CommonDBRelation
-   static public $itemtype_1 = 'IPAddress';
-   static public $items_id_1 = 'ipaddresses_id';
-
-   static public $itemtype_2 = 'IPNetwork';
-   static public $items_id_2 = 'ipnetworks_id';
-
-
-   /**
-    * Update IPNetwork's dependency
-    *
-    * @param $network IPNetwork object
-   **/
-   static function linkIPAddressFromIPNetwork(IPNetwork $network) {
-      global $DB;
-
-      $linkObject    = new self();
-      $linkTable     = $linkObject->getTable();
-      $ipnetworks_id = $network->getID();
-
-      // First, remove all links of the current Network
-      $iterator = $DB->request([
-         'SELECT' => 'id',
-         'FROM'   => $linkTable,
-         'WHERE'  => ['ipnetworks_id' => $ipnetworks_id]
-      ]);
-      while ($link = $iterator->next()) {
-         $linkObject->delete(['id' => $link['id']]);
-      }
-
-      // Then, look each IP address contained inside current Network
-      $iterator = $DB->request([
-         'SELECT' => [
-            new \QueryExpression($DB->quoteValue($ipnetworks_id) . ' AS ' . $DB->quoteName('ipnetworks_id')),
-            'id AS ipaddresses_id'
-         ],
-         'FROM'   => 'glpi_ipaddresses',
-         'WHERE'  => $network->getCriteriaForMatchingElement('glpi_ipaddresses', 'binary', 'version'),
-         'GROUP'  => 'id'
-      ]);
-      while ($link = $iterator->next()) {
-         $linkObject->add($link);
-      }
-   }
+    public static $itemtype_2 = 'IPNetwork';
+    public static $items_id_2 = 'ipnetworks_id';
 
 
-   /**
-    * @param $ipaddress IPAddress object
-   **/
-   static function addIPAddress(IPAddress $ipaddress) {
+    /**
+     * Update IPNetwork's dependency
+     *
+     * @param $network IPNetwork object
+    **/
+    public static function linkIPAddressFromIPNetwork(IPNetwork $network)
+    {
+        global $DB;
 
-      $linkObject = new self();
-      $input      = ['ipaddresses_id' => $ipaddress->getID()];
+        $linkObject    = new self();
+        $linkTable     = $linkObject->getTable();
+        $ipnetworks_id = $network->getID();
 
-      $entity         = $ipaddress->getEntityID();
-      $ipnetworks_ids = IPNetwork::searchNetworksContainingIP($ipaddress, $entity);
-      if ($ipnetworks_ids !== false) {
-         // Beware that invalid IPaddresses don't have any valid address !
-         $entity = $ipaddress->getEntityID();
-         foreach (IPNetwork::searchNetworksContainingIP($ipaddress, $entity) as $ipnetworks_id) {
-            $input['ipnetworks_id'] = $ipnetworks_id;
-            $linkObject->add($input);
-         }
-      }
-   }
+        // First, remove all links of the current Network
+        $iterator = $DB->request([
+           'SELECT' => 'id',
+           'FROM'   => $linkTable,
+           'WHERE'  => ['ipnetworks_id' => $ipnetworks_id]
+        ]);
+        while ($link = $iterator->next()) {
+            $linkObject->delete(['id' => $link['id']]);
+        }
+
+        // Then, look each IP address contained inside current Network
+        $iterator = $DB->request([
+           'SELECT' => [
+              new \QueryExpression($DB->quoteValue($ipnetworks_id) . ' AS ' . $DB->quoteName('ipnetworks_id')),
+              'id AS ipaddresses_id'
+           ],
+           'FROM'   => 'glpi_ipaddresses',
+           'WHERE'  => $network->getCriteriaForMatchingElement('glpi_ipaddresses', 'binary', 'version'),
+           'GROUP'  => 'id'
+        ]);
+        while ($link = $iterator->next()) {
+            $linkObject->add($link);
+        }
+    }
+
+
+    /**
+     * @param $ipaddress IPAddress object
+    **/
+    public static function addIPAddress(IPAddress $ipaddress)
+    {
+
+        $linkObject = new self();
+        $input      = ['ipaddresses_id' => $ipaddress->getID()];
+
+        $entity         = $ipaddress->getEntityID();
+        $ipnetworks_ids = IPNetwork::searchNetworksContainingIP($ipaddress, $entity);
+        if ($ipnetworks_ids !== false) {
+            // Beware that invalid IPaddresses don't have any valid address !
+            $entity = $ipaddress->getEntityID();
+            foreach (IPNetwork::searchNetworksContainingIP($ipaddress, $entity) as $ipnetworks_id) {
+                $input['ipnetworks_id'] = $ipnetworks_id;
+                $linkObject->add($input);
+            }
+        }
+    }
 
 }

@@ -1,5 +1,6 @@
 <?php
-include ('../inc/includes.php');
+
+include('../inc/includes.php');
 global $DB;
 
 // Get the last 6 months
@@ -36,5 +37,3 @@ while ($row = $result->next()) {
 // json parsing
 header('Content-Type: application/json');
 echo json_encode(array_values($ticketData));
-
-?>

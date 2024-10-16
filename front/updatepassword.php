@@ -30,16 +30,16 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 use Glpi\Exception\PasswordTooWeakException;
 
 Session::checkLoginUser();
 
 if (Session::getCurrentInterface() == 'central' || Session::getCurrentInterface() == 'helpdesk') {
-   Html::header(__('Update password'), $_SERVER['PHP_SELF']);
+    Html::header(__('Update password'), $_SERVER['PHP_SELF']);
 } else {
-   Html::simpleHeader(__('Update password'));
+    Html::simpleHeader(__('Update password'));
 }
 
 $user = new User();
@@ -49,59 +49,59 @@ $success  = false;
 $error_messages = [];
 
 if (array_key_exists('update', $_POST)) {
-   $current_password = $_POST['current_password'];
-   if (!Auth::checkPassword($current_password, $user->fields['password'])) {
-      $error_messages = [__('Incorrect password')];
-   } else {
-      $input = [
-         'id'               => $user->fields['id'],
-         'current_password' => $_POST['current_password'],
-         'password'         => $_POST['password'],
-         'password2'        => $_POST['password2'],
-      ];
-      if ($input['password'] === $input['current_password']) {
-         $error_messages = [__('The new password must be different from current password')];
-      } else if ($input['password'] !== $input['password2']) {
-         $error_messages = [__('The two passwords do not match')];
-      } else {
-         try {
-            Config::validatePassword($input['password'], false);
-            if ($user->update($input)) {
-               $success = true;
-            } else {
-               $error_messages = [__('An error occured during password update')];
+    $current_password = $_POST['current_password'];
+    if (!Auth::checkPassword($current_password, $user->fields['password'])) {
+        $error_messages = [__('Incorrect password')];
+    } else {
+        $input = [
+           'id'               => $user->fields['id'],
+           'current_password' => $_POST['current_password'],
+           'password'         => $_POST['password'],
+           'password2'        => $_POST['password2'],
+        ];
+        if ($input['password'] === $input['current_password']) {
+            $error_messages = [__('The new password must be different from current password')];
+        } elseif ($input['password'] !== $input['password2']) {
+            $error_messages = [__('The two passwords do not match')];
+        } else {
+            try {
+                Config::validatePassword($input['password'], false);
+                if ($user->update($input)) {
+                    $success = true;
+                } else {
+                    $error_messages = [__('An error occured during password update')];
+                }
+            } catch (PasswordTooWeakException $exception) {
+                $error_messages = $exception->getMessages();
             }
-         } catch (PasswordTooWeakException $exception) {
-            $error_messages = $exception->getMessages();
-         }
-      }
-   }
+        }
+    }
 }
 
 if ($success) {
-   echo '<table class="tab_cadre" aria-label="Password update form">';
-   echo '<tr><th colspan="2">' . __('Password update') . '</th></tr>';
-   echo '<tr>';
-   echo '<td>';
-   echo __('Your password has been successfully updated.');
-   echo '<br />';
-   echo '<a href="' . $CFG_GLPI['root_doc'] . '/front/logout.php?noAUTO=1">' . __('Log in') . '</a>';
-   echo '</td>';
-   echo '</tr>';
-   echo '</table>';
+    echo '<table class="tab_cadre" aria-label="Password update form">';
+    echo '<tr><th colspan="2">' . __('Password update') . '</th></tr>';
+    echo '<tr>';
+    echo '<td>';
+    echo __('Your password has been successfully updated.');
+    echo '<br />';
+    echo '<a href="' . $CFG_GLPI['root_doc'] . '/front/logout.php?noAUTO=1">' . __('Log in') . '</a>';
+    echo '</td>';
+    echo '</tr>';
+    echo '</table>';
 } else {
-   $user->showPasswordUpdateForm($error_messages);
+    $user->showPasswordUpdateForm($error_messages);
 }
 
 
 switch (Session::getCurrentInterface()) {
-   case 'central':
-      Html::footer();
-      break;
-   case 'helpdesk':
-      Html::footer();
-      break;
-   default:
-      Html::nullFooter();
-      break;
+    case 'central':
+        Html::footer();
+        break;
+    case 'helpdesk':
+        Html::footer();
+        break;
+    default:
+        Html::nullFooter();
+        break;
 }

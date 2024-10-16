@@ -30,19 +30,19 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRight("config", UPDATE);
 $notificationmail = new NotificationMailingSetting();
 
 if (!empty($_POST["test_smtp_send"])) {
-   NotificationMailing::testNotification();
-   Html::back();
+    NotificationMailing::testNotification();
+    Html::back();
 
-} else if (!empty($_POST["update"])) {
-   $config = new Config();
-   $config->update($_POST);
-   Html::back();
+} elseif (!empty($_POST["update"])) {
+    $config = new Config();
+    $config->update($_POST);
+    Html::back();
 }
 
 Html::header(Notification::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "config", "notification", "config");

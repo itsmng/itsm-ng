@@ -31,17 +31,18 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class OperatingSystemServicePack
-class OperatingSystemServicePack extends CommonDropdown {
+class OperatingSystemServicePack extends CommonDropdown
+{
+    public $can_be_translated = false;
 
-   public $can_be_translated = false;
 
-
-   static function getTypeName($nb = 0) {
-      return _n('Service pack', 'Service packs', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Service pack', 'Service packs', $nb);
+    }
 
 }

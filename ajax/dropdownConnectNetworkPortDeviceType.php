@@ -34,7 +34,7 @@
  * @since 0.84
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
@@ -44,21 +44,21 @@ Session::checkRight("networking", UPDATE);
 // Make a select box
 if (class_exists($_POST["itemtype"])) {
 
-   $params   = [
-      'entity'    => $_POST["entity_restrict"],
-      'condition' => [
-         'id' => new \QuerySubQuery([
-            'SELECT' => 'items_id',
-            'FROM'   => 'glpi_networkports',
-            'WHERE'  => [
-               'itemtype'           => $_POST['itemtype'],
-               'instantiation_type' => $_POST['instantiation_type']
-            ]
-         ])
-      ],
-   ];
+    $params   = [
+       'entity'    => $_POST["entity_restrict"],
+       'condition' => [
+          'id' => new \QuerySubQuery([
+             'SELECT' => 'items_id',
+             'FROM'   => 'glpi_networkports',
+             'WHERE'  => [
+                'itemtype'           => $_POST['itemtype'],
+                'instantiation_type' => $_POST['instantiation_type']
+             ]
+          ])
+       ],
+    ];
 
-   echo json_encode(getOptionForItems($_POST["itemtype"], ['entities_id' => $_POST["entity_restrict"] ?? Session::getActiveEntity()]));
+    echo json_encode(getOptionForItems($_POST["itemtype"], ['entities_id' => $_POST["entity_restrict"] ?? Session::getActiveEntity()]));
 
-   // Dropdown::show($_POST['itemtype'], $params);
+    // Dropdown::show($_POST['itemtype'], $params);
 }

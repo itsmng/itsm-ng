@@ -40,7 +40,6 @@ if (!defined('GLPI_ROOT')) {
  **/
 class NotificationChat implements NotificationInterface
 {
-
     /**
      * Check data
      *
@@ -49,17 +48,17 @@ class NotificationChat implements NotificationInterface
      *
      * @return boolean
      **/
-    static function check($value, $options = [])
+    public static function check($value, $options = [])
     {
     }
 
 
 
-    static function testNotification($id = 1)
+    public static function testNotification($id = 1)
     {
         global $CFG_GLPI;
         $rocketNotifConfiguration = new NotificationChatConfig();
-        $config = $rocketNotifConfiguration->find(['id'=> $id]);
+        $config = $rocketNotifConfiguration->find(['id' => $id]);
         $hookurl = $config[key($config)]['hookurl'];
 
         $glpiUrl = 'localhost/itsm-ng';
@@ -74,7 +73,7 @@ class NotificationChat implements NotificationInterface
     }
 
 
-    function sendNotification($options = [])
+    public function sendNotification($options = [])
     {
         global $DB;
         $data = [];
@@ -118,7 +117,6 @@ class NotificationChat implements NotificationInterface
                     __('Fatal-error: The chat %s was not added to queue '),
                     $data['completName']
                 ) . "\n"
-
             );
             return false;
         } else {
@@ -129,7 +127,6 @@ class NotificationChat implements NotificationInterface
                     __('Rocket chat: The chat %s was added to queue '),
                     $data['completName']
                 ) . "\n"
-
             );
         }
 

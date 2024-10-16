@@ -31,46 +31,47 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class KnowbaseItem_Profile
 /// since version 0.83
-class KnowbaseItem_Profile extends CommonDBRelation {
+class KnowbaseItem_Profile extends CommonDBRelation
+{
+    // From CommonDBRelation
+    public static $itemtype_1          = 'KnowbaseItem';
+    public static $items_id_1          = 'knowbaseitems_id';
+    public static $itemtype_2          = 'Profile';
+    public static $items_id_2          = 'profiles_id';
 
-   // From CommonDBRelation
-   static public $itemtype_1          = 'KnowbaseItem';
-   static public $items_id_1          = 'knowbaseitems_id';
-   static public $itemtype_2          = 'Profile';
-   static public $items_id_2          = 'profiles_id';
-
-   static public $checkItem_2_Rights  = self::DONT_CHECK_ITEM_RIGHTS;
-   static public $logs_for_item_2     = false;
+    public static $checkItem_2_Rights  = self::DONT_CHECK_ITEM_RIGHTS;
+    public static $logs_for_item_2     = false;
 
 
-   /**
-    * Get profiles for a knowbaseitem
-    *
-    * @param integer $knowbaseitems_id  ID of the knowbaseitem
-    *
-    * @return array of profiles linked to a knowbaseitem
-   **/
-   static function getProfiles($knowbaseitems_id) {
-      global $DB;
+    /**
+     * Get profiles for a knowbaseitem
+     *
+     * @param integer $knowbaseitems_id  ID of the knowbaseitem
+     *
+     * @return array of profiles linked to a knowbaseitem
+    **/
+    public static function getProfiles($knowbaseitems_id)
+    {
+        global $DB;
 
-      $prof  = [];
+        $prof  = [];
 
-      $iterator = $DB->request([
-         'FROM'   => self::getTable(),
-         'WHERE'  => [
-            'knowbaseitems_id' => $knowbaseitems_id
-         ]
-      ]);
+        $iterator = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+              'knowbaseitems_id' => $knowbaseitems_id
+           ]
+        ]);
 
-      while ($data = $iterator->next()) {
-         $prof[$data['profiles_id']][] = $data;
-      }
-      return $prof;
-   }
+        while ($data = $iterator->next()) {
+            $prof[$data['profiles_id']][] = $data;
+        }
+        return $prof;
+    }
 
 }

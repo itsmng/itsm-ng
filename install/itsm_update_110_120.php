@@ -35,19 +35,20 @@
  *
  * @return bool for success (will die for most error)
  **/
-function update110to120() {
-   /** @global Migration $migration */
-   global $DB, $migration;
+function update110to120()
+{
+    /** @global Migration $migration */
+    global $DB, $migration;
 
-   $updateresult     = true;
+    $updateresult     = true;
 
-   $migration->displayTitle(sprintf(__('Update to %s'), '1.2.0'));
-   $migration->setVersion('1.2.0');
+    $migration->displayTitle(sprintf(__('Update to %s'), '1.2.0'));
+    $migration->setVersion('1.2.0');
 
 
-   /** Create new table for Open ID connect's config */
-   if (!$DB->tableExists("glpi_specialstatuses")) {
-    $config = "CREATE TABLE `glpi_specialstatuses` (
+    /** Create new table for Open ID connect's config */
+    if (!$DB->tableExists("glpi_specialstatuses")) {
+        $config = "CREATE TABLE `glpi_specialstatuses` (
         `id` int(11) NOT NULL auto_increment,
         `name` varchar(255) DEFAULT NULL,
         `weight`   int(11) NOT NULL DEFAULT 0,
@@ -120,9 +121,9 @@ function update110to120() {
       'rights'      => 23,
     ];
     $DB->updateOrInsert("glpi_profilerights", $status_right, ['name' => 'status_ticket', 'profiles_id' => 4]);
-   
+
     if (!$DB->tableExists("glpi_oidc_mapping")) {
-      $config = "CREATE TABLE IF NOT EXISTS `glpi_oidc_mapping` (
+        $config = "CREATE TABLE IF NOT EXISTS `glpi_oidc_mapping` (
          `id` INT(11) NOT NULL DEFAULT 0,
          `name` varchar(255) DEFAULT '',
          `given_name` varchar(255) DEFAULT '',
@@ -135,22 +136,22 @@ function update110to120() {
          `date_mod` timestamp NULL DEFAULT NULL,
          PRIMARY KEY (`id`)
          ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-          $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
-      }
+        $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
+    }
 
-   if (!$DB->tableExists("glpi_oidc_users")) {
-      $config = "CREATE TABLE IF NOT EXISTS `glpi_oidc_users` (
+    if (!$DB->tableExists("glpi_oidc_users")) {
+        $config = "CREATE TABLE IF NOT EXISTS `glpi_oidc_users` (
          `id` int(11) NOT NULL auto_increment,
          `user_id` int(11) NOT NULL DEFAULT '0',
          `update`   TINYINT(1) NOT NULL DEFAULT 0,
          PRIMARY KEY (`id`)
          ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-          $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
-      }
+        $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
+    }
 
     /** /Create new table for Open ID connect's config */
 
-   // ************ Keep it at the end **************
-   $migration->executeMigration();
-   return $updateresult;
+    // ************ Keep it at the end **************
+    $migration->executeMigration();
+    return $updateresult;
 }

@@ -31,93 +31,99 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class DeviceSimcard
-class DeviceSimcard extends CommonDevice {
-   static protected $forward_entity_to = ['Item_DeviceSimcard', 'Infocom'];
+class DeviceSimcard extends CommonDevice
+{
+    protected static $forward_entity_to = ['Item_DeviceSimcard', 'Infocom'];
 
-   static function getTypeName($nb = 0) {
-      return _n('Simcard', 'Simcards', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Simcard', 'Simcards', $nb);
+    }
 
-   function getAdditionalFields() {
+    public function getAdditionalFields()
+    {
 
-      return array_merge(
-         parent::getAdditionalFields(),
-         [
-            _n('Type', 'Types', 1) => [
-               'name'  => 'devicesimcardtypes_id',
-               'type'  => 'select',
-               'values' => getOptionForItems('DeviceSimcardType'),
-               'value' => $this->fields['devicesimcardtypes_id'],
-               'actions' => getItemActionButtons(['info', 'add'], 'DeviceSimcardType')
-            ],
-            __('Voltage') => [
-               'name'  => 'voltage',
-               'type'  => 'number',
-               'after'  => 'mV',
-               'value' => $this->fields['voltage']
-            ],
-            __('Allow VOIP') => [
-                  'name'  => 'allow_voip',
-                  'type'  => 'checkbox',
-                  'value' => $this->fields['allow_voip'], 
-            ],
+        return array_merge(
+            parent::getAdditionalFields(),
+            [
+              _n('Type', 'Types', 1) => [
+                 'name'  => 'devicesimcardtypes_id',
+                 'type'  => 'select',
+                 'values' => getOptionForItems('DeviceSimcardType'),
+                 'value' => $this->fields['devicesimcardtypes_id'],
+                 'actions' => getItemActionButtons(['info', 'add'], 'DeviceSimcardType')
+              ],
+              __('Voltage') => [
+                 'name'  => 'voltage',
+                 'type'  => 'number',
+                 'after'  => 'mV',
+                 'value' => $this->fields['voltage']
+              ],
+              __('Allow VOIP') => [
+                    'name'  => 'allow_voip',
+                    'type'  => 'checkbox',
+                    'value' => $this->fields['allow_voip'],
+              ],
          ]
-      );
-   }
+        );
+    }
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
 
-      $tab[] = [
-            'id'                 => '12',
-            'table'              => $this->getTable(),
-            'field'              => 'voltage',
-            'name'               => __('Voltage'),
-            'datatype'           => 'string',
-            'autocomplete'       => true,
-      ];
+        $tab[] = [
+              'id'                 => '12',
+              'table'              => $this->getTable(),
+              'field'              => 'voltage',
+              'name'               => __('Voltage'),
+              'datatype'           => 'string',
+              'autocomplete'       => true,
+        ];
 
-      $tab[] = [
-            'id'                 => '13',
-            'table'              => 'glpi_devicesimcardtypes',
-            'field'              => 'name',
-            'name'               => _n('Type', 'Types', 1),
-            'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+              'id'                 => '13',
+              'table'              => 'glpi_devicesimcardtypes',
+              'field'              => 'name',
+              'name'               => _n('Type', 'Types', 1),
+              'datatype'           => 'dropdown'
+        ];
 
-      $tab[] = [
-            'id'                 => '14',
-            'table'              => $this->getTable(),
-            'field'              => 'allow_voip',
-            'name'               => __('Allow VOIP'),
-            'datatype'           => 'bool'
-      ];
+        $tab[] = [
+              'id'                 => '14',
+              'table'              => $this->getTable(),
+              'field'              => 'allow_voip',
+              'name'               => __('Allow VOIP'),
+              'datatype'           => 'bool'
+        ];
 
-      return $tab;
-   }
+        return $tab;
+    }
 
-   /**
-    * Criteria used for import function
-    *
-    * @see CommonDevice::getImportCriteria()
-    *
-    * @since 9.2
-    **/
-   function getImportCriteria() {
+    /**
+     * Criteria used for import function
+     *
+     * @see CommonDevice::getImportCriteria()
+     *
+     * @since 9.2
+     **/
+    public function getImportCriteria()
+    {
 
-      return [
-            'designation'             => 'equal',
-            'manufacturers_id'        => 'equal',
-            'devicesensortypes_id'    => 'equal',
-      ];
-   }
+        return [
+              'designation'             => 'equal',
+              'manufacturers_id'        => 'equal',
+              'devicesensortypes_id'    => 'equal',
+        ];
+    }
 
 
-   static function getIcon() {
-      return "fas fa-sim-card";
-   }
+    public static function getIcon()
+    {
+        return "fas fa-sim-card";
+    }
 }

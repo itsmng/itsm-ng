@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
@@ -34,20 +34,21 @@ if (!defined('GLPI_ROOT')) {
  * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
 **/
-class Item_DeviceGeneric extends Item_Devices {
+class Item_DeviceGeneric extends Item_Devices
+{
+    public static $itemtype_2 = 'DeviceGeneric';
+    public static $items_id_2 = 'devicegenerics_id';
 
-   static public $itemtype_2 = 'DeviceGeneric';
-   static public $items_id_2 = 'devicegenerics_id';
-
-   static protected $notable = false;
+    protected static $notable = false;
 
 
-   static function getSpecificities($specif = '') {
-      return ['serial' => parent::getSpecificities('serial'),
-                   'otherserial' => parent::getSpecificities('otherserial'),
-                   'locations_id' => parent::getSpecificities('locations_id'),
-                   'states_id' => parent::getSpecificities('states_id'),
-                  ];
-   }
+    public static function getSpecificities($specif = '')
+    {
+        return ['serial' => parent::getSpecificities('serial'),
+                     'otherserial' => parent::getSpecificities('otherserial'),
+                     'locations_id' => parent::getSpecificities('locations_id'),
+                     'states_id' => parent::getSpecificities('states_id'),
+                    ];
+    }
 
 }

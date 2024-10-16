@@ -40,8 +40,7 @@ if (!defined('GLPI_ROOT')) {
  */
 class NotificationChatSetting extends NotificationSetting
 {
-
-    static public function getTypeName($nb = 0)
+    public static function getTypeName($nb = 0)
     {
         return __('Chat followups configuration');
     }
@@ -53,13 +52,13 @@ class NotificationChatSetting extends NotificationSetting
     }
 
 
-    static public function getMode()
+    public static function getMode()
     {
         return Notification_NotificationTemplate::MODE_CHAT;
     }
 
 
-    function showFormConfig($options = [])
+    public function showFormConfig($options = [])
     {
         global $CFG_GLPI, $DB;
 
@@ -68,25 +67,25 @@ class NotificationChatSetting extends NotificationSetting
         }
 
         $formValues = [];
-        $groupsRaw = (new Group)->find();
+        $groupsRaw = (new Group())->find();
         $formValues['group'] = [];
         foreach ($groupsRaw as $key => $group) {
             $formValues['group'][$group['id']] = $group['completename'];
         }
 
-        $entitiesRaw = (new Entity)->find();
+        $entitiesRaw = (new Entity())->find();
         $formValues['entity'] = [];
         foreach ($entitiesRaw as $key => $entity) {
             $formValues['entity'][$entity['id']] = $entity['completename'];
         }
 
-        $locationsRaw = (new Location)->find();
+        $locationsRaw = (new Location())->find();
         $formValues['location'] = [];
         foreach ($locationsRaw as $key => $location) {
             $formValues['location'][$location['id']] = $location['completename'];
         }
 
-        $categoriesRaw = (new ITILCategory)->find();
+        $categoriesRaw = (new ITILCategory())->find();
         $formValues['category'] = [];
         foreach ($categoriesRaw as $key => $category) {
             $formValues['category'][$category['id']] = $category['completename'];

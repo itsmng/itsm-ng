@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkCentralAccess();
 
@@ -40,18 +40,21 @@ RuleCollection::titleBackup();
 
 $links = [];
 foreach ($CFG_GLPI["rulecollections_types"] as $rulecollectionclass) {
-   $rulecollection = new $rulecollectionclass();
-   if ($rulecollection->canList()) {
-      if ($plug = isPluginItemType($rulecollectionclass)) {
-         $title = sprintf(__('%1$s - %2$s'), Plugin::getInfo($plug['plugin'], 'name'),
-                                             $rulecollection->getTitle());
-      } else {
-         $title = $rulecollection->getTitle();
-      }
-      $ruleClassName = $rulecollection->getRuleClassName();
-      $links[] = ['url'   => $ruleClassName::getSearchURL(),
-                  'title' => $title];
-   }
+    $rulecollection = new $rulecollectionclass();
+    if ($rulecollection->canList()) {
+        if ($plug = isPluginItemType($rulecollectionclass)) {
+            $title = sprintf(
+                __('%1$s - %2$s'),
+                Plugin::getInfo($plug['plugin'], 'name'),
+                $rulecollection->getTitle()
+            );
+        } else {
+            $title = $rulecollection->getTitle();
+        }
+        $ruleClassName = $rulecollection->getRuleClassName();
+        $links[] = ['url'   => $ruleClassName::getSearchURL(),
+                    'title' => $title];
+    }
 }
 
 if (Session::haveRight("transfer", READ)
@@ -61,8 +64,8 @@ if (Session::haveRight("transfer", READ)
 }
 
 if (Session::haveRight("config", READ)) {
-   $links[] = ['url'   => $CFG_GLPI['root_doc']."/front/blacklist.php",
-               'title' => _n('Blacklist', 'Blacklists', Session::getPluralNumber())];
+    $links[] = ['url'   => $CFG_GLPI['root_doc']."/front/blacklist.php",
+                'title' => _n('Blacklist', 'Blacklists', Session::getPluralNumber())];
 }
 
 ?>

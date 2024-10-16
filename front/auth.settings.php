@@ -30,14 +30,19 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRight("config", UPDATE);
 
 $config = new Config();
 
-Html::header(__('External authentication sources'), $_SERVER['PHP_SELF'], "config", "auth",
-             "settings");
+Html::header(
+    __('External authentication sources'),
+    $_SERVER['PHP_SELF'],
+    "config",
+    "auth",
+    "settings"
+);
 $config->showFormAuthentication();
 
 Html::footer();

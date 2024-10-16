@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 //!  ProjectTeam Class
@@ -41,125 +41,132 @@ if (!defined('GLPI_ROOT')) {
  * @author Julien Dombre
  * @since 0.85
  **/
-class ProjectTeam extends CommonDBRelation {
+class ProjectTeam extends CommonDBRelation
+{
+    // From CommonDBTM
+    public $dohistory                  = true;
+    public $no_form_page               = true;
 
-   // From CommonDBTM
-   public $dohistory                  = true;
-   public $no_form_page               = true;
+    // From CommonDBRelation
+    public static $itemtype_1          = 'Project';
+    public static $items_id_1          = 'projects_id';
 
-   // From CommonDBRelation
-   static public $itemtype_1          = 'Project';
-   static public $items_id_1          = 'projects_id';
+    public static $itemtype_2          = 'itemtype';
+    public static $items_id_2          = 'items_id';
+    public static $checkItem_2_Rights  = self::DONT_CHECK_ITEM_RIGHTS;
 
-   static public $itemtype_2          = 'itemtype';
-   static public $items_id_2          = 'items_id';
-   static public $checkItem_2_Rights  = self::DONT_CHECK_ITEM_RIGHTS;
-
-   static public $available_types     = ['User', 'Group', 'Supplier', 'Contact'];
-
-
-   /**
-    * @see CommonDBTM::getNameField()
-   **/
-   static function getNameField() {
-      return 'id';
-   }
+    public static $available_types     = ['User', 'Group', 'Supplier', 'Contact'];
 
 
-   static function getTypeName($nb = 0) {
-      return _n('Project team', 'Project teams', $nb);
-   }
-
-
-   function getForbiddenStandardMassiveAction() {
-
-      $forbidden   = parent::getForbiddenStandardMassiveAction();
-      $forbidden[] = 'update';
-      return $forbidden;
-   }
-
-
-   /**
-    * @see CommonGLPI::getTabNameForItem()
-   **/
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-
-      if (self::canView()) {
-         $nb = 0;
-         switch ($item->getType()) {
-            case 'Project' :
-               if ($_SESSION['glpishow_count_on_tabs']) {
-                  $nb = $item->getTeamCount();
-               }
-               return self::createTabEntry(self::getTypeName(1), $nb);
-         }
-      }
-      return '';
-   }
-
-
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-
-      switch ($item->getType()) {
-         case 'Project' :
-            $item->showTeam($item);
-            return true;
-      }
-   }
-
-   /**
-    * Duplicate all teams from a project template to his clone
-    *
-    * @deprecated 9.5
-    * @since 9.2
-    *
-    * @param integer $oldid        ID of the item to clone
-    * @param integer $newid        ID of the item cloned
+    /**
+     * @see CommonDBTM::getNameField()
     **/
-   static function cloneProjectTeam ($oldid, $newid) {
-      Toolbox::deprecated('Use clone');
-      $team = self::getTeamFor($oldid);
-      foreach ($team as $type) {
-         foreach ($type as $data) {
-            $cd                  = new self();
-            unset($data['id']);
-            $data['projects_id'] = $newid;
-            $data                = Toolbox::addslashes_deep($data);
-            $cd->add($data);
-         }
-      }
-   }
+    public static function getNameField()
+    {
+        return 'id';
+    }
 
 
-   /**
-    * Get team for a project
-    *
-    * @param $projects_id
-   **/
-   static function getTeamFor($projects_id) {
-      global $DB;
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Project team', 'Project teams', $nb);
+    }
 
-      $team = [];
-      $iterator = $DB->request([
-         'FROM'   => self::getTable(),
-         'WHERE'  => ['projects_id' => $projects_id]
-      ]);
 
-      while ($data = $iterator->next()) {
-         if (!isset($team[$data['itemtype']])) {
-            $team[$data['itemtype']] = [];
-         }
-         $team[$data['itemtype']][] = $data;
-      }
+    public function getForbiddenStandardMassiveAction()
+    {
 
-      // Define empty types
-      foreach (static::$available_types as $type) {
-         if (!isset($team[$type])) {
-            $team[$type] = [];
-         }
-      }
+        $forbidden   = parent::getForbiddenStandardMassiveAction();
+        $forbidden[] = 'update';
+        return $forbidden;
+    }
 
-      return $team;
-   }
+
+    /**
+     * @see CommonGLPI::getTabNameForItem()
+    **/
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
+
+        if (self::canView()) {
+            $nb = 0;
+            switch ($item->getType()) {
+                case 'Project':
+                    if ($_SESSION['glpishow_count_on_tabs']) {
+                        $nb = $item->getTeamCount();
+                    }
+                    return self::createTabEntry(self::getTypeName(1), $nb);
+            }
+        }
+        return '';
+    }
+
+
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
+
+        switch ($item->getType()) {
+            case 'Project':
+                $item->showTeam($item);
+                return true;
+        }
+    }
+
+    /**
+     * Duplicate all teams from a project template to his clone
+     *
+     * @deprecated 9.5
+     * @since 9.2
+     *
+     * @param integer $oldid        ID of the item to clone
+     * @param integer $newid        ID of the item cloned
+     **/
+    public static function cloneProjectTeam($oldid, $newid)
+    {
+        Toolbox::deprecated('Use clone');
+        $team = self::getTeamFor($oldid);
+        foreach ($team as $type) {
+            foreach ($type as $data) {
+                $cd                  = new self();
+                unset($data['id']);
+                $data['projects_id'] = $newid;
+                $data                = Toolbox::addslashes_deep($data);
+                $cd->add($data);
+            }
+        }
+    }
+
+
+    /**
+     * Get team for a project
+     *
+     * @param $projects_id
+    **/
+    public static function getTeamFor($projects_id)
+    {
+        global $DB;
+
+        $team = [];
+        $iterator = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => ['projects_id' => $projects_id]
+        ]);
+
+        while ($data = $iterator->next()) {
+            if (!isset($team[$data['itemtype']])) {
+                $team[$data['itemtype']] = [];
+            }
+            $team[$data['itemtype']][] = $data;
+        }
+
+        // Define empty types
+        foreach (static::$available_types as $type) {
+            if (!isset($team[$type])) {
+                $team[$type] = [];
+            }
+        }
+
+        return $team;
+    }
 
 }

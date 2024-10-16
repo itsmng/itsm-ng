@@ -31,98 +31,110 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /*
  * @since 9.2
  */
-class DeviceSensor extends CommonDevice {
+class DeviceSensor extends CommonDevice
+{
+    protected static $forward_entity_to = ['Item_DeviceSensor', 'Infocom'];
 
-   static protected $forward_entity_to = ['Item_DeviceSensor', 'Infocom'];
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Sensor', 'Sensors', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('Sensor', 'Sensors', $nb);
-   }
 
+    public function getAdditionalFields()
+    {
 
-   function getAdditionalFields() {
-
-      return array_merge(
-         parent::getAdditionalFields(),
-         [
-            _n('Type', 'Types', 1) => [
-               'name'  => 'devicesensortypes_id',
-               'type'  => 'select',
-               'values' => getOptionForItems('DeviceSensorType'),
-               'value' => $this->fields['devicesensortypes_id'],
-               'actions' => getItemActionButtons(['info', 'add'], 'DeviceSensorType')
-            ]
+        return array_merge(
+            parent::getAdditionalFields(),
+            [
+              _n('Type', 'Types', 1) => [
+                 'name'  => 'devicesensortypes_id',
+                 'type'  => 'select',
+                 'values' => getOptionForItems('DeviceSensorType'),
+                 'value' => $this->fields['devicesensortypes_id'],
+                 'actions' => getItemActionButtons(['info', 'add'], 'DeviceSensorType')
+              ]
          ]
-      );
-   }
+        );
+    }
 
 
-   function rawSearchOptions() {
-      $tab                 = parent::rawSearchOptions();
+    public function rawSearchOptions()
+    {
+        $tab                 = parent::rawSearchOptions();
 
-      $tab[] = ['id'       => '12',
-                'table'    => 'glpi_devicesensortypes',
-                'field'    => 'name',
-                'name'     => _n('Type', 'Types', 1),
-                'datatype' => 'dropdown'];
+        $tab[] = ['id'       => '12',
+                  'table'    => 'glpi_devicesensortypes',
+                  'field'    => 'name',
+                  'name'     => _n('Type', 'Types', 1),
+                  'datatype' => 'dropdown'];
 
-      return $tab;
-   }
-
-
-   static function getHTMLTableHeader($itemtype, HTMLTableBase $base,
-                                      HTMLTableSuperHeader $super = null,
-                                      HTMLTableHeader $father = null, array $options = []) {
-
-      $column = parent::getHTMLTableHeader($itemtype, $base, $super, $father, $options);
-
-      if ($column == $father) {
-         return $father;
-      }
-
-      switch ($itemtype) {
-         case 'Computer' :
-         case 'Peripheral' :
-            Manufacturer::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
-            $base->addHeader('devicesensor_type', _n('Type', 'Types', 1), $super, $father);
-            break;
-      }
-   }
+        return $tab;
+    }
 
 
-   function getHTMLTableCellForItem(HTMLTableRow $row = null, CommonDBTM $item = null,
-                                    HTMLTableCell $father = null, array $options = []) {
+    public static function getHTMLTableHeader(
+        $itemtype,
+        HTMLTableBase $base,
+        HTMLTableSuperHeader $super = null,
+        HTMLTableHeader $father = null,
+        array $options = []
+    ) {
 
-      $column = parent::getHTMLTableCellForItem($row, $item, $father, $options);
+        $column = parent::getHTMLTableHeader($itemtype, $base, $super, $father, $options);
 
-      if ($column == $father) {
-         return $father;
-      }
+        if ($column == $father) {
+            return $father;
+        }
 
-      switch ($item->getType()) {
-         case 'Computer' :
-         case 'Peripheral' :
-            Manufacturer::getHTMLTableCellsForItem($row, $this, null, $options);
-            break;
-      }
-   }
+        switch ($itemtype) {
+            case 'Computer':
+            case 'Peripheral':
+                Manufacturer::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
+                $base->addHeader('devicesensor_type', _n('Type', 'Types', 1), $super, $father);
+                break;
+        }
+    }
 
 
-   /**
-    * Criteria used for import function
-    */
-   function getImportCriteria() {
+    public function getHTMLTableCellForItem(
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
+        array $options = []
+    ) {
 
-      return ['designation'          => 'equal',
-              'manufacturers_id'     => 'equal',
-              'devicesensortypes_id' => 'equal',
-              'locations_id'         => 'equal'];
-   }
+        $column = parent::getHTMLTableCellForItem($row, $item, $father, $options);
+
+        if ($column == $father) {
+            return $father;
+        }
+
+        switch ($item->getType()) {
+            case 'Computer':
+            case 'Peripheral':
+                Manufacturer::getHTMLTableCellsForItem($row, $this, null, $options);
+                break;
+        }
+    }
+
+
+    /**
+     * Criteria used for import function
+     */
+    public function getImportCriteria()
+    {
+
+        return ['designation'          => 'equal',
+                'manufacturers_id'     => 'equal',
+                'devicesensortypes_id' => 'equal',
+                'locations_id'         => 'equal'];
+    }
 
 }

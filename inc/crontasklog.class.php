@@ -31,80 +31,86 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * CronTaskLog class
 **/
-class CronTaskLog extends CommonDBTM{
+class CronTaskLog extends CommonDBTM
+{
+    // Class constant
+    public const STATE_START = 0;
+    public const STATE_RUN   = 1;
+    public const STATE_STOP  = 2;
+    public const STATE_ERROR = 3;
 
-   // Class constant
-   const STATE_START = 0;
-   const STATE_RUN   = 1;
-   const STATE_STOP  = 2;
-   const STATE_ERROR = 3;
 
+    /**
+     * Clean old event for a task
+     *
+     * @param $id     integer  ID of the CronTask
+     * @param $days   integer  number of day to keep
+     *
+     * @return integer number of events deleted
+    **/
+    public static function cleanOld($id, $days)
+    {
+        global $DB;
 
-   /**
-    * Clean old event for a task
-    *
-    * @param $id     integer  ID of the CronTask
-    * @param $days   integer  number of day to keep
-    *
-    * @return integer number of events deleted
-   **/
-   static function cleanOld($id, $days) {
-      global $DB;
+        $secs      = $days * DAY_TIMESTAMP;
 
-      $secs      = $days * DAY_TIMESTAMP;
-
-      $result = $DB->delete(
-         'glpi_crontasklogs', [
-            'crontasks_id' => $id,
-            new \QueryExpression("UNIX_TIMESTAMP(" . $DB->quoteName("date") . ") < UNIX_TIMESTAMP()-$secs")
+        $result = $DB->delete(
+            'glpi_crontasklogs',
+            [
+              'crontasks_id' => $id,
+              new \QueryExpression("UNIX_TIMESTAMP(" . $DB->quoteName("date") . ") < UNIX_TIMESTAMP()-$secs")
          ]
-      );
+        );
 
-      return $result ? $DB->affectedRows() : 0;
-   }
-
-
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-
-      if (!$withtemplate) {
-         $nb = 0;
-         switch ($item->getType()) {
-            case 'CronTask' :
-               $ong    = [];
-               $ong[1] = __('Statistics');
-               if ($_SESSION['glpishow_count_on_tabs']) {
-                  $nb =  countElementsInTable($this->getTable(),
-                                              ['crontasks_id' => $item->getID(),
-                                               'state'        => self::STATE_STOP ]);
-               }
-               $ong[2] = self::createTabEntry(_n('Log', 'Logs', Session::getPluralNumber()), $nb);
-               return $ong;
-         }
-      }
-      return '';
-   }
+        return $result ? $DB->affectedRows() : 0;
+    }
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
 
-      if ($item->getType()=='CronTask') {
-         switch ($tabnum) {
-            case 1 :
-               $item->showStatistics();
-               break;
+        if (!$withtemplate) {
+            $nb = 0;
+            switch ($item->getType()) {
+                case 'CronTask':
+                    $ong    = [];
+                    $ong[1] = __('Statistics');
+                    if ($_SESSION['glpishow_count_on_tabs']) {
+                        $nb =  countElementsInTable(
+                            $this->getTable(),
+                            ['crontasks_id' => $item->getID(),
+                                                     'state'        => self::STATE_STOP ]
+                        );
+                    }
+                    $ong[2] = self::createTabEntry(_n('Log', 'Logs', Session::getPluralNumber()), $nb);
+                    return $ong;
+            }
+        }
+        return '';
+    }
 
-            case 2 :
-               $item->showHistory();
-               break;
-         }
-      }
-      return true;
-   }
+
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
+
+        if ($item->getType() == 'CronTask') {
+            switch ($tabnum) {
+                case 1:
+                    $item->showStatistics();
+                    break;
+
+                case 2:
+                    $item->showHistory();
+                    break;
+            }
+        }
+        return true;
+    }
 
 }

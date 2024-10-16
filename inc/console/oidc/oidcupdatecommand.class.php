@@ -1,7 +1,7 @@
 <?php
 /**
  * ---------------------------------------------------------------------
- * ITSM-NG 
+ * ITSM-NG
  * Copyright (C) 2022 ITSM-NG and contributors.
  *
  * https://www.itsm-ng.org/
@@ -33,36 +33,38 @@
 namespace Glpi\Console\Oidc;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 use Glpi\Console\AbstractCommand;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class OidcUpdateCommand extends AbstractCommand {
+class OidcUpdateCommand extends AbstractCommand
+{
+    protected function configure()
+    {
+        parent::configure();
 
-   protected function configure() {
-      parent::configure();
+        $this->setName('itsmng:oidc:update');
+        $this->setAliases(['oidc:update']);
+        $this->setDescription(__('Each ITSM-NG user using openID connect must log in again to update their personal information'));
+    }
 
-      $this->setName('itsmng:oidc:update');
-      $this->setAliases(['oidc:update']);
-      $this->setDescription(__('Each ITSM-NG user using openID connect must log in again to update their personal information'));
-   }
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
-   protected function execute(InputInterface $input, OutputInterface $output) {
+        global $DB;
 
-      global $DB;
+        $querry = "UPDATE glpi_oidc_users SET `update` = 0;";
+        $DB->queryOrDie($querry);
 
-      $querry = "UPDATE glpi_oidc_users SET `update` = 0;";
-      $DB->queryOrDie($querry);
+        return 0; // Success
+    }
 
-      return 0; // Success
-   }
+    public function mustCheckMandatoryRequirements(): bool
+    {
 
-   public function mustCheckMandatoryRequirements(): bool {
-
-      return false;
-   }
+        return false;
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkLoginUser();
 
@@ -24,4 +24,3 @@ $ticketData = [
 // Json Parsing
 header('Content-Type: application/json');
 echo json_encode($ticketData);
-?>

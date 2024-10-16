@@ -33,41 +33,45 @@
 use function PHPSTORM_META\map;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * Fieldblacklist Class
 **/
-class Fieldblacklist extends CommonDropdown {
+class Fieldblacklist extends CommonDropdown
+{
+    public static $rightname         = 'config';
 
-   static $rightname         = 'config';
-
-   public $can_be_translated = false;
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Ignored value for the unicity', 'Ignored values for the unicity', $nb);
-   }
+    public $can_be_translated = false;
 
 
-   static function canCreate() {
-      return static::canUpdate();
-   }
-
-   /**
-    * @since 0.85
-   **/
-   static function canPurge() {
-      return static::canUpdate();
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Ignored value for the unicity', 'Ignored values for the unicity', $nb);
+    }
 
 
+    public static function canCreate()
+    {
+        return static::canUpdate();
+    }
 
-   function getAdditionalFields() {
-      global $CFG_GLPI;
+    /**
+     * @since 0.85
+    **/
+    public static function canPurge()
+    {
+        return static::canUpdate();
+    }
 
-      $loadFields = <<<JS
+
+
+    public function getAdditionalFields()
+    {
+        global $CFG_GLPI;
+
+        $loadFields = <<<JS
          $.ajax({
             url: "{$CFG_GLPI['root_doc']}/ajax/dropdownFieldsBlacklist.php",
             type: 'POST',
@@ -99,7 +103,7 @@ class Fieldblacklist extends CommonDropdown {
          });
       JS;
 
-      $loadValueInput = <<<JS
+        $loadValueInput = <<<JS
          $.ajax({
             url: "{$CFG_GLPI['root_doc']}/ajax/dropdownValuesBlacklist.php",
             type: 'POST',
@@ -120,336 +124,353 @@ class Fieldblacklist extends CommonDropdown {
             }
          });
       JS;
-      return [
-         _n('Type', 'Types', 1) => [
-            'name'  => 'itemtype',
-            'type'  => 'select',
-            'id'    => 'ItemTypeDropdown',
-            'values' => array_merge([ Dropdown::EMPTY_VALUE ], array_combine($CFG_GLPI['unicity_types'], $CFG_GLPI['unicity_types'])),
-            'value' => isset($this->fields['itemtype']) ? $this->fields['itemtype'] : '',
-            isset($this->fields['itemtype']) ? 'disabled' : '' => '',
-            'hooks' => [
-               'change' => $loadFields
-            ]
-         ],
-         _n('Field', 'Fields', 1) => [
-            'name'  => 'field',
-            'type'  => 'select',
-            'id' => 'FieldDropdown',
-            'values' => $this->selectCriterias(),
-            'value' => isset($this->fields['field']) ? $this->fields['field'] : '',
-            !isset($this->fields['itemtype']) ? 'disabled' : '',
-            'hooks' => [
-               'change' => $loadValueInput,
-            ],
-         ],
-         __('Value') => [
-            'content' => '<div id="ValueInput"></div>',
-            'init' => $loadValueInput,
-         ]
-      ];
-   }
+        return [
+           _n('Type', 'Types', 1) => [
+              'name'  => 'itemtype',
+              'type'  => 'select',
+              'id'    => 'ItemTypeDropdown',
+              'values' => array_merge([ Dropdown::EMPTY_VALUE ], array_combine($CFG_GLPI['unicity_types'], $CFG_GLPI['unicity_types'])),
+              'value' => isset($this->fields['itemtype']) ? $this->fields['itemtype'] : '',
+              isset($this->fields['itemtype']) ? 'disabled' : '' => '',
+              'hooks' => [
+                 'change' => $loadFields
+              ]
+           ],
+           _n('Field', 'Fields', 1) => [
+              'name'  => 'field',
+              'type'  => 'select',
+              'id' => 'FieldDropdown',
+              'values' => $this->selectCriterias(),
+              'value' => isset($this->fields['field']) ? $this->fields['field'] : '',
+              !isset($this->fields['itemtype']) ? 'disabled' : '',
+              'hooks' => [
+                 'change' => $loadValueInput,
+              ],
+           ],
+           __('Value') => [
+              'content' => '<div id="ValueInput"></div>',
+              'init' => $loadValueInput,
+           ]
+        ];
+    }
 
 
-   /**
-    * Get search function for the class
-    *
-    * @return array of search option
-   **/
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    /**
+     * Get search function for the class
+     *
+     * @return array of search option
+    **/
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
 
-      $tab[] = [
-         'id'                 => '4',
-         'table'              => $this->getTable(),
-         'field'              => 'itemtype',
-         'name'               => _n('Type', 'Types', 1),
-         'massiveaction'      => false,
-         'datatype'           => 'itemtypename',
-         'forcegroupby'       => true
-      ];
+        $tab[] = [
+           'id'                 => '4',
+           'table'              => $this->getTable(),
+           'field'              => 'itemtype',
+           'name'               => _n('Type', 'Types', 1),
+           'massiveaction'      => false,
+           'datatype'           => 'itemtypename',
+           'forcegroupby'       => true
+        ];
 
-      $tab[] = [
-         'id'                 => '6',
-         'table'              => $this->getTable(),
-         'field'              => 'field',
-         'name'               => _n('Field', 'Fields', 1),
-         'massiveaction'      => false,
-         'datatype'           => 'specific',
-         'additionalfields'   => [
-            '0'                  => 'itemtype'
-         ]
-      ];
+        $tab[] = [
+           'id'                 => '6',
+           'table'              => $this->getTable(),
+           'field'              => 'field',
+           'name'               => _n('Field', 'Fields', 1),
+           'massiveaction'      => false,
+           'datatype'           => 'specific',
+           'additionalfields'   => [
+              '0'                  => 'itemtype'
+           ]
+        ];
 
-      $tab[] = [
-         'id'                 => '7',
-         'table'              => $this->getTable(),
-         'field'              => 'value',
-         'name'               => __('Value'),
-         'datatype'           => 'specific',
-         'additionalfields'   => [
-            '0'                  => 'itemtype',
-            '1'                  => 'field'
-         ],
-         'massiveaction'      => false
-      ];
+        $tab[] = [
+           'id'                 => '7',
+           'table'              => $this->getTable(),
+           'field'              => 'value',
+           'name'               => __('Value'),
+           'datatype'           => 'specific',
+           'additionalfields'   => [
+              '0'                  => 'itemtype',
+              '1'                  => 'field'
+           ],
+           'massiveaction'      => false
+        ];
 
-      return $tab;
-   }
+        return $tab;
+    }
 
 
-   static function getSpecificValueToDisplay($field, $values, array $options = []) {
+    public static function getSpecificValueToDisplay($field, $values, array $options = [])
+    {
 
-      if (!is_array($values)) {
-         $values = [$field => $values];
-      }
-      switch ($field) {
-         case 'field':
-            if (isset($values['itemtype']) && !empty($values['itemtype'])) {
-               $target       = getItemForItemtype($values['itemtype']);
-               $searchOption = $target->getSearchOptionByField('field', $values[$field]);
-               return $searchOption['name'];
+        if (!is_array($values)) {
+            $values = [$field => $values];
+        }
+        switch ($field) {
+            case 'field':
+                if (isset($values['itemtype']) && !empty($values['itemtype'])) {
+                    $target       = getItemForItemtype($values['itemtype']);
+                    $searchOption = $target->getSearchOptionByField('field', $values[$field]);
+                    return $searchOption['name'];
+                }
+                break;
+
+            case 'value':
+                if (isset($values['itemtype']) && !empty($values['itemtype'])) {
+                    $target = getItemForItemtype($values['itemtype']);
+                    if (isset($values['field']) && !empty($values['field'])) {
+                        $searchOption = $target->getSearchOptionByField('field', $values['field']);
+                        return $target->getValueToDisplay($searchOption, $values[$field]);
+                    }
+                }
+                break;
+        }
+        return parent::getSpecificValueToDisplay($field, $values, $options);
+    }
+
+
+    /**
+     * @since 0.84
+     *
+     * @param $field
+     * @param $name               (default '')
+     * @param $values             (default '')
+     * @param $options      array
+    **/
+    public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
+    {
+
+        if (!is_array($values)) {
+            $values = [$field => $values];
+        }
+        $options['display'] = false;
+        switch ($field) {
+            case 'field':
+                if (isset($values['itemtype'])
+                    && !empty($values['itemtype'])) {
+                    $options['value'] = $values[$field];
+                    $options['name']  = $name;
+                    return self::dropdownField($values['itemtype'], $options);
+                }
+                break;
+
+            case 'value':
+                if (isset($values['itemtype'])
+                    && !empty($values['itemtype'])) {
+                    if ($item = getItemForItemtype($values['itemtype'])) {
+                        if (isset($values['field']) && !empty($values['field'])) {
+                            $searchOption = $item->getSearchOptionByField('field', $values['field']);
+                            return $item->getValueToSelect($searchOption, $name, $values[$field], $options);
+                        }
+                    }
+                }
+                break;
+        }
+        return parent::getSpecificValueToSelect($field, $name, $values, $options);
+    }
+
+
+    public function prepareInputForAdd($input)
+    {
+
+        $input = parent::prepareInputForAdd($input);
+        return $input;
+    }
+
+
+    public function prepareInputForUpdate($input)
+    {
+
+        $input = parent::prepareInputForUpdate($input);
+        return $input;
+    }
+
+
+    /**
+     * Display specific fields for FieldUnicity
+     *
+     * @param integer $ID     Unused
+     * @param array   $field  Array of fields
+    **/
+    public function displaySpecificTypeField($ID, $field = [])
+    {
+
+        switch ($field['type']) {
+            case 'blacklist_itemtype':
+                $this->showItemtype();
+                break;
+
+            case 'blacklist_field':
+                $this->selectCriterias();
+                break;
+
+            case 'blacklist_value':
+                $this->selectValues();
+                break;
+        }
+    }
+
+
+    /**
+     * Display a dropdown which contains all the available itemtypes
+     *
+     * @return void
+    **/
+    public function showItemtype()
+    {
+        global $CFG_GLPI;
+
+        if ($this->fields['id'] > 0) {
+            if ($item = getItemForItemtype($this->fields['itemtype'])) {
+                echo $item->getTypeName(1);
             }
-            break;
+            echo "<input type='hidden' name='itemtype' value='".$this->fields['itemtype']."'>";
 
-         case  'value' :
-            if (isset($values['itemtype']) && !empty($values['itemtype'])) {
-               $target = getItemForItemtype($values['itemtype']);
-               if (isset($values['field']) && !empty($values['field'])) {
-                  $searchOption = $target->getSearchOptionByField('field', $values['field']);
-                  return $target->getValueToDisplay($searchOption, $values[$field]);
-               }
+        } else {
+            //Add criteria : display dropdown
+            foreach ($CFG_GLPI['unicity_types'] as $itemtype) {
+                if ($item = getItemForItemtype($itemtype)) {
+                    if ($item->can(-1, READ)) {
+                        $options[$itemtype] = $item->getTypeName(1);
+                    }
+                }
             }
-            break;
-      }
-      return parent::getSpecificValueToDisplay($field, $values, $options);
-   }
+            asort($options);
+            $rand = Dropdown::showFromArray(
+                'itemtype',
+                $options,
+                ['value'               => $this->fields['value'],
+                                                  'display_emptychoice' => true]
+            );
+
+            $params = ['itemtype' => '__VALUE__',
+                            'id'       => $this->fields['id']];
+            Ajax::updateItemOnSelectEvent(
+                "dropdown_itemtype$rand",
+                "span_fields",
+                $CFG_GLPI["root_doc"]."/ajax/dropdownFieldsBlacklist.php",
+                $params
+            );
+        }
+    }
 
 
-   /**
-    * @since 0.84
-    *
-    * @param $field
-    * @param $name               (default '')
-    * @param $values             (default '')
-    * @param $options      array
-   **/
-   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
+    public function selectCriterias()
+    {
+        global $CFG_GLPI, $DB;
 
-      if (!is_array($values)) {
-         $values = [$field => $values];
-      }
-      $options['display'] = false;
-      switch ($field) {
-         case 'field' :
-            if (isset($values['itemtype'])
-                && !empty($values['itemtype'])) {
-               $options['value'] = $values[$field];
-               $options['name']  = $name;
-               return self::dropdownField($values['itemtype'], $options);
+        if (!isset($this->fields['itemtype']) || !$this->fields['itemtype']) {
+            echo "</span>";
+            return;
+        }
+
+        if (!isset($this->fields['entities_id'])) {
+            $this->fields['entities_id'] = $_SESSION['glpiactive_entity'];
+        }
+
+        if ($target = getItemForItemtype($this->fields['itemtype'])) {
+            $criteria = [];
+            foreach ($DB->listFields($target->getTable()) as $field) {
+                $searchOption = $target->getSearchOptionByField('field', $field['Field']);
+
+                if (!empty($searchOption)
+                      && !in_array($field['Type'], $target->getUnallowedFieldsForUnicity())
+                      && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
+                    $criteria[$field['Field']] = $searchOption['name'];
+                }
             }
-            break;
+            return $criteria;
+        }
+    }
 
-         case 'value' :
-            if (isset($values['itemtype'])
-                && !empty($values['itemtype'])) {
-               if ($item = getItemForItemtype($values['itemtype'])) {
-                  if (isset($values['field']) && !empty($values['field'])) {
-                     $searchOption = $item->getSearchOptionByField('field', $values['field']);
-                     return $item->getValueToSelect($searchOption, $name, $values[$field], $options);
-                  }
-               }
+
+    /** Dropdown fields for a specific itemtype
+     *
+     * @since 0.84
+     *
+     * @param string $itemtype
+     * @param array  $options
+    **/
+    public static function dropdownField($itemtype, $options = [])
+    {
+        global $DB;
+
+        $p['name']    = 'field';
+        $p['display'] = true;
+        $p['value']   = '';
+
+        if (is_array($options) && count($options)) {
+            foreach ($options as $key => $val) {
+                $p[$key] = $val;
             }
-            break;
-      }
-      return parent::getSpecificValueToSelect($field, $name, $values, $options);
-   }
+        }
 
+        if ($target = getItemForItemtype($itemtype)) {
+            $criteria = [];
+            foreach ($DB->listFields($target->getTable()) as $field) {
+                $searchOption = $target->getSearchOptionByField('field', $field['Field']);
 
-   function prepareInputForAdd($input) {
-
-      $input = parent::prepareInputForAdd($input);
-      return $input;
-   }
-
-
-   function prepareInputForUpdate($input) {
-
-      $input = parent::prepareInputForUpdate($input);
-      return $input;
-   }
-
-
-   /**
-    * Display specific fields for FieldUnicity
-    *
-    * @param integer $ID     Unused
-    * @param array   $field  Array of fields
-   **/
-   function displaySpecificTypeField($ID, $field = []) {
-
-      switch ($field['type']) {
-         case 'blacklist_itemtype' :
-            $this->showItemtype();
-            break;
-
-         case 'blacklist_field' :
-            $this->selectCriterias();
-            break;
-
-         case 'blacklist_value' :
-            $this->selectValues();
-            break;
-      }
-   }
-
-
-   /**
-    * Display a dropdown which contains all the available itemtypes
-    *
-    * @return void
-   **/
-   function showItemtype() {
-      global $CFG_GLPI;
-
-      if ($this->fields['id'] > 0) {
-         if ($item = getItemForItemtype($this->fields['itemtype'])) {
-            echo $item->getTypeName(1);
-         }
-         echo "<input type='hidden' name='itemtype' value='".$this->fields['itemtype']."'>";
-
-      } else {
-         //Add criteria : display dropdown
-         foreach ($CFG_GLPI['unicity_types'] as $itemtype) {
-            if ($item = getItemForItemtype($itemtype)) {
-               if ($item->can(-1, READ)) {
-                  $options[$itemtype] = $item->getTypeName(1);
-               }
+                if (!empty($searchOption)
+                    && !in_array($field['Type'], $target->getUnallowedFieldsForUnicity())
+                    && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
+                    $criteria[$field['Field']] = $searchOption['name'];
+                }
             }
-         }
-         asort($options);
-         $rand = Dropdown::showFromArray('itemtype', $options,
-                                         ['value'               => $this->fields['value'],
-                                               'display_emptychoice' => true]);
-
-         $params = ['itemtype' => '__VALUE__',
-                         'id'       => $this->fields['id']];
-         Ajax::updateItemOnSelectEvent("dropdown_itemtype$rand", "span_fields",
-                                       $CFG_GLPI["root_doc"]."/ajax/dropdownFieldsBlacklist.php",
-                                       $params);
-      }
-   }
+            return Dropdown::showFromArray($p['name'], $criteria, $p);
+        }
+        return false;
+    }
 
 
-   function selectCriterias() {
-      global $CFG_GLPI, $DB;
-
-      if (!isset($this->fields['itemtype']) || !$this->fields['itemtype']) {
-         echo "</span>";
-         return;
-      }
-
-      if (!isset($this->fields['entities_id'])) {
-         $this->fields['entities_id'] = $_SESSION['glpiactive_entity'];
-      }
-
-      if ($target = getItemForItemtype($this->fields['itemtype'])) {
-         $criteria = [];
-         foreach ($DB->listFields($target->getTable()) as $field) {
-            $searchOption = $target->getSearchOptionByField('field', $field['Field']);
-
-            if (!empty($searchOption)
-                  && !in_array($field['Type'], $target->getUnallowedFieldsForUnicity())
-                  && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
-               $criteria[$field['Field']] = $searchOption['name'];
+    /**
+     * @param $field  (default '')
+    **/
+    public function selectValues($field = '')
+    {
+        if ($field == '') {
+            $field = $this->fields['field'];
+        }
+        if ($this->fields['itemtype'] != '') {
+            if ($item = getItemForItemtype($this->fields['itemtype'])) {
+                $searchOption = $item->getSearchOptionByField('field', $field);
+                $options      = [];
+                if (isset($this->fields['entity'])) {
+                    $options['entity']      = $this->fields['entity'];
+                    $options['entity_sons'] = $this->fields['is_recursive'];
+                }
+                echo $item->getValueToSelect($searchOption, 'value', $this->fields['value'], $options);
             }
-         }
-         return $criteria;
-      }
-   }
+        }
+    }
 
 
-   /** Dropdown fields for a specific itemtype
-    *
-    * @since 0.84
-    *
-    * @param string $itemtype
-    * @param array  $options
-   **/
-   static function dropdownField($itemtype, $options = []) {
-      global $DB;
+    /**
+     * Check if a field & value are blacklisted or not
+     *
+     * @param itemtype      itemtype of the blacklisted field
+     * @param entities_id   the entity in which the field must be saved
+     * @param field         the field to check
+     * @param value         the field's value
+     *
+     * @return true is value if blacklisted, false otherwise
+    **/
+    public static function isFieldBlacklisted($itemtype, $entities_id, $field, $value)
+    {
+        global $DB;
 
-      $p['name']    = 'field';
-      $p['display'] = true;
-      $p['value']   = '';
-
-      if (is_array($options) && count($options)) {
-         foreach ($options as $key => $val) {
-            $p[$key] = $val;
-         }
-      }
-
-      if ($target = getItemForItemtype($itemtype)) {
-         $criteria = [];
-         foreach ($DB->listFields($target->getTable()) as $field) {
-            $searchOption = $target->getSearchOptionByField('field', $field['Field']);
-
-            if (!empty($searchOption)
-                && !in_array($field['Type'], $target->getUnallowedFieldsForUnicity())
-                && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
-               $criteria[$field['Field']] = $searchOption['name'];
-            }
-         }
-         return Dropdown::showFromArray($p['name'], $criteria, $p);
-      }
-      return false;
-   }
-
-
-   /**
-    * @param $field  (default '')
-   **/
-   function selectValues($field = '') {
-      if ($field == '') {
-         $field = $this->fields['field'];
-      }
-      if ($this->fields['itemtype'] != '') {
-         if ($item = getItemForItemtype($this->fields['itemtype'])) {
-            $searchOption = $item->getSearchOptionByField('field', $field);
-            $options      = [];
-            if (isset($this->fields['entity'])) {
-               $options['entity']      = $this->fields['entity'];
-               $options['entity_sons'] = $this->fields['is_recursive'];
-            }
-            echo $item->getValueToSelect($searchOption, 'value', $this->fields['value'], $options);
-         }
-      }
-   }
-
-
-   /**
-    * Check if a field & value are blacklisted or not
-    *
-    * @param itemtype      itemtype of the blacklisted field
-    * @param entities_id   the entity in which the field must be saved
-    * @param field         the field to check
-    * @param value         the field's value
-    *
-    * @return true is value if blacklisted, false otherwise
-   **/
-   static function isFieldBlacklisted($itemtype, $entities_id, $field, $value) {
-      global $DB;
-
-      $result = $DB->request([
-         'COUNT'  => 'cpt',
-         'FROM'   => 'glpi_fieldblacklists',
-         'WHERE'  => [
-            'itemtype'  => $itemtype,
-            'field'     => $field,
-            'value'     => $value
-         ] + getEntitiesRestrictCriteria('glpi_fieldblacklists', 'entities_id', $entities_id, true)
-      ])->next();
-      return $result['cpt'] > 0;
-   }
+        $result = $DB->request([
+           'COUNT'  => 'cpt',
+           'FROM'   => 'glpi_fieldblacklists',
+           'WHERE'  => [
+              'itemtype'  => $itemtype,
+              'field'     => $field,
+              'value'     => $value
+           ] + getEntitiesRestrictCriteria('glpi_fieldblacklists', 'entities_id', $entities_id, true)
+        ])->next();
+        return $result['cpt'] > 0;
+    }
 
 }

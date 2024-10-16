@@ -36,7 +36,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -44,194 +44,193 @@ if (!defined('GLPI_ROOT')) {
  **/
 class SLM extends CommonDBTM
 {
+    // From CommonDBTM
+    public $dohistory                   = true;
 
-   // From CommonDBTM
-   public $dohistory                   = true;
+    protected static $forward_entity_to = ['SLA', 'OLA'];
 
-   static protected $forward_entity_to = ['SLA', 'OLA'];
+    public static $rightname                   = 'slm';
 
-   static $rightname                   = 'slm';
+    public const TTR = 0; // Time to resolve
+    public const TTO = 1; // Time to own
 
-   const TTR = 0; // Time to resolve
-   const TTO = 1; // Time to own
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Service level', 'Service levels', $nb);
+    }
 
-   static function getTypeName($nb = 0)
-   {
-      return _n('Service level', 'Service levels', $nb);
-   }
+    /**
+     * Force calendar of the SLM if value -1: calendar of the entity
+     *
+     * @param integer $calendars_id calendars_id of the ticket
+     **/
+    public function setTicketCalendar($calendars_id)
+    {
 
-   /**
-    * Force calendar of the SLM if value -1: calendar of the entity
-    *
-    * @param integer $calendars_id calendars_id of the ticket
-    **/
-   function setTicketCalendar($calendars_id)
-   {
+        if ($this->fields['calendars_id'] == -1) {
+            $this->fields['calendars_id'] = $calendars_id;
+        }
+    }
 
-      if ($this->fields['calendars_id'] == -1) {
-         $this->fields['calendars_id'] = $calendars_id;
-      }
-   }
+    public function defineTabs($options = [])
+    {
 
-   function defineTabs($options = [])
-   {
+        $ong = [];
+        $this->addDefaultFormTab($ong);
+        $this->addImpactTab($ong, $options);
+        $this->addStandardTab('SLA', $ong, $options);
+        $this->addStandardTab('OLA', $ong, $options);
+        $this->addStandardTab('Log', $ong, $options);
 
-      $ong = [];
-      $this->addDefaultFormTab($ong);
-      $this->addImpactTab($ong, $options);
-      $this->addStandardTab('SLA', $ong, $options);
-      $this->addStandardTab('OLA', $ong, $options);
-      $this->addStandardTab('Log', $ong, $options);
+        return $ong;
+    }
 
-      return $ong;
-   }
+    public function cleanDBonPurge()
+    {
 
-   function cleanDBonPurge()
-   {
-
-      $this->deleteChildrenAndRelationsFromDb(
-         [
-            SLA::class,
-            OLA::class,
+        $this->deleteChildrenAndRelationsFromDb(
+            [
+              SLA::class,
+              OLA::class,
          ]
-      );
-   }
+        );
+    }
 
-   /**
-    * Print the slm form
-    *
-    * @param integer $ID ID of the item
-    *
-    * @return boolean item found
-    **/
-   function showForm($ID)
-   {
-      $form = [
-         'action' => Toolbox::getItemTypeFormURL('slm'),
-         'itemtype' => $this->getType(),
-         'content' => [
-            __('Niveau de services') => [
-               'visible' => true,
-               'inputs' => [
-                  $this->isNewID($ID) ? [] : [
-                     'type' => 'hidden',
-                     'name' => 'id',
-                     'value' => $ID
-                  ],
-                  __('Name') => [
-                     'name' => 'name',
-                     'type' => 'text',
-                     'value' => $this->fields['name'] ?? '',
-                  ],
-                  __('Calendar') => [
-                     'name' => 'calendars_id',
-                     'type' => 'select',
-                     'values' => [-1 => __('Calendar of the ticket'), 0 => __('24/7')] +
-                         getItemByEntity(Calendar::class, Session::getActiveEntity()),
-                     'value' => $this->fields['calendars_id'] ?? '',
-                     'actions' => getItemActionButtons(['info', 'add'], "Calendar"),
-                  ],
-                  __('Comments') => [
-                     'name' => 'comment',
-                     'type' => 'textarea',
-                     'value' => $this->fields['comment'] ?? '',
-                  ],
-               ]
-            ]
-         ]
-      ];
-      renderTwigForm($form, '', $this->fields);
+    /**
+     * Print the slm form
+     *
+     * @param integer $ID ID of the item
+     *
+     * @return boolean item found
+     **/
+    public function showForm($ID)
+    {
+        $form = [
+           'action' => Toolbox::getItemTypeFormURL('slm'),
+           'itemtype' => $this->getType(),
+           'content' => [
+              __('Niveau de services') => [
+                 'visible' => true,
+                 'inputs' => [
+                    $this->isNewID($ID) ? [] : [
+                       'type' => 'hidden',
+                       'name' => 'id',
+                       'value' => $ID
+                    ],
+                    __('Name') => [
+                       'name' => 'name',
+                       'type' => 'text',
+                       'value' => $this->fields['name'] ?? '',
+                    ],
+                    __('Calendar') => [
+                       'name' => 'calendars_id',
+                       'type' => 'select',
+                       'values' => [-1 => __('Calendar of the ticket'), 0 => __('24/7')] +
+                           getItemByEntity(Calendar::class, Session::getActiveEntity()),
+                       'value' => $this->fields['calendars_id'] ?? '',
+                       'actions' => getItemActionButtons(['info', 'add'], "Calendar"),
+                    ],
+                    __('Comments') => [
+                       'name' => 'comment',
+                       'type' => 'textarea',
+                       'value' => $this->fields['comment'] ?? '',
+                    ],
+                 ]
+              ]
+           ]
+        ];
+        renderTwigForm($form, '', $this->fields);
 
-      return true;
-   }
-
-
-   function rawSearchOptions()
-   {
-      $tab = [];
-
-      $tab[] = [
-         'id'                 => 'common',
-         'name'               => __('Characteristics')
-      ];
-
-      $tab[] = [
-         'id'                 => '1',
-         'table'              => $this->getTable(),
-         'field'              => 'name',
-         'name'               => __('Name'),
-         'datatype'           => 'itemlink',
-         'massiveaction'      => false,
-         'autocomplete'       => true,
-      ];
-
-      $tab[] = [
-         'id'                 => '2',
-         'table'              => $this->getTable(),
-         'field'              => 'id',
-         'name'               => __('ID'),
-         'massiveaction'      => false,
-         'datatype'           => 'number'
-      ];
-
-      $tab[] = [
-         'id'                 => '4',
-         'table'              => 'glpi_calendars',
-         'field'              => 'name',
-         'name'               => _n('Calendar', 'Calendars', 1),
-         'datatype'           => 'dropdown'
-      ];
-
-      $tab[] = [
-         'id'                 => '16',
-         'table'              => $this->getTable(),
-         'field'              => 'comment',
-         'name'               => __('Comments'),
-         'datatype'           => 'text'
-      ];
-
-      return $tab;
-   }
+        return true;
+    }
 
 
-   static function getMenuContent()
-   {
+    public function rawSearchOptions()
+    {
+        $tab = [];
 
-      $menu = [];
-      if (static::canView()) {
-         $menu['title']           = self::getTypeName(2);
-         $menu['page']            = static::getSearchURL(false);
-         $menu['icon']            = static::getIcon();
-         $menu['links']['search'] = static::getSearchURL(false);
-         if (static::canCreate()) {
-            $menu['links']['add'] = SLM::getFormURL(false);
-         }
+        $tab[] = [
+           'id'                 => 'common',
+           'name'               => __('Characteristics')
+        ];
 
-         $menu['options']['sla']['title']           = SLA::getTypeName(1);
-         $menu['options']['sla']['page']            = SLA::getSearchURL(false);
-         $menu['options']['sla']['links']['search'] = SLA::getSearchURL(false);
+        $tab[] = [
+           'id'                 => '1',
+           'table'              => $this->getTable(),
+           'field'              => 'name',
+           'name'               => __('Name'),
+           'datatype'           => 'itemlink',
+           'massiveaction'      => false,
+           'autocomplete'       => true,
+        ];
 
-         $menu['options']['ola']['title']           = OLA::getTypeName(1);
-         $menu['options']['ola']['page']            = OLA::getSearchURL(false);
-         $menu['options']['ola']['links']['search'] = OLA::getSearchURL(false);
+        $tab[] = [
+           'id'                 => '2',
+           'table'              => $this->getTable(),
+           'field'              => 'id',
+           'name'               => __('ID'),
+           'massiveaction'      => false,
+           'datatype'           => 'number'
+        ];
 
-         $menu['options']['slalevel']['title']           = SlaLevel::getTypeName(Session::getPluralNumber());
-         $menu['options']['slalevel']['page']            = SlaLevel::getSearchURL(false);
-         $menu['options']['slalevel']['links']['search'] = SlaLevel::getSearchURL(false);
+        $tab[] = [
+           'id'                 => '4',
+           'table'              => 'glpi_calendars',
+           'field'              => 'name',
+           'name'               => _n('Calendar', 'Calendars', 1),
+           'datatype'           => 'dropdown'
+        ];
 
-         $menu['options']['olalevel']['title']           = OlaLevel::getTypeName(Session::getPluralNumber());
-         $menu['options']['olalevel']['page']            = OlaLevel::getSearchURL(false);
-         $menu['options']['olalevel']['links']['search'] = OlaLevel::getSearchURL(false);
-      }
-      if (count($menu)) {
-         return $menu;
-      }
-      return false;
-   }
+        $tab[] = [
+           'id'                 => '16',
+           'table'              => $this->getTable(),
+           'field'              => 'comment',
+           'name'               => __('Comments'),
+           'datatype'           => 'text'
+        ];
+
+        return $tab;
+    }
 
 
-   static function getIcon()
-   {
-      return "fas fa-file-contract";
-   }
+    public static function getMenuContent()
+    {
+
+        $menu = [];
+        if (static::canView()) {
+            $menu['title']           = self::getTypeName(2);
+            $menu['page']            = static::getSearchURL(false);
+            $menu['icon']            = static::getIcon();
+            $menu['links']['search'] = static::getSearchURL(false);
+            if (static::canCreate()) {
+                $menu['links']['add'] = SLM::getFormURL(false);
+            }
+
+            $menu['options']['sla']['title']           = SLA::getTypeName(1);
+            $menu['options']['sla']['page']            = SLA::getSearchURL(false);
+            $menu['options']['sla']['links']['search'] = SLA::getSearchURL(false);
+
+            $menu['options']['ola']['title']           = OLA::getTypeName(1);
+            $menu['options']['ola']['page']            = OLA::getSearchURL(false);
+            $menu['options']['ola']['links']['search'] = OLA::getSearchURL(false);
+
+            $menu['options']['slalevel']['title']           = SlaLevel::getTypeName(Session::getPluralNumber());
+            $menu['options']['slalevel']['page']            = SlaLevel::getSearchURL(false);
+            $menu['options']['slalevel']['links']['search'] = SlaLevel::getSearchURL(false);
+
+            $menu['options']['olalevel']['title']           = OlaLevel::getTypeName(Session::getPluralNumber());
+            $menu['options']['olalevel']['page']            = OlaLevel::getSearchURL(false);
+            $menu['options']['olalevel']['links']['search'] = OlaLevel::getSearchURL(false);
+        }
+        if (count($menu)) {
+            return $menu;
+        }
+        return false;
+    }
+
+
+    public static function getIcon()
+    {
+        return "fas fa-file-contract";
+    }
 }

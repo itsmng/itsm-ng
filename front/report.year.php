@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRight("reports", READ);
 
@@ -42,14 +42,14 @@ Report::title();
 
 $values = [0 => __('All')];
 foreach ($CFG_GLPI["contract_types"] as $itemtype) {
-   if ($item = getItemForItemtype($itemtype)) {
-      $values[$itemtype] = $item->getTypeName();
-   }
+    if ($item = getItemForItemtype($itemtype)) {
+        $values[$itemtype] = $item->getTypeName();
+    }
 }
 $y      = date("Y");
 $dates = [ 0 => __('All')];
-for ($i=($y-10); $i<($y+10); $i++) {
-   $dates[$i] = $i;
+for ($i = ($y - 10); $i < ($y + 10); $i++) {
+    $dates[$i] = $i;
 }
 $form = [
    'action' => 'report.year.list.php',

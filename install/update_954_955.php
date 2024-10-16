@@ -35,40 +35,41 @@
  *
  * @return bool for success (will die for most error)
  **/
-function update954to955() {
-   global $DB, $migration;
+function update954to955()
+{
+    global $DB, $migration;
 
-   $updateresult = true;
+    $updateresult = true;
 
-   //TRANS: %s is the number of new version
-   $migration->displayTitle(sprintf(__('Update to %s'), '9.5.5'));
-   $migration->setVersion('9.5.5');
+    //TRANS: %s is the number of new version
+    $migration->displayTitle(sprintf(__('Update to %s'), '9.5.5'));
+    $migration->setVersion('9.5.5');
 
-   /* Add `DEFAULT CURRENT_TIMESTAMP` to some date fields */
-   $tables = [
-      'glpi_alerts',
-      'glpi_crontasklogs',
-      'glpi_notimportedemails',
-   ];
-   foreach ($tables as $table) {
-      $type_result = $DB->request(
-         [
-            'SELECT'       => ['data_type as DATA_TYPE'],
-            'FROM'         => 'information_schema.columns',
-            'WHERE'       => [
-               'table_schema' => $DB->dbdefault,
-               'table_name'   => $table,
-               'column_name'  => 'date',
-            ],
+    /* Add `DEFAULT CURRENT_TIMESTAMP` to some date fields */
+    $tables = [
+       'glpi_alerts',
+       'glpi_crontasklogs',
+       'glpi_notimportedemails',
+    ];
+    foreach ($tables as $table) {
+        $type_result = $DB->request(
+            [
+              'SELECT'       => ['data_type as DATA_TYPE'],
+              'FROM'         => 'information_schema.columns',
+              'WHERE'       => [
+                 'table_schema' => $DB->dbdefault,
+                 'table_name'   => $table,
+                 'column_name'  => 'date',
+              ],
          ]
-      );
-      $type = $type_result->next()['DATA_TYPE'];
-      $migration->changeField($table, 'date', 'date', $type . ' NOT NULL DEFAULT CURRENT_TIMESTAMP');
-   }
-   /* /Add `DEFAULT CURRENT_TIMESTAMP` to some date fields */
+        );
+        $type = $type_result->next()['DATA_TYPE'];
+        $migration->changeField($table, 'date', 'date', $type . ' NOT NULL DEFAULT CURRENT_TIMESTAMP');
+    }
+    /* /Add `DEFAULT CURRENT_TIMESTAMP` to some date fields */
 
-   // ************ Keep it at the end **************
-   $migration->executeMigration();
+    // ************ Keep it at the end **************
+    $migration->executeMigration();
 
-   return $updateresult;
+    return $updateresult;
 }

@@ -31,17 +31,19 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class ComputerType
-class ComputerType extends CommonDropdown {
+class ComputerType extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Computer type', 'Computer types', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('Computer type', 'Computer types', $nb);
-   }
-
-   static function getFieldLabel() {
-      return _n('Type', 'Types', 1);
-   }
+    public static function getFieldLabel()
+    {
+        return _n('Type', 'Types', 1);
+    }
 }

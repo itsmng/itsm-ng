@@ -36,7 +36,7 @@
 
 $AJAX_INCLUDE = 1;
 
-include ("../inc/includes.php");
+include("../inc/includes.php");
 
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
@@ -47,28 +47,28 @@ $res = [];
 $root_entities_for_profiles = array_column($_SESSION['glpiactiveprofile']['entities'], 'id');
 
 if (isset($_POST['str'])) {
-   $iterator = $DB->request([
-      'FROM'   => 'glpi_entities',
-      'WHERE'  => [
-         'name' => ['LIKE', '%' . $_POST['str'] . '%']
-      ],
-      'ORDER'  => ['completename']
-   ]);
+    $iterator = $DB->request([
+       'FROM'   => 'glpi_entities',
+       'WHERE'  => [
+          'name' => ['LIKE', '%' . $_POST['str'] . '%']
+       ],
+       'ORDER'  => ['completename']
+    ]);
 
-   while ($data = $iterator->next()) {
-      $ancestors = getAncestorsOf('glpi_entities', $data['id']);
-      foreach ($ancestors as $val) {
-         if (!in_array($val, $res)) {
-            // root nodes are suffixed by, id are uniques in jstree.
-            // so, in case of presence of this id in subtree of other nodes,
-            // it will be removed from root nodes
-            if (in_array($val, $root_entities_for_profiles)) {
-               $val.= 'r';
+    while ($data = $iterator->next()) {
+        $ancestors = getAncestorsOf('glpi_entities', $data['id']);
+        foreach ($ancestors as $val) {
+            if (!in_array($val, $res)) {
+                // root nodes are suffixed by, id are uniques in jstree.
+                // so, in case of presence of this id in subtree of other nodes,
+                // it will be removed from root nodes
+                if (in_array($val, $root_entities_for_profiles)) {
+                    $val .= 'r';
+                }
+                $res[] = $val;
             }
-            $res[] = $val;
-         }
-      }
-   }
+        }
+    }
 }
 $res = json_encode($res);
 echo $res;

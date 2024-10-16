@@ -31,28 +31,30 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
-abstract class CommonDeviceType extends CommonDropdown {
+abstract class CommonDeviceType extends CommonDropdown
+{
+    public static function getFormURL($full = true)
+    {
+        global $CFG_GLPI;
 
-   static function getFormURL($full = true) {
-      global $CFG_GLPI;
+        $dir = ($full ? $CFG_GLPI['root_doc'] : '');
+        $itemtype = get_called_class();
+        $link = "$dir/front/devicetype.form.php?itemtype=$itemtype";
 
-      $dir = ($full ? $CFG_GLPI['root_doc'] : '');
-      $itemtype = get_called_class();
-      $link = "$dir/front/devicetype.form.php?itemtype=$itemtype";
+        return $link;
+    }
 
-      return $link;
-   }
+    public static function getSearchURL($full = true)
+    {
+        global $CFG_GLPI;
 
-   static function getSearchURL($full = true) {
-      global $CFG_GLPI;
+        $dir = ($full ? $CFG_GLPI['root_doc'] : '');
+        $itemtype = get_called_class();
+        $link = "$dir/front/devicetype.php?itemtype=$itemtype";
 
-      $dir = ($full ? $CFG_GLPI['root_doc'] : '');
-      $itemtype = get_called_class();
-      $link = "$dir/front/devicetype.php?itemtype=$itemtype";
-
-      return $link;
-   }
+        return $link;
+    }
 }

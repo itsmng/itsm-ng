@@ -31,307 +31,328 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * UserEmail class
 **/
-class UserEmail  extends CommonDBChild {
+class UserEmail extends CommonDBChild
+{
+    // From CommonDBTM
+    public $auto_message_on_action = false;
 
-   // From CommonDBTM
-   public $auto_message_on_action = false;
-
-   // From CommonDBChild
-   static public $itemtype        = 'User';
-   static public $items_id        = 'users_id';
-   public $dohistory              = true;
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Email', 'Emails', $nb);
-   }
+    // From CommonDBChild
+    public static $itemtype        = 'User';
+    public static $items_id        = 'users_id';
+    public $dohistory              = true;
 
 
-   /**
-    * Get default email for user. If no default email get first one
-    *
-    * @param $users_id user ID
-    *
-    * @return default email, empty if no email set
-   **/
-   static function getDefaultForUser($users_id) {
-      global $DB;
-
-      // Get default one
-      $iterator = $DB->request([
-         'FROM'   => self::getTable(),
-         'WHERE'  => [
-            'users_id'     => $users_id,
-         ],
-         'ORDER'  => 'is_default DESC',
-         'LIMIT'  => 1
-      ]);
-
-      while ($row = $iterator->next()) {
-         return $row['email'];
-      }
-
-      return '';
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Email', 'Emails', $nb);
+    }
 
 
-   /**
-    * Get all emails for user.
-    *
-    * @param $users_id user ID
-    *
-    * @return array of emails
-   **/
-   static function getAllForUser($users_id) {
-      global $DB;
+    /**
+     * Get default email for user. If no default email get first one
+     *
+     * @param $users_id user ID
+     *
+     * @return default email, empty if no email set
+    **/
+    public static function getDefaultForUser($users_id)
+    {
+        global $DB;
 
-      $emails = [];
+        // Get default one
+        $iterator = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+              'users_id'     => $users_id,
+           ],
+           'ORDER'  => 'is_default DESC',
+           'LIMIT'  => 1
+        ]);
 
-      $iterator = $DB->request([
-         'FROM'   => self::getTable(),
-         'WHERE'  => [
-            'users_id'     => $users_id,
-         ]
-      ]);
+        while ($row = $iterator->next()) {
+            return $row['email'];
+        }
 
-      while ($row = $iterator->next()) {
-         $emails[] = $row['email'];
-      }
-
-      return $emails;
-   }
-
-
-   /**
-    * is an email of the user
-    *
-    * @param $users_id           user ID
-    * @param $email     string   email to check user ID
-    *
-    * @return boolean is this email set for the user ?
-   **/
-   static function isEmailForUser($users_id, $email) {
-      global $DB;
-
-      $iterator = $DB->request([
-         'FROM'   => self::getTable(),
-         'WHERE'  => [
-            'users_id'  => $users_id,
-            'email'     => $email
-         ],
-         'LIMIT'  => 1
-      ]);
-
-      if (count($iterator)) {
-         return true;
-      }
-
-      return false;
-   }
+        return '';
+    }
 
 
-   /**
-    * @since 0.84
-    *
-    * @param $field_name
-    * @param $child_count_js_var
-    *
-    * @return string
-   **/
-   static function getJSCodeToAddForItemChild($field_name, $child_count_js_var) {
+    /**
+     * Get all emails for user.
+     *
+     * @param $users_id user ID
+     *
+     * @return array of emails
+    **/
+    public static function getAllForUser($users_id)
+    {
+        global $DB;
 
-      return "<input title=\'".__s('Default email')."\' type=\'radio\' name=\'_default_email\'" .
-             " value=\'-'+$child_count_js_var+'\'>&nbsp;" .
-             "<input type=\'text\' size=\'30\' ". "name=\'" . $field_name .
-             "[-'+$child_count_js_var+']\'>";
-   }
+        $emails = [];
+
+        $iterator = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+              'users_id'     => $users_id,
+           ]
+        ]);
+
+        while ($row = $iterator->next()) {
+            $emails[] = $row['email'];
+        }
+
+        return $emails;
+    }
 
 
-   /**
-    * @since 0.85 (since 0.85 but param $id since 0.85)
-    *
-    * @param $canedit
-    * @param $field_name
-    * @param $id
-   **/
-   function showChildForItemForm($canedit, $field_name, $id) {
+    /**
+     * is an email of the user
+     *
+     * @param $users_id           user ID
+     * @param $email     string   email to check user ID
+     *
+     * @return boolean is this email set for the user ?
+    **/
+    public static function isEmailForUser($users_id, $email)
+    {
+        global $DB;
 
-      if ($this->isNewID($this->getID())) {
-         $value = '';
-      } else {
-         $value = Html::entities_deep($this->fields['email']);
-      }
+        $iterator = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+              'users_id'  => $users_id,
+              'email'     => $email
+           ],
+           'LIMIT'  => 1
+        ]);
 
-      $field_name = $field_name."[$id]";
-      echo "<input title='".__s('Default email')."' type='radio' name='_default_email'
+        if (count($iterator)) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * @since 0.84
+     *
+     * @param $field_name
+     * @param $child_count_js_var
+     *
+     * @return string
+    **/
+    public static function getJSCodeToAddForItemChild($field_name, $child_count_js_var)
+    {
+
+        return "<input title=\'".__s('Default email')."\' type=\'radio\' name=\'_default_email\'" .
+               " value=\'-'+$child_count_js_var+'\'>&nbsp;" .
+               "<input type=\'text\' size=\'30\' ". "name=\'" . $field_name .
+               "[-'+$child_count_js_var+']\'>";
+    }
+
+
+    /**
+     * @since 0.85 (since 0.85 but param $id since 0.85)
+     *
+     * @param $canedit
+     * @param $field_name
+     * @param $id
+    **/
+    public function showChildForItemForm($canedit, $field_name, $id)
+    {
+
+        if ($this->isNewID($this->getID())) {
+            $value = '';
+        } else {
+            $value = Html::entities_deep($this->fields['email']);
+        }
+
+        $field_name = $field_name."[$id]";
+        echo "<input title='".__s('Default email')."' type='radio' name='_default_email'
              value='".$this->getID()."'";
-      if (!$canedit) {
-         echo " disabled";
-      }
-      if ($this->fields['is_default']) {
-         echo " checked";
-      }
-      echo ">&nbsp;";
-      if (!$canedit || $this->fields['is_dynamic']) {
-         echo "<input type='hidden' name='$field_name' value='$value'>";
-         printf(__('%1$s %2$s'), $value, "<span class='b'>(". __('D').")</span>");
-      } else {
-         echo "<input type='text' size=30 name='$field_name' value='$value' >";
-      }
-   }
+        if (!$canedit) {
+            echo " disabled";
+        }
+        if ($this->fields['is_default']) {
+            echo " checked";
+        }
+        echo ">&nbsp;";
+        if (!$canedit || $this->fields['is_dynamic']) {
+            echo "<input type='hidden' name='$field_name' value='$value'>";
+            printf(__('%1$s %2$s'), $value, "<span class='b'>(". __('D').")</span>");
+        } else {
+            echo "<input type='text' size=30 name='$field_name' value='$value' >";
+        }
+    }
 
 
-   /**
-    * Show emails of a user
-    *
-    * @param $user User object
-    *
-    * @return void
-   **/
-   static function showForUser(User $user) {
+    /**
+     * Show emails of a user
+     *
+     * @param $user User object
+     *
+     * @return void
+    **/
+    public static function showForUser(User $user)
+    {
 
-      $users_id = $user->getID();
+        $users_id = $user->getID();
 
-      if (!$user->can($users_id, READ)
-          && ($users_id != Session::getLoginUserID())) {
-         return false;
-      }
-      $canedit = ($user->can($users_id, UPDATE) || ($users_id == Session::getLoginUserID()));
+        if (!$user->can($users_id, READ)
+            && ($users_id != Session::getLoginUserID())) {
+            return false;
+        }
+        $canedit = ($user->can($users_id, UPDATE) || ($users_id == Session::getLoginUserID()));
 
-      parent::showChildsForItemForm($user, '_useremails', $canedit);
+        parent::showChildsForItemForm($user, '_useremails', $canedit);
 
-   }
-
-
-   /**
-    * @param $user
-   **/
-   static function showAddEmailButton(User $user) {
-
-      $users_id = $user->getID();
-      if (!$user->can($users_id, READ) && ($users_id != Session::getLoginUserID())) {
-         return false;
-      }
-      $canedit = ($user->can($users_id, UPDATE) || ($users_id == Session::getLoginUserID()));
-
-      parent::showAddChildButtonForItemForm($user, '_useremails', $canedit);
-
-      return;
-   }
+    }
 
 
-   function prepareInputForAdd($input) {
+    /**
+     * @param $user
+    **/
+    public static function showAddEmailButton(User $user)
+    {
 
-      if (!$this->checkInputEmailValidity($input)) {
-         return false;
-      }
+        $users_id = $user->getID();
+        if (!$user->can($users_id, READ) && ($users_id != Session::getLoginUserID())) {
+            return false;
+        }
+        $canedit = ($user->can($users_id, UPDATE) || ($users_id == Session::getLoginUserID()));
 
-      // First email is default
-      if (countElementsInTable($this->getTable(), ['users_id' => $input['users_id']]) == 0) {
-         $input['is_default'] = 1;
-      }
+        parent::showAddChildButtonForItemForm($user, '_useremails', $canedit);
 
-      return parent::prepareInputForAdd($input);
-   }
-
-   function prepareInputForUpdate($input) {
-
-      if (!$this->checkInputEmailValidity($input)) {
-         return false;
-      }
-
-      return parent::prepareInputForUpdate($input);
-   }
-
-   /**
-    * Check validity of email passed in input.
-    *
-    * @param array $input
-    *
-    * @return bool
-    */
-   private function checkInputEmailValidity(array $input): bool {
-      return isset($input['email']) && !empty($input['email']) && GLPIMailer::validateAddress($input['email']);
-   }
+        return;
+    }
 
 
-   /**
-    * @since 0.84
-    *
-    * @see CommonDBTM::getNameField
-    *
-    * @return string
-   **/
-   static function getNameField() {
-      return 'email';
-   }
+    public function prepareInputForAdd($input)
+    {
+
+        if (!$this->checkInputEmailValidity($input)) {
+            return false;
+        }
+
+        // First email is default
+        if (countElementsInTable($this->getTable(), ['users_id' => $input['users_id']]) == 0) {
+            $input['is_default'] = 1;
+        }
+
+        return parent::prepareInputForAdd($input);
+    }
+
+    public function prepareInputForUpdate($input)
+    {
+
+        if (!$this->checkInputEmailValidity($input)) {
+            return false;
+        }
+
+        return parent::prepareInputForUpdate($input);
+    }
+
+    /**
+     * Check validity of email passed in input.
+     *
+     * @param array $input
+     *
+     * @return bool
+     */
+    private function checkInputEmailValidity(array $input): bool
+    {
+        return isset($input['email']) && !empty($input['email']) && GLPIMailer::validateAddress($input['email']);
+    }
 
 
-   function post_updateItem($history = 1) {
-      global $DB;
+    /**
+     * @since 0.84
+     *
+     * @see CommonDBTM::getNameField
+     *
+     * @return string
+    **/
+    public static function getNameField()
+    {
+        return 'email';
+    }
 
-      // if default is set : unsed others for the users
-      if (in_array('is_default', $this->updates)
-          && ($this->input["is_default"] == 1)) {
-         $DB->update(
-            $this->getTable(), [
-               'is_default' => 0
-            ], [
-               'id'        => ['<>', $this->input['id']],
-               'users_id'  => $this->fields['users_id']
+
+    public function post_updateItem($history = 1)
+    {
+        global $DB;
+
+        // if default is set : unsed others for the users
+        if (in_array('is_default', $this->updates)
+            && ($this->input["is_default"] == 1)) {
+            $DB->update(
+                $this->getTable(),
+                [
+                  'is_default' => 0
+            ],
+                [
+                  'id'        => ['<>', $this->input['id']],
+                  'users_id'  => $this->fields['users_id']
             ]
-         );
-      }
+            );
+        }
 
-      parent::post_updateItem($history);
-   }
-
-
-   function post_addItem() {
-      global $DB;
-
-      // if default is set : unset others for the users
-      if (isset($this->fields['is_default']) && ($this->fields["is_default"] == 1)) {
-         $DB->update(
-            $this->getTable(), [
-               'is_default' => 0
-            ], [
-               'id'        => ['<>', $this->fields['id']],
-               'users_id'  => $this->fields['users_id']
-            ]
-         );
-      }
-
-      parent::post_addItem();
-
-   }
+        parent::post_updateItem($history);
+    }
 
 
-   function post_deleteFromDB() {
-      global $DB;
+    public function post_addItem()
+    {
+        global $DB;
 
-      // if default is set : set default to another one
-      if ($this->fields["is_default"] == 1) {
-         $DB->update(
-            $this->getTable(), [
-               'is_default'   => 1
-            ], [
-               'WHERE'  => [
+        // if default is set : unset others for the users
+        if (isset($this->fields['is_default']) && ($this->fields["is_default"] == 1)) {
+            $DB->update(
+                $this->getTable(),
+                [
+                  'is_default' => 0
+            ],
+                [
                   'id'        => ['<>', $this->fields['id']],
                   'users_id'  => $this->fields['users_id']
-               ],
-               'LIMIT'  => 1
             ]
-         );
-      }
+            );
+        }
 
-      parent::post_deleteFromDB();
-   }
+        parent::post_addItem();
+
+    }
+
+
+    public function post_deleteFromDB()
+    {
+        global $DB;
+
+        // if default is set : set default to another one
+        if ($this->fields["is_default"] == 1) {
+            $DB->update(
+                $this->getTable(),
+                [
+                  'is_default'   => 1
+            ],
+                [
+                  'WHERE'  => [
+                     'id'        => ['<>', $this->fields['id']],
+                     'users_id'  => $this->fields['users_id']
+                  ],
+                  'LIMIT'  => 1
+            ]
+            );
+        }
+
+        parent::post_deleteFromDB();
+    }
 
 }

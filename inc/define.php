@@ -35,15 +35,15 @@
 define('GLPI_VERSION', '9.5.13');
 define('ITSM_VERSION', '2.0.0_rc4');
 if (substr(ITSM_VERSION, -4) === '-dev') {
-   //for dev version
-   define('ITSM_PREVER', str_replace('-dev', '', ITSM_VERSION));
-   define(
-      'ITSM_SCHEMA_VERSION',
-      ITSM_PREVER . '@' . sha1_file(GLPI_ROOT . '/install/mysql/glpi-empty.sql')
-   );
+    //for dev version
+    define('ITSM_PREVER', str_replace('-dev', '', ITSM_VERSION));
+    define(
+        'ITSM_SCHEMA_VERSION',
+        ITSM_PREVER . '@' . sha1_file(GLPI_ROOT . '/install/mysql/glpi-empty.sql')
+    );
 } else {
-   //for stable version
-   define("ITSM_SCHEMA_VERSION", '2.0.0_rc4');
+    //for stable version
+    define("ITSM_SCHEMA_VERSION", '2.0.0_rc4');
 }
 
 // Current version of ITSM-NG
@@ -343,8 +343,8 @@ $CFG_GLPI['device_types']                 = [
 
 $CFG_GLPI['itemdevices'] = [];
 foreach ($CFG_GLPI['device_types'] as $dtype) {
-   $CFG_GLPI['location_types'][] = 'Item_' . $dtype;
-   $CFG_GLPI["itemdevices"][] = 'Item_' . $dtype;
+    $CFG_GLPI['location_types'][] = 'Item_' . $dtype;
+    $CFG_GLPI["itemdevices"][] = 'Item_' . $dtype;
 }
 
 $CFG_GLPI["itemdevices_types"]            = [
@@ -394,13 +394,13 @@ $CFG_GLPI["notificationtemplates_types"]  = [
 ];
 
 $CFG_GLPI["contract_types"]               = array_merge(
-   [
+    [
       'Computer', 'Monitor', 'NetworkEquipment',
       'Peripheral', 'Phone', 'Printer', 'Project', 'Line',
       'Software', 'SoftwareLicense', 'Certificate',
       'DCRoom', 'Rack', 'Enclosure', 'Cluster', 'PDU', 'Appliance', 'Domain'
    ],
-   $CFG_GLPI['itemdevices']
+    $CFG_GLPI['itemdevices']
 );
 
 

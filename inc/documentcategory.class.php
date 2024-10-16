@@ -31,68 +31,73 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class DocumentCategory
-class DocumentCategory extends CommonTreeDropdown {
+class DocumentCategory extends CommonTreeDropdown
+{
+    public $can_be_translated = true;
 
-   public $can_be_translated = true;
+    public function getAdditionalFields()
+    {
 
-   function getAdditionalFields() {
+        return [
+           __('As child of') => [
+              'name'  => $this->getForeignKeyField(),
+              'type'  => 'select',
+              'values'  => getOptionForItems('DocumentCategory', ['NOT' => ['id' => $this->getID()]]),
+              'value' => $this->fields[$this->getForeignKeyField()],
+           ]
+        ];
+    }
 
-      return [
-         __('As child of') => [
-            'name'  => $this->getForeignKeyField(),
-            'type'  => 'select',
-            'values'  => getOptionForItems('DocumentCategory', ['NOT' => ['id' => $this->getID()]]),
-            'value' => $this->fields[$this->getForeignKeyField()],
-         ]
-      ];
-   }
-
-   static function getTypeName($nb = 0) {
-      return _n('Document heading', 'Document headings', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Document heading', 'Document headings', $nb);
+    }
 
 
-   function cleanRelationData() {
+    public function cleanRelationData()
+    {
 
-      parent::cleanRelationData();
+        parent::cleanRelationData();
 
-      if ($this->isUsedAsDefaultCategoryForTickets()) {
-         $newval = (isset($this->input['_replace_by']) ? $this->input['_replace_by'] : 0);
+        if ($this->isUsedAsDefaultCategoryForTickets()) {
+            $newval = (isset($this->input['_replace_by']) ? $this->input['_replace_by'] : 0);
 
-         Config::setConfigurationValues(
-            'core',
-            [
-               'documentcategories_id_forticket' => $newval,
+            Config::setConfigurationValues(
+                'core',
+                [
+                  'documentcategories_id_forticket' => $newval,
             ]
-         );
-      }
-   }
+            );
+        }
+    }
 
 
-   function isUsed() {
+    public function isUsed()
+    {
 
-      if (parent::isUsed()) {
-         return true;
-      }
+        if (parent::isUsed()) {
+            return true;
+        }
 
-      return $this->isUsedAsDefaultCategoryForTickets();
-   }
+        return $this->isUsedAsDefaultCategoryForTickets();
+    }
 
 
-   /**
-    * Check if category is used as default for tickets documents.
-    *
-    * @return boolean
-    */
-   private function isUsedAsDefaultCategoryForTickets() {
+    /**
+     * Check if category is used as default for tickets documents.
+     *
+     * @return boolean
+     */
+    private function isUsedAsDefaultCategoryForTickets()
+    {
 
-      $config_values = Config::getConfigurationValues('core', ['documentcategories_id_forticket']);
+        $config_values = Config::getConfigurationValues('core', ['documentcategories_id_forticket']);
 
-      return array_key_exists('documentcategories_id_forticket', $config_values)
-         && $config_values['documentcategories_id_forticket'] == $this->fields['id'];
-   }
+        return array_key_exists('documentcategories_id_forticket', $config_values)
+           && $config_values['documentcategories_id_forticket'] == $this->fields['id'];
+    }
 }

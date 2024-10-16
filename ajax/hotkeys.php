@@ -31,7 +31,7 @@
  */
 
 $AJAX_INCLUDE = 1;
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkLoginUser();
 
@@ -40,6 +40,6 @@ $user->getFromDB(session::getLoginUserID());
 
 $canUseShortcuts = $user->fields["access_shortcuts"];
 
-if(!str_contains($_SERVER["HTTP_REFERER"], "front/preference.php") && $canUseShortcuts == "1"){
+if (!str_contains($_SERVER["HTTP_REFERER"], "front/preference.php") && $canUseShortcuts == "1") {
     echo Html::hotkeys();
 }

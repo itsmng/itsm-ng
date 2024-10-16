@@ -32,45 +32,45 @@
 
 // Direct access to file
 if (strpos($_SERVER['PHP_SELF'], "rulecriteria.php")) {
-   include ('../inc/includes.php');
-   header("Content-Type: text/html; charset=UTF-8");
-   Html::header_nocache();
-} else if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    include('../inc/includes.php');
+    header("Content-Type: text/html; charset=UTF-8");
+    Html::header_nocache();
+} elseif (!defined('GLPI_ROOT')) {
+    die("Sorry. You can't access this file directly");
 }
 
 Session::checkLoginUser();
 
 if (isset($_POST["sub_type"]) && ($rule = getItemForItemtype($_POST["sub_type"]))) {
-   $criterias = $rule->getAllCriteria();
+    $criterias = $rule->getAllCriteria();
 
-   if (count($criterias)) {
-      // First include -> first of the predefined array
-      if (!isset($_POST["criteria"])) {
-         $_POST["criteria"] = key($criterias);
-      }
+    if (count($criterias)) {
+        // First include -> first of the predefined array
+        if (!isset($_POST["criteria"])) {
+            $_POST["criteria"] = key($criterias);
+        }
 
-      if (isset($criterias[$_POST["criteria"]]['allow_condition'])) {
-         $allow_condition = $criterias[$_POST["criteria"]]['allow_condition'];
-      } else {
-         $allow_condition = [];
-      }
+        if (isset($criterias[$_POST["criteria"]]['allow_condition'])) {
+            $allow_condition = $criterias[$_POST["criteria"]]['allow_condition'];
+        } else {
+            $allow_condition = [];
+        }
 
-      $condparam = ['criterion'        => $_POST["criteria"],
-                         'allow_conditions' => $allow_condition];
-      if (isset($_POST['condition'])) {
-         $condparam['value'] = $_POST['condition'];
-      }
+        $condparam = ['criterion'        => $_POST["criteria"],
+                           'allow_conditions' => $allow_condition];
+        if (isset($_POST['condition'])) {
+            $condparam['value'] = $_POST['condition'];
+        }
 
-      $elements = [];
-      foreach (RuleCriteria::getConditions($_POST['sub_type'], '') as $pattern => $label) {
-         if (empty($p['allow_conditions'])
-             || (!empty($p['allow_conditions']) && in_array($pattern, $p['allow_conditions']))) {
-            $elements[$pattern] = $label;
-         }
-      }
+        $elements = [];
+        foreach (RuleCriteria::getConditions($_POST['sub_type'], '') as $pattern => $label) {
+            if (empty($p['allow_conditions'])
+                || (!empty($p['allow_conditions']) && in_array($pattern, $p['allow_conditions']))) {
+                $elements[$pattern] = $label;
+            }
+        }
 
-      $updateScript = <<<JS
+        $updateScript = <<<JS
           var condition = $('#DropdownForConditionCriterias').val();
           var condition_span = $('#condition_span');
           var url = "{$CFG_GLPI['root_doc']}/ajax/rulecriteriavalue.php";
@@ -82,16 +82,16 @@ if (isset($_POST["sub_type"]) && ($rule = getItemForItemtype($_POST["sub_type"])
           });
       JS;
 
-      renderTwigTemplate('macros/input.twig', [
-          'name' => 'condition',
-          'id' => 'DropdownForConditionCriterias',
-          'type' => 'select',
-          'values' => $elements,
-          'hooks' => [
-              'change' => $updateScript
-          ],
-          'init' => $updateScript
-      ]);
-      echo "<span id='condition_span'></span>\n";
-   }
+        renderTwigTemplate('macros/input.twig', [
+            'name' => 'condition',
+            'id' => 'DropdownForConditionCriterias',
+            'type' => 'select',
+            'values' => $elements,
+            'hooks' => [
+                'change' => $updateScript
+            ],
+            'init' => $updateScript
+        ]);
+        echo "<span id='condition_span'></span>\n";
+    }
 }

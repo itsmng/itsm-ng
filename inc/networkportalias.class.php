@@ -31,130 +31,148 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// NetworkPortAlias class : alias instantiation of NetworkPort. An alias can be use to define VLAN
 /// tagged ports. It is use in old version of Linux to define several IP addresses to a given port.
 /// @since 0.84
-class NetworkPortAlias extends NetworkPortInstantiation {
+class NetworkPortAlias extends NetworkPortInstantiation
+{
+    public static function getTypeName($nb = 0)
+    {
+        return __('Alias port');
+    }
 
 
-   static function getTypeName($nb = 0) {
-      return __('Alias port');
-   }
+    public function prepareInput($input)
+    {
 
+        // Try to get mac address from the instantiation ...
 
-   function prepareInput($input) {
+        if (!isset($input['mac'])
+            && isset($input['networkports_id_alias'])) {
 
-      // Try to get mac address from the instantiation ...
-
-      if (!isset($input['mac'])
-          && isset($input['networkports_id_alias'])) {
-
-         $networkPort = new NetworkPort();
-         if ($networkPort->getFromDB($input['networkports_id_alias'])) {
-            $input['mac']            = $networkPort->getField('mac');
-         }
-      }
-
-      return $input;
-   }
-
-
-   function prepareInputForAdd($input) {
-      return parent::prepareInputForAdd($this->prepareInput($input));
-   }
-
-
-   function prepareInputForUpdate($input) {
-      return parent::prepareInputForUpdate($this->prepareInput($input));
-   }
-
-
-   function showInstantiationForm(NetworkPort $netport, $options, $recursiveItems) {
-
-      global $DB;
-
-      $lastItem = $recursiveItems[count($recursiveItems) - 1];
-      $netport_types = ['NetworkPortEthernet', 'NetworkPortWifi'];
-      foreach ($netport_types as $netport_type) {
-         $iterator = $DB->request([
-            'SELECT' => [
-               'port.id',
-               'port.name',
-               'port.mac'
-            ],
-            'FROM'   => 'glpi_networkports AS port',
-            'WHERE'  => [
-               'items_id'           => $lastItem->getID(),
-               'itemtype'           => $lastItem->getType(),
-               'instantiation_type' => $netport_type
-            ],
-            'ORDER'  => ['logical_number', 'name']
-         ]);
-
-         if (count($iterator)) {
-            $array_element_name = call_user_func([$netport_type, 'getTypeName'],
-                                                 count($iterator));
-            $possible_ports[$array_element_name] = [];
-
-            while ($portEntry = $iterator->next()) {
-               $macAddresses[$portEntry['id']] = $portEntry['mac'];
-               if (!empty($portEntry['mac'])) {
-                  $portEntry['name'] = sprintf(__('%1$s - %2$s'), $portEntry['name'],
-                                               $portEntry['mac']);
-               }
-               $possible_ports[$array_element_name][$portEntry['id']] = $portEntry['name'];
+            $networkPort = new NetworkPort();
+            if ($networkPort->getFromDB($input['networkports_id_alias'])) {
+                $input['mac']            = $networkPort->getField('mac');
             }
-         }
-      }
-      $checklistOptions = [];
-      foreach ($possible_ports as $key => $value) {
-         $checklistOptions = array_merge($checklistOptions, $value);
-      }
+        }
 
-      return [
-         $this->getTypeName() => [
-            'visible' => true,
-            'inputs' => [
-               __('MAC') => [
-                  'type' => 'text',
-                  'name' => 'mac',
-                  'value' => $netport->fields['mac'],
+        return $input;
+    }
+
+
+    public function prepareInputForAdd($input)
+    {
+        return parent::prepareInputForAdd($this->prepareInput($input));
+    }
+
+
+    public function prepareInputForUpdate($input)
+    {
+        return parent::prepareInputForUpdate($this->prepareInput($input));
+    }
+
+
+    public function showInstantiationForm(NetworkPort $netport, $options, $recursiveItems)
+    {
+
+        global $DB;
+
+        $lastItem = $recursiveItems[count($recursiveItems) - 1];
+        $netport_types = ['NetworkPortEthernet', 'NetworkPortWifi'];
+        foreach ($netport_types as $netport_type) {
+            $iterator = $DB->request([
+               'SELECT' => [
+                  'port.id',
+                  'port.name',
+                  'port.mac'
                ],
-               __('Origin port') => [
-                  'type' => 'select',
-                  'name' => 'networkports_id_alias',
-                  'values' => $checklistOptions,
-                  'value' => $this->fields['networkports_id_alias'],
-               ]
-            ]
-         ]
-      ];
-   }
+               'FROM'   => 'glpi_networkports AS port',
+               'WHERE'  => [
+                  'items_id'           => $lastItem->getID(),
+                  'itemtype'           => $lastItem->getType(),
+                  'instantiation_type' => $netport_type
+               ],
+               'ORDER'  => ['logical_number', 'name']
+            ]);
+
+            if (count($iterator)) {
+                $array_element_name = call_user_func(
+                    [$netport_type, 'getTypeName'],
+                    count($iterator)
+                );
+                $possible_ports[$array_element_name] = [];
+
+                while ($portEntry = $iterator->next()) {
+                    $macAddresses[$portEntry['id']] = $portEntry['mac'];
+                    if (!empty($portEntry['mac'])) {
+                        $portEntry['name'] = sprintf(
+                            __('%1$s - %2$s'),
+                            $portEntry['name'],
+                            $portEntry['mac']
+                        );
+                    }
+                    $possible_ports[$array_element_name][$portEntry['id']] = $portEntry['name'];
+                }
+            }
+        }
+        $checklistOptions = [];
+        foreach ($possible_ports as $key => $value) {
+            $checklistOptions = array_merge($checklistOptions, $value);
+        }
+
+        return [
+           $this->getTypeName() => [
+              'visible' => true,
+              'inputs' => [
+                 __('MAC') => [
+                    'type' => 'text',
+                    'name' => 'mac',
+                    'value' => $netport->fields['mac'],
+                 ],
+                 __('Origin port') => [
+                    'type' => 'select',
+                    'name' => 'networkports_id_alias',
+                    'values' => $checklistOptions,
+                    'value' => $this->fields['networkports_id_alias'],
+                 ]
+              ]
+           ]
+        ];
+    }
 
 
-   function getInstantiationHTMLTableHeaders(HTMLTableGroup $group, HTMLTableSuperHeader $super,
-                                             HTMLTableSuperHeader $internet_super = null,
-                                             HTMLTableHeader $father = null,
-                                             array $options = []) {
+    public function getInstantiationHTMLTableHeaders(
+        HTMLTableGroup $group,
+        HTMLTableSuperHeader $super,
+        HTMLTableSuperHeader $internet_super = null,
+        HTMLTableHeader $father = null,
+        array $options = []
+    ) {
 
-      $group->addHeader('Origin', __('Origin port'), $super);
+        $group->addHeader('Origin', __('Origin port'), $super);
 
-      parent::getInstantiationHTMLTableHeaders($group, $super, $internet_super, $father, $options);
-      return null;
-   }
+        parent::getInstantiationHTMLTableHeaders($group, $super, $internet_super, $father, $options);
+        return null;
+    }
 
 
-   function getInstantiationHTMLTable(NetworkPort $netport, HTMLTableRow $row,
-                                      HTMLTableCell $father = null, array $options = []) {
+    public function getInstantiationHTMLTable(
+        NetworkPort $netport,
+        HTMLTableRow $row,
+        HTMLTableCell $father = null,
+        array $options = []
+    ) {
 
-      $row->addCell($row->getHeaderByName('Instantiation', 'Origin'),
-                    $this->getInstantiationNetworkPortHTMLTable());
+        $row->addCell(
+            $row->getHeaderByName('Instantiation', 'Origin'),
+            $this->getInstantiationNetworkPortHTMLTable()
+        );
 
-      parent::getInstantiationHTMLTable($netport, $row, $father, $options);
-      return null;
+        parent::getInstantiationHTMLTable($netport, $row, $father, $options);
+        return null;
 
-   }
+    }
 }

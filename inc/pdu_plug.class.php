@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
@@ -35,158 +35,163 @@ if (!defined('GLPI_ROOT')) {
  * ---------------------------------------------------------------------
 **/
 
-class Pdu_Plug extends CommonDBRelation {
+class Pdu_Plug extends CommonDBRelation
+{
+    public static $itemtype_1 = 'PDU';
+    public static $items_id_1 = 'pdus_id';
+    public static $itemtype_2 = 'Plug';
+    public static $items_id_2 = 'plugs_id';
+    public static $checkItem_1_Rights = self::DONT_CHECK_ITEM_RIGHTS;
+    public static $mustBeAttached_1      = false;
+    public static $mustBeAttached_2      = false;
 
-   static public $itemtype_1 = 'PDU';
-   static public $items_id_1 = 'pdus_id';
-   static public $itemtype_2 = 'Plug';
-   static public $items_id_2 = 'plugs_id';
-   static public $checkItem_1_Rights = self::DONT_CHECK_ITEM_RIGHTS;
-   static public $mustBeAttached_1      = false;
-   static public $mustBeAttached_2      = false;
-
-   static function getTypeName($nb = 0) {
-      return _n('PDU plug', 'PDU plugs', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('PDU plug', 'PDU plugs', $nb);
+    }
 
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      $nb = 0;
-      switch ($item->getType()) {
-         default:
-            $field = $item->getType() == PDU::getType() ? 'pdus_id' : 'plugs_id';
-            if ($_SESSION['glpishow_count_on_tabs']) {
-               $nb = countElementsInTable(
-                  self::getTable(),
-                  [$field  => $item->getID()]
-               );
-            }
-            return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
-      }
-      return '';
-   }
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
+        $nb = 0;
+        switch ($item->getType()) {
+            default:
+                $field = $item->getType() == PDU::getType() ? 'pdus_id' : 'plugs_id';
+                if ($_SESSION['glpishow_count_on_tabs']) {
+                    $nb = countElementsInTable(
+                        self::getTable(),
+                        [$field  => $item->getID()]
+                    );
+                }
+                return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
+        }
+        return '';
+    }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-      self::showItems($item, $withtemplate);
-   }
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
+        self::showItems($item, $withtemplate);
+    }
 
-   /**
-    * Print items
-    *
-    * @param  PDU $pdu PDU instance
-    *
-    * @return void
-    */
-   static function showItems(PDU $pdu) {
-      global $DB;
+    /**
+     * Print items
+     *
+     * @param  PDU $pdu PDU instance
+     *
+     * @return void
+     */
+    public static function showItems(PDU $pdu)
+    {
+        global $DB;
 
-      $ID = $pdu->getID();
-      $rand = mt_rand();
+        $ID = $pdu->getID();
+        $rand = mt_rand();
 
-      if (!$pdu->getFromDB($ID)
-          || !$pdu->can($ID, READ)) {
-         return false;
-      }
-      $canedit = $pdu->canEdit($ID);
+        if (!$pdu->getFromDB($ID)
+            || !$pdu->can($ID, READ)) {
+            return false;
+        }
+        $canedit = $pdu->canEdit($ID);
 
-      $items = $DB->request([
-         'FROM'   => self::getTable(),
-         'WHERE'  => [
-            'pdus_id' => $pdu->getID()
-         ]
-      ]);
-      $link = new self();
+        $items = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+              'pdus_id' => $pdu->getID()
+           ]
+        ]);
+        $link = new self();
 
-      Session::initNavigateListItems(
-         self::getType(),
-         //TRANS : %1$s is the itemtype name,
-         //        %2$s is the name of the item (used for headings of a list)
-         sprintf(
-            __('%1$s = %2$s'),
-            $pdu->getTypeName(1),
-            $pdu->getName()
-         )
-      );
+        Session::initNavigateListItems(
+            self::getType(),
+            //TRANS : %1$s is the itemtype name,
+            //        %2$s is the name of the item (used for headings of a list)
+            sprintf(
+                __('%1$s = %2$s'),
+                $pdu->getTypeName(1),
+                $pdu->getName()
+            )
+        );
 
-      $items = iterator_to_array($items);
+        $items = iterator_to_array($items);
 
-      if ($canedit) {
-         $form = [
-            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
-            'buttons' => [
-               [
-                  'type' => 'submit',
-                  'name' => 'add',
-                  'value' => _sx('button', 'Add an item'),
-                  'class' => 'btn btn-secondary'
-               ]
-            ],
-            'content' => [
-               __('Add an item') => [
-                  'visible' => true,
-                  'inputs' => [
-                     [
-                        'type' => 'hidden',
-                        'name' => 'pdus_id',
-                        'value' => $ID
-                     ],
-                     __('Add a new plug') => [
-                        'type' => 'select',
-                        'name' => 'plugs_id',
-                        'values' => getOptionForItems(Plug::class),
-                        'actions' => getItemActionButtons(['info', 'add'], Plug::class),
-                     ],
-                     __('Number') => [
-                        'type' => 'number',
-                        'name' => 'number_plugs',
-                        'col_lg' => 6,
-                     ],
+        if ($canedit) {
+            $form = [
+               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+               'buttons' => [
+                  [
+                     'type' => 'submit',
+                     'name' => 'add',
+                     'value' => _sx('button', 'Add an item'),
+                     'class' => 'btn btn-secondary'
+                  ]
+               ],
+               'content' => [
+                  __('Add an item') => [
+                     'visible' => true,
+                     'inputs' => [
+                        [
+                           'type' => 'hidden',
+                           'name' => 'pdus_id',
+                           'value' => $ID
+                        ],
+                        __('Add a new plug') => [
+                           'type' => 'select',
+                           'name' => 'plugs_id',
+                           'values' => getOptionForItems(Plug::class),
+                           'actions' => getItemActionButtons(['info', 'add'], Plug::class),
+                        ],
+                        __('Number') => [
+                           'type' => 'number',
+                           'name' => 'number_plugs',
+                           'col_lg' => 6,
+                        ],
+                     ]
                   ]
                ]
-            ]
-         ];
-         renderTwigForm($form);
-      }
+            ];
+            renderTwigForm($form);
+        }
 
-      if ($canedit) {
-         $massiveactionparams = [
-            'container'       => 'tableForPDUPlug',
-            'display_arrow' => false,
-            'specific_actions' => [
-               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
-            ],
-         ];
-         Html::showMassiveActions($massiveactionparams);
-      }
+        if ($canedit) {
+            $massiveactionparams = [
+               'container'       => 'tableForPDUPlug',
+               'display_arrow' => false,
+               'specific_actions' => [
+                  'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+               ],
+            ];
+            Html::showMassiveActions($massiveactionparams);
+        }
 
-      $fields = [
-         __('Name'),
-         __('Number')
-      ];
-      $values = [];
-      $massive_action = [];
-      foreach ($items as $row) {
-         $item = new Plug;
-         $item->getFromDB($row['plugs_id']);
-         $values[] = [
-            $item->getLink(),
-            $row['number_plugs']
-         ];
-         $massive_action[] = sprintf('item[%s][%s]', self::class, $row['id']);
-      }
-      renderTwigTemplate('table.twig', [
-         'id' => 'tableForPDUPlug',
-         'fields' => $fields,
-         'values' => $values,
-         'massive_action' => $massive_action,
-      ]);
-   }
+        $fields = [
+           __('Name'),
+           __('Number')
+        ];
+        $values = [];
+        $massive_action = [];
+        foreach ($items as $row) {
+            $item = new Plug();
+            $item->getFromDB($row['plugs_id']);
+            $values[] = [
+               $item->getLink(),
+               $row['number_plugs']
+            ];
+            $massive_action[] = sprintf('item[%s][%s]', self::class, $row['id']);
+        }
+        renderTwigTemplate('table.twig', [
+           'id' => 'tableForPDUPlug',
+           'fields' => $fields,
+           'values' => $values,
+           'massive_action' => $massive_action,
+        ]);
+    }
 
-   function getForbiddenStandardMassiveAction() {
-      $forbidden   = parent::getForbiddenStandardMassiveAction();
-      $forbidden[] = 'CommonDBConnexity:affect';
-      $forbidden[] = 'CommonDBConnexity:unaffect';
-      return $forbidden;
-   }
+    public function getForbiddenStandardMassiveAction()
+    {
+        $forbidden   = parent::getForbiddenStandardMassiveAction();
+        $forbidden[] = 'CommonDBConnexity:affect';
+        $forbidden[] = 'CommonDBConnexity:unaffect';
+        return $forbidden;
+    }
 
 }

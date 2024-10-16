@@ -31,58 +31,62 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// LDAP criteria class
-class RuleRightParameter extends CommonDropdown {
+class RuleRightParameter extends CommonDropdown
+{
+    public static $rightname         = 'rule_ldap';
 
-   static $rightname         = 'rule_ldap';
+    public $can_be_translated = false;
 
-   public $can_be_translated = false;
+    /**
+     * @see CommonDBTM::prepareInputForAdd()
+    **/
+    public function prepareInputForAdd($input)
+    {
 
-   /**
-    * @see CommonDBTM::prepareInputForAdd()
-   **/
-   function prepareInputForAdd($input) {
-
-      //LDAP parameters MUST be in lower case
-      //because the are retieved in lower case  from the directory
-      $input["value"] = Toolbox::strtolower($input["value"]);
-      return $input;
-   }
-
-
-   function getAdditionalFields() {
-
-      return [
-         _n('Criterion', 'Criteria', 1) => [
-            'name'  => 'value',
-            'type'  => 'text',
-            'value' => $this->fields['value'],
-         ]
-      ];
-   }
+        //LDAP parameters MUST be in lower case
+        //because the are retieved in lower case  from the directory
+        $input["value"] = Toolbox::strtolower($input["value"]);
+        return $input;
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    public function getAdditionalFields()
+    {
 
-      $tab[] = [
-         'id'                 => '11',
-         'table'              => $this->getTable(),
-         'field'              => 'value',
-         'name'               => _n('Criterion', 'Criteria', 1),
-         'datatype'           => 'string',
-         'autocomplete'       => true,
-      ];
-
-      return $tab;
-   }
+        return [
+           _n('Criterion', 'Criteria', 1) => [
+              'name'  => 'value',
+              'type'  => 'text',
+              'value' => $this->fields['value'],
+           ]
+        ];
+    }
 
 
-   static function getTypeName($nb = 0) {
-      return _n('LDAP criterion', 'LDAP criteria', $nb);
-   }
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
+
+        $tab[] = [
+           'id'                 => '11',
+           'table'              => $this->getTable(),
+           'field'              => 'value',
+           'name'               => _n('Criterion', 'Criteria', 1),
+           'datatype'           => 'string',
+           'autocomplete'       => true,
+        ];
+
+        return $tab;
+    }
+
+
+    public static function getTypeName($nb = 0)
+    {
+        return _n('LDAP criterion', 'LDAP criteria', $nb);
+    }
 
 }

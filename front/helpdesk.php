@@ -31,7 +31,7 @@
  */
 
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 global $CFG_GLPI;
 

@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Html::header(__('Statistics'), '', "helpdesk", "stat");
 
@@ -38,38 +38,38 @@ Session::checkRight("statistic", READ);
 
 
 if (empty($_GET["showgraph"])) {
-   $_GET["showgraph"] = 0;
+    $_GET["showgraph"] = 0;
 }
 
 if (empty($_GET["date1"]) && empty($_GET["date2"])) {
-   $year          = date("Y")-1;
-   $_GET["date1"] = date("Y-m-d", mktime(1, 0, 0, date("m"), date("d"), $year));
-   $_GET["date2"] = date("Y-m-d");
+    $year          = date("Y") - 1;
+    $_GET["date1"] = date("Y-m-d", mktime(1, 0, 0, date("m"), date("d"), $year));
+    $_GET["date2"] = date("Y-m-d");
 }
 
 if (!empty($_GET["date1"])
     && !empty($_GET["date2"])
     && (strcmp($_GET["date2"], $_GET["date1"]) < 0)) {
 
-   $tmp           = $_GET["date1"];
-   $_GET["date1"] = $_GET["date2"];
-   $_GET["date2"] = $tmp;
+    $tmp           = $_GET["date1"];
+    $_GET["date1"] = $_GET["date2"];
+    $_GET["date2"] = $tmp;
 }
 
 if (!isset($_GET["start"])) {
-   $_GET["start"] = 0;
+    $_GET["start"] = 0;
 }
 // Why this test ?? For me it's doing nothing
 if (isset($_GET["dropdown"])) {
-   $_GET["dropdown"] = $_GET["dropdown"];
+    $_GET["dropdown"] = $_GET["dropdown"];
 }
 
 if (empty($_GET["dropdown"])) {
-   $_GET["dropdown"] = "ComputerType";
+    $_GET["dropdown"] = "ComputerType";
 }
 
 if (!isset($_GET['itemtype'])) {
-   $_GET['itemtype'] = 'Ticket';
+    $_GET['itemtype'] = 'Ticket';
 }
 
 $stat = new Stat();
@@ -87,9 +87,9 @@ $values = [_n('Dropdown', 'Dropdowns', Session::getPluralNumber()) => ['Computer
                ];
 $devices = Dropdown::getDeviceItemTypes();
 foreach ($devices as $label => $dp) {
-   foreach ($dp as $i => $name) {
-      $values[$label][$i] = $name;
-   }
+    foreach ($dp as $i => $name) {
+        $values[$label][$i] = $name;
+    }
 }
 
 Dropdown::showFromArray('dropdown', $values, ['value' => $_GET["dropdown"]]);
@@ -115,172 +115,191 @@ echo "</form>";
 
 if (empty($_GET["dropdown"])
     || !($item = getItemForItemtype($_GET["dropdown"]))) {
-   // Do nothing
-   Html::footer();
-   exit();
+    // Do nothing
+    Html::footer();
+    exit();
 }
 
 
 if (!($item instanceof CommonDevice)) {
-   // echo "Dropdown";
-   $type = "comp_champ";
+    // echo "Dropdown";
+    $type = "comp_champ";
 
-   $val = Stat::getItems($_GET['itemtype'], $_GET["date1"], $_GET["date2"], $_GET["dropdown"]);
-   $params = ['type'     => $type,
-                   'dropdown' => $_GET["dropdown"],
-                   'date1'    => $_GET["date1"],
-                   'date2'    => $_GET["date2"],
-                   'start'    => $_GET["start"]];
+    $val = Stat::getItems($_GET['itemtype'], $_GET["date1"], $_GET["date2"], $_GET["dropdown"]);
+    $params = ['type'     => $type,
+                    'dropdown' => $_GET["dropdown"],
+                    'date1'    => $_GET["date1"],
+                    'date2'    => $_GET["date2"],
+                    'start'    => $_GET["start"]];
 
 } else {
-   //   echo "Device";
-   $type  = "device";
+    //   echo "Device";
+    $type  = "device";
 
-   $val = Stat::getItems($_GET['itemtype'], $_GET["date1"], $_GET["date2"], $_GET["dropdown"]);
-   $params = ['type'     => $type,
-                   'dropdown' => $_GET["dropdown"],
-                   'date1'    => $_GET["date1"],
-                   'date2'    => $_GET["date2"],
-                   'start'    => $_GET["start"]];
+    $val = Stat::getItems($_GET['itemtype'], $_GET["date1"], $_GET["date2"], $_GET["dropdown"]);
+    $params = ['type'     => $type,
+                    'dropdown' => $_GET["dropdown"],
+                    'date1'    => $_GET["date1"],
+                    'date2'    => $_GET["date2"],
+                    'start'    => $_GET["start"]];
 }
 
-Html::printPager($_GET['start'], count($val), $CFG_GLPI['root_doc'].'/front/stat.location.php',
-                 "date1=".$_GET["date1"]."&amp;date2=".$_GET["date2"].
+Html::printPager(
+    $_GET['start'],
+    count($val),
+    $CFG_GLPI['root_doc'].'/front/stat.location.php',
+    "date1=".$_GET["date1"]."&amp;date2=".$_GET["date2"].
                      "&amp;itemtype=".$_GET['itemtype']."&amp;dropdown=".$_GET["dropdown"],
-                 'Stat', $params);
+    'Stat',
+    $params
+);
 
 if (!$_GET['showgraph']) {
-   Stat::showTable($_GET['itemtype'], $type, $_GET["date1"], $_GET["date2"], $_GET['start'], $val,
-                   $_GET["dropdown"]);
+    Stat::showTable(
+        $_GET['itemtype'],
+        $type,
+        $_GET["date1"],
+        $_GET["date2"],
+        $_GET['start'],
+        $val,
+        $_GET["dropdown"]
+    );
 } else {
-   $data = Stat::getData($_GET['itemtype'], $type, $_GET["date1"], $_GET["date2"], $_GET['start'],
-                          $val, $_GET["dropdown"]);
+    $data = Stat::getData(
+        $_GET['itemtype'],
+        $type,
+        $_GET["date1"],
+        $_GET["date2"],
+        $_GET['start'],
+        $val,
+        $_GET["dropdown"]
+    );
 
-   if (isset($data['opened']) && is_array($data['opened'])) {
-      $count = 0;
-      $labels = [];
-      $series = [];
-      foreach ($data['opened'] as $key => $val) {
-         if ($val > 0) {
-            $newkey = Toolbox::unclean_cross_side_scripting_deep(Html::clean($key));
-            $labels[] = $newkey;
-            $series[] = ['name' => $newkey, 'data' => $val];
-            $count += $val;
-         }
-      }
+    if (isset($data['opened']) && is_array($data['opened'])) {
+        $count = 0;
+        $labels = [];
+        $series = [];
+        foreach ($data['opened'] as $key => $val) {
+            if ($val > 0) {
+                $newkey = Toolbox::unclean_cross_side_scripting_deep(Html::clean($key));
+                $labels[] = $newkey;
+                $series[] = ['name' => $newkey, 'data' => $val];
+                $count += $val;
+            }
+        }
 
-      if (count($series)) {
-         $stat->displayPieGraph(
-            sprintf(
-               __('Opened %1$s (%2$s)'),
-               Ticket::getTypeName(Session::getPluralNumber()),
-               $count
-            ),
-            $labels,
-            $series
-         );
-      }
-   }
+        if (count($series)) {
+            $stat->displayPieGraph(
+                sprintf(
+                    __('Opened %1$s (%2$s)'),
+                    Ticket::getTypeName(Session::getPluralNumber()),
+                    $count
+                ),
+                $labels,
+                $series
+            );
+        }
+    }
 
-   if (isset($data['solved']) && is_array($data['solved'])) {
-      $count = 0;
-      $labels = [];
-      $series = [];
-      foreach ($data['solved'] as $key => $val) {
-         if ($val > 0) {
-            $labels[] = $newkey;
-            $series[] = ['name' => $newkey, 'data' => $val];
-            $count += $val;
-         }
-      }
+    if (isset($data['solved']) && is_array($data['solved'])) {
+        $count = 0;
+        $labels = [];
+        $series = [];
+        foreach ($data['solved'] as $key => $val) {
+            if ($val > 0) {
+                $labels[] = $newkey;
+                $series[] = ['name' => $newkey, 'data' => $val];
+                $count += $val;
+            }
+        }
 
-      if (count($series)) {
-         $stat->displayPieGraph(
-            sprintf(
-               __('Solved %1$s (%2$s)'),
-               Ticket::getTypeName(Session::getPluralNumber()),
-               $count
-            ),
-               $labels,
-               $series
-         );
-      }
-   }
+        if (count($series)) {
+            $stat->displayPieGraph(
+                sprintf(
+                    __('Solved %1$s (%2$s)'),
+                    Ticket::getTypeName(Session::getPluralNumber()),
+                    $count
+                ),
+                $labels,
+                $series
+            );
+        }
+    }
 
-   if (isset($data['late']) && is_array($data['late'])) {
-      $count = 0;
-      $labels = [];
-      $series = [];
-      foreach ($data['late'] as $key => $val) {
-         if ($val > 0) {
-            $labels[] = $newkey;
-            $series[] = ['name' => $newkey, 'data' => $val];
-            $count += $val;
-         }
-      }
+    if (isset($data['late']) && is_array($data['late'])) {
+        $count = 0;
+        $labels = [];
+        $series = [];
+        foreach ($data['late'] as $key => $val) {
+            if ($val > 0) {
+                $labels[] = $newkey;
+                $series[] = ['name' => $newkey, 'data' => $val];
+                $count += $val;
+            }
+        }
 
-      if (count($series)) {
-         $stat->displayPieGraph(
-            sprintf(
-               __('Late solved %1$s (%2$s)'),
-               Ticket::getTypeName(Session::getPluralNumber()),
-               $count
-            ),
-            $labels,
-            $series
-         );
-      }
-   }
+        if (count($series)) {
+            $stat->displayPieGraph(
+                sprintf(
+                    __('Late solved %1$s (%2$s)'),
+                    Ticket::getTypeName(Session::getPluralNumber()),
+                    $count
+                ),
+                $labels,
+                $series
+            );
+        }
+    }
 
-   if (isset($data['closed']) && is_array($data['closed'])) {
-      $count = 0;
-      $labels = [];
-      $series = [];
-      foreach ($data['closed'] as $key => $val) {
-         if ($val > 0) {
-            $labels[] = $newkey;
-            $series[] = ['name' => $newkey, 'data' => $val];
-            $count += $val;
-         }
-      }
+    if (isset($data['closed']) && is_array($data['closed'])) {
+        $count = 0;
+        $labels = [];
+        $series = [];
+        foreach ($data['closed'] as $key => $val) {
+            if ($val > 0) {
+                $labels[] = $newkey;
+                $series[] = ['name' => $newkey, 'data' => $val];
+                $count += $val;
+            }
+        }
 
-      if (count($series)) {
-         $stat->displayPieGraph(
-            sprintf(
-                __('Closed %1$s (%2$s)'),
-               Ticket::getTypeName(Session::getPluralNumber()),
-               $count
-            ),
-            $labels,
-            $series
-         );
-      }
-   }
+        if (count($series)) {
+            $stat->displayPieGraph(
+                sprintf(
+                    __('Closed %1$s (%2$s)'),
+                    Ticket::getTypeName(Session::getPluralNumber()),
+                    $count
+                ),
+                $labels,
+                $series
+            );
+        }
+    }
 
-   if (isset($data['opensatisfaction']) && is_array($data['opensatisfaction'])) {
-      $count = 0;
-      $labels = [];
-      $series = [];
-      foreach ($data['opensatisfaction'] as $key => $val) {
-         if ($val > 0) {
-            $labels[] = $newkey;
-            $series[] = ['name' => $newkey, 'data' => $val];
-            $count += $val;
-         }
-      }
+    if (isset($data['opensatisfaction']) && is_array($data['opensatisfaction'])) {
+        $count = 0;
+        $labels = [];
+        $series = [];
+        foreach ($data['opensatisfaction'] as $key => $val) {
+            if ($val > 0) {
+                $labels[] = $newkey;
+                $series[] = ['name' => $newkey, 'data' => $val];
+                $count += $val;
+            }
+        }
 
-      if (count($series)) {
-         $stat->displayPieGraph(
-            sprintf(
-                __('%1$s satisfaction survey (%2$s)'),
-               Ticket::getTypeName(Session::getPluralNumber()),
-               $count
-            ),
-            $labels,
-            $series
-         );
-      }
-   }
+        if (count($series)) {
+            $stat->displayPieGraph(
+                sprintf(
+                    __('%1$s satisfaction survey (%2$s)'),
+                    Ticket::getTypeName(Session::getPluralNumber()),
+                    $count
+                ),
+                $labels,
+                $series
+            );
+        }
+    }
 }
 
 Html::footer();

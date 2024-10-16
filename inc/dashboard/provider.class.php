@@ -54,34 +54,36 @@ use Toolbox;
 use User;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * Provider class
 **/
-class Provider {
-   static function number(CommonDBTM $item, $conditions = []) {
-      global $DB;
-  
-      $table = $item->getTable();
-  
-      // Build the SQL query
-      $query = <<<SQL
+class Provider
+{
+    public static function number(CommonDBTM $item, $conditions = [])
+    {
+        global $DB;
+
+        $table = $item->getTable();
+
+        // Build the SQL query
+        $query = <<<SQL
          SELECT COUNT(*) as count
          FROM `$table`
       SQL;
-      if (count($conditions)) {
-         $query .= ' WHERE `entities_id` = '.Session::getActiveEntity().' AND ';
-         foreach ($conditions as $field => $value) {
-            $query .= "`$field` = '$value' AND ";
-         }
-         $query = substr($query, 0, -5);
-      }
-  
-      // Execute the query
-      $iter = $DB->query($query);
-  
-      die(var_dump(iterator_to_array($iter)));
-  }
+        if (count($conditions)) {
+            $query .= ' WHERE `entities_id` = '.Session::getActiveEntity().' AND ';
+            foreach ($conditions as $field => $value) {
+                $query .= "`$field` = '$value' AND ";
+            }
+            $query = substr($query, 0, -5);
+        }
+
+        // Execute the query
+        $iter = $DB->query($query);
+
+        die(var_dump(iterator_to_array($iter)));
+    }
 }

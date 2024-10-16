@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 
@@ -42,10 +42,10 @@ if (!defined('GLPI_ROOT')) {
  *
  * @since 0.83
 **/
-class ProblemTemplatePredefinedField extends ITILTemplatePredefinedField {
-
-   // From CommonDBChild
-   static public $itemtype = 'ProblemTemplate';
-   static public $items_id = 'problemtemplates_id';
-   static public $itiltype = 'Problem';
+class ProblemTemplatePredefinedField extends ITILTemplatePredefinedField
+{
+    // From CommonDBChild
+    public static $itemtype = 'ProblemTemplate';
+    public static $items_id = 'problemtemplates_id';
+    public static $itiltype = 'Problem';
 }

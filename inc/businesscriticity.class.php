@@ -31,29 +31,31 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * DocumentType Class
 **/
-class BusinessCriticity  extends CommonTreeDropdown {
+class BusinessCriticity extends CommonTreeDropdown
+{
+    public $can_be_translated = true;
 
-   public $can_be_translated = true;
+    public function getAdditionalFields()
+    {
 
-   function getAdditionalFields() {
+        return [
+           __('As child of') => [
+              'name'  => $this->getForeignKeyField(),
+              'type'  => 'select',
+              'itemtype' => BusinessCriticity::class,
+              'value' => $this->fields[$this->getForeignKeyField()],
+           ]
+        ];
+    }
 
-      return [
-         __('As child of') => [
-            'name'  => $this->getForeignKeyField(),
-            'type'  => 'select',
-            'itemtype' => BusinessCriticity::class,
-            'value' => $this->fields[$this->getForeignKeyField()],
-         ]
-      ];
-   }
-
-   static function getTypeName($nb = 0) {
-      return _n('Business criticity', 'Business criticities', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Business criticity', 'Business criticities', $nb);
+    }
 }

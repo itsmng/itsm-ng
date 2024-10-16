@@ -30,19 +30,20 @@
  * ---------------------------------------------------------------------
  */
 
-class RuleDictionnaryManufacturerCollection extends RuleDictionnaryDropdownCollection {
+class RuleDictionnaryManufacturerCollection extends RuleDictionnaryDropdownCollection
+{
+    // From RuleCollection
+    //public $rule_class_name = 'RuleDictionnaryManufacturer';
 
-   // From RuleCollection
-   //public $rule_class_name = 'RuleDictionnaryManufacturer';
+    public $item_table  = "glpi_manufacturers";
+    public $menu_option = "manufacturers";
 
-   public $item_table  = "glpi_manufacturers";
-   public $menu_option = "manufacturers";
-
-   /**
-    * @see RuleCollection::getTitle()
-   **/
-   function getTitle() {
-      return __('Dictionary of manufacturers');
-   }
+    /**
+     * @see RuleCollection::getTitle()
+    **/
+    public function getTitle()
+    {
+        return __('Dictionary of manufacturers');
+    }
 
 }

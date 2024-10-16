@@ -35,27 +35,28 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * Relation between item and devices
 **/
-class Item_DeviceSoundCard extends Item_Devices {
+class Item_DeviceSoundCard extends Item_Devices
+{
+    public static $itemtype_2 = 'DeviceSoundCard';
+    public static $items_id_2 = 'devicesoundcards_id';
 
-   static public $itemtype_2 = 'DeviceSoundCard';
-   static public $items_id_2 = 'devicesoundcards_id';
-
-   static protected $notable = false;
+    protected static $notable = false;
 
 
-   static function getSpecificities($specif = '') {
+    public static function getSpecificities($specif = '')
+    {
 
-      return ['serial' => parent::getSpecificities('serial'),
-                   'otherserial' => parent::getSpecificities('otherserial'),
-                   'locations_id' => parent::getSpecificities('locations_id'),
-                   'states_id' => parent::getSpecificities('states_id'),
-                   'busID'  => parent::getSpecificities('busID')];
-   }
+        return ['serial' => parent::getSpecificities('serial'),
+                     'otherserial' => parent::getSpecificities('otherserial'),
+                     'locations_id' => parent::getSpecificities('locations_id'),
+                     'states_id' => parent::getSpecificities('states_id'),
+                     'busID'  => parent::getSpecificities('busID')];
+    }
 
 }

@@ -31,259 +31,276 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class DeviceProcessor
-class DeviceProcessor extends CommonDevice {
+class DeviceProcessor extends CommonDevice
+{
+    protected static $forward_entity_to = ['Item_DeviceProcessor', 'Infocom'];
 
-   static protected $forward_entity_to = ['Item_DeviceProcessor', 'Infocom'];
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Processor', 'Processors', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('Processor', 'Processors', $nb);
-   }
 
+    public function getAdditionalFields()
+    {
 
-   function getAdditionalFields() {
+        return array_merge(
+            parent::getAdditionalFields(),
+            [
+              __('Frequency by default') => [
+                 'name'  => 'frequency_default',
+                 'type'  => 'number',
+                 'after'  => __('MHz'),
+                 'value' => $this->fields['frequency_default']
+              ],
+              __('Frequency') => [
+                 'name'  => 'frequence',
+                 'type'  => 'number',
+                 'after'  => __('MHz'),
+                 'value' => $this->fields['frequence']
+              ],
+              __('Number of cores') => [
+                 'name'  => 'nbcores_default',
+                 'type'  => 'number',
+                 'value' => $this->fields['nbcores_default'],
+                 'step' => 1,
+                 'min' => 0
+              ],
+              __('Number of threads') => [
+                 'name'  => 'nbthreads_default',
+                 'type'  => 'number',
+                 'value' => $this->fields['nbthreads_default'],
+                 'step' => 1,
+                 'min' => 0,
 
-      return array_merge(
-         parent::getAdditionalFields(),
-         [
-            __('Frequency by default') => [
-               'name'  => 'frequency_default',
-               'type'  => 'number',
-               'after'  => __('MHz'),
-               'value' => $this->fields['frequency_default']
-            ],
-            __('Frequency') => [
-               'name'  => 'frequence',
-               'type'  => 'number',
-               'after'  => __('MHz'),
-               'value' => $this->fields['frequence']
-            ],
-            __('Number of cores') => [
-               'name'  => 'nbcores_default',
-               'type'  => 'number',
-               'value' => $this->fields['nbcores_default'],
-               'step' => 1,
-               'min' => 0
-            ],
-            __('Number of threads') => [
-               'name'  => 'nbthreads_default',
-               'type'  => 'number',
-               'value' => $this->fields['nbthreads_default'],
-               'step' => 1,
-               'min' => 0,
-
-            ],
-            _n('Model', 'Models', 1) => [
-               'name'  => 'deviceprocessormodels_id',
-               'type'  => 'select',
-               'values' => getOptionForItems('DeviceProcessorModel'),
-               'value' => $this->fields['deviceprocessormodels_id'],
-               'actions' => getItemActionButtons(['info', 'add'], 'DeviceProcessorModel')
-            ]
+              ],
+              _n('Model', 'Models', 1) => [
+                 'name'  => 'deviceprocessormodels_id',
+                 'type'  => 'select',
+                 'values' => getOptionForItems('DeviceProcessorModel'),
+                 'value' => $this->fields['deviceprocessormodels_id'],
+                 'actions' => getItemActionButtons(['info', 'add'], 'DeviceProcessorModel')
+              ]
          ]
-      );
-   }
+        );
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
 
-      $tab[] = [
-         'id'                 => '11',
-         'table'              => $this->getTable(),
-         'field'              => 'frequency_default',
-         'name'               => __('Frequency by default'),
-         'datatype'           => 'string',
-         'autocomplete'       => true,
-      ];
+        $tab[] = [
+           'id'                 => '11',
+           'table'              => $this->getTable(),
+           'field'              => 'frequency_default',
+           'name'               => __('Frequency by default'),
+           'datatype'           => 'string',
+           'autocomplete'       => true,
+        ];
 
-      $tab[] = [
-         'id'                 => '12',
-         'table'              => $this->getTable(),
-         'field'              => 'frequence',
-         'name'               => __('Frequency'),
-         'datatype'           => 'string',
-         'autocomplete'       => true,
-      ];
+        $tab[] = [
+           'id'                 => '12',
+           'table'              => $this->getTable(),
+           'field'              => 'frequence',
+           'name'               => __('Frequency'),
+           'datatype'           => 'string',
+           'autocomplete'       => true,
+        ];
 
-      $tab[] = [
-         'id'                 => '13',
-         'table'              => $this->getTable(),
-         'field'              => 'nbcores_default',
-         'name'               => __('Number of cores'),
-         'datatype'           => 'integer'
-      ];
+        $tab[] = [
+           'id'                 => '13',
+           'table'              => $this->getTable(),
+           'field'              => 'nbcores_default',
+           'name'               => __('Number of cores'),
+           'datatype'           => 'integer'
+        ];
 
-      $tab[] = [
-         'id'                 => '14',
-         'table'              => $this->getTable(),
-         'field'              => 'nbthreads_default',
-         'name'               => __('Number of threads'),
-         'datatype'           => 'integer'
-      ];
+        $tab[] = [
+           'id'                 => '14',
+           'table'              => $this->getTable(),
+           'field'              => 'nbthreads_default',
+           'name'               => __('Number of threads'),
+           'datatype'           => 'integer'
+        ];
 
-      $tab[] = [
-         'id'                 => '15',
-         'table'              => 'glpi_deviceprocessormodels',
-         'field'              => 'name',
-         'name'               => _n('Model', 'Models', 1),
-         'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+           'id'                 => '15',
+           'table'              => 'glpi_deviceprocessormodels',
+           'field'              => 'name',
+           'name'               => _n('Model', 'Models', 1),
+           'datatype'           => 'dropdown'
+        ];
 
-      return $tab;
-   }
-
-
-   /**
-    * @since 0.85
-    * @param $input
-    *
-    * @return number
-   **/
-   function prepareInputForAddOrUpdate($input) {
-
-      foreach (['frequence', 'frequency_default', 'nbcores_default',
-                     'nbthreads_default'] as $field) {
-         if (isset($input[$field]) && !is_numeric($input[$field])) {
-            $input[$field] = 0;
-         }
-      }
-      return $input;
-   }
+        return $tab;
+    }
 
 
-   function prepareInputForAdd($input) {
-      return $this->prepareInputForAddOrUpdate($input);
-   }
+    /**
+     * @since 0.85
+     * @param $input
+     *
+     * @return number
+    **/
+    public function prepareInputForAddOrUpdate($input)
+    {
+
+        foreach (['frequence', 'frequency_default', 'nbcores_default',
+                       'nbthreads_default'] as $field) {
+            if (isset($input[$field]) && !is_numeric($input[$field])) {
+                $input[$field] = 0;
+            }
+        }
+        return $input;
+    }
 
 
-   function prepareInputForUpdate($input) {
-      return $this->prepareInputForAddOrUpdate($input);
-   }
+    public function prepareInputForAdd($input)
+    {
+        return $this->prepareInputForAddOrUpdate($input);
+    }
 
 
-   static function getHTMLTableHeader($itemtype, HTMLTableBase $base,
-                                      HTMLTableSuperHeader $super = null,
-                                      HTMLTableHeader $father = null, array $options = []) {
-
-      $column = parent::getHTMLTableHeader($itemtype, $base, $super, $father, $options);
-
-      if ($column == $father) {
-         return $father;
-      }
-
-      switch ($itemtype) {
-         case 'Computer' :
-            Manufacturer::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
-            break;
-      }
-   }
+    public function prepareInputForUpdate($input)
+    {
+        return $this->prepareInputForAddOrUpdate($input);
+    }
 
 
-   function getHTMLTableCellForItem(HTMLTableRow $row = null, CommonDBTM $item = null,
-                                    HTMLTableCell $father = null, array $options = []) {
+    public static function getHTMLTableHeader(
+        $itemtype,
+        HTMLTableBase $base,
+        HTMLTableSuperHeader $super = null,
+        HTMLTableHeader $father = null,
+        array $options = []
+    ) {
 
-      $column = parent::getHTMLTableCellForItem($row, $item, $father, $options);
+        $column = parent::getHTMLTableHeader($itemtype, $base, $super, $father, $options);
 
-      if ($column == $father) {
-         return $father;
-      }
+        if ($column == $father) {
+            return $father;
+        }
 
-      switch ($item->getType()) {
-         case 'Computer' :
-            Manufacturer::getHTMLTableCellsForItem($row, $this, null, $options);
-            break;
-      }
-   }
-
-
-   function getImportCriteria() {
-
-      return ['designation'          => 'equal',
-                   'manufacturers_id'     => 'equal',
-                   'frequence'            => 'delta:10'];
-   }
-
-   public static function rawSearchOptionsToAdd($itemtype, $main_joinparams) {
-      global $DB;
-
-      $tab = [];
-
-      $tab[] = [
-         'id'                 => '17',
-         'table'              => 'glpi_deviceprocessors',
-         'field'              => 'designation',
-         'name'               => self::getTypeName(1),
-         'forcegroupby'       => true,
-         'usehaving'          => true,
-         'massiveaction'      => false,
-         'datatype'           => 'string',
-         'joinparams'         => [
-            'beforejoin'         => [
-               'table'              => 'glpi_items_deviceprocessors',
-               'joinparams'         => $main_joinparams
-            ]
-         ]
-      ];
-
-      $tab[] = [
-         'id'                 => '18',
-         'table'              => 'glpi_items_deviceprocessors',
-         'field'              => 'nbcores',
-         'name'               => __('processor: number of cores'),
-         'forcegroupby'       => true,
-         'usehaving'          => true,
-         'datatype'           => 'number',
-         'massiveaction'      => false,
-         'joinparams'         => $main_joinparams,
-         'computation'        =>
-            'SUM(' . $DB->quoteName('TABLE.nbcores') . ') * COUNT(DISTINCT ' .
-            $DB->quoteName('TABLE.id') . ') / COUNT(*)',
-         'nometa'             => true, // cannot GROUP_CONCAT a SUM
-      ];
-
-      $tab[] = [
-         'id'                 => '34',
-         'table'              => 'glpi_items_deviceprocessors',
-         'field'              => 'nbthreads',
-         'name'               => __('processor: number of threads'),
-         'forcegroupby'       => true,
-         'usehaving'          => true,
-         'datatype'           => 'number',
-         'massiveaction'      => false,
-         'joinparams'         => $main_joinparams,
-         'computation'        =>
-            'SUM(' . $DB->quoteName('TABLE.nbthreads') . ') * COUNT(DISTINCT ' .
-            $DB->quoteName('TABLE.id') . ') / COUNT(*)',
-         'nometa'             => true, // cannot GROUP_CONCAT a SUM
-      ];
-
-      $tab[] = [
-         'id'                 => '36',
-         'table'              => 'glpi_items_deviceprocessors',
-         'field'              => 'frequency',
-         'name'               => __('Processor frequency'),
-         'unit'               => 'MHz',
-         'forcegroupby'       => true,
-         'usehaving'          => true,
-         'datatype'           => 'number',
-         'width'              => 100,
-         'massiveaction'      => false,
-         'joinparams'         => $main_joinparams,
-         'computation'        =>
-            'SUM(' . $DB->quoteName('TABLE.frequency') . ') / COUNT(' .
-            $DB->quoteName('TABLE.id') . ')',
-         'nometa'             => true, // cannot GROUP_CONCAT a SUM
-      ];
-
-      return $tab;
-   }
+        switch ($itemtype) {
+            case 'Computer':
+                Manufacturer::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
+                break;
+        }
+    }
 
 
-   static function getIcon() {
-      return "fas fa-microchip";
-   }
+    public function getHTMLTableCellForItem(
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
+        array $options = []
+    ) {
+
+        $column = parent::getHTMLTableCellForItem($row, $item, $father, $options);
+
+        if ($column == $father) {
+            return $father;
+        }
+
+        switch ($item->getType()) {
+            case 'Computer':
+                Manufacturer::getHTMLTableCellsForItem($row, $this, null, $options);
+                break;
+        }
+    }
+
+
+    public function getImportCriteria()
+    {
+
+        return ['designation'          => 'equal',
+                     'manufacturers_id'     => 'equal',
+                     'frequence'            => 'delta:10'];
+    }
+
+    public static function rawSearchOptionsToAdd($itemtype, $main_joinparams)
+    {
+        global $DB;
+
+        $tab = [];
+
+        $tab[] = [
+           'id'                 => '17',
+           'table'              => 'glpi_deviceprocessors',
+           'field'              => 'designation',
+           'name'               => self::getTypeName(1),
+           'forcegroupby'       => true,
+           'usehaving'          => true,
+           'massiveaction'      => false,
+           'datatype'           => 'string',
+           'joinparams'         => [
+              'beforejoin'         => [
+                 'table'              => 'glpi_items_deviceprocessors',
+                 'joinparams'         => $main_joinparams
+              ]
+           ]
+        ];
+
+        $tab[] = [
+           'id'                 => '18',
+           'table'              => 'glpi_items_deviceprocessors',
+           'field'              => 'nbcores',
+           'name'               => __('processor: number of cores'),
+           'forcegroupby'       => true,
+           'usehaving'          => true,
+           'datatype'           => 'number',
+           'massiveaction'      => false,
+           'joinparams'         => $main_joinparams,
+           'computation'        =>
+              'SUM(' . $DB->quoteName('TABLE.nbcores') . ') * COUNT(DISTINCT ' .
+              $DB->quoteName('TABLE.id') . ') / COUNT(*)',
+           'nometa'             => true, // cannot GROUP_CONCAT a SUM
+        ];
+
+        $tab[] = [
+           'id'                 => '34',
+           'table'              => 'glpi_items_deviceprocessors',
+           'field'              => 'nbthreads',
+           'name'               => __('processor: number of threads'),
+           'forcegroupby'       => true,
+           'usehaving'          => true,
+           'datatype'           => 'number',
+           'massiveaction'      => false,
+           'joinparams'         => $main_joinparams,
+           'computation'        =>
+              'SUM(' . $DB->quoteName('TABLE.nbthreads') . ') * COUNT(DISTINCT ' .
+              $DB->quoteName('TABLE.id') . ') / COUNT(*)',
+           'nometa'             => true, // cannot GROUP_CONCAT a SUM
+        ];
+
+        $tab[] = [
+           'id'                 => '36',
+           'table'              => 'glpi_items_deviceprocessors',
+           'field'              => 'frequency',
+           'name'               => __('Processor frequency'),
+           'unit'               => 'MHz',
+           'forcegroupby'       => true,
+           'usehaving'          => true,
+           'datatype'           => 'number',
+           'width'              => 100,
+           'massiveaction'      => false,
+           'joinparams'         => $main_joinparams,
+           'computation'        =>
+              'SUM(' . $DB->quoteName('TABLE.frequency') . ') / COUNT(' .
+              $DB->quoteName('TABLE.id') . ')',
+           'nometa'             => true, // cannot GROUP_CONCAT a SUM
+        ];
+
+        return $tab;
+    }
+
+
+    public static function getIcon()
+    {
+        return "fas fa-microchip";
+    }
 }

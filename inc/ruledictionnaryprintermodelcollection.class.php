@@ -30,15 +30,17 @@
  * ---------------------------------------------------------------------
  */
 
-class RuleDictionnaryPrinterModelCollection extends RuleDictionnaryDropdownCollection {
-   public $item_table  = "glpi_printermodels";
-   public $menu_option = "model.printer";
+class RuleDictionnaryPrinterModelCollection extends RuleDictionnaryDropdownCollection
+{
+    public $item_table  = "glpi_printermodels";
+    public $menu_option = "model.printer";
 
-   /**
-    * @see RuleCollection::getTitle()
-   **/
-   function getTitle() {
-      return __('Dictionnary of printer models');
-   }
+    /**
+     * @see RuleCollection::getTitle()
+    **/
+    public function getTitle()
+    {
+        return __('Dictionnary of printer models');
+    }
 
 }

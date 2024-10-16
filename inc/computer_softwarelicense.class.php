@@ -31,41 +31,45 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * Manage link beetween computer and software licenses.
  * @deprecated 9.5.0 Use Item_SoftwareLicense
  */
-class Computer_SoftwareLicense extends Item_SoftwareLicense {
+class Computer_SoftwareLicense extends Item_SoftwareLicense
+{
+    public static function getTable($classname = null)
+    {
+        return Item_SoftwareLicense::getTable();
+    }
 
-   static function getTable($classname = null) {
-      return Item_SoftwareLicense::getTable();
-   }
+    public function prepareInputForAdd($input)
+    {
+        //Copy input to match new format
+        $input['itemtype'] = 'Computer';
+        if (isset($input['computers_id'])) {
+            $input['items_id'] = $input['computers_id'];
+        }
+        parent::prepareInputForAdd($input);
+    }
 
-   public function prepareInputForAdd($input) {
-      //Copy input to match new format
-      $input['itemtype'] = 'Computer';
-      if (isset($input['computers_id'])) {
-         $input['items_id'] = $input['computers_id'];
-      }
-      parent::prepareInputForAdd($input);
-   }
+    public function prepareInputForUpdate($input)
+    {
+        //Copy input to match new format
+        $input['itemtype'] = 'Computer';
+        if (isset($input['computers_id'])) {
+            $input['items_id'] = $input['computers_id'];
+        }
+        parent::prepareInputForUpdate($input);
+    }
 
-   public function prepareInputForUpdate($input) {
-      //Copy input to match new format
-      $input['itemtype'] = 'Computer';
-      if (isset($input['computers_id'])) {
-         $input['items_id'] = $input['computers_id'];
-      }
-      parent::prepareInputForUpdate($input);
-   }
-
-   public function post_getFromDB() {
-      //Copy fields to match new format
-      $this->fields['itemtype'] = 'Computer';
-      $this->fields['computers_id'] = $this->fields['items_id'];
-      parent::post_getFromDB();
-   }
+    public function post_getFromDB()
+    {
+        //Copy fields to match new format
+        $this->fields['itemtype'] = 'Computer';
+        $this->fields['computers_id'] = $this->fields['items_id'];
+        parent::post_getFromDB();
+    }
 }

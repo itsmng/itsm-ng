@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
@@ -39,22 +39,25 @@ if (!defined('GLPI_ROOT')) {
  *
  * since version 9.5.0
 **/
-class ProblemTemplate extends ITILTemplate {
-   use Glpi\Features\Clonable;
+class ProblemTemplate extends ITILTemplate
+{
+    use Glpi\Features\Clonable;
 
-   public $second_level_menu         = "problem";
-   public $third_level_menu          = "ProblemTemplate";
+    public $second_level_menu         = "problem";
+    public $third_level_menu          = "ProblemTemplate";
 
-   static function getTypeName($nb = 0) {
-      return _n('Problem template', 'Problem templates', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Problem template', 'Problem templates', $nb);
+    }
 
-   public function getCloneRelations() :array {
-      return [
-         ProblemTemplateHiddenField::class,
-         ProblemTemplateMandatoryField::class,
-         ProblemTemplatePredefinedField::class,
-      ];
-   }
+    public function getCloneRelations(): array
+    {
+        return [
+           ProblemTemplateHiddenField::class,
+           ProblemTemplateMandatoryField::class,
+           ProblemTemplatePredefinedField::class,
+        ];
+    }
 
 }

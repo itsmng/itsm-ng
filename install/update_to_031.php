@@ -31,73 +31,74 @@
  */
 
 ///update the database to the 0.31 version
-function updateDbTo031() {
-   global $DB;
+function updateDbTo031()
+{
+    global $DB;
 
-   //amSize ramSize
-   $query = "ALTER TABLE `users`
+    //amSize ramSize
+    $query = "ALTER TABLE `users`
              DROP `can_assign_job`";
-   $DB->queryOrDie($query);
+    $DB->queryOrDie($query);
 
-   $query = "ALTER TABLE `users`
+    $query = "ALTER TABLE `users`
              ADD `can_assign_job enum('yes','no')` NOT NULL DEFAULT 'no'";
-   $DB->queryOrDie($query);
+    $DB->queryOrDie($query);
 
-   $query = "UPDATE `users`
+    $query = "UPDATE `users`
              SET `can_assign_job` = 'yes'
              WHERE `type` = 'admin'";
-   $DB->queryOrDie($query);
+    $DB->queryOrDie($query);
 
-   echo "<p class='center'>Version 0.2 & < </p>";
+    echo "<p class='center'>Version 0.2 & < </p>";
 
-   //Version 0.21 ajout du champ ramSize a la table printers si non existant.
+    //Version 0.21 ajout du champ ramSize a la table printers si non existant.
 
-   if (!$DB->fieldExists("printers", "ramSize", false)) {
-      $query = "ALTER TABLE `printers`
+    if (!$DB->fieldExists("printers", "ramSize", false)) {
+        $query = "ALTER TABLE `printers`
                 ADD `ramSize` varchar(6) NOT NULL default ''";
-      $DB->queryOrDie($query);
-   }
+        $DB->queryOrDie($query);
+    }
 
-   echo "<p class='center'>Version 0.21  </p>";
+    echo "<p class='center'>Version 0.21  </p>";
 
-   //Version 0.3
-   //Ajout de NOT NULL et des valeurs par defaut.
+    //Version 0.3
+    //Ajout de NOT NULL et des valeurs par defaut.
 
-   $query = "ALTER TABLE `computers`
+    $query = "ALTER TABLE `computers`
              MODIFY `achat_date` `date` NOT NULL default '0000-00-00'";
-   $DB->queryOrDie($query);
-   $query = "ALTER TABLE `computers`
+    $DB->queryOrDie($query);
+    $query = "ALTER TABLE `computers`
              MODIFY `date_fin_garantie` `date` NOT NULL default '0000-00-00'";
 
-   $query = "ALTER TABLE `monitors`
+    $query = "ALTER TABLE `monitors`
              MODIFY `achat_date` `date` NOT NULL default '0000-00-00'";
-   $DB->queryOrDie($query);
-   $query = "ALTER TABLE `monitors`
+    $DB->queryOrDie($query);
+    $query = "ALTER TABLE `monitors`
              MODIFY `date_fin_garantie` `date` NOT NULL default '0000-00-00'";
 
-   $query = "ALTER TABLE `networking`
+    $query = "ALTER TABLE `networking`
              MODIFY `achat_date` `date` NOT NULL default '0000-00-00'";
-   $DB->queryOrDie($query);
-   $query = "ALTER TABLE `networking`
+    $DB->queryOrDie($query);
+    $query = "ALTER TABLE `networking`
              MODIFY `date_fin_garantie` `date` NOT NULL default '0000-00-00'";
 
-   $query = "ALTER TABLE `printers`
+    $query = "ALTER TABLE `printers`
              MODIFY `achat_date` `date` NOT NULL default '0000-00-00'";
-   $DB->queryOrDie($query);
-   $query = "ALTER TABLE `printers`
+    $DB->queryOrDie($query);
+    $query = "ALTER TABLE `printers`
              MODIFY `date_fin_garantie` `date` NOT NULL default '0000-00-00'";
 
-   $query = "ALTER TABLE `templates`
+    $query = "ALTER TABLE `templates`
              MODIFY `achat_date` `date` NOT NULL default '0000-00-00'";
-   $DB->queryOrDie($query);
-   $query = "ALTER TABLE `templates`
+    $DB->queryOrDie($query);
+    $query = "ALTER TABLE `templates`
              MODIFY `date_fin_garantie` `date` NOT NULL default '0000-00-00'";
 
-   echo "<p class='center'>Version 0.3  </p>";
+    echo "<p class='center'>Version 0.3  </p>";
 
-   // Before 0.31
-   if (!$DB->tableExists("glpi_config") && !$DB->tableExists("glpi_configs")) {
-      $query = "CREATE TABLE `glpi_config` (
+    // Before 0.31
+    if (!$DB->tableExists("glpi_config") && !$DB->tableExists("glpi_configs")) {
+        $query = "CREATE TABLE `glpi_config` (
                   `ID` int(11) NOT NULL auto_increment,
                   `num_of_events` varchar(200) NOT NULL default '',
                   `jobs_at_login` varchar(200) NOT NULL default '',
@@ -140,15 +141,15 @@ function updateDbTo031() {
                   `ldap_field_phone` varchar(200) NOT NULL default '',
                PRIMARY KEY (`ID`)
                ) TYPE=MyISAM AUTO_INCREMENT=2 ";
-      $DB->queryOrDie($query);
+        $DB->queryOrDie($query);
 
-      $query = "INSERT INTO `glpi_config`
+        $query = "INSERT INTO `glpi_config`
                VALUES (1, '10', '1', '1', '80', '30', '15', ' 0.31', 'GLPI powered by indepnet',
                         '/glpi', '5', '0', '', '', '', '', '', '', 'admsys@xxxxx.fr', 'SIGNATURE',
                         '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0','1', '1', '1',
                         'uid', 'mail', 'physicaldeliveryofficename', 'cn', 'telephonenumber')";
-      $DB->queryOrDie($query);
+        $DB->queryOrDie($query);
 
-      echo "<p class='center'>Version > 0.31  </p>";
-   }
+        echo "<p class='center'>Version > 0.31  </p>";
+    }
 }

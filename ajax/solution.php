@@ -32,21 +32,21 @@
 
 $AJAX_INCLUDE = 1;
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkLoginUser();
 
 if (isset($_POST['value']) && ($_POST['value'] > 0)) {
-   $template = new SolutionTemplate();
+    $template = new SolutionTemplate();
 
-   if ($template->getFromDB($_POST['value'])) {
-      $fields = $template->fields;
-      $fields['content'] = htmlspecialchars_decode($fields['content']);
-      echo json_encode($fields);
-   }
+    if ($template->getFromDB($_POST['value'])) {
+        $fields = $template->fields;
+        $fields['content'] = htmlspecialchars_decode($fields['content']);
+        echo json_encode($fields);
+    }
 
 } else {
-      echo json_encode([]);
+    echo json_encode([]);
 }

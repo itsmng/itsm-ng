@@ -35,19 +35,20 @@
  *
  * @return bool for success (will die for most error)
  **/
-function update101to110() {
-   /** @global Migration $migration */
-   global $DB, $migration;
+function update101to110()
+{
+    /** @global Migration $migration */
+    global $DB, $migration;
 
-   $updateresult     = true;
+    $updateresult     = true;
 
-   $migration->displayTitle(sprintf(__('Update to %s'), '1.1.0'));
-   $migration->setVersion('1.1.0');
+    $migration->displayTitle(sprintf(__('Update to %s'), '1.1.0'));
+    $migration->setVersion('1.1.0');
 
 
-   /** Create new table for Open ID connect's config */
-   if (!$DB->tableExists("glpi_oidc_config")) {
-    $config = "CREATE TABLE `glpi_oidc_config` (
+    /** Create new table for Open ID connect's config */
+    if (!$DB->tableExists("glpi_oidc_config")) {
+        $config = "CREATE TABLE `glpi_oidc_config` (
         `id` INT(11) NOT NULL DEFAULT 0,
         `Provider` varchar(255) DEFAULT NULL,
         `ClientID` varchar(255) DEFAULT NULL,
@@ -67,9 +68,9 @@ function update101to110() {
     // Update or insert OIDC config
     $DB->updateOrInsert("glpi_oidc_config", $oidc_config, ['id' => 0]);
 
-   /** /Create new table for Open ID connect's config */
+    /** /Create new table for Open ID connect's config */
 
-   // ************ Keep it at the end **************
-   $migration->executeMigration();
-   return $updateresult;
+    // ************ Keep it at the end **************
+    $migration->executeMigration();
+    return $updateresult;
 }

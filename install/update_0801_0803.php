@@ -35,25 +35,30 @@
  *
  * @return bool for success (will die for most error)
 **/
-function update0801to0803() {
-   global $migration;
+function update0801to0803()
+{
+    global $migration;
 
-   $updateresult     = true;
-   $ADDTODISPLAYPREF = [];
+    $updateresult     = true;
+    $ADDTODISPLAYPREF = [];
 
-   //TRANS: %s is the number of new version
-   $migration->displayTitle(sprintf(__('Update to %s'), '0.80.3'));
-   $migration->setVersion('0.80.3');
+    //TRANS: %s is the number of new version
+    $migration->displayTitle(sprintf(__('Update to %s'), '0.80.3'));
+    $migration->setVersion('0.80.3');
 
-   $migration->changeField("glpi_fieldunicities", 'fields', 'fields', "text");
+    $migration->changeField("glpi_fieldunicities", 'fields', 'fields', "text");
 
-   $migration->dropKey('glpi_ocslinks', 'unicity');
-   $migration->migrationOneTable('glpi_ocslinks');
-   $migration->addKey("glpi_ocslinks", ['ocsid', 'ocsservers_id'],
-                        "unicity", "UNIQUE");
+    $migration->dropKey('glpi_ocslinks', 'unicity');
+    $migration->migrationOneTable('glpi_ocslinks');
+    $migration->addKey(
+        "glpi_ocslinks",
+        ['ocsid', 'ocsservers_id'],
+        "unicity",
+        "UNIQUE"
+    );
 
-   // must always be at the end
-   $migration->executeMigration();
+    // must always be at the end
+    $migration->executeMigration();
 
-   return $updateresult;
+    return $updateresult;
 }

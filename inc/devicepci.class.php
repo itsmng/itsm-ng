@@ -31,54 +31,56 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * DevicePci Class
 **/
-class DevicePci extends CommonDevice {
+class DevicePci extends CommonDevice
+{
+    protected static $forward_entity_to = ['Item_DevicePci', 'Infocom'];
 
-   static protected $forward_entity_to = ['Item_DevicePci', 'Infocom'];
+    public static function getTypeName($nb = 0)
+    {
+        return _n('PCI device', 'PCI devices', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('PCI device', 'PCI devices', $nb);
-   }
-   
-   
-   /**
-    * @see CommonDevice::getAdditionalFields()
-    * @since 0.85
-    */
-    function getAdditionalFields() {
-       
-       return array_merge(
-          parent::getAdditionalFields(),
-          [
-             _n('Model', 'Models', 1) => [
-               'name'  => 'devicepcimodels_id',
-               'type'  => 'select',
-               'values' => getOptionForItems('DevicePciModel'),
-               'value' => $this->fields['devicepcimodels_id'],
-               'actions' => getItemActionButtons(['info', 'add'], 'DevicePciModel'),
-               'col_lg' => 8,
-            ],
-            RegisteredID::getTypeName(Session::getPluralNumber()) => [
-               'name'  => 'none',
-               'type'  => 'multiSelect',
-               'inputs' => [
-                  [
-                     'name' => 'current_registeredID_type',
-                     'type' => 'select',
-                     'values' => array_merge([ Dropdown::EMPTY_VALUE ], RegisteredID::getRegisteredIDTypes()),
-                  ],
-                  [
-                     'name' => 'current_registeredID',
-                     'type' => 'text',
-                     'size' => 30,
-                  ],
-               ],
-               'getInputAdd' => <<<JS
+
+    /**
+     * @see CommonDevice::getAdditionalFields()
+     * @since 0.85
+     */
+    public function getAdditionalFields()
+    {
+
+        return array_merge(
+            parent::getAdditionalFields(),
+            [
+              _n('Model', 'Models', 1) => [
+                'name'  => 'devicepcimodels_id',
+                'type'  => 'select',
+                'values' => getOptionForItems('DevicePciModel'),
+                'value' => $this->fields['devicepcimodels_id'],
+                'actions' => getItemActionButtons(['info', 'add'], 'DevicePciModel'),
+                'col_lg' => 8,
+             ],
+             RegisteredID::getTypeName(Session::getPluralNumber()) => [
+                'name'  => 'none',
+                'type'  => 'multiSelect',
+                'inputs' => [
+                   [
+                      'name' => 'current_registeredID_type',
+                      'type' => 'select',
+                      'values' => array_merge([ Dropdown::EMPTY_VALUE ], RegisteredID::getRegisteredIDTypes()),
+                   ],
+                   [
+                      'name' => 'current_registeredID',
+                      'type' => 'text',
+                      'size' => 30,
+                   ],
+                ],
+                'getInputAdd' => <<<JS
                   function () {
                      if (!$('input[name="current_registeredID"]').val()) {
                         return;
@@ -91,52 +93,55 @@ class DevicePci extends CommonDevice {
                      return {values, title};
                   }
                JS,
-               'values' => getOptionsWithNameForItem('RegisteredID',
-                  ['itemtype' => $this::class, 'items_id' => $this->getID()],
-                  ['_registeredID_type' => 'device_type', '_registeredID' => 'name']
-               ),
-               'col_lg' => 12,
-               'col_md' => 12,
-            ],
+                'values' => getOptionsWithNameForItem(
+                    'RegisteredID',
+                    ['itemtype' => $this::class, 'items_id' => $this->getID()],
+                    ['_registeredID_type' => 'device_type', '_registeredID' => 'name']
+                ),
+                'col_lg' => 12,
+                'col_md' => 12,
+             ],
          ]
-      );
-   }
+        );
+    }
 
-   function rawSearchOptions() {
+    public function rawSearchOptions()
+    {
 
-      $tab                 = parent::rawSearchOptions();
+        $tab                 = parent::rawSearchOptions();
 
-      $tab[] = [
-         'id'                 => '17',
-         'table'              => 'glpi_devicepcimodels',
-         'field'              => 'name',
-         'name'               => _n('Model', 'Models', 1),
-         'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+           'id'                 => '17',
+           'table'              => 'glpi_devicepcimodels',
+           'field'              => 'name',
+           'name'               => _n('Model', 'Models', 1),
+           'datatype'           => 'dropdown'
+        ];
 
-      return $tab;
-   }
+        return $tab;
+    }
 
-   public static function rawSearchOptionsToAdd($itemtype, $main_joinparams) {
-      $tab = [];
+    public static function rawSearchOptionsToAdd($itemtype, $main_joinparams)
+    {
+        $tab = [];
 
-      $tab[] = [
-         'id'                 => '95',
-         'table'              => 'glpi_devicepcis',
-         'field'              => 'designation',
-         'name'               => __('Other component'),
-         'forcegroupby'       => true,
-         'usehaving'          => true,
-         'massiveaction'      => false,
-         'datatype'           => 'string',
-         'joinparams'         => [
-            'beforejoin'         => [
-               'table'              => 'glpi_items_devicepcis',
-               'joinparams'         => $main_joinparams
-            ]
-         ]
-      ];
+        $tab[] = [
+           'id'                 => '95',
+           'table'              => 'glpi_devicepcis',
+           'field'              => 'designation',
+           'name'               => __('Other component'),
+           'forcegroupby'       => true,
+           'usehaving'          => true,
+           'massiveaction'      => false,
+           'datatype'           => 'string',
+           'joinparams'         => [
+              'beforejoin'         => [
+                 'table'              => 'glpi_items_devicepcis',
+                 'joinparams'         => $main_joinparams
+              ]
+           ]
+        ];
 
-      return $tab;
-   }
+        return $tab;
+    }
 }

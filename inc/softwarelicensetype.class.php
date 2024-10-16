@@ -31,33 +31,36 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class SoftwareLicenseType
-class SoftwareLicenseType extends CommonTreeDropdown {
+class SoftwareLicenseType extends CommonTreeDropdown
+{
+    public $can_be_translated       = true;
 
-   public $can_be_translated       = true;
+    public function getAdditionalFields()
+    {
 
-   function getAdditionalFields() {
-
-      return [
-         __('As child of') => [
-            'name'  => $this->getForeignKeyField(),
-            'type'  => 'select',
-            'values' => getOptionForItems('SoftwareLicenseType', ['NOT' => ['id' => $this->getID()]]),
-            'value' => $this->fields[$this->getForeignKeyField()]
-         ]
-      ];
-   }
+        return [
+           __('As child of') => [
+              'name'  => $this->getForeignKeyField(),
+              'type'  => 'select',
+              'values' => getOptionForItems('SoftwareLicenseType', ['NOT' => ['id' => $this->getID()]]),
+              'value' => $this->fields[$this->getForeignKeyField()]
+           ]
+        ];
+    }
 
 
-   static function getTypeName($nb = 0) {
-      return _n('License type', 'License types', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('License type', 'License types', $nb);
+    }
 
-   static function getFieldLabel() {
-      return _n('Type', 'Types', 1);
-   }
+    public static function getFieldLabel()
+    {
+        return _n('Type', 'Types', 1);
+    }
 
 }

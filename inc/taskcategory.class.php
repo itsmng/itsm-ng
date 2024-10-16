@@ -31,65 +31,68 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * TaskCategory class
 **/
-class TaskCategory extends CommonTreeDropdown {
+class TaskCategory extends CommonTreeDropdown
+{
+    // From CommonDBTM
+    public $dohistory          = true;
+    public $can_be_translated  = true;
 
-   // From CommonDBTM
-   public $dohistory          = true;
-   public $can_be_translated  = true;
+    public static $rightname          = 'taskcategory';
 
-   static $rightname          = 'taskcategory';
+    public function getAdditionalFields()
+    {
 
-   function getAdditionalFields() {
+        $tab = parent::getAdditionalFields();
 
-      $tab = parent::getAdditionalFields();
+        $tab[__('As child of')] = [
+           'name'  => 'taskcategories_id',
+           'type'  => 'select',
+           'values' => getOptionForItems('TaskCategory', ['NOT' => ['id' => $this->getID()]]),
+           'value' => $this->fields['taskcategories_id']
+        ];
 
-      $tab[__('As child of')] = [
-         'name'  => 'taskcategories_id',
-         'type'  => 'select',
-         'values' => getOptionForItems('TaskCategory', ['NOT' => ['id' => $this->getID()]]),
-         'value' => $this->fields['taskcategories_id']
-      ];
+        $tab[__('Active')] = [
+           'name'  => 'is_active',
+           'type'  => 'checkbox',
+           'value' => $this->fields['is_active']
+        ];
 
-      $tab[__('Active')] = [
-         'name'  => 'is_active',
-         'type'  => 'checkbox',
-         'value' => $this->fields['is_active']
-      ];
+        $tab[KnowbaseItemCategory::getTypeName()] = [
+           'name'  => 'knowbaseitemcategories_id',
+           'type'  => 'select',
+           'values' => getOptionForItems('KnowbaseItemCategory'),
+           'value' => $this->fields['knowbaseitemcategories_id']
+        ];
 
-      $tab[KnowbaseItemCategory::getTypeName()] = [
-         'name'  => 'knowbaseitemcategories_id',
-         'type'  => 'select',
-         'values' => getOptionForItems('KnowbaseItemCategory'),
-         'value' => $this->fields['knowbaseitemcategories_id']
-      ];
-
-      return $tab;
-   }
-
-
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
-
-      $tab[] = [
-         'id'                 => '8',
-         'table'              => $this->getTable(),
-         'field'              => 'is_active',
-         'name'               => __('Active'),
-         'datatype'           => 'bool'
-      ];
-
-      return $tab;
-   }
+        return $tab;
+    }
 
 
-   static function getTypeName($nb = 0) {
-      return _n('Task category', 'Task categories', $nb);
-   }
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
+
+        $tab[] = [
+           'id'                 => '8',
+           'table'              => $this->getTable(),
+           'field'              => 'is_active',
+           'name'               => __('Active'),
+           'datatype'           => 'bool'
+        ];
+
+        return $tab;
+    }
+
+
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Task category', 'Task categories', $nb);
+    }
 
 }

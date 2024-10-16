@@ -35,7 +35,8 @@
  *
  * @return bool for success (will die for most error)
  **/
-function update120to130() {
+function update120to130()
+{
     /** @global Migration $migration */
     global $DB, $migration;
 
@@ -94,12 +95,12 @@ function update120to130() {
         $DB->queryOrDie($config, "erreur lors de la création de la table de configuration ".$DB->error());
     }
 
-     // Add default notifications_chat in config
-     if (!isset($current_config['notifications_chat'])) {
+    // Add default notifications_chat in config
+    if (!isset($current_config['notifications_chat'])) {
         $migration->addConfig([
             'notifications_chat' => '0',
         ]);
-     }
+    }
 
     /** Create new table for Open ID connect's config */
     if (!$DB->tableExists("glpi_queuednotifications")) {
@@ -141,28 +142,28 @@ function update120to130() {
     }
 
     // Update OIDC config table
-    if(!$DB->fieldExists('glpi_oidc_config', 'scope')) {
+    if (!$DB->fieldExists('glpi_oidc_config', 'scope')) {
         $config = "ALTER TABLE `glpi_oidc_config` ADD COLUMN `scope` varchar(255) DEFAULT NULL";
         $DB->queryOrDie($config, "erreur lors de la mise a jour de la table de configuration oidc".$DB->error());
     }
 
     // Update users table to add accessibility columns
-    if(!$DB->fieldExists('glpi_users', 'access_zoom_level')) {
+    if (!$DB->fieldExists('glpi_users', 'access_zoom_level')) {
         $users = "ALTER TABLE `glpi_users` ADD COLUMN `access_zoom_level` smallint(1) DEFAULT 100";
         $DB->queryOrDie($users, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
     }
 
-    if(!$DB->fieldExists('glpi_users', 'access_font')) {
+    if (!$DB->fieldExists('glpi_users', 'access_font')) {
         $users = "ALTER TABLE `glpi_users` ADD COLUMN `access_font` varchar(100) DEFAULT NULL";
         $DB->queryOrDie($users, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
     }
 
-    if(!$DB->fieldExists('glpi_users', 'access_shortcuts')) {
+    if (!$DB->fieldExists('glpi_users', 'access_shortcuts')) {
         $users = "ALTER TABLE `glpi_users` ADD COLUMN `access_shortcuts` tinyint(1) DEFAULT 0";
         $DB->queryOrDie($users, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
     }
 
-    if(!$DB->fieldExists('glpi_users', 'access_custom_shortcuts')) {
+    if (!$DB->fieldExists('glpi_users', 'access_custom_shortcuts')) {
         $users = "ALTER TABLE `glpi_users` ADD COLUMN `access_custom_shortcuts` JSON DEFAULT NULL";
         $DB->queryOrDie($users, "erreur lors de la mise a jour de la table de glpi_users".$DB->error());
     }

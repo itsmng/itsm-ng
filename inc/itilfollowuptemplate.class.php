@@ -31,77 +31,80 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * Template for followups
  * @since 9.5
 **/
-class ITILFollowupTemplate extends CommonDropdown {
-
-   // From CommonDBTM
-   public $dohistory          = true;
-   public $can_be_translated  = true;
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Followup template', 'Followup templates', $nb);
-   }
+class ITILFollowupTemplate extends CommonDropdown
+{
+    // From CommonDBTM
+    public $dohistory          = true;
+    public $can_be_translated  = true;
 
 
-   function getAdditionalFields() {
-      return [
-         __('Content') => [
-            'name'  => 'content',
-            'type'  => 'richtextarea',
-            'value' => $this->fields['content'],
-            'col_lg' => 12,
-            'col_md' => 12,
-         ],
-         __('Source of followup') => [
-            'name'  => 'requesttypes_id',
-            'type'  => 'select',
-            'values' => getOptionForItems('RequestType'),
-            'value' => $this->fields['requesttypes_id']
-         ],
-         __('Private') => [
-            'name'  => 'is_private',
-            'type'  => 'checkbox',
-            'value' => $this->fields['is_private']
-         ]
-      ];
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Followup template', 'Followup templates', $nb);
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    public function getAdditionalFields()
+    {
+        return [
+           __('Content') => [
+              'name'  => 'content',
+              'type'  => 'richtextarea',
+              'value' => $this->fields['content'],
+              'col_lg' => 12,
+              'col_md' => 12,
+           ],
+           __('Source of followup') => [
+              'name'  => 'requesttypes_id',
+              'type'  => 'select',
+              'values' => getOptionForItems('RequestType'),
+              'value' => $this->fields['requesttypes_id']
+           ],
+           __('Private') => [
+              'name'  => 'is_private',
+              'type'  => 'checkbox',
+              'value' => $this->fields['is_private']
+           ]
+        ];
+    }
 
-      $tab[] = [
-         'id'                 => '4',
-         'name'               => __('Content'),
-         'field'              => 'content',
-         'table'              => self::getTable(),
-         'datatype'           => 'text',
-         'htmltext'           => true
-      ];
 
-      $tab[] = [
-         'id'                 => '5',
-         'name'               => __('Source of followup'),
-         'field'              => 'name',
-         'table'              => getTableForItemType('RequestType'),
-         'datatype'           => 'dropdown'
-      ];
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
 
-      $tab[] = [
-         'id'                 => '6',
-         'name'               => __('Private'),
-         'field'              => 'is_private',
-         'table'              => self::getTable(),
-         'datatype'           => 'bool'
-      ];
+        $tab[] = [
+           'id'                 => '4',
+           'name'               => __('Content'),
+           'field'              => 'content',
+           'table'              => self::getTable(),
+           'datatype'           => 'text',
+           'htmltext'           => true
+        ];
 
-      return $tab;
-   }
+        $tab[] = [
+           'id'                 => '5',
+           'name'               => __('Source of followup'),
+           'field'              => 'name',
+           'table'              => getTableForItemType('RequestType'),
+           'datatype'           => 'dropdown'
+        ];
+
+        $tab[] = [
+           'id'                 => '6',
+           'name'               => __('Private'),
+           'field'              => 'is_private',
+           'table'              => self::getTable(),
+           'datatype'           => 'bool'
+        ];
+
+        return $tab;
+    }
 }

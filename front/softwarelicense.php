@@ -30,13 +30,16 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRight("license", READ);
 
-Html::header(SoftwareLicense::getTypeName(Session::getPluralNumber()),
-                                          $_SERVER['PHP_SELF'],
-                                          "management", "softwarelicense");
+Html::header(
+    SoftwareLicense::getTypeName(Session::getPluralNumber()),
+    $_SERVER['PHP_SELF'],
+    "management",
+    "softwarelicense"
+);
 
 Search::show('SoftwareLicense');
 

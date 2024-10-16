@@ -30,42 +30,44 @@
  * ---------------------------------------------------------------------
  */
 
-class RuleDictionnaryOperatingSystem extends RuleDictionnaryDropdown {
+class RuleDictionnaryOperatingSystem extends RuleDictionnaryDropdown
+{
+    /**
+     * Constructor
+    **/
+    public function __construct()
+    {
+        parent::__construct('RuleDictionnaryOperatingSystem');
+    }
 
 
-   /**
-    * Constructor
-   **/
-   function __construct() {
-      parent::__construct('RuleDictionnaryOperatingSystem');
-   }
+    public function getCriterias()
+    {
+
+        static $criterias = [];
+
+        if (count($criterias)) {
+            return $criterias;
+        }
+
+        $criterias['name']['field'] = 'name';
+        $criterias['name']['name']  = OperatingSystem::getTypeName(1);
+        $criterias['name']['table'] = 'glpi_operatingsystems';
+        return $criterias;
+    }
 
 
-   function getCriterias() {
+    /**
+     * @see Rule::getActions()
+    **/
+    public function getActions()
+    {
 
-      static $criterias = [];
+        $actions                          = [];
+        $actions['name']['name']          = OperatingSystem::getTypeName(1);
+        $actions['name']['force_actions'] = ['append_regex_result', 'assign', 'regex_result'];
 
-      if (count($criterias)) {
-         return $criterias;
-      }
-
-      $criterias['name']['field'] = 'name';
-      $criterias['name']['name']  = OperatingSystem::getTypeName(1);
-      $criterias['name']['table'] = 'glpi_operatingsystems';
-      return $criterias;
-   }
-
-
-   /**
-    * @see Rule::getActions()
-   **/
-   function getActions() {
-
-      $actions                          = [];
-      $actions['name']['name']          = OperatingSystem::getTypeName(1);
-      $actions['name']['force_actions'] = ['append_regex_result', 'assign', 'regex_result'];
-
-      return $actions;
-   }
+        return $actions;
+    }
 
 }

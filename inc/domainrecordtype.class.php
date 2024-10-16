@@ -31,69 +31,71 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 class DomainRecordType extends CommonDropdown
 {
-   static $rightname = 'dropdown';
+    public static $rightname = 'dropdown';
 
-   static public $knowtypes = [
-      [
-         'id'        => 1,
-         'name'      => 'A',
-         'comment'   => 'Host address'
-      ], [
-         'id'        => 2,
-         'name'      => 'AAAA',
-         'comment'   => 'IPv6 host address'
-      ], [
-         'id'        => 3,
-         'name'      => 'ALIAS',
-         'comment'   => 'Auto resolved alias'
-      ], [
-         'id'        => 4,
-         'name'      => 'CNAME',
-         'comment'   => 'Canonical name for an alias',
-      ], [
-         'id'        => 5,
-         'name'      => 'MX',
-         'comment'   => 'Mail eXchange'
-      ], [
-         'id'        => 6,
-         'name'      => 'NS',
-         'comment'   => 'Name Server'
-      ], [
-         'id'        => 7,
-         'name'      => 'PTR',
-         'comment'   => 'Pointer'
-      ], [
-         'id'        => 8,
-         'name'      => 'SOA',
-         'comment'   => 'Start Of Authority',
-      ], [
-         'id'        => 9,
-         'name'      => 'SRV',
-         'comment'   => 'Location of service'
-      ], [
-         'id'        => 10,
-         'name'      => 'TXT',
-      'comment'    => 'Descriptive text'
-      ]
-   ];
+    public static $knowtypes = [
+       [
+          'id'        => 1,
+          'name'      => 'A',
+          'comment'   => 'Host address'
+       ], [
+          'id'        => 2,
+          'name'      => 'AAAA',
+          'comment'   => 'IPv6 host address'
+       ], [
+          'id'        => 3,
+          'name'      => 'ALIAS',
+          'comment'   => 'Auto resolved alias'
+       ], [
+          'id'        => 4,
+          'name'      => 'CNAME',
+          'comment'   => 'Canonical name for an alias',
+       ], [
+          'id'        => 5,
+          'name'      => 'MX',
+          'comment'   => 'Mail eXchange'
+       ], [
+          'id'        => 6,
+          'name'      => 'NS',
+          'comment'   => 'Name Server'
+       ], [
+          'id'        => 7,
+          'name'      => 'PTR',
+          'comment'   => 'Pointer'
+       ], [
+          'id'        => 8,
+          'name'      => 'SOA',
+          'comment'   => 'Start Of Authority',
+       ], [
+          'id'        => 9,
+          'name'      => 'SRV',
+          'comment'   => 'Location of service'
+       ], [
+          'id'        => 10,
+          'name'      => 'TXT',
+       'comment'    => 'Descriptive text'
+       ]
+    ];
 
-   static function getTypeName($nb = 0) {
-      return _n('Record type', 'Records types', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Record type', 'Records types', $nb);
+    }
 
-   public static function getDefaults() {
-      return array_map(
-         function($e) {
-            $e['is_recursive'] = 1;
-            return $e;
-         },
-         self::$knowtypes
-      );
-   }
+    public static function getDefaults()
+    {
+        return array_map(
+            function ($e) {
+                $e['is_recursive'] = 1;
+                return $e;
+            },
+            self::$knowtypes
+        );
+    }
 
 }

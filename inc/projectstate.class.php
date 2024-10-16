@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -39,55 +39,58 @@ if (!defined('GLPI_ROOT')) {
  *
  * @since 0.85
 **/
-class ProjectState extends CommonDropdown {
+class ProjectState extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Project state', 'Project states', $nb);
+    }
 
 
-   static function getTypeName($nb = 0) {
-      return _n('Project state', 'Project states', $nb);
-   }
+    public function post_getEmpty()
+    {
+        $this->fields['color'] = '#dddddd';
+    }
 
 
-   function post_getEmpty() {
-      $this->fields['color'] = '#dddddd';
-   }
+    public function getAdditionalFields()
+    {
+
+        return [
+           __('Color') => [
+              'name'     => 'color',
+              'type'     => 'color',
+              'value' => $this->fields['color'],
+           ],
+           __('Finished state') => [
+              'name'     => 'is_finished',
+              'type'     => 'checkbox',
+              'value' => $this->fields['is_finished'],
+           ],
+        ];
+    }
 
 
-   function getAdditionalFields() {
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
 
-      return [
-         __('Color') => [
-            'name'     => 'color',
-            'type'     => 'color',
-            'value' => $this->fields['color'],
-         ],
-         __('Finished state') => [
-            'name'     => 'is_finished',
-            'type'     => 'checkbox',
-            'value' => $this->fields['is_finished'],
-         ],
-      ];
-   }
+        $tab[] = [
+           'id'                 => '11',
+           'table'              => $this->getTable(),
+           'field'              => 'color',
+           'name'               => __('Color'),
+           'datatype'           => 'color'
+        ];
 
+        $tab[] = [
+           'id'                 => '12',
+           'table'              => $this->getTable(),
+           'field'              => 'is_finished',
+           'name'               => __('Finished state'),
+           'datatype'           => 'bool'
+        ];
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
-
-      $tab[] = [
-         'id'                 => '11',
-         'table'              => $this->getTable(),
-         'field'              => 'color',
-         'name'               => __('Color'),
-         'datatype'           => 'color'
-      ];
-
-      $tab[] = [
-         'id'                 => '12',
-         'table'              => $this->getTable(),
-         'field'              => 'is_finished',
-         'name'               => __('Finished state'),
-         'datatype'           => 'bool'
-      ];
-
-      return $tab;
-   }
+        return $tab;
+    }
 }

@@ -34,7 +34,7 @@
 use Glpi\Event;
 
 if (!defined('GLPI_ROOT')) {
-    include ('../inc/includes.php');
+    include('../inc/includes.php');
 }
 
 $user = new User();
@@ -48,13 +48,18 @@ if (isset($_POST["update"])) {
         $shortcuts[$K] = $V;
     }
 
-    $shortcuts = str_ireplace( array( '\'', '"', '\\'), '', $shortcuts);
+    $shortcuts = str_ireplace(array( '\'', '"', '\\'), '', $shortcuts);
     $_POST["access_custom_shortcuts"] = json_encode($shortcuts);
     $user->update($_POST);
 
-    Event::log($_POST["id"], "users", 5, "setup",
+    Event::log(
+        $_POST["id"],
+        "users",
+        5,
+        "setup",
         //TRANS: %s is the user login
-        sprintf(__('%s updates an item'), $_SESSION["glpiname"]));
+        sprintf(__('%s updates an item'), $_SESSION["glpiname"])
+    );
 
     Html::back();
 

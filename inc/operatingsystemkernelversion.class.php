@@ -31,34 +31,37 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class OperatingSystemKernelVersion extends CommonDropdown {
+class OperatingSystemKernelVersion extends CommonDropdown
+{
+    public $can_be_translated = false;
 
-   public $can_be_translated = false;
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Kernel version', 'Kernel versions', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('Kernel version', 'Kernel versions', $nb);
-   }
+    public function getAdditionalFields()
+    {
+        $fields   = parent::getAdditionalFields();
+        $fields[OperatingSystemKernel::getTypeName(1)] = [
+           'name'   => 'operatingsystemkernels_id',
+           'type'   => 'select',
+           'values' => getOptionForItems('OperatingSystemKernel'),
+           'value' => $this->fields['operatingsystemkernels_id']
+        ];
 
-   function getAdditionalFields() {
-      $fields   = parent::getAdditionalFields();
-      $fields[OperatingSystemKernel::getTypeName(1)] = [
-         'name'   => 'operatingsystemkernels_id',
-         'type'   => 'select',
-         'values' => getOptionForItems('OperatingSystemKernel'),
-         'value' => $this->fields['operatingsystemkernels_id']
-      ];
+        return $fields;
+    }
 
-      return $fields;
-   }
-
-   function displaySpecificTypeField($ID, $field = []) {
-      switch ($field['type']) {
-         case 'oskernel':
-            OperatingSystemKernel::dropdown(['value' => $this->fields['operatingsystemkernels_id']]);
-            break;
-      }
-   }
+    public function displaySpecificTypeField($ID, $field = [])
+    {
+        switch ($field['type']) {
+            case 'oskernel':
+                OperatingSystemKernel::dropdown(['value' => $this->fields['operatingsystemkernels_id']]);
+                break;
+        }
+    }
 }

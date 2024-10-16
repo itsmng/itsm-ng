@@ -33,7 +33,7 @@
 namespace Glpi\CalDAV\Node;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -41,13 +41,14 @@ if (!defined('GLPI_ROOT')) {
  *
  * @since 9.5.0
  */
-class Property {
-   const CAL_COLOR                = '{http://apple.com/ns/ical/}calendar-color';
-   const CAL_DESCRIPTION          = '{urn:ietf:params:xml:ns:caldav}calendar-description';
-   const CAL_SUPPORTED_COMPONENTS = '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set';
-   const CAL_USER_TYPE            = '{urn:ietf:params:xml:ns:caldav}calendar-user-type';
-   const DISPLAY_NAME             = '{DAV:}displayname';
-   const PRIMARY_EMAIL            = '{http://sabredav.org/ns}email-address';
-   const RESOURCE_TYPE            = '{DAV:}resourcetype';
-   const USERNAME                 = '{http://glpi-project.org/ns}username';
+class Property
+{
+    public const CAL_COLOR                = '{http://apple.com/ns/ical/}calendar-color';
+    public const CAL_DESCRIPTION          = '{urn:ietf:params:xml:ns:caldav}calendar-description';
+    public const CAL_SUPPORTED_COMPONENTS = '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set';
+    public const CAL_USER_TYPE            = '{urn:ietf:params:xml:ns:caldav}calendar-user-type';
+    public const DISPLAY_NAME             = '{DAV:}displayname';
+    public const PRIMARY_EMAIL            = '{http://sabredav.org/ns}email-address';
+    public const RESOURCE_TYPE            = '{DAV:}resourcetype';
+    public const USERNAME                 = '{http://glpi-project.org/ns}username';
 }

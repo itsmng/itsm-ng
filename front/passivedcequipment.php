@@ -30,15 +30,15 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRight("datacenter", READ);
 
 Html::header(
-   PassiveDCEquipment::getTypeName(Session::getPluralNumber()),
-   $_SERVER['PHP_SELF'],
-   "assets",
-   "passivedcequipment"
+    PassiveDCEquipment::getTypeName(Session::getPluralNumber()),
+    $_SERVER['PHP_SELF'],
+    "assets",
+    "passivedcequipment"
 );
 
 Search::show('PassiveDCEquipment');
