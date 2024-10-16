@@ -34,11 +34,11 @@
 // Extract command line arguments
 $options = [];
 if (isset($_SERVER['argv'])) {
-   for ($i = 1; $i < count($_SERVER['argv']); $i++) {
-      $chunks = explode('=', $_SERVER['argv'][$i], 2);
-      $chunks[0] = preg_replace('/^--/', '', $chunks[0]);
-      $options[$chunks[0]] = (isset($chunks[1]) ? $chunks[1] : true);
-   }
+    for ($i = 1; $i < count($_SERVER['argv']); $i++) {
+        $chunks = explode('=', $_SERVER['argv'][$i], 2);
+        $chunks[0] = preg_replace('/^--/', '', $chunks[0]);
+        $options[$chunks[0]] = (isset($chunks[1]) ? $chunks[1] : true);
+    }
 }
 
 $exit_code = 0;
@@ -46,61 +46,61 @@ $exit_code = 0;
 
 // Handle specific dependencies update command that cannot be made upon symfony console
 if (isset($_SERVER['argv']) && ['dependencies', 'install'] === array_slice($_SERVER['argv'], 1, 2)) {
-   $composer_command = 'composer install --ansi --no-interaction';
-   $npm_command = 'npm install --no-save';
+    $composer_command = 'composer install --ansi --no-interaction';
+    $npm_command = 'npm install --no-save';
 
-   if (array_key_exists('composer-options', $options) && is_string($options['composer-options'])) {
-      $composer_command .= ' ' . $options['composer-options'];
-   }
+    if (array_key_exists('composer-options', $options) && is_string($options['composer-options'])) {
+        $composer_command .= ' ' . $options['composer-options'];
+    }
 
-   chdir(dirname(__FILE__, 2));
+    chdir(dirname(__FILE__, 2));
 
-   passthru($composer_command, $exit_code);
-   if ($exit_code > 0) {
-      exit($exit_code);
-   }
+    passthru($composer_command, $exit_code);
+    if ($exit_code > 0) {
+        exit($exit_code);
+    }
 
-   passthru($npm_command, $exit_code);
-   if ($exit_code > 0) {
-      exit($exit_code);
-   }
+    passthru($npm_command, $exit_code);
+    if ($exit_code > 0) {
+        exit($exit_code);
+    }
 
-   file_put_contents('.package.hash', sha1_file('package-lock.json'));
+    file_put_contents('.package.hash', sha1_file('package-lock.json'));
 
-   passthru('npm run-script build', $exit_code);
-   exit($exit_code);
+    passthru('npm run-script build', $exit_code);
+    exit($exit_code);
 }
 
 if (isset($_SERVER['argv']) && ['locales', 'compile'] === array_slice($_SERVER['argv'], 1, 2)) {
-   chdir(dirname(__FILE__, 2));
+    chdir(dirname(__FILE__, 2));
 
-   $po_files = preg_grep('/\.po$/', scandir('./locales'));
-   foreach ($po_files as $po_file) {
-      $mo_file = preg_replace('/\.po$/', '.mo', $po_file);
-      passthru("cd ./locales && msgfmt -f -o {$mo_file} {$po_file}", $exit_code);
-      if ($exit_code > 0) {
-         exit($exit_code);
-      }
-   }
+    $po_files = preg_grep('/\.po$/', scandir('./locales'));
+    foreach ($po_files as $po_file) {
+        $mo_file = preg_replace('/\.po$/', '.mo', $po_file);
+        passthru("cd ./locales && msgfmt -f -o {$mo_file} {$po_file}", $exit_code);
+        if ($exit_code > 0) {
+            exit($exit_code);
+        }
+    }
 
-   exit($exit_code);
+    exit($exit_code);
 }
 
 // If "config-dir" option is used in command line, defines GLPI_CONFIG_DIR with its value
 if (array_key_exists('config-dir', $options)) {
-   $config_dir = $options['config-dir'];
+    $config_dir = $options['config-dir'];
 
-   if (false === $config_dir || !@is_dir($config_dir)) {
-      die(
-         sprintf(
-            '--config-dir "%s" does not exists in "%s".' . "\n",
-            $config_dir,
-            getcwd()
-         )
-      );
-   }
+    if (false === $config_dir || !@is_dir($config_dir)) {
+        die(
+            sprintf(
+                '--config-dir "%s" does not exists in "%s".' . "\n",
+                $config_dir,
+                getcwd()
+            )
+        );
+    }
 
-   define('GLPI_CONFIG_DIR', realpath($config_dir));
+    define('GLPI_CONFIG_DIR', realpath($config_dir));
 }
 
 

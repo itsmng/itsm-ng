@@ -10,11 +10,10 @@ new Itsm_minify();
 
 class Itsm_minify
 {
-
     /**
      * Constructor to minify css and js files
      */
-    function __construct()
+    public function __construct()
     {
 
         $dirs = [
