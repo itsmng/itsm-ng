@@ -33,7 +33,7 @@
 use Glpi\System\Status\StatusChecker;
 
 define('DO_NOT_CHECK_HTTP_REFERER', 1);
-include ('./inc/includes.php');
+include('./inc/includes.php');
 
 // Force in normal mode
 $_SESSION['glpi_use_mode'] = Session::NORMAL_MODE;
@@ -45,12 +45,12 @@ $valid_response_types = ['text/plain', 'application/json'];
 $fallback_response_type = 'text/plain';
 
 if (!isset($_SERVER['HTTP_ACCEPT']) || !in_array($_SERVER['HTTP_ACCEPT'], $valid_response_types, true)) {
-   $_SERVER['HTTP_ACCEPT'] = $fallback_response_type;
+    $_SERVER['HTTP_ACCEPT'] = $fallback_response_type;
 }
 header('Content-type: ' . $_SERVER['HTTP_ACCEPT']);
 
 if ($_SERVER['HTTP_ACCEPT'] === 'application/json') {
-   echo json_encode(StatusChecker::getFullStatus(true, true));
+    echo json_encode(StatusChecker::getFullStatus(true, true));
 } else {
-   echo StatusChecker::getFullStatus(true, false);
+    echo StatusChecker::getFullStatus(true, false);
 }
