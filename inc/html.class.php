@@ -1884,7 +1884,7 @@ JAVASCRIPT;
             'href'  => $CFG_GLPI['root_doc'] . '/front/central.php'
          ],
       ];
-      $twig_vars['help_link'] = 'https://itsm-ng.org';
+      $twig_vars['help_link'] = 'https://www.itsm-ng.org';
       if (is_dir(GLPI_ROOT . '/docs')) {
          $twig_vars['help_link'] = $CFG_GLPI['root_doc'] . '/docs';
       };
