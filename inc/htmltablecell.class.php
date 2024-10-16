@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -88,22 +89,22 @@ class HTMLTableCell extends HTMLTableEntity
         }
 
         if (!is_null($this->father)) {
-
             if ($this->father->row != $this->row) {
                 throw new HTMLTableCellFatherSameRow();
             }
 
             if ($this->father->header != $this->header->getFather()) {
-
-                if (($this->father->header instanceof HTMLTableHeader)
-                    && ($this->header->getFather() instanceof HTMLTableHeader)) {
+                if (
+                    ($this->father->header instanceof HTMLTableHeader)
+                    && ($this->header->getFather() instanceof HTMLTableHeader)
+                ) {
                     throw new HTMLTableCellFatherCoherentHeader($this->header->getFather()->getName() .
                                                                  ' != ' .
                                                                  $this->father->header->getName());
                 }
 
                 if ($this->father->header instanceof HTMLTableHeader) {
-                    throw new HTMLTableCellFatherCoherentHeader('NULL != '.
+                    throw new HTMLTableCellFatherCoherentHeader('NULL != ' .
                                                                  $this->father->header->getName());
                 }
 
@@ -113,11 +114,9 @@ class HTMLTableCell extends HTMLTableEntity
                 }
 
                 throw new HTMLTableCellFatherCoherentHeader('NULL != NULL');
-
             }
 
             $this->father->addSon($this, $header);
-
         } elseif (!is_null($this->header->getFather())) {
             throw new HTMLTableCellWithoutFather();
         }
@@ -248,7 +247,6 @@ class HTMLTableCell extends HTMLTableEntity
             }
             $this->start = $start;
             foreach ($this->sons as $sons_by_header) {
-
                 self::updateCellSteps($sons_by_header, $this->getNumberOfLines());
 
                 $son_start = $this->start;
@@ -270,16 +268,17 @@ class HTMLTableCell extends HTMLTableEntity
     public function displayCell($index, array $options = [])
     {
 
-        if (($index >= $this->start)
-            && ($index < ($this->start + $this->numberOfLines))) {
-
+        if (
+            ($index >= $this->start)
+            && ($index < ($this->start + $this->numberOfLines))
+        ) {
             if ($index == $this->start) {
                 if ($this->item instanceof CommonDBTM) {
                     Session::addToNavigateListItems($this->item->getType(), $this->item->getID());
                 }
-                echo "\t\t\t<td colspan='".$this->header->getColSpan()."'";
+                echo "\t\t\t<td colspan='" . $this->header->getColSpan() . "'";
                 if ($this->numberOfLines > 1) {
-                    echo " rowspan='".$this->numberOfLines."'";
+                    echo " rowspan='" . $this->numberOfLines . "'";
                 }
                 $this->displayEntityAttributs($options);
                 echo ">";

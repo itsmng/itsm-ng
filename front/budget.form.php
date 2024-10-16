@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -61,7 +62,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["delete"])) {
     $budget->check($_POST["id"], DELETE);
 
@@ -76,7 +76,6 @@ if (isset($_POST["add"])) {
         );
     }
     $budget->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $budget->check($_POST["id"], DELETE);
 
@@ -91,7 +90,6 @@ if (isset($_POST["add"])) {
         );
     }
     $budget->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $budget->check($_POST["id"], PURGE);
 
@@ -106,7 +104,6 @@ if (isset($_POST["add"])) {
         );
     }
     $budget->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $budget->check($_POST["id"], UPDATE);
 
@@ -121,12 +118,10 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 } elseif (isset($_GET['_in_modal'])) {
     Html::popHeader(Budget::getTypeName(1), $_SERVER['PHP_SELF']);
     $budget->showForm($_GET["id"], ['withtemplate' => $_GET["withtemplate"]]);
     Html::popFooter();
-
 } else {
     Html::header(Budget::getTypeName(1), $_SERVER['PHP_SELF'], "management", "budget");
     $budget->display([

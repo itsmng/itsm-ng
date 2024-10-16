@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -290,7 +291,6 @@ class RuleImportComputer extends Rule
             $criteria = $this->getCriteriaByID($criterion);
             if (!empty($criteria)) {
                 foreach ($criteria as $crit) {
-
                     // is a real complex criteria
                     if ($crit->fields["condition"] == Rule::PATTERN_FIND) {
                         if (!isset($input[$criterion]) || ($input[$criterion] == '')) {
@@ -409,7 +409,6 @@ class RuleImportComputer extends Rule
                     $it_criteria = array_merge_recursive($it_criteria, $sql_from);
                     $it_criteria = array_merge_recursive($it_criteria, $sql_leftjoin);
                     $it_criteria = array_merge_recursive($it_criteria, $sql_where);
-
                 }
             }
         }
@@ -433,7 +432,6 @@ class RuleImportComputer extends Rule
             }
         }
         return false;
-
     }
 
     public function executeActions($output, $params, array $input = [])
@@ -468,11 +466,10 @@ class RuleImportComputer extends Rule
         }
         if (!$entity_as_criteria) {
             echo "<tr class='tab_bg_1'>";
-            echo "<td colspan ='2'>".Entity::getTypeName(1)."</td>";
+            echo "<td colspan ='2'>" . Entity::getTypeName(1) . "</td>";
             echo "<td>";
             Dropdown::show('Entity');
             echo "</td></tr>";
         }
     }
-
 }

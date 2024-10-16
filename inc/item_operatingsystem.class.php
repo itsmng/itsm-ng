@@ -161,8 +161,10 @@ class Item_OperatingSystem extends CommonDBRelation
             $order = "DESC";
         }
 
-        if ((isset($_GET["sort"]) && !empty($_GET["sort"]))
-           && isset($columns[$_GET["sort"]])) {
+        if (
+            (isset($_GET["sort"]) && !empty($_GET["sort"]))
+            && isset($columns[$_GET["sort"]])
+        ) {
             $sort = $_GET["sort"];
         } else {
             $sort = "glpi_items_operatingsystems.id";
@@ -209,12 +211,14 @@ class Item_OperatingSystem extends CommonDBRelation
         }
 
         echo "<div class='spaced'>";
-        if ($canedit
+        if (
+            $canedit
             && $number
-            && ($withtemplate < 2)) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$params['rand']);
+            && ($withtemplate < 2)
+        ) {
+            Html::openMassiveActionsForm('mass' . __CLASS__ . $params['rand']);
             $massiveactionparams = ['num_displayed'  => min($_SESSION['glpilist_limit'], $number),
-                                         'container'      => 'mass'.__CLASS__.$params['rand']];
+                                         'container'      => 'mass' . __CLASS__ . $params['rand']];
             Html::showMassiveActions($massiveactionparams);
         }
 
@@ -224,23 +228,25 @@ class Item_OperatingSystem extends CommonDBRelation
         $header_top    = '';
         $header_bottom = '';
         $header_end    = '';
-        if ($canedit
+        if (
+            $canedit
             && $number
-            && ($withtemplate < 2)) {
-            $header_top    .= "<th width='11'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$params['rand']);
+            && ($withtemplate < 2)
+        ) {
+            $header_top    .= "<th width='11'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $params['rand']);
             $header_top    .= "</th>";
-            $header_bottom .= "<th width='11'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$params['rand']);
+            $header_bottom .= "<th width='11'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $params['rand']);
             $header_bottom .= "</th>";
         }
 
         foreach ($columns as $key => $val) {
-            $header_end .= "<th".($sort == $key ? " class='order_$order'" : '').">".
-                           "<a href='javascript:reloadTab(\"sort=$key&amp;order=".
-                             (($order == "ASC") ? "DESC" : "ASC")."&amp;start=0\");'>$val</a></th>";
+            $header_end .= "<th" . ($sort == $key ? " class='order_$order'" : '') . ">" .
+                           "<a href='javascript:reloadTab(\"sort=$key&amp;order=" .
+                             (($order == "ASC") ? "DESC" : "ASC") . "&amp;start=0\");'>$val</a></th>";
         }
 
         $header_end .= "</tr>";
-        echo $header_begin.$header_top.$header_end;
+        echo $header_begin . $header_top . $header_end;
 
         if ($number) {
             foreach ($os as $data) {
@@ -249,11 +255,13 @@ class Item_OperatingSystem extends CommonDBRelation
                     $linkname = sprintf(__('%1$s (%2$s)'), $linkname, $data["assocID"]);
                 }
                 $link = Toolbox::getItemTypeFormURL(self::getType());
-                $name = "<a href=\"".$link."?id=".$data["assocID"]."\">".$linkname."</a>";
+                $name = "<a href=\"" . $link . "?id=" . $data["assocID"] . "\">" . $linkname . "</a>";
 
                 echo "<tr class='tab_bg_1'>";
-                if ($canedit
-                    && ($withtemplate < 2)) {
+                if (
+                    $canedit
+                    && ($withtemplate < 2)
+                ) {
                     echo "<td width='10'>";
                     Html::showMassiveActionCheckBox(__CLASS__, $data["assocID"]);
                     echo "</td>";
@@ -266,7 +274,7 @@ class Item_OperatingSystem extends CommonDBRelation
                 echo "</tr>";
                 $i++;
             }
-            echo $header_begin.$header_bottom.$header_end;
+            echo $header_begin . $header_bottom . $header_end;
         }
 
         echo "</table>";
@@ -276,7 +284,6 @@ class Item_OperatingSystem extends CommonDBRelation
             Html::closeForm();
         }
         echo "</div>";
-
     }
 
     public function getConnexityItem(
@@ -762,7 +769,6 @@ class Item_OperatingSystem extends CommonDBRelation
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
                                 $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
                             }
-
                         } else {
                             $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
                             $ma->addMessage($item->getErrorMessage(ERROR_NOT_FOUND));

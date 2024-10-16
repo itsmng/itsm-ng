@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -69,8 +70,10 @@ class Link_Itemtype extends CommonDBChild
         $canedit  = $link->canEdit($links_id);
         $rand     = mt_rand();
 
-        if (!Link::canView()
-            || !$link->can($links_id, READ)) {
+        if (
+            !Link::canView()
+            || !$link->can($links_id, READ)
+        ) {
             return false;
         }
 
@@ -210,8 +213,7 @@ class Link_Itemtype extends CommonDBChild
             self::getTable(),
             [
               'itemtype'  => ['LIKE', "%Plugin$itemtype%"]
-         ]
+            ]
         );
     }
-
 }

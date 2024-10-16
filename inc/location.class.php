@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -468,16 +469,16 @@ class Location extends CommonTreeDropdown
 
         // Mini Search engine
         echo "<table class='tab_cadre_fixe' aria-label='Search Item'>";
-        echo "<tr class='tab_bg_1'><th colspan='2'>"._n('Type', 'Types', 1)."</th></tr>";
+        echo "<tr class='tab_bg_1'><th colspan='2'>" . _n('Type', 'Types', 1) . "</th></tr>";
         echo "<tr class='tab_bg_1'><td class='center'>";
-        echo _n('Type', 'Types', 1)."&nbsp;";
+        echo _n('Type', 'Types', 1) . "&nbsp;";
         $all_types = array_merge(['0' => '---'], $CFG_GLPI['location_types']);
         Dropdown::showItemType(
             $all_types,
             [
               'value'      => $current_itemtype,
               'on_change'  => 'reloadTab("start=0&criterion="+this.value)'
-         ]
+            ]
         );
         echo "</td></tr></table>";
 
@@ -486,34 +487,33 @@ class Location extends CommonTreeDropdown
             Html::printAjaxPager('', $start, $number);
 
             echo "<table class='tab_cadre_fixe' aria-label='Item Detail'>";
-            echo "<tr><th>"._n('Type', 'Types', 1)."</th>";
-            echo "<th>".Entity::getTypeName(1)."</th>";
-            echo "<th>".__('Name')."</th>";
-            echo "<th>".__('Serial number')."</th>";
-            echo "<th>".__('Inventory number')."</th>";
+            echo "<tr><th>" . _n('Type', 'Types', 1) . "</th>";
+            echo "<th>" . Entity::getTypeName(1) . "</th>";
+            echo "<th>" . __('Name') . "</th>";
+            echo "<th>" . __('Serial number') . "</th>";
+            echo "<th>" . __('Inventory number') . "</th>";
             echo "</tr>";
 
             while ($data = $iterator->next()) {
                 $item = getItemForItemtype($data['type']);
                 $item->getFromDB($data['id']);
-                echo "<tr class='tab_bg_1'><td class='center top'>".$item->getTypeName()."</td>";
-                echo "<td class='center'>".Dropdown::getDropdownName(
+                echo "<tr class='tab_bg_1'><td class='center top'>" . $item->getTypeName() . "</td>";
+                echo "<td class='center'>" . Dropdown::getDropdownName(
                     "glpi_entities",
                     $item->getEntityID()
                 );
-                echo "</td><td class='center'>".$item->getLink()."</td>";
-                echo "<td class='center'>".
-                      (isset($item->fields["serial"]) ? "".$item->fields["serial"]."" : "-");
+                echo "</td><td class='center'>" . $item->getLink() . "</td>";
+                echo "<td class='center'>" .
+                      (isset($item->fields["serial"]) ? "" . $item->fields["serial"] . "" : "-");
                 echo "</td>";
-                echo "<td class='center'>".
-                      (isset($item->fields["otherserial"]) ? "".$item->fields["otherserial"]."" : "-");
+                echo "<td class='center'>" .
+                      (isset($item->fields["otherserial"]) ? "" . $item->fields["otherserial"] . "" : "-");
                 echo "</td></tr>";
             }
         } else {
-            echo "<p class='center b'>".__('No item found')."</p>";
+            echo "<p class='center b'>" . __('No item found') . "</p>";
         }
         echo "</table></div>";
-
     }
 
     public function displaySpecificTypeField($ID, $field = [])

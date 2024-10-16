@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -68,7 +69,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 }
 
 Html::displayErrorAndDie("lost");

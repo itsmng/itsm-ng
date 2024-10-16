@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -65,8 +66,10 @@ class Notepad extends CommonDBChild
     public function canCreateItem()
     {
 
-        if (isset($this->fields['itemtype'])
-            && ($item = getItemForItemtype($this->fields['itemtype']))) {
+        if (
+            isset($this->fields['itemtype'])
+            && ($item = getItemForItemtype($this->fields['itemtype']))
+        ) {
             return Session::haveRight($item::$rightname, UPDATENOTE);
         }
         return false;
@@ -76,8 +79,10 @@ class Notepad extends CommonDBChild
     public function canUpdateItem()
     {
 
-        if (isset($this->fields['itemtype'])
-            && ($item = getItemForItemtype($this->fields['itemtype']))) {
+        if (
+            isset($this->fields['itemtype'])
+            && ($item = getItemForItemtype($this->fields['itemtype']))
+        ) {
             return Session::haveRight($item::$rightname, UPDATENOTE);
         }
         return false;
@@ -320,9 +325,10 @@ class Notepad extends CommonDBChild
             $showuserlink = 1;
         }
 
-        if ($canedit
-            && !(!empty($withtemplate) && ($withtemplate == 2))) {
-
+        if (
+            $canedit
+            && !(!empty($withtemplate) && ($withtemplate == 2))
+        ) {
             $form = [
                'action' => Toolbox::getItemTypeFormURL('Notepad'),
                'buttons' => [
@@ -358,13 +364,13 @@ class Notepad extends CommonDBChild
                        ]
                    ]
                ]
-        ];
+            ];
             renderTwigForm($form);
         }
 
         if (count($notes)) {
             foreach ($notes as $note) {
-                $id = 'note'.$note['id'].$rand;
+                $id = 'note' . $note['id'] . $rand;
                 $classtoadd = '';
                 if ($canedit) {
                     $classtoadd = " pointer";
@@ -372,8 +378,8 @@ class Notepad extends CommonDBChild
                 echo "<div class='boxnote' id='view$id'>";
 
                 echo "<div class='boxnoteleft'>";
-                echo "<img class='user_picture_verysmall' alt=\"".__s('Picture')."\" src='".
-                    User::getThumbnailURLForPicture($note['picture'])."'>";
+                echo "<img class='user_picture_verysmall' alt=\"" . __s('Picture') . "\" src='" .
+                    User::getThumbnailURLForPicture($note['picture']) . "'>";
                 echo "</div>"; // boxnoteleft
 
                 echo "<div class='boxnotecontent'>";
@@ -402,15 +408,15 @@ class Notepad extends CommonDBChild
 
                 echo "<div class='boxnotetext $classtoadd' ";
                 if ($canedit) {
-                    echo "onclick=\"".Html::jsHide("view$id")." ".
-                                   Html::jsShow("edit$id")."\"";
+                    echo "onclick=\"" . Html::jsHide("view$id") . " " .
+                                   Html::jsShow("edit$id") . "\"";
                 }
                 echo ">";
                 $content = nl2br($note['content']);
                 if (empty($content)) {
                     $content = NOT_AVAILABLE;
                 }
-                echo $content.'</div>'; // boxnotetext
+                echo $content . '</div>'; // boxnotetext
 
                 echo "</div>"; // boxnotecontent
                 echo "<div class='boxnoteright'>";

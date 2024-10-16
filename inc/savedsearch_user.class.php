@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -78,7 +79,7 @@ class SavedSearch_User extends CommonDBRelation
                     [
                       '1'   => __('Yes'),
                       '0'   => __('No')
-               ],
+                    ],
                     $options
                 );
         }

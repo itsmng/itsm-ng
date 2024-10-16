@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -150,12 +151,12 @@ class NetworkPortFiberchannel extends NetworkPortInstantiation
               'type' => 'text',
               'name' => 'mac',
               'value' => $netport->fields['mac'],
-         ],
+           ],
            !$oppositePort ? [
               'type' => 'hidden',
               'name' => 'NetworkPortConnect_networkports_id_1',
               'values' => $netport->getID(),
-         ] : [],
+           ] : [],
            __('Connected to') => !$oppositePort ? [
               'type' => 'select',
               'id' => 'NetworkPortConnect_itemtype',
@@ -184,7 +185,7 @@ class NetworkPortFiberchannel extends NetworkPortInstantiation
                   });
                JS,
               ]
-         ] : [],
+           ] : [],
            __('Itemtype') => !$oppositePort ? [
               'type' => 'select',
               'id' => 'NetworkPortConnect_items_id',
@@ -211,11 +212,11 @@ class NetworkPortFiberchannel extends NetworkPortInstantiation
                   });
                JS,
               ]
-         ] : [],
+           ] : [],
            __('Network port') => !$oppositePort ? [
               'type' => 'select',
               'name' => 'NetworkPortConnect_networkports_id_2',
-         ] : [],
+           ] : [],
         ];
         return $returnValue;
     }
@@ -441,7 +442,6 @@ class NetworkPortFiberchannel extends NetworkPortInstantiation
         $options['display'] = false;
 
         switch ($field) {
-
             case 'speed':
                 $options['value'] = $values[$field];
                 return Dropdown::showFromArray($name, self::getPortSpeed(), $options);

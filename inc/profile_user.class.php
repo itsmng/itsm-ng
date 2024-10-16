@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -96,9 +97,10 @@ class Profile_User extends CommonDBRelation
     {
 
         // TODO: check if the entities should not be inherited from the profile or the user
-        if (!isset($input['entities_id'])
-            || ($input['entities_id'] < 0)) {
-
+        if (
+            !isset($input['entities_id'])
+            || ($input['entities_id'] < 0)
+        ) {
             Session::addMessageAfterRedirect(
                 __('No selected element or badly defined operation'),
                 false,
@@ -126,8 +128,10 @@ class Profile_User extends CommonDBRelation
         $canedit = $user->canEdit($ID);
 
         $strict_entities = self::getUserEntities($ID, false);
-        if (!Session::haveAccessToOneOfEntities($strict_entities)
-            && !Session::canViewAllEntities()) {
+        if (
+            !Session::haveAccessToOneOfEntities($strict_entities)
+            && !Session::canViewAllEntities()
+        ) {
             $canedit = false;
         }
 
@@ -213,18 +217,17 @@ class Profile_User extends CommonDBRelation
 
             $link = $data["completename"];
             if ($_SESSION["glpiis_ids_visible"]) {
-
                 $link = sprintf(__('%1$s (%2$s)'), $link, $data["entities_id"]);
             }
 
             if ($canshowentity) {
-                $newValue[] = "<a href='".Toolbox::getItemTypeFormURL('Entity')."?id=".
-                       $data["entities_id"]."'>$link</a>";
+                $newValue[] = "<a href='" . Toolbox::getItemTypeFormURL('Entity') . "?id=" .
+                       $data["entities_id"] . "'>$link</a>";
             }
 
             if (Profile::canView()) {
-                $entname = "<a href='".Toolbox::getItemTypeFormURL('Profile')."?id=".$data["id"]."'>".
-                             $data["name"]."</a>";
+                $entname = "<a href='" . Toolbox::getItemTypeFormURL('Profile') . "?id=" . $data["id"] . "'>" .
+                             $data["name"] . "</a>";
             } else {
                 $entname =  $data["name"];
             }
@@ -244,7 +247,7 @@ class Profile_User extends CommonDBRelation
                 }
                 $entname = sprintf(__('%1$s%2$s'), $entname, ")</span>");
             }
-            $massiveActionValues[] = 'item['.self::class.']'.'['.$data['linkid'].']';
+            $massiveActionValues[] = 'item[' . self::class . ']' . '[' . $data['linkid'] . ']';
             $newValue[] = $entname;
             $values[] = $newValue;
         }
@@ -276,15 +279,15 @@ class Profile_User extends CommonDBRelation
                 }
 
                 if ($canshowentity) {
-                    echo "<a href='".Toolbox::getItemTypeFormURL('Entity')."?id=".
-                           $data["entities_id"]."'>";
+                    echo "<a href='" . Toolbox::getItemTypeFormURL('Entity') . "?id=" .
+                           $data["entities_id"] . "'>";
                 }
-                echo $link.($canshowentity ? "</a>" : '');
+                echo $link . ($canshowentity ? "</a>" : '');
                 echo "</td>";
 
                 if (Profile::canView()) {
-                    $entname = "<a href='".Toolbox::getItemTypeFormURL('Profile')."?id=".$data["id"]."'>".
-                                 $data["name"]."</a>";
+                    $entname = "<a href='" . Toolbox::getItemTypeFormURL('Profile') . "?id=" . $data["id"] . "'>" .
+                                 $data["name"] . "</a>";
                 } else {
                     $entname =  $data["name"];
                 }
@@ -304,13 +307,13 @@ class Profile_User extends CommonDBRelation
                     }
                     $entname = sprintf(__('%1$s%2$s'), $entname, ")</span>");
                 }
-                echo "<td>".$entname."</td>";
+                echo "<td>" . $entname . "</td>";
                 echo "</tr>";
             }
             echo "</table>";
         } else {
             echo "<table class='tab_cadre_fixe' aria-label='No item Found'>";
-            echo "<tr><th>".__('No item found')."</th></tr>";
+            echo "<tr><th>" . __('No item found') . "</th></tr>";
             echo "</table>\n";
         }
 
@@ -437,9 +440,9 @@ class Profile_User extends CommonDBRelation
 
         echo "<div class='spaced'>";
         if ($canedit && $nb) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
             $massiveactionparams = [
-               'container' => 'mass'.__CLASS__.$rand,
+               'container' => 'mass' . __CLASS__ . $rand,
                'specific_actions' => [
                   'purge' => _x('button', 'Delete permanently')
                ],
@@ -472,14 +475,14 @@ class Profile_User extends CommonDBRelation
                     $reduce_header = 0;
                     if ($canedit && $nb) {
                         echo "<th width='10'>";
-                        echo Html::getCheckAllAsCheckbox("profile".$data['pid']."_$rand");
+                        echo Html::getCheckAllAsCheckbox("profile" . $data['pid'] . "_$rand");
                         echo "</th>";
                         $reduce_header++;
                     }
-                    echo "<th colspan='".($headerspan - $reduce_header)."'>";
+                    echo "<th colspan='" . ($headerspan - $reduce_header) . "'>";
                     printf(__('%1$s: %2$s'), Profile::getTypeName(1), $data["pname"]);
                     echo "</th></tr></tbody>";
-                    echo "<tbody id='profile".$data['pid']."_$rand'>";
+                    echo "<tbody id='profile" . $data['pid'] . "_$rand'>";
                     $i = 0;
                 }
 
@@ -518,7 +521,7 @@ class Profile_User extends CommonDBRelation
                     }
                     $username = sprintf(__('%1$s%2$s'), $username, ")</span>");
                 }
-                echo "<td>".$username."</td>";
+                echo "<td>" . $username . "</td>";
                 $i++;
 
                 $current_pid = $data['pid'];
@@ -535,7 +538,6 @@ class Profile_User extends CommonDBRelation
             Html::closeForm();
         }
         echo "</div>";
-
     }
 
 
@@ -594,10 +596,10 @@ class Profile_User extends CommonDBRelation
         echo "<div class='spaced'>";
 
         if ($canedit && $nb) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
             $massiveactionparams = [
                'num_displayed' => min($_SESSION['glpilist_limit'], $nb),
-               'container'     => 'mass'.__CLASS__.$rand,
+               'container'     => 'mass' . __CLASS__ . $rand,
                'deprecated'    => true
             ];
             Html::showMassiveActions($massiveactionparams);
@@ -620,7 +622,6 @@ class Profile_User extends CommonDBRelation
 
             while ($data = $iterator->next()) {
                 if ($data["entity"] != $temp) {
-
                     while (($i % $nb_per_line) != 0) {
                         if ($canedit_entity) {
                             echo "<td width='10'>&nbsp;</td>";
@@ -642,10 +643,10 @@ class Profile_User extends CommonDBRelation
                     $rand           = mt_rand();
                     echo "<tr class='tab_bg_2'>";
                     echo "<td>";
-                    echo "<a href=\"javascript:showHideDiv('entity$temp$rand','imgcat$temp', '".
+                    echo "<a href=\"javascript:showHideDiv('entity$temp$rand','imgcat$temp', '" .
                              "fa-folder','fa-folder-open');\">";
                     echo "<i id='imgcat$temp' class='fa fa-folder' aria-hidden='true'></i>&nbsp;";
-                    echo "<span class='b'>".Dropdown::getDropdownName('glpi_entities', $data["entity"]).
+                    echo "<span class='b'>" . Dropdown::getDropdownName('glpi_entities', $data["entity"]) .
                           "</span>";
                     echo "</a>";
 
@@ -653,7 +654,7 @@ class Profile_User extends CommonDBRelation
 
                     echo "<tr class='tab_bg_2'><td>";
                     echo "<div class='center' id='entity$temp$rand' style='display:none;'>\n";
-                    echo Html::getCheckAllAsCheckbox("entity$temp$rand").__('All');
+                    echo Html::getCheckAllAsCheckbox("entity$temp$rand") . __('All');
 
                     echo "<table class='tab_cadre_fixe' aria-label='User Detail'>\n";
                 }
@@ -693,7 +694,7 @@ class Profile_User extends CommonDBRelation
                     }
                     $username = sprintf(__('%1$s%2$s'), $username, ")</span>");
                 }
-                echo "<td class='tab_bg_1'>". $username."</td>\n";
+                echo "<td class='tab_bg_1'>" . $username . "</td>\n";
                 $i++;
             }
 
@@ -712,9 +713,8 @@ class Profile_User extends CommonDBRelation
                 echo "</div>";
                 echo "</td></tr>\n";
             }
-
         } else {
-            echo "<tr class='tab_bg_2'><td class='tab_bg_1 center'>".__('No user found').
+            echo "<tr class='tab_bg_2'><td class='tab_bg_1 center'>" . __('No user found') .
                   "</td></tr>\n";
         }
         echo "</table>";
@@ -904,8 +904,10 @@ class Profile_User extends CommonDBRelation
 
         $entities = [];
         while ($data = $iterator->next()) {
-            if ($child
-                && $data['is_recursive']) {
+            if (
+                $child
+                && $data['is_recursive']
+            ) {
                 foreach (getSonsOf('glpi_entities', $data['entities_id']) as $id) {
                     $entities[$id] = $id;
                 }
@@ -940,8 +942,10 @@ class Profile_User extends CommonDBRelation
 
         $entities = [];
         while ($data = $iterator->next()) {
-            if ($child
-                && $data['is_recursive']) {
+            if (
+                $child
+                && $data['is_recursive']
+            ) {
                 foreach (getSonsOf('glpi_entities', $data['entities_id']) as $id) {
                     $entities[$id] = $id;
                 }
@@ -1208,11 +1212,13 @@ class Profile_User extends CommonDBRelation
     public static function showRelationMassiveActionsSubForm(MassiveAction $ma, $peer_number)
     {
 
-        if (($ma->getAction() == 'add')
-            && ($peer_number == 2)) {
-            echo "<br><br>".sprintf(__('%1$s: %2$s'), Entity::getTypeName(1), '');
+        if (
+            ($ma->getAction() == 'add')
+            && ($peer_number == 2)
+        ) {
+            echo "<br><br>" . sprintf(__('%1$s: %2$s'), Entity::getTypeName(1), '');
             Entity::dropdown(['entity' => $_SESSION['glpiactiveentities']]);
-            echo "<br><br>".sprintf(__('%1$s: %2$s'), __('Recursive'), '');
+            echo "<br><br>" . sprintf(__('%1$s: %2$s'), __('Recursive'), '');
             Html::showCheckbox(['name' => 'is_recursive']);
         }
     }

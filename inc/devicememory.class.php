@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -77,7 +78,7 @@ class DeviceMemory extends CommonDevice
                  'value' => $this->fields['devicememorymodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceMemoryModel')
               ]
-         ]
+            ]
         );
     }
 
@@ -175,7 +176,6 @@ class DeviceMemory extends CommonDevice
                 $base->addHeader('devicememory_frequency', __('Frequency'), $super, $father);
                 break;
         }
-
     }
 
 

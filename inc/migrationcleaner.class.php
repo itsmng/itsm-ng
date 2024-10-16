@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -71,18 +72,21 @@ class MigrationCleaner extends CommonGLPI
         global $DB;
 
         if (!isset($_SESSION['glpishowmigrationcleaner'])) {
-
-            if ($DB->tableExists('glpi_networkportmigrations')
-                && (countElementsInTable('glpi_networkportmigrations') > 0)) {
+            if (
+                $DB->tableExists('glpi_networkportmigrations')
+                && (countElementsInTable('glpi_networkportmigrations') > 0)
+            ) {
                 $_SESSION['glpishowmigrationcleaner'] = true;
             } else {
                 $_SESSION['glpishowmigrationcleaner'] = false;
             }
         }
 
-        if ($_SESSION['glpishowmigrationcleaner']
+        if (
+            $_SESSION['glpishowmigrationcleaner']
             && (Session::haveRight("networking", UPDATE)
-                || Session::haveRight("internet", UPDATE))) {
+                || Session::haveRight("internet", UPDATE))
+        ) {
             return true;
         }
 
@@ -93,5 +97,4 @@ class MigrationCleaner extends CommonGLPI
     {
         return "fas fa-broom";
     }
-
 }

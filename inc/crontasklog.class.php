@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -65,7 +66,7 @@ class CronTaskLog extends CommonDBTM
             [
               'crontasks_id' => $id,
               new \QueryExpression("UNIX_TIMESTAMP(" . $DB->quoteName("date") . ") < UNIX_TIMESTAMP()-$secs")
-         ]
+            ]
         );
 
         return $result ? $DB->affectedRows() : 0;
@@ -112,5 +113,4 @@ class CronTaskLog extends CommonDBTM
         }
         return true;
     }
-
 }

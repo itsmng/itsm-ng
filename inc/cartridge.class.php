@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -126,10 +127,11 @@ class Cartridge extends CommonDBChild
 
         if (in_array('pages', $this->updates)) {
             $printer = new Printer();
-            if ($printer->getFromDB($this->fields['printers_id'])
+            if (
+                $printer->getFromDB($this->fields['printers_id'])
                 && (($this->fields['pages'] > $printer->getField('last_pages_counter'))
-                    || ($this->oldvalues['pages'] == $printer->getField('last_pages_counter')))) {
-
+                    || ($this->oldvalues['pages'] == $printer->getField('last_pages_counter')))
+            ) {
                 $printer->update(['id'                 => $printer->getID(),
                                        'last_pages_counter' => $this->fields['pages'] ]);
             }
@@ -193,8 +195,10 @@ class Cartridge extends CommonDBChild
                 if (isset($input['pages'])) {
                     foreach ($ids as $key) {
                         if ($item->can($key, UPDATE)) {
-                            if ($item->update(['id' => $key,
-                                                    'pages' => $input['pages']])) {
+                            if (
+                                $item->update(['id' => $key,
+                                                    'pages' => $input['pages']])
+                            ) {
                                 $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                             } else {
                                 $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
@@ -232,10 +236,10 @@ class Cartridge extends CommonDBChild
               'date_out'     => 'NULL',
               'date_use'     => 'NULL',
               'printers_id'  => 0
-         ],
+            ],
             [
               'id' => $input['id']
-         ]
+            ]
         );
         if ($result && ($DB->affectedRows() > 0)) {
             return true;
@@ -280,11 +284,11 @@ class Cartridge extends CommonDBChild
                 [
                   'date_use'     => date('Y-m-d'),
                   'printers_id'  => $pID
-            ],
+                ],
                 [
                   'id'        => $cID,
                   'date_use'  => null
-            ]
+                ]
             );
             if ($result && ($DB->affectedRows() > 0)) {
                 $changes = [
@@ -295,7 +299,6 @@ class Cartridge extends CommonDBChild
                 Log::history($pID, 'Printer', $changes, 0, Log::HISTORY_LOG_SIMPLE_MESSAGE);
                 return true;
             }
-
         } else {
             Session::addMessageAfterRedirect(__('No free cartridge'), false, ERROR);
         }
@@ -325,14 +328,16 @@ class Cartridge extends CommonDBChild
                 $this->getTable(),
                 [
                   'date_out'  => date('Y-m-d')
-            ] + $toadd,
+                ] + $toadd,
                 [
                   'id'  => $ID
-            ]
+                ]
             );
 
-            if ($result
-                && ($DB->affectedRows() > 0)) {
+            if (
+                $result
+                && ($DB->affectedRows() > 0)
+            ) {
                 $changes = [
                    '0',
                    '',
@@ -398,10 +403,9 @@ class Cartridge extends CommonDBChild
                     $old
                 );
             }
-
         } else {
             if (!$nohtml) {
-                $out .= "<div class='tab_bg_1_2'><i>".__('No cartridge')."</i></div>";
+                $out .= "<div class='tab_bg_1_2'><i>" . __('No cartridge') . "</i></div>";
             } else {
                 $out .= __('No cartridge');
             }
@@ -436,23 +440,21 @@ class Cartridge extends CommonDBChild
 
             if (!$nohtml) {
                 $out .= "<table  class='tab_format $highlight' width='100%' aria-label='Printer Cartridge Details Table'><tr><td>";
-                $out .= __('Total')."</td><td>$total";
+                $out .= __('Total') . "</td><td>$total";
                 $out .= "</td><td colspan='2'></td><tr>";
                 $out .= "<tr><td>";
                 $out .= _nx('cartridge', 'Used', 'Used', $used);
                 $out .= "</td><td>$used</span></td><td>";
                 $out .= _nx('cartridge', 'Worn', 'Worn', $old);
                 $out .= "</td><td>$old</span></td></tr></table>";
-
             } else {
                 //TRANS : for display cartridges count : %1$d is the total number,
                 //        %2$d the used one, %3$d the worn one
                 $out .= sprintf(__('Total: %1$d (%2$d used, %3$d worn)'), $total, $used, $old);
             }
-
         } else {
             if (!$nohtml) {
-                $out .= "<div class='tab_bg_1_2'><i>".__('No cartridge')."</i></div>";
+                $out .= "<div class='tab_bg_1_2'><i>" . __('No cartridge') . "</i></div>";
             } else {
                 $out .= __('No cartridge');
             }
@@ -711,15 +713,15 @@ class Cartridge extends CommonDBChild
 
         $number = count($iterator);
 
-        $massiveActionId = 'tableForCartridgeCartridges'.rand();
+        $massiveActionId = 'tableForCartridgeCartridges' . rand();
         if ($canedit && $number) {
             $actions = [
                'purge' => _x('button', 'Delete permanently'),
-               'Infocom'.MassiveAction::CLASS_ACTION_SEPARATOR.'activate'
+               'Infocom' . MassiveAction::CLASS_ACTION_SEPARATOR . 'activate'
                   => __('Enable the financial and administrative information')
             ];
             if (!$show_old) {
-                $actions['Cartridge'.MassiveAction::CLASS_ACTION_SEPARATOR.'backtostock']
+                $actions['Cartridge' . MassiveAction::CLASS_ACTION_SEPARATOR . 'backtostock']
                       = __('Back to stock');
             }
             $massiveactionparams = [
@@ -768,7 +770,7 @@ class Cartridge extends CommonDBChild
                     if ($_SESSION['glpiis_ids_visible'] || empty($printname)) {
                         $printname = sprintf(__('%1$s (%2$s)'), $printname, $data["printID"]);
                     }
-                    $newValue[] = "<a href='".Printer::getFormURLWithID($data["printID"])."'><span class='b'>".$printname."</span></a>";
+                    $newValue[] = "<a href='" . Printer::getFormURLWithID($data["printID"]) . "'><span class='b'>" . $printname . "</span></a>";
                 } else {
                     $newValue[] = NOT_AVAILABLE;
                 }
@@ -979,16 +981,16 @@ class Cartridge extends CommonDBChild
 
 
         $pages = $printer->fields['init_pages_counter'];
-        $massiveActionContainerId = 'tableForPrinterCartridges'.rand();
+        $massiveActionContainerId = 'tableForPrinterCartridges' . rand();
         if ($canedit && $number) {
             if (!$old) {
-                $actions = [__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'uninstall'
+                $actions = [__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'uninstall'
                 => __('End of life'),
-                __CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'backtostock'
+                __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'backtostock'
                 => __('Back to stock')
-         ];
+                ];
             } else {
-                $actions = [__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'updatepages'
+                $actions = [__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'updatepages'
                 => __('Update printer counter'),
                 'purge' => _x('button', 'Delete permanently')];
             }
@@ -1029,12 +1031,12 @@ class Cartridge extends CommonDBChild
             $date_in    = Html::convDate($data["date_in"]);
             $date_use   = Html::convDate($data["date_use"]);
             $date_out   = Html::convDate($data["date_out"]);
-            $viewitemjs = ($canedit ? "style='cursor:pointer' onClick=\"viewEditCartridge".$cart_id.
+            $viewitemjs = ($canedit ? "style='cursor:pointer' onClick=\"viewEditCartridge" . $cart_id .
                            "$rand();\"" : '');
             $newValue = [
                $data['id'],
-               "<a href=\"".CartridgeItem::getFormURLWithID($data["tID"])."\">".
-               sprintf(__('%1$s - %2$s'), $data["type"], $data["ref"])."</a>",
+               "<a href=\"" . CartridgeItem::getFormURLWithID($data["tID"]) . "\">" .
+               sprintf(__('%1$s - %2$s'), $data["type"], $data["ref"]) . "</a>",
                $typename,
                $date_in,
                $date_use,
@@ -1061,9 +1063,9 @@ class Cartridge extends CommonDBChild
             $values[] = $newValue;
             $massive_action[] = sprintf('item[%s][%s]', self::class, $data['id']);
         }
-        echo "<p>".(($old == 0)
+        echo "<p>" . (($old == 0)
            ? __('Used cartridges')
-           : __('Worn cartridges'))."</p>";
+           : __('Worn cartridges')) . "</p>";
         renderTwigTemplate('table.twig', [
            'id' => $massiveActionContainerId,
            'fields' => $fields,
@@ -1127,20 +1129,20 @@ class Cartridge extends CommonDBChild
         $this->showFormHeader($options);
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>"._n('Printer', 'Printers', 1)."</td><td>";
+        echo "<td>" . _n('Printer', 'Printers', 1) . "</td><td>";
         echo $printer->getLink();
-        echo "<input type='hidden' name='printers_id' value='".$this->getField('printers_id')."'>\n";
-        echo "<input type='hidden' name='cartridgeitems_id' value='".
-               $this->getField('cartridgeitems_id')."'>\n";
+        echo "<input type='hidden' name='printers_id' value='" . $this->getField('printers_id') . "'>\n";
+        echo "<input type='hidden' name='cartridgeitems_id' value='" .
+               $this->getField('cartridgeitems_id') . "'>\n";
         echo "</td>\n";
-        echo "<td>"._n('Cartridge model', 'Cartridge models', 1)."</td>";
-        echo "<td>".$cartitem->getLink()."</td></tr>\n";
+        echo "<td>" . _n('Cartridge model', 'Cartridge models', 1) . "</td>";
+        echo "<td>" . $cartitem->getLink() . "</td></tr>\n";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Add date')."</td>";
-        echo "<td>".Html::convDate($this->fields["date_in"])."</td>";
+        echo "<td>" . __('Add date') . "</td>";
+        echo "<td>" . Html::convDate($this->fields["date_in"]) . "</td>";
 
-        echo "<td>".__('Use date')."</td><td>";
+        echo "<td>" . __('Use date') . "</td><td>";
         if ($is_used && !$is_old) {
             Html::showDateField("date_use", ['value'      => $this->fields["date_use"],
                                                   'maybeempty' => false,
@@ -1153,14 +1155,14 @@ class Cartridge extends CommonDBChild
 
         if ($is_old) {
             echo "<tr class='tab_bg_1'>";
-            echo "<td>".__('End date')."</td><td>";
+            echo "<td>" . __('End date') . "</td><td>";
             Html::showDateField("date_out", ['value'      => $this->fields["date_out"],
                                                   'maybeempty' => false,
                                                   'canedit'    => true,
                                                   'min'        => $this->fields["date_use"]]);
             echo "</td>";
-            echo "<td>".__('Printer counter')."</td><td>";
-            echo "<input type='text' name='pages' value=\"".$this->fields['pages']."\">";
+            echo "<td>" . __('Printer counter') . "</td><td>";
+            echo "<input type='text' name='pages' value=\"" . $this->fields['pages'] . "\">";
             echo "</td></tr>\n";
         }
         $this->showFormButtons($options);
@@ -1189,7 +1191,6 @@ class Cartridge extends CommonDBChild
         if (!count($iterator)) {
             //No specific parameters defined, taking global configuration params
             return $CFG_GLPI['cartridges_alert_repeat'];
-
         } else {
             $data = $iterator->next();
             //This entity uses global parameters -> return global config
@@ -1277,5 +1278,4 @@ class Cartridge extends CommonDBChild
     {
         return "fas fa-fill-drip";
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -66,7 +67,7 @@ class Calendar extends CommonDropdown
     {
 
         $forbidden   = parent::getForbiddenStandardMassiveAction();
-        $forbidden[] = 'CommonDropdown'.MassiveAction::CLASS_ACTION_SEPARATOR.'merge';
+        $forbidden[] = 'CommonDropdown' . MassiveAction::CLASS_ACTION_SEPARATOR . 'merge';
         return $forbidden;
     }
 
@@ -95,8 +96,8 @@ class Calendar extends CommonDropdown
         $actions = parent::getSpecificMassiveActions($checkitem);
 
         if ($isadmin) {
-            $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'duplicate'] = _x('button', 'Duplicate');
-            $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'addholiday'] = __('Add a close time');
+            $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'duplicate'] = _x('button', 'Duplicate');
+            $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'addholiday'] = __('Add a close time');
         }
         return $actions;
     }
@@ -157,8 +158,10 @@ class Calendar extends CommonDropdown
                     }
                     foreach ($ids as $id) {
                         if ($item->getFromDB($id)) {
-                            if (!$item->isEntityAssign()
-                                || ($input['entities_id'] != $item->getEntityID())) {
+                            if (
+                                !$item->isEntityAssign()
+                                || ($input['entities_id'] != $item->getEntityID())
+                            ) {
                                 if ($item->can(-1, CREATE, $options)) {
                                     if ($item->duplicate($options)) {
                                         $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
@@ -257,7 +260,7 @@ class Calendar extends CommonDropdown
             [
               Calendar_Holiday::class,
               CalendarSegment::class,
-         ]
+            ]
         );
     }
 
@@ -303,8 +306,8 @@ class Calendar extends CommonDropdown
                  [
                     'AND' => [
                        'glpi_holidays.is_perpetual'  => 1,
-                       new \QueryExpression("MONTH(".$DB->quoteName('end_date').")*100 + DAY(".$DB->quoteName('end_date').") >= ".date('nd', strtotime($date))),
-                       new \QueryExpression("MONTH(".$DB->quoteName('begin_date').")*100 + DAY(".$DB->quoteName('begin_date').") <= ".date('nd', strtotime($date)))
+                       new \QueryExpression("MONTH(" . $DB->quoteName('end_date') . ")*100 + DAY(" . $DB->quoteName('end_date') . ") >= " . date('nd', strtotime($date))),
+                       new \QueryExpression("MONTH(" . $DB->quoteName('begin_date') . ")*100 + DAY(" . $DB->quoteName('begin_date') . ") <= " . date('nd', strtotime($date)))
                     ]
                  ]
               ]
@@ -344,13 +347,12 @@ class Calendar extends CommonDropdown
         $datestart  = date('Y-m-d', $timestart);
         $dateend    = date('Y-m-d', $timeend);
         // Need to finish at the closing day : set hour to midnight (23:59:59 for PHP)
-        $timerealend = strtotime($dateend.' 23:59:59');
+        $timerealend = strtotime($dateend . ' 23:59:59');
 
         $activetime = 0;
 
         if ($work_in_days) {
             $activetime = $timeend - $timestart;
-
         } else {
             $cache_duration = $this->getDurationsCache();
 
@@ -372,8 +374,10 @@ class Calendar extends CommonDropdown
                         $endhour = date('H:i:s', $timeend);
                     }
 
-                    if ((($actualdate == $datestart) || ($actualdate == $dateend))
-                        && ($cache_duration[$dayofweek] > 0)) {
+                    if (
+                        (($actualdate == $datestart) || ($actualdate == $dateend))
+                        && ($cache_duration[$dayofweek] > 0)
+                    ) {
                         $timeoftheday = CalendarSegment::getActiveTimeBetween(
                             $this->fields['id'],
                             $dayofweek,
@@ -498,11 +502,14 @@ class Calendar extends CommonDropdown
             $actualdate     = date('Y-m-d', $actualtime);
 
             // Begin next day working
-            if ($this->isHoliday($actualdate)
-                || ($cache_duration[$dayofweek] == 0)) {
-
-                while ($this->isHoliday($actualdate)
-                       || ($cache_duration[$dayofweek] == 0)) {
+            if (
+                $this->isHoliday($actualdate)
+                || ($cache_duration[$dayofweek] == 0)
+            ) {
+                while (
+                    $this->isHoliday($actualdate)
+                       || ($cache_duration[$dayofweek] == 0)
+                ) {
                     $actualtime = self::getActualTime($actualtime, DAY_TIMESTAMP, $negative_delay);
                     $actualdate  = date('Y-m-d', $actualtime);
                     $dayofweek   = self::getDayNumberInWeek($actualtime);
@@ -510,8 +517,10 @@ class Calendar extends CommonDropdown
             }
 
             while ($numberofdays > 0) {
-                if (!$this->isHoliday($actualdate)
-                    && ($cache_duration[$dayofweek] > 0)) {
+                if (
+                    !$this->isHoliday($actualdate)
+                    && ($cache_duration[$dayofweek] > 0)
+                ) {
                     $numberofdays--;
                 }
                 $actualtime = self::getActualTime($actualtime, DAY_TIMESTAMP, $negative_delay);
@@ -520,11 +529,14 @@ class Calendar extends CommonDropdown
             }
 
             // Get next working day
-            if ($this->isHoliday($actualdate)
-                || ($cache_duration[$dayofweek] == 0)) {
-
-                while ($this->isHoliday($actualdate)
-                       || ($cache_duration[$dayofweek] == 0)) {
+            if (
+                $this->isHoliday($actualdate)
+                || ($cache_duration[$dayofweek] == 0)
+            ) {
+                while (
+                    $this->isHoliday($actualdate)
+                       || ($cache_duration[$dayofweek] == 0)
+                ) {
                     $actualtime = self::getActualTime($actualtime, DAY_TIMESTAMP, $negative_delay);
                     $actualdate  = date('Y-m-d', $actualtime);
                     $dayofweek   = self::getDayNumberInWeek($actualtime);
@@ -532,7 +544,7 @@ class Calendar extends CommonDropdown
             }
 
             $lastworkinghour = CalendarSegment::getLastWorkingHour($this->fields['id'], $dayofweek);
-            $actualtime      = strtotime(date('Y-m-d', $actualtime).' '.$lastworkinghour);
+            $actualtime      = strtotime(date('Y-m-d', $actualtime) . ' ' . $lastworkinghour);
             return date('Y-m-d H:i:s', $actualtime);
         }
 
@@ -546,11 +558,14 @@ class Calendar extends CommonDropdown
             // If day is an holiday must start on the begin of next working day
             $actualdate = date('Y-m-d', $actualtime);
             $dayofweek  = self::getDayNumberInWeek($actualtime);
-            if ($this->isHoliday($actualdate)
-                || ($cache_duration[$dayofweek] == 0)) {
-
-                while ($this->isHoliday($actualdate)
-                       || ($cache_duration[$dayofweek] == 0)) {
+            if (
+                $this->isHoliday($actualdate)
+                || ($cache_duration[$dayofweek] == 0)
+            ) {
+                while (
+                    $this->isHoliday($actualdate)
+                       || ($cache_duration[$dayofweek] == 0)
+                ) {
                     $actualtime = self::getActualTime($actualtime, DAY_TIMESTAMP, $negative_delay);
                     $actualdate = date('Y-m-d', $actualtime);
                     $dayofweek  = self::getDayNumberInWeek($actualtime);
@@ -559,7 +574,7 @@ class Calendar extends CommonDropdown
                     $this->fields['id'],
                     $dayofweek
                 );
-                $actualtime    = strtotime($actualdate.' '.$firstworkhour);
+                $actualtime    = strtotime($actualdate . ' ' . $firstworkhour);
             }
 
             while ($delay > 0) {
@@ -568,8 +583,10 @@ class Calendar extends CommonDropdown
                 $actualdate = date('Y-m-d', $actualtime);
                 $dayofweek  = self::getDayNumberInWeek($actualtime);
 
-                if (!$this->isHoliday($actualdate)
-                    && ($cache_duration[$dayofweek] > 0)) {
+                if (
+                    !$this->isHoliday($actualdate)
+                    && ($cache_duration[$dayofweek] > 0)
+                ) {
                     $delay -= DAY_TIMESTAMP;
                 }
                 if ($delay < 0) { // delay done : if < 0 delete hours
@@ -581,7 +598,7 @@ class Calendar extends CommonDropdown
             $dayofweek       = self::getDayNumberInWeek($actualtime);
             $lastworkinghour = CalendarSegment::getLastWorkingHour($this->fields['id'], $dayofweek);
             if ($lastworkinghour < date('H:i:s', $actualtime)) {
-                $actualtime   = strtotime(date('Y-m-d', $actualtime).' '.$lastworkinghour);
+                $actualtime   = strtotime(date('Y-m-d', $actualtime) . ' ' . $lastworkinghour);
             }
 
             return date('Y-m-d H:i:s', $actualtime);
@@ -591,10 +608,12 @@ class Calendar extends CommonDropdown
         $cache_duration = $this->getDurationsCache();
 
         // Only if segments exists
-        if (countElementsInTable(
-            'glpi_calendarsegments',
-            ['calendars_id' => $this->fields['id']]
-        )) {
+        if (
+            countElementsInTable(
+                'glpi_calendarsegments',
+                ['calendars_id' => $this->fields['id']]
+            )
+        ) {
             while ($delay >= 0) {
                 $actualdate = date('Y-m-d', $actualtime);
                 if (!$this->isHoliday($actualdate)) {
@@ -613,8 +632,10 @@ class Calendar extends CommonDropdown
                         $timeoftheday = $cache_duration[$dayofweek];
                     }
 
-                    if ($timeoftheday <= $delay && !$negative_delay
-                       || $timeoftheday >= $delay && $negative_delay) {
+                    if (
+                        $timeoftheday <= $delay && !$negative_delay
+                        || $timeoftheday >= $delay && $negative_delay
+                    ) {
                         // Delay is greater or equal than remaining time in day
                         // -> pass to next day
                         $actualtime = self::getActualTime($actualtime, DAY_TIMESTAMP, $negative_delay);
@@ -627,9 +648,8 @@ class Calendar extends CommonDropdown
                             $beginhour,
                             $delay
                         );
-                        return $actualdate.' '.$endhour;
+                        return $actualdate . ' ' . $endhour;
                     }
-
                 } else { // Holiday : pass to next day
                     $actualtime = self::getActualTime($actualtime, DAY_TIMESTAMP, $negative_delay);
                 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -115,8 +116,10 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
     {
 
         // can exists for template
-        if ($item instanceof ITILTemplate
-            && Session::haveRight("itiltemplate", READ)) {
+        if (
+            $item instanceof ITILTemplate
+            && Session::haveRight("itiltemplate", READ)
+        ) {
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                 $nb = countElementsInTable(
@@ -282,12 +285,12 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
         if ($canedit) {
             echo "<div class='firstbloc'>";
             echo "<form aria-label='Predefined Field' name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
-               action='".static::getFormURL()."'>";
+               action='" . static::getFormURL() . "'>";
 
             echo "<table class='tab_cadre_fixe' aria-label='Add a predefined field'>";
-            echo "<tr class='tab_bg_2'><th colspan='3'>".__('Add a predefined field')."</th></tr>";
+            echo "<tr class='tab_bg_2'><th colspan='3'>" . __('Add a predefined field') . "</th></tr>";
             echo "<tr class='tab_bg_2'><td class='right top' width='30%'>";
-            echo "<input type='hidden' name='".static::$items_id."' value='$ID'>";
+            echo "<input type='hidden' name='" . static::$items_id . "' value='$ID'>";
             $display_fields[-1] = Dropdown::EMPTY_VALUE;
             $display_fields    += $fields;
 
@@ -314,9 +317,9 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
                                                                   'entity'             => $tt->getEntityID()]];
 
             Ajax::updateItemOnSelectEvent(
-                "dropdown_num".$rand_dp,
+                "dropdown_num" . $rand_dp,
                 "show_massiveaction_field",
-                $CFG_GLPI["root_doc"]."/ajax/dropdownMassiveActionField.php",
+                $CFG_GLPI["root_doc"] . "/ajax/dropdownMassiveActionField.php",
                 $paramsmassaction
             );
             echo "</td><td>";
@@ -329,9 +332,9 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
 
         echo "<div class='spaced'>";
         if ($canedit && $numrows) {
-            Html::openMassiveActionsForm('mass'.static::getType().$rand);
+            Html::openMassiveActionsForm('mass' . static::getType() . $rand);
             $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
-                                          'container'     => 'mass'.static::getType().$rand];
+                                          'container'     => 'mass' . static::getType() . $rand];
             Html::showMassiveActions($massiveactionparams);
         }
         echo "<table class='tab_cadre_fixehov' aria-label='ITIL Template'>";
@@ -345,14 +348,14 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
             $header_end    = '';
             if ($canedit) {
                 $header_top    .= "<th width='10'>";
-                $header_top    .= Html::getCheckAllAsCheckbox('mass'.static::getType().$rand)."</th>";
+                $header_top    .= Html::getCheckAllAsCheckbox('mass' . static::getType() . $rand) . "</th>";
                 $header_bottom .= "<th width='10'>";
-                $header_bottom .= Html::getCheckAllAsCheckbox('mass'.static::getType().$rand)."</th>";
+                $header_bottom .= Html::getCheckAllAsCheckbox('mass' . static::getType() . $rand) . "</th>";
             }
-            $header_end .= "<th>".__('Name')."</th>";
-            $header_end .= "<th>".__('Value')."</th>";
+            $header_end .= "<th>" . __('Name') . "</th>";
+            $header_end .= "<th>" . __('Value') . "</th>";
             $header_end .= "</tr>";
-            echo $header_begin.$header_top.$header_end;
+            echo $header_begin . $header_top . $header_end;
 
             foreach ($predeffields as $data) {
                 if (!isset($fields[$data['num']])) {
@@ -361,9 +364,9 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
                 }
                 echo "<tr class='tab_bg_2'>";
                 if ($canedit) {
-                    echo "<td>".Html::getMassiveActionCheckBox(static::getType(), $data["id"])."</td>";
+                    echo "<td>" . Html::getMassiveActionCheckBox(static::getType(), $data["id"]) . "</td>";
                 }
-                echo "<td>".$fields[$data['num']]."</td>";
+                echo "<td>" . $fields[$data['num']] . "</td>";
 
                 echo "<td>";
                 $display_datas[$searchOption[$data['num']]['field']] = $data['value'];
@@ -375,9 +378,9 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
                 echo "</td>";
                 echo "</tr>";
             }
-            echo $header_begin.$header_bottom.$header_end;
+            echo $header_begin . $header_bottom . $header_end;
         } else {
-            echo "<tr><th colspan='3'>".__('No item found')."</th></tr>";
+            echo "<tr><th colspan='3'>" . __('No item found') . "</th></tr>";
         }
 
         echo "</table>";
@@ -388,5 +391,4 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
         }
         echo "</div>";
     }
-
 }

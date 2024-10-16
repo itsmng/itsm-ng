@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -48,5 +49,4 @@ class ChangeTemplatePredefinedField extends ITILTemplatePredefinedField
     public static $itemtype = 'ChangeTemplate';
     public static $items_id = 'changetemplates_id';
     public static $itiltype = 'Change';
-
 }

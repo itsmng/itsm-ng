@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -134,8 +135,10 @@ class Printer extends CommonDBTM
 
         $ID = $this->fields['id'];
 
-        if (($ID < 0)
-            || !$this->fields['is_recursive']) {
+        if (
+            ($ID < 0)
+            || !$this->fields['is_recursive']
+        ) {
             return true;
         }
 
@@ -155,7 +158,7 @@ class Printer extends CommonDBTM
             $criteria = [
                'SELECT'       => [
                   'itemtype',
-                  new QueryExpression('GROUP_CONCAT(DISTINCT '.$DB->quoteName('items_id').') AS '.$DB->quoteName('ids'))
+                  new QueryExpression('GROUP_CONCAT(DISTINCT ' . $DB->quoteName('items_id') . ') AS ' . $DB->quoteName('ids'))
                ],
                'FROM'         => 'glpi_networkports_networkports',
                'INNER JOIN'   => [
@@ -167,7 +170,7 @@ class Printer extends CommonDBTM
                   ]
                ],
                'WHERE'        => [
-                  'glpi_networkports_networkports.'.$enda   => new QuerySubQuery([
+                  'glpi_networkports_networkports.' . $enda   => new QuerySubQuery([
                      'SELECT' => 'id',
                      'FROM'   => 'glpi_networkports',
                      'WHERE'  => [
@@ -185,9 +188,10 @@ class Printer extends CommonDBTM
                 if ($item = getItemForItemtype($data["itemtype"])) {
                     // For each itemtype which are entity dependant
                     if ($item->isEntityAssign()) {
-
-                        if (countElementsInTable($itemtable, ['id' => $data["ids"],
-                                                   'NOT' => [ 'entities_id' => $entities]]) > 0) {
+                        if (
+                            countElementsInTable($itemtable, ['id' => $data["ids"],
+                                                   'NOT' => [ 'entities_id' => $entities]]) > 0
+                        ) {
                             return false;
                         }
                     }
@@ -244,10 +248,10 @@ class Printer extends CommonDBTM
             'glpi_cartridges',
             [
               'printers_id' => 'NULL'
-         ],
+            ],
             [
               'printers_id' => $this->fields['id']
-         ]
+            ]
         );
 
         $this->deleteChildrenAndRelationsFromDb(
@@ -255,7 +259,7 @@ class Printer extends CommonDBTM
               Certificate_Item::class,
               Computer_Item::class,
               Item_Project::class,
-         ]
+            ]
         );
 
         Item_Devices::cleanItemDeviceDBOnItemDelete(
@@ -472,8 +476,8 @@ class Printer extends CommonDBTM
         if (static::canUpdate()) {
             Computer_Item::getMassiveActionsForItemtype($actions, __CLASS__, 0, $checkitem);
             $actions += [
-               'Item_SoftwareLicense'.MassiveAction::CLASS_ACTION_SEPARATOR.'add'
-                  => "<i class='ma-icon fas fa-key' aria-hidden='true'></i>".
+               'Item_SoftwareLicense' . MassiveAction::CLASS_ACTION_SEPARATOR . 'add'
+                  => "<i class='ma-icon fas fa-key' aria-hidden='true'></i>" .
                      _x('button', 'Add a license')
             ];
             KnowbaseItem_Item::getMassiveActionsForItemtype($actions, __CLASS__, 0, $checkitem);
@@ -819,7 +823,6 @@ class Printer extends CommonDBTM
             if ($data['is_deleted']) {
                 $this->removeFromTrash($ID);
             }
-
         } else {
             $ID = 0;
         }
@@ -890,5 +893,4 @@ class Printer extends CommonDBTM
     {
         return "fas fa-print";
     }
-
 }

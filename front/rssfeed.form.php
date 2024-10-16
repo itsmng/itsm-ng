@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -60,7 +61,6 @@ if (isset($_POST["add"])) {
         )
     );
     Html::redirect($rssfeed->getFormURLWithID($newID));
-
 } elseif (isset($_POST["purge"])) {
     $rssfeed->check($_POST["id"], PURGE);
     $rssfeed->delete($_POST, 1);
@@ -73,7 +73,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $rssfeed->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $rssfeed->check($_POST["id"], UPDATE);   // Right to update the rssfeed
 
@@ -87,10 +86,11 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } elseif (isset($_POST["addvisibility"])) {
-    if (isset($_POST["_type"]) && !empty($_POST["_type"])
-        && isset($_POST["rssfeeds_id"]) && $_POST["rssfeeds_id"]) {
+    if (
+        isset($_POST["_type"]) && !empty($_POST["_type"])
+        && isset($_POST["rssfeeds_id"]) && $_POST["rssfeeds_id"]
+    ) {
         $item = null;
         switch ($_POST["_type"]) {
             case 'User':
@@ -128,7 +128,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } else {
     Html::header(RSSFeed::getTypeName(Session::getPluralNumber()), '', "tools", "rssfeed");
 

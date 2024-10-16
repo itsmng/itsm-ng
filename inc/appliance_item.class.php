@@ -73,7 +73,6 @@ class Appliance_Item extends CommonDBRelation
                 }
             }
             return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
-
         } elseif (in_array($item->getType(), Appliance::getTypes(true))) {
             if ($_SESSION['glpishow_count_on_tabs']) {
                 $nb = self::countForItem($item);
@@ -111,8 +110,10 @@ class Appliance_Item extends CommonDBRelation
         $ID = $appliance->fields['id'];
         $rand = mt_rand();
 
-        if (!$appliance->getFromDB($ID)
-            || !$appliance->can($ID, READ)) {
+        if (
+            !$appliance->getFromDB($ID)
+            || !$appliance->can($ID, READ)
+        ) {
             return false;
         }
         $canedit = $appliance->canEdit($ID);
@@ -268,8 +269,10 @@ class Appliance_Item extends CommonDBRelation
         $itemtype = $item->getType();
         $ID       = $item->fields['id'];
 
-        if (!Appliance::canView()
-            || !$item->can($ID, READ)) {
+        if (
+            !Appliance::canView()
+            || !$item->can($ID, READ)
+        ) {
             return;
         }
 
@@ -350,8 +353,10 @@ class Appliance_Item extends CommonDBRelation
             $app         = new Appliance();
             $app->getFromResultSet($data);
             $name = $app->fields["name"];
-            if ($_SESSION["glpiis_ids_visible"]
-                || empty($app->fields["name"])) {
+            if (
+                $_SESSION["glpiis_ids_visible"]
+                || empty($app->fields["name"])
+            ) {
                 $name = sprintf(__('%1$s (%2$s)'), $name, $app->fields["id"]);
             }
             $values[] = [
@@ -392,16 +397,22 @@ class Appliance_Item extends CommonDBRelation
         $error_detected = [];
 
         //check for requirements
-        if (($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
-            || (isset($input['itemtype']) && empty($input['itemtype']))) {
+        if (
+            ($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
+            || (isset($input['itemtype']) && empty($input['itemtype']))
+        ) {
             $error_detected[] = __('An item type is required');
         }
-        if (($this->isNewItem() && (!isset($input['items_id']) || empty($input['items_id'])))
-            || (isset($input['items_id']) && empty($input['items_id']))) {
+        if (
+            ($this->isNewItem() && (!isset($input['items_id']) || empty($input['items_id'])))
+            || (isset($input['items_id']) && empty($input['items_id']))
+        ) {
             $error_detected[] = __('An item is required');
         }
-        if (($this->isNewItem() && (!isset($input[self::$items_id_1]) || empty($input[self::$items_id_1])))
-            || (isset($input[self::$items_id_1]) && empty($input[self::$items_id_1]))) {
+        if (
+            ($this->isNewItem() && (!isset($input[self::$items_id_1]) || empty($input[self::$items_id_1])))
+            || (isset($input[self::$items_id_1]) && empty($input[self::$items_id_1]))
+        ) {
             $error_detected[] = __('An appliance is required');
         }
 
@@ -459,7 +470,7 @@ class Appliance_Item extends CommonDBRelation
         $this->deleteChildrenAndRelationsFromDb(
             [
               Appliance_Item_Relation::class,
-         ]
+            ]
         );
     }
 }

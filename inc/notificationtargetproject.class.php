@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -86,7 +87,6 @@ class NotificationTargetProject extends NotificationTarget
         //Look for all targets whose type is Notification::ITEM_USER
         switch ($data['type']) {
             case Notification::USER_TYPE:
-
                 switch ($data['items_id']) {
                     case Notification::MANAGER_USER:
                         $this->addItemAuthor();
@@ -136,7 +136,6 @@ class NotificationTargetProject extends NotificationTarget
                     case Notification::TEAM_SUPPLIER:
                         $this->addTeamSuppliers();
                         break;
-
                 }
         }
     }
@@ -268,7 +267,7 @@ class NotificationTargetProject extends NotificationTarget
         $this->data['##project.url##']
               = $this->formatURL(
                   $options['additionnaloption']['usertype'],
-                  "Project_".$item->getField("id")
+                  "Project_" . $item->getField("id")
               );
         $this->data["##project.name##"]
               = $item->getField('name');
@@ -382,7 +381,7 @@ class NotificationTargetProject extends NotificationTarget
             [
               'WHERE'  => $restrict,
               'ORDER'  => ['date DESC', 'id ASC']
-         ]
+            ]
         );
         $this->data['tasks'] = [];
         foreach ($tasks as $task) {
@@ -431,7 +430,7 @@ class NotificationTargetProject extends NotificationTarget
             [
               'WHERE'  => $restrict,
               'ORDER'  => ['begin_date DESC', 'id ASC']
-         ]
+            ]
         );
         $this->data['costs'] = [];
         $this->data["##project.totalcost##"] = 0;
@@ -527,9 +526,9 @@ class NotificationTargetProject extends NotificationTarget
 
             $tmp['##document.url##']   = $this->formatURL(
                 $options['additionnaloption']['usertype'],
-                "document_".$data['id']
+                "document_" . $data['id']
             );
-            $downloadurl               = "/front/document.send.php?docid=".$data['id'];
+            $downloadurl               = "/front/document.send.php?docid=" . $data['id'];
 
             $tmp['##document.downloadurl##']
                                           = $this->formatURL(
@@ -551,7 +550,7 @@ class NotificationTargetProject extends NotificationTarget
         $this->data["##project.urldocument##"]
                        = $this->formatURL(
                            $options['additionnaloption']['usertype'],
-                           "Project_".$item->getField("id").'_Document_Item$1'
+                           "Project_" . $item->getField("id") . '_Document_Item$1'
                        );
 
         $this->data["##project.numberofdocuments##"]
@@ -603,7 +602,7 @@ class NotificationTargetProject extends NotificationTarget
                                            );
                         }
 
-                        $modeltable = getSingular($item2->getTable())."models";
+                        $modeltable = getSingular($item2->getTable()) . "models";
                         $modelfield = getForeignKeyFieldForTable($modeltable);
 
                         if ($item2->isField($modelfield)) {
@@ -806,5 +805,4 @@ class NotificationTargetProject extends NotificationTarget
         }
         asort($this->tag_descriptions);
     }
-
 }

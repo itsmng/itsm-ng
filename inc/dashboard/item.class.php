@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -103,7 +104,7 @@ class Item extends \CommonDBChild
               'width'        => new \QueryParam(),
               'height'       => new \QueryParam(),
               'card_options' => new \QueryParam(),
-         ]
+            ]
         );
         $stmt = $DB->prepare($query_items);
         foreach ($items as $item_key => $item) {

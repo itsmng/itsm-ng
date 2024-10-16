@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -54,45 +55,45 @@ class ITILCategory extends CommonTreeDropdown
               'name' => $this->getForeignKeyField(),
               'values' => getOptionForItems('ITILCategory'),
               'value' => $this->fields[$this->getForeignKeyField()]
-           ],
-           __('Technician in charge of the hardware') => [
+            ],
+            __('Technician in charge of the hardware') => [
               'type' => 'select',
               'name' => 'users_id',
               'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
               'value' => $this->fields['users_id']
-           ],
-           __('Group in charge of the hardware') => [
+            ],
+            __('Group in charge of the hardware') => [
               'type' => 'select',
               'name' => 'groups_id',
               'values' => getOptionForItems('Group', ['is_assign' => 1]),
               'value' => $this->fields['groups_id']
-           ],
-           __('Knowledge base') => [
+            ],
+            __('Knowledge base') => [
               'type' => 'select',
               'name' => 'knowbaseitemcategories_id',
               'values' => getOptionForItems('KnowbaseItemCategory'),
               'value' => $this->fields['knowbaseitemcategories_id']
-           ],
-           __('Code representing the ticket category') => [
+            ],
+            __('Code representing the ticket category') => [
               'type' => 'text',
               'name' => 'code',
               'value' => $this->fields['code']
-           ],
-           __('Visible in the simplified interface') => [
+            ],
+            __('Visible in the simplified interface') => [
               'type' => 'checkbox',
               'name' => 'is_helpdeskvisible',
               'value' => $this->fields['is_helpdeskvisible']
-           ],
-           __('Visible for an incident') => [
+            ],
+            __('Visible for an incident') => [
               'type' => 'checkbox',
               'name' => 'is_incident',
               'value' => $this->fields['is_incident']
-           ],
-           __('Visible for a request') => [
+            ],
+            __('Visible for a request') => [
               'type' => 'checkbox',
               'name' => 'is_request',
               'value' => $this->fields['is_request']
-           ],
+            ],
         ];
 
         $show_for_problem = Session::haveRightsOr('problem', [CREATE, UPDATE, DELETE, Problem::READALL, Problem::READMY]);
@@ -357,8 +358,10 @@ class ITILCategory extends CommonTreeDropdown
         $input = parent::prepareInputForAdd($input);
 
         $input['code'] = isset($input['code']) ? trim($input['code']) : '';
-        if (!empty($input["code"])
-              && ITILCategory::getITILCategoryIDByCode($input["code"]) != -1) {
+        if (
+            !empty($input["code"])
+              && ITILCategory::getITILCategoryIDByCode($input["code"]) != -1
+        ) {
             Session::addMessageAfterRedirect(
                 __("Code representing the ticket category is already used"),
                 false,
@@ -375,8 +378,10 @@ class ITILCategory extends CommonTreeDropdown
         $input = parent::prepareInputForUpdate($input);
 
         $input['code'] = isset($input['code']) ? trim($input['code']) : '';
-        if (!empty($input["code"])
-              && !in_array(ITILCategory::getITILCategoryIDByCode($input["code"]), [$input['id'],-1])) {
+        if (
+            !empty($input["code"])
+              && !in_array(ITILCategory::getITILCategoryIDByCode($input["code"]), [$input['id'],-1])
+        ) {
             Session::addMessageAfterRedirect(
                 __("Code representing the ticket category is already used"),
                 false,
@@ -427,8 +432,10 @@ class ITILCategory extends CommonTreeDropdown
         $itilcategory = new self();
         $ID           = $tt->fields['id'];
 
-        if (!$tt->getFromDB($ID)
-            || !$tt->can($ID, READ)) {
+        if (
+            !$tt->getFromDB($ID)
+            || !$tt->can($ID, READ)
+        ) {
             return false;
         }
 
@@ -450,25 +457,25 @@ class ITILCategory extends CommonTreeDropdown
         echo "<table class='tab_cadre_fixe' aria-label='Item Detail'>";
         echo "<tr><th colspan='5'>";
         $itilcategory_type = $itilcategory->getType();
-        echo "<a href='".$itilcategory_type::getSearchURL()."'>";
+        echo "<a href='" . $itilcategory_type::getSearchURL() . "'>";
         echo self::getTypeName(count($iterator));
         echo "</a>";
         echo "</th></tr>";
         if (count($iterator)) {
-            echo "<th>".__('Name')."</th>";
-            echo "<th>".__('Incident')."</th>";
-            echo "<th>".__('Request')."</th>";
-            echo "<th>".Change::getTypeName(1)."</th>";
-            echo "<th>".Problem::getTypeName(1)."</th>";
+            echo "<th>" . __('Name') . "</th>";
+            echo "<th>" . __('Incident') . "</th>";
+            echo "<th>" . __('Request') . "</th>";
+            echo "<th>" . Change::getTypeName(1) . "</th>";
+            echo "<th>" . Problem::getTypeName(1) . "</th>";
             echo "</tr>";
 
             while ($data = $iterator->next()) {
                 echo "<tr class='tab_bg_2'>";
                 $itilcategory->getFromDB($data['id']);
-                echo "<td>".$itilcategory->getLink(['comments' => true])."</td>";
+                echo "<td>" . $itilcategory->getLink(['comments' => true]) . "</td>";
                 if ($data['tickettemplates_id_incident'] == $ID) {
                     echo "<td class='center'>
-                     <img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' alt=\"".__('OK').
+                     <img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' alt=\"" . __('OK') .
                              "\" width='14' height='14'>
                      </td>";
                 } else {
@@ -476,7 +483,7 @@ class ITILCategory extends CommonTreeDropdown
                 }
                 if ($data['tickettemplates_id_demand'] == $ID) {
                     echo "<td class='center'>
-                     <img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' alt=\"".__('OK').
+                     <img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' alt=\"" . __('OK') .
                              "\" width='14' height='14'>
                      </td>";
                 } else {
@@ -484,7 +491,7 @@ class ITILCategory extends CommonTreeDropdown
                 }
                 if ($data['changetemplates_id'] == $ID) {
                     echo "<td class='center'>
-                     <img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' alt=\"".__('OK').
+                     <img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' alt=\"" . __('OK') .
                              "\" width='14' height='14'>
                      </td>";
                 } else {
@@ -492,19 +499,17 @@ class ITILCategory extends CommonTreeDropdown
                 }
                 if ($data['problemtemplates_id'] == $ID) {
                     echo "<td class='center'>
-                     <img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' alt=\"".__('OK').
+                     <img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' alt=\"" . __('OK') .
                              "\" width='14' height='14'>
                      </td>";
                 } else {
                     echo "<td>&nbsp;</td>";
                 }
             }
-
         } else {
-            echo "<tr><th colspan='5'>".__('No item found')."</th></tr>";
+            echo "<tr><th colspan='5'>" . __('No item found') . "</th></tr>";
         }
 
         echo "</table></div>";
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -59,7 +60,7 @@ class SoftwareVersion extends CommonDBChild
         $this->deleteChildrenAndRelationsFromDb(
             [
               Item_SoftwareVersion::class,
-         ]
+            ]
         );
     }
 
@@ -116,13 +117,13 @@ class SoftwareVersion extends CommonDBChild
         $form = [
            'action' => $this->getFormURL(),
            'content' => [
-              __('New element').' '.self::getTypeName(1) => [
+              __('New element') . ' ' . self::getTypeName(1) => [
                  'visible' => 'true',
                  'inputs' => [
                     _n('Software', 'Software', Session::getPluralNumber()) => [
                        'content' => '<a href="' . Software::getFormURLWithID($softwares_id) . '">'
-                          .Dropdown::getDropdownName("glpi_softwares", $softwares_id)
-                          .'</a>',
+                          . Dropdown::getDropdownName("glpi_softwares", $softwares_id)
+                          . '</a>',
                     ],
                     $this->isNewID($ID) ? [
                        'type' => 'hidden',
@@ -158,17 +159,17 @@ class SoftwareVersion extends CommonDBChild
                        'type' => 'hidden',
                        'name' => $this->isNewID($ID) ? 'add' : 'update',
                        'value' => $this->isNewID($ID) ? 'add' : 'update'
-                  ],
+                    ],
                     'id' => $this->isNewID($ID) ? [
                        'type' => 'hidden',
                        'name' => 'id',
                        'value' => $ID
-                  ] : [],
+                    ] : [],
                     'entities_id' => [
                        'type' => 'hidden',
                        'name' => 'entities_id',
                        'value' => $this->fields['entities_id']
-                  ],
+                    ],
                  ]
               ]
            ]
@@ -177,8 +178,10 @@ class SoftwareVersion extends CommonDBChild
         renderTwigForm($form);
 
         // Only count softwareversions_id_buy (don't care of softwareversions_id_use if no installation)
-        if ((SoftwareLicense::countForVersion($ID) > 0)
-            || (Item_SoftwareVersion::countForVersion($ID) > 0)) {
+        if (
+            (SoftwareLicense::countForVersion($ID) > 0)
+            || (Item_SoftwareVersion::countForVersion($ID) > 0)
+        ) {
             $options['candel'] = false;
         }
 
@@ -338,7 +341,7 @@ class SoftwareVersion extends CommonDBChild
         echo "<div class='spaced'>";
 
         if ($canedit) {
-            $action = SoftwareVersion::getFormURL()."?softwares_id=$softwares_id'>";
+            $action = SoftwareVersion::getFormURL() . "?softwares_id=$softwares_id'>";
             $label  = _x('button', 'Add a version');
             echo <<<HTML
          <div class='center b mb-3'>
@@ -380,11 +383,11 @@ class SoftwareVersion extends CommonDBChild
 
         if (count($iterator)) {
             echo "<table class='tab_cadre_fixehov' aria-label='Comments'><tr>";
-            echo "<th>".self::getTypeName(Session::getPluralNumber())."</th>";
-            echo "<th>".__('Status')."</th>";
-            echo "<th>".OperatingSystem::getTypeName(1)."</th>";
-            echo "<th>"._n('Installation', 'Installations', Session::getPluralNumber())."</th>";
-            echo "<th>".__('Comments')."</th>";
+            echo "<th>" . self::getTypeName(Session::getPluralNumber()) . "</th>";
+            echo "<th>" . __('Status') . "</th>";
+            echo "<th>" . OperatingSystem::getTypeName(1) . "</th>";
+            echo "<th>" . _n('Installation', 'Installations', Session::getPluralNumber()) . "</th>";
+            echo "<th>" . __('Comments') . "</th>";
             echo "</tr>\n";
 
             for ($tot = $nb = 0; $data = $iterator->next(); $tot += $nb) {
@@ -392,25 +395,24 @@ class SoftwareVersion extends CommonDBChild
                 $nb = Item_SoftwareVersion::countForVersion($data['id']);
 
                 echo "<tr class='tab_bg_2'>";
-                echo "<td><a href='".SoftwareVersion::getFormURLWithID($data['id'])."'>";
-                echo $data['name'].(empty($data['name']) ? "(".$data['id'].")" : "")."</a></td>";
-                echo "<td>".$data['sname']."</td>";
-                echo "<td class='right'>".Dropdown::getDropdownName(
+                echo "<td><a href='" . SoftwareVersion::getFormURLWithID($data['id']) . "'>";
+                echo $data['name'] . (empty($data['name']) ? "(" . $data['id'] . ")" : "") . "</a></td>";
+                echo "<td>" . $data['sname'] . "</td>";
+                echo "<td class='right'>" . Dropdown::getDropdownName(
                     'glpi_operatingsystems',
                     $data['operatingsystems_id']
                 );
                 echo "</td>";
                 echo "<td class='numeric'>$nb</td>";
-                echo "<td>".nl2br($data['comment'])."</td></tr>\n";
+                echo "<td>" . nl2br($data['comment']) . "</td></tr>\n";
             }
 
-            echo "<tr class='tab_bg_1 noHover'><td class='right b' colspan='3'>".__('Total')."</td>";
+            echo "<tr class='tab_bg_1 noHover'><td class='right b' colspan='3'>" . __('Total') . "</td>";
             echo "<td class='numeric b'>$tot</td><td></td></tr>";
             echo "</table>\n";
-
         } else {
             echo "<table class='tab_cadre_fixe' aria-label='No item found'>";
-            echo "<tr><th>".__('No item found')."</th></tr>";
+            echo "<tr><th>" . __('No item found') . "</th></tr>";
             echo "</table>\n";
         }
 
@@ -443,5 +445,4 @@ class SoftwareVersion extends CommonDBChild
         }
         return true;
     }
-
 }

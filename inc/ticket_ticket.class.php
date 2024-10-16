@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -61,7 +62,6 @@ class Ticket_Ticket extends CommonDBRelation
     {
 
         switch ($ma->getAction()) {
-
             case 'add':
                 $options = [
                    self::LINK_TO => __('Linked to'),
@@ -92,7 +92,7 @@ class Ticket_Ticket extends CommonDBRelation
                     ]);
                 };
                 echo "</div>";
-                echo "<input type='submit' name='massiveaction' class='btn btn-secondary mt-3' value='"._sx('button', 'Post')."'>";
+                echo "<input type='submit' name='massiveaction' class='btn btn-secondary mt-3' value='" . _sx('button', 'Post') . "'>";
                 return true;
         }
         return parent::showMassiveActionsSubForm($ma);
@@ -114,8 +114,10 @@ class Ticket_Ticket extends CommonDBRelation
             case 'add':
                 $input = $ma->getInput();
                 $ticket = new Ticket();
-                if (isset($input['link'])
-                    && isset($input['tickets_id_1'])) {
+                if (
+                    isset($input['link'])
+                    && isset($input['tickets_id_1'])
+                ) {
                     if ($item->getFromDB($input['tickets_id_1'])) {
                         foreach ($ids as $id) {
                             $input2                          = [];
@@ -177,8 +179,8 @@ class Ticket_Ticket extends CommonDBRelation
                 $tickets[$data['id']] = [
                    'link'         => $data['link'],
                    'url'          => $ticket->getStatusIcon($ticket->fields['status'])
-                      ." <a href=".Ticket::getFormURLWithID($data['tickets_id_1']).">"
-                      .$ticket->fields['name']."</a>",
+                      . " <a href=" . Ticket::getFormURLWithID($data['tickets_id_1']) . ">"
+                      . $ticket->fields['name'] . "</a>",
                    'tickets_id_1' => $data['tickets_id_1'],
                    'tickets_id'   => $data['tickets_id_1']
                 ];
@@ -186,8 +188,8 @@ class Ticket_Ticket extends CommonDBRelation
                 $ticket->getFromDB($data['tickets_id_2']);
                 $tickets[$data['id']] = [
                    'link'       => $data['link'],
-                   'url'          => $ticket->getStatusIcon($ticket->fields['status'])." <a href=".Ticket::getFormURLWithID($data['tickets_id_2']).">"
-                      .$ticket->fields['name']."</a>",
+                   'url'          => $ticket->getStatusIcon($ticket->fields['status']) . " <a href=" . Ticket::getFormURLWithID($data['tickets_id_2']) . ">"
+                      . $ticket->fields['name'] . "</a>",
                    'tickets_id' => $data['tickets_id_2']
                 ];
             }
@@ -217,9 +219,11 @@ class Ticket_Ticket extends CommonDBRelation
                 if ($ticket->getFromDB($data['tickets_id'])) {
                     $icons =  Ticket::getStatusIcon($ticket->fields['status']);
                     if ($canupdate) {
-                        if ($tick->getFromDB($ID)
-                            && ($tick->fields['status'] != CommonITILObject::CLOSED)) {
-                            $icons .= '&nbsp;'.Html::getSimpleForm(
+                        if (
+                            $tick->getFromDB($ID)
+                            && ($tick->fields['status'] != CommonITILObject::CLOSED)
+                        ) {
+                            $icons .= '&nbsp;' . Html::getSimpleForm(
                                 static::getFormURL(),
                                 'purge',
                                 _x('button', 'Delete permanently'),
@@ -236,7 +240,6 @@ class Ticket_Ticket extends CommonDBRelation
                         $ticket->getLink(['forceid' => true])
                     );
                     printf(__('%1$s %2$s'), $text, $icons);
-
                 }
                 echo '<br>';
             }
@@ -317,8 +320,10 @@ class Ticket_Ticket extends CommonDBRelation
             foreach ($tickets as $key => $t) {
                 if ($t['tickets_id'] == $input['tickets_id_2']) {
                     // Delete old simple link
-                    if (($input['link'] == self::DUPLICATE_WITH)
-                        && ($t['link'] == self::LINK_TO)) {
+                    if (
+                        ($input['link'] == self::DUPLICATE_WITH)
+                        && ($t['link'] == self::LINK_TO)
+                    ) {
                         $tt = new Ticket_Ticket();
                         $tt->delete(["id" => $key]);
                     } else { // No duplicate link
@@ -394,7 +399,6 @@ class Ticket_Ticket extends CommonDBRelation
             $t->getFromDB($this->fields['tickets_id_2']);
             NotificationEvent::raiseEvent("update", $t);
         }
-
     }
 
 
@@ -474,7 +478,7 @@ class Ticket_Ticket extends CommonDBRelation
                     [
                       'id'     => $data['tickets_id'],
                       'status' => $ticket->fields['status']
-               ]
+                    ]
                 );
             }
         } else {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -141,7 +142,6 @@ class HTMLTableGroup extends HTMLTableBase
             $super_header = $this->table->getSuperHeaderByName($super_header_name);
 
             try {
-
                 $sub_header_names = $this->getHeaderOrder($super_header_name);
                 $count            = 0;
 
@@ -164,7 +164,6 @@ class HTMLTableGroup extends HTMLTableBase
                         }
                     }
                 }
-
             } catch (HTMLTableUnknownHeadersOrder $e) {
                 $this->ordered_headers[] = $super_header;
             }
@@ -203,9 +202,10 @@ class HTMLTableGroup extends HTMLTableBase
         }
 
         if ($this->getNumberOfRows() > 0) {
-
-            if ($p['display_title_for_each_group']
-                && !empty($this->content)) {
+            if (
+                $p['display_title_for_each_group']
+                && !empty($this->content)
+            ) {
                 echo "\t<tbody><tr><th colspan='$totalNumberOfColumn'>" . $this->content .
                      "</th></tr></tbody>\n";
             }
@@ -240,7 +240,7 @@ class HTMLTableGroup extends HTMLTableBase
                 }
                 $currentNumberOfSubRow = $row->getNumberOfSubRows();
                 if (($previousNumberOfSubRows * $currentNumberOfSubRow) > 1) {
-                    echo "\t<tbody><tr class='tab_bg_1'><td colspan='$totalNumberOfColumn'><hr></td></tr>".
+                    echo "\t<tbody><tr class='tab_bg_1'><td colspan='$totalNumberOfColumn'><hr></td></tr>" .
                          "</tbody>\n";
                 }
                 $row->displayRow($this->ordered_headers);

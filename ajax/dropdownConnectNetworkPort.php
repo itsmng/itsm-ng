@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -44,8 +45,10 @@ Html::header_nocache();
 Session::checkRight("networking", UPDATE);
 
 // Make a select box
-if (class_exists($_POST["itemtype"])
-    && isset($_POST["item"])) {
+if (
+    class_exists($_POST["itemtype"])
+    && isset($_POST["item"])
+) {
     $table = getTableForItemType($_POST["itemtype"]);
 
     $joins = [];

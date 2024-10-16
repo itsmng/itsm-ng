@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,7 +42,7 @@ use Sabre\VObject\Component\VTodo;
 
 class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemInterface
 {
-    use Glpi\Features\PlanningEvent  {
+    use Glpi\Features\PlanningEvent {
         rawSearchOptions as protected trait_rawSearchOptions;
     }
     use VobjectConverterTrait;
@@ -85,8 +86,10 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
 
         // the current user can update only this own events without UPDATE right
         // but not bg one, see above
-        if ($this->fields['users_id'] != Session::getLoginUserID()
-            && !Session::haveRight(self::$rightname, UPDATE)) {
+        if (
+            $this->fields['users_id'] != Session::getLoginUserID()
+            && !Session::haveRight(self::$rightname, UPDATE)
+        ) {
             return false;
         }
 
@@ -102,8 +105,10 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
 
         // the current user can update only this own events without PURGE right
         // but not bg one, see above
-        if ($this->fields['users_id'] != Session::getLoginUserID()
-            && !Session::haveRight(self::$rightname, PURGE)) {
+        if (
+            $this->fields['users_id'] != Session::getLoginUserID()
+            && !Session::haveRight(self::$rightname, PURGE)
+        ) {
             return false;
         }
 
@@ -117,8 +122,10 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
      */
     public function canUpdateBGEvents()
     {
-        if ($this->fields["background"]
-            && !Session::haveRight(self::$rightname, self::MANAGE_BG_EVENTS)) {
+        if (
+            $this->fields["background"]
+            && !Session::haveRight(self::$rightname, self::MANAGE_BG_EVENTS)
+        ) {
             return false;
         }
 
@@ -145,9 +152,11 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
         $is_rrule = strlen($this->fields['rrule']) > 0;
 
         // set event for another user
-        if (isset($options['res_itemtype'])
+        if (
+            isset($options['res_itemtype'])
             && isset($options['res_items_id'])
-            && strtolower($options['res_itemtype']) == "user") {
+            && strtolower($options['res_itemtype']) == "user"
+        ) {
             $this->fields['users_id'] =  $options['res_items_id'];
         }
 
@@ -259,7 +268,7 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
                           'values' => getOptionsForUsers('all', [], false),
                           'value' => $this->fields['users_id_guests'],
                           'multiple' => true,
-                          'after' => "<i class='fas fa-info-circle' title='".__('Each guest will have a read-only copy of this event')."'></i>",
+                          'after' => "<i class='fas fa-info-circle' title='" . __('Each guest will have a read-only copy of this event') . "'></i>",
                       ],
                       __('Status') => [
                           'type' => 'select',
@@ -334,7 +343,7 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
         $this->deleteChildrenAndRelationsFromDb(
             [
               VObject::class,
-         ]
+            ]
         );
     }
 
@@ -350,7 +359,7 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
         return self::getItemsAsVCalendars([
            'OR' => [
               self::getTableField('users_id')        => $users_id,
-              self::getTableField('users_id_guests') => ['LIKE', '%"'.$users_id.'"%'],
+              self::getTableField('users_id_guests') => ['LIKE', '%"' . $users_id . '"%'],
            ]
         ]);
     }

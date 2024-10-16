@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -61,7 +62,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["delete"])) {
     $app->check($_POST["id"], DELETE);
     $app->delete($_POST);
@@ -75,7 +75,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s deletes an item'), $_SESSION["glpiname"])
     );
     $app->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $app->check($_POST["id"], DELETE);
 
@@ -89,7 +88,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s restores an item'), $_SESSION["glpiname"])
     );
     $app->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $app->check($_POST["id"], PURGE);
 
@@ -103,7 +101,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $app->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $app->check($_POST["id"], UPDATE);
 
@@ -117,7 +114,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } else {
     Html::header(Appliance::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "management", "appliance");
     $options = [

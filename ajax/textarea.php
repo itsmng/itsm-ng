@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -39,8 +40,8 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 if (isset($_POST['name'])) {
-    echo "<textarea ".(isset($_POST['rows']) ? " rows='".$_POST['rows']."' " : "")." ".
-          (isset($_POST['cols']) ? " cols='".$_POST['cols']."' " : "")."  name='".$_POST['name']."'>";
+    echo "<textarea " . (isset($_POST['rows']) ? " rows='" . $_POST['rows'] . "' " : "") . " " .
+          (isset($_POST['cols']) ? " cols='" . $_POST['cols'] . "' " : "") . "  name='" . $_POST['name'] . "'>";
     echo Html::cleanPostForTextArea(Toolbox::clean_cross_side_scripting_deep(rawurldecode(($_POST["data"]))));
     echo "</textarea>";
 }

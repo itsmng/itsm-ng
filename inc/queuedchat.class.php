@@ -149,7 +149,6 @@ class QueuedChat extends CommonDBTM
             && isset($input['entities_id']) && ($input['entities_id'] >= 0)
             && isset($input['items_id']) && ($input['items_id'] >= 0)
             && isset($input['notificationtemplates_id']) && !empty($input['notificationtemplates_id'])
-
         ) {
             $criteria = [
                 'FROM'   => $this->getTable(),

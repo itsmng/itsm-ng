@@ -150,7 +150,7 @@ class Rack extends CommonDBTM
         $all_positions = isset($this->fields['vis_cols']) ? $room->getAllPositions() : [];
         $positions = array_diff_key($all_positions, $room->getFilled($this->fields['position'] ?? ''));
 
-        $title = __('New element').' '.self::getTypeName(1);
+        $title = __('New element') . ' ' . self::getTypeName(1);
         $form = [
            'action' => $CFG_GLPI['root_doc'] . '/front/rack.form.php',
            'buttons' => [
@@ -502,7 +502,7 @@ class Rack extends CommonDBTM
                         [
                           'dcrooms_id'   => $item->getID(),
                           'is_deleted'   => 0
-                  ]
+                        ]
                     );
                 }
                 return self::createTabEntry(
@@ -536,8 +536,10 @@ class Rack extends CommonDBTM
         $room_id = $room->getID();
         $rand = mt_rand();
 
-        if (!$room->getFromDB($room_id)
-            || !$room->can($room_id, READ)) {
+        if (
+            !$room->getFromDB($room_id)
+            || !$room->can($room_id, READ)
+        ) {
             return false;
         }
         $canedit = $room->canEdit($room_id);
@@ -562,8 +564,8 @@ class Rack extends CommonDBTM
         );
 
         echo "<div id='switchview'>";
-        echo "<i id='sviewlist' class='pointer fa fa-list-alt' title='".__('View as list')."'></i>";
-        echo "<i id='sviewgraph' class='pointer fa fa-th-large selected' title='".__('View graphical representation')."'></i>";
+        echo "<i id='sviewlist' class='pointer fa fa-list-alt' title='" . __('View as list') . "'></i>";
+        echo "<i id='sviewgraph' class='pointer fa fa-th-large selected' title='" . __('View graphical representation') . "'></i>";
         echo "</div>";
 
         $racks = iterator_to_array($racks);
@@ -571,14 +573,14 @@ class Rack extends CommonDBTM
 
         $rack = new self();
         if (!count($racks)) {
-            echo "<table class='tab_cadre_fixe' aria-label='No rack Found'><tr><th>".__('No rack found')."</th></tr>";
+            echo "<table class='tab_cadre_fixe' aria-label='No rack Found'><tr><th>" . __('No rack found') . "</th></tr>";
             echo "</table>";
         } else {
             if ($canedit) {
-                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
                 $massiveactionparams = [
                    'num_displayed'   => min($_SESSION['glpilist_limit'], count($racks)),
-                   'container'       => 'mass'.__CLASS__.$rand
+                   'container'       => 'mass' . __CLASS__ . $rand
                 ];
                 Html::showMassiveActions($massiveactionparams);
             }
@@ -587,10 +589,10 @@ class Rack extends CommonDBTM
             $header = "<tr>";
             if ($canedit) {
                 $header .= "<th width='10'>";
-                $header .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+                $header .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
                 $header .= "</th>";
             }
-            $header .= "<th>".__('Name')."</th>";
+            $header .= "<th>" . __('Name') . "</th>";
             $header .= "</tr>";
 
             echo $header;
@@ -627,7 +629,7 @@ class Rack extends CommonDBTM
         $w_prct   = 100 / $cols;
         $grid_w   = 40 * $cols;
         $grid_h   = (39 * $rows) + 16;
-        $ajax_url = $CFG_GLPI['root_doc']."/ajax/rack.php";
+        $ajax_url = $CFG_GLPI['root_doc'] . "/ajax/rack.php";
 
         //fill rows
         $cells    = [];
@@ -663,7 +665,7 @@ class Rack extends CommonDBTM
             echo "</th></thead><tbody>";
             foreach ($outbound as $out) {
                 $rack->getFromResultSet($out);
-                echo "<tr><td>".self::getCell($rack, $out)."</td></tr>";
+                echo "<tr><td>" . self::getCell($rack, $out) . "</td></tr>";
             }
             echo "</tbody></table>";
         }
@@ -674,7 +676,7 @@ class Rack extends CommonDBTM
             $width = ($i + 1) * $w_prct;
             echo "
          .grid-stack > .grid-stack-item[gs-x='$i'] { left: $left%;}
-         .grid-stack > .grid-stack-item[gs-width='".($i + 1)."'] {
+         .grid-stack > .grid-stack-item[gs-width='" . ($i + 1) . "'] {
             min-width: $width%;
             width: $width%;
          }";
@@ -688,17 +690,17 @@ class Rack extends CommonDBTM
             $blueprint = "
             <div class='blueprint'
                  style='background: url({$blueprint_url}) no-repeat top left/100% 100%;
-                        height: ".$grid_h."px;></div>";
+                        height: " . $grid_h . "px;></div>";
             $blueprint_ctrl = "<span class='mini_toggle active'
-                                  id='toggle_blueprint'>".__('Blueprint')."</span>";
+                                  id='toggle_blueprint'>" . __('Blueprint') . "</span>";
         }
 
         echo "
-      <div class='grid-room' style='width: ".($grid_w + 16)."px; min-height: ".$grid_h."px'>
+      <div class='grid-room' style='width: " . ($grid_w + 16) . "px; min-height: " . $grid_h . "px'>
          <span class='racks_view_controls'>
             $blueprint_ctrl
             <span class='mini_toggle active'
-                  id='toggle_grid'>".__('Grid')."</span>
+                  id='toggle_grid'>" . __('Grid') . "</span>
             <div class='sep'></div>
          </span>
          <ul class='indexes indexes-x'></ul>
@@ -706,10 +708,10 @@ class Rack extends CommonDBTM
 
         $dcroom = new DCRoom();
         if ($dcroom->canCreate()) {
-            echo "<div class='racks_add' style='width: ".$grid_w."px'></div>";
+            echo "<div class='racks_add' style='width: " . $grid_w . "px'></div>";
         }
 
-        echo "<div class='grid-stack grid-stack-$cols' style='width: ".$grid_w."px'>";
+        echo "<div class='grid-stack grid-stack-$cols' style='width: " . $grid_w . "px'>";
 
         foreach ($cells as $cell) {
             if ($rack->getFromDB($cell['id'])) {
@@ -1008,8 +1010,9 @@ JAVASCRIPT;
                 }
             }
             $position = $row['position'];
-            if (empty($itemtype) || empty($items_id)
-               || $itemtype != $row['itemtype'] || $items_id != $row['items_id']
+            if (
+                empty($itemtype) || empty($items_id)
+                || $itemtype != $row['itemtype'] || $items_id != $row['items_id']
             ) {
                 while (--$units >= 0) {
                     $content_filled = [
@@ -1073,7 +1076,7 @@ JAVASCRIPT;
             [
               Item_Rack::class,
               PDU_Rack::class,
-         ]
+            ]
         );
     }
 
@@ -1089,30 +1092,30 @@ JAVASCRIPT;
     {
         $bgcolor = $rack->getField('bgcolor');
         $fgcolor = Html::getInvertedColor($bgcolor);
-        return "<div class='grid-stack-item room_orientation_".$cell['room_orientation']."'
-                  gs-id='".$cell['id']."'
+        return "<div class='grid-stack-item room_orientation_" . $cell['room_orientation'] . "'
+                  gs-id='" . $cell['id'] . "'
                   gs-h='1'
                   gs-w='1'
-                  gs-x='".$cell['_x']."'
-                  gs-y='".$cell['_y']."'>
+                  gs-x='" . $cell['_x'] . "'
+                  gs-y='" . $cell['_y'] . "'>
             <div class='grid-stack-item-content'
                   style='background-color: $bgcolor;
                         color: $fgcolor;'>
-               <a href='".$rack->getLinkURL()."'
-                  style='color: $fgcolor'>".
-                    $cell['name']."</a>
+               <a href='" . $rack->getLinkURL() . "'
+                  style='color: $fgcolor'>" .
+                    $cell['name'] . "</a>
                <span class='tipcontent'>
                   <span>
-                     <label>".__('name').":</label>".
-                       $cell['name']."
+                     <label>" . __('name') . ":</label>" .
+                       $cell['name'] . "
                   </span>
                   <span>
-                     <label>".__('serial').":</label>".
-                       $cell['serial']."
+                     <label>" . __('serial') . ":</label>" .
+                       $cell['serial'] . "
                   </span>
                   <span>
-                     <label>".__('Inventory number').":</label>".
-                       $cell['otherserial']."
+                     <label>" . __('Inventory number') . ":</label>" .
+                       $cell['otherserial'] . "
                   </span>
                </span>
             </div><!-- // .grid-stack-item-content -->

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -59,7 +60,7 @@ class ClearCacheCommand extends Command
         global $GLPI_CACHE;
         $GLPI_CACHE->clear();
 
-        $output->writeln('<info>'. __('Cache reset successful') . '</info>');
+        $output->writeln('<info>' . __('Cache reset successful') . '</info>');
 
         return 0; // Success
     }

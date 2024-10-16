@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -47,28 +48,36 @@ class ErrorHandler extends \GLPITestCase
 
         $data = [
            [
-              'error_call'           => function () { file_get_contents('this-file-does-not-exists'); },
+              'error_call'           => function () {
+                file_get_contents('this-file-does-not-exists');
+              },
               'expected_log_level'   => LogLevel::WARNING,
               'expected_msg_pattern' => $log_prefix
                  . preg_quote('PHP Warning (' . E_WARNING . '): file_get_contents(this-file-does-not-exists): failed to open stream: No such file or directory', '/')
                  . $log_suffix,
            ],
            [
-              'error_call'           => function () { trigger_error('this is a warning', E_USER_WARNING); },
+              'error_call'           => function () {
+                trigger_error('this is a warning', E_USER_WARNING);
+              },
               'expected_log_level'   => LogLevel::WARNING,
               'expected_msg_pattern' => $log_prefix
                  . preg_quote('PHP User Warning (' . E_USER_WARNING . '): this is a warning', '/')
                  . $log_suffix,
            ],
            [
-              'error_call'           => function () { trigger_error('some notice', E_USER_NOTICE); },
+              'error_call'           => function () {
+                trigger_error('some notice', E_USER_NOTICE);
+              },
               'expected_log_level'   => LogLevel::NOTICE,
               'expected_msg_pattern' => $log_prefix
                  . preg_quote('PHP User Notice (' . E_USER_NOTICE . '): some notice', '/')
                  . $log_suffix,
            ],
            [
-              'error_call'           => function () { trigger_error('this method is deprecated', E_USER_DEPRECATED); },
+              'error_call'           => function () {
+                trigger_error('this method is deprecated', E_USER_DEPRECATED);
+              },
               'expected_log_level'   => LogLevel::NOTICE,
               'expected_msg_pattern' => $log_prefix
                  . preg_quote('PHP User deprecated function (' . E_USER_DEPRECATED . '): this method is deprecated', '/')
@@ -91,11 +100,11 @@ class ErrorHandler extends \GLPITestCase
             $data[] = [
                'error_call'           => function () {
                    $inst = new class () {
-                       public function nonstatic()
-                       {
-                       }
+                    public function nonstatic()
+                    {
+                    }
                    };
-                   $inst::nonstatic();
+                    $inst::nonstatic();
                },
                'expected_log_level'   => LogLevel::NOTICE,
                'expected_msg_pattern' => $log_prefix
@@ -103,7 +112,9 @@ class ErrorHandler extends \GLPITestCase
                   . $log_suffix,
             ];
             $data[] = [
-               'error_call'           => function () { $a = $b; },
+               'error_call'           => function () {
+                $a = $b;
+               },
                'expected_log_level'   => LogLevel::NOTICE,
                'expected_msg_pattern' => $log_prefix
                   . preg_quote('PHP Notice (' . E_NOTICE . '): Undefined variable: b', '/')

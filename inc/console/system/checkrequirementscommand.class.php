@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -69,7 +70,7 @@ class CheckRequirementsCommand extends AbstractCommand
               __('Requirement'),
               __('Status'),
               __('Messages'),
-         ]
+            ]
         );
 
         /* @var \Glpi\System\Requirement\RequirementInterface $requirement */
@@ -91,7 +92,7 @@ class CheckRequirementsCommand extends AbstractCommand
                   $requirement->getTitle(),
                   $status,
                   $requirement->isValidated() ? '' : implode("\n", $requirement->getValidationMessages())
-            ]
+                ]
             );
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -114,7 +115,7 @@ class ProcessSoftwareCategoryRulesCommand extends AbstractCommand
                 [
                   'name'             => $software->fields['name'],
                   'manufacturers_id' => $software->fields['manufacturers_id'],
-            ]
+                ]
             );
 
             $software->update($input);
@@ -126,7 +127,7 @@ class ProcessSoftwareCategoryRulesCommand extends AbstractCommand
         $this->output->write(PHP_EOL);
 
         $output->writeln(
-            '<info>' .sprintf(__('Number of softwares processed: %d.'), $processed_count) . '</info>'
+            '<info>' . sprintf(__('Number of softwares processed: %d.'), $processed_count) . '</info>'
         );
 
         return 0; // Success

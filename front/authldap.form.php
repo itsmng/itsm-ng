@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -47,7 +48,6 @@ if (isset($_POST["update"])) {
     }
     $config_ldap->update($_POST);
     Html::back();
-
 } elseif (isset($_POST["add"])) {
     if (array_key_exists('rootdn_passwd', $_POST)) {
         // Password must not be altered, it will be encrypt and never displayed, so sanitize is not necessary.
@@ -61,16 +61,14 @@ if (isset($_POST["update"])) {
             } else {
                 Session::addMessageAfterRedirect(__('Test failed'), false, ERROR);
             }
-            Html::redirect($CFG_GLPI["root_doc"] . "/front/authldap.php?next=extauth_ldap&id=".$newID);
+            Html::redirect($CFG_GLPI["root_doc"] . "/front/authldap.php?next=extauth_ldap&id=" . $newID);
         }
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $config_ldap->delete($_POST, 1);
     $_SESSION['glpi_authconfig'] = 1;
     $config_ldap->redirectToList();
-
 } elseif (isset($_POST["test_ldap"])) {
     $config_ldap->getFromDB($_POST["id"]);
 
@@ -90,7 +88,6 @@ if (isset($_POST["update"])) {
         );
     }
     Html::back();
-
 } elseif (isset($_POST["test_ldap_replicate"])) {
     $replicate = new AuthLdapReplicate();
     $replicate->getFromDB($_POST["ldap_replicate_id"]);
@@ -111,7 +108,6 @@ if (isset($_POST["update"])) {
         );
     }
     Html::back();
-
 } elseif (isset($_POST["add_replicate"])) {
     $replicate = new AuthLdapReplicate();
     unset($_POST["next"]);

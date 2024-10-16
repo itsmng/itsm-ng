@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -76,7 +77,7 @@ class DeviceDrive extends CommonDevice
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceDriveModel'),
 
               ]
-         ]
+            ]
         );
     }
 
@@ -144,7 +145,6 @@ class DeviceDrive extends CommonDevice
                 InterfaceType::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
                 break;
         }
-
     }
 
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -44,5 +45,4 @@ class VirtualMachineSystem extends CommonDropdown
     {
         return _n('Virtualization model', 'Virtualization models', $nb);
     }
-
 }

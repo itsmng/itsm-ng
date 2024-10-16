@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -142,7 +143,7 @@ class Principal extends AbstractBackend
                   $_SESSION['glpiactiveentities'],
                   true
               ),
-         ]
+            ]
         );
         foreach ($groups_iterator as $group_fields) {
             $members_uris[] = $this->getGroupPrincipalUri($group_fields['id']);
@@ -163,7 +164,7 @@ class Principal extends AbstractBackend
               'WHERE'     => [
                  \Group_User::getTableField('groups_id') => $group_id,
               ]
-         ]
+            ]
         );
         foreach ($users_iterator as $user_fields) {
             $members_uris[] = $this->getUserPrincipalUri($user_fields['name']);
@@ -208,7 +209,7 @@ class Principal extends AbstractBackend
                                   'SELECT' => 'id',
                                   'FROM'   => \User::getTable(),
                                   'WHERE'  => ['name' => $this->getUsernameFromPrincipalUri($path)],
-                           ]
+                                ]
                             ),
                          ],
                       ],

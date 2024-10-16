@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -76,5 +77,4 @@ class RuleDictionnaryPrinterModel extends RuleDictionnaryDropdown
         $actions['name']['force_actions'] = ['assign', 'regex_result', 'append_regex_result'];
         return $actions;
     }
-
 }

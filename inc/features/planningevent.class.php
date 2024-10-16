@@ -86,21 +86,23 @@ trait PlanningEvent
         $this->input = $this->addFiles(
             $this->input,
             [
-         'force_update'  => true,
-         'content_field' => 'text']
+            'force_update'  => true,
+            'content_field' => 'text']
         );
 
-        if (!isset($this->input['_no_check_plan'])
+        if (
+            !isset($this->input['_no_check_plan'])
             && isset($this->fields["users_id"])
             && isset($this->fields["begin"])
-            && !empty($this->fields["begin"])) {
+            && !empty($this->fields["begin"])
+        ) {
             Planning::checkAlreadyPlanned(
                 $this->fields["users_id"],
                 $this->fields["begin"],
                 $this->fields["end"],
                 [
                   $this->getType() => [$this->fields['id']]
-            ]
+                ]
             );
         }
 
@@ -115,9 +117,11 @@ trait PlanningEvent
     {
         global $DB;
 
-        if ($DB->fieldExists(static::getTable(), 'users_id')
+        if (
+            $DB->fieldExists(static::getTable(), 'users_id')
             && (!isset($input['users_id'])
-                || empty($input['users_id']))) {
+                || empty($input['users_id']))
+        ) {
             $input['users_id'] = Session::getLoginUserID();
         }
 
@@ -140,18 +144,20 @@ trait PlanningEvent
         $input["begin"] = $input["end"] = "NULL";
 
         if (isset($input['plan'])) {
-            if (!empty($input['plan']["begin"])
+            if (
+                !empty($input['plan']["begin"])
                 && !empty($input['plan']["end"])
-                && ($input['plan']["begin"] < $input['plan']["end"])) {
-
+                && ($input['plan']["begin"] < $input['plan']["end"])
+            ) {
                 $input['_plan']      = $input['plan'];
                 unset($input['plan']);
                 $input['is_planned'] = 1;
                 $input["begin"]      = $input['_plan']["begin"];
                 $input["end"]        = $input['_plan']["end"];
-
-            } elseif (isset($this->fields['begin'])
-                       && isset($this->fields['end'])) {
+            } elseif (
+                isset($this->fields['begin'])
+                       && isset($this->fields['end'])
+            ) {
                 Session::addMessageAfterRedirect(
                     __('Error in entering dates. The starting date is later than the ending date'),
                     false,
@@ -197,19 +203,20 @@ trait PlanningEvent
         }
 
         if (isset($input['plan'])) {
-
-            if (!empty($input['plan']["begin"])
+            if (
+                !empty($input['plan']["begin"])
                 && !empty($input['plan']["end"])
-                && ($input['plan']["begin"] < $input['plan']["end"])) {
-
+                && ($input['plan']["begin"] < $input['plan']["end"])
+            ) {
                 $input['_plan']      = $input['plan'];
                 unset($input['plan']);
                 $input['is_planned'] = 1;
                 $input["begin"]      = $input['_plan']["begin"];
                 $input["end"]        = $input['_plan']["end"];
-
-            } elseif (isset($this->fields['begin'])
-                       && isset($this->fields['end'])) {
+            } elseif (
+                isset($this->fields['begin'])
+                       && isset($this->fields['end'])
+            ) {
                 Session::addMessageAfterRedirect(
                     __('Error in entering dates. The starting date is later than the ending date'),
                     false,
@@ -254,17 +261,19 @@ trait PlanningEvent
 
     public function post_updateItem($history = 1)
     {
-        if (!isset($this->input['_no_check_plan'])
+        if (
+            !isset($this->input['_no_check_plan'])
             && isset($this->fields["users_id"])
             && isset($this->fields["begin"])
-            && !empty($this->fields["begin"])) {
+            && !empty($this->fields["begin"])
+        ) {
             Planning::checkAlreadyPlanned(
                 $this->fields["users_id"],
                 $this->fields["begin"],
                 $this->fields["end"],
                 [
                   $this->getType() => [$this->fields['id']]
-            ]
+                ]
             );
         }
         if (in_array("begin", $this->updates)) {
@@ -274,16 +283,17 @@ trait PlanningEvent
                 $this->fields["begin"]
             );
         }
-
     }
 
 
     public function pre_updateInDB()
     {
         // Set new user if initial user have been deleted
-        if (isset($this->fields['users_id'])
+        if (
+            isset($this->fields['users_id'])
             && $this->fields['users_id'] == 0
-            && $uid = Session::getLoginUserID()) {
+            && $uid = Session::getLoginUserID()
+        ) {
             $this->fields['users_id'] = $uid;
             $this->updates[]          = "users_id";
         }
@@ -391,8 +401,10 @@ trait PlanningEvent
         $table     = self::getTable();
         $has_bg    = $DB->fieldExists($table, 'background');
 
-        if (!isset($options['begin']) || $options['begin'] == 'NULL'
-           || !isset($options['end']) || $options['end'] == 'NULL') {
+        if (
+            !isset($options['begin']) || $options['begin'] == 'NULL'
+            || !isset($options['end']) || $options['end'] == 'NULL'
+        ) {
             return $events;
         }
 
@@ -412,10 +424,12 @@ trait PlanningEvent
         $nreadpriv = [];
 
         // See public event ?
-        if (!$options['genical']
-           && (Session::getLoginUserID() !== false && $who == Session::getLoginUserID())
-           && self::canView()
-           && isset($visibility_criteria['WHERE'])) {
+        if (
+            !$options['genical']
+            && (Session::getLoginUserID() !== false && $who == Session::getLoginUserID())
+            && self::canView()
+            && isset($visibility_criteria['WHERE'])
+        ) {
             $nreadpub = $visibility_criteria['WHERE'];
         }
         unset($visibility_criteria['WHERE']);
@@ -436,7 +450,7 @@ trait PlanningEvent
             if ($DB->fieldExists($table, 'users_id_guests')) {
                 $nreadpriv = ['OR' => [
                    "$table.users_id" => $who,
-                   "$table.users_id_guests" => ['LIKE', '%"'.$who.'"%'],
+                   "$table.users_id_guests" => ['LIKE', '%"' . $who . '"%'],
                 ]];
             }
         }
@@ -456,8 +470,10 @@ trait PlanningEvent
 
         $NASSIGN = [];
 
-        if (count($nreadpub)
-           && count($nreadpriv)) {
+        if (
+            count($nreadpub)
+            && count($nreadpriv)
+        ) {
             $NASSIGN = ['OR' => [$nreadpub, $nreadpriv]];
         } elseif (count($nreadpub)) {
             $NASSIGN = $nreadpub;
@@ -533,18 +549,18 @@ trait PlanningEvent
         if (count($iterator)) {
             while ($data = $iterator->next()) {
                 if ($event_obj->getFromDB($data["id"]) && $event_obj->canViewItem()) {
-                    $key = $data["begin"].
-                           "$$".$itemtype.
-                           "$$".$data["id"].
-                           "$$".$who.
-                           "$$".$whogroup;
+                    $key = $data["begin"] .
+                           "$$" . $itemtype .
+                           "$$" . $data["id"] .
+                           "$$" . $who .
+                           "$$" . $whogroup;
                     if (isset($options['from_group_users'])) {
                         $key .= "_gu";
                     }
 
                     $url = (!$options['genical'])
                        ? $event_obj->getFormURLWithID($data['id'])
-                       : $CFG_GLPI["url_base"].
+                       : $CFG_GLPI["url_base"] .
                          self::getFormURLWithID($data['id'], false);
 
                     $is_rrule = isset($data['rrule']) && strlen($data['rrule']) > 0;
@@ -564,10 +580,10 @@ trait PlanningEvent
                            Html::clean(Toolbox::unclean_cross_side_scripting_deep($data["text"])),
                            $CFG_GLPI["cut"]
                        ),
-                       'ajaxurl'          => $CFG_GLPI["root_doc"]."/ajax/planning.php".
-                                             "?action=edit_event_form".
-                                             "&itemtype=$itemtype".
-                                             "&id=".$data['id'].
+                       'ajaxurl'          => $CFG_GLPI["root_doc"] . "/ajax/planning.php" .
+                                             "?action=edit_event_form" .
+                                             "&itemtype=$itemtype" .
+                                             "&id=" . $data['id'] .
                                              "&url=$url",
                        'editable'         => $event_obj->canUpdateItem(),
                        'url'              => $url,
@@ -598,14 +614,14 @@ trait PlanningEvent
                         // - also set begin and end dates like it was as UTC
                         //   (Rrule lib will always compare with UTC)
                         $begin_datetime = new DateTime($options['begin'], new DateTimeZone('UTC'));
-                        $begin_datetime->sub(new DateInterval("PT".($duration - 1)."S"));
+                        $begin_datetime->sub(new DateInterval("PT" . ($duration - 1) . "S"));
                         $end_datetime   = new DateTime($options['end'], new DateTimeZone('UTC'));
                         $occurences = $rset->getOccurrencesBetween($begin_datetime, $end_datetime);
 
                         // add the found occurences to the final tab after replacing their dates
                         foreach ($occurences as $currentDate) {
                             $occurence_begin = $currentDate;
-                            $occurence_end   = (clone $currentDate)->add(new DateInterval("PT".$duration."S"));
+                            $occurence_end   = (clone $currentDate)->add(new DateInterval("PT" . $duration . "S"));
 
                             $events_toadd[] = array_merge($event, [
                                'begin' => $occurence_begin->format('Y-m-d H:i:s'),
@@ -651,41 +667,43 @@ trait PlanningEvent
         $item_fk  = getForeignKeyFieldForItemType(static::getType());
 
         if ($val["users_id"] != Session::getLoginUserID()) {
-            $users_id = "<br>".sprintf(__('%1$s: %2$s'), __('By'), getUserName($val["users_id"]));
+            $users_id = "<br>" . sprintf(__('%1$s: %2$s'), __('By'), getUserName($val["users_id"]));
             $img      = "rdv_public.png";
         }
 
-        $html .= "<img src='".$CFG_GLPI["root_doc"]."/pics/".$img."' alt='' title=\"".
-               self::getTypeName(1)."\">&nbsp;";
-        $html .= "<a id='reminder_".$val[$item_fk].$rand."' href='".
-               Reminder::getFormURLWithID($val[$item_fk])."'>";
+        $html .= "<img src='" . $CFG_GLPI["root_doc"] . "/pics/" . $img . "' alt='' title=\"" .
+               self::getTypeName(1) . "\">&nbsp;";
+        $html .= "<a id='reminder_" . $val[$item_fk] . $rand . "' href='" .
+               Reminder::getFormURLWithID($val[$item_fk]) . "'>";
 
         $html .= $users_id;
         $html .= "</a>";
         $recall = '';
         if (isset($val[$item_fk])) {
             $pr = new PlanningRecall();
-            if ($pr->getFromDBForItemAndUser(
-                $val['itemtype'],
-                $val[$item_fk],
-                Session::getLoginUserID()
-            )) {
-                $recall = "<br><span class='b'>".sprintf(
+            if (
+                $pr->getFromDBForItemAndUser(
+                    $val['itemtype'],
+                    $val[$item_fk],
+                    Session::getLoginUserID()
+                )
+            ) {
+                $recall = "<br><span class='b'>" . sprintf(
                     __('Recall on %s'),
                     Html::convDateTime($pr->fields['when'])
-                ).
+                ) .
                           "<span>";
             }
         }
 
         if ($complete) {
-            $html .= "<span>".Planning::getState($val["state"])."</span><br>";
-            $html .= "<div class='event-description rich_text_container'>".$val["text"].$recall."</div>";
+            $html .= "<span>" . Planning::getState($val["state"]) . "</span><br>";
+            $html .= "<div class='event-description rich_text_container'>" . $val["text"] . $recall . "</div>";
         } else {
             $html .= Html::showToolTip(
-                "<span class='b'>".Planning::getState($val["state"])."</span><br>
-                                   ".$val["text"].$recall,
-                ['applyto' => "reminder_".$val[$item_fk].$rand,
+                "<span class='b'>" . Planning::getState($val["state"]) . "</span><br>
+                                   " . $val["text"] . $recall,
+                ['applyto' => "reminder_" . $val[$item_fk] . $rand,
                                             'display' => false]
             );
         }
@@ -745,33 +763,33 @@ trait PlanningEvent
 
         $out .= "<span id='toggle_ar' style='display: $display_tar'>";
         $out .= "<a class='vsubmit'
-                 title='".__("Personalization")."'
+                 title='" . __("Personalization") . "'
                  onclick='$(\"#advanced_repetition$rand\").toggle()'>
                  <i class='fas fa-cog' aria-hidden='true'></i>
               </a>";
         $out .= "<div id='advanced_repetition$rand' style='display: $display_ar; max-width: 23'>";
 
         $out .= "<div class='field'>";
-        $out .= "<label for='dropdown_interval$rand'>".__("Interval")."</label>";
-        $out .= "<div>".Dropdown::showNumber('rrule[interval]', [
+        $out .= "<label for='dropdown_interval$rand'>" . __("Interval") . "</label>";
+        $out .= "<div>" . Dropdown::showNumber('rrule[interval]', [
            'value'   => $rrule['interval'],
            'rand'    => $rand,
            'display' => false,
-        ])."</div>";
+        ]) . "</div>";
         $out .= "</div>";
 
         $out .= "<div class='field'>";
-        $out .= "<label for='showdate$rand'>".__("Until")."</label>";
-        $out .= "<div>".Html::showDateField('rrule[until]', [
+        $out .= "<label for='showdate$rand'>" . __("Until") . "</label>";
+        $out .= "<div>" . Html::showDateField('rrule[until]', [
            'value'   => $rrule['until'],
            'rand'    => $rand,
            'display' => false,
-        ])."</div>";
+        ]) . "</div>";
         $out .= "</div>";
 
         $out .= "<div class='field'>";
-        $out .= "<label for='dropdown_byday$rand'>".__("By day")."</label>";
-        $out .= "<div>".Dropdown::showFromArray('rrule[byday]', [
+        $out .= "<label for='dropdown_byday$rand'>" . __("By day") . "</label>";
+        $out .= "<div>" . Dropdown::showFromArray('rrule[byday]', [
            'MO' => __('Monday'),
            'TU' => __('Tuesday'),
            'WE' => __('Wednesday'),
@@ -786,12 +804,12 @@ trait PlanningEvent
            'display_emptychoice' => true,
            'width'               => '100%',
            'multiple'            => true,
-        ])."</div>";
+        ]) . "</div>";
         $out .= "</div>";
 
         $out .= "<div class='field'>";
-        $out .= "<label for='dropdown_bymonth$rand'>".__("By month")."</label>";
-        $out .= "<div>".Dropdown::showFromArray('rrule[bymonth]', [
+        $out .= "<label for='dropdown_bymonth$rand'>" . __("By month") . "</label>";
+        $out .= "<div>" . Dropdown::showFromArray('rrule[bymonth]', [
            1  => __('January'),
            2  => __('February'),
            3  => __('March'),
@@ -811,19 +829,19 @@ trait PlanningEvent
            'display_emptychoice' => true,
            'width'               => '100%',
            'multiple'            => true,
-        ])."</div>";
+        ]) . "</div>";
         $out .= "</div>";
 
         $rand = mt_rand();
         $out .= "<div class='field'>";
-        $out .= "<label for='showdate$rand'>".__("Exceptions")."</label>";
-        $out .= "<div>".Html::showDateField('rrule[exceptions]', [
+        $out .= "<label for='showdate$rand'>" . __("Exceptions") . "</label>";
+        $out .= "<div>" . Html::showDateField('rrule[exceptions]', [
            'value'    => implode(', ', $rrule['exceptions']),
            'rand'     => $rand,
            'display'  => false,
            'multiple' => true,
            'size'     => 30,
-        ])."</div>";
+        ]) . "</div>";
         $out .= "</div>";
 
         $out .= "</div>"; // #advanced_repetition
@@ -853,12 +871,12 @@ trait PlanningEvent
                 Html::convDateTime($val["begin"]),
                 Html::convDateTime($val["end"])
             );
-            $out .= "<br/><a href='".$objectitemtype::getFormURLWithID($val[getForeignKeyFieldForItemType($objectitemtype)]);
+            $out .= "<br/><a href='" . $objectitemtype::getFormURLWithID($val[getForeignKeyFieldForItemType($objectitemtype)]);
             if ($item instanceof CommonITILTask) {
-                $out .= "&amp;forcetab=".$itemtype."$1";
+                $out .= "&amp;forcetab=" . $itemtype . "$1";
             }
             $out .= "'>";
-            $out .= Html::resume_text($val["name"], 80).'</a>';
+            $out .= Html::resume_text($val["name"], 80) . '</a>';
 
             return $out;
         }

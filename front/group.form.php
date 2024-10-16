@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -57,11 +58,12 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $group->check($_POST["id"], PURGE);
-    if ($group->isUsed()
-          && empty($_POST["forcepurge"])) {
+    if (
+        $group->isUsed()
+          && empty($_POST["forcepurge"])
+    ) {
         Html::header(
             $group->getTypeName(1),
             $_SERVER['PHP_SELF'],
@@ -84,7 +86,6 @@ if (isset($_POST["add"])) {
         );
         $group->redirectToList();
     }
-
 } elseif (isset($_POST["update"])) {
     $group->check($_POST["id"], UPDATE);
     $group->update($_POST);
@@ -97,12 +98,10 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } elseif (isset($_GET['_in_modal'])) {
     Html::popHeader(Group::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF']);
     $group->showForm($_GET["id"]);
     Html::popFooter();
-
 } elseif (isset($_POST["replace"])) {
     $group->check($_POST["id"], PURGE);
     $group->delete($_POST, 1);
@@ -116,7 +115,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s replaces an item'), $_SESSION["glpiname"])
     );
     $group->redirectToList();
-
 } else {
     Html::header(Group::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "admin", "group");
     $group->display([

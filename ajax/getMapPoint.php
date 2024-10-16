@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -72,8 +73,8 @@ if (!isset($_POST['itemtype']) || !isset($_POST['items_id']) || (int)$_POST['ite
         } else {
             $result = [
                'success'   => false,
-               'message'   => "<h3>".__("Location seems not geolocalized!")."</h3>".
-                              "<a href='".$item->getLinkURL()."'>".__("Consider filling latitude and longitude on this location.")."</a>"
+               'message'   => "<h3>" . __("Location seems not geolocalized!") . "</h3>" .
+                              "<a href='" . $item->getLinkURL() . "'>" . __("Consider filling latitude and longitude on this location.") . "</a>"
             ];
         }
     }

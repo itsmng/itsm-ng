@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -77,7 +78,7 @@ class SoftwareCategory extends CommonTreeDropdown
                 'core',
                 [
                   'softwarecategories_id_ondelete' => $newval,
-            ]
+                ]
             );
         }
     }

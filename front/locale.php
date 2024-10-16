@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -61,7 +62,7 @@ $default_response = json_encode(
          'language'     => $CFG_GLPI['languages'][$_SESSION['glpilanguage']][1],
          'plural-forms' => 'nplurals=2; plural=(n != 1);',
       ],
-   ]
+    ]
 );
 
 // Get messages from translator component

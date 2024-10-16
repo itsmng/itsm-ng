@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -80,13 +81,13 @@ abstract class LevelAgreement extends CommonDBChild
 
         switch ($subtype) {
             case SLM::TTO:
-                $dateField = static::$prefixticket.'time_to_own';
-                $laField   = static::$prefix.'s_id_tto';
+                $dateField = static::$prefixticket . 'time_to_own';
+                $laField   = static::$prefix . 's_id_tto';
                 break;
 
             case SLM::TTR:
-                $dateField = static::$prefixticket.'time_to_resolve';
-                $laField   = static::$prefix.'s_id_ttr';
+                $dateField = static::$prefixticket . 'time_to_resolve';
+                $laField   = static::$prefix . 's_id_ttr';
                 break;
         }
         return [$dateField, $laField];
@@ -291,7 +292,7 @@ abstract class LevelAgreement extends CommonDBChild
                 echo Dropdown::getDropdownName(
                     static::getTable(),
                     $ticket->fields[$laField]
-                )."&nbsp;";
+                ) . "&nbsp;";
                 echo Html::hidden($laField, ['value' => $ticket->fields[$laField]]);
                 $obj = new static();
                 $obj->getFromDB($ticket->fields[$laField]);
@@ -299,19 +300,19 @@ abstract class LevelAgreement extends CommonDBChild
                 $level      = new static::$levelclass();
                 $nextaction = new static::$levelticketclass();
                 if ($nextaction->getFromDBForTicket($ticket->fields["id"], $type)) {
-                    $comment .= '<br/><span class="b spaced">'.
+                    $comment .= '<br/><span class="b spaced">' .
                                   sprintf(
                                       __('Next escalation: %s'),
                                       Html::convDateTime($nextaction->fields['date'])
-                                  ).
+                                  ) .
                                 '</span><br>';
-                    if ($level->getFromDB($nextaction->fields[$pre.'levels_id'])) {
-                        $comment .= '<span class="b spaced">'.
+                    if ($level->getFromDB($nextaction->fields[$pre . 'levels_id'])) {
+                        $comment .= '<span class="b spaced">' .
                                       sprintf(
                                           __('%1$s: %2$s'),
                                           _n('Escalation level', 'Escalation levels', 1),
                                           $level->getName()
-                                      ).
+                                      ) .
                                     '</span>';
                     }
                 }
@@ -322,7 +323,7 @@ abstract class LevelAgreement extends CommonDBChild
                 }
                 Html::showToolTip($comment, $options);
                 if ($canupdate) {
-                    $delete_field = strtolower(get_called_class())."_delete";
+                    $delete_field = strtolower(get_called_class()) . "_delete";
                     $fields = [$delete_field       => $delete_field,
                                'id'                => $ticket->getID(),
                                'type'              => $type,
@@ -333,23 +334,22 @@ abstract class LevelAgreement extends CommonDBChild
                function delete_date$type$rand(e) {
                   e.preventDefault();
 
-                  if (nativeConfirm('".addslashes(__('Also delete date?'))."')) {
+                  if (nativeConfirm('" . addslashes(__('Also delete date?')) . "')) {
                      submitGetLink('$ticket_url',
-                                   ".json_encode(array_merge($fields, ['delete_date' => 1])).");
+                                   " . json_encode(array_merge($fields, ['delete_date' => 1])) . ");
                   } else {
                      submitGetLink('$ticket_url',
-                                   ".json_encode(array_merge($fields, ['delete_date' => 0])).");
+                                   " . json_encode(array_merge($fields, ['delete_date' => 0])) . ");
                   }
                }");
                     echo "<a class='fa fa-times-circle pointer'
                         onclick='delete_date$type$rand(event)'
-                        title='"._sx('button', 'Delete permanently')."'>";
-                    echo "<span class='sr-only'>"._x('button', 'Delete permanently')."</span>";
+                        title='" . _sx('button', 'Delete permanently') . "'>";
+                    echo "<span class='sr-only'>" . _x('button', 'Delete permanently') . "</span>";
                     echo "</a>";
                 }
                 echo $tt->getEndHiddenFieldText($laField);
                 echo "</td>";
-
             } else {
                 echo "<td width='200px'>";
                 echo $tt->getBeginHiddenFieldValue($dateField);
@@ -368,20 +368,22 @@ abstract class LevelAgreement extends CommonDBChild
                 $data     = $this->find(
                     ['type' => $type] + getEntitiesRestrictCriteria('', '', $ticket->fields['entities_id'], true)
                 );
-                if ($canupdate
-                    && !empty($data)) {
+                if (
+                    $canupdate
+                    && !empty($data)
+                ) {
                     echo $tt->getBeginHiddenFieldText($laField);
                     echo "<span id='la_action$type$rand' class='assign_la'>";
-                    echo "<a ".Html::addConfirmationOnAction(
+                    echo "<a " . Html::addConfirmationOnAction(
                         $this->getAddConfirmation(),
                         "cleanhide('la_action$type$rand');cleandisplay('la_choice$type$rand');"
-                    ).
-                         " class='pointer' title='".static::getTypeName()."'>
+                    ) .
+                         " class='pointer' title='" . static::getTypeName() . "'>
                     <i class='fas fa-stopwatch slt' aria-hidden='true'></i></a>";
                     echo "</span>";
                     echo "<span id='la_choice$type$rand' style='display:none' class='assign_la'>";
                     echo "<i class='fas fa-stopwatch slt' aria-hidden='true'></i>";
-                    echo "<span class='b'>".static::getTypeName()."</span>&nbsp;";
+                    echo "<span class='b'>" . static::getTypeName() . "</span>&nbsp;";
                     static::dropdown([
                        'name'      => $laField,
                        'entity'    => $ticket->fields["entities_id"],
@@ -392,7 +394,6 @@ abstract class LevelAgreement extends CommonDBChild
                 }
                 echo "</td>";
             }
-
         } else { // New Ticket
             echo "<td>";
             echo $tt->getBeginHiddenFieldValue($dateField);
@@ -408,18 +409,20 @@ abstract class LevelAgreement extends CommonDBChild
             $data     = $this->find(
                 ['type' => $type] + getEntitiesRestrictCriteria('', '', $ticket->fields['entities_id'], true)
             );
-            if ($canupdate
-                && !empty($data)) {
+            if (
+                $canupdate
+                && !empty($data)
+            ) {
                 echo $tt->getBeginHiddenFieldText($laField);
                 if (!$tt->isHiddenField($laField) || $tt->isPredefinedField($laField)) {
-                    echo "<th>".sprintf(
+                    echo "<th>" . sprintf(
                         __('%1$s%2$s'),
                         static::getTypeName(),
                         $tt->getMandatoryMark($laField)
-                    )."</th>";
+                    ) . "</th>";
                 }
                 echo $tt->getEndHiddenFieldText($laField);
-                echo "<td class='nopadding'>".$tt->getBeginHiddenFieldValue($laField);
+                echo "<td class='nopadding'>" . $tt->getBeginHiddenFieldValue($laField);
                 static::dropdown([
                    'name'      => $laField,
                    'entity'    => $ticket->fields["entities_id"],
@@ -467,14 +470,14 @@ abstract class LevelAgreement extends CommonDBChild
                        'id'                       => -1];
             Ajax::updateItemJsCode(
                 "showLa$instID$rand",
-                $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php",
+                $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
                 $params
             );
             echo "}";
             echo "</script>";
-            echo "<div class='center firstbloc'>".
+            echo "<div class='center firstbloc'>" .
                   "<a class='btn btn-secondary' href='javascript:viewAddLa$instID$rand();'>";
-            echo __('Add a new item')."</a></div>\n";
+            echo __('Add a new item') . "</a></div>\n";
         }
 
         // list
@@ -490,8 +493,8 @@ abstract class LevelAgreement extends CommonDBChild
         echo "<div class='spaced'>";
         if (count($laList)) {
             if ($canedit) {
-                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-                $massiveactionparams = ['container' => 'mass'.__CLASS__.$rand];
+                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
+                $massiveactionparams = ['container' => 'mass' . __CLASS__ . $rand];
                 Html::showMassiveActions($massiveactionparams);
             }
 
@@ -501,30 +504,30 @@ abstract class LevelAgreement extends CommonDBChild
             $header_bottom = '';
             $header_end    = '';
             if ($canedit) {
-                $header_top .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+                $header_top .= "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
                 $header_top .= "</th>";
-                $header_bottom .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+                $header_bottom .= "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
                 $header_bottom .= "</th>";
             }
-            $header_end .= "<th>".__('Name')."</th>";
-            $header_end .= "<th>"._n('Type', 'Types', 1)."</th>";
-            $header_end .= "<th>".__('Maximum time')."</th>";
-            $header_end .= "<th>"._n('Calendar', 'Calendars', 1)."</th>";
+            $header_end .= "<th>" . __('Name') . "</th>";
+            $header_end .= "<th>" . _n('Type', 'Types', 1) . "</th>";
+            $header_end .= "<th>" . __('Maximum time') . "</th>";
+            $header_end .= "<th>" . _n('Calendar', 'Calendars', 1) . "</th>";
 
-            echo $header_begin.$header_top.$header_end;
+            echo $header_begin . $header_top . $header_end;
             foreach ($laList as $val) {
-                $edit = ($canedit ? "style='cursor:pointer' onClick=\"viewEditLa".
-                            $instID.$val["id"]."$rand();\""
+                $edit = ($canedit ? "style='cursor:pointer' onClick=\"viewEditLa" .
+                            $instID . $val["id"] . "$rand();\""
                             : '');
                 echo "<script type='text/javascript' >";
-                echo "function viewEditLa".$instID.$val["id"]."$rand() {";
+                echo "function viewEditLa" . $instID . $val["id"] . "$rand() {";
                 $params = ['type'                     => $la->getType(),
                            'parenttype'               => $slm->getType(),
                            $slm->getForeignKeyField() => $instID,
                            'id'                       => $val["id"]];
                 Ajax::updateItemJsCode(
                     "showLa$instID$rand",
-                    $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php",
+                    $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
                     $params
                 );
                 echo "};";
@@ -537,8 +540,8 @@ abstract class LevelAgreement extends CommonDBChild
                 }
                 echo "</td>";
                 $la->getFromDB($val['id']);
-                echo "<td $edit>".$la->getLink()."</td>";
-                echo "<td $edit>".$la->getSpecificValueToDisplay('type', $la->fields['type'])."</td>";
+                echo "<td $edit>" . $la->getLink() . "</td>";
+                echo "<td $edit>" . $la->getSpecificValueToDisplay('type', $la->fields['type']) . "</td>";
                 echo "<td $edit>";
                 echo $la->getSpecificValueToDisplay(
                     'number_time',
@@ -553,10 +556,10 @@ abstract class LevelAgreement extends CommonDBChild
                 } elseif ($calendar->getFromDB($slm->fields['calendars_id'])) {
                     $link = $calendar->getLink();
                 }
-                echo "<td $edit>".$link."</td>";
+                echo "<td $edit>" . $link . "</td>";
                 echo "</tr>";
             }
-            echo $header_begin.$header_bottom.$header_end;
+            echo $header_begin . $header_bottom . $header_end;
             echo "</table>";
 
             if ($canedit) {
@@ -598,10 +601,9 @@ abstract class LevelAgreement extends CommonDBChild
             echo "<tr><th>" . __('No item found') . "</th>";
             echo "</tr>\n";
             echo "</table>\n";
-
         } else {
             if ($canedit) {
-                Html::openMassiveActionsForm('massRuleTicket'.$rand);
+                Html::openMassiveActionsForm('massRuleTicket' . $rand);
                 $massiveactionparams
                    = ['num_displayed'    => min($_SESSION['glpilist_limit'], $nb),
                       'specific_actions' => ['update' => _x('button', 'Update'),
@@ -615,15 +617,15 @@ abstract class LevelAgreement extends CommonDBChild
             $header_end    = '';
             if ($canedit) {
                 $header_begin  .= "<th width='10'>";
-                $header_top    .= Html::getCheckAllAsCheckbox('massRuleTicket'.$rand);
-                $header_bottom .= Html::getCheckAllAsCheckbox('massRuleTicket'.$rand);
+                $header_top    .= Html::getCheckAllAsCheckbox('massRuleTicket' . $rand);
+                $header_bottom .= Html::getCheckAllAsCheckbox('massRuleTicket' . $rand);
                 $header_end    .= "</th>";
             }
             $header_end .= "<th>" . RuleTicket::getTypeName($nb) . "</th>";
             $header_end .= "<th>" . __('Active') . "</th>";
             $header_end .= "<th>" . __('Description') . "</th>";
             $header_end .= "</tr>\n";
-            echo $header_begin.$header_top.$header_end;
+            echo $header_begin . $header_top . $header_end;
 
             Session::initNavigateListItems(
                 get_class($this),
@@ -644,9 +646,8 @@ abstract class LevelAgreement extends CommonDBChild
                     Html::showMassiveActionCheckBox("RuleTicket", $rule->fields["id"]);
                     echo "</td>";
                     $ruleclassname = get_class($rule);
-                    echo "<td><a href='".$ruleclassname::getFormURLWithID($rule->fields["id"])
-                            . "&amp;onglet=1'>" .$rule->fields["name"] ."</a></td>";
-
+                    echo "<td><a href='" . $ruleclassname::getFormURLWithID($rule->fields["id"])
+                            . "&amp;onglet=1'>" . $rule->fields["name"] . "</a></td>";
                 } else {
                     echo "<td>" . $rule->fields["name"] . "</td>";
                 }
@@ -655,7 +656,7 @@ abstract class LevelAgreement extends CommonDBChild
                 echo "<td>" . $rule->fields["description"] . "</td>";
                 echo "</tr>\n";
             }
-            echo $header_begin.$header_bottom.$header_end;
+            echo $header_begin . $header_bottom . $header_end;
             echo "</table>\n";
 
             if ($canedit) {
@@ -912,7 +913,6 @@ abstract class LevelAgreement extends CommonDBChild
                 if ($cal->getFromDB($this->fields['calendars_id'])) {
                     return $cal->getActiveTimeBetween($start, $end, $work_in_days);
                 }
-
             } else { // No calendar
                 $timestart = strtotime($start);
                 $timeend   = strtotime($end);
@@ -1092,8 +1092,8 @@ abstract class LevelAgreement extends CommonDBChild
 
         $pre = static::$prefix;
 
-        if (!$levels_id && isset($ticket->fields[$pre.'levels_id_ttr'])) {
-            $levels_id = $ticket->fields[$pre."levels_id_ttr"];
+        if (!$levels_id && isset($ticket->fields[$pre . 'levels_id_ttr'])) {
+            $levels_id = $ticket->fields[$pre . "levels_id_ttr"];
         }
 
         if ($levels_id) {
@@ -1101,11 +1101,11 @@ abstract class LevelAgreement extends CommonDBChild
             $date = $this->computeExecutionDate(
                 $ticket->fields['date'],
                 $levels_id,
-                $ticket->fields[$pre.'_waiting_duration']
+                $ticket->fields[$pre . '_waiting_duration']
             );
             if ($date != null) {
                 $toadd['date']           = $date;
-                $toadd[$pre.'levels_id'] = $levels_id;
+                $toadd[$pre . 'levels_id'] = $levels_id;
                 $toadd['tickets_id']     = $ticket->fields["id"];
                 $levelticket             = new static::$levelticketclass();
                 $levelticket->add($toadd);
@@ -1125,7 +1125,7 @@ abstract class LevelAgreement extends CommonDBChild
     {
         global $DB;
 
-        $ticketfield = static::$prefix."levels_id_ttr";
+        $ticketfield = static::$prefix . "levels_id_ttr";
 
         if ($ticket->fields[$ticketfield] > 0) {
             $levelticket = new static::$levelticketclass();

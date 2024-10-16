@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -120,7 +121,7 @@ class SeLinux extends \GLPITestCase
                  'SELinux boolean httpd_can_network_connect is off, some features may require this to be on.',
                  'SELinux boolean httpd_can_network_connect_db is off, some features may require this to be on.',
                  'SELinux boolean httpd_can_sendmail is off, some features may require this to be on.',
-            ]
+               ]
            );
     }
 

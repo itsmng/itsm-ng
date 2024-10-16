@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -42,8 +43,10 @@ if (isset($_GET["globalsearch"])) {
     $searchtext = trim($_GET["globalsearch"]);
 
     foreach ($CFG_GLPI["globalsearch_types"] as $itemtype) {
-        if (($item = getItemForItemtype($itemtype))
-            && $item->canView()) {
+        if (
+            ($item = getItemForItemtype($itemtype))
+            && $item->canView()
+        ) {
             $_GET["reset"]        = 'reset';
 
             $params                 = Search::manageParams($itemtype, $_GET, false, true);

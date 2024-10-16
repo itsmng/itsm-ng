@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -89,7 +90,7 @@ class NotificationTargetCertificate extends NotificationTarget
                '##certificate.expirationdate##' => Html::convDate($certificate["date_expiration"]),
                '##certificate.url##'            => $this->formatURL(
                    $options['additionnaloption']['usertype'],
-                   "Certificate_".$id
+                   "Certificate_" . $id
                ),
             ];
         }
@@ -126,5 +127,4 @@ class NotificationTargetCertificate extends NotificationTarget
 
         asort($this->tag_descriptions);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -223,11 +224,9 @@ class RuleMailCollector extends Rule
     {
 
         if (count($this->actions)) {
-
             foreach ($this->actions as $action) {
-
                 switch ($action->fields["action_type"]) {
-                    case "assign" :
+                    case "assign":
                         switch ($action->fields["field"]) {
                             default:
                                 $output[$action->fields["field"]] = $action->fields["value"];
@@ -247,11 +246,9 @@ class RuleMailCollector extends Rule
                                 //Case 2:
                                 if (isset($this->criterias_results['ONE_PROFILE'])) {
                                     $profile = $this->criterias_results['ONE_PROFILE'];
-
                                 } elseif (isset($this->criterias_results['UNIQUE_PROFILE'])) {
                                     //Case 3
                                     $profile = $this->criterias_results['UNIQUE_PROFILE'];
-
                                 } elseif (isset($this->criterias_results['PROFILES'])) {
                                     //Case 1
                                     $profile = $this->criterias_results['PROFILES'];
@@ -268,17 +265,17 @@ class RuleMailCollector extends Rule
                                     }
 
                                     //Case 2 : check if there's only one profile for this user
-                                    if ((isset($this->criterias_results['ONE_PROFILE'])
+                                    if (
+                                        (isset($this->criterias_results['ONE_PROFILE'])
                                          && (count($entities) == 1))
-                                        || !isset($this->criterias_results['ONE_PROFILE'])) {
-
+                                        || !isset($this->criterias_results['ONE_PROFILE'])
+                                    ) {
                                         if (count($entities) == 1) {
                                             //User has right on only one entity
                                             $output['entities_id'] = array_pop($entities);
                                         } elseif (isset($this->criterias_results['UNIQUE_PROFILE'])) {
                                             $output['entities_id'] = array_pop($entities);
                                         } else {
-
                                             //Rights on more than one entity : get the user's prefered entity
                                             if (isset($params['_users_id_requester'])) { // Not set when testing
                                                 $user = new User();
@@ -307,7 +304,7 @@ class RuleMailCollector extends Rule
                         }
                         break;
 
-                    case "regex_result" :
+                    case "regex_result":
                         foreach ($this->regex_results as $regex_result) {
                             $entity_found = -1;
                             $res          = RuleAction::getRegexResultById(
@@ -343,5 +340,4 @@ class RuleMailCollector extends Rule
         }
         return $output;
     }
-
 }

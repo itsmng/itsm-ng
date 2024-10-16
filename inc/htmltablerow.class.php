@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -129,11 +130,9 @@ class HTMLTableRow extends HTMLTableEntity
         // First, compute the total nomber of rows ...
         $this->numberOfSubRows = 0;
         foreach ($this->cells as $cellsOfHeader) {
-
             if (isset($cellsOfHeader[0])) {
                 $header = $cellsOfHeader[0]->getHeader();
                 if (is_null($header->getFather())) {
-
                     $numberOfSubRowsPerHeader = 0;
                     foreach ($cellsOfHeader as $cell) {
                         $cell->computeNumberOfLines();
@@ -148,13 +147,11 @@ class HTMLTableRow extends HTMLTableEntity
 
         // Then notify each cell and compute its starting row
         foreach ($this->cells as $cellsOfHeader) {
-
             if (isset($cellsOfHeader[0])) {
                 $header = $cellsOfHeader[0]->getHeader();
 
                 // Only do this for cells that don't have father: they will propagate this to there sons
                 if (is_null($header->getFather())) {
-
                     HTMLTableCell::updateCellSteps($cellsOfHeader, $this->numberOfSubRows);
 
                     $start = 0;
@@ -193,12 +190,12 @@ class HTMLTableRow extends HTMLTableEntity
                         $display |= $cell->displayCell($i, $options);
                     }
                     if (!$display) {
-                        echo "\t\t\t<td colspan='".$header->getColSpan()."'";
+                        echo "\t\t\t<td colspan='" . $header->getColSpan() . "'";
                         $header->displayEntityAttributs($options);
                         echo "></td>\n";
                     }
                 } else {
-                    echo "\t\t\t<td colspan='".$header->getColSpan()."'";
+                    echo "\t\t\t<td colspan='" . $header->getColSpan() . "'";
                     $header->displayEntityAttributs($options);
                     echo "></td>\n";
                 }

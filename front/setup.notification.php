@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -37,9 +38,11 @@ Session::checkSeveralRightsOr(['notification' => READ,
 
 Html::header(_n('Notification', 'Notifications', Session::getPluralNumber()), $_SERVER['PHP_SELF'], "config", "notification");
 
-if (!Session::haveRight("config", READ)
-   && Session::haveRight("notification", READ)) {
-    Html::redirect($CFG_GLPI["root_doc"].'/front/notification.php');
+if (
+    !Session::haveRight("config", READ)
+    && Session::haveRight("notification", READ)
+) {
+    Html::redirect($CFG_GLPI["root_doc"] . '/front/notification.php');
 }
 
 $settingconfig = new NotificationSettingConfig();

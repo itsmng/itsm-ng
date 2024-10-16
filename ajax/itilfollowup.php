@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -42,8 +43,10 @@ Html::header_nocache();
 
 Session::checkLoginUser();
 
-if (isset($_POST['itilfollowuptemplates_id'])
-    && $_POST['itilfollowuptemplates_id'] > 0) {
+if (
+    isset($_POST['itilfollowuptemplates_id'])
+    && $_POST['itilfollowuptemplates_id'] > 0
+) {
     $template = new ITILFollowupTemplate();
     $template->getFromDB($_POST['itilfollowuptemplates_id']);
 

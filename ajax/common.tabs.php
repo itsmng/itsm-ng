@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -116,8 +117,6 @@ if (isset($_GET['full_page_tab'])) {
     }
 
     Html::footer();
-
-
 } else {
     Html::ajaxFooter();
 }

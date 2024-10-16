@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -133,5 +134,4 @@ class RuleTicketCollection extends RuleCollection
         }
         return $input;
     }
-
 }

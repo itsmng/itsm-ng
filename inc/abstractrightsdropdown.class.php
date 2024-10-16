@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -179,7 +180,7 @@ abstract class AbstractRightsDropdown
         ], [], self::LIMIT);
         $profiles_items = [];
         foreach ($profiles as $profile) {
-            $new_key = 'profiles_id-'.$profile['id'];
+            $new_key = 'profiles_id-' . $profile['id'];
             $profiles_items[$new_key] = $profile['name'];
         }
 
@@ -199,13 +200,13 @@ abstract class AbstractRightsDropdown
         $entities = $entity_item->find(
             [
               'name' => ["LIKE", "%$text%"]
-         ] + getEntitiesRestrictCriteria(Entity::getTable()),
+            ] + getEntitiesRestrictCriteria(Entity::getTable()),
             [],
             self::LIMIT
         );
         $entities_items = [];
         foreach ($entities as $entity) {
-            $new_key = 'entities_id-'.$entity['id'];
+            $new_key = 'entities_id-' . $entity['id'];
             $entities_items[$new_key] = $entity['completename'];
         }
 
@@ -224,7 +225,7 @@ abstract class AbstractRightsDropdown
         $users = User::getSqlSearchResult(false, "all", -1, 0, [], $text, 0, self::LIMIT);
         $users_items = [];
         foreach ($users as $user) {
-            $new_key = 'users_id-'.$user['id'];
+            $new_key = 'users_id-' . $user['id'];
             $users_items[$new_key] = $user['name'];
         }
 
@@ -244,13 +245,13 @@ abstract class AbstractRightsDropdown
         $groups = $group_item->find(
             [
               'name' => ["LIKE", "%$text%"]
-         ] + getEntitiesRestrictCriteria(Group::getTable()),
+            ] + getEntitiesRestrictCriteria(Group::getTable()),
             [],
             self::LIMIT
         );
         $groups_items = [];
         foreach ($groups as $group) {
-            $new_key = 'groups_id-'.$group['id'];
+            $new_key = 'groups_id-' . $group['id'];
             $groups_items[$new_key] = $group['name'];
         }
 

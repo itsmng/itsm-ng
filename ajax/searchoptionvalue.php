@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -53,7 +54,7 @@ if (isset($_POST['searchtype'])) {
         $fieldname = 'metacriteria';
     }
 
-    $inputname         = $fieldname.'['.$_POST['num'].'][value]';
+    $inputname         = $fieldname . '[' . $_POST['num'] . '][value]';
     $display           = false;
     $item              = getItemForItemtype($_POST['itemtype']);
     $options2          = [];
@@ -71,7 +72,7 @@ if (isset($_POST['searchtype'])) {
         case "notunder":
             if (!$display && isset($searchopt['field'])) {
                 // Specific cases
-                switch ($searchopt['table'].".".$searchopt['field']) {
+                switch ($searchopt['table'] . "." . $searchopt['field']) {
                     // Add mygroups choice to searchopt
                     case "glpi_groups.completename":
                         $searchopt['toadd'] = ['mygroups' => __('My groups')];
@@ -116,7 +117,6 @@ if (isset($_POST['searchtype'])) {
                 // Standard datatype usage
                 if (!$display && isset($searchopt['datatype'])) {
                     switch ($searchopt['datatype']) {
-
                         case "date":
                         case "date_delay":
                         case "datetime":
@@ -132,8 +132,10 @@ if (isset($_POST['searchtype'])) {
                 }
 
                 //Could display be handled by a plugin ?
-                if (!$display
-                    && $plug = isPluginItemType(getItemTypeForTable($searchopt['table']))) {
+                if (
+                    !$display
+                    && $plug = isPluginItemType(getItemTypeForTable($searchopt['table']))
+                ) {
                     $display = Plugin::doOneHook(
                         $plug['plugin'],
                         'searchOptionsValues',
@@ -142,17 +144,16 @@ if (isset($_POST['searchtype'])) {
                           'searchtype'     => $_POST['searchtype'],
                           'searchoption'   => $searchopt,
                           'value'          => $_POST['value']
-                  ]
+                        ]
                     );
                 }
-
             }
             break;
     }
 
     // Default case : text field
     if (!$display) {
-        echo "<input type='text' size='13' name='$inputname' value=\"".
-               Html::cleanInputText($_POST['value'])."\">";
+        echo "<input type='text' size='13' name='$inputname' value=\"" .
+               Html::cleanInputText($_POST['value']) . "\">";
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -47,10 +48,11 @@ if (empty($_GET["date1"]) && empty($_GET["date2"])) {
     $_GET["date2"] = date("Y-m-d");
 }
 
-if (!empty($_GET["date1"])
+if (
+    !empty($_GET["date1"])
     && !empty($_GET["date2"])
-    && (strcmp($_GET["date2"], $_GET["date1"]) < 0)) {
-
+    && (strcmp($_GET["date2"], $_GET["date1"]) < 0)
+) {
     $tmp           = $_GET["date1"];
     $_GET["date1"] = $_GET["date2"];
     $_GET["date2"] = $tmp;
@@ -77,7 +79,7 @@ Stat::title();
 
 echo "<form aria-label='Location Statistics' method='get' name='form' action='stat.location.php'>";
 // keep it first param
-echo "<input type='hidden' name='itemtype' value='". $_GET['itemtype'] ."'>";
+echo "<input type='hidden' name='itemtype' value='" . $_GET['itemtype'] . "'>";
 
 echo "<table class='tab_cadre_fixe' aria-label='Statistics report filter'><tr class='tab_bg_2'><td rowspan='2' width='30%'>";
 $values = [_n('Dropdown', 'Dropdowns', Session::getPluralNumber()) => ['ComputerType'    => _n('Type', 'Types', 1),
@@ -96,14 +98,14 @@ Dropdown::showFromArray('dropdown', $values, ['value' => $_GET["dropdown"]]);
 
 echo "</td>";
 
-echo "<td class='right'>".__('Start date')."</td><td>";
+echo "<td class='right'>" . __('Start date') . "</td><td>";
 Html::showDateField("date1", ['value' => $_GET["date1"]]);
 echo "</td>";
-echo "<td class='right'>".__('Show graphics')."</td>";
+echo "<td class='right'>" . __('Show graphics') . "</td>";
 echo "<td rowspan='2' class='center'>";
-echo "<input type='submit' class='submit' name='submit' value='".__s('Display report')."'></td></tr>";
+echo "<input type='submit' class='submit' name='submit' value='" . __s('Display report') . "'></td></tr>";
 
-echo "<tr class='tab_bg_2'><td class='right'>".__('End date')."</td><td>";
+echo "<tr class='tab_bg_2'><td class='right'>" . __('End date') . "</td><td>";
 Html::showDateField("date2", ['value' => $_GET["date2"]]);
 echo "</td><td class='center'>";
 Dropdown::showYesNo('showgraph', $_GET['showgraph']);
@@ -113,8 +115,10 @@ echo "</table>";
 // form using GET method : CRSF not needed
 echo "</form>";
 
-if (empty($_GET["dropdown"])
-    || !($item = getItemForItemtype($_GET["dropdown"]))) {
+if (
+    empty($_GET["dropdown"])
+    || !($item = getItemForItemtype($_GET["dropdown"]))
+) {
     // Do nothing
     Html::footer();
     exit();
@@ -131,7 +135,6 @@ if (!($item instanceof CommonDevice)) {
                     'date1'    => $_GET["date1"],
                     'date2'    => $_GET["date2"],
                     'start'    => $_GET["start"]];
-
 } else {
     //   echo "Device";
     $type  = "device";
@@ -147,9 +150,9 @@ if (!($item instanceof CommonDevice)) {
 Html::printPager(
     $_GET['start'],
     count($val),
-    $CFG_GLPI['root_doc'].'/front/stat.location.php',
-    "date1=".$_GET["date1"]."&amp;date2=".$_GET["date2"].
-                     "&amp;itemtype=".$_GET['itemtype']."&amp;dropdown=".$_GET["dropdown"],
+    $CFG_GLPI['root_doc'] . '/front/stat.location.php',
+    "date1=" . $_GET["date1"] . "&amp;date2=" . $_GET["date2"] .
+                     "&amp;itemtype=" . $_GET['itemtype'] . "&amp;dropdown=" . $_GET["dropdown"],
     'Stat',
     $params
 );

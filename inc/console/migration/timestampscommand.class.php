@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -83,10 +84,10 @@ class TimestampsCommand extends AbstractCommand
             'information_schema.columns.data_type'    => 'datetime',
             'information_schema.tables.table_type'    => 'BASE TABLE',
 
-         ],
+           ],
            'ORDER'       => [
             'information_schema.columns.table_name'
-         ]
+           ]
         ]);
 
         $output->writeln(
@@ -178,7 +179,7 @@ class TimestampsCommand extends AbstractCommand
                 }
 
                 //build alter
-                $tablealter .= "\n\t MODIFY COLUMN ".$this->db->quoteName($column['COLUMN_NAME'])." TIMESTAMP";
+                $tablealter .= "\n\t MODIFY COLUMN " . $this->db->quoteName($column['COLUMN_NAME']) . " TIMESTAMP";
                 if ($nullable) {
                     $tablealter .= " NULL";
                 } else {
@@ -188,14 +189,14 @@ class TimestampsCommand extends AbstractCommand
                     $tablealter .= " DEFAULT $default";
                 }
                 if ($column['COLUMN_COMMENT'] != '') {
-                    $tablealter .= " COMMENT '".$this->db->escape($column['COLUMN_COMMENT'])."'";
+                    $tablealter .= " COMMENT '" . $this->db->escape($column['COLUMN_COMMENT']) . "'";
                 }
                 $tablealter .= ",";
             }
             $tablealter =  rtrim($tablealter, ",");
 
             // apply alter to table
-            $query = "ALTER TABLE " . $this->db->quoteName($table['TABLE_NAME']) . " " . $tablealter.";\n";
+            $query = "ALTER TABLE " . $this->db->quoteName($table['TABLE_NAME']) . " " . $tablealter . ";\n";
             $this->writelnOutputWithProgressBar(
                 '<comment>' . sprintf(__('Running %s'), $query) . '</comment>',
                 $progress_bar,

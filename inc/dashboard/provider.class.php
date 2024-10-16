@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -74,7 +75,7 @@ class Provider
          FROM `$table`
       SQL;
         if (count($conditions)) {
-            $query .= ' WHERE `entities_id` = '.Session::getActiveEntity().' AND ';
+            $query .= ' WHERE `entities_id` = ' . Session::getActiveEntity() . ' AND ';
             foreach ($conditions as $field => $value) {
                 $query .= "`$field` = '$value' AND ";
             }

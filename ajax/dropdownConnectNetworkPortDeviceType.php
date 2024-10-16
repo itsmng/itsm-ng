@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -43,7 +44,6 @@ Session::checkRight("networking", UPDATE);
 
 // Make a select box
 if (class_exists($_POST["itemtype"])) {
-
     $params   = [
        'entity'    => $_POST["entity_restrict"],
        'condition' => [

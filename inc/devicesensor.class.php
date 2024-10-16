@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -60,7 +61,7 @@ class DeviceSensor extends CommonDevice
                  'value' => $this->fields['devicesensortypes_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceSensorType')
               ]
-         ]
+            ]
         );
     }
 
@@ -136,5 +137,4 @@ class DeviceSensor extends CommonDevice
                 'devicesensortypes_id' => 'equal',
                 'locations_id'         => 'equal'];
     }
-
 }

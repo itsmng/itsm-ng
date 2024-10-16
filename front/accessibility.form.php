@@ -62,7 +62,6 @@ if (isset($_POST["update"])) {
     );
 
     Html::back();
-
 } else {
     Html::header(Preference::getTypeName(1), $_SERVER['PHP_SELF'], 'accessibility');
 

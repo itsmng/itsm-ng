@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -124,7 +125,7 @@ class DomainsPluginToCoreCommand extends AbstractCommand
                 [
                   __('You are about to launch migration of Domains plugin data into ITSM-NG core tables.'),
                   __('It is better to make a backup of your existing data before continuing.')
-            ]
+                ]
             );
 
             /** @var QuestionHelper $question_helper */
@@ -190,7 +191,7 @@ class DomainsPluginToCoreCommand extends AbstractCommand
                 $this->output->writeln(
                     [
                       '<error>' . $message . '</error>',
-               ],
+                    ],
                     OutputInterface::VERBOSITY_QUIET
                 );
                 return false;
@@ -215,7 +216,7 @@ class DomainsPluginToCoreCommand extends AbstractCommand
                   Plugin::TOBECLEANED, // Can be in this state if check was done without the plugin dir
                   Plugin::NOTINSTALLED, // Can be not installed if plugin has been cleaned in plugin list
                   Plugin::NOTUPDATED, // Plugin 1.8.0 version has never been installed
-            ]
+                ]
             );
             if ($is_installable) {
                 if ($this->input->getOption('update-plugin')) {
@@ -264,7 +265,7 @@ class DomainsPluginToCoreCommand extends AbstractCommand
                   Plugin::ACTIVATED, // Should not be possible as 1.8.0 is not compatible with 9.3
                   Plugin::TOBECONFIGURED, // Should not be possible as check_config of plugin returns always true
                   Plugin::NOTACTIVATED,
-            ]
+                ]
             );
             if (!$is_state_ok) {
                 // Should not happens as installation should put plugin in awaited state
@@ -591,7 +592,7 @@ class DomainsPluginToCoreCommand extends AbstractCommand
            'FROM'   => Domain_Item::getTable()
         ]);
         while ($row = $coreitems_iterator->next()) {
-            $core_items[$row['domains_id'].$row['itemtype'].$row['items_id']] = $row['id'];
+            $core_items[$row['domains_id'] . $row['itemtype'] . $row['items_id']] = $row['id'];
         }
 
         if ($items_iterator->count()) {
@@ -614,8 +615,8 @@ class DomainsPluginToCoreCommand extends AbstractCommand
                 }
                 $domains_id = $mapped_domain->fields['id'];
 
-                if (isset($core_items[$domains_id.$itm['itemtype'].$itm['items_id']])) {
-                    $core_item = $core_items[$domains_id.$itm['itemtype'].$itm['items_id']];
+                if (isset($core_items[$domains_id . $itm['itemtype'] . $itm['items_id']])) {
+                    $core_item = $core_items[$domains_id . $itm['itemtype'] . $itm['items_id']];
                     $message = sprintf(
                         __('Skip existing domain item %s...'),
                         $domains_id . ' ' . $itm['itemtype'] . ' ' . $itm['items_id']
@@ -649,7 +650,7 @@ class DomainsPluginToCoreCommand extends AbstractCommand
                 $new_iid = (int)$item->add($item_input);
                 $res = $new_iid > 0;
                 if ($res) {
-                    $core_items[$domains_id.$itm['itemtype'].$itm['items_id']] = $new_iid;
+                    $core_items[$domains_id . $itm['itemtype'] . $itm['items_id']] = $new_iid;
                 }
 
                 if (!$res) {
@@ -713,8 +714,10 @@ class DomainsPluginToCoreCommand extends AbstractCommand
     private function getCorrespondingItem($itemtype, $id)
     {
 
-        if (array_key_exists($itemtype, $this->elements_mapping)
-            && array_key_exists($id, $this->elements_mapping[$itemtype])) {
+        if (
+            array_key_exists($itemtype, $this->elements_mapping)
+            && array_key_exists($id, $this->elements_mapping[$itemtype])
+        ) {
             // Element exists in mapping, get new element
             $mapping  = $this->elements_mapping[$itemtype][$id];
             $id       = $mapping['id'];

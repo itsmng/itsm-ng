@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -163,7 +164,7 @@ abstract class HTMLTableHeader extends HTMLTableEntity
         } else {
             echo "<td class='subheader'";
         }
-        echo " colspan='".$this->colSpan."'>";
+        echo " colspan='" . $this->colSpan . "'>";
         if ($with_content) {
             $this->displayContent();
         } else {

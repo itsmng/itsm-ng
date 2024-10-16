@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -131,8 +132,10 @@ class UnsignedKeysCommand extends AbstractCommand
 
             // Ensure that column is not referenced in a CONSTRAINT key.
             foreach ($foreign_keys as $foreign_key) {
-                if (($foreign_key['TABLE_NAME'] === $table_name && $foreign_key['COLUMN_NAME'] === $column_name)
-                    || ($foreign_key['REFERENCED_TABLE_NAME'] === $table_name && $foreign_key['REFERENCED_COLUMN_NAME'] === $column_name)) {
+                if (
+                    ($foreign_key['TABLE_NAME'] === $table_name && $foreign_key['COLUMN_NAME'] === $column_name)
+                    || ($foreign_key['REFERENCED_TABLE_NAME'] === $table_name && $foreign_key['REFERENCED_COLUMN_NAME'] === $column_name)
+                ) {
                     $message = sprintf(
                         __('Migration of column "%s.%s" cannot be done as it is referenced in CONSTRAINT "%s" of table "%s.%s".'),
                         $table_name,

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -65,11 +66,11 @@ class GLPIPDF extends TCPDF
 
         // Position at 15 mm from bottom
         $this->SetY(-15);
-        $text = "GLPI PDF export - ".Html::convDate(date("Y-m-d"));
+        $text = "GLPI PDF export - " . Html::convDate(date("Y-m-d"));
         if ($this->total_count != null) {
             $text .= " - " . sprintf(_n('%s item', '%s items', $this->total_count), $this->total_count);
         }
-        $text .= " - ".$this->getAliasNumPage()."/".$this->getAliasNbPages();
+        $text .= " - " . $this->getAliasNumPage() . "/" . $this->getAliasNbPages();
 
         // Page number
         $this->Cell(0, 10, $text, 0, false, 'C', 0, '', 0, false, 'T', 'M');
@@ -87,19 +88,23 @@ class GLPIPDF extends TCPDF
         $list = [];
         $path = TCPDF_FONTS::_getfontpath();
 
-        foreach (glob($path.'/*.php') as $font) {
+        foreach (glob($path . '/*.php') as $font) {
             unset($name, $type);
             include $font;
             unset($cbbox, $cidinfo, $cw, $dw);
             $font = basename($font, '.php');
 
             // skip subfonts
-            if (((substr($font, -1) == 'b') || (substr($font, -1) == 'i'))
-                && isset($list[substr($font, 0, -1)])) {
+            if (
+                ((substr($font, -1) == 'b') || (substr($font, -1) == 'i'))
+                && isset($list[substr($font, 0, -1)])
+            ) {
                 continue;
             }
-            if (((substr($font, -2) == 'bi'))
-                && isset($list[substr($font, 0, -2)])) {
+            if (
+                ((substr($font, -2) == 'bi'))
+                && isset($list[substr($font, 0, -2)])
+            ) {
                 continue;
             }
             if (isset($name)) {

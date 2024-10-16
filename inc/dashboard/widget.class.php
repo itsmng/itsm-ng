@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -68,7 +69,7 @@ class Widget extends CommonGLPI
            'pie' => [
               'label'    => __("Pie"),
               'function' => 'Glpi\\Dashboard\\Widget::pie',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/pie.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/pie.png',
               'gradient' => true,
               'limit'    => true,
               'width'    => 3,
@@ -77,7 +78,7 @@ class Widget extends CommonGLPI
            'donut' => [
               'label'    => __("Donut"),
               'function' => 'Glpi\\Dashboard\\Widget::donut',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/donut.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/donut.png',
               'gradient' => true,
               'limit'    => true,
               'width'    => 3,
@@ -86,7 +87,7 @@ class Widget extends CommonGLPI
            'halfpie' => [
               'label'    => __("Half pie"),
               'function' => 'Glpi\\Dashboard\\Widget::halfPie',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/halfpie.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/halfpie.png',
               'gradient' => true,
               'limit'    => true,
               'width'    => 3,
@@ -95,7 +96,7 @@ class Widget extends CommonGLPI
            'halfdonut' => [
               'label'    => __("Half donut"),
               'function' => 'Glpi\\Dashboard\\Widget::halfDonut',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/halfdonut.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/halfdonut.png',
               'gradient' => true,
               'limit'    => true,
               'width'    => 3,
@@ -104,7 +105,7 @@ class Widget extends CommonGLPI
            'bar' => [
               'label'    => __("Bars"),
               'function' => 'Glpi\\Dashboard\\Widget::simpleBar',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/bar.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/bar.png',
               'gradient' => true,
               'limit'    => true,
               'pointlbl' => true,
@@ -114,7 +115,7 @@ class Widget extends CommonGLPI
            'line' => [
               'label'    => \Line::getTypeName(1),
               'function' => 'Glpi\\Dashboard\\Widget::simpleLine',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/line.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/line.png',
               'limit'    => true,
               'pointlbl' => true,
               'width'    => 4,
@@ -123,7 +124,7 @@ class Widget extends CommonGLPI
            'lines' => [
               'label'    => __("Multiple lines"),
               'function' => 'Glpi\\Dashboard\\Widget::multipleLines',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/line.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/line.png',
               'gradient' => true,
               'limit'    => true,
               'pointlbl' => true,
@@ -133,7 +134,7 @@ class Widget extends CommonGLPI
            'area' => [
               'label'    => __("Area"),
               'function' => 'Glpi\\Dashboard\\Widget::simpleArea',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/area.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/area.png',
               'limit'    => true,
               'pointlbl' => true,
               'width'    => 4,
@@ -142,7 +143,7 @@ class Widget extends CommonGLPI
            'areas' => [
               'label'    => __("Multiple areas"),
               'function' => 'Glpi\\Dashboard\\Widget::multipleAreas',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/area.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/area.png',
               'gradient' => true,
               'limit'    => true,
               'pointlbl' => true,
@@ -152,7 +153,7 @@ class Widget extends CommonGLPI
            'bars' => [
               'label'    => __("Multiple bars"),
               'function' => 'Glpi\\Dashboard\\Widget::multipleBars',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/bar.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/bar.png',
               'gradient' => true,
               'limit'    => true,
               'pointlbl' => true,
@@ -162,7 +163,7 @@ class Widget extends CommonGLPI
            'stackedbars' => [
               'label'    => __("Stacked bars"),
               'function' => 'Glpi\\Dashboard\\Widget::StackedBars',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/stacked.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/stacked.png',
               'gradient' => true,
               'limit'    => true,
               'pointlbl' => true,
@@ -172,7 +173,7 @@ class Widget extends CommonGLPI
            'hbar' => [
               'label'    => __("Horizontal bars"),
               'function' => 'Glpi\\Dashboard\\Widget::simpleHbar',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/hbar.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/hbar.png',
               'gradient' => true,
               'limit'    => true,
               'pointlbl' => true,
@@ -182,12 +183,12 @@ class Widget extends CommonGLPI
            'bigNumber' => [
               'label'    => __("Big number"),
               'function' => 'Glpi\\Dashboard\\Widget::bigNumber',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/bignumber.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/bignumber.png',
            ],
            'multipleNumber' => [
               'label'    => __("Multiple numbers"),
               'function' => 'Glpi\\Dashboard\\Widget::multipleNumber',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/multiplenumbers.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/multiplenumbers.png',
               'limit'    => true,
               'gradient' => true,
               'width'    => 3,
@@ -196,14 +197,14 @@ class Widget extends CommonGLPI
            'markdown' => [
               'label'    => __("Editable markdown"),
               'function' => 'Glpi\\Dashboard\\Widget::markdown',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/markdown.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/markdown.png',
               'width'    => 4,
               'height'   => 4,
            ],
            'searchShowList' => [
               'label'    => __("Search result"),
               'function' => 'Glpi\\Dashboard\\Widget::searchShowList',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/table.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/table.png',
               'limit'    => true,
               'width'    => 5,
               'height'   => 4,
@@ -211,7 +212,7 @@ class Widget extends CommonGLPI
            'summaryNumbers' => [
               'label'    => __("Summary numbers"),
               'function' => 'Glpi\\Dashboard\\Widget::summaryNumber',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/summarynumber.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/summarynumber.png',
               'limit'    => true,
               'gradient' => true,
               'width'    => 4,
@@ -220,7 +221,7 @@ class Widget extends CommonGLPI
            'articleList' => [
               'label'    => __("List of articles"),
               'function' => 'Glpi\\Dashboard\\Widget::articleList',
-              'image'    => $CFG_GLPI['root_doc'].'/pics/charts/articles.png',
+              'image'    => $CFG_GLPI['root_doc'] . '/pics/charts/articles.png',
               'limit'    => true,
               'width'    => 3,
               'height'   => 4,
@@ -260,7 +261,7 @@ class Widget extends CommonGLPI
            'alt'     => '',
            'color'   => '',
            'icon'    => '',
-           'id'      => 'bn_'.mt_rand(),
+           'id'      => 'bn_' . mt_rand(),
            'filters' => [],
         ];
         $p = array_merge($default, $params);
@@ -270,7 +271,7 @@ class Widget extends CommonGLPI
         $fg_hover_color   = Toolbox::getFgColor($p['color'], 15);
         $fg_hover_border  = Toolbox::getFgColor($p['color'], 30);
 
-        $class = count($p['filters']) > 0 ? " filter-".implode(' filter-', $p['filters']) : "";
+        $class = count($p['filters']) > 0 ? " filter-" . implode(' filter-', $p['filters']) : "";
 
         $href = strlen($p['url'])
            ? "href='{$p['url']}'"
@@ -358,7 +359,7 @@ HTML;
         $fg_color = Toolbox::getFgColor($p['color']);
 
         $class = $p['class'];
-        $class .= count($p['filters']) > 0 ? " filter-".implode(' filter-', $p['filters']) : "";
+        $class .= count($p['filters']) > 0 ? " filter-" . implode(' filter-', $p['filters']) : "";
 
         $alphabet = range('a', 'z');
         $numbers_html = "";
@@ -378,7 +379,7 @@ HTML;
                : "";
 
             $color2 = isset($entry['color'])
-               ? "style=\"color: ".Toolbox::getFgColor($entry['color'], 20).";\""
+               ? "style=\"color: " . Toolbox::getFgColor($entry['color'], 20) . ";\""
                : "";
 
             $formatted_number = Toolbox::shortenNumber($entry['number']);
@@ -399,7 +400,7 @@ HTML;
                <span class='content'>
                   <i class='icon fas fa-exclamation-triangle' aria-hidden='true'></i>
                </span>
-               <span class='label'>".__('No data found')."</span>
+               <span class='label'>" . __('No data found') . "</span>
             <span>";
         }
 
@@ -501,12 +502,12 @@ HTML;
         $class = "pie";
         $class .= $p['half'] ? " half" : "";
         $class .= $p['donut'] ? " donut" : "";
-        $class .= count($p['filters']) > 0 ? " filter-".implode(' filter-', $p['filters']) : "";
+        $class .= count($p['filters']) > 0 ? " filter-" . implode(' filter-', $p['filters']) : "";
 
         $no_data_html = "";
         if ($nodata) {
             $no_data_html = "<span class='empty-card no-data'>
-               <div>".__('No data found')."</div>
+               <div>" . __('No data found') . "</div>
             <span>";
         }
 
@@ -568,7 +569,7 @@ HTML;
         if ($p['half']) {
             $half_opts = "
             startAngle: 270,
-            total: ".($total * 2).",
+            total: " . ($total * 2) . ",
          ";
             $chartPadding = 9;
             $height_divider = 2;
@@ -705,7 +706,7 @@ HTML;
 JAVASCRIPT;
         $js = \Html::scriptBlock($js);
 
-        return $html.$js;
+        return $html . $js;
     }
 
 
@@ -837,7 +838,7 @@ JAVASCRIPT;
             array_merge($params, [
               'legend'   => true,
               'multiple' => true,
-         ]),
+            ]),
             $params['data']['labels'],
             $params['data']['series']
         );
@@ -942,7 +943,7 @@ JAVASCRIPT;
         $class .= $p['distributed'] ? " distributed" : "";
         $class .= $nb_series <= 10 ? " tab10" : "";
         $class .= $nb_series > 10 ? " tab20" : "";
-        $class .= count($p['filters']) > 0 ? " filter-".implode(' filter-', $p['filters']) : "";
+        $class .= count($p['filters']) > 0 ? " filter-" . implode(' filter-', $p['filters']) : "";
 
         $palette_style = "";
         if ($p['use_gradient']) {
@@ -955,7 +956,7 @@ JAVASCRIPT;
         $no_data_html = "";
         if ($nodata) {
             $no_data_html = "<span class='empty-card no-data'>
-               <div>".__('No data found')."</div>
+               <div>" . __('No data found') . "</div>
             <span>";
         }
 
@@ -1198,7 +1199,7 @@ HTML;
 JAVASCRIPT;
         $js = \Html::scriptBlock($js);
 
-        return $html.$js;
+        return $html . $js;
     }
 
 
@@ -1263,7 +1264,7 @@ JAVASCRIPT;
             array_merge($params, [
               'legend'   => true,
               'multiple' => true,
-         ]),
+            ]),
             $params['data']['labels'],
             $params['data']['series']
         );
@@ -1352,7 +1353,7 @@ JAVASCRIPT;
         $class = "line";
         $class .= $p['area'] ? " area" : "";
         $class .= $p['multiple'] ? " multiple" : "";
-        $class .= count($p['filters']) > 0 ? " filter-".implode(' filter-', $p['filters']) : "";
+        $class .= count($p['filters']) > 0 ? " filter-" . implode(' filter-', $p['filters']) : "";
 
         $animation_duration = self::$animation_duration;
 
@@ -1510,7 +1511,7 @@ HTML;
 JAVASCRIPT;
         $js = Html::scriptBlock($js);
 
-        return $html.$js;
+        return $html . $js;
     }
 
 
@@ -1541,8 +1542,12 @@ JAVASCRIPT;
         $border_color = Toolbox::getFgColor($p['color'], 10);
         $md           = new MarkdownExtra();
         // Prevent escaping as code is already escaped by GLPI sanityze
-        $md->code_span_content_func  = function ($code) { return $code; };
-        $md->code_block_content_func = function ($code) { return $code; };
+        $md->code_span_content_func  = function ($code) {
+            return $code;
+        };
+        $md->code_block_content_func = function ($code) {
+            return $code;
+        };
 
         $html = <<<HTML
       <div
@@ -1594,7 +1599,7 @@ HTML;
         ];
         $p = array_merge($default, $params);
 
-        $id = "search-table-".$p['rand'];
+        $id = "search-table-" . $p['rand'];
 
         $color = new Color($p['color']);
         $is_light = $color->isLight();
@@ -1606,7 +1611,7 @@ HTML;
            ? "href='{$p['url']}'"
            : "";
 
-        $class = count($p['filters']) > 0 ? " filter-".implode(' filter-', $p['filters']) : "";
+        $class = count($p['filters']) > 0 ? " filter-" . implode(' filter-', $p['filters']) : "";
 
         // prepare search data
         $_GET['_in_modal'] = true;
@@ -1681,7 +1686,7 @@ HTML;
         $bg_color_2 = Toolbox::getFgColor($p['color'], 5);
 
         $class = $p['class'];
-        $class .= count($p['filters']) > 0 ? " filter-".implode(' filter-', $p['filters']) : "";
+        $class .= count($p['filters']) > 0 ? " filter-" . implode(' filter-', $p['filters']) : "";
 
         $i = 0;
         $list_html = "";
@@ -1702,7 +1707,7 @@ HTML;
 
             $content_size = strlen($entry['content']);
             $content = strlen($entry['content'])
-               ? Toolbox::getHtmlToDisplay($entry['content']).
+               ? Toolbox::getHtmlToDisplay($entry['content']) .
                  (
                      $content_size > 300
                ? "<p class='read_more'><span class='read_more_button'>...</span></p>"
@@ -1727,12 +1732,12 @@ HTML;
             <span class='content'>
                <i class='icon fas fa-exclamation-triangle' aria-hidden='true'></i>
             </span>
-            <span class='label'>".__('No data found')."</span>
+            <span class='label'>" . __('No data found') . "</span>
          <span>";
         }
 
         $view_all = strlen($p['url'])
-           ? "<a href='{$p['url']}'><i class='fas fa-eye' title='".__("See all")."'></i></a>"
+           ? "<a href='{$p['url']}'><i class='fas fa-eye' title='" . __("See all") . "'></i></a>"
            : "";
 
         $html = <<<HTML
@@ -1779,7 +1784,7 @@ HTML;
 JAVASCRIPT;
         $js = \Html::scriptBlock($js);
 
-        return $html.$js;
+        return $html . $js;
     }
 
     /**
@@ -1843,7 +1848,7 @@ JAVASCRIPT;
                    : 1 - $i_s_step);
             }
 
-            $colors[$i - 1] = "#".Color::hslToHex($hsl);
+            $colors[$i - 1] = "#" . Color::hslToHex($hsl);
         }
 
         return [
@@ -1870,7 +1875,7 @@ JAVASCRIPT;
         $series_names  = implode(',', $palette['names']);
         $series_colors = implode(',', $palette['colors']);
 
-        $hash = sha1($series_names.$series_colors);
+        $hash = sha1($series_names . $series_colors);
         if (($palette_css = $GLPI_CACHE->get($hash)) !== null) {
             return $palette_css;
         }

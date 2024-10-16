@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -69,7 +70,7 @@ class BuildMissingTimestampsCommand extends AbstractCommand
                  'column_name'  => ['date_creation', 'date_mod'],
               ],
               'ORDER'  => ['table_name', 'column_name'],
-         ]
+            ]
         );
 
         $log_table = Log::getTable();

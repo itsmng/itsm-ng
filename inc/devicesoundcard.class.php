@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -101,7 +102,7 @@ class DeviceSoundCard extends CommonDevice
                  'col_lg' => 12,
                  'col_md' => 12,
               ],
-         ]
+            ]
         );
     }
 
@@ -151,7 +152,6 @@ class DeviceSoundCard extends CommonDevice
                 $base->addHeader('devicesoundcard_type', _n('Type', 'Types', 1), $super, $father);
                 break;
         }
-
     }
 
 

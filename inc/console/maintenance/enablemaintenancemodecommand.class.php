@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -54,7 +55,7 @@ class EnableMaintenanceModeCommand extends AbstractCommand
         $this->setAliases(
             [
               'maintenance:enable',
-         ]
+            ]
         );
         $this->setDescription(__('Enable maintenance mode'));
 

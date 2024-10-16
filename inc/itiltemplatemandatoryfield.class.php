@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -54,8 +55,10 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
     {
 
         // can exists for template
-        if ($item instanceof ITILTemplate
-            && Session::haveRight("itiltemplate", READ)) {
+        if (
+            $item instanceof ITILTemplate
+            && Session::haveRight("itiltemplate", READ)
+        ) {
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                 $nb = countElementsInTable(
@@ -191,10 +194,10 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
         if ($canedit) {
             echo "<div class='firstbloc'>";
             echo "<form aria-label='hidden Field' name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
-                  action='".$ttm->getFormURL()."'>";
+                  action='" . $ttm->getFormURL() . "'>";
 
             echo "<table class='tab_cadre_fixe' aria-label='Add a mandatory field'>";
-            echo "<tr class='tab_bg_2'><th colspan='2'>".__('Add a mandatory field')."</th></tr>";
+            echo "<tr class='tab_bg_2'><th colspan='2'>" . __('Add a mandatory field') . "</th></tr>";
             echo "<tr class='tab_bg_2'><td class='right'>";
             echo "<input type='hidden' name='" . static::$items_id . "' value='$ID'>";
 
@@ -213,7 +216,7 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
 
             Dropdown::showFromArray('num', $select_fields, ['used' => $used]);
             echo "</td><td class='center'>";
-            echo "&nbsp;<input type='submit' name='add' value=\""._sx('button', 'Add').
+            echo "&nbsp;<input type='submit' name='add' value=\"" . _sx('button', 'Add') .
                            "\" class='submit'>";
             echo "</td></tr>";
             echo "</table>";
@@ -223,9 +226,9 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
 
         echo "<div class='spaced'>";
         if ($canedit && $numrows) {
-            Html::openMassiveActionsForm('mass'.$ttm->getType().$rand);
+            Html::openMassiveActionsForm('mass' . $ttm->getType() . $rand);
             $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
-                                         'container'     => 'mass'.$ttm->getType().$rand];
+                                         'container'     => 'mass' . $ttm->getType() . $rand];
             Html::showMassiveActions($massiveactionparams);
         }
         echo "<table class='tab_cadre_fixehov' aria-label='ITIL Template'>";
@@ -239,21 +242,21 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
             $header_end    = '';
             if ($canedit) {
                 $header_top    .= "<th width='10'>";
-                $header_top    .= Html::getCheckAllAsCheckbox('mass'.$ttm->getType().$rand)."</th>";
+                $header_top    .= Html::getCheckAllAsCheckbox('mass' . $ttm->getType() . $rand) . "</th>";
                 $header_bottom .= "<th width='10'>";
-                $header_bottom .= Html::getCheckAllAsCheckbox('mass'.$ttm->getType().$rand)."</th>";
+                $header_bottom .= Html::getCheckAllAsCheckbox('mass' . $ttm->getType() . $rand) . "</th>";
             }
-            $header_end .= "<th>".__('Name')."</th>";
-            $header_end .= "<th>".__("Profile's interface")."</th>";
+            $header_end .= "<th>" . __('Name') . "</th>";
+            $header_end .= "<th>" . __("Profile's interface") . "</th>";
             $header_end .= "</tr>";
-            echo $header_begin.$header_top.$header_end;
+            echo $header_begin . $header_top . $header_end;
 
             foreach ($mandatoryfields as $data) {
                 echo "<tr class='tab_bg_2'>";
                 if ($canedit) {
-                    echo "<td>".Html::getMassiveActionCheckBox($ttm->getType(), $data["id"])."</td>";
+                    echo "<td>" . Html::getMassiveActionCheckBox($ttm->getType(), $data["id"]) . "</td>";
                 }
-                echo "<td>".$fields[$data['num']]."</td>";
+                echo "<td>" . $fields[$data['num']] . "</td>";
                 echo "<td>";
                 if (in_array($data['num'], $simplified_fields)) {
                     echo $both_interfaces;
@@ -263,9 +266,9 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
                 echo "</td>";
                 echo "</tr>";
             }
-            echo $header_begin.$header_bottom.$header_end;
+            echo $header_begin . $header_bottom . $header_end;
         } else {
-            echo "<tr><th colspan='2'>".__('No item found')."</th></tr>";
+            echo "<tr><th colspan='2'>" . __('No item found') . "</th></tr>";
         }
 
         echo "</table>";
@@ -276,5 +279,4 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
         }
         echo "</div>";
     }
-
 }

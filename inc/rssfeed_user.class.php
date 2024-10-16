@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -70,5 +71,4 @@ class RSSFeed_User extends CommonDBRelation
         }
         return $users;
     }
-
 }

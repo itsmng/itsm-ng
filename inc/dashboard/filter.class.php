@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -120,7 +121,7 @@ class Filter extends CommonGLPI
 JAVASCRIPT;
         $js = Html::scriptBlock($js);
 
-        return $js.self::field($fieldname, $field, $label, is_array($values) && count($values) > 0);
+        return $js . self::field($fieldname, $field, $label, is_array($values) && count($values) > 0);
     }
 
     /**
@@ -201,7 +202,7 @@ JAVASCRIPT;
 JAVASCRIPT;
         $js = Html::scriptBlock($js);
 
-        return $js.self::field($fieldname, $field, $label, $value > 0);
+        return $js . self::field($fieldname, $field, $label, $value > 0);
     }
 
     /**
@@ -255,6 +256,6 @@ HTML;
 JAVASCRIPT;
         $js = Html::scriptBlock($js);
 
-        return $html.$js;
+        return $html . $js;
     }
 }

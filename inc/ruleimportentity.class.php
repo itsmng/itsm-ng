@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -196,5 +197,4 @@ class RuleImportEntity extends Rule
 
         return $actions;
     }
-
 }

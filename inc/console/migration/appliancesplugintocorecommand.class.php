@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -164,7 +165,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
                   __('You are about to launch migration of Appliances plugin data into ITSM-ng core tables.'),
                   __('Any previous appliance created in core will be lost.'),
                   __('It is better to make a backup of your existing data before continuing.')
-            ]
+                ]
             );
 
             /**
@@ -219,7 +220,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
                 foreach ($fields as $field) {
                     if (!$this->db->fieldExists($table, $field)) {
                         $this->output->writeln(
-                            '<error>' . sprintf(__('Appliances plugin field "%s" is missing.'), $table.'.'.$field) . '</error>',
+                            '<error>' . sprintf(__('Appliances plugin field "%s" is missing.'), $table . '.' . $field) . '</error>',
                             OutputInterface::VERBOSITY_QUIET
                         );
                         $missing_tables = true;
@@ -507,7 +508,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
     private function createAppliances(): bool
     {
         $this->output->writeln(
-            '<comment>'. __('Creating Appliances...') . '</comment>',
+            '<comment>' . __('Creating Appliances...') . '</comment>',
             OutputInterface::VERBOSITY_NORMAL
         );
         $iterator = $this->db->request([

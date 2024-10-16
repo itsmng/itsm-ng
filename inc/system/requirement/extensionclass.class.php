@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -64,5 +65,4 @@ class ExtensionClass extends Extension
         $this->validated = class_exists($this->class_name) || interface_exists($this->class_name);
         $this->buildValidationMessage();
     }
-
 }

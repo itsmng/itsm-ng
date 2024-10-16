@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -132,7 +133,9 @@ class SynchronizeUsersCommand extends AbstractCommand
         $description .= implode(
             "\n",
             array_map(
-                function ($key, $value) { return '- ' . sprintf(__('%1$s: %2$s'), $key, $value); },
+                function ($key, $value) {
+                    return '- ' . sprintf(__('%1$s: %2$s'), $key, $value);
+                },
                 array_keys($strategies),
                 $strategies
             )
@@ -188,7 +191,7 @@ class SynchronizeUsersCommand extends AbstractCommand
                   'WHERE'  => [
                      'is_active' => 1,
                   ],
-            ]
+                ]
             );
             if ($servers_iterator->count() === 0) {
                 $output->writeln('<info>' . __('No active LDAP server found.') . '</info>');
@@ -209,7 +212,7 @@ class SynchronizeUsersCommand extends AbstractCommand
                   'WHERE'  => [
                      'id' => $servers_id,
                   ],
-            ]
+                ]
             );
             $servers_names = [];
             foreach ($servers_iterator as $server) {
@@ -275,7 +278,7 @@ class SynchronizeUsersCommand extends AbstractCommand
                       'script'       => true,
                       'begin_date'   => null !== $begin_date ? $begin_date : '',
                       'end_date'     => null !== $end_date ? $end_date : '',
-               ],
+                    ],
                     $results,
                     $limitexceeded
                 );
@@ -354,9 +357,11 @@ class SynchronizeUsersCommand extends AbstractCommand
                     $user_field = 'name';
                     $id_field = $server->fields['login_field'];
                     $value = $user['user'];
-                    if ($server->isSyncFieldEnabled()
+                    if (
+                        $server->isSyncFieldEnabled()
                         && (!($existing_user instanceof User)
-                            || !empty($existing_user->fields['sync_field']))) {
+                            || !empty($existing_user->fields['sync_field']))
+                    ) {
                         $value      = $user_sync_field;
                         $user_field = 'sync_field';
                         $id_field   = $server->fields['sync_field'];
@@ -368,7 +373,7 @@ class SynchronizeUsersCommand extends AbstractCommand
                           'value'            => $value,
                           'identifier_field' => $id_field,
                           'user_field'       => $user_field
-                  ],
+                        ],
                         $action,
                         $server_id
                     );
@@ -395,7 +400,7 @@ class SynchronizeUsersCommand extends AbstractCommand
                       __('Imported'),
                       __('Synchronized'),
                       __('Deleted from LDAP'),
-               ]
+                    ]
                 );
                 $result_output->addRow(
                     [
@@ -403,7 +408,7 @@ class SynchronizeUsersCommand extends AbstractCommand
                       $results[AuthLDAP::USER_IMPORTED],
                       $results[AuthLDAP::USER_SYNCHRONIZED],
                       $results[AuthLDAP::USER_DELETED_LDAP],
-               ]
+                    ]
                 );
                 $result_output->render();
             }

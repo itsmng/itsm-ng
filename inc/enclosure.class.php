@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -80,7 +81,7 @@ class Enclosure extends CommonDBTM
 
     public function showForm($ID, $options = [])
     {
-        $title = __('New item').' - '.self::getTypeName(1);
+        $title = __('New item') . ' - ' . self::getTypeName(1);
         $isNew = $this->isNewID($ID) || (isset($options['withtemplate']) && $options['withtemplate'] == 2);
 
         $form = [
@@ -326,8 +327,9 @@ class Enclosure extends CommonDBTM
 
         $filled = [];
         while ($row = $iterator->next()) {
-            if (empty($itemtype) || empty($items_id)
-               || $itemtype != $row['itemtype'] || $items_id != $row['items_id']
+            if (
+                empty($itemtype) || empty($items_id)
+                || $itemtype != $row['itemtype'] || $items_id != $row['items_id']
             ) {
                 $filled[$row['position']] = $row['position'];
             }
@@ -341,7 +343,7 @@ class Enclosure extends CommonDBTM
         $this->deleteChildrenAndRelationsFromDb(
             [
               Item_Enclosure::class,
-         ]
+            ]
         );
     }
 

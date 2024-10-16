@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -164,13 +165,17 @@ class PlanningExternalEventTemplate extends CommonDropdown
 
     public function parseExtraInput(array $orig_input = [], array $input = [])
     {
-        if (isset($orig_input['plan'])
-            && array_key_exists('_duration', $orig_input['plan'])) {
+        if (
+            isset($orig_input['plan'])
+            && array_key_exists('_duration', $orig_input['plan'])
+        ) {
             $input['duration'] = $orig_input['plan']['_duration'];
         }
 
-        if (isset($orig_input['_planningrecall'])
-            && array_key_exists('before_time', $orig_input['_planningrecall'])) {
+        if (
+            isset($orig_input['_planningrecall'])
+            && array_key_exists('before_time', $orig_input['_planningrecall'])
+        ) {
             $input['before_time'] = $orig_input['_planningrecall']['before_time'];
         }
 

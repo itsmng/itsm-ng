@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -66,9 +67,8 @@ if (isset($_POST["add"])) {
     if ($_SESSION['glpibackcreated']) {
         Html::redirect($task->getLinkURL());
     } else {
-        Html::redirect(ProjectTask::getFormURL()."?projects_id=".$task->fields['projects_id']);
+        Html::redirect(ProjectTask::getFormURL() . "?projects_id=" . $task->fields['projects_id']);
     }
-
 } elseif (isset($_POST["purge"])) {
     $task->check($_POST['id'], PURGE);
     $task->delete($_POST, 1);
@@ -82,7 +82,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges a task'), $_SESSION["glpiname"])
     );
     Html::redirect(Project::getFormURLWithID($task->fields['projects_id']));
-
 } elseif (isset($_POST["update"])) {
     $task->check($_POST["id"], UPDATE);
     $task->update($_POST);
@@ -96,12 +95,10 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates a task'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } elseif (isset($_GET['_in_modal'])) {
     Html::popHeader(ProjectTask::getTypeName(1), $_SERVER['PHP_SELF']);
     $task->showForm($_GET["id"], ['withtemplate' => $_GET["withtemplate"]]);
     Html::popFooter();
-
 } else {
     Html::header(ProjectTask::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "tools", "project");
     $task->display($_GET);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -53,14 +54,12 @@ class IPNetmask extends IPAddress
 
         // If $ipnetmask if empty, then, empty netmask !
         if ($ipnetmask != '') {
-
             // If $ipnetmask if an IPNetmask, then just clone it
             if ($ipnetmask instanceof IPNetmask) {
                 $this->version = $ipnetmask->version;
                 $this->textual = $ipnetmask->textual;
                 $this->binary  = $ipnetmask->binary;
                 $this->fields  = $ipnetmask->fields;
-
             } else {
                 // Else, check a binary then a string
                 if (!$this->setAddressFromBinary($ipnetmask)) {
@@ -100,7 +99,7 @@ class IPNetmask extends IPAddress
             if ($nbBits > 128) {
                 return false;
             }
-            $bits          = str_repeat("1", $nbBits).str_repeat("0", 128 - $nbBits);
+            $bits          = str_repeat("1", $nbBits) . str_repeat("0", 128 - $nbBits);
             $this->version = $version;
             $this->textual = $netmask;
             $this->binary  = [];
@@ -108,7 +107,6 @@ class IPNetmask extends IPAddress
                 $localBits      = substr($bits, 32 * $i, 32);
                 $this->binary[] = bindec($localBits);
             }
-
         } else {
             if (!$netmask = $this->setAddressFromString($netmask)) {
                 return false;

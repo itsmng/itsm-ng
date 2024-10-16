@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -151,9 +152,9 @@ class UserEmail extends CommonDBChild
     public static function getJSCodeToAddForItemChild($field_name, $child_count_js_var)
     {
 
-        return "<input title=\'".__s('Default email')."\' type=\'radio\' name=\'_default_email\'" .
+        return "<input title=\'" . __s('Default email') . "\' type=\'radio\' name=\'_default_email\'" .
                " value=\'-'+$child_count_js_var+'\'>&nbsp;" .
-               "<input type=\'text\' size=\'30\' ". "name=\'" . $field_name .
+               "<input type=\'text\' size=\'30\' " . "name=\'" . $field_name .
                "[-'+$child_count_js_var+']\'>";
     }
 
@@ -174,9 +175,9 @@ class UserEmail extends CommonDBChild
             $value = Html::entities_deep($this->fields['email']);
         }
 
-        $field_name = $field_name."[$id]";
-        echo "<input title='".__s('Default email')."' type='radio' name='_default_email'
-             value='".$this->getID()."'";
+        $field_name = $field_name . "[$id]";
+        echo "<input title='" . __s('Default email') . "' type='radio' name='_default_email'
+             value='" . $this->getID() . "'";
         if (!$canedit) {
             echo " disabled";
         }
@@ -186,7 +187,7 @@ class UserEmail extends CommonDBChild
         echo ">&nbsp;";
         if (!$canedit || $this->fields['is_dynamic']) {
             echo "<input type='hidden' name='$field_name' value='$value'>";
-            printf(__('%1$s %2$s'), $value, "<span class='b'>(". __('D').")</span>");
+            printf(__('%1$s %2$s'), $value, "<span class='b'>(" . __('D') . ")</span>");
         } else {
             echo "<input type='text' size=30 name='$field_name' value='$value' >";
         }
@@ -205,14 +206,15 @@ class UserEmail extends CommonDBChild
 
         $users_id = $user->getID();
 
-        if (!$user->can($users_id, READ)
-            && ($users_id != Session::getLoginUserID())) {
+        if (
+            !$user->can($users_id, READ)
+            && ($users_id != Session::getLoginUserID())
+        ) {
             return false;
         }
         $canedit = ($user->can($users_id, UPDATE) || ($users_id == Session::getLoginUserID()));
 
         parent::showChildsForItemForm($user, '_useremails', $canedit);
-
     }
 
 
@@ -290,17 +292,19 @@ class UserEmail extends CommonDBChild
         global $DB;
 
         // if default is set : unsed others for the users
-        if (in_array('is_default', $this->updates)
-            && ($this->input["is_default"] == 1)) {
+        if (
+            in_array('is_default', $this->updates)
+            && ($this->input["is_default"] == 1)
+        ) {
             $DB->update(
                 $this->getTable(),
                 [
                   'is_default' => 0
-            ],
+                ],
                 [
                   'id'        => ['<>', $this->input['id']],
                   'users_id'  => $this->fields['users_id']
-            ]
+                ]
             );
         }
 
@@ -318,16 +322,15 @@ class UserEmail extends CommonDBChild
                 $this->getTable(),
                 [
                   'is_default' => 0
-            ],
+                ],
                 [
                   'id'        => ['<>', $this->fields['id']],
                   'users_id'  => $this->fields['users_id']
-            ]
+                ]
             );
         }
 
         parent::post_addItem();
-
     }
 
 
@@ -341,18 +344,17 @@ class UserEmail extends CommonDBChild
                 $this->getTable(),
                 [
                   'is_default'   => 1
-            ],
+                ],
                 [
                   'WHERE'  => [
                      'id'        => ['<>', $this->fields['id']],
                      'users_id'  => $this->fields['users_id']
                   ],
                   'LIMIT'  => 1
-            ]
+                ]
             );
         }
 
         parent::post_deleteFromDB();
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -39,8 +40,10 @@ $groups_id = (isset($_GET["gID"]) ? (int)$_GET['uID'] : 0);
 $limititemtype = (isset($_GET['limititemtype']) ? $_GET['limititemtype'] : '');
 
 if (!isset($_GET["uID"])) {
-    if (($uid = Session::getLoginUserID())
-        && !Session::haveRight("planning", Planning::READALL)) {
+    if (
+        ($uid = Session::getLoginUserID())
+        && !Session::haveRight("planning", Planning::READALL)
+    ) {
         $users_id = $uid;
     } else {
         $users_id = 0;
@@ -68,8 +71,9 @@ if (!$ismine && $groups_id !== 0) {
     );
     $groups   = Group_User::getUserGroups($user->getID());
     foreach ($groups as $group) {
-        if ($groups_id == $group['id']
-           && in_array($group['entities_id'], $entities)
+        if (
+            $groups_id == $group['id']
+            && in_array($group['entities_id'], $entities)
         ) {
             $ismine = true;
         }

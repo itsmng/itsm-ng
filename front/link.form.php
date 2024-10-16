@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -53,8 +54,7 @@ if (isset($_POST["add"])) {
         "setup",
         sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $_POST["name"])
     );
-    Html::redirect(Toolbox::getItemTypeFormURL('Link')."?id=".$newID);
-
+    Html::redirect(Toolbox::getItemTypeFormURL('Link') . "?id=" . $newID);
 } elseif (isset($_POST["purge"])) {
     $link->check($_POST["id"], PURGE);
     $link->delete($_POST, 1);
@@ -67,7 +67,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $link->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $link->check($_POST["id"], UPDATE);
     $link->update($_POST);
@@ -80,7 +79,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } else {
     Html::header(Link::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "config", "link");
 

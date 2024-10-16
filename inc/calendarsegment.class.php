@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -69,13 +70,15 @@ class CalendarSegment extends CommonDBChild
     {
 
         // Check override of segment : do not add
-        if (count(self::getSegmentsBetween(
-            $input['calendars_id'],
-            $input['day'],
-            $input['begin'],
-            $input['day'],
-            $input['end']
-        )) > 0) {
+        if (
+            count(self::getSegmentsBetween(
+                $input['calendars_id'],
+                $input['day'],
+                $input['begin'],
+                $input['day'],
+                $input['end']
+            )) > 0
+        ) {
             Session::addMessageAfterRedirect(
                 __('Can not add a range riding an existing period'),
                 false,
@@ -105,7 +108,7 @@ class CalendarSegment extends CommonDBChild
               'WHERE'  => [
                  'calendars_id' => $oldid,
               ]
-         ]
+            ]
         );
 
         foreach ($result as $data) {
@@ -168,7 +171,7 @@ class CalendarSegment extends CommonDBChild
                  'end'    => ['>=', $begin_time],
                  'day'    => ['>', $begin_day]
               ]]
-         ]
+            ]
         );
     }
 
@@ -194,7 +197,7 @@ class CalendarSegment extends CommonDBChild
               new \QueryExpression(
                   "
                TIMEDIFF(
-                   LEAST(" . $DB->quoteValue($end_time) .", " . $DB->quoteName('end') . "),
+                   LEAST(" . $DB->quoteValue($end_time) . ", " . $DB->quoteName('end') . "),
                    GREATEST(" . $DB->quoteName('begin') . ", " . $DB->quoteValue($begin_time) . ")
                ) AS " . $DB->quoteName('TDIFF')
               )
@@ -205,7 +208,7 @@ class CalendarSegment extends CommonDBChild
               'day'          => $day,
               'begin'        => ['<', $end_time],
               'end'          => ['>', $begin_time]
-         ]
+           ]
         ]);
 
         while ($data = $iterator->next()) {
@@ -245,7 +248,7 @@ class CalendarSegment extends CommonDBChild
               'calendars_id' => $calendars_id,
               'day'          => $day,
               'end'          => ['>', $begin_time]
-         ],
+           ],
            'ORDER'  => 'begin'
         ]);
 
@@ -259,8 +262,8 @@ class CalendarSegment extends CommonDBChild
                 $beginstamp = $begin_hour * HOUR_TIMESTAMP + $begin_minute * MINUTE_TIMESTAMP + $begin_second;
                 $endstamp   = $beginstamp + $delay;
                 $units      = Toolbox::getTimestampTimeUnits($endstamp);
-                return str_pad($units['hour'], 2, '0', STR_PAD_LEFT).':'.
-                         str_pad($units['minute'], 2, '0', STR_PAD_LEFT).':'.
+                return str_pad($units['hour'], 2, '0', STR_PAD_LEFT) . ':' .
+                         str_pad($units['minute'], 2, '0', STR_PAD_LEFT) . ':' .
                          str_pad($units['second'], 2, '0', STR_PAD_LEFT);
             } else {
                 $delay -= $tstamp;
@@ -382,19 +385,19 @@ class CalendarSegment extends CommonDBChild
             echo "<div class='firstbloc'>";
             echo "<form name='calendarsegment_form$rand' aria-label='Add a Schedule' id='calendarsegment_form$rand' method='post'
                 action='";
-            echo Toolbox::getItemTypeFormURL(__CLASS__)."'>";
+            echo Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
             echo "<table class='tab_cadre_fixe' aria-label='Add Schedule Table'>";
-            echo "<tr class='tab_bg_1'><th colspan='7'>".__('Add a schedule')."</tr>";
+            echo "<tr class='tab_bg_1'><th colspan='7'>" . __('Add a schedule') . "</tr>";
 
-            echo "<tr class='tab_bg_2'><td class='center'>"._n('Day', 'Days', 1)."</td><td>";
+            echo "<tr class='tab_bg_2'><td class='center'>" . _n('Day', 'Days', 1) . "</td><td>";
             echo "<input type='hidden' name='calendars_id' value='$ID'>";
             Dropdown::showFromArray('day', Toolbox::getDaysOfWeekArray());
-            echo "</td><td class='center'>".__('Start').'</td><td>';
-            Dropdown::showHours("begin", ['value' => date('H').":00"]);
-            echo "</td><td class='center'>".__('End').'</td><td>';
-            Dropdown::showHours("end", ['value' => (date('H') + 1).":00"]);
+            echo "</td><td class='center'>" . __('Start') . '</td><td>';
+            Dropdown::showHours("begin", ['value' => date('H') . ":00"]);
+            echo "</td><td class='center'>" . __('End') . '</td><td>';
+            Dropdown::showHours("end", ['value' => (date('H') + 1) . ":00"]);
             echo "</td><td class='center'>";
-            echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
+            echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
             echo "</td></tr>";
 
             echo "</table>";
@@ -404,21 +407,21 @@ class CalendarSegment extends CommonDBChild
 
         echo "<div class='spaced'>";
         if ($canedit && $numrows) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
             $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
-                              'container'     => 'mass'.__CLASS__.$rand];
+                              'container'     => 'mass' . __CLASS__ . $rand];
             Html::showMassiveActions($massiveactionparams);
         }
         echo "<table class='tab_cadre_fixehov' aria-label='Schedule Details Table'>";
         echo "<tr>";
         if ($canedit && $numrows) {
             echo "<th width='10'>";
-            echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+            echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
             echo "</th>";
         }
-        echo "<th>"._n('Day', 'Days', 1)."</th>";
-        echo "<th>".__('Start')."</th>";
-        echo "<th>".__('End')."</th>";
+        echo "<th>" . _n('Day', 'Days', 1) . "</th>";
+        echo "<th>" . __('Start') . "</th>";
+        echo "<th>" . __('End') . "</th>";
         echo "</tr>";
 
         $daysofweek = Toolbox::getDaysOfWeekArray();
@@ -436,8 +439,8 @@ class CalendarSegment extends CommonDBChild
                 echo "<td>";
                 echo $daysofweek[$data['day']];
                 echo "</td>";
-                echo "<td>".$data["begin"]."</td>";
-                echo "<td>".$data["end"]."</td>";
+                echo "<td>" . $data["begin"] . "</td>";
+                echo "<td>" . $data["end"] . "</td>";
             }
             echo "</tr>";
         }

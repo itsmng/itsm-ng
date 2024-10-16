@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -46,7 +47,7 @@ class DocumentType extends CommonDropdown
     {
 
         $values = [];
-        if ($dh = opendir(GLPI_ROOT."/pics/icones")) {
+        if ($dh = opendir(GLPI_ROOT . "/pics/icones")) {
             $files = [];
             while (($file = readdir($dh)) !== false) {
                 $files[] = $file;
@@ -154,8 +155,8 @@ class DocumentType extends CommonDropdown
         switch ($field) {
             case 'icon':
                 if (!empty($values[$field])) {
-                    return "&nbsp;<img style='vertical-align:middle;' alt='' src='".
-                           $CFG_GLPI["typedoc_icon_dir"]."/".$values[$field]."'>";
+                    return "&nbsp;<img style='vertical-align:middle;' alt='' src='" .
+                           $CFG_GLPI["typedoc_icon_dir"] . "/" . $values[$field] . "'>";
                 }
         }
         return parent::getSpecificValueToDisplay($field, $values, $options);
@@ -182,7 +183,7 @@ class DocumentType extends CommonDropdown
                 return Dropdown::dropdownIcons(
                     $name,
                     $values[$field],
-                    GLPI_ROOT."/pics/icones",
+                    GLPI_ROOT . "/pics/icones",
                     false
                 );
         }
@@ -206,13 +207,13 @@ class DocumentType extends CommonDropdown
         $p = array_merge($p, $options);
 
         $display = "&nbsp;";
-        $display .= "<a href='#' onClick=\"".Html::jsGetElementbyID('documenttypelist').
+        $display .= "<a href='#' onClick=\"" . Html::jsGetElementbyID('documenttypelist') .
                     ".dialog('open'); return false;\" class='fa fa-info pointer' title='" . __s('Help') . "' >";
-        $display .= "<span class='sr-only'>".__s('Help')."></span>";
+        $display .= "<span class='sr-only'>" . __s('Help') . "></span>";
         $display .= "</a>";
         $display .= Ajax::createIframeModalWindow(
             'documenttypelist',
-            $CFG_GLPI["root_doc"]."/front/documenttype.list.php",
+            $CFG_GLPI["root_doc"] . "/front/documenttype.list.php",
             ['title'   => static::getTypeName(Session::getPluralNumber()),
                                                    'display' => false]
         );

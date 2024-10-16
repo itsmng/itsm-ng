@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -59,7 +60,7 @@ class NotificationTargetMailCollector extends NotificationTarget
             $tmp['##mailcollector.errors##'] = $mailcollector['errors'];
             $tmp['##mailcollector.url##']    = $this->formatURL(
                 $options['additionnaloption']['usertype'],
-                "MailCollector_".$id
+                "MailCollector_" . $id
             );
             $this->data['mailcollectors'][] = $tmp;
         }
@@ -112,5 +113,4 @@ class NotificationTargetMailCollector extends NotificationTarget
         asort($this->tag_descriptions);
         return $this->tag_descriptions;
     }
-
 }

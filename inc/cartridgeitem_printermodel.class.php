@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -64,7 +65,6 @@ class CartridgeItem_PrinterModel extends CommonDBRelation
             case 'CartridgeItem':
                 self::showForCartridgeItem($item);
                 break;
-
         }
         return true;
     }
@@ -179,8 +179,8 @@ class CartridgeItem_PrinterModel extends CommonDBRelation
                       ]
                    ]
                 ];
-                $url = Printer::getSearchURL()."?".Toolbox::append_params($opt, '&amp;');
-                $values[] = ["<a href='".$url."'>".$data["name"]];
+                $url = Printer::getSearchURL() . "?" . Toolbox::append_params($opt, '&amp;');
+                $values[] = ["<a href='" . $url . "'>" . $data["name"]];
                 $massive_action[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
             }
             renderTwigTemplate('table.twig', [

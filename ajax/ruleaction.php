@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -80,7 +81,6 @@ if (isset($_POST["sub_type"]) && class_exists($_POST["sub_type"])) {
             return false;
         }
         $actions = $actions_options[$field]['permitseveral'];
-
     } else {
         if (isset($actions_options[$field]['force_actions'])) {
             $actions = $actions_options[$field]['force_actions'];

@@ -91,8 +91,10 @@ class Timezone
         if (empty($params['value'])) {
             $params['value'] = 0;
         }
-        if (($params['value'] < max($params['min'], 10 * MINUTE_TIMESTAMP))
-           && $params['addfirstminutes']) {
+        if (
+            ($params['value'] < max($params['min'], 10 * MINUTE_TIMESTAMP))
+            && $params['addfirstminutes']
+        ) {
             $params['value'] = floor(($params['value']) / MINUTE_TIMESTAMP) * MINUTE_TIMESTAMP;
         } elseif (!in_array($params['value'], $params['toadd'])) {
             // Round to a valid step except if value is already valid (defined in values to add)
@@ -140,7 +142,7 @@ class Timezone
                 if ($day > 0) {
                     if (($hour > 0) || ($minute > 0)) {
                         if ($minute < 10) {
-                            $minute = '0'.$minute;
+                            $minute = '0' . $minute;
                         }
 
                         //TRANS: %1$d is the number of days, %2$d the number of hours,
@@ -154,10 +156,9 @@ class Timezone
                     } else {
                         $values[$i] = sprintf(_n('%d day', '%d days', $day), $day);
                     }
-
                 } elseif ($hour > 0 || $minute > 0) {
                     if ($minute < 10) {
-                        $minute = '0'.$minute;
+                        $minute = '0' . $minute;
                     }
 
                     //TRANS: %1$d the number of hours, %2$s the number of minutes : display 3h15

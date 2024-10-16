@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -58,7 +59,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $sla->check($_POST["id"], PURGE);
     $sla->delete($_POST, 1);
@@ -72,7 +72,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $sla->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $sla->check($_POST["id"], UPDATE);
     $sla->update($_POST);
@@ -86,7 +85,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } else {
     Html::header(SLA::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "config", "slm", "sla");
 

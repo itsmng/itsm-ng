@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -90,8 +91,8 @@ trait MapGeolocation
 
          var osmGeocoder = new L.Control.OSMGeocoder({
             collapsed: false,
-            placeholder: '".__s('Search')."',
-            text: '".__s('Search')."'
+            placeholder: '" . __s('Search') . "',
+            text: '" . __s('Search') . "'
          });
          map_elt.addControl(osmGeocoder);
          _autoSearch();
@@ -113,7 +114,7 @@ trait MapGeolocation
             var _clat = _popup._latlng.lat.toString();
             var _clng = _popup._latlng.lng.toString();
 
-            _popup.setContent('<p><a href=\'#\'>".__s('Set location here')."</a></p>');
+            _popup.setContent('<p><a href=\'#\'>" . __s('Set location here') . "</a></p>');
 
             $(_container).find('a').on('click', function(e){
                e.preventDefault();

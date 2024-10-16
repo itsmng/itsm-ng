@@ -79,7 +79,7 @@ class Item_DeviceProcessor extends Item_Devices
                  'type' => 'number',
                  'min' => 0,
               ]
-         ],
+           ],
            'nbthreads' => [
               'long name' => __('Number of threads'),
               'short name' => __('Threads'),
@@ -90,7 +90,7 @@ class Item_DeviceProcessor extends Item_Devices
                  'type' => 'number',
                  'min' => 0,
               ]
-         ],
+           ],
            'busID'     => parent::getSpecificities('busID')
         ];
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -40,14 +41,18 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 // depreciation behavior
-if (!isset($_POST["itemtype"]) && isset($_POST['table'])
-    && $DB->tableExists($_POST['table'])) {
+if (
+    !isset($_POST["itemtype"]) && isset($_POST['table'])
+    && $DB->tableExists($_POST['table'])
+) {
     Toolbox::deprecated();
     $_POST["itemtype"] = getItemTypeForTable($_POST['table']);
 }
 
-if (isset($_POST["itemtype"])
-    && isset($_POST["value"])) {
+if (
+    isset($_POST["itemtype"])
+    && isset($_POST["value"])
+) {
     // Security
     if (!is_subclass_of($_POST["itemtype"], "CommonDBTM")) {
         exit();
@@ -57,7 +62,7 @@ if (isset($_POST["itemtype"])
         case User::getType():
             if ($_POST['value'] == 0) {
                 $tmpname = [
-                   'link'    => $CFG_GLPI['root_doc']."/front/user.php",
+                   'link'    => $CFG_GLPI['root_doc'] . "/front/user.php",
                    'comment' => "",
                 ];
             } else {
@@ -79,17 +84,19 @@ if (isset($_POST["itemtype"])
 
             if (isset($_POST['withlink'])) {
                 echo "<script type='text/javascript' >\n";
-                echo Html::jsGetElementbyID($_POST['withlink']).".attr('href', '".$tmpname['link']."');";
+                echo Html::jsGetElementbyID($_POST['withlink']) . ".attr('href', '" . $tmpname['link'] . "');";
                 echo "</script>\n";
             }
             break;
 
         default:
             if ($_POST["value"] > 0) {
-                if (!Session::validateIDOR([
-                   'itemtype'    => $_POST['itemtype'],
-                   '_idor_token' => $_POST['_idor_token'] ?? ""
-                ])) {
+                if (
+                    !Session::validateIDOR([
+                    'itemtype'    => $_POST['itemtype'],
+                    '_idor_token' => $_POST['_idor_token'] ?? ""
+                    ])
+                ) {
                     exit();
                 }
 
@@ -100,8 +107,8 @@ if (isset($_POST["itemtype"])
                 }
                 if (isset($_POST['withlink'])) {
                     echo "<script type='text/javascript' >\n";
-                    echo Html::jsGetElementbyID($_POST['withlink']).".
-                    attr('href', '".$_POST['itemtype']::getFormURLWithID($_POST["value"])."');";
+                    echo Html::jsGetElementbyID($_POST['withlink']) . ".
+                    attr('href', '" . $_POST['itemtype']::getFormURLWithID($_POST["value"]) . "');";
                     echo "</script>\n";
                 }
             }

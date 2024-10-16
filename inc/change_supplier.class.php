@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -48,6 +49,4 @@ class Change_Supplier extends CommonITILActor
     public static $items_id_1 = 'changes_id';
     public static $itemtype_2 = 'Supplier';
     public static $items_id_2 = 'suppliers_id';
-
-
 }

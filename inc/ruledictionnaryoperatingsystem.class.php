@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -69,5 +70,4 @@ class RuleDictionnaryOperatingSystem extends RuleDictionnaryDropdown
 
         return $actions;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -43,6 +44,5 @@ class OperatingSystemVersion extends CommonDropdown
     public static function getTypeName($nb = 0)
     {
         return _n('Version of the operating system', 'Versions of the operating systems', $nb);
-
     }
 }

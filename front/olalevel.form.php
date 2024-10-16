@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -56,7 +57,6 @@ if (isset($_POST["update"])) {
     );
 
     Html::back();
-
 } elseif (isset($_POST["add"])) {
     $item->check(-1, CREATE, $_POST);
 
@@ -74,9 +74,7 @@ if (isset($_POST["update"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
-
     if (isset($_POST['id'])) {
         $item->check($_POST['id'], PURGE);
         if ($item->delete($_POST, 1)) {
@@ -93,7 +91,6 @@ if (isset($_POST["update"])) {
     }
 
     Html::back();
-
 } elseif (isset($_POST["add_action"])) {
     $item->check($_POST['olalevels_id'], UPDATE);
 
@@ -101,15 +98,12 @@ if (isset($_POST["update"])) {
     $action->add($_POST);
 
     Html::back();
-
 } elseif (isset($_POST["add_criteria"])) {
-
     $item->check($_POST['olalevels_id'], UPDATE);
     $criteria = new OlaLevelCriteria();
     $criteria->add($_POST);
 
     Html::back();
-
 } elseif (isset($_GET["id"]) && ($_GET["id"] > 0)) { //print computer information
     Html::header(OlaLevel::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "config", "slm", "olalevel");
     //show computer form to add

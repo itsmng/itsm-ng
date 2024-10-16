@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -442,7 +443,6 @@ abstract class CommonDropdown extends CommonDBTM
                         if ($row['cpt'] > 0) {
                             return true;
                         }
-
                     } else {
                         foreach ($field as $f) {
                             $row = $DB->request([
@@ -495,24 +495,24 @@ abstract class CommonDropdown extends CommonDBTM
 
         if (!$this->must_be_replace) {
             // Delete form (set to 0)
-            echo "<p>".__('If you confirm the deletion, all uses of this dropdown will be blanked.') .
+            echo "<p>" . __('If you confirm the deletion, all uses of this dropdown will be blanked.') .
                  "</p>";
             echo "<form aria-label='Delete Confirm' action='$target' method='post'>";
             echo "<table class='tab_cadre' aria-label='Delete Confirm Form'><tr>";
             echo "<td><input type='hidden' name='id' value='$ID'>";
-            echo "<input type='hidden' name='itemtype' value='".$this->getType()."' />";
+            echo "<input type='hidden' name='itemtype' value='" . $this->getType() . "' />";
             echo "<input type='hidden' name='forcepurge' value='1'>";
             echo "<input class='submit' type='submit' name='purge'
-                value=\""._sx('button', 'Confirm')."\">";
+                value=\"" . _sx('button', 'Confirm') . "\">";
             echo "</td>";
             echo "<td><input class='submit' type='submit' name='annuler'
-                    value=\""._sx('button', 'Cancel')."\">";
+                    value=\"" . _sx('button', 'Cancel') . "\">";
             echo "</td></tr></table>\n";
             Html::closeForm();
         }
 
         // Replace form (set to new value)
-        echo "<p>". __('You can also replace all uses of this dropdown by another.') ."</p>";
+        echo "<p>" . __('You can also replace all uses of this dropdown by another.') . "</p>";
         echo "<form aria-label='replace' action='$target' method='post'>";
         echo "<table class='tab_cadre' aria-label='Replace Form'><tr><td>";
 
@@ -527,7 +527,6 @@ abstract class CommonDropdown extends CommonDBTM
                                  'used'   => getSonsOf($this->getTable(), $ID),
                                  'width'   => '100%']
             );
-
         } else {
             Dropdown::show(
                 getItemTypeForTable($this->getTable()),
@@ -537,11 +536,11 @@ abstract class CommonDropdown extends CommonDBTM
             );
         }
         echo "<input type='hidden' name='id' value='$ID' />";
-        echo "<input type='hidden' name='itemtype' value='".$this->getType()."' />";
+        echo "<input type='hidden' name='itemtype' value='" . $this->getType() . "' />";
         echo "</td><td>";
-        echo "<input class='submit' type='submit' name='replace' value=\""._sx('button', 'Replace')."\">";
+        echo "<input class='submit' type='submit' name='replace' value=\"" . _sx('button', 'Replace') . "\">";
         echo "</td><td>";
-        echo "<input class='submit' type='submit' name='annuler' value=\""._sx('button', 'Cancel')."\">";
+        echo "<input class='submit' type='submit' name='annuler' value=\"" . _sx('button', 'Cancel') . "\">";
         echo "</td></tr></table>\n";
         Html::closeForm();
         echo "</div>";
@@ -698,11 +697,13 @@ abstract class CommonDropdown extends CommonDBTM
         // Manage forbidden actions
         $forbidden_actions = $this->getForbiddenStandardMassiveAction();
 
-        if ($isadmin
+        if (
+            $isadmin
             &&  $this->maybeRecursive()
             && (count($_SESSION['glpiactiveentities']) > 1)
-            && !in_array('merge', $forbidden_actions)) {
-            $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'merge'] = __('Merge and assign to current entity');
+            && !in_array('merge', $forbidden_actions)
+        ) {
+            $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'merge'] = __('Merge and assign to current entity');
         }
 
         return $actions;
@@ -719,7 +720,7 @@ abstract class CommonDropdown extends CommonDBTM
 
         switch ($ma->getAction()) {
             case 'merge':
-                echo $_SESSION['glpiactive_entity_shortname'].'<br>';
+                echo $_SESSION['glpiactive_entity_shortname'] . '<br>';
                 echo Html::submit(_x('button', 'Merge'), ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
                 return true;
         }
@@ -745,8 +746,10 @@ abstract class CommonDropdown extends CommonDBTM
                 foreach ($ids as $key) {
                     if ($item->can($key, UPDATE)) {
                         if ($item->getEntityID() == $_SESSION['glpiactive_entity']) {
-                            if ($item->update(['id'           => $key,
-                                                    'is_recursive' => 1])) {
+                            if (
+                                $item->update(['id'           => $key,
+                                                    'is_recursive' => 1])
+                            ) {
                                 $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                             } else {
                                 $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
@@ -807,8 +810,10 @@ abstract class CommonDropdown extends CommonDBTM
             $ret .= "&nbsp;&nbsp;";
         }
 
-        if ($this->isField('knowbaseitemcategories_id')
-            && $this->fields['knowbaseitemcategories_id']) {
+        if (
+            $this->isField('knowbaseitemcategories_id')
+            && $this->fields['knowbaseitemcategories_id']
+        ) {
             $title = __s('FAQ');
 
             if (Session::getCurrentInterface() == 'central') {
@@ -825,7 +830,7 @@ abstract class CommonDropdown extends CommonDBTM
                 $kbitem->getFromDB(reset($found_kbitem)['id']);
                 $ret .= "<div class='faqadd_block'>";
                 $ret .= "<label for='display_faq_chkbox$rand'>";
-                $ret .= "<img src='".$CFG_GLPI["root_doc"]."/pics/faqadd.png' class='middle pointer'
+                $ret .= "<img src='" . $CFG_GLPI["root_doc"] . "/pics/faqadd.png' class='middle pointer'
                       alt=\"$title\" title=\"$title\">";
                 $ret .= "</label>";
                 $ret .= "<input type='checkbox'  class='display_faq_chkbox' id='display_faq_chkbox$rand'>";
@@ -839,15 +844,15 @@ abstract class CommonDropdown extends CommonDBTM
                   var getKnowbaseItemAnswer$rand = function() {
                      var knowbaseitems_id = $('#dropdown_knowbaseitems_id$rand').val();
                      $('#faqadd_block_content$rand').load(
-                        '".$CFG_GLPI['root_doc']."/ajax/getKnowbaseItemAnswer.php',
+                        '" . $CFG_GLPI['root_doc'] . "/ajax/getKnowbaseItemAnswer.php',
                         {
                            'knowbaseitems_id': knowbaseitems_id
                         }
                      );
                   };
                ");
-                    $ret .= "<label for='dropdown_knowbaseitems_id$rand'>".
-                           KnowbaseItem::getTypeName()."</label>&nbsp;";
+                    $ret .= "<label for='dropdown_knowbaseitems_id$rand'>" .
+                           KnowbaseItem::getTypeName() . "</label>&nbsp;";
                     $ret .= KnowbaseItem::dropdown([
                        'value'     => reset($found_kbitem)['id'],
                        'display'   => false,

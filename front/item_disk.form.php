@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -64,7 +65,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $disk->check($_POST["id"], PURGE);
 
@@ -81,9 +81,8 @@ if (isset($_POST["add"])) {
     $itemtype = $disk->fields['itemtype'];
     $item = new $itemtype();
     $item->getFromDB($disk->fields['items_id']);
-    Html::redirect($itemtype::getFormURLWithID($disk->fields['items_id']).
+    Html::redirect($itemtype::getFormURLWithID($disk->fields['items_id']) .
                    ($item->fields['is_template'] ? "&withtemplate=1" : ""));
-
 } elseif (isset($_POST["update"])) {
     $disk->check($_POST["id"], UPDATE);
 
@@ -98,7 +97,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 } else {
     $itemtype = "computer";
     if ($_GET['id'] != '') {

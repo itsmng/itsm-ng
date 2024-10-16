@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -68,7 +69,7 @@ class DevicePowerSupply extends CommonDevice
                  'value' => $this->fields['devicepowersupplymodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DevicePowerSupplyModel')
               ]
-         ]
+            ]
         );
     }
 

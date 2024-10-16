@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -158,22 +159,30 @@ class Computer extends CommonDBTM
                 $changes['contact'] = $input['contact'];
             }
             // Update users and groups of attached items
-            if ($this->updates[$i] == 'users_id'
-                && $CFG_GLPI['is_user_autoupdate']) {
+            if (
+                $this->updates[$i] == 'users_id'
+                && $CFG_GLPI['is_user_autoupdate']
+            ) {
                 $changes['users_id'] = $input['users_id'];
             }
-            if ($this->updates[$i] == 'groups_id'
-                && $CFG_GLPI['is_group_autoupdate']) {
+            if (
+                $this->updates[$i] == 'groups_id'
+                && $CFG_GLPI['is_group_autoupdate']
+            ) {
                 $changes['groups_id'] = $input['groups_id'];
             }
             // Update state of attached items
-            if (($this->updates[$i] == 'states_id')
-                && ($CFG_GLPI['state_autoupdate_mode'] < 0)) {
+            if (
+                ($this->updates[$i] == 'states_id')
+                && ($CFG_GLPI['state_autoupdate_mode'] < 0)
+            ) {
                 $changes['states_id'] = $input['states_id'];
             }
             // Update loction of attached items
-            if ($this->updates[$i] == 'locations_id'
-                && $CFG_GLPI['is_location_autoupdate']) {
+            if (
+                $this->updates[$i] == 'locations_id'
+                && $CFG_GLPI['is_location_autoupdate']
+            ) {
                 $changes['locations_id'] = $input['locations_id'];
             }
         }
@@ -192,7 +201,7 @@ class Computer extends CommonDBTM
                          'computers_id' => $this->fields["id"],
                          'is_deleted'   => 0
                       ]
-               ]
+                    ]
                 );
                 $item      = new $type();
                 foreach ($items_result as $data) {
@@ -226,7 +235,7 @@ class Computer extends CommonDBTM
                              'items_id'     => $this->fields["id"],
                              'is_deleted'   => 0
                           ]
-                  ]
+                        ]
                     );
                     foreach ($devices_result as $data) {
                         $tID = $data['id'];
@@ -295,7 +304,7 @@ class Computer extends CommonDBTM
               ComputerVirtualMachine::class,
               Item_Disk::class,
               Item_Project::class,
-         ]
+            ]
         );
 
         Item_Devices::cleanItemDeviceDBOnItemDelete(
@@ -474,16 +483,16 @@ class Computer extends CommonDBTM
 
         if ($isadmin) {
             $actions += [
-               'Item_OperatingSystem'.MassiveAction::CLASS_ACTION_SEPARATOR.'update'
+               'Item_OperatingSystem' . MassiveAction::CLASS_ACTION_SEPARATOR . 'update'
                   => OperatingSystem::getTypeName(),
-               'Computer_Item'.MassiveAction::CLASS_ACTION_SEPARATOR.'add'
-                  => "<i class='ma-icon fas fa-plug' aria-hidden='true'></i>".
+               'Computer_Item' . MassiveAction::CLASS_ACTION_SEPARATOR . 'add'
+                  => "<i class='ma-icon fas fa-plug' aria-hidden='true'></i>" .
                      _x('button', 'Connect'),
-               'Item_SoftwareVersion'.MassiveAction::CLASS_ACTION_SEPARATOR.'add'
-                  => "<i class='ma-icon fas fa-laptop-medical' aria-hidden='true'></i>".
+               'Item_SoftwareVersion' . MassiveAction::CLASS_ACTION_SEPARATOR . 'add'
+                  => "<i class='ma-icon fas fa-laptop-medical' aria-hidden='true'></i>" .
                      _x('button', 'Install'),
-               'Item_SoftwareLicense'.MassiveAction::CLASS_ACTION_SEPARATOR.'add'
-                  => "<i class='ma-icon fas fa-key' aria-hidden='true'></i>".
+               'Item_SoftwareLicense' . MassiveAction::CLASS_ACTION_SEPARATOR . 'add'
+                  => "<i class='ma-icon fas fa-key' aria-hidden='true'></i>" .
                      _x('button', 'Add a license')
 
             ];
@@ -711,5 +720,4 @@ class Computer extends CommonDBTM
     {
         return "fas fa-laptop";
     }
-
 }

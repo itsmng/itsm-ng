@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -42,10 +43,11 @@ if (empty($_GET["date1"]) && empty($_GET["date2"])) {
     $_GET["date2"] = date("Y-m-d");
 }
 
-if (!empty($_GET["date1"])
+if (
+    !empty($_GET["date1"])
     && !empty($_GET["date2"])
-    && (strcmp($_GET["date2"], $_GET["date1"]) < 0)) {
-
+    && (strcmp($_GET["date2"], $_GET["date1"]) < 0)
+) {
     $tmp           = $_GET["date1"];
     $_GET["date1"] = $_GET["date2"];
     $_GET["date2"] = $tmp;
@@ -113,7 +115,7 @@ $stat->displayLineGraph(
          'name' => __('Closed'),
          'data' => $values['closed']
       ]
-   ]
+    ]
 );
 
 $values = [];
@@ -167,11 +169,10 @@ $stat->displayLineGraph(
          'name' => __('Real duration'),
          'data' => $values['avgactiontime']
       ]
-   ]
+    ]
 );
 
 if ($_GET['itemtype'] == 'Ticket') {
-
     ///////// Satisfaction
     $values = [];
     $values['opensatisfaction']   = Stat::constructEntryValues(
@@ -199,7 +200,7 @@ if ($_GET['itemtype'] == 'Ticket') {
              'name' => _nx('survey', 'Answered', 'Answered', Session::getPluralNumber()),
              'data' => $values['answersatisfaction']
           ]
-      ]
+        ]
     );
 
     $values = [];
@@ -218,7 +219,7 @@ if ($_GET['itemtype'] == 'Ticket') {
              'name' => __('Satisfaction'),
              'data' => $values['avgsatisfaction']
           ]
-      ]
+        ]
     );
 }
 

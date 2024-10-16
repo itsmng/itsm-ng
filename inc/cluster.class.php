@@ -235,7 +235,7 @@ class Cluster extends CommonDBTM
         $this->deleteChildrenAndRelationsFromDb(
             [
               Item_Cluster::class,
-         ]
+            ]
         );
     }
 

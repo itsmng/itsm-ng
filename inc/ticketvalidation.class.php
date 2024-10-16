@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -116,5 +117,4 @@ class TicketValidation extends CommonITILValidation
 
         return $values;
     }
-
 }

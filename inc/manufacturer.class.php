@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -108,9 +109,10 @@ class Manufacturer extends CommonDropdown
     public function post_workOnItem()
     {
 
-        if ((isset($this->input['_registeredID']))
-            && (is_array($this->input['_registeredID']))) {
-
+        if (
+            (isset($this->input['_registeredID']))
+            && (is_array($this->input['_registeredID']))
+        ) {
             $input = ['itemtype' => $this->getType(),
                            'items_id' => $this->getID()];
 
@@ -251,5 +253,4 @@ class Manufacturer extends CommonDropdown
             );
         }
     }
-
 }

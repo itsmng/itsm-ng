@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -54,7 +55,7 @@ class MemoryLimit extends \GLPITestCase
                  'Allocated memory: ' . \Toolbox::getSize(\Toolbox::getMemoryLimit()),
                  'A minimum of 16 Gio is commonly required for ITSM-NG.',
                  'Try increasing the memory_limit parameter in the php.ini file.'
-            ]
+               ]
            );
     }
 }

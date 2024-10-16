@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -40,5 +41,4 @@ class DeviceBatteryType extends CommonDeviceType
     {
         return _n('Battery type', 'Battery types', $nb);
     }
-
 }

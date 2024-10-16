@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -45,30 +46,30 @@ class Crontask extends \GLPITestCase
         //create some files
         $Data = [
            [
-              'name'    => GLPI_TMP_DIR.'/recent_file.txt',
+              'name'    => GLPI_TMP_DIR . '/recent_file.txt',
               'content' => 'content1',
            ],
            [
-              'name'    => GLPI_TMP_DIR.'/file1.txt',
+              'name'    => GLPI_TMP_DIR . '/file1.txt',
               'content' => 'content1',
            ],
            [
-              'name'    => GLPI_TMP_DIR.'/file2.txt',
+              'name'    => GLPI_TMP_DIR . '/file2.txt',
               'content' => 'content2',
            ],
            [
-              'name'    => GLPI_TMP_DIR.'/auto_orient/file3.txt',
+              'name'    => GLPI_TMP_DIR . '/auto_orient/file3.txt',
               'content' => 'content3',
            ],
            [
-              'name'    => GLPI_TMP_DIR.'/auto_orient/file4.txt',
+              'name'    => GLPI_TMP_DIR . '/auto_orient/file4.txt',
               'content' => 'content4',
            ]
         ];
 
         //create auto_orient directory
-        if (!file_exists(GLPI_TMP_DIR.'/auto_orient/')) {
-            mkdir(GLPI_TMP_DIR.'/auto_orient/', 0755, true);
+        if (!file_exists(GLPI_TMP_DIR . '/auto_orient/')) {
+            mkdir(GLPI_TMP_DIR . '/auto_orient/', 0755, true);
         }
 
         foreach ($Data as $Row) {
@@ -77,10 +78,9 @@ class Crontask extends \GLPITestCase
             fclose($file);
 
             //change filemtime (except recent_file.txt)
-            if ($Row['name'] != GLPI_TMP_DIR.'/recent_file.txt') {
+            if ($Row['name'] != GLPI_TMP_DIR . '/recent_file.txt') {
                 touch($Row['name'], time() - (HOUR_TIMESTAMP * 2));
             }
-
         }
 
         // launch Cron for cleaning _tmp directory

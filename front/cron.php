@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -39,8 +40,8 @@ include('../inc/includes.php');
 
 if (!is_writable(GLPI_LOCK_DIR)) {
     //TRANS: %s is a directory
-    echo "\t".sprintf(__('ERROR: %s is not writable')."\n", GLPI_LOCK_DIR);
-    echo "\t".__('run script as apache user')."\n";
+    echo "\t" . sprintf(__('ERROR: %s is not writable') . "\n", GLPI_LOCK_DIR);
+    echo "\t" . __('run script as apache user') . "\n";
     exit(1);
 }
 
@@ -48,10 +49,10 @@ if (!isCommandLine()) {
     //The advantage of using background-image is that cron is called in a separate
     //request and thus does not slow down output of the main page as it would if called
     //from there.
-    $image = pack("H*", "47494638396118001800800000ffffff00000021f90401000000002c0000000".
+    $image = pack("H*", "47494638396118001800800000ffffff00000021f90401000000002c0000000" .
                         "018001800000216848fa9cbed0fa39cb4da8bb3debcfb0f86e248965301003b");
     header("Content-Type: image/gif");
-    header("Content-Length: ".strlen($image));
+    header("Content-Length: " . strlen($image));
     header("Cache-Control: no-cache,no-store");
     header("Pragma: no-cache");
     header("Connection: close");
@@ -59,7 +60,6 @@ if (!isCommandLine()) {
     flush();
 
     CronTask::launch(CronTask::MODE_INTERNAL);
-
 } elseif (isset($_SERVER['argc']) && ($_SERVER['argc'] > 1)) {
     // Parse command line options
 
@@ -77,7 +77,6 @@ if (!isCommandLine()) {
             CronTask::launch($mode, 1, $_SERVER['argv'][$i]);
         }
     }
-
 } else {
     // Default from configuration
     CronTask::launch(CronTask::MODE_EXTERNAL, $CFG_GLPI['cron_limit']);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -256,7 +257,7 @@ class TaskTemplate extends CommonDropdown
                       'addfirstminutes' => true,
                       'inhours'         => true,
                       'toadd'           => $toadd
-               ]
+                    ]
                 );
                 break;
         }

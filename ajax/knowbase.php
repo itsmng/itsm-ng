@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -33,8 +34,10 @@
 include('../inc/includes.php');
 Html::header_nocache();
 
-if (!$CFG_GLPI["use_public_faq"]
-    && !Session::haveRightsOr('knowbase', [KnowbaseItem::READFAQ, READ])) {
+if (
+    !$CFG_GLPI["use_public_faq"]
+    && !Session::haveRightsOr('knowbase', [KnowbaseItem::READFAQ, READ])
+) {
     exit;
 }
 

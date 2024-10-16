@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -223,7 +224,7 @@ class HTMLTableMain extends HTMLTableBase
 
         echo "\n<table aria_label='Data Table 'class='tab_cadre_fixehov'";
         if (!empty($p['html_id'])) {
-            echo " id='".$p['html_id']."'";
+            echo " id='" . $p['html_id'] . "'";
         }
         echo ">\n";
 
@@ -233,21 +234,18 @@ class HTMLTableMain extends HTMLTableBase
         }
 
         if (!empty($this->title)) {
-            echo "\t\t<tr class='noHover'><th colspan='$totalNumberOfColumn'>".$this->title.
+            echo "\t\t<tr class='noHover'><th colspan='$totalNumberOfColumn'>" . $this->title .
                  "</th></tr>\n";
         }
 
         if ($totalNumberOfRow == 0) {
-
             if ($open_thead) {
                 echo "\t</thead>\n";
             }
 
-            echo "\t\t<tr class='tab_bg_1'>".
-                 "<td class='center' colspan='$totalNumberOfColumn'>" . __('None') ."</td></tr>\n";
-
+            echo "\t\t<tr class='tab_bg_1'>" .
+                 "<td class='center' colspan='$totalNumberOfColumn'>" . __('None') . "</td></tr>\n";
         } else {
-
             if ($p['display_thead']) {
                 $this->displaySuperHeader();
             }
@@ -268,5 +266,4 @@ class HTMLTableMain extends HTMLTableBase
         }
         echo "</table>\n";
     }
-
 }

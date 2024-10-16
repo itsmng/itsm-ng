@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -44,11 +45,10 @@ $contact = new Contact();
 
 if (isset($_GET['getvcard'])) {
     if ($_GET["id"] < 0) {
-        Html::redirect($CFG_GLPI["root_doc"]."/front/contact.php");
+        Html::redirect($CFG_GLPI["root_doc"] . "/front/contact.php");
     }
     $contact->check($_GET["id"], READ);
     $contact->generateVcard();
-
 } elseif (isset($_POST["add"])) {
     $contact->check(-1, CREATE, $_POST);
 
@@ -65,7 +65,6 @@ if (isset($_GET['getvcard'])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["delete"])) {
     $contact->check($_POST["id"], DELETE);
 
@@ -80,7 +79,6 @@ if (isset($_GET['getvcard'])) {
         );
     }
     $contact->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $contact->check($_POST["id"], DELETE);
 
@@ -95,7 +93,6 @@ if (isset($_GET['getvcard'])) {
         );
     }
     $contact->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $contact->check($_POST["id"], PURGE);
 
@@ -110,7 +107,6 @@ if (isset($_GET['getvcard'])) {
         );
     }
     $contact->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $contact->check($_POST["id"], UPDATE);
 
@@ -125,7 +121,6 @@ if (isset($_GET['getvcard'])) {
         );
     }
     Html::back();
-
 } else {
     Html::header(Contact::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "management", "contact");
     $contact->display([

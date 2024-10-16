@@ -146,8 +146,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
         }
 
         $context_id = 0;
-        if ($impact_item->fields["impactcontexts_id"] == 0
-           || $impact_item->fields["is_slave"] == 1) {
+        if (
+            $impact_item->fields["impactcontexts_id"] == 0
+            || $impact_item->fields["is_slave"] == 1
+        ) {
             // There is no context OR we are slave to another context -> let's
             // create a new one
             $context_id = $context_em->add($context_data);

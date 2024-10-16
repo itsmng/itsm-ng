@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -465,8 +466,8 @@ class Html extends \GLPITestCase
            'other-min.css'
         ];
         $dir = str_replace(realpath(GLPI_ROOT), '', realpath(GLPI_TMP_DIR));
-        $base_expected = '<link rel="stylesheet" type="text/css" href="'.
-           $CFG_GLPI['root_doc'] . $dir .'/%url?v='. ITSM_VERSION .'" %attrs>';
+        $base_expected = '<link rel="stylesheet" type="text/css" href="' .
+           $CFG_GLPI['root_doc'] . $dir . '/%url?v=' . ITSM_VERSION . '" %attrs>';
         $base_attrs = 'media="all"';
 
         //create test files
@@ -575,8 +576,8 @@ class Html extends \GLPITestCase
            'other-min.js'
         ];
         $dir = str_replace(realpath(GLPI_ROOT), '', realpath(GLPI_TMP_DIR));
-        $base_expected = '<script type="text/javascript" src="'.
-           $CFG_GLPI['root_doc'] . $dir .'/%url?v='. ITSM_VERSION .'"></script>';
+        $base_expected = '<script type="text/javascript" src="' .
+           $CFG_GLPI['root_doc'] . $dir . '/%url?v=' . ITSM_VERSION . '"></script>';
 
         //create test files
         foreach ($fake_files as $fake_file) {
@@ -713,7 +714,6 @@ class Html extends \GLPITestCase
                ->hasKey('title');
 
             if (isset($menu_entry['content'])) {
-
                 $this->array($menu_entry)
                    ->hasKey('types');
 
@@ -946,7 +946,6 @@ class Html extends \GLPITestCase
         ];
         $expected = '<input type="number" name="in_put" min="10" value="myval" class="form-control"/>';
         $this->string(\Html::input($name, $options))->isIdenticalTo($expected);
-
     }
 
     public function providerGetBackUrl()

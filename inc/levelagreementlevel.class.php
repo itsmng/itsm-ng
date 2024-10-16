@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -169,7 +170,6 @@ abstract class LevelAgreementLevel extends RuleTicket
                     return $possible_values[$values[$field]];
                 }
                 break;
-
         }
         return parent::getSpecificValueToDisplay($field, $values, $options);
     }
@@ -289,8 +289,10 @@ abstract class LevelAgreementLevel extends RuleTicket
             }
         }
 
-        if (!in_array(0, $p['used'])
-            && isset($p['type'])) {
+        if (
+            !in_array(0, $p['used'])
+            && isset($p['type'])
+        ) {
             if ($p['type'] == 1) {
                 $possible_values[0] = __('Time to own');
             } else {
@@ -395,5 +397,4 @@ abstract class LevelAgreementLevel extends RuleTicket
         }
         return true;
     }
-
 }

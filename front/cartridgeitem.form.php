@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -58,7 +59,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["delete"])) {
     $cartype->check($_POST["id"], DELETE);
 
@@ -73,7 +73,6 @@ if (isset($_POST["add"])) {
         );
     }
     $cartype->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $cartype->check($_POST["id"], DELETE);
 
@@ -88,7 +87,6 @@ if (isset($_POST["add"])) {
         );
     }
     $cartype->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $cartype->check($_POST["id"], PURGE);
 
@@ -103,7 +101,6 @@ if (isset($_POST["add"])) {
         );
     }
     $cartype->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $cartype->check($_POST["id"], UPDATE);
 
@@ -118,7 +115,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 } else {
     Html::header(Cartridge::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "assets", "cartridgeitem");
     $cartype->display(['id' => $_GET["id"],

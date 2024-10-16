@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -52,7 +53,7 @@ if (isset($_SESSION['glpihighcontrast_css']) && $_SESSION['glpihighcontrast_css'
 }
 $theme = isset($_SESSION['glpipalette']) ? $_SESSION['glpipalette'] : 'itsmng';
 echo Html::scss('css/palettes/' . $theme);
-echo Html::script($CFG_GLPI["root_doc"].'/script.js');
+echo Html::script($CFG_GLPI["root_doc"] . '/script.js');
 ?>
 
 </head>
@@ -70,16 +71,16 @@ function fillidfield(Type,Id) {
 <?php
 
 echo "<div class='center'>";
-echo "<p class='b'>".__('Search the ID of your hardware')."</p>";
-echo " <form name='form1' aria-label='Hardware ' method='post' action='".$_SERVER['PHP_SELF']."'>";
+echo "<p class='b'>" . __('Search the ID of your hardware') . "</p>";
+echo " <form name='form1' aria-label='Hardware ' method='post' action='" . $_SERVER['PHP_SELF'] . "'>";
 
 echo "<table class='tab_cadre_fixe' aria-label='Search form>";
-echo "<tr><th height='29'>".__('Enter the first letters (user, item name, serial or asset number)').
+echo "<tr><th height='29'>" . __('Enter the first letters (user, item name, serial or asset number)') .
      "</th></tr>";
 echo "<tr><td class='tab_bg_1 center'>";
 echo "<input name='NomContact' type='text' id='NomContact' >";
 echo "<input type='hidden' name='send' value='1'>"; // bug IE ! La validation par enter ne fonctionne pas sans cette ligne  incroyable mais vrai !
-echo "<input type='submit' name='send' value='". _sx('button', 'Search')."'>";
+echo "<input type='submit' name='send' value='" . _sx('button', 'Search') . "'>";
 echo "</td></tr></table>";
 Html::closeForm();
 echo "</div>";
@@ -87,12 +88,12 @@ echo "</div>";
 if (isset($_POST["send"])) {
     echo "<table class='tab_cadre_fixe' aria-label='Search results table'>";
     echo " <tr class='tab_bg3'>";
-    echo " <td class='center b' width='30%'>".__('Alternate username')."</td>";
-    echo " <td class='center b' width='20%'>".__('Hardware type')."</td>";
-    echo " <td class='center b' width='30%'>"._n('Associated element', 'Associated elements', Session::getPluralNumber())."</td>";
-    echo " <td class='center b' width='5%'>".__('ID')."</td>";
-    echo " <td class='center b' width='10%'>".__('Serial number')."</td>";
-    echo " <td class='center b' width='10%'>".__('Inventory number')."</td>";
+    echo " <td class='center b' width='30%'>" . __('Alternate username') . "</td>";
+    echo " <td class='center b' width='20%'>" . __('Hardware type') . "</td>";
+    echo " <td class='center b' width='30%'>" . _n('Associated element', 'Associated elements', Session::getPluralNumber()) . "</td>";
+    echo " <td class='center b' width='5%'>" . __('ID') . "</td>";
+    echo " <td class='center b' width='10%'>" . __('Serial number') . "</td>";
+    echo " <td class='center b' width='10%'>" . __('Inventory number') . "</td>";
     echo " </tr>";
 
     $types = ['Computer'         => Computer::getTypeName(1),
@@ -123,7 +124,7 @@ if (isset($_POST["send"])) {
             $Computer = $ligne['name'];
             $s1       = $ligne['serial'];
             $s2       = $ligne['otherserial'];
-            echo " <tr class='tab_bg_1' onClick=\"fillidfield(".$type.",".$Comp_num.")\">";
+            echo " <tr class='tab_bg_1' onClick=\"fillidfield(" . $type . "," . $Comp_num . ")\">";
             echo "<td class='center'>&nbsp;$Contact&nbsp;</td>";
             echo "<td class='center'>&nbsp;$label&nbsp;</td>";
             echo "<td class='center b'>&nbsp;$Computer&nbsp;</td>";
@@ -149,9 +150,9 @@ if (isset($_POST["send"])) {
     while ($ligne = $iterator->next()) {
         $Comp_num = $ligne['id'];
         $Computer = $ligne['name'];
-        echo " <tr class='tab_find' onClick=\"fillidfield('Software',".$Comp_num.")\">";
+        echo " <tr class='tab_find' onClick=\"fillidfield('Software'," . $Comp_num . ")\">";
         echo "<td class='center'>&nbsp;</td>";
-        echo "<td class='center'>&nbsp;"._n('Software', 'Software', 1)."&nbsp;</td>";
+        echo "<td class='center'>&nbsp;" . _n('Software', 'Software', 1) . "&nbsp;</td>";
         echo "<td class='center b'>&nbsp;$Computer&nbsp;</td>";
         echo "<td class='center'>&nbsp;$Comp_num&nbsp;</td>";
         echo "<td class='center'>&nbsp;</td></tr>";

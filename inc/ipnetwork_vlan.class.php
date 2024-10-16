@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -130,14 +131,14 @@ class IPNetwork_Vlan extends CommonDBRelation
 
         if ($canedit) {
             echo "<div class='firstbloc'>\n";
-            echo "<form aria-label='VLAN' method='post' action='".static::getFormURL()."'>\n";
+            echo "<form aria-label='VLAN' method='post' action='" . static::getFormURL() . "'>\n";
             echo "<table class='tab_cadre_fixe' aria-label='Associate a VLAN'>\n";
-            echo "<tr><th>".__('Associate a VLAN')."</th></tr>";
+            echo "<tr><th>" . __('Associate a VLAN') . "</th></tr>";
 
             echo "<tr class='tab_bg_1'><td class='center'>";
             echo "<input type='hidden' name='ipnetworks_id' value='$ID'>";
             Vlan::dropdown(['used' => $used]);
-            echo "&nbsp;<input type='submit' name='add' value='"._sx('button', 'Associate').
+            echo "&nbsp;<input type='submit' name='add' value='" . _sx('button', 'Associate') .
                          "' class='submit'>";
             echo "</td></tr>\n";
 
@@ -148,9 +149,9 @@ class IPNetwork_Vlan extends CommonDBRelation
 
         echo "<div class='spaced'>";
         if ($canedit && $number) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
             $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $number),
-                                         'container'     => 'mass'.__CLASS__.$rand];
+                                         'container'     => 'mass' . __CLASS__ . $rand];
             Html::showMassiveActions($massiveactionparams);
         }
         echo "<table class='tab_cadre_fixehov' aria-label='editable entity table'>";
@@ -160,16 +161,16 @@ class IPNetwork_Vlan extends CommonDBRelation
         $header_bottom = '';
         $header_end    = '';
         if ($canedit && $number) {
-            $header_top    .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+            $header_top    .= "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
             $header_top    .= "</th>";
-            $header_bottom .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+            $header_bottom .= "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
             $header_bottom .= "</th>";
         }
-        $header_end .= "<th>".__('Name')."</th>";
-        $header_end .= "<th>".Entity::getTypeName(1)."</th>";
-        $header_end .= "<th>".__('ID TAG')."</th>";
+        $header_end .= "<th>" . __('Name') . "</th>";
+        $header_end .= "<th>" . Entity::getTypeName(1) . "</th>";
+        $header_end .= "<th>" . __('ID TAG') . "</th>";
         $header_end .= "</tr>";
-        echo $header_begin.$header_top.$header_end;
+        echo $header_begin . $header_top . $header_end;
 
         $used = [];
         foreach ($vlans as $data) {
@@ -184,15 +185,15 @@ class IPNetwork_Vlan extends CommonDBRelation
                 $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
             }
             echo "<td class='center b'>
-               <a href='".$CFG_GLPI["root_doc"]."/front/vlan.form.php?id=".$data["id"]."'>".$name.
+               <a href='" . $CFG_GLPI["root_doc"] . "/front/vlan.form.php?id=" . $data["id"] . "'>" . $name .
                  "</a>";
             echo "</td>";
-            echo "<td class='center'>".Dropdown::getDropdownName("glpi_entities", $data["entities_id"]);
-            echo "<td class='numeric'>".$data["tag"]."</td>";
+            echo "<td class='center'>" . Dropdown::getDropdownName("glpi_entities", $data["entities_id"]);
+            echo "<td class='numeric'>" . $data["tag"] . "</td>";
             echo "</tr>";
         }
         if ($number) {
-            echo $header_begin.$header_bottom.$header_end;
+            echo $header_begin . $header_bottom . $header_end;
         }
         echo "</table>";
         if ($canedit && $number) {
@@ -201,7 +202,6 @@ class IPNetwork_Vlan extends CommonDBRelation
             Html::closeForm();
         }
         echo "</div>";
-
     }
 
 
@@ -254,5 +254,4 @@ class IPNetwork_Vlan extends CommonDBRelation
         }
         return true;
     }
-
 }

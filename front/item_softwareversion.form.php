@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -39,14 +40,17 @@ $inst = new Item_SoftwareVersion();
 
 // From asset - Software tab (add form)
 if (isset($_POST['add'])) {
-    if (isset($_POST['itemtype']) && isset($_POST['items_id']) && $_POST['items_id']
-        && isset($_POST['softwareversions_id']) && $_POST['softwareversions_id']) {
-
-        if ($inst->add([
-           'itemtype'        => $_POST['itemtype'],
-           'items_id'        => $_POST['items_id'],
-           'softwareversions_id' => $_POST['softwareversions_id']
-        ])) {
+    if (
+        isset($_POST['itemtype']) && isset($_POST['items_id']) && $_POST['items_id']
+        && isset($_POST['softwareversions_id']) && $_POST['softwareversions_id']
+    ) {
+        if (
+            $inst->add([
+            'itemtype'        => $_POST['itemtype'],
+            'items_id'        => $_POST['items_id'],
+            'softwareversions_id' => $_POST['softwareversions_id']
+            ])
+        ) {
             Event::log(
                 $_POST["items_id"],
                 $_POST['itemtype'],
@@ -67,6 +71,5 @@ if (isset($_POST['add'])) {
         Session::addMessageAfterRedirect($message, true, ERROR);
     }
     Html::back();
-
 }
 Html::displayErrorAndDie('Lost');

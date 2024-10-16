@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -52,7 +53,6 @@ if (isset($_POST["update"])) {
     echo "<script type='text/javascript' >\n";
     echo "window.parent.location.reload();";
     echo "</script>";
-
 } elseif (isset($_POST['delete'])) {
     $link->check($_POST['id'], DELETE);
     $link->delete($_POST);
@@ -65,7 +65,6 @@ if (isset($_POST["update"])) {
         sprintf(__('%s deletes an actor'), $_SESSION["glpiname"])
     );
     Html::redirect(Change::getFormURLWithID($link->fields['changes_id']));
-
 } elseif (isset($_GET["id"])) {
     $link->showSupplierNotificationForm($_GET["id"]);
 } else {

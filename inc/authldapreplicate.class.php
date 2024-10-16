@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -85,19 +86,18 @@ class AuthLdapReplicate extends CommonDBTM
         echo "<div class='center'>";
         echo "<table class='tab_cadre_fixe' aria-label='LDAP replica'>";
 
-        echo "<tr><th colspan='4'>".__('Add a LDAP directory replica'). "</th></tr>";
-        echo "<tr class='tab_bg_1'><td class='center'>".__('Name')."</td>";
-        echo "<td class='center'>".__('Server')."</td>";
-        echo "<td class='center'>"._n('Port', 'Ports', 1)."</td><td></td></tr>";
+        echo "<tr><th colspan='4'>" . __('Add a LDAP directory replica') . "</th></tr>";
+        echo "<tr class='tab_bg_1'><td class='center'>" . __('Name') . "</td>";
+        echo "<td class='center'>" . __('Server') . "</td>";
+        echo "<td class='center'>" . _n('Port', 'Ports', 1) . "</td><td></td></tr>";
         echo "<tr class='tab_bg_1'>";
         echo "<td class='center'><input class='form-control' type='text' name='name'></td>";
         echo "<td class='center'><input class='form-control' type='text' name='host'></td>";
         echo "<td class='center'><input class='form-control' type='text' name='port'></td>";
         echo "<td class='center'><input type='hidden' name='next' value='extauth_ldap'>";
         echo "<input type='hidden' name='authldaps_id' value='$master_id'>";
-        echo "<input type='submit' name='add_replicate' value='"._sx('button', 'Add') ."' class='btn btn-sm btn-secondary'></td>";
+        echo "<input type='submit' name='add_replicate' value='" . _sx('button', 'Add') . "' class='btn btn-sm btn-secondary'></td>";
         echo "</tr></table></div>";
         Html::closeForm();
     }
-
 }

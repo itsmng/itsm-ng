@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -83,5 +84,4 @@ interface RequirementInterface
      * @return bool
      */
     public function isValidated(): bool;
-
 }

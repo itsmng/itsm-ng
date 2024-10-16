@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -42,10 +43,11 @@ if (empty($_POST["date1"]) && empty($_POST["date2"])) {
     $_POST["date2"] = date("Y-m-d");
 }
 
-if (!empty($_POST["date1"])
+if (
+    !empty($_POST["date1"])
     && !empty($_POST["date2"])
-    && (strcmp($_POST["date2"], $_POST["date1"]) < 0)) {
-
+    && (strcmp($_POST["date2"], $_POST["date1"]) < 0)
+) {
     $tmp            = $_POST["date1"];
     $_POST["date1"] = $_POST["date2"];
     $_POST["date2"] = $tmp;
@@ -166,19 +168,20 @@ function display_infocoms_report($itemtype, $begin, $end)
     $display_entity = Session::isMultiEntitiesMode();
     $iterator = $DB->request($criteria);
 
-    if (count($iterator)
-        && ($item = getItemForItemtype($itemtype))) {
+    if (
+        count($iterator)
+        && ($item = getItemForItemtype($itemtype))
+    ) {
+        echo "<h2>" . $item->getTypeName(1) . "</h2>";
 
-        echo "<h2>".$item->getTypeName(1)."</h2>";
-
-        echo "<table class='tab_cadre' aria-label='Report Form'><tr><th>".__('Name')."</th>";
+        echo "<table class='tab_cadre' aria-label='Report Form'><tr><th>" . __('Name') . "</th>";
         if ($display_entity) {
-            echo "<th>".Entity::getTypeName(1)."</th>";
+            echo "<th>" . Entity::getTypeName(1) . "</th>";
         }
 
-        echo "<th>"._x('price', 'Value')."</th><th>".__('ANV')."</th>";
-        echo "<th>".__('TCO')."</th><th>".__('Date of purchase')."</th>";
-        echo "<th>".__('Startup date')."</th><th>".__('Warranty expiration date')."</th></tr>";
+        echo "<th>" . _x('price', 'Value') . "</th><th>" . __('ANV') . "</th>";
+        echo "<th>" . __('TCO') . "</th><th>" . __('Date of purchase') . "</th>";
+        echo "<th>" . __('Startup date') . "</th><th>" . __('Warranty expiration date') . "</th></tr>";
 
         $valeursoustot      = 0;
         $valeurnettesoustot = 0;
@@ -186,8 +189,10 @@ function display_infocoms_report($itemtype, $begin, $end)
         $valeurgraph        = [];
 
         while ($line = $iterator->next()) {
-            if (isset($line["is_global"]) && $line["is_global"]
-                && $item->getFromDB($line["items_id"])) {
+            if (
+                isset($line["is_global"]) && $line["is_global"]
+                && $item->getFromDB($line["items_id"])
+            ) {
                 $line["value"] *= Computer_Item::countForItem($item);
             }
 
@@ -242,17 +247,17 @@ function display_infocoms_report($itemtype, $begin, $end)
                 $valeurnettesoustot += $valeurnette;
             }
 
-            echo "<tr class='tab_bg_1'><td>".$line["name"]."</td>";
+            echo "<tr class='tab_bg_1'><td>" . $line["name"] . "</td>";
             if ($display_entity) {
-                echo "<td>".$line['entname']."</td>";
+                echo "<td>" . $line['entname'] . "</td>";
             }
 
-            echo "<td class='right'>".Html::formatNumber($line["value"])."</td>".
-                 "<td class='right'>".Html::formatNumber($valeurnette)."</td>".
-                 "<td class='right'>".Infocom::showTco($line["ticket_tco"], $line["value"])."</td>".
-                 "<td>".Html::convDate($line["buy_date"])."</td>".
-                 "<td>".Html::convDate($line["use_date"])."</td>".
-                 "<td>".Infocom::getWarrantyExpir($line["buy_date"], $line["warranty_duration"]).
+            echo "<td class='right'>" . Html::formatNumber($line["value"]) . "</td>" .
+                 "<td class='right'>" . Html::formatNumber($valeurnette) . "</td>" .
+                 "<td class='right'>" . Infocom::showTco($line["ticket_tco"], $line["value"]) . "</td>" .
+                 "<td>" . Html::convDate($line["buy_date"]) . "</td>" .
+                 "<td>" . Html::convDate($line["use_date"]) . "</td>" .
+                 "<td>" . Infocom::getWarrantyExpir($line["buy_date"], $line["warranty_duration"]) .
                  "</td></tr>";
         }
 
@@ -288,7 +293,7 @@ function display_infocoms_report($itemtype, $begin, $end)
                   [
                      'data' => $valeurnettegraphdisplay
                   ]
-            ],
+                ],
                 $chart_opts
             );
             echo "</td></tr>";
@@ -317,7 +322,7 @@ function display_infocoms_report($itemtype, $begin, $end)
                   [
                      'data' => $valeurgraphdisplay
                   ]
-            ],
+                ],
                 $chart_opts
             );
             echo "</td></tr>";
@@ -371,7 +376,7 @@ if (count($valeurnettegraphtot) > 0) {
           [
              'data' => $valeurnettegraphtotdisplay
           ]
-      ],
+        ],
         $chart_opts
     );
 }
@@ -385,7 +390,7 @@ if (count($valeurgraphtot) > 0) {
           [
              'data' => $valeurgraphtotdisplay
           ]
-      ],
+        ],
         $chart_opts
     );
 }

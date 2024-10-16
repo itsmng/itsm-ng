@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -42,7 +43,7 @@ if (isset($_POST["prise"]) && $_POST["prise"]) {
     $name = Dropdown::getDropdownName("glpi_netpoints", $_POST["prise"]);
 
     // Titre
-    echo "<div class='center spaced'><h2>".sprintf(__('Network report by outlet: %s'), $name).
+    echo "<div class='center spaced'><h2>" . sprintf(__('Network report by outlet: %s'), $name) .
          "</h2></div>";
 
     Report::reportForNetworkInformations(
@@ -71,7 +72,6 @@ if (isset($_POST["prise"]) && $_POST["prise"]) {
     );
 
     Html::footer();
-
 } else {
-    Html::redirect($CFG_GLPI['root_doc']."/front/report.networking.php");
+    Html::redirect($CFG_GLPI['root_doc'] . "/front/report.networking.php");
 }

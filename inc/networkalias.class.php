@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -122,8 +123,8 @@ class NetworkAlias extends FQDNLabel
         echo "&nbsp;:</td>\n<td>";
 
         if (!($ID > 0)) {
-            echo "<input type='hidden' name='networknames_id' value='".
-                  $this->fields["networknames_id"]."'>\n";
+            echo "<input type='hidden' name='networknames_id' value='" .
+                  $this->fields["networknames_id"] . "'>\n";
         }
         $this->displayRecursiveItems($recursiveItems, "Link");
         echo "</td><td>" . __('Name') . "</td><td>\n";
@@ -131,7 +132,7 @@ class NetworkAlias extends FQDNLabel
         echo "</td></tr>\n";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".FQDN::getTypeName()."</td><td>";
+        echo "<td>" . FQDN::getTypeName() . "</td><td>";
         Dropdown::show(
             getItemTypeForTable(getTableNameForForeignKeyField("fqdns_id")),
             ['value'        => $this->fields["fqdns_id"],
@@ -140,8 +141,8 @@ class NetworkAlias extends FQDNLabel
                              'displaywith'  => ['view']]
         );
         echo "</td>";
-        echo "<td>".__('Comments')."</td>";
-        echo "<td><textarea cols='45' rows='4' name='comment' >".$this->fields["comment"];
+        echo "<td>" . __('Comments') . "</td>";
+        echo "<td><textarea cols='45' rows='4' name='comment' >" . $this->fields["comment"];
         echo "</textarea></td>\n";
         echo "</tr>\n";
 
@@ -178,7 +179,7 @@ class NetworkAlias extends FQDNLabel
 
         $content = self::getTypeName();
         if (isset($options['column_links'][$column_name])) {
-            $content = "<a href='".$options['column_links'][$column_name]."'>$content</a>";
+            $content = "<a href='" . $options['column_links'][$column_name] . "'>$content</a>";
         }
         $this_header = $base->addHeader($column_name, $content, $super, $father);
         $this_header->setItemType('NetworkAlias');
@@ -234,14 +235,12 @@ class NetworkAlias extends FQDNLabel
 
         while ($line = $iterator->next()) {
             if ($alias->getFromDB($line["id"])) {
-
                 if ($createRow) {
                     $row = $row->createRow();
                 }
 
-                $content = "<a href='" . $alias->getLinkURL(). "'>".$alias->getInternetName()."</a>";
+                $content = "<a href='" . $alias->getLinkURL() . "'>" . $alias->getInternetName() . "</a>";
                 $row->addCell($header, $content, $father, $alias);
-
             }
         }
     }
@@ -289,22 +288,22 @@ class NetworkAlias extends FQDNLabel
                             'id'              => -1];
             Ajax::updateItemJsCode(
                 "viewnetworkalias$rand",
-                $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php",
+                $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
                 $params
             );
             echo "};";
             echo "</script>";
             echo "<a class='vsubmit' href='javascript:viewAddAlias$rand();'>";
-            echo __('Add a network alias')."</a>\n";
+            echo __('Add a network alias') . "</a>\n";
             echo "</div>\n";
         }
         echo "<div id='viewnetworkalias$rand'></div>";
 
         echo "<div class='spaced'>";
         if ($canedit && $number) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
             $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $number),
-                                         'container'     => 'mass'.__CLASS__.$rand];
+                                         'container'     => 'mass' . __CLASS__ . $rand];
             Html::showMassiveActions($massiveactionparams);
         }
         echo "<table class='tab_cadre_fixehov' aria-label='Internet Domain'>";
@@ -314,20 +313,20 @@ class NetworkAlias extends FQDNLabel
         $header_end    = '';
 
         if ($canedit && $number) {
-            $header_top    .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+            $header_top    .= "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
             $header_top    .= "</th>";
-            $header_bottom .= "<th width='10'>".Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+            $header_bottom .= "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
             $header_bottom .= "</th>";
         }
-        $header_end .= "<th>".__('Name')."</th>";
-        $header_end .= "<th>"._n('Internet domain', 'Internet domains', 1)."</th>";
-        $header_end .= "<th>".Entity::getTypeName(1)."</th>";
+        $header_end .= "<th>" . __('Name') . "</th>";
+        $header_end .= "<th>" . _n('Internet domain', 'Internet domains', 1) . "</th>";
+        $header_end .= "<th>" . Entity::getTypeName(1) . "</th>";
         $header_end .= "</tr>";
-        echo $header_begin.$header_top.$header_end;
+        echo $header_begin . $header_top . $header_end;
 
         foreach ($aliases as $data) {
             $showviewjs = ($canedit
-                           ? "style='cursor:pointer' onClick=\"viewEditAlias".$data['id']."$rand();\""
+                           ? "style='cursor:pointer' onClick=\"viewEditAlias" . $data['id'] . "$rand();\""
                            : '');
             echo "<tr class='tab_bg_1'>";
             if ($canedit) {
@@ -342,33 +341,33 @@ class NetworkAlias extends FQDNLabel
             echo "<td class='center b' $showviewjs>";
             if ($canedit) {
                 echo "\n<script type='text/javascript' >\n";
-                echo "function viewEditAlias". $data["id"]."$rand() {\n";
+                echo "function viewEditAlias" . $data["id"] . "$rand() {\n";
                 $params = ['type'             => __CLASS__,
                                 'parenttype'       => 'NetworkName',
                                 'networknames_id'  => $ID,
                                 'id'               => $data["id"]];
                 Ajax::updateItemJsCode(
                     "viewnetworkalias$rand",
-                    $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php",
+                    $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
                     $params
                 );
                 echo "};";
                 echo "</script>\n";
             }
-            echo "<a href='".static::getFormURLWithID($data["id"])."'>".$name."</a>";
+            echo "<a href='" . static::getFormURLWithID($data["id"]) . "'>" . $name . "</a>";
             echo "</td>";
-            echo "<td class='center' $showviewjs>".Dropdown::getDropdownName(
+            echo "<td class='center' $showviewjs>" . Dropdown::getDropdownName(
                 "glpi_fqdns",
                 $data["fqdns_id"]
             );
-            echo "<td class='center' $showviewjs>".Dropdown::getDropdownName(
+            echo "<td class='center' $showviewjs>" . Dropdown::getDropdownName(
                 "glpi_entities",
                 $data["entities_id"]
             );
             echo "</tr>";
         }
         if ($number) {
-            echo $header_begin.$header_bottom.$header_end;
+            echo $header_begin . $header_bottom . $header_end;
         }
         echo "</table>";
         if ($canedit && $number) {
@@ -411,18 +410,18 @@ class NetworkAlias extends FQDNLabel
 
         if ($number < 1) {
             echo "<table class='tab_cadre_fixe' aria-labe='Computer's name'>";
-            echo "<tr><th>".self::getTypeName(1)."</th><th>".__('No item found')."</th></tr>";
+            echo "<tr><th>" . self::getTypeName(1) . "</th><th>" . __('No item found') . "</th></tr>";
             echo "</table>\n";
         } else {
             Html::printAjaxPager(self::getTypeName($number), $start, $number);
 
             echo "<table class='tab_cadre_fixe' aria-label='Computer's Name'><tr>";
 
-            echo "<th><a href='javascript:reloadTab(\"order=alias\");'>".self::getTypeName(1).
+            echo "<th><a href='javascript:reloadTab(\"order=alias\");'>" . self::getTypeName(1) .
                  "</a></th>"; // Alias
-            echo "<th><a href='javascript:reloadTab(\"order=realname\");'>".__("Computer's name").
+            echo "<th><a href='javascript:reloadTab(\"order=realname\");'>" . __("Computer's name") .
                  "</a></th>";
-            echo "<th>".__('Comments')."</th>";
+            echo "<th>" . __('Comments') . "</th>";
             echo "</tr>\n";
 
             Session::initNavigateListItems(
@@ -461,18 +460,17 @@ class NetworkAlias extends FQDNLabel
                 Session::addToNavigateListItems($alias->getType(), $data["alias_id"]);
                 if ($address->getFromDB($data["address_id"])) {
                     echo "<tr class='tab_bg_1'>";
-                    echo "<td><a href='".$alias->getFormURLWithID($data['alias_id'])."'>" .
-                               $data['alias']. "</a></td>";
-                    echo "<td><a href='".$address->getLinkURL()."'>".$address->getInternetName().
+                    echo "<td><a href='" . $alias->getFormURLWithID($data['alias_id']) . "'>" .
+                               $data['alias'] . "</a></td>";
+                    echo "<td><a href='" . $address->getLinkURL() . "'>" . $address->getInternetName() .
                          "</a></td>";
-                    echo "<td>".$data['comment']."</td>";
+                    echo "<td>" . $data['comment'] . "</td>";
                     echo "</tr>\n";
                 }
             }
 
             echo "</table>\n";
             Html::printAjaxPager(self::getTypeName($number), $start, $number);
-
         }
         echo "</div>\n";
     }
@@ -496,8 +494,10 @@ class NetworkAlias extends FQDNLabel
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
 
-        if ($item->getID()
-            && $item->can($item->getField('id'), READ)) {
+        if (
+            $item->getID()
+            && $item->can($item->getField('id'), READ)
+        ) {
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                 switch ($item->getType()) {

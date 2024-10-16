@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -122,7 +123,7 @@ class NetworkEquipment extends CommonDBTM
             [
               Certificate_Item::class,
               Item_Project::class,
-         ]
+            ]
         );
 
         Item_Devices::cleanItemDeviceDBOnItemDelete(
@@ -201,8 +202,10 @@ class NetworkEquipment extends CommonDBTM
         global $DB;
 
         $ID = $this->fields['id'];
-        if (($ID < 0)
-            || !$this->fields['is_recursive']) {
+        if (
+            ($ID < 0)
+            || !$this->fields['is_recursive']
+        ) {
             return true;
         }
         if (!parent::canUnrecurs()) {
@@ -214,13 +217,14 @@ class NetworkEquipment extends CommonDBTM
         // RELATION : networking -> _port -> _wire -> _port -> device
 
         // Evaluate connection in the 2 ways
-        foreach (["networkports_id_1" => "networkports_id_2",
-                  "networkports_id_2" => "networkports_id_1"] as $enda => $endb) {
-
+        foreach (
+            ["networkports_id_1" => "networkports_id_2",
+                  "networkports_id_2" => "networkports_id_1"] as $enda => $endb
+        ) {
             $criteria = [
                'SELECT'       => [
                   'itemtype',
-                  new QueryExpression('GROUP_CONCAT(DISTINCT '.$DB->quoteName('items_id').') AS '.$DB->quoteName('ids'))
+                  new QueryExpression('GROUP_CONCAT(DISTINCT ' . $DB->quoteName('items_id') . ') AS ' . $DB->quoteName('ids'))
                ],
                'FROM'         => 'glpi_networkports_networkports',
                'INNER JOIN'   => [
@@ -232,7 +236,7 @@ class NetworkEquipment extends CommonDBTM
                   ]
                ],
                'WHERE'        => [
-                  'glpi_networkports_networkports.'.$enda   => new QuerySubQuery([
+                  'glpi_networkports_networkports.' . $enda   => new QuerySubQuery([
                      'SELECT' => 'id',
                      'FROM'   => 'glpi_networkports',
                      'WHERE'  => [
@@ -251,8 +255,10 @@ class NetworkEquipment extends CommonDBTM
                     if ($item = getItemForItemtype($data["itemtype"])) {
                         // For each itemtype which are entity dependant
                         if ($item->isEntityAssign()) {
-                            if (countElementsInTable($itemtable, ['id' => $data["ids"],
-                                                     'NOT' => ['entities_id' => $entities ]]) > 0) {
+                            if (
+                                countElementsInTable($itemtable, ['id' => $data["ids"],
+                                                     'NOT' => ['entities_id' => $entities ]]) > 0
+                            ) {
                                 return false;
                             }
                         }
@@ -409,8 +415,8 @@ class NetworkEquipment extends CommonDBTM
 
         if ($isadmin) {
             $actions += [
-               'Item_SoftwareLicense'.MassiveAction::CLASS_ACTION_SEPARATOR.'add'
-                  => "<i class='ma-icon fas fa-key' aria-hidden='true'></i>".
+               'Item_SoftwareLicense' . MassiveAction::CLASS_ACTION_SEPARATOR . 'add'
+                  => "<i class='ma-icon fas fa-key' aria-hidden='true'></i>" .
                      _x('button', 'Add a license')
             ];
             KnowbaseItem_Item::getMassiveActionsForItemtype($actions, __CLASS__, 0, $checkitem);

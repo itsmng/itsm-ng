@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -44,22 +45,21 @@ $config_mail = new AuthMail();
 if (isset($_POST["update"])) {
     $config_mail->update($_POST);
     Html::back();
-
 } elseif (isset($_POST["add"])) {
     //If no name has been given to this configuration, then go back to the page without adding
     if ($_POST["name"] != "") {
-        if (($config_mail->add($_POST))
-            && $_SESSION['glpibackcreated']) {
+        if (
+            ($config_mail->add($_POST))
+            && $_SESSION['glpibackcreated']
+        ) {
             Html::redirect($config_mail->getLinkURL());
         }
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $config_mail->delete($_POST, 1);
     $_SESSION['glpi_authconfig'] = 2;
     $config_mail->redirectToList();
-
 } elseif (isset($_POST["test"])) {
     if (AuthMail::testAuth($_POST["imap_string"], $_POST["imap_login"], $_POST["imap_password"])) {
         Session::addMessageAfterRedirect(__('Test successful'));

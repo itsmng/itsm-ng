@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -55,7 +56,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $cost->check($_POST["id"], PURGE);
     if ($cost->delete($_POST, 1)) {
@@ -68,8 +68,7 @@ if (isset($_POST["add"])) {
             sprintf(__('%s purges a cost'), $_SESSION["glpiname"])
         );
     }
-    Html::redirect(Toolbox::getItemTypeFormURL('Ticket').'?id='.$cost->fields['tickets_id']);
-
+    Html::redirect(Toolbox::getItemTypeFormURL('Ticket') . '?id=' . $cost->fields['tickets_id']);
 } elseif (isset($_POST["update"])) {
     $cost->check($_POST["id"], UPDATE);
 
@@ -84,7 +83,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 }
 
 Html::displayErrorAndDie('Lost');

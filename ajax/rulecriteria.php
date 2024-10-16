@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -64,8 +65,10 @@ if (isset($_POST["sub_type"]) && ($rule = getItemForItemtype($_POST["sub_type"])
 
         $elements = [];
         foreach (RuleCriteria::getConditions($_POST['sub_type'], '') as $pattern => $label) {
-            if (empty($p['allow_conditions'])
-                || (!empty($p['allow_conditions']) && in_array($pattern, $p['allow_conditions']))) {
+            if (
+                empty($p['allow_conditions'])
+                || (!empty($p['allow_conditions']) && in_array($pattern, $p['allow_conditions']))
+            ) {
                 $elements[$pattern] = $label;
             }
         }

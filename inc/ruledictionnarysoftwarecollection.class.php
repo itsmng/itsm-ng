@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -87,7 +88,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
         echo "<tr><td class='tab_bg_2 center'>";
         echo "<img src=\"" . $CFG_GLPI["root_doc"] . "/pics/warning.png\"></td>";
         echo "<td class='tab_bg_2 center'>" .
-              __('Warning! This operation can put merged software in the trashbin.<br>Sure to notify your users.').
+              __('Warning! This operation can put merged software in the trashbin.<br>Sure to notify your users.') .
              "</td></tr>\n";
         echo "<tr><th colspan='2' class='b'>" . __('Manufacturer choice') . "</th></tr>\n";
         echo "<tr><td class='tab_bg_2 center'>" .
@@ -97,7 +98,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
         echo "</td></tr>\n";
 
         echo "<tr><td class='tab_bg_2 center' colspan='2'>";
-        echo "<input type='submit' name='replay_rule' value=\""._sx('button', 'Post')."\"
+        echo "<input type='submit' name='replay_rule' value=\"" . _sx('button', 'Post') . "\"
              class='submit'>";
         echo "<input type='hidden' name='replay_confirm' value='replay_confirm'>";
         echo "</td></tr>";
@@ -164,7 +165,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                 if (!($i % $step)) {
                     if (isCommandLine()) {
                         printf(
-                            __('%1$s - replay rules on existing database: %2$s/%3$s (%4$s Mio)')."\n",
+                            __('%1$s - replay rules on existing database: %2$s/%3$s (%4$s Mio)') . "\n",
                             date("H:i:s"),
                             $i,
                             $nb,
@@ -183,7 +184,8 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                 //Replay software dictionnary rules
                 $res_rule = $this->processAllRules($input, [], []);
 
-                if ((isset($res_rule["name"]) && (strtolower($res_rule["name"]) != strtolower($input["name"])))
+                if (
+                    (isset($res_rule["name"]) && (strtolower($res_rule["name"]) != strtolower($input["name"])))
                     || (isset($res_rule["version"]) && ($res_rule["version"] != ''))
                     || (isset($res_rule['new_entities_id'])
                         && ($res_rule['new_entities_id'] != $input['entities_id']))
@@ -192,8 +194,8 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                     || (isset($res_rule['manufacturer'])
                         && ($res_rule['manufacturer'] != $input['manufacturer']))
                     || (isset($res_rule['softwarecategories_id'])
-                        && ($res_rule['softwarecategories_id'] != $input['softwarecategories_id']))) {
-
+                        && ($res_rule['softwarecategories_id'] != $input['softwarecategories_id']))
+                ) {
                     $IDs = [];
                     //Find all the softwares in the database with the same name and manufacturer
                     $same_iterator = $DB->request([
@@ -224,18 +226,17 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
             } // each distinct software
 
             if (isCommandLine()) {
-                printf(__('Replay rules on existing database: %1$s/%2$s')."   \n", $i, $nb);
+                printf(__('Replay rules on existing database: %1$s/%2$s') . "   \n", $i, $nb);
             } else {
                 Html::changeProgressBarPosition($i, $nb, "$i / $nb");
             }
-
         } else {
             $this->replayDictionnaryOnSoftwaresByID($items);
             return true;
         }
 
         if (isCommandLine()) {
-            printf(__('Replay rules on existing database ended on %s')."\n", date("r"));
+            printf(__('Replay rules on existing database ended on %s') . "\n", date("r"));
         }
 
         return (($i == $nb) ? -1 : $i);
@@ -289,8 +290,8 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                     $ID,
                     (
                         isset($res_rule['new_entities_id'])
-                  ? $res_rule['new_entities_id']
-                  : $soft["entities_id"]
+                    ? $res_rule['new_entities_id']
+                    : $soft["entities_id"]
                     ),
                     $soft['name'] ?? '',
                     $soft['manufacturer'] ?? '',
@@ -339,15 +340,16 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
         }
 
         //Software's name has changed or entity
-        if ((isset($res_rule["name"]) && (strtolower($res_rule["name"]) != strtolower($name)))
+        if (
+            (isset($res_rule["name"]) && (strtolower($res_rule["name"]) != strtolower($name)))
               //Entity has changed, and new entity is a parent of the current one
             || (!isset($res_rule["name"])
                 && isset($res_rule['new_entities_id'])
                 && in_array(
                     $res_rule['new_entities_id'],
                     getAncestorsOf('glpi_entities', $entity)
-                ))) {
-
+                ))
+        ) {
             if (isset($res_rule["name"])) {
                 $new_name = $res_rule["name"];
             } else {
@@ -376,7 +378,6 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
             }
             // Move licenses to new software
             $this->moveLicenses($ID, $new_software_id);
-
         } else {
             $new_software_id = $ID;
             $res_rule["id"]  = $ID;
@@ -412,8 +413,10 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
             } else {
                 $new_version_name = $version["name"];
             }
-            if (($ID != $new_software_id)
-                || ($new_version_name != $old_version_name)) {
+            if (
+                ($ID != $new_software_id)
+                || ($new_version_name != $old_version_name)
+            ) {
                 $this->moveVersions(
                     $ID,
                     $new_software_id,
@@ -496,10 +499,10 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                     [
                       'name'         => $new_version,
                       'softwares_id' => $new_software_id
-               ],
+                    ],
                     [
                       'id' => $version_id
-               ]
+                    ]
                 );
             } else {
                 // Delete software can be in double after update
@@ -513,7 +516,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                             'gcs_2'                       => 'items_id',
                             $item_softwareversion_table   => 'items_id', [
                                'AND' => [
-                                  'gcs_2.itemtype' => $item_softwareversion_table.'.itemtype'
+                                  'gcs_2.itemtype' => $item_softwareversion_table . '.itemtype'
                                ]
                             ]
                          ]
@@ -529,7 +532,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                         'glpi_items_softwareversions',
                         [
                           'id' => $data['id']
-                  ]
+                        ]
                     );
                 }
 
@@ -538,10 +541,10 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                     $item_softwareversion_table,
                     [
                       'softwareversions_id' => $new_versionID
-               ],
+                    ],
                     [
                       'softwareversions_id' => $version_id
-               ]
+                    ]
                 );
 
                 // Update licenses version link
@@ -549,20 +552,20 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                     'glpi_softwarelicenses',
                     [
                       'softwareversions_id_buy' => $new_versionID
-               ],
+                    ],
                     [
                       'softwareversions_id_buy' => $version_id
-               ]
+                    ]
                 );
 
                 $DB->update(
                     'glpi_softwarelicenses',
                     [
                       'softwareversions_id_use' => $new_versionID
-               ],
+                    ],
                     [
                       'softwareversions_id_use' => $version_id
-               ]
+                    ]
                 );
 
                 //Delete old version
@@ -585,8 +588,10 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
         global $DB;
 
         //Return false if one of the 2 softwares doesn't exists
-        if (!countElementsInTable('glpi_softwares', ['id' => $old_software_id])
-           || !countElementsInTable('glpi_softwares', ['id' => $new_software_id])) {
+        if (
+            !countElementsInTable('glpi_softwares', ['id' => $old_software_id])
+            || !countElementsInTable('glpi_softwares', ['id' => $new_software_id])
+        ) {
             return false;
         }
 
@@ -596,10 +601,10 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                 'glpi_softwarelicenses',
                 [
                   'softwares_id' => $new_software_id
-            ],
+                ],
                 [
                   'softwares_id' => $old_software_id
-            ]
+                ]
             );
         }
         return true;
@@ -630,5 +635,4 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
         }
         return -1;
     }
-
 }

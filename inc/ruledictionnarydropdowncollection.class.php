@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -58,7 +59,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
         }
 
         if (isCommandLine()) {
-            printf(__('Replay rules on existing database started on %s')."\n", date("r"));
+            printf(__('Replay rules on existing database started on %s') . "\n", date("r"));
         }
 
         // Get All items
@@ -80,7 +81,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                 if (!($i % $step)) {
                     if (isCommandLine()) {
                         //TRANS: %1$s is a row, %2$s is total rows
-                        printf(__('Replay rules on existing database: %1$s/%2$s')."\r", $i, $nb);
+                        printf(__('Replay rules on existing database: %1$s/%2$s') . "\r", $i, $nb);
                     } else {
                         Html::changeProgressBarPosition($i, $nb, "$i / $nb");
                     }
@@ -115,7 +116,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
         }
 
         if (isCommandLine()) {
-            printf(__('Replay rules on existing database started on %s')."\n", date("r"));
+            printf(__('Replay rules on existing database started on %s') . "\n", date("r"));
         } else {
             Html::changeProgressBarPosition($i, $nb, "$i / $nb");
         }
@@ -136,7 +137,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
         global $DB;
 
         if (isCommandLine()) {
-            printf(__('Replay rules on existing database started on %s')."\n", date("r"));
+            printf(__('Replay rules on existing database started on %s') . "\n", date("r"));
         }
 
         // Model check : need to check using manufacturer extra data
@@ -192,9 +193,8 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
 
             while ($data = $iterator->next()) {
                 if (!($i % $step)) {
-
                     if (isCommandLine()) {
-                        printf(__('Replay rules on existing database: %1$s/%2$s')."\r", $i, $nb);
+                        printf(__('Replay rules on existing database: %1$s/%2$s') . "\r", $i, $nb);
                     } else {
                         Html::changeProgressBarPosition($i, $nb, "$i / $nb");
                     }
@@ -254,13 +254,15 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                 $deletecartmodel  = false;
 
                 // No item left : delete old item
-                if ($result
-                    && ($result['cpt'] == 0)) {
+                if (
+                    $result
+                    && ($result['cpt'] == 0)
+                ) {
                     $DB->delete(
                         $this->item_table,
                         [
                           'id'  => $ID
-                  ]
+                        ]
                     );
                     $deletecartmodel  = true;
                 }
@@ -284,7 +286,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                                 'glpi_cartridgeitems_printermodels',
                                 [
                                   'printermodels_id'   => $ID
-                        ]
+                                ]
                             );
                         }
                         // Add new assoc
@@ -300,11 +302,10 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
         }
 
         if (isCommandLine()) {
-            printf(__('Replay rules on existing database ended on %s')."\n", date("r"));
+            printf(__('Replay rules on existing database ended on %s') . "\n", date("r"));
         } else {
             Html::changeProgressBarPosition($i, $nb, "$i / $nb");
         }
         return ($i == $nb ? -1 : $i);
     }
-
 }

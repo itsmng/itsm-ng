@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -69,12 +70,14 @@ class Contract_Item extends CommonDBRelation
 
         // Don't create a Contract_Item on contract that is alreay max used
         // Was previously done (until 0.83.*) by Contract_Item::can()
-        if (($contract->fields['max_links_allowed'] > 0)
+        if (
+            ($contract->fields['max_links_allowed'] > 0)
             && (countElementsInTable(
                 $this->getTable(),
                 ['contracts_id' => $this->input['contracts_id']]
             )
-                  >= $contract->fields['max_links_allowed'])) {
+                  >= $contract->fields['max_links_allowed'])
+        ) {
             return false;
         }
 
@@ -107,7 +110,6 @@ class Contract_Item extends CommonDBRelation
                             $tmp['name'],
                             Html::showToolTip($tmp['comment'], ['display' => false])
                         );
-
                     }
                     return Dropdown::getDropdownName(
                         getTableForItemType($values['itemtype']),
@@ -223,8 +225,10 @@ class Contract_Item extends CommonDBRelation
                     return self::createTabEntry(_n('Item', 'Items', Session::getPluralNumber()), $nb);
 
                 default:
-                    if ($_SESSION['glpishow_count_on_tabs']
-                        && in_array($item->getType(), $CFG_GLPI["contract_types"])) {
+                    if (
+                        $_SESSION['glpishow_count_on_tabs']
+                        && in_array($item->getType(), $CFG_GLPI["contract_types"])
+                    ) {
                         $nb = self::countForItem($item);
                     }
                     return self::createTabEntry(Contract::getTypeName(Session::getPluralNumber()), $nb);
@@ -282,7 +286,7 @@ class Contract_Item extends CommonDBRelation
                  'items_id' => $oldid,
                  'itemtype' => $itemtype,
               ],
-         ]
+            ]
         );
         foreach ($result as $data) {
             $contractitem = new self();
@@ -310,8 +314,10 @@ class Contract_Item extends CommonDBRelation
         $itemtype = $item->getType();
         $ID       = $item->fields['id'];
 
-        if (!Contract::canView()
-            || !$item->can($ID, READ)) {
+        if (
+            !Contract::canView()
+            || !$item->can($ID, READ)
+        ) {
             return;
         }
 
@@ -378,7 +384,7 @@ class Contract_Item extends CommonDBRelation
             if ($canedit && $number) {
                 $massiveactionparams = [
                    'num_displayed' => min($_SESSION['glpilist_limit'], $number),
-                   'container'     => 'TableFor'.__CLASS__,
+                   'container'     => 'TableFor' . __CLASS__,
                    'display_arrow' => false,
                    'specific_actions' => [
                       'purge' => __('Delete permanently the relation with selected elements')
@@ -404,12 +410,14 @@ class Contract_Item extends CommonDBRelation
             $con         = new Contract();
             $con->getFromResultSet($data);
             $name = $con->fields["name"];
-            if ($_SESSION["glpiis_ids_visible"]
-                || empty($con->fields["name"])) {
+            if (
+                $_SESSION["glpiis_ids_visible"]
+                || empty($con->fields["name"])
+            ) {
                 $name = sprintf(__('%1$s (%2$s)'), $name, $con->fields["id"]);
             }
             $newValue = [
-               "<a href='".Contract::getFormURLWithID($cID)."'>".$name."</a>",
+               "<a href='" . Contract::getFormURLWithID($cID) . "'>" . $name . "</a>",
                Dropdown::getDropdownName("glpi_entities", $con->fields["entities_id"]),
                $con->fields["num"],
                Dropdown::getDropdownName("glpi_contracttypes", $con->fields["contracttypes_id"]),
@@ -421,8 +429,10 @@ class Contract_Item extends CommonDBRelation
                    _n('month', 'months', $con->fields["duration"])
                ),
             ];
-            if (($con->fields["begin_date"] != '')
-                && !empty($con->fields["begin_date"])) {
+            if (
+                ($con->fields["begin_date"] != '')
+                && !empty($con->fields["begin_date"])
+            ) {
                 $newValue[] = Infocom::getWarrantyExpir(
                     $con->fields["begin_date"],
                     $con->fields["duration"],
@@ -430,11 +440,11 @@ class Contract_Item extends CommonDBRelation
                     true
                 );
             }
-            $massive_action_values[] = 'item['.__CLASS__.']['.$assocID.']';
+            $massive_action_values[] = 'item[' . __CLASS__ . '][' . $assocID . ']';
             $values[] = $newValue;
         }
         renderTwigTemplate('table.twig', [
-           'id' => 'TableFor'.__CLASS__,
+           'id' => 'TableFor' . __CLASS__,
            'fields' => $fields,
            'values' => $values,
            'massive_action' => $massive_action_values,
@@ -540,20 +550,19 @@ class Contract_Item extends CommonDBRelation
                 $nb = count($iterator);
 
                 if ($nb > $_SESSION['glpilist_limit']) {
-
                     $opt = ['order'      => 'ASC',
                                  'is_deleted' => 0,
                                  'reset'      => 'reset',
                                  'start'      => 0,
                                  'sort'       => 80,
-                                 'criteria'   => [0 => ['value'      => '$$$$'.$instID,
+                                 'criteria'   => [0 => ['value'      => '$$$$' . $instID,
                                                                   'searchtype' => 'contains',
                                                                   'field'      => 29]]];
 
                     $url  = $item::getSearchURL();
                     $url .= (strpos($url, '?') ? '&' : '?');
                     $url .= Toolbox::append_params($opt);
-                    $link = "<a href='$url'>" . __('Device list')."</a>";
+                    $link = "<a href='$url'>" . __('Device list') . "</a>";
 
                     $data[$itemtype] = ['longlist' => true,
                                              'name'     => sprintf(
@@ -573,10 +582,12 @@ class Contract_Item extends CommonDBRelation
             }
         }
 
-        if ($canedit
+        if (
+            $canedit
             && (($contract->fields['max_links_allowed'] == 0)
                 || ($contract->fields['max_links_allowed'] > $totalnb))
-            && ($withtemplate != 2)) {
+            && ($withtemplate != 2)
+        ) {
             $itemtypes = $CFG_GLPI['contract_types'];
             $options = [];
             foreach ($itemtypes as $itemtype) {
@@ -680,14 +691,16 @@ class Contract_Item extends CommonDBRelation
                 } else {
                     $name = $sub_item["name"];
                 }
-                if ($_SESSION["glpiis_ids_visible"]
-                   || empty($data["name"])) {
+                if (
+                    $_SESSION["glpiis_ids_visible"]
+                    || empty($data["name"])
+                ) {
                     $name = sprintf(__('%1$s (%2$s)'), $name, $sub_item["id"]);
                 }
 
                 if ($item->can($sub_item['id'], READ)) {
                     $link     = $itemtype::getFormURLWithID($sub_item['id']);
-                    $namelink = "<a href=\"".$link."\">".$name."</a>";
+                    $namelink = "<a href=\"" . $link . "\">" . $name . "</a>";
                 } else {
                     $namelink = $name;
                 }
@@ -696,8 +709,8 @@ class Contract_Item extends CommonDBRelation
                    ($nb  > 1 ? sprintf(__('%1$s: %2$s'), $typename, $nb) : $typename),
                    Dropdown::getDropdownName("glpi_entities", $sub_item['entity']),
                    $namelink,
-                   (isset($sub_item["serial"]) ? "".$sub_item["serial"]."" : "-"),
-                   (isset($sub_item["otherserial"]) ? "".$sub_item["otherserial"]."" : "-"),
+                   (isset($sub_item["serial"]) ? "" . $sub_item["serial"] . "" : "-"),
+                   (isset($sub_item["otherserial"]) ? "" . $sub_item["otherserial"] . "" : "-"),
                    isset($sub_item["states_id"]) ? Dropdown::getDropdownName("glpi_states", $sub_item['states_id']) : ''
                 ];
                 $values[] = $newValue;

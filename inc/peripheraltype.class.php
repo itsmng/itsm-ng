@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -46,5 +47,4 @@ class PeripheralType extends CommonDropdown
     {
         return _n('Type', 'Types', 1);
     }
-
 }

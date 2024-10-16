@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -61,7 +62,7 @@ class GLPIMailer extends PHPMailer
 
         if ($CFG_GLPI['smtp_mode'] != MAIL_MAIL) {
             $this->Mailer = "smtp";
-            $this->Host   = $CFG_GLPI['smtp_host'].':'.$CFG_GLPI['smtp_port'];
+            $this->Host   = $CFG_GLPI['smtp_host'] . ':' . $CFG_GLPI['smtp_port'];
 
             if ($CFG_GLPI['smtp_username'] != '') {
                 $this->SMTPAuth = true;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -68,7 +69,7 @@ class DeviceSimcard extends CommonDevice
                     'type'  => 'checkbox',
                     'value' => $this->fields['allow_voip'],
               ],
-         ]
+            ]
         );
     }
 

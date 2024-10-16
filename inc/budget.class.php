@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -140,12 +141,12 @@ class Budget extends CommonDropdown
                       'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
                       'class' => 'btn btn-secondary',
                   ],
-              $this->isNewID($ID) ? [] : [
+                  $this->isNewID($ID) ? [] : [
                       'type' => 'submit',
                       'name' => 'delete',
                       'value' => __('Put in trashbin'),
                       'class' => 'btn btn-secondary'
-              ],
+                  ],
               ],
            'content' => [
                   '' => [
@@ -195,8 +196,8 @@ class Budget extends CommonDropdown
                               'type' => 'textarea',
                               'value' => $this->fields['comment'],
                           ]
-                 ]
-              ]
+                      ]
+                  ]
            ]
         ];
 
@@ -383,12 +384,12 @@ class Budget extends CommonDropdown
         }
         echo "</th></tr>";
 
-        echo "<tr><th>"._n('Type', 'Types', 1)."</th>";
-        echo "<th>".Entity::getTypeName(1)."</th>";
-        echo "<th>".__('Name')."</th>";
-        echo "<th>".__('Serial number')."</th>";
-        echo "<th>".__('Inventory number')."</th>";
-        echo "<th>"._x('price', 'Value')."</th>";
+        echo "<tr><th>" . _n('Type', 'Types', 1) . "</th>";
+        echo "<th>" . Entity::getTypeName(1) . "</th>";
+        echo "<th>" . __('Name') . "</th>";
+        echo "<th>" . __('Serial number') . "</th>";
+        echo "<th>" . __('Inventory number') . "</th>";
+        echo "<th>" . _x('price', 'Value') . "</th>";
         echo "</tr>";
 
         $num       = 0;
@@ -409,8 +410,7 @@ class Budget extends CommonDropdown
 
             if ($item->canView()) {
                 switch ($itemtype) {
-
-                    case 'Contract' :
+                    case 'Contract':
                         $criteria = [
                            'SELECT'       => [
                               $item->getTable() . '.id',
@@ -441,13 +441,13 @@ class Budget extends CommonDropdown
                         ];
                         break;
 
-                    case 'Ticket' :
-                    case 'Problem' :
-                    case 'Change' :
-                        $costtable = getTableForItemType($item->getType().'Cost');
+                    case 'Ticket':
+                    case 'Problem':
+                    case 'Change':
+                        $costtable = getTableForItemType($item->getType() . 'Cost');
 
                         $sum = new QueryExpression(
-                            "SUM(" . $DB->quoteName("$costtable.actiontime") . " * " . $DB->quoteName("$costtable.cost_time") . "/".HOUR_TIMESTAMP."
+                            "SUM(" . $DB->quoteName("$costtable.actiontime") . " * " . $DB->quoteName("$costtable.cost_time") . "/" . HOUR_TIMESTAMP . "
                                           + " . $DB->quoteName("$costtable.cost_fixed") . "
                                           + " . $DB->quoteName("$costtable.cost_material") . ") AS " . $DB->quoteName('value')
                         );
@@ -480,7 +480,7 @@ class Budget extends CommonDropdown
                         ];
                         break;
 
-                    case 'Project' :
+                    case 'Project':
                         $criteria = [
                            'SELECT'       => [
                               $item->getTable() . '.id',
@@ -510,7 +510,7 @@ class Budget extends CommonDropdown
                         ];
                         break;
 
-                    case 'Cartridge' :
+                    case 'Cartridge':
                         $criteria = [
                            'SELECT'       => [
                               $item->getTable() . '.*',
@@ -543,7 +543,7 @@ class Budget extends CommonDropdown
                         ];
                         break;
 
-                    case 'Consumable' :
+                    case 'Consumable':
                         $criteria = [
                            'SELECT'       => [
                               $item->getTable() . '.*',
@@ -604,7 +604,7 @@ class Budget extends CommonDropdown
                         }
 
                         if ($item instanceof Item_Devices) {
-                            $criteria['ORDERBY'][] = $item->getTable() .'.itemtype';
+                            $criteria['ORDERBY'][] = $item->getTable() . '.itemtype';
                         } else {
                             $criteria['ORDERBY'][] = $item->getTable() . '.name';
                         }
@@ -617,7 +617,7 @@ class Budget extends CommonDropdown
                     echo "<tr class='tab_bg_1'>";
                     $name = $item->getTypeName($nb);
                     //TRANS: %1$s is a name, %2$s is a number
-                    echo "<td class='center'>".sprintf(__('%1$s: %2$s'), $name, $nb)."</td>";
+                    echo "<td class='center'>" . sprintf(__('%1$s: %2$s'), $name, $nb) . "</td>";
                     echo "<td class='center' colspan='2'>";
 
                     $opt = ['order'      => 'ASC',
@@ -625,15 +625,14 @@ class Budget extends CommonDropdown
                                    'reset'      => 'reset',
                                    'start'      => 0,
                                    'sort'       => 80,
-                                   'criteria'   => [0 => ['value'      => '$$$$'.$budgets_id,
+                                   'criteria'   => [0 => ['value'      => '$$$$' . $budgets_id,
                                                                     'searchtype' => 'contains',
                                                                     'field'      => 50]]];
 
-                    echo "<a href='". $item->getSearchURL() . "?" .Toolbox::append_params($opt). "'>".
-                          __('Device list')."</a></td>";
-                    echo "<td class='center'>-</td><td class='center'>-</td><td class='center'>-".
+                    echo "<a href='" . $item->getSearchURL() . "?" . Toolbox::append_params($opt) . "'>" .
+                          __('Device list') . "</a></td>";
+                    echo "<td class='center'>-</td><td class='center'>-</td><td class='center'>-" .
                           "</td></tr>";
-
                 } elseif ($nb) {
                     for ($prem = true; $data = $iterator->next(); $prem = false) {
                         $name = NOT_AVAILABLE;
@@ -650,22 +649,22 @@ class Budget extends CommonDropdown
                         echo "<tr class='tab_bg_1'>";
                         if ($prem) {
                             $typename = $item->getTypeName($nb);
-                            echo "<td class='center top' rowspan='$nb'>".
-                                  ($nb > 1 ? sprintf(__('%1$s: %2$s'), $typename, $nb) : $typename)."</td>";
+                            echo "<td class='center top' rowspan='$nb'>" .
+                                  ($nb > 1 ? sprintf(__('%1$s: %2$s'), $typename, $nb) : $typename) . "</td>";
                         }
-                        echo "<td class='center'>".Dropdown::getDropdownName(
+                        echo "<td class='center'>" . Dropdown::getDropdownName(
                             "glpi_entities",
                             $data["entities_id"]
                         );
                         echo "</td><td class='center";
                         echo(isset($data['is_deleted']) && $data['is_deleted'] ? " tab_bg_2_2'" : "'");
-                        echo ">".$name."</td>";
-                        echo "<td class='center'>".(isset($data["serial"]) ? "".$data["serial"]."" : "-");
+                        echo ">" . $name . "</td>";
+                        echo "<td class='center'>" . (isset($data["serial"]) ? "" . $data["serial"] . "" : "-");
                         echo "</td>";
-                        echo "<td class='center'>".
-                                 (isset($data["otherserial"]) ? "".$data["otherserial"]."" : "-")."</td>";
-                        echo "<td class='center'>".
-                                 (isset($data["value"]) ? "".Html::formatNumber($data["value"], true).""
+                        echo "<td class='center'>" .
+                                 (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-") . "</td>";
+                        echo "<td class='center'>" .
+                                 (isset($data["value"]) ? "" . Html::formatNumber($data["value"], true) . ""
                                                       : "-");
 
                         echo "</td></tr>";
@@ -677,7 +676,7 @@ class Budget extends CommonDropdown
 
         if ($num > 0) {
             echo "<tr class='tab_bg_2'>";
-            echo "<td class='center b'>".sprintf(__('%1$s = %2$s'), __('Total'), $num)."</td>";
+            echo "<td class='center b'>" . sprintf(__('%1$s = %2$s'), __('Total'), $num) . "</td>";
             echo "<td colspan='5'>&nbsp;</td></tr> ";
         }
         echo "</table></div>";
@@ -702,7 +701,7 @@ class Budget extends CommonDropdown
         $types_iterator = Infocom::getTypes(
             [
               'budgets_id' => $budgets_id
-         ] + getEntitiesRestrictCriteria('glpi_infocoms', 'entities_id')
+            ] + getEntitiesRestrictCriteria('glpi_infocoms', 'entities_id')
         );
 
         $total               = 0;
@@ -756,7 +755,7 @@ class Budget extends CommonDropdown
                     break;
 
                 case 'Project':
-                    $costtable   = getTableForItemType($item->getType().'Cost');
+                    $costtable   = getTableForItemType($item->getType() . 'Cost');
                     $criteria = [
                        'SELECT'       => [
                           $table . '.entities_id',
@@ -783,9 +782,9 @@ class Budget extends CommonDropdown
                 case 'Ticket':
                 case 'Problem':
                 case 'Change':
-                    $costtable   = getTableForItemType($item->getType().'Cost');
+                    $costtable   = getTableForItemType($item->getType() . 'Cost');
                     $sum = new QueryExpression(
-                        "SUM(" . $DB->quoteName("$costtable.actiontime") . " * " . $DB->quoteName("$costtable.cost_time") . "/".HOUR_TIMESTAMP."
+                        "SUM(" . $DB->quoteName("$costtable.actiontime") . " * " . $DB->quoteName("$costtable.cost_time") . "/" . HOUR_TIMESTAMP . "
                                        + " . $DB->quoteName("$costtable.cost_fixed") . "
                                        + " . $DB->quoteName("$costtable.cost_material") . ") AS " . $DB->quoteName('sumvalue')
                     );
@@ -848,7 +847,6 @@ class Budget extends CommonDropdown
                 $totalbytypes[$itemtype] = 0;
                 //Store, for each entity, the budget spent
                 while ($values = $iterator->next()) {
-
                     if (!isset($entities_values[$values['entities_id']])) {
                         $entities_values[$values['entities_id']] = 0;
                     }
@@ -861,7 +859,6 @@ class Budget extends CommonDropdown
                     $totalbytypes[$itemtype]                                 += $values['sumvalue'];
                 }
             }
-
         }
 
         $budget = new self();
@@ -869,14 +866,14 @@ class Budget extends CommonDropdown
 
         $colspan = count($found_types) + 2;
         echo "<div class='spaced'><table class='tab_cadre_fixehov' aria-label='Total Spent on the Budget Table'>";
-        echo "<tr class='noHover'><th colspan='$colspan'>".__('Total spent on the budget')."</th></tr>";
-        echo "<tr><th>".Entity::getTypeName(1)."</th>";
+        echo "<tr class='noHover'><th colspan='$colspan'>" . __('Total spent on the budget') . "</th></tr>";
+        echo "<tr><th>" . Entity::getTypeName(1) . "</th>";
         if (count($found_types)) {
             foreach ($found_types as $type => $typename) {
                 echo "<th>$typename</th>";
             }
         }
-        echo "<th>".__('Total')."</th>";
+        echo "<th>" . __('Total') . "</th>";
         echo "</tr>";
 
         // get all entities ordered by names
@@ -885,7 +882,7 @@ class Budget extends CommonDropdown
         foreach (array_keys($allentities) as $entity) {
             if (isset($entities_values[$entity])) {
                 echo "<tr class='tab_bg_1'>";
-                echo "<td class='b'>".Dropdown::getDropdownName('glpi_entities', $entity)."</td>";
+                echo "<td class='b'>" . Dropdown::getDropdownName('glpi_entities', $entity) . "</td>";
                 if (count($found_types)) {
                     foreach ($found_types as $type => $typename) {
                         echo "<td class='numeric'>";
@@ -898,30 +895,30 @@ class Budget extends CommonDropdown
                     }
                 }
 
-                echo "<td class='right b'>".Html::formatNumber($entities_values[$entity])."</td>";
+                echo "<td class='right b'>" . Html::formatNumber($entities_values[$entity]) . "</td>";
                 echo "</tr>";
             }
         }
         if (count($found_types)) {
             echo "<tr class='tab_bg_1'>";
-            echo "<td class='right b'>".__('Total')."</td>";
+            echo "<td class='right b'>" . __('Total') . "</td>";
             foreach ($found_types as $type => $typename) {
                 echo "<td class='numeric b'>";
                 echo Html::formatNumber($totalbytypes[$type]);
                 echo "</td>";
             }
-            echo "<td class='numeric b'>".Html::formatNumber($total)."</td>";
+            echo "<td class='numeric b'>" . Html::formatNumber($total) . "</td>";
             echo "</tr>";
         }
         echo "<tr class='tab_bg_1 noHover'><th colspan='$colspan'><br></th></tr>";
         echo "<tr class='tab_bg_1 noHover'>";
-        echo "<td class='right' colspan='".($colspan - 1)."'>".__('Total spent on the budget')."</td>";
-        echo "<td class='numeric b'>".Html::formatNumber($total)."</td></tr>";
+        echo "<td class='right' colspan='" . ($colspan - 1) . "'>" . __('Total spent on the budget') . "</td>";
+        echo "<td class='numeric b'>" . Html::formatNumber($total) . "</td></tr>";
         if ($_SESSION['glpiactive_entity'] == $budget->fields['entities_id']) {
             echo "<tr class='tab_bg_1 noHover'>";
-            echo "<td class='right' colspan='".($colspan - 1)."'>".__('Total remaining on the budget').
+            echo "<td class='right' colspan='" . ($colspan - 1) . "'>" . __('Total remaining on the budget') .
                   "</td>";
-            echo "<td class='numeric b'>".Html::formatNumber($budget->fields['value'] - $total).
+            echo "<td class='numeric b'>" . Html::formatNumber($budget->fields['value'] - $total) .
                   "</td></tr>";
         }
         echo "</table></div>";

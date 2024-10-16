@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -44,15 +45,14 @@ try {
 } catch (Exception $e) {
     Html::popHeader(__('Bulk modification error'), $_SERVER['PHP_SELF']);
 
-    echo "<div class='center'><img src='".$CFG_GLPI["root_doc"]."/pics/warning.png' alt='".
-       __s('Warning')."'><br><br>";
-    echo "<span class='b'>".$e->getMessage()."</span><br>";
+    echo "<div class='center'><img src='" . $CFG_GLPI["root_doc"] . "/pics/warning.png' alt='" .
+       __s('Warning') . "'><br><br>";
+    echo "<span class='b'>" . $e->getMessage() . "</span><br>";
     Html::displayBackLink();
     echo "</div>";
 
     Html::popFooter();
     exit();
-
 }
 Html::popHeader(__('Bulk modification'), $_SERVER['PHP_SELF']);
 
@@ -74,7 +74,7 @@ if ($nbok == 0) {
 }
 if ($nbnoright || $nbko) {
     //TRANS: %$1d and %$2d are numbers
-    $message .= "<br>".sprintf(
+    $message .= "<br>" . sprintf(
         __('(%1$d authorizations problems, %2$d failures)'),
         $nbnoright,
         $nbko

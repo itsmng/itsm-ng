@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -42,5 +43,4 @@ class ChangeTemplateMandatoryField extends ITILTemplateMandatoryField
     public static $itemtype  = 'ChangeTemplate';
     public static $items_id  = 'changetemplates_id';
     public static $itiltype = 'Change';
-
 }

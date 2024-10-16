@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -91,9 +92,10 @@ class Impact extends CommonGLPI
             );
         }
 
-        if (!$_SESSION['glpishow_count_on_tabs']
-           || !isset($item->fields['id'])
-           || $is_itil_object
+        if (
+            !$_SESSION['glpishow_count_on_tabs']
+            || !isset($item->fields['id'])
+            || $is_itil_object
         ) {
             // Count is disabled in config OR no item loaded OR ITIL object -> no count
             $total = 0;
@@ -282,11 +284,11 @@ class Impact extends CommonGLPI
             echo '<i class="fas fa-2x fa-caret-down impact-toggle-subitems-master impact-pointer" aria-hidden="true"></i></h3></th>';
             echo '</tr>';
             echo '<tr class="noHover">';
-            echo '<th>'._n('Item', 'Items', 1).'</th>';
-            echo '<th>'.__('Relation').'</th>';
-            echo '<th>'.Ticket::getTypeName(Session::getPluralNumber()).'</th>';
-            echo '<th>'.Problem::getTypeName(Session::getPluralNumber()).'</th>';
-            echo '<th>'.Change::getTypeName(Session::getPluralNumber()).'</th>';
+            echo '<th>' . _n('Item', 'Items', 1) . '</th>';
+            echo '<th>' . __('Relation') . '</th>';
+            echo '<th>' . Ticket::getTypeName(Session::getPluralNumber()) . '</th>';
+            echo '<th>' . Problem::getTypeName(Session::getPluralNumber()) . '</th>';
+            echo '<th>' . Change::getTypeName(Session::getPluralNumber()) . '</th>';
             echo '<th width="50px"></th>';
             echo '</tr>';
             echo '</thead>';
@@ -363,12 +365,12 @@ class Impact extends CommonGLPI
         // Toolbar
         echo '<div class="impact-list-toolbar">';
         if ($has_impact) {
-            echo '<a target="_blank" href="'.$CFG_GLPI['root_doc'].'/front/impactcsv.php?itemtype=' . $impact_item->fields['itemtype'] . '&items_id=' . $impact_item->fields['items_id'] .'">';
-            echo '<i class="fas fa-download impact-pointer impact-list-tools" title="' . __('Export to csv') .'"></i>';
+            echo '<a target="_blank" href="' . $CFG_GLPI['root_doc'] . '/front/impactcsv.php?itemtype=' . $impact_item->fields['itemtype'] . '&items_id=' . $impact_item->fields['items_id'] . '">';
+            echo '<i class="fas fa-download impact-pointer impact-list-tools" title="' . __('Export to csv') . '"></i>';
             echo '</a>';
         }
         if ($can_update && $impact_context) {
-            echo '<i id="impact-list-settings" class="fas fa-cog impact-pointer impact-list-tools" title="' . __('Settings') .'"></i>';
+            echo '<i id="impact-list-settings" class="fas fa-cog impact-pointer impact-list-tools" title="' . __('Settings') . '"></i>';
         }
         echo '</div>';
 
@@ -377,7 +379,7 @@ class Impact extends CommonGLPI
             $rand = mt_rand();
 
             echo '<div id="list_depth_dialog" class="impact-dialog" title=' . __("Settings") . '>';
-            echo '<form aria-label="Settings" action="'.$CFG_GLPI['root_doc'].'/front/impactitem.form.php" method="POST">';
+            echo '<form aria-label="Settings" action="' . $CFG_GLPI['root_doc'] . '/front/impactitem.form.php" method="POST">';
             echo '<table class="tab_cadre_fixe" aria-label="Impact Settings Form">';
             echo '<tr>';
             echo '<td><label for="impact_max_depth_' . $rand . '">' . __("Max depth") . '</label></td>';
@@ -555,7 +557,7 @@ class Impact extends CommonGLPI
                     $priority = $itil_object['priority'];
                 }
             }
-            $extra = 'id="' . $id . '" style="background-color:' .  $user->fields["priority_$priority"] .'; cursor:pointer;"';
+            $extra = 'id="' . $id . '" style="background-color:' .  $user->fields["priority_$priority"] . '; cursor:pointer;"';
 
             echo Html::scriptBlock('
             $(document).on("click", "#' . $id . '", function(e) {
@@ -760,8 +762,8 @@ class Impact extends CommonGLPI
         echo '<div class="impact-header">';
         echo "<h2>" . __("Impact analysis") . "</h2>";
         echo "<div id='switchview'>";
-        echo "<a id='sviewlist' href='#list'><i class='pointer fa fa-list-alt' title='".__('View as list')."'></i></a>";
-        echo "<a id='sviewgraph' href='#graph'><i class='pointer fa fa-bezier-curve' title='".__('View graphical representation')."'></i></a>";
+        echo "<a id='sviewlist' href='#list'><i class='pointer fa fa-list-alt' title='" . __('View as list') . "'></i></a>";
+        echo "<a id='sviewgraph' href='#graph'><i class='pointer fa fa-bezier-curve' title='" . __('View graphical representation') . "'></i></a>";
         echo "</div>";
         echo "</div>";
 
@@ -849,7 +851,7 @@ class Impact extends CommonGLPI
 
                $.ajax({
                   type: "GET",
-                  url: "'. $CFG_GLPI['root_doc'] . '/ajax/impact.php",
+                  url: "' . $CFG_GLPI['root_doc'] . '/ajax/impact.php",
                   data: {
                      itemtype: values[0],
                      items_id: values[1],
@@ -1049,7 +1051,7 @@ class Impact extends CommonGLPI
         echo '</div>'; // <div class="impact-side-search-more">
 
         echo '<div class="impact-side-search-no-results">';
-        echo '<p>'. __("No results") . '</p>';
+        echo '<p>' . __("No results") . '</p>';
         echo '</div>'; // <div class="impact-side-search-no-results">
 
         echo '<div class="impact-side-search-spinner">';
@@ -1111,18 +1113,18 @@ class Impact extends CommonGLPI
         echo '</div>'; // div class="impact-side-panel">
 
         echo '<ul>';
-        echo '<li id="save_impact" title="' . __("Save") .'"><i class="fas fa-fw fa-save"></i></li>';
-        echo '<li id="impact_undo" class="impact-disabled" title="' . __("Undo") .'"><i class="fas fa-fw fa-undo"></i></li>';
-        echo '<li id="impact_redo" class="impact-disabled" title="' . __("Redo") .'"><i class="fas fa-fw fa-redo"></i></li>';
+        echo '<li id="save_impact" title="' . __("Save") . '"><i class="fas fa-fw fa-save"></i></li>';
+        echo '<li id="impact_undo" class="impact-disabled" title="' . __("Undo") . '"><i class="fas fa-fw fa-undo"></i></li>';
+        echo '<li id="impact_redo" class="impact-disabled" title="' . __("Redo") . '"><i class="fas fa-fw fa-redo"></i></li>';
         echo '<li class="impact-separator"></li>';
-        echo '<li id="add_node" title="' . __("Add asset") .'"><i class="fas fa-fw fa-plus"></i></li>';
-        echo '<li id="add_edge" title="' . __("Add relation") .'"><i class="fas fa-fw fa-slash"></i></li>';
-        echo '<li id="add_compound" title="' . __("Add group") .'"><i class="far fa-fw fa-object-group"></i></li>';
-        echo '<li id="delete_element" title="' . __("Delete element") .'"><i class="fas fa-fw fa-trash"></i></li>';
+        echo '<li id="add_node" title="' . __("Add asset") . '"><i class="fas fa-fw fa-plus"></i></li>';
+        echo '<li id="add_edge" title="' . __("Add relation") . '"><i class="fas fa-fw fa-slash"></i></li>';
+        echo '<li id="add_compound" title="' . __("Add group") . '"><i class="far fa-fw fa-object-group"></i></li>';
+        echo '<li id="delete_element" title="' . __("Delete element") . '"><i class="fas fa-fw fa-trash"></i></li>';
         echo '<li class="impact-separator"></li>';
-        echo '<li id="export_graph" title="' . __("Download") .'"><i class="fas fa-fw fa-download"></i></li>';
-        echo '<li id="toggle_fullscreen" title="' . __("Fullscreen") .'"><i class="fas fa-fw fa-expand"></i></li>';
-        echo '<li id="impact_settings" title="' . __("Settings") .'"><i class="fas fa-fw fa-cog"></i></li>';
+        echo '<li id="export_graph" title="' . __("Download") . '"><i class="fas fa-fw fa-download"></i></li>';
+        echo '<li id="toggle_fullscreen" title="' . __("Fullscreen") . '"><i class="fas fa-fw fa-expand"></i></li>';
+        echo '<li id="impact_settings" title="' . __("Settings") . '"><i class="fas fa-fw fa-cog"></i></li>';
         echo '</ul>';
         echo '<span class="impact-side-toggle"><i class="fas fa-2x fa-chevron-left" aria-hidden="true"></i></span>';
         echo '</div>'; // <div class="impact-side impact-side-expanded">
@@ -1474,7 +1476,7 @@ class Impact extends CommonGLPI
                       'show_depends'             => 1,
                       'show_impact'              => 1,
                       'max_depth'                => 1,
-               ]
+                    ]
                 );
             }
         }
@@ -1708,16 +1710,18 @@ class Impact extends CommonGLPI
 
         // Remove impact context if defined and not a slave, update others
         // contexts if they are slave to us
-        if ($impact_item->fields['impactcontexts_id'] != 0
-           && $impact_item->fields['is_slave'] != 0) {
+        if (
+            $impact_item->fields['impactcontexts_id'] != 0
+            && $impact_item->fields['is_slave'] != 0
+        ) {
             $DB->update(
                 ImpactItem::getTable(),
                 [
                   'impactcontexts_id' => 0,
-            ],
+                ],
                 [
                   'impactcontexts_id' => $impact_item->fields['impactcontexts_id'],
-            ]
+                ]
             );
 
             $DB->delete(ImpactContext::getTable(), [
@@ -1736,10 +1740,10 @@ class Impact extends CommonGLPI
                     ImpactItem::getTable(),
                     [
                       'parent_id' => 0,
-               ],
+                    ],
                     [
                       'parent_id' => $impact_item->fields['parent_id']
-               ]
+                    ]
                 );
 
                 $DB->delete(ImpactCompound::getTable(), [

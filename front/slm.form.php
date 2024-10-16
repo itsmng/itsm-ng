@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -61,8 +62,7 @@ if (isset($_POST["add"])) {
             Html::redirect($slm->getLinkURL());
         }
     }
-    Html::redirect($CFG_GLPI["root_doc"]."/front/slm.php");
-
+    Html::redirect($CFG_GLPI["root_doc"] . "/front/slm.php");
 } elseif (isset($_POST["purge"])) {
     $slm->check($_POST["id"], PURGE);
     $slm->delete($_POST, 1);
@@ -76,7 +76,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $slm->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $slm->check($_POST["id"], UPDATE);
     $slm->update($_POST);
@@ -90,7 +89,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } else {
     Html::header(SLM::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "config", "slm");
 

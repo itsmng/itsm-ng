@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -51,32 +52,26 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["delete"])) {
     $extevent->check($_POST["id"], DELETE);
     $extevent->delete($_POST);
     $extevent->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $extevent->check($_POST["id"], DELETE);
     $extevent->restore($_POST);
     $extevent->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $extevent->check($_POST["id"], PURGE);
     $extevent->delete($_POST, 1);
     $extevent->redirectToList();
-
 } elseif (isset($_POST["purge_instance"])) {
     $extevent->check($_POST["id"], PURGE);
     $extevent->deleteInstance((int) $_POST["id"], $_POST['day']);
     $extevent->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $extevent->check($_POST["id"], UPDATE);
     $extevent->update($_POST);
     Html::back();
-
 } else {
     Html::header(
         PlanningExternalEvent::getTypeName(Session::getPluralNumber()),

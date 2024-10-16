@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -46,7 +47,6 @@ if (isset($_POST['value']) && ($_POST['value'] > 0)) {
         $fields['content'] = htmlspecialchars_decode($fields['content']);
         echo json_encode($fields);
     }
-
 } else {
     echo json_encode([]);
 }

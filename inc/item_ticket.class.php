@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -72,8 +73,10 @@ class Item_Ticket extends CommonItilObject_Item
 
         $ticket = new Ticket();
         // Not item linked for closed tickets
-        if ($ticket->getFromDB($this->fields['tickets_id'])
-            && in_array($ticket->fields['status'], $ticket->getClosedStatusArray())) {
+        if (
+            $ticket->getFromDB($this->fields['tickets_id'])
+            && in_array($ticket->fields['status'], $ticket->getClosedStatusArray())
+        ) {
             return false;
         }
 
@@ -126,9 +129,11 @@ class Item_Ticket extends CommonItilObject_Item
     {
 
         // Avoid duplicate entry
-        if (countElementsInTable($this->getTable(), ['tickets_id' => $input['tickets_id'],
+        if (
+            countElementsInTable($this->getTable(), ['tickets_id' => $input['tickets_id'],
                                                      'itemtype'   => $input['itemtype'],
-                                                     'items_id'   => $input['items_id']]) > 0) {
+                                                     'items_id'   => $input['items_id']]) > 0
+        ) {
             return false;
         }
 
@@ -208,8 +213,10 @@ class Item_Ticket extends CommonItilObject_Item
             // Get requester
             $class        = new $ticket->userlinkclass();
             $tickets_user = $class->getActors($params['id']);
-            if (isset($tickets_user[CommonITILActor::REQUESTER])
-                && (count($tickets_user[CommonITILActor::REQUESTER]) == 1)) {
+            if (
+                isset($tickets_user[CommonITILActor::REQUESTER])
+                && (count($tickets_user[CommonITILActor::REQUESTER]) == 1)
+            ) {
                 foreach ($tickets_user[CommonITILActor::REQUESTER] as $user_id_single) {
                     $params['_users_id_requester'] = $user_id_single['users_id'];
                 }
@@ -220,8 +227,10 @@ class Item_Ticket extends CommonItilObject_Item
             $usedcount = 0;
             foreach ($used as $itemtype => $items) {
                 foreach ($items as $items_id) {
-                    if (!isset($params['items_id'][$itemtype])
-                        || !in_array($items_id, $params['items_id'][$itemtype])) {
+                    if (
+                        !isset($params['items_id'][$itemtype])
+                        || !in_array($items_id, $params['items_id'][$itemtype])
+                    ) {
                         $params['items_id'][$itemtype][] = $items_id;
                     }
                     ++$usedcount;
@@ -263,7 +272,7 @@ class Item_Ticket extends CommonItilObject_Item
             echo "<span id='item_ticket_selection_information$rand'></span>";
             echo "</div>";
 
-            echo "<a href='javascript:itemAction$rand(\"add\");' class='btn btn-secondary' style='float:left'>"._sx('button', 'Add')."</a>";
+            echo "<a href='javascript:itemAction$rand(\"add\");' class='btn btn-secondary' style='float:left'>" . _sx('button', 'Add') . "</a>";
         }
 
         // Display list
@@ -291,7 +300,7 @@ class Item_Ticket extends CommonItilObject_Item
                           'rand'      => $rand,
                           'delete'    => $delete,
                           'visible'   => ($count <= 5)
-                  ]
+                        ]
                     );
                 }
             }
@@ -306,8 +315,8 @@ class Item_Ticket extends CommonItilObject_Item
             echo "<i>" . sprintf(_n('%1$s item not saved', '%1$s items not saved', $count_notsaved), $count_notsaved)  . "</i>";
         }
         if ($params['id'] > 0 && $usedcount > 5) {
-            echo "<i><a href='".$ticket->getFormURLWithID($params['id'])."&amp;forcetab=Item_Ticket$1'>"
-                     .__('Display all items')." (".$usedcount.")</a></i>";
+            echo "<i><a href='" . $ticket->getFormURLWithID($params['id']) . "&amp;forcetab=Item_Ticket$1'>"
+                     . __('Display all items') . " (" . $usedcount . ")</a></i>";
         }
         echo "</div>";
 
@@ -317,11 +326,11 @@ class Item_Ticket extends CommonItilObject_Item
 
         $js  = " function itemAction$rand(action, itemtype, items_id) {";
         $js .= "    $.ajax({
-                     url: '".$CFG_GLPI['root_doc']."/ajax/itemTicket.php',
+                     url: '" . $CFG_GLPI['root_doc'] . "/ajax/itemTicket.php',
                      dataType: 'html',
                      data: {'action'     : action,
                             'rand'       : $rand,
-                            'params'     : ".json_encode($opt).",
+                            'params'     : " . json_encode($opt) . ",
                             'my_items'   : $('#dropdown_my_items$rand').val(),
                             'itemtype'   : (itemtype === undefined) ? $('#dropdown_itemtype$rand').val() : itemtype,
                             'items_id'   : (items_id === undefined) ? $('#dropdown_add_items_id$rand').val() : items_id},
@@ -353,10 +362,10 @@ class Item_Ticket extends CommonItilObject_Item
             if ($params['visible']) {
                 $item->getFromDB($items_id);
                 $result =  "<div id='{$itemtype}_$items_id'>";
-                $result .= $item->getTypeName(1)." : ".$item->getLink(['comments' => true]);
+                $result .= $item->getTypeName(1) . " : " . $item->getLink(['comments' => true]);
                 $result .= Html::hidden("items_id[$itemtype][$items_id]", ['value' => $items_id]);
                 if ($params['delete']) {
-                    $result .= " <span class='fa fa-times-circle pointer' onclick=\"itemAction".$params['rand']."('delete', '$itemtype', '$items_id');\"></span>";
+                    $result .= " <span class='fa fa-times-circle pointer' onclick=\"itemAction" . $params['rand'] . "('delete', '$itemtype', '$items_id');\"></span>";
                 }
                 $result .= "</div>";
             } else {
@@ -390,17 +399,21 @@ class Item_Ticket extends CommonItilObject_Item
         $types_iterator = self::getDistinctTypes($instID);
         $number = count($types_iterator);
 
-        if ($canedit
+        if (
+            $canedit
             && !in_array($ticket->fields['status'], array_merge(
                 $ticket->getClosedStatusArray(),
                 $ticket->getSolvedStatusArray()
-            ))) {
+            ))
+        ) {
             // Select hardware on creation or if have update right
             $class        = new $ticket->userlinkclass();
             $tickets_user = $class->getActors($instID);
             $dev_user_id = 0;
-            if (isset($tickets_user[CommonITILActor::REQUESTER])
-                    && (count($tickets_user[CommonITILActor::REQUESTER]) == 1)) {
+            if (
+                isset($tickets_user[CommonITILActor::REQUESTER])
+                    && (count($tickets_user[CommonITILActor::REQUESTER]) == 1)
+            ) {
                 foreach ($tickets_user[CommonITILActor::REQUESTER] as $user_id_single) {
                     $dev_user_id = $user_id_single['users_id'];
                 }
@@ -411,8 +424,10 @@ class Item_Ticket extends CommonItilObject_Item
 
             // My items
             foreach ($CFG_GLPI["linkuser_types"] as $itemtype) {
-                if (($item = getItemForItemtype($itemtype))
-                    && Ticket::isPossibleToAssignType($itemtype)) {
+                if (
+                    ($item = getItemForItemtype($itemtype))
+                    && Ticket::isPossibleToAssignType($itemtype)
+                ) {
                     $itemtable = getTableForItemType($itemtype);
 
                     $criteria = [
@@ -453,7 +468,7 @@ class Item_Ticket extends CommonItilObject_Item
                                         $output = sprintf(__('%1$s - %2$s'), $output, $data['otherserial']);
                                     }
                                 }
-                                $devices[$itemtype."_".$data["id"]] = $output;
+                                $devices[$itemtype . "_" . $data["id"]] = $output;
 
                                 $already_add[$itemtype][] = $data["id"];
                             }
@@ -496,8 +511,10 @@ class Item_Ticket extends CommonItilObject_Item
                     }
 
                     foreach ($CFG_GLPI["linkgroup_types"] as $itemtype) {
-                        if (($item = getItemForItemtype($itemtype))
-                            && Ticket::isPossibleToAssignType($itemtype)) {
+                        if (
+                            ($item = getItemForItemtype($itemtype))
+                            && Ticket::isPossibleToAssignType($itemtype)
+                        ) {
                             $itemtable  = getTableForItemType($itemtype);
                             $criteria = [
                                'FROM'   => $itemtable,
@@ -536,7 +553,7 @@ class Item_Ticket extends CommonItilObject_Item
                                         if (isset($data['otherserial'])) {
                                             $output = sprintf(__('%1$s - %2$s'), $output, $data['otherserial']);
                                         }
-                                        $devices[$itemtype."_".$data["id"]] = $output;
+                                        $devices[$itemtype . "_" . $data["id"]] = $output;
 
                                         $already_add[$itemtype][] = $data["id"];
                                     }
@@ -606,7 +623,7 @@ class Item_Ticket extends CommonItilObject_Item
                                     if ($_SESSION["glpiis_ids_visible"]) {
                                         $output = sprintf(__('%1$s (%2$s)'), $output, $data["id"]);
                                     }
-                                    $devices["Software_".$data["id"]] = $output;
+                                    $devices["Software_" . $data["id"]] = $output;
 
                                     $already_add['Software'][] = $data["id"];
                                 }
@@ -625,8 +642,10 @@ class Item_Ticket extends CommonItilObject_Item
                 // Direct Connection
                 $types = ['Monitor', 'Peripheral', 'Phone', 'Printer'];
                 foreach ($types as $itemtype) {
-                    if (in_array($itemtype, $_SESSION["glpiactiveprofile"]["helpdesk_item_type"])
-                        && ($item = getItemForItemtype($itemtype))) {
+                    if (
+                        in_array($itemtype, $_SESSION["glpiactiveprofile"]["helpdesk_item_type"])
+                        && ($item = getItemForItemtype($itemtype))
+                    ) {
                         $itemtable = getTableForItemType($itemtype);
                         if (!isset($already_add[$itemtype])) {
                             $already_add[$itemtype] = [];
@@ -670,7 +689,7 @@ class Item_Ticket extends CommonItilObject_Item
                                     if ($itemtype != 'Software') {
                                         $output = sprintf(__('%1$s - %2$s'), $output, $data['otherserial']);
                                     }
-                                    $devices[$itemtype."_".$data["id"]] = $output;
+                                    $devices[$itemtype . "_" . $data["id"]] = $output;
 
                                     $already_add[$itemtype][] = $data["id"];
                                 }
@@ -787,13 +806,15 @@ class Item_Ticket extends CommonItilObject_Item
                 $prem = true;
                 while ($data = $iterator->next()) {
                     $name = $data["name"];
-                    if ($_SESSION["glpiis_ids_visible"]
-                        || empty($data["name"])) {
+                    if (
+                        $_SESSION["glpiis_ids_visible"]
+                        || empty($data["name"])
+                    ) {
                         $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
                     }
                     if ((Session::getCurrentInterface() != 'helpdesk') && $item::canView()) {
                         $link     = $itemtype::getFormURLWithID($data['id']);
-                        $namelink = "<a href=\"".$link."\">".$name."</a>";
+                        $namelink = "<a href=\"" . $link . "\">" . $name . "</a>";
                     } else {
                         $namelink = $name;
                     }
@@ -802,8 +823,8 @@ class Item_Ticket extends CommonItilObject_Item
                        $itemtype::getTypeName(),
                        Dropdown::getDropdownName("glpi_entities", $data['entity']),
                        $namelink,
-                       (isset($data["serial"]) ? "".$data["serial"]."" : "-"),
-                       (isset($data["otherserial"]) ? "".$data["otherserial"]."" : "-"),
+                       (isset($data["serial"]) ? "" . $data["serial"] . "" : "-"),
+                       (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-"),
                     ];
                     $massive_action[] = sprintf('item[%s][%s]', self::class, $data["linkid"]);
                 }
@@ -831,13 +852,15 @@ class Item_Ticket extends CommonItilObject_Item
                 $prem = true;
                 while ($data = $iterator->next()) {
                     $name = $data["name"];
-                    if ($_SESSION["glpiis_ids_visible"]
-                        || empty($data["name"])) {
+                    if (
+                        $_SESSION["glpiis_ids_visible"]
+                        || empty($data["name"])
+                    ) {
                         $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
                     }
                     if ((Session::getCurrentInterface() != 'helpdesk') && $item::canView()) {
                         $link     = $itemtype::getFormURLWithID($data['id']);
-                        $namelink = "<a href=\"".$link."\">".$name."</a>";
+                        $namelink = "<a href=\"" . $link . "\">" . $name . "</a>";
                     } else {
                         $namelink = $name;
                     }
@@ -850,19 +873,19 @@ class Item_Ticket extends CommonItilObject_Item
                     }
                     if ($prem) {
                         $typename = $item->getTypeName($nb);
-                        echo "<td class='center top' rowspan='$nb'>".
-                               (($nb > 1) ? sprintf(__('%1$s: %2$s'), $typename, $nb) : $typename)."</td>";
+                        echo "<td class='center top' rowspan='$nb'>" .
+                               (($nb > 1) ? sprintf(__('%1$s: %2$s'), $typename, $nb) : $typename) . "</td>";
                         $prem = false;
                     }
                     echo "<td class='center'>";
-                    echo Dropdown::getDropdownName("glpi_entities", $data['entity'])."</td>";
-                    echo "<td class='center".
+                    echo Dropdown::getDropdownName("glpi_entities", $data['entity']) . "</td>";
+                    echo "<td class='center" .
                              (isset($data['is_deleted']) && $data['is_deleted'] ? " tab_bg_2_2'" : "'");
-                    echo ">".$namelink."</td>";
-                    echo "<td class='center'>".(isset($data["serial"]) ? "".$data["serial"]."" : "-").
+                    echo ">" . $namelink . "</td>";
+                    echo "<td class='center'>" . (isset($data["serial"]) ? "" . $data["serial"] . "" : "-") .
                          "</td>";
-                    echo "<td class='center'>".
-                           (isset($data["otherserial"]) ? "".$data["otherserial"]."" : "-")."</td>";
+                    echo "<td class='center'>" .
+                           (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-") . "</td>";
                     echo "</tr>";
                 }
                 $totalnb += $nb;
@@ -886,8 +909,10 @@ class Item_Ticket extends CommonItilObject_Item
             $nb = 0;
             switch ($item->getType()) {
                 case 'Ticket':
-                    if (($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] != 0)
-                        && (count($_SESSION["glpiactiveprofile"]["helpdesk_item_type"]) > 0)) {
+                    if (
+                        ($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] != 0)
+                        && (count($_SESSION["glpiactiveprofile"]["helpdesk_item_type"]) > 0)
+                    ) {
                         if ($_SESSION['glpishow_count_on_tabs']) {
                             //$nb = self::countForMainItem($item);
                             $nb = countElementsInTable(
@@ -958,8 +983,10 @@ class Item_Ticket extends CommonItilObject_Item
 
             // My items
             foreach ($CFG_GLPI["linkuser_types"] as $itemtype) {
-                if (($item = getItemForItemtype($itemtype))
-                    && Ticket::isPossibleToAssignType($itemtype)) {
+                if (
+                    ($item = getItemForItemtype($itemtype))
+                    && Ticket::isPossibleToAssignType($itemtype)
+                ) {
                     $itemtable = getTableForItemType($itemtype);
 
                     $criteria = [
@@ -1000,7 +1027,7 @@ class Item_Ticket extends CommonItilObject_Item
                                         $output = sprintf(__('%1$s - %2$s'), $output, $data['otherserial']);
                                     }
                                 }
-                                $devices[$itemtype."_".$data["id"]] = $output;
+                                $devices[$itemtype . "_" . $data["id"]] = $output;
 
                                 $already_add[$itemtype][] = $data["id"];
                             }
@@ -1043,8 +1070,10 @@ class Item_Ticket extends CommonItilObject_Item
                     }
 
                     foreach ($CFG_GLPI["linkgroup_types"] as $itemtype) {
-                        if (($item = getItemForItemtype($itemtype))
-                            && Ticket::isPossibleToAssignType($itemtype)) {
+                        if (
+                            ($item = getItemForItemtype($itemtype))
+                            && Ticket::isPossibleToAssignType($itemtype)
+                        ) {
                             $itemtable  = getTableForItemType($itemtype);
                             $criteria = [
                                'FROM'   => $itemtable,
@@ -1083,7 +1112,7 @@ class Item_Ticket extends CommonItilObject_Item
                                         if (isset($data['otherserial'])) {
                                             $output = sprintf(__('%1$s - %2$s'), $output, $data['otherserial']);
                                         }
-                                        $devices[$itemtype."_".$data["id"]] = $output;
+                                        $devices[$itemtype . "_" . $data["id"]] = $output;
 
                                         $already_add[$itemtype][] = $data["id"];
                                     }
@@ -1153,7 +1182,7 @@ class Item_Ticket extends CommonItilObject_Item
                                     if ($_SESSION["glpiis_ids_visible"]) {
                                         $output = sprintf(__('%1$s (%2$s)'), $output, $data["id"]);
                                     }
-                                    $devices["Software_".$data["id"]] = $output;
+                                    $devices["Software_" . $data["id"]] = $output;
 
                                     $already_add['Software'][] = $data["id"];
                                 }
@@ -1172,8 +1201,10 @@ class Item_Ticket extends CommonItilObject_Item
                 // Direct Connection
                 $types = ['Monitor', 'Peripheral', 'Phone', 'Printer'];
                 foreach ($types as $itemtype) {
-                    if (in_array($itemtype, $_SESSION["glpiactiveprofile"]["helpdesk_item_type"])
-                        && ($item = getItemForItemtype($itemtype))) {
+                    if (
+                        in_array($itemtype, $_SESSION["glpiactiveprofile"]["helpdesk_item_type"])
+                        && ($item = getItemForItemtype($itemtype))
+                    ) {
                         $itemtable = getTableForItemType($itemtype);
                         if (!isset($already_add[$itemtype])) {
                             $already_add[$itemtype] = [];
@@ -1217,7 +1248,7 @@ class Item_Ticket extends CommonItilObject_Item
                                     if ($itemtype != 'Software') {
                                         $output = sprintf(__('%1$s - %2$s'), $output, $data['otherserial']);
                                     }
-                                    $devices[$itemtype."_".$data["id"]] = $output;
+                                    $devices[$itemtype . "_" . $data["id"]] = $output;
 
                                     $already_add[$itemtype][] = $data["id"];
                                 }
@@ -1240,7 +1271,7 @@ class Item_Ticket extends CommonItilObject_Item
                   'col_md' => 12,
                ]
             ]);
-            echo __('My devices')."&nbsp;";
+            echo __('My devices') . "&nbsp;";
             Dropdown::showFromArray('my_items', $my_devices, ['rand' => $rand]);
             echo "</div>";
 
@@ -1250,7 +1281,7 @@ class Item_Ticket extends CommonItilObject_Item
             Ajax::updateItemOnSelectEvent(
                 "dropdown_my_items$rand",
                 "item_ticket_selection_information$rand",
-                $CFG_GLPI["root_doc"]."/ajax/ticketiteminformation.php",
+                $CFG_GLPI["root_doc"] . "/ajax/ticketiteminformation.php",
                 $params
             );
         }
@@ -1326,7 +1357,7 @@ class Item_Ticket extends CommonItilObject_Item
         $output = [];
         while ($data = $iterator->next()) {
             $item = getItemForItemtype($data['itemtype']);
-            $output[$data['itemtype']."_".$data['id']] = $item->getTypeName()." - ".$data['name'];
+            $output[$data['itemtype'] . "_" . $data['id']] = $item->getTypeName() . " - " . $data['name'];
         }
 
         return Dropdown::showFromArray($p['name'], $output, $p);
@@ -1368,7 +1399,7 @@ class Item_Ticket extends CommonItilObject_Item
                                                        'checkright'      => true,
                                                        'entity_restrict' => $_SESSION['glpiactive_entity']
                                                       ]);
-                echo "<br><input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='btn btn-secondary'>";
+                echo "<br><input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='btn btn-secondary'>";
                 break;
 
             case 'delete_item':
@@ -1379,10 +1410,9 @@ class Item_Ticket extends CommonItilObject_Item
                                                        'entity_restrict' => $_SESSION['glpiactive_entity']
                                                       ]);
 
-                echo "<br><input type='submit' name='delete' value=\"".__('Delete permanently')."\" class='btn btn-secondary'>";
+                echo "<br><input type='submit' name='delete' value=\"" . __('Delete permanently') . "\" class='btn btn-secondary'>";
                 break;
         }
-
     }
 
     /**
@@ -1435,12 +1465,10 @@ class Item_Ticket extends CommonItilObject_Item
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
                                 $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
                             }
-
                         } else {
                             $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
                             $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
                         }
-
                     } else {
                         $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
                         $ma->addMessage($item->getErrorMessage(ERROR_NOT_FOUND));
@@ -1474,17 +1502,14 @@ class Item_Ticket extends CommonItilObject_Item
                                     $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
                                     $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
                                 }
-
                             } else {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
                                 $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
                             }
-
                         } else {
                             $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
                             $ma->addMessage($item->getErrorMessage(ERROR_NOT_FOUND));
                         }
-
                     } else {
                         $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
                         $ma->addMessage($item->getErrorMessage(ERROR_NOT_FOUND));
@@ -1541,8 +1566,10 @@ class Item_Ticket extends CommonItilObject_Item
             $addMessAfterRedirect = true;
         }
 
-        if (isset($this->input['_no_message'])
-            || !$this->auto_message_on_action) {
+        if (
+            isset($this->input['_no_message'])
+            || !$this->auto_message_on_action
+        ) {
             $addMessAfterRedirect = false;
         }
 
@@ -1573,7 +1600,6 @@ class Item_Ticket extends CommonItilObject_Item
                 __('Item successfully added'),
                 stripslashes($display)
             ));
-
         }
     }
 
@@ -1592,8 +1618,10 @@ class Item_Ticket extends CommonItilObject_Item
             $addMessAfterRedirect = true;
         }
 
-        if (isset($this->input['_no_message'])
-            || !$this->auto_message_on_action) {
+        if (
+            isset($this->input['_no_message'])
+            || !$this->auto_message_on_action
+        ) {
             $addMessAfterRedirect = false;
         }
 
@@ -1612,7 +1640,6 @@ class Item_Ticket extends CommonItilObject_Item
             }
             //TRANS : %s is the description of the updated item
             Session::addMessageAfterRedirect(sprintf(__('%1$s: %2$s'), __('Item successfully deleted'), $display));
-
         }
     }
 }

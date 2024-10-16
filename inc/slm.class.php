@@ -92,7 +92,7 @@ class SLM extends CommonDBTM
             [
               SLA::class,
               OLA::class,
-         ]
+            ]
         );
     }
 

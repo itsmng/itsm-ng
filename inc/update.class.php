@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -72,7 +73,7 @@ class Update extends CommonGLPI
             Session::setPath();
         } else {
             if (isCommandLine()) {
-                die("Can't write in ".GLPI_SESSION_DIR."\n");
+                die("Can't write in " . GLPI_SESSION_DIR . "\n");
             }
         }
         Session::start();
@@ -197,7 +198,7 @@ class Update extends CommonGLPI
                 include_once "{$updir}update_031_04.php";
                 update031to04();
                 if (!empty($ret) && $ret["adminchange"]) {
-                    echo "<div class='center'> <h2>". __("All users having administrators rights have have been updated to 'super-admin' rights with the creation of his new user type.") ."<h2></div>";
+                    echo "<div class='center'> <h2>" . __("All users having administrators rights have have been updated to 'super-admin' rights with the creation of his new user type.") . "<h2></div>";
                 }
                 // no break
             case "0.4":
@@ -653,11 +654,11 @@ class Update extends CommonGLPI
                 'glpi_crontasks',
                 [
                   'mode'   => 2
-            ],
+                ],
                 [
                   'name'      => ['!=', 'watcher'],
                   'allowmode' => ['&', 2]
-            ]
+                ]
             );
         }
 

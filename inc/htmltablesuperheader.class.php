@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -105,7 +106,7 @@ class HTMLTableSuperHeader extends HTMLTableHeader
 
     public function getCompositeName()
     {
-        return $this->getName().':';
+        return $this->getName() . ':';
     }
 
 
@@ -136,5 +137,4 @@ class HTMLTableSuperHeader extends HTMLTableHeader
     {
         return true;
     }
-
 }

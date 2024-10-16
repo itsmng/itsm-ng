@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -103,5 +104,4 @@ class InterfaceType extends CommonDropdown
             );
         }
     }
-
 }

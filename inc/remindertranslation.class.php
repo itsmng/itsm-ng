@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -78,8 +79,10 @@ class ReminderTranslation extends CommonDBChild
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
 
-        if (self::canBeTranslated($item)
-            && Session::getCurrentInterface() != "helpdesk") {
+        if (
+            self::canBeTranslated($item)
+            && Session::getCurrentInterface() != "helpdesk"
+        ) {
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                 $nb = self::getNumberOfTranslationsForItem($item);
@@ -102,8 +105,10 @@ class ReminderTranslation extends CommonDBChild
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
 
-        if ($item->getType() == "Reminder"
-            && self::canBeTranslated($item)) {
+        if (
+            $item->getType() == "Reminder"
+            && self::canBeTranslated($item)
+        ) {
             self::showTranslations($item);
         }
         return true;
@@ -133,15 +138,15 @@ class ReminderTranslation extends CommonDBChild
                             'id'               => -1];
             Ajax::updateItemJsCode(
                 "viewtranslation" . $item->getID() . "$rand",
-                $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php",
+                $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
                 $params
             );
             echo "};";
             echo "</script>\n";
 
-            echo "<div class='center'>".
-                 "<a class='vsubmit' href='javascript:addTranslation".$item->getID()."$rand();'>".
-                 __('Add a new translation')."</a></div><br>";
+            echo "<div class='center'>" .
+                 "<a class='vsubmit' href='javascript:addTranslation" . $item->getID() . "$rand();'>" .
+                 __('Add a new translation') . "</a></div><br>";
         }
 
         $obj   = new self();
@@ -149,8 +154,8 @@ class ReminderTranslation extends CommonDBChild
 
         if (count($found) > 0) {
             if ($canedit) {
-                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-                $massiveactionparams = ['container' => 'mass'.__CLASS__.$rand];
+                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
+                $massiveactionparams = ['container' => 'mass' . __CLASS__ . $rand];
                 Html::showMassiveActions($massiveactionparams);
             }
 
@@ -158,14 +163,14 @@ class ReminderTranslation extends CommonDBChild
 
             echo "<div class='center'>";
             echo "<table class='tab_cadre_fixehov' aria-label='List of Translation'><tr class='tab_bg_2'>";
-            echo "<th colspan='4'>".__("List of translations")."</th></tr>";
+            echo "<th colspan='4'>" . __("List of translations") . "</th></tr>";
             if ($canedit) {
                 echo "<th width='10'>";
-                echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+                echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
                 echo "</th>";
             }
-            echo "<th>".__("Language")."</th>";
-            echo "<th>".__("Subject")."</th>";
+            echo "<th>" . __("Language") . "</th>";
+            echo "<th>" . __("Subject") . "</th>";
             foreach ($found as $data) {
                 echo "<tr class='tab_bg_1'>";
                 if ($canedit) {
@@ -195,7 +200,7 @@ class ReminderTranslation extends CommonDBChild
             }
         } else {
             echo "<table class='tab_cadre_fixe' aria-label='No translation Found'><tr class='tab_bg_2'>";
-            echo "<th class='b'>" . __("No translation found")."</th></tr></table>";
+            echo "<th class='b'>" . __("No translation found") . "</th></tr></table>";
         }
 
         return true;
@@ -219,15 +224,14 @@ class ReminderTranslation extends CommonDBChild
             $options['itemtype'] = get_class($item);
             $options['reminders_id'] = $item->getID();
             $this->check(-1, CREATE, $options);
-
         }
         Html::initEditorSystem('text');
         $this->showFormHeader($options);
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Language')."&nbsp;:</td>";
+        echo "<td>" . __('Language') . "&nbsp;:</td>";
         echo "<td>";
-        echo "<input type='hidden' name='users_id' value=\"".Session::getLoginUserID()."\">";
-        echo "<input type='hidden' name='reminders_id' value='".$this->fields['reminders_id']."'>";
+        echo "<input type='hidden' name='users_id' value=\"" . Session::getLoginUserID() . "\">";
+        echo "<input type='hidden' name='reminders_id' value='" . $this->fields['reminders_id'] . "'>";
         if ($ID > 0) {
             echo Dropdown::getLanguageName($this->fields['language']);
         } else {
@@ -241,7 +245,7 @@ class ReminderTranslation extends CommonDBChild
         echo "</td><td colspan='2'>&nbsp;</td></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Name')."</td>";
+        echo "<td>" . __('Name') . "</td>";
         echo "<td colspan='3'>";
         Html::autocompletionTextField(
             $this,
@@ -253,7 +257,7 @@ class ReminderTranslation extends CommonDBChild
         echo "</td></tr>\n";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Description')."</td>";
+        echo "<td>" . __('Description') . "</td>";
         echo "<td colspan='3'>";
         Html::textarea(['name'              => 'text',
                         'value'             => $this->fields["text"],
@@ -282,8 +286,10 @@ class ReminderTranslation extends CommonDBChild
            'language'           => $_SESSION['glpilanguage']
         ]);
 
-        if ((count($found) > 0)
-            && in_array($field, ['name', 'text'])) {
+        if (
+            (count($found) > 0)
+            && in_array($field, ['name', 'text'])
+        ) {
             $first = array_shift($found);
             return $first[$field];
         }

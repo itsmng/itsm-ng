@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -49,10 +50,11 @@ if (empty($_POST["date1"]) && empty($_POST["date2"])) {
     $_POST["date2"] = date("Y-m-d");
 }
 
-if (!empty($_POST["date1"])
+if (
+    !empty($_POST["date1"])
     && !empty($_POST["date2"])
-    && (strcmp($_POST["date2"], $_POST["date1"]) < 0)) {
-
+    && (strcmp($_POST["date2"], $_POST["date1"]) < 0)
+) {
     $tmp            = $_POST["date1"];
     $_POST["date1"] = $_POST["date2"];
     $_POST["date2"] = $tmp;
@@ -66,11 +68,11 @@ Stat::title();
 
 echo "<div class='center'><form aria-label='Item Statistics' method='post' name='form' action='stat.item.php'>";
 echo "<table class='tab_cadre'><tr class='tab_bg_2'> aria-label='Statistics'";
-echo "<td class='right'>".__('Start date')."</td><td>";
+echo "<td class='right'>" . __('Start date') . "</td><td>";
 Html::showDateField("date1", ['value' => $_POST["date1"]]);
 echo "</td><td rowspan='2' class='center'>";
-echo "<input type='submit' class='submit' name='submit' value='".__s('Display report')."'></td></tr>";
-echo "<tr class='tab_bg_2'><td class='right'>".__('End date')."</td><td>";
+echo "<input type='submit' class='submit' name='submit' value='" . __s('Display report') . "'></td></tr>";
+echo "<tr class='tab_bg_2'><td class='right'>" . __('End date') . "</td><td>";
 Html::showDateField("date2", ['value' => $_POST["date2"]]);
 echo "</td></tr>";
 echo "</table>";

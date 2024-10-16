@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -216,9 +217,11 @@ trait VobjectConverterTrait
      */
     protected function getCommonInputFromVcomponent(Component $vcomponent, bool $is_new_item = true)
     {
-        if (!($vcomponent instanceof VEvent)
+        if (
+            !($vcomponent instanceof VEvent)
             && !($vcomponent instanceof VTodo)
-            && !($vcomponent instanceof VJournal)) {
+            && !($vcomponent instanceof VJournal)
+        ) {
             throw new \UnexpectedValueException(
                 'Component object must be a VEVENT, a VJOURNAL, or a VTODO'
             );

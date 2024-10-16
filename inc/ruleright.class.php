@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -134,19 +135,18 @@ class RuleRight extends Rule
 
         if (count($this->actions)) {
             foreach ($this->actions as $action) {
-
                 switch ($action->fields["action_type"]) {
                     case "assign":
                         switch ($action->fields["field"]) {
-                            case "entities_id" :
+                            case "entities_id":
                                 $entity[] = $action->fields["value"];
                                 break;
 
-                            case "profiles_id" :
+                            case "profiles_id":
                                 $right = $action->fields["value"];
                                 break;
 
-                            case "is_recursive" :
+                            case "is_recursive":
                                 $is_recursive = $action->fields["value"];
                                 break;
 
@@ -166,7 +166,7 @@ class RuleRight extends Rule
                                 $output["_ldap_rules"]['groups_id'][] = $action->fields["value"];
                                 break;
 
-                            case "is_active" :
+                            case "is_active":
                                 $output["is_active"] = $action->fields["value"];
                                 break;
 
@@ -174,7 +174,7 @@ class RuleRight extends Rule
                                 $output['timezone'] = $action->fields['value'];
                                 break;
 
-                            case "_ignore_user_import" :
+                            case "_ignore_user_import":
                                 $continue                   = false;
                                 $output_src["_stop_import"] = true;
                                 break;
@@ -182,7 +182,6 @@ class RuleRight extends Rule
                             default:
                                 $output[$action->fields["field"]] = $action->fields["value"];
                                 break;
-
                         } // switch (field)
                         break;
 
@@ -199,19 +198,19 @@ class RuleRight extends Rule
                                     );
                                     if ($res != null) {
                                         switch ($action->fields["field"]) {
-                                            case "_affect_entity_by_dn" :
+                                            case "_affect_entity_by_dn":
                                                 $entity_found = Entity::getEntityIDByDN(addslashes($res));
                                                 break;
 
-                                            case "_affect_entity_by_tag" :
+                                            case "_affect_entity_by_tag":
                                                 $entity_found = Entity::getEntityIDByTag(addslashes($res));
                                                 break;
 
-                                            case "_affect_entity_by_domain" :
+                                            case "_affect_entity_by_domain":
                                                 $entity_found = Entity::getEntityIDByDomain(addslashes($res));
                                                 break;
 
-                                            case "_affect_entity_by_completename" :
+                                            case "_affect_entity_by_completename":
                                                 $res          = Toolbox::unclean_cross_side_scripting_deep($res);
                                                 $entity_found = Entity::getEntityIDByCompletename(addslashes($res));
                                                 break;
@@ -235,7 +234,6 @@ class RuleRight extends Rule
                                 break;
                         } // switch (field)
                         break;
-
                 } // switch (action_type)
             } // foreach (action)
         } // count (actions)
@@ -466,14 +464,13 @@ class RuleRight extends Rule
 
         switch ($action['type']) {
             case 'timezone':
-
                 $timezones = $DB->getTimezones();
                 Dropdown::showFromArray(
                     'value',
                     $timezones,
                     [
                       'display_emptychoice' => true
-               ]
+                    ]
                 );
                 return true;
         }
@@ -499,5 +496,4 @@ class RuleRight extends Rule
             $criteria[$data["value"]]['table']     = '';
         }
     }
-
 }

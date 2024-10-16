@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -58,7 +59,7 @@ class DeviceGeneric extends CommonDevice
                  'value' => $this->fields['devicegenerictypes_id'],
                  'actions' => getItemActionButtons(['add', 'info'], 'DeviceGenericType')
               ]
-         ]
+            ]
         );
     }
 
@@ -138,5 +139,4 @@ class DeviceGeneric extends CommonDevice
                      'locations_id'      => 'equal',
                      ];
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -58,7 +59,6 @@ if (isset($_POST["add"])) {
     } else {
         Html::back();
     }
-
 } elseif (isset($_POST["delete"])) {
     $change->check($_POST["id"], DELETE);
 
@@ -72,7 +72,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s deletes an item'), $_SESSION["glpiname"])
     );
     $change->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $change->check($_POST["id"], DELETE);
 
@@ -86,7 +85,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s restores an item'), $_SESSION["glpiname"])
     );
     $change->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $change->check($_POST["id"], PURGE);
     $change->delete($_POST, 1);
@@ -100,7 +98,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $change->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $change->check($_POST["id"], UPDATE);
 
@@ -115,7 +112,6 @@ if (isset($_POST["add"])) {
     );
 
     Html::back();
-
 } elseif (isset($_POST['addme_observer'])) {
     $change->check($_POST['changes_id'], READ);
     $input = array_merge(Toolbox::addslashes_deep($change->fields), [
@@ -136,7 +132,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s adds an actor'), $_SESSION["glpiname"])
     );
     Html::redirect($change->getFormURLWithID($_POST['changes_id']));
-
 } elseif (isset($_POST['addme_assign'])) {
     $change_user = new Change_User();
 
@@ -181,7 +176,7 @@ if (isset($_POST["add"])) {
             [
               'title'         => __('Save solution to the knowledge base'),
               'reloadonclose' => false,
-         ]
+            ]
         );
         echo Html::scriptBlock('$(function() {' . Html::jsGetElementbyID('savetokb') . '.dialog("open"); });');
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -68,7 +69,7 @@ class DBConnection extends CommonDBTM
         $DB_str = "<?php\nclass DB extends DBmysql {\n" .
                   "   public \$dbhost     = '$host';\n" .
                   "   public \$dbuser     = '$user';\n" .
-                  "   public \$dbpassword = '". rawurlencode($password) . "';\n" .
+                  "   public \$dbpassword = '" . rawurlencode($password) . "';\n" .
                   "   public \$dbdefault  = '$DBname';\n" .
                   "}\n";
 
@@ -96,7 +97,7 @@ class DBConnection extends CommonDBTM
             $first = true;
             foreach ($hosts as $host) {
                 if (!empty($host)) {
-                    $DB_str .= ($first ? "array('" : ",'").$host."'";
+                    $DB_str .= ($first ? "array('" : ",'") . $host . "'";
                     $first   = false;
                 }
             }
@@ -105,7 +106,6 @@ class DBConnection extends CommonDBTM
                 return false;
             }
             $DB_str .= ");\n";
-
         } else {
             $DB_str .= "'$host';\n";
         }
@@ -214,10 +214,11 @@ class DBConnection extends CommonDBTM
     {
         global $DB, $CFG_GLPI;
 
-        if ($CFG_GLPI['use_slave_for_search']
+        if (
+            $CFG_GLPI['use_slave_for_search']
             && !$DB->isSlave()
-            && self::isDBSlaveActive()) {
-
+            && self::isDBSlaveActive()
+        ) {
             include_once(GLPI_CONFIG_DIR . "/config_db_slave.php");
             $DBread = new DBSlave();
 
@@ -226,31 +227,35 @@ class DBConnection extends CommonDBTM
                     FROM `glpi_logs`";
 
                 switch ($CFG_GLPI['use_slave_for_search']) {
-                    case 3 : // If synced or read-only account
+                    case 3: // If synced or read-only account
                         if (Session::isReadOnlyAccount()) {
                             return $DBread;
                         }
                         // nobreak;
 
                         // no break
-                    case 1 : // If synced (all changes)
+                    case 1: // If synced (all changes)
                         $slave  = $DBread->request($sql)->next();
                         $master = $DB->request($sql)->next();
-                        if (isset($slave['maxid']) && isset($master['maxid'])
-                            && ($slave['maxid'] == $master['maxid'])) {
+                        if (
+                            isset($slave['maxid']) && isset($master['maxid'])
+                            && ($slave['maxid'] == $master['maxid'])
+                        ) {
                             // Latest Master change available on Slave
                             return $DBread;
                         }
                         break;
 
-                    case 2 : // If synced (current user changes or profile in read only)
+                    case 2: // If synced (current user changes or profile in read only)
                         if (!isset($_SESSION['glpi_maxhistory'])) {
                             // No change yet
                             return $DBread;
                         }
                         $slave  = $DBread->request($sql)->next();
-                        if (isset($slave['maxid'])
-                            && ($slave['maxid'] >= $_SESSION['glpi_maxhistory'])) {
+                        if (
+                            isset($slave['maxid'])
+                            && ($slave['maxid'] >= $_SESSION['glpi_maxhistory'])
+                        ) {
                             // Latest current user change avaiable on Slave
                             return $DBread;
                         }
@@ -289,7 +294,6 @@ class DBConnection extends CommonDBTM
 
         // If not already connected to master due to config or error
         if (!$res) {
-
             // No DB slave : first connection to master give error
             if (!self::isDBSlaveActive()) {
                 // Slave wanted but not defined -> use master
@@ -297,7 +301,6 @@ class DBConnection extends CommonDBTM
                 if ($use_slave) {
                     $res = self::switchToMaster();
                 }
-
             } else { // Slave DB configured
                 // Try to connect to slave if wanted
                 if ($use_slave) {
@@ -422,7 +425,6 @@ class DBConnection extends CommonDBTM
         // 1 the master database is avalaible
         // 2 the slave database is configurated
         if (!$DB->isSlave() && self::isDBSlaveActive()) {
-
             $DBslave = self::getDBSlaveConf();
             if (is_array($DBslave->dbhost)) {
                 $hosts = $DBslave->dbhost;
@@ -484,12 +486,12 @@ class DBConnection extends CommonDBTM
                 echo __("can't connect to the database") . "<br>";
             } elseif ($diff) {
                 printf(
-                    __('%1$s: %2$s')."<br>",
+                    __('%1$s: %2$s') . "<br>",
                     __('Difference between master and slave'),
                     Html::timestampToString($diff, 1)
                 );
             } else {
-                printf(__('%1$s: %2$s')."<br>", __('Difference between master and slave'), __('None'));
+                printf(__('%1$s: %2$s') . "<br>", __('Difference between master and slave'), __('None'));
             }
         }
     }
@@ -503,7 +505,7 @@ class DBConnection extends CommonDBTM
 
         // No need to translate, this part always display in english (for copy/paste to forum)
 
-        echo "<tr class='tab_bg_2'><th>".self::getTypeName(Session::getPluralNumber())."</th></tr>";
+        echo "<tr class='tab_bg_2'><th>" . self::getTypeName(Session::getPluralNumber()) . "</th></tr>";
 
         echo "<tr class='tab_bg_1'><td><pre>\n&nbsp;\n";
         if (self::isDBSlaveActive()) {
@@ -532,5 +534,4 @@ class DBConnection extends CommonDBTM
         ];
         $cron->update($input);
     }
-
 }

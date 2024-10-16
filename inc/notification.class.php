@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -154,8 +155,10 @@ class Notification extends CommonDBTM
     {
         $menu = [];
 
-        if (Notification::canView()
-            || Config::canView()) {
+        if (
+            Notification::canView()
+            || Config::canView()
+        ) {
             $menu['title']                                      = _n('Notification', 'Notifications', Session::getPluralNumber());
             $menu['page']                                       = '/front/setup.notification.php';
             $menu['icon']                                       = self::getIcon();
@@ -172,7 +175,6 @@ class Notification extends CommonDBTM
                            = NotificationTemplate::getFormURL(false);
             $menu['options']['notificationtemplate']['links']['search']
                            = NotificationTemplate::getSearchURL(false);
-
         }
         if (count($menu)) {
             return $menu;
@@ -352,7 +354,7 @@ class Notification extends CommonDBTM
                       'display'             => false,
                       'display_emptychoice' => true,
                       'value'               => $values[$field],
-               ]
+                    ]
                 );
                 break;
         }
@@ -489,8 +491,8 @@ class Notification extends CommonDBTM
         $actions = parent::getSpecificMassiveActions($checkitem);
 
         if ($isadmin) {
-            $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'add_template'] = _x('button', 'Add notification template');
-            $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'remove_all_template'] = _x('button', 'Remove all notification templates');
+            $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'add_template'] = _x('button', 'Add notification template');
+            $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'remove_all_template'] = _x('button', 'Remove all notification templates');
         }
 
         return $actions;
@@ -526,7 +528,6 @@ class Notification extends CommonDBTM
                     $notification_template->getFromDB($ma->POST['notificationtemplates_id']);
 
                     if ($notification_template->fields['itemtype'] == $notification->fields['itemtype']) {
-
                         //check if already exist
                         $notification_notificationtemplate = new Notification_NotificationTemplate();
                         $data = [
@@ -540,12 +541,10 @@ class Notification extends CommonDBTM
                             $notification_notificationtemplate->add($data);
                             $ma->itemDone(Notification::getType(), $ma->POST['notificationtemplates_id'], MassiveAction::ACTION_OK);
                         }
-
                     } else {
                         $ma->itemDone(Notification::getType(), 0, MassiveAction::ACTION_KO);
-                        $ma->addMessage($notification->getErrorMessage(ERROR_COMPAT)." (".$notification_template->getLink().")");
+                        $ma->addMessage($notification->getErrorMessage(ERROR_COMPAT) . " (" . $notification_template->getLink() . ")");
                     }
-
                 }
                 return;
             case 'remove_all_template':
@@ -568,9 +567,11 @@ class Notification extends CommonDBTM
     public function canViewItem()
     {
 
-        if ((($this->fields['itemtype'] == 'CronTask')
+        if (
+            (($this->fields['itemtype'] == 'CronTask')
              || ($this->fields['itemtype'] == 'DBConnection'))
-            && !Config::canView()) {
+            && !Config::canView()
+        ) {
             return false;
         }
         return Session::haveAccessToEntity($this->getEntityID(), $this->isRecursive());
@@ -585,9 +586,11 @@ class Notification extends CommonDBTM
     public function canCreateItem()
     {
 
-        if ((($this->fields['itemtype'] == 'CronTask')
+        if (
+            (($this->fields['itemtype'] == 'CronTask')
              || ($this->fields['itemtype'] == 'DBConnection'))
-            && !Config::canUpdate()) {
+            && !Config::canUpdate()
+        ) {
             return false;
         }
         return Session::haveAccessToEntity($this->getEntityID());
@@ -601,7 +604,7 @@ class Notification extends CommonDBTM
             [
               Notification_NotificationTemplate::class,
               NotificationTarget::class,
-         ]
+            ]
         );
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -108,8 +109,8 @@ class RuleTicket extends Rule
         }
         if ($showwarning) {
             echo "<table class='tab_cadre_fixe' aria-label='Urgency or impact used in actions'>";
-            echo "<tr class='tab_bg_2'><td>".
-                  __('Urgency or impact used in actions, think to add Priority: recompute action if needed.').
+            echo "<tr class='tab_bg_2'><td>" .
+                  __('Urgency or impact used in actions, think to add Priority: recompute action if needed.') .
                   "</td></tr>\n";
             echo "</table><br>";
         }
@@ -145,7 +146,7 @@ class RuleTicket extends Rule
             }
         }
         if (!$entity_as_criteria) {
-            echo "<input type='hidden' name='entities_id' value='".$_SESSION["glpiactive_entity"]."'>";
+            echo "<input type='hidden' name='entities_id' value='" . $_SESSION["glpiactive_entity"] . "'>";
         }
     }
 
@@ -220,21 +221,24 @@ class RuleTicket extends Rule
                         }
 
                         // Special case for _users_id_requester, _users_id_observer and _users_id_assign
-                        if (in_array(
-                            $action->fields["field"],
-                            ['_users_id_requester', '_users_id_observer', '_users_id_assign']
-                        )) {
+                        if (
+                            in_array(
+                                $action->fields["field"],
+                                ['_users_id_requester', '_users_id_observer', '_users_id_assign']
+                            )
+                        ) {
                             // must reset alternative_email field to prevent mix of user/email
-                            unset($output[$action->fields["field"].'_notif']);
+                            unset($output[$action->fields["field"] . '_notif']);
                         }
 
                         // Special case of slas_id_ttr & slas_id_tto & olas_id_ttr & olas_id_tto
-                        if ($action->fields["field"] === 'slas_id_ttr'
+                        if (
+                            $action->fields["field"] === 'slas_id_ttr'
                             || $action->fields["field"] === 'slas_id_tto'
                             || $action->fields["field"] === 'olas_id_ttr'
-                            || $action->fields["field"] === 'olas_id_tto') {
-                            $output['_'.$action->fields["field"]] = $action->fields["value"];
-
+                            || $action->fields["field"] === 'olas_id_tto'
+                        ) {
+                            $output['_' . $action->fields["field"]] = $action->fields["value"];
                         }
 
                         // special case of itil solution template
@@ -246,9 +250,11 @@ class RuleTicket extends Rule
                         // Appended actors are stored on `_additional_*` keys.
                         $actions = $this->getActions();
                         $append_key = $actions[$action->fields["field"]]["appendto"] ?? null;
-                        if ($append_key !== null
+                        if (
+                            $append_key !== null
                             && preg_match('/^_additional_/', $append_key) === 1
-                            && array_key_exists($append_key, $output)) {
+                            && array_key_exists($append_key, $output)
+                        ) {
                             unset($output[$append_key]);
                         }
 
@@ -257,8 +263,10 @@ class RuleTicket extends Rule
                     case "append":
                         $actions = $this->getActions();
                         $value   = $action->fields["value"];
-                        if (isset($actions[$action->fields["field"]]["appendtoarray"])
-                            && isset($actions[$action->fields["field"]]["appendtoarrayfield"])) {
+                        if (
+                            isset($actions[$action->fields["field"]]["appendtoarray"])
+                            && isset($actions[$action->fields["field"]]["appendtoarrayfield"])
+                        ) {
                             $value = $actions[$action->fields["field"]]["appendtoarray"];
                             $value[$actions[$action->fields["field"]]["appendtoarrayfield"]]
                                    = $action->fields["value"];
@@ -279,15 +287,19 @@ class RuleTicket extends Rule
                         break;
 
                     case 'fromuser':
-                        if (($action->fields['field'] == 'locations_id')
-                            &&  isset($output['_locations_id_of_requester'])) {
+                        if (
+                            ($action->fields['field'] == 'locations_id')
+                            &&  isset($output['_locations_id_of_requester'])
+                        ) {
                             $output['locations_id'] = $output['_locations_id_of_requester'];
                         }
                         break;
 
                     case 'defaultfromuser':
-                        if (($action->fields['field'] == '_groups_id_requester')
-                              &&  isset($output['users_default_groups'])) {
+                        if (
+                            ($action->fields['field'] == '_groups_id_requester')
+                              &&  isset($output['users_default_groups'])
+                        ) {
                             $output['_groups_id_requester'] = $output['users_default_groups'];
                         }
                         break;
@@ -296,8 +308,10 @@ class RuleTicket extends Rule
                         if ($action->fields['field'] == 'locations_id' && isset($output['_locations_id_of_item'])) {
                             $output['locations_id'] = $output['_locations_id_of_item'];
                         }
-                        if ($action->fields['field'] == '_groups_id_requester'
-                            && isset($output['_groups_id_of_item'])) {
+                        if (
+                            $action->fields['field'] == '_groups_id_requester'
+                            && isset($output['_groups_id_of_item'])
+                        ) {
                             $output['_groups_id_requester'] = $output['_groups_id_of_item'];
                         }
                         break;
@@ -311,8 +325,10 @@ class RuleTicket extends Rule
                         break;
 
                     case 'do_not_compute':
-                        if ($action->fields['field'] == 'takeintoaccount_delay_stat'
-                            && $action->fields['value'] == 1) {
+                        if (
+                            $action->fields['field'] == 'takeintoaccount_delay_stat'
+                            && $action->fields['value'] == 1
+                        ) {
                             $output['_do_not_compute_takeintoaccount'] = true;
                         }
                         break;
@@ -333,21 +349,21 @@ class RuleTicket extends Rule
                         }
 
                         switch ($action->fields["action_type"]) {
-                            case "affectbyip" :
+                            case "affectbyip":
                                 $result = IPAddress::getUniqueItemByIPAddress(
                                     $regexvalue,
                                     $output["entities_id"]
                                 );
                                 break;
 
-                            case "affectbyfqdn" :
+                            case "affectbyfqdn":
                                 $result = FQDNLabel::getUniqueItemByFQDN(
                                     $regexvalue,
                                     $output["entities_id"]
                                 );
                                 break;
 
-                            case "affectbymac" :
+                            case "affectbymac":
                                 $result = NetworkPortInstantiation::getUniqueItemByMac(
                                     $regexvalue,
                                     $output["entities_id"]
@@ -426,13 +442,13 @@ class RuleTicket extends Rule
 
         $criterias['itilcategories_id']['table']              = 'glpi_itilcategories';
         $criterias['itilcategories_id']['field']              = 'name';
-        $criterias['itilcategories_id']['name']               = __('Category')." - ".__('Name');
+        $criterias['itilcategories_id']['name']               = __('Category') . " - " . __('Name');
         $criterias['itilcategories_id']['linkfield']          = 'itilcategories_id';
         $criterias['itilcategories_id']['type']               = 'dropdown';
 
         $criterias['itilcategories_id_cn']['table']           = 'glpi_itilcategories';
         $criterias['itilcategories_id_cn']['field']           = 'completename';
-        $criterias['itilcategories_id_cn']['name']            = __('Category').' - '.__('Complete name');
+        $criterias['itilcategories_id_cn']['name']            = __('Category') . ' - ' . __('Complete name');
         $criterias['itilcategories_id_cn']['linkfield']       = 'itilcategories_id';
         $criterias['itilcategories_id_cn']['type']            = 'dropdown';
 
@@ -846,5 +862,4 @@ class RuleTicket extends Rule
 
         return $values;
     }
-
 }

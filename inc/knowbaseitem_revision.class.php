@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -129,14 +130,14 @@ class KnowbaseItem_Revision extends CommonDBTM
         Html::printAjaxPager(self::getTypeName(1), $start, $number);
         // Output events
         echo "<div class='center'>";
-        echo "<input type='button' name='compare' value='"._sx('button', 'Compare selected revisions').
+        echo "<input type='button' name='compare' value='" . _sx('button', 'Compare selected revisions') .
                "' class='submit compare'>";
         echo "<table class='tab_cadre_fixehov' aria-label='Revisions'>";
         $header = '<tr>';
         $header .= "<th title='" . _sn('Revision', 'Revisions', 1) . "'>#</th>";
         $header .= "<th>&nbsp;</th>";
         $header .= "<th>" . __('Author')  . "</th>";
-        $header .= "<th>".__('Creation date')."</th>";
+        $header .= "<th>" . __('Creation date') . "</th>";
         $header .= "<th></th></tr>";
         echo $header;
 
@@ -148,8 +149,8 @@ class KnowbaseItem_Revision extends CommonDBTM
         echo "<td>(" . __('cur')  . ")</td>" .
                 "<td><input type='radio' name='oldid' value='0' style='visibility:hidden'/>" .
                 "<input type='radio' name='diff' value='0' checked='checked'/></td>" .
-                "<td>" . $user->getLink() . "</td>".
-                "<td class='tab_date'>". $item->fields['date_mod'] . "</td>" .
+                "<td>" . $user->getLink() . "</td>" .
+                "<td class='tab_date'>" . $item->fields['date_mod'] . "</td>" .
                 "<td></td>" .
                 "</tr>";
 
@@ -175,8 +176,8 @@ class KnowbaseItem_Revision extends CommonDBTM
 
             echo "/> <input type='radio' name='diff' value='{$revision['id']}'/></td>";
 
-            echo "<td>" . ($hasRevUser ? $user->getLink() : __('Unknown user')) . "</td>".
-                "<td class='tab_date'>". $revision['date_creation'] . "</td>";
+            echo "<td>" . ($hasRevUser ? $user->getLink() : __('Unknown user')) . "</td>" .
+                "<td class='tab_date'>" . $revision['date_creation'] . "</td>";
 
             $form = null;
             if ($item->getType() == KnowbaseItem::getType()) {
@@ -187,7 +188,7 @@ class KnowbaseItem_Revision extends CommonDBTM
 
             echo "<td><a href='#' data-rev='" . $revision['revision']  . "'
                     data-revid='" . $revision['id']  . "' class='show'>" . __('show') . "</a>
-                 - <a href='$form&to_rev={$revision['id']}' class='restore'>".
+                 - <a href='$form&to_rev={$revision['id']}' class='restore'>" .
                        __('restore')  . "</a></td>";
             echo "</tr>";
         }
@@ -214,9 +215,9 @@ class KnowbaseItem_Revision extends CommonDBTM
                      success: function(data) {
                         var title = '" . __('Show revision %rev') . "'.replace(/%rev/, _this.data('rev'));
                         var html = '<div title=\"' + title + '\" id=\"compare_view\"><table class=\"tab_cadre_fixehov\" aria-label='Revision'>';
-                        html += '<h2>".__('Subject')."</h2>';
+                        html += '<h2>" . __('Subject') . "</h2>';
                         html += '<div>' + data.name + '</div>';
-                        html += '<h2>".__('Content')."</h2>';
+                        html += '<h2>" . __('Content') . "</h2>';
                         html += '<div>' + data.answer + '</div>';
                         html += '</div>';
                         $(html).appendTo('body').dialog({
@@ -225,8 +226,8 @@ class KnowbaseItem_Revision extends CommonDBTM
                            modal: true
                         });
                      },
-                     error: function() { ".
-                          Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!'))."
+                     error: function() { " .
+                          Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!')) . "
                      }
                   });
                });
@@ -251,7 +252,7 @@ class KnowbaseItem_Revision extends CommonDBTM
                         }
                         var title = '" . __s('Compare revisions old and diff') . "'.replace(/old/, _oldid).replace(/diff/, _diffid);
                         var html_compare = '<div title=\"' + title + '\" id=\"compare_view\"><table class=\"tab_cadre_fixehov\" aria-label='Revision'>';
-                        html_compare += '<tr><th></th><th>" . __s('Original') . "</th><th>" . __s('Changed') ."</th><th>" . __('Differences')  . "</th></tr>';
+                        html_compare += '<tr><th></th><th>" . __s('Original') . "</th><th>" . __s('Changed') . "</th><th>" . __('Differences')  . "</th></tr>';
                         html_compare += '<tr><th>" . __s('Subject') . "</th><td class=\"original\">' + data['old']['name'] + '</td><td class=\"changed\">' + data['diff']['name'] + '</td><td class=\"diff\"></td></tr>';
                         html_compare += '<tr><th>" . __s('Content')  . "</th><td class=\"original\">' + data['old']['answer'] + '</td><td class=\"changed\">' + data['diff']['answer'] + '</td><td class=\"diff\"></td></tr>';
                         html_compare += '</table></div>';
@@ -262,8 +263,8 @@ class KnowbaseItem_Revision extends CommonDBTM
                         });
                         $('#compare_view tr').prettyTextDiff();
                      },
-                     error: function() { ".
-                          Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load requested comparison!'))."
+                     error: function() { " .
+                          Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load requested comparison!')) . "
                      }
                   });
                });
@@ -285,7 +286,7 @@ class KnowbaseItem_Revision extends CommonDBTM
 
         echo $header;
         echo "</table>";
-        echo "<input type='button' name='compare' value='"._sx('button', 'Compare selected revisions')."' class='submit compare'>";
+        echo "<input type='button' name='compare' value='" . _sx('button', 'Compare selected revisions') . "' class='submit compare'>";
         echo "</div>";
         Html::printAjaxPager(self::getTypeName(1), $start, $number);
     }

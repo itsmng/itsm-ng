@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -45,5 +46,4 @@ class RuleDictionnaryMonitorTypeCollection extends RuleDictionnaryDropdownCollec
     {
         return __('Dictionnary of monitor types');
     }
-
 }

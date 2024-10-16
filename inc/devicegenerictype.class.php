@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,5 +42,4 @@ class DeviceGenericType extends CommonDeviceType
     {
         return _n('Generic type', 'Generic types', $nb); //TODO : add this to locales (if don't exist)
     }
-
 }

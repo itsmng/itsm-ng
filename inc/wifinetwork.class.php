@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -127,7 +128,6 @@ class WifiNetwork extends CommonDropdown
                 self::getWifiNetworkModes(),
                 ['value' => $this->fields[$field['name']]]
             );
-
         }
     }
 

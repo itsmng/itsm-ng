@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -38,16 +39,19 @@ include('../inc/includes.php');
 
 //@session_start();
 
-if ($CFG_GLPI["ssovariables_id"] > 0
-    && strlen($CFG_GLPI['ssologout_url']) > 0) {
+if (
+    $CFG_GLPI["ssovariables_id"] > 0
+    && strlen($CFG_GLPI['ssologout_url']) > 0
+) {
     Html::redirect($CFG_GLPI["ssologout_url"]);
 }
 
-if (!isset($_SESSION["noAUTO"])
+if (
+    !isset($_SESSION["noAUTO"])
     && isset($_SESSION["glpiauthtype"])
     && $_SESSION["glpiauthtype"] == Auth::CAS
-    && Toolbox::canUseCAS()) {
-
+    && Toolbox::canUseCAS()
+) {
     $has_service_base_url_arg = version_compare(phpCAS::getVersion(), '1.6.0', '>=')
          || count((new ReflectionMethod(phpCAS::class, 'client'))->getParameters()) > 6;
     if (!$has_service_base_url_arg) {
@@ -78,10 +82,9 @@ $toADD = "";
 
 // Redirect management
 if (isset($_POST['redirect']) && (strlen($_POST['redirect']) > 0)) {
-    $toADD = "?redirect=" .$_POST['redirect'];
-
+    $toADD = "?redirect=" . $_POST['redirect'];
 } elseif (isset($_GET['redirect']) && (strlen($_GET['redirect']) > 0)) {
-    $toADD = "?redirect=" .$_GET['redirect'];
+    $toADD = "?redirect=" . $_GET['redirect'];
 }
 
 if (isset($_SESSION["noAUTO"]) || isset($_GET['noAUTO'])) {
@@ -94,7 +97,6 @@ if (isset($_SESSION["noAUTO"]) || isset($_GET['noAUTO'])) {
 }
 
 if (isset($_SESSION["itsm_is_oidc"]) && $_SESSION["itsm_is_oidc"] == 1) {
-
     //Get config from DB and use it to setup oidc
     $criteria = "SELECT * FROM glpi_oidc_config";
     $iterators = $DB->request($criteria);
@@ -113,7 +115,7 @@ if (isset($_SESSION["itsm_is_oidc"]) && $_SESSION["itsm_is_oidc"] == 1) {
         Session::destroy();
         Auth::setRememberMeCookie('');
 
-        $oidc->signOut($sid, $oidc_db['logout'] ?? $CFG_GLPI["url_base"]."/index.php".$toADD);
+        $oidc->signOut($sid, $oidc_db['logout'] ?? $CFG_GLPI["url_base"] . "/index.php" . $toADD);
     }
 }
 
@@ -123,4 +125,4 @@ Session::destroy();
 Auth::setRememberMeCookie('');
 
 // Redirect to the login-page
-Html::redirect($CFG_GLPI["root_doc"]."/index.php".$toADD);
+Html::redirect($CFG_GLPI["root_doc"] . "/index.php" . $toADD);

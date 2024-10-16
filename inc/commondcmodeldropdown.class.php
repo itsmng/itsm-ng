@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -303,8 +304,10 @@ abstract class CommonDCModelDropdown extends CommonDropdown
     public function managePictures($input)
     {
         foreach (['picture_front', 'picture_rear'] as $name) {
-            if (isset($input["_blank_$name"])
-                && $input["_blank_$name"]) {
+            if (
+                isset($input["_blank_$name"])
+                && $input["_blank_$name"]
+            ) {
                 $input[$name] = '';
 
                 if (array_key_exists($name, $this->fields)) {
@@ -347,10 +350,10 @@ abstract class CommonDCModelDropdown extends CommonDropdown
                       '0.5'    => __('1/2'),
                       '0.33'   => __('1/3'),
                       '0.25'   => __('1/4')
-               ],
+                    ],
                     [
                       'value'                 => $this->fields[$field['name']]
-               ]
+                    ]
                 );
                 break;
             default:

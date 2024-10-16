@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -112,8 +113,10 @@ class RuleCriteria extends CommonDBChild
     {
 
         parent::post_addItem();
-        if (isset($this->input['rules_id'])
-            && ($realrule = Rule::getRuleObjectByID($this->input['rules_id']))) {
+        if (
+            isset($this->input['rules_id'])
+            && ($realrule = Rule::getRuleObjectByID($this->input['rules_id']))
+        ) {
             $realrule->update(['id'       => $this->input['rules_id'],
                                     'date_mod' => $_SESSION['glpi_currenttime']]);
         }
@@ -129,8 +132,10 @@ class RuleCriteria extends CommonDBChild
     {
 
         parent::post_purgeItem();
-        if (isset($this->fields['rules_id'])
-            && ($realrule = Rule::getRuleObjectByID($this->fields['rules_id']))) {
+        if (
+            isset($this->fields['rules_id'])
+            && ($realrule = Rule::getRuleObjectByID($this->fields['rules_id']))
+        ) {
             $realrule->update(['id'       => $this->fields['rules_id'],
                                     'date_mod' => $_SESSION['glpi_currenttime']]);
         }
@@ -205,9 +210,11 @@ class RuleCriteria extends CommonDBChild
         switch ($field) {
             case 'criteria':
                 $generic_rule = new Rule();
-                if (isset($values['rules_id'])
+                if (
+                    isset($values['rules_id'])
                     && !empty($values['rules_id'])
-                    && $generic_rule->getFromDB($values['rules_id'])) {
+                    && $generic_rule->getFromDB($values['rules_id'])
+                ) {
                     if ($rule = getItemForItemtype($generic_rule->fields["sub_type"])) {
                         return $rule->getCriteriaName($values[$field]);
                     }
@@ -216,9 +223,11 @@ class RuleCriteria extends CommonDBChild
 
             case 'condition':
                 $generic_rule = new Rule();
-                if (isset($values['rules_id'])
+                if (
+                    isset($values['rules_id'])
                     && !empty($values['rules_id'])
-                    && $generic_rule->getFromDB($values['rules_id'])) {
+                    && $generic_rule->getFromDB($values['rules_id'])
+                ) {
                     if (isset($values['criteria']) && !empty($values['criteria'])) {
                         $criterion = $values['criteria'];
                     }
@@ -231,9 +240,11 @@ class RuleCriteria extends CommonDBChild
                     return NOT_AVAILABLE;
                 }
                 $generic_rule = new Rule();
-                if (isset($values['rules_id'])
+                if (
+                    isset($values['rules_id'])
                     && !empty($values['rules_id'])
-                    && $generic_rule->getFromDB($values['rules_id'])) {
+                    && $generic_rule->getFromDB($values['rules_id'])
+                ) {
                     if ($rule = getItemForItemtype($generic_rule->fields["sub_type"])) {
                         return $rule->getCriteriaDisplayPattern(
                             $values["criteria"],
@@ -265,9 +276,11 @@ class RuleCriteria extends CommonDBChild
         switch ($field) {
             case 'criteria':
                 $generic_rule = new Rule();
-                if (isset($values['rules_id'])
+                if (
+                    isset($values['rules_id'])
                     && !empty($values['rules_id'])
-                    && $generic_rule->getFromDB($values['rules_id'])) {
+                    && $generic_rule->getFromDB($values['rules_id'])
+                ) {
                     if ($rule = getItemForItemtype($generic_rule->fields["sub_type"])) {
                         $options['value'] = $values[$field];
                         $options['name']  = $name;
@@ -278,9 +291,11 @@ class RuleCriteria extends CommonDBChild
 
             case 'condition':
                 $generic_rule = new Rule();
-                if (isset($values['rules_id'])
+                if (
+                    isset($values['rules_id'])
                     && !empty($values['rules_id'])
-                    && $generic_rule->getFromDB($values['rules_id'])) {
+                    && $generic_rule->getFromDB($values['rules_id'])
+                ) {
                     if (isset($values['criteria']) && !empty($values['criteria'])) {
                         $options['criterion'] = $values['criteria'];
                     }
@@ -295,9 +310,11 @@ class RuleCriteria extends CommonDBChild
                     return NOT_AVAILABLE;
                 }
                 $generic_rule = new Rule();
-                if (isset($values['rules_id'])
+                if (
+                    isset($values['rules_id'])
                     && !empty($values['rules_id'])
-                    && $generic_rule->getFromDB($values['rules_id'])) {
+                    && $generic_rule->getFromDB($values['rules_id'])
+                ) {
                     if ($rule = getItemForItemtype($generic_rule->fields["sub_type"])) {
                         /// TODO : manage display param to this function : need to send ot to all under functions
                         $rule->displayCriteriaSelectPattern(
@@ -358,8 +375,10 @@ class RuleCriteria extends CommonDBChild
 
         //If pattern is wildcard, don't check the rule and return true
         //or if the condition is "already present in GLPI" : will be processed later
-        if (($pattern == Rule::RULE_WILDCARD)
-            || ($condition == Rule::PATTERN_FIND)) {
+        if (
+            ($pattern == Rule::RULE_WILDCARD)
+            || ($condition == Rule::PATTERN_FIND)
+        ) {
             return true;
         }
 
@@ -418,7 +437,7 @@ class RuleCriteria extends CommonDBChild
                 return true;
 
             case Rule::PATTERN_END:
-                $value = "/".$pattern."$/i";
+                $value = "/" . $pattern . "$/i";
                 if (preg_match($value, $field) > 0) {
                     $criterias_results[$criteria] = $pattern;
                     return true;
@@ -462,7 +481,7 @@ class RuleCriteria extends CommonDBChild
                 $results = [];
                 // Permit use < and >
                 $pattern = Toolbox::unclean_cross_side_scripting_deep($pattern);
-                if (preg_match_all($pattern."i", $field, $results) > 0) {
+                if (preg_match_all($pattern . "i", $field, $results) > 0) {
                     // Drop $result[0] : complete match result
                     array_shift($results);
                     // And add to $regex_result array
@@ -481,7 +500,7 @@ class RuleCriteria extends CommonDBChild
             case Rule::REGEX_NOT_MATCH:
                 // Permit use < and >
                 $pattern = Toolbox::unclean_cross_side_scripting_deep($pattern);
-                if (preg_match($pattern."i", $field) == 0) {
+                if (preg_match($pattern . "i", $field) == 0) {
                     $criterias_results[$criteria] = $pattern;
                     return true;
                 }
@@ -549,8 +568,10 @@ class RuleCriteria extends CommonDBChild
             if (isset($crit['type']) && ($crit['type'] == 'dropdown')) {
                 $crititemtype = getItemTypeForTable($crit['table']);
 
-                if (($item = getItemForItemtype($crititemtype))
-                    && $item instanceof CommonTreeDropdown) {
+                if (
+                    ($item = getItemForItemtype($crititemtype))
+                    && $item instanceof CommonTreeDropdown
+                ) {
                     $criteria[Rule::PATTERN_UNDER]     = __('under');
                     $criteria[Rule::PATTERN_NOT_UNDER] = __('not under');
                 }
@@ -581,8 +602,10 @@ class RuleCriteria extends CommonDBChild
         }
         $elements = [];
         foreach (self::getConditions($itemtype, $p['criterion']) as $pattern => $label) {
-            if (empty($p['allow_conditions'])
-                || (!empty($p['allow_conditions']) && in_array($pattern, $p['allow_conditions']))) {
+            if (
+                empty($p['allow_conditions'])
+                || (!empty($p['allow_conditions']) && in_array($pattern, $p['allow_conditions']))
+            ) {
                 $elements[$pattern] = $label;
             }
         }
@@ -683,5 +706,4 @@ class RuleCriteria extends CommonDBChild
         ];
         renderTwigForm($form, '', $this->fields);
     }
-
 }

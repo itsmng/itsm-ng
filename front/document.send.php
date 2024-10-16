@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -45,11 +46,11 @@ if (isset($_GET['docid'])) { // docid for document
 
     if (!file_exists(GLPI_DOC_DIR . '/' . $doc->fields['filepath'])) {
         Html::displayErrorAndDie(__('File not found'), true); // Not found
-
     } elseif ($doc->canViewFile($_GET)) {
-        if ($doc->fields['sha1sum']
-            && $doc->fields['sha1sum'] != sha1_file(GLPI_DOC_DIR . '/' . $doc->fields['filepath'])) {
-
+        if (
+            $doc->fields['sha1sum']
+            && $doc->fields['sha1sum'] != sha1_file(GLPI_DOC_DIR . '/' . $doc->fields['filepath'])
+        ) {
             Html::displayErrorAndDie(__('File is altered (bad checksum)'), true); // Doc alterated
         } else {
             $context = isset($_GET['context']) ? $_GET['context'] : null;
@@ -58,14 +59,15 @@ if (isset($_GET['docid'])) { // docid for document
     } else {
         Html::displayErrorAndDie(__('Unauthorized access to this file'), true); // No right
     }
-
 } elseif (isset($_GET["file"])) { // for other file
     $splitter = explode("/", $_GET["file"], 2);
     if (count($splitter) == 2) {
         $expires_headers = false;
         $send = false;
-        if (($splitter[0] == "_dumps")
-            && Session::haveRight("backup", CREATE)) {
+        if (
+            ($splitter[0] == "_dumps")
+            && Session::haveRight("backup", CREATE)
+        ) {
             $send = GLPI_DUMP_DIR . '/' . $splitter[1];
         }
 

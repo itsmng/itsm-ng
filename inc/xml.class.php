@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -130,7 +131,7 @@ class XML
 
             if ($result == false) {
                 $this->IsError     = 1;
-                $this->ErrorString = "Error in SQL Query: ".$strqry;
+                $this->ErrorString = "Error in SQL Query: " . $strqry;
                 return -1;
             }
             // OK... let's create XML;)
@@ -139,7 +140,7 @@ class XML
             $FieldsVector = [];
             while ($i < $DB->numFields($result)) {
                 $name = $DB->fieldName($result, $i);
-                fputs($fp, "      <field>".$name."</field>\n");
+                fputs($fp, "      <field>" . $name . "</field>\n");
                 $FieldsVector[] = $name;
                 $i++;
             }
@@ -158,7 +159,7 @@ class XML
                             break;
 
                         case 2:
-                            $FieldName = "data".$j;
+                            $FieldName = "data" . $j;
                             break;
 
                         case 3:
@@ -167,10 +168,10 @@ class XML
 
                         case 4:
                             $FieldName = "data";
-                            $Attributes = " fieldname=\"".$FieldsVector[$j]."\"";
+                            $Attributes = " fieldname=\"" . $FieldsVector[$j] . "\"";
                     }
-                    fputs($fp, "         <".$FieldName.$Attributes.">".
-                          Toolbox::encodeInUtf8(htmlspecialchars($row[$j]))."</".$FieldName.">\n");
+                    fputs($fp, "         <" . $FieldName . $Attributes . ">" .
+                          Toolbox::encodeInUtf8(htmlspecialchars($row[$j])) . "</" . $FieldName . ">\n");
                 }
                 fputs($fp, "      </row>\n");
             }
@@ -181,7 +182,5 @@ class XML
         fputs($fp, "</dataxml>");
         //OK free ...;)
         fclose($fp);
-
     } // End  Function : DoXML
-
 } // Fine Class XML

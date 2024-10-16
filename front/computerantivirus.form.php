@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -61,7 +62,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $antivirus->check($_POST["id"], PURGE);
 
@@ -77,9 +77,8 @@ if (isset($_POST["add"])) {
     }
     $computer = new Computer();
     $computer->getFromDB($antivirus->fields['computers_id']);
-    Html::redirect(Toolbox::getItemTypeFormURL('Computer').'?id='.$antivirus->fields['computers_id'].
+    Html::redirect(Toolbox::getItemTypeFormURL('Computer') . '?id=' . $antivirus->fields['computers_id'] .
                    ($computer->fields['is_template'] ? "&withtemplate=1" : ""));
-
 } elseif (isset($_POST["update"])) {
     $antivirus->check($_POST["id"], UPDATE);
 
@@ -94,7 +93,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 } else {
     Html::header(Computer::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "assets", "computer");
     $antivirus->display(['id'           => $_GET["id"],

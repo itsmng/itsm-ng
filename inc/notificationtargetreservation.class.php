@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -113,16 +114,15 @@ class NotificationTargetReservation extends NotificationTarget
                 $this->data['##reservation.itemurl##']
                                      = $this->formatURL(
                                          $options['additionnaloption']['usertype'],
-                                         $itemtype."_".$item->getField('id')
+                                         $itemtype . "_" . $item->getField('id')
                                      );
 
                 $this->data['##reservation.url##']
                                      = $this->formatURL(
                                          $options['additionnaloption']['usertype'],
-                                         "Reservation_".$this->obj->getField('id')
+                                         "Reservation_" . $this->obj->getField('id')
                                      );
             }
-
         } else {
             $this->data['##reservation.entity##'] = Dropdown::getDropdownName(
                 'glpi_entities',
@@ -141,7 +141,7 @@ class NotificationTargetReservation extends NotificationTarget
                     $tmp['##reservation.url##']
                                          = $this->formatURL(
                                              $options['additionnaloption']['usertype'],
-                                             "Reservation_".$id
+                                             "Reservation_" . $id
                                          );
                 }
                 $this->data['reservations'][] = $tmp;
@@ -223,14 +223,14 @@ class NotificationTargetReservation extends NotificationTarget
             if ($ri->getFromDB($this->obj->getField('reservationitems_id'))) {
                 $itemtype = $ri->getField('itemtype');
 
-                if (($itemtype != NOT_AVAILABLE) && ($itemtype != '')
-                    && ($item = getItemForItemtype($itemtype))) {
+                if (
+                    ($itemtype != NOT_AVAILABLE) && ($itemtype != '')
+                    && ($item = getItemForItemtype($itemtype))
+                ) {
                     $item->getFromDB($ri->getField('items_id'));
                     $this->target_object[] = $item;
                 }
             }
         }
     }
-
-
 }

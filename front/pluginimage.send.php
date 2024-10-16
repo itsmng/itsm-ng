@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -55,14 +56,15 @@ if (!isset($_GET["name"]) || !isset($_GET["plugin"]) || !Plugin::isPluginActive(
     die("security");
 }
 
-$dir = GLPI_PLUGIN_DOC_DIR."/".$_GET["plugin"]."/";
-$filepath = $dir.$_GET["name"];
+$dir = GLPI_PLUGIN_DOC_DIR . "/" . $_GET["plugin"] . "/";
+$filepath = $dir . $_GET["name"];
 
-if ((basename($_GET["name"]) != $_GET["name"])
+if (
+    (basename($_GET["name"]) != $_GET["name"])
     || (basename($_GET["plugin"]) != $_GET["plugin"])
     || !Toolbox::startsWith(realpath($filepath), realpath(GLPI_PLUGIN_DOC_DIR))
-    || !Document::isImage($filepath)) {
-
+    || !Document::isImage($filepath)
+) {
     Event::log(
         0,
         "system",

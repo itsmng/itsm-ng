@@ -52,12 +52,12 @@ class Html
         "node_modules/jquery-ui-dist/jquery-ui.min.css",
         'node_modules/@fortawesome/fontawesome-free/css/all.css',
         'css/jstree-glpi.css',
-   ];
+    ];
 
     private static $scss = [
         'css/styles',
         'css/itsm2.scss',
-   ];
+    ];
 
     private static $js = [
         "node_modules/jquery-ui-dist/jquery-ui.min.js",
@@ -68,7 +68,7 @@ class Html
         "node_modules/select2/dist/js/select2.min.js",
         "src/ngFunctions.js",
 
-   ];
+    ];
 
     private static function getFilePath($file, $isScss = false)
     {
@@ -130,7 +130,7 @@ class Html
                 '@<div[^>]*?tooltip_text[^>]*?>.*?</div[^>]*?>@si',
                 '@<div[^>]*?tooltip_picture_border[^>]*?>.*?</div[^>]*?>@si',
                 '@<div[^>]*?invisible[^>]*?>.*?</div[^>]*?>@si'
-         ];
+            ];
             $value         = preg_replace($specialfilter, '', $value);
 
             $value = preg_replace("/<(p|br|div)( [^>]*)?" . ">/i", "\n", $value);
@@ -1157,8 +1157,9 @@ class Html
                addslashes($params['message']) . "\");");
         }
 
-        if (($params['percent'] >= 0)
-           && ($params['percent'] <= 100)
+        if (
+            ($params['percent'] >= 0)
+            && ($params['percent'] <= 100)
         ) {
             echo Html::scriptBlock(self::jsGetElementbyID($id) . ".progressbar('option', 'value', " .
                $params['percent'] . " );");
@@ -1703,12 +1704,10 @@ JAVASCRIPT;
             || !is_array($_SESSION['glpimenu'])
             || (count($_SESSION['glpimenu']) == 0)
         ) {
-
             $menu = self::getMenuInfos();
 
             // Permit to plugins to add entry to others sector !
             if (isset($PLUGIN_HOOKS["menu_toadd"]) && count($PLUGIN_HOOKS["menu_toadd"])) {
-
                 foreach ($PLUGIN_HOOKS["menu_toadd"] as $plugin => $items) {
                     if (!Plugin::isPluginActive($plugin)) {
                         continue;
@@ -1825,8 +1824,9 @@ JAVASCRIPT;
         self::includeHeader($title, $sector, $item, $option);
 
         $body_class = "layout_" . $_SESSION['glpilayout'];
-        if ((strpos($_SERVER['REQUEST_URI'], ".form.php") !== false)
-        && isset($_GET['id']) && ($_GET['id'] > 0)
+        if (
+            (strpos($_SERVER['REQUEST_URI'], ".form.php") !== false)
+            && isset($_GET['id']) && ($_GET['id'] > 0)
         ) {
             if (!CommonGLPI::isLayoutExcludedPage()) {
                 $body_class .= " form";
@@ -1911,7 +1911,7 @@ JAVASCRIPT;
               'icon'      => '/pics/menu_config.png',
               'icon_url'  => SavedSearch::getSearchURL(),
               'icon_txt'  => __('Manage saved searches')
-         ]
+            ]
         );
 
 
@@ -1976,7 +1976,6 @@ JAVASCRIPT;
                . __s('You will find it on the ITSM-NG.org site.') . "\"> "
                . $foundedNewVersion
                . "</a>";
-
         }
         $twig_vars["copyright_message"] = self::getCopyrightMessage();
         $twig_vars["maintenance_mode"] = $CFG_GLPI['maintenance_mode'];
@@ -2289,7 +2288,6 @@ JAVASCRIPT;
 
                 // list menu item
                 foreach ($data['content'] as $key => $val) {
-
                     if (
                         isset($val['page'])
                         && isset($val['title'])
@@ -2438,7 +2436,6 @@ JAVASCRIPT;
         if (count($actions)) {
             foreach ($actions as $name => $label) {
                 if (!empty($name)) {
-
                     echo "<input type='submit' name='$name' ";
                     if (is_array($confirm) && isset($confirm[$name])) {
                         echo self::addConfirmationOnAction($confirm[$name]);
@@ -2852,9 +2849,10 @@ JAVASCRIPT;
         $max        = Toolbox::get_max_input_vars();
         $out = '';
 
-        if (($p['num_displayed'] >= 0)
-           && ($max > 0)
-           && ($max < ($p['num_displayed'] + 10))
+        if (
+            ($p['num_displayed'] >= 0)
+            && ($max > 0)
+            && ($max < ($p['num_displayed'] + 10))
         ) {
             if (
                 !$p['ontop']
@@ -2911,7 +2909,7 @@ JAVASCRIPT;
                       'height'          => $p['height'],
                       'js_modal_fields' => $js_modal_fields,
                       'display'         => false
-               ]
+                    ]
                 );
             }
             if ($p['display_arrow']) {
@@ -3416,17 +3414,17 @@ JS;
         $rand   = mt_rand();
         $output = '';
         // Validate value
-        if (($value != 'NOW')
-           && ($value != 'TODAY')
-           && !preg_match("/\d{4}-\d{2}-\d{2}.*/", $value)
-           && !strstr($value, 'HOUR')
-           && !strstr($value, 'MINUTE')
-           && !strstr($value, 'DAY')
-           && !strstr($value, 'WEEK')
-           && !strstr($value, 'MONTH')
-           && !strstr($value, 'YEAR')
+        if (
+            ($value != 'NOW')
+            && ($value != 'TODAY')
+            && !preg_match("/\d{4}-\d{2}-\d{2}.*/", $value)
+            && !strstr($value, 'HOUR')
+            && !strstr($value, 'MINUTE')
+            && !strstr($value, 'DAY')
+            && !strstr($value, 'WEEK')
+            && !strstr($value, 'MONTH')
+            && !strstr($value, 'YEAR')
         ) {
-
             $value = "";
         }
 
@@ -3450,7 +3448,7 @@ JS;
               'value'   => $value,
               'display' => false,
               'rand'    => $rand
-         ]
+            ]
         );
         $field_id   = Html::cleanId("dropdown__select_$element$rand");
 
@@ -3814,7 +3812,7 @@ JS;
                   'width'     => '150px',
                   'on_change' => 'submit()',
                   'class' => 'form-select form-select-sm ms-3'
-            ]
+                ]
             );
             Html::closeForm();
             echo '</li>';
@@ -3827,7 +3825,7 @@ JS;
                 [
                   'title'       => __('Select the desired entity'),
                   'extraparams' => ['target' => $target]
-            ]
+                ]
             );
             $active_entity = addslashes($_SESSION["glpiactive_entity_name"]);
             $entity_shortname = $_SESSION["glpiactive_entity_shortname"];
@@ -3937,7 +3935,7 @@ JS;
                   'display' => false,
                   'width'   => 600,
                   'height'  => 300
-            ]
+                ]
             );
         }
         $js = "";
@@ -4501,7 +4499,6 @@ JAVASCRIPT
             && isset($_SESSION["glpiactiveprofile"])
             && (Session::getCurrentInterface() == "central")
         ) {
-
             echo "<td class='tab_bg_2 responsive_hidden' width='30%'>";
             echo "<form aria-label='Item Type' method='GET' action='" . $CFG_GLPI["root_doc"] . "/front/report.dynamic.php'>";
             echo Html::hidden('item_type', ['value' => $item_type_output]);
@@ -5397,7 +5394,7 @@ JAVASCRIPT;
                 self::cleanInputText($key),
                 (
                     $selected != false && ($key == $selected
-               || is_array($selected) && in_array($key, $selected))
+                || is_array($selected) && in_array($key, $selected))
                 ) ? ' selected="selected"' : '',
                 Html::entities_deep($value)
             );
@@ -5463,7 +5460,7 @@ JAVASCRIPT;
             );
         }
 
-        $button = "<button type='submit' aria-label='".self::clean($caption)."' value='%s' %s>
+        $button = "<button type='submit' aria-label='" . self::clean($caption) . "' value='%s' %s>
                $caption
             </button>&nbsp;";
 
@@ -5816,7 +5813,6 @@ JAVASCRIPT;
             $options_rt['display'] = false;
             $display .= self::fileForRichText($options_rt);
         } else {
-
             // manage file upload without tinymce editor
             $display .= "<div id='{$p['dropZone']}'>";
             $display .= "<span class='b'>" . __('Drag and drop your file here, or') . '</span><br>';
@@ -6178,7 +6174,6 @@ JAVASCRIPT;
         echo "\t</tr>\n";
 
         foreach ($rows as $row_name => $row) {
-
             if ((!is_string($row)) && (!is_array($row))) {
                 continue;
             }
@@ -6188,7 +6183,6 @@ JAVASCRIPT;
             if (is_string($row)) {
                 echo "\t\t<th colspan='$number_columns'>$row</th>\n";
             } else {
-
                 $row_id = Html::cleanId('row_label_' . $row_name . '_' . $param['rand']);
                 if (isset($row['class'])) {
                     $class = $row['class'];
@@ -6264,9 +6258,10 @@ JAVASCRIPT;
                     echo "</td>\n";
                 }
             }
-            if (($param['row_check_all'])
-               && (!is_string($row))
-               && ($nb_cb_per_row['total'] > 1)
+            if (
+                ($param['row_check_all'])
+                && (!is_string($row))
+                && ($nb_cb_per_row['total'] > 1)
             ) {
                 $cb_options['criterion']    = ['tag_for_massive' => 'row_' . $row_name . '_' .
                    $param['rand']];
@@ -7053,15 +7048,14 @@ JAVASCRIPT;
                 //echo $name . " - ". $shortcut. nl2br("<br>") ;
                 $url = Toolbox::getItemTypeFormURL($name);
                 if ($name == "Accessibility") {
-                    $url = $CFG_GLPI['root_doc']."/front/preference.php";
+                    $url = $CFG_GLPI['root_doc'] . "/front/preference.php";
                 } // Redirect accessibility to preference
-                echo Html::scriptBlock('hotkeys('."'$shortcut'".',function() {
-                                    location.replace('."'$url'".');
+                echo Html::scriptBlock('hotkeys(' . "'$shortcut'" . ',function() {
+                                    location.replace(' . "'$url'" . ');
                                  });
             ');
             }
         }
-
     }
 
     /**
@@ -7106,7 +7100,7 @@ JAVASCRIPT;
               'icon'      => '/pics/menu_config.png',
               'icon_url'  => SavedSearch::getSearchURL(),
               'icon_txt'  => __('Manage saved searches')
-         ]
+            ]
         );
 
         $sanitizedURL = URL::sanitizeURL("https://www.itsm-ng.org/");
@@ -7147,7 +7141,7 @@ JAVASCRIPT;
                    'SELECT' => 'menu_favorite',
                    'FROM'   => 'glpi_users',
                    'WHERE'  => ['id' => $_SESSION["glpiID"]]
-             ]
+                ]
             );
             $menu_favorites = json_decode($menu_favorites->next()['menu_favorite'], true);
             $menu_collapse = $DB->request(
@@ -7155,7 +7149,7 @@ JAVASCRIPT;
                  'SELECT' => 'menu_open',
                  'FROM'   => 'glpi_users',
                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
-          ]
+                ]
             );
             $menu_collapse = json_decode($menu_collapse->next()['menu_open'], true);
         } else {
@@ -7402,7 +7396,7 @@ JAVASCRIPT;
                 [
                   'sourceMapBasepath' => GLPI_ROOT . '/',
                   'sourceRoot'        => $CFG_GLPI['root_doc'] . '/',
-            ]
+                ]
             );
         }
 
@@ -7523,7 +7517,7 @@ JAVASCRIPT;
             [
               self::getScssCompileDir(),
               str_replace('/', '_', $file) . '.min.css',
-         ]
+            ]
         );
     }
 

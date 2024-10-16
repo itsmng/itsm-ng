@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -52,7 +53,7 @@ class PhpVersion extends \GLPITestCase
            ->isEqualTo(
                [
                  'You must install at least PHP 20.7.'
-            ]
+               ]
            );
     }
 }

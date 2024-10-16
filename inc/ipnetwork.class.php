@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -160,8 +161,10 @@ class IPNetwork extends CommonImplicitTreeDropdown
         unset($this->netmask);
         unset($this->gateway);
 
-        if (isset($this->fields["address"])
-            && isset($this->fields["netmask"])) {
+        if (
+            isset($this->fields["address"])
+            && isset($this->fields["netmask"])
+        ) {
             if ($this->fields["version"] == 4) {
                 $this->fields["network"] = sprintf(
                     __('%1$s / %2$s'),
@@ -176,7 +179,6 @@ class IPNetwork extends CommonImplicitTreeDropdown
                 );
             }
         }
-
     }
 
 
@@ -256,9 +258,11 @@ class IPNetwork extends CommonImplicitTreeDropdown
             return ['error' => __('Invalid network address'),
                          'input' => false];
         }
-        if (!isset($this->fields["id"])
+        if (
+            !isset($this->fields["id"])
             || !isset($this->fields["network"])
-            || ($input["network"] != $this->fields["network"])) {
+            || ($input["network"] != $this->fields["network"])
+        ) {
             $network = explode("/", $input["network"]);
             if (count($network) != 2) {
                 return ['error' => __('Invalid input format for the network'),
@@ -311,13 +315,14 @@ class IPNetwork extends CommonImplicitTreeDropdown
             $previousNetmask = new IPNetmask();
             $previousNetmask->setAddressFromArray($this->fields, "version", "netmask", "netmask");
 
-            if ($previousAddress->equals($address)
-                && $previousNetmask->equals($netmask)) {
+            if (
+                $previousAddress->equals($address)
+                && $previousNetmask->equals($netmask)
+            ) {
                 $this->networkUpdate = false;
             } else {
                 $this->networkUpdate = true;
             }
-
         } else {
             // If netmask and address are not modified, then, load them from DB to check the validity
             // of the gateway
@@ -335,19 +340,25 @@ class IPNetwork extends CommonImplicitTreeDropdown
         $returnValue = [];
         // If the gateway has been altered, or the network information (address or netmask) changed,
         // then, we must revalidate the gateway !
-        if (!isset($this->fields["gateway"])
+        if (
+            !isset($this->fields["gateway"])
             || ($input["gateway"] != $this->fields["gateway"])
-            || $this->networkUpdate) {
+            || $this->networkUpdate
+        ) {
             $gateway = new IPAddress();
 
             if (!empty($input["gateway"])) {
-                if (!$gateway->setAddressFromString($input["gateway"])
-                    || !self::checkIPFromNetwork($gateway, $address, $netmask)) {
+                if (
+                    !$gateway->setAddressFromString($input["gateway"])
+                    || !self::checkIPFromNetwork($gateway, $address, $netmask)
+                ) {
                     $returnValue['error'] = __('Invalid gateway address');
 
                     if (!empty($this->fields["gateway"])) {
-                        if (!$gateway->setAddressFromString($this->fields["gateway"])
-                            || !self::checkIPFromNetwork($gateway, $address, $netmask)) {
+                        if (
+                            !$gateway->setAddressFromString($this->fields["gateway"])
+                            || !self::checkIPFromNetwork($gateway, $address, $netmask)
+                        ) {
                             $gateway->disableAddress();
                         }
                     } else {
@@ -431,7 +442,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
             [
               IPAddress_IPNetwork::class,
               IPNetwork_Vlan::class,
-         ]
+            ]
         );
     }
 
@@ -549,8 +560,10 @@ class IPNetwork extends CommonImplicitTreeDropdown
         $netmaskDB  = ['netmask_0', 'netmask_1', 'netmask_2', 'netmask_3'];
 
         $WHERE      = [];
-        if (isset($condition["address"])
-            && isset($condition["netmask"])) {
+        if (
+            isset($condition["address"])
+            && isset($condition["netmask"])
+        ) {
             $addressPa = new IPAddress($condition["address"]);
 
             // Check version equality ...
@@ -580,7 +593,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
             if ($relation == "equals") {
                 for ($i = $startIndex; $i < 4; ++$i) {
                     $WHERE = [
-                       new \QueryExpression("(".$DB->quoteName($addressDB[$i]) . " & " . $DB->quoteValue($netmaskPa[$i]) . ") = (".$DB->quoteValue($addressPa[$i])." & ".$DB->quoteValue($netmaskPa[$i]).")"),
+                       new \QueryExpression("(" . $DB->quoteName($addressDB[$i]) . " & " . $DB->quoteValue($netmaskPa[$i]) . ") = (" . $DB->quoteValue($addressPa[$i]) . " & " . $DB->quoteValue($netmaskPa[$i]) . ")"),
                        $netmaskDB[$i]  => $netmaskPa[$i]
                     ];
                 }
@@ -593,8 +606,8 @@ class IPNetwork extends CommonImplicitTreeDropdown
                     }
 
                     $WHERE = [
-                       new \QueryExpression("(".$DB->quoteName($addressDB[$i])." & $globalNetmask) = (".$DB->quoteValue($addressPa[$i])." & $globalNetmask)"),
-                       new \QueryExpression("(".$DB->quoteValue($netmaskPa[$i])." & ".$DB->quoteName($netmaskDB[$i]).")=$globalNetmask")
+                       new \QueryExpression("(" . $DB->quoteName($addressDB[$i]) . " & $globalNetmask) = (" . $DB->quoteValue($addressPa[$i]) . " & $globalNetmask)"),
+                       new \QueryExpression("(" . $DB->quoteValue($netmaskPa[$i]) . " & " . $DB->quoteName($netmaskDB[$i]) . ")=$globalNetmask")
                     ];
                 }
             }
@@ -648,7 +661,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
         // the last should be 0.0.0.0/0.0.0.0 of x.y.z.a/255.255.255.255 regarding the interested
         // element)
         for ($i = $startIndex; $i < 4; ++$i) {
-            $ORDER[] = new \QueryExpression("BIT_COUNT(".$DB->quoteName($netmaskDB[$i]).") $ORDER_ORIENTATION");
+            $ORDER[] = new \QueryExpression("BIT_COUNT(" . $DB->quoteName($netmaskDB[$i]) . ") $ORDER_ORIENTATION");
         }
 
         if (!empty($condition["where"])) {
@@ -948,7 +961,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
               'ipnetworks_id'   => 0,
               'level'           => 1,
               'completename'    => new \QueryExpression($DB->quoteName('name'))
-         ],
+            ],
             [true]
         );
 
@@ -1063,7 +1076,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
                 );
 
                 if ($network->fields['addressable'] == 1) {
-                    $content = "<span class='b'>".$content."</span>";
+                    $content = "<span class='b'>" . $content . "</span>";
                 }
                 $content = sprintf(__('%1$s - %2$s'), $content, $network->getLink());
                 $row->addCell($header, $content, $father, $network);
@@ -1091,7 +1104,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
         Ajax::updateItemOnSelectEvent(
             "dropdown_ipnetworks_id$rand",
             "show_ipnetwork_$rand",
-            $CFG_GLPI["root_doc"]. "/ajax/dropdownShowIPNetwork.php",
+            $CFG_GLPI["root_doc"] . "/ajax/dropdownShowIPNetwork.php",
             $params
         );
 
@@ -1106,9 +1119,10 @@ class IPNetwork extends CommonImplicitTreeDropdown
     {
         parent::title();
 
-        if (Session::haveRight('internet', UPDATE)
-            && Session::canViewAllEntities()) {
-
+        if (
+            Session::haveRight('internet', UPDATE)
+            && Session::canViewAllEntities()
+        ) {
             echo "<div class='spaced' id='tabsbody'>";
             echo "<table class='tab_cadre_fixe' aria-label='Reinit Newtork'>";
 

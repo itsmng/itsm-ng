@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -182,7 +183,7 @@ class RequestType extends CommonDropdown
                 $update,
                 [
                   'id' => ['<>', $this->fields['id']]
-            ]
+                ]
             );
         }
     }
@@ -234,7 +235,7 @@ class RequestType extends CommonDropdown
                 $update,
                 [
                   'id' => ['<>', $this->fields['id']]
-            ]
+                ]
             );
         }
     }
@@ -255,7 +256,7 @@ class RequestType extends CommonDropdown
             return 0;
         }
 
-        foreach ($DB->request('glpi_requesttypes', ['is_'.$source.'_default' => 1, 'is_active' => 1]) as $data) {
+        foreach ($DB->request('glpi_requesttypes', ['is_' . $source . '_default' => 1, 'is_active' => 1]) as $data) {
             return $data['id'];
         }
         return 0;
@@ -280,7 +281,7 @@ class RequestType extends CommonDropdown
                 'core',
                 [
                   'default_requesttypes_id' => $newval,
-            ]
+                ]
             );
         }
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -46,6 +47,4 @@ class Change_User extends CommonITILActor
     public static $items_id_1 = 'changes_id';
     public static $itemtype_2 = 'User';
     public static $items_id_2 = 'users_id';
-
-
 }

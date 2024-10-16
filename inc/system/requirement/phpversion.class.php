@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -65,5 +66,4 @@ class PhpVersion extends AbstractRequirement
            ? sprintf(__('PHP version is at least %s - Perfect!'), $this->min_version)
            : sprintf(__('You must install at least PHP %s.'), $this->min_version);
     }
-
 }

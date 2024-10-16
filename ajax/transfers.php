@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -40,7 +41,7 @@ if (isset($_POST["id"]) && ($_POST["id"] > 0)) {
     $transfer = new Transfer();
     $transfer->showForm(
         $_POST["id"],
-        ['target' => $CFG_GLPI["root_doc"]."/front/transfer.action.php"]
+        ['target' => $CFG_GLPI["root_doc"] . "/front/transfer.action.php"]
     );
 }
 

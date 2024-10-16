@@ -87,8 +87,10 @@ class Pdu_Plug extends CommonDBRelation
         $ID = $pdu->getID();
         $rand = mt_rand();
 
-        if (!$pdu->getFromDB($ID)
-            || !$pdu->can($ID, READ)) {
+        if (
+            !$pdu->getFromDB($ID)
+            || !$pdu->can($ID, READ)
+        ) {
             return false;
         }
         $canedit = $pdu->canEdit($ID);
@@ -193,5 +195,4 @@ class Pdu_Plug extends CommonDBRelation
         $forbidden[] = 'CommonDBConnexity:unaffect';
         return $forbidden;
     }
-
 }

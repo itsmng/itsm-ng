@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -77,7 +78,7 @@ class Itil_Project extends CommonDBRelation
                             [
                               'itemtype' => $item->getType(),
                               'items_id' => $item->getID(),
-                     ]
+                            ]
                         );
                     }
                     $label = self::createTabEntry(Project::getTypeName(Session::getPluralNumber()), $nb);
@@ -92,7 +93,6 @@ class Itil_Project extends CommonDBRelation
                         $nb
                     );
                     break;
-
             }
         }
 
@@ -284,11 +284,11 @@ class Itil_Project extends CommonDBRelation
                     $userdata    = getUserName($d["users_id"], 2);
                     $actors .= sprintf(
                         __('%1$s %2$s'),
-                        "<span class='b'>".$userdata['name']."</span>",
+                        "<span class='b'>" . $userdata['name'] . "</span>",
                         Html::showToolTip(
                             $userdata["comment"],
                             ['link'    => $userdata["link"],
-                     'display' => false]
+                            'display' => false]
                         )
                     );
                     $actors .= "<br>";
@@ -307,7 +307,7 @@ class Itil_Project extends CommonDBRelation
                         $userdata   = getUserName($d["users_id"], 2);
                         $actors .= sprintf(
                             __('%1$s %2$s'),
-                            "<span class='b'>".$userdata['name']."</span>",
+                            "<span class='b'>" . $userdata['name'] . "</span>",
                             Html::showToolTip(
                                 $userdata["comment"],
                                 ['link'    => $userdata["link"],
@@ -338,13 +338,13 @@ class Itil_Project extends CommonDBRelation
 
                 $name = $item->getName();
                 if ($item->canViewItem()) {
-                    $name = "<a id='".$item->getType().$item->fields["id"]."$rand' href=\"".$item->getLinkURL()
-                                   ."\">$name</a>";
+                    $name = "<a id='" . $item->getType() . $item->fields["id"] . "$rand' href=\"" . $item->getLinkURL()
+                                   . "\">$name</a>";
                 }
                 $newValue[] = $name;
 
                 $planned_infos = '';
-                $tasktype      = $item->getType()."Task";
+                $tasktype      = $item->getType() . "Task";
                 $plan          = new $tasktype();
                 $items         = [];
 
@@ -354,32 +354,30 @@ class Itil_Project extends CommonDBRelation
                       'WHERE' => [
                          $item->getForeignKeyField() => $item->fields['id'],
                       ],
-               ]
+                    ]
                 );
                 foreach ($result as $plan) {
-
                     if (isset($plan['begin']) && $plan['begin']) {
                         $items[$plan['id']] = $plan['id'];
                         $planned_infos .= sprintf(
-                            __('From %s').
+                            __('From %s') .
                                                    ($p['output_type'] == Search::HTML_OUTPUT ? '<br>' : ''),
                             Html::convDateTime($plan['begin'])
                         );
                         $planned_infos .= sprintf(
-                            __('To %s').
+                            __('To %s') .
                                                    ($p['output_type'] == Search::HTML_OUTPUT ? '<br>' : ''),
                             Html::convDateTime($plan['end'])
                         );
                         if ($plan['users_id_tech']) {
                             $planned_infos .= sprintf(
-                                __('By %s').
+                                __('By %s') .
                                                        ($p['output_type'] == Search::HTML_OUTPUT ? '<br>' : ''),
                                 getUserName($plan['users_id_tech'])
                             );
                         }
                         $planned_infos .= "<br>";
                     }
-
                 }
 
                 $newValue[] = $planned_infos;
@@ -405,7 +403,7 @@ class Itil_Project extends CommonDBRelation
                           'row_num'                => $i,
                           'type_for_massiveaction' => __CLASS__,
                           'id_for_massiveaction'   => $data['linkid']
-                  ]
+                        ]
                     );
                     $i++;
                 }
@@ -474,11 +472,13 @@ class Itil_Project extends CommonDBRelation
             $used[$data['id']]     = $data['id'];
         }
 
-        if ($canedit
-           && !in_array($itil->fields['status'], array_merge(
-               $itil->getClosedStatusArray(),
-               $itil->getSolvedStatusArray()
-           ))) {
+        if (
+            $canedit
+            && !in_array($itil->fields['status'], array_merge(
+                $itil->getClosedStatusArray(),
+                $itil->getSolvedStatusArray()
+            ))
+        ) {
             $form = [
                'action' => Toolbox::getItemTypeFormURL(__CLASS__),
                'buttons' => [

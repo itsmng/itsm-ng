@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -33,17 +34,17 @@
 include('../inc/includes.php');
 
 if (isset($_POST['reinit_network'])) {
-
-    if (Session::haveRight('internet', UPDATE)
+    if (
+        Session::haveRight('internet', UPDATE)
         // Check access to all entities
-        && Session::canViewAllEntities()) {
+        && Session::canViewAllEntities()
+    ) {
         IPNetwork::recreateTree();
         Session::addMessageAfterRedirect(__('Successfully recreated network tree'));
         Html::back();
     } else {
         Html::displayRightError();
     }
-
 }
 
 $dropdown = new IPNetwork();

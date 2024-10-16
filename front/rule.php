@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -57,14 +58,16 @@ foreach ($CFG_GLPI["rulecollections_types"] as $rulecollectionclass) {
     }
 }
 
-if (Session::haveRight("transfer", READ)
-    && Session::isMultiEntitiesMode()) {
-    $links[] = ['url'   => $CFG_GLPI['root_doc']."/front/transfer.php",
+if (
+    Session::haveRight("transfer", READ)
+    && Session::isMultiEntitiesMode()
+) {
+    $links[] = ['url'   => $CFG_GLPI['root_doc'] . "/front/transfer.php",
                 'title' => __('Transfer')];
 }
 
 if (Session::haveRight("config", READ)) {
-    $links[] = ['url'   => $CFG_GLPI['root_doc']."/front/blacklist.php",
+    $links[] = ['url'   => $CFG_GLPI['root_doc'] . "/front/blacklist.php",
                 'title' => _n('Blacklist', 'Blacklists', Session::getPluralNumber())];
 }
 

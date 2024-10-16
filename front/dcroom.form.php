@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -61,7 +62,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["delete"])) {
     $room->check($_POST["id"], DELETE);
     $room->delete($_POST);
@@ -75,7 +75,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s deletes an item'), $_SESSION["glpiname"])
     );
     $room->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $room->check($_POST["id"], DELETE);
 
@@ -89,7 +88,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s restores an item'), $_SESSION["glpiname"])
     );
     $room->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $room->check($_POST["id"], PURGE);
 
@@ -103,7 +101,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $room->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $room->check($_POST["id"], UPDATE);
 
@@ -117,14 +114,15 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } else {
     Html::header(DCRoom::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "management", "datacenter", "dcroom");
     $options = [
        'id' => $_GET["id"],
     ];
-    if (isset($_REQUEST['_add_fromitem'])
-        && isset($_REQUEST['datacenters_id'])) {
+    if (
+        isset($_REQUEST['_add_fromitem'])
+        && isset($_REQUEST['datacenters_id'])
+    ) {
         $options['datacenters_id'] = $_REQUEST['datacenters_id'];
         $datacenter = new Datacenter();
         $datacenter->getFromDB($options['datacenters_id']);

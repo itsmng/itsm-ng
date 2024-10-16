@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -99,5 +100,4 @@ class NotificationTargetFieldUnicity extends NotificationTarget
         asort($this->tag_descriptions);
         return $this->tag_descriptions;
     }
-
 }

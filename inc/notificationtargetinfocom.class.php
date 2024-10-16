@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -68,8 +69,8 @@ class NotificationTargetInfocom extends NotificationTarget
                                          = $item['warrantyexpiration'];
                 $tmp['##infocom.url##']  = $this->formatURL(
                     $options['additionnaloption']['usertype'],
-                    $item['itemtype']."_".
-                                                              $item['items_id']."_Infocom"
+                    $item['itemtype'] . "_" .
+                                                              $item['items_id'] . "_Infocom"
                 );
             }
             $this->data['infocoms'][] = $tmp;
@@ -106,5 +107,4 @@ class NotificationTargetInfocom extends NotificationTarget
 
         asort($this->tag_descriptions);
     }
-
 }

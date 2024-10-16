@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -67,9 +68,11 @@ class Item_Project extends CommonDBRelation
     {
 
         // Avoid duplicate entry
-        if (countElementsInTable($this->getTable(), ['projects_id' => $input['projects_id'],
+        if (
+            countElementsInTable($this->getTable(), ['projects_id' => $input['projects_id'],
                                                      'itemtype'    => $input['itemtype'],
-                                                     'items_id'    => $input['items_id']]) > 0) {
+                                                     'items_id'    => $input['items_id']]) > 0
+        ) {
             return false;
         }
         return parent::prepareInputForAdd($input);
@@ -204,19 +207,21 @@ class Item_Project extends CommonDBRelation
 
                 while ($data = $iterator->next()) {
                     $name = $data[$itemtype::getNameField()];
-                    if ($_SESSION["glpiis_ids_visible"]
-                        || empty($data[$itemtype::getNameField()])) {
+                    if (
+                        $_SESSION["glpiis_ids_visible"]
+                        || empty($data[$itemtype::getNameField()])
+                    ) {
                         $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
                     }
                     $link     = $item::getFormURLWithID($data['id']);
-                    $namelink = "<a href=\"".$link."\">".$name."</a>";
+                    $namelink = "<a href=\"" . $link . "\">" . $name . "</a>";
 
                     $values[] = [
                        $item->getTypeName(),
                        Dropdown::getDropdownName("glpi_entities", $data['entity']),
                        $namelink,
-                       (isset($data["serial"]) ? "".$data["serial"]."" : "-"),
-                       (isset($data["otherserial"]) ? "".$data["otherserial"]."" : "-"),
+                       (isset($data["serial"]) ? "" . $data["serial"] . "" : "-"),
+                       (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-"),
                     ];
                     $massiveactionValues[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
                 }
@@ -285,5 +290,4 @@ class Item_Project extends CommonDBRelation
         }
         return true;
     }
-
 }

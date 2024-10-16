@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -51,7 +52,7 @@ if (isset($_POST["validatortype"])) {
             break;
 
         case 'group':
-            $name = !empty($_POST['name']) ? $_POST['name'].'[groups_id]' : 'groups_id';
+            $name = !empty($_POST['name']) ? $_POST['name'] . '[groups_id]' : 'groups_id';
             $value = (isset($_POST['users_id_validate']['groups_id']) ? $_POST['users_id_validate']['groups_id'] : $_POST['groups_id']);
 
             echo json_encode(getItemByEntity(Group::class, $_POST['entity'] ?? Session::getActiveEntity()));
@@ -84,8 +85,10 @@ if (isset($_POST["validatortype"])) {
             }
 
             // Display all users
-            if (isset($_POST['all_users'])
-                && $_POST['all_users']) {
+            if (
+                isset($_POST['all_users'])
+                && $_POST['all_users']
+            ) {
                 $param['values'] =  array_keys($users);
             }
             $param['multiple'] = true;
@@ -101,7 +104,7 @@ if (isset($_POST["validatortype"])) {
 
             // Display all/none buttons to select all or no users in group
             if (!empty($_POST['groups_id'])) {
-                echo "<br><br><a id='all_users' class='vsubmit'>".__('All')."</a>";
+                echo "<br><br><a id='all_users' class='vsubmit'>" . __('All') . "</a>";
                 $param_button = [
                    'validatortype'     => 'list_users',
                    'name'              => !empty($_POST['name']) ? $_POST['name'] : '',
@@ -114,17 +117,17 @@ if (isset($_POST["validatortype"])) {
                 Ajax::updateItemOnEvent(
                     'all_users',
                     'show_list_users',
-                    $CFG_GLPI["root_doc"]."/ajax/dropdownValidator.php",
+                    $CFG_GLPI["root_doc"] . "/ajax/dropdownValidator.php",
                     $param_button,
                     ['click']
                 );
 
-                echo "&nbsp;<a id='no_users' class='vsubmit'>".__('None')."</a>";
+                echo "&nbsp;<a id='no_users' class='vsubmit'>" . __('None') . "</a>";
                 $param_button['all_users'] = 0;
                 Ajax::updateItemOnEvent(
                     'no_users',
                     'show_list_users',
-                    $CFG_GLPI["root_doc"]."/ajax/dropdownValidator.php",
+                    $CFG_GLPI["root_doc"] . "/ajax/dropdownValidator.php",
                     $param_button,
                     ['click']
                 );

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -64,8 +65,10 @@ class CheckCommand extends AbstractCommand
 
         $differ = new Differ();
 
-        if (false === ($empty_file = realpath(GLPI_ROOT . '/install/mysql/glpi-empty.sql'))
-            || false === ($empty_sql = file_get_contents($empty_file))) {
+        if (
+            false === ($empty_file = realpath(GLPI_ROOT . '/install/mysql/glpi-empty.sql'))
+            || false === ($empty_sql = file_get_contents($empty_file))
+        ) {
             $message = sprintf(__('Unable to read installation file "%s".'), $empty_file);
             $output->writeln(
                 '<error>' . $message . '</error>',

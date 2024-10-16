@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -123,8 +124,10 @@ trait CalDAVPrincipalsTrait
 
         global $DB;
 
-        if (!Session::haveRight(Planning::$rightname, Planning::READALL)
-            && empty($_SESSION['glpigroups'])) {
+        if (
+            !Session::haveRight(Planning::$rightname, Planning::READALL)
+            && empty($_SESSION['glpigroups'])
+        ) {
             // User cannot read planning of everyone and has no groups.
             return new EmptyIterator();
         }
@@ -148,7 +151,7 @@ trait CalDAVPrincipalsTrait
             [
               'FROM'  => Group::getTable(),
               'WHERE' => $groups_criteria,
-         ]
+            ]
         );
 
         return $groups_iterator;
@@ -165,8 +168,10 @@ trait CalDAVPrincipalsTrait
         if (!Session::haveRightsOr(Planning::$rightname, [Planning::READALL, Planning::READGROUP])) {
             // Can see only personnal planning
             $rights = 'id';
-        } elseif (Session::haveRight(Planning::$rightname, Planning::READGROUP)
-            && !Session::haveRight(Planning::$rightname, Planning::READALL)) {
+        } elseif (
+            Session::haveRight(Planning::$rightname, Planning::READGROUP)
+            && !Session::haveRight(Planning::$rightname, Planning::READALL)
+        ) {
             // Can see only planning from users sharing same groups
             $rights = 'groups';
         } else {

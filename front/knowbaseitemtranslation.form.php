@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -67,7 +68,6 @@ if (isset($_POST['add'])) {
     }
     Html::redirect($translation->getFormURLWithID($_GET['id']));
 } elseif (isset($_GET["id"])) {
-
     // modifier un item dans la base de connaissance
     $translation->check($_GET["id"], READ);
 
@@ -79,8 +79,8 @@ if (isset($_POST['add'])) {
         Html::simpleHeader(
             __('FAQ'),
             [__('Authentication')
-                                           => $CFG_GLPI['root_doc'].'/',
-                                 __('FAQ') => $CFG_GLPI['root_doc'].'/front/helpdesk.faq.php']
+                                           => $CFG_GLPI['root_doc'] . '/',
+                                 __('FAQ') => $CFG_GLPI['root_doc'] . '/front/helpdesk.faq.php']
         );
     }
 

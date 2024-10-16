@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -83,15 +84,19 @@ class TicketSatisfaction extends CommonDBTM
         }
 
         // you can't change if your answer > 12h
-        if (!is_null($this->fields['date_answered'])
-            && ((time() - strtotime($this->fields['date_answered'])) > (12 * HOUR_TIMESTAMP))) {
+        if (
+            !is_null($this->fields['date_answered'])
+            && ((time() - strtotime($this->fields['date_answered'])) > (12 * HOUR_TIMESTAMP))
+        ) {
             return false;
         }
 
-        if ($ticket->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
+        if (
+            $ticket->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
             || ($ticket->fields["users_id_recipient"] === Session::getLoginUserID() && Session::haveRight('ticket', Ticket::SURVEY))
             || (isset($_SESSION["glpigroups"])
-                && $ticket->haveAGroup(CommonITILActor::REQUESTER, $_SESSION["glpigroups"]))) {
+                && $ticket->haveAGroup(CommonITILActor::REQUESTER, $_SESSION["glpigroups"]))
+        ) {
             return true;
         }
         return false;
@@ -113,9 +118,8 @@ class TicketSatisfaction extends CommonDBTM
         // for external inquest => link
         if ($this->fields["type"] == 2) {
             $url = Entity::generateLinkSatisfaction($ticket);
-            echo "<div class='center spaced'>".
-                 "<a href='$url'>".__('External survey')."</a><br>($url)</div>";
-
+            echo "<div class='center spaced'>" .
+                 "<a href='$url'>" . __('External survey') . "</a><br>($url)</div>";
         } else { // for internal inquest => form
             $this->showFormHeader($options);
 
@@ -124,21 +128,21 @@ class TicketSatisfaction extends CommonDBTM
                 $this->fields["satisfaction"] = 3;
             }
             echo "<tr class='tab_bg_2'>";
-            echo "<td>".__('Satisfaction with the resolution of the ticket')."</td>";
+            echo "<td>" . __('Satisfaction with the resolution of the ticket') . "</td>";
             echo "<td>";
             echo "<input type='hidden' name='tickets_id' value='$tid'>";
 
             echo "<select aria-label='Satisfaction' id='satisfaction_data' name='satisfaction'>";
 
             for ($i = 0; $i <= 5; $i++) {
-                echo "<option value='$i' ".(($i == $this->fields["satisfaction"]) ? 'selected' : '').
+                echo "<option value='$i' " . (($i == $this->fields["satisfaction"]) ? 'selected' : '') .
                       ">$i</option>";
             }
             echo "</select>";
             echo "<div class='rateit' id='stars'></div>";
             echo  "<script type='text/javascript'>\n";
             echo "$(function() {";
-            echo "$('#stars').rateit({value: ".$this->fields["satisfaction"].",
+            echo "$('#stars').rateit({value: " . $this->fields["satisfaction"] . ",
                                    min : 0,
                                    max : 5,
                                    step: 1,
@@ -150,15 +154,15 @@ class TicketSatisfaction extends CommonDBTM
             echo "</td></tr>";
 
             echo "<tr class='tab_bg_2'>";
-            echo "<td rowspan='1'>".__('Comments')."</td>";
+            echo "<td rowspan='1'>" . __('Comments') . "</td>";
             echo "<td rowspan='1' class='middle'>";
-            echo "<textarea cols='45' rows='7' name='comment' >".$this->fields["comment"]."</textarea>";
+            echo "<textarea cols='45' rows='7' name='comment' >" . $this->fields["comment"] . "</textarea>";
             echo "</td></tr>\n";
 
             if ($this->fields["date_answered"] > 0) {
                 echo "<tr class='tab_bg_2'>";
-                echo "<td>".__('Response date to the satisfaction survey')."</td><td>";
-                echo Html::convDateTime($this->fields["date_answered"])."</td></tr>\n";
+                echo "<td>" . __('Response date to the satisfaction survey') . "</td><td>";
+                echo Html::convDateTime($this->fields["date_answered"]) . "</td></tr>\n";
             }
 
             $options['candel'] = false;

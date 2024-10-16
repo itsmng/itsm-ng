@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -162,7 +163,7 @@ class ITILSolution extends CommonDBChild
         }
 
         // Alert if validation waiting
-        $validationtype = $item->getType().'Validation';
+        $validationtype = $item->getType() . 'Validation';
         if (method_exists($validationtype, 'alertValidation') && $this->isNewItem()) {
             $validationtype::alertValidation($item, 'solution');
         }
@@ -212,10 +213,10 @@ class ITILSolution extends CommonDBChild
                        ]
                     ] : [],
                     '' => ($show_template) && (Session::haveRightsOr('knowbase', [READ, KnowbaseItem::READFAQ])) ? [
-                       'content' => "<a class='btn btn-secondary' title=\"".__('Search a solution')."\"
-                        href='".$CFG_GLPI['root_doc']."/front/knowbaseitem.php?item_itemtype=".
-                          $item->getType()."&amp;item_items_id=".$item->getID().
-                          "&amp;forcetab=Knowbase$1'>".__('Search a solution')."</a>",
+                       'content' => "<a class='btn btn-secondary' title=\"" . __('Search a solution') . "\"
+                        href='" . $CFG_GLPI['root_doc'] . "/front/knowbaseitem.php?item_itemtype=" .
+                          $item->getType() . "&amp;item_items_id=" . $item->getID() .
+                          "&amp;forcetab=Knowbase$1'>" . __('Search a solution') . "</a>",
                     ] : [],
                     [
                        'type' => 'hidden',
@@ -251,11 +252,11 @@ class ITILSolution extends CommonDBChild
                        'name' => 'kb_linked_id',
                        'value' => $kb->getID(),
                        'checked' => '',
-                  ] : [],
+                    ] : [],
                     __('Save and add to the knowledge base') => ($canedit && Session::haveRight('knowbase', UPDATE) && !isset($options['nokb'])) ? [
                        'type' => 'checkbox',
                        'name' => '_sol_to_kb',
-                  ] : [],
+                    ] : [],
                     __('Description') => ($canedit) ? [
                        'type' => 'richtextarea',
                        'name' => 'content',
@@ -264,9 +265,9 @@ class ITILSolution extends CommonDBChild
                        'col_lg' => 12,
                        'col_md' => 12,
 
-                  ] : [
+                    ] : [
                        Toolbox::unclean_cross_side_scripting_deep($this->getField('content'))
-                  ],
+                    ],
                  ]
               ]
            ]
@@ -293,7 +294,7 @@ class ITILSolution extends CommonDBChild
                  'itemtype'  => $itemtype,
                  'items_id'  => $items_id
               ]
-         ]
+            ]
         );
     }
 
@@ -301,8 +302,9 @@ class ITILSolution extends CommonDBChild
     {
         $input['users_id'] = Session::getLoginUserID();
 
-        if ($this->item == null
-           || (isset($input['itemtype']) && isset($input['items_id']))
+        if (
+            $this->item == null
+            || (isset($input['itemtype']) && isset($input['items_id']))
         ) {
             $this->item = new $input['itemtype']();
             $this->item->getFromDB($input['items_id']);
@@ -367,7 +369,7 @@ class ITILSolution extends CommonDBChild
               'force_update' => true,
               'name' => 'content',
               'content_field' => 'content',
-         ]
+            ]
         );
 
         // Add solution to duplicates
@@ -413,8 +415,10 @@ class ITILSolution extends CommonDBChild
             return false;
         }
 
-        if (isset($input['update'])
-            && ($uid = Session::getLoginUserID())) {
+        if (
+            isset($input['update'])
+            && ($uid = Session::getLoginUserID())
+        ) {
             $input["users_id_editor"] = $uid;
         }
 

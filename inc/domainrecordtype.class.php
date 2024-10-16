@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -97,5 +98,4 @@ class DomainRecordType extends CommonDropdown
             self::$knowtypes
         );
     }
-
 }

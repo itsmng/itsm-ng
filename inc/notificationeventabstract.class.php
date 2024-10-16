@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -97,13 +98,17 @@ abstract class NotificationEventAbstract
 
                 foreach ($notificationtarget->getTargets() as $users_infos) {
                     $key = $users_infos[static::getTargetFieldName()];
-                    if ($label
-                          || $notificationtarget->validateSendTo($event, $users_infos, $notify_me, $emitter)) {
+                    if (
+                        $label
+                          || $notificationtarget->validateSendTo($event, $users_infos, $notify_me, $emitter)
+                    ) {
                         //If the user have not yet been notified
                         if (!isset($processed[$users_infos['language']][$key])) {
                             //If ther user's language is the same as the template's one
-                            if (isset($notprocessed[$users_infos['language']]
-                                                          [$key])) {
+                            if (
+                                isset($notprocessed[$users_infos['language']]
+                                                          [$key])
+                            ) {
                                 unset($notprocessed[$users_infos['language']]
                                                            [$key]);
                             }
@@ -119,12 +124,14 @@ abstract class NotificationEventAbstract
                                 $DB->setTimezone($orig_tz);
                             }
 
-                            if ($tid = $template->getTemplateByLanguage(
-                                $notificationtarget,
-                                $users_infos,
-                                $event,
-                                $options
-                            )) {
+                            if (
+                                $tid = $template->getTemplateByLanguage(
+                                    $notificationtarget,
+                                    $users_infos,
+                                    $event,
+                                    $options
+                                )
+                            ) {
                                 //Send notification to the user
                                 if ($label == '') {
                                     $send_data = $template->getDataToSend(
@@ -151,23 +158,21 @@ abstract class NotificationEventAbstract
                                     if (array_key_exists('email', $users_infos)) {
                                         Notification::send($send_data);
                                     }
-
                                 } else {
                                     $notificationtarget->getFromDB($target['id']);
-                                    echo "<tr class='tab_bg_2'><td>".$label."</td>";
-                                    echo "<td>".$notificationtarget->getNameID()."</td>";
-                                    echo "<td>".sprintf(
+                                    echo "<tr class='tab_bg_2'><td>" . $label . "</td>";
+                                    echo "<td>" . $notificationtarget->getNameID() . "</td>";
+                                    echo "<td>" . sprintf(
                                         __('%1$s (%2$s)'),
                                         $template->getName(),
                                         $users_infos['language']
-                                    )."</td>";
-                                    echo "<td>".$options['mode']."</td>";
-                                    echo "<td>".$key."</td>";
+                                    ) . "</td>";
+                                    echo "<td>" . $options['mode'] . "</td>";
+                                    echo "<td>" . $key . "</td>";
                                     echo "</tr>";
                                 }
                                 $processed[$users_infos['language']][$key]
                                                                           = $users_infos;
-
                             } else {
                                 $notprocessed[$users_infos['language']][$key]
                                                                              = $users_infos;

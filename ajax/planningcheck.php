@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -46,15 +47,15 @@ Session::checkLoginUser();
 
 if (isset($_POST['users_id']) && ($_POST['users_id'] > 0)) {
     $rand = mt_rand();
-    echo "<a href='#' title=\"".__s('Availability')."\" onClick=\"".Html::jsGetElementbyID('planningcheck'.$rand).".dialog('open'); return false;\">";
+    echo "<a href='#' title=\"" . __s('Availability') . "\" onClick=\"" . Html::jsGetElementbyID('planningcheck' . $rand) . ".dialog('open'); return false;\">";
     echo "<i class='far fa-calendar-alt' title='calendar'></i>";
-    echo "<span class='sr-only'>".__('Availability')."</span>";
+    echo "<span class='sr-only'>" . __('Availability') . "</span>";
     echo "</a>";
     Ajax::createIframeModalWindow(
-        'planningcheck'.$rand,
-        $CFG_GLPI["root_doc"].
-                                        "/front/planning.php?checkavailability=checkavailability".
-                                        "&itemtype=User&users_id=".$_POST['users_id'],
+        'planningcheck' . $rand,
+        $CFG_GLPI["root_doc"] .
+                                        "/front/planning.php?checkavailability=checkavailability" .
+                                        "&itemtype=User&users_id=" . $_POST['users_id'],
         ['title'  => __('Availability')]
     );
 }

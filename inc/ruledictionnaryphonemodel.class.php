@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -77,5 +78,4 @@ class RuleDictionnaryPhoneModel extends RuleDictionnaryDropdown
 
         return $actions;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -42,6 +43,4 @@ class Problem_User extends CommonITILActor
     public static $items_id_1 = 'problems_id';
     public static $itemtype_2 = 'User';
     public static $items_id_2 = 'users_id';
-
-
 }

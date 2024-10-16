@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -38,7 +39,6 @@ Html::header(Consumable::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_
 
 if (isset($_GET["synthese"])) {
     Consumable::showSummary();
-
 } else {
     Search::show('ConsumableItem');
 }

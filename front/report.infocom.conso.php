@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -42,10 +43,11 @@ if (empty($_POST["date1"]) && empty($_POST["date2"])) {
     $_POST["date2"] = date("Y-m-d");
 }
 
-if (!empty($_POST["date1"])
+if (
+    !empty($_POST["date1"])
     && !empty($_POST["date2"])
-    && (strcmp($_POST["date2"], $_POST["date1"]) < 0)) {
-
+    && (strcmp($_POST["date2"], $_POST["date1"]) < 0)
+) {
     $tmp            = $_POST["date1"];
     $_POST["date1"] = $_POST["date2"];
     $_POST["date2"] = $tmp;
@@ -130,8 +132,7 @@ function display_infocoms_report($itemtype, $begin, $end)
     ];
 
     switch ($itemtype) {
-
-        case 'SoftwareLicense' :
+        case 'SoftwareLicense':
             $criteria['INNER JOIN']['glpi_softwares'] = [
                'ON'  => [
                   'glpi_softwarelicenses' => 'softwares_id',
@@ -172,10 +173,11 @@ function display_infocoms_report($itemtype, $begin, $end)
     }
     $iterator = $DB->request($criteria);
 
-    if (count($iterator)
-          && ($item = getItemForItemtype($itemtype))) {
-
-        echo "<h2>".$item->getTypeName(1)."</h2>";
+    if (
+        count($iterator)
+          && ($item = getItemForItemtype($itemtype))
+    ) {
+        echo "<h2>" . $item->getTypeName(1) . "</h2>";
         echo "<table class='tab_cadre' aria-label='Report Data for Each Item Type' >";
 
         $valeursoustot      = 0;
@@ -192,7 +194,6 @@ function display_infocoms_report($itemtype, $begin, $end)
                         $line["value"] *= $item->fields["number"];
                     }
                 }
-
             }
             if ($line["value"] > 0) {
                 $valeursoustot += $line["value"];
@@ -222,14 +223,12 @@ function display_infocoms_report($itemtype, $begin, $end)
 
             if (is_array($tmp) && (count($tmp) > 0)) {
                 foreach ($tmp["annee"] as $key => $val) {
-
                     if ($tmp["vcnetfin"][$key] > 0) {
                         if (!isset($valeurnettegraph[$val])) {
                             $valeurnettegraph[$val] = 0;
                         }
                         $valeurnettegraph[$val] += $tmp["vcnetdeb"][$key];
                     }
-
                 }
             }
 
@@ -242,7 +241,6 @@ function display_infocoms_report($itemtype, $begin, $end)
                     }
                     $valeurgraph[$year] += $line["value"];
                 }
-
             }
 
             $valeurnette = str_replace([" ", "-"], ["", ""], $valeurnette);
@@ -276,7 +274,7 @@ function display_infocoms_report($itemtype, $begin, $end)
                   [
                      'data' => $valeurnettegraphdisplay
                   ]
-            ],
+                ],
                 $chart_opts
             );
 
@@ -304,7 +302,7 @@ function display_infocoms_report($itemtype, $begin, $end)
                   [
                      'data' => $valeurgraphdisplay
                   ]
-            ],
+                ],
                 $chart_opts
             );
             echo "</td></tr>";
@@ -359,7 +357,7 @@ if (count($valeurnettegraphtot) > 0) {
           [
              'data' => $valeurnettegraphtotdisplay
           ]
-      ],
+        ],
         $chart_opts
     );
 }
@@ -373,7 +371,7 @@ if (count($valeurgraphtot) > 0) {
           [
              'data' => $valeurgraphtotdisplay
           ]
-      ],
+        ],
         $chart_opts
     );
 }

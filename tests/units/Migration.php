@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -142,11 +143,11 @@ class Migration extends \GLPITestCase
            1 => 'SELECT `id` FROM `glpi_configs` WHERE `context` = \'core\' AND `name` = \'one\'',
            2 => 'INSERT INTO `glpi_configs` (`context`, `name`, `value`) VALUES (\'core\', \'one\', \'key\')',
            3 => 'SELECT * FROM `glpi_configs` WHERE `glpi_configs`.`id` = \'0\' LIMIT 1',
-           4 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \''.$_SESSION['glpi_currenttime'].'\', \'1\', \'one \', \'key\')',
+           4 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \'' . $_SESSION['glpi_currenttime'] . '\', \'1\', \'one \', \'key\')',
            5 => 'SELECT `id` FROM `glpi_configs` WHERE `context` = \'core\' AND `name` = \'two\'',
            6 => 'INSERT INTO `glpi_configs` (`context`, `name`, `value`) VALUES (\'core\', \'two\', \'value\')',
            7 => 'SELECT * FROM `glpi_configs` WHERE `glpi_configs`.`id` = \'0\' LIMIT 1',
-           8 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \''.$_SESSION['glpi_currenttime'].'\', \'1\', \'two \', \'value\')',
+           8 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \'' . $_SESSION['glpi_currenttime'] . '\', \'1\', \'two \', \'value\')',
         ];
         $this->array($this->queries)->isIdenticalTo($core_queries);
 
@@ -168,11 +169,11 @@ class Migration extends \GLPITestCase
            1 => 'SELECT `id` FROM `glpi_configs` WHERE `context` = \'test-context\' AND `name` = \'one\'',
            2 => 'INSERT INTO `glpi_configs` (`context`, `name`, `value`) VALUES (\'test-context\', \'one\', \'key\')',
            3 => 'SELECT * FROM `glpi_configs` WHERE `glpi_configs`.`id` = \'0\' LIMIT 1',
-           4 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \''.$_SESSION['glpi_currenttime'].'\', \'1\', \'one (test-context) \', \'key\')',
+           4 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \'' . $_SESSION['glpi_currenttime'] . '\', \'1\', \'one (test-context) \', \'key\')',
            5 => 'SELECT `id` FROM `glpi_configs` WHERE `context` = \'test-context\' AND `name` = \'two\'',
            6 => 'INSERT INTO `glpi_configs` (`context`, `name`, `value`) VALUES (\'test-context\', \'two\', \'value\')',
            7 => 'SELECT * FROM `glpi_configs` WHERE `glpi_configs`.`id` = \'0\' LIMIT 1',
-           8 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \''.$_SESSION['glpi_currenttime'].'\', \'1\', \'two (test-context) \', \'value\')',
+           8 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \'' . $_SESSION['glpi_currenttime'] . '\', \'1\', \'two (test-context) \', \'value\')',
         ]);
 
         //test with one existing value => only new key should be inserted
@@ -208,7 +209,7 @@ class Migration extends \GLPITestCase
 
         $this->array($this->queries)->isIdenticalTo([
            0 => 'INSERT INTO `glpi_configs` (`context`, `name`, `value`) VALUES (\'core\', \'two\', \'value\')',
-           1 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \''.$_SESSION['glpi_currenttime'].'\', \'1\', \'two \', \'value\')',
+           1 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \'' . $_SESSION['glpi_currenttime'] . '\', \'1\', \'two \', \'value\')',
         ]);
     }
 
@@ -619,7 +620,7 @@ class Migration extends \GLPITestCase
         $this->array($this->queries)->isIdenticalTo(
             [
               "RENAME TABLE `glpi_oldtable` TO `glpi_newtable`",
-         ]
+            ]
         );
 
         // Case 2, rename after changes were already applied
@@ -637,7 +638,7 @@ class Migration extends \GLPITestCase
               "ALTER TABLE `glpi_oldtable` ADD FULLTEXT `fulltext_key` (`fulltext_key`)",
               "ALTER TABLE `glpi_oldtable` ADD UNIQUE `id` (`id`)",
               "RENAME TABLE `glpi_oldtable` TO `glpi_newtable`",
-         ]
+            ]
         );
 
         // Case 3, apply changes after renaming
@@ -655,7 +656,7 @@ class Migration extends \GLPITestCase
               "ALTER TABLE `glpi_newtable` ADD `bool_field` TINYINT(1) NOT NULL DEFAULT '0'   ",
               "ALTER TABLE `glpi_newtable` ADD FULLTEXT `fulltext_key` (`fulltext_key`)",
               "ALTER TABLE `glpi_newtable` ADD UNIQUE `id` (`id`)",
-         ]
+            ]
         );
     }
 
@@ -744,8 +745,10 @@ class Migration extends \GLPITestCase
             return preg_match('/^someoldtypes_id/', $field);
         };
         $this->calling($this->db)->request = function ($request) {
-            if (isset($request['WHERE']['OR'][0])
-                && $request['WHERE']['OR'][0] === ['column_name'  => 'someoldtypes_id']) {
+            if (
+                isset($request['WHERE']['OR'][0])
+                && $request['WHERE']['OR'][0] === ['column_name'  => 'someoldtypes_id']
+            ) {
                 // Request used for foreign key fields
                 return new \ArrayIterator([
                    ['TABLE_NAME' => 'glpi_oneitem_with_fkey',     'COLUMN_NAME' => 'someoldtypes_id'],
@@ -753,8 +756,10 @@ class Migration extends \GLPITestCase
                    ['TABLE_NAME' => 'glpi_anotheritem_with_fkey', 'COLUMN_NAME' => 'someoldtypes_id_tech'],
                 ]);
             }
-            if (isset($request['WHERE']['OR'][0])
-                && $request['WHERE']['OR'][0] === ['column_name'  => 'itemtype']) {
+            if (
+                isset($request['WHERE']['OR'][0])
+                && $request['WHERE']['OR'][0] === ['column_name'  => 'itemtype']
+            ) {
                 // Request used for itemtype fields
                 return new \ArrayIterator([
                    ['TABLE_NAME' => 'glpi_computers', 'COLUMN_NAME' => 'itemtype'],
@@ -783,7 +788,7 @@ class Migration extends \GLPITestCase
                   'Change of the database layout - glpi_oneitem_with_fkey',
                   'Change of the database layout - glpi_anotheritem_with_fkey',
                   'Task completed.',
-            ]
+                ]
             )
         );
 
@@ -813,7 +818,7 @@ class Migration extends \GLPITestCase
                   '============================ Rename "SomeOldType" itemtype to "NewName" ============================' . "\n",
                   'Rename "SomeOldType" itemtype to "NewName" in all tables',
                   'Task completed.',
-            ]
+                ]
             )
         );
 

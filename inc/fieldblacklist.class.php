@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -249,8 +250,10 @@ class Fieldblacklist extends CommonDropdown
         $options['display'] = false;
         switch ($field) {
             case 'field':
-                if (isset($values['itemtype'])
-                    && !empty($values['itemtype'])) {
+                if (
+                    isset($values['itemtype'])
+                    && !empty($values['itemtype'])
+                ) {
                     $options['value'] = $values[$field];
                     $options['name']  = $name;
                     return self::dropdownField($values['itemtype'], $options);
@@ -258,8 +261,10 @@ class Fieldblacklist extends CommonDropdown
                 break;
 
             case 'value':
-                if (isset($values['itemtype'])
-                    && !empty($values['itemtype'])) {
+                if (
+                    isset($values['itemtype'])
+                    && !empty($values['itemtype'])
+                ) {
                     if ($item = getItemForItemtype($values['itemtype'])) {
                         if (isset($values['field']) && !empty($values['field'])) {
                             $searchOption = $item->getSearchOptionByField('field', $values['field']);
@@ -327,8 +332,7 @@ class Fieldblacklist extends CommonDropdown
             if ($item = getItemForItemtype($this->fields['itemtype'])) {
                 echo $item->getTypeName(1);
             }
-            echo "<input type='hidden' name='itemtype' value='".$this->fields['itemtype']."'>";
-
+            echo "<input type='hidden' name='itemtype' value='" . $this->fields['itemtype'] . "'>";
         } else {
             //Add criteria : display dropdown
             foreach ($CFG_GLPI['unicity_types'] as $itemtype) {
@@ -351,7 +355,7 @@ class Fieldblacklist extends CommonDropdown
             Ajax::updateItemOnSelectEvent(
                 "dropdown_itemtype$rand",
                 "span_fields",
-                $CFG_GLPI["root_doc"]."/ajax/dropdownFieldsBlacklist.php",
+                $CFG_GLPI["root_doc"] . "/ajax/dropdownFieldsBlacklist.php",
                 $params
             );
         }
@@ -376,9 +380,11 @@ class Fieldblacklist extends CommonDropdown
             foreach ($DB->listFields($target->getTable()) as $field) {
                 $searchOption = $target->getSearchOptionByField('field', $field['Field']);
 
-                if (!empty($searchOption)
+                if (
+                    !empty($searchOption)
                       && !in_array($field['Type'], $target->getUnallowedFieldsForUnicity())
-                      && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
+                      && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())
+                ) {
                     $criteria[$field['Field']] = $searchOption['name'];
                 }
             }
@@ -413,9 +419,11 @@ class Fieldblacklist extends CommonDropdown
             foreach ($DB->listFields($target->getTable()) as $field) {
                 $searchOption = $target->getSearchOptionByField('field', $field['Field']);
 
-                if (!empty($searchOption)
+                if (
+                    !empty($searchOption)
                     && !in_array($field['Type'], $target->getUnallowedFieldsForUnicity())
-                    && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
+                    && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())
+                ) {
                     $criteria[$field['Field']] = $searchOption['name'];
                 }
             }
@@ -472,5 +480,4 @@ class Fieldblacklist extends CommonDropdown
         ])->next();
         return $result['cpt'] > 0;
     }
-
 }

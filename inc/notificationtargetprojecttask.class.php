@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -78,7 +79,6 @@ class NotificationTargetProjectTask extends NotificationTarget
         //Look for all targets whose type is Notification::ITEM_USER
         switch ($data['type']) {
             case Notification::USER_TYPE:
-
                 switch ($data['items_id']) {
                     //Send to the users in project team
                     case Notification::TEAM_USER:
@@ -109,7 +109,6 @@ class NotificationTargetProjectTask extends NotificationTarget
                     case Notification::TEAM_SUPPLIER:
                         $this->addTeamSuppliers();
                         break;
-
                 }
         }
     }
@@ -242,7 +241,7 @@ class NotificationTargetProjectTask extends NotificationTarget
         $this->data['##projecttask.url##']
                     = $this->formatURL(
                         $options['additionnaloption']['usertype'],
-                        "ProjectTask_".$item->getField("id")
+                        "ProjectTask_" . $item->getField("id")
                     );
         $this->data["##projecttask.name##"]
                     = $item->getField('name');
@@ -251,7 +250,7 @@ class NotificationTargetProjectTask extends NotificationTarget
         $this->data["##projecttask.projecturl##"]
                     = $this->formatURL(
                         $options['additionnaloption']['usertype'],
-                        "Project_".$item->getField("projects_id")
+                        "Project_" . $item->getField("projects_id")
                     );
         $this->data["##projecttask.description##"]
                     = $item->getField('content');
@@ -355,7 +354,7 @@ class NotificationTargetProjectTask extends NotificationTarget
             [
               'WHERE'  => $restrict,
               'ORDER'  => $order
-         ]
+            ]
         );
         $this->data['tasks'] = [];
         foreach ($tasks as $task) {
@@ -429,7 +428,7 @@ class NotificationTargetProjectTask extends NotificationTarget
                                             = $ticket->getField('name');
                     $tmp['##ticket.url##']  = $this->formatURL(
                         $options['additionnaloption']['usertype'],
-                        "Ticket_".$data['tickets_id']
+                        "Ticket_" . $data['tickets_id']
                     );
                     $tmp['##ticket.content##']
                                             = $ticket->getField('content');
@@ -469,9 +468,9 @@ class NotificationTargetProjectTask extends NotificationTarget
 
             $tmp['##document.url##']  = $this->formatURL(
                 $options['additionnaloption']['usertype'],
-                "document_".$data['id']
+                "document_" . $data['id']
             );
-            $downloadurl              = "/front/document.send.php?docid=".$data['id'];
+            $downloadurl              = "/front/document.send.php?docid=" . $data['id'];
 
             $tmp['##document.downloadurl##']
                                        = $this->formatURL(
@@ -493,7 +492,7 @@ class NotificationTargetProjectTask extends NotificationTarget
         $this->data["##projecttask.urldocument##"]
                        = $this->formatURL(
                            $options['additionnaloption']['usertype'],
-                           "ProjectTask_".$item->getField("id").'_Document_Item$1'
+                           "ProjectTask_" . $item->getField("id") . '_Document_Item$1'
                        );
 
         $this->data["##projecttask.numberofdocuments##"]

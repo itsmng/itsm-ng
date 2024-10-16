@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -201,7 +202,6 @@ class DBmysql
             // Round robin choice
             $i    = (isset($choice) ? $choice : mt_rand(0, count($this->dbhost) - 1));
             $host = $this->dbhost[$i];
-
         } else {
             $host = $this->dbhost;
         }
@@ -270,8 +270,10 @@ class DBmysql
             $zone = $_SESSION['glpi_tz'];
         } else {
             $conf_tz = ['value' => null];
-            if ($this->tableExists(Config::getTable())
-                && $this->fieldExists(Config::getTable(), 'value')) {
+            if (
+                $this->tableExists(Config::getTable())
+                && $this->fieldExists(Config::getTable(), 'value')
+            ) {
                 $conf_tz = $this->request([
                    'SELECT' => 'value',
                    'FROM'   => Config::getTable(),
@@ -343,8 +345,8 @@ class DBmysql
             return $res;
         } catch (\mysqli_sql_exception $e) {
             // no translation for error logs
-            $error = "  *** MySQL query error:\n  SQL: ".$query."\n  Error: ".
-                      $this->dbh->error."\n";
+            $error = "  *** MySQL query error:\n  SQL: " . $query . "\n  Error: " .
+                      $this->dbh->error . "\n";
             $error .= Toolbox::backtrace(false, 'DBmysql->query()', ['Toolbox::backtrace()']);
 
             Toolbox::logSqlError($error);
@@ -408,8 +410,8 @@ class DBmysql
         $res = $this->dbh->prepare($query);
         if (!$res) {
             // no translation for error logs
-            $error = "  *** MySQL prepare error:\n  SQL: ".$query."\n  Error: ".
-                      $this->dbh->error."\n";
+            $error = "  *** MySQL prepare error:\n  SQL: " . $query . "\n  Error: " .
+                      $this->dbh->error . "\n";
             $error .= Toolbox::backtrace(false, 'DBmysql->prepare()', ['Toolbox::backtrace()']);
 
             Toolbox::logInFile("sql-errors", $error);
@@ -417,9 +419,11 @@ class DBmysql
                 throw new GlpitestSQLError($error);
             }
 
-            if (isset($_SESSION['glpi_use_mode'])
+            if (
+                isset($_SESSION['glpi_use_mode'])
                 && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE
-                && $CFG_GLPI["debug_sql"]) {
+                && $CFG_GLPI["debug_sql"]
+            ) {
                 $SQL_TOTAL_REQUEST++;
                 $DEBUG_SQL["errors"][$SQL_TOTAL_REQUEST] = $this->error();
             }
@@ -438,9 +442,11 @@ class DBmysql
      */
     public function result($result, $i, $field)
     {
-        if ($result && ($result->data_seek($i))
+        if (
+            $result && ($result->data_seek($i))
             && ($data = $result->fetch_array())
-            && isset($data[$field])) {
+            && isset($data[$field])
+        ) {
             return $data[$field];
         }
         return null;
@@ -971,7 +977,7 @@ class DBmysql
                 $ret['Server SQL Mode'] = '';
             }
         }
-        $ret['Parameters'] = $this->dbuser."@".$this->dbhost."/".$this->dbdefault;
+        $ret['Parameters'] = $this->dbuser . "@" . $this->dbhost . "/" . $this->dbdefault;
         $ret['Host info']  = $this->dbh->host_info;
 
         return $ret;
@@ -1015,7 +1021,7 @@ class DBmysql
      */
     public function getLock($name)
     {
-        $name          = addslashes($this->dbdefault.'.'.$name);
+        $name          = addslashes($this->dbdefault . '.' . $name);
         $query         = "SELECT GET_LOCK('$name', 0)";
         $result        = $this->query($query);
         list($lock_ok) = $this->fetchRow($result);
@@ -1034,7 +1040,7 @@ class DBmysql
      */
     public function releaseLock($name)
     {
-        $name          = addslashes($this->dbdefault.'.'.$name);
+        $name          = addslashes($this->dbdefault . '.' . $name);
         $query         = "SELECT RELEASE_LOCK('$name')";
         $result        = $this->query($query);
         list($lock_ok) = $this->fetchRow($result);
@@ -1315,7 +1321,7 @@ class DBmysql
             throw new \RuntimeException('Cannot run an UPDATE query without WHERE clause!');
         }
 
-        $query  = "UPDATE ". self::quoteName($table);
+        $query  = "UPDATE " . self::quoteName($table);
 
         //JOINS
         $it = new DBmysqlIterator($this);
@@ -1323,7 +1329,7 @@ class DBmysql
 
         $query .= " SET ";
         foreach ($params as $field => $value) {
-            $query .= self::quoteName($field) . " = ".$this->quoteValue($value).", ";
+            $query .= self::quoteName($field) . " = " . $this->quoteValue($value) . ", ";
         }
         $query = rtrim($query, ', ');
 
@@ -1445,7 +1451,7 @@ class DBmysql
             throw new \RuntimeException('Cannot run an DELETE query without WHERE clause!');
         }
 
-        $query  = "DELETE " . self::quoteName($table) . " FROM ". self::quoteName($table);
+        $query  = "DELETE " . self::quoteName($table) . " FROM " . self::quoteName($table);
 
         $it = new DBmysqlIterator($this);
         $query .= $it->analyseJoins($joins);
@@ -1505,7 +1511,6 @@ class DBmysql
                 echo $message . "\n";
                 die(1);
             }
-
         }
         return $res;
     }
@@ -1530,7 +1535,9 @@ class DBmysql
         $index = preg_grep(
             "/^\s\s+?KEY/",
             array_map(
-                function ($idx) { return rtrim($idx, ','); },
+                function ($idx) {
+                    return rtrim($idx, ',');
+                },
                 explode("\n", $structure)
             )
         );
@@ -1539,7 +1546,7 @@ class DBmysql
             [
               "/\s\s+KEY .*/",
               "/AUTO_INCREMENT=\d+ /"
-         ],
+            ],
             "",
             $structure
         );
@@ -1551,12 +1558,12 @@ class DBmysql
               " COLLATE utf8_unicode_ci",
               " CHARACTER SET utf8",
               ', ',
-         ],
+            ],
             [
               '',
               '',
               ',',
-         ],
+            ],
             trim($structure)
         );
 
@@ -1601,7 +1608,6 @@ class DBmysql
            'schema' => strtolower($structure),
            'index'  => $index
         ];
-
     }
 
     /**
@@ -1685,9 +1691,9 @@ class DBmysql
 
         $tz_table_res = $this->request(
             'SHOW TABLES FROM '
-         . $this->quoteName('mysql')
-         . ' LIKE '
-         . $this->quoteValue('time_zone_name')
+            . $this->quoteName('mysql')
+            . ' LIKE '
+            . $this->quoteValue('time_zone_name')
         );
         if ($tz_table_res->count() === 0) {
             $msg = __('Access to timezone table (mysql.time_zone_name) is not allowed.');
@@ -1830,7 +1836,7 @@ class DBmysql
             ],
             'information_schema.columns.data_type' => ['tinyint', 'smallint', 'mediumint', 'int', 'bigint'],
             ['NOT' => ['information_schema.columns.column_type' => ['LIKE', '%unsigned%']]],
-         ],
+           ],
            'ORDER'      => ['TABLE_NAME']
         ];
         foreach (self::ALLOWED_SIGNED_KEYS as $allowed_signed_key) {
@@ -2000,7 +2006,6 @@ class DBmysql
             if (($i != ($linecount - 1)) || (strlen($lines[$i]) > 0)) {
                 if (isset($lines[$i][0])) {
                     if ($lines[$i][0] != "#" && substr($lines[$i], 0, 2) != "--") {
-
                         $output .= $lines[$i] . "\n";
                     } else {
                         $output .= "\n";

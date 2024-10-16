@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -168,7 +169,6 @@ class TicketTemplate extends ITILTemplate
                 case 2:
                     $item->showHelpdeskPreview($item);
                     return true;
-
             }
         }
         return false;
@@ -193,5 +193,4 @@ class TicketTemplate extends ITILTemplate
             $ticket->showFormHelpdesk(Session::getLoginUserID(), $tt->getID());
         }
     }
-
 }

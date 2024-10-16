@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -44,13 +45,11 @@ Session::checkLoginUser();
 try {
     $ma = new MassiveAction($_POST, $_GET, 'initial');
 } catch (Exception $e) {
-
-    echo "<div class='center'><img src='".$CFG_GLPI["root_doc"]."/pics/warning.png' alt='".
-                               __s('Warning')."'><br><br>";
-    echo "<span class='b'>".$e->getMessage()."</span><br>";
+    echo "<div class='center'><img src='" . $CFG_GLPI["root_doc"] . "/pics/warning.png' alt='" .
+                               __s('Warning') . "'><br><br>";
+    echo "<span class='b'>" . $e->getMessage() . "</span><br>";
     echo "</div>";
     exit();
-
 }
 
 echo "<div class='center massiveactions w-100'>";
@@ -80,7 +79,7 @@ if (count($actions)) {
     Ajax::updateItemOnSelectEvent(
         "dropdown_massiveaction$rand",
         "show_massiveaction$rand",
-        $CFG_GLPI["root_doc"]."/ajax/dropdownMassiveAction.php",
+        $CFG_GLPI["root_doc"] . "/ajax/dropdownMassiveAction.php",
         $params
     );
 

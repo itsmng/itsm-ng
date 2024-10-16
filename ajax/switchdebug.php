@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -39,7 +40,7 @@ if (Config::canUpdate()) {
         [
           'id'        => Session::getLoginUserID(),
           'use_mode'  => $mode
-      ]
+        ]
     );
     Session::addMessageAfterRedirect(
         $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE ?

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -72,9 +73,10 @@ if (isset($_POST["add"])) {
         sprintf(__('%s adds a followup'), $_SESSION["glpiname"])
     );
     Html::redirect($track->getFormURLWithID($fup->getField('items_id')));
-
-} elseif (isset($_POST['add_close'])
-           || isset($_POST['add_reopen'])) {
+} elseif (
+    isset($_POST['add_close'])
+           || isset($_POST['add_reopen'])
+) {
     if ($track->getFromDB($_POST['items_id']) && (method_exists($track, 'canApprove') && $track->canApprove())) {
         $fup->add($_POST);
 
@@ -88,7 +90,6 @@ if (isset($_POST["add"])) {
         );
         Html::back();
     }
-
 } elseif (isset($_POST["update"])) {
     $fup->check($_POST['id'], UPDATE);
     $fup->update($_POST);
@@ -102,7 +103,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates a followup'), $_SESSION["glpiname"])
     );
     Html::redirect($track->getFormURLWithID($fup->getField('items_id')));
-
 } elseif (isset($_POST["purge"])) {
     $fup->check($_POST['id'], PURGE);
     $fup->delete($_POST, 1);

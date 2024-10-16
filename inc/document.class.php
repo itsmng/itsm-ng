@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -71,8 +72,10 @@ class Document extends CommonDBTM
         global $CFG_GLPI;
 
         // All devices can have documents!
-        if (is_a($item, 'Item_Devices', true)
-            || is_a($item, 'CommonDevice', true)) {
+        if (
+            is_a($item, 'Item_Devices', true)
+            || is_a($item, 'CommonDevice', true)
+        ) {
             return true;
         }
 
@@ -140,9 +143,10 @@ class Document extends CommonDBTM
         }
 
         // From Ticket Document Tab => check right to add followup.
-        if (isset($this->fields['tickets_id'])
-            && ($this->fields['tickets_id'] > 0)) {
-
+        if (
+            isset($this->fields['tickets_id'])
+            && ($this->fields['tickets_id'] > 0)
+        ) {
             $ticket = new Ticket();
             if ($ticket->getFromDB($this->fields['tickets_id'])) {
                 return $ticket->canAddFollowups();
@@ -162,28 +166,29 @@ class Document extends CommonDBTM
         $this->deleteChildrenAndRelationsFromDb(
             [
               Document_Item::class,
-         ]
+            ]
         );
 
         // UNLINK DU FICHIER
         if (!empty($this->fields["filepath"])) {
-            if (is_file(GLPI_DOC_DIR."/".$this->fields["filepath"])
-                && !is_dir(GLPI_DOC_DIR."/".$this->fields["filepath"])
+            if (
+                is_file(GLPI_DOC_DIR . "/" . $this->fields["filepath"])
+                && !is_dir(GLPI_DOC_DIR . "/" . $this->fields["filepath"])
                 && (countElementsInTable(
                     $this->getTable(),
                     ['sha1sum' => $this->fields["sha1sum"] ]
-                ) <= 1)) {
-
-                if (unlink(GLPI_DOC_DIR."/".$this->fields["filepath"])) {
+                ) <= 1)
+            ) {
+                if (unlink(GLPI_DOC_DIR . "/" . $this->fields["filepath"])) {
                     Session::addMessageAfterRedirect(sprintf(
                         __('Succesful deletion of the file %s'),
-                        GLPI_DOC_DIR."/".$this->fields["filepath"]
+                        GLPI_DOC_DIR . "/" . $this->fields["filepath"]
                     ));
                 } else {
                     Session::addMessageAfterRedirect(
                         sprintf(
                             __('Failed to delete the file %s'),
-                            GLPI_DOC_DIR."/".$this->fields["filepath"]
+                            GLPI_DOC_DIR . "/" . $this->fields["filepath"]
                         ),
                         false,
                         ERROR
@@ -222,11 +227,12 @@ class Document extends CommonDBTM
 
         // Create a doc only selecting a file from a item form
         $create_from_item = false;
-        if (isset($input["items_id"])
+        if (
+            isset($input["items_id"])
             && isset($input["itemtype"])
             && ($item = getItemForItemtype($input["itemtype"]))
-            && ($input["items_id"] > 0)) {
-
+            && ($input["items_id"] > 0)
+        ) {
             $typename = $item->getTypeName(1);
             $name     = NOT_AVAILABLE;
 
@@ -251,7 +257,7 @@ class Document extends CommonDBTM
         } elseif (isset($input["upload_file"]) && !empty($input["upload_file"])) {
             // Move doc from upload dir
             $upload_ok = $this->moveUploadedDocument($input, $input["upload_file"]);
-        } elseif (isset($input['filepath']) && file_exists(GLPI_DOC_DIR.'/'.$input['filepath'])) {
+        } elseif (isset($input['filepath']) && file_exists(GLPI_DOC_DIR . '/' . $input['filepath'])) {
             // Document is created using an existing document file
             $upload_ok = true;
         }
@@ -271,23 +277,29 @@ class Document extends CommonDBTM
         }
 
         // Default document name
-        if ((!isset($input['name']) || empty($input['name']))
-            && isset($input['filename'])) {
+        if (
+            (!isset($input['name']) || empty($input['name']))
+            && isset($input['filename'])
+        ) {
             $input['name'] = $input['filename'];
         }
 
         unset($input["upload_file"]);
 
         // Don't add if no file
-        if (isset($input["_only_if_upload_succeed"])
+        if (
+            isset($input["_only_if_upload_succeed"])
             && $input["_only_if_upload_succeed"]
-            && (!isset($input['filename']) || empty($input['filename']))) {
+            && (!isset($input['filename']) || empty($input['filename']))
+        ) {
             return false;
         }
 
         // Set default category for document linked to tickets
-        if (isset($input['itemtype']) && ($input['itemtype'] == 'Ticket')
-            && (!isset($input['documentcategories_id']) || ($input['documentcategories_id'] == 0))) {
+        if (
+            isset($input['itemtype']) && ($input['itemtype'] == 'Ticket')
+            && (!isset($input['documentcategories_id']) || ($input['documentcategories_id'] == 0))
+        ) {
             $input['documentcategories_id'] = $CFG_GLPI["documentcategories_id_forticket"];
         }
 
@@ -321,13 +333,14 @@ class Document extends CommonDBTM
     public function post_addItem()
     {
 
-        if (isset($this->input["items_id"])
+        if (
+            isset($this->input["items_id"])
             && isset($this->input["itemtype"])
             && (($this->input["items_id"] > 0)
                 || (($this->input["items_id"] == 0)
                     && ($this->input["itemtype"] == 'Entity')))
-            && !empty($this->input["itemtype"])) {
-
+            && !empty($this->input["itemtype"])
+        ) {
             $docitem = new Document_Item();
             $docitem->add(['documents_id' => $this->fields['id'],
                                 'itemtype'     => $this->input["itemtype"],
@@ -347,9 +360,11 @@ class Document extends CommonDBTM
 
     public function post_getFromDB()
     {
-        if (isAPI()
+        if (
+            isAPI()
             && (isset($_SERVER['HTTP_ACCEPT']) && $_SERVER['HTTP_ACCEPT'] == 'application/octet-stream'
-                || isset($_GET['alt']) && $_GET['alt'] == 'media')) {
+                || isset($_GET['alt']) && $_GET['alt'] == 'media')
+        ) {
             // This is a API request to download the document
             $this->send();
             exit();
@@ -581,17 +596,19 @@ class Document extends CommonDBTM
         $initfileout = $fileout;
 
         if (Toolbox::strlen($fileout) > $len) {
-            $fileout = Toolbox::substr($fileout, 0, $len)."&hellip;";
+            $fileout = Toolbox::substr($fileout, 0, $len) . "&hellip;";
         }
 
         $out   = '';
         $open  = '';
         $close = '';
-        if (self::canView()
-            || $this->canViewFile(['tickets_id' => $this->fields['tickets_id']])) {
-            $open  = "<a href='".$CFG_GLPI["root_doc"]."/front/document.send.php?docid=".
-                       $this->fields['id'].$params."' alt=\"".$initfileout."\"
-                    title=\"".$initfileout."\"target='_blank'>";
+        if (
+            self::canView()
+            || $this->canViewFile(['tickets_id' => $this->fields['tickets_id']])
+        ) {
+            $open  = "<a href='" . $CFG_GLPI["root_doc"] . "/front/document.send.php?docid=" .
+                       $this->fields['id'] . $params . "' alt=\"" . $initfileout . "\"
+                    title=\"" . $initfileout . "\"target='_blank'>";
             $close = "</a>";
         }
         $splitter = explode("/", $this->fields['filepath']);
@@ -609,12 +626,12 @@ class Document extends CommonDBTM
             if (count($iterator) > 0) {
                 $result = $iterator->next();
                 $icon = $result['icon'];
-                if (!file_exists(GLPI_ROOT."/pics/icones/$icon")) {
+                if (!file_exists(GLPI_ROOT . "/pics/icones/$icon")) {
                     $icon = "defaut-dist.png";
                 }
-                $out .= "&nbsp;<img class='middle' style='margin-left:3px; margin-right:6px;' alt=\"".
-                                  $initfileout."\" title=\"".$initfileout."\" src='".
-                                  $CFG_GLPI["typedoc_icon_dir"]."/$icon'>";
+                $out .= "&nbsp;<img class='middle' style='margin-left:3px; margin-right:6px;' alt=\"" .
+                                  $initfileout . "\" title=\"" . $initfileout . "\" src='" .
+                                  $CFG_GLPI["typedoc_icon_dir"] . "/$icon'>";
             }
         }
         $out .= "$open<span class='b'>$fileout</span>$close";
@@ -654,7 +671,7 @@ class Document extends CommonDBTM
                  $this->getTable() . '.entities_id'  => $entity
               ],
               'LIMIT'  => 1,
-         ]
+            ]
         );
 
         if ($doc_iterator->count() === 0) {
@@ -677,9 +694,11 @@ class Document extends CommonDBTM
     {
 
         // Check if it is my doc
-        if (Session::getLoginUserID()
+        if (
+            Session::getLoginUserID()
             && ($this->can($this->fields["id"], READ)
-                || ($this->fields["users_id"] === Session::getLoginUserID()))) {
+                || ($this->fields["users_id"] === Session::getLoginUserID()))
+        ) {
             return true;
         }
 
@@ -691,21 +710,27 @@ class Document extends CommonDBTM
             return true;
         }
 
-        if (isset($options["changes_id"])
-            && $this->canViewFileFromItilObject('Change', $options["changes_id"])) {
+        if (
+            isset($options["changes_id"])
+            && $this->canViewFileFromItilObject('Change', $options["changes_id"])
+        ) {
             return true;
         }
 
-        if (isset($options["problems_id"])
-            && $this->canViewFileFromItilObject('Problem', $options["problems_id"])) {
+        if (
+            isset($options["problems_id"])
+            && $this->canViewFileFromItilObject('Problem', $options["problems_id"])
+        ) {
             return true;
         }
 
         // The following case should be reachable from the API
         self::loadAPISessionIfExist();
 
-        if (isset($options["tickets_id"])
-            && $this->canViewFileFromItilObject('Ticket', $options["tickets_id"])) {
+        if (
+            isset($options["tickets_id"])
+            && $this->canViewFileFromItilObject('Ticket', $options["tickets_id"])
+        ) {
             return true;
         }
 
@@ -774,7 +799,7 @@ class Document extends CommonDBTM
               'WHERE'     => [
                  'glpi_documents_items.documents_id' => $this->fields['id']
               ]
-         ],
+            ],
             Reminder::getVisibilityCriteria()
         );
 
@@ -799,9 +824,11 @@ class Document extends CommonDBTM
             return false;
         }
 
-        if (!Session::haveRight(KnowbaseItem::$rightname, READ)
+        if (
+            !Session::haveRight(KnowbaseItem::$rightname, READ)
             && !Session::haveRight(KnowbaseItem::$rightname, KnowbaseItem::READFAQ)
-            && !$CFG_GLPI['use_public_faq']) {
+            && !$CFG_GLPI['use_public_faq']
+        ) {
             return false;
         }
 
@@ -1086,7 +1113,7 @@ class Document extends CommonDBTM
             $prefix = array_shift($input['_prefix_filename']);
         }
 
-        $fullpath = GLPI_UPLOAD_DIR."/".$filename;
+        $fullpath = GLPI_UPLOAD_DIR . "/" . $filename;
         $filename = str_replace($prefix, '', $filename);
 
         if (!is_dir(GLPI_UPLOAD_DIR)) {
@@ -1111,16 +1138,17 @@ class Document extends CommonDBTM
         }
 
         // Delete old file (if not used by another doc)
-        if (isset($input['current_filepath'])
+        if (
+            isset($input['current_filepath'])
             && !empty($input['current_filepath'])
-            && is_file(GLPI_DOC_DIR."/".$input['current_filepath'])
+            && is_file(GLPI_DOC_DIR . "/" . $input['current_filepath'])
             && (countElementsInTable(
                 'glpi_documents',
-                ['sha1sum' => sha1_file(GLPI_DOC_DIR."/".
+                ['sha1sum' => sha1_file(GLPI_DOC_DIR . "/" .
                                                $input['current_filepath']) ]
-            ) <= 1)) {
-
-            if (unlink(GLPI_DOC_DIR."/".$input['current_filepath'])) {
+            ) <= 1)
+        ) {
+            if (unlink(GLPI_DOC_DIR . "/" . $input['current_filepath'])) {
                 Session::addMessageAfterRedirect(sprintf(
                     __('Succesful deletion of the file %s'),
                     $input['current_filename']
@@ -1131,7 +1159,7 @@ class Document extends CommonDBTM
                     sprintf(
                         __('Failed to delete the file %1$s (%2$s)'),
                         $input['current_filename'],
-                        GLPI_DOC_DIR."/".$input['current_filepath']
+                        GLPI_DOC_DIR . "/" . $input['current_filepath']
                     ),
                     false,
                     ERROR
@@ -1142,18 +1170,18 @@ class Document extends CommonDBTM
         // Local file : try to detect mime type
         $input['mime'] = Toolbox::getMime($fullpath);
 
-        if (is_writable(GLPI_UPLOAD_DIR)
-            && is_writable($fullpath)) { // Move if allowed
-
-            if (self::renameForce($fullpath, GLPI_DOC_DIR."/".$new_path)) {
+        if (
+            is_writable(GLPI_UPLOAD_DIR)
+            && is_writable($fullpath)
+        ) { // Move if allowed
+            if (self::renameForce($fullpath, GLPI_DOC_DIR . "/" . $new_path)) {
                 Session::addMessageAfterRedirect(__('Document move succeeded.'));
             } else {
                 Session::addMessageAfterRedirect(__('File move failed.'), false, ERROR);
                 return false;
             }
-
         } else { // Copy (will overwrite dest file is present)
-            if (copy($fullpath, GLPI_DOC_DIR."/".$new_path)) {
+            if (copy($fullpath, GLPI_DOC_DIR . "/" . $new_path)) {
                 Session::addMessageAfterRedirect(__('Document copy succeeded.'));
             } else {
                 Session::addMessageAfterRedirect(__('File move failed'), false, ERROR);
@@ -1185,7 +1213,7 @@ class Document extends CommonDBTM
             $prefix = array_shift($input['_prefix_filename']);
         }
 
-        $fullpath = GLPI_TMP_DIR."/".$filename;
+        $fullpath = GLPI_TMP_DIR . "/" . $filename;
         $filename = str_replace($prefix, '', $filename);
         if (!is_dir(GLPI_TMP_DIR)) {
             Session::addMessageAfterRedirect(__("Temporary directory doesn't exist"), false, ERROR);
@@ -1210,16 +1238,17 @@ class Document extends CommonDBTM
         }
 
         // Delete old file (if not used by another doc)
-        if (isset($input['current_filepath'])
+        if (
+            isset($input['current_filepath'])
             && !empty($input['current_filepath'])
-            && is_file(GLPI_DOC_DIR."/".$input['current_filepath'])
+            && is_file(GLPI_DOC_DIR . "/" . $input['current_filepath'])
             && (countElementsInTable(
                 'glpi_documents',
-                ['sha1sum' => sha1_file(GLPI_DOC_DIR."/".
+                ['sha1sum' => sha1_file(GLPI_DOC_DIR . "/" .
                                                $input['current_filepath']) ]
-            ) <= 1)) {
-
-            if (unlink(GLPI_DOC_DIR."/".$input['current_filepath'])) {
+            ) <= 1)
+        ) {
+            if (unlink(GLPI_DOC_DIR . "/" . $input['current_filepath'])) {
                 Session::addMessageAfterRedirect(sprintf(
                     __('Succesful deletion of the file %s'),
                     $input['current_filename']
@@ -1230,7 +1259,7 @@ class Document extends CommonDBTM
                     sprintf(
                         __('Failed to delete the file %1$s (%2$s)'),
                         $input['current_filename'],
-                        GLPI_DOC_DIR."/".$input['current_filepath']
+                        GLPI_DOC_DIR . "/" . $input['current_filepath']
                     ),
                     false,
                     ERROR
@@ -1241,18 +1270,18 @@ class Document extends CommonDBTM
         // Local file : try to detect mime type
         $input['mime'] = Toolbox::getMime($fullpath);
 
-        if (is_writable(GLPI_TMP_DIR)
-            && is_writable($fullpath)) { // Move if allowed
-
-            if (self::renameForce($fullpath, GLPI_DOC_DIR."/".$new_path)) {
+        if (
+            is_writable(GLPI_TMP_DIR)
+            && is_writable($fullpath)
+        ) { // Move if allowed
+            if (self::renameForce($fullpath, GLPI_DOC_DIR . "/" . $new_path)) {
                 Session::addMessageAfterRedirect(__('Document move succeeded.'));
             } else {
                 Session::addMessageAfterRedirect(__('File move failed.'), false, ERROR);
                 return false;
             }
-
         } else { // Copy (will overwrite dest file is present)
-            if (copy($fullpath, GLPI_DOC_DIR."/".$new_path)) {
+            if (copy($fullpath, GLPI_DOC_DIR . "/" . $new_path)) {
                 Session::addMessageAfterRedirect(__('Document copy succeeded.'));
             } else {
                 Session::addMessageAfterRedirect(__('File move failed'), false, ERROR);
@@ -1281,10 +1310,11 @@ class Document extends CommonDBTM
     public static function uploadDocument(array &$input, $FILEDESC)
     {
 
-        if (!count($FILEDESC)
+        if (
+            !count($FILEDESC)
             || empty($FILEDESC['name'])
-            || !is_file($FILEDESC['tmp_name'])) {
-
+            || !is_file($FILEDESC['tmp_name'])
+        ) {
             switch ($FILEDESC['error']) {
                 case 1:
                 case 2:
@@ -1308,15 +1338,16 @@ class Document extends CommonDBTM
         }
 
         // Delete old file (if not used by another doc)
-        if (isset($input['current_filepath'])
+        if (
+            isset($input['current_filepath'])
             && !empty($input['current_filepath'])
             && (countElementsInTable(
                 'glpi_documents',
-                ['sha1sum' => sha1_file(GLPI_DOC_DIR."/".
+                ['sha1sum' => sha1_file(GLPI_DOC_DIR . "/" .
                                                $input['current_filepath']) ]
-            ) <= 1)) {
-
-            if (unlink(GLPI_DOC_DIR."/".$input['current_filepath'])) {
+            ) <= 1)
+        ) {
+            if (unlink(GLPI_DOC_DIR . "/" . $input['current_filepath'])) {
                 Session::addMessageAfterRedirect(sprintf(
                     __('Succesful deletion of the file %s'),
                     $input['current_filename']
@@ -1327,7 +1358,7 @@ class Document extends CommonDBTM
                     sprintf(
                         __('Failed to delete the file %1$s (%2$s)'),
                         $input['current_filename'],
-                        GLPI_DOC_DIR."/".$input['current_filepath']
+                        GLPI_DOC_DIR . "/" . $input['current_filepath']
                     ),
                     false,
                     ERROR
@@ -1341,7 +1372,7 @@ class Document extends CommonDBTM
         }
 
         // Move uploaded file
-        if (self::renameForce($FILEDESC['tmp_name'], GLPI_DOC_DIR."/".$path)) {
+        if (self::renameForce($FILEDESC['tmp_name'], GLPI_DOC_DIR . "/" . $path)) {
             Session::addMessageAfterRedirect(__('The file is valid. Upload is successful.'));
             // For display
             $input['filename'] = addslashes($FILEDESC['name']);
@@ -1375,7 +1406,7 @@ class Document extends CommonDBTM
 
             if (Session::haveRight('dropdown', READ)) {
                 $dt       = new DocumentType();
-                $message .= " <a target='_blank' href='".$dt->getSearchURL()."' class='pointer'>
+                $message .= " <a target='_blank' href='" . $dt->getSearchURL() . "' class='pointer'>
                          <i class='fa fa-info' aria-hidden='true'</i><span class='sr-only'>" . __('Manage document types')  . "</span></a>";
             }
             Session::addMessageAfterRedirect($message, false, ERROR);
@@ -1393,28 +1424,30 @@ class Document extends CommonDBTM
             );
             return '';
         }
-        $subdir = $dir.'/'.substr($sha1sum, 0, 2);
+        $subdir = $dir . '/' . substr($sha1sum, 0, 2);
 
-        if (!is_dir(GLPI_DOC_DIR."/".$subdir)
-            && @mkdir(GLPI_DOC_DIR."/".$subdir, 0777, true)) {
+        if (
+            !is_dir(GLPI_DOC_DIR . "/" . $subdir)
+            && @mkdir(GLPI_DOC_DIR . "/" . $subdir, 0777, true)
+        ) {
             Session::addMessageAfterRedirect(sprintf(
                 __('Create the directory %s'),
-                GLPI_DOC_DIR."/".$subdir
+                GLPI_DOC_DIR . "/" . $subdir
             ));
         }
 
-        if (!is_dir(GLPI_DOC_DIR."/".$subdir)) {
+        if (!is_dir(GLPI_DOC_DIR . "/" . $subdir)) {
             Session::addMessageAfterRedirect(
                 sprintf(
                     __('Failed to create the directory %s. Verify that you have the correct permission'),
-                    GLPI_DOC_DIR."/".$subdir
+                    GLPI_DOC_DIR . "/" . $subdir
                 ),
                 false,
                 ERROR
             );
             return '';
         }
-        return $subdir.'/'.substr($sha1sum, 2).'.'.$dir;
+        return $subdir . '/' . substr($sha1sum, 2) . '.' . $dir;
     }
 
 
@@ -1426,7 +1459,6 @@ class Document extends CommonDBTM
     public static function showUploadedFilesDropdown($myname)
     {
         if (is_dir(GLPI_UPLOAD_DIR)) {
-
             $uploaded_files = [];
             if ($handle = opendir(GLPI_UPLOAD_DIR)) {
                 while (false !== ($file = readdir($handle))) {
@@ -1445,7 +1477,6 @@ class Document extends CommonDBTM
             } else {
                 echo __('No file available');
             }
-
         } else {
             echo __("Upload directory doesn't exist");
         }
@@ -1486,11 +1517,13 @@ class Document extends CommonDBTM
         ]);
 
         while ($data = $iterator->next()) {
-            if (preg_match(
-                Toolbox::unclean_cross_side_scripting_deep($data['ext'])."i",
-                $ext,
-                $results
-            ) > 0) {
+            if (
+                preg_match(
+                    Toolbox::unclean_cross_side_scripting_deep($data['ext']) . "i",
+                    $ext,
+                    $results
+                ) > 0
+            ) {
                 return Toolbox::strtoupper($ext);
             }
         }
@@ -1615,19 +1648,19 @@ class Document extends CommonDBTM
         $is_deleted = 0,
         CommonDBTM $checkitem = null
     ) {
-        $action_prefix = 'Document_Item'.MassiveAction::CLASS_ACTION_SEPARATOR;
+        $action_prefix = 'Document_Item' . MassiveAction::CLASS_ACTION_SEPARATOR;
 
         if (self::canApplyOn($itemtype)) {
             if (Document::canView()) {
-                $actions[$action_prefix.'add']    = "<i class='ma-icon far fa-file' aria-hidden='true'></i>".
+                $actions[$action_prefix . 'add']    = "<i class='ma-icon far fa-file' aria-hidden='true'></i>" .
                                                     _x('button', 'Add a document');
-                $actions[$action_prefix.'remove'] = _x('button', 'Remove a document');
+                $actions[$action_prefix . 'remove'] = _x('button', 'Remove a document');
             }
         }
 
         if ((is_a($itemtype, __CLASS__, true)) && (static::canUpdate())) {
-            $actions[$action_prefix.'add_item']    = _x('button', 'Add an item');
-            $actions[$action_prefix.'remove_item'] = _x('button', 'Remove an item');
+            $actions[$action_prefix . 'add_item']    = _x('button', 'Add an item');
+            $actions[$action_prefix . 'remove_item'] = _x('button', 'Remove an item');
         }
     }
 
@@ -1641,7 +1674,7 @@ class Document extends CommonDBTM
     **/
     public static function getImageTag($string)
     {
-        return self::$tag_prefix.$string.self::$tag_prefix;
+        return self::$tag_prefix . $string . self::$tag_prefix;
     }
 
     /**

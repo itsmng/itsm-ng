@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -48,8 +49,10 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
     {
         $field = self::getTargetFieldName();
 
-        if (!isset($data[$field])
-           && isset($data['users_id'])) {
+        if (
+            !isset($data[$field])
+            && isset($data['users_id'])
+        ) {
             // No email set : get default for user
             $data[$field] = UserEmail::getDefaultForUser($data['users_id']);
         }
@@ -135,8 +138,8 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
             }
 
             // Add custom header for mail grouping in reader
-            $mmail->AddCustomHeader("In-Reply-To: <GLPI-".$current->fields["itemtype"]."-".
-                                    $current->fields["items_id"].">");
+            $mmail->AddCustomHeader("In-Reply-To: <GLPI-" . $current->fields["itemtype"] . "-" .
+                                    $current->fields["items_id"] . ">");
 
             $mmail->SetFrom($current->fields['sender'], $current->fields['sendername']);
 
@@ -174,7 +177,7 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
                       'SELECT' => ['documents_id'],
                       'FROM'   => Document_Item::getTable(),
                       'WHERE'  => $doc_crit,
-               ]
+                    ]
                 );
                 foreach ($doc_items_iterator as $doc_item) {
                     $documents_ids[] = $doc_item['documents_id'];
@@ -195,23 +198,27 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
                 foreach ($documents_ids as $document_id) {
                     $doc->getFromDB($document_id);
                     // Add embeded image if tag present in ticket content
-                    if (preg_match_all(
-                        '/'.preg_quote($doc->fields['tag']).'/',
-                        $current->fields['body_html'],
-                        $matches,
-                        PREG_PATTERN_ORDER
-                    )) {
+                    if (
+                        preg_match_all(
+                            '/' . preg_quote($doc->fields['tag']) . '/',
+                            $current->fields['body_html'],
+                            $matches,
+                            PREG_PATTERN_ORDER
+                        )
+                    ) {
                         $image_path = Document::getImage(
-                            GLPI_DOC_DIR."/".$doc->fields['filepath'],
+                            GLPI_DOC_DIR . "/" . $doc->fields['filepath'],
                             'mail'
                         );
-                        if ($mmail->AddEmbeddedImage(
-                            $image_path,
-                            $doc->fields['tag'],
-                            $doc->fields['filename'],
-                            'base64',
-                            $doc->fields['mime']
-                        )) {
+                        if (
+                            $mmail->AddEmbeddedImage(
+                                $image_path,
+                                $doc->fields['tag'],
+                                $doc->fields['filename'],
+                                'base64',
+                                $doc->fields['mime']
+                            )
+                        ) {
                             $inline_docs[$document_id] = $doc->fields['tag'];
                         }
                     } else {
@@ -222,11 +229,13 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
 
                 // manage inline images (and not added as documents in object)
                 $matches = [];
-                if (preg_match_all(
-                    "/<img[^>]*src=(\"|')[^\"']*document\.send\.php\?docid=([0-9]+)[^\"']*(\"|')[^<]*>/",
-                    $current->fields['body_html'],
-                    $matches
-                )) {
+                if (
+                    preg_match_all(
+                        "/<img[^>]*src=(\"|')[^\"']*document\.send\.php\?docid=([0-9]+)[^\"']*(\"|')[^<]*>/",
+                        $current->fields['body_html'],
+                        $matches
+                    )
+                ) {
                     if (isset($matches[2])) {
                         foreach ($matches[2] as $pos => $docID) {
                             if (!in_array($docID, $inline_docs)) {
@@ -243,18 +252,20 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
                                 }
 
                                 $image_path = Document::getImage(
-                                    GLPI_DOC_DIR."/".$doc->fields['filepath'],
+                                    GLPI_DOC_DIR . "/" . $doc->fields['filepath'],
                                     'mail',
                                     $width,
                                     $height
                                 );
-                                if ($mmail->AddEmbeddedImage(
-                                    $image_path,
-                                    $doc->fields['tag'],
-                                    $doc->fields['filename'],
-                                    'base64',
-                                    $doc->fields['mime']
-                                )) {
+                                if (
+                                    $mmail->AddEmbeddedImage(
+                                        $image_path,
+                                        $doc->fields['tag'],
+                                        $doc->fields['filename'],
+                                        'base64',
+                                        $doc->fields['mime']
+                                    )
+                                ) {
                                     $inline_docs[$docID] = $doc->fields['tag'];
                                 }
                             }
@@ -267,13 +278,13 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
                 foreach ($inline_docs as $docID => $tag) {
                     $current->fields['body_html'] = preg_replace(
                         [
-                          '/src=["\'][^"\']*document\.send\.php\?docid='.$docID.'(&[^"\']+)?["\']/',
-                          '/href=["\'][^"\']*document\.send\.php\?docid='.$docID.'(&[^"\']+)?["\']/',
-                  ],
+                          '/src=["\'][^"\']*document\.send\.php\?docid=' . $docID . '(&[^"\']+)?["\']/',
+                          '/href=["\'][^"\']*document\.send\.php\?docid=' . $docID . '(&[^"\']+)?["\']/',
+                        ],
                         [
                           'src="cid:' . $tag . '"',
                           'href="' . $CFG_GLPI['url_base'] . '/front/document.send.php?docid=' . $docID . '$1"',
-                  ],
+                        ],
                         $current->fields['body_html']
                     );
                 }
@@ -297,7 +308,7 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
             $mmail->AddAddress($recipient, $current->fields['recipientname']);
 
             if (!empty($current->fields['messageid'])) {
-                $mmail->MessageID = "<".$current->fields['messageid'].">";
+                $mmail->MessageID = "<" . $current->fields['messageid'] . ">";
             }
 
             $messageerror = __('Error in sending the email');
@@ -316,7 +327,7 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
                             $retries
                         ),
                         $current->fields['name'],
-                        $mmail->ErrorInfo."\n"
+                        $mmail->ErrorInfo . "\n"
                     )
                 );
 
@@ -329,7 +340,7 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
                                 __('Fatal error: giving up delivery of email to %s'),
                                 $current->fields['recipient']
                             ),
-                            $current->fields['name']."\n"
+                            $current->fields['name'] . "\n"
                         )
                     );
                     $current->delete(['id' => $current->fields['id']]);
@@ -355,7 +366,7 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
                             __('An email was sent to %s'),
                             $current->fields['recipient']
                         ),
-                        $current->fields['name']."\n"
+                        $current->fields['name'] . "\n"
                     )
                 );
                 $mmail->ClearAddresses();

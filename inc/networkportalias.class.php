@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -50,9 +51,10 @@ class NetworkPortAlias extends NetworkPortInstantiation
 
         // Try to get mac address from the instantiation ...
 
-        if (!isset($input['mac'])
-            && isset($input['networkports_id_alias'])) {
-
+        if (
+            !isset($input['mac'])
+            && isset($input['networkports_id_alias'])
+        ) {
             $networkPort = new NetworkPort();
             if ($networkPort->getFromDB($input['networkports_id_alias'])) {
                 $input['mac']            = $networkPort->getField('mac');
@@ -173,6 +175,5 @@ class NetworkPortAlias extends NetworkPortInstantiation
 
         parent::getInstantiationHTMLTable($netport, $row, $father, $options);
         return null;
-
     }
 }

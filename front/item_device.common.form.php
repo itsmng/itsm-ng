@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -88,7 +89,6 @@ if (isset($_POST["add"])) {
 
     $device = $item_device->getOnePeer(1);
     Html::redirect($device->getLinkURL());
-
 } elseif (isset($_POST["update"])) {
     $item_device->check($_POST["id"], UPDATE);
     $item_device->update($_POST);
@@ -102,9 +102,7 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } else {
-
     if (in_array($item_device->getType(), $CFG_GLPI['devices_in_menu'])) {
         Html::header($item_device->getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "assets", strtolower($item_device->getType()));
     } else {

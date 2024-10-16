@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,17 +42,14 @@ if (isset($_POST["add"])) {
     $client->check(-1, CREATE, $_POST);
     $client->add($_POST);
     Html::back();
-
 } elseif (isset($_POST["update"])) {
     $client->check($_POST["id"], UPDATE);
     $client->update($_POST);
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $client->check($_POST["id"], PURGE);
     $client->delete($_POST);
-    Html::redirect($CFG_GLPI["root_doc"]."/front/config.form.php");
-
+    Html::redirect($CFG_GLPI["root_doc"] . "/front/config.form.php");
 } else {
     Html::header(APIClient::getTypeName(1), $_SERVER['PHP_SELF'], "config", "config", "apiclient");
     $client->display(['id' => $_GET["id"]]);

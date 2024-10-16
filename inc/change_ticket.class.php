@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -184,8 +185,10 @@ class Change_Ticket extends CommonDBRelation
                 $ticket = new Ticket();
                 foreach ($ids as $id) {
                     if ($item->can($id, READ)) {
-                        if ($ticket->getFromDB($item->fields['tickets_id'])
-                            && $ticket->canSolve()) {
+                        if (
+                            $ticket->getFromDB($item->fields['tickets_id'])
+                            && $ticket->canSolve()
+                        ) {
                             $solution = new ITILSolution();
                             $added = $solution->add([
                                'itemtype'  => $ticket->getType(),
@@ -267,10 +270,10 @@ class Change_Ticket extends CommonDBRelation
         if ($canedit) {
             echo "<div class='firstbloc'>";
             echo "<form aria-label='Add a ticket' name='changeticket_form$rand' id='changeticket_form$rand' method='post'
-                action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
+                action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
 
             echo "<table class='tab_cadre_fixe' aria-label='Add a ticket'>";
-            echo "<tr class='tab_bg_2'><th colspan='2'>".__('Add a ticket')."</th></tr>";
+            echo "<tr class='tab_bg_2'><th colspan='2'>" . __('Add a ticket') . "</th></tr>";
 
             echo "<tr class='tab_bg_2'><td>";
             echo "<input type='hidden' name='changes_id' value='$ID'>";
@@ -282,7 +285,7 @@ class Change_Ticket extends CommonDBRelation
                'condition'   => Ticket::getOpenCriteria()
             ]);
             echo "</td><td class='center'>";
-            echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
+            echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
             echo "</td></tr>";
 
             echo "</table>";
@@ -292,15 +295,15 @@ class Change_Ticket extends CommonDBRelation
 
         echo "<div class='spaced'>";
         if ($canedit && $numrows) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
             $massiveactionparams
                = ['num_displayed'    => min($_SESSION['glpilist_limit'], $numrows),
                        'specific_actions' => ['purge' => _x('button', 'Delete permanently'),
-                                                    __CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'solveticket'
+                                                    __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'solveticket'
                                                            => __('Solve tickets'),
-                                                    __CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'add_task'
+                                                    __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'add_task'
                                                            => __('Add a new task')],
-                        'container'        => 'mass'.__CLASS__.$rand,
+                        'container'        => 'mass' . __CLASS__ . $rand,
                         'extraparams'      => ['changes_id' => $change->getID()],
                         'width'            => 1000,
                         'height'           => 500];
@@ -308,10 +311,10 @@ class Change_Ticket extends CommonDBRelation
         }
 
         echo "<table class='tab_cadre_fixehov' aria-label='Ticket Table'>";
-        echo "<tr class='noHover'><th colspan='12'>".Ticket::getTypeName($numrows)."</th>";
+        echo "<tr class='noHover'><th colspan='12'>" . Ticket::getTypeName($numrows) . "</th>";
         echo "</tr>";
         if ($numrows) {
-            Ticket::commonListHeader(Search::HTML_OUTPUT, 'mass'.__CLASS__.$rand);
+            Ticket::commonListHeader(Search::HTML_OUTPUT, 'mass' . __CLASS__ . $rand);
             Session::initNavigateListItems(
                 'Ticket',
                 //TRANS : %1$s is the itemtype name,
@@ -332,11 +335,11 @@ class Change_Ticket extends CommonDBRelation
                       'row_num'                => $i,
                       'type_for_massiveaction' => __CLASS__,
                       'id_for_massiveaction'   => $data['linkid']
-               ]
+                    ]
                 );
                 $i++;
             }
-            Ticket::commonListHeader(Search::HTML_OUTPUT, 'mass'.__CLASS__.$rand);
+            Ticket::commonListHeader(Search::HTML_OUTPUT, 'mass' . __CLASS__ . $rand);
         }
         echo "</table>";
         if ($canedit && $numrows) {
@@ -429,8 +432,8 @@ class Change_Ticket extends CommonDBRelation
                            'actions' => getItemActionButtons(['info'], Change::class)
                         ],
                         '' => Session::haveRight('change', CREATE) ? [
-                           'content' => "<a href='".Toolbox::getItemTypeFormURL('Change')."?tickets_id={$ID}'>"
-                              .__('Create a change from this ticket').'</a>',
+                           'content' => "<a href='" . Toolbox::getItemTypeFormURL('Change') . "?tickets_id={$ID}'>"
+                              . __('Create a change from this ticket') . '</a>',
                         ] : []
                      ]
                   ]
@@ -439,7 +442,7 @@ class Change_Ticket extends CommonDBRelation
             renderTwigForm($form);
         }
 
-        $massiveActionContainerID = 'TableFor'.__CLASS__.$rand;
+        $massiveActionContainerID = 'TableFor' . __CLASS__ . $rand;
         if ($canedit && $numrows) {
             $massiveactionparams = [
                'container'     => $massiveActionContainerID,
@@ -482,7 +485,7 @@ class Change_Ticket extends CommonDBRelation
                 $userdata    = getUserName($d["users_id"], 2);
                 $newCell .= sprintf(
                     __('%1$s %2$s'),
-                    "<span class='b'>".$userdata['name']."</span>",
+                    "<span class='b'>" . $userdata['name'] . "</span>",
                     Html::showToolTip(
                         $userdata["comment"],
                         ['link'    => $userdata["link"],
@@ -511,7 +514,7 @@ class Change_Ticket extends CommonDBRelation
                     $userdata   = getUserName($d["users_id"], 2);
                     $newCell .= sprintf(
                         __('%1$s %2$s'),
-                        "<span class='b'>".$userdata['name']."</span>",
+                        "<span class='b'>" . $userdata['name'] . "</span>",
                         Html::showToolTip(
                             $userdata["comment"],
                             ['link'    => $userdata["link"],
@@ -543,7 +546,7 @@ class Change_Ticket extends CommonDBRelation
             $newCell  = '';
             $planned_infos = '';
 
-            $tasktype      = $change->getType()."Task";
+            $tasktype      = $change->getType() . "Task";
             $plan          = new $tasktype();
             $items         = [];
 
@@ -553,30 +556,28 @@ class Change_Ticket extends CommonDBRelation
                   'WHERE' => [
                      $change->getForeignKeyField() => $change->fields['id'],
                   ],
-            ]
+                ]
             );
             foreach ($result as $plan) {
-
                 if (isset($plan['begin']) && $plan['begin']) {
                     $items[$plan['id']] = $plan['id'];
-                    $planned_infos .= sprintf(__('From %s'). ('<br>'), Html::convDateTime($plan['begin']));
-                    $planned_infos .= sprintf(__('To %s'). ('<br>'), Html::convDateTime($plan['end']));
+                    $planned_infos .= sprintf(__('From %s') . ('<br>'), Html::convDateTime($plan['begin']));
+                    $planned_infos .= sprintf(__('To %s') . ('<br>'), Html::convDateTime($plan['end']));
                     if ($plan['users_id_tech']) {
                         $planned_infos .= sprintf(
-                            __('By %s'). ('<br>'),
+                            __('By %s') . ('<br>'),
                             getUserName($plan['users_id_tech'])
                         );
                     }
                     $planned_infos .= "<br>";
                 }
-
             }
 
             $newCell = count($items);
             if ($newCell) {
                 $newCell = "<span class='pointer'
-                              id='".$change->getType().$change->fields["id"]."planning$rand'>".
-                                  $newCell.'</span>';
+                              id='" . $change->getType() . $change->fields["id"] . "planning$rand'>" .
+                                  $newCell . '</span>';
                 $newCell = sprintf(
                     __('%1$s %2$s'),
                     $newCell,
@@ -584,10 +585,10 @@ class Change_Ticket extends CommonDBRelation
                         $planned_infos,
                         [
                           'display' => false,
-                          'applyto' => $change->getType().
-                          $change->fields["id"].
-                          "planning".$rand
-                  ]
+                          'applyto' => $change->getType() .
+                          $change->fields["id"] .
+                          "planning" . $rand
+                        ]
                     )
                 );
             }

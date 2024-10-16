@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -62,5 +63,4 @@ class RuleImportEntityCollection extends RuleCollection
     {
         return __('Rules for assigning an item to an entity');
     }
-
 }

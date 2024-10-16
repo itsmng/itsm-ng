@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,8 +33,9 @@
 
 include('../inc/includes.php');
 
-if ((!isset($_GET['itemtype']) || !class_exists($_GET['itemtype']))
-   && (!isset($_POST['itemtype']) || !class_exists($_POST['itemtype']))
+if (
+    (!isset($_GET['itemtype']) || !class_exists($_GET['itemtype']))
+    && (!isset($_POST['itemtype']) || !class_exists($_POST['itemtype']))
 ) {
     throw new \RuntimeException(
         'Missing or incorrect device type called!'

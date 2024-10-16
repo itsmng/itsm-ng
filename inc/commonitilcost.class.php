@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -65,8 +66,10 @@ abstract class CommonITILCost extends CommonDBChild
     {
 
         // can exists for template
-        if (($item->getType() == static::$itemtype)
-            && static::canView()) {
+        if (
+            ($item->getType() == static::$itemtype)
+            && static::canView()
+        ) {
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                 $nb = countElementsInTable(
@@ -315,8 +318,10 @@ abstract class CommonITILCost extends CommonDBChild
     {
 
         $item = new static::$itemtype();
-        if (!isset($this->fields[static::$items_id])
-            || !$item->getFromDB($this->fields[static::$items_id])) {
+        if (
+            !isset($this->fields[static::$items_id])
+            || !$item->getFromDB($this->fields[static::$items_id])
+        ) {
             return false;
         }
 
@@ -528,9 +533,11 @@ abstract class CommonITILCost extends CommonDBChild
 
         $ID = $item->fields['id'];
 
-        if (!$item->getFromDB($ID)
+        if (
+            !$item->getFromDB($ID)
             || !$item->canViewItem()
-            || !static::canView()) {
+            || !static::canView()
+        ) {
             return false;
         }
         $canedit = false;
@@ -553,29 +560,31 @@ abstract class CommonITILCost extends CommonDBChild
 
         $rand   = mt_rand();
 
-        if ($canedit
+        if (
+            $canedit
             && !in_array($item->fields['status'], array_merge(
                 $item->getClosedStatusArray(),
                 $item->getSolvedStatusArray()
-            ))) {
-            echo "<div id='viewcost".$ID."_$rand'></div>\n";
+            ))
+        ) {
+            echo "<div id='viewcost" . $ID . "_$rand'></div>\n";
             echo "<script type='text/javascript' >\n";
-            echo "function viewAddCost".$ID."_$rand() {\n";
+            echo "function viewAddCost" . $ID . "_$rand() {\n";
             $params = ['type'             => static::getType(),
                             'parenttype'       => static::$itemtype,
                             static::$items_id  => $ID,
                             'id'               => -1];
             Ajax::updateItemJsCode(
-                "viewcost".$ID."_$rand",
-                $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php",
+                "viewcost" . $ID . "_$rand",
+                $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
                 $params
             );
             echo "};";
             echo "</script>\n";
             if (static::canCreate()) {
-                echo "<div class='center firstbloc'>".
-                       "<a class='btn btn-secondary' href='javascript:viewAddCost".$ID."_$rand();'>";
-                echo __('Add a new cost')."</a></div>\n";
+                echo "<div class='center firstbloc'>" .
+                       "<a class='btn btn-secondary' href='javascript:viewAddCost" . $ID . "_$rand();'>";
+                echo __('Add a new cost') . "</a></div>\n";
             }
         }
 
@@ -643,7 +652,7 @@ abstract class CommonITILCost extends CommonDBChild
                    $data['cost_fixed'],
                    $data['cost_material']
                ),
-               '<a><i class="fas fa-pencil-alt" onclick="viewEditCost' .$data[static::$items_id]."_". $data["id"]. "_$rand()\" title='viewEditCost'></i></a>"
+               '<a><i class="fas fa-pencil-alt" onclick="viewEditCost' . $data[static::$items_id] . "_" . $data["id"] . "_$rand()\" title='viewEditCost'></i></a>"
             ];
             $total_time += $data['actiontime'];
             $total_costtime += ($data['actiontime'] * $data['cost_time'] / HOUR_TIMESTAMP);
@@ -658,14 +667,14 @@ abstract class CommonITILCost extends CommonDBChild
 
             if ($canedit) {
                 echo "\n<script type='text/javascript' >\n";
-                echo "function viewEditCost" .$data[static::$items_id]."_". $data["id"]. "_$rand() {\n";
+                echo "function viewEditCost" . $data[static::$items_id] . "_" . $data["id"] . "_$rand() {\n";
                 $params = ['type'            => static::getType(),
                                'parenttype'       => static::$itemtype,
                                static::$items_id  => $data[static::$items_id],
                                'id'               => $data["id"]];
                 Ajax::updateItemJsCode(
-                    "viewcost".$ID."_$rand",
-                    $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php",
+                    "viewcost" . $ID . "_$rand",
+                    $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
                     $params
                 );
                 echo "};";
@@ -727,7 +736,7 @@ abstract class CommonITILCost extends CommonDBChild
               'ORDER'     => [
                  'begin_date'
               ],
-         ]
+            ]
         );
 
         $tab = ['totalcost'   => 0,
@@ -780,5 +789,4 @@ abstract class CommonITILCost extends CommonDBChild
             $edit
         );
     }
-
 }

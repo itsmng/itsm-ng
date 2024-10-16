@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -59,5 +60,4 @@ class SlaLevelCriteria extends RuleCriteria
         // RuleCriteria search options requires value of rules_id field which does not exists here
         return [];
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -75,11 +76,11 @@ class Lock extends CommonGLPI
 
         echo "<div width='50%'>";
         echo "<form aria-label='Locked Form' method='post' id='lock_form'
-             name='lock_form' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
+             name='lock_form' action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
         echo "<input type='hidden' name='id' value='$ID'>\n";
         echo "<input type='hidden' name='itemtype' value='$itemtype'>\n";
         echo "<table class='tab_cadre_fixe' aria-label='Locked Item'>";
-        echo "<tr><th colspan='2'>".__('Locked items')."</th></tr>";
+        echo "<tr><th colspan='2'>" . __('Locked items') . "</th></tr>";
 
         //Use a hook to allow external inventory tools to manage per field lock
         $results =  Plugin::doHookFunction('display_locked_fields', ['item'   => $item,
@@ -103,7 +104,7 @@ class Lock extends CommonGLPI
                     $asset = new $type();
                     $asset->getFromDB($line['items_id']);
                     if ($first) {
-                        echo "<tr><th colspan='2'>".$type::getTypeName(Session::getPluralNumber())."</th></tr>\n";
+                        echo "<tr><th colspan='2'>" . $type::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
                         $first = false;
                     }
 
@@ -119,7 +120,6 @@ class Lock extends CommonGLPI
                     echo "<td class='left' width='95%'>" . $asset->getName() . "</td>";
                     echo "</tr>\n";
                 }
-
             }
 
             //items disks
@@ -134,7 +134,7 @@ class Lock extends CommonGLPI
             $first  = true;
             foreach ($DB->request($item_disk->getTable(), $params) as $line) {
                 if ($first) {
-                    echo "<tr><th colspan='2'>".$item_disk->getTypeName(Session::getPluralNumber())."</th></tr>\n";
+                    echo "<tr><th colspan='2'>" . $item_disk->getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
                     $first = false;
                 }
 
@@ -159,7 +159,7 @@ class Lock extends CommonGLPI
             $first  = true;
             foreach ($DB->request($computer_vm->getTable(), $params) as $line) {
                 if ($first) {
-                    echo "<tr><th colspan='2'>".$computer_vm->getTypeName(Session::getPluralNumber())."</th></tr>\n";
+                    echo "<tr><th colspan='2'>" . $computer_vm->getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
                     $first = false;
                 }
 
@@ -209,7 +209,7 @@ class Lock extends CommonGLPI
               'isv.itemtype'    => $itemtype,
            ]
         ]);
-        echo "<tr><th colspan='2'>".Software::getTypeName(Session::getPluralNumber())."</th></tr>\n";
+        echo "<tr><th colspan='2'>" . Software::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
         while ($data = $iterator->next()) {
             echo "<tr class='tab_bg_1'>";
 
@@ -220,7 +220,7 @@ class Lock extends CommonGLPI
             }
             echo "</td>";
 
-            echo "<td class='left' width='95%'>" . $data['software']." ".$data['version'] . "</td>";
+            echo "<td class='left' width='95%'>" . $data['software'] . " " . $data['version'] . "</td>";
             echo "</tr>\n";
         }
 
@@ -257,7 +257,7 @@ class Lock extends CommonGLPI
            ]
         ]);
 
-        echo "<tr><th colspan='2'>".SoftwareLicense::getTypeName(Session::getPluralNumber())."</th></tr>\n";
+        echo "<tr><th colspan='2'>" . SoftwareLicense::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
         while ($data = $iterator->next()) {
             echo "<tr class='tab_bg_1'>";
 
@@ -268,7 +268,7 @@ class Lock extends CommonGLPI
             }
             echo "</td>";
 
-            echo "<td class='left' width='95%'>" . $data['software']." ".$data['version'] . "</td>";
+            echo "<td class='left' width='95%'>" . $data['software'] . " " . $data['version'] . "</td>";
             echo "</tr>\n";
         }
 
@@ -282,7 +282,7 @@ class Lock extends CommonGLPI
         foreach ($DB->request($networkport->getTable(), $params) as $line) {
             $networkport->getFromDB($line['id']);
             if ($first) {
-                echo "<tr><th colspan='2'>".$networkport->getTypeName(Session::getPluralNumber())."</th></tr>\n";
+                echo "<tr><th colspan='2'>" . $networkport->getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
                 $first = false;
             }
 
@@ -297,7 +297,6 @@ class Lock extends CommonGLPI
 
             echo "<td class='left' width='95%'>" . $networkport->getName() . "</td>";
             echo "</tr>\n";
-
         }
 
         $first = true;
@@ -314,7 +313,7 @@ class Lock extends CommonGLPI
         foreach ($DB->request(['glpi_networknames', 'glpi_networkports'], $params) as $line) {
             $networkname->getFromDB($line['id']);
             if ($first) {
-                echo "<tr><th colspan='2'>".NetworkName::getTypeName(Session::getPluralNumber())."</th></tr>\n";
+                echo "<tr><th colspan='2'>" . NetworkName::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
                 $first = false;
             }
 
@@ -329,7 +328,6 @@ class Lock extends CommonGLPI
 
             echo "<td class='left' width='95%'>" . $networkname->getName() . "</td>";
             echo "</tr>\n";
-
         }
 
         $first  = true;
@@ -345,12 +343,14 @@ class Lock extends CommonGLPI
            'glpi_networkports.itemtype'  => $itemtype
         ];
         $params['FIELDS'] = ['glpi_ipaddresses' => 'id'];
-        foreach ($DB->request(['glpi_ipaddresses',
+        foreach (
+            $DB->request(['glpi_ipaddresses',
                                     'glpi_networknames',
-                                    'glpi_networkports'], $params) as $line) {
+                                    'glpi_networkports'], $params) as $line
+        ) {
             $ipaddress->getFromDB($line['id']);
             if ($first) {
-                echo "<tr><th colspan='2'>".IPAddress::getTypeName(Session::getPluralNumber())."</th></tr>\n";
+                echo "<tr><th colspan='2'>" . IPAddress::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
                 $first = false;
             }
 
@@ -365,7 +365,6 @@ class Lock extends CommonGLPI
 
             echo "<td class='left' width='95%'>" . $ipaddress->getName() . "</td>";
             echo "</tr>\n";
-
         }
 
         $types = Item_Devices::getDeviceTypes();
@@ -380,7 +379,7 @@ class Lock extends CommonGLPI
             );
         }
         if ($nb) {
-            echo "<tr><th colspan='2'>"._n('Component', 'Components', Session::getPluralNumber())."</th></tr>\n";
+            echo "<tr><th colspan='2'>" . _n('Component', 'Components', Session::getPluralNumber()) . "</th></tr>\n";
             foreach ($types as $type) {
                 $type_item = new $type();
 
@@ -416,7 +415,7 @@ class Lock extends CommonGLPI
                     echo "<td class='center' width='10'>";
                     if ($type_item->can($data['id'], UPDATE) || $type_item->can($data['id'], PURGE)) {
                         $header = true;
-                        echo "<input type='checkbox' name='".$type."[" . $data['id'] . "]'>";
+                        echo "<input type='checkbox' name='" . $type . "[" . $data['id'] . "]'>";
                     }
                     echo "</td>";
 
@@ -436,7 +435,7 @@ class Lock extends CommonGLPI
                                       'purge'  => _sx('button', 'Delete permanently')]);
         } else {
             echo "<tr class='tab_bg_2'>";
-            echo "<td class='center' colspan='2'>". __('No locked item')."</td></tr>";
+            echo "<td class='center' colspan='2'>" . __('No locked item') . "</td></tr>";
             echo "</table>";
         }
 
@@ -581,7 +580,6 @@ class Lock extends CommonGLPI
                     $table     = getTableForItemType($itemtype);
                     $field     = 'items_id';
                 }
-
         }
 
         return ['condition' => $condition,
@@ -603,11 +601,12 @@ class Lock extends CommonGLPI
         CommonDBTM $checkitem = null
     ) {
 
-        $action_name = __CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'unlock';
+        $action_name = __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'unlock';
 
-        if (Session::haveRight('computer', UPDATE)
-            && ($itemtype == 'Computer')) {
-
+        if (
+            Session::haveRight('computer', UPDATE)
+            && ($itemtype == 'Computer')
+        ) {
             $actions[$action_name] = __('Unlock components');
         }
     }
@@ -711,5 +710,4 @@ class Lock extends CommonGLPI
                 return;
         }
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -88,7 +89,7 @@ class CartridgeItem extends CommonDBTM
             [
               Cartridge::class,
               CartridgeItem_PrinterModel::class,
-         ]
+            ]
         );
 
         $class = new Alert();
@@ -162,8 +163,10 @@ class CartridgeItem extends CommonDBTM
     {
         global $DB;
 
-        if (($cartridgeitems_id > 0)
-            && ($printermodels_id > 0)) {
+        if (
+            ($cartridgeitems_id > 0)
+            && ($printermodels_id > 0)
+        ) {
             $params = [
                'cartridgeitems_id' => $cartridgeitems_id,
                'printermodels_id'  => $printermodels_id
@@ -493,7 +496,7 @@ class CartridgeItem extends CommonDBTM
                             ['glpi_alerts.date' => ['<', new QueryExpression('CURRENT_TIMESTAMP() - INTERVAL ' . $repeat . ' second')]],
                          ],
                       ],
-               ]
+                    ]
                 );
 
                 $message = "";
@@ -528,7 +531,7 @@ class CartridgeItem extends CommonDBTM
                     $entityname = Dropdown::getDropdownName("glpi_entities", $entity);
                     if (NotificationEvent::raiseEvent('alert', new CartridgeItem(), $options)) {
                         if ($task) {
-                            $task->log(sprintf(__('%1$s: %2$s')."\n", $entityname, $message));
+                            $task->log(sprintf(__('%1$s: %2$s') . "\n", $entityname, $message));
                             $task->addVolume(1);
                         } else {
                             Session::addMessageAfterRedirect(sprintf(
@@ -549,7 +552,6 @@ class CartridgeItem extends CommonDBTM
                             $alert->add($input);
                             unset($alert->fields['id']);
                         }
-
                     } else {
                         //TRANS: %s is entity name
                         $msg = sprintf(__('%s: send cartridge alert failed'), $entityname);
@@ -665,5 +667,4 @@ class CartridgeItem extends CommonDBTM
     {
         return Cartridge::getIcon();
     }
-
 }

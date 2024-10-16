@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -55,5 +56,4 @@ class RuleAssetCollection extends RuleCollection
         }
         return $output;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -94,5 +95,4 @@ class TaskCategory extends CommonTreeDropdown
     {
         return _n('Task category', 'Task categories', $nb);
     }
-
 }

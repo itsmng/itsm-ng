@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -72,5 +73,4 @@ class Group_Reminder extends CommonDBRelation
         }
         return $groups;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -63,7 +64,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $mailgate->check($_POST['id'], PURGE);
     $mailgate->delete($_POST, 1);
@@ -77,7 +77,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $mailgate->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $mailgate->check($_POST['id'], UPDATE);
 
@@ -97,13 +96,11 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } elseif (isset($_POST["get_mails"])) {
     $mailgate->check($_POST['id'], UPDATE);
     $mailgate->collect($_POST["id"], 1);
 
     Html::back();
-
 } else {
     Html::header(MailCollector::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "config", "mailcollector");
     $mailgate->display(['id' => $_GET["id"]]);

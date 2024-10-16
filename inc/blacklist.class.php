@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -134,8 +135,10 @@ class Blacklist extends CommonDropdown
     public function prepareInputForAdd($input)
     {
 
-        if ((!isset($input['name']) || empty($input['name']))
-            && isset($input['value'])) {
+        if (
+            (!isset($input['name']) || empty($input['name']))
+            && isset($input['value'])
+        ) {
             $input['name'] = $input['value'];
         }
         return $input;
@@ -315,5 +318,4 @@ class Blacklist extends CommonDropdown
     {
         return self::getBlacklistedItems(self::EMAIL);
     }
-
 }

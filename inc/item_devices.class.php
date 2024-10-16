@@ -113,8 +113,9 @@ class Item_Devices extends CommonDBRelation
 
         $forbidden = parent::getForbiddenStandardMassiveAction();
 
-        if ((count(static::getSpecificities()) == 0)
-           && !Infocom::canApplyOn($this)
+        if (
+            (count(static::getSpecificities()) == 0)
+            && !Infocom::canApplyOn($this)
         ) {
             $forbidden[] = 'update';
         }
@@ -264,7 +265,7 @@ class Item_Devices extends CommonDBRelation
                 [[
                   'id'                => 'devices',
                   'name'              => _n('Component', 'Components', Session::getPluralNumber())
-            ]],
+                ]],
                 $options
             );
         }
@@ -448,7 +449,6 @@ class Item_Devices extends CommonDBRelation
             !isset($CFG_GLPI['item_device_types'])
             || (count($CFG_GLPI['item_device_types']) != count($CFG_GLPI['device_types']))
         ) {
-
             $CFG_GLPI['item_device_types'] = [];
 
             foreach (CommonDevice::getDeviceTypes() as $deviceType) {
@@ -614,7 +614,7 @@ class Item_Devices extends CommonDBRelation
                               'items_id'   => $item->getID(),
                               'itemtype'   => $item->getType(),
                               'is_deleted' => 0
-                     ]
+                            ]
                         );
                     }
                 }
@@ -634,7 +634,7 @@ class Item_Devices extends CommonDBRelation
                         [
                           $foreignkeyField => $item->getID(),
                           'is_deleted' => 0
-                  ]
+                        ]
                     );
                 }
                 return self::createTabEntry(_n('Item', 'Items', Session::getPluralNumber()), $nb);
@@ -868,7 +868,7 @@ class Item_Devices extends CommonDBRelation
             }
             $datas = iterator_to_array($DB->request($criteria));
             if (count($datas)) {
-                $massiveActionContainerId = 'mass'.__CLASS__.rand();
+                $massiveActionContainerId = 'mass' . __CLASS__ . rand();
                 if ($canedit) {
                     $params = [
                        'container' => $massiveActionContainerId,
@@ -895,13 +895,13 @@ class Item_Devices extends CommonDBRelation
                         $newValue[$column] = $data[$column];
                     }
                     if ($canedit) {
-                        $newValue[] = '<a href=' . $link->getFormURL().'?id='.$data['id'] . '>' . __('Update') . "</a>";
+                        $newValue[] = '<a href=' . $link->getFormURL() . '?id=' . $data['id'] . '>' . __('Update') . "</a>";
                     }
                     $values[] = $newValue;
                     $massive_action[] = sprintf('item[%s][%s]', $link::class, $data['id']);
                 }
                 echo "<hr>";
-                echo "<h2>".$link::getTypeName()."</h2>";
+                echo "<h2>" . $link::getTypeName() . "</h2>";
                 renderTwigTemplate('table.twig', [
                    'id' => $massiveActionContainerId,
                    'fields' => $fields,
@@ -1118,12 +1118,10 @@ class Item_Devices extends CommonDBRelation
 
         $iterator = $DB->request($criteria);
         while ($link = $iterator->next()) {
-
             Session::addToNavigateListItems(static::getType(), $link["id"]);
             $this->getFromDB($link['id']);
             $current_row  = $table_group->createRow();
             if ((is_null($peer)) || ($link[$fk] != $peer->getID())) {
-
                 if ($peer instanceof CommonDBTM) {
                     $peer->getFromDB($link[$fk]);
                 }
@@ -1196,10 +1194,12 @@ class Item_Devices extends CommonDBRelation
                 $spec_cell = $current_row->addCell($specificity_columns[$field], $content, $spec_cell);
             }
 
-            if (countElementsInTable('glpi_infocoms', [
-               'itemtype' => $this->getType(),
-               'items_id' => $link['id']
-            ])) {
+            if (
+                countElementsInTable('glpi_infocoms', [
+                'itemtype' => $this->getType(),
+                'items_id' => $link['id']
+                ])
+            ) {
                 $content = [[
                    'function'   => 'Infocom::showDisplayLink',
                    'parameters' => [$this->getType(), $link['id']]
@@ -1335,8 +1335,9 @@ class Item_Devices extends CommonDBRelation
                     return;
                 }
 
-                if ((isset($input[$linktype::getForeignKeyField()]))
-                   && (count($input[$linktype::getForeignKeyField()]))
+                if (
+                    (isset($input[$linktype::getForeignKeyField()]))
+                    && (count($input[$linktype::getForeignKeyField()]))
                 ) {
                     $update_input = [
                        'itemtype' => $input['itemtype'],
@@ -1499,11 +1500,11 @@ class Item_Devices extends CommonDBRelation
                         [
                           'items_id'  => 0,
                           'itemtype'  => ''
-                  ],
+                        ],
                         [
                           'items_id'  => $items_id,
                           'itemtype'  => $itemtype
-                  ]
+                        ]
                     );
                 } else {
                     $link->cleanDBOnItemDelete($itemtype, $items_id);
@@ -1638,26 +1639,29 @@ class Item_Devices extends CommonDBRelation
 
         if ($computer instanceof CommonDBTM) {
             if (
-                isset($CFG_GLPI['is_location_autoupdate']) && $CFG_GLPI["is_location_autoupdate"]
-                && (!isset($input['locations_id']) ||
-                   $computer->fields['locations_id'] != $input['locations_id'])
+                isset($CFG_GLPI['is_location_autoupdate'])
+                && $CFG_GLPI["is_location_autoupdate"]
+                && (!isset($input['locations_id'])
+                   || $computer->fields['locations_id'] != $input['locations_id'])
             ) {
                 $input['locations_id'] = $computer->fields['locations_id'];
             }
 
-            if ((isset($CFG_GLPI['state_autoupdate_mode']) && $CFG_GLPI["state_autoupdate_mode"] < 0)
-               && (!isset($input['states_id']) ||
-                  $computer->fields['states_id'] != $input['states_id'])
+            if (
+                (isset($CFG_GLPI['state_autoupdate_mode'])
+                && $CFG_GLPI["state_autoupdate_mode"] < 0)
+                && (!isset($input['states_id'])
+                  || $computer->fields['states_id'] != $input['states_id'])
             ) {
-
                 $input['states_id'] = $computer->fields['states_id'];
             }
 
-            if ((isset($CFG_GLPI['state_autoupdate_mode']) && $CFG_GLPI["state_autoupdate_mode"] > 0)
-               && (!isset($input['states_id']) ||
-                  $input['states_id'] != $CFG_GLPI["state_autoupdate_mode"])
+            if (
+                (isset($CFG_GLPI['state_autoupdate_mode'])
+                && $CFG_GLPI["state_autoupdate_mode"] > 0)
+                && (!isset($input['states_id'])
+                  || $input['states_id'] != $CFG_GLPI["state_autoupdate_mode"])
             ) {
-
                 $input['states_id'] = $CFG_GLPI["state_autoupdate_mode"];
             }
         }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -86,7 +87,9 @@ class ProtectedWebAccess extends AbstractRequirement
             return;
         }
 
-        $oldhand = set_error_handler(function ($errno, $errmsg, $filename, $linenum) {return true;});
+        $oldhand = set_error_handler(function ($errno, $errmsg, $filename, $linenum) {
+            return true;
+        });
         $oldlevel = error_reporting(0);
 
         //create a context to set timeout

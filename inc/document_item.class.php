@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -66,9 +67,10 @@ class Document_Item extends CommonDBRelation
         if ($this->fields['itemtype'] == 'Ticket') {
             $ticket = new Ticket();
             // Not item linked for closed tickets
-            if ($ticket->getFromDB($this->fields['items_id'])
-                && in_array($ticket->fields['status'], $ticket->getClosedStatusArray())) {
-
+            if (
+                $ticket->getFromDB($this->fields['items_id'])
+                && in_array($ticket->fields['status'], $ticket->getClosedStatusArray())
+            ) {
                 return false;
             }
         }
@@ -90,8 +92,10 @@ class Document_Item extends CommonDBRelation
             return false;
         }
 
-        if ((empty($input['items_id']))
-            && ($input['itemtype'] != 'Entity')) {
+        if (
+            (empty($input['items_id']))
+            && ($input['itemtype'] != 'Entity')
+        ) {
             Toolbox::logError('Item ID is mandatory');
             return false;
         }
@@ -102,8 +106,10 @@ class Document_Item extends CommonDBRelation
         }
 
         // Do not insert circular link for document
-        if (($input['itemtype'] == 'Document')
-            && ($input['items_id'] == $input['documents_id'])) {
+        if (
+            ($input['itemtype'] == 'Document')
+            && ($input['items_id'] == $input['documents_id'])
+        ) {
             Toolbox::logError('Cannot link document to itself');
             return false;
         }
@@ -176,11 +182,13 @@ class Document_Item extends CommonDBRelation
 
             if (isset($tt->mandatory['_documents_id'])) {
                 // refuse delete if only one document
-                if (countElementsInTable(
-                    $this->getTable(),
-                    ['items_id' => $this->fields['items_id'],
+                if (
+                    countElementsInTable(
+                        $this->getTable(),
+                        ['items_id' => $this->fields['items_id'],
                                          'itemtype' => 'Ticket' ]
-                ) == 1) {
+                    ) == 1
+                ) {
                     $message = sprintf(
                         __('Mandatory fields are not filled. Please correct: %s'),
                         Document::getTypeName(Session::getPluralNumber())
@@ -279,11 +287,12 @@ class Document_Item extends CommonDBRelation
 
             default:
                 // Can exist for template
-                if (Document::canView()
+                if (
+                    Document::canView()
                     || ($item->getType() == 'Ticket')
                     || ($item->getType() == 'Reminder')
-                    || ($item->getType() == 'KnowbaseItem')) {
-
+                    || ($item->getType() == 'KnowbaseItem')
+                ) {
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nbitem = self::countForItem($item);
                     }
@@ -351,9 +360,9 @@ class Document_Item extends CommonDBRelation
             $docitem = new self();
             $docitem->add(
                 [
-            'documents_id' => $data["documents_id"],
-            'itemtype'     => $newitemtype,
-            'items_id'     => $newid]
+                'documents_id' => $data["documents_id"],
+                'itemtype'     => $newitemtype,
+                'items_id'     => $newid]
             );
         }
     }
@@ -522,8 +531,10 @@ class Document_Item extends CommonDBRelation
                     } else {
                         $linkname = $data["name"];
                     }
-                    if ($_SESSION["glpiis_ids_visible"]
-                          || empty($data["name"])) {
+                    if (
+                        $_SESSION["glpiis_ids_visible"]
+                          || empty($data["name"])
+                    ) {
                         $linkname = sprintf(__('%1$s (%2$s)'), $linkname, $data["id"]);
                     }
                     if ($item instanceof Item_Devices) {
@@ -543,8 +554,8 @@ class Document_Item extends CommonDBRelation
                            "glpi_entities",
                            $data['entity']
                        ) : "-",
-                       isset($data["serial"]) ? "".$data["serial"]."" : "-",
-                       isset($data["otherserial"]) ? "".$data["otherserial"]."" : "-",
+                       isset($data["serial"]) ? "" . $data["serial"] . "" : "-",
+                       isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-",
                     ];
                     $values[] = $newData;
                     $massiveactionValues[] = sprintf('item[%s][%s]', $itemtype, $data['id']);
@@ -576,10 +587,12 @@ class Document_Item extends CommonDBRelation
             return false;
         }
 
-        if (($item->getType() != 'Ticket')
+        if (
+            ($item->getType() != 'Ticket')
             && ($item->getType() != 'KnowbaseItem')
             && ($item->getType() != 'Reminder')
-            && !Document::canView()) {
+            && !Document::canView()
+        ) {
             return false;
         }
 
@@ -610,17 +623,17 @@ class Document_Item extends CommonDBRelation
         }
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Add a document')."</td>";
+        echo "<td>" . __('Add a document') . "</td>";
         echo "<td colspan='$colspan'>";
         echo "<input type='hidden' name='entities_id' value='$entity'>";
-        echo "<input type='hidden' name='is_recursive' value='".$item->isRecursive()."'>";
-        echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
-        echo "<input type='hidden' name='items_id' value='".$item->getID()."'>";
+        echo "<input type='hidden' name='is_recursive' value='" . $item->isRecursive() . "'>";
+        echo "<input type='hidden' name='itemtype' value='" . $item->getType() . "'>";
+        echo "<input type='hidden' name='items_id' value='" . $item->getID() . "'>";
         if ($item->getType() == 'Ticket') {
-            echo "<input type='hidden' name='tickets_id' value='".$item->getID()."'>";
+            echo "<input type='hidden' name='tickets_id' value='" . $item->getID() . "'>";
         }
         Html::file(['multiple' => true]);
-        echo "</td><td class='left'>(".Document::getMaxUploadSize().")&nbsp;</td>";
+        echo "</td><td class='left'>(" . Document::getMaxUploadSize() . ")&nbsp;</td>";
         echo "<td></td></tr>";
     }
 
@@ -663,8 +676,10 @@ class Document_Item extends CommonDBRelation
         $used       = array_keys($used_found);
         $used       = array_combine($used, $used);
 
-        if ($item->canAddItem('Document')
-            && $withtemplate < 2) {
+        if (
+            $item->canAddItem('Document')
+            && $withtemplate < 2
+        ) {
             // Restrict entity for knowbase
             $entities = "";
             $entity   = $_SESSION["glpiactive_entity"];
@@ -756,8 +771,10 @@ class Document_Item extends CommonDBRelation
             ];
             renderTwigForm($form);
 
-            if (Document::canView()
-                && ($nb > count($used))) {
+            if (
+                Document::canView()
+                && ($nb > count($used))
+            ) {
                 $values = getItemByEntity(Document::class, $entities);
                 $criteria = [
                    'FROM'   => 'glpi_documentcategories',
@@ -897,8 +914,10 @@ class Document_Item extends CommonDBRelation
             $order = "DESC";
         }
 
-        if ((isset($_GET["sort"]) && !empty($_GET["sort"]))
-           && isset($columns[$_GET["sort"]])) {
+        if (
+            (isset($_GET["sort"]) && !empty($_GET["sort"]))
+            && isset($columns[$_GET["sort"]])
+        ) {
             $sort = $_GET["sort"];
         } else {
             $sort = "assocdate";
@@ -910,7 +929,7 @@ class Document_Item extends CommonDBRelation
         $linkparam = '';
 
         if (get_class($item) == 'Ticket') {
-            $linkparam = "&amp;tickets_id=".$item->fields['id'];
+            $linkparam = "&amp;tickets_id=" . $item->fields['id'];
         }
 
         $criteria = [
@@ -984,10 +1003,12 @@ class Document_Item extends CommonDBRelation
             $used[$data['id']]           = $data['id'];
         }
 
-        $massiveActionContainerId = 'mass'.__CLASS__.$params['rand'];
-        if ($canedit
-        && $number
-        && ($withtemplate < 2)) {
+        $massiveActionContainerId = 'mass' . __CLASS__ . $params['rand'];
+        if (
+            $canedit
+            && $number
+            && ($withtemplate < 2)
+        ) {
             $massiveactionparams = [
                'container'      => $massiveActionContainerId,
                'display_arrow' => false,
@@ -1197,8 +1218,9 @@ class Document_Item extends CommonDBRelation
         if (in_array(CommonITILActor::ASSIGN, $roles)) {
             // The author is assigned -> support agent
             return true;
-        } elseif (in_array(CommonITILActor::OBSERVER, $roles)
-           || in_array(CommonITILActor::REQUESTER, $roles)
+        } elseif (
+            in_array(CommonITILActor::OBSERVER, $roles)
+            || in_array(CommonITILActor::REQUESTER, $roles)
         ) {
             // The author is an observer or a requester -> not a support agent
             return false;

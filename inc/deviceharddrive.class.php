@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -82,7 +83,7 @@ class DeviceHardDrive extends CommonDevice
                  'value' => $this->fields['interfacetypes_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'InterfaceType')
               ]
-         ]
+            ]
         );
     }
 
@@ -190,7 +191,6 @@ class DeviceHardDrive extends CommonDevice
                 InterfaceType::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
                 break;
         }
-
     }
 
 

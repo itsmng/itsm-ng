@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -180,7 +181,7 @@ if (($_POST['action'] ?? null) == 'update') {
 } elseif ($_REQUEST['action'] == 'get_url') {
     $checkParams(['items_id']);
     if ($_REQUEST['items_id'] == -1) {
-        echo $itemtype::getFormURL(true).'?showglobalkanban=1';
+        echo $itemtype::getFormURL(true) . '?showglobalkanban=1';
         return;
     }
     $item->getFromDB($_REQUEST['items_id']);
@@ -191,7 +192,7 @@ if (($_POST['action'] ?? null) == 'update') {
         http_response_code(400);
         return;
     }
-    echo $itemtype::getFormURLWithID($_REQUEST['items_id'], true)."&forcetab={$tab_id}";
+    echo $itemtype::getFormURLWithID($_REQUEST['items_id'], true) . "&forcetab={$tab_id}";
 } elseif (($_POST['action'] ?? null) == 'create_column') {
     $checkParams(['column_field', 'items_id', 'column_name']);
     $column_field = $_POST['column_field'];

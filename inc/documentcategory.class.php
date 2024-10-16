@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -70,7 +71,7 @@ class DocumentCategory extends CommonTreeDropdown
                 'core',
                 [
                   'documentcategories_id_forticket' => $newval,
-            ]
+                ]
             );
         }
     }

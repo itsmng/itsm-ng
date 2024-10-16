@@ -286,7 +286,6 @@ class MailServer
         if ($action == 'authmail') {
             $authmail = true;
             $title = __('Email server');
-
         } elseif ($action == 'mailcollector') {
             $mailcollector = true;
             $title = __('Receiver');
@@ -498,7 +497,6 @@ class MailServer
         if (strstr($entry, '/secure')) {
             $data['secure'] = '/secure';
             $data['norsh'] = str_replace('/secure', '', $data['norsh']);
-
         }
         if (strstr($entry, '/debug')) {
             $data['debug'] = '/debug';

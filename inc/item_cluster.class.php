@@ -86,8 +86,10 @@ class Item_Cluster extends CommonDBRelation
         $ID = $cluster->fields['id'];
         $rand = mt_rand();
 
-        if (!$cluster->getFromDB($ID)
-            || !$cluster->can($ID, READ)) {
+        if (
+            !$cluster->getFromDB($ID)
+            || !$cluster->can($ID, READ)
+        ) {
             return false;
         }
         $canedit = $cluster->canEdit($ID);
@@ -119,7 +121,7 @@ class Item_Cluster extends CommonDBRelation
                 [
                   'cluster'   => $ID,
                   'position'  => 1
-            ]
+                ]
             );
             echo "</div>";
         }
@@ -127,14 +129,14 @@ class Item_Cluster extends CommonDBRelation
         $items = iterator_to_array($items);
 
         if (!count($items)) {
-            echo "<table class='tab_cadre_fixe' aria-label='No item Found'><tr><th>".__('No item found')."</th></tr>";
+            echo "<table class='tab_cadre_fixe' aria-label='No item Found'><tr><th>" . __('No item found') . "</th></tr>";
             echo "</table>";
         } else {
             if ($canedit) {
-                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
                 $massiveactionparams = [
                    'num_displayed'   => min($_SESSION['glpilist_limit'], count($items)),
-                   'container'       => 'mass'.__CLASS__.$rand
+                   'container'       => 'mass' . __CLASS__ . $rand
                 ];
                 Html::showMassiveActions($massiveactionparams);
             }
@@ -143,10 +145,10 @@ class Item_Cluster extends CommonDBRelation
             $header = "<tr>";
             if ($canedit) {
                 $header .= "<th width='10'>";
-                $header .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+                $header .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
                 $header .= "</th>";
             }
-            $header .= "<th>"._n('Item', 'Items', 1)."</th>";
+            $header .= "<th>" . _n('Item', 'Items', 1) . "</th>";
             $header .= "</tr>";
 
             echo $header;
@@ -298,16 +300,22 @@ class Item_Cluster extends CommonDBRelation
         $error_detected = [];
 
         //check for requirements
-        if (($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
-            || (isset($input['itemtype']) && empty($input['itemtype']))) {
+        if (
+            ($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
+            || (isset($input['itemtype']) && empty($input['itemtype']))
+        ) {
             $error_detected[] = __('An item type is required');
         }
-        if (($this->isNewItem() && (!isset($input['items_id']) || empty($input['items_id'])))
-            || (isset($input['items_id']) && empty($input['items_id']))) {
+        if (
+            ($this->isNewItem() && (!isset($input['items_id']) || empty($input['items_id'])))
+            || (isset($input['items_id']) && empty($input['items_id']))
+        ) {
             $error_detected[] = __('An item is required');
         }
-        if (($this->isNewItem() && (!isset($input['clusters_id']) || empty($input['clusters_id'])))
-            || (isset($input['clusters_id']) && empty($input['clusters_id']))) {
+        if (
+            ($this->isNewItem() && (!isset($input['clusters_id']) || empty($input['clusters_id'])))
+            || (isset($input['clusters_id']) && empty($input['clusters_id']))
+        ) {
             $error_detected[] = __('A cluster is required');
         }
 

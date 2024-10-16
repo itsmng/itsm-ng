@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -69,16 +70,18 @@ if (isset($_POST["action"])) {
         $rulecollection->menu_option
     );
 
-    if (!(isset($_POST['replay_confirm']) || isset($_GET['offset']))
-        && $rulecollection->warningBeforeReplayRulesOnExistingDB($_SERVER['PHP_SELF'])) {
+    if (
+        !(isset($_POST['replay_confirm']) || isset($_GET['offset']))
+        && $rulecollection->warningBeforeReplayRulesOnExistingDB($_SERVER['PHP_SELF'])
+    ) {
         Html::footer();
         exit();
     }
 
     echo "<table class='tab_cadrehov' aria-label='Replay the rules dictionary'>";
 
-    echo "<tr><th><div class='relative b'>" .$rulecollection->getTitle(). "<br>" .
-          __('Replay the rules dictionary'). "</div></th></tr>\n";
+    echo "<tr><th><div class='relative b'>" . $rulecollection->getTitle() . "<br>" .
+          __('Replay the rules dictionary') . "</div></th></tr>\n";
     echo "<tr><td class='center'>";
     Html::createProgressBar(__('Work in progress...'));
     echo "</td></tr>\n";
@@ -88,7 +91,6 @@ if (isset($_POST["action"])) {
         // First run
         $offset       = $rulecollection->replayRulesOnExistingDB(0, $max, [], $_POST);
         $manufacturer = (isset($_POST["manufacturer"]) ? $_POST["manufacturer"] : 0);
-
     } else {
         // Next run
         $offset       = $rulecollection->replayRulesOnExistingDB(
@@ -111,11 +113,10 @@ if (isset($_POST["action"])) {
             __('Task completed in %s'),
             Html::timestampToString($duree)
         ));
-        echo "<a href='".$_SERVER['PHP_SELF']."'>".__('Back')."</a>";
-
+        echo "<a href='" . $_SERVER['PHP_SELF'] . "'>" . __('Back') . "</a>";
     } else {
         // Need more work
-        Html::redirect($_SERVER['PHP_SELF']."?start=$start&replay_rule=1&offset=$offset&manufacturer=".
+        Html::redirect($_SERVER['PHP_SELF'] . "?start=$start&replay_rule=1&offset=$offset&manufacturer=" .
                        "$manufacturer");
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -75,7 +76,7 @@ class KnowbaseItem_Item extends CommonDBRelation
                         [
                           'itemtype' => $item::getType(),
                           'items_id' => $item->getId()
-                  ]
+                        ]
                     );
                 }
             }
@@ -129,7 +130,7 @@ class KnowbaseItem_Item extends CommonDBRelation
                 [
                   'itemtype' => $item::getType(),
                   'items_id' => $item_id
-            ]
+                ]
             );
         }
 
@@ -258,7 +259,7 @@ class KnowbaseItem_Item extends CommonDBRelation
                            'disabled' => '',
                            'name' => 'items_id',
                            'col_lg' => 6,
-                     ] : [],
+                        ] : [],
                      ]
                   ]
                ]
@@ -281,7 +282,7 @@ class KnowbaseItem_Item extends CommonDBRelation
 
         // Output events
         $rand = rand();
-        $massiveActionContainerId = 'tableForKnowbaseItem_Item'.$rand;
+        $massiveActionContainerId = 'tableForKnowbaseItem_Item' . $rand;
         if ($canedit) {
             $massiveactionparams = [
                'num_displayed' => min($_SESSION['glpilist_limit'], $number),
@@ -312,8 +313,10 @@ class KnowbaseItem_Item extends CommonDBRelation
             }
 
             $name = $linked_item->fields['name'];
-            if ($_SESSION["glpiis_ids_visible"]
-               || empty($name)) {
+            if (
+                $_SESSION["glpiis_ids_visible"]
+                || empty($name)
+            ) {
                 $name = sprintf(__('%1$s (%2$s)'), $name, $linked_item->getID());
             }
 
@@ -508,10 +511,10 @@ class KnowbaseItem_Item extends CommonDBRelation
         $kb_item = new KnowbaseItem();
         $kb_item->getEmpty();
         if ($kb_item->canViewItem()) {
-            $action_prefix = __CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR;
+            $action_prefix = __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR;
 
-            $actions[$action_prefix.'add']
-               = "<i class='ma-icon fas fa-book' aria-hidden='true'></i>".
+            $actions[$action_prefix . 'add']
+               = "<i class='ma-icon fas fa-book' aria-hidden='true'></i>" .
                  _x('button', 'Link knowledgebase article');
         }
 

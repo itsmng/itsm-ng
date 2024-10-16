@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -42,17 +43,21 @@ Html::header_nocache();
 Session::checkCentralAccess();
 
 // Make a select box
-if ($_POST['items_id']
-    && $_POST['itemtype'] && class_exists($_POST['itemtype'])) {
+if (
+    $_POST['items_id']
+    && $_POST['itemtype'] && class_exists($_POST['itemtype'])
+) {
     $devicetype = $_POST['itemtype'];
     $linktype   = $devicetype::getItem_DeviceType();
 
     if (count($linktype::getSpecificities())) {
         $keys = array_keys($linktype::getSpecificities());
-        array_walk($keys, function (&$val) use ($DB) { return $DB->quoteName($val); });
+        array_walk($keys, function (&$val) use ($DB) {
+            return $DB->quoteName($val);
+        });
         $name_field = new QueryExpression(
             "CONCAT_WS(' - ', " . implode(', ', $keys) . ")"
-         . "AS ".$DB->quoteName("name")
+            . "AS " . $DB->quoteName("name")
         );
     } else {
         $name_field = 'id AS name';
@@ -65,7 +70,7 @@ if ($_POST['items_id']
              $devicetype::getForeignKeyField() => $_POST['items_id'],
              'itemtype'                        => '',
           ]
-      ]
+        ]
     );
     $devices = [];
     foreach ($result as $row) {
@@ -74,7 +79,6 @@ if ($_POST['items_id']
             $name = $row['id'];
         }
         $devices[$row['id']] = $name;
-
     }
     echo json_encode(['name' => $devicetype::getForeignKeyField(), 'options' => $devices]);
 }

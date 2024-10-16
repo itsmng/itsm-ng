@@ -110,16 +110,22 @@ class Appliance_Item_Relation extends CommonDBRelation
         $error_detected = [];
 
         //check for requirements
-        if (($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
-            || (isset($input['itemtype']) && empty($input['itemtype']))) {
+        if (
+            ($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
+            || (isset($input['itemtype']) && empty($input['itemtype']))
+        ) {
             $error_detected[] = __('An item type is required');
         }
-        if (($this->isNewItem() && (!isset($input['items_id']) || empty($input['items_id'])))
-            || (isset($input['items_id']) && empty($input['items_id']))) {
+        if (
+            ($this->isNewItem() && (!isset($input['items_id']) || empty($input['items_id'])))
+            || (isset($input['items_id']) && empty($input['items_id']))
+        ) {
             $error_detected[] = __('An item is required');
         }
-        if (($this->isNewItem() && (!isset($input[self::$items_id_1]) || empty($input[self::$items_id_1])))
-            || (isset($input[self::$items_id_1]) && empty($input[self::$items_id_1]))) {
+        if (
+            ($this->isNewItem() && (!isset($input[self::$items_id_1]) || empty($input[self::$items_id_1])))
+            || (isset($input[self::$items_id_1]) && empty($input[self::$items_id_1]))
+        ) {
             $error_detected[] = __('An appliance item is required');
         }
 
@@ -185,9 +191,9 @@ class Appliance_Item_Relation extends CommonDBRelation
             $itemtype = $row['itemtype'];
             $item = new $itemtype();
             $item->getFromDB($row['items_id']);
-            $relations[$row['id']] = "<i class='".$item->getIcon()."' title='".$item::getTypeName(1)."'></i>".
-                           "&nbsp;".$item::getTypeName(1).
-                           "&nbsp;-&nbsp;".$item->getLink();
+            $relations[$row['id']] = "<i class='" . $item->getIcon() . "' title='" . $item::getTypeName(1) . "'></i>" .
+                           "&nbsp;" . $item::getTypeName(1) .
+                           "&nbsp;-&nbsp;" . $item->getLink();
         }
 
         return $relations;
@@ -242,9 +248,9 @@ class Appliance_Item_Relation extends CommonDBRelation
     ) {
         if ($canedit) {
             $form_url = Appliance_Item_Relation::getFormURL();
-            echo "<div id='add_relation_dialog' title='"._x('button', "Add an item")."' style='display:none;'>
+            echo "<div id='add_relation_dialog' title='" . _x('button', "Add an item") . "' style='display:none;'>
          <form  aria-label='Add Relation dialog' action='{$form_url}' method='POST'>
-            <p>".Dropdown::showSelectItemFromItemtypes([
+            <p>" . Dropdown::showSelectItemFromItemtypes([
                   'items_id_name'   => 'items_id',
                   'itemtypes'       => Appliance_Item_Relation::getTypes(true),
                   'entity_restrict' => ($item->fields['is_recursive'] ?? false)
@@ -252,10 +258,10 @@ class Appliance_Item_Relation extends CommonDBRelation
                                           : $item->fields['entities_id'],
                   'checkright'     => true,
                   'display'        => false,
-               ])."</p>
+               ]) . "</p>
             <input type='hidden' name='appliances_items_id'>
-            ".Html::submit(_x('button', "Add"), ['name' => 'add'])."
-         ".Html::closeForm(false)."
+            " . Html::submit(_x('button', "Add"), ['name' => 'add']) . "
+         " . Html::closeForm(false) . "
          </div>";
 
             $crsf_token = Session::getNewCSRFToken();

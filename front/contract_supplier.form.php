@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -51,8 +52,10 @@ if (isset($_POST["add"])) {
     }
     $contractsupplier->check(-1, CREATE, $_POST);
 
-    if (isset($_POST["contracts_id"]) && ($_POST["contracts_id"] > 0)
-        && isset($_POST["suppliers_id"]) && ($_POST["suppliers_id"] > 0)) {
+    if (
+        isset($_POST["contracts_id"]) && ($_POST["contracts_id"] > 0)
+        && isset($_POST["suppliers_id"]) && ($_POST["suppliers_id"] > 0)
+    ) {
         if ($contractsupplier->add($_POST)) {
             Event::log(
                 $_POST["contracts_id"],

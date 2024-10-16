@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -47,13 +48,15 @@ if (isset($_POST['is_private'])) {
             echo "<input type='hidden' name='entities_id' value='0'>\n";
             echo "<input type='hidden' name='is_recursive' value='0'>\n";
             $private =  __('Personal');
-            $link    = "<a href='#' onClick='setPublic".$_POST['rand']."();return false;'>".__('Set public')."</a>";
+            $link    = "<a href='#' onClick='setPublic" . $_POST['rand'] . "();return false;'>" . __('Set public') . "</a>";
             printf(__('%1$s - %2$s'), $private, $link);
             break;
 
         case false:
-            if (isset($_POST['entities_id'])
-                && in_array($_POST['entities_id'], $_SESSION['glpiactiveentities'])) {
+            if (
+                isset($_POST['entities_id'])
+                && in_array($_POST['entities_id'], $_SESSION['glpiactiveentities'])
+            ) {
                 $val = $_POST['entities_id'];
             } else {
                 $val = $_SESSION['glpiactive_entity'];
@@ -64,10 +67,10 @@ if (isset($_POST['is_private'])) {
             echo __('Public');
             echo "</td><td>";
             Entity::dropdown(['value' => $val]);
-            echo "</td><td>". __('Child entities')."</td><td>";
+            echo "</td><td>" . __('Child entities') . "</td><td>";
             Dropdown::showYesNo('is_recursive', $_POST["is_recursive"]);
             echo "</td><td>";
-            echo "<a href='#' onClick='setPrivate".$_POST['rand']."();return false'>".__('Set personal')."</a>";
+            echo "<a href='#' onClick='setPrivate" . $_POST['rand'] . "();return false'>" . __('Set personal') . "</a>";
             echo "</td></tr></table>";
             break;
     }

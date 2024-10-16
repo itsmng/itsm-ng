@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,5 +42,4 @@ class MonitorModel extends CommonDCModelDropdown
     {
         return _n('Monitor model', 'Monitor models', $nb);
     }
-
 }

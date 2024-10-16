@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -53,7 +54,7 @@ class DisableMaintenanceModeCommand extends AbstractCommand
         $this->setAliases(
             [
               'maintenance:disable',
-         ]
+            ]
         );
         $this->setDescription(__('Disable maintenance mode'));
     }

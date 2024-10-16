@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -67,7 +68,6 @@ abstract class CommonItilObject_Item extends CommonDBRelation
                             $tmp['name'],
                             Html::showToolTip($tmp['comment'], ['display' => false])
                         );
-
                     }
                     return Dropdown::getDropdownName(
                         getTableForItemType($values['itemtype']),
@@ -125,20 +125,23 @@ abstract class CommonItilObject_Item extends CommonDBRelation
         if ($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] == 0) {
             echo "<input type='hidden' name='$myname' value=''>";
             echo "<input type='hidden' name='items_id' value='0'>";
-
         } else {
             echo "<div id='tracking_all_devices$rand'>";
-            if ($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] & pow(
-                2,
-                Ticket::HELPDESK_ALL_HARDWARE
-            )) {
+            if (
+                $_SESSION["glpiactiveprofile"]["helpdesk_hardware"] & pow(
+                    2,
+                    Ticket::HELPDESK_ALL_HARDWARE
+                )
+            ) {
                 // Display a message if view my hardware
-                if ($users_id
+                if (
+                    $users_id
                     && ($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] & pow(
                         2,
                         Ticket::HELPDESK_MY_HARDWARE
-                    ))) {
-                    echo __('Or complete search')."&nbsp;";
+                    ))
+                ) {
+                    echo __('Or complete search') . "&nbsp;";
                 }
 
                 $types = static::$itemtype_1::getAllTypesForHelpdesk();

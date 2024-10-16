@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -81,12 +82,12 @@ class RuleRightCollection extends RuleCollection
         $actions = $rule->getActions();
         echo "<tr><th colspan='4'>" . __('Rule results') . "</th></tr>";
         echo "<tr class='tab_bg_2'>";
-        echo "<td class='center' colspan='2'>"._n('Validation', 'Validations', 1)."</td><td colspan='2'>".
-             "<span class='b'>".Dropdown::getYesNo($global_result)."</span></td>";
+        echo "<td class='center' colspan='2'>" . _n('Validation', 'Validations', 1) . "</td><td colspan='2'>" .
+             "<span class='b'>" . Dropdown::getYesNo($global_result) . "</span></td>";
 
         if (isset($output["_ldap_rules"]["rules_entities"])) {
             echo "<tr class='tab_bg_2'>";
-            echo "<td class='center' colspan='4'>".__('Entities assignment')."</td>";
+            echo "<td class='center' colspan='4'>" . __('Entities assignment') . "</td>";
             foreach ($output["_ldap_rules"]["rules_entities"] as $entities) {
                 foreach ($entities as $entity) {
                     $this->displayActionByName("entity", $entity[0]);
@@ -99,7 +100,7 @@ class RuleRightCollection extends RuleCollection
 
         if (isset($output["_ldap_rules"]["rules_rights"])) {
             echo "<tr class='tab_bg_2'>";
-            echo "<td colspan='4' class='center'>".__('Rights assignment')."</td>";
+            echo "<td colspan='4' class='center'>" . __('Rights assignment') . "</td>";
             foreach ($output["_ldap_rules"]["rules_rights"] as $val) {
                 $this->displayActionByName("profile", $val[0]);
             }
@@ -107,7 +108,7 @@ class RuleRightCollection extends RuleCollection
 
         if (isset($output["_ldap_rules"]["rules_entities_rights"])) {
             echo "<tr class='tab_bg_2'>";
-            echo "<td colspan='4' class='center'>".__('Rights and entities assignment')."</td>";
+            echo "<td colspan='4' class='center'>" . __('Rights and entities assignment') . "</td>";
             foreach ($output["_ldap_rules"]["rules_entities_rights"] as $val) {
                 if (is_array($val[0])) {
                     foreach ($val[0] as $tmp) {
@@ -136,8 +137,8 @@ class RuleRightCollection extends RuleCollection
                     $actiontype = '';
                 }
                 echo "<tr class='tab_bg_2'>";
-                echo "<td class='center'>".$actions[$criteria]["name"]."</td>";
-                echo "<td class='center'>".$rule->getActionValue($criteria, $actiontype, $value);
+                echo "<td class='center'>" . $actions[$criteria]["name"] . "</td>";
+                echo "<td class='center'>" . $rule->getActionValue($criteria, $actiontype, $value);
                 echo "</td></tr>\n";
             }
         }
@@ -157,18 +158,18 @@ class RuleRightCollection extends RuleCollection
         echo "<tr class='tab_bg_2'>";
         switch ($name) {
             case "entity":
-                echo "<td class='center'>".Entity::getTypeName(1)." </td>\n";
-                echo "<td class='center'>".Dropdown::getDropdownName("glpi_entities", $value)."</td>";
+                echo "<td class='center'>" . Entity::getTypeName(1) . " </td>\n";
+                echo "<td class='center'>" . Dropdown::getDropdownName("glpi_entities", $value) . "</td>";
                 break;
 
             case "profile":
-                echo "<td class='center'>"._n('Profile', 'Profiles', Session::getPluralNumber())." </td>\n";
-                echo "<td class='center'>".Dropdown::getDropdownName("glpi_profiles", $value)."</td>";
+                echo "<td class='center'>" . _n('Profile', 'Profiles', Session::getPluralNumber()) . " </td>\n";
+                echo "<td class='center'>" . Dropdown::getDropdownName("glpi_profiles", $value) . "</td>";
                 break;
 
             case "is_recursive":
-                echo "<td class='center'>".__('Recursive')." </td>\n";
-                echo "<td class='center'>".Dropdown::getYesNo($value)."</td>";
+                echo "<td class='center'>" . __('Recursive') . " </td>\n";
+                echo "<td class='center'>" . Dropdown::getYesNo($value) . "</td>";
                 break;
         }
         echo "</tr>";
@@ -317,5 +318,4 @@ class RuleRightCollection extends RuleCollection
         }
         return $fields;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -57,7 +58,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["delete"])) {
     $problem->check($_POST["id"], DELETE);
 
@@ -71,7 +71,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s deletes an item'), $_SESSION["glpiname"])
     );
     $problem->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $problem->check($_POST["id"], DELETE);
 
@@ -85,7 +84,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s restores an item'), $_SESSION["glpiname"])
     );
     $problem->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $problem->check($_POST["id"], PURGE);
 
@@ -99,7 +97,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $problem->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $problem->check($_POST["id"], UPDATE);
 
@@ -115,11 +112,10 @@ if (isset($_POST["add"])) {
 
     // Copy solution to KB redirect to KB
     if (isset($_POST['_sol_to_kb']) && $_POST['_sol_to_kb']) {
-        Html::redirect(KnowbaseItem::getFormURL()."?id=new&item_itemtype=Problem&item_items_id=". $_POST["id"]);
+        Html::redirect(KnowbaseItem::getFormURL() . "?id=new&item_itemtype=Problem&item_items_id=" . $_POST["id"]);
     } else {
         Html::back();
     }
-
 } elseif (isset($_POST['addme_observer'])) {
     $problem->check($_POST['problems_id'], READ);
     $input = array_merge(Toolbox::addslashes_deep($problem->fields), [
@@ -140,7 +136,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s adds an actor'), $_SESSION["glpiname"])
     );
     Html::redirect($problem->getFormURLWithID($_POST['problems_id']));
-
 } elseif (isset($_POST['addme_assign'])) {
     $problem_user = new Problem_User();
     $problem->check($_POST['problems_id'], READ);
@@ -184,7 +179,7 @@ if (isset($_POST["add"])) {
             [
               'title'         => __('Save solution to the knowledge base'),
               'reloadonclose' => false,
-         ]
+            ]
         );
         echo Html::scriptBlock('$(function() {' . Html::jsGetElementbyID('savetokb') . '.dialog("open"); });');
     }

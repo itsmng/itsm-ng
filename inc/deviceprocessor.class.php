@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -85,7 +86,7 @@ class DeviceProcessor extends CommonDevice
                  'value' => $this->fields['deviceprocessormodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceProcessorModel')
               ]
-         ]
+            ]
         );
     }
 
@@ -149,8 +150,10 @@ class DeviceProcessor extends CommonDevice
     public function prepareInputForAddOrUpdate($input)
     {
 
-        foreach (['frequence', 'frequency_default', 'nbcores_default',
-                       'nbthreads_default'] as $field) {
+        foreach (
+            ['frequence', 'frequency_default', 'nbcores_default',
+                       'nbthreads_default'] as $field
+        ) {
             if (isset($input[$field]) && !is_numeric($input[$field])) {
                 $input[$field] = 0;
             }
