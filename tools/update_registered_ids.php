@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -43,8 +44,10 @@ include('../inc/includes.php');
 
 $registeredid = new RegisteredID();
 $manufacturer = new Manufacturer();
-foreach (['PCI' => 'http://pciids.sourceforge.net/v2.2/pci.ids',
-               'USB' => 'http://www.linux-usb.org/usb.ids'] as $type => $URL) {
+foreach (
+    ['PCI' => 'http://pciids.sourceforge.net/v2.2/pci.ids',
+               'USB' => 'http://www.linux-usb.org/usb.ids'] as $type => $URL
+) {
     echo "Processing : $type\n";
     foreach (file($URL) as $line) {
         if ($line[0] == '#') {
@@ -57,11 +60,13 @@ foreach (['PCI' => 'http://pciids.sourceforge.net/v2.2/pci.ids',
         if ($line[0] != '\t') {
             $id   = strtolower(substr($line, 0, 4));
             $name = addslashes(trim(substr($line, 4)));
-            if ($registeredid->getFromDBByCrit([
-               'itemtype'     => 'Manufacturer',
-               'name'         => $id,
-               'device_type'  => $type
-            ])) {
+            if (
+                $registeredid->getFromDBByCrit([
+                'itemtype'     => 'Manufacturer',
+                'name'         => $id,
+                'device_type'  => $type
+                ])
+            ) {
                 $manufacturer->getFromDB($registeredid->fields['items_id']);
             } else {
                 if (!$manufacturer->getFromDBByCrit(['name' => $name])) {

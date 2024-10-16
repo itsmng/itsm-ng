@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -63,7 +64,7 @@ class Contact extends CommonDBTM
               Contact_Supplier::class,
               ProjectTaskTeam::class,
               ProjectTeam::class,
-         ]
+            ]
         );
     }
 
@@ -180,32 +181,32 @@ class Contact extends CommonDBTM
                               'type' => 'text',
                               'value' => $this->fields['name'],
                           ],
-                    __('First name') => [
+                          __('First name') => [
                               'name' => 'firstname',
                               'type' => 'text',
                               'value' => $this->fields['firstname'],
                           ],
-                    __('Phone') => [
+                          __('Phone') => [
                               'name' => 'phone',
                               'type' => 'text',
                               'value' => $this->fields['phone'],
                           ],
-                    __('Phone 2') => [
+                          __('Phone 2') => [
                               'name' => 'phone2',
                               'type' => 'text',
                               'value' => $this->fields['phone2'],
                           ],
-                    __('Mobile phone') => [
+                          __('Mobile phone') => [
                               'name' => 'mobile',
                               'type' => 'text',
                               'value' => $this->fields['mobile'],
                           ],
-                    __('Fax') => [
+                          __('Fax') => [
                               'name' => 'fax',
                               'type' => 'text',
                               'value' => $this->fields['fax'],
                           ],
-                    __('Email') => [
+                          __('Email') => [
                               'name' => 'email',
                               'type' => 'text',
                               'value' => $this->fields['email'],
@@ -217,7 +218,7 @@ class Contact extends CommonDBTM
                               'value' => $this->fields['contacttypes_id'],
                               'actions' => getItemActionButtons(['info', 'add'], "contacttype"),
                           ],
-                    __('Title') => [
+                          __('Title') => [
                               'name' => 'usertitles_id',
                               'type' => 'select',
                               'values' => getOptionForItems("usertitle"),
@@ -228,34 +229,34 @@ class Contact extends CommonDBTM
                               'name' => 'comment',
                               'type' => 'textarea',
                               'value' => $this->fields['comment'],
-                    ],
-                    __('Address') => [
+                          ],
+                          __('Address') => [
                               'name' => 'address',
                               'type' => 'textarea',
                               'value' => $this->fields["address"],
                           ],
-                    __('Postal code') => [
-                       'name' => 'postcode',
-                       'type' => 'text',
-                       'value' => $this->fields['postcode'],
-                    ],
-                    __('City') => [
-                       'name' => 'town',
-                       'type' => 'text',
-                       'value' => $this->fields['town'],
-                    ],
-                    __('State') => [
-                       'name' => 'state',
-                       'type' => 'text',
-                       'value' => $this->fields['state'],
-                    ],
-                    __('Country') => [
-                       'name' => 'country',
-                       'type' => 'text',
-                       'value' => $this->fields['country'],
-                    ]
+                          __('Postal code') => [
+                          'name' => 'postcode',
+                          'type' => 'text',
+                          'value' => $this->fields['postcode'],
+                          ],
+                          __('City') => [
+                          'name' => 'town',
+                          'type' => 'text',
+                          'value' => $this->fields['town'],
+                          ],
+                          __('State') => [
+                          'name' => 'state',
+                          'type' => 'text',
+                          'value' => $this->fields['state'],
+                          ],
+                          __('Country') => [
+                          'name' => 'country',
+                          'type' => 'text',
+                          'value' => $this->fields['country'],
+                          ]
+                      ]
                   ]
-              ]
               ]
           ];
         renderTwigForm($form, '', $this->fields);
@@ -271,7 +272,7 @@ class Contact extends CommonDBTM
         $actions = parent::getSpecificMassiveActions($checkitem);
 
         if ($isadmin) {
-            $actions['Contact_Supplier'.MassiveAction::CLASS_ACTION_SEPARATOR.'add']
+            $actions['Contact_Supplier' . MassiveAction::CLASS_ACTION_SEPARATOR . 'add']
                   = _x('button', 'Add a supplier');
         }
 
@@ -536,10 +537,10 @@ class Contact extends CommonDBTM
 
         // send the  VCard
         $output   = $vcard->serialize();
-        $filename = $this->fields["name"]."_".$this->fields["firstname"].".vcf";
+        $filename = $this->fields["name"] . "_" . $this->fields["firstname"] . ".vcf";
 
         @header("Content-Disposition: attachment; filename=\"$filename\"");
-        @header("Content-Length: ".Toolbox::strlen($output));
+        @header("Content-Length: " . Toolbox::strlen($output));
         @header("Connection: close");
         @header("content-type: text/x-vcard; charset=UTF-8");
 

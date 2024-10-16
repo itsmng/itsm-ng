@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -88,5 +89,4 @@ class NetworkPort_NetworkPort extends CommonDBRelation
             return false;
         }
     }
-
 }

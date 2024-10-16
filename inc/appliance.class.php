@@ -474,7 +474,7 @@ class Appliance extends CommonDBTM
         $this->deleteChildrenAndRelationsFromDb(
             [
               Appliance_Item::class,
-         ]
+            ]
         );
     }
 

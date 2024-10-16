@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -78,5 +79,4 @@ class MemoryLimit extends AbstractRequirement
             $this->validation_messages[] = __('Try increasing the memory_limit parameter in the php.ini file.');
         }
     }
-
 }

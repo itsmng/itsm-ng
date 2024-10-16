@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -57,23 +58,24 @@ if (isset($_POST['execute'])) {
     Session::checkRight('config', UPDATE);
     $crontask->update($_POST);
     Html::back();
-
-} elseif (isset($_POST['resetdate'])
-           && isset($_POST["id"])) {
+} elseif (
+    isset($_POST['resetdate'])
+           && isset($_POST["id"])
+) {
     Session::checkRight('config', UPDATE);
     if ($crontask->getFromDB($_POST["id"])) {
         $crontask->resetDate();
     }
     Html::back();
-
-} elseif (isset($_POST['resetstate'])
-           && isset($_POST["id"])) {
+} elseif (
+    isset($_POST['resetstate'])
+           && isset($_POST["id"])
+) {
     Session::checkRight('config', UPDATE);
     if ($crontask->getFromDB($_POST["id"])) {
         $crontask->resetState();
     }
     Html::back();
-
 } else {
     if (!isset($_GET["id"]) || empty($_GET["id"])) {
         exit();

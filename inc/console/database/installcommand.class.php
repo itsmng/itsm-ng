@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -111,9 +112,11 @@ class InstallCommand extends AbstractConfigureCommand
     protected function interact(InputInterface $input, OutputInterface $output)
     {
 
-        if ($this->isDbAlreadyConfigured()
+        if (
+            $this->isDbAlreadyConfigured()
             && $this->isInputContainingConfigValues($input, $output)
-            && !$input->getOption('reconfigure')) {
+            && !$input->getOption('reconfigure')
+        ) {
             /** @var \Symfony\Component\Console\Helper\QuestionHelper $question_helper */
             $question_helper = $this->getHelper('question');
             $reconfigure = $question_helper->ask(
@@ -142,9 +145,11 @@ class InstallCommand extends AbstractConfigureCommand
         $default_language = $input->getOption('default-language');
         $force            = $input->getOption('force');
 
-        if ($this->isDbAlreadyConfigured()
+        if (
+            $this->isDbAlreadyConfigured()
             && $this->isInputContainingConfigValues($input, $output)
-            && !$input->getOption('reconfigure')) {
+            && !$input->getOption('reconfigure')
+        ) {
             // Prevent overriding of existing DB when input contains configuration values and
             // --reconfigure option is not used.
             $output->writeln(
@@ -236,8 +241,10 @@ class InstallCommand extends AbstractConfigureCommand
             '<comment>' . __('Creating the database...') . '</comment>',
             OutputInterface::VERBOSITY_VERBOSE
         );
-        if (!$mysqli->query('CREATE DATABASE IF NOT EXISTS `' . $db_name .'`')
-            || !$mysqli->select_db($db_name)) {
+        if (
+            !$mysqli->query('CREATE DATABASE IF NOT EXISTS `' . $db_name . '`')
+            || !$mysqli->select_db($db_name)
+        ) {
             $message = sprintf(
                 __('Database creation failed with message "(%s) %s".'),
                 $mysqli->errno,

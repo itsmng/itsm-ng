@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -64,5 +65,4 @@ class QueryParam extends DbTestCase
         $qpa = new \QueryParam();
         $this->string($qpa->getValue())->isIdenticalTo('?');
     }
-
 }

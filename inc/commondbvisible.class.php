@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -59,8 +60,10 @@ abstract class CommonDBVisible extends CommonDBTM
         }
 
         // Groups
-        if (count($this->groups)
-            && isset($_SESSION["glpigroups"]) && count($_SESSION["glpigroups"])) {
+        if (
+            count($this->groups)
+            && isset($_SESSION["glpigroups"]) && count($_SESSION["glpigroups"])
+        ) {
             foreach ($this->groups as $data) {
                 foreach ($data as $group) {
                     if (in_array($group['groups_id'], $_SESSION["glpigroups"])) {
@@ -78,8 +81,10 @@ abstract class CommonDBVisible extends CommonDBTM
         }
 
         // Entities
-        if (count($this->entities)
-            && isset($_SESSION["glpiactiveentities"]) && count($_SESSION["glpiactiveentities"])) {
+        if (
+            count($this->entities)
+            && isset($_SESSION["glpiactiveentities"]) && count($_SESSION["glpiactiveentities"])
+        ) {
             foreach ($this->entities as $data) {
                 foreach ($data as $entity) {
                     if (Session::haveAccessToEntity($entity['entities_id'], $entity['is_recursive'])) {
@@ -90,9 +95,11 @@ abstract class CommonDBVisible extends CommonDBTM
         }
 
         // Profiles
-        if (count($this->profiles)
+        if (
+            count($this->profiles)
             && isset($_SESSION["glpiactiveprofile"])
-            && isset($_SESSION["glpiactiveprofile"]['id'])) {
+            && isset($_SESSION["glpiactiveprofile"]['id'])
+        ) {
             if (isset($this->profiles[$_SESSION["glpiactiveprofile"]['id']])) {
                 foreach ($this->profiles[$_SESSION["glpiactiveprofile"]['id']] as $profile) {
                     // All the profile
@@ -166,7 +173,7 @@ abstract class CommonDBVisible extends CommonDBTM
                         __('Type') => [
                            'type' => 'select',
                            'name' => '_type',
-                           'id' => 'selectForType'.$rand,
+                           'id' => 'selectForType' . $rand,
                            'values' => [ Dropdown::EMPTY_VALUE,
                               'Entity' => 'Entity',
                               'Group' => 'Group',
@@ -249,7 +256,7 @@ abstract class CommonDBVisible extends CommonDBTM
             ];
             renderTwigForm($form);
         }
-        $massContainerId = 'mass'.__CLASS__.$rand;
+        $massContainerId = 'mass' . __CLASS__ . $rand;
         if ($canedit && $nb) {
             $massiveactionparams = [
                'num_displayed' => min($_SESSION['glpilist_limit'], $nb),
@@ -306,7 +313,7 @@ abstract class CommonDBVisible extends CommonDBTM
                             $entname = sprintf(
                                 __('%1$s %2$s'),
                                 $entname,
-                                "<span class='b'>(".__('R').")</span>"
+                                "<span class='b'>(" . __('R') . ")</span>"
                             );
                         }
                     }
@@ -329,7 +336,7 @@ abstract class CommonDBVisible extends CommonDBTM
                         $entname = sprintf(
                             __('%1$s %2$s'),
                             $entname,
-                            "<span class='b'>(".__('R').")</span>"
+                            "<span class='b'>(" . __('R') . ")</span>"
                         );
                     }
                     $values[] = [
@@ -360,7 +367,7 @@ abstract class CommonDBVisible extends CommonDBTM
                             $entname = sprintf(
                                 __('%1$s %2$s'),
                                 $entname,
-                                "<span class='b'>(".__('R').")</span>"
+                                "<span class='b'>(" . __('R') . ")</span>"
                             );
                         }
                     }
@@ -368,7 +375,7 @@ abstract class CommonDBVisible extends CommonDBTM
                        Profile::getTypeName(1),
                        $entname,
                     ];
-                    $massive_action[] = sprintf('item[%s][%s]', 'Profile_'.$this->getType(), $data['id']);
+                    $massive_action[] = sprintf('item[%s][%s]', 'Profile_' . $this->getType(), $data['id']);
                 }
             }
         }

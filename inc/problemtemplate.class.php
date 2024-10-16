@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -59,5 +60,4 @@ class ProblemTemplate extends ITILTemplate
            ProblemTemplatePredefinedField::class,
         ];
     }
-
 }

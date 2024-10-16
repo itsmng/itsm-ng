@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -129,7 +130,7 @@ class DbTestCase extends \GLPITestCase
             [
               'TicketFollowup', // Deprecated
               '/^Computer_Software.*/', // Deprecated
-         ]
+            ]
         );
 
         $classes = [];
@@ -138,7 +139,7 @@ class DbTestCase extends \GLPITestCase
                 continue;
             }
 
-            $php_file = file_get_contents("inc/".$fileInfo->getFilename());
+            $php_file = file_get_contents("inc/" . $fileInfo->getFilename());
             $tokens = token_get_all($php_file);
             $class_token = false;
             foreach ($tokens as $token) {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -71,7 +72,6 @@ if (isset($_POST["disconnect"])) {
         }
     }
     Html::back();
-
 }
 
 Html::displayErrorAndDie('Lost');

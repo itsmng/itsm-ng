@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,5 +42,4 @@ class SupplierType extends CommonDropdown
     {
         return _n('Third party type', 'Third party types', $nb);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -61,7 +62,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["delete"])) {
     $peripheral->check($_POST["id"], DELETE);
     $peripheral->delete($_POST);
@@ -75,7 +75,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s deletes an item'), $_SESSION["glpiname"])
     );
     $peripheral->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $peripheral->check($_POST["id"], DELETE);
 
@@ -89,7 +88,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s restores an item'), $_SESSION["glpiname"])
     );
     $peripheral->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $peripheral->check($_POST["id"], PURGE);
 
@@ -103,7 +101,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $peripheral->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $peripheral->check($_POST["id"], UPDATE);
 
@@ -117,7 +114,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } elseif (isset($_POST["unglobalize"])) {
     $peripheral->check($_POST["id"], UPDATE);
 
@@ -132,7 +128,6 @@ if (isset($_POST["add"])) {
     );
 
     Html::redirect($peripheral->getFormURLWithID($_POST["id"]));
-
 } else {
     Html::header(Peripheral::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "assets", "peripheral");
     $peripheral->display([

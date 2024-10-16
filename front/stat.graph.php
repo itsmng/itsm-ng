@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -49,10 +50,11 @@ if (empty($_POST["date1"]) && empty($_POST["date2"])) {
     }
 }
 
-if (!empty($_POST["date1"])
+if (
+    !empty($_POST["date1"])
     && !empty($_POST["date2"])
-    && (strcmp($_POST["date2"], $_POST["date1"]) < 0)) {
-
+    && (strcmp($_POST["date2"], $_POST["date1"]) < 0)
+) {
     $tmp            = $_POST["date1"];
     $_POST["date1"] = $_POST["date2"];
     $_POST["date2"] = $tmp;
@@ -342,20 +344,20 @@ echo "<div class='center'>";
 echo "<table class='tab_cadre'> aria-label='External authentication sources'";
 echo "<tr><td>";
 if ($prev > 0) {
-    echo "<a href=\"".$_SERVER['PHP_SELF']."?$cleantarget&amp;date1=".$_POST["date1"]."&amp;date2=".
-           $_POST["date2"]."&amp;id=$prev\">
-          <img src='".$CFG_GLPI["root_doc"]."/pics/left.png' alt=\"".__s('Previous')."\"
-           title=\"".__s('Previous')."\"></a>";
+    echo "<a href=\"" . $_SERVER['PHP_SELF'] . "?$cleantarget&amp;date1=" . $_POST["date1"] . "&amp;date2=" .
+           $_POST["date2"] . "&amp;id=$prev\">
+          <img src='" . $CFG_GLPI["root_doc"] . "/pics/left.png' alt=\"" . __s('Previous') . "\"
+           title=\"" . __s('Previous') . "\"></a>";
 }
 echo "</td>";
 
 echo "<td width='400' class='center b'>$title</td>";
 echo "<td>";
 if ($next > 0) {
-    echo "<a href=\"".$_SERVER['PHP_SELF']."?$cleantarget&amp;date1=".$_POST["date1"]."&amp;date2=".
-           $_POST["date2"]."&amp;id=$next\">
-          <img src='".$CFG_GLPI["root_doc"]."/pics/right.png' alt=\"".__s('Next')."\"
-           title=\"".__s('Next')."\"></a>";
+    echo "<a href=\"" . $_SERVER['PHP_SELF'] . "?$cleantarget&amp;date1=" . $_POST["date1"] . "&amp;date2=" .
+           $_POST["date2"] . "&amp;id=$next\">
+          <img src='" . $CFG_GLPI["root_doc"] . "/pics/right.png' alt=\"" . __s('Next') . "\"
+           title=\"" . __s('Next') . "\"></a>";
 }
 echo "</td>";
 echo "</tr>";
@@ -365,13 +367,13 @@ $target = preg_replace("/&/", "&amp;", $_SERVER["REQUEST_URI"]);
 
 echo "<form aria-label='Statistics' method='post' name='form' action='$target'><div class='center'>";
 echo "<table class='tab_cadre' aria-label='Statistics'>";
-echo "<tr class='tab_bg_2'><td class='right'>".__('Start date')."</td><td>";
+echo "<tr class='tab_bg_2'><td class='right'>" . __('Start date') . "</td><td>";
 Html::showDateField("date1", ['value' => $_POST["date1"]]);
 echo "</td><td rowspan='2' class='center'>";
-echo "<input type='hidden' name='itemtype' value=\"".$_GET['itemtype']."\">";
-echo "<input type='submit' class='submit' value=\"".__s('Display report')."\"></td></tr>";
+echo "<input type='hidden' name='itemtype' value=\"" . $_GET['itemtype'] . "\">";
+echo "<input type='submit' class='submit' value=\"" . __s('Display report') . "\"></td></tr>";
 
-echo "<tr class='tab_bg_2'><td class='right'>".__('End date')."</td><td>";
+echo "<tr class='tab_bg_2'><td class='right'>" . __('End date') . "</td><td>";
 Html::showDateField("date2", ['value' => $_POST["date2"]]);
 echo "</td></tr>";
 echo "</table></div>";
@@ -440,7 +442,7 @@ $stat->displayLineGraph(
          'name' => __('Closed'),
          'data' => $values['closed']
       ]
-   ]
+    ]
 );
 
 $values = [];
@@ -562,7 +564,7 @@ if ($_GET['itemtype'] == 'Ticket') {
              'name' => _nx('survey', 'Answered', 'Answered', Session::getPluralNumber()),
              'data' => $values['answersatisfaction']
           ]
-      ]
+        ]
     );
 
     $values = [];
@@ -584,7 +586,7 @@ if ($_GET['itemtype'] == 'Ticket') {
              'name' => __('Satisfaction'),
              'data' => $values['avgsatisfaction']
           ]
-      ]
+        ]
     );
 }
 Html::footer();

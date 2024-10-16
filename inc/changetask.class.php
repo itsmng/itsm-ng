@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -113,7 +114,6 @@ class ChangeTask extends CommonITILTask
                                 )))));
         }
         return false;
-
     }
 
 
@@ -129,9 +129,11 @@ class ChangeTask extends CommonITILTask
             return false;
         }
 
-        if (($this->fields["users_id"] != Session::getLoginUserID())
+        if (
+            ($this->fields["users_id"] != Session::getLoginUserID())
             && !Session::haveRight('change', UPDATE)
-            && !Session::haveRight(self::$rightname, parent::UPDATEALL)) {
+            && !Session::haveRight(self::$rightname, parent::UPDATEALL)
+        ) {
             return false;
         }
 

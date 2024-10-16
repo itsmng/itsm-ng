@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -82,7 +83,7 @@ class SsoVariable extends CommonDropdown
                 'core',
                 [
                   'ssovariables_id' => $newval,
-            ]
+                ]
             );
         }
     }

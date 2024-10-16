@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -57,7 +58,7 @@ if (isset($_POST['enable_custom_css']) && isset($_POST['entities_id'])) {
 
     $rand = mt_rand();
 
-    echo '<textarea id="custom_css_code_'. $rand . '" name="custom_css_code" ';
+    echo '<textarea id="custom_css_code_' . $rand . '" name="custom_css_code" ';
     if (!$enable_custom_css) {
         echo 'disabled';
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -79,8 +80,10 @@ class Certificate_Item extends CommonDBRelation
     {
 
         if (!$withtemplate) {
-            if ($item->getType() == 'Certificate'
-               && count(Certificate::getTypes(false))) {
+            if (
+                $item->getType() == 'Certificate'
+                && count(Certificate::getTypes(false))
+            ) {
                 if ($_SESSION['glpishow_count_on_tabs']) {
                     return self::createTabEntry(
                         _n('Associated item', 'Associated items', Session::getPluralNumber()),
@@ -88,9 +91,10 @@ class Certificate_Item extends CommonDBRelation
                     );
                 }
                 return _n('Associated item', 'Associated items', Session::getPluralNumber());
-
-            } elseif (in_array($item->getType(), Certificate::getTypes(true))
-               && Certificate::canView()) {
+            } elseif (
+                in_array($item->getType(), Certificate::getTypes(true))
+                && Certificate::canView()
+            ) {
                 if ($_SESSION['glpishow_count_on_tabs']) {
                     return self::createTabEntry(
                         Certificate::getTypeName(2),
@@ -176,11 +180,13 @@ class Certificate_Item extends CommonDBRelation
     public function deleteItemByCertificatesAndItem($certificates_id, $items_id, $itemtype)
     {
 
-        if ($this->getFromDBbyCertificatesAndItem(
-            $certificates_id,
-            $items_id,
-            $itemtype
-        )) {
+        if (
+            $this->getFromDBbyCertificatesAndItem(
+                $certificates_id,
+                $items_id,
+                $itemtype
+            )
+        ) {
             $this->delete(['id' => $this->fields["id"]]);
         }
     }
@@ -348,8 +354,10 @@ class Certificate_Item extends CommonDBRelation
                     } else {
                         $linkname = $data["name"];
                     }
-                    if ($_SESSION["glpiis_ids_visible"]
-                          || empty($data["name"])) {
+                    if (
+                        $_SESSION["glpiis_ids_visible"]
+                          || empty($data["name"])
+                    ) {
                         $linkname = sprintf(__('%1$s (%2$s)'), $linkname, $data["id"]);
                     }
                     if ($item instanceof Item_Devices) {
@@ -369,8 +377,8 @@ class Certificate_Item extends CommonDBRelation
                            "glpi_entities",
                            $data['entity']
                        ) : "-",
-                       isset($data["serial"]) ? "".$data["serial"]."" : "-",
-                       isset($data["otherserial"]) ? "".$data["otherserial"]."" : "-",
+                       isset($data["serial"]) ? "" . $data["serial"] . "" : "-",
+                       isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-",
                     ];
                     $values[] = $newData;
                     $massiveactionValues[] = sprintf('item[%s][%s]', $itemtype, $data['id']);
@@ -401,9 +409,11 @@ class Certificate_Item extends CommonDBRelation
 
         $ID = $item->getField('id');
 
-        if ($item->isNewID($ID)
-           || !Certificate::canView() ||
-              !$item->can($item->fields['id'], READ)) {
+        if (
+            $item->isNewID($ID)
+            || !Certificate::canView()
+              || !$item->can($item->fields['id'], READ)
+        ) {
             return false;
         }
 
@@ -429,7 +439,6 @@ class Certificate_Item extends CommonDBRelation
         }
 
         if ($canedit && $withtemplate < 2) {
-
             if ($item->maybeRecursive()) {
                 $is_recursive = $item->fields['is_recursive'];
             } else {
@@ -548,8 +557,9 @@ class Certificate_Item extends CommonDBRelation
 
             ];
 
-            if ($data["date_expiration"] <= date('Y-m-d')
-               && !empty($data["date_expiration"])
+            if (
+                $data["date_expiration"] <= date('Y-m-d')
+                && !empty($data["date_expiration"])
             ) {
                 $newValue[] = Html::convDate($data["date_expiration"]);
             } elseif (empty($data["date_expiration"])) {

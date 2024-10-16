@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -43,7 +44,7 @@ Html::requireJs('jstree');
 $_SESSION["glpilanguage"] = $_SESSION['glpilanguage'] ?? $CFG_GLPI['language'];
 // Anonymous FAQ
 Html::header(__('FAQ'), [
-   __('FAQ') => $CFG_GLPI['root_doc'].'/front/helpdesk.faq.php'
+   __('FAQ') => $CFG_GLPI['root_doc'] . '/front/helpdesk.faq.php'
 ]);
 
 if (isset($_GET["id"])) {
@@ -51,7 +52,6 @@ if (isset($_GET["id"])) {
     if ($kb->getFromDB($_GET["id"])) {
         $kb->showFull();
     }
-
 } else {
     // Manage forcetab : non standard system (file name <> class name)
     if (isset($_GET['forcetab'])) {

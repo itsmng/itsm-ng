@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -143,7 +144,7 @@ class Calendar_Holiday extends CommonDBRelation
         }
 
 
-        $massActionContainerId = 'mass'.__CLASS__.$rand;
+        $massActionContainerId = 'mass' . __CLASS__ . $rand;
         if ($canedit && $numrows) {
             $massiveactionparams = [
                'num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
@@ -165,7 +166,7 @@ class Calendar_Holiday extends CommonDBRelation
         $massive_action = [];
         foreach ($holidays as $data) {
             $values[] = [
-               '<a href="'.Toolbox::getItemTypeFormURL('Holiday')."?id=".$data['id'].'">'.$data["name"].'</a>',
+               '<a href="' . Toolbox::getItemTypeFormURL('Holiday') . "?id=" . $data['id'] . '">' . $data["name"] . '</a>',
                Html::convDate($data["begin_date"]),
                Html::convDate($data["end_date"]),
                Dropdown::getYesNo($data["is_perpetual"]),
@@ -200,7 +201,7 @@ class Calendar_Holiday extends CommonDBRelation
               'WHERE'  => [
                  'calendars_id' => $oldid,
               ]
-         ]
+            ]
         );
 
         foreach ($result as $data) {

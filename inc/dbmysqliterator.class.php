@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -259,7 +260,7 @@ class DBmysqlIterator implements Iterator, Countable
             if (is_array($table)) {
                 if (count($table)) {
                     $table = array_map([DBmysql::class, 'quoteName'], $table);
-                    $this->sql .= ' FROM '.implode(", ", $table);
+                    $this->sql .= ' FROM ' . implode(", ", $table);
                 } else {
                     trigger_error("Missing table name", E_USER_ERROR);
                 }
@@ -287,7 +288,7 @@ class DBmysqlIterator implements Iterator, Countable
 
             // WHERE criteria list
             if (!empty($crit)) {
-                $this->sql .= " WHERE ".$this->analyseCrit($crit);
+                $this->sql .= " WHERE " . $this->analyseCrit($crit);
                 if ($where) {
                     trigger_error(
                         'Criteria found both inside and outside "WHERE" key. Some of them will be ignored',
@@ -295,14 +296,14 @@ class DBmysqlIterator implements Iterator, Countable
                     );
                 }
             } elseif ($where) {
-                $this->sql .= " WHERE ".$this->analyseCrit($where);
+                $this->sql .= " WHERE " . $this->analyseCrit($where);
             }
 
             // GROUP BY field list
             if (is_array($groupby)) {
                 if (count($groupby)) {
                     $groupby = array_map([DBmysql::class, 'quoteName'], $groupby);
-                    $this->sql .= ' GROUP BY '.implode(", ", $groupby);
+                    $this->sql .= ' GROUP BY ' . implode(", ", $groupby);
                 } else {
                     trigger_error("Missing group by field", E_USER_ERROR);
                 }
@@ -313,7 +314,7 @@ class DBmysqlIterator implements Iterator, Countable
 
             // HAVING criteria list
             if ($having) {
-                $this->sql .= " HAVING ".$this->analyseCrit($having);
+                $this->sql .= " HAVING " . $this->analyseCrit($having);
             }
 
             // ORDER BY
@@ -364,7 +365,7 @@ class DBmysqlIterator implements Iterator, Countable
             }
         }
 
-        return " ORDER BY ".implode(", ", $cleanorderby);
+        return " ORDER BY " . implode(", ", $cleanorderby);
     }
 
 
@@ -462,7 +463,7 @@ class DBmysqlIterator implements Iterator, Countable
     private function handleFieldsAlias($t, $f, $suffix = '')
     {
         $names = preg_split('/\s+AS\s+/i', $f);
-        $expr  = "$t(".$this->handleFields(0, $names[0])."$suffix)";
+        $expr  = "$t(" . $this->handleFields(0, $names[0]) . "$suffix)";
         if (isset($names[1])) {
             $expr .= " AS " . DBmysql::quoteName($names[1]);
         }
@@ -526,15 +527,12 @@ class DBmysqlIterator implements Iterator, Countable
                     // No Key case => recurse.
                     $ret .= "(" . $this->analyseCrit($value) . ")";
                 }
-
             } elseif (($name === "OR") || ($name === "AND")) {
                 // Binary logical operator
                 $ret .= "(" . $this->analyseCrit($value, $name) . ")";
-
             } elseif ($name === "NOT") {
                 // Uninary logicial operator
                 $ret .= " NOT (" . $this->analyseCrit($value) . ")";
-
             } elseif ($name === "FKEY" || $name === 'ON') {
                 // Foreign Key condition
                 $ret .= $this->analyseFkey($value);
@@ -575,7 +573,7 @@ class DBmysqlIterator implements Iterator, Countable
                         throw new \RuntimeException('Empty IN are not allowed');
                     }
                     // Array of Values
-                    return "IN (".$this->analyseCriterionValue($value).")";
+                    return "IN (" . $this->analyseCriterionValue($value) . ")";
                 }
             } else {
                 $comparison = ($value instanceof \AbstractQuery ? 'IN' : '=');

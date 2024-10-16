@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -42,5 +43,4 @@ class ProblemTemplateMandatoryField extends ITILTemplateMandatoryField
     public static $itemtype  = 'ProblemTemplate';
     public static $items_id  = 'problemtemplates_id';
     public static $itiltype = 'Problem';
-
 }

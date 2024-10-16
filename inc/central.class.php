@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -260,7 +261,6 @@ class Central extends CommonGLPI
             Ticket::showCentralList(0, "tovalidate", false);
         }
         if ($showticket) {
-
             if (Ticket::isAllowedStatus(Ticket::SOLVED, Ticket::CLOSED)) {
                 Ticket::showCentralList(0, "toapprove", false);
             }
@@ -276,7 +276,6 @@ class Central extends CommonGLPI
             Ticket::showCentralList(0, "waiting", false);
 
             TicketTask::showCentralList(0, "todo", false);
-
         }
         if ($showproblem) {
             Problem::showCentralList(0, "process", false);
@@ -458,8 +457,10 @@ class Central extends CommonGLPI
             }
         }
 
-        if ($DB->isSlave()
-            && !$DB->first_connection) {
+        if (
+            $DB->isSlave()
+            && !$DB->first_connection
+        ) {
             $warnings[] = __('SQL replica: read only');
         }
 
@@ -468,8 +469,7 @@ class Central extends CommonGLPI
          <div class='alert alert-warning'>
             <?php echo "<ul><li>" . implode('</li><li>', $warnings) . "</li></ul>" ?>
          </div>
-      <?php
+            <?php
         }
     }
-
 }

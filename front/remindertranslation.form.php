@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,15 +42,12 @@ $translation = new ReminderTranslation();
 if (isset($_POST['add'])) {
     $translation->add($_POST);
     Html::back();
-
 } elseif (isset($_POST['update'])) {
     $translation->update($_POST);
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $translation->delete($_POST, true);
     Html::redirect(Reminder::getFormURLWithID($_POST['reminders_id']));
-
 } elseif (isset($_GET["id"])) {
     $translation->check($_GET["id"], READ);
     Html::header(Reminder::getTypeName(1), $_SERVER['PHP_SELF'], "tools", "remindertranslation");

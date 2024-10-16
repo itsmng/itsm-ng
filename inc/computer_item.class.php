@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -86,15 +87,19 @@ class Computer_Item extends CommonDBRelation
         global $CFG_GLPI;
 
         $item = static::getItemFromArray(static::$itemtype_2, static::$items_id_2, $input);
-        if (!($item instanceof CommonDBTM)
+        if (
+            !($item instanceof CommonDBTM)
             || (($item->getField('is_global') == 0)
-                && ($this->countForItem($item) > 0))) {
+                && ($this->countForItem($item) > 0))
+        ) {
             return false;
         }
 
         $comp = static::getItemFromArray(static::$itemtype_1, static::$items_id_1, $input);
-        if (!($comp instanceof Computer)
-            || (self::countForAll($comp, $item) > 0)) {
+        if (
+            !($comp instanceof Computer)
+            || (self::countForAll($comp, $item) > 0)
+        ) {
             // no duplicates
             return false;
         }
@@ -103,20 +108,22 @@ class Computer_Item extends CommonDBRelation
             // Autoupdate some fields - should be in post_addItem (here to avoid more DB access)
             $updates = [];
 
-            if ($CFG_GLPI["is_location_autoupdate"]
-                && ($comp->fields['locations_id'] != $item->getField('locations_id'))) {
-
+            if (
+                $CFG_GLPI["is_location_autoupdate"]
+                && ($comp->fields['locations_id'] != $item->getField('locations_id'))
+            ) {
                 $updates['locations_id'] = addslashes($comp->fields['locations_id']);
                 Session::addMessageAfterRedirect(
                     __('Location updated. The connected items have been moved in the same location.'),
                     true
                 );
             }
-            if (($CFG_GLPI["is_user_autoupdate"]
+            if (
+                ($CFG_GLPI["is_user_autoupdate"]
                  && ($comp->fields['users_id'] != $item->getField('users_id')))
                 || ($CFG_GLPI["is_group_autoupdate"]
-                    && ($comp->fields['groups_id'] != $item->getField('groups_id')))) {
-
+                    && ($comp->fields['groups_id'] != $item->getField('groups_id')))
+            ) {
                 if ($CFG_GLPI["is_user_autoupdate"]) {
                     $updates['users_id'] = $comp->fields['users_id'];
                 }
@@ -129,10 +136,11 @@ class Computer_Item extends CommonDBRelation
                 );
             }
 
-            if ($CFG_GLPI["is_contact_autoupdate"]
+            if (
+                $CFG_GLPI["is_contact_autoupdate"]
                 && (($comp->fields['contact'] != $item->getField('contact'))
-                    || ($comp->fields['contact_num'] != $item->getField('contact_num')))) {
-
+                    || ($comp->fields['contact_num'] != $item->getField('contact_num')))
+            ) {
                 $updates['contact']     = addslashes($comp->fields['contact']);
                 $updates['contact_num'] = addslashes($comp->fields['contact_num']);
                 Session::addMessageAfterRedirect(
@@ -141,9 +149,10 @@ class Computer_Item extends CommonDBRelation
                 );
             }
 
-            if (($CFG_GLPI["state_autoupdate_mode"] < 0)
-                && ($comp->fields['states_id'] != $item->getField('states_id'))) {
-
+            if (
+                ($CFG_GLPI["state_autoupdate_mode"] < 0)
+                && ($comp->fields['states_id'] != $item->getField('states_id'))
+            ) {
                 $updates['states_id'] = $comp->fields['states_id'];
                 Session::addMessageAfterRedirect(
                     __('Status updated. The connected items have been updated using this status.'),
@@ -151,9 +160,10 @@ class Computer_Item extends CommonDBRelation
                 );
             }
 
-            if (($CFG_GLPI["state_autoupdate_mode"] > 0)
-                && ($item->getField('states_id') != $CFG_GLPI["state_autoupdate_mode"])) {
-
+            if (
+                ($CFG_GLPI["state_autoupdate_mode"] > 0)
+                && ($item->getField('states_id') != $CFG_GLPI["state_autoupdate_mode"])
+            ) {
                 $updates['states_id'] = $CFG_GLPI["state_autoupdate_mode"];
             }
 
@@ -182,7 +192,6 @@ class Computer_Item extends CommonDBRelation
             //Get device fields
             if ($device = getItemForItemtype($this->fields['itemtype'])) {
                 if ($device->getFromDB($this->fields['items_id'])) {
-
                     if (!$device->getField('is_global')) {
                         $updates = [];
                         if ($CFG_GLPI["is_location_autoclean"] && $device->isField('locations_id')) {
@@ -200,15 +209,18 @@ class Computer_Item extends CommonDBRelation
                         if ($CFG_GLPI["is_contact_autoclean"] && $device->isField('contact_num')) {
                             $updates['contact_num'] = "";
                         }
-                        if (($CFG_GLPI["state_autoclean_mode"] < 0)
-                            && $device->isField('states_id')) {
+                        if (
+                            ($CFG_GLPI["state_autoclean_mode"] < 0)
+                            && $device->isField('states_id')
+                        ) {
                             $updates['states_id'] = 0;
                         }
 
-                        if (($CFG_GLPI["state_autoclean_mode"] > 0)
+                        if (
+                            ($CFG_GLPI["state_autoclean_mode"] > 0)
                             && $device->isField('states_id')
-                            && ($device->getField('states_id') != $CFG_GLPI["state_autoclean_mode"])) {
-
+                            && ($device->getField('states_id') != $CFG_GLPI["state_autoclean_mode"])
+                        ) {
                             $updates['states_id'] = $CFG_GLPI["state_autoclean_mode"];
                         }
 
@@ -230,13 +242,13 @@ class Computer_Item extends CommonDBRelation
         CommonDBTM $checkitem = null
     ) {
 
-        $action_prefix = __CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR;
+        $action_prefix = __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR;
         $specificities = self::getRelationMassiveActionsSpecificities();
 
         if (in_array($itemtype, $specificities['itemtypes'])) {
-            $actions[$action_prefix.'add']    = "<i class='ma-icon fas fa-plug' aria-hidden='true'></i>".
+            $actions[$action_prefix . 'add']    = "<i class='ma-icon fas fa-plug' aria-hidden='true'></i>" .
                                                 _x('button', 'Connect');
-            $actions[$action_prefix.'remove'] = _x('button', 'Disconnect');
+            $actions[$action_prefix . 'remove'] = _x('button', 'Disconnect');
         }
         parent::getMassiveActionsForItemtype($actions, $itemtype, $is_deleted, $checkitem);
     }
@@ -330,8 +342,10 @@ class Computer_Item extends CommonDBRelation
         $AjaxUsedData = json_encode($used);
         $number = count($datas);
 
-        if ($canedit
-            && !(!empty($withtemplate) && ($withtemplate == 2))) {
+        if (
+            $canedit
+            && !(!empty($withtemplate) && ($withtemplate == 2))
+        ) {
             $valuesForDropdown = [];
             foreach ($CFG_GLPI['directconnect_types'] as $type) {
                 if ($item = getItemForItemtype($type)) {
@@ -465,18 +479,17 @@ class Computer_Item extends CommonDBRelation
                     $linkname = sprintf(__('%1$s (%2$s)'), $linkname, $data["id"]);
                 }
                 $link = $data['assoc_itemtype']::getFormURLWithID($data["id"]);
-                $massiveActionValues[$data['id']] = 'item[Computer_Item]['.$data['linkid'].']';
+                $massiveActionValues[$data['id']] = 'item[Computer_Item][' . $data['linkid'] . ']';
                 $values[$data['id']] = [
                    $data['assoc_itemtype']::getTypeName(1),
-                   "<a href=\"".$link."\">".$linkname."</a>",
+                   "<a href=\"" . $link . "\">" . $linkname . "</a>",
                    Dropdown::getDropdownName("glpi_entities", $data['entities_id']),
-                   (isset($data["serial"]) ? "".$data["serial"]."" : "-"),
-                   (isset($data["otherserial"]) ? "".$data["otherserial"]."" : "-"),
+                   (isset($data["serial"]) ? "" . $data["serial"] . "" : "-"),
+                   (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-"),
                 ];
                 if (Plugin::haveImport()) {
                     $values[$data['id']][6] = Dropdown::getYesNo($data[static::getTable() . '_is_dynamic']);
                 }
-
             }
             $twig_vars = [
                'id' => 'ComputerConnectionTable',
@@ -529,7 +542,7 @@ class Computer_Item extends CommonDBRelation
                  'items_id'   => $ID,
                  'is_deleted' => 0,
               ]
-         ]
+            ]
         );
         foreach ($result as $data) {
             $compids[$data['id']] = $data['computers_id'];
@@ -537,9 +550,11 @@ class Computer_Item extends CommonDBRelation
             $used['Computer'][]   = $data['computers_id'];
         }
         $number = count($compids);
-        if ($canedit
+        if (
+            $canedit
             && ($global || !$number)
-            && !(!empty($withtemplate) && ($withtemplate == 2))) {
+            && !(!empty($withtemplate) && ($withtemplate == 2))
+        ) {
             $form = [
                'action' => Toolbox::getItemTypeFormURL(__CLASS__),
                'buttons' => [
@@ -579,12 +594,12 @@ class Computer_Item extends CommonDBRelation
         }
 
         echo "<div class='spaced'>";
-        $massActionId = 'mass'.__CLASS__.$rand;
+        $massActionId = 'mass' . __CLASS__ . $rand;
         if ($canedit && $number) {
             $massiveactionparams = [
                'num_displayed' => min($_SESSION['glpilist_limit'], $number),
                'specific_actions' => ['purge' => _x('button', 'Disconnect')],
-               'container' => 'mass'.__CLASS__.$rand,
+               'container' => 'mass' . __CLASS__ . $rand,
                'display_arrow' => false,
             ];
             Html::showMassiveActions($massiveactionparams);
@@ -606,7 +621,7 @@ class Computer_Item extends CommonDBRelation
 
 
                 if ($canedit) {
-                    $massiveActionValues[$key] = 'item[Computer_Item]['.$key.']';
+                    $massiveActionValues[$key] = 'item[Computer_Item][' . $key . ']';
                 }
                 $newValue = [
                     'name' => $comp->getLink(),
@@ -626,7 +641,7 @@ class Computer_Item extends CommonDBRelation
                'massive_action' => $massiveActionValues,
             ]);
         } else {
-            echo "<tr><td class='tab_bg_1 b'><i>".__('Not connected')."</i>";
+            echo "<tr><td class='tab_bg_1 b'><i>" . __('Not connected') . "</i>";
             echo "</td></tr>";
         }
     }
@@ -720,14 +735,13 @@ class Computer_Item extends CommonDBRelation
             Ajax::updateItemOnSelectEvent(
                 "dropdown_itemtype$rand",
                 "show_$myname$rand",
-                $CFG_GLPI["root_doc"]."/ajax/dropdownConnect.php",
+                $CFG_GLPI["root_doc"] . "/ajax/dropdownConnect.php",
                 $params
             );
 
             echo "<br><div id='show_$myname$rand'>&nbsp;</div>\n";
         }
         return $rand;
-
     }
 
 
@@ -755,7 +769,7 @@ class Computer_Item extends CommonDBRelation
 
         $rand     = mt_rand();
 
-        $field_id = Html::cleanId("dropdown_".$myname.$rand);
+        $field_id = Html::cleanId("dropdown_" . $myname . $rand);
         $param    = [
            'entity_restrict' => $entity_restrict,
            'fromtype'        => $fromtype,
@@ -770,7 +784,7 @@ class Computer_Item extends CommonDBRelation
         echo Html::jsAjaxDropdown(
             $myname,
             $field_id,
-            $CFG_GLPI['root_doc']."/ajax/getDropdownConnect.php",
+            $CFG_GLPI['root_doc'] . "/ajax/getDropdownConnect.php",
             $param
         );
 
@@ -801,10 +815,12 @@ class Computer_Item extends CommonDBRelation
                     break;
 
                 case 'Computer':
-                    if (Phone::canView()
+                    if (
+                        Phone::canView()
                         || Printer::canView()
                         || Peripheral::canView()
-                        || Monitor::canView()) {
+                        || Monitor::canView()
+                    ) {
                         if ($_SESSION['glpishow_count_on_tabs']) {
                             $nb = self::countForMainItem($item);
                         }
@@ -928,13 +944,15 @@ class Computer_Item extends CommonDBRelation
                 if (!class_exists($data['itemtype'])) {
                     continue;
                 }
-                if (countElementsInTable(
-                    $data['itemtype']::getTable(),
-                    [
+                if (
+                    countElementsInTable(
+                        $data['itemtype']::getTable(),
+                        [
                          'id' => $data['ids'],
                          'NOT' => ['entities_id' => $entities]
-                      ]
-                ) > 0) {
+                        ]
+                    ) > 0
+                ) {
                     return false;
                 }
             }
@@ -955,11 +973,13 @@ class Computer_Item extends CommonDBRelation
             ]);
 
             while ($data = $iterator->next()) {
-                if (countElementsInTable(
-                    "glpi_computers",
-                    ['id' => $data["computers_id"],
+                if (
+                    countElementsInTable(
+                        "glpi_computers",
+                        ['id' => $data["computers_id"],
                          'NOT' => ['entities_id' => $entities]]
-                ) > 0) {
+                    ) > 0
+                ) {
                     return false;
                 }
             }

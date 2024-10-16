@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -169,11 +170,10 @@ class NetworkPortDialup extends NetworkPortInstantiation
         echo "<tr class='tab_bg_1'>";
         $this->showMacField($netport, $options);
 
-        echo "<td>".__('Connected to').'</td><td>';
+        echo "<td>" . __('Connected to') . '</td><td>';
         self::showConnection($netport, true);
         echo "</td>";
 
         echo "</tr>";
     }
-
 }

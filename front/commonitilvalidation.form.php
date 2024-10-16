@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -60,9 +61,10 @@ $fk       = getForeignKeyFieldForItemType($itemtype);
 
 if (isset($_POST["add"])) {
     $validation->check(-1, CREATE, $_POST);
-    if (isset($_POST['users_id_validate'])
-        && (count($_POST['users_id_validate']) > 0)) {
-
+    if (
+        isset($_POST['users_id_validate'])
+        && (count($_POST['users_id_validate']) > 0)
+    ) {
         $users = $_POST['users_id_validate'];
         foreach ($users as $user) {
             $_POST['users_id_validate'] = $user;
@@ -78,7 +80,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["update"])) {
     $validation->check($_POST['id'], UPDATE);
     $validation->update($_POST);
@@ -91,7 +92,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an approval'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $validation->check($_POST['id'], PURGE);
     $validation->delete($_POST, 1);
@@ -105,7 +105,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an approval'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } elseif (isset($_POST['approval_action'])) {
     if ($_POST['users_id_validate'] == Session::getLoginUserID()) {
         $validation->update($_POST + [

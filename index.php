@@ -81,7 +81,7 @@ if (isset($is_activate) && $is_activate) {
     $twig_vars["is_activate"] = $is_activate;
     if (isset($_POST["login_oidc"])) {
         Html::redirect("front/oidc.php"
-            . (isset($_POST['redirect']) ? "?redirect=".Html::entities_deep($_POST['redirect']) : ""));
+            . (isset($_POST['redirect']) ? "?redirect=" . Html::entities_deep($_POST['redirect']) : ""));
     }
 }
 
@@ -127,15 +127,16 @@ if ($CFG_GLPI["login_remember_time"]) {
 
 $twig_vars["login_input_value"] = _sx('button', 'Post');
 
-if ($CFG_GLPI["notifications_mailing"]
-   && countElementsInTable(
-       'glpi_notifications',
-       [
+if (
+    $CFG_GLPI["notifications_mailing"]
+    && countElementsInTable(
+        'glpi_notifications',
+        [
          'itemtype'  => 'User',
          'event'     => 'passwordforget',
          'is_active' => 1
-      ]
-   )
+        ]
+    )
 ) {
     $twig_vars["show_password_forget"] = true;
 }

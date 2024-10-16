@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -174,8 +175,10 @@ class InstallCommand extends AbstractPluginCommand
         foreach (PLUGINS_DIRECTORIES as $plugins_directory) {
             $directory_handle  = opendir($plugins_directory);
             while (false !== ($filename = readdir($directory_handle))) {
-                if (!in_array($filename, ['.svn', '.', '..'])
-                    && is_dir($plugins_directory . DIRECTORY_SEPARATOR . $filename)) {
+                if (
+                    !in_array($filename, ['.svn', '.', '..'])
+                    && is_dir($plugins_directory . DIRECTORY_SEPARATOR . $filename)
+                ) {
                     $directories[] = $filename;
                 }
             }
@@ -191,10 +194,12 @@ class InstallCommand extends AbstractPluginCommand
                 continue; // Ignore directory if not able to load plugin information.
             }
 
-            if ($only_not_installed
+            if (
+                $only_not_installed
                 && ($this->isAlreadyInstalled($directory)
                     || (array_key_exists('oldname', $informations)
-                        && $this->isAlreadyInstalled($informations['oldname'])))) {
+                        && $this->isAlreadyInstalled($informations['oldname'])))
+            ) {
                 continue;
             }
 
@@ -286,10 +291,12 @@ class InstallCommand extends AbstractPluginCommand
         }
 
         // Check if plugin is not already installed
-        if (!$allow_reinstall
+        if (
+            !$allow_reinstall
             && ($this->isAlreadyInstalled($directory)
                 || (array_key_exists('oldname', $informations)
-                    && $this->isAlreadyInstalled($informations['oldname'])))) {
+                    && $this->isAlreadyInstalled($informations['oldname'])))
+        ) {
             $message = sprintf(
                 __('Plugin "%s" is already installed. Use --force option to force reinstallation.'),
                 $directory
@@ -332,7 +339,7 @@ class InstallCommand extends AbstractPluginCommand
                 [
                   '<error>' . sprintf(__('Plugin "%s" requirements not met.'), $directory) . '</error>',
                   '<error>' . $ob_contents . '</error>',
-            ],
+                ],
                 OutputInterface::VERBOSITY_QUIET
             );
             return false;

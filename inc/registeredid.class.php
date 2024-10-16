@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -73,12 +74,12 @@ class RegisteredID extends CommonDBChild
     {
 
         $result = "<select name='" . $field_name . "_type[-'+$child_count_js_var+']' aria-label='" . $field_name . "'>";
-        $result .= "<option value=\'\'>".Dropdown::EMPTY_VALUE."</option>";
+        $result .= "<option value=\'\'>" . Dropdown::EMPTY_VALUE . "</option>";
         foreach (self::getRegisteredIDTypes() as $name => $label) {
             $result .= "<option value=\'$name\'>$label</option>";
         }
         $result .= "</select> : ";
-        $result .= "<input type=\'text\' size=\'30\' ". "name=\'" . $field_name .
+        $result .= "<input type=\'text\' size=\'30\' " . "name=\'" . $field_name .
                   "[-'+$child_count_js_var+']\'>";
         return $result;
     }
@@ -95,13 +96,13 @@ class RegisteredID extends CommonDBChild
         } else {
             $value = $this->getName();
         }
-        $main_field        = $field_name."[$id]";
-        $type_field        = $field_name."_type[$id]";
+        $main_field        = $field_name . "[$id]";
+        $type_field        = $field_name . "_type[$id]";
         $registeredIDTypes = self::getRegisteredIDTypes();
 
         if ($canedit) {
             echo "<select aria-label='$field_name' name='$type_field'>";
-            echo "<option value=''>".Dropdown::EMPTY_VALUE."</option>";
+            echo "<option value=''>" . Dropdown::EMPTY_VALUE . "</option>";
             foreach ($registeredIDTypes as $name => $label) {
                 echo "<option value='$name'";
                 if ($this->fields['device_type'] == $name) {
@@ -123,5 +124,4 @@ class RegisteredID extends CommonDBChild
             }
         }
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -304,7 +305,7 @@ class PDU extends CommonDBTM
             [
               Pdu_Plug::class,
               PDU_Rack::class,
-         ]
+            ]
         );
     }
 

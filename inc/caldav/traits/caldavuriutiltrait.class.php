@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -106,8 +107,10 @@ trait CalDAVUriUtilTrait
     {
         $principal_itemtype = $this->getPrincipalItemtypeFromUri($uri);
 
-        if (null === $principal_itemtype || !class_exists($principal_itemtype)
-            || !is_a($principal_itemtype, \CommonDBTM::class, true)) {
+        if (
+            null === $principal_itemtype || !class_exists($principal_itemtype)
+            || !is_a($principal_itemtype, \CommonDBTM::class, true)
+        ) {
             return null;
         }
 
@@ -205,8 +208,8 @@ trait CalDAVUriUtilTrait
                   'FROM'   => getTableForItemType($itemtype),
                   'WHERE'  => [
                      'uuid' => $uid,
-               ]
-            ]
+                  ]
+                ]
             );
         }
 
@@ -218,7 +221,7 @@ trait CalDAVUriUtilTrait
               ],
               'DISTINCT' => true,
               'FROM'     => $union,
-         ]
+            ]
         );
 
         if ($items_iterator->count() !== 1) {

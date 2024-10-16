@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -84,46 +85,34 @@ class APIXmlrpc extends API
         if ($resource === "initSession") {
             $this->session_write = true;
             return $this->returnResponse($this->initSession($this->parameters));
-
         } elseif ($resource === "killSession") { // logout from glpi
             $this->session_write = true;
             return $this->returnResponse($this->killSession());
-
         } elseif ($resource === "changeActiveEntities") { // change active entities
             $this->session_write = true;
             return $this->returnResponse($this->changeActiveEntities($this->parameters));
-
         } elseif ($resource === "getMyEntities") { // get all entities of logged user
             return $this->returnResponse($this->getMyEntities($this->parameters));
-
         } elseif ($resource === "getActiveEntities") { // get curent active entity
             return $this->returnResponse($this->getActiveEntities($this->parameters));
-
         } elseif ($resource === "changeActiveProfile") { // change active profile
             $this->session_write = true;
             return $this->returnResponse($this->changeActiveProfile($this->parameters));
-
         } elseif ($resource === "getMyProfiles") { // get all profiles of current logged user
             return $this->returnResponse($this->getMyProfiles($this->parameters));
-
         } elseif ($resource === "getActiveProfile") { // get current active profile
             return $this->returnResponse($this->getActiveProfile($this->parameters));
-
         } elseif ($resource === "getFullSession") { // get complete php session
             return $this->returnResponse($this->getFullSession($this->parameters));
-
         } elseif ($resource === "getGlpiConfig") { // get complete php var $CFG_GLPI
             return $this->returnResponse($this->getGlpiConfig($this->parameters));
-
         } elseif ($resource === "getMultipleItems") { // get multiple items (with various itemtype)
             return $this->returnResponse($this->getMultipleItems($this->parameters));
-
         } elseif ($resource === "listSearchOptions") { // list searchOptions of an itemtype
             return $this->returnResponse($this->listSearchOptions(
                 $this->parameters['itemtype'],
                 $this->parameters
             ));
-
         } elseif ($resource === "search") { // Search on itemtype
             $this->checkSessionToken();
 
@@ -132,8 +121,8 @@ class APIXmlrpc extends API
 
             //add pagination headers
             $additionalheaders                  = [];
-            $additionalheaders["Accept-Range"]  = $this->parameters['itemtype']." "
-                                                  .Toolbox::get_max_input_vars();
+            $additionalheaders["Accept-Range"]  = $this->parameters['itemtype'] . " "
+                                                  . Toolbox::get_max_input_vars();
             if ($response['totalcount'] > 0) {
                 $additionalheaders["Content-Range"] = $response['content-range'];
             }
@@ -144,23 +133,25 @@ class APIXmlrpc extends API
             }
 
             return $this->returnResponse($response, $code, $additionalheaders);
-
         } elseif ($resource === "lostPassword") {
             return $this->returnResponse($this->lostPassword($this->parameters), 204);
-
-        } elseif (in_array(
-            $resource,
-            ["getItem", "getItems", "createItems", "updateItems", "deleteItems"]
-        )) {
+        } elseif (
+            in_array(
+                $resource,
+                ["getItem", "getItems", "createItems", "updateItems", "deleteItems"]
+            )
+        ) {
             // commonDBTM manipulation
 
             // check itemtype parameter
             if (!isset($this->parameters['itemtype'])) {
                 $this->returnError(__("missing itemtype"), 400, "ITEMTYPE_RESOURCE_MISSING");
             }
-            if (!class_exists($this->parameters['itemtype'])
+            if (
+                !class_exists($this->parameters['itemtype'])
                 || !is_subclass_of($this->parameters['itemtype'], 'CommonDBTM')
-                && $this->parameters['itemtype'] != "AllAssets") {
+                && $this->parameters['itemtype'] != "AllAssets"
+            ) {
                 $this->returnError(
                     __("itemtype not found or not an instance of CommonDBTM"),
                     400,
@@ -177,10 +168,9 @@ class APIXmlrpc extends API
                 $additionalheaders = [];
                 if (isset($response['date_mod'])) {
                     $datemod = strtotime($response['date_mod']);
-                    $additionalheaders['Last-Modified'] = gmdate("D, d M Y H:i:s", $datemod)." GMT";
+                    $additionalheaders['Last-Modified'] = gmdate("D, d M Y H:i:s", $datemod) . " GMT";
                 }
                 return $this->returnResponse($response, 200, $additionalheaders);
-
             } elseif ($resource === "getItems") { // get a collection of a CommonDBTM item
                 // return collection of items
                 $totalcount = 0;
@@ -203,41 +193,38 @@ class APIXmlrpc extends API
                 }
 
                 $additionalheaders                  = [];
-                $additionalheaders["Accept-Range"]  = $this->parameters['itemtype']." ".
+                $additionalheaders["Accept-Range"]  = $this->parameters['itemtype'] . " " .
                                                       Toolbox::get_max_input_vars();
                 if ($totalcount > 0) {
-                    $additionalheaders["Content-Range"] = implode('-', $range)."/".$totalcount;
+                    $additionalheaders["Content-Range"] = implode('-', $range) . "/" . $totalcount;
                 }
 
                 return $this->returnResponse($response, $code, $additionalheaders);
-
             } elseif ($resource === "createItems") { // create one or many CommonDBTM items
                 $response = $this->createItems($this->parameters['itemtype'], $this->parameters);
 
                 $additionalheaders = [];
                 if (isset($response['id'])) {
                     // add a location targetting created element
-                    $additionalheaders['location'] = self::$api_url."/".$this->parameters['itemtype']."/".$response['id'];
+                    $additionalheaders['location'] = self::$api_url . "/" . $this->parameters['itemtype'] . "/" . $response['id'];
                 } else {
                     // add a link header targetting created elements
                     $additionalheaders['link'] = "";
                     foreach ($response as $created_item) {
                         if ($created_item['id']) {
-                            $additionalheaders['link'] .= self::$api_url."/".$this->parameters['itemtype'].
-                                                         "/".$created_item['id'].",";
+                            $additionalheaders['link'] .= self::$api_url . "/" . $this->parameters['itemtype'] .
+                                                         "/" . $created_item['id'] . ",";
                         }
                     }
                     // remove last comma
                     $additionalheaders['link'] = trim($additionalheaders['link'], ",");
                 }
                 return $this->returnResponse($response, 201);
-
             } elseif ($resource === "updateItems") { // update one or many CommonDBTM items
                 return $this->returnResponse($this->updateItems(
                     $this->parameters['itemtype'],
                     $this->parameters
                 ));
-
             } elseif ($resource === "deleteItems") { // delete one or many CommonDBTM items
                 if (isset($this->parameters['id'])) {
                     //override input
@@ -251,7 +238,6 @@ class APIXmlrpc extends API
                     ),
                     $code
                 );
-
             }
         }
 
@@ -282,8 +268,10 @@ class APIXmlrpc extends API
                             : []);
 
         // transform input from array to object
-        if (isset($this->parameters['input'])
-            && is_array($this->parameters['input'])) {
+        if (
+            isset($this->parameters['input'])
+            && is_array($this->parameters['input'])
+        ) {
             $first_field = array_values($this->parameters['input'])[0];
             if (is_array($first_field)) {
                 foreach ($this->parameters['input'] as &$input) {
@@ -347,7 +335,7 @@ class APIXmlrpc extends API
             $escaped_response = [];
             foreach ($response as $key => $value) {
                 if (is_integer($key)) {
-                    $key = " ".$key;
+                    $key = " " . $key;
                 }
                 if (is_array($value)) {
                     $value = $this->escapekeys($value);
@@ -358,5 +346,4 @@ class APIXmlrpc extends API
         }
         return $response;
     }
-
 }

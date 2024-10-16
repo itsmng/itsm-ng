@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -83,9 +84,9 @@ class NotificationTargetSavedSearch_Alert extends NotificationTarget
         $this->data['##savedsearch.id##']        = $savedsearch->getID();
         $this->data['##savedsearch.count##']     = (int)$options['data']['totalcount'];
         $this->data['##savedsearch.type##']      = $savedsearch->getField('itemtype');
-        $this->data['##savedsearch.url##']       = $CFG_GLPI['url_base']."/?redirect=" .
+        $this->data['##savedsearch.url##']       = $CFG_GLPI['url_base'] . "/?redirect=" .
                                                      rawurlencode($savedsearch->getSearchURL(false) .
-                                                     "?action=load&id=". $savedsearch->getID());
+                                                     "?action=load&id=" . $savedsearch->getID());
 
         $this->getTags();
         foreach ($this->tag_descriptions[NotificationTarget::TAG_LANGUAGE] as $tag => $values) {

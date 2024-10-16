@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -54,7 +55,6 @@ if (isset($_POST["add_action"])) {
     $ruleaction->add($_POST);
 
     Html::back();
-
 } elseif (isset($_POST["update"])) {
     $rulecollection->checkGlobal(UPDATE);
     $rule->update($_POST);
@@ -68,7 +68,6 @@ if (isset($_POST["add_action"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } elseif (isset($_POST["add"])) {
     $rulecollection->checkGlobal(CREATE);
 
@@ -80,8 +79,7 @@ if (isset($_POST["add_action"])) {
         "setup",
         sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $newID)
     );
-    Html::redirect($_SERVER['HTTP_REFERER']."?id=$newID");
-
+    Html::redirect($_SERVER['HTTP_REFERER'] . "?id=$newID");
 } elseif (isset($_POST["purge"])) {
     $rulecollection->checkGlobal(PURGE);
     $rulecollection->deleteRuleOrder($_POST["ranking"]);

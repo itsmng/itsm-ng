@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -309,7 +310,9 @@ class ErrorHandler
             $exit_code = $this->exit_code;
             register_shutdown_function(
                 'register_shutdown_function',
-                function () use ($exit_code) { exit($exit_code); }
+                function () use ($exit_code) {
+                    exit($exit_code);
+                }
             );
         }
     }
@@ -361,8 +364,10 @@ class ErrorHandler
     private function outputDebugMessage(string $error_type, string $message, string $log_level, bool $force = false)
     {
 
-        if ((!$force
-            && (!isset($_SESSION['glpi_use_mode']) || $_SESSION['glpi_use_mode'] != \Session::DEBUG_MODE)) || isAPI()) {
+        if (
+            (!$force
+            && (!isset($_SESSION['glpi_use_mode']) || $_SESSION['glpi_use_mode'] != \Session::DEBUG_MODE)) || isAPI()
+        ) {
             return;
         }
 

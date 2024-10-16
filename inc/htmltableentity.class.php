@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -139,7 +140,7 @@ abstract class HTMLTableEntity
             }
         }
         if (count($style) > 0) {
-            echo " style='".implode(';', $style)."'";
+            echo " style='" . implode(';', $style) . "'";
         }
 
         $class = $this->html_class;
@@ -151,7 +152,7 @@ abstract class HTMLTableEntity
             }
         }
         if (count($class) > 0) {
-            echo " class='".implode(' ', $class)."'";
+            echo " class='" . implode(' ', $class) . "'";
         }
     }
 

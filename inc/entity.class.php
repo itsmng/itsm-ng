@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -127,7 +128,7 @@ class Entity extends CommonTreeDropdown
         $forbidden[] = 'delete';
         $forbidden[] = 'purge';
         $forbidden[] = 'restore';
-        $forbidden[] = 'CommonDropdown'.MassiveAction::CLASS_ACTION_SEPARATOR.'merge';
+        $forbidden[] = 'CommonDropdown' . MassiveAction::CLASS_ACTION_SEPARATOR . 'merge';
         return $forbidden;
     }
 
@@ -227,7 +228,6 @@ class Entity extends CommonTreeDropdown
         }
 
         foreach (self::$field_right as $right => $fields) {
-
             if ($right == 'entity_helpdesk') {
                 if (Session::haveRight(self::$rightname, self::UPDATEHELPDESK)) {
                     foreach ($fields as $field) {
@@ -278,7 +278,7 @@ class Entity extends CommonTreeDropdown
 
         $result = $DB->request([
            'SELECT' => new \QueryExpression(
-               'MAX('.$DB->quoteName('id').')+1 AS newID'
+               'MAX(' . $DB->quoteName('id') . ')+1 AS newID'
            ),
            'FROM'   => $this->getTable()
         ])->next();
@@ -303,15 +303,16 @@ class Entity extends CommonTreeDropdown
 
         // Si on change le taux de déclenchement de l'enquête (enquête activée) ou le type de l'enquete,
         // cela s'applique aux prochains tickets - Pas à l'historique
-        if ((isset($input['inquest_rate'])
+        if (
+            (isset($input['inquest_rate'])
              && (($this->fields['inquest_rate'] == 0)
                  || is_null($this->fields['max_closedate']))
              && ($input['inquest_rate'] != $this->fields['inquest_rate']))
             || (isset($input['inquest_config'])
                 && (($this->fields['inquest_config'] == self::CONFIG_PARENT)
                     || is_null($this->fields['max_closedate']))
-                && ($input['inquest_config'] != $this->fields['inquest_config']))) {
-
+                && ($input['inquest_config'] != $this->fields['inquest_config']))
+        ) {
             $input['max_closedate'] = $_SESSION["glpi_currenttime"];
         }
 
@@ -361,10 +362,12 @@ class Entity extends CommonTreeDropdown
                     if (Notification::canView()) {
                         $ong[4] = _n('Notification', 'Notifications', Session::getPluralNumber());
                     }
-                    if (Session::haveRightsOr(
-                        self::$rightname,
-                        [self::READHELPDESK, self::UPDATEHELPDESK]
-                    )) {
+                    if (
+                        Session::haveRightsOr(
+                            self::$rightname,
+                            [self::READHELPDESK, self::UPDATEHELPDESK]
+                        )
+                    ) {
                         $ong[5] = __('Assistance');
                     }
                     $ong[6] = __('Assets');
@@ -486,7 +489,7 @@ class Entity extends CommonTreeDropdown
 
         // Add right to current user - Hack to avoid login/logout
         $_SESSION['glpiactiveentities'][$this->fields['id']] = $this->fields['id'];
-        $_SESSION['glpiactiveentities_string']              .= ",'".$this->fields['id']."'";
+        $_SESSION['glpiactiveentities_string']              .= ",'" . $this->fields['id'] . "'";
     }
 
 
@@ -505,7 +508,7 @@ class Entity extends CommonTreeDropdown
               Entity_KnowbaseItem::class,
               Entity_Reminder::class,
               Entity_RSSFeed::class,
-         ]
+            ]
         );
     }
 
@@ -1208,17 +1211,17 @@ class Entity extends CommonTreeDropdown
         $rand = mt_rand();
 
         if (Session::getCurrentInterface() == 'helpdesk') {
-            $actionurl = $CFG_GLPI["root_doc"]."/front/helpdesk.public.php?active_entity=";
+            $actionurl = $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php?active_entity=";
         } else {
-            $actionurl = $CFG_GLPI["root_doc"]."/front/central.php?active_entity=";
+            $actionurl = $CFG_GLPI["root_doc"] . "/front/central.php?active_entity=";
         }
 
         echo "<div class='center'>";
-        echo "<span class='b'>".__('Select the desired entity')."<br>( <img src='".$CFG_GLPI["root_doc"].
-              "/pics/entity_all.png' alt=''> ".__s('to see the entity and its sub-entities').")</span>".
+        echo "<span class='b'>" . __('Select the desired entity') . "<br>( <img src='" . $CFG_GLPI["root_doc"] .
+              "/pics/entity_all.png' alt=''> " . __s('to see the entity and its sub-entities') . ")</span>" .
               "<br>";
-        echo "<a style='font-size:14px;' href='".$target."?active_entity=all' title=\"".
-               __s('Show all')."\">".str_replace(" ", "&nbsp;", __('Show all'))."</a></div>";
+        echo "<a style='font-size:14px;' href='" . $target . "?active_entity=all' title=\"" .
+               __s('Show all') . "\">" . str_replace(" ", "&nbsp;", __('Show all')) . "</a></div>";
 
         echo "<div class='left' style='width:100%'>";
         echo "<form aria-label='Entity Search' id='entsearchform'>";
@@ -1239,13 +1242,13 @@ class Entity extends CommonTreeDropdown
                            'show_only_matches': true,
                            'ajax': {
                               'type': 'POST',
-                              'url': '".$CFG_GLPI["root_doc"]."/ajax/entitytreesearch.php'
+                              'url': '" . $CFG_GLPI["root_doc"] . "/ajax/entitytreesearch.php'
                            }
                         },
                         'qload': {
                            'prevLimit': 50,
                            'nextLimit': 30,
-                           'moreText': '".__s('Load more entities...')."'
+                           'moreText': '" . __s('Load more entities...') . "'
                         },
                         'conditionalselect': function (node, event) {
                            if (node === false) {
@@ -1267,17 +1270,17 @@ class Entity extends CommonTreeDropdown
                            'data': {
                               'url': function(node) {
                                  return node.id === '#' ?
-                                    '".$CFG_GLPI["root_doc"]."/ajax/entitytreesons.php?node=-1' :
-                                    '".$CFG_GLPI["root_doc"]."/ajax/entitytreesons.php?node='+node.id;
+                                    '" . $CFG_GLPI["root_doc"] . "/ajax/entitytreesons.php?node=-1' :
+                                    '" . $CFG_GLPI["root_doc"] . "/ajax/entitytreesons.php?node='+node.id;
                               }
                            }
                         }
                      });
 
                      var searchTree = function() {
-                        ".Html::jsGetElementbyID("tree_projectcategory$rand").".jstree('close_all');;
-                        ".Html::jsGetElementbyID("tree_projectcategory$rand").
-                          ".jstree('search',".Html::jsGetDropdownValue('entsearchtext').");
+                        " . Html::jsGetElementbyID("tree_projectcategory$rand") . ".jstree('close_all');;
+                        " . Html::jsGetElementbyID("tree_projectcategory$rand") .
+                          ".jstree('search'," . Html::jsGetDropdownValue('entsearchtext') . ");
                      }
 
                      $('#entsearchform').submit(function( event ) {
@@ -1401,15 +1404,14 @@ class Entity extends CommonTreeDropdown
         ]);
 
         while ($entitydata = $iterator->next()) {
-            if ((is_null($entitydata[$field])
+            if (
+                (is_null($entitydata[$field])
                  || ($entitydata[$field] == self::CONFIG_PARENT))
-                && isset($entities[$entitydata['parent']])) {
-
+                && isset($entities[$entitydata['parent']])
+            ) {
                 // config inherit from parent
                 $entities[$entitydata['entity']] = $entities[$entitydata['parent']];
-
             } elseif ($entitydata[$field] > 0) {
-
                 // config found in entity
                 $entities[$entitydata['entity']] = $entitydata[$field];
             }
@@ -1540,7 +1542,7 @@ class Entity extends CommonTreeDropdown
         $canedit = $entity->can($ID, UPDATE);
 
         if ($canedit) {
-            echo "<form aria-label='Entity Action' method='post' name=form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' data-track-changes='true'>";
+            echo "<form aria-label='Entity Action' method='post' name=form action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "' data-track-changes='true'>";
         }
         $form = [
            'action' => $canedit ? Toolbox::getItemTypeFormURL(__CLASS__) : '',
@@ -1562,7 +1564,7 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('id'),
                     ],
                     '' => [
-                       'content' => '<b>'.__('These parameters are used as actions in generic rules for assignment to entities').'</b>',
+                       'content' => '<b>' . __('These parameters are used as actions in generic rules for assignment to entities') . '</b>',
                        'col_lg' => 12,
                        'col_md' => 12,
                     ],
@@ -1617,7 +1619,6 @@ class Entity extends CommonTreeDropdown
         Plugin::doHook("post_item_form", ['item' => $entity, 'options' => &$options]);
         $additionnal = ob_get_clean();
         renderTwigForm($form, $additionnal);
-
     }
 
 
@@ -1643,7 +1644,7 @@ class Entity extends CommonTreeDropdown
         }
         $states = getAllDataFromTable('glpi_states');
         foreach ($states as $state) {
-            $options[Infocom::ON_STATUS_CHANGE.'_'.$state['id']]
+            $options[Infocom::ON_STATUS_CHANGE . '_' . $state['id']]
                         //TRANS: %s is the name of the state
                = sprintf(__('Fill when shifting to state %s'), $state['name']);
         }
@@ -1750,8 +1751,10 @@ class Entity extends CommonTreeDropdown
     {
 
         $ID = $entity->getField('id');
-        if (!$entity->can($ID, READ)
-            || !Notification::canView()) {
+        if (
+            !$entity->can($ID, READ)
+            || !Notification::canView()
+        ) {
             return false;
         }
 
@@ -2067,7 +2070,7 @@ class Entity extends CommonTreeDropdown
 
         echo "<div class='spaced'>";
         if ($canedit) {
-            echo "<form aria-label='Customization Option' method='post' name=form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' data-track-changes='true'>";
+            echo "<form aria-label='Customization Option' method='post' name=form action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "' data-track-changes='true'>";
         }
 
         echo "<table class='tab_cadre_fixe custom_css_configuration' aria-label='Customization option'>";
@@ -2076,10 +2079,10 @@ class Entity extends CommonTreeDropdown
 
         $rand = mt_rand();
 
-        echo "<tr><th colspan='2'>".__('UI options')."</th></tr>";
+        echo "<tr><th colspan='2'>" . __('UI options') . "</th></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Enable CSS customization')."</td>";
+        echo "<td>" . __('Enable CSS customization') . "</td>";
         echo "<td>";
         $values = [];
         if (($ID > 0) ? 1 : 0) {
@@ -2094,7 +2097,7 @@ class Entity extends CommonTreeDropdown
               'display' => false,
               'rand'    => $rand,
               'value'   => $entity->fields['enable_custom_css']
-         ]
+            ]
         );
         echo "</td></tr>";
 
@@ -2120,7 +2123,7 @@ class Entity extends CommonTreeDropdown
             [
               'enable_custom_css' => '__VALUE__',
               'entities_id'       => $ID
-         ]
+            ]
         );
 
         Plugin::doHook("post_item_form", ['item' => $entity, 'options' => &$options]);
@@ -2129,8 +2132,8 @@ class Entity extends CommonTreeDropdown
 
         if ($canedit) {
             echo "<div class='center'>";
-            echo "<input type='hidden' name='id' value='".$entity->fields["id"]."'>";
-            echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='btn btn-secondary'>";
+            echo "<input type='hidden' name='id' value='" . $entity->fields["id"] . "'>";
+            echo "<input type='submit' name='update' value=\"" . _sx('button', 'Save') . "\" class='btn btn-secondary'>";
             echo "</div>";
             Html::closeForm();
         }
@@ -2246,8 +2249,10 @@ class Entity extends CommonTreeDropdown
 
         $entity = new self();
 
-        if ($entity->getFromDB($entities_id)
-            && ($entity->getField('authldaps_id') > 0)) {
+        if (
+            $entity->getFromDB($entities_id)
+            && ($entity->getField('authldaps_id') > 0)
+        ) {
             return true;
         }
 
@@ -2269,11 +2274,13 @@ class Entity extends CommonTreeDropdown
         global $CFG_GLPI;
 
         $ID = $entity->getField('id');
-        if (!$entity->can($ID, READ)
+        if (
+            !$entity->can($ID, READ)
             || !Session::haveRightsOr(
                 self::$rightname,
                 [self::READHELPDESK, self::UPDATEHELPDESK]
-            )) {
+            )
+        ) {
             return false;
         }
         $canedit = (Session::haveRight(self::$rightname, self::UPDATEHELPDESK)
@@ -2326,7 +2333,7 @@ class Entity extends CommonTreeDropdown
                            getOptionForItems(ChangeTemplate::class)
                        ),
                        'actions' => getItemActionButtons(['info', 'add'], ChangeTemplate::class),
-                  ],
+                    ],
                     _n('Problem template', 'Problem templates', 1) => [
                        'type'  => 'select',
                        'name'  => 'problemtemplates_id',
@@ -2336,7 +2343,7 @@ class Entity extends CommonTreeDropdown
                            getOptionForItems(ProblemTemplate::class)
                        ),
                        'actions' => getItemActionButtons(['info', 'add'], ProblemTemplate::class),
-                  ],
+                    ],
                  ]
               ],
               __('Tickets configuration') => [
@@ -2384,7 +2391,7 @@ class Entity extends CommonTreeDropdown
                        'col_lg' => 6,
                   ],
                ]
-            ],
+              ],
               __('Automatic closing configuration') => [
                'visible' => true,
                'inputs' => [
@@ -2409,7 +2416,7 @@ class Entity extends CommonTreeDropdown
                        'col_lg' => 6,
                   ],
                ]
-            ],
+              ],
               __('Configuring the satisfaction survey') => [
                'visible' => true,
                'inputs' => [
@@ -2466,7 +2473,7 @@ class Entity extends CommonTreeDropdown
                        'col_lg' => 6,
                   ],
                ]
-            ]
+              ]
            ]
         ];
         renderTwigForm($form);
@@ -2505,13 +2512,17 @@ class Entity extends CommonTreeDropdown
             // Value is defined : use it
             if (isset($entity->fields[$fieldref])) {
                 // Numerical value
-                if (is_numeric($default_value)
-                    && ($entity->fields[$fieldref] != self::CONFIG_PARENT)) {
+                if (
+                    is_numeric($default_value)
+                    && ($entity->fields[$fieldref] != self::CONFIG_PARENT)
+                ) {
                     return $entity->fields[$fieldval];
                 }
                 // String value
-                if (!is_numeric($default_value)
-                    && $entity->fields[$fieldref]) {
+                if (
+                    !is_numeric($default_value)
+                    && $entity->fields[$fieldref]
+                ) {
                     return $entity->fields[$fieldval];
                 }
             }
@@ -2519,7 +2530,6 @@ class Entity extends CommonTreeDropdown
 
         // Entity data not found or not defined : search in parent one
         if ($entities_id > 0) {
-
             if ($entity->getFromDB($entities_id)) {
                 $ret = self::getUsedConfig(
                     $fieldref,
@@ -2528,7 +2538,6 @@ class Entity extends CommonTreeDropdown
                     $default_value
                 );
                 return $ret;
-
             }
         }
 
@@ -2944,7 +2953,6 @@ class Entity extends CommonTreeDropdown
                         return __('24/7');
                 }
                 return Dropdown::getDropdownName('glpi_calendars', $values[$field]);
-
         }
         return parent::getSpecificValueToDisplay($field, $values, $options);
     }
@@ -3015,7 +3023,7 @@ class Entity extends CommonTreeDropdown
                 $tab[self::CONFIG_PARENT] = __('Inheritance of the parent entity');
                 $states = getAllDataFromTable('glpi_states');
                 foreach ($states as $state) {
-                    $tab[Infocom::ON_STATUS_CHANGE.'_'.$state['id']]
+                    $tab[Infocom::ON_STATUS_CHANGE . '_' . $state['id']]
                                 //TRANS: %s is the name of the state
                        = sprintf(__('Fill when shifting to state %s'), $state['name']);
                 }
@@ -3063,7 +3071,6 @@ class Entity extends CommonTreeDropdown
                 $options['toadd'][self::CONFIG_PARENT] = __('Inheritance of the parent entity');
 
                 return self::dropdown($options);
-
         }
         return parent::getSpecificValueToSelect($field, $name, $values, $options);
     }
@@ -3098,8 +3105,8 @@ class Entity extends CommonTreeDropdown
             return "";
         }
 
-        $out = "<div class='inherited ".($inline ? "inline" : "")."'
-                   title='".__("Value inherited from a parent entity")."'>
+        $out = "<div class='inherited " . ($inline ? "inline" : "") . "'
+                   title='" . __("Value inherited from a parent entity") . "'>
          <i class='fas fa-level-down-alt' aria-hidden='true'></i>
          $value
       </div>";

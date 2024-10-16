@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -59,7 +60,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["delete"])) {
     $ent->check($_POST["id"], DELETE);
     $ent->delete($_POST);
@@ -72,7 +72,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s deletes an item'), $_SESSION["glpiname"])
     );
     $ent->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $ent->check($_POST["id"], DELETE);
     $ent->restore($_POST);
@@ -86,7 +85,6 @@ if (isset($_POST["add"])) {
     );
 
     $ent->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $ent->check($_POST["id"], PURGE);
     $ent->delete($_POST, 1);
@@ -100,7 +98,6 @@ if (isset($_POST["add"])) {
     );
 
     $ent->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $ent->check($_POST["id"], UPDATE);
     $ent->update($_POST);
@@ -113,7 +110,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } else {
     Html::header(Supplier::getTypeName(Session::getPluralNumber()), '', "management", "supplier");
     $ent->display([

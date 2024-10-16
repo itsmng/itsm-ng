@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -58,14 +59,14 @@ class NotificationTargetCrontask extends NotificationTarget
             $tmp['##crontask.name##'] = '';
 
             if ($isplug = isPluginItemType($crontask["itemtype"])) {
-                $tmp['##crontask.name##'] = $isplug["plugin"]." - ";
+                $tmp['##crontask.name##'] = $isplug["plugin"] . " - ";
             }
 
             $tmp['##crontask.name##']       .= $crontask['name'];
             $tmp['##crontask.description##'] = $cron->getDescription($id);
             $tmp['##crontask.url##']         = $this->formatURL(
                 $options['additionnaloption']['usertype'],
-                "CronTask_".$id
+                "CronTask_" . $id
             );
             $this->data['crontasks'][] = $tmp;
         }
@@ -109,5 +110,4 @@ class NotificationTargetCrontask extends NotificationTarget
         }
         asort($this->tag_descriptions);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -138,7 +139,7 @@ class Peripheral extends CommonDBTM
               Certificate_Item::class,
               Computer_Item::class,
               Item_Project::class,
-         ]
+            ]
         );
 
         Item_Devices::cleanItemDeviceDBOnItemDelete(
@@ -330,8 +331,8 @@ class Peripheral extends CommonDBTM
         if (static::canUpdate()) {
             Computer_Item::getMassiveActionsForItemtype($actions, __CLASS__, 0, $checkitem);
             $actions += [
-               'Item_SoftwareLicense'.MassiveAction::CLASS_ACTION_SEPARATOR.'add'
-                  => "<i class='ma-icon fas fa-key' aria-hidden='true'></i>".
+               'Item_SoftwareLicense' . MassiveAction::CLASS_ACTION_SEPARATOR . 'add'
+                  => "<i class='ma-icon fas fa-key' aria-hidden='true'></i>" .
                      _x('button', 'Add a license')
             ];
             KnowbaseItem_Item::getMassiveActionsForItemtype($actions, __CLASS__, 0, $checkitem);

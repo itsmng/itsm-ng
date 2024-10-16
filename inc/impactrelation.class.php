@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -61,8 +62,9 @@ class ImpactRelation extends CommonDBRelation
         }
 
         // Check that source and impacted are different items
-        if ($input['itemtype_source'] == $input['itemtype_impacted']
-           && $input['items_id_source'] == $input['items_id_impacted']
+        if (
+            $input['itemtype_source'] == $input['itemtype_impacted']
+            && $input['items_id_source'] == $input['items_id_impacted']
         ) {
             return false;
         }

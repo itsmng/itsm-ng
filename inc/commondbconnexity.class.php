@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -249,10 +250,14 @@ abstract class CommonDBConnexity extends CommonDBTM
         $item = ($type ? getItemForItemtype($type) : false);
 
         if ($item !== false) {
-            if ($getFromDB
-                || $getFromDBOrEmpty) {
-                if (isset($array[$items_id])
-                    && $item->getFromDB($array[$items_id])) {
+            if (
+                $getFromDB
+                || $getFromDBOrEmpty
+            ) {
+                if (
+                    isset($array[$items_id])
+                    && $item->getFromDB($array[$items_id])
+                ) {
                     return $item;
                 }
                 if ($getFromDBOrEmpty) {
@@ -293,24 +298,26 @@ abstract class CommonDBConnexity extends CommonDBTM
 
         $have_to_check = false;
         foreach ($fields as $field_name) {
-            if ((isset($this->fields[$field_name]))
-                && ($input[$field_name] != $this->fields[$field_name])) {
-
+            if (
+                (isset($this->fields[$field_name]))
+                && ($input[$field_name] != $this->fields[$field_name])
+            ) {
                 $have_to_check = true;
                 break;
             }
         }
 
         if ($have_to_check) {
-
             $new_item = clone $this;
 
             // Solution 1 : If we cannot create the new item or delete the old item,
             // then we cannot update the item
             unset($new_item->fields);
-            if (!$new_item->can(-1, CREATE, $input)
+            if (
+                !$new_item->can(-1, CREATE, $input)
                  || !$this->can($this->getID(), DELETE)
-                 || !$this->can($this->getID(), PURGE)) {
+                 || !$this->can($this->getID(), PURGE)
+            ) {
                 Session::addMessageAfterRedirect(
                     __('Cannot update item: not enough right on the parent(s) item(s)'),
                     INFO,
@@ -363,8 +370,10 @@ abstract class CommonDBConnexity extends CommonDBTM
     public static function canConnexity($method, $item_right, $itemtype, $items_id)
     {
 
-        if (($item_right != self::DONT_CHECK_ITEM_RIGHTS)
-            && (!preg_match('/^itemtype/', $itemtype))) {
+        if (
+            ($item_right != self::DONT_CHECK_ITEM_RIGHTS)
+            && (!preg_match('/^itemtype/', $itemtype))
+        ) {
             if ($item_right == self::HAVE_VIEW_RIGHT_ON_ITEM) {
                 $method = 'canView';
             }
@@ -548,14 +557,14 @@ abstract class CommonDBConnexity extends CommonDBTM
             return;
         }
 
-        $prefix = __CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR;
+        $prefix = __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR;
 
         if ($unaffect) {
-            $actions[$prefix.'unaffect'] = $specificities['action_name']['unaffect'];
+            $actions[$prefix . 'unaffect'] = $specificities['action_name']['unaffect'];
         }
 
         if ($affect) {
-            $actions[$prefix.'affect'] = $specificities['action_name']['affect'];
+            $actions[$prefix . 'affect'] = $specificities['action_name']['affect'];
         }
 
         parent::getMassiveActionsForItemtype($actions, $itemtype, $is_deleted, $checkitem);
@@ -608,15 +617,19 @@ abstract class CommonDBConnexity extends CommonDBTM
                         if ((!$itemtype::$mustBeAttached_1) && (!$itemtype::$mustBeAttached_2)) {
                             // Should never occur ... But we must care !
                             $values = [];
-                            if ((empty($itemtype::$itemtype_1))
-                             || (preg_match('/^itemtype/', $itemtype::$itemtype_1))) {
+                            if (
+                                (empty($itemtype::$itemtype_1))
+                                || (preg_match('/^itemtype/', $itemtype::$itemtype_1))
+                            ) {
                                 $values[0] = __('First Item');
                             } else {
                                 $itemtype_1 = $itemtype::$itemtype_1;
                                 $values[0]  = $itemtype_1::getTypeName(Session::getPluralNumber());
                             }
-                            if ((empty($itemtype::$itemtype_2))
-                                || (preg_match('/^itemtype/', $itemtype::$itemtype_2))) {
+                            if (
+                                (empty($itemtype::$itemtype_2))
+                                || (preg_match('/^itemtype/', $itemtype::$itemtype_2))
+                            ) {
                                 $values[1] = __('Second Item');
                             } else {
                                 $itemtype_2 = $itemtype::$itemtype_2;
@@ -632,7 +645,7 @@ abstract class CommonDBConnexity extends CommonDBTM
                         }
                     }
                 }
-                echo "<br><br>".Html::submit(_x('button', 'Dissociate'), ['name' => 'massiveaction']);
+                echo "<br><br>" . Html::submit(_x('button', 'Dissociate'), ['name' => 'massiveaction']);
                 return true;
 
             case 'affect':
@@ -675,7 +688,7 @@ abstract class CommonDBConnexity extends CommonDBTM
                     $options['itemtypes']     = $peertypes;
                 }
 
-                echo "<br><br>".Html::submit(_x('button', 'Associate'), ['name' => 'massiveaction']);
+                echo "<br><br>" . Html::submit(_x('button', 'Associate'), ['name' => 'massiveaction']);
                 return true;
         }
 
@@ -816,8 +829,10 @@ abstract class CommonDBConnexity extends CommonDBTM
                         continue;
                     }
                     if (preg_match('/^itemtype/', $peertype)) {
-                        if (($input2[$peertype] == $item->fields[$peertype])
-                            && ($input2[$peers_id] == $item->fields[$peers_id])) {
+                        if (
+                            ($input2[$peertype] == $item->fields[$peertype])
+                            && ($input2[$peers_id] == $item->fields[$peers_id])
+                        ) {
                             $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
                             $ma->addMessage($item->getErrorMessage(ERROR_ALREADY_DEFINED));
                             continue;
@@ -847,5 +862,4 @@ abstract class CommonDBConnexity extends CommonDBTM
 
         parent::processMassiveActionsForOneItemtype($ma, $item, $ids);
     }
-
 }

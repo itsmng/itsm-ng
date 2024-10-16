@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -94,7 +95,7 @@ class Right extends \CommonDBChild
               'dashboards_dashboards_id' => new \QueryParam(),
               'itemtype' => new \QueryParam(),
               'items_id' => new \QueryParam(),
-         ]
+            ]
         );
         $stmt = $DB->prepare($query_rights);
         foreach ($rights as $fk => $right_line) {

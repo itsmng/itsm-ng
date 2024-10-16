@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -69,7 +70,7 @@ abstract class FQDNLabel extends CommonDBChild
 
         $domainName = FQDN::getFQDNFromID($domain);
         if (!empty($domainName)) {
-            return $label.".".$domainName;
+            return $label . "." . $domainName;
         }
         return $label;
     }
@@ -129,7 +130,6 @@ abstract class FQDNLabel extends CommonDBChild
                 );
                 return false;
             }
-
         }
         return $input;
     }
@@ -165,7 +165,7 @@ abstract class FQDNLabel extends CommonDBChild
             $count = 0;
             $label = str_replace('*', '%', $label, $count);
             if ($count == 0) {
-                $label = '%'.$label.'%';
+                $label = '%' . $label . '%';
             }
             $relation = ['LIKE',  $label];
         } else {
@@ -173,16 +173,19 @@ abstract class FQDNLabel extends CommonDBChild
         }
 
         $IDs = [];
-        foreach (['NetworkName'  => 'glpi_networknames',
-                       'NetworkAlias' => 'glpi_networkaliases'] as $class => $table) {
+        foreach (
+            ['NetworkName'  => 'glpi_networknames',
+                       'NetworkAlias' => 'glpi_networkaliases'] as $class => $table
+        ) {
             $criteria = [
                'SELECT' => 'id',
                'FROM'   => $table,
                'WHERE'  => ['name' => $relation]
             ];
 
-            if (is_array($fqdns_id) && count($fqdns_id) > 0
-               || is_int($fqdns_id) && $fqdns_id > 0
+            if (
+                is_array($fqdns_id) && count($fqdns_id) > 0
+                || is_int($fqdns_id) && $fqdns_id > 0
             ) {
                 $criteria['WHERE']['fqdns_id'] = $fqdns_id;
             }
@@ -259,12 +262,14 @@ abstract class FQDNLabel extends CommonDBChild
         // Filter : Do not keep ip not linked to asset
         if (count($labels_with_items)) {
             foreach ($labels_with_items as $key => $tab) {
-                if (isset($tab[0])
+                if (
+                    isset($tab[0])
                     && (($tab[0] instanceof NetworkName)
                         || ($tab[0] instanceof NetworkPort)
                         || $tab[0]->isDeleted()
                         || $tab[0]->isTemplate()
-                        || ($tab[0]->getEntityID() != $entity))) {
+                        || ($tab[0]->getEntityID() != $entity))
+                ) {
                     unset($labels_with_items[$key]);
                 }
             }

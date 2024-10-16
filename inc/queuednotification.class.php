@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -82,7 +83,7 @@ class QueuedNotification extends CommonDBTM
         $actions = parent::getSpecificMassiveActions($checkitem);
 
         if ($isadmin && !$is_deleted) {
-            $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'sendmail'] = _x('button', 'Send');
+            $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'sendmail'] = _x('button', 'Send');
         }
 
         return $actions;
@@ -157,11 +158,13 @@ class QueuedNotification extends CommonDBTM
         }
 
         // Drop existing mails in queue for the same event and item  and recipient
-        if (isset($input['itemtype']) && !empty($input['itemtype'])
+        if (
+            isset($input['itemtype']) && !empty($input['itemtype'])
             && isset($input['entities_id']) && ($input['entities_id'] >= 0)
             && isset($input['items_id']) && ($input['items_id'] >= 0)
             && isset($input['notificationtemplates_id']) && !empty($input['notificationtemplates_id'])
-            && isset($input['recipient'])) {
+            && isset($input['recipient'])
+        ) {
             $criteria = [
                'FROM'   => $this->getTable(),
                'WHERE'  => [
@@ -408,7 +411,7 @@ class QueuedNotification extends CommonDBTM
                 $out = '';
                 if (is_array($values[$field]) && count($values[$field])) {
                     foreach ($values[$field] as $key => $val) {
-                        $out .= $key.': '.$val.'<br>';
+                        $out .= $key . ': ' . $val . '<br>';
                     }
                 }
                 return $out;
@@ -417,7 +420,6 @@ class QueuedNotification extends CommonDBTM
                 $out = Notification_NotificationTemplate::getMode($values[$field])['label'];
                 return $out;
                 break;
-
         }
         return parent::getSpecificValueToDisplay($field, $values, $options);
     }
@@ -482,7 +484,6 @@ class QueuedNotification extends CommonDBTM
             case 'queuednotificationclean':
                 return ['description' => __('Clean notification queue'),
                              'parameter'   => __('Days to keep sent chat')];
-
         }
         return [];
     }
@@ -526,9 +527,10 @@ class QueuedNotification extends CommonDBTM
                 $eventclass = 'Plugin' . ucfirst($conf['from']) . $eventclass;
             }
 
-            if ($limit_modes !== null && !in_array($mode, $limit_modes)
-               || !$CFG_GLPI['notifications_' . $mode]
-               || !$eventclass::canCron()
+            if (
+                $limit_modes !== null && !in_array($mode, $limit_modes)
+                || !$CFG_GLPI['notifications_' . $mode]
+                || !$eventclass::canCron()
             ) {
                 //mode is not in limits, is disabled, or cannot be called from cron, passing
                 continue;
@@ -613,8 +615,8 @@ class QueuedNotification extends CommonDBTM
                 self::getTable(),
                 [
                   'is_deleted'   => 1,
-                  new \QueryExpression('(UNIX_TIMESTAMP('.$DB->quoteName('send_time').') < '.$DB->quoteValue($send_time).')')
-            ]
+                  new \QueryExpression('(UNIX_TIMESTAMP(' . $DB->quoteName('send_time') . ') < ' . $DB->quoteValue($send_time) . ')')
+                ]
             );
             $vol = $DB->affectedRows();
         }
@@ -634,8 +636,10 @@ class QueuedNotification extends CommonDBTM
     **/
     public static function forceSendFor($itemtype, $items_id)
     {
-        if (!empty($itemtype)
-           && !empty($items_id)) {
+        if (
+            !empty($itemtype)
+            && !empty($items_id)
+        ) {
             $pendings = self::getPendings(
                 null,
                 1,
@@ -643,7 +647,7 @@ class QueuedNotification extends CommonDBTM
                 [
                   'itemtype'  => $itemtype,
                   'items_id'  => $items_id
-            ]
+                ]
             );
 
             foreach ($pendings as $mode => $data) {
@@ -673,20 +677,20 @@ class QueuedNotification extends CommonDBTM
 
         $this->showFormHeader($options);
         echo "<tr class='tab_bg_1'>";
-        echo "<td>"._n('Type', 'Types', 1)."</td>";
+        echo "<td>" . _n('Type', 'Types', 1) . "</td>";
 
         echo "<td>";
         if (!($item = getItemForItemtype($this->fields['itemtype']))) {
             echo NOT_AVAILABLE;
             echo "</td>";
-            echo "<td>"._n('Item', 'Items', 1)."</td>";
+            echo "<td>" . _n('Item', 'Items', 1) . "</td>";
             echo "<td>";
             echo NOT_AVAILABLE;
         } elseif ($item instanceof CommonDBTM) {
             echo $item->getType();
             $item->getFromDB($this->fields['items_id']);
             echo "</td>";
-            echo "<td>"._n('Item', 'Items', 1)."</td>";
+            echo "<td>" . _n('Item', 'Items', 1) . "</td>";
             echo "<td>";
             echo $item->getLink();
         } else {
@@ -696,7 +700,7 @@ class QueuedNotification extends CommonDBTM
         echo "</tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>"._n('Notification template', 'Notification templates', 1)."</td>";
+        echo "<td>" . _n('Notification template', 'Notification templates', 1) . "</td>";
         echo "<td>";
         echo Dropdown::getDropdownName(
             'glpi_notificationtemplates',
@@ -708,67 +712,66 @@ class QueuedNotification extends CommonDBTM
         echo "</tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Creation date')."</td>";
+        echo "<td>" . __('Creation date') . "</td>";
         echo "<td>";
         echo Html::convDateTime($this->fields['create_time']);
-        echo "</td><td>".__('Expected send date')."</td>";
-        echo "<td>".Html::convDateTime($this->fields['send_time'])."</td>";
+        echo "</td><td>" . __('Expected send date') . "</td>";
+        echo "<td>" . Html::convDateTime($this->fields['send_time']) . "</td>";
         echo "</tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Send date')."</td>";
-        echo "<td>".Html::convDateTime($this->fields['sent_time'])."</td>";
-        echo "<td>".__('Number of tries of sent')."</td>";
-        echo "<td>".$this->fields['sent_try']."</td>";
+        echo "<td>" . __('Send date') . "</td>";
+        echo "<td>" . Html::convDateTime($this->fields['sent_time']) . "</td>";
+        echo "<td>" . __('Number of tries of sent') . "</td>";
+        echo "<td>" . $this->fields['sent_try'] . "</td>";
         echo "</tr>";
 
-        echo "<tr><th colspan='4'>"._n('Email', 'Emails', 1)."</th></tr>";
+        echo "<tr><th colspan='4'>" . _n('Email', 'Emails', 1) . "</th></tr>";
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Sender email')."</td>";
-        echo "<td>".$this->fields['sender']."</td>";
-        echo "<td>".__('Sender name')."</td>";
-        echo "<td>".$this->fields['sendername']."</td>";
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Recipient email')."</td>";
-        echo "<td>".$this->fields['recipient']."</td>";
-        echo "<td>".__('Recipient name')."</td>";
-        echo "<td>".$this->fields['recipientname']."</td>";
+        echo "<td>" . __('Sender email') . "</td>";
+        echo "<td>" . $this->fields['sender'] . "</td>";
+        echo "<td>" . __('Sender name') . "</td>";
+        echo "<td>" . $this->fields['sendername'] . "</td>";
         echo "</tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Reply-to email')."</td>";
-        echo "<td>".$this->fields['replyto']."</td>";
-        echo "<td>".__('Reply-to name')."</td>";
-        echo "<td>".$this->fields['replytoname']."</td>";
+        echo "<td>" . __('Recipient email') . "</td>";
+        echo "<td>" . $this->fields['recipient'] . "</td>";
+        echo "<td>" . __('Recipient name') . "</td>";
+        echo "<td>" . $this->fields['recipientname'] . "</td>";
         echo "</tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Message ID')."</td>";
-        echo "<td>".$this->fields['messageid']."</td>";
-        echo "<td>".__('Additional headers')."</td>";
-        echo "<td>".self::getSpecificValueToDisplay('headers', $this->fields)."</td>";
+        echo "<td>" . __('Reply-to email') . "</td>";
+        echo "<td>" . $this->fields['replyto'] . "</td>";
+        echo "<td>" . __('Reply-to name') . "</td>";
+        echo "<td>" . $this->fields['replytoname'] . "</td>";
         echo "</tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Subject')."</td>";
-        echo "<td colspan=3>".$this->fields['name']."</td>";
+        echo "<td>" . __('Message ID') . "</td>";
+        echo "<td>" . $this->fields['messageid'] . "</td>";
+        echo "<td>" . __('Additional headers') . "</td>";
+        echo "<td>" . self::getSpecificValueToDisplay('headers', $this->fields) . "</td>";
         echo "</tr>";
 
-        echo "<tr><th colspan='2'>".__('Email HTML body')."</th>";
-        echo "<th colspan='2'>".__('Email text body')."</th>";
+        echo "<tr class='tab_bg_1'>";
+        echo "<td>" . __('Subject') . "</td>";
+        echo "<td colspan=3>" . $this->fields['name'] . "</td>";
+        echo "</tr>";
+
+        echo "<tr><th colspan='2'>" . __('Email HTML body') . "</th>";
+        echo "<th colspan='2'>" . __('Email text body') . "</th>";
         echo "</tr>";
 
         echo "<tr class='tab_bg_1 top' >";
-        echo "<td colspan='2' class='queuemail_preview'>".self::cleanHtml($this->fields['body_html'])."</td>";
-        echo "<td colspan='2'>".nl2br($this->fields['body_text'], false)."</td>";
+        echo "<td colspan='2' class='queuemail_preview'>" . self::cleanHtml($this->fields['body_html']) . "</td>";
+        echo "<td colspan='2'>" . nl2br($this->fields['body_text'], false) . "</td>";
         echo "</tr>";
 
         $this->showFormButtons($options);
 
         return true;
-
     }
 
 

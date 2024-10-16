@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -97,10 +98,12 @@ class RuleMailCollectorCollection extends RuleCollection
             //Get all profiles
             $profiles = Profile_User::getForUser($input['_users_id_requester']);
             foreach ($profiles as $profile) {
-                if (Profile_User::haveUniqueRight(
-                    $input['_users_id_requester'],
-                    $profile['profiles_id']
-                )) {
+                if (
+                    Profile_User::haveUniqueRight(
+                        $input['_users_id_requester'],
+                        $profile['profiles_id']
+                    )
+                ) {
                     $input['UNIQUE_PROFILE'][$profile['profiles_id']] = $profile['profiles_id'];
                 }
             }
@@ -139,5 +142,4 @@ class RuleMailCollectorCollection extends RuleCollection
         return static::canView()
                && MailCollector::countCollectors();
     }
-
 }

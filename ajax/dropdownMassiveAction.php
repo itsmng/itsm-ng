@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -38,9 +39,9 @@ Html::header_nocache();
 try {
     $ma = new MassiveAction($_POST, $_GET, 'specialize');
 } catch (Exception $e) {
-    echo "<div class='center'><img src='".$CFG_GLPI["root_doc"]."/pics/warning.png' alt='".
-       __s('Warning')."'><br><br>";
-    echo "<span class='b'>".$e->getMessage()."</span><br>";
+    echo "<div class='center'><img src='" . $CFG_GLPI["root_doc"] . "/pics/warning.png' alt='" .
+       __s('Warning') . "'><br><br>";
+    echo "<span class='b'>" . $e->getMessage() . "</span><br>";
     echo "</div>";
     exit();
 }

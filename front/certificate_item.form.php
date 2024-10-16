@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -51,9 +52,7 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 } elseif (isset($_POST["delete"])) {
-
     foreach ($_POST["item"] as $key => $val) {
         $input = ['id' => $key];
         if ($val == 1) {
@@ -62,7 +61,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 }
 
 Html::displayErrorAndDie("lost");

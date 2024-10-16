@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -56,7 +57,6 @@ if (isset($_POST["add"])) {
     $url      = Toolbox::getItemTypeFormURL('NotificationTemplateTranslation', true);
     $url     .= "?notificationtemplates_id=$newID";
     Html::redirect($url);
-
 } elseif (isset($_POST["purge"])) {
     $notificationtemplate->check($_POST["id"], PURGE);
     $notificationtemplate->delete($_POST, 1);
@@ -70,7 +70,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $notificationtemplate->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $notificationtemplate->check($_POST["id"], UPDATE);
 
@@ -84,7 +83,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } else {
     Html::header(
         NotificationTemplate::getTypeName(Session::getPluralNumber()),

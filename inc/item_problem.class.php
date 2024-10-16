@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -64,9 +65,11 @@ class Item_Problem extends CommonItilObject_Item
     {
 
         // Avoid duplicate entry
-        if (countElementsInTable($this->getTable(), ['problems_id' => $input['problems_id'],
+        if (
+            countElementsInTable($this->getTable(), ['problems_id' => $input['problems_id'],
                                                     'itemtype'    => $input['itemtype'],
-                                                    'items_id'    => $input['items_id']]) > 0) {
+                                                    'items_id'    => $input['items_id']]) > 0
+        ) {
             return false;
         }
         return parent::prepareInputForAdd($input);
@@ -195,20 +198,22 @@ class Item_Problem extends CommonItilObject_Item
                 $prem = true;
                 while ($data = $iterator->next()) {
                     $name = $data["name"];
-                    if ($_SESSION["glpiis_ids_visible"]
-                        || empty($data["name"])) {
+                    if (
+                        $_SESSION["glpiis_ids_visible"]
+                        || empty($data["name"])
+                    ) {
                         $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
                     }
                     $link = $itemtype::getFormURLWithID($data['id']);
-                    $namelink = "<a href=\"".$link."\">".$name."</a>";
+                    $namelink = "<a href=\"" . $link . "\">" . $name . "</a>";
                     $typename = $item->getTypeName($nb);
 
                     $values[] = [
                        (($nb > 1) ? sprintf(__('%1$s: %2$s'), $typename, $nb) : $typename),
                        Dropdown::getDropdownName("glpi_entities", $data['entity']),
                        $namelink,
-                       (isset($data["serial"]) ? "".$data["serial"]."" : "-"),
-                       (isset($data["otherserial"]) ? "".$data["otherserial"]."" : "-"),
+                       (isset($data["serial"]) ? "" . $data["serial"] . "" : "-"),
+                       (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-"),
                     ];
                     $massive_action[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
                 }
@@ -292,5 +297,4 @@ class Item_Problem extends CommonItilObject_Item
         }
         return true;
     }
-
 }

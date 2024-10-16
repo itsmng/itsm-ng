@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -217,7 +218,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
                 [
                   __('You are about to launch migration of Racks plugin data into ITSM-ng core tables.'),
                   __('It is better to make a backup of your existing data before continuing.')
-            ]
+                ]
             );
 
             /** @var QuestionHelper $question_helper */
@@ -287,7 +288,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
                 $this->output->writeln(
                     [
                       '<error>' . $message . '</error>',
-               ],
+                    ],
                     OutputInterface::VERBOSITY_QUIET
                 );
                 return false;
@@ -312,7 +313,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
                   Plugin::TOBECLEANED, // Can be in this state if check was done without the plugin dir
                   Plugin::NOTINSTALLED, // Can be not installed if plugin has been cleaned in plugin list
                   Plugin::NOTUPDATED, // Plugin 1.8.0 version has never been installed
-            ]
+                ]
             );
             if ($is_installable) {
                 if ($this->input->getOption('update-plugin')) {
@@ -361,7 +362,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
                   Plugin::ACTIVATED, // Should not be possible as 1.8.0 is not compatible with 9.3
                   Plugin::TOBECONFIGURED, // Should not be possible as check_config of plugin returns always true
                   Plugin::NOTACTIVATED,
-            ]
+                ]
             );
             if (!$is_state_ok) {
                 // Should not happens as installation should put plugin in awaited state
@@ -525,7 +526,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
         $othermodels_iterator = $this->db->request(
             [
               'FROM' => 'glpi_plugin_racks_othermodels'
-         ]
+            ]
         );
 
         if ($count_othermodels = $othermodels_iterator->count()) {
@@ -536,7 +537,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
                       __('We found %d models for other items. For each, we will ask you where you want to import it.'),
                       $count_othermodels
                   ),
-            ],
+                ],
                 OutputInterface::VERBOSITY_QUIET
             );
 
@@ -561,7 +562,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
                           self::OTHER_TYPE_CHOICE_MONITOR             => Monitor::getTypeName(1),
                           self::OTHER_TYPE_CHOICE_PASSIVEDCEQUIPEMENT => PassiveDCEquipment::getTypeName(1),
                           self::OTHER_TYPE_CHOICE_IGNORE              => __('Ignore (default)'),
-                  ],
+                        ],
                         self::OTHER_TYPE_CHOICE_IGNORE
                     )
                 );
@@ -611,8 +612,10 @@ class RacksPluginToCoreCommand extends AbstractCommand
                    'comment' => $othermodel['comment'],
                 ]);
 
-                if (!($new_model_id = $new_model->getFromDBByCrit($new_model_fields))
-                    && !($new_model_id = $new_model->add($new_model_fields))) {
+                if (
+                    !($new_model_id = $new_model->getFromDBByCrit($new_model_fields))
+                    && !($new_model_id = $new_model->add($new_model_fields))
+                ) {
                     $has_errors = true;
 
                     $message = sprintf(__('Unable to import other model "%s".'), $model_label);
@@ -644,7 +647,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
                       'WHERE' => [
                          'plugin_racks_othermodels_id' => $othermodel['id'],
                       ],
-               ]
+                    ]
                 );
 
                 if ($otheritems_iterator->count()) {
@@ -722,7 +725,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
             [
               'FROM'  => 'glpi_plugin_racks_itemspecifications',
               'ORDER' => 'id ASC'
-         ]
+            ]
         );
 
         if ($specs_iterator->count()) {
@@ -815,7 +818,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
         $models_iterator = $this->db->request(
             [
               'FROM' => 'glpi_plugin_racks_rackmodels',
-         ]
+            ]
         );
 
         if ($models_iterator->count()) {
@@ -840,11 +843,13 @@ class RacksPluginToCoreCommand extends AbstractCommand
                     [
                       'name'    => $old_model['name'],
                       'comment' => $old_model['comment'],
-               ]
+                    ]
                 );
 
-                if (!($rackmodel_id = $rackmodel->getFromDBByCrit($rackmodel_fields))
-                    && !($rackmodel_id = $rackmodel->add($rackmodel_fields))) {
+                if (
+                    !($rackmodel_id = $rackmodel->getFromDBByCrit($rackmodel_fields))
+                    && !($rackmodel_id = $rackmodel->add($rackmodel_fields))
+                ) {
                     $has_errors = true;
 
                     $message = sprintf(__('Unable to import rack model "%s".'), $old_model['name']);
@@ -894,7 +899,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
         $types_iterator = $this->db->request(
             [
               'FROM' => 'glpi_plugin_racks_racktypes',
-         ]
+            ]
         );
 
         if ($types_iterator->count()) {
@@ -921,11 +926,13 @@ class RacksPluginToCoreCommand extends AbstractCommand
                       'entities_id'  => $old_type['entities_id'],
                       'is_recursive' => $old_type['is_recursive'],
                       'comment'      => $old_type['comment'],
-               ]
+                    ]
                 );
 
-                if (!($racktype_id = $racktype->getFromDBByCrit($racktype_fields))
-                    && !($racktype_id = $racktype->add($racktype_fields))) {
+                if (
+                    !($racktype_id = $racktype->getFromDBByCrit($racktype_fields))
+                    && !($racktype_id = $racktype->add($racktype_fields))
+                ) {
                     $has_errors = true;
 
                     $message = sprintf(__('Unable to import rack type "%s".'), $old_type['name']);
@@ -975,7 +982,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
         $states_iterator = $this->db->request(
             [
               'FROM' => 'glpi_plugin_racks_rackstates',
-         ]
+            ]
         );
 
         if ($states_iterator->count()) {
@@ -1000,7 +1007,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
                     [
                       'name'      => $old_state['name'],
                       'states_id' => 0,
-               ]
+                    ]
                 );
 
                 if (!($state_id = $state->getFromDBByCrit($state_fields))) {
@@ -1059,7 +1066,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
         $rooms_iterator = $this->db->request(
             [
               'FROM' => 'glpi_plugin_racks_roomlocations',
-         ]
+            ]
         );
 
         if ($rooms_iterator->count()) {
@@ -1088,11 +1095,13 @@ class RacksPluginToCoreCommand extends AbstractCommand
                       'datacenters_id' => $this->datacenter_id,
                       'vis_cols'       => 10,
                       'vis_rows'       => 10,
-               ]
+                    ]
                 );
 
-                if (!($room_id = $room->getFromDBByCrit($room_fields))
-                    && !($room_id = $room->add($room_fields))) {
+                if (
+                    !($room_id = $room->getFromDBByCrit($room_fields))
+                    && !($room_id = $room->add($room_fields))
+                ) {
                     $has_errors = true;
 
                     $message = sprintf(__('Unable to import room "%s".'), $old_room['completename']);
@@ -1142,7 +1151,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
         $racks_iterator = $this->db->request(
             [
               'FROM' => 'glpi_plugin_racks_racks',
-         ]
+            ]
         );
 
         if ($racks_iterator->count()) {
@@ -1214,7 +1223,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
                       'is_deleted'       => $old_rack['is_deleted'],
                       'dcrooms_id'       => $room_id,
                       'bgcolor'          => "#F5B7B1",
-               ]
+                    ]
                 );
 
                 if (!($rack_id = $rack->getFromDBByCrit($rack_fields))) {
@@ -1272,7 +1281,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
             [
               'FROM'  => 'glpi_plugin_racks_racks_items',
               'ORDER' => 'id'
-         ]
+            ]
         );
 
         if ($items_iterator->count()) {
@@ -1331,8 +1340,10 @@ class RacksPluginToCoreCommand extends AbstractCommand
                 $modeltype = $item->getType() . 'Model';
                 if (class_exists($modeltype)) {
                     $model_fkey = getForeignKeyFieldForTable($modeltype::getTable());
-                    if (array_key_exists($model_fkey, $item->fields)
-                       && null !== ($model = $this->getCorrespondingItem($modeltype, $item->fields[$model_fkey]))) {
+                    if (
+                        array_key_exists($model_fkey, $item->fields)
+                        && null !== ($model = $this->getCorrespondingItem($modeltype, $item->fields[$model_fkey]))
+                    ) {
                         $required_units = $model->fields['required_units'];
                     }
                 }
@@ -1415,8 +1426,10 @@ class RacksPluginToCoreCommand extends AbstractCommand
     private function getCorrespondingItem($itemtype, $id)
     {
 
-        if (array_key_exists($itemtype, $this->elements_mapping)
-            && array_key_exists($id, $this->elements_mapping[$itemtype])) {
+        if (
+            array_key_exists($itemtype, $this->elements_mapping)
+            && array_key_exists($id, $this->elements_mapping[$itemtype])
+        ) {
             // Element exists in mapping, get new element
             $mapping  = $this->elements_mapping[$itemtype][$id];
             $id       = $mapping['id'];
@@ -1454,9 +1467,10 @@ class RacksPluginToCoreCommand extends AbstractCommand
                'vis_rows'       => 10,
             ];
 
-            if (!($room_id = $room->getFromDBByCrit($room_fields))
-                && !($room_id = $room->add($room_fields))) {
-
+            if (
+                !($room_id = $room->getFromDBByCrit($room_fields))
+                && !($room_id = $room->add($room_fields))
+            ) {
                 $this->outputImportError(__('Unable to create default room.'));
 
                 $room_id = 0;

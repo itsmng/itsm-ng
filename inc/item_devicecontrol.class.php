@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -54,5 +55,4 @@ class Item_DeviceControl extends Item_Devices
                      'states_id' => parent::getSpecificities('states_id'),
                      'busID'  => parent::getSpecificities('busID')];
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -93,9 +94,11 @@ class FieldUnicity extends CommonDropdown
 
             foreach ($DB->listFields(getTableForItemType($target::class)) as $field) {
                 $searchOption = $target->getSearchOptionByField('field', $field['Field']);
-                if (!empty($searchOption)
+                if (
+                    !empty($searchOption)
                       && !in_array($field['Type'], $blacklisted_types)
-                      && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
+                      && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())
+                ) {
                     $values[$field['Field']] = $searchOption['name'];
                 }
             }
@@ -246,8 +249,7 @@ class FieldUnicity extends CommonDropdown
             if ($item = getItemForItemtype($this->fields['itemtype'])) {
                 echo $item->getTypeName();
             }
-            echo "<input type='hidden' name='itemtype' value='".$this->fields['itemtype']."'>";
-
+            echo "<input type='hidden' name='itemtype' value='" . $this->fields['itemtype'] . "'>";
         } else {
             $options = [];
             //Add criteria : display dropdown
@@ -266,11 +268,10 @@ class FieldUnicity extends CommonDropdown
             Ajax::updateItemOnSelectEvent(
                 "dropdown_itemtype$rand",
                 "span_fields",
-                $CFG_GLPI["root_doc"]."/ajax/dropdownUnicityFields.php",
+                $CFG_GLPI["root_doc"] . "/ajax/dropdownUnicityFields.php",
                 $params
             );
         }
-
     }
 
 
@@ -381,9 +382,11 @@ class FieldUnicity extends CommonDropdown
             $values = [];
             foreach ($DB->listFields(getTableForItemType($itemtype)) as $field) {
                 $searchOption = $target->getSearchOptionByField('field', $field['Field']);
-                if (!empty($searchOption)
+                if (
+                    !empty($searchOption)
                     && !in_array($field['Type'], $blacklisted_types)
-                    && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
+                    && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())
+                ) {
                     $values[$field['Field']] = $searchOption['name'];
                 }
             }
@@ -511,8 +514,10 @@ class FieldUnicity extends CommonDropdown
         }
         switch ($field) {
             case 'fields':
-                if (isset($values['itemtype'])
-                    && !empty($values['itemtype'])) {
+                if (
+                    isset($values['itemtype'])
+                    && !empty($values['itemtype'])
+                ) {
                     if ($target = getItemForItemtype($values['itemtype'])) {
                         $searchOption = $target->getSearchOptionByField('field', $values[$field]);
                         $fields       = explode(',', $values[$field]);
@@ -549,8 +554,10 @@ class FieldUnicity extends CommonDropdown
         $options['display'] = false;
         switch ($field) {
             case 'fields':
-                if (isset($values['itemtype'])
-                    && !empty($values['itemtype'])) {
+                if (
+                    isset($values['itemtype'])
+                    && !empty($values['itemtype'])
+                ) {
                     $options['values'] = explode(',', $values[$field]);
                     $options['name']   = $name;
                     return self::dropdownFields($values['itemtype'], $options);
@@ -571,15 +578,16 @@ class FieldUnicity extends CommonDropdown
     public static function checkBeforeInsert($input)
     {
 
-        if (!$input['itemtype']
-            || empty($input['_fields'])) {
+        if (
+            !$input['itemtype']
+            || empty($input['_fields'])
+        ) {
             Session::addMessageAfterRedirect(
                 __("It's mandatory to select a type and at least one field"),
                 true,
                 ERROR
             );
             $input = [];
-
         } else {
             $input['fields'] = implode(',', $input['_fields']);
             unset($input['_fields']);
@@ -619,7 +627,7 @@ class FieldUnicity extends CommonDropdown
             self::getTable(),
             [
               'itemtype'  => ['LIKE', "%Plugin$itemtype%"]
-         ]
+            ]
         );
     }
 
@@ -646,7 +654,7 @@ class FieldUnicity extends CommonDropdown
         if (!empty($fields)) {
             $colspan = count($fields) + 1;
             echo "<table class='tab_cadre_fixe' aria-label='Duplicates'>";
-            echo "<tr class='tab_bg_2'><th colspan='".$colspan."'>".__('Duplicates')."</th></tr>";
+            echo "<tr class='tab_bg_2'><th colspan='" . $colspan . "'>" . __('Duplicates') . "</th></tr>";
 
             $entities = [$unicity->fields['entities_id']];
             if ($unicity->fields['is_recursive']) {
@@ -686,38 +694,36 @@ class FieldUnicity extends CommonDropdown
             while ($data = $iterator->next()) {
                 if ($data['cpt'] > 1) {
                     $results[] = $data;
-
                 }
             }
 
             if (empty($results)) {
                 echo "<tr class='tab_bg_2'>";
-                echo "<td class='center' colspan='$colspan'>".__('No item to display')."</td></tr>";
+                echo "<td class='center' colspan='$colspan'>" . __('No item to display') . "</td></tr>";
             } else {
                 echo "<tr class='tab_bg_2'>";
                 foreach ($fields as $field) {
                     $searchOption = $item->getSearchOptionByField('field', $field);
-                    echo "<th>".$searchOption["name"]."</th>";
+                    echo "<th>" . $searchOption["name"] . "</th>";
                 }
-                echo "<th>"._x('quantity', 'Number')."</th></tr>";
+                echo "<th>" . _x('quantity', 'Number') . "</th></tr>";
 
                 foreach ($results as $result) {
                     echo "<tr class='tab_bg_2'>";
                     foreach ($fields as $field) {
                         $table = getTableNameForForeignKeyField($field);
                         if ($table != '') {
-                            echo "<td>".Dropdown::getDropdownName($table, $result[$field])."</td>";
+                            echo "<td>" . Dropdown::getDropdownName($table, $result[$field]) . "</td>";
                         } else {
-                            echo "<td>".$result[$field]."</td>";
+                            echo "<td>" . $result[$field] . "</td>";
                         }
                     }
-                    echo "<td class='numeric'>".$result['cpt']."</td></tr>";
+                    echo "<td class='numeric'>" . $result['cpt'] . "</td></tr>";
                 }
             }
-
         } else {
             echo "<tr class='tab_bg_2'>";
-            echo "<td class='center' colspan='$colspan'>".__('No item to display')."</td></tr>";
+            echo "<td class='center' colspan='$colspan'>" . __('No item to display') . "</td></tr>";
         }
         echo "</table>";
     }

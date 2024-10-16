@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,5 +42,4 @@ class PeripheralModel extends CommonDCModelDropdown
     {
         return _n('Peripheral model', 'Peripheral models', $nb);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -191,7 +192,7 @@ class Application extends BaseApplication
                   InputOption::VALUE_OPTIONAL,
                   __('Output language (default value is existing ITSM-NG "language" configuration or "en_GB")')
               )
-         ]
+            ]
         );
 
         return $definition;
@@ -235,18 +236,22 @@ class Application extends BaseApplication
 
         $begin_time = microtime(true);
 
-        if ($command instanceof GlpiCommandInterface && $command->requiresUpToDateDb()
-            && (!array_key_exists('dbversion', $this->config) || (trim($this->config['dbversion']) != ITSM_SCHEMA_VERSION))) {
+        if (
+            $command instanceof GlpiCommandInterface && $command->requiresUpToDateDb()
+            && (!array_key_exists('dbversion', $this->config) || (trim($this->config['dbversion']) != ITSM_SCHEMA_VERSION))
+        ) {
             $output->writeln(
                 '<error>'
-            . __('The version of the database is not compatible with the version of the installed files. An update is necessary.')
-            . '</error>'
+                . __('The version of the database is not compatible with the version of the installed files. An update is necessary.')
+                . '</error>'
             );
             return self::ERROR_DB_OUTDATED;
         }
 
-        if ($command instanceof GlpiCommandInterface && $command->mustCheckMandatoryRequirements()
-            && !$this->checkCoreMandatoryRequirements()) {
+        if (
+            $command instanceof GlpiCommandInterface && $command->mustCheckMandatoryRequirements()
+            && !$this->checkCoreMandatoryRequirements()
+        ) {
             return self::ERROR_MISSING_REQUIREMENTS;
         }
 
@@ -288,7 +293,7 @@ class Application extends BaseApplication
             [
               'debug_sql'  => 0,
               'debug_vars' => 0,
-         ]
+            ]
         );
 
         global $GLPI;
@@ -410,8 +415,10 @@ class Application extends BaseApplication
         }
 
         // 2. Check in GLPI configuration
-        if (null === $lang && array_key_exists('language', $this->config)
-            && $this->isLanguageValid($this->config['language'])) {
+        if (
+            null === $lang && array_key_exists('language', $this->config)
+            && $this->isLanguageValid($this->config['language'])
+        ) {
             $lang = $this->config['language'];
         }
 

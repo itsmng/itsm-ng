@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -60,7 +61,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["delete"])) {
     $print->check($_POST["id"], DELETE);
     $print->delete($_POST);
@@ -74,7 +74,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s deletes an item'), $_SESSION["glpiname"])
     );
     $print->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $print->check($_POST["id"], DELETE);
 
@@ -88,7 +87,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s restores an item'), $_SESSION["glpiname"])
     );
     $print->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $print->check($_POST["id"], PURGE);
 
@@ -102,7 +100,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $print->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $print->check($_POST["id"], UPDATE);
 
@@ -116,7 +113,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } elseif (isset($_POST["unglobalize"])) {
     $print->check($_POST["id"], UPDATE);
 
@@ -130,7 +126,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s sets unitary management'), $_SESSION["glpiname"])
     );
     Html::redirect($print->getFormURLWithID($_POST["id"]));
-
 } else {
     Html::header(Printer::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "assets", "printer");
     $print->display([

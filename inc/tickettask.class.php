@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -94,21 +95,27 @@ class TicketTask extends CommonITILTask
             return true;
         }
 
-        if (!$this->fields['is_private']
-            && Session::haveRight(self::$rightname, parent::SEEPUBLIC)) {
+        if (
+            !$this->fields['is_private']
+            && Session::haveRight(self::$rightname, parent::SEEPUBLIC)
+        ) {
             return true;
         }
 
         // see task created or affected to me
-        if (Session::getCurrentInterface() == "central"
+        if (
+            Session::getCurrentInterface() == "central"
             && ($this->fields["users_id"] === Session::getLoginUserID())
-                || ($this->fields["users_id_tech"] === Session::getLoginUserID())) {
+                || ($this->fields["users_id_tech"] === Session::getLoginUserID())
+        ) {
             return true;
         }
 
-        if ($this->fields["groups_id_tech"] && ($this->fields["groups_id_tech"] > 0)
+        if (
+            $this->fields["groups_id_tech"] && ($this->fields["groups_id_tech"] > 0)
             && isset($_SESSION["glpigroups"])
-            && in_array($this->fields["groups_id_tech"], $_SESSION["glpigroups"])) {
+            && in_array($this->fields["groups_id_tech"], $_SESSION["glpigroups"])
+        ) {
             return true;
         }
 
@@ -129,9 +136,11 @@ class TicketTask extends CommonITILTask
         }
 
         $ticket = new Ticket();
-        if ($ticket->getFromDB($this->fields['tickets_id'])
+        if (
+            $ticket->getFromDB($this->fields['tickets_id'])
             // No validation for closed tickets
-            && !in_array($ticket->fields['status'], $ticket->getClosedStatusArray())) {
+            && !in_array($ticket->fields['status'], $ticket->getClosedStatusArray())
+        ) {
             return (Session::haveRight(self::$rightname, parent::ADDALLITEM)
                     || $ticket->isUser(CommonITILActor::ASSIGN, Session::getLoginUserID())
                     || (isset($_SESSION["glpigroups"])
@@ -157,13 +166,17 @@ class TicketTask extends CommonITILTask
         }
 
         $ticket = new Ticket();
-        if ($ticket->getFromDB($this->fields['tickets_id'])
-           && in_array($ticket->fields['status'], $ticket->getClosedStatusArray())) {
+        if (
+            $ticket->getFromDB($this->fields['tickets_id'])
+            && in_array($ticket->fields['status'], $ticket->getClosedStatusArray())
+        ) {
             return false;
         }
 
-        if (($this->fields["users_id"] != Session::getLoginUserID())
-            && !Session::haveRight(self::$rightname, parent::UPDATEALL)) {
+        if (
+            ($this->fields["users_id"] != Session::getLoginUserID())
+            && !Session::haveRight(self::$rightname, parent::UPDATEALL)
+        ) {
             return false;
         }
 
@@ -179,8 +192,10 @@ class TicketTask extends CommonITILTask
     public function canPurgeItem()
     {
         $ticket = new Ticket();
-        if ($ticket->getFromDB($this->fields['tickets_id'])
-           && in_array($ticket->fields['status'], $ticket->getClosedStatusArray())) {
+        if (
+            $ticket->getFromDB($this->fields['tickets_id'])
+            && in_array($ticket->fields['status'], $ticket->getClosedStatusArray())
+        ) {
             return false;
         }
 
@@ -295,15 +310,17 @@ class TicketTask extends CommonITILTask
         Plugin::doHook("post_item_form", ['item' => $this, 'options' => &$params]);
 
         echo "<tr class='tab_bg_2'>";
-        echo "<td class='center' colspan='".($params['colspan'] * 2)."'>";
+        echo "<td class='center' colspan='" . ($params['colspan'] * 2) . "'>";
 
         if ($this->isNewID($ID)) {
             echo Ticket::getSplittedSubmitButtonHtml($this->fields['tickets_id'], 'add');
         } else {
-            if ($params['candel']
+            if (
+                $params['candel']
                   // no trashbin in tickettask
-             //   && !$this->can($ID, DELETE)
-                && !$this->can($ID, PURGE)) {
+                //   && !$this->can($ID, DELETE)
+                && !$this->can($ID, PURGE)
+            ) {
                 $params['candel'] = false;
             }
 
@@ -313,7 +330,7 @@ class TicketTask extends CommonITILTask
             }
 
             if ($params['candel']) {
-                echo "<td class='right' colspan='".($params['colspan'] * 2)."' >\n";
+                echo "<td class='right' colspan='" . ($params['colspan'] * 2) . "' >\n";
                 if ($this->can($ID, PURGE)) {
                     echo Html::submit(
                         _x('button', 'Delete permanently'),
@@ -324,7 +341,7 @@ class TicketTask extends CommonITILTask
             }
 
             if ($this->isField('date_mod')) {
-                echo "<input type='hidden' name='_read_date_mod' value='".$this->getField('date_mod')."'>";
+                echo "<input type='hidden' name='_read_date_mod' value='" . $this->getField('date_mod') . "'>";
             }
         }
 

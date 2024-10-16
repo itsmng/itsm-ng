@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -80,7 +81,7 @@ class HTMLTableSubHeader extends HTMLTableHeader
 
     public function getCompositeName()
     {
-        return $this->header->getCompositeName().$this->getName();
+        return $this->header->getCompositeName() . $this->getName();
     }
 
 

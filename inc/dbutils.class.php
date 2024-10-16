@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -54,7 +55,7 @@ final class DbUtils
         if (!Toolbox::startsWith($table, 'glpi_')) {
             return "";
         }
-        return substr($table, 5)."_id";
+        return substr($table, 5) . "_id";
     }
 
 
@@ -89,7 +90,7 @@ final class DbUtils
             $fkname = substr($fkname, 1);
         }
 
-        return "glpi_".preg_replace("/_id.*/", "", $fkname);
+        return "glpi_" . preg_replace("/_id.*/", "", $fkname);
     }
 
     /**
@@ -191,16 +192,14 @@ final class DbUtils
 
         if (isset($CFG_GLPI['glpitablesitemtype'][$itemtype])) {
             return $CFG_GLPI['glpitablesitemtype'][$itemtype];
-
         } else {
             $prefix = "glpi_";
 
             if ($plug = isPluginItemType($itemtype)) {
                 /* PluginFooBar   => glpi_plugin_foos_bars */
                 /* GlpiPlugin\Foo\Bar => glpi_plugin_foos_bars */
-                $prefix .= "plugin_".strtolower($plug['plugin'])."_";
+                $prefix .= "plugin_" . strtolower($plug['plugin']) . "_";
                 $table   = strtolower($plug['class']);
-
             } else {
                 $table = strtolower($itemtype);
                 if (substr($itemtype, 0, \strlen(NS_GLPI)) === NS_GLPI) {
@@ -215,14 +214,13 @@ final class DbUtils
                     $split[$key] = $this->getPlural($part);
                 }
                 $table = implode('_', $split);
-
             } else {
                 $table = $this->getPlural($table);
             }
 
-            $CFG_GLPI['glpitablesitemtype'][$itemtype]      = $prefix.$table;
-            $CFG_GLPI['glpiitemtypetables'][$prefix.$table] = $itemtype;
-            return $prefix.$table;
+            $CFG_GLPI['glpitablesitemtype'][$itemtype]      = $prefix . $table;
+            $CFG_GLPI['glpiitemtypetables'][$prefix . $table] = $itemtype;
+            return $prefix . $table;
         }
     }
 
@@ -240,7 +238,6 @@ final class DbUtils
 
         if (isset($CFG_GLPI['glpiitemtypetables'][$table])) {
             return $CFG_GLPI['glpiitemtypetables'][$table];
-
         } else {
             $inittable = $table;
             $table     = str_replace("glpi_", "", $table);
@@ -250,7 +247,7 @@ final class DbUtils
             $matches = [];
             if (preg_match('/^plugin_([a-z0-9]+)_/', $table, $matches)) {
                 $table  = preg_replace('/^plugin_[a-z0-9]+_/', '', $table);
-                $prefix = "Plugin".Toolbox::ucfirst($matches[1]);
+                $prefix = "Plugin" . Toolbox::ucfirst($matches[1]);
                 $pref2  = NS_PLUG . ucfirst($matches[1]) . '\\';
             }
 
@@ -261,12 +258,11 @@ final class DbUtils
                     $split[$key] = Toolbox::ucfirst($this->getSingular($part));
                 }
                 $table = implode('_', $split);
-
             } else {
                 $table = Toolbox::ucfirst($this->getSingular($table));
             }
 
-            $itemtype = $prefix.$table;
+            $itemtype = $prefix . $table;
             // Get real existence of itemtype
             if ($item = $this->getItemForItemtype($itemtype)) {
                 $itemtype                                   = get_class($item);
@@ -550,20 +546,21 @@ final class DbUtils
     ) {
         global $DB;
 
-        $query = $separator ." ( ";
+        $query = $separator . " ( ";
 
         // !='0' needed because consider as empty
-        if (!$complete_request
-           && ($value != '0')
-           && empty($value)
-           && isset($_SESSION['glpishowallentities'])
-           && $_SESSION['glpishowallentities']) {
-
+        if (
+            !$complete_request
+            && ($value != '0')
+            && empty($value)
+            && isset($_SESSION['glpishowallentities'])
+            && $_SESSION['glpishowallentities']
+        ) {
             // Not ADD "AND 1" if not needed
             if (trim($separator) == "AND") {
                 return "";
             }
-            return $query." 1 ) ";
+            return $query . " 1 ) ";
         }
 
         if (empty($field)) {
@@ -589,7 +586,7 @@ final class DbUtils
                 $value = 0;
             }
             if (strlen($value) == 0) {
-                $query .= " IN (".$_SESSION['glpiactiveentities_string'].") ";
+                $query .= " IN (" . $_SESSION['glpiactiveentities_string'] . ") ";
             } else {
                 $query .= " = '$value' ";
             }
@@ -597,15 +594,16 @@ final class DbUtils
 
         if ($is_recursive) {
             $ancestors = [];
-            if (isset($_SESSION['glpiactiveentities'])
+            if (
+                isset($_SESSION['glpiactiveentities'])
                 && isset($_SESSION['glpiparententities'])
-                && $value == $_SESSION['glpiactiveentities']) {
+                && $value == $_SESSION['glpiactiveentities']
+            ) {
                 $ancestors = $_SESSION['glpiparententities'];
             } else {
                 if (is_array($value)) {
                     $ancestors = $this->getAncestorsOf("glpi_entities", $value);
                     $ancestors = array_diff($ancestors, $value);
-
                 } elseif (strlen($value) == 0 && isset($_SESSION['glpiparententities'])) {
                     $ancestors = $_SESSION['glpiparententities'];
                 } else {
@@ -654,12 +652,13 @@ final class DbUtils
     ) {
 
         // !='0' needed because consider as empty
-        if (!$complete_request
-           && ($value != '0')
-           && empty($value)
-           && isset($_SESSION['glpishowallentities'])
-           && $_SESSION['glpishowallentities']) {
-
+        if (
+            !$complete_request
+            && ($value != '0')
+            && empty($value)
+            && isset($_SESSION['glpishowallentities'])
+            && $_SESSION['glpishowallentities']
+        ) {
             return [];
         }
 
@@ -696,10 +695,8 @@ final class DbUtils
             if (is_array($value)) {
                 $ancestors = $this->getAncestorsOf("glpi_entities", $value);
                 $ancestors = array_diff($ancestors, $value);
-
             } elseif (strlen($value) == 0) {
                 $ancestors = $_SESSION['glpiparententities'];
-
             } else {
                 $ancestors = $this->getAncestorsOf('glpi_entities', $value);
             }
@@ -751,9 +748,10 @@ final class DbUtils
         $parentIDfield = $this->getForeignKeyFieldForTable($table);
         $use_cache     = $DB->fieldExists($table, "sons_cache");
 
-        if ($use_cache
-           && ($IDf > 0)) {
-
+        if (
+            $use_cache
+            && ($IDf > 0)
+        ) {
             $iterator = $DB->request([
                'SELECT' => 'sons_cache',
                'FROM'   => $table,
@@ -813,17 +811,18 @@ final class DbUtils
             }
 
             // Store cache data in DB
-            if ($use_cache
-               && ($IDf > 0)) {
-
+            if (
+                $use_cache
+                && ($IDf > 0)
+            ) {
                 $DB->update(
                     $table,
                     [
                       'sons_cache' => $this->exportArrayToDB($sons)
-               ],
+                    ],
                     [
                       'id' => $IDf
-               ]
+                    ]
                 );
             }
         }
@@ -895,8 +894,10 @@ final class DbUtils
                         }
 
                         // ID=0 only exists for Entities
-                        if (($parent > 0)
-                           || ($table == 'glpi_entities')) {
+                        if (
+                            ($parent > 0)
+                            || ($table == 'glpi_entities')
+                        ) {
                             $loc_id_found[$parent] = $parent;
                         }
 
@@ -905,10 +906,10 @@ final class DbUtils
                             $table,
                             [
                               'ancestors_cache' => $this->exportArrayToDB($loc_id_found)
-                     ],
+                            ],
                             [
                               'id' => $row['id']
-                     ]
+                            ]
                         );
 
                         $ancestors = array_replace($ancestors, $loc_id_found);
@@ -916,7 +917,6 @@ final class DbUtils
                 }
             }
         } else {
-
             // Get the ancestors
             // iterative solution for table without cache
             foreach ($items_id as $id) {
@@ -936,8 +936,10 @@ final class DbUtils
                         $IDf = 0;
                     }
 
-                    if (!isset($ancestors[$IDf])
-                          && (($IDf > 0) || ($table == 'glpi_entities'))) {
+                    if (
+                        !isset($ancestors[$IDf])
+                          && (($IDf > 0) || ($table == 'glpi_entities'))
+                    ) {
                         $ancestors[$IDf] = $IDf;
                     } else {
                         $IDf = 0;
@@ -987,7 +989,7 @@ final class DbUtils
         $name    = "";
         $comment = "";
 
-        $SELECTNAME    = new \QueryExpression("'' AS ". $DB->quoteName('transname'));
+        $SELECTNAME    = new \QueryExpression("'' AS " . $DB->quoteName('transname'));
         $SELECTCOMMENT = new \QueryExpression("'' AS " . $DB->quoteName('transcomment'));
         $JOIN          = [];
         $JOINS         = [];
@@ -1049,7 +1051,7 @@ final class DbUtils
                 $name = $result['name'];
             }
 
-            $comment      = $name." :<br/>";
+            $comment      = $name . " :<br/>";
             $transcomment = $result['transcomment'];
 
             if ($translate && !empty($transcomment)) {
@@ -1088,7 +1090,7 @@ final class DbUtils
         $name    = "";
         $comment = "";
 
-        $SELECTNAME    = new \QueryExpression("'' AS ". $DB->quoteName('transname'));
+        $SELECTNAME    = new \QueryExpression("'' AS " . $DB->quoteName('transname'));
         $SELECTCOMMENT = new \QueryExpression("'' AS " . $DB->quoteName('transcomment'));
         $JOIN          = [];
         $JOINS         = [];
@@ -1147,7 +1149,7 @@ final class DbUtils
                   "$table.address",
                   "$table.town",
                   "$table.country"
-            ]
+                ]
             );
         }
 
@@ -1169,8 +1171,8 @@ final class DbUtils
 
             if ($tooltip) {
                 $comment  = sprintf(
-                    __('%1$s: %2$s')."<br>",
-                    "<span class='b'>".__('Complete name')."</span>",
+                    __('%1$s: %2$s') . "<br>",
+                    "<span class='b'>" . __('Complete name') . "</span>",
                     $name
                 );
                 if ($table == Location::getTable()) {
@@ -1181,8 +1183,9 @@ final class DbUtils
                     if (!empty($address)) {
                         $acomment .= $address;
                     }
-                    if (!empty($address) &&
-                       (!empty($town) || !empty($country))
+                    if (
+                        !empty($address) &&
+                        (!empty($town) || !empty($country))
                     ) {
                         $acomment .= '<br/>';
                     }
@@ -1196,10 +1199,10 @@ final class DbUtils
                         $acomment .= $country;
                     }
                     if (trim($acomment != '')) {
-                        $comment .= "<span class='b'>&nbsp;".__('Address:')."</span> " . $acomment . "<br/>";
+                        $comment .= "<span class='b'>&nbsp;" . __('Address:') . "</span> " . $acomment . "<br/>";
                     }
                 }
-                $comment .= "<span class='b'>&nbsp;".__('Comments')."&nbsp;</span>";
+                $comment .= "<span class='b'>&nbsp;" . __('Comments') . "&nbsp;</span>";
             }
             $transcomment = $result['transcomment'];
             if ($translate && !empty($transcomment)) {
@@ -1259,7 +1262,7 @@ final class DbUtils
 
             $level++;
             list($tmpname, $level)  = $this->getTreeValueName($table, $parentID, $name, $level);
-            $name                   = $tmpname. $name;
+            $name                   = $tmpname . $name;
         }
         return [$name, $level];
     }
@@ -1398,13 +1401,13 @@ final class DbUtils
         }
 
         if (empty($reallink)) {
-            $reallink = "`".$table."`.`id`";
+            $reallink = "`" . $table . "`.`id`";
         }
 
         $id_found = $this->getSonsOf($table, $IDf);
 
         // Construct the final request
-        return $reallink." IN ('".implode("','", $id_found)."')";
+        return $reallink . " IN ('" . implode("','", $id_found) . "')";
     }
 
 
@@ -1431,10 +1434,10 @@ final class DbUtils
                 [
                   'completename' => addslashes($name),
                   'level'        => $level
-            ],
+                ],
                 [
                   'id' => $data['id']
-            ]
+                ]
             );
         }
     }
@@ -1475,34 +1478,39 @@ final class DbUtils
 
             if (strlen($firstname) > 0) {
                 if ($order == User::FIRSTNAME_BEFORE) {
-                    $formatted = $firstname." ".$formatted;
+                    $formatted = $firstname . " " . $formatted;
                 } else {
-                    $formatted .= " ".$firstname;
+                    $formatted .= " " . $firstname;
                 }
             }
 
-            if (($cut > 0)
-               && (Toolbox::strlen($formatted) > $cut)) {
-                $formatted = Toolbox::substr($formatted, 0, $cut)." ...";
+            if (
+                ($cut > 0)
+                && (Toolbox::strlen($formatted) > $cut)
+            ) {
+                $formatted = Toolbox::substr($formatted, 0, $cut) . " ...";
             }
-
         } else {
             $formatted = $login;
         }
 
-        if ($ID > 0
-           && ((strlen($formatted) == 0) || $id_visible)) {
+        if (
+            $ID > 0
+            && ((strlen($formatted) == 0) || $id_visible)
+        ) {
             $formatted = sprintf(__('%1$s (%2$s)'), $formatted, $ID);
         }
 
-        if (($link == 1)
-           && ($ID > 0)) {
-            $before = "<a title=\"".htmlspecialchars($formatted)."\"
-                       href='".User::getFormURLWithID($ID)."'>";
+        if (
+            ($link == 1)
+            && ($ID > 0)
+        ) {
+            $before = "<a title=\"" . htmlspecialchars($formatted) . "\"
+                       href='" . User::getFormURLWithID($ID) . "'>";
             $after  = "</a>";
         }
 
-        $username = $before.$formatted.$after;
+        $username = $before . $formatted . $after;
         return $username;
     }
 
@@ -1532,7 +1540,7 @@ final class DbUtils
                 'glpi_users',
                 [
                   'WHERE' => ['id' => $ID]
-            ]
+                ]
             );
 
             if ($link == 2) {
@@ -1608,18 +1616,18 @@ final class DbUtils
                         foreach ($comments as $datas) {
                             // Do not use SPAN here
                             $user['comment'] .= sprintf(
-                                __('%1$s: %2$s')."<br>",
-                                "<strong>".$datas['name']."</strong>",
+                                __('%1$s: %2$s') . "<br>",
+                                "<strong>" . $datas['name'] . "</strong>",
                                 $datas['value']
                             );
                         }
                     }
 
                     if (!empty($data['picture'])) {
-                        $user['comment'] = "<div class='tooltip_picture_border'>".
-                                          "<img  class='tooltip_picture' src='".
-                                             User::getThumbnailURLForPicture($data['picture'])."' /></div>".
-                                          "<div class='tooltip_text'>".$user['comment']."</div>";
+                        $user['comment'] = "<div class='tooltip_picture_border'>" .
+                                          "<img  class='tooltip_picture' src='" .
+                                             User::getThumbnailURLForPicture($data['picture']) . "' /></div>" .
+                                          "<div class='tooltip_text'>" . $user['comment'] . "</div>";
                     }
                 } else {
                     $user = $username;
@@ -1646,11 +1654,12 @@ final class DbUtils
 
         $len = Toolbox::strlen($objectName);
 
-        if ($isTemplate
-           && ($len > 8)
-           && (Toolbox::substr($objectName, 0, 4) === '&lt;')
-           && (Toolbox::substr($objectName, $len - 4, 4) === '&gt;')) {
-
+        if (
+            $isTemplate
+            && ($len > 8)
+            && (Toolbox::substr($objectName, 0, 4) === '&lt;')
+            && (Toolbox::substr($objectName, $len - 4, 4) === '&gt;')
+        ) {
             $autoNum = Toolbox::substr($objectName, 4, $len - 8);
             $mask    = '';
 
@@ -1666,14 +1675,14 @@ final class DbUtils
                       '\\m',
                       '\\d',
                       '\\g'
-               ],
+                    ],
                     [
                       date('y'),
                       date('Y'),
                       date('m'),
                       date('d'),
                       ''
-               ],
+                    ],
                     $autoNum
                 );
 
@@ -1712,8 +1721,10 @@ final class DbUtils
                            ]
                         ];
 
-                        if ($CFG_GLPI["use_autoname_by_entity"]
-                           && ($entities_id >= 0)) {
+                        if (
+                            $CFG_GLPI["use_autoname_by_entity"]
+                            && ($entities_id >= 0)
+                        ) {
                             $criteria['WHERE']['entities_id'] = $entities_id;
                         }
 
@@ -1723,8 +1734,8 @@ final class DbUtils
                     $criteria = [
                        'SELECT' => [
                           new \QueryExpression(
-                              "CAST(SUBSTRING(".$DB->quoteName('code').", $pos, $len) AS " .
-                        "unsigned) AS " . $DB->quoteName('no')
+                              "CAST(SUBSTRING(" . $DB->quoteName('code') . ", $pos, $len) AS " .
+                              "unsigned) AS " . $DB->quoteName('no')
                           )
                        ],
                        'FROM'   => new \QueryUnion($subqueries, false, 'codes')
@@ -1734,22 +1745,24 @@ final class DbUtils
                     $criteria = [
                        'SELECT' => [
                           new \QueryExpression(
-                              "CAST(SUBSTRING(".$DB->quoteName($field).", $pos, $len) AS " .
-                        "unsigned) AS " . $DB->quoteName('no')
+                              "CAST(SUBSTRING(" . $DB->quoteName($field) . ", $pos, $len) AS " .
+                              "unsigned) AS " . $DB->quoteName('no')
                           )
                        ],
                        'FROM'   => $table,
                        'WHERE'  => [
                           $field   => ['LIKE', $like]
-                  ]
+                       ]
                     ];
 
                     if ($itemtype != 'Infocom') {
                         $criteria['WHERE']['is_deleted'] = 0;
                         $criteria['WHERE']['is_template'] = 0;
 
-                        if ($CFG_GLPI["use_autoname_by_entity"]
-                           && ($entities_id >= 0)) {
+                        if (
+                            $CFG_GLPI["use_autoname_by_entity"]
+                            && ($entities_id >= 0)
+                        ) {
                             $criteria['WHERE']['entities_id'] = $entities_id;
                         }
                     }
@@ -1773,12 +1786,12 @@ final class DbUtils
                       $mask,
                       '\\_',
                       '\\%'
-               ],
+                    ],
                     [
                       Toolbox::str_pad($newNo, $len, '0', STR_PAD_LEFT),
                       '_',
                       '%'
-               ],
+                    ],
                     $autoNum
                 );
             }
@@ -1872,8 +1885,10 @@ final class DbUtils
             foreach (explode(" ", $data ?? '') as $item) {
                 $a = explode("=>", $item);
 
-                if ((strlen($a[0]) > 0)
-                   && isset($a[1])) {
+                if (
+                    (strlen($a[0]) > 0)
+                    && isset($a[1])
+                ) {
                     $tab[urldecode($a[0])] = urldecode($a[1]);
                 }
             }
@@ -1892,7 +1907,7 @@ final class DbUtils
     {
         $t = explode(" ", $time);
         $p = explode(":", $t[1]);
-        return $p[0].":".$p[1];
+        return $p[0] . ":" . $p[1];
     }
 
     /**

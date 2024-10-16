@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -152,19 +153,21 @@ class KnowbaseItemTranslation extends CommonDBChild
 
         $linkusers_id = true;
         // show item : question and answer
-        if (((Session::getLoginUserID() === false) && $CFG_GLPI["use_public_faq"])
+        if (
+            ((Session::getLoginUserID() === false) && $CFG_GLPI["use_public_faq"])
             || (Session::getCurrentInterface() == "helpdesk")
-            || !User::canView()) {
+            || !User::canView()
+        ) {
             $linkusers_id = false;
         }
 
         echo "<table class='tab_cadre_fixe' aria-label='Show Full'>";
 
-        echo "<tr><td class='left' colspan='4'><h2>".__('Subject')."</h2>";
+        echo "<tr><td class='left' colspan='4'><h2>" . __('Subject') . "</h2>";
         echo $this->fields["name"];
 
         echo "</td></tr>";
-        echo "<tr><td class='left' colspan='4'><h2>".__('Content')."</h2>\n";
+        echo "<tr><td class='left' colspan='4'><h2>" . __('Content') . "</h2>\n";
 
         echo "<div id='kbanswer'>";
         $answer = $this->fields["answer"];
@@ -199,15 +202,15 @@ class KnowbaseItemTranslation extends CommonDBChild
                             'id'               => -1];
             Ajax::updateItemJsCode(
                 "viewtranslation" . $item->getID() . "$rand",
-                $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php",
+                $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
                 $params
             );
             echo "};";
             echo "</script>\n";
 
-            echo "<div class='center'>".
-                 "<a class='vsubmit' href='javascript:addTranslation".$item->getID()."$rand();'>".
-                 __('Add a new translation')."</a></div><br>";
+            echo "<div class='center'>" .
+                 "<a class='vsubmit' href='javascript:addTranslation" . $item->getID() . "$rand();'>" .
+                 __('Add a new translation') . "</a></div><br>";
         }
 
         $obj   = new self();
@@ -215,8 +218,8 @@ class KnowbaseItemTranslation extends CommonDBChild
 
         if (count($found) > 0) {
             if ($canedit) {
-                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-                $massiveactionparams = ['container' => 'mass'.__CLASS__.$rand];
+                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
+                $massiveactionparams = ['container' => 'mass' . __CLASS__ . $rand];
                 Html::showMassiveActions($massiveactionparams);
             }
 
@@ -224,14 +227,14 @@ class KnowbaseItemTranslation extends CommonDBChild
 
             echo "<div class='center'>";
             echo "<table class='tab_cadre_fixehov'><tr class='tab_bg_2' aria-label='Language'>";
-            echo "<th colspan='4'>".__("List of translations")."</th></tr>";
+            echo "<th colspan='4'>" . __("List of translations") . "</th></tr>";
             if ($canedit) {
                 echo "<th width='10'>";
-                echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+                echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
                 echo "</th>";
             }
-            echo "<th>".__("Language")."</th>";
-            echo "<th>".__("Subject")."</th>";
+            echo "<th>" . __("Language") . "</th>";
+            echo "<th>" . __("Subject") . "</th>";
             foreach ($found as $data) {
                 echo "<tr class='tab_bg_1'>";
                 if ($canedit) {
@@ -261,7 +264,7 @@ class KnowbaseItemTranslation extends CommonDBChild
             }
         } else {
             echo "<table class='tab_cadre_fixe' aria-label='No translation Found'><tr class='tab_bg_2'>";
-            echo "<th class='b'>" . __("No translation found")."</th></tr></table>";
+            echo "<th class='b'>" . __("No translation found") . "</th></tr></table>";
         }
 
         return true;
@@ -286,15 +289,14 @@ class KnowbaseItemTranslation extends CommonDBChild
             $options['itemtype']         = get_class($item);
             $options['knowbaseitems_id'] = $item->getID();
             $this->check(-1, CREATE, $options);
-
         }
         Html::initEditorSystem('answer');
         $this->showFormHeader($options);
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Language')."&nbsp;:</td>";
+        echo "<td>" . __('Language') . "&nbsp;:</td>";
         echo "<td>";
-        echo "<input type='hidden' name='users_id' value=\"".Session::getLoginUserID()."\">";
-        echo "<input type='hidden' name='knowbaseitems_id' value='".$this->fields['knowbaseitems_id']."'>";
+        echo "<input type='hidden' name='users_id' value=\"" . Session::getLoginUserID() . "\">";
+        echo "<input type='hidden' name='knowbaseitems_id' value='" . $this->fields['knowbaseitems_id'] . "'>";
         if ($ID > 0) {
             echo Dropdown::getLanguageName($this->fields['language']);
         } else {
@@ -308,15 +310,15 @@ class KnowbaseItemTranslation extends CommonDBChild
         echo "</td><td colspan='2'>&nbsp;</td></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Subject')."</td>";
+        echo "<td>" . __('Subject') . "</td>";
         echo "<td colspan='3'>";
-        echo "<textarea cols='100' rows='1' name='name'>".$this->fields["name"]."</textarea>";
+        echo "<textarea cols='100' rows='1' name='name'>" . $this->fields["name"] . "</textarea>";
         echo "</td></tr>\n";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Content')."</td>";
+        echo "<td>" . __('Content') . "</td>";
         echo "<td colspan='3'>";
-        echo "<textarea cols='100' rows='30' id='answer' name='answer'>".$this->fields["answer"];
+        echo "<textarea cols='100' rows='30' id='answer' name='answer'>" . $this->fields["answer"];
         echo "</textarea>";
         echo "</td></tr>\n";
 
@@ -341,8 +343,10 @@ class KnowbaseItemTranslation extends CommonDBChild
            'language'           => $_SESSION['glpilanguage']
         ]);
 
-        if ((count($found) > 0)
-            && in_array($field, ['name', 'answer'])) {
+        if (
+            (count($found) > 0)
+            && in_array($field, ['name', 'answer'])
+        ) {
             $first = array_shift($found);
             return $first[$field];
         }

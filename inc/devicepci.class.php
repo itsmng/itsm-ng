@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -64,8 +65,8 @@ class DevicePci extends CommonDevice
                 'value' => $this->fields['devicepcimodels_id'],
                 'actions' => getItemActionButtons(['info', 'add'], 'DevicePciModel'),
                 'col_lg' => 8,
-             ],
-             RegisteredID::getTypeName(Session::getPluralNumber()) => [
+              ],
+              RegisteredID::getTypeName(Session::getPluralNumber()) => [
                 'name'  => 'none',
                 'type'  => 'multiSelect',
                 'inputs' => [
@@ -100,8 +101,8 @@ class DevicePci extends CommonDevice
                 ),
                 'col_lg' => 12,
                 'col_md' => 12,
-             ],
-         ]
+              ],
+            ]
         );
     }
 

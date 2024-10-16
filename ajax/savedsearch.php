@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -60,8 +61,10 @@ if (isset($_POST["name"])) {
     return;
 }
 
-if (isset($_GET['mark_default'])
-           && isset($_GET["id"])) {
+if (
+    isset($_GET['mark_default'])
+           && isset($_GET["id"])
+) {
     $savedsearch->check($_GET["id"], READ);
 
     if ($_GET["mark_default"] > 0) {
@@ -99,7 +102,7 @@ if ($_GET['action'] == 'create') {
           'url'       => $_GET["url"],
           'itemtype'  => $_GET["itemtype"],
           'ajax'      => true
-      ]
+        ]
     );
     return;
 }

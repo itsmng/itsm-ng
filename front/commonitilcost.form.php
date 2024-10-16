@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -71,7 +72,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $cost->check($_POST["id"], PURGE);
     if ($cost->delete($_POST, 1)) {
@@ -85,7 +85,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::redirect($itemtype::getFormURLWithID($cost->fields[$fk]));
-
 } elseif (isset($_POST["update"])) {
     $cost->check($_POST["id"], UPDATE);
 
@@ -100,7 +99,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 }
 
 Html::displayErrorAndDie('Lost');

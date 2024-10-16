@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -40,13 +41,14 @@ if (strpos($_SERVER['PHP_SELF'], "subvisibility.php")) {
 
 Session::checkLoginUser();
 
-if (isset($_POST['type']) && !empty($_POST['type'])
-    && isset($_POST['items_id']) && ($_POST['items_id'] > 0)) {
-
+if (
+    isset($_POST['type']) && !empty($_POST['type'])
+    && isset($_POST['items_id']) && ($_POST['items_id'] > 0)
+) {
     $prefix = '';
     $suffix = '';
     if (isset($_POST['prefix']) && !empty($_POST['prefix'])) {
-        $prefix = $_POST['prefix'].'[';
+        $prefix = $_POST['prefix'] . '[';
         $suffix = ']';
     }
 
@@ -54,7 +56,7 @@ if (isset($_POST['type']) && !empty($_POST['type'])
         case 'Group':
         case 'Profile':
             $params = ['value' => $_SESSION['glpiactive_entity'],
-                            'name'  => $prefix.'entities_id'.$suffix];
+                            'name'  => $prefix . 'entities_id' . $suffix];
             if (Session::canViewAllEntities()) {
                 $params['toadd'] = [-1 => __('No restriction')];
             }
@@ -65,7 +67,7 @@ if (isset($_POST['type']) && !empty($_POST['type'])
             echo "</td><td>";
             echo __('Child entities');
             echo "</td><td>";
-            Dropdown::showYesNo($prefix.'is_recursive'.$suffix);
+            Dropdown::showYesNo($prefix . 'is_recursive' . $suffix);
             echo "</td></tr></table>";
             break;
     }

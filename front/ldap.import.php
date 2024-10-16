@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -52,16 +53,16 @@ if (isset($_GET['order'])) {
     $_SESSION['ldap_import']['order'] = $_GET['order'];
 }
 if ($_SESSION['ldap_import']['action'] == 'show') {
-
     $authldap = new AuthLDAP();
     $authldap->getFromDB($_SESSION['ldap_import']['authldaps_id']);
 
     AuthLDAP::showUserImportForm($authldap);
 
-    if (isset($_SESSION['ldap_import']['authldaps_id'])
+    if (
+        isset($_SESSION['ldap_import']['authldaps_id'])
         && ($_SESSION['ldap_import']['authldaps_id'] != NOT_AVAILABLE)
-        && (isset($_POST['search']) || isset($_GET['start']) || isset($_POST['glpilist_limit']))) {
-
+        && (isset($_POST['search']) || isset($_GET['start']) || isset($_POST['glpilist_limit']))
+    ) {
         echo "<br />";
         AuthLDAP::searchUser($authldap);
     }

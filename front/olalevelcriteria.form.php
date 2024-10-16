@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -43,13 +44,11 @@ if (isset($_POST["add"])) {
     $criteria->add($_POST);
 
     Html::back();
-
 } elseif (isset($_POST["update"])) {
     $criteria->check($_POST['id'], UPDATE);
     $criteria->update($_POST);
 
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $criteria->check($_POST['id'], PURGE);
     $criteria->delete($_POST, 1);

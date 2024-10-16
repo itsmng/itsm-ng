@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -62,7 +63,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $ola->check($_POST["id"], PURGE);
     $ola->delete($_POST, 1);
@@ -76,7 +76,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $ola->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $ola->check($_POST["id"], UPDATE);
     $ola->update($_POST);
@@ -90,7 +89,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } else {
     Html::header(OLA::getTypeName(1), $_SERVER['PHP_SELF'], "config", "slm", "ola");
 

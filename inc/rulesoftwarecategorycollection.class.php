@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -78,5 +79,4 @@ class RuleSoftwareCategoryCollection extends RuleCollection
         }
         return $params;
     }
-
 }

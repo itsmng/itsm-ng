@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -61,7 +62,7 @@ class RuleRight extends DbTestCase
                   'name'      => 'Root',
                   'is_active' => 1,
                   'sub_type'  => 'RuleRight'
-            ]
+                ]
             )
         )->isIdenticalTo(1);
     }
@@ -90,7 +91,7 @@ class RuleRight extends DbTestCase
            'rules_id'  => $rules_id,
            'criteria'  => 'MAIL_EMAIL',
            'condition' => \Rule::PATTERN_IS,
-           'pattern'   => TU_USER.'@glpi.com',
+           'pattern'   => TU_USER . '@glpi.com',
         ]);
 
         $actions = new \RuleAction();
@@ -118,9 +119,11 @@ class RuleRight extends DbTestCase
         // check the assigned right exists in the collection
         $found = false;
         foreach ($pu as $right) {
-            if (isset($right['entities_id']) && $right['entities_id'] == 1
+            if (
+                isset($right['entities_id']) && $right['entities_id'] == 1
                 && isset($right['profiles_id']) && $right['profiles_id'] == 5
-                && isset($right['is_dynamic']) && $right['is_dynamic'] == 1) {
+                && isset($right['is_dynamic']) && $right['is_dynamic'] == 1
+            ) {
                 $found = true;
                 break;
             }
@@ -147,9 +150,11 @@ class RuleRight extends DbTestCase
         // check the assigned right exists in the collection
         $found = false;
         foreach ($pu as $right) {
-            if (isset($right['entities_id']) && $right['entities_id'] == 1
+            if (
+                isset($right['entities_id']) && $right['entities_id'] == 1
                 && isset($right['profiles_id']) && $right['profiles_id'] == 5
-                && isset($right['is_dynamic']) && $right['is_dynamic'] == 1) {
+                && isset($right['is_dynamic']) && $right['is_dynamic'] == 1
+            ) {
                 $found = true;
                 break;
             }

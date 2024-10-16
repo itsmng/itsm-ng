@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -67,7 +68,7 @@ class NotificationTargetConsumableItem extends NotificationTarget
             $tmp['##consumable.remaining##'] = Consumable::getUnusedNumber($id);
             $tmp['##consumable.url##']       = $this->formatURL(
                 $options['additionnaloption']['usertype'],
-                "ConsumableItem_".$id
+                "ConsumableItem_" . $id
             );
             $this->data['consumables'][] = $tmp;
         }
@@ -103,5 +104,4 @@ class NotificationTargetConsumableItem extends NotificationTarget
 
         asort($this->tag_descriptions);
     }
-
 }

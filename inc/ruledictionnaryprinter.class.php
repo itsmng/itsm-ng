@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -113,5 +114,4 @@ class RuleDictionnaryPrinter extends Rule
 
         return $actions;
     }
-
 }

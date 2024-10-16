@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -126,7 +127,7 @@ class APIClient extends CommonDBTM
            'id'                 => '5',
            'table'              => $this->getTable(),
            'field'              => 'ipv4_range_start',
-           'name'               => __('IPv4 address range')." - ".__("Start"),
+           'name'               => __('IPv4 address range') . " - " . __("Start"),
            'datatype'           => 'specific'
         ];
 
@@ -134,7 +135,7 @@ class APIClient extends CommonDBTM
            'id'                 => '6',
            'table'              => $this->getTable(),
            'field'              => 'ipv4_range_end',
-           'name'               => __('IPv4 address range')." - ".__("End"),
+           'name'               => __('IPv4 address range') . " - " . __("End"),
            'datatype'           => 'specific'
         ];
 

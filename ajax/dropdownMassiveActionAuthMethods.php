@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -66,5 +67,5 @@ if ($_POST["authtype"] > 0) {
             break;
     }
 
-    echo "&nbsp;<input type='submit' name='$name' class='submit' value=\""._sx('button', 'Post')."\">";
+    echo "&nbsp;<input type='submit' name='$name' class='submit' value=\"" . _sx('button', 'Post') . "\">";
 }

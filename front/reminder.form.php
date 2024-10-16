@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -56,7 +57,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $remind->check($_POST["id"], PURGE);
     $remind->delete($_POST, 1);
@@ -73,7 +73,6 @@ if (isset($_POST["add"])) {
     } else {
         Html::back();
     }
-
 } elseif (isset($_POST["update"])) {
     $remind->check($_POST["id"], UPDATE);   // Right to update the reminder
 
@@ -87,10 +86,11 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } elseif (isset($_POST["addvisibility"])) {
-    if (isset($_POST["_type"]) && !empty($_POST["_type"])
-        && isset($_POST["reminders_id"]) && $_POST["reminders_id"]) {
+    if (
+        isset($_POST["_type"]) && !empty($_POST["_type"])
+        && isset($_POST["reminders_id"]) && $_POST["reminders_id"]
+    ) {
         $item = null;
         switch ($_POST["_type"]) {
             case 'User':
@@ -128,7 +128,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } else {
     Html::header(Reminder::getTypeName(Session::getPluralNumber()), '', "tools", "reminder");
 

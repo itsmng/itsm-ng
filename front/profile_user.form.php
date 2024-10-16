@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -39,7 +40,6 @@ Session::checkCentralAccess();
 $right   = new Profile_User();
 
 if (isset($_POST["add"])) {
-
     $right->check(-1, CREATE, $_POST);
     if ($right->add($_POST)) {
         Event::log(
@@ -52,7 +52,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 }
 
 Html::displayErrorAndDie("lost");

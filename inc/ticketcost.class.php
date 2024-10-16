@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -46,5 +47,4 @@ class TicketCost extends CommonITILCost
     public static $items_id  = 'tickets_id';
 
     public static $rightname        = 'ticketcost';
-
 }

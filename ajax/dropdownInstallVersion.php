@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -80,7 +81,6 @@ if ($_POST['softwares_id'] > 0) {
             $output = sprintf(__('%1$s - %2$s'), $output, $data['sname']);
         }
         $values[$ID] = $output;
-
     }
 
     echo json_encode($values);

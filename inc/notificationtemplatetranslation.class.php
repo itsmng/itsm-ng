@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -113,8 +114,8 @@ class NotificationTemplateTranslation extends CommonDBChild
 
         $rand = mt_rand();
         Ajax::createIframeModalWindow(
-            "tags".$rand,
-            $CFG_GLPI['root_doc']."/front/notification.tags.php?sub_type=".
+            "tags" . $rand,
+            $CFG_GLPI['root_doc'] . "/front/notification.tags.php?sub_type=" .
                                          addslashes($template->getField('itemtype'))
         );
 
@@ -143,11 +144,11 @@ class NotificationTemplateTranslation extends CommonDBChild
                           'value' => $notificationtemplates_id
                       ],
                       NotificationTemplate::getTypeName() => [
-                          'content' => "<a href='".Toolbox::getItemTypeFormURL('NotificationTemplate').
-                                        "?id=".$notificationtemplates_id."'>".$template->getField('name')."</a>".
-                                        "<a class='btn btn-sm btn-outline-info' href='#' onClick=\"".
-                                        Html::jsGetElementbyID("tags".$rand).".dialog('open'); return false;\">".
-                                        __('Show list of available tags')."</a>",
+                          'content' => "<a href='" . Toolbox::getItemTypeFormURL('NotificationTemplate') .
+                                        "?id=" . $notificationtemplates_id . "'>" . $template->getField('name') . "</a>" .
+                                        "<a class='btn btn-sm btn-outline-info' href='#' onClick=\"" .
+                                        Html::jsGetElementbyID("tags" . $rand) . ".dialog('open'); return false;\">" .
+                                        __('Show list of available tags') . "</a>",
                           'col_lg' => 12,
                           'col_md' => 12,
                       ],
@@ -202,10 +203,10 @@ class NotificationTemplateTranslation extends CommonDBChild
         $nID     = $template->getField('id');
         $canedit = Config::canUpdate();
 
-        $massiveActionId = 'TableFor'.self::class;
+        $massiveActionId = 'TableFor' . self::class;
         if ($canedit) {
-            $url = Toolbox::getItemTypeFormURL('NotificationTemplateTranslation').
-                    "?notificationtemplates_id=".$nID;
+            $url = Toolbox::getItemTypeFormURL('NotificationTemplateTranslation') .
+                    "?notificationtemplates_id=" . $nID;
             $title = __('Add a new translation');
             echo <<<HTML
             <div class='center'>
@@ -225,20 +226,20 @@ class NotificationTemplateTranslation extends CommonDBChild
         $values = [];
         $massiveActionValues = [];
 
-        foreach ($DB->request(
-            'glpi_notificationtemplatetranslations',
-            ['notificationtemplates_id' => $nID]
-        ) as $data) {
-
+        foreach (
+            $DB->request(
+                'glpi_notificationtemplatetranslations',
+                ['notificationtemplates_id' => $nID]
+            ) as $data
+        ) {
             $link = '';
             if ($this->getFromDB($data['id'])) {
                 Session::addToNavigateListItems('NotificationTemplateTranslation', $data['id']);
-                $link .= "<a href='".Toolbox::getItemTypeFormURL('NotificationTemplateTranslation').
-                      "?id=".$data['id']."&amp;notificationtemplates_id=".$nID."'>";
+                $link .= "<a href='" . Toolbox::getItemTypeFormURL('NotificationTemplateTranslation') .
+                      "?id=" . $data['id'] . "&amp;notificationtemplates_id=" . $nID . "'>";
 
                 if ($data['language'] != '') {
                     $link .= $CFG_GLPI['languages'][$data['language']][0];
-
                 } else {
                     $link .= __('Default translation');
                 }
@@ -271,7 +272,6 @@ class NotificationTemplateTranslation extends CommonDBChild
         if (!$txt) {
             // No HTML (nothing to display)
             $input['content_html'] = '';
-
         } elseif (!$input['content_text']) {
             // Use cleaned HTML
             $input['content_text'] = $txt;
@@ -353,7 +353,7 @@ class NotificationTemplateTranslation extends CommonDBChild
             'glpi_notificationtemplatetranslations',
             [
               'notificationtemplates_id' => $language_id
-         ]
+            ]
         );
         $used           = [];
 
@@ -375,11 +375,11 @@ class NotificationTemplateTranslation extends CommonDBChild
 
         echo "<div class='center'>";
         echo "<table class='tab_cadre_fixe' aria-label='Available Tags'>";
-        echo "<tr><th>".__('Tag')."</th>
-                <th>".__('Label')."</th>
-                <th>"._n('Event', 'Events', 1)."</th>
-                <th>"._n('Type', 'Types', 1)."</th>
-                <th>".__('Possible values')."</th>
+        echo "<tr><th>" . __('Tag') . "</th>
+                <th>" . __('Label') . "</th>
+                <th>" . _n('Event', 'Events', 1) . "</th>
+                <th>" . _n('Type', 'Types', 1) . "</th>
+                <th>" . __('Possible values') . "</th>
             </tr>";
 
         $tags = [];
@@ -392,7 +392,6 @@ class NotificationTemplateTranslation extends CommonDBChild
         }
         ksort($tags);
         foreach ($tags as $tag => $values) {
-
             if ($values['events'] == NotificationTarget::TAG_FOR_ALL_EVENTS) {
                 $event = __('All');
             } else {
@@ -413,16 +412,16 @@ class NotificationTemplateTranslation extends CommonDBChild
                 $allowed_values = '';
             }
 
-            echo "<tr class='tab_bg_1'><td>".$tag."</td>".
+            echo "<tr class='tab_bg_1'><td>" . $tag . "</td>" .
                  "<td>";
             if ($values['type'] == NotificationTarget::TAG_LANGUAGE) {
                 printf(__('%1$s: %2$s'), __('Label'), $values['label']);
             } else {
                 echo $values['label'];
             }
-            echo "</td><td>".$event."</td>".
-                 "<td>".$action."</td>".
-                 "<td>".$allowed_values."</td>".
+            echo "</td><td>" . $event . "</td>" .
+                 "<td>" . $action . "</td>" .
+                 "<td>" . $allowed_values . "</td>" .
                  "</tr>";
         }
         echo "</table></div>";
@@ -481,14 +480,14 @@ class NotificationTemplateTranslation extends CommonDBChild
 
         echo "<div class='spaced'>";
         echo "<table class='tab_cadre_fixe' aria-label='Debug'>";
-        echo "<tr><th colspan='2'>".__('Preview')."</th></tr>";
+        echo "<tr><th colspan='2'>" . __('Preview') . "</th></tr>";
 
         $oktypes = ['CartridgeItem', 'Change', 'ConsumableItem', 'Contract', 'CronTask',
                          'Problem', 'Project', 'Ticket', 'User'];
 
         if (!in_array($itemtype, $oktypes)) {
             // this itemtype doesn't work, need to be fixed
-            echo "<tr class='tab_bg_2 center'><td>".NOT_AVAILABLE."</td>";
+            echo "<tr class='tab_bg_2 center'><td>" . NOT_AVAILABLE . "</td>";
             echo "</table></div>";
             return;
         }
@@ -496,22 +495,24 @@ class NotificationTemplateTranslation extends CommonDBChild
         // Criteria Form
         $key   = getForeignKeyFieldForItemType($item->getType());
         $id    = Session::getSavedOption(__CLASS__, $key, 0);
-        $event = Session::getSavedOption(__CLASS__, $key.'_event', '');
+        $event = Session::getSavedOption(__CLASS__, $key . '_event', '');
 
-        echo "<tr class='tab_bg_2'><td>".$item->getTypeName(1)."&nbsp;";
+        echo "<tr class='tab_bg_2'><td>" . $item->getTypeName(1) . "&nbsp;";
         $item->dropdown(['value'     => $id,
-                              'on_change' => 'reloadTab("'.$key.'="+this.value)']);
-        echo "</td><td>".NotificationEvent::getTypeName(1)."&nbsp;";
+                              'on_change' => 'reloadTab("' . $key . '="+this.value)']);
+        echo "</td><td>" . NotificationEvent::getTypeName(1) . "&nbsp;";
         NotificationEvent::dropdownEvents(
             $item->getType(),
             ['value'     => $event,
-                                                'on_change' => 'reloadTab("'.$key.'_event="+this.value)']
+                                                'on_change' => 'reloadTab("' . $key . '_event="+this.value)']
         );
         echo "</td>";
 
         // Preview
-        if ($event
-            && $item->getFromDB($id)) {
+        if (
+            $event
+            && $item->getFromDB($id)
+        ) {
             $options = ['_debug' => true];
 
             // TODO Awfull Hack waiting for https://forge.indepnet.net/issues/3439
@@ -529,16 +530,15 @@ class NotificationTemplateTranslation extends CommonDBChild
             $template->resetComputedTemplates();
             $template->setSignature(Notification::getMailingSignature($_SESSION['glpiactive_entity']));
             if ($tid = $template->getTemplateByLanguage($target, $infos, $event, $options)) {
-
                 $data = $template->templates_by_languages[$tid];
 
-                echo "<tr><th colspan='2'>".__('Subject')."</th></tr>";
-                echo "<tr class='tab_bg_2 b'><td colspan='2'>".$data['subject']."</td></tr>";
+                echo "<tr><th colspan='2'>" . __('Subject') . "</th></tr>";
+                echo "<tr class='tab_bg_2 b'><td colspan='2'>" . $data['subject'] . "</td></tr>";
 
-                echo "<tr><th>".__('Email text body')."</th>";
-                echo "<th>".__('Email HTML body')."</th></tr>";
-                echo "<tr class='tab_bg_2'><td>".nl2br($data['content_text'])."</td>";
-                echo "<td>".$data['content_html']."</td></tr>";
+                echo "<tr><th>" . __('Email text body') . "</th>";
+                echo "<th>" . __('Email HTML body') . "</th></tr>";
+                echo "<tr class='tab_bg_2'><td>" . nl2br($data['content_text']) . "</td>";
+                echo "<td>" . $data['content_html'] . "</td></tr>";
             }
         }
         echo "</table></div>";

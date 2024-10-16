@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -145,12 +146,12 @@ class NetworkPortEthernet extends NetworkPortInstantiation
               'type' => 'text',
               'name' => 'mac',
               'value' => $netport->fields['mac'],
-         ],
+           ],
            !$oppositePort ? [
               'type' => 'hidden',
               'name' => 'NetworkPortConnect_networkports_id_1',
               'values' => $netport->getID(),
-         ] : [],
+           ] : [],
            __('Connected to') => !$oppositePort ? [
               'type' => 'select',
               'id' => 'NetworkPortConnect_itemtype',
@@ -179,7 +180,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation
                   });
                JS,
               ]
-         ] : [],
+           ] : [],
            __('Itemtype') => !$oppositePort ? [
               'type' => 'select',
               'id' => 'NetworkPortConnect_items_id',
@@ -206,11 +207,11 @@ class NetworkPortEthernet extends NetworkPortInstantiation
                   });
                JS,
               ]
-         ] : [],
+           ] : [],
            __('Network port') => !$oppositePort ? [
               'type' => 'select',
               'name' => 'NetworkPortConnect_networkports_id_2',
-         ] : [],
+           ] : [],
            __('Action') => $oppositePort ? [
               'content' => Html::showSimpleForm(
                   $oppositePort->getFormURL(),
@@ -218,7 +219,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation
                   _x('button', 'Disconnect'),
                   ['id' => $relations_id]
               )
-         ] : [],
+           ] : [],
         ];
         return $returnValue;
     }
@@ -282,7 +283,6 @@ class NetworkPortEthernet extends NetworkPortInstantiation
 
         parent::getInstantiationHTMLTable($netport, $row, $father, $options);
         Netpoint::getHTMLTableCellsForItem($row, $this, $father, $options);
-
     }
 
 
@@ -511,5 +511,4 @@ class NetworkPortEthernet extends NetworkPortInstantiation
            ]
         ];
     }
-
 }

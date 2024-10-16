@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -75,9 +76,9 @@ class NotImportedEmail extends CommonDBTM
         $actions = parent::getSpecificMassiveActions($checkitem);
 
         if ($isadmin) {
-            $prefix                          = __CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR;
-            $actions[$prefix.'delete_email'] = __('Delete emails');
-            $actions[$prefix.'import_email'] = _x('button', 'Import');
+            $prefix                          = __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR;
+            $actions[$prefix . 'delete_email'] = __('Delete emails');
+            $actions[$prefix . 'import_email'] = _x('button', 'Import');
         }
         return $actions;
     }
@@ -304,6 +305,4 @@ class NotImportedEmail extends CommonDBTM
         }
         return parent::getSpecificValueToSelect($field, $name, $values, $options);
     }
-
-
 }

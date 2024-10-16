@@ -30,6 +30,7 @@
  * along with ITSM-NG. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
  */
+
 require __DIR__ . '/../vendor/autoload.php';
 
 if (!defined('GLPI_ROOT')) {

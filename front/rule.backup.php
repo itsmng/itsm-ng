@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -79,9 +80,9 @@ switch ($action) {
     case "download":
         echo "<div class='center'>";
         $itemtype = $_REQUEST['itemtype'];
-        echo "<a href='".$itemtype::getSearchURL()."'>".__('Back')."</a>";
+        echo "<a href='" . $itemtype::getSearchURL() . "'>" . __('Back') . "</a>";
         echo "</div>";
-        Html::redirect("rule.backup.php?action=export&itemtype=".$_REQUEST['itemtype']);
+        Html::redirect("rule.backup.php?action=export&itemtype=" . $_REQUEST['itemtype']);
         break;
 
     case "process_import":
@@ -89,7 +90,6 @@ switch ($action) {
         RuleCollection::processImportRules();
         Html::back();
         break;
-
 }
 if ($action != "export") {
     Html::footer();

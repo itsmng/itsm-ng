@@ -14,9 +14,11 @@ class Csrf
 
     public static function verify()
     {
-        if (isset($_SESSION['_glpi_csrf_token'])
+        if (
+            isset($_SESSION['_glpi_csrf_token'])
             && isset($_POST['_glpi_csrf_token'])
-            && $_SESSION['_glpi_csrf_token'] === $_POST['_glpi_csrf_token']) {
+            && $_SESSION['_glpi_csrf_token'] === $_POST['_glpi_csrf_token']
+        ) {
             if (time() >= $_SESSION['csrf_token_time']) {
                 return false;
             }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -168,11 +169,13 @@ final class StatusChecker
                     $status['status'] = self::STATUS_OK;
                     foreach ($ldap_methods as $method) {
                         try {
-                            if (AuthLDAP::tryToConnectToServer(
-                                $method,
-                                $method['rootdn'],
-                                Toolbox::sodiumDecrypt($method['rootdn_passwd'])
-                            )) {
+                            if (
+                                AuthLDAP::tryToConnectToServer(
+                                    $method,
+                                    $method['rootdn'],
+                                    Toolbox::sodiumDecrypt($method['rootdn_passwd'])
+                                )
+                            ) {
                                 $status['servers'][$method['name']] = [
                                    'status' => self::STATUS_OK
                                 ];
@@ -219,9 +222,9 @@ final class StatusChecker
                     foreach ($imap_methods as $method) {
                         $param = Toolbox::parseMailServerConnectString($method['connect_string'], true);
                         if ($param['ssl'] === true) {
-                            $host = 'ssl://'.$param['address'];
+                            $host = 'ssl://' . $param['address'];
                         } elseif ($param['tls'] === true) {
-                            $host = 'tls://'.$param['address'];
+                            $host = 'tls://' . $param['address'];
                         } else {
                             $host = $param['address'];
                         }
@@ -261,9 +264,9 @@ final class StatusChecker
             if (!empty($CFG_GLPI['cas_host'])) {
                 $url = $CFG_GLPI['cas_host'];
                 if (!empty($CFG_GLPI['cas_port'])) {
-                    $url .= ':'. (int)$CFG_GLPI['cas_port'];
+                    $url .= ':' . (int)$CFG_GLPI['cas_port'];
                 }
-                $url .= '/'.$CFG_GLPI['cas_uri'];
+                $url .= '/' . $CFG_GLPI['cas_uri'];
                 $data = Toolbox::getURLContent($url);
                 if (!empty($data)) {
                     $status['status'] = self::STATUS_OK;
@@ -337,15 +340,15 @@ final class StatusChecker
                       'state'  => CronTask::STATE_RUNNING,
                       'OR'     => [
                          new \QueryExpression(
-                             '(unix_timestamp(' . DBmysql::quoteName('lastrun') . ') + 2 * '.
-                        DBmysql::quoteName('frequency') .' < unix_timestamp(now()))'
+                             '(unix_timestamp(' . DBmysql::quoteName('lastrun') . ') + 2 * ' .
+                             DBmysql::quoteName('frequency') . ' < unix_timestamp(now()))'
                          ),
                          new \QueryExpression(
-                             '(unix_timestamp(' . DBmysql::quoteName('lastrun') . ') + 2 * '.
-                        HOUR_TIMESTAMP . ' < unix_timestamp(now()))'
+                             '(unix_timestamp(' . DBmysql::quoteName('lastrun') . ') + 2 * ' .
+                             HOUR_TIMESTAMP . ' < unix_timestamp(now()))'
                          )
                       ]
-               ]
+                    ]
                 );
                 foreach ($stuck_crontasks as $ct) {
                     $status['stuck'][] = $ct['name'];

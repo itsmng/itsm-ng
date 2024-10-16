@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -129,19 +130,22 @@ class DropdownTranslation extends CommonDBChild
         if ($this->fields['field'] == 'name') {
             $translation = new self();
             //If last translated field is deleted, then delete also completename record
-            if ($this->getNumberOfTranslations(
-                $this->fields['itemtype'],
-                $this->fields['items_id'],
-                $this->fields['field'],
-                $this->fields['language']
-            ) == 0) {
-
-                if ($completenames_id = self::getTranslationID(
-                    $this->fields['items_id'],
+            if (
+                $this->getNumberOfTranslations(
                     $this->fields['itemtype'],
-                    'completename',
+                    $this->fields['items_id'],
+                    $this->fields['field'],
                     $this->fields['language']
-                )) {
+                ) == 0
+            ) {
+                if (
+                    $completenames_id = self::getTranslationID(
+                        $this->fields['items_id'],
+                        $this->fields['itemtype'],
+                        'completename',
+                        $this->fields['language']
+                    )
+                ) {
                     $translation->delete(['id' => $completenames_id]);
                 }
             }
@@ -282,8 +286,10 @@ class DropdownTranslation extends CommonDBChild
         );
         $item = new $input['itemtype']();
         //Completename is used only for tree dropdowns !
-        if ($item instanceof CommonTreeDropdown
-            && isset($input['language'])) {
+        if (
+            $item instanceof CommonTreeDropdown
+            && isset($input['language'])
+        ) {
             $item->getFromDB($input['items_id']);
             $foreignKey = $item->getForeignKeyField();
 
@@ -365,24 +371,24 @@ class DropdownTranslation extends CommonDBChild
         $canedit = $item->can($item->getID(), UPDATE);
 
         if ($canedit) {
-            echo "<div id='viewtranslation" . $item->getType().$item->getID() . "$rand'></div>\n";
+            echo "<div id='viewtranslation" . $item->getType() . $item->getID() . "$rand'></div>\n";
 
             echo "<script type='text/javascript' >\n";
-            echo "function addTranslation" . $item->getType().$item->getID() . "$rand() {\n";
+            echo "function addTranslation" . $item->getType() . $item->getID() . "$rand() {\n";
             $params = ['type'                       => __CLASS__,
                             'parenttype'                 => get_class($item),
                             $item->getForeignKeyField()  => $item->getID(),
                             'id'                         => -1];
             Ajax::updateItemJsCode(
-                "viewtranslation" . $item->getType().$item->getID() . "$rand",
-                $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php",
+                "viewtranslation" . $item->getType() . $item->getID() . "$rand",
+                $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
                 $params
             );
             echo "};";
             echo "</script>\n";
-            echo "<div class='center'>".
-                 "<a class='vsubmit' href='javascript:addTranslation".
-                   $item->getType().$item->getID()."$rand();'>". __('Add a new translation').
+            echo "<div class='center'>" .
+                 "<a class='vsubmit' href='javascript:addTranslation" .
+                   $item->getType() . $item->getID() . "$rand();'>" . __('Add a new translation') .
                  "</a></div><br>";
         }
 
@@ -397,26 +403,26 @@ class DropdownTranslation extends CommonDBChild
         ]);
         if (count($iterator)) {
             if ($canedit) {
-                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-                $massiveactionparams = ['container' => 'mass'.__CLASS__.$rand];
+                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
+                $massiveactionparams = ['container' => 'mass' . __CLASS__ . $rand];
                 Html::showMassiveActions($massiveactionparams);
             }
             echo "<div class='center'>";
             echo "<table class='tab_cadre_fixehov' aria-label='List of translations'><tr class='tab_bg_2'>";
-            echo "<th colspan='4'>".__("List of translations")."</th></tr><tr>";
+            echo "<th colspan='4'>" . __("List of translations") . "</th></tr><tr>";
             if ($canedit) {
                 echo "<th width='10'>";
-                echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+                echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
                 echo "</th>";
             }
-            echo "<th>".__("Language")."</th>";
-            echo "<th>"._n('Field', 'Fields', 1)."</th>";
-            echo "<th>".__("Value")."</th></tr>";
+            echo "<th>" . __("Language") . "</th>";
+            echo "<th>" . _n('Field', 'Fields', 1) . "</th>";
+            echo "<th>" . __("Value") . "</th></tr>";
             while ($data = $iterator->next()) {
                 $onhover = '';
                 if ($canedit) {
                     $onhover = "style='cursor:pointer'
-                           onClick=\"viewEditTranslation".$data['itemtype'].$data['id']."$rand();\"";
+                           onClick=\"viewEditTranslation" . $data['itemtype'] . $data['id'] . "$rand();\"";
                 }
                 echo "<tr class='tab_bg_1'>";
                 if ($canedit) {
@@ -428,14 +434,14 @@ class DropdownTranslation extends CommonDBChild
                 echo "<td $onhover>";
                 if ($canedit) {
                     echo "\n<script type='text/javascript' >\n";
-                    echo "function viewEditTranslation".$data['itemtype'].$data['id']."$rand() {\n";
+                    echo "function viewEditTranslation" . $data['itemtype'] . $data['id'] . "$rand() {\n";
                     $params = ['type'                     => __CLASS__,
                                    'parenttype'                => get_class($item),
                                    $item->getForeignKeyField() => $item->getID(),
                                    'id'                        => $data["id"]];
                     Ajax::updateItemJsCode(
-                        "viewtranslation" . $item->getType().$item->getID() . "$rand",
-                        $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php",
+                        "viewtranslation" . $item->getType() . $item->getID() . "$rand",
+                        $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
                         $params
                     );
                     echo "};";
@@ -444,8 +450,8 @@ class DropdownTranslation extends CommonDBChild
                 echo Dropdown::getLanguageName($data['language']);
                 echo "</td><td $onhover>";
                 $searchOption = $item->getSearchOptionByField('field', $data['field']);
-                echo $searchOption['name']."</td>";
-                echo "<td $onhover>".$data['value']."</td>";
+                echo $searchOption['name'] . "</td>";
+                echo "<td $onhover>" . $data['value'] . "</td>";
                 echo "</tr>";
             }
             echo "</table>";
@@ -456,7 +462,7 @@ class DropdownTranslation extends CommonDBChild
             }
         } else {
             echo "<table class='tab_cadre_fixe' aria-label='No translation found''><tr class='tab_bg_2'>";
-            echo "<th class='b'>" . __("No translation found")."</th></tr></table>";
+            echo "<th class='b'>" . __("No translation found") . "</th></tr></table>";
         }
         return true;
     }
@@ -487,12 +493,12 @@ class DropdownTranslation extends CommonDBChild
         $rand = mt_rand();
         $this->showFormHeader($options);
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Language')."</td>";
+        echo "<td>" . __('Language') . "</td>";
         echo "<td>";
-        echo "<input type='hidden' name='items_id' value='".$item->getID()."'>";
-        echo "<input type='hidden' name='itemtype' value='".get_class($item)."'>";
+        echo "<input type='hidden' name='items_id' value='" . $item->getID() . "'>";
+        echo "<input type='hidden' name='itemtype' value='" . get_class($item) . "'>";
         if ($ID > 0) {
-            echo "<input type='hidden' name='language' value='".$this->fields['language']."'>";
+            echo "<input type='hidden' name='language' value='" . $this->fields['language'] . "'>";
             echo Dropdown::getLanguageName($this->fields['language']);
         } else {
             $rand   = Dropdown::showLanguages(
@@ -506,16 +512,16 @@ class DropdownTranslation extends CommonDBChild
             Ajax::updateItemOnSelectEvent(
                 "dropdown_language$rand",
                 "span_fields",
-                $CFG_GLPI["root_doc"]."/ajax/updateTranslationFields.php",
+                $CFG_GLPI["root_doc"] . "/ajax/updateTranslationFields.php",
                 $params
             );
         }
         echo "</td><td colspan='2'>&nbsp;</td></tr>";
 
-        echo "<tr class='tab_bg_1'><td>"._n('Field', 'Fields', 1)."</td>";
+        echo "<tr class='tab_bg_1'><td>" . _n('Field', 'Fields', 1) . "</td>";
         echo "<td>";
         if ($ID > 0) {
-            echo "<input type='hidden' name='field' value='".$this->fields['field']."'>";
+            echo "<input type='hidden' name='field' value='" . $this->fields['field'] . "'>";
             $searchOption = $item->getSearchOptionByField('field', $this->fields['field']);
             echo $searchOption['name'];
         } else {
@@ -524,8 +530,8 @@ class DropdownTranslation extends CommonDBChild
             echo "</span>";
         }
         echo "</td>";
-        echo "<td>".__('Value')."</td>";
-        echo "<td><input type='text' name='value' value=\"".$this->fields['value']."\" size='50'>";
+        echo "<td>" . __('Value') . "</td>";
+        echo "<td><input type='text' name='value' value=\"" . $this->fields['value'] . "\" size='50'>";
         echo "</td>";
         echo "</tr>\n";
         $this->showFormButtons($options);
@@ -549,11 +555,13 @@ class DropdownTranslation extends CommonDBChild
         $options = [];
         foreach (Search::getOptions(get_class($item)) as $id => $field) {
             //Can only translate name, and fields whose datatype is text or string
-            if (isset($field['field'])
+            if (
+                isset($field['field'])
                 && ($field['field'] == 'name')
                 && ($field['table'] == getTableForItemType(get_class($item)))
                 || (isset($field['datatype'])
-                    && in_array($field['datatype'], ['text', 'string']))) {
+                    && in_array($field['datatype'], ['text', 'string']))
+            ) {
                 $options[$field['field']] = $field['name'];
             }
         }
@@ -603,8 +611,10 @@ class DropdownTranslation extends CommonDBChild
         //If dropdown translation is globally off, or if this itemtype cannot be translated,
         //then original value should be returned
         $item = new $itemtype();
-        if (!$ID
-            || !Session::haveTranslations($itemtype, $field)) {
+        if (
+            !$ID
+            || !Session::haveTranslations($itemtype, $field)
+        ) {
             return $value;
         }
         //ID > 0 : dropdown item might be translated !
@@ -824,5 +834,4 @@ class DropdownTranslation extends CommonDBChild
         }
         return $tab;
     }
-
 }

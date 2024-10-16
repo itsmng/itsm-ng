@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -40,5 +41,4 @@ class AutoUpdateSystem extends CommonDropdown
     {
         return _n('Update Source', 'Update Sources', $nb);
     }
-
 }

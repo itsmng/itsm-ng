@@ -438,7 +438,7 @@ class Domain extends CommonDropdown
               'width'   => '30%',
               'rand'    => $rand,
               'display' => false
-         ]
+            ]
         );
 
         if ($p['display']) {
@@ -684,16 +684,17 @@ class Domain extends CommonDropdown
             }
 
             foreach (array_keys($querys) as $type) {
-
                 foreach ($domain_infos[$type] as $entity => $domains) {
-                    if (NotificationEvent::raiseEvent(
-                        ($type == Alert::NOTICE ? "DomainsWhichExpire" : "ExpiredDomains"),
-                        new Domain(),
-                        [
-                          'entities_id' => $entity,
-                          'domains'     => $domains
-                  ]
-                    )) {
+                    if (
+                        NotificationEvent::raiseEvent(
+                            ($type == Alert::NOTICE ? "DomainsWhichExpire" : "ExpiredDomains"),
+                            new Domain(),
+                            [
+                            'entities_id' => $entity,
+                            'domains'     => $domains
+                            ]
+                        )
+                    ) {
                         $message     = $domain_messages[$type][$entity];
                         $cron_status = 1;
                         if ($task) {

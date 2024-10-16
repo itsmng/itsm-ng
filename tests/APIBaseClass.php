@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -109,7 +110,7 @@ abstract class APIBaseClass extends atoum
               'ipv4_range_start' => '127.0.0.1',
               'ipv4_range_end'   => '127.0.0.1',
               '_reset_app_token' => true,
-         ])
+            ])
         )->isGreaterThan(0);
 
         $app_token = $apiclient->fields['app_token'];
@@ -1124,7 +1125,7 @@ abstract class APIBaseClass extends atoum
             $computer->add([
               'name'         => 'A computer to delete',
               'entities_id'  => 1
-         ])
+            ])
         )->isGreaterThan(0);
         $computers_id = $computer->getID();
 
@@ -1310,7 +1311,7 @@ abstract class APIBaseClass extends atoum
         $criteria = [];
         $queryString = "";
         foreach ($rows as $row) {
-            $queryString = "&criteria[0][link]=or&criteria[0][field]=1&criteria[0][searchtype]=equals&criteria[0][value]=".$row['name'];
+            $queryString = "&criteria[0][link]=or&criteria[0][field]=1&criteria[0][searchtype]=equals&criteria[0][value]=" . $row['name'];
         }
 
         $data = $this->query(
@@ -1369,7 +1370,7 @@ abstract class APIBaseClass extends atoum
             [
               'profiles_id'  => 4,
               'name'         => 'devicesimcard_pinpuk'
-         ]
+            ]
         );
 
         // Profile changed then login
@@ -1384,7 +1385,7 @@ abstract class APIBaseClass extends atoum
             [
               'profiles_id'  => 4,
               'name'         => 'devicesimcard_pinpuk'
-         ]
+            ]
         );
         $this->session_token = $backupSessionToken;
 
@@ -1439,7 +1440,6 @@ abstract class APIBaseClass extends atoum
             400,
             'ERROR'
         );
-
     }
 
     /**
@@ -1473,7 +1473,7 @@ abstract class APIBaseClass extends atoum
                 [
                   'itemtype' => $itemtype,
                   'headers'  => ['Session-Token' => $this->session_token]
-            ]
+                ]
             );
 
             $this->array($itemtype::$undisclosedFields)
@@ -1675,7 +1675,7 @@ abstract class APIBaseClass extends atoum
     {
         $this->integer($data['count'])->isLessThanOrEqualTo($data['totalcount']);
         $this->array($headers)->hasKey('Content-Range');
-        $expectedContentRange = '0-'.($data['count'] - 1).'/'.$data['totalcount'];
+        $expectedContentRange = '0-' . ($data['count'] - 1) . '/' . $data['totalcount'];
         $this->string($headers['Content-Range'][0])->isIdenticalTo($expectedContentRange);
     }
 

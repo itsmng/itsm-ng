@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -62,5 +63,4 @@ class SoftwareLicenseType extends CommonTreeDropdown
     {
         return _n('Type', 'Types', 1);
     }
-
 }

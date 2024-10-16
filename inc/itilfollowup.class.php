@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -123,8 +124,10 @@ class ITILFollowup extends CommonDBChild
         if (Session::haveRight(self::$rightname, self::SEEPRIVATE)) {
             return true;
         }
-        if (!$this->fields['is_private']
-            && Session::haveRight(self::$rightname, self::SEEPUBLIC)) {
+        if (
+            !$this->fields['is_private']
+            && Session::haveRight(self::$rightname, self::SEEPUBLIC)
+        ) {
             return true;
         }
         if ($itilobject instanceof Ticket) {
@@ -140,17 +143,20 @@ class ITILFollowup extends CommonDBChild
 
     public function canCreateItem()
     {
-        if (!isset($this->fields['itemtype'])
-            || strlen($this->fields['itemtype']) == 0) {
+        if (
+            !isset($this->fields['itemtype'])
+            || strlen($this->fields['itemtype']) == 0
+        ) {
             return false;
         }
 
         $itilobject = new $this->fields['itemtype']();
 
-        if (!$itilobject->can($this->getField('items_id'), READ)
-           // No validation for closed tickets
-           || in_array($itilobject->fields['status'], $itilobject->getClosedStatusArray())
-           && !$itilobject->canReopen()
+        if (
+            !$itilobject->can($this->getField('items_id'), READ)
+            // No validation for closed tickets
+            || in_array($itilobject->fields['status'], $itilobject->getClosedStatusArray())
+            && !$itilobject->canReopen()
         ) {
             return false;
         }
@@ -177,8 +183,10 @@ class ITILFollowup extends CommonDBChild
     public function canUpdateItem()
     {
 
-        if (($this->fields["users_id"] != Session::getLoginUserID())
-            && !Session::haveRight(self::$rightname, self::UPDATEALL)) {
+        if (
+            ($this->fields["users_id"] != Session::getLoginUserID())
+            && !Session::haveRight(self::$rightname, self::UPDATEALL)
+        ) {
             return false;
         }
 
@@ -246,10 +254,11 @@ class ITILFollowup extends CommonDBChild
             $this->input["users_id"]
         );
 
-        if (isset($this->input["_close"])
+        if (
+            isset($this->input["_close"])
             && $this->input["_close"]
-            && ($parentitem->fields["status"] == CommonITILObject::SOLVED)) {
-
+            && ($parentitem->fields["status"] == CommonITILObject::SOLVED)
+        ) {
             $update = [
                'id'        => $parentitem->fields['id'],
                'status'    => CommonITILObject::CLOSED,
@@ -269,28 +278,34 @@ class ITILFollowup extends CommonDBChild
         }
         // if reopen set (from followup form or mailcollector)
         // and status is reopenable and not changed in form
-        if (isset($this->input["_reopen"])
+        if (
+            isset($this->input["_reopen"])
             && $this->input["_reopen"]
             && in_array($parentitem->fields["status"], $parentitem::getReopenableStatusArray())
-            && $this->input['_status'] == $parentitem->fields["status"]) {
-
+            && $this->input['_status'] == $parentitem->fields["status"]
+        ) {
             $needupdateparent = false;
-            if (($parentitem->countUsers(CommonITILActor::ASSIGN) > 0)
+            if (
+                ($parentitem->countUsers(CommonITILActor::ASSIGN) > 0)
                 || ($parentitem->countGroups(CommonITILActor::ASSIGN) > 0)
-                || ($parentitem->countSuppliers(CommonITILActor::ASSIGN) > 0)) {
-
+                || ($parentitem->countSuppliers(CommonITILActor::ASSIGN) > 0)
+            ) {
                 //check if lifecycle allowed new status
-                if (Session::isCron()
+                if (
+                    Session::isCron()
                     || Session::getCurrentInterface() == "helpdesk"
-                    || $parentitem::isAllowedStatus($parentitem->fields["status"], CommonITILObject::ASSIGNED)) {
+                    || $parentitem::isAllowedStatus($parentitem->fields["status"], CommonITILObject::ASSIGNED)
+                ) {
                     $needupdateparent = true;
                     $update['status'] = CommonITILObject::ASSIGNED;
                 }
             } else {
                 //check if lifecycle allowed new status
-                if (Session::isCron()
+                if (
+                    Session::isCron()
                     || Session::getCurrentInterface() == "helpdesk"
-                    || $parentitem::isAllowedStatus($parentitem->fields["status"], CommonITILObject::INCOMING)) {
+                    || $parentitem::isAllowedStatus($parentitem->fields["status"], CommonITILObject::INCOMING)
+                ) {
                     $needupdateparent = true;
                     $update['status'] = CommonITILObject::INCOMING;
                 }
@@ -303,13 +318,13 @@ class ITILFollowup extends CommonDBChild
                 $parentitem->update($update);
                 $reopened     = true;
             }
-
         }
 
         //change ITILObject status only if imput change
-        if (!$reopened
-            && $this->input['_status'] != $parentitem->fields['status']) {
-
+        if (
+            !$reopened
+            && $this->input['_status'] != $parentitem->fields['status']
+        ) {
             $update['status'] = $this->input['_status'];
             $update['id']     = $parentitem->fields['id'];
 
@@ -383,9 +398,11 @@ class ITILFollowup extends CommonDBChild
 
         $input["_job"] = new $input['itemtype']();
 
-        if (empty($input['content'])
+        if (
+            empty($input['content'])
             && !isset($input['add_close'])
-            && !isset($input['add_reopen'])) {
+            && !isset($input['add_reopen'])
+        ) {
             Session::addMessageAfterRedirect(
                 __("You can't add a followup without description"),
                 false,
@@ -465,8 +482,10 @@ class ITILFollowup extends CommonDBChild
         }
 
         // update last editor if content change
-        if (($uid = Session::getLoginUserID())
-            && isset($input['content']) && ($input['content'] != $this->fields['content'])) {
+        if (
+            ($uid = Session::getLoginUserID())
+            && isset($input['content']) && ($input['content'] != $this->fields['content'])
+        ) {
             $input["users_id_editor"] = $uid;
         }
 
@@ -508,10 +527,12 @@ class ITILFollowup extends CommonDBChild
         $job->updateDateMod($this->fields['items_id'], false, $uid);
 
         if (count($this->updates)) {
-            if (!isset($this->input['_disablenotif'])
+            if (
+                !isset($this->input['_disablenotif'])
                 && $CFG_GLPI["use_notifications"]
                 && (in_array("content", $this->updates)
-                    || isset($this->input['_need_send_mail']))) {
+                    || isset($this->input['_need_send_mail']))
+            ) {
                 //FIXME: _need_send_mail does not seems to be used
 
                 $options = ['followup_id' => $this->fields["id"],
@@ -522,8 +543,10 @@ class ITILFollowup extends CommonDBChild
         }
 
         // change ITIL Object status (from splitted button)
-        if (isset($this->input['_status'])
-            && ($this->input['_status'] != $this->input['_job']->fields['status'])) {
+        if (
+            isset($this->input['_status'])
+            && ($this->input['_status'] != $this->input['_job']->fields['status'])
+        ) {
             $update = [
                'status'        => $this->input['_status'],
                'id'            => $this->input['_job']->fields['id'],
@@ -646,7 +669,7 @@ class ITILFollowup extends CommonDBChild
         $followup_condition = '';
         if (!Session::haveRight('followup', self::SEEPRIVATE)) {
             $followup_condition = "AND (`NEWTABLE`.`is_private` = 0
-                                     OR `NEWTABLE`.`users_id` = '".Session::getLoginUserID()."')";
+                                     OR `NEWTABLE`.`users_id` = '" . Session::getLoginUserID() . "')";
         }
 
         $tab[] = [
@@ -760,10 +783,11 @@ class ITILFollowup extends CommonDBChild
     public function showApprobationForm($itilobject)
     {
 
-        if (($itilobject->fields["status"] == CommonITILObject::SOLVED)
+        if (
+            ($itilobject->fields["status"] == CommonITILObject::SOLVED)
             && $itilobject->canApprove()
-            && $itilobject->isAllowedStatus($itilobject->fields['status'], CommonITILObject::CLOSED)) {
-
+            && $itilobject->isAllowedStatus($itilobject->fields['status'], CommonITILObject::CLOSED)
+        ) {
             $form = [
                'action' => $this->getFormURL(),
                'buttons' => [
@@ -807,7 +831,6 @@ class ITILFollowup extends CommonDBChild
                   ]
                ]
             ];
-
         }
 
         renderTwigForm($form);
@@ -865,12 +888,14 @@ class ITILFollowup extends CommonDBChild
         if ($this->isNewID($ID)) {
             if ($item->canReopen()) {
                 $reopen_case = true;
-                echo "<div class='center b'>".__('If you want to reopen the ticket, you must specify a reason')."</div>";
+                echo "<div class='center b'>" . __('If you want to reopen the ticket, you must specify a reason') . "</div>";
             }
 
             // the reqester triggers the reopening on close/solve/waiting status
-            if ($requester
-                && in_array($item->fields['status'], $item::getReopenableStatusArray())) {
+            if (
+                $requester
+                && in_array($item->fields['status'], $item::getReopenableStatusArray())
+            ) {
                 $reopen_case = true;
             }
         }
@@ -994,7 +1019,7 @@ class ITILFollowup extends CommonDBChild
             $rand_text = mt_rand();
             $content_id = "content$rand";
             echo "<tr class='tab_bg_1'>";
-            echo "<td class='middle right'>".__('Description')."</td>";
+            echo "<td class='middle right'>" . __('Description') . "</td>";
             echo "<td class='center middle'>";
 
             Html::textarea(['name'              => 'content',
@@ -1050,14 +1075,16 @@ class ITILFollowup extends CommonDBChild
         Plugin::doHook("post_item_form", ['item' => $this, 'options' => &$params]);
 
         echo "<tr class='tab_bg_2'>";
-        echo "<td class='center' colspan='".($params['colspan'] * 2)."'>";
+        echo "<td class='center' colspan='" . ($params['colspan'] * 2) . "'>";
 
         if ($this->isNewID($ID)) {
             echo $params['item']::getSplittedSubmitButtonHtml($this->fields['items_id'], 'add');
         } else {
-            if ($params['candel']
+            if (
+                $params['candel']
                 && !$this->can($ID, DELETE)
-                && !$this->can($ID, PURGE)) {
+                && !$this->can($ID, PURGE)
+            ) {
                 $params['candel'] = false;
             }
 
@@ -1067,7 +1094,7 @@ class ITILFollowup extends CommonDBChild
             }
 
             if ($params['candel']) {
-                echo "<td class='right' colspan='".($params['colspan'] * 2)."' >\n";
+                echo "<td class='right' colspan='" . ($params['colspan'] * 2) . "' >\n";
                 if ($this->can($ID, PURGE)) {
                     echo Html::submit(
                         _x('button', 'Delete permanently'),
@@ -1078,7 +1105,7 @@ class ITILFollowup extends CommonDBChild
             }
 
             if ($this->isField('date_mod')) {
-                echo "<input type='hidden' name='_read_date_mod' value='".$this->getField('date_mod')."'>";
+                echo "<input type='hidden' name='_read_date_mod' value='" . $this->getField('date_mod') . "'>";
             }
         }
 
@@ -1123,8 +1150,8 @@ class ITILFollowup extends CommonDBChild
         $out = "";
         if (count($iterator)) {
             $out .= "<div class='center' aria-label='ITIL Objects Information'><table class='tab_cadre' width='100%'>\n
-                  <tr><th>"._n('Date', 'Dates', 1)."</th><th>"._n('Requester', 'Requesters', 1)."</th>
-                  <th>".__('Description')."</th></tr>\n";
+                  <tr><th>" . _n('Date', 'Dates', 1) . "</th><th>" . _n('Requester', 'Requesters', 1) . "</th>
+                  <th>" . __('Description') . "</th></tr>\n";
 
             $showuserlink = 0;
             if (Session::haveRight('user', READ)) {
@@ -1132,12 +1159,12 @@ class ITILFollowup extends CommonDBChild
             }
             while ($data = $iterator->next()) {
                 $out .= "<tr class='tab_bg_3'>
-                     <td class='center'>".Html::convDateTime($data["date"])."</td>
-                     <td class='center'>".getUserName($data["users_id"], $showuserlink)."</td>
-                     <td width='70%' class='b'>".Html::resume_text(
-                    $data["content"],
-                    $CFG_GLPI["cut"]
-                )."
+                     <td class='center'>" . Html::convDateTime($data["date"]) . "</td>
+                     <td class='center'>" . getUserName($data["users_id"], $showuserlink) . "</td>
+                     <td width='70%' class='b'>" . Html::resume_text(
+                         $data["content"],
+                         $CFG_GLPI["cut"]
+                     ) . "
                      </td></tr>";
             }
             $out .= "</table></div>";
@@ -1204,7 +1231,7 @@ class ITILFollowup extends CommonDBChild
             ]);
         };
         echo '</div>';
-        echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='btn btn-secondary mt-3'>";
+        echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='btn btn-secondary mt-3'>";
     }
 
     public static function showMassiveActionsSubForm(MassiveAction $ma)

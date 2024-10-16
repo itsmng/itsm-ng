@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -44,5 +45,4 @@ class Filesystem extends CommonDropdown
     {
         return _n('File system', 'File systems', $nb);
     }
-
 }

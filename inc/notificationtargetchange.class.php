@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -73,7 +74,7 @@ class NotificationTargetChange extends NotificationTargetCommonITILObject
         $data['##change.urlvalidation##']
                        = $this->formatURL(
                            $options['additionnaloption']['usertype'],
-                           "change_".$item->getField("id")."_ChangeValidation$1"
+                           "change_" . $item->getField("id") . "_ChangeValidation$1"
                        );
         $data['##change.globalvalidation##']
                        = ChangeValidation::getStatus($item->getField('global_validation'));
@@ -104,7 +105,7 @@ class NotificationTargetChange extends NotificationTargetCommonITILObject
                         $tmp['##ticket.title##']   = $ticket->getField('name');
                         $tmp['##ticket.url##']     = $this->formatURL(
                             $options['additionnaloption']['usertype'],
-                            "Ticket_".$row['tickets_id']
+                            "Ticket_" . $row['tickets_id']
                         );
                         $tmp['##ticket.content##'] = $ticket->getField('content');
 
@@ -132,7 +133,7 @@ class NotificationTargetChange extends NotificationTargetCommonITILObject
                         $tmp['##problem.url##']
                                              = $this->formatURL(
                                                  $options['additionnaloption']['usertype'],
-                                                 "Problem_".$row['problems_id']
+                                                 "Problem_" . $row['problems_id']
                                              );
                         $tmp['##problem.content##']
                                              = $problem->getField('content');
@@ -189,7 +190,7 @@ class NotificationTargetChange extends NotificationTargetCommonITILObject
                                                );
                             }
 
-                            $modeltable = getSingular($item2->getTable())."models";
+                            $modeltable = getSingular($item2->getTable()) . "models";
                             $modelfield = getForeignKeyFieldForTable($modeltable);
 
                             if ($item2->isField($modelfield)) {
@@ -214,7 +215,7 @@ class NotificationTargetChange extends NotificationTargetCommonITILObject
                 [
                   'WHERE'  => $restrict,
                   'ORDER'  => ['submission_date DESC', 'id ASC']
-            ]
+                ]
             );
             $data['validations'] = [];
             foreach ($validations as $validation) {
@@ -259,7 +260,6 @@ class NotificationTargetChange extends NotificationTargetCommonITILObject
 
                 $data['validations'][] = $tmp;
             }
-
         }
         return $data;
     }
@@ -399,5 +399,4 @@ class NotificationTargetChange extends NotificationTargetCommonITILObject
         }
         asort($this->tag_descriptions);
     }
-
 }

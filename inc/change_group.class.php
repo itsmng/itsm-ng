@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -48,6 +49,4 @@ class Change_Group extends CommonITILActor
     public static $items_id_1 = 'changes_id';
     public static $itemtype_2 = 'Group';
     public static $items_id_2 = 'groups_id';
-
-
 }

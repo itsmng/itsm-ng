@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -62,7 +63,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $cost->check($_POST["id"], PURGE);
 
@@ -78,9 +78,8 @@ if (isset($_POST["add"])) {
     }
     $contract = new Contract();
     $contract->getFromDB($cost->fields['contracts_id']);
-    Html::redirect(Toolbox::getItemTypeFormURL('Contract').'?id='.$cost->fields['contracts_id'].
+    Html::redirect(Toolbox::getItemTypeFormURL('Contract') . '?id=' . $cost->fields['contracts_id'] .
                    ($contract->fields['is_template'] ? "&withtemplate=1" : ""));
-
 } elseif (isset($_POST["update"])) {
     $cost->check($_POST["id"], UPDATE);
 
@@ -95,7 +94,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 }
 
 Html::displayErrorAndDie('Lost');

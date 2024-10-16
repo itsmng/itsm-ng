@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -76,7 +77,7 @@ if (($_GET['action'] ?? null) === 'show_pdu_form') {
             $answer['status'] = $rack->update([
                'id'         => (int) $_POST['id'],
                'dcrooms_id' => (int) $_POST['dcrooms_id'],
-               'position'   => (int) $_POST['x'].",".(int) $_POST['y'],
+               'position'   => (int) $_POST['x'] . "," . (int) $_POST['y'],
             ]);
             break;
     }

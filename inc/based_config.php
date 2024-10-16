@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -103,8 +104,8 @@ include_once(GLPI_ROOT . "/inc/autoload.function.php");
     }
 
     // Define constants values from local configuration file
-    if (file_exists(GLPI_ROOT. '/config/local_define.php') && !defined('TU_USER')) {
-        require_once GLPI_ROOT. '/config/local_define.php';
+    if (file_exists(GLPI_ROOT . '/config/local_define.php') && !defined('TU_USER')) {
+        require_once GLPI_ROOT . '/config/local_define.php';
     }
 
     // Define constants values from downstream distribution file

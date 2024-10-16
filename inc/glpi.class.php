@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -62,8 +63,9 @@ class GLPI
             $this->log_level = Logger::DEBUG;
         } elseif (defined('GLPI_LOG_LVL')) {
             $this->log_level = GLPI_LOG_LVL;
-        } elseif (!isset($_SESSION['glpi_use_mode'])
-           || ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
+        } elseif (
+            !isset($_SESSION['glpi_use_mode'])
+            || ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
         ) {
             $this->log_level = Logger::DEBUG;
         }

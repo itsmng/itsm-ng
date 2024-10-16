@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -77,16 +78,20 @@ abstract class HTMLTableBase
         $header_name    = '';
         $subHeader_name = '';
         $header_object->getHeaderAndSubHeaderName($header_name, $subHeader_name);
-        if ($header_object->isSuperHeader()
+        if (
+            $header_object->isSuperHeader()
             && (!$this->super)
-            && (!$allow_super_header)) {
+            && (!$allow_super_header)
+        ) {
             throw new Exception(sprintf(
                 'Implementation error: invalid super header name "%s"',
                 $header_name
             ));
         }
-        if (!$header_object->isSuperHeader()
-            && $this->super) {
+        if (
+            !$header_object->isSuperHeader()
+            && $this->super
+        ) {
             throw new Exception(sprintf(
                 'Implementation error: invalid super header name "%s"',
                 $header_name
@@ -179,7 +184,7 @@ abstract class HTMLTableBase
             if (isset($this->headers[$name][$sub_name])) {
                 return $this->headers[$name][$sub_name];
             }
-            throw new HTMLTableUnknownHeader($name.':'.$sub_name);
+            throw new HTMLTableUnknownHeader($name . ':' . $sub_name);
         }
 
         foreach ($this->headers as $header) {
@@ -220,6 +225,5 @@ abstract class HTMLTableBase
             return $this->headers_sub_order[$header_name];
         }
         throw new HTMLTableUnknownHeadersOrder($header_name);
-
     }
 }

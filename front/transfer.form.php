@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -54,7 +55,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $_POST["name"])
     );
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $transfer->check($_POST["id"], PURGE);
 
@@ -67,8 +67,7 @@ if (isset($_POST["add"])) {
         //TRANS: %s is the user login
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
-    Html::redirect($CFG_GLPI["root_doc"]."/front/transfer.php");
-
+    Html::redirect($CFG_GLPI["root_doc"] . "/front/transfer.php");
 } elseif (isset($_POST["update"])) {
     $transfer->check($_POST["id"], UPDATE);
 

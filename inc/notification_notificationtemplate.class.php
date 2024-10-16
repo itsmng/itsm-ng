@@ -182,7 +182,6 @@ class Notification_NotificationTemplate extends CommonDBRelation
                 'name' => $tpl_link,
                 'mode' => $mode,
             ];
-
         }
         renderTwigTemplate('table.twig', [
            'fields' => $fields,

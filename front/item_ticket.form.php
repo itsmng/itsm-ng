@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -69,7 +70,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 } elseif (isset($_POST["delete"])) {
     $item_ticket = new Item_Ticket();
     $item_ticket->deleteByCriteria(['tickets_id' => $_POST['tickets_id'],

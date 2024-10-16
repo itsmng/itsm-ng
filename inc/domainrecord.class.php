@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -68,7 +69,7 @@ class DomainRecord extends CommonDBChild
             self::getTable(),
             [
               "domains_id"   => $item->getID(),
-         ]
+            ]
         );
     }
 

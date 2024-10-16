@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -78,7 +79,7 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
         global $DB;
 
         if (isCommandLine()) {
-            printf(__('Replay rules on existing database started on %s')."\n", date("r"));
+            printf(__('Replay rules on existing database started on %s') . "\n", date("r"));
         }
         $nb = 0;
         $i  = $offset;
@@ -122,7 +123,7 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
                 if (isCommandLine()) {
                     //TRANS: %1$s is a date, %2$s is a row, %3$s is total row, %4$s is memory
                     printf(
-                        __('%1$s - replay rules on existing database: %2$s/%3$s (%4$s Mio)')."\n",
+                        __('%1$s - replay rules on existing database: %2$s/%3$s (%4$s Mio)') . "\n",
                         date("H:i:s"),
                         $i,
                         $nb,
@@ -144,7 +145,6 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
 
             //If the software's name or version has changed
             if (self::somethingHasChanged($res_rule, $input)) {
-
                 $IDs = [];
                 //Find all the printers in the database with the same name and manufacturer
                 $print_iterator = $DB->request([
@@ -176,13 +176,13 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
         }
 
         if (isCommandLine()) {
-            printf(__('Replay rules on existing database: %1$s/%2$s')."\n", $i, $nb);
+            printf(__('Replay rules on existing database: %1$s/%2$s') . "\n", $i, $nb);
         } else {
             Html::changeProgressBarPosition($i, $nb, "$i / $nb");
         }
 
         if (isCommandLine()) {
-            printf(__('Replay rules on existing database ended on %s')."\n", date("r"));
+            printf(__('Replay rules on existing database ended on %s') . "\n", date("r"));
         }
 
         return (($i == $nb) ? -1 : $i);
@@ -196,9 +196,11 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
     public static function somethingHasChanged(array $res_rule, array $input)
     {
 
-        if ((isset($res_rule["name"]) && ($res_rule["name"] != $input["name"]))
+        if (
+            (isset($res_rule["name"]) && ($res_rule["name"] != $input["name"]))
             || (isset($res_rule["manufacturer"]) && ($res_rule["manufacturer"] != ''))
-            || (isset($res_rule['is_global']) && ($res_rule['is_global'] != ''))) {
+            || (isset($res_rule['is_global']) && ($res_rule['is_global'] != ''))
+        ) {
             return true;
         }
         return false;
@@ -299,9 +301,10 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
         $printer = new Printer();
 
         //Printer's name has changed
-        if (isset($res_rule["name"])
-            && ($res_rule["name"] != $p['name'])) {
-
+        if (
+            isset($res_rule["name"])
+            && ($res_rule["name"] != $p['name'])
+        ) {
             $manufacturer = "";
 
             if (isset($res_rule["manufacturer"])) {
@@ -328,7 +331,6 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
 
             // Move direct connections
             $this->moveDirectConnections($p['id'], $new_printer_id);
-
         } else {
             $new_printer_id  = $p['id'];
             $res_rule["id"]  = $p['id'];
@@ -346,7 +348,6 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
         if ($new_printer_id != $p['id']) {
             $printers_ids[] = $p['id'];
         }
-
     }
 
 
@@ -367,17 +368,18 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
             [
               'itemtype'  => 'Printer',
               'items_id'  => $ID
-         ]
+            ]
         );
         foreach ($connections as $connection) {
-
             //Direct connection exists in the target printer ?
-            if (!countElementsInTable(
-                "glpi_computers_items",
-                ['itemtype'     => 'Printer',
+            if (
+                !countElementsInTable(
+                    "glpi_computers_items",
+                    ['itemtype'     => 'Printer',
                                        'items_id'     => $new_printers_id,
                                        'computers_id' => $connection["computers_id"]]
-            )) {
+                )
+            ) {
                 //Direct connection doesn't exists in the target printer : move it
                 $computeritem->update(['id'       => $connection['id'],
                                             'items_id' => $new_printers_id]);
@@ -387,5 +389,4 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
             }
         }
     }
-
 }

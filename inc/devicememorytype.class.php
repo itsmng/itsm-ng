@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,5 +42,4 @@ class DeviceMemoryType extends CommonDeviceType
     {
         return _n('Memory type', 'Memory types', $nb);
     }
-
 }

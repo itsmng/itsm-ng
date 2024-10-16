@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -98,5 +99,4 @@ class BlacklistedMailContent extends CommonDropdown
 
         return $tab;
     }
-
 }

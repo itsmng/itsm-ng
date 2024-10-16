@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -52,7 +53,7 @@ class DeleteOrphanLogsCommand extends AbstractCommand
         $this->setAliases(
             [
               'tools:delete_orphan_logs',
-         ]
+            ]
         );
         $this->setDescription(__('Delete orphan logs'));
 
@@ -113,7 +114,7 @@ class DeleteOrphanLogsCommand extends AbstractCommand
                      ['NOT' => ['items_id' => new QuerySubQuery(['SELECT' => 'id', 'FROM' => $tablename])]],
                      'itemtype' => $itemtype,
                   ],
-            ]
+                ]
             );
 
             $globalCount += $result->numrows();

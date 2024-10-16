@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -88,7 +89,7 @@ class ConsumableItem extends CommonDBTM
         $this->deleteChildrenAndRelationsFromDb(
             [
               Consumable::class,
-         ]
+            ]
         );
 
         // Alert does not extends CommonDBConnexity
@@ -381,7 +382,6 @@ class ConsumableItem extends CommonDBTM
             $alert   = new Alert();
 
             foreach (Entity::getEntitiesToNotify('consumables_alert_repeat') as $entity => $repeat) {
-
                 $alerts_result = $DB->request(
                     [
                       'SELECT'    => [
@@ -414,15 +414,17 @@ class ConsumableItem extends CommonDBTM
                             ['glpi_alerts.date' => ['<', new QueryExpression('CURRENT_TIMESTAMP() - INTERVAL ' . $repeat . ' second')]],
                          ],
                       ],
-               ]
+                    ]
                 );
 
                 $message = "";
                 $items   = [];
 
                 foreach ($alerts_result as $consumable) {
-                    if (($unused = Consumable::getUnusedNumber($consumable["consID"]))
-                                   <= $consumable["threshold"]) {
+                    if (
+                        ($unused = Consumable::getUnusedNumber($consumable["consID"]))
+                                   <= $consumable["threshold"]
+                    ) {
                         // define message alert
                         //TRANS: %1$s is the consumable name, %2$s its reference, %3$d the remaining number
                         $message .= sprintf(
@@ -453,13 +455,13 @@ class ConsumableItem extends CommonDBTM
                             $task->log(Dropdown::getDropdownName(
                                 "glpi_entities",
                                 $entity
-                            )." :  $message\n");
+                            ) . " :  $message\n");
                             $task->addVolume(1);
                         } else {
                             Session::addMessageAfterRedirect(Dropdown::getDropdownName(
                                 "glpi_entities",
                                 $entity
-                            ).
+                            ) .
                                                              " :  $message");
                         }
 
@@ -474,7 +476,6 @@ class ConsumableItem extends CommonDBTM
                             $alert->add($input);
                             unset($alert->fields['id']);
                         }
-
                     } else {
                         $entityname = Dropdown::getDropdownName('glpi_entities', $entity);
                         //TRANS: %s is entity name

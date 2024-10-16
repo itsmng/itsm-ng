@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -54,9 +55,11 @@ if ($target = getItemForItemtype($field->fields['itemtype'])) {
     $values = [];
     foreach ($DB->listFields(getTableForItemType($target::class)) as $field) {
         $searchOption = $target->getSearchOptionByField('field', $field['Field']);
-        if (!empty($searchOption)
+        if (
+            !empty($searchOption)
               && !in_array($field['Type'], $blacklisted_types)
-              && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
+              && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())
+        ) {
             $values[$field['Field']] = $searchOption['name'];
         }
     }

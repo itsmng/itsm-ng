@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -39,7 +40,6 @@ Session::checkCentralAccess();
 $item = new CalendarSegment();
 
 if (isset($_POST["add"])) {
-
     $item->check(-1, CREATE, $_POST);
     if ($item->add($_POST)) {
         Event::log(

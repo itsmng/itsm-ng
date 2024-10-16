@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -48,10 +49,10 @@ if (isset($_POST["validatortype"])) {
                                  'entity' => $_SESSION["glpiactive_entity"],
                                  'right'  => ['validate_request', 'validate_incident']]);
 
-            echo "<br><br>".__('Comments')." ";
+            echo "<br><br>" . __('Comments') . " ";
             echo "<textarea name='comment_submission' cols='50' rows='6'></textarea>&nbsp;";
 
-            echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
+            echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
             break;
 
         case 'group':
@@ -66,7 +67,7 @@ if (isset($_POST["validatortype"])) {
             Ajax::updateItemOnSelectEvent(
                 "dropdown_groups_id$rand",
                 "show_groups_users",
-                $CFG_GLPI["root_doc"]."/ajax/dropdownMassiveActionAddValidator.php",
+                $CFG_GLPI["root_doc"] . "/ajax/dropdownMassiveActionAddValidator.php",
                 $param
             );
 
@@ -74,7 +75,6 @@ if (isset($_POST["validatortype"])) {
             break;
 
         case 'group_user':
-
             $opt = ['groups_id'   => $_POST["groups_id"],
                               'right'     => $_POST['right'],
                               'entity'    => $_SESSION["glpiactive_entity"]];
@@ -92,8 +92,10 @@ if (isset($_POST["validatortype"])) {
                 );
             }
 
-            if (isset($_POST['all_users'])
-                && $_POST['all_users']) {
+            if (
+                isset($_POST['all_users'])
+                && $_POST['all_users']
+            ) {
                 $param['values'] =  array_keys($users);
             }
 
@@ -105,7 +107,7 @@ if (isset($_POST["validatortype"])) {
 
             // Display all/none buttons to select all or no users in group
             if (!empty($_POST['groups_id'])) {
-                echo "<a id='all_users' class='vsubmit'>".__('All')."</a>";
+                echo "<a id='all_users' class='vsubmit'>" . __('All') . "</a>";
                 $param_button = [
                    'validatortype'     => 'group_user',
                    'users_id_validate' => '',
@@ -117,27 +119,26 @@ if (isset($_POST["validatortype"])) {
                 Ajax::updateItemOnEvent(
                     'all_users',
                     'show_groups_users',
-                    $CFG_GLPI["root_doc"]."/ajax/dropdownMassiveActionAddValidator.php",
+                    $CFG_GLPI["root_doc"] . "/ajax/dropdownMassiveActionAddValidator.php",
                     $param_button,
                     ['click']
                 );
 
-                echo "&nbsp;<a id='no_users' class='vsubmit'>".__('None')."</a>";
+                echo "&nbsp;<a id='no_users' class='vsubmit'>" . __('None') . "</a>";
                 $param_button['all_users'] = 0;
                 Ajax::updateItemOnEvent(
                     'no_users',
                     'show_groups_users',
-                    $CFG_GLPI["root_doc"]."/ajax/dropdownMassiveActionAddValidator.php",
+                    $CFG_GLPI["root_doc"] . "/ajax/dropdownMassiveActionAddValidator.php",
                     $param_button,
                     ['click']
                 );
             }
 
-            echo "<br><br>".__('Comments')." ";
+            echo "<br><br>" . __('Comments') . " ";
             echo "<textarea name='comment_submission' cols='50' rows='6'></textarea>&nbsp;";
 
-            echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
+            echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
             break;
     }
-
 }

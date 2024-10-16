@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -147,5 +148,4 @@ abstract class AbstractRequirement implements RequirementInterface
 
         return true === $this->validated;
     }
-
 }

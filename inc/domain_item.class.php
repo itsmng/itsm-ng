@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -57,14 +58,16 @@ class Domain_Item extends CommonDBRelation
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
         if (!$withtemplate) {
-            if ($item->getType() == 'Domain'
+            if (
+                $item->getType() == 'Domain'
                 && count(Domain::getTypes(false))
             ) {
                 if ($_SESSION['glpishow_count_on_tabs']) {
                     return self::createTabEntry(_n('Associated item', 'Associated items', Session::getPluralNumber()), self::countForDomain($item));
                 }
                 return _n('Associated item', 'Associated items', Session::getPluralNumber());
-            } elseif ($item->getType() == 'DomainRelation' || in_array($item->getType(), Domain::getTypes(true))
+            } elseif (
+                $item->getType() == 'DomainRelation' || in_array($item->getType(), Domain::getTypes(true))
                        && Session::haveRight('domain', READ)
             ) {
                 if ($_SESSION['glpishow_count_on_tabs']) {
@@ -80,8 +83,9 @@ class Domain_Item extends CommonDBRelation
     {
         if ($item->getType() == 'Domain') {
             self::showForDomain($item);
-        } elseif (in_array($item->getType(), Domain::getTypes(true))
-           || $item->getType() == DomainRelation::getType()
+        } elseif (
+            in_array($item->getType(), Domain::getTypes(true))
+            || $item->getType() == DomainRelation::getType()
         ) {
             self::showForItem($item);
         }
@@ -99,7 +103,7 @@ class Domain_Item extends CommonDBRelation
             [
               "domains_id"   => $item->getID(),
               "itemtype"     => $types
-         ]
+            ]
         );
     }
 
@@ -119,7 +123,6 @@ class Domain_Item extends CommonDBRelation
             self::getTable(),
             $criteria
         );
-
     }
 
     public function getFromDBbyDomainsAndItem($domains_id, $items_id, $itemtype)
@@ -146,7 +149,6 @@ class Domain_Item extends CommonDBRelation
            'itemtype'           => $values['itemtype'],
            'domainrelations_id' => $values['domainrelations_id']
         ]);
-
     }
 
     public function deleteItemByDomainsAndItem($domains_id, $items_id, $itemtype)
@@ -424,8 +426,6 @@ class Domain_Item extends CommonDBRelation
                     Session::initNavigateListItems($itemtype, Domain::getTypeName(2) . " = " . $domain->fields['name']);
 
                     while ($data = $linked_iterator->next()) {
-
-
                         Session::addToNavigateListItems($itemtype, $data["id"]);
                         $item->getFromDB($data["id"]);
 
@@ -468,7 +468,6 @@ class Domain_Item extends CommonDBRelation
             Html::closeForm();
         }
         echo "</div>";
-
     }
 
     /**
@@ -581,7 +580,8 @@ class Domain_Item extends CommonDBRelation
             $result = $domain_iterator->next();
             $nb     = $result['cpt'];
 
-            if (Session::haveRight('domain', READ)
+            if (
+                Session::haveRight('domain', READ)
                 && ($nb > count($used))
             ) {
                 $form = [

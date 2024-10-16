@@ -62,8 +62,10 @@ class Accessibility extends CommonDBTM
                 return __('Accessibility');
 
             case 'User':
-                if (User::canUpdate()
-                    && $item->currentUserHaveMoreRightThan($item->getID())) {
+                if (
+                    User::canUpdate()
+                    && $item->currentUserHaveMoreRightThan($item->getID())
+                ) {
                     return __('Accessibility');
                 }
                 break;
@@ -84,7 +86,6 @@ class Accessibility extends CommonDBTM
                 $user->computePreferences();
                 $config->showAccessForm($user->fields);
             }
-
         } elseif ($item->getType() == 'User') {
             $config = new self();
             $user   = new User();
@@ -113,7 +114,7 @@ class Accessibility extends CommonDBTM
         if (array_key_exists('last_login', $data)) {
             $userpref = true;
             if ($data["id"] === Session::getLoginUserID()) {
-                $url  = $CFG_GLPI['root_doc']."/front/accessibility.form.php";
+                $url  = $CFG_GLPI['root_doc'] . "/front/accessibility.form.php";
             } else {
                 $url  = Accessibility::getFormURL();
             }
@@ -124,14 +125,14 @@ class Accessibility extends CommonDBTM
         }
 
         if ($userpref) {
-            echo "<input type='hidden' name='id' value='".$data['id']."'>";
+            echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
         }
 
         echo "<div class='center' id='tabsbody'>";
         echo "<table class='tab_cadre_fixe' style='position: relative' aria-label='Accessibility settings'>";
         echo "<tr><th colspan='4'>" . __('Interface') . "</th></tr>";
         echo "<tr class='tab_bg_1' >";
-        echo "<td width='40%'><label for='access_zoom_level_drop$rand'>" .__('UI Scale') . "</label></td>";
+        echo "<td width='40%'><label for='access_zoom_level_drop$rand'>" . __('UI Scale') . "</label></td>";
 
         $zooms = [
             100 => '100%',
@@ -152,7 +153,7 @@ class Accessibility extends CommonDBTM
         echo "</td></tr>";
 
         echo "<tr class='tab_bg_1' >";
-        echo "<td width='40%'><label for='access_font_drop$rand'>" .__('UI Font') . "</label></td>";
+        echo "<td width='40%'><label for='access_font_drop$rand'>" . __('UI Font') . "</label></td>";
 
         $fonts = [
             ""                  => "Default",
@@ -166,13 +167,13 @@ class Accessibility extends CommonDBTM
         echo "</td></tr>";
 
         echo "<tr class='tab_bg_1' >";
-        echo "<td width='40%'><label for='access_shortcuts_drop$rand'>" .__('Enable shortcuts') . "</label></td>";
+        echo "<td width='40%'><label for='access_shortcuts_drop$rand'>" . __('Enable shortcuts') . "</label></td>";
         echo "<td width='40%'>";
         Dropdown::showYesNo('access_shortcuts', $data["access_shortcuts"], -1, ['rand' => $rand]);
         echo "</td></tr>";
 
         if ($displayShortcut) {
-            echo "<tr><th colspan='4'>" . __('Shortcuts') . "<span id ='alert_save' style='display:none; position: absolute; left: 50.5%; color: #ae0c2a; '><i>".__("Don't forget to save")."</i></span>" . " <a style='position: absolute; right: 25px; cursor: pointer; user-select: none;' onclick='\$(\".togshortcuts\").toggle(400);'>[".__("Toggle view")."]</a></th></tr>";
+            echo "<tr><th colspan='4'>" . __('Shortcuts') . "<span id ='alert_save' style='display:none; position: absolute; left: 50.5%; color: #ae0c2a; '><i>" . __("Don't forget to save") . "</i></span>" . " <a style='position: absolute; right: 25px; cursor: pointer; user-select: none;' onclick='\$(\".togshortcuts\").toggle(400);'>[" . __("Toggle view") . "]</a></th></tr>";
 
             if (is_null($data["access_custom_shortcuts"])) {
                 $shortcuts = [];
@@ -187,7 +188,6 @@ class Accessibility extends CommonDBTM
                 if (is_subclass_of($class, "CommonGLPI")) {
                     $tabs = array($class => $class::getTypeName());
                     $classes = array_merge($classes, $tabs);
-
                 }
             }
 
@@ -195,7 +195,7 @@ class Accessibility extends CommonDBTM
             ksort($classes);
 
             foreach ($classes as $tab => $display) {
-                $shortcut = $shortcuts[$tab] ?? __("shift+alt+" .$cpt);
+                $shortcut = $shortcuts[$tab] ?? __("shift+alt+" . $cpt);
 
                 echo "<tr class='togshortcuts' style='display: none;' enctype='application/json'>";
                 echo "<input type='hidden' id='$tab' name='$tab' value='$shortcut' >";
@@ -205,7 +205,7 @@ class Accessibility extends CommonDBTM
                 if (!is_array($shortcut)) {
                     $shortcutHtml = "<kbd style='font-family:$font'>$shortcut</kbd>";
                 } else {
-                    $shortcutHtml = "<kbd style='font-family:$font'>".implode("</kbd>+<kbd>", $shortcut)."</kbd>";
+                    $shortcutHtml = "<kbd style='font-family:$font'>" . implode("</kbd>+<kbd>", $shortcut) . "</kbd>";
                 }
 
                 Html::accessibilityHeader();
@@ -238,8 +238,8 @@ class Accessibility extends CommonDBTM
             
             function myFunction(rack) {
                     var entity_element = $(this);
-                    let all_shotcuts = '.json_encode($all_shotcuts).'; // Retrieve all shortcuts
-                    let all_classes  = '.json_encode($all_classes).';  // Retrieve all classes
+                    let all_shotcuts = ' . json_encode($all_shotcuts) . '; // Retrieve all shortcuts
+                    let all_classes  = ' . json_encode($all_classes) . ';  // Retrieve all classes
                     
                     let id_span = document.getElementsByClassName(rack.id)[0]; // the span 
                     let id_input_hidden  = document.getElementById(rack.name); // the input hidden
@@ -250,7 +250,7 @@ class Accessibility extends CommonDBTM
                     modal = document.getElementById("modalForm"); //The modal
                     if(modal.style.display === "none"){
                         modal.style.display = "block";
-                        document.addEventListener('."'keydown'".', getShortcut); // Instanciation get short 
+                        document.addEventListener(' . "'keydown'" . ', getShortcut); // Instanciation get short 
                           
                     } else {
                         modal.style.display = "none";
@@ -266,7 +266,7 @@ class Accessibility extends CommonDBTM
                         keyPressed="";
                         document.getElementById("shortcut_added").innerHTML =""; //
                         document.getElementById("shortcut_existant").innerHTML ="";
-                        document.removeEventListener('."'keydown'".', getShortcut);
+                        document.removeEventListener(' . "'keydown'" . ', getShortcut);
                     });
                     
                     
@@ -295,7 +295,7 @@ class Accessibility extends CommonDBTM
                                     id_span.innerHTML = "<kbd>"+keyPressed.slice(0 , -1)+"</kbd>";
             
                                     modal.style.display = "none";
-                                    document.removeEventListener('."'keydown'".', getShortcut);
+                                    document.removeEventListener(' . "'keydown'" . ', getShortcut);
                                     document.getElementById("shortcut_added").innerHTML ="";
                                     btn_infoBulle.innerHTML ="&nbsp;&nbsp;&nbsp;";
                                     alertSave.style.display = "inline";
@@ -315,7 +315,7 @@ class Accessibility extends CommonDBTM
         if ((!$userpref && $canedit) || ($userpref && $canedituser)) {
             echo "<tr class='tab_bg_2'>";
             echo "<td colspan='4' class='center'>";
-            echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
+            echo "<input type='submit' name='update' class='submit' value=\"" . _sx('button', 'Save') . "\">";
             echo "</td></tr>";
         }
 
@@ -349,7 +349,7 @@ class Accessibility extends CommonDBTM
 
             echo "<tr >";
             echo "<td  style='position: absolute; margin: 0; left: 50%; transform: translate(-50%, 0%); '>";
-            echo "<input type='submit'  id='submit_in_modal'  name='submit_in_modal' class='vsubmit' value=\""._sx('button', 'Update')."\">";
+            echo "<input type='submit'  id='submit_in_modal'  name='submit_in_modal' class='vsubmit' value=\"" . _sx('button', 'Update') . "\">";
             echo "</td>";
             echo "</tr>";
 

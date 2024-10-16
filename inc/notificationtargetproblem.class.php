@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -90,7 +91,7 @@ class NotificationTargetProblem extends NotificationTargetCommonITILObject
                         $tmp['##ticket.url##']
                                           = $this->formatURL(
                                               $options['additionnaloption']['usertype'],
-                                              "Ticket_".$row['tickets_id']
+                                              "Ticket_" . $row['tickets_id']
                                           );
                         $tmp['##ticket.content##']
                                           = $ticket->getField('content');
@@ -119,7 +120,7 @@ class NotificationTargetProblem extends NotificationTargetCommonITILObject
                         $tmp['##change.url##']
                                           = $this->formatURL(
                                               $options['additionnaloption']['usertype'],
-                                              "Change_".$row['changes_id']
+                                              "Change_" . $row['changes_id']
                                           );
                         $tmp['##change.content##']
                                           = $change->getField('content');
@@ -176,7 +177,7 @@ class NotificationTargetProblem extends NotificationTargetCommonITILObject
                                                );
                             }
 
-                            $modeltable = getSingular($item2->getTable())."models";
+                            $modeltable = getSingular($item2->getTable()) . "models";
                             $modelfield = getForeignKeyFieldForTable($modeltable);
 
                             if ($item2->isField($modelfield)) {
@@ -268,5 +269,4 @@ class NotificationTargetProblem extends NotificationTargetCommonITILObject
         }
         asort($this->tag_descriptions);
     }
-
 }

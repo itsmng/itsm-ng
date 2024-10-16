@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -53,7 +54,6 @@ if (isset($_POST["add"])) {
             //TRANS: %s is the user login
             sprintf(__('%s associates a VLAN to a network port'), $_SESSION["glpiname"])
         );
-
     }
     Html::back();
 }

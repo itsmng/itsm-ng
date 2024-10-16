@@ -117,8 +117,9 @@ class Item_SoftwareVersion extends CommonDBRelation
         }
         $itemtype = $input['itemtype'];
         $item = new $itemtype();
-        if ((!isset($input['is_template_item']) && $item->maybeTemplate())
-           || (!isset($input['is_deleted_item']) && $item->maybeDeleted())
+        if (
+            (!isset($input['is_template_item']) && $item->maybeTemplate())
+            || (!isset($input['is_deleted_item']) && $item->maybeDeleted())
         ) {
             if ($item->getFromDB($input['items_id'])) {
                 if ($item->maybeTemplate()) {
@@ -142,8 +143,9 @@ class Item_SoftwareVersion extends CommonDBRelation
         if (isset($input['itemtype']) && isset($input['items_id'])) {
             $itemtype = $input['itemtype'];
             $item = new $itemtype();
-            if ((!isset($input['is_template_item']) && $item->maybeTemplate())
-               || (!isset($input['is_deleted_item']) && $item->maybeDeleted())
+            if (
+                (!isset($input['is_template_item']) && $item->maybeTemplate())
+                || (!isset($input['is_deleted_item']) && $item->maybeDeleted())
             ) {
                 if ($item->getFromDB($input['items_id'])) {
                     if ($item->maybeTemplate()) {
@@ -178,7 +180,7 @@ class Item_SoftwareVersion extends CommonDBRelation
                             'is_deleted' => 0,
                             'entities_id' => $_SESSION["glpiactive_entity"],
                             'is_template' => 0
-                     ]
+                          ]
                       ),
                       'actions' => getItemActionButtons(['info'], Software::class),
                       'col_lg' => 12,
@@ -218,7 +220,7 @@ class Item_SoftwareVersion extends CommonDBRelation
                       'disabled' => '',
                       'col_lg' => 12,
                       'col_md' => 12,
-               ]
+                   ]
 
                 ];
                 foreach ($inputs as $title => $input) {
@@ -262,11 +264,13 @@ class Item_SoftwareVersion extends CommonDBRelation
                     foreach ($ids as $id) {
                         if ($item->can($id, UPDATE)) {
                             //Process rules
-                            if ($item->update([
-                               'id' => $id,
-                               'softwareversions_id'
-                               => $input['softwareversions_id']
-                            ])) {
+                            if (
+                                $item->update([
+                                'id' => $id,
+                                'softwareversions_id'
+                                => $input['softwareversions_id']
+                                ])
+                            ) {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                             } else {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
@@ -288,11 +292,13 @@ class Item_SoftwareVersion extends CommonDBRelation
                     foreach ($ids as $id) {
                         if ($item->can($id, UPDATE)) {
                             //Process rules
-                            if ($itemtoadd->add([
-                               'items_id'              => $id,
-                               'itemtype'              => $item::getType(),
-                               'softwareversions_id'   => $_POST['peer_softwareversions_id']
-                            ])) {
+                            if (
+                                $itemtoadd->add([
+                                'items_id'              => $id,
+                                'itemtype'              => $item::getType(),
+                                'softwareversions_id'   => $_POST['peer_softwareversions_id']
+                                ])
+                            ) {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                             } else {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
@@ -335,11 +341,11 @@ class Item_SoftwareVersion extends CommonDBRelation
                 [
                   'is_template_item'  => $item->maybeTemplate() ? $item->getField('is_template') : 0,
                   'is_deleted_item'   => $item->maybeDeleted() ? $item->getField('is_deleted') : 0
-            ],
+                ],
                 [
                   'items_id' => $items_id,
                   'itemtype' => $itemtype
-            ]
+                ]
             );
             return $result;
         }
@@ -1079,8 +1085,9 @@ class Item_SoftwareVersion extends CommonDBRelation
 
         $iterator = self::getFromItem($item);
 
-        if ((empty($withtemplate) || ($withtemplate != 2))
-           && $canedit
+        if (
+            (empty($withtemplate) || ($withtemplate != 2))
+            && $canedit
         ) {
             $form = [
                'action' => Item_SoftwareVersion::getFormURL(),
@@ -1237,8 +1244,9 @@ class Item_SoftwareVersion extends CommonDBRelation
            'massive_action' => $massive_action,
         ]);
 
-        if ((empty($withtemplate) || ($withtemplate != 2))
-           && $canedit
+        if (
+            (empty($withtemplate) || ($withtemplate != 2))
+            && $canedit
         ) {
             $allOptions = getOptionForItems(Software::class, ['entities_id' => $entities_id, 'is_template' => 0]);
             $options = [];

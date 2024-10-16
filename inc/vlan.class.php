@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -100,7 +101,7 @@ class Vlan extends CommonDropdown
             [
               IPNetwork_Vlan::class,
               NetworkPort_Vlan::class,
-         ]
+            ]
         );
     }
 
@@ -178,7 +179,7 @@ class Vlan extends CommonDropdown
                         __('%1$s: %2$s'),
                         __('ID TAG'),
                         $vlan->fields['tag']
-                    )."<br>".
+                    ) . "<br>" .
                                               sprintf(
                                                   __('%1$s: %2$s'),
                                                   __('Comments'),

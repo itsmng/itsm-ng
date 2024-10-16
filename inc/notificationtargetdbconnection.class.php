@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -65,7 +66,7 @@ class NotificationTargetDBConnection extends NotificationTarget
         } else {
             $tmp = Html::timestampToString($options['diff'], true);
         }
-        $this->data['##dbconnection.delay##'] = $tmp." (".$options['name'].")";
+        $this->data['##dbconnection.delay##'] = $tmp . " (" . $options['name'] . ")";
 
         $this->getTags();
         foreach ($this->tag_descriptions[NotificationTarget::TAG_LANGUAGE] as $tag => $values) {
@@ -73,7 +74,6 @@ class NotificationTargetDBConnection extends NotificationTarget
                 $this->data[$tag] = $values['label'];
             }
         }
-
     }
 
 
@@ -104,5 +104,4 @@ class NotificationTargetDBConnection extends NotificationTarget
 
         asort($this->tag_descriptions);
     }
-
 }

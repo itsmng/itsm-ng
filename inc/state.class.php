@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -125,7 +126,6 @@ class State extends CommonTreeDropdown
             if ($item = getItemForItemtype($itemtype)) {
                 if (!$item->canView()) {
                     unset($state_type[$key]);
-
                 } else {
                     $table = getTableForItemType($itemtype);
                     $WHERE = [];
@@ -158,18 +158,18 @@ class State extends CommonTreeDropdown
             echo "<div class='center'><table class='tab_cadrehov' aria-label='Status'><tr>";
 
             // Type
-            echo "<th>".__('Status')."</th>";
+            echo "<th>" . __('Status') . "</th>";
 
             foreach ($state_type as $key => $itemtype) {
                 if ($item = getItemForItemtype($itemtype)) {
-                    echo "<th>".$item->getTypeName(Session::getPluralNumber())."</th>";
+                    echo "<th>" . $item->getTypeName(Session::getPluralNumber()) . "</th>";
                     $total[$itemtype] = 0;
                 } else {
                     unset($state_type[$key]);
                 }
             }
 
-            echo "<th>".__('Total')."</th>";
+            echo "<th>" . __('Total') . "</th>";
             echo "</tr>";
 
             $iterator = $DB->request([
@@ -203,10 +203,10 @@ class State extends CommonTreeDropdown
                 $opt = ['reset'    => 'reset',
                             'sort'     => 1,
                             'start'    => 0,
-                            'criteria' => ['0' => ['value' => '$$$$'.$data['id'],
+                            'criteria' => ['0' => ['value' => '$$$$' . $data['id'],
                                                              'searchtype' => 'contains',
                                                              'field' => 31]]];
-                echo "<a href='".$CFG_GLPI['root_doc']."/front/allassets.php?".Toolbox::append_params($opt, '&amp;')."'>".$data["completename"]."</a></td>";
+                echo "<a href='" . $CFG_GLPI['root_doc'] . "/front/allassets.php?" . Toolbox::append_params($opt, '&amp;') . "'>" . $data["completename"] . "</a></td>";
 
                 foreach ($state_type as $itemtype) {
                     echo "<td class='numeric'>";
@@ -224,19 +224,18 @@ class State extends CommonTreeDropdown
                 echo "<td class='numeric b'>$tot</td>";
                 echo "</tr>";
             }
-            echo "<tr class='tab_bg_2'><td class='center b'>".__('Total')."</td>";
+            echo "<tr class='tab_bg_2'><td class='center b'>" . __('Total') . "</td>";
             $tot = 0;
 
             foreach ($state_type as $itemtype) {
-                echo "<td class='numeric b'>".$total[$itemtype]."</td>";
+                echo "<td class='numeric b'>" . $total[$itemtype] . "</td>";
                 $tot += $total[$itemtype];
             }
 
             echo "<td class='numeric b'>$tot</td></tr>";
             echo "</table></div>";
-
         } else {
-            echo "<div class='center b'>".__('No item found')."</div>";
+            echo "<div class='center b'>" . __('No item found') . "</div>";
         }
     }
 
@@ -519,8 +518,10 @@ class State extends CommonTreeDropdown
         $has_changed = false;
         $where = [];
         foreach ($unicity_fields as $unicity_field) {
-            if (isset($input[$unicity_field]) &&
-                  (!isset($this->fields[$unicity_field]) || $input[$unicity_field] != $this->fields[$unicity_field])) {
+            if (
+                isset($input[$unicity_field]) &&
+                  (!isset($this->fields[$unicity_field]) || $input[$unicity_field] != $this->fields[$unicity_field])
+            ) {
                 $has_changed = true;
             }
             if (isset($input[$unicity_field])) {
@@ -553,5 +554,4 @@ class State extends CommonTreeDropdown
         }
         return $fields;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -61,6 +62,4 @@ class RuleImportComputerCollection extends RuleCollection
     {
         return __('Rules for import and link computers');
     }
-
-
 }

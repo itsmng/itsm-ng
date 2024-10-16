@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -183,9 +184,8 @@ class Datacenter extends CommonDBTM
         $links = [];
         if (static::canView()) {
             $rooms = "<i class=\"fa fa-building pointer\" title=\"" . DCRoom::getTypeName(Session::getPluralNumber()) .
-               "\"></i><span class=\"sr-only\">" . DCRoom::getTypeName(Session::getPluralNumber()). "</span>";
+               "\"></i><span class=\"sr-only\">" . DCRoom::getTypeName(Session::getPluralNumber()) . "</span>";
             $links[$rooms] = DCRoom::getSearchURL(false);
-
         }
         if (count($links)) {
             return $links;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -38,7 +39,6 @@ $notificationmail = new NotificationMailingSetting();
 if (!empty($_POST["test_smtp_send"])) {
     NotificationMailing::testNotification();
     Html::back();
-
 } elseif (!empty($_POST["update"])) {
     $config = new Config();
     $config->update($_POST);

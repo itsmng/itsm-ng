@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -78,5 +79,4 @@ class SessionsConfiguration extends AbstractRequirement
         $this->validated = true;
         $this->validation_messages[] = __s('Sessions support is available - Perfect!');
     }
-
 }

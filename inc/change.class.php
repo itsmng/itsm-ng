@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -171,8 +172,8 @@ class Change extends CommonITILObject
         $actions = parent::getSpecificMassiveActions($checkitem);
 
         if ($this->canAdminActors()) {
-            $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'add_actor'] = __('Add an actor');
-            $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'update_notif']
+            $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'add_actor'] = __('Add an actor');
+            $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'update_notif']
                   = __('Set notifications for all actors');
         }
 
@@ -189,7 +190,7 @@ class Change extends CommonITILObject
                     $nb_elements = count($timeline);
 
                     $ong = [
-                       5 => __("Processing change")." <sup class='tab_nb'>$nb_elements</sup>",
+                       5 => __("Processing change") . " <sup class='tab_nb'>$nb_elements</sup>",
                        1 => __('Analysis'),
                        3 => __('Plans')
                     ];
@@ -275,7 +276,7 @@ class Change extends CommonITILObject
               ChangeCost::class,
               ChangeValidation::class,
               // Done by parent: ITILSolution::class,
-         ]
+            ]
         );
 
         parent::cleanDBonPurge();
@@ -300,18 +301,20 @@ class Change extends CommonITILObject
 
         if ($donotif && $CFG_GLPI["use_notifications"]) {
             $mailtype = "update";
-            if (isset($this->input["status"]) && $this->input["status"]
+            if (
+                isset($this->input["status"]) && $this->input["status"]
                 && in_array("status", $this->updates)
-                && in_array($this->input["status"], $this->getSolvedStatusArray())) {
-
+                && in_array($this->input["status"], $this->getSolvedStatusArray())
+            ) {
                 $mailtype = "solved";
             }
 
-            if (isset($this->input["status"])
+            if (
+                isset($this->input["status"])
                 && $this->input["status"]
                 && in_array("status", $this->updates)
-                && in_array($this->input["status"], $this->getClosedStatusArray())) {
-
+                && in_array($this->input["status"], $this->getClosedStatusArray())
+            ) {
                 $mailtype = "closed";
             }
 
@@ -380,7 +383,6 @@ class Change extends CommonITILObject
                     $row['changes_id'] = $this->fields['id'];
                     $assoc->add(Toolbox::addslashes_deep($row));
                 }
-
             }
         }
 
@@ -390,15 +392,19 @@ class Change extends CommonITILObject
             $this->getFromDB($this->fields['id']);
 
             $type = "new";
-            if (isset($this->fields["status"])
-                && in_array($this->input["status"], $this->getSolvedStatusArray())) {
+            if (
+                isset($this->fields["status"])
+                && in_array($this->input["status"], $this->getSolvedStatusArray())
+            ) {
                 $type = "solved";
             }
             NotificationEvent::raiseEvent($type, $this);
         }
 
-        if (isset($this->input['_from_items_id'])
-            && isset($this->input['_from_itemtype'])) {
+        if (
+            isset($this->input['_from_items_id'])
+            && isset($this->input['_from_itemtype'])
+        ) {
             $change_item = new Change_Item();
             $change_item->add([
                'items_id'      => (int)$this->input['_from_items_id'],
@@ -818,14 +824,14 @@ class Change extends CommonITILObject
         $predefined_fields = [];
         $tpl_key = $this->getTemplateFormFieldName();
         if (!$ID) {
-
             if (isset($tt->predefined) && count($tt->predefined)) {
                 foreach ($tt->predefined as $predeffield => $predefvalue) {
                     if (isset($default_values[$predeffield])) {
                         // Is always default value : not set
                         // Set if already predefined field
                         // Set if ticket template change
-                        if (((count($options['_predefined_fields']) == 0)
+                        if (
+                            ((count($options['_predefined_fields']) == 0)
                              && ($options[$predeffield] == $default_values[$predeffield]))
                             || (isset($options['_predefined_fields'][$predeffield])
                                 && ($options[$predeffield] == $options['_predefined_fields'][$predeffield]))
@@ -838,7 +844,6 @@ class Change extends CommonITILObject
                             || (isset($ticket) && $options[$predeffield] == $ticket->getField($predeffield))
                             || (isset($problem) && $options[$predeffield] == $problem->getField($predeffield))
                         ) {
-
                             // Load template data
                             $options[$predeffield]            = $predefvalue;
                             $this->fields[$predeffield]      = $predefvalue;
@@ -850,7 +855,6 @@ class Change extends CommonITILObject
                 if (count($predefined_fields) == 0) {
                     $predefined_fields['_all_predefined_override'] = 1;
                 }
-
             } else { // No template load : reset predefined values
                 if (count($options['_predefined_fields'])) {
                     foreach ($options['_predefined_fields'] as $predeffield => $predefvalue) {
@@ -953,12 +957,12 @@ class Change extends CommonITILObject
                           ) : '')
                     ] : [],
                     __('Date of solving') => ($ID
-                  && (in_array($this->fields["status"], $this->getSolvedStatusArray())
-                  || in_array($this->fields["status"], $this->getClosedStatusArray()))) ? [
+                    && (in_array($this->fields["status"], $this->getSolvedStatusArray())
+                    || in_array($this->fields["status"], $this->getClosedStatusArray()))) ? [
                      'type' => 'datetime-local',
                      'name' => 'solvedate',
                      'value' => $this->fields["solvedate"],
-                  ] : [],
+                    ] : [],
                     __('Closing date') => ($ID
                      && (in_array($this->fields["status"], $this->getSolvedStatusArray())
                           || in_array($this->fields["status"], $this->getClosedStatusArray()))
@@ -966,7 +970,7 @@ class Change extends CommonITILObject
                      'type' => 'datetime-local',
                      'name' => 'closedate',
                      'value' => $this->fields["solvedate"],
-                  ] : []
+                    ] : []
                  ]
               ],
               __('Parameters') => [
@@ -980,7 +984,7 @@ class Change extends CommonITILObject
                      'col_lg' => 6,
                   ] : [
                      'content' => "&nbsp;<a class='vsubmit' href='"
-                          .$this->getLinkURL(). "&amp;_openfollowup=1&amp;forcetab=" . "Change$1'>".__('Reopen')."</a>",
+                          . $this->getLinkURL() . "&amp;_openfollowup=1&amp;forcetab=" . "Change$1'>" . __('Reopen') . "</a>",
                      'col_lg' => 6,
                   ],
                   __('Category') => [
@@ -1065,12 +1069,12 @@ class Change extends CommonITILObject
                         'name' => 'global_validation',
                         'values' => CommonITILValidation::getAllStatusArray(),
                         'value' => $this->fields['global_validation'],
-                  ] : [
-                     'content' => ChangeValidation::getStatus($this->fields['global_validation'])
-                  ]
+                      ] : [
+                      'content' => ChangeValidation::getStatus($this->fields['global_validation'])
+                      ]
                   ) : [],
                ]
-            ],
+              ],
               __('Actor') => (!$options['template_preview']) ? [
                'visible' => true,
                'inputs' => [
@@ -1118,7 +1122,7 @@ class Change extends CommonITILObject
                    'ticketId' => $this->isNewID($ID) ? 0 : $ID,
                  ],
                ]
-            ] : [],
+              ] : [],
               __('Content') => [
                'visible' => true,
                'inputs' => [
@@ -1137,7 +1141,7 @@ class Change extends CommonITILObject
                      'col_md' => 12,
                   ]
                ]
-            ],
+              ],
               __('Analysis') => (!$ID) ? [
                'visible' => true,
                'inputs' => [
@@ -1156,7 +1160,7 @@ class Change extends CommonITILObject
                      'col_md' => 12,
                   ],
                ]
-            ] : [],
+              ] : [],
               __('Plan') => (!$ID) ? [
                'visible' => true,
                'inputs' => [
@@ -1192,14 +1196,13 @@ class Change extends CommonITILObject
                      'value' => Toolbox::prepareArrayForInput($predefined_fields)
                   ] : [],
                ]
-            ] : [],
+              ] : [],
 
            ]
         ];
         renderTwigForm($form, '', $this->fields);
 
         return true;
-
     }
 
 
@@ -1424,7 +1427,7 @@ class Change extends CommonITILObject
                 if ($item->haveChildren()) {
                     $tree = Session::getSavedOption(__CLASS__, 'tree', 0);
                     echo "<table class='tab_cadre_fixe' aria-label='Last changes'>";
-                    echo "<tr class='tab_bg_1'><th>".__('Last changes')."</th></tr>";
+                    echo "<tr class='tab_bg_1'><th>" . __('Last changes') . "</th></tr>";
                     echo "<tr class='tab_bg_1'><td class='center'>";
                     echo __('Child groups');
                     Dropdown::showYesNo(
@@ -1453,11 +1456,13 @@ class Change extends CommonITILObject
         }
 
         // Link to open a new change
-        if ($item->getID()
+        if (
+            $item->getID()
             && Change::isPossibleToAssignType($item->getType())
             && self::canCreate()
             && !(!empty($withtemplate) && $withtemplate == 2)
-            && (!isset($item->fields['is_template']) || $item->fields['is_template'] == 0)) {
+            && (!isset($item->fields['is_template']) || $item->fields['is_template'] == 0)
+        ) {
             echo "<div class='firstbloc'>";
             Html::showSimpleForm(
                 Change::getFormURL(),
@@ -1467,7 +1472,7 @@ class Change extends CommonITILObject
                   '_from_itemtype' => $item->getType(),
                   '_from_items_id' => $item->getID(),
                   'entities_id'    => $item->fields['entities_id']
-            ]
+                ]
             );
             echo "</div>";
         }
@@ -1486,7 +1491,6 @@ class Change extends CommonITILObject
             $colspan++;
         }
         if ($number > 0) {
-
             Session::initNavigateListItems(
                 'Change',
                 //TRANS : %1$s is the itemtype name,
@@ -1504,9 +1508,8 @@ class Change extends CommonITILObject
             echo sprintf(_n('Last %d change', 'Last %d changes', $number), $number);
 
             echo "</th></tr>";
-
         } else {
-            echo "<tr><th>".__('No change found.')."</th></tr>";
+            echo "<tr><th>" . __('No change found.') . "</th></tr>";
         }
         // Ticket list
         if ($number > 0) {
@@ -1553,12 +1556,10 @@ class Change extends CommonITILObject
                 }
                 self::commonListHeader(Search::HTML_OUTPUT);
             } else {
-                echo "<tr><th>".__('No change found.')."</th></tr>";
+                echo "<tr><th>" . __('No change found.') . "</th></tr>";
             }
             echo "</table></div>";
-
         } // Subquery for linked item
-
     }
 
 

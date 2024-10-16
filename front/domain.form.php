@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -55,29 +56,24 @@ if (isset($_POST["add"])) {
     $domain->check($_POST['id'], DELETE);
     $domain->delete($_POST);
     $domain->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $domain->check($_POST['id'], PURGE);
     $domain->restore($_POST);
     $domain->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $domain->check($_POST['id'], PURGE);
     $domain->delete($_POST, 1);
     $domain->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $domain->check($_POST['id'], UPDATE);
     $domain->update($_POST);
     Html::back();
-
 } elseif (isset($_POST["additem"])) {
     if (!empty($_POST['itemtype']) && $_POST['items_id'] > 0) {
         $ditem->check(-1, UPDATE, $_POST);
         $ditem->addItem($_POST);
     }
     Html::back();
-
 } elseif (isset($_POST["addrecord"])) {
     $record = new \DomainRecord();
     $_POST['id'] = $_POST['domainrecords_id'];
@@ -85,7 +81,6 @@ if (isset($_POST["add"])) {
     $record->check(-1, UPDATE, $_POST);
     $record->update($_POST);
     Html::redirect($domain->getFormURLWithID($_POST['domains_id']));
-
 } elseif (isset($_POST["deleteitem"])) {
     foreach ($_POST["item"] as $key => $val) {
         $input = ['id' => $key];
@@ -95,15 +90,12 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["deletedomains"])) {
     $input = ['id' => $_POST["id"]];
     $ditem->check($_POST["id"], UPDATE);
     $ditem->delete($input);
     Html::back();
-
 } else {
-
     Html::header(Domain::getTypeName(1), $_SERVER['PHP_SELF'], "management", "domain");
     $domain->display([
        'id'           => $_GET["id"],

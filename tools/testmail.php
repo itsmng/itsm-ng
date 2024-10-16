@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -86,8 +87,8 @@ if ($enc) {
 }
 
 $mmail->Subject = "ITSM-NG test mail" . ($enc ? " ($enc)" : '');
-$mmail->Body = "<html><body><h3>ITSM-NG test mail</h3><p>Encoding = <span class='b'>$enc</span></p>".
-             "<p>Date = <span class='b'>$dat</span></p><p>Secret = <span class='b'>$secret</span>".
+$mmail->Body = "<html><body><h3>ITSM-NG test mail</h3><p>Encoding = <span class='b'>$enc</span></p>" .
+             "<p>Date = <span class='b'>$dat</span></p><p>Secret = <span class='b'>$secret</span>" .
              "</p></body></html>";
 $mmail->AltBody = "ITSM-NG test mail\nEncoding : $enc\nDate : $dat\nSecret=$secret";
 
@@ -98,4 +99,4 @@ $mmail->AddStringAttachment($logo, 'itsm-ng.png', ($enc ? $enc : 'base64'), 'ima
 
 $mmail->AddStringAttachment($secret, 'secret.txt', ($enc ? $enc : 'base64'), 'text/plain');
 
-echo "Send : ". ($mmail->Send() ? "OK\n" : "Failed (". $mmail->ErrorInfo.")\n");
+echo "Send : " . ($mmail->Send() ? "OK\n" : "Failed (" . $mmail->ErrorInfo . ")\n");

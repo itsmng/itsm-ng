@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -60,7 +61,6 @@ if (isset($_POST["add"])) {
         Html::redirect(Software::getFormURLWithID($version->fields['softwares_id']));
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $version->check($_POST['id'], PURGE);
     $version->delete($_POST, 1);
@@ -73,7 +73,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%1$s purges the version %2$s'), $_SESSION["glpiname"], $_POST["id"])
     );
     $version->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $version->check($_POST['id'], UPDATE);
 
@@ -87,7 +86,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%1$s updates the version %2$s'), $_SESSION["glpiname"], $_POST["id"])
     );
     Html::back();
-
 } else {
     Html::header(SoftwareVersion::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "assets", "software");
     $version->display(['id'           => $_GET["id"],

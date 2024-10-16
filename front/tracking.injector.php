@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,9 +33,11 @@
 
 include('../inc/includes.php');
 
-if (empty($_POST["_type"])
+if (
+    empty($_POST["_type"])
     || ($_POST["_type"] != "Helpdesk")
-    || !$CFG_GLPI["use_anonymous_helpdesk"]) {
+    || !$CFG_GLPI["use_anonymous_helpdesk"]
+) {
     Session::checkRight("ticket", CREATE);
 }
 
@@ -42,7 +45,7 @@ $track = new Ticket();
 
 // Security check
 if (empty($_POST) || (count($_POST) == 0)) {
-    Html::redirect($CFG_GLPI["root_doc"]."/front/helpdesk.public.php");
+    Html::redirect($CFG_GLPI["root_doc"] . "/front/helpdesk.public.php");
 }
 
 if (isset($_POST["_type"]) && ($_POST["_type"] == "Helpdesk")) {
@@ -63,28 +66,25 @@ if (isset($_POST['add'])) {
             Html::redirect($track->getLinkURL());
         }
         if (isset($_POST["_type"]) && ($_POST["_type"] == "Helpdesk")) {
-            echo "<div class='center spaced'>".
+            echo "<div class='center spaced'>" .
                    __('Your ticket has been registered, its treatment is in progress.');
             Html::displayBackLink();
             echo "</div>";
         } else {
             echo "<div class='center b spaced'>";
-            echo "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' alt='".__s('OK')."'>";
+            echo "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' alt='" . __s('OK') . "'>";
             Session::addMessageAfterRedirect(__('Thank you for using our automatic helpdesk system.'));
             Html::displayMessageAfterRedirect();
             echo "</div>";
         }
-
     } else {
         echo "<div class='center'>";
-        echo "<img src='".$CFG_GLPI["root_doc"]."/pics/warning.png' alt='".__s('Warning')."'><br>";
+        echo "<img src='" . $CFG_GLPI["root_doc"] . "/pics/warning.png' alt='" . __s('Warning') . "'><br>";
         Html::displayMessageAfterRedirect();
-        echo "<a href='".$CFG_GLPI["root_doc"]."/front/helpdesk.public.php?create_ticket=1'>".
-              __('Back')."</a></div>";
-
+        echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php?create_ticket=1'>" .
+              __('Back') . "</a></div>";
     }
     Html::nullFooter();
-
 } else { // reload display form
     $track->showFormHelpdesk(Session::getLoginUserID());
     Html::footer();

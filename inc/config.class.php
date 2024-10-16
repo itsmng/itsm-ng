@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -98,9 +99,11 @@ class Config extends CommonDBTM
 
     public function canViewItem()
     {
-        if (isset($this->fields['context']) &&
+        if (
+            isset($this->fields['context']) &&
             ($this->fields['context'] == 'core' ||
-            Plugin::isPluginActive($this->fields['context']))) {
+            Plugin::isPluginActive($this->fields['context']))
+        ) {
             return true;
         }
         return false;
@@ -136,10 +139,12 @@ class Config extends CommonDBTM
             unset($input['_glpi_csrf_token']);
             unset($input['update']);
             unset($input['config_context']);
-            if ((!empty($input['config_class']))
+            if (
+                (!empty($input['config_class']))
                 && (class_exists($input['config_class']))
-                && (method_exists($input['config_class'], 'configUpdate'))) {
-                $config_method = $input['config_class'].'::configUpdate';
+                && (method_exists($input['config_class'], 'configUpdate'))
+            ) {
+                $config_method = $input['config_class'] . '::configUpdate';
                 unset($input['config_class']);
                 $input = call_user_func($config_method, $input);
             }
@@ -194,7 +199,6 @@ class Config extends CommonDBTM
                 if (!$already_active) {
                     // Activate Slave from the "system" tab
                     DBConnection::createDBSlaveConfig();
-
                 } elseif (isset($input["_dbreplicate_dbhost"])) {
                     // Change parameter from the "replicate" tab
                     DBConnection::saveDBSlaveConf(
@@ -262,7 +266,7 @@ class Config extends CommonDBTM
         // Add skipMaintenance if maintenance mode update
         if (isset($input['maintenance_mode']) && $input['maintenance_mode']) {
             $_SESSION['glpiskipMaintenance'] = 1;
-            $url = $CFG_GLPI['root_doc']."/index.php?skipMaintenance=1";
+            $url = $CFG_GLPI['root_doc'] . "/index.php?skipMaintenance=1";
             Session::addMessageAfterRedirect(
                 sprintf(
                     __('Maintenance mode activated. Backdoor using: %s'),
@@ -281,8 +285,10 @@ class Config extends CommonDBTM
     public static function unsetUndisclosedFields(&$fields)
     {
         if (isset($fields['context']) && isset($fields['name'])) {
-            if ($fields['context'] == 'core'
-                && in_array($fields['name'], self::$undisclosedFields)) {
+            if (
+                $fields['context'] == 'core'
+                && in_array($fields['name'], self::$undisclosedFields)
+            ) {
                 unset($fields['value']);
             } else {
                 $fields = Plugin::doHookFunction('undiscloseConfigValue', $fields);
@@ -314,9 +320,9 @@ class Config extends CommonDBTM
                     'name' => 'update',
                     'value' => __('Update'),
                     'class' => 'btn btn-secondary'
-              ]
-           ] : [],
-           'content' => [
+                ]
+            ] : [],
+            'content' => [
                __('General setup') => [
                    'visible' => true,
                    'inputs' => [
@@ -326,39 +332,39 @@ class Config extends CommonDBTM
                            'value' => $CFG_GLPI["url_base"],
                            'col_lg' => 12,
                            'col_md' => 12,
-                    ],
-                    __('Text in the login box') => [
+                       ],
+                       __('Text in the login box') => [
                         'name' => 'text_login',
                         'type' => 'textarea',
                         'value' => $CFG_GLPI["text_login"],
                         'col_lg' => 12,
                         'col_md' => 12,
-                    ],
-                    __('Simplified interface help link') => [
+                       ],
+                       __('Simplified interface help link') => [
                         'name' => 'helpdesk_doc_url',
                         'type' => 'text',
                         'value' => $CFG_GLPI["helpdesk_doc_url"],
                         'col_lg' => 6,
-                    ],
-                    __('Standard interface help link') => [
+                       ],
+                       __('Standard interface help link') => [
                         'name' => 'central_doc_url',
                         'type' => 'text',
                         'value' => $CFG_GLPI["central_doc_url"],
                         'col_lg' => 6,
-                    ],
-                    __('Allow FAQ anonymous access') => [
+                       ],
+                       __('Allow FAQ anonymous access') => [
                         'name' => 'use_public_faq',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["use_public_faq"],
                         'col_lg' => 6,
-                    ],
-                    __('Default characters limit (summary text boxes)') => [
+                       ],
+                       __('Default characters limit (summary text boxes)') => [
                         'name' => 'cut',
                         'type' => 'number',
                         'value' => $CFG_GLPI["cut"],
                         'col_lg' => 6,
-                    ],
-                    __('Default url length limit') => [
+                       ],
+                       __('Default url length limit') => [
                         'name' => 'url_maxlength',
                         'type' => 'number',
                         'value' => $CFG_GLPI["url_maxlength"],
@@ -366,32 +372,32 @@ class Config extends CommonDBTM
                         'max' => 80,
                         'step' => 5,
                         'col_lg' => 6,
-                    ],
-                    __('Default decimals limit') => [
+                       ],
+                       __('Default decimals limit') => [
                         'name' => 'decimal_number',
                         'type' => 'number',
                         'value' => $CFG_GLPI["decimal_number"],
                         'min' => 1,
                         'max' => 4,
-                    ],
-                    __("Translation of dropdowns") => [
+                       ],
+                       __("Translation of dropdowns") => [
                         'name' => 'translate_dropdowns',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["translate_dropdowns"],
-                    ],
-                    __("Knowledge base translation") => [
+                       ],
+                       __("Knowledge base translation") => [
                         'name' => 'translate_kb',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["translate_kb"],
-                    ],
-                    __("Translation of reminders") => [
+                       ],
+                       __("Translation of reminders") => [
                         'name' => 'translate_reminders',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["translate_reminders"],
-                    ],
-                 ]
-              ],
-              __('Dynamic display') => [
+                       ],
+                   ]
+               ],
+               __('Dynamic display') => [
                   'visible' => true,
                   'inputs' => [
                       __('Page size for dropdown (paging using scroll)') => [
@@ -401,14 +407,14 @@ class Config extends CommonDBTM
                           'min' => 1,
                           'max' => 200,
                           'col_lg' => 6,
-                    ],
-                    __('Autocompletion of text fields') => [
+                      ],
+                      __('Autocompletion of text fields') => [
                         'name' => 'use_ajax_autocompletion',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["use_ajax_autocompletion"],
                         'col_lg' => 6,
-                    ],
-                    __("Don't show search engine in dropdowns if the number of items is less than") => [
+                      ],
+                      __("Don't show search engine in dropdowns if the number of items is less than") => [
                         'name' => 'ajax_limit_count',
                         'type' => 'number',
                         'value' => $CFG_GLPI["ajax_limit_count"],
@@ -418,10 +424,10 @@ class Config extends CommonDBTM
                         'after' => "0 => " . __('Never'),
                         'col_lg' => 12,
                         'col_mg' => 12,
-                    ],
-                 ]
-              ],
-              __('Search engine') => [
+                      ],
+                  ]
+               ],
+               __('Search engine') => [
                   'visible' => true,
                   'inputs' => [
                       __('Items seen') => [
@@ -431,56 +437,56 @@ class Config extends CommonDBTM
                               0 => __('No'),
                               1 => sprintf(__('%1$s (%2$s)'), __('Yes'), __('last criterion')),
                               2 => sprintf(__('%1$s (%2$s)'), __('Yes'), __('default criterion'))
-                       ],
-                       'value' => $CFG_GLPI['allow_search_view'],
-                    ],
-                    __('Global search') => [
+                          ],
+                          'value' => $CFG_GLPI['allow_search_view'],
+                      ],
+                      __('Global search') => [
                         'name' => 'allow_search_global',
                         'type' => 'select',
                         'values' => [
                             0 => __('No'),
                             1 => sprintf(__('%1$s (%2$s)'), __('Yes'), __('last criterion'))
-                       ],
-                       'value' => $CFG_GLPI['allow_search_global'],
-                    ],
-                    __('All') => [
+                        ],
+                        'value' => $CFG_GLPI['allow_search_global'],
+                      ],
+                      __('All') => [
                         'name' => 'allow_search_all',
                         'type' => 'select',
                         'values' => [
                             0 => __('No'),
                             1 => sprintf(__('%1$s (%2$s)'), __('Yes'), __('last criterion'))
-                       ],
-                       'value' => $CFG_GLPI['allow_search_all'],
-                    ],
-                 ]
-              ],
-              __('Item locks') => [
+                        ],
+                        'value' => $CFG_GLPI['allow_search_all'],
+                      ],
+                  ]
+               ],
+               __('Item locks') => [
                   'visible' => true,
                   'inputs' => [
                       __('Use locks') => [
                           'name' => 'lock_use_lock_item',
                           'type' => 'checkbox',
                           'value' => $CFG_GLPI["lock_use_lock_item"],
-                    ],
-                    __('Profile to be used when locking items') => ($CFG_GLPI["lock_use_lock_item"]) ? [
+                      ],
+                      __('Profile to be used when locking items') => ($CFG_GLPI["lock_use_lock_item"]) ? [
                         'name' => 'lock_lockprofile_id',
                         'type' => 'select',
                         'values' => getOptionForItems('Profile'),
                         'value' => $CFG_GLPI["lock_lockprofile_id"],
                         'action' => getItemActionButtons(['info'], 'Profile'),
-                    ] : [
+                      ] : [
                         'content' => Dropdown::getDropdownName(Profile::getTable(), $CFG_GLPI['lock_lockprofile_id']),
-                    ],
-                    __('List of items to lock') => [
+                      ],
+                      __('List of items to lock') => [
                         'name' => 'lock_item_list',
                         'type' => 'checklist',
                         'options' => ObjectLock::getLockableObjects(),
                         'values' => $CFG_GLPI['lock_item_list'],
                         !$CFG_GLPI["lock_use_lock_item"] ? 'disabled' : '',
-                    ],
-                 ]
-              ],
-              __('Auto Login') => [
+                      ],
+                  ]
+               ],
+               __('Auto Login') => [
                   'visible' => true,
                   'inputs' => [
                       __('Time to allow "Remember Me"') => [
@@ -493,22 +499,22 @@ class Config extends CommonDBTM
                               'step'  => DAY_TIMESTAMP,
                               'toadd' => [HOUR_TIMESTAMP, HOUR_TIMESTAMP * 2, HOUR_TIMESTAMP * 6, HOUR_TIMESTAMP * 12],
                               'rand'  => $rand
-                       ])),
+                          ])),
                        'value' => $CFG_GLPI["login_remember_time"],
-                    ],
-                    __("Default state of checkbox") => [
+                      ],
+                      __("Default state of checkbox") => [
                         'name' => 'login_remember_default',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["login_remember_default"],
-                    ],
-                    __('Display source dropdown on login page') => [
+                      ],
+                      __('Display source dropdown on login page') => [
                         'name' => 'display_login_source',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["display_login_source"],
-                    ],
-                 ]
-              ],
-           ]
+                      ],
+                  ]
+               ],
+            ]
         ];
         renderTwigForm($form);
     }
@@ -547,9 +553,9 @@ class Config extends CommonDBTM
                     'name' => 'update',
                     'value' => __('Update'),
                     'class' => 'btn btn-secondary'
-              ] : [],
-           ],
-           'content' => [
+                ] : [],
+            ],
+            'content' => [
                __('Assets') => [
                    'visible' => true,
                    'inputs' => [
@@ -558,78 +564,78 @@ class Config extends CommonDBTM
                            'type' => 'checkbox',
                            'value' => $CFG_GLPI["auto_create_infocoms"],
                            'col_lg' => 6,
-                    ],
-                    __('Software category deleted by the dictionary rules') => [
+                       ],
+                       __('Software category deleted by the dictionary rules') => [
                         'name' => 'softwarecategories_id_ondelete',
                         'type' => 'select',
                         'values' => getOptionForItems('SoftwareCategory'),
                         'value' => $CFG_GLPI["softwarecategories_id_ondelete"],
                         'col_lg' => 6,
-                    ],
-                    __('Restrict monitor management') => [
+                       ],
+                       __('Restrict monitor management') => [
                         'name' => 'monitors_management_restrict',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["monitors_management_restrict"],
                         'col_lg' => 6,
-                    ],
-                    __('Restrict device management') => [
+                       ],
+                       __('Restrict device management') => [
                         'name' => 'peripherals_management_restrict',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["peripherals_management_restrict"],
                         'col_lg' => 6,
-                    ],
-                    __('Restrict phone management') => [
+                       ],
+                       __('Restrict phone management') => [
                         'name' => 'phones_management_restrict',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["phones_management_restrict"],
                         'col_lg' => 6,
-                    ],
-                    __('Restrict printer management') => [
+                       ],
+                       __('Restrict printer management') => [
                         'name' => 'printers_management_restrict',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["printers_management_restrict"],
                         'col_lg' => 6,
-                    ],
-                    __('End of fiscal year') => [
+                       ],
+                       __('End of fiscal year') => [
                         'name' => 'date_tax',
                         'type' => 'date',
                         'value' => $CFG_GLPI["date_tax"],
                         'rand' => $rand,
                         'col_lg' => 6,
                         'required' => true,
-                    ],
-                    __('Automatic fields (marked by *)') => [
+                       ],
+                       __('Automatic fields (marked by *)') => [
                         'name' => 'use_autoname_by_entity',
                         'type' => 'select',
                         'values' => [
                             0 => __('Global'),
                             1 => __('By entity')
+                        ],
+                        'value' => $CFG_GLPI["use_autoname_by_entity"],
+                        'rand' => $rand,
+                        'col_lg' => 6,
                        ],
-                       'value' => $CFG_GLPI["use_autoname_by_entity"],
-                       'rand' => $rand,
-                       'col_lg' => 6,
-                    ],
-                    __('Devices displayed in menu') => [
+                       __('Devices displayed in menu') => [
                         'type' => 'checklist',
                         'name' => 'devices_in_menu',
                         'options' => $item_devices_types,
                         'values' => $CFG_GLPI['devices_in_menu'],
-                    ],
-                    [
+                       ],
+                       [
                         'name' => '_update_devices_in_menu',
                         'type' => 'hidden',
                         'value' => 1,
-                    ],
-                    __('Automatic transfer of computers') => (Session::haveRightsOr("transfer", [CREATE, UPDATE])
-                    && Session::isMultiEntitiesMode()) ? [
+                       ],
+                       __('Automatic transfer of computers') => (Session::haveRightsOr("transfer", [CREATE, UPDATE])
+                       && Session::isMultiEntitiesMode()) ? [
                         'name' => 'transfers_id_auto',
                         'type' => 'select',
                         'values' => array_merge([__('No automatic transfer')], getOptionForItems('Transfer')),
                         'value' => $CFG_GLPI["transfers_id_auto"],
-                    ] : [],
-                 ]
-              ],
-              __('Automatically update of the elements related to the computers') . ' : ' . __('Unit management') => [
+                       ] : [],
+                   ]
+               ],
+               __('Automatically update of the elements related to the computers') . ' : ' . __('Unit management') => [
                   'visible' => true,
                   'inputs' => [
                       __('Alternate username') . '(' . __('When connecting or updating') . ')' => [
@@ -638,103 +644,103 @@ class Config extends CommonDBTM
                           'values' => [
                               0 => __('Do not copy'),
                               1 => __('Copy'),
-                       ],
-                       'value' => $CFG_GLPI["is_contact_autoupdate"],
-                       'col_lg' => 6,
-                    ],
-                    __('Alternate username') . '(' . __('When disconnecting') . ')' => [
+                          ],
+                          'value' => $CFG_GLPI["is_contact_autoupdate"],
+                          'col_lg' => 6,
+                      ],
+                      __('Alternate username') . '(' . __('When disconnecting') . ')' => [
                         'name' => 'is_contact_autoclean',
                         'type' => 'select',
                         'values' => [
                             0 => __('Do not delete'),
                             1 => __('Clear'),
-                       ],
-                       'value' => $CFG_GLPI["is_contact_autoclean"],
-                       'col_lg' => 6,
-                    ],
-                    User::getTypeName(1) . '(' . __('When connecting or updating') . ')' => [
+                        ],
+                        'value' => $CFG_GLPI["is_contact_autoclean"],
+                        'col_lg' => 6,
+                      ],
+                      User::getTypeName(1) . '(' . __('When connecting or updating') . ')' => [
                         'name' => 'is_user_autoupdate',
                         'type' => 'select',
                         'values' => [
                             0 => __('Do not copy'),
                             1 => __('Copy'),
-                       ],
-                       'value' => $CFG_GLPI["is_user_autoupdate"],
-                       'col_lg' => 6,
-                    ],
-                    User::getTypeName(1) . '(' . __('When disconnecting') . ')' => [
+                        ],
+                        'value' => $CFG_GLPI["is_user_autoupdate"],
+                        'col_lg' => 6,
+                      ],
+                      User::getTypeName(1) . '(' . __('When disconnecting') . ')' => [
                         'name' => 'is_user_autoclean',
                         'type' => 'select',
                         'values' => [
                             0 => __('Do not delete'),
                             1 => __('Clear'),
-                       ],
-                       'value' => $CFG_GLPI["is_user_autoclean"],
-                       'col_lg' => 6,
-                    ],
-                    Group::getTypeName(1) . '(' . __('When connecting or updating') . ')' => [
+                        ],
+                        'value' => $CFG_GLPI["is_user_autoclean"],
+                        'col_lg' => 6,
+                      ],
+                      Group::getTypeName(1) . '(' . __('When connecting or updating') . ')' => [
                         'name' => 'is_group_autoupdate',
                         'type' => 'select',
                         'values' => [
                             0 => __('Do not copy'),
                             1 => __('Copy'),
-                       ],
-                       'value' => $CFG_GLPI["is_group_autoupdate"],
-                       'col_lg' => 6,
-                    ],
-                    Group::getTypeName(1) . '(' . __('When disconnecting') . ')' => [
+                        ],
+                        'value' => $CFG_GLPI["is_group_autoupdate"],
+                        'col_lg' => 6,
+                      ],
+                      Group::getTypeName(1) . '(' . __('When disconnecting') . ')' => [
                         'name' => 'is_group_autoclean',
                         'type' => 'select',
                         'values' => [
                             0 => __('Do not delete'),
                             1 => __('Clear'),
-                       ],
-                       'value' => $CFG_GLPI["is_group_autoclean"],
-                       'col_lg' => 6,
-                    ],
-                    Location::getTypeName(1) . '(' . __('When connecting or updating') . ')' => [
+                        ],
+                        'value' => $CFG_GLPI["is_group_autoclean"],
+                        'col_lg' => 6,
+                      ],
+                      Location::getTypeName(1) . '(' . __('When connecting or updating') . ')' => [
                         'name' => 'is_location_autoupdate',
                         'type' => 'select',
                         'values' => [
                             0 => __('Do not copy'),
                             1 => __('Copy'),
-                       ],
-                       'value' => $CFG_GLPI["is_location_autoupdate"],
-                       'col_lg' => 6,
-                    ],
-                    Location::getTypeName(1) . '(' . __('When disconnecting') . ')' => [
+                        ],
+                        'value' => $CFG_GLPI["is_location_autoupdate"],
+                        'col_lg' => 6,
+                      ],
+                      Location::getTypeName(1) . '(' . __('When disconnecting') . ')' => [
                         'name' => 'is_location_autoclean',
                         'type' => 'select',
                         'values' => [
                             0 => __('Do not delete'),
                             1 => __('Clear'),
-                       ],
-                       'value' => $CFG_GLPI["is_location_autoclean"],
-                       'col_lg' => 6,
-                    ],
-                    __('Status') . '(' . __('When connecting or updating') . ')' => [
+                        ],
+                        'value' => $CFG_GLPI["is_location_autoclean"],
+                        'col_lg' => 6,
+                      ],
+                      __('Status') . '(' . __('When connecting or updating') . ')' => [
                         'name' => 'state_autoupdate_mode',
                         'type' => 'select',
                         'values' => [
                             0 => __('Do not copy'),
                             1 => __('Copy computer status'),
-                       ],
-                       'value' => $CFG_GLPI["state_autoupdate_mode"],
-                       'col_lg' => 6,
-                    ],
-                    __('Status') . '(' . __('When disconnecting') . ')' => [
+                        ],
+                        'value' => $CFG_GLPI["state_autoupdate_mode"],
+                        'col_lg' => 6,
+                      ],
+                      __('Status') . '(' . __('When disconnecting') . ')' => [
                         'name' => 'state_autoclean_mode',
                         'type' => 'select',
                         'values' => [
                             0 => __('Do not delete'),
                             1 => __('Clear status'),
-                       ],
-                       'value' => $CFG_GLPI["state_autoclean_mode"],
-                       'col_lg' => 6,
-                    ],
-                 ]
-              ]
-           ]
+                        ],
+                        'value' => $CFG_GLPI["state_autoclean_mode"],
+                        'col_lg' => 6,
+                      ],
+                  ]
+               ]
+            ]
         ];
         renderTwigForm($form);
     }
@@ -762,8 +768,8 @@ class Config extends CommonDBTM
                     'value' => _sx('button', 'Save'),
                     'class' => 'btn btn-secondary',
                   ],
-           ],
-           'content' => [
+            ],
+            'content' => [
                __('Authentication') => [
                    'visible' => true,
                    'inputs' => [
@@ -771,27 +777,27 @@ class Config extends CommonDBTM
                            'name' => 'is_users_auto_add',
                            'type' => 'checkbox',
                            'value' => $CFG_GLPI["is_users_auto_add"],
-                    ],
-                    __('Add a user without accreditation from a LDAP directory') => [
+                       ],
+                       __('Add a user without accreditation from a LDAP directory') => [
                         'name' => 'use_noright_users_add',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["use_noright_users_add"],
-                    ],
-                    __('Action when a user is deleted from the LDAP directory') => [
+                       ],
+                       __('Action when a user is deleted from the LDAP directory') => [
                         'name' => 'user_deleted_ldap',
                         'type' => 'select',
                         'values' => AuthLDAP::getLdapDeletedUserActionOptions(),
                         'value' => $CFG_GLPI["user_deleted_ldap"],
-                    ],
-                    __('ITSM-NG server time zone') => [
+                       ],
+                       __('ITSM-NG server time zone') => [
                         'name' => 'time_offset',
                         'type' => 'select',
                         'values' => Timezone::showGMT(),
                         'value' => $CFG_GLPI["time_offset"],
-                    ],
-                 ],
-              ],
-           ]
+                       ],
+                   ],
+               ],
+            ]
         ];
 
         renderTwigForm($form);
@@ -811,7 +817,7 @@ class Config extends CommonDBTM
             return;
         }
 
-        echo "<form aria-label='DB Slave' name='form' action=\"".Toolbox::getItemTypeFormURL(__CLASS__)."\" method='post' data-track-changes='true'>";
+        echo "<form aria-label='DB Slave' name='form' action=\"" . Toolbox::getItemTypeFormURL(__CLASS__) . "\" method='post' data-track-changes='true'>";
         echo "<div class='center' id='tabsbody'>";
         echo "<input type='hidden' name='_dbslave_status' value='1'>";
         echo "<table class='tab_cadre_fixe' aria-label='DB Slave form'>";
@@ -829,15 +835,15 @@ class Config extends CommonDBTM
         echo "<td>" . __('SQL server (MariaDB or MySQL)') . "</td>";
         echo "<td><input type='text' name='_dbreplicate_dbhost' size='40' value='$host'></td>";
         echo "<td>" . __('Database') . "</td>";
-        echo "<td><input type='text' name='_dbreplicate_dbdefault' value='".$DBslave->dbdefault."'>";
+        echo "<td><input type='text' name='_dbreplicate_dbdefault' value='" . $DBslave->dbdefault . "'>";
         echo "</td></tr>";
 
         echo "<tr class='tab_bg_2'>";
         echo "<td>" . __('SQL user') . "</td>";
-        echo "<td><input type='text' name='_dbreplicate_dbuser' value='".$DBslave->dbuser."'></td>";
+        echo "<td><input type='text' name='_dbreplicate_dbuser' value='" . $DBslave->dbuser . "'></td>";
         echo "<td>" . __('SQL password') . "</td>";
-        echo "<td><input type='password' name='_dbreplicate_dbpassword' value='".
-            rawurldecode($DBslave->dbpassword)."'>";
+        echo "<td><input type='password' name='_dbreplicate_dbpassword' value='" .
+            rawurldecode($DBslave->dbpassword) . "'>";
         echo "</td></tr>";
 
         echo "<tr class='tab_bg_2'>";
@@ -862,7 +868,7 @@ class Config extends CommonDBTM
         }
 
         echo "<tr class='tab_bg_2'><td colspan='4' class='center'>";
-        echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
+        echo "<input type='submit' name='update' class='submit' value=\"" . _sx('button', 'Save') . "\">";
         echo "</td></tr>";
 
         echo "</table></div>";
@@ -884,7 +890,7 @@ class Config extends CommonDBTM
             return;
         }
 
-        $inline_doc_api = trim($CFG_GLPI['url_base_api'], '/')."/";
+        $inline_doc_api = trim($CFG_GLPI['url_base_api'], '/') . "/";
         $form = [
             'action' => Toolbox::getItemTypeFormURL(__CLASS__),
             'method' => 'post',
@@ -898,39 +904,39 @@ class Config extends CommonDBTM
                             'size' => 80,
                             'value' => $CFG_GLPI["url_base_api"],
                             'col_lg' => 6,
-                    ],
-                    __('Enable Rest API') => [
+                        ],
+                        __('Enable Rest API') => [
                         'name' => 'enable_api',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["enable_api"],
                         'col_lg' => 6,
-                    ],
-                    '' => $CFG_GLPI['enable_api'] ? [
-                        'content' => "<a href='$inline_doc_api'>".__("API inline Documentation")."</a>"
-                    ] : [],
-                 ]
-              ],
-              __('Authentication') => [
+                        ],
+                        '' => $CFG_GLPI['enable_api'] ? [
+                        'content' => "<a href='$inline_doc_api'>" . __("API inline Documentation") . "</a>"
+                        ] : [],
+                    ]
+                ],
+                __('Authentication') => [
                   'visible' => true,
                   'inputs' => [
                       __('Enable login with credentials') => [
                           'name' => 'enable_api_login_credentials',
                           'type' => 'checkbox',
                           'value' => $CFG_GLPI["enable_api_login_credentials"]
-                    ],
-                    __('Enable login with external token') => [
+                      ],
+                      __('Enable login with external token') => [
                         'name' => 'enable_api_login_external_token',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["enable_api_login_external_token"]
-                    ],
-                    [
+                      ],
+                      [
                         'name' => 'update',
                         'type' => 'hidden',
                         'value' => 1
-                    ]
-                 ]
-              ],
-           ]
+                      ]
+                  ]
+                ],
+            ]
         ];
 
         renderTwigForm($form);
@@ -985,7 +991,7 @@ class Config extends CommonDBTM
                     'name' => "_impact_{$i}",
                     'type' => 'checkbox',
                     'value' => ($CFG_GLPI['impact_mask'] & (1 << $i)) > 0,
-            ]);
+                ]);
             } else {
                 echo "<input type='hidden' name='_impact_{$i}' value='1' />";
             }
@@ -996,7 +1002,7 @@ class Config extends CommonDBTM
                     'name' => "_urgency_{$i}",
                     'type' => 'checkbox',
                     'value' => ($CFG_GLPI['urgency_mask'] & (1 << $i)) > 0,
-            ]);
+                ]);
             } else {
                 echo "<input type='hidden' name='_urgency_{$i}' value='1' />";
             }
@@ -1011,27 +1017,29 @@ class Config extends CommonDBTM
                 if (isset($CFG_GLPI['priority_matrix'][$urgency][$impact])) {
                     $pri = $CFG_GLPI['priority_matrix'][$urgency][$impact];
                 }
-                if (($CFG_GLPI['impact_mask'] & (1 << $impact)) != 0
-                    && ($CFG_GLPI['urgency_mask'] & (1 << $urgency)) != 0) {
+                if (
+                    ($CFG_GLPI['impact_mask'] & (1 << $impact)) != 0
+                    && ($CFG_GLPI['urgency_mask'] & (1 << $urgency)) != 0
+                ) {
                     ob_start();
                     renderTwigTemplate('macros/input.twig', [
                         'name' => "_matrix_{$urgency}_{$impact}",
                         'type' => 'select',
                         'values' => $urgencynames,
                         'value' => $CFG_GLPI['priority_matrix'][$urgency][$impact]
-               ]);
+                    ]);
                     $content = ob_get_clean();
                     $matrix[$urgency][$impact] = [
                         'content' => $content,
-                        'style' => "background:" . $_SESSION['glpipriority_'.$pri],
-               ];
+                        'style' => "background:" . $_SESSION['glpipriority_' . $pri],
+                    ];
                 } else {
                     $matrix[$urgency][$impact] = [
                         'content' => "<input
                     type='hidden'
                     name='_matrix_{$urgency}_{$impact}'
                     value='{$CFG_GLPI['priority_matrix'][$urgency][$impact]}' />",
-               ];
+                    ];
                 }
             }
         }
@@ -1044,9 +1052,9 @@ class Config extends CommonDBTM
                     'name' => 'update',
                     'value' => __('Update'),
                     'class' => 'btn btn-secondary'
-              ] : [],
-           ],
-           'content' => [
+                ] : [],
+            ],
+            'content' => [
                __('Assistance') => [
                    'visible' => true,
                    'inputs' => [
@@ -1055,75 +1063,75 @@ class Config extends CommonDBTM
                            'type' => 'time',
                            'value' => $CFG_GLPI["planning_begin"],
                            'col_lg' => 6,
-                    ],
-                    __('To') => [
+                       ],
+                       __('To') => [
                         'name' => 'planning_end',
                         'type' => 'time',
                         'value' => $CFG_GLPI["planning_end"],
                         'col_lg' => 6,
-                    ],
-                    __('Step for the hours (minutes)') => [
+                       ],
+                       __('Step for the hours (minutes)') => [
                         'name' => 'time_step',
                         'type' => 'number',
                         'value' => $CFG_GLPI["time_step"],
                         'min' => 1,
                         'max' => 60,
                         'step' => 1,
-                    ],
-                    __('Default file size limit imported by the mails receiver') => [
+                       ],
+                       __('Default file size limit imported by the mails receiver') => [
                         'name' => 'default_mailcollector_filesize_max',
                         'type' => 'select',
                         'values' => $sizes,
                         'value' => $CFG_GLPI["default_mailcollector_filesize_max"],
-                    ],
-                    __('Default heading when adding a document to a ticket') => [
+                       ],
+                       __('Default heading when adding a document to a ticket') => [
                         'name' => 'documentcategories_id_forticket',
                         'type' => 'select',
                         'values' => getOptionForItems('DocumentCategory'),
                         'value' => $CFG_GLPI["documentcategories_id_forticket"],
                         'actions' => getItemActionButtons(['info', 'add'], 'DocumentCategory'),
-                    ],
-                    __('By default, a software may be linked to a ticket') => [
+                       ],
+                       __('By default, a software may be linked to a ticket') => [
                         'name' => 'default_software_helpdesk_visible',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["default_software_helpdesk_visible"],
-                    ],
-                    __('Keep tickets when purging hardware in the inventory') => [
+                       ],
+                       __('Keep tickets when purging hardware in the inventory') => [
                         'name' => 'keep_tickets_on_delete',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["keep_tickets_on_delete"],
-                    ],
-                    __('Show personnal information in new ticket form (simplified interface)') => [
+                       ],
+                       __('Show personnal information in new ticket form (simplified interface)') => [
                         'name' => 'use_check_pref',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["use_check_pref"],
-                    ],
-                    __('Allow anonymous ticket creation (helpdesk.receiver)') => [
+                       ],
+                       __('Allow anonymous ticket creation (helpdesk.receiver)') => [
                         'name' => 'use_anonymous_helpdesk',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["use_anonymous_helpdesk"],
-                    ],
-                    __('Allow anonymous followups (receiver)') => [
+                       ],
+                       __('Allow anonymous followups (receiver)') => [
                         'name' => 'use_anonymous_followups',
                         'type' => 'checkbox',
                         'value' => $CFG_GLPI["use_anonymous_followups"],
-                    ],
-                    [
+                       ],
+                       [
                         'type' => 'hidden',
                         'name' => '_matrix',
                         'value' => 1,
-                    ],
-                    __('Matrix of calculus for priority') => [
+                       ],
+                       __('Matrix of calculus for priority') => [
                         'type' => 'twig',
                         'template' => 'matrix.twig',
                         'col_lg' => 12,
                         'col_md' => 12,
                         'headers' => $headers,
                         'matrix' => $matrix,
-                    ]
-                 ]
-              ]
-           ]
+                       ]
+                   ]
+               ]
+            ]
         ];
         //debug matrix
         renderTwigForm($form);
@@ -1250,7 +1258,7 @@ class Config extends CommonDBTM
 
         $form = [
            'action' => isset($data['id'])
-              && $data["id"] === Session::getLoginUserID() ? $CFG_GLPI['root_doc']."/front/preference.php" : User::getFormURL(),
+              && $data["id"] === Session::getLoginUserID() ? $CFG_GLPI['root_doc'] . "/front/preference.php" : User::getFormURL(),
            'buttons' => [
               [
                  'type' => 'submit',
@@ -1447,7 +1455,7 @@ class Config extends CommonDBTM
                        'min' => 0,
                        'max' => 30,
                        'step' => 1,
-                       'after' => "0 => ".__('Never'),
+                       'after' => "0 => " . __('Never'),
                        'value' => $data["refresh_views"],
                     ],
                     __('Pre-select me as a technician when creating a ticket') =>
@@ -1651,7 +1659,7 @@ class Config extends CommonDBTM
             printf(
                 __('%1$s: %2$s'),
                 __('Password minimum length'),
-                "<span id='password_min_length' class='red'>".$CFG_GLPI['password_min_length'].
+                "<span id='password_min_length' class='red'>" . $CFG_GLPI['password_min_length'] .
                       "</span>"
             );
         }
@@ -1659,56 +1667,56 @@ class Config extends CommonDBTM
         echo "<script type='text/javascript' >\n";
         echo "function passwordCheck() {\n";
         if ($CFG_GLPI["use_password_security"]) {
-            echo "var pwd = ".Html::jsGetElementbyID($field).";";
-            echo "if (pwd.val().length < ".$CFG_GLPI['password_min_length'].") {
-               ".Html::jsGetElementByID('password_min_length').".addClass('red');
-               ".Html::jsGetElementByID('password_min_length').".removeClass('green');
+            echo "var pwd = " . Html::jsGetElementbyID($field) . ";";
+            echo "if (pwd.val().length < " . $CFG_GLPI['password_min_length'] . ") {
+               " . Html::jsGetElementByID('password_min_length') . ".addClass('red');
+               " . Html::jsGetElementByID('password_min_length') . ".removeClass('green');
          } else {
-               ".Html::jsGetElementByID('password_min_length').".addClass('green');
-               ".Html::jsGetElementByID('password_min_length').".removeClass('red');
+               " . Html::jsGetElementByID('password_min_length') . ".addClass('green');
+               " . Html::jsGetElementByID('password_min_length') . ".removeClass('red');
          }";
             if ($CFG_GLPI["password_need_number"]) {
-                $needs[] = "<span id='password_need_number' class='red'>".__('Digit')."</span>";
+                $needs[] = "<span id='password_need_number' class='red'>" . __('Digit') . "</span>";
                 echo "var numberRegex = new RegExp('[0-9]', 'g');
              if (false == numberRegex.test(pwd.val())) {
-                 ".Html::jsGetElementByID('password_need_number').".addClass('red');
-                 ".Html::jsGetElementByID('password_need_number').".removeClass('green');
+                 " . Html::jsGetElementByID('password_need_number') . ".addClass('red');
+                 " . Html::jsGetElementByID('password_need_number') . ".removeClass('green');
             } else {
-                ".Html::jsGetElementByID('password_need_number').".addClass('green');
-                ".Html::jsGetElementByID('password_need_number').".removeClass('red');
+                " . Html::jsGetElementByID('password_need_number') . ".addClass('green');
+                " . Html::jsGetElementByID('password_need_number') . ".removeClass('red');
             }";
             }
             if ($CFG_GLPI["password_need_letter"]) {
-                $needs[] = "<span id='password_need_letter' class='red'>".__('Lowercase')."</span>";
+                $needs[] = "<span id='password_need_letter' class='red'>" . __('Lowercase') . "</span>";
                 echo "var letterRegex = new RegExp('[a-z]', 'g');
              if (false == letterRegex.test(pwd.val())) {
-                 ".Html::jsGetElementByID('password_need_letter').".addClass('red');
-                 ".Html::jsGetElementByID('password_need_letter').".removeClass('green');
+                 " . Html::jsGetElementByID('password_need_letter') . ".addClass('red');
+                 " . Html::jsGetElementByID('password_need_letter') . ".removeClass('green');
             } else {
-                ".Html::jsGetElementByID('password_need_letter').".addClass('green');
-                ".Html::jsGetElementByID('password_need_letter').".removeClass('red');
+                " . Html::jsGetElementByID('password_need_letter') . ".addClass('green');
+                " . Html::jsGetElementByID('password_need_letter') . ".removeClass('red');
             }";
             }
             if ($CFG_GLPI["password_need_caps"]) {
-                $needs[] = "<span id='password_need_caps' class='red'>".__('Uppercase')."</span>";
+                $needs[] = "<span id='password_need_caps' class='red'>" . __('Uppercase') . "</span>";
                 echo "var capsRegex = new RegExp('[A-Z]', 'g');
              if (false == capsRegex.test(pwd.val())) {
-                 ".Html::jsGetElementByID('password_need_caps').".addClass('red');
-                 ".Html::jsGetElementByID('password_need_caps').".removeClass('green');
+                 " . Html::jsGetElementByID('password_need_caps') . ".addClass('red');
+                 " . Html::jsGetElementByID('password_need_caps') . ".removeClass('green');
             } else {
-                ".Html::jsGetElementByID('password_need_caps').".addClass('green');
-                ".Html::jsGetElementByID('password_need_caps').".removeClass('red');
+                " . Html::jsGetElementByID('password_need_caps') . ".addClass('green');
+                " . Html::jsGetElementByID('password_need_caps') . ".removeClass('red');
             }";
             }
             if ($CFG_GLPI["password_need_symbol"]) {
-                $needs[] = "<span id='password_need_symbol' class='red'>".__('Symbol')."</span>";
+                $needs[] = "<span id='password_need_symbol' class='red'>" . __('Symbol') . "</span>";
                 echo "var capsRegex = new RegExp('[^a-zA-Z0-9_]', 'g');
              if (false == capsRegex.test(pwd.val())) {
-                 ".Html::jsGetElementByID('password_need_symbol').".addClass('red');
-                 ".Html::jsGetElementByID('password_need_symbol').".removeClass('green');
+                 " . Html::jsGetElementByID('password_need_symbol') . ".addClass('red');
+                 " . Html::jsGetElementByID('password_need_symbol') . ".removeClass('green');
             } else {
-                ".Html::jsGetElementByID('password_need_symbol').".addClass('green');
-                ".Html::jsGetElementByID('password_need_symbol').".removeClass('red');
+                " . Html::jsGetElementByID('password_need_symbol') . ".addClass('green');
+                " . Html::jsGetElementByID('password_need_symbol') . ".removeClass('red');
             }";
             }
         }
@@ -1748,8 +1756,10 @@ class Config extends CommonDBTM
                     $exception->addMessage(__('Password too short!'));
                 }
             }
-            if ($CFG_GLPI["password_need_number"]
-                && !preg_match("/[0-9]+/", $password)) {
+            if (
+                $CFG_GLPI["password_need_number"]
+                && !preg_match("/[0-9]+/", $password)
+            ) {
                 $ok = false;
                 if ($display) {
                     Session::addMessageAfterRedirect(
@@ -1761,8 +1771,10 @@ class Config extends CommonDBTM
                     $exception->addMessage(__('Password must include at least a digit!'));
                 }
             }
-            if ($CFG_GLPI["password_need_letter"]
-                && !preg_match("/[a-z]+/", $password)) {
+            if (
+                $CFG_GLPI["password_need_letter"]
+                && !preg_match("/[a-z]+/", $password)
+            ) {
                 $ok = false;
                 if ($display) {
                     Session::addMessageAfterRedirect(
@@ -1774,8 +1786,10 @@ class Config extends CommonDBTM
                     $exception->addMessage(__('Password must include at least a lowercase letter!'));
                 }
             }
-            if ($CFG_GLPI["password_need_caps"]
-                && !preg_match("/[A-Z]+/", $password)) {
+            if (
+                $CFG_GLPI["password_need_caps"]
+                && !preg_match("/[A-Z]+/", $password)
+            ) {
                 $ok = false;
                 if ($display) {
                     Session::addMessageAfterRedirect(
@@ -1787,8 +1801,10 @@ class Config extends CommonDBTM
                     $exception->addMessage(__('Password must include at least a uppercase letter!'));
                 }
             }
-            if ($CFG_GLPI["password_need_symbol"]
-                && !preg_match("/\W+/", $password)) {
+            if (
+                $CFG_GLPI["password_need_symbol"]
+                && !preg_match("/\W+/", $password)
+            ) {
                 $ok = false;
                 if ($display) {
                     Session::addMessageAfterRedirect(
@@ -1800,7 +1816,6 @@ class Config extends CommonDBTM
                     $exception->addMessage(__('Password must include at least a symbol!'));
                 }
             }
-
         }
         if (!$ok && !$display) {
             throw $exception;
@@ -1993,37 +2008,39 @@ class Config extends CommonDBTM
         ob_start();
         echo "<table aria-label=System Information'>";
         echo "<tr class='tab_bg_1'><td><pre>\n";
-        echo "ITSM-NG $ver (" . $CFG_GLPI['root_doc']." => " . GLPI_ROOT . ")\n";
+        echo "ITSM-NG $ver (" . $CFG_GLPI['root_doc'] . " => " . GLPI_ROOT . ")\n";
         echo "Installation mode: " . GLPI_INSTALL_MODE . "\n";
         echo "Current language:" . $oldlang . "\n";
         echo "\n</pre></td></tr>";
 
         echo "<tr><th>Server</th></tr>\n";
         echo "<tr class='tab_bg_1'><td><pre>\n&nbsp;\n";
-        echo wordwrap("Operating system: ".php_uname()."\n", $width, "\n\t");
+        echo wordwrap("Operating system: " . php_uname() . "\n", $width, "\n\t");
         $exts = get_loaded_extensions();
         sort($exts);
         echo wordwrap(
-            "PHP ".phpversion().' '.php_sapi_name()." (".implode(', ', $exts).")\n",
+            "PHP " . phpversion() . ' ' . php_sapi_name() . " (" . implode(', ', $exts) . ")\n",
             $width,
             "\n\t"
         );
         $msg = "Setup: ";
 
-        foreach (['max_execution_time', 'memory_limit', 'post_max_size', 'safe_mode',
-            'session.save_handler', 'upload_max_filesize'] as $key) {
-            $msg .= $key.'="'.ini_get($key).'" ';
+        foreach (
+            ['max_execution_time', 'memory_limit', 'post_max_size', 'safe_mode',
+            'session.save_handler', 'upload_max_filesize'] as $key
+        ) {
+            $msg .= $key . '="' . ini_get($key) . '" ';
         }
-        echo wordwrap($msg."\n", $width, "\n\t");
+        echo wordwrap($msg . "\n", $width, "\n\t");
 
         $msg = 'Software: ';
         if (isset($_SERVER["SERVER_SOFTWARE"])) {
             $msg .= $_SERVER["SERVER_SOFTWARE"];
         }
         if (isset($_SERVER["SERVER_SIGNATURE"])) {
-            $msg .= ' ('.Html::clean($_SERVER["SERVER_SIGNATURE"]).')';
+            $msg .= ' (' . Html::clean($_SERVER["SERVER_SIGNATURE"]) . ')';
         }
-        echo wordwrap($msg."\n", $width, "\n\t");
+        echo wordwrap($msg . "\n", $width, "\n\t");
 
         if (isset($_SERVER["HTTP_USER_AGENT"])) {
             echo "\t" . Toolbox::clean_cross_side_scripting_deep($_SERVER["HTTP_USER_AGENT"]) . "\n";
@@ -2074,8 +2091,8 @@ class Config extends CommonDBTM
         Session::loadLanguage($oldlang);
 
         $files = array_merge(
-            glob(GLPI_LOCAL_I18N_DIR."/**/*.php"),
-            glob(GLPI_LOCAL_I18N_DIR."/**/*.mo")
+            glob(GLPI_LOCAL_I18N_DIR . "/**/*.php"),
+            glob(GLPI_LOCAL_I18N_DIR . "/**/*.mo")
         );
         sort($files);
         if (count($files)) {
@@ -2089,7 +2106,7 @@ class Config extends CommonDBTM
 
         echo "<tr class='tab_bg_1'><td>[/code]\n</td></tr>";
 
-        echo "<tr class='tab_bg_2'><th>". __('To copy/paste in your support request')."</th></tr>\n";
+        echo "<tr class='tab_bg_2'><th>" . __('To copy/paste in your support request') . "</th></tr>\n";
 
         echo "</table>";
         $serverLogs = ob_get_clean();
@@ -2102,9 +2119,9 @@ class Config extends CommonDBTM
                     'name' => 'update',
                     'value' => _sx('button', 'Save'),
                     'class' => 'btn btn-secondary',
-              ],
-           ],
-           'content' => [
+                ],
+            ],
+            'content' => [
                __('General setup') => [
                    'visible' => true,
                    'inputs' => [
@@ -2117,10 +2134,10 @@ class Config extends CommonDBTM
                                3 => __('3- Important (successful logins)'),
                                4 => __('4- Notices (add, delete, tracking)'),
                                5 => __('5- Complete (all)'),
+                           ],
+                           'value' => $CFG_GLPI["event_loglevel"],
                        ],
-                       'value' => $CFG_GLPI["event_loglevel"],
-                    ],
-                    __('Maximal number of automatic actions (run by CLI)') => [
+                       __('Maximal number of automatic actions (run by CLI)') => [
                         'type' => 'number',
                         'name' => 'cron_limit',
                         'min' => 1,
@@ -2128,39 +2145,39 @@ class Config extends CommonDBTM
                         'value' => $CFG_GLPI["cron_limit"],
                         'col_lg' => 8,
                         'col_md' => 12,
-                    ],
-                    __('Logs in files (SQL, email, automatic action...)') => [
+                       ],
+                       __('Logs in files (SQL, email, automatic action...)') => [
                         'type' => 'checkbox',
                         'name' => 'use_log_in_files',
                         'value' => $CFG_GLPI["use_log_in_files"],
                         'col_lg' => 6,
-                    ],
-                    _n('SQL replica', 'SQL replicas', 1) => [
+                       ],
+                       _n('SQL replica', 'SQL replicas', 1) => [
                         'type' => 'checkbox',
                         'name' => 'use_db_slave',
                         'value' => DBConnection::isDBSlaveActive(),
                         'col_lg' => 6,
-                    ],
-                 ]
-              ],
-              __('Maintenance mode') => [
+                       ],
+                   ]
+               ],
+               __('Maintenance mode') => [
                   'visible' => true,
                   'inputs' => [
                       __('Maintenance mode') => [
                           'type' => 'checkbox',
                           'name' => 'maintenance_mode',
                           'value' => $CFG_GLPI["maintenance_mode"],
-                    ],
-                    __('Maintenance text') => [
+                      ],
+                      __('Maintenance text') => [
                         'type' => 'textarea',
                         'name' => 'maintenance_text',
                         'value' => $CFG_GLPI["maintenance_text"],
                         'col_lg' => 8,
                         'col_md' => 12,
-                    ]
-                 ]
-              ],
-              __('Proxy configuration for upgrade check') => [
+                      ]
+                  ]
+               ],
+               __('Proxy configuration for upgrade check') => [
                   'visible' => true,
                   'inputs' => [
                       __('Server') => [
@@ -2168,20 +2185,20 @@ class Config extends CommonDBTM
                           'name' => 'proxy_name',
                           'value' => $CFG_GLPI["proxy_name"],
                           'col_lg' => 6,
-                    ],
-                    __('Port') => [
+                      ],
+                      __('Port') => [
                         'type' => 'text',
                         'name' => 'proxy_port',
                         'value' => $CFG_GLPI["proxy_port"],
                         'col_lg' => 6,
-                    ],
-                    __('Login') => [
+                      ],
+                      __('Login') => [
                         'type' => 'text',
                         'name' => 'proxy_user',
                         'value' => $CFG_GLPI["proxy_user"],
                         'col_lg' => 6,
-                    ],
-                    __('Password') => [
+                      ],
+                      __('Password') => [
                         'type' => 'password',
                         'name' => 'proxy_passwd',
                         'value' => '',
@@ -2191,18 +2208,18 @@ class Config extends CommonDBTM
                         <input type='checkbox' name='_blank_proxy_passwd' id='_blank_proxy_passwd'/>
                         <label for='_blank_proxy_passwd'>$clear</label>
                      HTML,
-                    ],
-                 ]
-              ],
-              Telemetry::getViewLink() => [
+                      ],
+                  ]
+               ],
+               Telemetry::getViewLink() => [
                  'visible' => true,
                  'inputs' => [
                     __('Information about system installation and configuration') => [
                        'content' => $serverLogs
                     ]
                  ]
-              ]
-           ]
+               ]
+            ]
         ];
         renderTwigForm($form);
     }
@@ -2219,15 +2236,12 @@ class Config extends CommonDBTM
     {
         if (is_object($libstring)) {
             return realpath(dirname((new ReflectionObject($libstring))->getFileName()));
-
         } elseif (class_exists($libstring) || interface_exists($libstring)) {
             return realpath(dirname((new ReflectionClass($libstring))->getFileName()));
-
         } elseif (function_exists($libstring)) {
             // Internal function have no file name
             $path = (new ReflectionFunction($libstring))->getFileName();
             return ($path ? realpath(dirname($path)) : false);
-
         }
         return false;
     }
@@ -2393,10 +2407,12 @@ class Config extends CommonDBTM
         //                   / extjs dico / tinymce dico
         // ID  or extjs dico or tinymce dico
         foreach ($CFG_GLPI["languages"] as $ID => $language) {
-            if ((strcasecmp($lang, $ID) == 0)
+            if (
+                (strcasecmp($lang, $ID) == 0)
                 || (strcasecmp($altLang, $ID) == 0)
                 || (strcasecmp($lang, $language[2]) == 0)
-                || (strcasecmp($lang, $language[3]) == 0)) {
+                || (strcasecmp($lang, $language[3]) == 0)
+            ) {
                 return $ID;
             }
         }
@@ -2485,8 +2501,10 @@ class Config extends CommonDBTM
                 return __('Personalization');
 
             case 'User':
-                if (User::canUpdate()
-                    && $item->currentUserHaveMoreRightThan($item->getID())) {
+                if (
+                    User::canUpdate()
+                    && $item->currentUserHaveMoreRightThan($item->getID())
+                ) {
                     return __('Settings');
                 }
                 break;
@@ -2507,8 +2525,10 @@ class Config extends CommonDBTM
                     $tabs[11] = Impact::getTypeName();
                 }
 
-                if (DBConnection::isDBSlaveActive()
-                    && Config::canUpdate()) {
+                if (
+                    DBConnection::isDBSlaveActive()
+                    && Config::canUpdate()
+                ) {
                     $tabs[6]  = _n('SQL replica', 'SQL replicas', Session::getPluralNumber());  // Slave
                 }
                 return $tabs;
@@ -2531,7 +2551,6 @@ class Config extends CommonDBTM
                 $user->computePreferences();
                 $config->showFormUserPrefs($user->fields);
             }
-
         } elseif ($item->getType() == 'User') {
             $config = new self();
             $user   = new User();
@@ -2539,7 +2558,6 @@ class Config extends CommonDBTM
                 $user->computePreferences();
                 $config->showFormUserPrefs($user->fields);
             }
-
         } elseif ($item->getType() == __CLASS__) {
             switch ($tabnum) {
                 case 1:
@@ -2617,7 +2635,7 @@ class Config extends CommonDBTM
         }
         $message = $error > 0 ? $ko_message : $ok_message;
 
-        $img = "<img src='".$CFG_GLPI['root_doc']."/pics/";
+        $img = "<img src='" . $CFG_GLPI['root_doc'] . "/pics/";
         $img .= ($error > 0 ? "ko_min" : "ok_min") . ".png' alt='$message' title='$message'/>";
 
         if (isCommandLine()) {
@@ -2677,7 +2695,6 @@ class Config extends CommonDBTM
             } else {
                 echo "<img src=\"{$CFG_GLPI['root_doc']}/pics/warning_min.png\">" . $msg . "\n";
             }
-
         }
 
         foreach ($report['missing'] as $ext => $msg) {
@@ -2910,8 +2927,8 @@ class Config extends CommonDBTM
 
         // Only write test for GLPI_LOG as SElinux prevent removing log file.
         if (!$fordebug) {
-            echo "<tr class='tab_bg_1'><td class='b left'>".
-                  __('Checking write permissions for log files')."</td>";
+            echo "<tr class='tab_bg_1'><td class='b left'>" .
+                  __('Checking write permissions for log files') . "</td>";
         }
 
         $can_write_logs = false;
@@ -2927,22 +2944,21 @@ class Config extends CommonDBTM
 
         if ($can_write_logs) {
             if ($fordebug) {
-                echo "<img src='".$CFG_GLPI['root_doc']."/pics/ok_min.png' alt=\"".__s('OK')."\">".
-                       GLPI_LOG_DIR." : OK\n";
+                echo "<img src='" . $CFG_GLPI['root_doc'] . "/pics/ok_min.png' alt=\"" . __s('OK') . "\">" .
+                       GLPI_LOG_DIR . " : OK\n";
             } else {
-                echo "<td><img src='".$CFG_GLPI['root_doc']."/pics/ok_min.png' alt=\"".
-                           __s('A file was created - Perfect!')."\" title=\"".
-                           __s('A file was created - Perfect!')."\"></td></tr>";
+                echo "<td><img src='" . $CFG_GLPI['root_doc'] . "/pics/ok_min.png' alt=\"" .
+                           __s('A file was created - Perfect!') . "\" title=\"" .
+                           __s('A file was created - Perfect!') . "\"></td></tr>";
             }
-
         } else {
             if ($fordebug) {
-                echo "<img src='".$CFG_GLPI['root_doc']."/pics/warning_min.png'>".
-                      sprintf(__('Check permissions to the directory: %s'), GLPI_LOG_DIR)."\n";
+                echo "<img src='" . $CFG_GLPI['root_doc'] . "/pics/warning_min.png'>" .
+                      sprintf(__('Check permissions to the directory: %s'), GLPI_LOG_DIR) . "\n";
             } else {
-                echo "<td><img src='".$CFG_GLPI['root_doc']."/pics/warning_min.png'>".
-                     "<p class='red'>".__('The file could not be created.')."</p>".
-                     sprintf(__('Check permissions to the directory: %s'), GLPI_LOG_DIR)."</td></tr>";
+                echo "<td><img src='" . $CFG_GLPI['root_doc'] . "/pics/warning_min.png'>" .
+                     "<p class='red'>" . __('The file could not be created.') . "</p>" .
+                     sprintf(__('Check permissions to the directory: %s'), GLPI_LOG_DIR) . "</td></tr>";
             }
         }
 
@@ -2953,7 +2969,7 @@ class Config extends CommonDBTM
             $error = 0;
             foreach ($dir_to_check as $dir => $message) {
                 if (!$fordebug) {
-                    echo "<tr class='tab_bg_1'><td class='left b'>".$message."</td>";
+                    echo "<tr class='tab_bg_1'><td class='left b'>" . $message . "</td>";
                 }
                 $tmperror = Toolbox::testWriteAccessToDirectory($dir);
 
@@ -2966,25 +2982,25 @@ class Config extends CommonDBTM
 
                 if ($tmperror > 0) {
                     if ($fordebug) {
-                        echo "<img src='".$CFG_GLPI['root_doc']."/pics/ko_min.png'> ".
-                              sprintf(__('Check permissions to the directory: %s'), $dir).
-                              " ".$errors[$tmperror]."\n";
+                        echo "<img src='" . $CFG_GLPI['root_doc'] . "/pics/ko_min.png'> " .
+                              sprintf(__('Check permissions to the directory: %s'), $dir) .
+                              " " . $errors[$tmperror] . "\n";
                     } else {
-                        echo "<td><img src='".$CFG_GLPI['root_doc']."/pics/ko_min.png'><p class='red'>".
-                           $errors[$tmperror]."</p> ".
-                           sprintf(__('Check permissions to the directory: %s'), $dir).
+                        echo "<td><img src='" . $CFG_GLPI['root_doc'] . "/pics/ko_min.png'><p class='red'>" .
+                           $errors[$tmperror] . "</p> " .
+                           sprintf(__('Check permissions to the directory: %s'), $dir) .
                            "'</td></tr>";
                     }
                     $error = 2;
                 } else {
                     if ($fordebug) {
-                        echo "<img src='".$CFG_GLPI['root_doc']."/pics/ok_min.png' alt=\"".__s('OK').
+                        echo "<img src='" . $CFG_GLPI['root_doc'] . "/pics/ok_min.png' alt=\"" . __s('OK') .
                            "\">$dir : OK\n";
                     } else {
-                        echo "<td><img src='".$CFG_GLPI['root_doc']."/pics/ok_min.png' alt=\"".
-                                 __s('A file and a directory have be created and deleted - Perfect!')."\"
-                           title=\"".
-                                 __s('A file and a directory have be created and deleted - Perfect!')."\">".
+                        echo "<td><img src='" . $CFG_GLPI['root_doc'] . "/pics/ok_min.png' alt=\"" .
+                                 __s('A file and a directory have be created and deleted - Perfect!') . "\"
+                           title=\"" .
+                                 __s('A file and a directory have be created and deleted - Perfect!') . "\">" .
                            "</td></tr>";
                     }
                 }
@@ -3005,7 +3021,9 @@ class Config extends CommonDBTM
         }
 
         if ($check_access) {
-            $oldhand = set_error_handler(function ($errno, $errmsg, $filename, $linenum, $vars) {return true;});
+            $oldhand = set_error_handler(function ($errno, $errmsg, $filename, $linenum, $vars) {
+                return true;
+            });
             $oldlevel = error_reporting(0);
 
             //create a context to set timeout
@@ -3022,44 +3040,44 @@ class Config extends CommonDBTM
             }
             $uri = $protocol . '://' . $_SERVER['SERVER_NAME'] . $CFG_GLPI['root_doc'];
 
-            if ($fic = fopen($uri.'/index.php?skipCheckWriteAccessToDirs=1', 'r', false, $context)) {
+            if ($fic = fopen($uri . '/index.php?skipCheckWriteAccessToDirs=1', 'r', false, $context)) {
                 fclose($fic);
                 if (!$fordebug) {
-                    echo "<tr class='tab_bg_1'><td class='b left'>".
-                       __('Web access to files directory is protected')."</td>";
+                    echo "<tr class='tab_bg_1'><td class='b left'>" .
+                       __('Web access to files directory is protected') . "</td>";
                 }
-                if ($fic = fopen($uri.'/files/_log/php-errors.log', 'r', false, $context)) {
+                if ($fic = fopen($uri . '/files/_log/php-errors.log', 'r', false, $context)) {
                     fclose($fic);
                     if ($fordebug) {
-                        echo "<img src='".$CFG_GLPI['root_doc']."/pics/warning_min.png'>".
-                              __('Web access to the files directory should not be allowed')."\n".
-                              __('Check the .htaccess file and the web server configuration.')."\n";
+                        echo "<img src='" . $CFG_GLPI['root_doc'] . "/pics/warning_min.png'>" .
+                              __('Web access to the files directory should not be allowed') . "\n" .
+                              __('Check the .htaccess file and the web server configuration.') . "\n";
                     } else {
-                        echo "<td><img src='".$CFG_GLPI['root_doc']."/pics/warning_min.png'>".
-                           "<p class='red'>".__('Web access to the files directory should not be allowed')."<br/>".
-                           __('Check the .htaccess file and the web server configuration.')."</p></td></tr>";
+                        echo "<td><img src='" . $CFG_GLPI['root_doc'] . "/pics/warning_min.png'>" .
+                           "<p class='red'>" . __('Web access to the files directory should not be allowed') . "<br/>" .
+                           __('Check the .htaccess file and the web server configuration.') . "</p></td></tr>";
                     }
                     $error = 1;
                 } else {
                     if ($fordebug) {
-                        echo "<img src='".$CFG_GLPI['root_doc']."/pics/ok_min.png' alt=\"".
-                              __s('Web access to files directory is protected')."\">".
-                              __s('Web access to files directory is protected')." : OK\n";
+                        echo "<img src='" . $CFG_GLPI['root_doc'] . "/pics/ok_min.png' alt=\"" .
+                              __s('Web access to files directory is protected') . "\">" .
+                              __s('Web access to files directory is protected') . " : OK\n";
                     } else {
-                        echo "<td><img src='".$CFG_GLPI['root_doc']."/pics/ok_min.png' alt=\"".
-                              __s('Web access to files directory is protected')."\" title=\"".
-                              __s('Web access to files directory is protected')."\"></td></tr>";
+                        echo "<td><img src='" . $CFG_GLPI['root_doc'] . "/pics/ok_min.png' alt=\"" .
+                              __s('Web access to files directory is protected') . "\" title=\"" .
+                              __s('Web access to files directory is protected') . "\"></td></tr>";
                     }
                 }
             } else {
-                $msg = __('Web access to the files directory should not be allowed but this cannot be checked automatically on this instance.')."\n".
-                   "Make sure acces to <a href='{$CFG_GLPI['root_doc']}/files/_log/php-errors.log'>".__('error log file')."</a> is forbidden; otherwise review .htaccess file and web server configuration.";
+                $msg = __('Web access to the files directory should not be allowed but this cannot be checked automatically on this instance.') . "\n" .
+                   "Make sure acces to <a href='{$CFG_GLPI['root_doc']}/files/_log/php-errors.log'>" . __('error log file') . "</a> is forbidden; otherwise review .htaccess file and web server configuration.";
 
                 if ($fordebug) {
-                    echo "<img src='".$CFG_GLPI['root_doc']."/pics/warning_min.png'>".$msg;
+                    echo "<img src='" . $CFG_GLPI['root_doc'] . "/pics/warning_min.png'>" . $msg;
                 } else {
-                    echo "<td><img src='".$CFG_GLPI['root_doc']."/pics/warning_min.png'>".
-                          "<p class='red'>".nl2br($msg)."</p></td></tr>";
+                    echo "<td><img src='" . $CFG_GLPI['root_doc'] . "/pics/warning_min.png'>" .
+                          "<p class='red'>" . nl2br($msg) . "</p></td></tr>";
                 }
             }
 
@@ -3244,10 +3262,12 @@ class Config extends CommonDBTM
             $CFG_GLPI['lock_item_list'] = importArrayFromDB($CFG_GLPI['lock_item_list']);
         }
 
-        if (isset($CFG_GLPI['lock_lockprofile_id'])
+        if (
+            isset($CFG_GLPI['lock_lockprofile_id'])
             && $CFG_GLPI['lock_use_lock_item']
             && $CFG_GLPI['lock_lockprofile_id'] > 0
-            && !isset($CFG_GLPI['lock_lockprofile'])) {
+            && !isset($CFG_GLPI['lock_lockprofile'])
+        ) {
             $prof = new Profile();
             $prof->getFromDB($CFG_GLPI['lock_lockprofile_id']);
             $prof->cleanProfile();
@@ -3285,16 +3305,17 @@ class Config extends CommonDBTM
                 $value = Toolbox::sodiumEncrypt($value);
             }
 
-            if ($config->getFromDBByCrit([
-               'context'   => $context,
-               'name'      => $name
-            ])) {
+            if (
+                $config->getFromDBByCrit([
+                'context'   => $context,
+                'name'      => $name
+                ])
+            ) {
                 $input = ['id'      => $config->getID(),
                           'context' => $context,
                           'value'   => $value];
 
                 $config->update($input);
-
             } else {
                 $input = ['context' => $context,
                           'name'    => $name,
@@ -3320,10 +3341,12 @@ class Config extends CommonDBTM
 
         $config = new self();
         foreach ($values as $value) {
-            if ($config->getFromDBByCrit([
-               'context'   => $context,
-               'name'      => $value
-            ])) {
+            if (
+                $config->getFromDBByCrit([
+                'context'   => $context,
+                'name'      => $value
+                ])
+            ) {
                 $config->delete(['id' => $config->getID()]);
             }
         }
@@ -3334,8 +3357,11 @@ class Config extends CommonDBTM
     {
 
         $values = parent::getRights();
-        unset($values[CREATE], $values[DELETE],
-            $values[PURGE]);
+        unset(
+            $values[CREATE],
+            $values[DELETE],
+            $values[PURGE]
+        );
 
         return $values;
     }
@@ -3349,7 +3375,7 @@ class Config extends CommonDBTM
      */
     public static function agreeDevMessage($bg = false)
     {
-        $msg = '<p class="'.($bg ? 'mig' : '') .'red"><strong>' . __('You are using a development version, be careful!') . '</strong><br/>';
+        $msg = '<p class="' . ($bg ? 'mig' : '') . 'red"><strong>' . __('You are using a development version, be careful!') . '</strong><br/>';
         $msg .= "<input type='checkbox' required='required' id='agree_dev' name='agree_dev'/><label for='agree_dev'>" . __('I know I am using a unstable version.') . "</label></p>";
         $msg .= "<script type=text/javascript>
             $(function() {
@@ -3392,9 +3418,10 @@ class Config extends CommonDBTM
          */
         // Read configuration
         $conf = [];
-        if ($DB
-           && $DB->connected
-           && $DB->fieldExists(self::getTable(), 'context')
+        if (
+            $DB
+            && $DB->connected
+            && $DB->fieldExists(self::getTable(), 'context')
         ) {
             $conf = self::getConfigurationValues($context, [$optname]);
         }
@@ -3446,7 +3473,6 @@ class Config extends CommonDBTM
                 case 'apcu':
                 case 'memory':
                 case 'session':
-
                 default:
                     $skip_integrity_checks = false;
                     break;
@@ -3516,8 +3542,10 @@ class Config extends CommonDBTM
                     $fallback = true;
                 } catch (Exception $e1) {
                     Toolbox::logError($e1->getMessage());
-                    if (isset($_SESSION['glpi_use_mode'])
-                        && Session::DEBUG_MODE == $_SESSION['glpi_use_mode']) {
+                    if (
+                        isset($_SESSION['glpi_use_mode'])
+                        && Session::DEBUG_MODE == $_SESSION['glpi_use_mode']
+                    ) {
                         //preivous attempt has faled as well.
                         Toolbox::logDebug($e->getMessage());
                     }
@@ -3528,8 +3556,10 @@ class Config extends CommonDBTM
                 $opt = ['adapter' => 'memory'];
                 $storage = Laminas\Cache\StorageFactory::factory($opt);
             }
-            if (isset($_SESSION['glpi_use_mode'])
-                && Session::DEBUG_MODE == $_SESSION['glpi_use_mode']) {
+            if (
+                isset($_SESSION['glpi_use_mode'])
+                && Session::DEBUG_MODE == $_SESSION['glpi_use_mode']
+            ) {
                 Toolbox::logDebug($e->getMessage());
             }
         }
@@ -3548,7 +3578,7 @@ class Config extends CommonDBTM
      */
     public function getPalettes()
     {
-        $themes_files = scandir(GLPI_ROOT."/css/palettes/");
+        $themes_files = scandir(GLPI_ROOT . "/css/palettes/");
         $themes = [];
         foreach ($themes_files as $file) {
             if (strpos($file, ".scss") !== false) {
@@ -3861,10 +3891,11 @@ class Config extends CommonDBTM
         global $DB;
 
         // Check if password expiration mechanism has been activated
-        if ($this->fields['name'] == 'password_expiration_delay'
+        if (
+            $this->fields['name'] == 'password_expiration_delay'
             && array_key_exists('value', $this->oldvalues)
-            && (int)$this->oldvalues['value'] === -1) {
-
+            && (int)$this->oldvalues['value'] === -1
+        ) {
             // As passwords will now expire, consider that "now" is the reference date of expiration delay
             $DB->update(
                 User::getTable(),

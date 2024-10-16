@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -42,14 +43,14 @@ if (isset($_SESSION["ldap_sortorder"])) {
 
 AuthLDAP::manageValuesInSession([], true);
 echo "<div class='center'><table class='tab_cadre' aria-label='LDAP directory link'>";
-echo "<tr><th>".__('Bulk import users from a LDAP directory')."</th></tr>";
+echo "<tr><th>" . __('Bulk import users from a LDAP directory') . "</th></tr>";
 
-echo "<tr class='tab_bg_1'><td class='center b'>".
-     "<a href='ldap.import.php?mode=1&action=show'>". __('Synchronizing already imported users').
+echo "<tr class='tab_bg_1'><td class='center b'>" .
+     "<a href='ldap.import.php?mode=1&action=show'>" . __('Synchronizing already imported users') .
      "</a></td></tr>";
 
-echo "<tr class='tab_bg_1'><td class='center b'>".
-     "<a href='ldap.import.php?mode=0&action=show'>". __('Import new users')."</a></td> </tr>";
+echo "<tr class='tab_bg_1'><td class='center b'>" .
+     "<a href='ldap.import.php?mode=0&action=show'>" . __('Import new users') . "</a></td> </tr>";
 
 echo "</table></div>";
 

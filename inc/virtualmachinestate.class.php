@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,5 +42,4 @@ class VirtualMachineState extends CommonDropdown
     {
         return _n('State of the virtual machine', 'States of the virtual machine', $nb);
     }
-
 }

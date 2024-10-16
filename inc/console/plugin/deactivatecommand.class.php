@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -156,7 +157,7 @@ class DeactivateCommand extends AbstractPluginCommand
               'WHERE' => [
                  'state' => Plugin::ACTIVATED
               ]
-         ]
+            ]
         );
         foreach ($plugin_iterator as $plugin) {
             $choices[$plugin['directory']] = $plugin['name'];

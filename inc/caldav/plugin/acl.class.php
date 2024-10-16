@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -72,8 +73,10 @@ class Acl extends Plugin
 
         $acl = parent::getAcl($node);
 
-        if (!($node instanceof IACL) || ($owner_path = $node->getOwner()) === null
-            || !$this->canViewPrincipalObjects($owner_path)) {
+        if (
+            !($node instanceof IACL) || ($owner_path = $node->getOwner()) === null
+            || !$this->canViewPrincipalObjects($owner_path)
+        ) {
             return $acl;
         }
 

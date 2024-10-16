@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -44,15 +45,19 @@ Session::checkCentralAccess();
 $used = [];
 
 // Clean used array
-if (isset($_POST['used'])
-   && is_array($_POST['used'])
-      && (count($_POST['used']) > 0)) {
-    foreach ($DB->request(
-        'glpi_certificates',
-        ['id'                  => $_POST['used'],
+if (
+    isset($_POST['used'])
+    && is_array($_POST['used'])
+      && (count($_POST['used']) > 0)
+) {
+    foreach (
+        $DB->request(
+            'glpi_certificates',
+            ['id'                  => $_POST['used'],
                            'certificatetypes_id' => $_POST['certificatetype']
                           ]
-    ) as $data) {
+        ) as $data
+    ) {
         $used[$data['id']] = $data['id'];
     }
 }

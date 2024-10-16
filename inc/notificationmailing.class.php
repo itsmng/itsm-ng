@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -70,8 +71,10 @@ class NotificationMailing implements NotificationInterface
         $checkdns = (isset($options['checkdns']) ? $options['checkdns'] : false);
         if ($checkdns) {
             $domain    = substr($address, strrpos($address, '@') + 1);
-            if ($isValid
-                  && !(checkdnsrr($domain, "MX") || checkdnsrr($domain, "A"))) {
+            if (
+                $isValid
+                  && !(checkdnsrr($domain, "MX") || checkdnsrr($domain, "A"))
+            ) {
                 // domain not found in DNS
                 $isValid = false;
             }
@@ -91,7 +94,7 @@ class NotificationMailing implements NotificationInterface
         $mmail->AddCustomHeader("X-Auto-Response-Suppress: OOF, DR, NDR, RN, NRN");
         $mmail->SetFrom($CFG_GLPI["admin_email"], $CFG_GLPI["admin_email_name"], false);
 
-        $text = __('This is a test email.')."\n-- \n".$CFG_GLPI["mailing_signature"];
+        $text = __('This is a test email.') . "\n-- \n" . $CFG_GLPI["mailing_signature"];
         $recipient = $CFG_GLPI['admin_email'];
         if (defined('GLPI_FORCE_MAIL')) {
             //force recipient to configured email address
@@ -101,7 +104,7 @@ class NotificationMailing implements NotificationInterface
         }
 
         $mmail->AddAddress($recipient, $CFG_GLPI["admin_email_name"]);
-        $mmail->Subject = "[ITSM-NG] ".__('Mail test');
+        $mmail->Subject = "[ITSM-NG] " . __('Mail test');
         $mmail->Body    = $text;
 
         if (!$mmail->Send()) {
@@ -175,7 +178,7 @@ class NotificationMailing implements NotificationInterface
                         __('An email to %s was added to queue'),
                         $options['to']
                     ),
-                    $options['subject']."\n"
+                    $options['subject'] . "\n"
                 )
             );
         }

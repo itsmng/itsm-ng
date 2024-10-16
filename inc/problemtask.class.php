@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -133,9 +134,11 @@ class ProblemTask extends CommonITILTask
             return false;
         }
 
-        if (($this->fields["users_id"] != Session::getLoginUserID())
+        if (
+            ($this->fields["users_id"] != Session::getLoginUserID())
             && !Session::haveRight('problem', UPDATE)
-            && !Session::haveRight(self::$rightname, parent::UPDATEALL)) {
+            && !Session::haveRight(self::$rightname, parent::UPDATEALL)
+        ) {
             return false;
         }
 
@@ -201,6 +204,4 @@ class ProblemTask extends CommonITILTask
     {
         return parent::genericPopulateNotPlanned(__CLASS__, $options);
     }
-
-
 }

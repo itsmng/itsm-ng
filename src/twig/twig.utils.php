@@ -181,8 +181,8 @@ function getLinkedDocumentsForItem($itemType, $items_id)
     $document = new Document();
     while ($val = $iterator->next()) {
         $document->getFromDB($val['documents_id']);
-        $options[$val['id']] = "<a href=".$document->getFormURLWithID($val['documents_id'])
-            .">".$document->fields['filename']." (".filesize(GLPI_DOC_DIR . $document->fields['filepath'])."B)</a>";
+        $options[$val['id']] = "<a href=" . $document->getFormURLWithID($val['documents_id'])
+            . ">" . $document->fields['filename'] . " (" . filesize(GLPI_DOC_DIR . $document->fields['filepath']) . "B)</a>";
     }
 
     return $options;
@@ -232,7 +232,6 @@ function renderTwigTemplate($path, $vars, $root = '/templates')
         echo "</pre>";
         echo $e->getFile() . ':' . $e->getLine();
         echo "</div>";
-
     }
 }
 
@@ -267,9 +266,11 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
             ]
         ], $form['content'][array_key_first($form['content'])]['inputs']);
     };
-    if (isset($_SESSION['glpiactiveentities']) &&
+    if (
+        isset($_SESSION['glpiactiveentities']) &&
         count($_SESSION['glpiactiveentities']) > 1 &&
-        isset($fields['entities_id']) && !isset($fields['noEntity'])) {
+        isset($fields['entities_id']) && !isset($fields['noEntity'])
+    ) {
         $entity_name = Dropdown::getDropdownName('glpi_entities', $fields['entities_id']);
         $form['content'] = [Entity::getTypeName() => [
             'visible' => true,
@@ -299,7 +300,6 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
                 'value' => Session::getIsActiveEntityRecursive(),
             ],
         ], $form['content'][array_key_first($form['content'])]['inputs']);
-
     }
     if (isset($form['itemtype'])) {
         $item = new $form['itemtype']();
@@ -408,10 +408,10 @@ function getItemActionButtons(array $actions, string $itemType): array
                 break;
             case 'add':
                 $item = new $itemType();
-                Ajax::createModalWindow('add_'.$itemType, $item->getFormUrl() . '?_in_modal=1');
+                Ajax::createModalWindow('add_' . $itemType, $item->getFormUrl() . '?_in_modal=1');
                 $content = [
                     'icon' => 'fas fa-plus',
-                    'onClick' => "add_".$itemType.".dialog('open');",
+                    'onClick' => "add_" . $itemType . ".dialog('open');",
                     'info' => 'Add',
                 ];
                 break;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -54,17 +55,14 @@ if (isset($_POST["add"])) {
     $record->check($_POST['id'], DELETE);
     $record->delete($_POST);
     $record->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $record->check($_POST['id'], PURGE);
     $record->restore($_POST);
     $record->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $record->check($_POST['id'], PURGE);
     $record->delete($_POST, 1);
     $record->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $record->check($_POST['id'], UPDATE);
     $record->update($_POST);
@@ -73,7 +71,6 @@ if (isset($_POST["add"])) {
     Html::popHeader(DomainRecord::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF']);
     $record->showForm($_GET["id"], ['domains_id' => $_GET['domains_id'] ?? null]);
     Html::popFooter();
-
 } else {
     Html::header(DomainRecord::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "management", "domain", "domainrecord");
     $record->display([

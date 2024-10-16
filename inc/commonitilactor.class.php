@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -76,13 +77,17 @@ abstract class CommonITILActor extends CommonDBRelation
     {
 
         // Anonymous user is valid if 'alternative_email' field is not empty
-        if (isset($input['users_id']) && ($input['users_id'] == 0)
-            && isset($input['alternative_email']) && !empty($input['alternative_email'])) {
+        if (
+            isset($input['users_id']) && ($input['users_id'] == 0)
+            && isset($input['alternative_email']) && !empty($input['alternative_email'])
+        ) {
             return true;
         }
         // Anonymous supplier is valid if 'alternative_email' field is not empty
-        if (isset($input['suppliers_id']) && ($input['suppliers_id'] == 0)
-            && isset($input['alternative_email']) && !empty($input['alternative_email'])) {
+        if (
+            isset($input['suppliers_id']) && ($input['suppliers_id'] == 0)
+            && isset($input['alternative_email']) && !empty($input['alternative_email'])
+        ) {
             return true;
         }
         return false;
@@ -171,10 +176,10 @@ abstract class CommonITILActor extends CommonDBRelation
         }
         $item = new static::$itemtype_1();
 
-        echo "<br><form aria-label='Notification' method='post' action='".$_SERVER['PHP_SELF']."'>";
+        echo "<br><form aria-label='Notification' method='post' action='" . $_SERVER['PHP_SELF'] . "'>";
         echo "<div class='center'>";
         echo "<table class='tab_cadre' width='80%' aria-label='User Notification'>";
-        echo "<tr class='tab_bg_2'><td>".$item->getTypeName(1)."</td>";
+        echo "<tr class='tab_bg_2'><td>" . $item->getTypeName(1) . "</td>";
         echo "<td>";
         if ($item->getFromDB($this->fields[static::getItilObjectForeignKey()])) {
             echo $item->getField('name');
@@ -189,21 +194,22 @@ abstract class CommonITILActor extends CommonDBRelation
             $emails        = $user->getAllEmails();
         }
 
-        echo "<tr class='tab_bg_2'><td>".User::getTypeName(1)."</td>";
-        echo "<td>".$user->getName()."</td></tr>";
+        echo "<tr class='tab_bg_2'><td>" . User::getTypeName(1) . "</td>";
+        echo "<td>" . $user->getName() . "</td></tr>";
 
-        echo "<tr class='tab_bg_1'><td>".__('Email Followup')."</td>";
+        echo "<tr class='tab_bg_1'><td>" . __('Email Followup') . "</td>";
         echo "<td>";
         Dropdown::showYesNo('use_notification', $this->fields['use_notification']);
         echo "</td></tr>";
 
-        echo "<tr class='tab_bg_1'><td>"._n('Email', 'Emails', 1)."</td>";
+        echo "<tr class='tab_bg_1'><td>" . _n('Email', 'Emails', 1) . "</td>";
         echo "<td>";
-        if ((count($emails) ==  1)
+        if (
+            (count($emails) ==  1)
             && !empty($default_email)
-            && NotificationMailing::isUserAddressValid($default_email)) {
+            && NotificationMailing::isUserAddressValid($default_email)
+        ) {
             echo $default_email;
-
         } elseif (count($emails) > 1) {
             // Several emails : select in the list
             $emailtab = [];
@@ -216,14 +222,14 @@ abstract class CommonITILActor extends CommonDBRelation
                 ['value'   => $this->fields['alternative_email']]
             );
         } else {
-            echo "<input type='text' size='40' name='alternative_email' value='".
-                   $this->fields['alternative_email']."'>";
+            echo "<input type='text' size='40' name='alternative_email' value='" .
+                   $this->fields['alternative_email'] . "'>";
         }
         echo "</td></tr>";
 
         echo "<tr class='tab_bg_2'>";
         echo "<td class='center' colspan='2'>";
-        echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit'>";
+        echo "<input type='submit' name='update' value=\"" . _sx('button', 'Save') . "\" class='submit'>";
         echo "<input type='hidden' name='id' value='$ID'>";
         echo "</td></tr>";
 
@@ -252,10 +258,10 @@ abstract class CommonITILActor extends CommonDBRelation
         }
         $item = new static::$itemtype_1();
 
-        echo "<br><form aria-label='Supplier Notification' method='post' action='".$_SERVER['PHP_SELF']."'>";
+        echo "<br><form aria-label='Supplier Notification' method='post' action='" . $_SERVER['PHP_SELF'] . "'>";
         echo "<div class='center'>";
         echo "<table class='tab_cadre' width='80%' aria-label='Supplier Notifications'>";
-        echo "<tr class='tab_bg_2'><td>".$item->getTypeName(1)."</td>";
+        echo "<tr class='tab_bg_2'><td>" . $item->getTypeName(1) . "</td>";
         echo "<td>";
         if ($item->getFromDB($this->fields[static::getItilObjectForeignKey()])) {
             echo $item->getField('name');
@@ -268,26 +274,26 @@ abstract class CommonITILActor extends CommonDBRelation
             $default_email = $supplier->fields['email'];
         }
 
-        echo "<tr class='tab_bg_2'><td>".Supplier::getTypeName(1)."</td>";
-        echo "<td>".$supplier->getName()."</td></tr>";
+        echo "<tr class='tab_bg_2'><td>" . Supplier::getTypeName(1) . "</td>";
+        echo "<td>" . $supplier->getName() . "</td></tr>";
 
-        echo "<tr class='tab_bg_1'><td>".__('Email Followup')."</td>";
+        echo "<tr class='tab_bg_1'><td>" . __('Email Followup') . "</td>";
         echo "<td>";
         Dropdown::showYesNo('use_notification', $this->fields['use_notification']);
         echo "</td></tr>";
 
-        echo "<tr class='tab_bg_1'><td>"._n('Email', 'Emails', 1)."</td>";
+        echo "<tr class='tab_bg_1'><td>" . _n('Email', 'Emails', 1) . "</td>";
         echo "<td>";
         if (empty($this->fields['alternative_email'])) {
             $this->fields['alternative_email'] = $default_email;
         }
-        echo "<input type='text' size='40' name='alternative_email' value='".
-               $this->fields['alternative_email']."'>";
+        echo "<input type='text' size='40' name='alternative_email' value='" .
+               $this->fields['alternative_email'] . "'>";
         echo "</td></tr>";
 
         echo "<tr class='tab_bg_2'>";
         echo "<td class='center' colspan='2'>";
-        echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit'>";
+        echo "<input type='submit' name='update' value=\"" . _sx('button', 'Save') . "\" class='submit'>";
         echo "<input type='hidden' name='id' value='$ID'>";
         echo "</td></tr>";
 
@@ -305,12 +311,13 @@ abstract class CommonITILActor extends CommonDBRelation
         $item = $this->getConnexityItem(static::$itemtype_1, static::getItilObjectForeignKey());
 
         if ($item instanceof CommonDBTM) {
-            if (($item->countSuppliers(CommonITILActor::ASSIGN) == 0)
+            if (
+                ($item->countSuppliers(CommonITILActor::ASSIGN) == 0)
                 && ($item->countUsers(CommonITILActor::ASSIGN) == 0)
                 && ($item->countGroups(CommonITILActor::ASSIGN) == 0)
                 && ($item->fields['status'] != CommonITILObject::CLOSED)
-                && ($item->fields['status'] != CommonITILObject::SOLVED)) {
-
+                && ($item->fields['status'] != CommonITILObject::SOLVED)
+            ) {
                 $status = CommonITILObject::INCOMING;
                 if (in_array($item->fields['status'], Change::getNewStatusArray())) {
                     $status = $item->fields['status'];
@@ -328,7 +335,6 @@ abstract class CommonITILActor extends CommonDBRelation
                     NotificationEvent::raiseEvent("update", $item, $options);
                 }
             }
-
         }
         parent::post_deleteFromDB();
     }
@@ -371,8 +377,10 @@ abstract class CommonITILActor extends CommonDBRelation
                 }
             }
         }
-        if (isset($input['alternative_email']) && $input['alternative_email'] != ''
-            && !NotificationMailing::isUserAddressValid($input['alternative_email'])) {
+        if (
+            isset($input['alternative_email']) && $input['alternative_email'] != ''
+            && !NotificationMailing::isUserAddressValid($input['alternative_email'])
+        ) {
             Session::addMessageAfterRedirect(
                 __('Invalid email address'),
                 false,
@@ -399,9 +407,11 @@ abstract class CommonITILActor extends CommonDBRelation
 
         if ($item->getFromDB($this->fields[static::getItilObjectForeignKey()])) {
             // Check object status and update it if needed
-            if (!isset($this->input['_from_object'])
+            if (
+                !isset($this->input['_from_object'])
                 && in_array($item->fields["status"], $item->getNewStatusArray())
-                && in_array(CommonITILObject::ASSIGNED, array_keys($item->getAllStatusArray()))) {
+                && in_array(CommonITILObject::ASSIGNED, array_keys($item->getAllStatusArray()))
+            ) {
                 $item->update(['id'               => $item->getID(),
                                'status'           => CommonITILObject::ASSIGNED,
                                '_from_assignment' => true]);
@@ -422,12 +432,11 @@ abstract class CommonITILActor extends CommonDBRelation
                         break;
                 }
                 // example for event: assign_group
-                $event = $string_type."_".strtolower($this::$itemtype_2);
+                $event = $string_type . "_" . strtolower($this::$itemtype_2);
                 NotificationEvent::raiseEvent($event, $item);
             }
         }
 
         parent::post_addItem();
     }
-
 }

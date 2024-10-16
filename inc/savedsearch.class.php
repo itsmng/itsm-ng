@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -76,12 +77,12 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     public function getSpecificMassiveActions($checkitem = null)
     {
 
-        $actions[get_called_class().MassiveAction::CLASS_ACTION_SEPARATOR.'unset_default']
+        $actions[get_called_class() . MassiveAction::CLASS_ACTION_SEPARATOR . 'unset_default']
                        = __('Unset as default');
-        $actions[get_called_class().MassiveAction::CLASS_ACTION_SEPARATOR.'change_count_method']
+        $actions[get_called_class() . MassiveAction::CLASS_ACTION_SEPARATOR . 'change_count_method']
                        = __('Change count method');
         if (Session::haveRight('transfer', READ)) {
-            $actions[get_called_class().MassiveAction::CLASS_ACTION_SEPARATOR.'change_entity']
+            $actions[get_called_class() . MassiveAction::CLASS_ACTION_SEPARATOR . 'change_entity']
                         = __('Change visibility');
         }
         return $actions;
@@ -334,8 +335,10 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     {
 
         // Set new user if initial user have been deleted
-        if (($this->fields['users_id'] == 0)
-            && ($uid = Session::getLoginUserID())) {
+        if (
+            ($this->fields['users_id'] == 0)
+            && ($uid = Session::getLoginUserID())
+        ) {
             $this->input['users_id']  = $uid;
             $this->fields['users_id'] = $uid;
             $this->updates[]          = "users_id";
@@ -360,7 +363,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             [
               SavedSearch_Alert::class,
               SavedSearch_User::class,
-         ]
+            ]
         );
     }
 
@@ -517,12 +520,14 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                     unset($query_tab['criteria']);
                     $new_key = 0;
                     foreach ($query_tab_save['criteria'] as $key => $val) {
-                        if (isset($val['field'])
+                        if (
+                            isset($val['field'])
                             && $val['field'] != 'view'
                             && $val['field'] != 'all'
                             && (!isset($opt[$val['field']])
                                 || (isset($opt[$val['field']]['nosearch'])
-                                    && $opt[$val['field']]['nosearch']))) {
+                                    && $opt[$val['field']]['nosearch']))
+                        ) {
                             $partial_load = true;
                         } else {
                             $query_tab['criteria'][$new_key] = $val;
@@ -540,8 +545,10 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                             $opt = Search::getCleanedOptions($val['itemtype']);
                         }
                         // Use if meta type is valid and option available
-                        if (!isset($val['itemtype']) || !in_array($val['itemtype'], $meta_ok)
-                            || !isset($opt[$val['field']])) {
+                        if (
+                            !isset($val['itemtype']) || !in_array($val['itemtype'], $meta_ok)
+                            || !isset($opt[$val['field']])
+                        ) {
                             $partial_load = true;
                         } else {
                             $query_tab['metacriteria'][$new_key] = $val;
@@ -573,8 +580,8 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
         global $CFG_GLPI;
 
         if ($params = $this->getParameters($ID)) {
-            $url  = $CFG_GLPI['root_doc']."/".rawurldecode($this->fields["path"]);
-            $url .= "?".Toolbox::append_params($params);
+            $url  = $CFG_GLPI['root_doc'] . "/" . rawurldecode($this->fields["path"]);
+            $url .= "?" . Toolbox::append_params($params);
 
             Html::redirect($url);
         }
@@ -614,8 +621,10 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     {
         global $DB;
 
-        if ($this->getFromDB($ID)
-            && ($this->fields['type'] != self::URI)) {
+        if (
+            $this->getFromDB($ID)
+            && ($this->fields['type'] != self::URI)
+        ) {
             $dd = new SavedSearch_User();
             // Is default view for this itemtype already exists ?
             $iterator = $DB->request([
@@ -656,8 +665,10 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     {
         global $DB;
 
-        if ($this->getFromDB($ID)
-            && ($this->fields['type'] != self::URI)) {
+        if (
+            $this->getFromDB($ID)
+            && ($this->fields['type'] != self::URI)
+        ) {
             $dd = new SavedSearch_User();
             // Is default view for this itemtype already exists ?
             $iterator = $DB->request([
@@ -695,7 +706,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                 'glpi_savedsearches_users',
                 [
                   'savedsearches_id'   => $ids
-            ]
+                ]
             );
         }
     }
@@ -809,14 +820,14 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
         $colspan = 2;
         echo "<table class='tab_cadre_fixehov' aria-label='Filter List'>";
         echo "<thead><tr><th colspan='$colspan' class='search_header'>" .
-                    "<input type='text' id='filter_savedsearch' placeholder='".__('Filter list')."' style='width: 95%; padding: 5px'></i>" .
+                    "<input type='text' id='filter_savedsearch' placeholder='" . __('Filter list') . "' style='width: 95%; padding: 5px'></i>" .
              "</th></tr></thead>";
         echo "<thead><tr><th colspan='$colspan' class='private_header'>" .
                     sprintf(
                         _n('Private %1$s', 'Private %1$s', count($searches['private'])),
                         $this->getTypeName(count($searches['private']))
                     ) .
-                    "<i class='toggle fa fa-chevron-circle-up' title='".__('Hide/Show elements')."'></i>" .
+                    "<i class='toggle fa fa-chevron-circle-up' title='" . __('Hide/Show elements') . "'></i>" .
              "</th></tr></thead><tbody>";
         echo $this->displaySavedSearchType($searches['private']);
         echo "</tbody>";
@@ -826,7 +837,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                             _n('Public %1$s', 'Public %1$s', count($searches['public'])),
                             $this->getTypeName(count($searches['public']))
                         ) .
-                        "<i class='toggle fa fa-chevron-circle-up' title='".__('Hide/Show elements')."'></i>" .
+                        "<i class='toggle fa fa-chevron-circle-up' title='" . __('Hide/Show elements') . "'></i>" .
                  "</th></tr></thead><tbody>";
             echo $this->displaySavedSearchType($searches['public']);
             echo "</tbody>";
@@ -987,13 +998,13 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                 echo "<td class='small no-wrap'>";
                 if (is_null($this->fields['IS_DEFAULT'])) {
                     echo "<a class='default fa fa-star bookmark_record' href=\"" .
-                            $this->getSearchURL() . "?action=edit&amp; mark_default=1&amp;id=".
-                            $this->fields["id"]."\" title=\"".__s('Not default search')."\">".
+                            $this->getSearchURL() . "?action=edit&amp; mark_default=1&amp;id=" .
+                            $this->fields["id"] . "\" title=\"" . __s('Not default search') . "\">" .
                             "<span class='sr-only'>" . __('Not default search')  . "</span></a>";
                 } else {
-                    echo "<a class='default fa fa-star bookmark_default' href=\"".
-                            $this->getSearchURL() . "?action=edit&amp;mark_default=0&amp;id=".
-                            $this->fields["id"]."\" title=\"".__s('Default search')."\">".
+                    echo "<a class='default fa fa-star bookmark_default' href=\"" .
+                            $this->getSearchURL() . "?action=edit&amp;mark_default=0&amp;id=" .
+                            $this->fields["id"] . "\" title=\"" . __s('Default search') . "\">" .
                             "<span class='sr-only'>" . __('Default search') . "</span></a>";
                 }
                 echo "</td>";
@@ -1002,8 +1013,8 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
 
                 $title = ($is_private ? __s('Click to load or drag and drop to reorder')
                                       : __s('Click to load'));
-                echo "<a class='savedsearchlink' href=\"".$this->getSearchURL()."?action=load&amp;id=".
-                         $this->fields["id"]."\" title='".$title."'>".
+                echo "<a class='savedsearchlink' href=\"" . $this->getSearchURL() . "?action=load&amp;id=" .
+                         $this->fields["id"] . "\" title='" . $title . "'>" .
                          $text;
                 if ($_SESSION['glpishow_count_on_tabs']) {
                     echo "<span class='primary-bg primary-fg count'>$count</span>";
@@ -1093,14 +1104,14 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
         global $CFG_GLPI;
 
         echo "<a href='#' onClick=\"savesearch.dialog('open'); return false;\"
-             class='fa fa-star bookmark_record save' title='".__s('Save current search')."'>";
-        echo "<span class='sr-only'>".__s('Save current search')."</span>";
+             class='fa fa-star bookmark_record save' title='" . __s('Save current search') . "'>";
+        echo "<span class='sr-only'>" . __s('Save current search') . "</span>";
         echo "</a>";
 
         Ajax::createModalWindow(
             'savesearch',
             $CFG_GLPI['root_doc'] .
-                                   "/ajax/savedsearch.php?action=create&itemtype=$itemtype&type=$type&url=".
+                                   "/ajax/savedsearch.php?action=create&itemtype=$itemtype&type=$type&url=" .
                                    rawurlencode($_SERVER["REQUEST_URI"]),
             ['title'       => __('Save current search')]
         );
@@ -1159,10 +1170,10 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                   'last_execution_time'   => $time,
                   'last_execution_date'   => date('Y-m-d H:i:s'),
                   'counter'               => new \QueryExpression($DB->quoteName('counter') . ' + 1')
-            ],
+                ],
                 [
                   'id' => $id
-            ]
+                ]
             );
         }
     }
@@ -1257,10 +1268,10 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             $this->getTable(),
             [
               'do_count' => $do_count
-         ],
+            ],
             [
               'id' => $ids
-         ]
+            ]
         );
         return $result;
     }
@@ -1284,10 +1295,10 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             [
               'entities_id'  => $eid,
               'is_recursive' => $recur
-         ],
+            ],
             [
               'id' => $ids
-         ]
+            ]
         );
         return $result;
     }
@@ -1336,10 +1347,10 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                     [
                       'last_execution_time'   => new QueryParam(),
                       'last_execution_date'   => new QueryParam()
-               ],
+                    ],
                     [
                       'id'                    => new QueryParam()
-               ]
+                    ]
                 );
                 $stmt = $DB->prepare($query);
 
@@ -1398,20 +1409,23 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     {
         global $CFG_GLPI;
 
-        if (($force === true)
+        if (
+            ($force === true)
             || (($this->fields['do_count'] == self::COUNT_YES)
                 || ($this->fields['do_count'] == self::COUNT_AUTO)
                 && ($this->getField('last_execution_time') != null)
-                && ($this->fields['last_execution_time'] <= $CFG_GLPI['max_time_for_count']))) {
-
+                && ($this->fields['last_execution_time'] <= $CFG_GLPI['max_time_for_count']))
+        ) {
             $search = new Search();
             //Do the same as self::getParameters() but getFromDB is useless
             $query_tab = [];
             parse_str($this->getField('query'), $query_tab);
 
             $params = null;
-            if (class_exists($this->getField('itemtype'))
-                || ($this->getField('itemtype') == 'AllAssets')) {
+            if (
+                class_exists($this->getField('itemtype'))
+                || ($this->getField('itemtype') == 'AllAssets')
+            ) {
                 $params = $this->prepareQueryToUse($this->getField('type'), $query_tab);
             }
 

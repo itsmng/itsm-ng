@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * ITSM-NG
@@ -38,9 +39,11 @@ Html::header_nocache();
 Session::checkCentralAccess();
 
 // Make a select box
-if (isset($_POST["type"])
+if (
+    isset($_POST["type"])
     && isset($_POST["actorType"])
-    && isset($_POST["itemtype"])) {
+    && isset($_POST["itemtype"])
+) {
     $rand = mt_rand();
     $withemail = isset($_POST['allow_email']) && filter_var($_POST['allow_email'], FILTER_VALIDATE_BOOLEAN);
 
@@ -118,7 +121,6 @@ if (isset($_POST["type"])
             default:
                 echo json_encode([Dropdown::EMPTY_VALUE]);
                 break;
-
         }
     }
 }

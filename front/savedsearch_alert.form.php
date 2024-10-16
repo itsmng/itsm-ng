@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -61,7 +62,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $alert->check($_POST["id"], PURGE);
 
@@ -77,8 +77,7 @@ if (isset($_POST["add"])) {
     }
     $search = new SavedSearch();
     $search->getFromDB($alert->fields['savedsearches_id']);
-    Html::redirect(Toolbox::getItemTypeFormURL('SavedSearch').'?id='.$alert->fields['savedsearches_id']);
-
+    Html::redirect(Toolbox::getItemTypeFormURL('SavedSearch') . '?id=' . $alert->fields['savedsearches_id']);
 } elseif (isset($_POST["update"])) {
     $alert->check($_POST["id"], UPDATE);
 
@@ -93,7 +92,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 } else {
     Html::header(SavedSearch::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "tools", "savedsearch");
     $alert->display(['id'           => $_GET["id"],

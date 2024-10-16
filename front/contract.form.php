@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -60,10 +61,8 @@ if (isset($_POST["add"])) {
         if ($_SESSION['glpibackcreated']) {
             Html::redirect($contract->getLinkURL());
         }
-
     }
     Html::back();
-
 } elseif (isset($_POST["delete"])) {
     $contract->check($_POST['id'], DELETE);
 
@@ -78,7 +77,6 @@ if (isset($_POST["add"])) {
         );
     }
     $contract->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $contract->check($_POST['id'], DELETE);
 
@@ -93,7 +91,6 @@ if (isset($_POST["add"])) {
         );
     }
     $contract->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $contract->check($_POST['id'], PURGE);
 
@@ -108,7 +105,6 @@ if (isset($_POST["add"])) {
         );
     }
     $contract->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $contract->check($_POST['id'], UPDATE);
 
@@ -123,7 +119,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 } else {
     Html::header(Contract::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "management", "contract");
     $contract->display([

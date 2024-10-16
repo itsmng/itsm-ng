@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -88,5 +89,4 @@ class RuleRightParameter extends CommonDropdown
     {
         return _n('LDAP criterion', 'LDAP criteria', $nb);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * ITSM-NG
@@ -58,7 +59,6 @@ class SpecialStatus extends CommonTreeDropdown
         $done = 0;
 
         for ($i = 0; $done < count($tab['name']); $i++) {
-
             if (isset($tab['name'][$i])) {
                 switch ($tab['name'][$i]) {
                     case "New":
@@ -82,7 +82,6 @@ class SpecialStatus extends CommonTreeDropdown
                 }
                 $done++;
             }
-
         }
     }
 
@@ -97,21 +96,21 @@ class SpecialStatus extends CommonTreeDropdown
         if (isset($_POST["update"])) {
             $before = Ticket::getAllStatusArray(false, true);
             while ($update = $iterators->next()) {
-                $checksum = $checksum + $_POST["is_active_" .$update["id"]];
+                $checksum = $checksum + $_POST["is_active_" . $update["id"]];
                 $DB->update(
                     "glpi_specialstatuses",
-                    ['weight' => $_POST["weight_".$update["id"]]],
+                    ['weight' => $_POST["weight_" . $update["id"]]],
                     ['id' => $update["id"]]
                 );
                 $DB->update(
                     "glpi_specialstatuses",
-                    ['is_active' => $_POST["is_active_" .$update["id"]]],
+                    ['is_active' => $_POST["is_active_" . $update["id"]]],
                     ['id' => $update["id"]]
                 );
-                if (isset($_POST["color_" .$update["id"]])) {
+                if (isset($_POST["color_" . $update["id"]])) {
                     $DB->update(
                         "glpi_specialstatuses",
-                        ['color' => $_POST["color_" .$update["id"]]],
+                        ['color' => $_POST["color_" . $update["id"]]],
                         ['id' => $update["id"]]
                     );
                 }
@@ -152,20 +151,20 @@ class SpecialStatus extends CommonTreeDropdown
 
         echo "<form aria-label='Informations' method='post' action='./specialstatus.php' method='post'>";
         echo "<table style='width:40%' class='tab_cadre' cellpadding='5' aria-label='Special Status'>";
-        echo "<tr><th colspan='5'>".__("Special Status")."</th></tr>";
+        echo "<tr><th colspan='5'>" . __("Special Status") . "</th></tr>";
         echo "<tr class='tab_bg_1'>";
-        echo "<td><b>".__("Name")."</b></td>";
-        echo "<td><b>".__("Weight")."</b></td>";
-        echo "<td><b>".__("Active")."</b></td>";
-        echo "<td><b>".__("Color")."</b></td>";
-        echo "<td><b>".__("Delete")."</b></td>";
+        echo "<td><b>" . __("Name") . "</b></td>";
+        echo "<td><b>" . __("Weight") . "</b></td>";
+        echo "<td><b>" . __("Active") . "</b></td>";
+        echo "<td><b>" . __("Color") . "</b></td>";
+        echo "<td><b>" . __("Delete") . "</b></td>";
         echo "</tr>";
 
         $iterators = $DB->request($criteria);
         while ($data = $iterators->next()) {
             echo "<tr class='tab_bg_1'>";
-            echo "<td>" . $data["name"]. "</td>";
-            echo "<td><input type='number' id='weight_". $data["id"] ."' name='weight_". $data["id"] ."' value='". $data["weight"] ."' min='1'></td>";
+            echo "<td>" . $data["name"] . "</td>";
+            echo "<td><input type='number' id='weight_" . $data["id"] . "' name='weight_" . $data["id"] . "' value='" . $data["weight"] . "' min='1'></td>";
             echo "<td>";
             Dropdown::showYesNo("is_active_" . $data["id"], $data["is_active"], -1, ['use_checkbox' => true]);
             echo "</td>";
@@ -173,16 +172,16 @@ class SpecialStatus extends CommonTreeDropdown
                 echo "<td>";
                 echo "<td>";
             } else {
-                echo "<td><input type='color' id='color_". $data["id"] ."' name='color_". $data["id"] ."' value='". $data["color"] ."'>";
+                echo "<td><input type='color' id='color_" . $data["id"] . "' name='color_" . $data["id"] . "' value='" . $data["color"] . "'>";
                 echo "<td>";
-                echo "<a class='planning_link planning_add_filter' href='javascript:specialstatus.showStatusModal(". $data["id"] .");'>";
-                echo "<i style='color:#772317' class='fa fa-trash-alt pointer fa-2x' title='" .__("Delete"). "'></i>";
+                echo "<a class='planning_link planning_add_filter' href='javascript:specialstatus.showStatusModal(" . $data["id"] . ");'>";
+                echo "<i style='color:#772317' class='fa fa-trash-alt pointer fa-2x' title='" . __("Delete") . "'></i>";
                 echo "</a>";
             }
             echo "</td></tr>";
         }
         echo "<tr class='tab_bg_1'><td class='center' colspan='5'>";
-        echo "<input type='submit' name='update' value='". _sx('button', 'Save') ."' class='btn btn-secondary'>";
+        echo "<input type='submit' name='update' value='" . _sx('button', 'Save') . "' class='btn btn-secondary'>";
         echo "</td></tr>";
         echo "</table>";
         Html::closeForm();
@@ -207,18 +206,18 @@ class SpecialStatus extends CommonTreeDropdown
             $count = count($result);
 
             if ($count <= 1) {
-                echo "<b>" . "$count " . __('Ticket is still using this status, are you sure to remove the status?') ."</b>";
+                echo "<b>" . "$count " . __('Ticket is still using this status, are you sure to remove the status?') . "</b>";
             } else {
-                echo "<b>" . "$count " . __('Tickets are still using this status, are you sure to remove the status?') ."</b>";
+                echo "<b>" . "$count " . __('Tickets are still using this status, are you sure to remove the status?') . "</b>";
             }
         } else {
-            echo "<b>" .__('Are you sure to remove the status?') . "</b>";
+            echo "<b>" . __('Are you sure to remove the status?') . "</b>";
         }
         echo "<br>";
         $_SESSION["id"] = $id;
         echo "<table style='width:40%; margin-top: 2.5em; text-align:center' cellpadding='2'><tr class='tab_bg_1' aria-label='Confirm / Cancel'>";
-        echo "<td><input type='submit' name='force' value='". _sx('button', 'Confirm') ."' class='submit'></td>";
-        echo "<td><input type='submit' name='cancel' value='". _sx('button', 'Cancel') ."' class='submit'></td>";
+        echo "<td><input type='submit' name='force' value='" . _sx('button', 'Confirm') . "' class='submit'></td>";
+        echo "<td><input type='submit' name='cancel' value='" . _sx('button', 'Cancel') . "' class='submit'></td>";
         echo "</tr></table>";
         Html::closeForm();
     }
@@ -246,12 +245,12 @@ class SpecialStatus extends CommonTreeDropdown
         }
         echo "<form aria-label='Status' method='post' action='./specialstatus.form.php' method='post'>";
         echo "<table style='width:40%' class='tab_cadre' cellpadding='5' aria-label='New / Special Status'>";
-        echo "<tr><th colspan='4'>".__("New Status - Special status")."</th></tr>";
+        echo "<tr><th colspan='4'>" . __("New Status - Special status") . "</th></tr>";
         echo "<tr class='tab_bg_1'>";
-        echo "<td><b>".__("Name")."</b></td>";
-        echo "<td><b>".__("Weight")."</b></td>";
-        echo "<td><b>".__("Active")."</b></td>";
-        echo "<td><b>".__("Color")."</b></td></tr>";
+        echo "<td><b>" . __("Name") . "</b></td>";
+        echo "<td><b>" . __("Weight") . "</b></td>";
+        echo "<td><b>" . __("Active") . "</b></td>";
+        echo "<td><b>" . __("Color") . "</b></td></tr>";
         echo "<tr class='tab_bg_1'>";
         echo "<td><input type='text' id='name' name='name' placeholder='Name'></td>";
         echo "<td><input type='number' id='weight' name='weight' value='1' min='1'></td>";
@@ -261,7 +260,7 @@ class SpecialStatus extends CommonTreeDropdown
         echo "<td><input type='color' id='color' name='color'value='#131425'>";
         echo "</td></tr>";
         echo "<tr class='tab_bg_1'><td class='center' colspan='4'>";
-        echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Add')."\">";
+        echo "<input type='submit' name='update' class='submit' value=\"" . _sx('button', 'Add') . "\">";
         echo "</td></tr>";
         echo "</table>";
         Html::closeForm();
@@ -276,7 +275,6 @@ class SpecialStatus extends CommonTreeDropdown
 
         $iterators = $DB->request($criteria);
         while ($data = $iterators->next()) {
-
             for ($i = 0; $i < count($after["name"]) + max($after["weight"]); $i++) {
                 if (!isset($before["name"][$data["status"]])) {
                     continue;
@@ -294,6 +292,5 @@ class SpecialStatus extends CommonTreeDropdown
                 }
             }
         }
-
     }
 }

@@ -147,7 +147,7 @@ class Auth extends CommonGLPI
                  'glpi_users'      => 'id',
                  'glpi_useremails' => 'users_id'
               ]]]
-         ]
+            ]
         );
         // Check if there is a row
         if ($result->numrows() == 0) {
@@ -275,7 +275,6 @@ class Auth extends CommonGLPI
             $dn = $infos['dn'];
             $this->user_found = $dn != '';
             if ($this->user_found && @ldap_bind($this->ldap_connection, $dn, $password)) {
-
                 //Hook to implement to restrict access by checking the ldap directory
                 if (Plugin::doHookFunction("restrict_ldap_auth", $infos)) {
                     return $infos;
@@ -403,8 +402,8 @@ class Auth extends CommonGLPI
                  'name'     => $name,
                  'authtype' => self::DB_GLPI,
                  'auths_id' => 0,
+              ]
             ]
-         ]
         );
 
         // Have we a result ?
@@ -423,7 +422,7 @@ class Auth extends CommonGLPI
                         [
                           'id'        => $row['id'],
                           'is_active' => 0,
-                  ]
+                        ]
                     );
                 }
                 if (
@@ -462,7 +461,7 @@ class Auth extends CommonGLPI
                       'type'  => Auth::DB_GLPI,
                       'login' => $this->user->fields['name'],
                       'email' => UserEmail::getDefaultForUser($row['id'])
-               ]
+                    ]
                 );
 
                 $this->user->fields = $result + [
@@ -587,7 +586,6 @@ class Auth extends CommonGLPI
                     && NotificationMailing::isUserAddressValid($sslattributes[$CFG_GLPI["x509_email_field"]])
                     && self::isValidLogin($sslattributes[$CFG_GLPI["x509_email_field"]])
                 ) {
-
                     $restrict = false;
                     $CFG_GLPI["x509_ou_restrict"] = trim($CFG_GLPI["x509_ou_restrict"]);
                     if (!empty($CFG_GLPI["x509_ou_restrict"])) {
@@ -854,8 +852,9 @@ class Auth extends CommonGLPI
                         }
                     }
                 }
-                if ((count($ldapservers) == 0)
-                   && ($authtype == self::EXTERNAL)
+                if (
+                    (count($ldapservers) == 0)
+                    && ($authtype == self::EXTERNAL)
                 ) {
                     // Case of using external auth and no LDAP servers, so get data from external auth
                     $this->user->getFromSSO();
@@ -895,7 +894,6 @@ class Auth extends CommonGLPI
             ) {
                 $this->addToError(__('Empty login or password'));
             } else {
-
                 // Try connect local user if not yet authenticated
                 if (
                     empty($login_auth)
@@ -915,7 +913,6 @@ class Auth extends CommonGLPI
                         || $this->user->fields["authtype"] == $this::EXTERNAL
                         || $this->user->fields["authtype"] == $this::LDAP
                     ) {
-
                         if (Toolbox::canUseLdap()) {
                             AuthLDAP::tryLdapAuth(
                                 $this,
@@ -964,7 +961,6 @@ class Auth extends CommonGLPI
         // is not present on the DB, so we add him.
         // if not, we update him.
         if ($this->auth_succeded) {
-
             //Set user an not deleted from LDAP
             $this->user->fields['is_deleted_ldap'] = 0;
 
@@ -1358,7 +1354,6 @@ class Auth extends CommonGLPI
             && isset($_SERVER['SSL_CLIENT_S_DN'])
             && strstr($_SERVER['SSL_CLIENT_S_DN'], $CFG_GLPI["x509_email_field"])
         ) {
-
             if ($redirect) {
                 Html::redirect($CFG_GLPI["root_doc"] . "/front/login.php" . $redir_string);
             } else {
@@ -1376,7 +1371,6 @@ class Auth extends CommonGLPI
                 /*|| (isset($_REQUEST[$ssovariable]) && !empty($_REQUEST[$ssovariable]))*/
             )
         ) {
-
             if ($redirect) {
                 Html::redirect($CFG_GLPI["root_doc"] . "/front/login.php" . $redir_string);
             } else {

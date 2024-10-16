@@ -214,10 +214,10 @@ class Profile extends CommonDBTM
                 $this->getTable(),
                 [
                   'is_default' => 0
-            ],
+                ],
                 [
                   'id' => ['<>', $this->input['id']]
-            ]
+                ]
             );
         }
 
@@ -226,7 +226,6 @@ class Profile extends CommonDBTM
             isset($_SESSION['glpiactiveprofile']['id'])
             && $_SESSION['glpiactiveprofile']['id'] == $this->input['id']
         ) {
-
             if (in_array('helpdesk_item_type', $this->updates)) {
                 $_SESSION['glpiactiveprofile']['helpdesk_item_type'] = importArrayFromDB($this->input['helpdesk_item_type']);
             }
@@ -253,10 +252,10 @@ class Profile extends CommonDBTM
                 $this->getTable(),
                 [
                   'is_default' => 0
-            ],
+                ],
                 [
                   'id' => ['<>', $this->fields['id']]
-            ]
+                ]
             );
         }
     }
@@ -272,7 +271,7 @@ class Profile extends CommonDBTM
               Profile_RSSFeed::class,
               Profile_User::class,
               ProfileRight::class,
-         ]
+            ]
         );
 
         Rule::cleanForItemAction($this);
@@ -319,8 +318,9 @@ class Profile extends CommonDBTM
             $cycle = [];
             foreach ($tab as $from) {
                 foreach ($tab as $dest) {
-                    if (($from != $dest)
-                       && (!isset($input["_cycle_ticket"][$from][$dest])
+                    if (
+                        ($from != $dest)
+                        && (!isset($input["_cycle_ticket"][$from][$dest])
                           || ($input["_cycle_ticket"][$from][$dest] == 0))
                     ) {
                         $cycle[$from][$dest] = 0;
@@ -335,8 +335,9 @@ class Profile extends CommonDBTM
             $cycle = [];
             foreach ($tab as $from => $label) {
                 foreach ($tab as $dest => $label2) {
-                    if (($from !== $dest)
-                       && ($input["_cycle_problem"][$from][$dest] == 0)
+                    if (
+                        ($from !== $dest)
+                        && ($input["_cycle_problem"][$from][$dest] == 0)
                     ) {
                         $cycle[$from][$dest] = 0;
                     }
@@ -350,8 +351,9 @@ class Profile extends CommonDBTM
             $cycle = [];
             foreach ($tab as $from => $label) {
                 foreach ($tab as $dest => $label2) {
-                    if (($from !== $dest)
-                       && ($input["_cycle_change"][$from][$dest] == 0)
+                    if (
+                        ($from !== $dest)
+                        && ($input["_cycle_change"][$from][$dest] == 0)
                     ) {
                         $cycle[$from][$dest] = 0;
                     }
@@ -362,7 +364,6 @@ class Profile extends CommonDBTM
 
         // keep only unnecessary rights when switching from standard to self-service interface
         if (!isset($input["_ticket"]) && isset($input['interface']) && $input['interface'] == "helpdesk") {
-
             $ticket = new Ticket();
             $ss_rights = $ticket->getRights("helpdesk");
             $ss_rights = array_keys($ss_rights);
@@ -397,12 +398,13 @@ class Profile extends CommonDBTM
         }
 
         // check if right if the last write profile on Profile object
-        if (($this->fields['profile'] & UPDATE)
-           && isset($input['profile']) && !($input['profile'] & UPDATE)
-           && (countElementsInTable(
-               "glpi_profilerights",
-               ['name' => 'profile', 'rights' => ['&',  UPDATE]]
-           ))
+        if (
+            ($this->fields['profile'] & UPDATE)
+            && isset($input['profile']) && !($input['profile'] & UPDATE)
+            && (countElementsInTable(
+                "glpi_profilerights",
+                ['name' => 'profile', 'rights' => ['&',  UPDATE]]
+            ))
         ) {
             Session::addMessageAfterRedirect(
                 __("This profile is the last with write rights on profiles"),
@@ -425,11 +427,12 @@ class Profile extends CommonDBTM
      **/
     public function pre_deleteItem()
     {
-        if (($this->fields['profile'] & DELETE)
-           && (countElementsInTable(
-               "glpi_profilerights",
-               ['name' => 'profile', 'rights' => ['&', DELETE]]
-           ))
+        if (
+            ($this->fields['profile'] & DELETE)
+            && (countElementsInTable(
+                "glpi_profilerights",
+                ['name' => 'profile', 'rights' => ['&', DELETE]]
+            ))
         ) {
             Session::addMessageAfterRedirect(
                 __("This profile is the last with write rights on profiles"),
@@ -503,7 +506,6 @@ class Profile extends CommonDBTM
             isset($this->fields["helpdesk_item_type"])
             && !is_array($this->fields["helpdesk_item_type"])
         ) {
-
             $this->fields["helpdesk_item_type"] = importArrayFromDB($this->fields["helpdesk_item_type"]);
         }
 
@@ -512,7 +514,6 @@ class Profile extends CommonDBTM
             !isset($this->fields["helpdesk_item_type"])
             || !is_array($this->fields["helpdesk_item_type"])
         ) {
-
             $this->fields["helpdesk_item_type"] = [];
         }
 
@@ -521,7 +522,6 @@ class Profile extends CommonDBTM
             isset($this->fields["managed_domainrecordtypes"])
             && !is_array($this->fields["managed_domainrecordtypes"])
         ) {
-
             $this->fields["managed_domainrecordtypes"] = importArrayFromDB($this->fields["managed_domainrecordtypes"]);
         }
 
@@ -530,7 +530,6 @@ class Profile extends CommonDBTM
             !isset($this->fields["managed_domainrecordtypes"])
             || !is_array($this->fields["managed_domainrecordtypes"])
         ) {
-
             $this->fields["managed_domainrecordtypes"] = [];
         }
 
@@ -716,49 +715,49 @@ class Profile extends CommonDBTM
                           __('Default profile') => [
                               'name' => 'is_default',
                               'type' => 'select',
-                       'id' => 'is_default',
-                       'values' => [
+                          'id' => 'is_default',
+                          'values' => [
                           '0' => __('No'),
                           '1' => __('Yes'),
-                       ],
+                              ],
                               'value' => $this->fields['is_default']
                           ],
                           __('Profile\'s interface') => [
                               'name' => 'interface',
                               'type' => 'select',
                               'value' => $this->fields['interface'],
-                       'values' => [
+                          'values' => [
                           'central' => __('Standard interface'),
                           'helpdesk' => __('Simplified interface'),
-                       ]
+                              ]
                           ],
                           __('Update password') => [
                               'name' => '_password_update',
                               'type' => 'select',
-                       'id' => 'password_update',
-                       'values' => [
+                          'id' => 'password_update',
+                          'values' => [
                           '0' => __('No'),
                           '1' => __('Yes'),
-                       ],
+                              ],
                               'value' => $this->fields['password_update']
                           ],
                           __('Ticket creation form on login') => [
                               'name' => 'create_ticket_on_login',
                               'type' => 'select',
-                       'id' => 'create_ticket_on_login',
-                       'values' => [
+                          'id' => 'create_ticket_on_login',
+                          'values' => [
                           '0' => __('No'),
                           '1' => __('Yes'),
-                       ],
+                              ],
                               'value' => $this->fields['create_ticket_on_login']
-                       ],
-                       __('Comment') => [
+                          ],
+                          __('Comment') => [
                           'name' => 'comment',
                           'type' => 'textarea',
                           'value' => $this->fields['comment'] ?? ''
-                       ],
-                 ]
-              ]
+                          ],
+                      ]
+                  ]
            ]
         ];
 
@@ -834,7 +833,7 @@ class Profile extends CommonDBTM
             [
               'field' => 'helpdesk_hardware',
               'value' => $this->fields['helpdesk_hardware']
-         ]
+            ]
         );
         echo "</td></tr>\n";
 
@@ -991,8 +990,9 @@ class Profile extends CommonDBTM
         }
 
         echo "<div class='spaced'>";
-        if (($canedit = Session::haveRightsOr(self::$rightname, [UPDATE, CREATE, PURGE]))
-           && $openform
+        if (
+            ($canedit = Session::haveRightsOr(self::$rightname, [UPDATE, CREATE, PURGE]))
+            && $openform
         ) {
             echo "<form aria-label='Asset' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
         }
@@ -1097,8 +1097,9 @@ class Profile extends CommonDBTM
 
         echo "<div class='spaced'>";
 
-        if (($canedit = Session::haveRightsOr(self::$rightname, [UPDATE, CREATE, PURGE]))
-           && $openform
+        if (
+            ($canedit = Session::haveRightsOr(self::$rightname, [UPDATE, CREATE, PURGE]))
+            && $openform
         ) {
             echo "<form aria-label='Managment' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
         }
@@ -1158,22 +1159,22 @@ class Profile extends CommonDBTM
               'itemtype'  => 'Datacenter',
               'label'     => Datacenter::getTypeName(Session::getPluralNumber()),
               'field'     => 'datacenter'
-         ],
+           ],
            [
               'itemtype'  => 'Cluster',
               'label'     => Cluster::getTypeName(Session::getPluralNumber()),
               'field'     => 'cluster'
-         ],
+           ],
            [
               'itemtype'  => 'Domain',
               'label'     => _n('Domain', 'Domains', Session::getPluralNumber()),
               'field'     => 'domain'
-         ],
+           ],
            [
               'itemtype'  => 'Appliance',
               'label'     => Appliance::getTypeName(Session::getPluralNumber()),
               'field'     => 'appliance'
-         ],
+           ],
         ];
         $matrix_options['title'] = __('Management');
         $this->displayRightsChoiceMatrix($rights, $matrix_options);
@@ -1192,7 +1193,7 @@ class Profile extends CommonDBTM
               'multiple' => true,
               'values'  => $values,
               'value'   => $this->fields['managed_domainrecordtypes'],
-         ]
+            ]
         );
         echo "</div>\n";
 
@@ -1227,8 +1228,9 @@ class Profile extends CommonDBTM
 
         echo "<div class='spaced'>";
 
-        if (($canedit = Session::haveRightsOr(self::$rightname, [UPDATE, CREATE, PURGE]))
-           && $openform
+        if (
+            ($canedit = Session::haveRightsOr(self::$rightname, [UPDATE, CREATE, PURGE]))
+            && $openform
         ) {
             echo "<form aria-label='Tools' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
         }
@@ -1315,8 +1317,9 @@ class Profile extends CommonDBTM
         }
 
         echo "<div class='spaced'>";
-        if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
-           && $openform
+        if (
+            ($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
+            && $openform
         ) {
             echo "<form aria-label='Tracking' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
         }
@@ -1426,7 +1429,7 @@ class Profile extends CommonDBTM
             [
               'field' => 'helpdesk_hardware',
               'value' => $this->fields['helpdesk_hardware']
-         ]
+            ]
         );
         echo "</td></tr>\n";
 
@@ -1557,7 +1560,7 @@ class Profile extends CommonDBTM
               'row_check_all' => true,
               'col_check_all' => true,
               'first_cell'    => '<b>' . __("From \ To") . '</b>'
-         ]
+            ]
         );
     }
 
@@ -1577,8 +1580,9 @@ class Profile extends CommonDBTM
 
         echo "<div class='spaced'>";
 
-        if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
-           && $openform
+        if (
+            ($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
+            && $openform
         ) {
             echo "<form aria-label='Life Cycle' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
         }
@@ -1672,9 +1676,10 @@ class Profile extends CommonDBTM
                     $content['checked'] = true;
                 }
 
-                if (($index_1 == $index_2)
-                   || (!$canedit)
-                   || !in_array($index_2, $allowactions[$index_1])
+                if (
+                    ($index_1 == $index_2)
+                    || (!$canedit)
+                    || !in_array($index_2, $allowactions[$index_1])
                 ) {
                     $content['readonly'] = true;
                 }
@@ -1688,7 +1693,7 @@ class Profile extends CommonDBTM
             [
               'title'         => $title,
               'first_cell'    => '<b>' . __("From \ To") . '</b>'
-         ]
+            ]
         );
     }
 
@@ -1710,8 +1715,9 @@ class Profile extends CommonDBTM
 
         echo "<div class='spaced'>";
 
-        if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
-           && $openform
+        if (
+            ($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
+            && $openform
         ) {
             echo "<form aria-label='Life Cycle HelpDesk' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
         }
@@ -1750,9 +1756,11 @@ class Profile extends CommonDBTM
 
         echo "<div class='spaced'>";
 
-        if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
-           && $openform) {
-            echo "<form aria-label='Access' method='post' action='".$this->getFormURL()."' data-track-changes='true'>";
+        if (
+            ($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
+            && $openform
+        ) {
+            echo "<form aria-label='Access' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
         }
 
         $matrix_options = [
@@ -1772,11 +1780,13 @@ class Profile extends CommonDBTM
         $matrix_options['default_class'] = 'tab_bg_2';
         $this->displayRightsChoiceMatrix($rights, $matrix_options);
 
-        if ($canedit
-           && $closeform) {
+        if (
+            $canedit
+            && $closeform
+        ) {
             echo "<div class='center'>";
-            echo "<input type='hidden' name='id' value='".$this->fields['id']."'>";
-            echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='btn btn-secondary'>";
+            echo "<input type='hidden' name='id' value='" . $this->fields['id'] . "'>";
+            echo "<input type='submit' name='update' value=\"" . _sx('button', 'Save') . "\" class='btn btn-secondary'>";
             echo "</div>\n";
             Html::closeForm();
         }
@@ -1798,9 +1808,11 @@ class Profile extends CommonDBTM
         }
 
         echo "<div class='spaced'>";
-        if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
-           && $openform) {
-            echo "<form aria-label='Acces HelpDesk' method='post' action='".$this->getFormURL()."' data-track-changes='true'>";
+        if (
+            ($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
+            && $openform
+        ) {
+            echo "<form aria-label='Acces HelpDesk' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
         }
 
         $matrix_options = ['canedit'       => $canedit,
@@ -1818,11 +1830,13 @@ class Profile extends CommonDBTM
         $matrix_options['default_class'] = 'tab_bg_2';
         $this->displayRightsChoiceMatrix($rights, $matrix_options);
 
-        if ($canedit
-           && $closeform) {
+        if (
+            $canedit
+            && $closeform
+        ) {
             echo "<div class='center'>";
-            echo "<input type='hidden' name='id' value='".$this->fields['id']."'>";
-            echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='btn btn-secondary'>";
+            echo "<input type='hidden' name='id' value='" . $this->fields['id'] . "'>";
+            echo "<input type='submit' name='update' value=\"" . _sx('button', 'Save') . "\" class='btn btn-secondary'>";
             echo "</div>\n";
             Html::closeForm();
         }
@@ -1846,8 +1860,9 @@ class Profile extends CommonDBTM
 
         echo "<div class='spaced'>";
 
-        if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
-           && $openform
+        if (
+            ($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
+            && $openform
         ) {
             echo "<form aria-label='Admin' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
         }
@@ -1989,8 +2004,9 @@ class Profile extends CommonDBTM
         }
 
         echo "<div class='spaced'>";
-        if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
-           && $openform
+        if (
+            ($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
+            && $openform
         ) {
             echo "<form aria-label='Setup' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
         }
@@ -2152,8 +2168,9 @@ class Profile extends CommonDBTM
         }
 
         echo "<div class='spaced'>";
-        if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
-           && $openform
+        if (
+            ($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
+            && $openform
         ) {
             echo "<form aria-label='Setup HelpDesk' method='post' action='" . $this->getFormURL() . "' data-track-changes='true'>";
         }
@@ -3319,7 +3336,7 @@ class Profile extends CommonDBTM
               'value'   => $param['value'],
               'rand'    => $param['rand'],
               'display' => $param['display']
-         ]
+            ]
         );
     }
 
@@ -3363,7 +3380,7 @@ class Profile extends CommonDBTM
               'value'               => $p['value'],
               'rand'                => $p['rand'],
               'display_emptychoice' => true
-         ]
+            ]
         );
     }
 
@@ -3566,7 +3583,7 @@ class Profile extends CommonDBTM
                  'glpi_profilerights.name'   => $rightname,
                  'glpi_profilerights.rights' => ['&',  $rightvalue],
               ] + getEntitiesRestrictCriteria('glpi_profiles_users', '', $entity_id, true),
-         ]
+            ]
         );
 
         if (!$data = $result->next()) {
@@ -3637,7 +3654,6 @@ class Profile extends CommonDBTM
         $rows          = [];
 
         foreach ($rights as $info) {
-
             if (is_string($info)) {
                 $rows[] = $info;
                 continue;
@@ -3735,7 +3751,7 @@ class Profile extends CommonDBTM
               'row_check_all'        => count($columns) > 1,
               'col_check_all'        => count($rows) > 1,
               'rotate_column_titles' => false
-         ]
+            ]
         );
     }
 

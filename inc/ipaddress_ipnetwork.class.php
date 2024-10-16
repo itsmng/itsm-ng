@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -108,5 +109,4 @@ class IPAddress_IPNetwork extends CommonDBRelation
             }
         }
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -84,8 +85,10 @@ class XHProf
     public function start($msg = '')
     {
 
-        if (!self::$run
-            && function_exists('xhprof_enable')) {
+        if (
+            !self::$run
+            && function_exists('xhprof_enable')
+        ) {
             xhprof_enable();
             if (class_exists('Toolbox')) {
                 Toolbox::logDebug("Start profiling with XHProf", $msg);
@@ -102,15 +105,15 @@ class XHProf
             $data = xhprof_disable();
 
             $incl = (defined('XHPROF_PATH') ? XHPROF_PATH : self::XHPROF_PATH);
-            include_once $incl.'/utils/xhprof_lib.php';
-            include_once $incl.'/utils/xhprof_runs.php';
+            include_once $incl . '/utils/xhprof_lib.php';
+            include_once $incl . '/utils/xhprof_runs.php';
 
             $runs = new XHProfRuns_Default();
             $id   = $runs->save_run($data, 'glpi');
 
             $url  = (defined('XHPROF_URL') ? XHPROF_URL : self::XHPROF_URL);
             $host = (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost');
-            $link = "http://".$host."$url/index.php?run=$id&source=glpi";
+            $link = "http://" . $host . "$url/index.php?run=$id&source=glpi";
             Toolbox::logDebug("Stop profiling with XHProf, result URL", $link);
 
             self::$run = false;

@@ -50,5 +50,4 @@ class Item_DeviceGeneric extends Item_Devices
                      'states_id' => parent::getSpecificities('states_id'),
                     ];
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -52,7 +53,6 @@ if (isset($_POST["update"])) {
     } else {
         Html::back();
     }
-
 } elseif (isset($_POST['delete'])) {
     $link->check($_POST['id'], DELETE);
     $link->delete($_POST);
@@ -74,8 +74,7 @@ if (isset($_POST["update"])) {
         ERROR
     );
 
-    Html::redirect($CFG_GLPI["root_doc"]."/front/ticket.php");
-
+    Html::redirect($CFG_GLPI["root_doc"] . "/front/ticket.php");
 } elseif (isset($_GET["id"])) {
     $link->showUserNotificationForm($_GET["id"]);
 } else {

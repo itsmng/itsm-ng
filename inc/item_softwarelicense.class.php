@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -214,13 +215,13 @@ class Item_SoftwareLicense extends CommonDBRelation
                 Ajax::updateItemOnSelectEvent(
                     "dropdown_itemtype$rand",
                     "results_itemtype$rand",
-                    $CFG_GLPI["root_doc"]."/ajax/dropdownAllItems.php",
+                    $CFG_GLPI["root_doc"] . "/ajax/dropdownAllItems.php",
                     $p
                 );
 
                 echo "<span id='results_itemtype$rand'>\n";
                 echo "</td><td>";
-                echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction'])."</span>";
+                echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']) . "</span>";
                 echo "</td></tr>";
 
                 return true;
@@ -242,9 +243,11 @@ class Item_SoftwareLicense extends CommonDBRelation
                     foreach ($ids as $id) {
                         if ($item->can($id, UPDATE)) {
                             //Process rules
-                            if ($item->update(['id'  => $id,
+                            if (
+                                $item->update(['id'  => $id,
                                                     'softwarelicenses_id'
-                                                    => $input['softwarelicenses_id']])) {
+                                                    => $input['softwarelicenses_id']])
+                            ) {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                             } else {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
@@ -496,8 +499,8 @@ class Item_SoftwareLicense extends CommonDBRelation
 
         echo "<div class='center'>";
         echo "<table class='tab_cadre' aria-label='Number of affected items'><tr>";
-        echo "<th>".Entity::getTypeName(1)."</th>";
-        echo "<th>".__('Number of affected items')."</th>";
+        echo "<th>" . Entity::getTypeName(1) . "</th>";
+        echo "<th>" . __('Number of affected items') . "</th>";
         echo "</tr>\n";
 
         $tot = 0;
@@ -524,7 +527,7 @@ class Item_SoftwareLicense extends CommonDBRelation
                   ]
                ],
                'WHERE'     => [
-                  $item_license_table.'.softwarelicenses_id'   => $softwarelicense_id
+                  $item_license_table . '.softwarelicenses_id'   => $softwarelicense_id
                ] + getEntitiesRestrictCriteria($license_table, '', $data['id'])
             ]);
 
@@ -545,8 +548,8 @@ class Item_SoftwareLicense extends CommonDBRelation
         }
 
         if ($tot > 0) {
-            echo "<tr class='tab_bg_1'><td class='center b'>".__('Total')."</td>";
-            echo "<td class='numeric b '>".$tot."</td></tr>\n";
+            echo "<tr class='tab_bg_1'><td class='center b'>" . __('Total') . "</td>";
+            echo "<td class='numeric b '>" . $tot . "</td></tr>\n";
         } else {
             echo "<tr class='tab_bg_1'><td colspan='2 b'>" . __('No item found') . "</td></tr>\n";
         }
@@ -590,7 +593,7 @@ class Item_SoftwareLicense extends CommonDBRelation
         if (isset($_GET["sort"]) && !empty($_GET["sort"])) {
             // manage several param like location,compname : order first
             $tmp  = explode(",", $_GET["sort"]);
-            $sort = "`".implode("` $order,`", $tmp)."`";
+            $sort = "`" . implode("` $order,`", $tmp) . "`";
         } else {
             $sort = "`entity` $order, `itemname`";
         }
@@ -598,9 +601,11 @@ class Item_SoftwareLicense extends CommonDBRelation
         //SoftwareLicense ID
         $number = self::countForLicense($searchID);
 
-        if ($canedit
-           && ($license->getField('number') == -1 || $number < $license->getField('number')
-           || $license->getField('allow_overquota'))) {
+        if (
+            $canedit
+            && ($license->getField('number') == -1 || $number < $license->getField('number')
+            || $license->getField('allow_overquota'))
+        ) {
             $values = [];
             $types = $CFG_GLPI['software_types'];
             if (count($types)) {
@@ -712,7 +717,7 @@ class Item_SoftwareLicense extends CommonDBRelation
                   'glpi_softwarelicenses.softwares_id AS softid',
                   "{$itemtable}.name AS itemname",
                   "{$itemtable}.id AS iID",
-                  new QueryExpression($DB->quoteValue($itemtype)." AS ".$DB::quoteName('item_type')),
+                  new QueryExpression($DB->quoteValue($itemtype) . " AS " . $DB::quoteName('item_type')),
                ],
                'FROM'   => $item_license_table,
                'INNER JOIN' => [
@@ -729,7 +734,7 @@ class Item_SoftwareLicense extends CommonDBRelation
                         $item_license_table     => 'items_id',
                         $itemtable        => 'id', [
                            'AND' => [
-                              $item_license_table.'.itemtype'  => $itemtype
+                              $item_license_table . '.itemtype'  => $itemtype
                            ]
                         ]
                      ]
@@ -741,17 +746,17 @@ class Item_SoftwareLicense extends CommonDBRelation
                ]
             ];
             if ($DB->fieldExists($itemtable, 'serial')) {
-                $query['SELECT'][] = $itemtable.'.serial';
+                $query['SELECT'][] = $itemtable . '.serial';
             } else {
                 $query['SELECT'][] = new QueryExpression(
-                    $DB->quoteValue('')." AS ".$DB->quoteName($itemtable.".serial")
+                    $DB->quoteValue('') . " AS " . $DB->quoteName($itemtable . ".serial")
                 );
             }
             if ($DB->fieldExists($itemtable, 'otherserial')) {
-                $query['SELECT'][] = $itemtable.'.otherserial';
+                $query['SELECT'][] = $itemtable . '.otherserial';
             } else {
                 $query['SELECT'][] = new QueryExpression(
-                    $DB->quoteValue('')." AS ".$DB->quoteName($itemtable.".otherserial")
+                    $DB->quoteValue('') . " AS " . $DB->quoteName($itemtable . ".otherserial")
                 );
             }
             if ($DB->fieldExists($itemtable, 'users_id')) {
@@ -767,16 +772,16 @@ class Item_SoftwareLicense extends CommonDBRelation
                 ];
             } else {
                 $query['SELECT'][] = new QueryExpression(
-                    $DB->quoteValue('')." AS ".$DB->quoteName($itemtable.".username")
+                    $DB->quoteValue('') . " AS " . $DB->quoteName($itemtable . ".username")
                 );
                 $query['SELECT'][] = new QueryExpression(
-                    $DB->quoteValue('-1')." AS ".$DB->quoteName($itemtable.".userid")
+                    $DB->quoteValue('-1') . " AS " . $DB->quoteName($itemtable . ".userid")
                 );
                 $query['SELECT'][] = new QueryExpression(
-                    $DB->quoteValue('')." AS ".$DB->quoteName($itemtable.".userrealname")
+                    $DB->quoteValue('') . " AS " . $DB->quoteName($itemtable . ".userrealname")
                 );
                 $query['SELECT'][] = new QueryExpression(
-                    $DB->quoteValue('')." AS ".$DB->quoteName($itemtable.".userfirstname")
+                    $DB->quoteValue('') . " AS " . $DB->quoteName($itemtable . ".userfirstname")
                 );
             }
             if ($DB->fieldExists($itemtable, 'entities_id')) {
@@ -790,7 +795,7 @@ class Item_SoftwareLicense extends CommonDBRelation
                 $query['WHERE'] += getEntitiesRestrictCriteria($itemtable, '', '', true);
             } else {
                 $query['SELECT'][] = new QueryExpression(
-                    $DB->quoteValue('')." AS ".$DB->quoteName('entity')
+                    $DB->quoteValue('') . " AS " . $DB->quoteName('entity')
                 );
             }
             if ($DB->fieldExists($itemtable, 'locations_id')) {
@@ -803,7 +808,7 @@ class Item_SoftwareLicense extends CommonDBRelation
                 ];
             } else {
                 $query['SELECT'][] = new QueryExpression(
-                    $DB->quoteValue('')." AS ".$DB->quoteName('location')
+                    $DB->quoteValue('') . " AS " . $DB->quoteName('location')
                 );
             }
             if ($DB->fieldExists($itemtable, 'states_id')) {
@@ -816,7 +821,7 @@ class Item_SoftwareLicense extends CommonDBRelation
                 ];
             } else {
                 $query['SELECT'][] = new QueryExpression(
-                    $DB->quoteValue('')." AS ".$DB->quoteName('state')
+                    $DB->quoteValue('') . " AS " . $DB->quoteName('state')
                 );
             }
             if ($DB->fieldExists($itemtable, 'groups_id')) {
@@ -829,7 +834,7 @@ class Item_SoftwareLicense extends CommonDBRelation
                 ];
             } else {
                 $query['SELECT'][] = new QueryExpression(
-                    $DB->quoteValue('')." AS ".$DB->quoteName('groupe')
+                    $DB->quoteValue('') . " AS " . $DB->quoteName('groupe')
                 );
             }
             if ($DB->fieldExists($itemtable, 'is_deleted')) {
@@ -864,7 +869,7 @@ class Item_SoftwareLicense extends CommonDBRelation
 
                 // show transfer only if multi licenses for this software
                 if (self::countLicenses($data['softid']) > 1) {
-                    $massiveactionparams['specific_actions'][__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'move_license'] = _x('button', 'Move');
+                    $massiveactionparams['specific_actions'][__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'move_license'] = _x('button', 'Move');
                 }
 
                 // Options to update license
@@ -902,8 +907,8 @@ class Item_SoftwareLicense extends CommonDBRelation
                 $newValue = [];
                 $newValue[] = $data['itemtype'];
                 if ($canshowitems[$data['item_type']]) {
-                    $newValue[] = "<a href='".$data['item_type']::getFormURLWithID($data['iID'])."'>"
-                                            .$data['itemname']."</a>";
+                    $newValue[] = "<a href='" . $data['item_type']::getFormURLWithID($data['iID']) . "'>"
+                                            . $data['itemname'] . "</a>";
                 } else {
                     $newValue[] = $data['itemname'];
                 }
@@ -935,7 +940,6 @@ class Item_SoftwareLicense extends CommonDBRelation
                'values' => $values,
                'massive_action' => $massiveactionValues
             ]);
-
         } else { // Not found
             echo __('No item found');
         }

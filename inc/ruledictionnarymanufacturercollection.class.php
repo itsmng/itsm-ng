@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -45,5 +46,4 @@ class RuleDictionnaryManufacturerCollection extends RuleDictionnaryDropdownColle
     {
         return __('Dictionary of manufacturers');
     }
-
 }

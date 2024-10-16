@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -177,8 +178,8 @@ class KnowbaseItem_Comment extends CommonDBTM
                           _bindForm(_form);
                           _this.parents('.h_item').after(_form);
                        },
-                       error: function() { ".
-                            Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!'))."
+                       error: function() { " .
+                            Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!')) . "
                        }
                     });
                  });
@@ -211,8 +212,8 @@ class KnowbaseItem_Comment extends CommonDBTM
                            .parent()
                            .append(_form);
                        },
-                       error: function() { ".
-                            Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!'))."
+                       error: function() { " .
+                            Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!')) . "
                        }
                     });
                  });
@@ -279,15 +280,15 @@ class KnowbaseItem_Comment extends CommonDBTM
                 $html .= '<hr/>';
             }
             $html .= "<div class='h_info'>";
-            $html .= "<div class='h_date'>".Html::convDateTime($comment['date_creation'])."</div>";
+            $html .= "<div class='h_date'>" . Html::convDateTime($comment['date_creation']) . "</div>";
             $html .= "<div class='h_user'>";
             $html .= "<div class='tooltip_picture_border'>";
-            $html .= "<img class='user_picture' alt='' src='".
-                   User::getThumbnailURLForPicture($user->fields['picture'])."'>";
+            $html .= "<img class='user_picture' alt='' src='" .
+                   User::getThumbnailURLForPicture($user->fields['picture']) . "'>";
             $html .= "</div>";
             $html .= "<span class='h_user_name'>";
             $userdata = getUserName($user->getID(), 2);
-            $html .= $user->getLink()."&nbsp;";
+            $html .= $user->getLink() . "&nbsp;";
             $html .= Html::showToolTip(
                 $userdata["comment"],
                 ['link' => $userdata['link'], 'display' => false]
@@ -324,7 +325,6 @@ class KnowbaseItem_Comment extends CommonDBTM
             $html .= "</div>";
 
             if (isset($comment['answers']) && count($comment['answers']) > 0) {
-
                 $html .= "<input type='checkbox' id='toggle_{$comment['id']}'
                              class='toggle_comments' checked='checked'>";
                 $html .= "<label for='toggle_{$comment['id']}' class='toggle_label'>&nbsp;</label>";

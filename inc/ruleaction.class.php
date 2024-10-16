@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -111,8 +112,10 @@ class RuleAction extends CommonDBChild
     {
 
         parent::post_addItem();
-        if (isset($this->input['rules_id'])
-            && ($realrule = Rule::getRuleObjectByID($this->input['rules_id']))) {
+        if (
+            isset($this->input['rules_id'])
+            && ($realrule = Rule::getRuleObjectByID($this->input['rules_id']))
+        ) {
             $realrule->update(['id'       => $this->input['rules_id'],
                                     'date_mod' => $_SESSION['glpi_currenttime']]);
         }
@@ -128,8 +131,10 @@ class RuleAction extends CommonDBChild
     {
 
         parent::post_purgeItem();
-        if (isset($this->fields['rules_id'])
-            && ($realrule = Rule::getRuleObjectByID($this->fields['rules_id']))) {
+        if (
+            isset($this->fields['rules_id'])
+            && ($realrule = Rule::getRuleObjectByID($this->fields['rules_id']))
+        ) {
             $realrule->update(['id'       => $this->fields['rules_id'],
                                     'date_mod' => $_SESSION['glpi_currenttime']]);
         }
@@ -204,9 +209,11 @@ class RuleAction extends CommonDBChild
         switch ($field) {
             case 'field':
                 $generic_rule = new Rule();
-                if (isset($values['rules_id'])
+                if (
+                    isset($values['rules_id'])
                     && !empty($values['rules_id'])
-                    && $generic_rule->getFromDB($values['rules_id'])) {
+                    && $generic_rule->getFromDB($values['rules_id'])
+                ) {
                     if ($rule = getItemForItemtype($generic_rule->fields["sub_type"])) {
                         return $rule->getAction($values[$field]);
                     }
@@ -221,9 +228,11 @@ class RuleAction extends CommonDBChild
                     return NOT_AVAILABLE;
                 }
                 $generic_rule = new Rule();
-                if (isset($values['rules_id'])
+                if (
+                    isset($values['rules_id'])
                     && !empty($values['rules_id'])
-                    && $generic_rule->getFromDB($values['rules_id'])) {
+                    && $generic_rule->getFromDB($values['rules_id'])
+                ) {
                     if ($rule = getItemForItemtype($generic_rule->fields["sub_type"])) {
                         return $rule->getCriteriaDisplayPattern(
                             $values["criteria"],
@@ -255,9 +264,11 @@ class RuleAction extends CommonDBChild
         switch ($field) {
             case 'field':
                 $generic_rule = new Rule();
-                if (isset($values['rules_id'])
+                if (
+                    isset($values['rules_id'])
                     && !empty($values['rules_id'])
-                    && $generic_rule->getFromDB($values['rules_id'])) {
+                    && $generic_rule->getFromDB($values['rules_id'])
+                ) {
                     if ($rule = getItemForItemtype($generic_rule->fields["sub_type"])) {
                         $options['value'] = $values[$field];
                         $options['name']  = $name;
@@ -268,9 +279,11 @@ class RuleAction extends CommonDBChild
 
             case 'action_type':
                 $generic_rule = new Rule();
-                if (isset($values['rules_id'])
+                if (
+                    isset($values['rules_id'])
                     && !empty($values['rules_id'])
-                    && $generic_rule->getFromDB($values['rules_id'])) {
+                    && $generic_rule->getFromDB($values['rules_id'])
+                ) {
                     return self::dropdownActions(['subtype'     => $generic_rule->fields["sub_type"],
                                                        'name'        => $name,
                                                        'value'       => $values[$field],
@@ -284,9 +297,11 @@ class RuleAction extends CommonDBChild
                     return NOT_AVAILABLE;
                 }
                 $generic_rule = new Rule();
-                if (isset($values['rules_id'])
+                if (
+                    isset($values['rules_id'])
                     && !empty($values['rules_id'])
-                    && $generic_rule->getFromDB($values['rules_id'])) {
+                    && $generic_rule->getFromDB($values['rules_id'])
+                ) {
                     if ($rule = getItemForItemtype($generic_rule->fields["sub_type"])) {
                         /// TODO review it : need to pass display param and others...
                         return $rule->displayActionSelectPattern($values);
@@ -385,7 +400,6 @@ class RuleAction extends CommonDBChild
                     return false;
                 }
                 $actions = $actions_options[$field]['permitseveral'];
-
             } else {
                 if (isset($actions_options[$field]['force_actions'])) {
                     $actions = $actions_options[$field]['force_actions'];
@@ -480,10 +494,12 @@ class RuleAction extends CommonDBChild
             ]);
 
             while ($action = $iterator->next()) {
-                if (isset($actions_options[$action["field"]])
+                if (
+                    isset($actions_options[$action["field"]])
                      && ($action["field"] != 'groups_id_validate')
                      && ($action["field"] != 'users_id_validate')
-                     && ($action["field"] != 'affectobject')) {
+                     && ($action["field"] != 'affectobject')
+                ) {
                     $actions[$action["field"]] = $action["field"];
                 }
             }
@@ -532,7 +548,6 @@ class RuleAction extends CommonDBChild
             default:
                 $actions = Rule::getActionsByType($options["sub_type"]);
                 if (isset($actions[$options["field"]]['type'])) {
-
                     switch ($actions[$options["field"]]['type']) {
                         case "dropdown":
                             $table   = $actions[$options["field"]]['table'];
@@ -663,7 +678,7 @@ class RuleAction extends CommonDBChild
                                       'action_type'           => 'add_validation',
                                       'field'                 => 'users_id_validate',
                                       $item->getRuleIdField() => $options[$item->getRuleIdField()]
-                           ]
+                                    ]
                                 );
 
                                 foreach ($rule_data as $data) {
@@ -692,7 +707,7 @@ class RuleAction extends CommonDBChild
                                       'action_type'           => 'add_validation',
                                       'field'                 => 'groups_id_validate',
                                       $item->getRuleIdField() => $options[$item->getRuleIdField()]
-                           ]
+                                    ]
                                 );
                                 foreach ($rule_data as $data) {
                                     $used[] = $data['value'];
@@ -768,8 +783,10 @@ class RuleAction extends CommonDBChild
         }
 
         $used = $this->getAlreadyUsedForRuleID($this->fields[static::$items_id], $rule->getType());
-        if ($ID
-            && isset($used[$this->fields['field']])) {
+        if (
+            $ID
+            && isset($used[$this->fields['field']])
+        ) {
             unset($used[$this->fields['field']]);
         }
         $rand = rand();
@@ -820,7 +837,7 @@ class RuleAction extends CommonDBChild
         Ajax::updateItemOnSelectEvent(
             "dropdown_field$rand",
             "action_span",
-            $CFG_GLPI["root_doc"]."/ajax/ruleaction.php",
+            $CFG_GLPI["root_doc"] . "/ajax/ruleaction.php",
             $params
         );
 
@@ -832,7 +849,7 @@ class RuleAction extends CommonDBChild
             echo "$(function() {";
             Ajax::updateItemJsCode(
                 "action_span",
-                $CFG_GLPI["root_doc"]."/ajax/ruleaction.php",
+                $CFG_GLPI["root_doc"] . "/ajax/ruleaction.php",
                 $params
             );
             echo '});</script>';

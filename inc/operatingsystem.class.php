@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -44,5 +45,4 @@ class OperatingSystem extends CommonDropdown
     {
         return _n('Operating system', 'Operating systems', $nb);
     }
-
 }

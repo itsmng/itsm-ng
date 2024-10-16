@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -138,7 +139,6 @@ class DBmysqlIterator extends DbTestCase
            ->withType(E_USER_ERROR)
            ->withMessage('Missing table name')
            ->exists();
-
     }
 
 
@@ -390,11 +390,11 @@ class DBmysqlIterator extends DbTestCase
                     ]
                  ]
               ]
-         ]
+            ]
         );
         $this->string($it->getSql())->isIdenticalTo(
-            'SELECT * FROM `foo` LEFT JOIN `bar` ON (`bar`.`id` = `foo`.`fk`) '.
-         'LEFT JOIN `baz` ON (`baz`.`id` = `foo`.`baz_id`)'
+            'SELECT * FROM `foo` LEFT JOIN `bar` ON (`bar`.`id` = `foo`.`fk`) ' .
+            'LEFT JOIN `baz` ON (`baz`.`id` = `foo`.`baz_id`)'
         );
 
         $it = $this->it->execute('foo', ['INNER JOIN' => []]);
@@ -449,7 +449,7 @@ class DBmysqlIterator extends DbTestCase
                     ]
                  ]
               ]
-         ]
+            ]
         );
         $this->string($it->getSql())->isIdenticalTo(
             'SELECT * FROM `foo` LEFT JOIN `bar` ON (`bar`.`id` = `foo`.`fk` OR `field` > \'20\')'
@@ -468,7 +468,7 @@ class DBmysqlIterator extends DbTestCase
                     ]
                  ]
               ]
-         ]
+            ]
         );
         $this->string($it->getSql())->isIdenticalTo(
             'SELECT * FROM `foo` LEFT JOIN `bar` ON (`bar`.`id` = `foo`.`fk` AND `field` = \'42\')'
@@ -487,12 +487,11 @@ class DBmysqlIterator extends DbTestCase
                     ]
                  ]
               ]
-         ]
+            ]
         );
         $this->string($it->getSql())->isIdenticalTo(
             'SELECT * FROM `foo` LEFT JOIN (SELECT * FROM `bar`) AS `t2` ON (`t2`.`id` = `foo`.`fk`)'
         );
-
     }
 
     public function testAnalyseJoins()
@@ -655,7 +654,6 @@ class DBmysqlIterator extends DbTestCase
            ->withType(E_USER_ERROR)
            ->withMessage('Missing group by field')
            ->exists();
-
     }
 
     public function testRange()
@@ -1074,7 +1072,7 @@ class DBmysqlIterator extends DbTestCase
                      INNER JOIN `glpi_networkports` AS `PORT`
                         ON (`NAME`.`items_id` = `PORT`.`id`
                              AND NOT (`PORT`.`itemtype`
-                                      IN ('" .implode("', '", $CFG_GLPI["networkport_types"])."')))
+                                      IN ('" . implode("', '", $CFG_GLPI["networkport_types"]) . "')))
                      LEFT JOIN `glpi_entities` ON (`ADDR`.`entities_id` = `glpi_entities`.`id`)
                      WHERE `LINK`.`ipnetworks_id` = '42')";
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -49,8 +50,10 @@ $ret = 0;
 if (isset($_POST['unlock']) && isset($_POST["id"])) {
     // then we may have something to unlock
     $ol = new ObjectLock();
-    if ($ol->getFromDB($_POST["id"])
-        && $ol->deleteFromDB(1)) {
+    if (
+        $ol->getFromDB($_POST["id"])
+        && $ol->deleteFromDB(1)
+    ) {
         if (isset($_POST['force'])) {
             Log::history(
                 $ol->fields['items_id'],
@@ -62,17 +65,20 @@ if (isset($_POST['unlock']) && isset($_POST["id"])) {
         }
         $ret = 1;
     }
-
-} elseif (isset($_POST['requestunlock'])
-           && isset($_POST["id"])) {
+} elseif (
+    isset($_POST['requestunlock'])
+           && isset($_POST["id"])
+) {
     // the we must ask for unlock
     $ol = new ObjectLock();
     if ($ol->getFromDB($_POST["id"])) {
         NotificationEvent::raiseEvent('unlock', $ol);
         $ret = 1;
     }
-} elseif (isset($_GET['lockstatus'])
-           && isset($_GET["id"])) {
+} elseif (
+    isset($_GET['lockstatus'])
+           && isset($_GET["id"])
+) {
     $ol = new ObjectLock();
     if ($ol->getFromDB($_GET["id"])) {
         $ret = 1; // found = still locked

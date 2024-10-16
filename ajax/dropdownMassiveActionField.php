@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -56,8 +57,10 @@ if (isset($_POST['submitname']) && $_POST['submitname']) {
 }
 
 
-if (isset($_POST["itemtype"])
-    && isset($_POST["id_field"]) && $_POST["id_field"]) {
+if (
+    isset($_POST["itemtype"])
+    && isset($_POST["id_field"]) && $_POST["id_field"]
+) {
     $search = Search::getOptions($_POST["itemtype"]);
     if (!isset($search[$_POST["id_field"]])) {
         exit();
@@ -69,9 +72,11 @@ if (isset($_POST["itemtype"])
 
     $plugdisplay = false;
     // Specific plugin Type case
-    if (($plug = isPluginItemType($_POST["itemtype"]))
-       // Specific for plugin which add link to core object
-        || ($plug = isPluginItemType(getItemTypeForTable($search['table'])))) {
+    if (
+        ($plug = isPluginItemType($_POST["itemtype"]))
+        // Specific for plugin which add link to core object
+        || ($plug = isPluginItemType(getItemTypeForTable($search['table'])))
+    ) {
         $plugdisplay = Plugin::doOneHook(
             $plug['plugin'],
             'MassiveActionsFieldsDisplay',
@@ -82,8 +87,10 @@ if (isset($_POST["itemtype"])
 
     $fieldname = '';
 
-    if (empty($search["linkfield"])
-        || ($search['table'] == 'glpi_infocoms')) {
+    if (
+        empty($search["linkfield"])
+        || ($search['table'] == 'glpi_infocoms')
+    ) {
         $fieldname = $search["field"];
     } else {
         $fieldname = $search["linkfield"];
@@ -112,5 +119,4 @@ if (isset($_POST["itemtype"])
     if (!$inline) {
         echo "<br><input type='submit' name='massiveaction' class='submit' value='$submitname'>";
     }
-
 }

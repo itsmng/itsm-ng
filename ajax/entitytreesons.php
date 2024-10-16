@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -55,7 +56,7 @@ if (isset($_GET['node'])) {
                // append r for root nodes, id are uniques in jstree.
                // so, in case of presence of this id in subtree of other nodes,
                // it will be removed from root nodes
-               'id'   => $ID.'r',
+               'id'   => $ID . 'r',
                'text' => Dropdown::getDropdownName("glpi_entities", $ID)
             ];
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -102,7 +103,7 @@ class NotificationAjax implements NotificationInterface
                         __('A browser notification to %s was added to queue'),
                         $options['to']
                     ),
-                    $options['subject']."\n"
+                    $options['subject'] . "\n"
                 )
             );
         }
@@ -133,11 +134,12 @@ class NotificationAjax implements NotificationInterface
             if ($iterator->numrows()) {
                 while ($row = $iterator->next()) {
                     $url = null;
-                    if ($row['itemtype'] != 'NotificationAjax' &&
-                       method_exists($row['itemtype'], 'getFormURL')
+                    if (
+                        $row['itemtype'] != 'NotificationAjax' &&
+                        method_exists($row['itemtype'], 'getFormURL')
                     ) {
                         $item = new $row['itemtype']();
-                        $url = $item->getFormURL(false)."?id={$row['items_id']}";
+                        $url = $item->getFormURL(false) . "?id={$row['items_id']}";
                     }
 
                     $return[] = [
@@ -174,11 +176,11 @@ class NotificationAjax implements NotificationInterface
             [
               'sent_time'    => $now,
               'is_deleted'   => 1
-         ],
+            ],
             [
               'id'        => $id,
               'recipient' => Session::getLoginUserID()
-         ]
+            ]
         );
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -69,7 +70,7 @@ class DeviceBattery extends CommonDevice
                  'value' => $this->fields['voltage'],
                  'min' => 0
               ]
-         ]
+            ]
         );
     }
 
@@ -168,7 +169,6 @@ class DeviceBattery extends CommonDevice
                 $father
             );
         }
-
     }
 
 

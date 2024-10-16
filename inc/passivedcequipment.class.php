@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -67,7 +68,7 @@ class PassiveDCEquipment extends CommonDBTM
 
     public function showForm($ID, $options = [])
     {
-        $title = __('New item').' - '.self::getTypeName(1);
+        $title = __('New item') . ' - ' . self::getTypeName(1);
         $form = [
            'action' => $this->getFormURL(),
            'itemtype' => self::class,

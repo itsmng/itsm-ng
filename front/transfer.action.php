@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -45,15 +46,15 @@ if (isset($_POST['transfer'])) {
         }
         $transfer->moveItems($_SESSION['glpitransfer_list'], $_POST['to_entity'], $_POST);
         unset($_SESSION['glpitransfer_list']);
-        echo "<div class='b center'>".__('Operation successful')."<br>";
-        echo "<a href='central.php'>".__('Back')."</a></div>";
+        echo "<div class='b center'>" . __('Operation successful') . "<br>";
+        echo "<a href='central.php'>" . __('Back') . "</a></div>";
         Html::footer();
         exit();
     }
 } elseif (isset($_POST['clear'])) {
     unset($_SESSION['glpitransfer_list']);
-    echo "<div class='b center'>".__('Operation successful')."<br>";
-    echo "<a href='central.php'>".__('Back')."</a></div>";
+    echo "<div class='b center'>" . __('Operation successful') . "<br>";
+    echo "<a href='central.php'>" . __('Back') . "</a></div>";
     echo "</div>";
     Html::footer();
     exit();

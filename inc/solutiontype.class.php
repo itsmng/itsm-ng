@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,5 +42,4 @@ class SolutionType extends CommonDropdown
     {
         return _n('Solution type', 'Solution types', $nb);
     }
-
 }

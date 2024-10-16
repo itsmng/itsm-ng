@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,5 +42,4 @@ class PassiveDCEquipmentType extends CommonDropdown
     {
         return _n('Passive device type', 'Passive device types', $nb);
     }
-
 }

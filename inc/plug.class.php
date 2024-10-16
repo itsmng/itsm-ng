@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -48,7 +49,7 @@ class Plug extends CommonDropdown
         $this->deleteChildrenAndRelationsFromDb(
             [
               Pdu_Plug::class,
-         ]
+            ]
         );
     }
 }

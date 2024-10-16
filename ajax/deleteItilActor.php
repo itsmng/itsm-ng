@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * ITSM-NG
@@ -37,7 +38,8 @@ if (
     isset($_POST['objectTypeId']) &&
     isset($_POST['objectId']) &&
     isset($_POST['ticketId']) &&
-    Session::haveRight('ticket', UPDATE)) {
+    Session::haveRight('ticket', UPDATE)
+) {
     $ticket = new Ticket();
     $ticket->getFromDB($_POST['ticketId']);
 

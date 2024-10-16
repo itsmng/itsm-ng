@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -44,7 +45,6 @@ $setupdisplay = new DisplayPreference();
 
 if (isset($_POST["activate"])) {
     $setupdisplay->activatePerso($_POST);
-
 } elseif (isset($_POST["disable"])) {
     if ($_POST['users_id'] == Session::getLoginUserID()) {
         $setupdisplay->deleteByCriteria(['users_id' => $_POST['users_id'],
@@ -52,13 +52,10 @@ if (isset($_POST["activate"])) {
     }
 } elseif (isset($_POST["add"])) {
     $setupdisplay->add($_POST);
-
 } elseif (isset($_POST["purge"]) || isset($_POST["purge_x"])) {
     $setupdisplay->delete($_POST, 1);
-
 } elseif (isset($_POST["up"]) || isset($_POST["up_x"])) {
     $setupdisplay->orderItem($_POST, 'up');
-
 } elseif (isset($_POST["down"]) || isset($_POST["down_x"])) {
     $setupdisplay->orderItem($_POST, 'down');
 }

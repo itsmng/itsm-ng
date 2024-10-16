@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -84,8 +85,10 @@ class DisplayPreference extends CommonDBTM
                     $user->getFromDB($input['users_id']);
                     foreach ($ids as $id) {
                         if ($input['users_id'] == Session::getLoginUserID()) {
-                            if ($item->deleteByCriteria(['users_id' => $input['users_id'],
-                                                              'itemtype' => $id])) {
+                            if (
+                                $item->deleteByCriteria(['users_id' => $input['users_id'],
+                                                              'itemtype' => $id])
+                            ) {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                             } else {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
@@ -172,7 +175,6 @@ class DisplayPreference extends CommonDBTM
                 $this->fields     = $data;
                 $this->addToDB();
             }
-
         } else {
             // No items in the global config
             $searchopt = Search::getOptions($input["itemtype"]);
@@ -180,10 +182,11 @@ class DisplayPreference extends CommonDBTM
                 $done = false;
 
                 foreach ($searchopt as $key => $val) {
-                    if (is_array($val)
+                    if (
+                        is_array($val)
                         && ($key != 1)
-                        && !$done) {
-
+                        && !$done
+                    ) {
                         $data["users_id"] = $input["users_id"];
                         $data["itemtype"] = $input["itemtype"];
                         $data["rank"]     = 1;
@@ -305,13 +308,12 @@ class DisplayPreference extends CommonDBTM
             echo "<form aria-label='Personal Criteria' method='post' action='$target'>";
             echo "<input type='hidden' name='itemtype' value='$itemtype'>";
             echo "<input type='hidden' name='users_id' value='$IDuser'>";
-            echo __('No personal criteria. Create personal parameters?')."<span class='small_space'>";
-            echo "<input type='submit' name='activate' value=\"".__('Create')."\"
+            echo __('No personal criteria. Create personal parameters?') . "<span class='small_space'>";
+            echo "<input type='submit' name='activate' value=\"" . __('Create') . "\"
                 class='submit'>";
             echo "</span>";
             Html::closeForm();
             echo "</th></tr></table>\n";
-
         } else {
             $already_added = self::getForTypeUser($itemtype, $IDuser);
 
@@ -319,8 +321,8 @@ class DisplayPreference extends CommonDBTM
             echo "<form aria-label='Personal Criteria' method='post' action='$target'>";
             echo "<input type='hidden' name='itemtype' value='$itemtype'>";
             echo "<input type='hidden' name='users_id' value='$IDuser'>";
-            echo __('Select default items to show')."<span class='small_space'>";
-            echo "<input type='submit' name='disable' value=\"".__('Delete')."\"
+            echo __('Select default items to show') . "<span class='small_space'>";
+            echo "<input type='submit' name='disable' value=\"" . __('Delete') . "\"
                 class='submit'>";
             echo "</span>";
             Html::closeForm();
@@ -337,16 +339,18 @@ class DisplayPreference extends CommonDBTM
                     $group = $val;
                 } elseif (count($val) === 1) {
                     $group = $val['name'];
-                } elseif ($key != 1
+                } elseif (
+                    $key != 1
                            && !in_array($key, $already_added)
-                           && (!isset($val['nodisplay']) || !$val['nodisplay'])) {
+                           && (!isset($val['nodisplay']) || !$val['nodisplay'])
+                ) {
                     $values[$group][$key] = $val["name"];
                 }
             }
             if ($values) {
                 Dropdown::showFromArray('num', $values);
                 echo "<span class='small_space'>";
-                echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
+                echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
                 echo "</span>";
             }
             Html::closeForm();
@@ -354,19 +358,20 @@ class DisplayPreference extends CommonDBTM
 
             // print first element
             echo "<tr class='tab_bg_2'>";
-            echo "<td class='center' width='50%'>".$searchopt[1]["name"]."</td>";
+            echo "<td class='center' width='50%'>" . $searchopt[1]["name"] . "</td>";
             echo "<td colspan='3'>&nbsp;</td>";
             echo "</tr>";
 
             // print entity
-            if (Session::isMultiEntitiesMode()
+            if (
+                Session::isMultiEntitiesMode()
                 && (isset($CFG_GLPI["union_search_type"][$itemtype])
                     || ($item && $item->maybeRecursive())
                     || (count($_SESSION["glpiactiveentities"]) > 1))
-                && isset($searchopt[80])) {
-
+                && isset($searchopt[80])
+            ) {
                 echo "<tr class='tab_bg_2'>";
-                echo "<td class='center' width='50%'>".$searchopt[80]["name"]."</td>";
+                echo "<td class='center' width='50%'>" . $searchopt[80]["name"] . "</td>";
                 echo "<td colspan='3'>&nbsp;</td>";
                 echo "</tr>";
             }
@@ -377,20 +382,19 @@ class DisplayPreference extends CommonDBTM
                     if (($data["num"] != 1) && isset($searchopt[$data["num"]])) {
                         echo "<tr class='tab_bg_2'>";
                         echo "<td class='center' width='50%' >";
-                        echo $searchopt[$data["num"]]["name"]."</td>";
+                        echo $searchopt[$data["num"]]["name"] . "</td>";
 
                         if ($i != 0) {
                             echo "<td class='center middle'>";
                             echo "<form aria-label='Informations' method='post' action='$target'>";
-                            echo "<input type='hidden' name='id' value='".$data["id"]."'>";
+                            echo "<input type='hidden' name='id' value='" . $data["id"] . "'>";
                             echo "<input type='hidden' name='users_id' value='$IDuser'>";
                             echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                            echo "<button type='submit' aria-label='UP 'name='up'".
-                                " title=\"".__s('Bring up')."\"".
+                            echo "<button type='submit' aria-label='UP 'name='up'" .
+                                " title=\"" . __s('Bring up') . "\"" .
                                 " class='unstyled pointer'><i class='fa fa-arrow-up' aria-hidden='true'></i></button>";
                             Html::closeForm();
                             echo "</td>\n";
-
                         } else {
                             echo "<td>&nbsp;</td>";
                         }
@@ -398,15 +402,14 @@ class DisplayPreference extends CommonDBTM
                         if ($i != ($numrows - 1)) {
                             echo "<td class='center middle'>";
                             echo "<form aria-label='Informations' method='post' action='$target'>";
-                            echo "<input type='hidden' name='id' value='".$data["id"]."'>";
+                            echo "<input type='hidden' name='id' value='" . $data["id"] . "'>";
                             echo "<input type='hidden' name='users_id' value='$IDuser'>";
                             echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                            echo "<button type='submit' aria-label='down' name='down'".
-                                " title=\"".__s('Bring down')."\"".
+                            echo "<button type='submit' aria-label='down' name='down'" .
+                                " title=\"" . __s('Bring down') . "\"" .
                                 " class='unstyled pointer'><i class='fa fa-arrow-down' aria-hidden='true'></i></button>";
                             Html::closeForm();
                             echo "</td>\n";
-
                         } else {
                             echo "<td>&nbsp;</td>";
                         }
@@ -414,11 +417,11 @@ class DisplayPreference extends CommonDBTM
                         if (!isset($searchopt[$data["num"]]["noremove"]) || $searchopt[$data["num"]]["noremove"] !== true) {
                             echo "<td class='center middle'>";
                             echo "<form aria-label='Item Information' method='post' action='$target'>";
-                            echo "<input type='hidden' name='id' value='".$data["id"]."'>";
+                            echo "<input type='hidden' name='id' value='" . $data["id"] . "'>";
                             echo "<input type='hidden' name='users_id' value='$IDuser'>";
                             echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                            echo "<button type='submit' aria-label='Delete' name='purge'".
-                                  " title=\""._sx('button', 'Delete permanently')."\"".
+                            echo "<button type='submit' aria-label='Delete' name='purge'" .
+                                  " title=\"" . _sx('button', 'Delete permanently') . "\"" .
                                   " class='unstyled pointer'><i class='fa fa-times-circle' aria-hidden='true'></i></button>";
                             Html::closeForm();
                             echo "</td>\n";
@@ -483,9 +486,11 @@ class DisplayPreference extends CommonDBTM
                     $group = $val;
                 } elseif (count($val) === 1) {
                     $group = $val['name'];
-                } elseif ($key != 1
+                } elseif (
+                    $key != 1
                            && !in_array($key, $already_added)
-                           && (!isset($val['nodisplay']) || !$val['nodisplay'])) {
+                           && (!isset($val['nodisplay']) || !$val['nodisplay'])
+                ) {
                     $values[$group][$key] = $val["name"];
                 }
             }
@@ -540,8 +545,10 @@ class DisplayPreference extends CommonDBTM
         $i = 0;
         while ($data = $iterator->next()) {
             $newValue = [];
-            if (($data["num"] != 1)
-                && isset($searchopt[$data["num"]])) {
+            if (
+                ($data["num"] != 1)
+                && isset($searchopt[$data["num"]])
+            ) {
                 $newValue['name'] = $searchopt[$data["num"]]["name"];
 
                 if ($global_write) {
@@ -604,10 +611,10 @@ class DisplayPreference extends CommonDBTM
 
         if ($numrows) {
             while ($data = $iterator->next()) {
-
-                if (($data["num"] != 1)
-                    && isset($searchopt[$data["num"]])) {
-
+                if (
+                    ($data["num"] != 1)
+                    && isset($searchopt[$data["num"]])
+                ) {
                     echo "<tr class='tab_bg_2'><td class='center' width='50%'>";
                     echo $searchopt[$data["num"]]["name"];
                     echo "</td>";
@@ -616,15 +623,14 @@ class DisplayPreference extends CommonDBTM
                         if ($i != 0) {
                             echo "<td class='center middle'>";
                             echo "<form aria-label='Informations' method='post' action='$target'>";
-                            echo "<input type='hidden' name='id' value='".$data["id"]."'>";
+                            echo "<input type='hidden' name='id' value='" . $data["id"] . "'>";
                             echo "<input type='hidden' name='users_id' value='$IDuser'>";
                             echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                            echo "<button type='submit' aria-label='Bring Down' name='up'".
-                                " title=\"".__s('Bring up')."\"".
+                            echo "<button type='submit' aria-label='Bring Down' name='up'" .
+                                " title=\"" . __s('Bring up') . "\"" .
                                 " class='unstyled pointer'><i class='fa fa-arrow-up' aria-hidden='true'></i></button>";
                             Html::closeForm();
                             echo "</td>";
-
                         } else {
                             echo "<td>&nbsp;</td>\n";
                         }
@@ -632,15 +638,14 @@ class DisplayPreference extends CommonDBTM
                         if ($i != ($numrows - 1)) {
                             echo "<td class='center middle'>";
                             echo "<form  aria-label='Informations' method='post' action='$target'>";
-                            echo "<input type='hidden' name='id' value='".$data["id"]."'>";
+                            echo "<input type='hidden' name='id' value='" . $data["id"] . "'>";
                             echo "<input type='hidden' name='users_id' value='$IDuser'>";
                             echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                            echo "<button type='submit' aria-label='Bring Down' name='down'".
-                                " title=\"".__s('Bring down')."\"".
+                            echo "<button type='submit' aria-label='Bring Down' name='down'" .
+                                " title=\"" . __s('Bring down') . "\"" .
                                 " class='unstyled pointer'><i class='fa fa-arrow-down' aria-hidden='true'></i></button>";
                             Html::closeForm();
                             echo "</td>";
-
                         } else {
                             echo "<td>&nbsp;</td>\n";
                         }
@@ -648,11 +653,11 @@ class DisplayPreference extends CommonDBTM
                         if (!isset($searchopt[$data["num"]]["noremove"]) || $searchopt[$data["num"]]["noremove"] !== true) {
                             echo "<td class='center middle'>";
                             echo "<form aria-label='Informations' method='post' action='$target'>";
-                            echo "<input type='hidden' name='id' value='".$data["id"]."'>";
+                            echo "<input type='hidden' name='id' value='" . $data["id"] . "'>";
                             echo "<input type='hidden' name='users_id' value='$IDuser'>";
                             echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                            echo "<button type='submit' aria-label='Delete' name='purge'".
-                                  " title=\""._sx('button', 'Delete permanently')."\"".
+                            echo "<button type='submit' aria-label='Delete' name='purge'" .
+                                  " title=\"" . _sx('button', 'Delete permanently') . "\"" .
                                   " class='unstyled pointer'><i class='fa fa-times-circle' aria-hidden='true'></i></button>";
                             Html::closeForm();
                             echo "</td>\n";
@@ -694,11 +699,11 @@ class DisplayPreference extends CommonDBTM
         if (count($iterator) > 0) {
             $rand = mt_rand();
             echo "<div class='spaced'>";
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
             $massiveactionparams = ['width'            => 400,
                               'height'           => 200,
-                              'container'        => 'mass'.__CLASS__.$rand,
-                              'specific_actions' => [__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'delete_for_user'
+                              'container'        => 'mass' . __CLASS__ . $rand,
+                              'specific_actions' => [__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'delete_for_user'
                                                           => _x('button', 'Delete permanently')],
                               'extraparams'      => ['massive_action_fields' => ['users_id']]];
 
@@ -709,9 +714,9 @@ class DisplayPreference extends CommonDBTM
             echo "<table class='tab_cadre_fixe' aria-label='List of Items with Actions'>";
             echo "<tr>";
             echo "<th width='10'>";
-            echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+            echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
             echo "</th>";
-            echo "<th colspan='2'>"._n('Type', 'Types', 1)."</th></tr>";
+            echo "<th colspan='2'>" . _n('Type', 'Types', 1) . "</th></tr>";
             while ($data = $iterator->next()) {
                 echo "<tr class='tab_bg_1'><td width='10'>";
                 Html::showMassiveActionCheckBox(__CLASS__, $data["itemtype"]);
@@ -721,7 +726,7 @@ class DisplayPreference extends CommonDBTM
                 } else {
                     $name = $data["itemtype"];
                 }
-                echo "<td>$name</td><td class='numeric'>".$data['nb']."</td>";
+                echo "<td>$name</td><td class='numeric'>" . $data['nb'] . "</td>";
                 echo "</tr>";
             }
             echo "</table>";
@@ -729,10 +734,9 @@ class DisplayPreference extends CommonDBTM
             Html::showMassiveActions($massiveactionparams);
             Html::closeForm();
             echo "</div>";
-
         } else {
             echo "<table class='tab_cadre_fixe' aria-label='No item found'>";
-            echo "<tr class='tab_bg_2'><td class='b center'>".__('No item found')."</td></tr>";
+            echo "<tr class='tab_bg_2'><td class='b center'>" . __('No item found') . "</td></tr>";
             echo "</table>";
         }
     }
@@ -811,5 +815,4 @@ class DisplayPreference extends CommonDBTM
 
         return $values;
     }
-
 }

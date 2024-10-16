@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -79,11 +80,12 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
     public function getContentHeader()
     {
 
-        if ($this->getMode() == \Notification_NotificationTemplate::MODE_MAIL
-           && MailCollector::countActiveCollectors()
-           && $this->allowResponse()
+        if (
+            $this->getMode() == \Notification_NotificationTemplate::MODE_MAIL
+            && MailCollector::countActiveCollectors()
+            && $this->allowResponse()
         ) {
-            return self::HEADERTAG.' '.__('To answer by email, write above this line').' '.
+            return self::HEADERTAG . ' ' . __('To answer by email, write above this line') . ' ' .
                    self::HEADERTAG;
         }
 
@@ -97,11 +99,12 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
     public function getContentFooter()
     {
 
-        if ($this->getMode() == \Notification_NotificationTemplate::MODE_MAIL
-           && MailCollector::countActiveCollectors()
-           && $this->allowResponse()
+        if (
+            $this->getMode() == \Notification_NotificationTemplate::MODE_MAIL
+            && MailCollector::countActiveCollectors()
+            && $this->allowResponse()
         ) {
-            return self::FOOTERTAG.' '.__('To answer by email, write under this line').' '.
+            return self::FOOTERTAG . ' ' . __('To answer by email, write under this line') . ' ' .
                    self::FOOTERTAG;
         }
 
@@ -116,7 +119,7 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
     **/
     public function getMessageID()
     {
-        return "GLPI-".$this->obj->getField('id').".".time().".".rand(). "@".php_uname('n');
+        return "GLPI-" . $this->obj->getField('id') . "." . time() . "." . rand() . "@" . php_uname('n');
     }
 
 
@@ -134,10 +137,11 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
             $item_ticket = new Item_Ticket();
             $data = $item_ticket->find(['tickets_id' => $this->obj->fields['id']]);
             foreach ($data as $val) {
-                if (($val['itemtype'] != NOT_AVAILABLE)
+                if (
+                    ($val['itemtype'] != NOT_AVAILABLE)
                     && ($val['itemtype'] != '')
-                    && ($item = getItemForItemtype($val['itemtype']))) {
-
+                    && ($item = getItemForItemtype($val['itemtype']))
+                ) {
                     $item->getFromDB($val['items_id']);
                     $this->target_object[] = $item;
                 }
@@ -188,7 +192,7 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
         $data['##ticket.urlvalidation##']
                           = $this->formatURL(
                               $options['additionnaloption']['usertype'],
-                              "ticket_".$item->getField("id")."_TicketValidation$1"
+                              "ticket_" . $item->getField("id") . "_TicketValidation$1"
                           );
         $data['##ticket.globalvalidation##']
                           = TicketValidation::getStatus($item->getField('global_validation'));
@@ -308,11 +312,12 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
         $data['items'] = [];
         if (count($items)) {
             foreach ($items as $val) {
-                if (isset($val['itemtype'])
+                if (
+                    isset($val['itemtype'])
                     && ($hardware = getItemForItemtype($val['itemtype']))
                     && isset($val["items_id"])
-                    && $hardware->getFromDB($val["items_id"])) {
-
+                    && $hardware->getFromDB($val["items_id"])
+                ) {
                     $tmp = [];
 
                     //Object type
@@ -384,7 +389,7 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
                                     = Dropdown::getDropdownName('glpi_groups', $hardware->getField('groups_id'));
                     }
 
-                    $modeltable = getSingular($hardware->getTable())."models";
+                    $modeltable = getSingular($hardware->getTable()) . "models";
                     $modelfield = getForeignKeyFieldForTable($modeltable);
 
                     if ($hardware->isField($modelfield)) {
@@ -417,7 +422,7 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
                         $tmp['##linkedticket.url##']
                                           = $this->formatURL(
                                               $options['additionnaloption']['usertype'],
-                                              "ticket_".$row['tickets_id']
+                                              "ticket_" . $row['tickets_id']
                                           );
 
                         $tmp['##linkedticket.title##']
@@ -450,7 +455,7 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
                         $tmp['##problem.url##']
                                        = $this->formatURL(
                                            $options['additionnaloption']['usertype'],
-                                           "problem_".$row['problems_id']
+                                           "problem_" . $row['problems_id']
                                        );
                         $tmp['##problem.content##']
                                        = $problem->getField('content');
@@ -479,7 +484,7 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
                         $tmp['##change.url##']
                                        = $this->formatURL(
                                            $options['additionnaloption']['usertype'],
-                                           "change_".$row['changes_id']
+                                           "change_" . $row['changes_id']
                                        );
                         $tmp['##change.content##']
                                        = $change->getField('content');
@@ -501,7 +506,7 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
                 [
                   'WHERE'  => $solution_restrict,
                   'ORDER'  => ['date_mod DESC', 'id ASC']
-            ]
+                ]
             );
             $current = current($replysolved);
             $data['##ticket.solution.approval.description##'] = $current ? $current['content'] : '';
@@ -520,7 +525,7 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
                 [
                   'WHERE'  => $restrict,
                   'ORDER'  => ['submission_date DESC', 'id ASC']
-            ]
+                ]
             );
             $data['validations'] = [];
             foreach ($validations as $validation) {
@@ -573,9 +578,8 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
                     $data['##ticket.urlsatisfaction##']
                                 = $this->formatURL(
                                     $options['additionnaloption']['usertype'],
-                                    "ticket_".$item->getField("id").'_Ticket$3'
+                                    "ticket_" . $item->getField("id") . '_Ticket$3'
                                 );
-
                 } elseif ($inquest->fields['type'] == 2) { // external inquest
                     $data['##ticket.urlsatisfaction##'] = Entity::generateLinkSatisfaction($item);
                 }
@@ -944,5 +948,4 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
 
         asort($this->tag_descriptions);
     }
-
 }

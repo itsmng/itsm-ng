@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -29,6 +30,7 @@
  * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
  */
+
 use Ramsey\Uuid\Uuid;
 
 if (!defined('GLPI_ROOT')) {
@@ -148,7 +150,7 @@ class Grid extends CommonGLPI
             $entities = [$params['entities_id']];
         }
         $_SESSION['glpiactiveentities']        = $entities;
-        $_SESSION['glpiactiveentities_string'] = "'".implode("', '", $entities)."'";
+        $_SESSION['glpiactiveentities_string'] = "'" . implode("', '", $entities) . "'";
 
         // show embeded dashboard
         $this->show(true);
@@ -156,7 +158,7 @@ class Grid extends CommonGLPI
 
     public static function getToken(string $dasboard = "", int $entities_id = 0, int $is_recursive = 0): string
     {
-        $seed         = $dasboard.$entities_id.$is_recursive.Telemetry::getInstanceUuid();
+        $seed         = $dasboard . $entities_id . $is_recursive . Telemetry::getInstanceUuid();
         $uuid         = Uuid::uuid5(Uuid::NAMESPACE_OID, $seed);
         $token        = $uuid->toString();
 
@@ -236,7 +238,7 @@ class Grid extends CommonGLPI
         // add card options in data attribute
         $data_option_attr = "";
         if (count($data_option)) {
-            $data_option_attr = "data-card-options='".json_encode($data_option, JSON_HEX_APOS)."'";
+            $data_option_attr = "data-card-options='" . json_encode($data_option, JSON_HEX_APOS) . "'";
         }
 
         $refresh_label = __("Refresh this card");
@@ -324,8 +326,10 @@ HTML;
 
         foreach ($menu_itemtypes as &$firstlvl) {
             $firstlvl = array_filter($firstlvl, static function ($itemtype) use ($exclude) {
-                if (in_array($itemtype, $exclude)
-                   || !is_subclass_of($itemtype, 'CommonDBTM')) {
+                if (
+                    in_array($itemtype, $exclude)
+                    || !is_subclass_of($itemtype, 'CommonDBTM')
+                ) {
                     return false;
                 }
 
@@ -376,7 +380,6 @@ HTML;
         $new_key = "";
         $target = Toolbox::cleanTarget($_REQUEST['_target'] ?? $_SERVER['REQUEST_URI'] ?? "");
         if (isset($_SESSION['last_dashboards']) && strlen($target) > 0) {
-
             $target = preg_replace('/^' . preg_quote($CFG_GLPI['root_doc'], '/') . '/', '', $target);
             if (!isset($_SESSION['last_dashboards'][$target])) {
                 return "";
@@ -393,5 +396,4 @@ HTML;
 
         return $new_key;
     }
-
 }

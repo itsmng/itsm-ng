@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -169,7 +170,7 @@ class Ajax
         $out  =  "<script type='text/javascript'>\n";
         $out .= "$(function() {";
         $out .= "$('<div id=\'$name\' class=\'slidepanel on{$param['position']}\'><div class=\"header\">" .
-           "<button type=\'button\' class=\'close ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close\' title=\'". __s('Close') . "\'><span class=\'ui-button-icon-primary ui-icon ui-icon-closethick\'></span><span class=\'ui-button-text\'>". __('Close') ."</span></button>";
+           "<button type=\'button\' class=\'close ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close\' title=\'" . __s('Close') . "\'><span class=\'ui-button-icon-primary ui-icon ui-icon-closethick\'></span><span class=\'ui-button-text\'>" . __('Close') . "</span></button>";
 
         if ($param['icon']) {
             $icon = "<img class=\'icon\' src=\'{$CFG_GLPI['root_doc']}{$param['icon']}\' alt=\'{$param['icon_txt']}\' title=\'{$param['icon_txt']}\'/>";
@@ -274,11 +275,11 @@ class Ajax
             $out .= "$('<div></div>')";
         }
         $out .= ".dialog({\n
-         width:".$param['width'].",\n
+         width:" . $param['width'] . ",\n
          autoOpen: false,\n
-         height:".$param['height'].",\n
-         modal: ".($param['modal'] ? 'true' : 'false').",\n
-         title: \"".addslashes($param['title'])."\"\n
+         height:" . $param['height'] . ",\n
+         modal: " . ($param['modal'] ? 'true' : 'false') . ",\n
+         title: \"" . addslashes($param['title']) . "\"\n
          });\n});";
         $out .= "</script>";
 
@@ -287,7 +288,6 @@ class Ajax
         } else {
             return $out;
         }
-
     }
 
 
@@ -327,7 +327,7 @@ class Ajax
                 }
             }
         }
-        $url .= (strstr($url, '?') ? '&' : '?').'_in_modal=1';
+        $url .= (strstr($url, '?') ? '&' : '?') . '_in_modal=1';
 
         $out  = "<div id=\"$domid\">";
         $out .= "<iframe id='Iframe$domid' class='iframe hidden' title='Iframe'=></iframe></div>";
@@ -337,8 +337,8 @@ class Ajax
             $('#$domid').dialog({
                modal: true,
                autoOpen: false,
-               height: ".$param['height'].",
-               width: ".$param['width'].",
+               height: " . $param['height'] . ",
+               width: " . $param['width'] . ",
                draggable: true,
                resizeable: true,
                open: function(ev, ui){
@@ -347,7 +347,7 @@ class Ajax
             $out .= "close: function(ev, ui) { window.location.reload() },";
         }
 
-        $out .= "title: \"".addslashes($param['title'])."\"});
+        $out .= "title: \"" . addslashes($param['title']) . "\"});
          });
             </script>";
 
@@ -401,8 +401,10 @@ class Ajax
         $rand = mt_rand();
         if (count($tabs) > 0) {
             echo "<div id='tabs$rand' class='center$mainclass $orientation'>";
-            if (CommonGLPI::isLayoutWithMain()
-                && !CommonGLPI::isLayoutExcludedPage()) {
+            if (
+                CommonGLPI::isLayoutWithMain()
+                && !CommonGLPI::isLayoutExcludedPage()
+            ) {
                 $orientation = 'horizontal';
             }
             echo "<ul>";
@@ -412,30 +414,30 @@ class Ajax
                 if ($key == $active_tabs) {
                     $selected_tab = $current;
                 }
-                echo "<li><a title=\"".
-                     str_replace(["<sup class='tab_nb'>", '</sup>'], '', $val['title'])."\" ";
-                echo " href='".$val['url'].(isset($val['params']) ? '?'.$val['params'] : '')."'>";
+                echo "<li><a title=\"" .
+                     str_replace(["<sup class='tab_nb'>", '</sup>'], '', $val['title']) . "\" ";
+                echo " href='" . $val['url'] . (isset($val['params']) ? '?' . $val['params'] : '') . "'>";
                 // extract sup information
                 // $title = '';
                 // $limit = 16;
                 // No title strip for horizontal menu
                 $title = $val['title'];
                 $currentShortcut = null;
-                echo $title."</a>";
+                echo $title . "</a>";
                 // Below is code dedicated to rendering the keyboard shortcuts, you shouldn't have to touch this.
                 if ($displayShortcuts && $orientation == 'vertical' && count($tabs) > 1) {
                     $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true)[$key] ?? null;
                 }
                 if (is_array($currentShortcut)) {
                     // I wish doing this wasn't necessary, but it is
-                    $shortcutWrapperID = "acc".mt_rand();
+                    $shortcutWrapperID = "acc" . mt_rand();
                     echo "<div id='$shortcutWrapperID' style='align-items: end;float: right; top: -25px; right: 5%; position: inherit; margin-bottom: -55px; pointer-events: none;'>";
                     // Generate <kbd> elements
-                    echo "<kbd>".implode("</kbd>+<kbd>", $currentShortcut)."</kbd>";
+                    echo "<kbd>" . implode("</kbd>+<kbd>", $currentShortcut) . "</kbd>";
                     echo Html::scriptBlock("
-                    hotkeys('".strtolower(implode("+", $currentShortcut))."', function(e, h) {
+                    hotkeys('" . strtolower(implode("+", $currentShortcut)) . "', function(e, h) {
                        e.preventDefault();
-                       $('#".$shortcutWrapperID."').prev('a').trigger('click');
+                       $('#" . $shortcutWrapperID . "').prev('a').trigger('click');
                     });
                 ");
                     echo "</div>";
@@ -485,8 +487,8 @@ class Ajax
                   if (tabs.length > 1) {
                      var newIndex = tabs.index(ui.tab);
                      $.get(
-                        '".$CFG_GLPI['root_doc']."/ajax/updatecurrenttab.php',
-                        { itemtype: '".addslashes($type)."', id: '$ID', tab: newIndex }
+                        '" . $CFG_GLPI['root_doc'] . "/ajax/updatecurrenttab.php',
+                        { itemtype: '" . addslashes($type) . "', id: '$ID', tab: newIndex }
                      );
                   }
                }
@@ -515,8 +517,10 @@ class Ajax
                 $js .=  "$('#tabs$rand').tabs().addClass( 'ui-tabs-vertical ui-helper-clearfix' );";
             }
 
-            if (CommonGLPI::isLayoutWithMain()
-                && !CommonGLPI::isLayoutExcludedPage()) {
+            if (
+                CommonGLPI::isLayoutWithMain()
+                && !CommonGLPI::isLayoutExcludedPage()
+            ) {
                 $js .=  "$('#tabs$rand').scrollabletabs();";
             } else {
                 $js .=  "$('#tabs$rand').removeClass( 'ui-corner-top' ).addClass( 'ui-corner-left' );";
@@ -715,7 +719,7 @@ class Ajax
                 if ($buffertime > 0) {
                     $output .= "var last$zone$event = 0;";
                 }
-                $output .= Html::jsGetElementbyID(Html::cleanId($zone)).".on(
+                $output .= Html::jsGetElementbyID(Html::cleanId($zone)) . ".on(
                '$event',
                function(event) {";
                 // TODO manage buffer time !!?
@@ -729,14 +733,14 @@ class Ajax
 
                 $condition = '';
                 if ($minsize >= 0) {
-                    $condition = Html::jsGetElementbyID(Html::cleanId($zone)).".val().length >= $minsize ";
+                    $condition = Html::jsGetElementbyID(Html::cleanId($zone)) . ".val().length >= $minsize ";
                 }
                 if (count($forceloadfor)) {
                     foreach ($forceloadfor as $value) {
                         if (!empty($condition)) {
                             $condition .= " || ";
                         }
-                        $condition .= Html::jsGetElementbyID(Html::cleanId($zone)).".val() == '$value'";
+                        $condition .= Html::jsGetElementbyID(Html::cleanId($zone)) . ".val() == '$value'";
                     }
                 }
                 if (!empty($condition)) {
@@ -777,13 +781,17 @@ class Ajax
 
         $output    = '';
         // Old scheme
-        if (isset($options["update_item"])
-            && (is_array($options["update_item"]) || (strlen($options["update_item"]) > 0))) {
+        if (
+            isset($options["update_item"])
+            && (is_array($options["update_item"]) || (strlen($options["update_item"]) > 0))
+        ) {
             $field     = "update_item";
         }
         // New scheme
-        if (isset($options["toupdate"])
-            && (is_array($options["toupdate"]) || (strlen($options["toupdate"]) > 0))) {
+        if (
+            isset($options["toupdate"])
+            && (is_array($options["toupdate"]) || (strlen($options["toupdate"]) > 0))
+        ) {
             $field     = "toupdate";
         }
 
@@ -800,17 +808,18 @@ class Ajax
                         $paramsupdate = [$data['value_fieldname'] => '__VALUE__'];
                     }
 
-                    if (isset($data["moreparams"])
+                    if (
+                        isset($data["moreparams"])
                         && is_array($data["moreparams"])
-                        && count($data["moreparams"])) {
-
+                        && count($data["moreparams"])
+                    ) {
                         foreach ($data["moreparams"] as $key => $val) {
                             $paramsupdate[$key] = $val;
                         }
                     }
 
                     $output .= self::updateItemOnSelectEvent(
-                        "dropdown_".$options["name"].$options["rand"],
+                        "dropdown_" . $options["name"] . $options["rand"],
                         $data['to_update'],
                         $data['url'],
                         $paramsupdate,
@@ -848,7 +857,7 @@ class Ajax
         $display = true
     ) {
 
-        $out = Html::jsGetElementbyID($toupdate).".load('$url'\n";
+        $out = Html::jsGetElementbyID($toupdate) . ".load('$url'\n";
         if (count($parameters)) {
             $out .= ",{";
             $first = true;
@@ -864,20 +873,17 @@ class Ajax
                     $out .= ",";
                 }
 
-                $out .= $key.":";
+                $out .= $key . ":";
                 $regs = [];
                 if (!is_array($val) && preg_match('/^__VALUE(\d+)__$/', $val, $regs)) {
-                    $out .=  Html::jsGetElementbyID(Html::cleanId($toobserve[$regs[1]])).".val()";
-
+                    $out .=  Html::jsGetElementbyID(Html::cleanId($toobserve[$regs[1]])) . ".val()";
                 } elseif (!is_array($val) && $val === "__VALUE__") {
-                    $out .=  Html::jsGetElementbyID(Html::cleanId($toobserve)).".val()";
-
+                    $out .=  Html::jsGetElementbyID(Html::cleanId($toobserve)) . ".val()";
                 } else {
                     $out .=  json_encode($val);
                 }
             }
             $out .= "}\n";
-
         }
         $out .= ")\n";
         // $out .= <<<JS
@@ -923,5 +929,4 @@ class Ajax
             return $output;
         }
     }
-
 }

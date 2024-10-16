@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -74,7 +75,7 @@ class DeviceFirmware extends CommonDevice
                  'value' => $this->fields['devicefirmwaremodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceFirmwareModel')
               ]
-         ]
+            ]
         );
     }
 

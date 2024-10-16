@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -56,8 +57,7 @@ if (isset($_POST["purge"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
 
-    Html::redirect($CFG_GLPI["root_doc"]."/front/networkportmigration.php");
-
+    Html::redirect($CFG_GLPI["root_doc"] . "/front/networkportmigration.php");
 } elseif (isset($_POST["delete_several"])) {
     Session::checkRight("networking", UPDATE);
 
@@ -78,7 +78,6 @@ if (isset($_POST["purge"])) {
     );
 
     Html::back();
-
 } elseif (isset($_POST["update"])) {
     $np->check($_POST['id'], PURGE);
 
@@ -100,8 +99,7 @@ if (isset($_POST["purge"])) {
         $np->delete($_POST);
     }
 
-    Html::redirect($CFG_GLPI["root_doc"]."/front/networkportmigration.php");
-
+    Html::redirect($CFG_GLPI["root_doc"] . "/front/networkportmigration.php");
 } else {
     Session::checkRight("networking", UPDATE);
     Html::header(

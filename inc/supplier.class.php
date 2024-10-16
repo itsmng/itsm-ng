@@ -71,7 +71,7 @@ class Supplier extends CommonDBTM
               ProjectTaskTeam::class,
               ProjectTeam::class,
               Supplier_Ticket::class,
-         ]
+            ]
         );
 
         // Ticket rules use suppliers_id_assign

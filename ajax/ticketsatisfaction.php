@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -55,7 +56,7 @@ if (isset($_POST['inquest_config']) && isset($_POST['entities_id'])) {
 
     if ($_POST['inquest_config'] > 0) {
         echo "<table class='tab_cadre_fixe' width='50%' aria-label='Survey configuration table'>";
-        echo "<tr class='tab_bg_1'><td width='50%'>".__('Create survey after')."</td>";
+        echo "<tr class='tab_bg_1'><td width='50%'>" . __('Create survey after') . "</td>";
         echo "<td>";
         Dropdown::showNumber(
             'inquest_delay',
@@ -68,8 +69,8 @@ if (isset($_POST['inquest_config']) && isset($_POST['entities_id'])) {
         );
         echo "</td></tr>";
 
-        echo "<tr class='tab_bg_1'>".
-             "<td>".__('Rate to trigger survey')."</td>";
+        echo "<tr class='tab_bg_1'>" .
+             "<td>" . __('Rate to trigger survey') . "</td>";
         echo "<td>";
         Dropdown::showNumber('inquest_rate', ['value'   => $inquest_rate,
                                                    'min'     => 10,
@@ -79,7 +80,7 @@ if (isset($_POST['inquest_config']) && isset($_POST['entities_id'])) {
                                                    'unit'    => '%']);
         echo "</td></tr>";
 
-        echo "<tr class='tab_bg_1'><td width='50%'>".__('Duration of survey')."</td>";
+        echo "<tr class='tab_bg_1'><td width='50%'>" . __('Duration of survey') . "</td>";
         echo "<td>";
         Dropdown::showNumber(
             'inquest_duration',
@@ -92,18 +93,18 @@ if (isset($_POST['inquest_config']) && isset($_POST['entities_id'])) {
         );
         echo "</td></tr>";
 
-        echo "<tr class='tab_bg_1'><td>". __('For tickets closed after')."</td><td>";
+        echo "<tr class='tab_bg_1'><td>" . __('For tickets closed after') . "</td><td>";
         Html::showDateTimeField("max_closedate", ['value'      => $max_closedate,
                                                         'timestep'   => 1]);
         echo "</td></tr>";
 
         if ($_POST['inquest_config'] == 2) {
             echo "<tr class='tab_bg_1'>";
-            echo "<td>".__('Valid tags')."</td><td>".
-                  "[TICKET_ID] [TICKET_NAME] [TICKET_CREATEDATE] [TICKET_SOLVEDATE] ".
-                  "[REQUESTTYPE_ID] [REQUESTTYPE_NAME] [TICKET_PRIORITY] [TICKET_PRIORITYNAME]  ".
-                  "[TICKETCATEGORY_ID] [TICKETCATEGORY_NAME] [TICKETTYPE_ID] ".
-                  "[TICKETTYPE_NAME] [SOLUTIONTYPE_ID] [SOLUTIONTYPE_NAME] ".
+            echo "<td>" . __('Valid tags') . "</td><td>" .
+                  "[TICKET_ID] [TICKET_NAME] [TICKET_CREATEDATE] [TICKET_SOLVEDATE] " .
+                  "[REQUESTTYPE_ID] [REQUESTTYPE_NAME] [TICKET_PRIORITY] [TICKET_PRIORITYNAME]  " .
+                  "[TICKETCATEGORY_ID] [TICKETCATEGORY_NAME] [TICKETTYPE_ID] " .
+                  "[TICKETTYPE_NAME] [SOLUTIONTYPE_ID] [SOLUTIONTYPE_NAME] " .
                   "[SLA_TTO_ID] [SLA_TTO_NAME] [SLA_TTR_ID] [SLA_TTR_NAME] [SLALEVEL_ID] [SLALEVEL_NAME]</td></tr>";
 
             echo "<tr class='tab_bg_1'><td>" . __('URL') . "</td>";

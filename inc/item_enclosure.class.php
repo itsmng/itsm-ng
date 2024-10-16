@@ -76,8 +76,10 @@ class Item_Enclosure extends CommonDBRelation
         $ID = $enclosure->getID();
         $rand = mt_rand();
 
-        if (!$enclosure->getFromDB($ID)
-            || !$enclosure->can($ID, READ)) {
+        if (
+            !$enclosure->getFromDB($ID)
+            || !$enclosure->can($ID, READ)
+        ) {
             return false;
         }
         $canedit = $enclosure->canEdit($ID);
@@ -109,7 +111,7 @@ class Item_Enclosure extends CommonDBRelation
                 [
                   'enclosure'   => $enclosure->getID(),
                   'position'  => 1
-            ]
+                ]
             );
             echo "</div>";
         }
@@ -117,14 +119,14 @@ class Item_Enclosure extends CommonDBRelation
         $items = iterator_to_array($items);
 
         if (!count($items)) {
-            echo "<table class='tab_cadre_fixe' aria-label='No Item Found'><tr><th>".__('No item found')."</th></tr>";
+            echo "<table class='tab_cadre_fixe' aria-label='No Item Found'><tr><th>" . __('No item found') . "</th></tr>";
             echo "</table>";
         } else {
             if ($canedit) {
-                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
                 $massiveactionparams = [
                    'num_displayed'   => min($_SESSION['glpilist_limit'], count($items)),
-                   'container'       => 'mass'.__CLASS__.$rand
+                   'container'       => 'mass' . __CLASS__ . $rand
                 ];
                 Html::showMassiveActions($massiveactionparams);
             }
@@ -133,11 +135,11 @@ class Item_Enclosure extends CommonDBRelation
             $header = "<tr>";
             if ($canedit) {
                 $header .= "<th width='10'>";
-                $header .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+                $header .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
                 $header .= "</th>";
             }
-            $header .= "<th>"._n('Item', 'Items', 1)."</th>";
-            $header .= "<th>".__('Position')."</th>";
+            $header .= "<th>" . _n('Item', 'Items', 1) . "</th>";
+            $header .= "<th>" . __('Position') . "</th>";
             $header .= "</tr>";
 
             echo $header;
@@ -182,7 +184,7 @@ class Item_Enclosure extends CommonDBRelation
         $rand = mt_rand();
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td><label for='dropdown_itemtype$rand'>".__('Item type')."</label></td>";
+        echo "<td><label for='dropdown_itemtype$rand'>" . __('Item type') . "</label></td>";
         echo "<td>";
         $types = $CFG_GLPI['rackable_types'];
         $translated_types = [];
@@ -197,7 +199,7 @@ class Item_Enclosure extends CommonDBRelation
               'display_emptychoice'   => true,
               'value'                 => $this->fields["itemtype"],
               'rand'                  => $rand
-         ]
+            ]
         );
 
         //get all used items
@@ -223,14 +225,14 @@ class Item_Enclosure extends CommonDBRelation
         Ajax::updateItemOnSelectEvent(
             "dropdown_itemtype$rand",
             "items_id",
-            $CFG_GLPI["root_doc"]."/ajax/dropdownAllItems.php",
+            $CFG_GLPI["root_doc"] . "/ajax/dropdownAllItems.php",
             [
               'idtable'   => '__VALUE__',
               'name'      => 'items_id',
               'value'     => $this->fields['items_id'],
               'rand'      => $rand,
               'used'      => $used
-         ]
+            ]
         );
 
         //TODO: update possible positions according to selected item number of units
@@ -239,7 +241,7 @@ class Item_Enclosure extends CommonDBRelation
         //TODO: update orientation according to item model depth
 
         echo "</td>";
-        echo "<td><label for='dropdown_items_id$rand'>"._n('Item', 'Items', 1)."</label></td>";
+        echo "<td><label for='dropdown_items_id$rand'>" . _n('Item', 'Items', 1) . "</label></td>";
         echo "<td id='items_id'>";
         if (isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])) {
             $itemtype = $this->fields['itemtype'];
@@ -256,7 +258,7 @@ class Item_Enclosure extends CommonDBRelation
                 [
                   'display_emptychoice'   => true,
                   'rand'                  => $rand
-            ]
+                ]
             );
         }
 
@@ -264,11 +266,11 @@ class Item_Enclosure extends CommonDBRelation
         echo "</tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td><label for='dropdown_enclosures_id$rand'>".Enclosure::getTypeName(1)."</label></td>";
+        echo "<td><label for='dropdown_enclosures_id$rand'>" . Enclosure::getTypeName(1) . "</label></td>";
         echo "<td>";
         Enclosure::dropdown(['value' => $this->fields["enclosures_id"], 'rand' => $rand]);
         echo "</td>";
-        echo "<td><label for='dropdown_position$rand'>".__('Position')."</label></td>";
+        echo "<td><label for='dropdown_position$rand'>" . __('Position') . "</label></td>";
         echo "<td>";
         Dropdown::showNumber(
             'position',
@@ -278,7 +280,7 @@ class Item_Enclosure extends CommonDBRelation
               'step'   => 1,
               'used'   => $enclosure->getFilled($this->fields['itemtype'], $this->fields['items_id']),
               'rand'   => $rand
-         ]
+            ]
         );
         echo "</td>";
         echo "</tr>";
@@ -308,20 +310,28 @@ class Item_Enclosure extends CommonDBRelation
         $error_detected = [];
 
         //check for requirements
-        if (($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
-            || (isset($input['itemtype']) && empty($input['itemtype']))) {
+        if (
+            ($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
+            || (isset($input['itemtype']) && empty($input['itemtype']))
+        ) {
             $error_detected[] = __('An item type is required');
         }
-        if (($this->isNewItem() && (!isset($input['items_id']) || empty($input['items_id'])))
-            || (isset($input['items_id']) && empty($input['items_id']))) {
+        if (
+            ($this->isNewItem() && (!isset($input['items_id']) || empty($input['items_id'])))
+            || (isset($input['items_id']) && empty($input['items_id']))
+        ) {
             $error_detected[] = __('An item is required');
         }
-        if (($this->isNewItem() && (!isset($input['enclosures_id']) || empty($input['enclosures_id'])))
-            || (isset($input['enclosures_id']) && empty($input['enclosures_id']))) {
+        if (
+            ($this->isNewItem() && (!isset($input['enclosures_id']) || empty($input['enclosures_id'])))
+            || (isset($input['enclosures_id']) && empty($input['enclosures_id']))
+        ) {
             $error_detected[] = __('An enclosure is required');
         }
-        if (($this->isNewItem() && (!isset($input['position']) || empty($input['position'])))
-            || (isset($input['position']) && empty($input['position']))) {
+        if (
+            ($this->isNewItem() && (!isset($input['position']) || empty($input['position'])))
+            || (isset($input['position']) && empty($input['position']))
+        ) {
             $error_detected[] = __('A position is required');
         }
 

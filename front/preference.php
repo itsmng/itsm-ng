@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -52,8 +53,10 @@ if (isset($_GET['lostpassword'])) {
 
 Session::checkLoginUser();
 
-if (isset($_POST["update"])
-    && ($_POST["id"] == Session::getLoginUserID())) {
+if (
+    isset($_POST["update"])
+    && ($_POST["id"] == Session::getLoginUserID())
+) {
     $user->update($_POST);
     Event::log(
         $_POST["id"],
@@ -64,7 +67,6 @@ if (isset($_POST["update"])
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } else {
     Html::header(Preference::getTypeName(1), $_SERVER['PHP_SELF'], 'preference');
 

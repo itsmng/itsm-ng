@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -147,8 +148,10 @@ class CronTask extends CommonDBTM
             return 1;
         }
 
-        if (is_file(GLPI_CRON_DIR. '/all.lock')
-            || is_file(GLPI_CRON_DIR. '/'.$this->fields['name'].'.lock')) {
+        if (
+            is_file(GLPI_CRON_DIR . '/all.lock')
+            || is_file(GLPI_CRON_DIR . '/' . $this->fields['name'] . '.lock')
+        ) {
             // Global lock
             return 2;
         }
@@ -203,7 +206,7 @@ class CronTask extends CommonDBTM
             // End of this cron
             $_SESSION["glpicronuserrunning"] = '';
             self::release_lock();
-            Toolbox::logInFile('cron', __('Action aborted')."\n");
+            Toolbox::logInFile('cron', __('Action aborted') . "\n");
             exit;
         }
     }
@@ -230,11 +233,11 @@ class CronTask extends CommonDBTM
             [
               'state'  => self::STATE_RUNNING,
               'lastrun'   => new \QueryExpression('DATE_FORMAT(NOW(),\'%Y-%m-%d %H:%i:00\')')
-         ],
+            ],
             [
               'id'  => $this->fields['id'],
               'NOT' => ['state' => self::STATE_RUNNING]
-         ]
+            ]
         );
 
         if ($DB->affectedRows($result) > 0) {
@@ -309,11 +312,11 @@ class CronTask extends CommonDBTM
             $this->getTable(),
             [
               'state'  => $this->fields['state']
-         ],
+            ],
             [
               'id'     => $this->fields['id'],
               'state'  => self::STATE_RUNNING
-         ]
+            ]
         );
 
         if ($DB->affectedRows($result) > 0) {
@@ -328,7 +331,6 @@ class CronTask extends CommonDBTM
             } elseif ($retcode < 0) {
                 $content = __('Action completed, partially processed');
                 $content = 'Action completed, partially processed';
-
             } elseif ($retcode > 0) {
                 $content = __('Action completed, fully processed');
                 $content = 'Action completed, fully processed';
@@ -425,12 +427,12 @@ class CronTask extends CommonDBTM
             }
 
             // Get system lock
-            if (is_file(GLPI_CRON_DIR. '/all.lock')) {
+            if (is_file(GLPI_CRON_DIR . '/all.lock')) {
                 // Global lock
                 return false;
             }
             $locks = [];
-            foreach (glob(GLPI_CRON_DIR. '/*.lock') as $lock) {
+            foreach (glob(GLPI_CRON_DIR . '/*.lock') as $lock) {
                 $reg = [];
                 if (preg_match('!.*/(.*).lock$!', $lock, $reg)) {
                     $locks[] = $reg[1];
@@ -497,7 +499,7 @@ class CronTask extends CommonDBTM
                  'itemtype' => 'CronTask',
                  'date'     => ['>', new QueryExpression('CURRENT_TIMESTAMP() - INTERVAL 1 day')],
               ],
-         ]
+            ]
         );
         if ($alert_iterator->count() > 0) {
             // An alert has been sent within last day, so do not send a new one to not bother administrator
@@ -521,7 +523,7 @@ class CronTask extends CommonDBTM
               ],
               'ORDER'  => 'id DESC',
               'LIMIT'  => $threshold * 2
-         ]
+            ]
         );
 
         $error_count = 0;
@@ -546,7 +548,7 @@ class CronTask extends CommonDBTM
                   'type'     => Alert::THRESHOLD,
                   'itemtype' => 'CronTask',
                   'items_id' => $this->fields['id'],
-            ]
+                ]
             );
         }
     }
@@ -555,32 +557,38 @@ class CronTask extends CommonDBTM
     {
         $next = strtotime($this->fields['lastrun']) + $this->fields['frequency'];
         $hour    = date('H', $next);
-        $start  = ($this->fields['hourmin'] < 10 ? "0".$this->fields['hourmin']
+        $start  = ($this->fields['hourmin'] < 10 ? "0" . $this->fields['hourmin']
                                                : $this->fields['hourmin']);
-        $end  = ($this->fields['hourmax'] < 10 ? "0".$this->fields['hourmax']
+        $end  = ($this->fields['hourmax'] < 10 ? "0" . $this->fields['hourmax']
                                                : $this->fields['hourmax']);
 
-        if (($start < $end)
-              && ($hour < $start)) {
-            $disp = date('Y-m-d', $next). " $start:00:00";
+        if (
+            ($start < $end)
+              && ($hour < $start)
+        ) {
+            $disp = date('Y-m-d', $next) . " $start:00:00";
             $next = strtotime($disp);
-        } elseif (($start < $end)
-                    && ($hour >= $this->fields['hourmax'])) {
-            $disp = date('Y-m-d', $next + DAY_TIMESTAMP). " $start:00:00";
+        } elseif (
+            ($start < $end)
+                    && ($hour >= $this->fields['hourmax'])
+        ) {
+            $disp = date('Y-m-d', $next + DAY_TIMESTAMP) . " $start:00:00";
             $next = strtotime($disp);
         }
 
-        if (($start > $end)
+        if (
+            ($start > $end)
               && ($hour < $start)
-              && ($hour >= $end)) {
-            $disp = date('Y-m-d', $next). " $start:00:00";
+              && ($hour >= $end)
+        ) {
+            $disp = date('Y-m-d', $next) . " $start:00:00";
             $next = strtotime($disp);
         } else {
             $disp = date("Y-m-d H:i:s", $next);
         }
 
         if ($next < time()) {
-            echo __('As soon as possible').'<br>('.Html::convDateTime($disp).') ';
+            echo __('As soon as possible') . '<br>(' . Html::convDateTime($disp) . ') ';
         } else {
             echo Html::convDateTime($disp);
         }
@@ -662,8 +670,8 @@ class CronTask extends CommonDBTM
                        ],
                        'value' => $this->fields["state"]
                     ],
-                    __('System lock') => (is_file(GLPI_CRON_DIR. '/'.$this->fields["name"].'.lock')
-                    || is_file(GLPI_CRON_DIR. '/all.lock')) ? [
+                    __('System lock') => (is_file(GLPI_CRON_DIR . '/' . $this->fields["name"] . '.lock')
+                    || is_file(GLPI_CRON_DIR . '/all.lock')) ? [
                        'content' => __('System lock')
                     ] : [],
                     __('Plugin lock') => $isplug && !$plug->isActivated($isplug["plugin"]) ? [
@@ -698,7 +706,7 @@ class CronTask extends CommonDBTM
                        'min' => 0,
                        'max' => 360,
                        'step' => 10,
-                       'after' => '(0 => '.__('Infinite').')',
+                       'after' => '(0 => ' . __('Infinite') . ')',
                        'value' => $this->fields["logs_lifetime"]
                     ],
                     __('Last run') => [
@@ -717,14 +725,14 @@ class CronTask extends CommonDBTM
                      'min' => 0,
                      'max' => 400,
                      'value' => $this->fields["param"]
-                  ],
+                    ],
                     __('Next run') => [
                      'content' => $this->fields['state'] != self::STATE_WAITING ?
                           $this->getStateName($this->fields['state']) : (
                               empty($this->fields['lastrun']) ?
                            __('As soon as possible') : $this->getNextRunTime()
                           )
-                  ],
+                    ],
                     __('Maintenance mode') => [
                      'content' => isset($CFG_GLPI['maintenance_mode']) && $CFG_GLPI['maintenance_mode'] ?
                           __('enabled') : (
@@ -734,12 +742,12 @@ class CronTask extends CommonDBTM
                                   __('Execute')
                               ) : __('disabled')
                           )
-                  ],
+                    ],
                     !$this->isNewID($ID) ? [
                      'type' => 'hidden',
                      'name' => 'id',
                      'value' => $ID
-                  ] : [],
+                    ] : [],
                  ]
               ]
            ]
@@ -950,7 +958,7 @@ class CronTask extends CommonDBTM
 
         // No cron in maintenance mode
         if (isset($CFG_GLPI['maintenance_mode']) && $CFG_GLPI['maintenance_mode']) {
-            Toolbox::logInFile('cron', __('Maintenance mode enabled, running tasks is disabled')."\n");
+            Toolbox::logInFile('cron', __('Maintenance mode enabled, running tasks is disabled') . "\n");
             return false;
         }
 
@@ -960,13 +968,13 @@ class CronTask extends CommonDBTM
             // If cron is launched in command line, and if memory is insufficient,
             // display a warning in the logs
             if (Toolbox::checkMemoryLimit() == 2) {
-                Toolbox::logInFile('cron', __('A minimum of 64 Mio is commonly required for ITSM-NG.')."\n");
+                Toolbox::logInFile('cron', __('A minimum of 64 Mio is commonly required for ITSM-NG.') . "\n");
             }
             // If no task in CLI mode, call cron.php from command line is not really usefull ;)
             if (!countElementsInTable($crontask->getTable(), ['mode' => abs($mode)])) {
                 Toolbox::logInFile(
                     'cron',
-                    __('No task with Run mode = CLI, fix your tasks configuration')."\n"
+                    __('No task with Run mode = CLI, fix your tasks configuration') . "\n"
                 );
             }
         }
@@ -980,7 +988,7 @@ class CronTask extends CommonDBTM
                     $i
                 );
                 if ($crontask->getNeedToRun($mode, $name)) {
-                    $_SESSION["glpicronuserrunning"] = "cron_".$crontask->fields['name'];
+                    $_SESSION["glpicronuserrunning"] = "cron_" . $crontask->fields['name'];
 
                     $function = sprintf('%s::cron%s', $crontask->fields['itemtype'], $crontask->fields['name']);
 
@@ -993,7 +1001,7 @@ class CronTask extends CommonDBTM
                                 sprintf(
                                     __('%1$s: %2$s'),
                                     $msgprefix,
-                                    sprintf(__('%1$s %2$s')."\n", __('Launch'), $crontask->fields['name'])
+                                    sprintf(__('%1$s %2$s') . "\n", __('Launch'), $crontask->fields['name'])
                                 )
                             );
                             try {
@@ -1007,7 +1015,7 @@ class CronTask extends CommonDBTM
                                         __('%1$s: %2$s'),
                                         $msgprefix,
                                         sprintf(
-                                            __('Error during %s execution. Check in "%s" for more details.')."\n",
+                                            __('Error during %s execution. Check in "%s" for more details.') . "\n",
                                             $crontask->fields['name'],
                                             GLPI_LOG_DIR . '/php-errors.log'
                                         )
@@ -1025,33 +1033,31 @@ class CronTask extends CommonDBTM
                                 sprintf(
                                     __('%1$s: %2$s'),
                                     $msgprefix,
-                                    sprintf(__('%1$s %2$s')."\n", __("Can't start"), $crontask->fields['name'])
+                                    sprintf(__('%1$s %2$s') . "\n", __("Can't start"), $crontask->fields['name'])
                                 )
                             );
                         }
                     } else {
-                        $undefined_msg = sprintf(__('Undefined function %s (for cron)')."\n", $function);
+                        $undefined_msg = sprintf(__('Undefined function %s (for cron)') . "\n", $function);
                         Toolbox::logInFile('php-errors', $undefined_msg);
                         Toolbox::logInFile(
                             'cron',
                             sprintf(
                                 __('%1$s: %2$s'),
                                 $msgprefix,
-                                sprintf(__('%1$s %2$s')."\n", __("Can't start"), $crontask->fields['name'])
-                            ) ."\n". $undefined_msg
+                                sprintf(__('%1$s %2$s') . "\n", __("Can't start"), $crontask->fields['name'])
+                            ) . "\n" . $undefined_msg
                         );
                     }
-
                 } elseif ($i == 1) {
                     $msgcron = sprintf(__('%1$s: %2$s'), $msgprefix, __('Nothing to launch'));
-                    Toolbox::logInFile('cron', $msgcron."\n");
+                    Toolbox::logInFile('cron', $msgcron . "\n");
                 }
             } // end for
             $_SESSION["glpicronuserrunning"] = '';
             self::release_lock();
-
         } else {
-            Toolbox::logInFile('cron', __("Can't get DB lock")."\n");
+            Toolbox::logInFile('cron', __("Can't get DB lock") . "\n");
         }
 
         return $taskname;
@@ -1092,15 +1098,19 @@ class CronTask extends CommonDBTM
            'frequency' => $frequency
         ];
 
-        foreach (['allowmode', 'comment', 'hourmax', 'hourmin', 'logs_lifetime', 'mode',
-                       'param', 'state'] as $key) {
+        foreach (
+            ['allowmode', 'comment', 'hourmax', 'hourmin', 'logs_lifetime', 'mode',
+                       'param', 'state'] as $key
+        ) {
             if (isset($options[$key])) {
                 $input[$key] = $options[$key];
             }
         }
-        if (defined('GLPI_SYSTEM_CRON')
+        if (
+            defined('GLPI_SYSTEM_CRON')
             && ($input['allowmode'] & self::MODE_EXTERNAL)
-            && !isset($input['mode'])) {
+            && !isset($input['mode'])
+        ) {
             // Downstream packages may provide a good system cron
             $input['mode'] = self::MODE_EXTERNAL;
         }
@@ -1156,7 +1166,7 @@ class CronTask extends CommonDBTM
 
         echo "<br><div class='center'>";
         echo "<table class='tab_cadre' aria-label='Statistics'>";
-        echo "<tr><th colspan='2'>&nbsp;".__('Statistics')."</th></tr>\n";
+        echo "<tr><th colspan='2'>&nbsp;" . __('Statistics') . "</th></tr>\n";
 
         $nbstart = countElementsInTable(
             'glpi_crontasklogs',
@@ -1174,7 +1184,7 @@ class CronTask extends CommonDBTM
                                          'state'        => CronTaskLog::STATE_ERROR ]
         );
 
-        echo "<tr class='tab_bg_2'><td>".__('Run count')."</td><td class='right'>";
+        echo "<tr class='tab_bg_2'><td>" . __('Run count') . "</td><td class='right'>";
         if ($nbstart == $nbstop) {
             echo $nbstart;
         } else {
@@ -1218,65 +1228,65 @@ class CronTask extends CommonDBTM
                ]
             ])->next();
 
-            echo "<tr class='tab_bg_1'><td>".__('Start date')."</td>";
-            echo "<td class='right'>".Html::convDateTime($data['datemin'])."</td></tr>";
+            echo "<tr class='tab_bg_1'><td>" . __('Start date') . "</td>";
+            echo "<td class='right'>" . Html::convDateTime($data['datemin']) . "</td></tr>";
 
-            echo "<tr class='tab_bg_2'><td>".__('Minimal time')."</td>";
-            echo "<td class='right'>".sprintf(
+            echo "<tr class='tab_bg_2'><td>" . __('Minimal time') . "</td>";
+            echo "<td class='right'>" . sprintf(
                 _n('%s second', '%s seconds', $data['elapsedmin']),
                 number_format($data['elapsedmin'], 2)
             );
             echo "</td></tr>";
 
-            echo "<tr class='tab_bg_1'><td>".__('Maximal time')."</td>";
-            echo "<td class='right'>".sprintf(
+            echo "<tr class='tab_bg_1'><td>" . __('Maximal time') . "</td>";
+            echo "<td class='right'>" . sprintf(
                 _n('%s second', '%s seconds', $data['elapsedmax']),
                 number_format($data['elapsedmax'], 2)
             );
             echo "</td></tr>";
 
-            echo "<tr class='tab_bg_2'><td>".__('Average time')."</td>";
-            echo "<td class='right b'>".sprintf(
+            echo "<tr class='tab_bg_2'><td>" . __('Average time') . "</td>";
+            echo "<td class='right b'>" . sprintf(
                 _n('%s second', '%s seconds', $data['elapsedavg']),
                 number_format($data['elapsedavg'], 2)
             );
             echo "</td></tr>";
 
-            echo "<tr class='tab_bg_1'><td>".__('Total duration')."</td>";
-            echo "<td class='right'>".sprintf(
+            echo "<tr class='tab_bg_1'><td>" . __('Total duration') . "</td>";
+            echo "<td class='right'>" . sprintf(
                 _n('%s second', '%s seconds', $data['elapsedtot']),
                 number_format($data['elapsedtot'], 2)
             );
             echo "</td></tr>";
 
             if ($data['voltot'] > 0) {
-                echo "<tr class='tab_bg_2'><td>".__('Minimal count')."</td>";
-                echo "<td class='right'>".sprintf(
+                echo "<tr class='tab_bg_2'><td>" . __('Minimal count') . "</td>";
+                echo "<td class='right'>" . sprintf(
                     _n('%s item', '%s items', $data['volmin']),
                     $data['volmin']
-                )."</td></tr>";
+                ) . "</td></tr>";
 
-                echo "<tr class='tab_bg_1'><td>".__('Maximal count')."</td>";
-                echo "<td class='right'>".sprintf(
+                echo "<tr class='tab_bg_1'><td>" . __('Maximal count') . "</td>";
+                echo "<td class='right'>" . sprintf(
                     _n('%s item', '%s items', $data['volmax']),
                     $data['volmax']
-                )."</td></tr>";
+                ) . "</td></tr>";
 
-                echo "<tr class='tab_bg_2'><td>".__('Average count')."</td>";
-                echo "<td class='right b'>".sprintf(
+                echo "<tr class='tab_bg_2'><td>" . __('Average count') . "</td>";
+                echo "<td class='right b'>" . sprintf(
                     _n('%s item', '%s items', $data['volavg']),
                     number_format($data['volavg'], 2)
-                ).
+                ) .
                      "</td></tr>";
 
-                echo "<tr class='tab_bg_1'><td>".__('Total count')."</td>";
-                echo "<td class='right'>". sprintf(
+                echo "<tr class='tab_bg_1'><td>" . __('Total count') . "</td>";
+                echo "<td class='right'>" . sprintf(
                     _n('%s item', '%s items', $data['voltot']),
                     $data['voltot']
-                )."</td></tr>";
+                ) . "</td></tr>";
 
-                echo "<tr class='tab_bg_2'><td>".__('Average speed')."</td>";
-                echo "<td class='left'>".sprintf(
+                echo "<tr class='tab_bg_2'><td>" . __('Average speed') . "</td>";
+                echo "<td class='left'>" . sprintf(
                     __('%s items/sec'),
                     number_format($data['voltot'] / $data['elapsedtot'], 2)
                 );
@@ -1312,13 +1322,13 @@ class CronTask extends CommonDBTM
             [
               'crontasks_id' => $this->fields['id'],
               'state'        => [CronTaskLog::STATE_STOP, CronTaskLog::STATE_ERROR],
-         ]
+            ]
         );
 
         echo "<br><div class='center'>";
         if ($number < 1) {
             echo "<table class='tab_cadre_fixe' aria-label='History'>";
-            echo "<tr><th>".__('No item found')."</th></tr>";
+            echo "<tr><th>" . __('No item found') . "</th></tr>";
             echo "</table>";
             echo "</div>";
             return;
@@ -1341,35 +1351,34 @@ class CronTask extends CommonDBTM
         if (count($iterator)) {
             echo "<table class='tab_cadrehov' aria-label='Activity Log'>";
             $header = "<tr>";
-            $header .= "<th>"._n('Date', 'Dates', 1)."</th>";
-            $header .= "<th>".__('Total duration')."</th>";
-            $header .= "<th>"._x('quantity', 'Number')."</th>";
-            $header .= "<th>".__('Description')."</th>";
+            $header .= "<th>" . _n('Date', 'Dates', 1) . "</th>";
+            $header .= "<th>" . __('Total duration') . "</th>";
+            $header .= "<th>" . _x('quantity', 'Number') . "</th>";
+            $header .= "<th>" . __('Description') . "</th>";
             $header .= "</tr>\n";
             echo $header;
 
             while ($data = $iterator->next()) {
                 echo "<tr class='tab_bg_2'>";
-                echo "<td><a href='javascript:reloadTab(\"crontasklogs_id=".
-                            $data['crontasklogs_id']."\");'>".Html::convDateTime($data['date']).
+                echo "<td><a href='javascript:reloadTab(\"crontasklogs_id=" .
+                            $data['crontasklogs_id'] . "\");'>" . Html::convDateTime($data['date']) .
                       "</a></td>";
-                echo "<td class='right'>".sprintf(
+                echo "<td class='right'>" . sprintf(
                     _n(
                         '%s second',
                         '%s seconds',
                         intval($data['elapsed'])
                     ),
                     number_format($data['elapsed'], 3)
-                ).
+                ) .
                       "&nbsp;&nbsp;&nbsp;</td>";
-                echo "<td class='numeric'>".$data['volume']."</td>";
+                echo "<td class='numeric'>" . $data['volume'] . "</td>";
                 // Use gettext to display
-                echo "<td>".__($data['content'])."</td>";
+                echo "<td>" . __($data['content']) . "</td>";
                 echo "</tr>\n";
             }
             echo $header;
             echo "</table>";
-
         } else { // Not found
             echo __('No item found');
         }
@@ -1391,7 +1400,7 @@ class CronTask extends CommonDBTM
         global $DB;
 
         echo "<br><div class='center'>";
-        echo "<p><a href='javascript:reloadTab(\"crontasklogs_id=0\");'>".__('Last run list')."</a>".
+        echo "<p><a href='javascript:reloadTab(\"crontasklogs_id=0\");'>" . __('Last run list') . "</a>" .
              "</p>";
 
         $iterator = $DB->request([
@@ -1407,22 +1416,22 @@ class CronTask extends CommonDBTM
 
         if (count($iterator)) {
             echo "<table class='tab_cadrehov' aria-label='Activity Log Table'><tr>";
-            echo "<th>"._n('Date', 'Dates', 1)."</th>";
-            echo "<th>".__('Status')."</th>";
-            echo "<th>". __('Duration')."</th>";
-            echo "<th>"._x('quantity', 'Number')."</th>";
-            echo "<th>".__('Description')."</th>";
+            echo "<th>" . _n('Date', 'Dates', 1) . "</th>";
+            echo "<th>" . __('Status') . "</th>";
+            echo "<th>" . __('Duration') . "</th>";
+            echo "<th>" . _x('quantity', 'Number') . "</th>";
+            echo "<th>" . __('Description') . "</th>";
             echo "</tr>\n";
 
             $first = true;
             while ($data = $iterator->next()) {
                 echo "<tr class='tab_bg_2'>";
-                echo "<td class='center'>".($first ? Html::convDateTime($data['date'])
-                                                    : "&nbsp;")."</a></td>";
+                echo "<td class='center'>" . ($first ? Html::convDateTime($data['date'])
+                                                    : "&nbsp;") . "</a></td>";
                 $content = $data['content'];
                 switch ($data['state']) {
                     case CronTaskLog::STATE_START:
-                        echo "<td>".__('Start')."</td>";
+                        echo "<td>" . __('Start') . "</td>";
                         // Pass content to gettext
                         // implode (Run mode: XXX)
                         $list = explode(':', $data['content']);
@@ -1432,41 +1441,40 @@ class CronTask extends CommonDBTM
                         break;
 
                     case CronTaskLog::STATE_STOP:
-                        echo "<td>".__('End')."</td>";
+                        echo "<td>" . __('End') . "</td>";
                         // Pass content to gettext
                         $content = __($data['content']);
                         break;
 
                     case CronTaskLog::STATE_ERROR:
-                        echo "<td>".__('Error')."</td>";
+                        echo "<td>" . __('Error') . "</td>";
                         // Pass content to gettext
                         $content = __($data['content']);
                         break;
 
                     default:
-                        echo "<td>".__('Running')."</td>";
+                        echo "<td>" . __('Running') . "</td>";
                         // Pass content to gettext
                         $content = __($data['content']);
                 }
 
-                echo "<td class='right'>".sprintf(
+                echo "<td class='right'>" . sprintf(
                     _n(
                         '%s second',
                         '%s seconds',
                         intval($data['elapsed'])
                     ),
                     number_format($data['elapsed'], 3)
-                ).
+                ) .
                       "&nbsp;&nbsp;</td>";
-                echo "<td class='numeric'>".$data['volume']."</td>";
+                echo "<td class='numeric'>" . $data['volume'] . "</td>";
 
-                echo "<td>".$content."</td>";
+                echo "<td>" . $content . "</td>";
                 echo "</tr>\n";
                 $first = false;
             };
 
             echo "</table>";
-
         } else { // Not found
             echo __('No item found');
         }
@@ -1531,7 +1539,7 @@ class CronTask extends CommonDBTM
         $actions = parent::getSpecificMassiveActions($checkitem);
 
         if ($isadmin) {
-            $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'reset'] = __('Reset last run');
+            $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'reset'] = __('Reset last run');
         }
         return $actions;
     }
@@ -1736,7 +1744,7 @@ class CronTask extends CommonDBTM
             $maxlifetime = WEEK_TIMESTAMP;
         }
         $nb = 0;
-        foreach (glob(GLPI_SESSION_DIR."/sess_*") as $filename) {
+        foreach (glob(GLPI_SESSION_DIR . "/sess_*") as $filename) {
             if ((filemtime($filename) + $maxlifetime) < time()) {
                 // Delete session file if not delete before
                 if (@unlink($filename)) {
@@ -1753,7 +1761,7 @@ class CronTask extends CommonDBTM
                     'Clean %1$d session file created since more than %2$s seconds',
                     'Clean %1$d session files created since more than %2$s seconds',
                     $nb
-                )."\n",
+                ) . "\n",
                 $nb,
                 $maxlifetime
             ));
@@ -1784,10 +1792,10 @@ class CronTask extends CommonDBTM
         $firstdate = date("Ymd", time() - ($task->fields['param'] * DAY_TIMESTAMP)); // compute current date - param as days and format it like YYYYMMDD
 
         // first look for bak to delete
-        $dir       = GLPI_LOG_DIR."/*.bak";
+        $dir       = GLPI_LOG_DIR . "/*.bak";
         $findfiles = glob($dir);
         foreach ($findfiles as $file) {
-            $shortfile = str_replace(GLPI_LOG_DIR.'/', '', $file);
+            $shortfile = str_replace(GLPI_LOG_DIR . '/', '', $file);
             // now depending on the format of the name we delete the file (for aging archives) or rename it (will add Ymd.log to the end of the file)
             $match = null;
             if (preg_match('/.+[.]log[.](\\d{8})[.]bak$/', $file, $match) > 0) {
@@ -1805,13 +1813,13 @@ class CronTask extends CommonDBTM
         }
 
         // second look for log to archive
-        $dir       = GLPI_LOG_DIR."/*.log";
+        $dir       = GLPI_LOG_DIR . "/*.log";
         $findfiles = glob($dir);
         foreach ($findfiles as $file) {
-            $shortfile    = str_replace(GLPI_LOG_DIR.'/', '', $file);
+            $shortfile    = str_replace(GLPI_LOG_DIR . '/', '', $file);
             // rename the file
-            $newfilename  = $file.".".date("Ymd", time()).".bak"; // will add to filename a string with format YYYYMMDD (= current date)
-            $shortnewfile = str_replace(GLPI_LOG_DIR.'/', '', $newfilename);
+            $newfilename  = $file . "." . date("Ymd", time()) . ".bak"; // will add to filename a string with format YYYYMMDD (= current date)
+            $shortnewfile = str_replace(GLPI_LOG_DIR . '/', '', $newfilename);
 
             $task->addVolume(1);
             if (!file_exists($newfilename) && rename($file, $newfilename)) {
@@ -1847,8 +1855,8 @@ class CronTask extends CommonDBTM
         // max time to keep the file session
         $maxlifetime = HOUR_TIMESTAMP;
         $nb          = 0;
-        foreach (glob(GLPI_GRAPH_DIR."/*") as $filename) {
-            if (basename($filename) == "remove.txt" && is_dir(GLPI_ROOT.'/.git')) {
+        foreach (glob(GLPI_GRAPH_DIR . "/*") as $filename) {
+            if (basename($filename) == "remove.txt" && is_dir(GLPI_ROOT . '/.git')) {
                 continue;
             }
             if ((filemtime($filename) + $maxlifetime) < time()) {
@@ -1865,7 +1873,7 @@ class CronTask extends CommonDBTM
                     'Clean %1$d graph file created since more than %2$s seconds',
                     'Clean %1$d graph files created since more than %2$s seconds',
                     $nb
-                )."\n",
+                ) . "\n",
                 $nb,
                 $maxlifetime
             ));
@@ -1897,20 +1905,24 @@ class CronTask extends CommonDBTM
 
         //first step unlike only file if needed
         foreach ($files as $filename) {
-            if (basename($filename) == "remove.txt" && is_dir(GLPI_ROOT.'/.git')) {
+            if (basename($filename) == "remove.txt" && is_dir(GLPI_ROOT . '/.git')) {
                 continue;
             }
 
-            if (is_file($filename) && is_writable($filename)
-                && (filemtime($filename) + $maxlifetime) < time()) {
+            if (
+                is_file($filename) && is_writable($filename)
+                && (filemtime($filename) + $maxlifetime) < time()
+            ) {
                 if (@unlink($filename)) {
                     $nb++;
                 }
             }
 
-            if (is_dir($filename) && is_readable($filename)
-               //be sure that the directory is empty
-               && count(scandir($filename)) == 2) {
+            if (
+                is_dir($filename) && is_readable($filename)
+                //be sure that the directory is empty
+                && count(scandir($filename)) == 2
+            ) {
                 if (@rmdir($filename)) {
                     $nb++;
                 }
@@ -1924,7 +1936,7 @@ class CronTask extends CommonDBTM
                     'Clean %1$d temporary file created since more than %2$s seconds',
                     'Clean %1$d temporary files created since more than %2$s seconds',
                     $nb
-                )."\n",
+                ) . "\n",
                 $nb,
                 $maxlifetime
             ));
@@ -1978,8 +1990,8 @@ class CronTask extends CommonDBTM
            'WHERE'  => [
               'state'  => self::STATE_RUNNING,
               'OR'     => [
-                 new \QueryExpression('unix_timestamp('.$DB->quoteName('lastrun').') + 2 * '.$DB->quoteName('frequency').' < unix_timestamp(now())'),
-                 new \QueryExpression('unix_timestamp('.$DB->quoteName('lastrun').') + 2 * '.HOUR_TIMESTAMP.' < unix_timestamp(now())')
+                 new \QueryExpression('unix_timestamp(' . $DB->quoteName('lastrun') . ') + 2 * ' . $DB->quoteName('frequency') . ' < unix_timestamp(now())'),
+                 new \QueryExpression('unix_timestamp(' . $DB->quoteName('lastrun') . ') + 2 * ' . HOUR_TIMESTAMP . ' < unix_timestamp(now())')
               ]
            ]
         ]);
@@ -2086,7 +2098,7 @@ class CronTask extends CommonDBTM
     {
         global $CFG_GLPI;
 
-        $path = $CFG_GLPI['root_doc']."/front/cron.php";
+        $path = $CFG_GLPI['root_doc'] . "/front/cron.php";
 
         echo "<div style=\"background-image: url('$path');\"></div>";
         return true;
@@ -2104,13 +2116,11 @@ class CronTask extends CommonDBTM
         if (isset($_SESSION["glpicrontimer"])) {
             // call static function callcron() every 5min
             if ((time() - $_SESSION["glpicrontimer"]) > 300) {
-
                 if (self::callCronForce()) {
                     // Restart timer
                     $_SESSION["glpicrontimer"] = time();
                 }
             }
-
         } else {
             // Start timer
             $_SESSION["glpicrontimer"] = time();

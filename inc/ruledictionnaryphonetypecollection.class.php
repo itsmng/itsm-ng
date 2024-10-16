@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -42,5 +43,4 @@ class RuleDictionnaryPhoneTypeCollection extends RuleDictionnaryDropdownCollecti
     {
         return __('Dictionnary of phone types');
     }
-
 }

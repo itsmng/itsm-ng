@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -128,7 +129,7 @@ class Migration
 
         if (!isCommandLine() && $id != $this->current_message_area_id) {
             $this->current_message_area_id = $id;
-            echo "<div id='".$this->current_message_area_id."'></div>";
+            echo "<div id='" . $this->current_message_area_id . "'></div>";
         }
 
         $this->displayMessage(__('Work in progress...'));
@@ -189,14 +190,16 @@ class Migration
     {
 
         if ($warning) {
-            $log_file_name = 'warning_during_migration_to_'.$this->version;
+            $log_file_name = 'warning_during_migration_to_' . $this->version;
         } else {
-            $log_file_name = 'migration_to_'.$this->version;
+            $log_file_name = 'migration_to_' . $this->version;
         }
 
         // Do not log if more than 3 log error
-        if ($this->log_errors < 3
-           && !Toolbox::logInFile($log_file_name, $message . ' @ ', true)) {
+        if (
+            $this->log_errors < 3
+            && !Toolbox::logInFile($log_file_name, $message . ' @ ', true)
+        ) {
             $this->log_errors++;
         }
     }
@@ -398,11 +401,11 @@ class Migration
         $format = $this->fieldFormat($type, $params['value'], $params['nodefault']);
 
         if (!empty($params['comment'])) {
-            $params['comment'] = " COMMENT '".addslashes($params['comment'])."'";
+            $params['comment'] = " COMMENT '" . addslashes($params['comment']) . "'";
         }
 
         if (!empty($params['after'])) {
-            $params['after'] = " AFTER `".$params['after']."`";
+            $params['after'] = " AFTER `" . $params['after'] . "`";
         } elseif (!empty($params['first'])) {
             $params['first'] = " FIRST ";
         }
@@ -413,15 +416,15 @@ class Migration
 
         if ($format) {
             if (!$DB->fieldExists($table, $field, false)) {
-                $this->change[$table][] = "ADD `$field` $format ".$params['comment'] ." ".
-                                          $params['null'].$params['first'].$params['after'];
+                $this->change[$table][] = "ADD `$field` $format " . $params['comment'] . " " .
+                                          $params['null'] . $params['first'] . $params['after'];
 
                 if ($params['update'] !== '') {
                     $this->migrationOneTable($table);
                     $query = "UPDATE `$table`
-                        SET `$field` = ".$params['update']." ".
-                             $params['condition']."";
-                    $DB->queryOrDie($query, $this->version." set $field in $table");
+                        SET `$field` = " . $params['update'] . " " .
+                             $params['condition'] . "";
+                    $DB->queryOrDie($query, $this->version . " set $field in $table");
                 }
                 return true;
             }
@@ -467,11 +470,11 @@ class Migration
         $format = $this->fieldFormat($type, $params['value'], $params['nodefault']);
 
         if ($params['comment']) {
-            $params['comment'] = " COMMENT '".addslashes($params['comment'])."'";
+            $params['comment'] = " COMMENT '" . addslashes($params['comment']) . "'";
         }
 
         if (!empty($params['after'])) {
-            $params['after'] = " AFTER `".$params['after']."`";
+            $params['after'] = " AFTER `" . $params['after'] . "`";
         } elseif (!empty($params['first'])) {
             $params['first'] = " FIRST ";
         }
@@ -483,14 +486,16 @@ class Migration
         if ($DB->fieldExists($table, $oldfield, false)) {
             // in order the function to be replayed
             // Drop new field if name changed
-            if (($oldfield != $newfield)
-                && $DB->fieldExists($table, $newfield)) {
+            if (
+                ($oldfield != $newfield)
+                && $DB->fieldExists($table, $newfield)
+            ) {
                 $this->change[$table][] = "DROP `$newfield` ";
             }
 
             if ($format) {
-                $this->change[$table][] = "CHANGE `$oldfield` `$newfield` $format ".$params['comment']." ".
-                                          $params['null'].$params['first'].$params['after'];
+                $this->change[$table][] = "CHANGE `$oldfield` `$newfield` $format " . $params['comment'] . " " .
+                                          $params['null'] . $params['first'] . $params['after'];
             }
             return true;
         }
@@ -560,9 +565,9 @@ class Migration
         if (!isIndex($table, $indexname)) {
             if (is_array($fields)) {
                 if ($len) {
-                    $fields = "`".implode("`($len), `", $fields)."`($len)";
+                    $fields = "`" . implode("`($len), `", $fields) . "`($len)";
                 } else {
-                    $fields = "`".implode("`, `", $fields)."`";
+                    $fields = "`" . implode("`, `", $fields) . "`";
                 }
             } elseif ($len) {
                 $fields = "`$fields`($len)";
@@ -612,7 +617,7 @@ class Migration
 
         if (!$DB->tableExists("$newtable") && $DB->tableExists("$oldtable")) {
             $query = "RENAME TABLE `$oldtable` TO `$newtable`";
-            $DB->queryOrDie($query, $this->version." rename $oldtable");
+            $DB->queryOrDie($query, $this->version . " rename $oldtable");
 
             // Clear possibly forced value of table name.
             // Actually the only forced value in core is for config table.
@@ -635,8 +640,9 @@ class Migration
                 unset($this->uniques[$oldtable]);
             }
         } else {
-            if (Toolbox::startsWith($oldtable, 'glpi_plugin_')
-               || Toolbox::startsWith($newtable, 'glpi_plugin_')
+            if (
+                Toolbox::startsWith($oldtable, 'glpi_plugin_')
+                || Toolbox::startsWith($newtable, 'glpi_plugin_')
             ) {
                 return;
             }
@@ -667,21 +673,22 @@ class Migration
     {
         global $DB;
 
-        if (!$DB->tableExists($newtable)
-            && $DB->tableExists($oldtable)) {
-
+        if (
+            !$DB->tableExists($newtable)
+            && $DB->tableExists($oldtable)
+        ) {
             // Try to do a flush tables if RELOAD privileges available
             // $query = "FLUSH TABLES `$oldtable`, `$newtable`";
             // $DB->query($query);
 
             $query = "CREATE TABLE `$newtable` LIKE `$oldtable`";
-            $DB->queryOrDie($query, $this->version." create $newtable");
+            $DB->queryOrDie($query, $this->version . " create $newtable");
 
             //nedds DB::insert to support subqeries to get migrated
             $query = "INSERT INTO `$newtable`
                           (SELECT *
                            FROM `$oldtable`)";
-            $DB->queryOrDie($query, $this->version." copy from $oldtable to $newtable");
+            $DB->queryOrDie($query, $this->version . " copy from $oldtable to $newtable");
         }
     }
 
@@ -700,9 +707,10 @@ class Migration
     {
         global $DB;
 
-        if ($DB->tableExists("$table")
-            && is_array($input) && (count($input) > 0)) {
-
+        if (
+            $DB->tableExists("$table")
+            && is_array($input) && (count($input) > 0)
+        ) {
             $values = [];
             foreach ($input as $field => $value) {
                 if ($DB->fieldExists($table, $field)) {
@@ -710,7 +718,7 @@ class Migration
                 }
             }
 
-            $DB->insertOrDie($table, $values, $this->version." insert in $table");
+            $DB->insertOrDie($table, $values, $this->version . " insert in $table");
 
             return $DB->insertId();
         }
@@ -729,17 +737,17 @@ class Migration
         global $DB;
 
         if (isset($this->change[$table])) {
-            $query = "ALTER TABLE `$table` ".implode(" ,\n", $this->change[$table])." ";
+            $query = "ALTER TABLE `$table` " . implode(" ,\n", $this->change[$table]) . " ";
             $this->displayMessage(sprintf(__('Change of the database layout - %s'), $table));
-            $DB->queryOrDie($query, $this->version." multiple alter in $table");
+            $DB->queryOrDie($query, $this->version . " multiple alter in $table");
             unset($this->change[$table]);
         }
 
         if (isset($this->fulltexts[$table])) {
             $this->displayMessage(sprintf(__('Adding fulltext indices - %s'), $table));
             foreach ($this->fulltexts[$table] as $idx) {
-                $query = "ALTER TABLE `$table` ".$idx;
-                $DB->queryOrDie($query, $this->version." $idx");
+                $query = "ALTER TABLE `$table` " . $idx;
+                $DB->queryOrDie($query, $this->version . " $idx");
             }
             unset($this->fulltexts[$table]);
         }
@@ -747,8 +755,8 @@ class Migration
         if (isset($this->uniques[$table])) {
             $this->displayMessage(sprintf(__('Adding unicity indices - %s'), $table));
             foreach ($this->uniques[$table] as $idx) {
-                $query = "ALTER TABLE `$table` ".$idx;
-                $DB->queryOrDie($query, $this->version." $idx");
+                $query = "ALTER TABLE `$table` " . $idx;
+                $DB->queryOrDie($query, $this->version . " $idx");
             }
             unset($this->uniques[$table]);
         }
@@ -816,7 +824,7 @@ class Migration
         // Compute ranking
         $sql = "SELECT MAX(`ranking`) AS `rank`
               FROM `glpi_rules`
-              WHERE `sub_type` = '".$rule['sub_type']."'";
+              WHERE `sub_type` = '" . $rule['sub_type'] . "'";
         $result = $DB->query($sql);
 
         $ranking = 1;
@@ -882,7 +890,7 @@ class Migration
                     while ($data = $iterator->next()) {
                         $query = "SELECT MAX(`rank`)
                               FROM `glpi_displaypreferences`
-                              WHERE `users_id` = '".$data['users_id']."'
+                              WHERE `users_id` = '" . $data['users_id'] . "'
                                     AND `itemtype` = '$type'";
                         $result = $DB->query($query);
                         $rank   = $DB->result($result, 0, 0);
@@ -891,7 +899,7 @@ class Migration
                         foreach ($tab as $newval) {
                             $query = "SELECT *
                                  FROM `glpi_displaypreferences`
-                                 WHERE `users_id` = '".$data['users_id']."'
+                                 WHERE `users_id` = '" . $data['users_id'] . "'
                                        AND `num` = '$newval'
                                        AND `itemtype` = '$type'";
                             if ($result2 = $DB->query($query)) {
@@ -903,13 +911,12 @@ class Migration
                                           'num'       => $newval,
                                           'rank'      => $rank++,
                                           'users_id'  => $data['users_id']
-                                 ]
+                                        ]
                                     );
                                 }
                             }
                         }
                     }
-
                 } else { // Add for default user
                     $rank = 1;
                     foreach ($tab as $newval) {
@@ -920,7 +927,7 @@ class Migration
                               'num'       => $newval,
                               'rank'      => $rank++,
                               'users_id'  => 0
-                        ]
+                            ]
                         );
                     }
                 }
@@ -936,7 +943,7 @@ class Migration
                         [
                           'itemtype'  => $type,
                           'num'       => $tab
-                  ]
+                        ]
                     );
                 }
             }
@@ -1056,7 +1063,7 @@ class Migration
                     [
                       'context'   => $context,
                       'name'      => array_keys($config)
-               ]
+                    ]
                 );
                 foreach ($existing as $conf) {
                     unset($config[$conf['name']]);
@@ -1111,7 +1118,7 @@ class Migration
               'WHERE'     => [
                  'glpi_profilerights.id' => null,
               ]
-         ]
+            ]
         );
 
         if ($prof_iterator->count() === 0) {
@@ -1149,7 +1156,7 @@ class Migration
                   'profiles_id'  => $profile['id'],
                   'name'         => $name,
                   'rights'       => $reqmet ? $rights : 0
-            ],
+                ],
                 sprintf('%1$s add right for %2$s', $this->version, $name)
             );
         }
@@ -1339,7 +1346,7 @@ class Migration
                      ],
                   ],
                   'ORDER'  => 'TABLE_NAME',
-            ]
+                ]
             );
             $fkey_column_array = iterator_to_array($fkey_column_iterator); // Convert to array to be able to loop twice
             foreach ($fkey_column_array as $fkey_column) {
@@ -1405,7 +1412,7 @@ class Migration
                  ],
               ],
               'ORDER'  => 'TABLE_NAME',
-         ]
+            ]
         );
         foreach ($itemtype_column_iterator as $itemtype_column) {
             $this->addPostQuery(
@@ -1498,9 +1505,16 @@ class Migration
                     if (isset($query['criteria'])) {
                         foreach ($query['criteria'] as $cid => $criterion) {
                             $is_meta = isset($criterion['meta']) && (int)$criterion['meta'] === 1;
-                            if (($is_meta && isset($criterion['itemtype'], $criterion['field']) &&
-                                  $criterion['itemtype'] === $itemtype && (int)$criterion['field'] === $old_search_opt)
-                               || (!$is_meta && $data['itemtype'] === $itemtype && isset($criterion['field']) && (int)$criterion['field'] === $old_search_opt)) {
+                            if (
+                                ($is_meta &&
+                                isset($criterion['itemtype'], $criterion['field']) &&
+                                  $criterion['itemtype'] === $itemtype &&
+                                  (int)$criterion['field'] === $old_search_opt) ||
+                                (!$is_meta &&
+                                $data['itemtype'] === $itemtype &&
+                                isset($criterion['field']) &&
+                                (int)$criterion['field'] === $old_search_opt)
+                            ) {
                                 $query['criteria'][$cid]['field'] = $new_search_opt;
                                 $is_changed = true;
                             }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -36,6 +37,5 @@ class Something extends \CommonDBTM
 {
     public function __construct(array $param)
     {
-
     }
 }

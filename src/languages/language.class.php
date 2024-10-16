@@ -22,7 +22,7 @@ class Language
         global $CFG_GLPI;
 
         foreach ($CFG_GLPI["languages"] as $key => $val) {
-            if (isset($val[1]) && is_file(GLPI_ROOT ."/locales/".$val[1])) {
+            if (isset($val[1]) && is_file(GLPI_ROOT . "/locales/" . $val[1])) {
                 $languages[$key] = $val[0];
             }
         }

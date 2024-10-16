@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -74,8 +75,10 @@ class NetworkPortAggregate extends NetworkPortInstantiation
     {
         global $DB;
 
-        if (isset($this->fields['networkports_id_list'])
-            && is_string($this->fields['networkports_id_list'])) {
+        if (
+            isset($this->fields['networkports_id_list'])
+            && is_string($this->fields['networkports_id_list'])
+        ) {
             $this->fields['networkports_id_list']
                            = importArrayFromDB($this->fields['networkports_id_list']);
         }
@@ -156,7 +159,6 @@ class NetworkPortAggregate extends NetworkPortInstantiation
 
         parent::getInstantiationHTMLTableHeaders($group, $super, $internet_super, $father, $options);
         return null;
-
     }
 
 
@@ -167,8 +169,10 @@ class NetworkPortAggregate extends NetworkPortInstantiation
         array $options = []
     ) {
 
-        if (isset($this->fields['networkports_id_list'])
-            && is_string($this->fields['networkports_id_list'])) {
+        if (
+            isset($this->fields['networkports_id_list'])
+            && is_string($this->fields['networkports_id_list'])
+        ) {
             $this->fields['networkports_id_list']
                            = importArrayFromDB($this->fields['networkports_id_list']);
         }
@@ -181,5 +185,4 @@ class NetworkPortAggregate extends NetworkPortInstantiation
         parent::getInstantiationHTMLTable($netport, $row, $father, $options);
         return null;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -45,5 +46,4 @@ class ProjectTaskType extends CommonDropdown
     {
         return _n('Project tasks type', 'Project tasks types', $nb);
     }
-
 }

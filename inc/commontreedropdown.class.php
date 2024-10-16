@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -81,8 +82,10 @@ abstract class CommonTreeDropdown extends CommonDropdown
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
 
-        if (!$withtemplate
-            && ($item->getType() == $this->getType())) {
+        if (
+            !$withtemplate
+            && ($item->getType() == $this->getType())
+        ) {
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                 $nb = countElementsInTable(
@@ -114,7 +117,7 @@ abstract class CommonTreeDropdown extends CommonDropdown
     **/
     public static function getCompleteNameFromParents($parentCompleteName, $thisName)
     {
-        return addslashes($parentCompleteName). " > ".$thisName;
+        return addslashes($parentCompleteName) . " > " . $thisName;
     }
 
 
@@ -132,9 +135,11 @@ abstract class CommonTreeDropdown extends CommonDropdown
         // leading/ending space will break findID/import
         $input['name'] = trim($input['name']);
 
-        if (isset($input[$this->getForeignKeyField()])
+        if (
+            isset($input[$this->getForeignKeyField()])
             && !$this->isNewID($input[$this->getForeignKeyField()])
-            && $parent->getFromDB($input[$this->getForeignKeyField()])) {
+            && $parent->getFromDB($input[$this->getForeignKeyField()])
+        ) {
             $input['level']        = $parent->fields['level'] + 1;
             // Sometimes (internet address), the complete name may be different ...
             /* if ($input[$this->getForeignKeyField()]==0) { // Root entity case
@@ -179,7 +184,7 @@ abstract class CommonTreeDropdown extends CommonDropdown
               'SELECT' => 'id',
               'FROM'   => $this->getTable(),
               'WHERE'  => [$this->getForeignKeyField() => $this->fields['id']]
-         ]
+            ]
         );
 
         foreach ($result as $data) {
@@ -197,10 +202,12 @@ abstract class CommonTreeDropdown extends CommonDropdown
 
         if (isset($input[$this->getForeignKeyField()])) {
             // Can't move a parent under a child
-            if (in_array(
-                $input[$this->getForeignKeyField()],
-                getSonsOf($this->getTable(), $input['id'])
-            )) {
+            if (
+                in_array(
+                    $input[$this->getForeignKeyField()],
+                    getSonsOf($this->getTable(), $input['id'])
+                )
+            ) {
                 return false;
             }
             // Parent changes => clear ancestors and update its level and completename
@@ -320,10 +327,10 @@ abstract class CommonTreeDropdown extends CommonDropdown
             $this->getTable(),
             [
               'sons_cache' => 'NULL'
-         ],
+            ],
             [
               'id' => $ancestors
-         ]
+            ]
         );
 
         //drop from sons cache when needed
@@ -514,7 +521,6 @@ abstract class CommonTreeDropdown extends CommonDropdown
             if ($papa->getFromDB($this->fields[$this->getForeignKeyField()])) {
                 $link = $papa->getTreeLink() . " > ";
             }
-
         }
         return $link . $this->getLink();
     }
@@ -600,26 +606,26 @@ abstract class CommonTreeDropdown extends CommonDropdown
               'FROM'  => $this->getTable(),
               'WHERE' => [$fk => $ID],
               'ORDER' => 'name',
-         ]
+            ]
         ));
 
         $values = [];
         foreach ($result as $data) {
-            $newValue = ['<a href="'.$this->getFormURL().'?id='.$data['id'].'">'.$data['name'].'</a>'];
+            $newValue = ['<a href="' . $this->getFormURL() . '?id=' . $data['id'] . '">' . $data['name'] . '</a>'];
             if ($entity_assign) {
                 $newValue[] = Dropdown::getDropdownName("glpi_entities", $data["entities_id"]);
             }
             foreach ($fields as $field) {
                 switch ($field['type']) {
-                    case 'UserDropdown' :
+                    case 'UserDropdown':
                         $newValue[] = getUserName($data[$field['name']]);
                         break;
 
-                    case 'bool' :
+                    case 'bool':
                         $newValue[] = Dropdown::getYesNo($data[$field['name']]);
                         break;
 
-                    case 'dropdownValue' :
+                    case 'dropdownValue':
                         $newValue[] = Dropdown::getDropdownName(
                             getTableNameForForeignKeyField($field['name']),
                             $data[$field['name']]
@@ -649,8 +655,8 @@ abstract class CommonTreeDropdown extends CommonDropdown
         $actions = parent::getSpecificMassiveActions($checkitem);
 
         if ($isadmin) {
-            $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'move_under']
-                     = "<i class='ma-icon fas fa-sitemap' aria-hidden='true'></i>".
+            $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'move_under']
+                     = "<i class='ma-icon fas fa-sitemap' aria-hidden='true'></i>" .
                        _x('button', 'Move under');
         }
 
@@ -672,10 +678,9 @@ abstract class CommonTreeDropdown extends CommonDropdown
                       'itemtype' => $itemtype,
                    ]
                 ]);
-                echo "<br><br><input type='submit' name='massiveaction' class='btn btn-secondary' value='".
-                               _sx('button', 'Move')."'>\n";
+                echo "<br><br><input type='submit' name='massiveaction' class='btn btn-secondary' value='" .
+                               _sx('button', 'Move') . "'>\n";
                 return true;
-
         }
         return parent::showMassiveActionsSubForm($ma);
     }
@@ -702,12 +707,16 @@ abstract class CommonTreeDropdown extends CommonDropdown
                     foreach ($ids as $id) {
                         if ($item->can($id, UPDATE)) {
                             // Check if parent is not a child of the original one
-                            if (!in_array($parent->getID(), getSonsOf(
-                                $item->getTable(),
-                                $item->getID()
-                            ))) {
-                                if ($item->update(['id' => $id,
-                                                        $fk  => $parent->getID()])) {
+                            if (
+                                !in_array($parent->getID(), getSonsOf(
+                                    $item->getTable(),
+                                    $item->getID()
+                                ))
+                            ) {
+                                if (
+                                    $item->update(['id' => $id,
+                                                        $fk  => $parent->getID()])
+                                ) {
                                     $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                                 } else {
                                     $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -59,8 +60,7 @@ class PrinterModel extends CommonDropdown
         $this->deleteChildrenAndRelationsFromDb(
             [
               CartridgeItem_PrinterModel::class,
-         ]
+            ]
         );
     }
-
 }

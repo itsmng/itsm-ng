@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -201,15 +202,17 @@ class RuleAsset extends Rule
         if (count($this->actions)) {
             foreach ($this->actions as $action) {
                 switch ($action->fields["action_type"]) {
-                    case "assign" :
+                    case "assign":
                         $output[$action->fields["field"]] = $action->fields["value"];
                         break;
 
-                    case "append" :
+                    case "append":
                         $actions = $this->getActions();
                         $value   = $action->fields["value"];
-                        if (isset($actions[$action->fields["field"]]["appendtoarray"])
-                            && isset($actions[$action->fields["field"]]["appendtoarrayfield"])) {
+                        if (
+                            isset($actions[$action->fields["field"]]["appendtoarray"])
+                            && isset($actions[$action->fields["field"]]["appendtoarrayfield"])
+                        ) {
                             $value = $actions[$action->fields["field"]]["appendtoarray"];
                             $value[$actions[$action->fields["field"]]["appendtoarrayfield"]]
                                    = $action->fields["value"];
@@ -217,7 +220,7 @@ class RuleAsset extends Rule
                         $output[$actions[$action->fields["field"]]["appendto"]][] = $value;
                         break;
 
-                    case "regex_result" :
+                    case "regex_result":
                         switch ($action->fields["field"]) {
                             case "_affect_user_by_regex":
                                 foreach ($this->regex_results as $regex_result) {
@@ -258,6 +261,4 @@ class RuleAsset extends Rule
         }
         return $output;
     }
-
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -63,7 +64,7 @@ class DeviceMotherboard extends CommonDevice
                  'value' => $this->fields['devicemotherboardmodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceMotherBoardModel'),
               ]
-         ]
+            ]
         );
     }
 

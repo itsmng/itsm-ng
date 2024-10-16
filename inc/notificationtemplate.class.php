@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -253,8 +254,10 @@ class NotificationTemplate extends CommonDBTM
 
         //Additionnal option can be given for template processing
         //For the moment, only option to see private tasks & followups is available
-        if (!empty($options)
-            && isset($options['sendprivate'])) {
+        if (
+            !empty($options)
+            && isset($options['sendprivate'])
+        ) {
             return 1;
         }
         return 0;
@@ -341,29 +344,29 @@ class NotificationTemplate extends CommonDBTM
 
                     $lang['content_html'] =
                           "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-                        'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>".
+                        'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>" .
                           "<html>
                         <head>
                          <META http-equiv='Content-Type' content='text/html; charset=utf-8'>
-                         <title>".Html::entities_deep($lang['subject'])."</title>
+                         <title>" . Html::entities_deep($lang['subject']) . "</title>
                          <style type='text/css'>
-                           ".$this->fields['css']."
+                           " . $this->fields['css'] . "
                          </style>
                         </head>
-                        <body>\n".(!empty($add_header) ? $add_header."\n<br><br>" : '').
-                             $template_datas['content_html'].
-                          "<br><br>-- \n<br>".$signature_html.
-                          "<br>$footer_string".
-                          "<br><br>\n".(!empty($add_footer) ? $add_footer."\n<br><br>" : '').
+                        <body>\n" . (!empty($add_header) ? $add_header . "\n<br><br>" : '') .
+                             $template_datas['content_html'] .
+                          "<br><br>-- \n<br>" . $signature_html .
+                          "<br>$footer_string" .
+                          "<br><br>\n" . (!empty($add_footer) ? $add_footer . "\n<br><br>" : '') .
                           "\n</body></html>";
                 }
 
                 $lang['content_text']
-                      = (!empty($add_header) ? $add_header."\n\n" : '').                    Html::clean(self::process(
+                      = (!empty($add_header) ? $add_header . "\n\n" : '') .                    Html::clean(self::process(
                           $template_datas['content_text'],
                           $data
-                      )."\n\n-- \n".$this->signature.
-                                          "\n".Html::entity_decode_deep($generated_by))."\n\n".$add_footer;
+                      ) . "\n\n-- \n" . $this->signature .
+                                          "\n" . Html::entity_decode_deep($generated_by)) . "\n\n" . $add_footer;
                 $this->templates_by_languages[$tid] = $lang;
             }
 
@@ -409,19 +412,21 @@ class NotificationTemplate extends CommonDBTM
         $string = Toolbox::unclean_cross_side_scripting_deep($string);
 
         //First of all process the FOREACH tag
-        if (preg_match_all(
-            "/##FOREACH[ ]?(FIRST|LAST)?[ ]?([0-9]*)?[ ]?([a-z-0-9\._]*)##/i",
-            $string,
-            $out
-        )) {
-
+        if (
+            preg_match_all(
+                "/##FOREACH[ ]?(FIRST|LAST)?[ ]?([0-9]*)?[ ]?([a-z-0-9\._]*)##/i",
+                $string,
+                $out
+            )
+        ) {
             foreach ($out[3] as $id => $tag_infos) {
-                $regex = "/".$out[0][$id]."(.*)##ENDFOREACH".$tag_infos."##/Uis";
+                $regex = "/" . $out[0][$id] . "(.*)##ENDFOREACH" . $tag_infos . "##/Uis";
 
-                if (preg_match($regex, $string, $tag_out)
+                if (
+                    preg_match($regex, $string, $tag_out)
                     && isset($data[$tag_infos])
-                    && is_array($data[$tag_infos])) {
-
+                    && is_array($data[$tag_infos])
+                ) {
                     $data_lang_foreach = $cleandata;
                     unset($data_lang_foreach[$tag_infos]);
 
@@ -429,7 +434,6 @@ class NotificationTemplate extends CommonDBTM
                     $foreachvalues = $data[$tag_infos];
                     if (!empty($foreachvalues)) {
                         if (isset($out[1][$id]) && ($out[1][$id] != '')) {
-
                             if ($out[1][$id] == 'FIRST') {
                                 $foreachvalues = array_reverse($foreachvalues);
                             }
@@ -453,7 +457,6 @@ class NotificationTemplate extends CommonDBTM
                         $output_foreach_string .= strtr($tmp, $data_lang_foreach);
                     }
                     $string = str_replace($tag_out[0], $output_foreach_string, $string);
-
                 } else {
                     $string = str_replace($tag_out, '', $string);
                 }
@@ -479,27 +482,26 @@ class NotificationTemplate extends CommonDBTM
             foreach ($out[1] as $key => $tag_infos) {
                 $if_field = $tag_infos;
                 //Get the field tag value (if one)
-                $regex_if = "/##IF".$if_field."[=]?.*##(.*)##ENDIF".$if_field."##/Uis";
+                $regex_if = "/##IF" . $if_field . "[=]?.*##(.*)##ENDIF" . $if_field . "##/Uis";
                 //Get the else tag value (if one)
-                $regex_else = "/##ELSE".$if_field."[=]?.*##(.*)##ENDELSE".$if_field."##/Uis";
+                $regex_else = "/##ELSE" . $if_field . "[=]?.*##(.*)##ENDELSE" . $if_field . "##/Uis";
 
                 $condition_ok = false;
 
                 if (empty($out[2][$key]) && !strlen($out[2][$key])) { // No = : check if ot empty or not null
-
-                    if (isset($data['##'.$if_field.'##'])
-                        && $data['##'.$if_field.'##'] != '0'
-                        && $data['##'.$if_field.'##'] != ''
-                        && $data['##'.$if_field.'##'] != '&nbsp;'
-                        && !is_null($data['##'.$if_field.'##'])) {
-
+                    if (
+                        isset($data['##' . $if_field . '##'])
+                        && $data['##' . $if_field . '##'] != '0'
+                        && $data['##' . $if_field . '##'] != ''
+                        && $data['##' . $if_field . '##'] != '&nbsp;'
+                        && !is_null($data['##' . $if_field . '##'])
+                    ) {
                         $condition_ok = true;
-
                     }
                 } else { // check exact match
-                    if (isset($data['##'.$if_field.'##'])) {
+                    if (isset($data['##' . $if_field . '##'])) {
                         // Data value: the value for the field in the database
-                        $data_value = Html::entity_decode_deep($data['##'.$if_field.'##']);
+                        $data_value = Html::entity_decode_deep($data['##' . $if_field . '##']);
 
                         // Condition value: the expected value needed to validate the condition
                         $condition_value = Html::entity_decode_deep($out[2][$key]);
@@ -520,7 +522,6 @@ class NotificationTemplate extends CommonDBTM
                 if ($condition_ok) { // Do IF
                     $string = preg_replace($regex_if, "\\1", $string, 1);
                     $string = preg_replace($regex_else, "", $string, 1);
-
                 } else { // Do ELSE
                     $string = preg_replace($regex_if, "", $string, 1);
                     $string = preg_replace($regex_else, "\\1", $string, 1);
@@ -637,7 +638,7 @@ class NotificationTemplate extends CommonDBTM
             [
               Notification_NotificationTemplate::class,
               NotificationTemplateTranslation::class,
-         ]
+            ]
         );
 
         // QueuedNotification does not extends CommonDBConnexity

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -98,8 +99,10 @@ class ReplayDictionnaryRulesCommand extends AbstractCommand
         $dictionnary = $input->getOption('dictionnary');
         $rulecollection = \RuleCollection::getClassByType($dictionnary);
 
-        if (!in_array($dictionnary, $this->getDictionnaryTypes())
-            || !($rulecollection instanceof \RuleCollection)) {
+        if (
+            !in_array($dictionnary, $this->getDictionnaryTypes())
+            || !($rulecollection instanceof \RuleCollection)
+        ) {
             throw new InvalidArgumentException(
                 sprintf(__('Invalid "dictionnary" value.'))
             );

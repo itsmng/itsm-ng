@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -37,11 +38,9 @@
 include('../inc/includes.php');
 
 if (isset($_POST['itemtype'])) {
-
     $itemtype    = $_POST['itemtype'];
     $source_item = new $itemtype();
     if ($source_item->can($_POST['id'], UPDATE)) {
-
         $devices = Item_Devices::getDeviceTypes();
         $actions = array_merge($CFG_GLPI['inventory_lockable_objects'], array_values($devices));
 
@@ -70,7 +69,6 @@ if (isset($_POST['itemtype'])) {
 
             //Execute hook to unlock fields managed by a plugin, if needed
             Plugin::doHookFunction('unlock_fields', $_POST);
-
         } elseif (isset($_POST["purge"])) {
             foreach ($actions as $type) {
                 if (isset($_POST[$type]) && count($_POST[$type])) {

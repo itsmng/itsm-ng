@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -58,9 +59,10 @@ class ProfileRight extends CommonDBChild
 
         $rights = [];
 
-        if (!$GLPI_CACHE->has('all_possible_rights')
-            || count($GLPI_CACHE->get('all_possible_rights')) == 0) {
-
+        if (
+            !$GLPI_CACHE->has('all_possible_rights')
+            || count($GLPI_CACHE->get('all_possible_rights')) == 0
+        ) {
             $iterator = $DB->request([
                'SELECT'          => 'name',
                'DISTINCT'        => true,
@@ -138,7 +140,7 @@ class ProfileRight extends CommonDBChild
                     [
                       'profiles_id'  => $profiles_id,
                       'name'         => $name
-               ]
+                    ]
                 );
                 if (!$res) {
                     $ok = false;
@@ -165,7 +167,7 @@ class ProfileRight extends CommonDBChild
                 self::getTable(),
                 [
                   'name' => $name
-            ]
+                ]
             );
             if (!$result) {
                 $ok = false;
@@ -196,11 +198,11 @@ class ProfileRight extends CommonDBChild
                 'glpi_profilerights',
                 [
                   'rights' => new \QueryExpression($DB->quoteName('rights') . ' | ' . (int)$value)
-            ],
+                ],
                 [
                   'name'         => $right,
                   'profiles_id'  => $profiles
-            ]
+                ]
             );
             if (!$result) {
                 $ok = false;
@@ -241,11 +243,11 @@ class ProfileRight extends CommonDBChild
                     self::getTable(),
                     [
                       'rights' => $val
-               ],
+                    ],
                     [
                       'profiles_id'  => $key,
                       'name'         => $newright
-               ]
+                    ]
                 );
                 if (!$res) {
                     $ok = false;
@@ -289,7 +291,7 @@ class ProfileRight extends CommonDBChild
             [
               'profiles_id' => new QueryParam(),
               'name'        => new QueryParam(),
-         ]
+            ]
         );
         $stmt = $DB->prepare($query);
         while ($right = $iterator->next()) {
@@ -311,13 +313,13 @@ class ProfileRight extends CommonDBChild
         $me = new self();
         foreach ($rights as $name => $right) {
             if (isset($right)) {
-                if ($me->getFromDBByCrit(['profiles_id'   => $profiles_id,
-                                          'name'          => $name])) {
-
+                if (
+                    $me->getFromDBByCrit(['profiles_id'   => $profiles_id,
+                                          'name'          => $name])
+                ) {
                     $input = ['id'          => $me->getID(),
                               'rights'      => $right];
                     $me->update($input);
-
                 } else {
                     $input = ['profiles_id' => $profiles_id,
                               'name'        => $name,
@@ -341,11 +343,12 @@ class ProfileRight extends CommonDBChild
     {
 
         // update current profile
-        if (isset($_SESSION['glpiactiveprofile']['id'])
+        if (
+            isset($_SESSION['glpiactiveprofile']['id'])
             && $_SESSION['glpiactiveprofile']['id'] == $this->fields['profiles_id']
             && (!isset($_SESSION['glpiactiveprofile'][$this->fields['name']])
-                || $_SESSION['glpiactiveprofile'][$this->fields['name']] != $this->fields['rights'])) {
-
+                || $_SESSION['glpiactiveprofile'][$this->fields['name']] != $this->fields['rights'])
+        ) {
             $_SESSION['glpiactiveprofile'][$this->fields['name']] = $this->fields['rights'];
             unset($_SESSION['glpimenu']);
         }
@@ -393,5 +396,4 @@ class ProfileRight extends CommonDBChild
     {
         return ['Profile', $this->fields['profiles_id']];
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -65,7 +66,6 @@ if (isset($_POST["add"])) {
     } else {
         Html::back();
     }
-
 } elseif (isset($_POST["delete"])) {
     $project->check($_POST["id"], DELETE);
 
@@ -79,7 +79,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s deletes an item'), $_SESSION["glpiname"])
     );
     $project->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $project->check($_POST["id"], DELETE);
 
@@ -93,7 +92,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s restores an item'), $_SESSION["glpiname"])
     );
     $project->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $project->check($_POST["id"], PURGE);
     $project->delete($_POST, 1);
@@ -107,7 +105,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $project->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $project->check($_POST["id"], UPDATE);
 
@@ -122,12 +119,10 @@ if (isset($_POST["add"])) {
     );
 
     Html::back();
-
 } elseif (isset($_GET['_in_modal'])) {
     Html::popHeader(Budget::getTypeName(1), $_SERVER['PHP_SELF']);
     $project->showForm($_GET["id"], ['withtemplate' => $_GET["withtemplate"]]);
     Html::popFooter();
-
 } else {
     Html::header(Project::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "tools", "project");
 

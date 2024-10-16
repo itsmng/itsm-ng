@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -65,7 +66,7 @@ class Group_User extends CommonDBRelation
             [
               'users_id' => $users_id,
               'groups_id' => $groups_id
-         ]
+            ]
         ) > 0;
     }
 
@@ -169,8 +170,10 @@ class Group_User extends CommonDBRelation
         global $CFG_GLPI;
 
         $ID = $user->fields['id'];
-        if (!Group::canView()
-            || !$user->can($ID, READ)) {
+        if (
+            !Group::canView()
+            || !$user->can($ID, READ)
+        ) {
             return false;
         }
 
@@ -261,16 +264,16 @@ class Group_User extends CommonDBRelation
             }
             $newValue = [$group->getLink()];
             if ($data['is_dynamic']) {
-                $newValue[] = "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' width='14' height='14' alt=\"".
-                __('Dynamic')."\">";
+                $newValue[] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
+                __('Dynamic') . "\">";
             }
             if ($data['is_manager']) {
-                $newValue[] = "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' width='14' height='14' alt=\"".
-                __('Manager')."\">";
+                $newValue[] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
+                __('Manager') . "\">";
             }
             if ($data['is_userdelegate']) {
-                $newValue[] = "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' width='14' height='14' alt=\"".
-                __('Delegatee')."\">";
+                $newValue[] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
+                __('Delegatee') . "\">";
             }
             $values[] = $newValue;
             $massiveactionparams[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
@@ -375,8 +378,10 @@ class Group_User extends CommonDBRelation
             $entityrestrict = getSonsOf('glpi_entities', $group->fields['entities_id']);
 
             // active entity could be a child of object entity
-            if (($_SESSION['glpiactive_entity'] != $group->fields['entities_id'])
-                && in_array($_SESSION['glpiactive_entity'], $entityrestrict)) {
+            if (
+                ($_SESSION['glpiactive_entity'] != $group->fields['entities_id'])
+                && in_array($_SESSION['glpiactive_entity'], $entityrestrict)
+            ) {
                 $entityrestrict = getSonsOf('glpi_entities', $_SESSION['glpiactive_entity']);
             }
         } else {
@@ -456,8 +461,10 @@ class Group_User extends CommonDBRelation
         global $CFG_GLPI;
 
         $ID = $group->getID();
-        if (!User::canView()
-            || !$group->can($ID, READ)) {
+        if (
+            !User::canView()
+            || !$group->can($ID, READ)
+        ) {
             return false;
         }
 
@@ -497,7 +504,7 @@ class Group_User extends CommonDBRelation
             $massiveactionValues = [];
             $massiveactionparams = [
                'num_displayed' => min($number - $start, $_SESSION['glpilist_limit']),
-               'container' => 'mass'.__CLASS__.$rand,
+               'container' => 'mass' . __CLASS__ . $rand,
                'display_arrow' => false
             ];
 
@@ -525,20 +532,20 @@ class Group_User extends CommonDBRelation
                     $newValue['parent'] = __('Root');
                 }
                 if ($data['is_dynamic']) {
-                    $newValue['dynamic'] = "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' width='14' height='14' alt=\"".
-                       __('Dynamic')."\">";
+                    $newValue['dynamic'] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
+                       __('Dynamic') . "\">";
                 }
                 if ($data['is_manager']) {
-                    $newValue['manager'] = "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' width='14' height='14' alt=\"".
-                    __('Manager')."\">";
+                    $newValue['manager'] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
+                    __('Manager') . "\">";
                 }
                 if ($data['is_userdelegate']) {
-                    $newValue['delegatee'] = "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' width='14' height='14' alt=\"".
-                    __('Delegatee')."\">";
+                    $newValue['delegatee'] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
+                    __('Delegatee') . "\">";
                 }
                 if ($user->fields['is_active']) {
-                    $newValue['active'] = "<img src='".$CFG_GLPI["root_doc"]."/pics/ok.png' width='14' height='14' alt=\"".
-                    __('Active')."\">";
+                    $newValue['active'] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
+                    __('Active') . "\">";
                 }
                 if ($canedit) {
                     $massiveactionValues[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
@@ -546,13 +553,13 @@ class Group_User extends CommonDBRelation
                 $values[] = $newValue;
             }
             renderTwigTemplate('table.twig', [
-               'id' => 'mass'.__CLASS__.$rand,
+               'id' => 'mass' . __CLASS__ . $rand,
                'fields' => $fields,
                'values' => $values,
                'massive_action' => $massiveactionValues,
             ]);
         } else {
-            echo "<p class='center b'>".__('No item found')."</p>";
+            echo "<p class='center b'>" . __('No item found') . "</p>";
         }
     }
 
@@ -759,7 +766,7 @@ class Group_User extends CommonDBRelation
 
         // add new user to plannings
         $groups_id  = $this->fields['groups_id'];
-        $planning_k = 'group_'.$groups_id.'_users';
+        $planning_k = 'group_' . $groups_id . '_users';
 
         // find users with the current group in their plannings
         $user_inst = new User();
@@ -772,10 +779,10 @@ class Group_User extends CommonDBRelation
             User::getTable(),
             [
               'plannings' => new QueryParam(),
-         ],
+            ],
             [
               'id'        => new QueryParam()
-         ]
+            ]
         );
         $stmt = $DB->prepare($query);
         $in_transaction = $DB->inTransaction();
@@ -788,7 +795,7 @@ class Group_User extends CommonDBRelation
             $nb_users  = count($plannings['plannings'][$planning_k]['users']);
 
             // add the planning for the user
-            $plannings['plannings'][$planning_k]['users']['user_'.$this->fields['users_id']] = [
+            $plannings['plannings'][$planning_k]['users']['user_' . $this->fields['users_id']] = [
                'color'   => Planning::getPaletteColor('bg', $nb_users),
                'display' => true,
                'type'    => 'user'
@@ -818,7 +825,7 @@ class Group_User extends CommonDBRelation
 
         // remove user from plannings
         $groups_id  = $this->fields['groups_id'];
-        $planning_k = 'group_'.$groups_id.'_users';
+        $planning_k = 'group_' . $groups_id . '_users';
 
         // find users with the current group in their plannings
         $user_inst = new User();
@@ -831,10 +838,10 @@ class Group_User extends CommonDBRelation
             User::getTable(),
             [
               'plannings' => new QueryParam(),
-         ],
+            ],
             [
               'id'        => new QueryParam()
-         ]
+            ]
         );
         $stmt = $DB->prepare($query);
         $in_transaction = $DB->inTransaction();
@@ -846,7 +853,7 @@ class Group_User extends CommonDBRelation
             $plannings = importArrayFromDB($user['plannings']);
 
             // delete planning for the user
-            unset($plannings['plannings'][$planning_k]['users']['user_'.$this->fields['users_id']]);
+            unset($plannings['plannings'][$planning_k]['users']['user_' . $this->fields['users_id']]);
 
             // if current user logged, append also to its session
             if ($users_id == Session::getLoginUserID()) {

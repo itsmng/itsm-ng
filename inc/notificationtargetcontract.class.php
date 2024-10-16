@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -114,7 +115,7 @@ class NotificationTargetContract extends NotificationTarget
 
             $tmp['##contract.url##']          = $this->formatURL(
                 $options['additionnaloption']['usertype'],
-                "Contract_".$id
+                "Contract_" . $id
             );
             $tmp['##contract.items.number##'] = 0;
             $tmp['##contract.items##']        = '';
@@ -163,7 +164,6 @@ class NotificationTargetContract extends NotificationTarget
                 $this->data[$tag] = $values['label'];
             }
         }
-
     }
 
 
@@ -216,5 +216,4 @@ class NotificationTargetContract extends NotificationTarget
 
         asort($this->tag_descriptions);
     }
-
 }

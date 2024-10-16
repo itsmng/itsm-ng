@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -56,6 +57,5 @@ if (isset($_POST['purge'])) {
         sprintf(__('%s purges link between tickets'), $_SESSION["glpiname"])
     );
     Html::redirect(Ticket::getFormURLWithID($_POST['tickets_id']));
-
 }
 Html::displayErrorAndDie("lost");

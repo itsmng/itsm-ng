@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -38,7 +39,7 @@ Html::header_nocache();
 
 Session::checkLoginUser();
 if (!isset($_POST['target'])) {
-    $_POST['target'] = $CFG_GLPI['root_doc']."/front/central.php";
+    $_POST['target'] = $CFG_GLPI['root_doc'] . "/front/central.php";
 }
 
 Entity::showSelector($_POST['target'], "activeentity");

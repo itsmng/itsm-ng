@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,11 +42,13 @@ Report::title();
 $items = $CFG_GLPI["report_types"];
 
 // Titre
-echo "<div class='center b spaced'><big>".__('Device list')."</big></div>";
+echo "<div class='center b spaced'><big>" . __('Device list') . "</big></div>";
 
 // Request All
-if ((isset($_POST["item_type"][0]) && ($_POST["item_type"][0] == 0))
-    || !isset($_POST["item_type"])) {
+if (
+    (isset($_POST["item_type"][0]) && ($_POST["item_type"][0] == 0))
+    || !isset($_POST["item_type"])
+) {
     $_POST["item_type"] = $items;
 }
 
@@ -152,8 +155,8 @@ if (isset($_POST["item_type"]) && is_array($_POST["item_type"])) {
             if (isset($_POST["year"][0]) && ($_POST["year"][0] != 0)) {
                 $ors = [];
                 foreach ($_POST["year"] as $val2) {
-                    $ors[] = new QueryExpression("YEAR(".$DB->quoteName('glpi_infocoms.buy_date').") = ".$DB->quote($val2));
-                    $ors[] = new QueryExpression("YEAR(".$DB->quoteName('glpi_contracts.begin_date').") = ".$DB->quote($val2));
+                    $ors[] = new QueryExpression("YEAR(" . $DB->quoteName('glpi_infocoms.buy_date') . ") = " . $DB->quote($val2));
+                    $ors[] = new QueryExpression("YEAR(" . $DB->quoteName('glpi_contracts.begin_date') . ") = " . $DB->quote($val2));
                 }
                 if (count($ors)) {
                     $criteria['WHERE'][] = [
@@ -172,74 +175,74 @@ if (count($all_criteria)) {
         $iterator = $DB->request($val);
         if (count($iterator)) {
             $item = new $key();
-            echo "<div class='center b'>".$item->getTypeName(1)."</div>";
+            echo "<div class='center b'>" . $item->getTypeName(1) . "</div>";
             echo "<table class='tab_cadre_fixehov' aria-label='Device list' >";
-            echo "<tr><th>".__('Name')."</th>";
-            echo "<th>".__('Deleted')."</th>";
+            echo "<tr><th>" . __('Name') . "</th>";
+            echo "<th>" . __('Deleted') . "</th>";
             if ($display_entity) {
-                echo "<th>".Entity::getTypeName(1)."</th>";
+                echo "<th>" . Entity::getTypeName(1) . "</th>";
             }
-            echo "<th>".Location::getTypeName(1)."</th>";
-            echo "<th>".__('Date of purchase')."</th>";
-            echo "<th>".__('Warranty expiration date')."</th>";
-            echo "<th>".ContractType::getTypeName(1)."</th>";
-            echo "<th>".__('Start date')."</th>";
-            echo "<th>".__('End date')."</th></tr>";
+            echo "<th>" . Location::getTypeName(1) . "</th>";
+            echo "<th>" . __('Date of purchase') . "</th>";
+            echo "<th>" . __('Warranty expiration date') . "</th>";
+            echo "<th>" . ContractType::getTypeName(1) . "</th>";
+            echo "<th>" . __('Start date') . "</th>";
+            echo "<th>" . __('End date') . "</th></tr>";
 
             while ($data = $iterator->next()) {
                 echo "<tr class='tab_bg_1'>";
                 if ($data['itemname']) {
-                    echo "<td> ".$data['itemname']."</td>";
+                    echo "<td> " . $data['itemname'] . "</td>";
                 } else {
-                    echo "<td>".NOT_AVAILABLE."</td>";
+                    echo "<td>" . NOT_AVAILABLE . "</td>";
                 }
-                echo "<td class='center'>".Dropdown::getYesNo($data['itemdeleted'])."</td>";
+                echo "<td class='center'>" . Dropdown::getYesNo($data['itemdeleted']) . "</td>";
 
                 if ($display_entity) {
-                    echo "<td>".$data['entname']."</td>";
+                    echo "<td>" . $data['entname'] . "</td>";
                 }
 
                 if ($data['location']) {
-                    echo "<td>".$data['location']."</td>";
+                    echo "<td>" . $data['location'] . "</td>";
                 } else {
-                    echo "<td>".NOT_AVAILABLE."</td>";
+                    echo "<td>" . NOT_AVAILABLE . "</td>";
                 }
 
                 if ($data['buy_date']) {
-                    echo "<td class='center'>".Html::convDate($data['buy_date'])."</td>";
+                    echo "<td class='center'>" . Html::convDate($data['buy_date']) . "</td>";
                     if ($data["warranty_duration"]) {
-                        echo "<td class='center'>".Infocom::getWarrantyExpir(
+                        echo "<td class='center'>" . Infocom::getWarrantyExpir(
                             $data["buy_date"],
                             $data["warranty_duration"]
-                        ).
+                        ) .
                              "</td>";
                     } else {
-                        echo "<td class='center'>".NOT_AVAILABLE."</td>";
+                        echo "<td class='center'>" . NOT_AVAILABLE . "</td>";
                     }
                 } else {
-                    echo "<td class='center'>".NOT_AVAILABLE."</td>";
-                    echo "<td class='center'>".NOT_AVAILABLE."</td>";
+                    echo "<td class='center'>" . NOT_AVAILABLE . "</td>";
+                    echo "<td class='center'>" . NOT_AVAILABLE . "</td>";
                 }
 
                 if ($data['type']) {
-                    echo "<td>".$data['type']."</td>";
+                    echo "<td>" . $data['type'] . "</td>";
                 } else {
-                    echo "<td>".NOT_AVAILABLE."</td>";
+                    echo "<td>" . NOT_AVAILABLE . "</td>";
                 }
 
                 if ($data['begin_date']) {
-                    echo "<td class='center'>".Html::convDate($data['begin_date'])."</td>";
+                    echo "<td class='center'>" . Html::convDate($data['begin_date']) . "</td>";
                     if ($data["duration"]) {
-                        echo "<td class='center'>".Infocom::getWarrantyExpir(
+                        echo "<td class='center'>" . Infocom::getWarrantyExpir(
                             $data["begin_date"],
                             $data["duration"]
-                        )."</td>";
+                        ) . "</td>";
                     } else {
-                        echo "<td class='center'>".NOT_AVAILABLE."</td>";
+                        echo "<td class='center'>" . NOT_AVAILABLE . "</td>";
                     }
                 } else {
-                    echo "<td class='center'>".NOT_AVAILABLE."</td>";
-                    echo "<td class='center'>".NOT_AVAILABLE."</td>";
+                    echo "<td class='center'>" . NOT_AVAILABLE . "</td>";
+                    echo "<td class='center'>" . NOT_AVAILABLE . "</td>";
                 }
 
                 echo "</tr>\n";

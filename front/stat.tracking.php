@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -58,10 +59,11 @@ if (empty($_GET["date1"]) && empty($_GET["date2"])) {
     $_GET["date2"] = date("Y-m-d");
 }
 
-if (!empty($_GET["date1"])
+if (
+    !empty($_GET["date1"])
     && !empty($_GET["date2"])
-    && (strcmp($_GET["date2"], $_GET["date1"]) < 0)) {
-
+    && (strcmp($_GET["date2"], $_GET["date1"]) < 0)
+) {
     $tmp           = $_GET["date1"];
     $_GET["date1"] = $_GET["date2"];
     $_GET["date2"] = $tmp;
@@ -118,24 +120,24 @@ foreach ($items as $label => $tab) {
 
 echo "<div class='center'><form aria-label='Tracking Statistics' method='get' name='form' action='stat.tracking.php'>";
 // Keep it first param
-echo "<input type='hidden' name='itemtype' value=\"". $_GET["itemtype"] ."\">";
+echo "<input type='hidden' name='itemtype' value=\"" . $_GET["itemtype"] . "\">";
 
 echo "<table class='tab_cadre_fixe' aria-label='Statistics report filter'>";
 echo "<tr class='tab_bg_2'><td rowspan='2' class='center' width='30%'>";
 Dropdown::showFromArray('type', $values, ['value' => $_GET['type']]);
 echo "</td>";
-echo "<td class='right'>".__('Start date')."</td><td>";
+echo "<td class='right'>" . __('Start date') . "</td><td>";
 Html::showDateField("date1", ['value' => $_GET["date1"]]);
 echo "</td>";
-echo "<td class='right'>".__('Show graphics')."</td>";
+echo "<td class='right'>" . __('Show graphics') . "</td>";
 echo "<td rowspan='2' class='center'>";
-echo "<input type='submit' class='submit' name='submit' value=\"".__s('Display report')."\"></td>".
+echo "<input type='submit' class='submit' name='submit' value=\"" . __s('Display report') . "\"></td>" .
      "</tr>";
 
-echo "<tr class='tab_bg_2'><td class='right'>".__('End date')."</td><td>";
+echo "<tr class='tab_bg_2'><td class='right'>" . __('End date') . "</td><td>";
 Html::showDateField("date2", ['value' => $_GET["date2"]]);
 echo "</td><td class='center'>";
-echo "<input type='hidden' name='value2' value='".$_GET["value2"]."'>";
+echo "<input type='hidden' name='value2' value='" . $_GET["value2"] . "'>";
 Dropdown::showYesNo('showgraph', $_GET['showgraph']);
 echo "</td></tr>";
 echo "</table>";
@@ -159,10 +161,10 @@ $params = ['type'   => $_GET["type"],
 Html::printPager(
     $_GET['start'],
     count($val),
-    $CFG_GLPI['root_doc'].'/front/stat.tracking.php',
-    "date1=".$_GET["date1"]."&amp;date2=".$_GET["date2"]."&amp;type=".$_GET["type"].
-                    "&amp;showgraph=".$_GET["showgraph"]."&amp;itemtype=".$_GET["itemtype"].
-                    "&amp;value2=".$_GET['value2'],
+    $CFG_GLPI['root_doc'] . '/front/stat.tracking.php',
+    "date1=" . $_GET["date1"] . "&amp;date2=" . $_GET["date2"] . "&amp;type=" . $_GET["type"] .
+                    "&amp;showgraph=" . $_GET["showgraph"] . "&amp;itemtype=" . $_GET["itemtype"] .
+                    "&amp;value2=" . $_GET['value2'],
     'Stat',
     $params
 );
@@ -177,7 +179,6 @@ if (!$_GET['showgraph']) {
         $val,
         $_GET['value2']
     );
-
 } else {
     $data = Stat::getData(
         $_GET["itemtype"],
@@ -321,7 +322,6 @@ if (!$_GET['showgraph']) {
             }
         }
     }
-
 }
 
 Html::footer();

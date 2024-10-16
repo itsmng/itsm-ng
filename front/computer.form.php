@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -78,7 +79,6 @@ if (isset($_POST["add"])) {
         );
     }
     $computer->redirectToList();
-
 } elseif (isset($_POST["restore"])) {
     $computer->check($_POST['id'], DELETE);
     if ($computer->restore($_POST)) {
@@ -92,7 +92,6 @@ if (isset($_POST["add"])) {
         );
     }
     $computer->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $computer->check($_POST['id'], PURGE);
     if ($computer->delete($_POST, 1)) {

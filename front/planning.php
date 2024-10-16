@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -37,8 +38,10 @@ if (!isset($_GET['genical'])) {
 }
 
 if (!isset($_GET["uID"])) {
-    if (($uid = Session::getLoginUserID())
-        && !Session::haveRight("planning", Planning::READALL)) {
+    if (
+        ($uid = Session::getLoginUserID())
+        && !Session::haveRight("planning", Planning::READALL)
+    ) {
         $_GET["uID"] = $uid;
     } else {
         $_GET["uID"] = 0;
@@ -59,7 +62,6 @@ if (isset($_GET['checkavailability'])) {
 
     Planning::checkAvailability($_GET);
     Html::popFooter();
-
 } elseif (isset($_GET['genical'])) {
     if (isset($_GET['token'])) {
         // Check user token
@@ -77,7 +79,6 @@ if (isset($_GET['checkavailability'])) {
                 Session::initEntityProfiles($user->getID());
                 if (isset($_SESSION['glpiprofiles'][$user->fields['profiles_id']])) {
                     Session::changeProfile($user->fields['profiles_id']);
-
                 } else {
                     Session::changeProfile(key($_SESSION['glpiprofiles']));
                 }
@@ -100,8 +101,10 @@ if (isset($_GET['checkavailability'])) {
                     );
                     $groups   = Group_User::getUserGroups($user->getID());
                     foreach ($groups as $group) {
-                        if (($_GET["gID"] == $group['id'])
-                            && in_array($group['entities_id'], $entities)) {
+                        if (
+                            ($_GET["gID"] == $group['id'])
+                            && in_array($group['entities_id'], $entities)
+                        ) {
                             $ismine = true;
                         }
                     }

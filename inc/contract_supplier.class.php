@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -115,8 +116,10 @@ class Contract_Supplier extends CommonDBRelation
     {
 
         $ID = $supplier->fields['id'];
-        if (!Contract::canView()
-            || !$supplier->can($ID, READ)) {
+        if (
+            !Contract::canView()
+            || !$supplier->can($ID, READ)
+        ) {
             return;
         }
         $canedit = $supplier->can($ID, UPDATE);
@@ -193,13 +196,15 @@ class Contract_Supplier extends CommonDBRelation
             $cID        = $data["id"];
             $assocID    = $data["linkid"];
             $name = $data["name"];
-            if ($_SESSION["glpiis_ids_visible"]
-                || empty($data["name"])) {
+            if (
+                $_SESSION["glpiis_ids_visible"]
+                || empty($data["name"])
+            ) {
                 $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
             }
             $values[] = [
-               'checkbox' => $canedit ? Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand) : '',
-               'name' => "<a href='".Contract::getFormURLWithID($cID)."'>".$name."</a>",
+               'checkbox' => $canedit ? Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) : '',
+               'name' => "<a href='" . Contract::getFormURLWithID($cID) . "'>" . $name . "</a>",
                'entities_id' => Dropdown::getDropdownName("glpi_entities", $data["entity"]),
                'num' => $data["num"],
                'contracttypes_id' => Dropdown::getDropdownName("glpi_contracttypes", $data["contracttypes_id"]),
@@ -231,8 +236,10 @@ class Contract_Supplier extends CommonDBRelation
 
         $instID = $contract->fields['id'];
 
-        if (!$contract->can($instID, READ)
-            || !Session::haveRight("contact_enterprise", READ)) {
+        if (
+            !$contract->can($instID, READ)
+            || !Session::haveRight("contact_enterprise", READ)
+        ) {
             return;
         }
         $canedit = $contract->can($instID, UPDATE);
@@ -302,19 +309,21 @@ class Contract_Supplier extends CommonDBRelation
             $website = $data['website'];
             if (!empty($website)) {
                 if (!preg_match("?https*://?", $website)) {
-                    $website = "http://".$website;
+                    $website = "http://" . $website;
                 }
-                $website = "<a target=_blank href='$website'>".$data['website']."</a>";
+                $website = "<a target=_blank href='$website'>" . $data['website'] . "</a>";
             }
             $entID         = $data['id'];
             $entity        = $data['entity'];
             $entname       = Dropdown::getDropdownName("glpi_suppliers", $entID);
-            if ($_SESSION["glpiis_ids_visible"]
-                || empty($entname)) {
+            if (
+                $_SESSION["glpiis_ids_visible"]
+                || empty($entname)
+            ) {
                 $entname = sprintf(__('%1$s (%2$s)'), $entname, $entID);
             }
             $values[] = [
-               'supplier' => "<a href='".Supplier::getFormURLWithID($entID)."'>".$entname."</a>",
+               'supplier' => "<a href='" . Supplier::getFormURLWithID($entID) . "'>" . $entname . "</a>",
                'entity' => Dropdown::getDropdownName("glpi_entities", $entity),
                'suppliertypes_id' => Dropdown::getDropdownName("glpi_suppliertypes", $data['suppliertypes_id']),
                'phonenumber' => $data['phonenumber'],

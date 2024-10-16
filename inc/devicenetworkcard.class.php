@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -120,7 +121,7 @@ class DeviceNetworkCard extends CommonDevice
                  'col_lg' => 8,
                  'col_md' => 8,
               ],
-         ]
+            ]
         );
     }
 

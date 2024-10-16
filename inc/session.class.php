@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -98,15 +99,18 @@ class Session
             // Normal mode for this request
             $_SESSION["glpi_use_mode"] = self::NORMAL_MODE;
             // Check ID exists and load complete user from DB (plugins...)
-            if (isset($auth->user->fields['id'])
-                && $auth->user->getFromDB($auth->user->fields['id'])) {
-
-                if (!$auth->user->fields['is_deleted']
+            if (
+                isset($auth->user->fields['id'])
+                && $auth->user->getFromDB($auth->user->fields['id'])
+            ) {
+                if (
+                    !$auth->user->fields['is_deleted']
                     && ($auth->user->fields['is_active']
                         && (($auth->user->fields['begin_date'] < $_SESSION["glpi_currenttime"])
                             || is_null($auth->user->fields['begin_date']))
                         && (($auth->user->fields['end_date'] > $_SESSION["glpi_currenttime"])
-                            || is_null($auth->user->fields['end_date'])))) {
+                            || is_null($auth->user->fields['end_date'])))
+                ) {
                     $_SESSION["glpiID"]              = $auth->user->fields['id'];
                     $_SESSION["glpifriendlyname"]    = $auth->user->getFriendlyName();
                     $_SESSION["glpiname"]            = $auth->user->fields['name'];
@@ -161,7 +165,6 @@ class Session
                     // Use default profile if exist
                     if (isset($_SESSION['glpiprofiles'][$auth->user->fields['profiles_id']])) {
                         self::changeProfile($auth->user->fields['profiles_id']);
-
                     } else { // Else use first
                         self::changeProfile(key($_SESSION['glpiprofiles']));
                     }
@@ -170,12 +173,10 @@ class Session
                         $auth->auth_succeded = false;
                         $auth->addToError(__("You don't have right to connect"));
                     }
-
                 } else {
                     $auth->auth_succeded = false;
                     $auth->addToError(__("You don't have access to this application because your account was deactivated or removed"));
                 }
-
             } else {
                 $auth->auth_succeded = false;
                 $auth->addToError(__("You don't have right to connect"));
@@ -192,8 +193,10 @@ class Session
     public static function setPath()
     {
 
-        if (ini_get("session.save_handler") == "files"
-            && session_status() !== PHP_SESSION_ACTIVE) {
+        if (
+            ini_get("session.save_handler") == "files"
+            && session_status() !== PHP_SESSION_ACTIVE
+        ) {
             session_save_path(GLPI_SESSION_DIR);
         }
     }
@@ -212,7 +215,7 @@ class Session
             ini_set('session.cookie_httponly', '1');
             ini_set('session.use_only_cookies', '1');
 
-            session_name("glpi_".md5(realpath(GLPI_ROOT)));
+            session_name("glpi_" . md5(realpath(GLPI_ROOT)));
 
             @session_start();
         }
@@ -277,7 +280,6 @@ class Session
         // Command line can see all entities
         return (isCommandLine()
                 || ((countElementsInTable("glpi_entities")) == count($_SESSION["glpiactiveentities"])));
-
     }
 
 
@@ -309,7 +311,6 @@ class Session
             if (isset($_SERVER['HTTP_REFERER'])) {
                 $url = $_SERVER['HTTP_REFERER'];
             }
-
         } else {
             $url = $_SERVER['REQUEST_URI'];
         }
@@ -356,7 +357,6 @@ class Session
                         }
                     }
                 }
-
             } else {
                 /// Check entity validity
                 $ancestors = getAncestorsOf("glpi_entities", $ID);
@@ -387,12 +387,12 @@ class Session
 
         if (count($newentities) > 0) {
             $_SESSION['glpiactiveentities']           = $newentities;
-            $_SESSION['glpiactiveentities_string']    = "'".implode("', '", $newentities)."'";
+            $_SESSION['glpiactiveentities_string']    = "'" . implode("', '", $newentities) . "'";
             $active                                   = reset($newentities);
             $_SESSION['glpiparententities']           = $ancestors;
             $_SESSION['glpiparententities_string']    = implode("', '", $ancestors);
             if (!empty($_SESSION['glpiparententities_string'])) {
-                $_SESSION['glpiparententities_string'] = "'".$_SESSION['glpiparententities_string']."'";
+                $_SESSION['glpiparententities_string'] = "'" . $_SESSION['glpiparententities_string'] . "'";
             }
             // Active entity loading
             $_SESSION["glpiactive_entity"]           = $active;
@@ -447,9 +447,10 @@ class Session
     public static function changeProfile($ID)
     {
 
-        if (isset($_SESSION['glpiprofiles'][$ID])
-            && count($_SESSION['glpiprofiles'][$ID]['entities'])) {
-
+        if (
+            isset($_SESSION['glpiprofiles'][$ID])
+            && count($_SESSION['glpiprofiles'][$ID]['entities'])
+        ) {
             $profile = new Profile();
             if ($profile->getFromDB($ID)) {
                 $profile->cleanProfile();
@@ -555,8 +556,9 @@ class Session
 
                 while ($data = $entities_iterator->next()) {
                     // Do not override existing entity if define as recursive
-                    if (!isset($_SESSION['glpiprofiles'][$key]['entities'][$data['eID']])
-                       || $data['is_recursive']
+                    if (
+                        !isset($_SESSION['glpiprofiles'][$key]['entities'][$data['eID']])
+                        || $data['is_recursive']
                     ) {
                         $_SESSION['glpiprofiles'][$key]['entities'][$data['eID']] = [
                            'id'           => $data['eID'],
@@ -593,7 +595,7 @@ class Session
               ]
            ],
            'WHERE'     => [
-              Group_User::getTable(). '.users_id' => self::getLoginUserID()
+              Group_User::getTable() . '.users_id' => self::getLoginUserID()
            ] + getEntitiesRestrictCriteria(
                Group::getTable(),
                'entities_id',
@@ -665,7 +667,7 @@ class Session
             $TRANSLATE->setCache($cache);
         }
 
-        $TRANSLATE->addTranslationFile('gettext', GLPI_I18N_DIR.$newfile, 'glpi', $trytoload);
+        $TRANSLATE->addTranslationFile('gettext', GLPI_I18N_DIR . $newfile, 'glpi', $trytoload);
 
         $core_folders = is_dir(GLPI_LOCAL_I18N_DIR) ? scandir(GLPI_LOCAL_I18N_DIR) : [];
         $core_folders = array_filter($core_folders, function ($dir) {
@@ -786,8 +788,10 @@ class Session
     public static function getLoginUserID($force_human = true)
     {
 
-        if (!$force_human
-            && self::isCron()) { // Check cron jobs
+        if (
+            !$force_human
+            && self::isCron()
+        ) { // Check cron jobs
             return $_SESSION["glpicronuserrunning"];
         }
 
@@ -826,8 +830,10 @@ class Session
     public static function checkValidSessionId()
     {
 
-        if (!isset($_SESSION['valid_id'])
-            || ($_SESSION['valid_id'] !== session_id())) {
+        if (
+            !isset($_SESSION['valid_id'])
+            || ($_SESSION['valid_id'] !== session_id())
+        ) {
             Html::redirectToLogin('error=3');
         }
         return true;
@@ -1085,8 +1091,10 @@ class Session
         global $DB;
 
         //If GLPI is using the slave DB -> read only mode
-        if ($DB->isSlave()
-            && ($right & (CREATE | UPDATE | DELETE | PURGE))) {
+        if (
+            $DB->isSlave()
+            && ($right & (CREATE | UPDATE | DELETE | PURGE))
+        ) {
             return false;
         }
 
@@ -1177,9 +1185,8 @@ class Session
                 // We are in cron mode
                 // Do not display message in user interface, but record error
                 if ($message_type == ERROR) {
-                    Toolbox::logInFile('cron', $msg."\n");
+                    Toolbox::logInFile('cron', $msg . "\n");
                 }
-
             } else {
                 $array = &$_SESSION['MESSAGE_AFTER_REDIRECT'];
 
@@ -1191,9 +1198,11 @@ class Session
                     $array[$message_type] = [];
                 }
 
-                if (!$check_once
+                if (
+                    !$check_once
                     || !isset($array[$message_type])
-                    || in_array($msg, $array[$message_type]) === false) {
+                    || in_array($msg, $array[$message_type]) === false
+                ) {
                     $array[$message_type][] = $msg;
                 }
             }
@@ -1252,9 +1261,11 @@ class Session
     {
 
         foreach ($_SESSION['glpiactiveprofile'] as $name => $val) {
-            if (is_numeric($val)
+            if (
+                is_numeric($val)
                 && ($name != 'search_config')
-                && ($val & ~READ)) {
+                && ($val & ~READ)
+            ) {
                 return false;
             }
         }
@@ -1333,8 +1344,10 @@ class Session
             return false;
         }
         $requestToken = $data['_glpi_csrf_token'];
-        if (isset($_SESSION['glpicsrftokens'][$requestToken])
-            && ($_SESSION['glpicsrftokens'][$requestToken] >= time())) {
+        if (
+            isset($_SESSION['glpicsrftokens'][$requestToken])
+            && ($_SESSION['glpicsrftokens'][$requestToken] >= time())
+        ) {
             if (!defined('GLPI_KEEP_CSRF_TOKEN')) { /* When post open a new windows */
                 unset($_SESSION['glpicsrftokens'][$requestToken]);
             }
@@ -1359,8 +1372,10 @@ class Session
     public static function checkCSRF($data)
     {
 
-        if (GLPI_USE_CSRF_CHECK
-            && (!Session::validateCSRF($data))) {
+        if (
+            GLPI_USE_CSRF_CHECK
+            && (!Session::validateCSRF($data))
+        ) {
             // Output JSON if requested by client
             if (strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false) {
                 http_response_code(403);
@@ -1427,8 +1442,10 @@ class Session
 
         $token = $data['_idor_token'];
 
-        if (isset($_SESSION['glpiidortokens'][$token])
-            && $_SESSION['glpiidortokens'][$token]['expires'] >= time()) {
+        if (
+            isset($_SESSION['glpiidortokens'][$token])
+            && $_SESSION['glpiidortokens'][$token]['expires'] >= time()
+        ) {
             $idor_data =  $_SESSION['glpiidortokens'][$token];
             unset($idor_data['expires']);
 
@@ -1521,8 +1538,10 @@ class Session
     public static function canImpersonate($user_id)
     {
 
-        if ($user_id <= 0 || self::getLoginUserID() == $user_id
-            || (self::isImpersonateActive() && self::getImpersonatorId() == $user_id)) {
+        if (
+            $user_id <= 0 || self::getLoginUserID() == $user_id
+            || (self::isImpersonateActive() && self::getImpersonatorId() == $user_id)
+        ) {
             return false; // Cannot impersonate invalid user, self, or already impersonated user
         }
 
@@ -1722,6 +1741,6 @@ class Session
             $entities = [$entities_id];
         }
         $_SESSION['glpiactiveentities']        = $entities;
-        $_SESSION['glpiactiveentities_string'] = "'".implode("', '", $entities)."'";
+        $_SESSION['glpiactiveentities_string'] = "'" . implode("', '", $entities) . "'";
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -41,5 +42,4 @@ class CartridgeItemType extends CommonDropdown
     {
         return _n('Cartridge type', 'Cartridge types', $nb);
     }
-
 }

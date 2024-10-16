@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -69,7 +70,7 @@ if (isset($_GET["lID"])) {
                 header("Content-disposition: filename=\"$filename\"");
                 $mime = "application/scriptfile";
 
-                header("Content-type: ".$mime);
+                header("Content-type: " . $mime);
                 header('Pragma: no-cache');
                 header('Expires: 0');
 

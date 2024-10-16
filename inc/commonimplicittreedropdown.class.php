@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -47,7 +48,7 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
     {
 
         $forbidden   = parent::getForbiddenStandardMassiveAction();
-        $forbidden[] = 'CommonTreeDropdown'.MassiveAction::CLASS_ACTION_SEPARATOR.'move_under';
+        $forbidden[] = 'CommonTreeDropdown' . MassiveAction::CLASS_ACTION_SEPARATOR . 'move_under';
         return $forbidden;
     }
 
@@ -173,10 +174,10 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
                     $this->getTable(),
                     [
                       $this->getForeignKeyField() => $oldParent
-               ],
+                    ],
                     [
                       'id' => $oldSons
-               ]
+                    ]
                 );
                 // Then, regenerate the old sons to reflect there new ancestors
                 $this->regenerateTreeUnderID($oldParent, true, true);
@@ -204,10 +205,10 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
                     $this->getTable(),
                     [
                       $this->getForeignKeyField() => $this->getID()
-               ],
+                    ],
                     [
                       'id' => $newSons
-               ]
+                    ]
                 );
                 // Then, regenerate the new sons to reflect there new ancestors
                 $this->regenerateTreeUnderID($this->getID(), true, true);

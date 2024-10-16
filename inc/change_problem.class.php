@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -162,10 +163,10 @@ class Change_Problem extends CommonDBRelation
             echo "<div class='firstbloc'>";
 
             echo "<form aria-label='Problem Changes' name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
-                action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
+                action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
 
             echo "<table class='tab_cadre_fixe' aria-label='Problem Changes Table'>";
-            echo "<tr class='tab_bg_2'><th colspan='3'>".__('Add a change')."</th></tr>";
+            echo "<tr class='tab_bg_2'><th colspan='3'>" . __('Add a change') . "</th></tr>";
 
             echo "<tr class='tab_bg_2'><td>";
             echo "<input type='hidden' name='problems_id' value='$ID'>";
@@ -175,10 +176,10 @@ class Change_Problem extends CommonDBRelation
                'entity_sons' => $problem->isRecursive(),
             ]);
             echo "</td><td class='center'>";
-            echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
+            echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
             echo "</td><td>";
             if (Session::haveRight('change', CREATE)) {
-                echo "<a href='".Toolbox::getItemTypeFormURL('Change')."?problems_id=$ID'>";
+                echo "<a href='" . Toolbox::getItemTypeFormURL('Change') . "?problems_id=$ID'>";
                 echo __('Create a change from this problem');
                 echo "</a>";
             }
@@ -189,17 +190,17 @@ class Change_Problem extends CommonDBRelation
 
         echo "<div class='spaced'>";
         if ($canedit && $numrows) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
             $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
-                                         'container'     => 'mass'.__CLASS__.$rand];
+                                         'container'     => 'mass' . __CLASS__ . $rand];
             Html::showMassiveActions($massiveactionparams);
         }
 
         echo "<table class='tab_cadre_fixehov' aria-label='Changes Table'>";
-        echo "<tr class='noHover'><th colspan='12'>".Change::getTypeName($numrows)."</th>";
+        echo "<tr class='noHover'><th colspan='12'>" . Change::getTypeName($numrows) . "</th>";
         echo "</tr>";
         if ($numrows) {
-            Change::commonListHeader(Search::HTML_OUTPUT, 'mass'.__CLASS__.$rand);
+            Change::commonListHeader(Search::HTML_OUTPUT, 'mass' . __CLASS__ . $rand);
             Session::initNavigateListItems(
                 'Change',
                 //TRANS : %1$s is the itemtype name,
@@ -219,7 +220,7 @@ class Change_Problem extends CommonDBRelation
                                                      'id_for_massiveaction'   => $data['linkid']]);
                 $i++;
             }
-            Change::commonListHeader(Search::HTML_OUTPUT, 'mass'.__CLASS__.$rand);
+            Change::commonListHeader(Search::HTML_OUTPUT, 'mass' . __CLASS__ . $rand);
         }
         echo "</table>";
 
@@ -229,7 +230,6 @@ class Change_Problem extends CommonDBRelation
             Html::closeForm();
         }
         echo "</div>";
-
     }
 
 
@@ -343,18 +343,18 @@ class Change_Problem extends CommonDBRelation
         foreach ($problems as $data) {
             $newValue = [];
 
-            $newValue[] = sprintf(__('%1$s: %2$s'), __('ID'), $data["id"])."&nbsp;".CommonITILObject::getStatusIcon($data["status"]);
+            $newValue[] = sprintf(__('%1$s: %2$s'), __('ID'), $data["id"]) . "&nbsp;" . CommonITILObject::getStatusIcon($data["status"]);
 
             if ($data['status'] == CommonITILObject::CLOSED) {
-                $newValue[] = sprintf(__('Closed on %s'), '<br>').Html::convDateTime($data['closedate']);
+                $newValue[] = sprintf(__('Closed on %s'), '<br>') . Html::convDateTime($data['closedate']);
             } elseif ($data['status'] == CommonITILObject::SOLVED) {
-                $newValue[] = sprintf(__('Solved on %s'), '<br>').Html::convDateTime($data['solvedate']);
+                $newValue[] = sprintf(__('Solved on %s'), '<br>') . Html::convDateTime($data['solvedate']);
             } elseif ($data['begin_waiting_date']) {
-                $newValue[] = sprintf(__('Put on hold on %s'), '<br>').Html::convDateTime($data['begin_waiting_date']);
+                $newValue[] = sprintf(__('Put on hold on %s'), '<br>') . Html::convDateTime($data['begin_waiting_date']);
             } elseif ($data['time_to_resolve']) {
-                $newValue[] = sprintf(__('%1$s: %2$s'), __('Time to resolve'), '<br>').Html::convDateTime($data['time_to_resolve']);
+                $newValue[] = sprintf(__('%1$s: %2$s'), __('Time to resolve'), '<br>') . Html::convDateTime($data['time_to_resolve']);
             } else {
-                $newValue[] = sprintf(__('Opened on %s'), '<br>').Html::convDateTime($data['date']);
+                $newValue[] = sprintf(__('Opened on %s'), '<br>') . Html::convDateTime($data['date']);
             }
             $newValue[] = Html::convDateTime($data["date_mod"]);
             $newValue[] = CommonITILObject::getPriorityName($data["priority"]);
@@ -366,7 +366,7 @@ class Change_Problem extends CommonDBRelation
                 $userdata    = getUserName($d["users_id"], 2);
                 $cell .= sprintf(
                     __('%1$s %2$s'),
-                    "<span class='b'>".$userdata['name']."</span>",
+                    "<span class='b'>" . $userdata['name'] . "</span>",
                     Html::showToolTip(
                         $userdata["comment"],
                         ['link'    => $userdata["link"],
@@ -392,7 +392,7 @@ class Change_Problem extends CommonDBRelation
                     $userdata   = getUserName($d["users_id"], 2);
                     $cell .= sprintf(
                         __('%1$s %2$s'),
-                        "<span class='b'>".$userdata['name']."</span>",
+                        "<span class='b'>" . $userdata['name'] . "</span>",
                         Html::showToolTip(
                             $userdata["comment"],
                             ['link'    => $userdata["link"],
@@ -422,12 +422,12 @@ class Change_Problem extends CommonDBRelation
             );
 
             $newValue[] = ($item->canViewItem()) ?
-            "<a id='".$item->getType().$item->fields["id"]."$rand' href=\"".$item->getLinkURL()
-            ."\">".$item->getName()."</a>" : $item->getName();
+            "<a id='" . $item->getType() . $item->fields["id"] . "$rand' href=\"" . $item->getLinkURL()
+            . "\">" . $item->getName() . "</a>" : $item->getName();
 
             $cell  = '';
             $planned_infos = '';
-            $tasktype      = $item->getType()."Task";
+            $tasktype      = $item->getType() . "Task";
             $plan          = new $tasktype();
             $items         = [];
             $result = $DB->request(
@@ -436,36 +436,34 @@ class Change_Problem extends CommonDBRelation
                   'WHERE' => [
                      $item->getForeignKeyField() => $item->fields['id'],
                   ],
-            ]
+                ]
             );
             foreach ($result as $plan) {
-
                 if (isset($plan['begin']) && $plan['begin']) {
                     $items[$plan['id']] = $plan['id'];
-                    $planned_infos .= sprintf(__('From %s').'<br>', Html::convDateTime($plan['begin']));
-                    $planned_infos .= sprintf(__('To %s').'<br>', Html::convDateTime($plan['end']));
+                    $planned_infos .= sprintf(__('From %s') . '<br>', Html::convDateTime($plan['begin']));
+                    $planned_infos .= sprintf(__('To %s') . '<br>', Html::convDateTime($plan['end']));
                     if ($plan['users_id_tech']) {
-                        $planned_infos .= sprintf(__('By %s').'<br>', getUserName($plan['users_id_tech']));
+                        $planned_infos .= sprintf(__('By %s') . '<br>', getUserName($plan['users_id_tech']));
                     }
                     $planned_infos .= "<br>";
                 }
-
             }
 
             $cell = count($items);
             if ($cell) {
                 $cell = "<span class='pointer'
-                              id='".$item->getType().$item->fields["id"]."planning$rand'>".
-                                  $cell.'</span>';
+                              id='" . $item->getType() . $item->fields["id"] . "planning$rand'>" .
+                                  $cell . '</span>';
                 $cell = sprintf(
                     __('%1$s %2$s'),
                     $cell,
                     Html::showToolTip(
                         $planned_infos,
                         ['display' => false,
-                          'applyto' => $item->getType().
-                                         $item->fields["id"].
-                                         "planning".$rand]
+                          'applyto' => $item->getType() .
+                                         $item->fields["id"] .
+                                         "planning" . $rand]
                     )
                 );
             }

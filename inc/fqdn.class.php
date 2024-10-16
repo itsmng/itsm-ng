@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -78,9 +79,10 @@ class FQDN extends CommonDropdown
     public function prepareInput($input)
     {
 
-        if (isset($input['fqdn'])
-            || $this->isNewID($this->getID())) {
-
+        if (
+            isset($input['fqdn'])
+            || $this->isNewID($this->getID())
+        ) {
             // Check that FQDN is not empty
             if (empty($input['fqdn'])) {
                 Session::addMessageAfterRedirect(__('FQDN must not be empty'), false, ERROR);
@@ -95,7 +97,6 @@ class FQDN extends CommonDropdown
                 Session::addMessageAfterRedirect(__('FQDN is not valid'), false, ERROR);
                 return false;
             }
-
         }
         return $input;
     }
@@ -161,7 +162,7 @@ class FQDN extends CommonDropdown
             $count = 0;
             $fqdn  = str_replace('*', '%', $fqdn, $count);
             if ($count == 0) {
-                $fqdn = '%'.$fqdn.'%';
+                $fqdn = '%' . $fqdn . '%';
             }
             $relation = ['LIKE', $fqdn];
         } else {

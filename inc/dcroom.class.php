@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -187,8 +188,10 @@ class DCRoom extends CommonDBTM
      */
     public function manageBlueprint($input)
     {
-        if (isset($input["clearPictureForblueprint"])
-            && $input["clearPictureForblueprint"]) {
+        if (
+            isset($input["clearPictureForblueprint"])
+            && $input["clearPictureForblueprint"]
+        ) {
             $input['blueprint'] = '';
 
             if (array_key_exists('blueprint', $this->fields)) {
@@ -317,7 +320,7 @@ class DCRoom extends CommonDBTM
                         [
                           'datacenters_id'  => $item->getID(),
                           'is_deleted'      => 0
-                  ]
+                        ]
                     );
                 }
                 return self::createTabEntry(
@@ -347,8 +350,10 @@ class DCRoom extends CommonDBTM
         $ID = $datacenter->getID();
         $rand = mt_rand();
 
-        if (!$datacenter->getFromDB($ID)
-            || !$datacenter->can($ID, READ)) {
+        if (
+            !$datacenter->getFromDB($ID)
+            || !$datacenter->can($ID, READ)
+        ) {
             return false;
         }
         $canedit = $datacenter->canEdit($ID);
@@ -370,10 +375,10 @@ class DCRoom extends CommonDBTM
         echo "</div>";
 
         if ($canedit) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
             $massiveactionparams = [
                'num_displayed'   => min($_SESSION['glpilist_limit'], count($rooms)),
-               'container'       => 'mass'.__CLASS__.$rand,
+               'container'       => 'mass' . __CLASS__ . $rand,
                'deprecated'      => true
             ];
             Html::showMassiveActions($massiveactionparams);
@@ -391,17 +396,17 @@ class DCRoom extends CommonDBTM
         );
 
         if (!count($rooms)) {
-            echo "<table class='tab_cadre_fixe' aria-label='Server Rooms Table'><tr><th>".__('No server room found')."</th></tr>";
+            echo "<table class='tab_cadre_fixe' aria-label='Server Rooms Table'><tr><th>" . __('No server room found') . "</th></tr>";
             echo "</table>";
         } else {
             echo "<table class='tab_cadre_fixehov' aria-label='Server Rooms Table'>";
             $header = "<tr>";
             if ($canedit) {
                 $header .= "<th width='10'>";
-                $header .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+                $header .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
                 $header .= "</th>";
             }
-            $header .= "<th>".__('Name')."</th>";
+            $header .= "<th>" . __('Name') . "</th>";
             $header .= "</tr>";
 
             $dcroom = new self();

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -46,7 +47,6 @@ if (isset($_POST["add"])) {
 
     // We need to redirect to form to enter rights
     Html::redirect($prof->getFormURLWithID($ID));
-
 } elseif (isset($_POST["purge"])) {
     $prof->check($_POST['id'], PURGE);
     if ($prof->delete($_POST, 1)) {
@@ -54,9 +54,10 @@ if (isset($_POST["add"])) {
     } else {
         Html::back();
     }
-
-} elseif (isset($_POST["update"])
-           || isset($_POST["interface"])) {
+} elseif (
+    isset($_POST["update"])
+           || isset($_POST["interface"])
+) {
     $prof->check($_POST['id'], UPDATE);
 
     $prof->update($_POST);

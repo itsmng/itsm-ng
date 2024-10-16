@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -81,7 +82,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s adds a task'), $_SESSION["glpiname"])
     );
     Html::redirect($itemtype::getFormURLWithID($task->getField($fk)));
-
 } elseif (isset($_POST["purge"])) {
     $task->check($_POST['id'], PURGE);
     $task->delete($_POST, 1);
@@ -95,7 +95,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges a task'), $_SESSION["glpiname"])
     );
     Html::redirect($itemtype::getFormURLWithID($task->getField($fk)));
-
 } elseif (isset($_POST["update"])) {
     $task->check($_POST["id"], UPDATE);
     $task->update($_POST);
@@ -109,7 +108,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates a task'), $_SESSION["glpiname"])
     );
     Html::back();
-
 }
 
 Html::displayErrorAndDie('Lost');

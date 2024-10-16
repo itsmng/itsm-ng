@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -106,10 +107,11 @@ class Knowbase extends CommonGLPI
         global $CFG_GLPI;
 
         // Search a solution
-        if (!isset($_GET["contains"])
+        if (
+            !isset($_GET["contains"])
             && isset($_GET["itemtype"])
-            && isset($_GET["items_id"])) {
-
+            && isset($_GET["items_id"])
+        ) {
             if (in_array($_GET["item_itemtype"], $CFG_GLPI['kb_types']) && $item = getItemForItemtype($_GET["itemtype"])) {
                 if ($item->can($_GET["item_items_id"], READ)) {
                     $_GET["contains"] = addslashes($item->getField('name'));
@@ -148,7 +150,7 @@ class Knowbase extends CommonGLPI
         global $CFG_GLPI;
 
         $rand        = mt_rand();
-        $ajax_url    = $CFG_GLPI["root_doc"]."/ajax/knowbase.php";
+        $ajax_url    = $CFG_GLPI["root_doc"] . "/ajax/knowbase.php";
         $loading_txt = addslashes(__('Loading...'));
         $start       = (int)($_REQUEST['start'] ?? 0);
 
@@ -265,7 +267,7 @@ JAVASCRIPT;
                          DB::quoteName(KnowbaseItemCategory::getTableField('id'))
                      ),
                   ]
-            ],
+                ],
                 $kbitem_visibility_crit
             ),
             'items_count'
@@ -324,7 +326,7 @@ JAVASCRIPT;
                   'WHERE'  => [
                      KnowbaseItem::getTableField($cat_fk) => 0,
                   ]
-            ],
+                ],
                 $kbitem_visibility_crit
             )
         )->next();
@@ -378,6 +380,4 @@ JAVASCRIPT;
         $ki->showManageForm($_GET);
         KnowbaseItem::showList($_GET, $_GET["unpublished"]);
     }
-
-
 }

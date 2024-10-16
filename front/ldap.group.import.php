@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -49,7 +50,6 @@ if (isset($_GET['next']) || !isset($_SESSION['ldap_server']) && !isset($_POST['l
             $_SESSION["ldap_group_filter2"] = $_POST["ldap_filter2"];
         }
         Html::redirect($_SERVER['PHP_SELF']);
-
     } else {
         if (!isset($_GET['start'])) {
             $_GET['start'] = 0;
@@ -62,15 +62,14 @@ if (isset($_GET['next']) || !isset($_SESSION['ldap_server']) && !isset($_POST['l
             if (isset($_POST["ldap_server"])) {
                 $_SESSION["ldap_server"] = $_POST["ldap_server"];
             } else {
-                Html::redirect($CFG_GLPI["root_doc"]."/front/ldap.php");
+                Html::redirect($CFG_GLPI["root_doc"] . "/front/ldap.php");
             }
         }
 
         if (!AuthLDAP::testLDAPConnection($_SESSION["ldap_server"])) {
             unset($_SESSION["ldap_server"]);
-            echo "<div class='center b'>".__('Unable to connect to the LDAP directory')."<br>";
-            echo "<a href='".$_SERVER['PHP_SELF']."?next=listservers'>".__('Back')."</a></div>";
-
+            echo "<div class='center b'>" . __('Unable to connect to the LDAP directory') . "<br>";
+            echo "<a href='" . $_SERVER['PHP_SELF'] . "?next=listservers'>" . __('Back') . "</a></div>";
         } else {
             if (!isset($_SESSION["ldap_group_filter"])) {
                 $_SESSION["ldap_group_filter"] = '';
@@ -97,7 +96,6 @@ if (isset($_GET['next']) || !isset($_SESSION['ldap_server']) && !isset($_POST['l
                 $_SESSION["ldap_sortorder"]
             );
         }
-
     }
 }
 

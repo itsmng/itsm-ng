@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -169,7 +170,7 @@ class NetworkName extends FQDNLabel
                        'name' => 'comment',
                        'type' => 'textarea',
                        'value' => $this->fields['comment'] ?? '',
-                  ],
+                    ],
                  ],
 
               ]
@@ -282,8 +283,10 @@ class NetworkName extends FQDNLabel
     public function post_workOnItem()
     {
 
-        if ((isset($this->input['_ipaddresses']))
-            && (is_array($this->input['_ipaddresses']))) {
+        if (
+            (isset($this->input['_ipaddresses']))
+            && (is_array($this->input['_ipaddresses']))
+        ) {
             $input = ['itemtype' => 'NetworkName',
                            'items_id' => $this->getID()];
             foreach ($this->input['_ipaddresses'] as $id => $ip) {
@@ -322,16 +325,19 @@ class NetworkName extends FQDNLabel
         $this->post_workOnItem();
         if (count($this->updates)) {
             // Update Ticket Tco
-            if (in_array("itemtype", $this->updates)
-                || in_array("items_id", $this->updates)) {
-
+            if (
+                in_array("itemtype", $this->updates)
+                || in_array("items_id", $this->updates)
+            ) {
                 $ip = new IPAddress();
                 // Update IPAddress
-                foreach ($DB->request(
-                    'glpi_ipaddresses',
-                    ['itemtype' => 'NetworkName',
+                foreach (
+                    $DB->request(
+                        'glpi_ipaddresses',
+                        ['itemtype' => 'NetworkName',
                                             'items_id' => $this->getID()]
-                ) as $data) {
+                    ) as $data
+                ) {
                     $ip->update(['id'       => $data['id'],
                                       'itemtype' => 'NetworkName',
                                       'items_id' => $this->getID()]);
@@ -349,7 +355,7 @@ class NetworkName extends FQDNLabel
             [
               IPAddress::class,
               NetworkAlias::class,
-         ]
+            ]
         );
     }
 
@@ -468,7 +474,6 @@ class NetworkName extends FQDNLabel
                     $name->getEmpty();
                     break;
             }
-
         } else {
             $name->getEmpty();
         }
@@ -482,7 +487,7 @@ class NetworkName extends FQDNLabel
                     'type' => 'hidden',
                     'value' => $name->getID()
                  ] : [],
-                 ($name->getID() > 0) ? "<a href='".$name->getLinkURL()."'>".self::getTypeName(1)."</a>" : self::getTypeName(1) => [
+                 ($name->getID() > 0) ? "<a href='" . $name->getLinkURL() . "'>" . self::getTypeName(1) . "</a>" : self::getTypeName(1) => [
                     'name' => 'NetworkName_name',
                     'type' => 'text',
                     'value' => $name->fields['name'] ?? '',
@@ -526,7 +531,7 @@ class NetworkName extends FQDNLabel
                         ['NetworkName__ipaddresses' => 'name']
                     ),
                  ],
-           ],
+              ],
            ]
         ];
     }
@@ -550,11 +555,13 @@ class NetworkName extends FQDNLabel
     ) {
 
         $column_name = __CLASS__;
-        if (isset($options['massiveactionnetworkname'])
-            && $options['massiveactionnetworkname']) {
+        if (
+            isset($options['massiveactionnetworkname'])
+            && $options['massiveactionnetworkname']
+        ) {
             $delete_all_column = $base->addHeader(
                 'delete',
-                Html::getCheckAllAsCheckbox('mass'.__CLASS__.
+                Html::getCheckAllAsCheckbox('mass' . __CLASS__ .
                                                                               $options['rand']),
                 $super,
                 $father
@@ -562,17 +569,16 @@ class NetworkName extends FQDNLabel
             $delete_all_column->setHTMLClass('center');
         }
         if (!isset($options['dont_display'][$column_name])) {
-
             $content = self::getTypeName();
             if (isset($options['column_links'][$column_name])) {
-                $content = "<a href='".$options['column_links'][$column_name]."'>$content</a>";
+                $content = "<a href='" . $options['column_links'][$column_name] . "'>$content</a>";
             }
             $father = $base->addHeader($column_name, $content, $super, $father);
             $father->setItemType('NetworkName');
 
             if (isset($options['display_isDynamic']) && ($options['display_isDynamic'])) {
                 $father = $base->addHeader(
-                    $column_name.'_dynamic',
+                    $column_name . '_dynamic',
                     __('Automatic inventory'),
                     $super,
                     $father
@@ -641,7 +647,7 @@ class NetworkName extends FQDNLabel
                                ]
                             ];
                             $criteria['ORDERBY'] = [
-                               new QueryExpression("ISNULL (".$DB->quoteName('glpi_ipaddresses.id').")"),
+                               new QueryExpression("ISNULL (" . $DB->quoteName('glpi_ipaddresses.id') . ")"),
                                'glpi_ipaddresses.binary_3',
                                'glpi_ipaddresses.binary_2',
                                'glpi_ipaddresses.binary_1',
@@ -659,7 +665,7 @@ class NetworkName extends FQDNLabel
                                ]
                             ];
                             $criteria['ORDERBY'] = [
-                               new QueryExpression("ISNULL (".$DB->quoteName('glpi_networkaliases.name').")"),
+                               new QueryExpression("ISNULL (" . $DB->quoteName('glpi_networkaliases.name') . ")"),
                                'glpi_networkaliases.name'
                             ];
                             break;
@@ -699,7 +705,6 @@ class NetworkName extends FQDNLabel
                    'glpi_networkports.items_id'  => $item->getID()
                 ];
                 break;
-
         }
 
         if (isset($options['SQL_options'])) {
@@ -714,13 +719,14 @@ class NetworkName extends FQDNLabel
         $iterator = $DB->request($criteria);
         while ($line = $iterator->next()) {
             if ($address->getFromDB($line["id"])) {
-
                 if ($createRow) {
                     $row = $row->createAnotherRow();
                 }
 
-                if (isset($options['massiveactionnetworkname'])
-                   && $options['massiveactionnetworkname']) {
+                if (
+                    isset($options['massiveactionnetworkname'])
+                    && $options['massiveactionnetworkname']
+                ) {
                     $header      = $row->getGroup()->getHeaderByName('Internet', 'delete');
                     $cell_value  = Html::getMassiveActionCheckBox(__CLASS__, $line["id"]);
                     $row->addCell($header, $cell_value, $father);
@@ -728,11 +734,11 @@ class NetworkName extends FQDNLabel
 
                 $internetName = $address->getInternetName();
                 if (empty($internetName)) {
-                    $internetName = "(".$line["id"].")";
+                    $internetName = "(" . $line["id"] . ")";
                 }
                 $content  = $internetName;
                 if (Session::haveRight('internet', READ)) {
-                    $content  = "<a href='" . $address->getLinkURL(). "'>".$internetName."</a>";
+                    $content  = "<a href='" . $address->getLinkURL() . "'>" . $internetName . "</a>";
                 }
 
                 if (!isset($options['dont_display'][$column_name])) {
@@ -741,7 +747,7 @@ class NetworkName extends FQDNLabel
                     if (isset($options['display_isDynamic']) && ($options['display_isDynamic'])) {
                         $dyn_header   = $row->getGroup()->getHeaderByName(
                             'Internet',
-                            $column_name.'_dynamic'
+                            $column_name . '_dynamic'
                         );
                         $dynamic_cell = $row->addCell(
                             $dyn_header,
@@ -758,7 +764,6 @@ class NetworkName extends FQDNLabel
 
                 NetworkAlias::getHTMLTableCellsForItem($row, $address, $father_for_children, $options);
                 IPAddress::getHTMLTableCellsForItem($row, $address, $father_for_children, $options);
-
             }
         }
     }
@@ -782,17 +787,18 @@ class NetworkName extends FQDNLabel
 
         $rand = mt_rand();
 
-        if (($item->getType() == 'NetworkPort')
+        if (
+            ($item->getType() == 'NetworkPort')
             && Session::haveRight('internet', UPDATE)
-            && $item->canUpdateItem()) {
-
+            && $item->canUpdateItem()
+        ) {
             $items_id = $item->getID();
             $itemtype = $item->getType();
 
             echo "<div class='firstbloc'>\n";
-            echo "<form aria-label='Network' method='post' action='".static::getFormURL()."'>\n";
+            echo "<form aria-label='Network' method='post' action='" . static::getFormURL() . "'>\n";
             echo "<table class='tab_cadre_fixe' aria-label='Network'>\n";
-            echo "<tr><th colspan='4'>".__('Add a network name')."</th></tr>";
+            echo "<tr><th colspan='4'>" . __('Add a network name') . "</th></tr>";
 
             echo "<tr class='tab_bg_1'><td class='right'>";
             echo "<input type='hidden' name='items_id' value='$items_id'>\n";
@@ -804,13 +810,13 @@ class NetworkName extends FQDNLabel
                'condition' => ['items_id' => 0]
             ]);
             echo "</td><td class='left'>";
-            echo "<input type='submit' name='assign_address' value='"._sx('button', 'Associate').
+            echo "<input type='submit' name='assign_address' value='" . _sx('button', 'Associate') .
                    "' class='submit'>";
             echo "</td>";
             if (static::canCreate()) {
                 echo "<td class='right' width='30%'>";
-                echo "<a href=\"" . static::getFormURL()."?items_id=$items_id&amp;itemtype=$itemtype\">";
-                echo __('Create a new network name')."</a>";
+                echo "<a href=\"" . static::getFormURL() . "?items_id=$items_id&amp;itemtype=$itemtype\">";
+                echo __('Create a new network name') . "</a>";
                 echo "</td>";
             }
             echo "</tr>\n";
@@ -822,8 +828,10 @@ class NetworkName extends FQDNLabel
 
         $table_options = ['createRow' => true];
 
-        if (($item->getType() == 'FQDN')
-            || ($item->getType() == 'NetworkEquipment')) {
+        if (
+            ($item->getType() == 'FQDN')
+            || ($item->getType() == 'NetworkEquipment')
+        ) {
             if (isset($_GET["start"])) {
                 $start = $_GET["start"];
             } else {
@@ -851,7 +859,6 @@ class NetworkName extends FQDNLabel
             ];
 
             $canedit = false;
-
         } else {
             $canedit = Session::haveRight('internet', UPDATE) && $item->canUpdateItem();
         }
@@ -889,9 +896,9 @@ class NetworkName extends FQDNLabel
                 )
             );
             if ($canedit && $number) {
-                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
                 $massiveactionparams = ['num_displayed'    => min($_SESSION['glpilist_limit'], $number),
-                                  'container'        => 'mass'.__CLASS__.$rand];
+                                  'container'        => 'mass' . __CLASS__ . $rand];
                 Html::showMassiveActions($massiveactionparams);
             }
 
@@ -910,7 +917,7 @@ class NetworkName extends FQDNLabel
                 Html::printAjaxPager(self::getTypeName(Session::getPluralNumber()), $start, self::countForItem($item));
             }
         } else {
-            echo "<table class='tab_cadre_fixe' aria-label='no network name found'><tr><th>".__('No network name found')."</th></tr>";
+            echo "<table class='tab_cadre_fixe' aria-label='no network name found'><tr><th>" . __('No network name found') . "</th></tr>";
             echo "</table>";
         }
     }
@@ -984,8 +991,10 @@ class NetworkName extends FQDNLabel
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
 
-        if ($item->getID()
-            && $item->can($item->getField('id'), READ)) {
+        if (
+            $item->getID()
+            && $item->can($item->getField('id'), READ)
+        ) {
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                 $nb = self::countForItem($item);
@@ -994,5 +1003,4 @@ class NetworkName extends FQDNLabel
         }
         return '';
     }
-
 }

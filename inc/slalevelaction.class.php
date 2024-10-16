@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -54,5 +55,4 @@ class SlaLevelAction extends RuleAction
         // RuleAction search options requires value of rules_id field which does not exists here
         return [];
     }
-
 }

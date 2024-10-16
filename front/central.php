@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,8 +33,10 @@
 
 include('../inc/includes.php');
 
-if (!(isset($_GET["embed"])
-      && isset($_GET["dashboard"]))) {
+if (
+    !(isset($_GET["embed"])
+      && isset($_GET["dashboard"]))
+) {
     Session::checkCentralAccess();
 }
 
@@ -55,7 +58,7 @@ if (isset($_POST['newprofile'])) {
             if ($_SESSION['glpiactiveprofile']['create_ticket_on_login']) {
                 Html::redirect($CFG_GLPI['root_doc'] . "/front/helpdesk.public.php?create_ticket=1");
             } else {
-                Html::redirect($CFG_GLPI['root_doc']."/front/helpdesk.public.php");
+                Html::redirect($CFG_GLPI['root_doc'] . "/front/helpdesk.public.php");
             }
         }
         $_SESSION['_redirected_from_profile_selector'] = true;
@@ -72,7 +75,7 @@ if (isset($_GET["active_entity"])) {
     }
     if (Session::changeActiveEntities($_GET["active_entity"], $_GET["is_recursive"])) {
         if (isset($_SERVER['HTTP_REFERER'])) {
-            Html::redirect(preg_replace("/(\?|&|".urlencode('?')."|".urlencode('&').")?(entities_id|active_entity).*/", "", $_SERVER['HTTP_REFERER']));
+            Html::redirect(preg_replace("/(\?|&|" . urlencode('?') . "|" . urlencode('&') . ")?(entities_id|active_entity).*/", "", $_SERVER['HTTP_REFERER']));
         }
     }
 }

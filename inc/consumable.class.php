@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -90,7 +91,7 @@ class Consumable extends CommonDBChild
         $this->deleteChildrenAndRelationsFromDb(
             [
               Infocom::class,
-         ]
+            ]
         );
     }
 
@@ -124,10 +125,10 @@ class Consumable extends CommonDBChild
             $this->getTable(),
             [
               'date_out' => 'NULL'
-         ],
+            ],
             [
               'id' => $input['id']
-         ]
+            ]
         );
         if ($result) {
             return true;
@@ -162,19 +163,20 @@ class Consumable extends CommonDBChild
     {
         global $DB;
 
-        if (!empty($itemtype)
-            && ($items_id > 0)) {
-
+        if (
+            !empty($itemtype)
+            && ($items_id > 0)
+        ) {
             $result = $DB->update(
                 $this->getTable(),
                 [
                   'date_out'  => date('Y-m-d'),
                   'itemtype'  => $itemtype,
                   'items_id'  => $items_id
-            ],
+                ],
                 [
                   'id' => $ID
-            ]
+                ]
             );
             if ($result) {
                 return true;
@@ -200,7 +202,7 @@ class Consumable extends CommonDBChild
                                                                    => $input["entities_id"],
                                                                 'itemtypes'
                                                                    => $CFG_GLPI["consumables_types"]]);
-                    echo "<br><br>".Html::submit(
+                    echo "<br><br>" . Html::submit(
                         _x('button', 'Give'),
                         ['name' => 'massiveaction']
                     );
@@ -235,8 +237,10 @@ class Consumable extends CommonDBChild
                 return;
             case 'give':
                 $input = $ma->getInput();
-                if (($input["give_items_id"] > 0)
-                    && !empty($input['give_itemtype'])) {
+                if (
+                    ($input["give_items_id"] > 0)
+                    && !empty($input['give_itemtype'])
+                ) {
                     foreach ($ids as $key) {
                         if ($item->can($key, UPDATE)) {
                             if ($item->out($key, $input['give_itemtype'], $input["give_items_id"])) {
@@ -361,7 +365,7 @@ class Consumable extends CommonDBChild
             if ($nohtml) {
                 $out = $tmptxt;
             } else {
-                $out = "<div $highlight>".$tmptxt."</div>";
+                $out = "<div $highlight>" . $tmptxt . "</div>";
             }
         } else {
             $out = '';
@@ -428,7 +432,6 @@ class Consumable extends CommonDBChild
 
         if (self::isNew($cID)) {
             return _nx('consumable', 'New', 'New', 1);
-
         } elseif (self::isOld($cID)) {
             return _nx('consumable', 'Used', 'Used', 1);
         }
@@ -538,20 +541,20 @@ class Consumable extends CommonDBChild
             if ($consitem->can($tID, PURGE)) {
                 $actions['delete'] = _x('button', 'Delete permanently');
             }
-            $actions['Infocom'.MassiveAction::CLASS_ACTION_SEPARATOR.'activate']
+            $actions['Infocom' . MassiveAction::CLASS_ACTION_SEPARATOR . 'activate']
                = __('Enable the financial and administrative information');
 
             if ($show_old) {
-                $actions['Consumable'.MassiveAction::CLASS_ACTION_SEPARATOR.'backtostock']
+                $actions['Consumable' . MassiveAction::CLASS_ACTION_SEPARATOR . 'backtostock']
                          = __('Back to stock');
             } else {
-                $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'give'] = _x('button', 'Give');
+                $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'give'] = _x('button', 'Give');
             }
             $entparam = ['entities_id' => $consitem->getEntityID()];
             if ($consitem->isRecursive()) {
                 $entparam = ['entities_id' => getSonsOf('glpi_entities', $consitem->getEntityID())];
             }
-            $massFormContainerId = 'tableForConsumable'.rand();
+            $massFormContainerId = 'tableForConsumable' . rand();
             $massiveactionparams = [
                'specific_actions' => $actions,
                'container'        => $massFormContainerId,
@@ -647,7 +650,7 @@ class Consumable extends CommonDBChild
         $used = [];
 
         while ($data = $iterator->next()) {
-            $used[$data['itemtype'].'####'.$data['items_id']][$data["consumableitems_id"]]
+            $used[$data['itemtype'] . '####' . $data['items_id']][$data["consumableitems_id"]]
                = $data["count"];
         }
 
@@ -690,27 +693,27 @@ class Consumable extends CommonDBChild
             echo "<div class='center'><table class='tab_cadrehov' aria-label='summary'><tr>";
 
             // Type
-            echo "<th>".__('Give to')."</th>";
+            echo "<th>" . __('Give to') . "</th>";
 
             foreach ($types as $key => $type) {
                 echo "<th>$type</th>";
                 $total[$key] = 0;
             }
-            echo "<th>".__('Total')."</th>";
+            echo "<th>" . __('Total') . "</th>";
             echo "</tr>";
 
             // new
-            echo "<tr class='tab_bg_2'><td class='b'>".__('In stock')."</td>";
+            echo "<tr class='tab_bg_2'><td class='b'>" . __('In stock') . "</td>";
             $tot = 0;
             foreach ($types as $id_type => $type) {
                 if (!isset($new[$id_type])) {
                     $new[$id_type] = 0;
                 }
-                echo "<td class='center'>".$new[$id_type]."</td>";
+                echo "<td class='center'>" . $new[$id_type] . "</td>";
                 $total[$id_type] += $new[$id_type];
                 $tot             += $new[$id_type];
             }
-            echo "<td class='numeric'>".$tot."</td>";
+            echo "<td class='numeric'>" . $tot . "</td>";
             echo "</tr>";
 
             foreach ($used as $itemtype_items_id => $val) {
@@ -727,25 +730,24 @@ class Consumable extends CommonDBChild
                     if (!isset($val[$id_type])) {
                         $val[$id_type] = 0;
                     }
-                    echo "<td class='center'>".$val[$id_type]."</td>";
+                    echo "<td class='center'>" . $val[$id_type] . "</td>";
                     $total[$id_type] += $val[$id_type];
                     $tot             += $val[$id_type];
                 }
-                echo "<td class='numeric'>".$tot."</td>";
+                echo "<td class='numeric'>" . $tot . "</td>";
                 echo "</tr>";
             }
-            echo "<tr class='tab_bg_1'><td class='b'>".__('Total')."</td>";
+            echo "<tr class='tab_bg_1'><td class='b'>" . __('Total') . "</td>";
             $tot = 0;
             foreach ($types as $id_type => $type) {
                 $tot += $total[$id_type];
-                echo "<td class='numeric'>".$total[$id_type]."</td>";
+                echo "<td class='numeric'>" . $total[$id_type] . "</td>";
             }
-            echo "<td class='numeric'>".$tot."</td>";
+            echo "<td class='numeric'>" . $tot . "</td>";
             echo "</tr>";
             echo "</table></div>";
-
         } else {
-            echo "<div class='center b'>".__('No consumable found')."</div>";
+            echo "<div class='center b'>" . __('No consumable found') . "</div>";
         }
     }
 

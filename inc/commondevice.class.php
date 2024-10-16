@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -89,7 +90,7 @@ abstract class CommonDevice extends CommonDropdown
             $devicetype = get_called_class();
         }
         if ($plug = isPluginItemType($devicetype)) {
-            return 'Plugin'.$plug['plugin'].'Item_'.$plug['class'];
+            return 'Plugin' . $plug['plugin'] . 'Item_' . $plug['class'];
         }
         return "Item_$devicetype";
     }
@@ -182,8 +183,10 @@ abstract class CommonDevice extends CommonDropdown
         global $DB;
 
         $ID = $this->fields['id'];
-        if (($ID < 0)
-            || !$this->fields['is_recursive']) {
+        if (
+            ($ID < 0)
+            || !$this->fields['is_recursive']
+        ) {
             return true;
         }
         if (!parent::canUnrecurs()) {
@@ -209,7 +212,7 @@ abstract class CommonDevice extends CommonDropdown
               'GROUPBY'   => [
                  'itemtype',
               ]
-         ]
+            ]
         );
 
         foreach ($result as $data) {
@@ -218,8 +221,10 @@ abstract class CommonDevice extends CommonDropdown
                 if ($item = getItemForItemtype($data["itemtype"])) {
                     // For each itemtype which are entity dependant
                     if ($item->isEntityAssign()) {
-                        if (countElementsInTable($itemtable, ['id'  => $data["ids"],
-                                                              'NOT' => ['entities_id' => $entities ]]) > 0) {
+                        if (
+                            countElementsInTable($itemtable, ['id'  => $data["ids"],
+                                                              'NOT' => ['entities_id' => $entities ]]) > 0
+                        ) {
                             return false;
                         }
                     }
@@ -365,7 +370,7 @@ abstract class CommonDevice extends CommonDropdown
         }
 
         if (static::canView()) {
-            $content = "<a href='".static::getSearchURL()."'>" . static::getTypeName(1) . "</a>";
+            $content = "<a href='" . static::getSearchURL() . "'>" . static::getTypeName(1) . "</a>";
         } else {
             $content = static::getTypeName(1);
         }
@@ -382,7 +387,6 @@ abstract class CommonDevice extends CommonDropdown
         }
 
         return $column;
-
     }
 
 
@@ -416,12 +420,12 @@ abstract class CommonDevice extends CommonDropdown
         }
 
         if ($options['canedit']) {
-            $field_name  = 'quantity_'.$this->getType().'_'.$this->getID();
-            $content .= "&nbsp;<span class='fa fa-plus pointer' title='".__s('Add')."'
-                      onClick=\"".Html::jsShow($field_name)."\"
+            $field_name  = 'quantity_' . $this->getType() . '_' . $this->getID();
+            $content .= "&nbsp;<span class='fa fa-plus pointer' title='" . __s('Add') . "'
+                      onClick=\"" . Html::jsShow($field_name) . "\"
                       ><span class='sr-only'>" .  __s('Add') . "</span></span>";
             $content .= "<span id='$field_name' style='display:none'><br>";
-            $content .= __('Add')."&nbsp;";
+            $content .= __('Add') . "&nbsp;";
 
             $content  = [$content,
                         ['function'   => 'Dropdown::showNumber',
@@ -444,7 +448,6 @@ abstract class CommonDevice extends CommonDropdown
         }
 
         return $cell;
-
     }
 
 
@@ -535,9 +538,10 @@ abstract class CommonDevice extends CommonDropdown
     public function post_workOnItem()
     {
 
-        if ((isset($this->input['_registeredID']))
-            && (is_array($this->input['_registeredID']))) {
-
+        if (
+            (isset($this->input['_registeredID']))
+            && (is_array($this->input['_registeredID']))
+        ) {
             $input = ['itemtype' => $this->getType(),
                            'items_id' => $this->getID()];
 

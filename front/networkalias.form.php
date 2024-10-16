@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -59,7 +60,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $alias->check($_POST['id'], PURGE);
     $item = $alias->getItem();
@@ -75,9 +75,8 @@ if (isset($_POST["add"])) {
     if ($item) {
         Html::redirect($item->getLinkURL());
     } else {
-        Html::redirect($CFG_GLPI["root_doc"]."/front/central.php");
+        Html::redirect($CFG_GLPI["root_doc"] . "/front/central.php");
     }
-
 } elseif (isset($_POST["update"])) {
     $alias->check($_POST["id"], UPDATE);
     $alias->update($_POST);
@@ -97,7 +96,6 @@ if (isset($_GET['_in_modal'])) {
     Html::popHeader(NetworkAlias::getTypeName(1), $_SERVER['PHP_SELF']);
     $alias->showForm($_GET["id"], $_GET);
     Html::popFooter();
-
 } else {
     if (!isset($_GET["id"])) {
         $_GET["id"] = "";

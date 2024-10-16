@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -63,9 +64,9 @@ if (isset($_SESSION["ldap_group_filter2"])) {
 }
 
 echo "<div class='center'><table class='tab_cadre' aria-label='LDAP directory link'>";
-echo "<tr><th>".__('Bulk import groups from a LDAP directory')."</th></tr>";
-echo "<tr class='tab_bg_1'><td class='center b'>".
-     "<a href=\"ldap.group.import.php?next=servers\">". __('Import of new groups')."</a></td></tr>";
+echo "<tr><th>" . __('Bulk import groups from a LDAP directory') . "</th></tr>";
+echo "<tr class='tab_bg_1'><td class='center b'>" .
+     "<a href=\"ldap.group.import.php?next=servers\">" . __('Import of new groups') . "</a></td></tr>";
 echo "</table></div>";
 
 Html::footer();

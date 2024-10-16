@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -75,7 +76,7 @@ class Item_Disk extends CommonDBChild
                       'items_id'     => $item->getID(),
                       'itemtype'     => $item->getType(),
                       'is_deleted'   => 0
-               ]
+                    ]
                 );
             }
             return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
@@ -276,7 +277,6 @@ class Item_Disk extends CommonDBChild
         renderTwigForm($form);
 
         return true;
-
     }
 
     /**
@@ -329,17 +329,21 @@ class Item_Disk extends CommonDBChild
         $ID = $item->fields['id'];
         $itemtype = $item->getType();
 
-        if (!$item->getFromDB($ID)
-            || !$item->can($ID, READ)) {
+        if (
+            !$item->getFromDB($ID)
+            || !$item->can($ID, READ)
+        ) {
             return false;
         }
         $canedit = $item->canEdit($ID);
 
-        if ($canedit
-            && !(!empty($withtemplate) && ($withtemplate == 2))) {
-            echo "<div class='center firstbloc'>".
-                  "<a class='btn btn-secondary' href='".self::getFormURL()."?itemtype=$itemtype&items_id=$ID&amp;withtemplate=".
-                     $withtemplate."'>";
+        if (
+            $canedit
+            && !(!empty($withtemplate) && ($withtemplate == 2))
+        ) {
+            echo "<div class='center firstbloc'>" .
+                  "<a class='btn btn-secondary' href='" . self::getFormURL() . "?itemtype=$itemtype&items_id=$ID&amp;withtemplate=" .
+                     $withtemplate . "'>";
             echo __('Add a volume');
             echo "</a></div>\n";
         }
@@ -352,22 +356,21 @@ class Item_Disk extends CommonDBChild
         if (Plugin::haveImport()) {
             $colspan++;
         }
-        echo "<tr class='noHover'><th colspan='$colspan'>".self::getTypeName(count($iterator)).
+        echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName(count($iterator)) .
               "</th></tr>";
 
         if (count($iterator)) {
-
-            $header = "<tr><th>".__('Name')."</th>";
+            $header = "<tr><th>" . __('Name') . "</th>";
             if (Plugin::haveImport()) {
-                $header .= "<th>".__('Automatic inventory')."</th>";
+                $header .= "<th>" . __('Automatic inventory') . "</th>";
             }
-            $header .= "<th>".__('Partition')."</th>";
-            $header .= "<th>".__('Mount point')."</th>";
-            $header .= "<th>".Filesystem::getTypeName(1)."</th>";
-            $header .= "<th>".__('Global size')."</th>";
-            $header .= "<th>".__('Free size')."</th>";
-            $header .= "<th>".__('Free percentage')."</th>";
-            $header .= "<th>".__('Encryption')."</th>";
+            $header .= "<th>" . __('Partition') . "</th>";
+            $header .= "<th>" . __('Mount point') . "</th>";
+            $header .= "<th>" . Filesystem::getTypeName(1) . "</th>";
+            $header .= "<th>" . __('Global size') . "</th>";
+            $header .= "<th>" . __('Free size') . "</th>";
+            $header .= "<th>" . __('Free percentage') . "</th>";
+            $header .= "<th>" . __('Encryption') . "</th>";
             $header .= "</tr>";
             echo $header;
 
@@ -385,14 +388,14 @@ class Item_Disk extends CommonDBChild
             $disk = new self();
             while ($data = $iterator->next()) {
                 $disk->getFromResultSet($data);
-                echo "<tr class='tab_bg_2" .(isset($data['is_deleted']) && $data['is_deleted'] ? " tab_bg_2_2'" : "'")."'>";
-                echo "<td>".$disk->getLink()."</td>";
+                echo "<tr class='tab_bg_2" . (isset($data['is_deleted']) && $data['is_deleted'] ? " tab_bg_2_2'" : "'") . "'>";
+                echo "<td>" . $disk->getLink() . "</td>";
                 if (Plugin::haveImport()) {
-                    echo "<td>".Dropdown::getYesNo($data['is_dynamic'])."</td>";
+                    echo "<td>" . Dropdown::getYesNo($data['is_dynamic']) . "</td>";
                 }
-                echo "<td>".$data['device']."</td>";
-                echo "<td>".$data['mountpoint']."</td>";
-                echo "<td>".$data['fsname']."</td>";
+                echo "<td>" . $data['device'] . "</td>";
+                echo "<td>" . $data['mountpoint'] . "</td>";
+                echo "<td>" . $data['fsname'] . "</td>";
                 //TRANS: %s is a size
                 $tmp = Toolbox::getSize($data['totalsize'] * 1024 * 1024);
                 echo "<td class='right'>$tmp<span class='small_space'></span></td>";
@@ -434,7 +437,7 @@ class Item_Disk extends CommonDBChild
             }
             echo $header;
         } else {
-            echo "<tr class='tab_bg_2'><th colspan='$colspan'>".__('No item found')."</th></tr>";
+            echo "<tr class='tab_bg_2'><th colspan='$colspan'>" . __('No item found') . "</th></tr>";
         }
 
         echo "</table>";
@@ -737,7 +740,7 @@ class Item_Disk extends CommonDBChild
             [
               'value'   => $value,
               'display' => false
-         ]
+            ]
         );
     }
 

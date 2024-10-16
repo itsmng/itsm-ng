@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -110,10 +111,11 @@ class Holiday extends CommonDropdown
 
         $input = parent::prepareInputForAdd($input);
 
-        if (empty($input['end_date'])
+        if (
+            empty($input['end_date'])
             || ($input['end_date'] == 'NULL')
-            || ($input['end_date'] < $input['begin_date'])) {
-
+            || ($input['end_date'] < $input['begin_date'])
+        ) {
             $input['end_date'] = $input['begin_date'];
         }
         return $input;
@@ -125,14 +127,14 @@ class Holiday extends CommonDropdown
 
         $input = parent::prepareInputForUpdate($input);
 
-        if (isset($input['begin_date']) && (empty($input['end_date'])
+        if (
+            isset($input['begin_date']) && (empty($input['end_date'])
             || ($input['end_date'] == 'NULL')
-            || ($input['end_date'] < $input['begin_date']))) {
-
+            || ($input['end_date'] < $input['begin_date']))
+        ) {
             $input['end_date'] = $input['begin_date'];
         }
 
         return $input;
     }
-
 }

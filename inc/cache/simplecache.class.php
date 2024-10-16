@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -282,8 +283,10 @@ class SimpleCache extends SimpleCacheDecorator implements CacheInterface
      */
     private function checkFootprintFileIntegrity()
     {
-        if ((file_exists($this->footprint_file) && !is_writable($this->footprint_file))
-            || (!file_exists($this->footprint_file) && !is_writable(dirname($this->footprint_file)))) {
+        if (
+            (file_exists($this->footprint_file) && !is_writable($this->footprint_file))
+            || (!file_exists($this->footprint_file) && !is_writable(dirname($this->footprint_file)))
+        ) {
             trigger_error(
                 sprintf('Cannot write "%s" cache footprint file. Cache performance can be lowered.', $this->footprint_file),
                 E_USER_WARNING

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -44,7 +45,7 @@ define(
     [
       GLPI_ROOT . '/plugins',
       GLPI_ROOT . '/tests/fixtures/plugins',
-   ]
+    ]
 );
 
 define('TU_USER', '_test_user');
@@ -60,8 +61,10 @@ if (!file_exists(GLPI_CONFIG_DIR . '/config_db.php')) {
 
 // Create subdirectories of GLPI_VAR_DIR based on defined constants
 foreach (get_defined_constants() as $constant_name => $constant_value) {
-    if (preg_match('/^GLPI_[\w]+_DIR$/', $constant_name)
-        && preg_match('/^' . preg_quote(GLPI_VAR_DIR, '/') . '\//', $constant_value)) {
+    if (
+        preg_match('/^GLPI_[\w]+_DIR$/', $constant_name)
+        && preg_match('/^' . preg_quote(GLPI_VAR_DIR, '/') . '\//', $constant_value)
+    ) {
         is_dir($constant_value) or mkdir($constant_value, 0755, true);
     }
 }
@@ -389,7 +392,7 @@ function loadDataset()
              'users_id'     => TU_USER,
              'is_default'   => '1',
              'is_dynamic'   => '0',
-             'email'        => TU_USER.'@glpi.com'
+             'email'        => TU_USER . '@glpi.com'
           ]
        ], 'KnowbaseItem' => [
           [

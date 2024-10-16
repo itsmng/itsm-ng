@@ -238,7 +238,7 @@ class ProjectTask_Ticket extends CommonDBRelation
                       'row_num'                => $i,
                       'type_for_massiveaction' => __CLASS__,
                       'id_for_massiveaction'   => $data['linkid']
-               ]
+                    ]
                 );
                 $i++;
             }
@@ -294,7 +294,7 @@ class ProjectTask_Ticket extends CommonDBRelation
                   'WHERE'  => [
                      'is_finished' => 1
                   ],
-            ]
+                ]
             );
             $finished_states_ids = [];
             foreach ($finished_states_it as $finished_state) {
@@ -470,7 +470,7 @@ class ProjectTask_Ticket extends CommonDBRelation
                         [
                           'display' => false,
                           'applyto' => "Project" . $data["projects_id"] . $rand
-                  ]
+                        ]
                     )
                 );
                 $link = "<a id='ProjectTask" . $data["id"] . $rand . "' href='" .
@@ -484,7 +484,7 @@ class ProjectTask_Ticket extends CommonDBRelation
                         [
                           'display' => false,
                           'applyto' => "ProjectTask" . $data["id"] . $rand
-                  ]
+                        ]
                     )
                 );
                 $newValue[] = $data['tname'];

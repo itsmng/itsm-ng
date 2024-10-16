@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -97,7 +98,7 @@ class Netpoint extends CommonDropdown
 
         $this->check(-1, CREATE, $input);
         for ($i = $input["_from"]; $i <= $input["_to"]; $i++) {
-            $input["name"] = $input["_before"].$i.$input["_after"];
+            $input["name"] = $input["_before"] . $i . $input["_after"];
             $this->add($input);
         }
         Event::log(
@@ -146,7 +147,7 @@ class Netpoint extends CommonDropdown
             }
         }
 
-        $field_id = Html::cleanId("dropdown_".$myname.$rand);
+        $field_id = Html::cleanId("dropdown_" . $myname . $rand);
         $param    = ['value'               => $value,
                           'valuename'           => $name,
                           'entity_restrict'     => $entity_restrict,
@@ -155,25 +156,24 @@ class Netpoint extends CommonDropdown
         echo Html::jsAjaxDropdown(
             $myname,
             $field_id,
-            $CFG_GLPI['root_doc']."/ajax/getDropdownNetpoint.php",
+            $CFG_GLPI['root_doc'] . "/ajax/getDropdownNetpoint.php",
             $param
         );
 
         // Display comment
         if ($display_comment) {
-            $comment_id = Html::cleanId("comment_".$myname.$rand);
+            $comment_id = Html::cleanId("comment_" . $myname . $rand);
             Html::showToolTip($comment, ['contentid' => $comment_id]);
 
             $item = new self();
             if ($item->canCreate()) {
-                echo "<span class='fa fa-plus pointer' title=\"".__s('Add')."\" ".
-                      "onClick=\"".Html::jsGetElementbyID('netpoint'.$rand).".dialog('open');\">" .
+                echo "<span class='fa fa-plus pointer' title=\"" . __s('Add') . "\" " .
+                      "onClick=\"" . Html::jsGetElementbyID('netpoint' . $rand) . ".dialog('open');\">" .
                       "<span class='sr-only'>" . __s('Add') . "</span></span>";
                 Ajax::createIframeModalWindow(
-                    'netpoint'.$rand,
+                    'netpoint' . $rand,
                     $item->getFormURL()
                 );
-
             }
             $paramscomment = [
                'value'       => '__VALUE__',
@@ -183,7 +183,7 @@ class Netpoint extends CommonDropdown
             echo Ajax::updateItemOnSelectEvent(
                 $field_id,
                 $comment_id,
-                $CFG_GLPI["root_doc"]."/ajax/comments.php",
+                $CFG_GLPI["root_doc"] . "/ajax/comments.php",
                 $paramscomment,
                 false
             );
@@ -305,25 +305,25 @@ class Netpoint extends CommonDropdown
         if ($canedit) {
             echo "<div class='first-bloc'>";
             // Minimal form for quick input.
-            echo "<form aria-label='Location' action='".$netpoint->getFormURL()."' method='post'>";
+            echo "<form aria-label='Location' action='" . $netpoint->getFormURL() . "' method='post'>";
             echo "<br><table class='tab_cadre_fixe' aria-label='Location'>";
             echo "<tr class='tab_bg_2 center'>";
-            echo "<td class='b'>"._n('Network outlet', 'Network outlets', 1)."</td>";
-            echo "<td>".__('Name')."</td><td>";
+            echo "<td class='b'>" . _n('Network outlet', 'Network outlets', 1) . "</td>";
+            echo "<td>" . __('Name') . "</td><td>";
             Html::autocompletionTextField($item, "name", ['value' => '']);
-            echo "<input type='hidden' name='entities_id' value='".$_SESSION['glpiactive_entity']."'>";
+            echo "<input type='hidden' name='entities_id' value='" . $_SESSION['glpiactive_entity'] . "'>";
             echo "<input type='hidden' name='locations_id' value='$ID'></td>";
-            echo "<td><input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
+            echo "<td><input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
             echo "</td></tr>\n";
             echo "</table>\n";
             Html::closeForm();
 
             // Minimal form for massive input.
-            echo "<form aria-label='Location' action='".$netpoint->getFormURL()."' method='post'>";
+            echo "<form aria-label='Location' action='" . $netpoint->getFormURL() . "' method='post'>";
             echo "<table class='tab_cadre_fixe' aria-label='Location'>";
             echo "<tr class='tab_bg_2 center'>";
-            echo "<td class='b'>"._n('Network outlet', 'Network outlets', Session::getPluralNumber())."</td>";
-            echo "<td>".__('Name')."</td><td>";
+            echo "<td class='b'>" . _n('Network outlet', 'Network outlets', Session::getPluralNumber()) . "</td>";
+            echo "<td>" . __('Name') . "</td><td>";
             echo "<input type='text' maxlength='100' size='10' name='_before'>&nbsp;";
             Dropdown::showNumber('_from', ['value' => 0,
                                                 'min'   => 0,
@@ -333,10 +333,10 @@ class Netpoint extends CommonDropdown
                                               'min'   => 0,
                                               'max'   => 400]);
             echo "&nbsp;<input type='text' maxlength='100' size='10' name='_after'><br>";
-            echo "<input type='hidden' name='entities_id' value='".$_SESSION['glpiactive_entity']."'>";
+            echo "<input type='hidden' name='entities_id' value='" . $_SESSION['glpiactive_entity'] . "'>";
             echo "<input type='hidden' name='locations_id' value='$ID'>";
             echo "<input type='hidden' name='_method' value='AddMulti'></td>";
-            echo "<td><input type='submit' name='execute' value=\""._sx('button', 'Add')."\"
+            echo "<td><input type='submit' name='execute' value=\"" . _sx('button', 'Add') . "\"
                     class='submit'>";
             echo "</td></tr>\n";
             echo "</table>\n";
@@ -348,8 +348,8 @@ class Netpoint extends CommonDropdown
 
         if ($number < 1) {
             echo "<table class='tab_cadre_fixe' aria-label='No item Found'>";
-            echo "<tr><th>".self::getTypeName(1)."</th>";
-            echo "<th>".__('No item found')."</th></tr>";
+            echo "<tr><th>" . self::getTypeName(1) . "</th>";
+            echo "<th>" . __('No item found') . "</th></tr>";
             echo "</table>\n";
         } else {
             Html::printAjaxPager(
@@ -360,12 +360,12 @@ class Netpoint extends CommonDropdown
 
             if ($canedit) {
                 $rand = mt_rand();
-                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
                 $massiveactionparams
                    = ['num_displayed'
                                => min($_SESSION['glpilist_limit'], $number),
                            'container'
-                               => 'mass'.__CLASS__.$rand,
+                               => 'mass' . __CLASS__ . $rand,
                            'specific_actions'
                                => ['purge' => _x('button', 'Delete permanently')]];
                 Html::showMassiveActions($massiveactionparams);
@@ -375,12 +375,12 @@ class Netpoint extends CommonDropdown
 
             if ($canedit) {
                 echo "<th width='10'>";
-                echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+                echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
                 echo "</th>";
             }
 
-            echo "<th>".__('Name')."</th>"; // Name
-            echo "<th>".__('Comments')."</th>"; // Comment
+            echo "<th>" . __('Name') . "</th>"; // Name
+            echo "<th>" . __('Comments') . "</th>"; // Comment
             echo "</tr>\n";
 
             $crit = ['locations_id' => $ID,
@@ -403,12 +403,12 @@ class Netpoint extends CommonDropdown
                 echo "<tr class='tab_bg_1'>";
 
                 if ($canedit) {
-                    echo "<td>".Html::getMassiveActionCheckBox(__CLASS__, $data["id"])."</td>";
+                    echo "<td>" . Html::getMassiveActionCheckBox(__CLASS__, $data["id"]) . "</td>";
                 }
 
-                echo "<td><a href='".$netpoint->getFormURL();
-                echo '?id='.$data['id']."'>".$data['name']."</a></td>";
-                echo "<td>".$data['comment']."</td>";
+                echo "<td><a href='" . $netpoint->getFormURL();
+                echo '?id=' . $data['id'] . "'>" . $data['name'] . "</a></td>";
+                echo "<td>" . $data['comment'] . "</td>";
                 echo "</tr>\n";
             }
 
@@ -424,7 +424,6 @@ class Netpoint extends CommonDropdown
                 $start,
                 $number
             );
-
         }
 
         echo "</div>\n";
@@ -455,7 +454,6 @@ class Netpoint extends CommonDropdown
         }
 
         $base->addHeader($column_name, _n('Network outlet', 'Network outlets', 1), $super, $father);
-
     }
 
 
@@ -486,5 +484,4 @@ class Netpoint extends CommonDropdown
             $father
         );
     }
-
 }

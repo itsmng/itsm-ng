@@ -266,5 +266,4 @@ class NotificationChatSetting extends NotificationSetting
             'values' => $values,
         ]);
     }
-
 }

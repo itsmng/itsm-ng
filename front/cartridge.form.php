@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -55,7 +56,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s adds cartridges'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $cartype->check($_POST["cartridgeitems_id"], PURGE);
 
@@ -70,7 +70,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 } elseif (isset($_POST["install"])) {
     if ($_POST["cartridgeitems_id"]) {
         $cartype->check($_POST["cartridgeitems_id"], UPDATE);
@@ -88,7 +87,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::redirect(Printer::getFormURLWithID($_POST["printers_id"]));
-
 } elseif (isset($_POST["update"])) {
     $cart->check($_POST["id"], UPDATE);
 
@@ -103,7 +101,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 } else {
     Html::back();
 }

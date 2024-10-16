@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -37,8 +38,8 @@ if (!defined('GLPI_ROOT')) {
 // Be sure to use global objects if this file is included outside normal process
 global $CFG_GLPI, $GLPI, $GLPI_CACHE, $DB;
 
-include_once(GLPI_ROOT."/inc/based_config.php");
-include_once(GLPI_ROOT."/inc/dbconnection.class.php");
+include_once(GLPI_ROOT . "/inc/based_config.php");
+include_once(GLPI_ROOT . "/inc/dbconnection.class.php");
 
 Session::setPath();
 Session::start();
@@ -66,17 +67,15 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
         echo "<p>Error: GLPI seems to not be configured properly.</p>";
         echo "<p>config_db.php file is missing.</p>";
         echo "<p>Please restart the install process.</p>";
-        echo "<p><a class='red' href='".$CFG_GLPI['root_doc']."/install/install.php'>Click here to proceed</a></p>";
+        echo "<p><a class='red' href='" . $CFG_GLPI['root_doc'] . "/install/install.php'>Click here to proceed</a></p>";
         echo "</div>";
         Html::nullFooter();
-
     } else {
         echo "Error: GLPI seems to not be configured properly.\n";
         echo "config_db.php file is missing.\n";
         echo "Please connect to GLPI web interface to complete the install process.\n";
     }
     die(1);
-
 } else {
     include_once(GLPI_CONFIG_DIR . "/config_db.php");
 
@@ -106,9 +105,11 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
         exit();
     }
 
-    if (isCommandLine()
+    if (
+        isCommandLine()
         && !defined('TU_USER') // In test suite context, used --debug option is the atoum one
-        && isset($_SERVER['argv'])) {
+        && isset($_SERVER['argv'])
+    ) {
         $key = array_search('--debug', $_SERVER['argv']);
         if ($key) {
             $_SESSION['glpi_use_mode'] = Session::DEBUG_MODE;
@@ -135,9 +136,11 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
     }
 
     // Check maintenance mode
-    if (isset($CFG_GLPI["maintenance_mode"])
+    if (
+        isset($CFG_GLPI["maintenance_mode"])
         && $CFG_GLPI["maintenance_mode"]
-        && !isset($dont_check_maintenance_mode)) {
+        && !isset($dont_check_maintenance_mode)
+    ) {
         if (isset($_GET['skipMaintenance']) && $_GET['skipMaintenance']) {
             $_SESSION["glpiskipMaintenance"] = 1;
         }
@@ -147,7 +150,6 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
             if (isCommandLine()) {
                 echo __('Service is down for maintenance. It will be back shortly.');
                 echo "\n";
-
             } else {
                 Html::nullHeader("MAINTENANCE MODE", $CFG_GLPI["root_doc"]);
                 echo "<div class='center'>";
@@ -156,7 +158,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                 echo __('Service is down for maintenance. It will be back shortly.');
                 echo "</p>";
                 if (isset($CFG_GLPI["maintenance_text"]) && !empty($CFG_GLPI["maintenance_text"])) {
-                    echo "<p>".$CFG_GLPI["maintenance_text"]."</p>";
+                    echo "<p>" . $CFG_GLPI["maintenance_text"] . "</p>";
                 }
                 echo "</div>";
                 Html::nullFooter();
@@ -165,15 +167,15 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
         }
     }
     // Check version
-    if ((!isset($CFG_GLPI['dbversion']) || (trim($CFG_GLPI["dbversion"]) != ITSM_SCHEMA_VERSION))
-        && !isset($_GET["donotcheckversion"])) {
-
+    if (
+        (!isset($CFG_GLPI['dbversion']) || (trim($CFG_GLPI["dbversion"]) != ITSM_SCHEMA_VERSION))
+        && !isset($_GET["donotcheckversion"])
+    ) {
         Session::loadLanguage('', false);
 
         if (isCommandLine()) {
             echo __('The version of the database is not compatible with the version of the installed files. An update is necessary.');
             echo "\n";
-
         } else {
             Html::nullHeader("UPDATE NEEDED", $CFG_GLPI["root_doc"]);
             echo "<div class='center'>";
@@ -183,8 +185,8 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
             echo "</table></div>";
 
             if ($error) {
-                echo "<form aria-label='Error' action='".$CFG_GLPI["root_doc"]."/index.php' method='post'>";
-                echo "<input type='submit' name='submit' class='btn btn-secondary mb-3' value=\"".__s('Try again')."\">";
+                echo "<form aria-label='Error' action='" . $CFG_GLPI["root_doc"] . "/index.php' method='post'>";
+                echo "<input type='submit' name='submit' class='btn btn-secondary mb-3' value=\"" . __s('Try again') . "\">";
                 Html::closeForm();
             }
             if ($error < 2) {
@@ -216,36 +218,34 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                     } elseif (!isset($CFG_GLPI['dbversion']) || trim($CFG_GLPI["dbversion"]) < ITSM_SCHEMA_VERSION) {
                         $older = true;
                     } elseif (trim($CFG_GLPI["dbversion"]) > ITSM_SCHEMA_VERSION) {
-
                         // test for GLPI version
                     } elseif (version_compare(trim($CFG_GLPI["dbversion"]), '10', '>=')) {  // GLPI 10 not managed
                     } elseif (version_compare(trim($CFG_GLPI["dbversion"]), '9', '>=')) {  // for GLPI 9.x
                         $older = true;
-
                     } elseif (trim($CFG_GLPI["dbversion"]) > ITSM_SCHEMA_VERSION) {
                         $newer = true;
                     }
                 }
 
                 if ($older === true) {
-                    echo "<form method='post' aria-label='old DB' action='".$CFG_GLPI["root_doc"]."/install/update.php'>";
+                    echo "<form method='post' aria-label='old DB' action='" . $CFG_GLPI["root_doc"] . "/install/update.php'>";
                     if ($dev === true) {
                         echo Config::agreeDevMessage();
                     }
                     echo "<p class='alert alert-danger'>";
-                    echo __('The version of the database is not compatible with the version of the installed files. An update is necessary.')."</p>";
-                    echo "<input type='submit' name='from_update' value=\""._sx('button', 'Upgrade')."\"
+                    echo __('The version of the database is not compatible with the version of the installed files. An update is necessary.') . "</p>";
+                    echo "<input type='submit' name='from_update' value=\"" . _sx('button', 'Upgrade') . "\"
                       class='btn btn-secondary mb-3'>";
                     Html::closeForm();
                 } elseif ($newer === true) {
-                    echo "<p class='red'>".
-                          __('You are trying to use ITSM-NG with outdated files compared to the version of the database. Please install the correct ITSM-NG files corresponding to the version of your database.')."</p>";
+                    echo "<p class='red'>" .
+                          __('You are trying to use ITSM-NG with outdated files compared to the version of the database. Please install the correct ITSM-NG files corresponding to the version of your database.') . "</p>";
                 } elseif ($dev === true) {
-                    echo "<p class='red'><strong>".
-                          __('You are trying to update to a development version from a development version. This is not supported.')."</strong></p>";
+                    echo "<p class='red'><strong>" .
+                          __('You are trying to update to a development version from a development version. This is not supported.') . "</strong></p>";
                 } else { // for GLPI 10
-                    echo "<p class='red'><strong>".
-                             __('Upgrade from GLPI 10 is not supported.')."</strong></p>";
+                    echo "<p class='red'><strong>" .
+                             __('Upgrade from GLPI 10 is not supported.') . "</strong></p>";
                 }
             }
 
@@ -268,5 +268,4 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
             }
         }
     }
-
 }

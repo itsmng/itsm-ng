@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -139,19 +140,23 @@ class PlanningCsv extends CommonGLPI
             header("Expires: Mon, 26 Nov 1962 00:00:00 GMT");
             header('Pragma: private'); /// IE BUG + SSL
             header('Cache-control: private, must-revalidate'); /// IE BUG + SSL
-            header("Content-disposition: filename=".$this->filename);
+            header("Content-disposition: filename=" . $this->filename);
             header('Content-type: application/octetstream');
             // zero width no break space (for excel)
         }
 
         echo implode(
             $_SESSION["glpicsv_delimiter"],
-            array_map(function ($value) { return $this->quote($value); }, $this->titles)
+            array_map(function ($value) {
+                return $this->quote($value);
+            }, $this->titles)
         ) . $this->eol;
         foreach ($this->lines as $line) {
             echo implode(
                 $_SESSION["glpicsv_delimiter"],
-                array_map(function ($value) { return $this->quote($value); }, $line)
+                array_map(function ($value) {
+                    return $this->quote($value);
+                }, $line)
             ) . $this->eol;
         }
     }
@@ -178,7 +183,7 @@ class PlanningCsv extends CommonGLPI
      */
     public function quote($value)
     {
-        return $this->quote . str_replace($this->quote, $this->quote.$this->quote, $value) . $this->quote;
+        return $this->quote . str_replace($this->quote, $this->quote . $this->quote, $value) . $this->quote;
     }
 
     public function __get($name)

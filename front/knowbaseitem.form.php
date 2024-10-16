@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -62,11 +63,10 @@ if (isset($_POST["add"])) {
         sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $newID)
     );
     if (isset($_POST['_in_modal']) && $_POST['_in_modal']) {
-        Html::redirect($kb->getFormURLWithID($newID)."&_in_modal=1");
+        Html::redirect($kb->getFormURLWithID($newID) . "&_in_modal=1");
     } else {
-        Html::redirect($CFG_GLPI["root_doc"]."/front/knowbaseitem.php");
+        Html::redirect($CFG_GLPI["root_doc"] . "/front/knowbaseitem.php");
     }
-
 } elseif (isset($_POST["update"])) {
     // actualiser  un item dans la base de connaissances
     $kb->check($_POST["id"], UPDATE);
@@ -81,7 +81,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::redirect($kb->getFormURLWithID($_POST['id']));
-
 } elseif (isset($_POST["purge"])) {
     // effacer un item dans la base de connaissances
     $kb->check($_POST["id"], PURGE);
@@ -95,10 +94,11 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $kb->redirectToList();
-
 } elseif (isset($_POST["addvisibility"])) {
-    if (isset($_POST["_type"]) && !empty($_POST["_type"])
-        && isset($_POST["knowbaseitems_id"]) && $_POST["knowbaseitems_id"]) {
+    if (
+        isset($_POST["_type"]) && !empty($_POST["_type"])
+        && isset($_POST["knowbaseitems_id"]) && $_POST["knowbaseitems_id"]
+    ) {
         $item = null;
         switch ($_POST["_type"]) {
             case 'User':
@@ -136,7 +136,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_GET["id"]) and isset($_GET['to_rev'])) {
     $kb->check($_GET["id"], UPDATE);
     if ($kb->revertTo($_GET['to_rev'])) {
@@ -159,7 +158,7 @@ if (isset($_POST["add"])) {
     Html::redirect($kb->getFormURLWithID($_GET['id']));
 } elseif (isset($_GET["id"])) {
     if (!Session::getLoginUserID()) {
-        Html::redirect("helpdesk.faq.php?id=".$_GET['id']);
+        Html::redirect("helpdesk.faq.php?id=" . $_GET['id']);
     }
 
     if (isset($_GET["_in_modal"])) {

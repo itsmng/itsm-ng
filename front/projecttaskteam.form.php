@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -43,7 +44,6 @@ Session::checkCentralAccess();
 $team = new ProjectTaskTeam();
 
 if (isset($_POST["add"])) {
-
     $team->check(-1, CREATE, $_POST);
     if ($team->add($_POST)) {
         Event::log(
@@ -56,7 +56,6 @@ if (isset($_POST["add"])) {
         );
     }
     Html::back();
-
 }
 
 Html::displayErrorAndDie("lost");

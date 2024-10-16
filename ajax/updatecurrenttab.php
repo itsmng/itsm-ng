@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -38,7 +39,6 @@ if (!basename($_SERVER['SCRIPT_NAME']) == "helpdesk.faq.php") {
 
 // Manage tabs
 if (isset($_GET['tab']) && isset($_GET['itemtype'])) {
-
     $tabs = Toolbox::getAvailablesTabs($_UGET['itemtype'], $_GET['id'] ?? null);
     $current      = 0;
     foreach (array_keys($tabs) as $key) {

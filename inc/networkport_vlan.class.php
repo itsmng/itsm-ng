@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -131,17 +132,17 @@ class NetworkPort_Vlan extends CommonDBRelation
 
         if ($canedit) {
             echo "<div class='firstbloc'>\n";
-            echo "<form aria-label='VLAN' method='post' action='".static::getFormURL()."'>\n";
+            echo "<form aria-label='VLAN' method='post' action='" . static::getFormURL() . "'>\n";
             echo "<table class='tab_cadre_fixe' aria-label='VLAN'>\n";
-            echo "<tr><th colspan='4'>".__('Associate a VLAN')."</th></tr>";
+            echo "<tr><th colspan='4'>" . __('Associate a VLAN') . "</th></tr>";
 
             echo "<tr class='tab_bg_1'><td class='right'>";
             echo "<input type='hidden' name='networkports_id' value='$ID'>";
             Vlan::dropdown(['used' => $used]);
             echo "</td>";
-            echo "<td class='right'>".__('Tagged')."</td>";
+            echo "<td class='right'>" . __('Tagged') . "</td>";
             echo "<td class='left'><input type='checkbox' name='tagged' value='1'></td>";
-            echo "<td><input type='submit' name='add' value='"._sx('button', 'Associate').
+            echo "<td><input type='submit' name='add' value='" . _sx('button', 'Associate') .
                        "' class='submit'>";
             echo "</td></tr>\n";
 
@@ -152,9 +153,9 @@ class NetworkPort_Vlan extends CommonDBRelation
 
         echo "<div class='spaced'>";
         if ($canedit && $number) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
             $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $number),
-                                         'container'     => 'mass'.__CLASS__.$rand];
+                                         'container'     => 'mass' . __CLASS__ . $rand];
             Html::showMassiveActions($massiveactionparams);
         }
         echo "<table class='tab_cadre_fixehov' aria-label='VLAN Detail'>";
@@ -165,16 +166,16 @@ class NetworkPort_Vlan extends CommonDBRelation
         $header_end    = '';
         if ($canedit && $number) {
             $header_top    .= "<th width='10'>";
-            $header_top    .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand)."</th>";
+            $header_top    .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
             $header_bottom .= "<th width='10'>";
-            $header_bottom .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand)."</th>";
+            $header_bottom .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
         }
-        $header_end .= "<th>".__('Name')."</th>";
-        $header_end .= "<th>".Entity::getTypeName(1)."</th>";
-        $header_end .= "<th>".__('Tagged')."</th>";
-        $header_end .= "<th>".__('ID TAG')."</th>";
+        $header_end .= "<th>" . __('Name') . "</th>";
+        $header_end .= "<th>" . Entity::getTypeName(1) . "</th>";
+        $header_end .= "<th>" . __('Tagged') . "</th>";
+        $header_end .= "<th>" . __('ID TAG') . "</th>";
         $header_end .= "</tr>";
-        echo $header_begin.$header_top.$header_end;
+        echo $header_begin . $header_top . $header_end;
 
         $used = [];
         foreach ($vlans as $data) {
@@ -189,16 +190,16 @@ class NetworkPort_Vlan extends CommonDBRelation
                 $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
             }
             echo "<td class='b'>
-               <a href='".Vlan::getFormURLWithID($data['id'])."'>".$name.
+               <a href='" . Vlan::getFormURLWithID($data['id']) . "'>" . $name .
                  "</a>";
             echo "</td>";
-            echo "<td>".Dropdown::getDropdownName("glpi_entities", $data["entities_id"]);
-            echo "</td><td>".Dropdown::getYesNo($data["tagged"])."</td>";
-            echo "<td>".$data["tag"]."</td>";
+            echo "<td>" . Dropdown::getDropdownName("glpi_entities", $data["entities_id"]);
+            echo "</td><td>" . Dropdown::getYesNo($data["tagged"]) . "</td>";
+            echo "<td>" . $data["tag"] . "</td>";
             echo "</tr>";
         }
         if ($number) {
-            echo $header_begin.$header_top.$header_end;
+            echo $header_begin . $header_top . $header_end;
         }
         echo "</table>";
         if ($canedit && $number) {
@@ -207,7 +208,6 @@ class NetworkPort_Vlan extends CommonDBRelation
             Html::closeForm();
         }
         echo "</div>";
-
     }
 
 
@@ -251,9 +251,9 @@ class NetworkPort_Vlan extends CommonDBRelation
 
         echo "<div class='spaced'>";
         if ($canedit && $number) {
-            Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
             $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $number),
-                                         'container'     => 'mass'.__CLASS__.$rand];
+                                         'container'     => 'mass' . __CLASS__ . $rand];
             Html::showMassiveActions($massiveactionparams);
         }
         echo "<table class='tab_cadre_fixehov' aria-label='VLAN Detail'>";
@@ -264,14 +264,14 @@ class NetworkPort_Vlan extends CommonDBRelation
         $header_end    = '';
         if ($canedit && $number) {
             $header_top    .= "<th width='10'>";
-            $header_top    .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand)."</th>";
+            $header_top    .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
             $header_bottom .= "<th width='10'>";
-            $header_bottom .= Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand)."</th>";
+            $header_bottom .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
         }
-        $header_end .= "<th>".__('Name')."</th>";
-        $header_end .= "<th>".Entity::getTypeName(1)."</th>";
+        $header_end .= "<th>" . __('Name') . "</th>";
+        $header_end .= "<th>" . Entity::getTypeName(1) . "</th>";
         $header_end .= "</tr>";
-        echo $header_begin.$header_top.$header_end;
+        echo $header_begin . $header_top . $header_end;
 
         $used = [];
         foreach ($vlans as $data) {
@@ -286,14 +286,14 @@ class NetworkPort_Vlan extends CommonDBRelation
                 $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
             }
             echo "<td class='b'>
-               <a href='".NetworkPort::getFormURLWithID($data['id'])."'>".$name.
+               <a href='" . NetworkPort::getFormURLWithID($data['id']) . "'>" . $name .
                  "</a>";
             echo "</td>";
-            echo "<td>".Dropdown::getDropdownName("glpi_entities", $data["entities_id"]);
+            echo "<td>" . Dropdown::getDropdownName("glpi_entities", $data["entities_id"]);
             echo "</tr>";
         }
         if ($number) {
-            echo $header_begin.$header_top.$header_end;
+            echo $header_begin . $header_top . $header_end;
         }
         echo "</table>";
         if ($canedit && $number) {
@@ -302,7 +302,6 @@ class NetworkPort_Vlan extends CommonDBRelation
             Html::closeForm();
         }
         echo "</div>";
-
     }
     /**
      * @param $portID
@@ -348,7 +347,6 @@ class NetworkPort_Vlan extends CommonDBRelation
                         );
                     }
                     return self::createTabEntry(NetworkPort::getTypeName(), $nb);
-
             }
         }
         return '';
@@ -359,7 +357,6 @@ class NetworkPort_Vlan extends CommonDBRelation
     {
 
         switch ($item->getType()) {
-
             case 'NetworkPort':
                 return self::showForNetworkPort($item);
             case 'Vlan':
@@ -390,7 +387,7 @@ class NetworkPort_Vlan extends CommonDBRelation
     {
 
         if ($ma->getAction() == 'add') {
-            echo "<br><br>". __('Tagged'). Html::getCheckbox(['name' => 'tagged']);
+            echo "<br><br>" . __('Tagged') . Html::getCheckbox(['name' => 'tagged']);
         }
     }
 
@@ -406,5 +403,4 @@ class NetworkPort_Vlan extends CommonDBRelation
         }
         return [];
     }
-
 }

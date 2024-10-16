@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -84,8 +85,10 @@ abstract class ITILTemplate extends CommonDropdown
             $this->hidden = $tth->getHiddenFields($ID, $withtypeandcategory);
 
             // Force items_id if itemtype is defined
-            if (isset($this->hidden['itemtype'])
-                && !isset($this->hidden['items_id'])) {
+            if (
+                isset($this->hidden['itemtype'])
+                && !isset($this->hidden['items_id'])
+            ) {
                 $this->hidden['items_id'] = $itil_object->getSearchOptionIDByField(
                     'field',
                     'items_id',
@@ -98,8 +101,10 @@ abstract class ITILTemplate extends CommonDropdown
             $this->mandatory = $ttm->getMandatoryFields($ID);
 
             // Force items_id if itemtype is defined
-            if (isset($this->mandatory['itemtype'])
-                && !isset($this->mandatory['items_id'])) {
+            if (
+                isset($this->mandatory['itemtype'])
+                && !isset($this->mandatory['items_id'])
+            ) {
                 $this->mandatory['items_id'] = $itil_object->getSearchOptionIDByField(
                     'field',
                     'items_id',
@@ -498,10 +503,12 @@ abstract class ITILTemplate extends CommonDropdown
         if ($this->isHiddenField($field)) {
             $output .= "</span>";
             if ($ticket && isset($ticket->fields[$field])) {
-                $output .= "<input type='hidden' name='$field' value=\"".$ticket->fields[$field]."\">";
+                $output .= "<input type='hidden' name='$field' value=\"" . $ticket->fields[$field] . "\">";
             }
-            if ($this->isPredefinedField($field)
-                && !is_null($ticket)) {
+            if (
+                $this->isPredefinedField($field)
+                && !is_null($ticket)
+            ) {
                 if ($num = array_search($field, $this->getAllowedFields())) {
                     $display_options = ['comments' => true,
                                              'html'     => true];
@@ -509,8 +516,8 @@ abstract class ITILTemplate extends CommonDropdown
 
                     /// Display items_id
                     if ($field == 'itemtype') {
-                        $output .= "<input type='hidden' name='items_id' value=\"".
-                                     $ticket->fields['items_id']."\">";
+                        $output .= "<input type='hidden' name='items_id' value=\"" .
+                                     $ticket->fields['items_id'] . "\">";
                         if ($num = array_search('items_id', $this->getAllowedFields())) {
                             $output = sprintf(
                                 __('%1$s - %2$s'),
@@ -616,10 +623,12 @@ abstract class ITILTemplate extends CommonDropdown
         $isadmin = static::canUpdate();
         $actions = parent::getSpecificMassiveActions($checkitem);
 
-        if ($isadmin
+        if (
+            $isadmin
             &&  $this->maybeRecursive()
-            && (count($_SESSION['glpiactiveentities']) > 1)) {
-            $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'merge'] = __('Merge and assign to current entity');
+            && (count($_SESSION['glpiactiveentities']) > 1)
+        ) {
+            $actions[__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'merge'] = __('Merge and assign to current entity');
         }
 
         return $actions;
@@ -631,8 +640,8 @@ abstract class ITILTemplate extends CommonDropdown
 
         switch ($ma->getAction()) {
             case 'merge':
-                echo "&nbsp;".$_SESSION['glpiactive_entity_shortname'];
-                echo "<br><br>".Html::submit(_x('button', 'Merge'), ['name' => 'massiveaction']);
+                echo "&nbsp;" . $_SESSION['glpiactive_entity_shortname'];
+                echo "<br><br>" . Html::submit(_x('button', 'Merge'), ['name' => 'massiveaction']);
                 return true;
         }
 
@@ -651,8 +660,10 @@ abstract class ITILTemplate extends CommonDropdown
                 foreach ($ids as $key) {
                     if ($item->can($key, UPDATE)) {
                         if ($item->getEntityID() == $_SESSION['glpiactive_entity']) {
-                            if ($item->update(['id'           => $key,
-                                                    'is_recursive' => 1])) {
+                            if (
+                                $item->update(['id'           => $key,
+                                                    'is_recursive' => 1])
+                            ) {
                                 $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                             } else {
                                 $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
@@ -672,7 +683,6 @@ abstract class ITILTemplate extends CommonDropdown
                                 $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                             }
                         }
-
                     } else {
                         $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_NORIGHT);
                         $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
@@ -705,8 +715,8 @@ abstract class ITILTemplate extends CommonDropdown
         foreach ($to_merge as $merge) {
             $source[$merge] = $this->formatFieldsToMerge(
                 getAllDataFromTable(
-                    'glpi_'.$itiltype.'template'.$merge,
-                    [$itiltype.'templates_id' => $source_id]
+                    'glpi_' . $itiltype . 'template' . $merge,
+                    [$itiltype . 'templates_id' => $source_id]
                 )
             );
         }
@@ -716,8 +726,8 @@ abstract class ITILTemplate extends CommonDropdown
         foreach ($to_merge as $merge) {
             $target[$merge] = $this->formatFieldsToMerge(
                 getAllDataFromTable(
-                    'glpi_'.$itiltype.'template'.$merge,
-                    [$itiltype.'templates_id' => $target_id]
+                    'glpi_' . $itiltype . 'template' . $merge,
+                    [$itiltype . 'templates_id' => $target_id]
                 )
             );
         }
@@ -727,13 +737,13 @@ abstract class ITILTemplate extends CommonDropdown
             foreach ($data as $key => $val) {
                 if (!array_key_exists($key, $target[$merge])) {
                     $DB->update(
-                        'glpi_'.$itiltype.'template'.$merge,
+                        'glpi_' . $itiltype . 'template' . $merge,
                         [
-                          $itiltype.'templates_id' => $target_id
-                  ],
+                          $itiltype . 'templates_id' => $target_id
+                        ],
                         [
                           'id' => $val['id']
-                  ]
+                        ]
                     );
                 }
             }
@@ -780,16 +790,18 @@ abstract class ITILTemplate extends CommonDropdown
         foreach ($source as $merge => $data) {
             foreach ($data as $key => $val) {
                 $template->getFromDB($target_id);
-                if (!array_key_exists($key, $target[$merge])
-                    && in_array($val['entities_id'], $_SESSION['glpiactiveentities'])) {
+                if (
+                    !array_key_exists($key, $target[$merge])
+                    && in_array($val['entities_id'], $_SESSION['glpiactiveentities'])
+                ) {
                     $DB->update(
                         'glpi_itilcategories',
                         [
                           $merge => $target_id
-                  ],
+                        ],
                         [
                           'id' => $val['id']
-                  ]
+                        ]
                     );
                 }
             }
@@ -854,7 +866,6 @@ abstract class ITILTemplate extends CommonDropdown
 
         $this->update($input);
         return true;
-
     }
 
 

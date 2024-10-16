@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -135,17 +136,21 @@ class Log extends CommonDBTM
                     continue;
                 }
                 // specific for profile
-                if (($item->getType() == 'ProfileRight')
-                    && ($key == 'rights')) {
-                    if (isset($val2['rightname'])
-                        && ($val2['rightname'] == $item->fields['name'])) {
-
+                if (
+                    ($item->getType() == 'ProfileRight')
+                    && ($key == 'rights')
+                ) {
+                    if (
+                        isset($val2['rightname'])
+                        && ($val2['rightname'] == $item->fields['name'])
+                    ) {
                         $id_search_option = $key2;
                         $changes          =  [$id_search_option, addslashes($oldval), $values[$key]];
                     }
-
-                } elseif (($val2['linkfield'] == $key && $real_type === $item->getType())
-                           || ($key == $val2['field'] && $val2['table'] == $item->getTable())) {
+                } elseif (
+                    ($val2['linkfield'] == $key && $real_type === $item->getType())
+                           || ($key == $val2['field'] && $val2['table'] == $item->getTable())
+                ) {
                     // Linkfield or standard field not massive action enable
                     $id_search_option = $key2; // Give ID of the $SEARCHOPTION
 
@@ -226,7 +231,6 @@ class Log extends CommonDBTM
             } else { // For cron management
                 $username = $uid;
             }
-
         } else {
             $username = "";
         }
@@ -301,7 +305,7 @@ class Log extends CommonDBTM
         if ($total_number < 1) {
             echo "<div class='center'>";
             echo "<table class='tab_cadre_fixe' aria-label='No historical'>";
-            echo "<tr><th>".__('No historical')."</th></tr>";
+            echo "<tr><th>" . __('No historical') . "</th></tr>";
             echo "</table>";
             echo "</div><br>";
             return;
@@ -421,7 +425,7 @@ class Log extends CommonDBTM
                         $specif_fields  = $linktype::getSpecificities();
                         if (isset($specif_fields[$field]['short name'])) {
                             $tmp['field']   = $devicetype;
-                            $tmp['field']  .= " (".$specif_fields[$field]['short name'].")";
+                            $tmp['field']  .= " (" . $specif_fields[$field]['short name'] . ")";
                         }
                         //TRANS: %1$s is the old_value, %2$s is the new_value
                         $tmp['change']  = sprintf(
@@ -439,7 +443,6 @@ class Log extends CommonDBTM
                             } else {
                                 $tmp['field'] = $item2->getTypeName(1);
                             }
-
                         }
                         //TRANS: %s is the component name
                         $tmp['change'] = sprintf(__('%1$s: %2$s'), $action_label, $data["old_value"]);
@@ -453,7 +456,6 @@ class Log extends CommonDBTM
                             } else {
                                 $tmp['field'] = $item2->getTypeName(1);
                             }
-
                         }
                         //TRANS: %s is the component name
                         $tmp['change'] = sprintf(__('%1$s: %2$s'), $action_label, $data["old_value"]);
@@ -467,7 +469,6 @@ class Log extends CommonDBTM
                             } else {
                                 $tmp['field'] = $item2->getTypeName(1);
                             }
-
                         }
                         //TRANS: %s is the component name
                         $tmp['change'] = sprintf(__('%1$s: %2$s'), $action_label, $data["new_value"]);
@@ -493,7 +494,6 @@ class Log extends CommonDBTM
                             } else {
                                 $tmp['field'] = $item2->getTypeName(1);
                             }
-
                         }
                         //TRANS: %s is the item name
                         $tmp['change'] = sprintf(__('%1$s: %2$s'), $action_label, $data["old_value"]);
@@ -507,7 +507,6 @@ class Log extends CommonDBTM
                             } else {
                                 $tmp['field'] = $item2->getTypeName(1);
                             }
-
                         }
                         //TRANS: %s is the item name
                         $tmp['change'] = sprintf(__('%1$s: %2$s'), $action_label, $data["new_value"]);
@@ -676,15 +675,16 @@ class Log extends CommonDBTM
 
                     default:
                         $fct = [$data['itemtype_link'], 'getHistoryEntry'];
-                        if (($data['linked_action'] >= self::HISTORY_PLUGIN)
+                        if (
+                            ($data['linked_action'] >= self::HISTORY_PLUGIN)
                             && $data['itemtype_link']
-                            && is_callable($fct)) {
+                            && is_callable($fct)
+                        ) {
                             $tmp['field']  = $data['itemtype_link']::getTypeName(1);
                             $tmp['change'] = call_user_func($fct, $data);
                         }
                         $tmp['display_history'] = !empty($tmp['change']);
                 }
-
             } else {
                 $fieldname = "";
                 $searchopt = [];
@@ -702,8 +702,10 @@ class Log extends CommonDBTM
                         break;
                     }
                 }
-                if (($itemtable == $tablename)
-                    || ($tmp['datatype'] == 'right')) {
+                if (
+                    ($itemtable == $tablename)
+                    || ($tmp['datatype'] == 'right')
+                ) {
                     switch ($tmp['datatype']) {
                         // specific case for text field
                         case 'text':
@@ -907,7 +909,7 @@ class Log extends CommonDBTM
 
                         $value = $devicetype;
                         if (isset($specif_fields[$field]['short name'])) {
-                            $value .= " (".$specif_fields[$field]['short name'].")";
+                            $value .= " (" . $specif_fields[$field]['short name'] . ")";
                         }
                         break;
 
@@ -950,7 +952,6 @@ class Log extends CommonDBTM
                         $value = __('Others');
                         break;
                 }
-
             } else {
                 // It's not an internal device
                 foreach (Search::getOptions($itemtype) as $search_opt_key => $search_opt_val) {
@@ -1262,5 +1263,4 @@ class Log extends CommonDBTM
         $values = [ READ => __('Read')];
         return $values;
     }
-
 }

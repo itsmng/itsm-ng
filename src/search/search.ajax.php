@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * ITSM-NG
@@ -81,9 +82,11 @@ $datas = Search::getDatas($itemtype, $params);
 
 foreach ($datas['data']['rows'] as $row) {
     $newData = [$row['id'] => $row['id']];
-    if (!isset($row['entities_id'])
-        || in_array($row['entities_id'], $_SESSION['glpiactiveentities'])) {
-        $newData['value'] = 'item['.$itemtype.']['.$row['id'].']';
+    if (
+        !isset($row['entities_id'])
+        || in_array($row['entities_id'], $_SESSION['glpiactiveentities'])
+    ) {
+        $newData['value'] = 'item[' . $itemtype . '][' . $row['id'] . ']';
     } else {
         $newData['value'] = null;
     }

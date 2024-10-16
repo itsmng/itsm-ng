@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -63,7 +64,6 @@ if (isset($_POST["add"])) {
         }
     }
     Html::back();
-
 } elseif (isset($_POST["restore"])) {
     $license->check($_POST['id'], DELETE);
     if ($license->restore($_POST)) {
@@ -77,7 +77,6 @@ if (isset($_POST["add"])) {
         );
     }
     $license->redirectToList();
-
 } elseif (isset($_POST["delete"])) {
     $license->check($_POST['id'], DELETE);
     $license->delete($_POST, 0);
@@ -90,7 +89,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%1$s deletes the license %2$s'), $_SESSION["glpiname"], $_POST["id"])
     );
     $license->redirectToList();
-
 } elseif (isset($_POST["purge"])) {
     $license->check($_POST['id'], PURGE);
     $license->delete($_POST, 1);
@@ -103,7 +101,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%1$s purges the license %2$s'), $_SESSION["glpiname"], $_POST["id"])
     );
     $license->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $license->check($_POST['id'], UPDATE);
 
@@ -117,7 +114,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%1$s updates the license %2$s'), $_SESSION["glpiname"], $_POST["id"])
     );
     Html::back();
-
 } else {
     Html::header(
         SoftwareLicense::getTypeName(Session::getPluralNumber()),

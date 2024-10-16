@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -77,13 +78,13 @@ class Event extends CommonDBTM
         if (isset($this->fields['level']) && $this->fields['level'] <= 3) {
             $message_type = "";
             if (isset($this->fields['type']) && $this->fields['type'] != 'system') {
-                $message_type = "[".$this->fields['type']." ".$this->fields['id']."] ";
+                $message_type = "[" . $this->fields['type'] . " " . $this->fields['id'] . "] ";
             }
 
-            $full_message = "[".$this->fields['service']."] ".
-                            $message_type.
-                            $this->fields['level'].": ".
-                            Toolbox::stripslashes_deep($this->fields['message'])."\n";
+            $full_message = "[" . $this->fields['service'] . "] " .
+                            $message_type .
+                            $this->fields['level'] . ": " .
+                            Toolbox::stripslashes_deep($this->fields['message']) . "\n";
 
             Toolbox::logInFile("event", $full_message);
         }
@@ -134,7 +135,7 @@ class Event extends CommonDBTM
             'glpi_events',
             [
               new \QueryExpression("UNIX_TIMESTAMP(date) < UNIX_TIMESTAMP()-$secs")
-         ]
+            ]
         );
         return $DB->affectedRows();
     }
@@ -192,16 +193,16 @@ class Event extends CommonDBTM
         } else {
             switch ($type) {
                 case "rules":
-                    echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/rule.generic.form.php?id=".
-                          $items_id."\">".$items_id."</a>";
+                    echo "<a href=\"" . $CFG_GLPI["root_doc"] . "/front/rule.generic.form.php?id=" .
+                          $items_id . "\">" . $items_id . "</a>";
                     break;
 
                 case "infocom":
                     $rand = mt_rand();
-                    echo " <a href='#' onClick=\"".Html::jsGetElementbyID('infocom'.$rand).".
+                    echo " <a href='#' onClick=\"" . Html::jsGetElementbyID('infocom' . $rand) . ".
                        dialog('open');\">$items_id</a>";
                     Ajax::createIframeModalWindow(
-                        'infocom'.$rand,
+                        'infocom' . $rand,
                         Infocom::getFormURLWithID($items_id),
                         ['height' => 600]
                     );
@@ -212,8 +213,8 @@ class Event extends CommonDBTM
                     break;
 
                 case "reservationitem":
-                    echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/reservation.php?reservationitems_id=".
-                          $items_id."\">".$items_id."</a>";
+                    echo "<a href=\"" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
+                          $items_id . "\">" . $items_id . "</a>";
                     break;
 
                 default:
@@ -223,7 +224,7 @@ class Event extends CommonDBTM
                         $url  =  $item->getFormURLWithID($items_id);
                     }
                     if (!empty($url)) {
-                        echo "<a href=\"".$url."\">".$items_id."</a>";
+                        echo "<a href=\"" . $url . "\">" . $items_id . "</a>";
                     } else {
                         echo $items_id;
                     }
@@ -250,7 +251,7 @@ class Event extends CommonDBTM
         // define default sorting
         $usersearch = "";
         if (!empty($user)) {
-            $usersearch = $user." ";
+            $usersearch = $user . " ";
         }
 
         // Query Database
@@ -268,7 +269,7 @@ class Event extends CommonDBTM
         // No Events in database
         if ($number < 1) {
             echo "<br><div class='spaced'><table class='tab_cadrehov' aria_label='No Event'>";
-            echo "<tr><th>".__('No Event')."</th></tr>";
+            echo "<tr><th>" . __('No Event') . "</th></tr>";
             echo "</table></div>";
             return;
         }
@@ -279,15 +280,15 @@ class Event extends CommonDBTM
         echo "<br><div class='spaced'><table class='tab_cadre' aria-label='Last Event'>";
         echo "<tr><th colspan='5'>";
         //TRANS: %d is the number of item to display
-        echo "<p class='table-title'><a href=\"".$CFG_GLPI["root_doc"]."/front/event.php\">".
-               sprintf(__('Last %d events'), $_SESSION['glpilist_limit'])."</a></p>";
+        echo "<p class='table-title'><a href=\"" . $CFG_GLPI["root_doc"] . "/front/event.php\">" .
+               sprintf(__('Last %d events'), $_SESSION['glpilist_limit']) . "</a></p>";
         echo "</th></tr>";
 
-        echo "<tr><th>".__('Source')."</th>";
-        echo "<th>".__('Id')."</th>";
-        echo "<th>"._n('Date', 'Dates', 1)."</th>";
-        echo "<th width='10%'>".__('Service')."</th>";
-        echo "<th width='50%'>".__('Message')."</th></tr>";
+        echo "<tr><th>" . __('Source') . "</th>";
+        echo "<th>" . __('Id') . "</th>";
+        echo "<th>" . _n('Date', 'Dates', 1) . "</th>";
+        echo "<th width='10%'>" . __('Service') . "</th>";
+        echo "<th width='50%'>" . __('Message') . "</th></tr>";
 
         while ($data = $iterator->next()) {
             $ID       = $data['id'];
@@ -307,12 +308,12 @@ class Event extends CommonDBTM
                 }
             }
 
-            echo "<tr class='tab_bg_2'><td>".$itemtype."</td>";
+            echo "<tr class='tab_bg_2'><td>" . $itemtype . "</td>";
             echo "<td>";
             self::displayItemLogID($type, $items_id);
-            echo "</td><td>".Html::convDateTime($date)."</td>";
-            echo "<td>".(isset($logService[$service]) ? $logService[$service] : '');
-            echo "</td><td>".$message."</td></tr>";
+            echo "</td><td>" . Html::convDateTime($date) . "</td>";
+            echo "<td>" . (isset($logService[$service]) ? $logService[$service] : '');
+            echo "</td><td>" . $message . "</td></tr>";
 
             $i++;
         }
@@ -369,7 +370,7 @@ class Event extends CommonDBTM
 
         // No Events in database
         if ($number < 1) {
-            echo "<div class='center b'>".__('No Event')."</div>";
+            echo "<div class='center b'>" . __('No Event') . "</div>";
             return;
         }
 
@@ -384,11 +385,11 @@ class Event extends CommonDBTM
         echo "<tr>";
 
         foreach ($items as $field => $args) {
-            echo "<th ".$args[1]."";
+            echo "<th " . $args[1] . "";
             if ($sort == $field) {
                 echo " class='order_$order' ";
             }
-            echo "><a href='$target?sort=$field&amp;order=".(($order == "ASC") ? "DESC" : "ASC")."'>".$args[0].
+            echo "><a href='$target?sort=$field&amp;order=" . (($order == "ASC") ? "DESC" : "ASC") . "'>" . $args[0] .
                  "</a></th>";
         }
         echo "</tr>";
@@ -416,9 +417,9 @@ class Event extends CommonDBTM
             echo "<td>$itemtype</td>";
             echo "<td class='center b'>";
             self::displayItemLogID($type, $items_id);
-            echo "</td><td>".Html::convDateTime($date)."</td>";
-            echo "<td class='center'>".(isset($logService[$service]) ? $logService[$service] : $service);
-            echo "</td><td class='center'>".$level."</td><td>".$message."</td></tr>";
+            echo "</td><td>" . Html::convDateTime($date) . "</td>";
+            echo "<td class='center'>" . (isset($logService[$service]) ? $logService[$service] : $service);
+            echo "</td><td class='center'>" . $level . "</td><td>" . $message . "</td></tr>";
 
             $i++;
         }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -309,5 +310,4 @@ class ProjectTaskTemplate extends CommonDropdown
 
         return $ong;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -37,12 +38,14 @@ Session::checkLoginUser();
 if (($_POST['action'] ?? null) === 'change_task_state') {
     header("Content-Type: application/json; charset=UTF-8");
 
-    if (!isset($_POST['tasks_id'])
-        || !isset($_POST['parenttype']) || ($parent = getItemForItemtype($_POST['parenttype'])) === false) {
+    if (
+        !isset($_POST['tasks_id'])
+        || !isset($_POST['parenttype']) || ($parent = getItemForItemtype($_POST['parenttype'])) === false
+    ) {
         exit();
     }
 
-    $taskClass = $parent->getType()."Task";
+    $taskClass = $parent->getType() . "Task";
     $task = new $taskClass();
     $task->getFromDB(intval($_POST['tasks_id']));
     if (!in_array($task->fields['state'], [0, Planning::INFO])) {
@@ -125,10 +128,11 @@ if (($_POST['action'] ?? null) === 'change_task_state') {
         }
         $manage_locks($_REQUEST['parenttype'], $parent->getID());
         $validation->showForm($id, ['parent' => $parent]);
-    } elseif (isset($_REQUEST[$parent->getForeignKeyField()])
+    } elseif (
+        isset($_REQUEST[$parent->getForeignKeyField()])
           && isset($_REQUEST["id"])
-          && $parent->getFromDB($_REQUEST[$parent->getForeignKeyField()])) {
-
+          && $parent->getFromDB($_REQUEST[$parent->getForeignKeyField()])
+    ) {
         $manage_locks($_REQUEST['parenttype'], $parent->getID());
         $foreignKey = $parent->getForeignKeyField();
         $parent::showSubForm($item, $_REQUEST["id"], ['parent' => $parent,

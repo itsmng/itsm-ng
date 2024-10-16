@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -62,8 +63,10 @@ class SavedSearch_Alert extends CommonDBChild
     {
 
         // can exists for template
-        if (($item->getType() == 'SavedSearch')
-            && SavedSearch::canView()) {
+        if (
+            ($item->getType() == 'SavedSearch')
+            && SavedSearch::canView()
+        ) {
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                 $nb = countElementsInTable(
@@ -198,8 +201,10 @@ class SavedSearch_Alert extends CommonDBChild
 
         $ID = $search->getID();
 
-        if (!$search->getFromDB($ID)
-            || !$search->can($ID, READ)) {
+        if (
+            !$search->getFromDB($ID)
+            || !$search->can($ID, READ)
+        ) {
             return false;
         }
         $canedit = $search->canEdit($ID);
@@ -241,11 +246,13 @@ class SavedSearch_Alert extends CommonDBChild
         }
         echo '</div>';
 
-        if ($canedit
-            && !(!empty($withtemplate) && ($withtemplate == 2))) {
-            echo "<div class='firstbloc'>".
-                  "<a class='btn btn-secondary' href='" . self::getFormURL() . "?savedsearches_id=$ID&amp;withtemplate=".
-                     $withtemplate."'>";
+        if (
+            $canedit
+            && !(!empty($withtemplate) && ($withtemplate == 2))
+        ) {
+            echo "<div class='firstbloc'>" .
+                  "<a class='btn btn-secondary' href='" . self::getFormURL() . "?savedsearches_id=$ID&amp;withtemplate=" .
+                     $withtemplate . "'>";
             echo __('Add an alert');
             echo "</a></div>\n";
         }
@@ -259,13 +266,13 @@ class SavedSearch_Alert extends CommonDBChild
 
         $colspan = 4;
         if ($iterator->numrows()) {
-            echo "<tr class='noHover'><th colspan='$colspan'>".self::getTypeName($iterator->numrows()).
+            echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName($iterator->numrows()) .
                "</th></tr>";
 
-            $header = "<tr><th>".__('Name')."</th>";
-            $header .= "<th>".__('Operator')."</th>";
-            $header .= "<th>".__('Value')."</th>";
-            $header .= "<th>".__('Active')."</th>";
+            $header = "<tr><th>" . __('Name') . "</th>";
+            $header .= "<th>" . __('Operator') . "</th>";
+            $header .= "<th>" . __('Value') . "</th>";
+            $header .= "<th>" . __('Active') . "</th>";
             $header .= "</tr>";
             echo $header;
 
@@ -273,16 +280,16 @@ class SavedSearch_Alert extends CommonDBChild
             while ($data = $iterator->next()) {
                 $alert->getFromDB($data['id']);
                 echo "<tr class='tab_bg_2'>";
-                echo "<td>".$alert->getLink()."</td>";
-                echo "<td>".self::getOperators($data['operator'])."</td>";
-                echo "<td>".$data['value']."</td>";
-                echo "<td>".Dropdown::getYesNo($data['is_active'])."</td>";
+                echo "<td>" . $alert->getLink() . "</td>";
+                echo "<td>" . self::getOperators($data['operator']) . "</td>";
+                echo "<td>" . $data['value'] . "</td>";
+                echo "<td>" . Dropdown::getYesNo($data['is_active']) . "</td>";
                 echo "</tr>";
                 Session::addToNavigateListItems(__CLASS__, $data['id']);
             }
             echo $header;
         } else {
-            echo "<tr class='tab_bg_2'><th colspan='$colspan'>".__('No item found')."</th></tr>";
+            echo "<tr class='tab_bg_2'><th colspan='$colspan'>" . __('No item found') . "</th></tr>";
         }
 
         echo "</table>";

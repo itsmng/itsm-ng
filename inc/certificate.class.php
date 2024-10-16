@@ -74,7 +74,7 @@ class Certificate extends CommonDBTM
         $this->deleteChildrenAndRelationsFromDb(
             [
               Certificate_Item::class,
-         ]
+            ]
         );
     }
 
@@ -856,7 +856,7 @@ class Certificate extends CommonDBTM
                      ],
                      'glpi_certificates.entities_id' => $entity,
                   ],
-            ]
+                ]
             );
 
             $message = "";

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -48,8 +49,10 @@ if (isset($_POST["my_items"]) && !empty($_POST["my_items"])) {
     }
 }
 
-if (isset($_POST['itemtype'])
-    && isset($_POST['items_id']) && ($_POST['items_id'] > 0)) {
+if (
+    isset($_POST['itemtype'])
+    && isset($_POST['items_id']) && ($_POST['items_id'] > 0)
+) {
     // Security
     if (!class_exists($_POST['itemtype'])) {
         exit();
@@ -76,7 +79,7 @@ if (isset($_POST['itemtype'])
     if ($nb) {
         $content = '';
         foreach ($data as $title) {
-            $content .= $title.'<br>';
+            $content .= $title . '<br>';
         }
         echo '&nbsp;';
         Html::showToolTip($content);

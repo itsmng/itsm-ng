@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -57,7 +58,6 @@ class SLA extends LevelAgreement
 
     public function showFormWarning()
     {
-
     }
 
     public function getAddConfirmation()

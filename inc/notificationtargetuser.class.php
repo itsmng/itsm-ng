@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -159,7 +160,7 @@ class NotificationTargetUser extends NotificationTarget
                   'tag'    => $tag,
                   'label'  => $label,
                   'value'  => true,
-            ]
+                ]
             );
         }
 
@@ -217,7 +218,7 @@ class NotificationTargetUser extends NotificationTarget
                   'label'  => $label,
                   'value'  => true,
                   'events' => [$event],
-            ]
+                ]
             );
         }
 
@@ -229,7 +230,7 @@ class NotificationTargetUser extends NotificationTarget
                   'value'  => false,
                   'lang'   => true,
                   'events' => [$event],
-            ]
+                ]
             );
         }
     }

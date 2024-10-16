@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -242,7 +243,7 @@ class CommandLoader implements CommandLoaderInterface
                     [
                       NS_PLUG . ucfirst($plugin_key) . '\\',
                       'Plugin' . ucfirst($plugin_key),
-               ]
+                    ]
                 );
 
                 if (null === $class) {
@@ -321,8 +322,10 @@ class CommandLoader implements CommandLoaderInterface
     {
 
         // Check if file is readable and contained classname finishes by "command"
-        if (!$file->isReadable() || !$file->isFile()
-           || !preg_match('/^(.*)command\.class\.php$/', $file->getFilename())) {
+        if (
+            !$file->isReadable() || !$file->isFile()
+            || !preg_match('/^(.*)command\.class\.php$/', $file->getFilename())
+        ) {
             return null;
         }
 
@@ -376,5 +379,4 @@ class CommandLoader implements CommandLoaderInterface
         // Cannot use realpath to normalize path as it will not work when using a virtual fs (unit tests)
         return str_replace($basedir . DIRECTORY_SEPARATOR, '', $filepath);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -338,9 +339,11 @@ class Calendar extends AbstractBackend
 
         if ($item->isNewItem()) {
             // Auto set entities_id if exists and not set
-            if (!array_key_exists('entities_id', $input)
+            if (
+                !array_key_exists('entities_id', $input)
                 && $item->isField('entities_id')
-                && array_key_exists('glpiactive_entity', $_SESSION)) {
+                && array_key_exists('glpiactive_entity', $_SESSION)
+            ) {
                 $input['entities_id'] = $_SESSION['glpiactive_entity'];
             }
             if (!$item->can(-1, CREATE, $input)) {
@@ -386,7 +389,7 @@ class Calendar extends AbstractBackend
             [
               'itemtype' => $itemtype,
               'items_id' => $items_id,
-         ]
+            ]
         );
 
         $input = [

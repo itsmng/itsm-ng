@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -67,7 +68,7 @@ class NotificationTargetSoftwareLicense extends NotificationTarget
                                        = Html::convDate($license["expire"]);
             $tmp['##license.url##']    = $this->formatURL(
                 $options['additionnaloption']['usertype'],
-                "SoftwareLicense_".$id
+                "SoftwareLicense_" . $id
             );
             $this->data['licenses'][] = $tmp;
         }
@@ -105,5 +106,4 @@ class NotificationTargetSoftwareLicense extends NotificationTarget
 
         asort($this->tag_descriptions);
     }
-
 }

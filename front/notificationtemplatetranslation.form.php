@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -53,7 +54,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $_POST["language"])
     );
     Html::back();
-
 } elseif (isset($_POST["purge"])) {
     $language->check($_POST["id"], PURGE);
     $language->delete($_POST, 1);
@@ -67,7 +67,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
     );
     $language->redirectToList();
-
 } elseif (isset($_POST["update"])) {
     $language->check($_POST["id"], UPDATE);
     $language->update($_POST);
@@ -81,7 +80,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } else {
     Html::header(
         NotificationTemplate::getTypeName(Session::getPluralNumber()),

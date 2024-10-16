@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -66,7 +67,7 @@ if (isset($_POST['delete'])) {
         ERROR
     );
 
-    Html::redirect($CFG_GLPI["root_doc"]."/front/change.php");
+    Html::redirect($CFG_GLPI["root_doc"] . "/front/change.php");
 }
 
 Html::displayErrorAndDie('Lost');

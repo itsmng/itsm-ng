@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -98,8 +99,9 @@ class QueryUnion extends AbstractQuery
         global $DB;
 
         $union_queries = $this->getQueries();
-        if (empty($union_queries
-        )) {
+        if (
+            empty($union_queries)
+        ) {
             throw new \RuntimeException('Cannot build an empty union query');
         }
 

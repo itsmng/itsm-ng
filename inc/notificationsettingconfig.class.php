@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -91,7 +92,6 @@ class NotificationSettingConfig extends CommonDBTM
         $out = '';
         $modes_settings = [];
         if (Session::haveRight("config", UPDATE)) {
-
             $form = [
                'action' => $CFG_GLPI['root_doc'] . '/front/setup.notification.php',
                'buttons' => [
@@ -171,12 +171,12 @@ class NotificationSettingConfig extends CommonDBTM
 
             /* Glocal parameters */
             if (Session::haveRight("config", READ)) {
-                $links[] = ['url'   => $CFG_GLPI['root_doc']."/front/notificationtemplate.php",
+                $links[] = ['url'   => $CFG_GLPI['root_doc'] . "/front/notificationtemplate.php",
                             'title' => _n('Notification template', 'Notification templates', Session::getPluralNumber())];
             }
 
             if (Session::haveRight("notification", READ) && $notifs_on) {
-                $links[] = ['url'   => $CFG_GLPI['root_doc']."/front/notification.php",
+                $links[] = ['url'   => $CFG_GLPI['root_doc'] . "/front/notification.php",
                             'title' => _n('Notification', 'Notifications', Session::getPluralNumber())];
             } else {
                 $links[] = ['url' => '#',

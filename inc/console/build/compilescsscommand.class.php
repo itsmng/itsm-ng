@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -119,7 +120,7 @@ class CompileScssCommand extends Command
                 [
                   'file'    => $file,
                   'nocache' => true,
-            ]
+                ]
             );
 
             if (strlen($css) === @file_put_contents($compiled_path, $css)) {

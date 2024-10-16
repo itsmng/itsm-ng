@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -66,7 +67,7 @@ class NotificationTargetCartridgeItem extends NotificationTarget
             $tmp['##cartridge.remaining##'] = Cartridge::getUnusedNumber($id);
             $tmp['##cartridge.url##']       = $this->formatURL(
                 $options['additionnaloption']['usertype'],
-                "CartridgeItem_".$id
+                "CartridgeItem_" . $id
             );
             $this->data['cartridges'][] = $tmp;
         }
@@ -103,5 +104,4 @@ class NotificationTargetCartridgeItem extends NotificationTarget
 
         asort($this->tag_descriptions);
     }
-
 }

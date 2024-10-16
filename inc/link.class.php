@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -86,7 +87,7 @@ class Link extends CommonDBTM
                     [
                       'glpi_links_itemtypes.links_id'  => new \QueryExpression(DB::quoteName('glpi_links.id')),
                       'glpi_links_itemtypes.itemtype'  => $item->getType()
-               ] + $entity_criteria
+                    ] + $entity_criteria
                 );
             }
             return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
@@ -121,7 +122,7 @@ class Link extends CommonDBTM
         $this->deleteChildrenAndRelationsFromDb(
             [
               Link_Itemtype::class,
-         ]
+            ]
         );
     }
 
@@ -166,7 +167,7 @@ class Link extends CommonDBTM
                               'type' => 'text',
                               'value' => $this->fields['name'] ?? '',
                           ],
-                    __('Link or filename') => [
+                          __('Link or filename') => [
                               'name' => 'link',
                               'type' => 'text',
                               'value' => $this->fields['link'] ?? '',
@@ -177,23 +178,23 @@ class Link extends CommonDBTM
                               'values' => [
                           '0' => __('No'),
                           '1' => __('Yes'),
-                       ],
+                              ],
                               'value' => $this->fields['open_window'] ?? '',
                           ],
-                    __('File content') => [
+                          __('File content') => [
                               'name' => 'data',
                               'type' => 'textarea',
                               'value' => $this->fields['data'] ?? '',
                           ],
-                    __('Valid tags') => [
-                       "content" => "<p>[LOGIN] [ID] [NAME] [LOCATION] [LOCATIONID] [IP] [MAC] [NETWORK]
+                          __('Valid tags') => [
+                          "content" => "<p>[LOGIN] [ID] [NAME] [LOCATION] [LOCATIONID] [IP] [MAC] [NETWORK]
                      [DOMAIN] [SERIAL] [OTHERSERIAL] [USER] [GROUP] [REALNAME] [FIRSTNAME]
                      <br>ou<br>
                      [FIELD:nom du champ en base] (Exemple : [FIELD:name], [FIELD:content], ...)
                      </p>"
-                    ],
-                 ]
-              ]
+                          ],
+                      ]
+                  ]
               ]
         ];
 
@@ -297,28 +298,38 @@ class Link extends CommonDBTM
         if (strstr($link, "[ID]")) {
             $link = str_replace("[ID]", $item->fields['id'], $link);
         }
-        if (strstr($link, "[LOGIN]")
-            && isset($_SESSION["glpiname"])) {
+        if (
+            strstr($link, "[LOGIN]")
+            && isset($_SESSION["glpiname"])
+        ) {
             $link = str_replace("[LOGIN]", $_SESSION["glpiname"], $link);
         }
 
         if (strstr($link, "[NAME]")) {
             $link = str_replace("[NAME]", $item->getName(), $link);
         }
-        if (strstr($link, "[SERIAL]")
-            && $item->isField('serial')) {
+        if (
+            strstr($link, "[SERIAL]")
+            && $item->isField('serial')
+        ) {
             $link = str_replace("[SERIAL]", $item->getField('serial'), $link);
         }
-        if (strstr($link, "[OTHERSERIAL]")
-            && $item->isField('otherserial')) {
+        if (
+            strstr($link, "[OTHERSERIAL]")
+            && $item->isField('otherserial')
+        ) {
             $link = str_replace("[OTHERSERIAL]", $item->getField('otherserial'), $link);
         }
-        if (strstr($link, "[LOCATIONID]")
-            && $item->isField('locations_id')) {
+        if (
+            strstr($link, "[LOCATIONID]")
+            && $item->isField('locations_id')
+        ) {
             $link = str_replace("[LOCATIONID]", $item->getField('locations_id'), $link);
         }
-        if (strstr($link, "[LOCATION]")
-            && $item->isField('locations_id')) {
+        if (
+            strstr($link, "[LOCATION]")
+            && $item->isField('locations_id')
+        ) {
             $link = str_replace(
                 "[LOCATION]",
                 Dropdown::getDropdownName(
@@ -328,8 +339,10 @@ class Link extends CommonDBTM
                 $link
             );
         }
-        if (strstr($link, "[DOMAIN]")
-           && in_array($item->getType(), $CFG_GLPI['domain_types'], true)) {
+        if (
+            strstr($link, "[DOMAIN]")
+            && in_array($item->getType(), $CFG_GLPI['domain_types'], true)
+        ) {
             $domain_table = Domain::getTable();
             $domain_item_table = Domain_Item::getTable();
             $iterator = $DB->request([
@@ -350,8 +363,10 @@ class Link extends CommonDBTM
                 $link = str_replace("[DOMAIN]", $iterator->next()['name'], $link);
             }
         }
-        if (strstr($link, "[NETWORK]")
-            && $item->isField('networks_id')) {
+        if (
+            strstr($link, "[NETWORK]")
+            && $item->isField('networks_id')
+        ) {
             $link = str_replace(
                 "[NETWORK]",
                 Dropdown::getDropdownName(
@@ -361,8 +376,10 @@ class Link extends CommonDBTM
                 $link
             );
         }
-        if (strstr($link, "[USER]")
-            && $item->isField('users_id')) {
+        if (
+            strstr($link, "[USER]")
+            && $item->isField('users_id')
+        ) {
             $link = str_replace(
                 "[USER]",
                 Dropdown::getDropdownName(
@@ -372,8 +389,10 @@ class Link extends CommonDBTM
                 $link
             );
         }
-        if (strstr($link, "[GROUP]")
-            && $item->isField('groups_id')) {
+        if (
+            strstr($link, "[GROUP]")
+            && $item->isField('groups_id')
+        ) {
             $link = str_replace(
                 "[GROUP]",
                 Dropdown::getDropdownName(
@@ -383,12 +402,16 @@ class Link extends CommonDBTM
                 $link
             );
         }
-        if (strstr($link, "[REALNAME]")
-              && $item->isField('realname')) {
+        if (
+            strstr($link, "[REALNAME]")
+              && $item->isField('realname')
+        ) {
             $link = str_replace("[REALNAME]", $item->getField('realname'), $link);
         }
-        if (strstr($link, "[FIRSTNAME]")
-              && $item->isField('firstname')) {
+        if (
+            strstr($link, "[FIRSTNAME]")
+              && $item->isField('firstname')
+        ) {
             $link = str_replace("[FIRSTNAME]", $item->getField('firstname'), $link);
         }
 
@@ -430,8 +453,8 @@ class Link extends CommonDBTM
                    ]
                 ]);
                 while ($data2 = $iterator->next()) {
-                    $ipmac['ip'.$data2['id']]['ip']  = $data2["ip"];
-                    $ipmac['ip'.$data2['id']]['mac'] = $item->getField('mac');
+                    $ipmac['ip' . $data2['id']]['ip']  = $data2["ip"];
+                    $ipmac['ip' . $data2['id']]['mac'] = $item->getField('mac');
                 }
             }
 
@@ -480,8 +503,8 @@ class Link extends CommonDBTM
                ]
             ]);
             while ($data2 = $iterator->next()) {
-                $ipmac['ip'.$data2['id']]['ip']  = $data2["ip"];
-                $ipmac['ip'.$data2['id']]['mac'] = $data2["mac"];
+                $ipmac['ip' . $data2['id']]['ip']  = $data2["ip"];
+                $ipmac['ip' . $data2['id']]['mac'] = $data2["mac"];
             }
         }
 
@@ -517,8 +540,8 @@ class Link extends CommonDBTM
 
             $iterator = $DB->request($criteria);
             while ($data2 = $iterator->next()) {
-                $ipmac['mac'.$data2['id']]['ip']  = '';
-                $ipmac['mac'.$data2['id']]['mac'] = $data2["mac"];
+                $ipmac['mac' . $data2['id']]['ip']  = '';
+                $ipmac['mac' . $data2['id']]['mac'] = $data2["mac"];
             }
         }
 
@@ -584,7 +607,7 @@ class Link extends CommonDBTM
         echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Item Detail'>";
 
         if (count($iterator)) {
-            echo "<tr><th>".self::getTypeName(Session::getPluralNumber())."</th></tr>";
+            echo "<tr><th>" . self::getTypeName(Session::getPluralNumber()) . "</th></tr>";
             while ($data = $iterator->next()) {
                 $links = self::getAllLinksFor($item, $data);
 
@@ -594,10 +617,9 @@ class Link extends CommonDBTM
                 }
             }
             echo "</table></div>";
-
         } else {
-            echo "<tr class='tab_bg_2'><th>".self::getTypeName(Session::getPluralNumber())."</th></tr>";
-            echo "<tr class='tab_bg_2'><td class='center b'>".__('No link defined')."</td></tr>";
+            echo "<tr class='tab_bg_2'><th>" . self::getTypeName(Session::getPluralNumber()) . "</th></tr>";
+            echo "<tr class='tab_bg_2'><td class='center b'>" . __('No link defined') . "</td></tr>";
             echo "</table></div>";
         }
     }
@@ -615,10 +637,12 @@ class Link extends CommonDBTM
         global $CFG_GLPI;
 
         $computedlinks = [];
-        if (!isset($params['name'])
+        if (
+            !isset($params['name'])
             || !isset($params['link'])
             || !isset($params['data'])
-            || !isset($params['id'])) {
+            || !isset($params['id'])
+        ) {
             return $computedlinks;
         }
 
@@ -665,9 +689,9 @@ class Link extends CommonDBTM
                     // same name for all files, ex name = foo.txt
                     $file = reset($files);
                 }
-                $url             = $CFG_GLPI["root_doc"]."/front/link.send.php?lID=".$params['id'].
-                                  "&itemtype=".$item->getType().
-                                  "&id=".$item->getID()."&rank=$key";
+                $url             = $CFG_GLPI["root_doc"] . "/front/link.send.php?lID=" . $params['id'] .
+                                  "&itemtype=" . $item->getType() .
+                                  "&id=" . $item->getID() . "&rank=$key";
                 $newlink         = '<a href="' . htmlspecialchars($url) . '" target="_blank">';
                 $linkname        = sprintf(__('%1$s #%2$s'), $name, $i);
                 $newlink        .= sprintf(__('%1$s: %2$s'), $linkname, $val);

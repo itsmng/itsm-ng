@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -66,8 +67,10 @@ if (($_POST["action"] ?? null) == "delete_event") {
 
 if ($_REQUEST["action"] == "get_externalevent_template") {
     $key = 'planningexternaleventtemplates_id';
-    if (isset($_POST[$key])
-        && $_POST[$key] > 0) {
+    if (
+        isset($_POST[$key])
+        && $_POST[$key] > 0
+    ) {
         $template = new PlanningExternalEventTemplate();
         $template->getFromDB($_POST[$key]);
 

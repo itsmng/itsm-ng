@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -52,23 +53,21 @@ $relations = getDbRelations();
 $query = [];
 foreach ($relations as $totable => $rels) {
     foreach ($rels as $fromtable => $fromfield) {
-
         if ($fromtable[0] == "_") {
             $fromtable = substr($fromtable, 1);
         }
 
         if (!is_array($fromfield)) {
-            $query[$fromtable][] = " ADD CONSTRAINT `". $fromtable."_".$fromfield."`
+            $query[$fromtable][] = " ADD CONSTRAINT `" . $fromtable . "_" . $fromfield . "`
                                   FOREIGN KEY (`$fromfield`)
                                   REFERENCES `$totable` (`id`) ";
         } else {
             foreach ($fromfield as $f) {
-                $query[$fromtable][] = " ADD CONSTRAINT `".$fromtable."_".$f."`
+                $query[$fromtable][] = " ADD CONSTRAINT `" . $fromtable . "_" . $f . "`
                                      FOREIGN KEY (`$f`)
                                      REFERENCES `$totable` (`id`) ";
             }
         }
-
     }
 }
 
@@ -86,9 +85,8 @@ foreach ($query as $table => $constraints) {
         $q .= $c;
     }
 
-    echo $q."<br><br>";
-    $DB->query($q) or die($q." ".$DB->error());
-
+    echo $q . "<br><br>";
+    $DB->query($q) or die($q . " " . $DB->error());
 }
 
 $DB->query("SET FOREIGN_KEY_CHECKS = 1;");

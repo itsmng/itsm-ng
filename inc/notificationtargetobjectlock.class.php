@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -126,8 +127,8 @@ class NotificationTargetObjectLock extends NotificationTarget
                                                 = $_SESSION['glpirealname'];
         $this->data['##objectlock.requester.firstname##']
                                                 = $_SESSION['glpifirstname'];
-        $this->data['##objectlock.url##']      = $CFG_GLPI['url_base']."/?redirect=".
-                                                     $options['item']->fields['itemtype']. "_".
+        $this->data['##objectlock.url##']      = $CFG_GLPI['url_base'] . "/?redirect=" .
+                                                     $options['item']->fields['itemtype'] . "_" .
                                                      $options['item']->fields['items_id'];
 
         $this->getTags();
@@ -143,14 +144,15 @@ class NotificationTargetObjectLock extends NotificationTarget
     {
 
         $mails = new UserEmail();
-        if (isset($_SESSION['glpiID']) && ($_SESSION['glpiID'] > 0)
+        if (
+            isset($_SESSION['glpiID']) && ($_SESSION['glpiID'] > 0)
             && isset($_SESSION['glpilock_directunlock_notification'])
             && ($_SESSION['glpilock_directunlock_notification'] > 0)
             && $mails->getFromDBByCrit([
                'users_id'    => $_SESSION['glpiID'],
                'is_default'  => 1
-            ])) {
-
+            ])
+        ) {
             $ret = ['email' => $mails->fields['email'],
                     'name'  => formatUserName(
                         0,

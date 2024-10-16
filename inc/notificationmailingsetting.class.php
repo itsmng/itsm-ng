@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -204,9 +205,7 @@ class NotificationMailingSetting extends NotificationSetting
                   ]
               ]
           ]
-    ];
+        ];
         renderTwigForm($form);
-
     }
-
 }

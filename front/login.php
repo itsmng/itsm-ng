@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -71,10 +72,9 @@ $remember = isset($_SESSION['rmbfield']) && isset($_POST[$_SESSION['rmbfield']])
 // Redirect management
 $REDIRECT = "";
 if (isset($_POST['redirect']) && (strlen($_POST['redirect']) > 0)) {
-    $REDIRECT = "?redirect=" .rawurlencode($_POST['redirect']);
-
+    $REDIRECT = "?redirect=" . rawurlencode($_POST['redirect']);
 } elseif (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
-    $REDIRECT = "?redirect=" .rawurlencode($_GET['redirect']);
+    $REDIRECT = "?redirect=" . rawurlencode($_GET['redirect']);
 }
 
 $auth = new Auth();
@@ -88,8 +88,8 @@ if ($auth->login($login, $password, (isset($_REQUEST["noAUTO"]) ? $_REQUEST["noA
     Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
     echo '<div class="center b">' . $auth->getErr() . '<br><br>';
     // Logout whit noAUto to manage auto_login with errors
-    echo '<a href="' . $CFG_GLPI["root_doc"] . '/front/logout.php?noAUTO=1'.
-          str_replace("?", "&", $REDIRECT).'">' .__('Log in again') . '</a></div>';
+    echo '<a href="' . $CFG_GLPI["root_doc"] . '/front/logout.php?noAUTO=1' .
+          str_replace("?", "&", $REDIRECT) . '">' . __('Log in again') . '</a></div>';
     Html::nullFooter();
     exit();
 }

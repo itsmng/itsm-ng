@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -44,7 +45,6 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 if (isset($_POST['type']) && isset($_POST['end'])) {
-
     echo "<table width='90%' aria-label='Periodicity settings table'>";
     switch ($_POST['type']) {
         case 'day':
@@ -78,9 +78,9 @@ if (isset($_POST['type']) && isset($_POST['end'])) {
             ]);
             $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
             foreach ($days as $day) {
-                echo "<th>".__($day)."</th>";
+                echo "<th>" . __($day) . "</th>";
             }
-            echo "</tr><tr class='center'><td>".__('By day').'</td>';
+            echo "</tr><tr class='center'><td>" . __('By day') . '</td>';
 
             foreach ($days as $day) {
                 echo "<td><input type='checkbox' name='periodicity[days][$day]'></td>";
@@ -113,7 +113,6 @@ if (isset($_POST['type']) && isset($_POST['end'])) {
                    'col_md' => 12,
                ]
             ]);
-
     }
     echo '</table>';
 }

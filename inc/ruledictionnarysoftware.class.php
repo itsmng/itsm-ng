@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -171,12 +172,10 @@ class RuleDictionnarySoftware extends Rule
 
                 //display the additionnal field
                 echo "<tr class='tab_bg_1'>";
-                echo "<td>".$this->fields['match']."</td>";
-                echo "<td>".$actions[$action->fields['field']]['name']."</td>";
+                echo "<td>" . $this->fields['match'] . "</td>";
+                echo "<td>" . $actions[$action->fields['field']]['name'] . "</td>";
                 echo "<td><input type='text' name='version' value='$value'></td></tr>";
             }
         }
     }
-
-
 }

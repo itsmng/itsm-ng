@@ -129,7 +129,6 @@ class TicketRecurrent extends CommonDropdown
             && isset($input['periodicity'])
             && isset($input['create_before'])
         ) {
-
             $input['next_creation_date'] = $this->computeNextCreationDate(
                 $input['begin_date'],
                 $input['end_date'],
@@ -184,7 +183,7 @@ class TicketRecurrent extends CommonDropdown
                  'max'   => 30 * DAY_TIMESTAMP
               ]),
               'value' => $this->fields['periodicity']
-          ],
+           ],
            __('Preliminary creation') => [
               'name'  => 'create_before',
               'type'  => 'select',

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -362,7 +363,7 @@ class Telemetry extends CommonGLPI
                   _elt.dialog({
                      title: '" . addslashes(__('Telemetry data')) . "',
                      buttons: {
-                        ".addslashes(__('OK')).": function() {
+                        " . addslashes(__('OK')) . ": function() {
                            $(this).dialog('close');
                         }
                      },
@@ -432,7 +433,7 @@ class Telemetry extends CommonGLPI
     {
         $out = "<h4><input type='checkbox' checked='checked' value='1' name='send_stats' id='send_stats'/>";
         $out .= "<label for='send_stats'>" . __('Send "usage statistics"')  . "</label></h4>";
-        $out .= "<p><strong>" . __("We need your help to improve ITSM-NG and the plugins ecosystem!") ."</strong></p>";
+        $out .= "<p><strong>" . __("We need your help to improve ITSM-NG and the plugins ecosystem!") . "</strong></p>";
         $out .= __("Once sent, usage statistics are aggregated and made available to a broad range of ITSM-NG developers.") . "</p>";
         $out .= "<p>" . __("Let us know your usage to improve future versions of ITSM-NG and its plugins!") . "</p>";
 
@@ -450,11 +451,11 @@ class Telemetry extends CommonGLPI
         $out = "<hr/>";
         $out .= "<h4>" . __('Reference your ITSM-NG') . "</h4>";
         $out .= "<p>" . sprintf(
-            __("Besides, if you appreciate GLPI and its community, ".
-         "please take a minute to reference your organization by filling %1\$s."),
+            __("Besides, if you appreciate GLPI and its community, " .
+            "please take a minute to reference your organization by filling %1\$s."),
             sprintf(
                 "<a href='" . GLPI_TELEMETRY_URI . "/reference?showmodal&uuid=" .
-            self::getRegistrationUuid() . "' target='_blank'>%1\$s</a>",
+                self::getRegistrationUuid() . "' target='_blank'>%1\$s</a>",
                 __('the following form')
             )
         ) . "</p>";

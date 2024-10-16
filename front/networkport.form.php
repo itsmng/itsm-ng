@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -47,7 +48,6 @@ if (!isset($_GET["id"])) {
 }
 
 if (isset($_POST["add"])) {
-
     // Is a preselected mac adress selected ?
     if (isset($_POST['pre_mac'])) {
         if (!empty($_POST['pre_mac'])) {
@@ -68,7 +68,6 @@ if (isset($_POST["add"])) {
             sprintf(__('%s adds an item'), $_SESSION["glpiname"])
         );
         Html::back();
-
     } else {
         Session::checkRight("networking", UPDATE);
 
@@ -83,7 +82,7 @@ if (isset($_POST["add"])) {
                 $add = "0";
             }
             $input["logical_number"] = $i;
-            $input["name"]           = $_POST["name"].$add.$i;
+            $input["name"]           = $_POST["name"] . $add . $i;
             unset($np->fields["id"]);
 
             if ($np->can(-1, CREATE, $input)) {
@@ -100,7 +99,6 @@ if (isset($_POST["add"])) {
         );
         Html::back();
     }
-
 } elseif (isset($_POST["purge"])) {
     $np->check($_POST['id'], PURGE);
     $np->delete($_POST, 1);
@@ -116,8 +114,7 @@ if (isset($_POST["add"])) {
     if ($item = getItemForItemtype($np->fields['itemtype'])) {
         Html::redirect($item->getFormURLWithID($np->fields['items_id']));
     }
-    Html::redirect($CFG_GLPI["root_doc"]."/front/central.php");
-
+    Html::redirect($CFG_GLPI["root_doc"] . "/front/central.php");
 } elseif (isset($_POST["update"])) {
     $np->check($_POST['id'], UPDATE);
 
@@ -131,7 +128,6 @@ if (isset($_POST["add"])) {
         sprintf(__('%s updates an item'), $_SESSION["glpiname"])
     );
     Html::back();
-
 } elseif (isset($_POST["disconnect"])) {
     $nn->check($_POST['id'], DELETE);
 
@@ -139,7 +135,6 @@ if (isset($_POST["add"])) {
         $nn->delete($_POST);
     }
     Html::back();
-
 } else {
     if (empty($_GET["items_id"])) {
         $_GET["items_id"] = "";
