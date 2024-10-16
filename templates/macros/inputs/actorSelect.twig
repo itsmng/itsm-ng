@@ -20,7 +20,11 @@
                 <i class="{{ actor.icon|raw }}"></i>
               </td>
               <td> {{actor.name|raw}} </td>
-              <td class="d-flex flex-row-reverse">
+              <td class="d-flex flex-row">
+                {% if actor.followupTitle %}
+                    <button type="button" class="btn btn-sm btn-outline-secondary" aria-label="Manage email followup" title="{{ actor.followupTitle|raw }}"
+                        onclick="$('#{{actor.modal}}').dialog('open')"><i class="fas fa-envelope"></i></button>
+                {% endif %}
                 <button type="button" class="btn btn-sm btn-outline-danger" aria-label="Remove actor {{ actor.name }}" onClick="removeActor{{rand}}('{{actor.type}}', '{{actor.id}}')"><i class="fas fa-times"></i></button>
               </td>
             </tr>
@@ -47,7 +51,7 @@
 
   function setActorSelectValues{{rand}}() {
     {% if attributes.single is defined and attributes.single %}
-    const name = "{{attributes.name}}";
+    const name = "_" + $('#ActorTypeSelector_{{rand}}').val() + "s_id_assign";
     {% else %}
     const name = "_itil_{{attributes.actorType}}[" + $("#ActorTypeSelector_{{rand}}")[0].value + "s_id]";
     {% endif %}

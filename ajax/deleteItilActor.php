@@ -68,7 +68,7 @@ if (
             $ticketSupplier = new Supplier_Ticket();
             $ticketSupplier->getFromDBByCrit([
                 'tickets_id' => $ticket->getID(),
-                'suppliers_id' => $object,
+                'suppliers_id' => $objectId,
                 'type' => $objectTypeId
             ]);
             $ticketSupplier->delete(['id' => $ticketSupplier->getID()]);

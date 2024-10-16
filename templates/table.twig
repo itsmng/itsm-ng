@@ -94,7 +94,9 @@
 
 	$(function() {
 		setTimeout(function() {
-			$('#{{id}}').bootstrapTable();
+			$('#{{id}}').bootstrapTable({
+                loadingTemplate: function () { return '<div class="spinner-border mt-5" role="status"><span class="visually-hidden">Loading...</span></div>' }
+            }).bootstrapTable('showLoading');
 		}, 200);
 
 		{% if not minimal %}

@@ -110,7 +110,7 @@ if (isset($_POST["type"])
             $forbiddenActors = array_filter($forbiddenActors, function($actor) {
                return isset($actor['suppliers_id']);
             });
-            $options = getItemByEntity('Supplier', $ticket->fields['entities_id']);
+            $options = getItemByEntity('Supplier', $ticket->fields['entities_id'] ?? Session::getActiveEntity());
             $forbiddenActors = array_column($forbiddenActors, 'suppliers_id');
             $options = array_diff_key($options, array_combine($forbiddenActors, $forbiddenActors));
             echo json_encode($options);

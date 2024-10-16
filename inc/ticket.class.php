@@ -4522,30 +4522,76 @@ class Ticket extends CommonITILObject
       );
    }
 
+   function generateFollowupLink($actor, $actorType) {
+      global $CFG_GLPI;
+
+      if ($CFG_GLPI["notifications_mailing"]) {
+         $text = __('Email followup')." : ".Dropdown::getYesNo($actor['use_notification']).
+            '&#10;';
+
+         if ($actor['use_notification']) {
+            $email = $actor['alternative_email'];
+            $actorObj = new $actorType();
+            if (empty($email) && $actorObj->getFromDB($actor[$actorType == User::class ? 'users_id' : 'suppliers_id'])) {
+               $email = $actorType == User::class ? $actorObj->getDefaultEmail() : $actorObj->fields['email'];
+            }
+            $text .= sprintf(__('%1$s: %2$s'), _n('Email', 'Emails', 1), $email);
+            if (!NotificationMailing::isUserAddressValid($email)) {
+               $text .= __('Invalid email address');
+            }
+         }
+
+         switch ($actorType) {
+            case User::class:
+                $link = new Ticket_User();
+                break;
+            case Supplier::class:
+                $link = new Supplier_Ticket();
+                break;
+         };
+         $rand = mt_rand();
+         Ajax::createIframeModalWindow(
+            'followup' . $rand,
+            $link->getFormURLWithID($actor['id']),
+            [
+               'width'   => 600,
+               'height'  => 300
+            ]
+         );
+
+         return [ 'followupTitle' => $text, 'modal' => 'followup' . $rand ];
+      }
+      return [];
+   }
+
    private function getActorsForAction($action)
    {
+
       $actors = [];
 
       $userActors = $this->getUsers($action);
       foreach ($userActors as $userActor) {
-         $actors[] = [
+         $newUserActor = [
             'name' => getUserName($userActor['users_id']),
             'id' => $userActor['users_id'],
             'type' => 'user',
             'icon' => User::getIcon($userActor['users_id']),
          ];
+         $newUserActor += $this->generateFollowupLink($userActor, User::class);
+         $actors[] = $newUserActor;
       }
 
       $groupActors = $this->getGroups($action);
       foreach ($groupActors as $groupActor) {
          $group = new Group();
          $group->getFromDB($groupActor['groups_id']);
-         $actors[] = [
+         $newGroupActor = [
             'name' => $group->getName(),
             'id' => $groupActor['groups_id'],
             'type' => 'group',
             'icon' => Group::getIcon(),
          ];
+         $actors[] = $newGroupActor;
       }
 
       if ($action == CommonITILActor::ASSIGN) {
@@ -4553,12 +4599,14 @@ class Ticket extends CommonITILObject
          foreach ($supplierActors as $supplierActor) {
             $supplier = new Supplier();
             $supplier->getFromDB($supplierActor['suppliers_id']);
-            $actors[] = [
+            $newSupplierActor = [
                'name' => $supplier->getName(),
                'id' => $supplierActor['suppliers_id'],
                'type' => 'supplier',
                'icon' => Supplier::getIcon(),
             ];
+            $newSupplierActor += $this->generateFollowupLink($supplierActor, Supplier::class);
+            $actors[] = $newSupplierActor;
          }
       }
       return $actors;
@@ -4815,6 +4863,8 @@ class Ticket extends CommonITILObject
 
       $display_save_btn = (!array_key_exists('locked', $options) || !$options['locked'])
          && ($canupdate || $can_requester || $canpriority || $canassign || $canassigntome);
+
+      $rand = mt_rand();
 
       $formUrl = $this->getFormURL();
       $reopenLabel = __('Reopen');
