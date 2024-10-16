@@ -1412,7 +1412,29 @@ div.chip > p {
 .input-container {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 }
+
+.input-group {
+    flex: 1;
+    min-width: 200px; 
+    max-width: 100%;
+}
+
+.select2-container {
+    width: 100% !important;
+}
+
+.select2-dropdown {
+    width: auto !important;
+}
+
+@media (max-width: 768px) {
+    .input-group {
+        min-width: 150px;
+    }
+}
+
 
 .secondary {
     border-radius: 0.5rem;
