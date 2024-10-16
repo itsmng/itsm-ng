@@ -185,28 +185,28 @@ var GLPIPlanning = {
           }
 
           // show tooltips
-//          element.qtip({
-//            position: qtip_position,
-//            content: tooltip,
-//            style: {
-//              classes: "qtip-shadow qtip-bootstrap",
-//            },
-//            show: {
-//              solo: true,
-//              delay: 100,
-//            },
-//            hide: {
-//              fixed: true,
-//              delay: 100,
-//            },
-//            events: {
-//              show: function (event) {
-//                if (!window_focused) {
-//                  event.preventDefault();
-//                }
-//              },
-//            },
-//          });
+          //          element.qtip({
+          //            position: qtip_position,
+          //            content: tooltip,
+          //            style: {
+          //              classes: "qtip-shadow qtip-bootstrap",
+          //            },
+          //            show: {
+          //              solo: true,
+          //              delay: 100,
+          //            },
+          //            hide: {
+          //              fixed: true,
+          //              delay: 100,
+          //            },
+          //            events: {
+          //              show: function (event) {
+          //                if (!window_focused) {
+          //                  event.preventDefault();
+          //                }
+          //              },
+          //            },
+          //          });
         }
 
         // context menu
@@ -404,7 +404,7 @@ var GLPIPlanning = {
             display_done_events: display_done_events,
             view_name: view_name,
           };
-          return params
+          return params;
         },
         success: function (data) {
           if (!options.full_view && data.length == 0) {

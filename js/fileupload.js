@@ -32,51 +32,51 @@
 /* global fileType, getExtIcon, getSize, isImage, stopEvent, Uint8Array */
 
 function uploadFile(file, editor, input_name) {
-   var returnTag = false;
+  var returnTag = false;
 
-   //Create formdata from file to send with ajax request
-   var formdata = new FormData();
-   formdata.append('filename[0]', file, file.name);
-   formdata.append('name', 'filename');
+  //Create formdata from file to send with ajax request
+  var formdata = new FormData();
+  formdata.append('filename[0]', file, file.name);
+  formdata.append('name', 'filename');
 
-   // upload file with ajax
-   $.post({
-      url: CFG_GLPI.root_doc+'/ajax/fileupload.php',
-      data: formdata,
-      processData: false,
-      contentType: false,
-      dataType: 'JSON',
-      async: false,
-      success: function(data) {
-         $.each(data, function(index, element) {
-            if (element[0].error === undefined) {
-               returnTag = '';
-               var tag = getFileTag(element);
-               //if is an image add tag
-               if (isImage(file)) {
-                  returnTag = tag.tag;
-               }
-               //display uploaded file
-               displayUploadedFile(element[0], tag, editor, input_name);
-            } else {
-               returnTag = false;
-               alert(element[0].error);
-            }
-         });
-      },
+  // upload file with ajax
+  $.post({
+    url: CFG_GLPI.root_doc+'/ajax/fileupload.php',
+    data: formdata,
+    processData: false,
+    contentType: false,
+    dataType: 'JSON',
+    async: false,
+    success: function(data) {
+      $.each(data, function(index, element) {
+        if (element[0].error === undefined) {
+          returnTag = '';
+          var tag = getFileTag(element);
+          //if is an image add tag
+          if (isImage(file)) {
+            returnTag = tag.tag;
+          }
+          //display uploaded file
+          displayUploadedFile(element[0], tag, editor, input_name);
+        } else {
+          returnTag = false;
+          alert(element[0].error);
+        }
+      });
+    },
 
-      error: function (request) {
-         // If this is an error on the return
-         if ("responseText" in request && request.responseText.length > 0) {
-            alert(request.responseText);
-         } else {
-            // Error before sending request #3866
-            alert(request.statusText);
-         }
+    error: function (request) {
+      // If this is an error on the return
+      if ("responseText" in request && request.responseText.length > 0) {
+        alert(request.responseText);
+      } else {
+        // Error before sending request #3866
+        alert(request.statusText);
       }
-   });
+    }
+  });
 
-   return returnTag;
+  return returnTag;
 }
 
 /**
@@ -86,24 +86,24 @@ function uploadFile(file, editor, input_name) {
  * @return     {(boolean|string)}  The file tag.
  */
 var getFileTag = function(data) {
-   var returnString = '';
+  var returnString = '';
 
-   $.ajax({
-      type: 'POST',
-      url: CFG_GLPI.root_doc+'/ajax/getFileTag.php',
-      data: {'data':data},
-      dataType: 'JSON',
-      async: false,
-      success: function(data) {
-         returnString = data[0];
-      },
-      error: function (request) {
-         console.warn(request.responseText);
-         returnString=false;
-      }
-   });
+  $.ajax({
+    type: 'POST',
+    url: CFG_GLPI.root_doc+'/ajax/getFileTag.php',
+    data: {'data':data},
+    dataType: 'JSON',
+    async: false,
+    success: function(data) {
+      returnString = data[0];
+    },
+    error: function (request) {
+      console.warn(request.responseText);
+      returnString=false;
+    }
+  });
 
-   return returnString;
+  return returnString;
 };
 
 /**
@@ -116,60 +116,60 @@ var getFileTag = function(data) {
  */
 var fileindex = 0;
 var displayUploadedFile = function(file, tag, editor, input_name) {
-   // default argument(s)
-   input_name = (typeof input_name === 'undefined' || input_name == null) ? 'filename' : input_name;
+  // default argument(s)
+  input_name = (typeof input_name === 'undefined' || input_name == null) ? 'filename' : input_name;
 
-   // find the nearest fileupload_info where to append file list
-   var current_dom_point = $(editor.targetElm);
-   var iteration = 0;
-   var filecontainer;
-   do {
-      current_dom_point = current_dom_point.parent();
-      filecontainer = current_dom_point.find('.fileupload_info');
-      iteration++;
-   } while (filecontainer.length <= 0 && iteration < 30);
+  // find the nearest fileupload_info where to append file list
+  var current_dom_point = $(editor.targetElm);
+  var iteration = 0;
+  var filecontainer;
+  do {
+    current_dom_point = current_dom_point.parent();
+    filecontainer = current_dom_point.find('.fileupload_info');
+    iteration++;
+  } while (filecontainer.length <= 0 && iteration < 30);
 
-   if (filecontainer.length) {
-      var ext = file.name.split('.').pop();
+  if (filecontainer.length) {
+    var ext = file.name.split('.').pop();
 
-      var p = $('<p></p>')
-         .attr('id',file.id)
-         .html(
-            getExtIcon(ext)
+    var p = $('<p></p>')
+      .attr('id',file.id)
+      .html(
+        getExtIcon(ext)
             + '&nbsp;'
             + '<b>'+file.display
             + '</b>'
             + '&nbsp;('
             + getSize(file.size)+')&nbsp;'
-         ).appendTo(filecontainer);
+      ).appendTo(filecontainer);
 
-      // File
-      $('<input/>')
-         .attr('type', 'hidden')
-         .attr('name', '_'+input_name+'['+fileindex+']')
-         .attr('value', file.name).appendTo(p);
+    // File
+    $('<input/>')
+      .attr('type', 'hidden')
+      .attr('name', '_'+input_name+'['+fileindex+']')
+      .attr('value', file.name).appendTo(p);
 
-      // Prefix
-      $('<input/>')
-         .attr('type', 'hidden')
-         .attr('name', '_prefix_'+input_name+'['+fileindex+']')
-         .attr('value', file.prefix).appendTo(p);
+    // Prefix
+    $('<input/>')
+      .attr('type', 'hidden')
+      .attr('name', '_prefix_'+input_name+'['+fileindex+']')
+      .attr('value', file.prefix).appendTo(p);
 
-      // Tag
-      $('<input/>')
-         .attr('type', 'hidden')
-         .attr('name', '_tag_'+input_name+'['+fileindex+']')
-         .attr('value', tag.name)
-         .appendTo(p);
+    // Tag
+    $('<input/>')
+      .attr('type', 'hidden')
+      .attr('name', '_tag_'+input_name+'['+fileindex+']')
+      .attr('value', tag.name)
+      .appendTo(p);
 
-      // Delete button
-      var elementsIdToRemove = {0:file.id, 1:file.id+'2'};
-      $('<span class="fa fa-times-circle pointer"></span>').click(function() {
-         deleteImagePasted(elementsIdToRemove, tag.tag, editor);
-      }).appendTo(p);
+    // Delete button
+    var elementsIdToRemove = {0:file.id, 1:file.id+'2'};
+    $('<span class="fa fa-times-circle pointer"></span>').click(function() {
+      deleteImagePasted(elementsIdToRemove, tag.tag, editor);
+    }).appendTo(p);
 
-      fileindex++;
-   }
+    fileindex++;
+  }
 };
 
 /**
@@ -180,18 +180,18 @@ var displayUploadedFile = function(file, tag, editor, input_name) {
  * @param      {Object}  editor              The editor
  */
 var deleteImagePasted = function(elementsIdToRemove, tagToRemove, editor) {
-   // Remove file display lines
-   $.each(elementsIdToRemove, function (index, element) {
-      $('#'+element).remove();
-   });
+  // Remove file display lines
+  $.each(elementsIdToRemove, function (index, element) {
+    $('#'+element).remove();
+  });
 
-   if (typeof editor !== "undefined"
+  if (typeof editor !== "undefined"
        && typeof editor.dom !== "undefined") {
-      editor.setContent(editor.getContent().replace('<p>'+tagToRemove+'</p>', ''));
+    editor.setContent(editor.getContent().replace('<p>'+tagToRemove+'</p>', ''));
 
-      var regex = new RegExp('#', 'g');
-      editor.dom.remove(tagToRemove.replace(regex, ''));
-   }
+    var regex = new RegExp('#', 'g');
+    editor.dom.remove(tagToRemove.replace(regex, ''));
+  }
 };
 
 /**
@@ -202,54 +202,54 @@ var deleteImagePasted = function(elementsIdToRemove, tagToRemove, editor) {
  * @param  {string}   tag
  */
 var insertImgFromFile = function(editor, fileImg, tag) {
-   var urlCreator = window.URL || window.webkitURL;
-   var imageUrl   = urlCreator.createObjectURL(fileImg);
-   var regex      = new RegExp('#', 'g');
-   var maxHeight  = $(tinyMCE.activeEditor.getContainer()).height() - 60;
-   var maxWidth   = $(tinyMCE.activeEditor.getContainer()).width()  - 120;
+  var urlCreator = window.URL || window.webkitURL;
+  var imageUrl   = urlCreator.createObjectURL(fileImg);
+  var regex      = new RegExp('#', 'g');
+  var maxHeight  = $(tinyMCE.activeEditor.getContainer()).height() - 60;
+  var maxWidth   = $(tinyMCE.activeEditor.getContainer()).width()  - 120;
 
-   if (window.FileReader && window.File && window.FileList && window.Blob ) {
-      // indicate loading in tinymce
-      editor.setProgressState(true);
+  if (window.FileReader && window.File && window.FileList && window.Blob ) {
+    // indicate loading in tinymce
+    editor.setProgressState(true);
 
-      var reader = new FileReader();
-      reader.onload = (function(theFile) {
-         var image    = new Image();
-         image.src    = theFile.target.result;
-         image.onload = function() {
-            // access image size here
-            var imgWidth  = this.width;
-            var imgHeight = this.height;
-            var ratio     = 0;
+    var reader = new FileReader();
+    reader.onload = (function(theFile) {
+      var image    = new Image();
+      image.src    = theFile.target.result;
+      image.onload = function() {
+        // access image size here
+        var imgWidth  = this.width;
+        var imgHeight = this.height;
+        var ratio     = 0;
 
-            if (imgWidth > maxWidth) {
-               ratio     = maxWidth / imgWidth; // get ratio for scaling image
-               imgHeight = imgHeight * ratio;   // Reset height to match scaled image
-               imgWidth  = imgWidth * ratio;    // Reset width to match scaled image
-            }
+        if (imgWidth > maxWidth) {
+          ratio     = maxWidth / imgWidth; // get ratio for scaling image
+          imgHeight = imgHeight * ratio;   // Reset height to match scaled image
+          imgWidth  = imgWidth * ratio;    // Reset width to match scaled image
+        }
 
-            // Check if current height is larger than max
-            if (imgHeight > maxHeight) {
-               ratio     = maxHeight / imgHeight; // get ratio for scaling image
-               imgWidth  = imgWidth * ratio;      // Reset width to match scaled image
-               imgHeight = imgHeight * ratio;     // Reset height to match scaled image
-            }
+        // Check if current height is larger than max
+        if (imgHeight > maxHeight) {
+          ratio     = maxHeight / imgHeight; // get ratio for scaling image
+          imgWidth  = imgWidth * ratio;      // Reset width to match scaled image
+          imgHeight = imgHeight * ratio;     // Reset height to match scaled image
+        }
 
-            editor.execCommand(
-               'mceInsertContent',
-               false,
-               "<img width='"+imgWidth+"' height='"+imgHeight+"'' id='"+tag.replace(regex,'')+"' src='"+imageUrl+"'>"
-            );
+        editor.execCommand(
+          'mceInsertContent',
+          false,
+          "<img width='"+imgWidth+"' height='"+imgHeight+"'' id='"+tag.replace(regex,'')+"' src='"+imageUrl+"'>"
+        );
 
-            // loading done, remove indicator
-            editor.setProgressState(false);
-         };
-      });
-      reader.readAsDataURL(fileImg);
+        // loading done, remove indicator
+        editor.setProgressState(false);
+      };
+    });
+    reader.readAsDataURL(fileImg);
 
-   } else {
-      console.warn('thanks to update your browser to get preview of image');
-   }
+  } else {
+    console.warn('thanks to update your browser to get preview of image');
+  }
 };
 
 /**
@@ -259,28 +259,28 @@ var insertImgFromFile = function(editor, fileImg, tag) {
  * @return     {Blob}    { description_of_the_return_value }
  */
 var dataURItoBlob = function(dataURI) {
-   // convert base64/URLEncoded data component to raw binary data held in a string
-   var byteString;
-   if (dataURI.split(',')[0].indexOf('base64') >= 0) {
-      byteString = atob(dataURI.split(',')[1]);
-   } else {
-      byteString = unescape(dataURI.split(',')[1]);
-   }
+  // convert base64/URLEncoded data component to raw binary data held in a string
+  var byteString;
+  if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+    byteString = atob(dataURI.split(',')[1]);
+  } else {
+    byteString = unescape(dataURI.split(',')[1]);
+  }
 
-   // separate out the mime component
-   var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-   var imgExt = mimeString.split('/')[1];
+  // separate out the mime component
+  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+  var imgExt = mimeString.split('/')[1];
 
-   // write the bytes of the string to a typed array
-   var ia = new Uint8Array(byteString.length);
-   for (var i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-   }
+  // write the bytes of the string to a typed array
+  var ia = new Uint8Array(byteString.length);
+  for (var i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
 
-   var file = new Blob([ia], {type:mimeString});
-   file.name = 'image_paste' + Math.floor((Math.random() * 10000000) + 1) + '.' + imgExt;
+  var file = new Blob([ia], {type:mimeString});
+  file.name = 'image_paste' + Math.floor((Math.random() * 10000000) + 1) + '.' + imgExt;
 
-   return file;
+  return file;
 };
 
 /**
@@ -290,7 +290,7 @@ var dataURItoBlob = function(dataURI) {
 * @return     String mimeType   return mimeType of data
 */
 var isImageFromPaste = function(content) {
-   return content.match(new RegExp('<img.*data:image/')) !== null;
+  return content.match(new RegExp('<img.*data:image/')) !== null;
 };
 
 /**
@@ -300,7 +300,7 @@ var isImageFromPaste = function(content) {
 * @return     String mimeType   return mimeType of data
 */
 var isImageBlobFromPaste = function(content) {
-   return content.match(new RegExp('<img.*src=[\'"]blob:')) !== null;
+  return content.match(new RegExp('<img.*src=[\'"]blob:')) !== null;
 };
 
 /**
@@ -310,12 +310,12 @@ var isImageBlobFromPaste = function(content) {
 * @return {string}  Source of image or empty string.
 */
 var extractSrcFromImgTag = function(content) {
-   var foundImage = $('<div></div>').append(content).find('img');
-   if (foundImage.length > 0) {
-      return foundImage.attr('src');
-   }
+  var foundImage = $('<div></div>').append(content).find('img');
+  if (foundImage.length > 0) {
+    return foundImage.attr('src');
+  }
 
-   return '';
+  return '';
 };
 
 /**
@@ -324,14 +324,14 @@ var extractSrcFromImgTag = function(content) {
  * @param  {Blob}   image  The image to insert
  */
 var insertImageInTinyMCE = function(editor, image) {
-   //make ajax call for upload doc
-   var input_name = $(editor.targetElm).attr('name');
-   var tag = uploadFile(image, editor, input_name);
-   if (tag !== false) {
-      insertImgFromFile(editor, image, tag);
-   }
+  //make ajax call for upload doc
+  var input_name = $(editor.targetElm).attr('name');
+  var tag = uploadFile(image, editor, input_name);
+  if (tag !== false) {
+    insertImgFromFile(editor, image, tag);
+  }
 
-   return tag;
+  return tag;
 };
 
 /**
@@ -340,112 +340,112 @@ var insertImageInTinyMCE = function(editor, image) {
  * @param  {[Object]} editor TinyMCE editor
  */
 if (typeof tinyMCE != 'undefined') {
-   tinyMCE.PluginManager.add('glpi_upload_doc', function(editor) {
-      editor.on('PastePreProcess', function(event) {
-         //Check if data is an image
-         if (isImageFromPaste(event.content)) {
-            stopEvent(event);
+  tinyMCE.PluginManager.add('glpi_upload_doc', function(editor) {
+    editor.on('PastePreProcess', function(event) {
+      //Check if data is an image
+      if (isImageFromPaste(event.content)) {
+        stopEvent(event);
 
-            //extract base64 data
-            var base64 = extractSrcFromImgTag(event.content);
+        //extract base64 data
+        var base64 = extractSrcFromImgTag(event.content);
 
-            //transform to blob and insert into editor
-            if (base64.length) {
-               var file = dataURItoBlob(base64);
+        //transform to blob and insert into editor
+        if (base64.length) {
+          var file = dataURItoBlob(base64);
 
-               insertImageInTinyMCE(editor, file);
+          insertImageInTinyMCE(editor, file);
+        }
+
+      } else if (isImageBlobFromPaste(event.content)) {
+        stopEvent(event);
+
+        var src = extractSrcFromImgTag(event.content);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', src, true);
+        xhr.responseType = 'arraybuffer';
+        xhr.onload = function() {
+          if (this.status !== 200) {
+            console.error("paste error");
+            return;
+          }
+
+          var imgData = new Uint8Array(this.response);
+          // fileType.fromBuffer() returns a promise (async method)
+          fileType.fromBuffer(imgData).then(function(imgType) {
+            if (!imgType || !imgType.ext || !imgType.mime) {
+              // Unable to retrieve file ext
+              console.error("paste error");
+              return;
             }
 
-         } else if (isImageBlobFromPaste(event.content)) {
-            stopEvent(event);
+            var file  = new Blob([imgData.buffer], {type: imgType.mime});
+            file.name = 'image_paste' + Math.floor((Math.random() * 10000000) + 1) + '.' + imgType.ext;
 
-            var src = extractSrcFromImgTag(event.content);
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', src, true);
-            xhr.responseType = 'arraybuffer';
-            xhr.onload = function() {
-               if (this.status !== 200) {
-                  console.error("paste error");
-                  return;
-               }
-
-               var imgData = new Uint8Array(this.response);
-               // fileType.fromBuffer() returns a promise (async method)
-               fileType.fromBuffer(imgData).then(function(imgType) {
-                  if (!imgType || !imgType.ext || !imgType.mime) {
-                     // Unable to retrieve file ext
-                     console.error("paste error");
-                     return;
-                  }
-
-                  var file  = new Blob([imgData.buffer], {type: imgType.mime});
-                  file.name = 'image_paste' + Math.floor((Math.random() * 10000000) + 1) + '.' + imgType.ext;
-
-                  insertImageInTinyMCE(editor, file);
-               });
-            };
-            xhr.send();
-         }
-      });
-   });
+            insertImageInTinyMCE(editor, file);
+          });
+        };
+        xhr.send();
+      }
+    });
+  });
 }
 
 
 $(function() {
-   // set a function to track drag hover event
-   $(document).bind('dragover', function (event) {
-      event.preventDefault();
+  // set a function to track drag hover event
+  $(document).bind('dragover', function (event) {
+    event.preventDefault();
 
-      var dropZone = $('.dropzone');
-      var foundDropzone;
-      var timeout = window.dropZoneTimeout;
+    var dropZone = $('.dropzone');
+    var foundDropzone;
+    var timeout = window.dropZoneTimeout;
 
-      if (!timeout) {
-         dropZone.addClass('dragin');
-      } else {
-         clearTimeout(timeout);
+    if (!timeout) {
+      dropZone.addClass('dragin');
+    } else {
+      clearTimeout(timeout);
+    }
+
+    var found = false;
+    var node = event.target;
+
+    do {
+      if ($(node).hasClass('draghoverable')) {
+        found = true;
+        foundDropzone = $(node);
+        break;
       }
 
-      var found = false;
-      var node = event.target;
+      node = node.parentNode;
+    } while (node !== null);
 
-      do {
-         if ($(node).hasClass('draghoverable')) {
-            found = true;
-            foundDropzone = $(node);
-            break;
-         }
+    dropZone.removeClass('dragin draghover');
 
-         node = node.parentNode;
-      } while (node !== null);
+    if (found) {
+      foundDropzone.addClass('draghover');
+    }
+  });
 
-      dropZone.removeClass('dragin draghover');
+  // remove dragover styles on drop
+  $(document).bind('drop', function(event) {
+    event.preventDefault();
+    $('.draghoverable').removeClass('draghover');
 
-      if (found) {
-         foundDropzone.addClass('draghover');
-      }
-   });
-
-   // remove dragover styles on drop
-   $(document).bind('drop', function(event) {
-      event.preventDefault();
-      $('.draghoverable').removeClass('draghover');
-
-      // if file present, insert it in filelist
-      if (typeof event.originalEvent.dataTransfer.files !== 'undefined') {
-         $.each(event.originalEvent.dataTransfer.files, function(index, element) {
-            var input_name = null;
-            var input_file = $(event.target).find('input[type=file][name]');
-            if (input_file.length) {
-               input_name = input_file.attr('name').replace('[]', '');
-            }
-            uploadFile(
-               element,
-               {targetElm: $(event.target).find('.fileupload_info')},
-               input_name
-            );
-         });
-      }
-   });
+    // if file present, insert it in filelist
+    if (typeof event.originalEvent.dataTransfer.files !== 'undefined') {
+      $.each(event.originalEvent.dataTransfer.files, function(index, element) {
+        var input_name = null;
+        var input_file = $(event.target).find('input[type=file][name]');
+        if (input_file.length) {
+          input_name = input_file.attr('name').replace('[]', '');
+        }
+        uploadFile(
+          element,
+          {targetElm: $(event.target).find('.fileupload_info')},
+          input_name
+        );
+      });
+    }
+  });
 });
